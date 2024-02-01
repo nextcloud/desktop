@@ -3746,7 +3746,7 @@ for additional privileges during the process.</source>
         <translation>브라우저 다시 열기</translation>
     </message>
     <message>
-        <location filename="../src/gui/newwizard/pages/oauthcredentialssetupwizardpage.cpp" line="49"/>
+        <location filename="../src/gui/newwizard/pages/oauthcredentialssetupwizardpage.cpp" line="47"/>
         <source>Please use your browser to log in to %1.</source>
         <translation>%1에 로그인하려면 브라우저를 이용하세요.</translation>
     </message>

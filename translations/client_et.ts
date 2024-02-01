@@ -1871,7 +1871,7 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     <message>
         <location filename="../src/gui/logbrowser.ui" line="53"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;b&gt;The logs contain sensitive information which you should not make publicly available&lt;/b&gt;&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;b&gt;Logid sisaldavad tundlikku teavet, mida te ei tohiks avalikult kättesaadavaks teha&lt;/b&gt;&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.ui" line="71"/>
@@ -3745,7 +3745,7 @@ for additional privileges during the process.</source>
         <translation>Avage brauser uuesti</translation>
     </message>
     <message>
-        <location filename="../src/gui/newwizard/pages/oauthcredentialssetupwizardpage.cpp" line="49"/>
+        <location filename="../src/gui/newwizard/pages/oauthcredentialssetupwizardpage.cpp" line="47"/>
         <source>Please use your browser to log in to %1.</source>
         <translation>Palun kasutage oma brauserit, et logida sisse %1.</translation>
     </message>

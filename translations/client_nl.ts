@@ -3748,7 +3748,7 @@ vragen om extra autorisaties tijdens installatie.</translation>
         <translation>Heropen browser</translation>
     </message>
     <message>
-        <location filename="../src/gui/newwizard/pages/oauthcredentialssetupwizardpage.cpp" line="49"/>
+        <location filename="../src/gui/newwizard/pages/oauthcredentialssetupwizardpage.cpp" line="47"/>
         <source>Please use your browser to log in to %1.</source>
         <translation>Gebruik de browser om bij %1 in te loggen.</translation>
     </message>

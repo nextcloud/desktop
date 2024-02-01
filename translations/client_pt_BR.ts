@@ -555,7 +555,7 @@ Esta ação irá anular qualquer sincronização atualmente em execução.</tran
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="709"/>
         <source>Updating credentials for %1...</source>
-        <translation type="unfinished"/>
+        <translation>Atualizando credenciais para %1...</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="713"/>
@@ -585,27 +585,27 @@ Esta ação irá anular qualquer sincronização atualmente em execução.</tran
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="600"/>
         <source>Sync paused by user</source>
-        <translation type="unfinished"/>
+        <translation>Sincronização pausada pelo usuário</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="634"/>
         <source>Internet connection is metered</source>
-        <translation type="unfinished"/>
+        <translation>A conexão com a Internet é medida</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="635"/>
         <source>Synchronization is paused because the Internet connection is a metered connection&lt;p&gt;Do you really want to force a Synchronization now?</source>
-        <translation type="unfinished"/>
+        <translation>A sincronização está pausada porque a conexão com a Internet é limitada&lt;p&gt;Você realmente deseja forçar uma sincronização agora?</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="656"/>
         <source>User triggered force sync</source>
-        <translation type="unfinished"/>
+        <translation>Sincronização forçada acionada pelo usuário</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="689"/>
         <source>Sync to %1 is paused due to metered internet connection.</source>
-        <translation type="unfinished"/>
+        <translation>A sincronização com %1 está pausada devido à conexão limitada à Internet.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="700"/>
@@ -1046,7 +1046,7 @@ A atualização será executada em segundo plano e substituirá o arquivo AppIma
     <message>
         <location filename="../src/gui/folder.cpp" line="788"/>
         <source>Switching VFS mode on folder &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Alternando o modo VFS na pasta &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="950"/>
@@ -1144,12 +1144,12 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderman.cpp" line="390"/>
         <source>Account disconnected or paused</source>
-        <translation type="unfinished"/>
+        <translation>Conta desconectada ou pausada</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="605"/>
         <source>Folder is about to be removed</source>
-        <translation type="unfinished"/>
+        <translation>A pasta está prestes a ser removida</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="629"/>
@@ -1174,7 +1174,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderman.cpp" line="727"/>
         <source>Folder &apos;%1&apos; is already in use by application %2!</source>
-        <translation type="unfinished"/>
+        <translation>A pasta &apos;%1&apos; já está em uso pelo aplicativo %2!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="741"/>
@@ -1293,7 +1293,7 @@ Considere remover esta pasta da conta e adicioná-la novamente.</translation>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="941"/>
         <source>Selective sync list changed</source>
-        <translation type="unfinished"/>
+        <translation>Lista de sincronização seletiva alterada</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="987"/>
@@ -1351,7 +1351,7 @@ Considere remover esta pasta da conta e adicioná-la novamente.</translation>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1222"/>
         <source>User triggered sync-all for selective synced folder</source>
-        <translation type="unfinished"/>
+        <translation>Sincronização de tudo acionada pelo usuário para pasta sincronizada seletiva</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1065"/>
@@ -1870,7 +1870,7 @@ Os itens em que a exclusão é permitida serão excluídos se impedirem que um d
     <message>
         <location filename="../src/gui/logbrowser.ui" line="53"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;b&gt;The logs contain sensitive information which you should not make publicly available&lt;/b&gt;&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;b&gt;Os registros contêm informações confidenciais que você não deve disponibilizar publicamente&lt;/b&gt;&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.ui" line="71"/>
@@ -2018,7 +2018,7 @@ foi baixado. A versão instalada é %3.&lt;/p&gt;</translation>
     <message>
         <location filename="../src/gui/networksettings.ui" line="20"/>
         <source>Pause synchronization when the Internet connection is metered</source>
-        <translation type="unfinished"/>
+        <translation>Pausar a sincronização quando a conexão com a Internet for medida</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="30"/>
@@ -2249,7 +2249,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="173"/>
         <source>%1 installed successfully. Restart the application to finish installing the update.</source>
-        <translation type="unfinished"/>
+        <translation>%1 instalado com sucesso. Reinicie o aplicativo para concluir a instalação da atualização.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="175"/>
@@ -3479,7 +3479,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="871"/>
         <source>Aborted due to %1</source>
-        <translation type="unfinished"/>
+        <translation>Abortado devido a %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="889"/>
@@ -3500,7 +3500,7 @@ for additional privileges during the process.</source>
         <location filename="../src/libsync/syncengine.cpp" line="86"/>
         <source>application exit</source>
         <comment>abort reason</comment>
-        <translation type="unfinished"/>
+        <translation>saída do aplicativo</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="399"/>
@@ -3745,7 +3745,7 @@ for additional privileges during the process.</source>
         <translation>Reabrir Navegador</translation>
     </message>
     <message>
-        <location filename="../src/gui/newwizard/pages/oauthcredentialssetupwizardpage.cpp" line="49"/>
+        <location filename="../src/gui/newwizard/pages/oauthcredentialssetupwizardpage.cpp" line="47"/>
         <source>Please use your browser to log in to %1.</source>
         <translation>Por favor, use seu navegador para fazer login %1.</translation>
     </message>
@@ -4039,7 +4039,7 @@ Tem certeza de que deseja continuar?</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="954"/>
         <source>User paused sync for account &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>O usuário pausou a sincronização da conta &apos;%1&apos;</translation>
     </message>
 </context>
 <context>
@@ -4067,7 +4067,7 @@ Tem certeza de que deseja continuar?</translation>
     <message>
         <location filename="../src/common/utility.cpp" line="352"/>
         <source>less than a minute ago</source>
-        <translation type="unfinished"/>
+        <translation>a menos de um minuto atras</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="356"/>
@@ -4261,12 +4261,12 @@ Tem certeza de que deseja continuar?</translation>
     <message>
         <location filename="../src/gui/updater/updatedownloadeddialog.ui" line="20"/>
         <source>Update downloaded</source>
-        <translation type="unfinished"/>
+        <translation>Atualização baixada</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/updatedownloadeddialog.ui" line="53"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:11pt; font-weight:700;&quot;&gt;Restart required&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:11pt; font-weight:700;&quot;&gt;é necessário reiniciar&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
 </context>
 <context>

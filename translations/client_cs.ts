@@ -3732,7 +3732,7 @@ můžete být požádáni o dodatečná oprávnění.</translation>
         <translation>Znovu otevřít prohlížeč</translation>
     </message>
     <message>
-        <location filename="../src/gui/newwizard/pages/oauthcredentialssetupwizardpage.cpp" line="49"/>
+        <location filename="../src/gui/newwizard/pages/oauthcredentialssetupwizardpage.cpp" line="47"/>
         <source>Please use your browser to log in to %1.</source>
         <translation>Prosím použijte Váš prohlížeč k přihlášení k %1.</translation>
     </message>

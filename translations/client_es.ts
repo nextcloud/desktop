@@ -3744,7 +3744,7 @@ for additional privileges during the process.</source>
         <translation>Volver a abrir navegador</translation>
     </message>
     <message>
-        <location filename="../src/gui/newwizard/pages/oauthcredentialssetupwizardpage.cpp" line="49"/>
+        <location filename="../src/gui/newwizard/pages/oauthcredentialssetupwizardpage.cpp" line="47"/>
         <source>Please use your browser to log in to %1.</source>
         <translation>Por favor, use el navegador para autenticarse en %1.</translation>
     </message>

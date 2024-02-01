@@ -3746,7 +3746,7 @@ for additional privileges during the process.</source>
         <translation>Tarayıcıyı Yeniden Aç</translation>
     </message>
     <message>
-        <location filename="../src/gui/newwizard/pages/oauthcredentialssetupwizardpage.cpp" line="49"/>
+        <location filename="../src/gui/newwizard/pages/oauthcredentialssetupwizardpage.cpp" line="47"/>
         <source>Please use your browser to log in to %1.</source>
         <translation>Lütfen %1&apos;de oturum açmak için tarayıcınızı kullanın.</translation>
     </message>
