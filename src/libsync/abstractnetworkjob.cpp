@@ -323,20 +323,20 @@ QString AbstractNetworkJob::errorString() const
 
 QString AbstractNetworkJob::errorStringParsingBody(QByteArray *body)
 {
-    QString base = errorString();
+    const auto base = errorString();
     if (base.isEmpty() || !reply()) {
         return QString();
     }
 
-    QByteArray replyBody = reply()->readAll();
+    const auto replyBody = reply()->readAll();
     if (body) {
         *body = replyBody;
     }
 
-    QString extra = extractErrorMessage(replyBody);
+    const auto extra = extractErrorMessage(replyBody);
     // Don't append the XML error message to a OC-ErrorString message.
     if (!extra.isEmpty() && !reply()->hasRawHeader("OC-ErrorString")) {
-        return QString::fromLatin1("%1 (%2)").arg(base, extra);
+        return extra;
     }
 
     return base;
@@ -416,7 +416,7 @@ QString extractErrorMessage(const QByteArray &errorResponse)
     while (!reader.atEnd() && !reader.hasError()) {
         reader.readNextStartElement();
         if (reader.name() == QLatin1String("message")) {
-            QString message = reader.readElementText();
+            const auto message = reader.readElementText();
             if (!message.isEmpty()) {
                 return message;
             }
