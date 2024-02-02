@@ -48,7 +48,7 @@ NCClientInterface::ContextMenuInfo NCClientInterface::FetchInfo(const std::wstri
     ContextMenuInfo info;
     std::wstring response;
     int sleptCount = 0;
-    while (sleptCount < 5) {
+    while (sleptCount < 20) {
         if (socket.ReadLine(&response)) {
             if (StringUtil::begins_with(response, wstring(L"REGISTER_PATH:"))) {
                 wstring responsePath = response.substr(14); // length of REGISTER_PATH
