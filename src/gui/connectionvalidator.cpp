@@ -27,6 +27,7 @@
 #include "networkjobs.h"
 #include "clientproxy.h"
 #include <creds/abstractcredentials.h>
+#include "systray.h"
 
 namespace OCC {
 
@@ -328,7 +329,15 @@ void ConnectionValidator::reportConnected() {
 void ConnectionValidator::reportResult(Status status)
 {
     emit connectionResult(status, _errors);
+    showSystrayErrorMessage();
     deleteLater();
+}
+
+void ConnectionValidator::showSystrayErrorMessage()
+{
+    Systray::instance()->showMessage(tr("Network Error"),
+                                     _errors.join("<br>"),
+                                     QSystemTrayIcon::Warning);
 }
 
 } // namespace OCC
