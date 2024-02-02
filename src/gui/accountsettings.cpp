@@ -1105,10 +1105,10 @@ void AccountSettings::showConnectionLabel(const QString &message, QStringList er
         _ui->connectLabel->setStyleSheet({});
     } else {
         errors.prepend(message);
-        auto msg = errors.join(QLatin1String("\n"));
-        qCDebug(lcAccountSettings) << msg;
-        Theme::replaceLinkColorString(msg, QColor("#c1c8e6"));
-        _ui->connectLabel->setText(msg);
+        auto userFriendlyMsg = errors.join(QLatin1String("<br>"));
+        qCDebug(lcAccountSettings) << userFriendlyMsg;
+        Theme::replaceLinkColorString(userFriendlyMsg, QColor("#c1c8e6"));
+        _ui->connectLabel->setText(userFriendlyMsg);
         _ui->connectLabel->setToolTip({});
         _ui->connectLabel->setStyleSheet(errStyle);
     }
@@ -1276,9 +1276,9 @@ void AccountSettings::slotAccountStateChanged()
             break;
         }
         case AccountState::NetworkError:
-            showConnectionLabel(tr("No connection to %1 at %2.")
-                                    .arg(Utility::escape(Theme::instance()->appNameGUI()), server),
-                _accountState->connectionErrors());
+            showConnectionLabel(tr("Unable to connect to %1.")
+                                    .arg(Utility::escape(Theme::instance()->appNameGUI())),
+                                _accountState->connectionErrors());
             break;
         case AccountState::ConfigurationError:
             showConnectionLabel(tr("Server configuration error: %1 at %2.")
