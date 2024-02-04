@@ -144,7 +144,7 @@ void EncryptedFolderMetadataHandler::slotFolderEncryptedIdError(QNetworkReply *r
     Q_ASSERT(reply);
     qCDebug(lcFetchAndUploadE2eeFolderMetadataJob) << "Error retrieving the Id of the encrypted folder.";
     if (!reply) {
-        emit fetchFinished(-1, tr("Error fetching encrypted folder id."));
+        emit fetchFinished(-1, tr("Error fetching encrypted folder ID."));
         return;
     }
     const auto errorCode = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
