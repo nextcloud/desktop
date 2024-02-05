@@ -35,4 +35,6 @@ struct FileProviderConfig {
         get { internalConfig[ConfigKey.fastEnumerationEnabled.rawValue] as? Bool ?? true }
         set { internalConfig[ConfigKey.fastEnumerationEnabled.rawValue] = newValue }
     }
+
+    lazy var fastEnumerationSet = internalConfig[ConfigKey.fastEnumerationEnabled.rawValue] != nil
 }
