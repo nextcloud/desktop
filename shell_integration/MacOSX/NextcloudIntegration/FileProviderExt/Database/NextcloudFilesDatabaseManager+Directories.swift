@@ -28,8 +28,10 @@ extension NextcloudFilesDatabaseManager {
             of: placeholderSeparator, with: problematicSeparator)
 
         if let metadata = ncDatabase().objects(NextcloudItemMetadataTable.self).filter(
-            "account == %@ AND serverUrl == %@ AND fileName == %@ AND directory == true", account,
-            directoryItemServerUrl, directoryItemFileName
+            "account == %@ AND serverUrl == %@ AND fileName == %@ AND directory == true", 
+            account,
+            directoryItemServerUrl, 
+            directoryItemFileName
         ).first {
             return NextcloudItemMetadataTable(value: metadata)
         }

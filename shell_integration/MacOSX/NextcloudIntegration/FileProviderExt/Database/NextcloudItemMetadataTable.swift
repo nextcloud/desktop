@@ -94,7 +94,8 @@ class NextcloudItemMetadataTable: Object {
     @Persisted var sessionSelector = ""
     @Persisted var sessionTaskIdentifier: Int = 0
     @Persisted var sharePermissionsCollaborationServices: Int = 0
-    let sharePermissionsCloudMesh = List<String>()  // TODO: Find a way to compare these in remote state check
+    // TODO: Find a way to compare these two below in remote state check
+    let sharePermissionsCloudMesh = List<String>()
     let shareType = List<Int>()
     @Persisted var size: Int64 = 0
     @Persisted var status: Int = 0
@@ -183,9 +184,12 @@ class NextcloudItemMetadataTable: Object {
     func isInSameDatabaseStoreableRemoteState(_ comparingMetadata: NextcloudItemMetadataTable)
         -> Bool
     {
-        comparingMetadata.etag == etag && comparingMetadata.fileNameView == fileNameView
-            && comparingMetadata.date == date && comparingMetadata.permissions == permissions
-            && comparingMetadata.hasPreview == hasPreview && comparingMetadata.note == note
+        comparingMetadata.etag == etag 
+            && comparingMetadata.fileNameView == fileNameView
+            && comparingMetadata.date == date 
+            && comparingMetadata.permissions == permissions
+            && comparingMetadata.hasPreview == hasPreview 
+            && comparingMetadata.note == note
             && comparingMetadata.lock == lock
             && comparingMetadata.sharePermissionsCollaborationServices
                 == sharePermissionsCollaborationServices
@@ -203,13 +207,13 @@ class NextcloudItemMetadataTable: Object {
         }
 
         let urlBase = urlBase.urlEncoded!
-        let webdavUrl = urlBase + NextcloudAccount.webDavFilesUrlSuffix + user  // Leave the leading slash
+        // Leave the leading slash in webdavUrl
+        let webdavUrl = urlBase + NextcloudAccount.webDavFilesUrlSuffix + user
         let serverFileRelativeUrl =
             serverUrl.replacingOccurrences(of: webdavUrl, with: "") + "/" + fileName
 
         let urlString =
             "\(urlBase)/index.php/core/preview.png?file=\(serverFileRelativeUrl)&x=\(size.width)&y=\(size.height)&a=1&mode=cover"
-
         return URL(string: urlString)
     }
 }
