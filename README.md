@@ -1,4 +1,4 @@
-# Nextcloud Desktop Client
+# Nextcloud Desktop Client 
 
 The :computer: Nextcloud Desktop Client is a tool to synchronize files from Nextcloud Server
 with your computer.
