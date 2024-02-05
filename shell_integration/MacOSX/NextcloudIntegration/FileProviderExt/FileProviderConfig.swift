@@ -9,7 +9,7 @@ import FileProvider
 import Foundation
 
 struct FileProviderConfig {
-    enum FileProviderConfigKey: String {
+    private enum ConfigKey: String {
         case fastEnumerationEnabled = "fastEnumerationEnabled"
     }
 
@@ -29,5 +29,10 @@ struct FileProviderConfig {
             let defaults = UserDefaults.standard
             defaults.setValue(newValue, forKey: domainIdentifier.rawValue)
         }
+    }
+
+    var fastEnumerationEnabled: Bool {
+        get { internalConfig[ConfigKey.fastEnumerationEnabled.rawValue] as? Bool ?? true }
+        set { internalConfig[ConfigKey.fastEnumerationEnabled.rawValue] = newValue }
     }
 }
