@@ -65,7 +65,6 @@ import OSLog
     // Since it's not desirable to cancel a long recursive enumeration half-way through, we do the
     // fast enumeration by default. We prompt the user on the client side to run a proper, full
     // enumeration if they want for safety.
-    var fastEnumeration = true
     lazy var config = FileProviderConfig(domainIdentifier: domain.identifier)
 
     required init(domain: NSFileProviderDomain) {
@@ -808,7 +807,7 @@ import OSLog
             enumeratedItemIdentifier: containerItemIdentifier,
             ncAccount: ncAccount,
             ncKit: ncKit,
-            fastEnumeration: fastEnumeration
+            fastEnumeration: config.fastEnumerationEnabled
         )
     }
 
