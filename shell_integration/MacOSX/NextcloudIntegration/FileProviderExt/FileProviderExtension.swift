@@ -20,26 +20,17 @@ import OSLog
 class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKCommonDelegate {
     let domain: NSFileProviderDomain
     let ncKit = NextcloudKit()
-    lazy var ncKitBackground: NKBackground = {
-        let nckb = NKBackground(nkCommonInstance: ncKit.nkCommonInstance)
-        return nckb
-    }()
-
-    let appGroupIdentifier: String? =
-        Bundle.main.object(forInfoDictionaryKey: "SocketApiPrefix") as? String
+    let appGroupIdentifier = Bundle.main.object(forInfoDictionaryKey: "SocketApiPrefix") as? String
     var ncAccount: NextcloudAccount?
+    lazy var ncKitBackground = NKBackground(nkCommonInstance: ncKit.nkCommonInstance)
     lazy var socketClient: LocalSocketClient? = {
         guard let containerUrl = pathForAppGroupContainer() else {
-            Logger.fileProviderExtension.critical(
-                "Could not start file provider socket client properly as could not get container url"
-            )
+            Logger.fileProviderExtension.critical("Won't start client, no container url")
             return nil
         }
-
         let socketPath = containerUrl.appendingPathComponent(
             ".fileprovidersocket", conformingTo: .archive)
         let lineProcessor = FileProviderSocketLineProcessor(delegate: self)
-
         return LocalSocketClient(socketPath: socketPath.path, lineProcessor: lineProcessor)
     }()
 
@@ -61,9 +52,11 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
     }()
 
     required init(domain: NSFileProviderDomain) {
+        // The containing application must create a domain using
+        // `NSFileProviderManager.add(_:, completionHandler:)`. The system will then launch the
+        // application extension process, call `FileProviderExtension.init(domain:)` to instantiate
+        // the extension for that domain, and call methods on the instance.
         self.domain = domain
-        // The containing application must create a domain using `NSFileProviderManager.add(_:, completionHandler:)`. The system will then launch the application extension process, call `FileProviderExtension.init(domain:)` to instantiate the extension for that domain, and call methods on the instance.
-
         super.init()
         socketClient?.start()
     }
