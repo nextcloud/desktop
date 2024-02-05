@@ -77,4 +77,10 @@ class ClientCommunicationService: NSObject, NSFileProviderServiceSource, NSXPCLi
             completionHandler(logs.joined(separator: "\n"), nil)
         }
     }
+
+    func getFastEnumerationState(completionHandler: @escaping (Bool, Bool) -> Void) {
+        let enabled = fpExtension.config.fastEnumerationEnabled
+        let set = fpExtension.config.fastEnumerationSet
+        completionHandler(enabled, set)
+    }
 }
