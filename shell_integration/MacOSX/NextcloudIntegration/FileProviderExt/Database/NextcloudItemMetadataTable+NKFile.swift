@@ -104,8 +104,11 @@ extension NextcloudItemMetadataTable {
         var metadatas: [NextcloudItemMetadataTable] = []
 
         let conversionQueue = DispatchQueue(
-            label: "nkFileToMetadataConversionQueue", qos: .userInitiated, attributes: .concurrent)
-        let appendQueue = DispatchQueue(label: "metadataAppendQueue", qos: .userInitiated)  // Serial queue
+            label: "nkFileToMetadataConversionQueue", 
+            qos: .userInitiated,
+            attributes: .concurrent)
+        // appendQueue is a serial queue, not concurrent
+        let appendQueue = DispatchQueue(label: "metadataAppendQueue", qos: .userInitiated)
         let dispatchGroup = DispatchGroup()
 
         for file in files {

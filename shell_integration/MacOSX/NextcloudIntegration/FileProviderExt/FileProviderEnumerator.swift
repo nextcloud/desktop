@@ -23,7 +23,8 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
         FileProviderEnumerator.isSystemIdentifier(enumeratedItemIdentifier)
     }
 
-    private let anchor = NSFileProviderSyncAnchor(Date().description.data(using: .utf8)!)  // TODO: actually use this in NCKit and server requests
+    // TODO: actually use this in NCKit and server requests
+    private let anchor = NSFileProviderSyncAnchor(Date().description.data(using: .utf8)!)
     private static let maxItemsPerFileProviderPage = 100
     let ncAccount: NextcloudAccount
     let ncKit: NextcloudKit
@@ -35,7 +36,8 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
     }
 
     init(
-        enumeratedItemIdentifier: NSFileProviderItemIdentifier, ncAccount: NextcloudAccount,
+        enumeratedItemIdentifier: NSFileProviderItemIdentifier,
+        ncAccount: NextcloudAccount,
         ncKit: NextcloudKit
     ) {
         self.enumeratedItemIdentifier = enumeratedItemIdentifier
@@ -317,8 +319,12 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
             )
 
             FileProviderEnumerator.completeChangesObserver(
-                observer, anchor: anchor, ncKit: self.ncKit, newMetadatas: newMetadatas,
-                updatedMetadatas: updatedMetadatas, deletedMetadatas: deletedMetadatas)
+                observer,
+                anchor: anchor,
+                ncKit: self.ncKit,
+                newMetadatas: newMetadatas,
+                updatedMetadatas: updatedMetadatas,
+                deletedMetadatas: deletedMetadatas)
         }
     }
 

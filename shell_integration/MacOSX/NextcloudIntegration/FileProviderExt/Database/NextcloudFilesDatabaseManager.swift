@@ -123,7 +123,9 @@ class NextcloudFilesDatabaseManager: NSObject {
         -> [NextcloudItemMetadataTable]
     {
         let metadatas = ncDatabase().objects(NextcloudItemMetadataTable.self).filter(
-            "account == %@ AND serverUrl == %@ AND status == %@", account, serverUrl,
+            "account == %@ AND serverUrl == %@ AND status == %@", 
+            account,
+            serverUrl,
             status.rawValue)
         return sortedItemMetadatas(metadatas)
     }
@@ -216,7 +218,9 @@ class NextcloudFilesDatabaseManager: NSObject {
     }
 
     func updateItemMetadatas(
-        account: String, serverUrl: String, updatedMetadatas: [NextcloudItemMetadataTable],
+        account: String, 
+        serverUrl: String,
+        updatedMetadatas: [NextcloudItemMetadataTable],
         updateDirectoryEtags: Bool
     ) -> (
         newMetadatas: [NextcloudItemMetadataTable]?,
@@ -227,7 +231,9 @@ class NextcloudFilesDatabaseManager: NSObject {
 
         do {
             let existingMetadatas = database.objects(NextcloudItemMetadataTable.self).filter(
-                "account == %@ AND serverUrl == %@ AND status == %@", account, serverUrl,
+                "account == %@ AND serverUrl == %@ AND status == %@", 
+                account,
+                serverUrl,
                 NextcloudItemMetadataTable.Status.normal.rawValue)
 
             let metadatasToDelete = processItemMetadatasToDelete(
@@ -249,7 +255,8 @@ class NextcloudFilesDatabaseManager: NSObject {
 
             for metadata in directoriesNeedingRename {
                 if let updatedDirectoryChildren = renameDirectoryAndPropagateToChildren(
-                    ocId: metadata.ocId, newServerUrl: metadata.serverUrl,
+                    ocId: metadata.ocId, 
+                    newServerUrl: metadata.serverUrl,
                     newFileName: metadata.fileName)
                 {
                     metadatasToUpdate += updatedDirectoryChildren
@@ -270,7 +277,8 @@ class NextcloudFilesDatabaseManager: NSObject {
             }
 
             return (
-                newMetadatas: metadatasToCreate, updatedMetadatas: metadatasToUpdate,
+                newMetadatas: metadatasToCreate, 
+                updatedMetadatas: metadatasToUpdate,
                 deletedMetadatas: metadatasToDelete
             )
         } catch {
@@ -282,7 +290,8 @@ class NextcloudFilesDatabaseManager: NSObject {
     }
 
     func setStatusForItemMetadata(
-        _ metadata: NextcloudItemMetadataTable, status: NextcloudItemMetadataTable.Status,
+        _ metadata: NextcloudItemMetadataTable, 
+        status: NextcloudItemMetadataTable.Status,
         completionHandler: @escaping (_ updatedMetadata: NextcloudItemMetadataTable?) -> Void
     ) {
         let database = ncDatabase()
