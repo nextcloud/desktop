@@ -83,4 +83,22 @@ class ClientCommunicationService: NSObject, NSFileProviderServiceSource, NSXPCLi
         let set = fpExtension.config.fastEnumerationSet
         completionHandler(enabled, set)
     }
+
+    func setFastEnumerationEnabled(_ enabled: Bool) {
+        fpExtension.config.fastEnumerationEnabled = enabled
+
+        guard enabled else { return }
+        // If enabled, start full enumeration
+        guard let fpManager = NSFileProviderManager(for: fpExtension.domain) else {
+            let domainName = self.fpExtension.domain.displayName
+            Logger.fileProviderExtension.error("Could not get file provider manager for domain \(domainName, privacy: .public), cannot run enumeration after fast enumeration setting change")
+            return
+        }
+
+        fpManager.signalEnumerator(for: .workingSet) { error in
+            if error != nil {
+                Logger.fileProviderExtension.error("Error signalling enumerator for working set, received error: \(error!.localizedDescription, privacy: .public)")
+            }
+        }
+    }
 }
