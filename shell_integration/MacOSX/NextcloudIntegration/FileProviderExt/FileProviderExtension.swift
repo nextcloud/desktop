@@ -25,16 +25,17 @@ import OSLog
     lazy var ncKitBackground = NKBackground(nkCommonInstance: ncKit.nkCommonInstance)
     lazy var socketClient: LocalSocketClient? = {
         guard let containerUrl = pathForAppGroupContainer() else {
-            Logger.fileProviderExtension.critical("Won't start client, no container url")
-            return nil
+            Logger.fileProviderExtension.critical("Won't start socket client, no container url")
+            return nil;
         }
+
         let socketPath = containerUrl.appendingPathComponent(
             ".fileprovidersocket", conformingTo: .archive)
         let lineProcessor = FileProviderSocketLineProcessor(delegate: self)
         return LocalSocketClient(socketPath: socketPath.path, lineProcessor: lineProcessor)
     }()
 
-    let urlSessionIdentifier: String = "com.nextcloud.session.upload.fileproviderext"
+    let urlSessionIdentifier = "com.nextcloud.session.upload.fileproviderext"
     let urlSessionMaximumConnectionsPerHost = 5
     lazy var urlSession: URLSession = {
         let configuration = URLSessionConfiguration.background(withIdentifier: urlSessionIdentifier)
@@ -46,8 +47,10 @@ import OSLog
         configuration.sharedContainerIdentifier = appGroupIdentifier
 
         let session = URLSession(
-            configuration: configuration, delegate: ncKitBackground,
-            delegateQueue: OperationQueue.main)
+            configuration: configuration,
+            delegate: ncKitBackground,
+            delegateQueue: OperationQueue.main
+        )
         return session
     }()
 
@@ -65,7 +68,7 @@ import OSLog
     var fastEnumeration = true
 
     required init(domain: NSFileProviderDomain) {
-        // The containing application must create a domain using
+        // The containing application must create a domain using 
         // `NSFileProviderManager.add(_:, completionHandler:)`. The system will then launch the
         // application extension process, call `FileProviderExtension.init(domain:)` to instantiate
         // the extension for that domain, and call methods on the instance.
@@ -77,7 +80,8 @@ import OSLog
     func invalidate() {
         // TODO: cleanup any resources
         Logger.fileProviderExtension.debug(
-            "Extension for domain \(self.domain.displayName, privacy: .public) is being torn down")
+            "Extension for domain \(self.domain.displayName, privacy: .public) is being torn down"
+        )
     }
 
     // MARK: NSFileProviderReplicatedExtension protocol methods
