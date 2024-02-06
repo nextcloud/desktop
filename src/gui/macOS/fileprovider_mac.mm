@@ -102,5 +102,10 @@ void FileProvider::createDebugArchiveForDomain(const QString &domainIdentifier, 
     _xpc->createDebugArchiveForExtension(domainIdentifier, filename);
 }
 
+FileProviderXPC *FileProvider::xpc() const
+{
+    return _xpc.get();
+}
+
 } // namespace Mac
 } // namespace OCC
