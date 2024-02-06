@@ -137,4 +137,25 @@ void FileProviderXPC::createDebugArchiveForExtension(const QString &extensionAcc
     }
 }
 
+std::optional<std::pair<bool, bool>> FileProviderXPC::fastEnumerationStateForExtension(const QString &extensionAccountId) const
+{
+    qCInfo(lcFileProviderXPC) << "Checking if fast enumeration is enabled for extension" << extensionAccountId;
+    const auto service = (NSObject<ClientCommunicationProtocol> *)_clientCommServices.value(extensionAccountId);
+    if (service == nil) {
+        qCWarning(lcFileProviderXPC) << "Could not get service for extension" << extensionAccountId;
+        return std::nullopt;
+    }
+
+    __block BOOL receivedFastEnumerationEnabled; // What is the value of the setting being used by the extension?
+    __block BOOL receivedFastEnumerationSet; // Has the setting been set by the user?
+    dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
+    [service getFastEnumerationStateWithCompletionHandler:^(BOOL enabled, BOOL set) {
+        receivedFastEnumerationEnabled = enabled;
+        receivedFastEnumerationSet = set;
+        dispatch_semaphore_signal(semaphore);
+    }];
+    dispatch_wait(semaphore, DISPATCH_TIME_FOREVER);
+    return std::optional<std::pair<bool, bool>>{{receivedFastEnumerationEnabled, receivedFastEnumerationSet}};
+}
+
 } // namespace OCC::Mac
