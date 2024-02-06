@@ -72,7 +72,7 @@ void ServerUrlSetupWizardState::evaluatePage()
             userProvidedUrl.prepend(defaultUrlSchemeC);
         }
 
-        return QUrl::fromUserInput(userProvidedUrl);
+        return QUrl::fromUserInput(userProvidedUrl).adjusted(QUrl::RemoveUserInfo);
     }();
 
     // (ab)use the account builder as temporary storage for the URL we are about to probe (after sanitation)

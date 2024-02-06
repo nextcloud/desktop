@@ -1,0 +1,8 @@
+Bugfix: strip user information from new-connection URL
+
+Credentials in the URL are not supported for some time. This fix strips
+them from the URL before storage and using it to authenticate the client
+to the server.
+
+https://github.com/owncloud/client/issues/11497
+https://github.com/owncloud/client/pull/11509
