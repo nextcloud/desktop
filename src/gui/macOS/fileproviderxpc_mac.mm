@@ -158,4 +158,11 @@ std::optional<std::pair<bool, bool>> FileProviderXPC::fastEnumerationStateForExt
     return std::optional<std::pair<bool, bool>>{{receivedFastEnumerationEnabled, receivedFastEnumerationSet}};
 }
 
+void FileProviderXPC::setFastEnumerationEnabledForExtension(const QString &extensionAccountId, bool enabled) const
+{
+    qCInfo(lcFileProviderXPC) << "Setting fast enumeration for extension" << extensionAccountId << "to" << enabled;
+    const auto service = (NSObject<ClientCommunicationProtocol> *)_clientCommServices.value(extensionAccountId);
+    [service setFastEnumerationEnabled:enabled];
+}
+
 } // namespace OCC::Mac
