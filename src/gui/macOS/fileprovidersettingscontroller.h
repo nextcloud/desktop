@@ -45,6 +45,7 @@ public:
     [[nodiscard]] unsigned long long remoteStorageUsageForAccount(const QString &userIdAtHost) const;
     [[nodiscard]] Q_INVOKABLE float remoteStorageUsageGbForAccount(const QString &userIdAtHost) const;
     [[nodiscard]] Q_INVOKABLE bool fastEnumerationEnabledForAccount(const QString &userIdAtHost) const;
+    [[nodiscard]] Q_INVOKABLE bool fastEnumerationSetForAccount(const QString &userIdAtHost) const;
 
     [[nodiscard]] Q_INVOKABLE QAbstractListModel *materialisedItemsModelForAccount(const QString &userIdAtHost);
     [[nodiscard]] Q_INVOKABLE FileProviderDomainSyncStatus *domainSyncStatusForAccount(const QString &userIdAtHost) const;

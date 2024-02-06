@@ -362,6 +362,18 @@ void FileProviderSettingsController::setVfsEnabledForAccount(const QString &user
     }
 }
 
+bool FileProviderSettingsController::fastEnumerationSetForAccount(const QString &userIdAtHost) const
+{
+    const auto xpc = FileProvider::instance()->xpc();
+    if (!xpc) {
+        return false;
+    }
+    if (const auto state = xpc->fastEnumerationStateForExtension(userIdAtHost)) {
+        return state->second;
+    }
+    return false;
+}
+
 bool FileProviderSettingsController::fastEnumerationEnabledForAccount(const QString &userIdAtHost) const
 {
     const auto xpc = FileProvider::instance()->xpc();
