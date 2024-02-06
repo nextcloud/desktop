@@ -285,7 +285,7 @@ def step(context, permissions, receiver, resource):
     SharingDialog.removePermissions(permissions)
 
 
-@When("the user closes the sharing dialog")
+@Step("the user closes the sharing dialog")
 def step(context):
     SharingDialog.closeSharingDialog()
 

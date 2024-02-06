@@ -53,6 +53,12 @@ class AccountSetting:
         "type": "QWidget",
         "visible": 0,
     }
+    DIALOG_STACK = {
+        "name": "dialogStack",
+        "type": "QStackedWidget",
+        "visible": 1,
+        "window": names.settings_OCC_SettingsDialog,
+    }
     CONFIRMATION_YES_BUTTON = {"text": "Yes", "type": "QPushButton", "visible": 1}
 
     @staticmethod

@@ -262,7 +262,7 @@ def step(context):
     waitForInitialSyncToComplete(getResourcePath('/', account_details["user"]))
 
 
-@When('the user cancels the sync connection wizard')
+@Step('the user cancels the sync connection wizard')
 def step(context):
     SyncConnectionWizard.cancelFolderSyncConnectionWizard()
 

@@ -1,7 +1,7 @@
 from urllib.parse import urlparse
 import squish, test
 import subprocess
-from os import makedirs, path
+from os import makedirs
 from os.path import exists, join
 from helpers.SpaceHelper import get_space_id
 from helpers.ConfigHelper import get_config, set_config, isWindows

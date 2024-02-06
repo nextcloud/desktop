@@ -209,7 +209,8 @@ def teardown_client():
         # remove account from UI
         # In Windows, removing only config and sync folders won't help
         # so to work around that, remove the account connection
-        close_open_dialogs()
+        close_dialogs()
+        close_widgets()
         server_host = urlparse(get_config('localBackendUrl')).netloc
         accounts = Toolbar.get_accounts()
         for account in accounts:
@@ -241,7 +242,7 @@ def teardown_client():
             test.log(f'Failed to delete{entry.name}. Reason: {e}.')
 
 
-def close_open_dialogs():
+def close_dialogs():
     # close the current active dailog if it's not a main client window
     while True:
         active_window = QApplication.activeModalWidget()
@@ -253,3 +254,23 @@ def close_open_dialogs():
             confirm_dialog = QApplication.activeModalWidget()
             if confirm_dialog.visible:
                 clickButton(waitForObject(AccountSetting.CONFIRMATION_YES_BUTTON))
+
+
+def close_widgets():
+    try:
+        ch = object.children(squish.waitForObject(AccountSetting.DIALOG_STACK, 500))
+        for obj in ch:
+            if (
+                hasattr(obj, "objectName")
+                and obj.objectName != ''
+                and obj.objectName != "page"
+            ):
+                obj.close()
+                # if the dialog has a confirmation dialog, confirm it
+                confirm_dialog = QApplication.activeModalWidget()
+                if str(confirm_dialog) != "<null>" and confirm_dialog.visible:
+                    clickButton(waitForObject(AccountSetting.CONFIRMATION_YES_BUTTON))
+    except LookupError:
+        # nothing to close if DIALOG_STACK is not found
+        # required for client versions <= 5
+        pass

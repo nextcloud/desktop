@@ -83,6 +83,7 @@ Feature: Sharing
         And the user opens the sharing dialog of "SharedFolder" using the client-UI
         And the user searches for collaborator "Brian Murphy" using the client-UI
         Then the error "No results for 'Brian Murphy'" should be displayed
+        And the user closes the sharing dialog
 
 
     Scenario: try to self share a file/folder
@@ -96,6 +97,7 @@ Feature: Sharing
         And the user opens the sharing dialog of "OwnFolder" using the client-UI
         And the user selects "Alice Hansen" as collaborator of resource "OwnFolder" using the client-UI
         Then the error "Can't share with yourself" should be displayed
+        And the user closes the sharing dialog
 
 
     Scenario: search for users with minimum autocomplete characters
@@ -109,6 +111,7 @@ Feature: Sharing
             | user      |
             | TestUser1 |
             | TestUser2 |
+        And the user closes the sharing dialog
 
     Scenario: autocomplete offers a list of users followed by a list of groups
         And user "Alice" has uploaded file with content "ownCloud test text file" to "textfile.txt" in the server
@@ -119,6 +122,7 @@ Feature: Sharing
             | user          |
             | admin         |
             | admin (group) |
+        And the user closes the sharing dialog
 
     Scenario: collaborators are listed in chronological order
         Given user "Brian" has been created on the server with default attributes and without skeleton files
@@ -141,6 +145,7 @@ Feature: Sharing
             | TestUser1    |
             | TestUser3    |
             | TestUser2    |
+        And the user closes the sharing dialog
 
     @issue-7459
     Scenario: Progress indicator should not be visible after unselecting the password protection checkbox while sharing through public link
@@ -150,6 +155,7 @@ Feature: Sharing
         And the user toggles the password protection using the client-UI
         And the user toggles the password protection using the client-UI
         Then the password progress indicator should not be visible in the client-UI - expected to fail
+        And the user closes the sharing dialog
 
 
     Scenario: Collaborator should not see to whom a file/folder is shared.
@@ -164,6 +170,7 @@ Feature: Sharing
         When the user closes the sharing dialog
         And the user opens the sharing dialog of "Folder" using the client-UI
         Then the error text "The item is not shared with any users or groups" should be displayed in the sharing dialog
+        And the user closes the sharing dialog
 
 
     Scenario: share file and folder to a group
@@ -197,6 +204,7 @@ Feature: Sharing
         When the user closes the sharing dialog
         And the user tires to share resource "Folder" with the group "grp1" using the client-UI
         Then the error "Path already shared with this group" should be displayed
+        And the user closes the sharing dialog
 
 
     Scenario: sharee edits content of files shared by sharer
@@ -250,6 +258,7 @@ Feature: Sharing
         And the user removes permissions "edit" for user "Brian Murphy" of resource "textfile.txt" using the client-UI
         And the user closes the sharing dialog
         And the user removes permissions "edit" for user "Brian Murphy" of resource "FOLDER" using the client-UI
+        And the user closes the sharing dialog
         And user "Brian" tries to overwrite the file "textfile.txt" with content "overwrite ownCloud test text file"
         And user "Brian" tries to overwrite the file "FOLDER/simple.txt" with content "overwrite some content"
         And user "Brian" waits for file "textfile.txt" to have sync error
@@ -376,8 +385,10 @@ Feature: Sharing
         And user "Brian" has set up a client with default settings
         When the user opens the sharing dialog of "FOLDER" using the client-UI
         Then the error text "The file can not be shared because it was shared without sharing permission." should be displayed in the sharing dialog
+        And the user closes the sharing dialog
         When the user opens the sharing dialog of "textfile.txt" using the client-UI
         Then the error text "The file can not be shared because it was shared without sharing permission." should be displayed in the sharing dialog
+        And the user closes the sharing dialog
 
 
     Scenario: unshare a shared file and folder
@@ -393,6 +404,7 @@ Feature: Sharing
         When the user closes the sharing dialog
         And the user unshares the resource "simple-folder" for collaborator "Brian Murphy" using the client-UI
         Then the text "The item is not shared with any users or groups" should be displayed in the sharing dialog
+        And the user closes the sharing dialog
         And as "Brian" folder "simple-folder" on the server should not exist
 
 
@@ -423,6 +435,7 @@ Feature: Sharing
         And user "Brian" has set up a client with default settings
         When the user unshares the resource "textfile.txt" for collaborator "Carol King" using the client-UI
         Then the text "The item is not shared with any users or groups" should be displayed in the sharing dialog
+        And the user closes the sharing dialog
 
     @smokeTest
     Scenario: simple sharing of file and folder by public link without password
@@ -437,6 +450,7 @@ Feature: Sharing
         When the user creates a new public link with permissions "Download / View" for folder "simple-folder" without password using the client-UI
         Then as user "Alice" the folder "simple-folder" should have a public link in the server
         And the public should be able to download the folder "simple-folder/child" without password from the last created public link by "Alice" on the server
+        And the user closes the sharing dialog
 
 
     Scenario Outline: simple sharing of file and folder by public link with password
@@ -450,6 +464,7 @@ Feature: Sharing
         When the user creates a new public link with permissions "Download / View" for folder "simple-folder" with password "<password>" using the client-UI
         Then as user "Alice" the folder "simple-folder" should have a public link in the server
         And the public should be able to download the folder "simple-folder" with password "<password>" from the last created public link by "Alice" on the server
+        And the user closes the sharing dialog
         Examples:
             | password     |
             | password1234 |
@@ -463,6 +478,7 @@ Feature: Sharing
             | name     | Public-link   |
         And user "Alice" has set up a client with default settings
         When the user deletes the public link for file "textfile0.txt"
+        And the user closes the sharing dialog
         Then as user "Alice" the file "/textfile0.txt" should not have any public link in the server
 
 
@@ -477,6 +493,7 @@ Feature: Sharing
         And the user changes the password of public link "Public-link" to "password1234" using the client-UI
         Then as user "Alice" the file "textfile0.txt" should have a public link in the server
         And the public should be able to download the file "textfile0.txt" with password "password1234" from the last created public link by "Alice" on the server
+        And the user closes the sharing dialog
 
 
     Scenario: simple sharing of a file by public link with default expiration date
@@ -504,6 +521,7 @@ Feature: Sharing
         And the user creates a new public link with following settings using the client-UI:
             | path       | FOLDER     |
             | expireDate | 2031-12-30 |
+        And the user closes the sharing dialog
         Then as user "Alice" the folder "FOLDER" should have a public link in the server
         And the last public link share response of user "Alice" should include the following fields on the server
             | expireDate | 2031-12-30 |
@@ -516,6 +534,7 @@ Feature: Sharing
             | path       | textfile.txt |
             | password   | pass123      |
             | expireDate | 2031-10-14   |
+        And the user closes the sharing dialog
         Then as user "Alice" the file "textfile.txt" should have a public link in the server
         And the last public link share response of user "Alice" should include the following fields on the server
             | expireDate | 2031-10-14 |
@@ -532,6 +551,7 @@ Feature: Sharing
         When the user opens the public links dialog of "textfile0.txt" using the client-UI
         And the user edits the public link named "Public link" of file "textfile0.txt" changing following
             | expireDate | 2038-07-21 |
+        And the user closes the sharing dialog
         Then the last public link share response of user "Alice" should include the following fields on the server
             | expireDate | 2038-07-21 |
 
@@ -547,6 +567,7 @@ Feature: Sharing
         When the user opens the public links dialog of "simple-folder" using the client-UI
         And the user edits the public link named "Public link" of file "simple-folder" changing following
             | expireDate | 2038-07-21 |
+        And the user closes the sharing dialog
         Then the last public link share response of user "Alice" should include the following fields on the server
             | expireDate | 2038-07-21 |
 
@@ -556,6 +577,7 @@ Feature: Sharing
         And user "Alice" has set up a client with default settings
         When the user creates a new public link for folder "simple-folder" using the client-UI with these details:
             | role | <role> |
+        And the user closes the sharing dialog
         Then user "Alice" on the server should have a share with these details:
             | field       | value          |
             | share_type  | public_link    |
@@ -576,6 +598,7 @@ Feature: Sharing
         And user "Alice" has set up a client with default settings
         When the user creates a new public link for folder "simple-folder" using the client-UI with these details:
             | role | Contributor |
+        And the user closes the sharing dialog
         Then user "Alice" on the server should have a share with these details:
             | field       | value          |
             | share_type  | public_link    |
@@ -599,6 +622,7 @@ Feature: Sharing
         When the user closes the sharing dialog
         And the user removes permissions "<permissions>" for user "Brian Murphy" of resource "lorem.txt" using the client-UI
         Then "<permissions>" permissions should not be displayed for user "Brian Murphy" for resource "lorem.txt" on the client-UI
+        And the user closes the sharing dialog
         And user "Alice" on the server should have a share with these details:
             | field       | value                        |
             | uid_owner   | Alice                        |
