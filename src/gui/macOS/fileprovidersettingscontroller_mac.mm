@@ -378,12 +378,12 @@ bool FileProviderSettingsController::fastEnumerationEnabledForAccount(const QStr
 {
     const auto xpc = FileProvider::instance()->xpc();
     if (!xpc) {
-        return false;
+        return true;
     }
     if (const auto fastEnumerationState = xpc->fastEnumerationStateForExtension(userIdAtHost)) {
         return fastEnumerationState->first;
     }
-    return false;
+    return true;
 }
 
 void FileProviderSettingsController::setFastEnumerationEnabledForAccount(const QString &userIdAtHost, const bool setEnabled)
