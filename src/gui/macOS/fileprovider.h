@@ -37,7 +37,7 @@ public:
     static FileProvider *instance();
     ~FileProvider() override;
 
-    static bool fileProviderAvailable();
+    [[nodiscard]] static bool fileProviderAvailable();
 
 public slots:
     void createDebugArchiveForDomain(const QString &domainIdentifier, const QString &filename) const;
