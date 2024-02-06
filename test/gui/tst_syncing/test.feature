@@ -154,6 +154,7 @@ Feature: Syncing files
             | aFolder   |
             | 123Folder |
             | bFolder   |
+        And the user cancels the sync connection wizard
 
 
     Scenario Outline: Syncing a folder to the server
