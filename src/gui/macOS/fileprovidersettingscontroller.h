@@ -51,6 +51,7 @@ public:
 
 public slots:
     void setVfsEnabledForAccount(const QString &userIdAtHost, const bool setEnabled);
+    void setFastEnumerationEnabledForAccount(const QString &userIdAtHost, const bool setEnabled);
 
     void createEvictionWindowForAccount(const QString &userIdAtHost);
     void signalFileProviderDomain(const QString &userIdAtHost);
@@ -61,6 +62,8 @@ signals:
     void localStorageUsageForAccountChanged(const QString &userIdAtHost);
     void remoteStorageUsageForAccountChanged(const QString &userIdAtHost);
     void materialisedItemsForAccountChanged(const QString &userIdAtHost);
+    void fastEnumerationEnabledForAccountChanged(const QString &userIdAtHost);
+    void fastEnumerationSetForAccountChanged(const QString &userIdAtHost);
 
 private:
     explicit FileProviderSettingsController(QObject *parent = nullptr);

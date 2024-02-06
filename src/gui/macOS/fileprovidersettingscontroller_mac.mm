@@ -374,6 +374,20 @@ bool FileProviderSettingsController::fastEnumerationEnabledForAccount(const QStr
     return false;
 }
 
+void FileProviderSettingsController::setFastEnumerationEnabledForAccount(const QString &userIdAtHost, const bool setEnabled)
+{
+    const auto xpc = FileProvider::instance()->xpc();
+    if (!xpc) {
+        // Reset state of UI elements
+        emit fastEnumerationEnabledForAccountChanged(userIdAtHost);
+        emit fastEnumerationSetForAccountChanged(userIdAtHost);
+        return;
+    }
+    xpc->setFastEnumerationEnabledForExtension(userIdAtHost, setEnabled);
+    emit fastEnumerationEnabledForAccountChanged(userIdAtHost);
+    emit fastEnumerationSetForAccountChanged(userIdAtHost);
+}
+
 unsigned long long FileProviderSettingsController::localStorageUsageForAccount(const QString &userIdAtHost) const
 {
     return d->localStorageUsageForAccount(userIdAtHost);
