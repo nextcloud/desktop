@@ -41,9 +41,6 @@ public:
 
     [[nodiscard]] FileProviderXPC *xpc() const;
 
-public slots:
-    void createDebugArchiveForDomain(const QString &domainIdentifier, const QString &filename) const;
-
 private slots:
     void configureXPC();
 

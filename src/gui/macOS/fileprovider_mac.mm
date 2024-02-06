@@ -97,11 +97,6 @@ void FileProvider::configureXPC()
     }
 }
 
-void FileProvider::createDebugArchiveForDomain(const QString &domainIdentifier, const QString &filename) const
-{
-    _xpc->createDebugArchiveForExtension(domainIdentifier, filename);
-}
-
 FileProviderXPC *FileProvider::xpc() const
 {
     return _xpc.get();

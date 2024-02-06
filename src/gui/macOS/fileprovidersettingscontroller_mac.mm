@@ -437,7 +437,13 @@ void FileProviderSettingsController::createDebugArchive(const QString &userIdAtH
     if (filename.isEmpty()) {
         return;
     }
-    FileProvider::instance()->createDebugArchiveForDomain(userIdAtHost, filename);
+
+    const auto xpc = FileProvider::instance()->xpc();
+    if (!xpc) {
+        qCWarning(lcFileProviderSettingsController) << "Could not create debug archive, FileProviderXPC is not available.";
+        return;
+    }
+    xpc->createDebugArchiveForExtension(userIdAtHost, filename);
 }
 
 FileProviderDomainSyncStatus *FileProviderSettingsController::domainSyncStatusForAccount(const QString &userIdAtHost) const
