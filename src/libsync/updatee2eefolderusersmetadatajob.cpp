@@ -89,7 +89,7 @@ void UpdateE2eeFolderUsersMetadataJob::start(const bool keepLock)
 void UpdateE2eeFolderUsersMetadataJob::slotStartE2eeMetadataJobs()
 {
     if (_operation == Operation::Add && _folderUserCertificate.isNull()) {
-        emit finished(404, tr("Could not fetch publicKey for user %1").arg(_folderUserId));
+        emit finished(404, tr("Could not fetch public key for user %1").arg(_folderUserId));
         return;
     }
 
