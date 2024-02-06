@@ -12,39 +12,39 @@
  * for more details.
  */
 
-import Foundation
 import Alamofire
+import Foundation
 
 extension Progress {
     func setHandlersFromAfRequest(_ request: Request) {
-        self.cancellationHandler = { request.cancel() }
-        self.pausingHandler = { request.suspend() }
-        self.resumingHandler = { request.resume() }
+        cancellationHandler = { request.cancel() }
+        pausingHandler = { request.suspend() }
+        resumingHandler = { request.resume() }
     }
 
     func copyCurrentStateToProgress(_ otherProgress: Progress, includeHandlers: Bool = false) {
         if includeHandlers {
-            otherProgress.cancellationHandler = self.cancellationHandler
-            otherProgress.pausingHandler = self.pausingHandler
-            otherProgress.resumingHandler = self.resumingHandler
+            otherProgress.cancellationHandler = cancellationHandler
+            otherProgress.pausingHandler = pausingHandler
+            otherProgress.resumingHandler = resumingHandler
         }
-        
-        otherProgress.totalUnitCount = self.totalUnitCount
-        otherProgress.completedUnitCount = self.completedUnitCount
-        otherProgress.estimatedTimeRemaining = self.estimatedTimeRemaining
-        otherProgress.localizedDescription = self.localizedAdditionalDescription
-        otherProgress.localizedAdditionalDescription = self.localizedAdditionalDescription
-        otherProgress.isCancellable = self.isCancellable
-        otherProgress.isPausable = self.isPausable
-        otherProgress.fileCompletedCount = self.fileCompletedCount
-        otherProgress.fileURL = self.fileURL
-        otherProgress.fileTotalCount = self.fileTotalCount
-        otherProgress.fileCompletedCount = self.fileCompletedCount
-        otherProgress.fileOperationKind = self.fileOperationKind
-        otherProgress.kind = self.kind
-        otherProgress.throughput = self.throughput
 
-        for (key, object) in self.userInfo {
+        otherProgress.totalUnitCount = totalUnitCount
+        otherProgress.completedUnitCount = completedUnitCount
+        otherProgress.estimatedTimeRemaining = estimatedTimeRemaining
+        otherProgress.localizedDescription = localizedAdditionalDescription
+        otherProgress.localizedAdditionalDescription = localizedAdditionalDescription
+        otherProgress.isCancellable = isCancellable
+        otherProgress.isPausable = isPausable
+        otherProgress.fileCompletedCount = fileCompletedCount
+        otherProgress.fileURL = fileURL
+        otherProgress.fileTotalCount = fileTotalCount
+        otherProgress.fileCompletedCount = fileCompletedCount
+        otherProgress.fileOperationKind = fileOperationKind
+        otherProgress.kind = kind
+        otherProgress.throughput = throughput
+
+        for (key, object) in userInfo {
             otherProgress.setUserInfoObject(object, forKey: key)
         }
     }

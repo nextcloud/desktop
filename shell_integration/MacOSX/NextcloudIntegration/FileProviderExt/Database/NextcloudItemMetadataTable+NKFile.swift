@@ -69,8 +69,10 @@ extension NextcloudItemMetadataTable {
         }
         metadata.size = file.size
         metadata.classFile = file.classFile
-        //FIXME: iOS 12.0,* don't detect UTI text/markdown, text/x-markdown
-        if (metadata.contentType == "text/markdown" || metadata.contentType == "text/x-markdown") && metadata.classFile == NKCommon.TypeClassFile.unknow.rawValue {
+        // FIXME: iOS 12.0,* don't detect UTI text/markdown, text/x-markdown
+        if metadata.contentType == "text/markdown" || metadata.contentType == "text/x-markdown",
+            metadata.classFile == NKCommon.TypeClassFile.unknow.rawValue
+        {
             metadata.classFile = NKCommon.TypeClassFile.document.rawValue
         }
         if let date = file.uploadDate {
@@ -87,26 +89,33 @@ extension NextcloudItemMetadataTable {
         return metadata
     }
 
-    static func metadatasFromDirectoryReadNKFiles(_ files: [NKFile],
-                                                  account: String,
-                                                  completionHandler: @escaping (_ directoryMetadata: NextcloudItemMetadataTable,
-                                                                                _ childDirectoriesMetadatas: [NextcloudItemMetadataTable],
-                                                                                _ metadatas: [NextcloudItemMetadataTable]) -> Void) {
-
+    static func metadatasFromDirectoryReadNKFiles(
+        _ files: [NKFile],
+        account: String,
+        completionHandler: @escaping (
+            _ directoryMetadata: NextcloudItemMetadataTable,
+            _ childDirectoriesMetadatas: [NextcloudItemMetadataTable],
+            _ metadatas: [NextcloudItemMetadataTable]
+        ) -> Void
+    ) {
         var directoryMetadataSet = false
         var directoryMetadata = NextcloudItemMetadataTable()
         var childDirectoriesMetadatas: [NextcloudItemMetadataTable] = []
         var metadatas: [NextcloudItemMetadataTable] = []
 
-        let conversionQueue = DispatchQueue(label: "nkFileToMetadataConversionQueue", qos: .userInitiated, attributes: .concurrent)
-        let appendQueue = DispatchQueue(label: "metadataAppendQueue", qos: .userInitiated) // Serial queue
+        let conversionQueue = DispatchQueue(
+            label: "nkFileToMetadataConversionQueue", 
+            qos: .userInitiated,
+            attributes: .concurrent)
+        // appendQueue is a serial queue, not concurrent
+        let appendQueue = DispatchQueue(label: "metadataAppendQueue", qos: .userInitiated)
         let dispatchGroup = DispatchGroup()
 
         for file in files {
-            if metadatas.isEmpty && !directoryMetadataSet {
+            if metadatas.isEmpty, !directoryMetadataSet {
                 let metadata = NextcloudItemMetadataTable.fromNKFile(file, account: account)
-                directoryMetadata = metadata;
-                directoryMetadataSet = true;
+                directoryMetadata = metadata
+                directoryMetadataSet = true
             } else {
                 conversionQueue.async(group: dispatchGroup) {
                     let metadata = NextcloudItemMetadataTable.fromNKFile(file, account: account)

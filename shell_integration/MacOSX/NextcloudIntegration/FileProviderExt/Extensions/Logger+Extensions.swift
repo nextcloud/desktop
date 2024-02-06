@@ -17,11 +17,14 @@ import OSLog
 extension Logger {
     private static var subsystem = Bundle.main.bundleIdentifier!
 
-    static let desktopClientConnection = Logger(subsystem: subsystem, category: "desktopclientconnection")
+    static let desktopClientConnection = Logger(
+        subsystem: subsystem, category: "desktopclientconnection")
     static let enumeration = Logger(subsystem: subsystem, category: "enumeration")
-    static let fileProviderExtension = Logger(subsystem: subsystem, category: "fileproviderextension")
+    static let fileProviderExtension = Logger(
+        subsystem: subsystem, category: "fileproviderextension")
     static let fileTransfer = Logger(subsystem: subsystem, category: "filetransfer")
     static let localFileOps = Logger(subsystem: subsystem, category: "localfileoperations")
     static let ncFilesDatabase = Logger(subsystem: subsystem, category: "nextcloudfilesdatabase")
-    static let materialisedFileHandling = Logger(subsystem: subsystem, category: "materialisedfilehandling")
+    static let materialisedFileHandling = Logger(
+        subsystem: subsystem, category: "materialisedfilehandling")
 }

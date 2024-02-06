@@ -13,29 +13,24 @@
  */
 
 import FileProvider
-import OSLog
 import NCDesktopClientSocketKit
 import NextcloudKit
+import OSLog
 
 class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKCommonDelegate {
     let domain: NSFileProviderDomain
     let ncKit = NextcloudKit()
-    lazy var ncKitBackground: NKBackground = {
-        let nckb = NKBackground(nkCommonInstance: ncKit.nkCommonInstance)
-        return nckb
-    }()
-
-    let appGroupIdentifier: String? = Bundle.main.object(forInfoDictionaryKey: "SocketApiPrefix") as? String
+    let appGroupIdentifier = Bundle.main.object(forInfoDictionaryKey: "SocketApiPrefix") as? String
     var ncAccount: NextcloudAccount?
+    lazy var ncKitBackground = NKBackground(nkCommonInstance: ncKit.nkCommonInstance)
     lazy var socketClient: LocalSocketClient? = {
         guard let containerUrl = pathForAppGroupContainer() else {
-            Logger.fileProviderExtension.critical("Could not start file provider socket client properly as could not get container url")
-            return nil;
+            Logger.fileProviderExtension.critical("Won't start client, no container url")
+            return nil
         }
-
-        let socketPath = containerUrl.appendingPathComponent(".fileprovidersocket", conformingTo: .archive)
+        let socketPath = containerUrl.appendingPathComponent(
+            ".fileprovidersocket", conformingTo: .archive)
         let lineProcessor = FileProviderSocketLineProcessor(delegate: self)
-
         return LocalSocketClient(socketPath: socketPath.path, lineProcessor: lineProcessor)
     }()
 
@@ -50,32 +45,44 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
         configuration.requestCachePolicy = NSURLRequest.CachePolicy.reloadIgnoringLocalCacheData
         configuration.sharedContainerIdentifier = appGroupIdentifier
 
-        let session = URLSession(configuration: configuration, delegate: ncKitBackground, delegateQueue: OperationQueue.main)
+        let session = URLSession(
+            configuration: configuration, delegate: ncKitBackground,
+            delegateQueue: OperationQueue.main)
         return session
     }()
 
     required init(domain: NSFileProviderDomain) {
+        // The containing application must create a domain using
+        // `NSFileProviderManager.add(_:, completionHandler:)`. The system will then launch the
+        // application extension process, call `FileProviderExtension.init(domain:)` to instantiate
+        // the extension for that domain, and call methods on the instance.
         self.domain = domain
-        // The containing application must create a domain using `NSFileProviderManager.add(_:, completionHandler:)`. The system will then launch the application extension process, call `FileProviderExtension.init(domain:)` to instantiate the extension for that domain, and call methods on the instance.
-
         super.init()
-        self.socketClient?.start()
+        socketClient?.start()
     }
-    
+
     func invalidate() {
         // TODO: cleanup any resources
-        Logger.fileProviderExtension.debug("Extension for domain \(self.domain.displayName, privacy: .public) is being torn down")
+        Logger.fileProviderExtension.debug(
+            "Extension for domain \(self.domain.displayName, privacy: .public) is being torn down")
     }
 
     // MARK: NSFileProviderReplicatedExtension protocol methods
-    
-    func item(for identifier: NSFileProviderItemIdentifier, request: NSFileProviderRequest, completionHandler: @escaping (NSFileProviderItem?, Error?) -> Void) -> Progress {
+
+    func item(
+        for identifier: NSFileProviderItemIdentifier, request _: NSFileProviderRequest,
+        completionHandler: @escaping (NSFileProviderItem?, Error?) -> Void
+    ) -> Progress {
         // resolve the given identifier to a record in the model
 
-        Logger.fileProviderExtension.debug("Received item request for item with identifier: \(identifier.rawValue, privacy: .public)")
+        Logger.fileProviderExtension.debug(
+            "Received item request for item with identifier: \(identifier.rawValue, privacy: .public)"
+        )
         if identifier == .rootContainer {
-            guard let ncAccount = ncAccount else {
-                Logger.fileProviderExtension.error("Not providing item: \(identifier.rawValue, privacy: .public) as account not set up yet")
+            guard let ncAccount else {
+                Logger.fileProviderExtension.error(
+                    "Not providing item: \(identifier.rawValue, privacy: .public) as account not set up yet"
+                )
                 completionHandler(nil, NSFileProviderError(.notAuthenticated))
                 return Progress()
             }
@@ -90,35 +97,52 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
             metadata.serverUrl = ncAccount.serverUrl
             metadata.classFile = NKCommon.TypeClassFile.directory.rawValue
 
-            completionHandler(FileProviderItem(metadata: metadata, parentItemIdentifier: NSFileProviderItemIdentifier.rootContainer, ncKit: ncKit), nil)
+            completionHandler(
+                FileProviderItem(
+                    metadata: metadata,
+                    parentItemIdentifier: NSFileProviderItemIdentifier.rootContainer,
+                    ncKit: ncKit), nil)
             return Progress()
         }
 
         let dbManager = NextcloudFilesDatabaseManager.shared
-        
+
         guard let metadata = dbManager.itemMetadataFromFileProviderItemIdentifier(identifier),
-              let parentItemIdentifier = dbManager.parentItemIdentifierFromMetadata(metadata) else {
+            let parentItemIdentifier = dbManager.parentItemIdentifierFromMetadata(metadata)
+        else {
             completionHandler(nil, NSFileProviderError(.noSuchItem))
             return Progress()
         }
 
-        completionHandler(FileProviderItem(metadata: metadata, parentItemIdentifier: parentItemIdentifier, ncKit: ncKit), nil)
+        completionHandler(
+            FileProviderItem(
+                metadata: metadata, parentItemIdentifier: parentItemIdentifier, ncKit: ncKit), nil)
         return Progress()
     }
-    
-    func fetchContents(for itemIdentifier: NSFileProviderItemIdentifier, version requestedVersion: NSFileProviderItemVersion?, request: NSFileProviderRequest, completionHandler: @escaping (URL?, NSFileProviderItem?, Error?) -> Void) -> Progress {
 
-        Logger.fileProviderExtension.debug("Received request to fetch contents of item with identifier: \(itemIdentifier.rawValue, privacy: .public)")
+    func fetchContents(
+        for itemIdentifier: NSFileProviderItemIdentifier,
+        version requestedVersion: NSFileProviderItemVersion?, request: NSFileProviderRequest,
+        completionHandler: @escaping (URL?, NSFileProviderItem?, Error?) -> Void
+    ) -> Progress {
+        Logger.fileProviderExtension.debug(
+            "Received request to fetch contents of item with identifier: \(itemIdentifier.rawValue, privacy: .public)"
+        )
 
         guard requestedVersion == nil else {
             // TODO: Add proper support for file versioning
-            Logger.fileProviderExtension.error("Can't return contents for specific version as this is not supported.")
-            completionHandler(nil, nil, NSError(domain: NSCocoaErrorDomain, code: NSFeatureUnsupportedError, userInfo:[:]))
+            Logger.fileProviderExtension.error(
+                "Can't return contents for specific version as this is not supported.")
+            completionHandler(
+                nil, nil,
+                NSError(domain: NSCocoaErrorDomain, code: NSFeatureUnsupportedError, userInfo: [:]))
             return Progress()
         }
 
         guard ncAccount != nil else {
-            Logger.fileProviderExtension.error("Not fetching contents item: \(itemIdentifier.rawValue, privacy: .public) as account not set up yet")
+            Logger.fileProviderExtension.error(
+                "Not fetching contents item: \(itemIdentifier.rawValue, privacy: .public) as account not set up yet"
+            )
             completionHandler(nil, nil, NSFileProviderError(.notAuthenticated))
             return Progress()
         }
@@ -126,46 +150,65 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
         let dbManager = NextcloudFilesDatabaseManager.shared
         let ocId = itemIdentifier.rawValue
         guard let metadata = dbManager.itemMetadataFromOcId(ocId) else {
-            Logger.fileProviderExtension.error("Could not acquire metadata of item with identifier: \(itemIdentifier.rawValue, privacy: .public)")
+            Logger.fileProviderExtension.error(
+                "Could not acquire metadata of item with identifier: \(itemIdentifier.rawValue, privacy: .public)"
+            )
             completionHandler(nil, nil, NSFileProviderError(.noSuchItem))
             return Progress()
         }
 
         guard !metadata.isDocumentViewableOnly else {
-            Logger.fileProviderExtension.error("Could not get contents of item as is readonly: \(itemIdentifier.rawValue, privacy: .public) \(metadata.fileName, privacy: .public)")
+            Logger.fileProviderExtension.error(
+                "Could not get contents of item as is readonly: \(itemIdentifier.rawValue, privacy: .public) \(metadata.fileName, privacy: .public)"
+            )
             completionHandler(nil, nil, NSFileProviderError(.cannotSynchronize))
             return Progress()
         }
 
         let serverUrlFileName = metadata.serverUrl + "/" + metadata.fileName
 
-        Logger.fileProviderExtension.debug("Fetching file with name \(metadata.fileName, privacy: .public) at URL: \(serverUrlFileName, privacy: .public)")
+        Logger.fileProviderExtension.debug(
+            "Fetching file with name \(metadata.fileName, privacy: .public) at URL: \(serverUrlFileName, privacy: .public)"
+        )
 
         let progress = Progress()
 
         // TODO: Handle folders nicely
         do {
-            let fileNameLocalPath = try localPathForNCFile(ocId: metadata.ocId, fileNameView: metadata.fileNameView, domain: self.domain)
+            let fileNameLocalPath = try localPathForNCFile(
+                ocId: metadata.ocId, fileNameView: metadata.fileNameView, domain: domain)
 
-            dbManager.setStatusForItemMetadata(metadata, status: NextcloudItemMetadataTable.Status.downloading) { updatedMetadata in
+            dbManager.setStatusForItemMetadata(
+                metadata, status: NextcloudItemMetadataTable.Status.downloading
+            ) { updatedMetadata in
 
-                guard let updatedMetadata = updatedMetadata else {
-                    Logger.fileProviderExtension.error("Could not acquire updated metadata of item with identifier: \(itemIdentifier.rawValue, privacy: .public), unable to update item status to downloading")
+                guard let updatedMetadata else {
+                    Logger.fileProviderExtension.error(
+                        "Could not acquire updated metadata of item with identifier: \(itemIdentifier.rawValue, privacy: .public), unable to update item status to downloading"
+                    )
                     completionHandler(nil, nil, NSFileProviderError(.noSuchItem))
                     return
                 }
 
-                self.ncKit.download(serverUrlFileName: serverUrlFileName,
-                                    fileNameLocalPath: fileNameLocalPath.path,
-                                    requestHandler: { request in
-                    progress.setHandlersFromAfRequest(request)
-                }, taskHandler: { task in
-                    NSFileProviderManager(for: self.domain)?.register(task, forItemWithIdentifier: itemIdentifier, completionHandler: { _ in })
-                }, progressHandler: { downloadProgress in
-                    downloadProgress.copyCurrentStateToProgress(progress)
-                }) { _, etag, date, _, _, _, error in
+                self.ncKit.download(
+                    serverUrlFileName: serverUrlFileName,
+                    fileNameLocalPath: fileNameLocalPath.path,
+                    requestHandler: { request in
+                        progress.setHandlersFromAfRequest(request)
+                    },
+                    taskHandler: { task in
+                        NSFileProviderManager(for: self.domain)?.register(
+                            task, forItemWithIdentifier: itemIdentifier, completionHandler: { _ in }
+                        )
+                    },
+                    progressHandler: { downloadProgress in
+                        downloadProgress.copyCurrentStateToProgress(progress)
+                    }
+                ) { _, etag, date, _, _, _, error in
                     if error == .success {
-                        Logger.fileTransfer.debug("Acquired contents of item with identifier: \(itemIdentifier.rawValue, privacy: .public) and filename: \(updatedMetadata.fileName, privacy: .public)")
+                        Logger.fileTransfer.debug(
+                            "Acquired contents of item with identifier: \(itemIdentifier.rawValue, privacy: .public) and filename: \(updatedMetadata.fileName, privacy: .public)"
+                        )
 
                         updatedMetadata.status = NextcloudItemMetadataTable.Status.normal.rawValue
                         updatedMetadata.sessionError = ""
@@ -175,18 +218,26 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
                         dbManager.addLocalFileMetadataFromItemMetadata(updatedMetadata)
                         dbManager.addItemMetadata(updatedMetadata)
 
-                        guard let parentItemIdentifier = dbManager.parentItemIdentifierFromMetadata(updatedMetadata) else {
+                        guard
+                            let parentItemIdentifier = dbManager.parentItemIdentifierFromMetadata(
+                                updatedMetadata)
+                        else {
                             completionHandler(nil, nil, NSFileProviderError(.noSuchItem))
                             return
                         }
 
-                        let fpItem = FileProviderItem(metadata: updatedMetadata, parentItemIdentifier: parentItemIdentifier, ncKit: self.ncKit)
+                        let fpItem = FileProviderItem(
+                            metadata: updatedMetadata, parentItemIdentifier: parentItemIdentifier,
+                            ncKit: self.ncKit)
 
                         completionHandler(fileNameLocalPath, fpItem, nil)
                     } else {
-                        Logger.fileTransfer.error("Could not acquire contents of item with identifier: \(itemIdentifier.rawValue, privacy: .public) and fileName: \(updatedMetadata.fileName, privacy: .public)")
+                        Logger.fileTransfer.error(
+                            "Could not acquire contents of item with identifier: \(itemIdentifier.rawValue, privacy: .public) and fileName: \(updatedMetadata.fileName, privacy: .public)"
+                        )
 
-                        updatedMetadata.status = NextcloudItemMetadataTable.Status.downloadError.rawValue
+                        updatedMetadata.status =
+                            NextcloudItemMetadataTable.Status.downloadError.rawValue
                         updatedMetadata.sessionError = error.errorDescription
 
                         dbManager.addItemMetadata(updatedMetadata)
@@ -195,40 +246,60 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
                     }
                 }
             }
-        } catch let error {
-            Logger.fileProviderExtension.error("Could not find local path for file \(metadata.fileName, privacy: .public), received error: \(error.localizedDescription, privacy: .public)")
+        } catch {
+            Logger.fileProviderExtension.error(
+                "Could not find local path for file \(metadata.fileName, privacy: .public), received error: \(error.localizedDescription, privacy: .public)"
+            )
             completionHandler(nil, nil, NSFileProviderError(.cannotSynchronize))
         }
 
         return progress
     }
-    
-    func createItem(basedOn itemTemplate: NSFileProviderItem, fields: NSFileProviderItemFields, contents url: URL?, options: NSFileProviderCreateItemOptions = [], request: NSFileProviderRequest, completionHandler: @escaping (NSFileProviderItem?, NSFileProviderItemFields, Bool, Error?) -> Void) -> Progress {
+
+    func createItem(
+        basedOn itemTemplate: NSFileProviderItem, fields _: NSFileProviderItemFields,
+        contents url: URL?, options: NSFileProviderCreateItemOptions = [],
+        request: NSFileProviderRequest,
+        completionHandler: @escaping (NSFileProviderItem?, NSFileProviderItemFields, Bool, Error?)
+            ->
+            Void
+    ) -> Progress {
         // TODO: a new item was created on disk, process the item's creation
 
-        Logger.fileProviderExtension.debug("Received create item request for item with identifier: \(itemTemplate.itemIdentifier.rawValue, privacy: .public) and filename: \(itemTemplate.filename, privacy: .public)")
+        Logger.fileProviderExtension.debug(
+            "Received create item request for item with identifier: \(itemTemplate.itemIdentifier.rawValue, privacy: .public) and filename: \(itemTemplate.filename, privacy: .public)"
+        )
 
         guard itemTemplate.contentType != .symbolicLink else {
             Logger.fileProviderExtension.error("Cannot create item, symbolic links not supported.")
-            completionHandler(itemTemplate, NSFileProviderItemFields(), false, NSError(domain: NSCocoaErrorDomain, code: NSFeatureUnsupportedError, userInfo:[:]))
+            completionHandler(
+                itemTemplate, NSFileProviderItemFields(), false,
+                NSError(domain: NSCocoaErrorDomain, code: NSFeatureUnsupportedError, userInfo: [:]))
             return Progress()
         }
 
-        guard let ncAccount = ncAccount else {
-            Logger.fileProviderExtension.error("Not creating item: \(itemTemplate.itemIdentifier.rawValue, privacy: .public) as account not set up yet")
-            completionHandler(itemTemplate, NSFileProviderItemFields(), false, NSFileProviderError(.notAuthenticated))
+        guard let ncAccount else {
+            Logger.fileProviderExtension.error(
+                "Not creating item: \(itemTemplate.itemIdentifier.rawValue, privacy: .public) as account not set up yet"
+            )
+            completionHandler(
+                itemTemplate, NSFileProviderItemFields(), false,
+                NSFileProviderError(.notAuthenticated))
             return Progress()
         }
 
         let dbManager = NextcloudFilesDatabaseManager.shared
         let parentItemIdentifier = itemTemplate.parentItemIdentifier
-        let itemTemplateIsFolder = itemTemplate.contentType == .folder ||
-                                   itemTemplate.contentType == .directory
+        let itemTemplateIsFolder =
+            itemTemplate.contentType == .folder || itemTemplate.contentType == .directory
 
         if options.contains(.mayAlreadyExist) {
             // TODO: This needs to be properly handled with a check in the db
-            Logger.fileProviderExtension.info("Not creating item: \(itemTemplate.itemIdentifier.rawValue, privacy: .public) as it may already exist")
-            completionHandler(itemTemplate, NSFileProviderItemFields(), false, NSFileProviderError(.noSuchItem))
+            Logger.fileProviderExtension.info(
+                "Not creating item: \(itemTemplate.itemIdentifier.rawValue, privacy: .public) as it may already exist"
+            )
+            completionHandler(
+                itemTemplate, NSFileProviderItemFields(), false, NSFileProviderError(.noSuchItem))
             return Progress()
         }
 
@@ -237,9 +308,16 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
         if parentItemIdentifier == .rootContainer {
             parentItemServerUrl = ncAccount.davFilesUrl
         } else {
-            guard let parentItemMetadata = dbManager.directoryMetadata(ocId: parentItemIdentifier.rawValue) else {
-                Logger.fileProviderExtension.error("Not creating item: \(itemTemplate.itemIdentifier.rawValue, privacy: .public), could not find metadata for parentItemIdentifier \(parentItemIdentifier.rawValue, privacy: .public)")
-                completionHandler(itemTemplate, NSFileProviderItemFields(), false, NSFileProviderError(.noSuchItem))
+            guard
+                let parentItemMetadata = dbManager.directoryMetadata(
+                    ocId: parentItemIdentifier.rawValue)
+            else {
+                Logger.fileProviderExtension.error(
+                    "Not creating item: \(itemTemplate.itemIdentifier.rawValue, privacy: .public), could not find metadata for parentItemIdentifier \(parentItemIdentifier.rawValue, privacy: .public)"
+                )
+                completionHandler(
+                    itemTemplate, NSFileProviderItemFields(), false,
+                    NSFileProviderError(.noSuchItem))
                 return Progress()
             }
 
@@ -249,29 +327,43 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
         let fileNameLocalPath = url?.path ?? ""
         let newServerUrlFileName = parentItemServerUrl + "/" + itemTemplate.filename
 
-        Logger.fileProviderExtension.debug("About to upload item with identifier: \(itemTemplate.itemIdentifier.rawValue, privacy: .public) of type: \(itemTemplate.contentType?.identifier ?? "UNKNOWN") (is folder: \(itemTemplateIsFolder ? "yes" : "no") and filename: \(itemTemplate.filename) to server url: \(newServerUrlFileName, privacy: .public) with contents located at: \(fileNameLocalPath, privacy: .public)")
+        Logger.fileProviderExtension.debug(
+            "About to upload item with identifier: \(itemTemplate.itemIdentifier.rawValue, privacy: .public) of type: \(itemTemplate.contentType?.identifier ?? "UNKNOWN") (is folder: \(itemTemplateIsFolder ? "yes" : "no") and filename: \(itemTemplate.filename) to server url: \(newServerUrlFileName, privacy: .public) with contents located at: \(fileNameLocalPath, privacy: .public)"
+        )
 
         if itemTemplateIsFolder {
-            self.ncKit.createFolder(serverUrlFileName: newServerUrlFileName) { account, ocId, _, error in
+            ncKit.createFolder(serverUrlFileName: newServerUrlFileName) { account, _, _, error in
                 guard error == .success else {
-                    Logger.fileTransfer.error("Could not create new folder with name: \(itemTemplate.filename, privacy: .public), received error: \(error.errorDescription, privacy: .public)")
+                    Logger.fileTransfer.error(
+                        "Could not create new folder with name: \(itemTemplate.filename, privacy: .public), received error: \(error.errorDescription, privacy: .public)"
+                    )
                     completionHandler(itemTemplate, [], false, error.fileProviderError)
                     return
                 }
 
                 // Read contents after creation
-                self.ncKit.readFileOrFolder(serverUrlFileName: newServerUrlFileName, depth: "0", showHiddenFiles: true) { account, files, _, error in
+                self.ncKit.readFileOrFolder(
+                    serverUrlFileName: newServerUrlFileName, depth: "0", showHiddenFiles: true
+                ) { account, files, _, error in
                     guard error == .success else {
-                        Logger.fileTransfer.error("Could not read new folder with name: \(itemTemplate.filename, privacy: .public), received error: \(error.errorDescription, privacy: .public)")
+                        Logger.fileTransfer.error(
+                            "Could not read new folder with name: \(itemTemplate.filename, privacy: .public), received error: \(error.errorDescription, privacy: .public)"
+                        )
                         return
                     }
 
                     DispatchQueue.global().async {
-                        NextcloudItemMetadataTable.metadatasFromDirectoryReadNKFiles(files, account: account) { directoryMetadata, childDirectoriesMetadata, metadatas in
+                        NextcloudItemMetadataTable.metadatasFromDirectoryReadNKFiles(
+                            files, account: account
+                        ) {
+                            directoryMetadata, _, _ in
 
                             dbManager.addItemMetadata(directoryMetadata)
 
-                            let fpItem = FileProviderItem(metadata: directoryMetadata, parentItemIdentifier: parentItemIdentifier, ncKit: self.ncKit)
+                            let fpItem = FileProviderItem(
+                                metadata: directoryMetadata,
+                                parentItemIdentifier: parentItemIdentifier,
+                                ncKit: self.ncKit)
 
                             completionHandler(fpItem, [], true, nil)
                         }
@@ -284,25 +376,37 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
 
         let progress = Progress()
 
-        self.ncKit.upload(serverUrlFileName: newServerUrlFileName,
-                          fileNameLocalPath: fileNameLocalPath,
-                          requestHandler: { request in
-            progress.setHandlersFromAfRequest(request)
-        }, taskHandler: { task in
-            NSFileProviderManager(for: self.domain)?.register(task, forItemWithIdentifier: itemTemplate.itemIdentifier, completionHandler: { _ in })
-        }, progressHandler: { uploadProgress in
-            uploadProgress.copyCurrentStateToProgress(progress)
-        }) { account, ocId, etag, date, size, _, _, error  in
-            guard error == .success, let ocId = ocId else {
-                Logger.fileTransfer.error("Could not upload item with filename: \(itemTemplate.filename, privacy: .public), received error: \(error.errorDescription, privacy: .public)")
+        ncKit.upload(
+            serverUrlFileName: newServerUrlFileName,
+            fileNameLocalPath: fileNameLocalPath,
+            requestHandler: { request in
+                progress.setHandlersFromAfRequest(request)
+            },
+            taskHandler: { task in
+                NSFileProviderManager(for: self.domain)?.register(
+                    task, forItemWithIdentifier: itemTemplate.itemIdentifier,
+                    completionHandler: { _ in })
+            },
+            progressHandler: { uploadProgress in
+                uploadProgress.copyCurrentStateToProgress(progress)
+            }
+        ) { account, ocId, etag, date, size, _, _, error in
+            guard error == .success, let ocId else {
+                Logger.fileTransfer.error(
+                    "Could not upload item with filename: \(itemTemplate.filename, privacy: .public), received error: \(error.errorDescription, privacy: .public)"
+                )
                 completionHandler(itemTemplate, [], false, error.fileProviderError)
                 return
             }
 
-            Logger.fileTransfer.info("Successfully uploaded item with identifier: \(ocId, privacy: .public) and filename: \(itemTemplate.filename, privacy: .public)")
+            Logger.fileTransfer.info(
+                "Successfully uploaded item with identifier: \(ocId, privacy: .public) and filename: \(itemTemplate.filename, privacy: .public)"
+            )
 
             if size != itemTemplate.documentSize as? Int64 {
-                Logger.fileTransfer.warning("Created item upload reported as successful, but there are differences between the received file size (\(size, privacy: .public)) and the original file size (\(itemTemplate.documentSize??.int64Value ?? 0))")
+                Logger.fileTransfer.warning(
+                    "Created item upload reported as successful, but there are differences between the received file size (\(size, privacy: .public)) and the original file size (\(itemTemplate.documentSize??.int64Value ?? 0))"
+                )
             }
 
             let newMetadata = NextcloudItemMetadataTable()
@@ -324,34 +428,48 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
             dbManager.addLocalFileMetadataFromItemMetadata(newMetadata)
             dbManager.addItemMetadata(newMetadata)
 
-            let fpItem = FileProviderItem(metadata: newMetadata, parentItemIdentifier: parentItemIdentifier, ncKit: self.ncKit)
+            let fpItem = FileProviderItem(
+                metadata: newMetadata, parentItemIdentifier: parentItemIdentifier, ncKit: self.ncKit
+            )
 
             completionHandler(fpItem, [], false, nil)
         }
 
         return progress
     }
-    
-    func modifyItem(_ item: NSFileProviderItem, baseVersion version: NSFileProviderItemVersion, changedFields: NSFileProviderItemFields, contents newContents: URL?, options: NSFileProviderModifyItemOptions = [], request: NSFileProviderRequest, completionHandler: @escaping (NSFileProviderItem?, NSFileProviderItemFields, Bool, Error?) -> Void) -> Progress {
+
+    func modifyItem(
+        _ item: NSFileProviderItem, baseVersion _: NSFileProviderItemVersion,
+        changedFields: NSFileProviderItemFields, contents newContents: URL?,
+        options: NSFileProviderModifyItemOptions = [], request: NSFileProviderRequest,
+        completionHandler: @escaping (NSFileProviderItem?, NSFileProviderItemFields, Bool, Error?)
+            ->
+            Void
+    ) -> Progress {
         // An item was modified on disk, process the item's modification
         // TODO: Handle finder things like tags, other possible item changed fields
 
-        Logger.fileProviderExtension.debug("Received modify item request for item with identifier: \(item.itemIdentifier.rawValue, privacy: .public) and filename: \(item.filename, privacy: .public)")
+        Logger.fileProviderExtension.debug(
+            "Received modify item request for item with identifier: \(item.itemIdentifier.rawValue, privacy: .public) and filename: \(item.filename, privacy: .public)"
+        )
 
-        guard let ncAccount = ncAccount else {
-            Logger.fileProviderExtension.error("Not modifying item: \(item.itemIdentifier.rawValue, privacy: .public) as account not set up yet")
+        guard let ncAccount else {
+            Logger.fileProviderExtension.error(
+                "Not modifying item: \(item.itemIdentifier.rawValue, privacy: .public) as account not set up yet"
+            )
             completionHandler(item, [], false, NSFileProviderError(.notAuthenticated))
             return Progress()
         }
 
         let dbManager = NextcloudFilesDatabaseManager.shared
         let parentItemIdentifier = item.parentItemIdentifier
-        let itemTemplateIsFolder = item.contentType == .folder ||
-                                   item.contentType == .directory
+        let itemTemplateIsFolder = item.contentType == .folder || item.contentType == .directory
 
         if options.contains(.mayAlreadyExist) {
             // TODO: This needs to be properly handled with a check in the db
-            Logger.fileProviderExtension.warning("Modification for item: \(item.itemIdentifier.rawValue, privacy: .public) may already exist")
+            Logger.fileProviderExtension.warning(
+                "Modification for item: \(item.itemIdentifier.rawValue, privacy: .public) may already exist"
+            )
         }
 
         var parentItemServerUrl: String
@@ -359,8 +477,13 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
         if parentItemIdentifier == .rootContainer {
             parentItemServerUrl = ncAccount.davFilesUrl
         } else {
-            guard let parentItemMetadata = dbManager.directoryMetadata(ocId: parentItemIdentifier.rawValue) else {
-                Logger.fileProviderExtension.error("Not modifying item: \(item.itemIdentifier.rawValue, privacy: .public), could not find metadata for parentItemIdentifier \(parentItemIdentifier.rawValue, privacy: .public)")
+            guard
+                let parentItemMetadata = dbManager.directoryMetadata(
+                    ocId: parentItemIdentifier.rawValue)
+            else {
+                Logger.fileProviderExtension.error(
+                    "Not modifying item: \(item.itemIdentifier.rawValue, privacy: .public), could not find metadata for parentItemIdentifier \(parentItemIdentifier.rawValue, privacy: .public)"
+                )
                 completionHandler(item, [], false, NSFileProviderError(.noSuchItem))
                 return Progress()
             }
@@ -371,7 +494,9 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
         let fileNameLocalPath = newContents?.path ?? ""
         let newServerUrlFileName = parentItemServerUrl + "/" + item.filename
 
-        Logger.fileProviderExtension.debug("About to upload modified item with identifier: \(item.itemIdentifier.rawValue, privacy: .public) of type: \(item.contentType?.identifier ?? "UNKNOWN") (is folder: \(itemTemplateIsFolder ? "yes" : "no") and filename: \(item.filename, privacy: .public) to server url: \(newServerUrlFileName, privacy: .public) with contents located at: \(fileNameLocalPath, privacy: .public)")
+        Logger.fileProviderExtension.debug(
+            "About to upload modified item with identifier: \(item.itemIdentifier.rawValue, privacy: .public) of type: \(item.contentType?.identifier ?? "UNKNOWN") (is folder: \(itemTemplateIsFolder ? "yes" : "no") and filename: \(item.filename, privacy: .public) to server url: \(newServerUrlFileName, privacy: .public) with contents located at: \(fileNameLocalPath, privacy: .public)"
+        )
 
         var modifiedItem = item
 
@@ -384,10 +509,14 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
         if changedFields.contains(.filename) || changedFields.contains(.parentItemIdentifier) {
             dispatchQueue.async {
                 let ocId = item.itemIdentifier.rawValue
-                Logger.fileProviderExtension.debug("Changed fields for item \(ocId, privacy: .public) with filename \(item.filename, privacy: .public) includes filename or parentitemidentifier...")
+                Logger.fileProviderExtension.debug(
+                    "Changed fields for item \(ocId, privacy: .public) with filename \(item.filename, privacy: .public) includes filename or parentitemidentifier..."
+                )
 
                 guard let metadata = dbManager.itemMetadataFromOcId(ocId) else {
-                    Logger.fileProviderExtension.error("Could not acquire metadata of item with identifier: \(item.itemIdentifier.rawValue, privacy: .public)")
+                    Logger.fileProviderExtension.error(
+                        "Could not acquire metadata of item with identifier: \(item.itemIdentifier.rawValue, privacy: .public)"
+                    )
                     completionHandler(item, [], false, NSFileProviderError(.noSuchItem))
                     return
                 }
@@ -395,14 +524,18 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
                 var renameError: NSFileProviderError?
                 let oldServerUrlFileName = metadata.serverUrl + "/" + metadata.fileName
 
-                let moveFileOrFolderDispatchGroup = DispatchGroup() // Make this block wait until done
+                let moveFileOrFolderDispatchGroup = DispatchGroup()  // Make this block wait until done
                 moveFileOrFolderDispatchGroup.enter()
 
-                self.ncKit.moveFileOrFolder(serverUrlFileNameSource: oldServerUrlFileName,
-                                            serverUrlFileNameDestination: newServerUrlFileName,
-                                            overwrite: false) { account, error in
+                self.ncKit.moveFileOrFolder(
+                    serverUrlFileNameSource: oldServerUrlFileName,
+                    serverUrlFileNameDestination: newServerUrlFileName,
+                    overwrite: false
+                ) { _, error in
                     guard error == .success else {
-                        Logger.fileTransfer.error("Could not move file or folder: \(oldServerUrlFileName, privacy: .public) to \(newServerUrlFileName, privacy: .public), received error: \(error.errorDescription, privacy: .public)")
+                        Logger.fileTransfer.error(
+                            "Could not move file or folder: \(oldServerUrlFileName, privacy: .public) to \(newServerUrlFileName, privacy: .public), received error: \(error.errorDescription, privacy: .public)"
+                        )
                         renameError = error.fileProviderError
                         moveFileOrFolderDispatchGroup.leave()
                         return
@@ -411,37 +544,49 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
                     // Remember that a folder metadata's serverUrl is its direct server URL, while for
                     // an item metadata the server URL is the parent folder's URL
                     if itemTemplateIsFolder {
-                        _ = dbManager.renameDirectoryAndPropagateToChildren(ocId: ocId, newServerUrl: newServerUrlFileName, newFileName: item.filename)
+                        _ = dbManager.renameDirectoryAndPropagateToChildren(
+                            ocId: ocId, newServerUrl: newServerUrlFileName,
+                            newFileName: item.filename)
                         self.signalEnumerator { error in
                             if error != nil {
-                                Logger.fileTransfer.error("Error notifying change in moved directory: \(error)")
+                                Logger.fileTransfer.error(
+                                    "Error notifying change in moved directory: \(error)")
                             }
                         }
                     } else {
-                        dbManager.renameItemMetadata(ocId: ocId, newServerUrl: parentItemServerUrl, newFileName: item.filename)
+                        dbManager.renameItemMetadata(
+                            ocId: ocId, newServerUrl: parentItemServerUrl,
+                            newFileName: item.filename)
                     }
 
                     guard let newMetadata = dbManager.itemMetadataFromOcId(ocId) else {
-                        Logger.fileTransfer.error("Could not acquire metadata of item with identifier: \(ocId, privacy: .public), cannot correctly inform of modification")
+                        Logger.fileTransfer.error(
+                            "Could not acquire metadata of item with identifier: \(ocId, privacy: .public), cannot correctly inform of modification"
+                        )
                         renameError = NSFileProviderError(.noSuchItem)
                         moveFileOrFolderDispatchGroup.leave()
                         return
                     }
 
-                    modifiedItem = FileProviderItem(metadata: newMetadata, parentItemIdentifier: parentItemIdentifier, ncKit: self.ncKit)
+                    modifiedItem = FileProviderItem(
+                        metadata: newMetadata, parentItemIdentifier: parentItemIdentifier,
+                        ncKit: self.ncKit)
                     moveFileOrFolderDispatchGroup.leave()
                 }
 
                 moveFileOrFolderDispatchGroup.wait()
 
                 guard renameError == nil else {
-                    Logger.fileTransfer.error("Stopping rename of item with ocId \(ocId, privacy: .public) due to error: \(renameError!.localizedDescription, privacy: .public)")
+                    Logger.fileTransfer.error(
+                        "Stopping rename of item with ocId \(ocId, privacy: .public) due to error: \(renameError!.localizedDescription, privacy: .public)"
+                    )
                     completionHandler(modifiedItem, [], false, renameError)
                     return
                 }
 
                 guard !itemTemplateIsFolder else {
-                    Logger.fileTransfer.debug("Only handling renaming for folders. ocId: \(ocId, privacy: .public)")
+                    Logger.fileTransfer.debug(
+                        "Only handling renaming for folders. ocId: \(ocId, privacy: .public)")
                     completionHandler(modifiedItem, [], false, nil)
                     return
                 }
@@ -454,7 +599,9 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
         }
 
         guard !itemTemplateIsFolder else {
-            Logger.fileTransfer.debug("System requested modification for folder with ocID \(item.itemIdentifier.rawValue, privacy: .public) (\(newServerUrlFileName, privacy: .public)) of something other than folder name.")
+            Logger.fileTransfer.debug(
+                "System requested modification for folder with ocID \(item.itemIdentifier.rawValue, privacy: .public) (\(newServerUrlFileName, privacy: .public)) of something other than folder name."
+            )
             completionHandler(modifiedItem, [], false, nil)
             return Progress()
         }
@@ -463,41 +610,62 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
 
         if changedFields.contains(.contents) {
             dispatchQueue.async {
-                Logger.fileProviderExtension.debug("Item modification for \(item.itemIdentifier.rawValue, privacy: .public) \(item.filename, privacy: .public) includes contents")
+                Logger.fileProviderExtension.debug(
+                    "Item modification for \(item.itemIdentifier.rawValue, privacy: .public) \(item.filename, privacy: .public) includes contents"
+                )
 
                 guard newContents != nil else {
-                    Logger.fileProviderExtension.warning("WARNING. Could not upload modified contents as was provided nil contents url. ocId: \(item.itemIdentifier.rawValue, privacy: .public)")
+                    Logger.fileProviderExtension.warning(
+                        "WARNING. Could not upload modified contents as was provided nil contents url. ocId: \(item.itemIdentifier.rawValue, privacy: .public)"
+                    )
                     completionHandler(modifiedItem, [], false, NSFileProviderError(.noSuchItem))
                     return
                 }
 
                 let ocId = item.itemIdentifier.rawValue
                 guard let metadata = dbManager.itemMetadataFromOcId(ocId) else {
-                    Logger.fileProviderExtension.error("Could not acquire metadata of item with identifier: \(ocId, privacy: .public)")
-                    completionHandler(item, NSFileProviderItemFields(), false, NSFileProviderError(.noSuchItem))
+                    Logger.fileProviderExtension.error(
+                        "Could not acquire metadata of item with identifier: \(ocId, privacy: .public)"
+                    )
+                    completionHandler(
+                        item, NSFileProviderItemFields(), false, NSFileProviderError(.noSuchItem))
                     return
                 }
 
-                dbManager.setStatusForItemMetadata(metadata, status: NextcloudItemMetadataTable.Status.uploading) { updatedMetadata in
+                dbManager.setStatusForItemMetadata(
+                    metadata, status: NextcloudItemMetadataTable.Status.uploading
+                ) { updatedMetadata in
 
                     if updatedMetadata == nil {
-                        Logger.fileProviderExtension.warning("Could not acquire updated metadata of item with identifier: \(ocId, privacy: .public), unable to update item status to uploading")
+                        Logger.fileProviderExtension.warning(
+                            "Could not acquire updated metadata of item with identifier: \(ocId, privacy: .public), unable to update item status to uploading"
+                        )
                     }
 
-                    self.ncKit.upload(serverUrlFileName: newServerUrlFileName,
-                                      fileNameLocalPath: fileNameLocalPath,
-                                      requestHandler: { request in
-                        progress.setHandlersFromAfRequest(request)
-                    }, taskHandler: { task in
-                        NSFileProviderManager(for: self.domain)?.register(task, forItemWithIdentifier: item.itemIdentifier, completionHandler: { _ in })
-                    }, progressHandler: { uploadProgress in
-                        uploadProgress.copyCurrentStateToProgress(progress)
-                    }) { account, ocId, etag, date, size, _, _, error  in
-                        if error == .success, let ocId = ocId {
-                            Logger.fileProviderExtension.info("Successfully uploaded item with identifier: \(ocId, privacy: .public) and filename: \(item.filename, privacy: .public)")
+                    self.ncKit.upload(
+                        serverUrlFileName: newServerUrlFileName,
+                        fileNameLocalPath: fileNameLocalPath,
+                        requestHandler: { request in
+                            progress.setHandlersFromAfRequest(request)
+                        },
+                        taskHandler: { task in
+                            NSFileProviderManager(for: self.domain)?.register(
+                                task, forItemWithIdentifier: item.itemIdentifier,
+                                completionHandler: { _ in })
+                        },
+                        progressHandler: { uploadProgress in
+                            uploadProgress.copyCurrentStateToProgress(progress)
+                        }
+                    ) { account, ocId, etag, date, size, _, _, error in
+                        if error == .success, let ocId {
+                            Logger.fileProviderExtension.info(
+                                "Successfully uploaded item with identifier: \(ocId, privacy: .public) and filename: \(item.filename, privacy: .public)"
+                            )
 
                             if size != item.documentSize as? Int64 {
-                                Logger.fileTransfer.warning("Created item upload reported as successful, but there are differences between the received file size (\(size, privacy: .public)) and the original file size (\(item.documentSize??.int64Value ?? 0))")
+                                Logger.fileTransfer.warning(
+                                    "Created item upload reported as successful, but there are differences between the received file size (\(size, privacy: .public)) and the original file size (\(item.documentSize??.int64Value ?? 0))"
+                                )
                             }
 
                             let newMetadata = NextcloudItemMetadataTable()
@@ -519,10 +687,15 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
                             dbManager.addLocalFileMetadataFromItemMetadata(newMetadata)
                             dbManager.addItemMetadata(newMetadata)
 
-                            modifiedItem = FileProviderItem(metadata: newMetadata, parentItemIdentifier: parentItemIdentifier, ncKit: self.ncKit)
+                            modifiedItem = FileProviderItem(
+                                metadata: newMetadata, parentItemIdentifier: parentItemIdentifier,
+                                ncKit: self.ncKit
+                            )
                             completionHandler(modifiedItem, [], false, nil)
                         } else {
-                            Logger.fileTransfer.error("Could not upload item \(item.itemIdentifier.rawValue, privacy: .public) with filename: \(item.filename, privacy: .public), received error: \(error.errorDescription, privacy: .public)")
+                            Logger.fileTransfer.error(
+                                "Could not upload item \(item.itemIdentifier.rawValue, privacy: .public) with filename: \(item.filename, privacy: .public), received error: \(error.errorDescription, privacy: .public)"
+                            )
 
                             metadata.status = NextcloudItemMetadataTable.Status.uploadError.rawValue
                             metadata.sessionError = error.errorDescription
@@ -536,19 +709,28 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
                 }
             }
         } else {
-            Logger.fileProviderExtension.debug("Nothing more to do with \(item.itemIdentifier.rawValue, privacy: .public) \(item.filename, privacy: .public), modifications complete")
+            Logger.fileProviderExtension.debug(
+                "Nothing more to do with \(item.itemIdentifier.rawValue, privacy: .public) \(item.filename, privacy: .public), modifications complete"
+            )
             completionHandler(modifiedItem, [], false, nil)
         }
 
         return progress
     }
-    
-    func deleteItem(identifier: NSFileProviderItemIdentifier, baseVersion version: NSFileProviderItemVersion, options: NSFileProviderDeleteItemOptions = [], request: NSFileProviderRequest, completionHandler: @escaping (Error?) -> Void) -> Progress {
 
-        Logger.fileProviderExtension.debug("Received delete item request for item with identifier: \(identifier.rawValue, privacy: .public)")
+    func deleteItem(
+        identifier: NSFileProviderItemIdentifier, baseVersion _: NSFileProviderItemVersion,
+        options _: NSFileProviderDeleteItemOptions = [], request _: NSFileProviderRequest,
+        completionHandler: @escaping (Error?) -> Void
+    ) -> Progress {
+        Logger.fileProviderExtension.debug(
+            "Received delete item request for item with identifier: \(identifier.rawValue, privacy: .public)"
+        )
 
         guard ncAccount != nil else {
-            Logger.fileProviderExtension.error("Not deleting item: \(identifier.rawValue, privacy: .public) as account not set up yet")
+            Logger.fileProviderExtension.error(
+                "Not deleting item: \(identifier.rawValue, privacy: .public) as account not set up yet"
+            )
             completionHandler(NSFileProviderError(.notAuthenticated))
             return Progress()
         }
@@ -566,14 +748,18 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
             return Progress()
         }
 
-        self.ncKit.deleteFileOrFolder(serverUrlFileName: serverFileNameUrl) { account, error in
+        ncKit.deleteFileOrFolder(serverUrlFileName: serverFileNameUrl) { _, error in
             guard error == .success else {
-                Logger.fileTransfer.error("Could not delete item with ocId \(identifier.rawValue, privacy: .public) at \(serverFileNameUrl, privacy: .public), received error: \(error.errorDescription, privacy: .public)")
+                Logger.fileTransfer.error(
+                    "Could not delete item with ocId \(identifier.rawValue, privacy: .public) at \(serverFileNameUrl, privacy: .public), received error: \(error.errorDescription, privacy: .public)"
+                )
                 completionHandler(error.fileProviderError)
                 return
             }
 
-            Logger.fileTransfer.info("Successfully deleted item with identifier: \(identifier.rawValue, privacy: .public) at: \(serverFileNameUrl, privacy: .public)")
+            Logger.fileTransfer.info(
+                "Successfully deleted item with identifier: \(identifier.rawValue, privacy: .public) at: \(serverFileNameUrl, privacy: .public)"
+            )
 
             if itemMetadata.directory {
                 _ = dbManager.deleteDirectoryAndSubdirectoriesMetadata(ocId: ocId)
@@ -589,32 +775,41 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
 
         return Progress()
     }
-    
-    func enumerator(for containerItemIdentifier: NSFileProviderItemIdentifier, request: NSFileProviderRequest) throws -> NSFileProviderEnumerator {
 
-        guard let ncAccount = ncAccount else {
-            Logger.fileProviderExtension.error("Not providing enumerator for container with identifier \(containerItemIdentifier.rawValue, privacy: .public) yet as account not set up")
+    func enumerator(
+        for containerItemIdentifier: NSFileProviderItemIdentifier, request _: NSFileProviderRequest
+    ) throws -> NSFileProviderEnumerator {
+        guard let ncAccount else {
+            Logger.fileProviderExtension.error(
+                "Not providing enumerator for container with identifier \(containerItemIdentifier.rawValue, privacy: .public) yet as account not set up"
+            )
             throw NSFileProviderError(.notAuthenticated)
         }
 
-        return FileProviderEnumerator(enumeratedItemIdentifier: containerItemIdentifier, ncAccount: ncAccount, ncKit: ncKit)
+        return FileProviderEnumerator(
+            enumeratedItemIdentifier: containerItemIdentifier, ncAccount: ncAccount, ncKit: ncKit)
     }
 
     func materializedItemsDidChange(completionHandler: @escaping () -> Void) {
-        guard let ncAccount = self.ncAccount else {
-            Logger.fileProviderExtension.error("Not purging stale local file metadatas, account not set up")
+        guard let ncAccount else {
+            Logger.fileProviderExtension.error(
+                "Not purging stale local file metadatas, account not set up")
             completionHandler()
             return
         }
 
         guard let fpManager = NSFileProviderManager(for: domain) else {
-            Logger.fileProviderExtension.error("Could not get file provider manager for domain: \(self.domain.displayName, privacy: .public)")
+            Logger.fileProviderExtension.error(
+                "Could not get file provider manager for domain: \(self.domain.displayName, privacy: .public)"
+            )
             completionHandler()
             return
         }
 
         let materialisedEnumerator = fpManager.enumeratorForMaterializedItems()
-        let materialisedObserver = FileProviderMaterialisedEnumerationObserver(ncKitAccount: ncAccount.ncKitAccount) { _ in
+        let materialisedObserver = FileProviderMaterialisedEnumerationObserver(
+            ncKitAccount: ncAccount.ncKitAccount
+        ) { _ in
             completionHandler()
         }
         let startingPage = NSFileProviderPage(NSFileProviderPage.initialPageSortedByName as Data)
@@ -622,9 +817,11 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
         materialisedEnumerator.enumerateItems(for: materialisedObserver, startingAt: startingPage)
     }
 
-    func signalEnumerator(completionHandler: @escaping(_ error: Error?) -> Void) {
-        guard let fpManager = NSFileProviderManager(for: self.domain) else {
-            Logger.fileProviderExtension.error("Could not get file provider manager for domain, could not signal enumerator. This might lead to future conflicts.")
+    func signalEnumerator(completionHandler: @escaping (_ error: Error?) -> Void) {
+        guard let fpManager = NSFileProviderManager(for: domain) else {
+            Logger.fileProviderExtension.error(
+                "Could not get file provider manager for domain, could not signal enumerator. This might lead to future conflicts."
+            )
             return
         }
 

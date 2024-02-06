@@ -13,11 +13,10 @@
  */
 
 import FileProvider
-import UniformTypeIdentifiers
 import NextcloudKit
+import UniformTypeIdentifiers
 
 class FileProviderItem: NSObject, NSFileProviderItem {
-
     enum FileProviderItemTransferError: Error {
         case downloadError
         case uploadError
@@ -26,71 +25,78 @@ class FileProviderItem: NSObject, NSFileProviderItem {
     let metadata: NextcloudItemMetadataTable
     let parentItemIdentifier: NSFileProviderItemIdentifier
     let ncKit: NextcloudKit
-    
+
     var itemIdentifier: NSFileProviderItemIdentifier {
-        return NSFileProviderItemIdentifier(metadata.ocId)
+        NSFileProviderItemIdentifier(metadata.ocId)
     }
-    
+
     var capabilities: NSFileProviderItemCapabilities {
         guard !metadata.directory else {
-            return [ .allowsAddingSubItems,
-                     .allowsContentEnumerating,
-                     .allowsReading,
-                     .allowsDeleting,
-                     .allowsRenaming ]
+            return [
+                .allowsAddingSubItems,
+                .allowsContentEnumerating,
+                .allowsReading,
+                .allowsDeleting,
+                .allowsRenaming,
+            ]
         }
         guard !metadata.lock else {
-            return [ .allowsReading ]
+            return [.allowsReading]
         }
-        return [ .allowsWriting,
-                 .allowsReading,
-                 .allowsDeleting,
-                 .allowsRenaming,
-                 .allowsReparenting ]
+        return [
+            .allowsWriting,
+            .allowsReading,
+            .allowsDeleting,
+            .allowsRenaming,
+            .allowsReparenting,
+        ]
     }
-    
+
     var itemVersion: NSFileProviderItemVersion {
-        NSFileProviderItemVersion(contentVersion: metadata.etag.data(using: .utf8)!,
-                                  metadataVersion: metadata.etag.data(using: .utf8)!)
+        NSFileProviderItemVersion(
+            contentVersion: metadata.etag.data(using: .utf8)!,
+            metadataVersion: metadata.etag.data(using: .utf8)!)
     }
-    
+
     var filename: String {
-        return metadata.fileNameView
+        metadata.fileNameView
     }
-    
+
     var contentType: UTType {
-        if self.itemIdentifier == .rootContainer || metadata.directory {
+        if itemIdentifier == .rootContainer || metadata.directory {
             return .folder
         }
 
-        let internalType = ncKit.nkCommonInstance.getInternalType(fileName: metadata.fileNameView,
-                                                                  mimeType: "",
-                                                                  directory: metadata.directory)
+        let internalType = ncKit.nkCommonInstance.getInternalType(
+            fileName: metadata.fileNameView,
+            mimeType: "",
+            directory: metadata.directory)
         return UTType(filenameExtension: internalType.ext) ?? .content
     }
 
     var documentSize: NSNumber? {
-        return NSNumber(value: metadata.size)
+        NSNumber(value: metadata.size)
     }
 
     var creationDate: Date? {
-        return metadata.creationDate as Date
+        metadata.creationDate as Date
     }
 
     var lastUsedDate: Date? {
-        return metadata.date as Date
+        metadata.date as Date
     }
 
     var contentModificationDate: Date? {
-        return metadata.date as Date
+        metadata.date as Date
     }
 
     var isDownloaded: Bool {
-        return metadata.directory || NextcloudFilesDatabaseManager.shared.localFileMetadataFromOcId(metadata.ocId) != nil
+        metadata.directory
+            || NextcloudFilesDatabaseManager.shared.localFileMetadataFromOcId(metadata.ocId) != nil
     }
 
     var isDownloading: Bool {
-        return metadata.status == NextcloudItemMetadataTable.Status.downloading.rawValue
+        metadata.status == NextcloudItemMetadataTable.Status.downloading.rawValue
     }
 
     var downloadingError: Error? {
@@ -101,30 +107,37 @@ class FileProviderItem: NSObject, NSFileProviderItem {
     }
 
     var isUploaded: Bool {
-        return NextcloudFilesDatabaseManager.shared.localFileMetadataFromOcId(metadata.ocId) != nil
+        NextcloudFilesDatabaseManager.shared.localFileMetadataFromOcId(metadata.ocId) != nil
     }
 
     var isUploading: Bool {
-        return metadata.status == NextcloudItemMetadataTable.Status.uploading.rawValue
+        metadata.status == NextcloudItemMetadataTable.Status.uploading.rawValue
     }
 
     var uploadingError: Error? {
         if metadata.status == NextcloudItemMetadataTable.Status.uploadError.rawValue {
-            return FileProviderItemTransferError.uploadError
+            FileProviderItemTransferError.uploadError
         } else {
-            return nil
+            nil
         }
     }
 
     var childItemCount: NSNumber? {
         if metadata.directory {
-            return NSNumber(integerLiteral: NextcloudFilesDatabaseManager.shared.childItemsForDirectory(metadata).count)
+            NSNumber(
+                integerLiteral: NextcloudFilesDatabaseManager.shared.childItemsForDirectory(
+                    metadata
+                ).count)
         } else {
-            return nil
+            nil
         }
     }
 
-    required init(metadata: NextcloudItemMetadataTable, parentItemIdentifier: NSFileProviderItemIdentifier, ncKit: NextcloudKit) {
+    required init(
+        metadata: NextcloudItemMetadataTable,
+        parentItemIdentifier: NSFileProviderItemIdentifier,
+        ncKit: NextcloudKit
+    ) {
         self.metadata = metadata
         self.parentItemIdentifier = parentItemIdentifier
         self.ncKit = ncKit

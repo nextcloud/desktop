@@ -12,10 +12,10 @@
  * for more details.
  */
 
-import Foundation
-import RealmSwift
 import FileProvider
+import Foundation
 import NextcloudKit
+import RealmSwift
 
 class NextcloudItemMetadataTable: Object {
     enum Status: Int {
@@ -71,7 +71,7 @@ class NextcloudItemMetadataTable: Object {
     @Persisted var isExtractFile: Bool = false
     @Persisted var livePhoto: Bool = false
     @Persisted var mountType = ""
-    @Persisted var name = "" // for unifiedSearch is the provider.id
+    @Persisted var name = ""  // for unifiedSearch is the provider.id
     @Persisted var note = ""
     @Persisted var ownerId = ""
     @Persisted var ownerDisplayName = ""
@@ -88,13 +88,14 @@ class NextcloudItemMetadataTable: Object {
     @Persisted var quotaAvailableBytes: Int64 = 0
     @Persisted var resourceType = ""
     @Persisted var richWorkspace: String?
-    @Persisted var serverUrl = "" // For parent directory!!
+    @Persisted var serverUrl = ""  // For parent directory!!
     @Persisted var session = ""
     @Persisted var sessionError = ""
     @Persisted var sessionSelector = ""
     @Persisted var sessionTaskIdentifier: Int = 0
     @Persisted var sharePermissionsCollaborationServices: Int = 0
-    let sharePermissionsCloudMesh = List<String>() // TODO: Find a way to compare these in remote state check
+    // TODO: Find a way to compare these two below in remote state check
+    let sharePermissionsCloudMesh = List<String>()
     let shareType = List<Int>()
     @Persisted var size: Int64 = 0
     @Persisted var status: Int = 0
@@ -117,22 +118,25 @@ class NextcloudItemMetadataTable: Object {
     }
 
     var isRenameable: Bool {
-        return lock
+        lock
     }
 
     var isPrintable: Bool {
         if isDocumentViewableOnly {
             return false
         }
-        if ["application/pdf", "com.adobe.pdf"].contains(contentType) || contentType.hasPrefix("text/") || classFile == NKCommon.TypeClassFile.image.rawValue {
+        if ["application/pdf", "com.adobe.pdf"].contains(contentType)
+            || contentType.hasPrefix("text/")
+            || classFile == NKCommon.TypeClassFile.image.rawValue
+        {
             return true
         }
         return false
     }
 
     var isDocumentViewableOnly: Bool {
-        return sharePermissionsCollaborationServices == SharePermissions.readShare.rawValue &&
-            classFile == NKCommon.TypeClassFile.document.rawValue
+        sharePermissionsCollaborationServices == SharePermissions.readShare.rawValue
+            && classFile == NKCommon.TypeClassFile.document.rawValue
     }
 
     var isCopyableInPasteboard: Bool {
@@ -143,22 +147,21 @@ class NextcloudItemMetadataTable: Object {
         if directory || isDocumentViewableOnly {
             return false
         }
-        return contentType == "com.adobe.pdf" || contentType == "application/pdf" || classFile == NKCommon.TypeClassFile.image.rawValue
+        return contentType == "com.adobe.pdf" || contentType == "application/pdf"
+            || classFile == NKCommon.TypeClassFile.image.rawValue
     }
 
     var isSettableOnOffline: Bool {
-        return session.isEmpty && !isDocumentViewableOnly
+        session.isEmpty && !isDocumentViewableOnly
     }
 
     var canOpenIn: Bool {
-        return session.isEmpty && !isDocumentViewableOnly && !directory
+        session.isEmpty && !isDocumentViewableOnly && !directory
     }
 
     var isDownloadUpload: Bool {
-        return status == Status.inDownload.rawValue ||
-            status == Status.downloading.rawValue ||
-            status == Status.inUpload.rawValue ||
-            status == Status.uploading.rawValue
+        status == Status.inDownload.rawValue || status == Status.downloading.rawValue
+            || status == Status.inUpload.rawValue || status == Status.uploading.rawValue
     }
 
     var isDownload: Bool {
@@ -171,30 +174,31 @@ class NextcloudItemMetadataTable: Object {
 
     override func isEqual(_ object: Any?) -> Bool {
         if let object = object as? NextcloudItemMetadataTable {
-            return self.fileId == object.fileId &&
-                   self.account == object.account &&
-                   self.path == object.path &&
-                   self.fileName == object.fileName
+            return fileId == object.fileId && account == object.account && path == object.path
+                && fileName == object.fileName
         }
 
         return false
     }
 
-    func isInSameDatabaseStoreableRemoteState(_ comparingMetadata: NextcloudItemMetadataTable) -> Bool {
-        return comparingMetadata.etag == self.etag &&
-            comparingMetadata.fileNameView == self.fileNameView &&
-            comparingMetadata.date == self.date &&
-            comparingMetadata.permissions == self.permissions &&
-            comparingMetadata.hasPreview == self.hasPreview &&
-            comparingMetadata.note == self.note &&
-            comparingMetadata.lock == self.lock &&
-            comparingMetadata.sharePermissionsCollaborationServices == self.sharePermissionsCollaborationServices &&
-            comparingMetadata.favorite == self.favorite
+    func isInSameDatabaseStoreableRemoteState(_ comparingMetadata: NextcloudItemMetadataTable)
+        -> Bool
+    {
+        comparingMetadata.etag == etag 
+            && comparingMetadata.fileNameView == fileNameView
+            && comparingMetadata.date == date 
+            && comparingMetadata.permissions == permissions
+            && comparingMetadata.hasPreview == hasPreview 
+            && comparingMetadata.note == note
+            && comparingMetadata.lock == lock
+            && comparingMetadata.sharePermissionsCollaborationServices
+                == sharePermissionsCollaborationServices
+            && comparingMetadata.favorite == favorite
     }
 
     /// Returns false if the user is lokced out of the file. I.e. The file is locked but by someone else
     func canUnlock(as user: String) -> Bool {
-        return !lock || (lockOwner == user && lockOwnerType == 0)
+        !lock || (lockOwner == user && lockOwnerType == 0)
     }
 
     func thumbnailUrl(size: CGSize) -> URL? {
@@ -203,11 +207,13 @@ class NextcloudItemMetadataTable: Object {
         }
 
         let urlBase = urlBase.urlEncoded!
-        let webdavUrl = urlBase + NextcloudAccount.webDavFilesUrlSuffix + user // Leave the leading slash
-        let serverFileRelativeUrl = serverUrl.replacingOccurrences(of: webdavUrl, with: "") + "/" + fileName
+        // Leave the leading slash in webdavUrl
+        let webdavUrl = urlBase + NextcloudAccount.webDavFilesUrlSuffix + user
+        let serverFileRelativeUrl =
+            serverUrl.replacingOccurrences(of: webdavUrl, with: "") + "/" + fileName
 
-        let urlString = "\(urlBase)/index.php/core/preview.png?file=\(serverFileRelativeUrl)&x=\(size.width)&y=\(size.height)&a=1&mode=cover"
-
+        let urlString =
+            "\(urlBase)/index.php/core/preview.png?file=\(serverFileRelativeUrl)&x=\(size.width)&y=\(size.height)&a=1&mode=cover"
         return URL(string: urlString)
     }
 }

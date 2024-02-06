@@ -12,44 +12,53 @@
  * for more details.
  */
 
-import Foundation
 import FileProvider
+import Foundation
 import OSLog
 
-class FileProviderMaterialisedEnumerationObserver : NSObject, NSFileProviderEnumerationObserver {
+class FileProviderMaterialisedEnumerationObserver: NSObject, NSFileProviderEnumerationObserver {
     let ncKitAccount: String
     let completionHandler: (_ deletedOcIds: Set<String>) -> Void
-    var allEnumeratedItemIds: Set<String> = Set<String>()
+    var allEnumeratedItemIds: Set<String> = .init()
 
-    required init(ncKitAccount: String, completionHandler: @escaping(_ deletedOcIds: Set<String>) -> Void) {
+    required init(
+        ncKitAccount: String, completionHandler: @escaping (_ deletedOcIds: Set<String>) -> Void
+    ) {
         self.ncKitAccount = ncKitAccount
         self.completionHandler = completionHandler
         super.init()
     }
 
     func didEnumerate(_ updatedItems: [NSFileProviderItemProtocol]) {
-        let updatedItemsIds = Array(updatedItems.map { $0.itemIdentifier.rawValue })
+        let updatedItemsIds = Array(updatedItems.map(\.itemIdentifier.rawValue))
 
         for updatedItemsId in updatedItemsIds {
             allEnumeratedItemIds.insert(updatedItemsId)
         }
     }
 
-    func finishEnumerating(upTo nextPage: NSFileProviderPage?) {
+    func finishEnumerating(upTo _: NSFileProviderPage?) {
         Logger.materialisedFileHandling.debug("Handling enumerated materialised items.")
-        FileProviderMaterialisedEnumerationObserver.handleEnumeratedItems(self.allEnumeratedItemIds,
-                                                                          account: self.ncKitAccount,
-                                                                          completionHandler: self.completionHandler)
+        FileProviderMaterialisedEnumerationObserver.handleEnumeratedItems(
+            allEnumeratedItemIds,
+            account: ncKitAccount,
+            completionHandler: completionHandler)
     }
 
     func finishEnumeratingWithError(_ error: Error) {
-        Logger.materialisedFileHandling.error("Ran into error when enumerating materialised items: \(error.localizedDescription, privacy: .public). Handling items enumerated so far")
-        FileProviderMaterialisedEnumerationObserver.handleEnumeratedItems(self.allEnumeratedItemIds,
-                                                                          account: self.ncKitAccount,
-                                                                          completionHandler: self.completionHandler)
+        Logger.materialisedFileHandling.error(
+            "Ran into error when enumerating materialised items: \(error.localizedDescription, privacy: .public). Handling items enumerated so far"
+        )
+        FileProviderMaterialisedEnumerationObserver.handleEnumeratedItems(
+            allEnumeratedItemIds,
+            account: ncKitAccount,
+            completionHandler: completionHandler)
     }
 
-    static func handleEnumeratedItems(_ itemIds: Set<String>, account: String, completionHandler: @escaping(_ deletedOcIds: Set<String>) -> Void) {
+    static func handleEnumeratedItems(
+        _ itemIds: Set<String>, account: String,
+        completionHandler: @escaping (_ deletedOcIds: Set<String>) -> Void
+    ) {
         let dbManager = NextcloudFilesDatabaseManager.shared
         let databaseLocalFileMetadatas = dbManager.localFileMetadatas(account: account)
         var noLongerMaterialisedIds = Set<String>()
@@ -60,12 +69,13 @@ class FileProviderMaterialisedEnumerationObserver : NSObject, NSFileProviderEnum
 
                 guard itemIds.contains(localFileOcId) else {
                     noLongerMaterialisedIds.insert(localFileOcId)
-                    continue;
+                    continue
                 }
             }
 
             DispatchQueue.main.async {
-                Logger.materialisedFileHandling.info("Cleaning up local file metadatas for unmaterialised items")
+                Logger.materialisedFileHandling.info(
+                    "Cleaning up local file metadatas for unmaterialised items")
                 for itemId in noLongerMaterialisedIds {
                     dbManager.deleteLocalFileMetadata(ocId: itemId)
                 }
