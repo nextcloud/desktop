@@ -270,7 +270,8 @@ QVariant FolderStatusModel::data(const QModelIndex &index, int role) const
         return accountConnected;
     case Qt::ToolTipRole: {
         if (!progress.isNull()) {
-            return progress._progressString;
+            // e.g. 13 seconds left, 500 MB of 1 GB, file 3 of 6
+            return progress._overallSyncString;
         }
         auto toolTip = accountConnected
             ? Theme::instance()->statusHeaderText(folder->syncResult().status())
@@ -307,12 +308,14 @@ QVariant FolderStatusModel::data(const QModelIndex &index, int role) const
             return Theme::instance()->folderOfflineIcon();
         }
     case FolderStatusDelegate::SyncProgressItemString:
+        // e.g. Syncing fileName1, filename2
         return progress._progressString;
     case FolderStatusDelegate::WarningCount:
         return progress._warningCount;
     case FolderStatusDelegate::SyncProgressOverallPercent:
         return progress._overallPercent;
     case FolderStatusDelegate::SyncProgressOverallString:
+        // 13 seconds left, 500 MB of 1 GB, file 3 of 6
         return progress._overallSyncString;
     case FolderStatusDelegate::FolderSyncText:
         if (folder->virtualFilesEnabled()) {
@@ -1137,7 +1140,7 @@ void FolderStatusModel::slotSetProgress(const ProgressInfo &progress)
         }
     } else if (totalFileCount > 0) {
         // Don't attempt to estimate the time left if there is no kb to transfer.
-        overallSyncString = tr("file %1 of %2").arg(currentFile).arg(totalFileCount);
+        overallSyncString = tr("%1 file %2 of %3").arg(kindString).arg(currentFile).arg(totalFileCount);
     }
 
     pi->_overallSyncString = overallSyncString;
