@@ -274,12 +274,12 @@ void OCUpdater::setPreviouslySkippedVersion(const QString &previouslySkippedVers
 
 ////////////////////////////////////////////////////////////////////////
 
-NSISUpdater::NSISUpdater(const QUrl &url)
+WindowsUpdater::WindowsUpdater(const QUrl &url)
     : OCUpdater(url)
 {
 }
 
-void NSISUpdater::slotWriteFile()
+void WindowsUpdater::slotWriteFile()
 {
     QNetworkReply *reply = qobject_cast<QNetworkReply *>(sender());
     if (_file->isOpen()) {
@@ -287,7 +287,7 @@ void NSISUpdater::slotWriteFile()
     }
 }
 
-void NSISUpdater::wipeUpdateData()
+void WindowsUpdater::wipeUpdateData()
 {
     auto settings = ConfigFile::makeQSettings();
     QString updateFileName = settings.value(updateAvailableC).toString();
@@ -299,7 +299,7 @@ void NSISUpdater::wipeUpdateData()
     settings.remove(autoUpdateAttemptedC);
 }
 
-void NSISUpdater::slotDownloadFinished()
+void WindowsUpdater::slotDownloadFinished()
 {
     QNetworkReply *reply = qobject_cast<QNetworkReply *>(sender());
     const QUrl url(reply->url());
@@ -332,7 +332,7 @@ void NSISUpdater::slotDownloadFinished()
     settings.setValue(updateAvailableC, _targetFile);
 }
 
-void NSISUpdater::versionInfoArrived(const UpdateInfo &info)
+void WindowsUpdater::versionInfoArrived(const UpdateInfo &info)
 {
     auto settings = ConfigFile::makeQSettings();
     const auto infoVersion = QVersionNumber::fromString(info.version());
@@ -364,8 +364,8 @@ void NSISUpdater::versionInfoArrived(const UpdateInfo &info)
                 auto request = QNetworkRequest(QUrl(url));
                 request.setAttribute(QNetworkRequest::RedirectPolicyAttribute, QNetworkRequest::NoLessSafeRedirectPolicy);
                 QNetworkReply *reply = qnam()->get(request);
-                connect(reply, &QIODevice::readyRead, this, &NSISUpdater::slotWriteFile);
-                connect(reply, &QNetworkReply::finished, this, &NSISUpdater::slotDownloadFinished);
+                connect(reply, &QIODevice::readyRead, this, &WindowsUpdater::slotWriteFile);
+                connect(reply, &QNetworkReply::finished, this, &WindowsUpdater::slotDownloadFinished);
                 setDownloadState(Downloading);
                 _file.reset(new QTemporaryFile);
                 _file->setAutoRemove(true);
@@ -375,7 +375,7 @@ void NSISUpdater::versionInfoArrived(const UpdateInfo &info)
     }
 }
 
-void NSISUpdater::showNoUrlDialog(const UpdateInfo &info)
+void WindowsUpdater::showNoUrlDialog(const UpdateInfo &info)
 {
     // if the version tag is set, there is a newer version.
     QDialog *msgBox = new QDialog;
@@ -417,14 +417,14 @@ void NSISUpdater::showNoUrlDialog(const UpdateInfo &info)
     connect(reject, &QAbstractButton::clicked, msgBox, &QDialog::reject);
     connect(getupdate, &QAbstractButton::clicked, msgBox, &QDialog::accept);
 
-    connect(skip, &QAbstractButton::clicked, this, &NSISUpdater::slotSetPreviouslySkippedVersion);
-    connect(getupdate, &QAbstractButton::clicked, this, &NSISUpdater::slotOpenUpdateUrl);
+    connect(skip, &QAbstractButton::clicked, this, &WindowsUpdater::slotSetPreviouslySkippedVersion);
+    connect(getupdate, &QAbstractButton::clicked, this, &WindowsUpdater::slotOpenUpdateUrl);
 
     layout->addWidget(bb);
     ocApp()->gui()->settingsDialog()->addModalWidget(msgBox);
 }
 
-void NSISUpdater::showUpdateErrorDialog(const QString &targetVersion)
+void WindowsUpdater::showUpdateErrorDialog(const QString &targetVersion)
 {
     QDialog *msgBox = new QDialog;
     msgBox->setAttribute(Qt::WA_DeleteOnClose);
@@ -485,7 +485,7 @@ void NSISUpdater::showUpdateErrorDialog(const QString &targetVersion)
     msgBox->open();
 }
 
-bool NSISUpdater::handleStartup()
+bool WindowsUpdater::handleStartup()
 {
     const auto settings = ConfigFile::makeQSettings();
     const QString updateFileName = settings.value(updateAvailableC).toString();
@@ -512,12 +512,12 @@ bool NSISUpdater::handleStartup()
     return false;
 }
 
-void NSISUpdater::slotSetPreviouslySkippedVersion()
+void WindowsUpdater::slotSetPreviouslySkippedVersion()
 {
     setPreviouslySkippedVersion(updateInfo().version());
 }
 
-void NSISUpdater::startInstallerAndQuit()
+void WindowsUpdater::startInstallerAndQuit()
 {
     Q_ASSERT(downloadState() == DownloadState::DownloadComplete);
 
@@ -527,27 +527,25 @@ void NSISUpdater::startInstallerAndQuit()
     settings.sync();
     qCInfo(lcUpdater) << "Running updater" << updateFile;
 
-    if (updateFile.endsWith(QLatin1String(".exe"))) {
-        QProcess::startDetached(updateFile, QStringList() << QStringLiteral("/S") << QStringLiteral("/launch"));
-    } else if (updateFile.endsWith(QLatin1String(".msi"))) {
-        // When MSIs are installed without gui they cannot launch applications
-        // as they lack the user context. That is why we need to run the client
-        // manually here. We wrap the msiexec and client invocation in a powershell
-        // script because owncloud.exe will be shut down for installation.
-        // | Out-Null forces powershell to wait for msiexec to finish.
-        auto preparePathForPowershell = [](QString path) {
-            path.replace(QLatin1String("'"), QLatin1String("''"));
+    Q_ASSERT(updateFile.endsWith(QLatin1String(".msi")));
+    // When MSIs are installed without gui they cannot launch applications
+    // as they lack the user context. That is why we need to run the client
+    // manually here. We wrap the msiexec and client invocation in a powershell
+    // script because owncloud.exe will be shut down for installation.
+    // | Out-Null forces powershell to wait for msiexec to finish.
+    auto preparePathForPowershell = [](QString path) {
+        path.replace(QLatin1String("'"), QLatin1String("''"));
 
-            return QDir::toNativeSeparators(path);
-        };
+        return QDir::toNativeSeparators(path);
+    };
 
-        QString msiLogFile = ConfigFile::configPath() + QStringLiteral("msi.log");
-        const QString command = QStringLiteral("&{msiexec /norestart /passive /i '%1' /L*V '%2'| Out-Null ; &'%3'}")
-                                    .arg(preparePathForPowershell(updateFile), preparePathForPowershell(msiLogFile),
-                                        preparePathForPowershell(QCoreApplication::applicationFilePath()));
+    QString msiLogFile = ConfigFile::configPath() + QStringLiteral("msi.log");
+    const QString command =
+        QStringLiteral("&{msiexec /norestart /passive /i '%1' /L*V '%2'| Out-Null ; &'%3'}")
+            .arg(preparePathForPowershell(updateFile), preparePathForPowershell(msiLogFile), preparePathForPowershell(QCoreApplication::applicationFilePath()));
 
-        QProcess::startDetached(QStringLiteral("powershell.exe"), QStringList{QStringLiteral("-Command"), command});
-    }
+    QProcess::startDetached(QStringLiteral("powershell.exe"), QStringList{QStringLiteral("-Command"), command});
+    QTimer::singleShot(0, QApplication::instance(), &QApplication::quit);
 }
 
 ////////////////////////////////////////////////////////////////////////

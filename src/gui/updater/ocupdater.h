@@ -167,11 +167,11 @@ private:
  * @brief Windows Updater Using NSIS
  * @ingroup gui
  */
-class NSISUpdater : public OCUpdater
+class WindowsUpdater : public OCUpdater
 {
     Q_OBJECT
 public:
-    explicit NSISUpdater(const QUrl &url);
+    explicit WindowsUpdater(const QUrl &url);
     bool handleStartup() override;
 
     void startInstallerAndQuit();

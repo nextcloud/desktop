@@ -128,7 +128,7 @@ Updater *Updater::create()
     return new SparkleUpdater(url);
 #elif defined(Q_OS_WIN32)
     // Also for MSI
-    return new NSISUpdater(url);
+    return new WindowsUpdater(url);
 #else
 #ifdef WITH_APPIMAGEUPDATER
     if (Utility::runningInAppImage()) {
