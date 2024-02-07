@@ -329,7 +329,12 @@ void ConnectionValidator::reportConnected() {
 void ConnectionValidator::reportResult(Status status)
 {
     emit connectionResult(status, _errors);
-    showSystrayErrorMessage();
+
+    // notify user of errors
+    if (!_errors.isEmpty()) {
+       showSystrayErrorMessage();
+    }
+
     deleteLater();
 }
 
