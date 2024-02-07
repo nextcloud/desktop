@@ -17,6 +17,7 @@
 
 #include "accountmanager.h"
 #include "application.h"
+#include "common/restartmanager.h"
 #include "common/version.h"
 #include "configfile.h"
 #include "theme.h"
@@ -140,7 +141,7 @@ GeneralSettings::GeneralSettings(QWidget *parent)
             if (auto *nsisupdater = qobject_cast<WindowsUpdater *>(ocupdater)) {
                 connect(_ui->restartButton, &QAbstractButton::clicked, nsisupdater, &WindowsUpdater::startInstallerAndQuit);
             } else {
-                connect(_ui->restartButton, &QAbstractButton::clicked, qApp, &QApplication::quit);
+                connect(_ui->restartButton, &QAbstractButton::clicked, this, [] { RestartManager::requestRestart(); });
             }
             updateInfo();
         }

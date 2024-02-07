@@ -15,6 +15,7 @@
 #include <QtGlobal>
 
 #include "accountmanager.h"
+#include "common/restartmanager.h"
 #include "common/utility.h"
 #include "gui/application.h"
 #include "gui/logbrowser.h"
@@ -363,182 +364,185 @@ QString setupTranslations(QApplication *app)
 
 int main(int argc, char **argv)
 {
-    // when called with --cmd we run the cmd client in a sub process and forward everything
-    if (argc > 1 && argv[1] == QByteArrayLiteral("--cmd")) {
+    return RestartManager([](int argc, char **argv) {
+        // when called with --cmd we run the cmd client in a sub process and forward everything
+        if (argc > 1 && argv[1] == QByteArrayLiteral("--cmd")) {
 #ifdef Q_OS_WIN
-        // On Windows ui applications don't have console access by default
-        // We can't use our normal workaround to attach to the parent console as it breaks the stdin handling.
-        // Therefore, we create a new console and redirect our streams.
-        AllocConsole();
-        freopen("CONIN$", "r", stdin);
-        freopen("CONOUT$", "w", stdout);
-        freopen("CONOUT$", "w", stderr);
+            // On Windows ui applications don't have console access by default
+            // We can't use our normal workaround to attach to the parent console as it breaks the stdin handling.
+            // Therefore, we create a new console and redirect our streams.
+            AllocConsole();
+            freopen("CONIN$", "r", stdin);
+            freopen("CONOUT$", "w", stdout);
+            freopen("CONOUT$", "w", stderr);
 #endif
-        QCoreApplication cmdApp(argc, argv);
-        QProcess cmd;
-        cmd.setProcessChannelMode(QProcess::ForwardedChannels);
-        cmd.setInputChannelMode(QProcess::ForwardedInputChannel);
+            QCoreApplication cmdApp(argc, argv);
+            QProcess cmd;
+            cmd.setProcessChannelMode(QProcess::ForwardedChannels);
+            cmd.setInputChannelMode(QProcess::ForwardedInputChannel);
 
-        const QString app = []() -> QString {
+            const QString app = []() -> QString {
 #ifdef Q_OS_WIN
-            return QCoreApplication::applicationFilePath().chopped(4) + QStringLiteral("cmd.exe");
+                return QCoreApplication::applicationFilePath().chopped(4) + QStringLiteral("cmd.exe");
 #else
-            return QCoreApplication::applicationFilePath() + QStringLiteral("cmd");
+                return QCoreApplication::applicationFilePath() + QStringLiteral("cmd");
 #endif
-        }();
-        cmd.start(app, cmdApp.arguments().mid(2));
-        if (!cmd.waitForFinished(-1)) {
-            std::cout << "Failed to start" << qPrintable(cmd.program()) << std::endl;
-        }
+            }();
+            cmd.start(app, cmdApp.arguments().mid(2));
+            if (!cmd.waitForFinished(-1)) {
+                std::cout << "Failed to start" << qPrintable(cmd.program()) << std::endl;
+            }
 #ifdef Q_OS_WIN
-        // readline to keep the console window open until closed by the user
-        std::string dummy;
-        std::cout << "Press enter to close";
-        std::getline(std::cin, dummy);
+            // readline to keep the console window open until closed by the user
+            std::string dummy;
+            std::cout << "Press enter to close";
+            std::getline(std::cin, dummy);
 #endif
-        return cmd.exitCode();
-    }
+            return cmd.exitCode();
+        }
 
-    // load the resources
-    const OCC::ResourcesLoader resource;
+        // load the resources
+        const OCC::ResourcesLoader resource;
 
-    // Create a `Platform` instance so it can set-up/tear-down stuff for us, and do any
-    // initialisation that needs to be done before creating a QApplication
-    const auto platform = Platform::create();
+        // Create a `Platform` instance so it can set-up/tear-down stuff for us, and do any
+        // initialisation that needs to be done before creating a QApplication
+        const auto platform = Platform::create();
 
-    // Create the (Q)Application instance:
-    QApplication app(argc, argv);
-    // TODO: Can't set this without breaking current config paths
-    //    setOrganizationName(QLatin1String(APPLICATION_VENDOR));
-    app.setOrganizationDomain(Theme::instance()->orgDomainName());
-    app.setApplicationName(Theme::instance()->appName());
-    app.setWindowIcon(Theme::instance()->applicationIcon());
-    app.setApplicationVersion(Theme::instance()->versionSwitchOutput());
+        // Create the (Q)Application instance:
+        QApplication app(argc, argv);
+        // TODO: Can't set this without breaking current config paths
+        //    setOrganizationName(QLatin1String(APPLICATION_VENDOR));
+        app.setOrganizationDomain(Theme::instance()->orgDomainName());
+        app.setApplicationName(Theme::instance()->appName());
+        app.setWindowIcon(Theme::instance()->applicationIcon());
+        app.setApplicationVersion(Theme::instance()->versionSwitchOutput());
 
-    // Load the translations before option parsing, so we can localize help text and error messages.
-    QString displayLanguage = setupTranslations(&app);
+        // Load the translations before option parsing, so we can localize help text and error messages.
+        QString displayLanguage = setupTranslations(&app);
 
-    // parse the arguments before we handle singleApplication
-    // errors and help/version need to be handled in this instance
-    const auto options = parseOptions(app.arguments());
+        // parse the arguments before we handle singleApplication
+        // errors and help/version need to be handled in this instance
+        const auto options = parseOptions(app.arguments());
 
-    KDSingleApplication singleApplication;
+        KDSingleApplication singleApplication;
 
-    if (!singleApplication.isPrimaryInstance()) {
-        // if the application is already running, notify it.
-        qCInfo(lcMain) << "Already running, exiting...";
-        if (app.isSessionRestored()) {
-            // This call is mirrored with the one in Application::slotParseMessage
-            qCInfo(lcMain) << "Session was restored, don't notify app!";
+        if (!singleApplication.isPrimaryInstance()) {
+            // if the application is already running, notify it.
+            qCInfo(lcMain) << "Already running, exiting...";
+            if (app.isSessionRestored()) {
+                // This call is mirrored with the one in Application::slotParseMessage
+                qCInfo(lcMain) << "Session was restored, don't notify app!";
+                return -1;
+            }
+
+            QStringList args = app.arguments();
+            if (args.size() > 1) {
+                QString msg = args.join(QLatin1String("|"));
+                if (!singleApplication.sendMessage((msgParseOptionsC() + msg).toUtf8()))
+                    return -1;
+            }
+
+            return 0;
+        }
+
+        // Check if the user upgraded or downgraded. We do this as early as possible, to detect
+        // a possible downgrade.
+        if (!checkClientVersion()) {
             return -1;
         }
 
-        QStringList args = app.arguments();
-        if (args.size() > 1) {
-            QString msg = args.join(QLatin1String("|"));
-            if (!singleApplication.sendMessage((msgParseOptionsC() + msg).toUtf8()))
-                return -1;
-        }
-
-        return 0;
-    }
-
-    // Check if the user upgraded or downgraded. We do this as early as possible, to detect
-    // a possible downgrade.
-    if (!checkClientVersion()) {
-        return -1;
-    }
-
-    setupLogging(options);
+        setupLogging(options);
 
 #if QT_VERSION >= QT_VERSION_CHECK(6, 3, 0)
-    qCDebug(lcMain) << QNetworkInformation::availableBackends().join(QStringLiteral(", "));
-    if (!QNetworkInformation::loadDefaultBackend()) {
-        qCWarning(lcMain) << "Failed to load QNetworkInformation";
-    } else {
-        qCDebug(lcMain) << "Loaded network information backend:" << QNetworkInformation::instance()->backendName()
-                        << "supported features:" << QNetworkInformation::instance()->supportedFeatures();
-    }
+        qCDebug(lcMain) << QNetworkInformation::availableBackends().join(QStringLiteral(", "));
+        if (!QNetworkInformation::loadDefaultBackend()) {
+            qCWarning(lcMain) << "Failed to load QNetworkInformation";
+        } else {
+            qCDebug(lcMain) << "Loaded network information backend:" << QNetworkInformation::instance()->backendName()
+                            << "supported features:" << QNetworkInformation::instance()->supportedFeatures();
+        }
 #else
-    qCWarning(lcMain) << "QNetworkInformation is not available";
+        qCWarning(lcMain) << "QNetworkInformation is not available";
 #endif
 
-    platform->setApplication(&app);
+        platform->setApplication(&app);
 
-    auto folderManager = FolderMan::createInstance();
+        auto folderManager = FolderMan::createInstance();
 
-    if (!AccountManager::instance()->restore()) {
-        qCCritical(lcMain) << "Could not read the account settings, quitting";
-        QMessageBox::critical(nullptr, QCoreApplication::translate("account loading", "Error accessing the configuration file"),
-            QCoreApplication::translate("account loading", "There was an error while accessing the configuration file at %1.").arg(ConfigFile::configFile()),
-            QMessageBox::Close);
-        return -1;
-    }
-
-    // Setup the folders. This includes a downgrade-detection, in which case the return value
-    // is empty. Note that the value 0 (zero) is a valid return value (non-empty), in which case
-    // the dialog is not shown.
-    if (!FolderMan::instance()->setupFolders().has_value()) {
-        // Empty return value: there was a downgrade detected on one of the databases
-        showDowngradeDialog();
-        return -1;
-    }
-
-    folderManager->setSyncEnabled(true);
-
-    auto ocApp = Application::createInstance(platform.get(), displayLanguage, options.debugMode);
-
-    QObject::connect(platform.get(), &Platform::requestAttention, ocApp->gui(), &ownCloudGui::slotShowSettings);
-
-    QObject::connect(&singleApplication, &KDSingleApplication::messageReceived, ocApp.get(), [&](const QByteArray &message) {
-        const QString msg = QString::fromUtf8(message);
-        qCInfo(lcMain) << Q_FUNC_INFO << msg;
-        if (msg.startsWith(msgParseOptionsC())) {
-            const QStringList optionsStrings = msg.mid(msgParseOptionsC().size()).split(QLatin1Char('|'));
-            CommandLineOptions options = parseOptions(optionsStrings);
-            if (options.show) {
-                ocApp->gui()->slotShowSettings();
-            }
-            if (options.quitInstance) {
-                qApp->quit();
-            }
-            if (!options.fileToOpen.isEmpty()) {
-                QTimer::singleShot(0, ocApp.get(), [ocApp = ocApp.get(), fileToOpen = options.fileToOpen] { ocApp->openVirtualFile(fileToOpen); });
-            }
+        if (!AccountManager::instance()->restore()) {
+            qCCritical(lcMain) << "Could not read the account settings, quitting";
+            QMessageBox::critical(nullptr, QCoreApplication::translate("account loading", "Error accessing the configuration file"),
+                QCoreApplication::translate("account loading", "There was an error while accessing the configuration file at %1.")
+                    .arg(ConfigFile::configFile()),
+                QMessageBox::Close);
+            return -1;
         }
-    });
 
-    platform->startServices();
+        // Setup the folders. This includes a downgrade-detection, in which case the return value
+        // is empty. Note that the value 0 (zero) is a valid return value (non-empty), in which case
+        // the dialog is not shown.
+        if (!FolderMan::instance()->setupFolders().has_value()) {
+            // Empty return value: there was a downgrade detected on one of the databases
+            showDowngradeDialog();
+            return -1;
+        }
 
-    // Handle user requests from the command-line first, before checking for updates. Because, if
-    // the user explicitly requested an action, then quiting because of an update will not be
-    // appreciated.
-    if (options.show) {
-        ocApp->gui()->slotShowSettings();
-        // The user explicitly requested the settings dialog, so don't start the new-account wizard.
-    } else if (!options.fileToOpen.isEmpty() && !AccountManager::instance()->accounts().isEmpty()) {
-        // Only try to open a file when accounts have been configured.
-        QTimer::singleShot(0, ocApp.get(), [ocApp = ocApp.get(), fileToOpen = options.fileToOpen] { ocApp->openVirtualFile(fileToOpen); });
-    } else {
-        // No user-requested action, check for updates.
+        folderManager->setSyncEnabled(true);
+
+        auto ocApp = Application::createInstance(platform.get(), displayLanguage, options.debugMode);
+
+        QObject::connect(platform.get(), &Platform::requestAttention, ocApp->gui(), &ownCloudGui::slotShowSettings);
+
+        QObject::connect(&singleApplication, &KDSingleApplication::messageReceived, ocApp.get(), [&](const QByteArray &message) {
+            const QString msg = QString::fromUtf8(message);
+            qCInfo(lcMain) << Q_FUNC_INFO << msg;
+            if (msg.startsWith(msgParseOptionsC())) {
+                const QStringList optionsStrings = msg.mid(msgParseOptionsC().size()).split(QLatin1Char('|'));
+                CommandLineOptions options = parseOptions(optionsStrings);
+                if (options.show) {
+                    ocApp->gui()->slotShowSettings();
+                }
+                if (options.quitInstance) {
+                    qApp->quit();
+                }
+                if (!options.fileToOpen.isEmpty()) {
+                    QTimer::singleShot(0, ocApp.get(), [ocApp = ocApp.get(), fileToOpen = options.fileToOpen] { ocApp->openVirtualFile(fileToOpen); });
+                }
+            }
+        });
+
+        platform->startServices();
+
+        // Handle user requests from the command-line first, before checking for updates. Because, if
+        // the user explicitly requested an action, then quiting because of an update will not be
+        // appreciated.
+        if (options.show) {
+            ocApp->gui()->slotShowSettings();
+            // The user explicitly requested the settings dialog, so don't start the new-account wizard.
+        } else if (!options.fileToOpen.isEmpty() && !AccountManager::instance()->accounts().isEmpty()) {
+            // Only try to open a file when accounts have been configured.
+            QTimer::singleShot(0, ocApp.get(), [ocApp = ocApp.get(), fileToOpen = options.fileToOpen] { ocApp->openVirtualFile(fileToOpen); });
+        } else {
+            // No user-requested action, check for updates.
 #ifdef WITH_AUTO_UPDATER
-        // if handleStartup returns true, main()
-        // needs to terminate here, e.g. because
-        // the updater is triggered
-        Updater *updater = Updater::instance();
-        if (updater && updater->handleStartup()) {
-            return 1;
-        }
+            // if handleStartup returns true, main()
+            // needs to terminate here, e.g. because
+            // the updater is triggered
+            Updater *updater = Updater::instance();
+            if (updater && updater->handleStartup()) {
+                return 1;
+            }
 #endif
-    }
+        }
 
-    // Display the wizard if we don't have an account yet, and no other UI is showing.
-    if (AccountManager::instance()->accounts().isEmpty()) {
-        QTimer::singleShot(0, ocApp->gui(), &ownCloudGui::runNewAccountWizard);
-    }
+        // Display the wizard if we don't have an account yet, and no other UI is showing.
+        if (AccountManager::instance()->accounts().isEmpty()) {
+            QTimer::singleShot(0, ocApp->gui(), &ownCloudGui::runNewAccountWizard);
+        }
 
-    // Now that everything is up and running, start accepting connections/requests from the shell integration.
-    folderManager->socketApi()->startShellIntegration();
+        // Now that everything is up and running, start accepting connections/requests from the shell integration.
+        folderManager->socketApi()->startShellIntegration();
 
-    return app.exec();
+        return app.exec();
+    }).exec(argc, argv);
 }

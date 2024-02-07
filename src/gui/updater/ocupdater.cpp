@@ -14,6 +14,7 @@
 
 #include "accessmanager.h"
 #include "application.h"
+#include "common/restartmanager.h"
 #include "common/utility.h"
 #include "common/version.h"
 #include "configfile.h"
@@ -54,15 +55,7 @@ UpdaterScheduler::UpdaterScheduler(Application *app, QObject *parent)
                 _updateDownloadedDialog->setAttribute(Qt::WA_DeleteOnClose);
                 ocApp()->gui()->settingsDialog()->addModalWidget(_updateDownloadedDialog);
 
-                connect(_updateDownloadedDialog, &UpdateDownloadedDialog::accepted, this, []() {
-                    // restart:
-                    qCInfo(lcUpdater) << "Restarting application NOW, PID" << qApp->applicationPid() << "is ending.";
-                    QTimer::singleShot(0, qApp->quit);
-                    QStringList args = qApp->arguments();
-                    QString prg = args.takeFirst();
-
-                    QProcess::startDetached(prg, args);
-                });
+                connect(_updateDownloadedDialog, &UpdateDownloadedDialog::accepted, this, []() { RestartManager::requestRestart(); });
             }
         });
 

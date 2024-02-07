@@ -16,6 +16,7 @@ set(common_SOURCES
     ${CMAKE_CURRENT_LIST_DIR}/vfs.cpp
     ${CMAKE_CURRENT_LIST_DIR}/pinstate.cpp
     ${CMAKE_CURRENT_LIST_DIR}/plugin.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/restartmanager.cpp
     ${CMAKE_CURRENT_LIST_DIR}/syncfilestatus.cpp
     ${CMAKE_CURRENT_BINARY_DIR}/version.cpp
 )

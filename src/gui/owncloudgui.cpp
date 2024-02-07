@@ -18,6 +18,7 @@
 #include "accountmanager.h"
 #include "accountstate.h"
 #include "application.h"
+#include "common/restartmanager.h"
 #include "common/syncjournalfilerecord.h"
 #include "configfile.h"
 #include "creds/abstractcredentials.h"
@@ -649,6 +650,7 @@ void ownCloudGui::updateContextMenu()
         crashMenu->addAction(QStringLiteral("Crash now - Utility::crash()"), _app, [] { Utility::crash(); });
         crashMenu->addAction(QStringLiteral("Crash now - OC_ENFORCE()"), _app, [] { OC_ENFORCE(false); });
         crashMenu->addAction(QStringLiteral("Crash now - qFatal"), _app, [] { qFatal("la Qt fatale"); });
+        crashMenu->addAction(QStringLiteral("Restart now"), _app, [] { RestartManager::requestRestart(); });
     }
 
     _contextMenu->addSeparator();
