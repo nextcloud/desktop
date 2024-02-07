@@ -249,6 +249,32 @@ void setupLogging(const CommandLineOptions &options)
     qCInfo(lcMain) << "Arguments:" << qApp->arguments();
 }
 
+void loadQNetworkInformationBackend()
+{
+#if QT_VERSION >= QT_VERSION_CHECK(6, 3, 0)
+    if (!QNetworkInformation::loadDefaultBackend()) {
+        qCWarning(lcMain) << "Failed to load default backend of QNetworkInformation.";
+        if (!QNetworkInformation::loadBackendByFeatures(QNetworkInformation::Feature::Metered)) {
+            qCWarning(lcMain) << "Failed to load backend of QNetworkInformation by metered feature.";
+            if (!QNetworkInformation::loadBackendByFeatures(QNetworkInformation::Feature::Reachability)) {
+                qCWarning(lcMain) << "Failed to load backend of QNetworkInformation by reachability feature.";
+                qCWarning(lcMain) << "Available backends:" << QNetworkInformation::availableBackends().join(QStringLiteral(", "));
+                return;
+            }
+        }
+    }
+    qCDebug(lcMain) << "Loaded network information backend:" << QNetworkInformation::instance()->backendName();
+    qCDebug(lcMain) << "Supported features:" << QNetworkInformation::instance()->supportedFeatures();
+    qCDebug(lcMain) << "Available backends:" << QNetworkInformation::availableBackends().join(QStringLiteral(", "));
+    if (auto qni = QNetworkInformation::instance()) {
+        QObject::connect(qni, &QNetworkInformation::reachabilityChanged,
+            [](QNetworkInformation::Reachability reachability) { qCInfo(lcApplication) << "Connection Status changed to:" << reachability; });
+    }
+#else
+    qCWarning(lcMain) << "QNetworkInformation is not available on this platform";
+#endif
+}
+
 QString setupTranslations(QApplication *app)
 {
     const auto trPath = Translations::translationsDirectoryPath();
@@ -452,18 +478,7 @@ int main(int argc, char **argv)
         }
 
         setupLogging(options);
-
-#if QT_VERSION >= QT_VERSION_CHECK(6, 3, 0)
-        qCDebug(lcMain) << QNetworkInformation::availableBackends().join(QStringLiteral(", "));
-        if (!QNetworkInformation::loadDefaultBackend()) {
-            qCWarning(lcMain) << "Failed to load QNetworkInformation";
-        } else {
-            qCDebug(lcMain) << "Loaded network information backend:" << QNetworkInformation::instance()->backendName()
-                            << "supported features:" << QNetworkInformation::instance()->supportedFeatures();
-        }
-#else
-        qCWarning(lcMain) << "QNetworkInformation is not available";
-#endif
+        loadQNetworkInformationBackend();
 
         platform->setApplication(&app);
 

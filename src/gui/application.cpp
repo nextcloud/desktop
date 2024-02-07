@@ -122,15 +122,6 @@ Application::Application(Platform *platform, const QString &displayLanguage, boo
     // Cleanup at Quit.
     connect(qApp, &QCoreApplication::aboutToQuit, this, &Application::slotCleanup);
     qApp->installEventFilter(this);
-
-#if QT_VERSION >= QT_VERSION_CHECK(6, 3, 0)
-    if (!QNetworkInformation::loadDefaultBackend()) {
-        qCWarning(lcApplication) << "Failed to load QNetworkInformation";
-    } else {
-        connect(QNetworkInformation::instance(), &QNetworkInformation::reachabilityChanged, this,
-            [this](QNetworkInformation::Reachability reachability) { qCInfo(lcApplication) << "Connection Status changed to:" << reachability; });
-    }
-#endif
 }
 
 Application::~Application()
