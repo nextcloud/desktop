@@ -1661,8 +1661,8 @@ Det kan vara problem med dina OpenSSL-bibliotek.</translation>
     </message>
     <message>
         <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="147"/>
-        <source>Error fetching encrypted folder id.</source>
-        <translation>Fel vid hämtning av krypterat mapp-ID.</translation>
+        <source>Error fetching encrypted folder ID.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="181"/>
@@ -5087,8 +5087,8 @@ Servern svarade med fel: %2</translation>
     </message>
     <message>
         <location filename="../src/libsync/updatee2eefolderusersmetadatajob.cpp" line="92"/>
-        <source>Could not fetch publicKey for user %1</source>
-        <translation>Kunde inte hämta publik nyckel för användare %1</translation>
+        <source>Could not fetch public key for user %1</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/updatee2eefolderusersmetadatajob.cpp" line="100"/>

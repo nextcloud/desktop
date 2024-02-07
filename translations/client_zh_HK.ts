@@ -1663,8 +1663,8 @@ This can be an issue with your OpenSSL libraries.</source>
     </message>
     <message>
         <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="147"/>
-        <source>Error fetching encrypted folder id.</source>
-        <translation>錯誤擷取已加密資料夾ID。</translation>
+        <source>Error fetching encrypted folder ID.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="181"/>
@@ -5088,8 +5088,8 @@ Server replied with error: %2</source>
     </message>
     <message>
         <location filename="../src/libsync/updatee2eefolderusersmetadatajob.cpp" line="92"/>
-        <source>Could not fetch publicKey for user %1</source>
-        <translation>無法擷取用戶 %1 的公共金鑰</translation>
+        <source>Could not fetch public key for user %1</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/updatee2eefolderusersmetadatajob.cpp" line="100"/>
