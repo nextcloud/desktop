@@ -331,7 +331,8 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
         overallProgressRect.setWidth(progressBarRect.width());
         painter->setFont(progressFont);
 
-        painter->drawText(QStyle::visualRect(option.direction, option.rect, overallProgressRect), Qt::AlignLeft | Qt::AlignVCenter, overallString);
+        painter->drawText(QStyle::visualRect(option.direction, option.rect, generalSyncStatusRect), Qt::AlignLeft | Qt::AlignVCenter, generalSyncStatus);
+
         painter->restore();
     }
 
