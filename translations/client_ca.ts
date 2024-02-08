@@ -755,6 +755,11 @@ Aquesta acció anul·larà qualsevol sincronització en execució.</translation>
         <translation>No hi ha connexió a %1 a %2.</translation>
     </message>
     <message>
+        <location filename="../src/gui/accountsettings.cpp" line="1279"/>
+        <source>Unable to connect to %1.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/accountsettings.cpp" line="1264"/>
         <source>Server configuration error: %1 at %2.</source>
         <translation>Error de configuració del servidor: %1 a %2.</translation>
@@ -1445,6 +1450,11 @@ Aquesta acció anul·larà qualsevol sincronització en execució.</translation>
         <location filename="../src/gui/connectionvalidator.cpp" line="287"/>
         <source>Please update to the latest server and restart the client.</source>
         <translation>Actualitzeu el servidor a la versió més recent i reinicieu el client.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/connectionvalidator.cpp" line="338"/>
+        <source>Network Error</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>

@@ -755,6 +755,11 @@ skráakerfið eða sameignarmöppur, gætu verið með önnur takmörk.</transla
         <translation>Engin tenging við %1 á %2.</translation>
     </message>
     <message>
+        <location filename="../src/gui/accountsettings.cpp" line="1279"/>
+        <source>Unable to connect to %1.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/accountsettings.cpp" line="1264"/>
         <source>Server configuration error: %1 at %2.</source>
         <translation type="unfinished"/>
@@ -1447,6 +1452,11 @@ gagnageymslur: </translation>
         <location filename="../src/gui/connectionvalidator.cpp" line="287"/>
         <source>Please update to the latest server and restart the client.</source>
         <translation>Uppfærðu í nýjasta þjóninn og endurræstu forritið.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/connectionvalidator.cpp" line="338"/>
+        <source>Network Error</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
