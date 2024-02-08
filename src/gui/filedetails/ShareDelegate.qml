@@ -262,8 +262,6 @@ GridLayout {
                 ShareDetailsPage {
                     id: shareDetailsPage
 
-                    width: parent.width
-                    height: parent.height
                     backgroundsVisible: root.backgroundsVisible
                     accentColor: root.accentColor
 
