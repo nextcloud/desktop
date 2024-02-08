@@ -756,6 +756,11 @@ This action will abort any currently running synchronization.</translation>
         <translation>اتصال به 1% در 2% وجود ندارد.</translation>
     </message>
     <message>
+        <location filename="../src/gui/accountsettings.cpp" line="1279"/>
+        <source>Unable to connect to %1.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/accountsettings.cpp" line="1264"/>
         <source>Server configuration error: %1 at %2.</source>
         <translation>Server configuration error: %1 at %2.</translation>
@@ -1446,6 +1451,11 @@ This action will abort any currently running synchronization.</translation>
         <location filename="../src/gui/connectionvalidator.cpp" line="287"/>
         <source>Please update to the latest server and restart the client.</source>
         <translation>لطفا به آخرین سرور به روز رسانی کنید و مشتری را مجددا راه اندازی نمایید.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/connectionvalidator.cpp" line="338"/>
+        <source>Network Error</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
