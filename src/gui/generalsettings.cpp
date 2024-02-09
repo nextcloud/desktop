@@ -104,9 +104,6 @@ GeneralSettings::GeneralSettings(QWidget *parent)
         ocApp()->gui()->slotToggleLogBrowser();
     });
 
-    // accountAdded means the wizard was finished and the wizard might change some options.
-    connect(AccountManager::instance(), &AccountManager::accountAdded, this, &GeneralSettings::loadMiscSettings);
-
     // Only our standard brandings currently support beta channel
 #ifdef WITH_AUTO_UPDATER
     if (Theme::instance()->appName() != QLatin1String("testpilotcloud")) {
