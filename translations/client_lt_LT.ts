@@ -1447,7 +1447,7 @@ This action will abort any currently running synchronization.</source>
         <translation>Prašome atnaujinkite serverį iki naujausios versijos ir perkraukite klientą.</translation>
     </message>
     <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="338"/>
+        <location filename="../src/gui/connectionvalidator.cpp" line="343"/>
         <source>Network Error</source>
         <translation type="unfinished"/>
     </message>

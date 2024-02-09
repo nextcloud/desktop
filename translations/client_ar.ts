@@ -756,7 +756,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1279"/>
         <source>Unable to connect to %1.</source>
-        <translation type="unfinished"/>
+        <translation>تعذّر الاتصال بـ %1.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1264"/>
@@ -1452,9 +1452,9 @@ This action will abort any currently running synchronization.</source>
         <translation>يرجى التحديث إلى الإصدار الأخير من الخادوم ثم إعادة تشغيل العميل.</translation>
     </message>
     <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="338"/>
+        <location filename="../src/gui/connectionvalidator.cpp" line="343"/>
         <source>Network Error</source>
-        <translation type="unfinished"/>
+        <translation>خطأ في الشبكة</translation>
     </message>
 </context>
 <context>

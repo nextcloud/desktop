@@ -1454,7 +1454,7 @@ gagnageymslur: </translation>
         <translation>Uppfærðu í nýjasta þjóninn og endurræstu forritið.</translation>
     </message>
     <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="338"/>
+        <location filename="../src/gui/connectionvalidator.cpp" line="343"/>
         <source>Network Error</source>
         <translation type="unfinished"/>
     </message>

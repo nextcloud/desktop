@@ -1452,7 +1452,7 @@ Aquesta acció anul·larà qualsevol sincronització en execució.</translation>
         <translation>Actualitzeu el servidor a la versió més recent i reinicieu el client.</translation>
     </message>
     <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="338"/>
+        <location filename="../src/gui/connectionvalidator.cpp" line="343"/>
         <source>Network Error</source>
         <translation type="unfinished"/>
     </message>
