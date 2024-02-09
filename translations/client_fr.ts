@@ -759,7 +759,7 @@ Vous prenez vos propres risques.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1279"/>
         <source>Unable to connect to %1.</source>
-        <translation type="unfinished"/>
+        <translation>Impossible de se connecter à %1.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1264"/>
@@ -1455,9 +1455,9 @@ Vous prenez vos propres risques.</translation>
         <translation>Veuillez mettre à jour le serveur vers la dernière version et redémarrer le client.</translation>
     </message>
     <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="338"/>
+        <location filename="../src/gui/connectionvalidator.cpp" line="343"/>
         <source>Network Error</source>
-        <translation type="unfinished"/>
+        <translation>Erreur réseau</translation>
     </message>
 </context>
 <context>

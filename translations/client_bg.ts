@@ -1452,7 +1452,7 @@ This action will abort any currently running synchronization.</source>
         <translation>Моля, обновете до по-нов сървър и рестартирайте клиента</translation>
     </message>
     <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="338"/>
+        <location filename="../src/gui/connectionvalidator.cpp" line="343"/>
         <source>Network Error</source>
         <translation type="unfinished"/>
     </message>

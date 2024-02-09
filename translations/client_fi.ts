@@ -1450,7 +1450,7 @@ Tämä toiminto peruu kaikki tämänhetkiset synkronoinnit.</translation>
         <translation>Päivitä uusimpaan palvelinversioon ja käynnistä asiakasohjelmisto uudelleen.</translation>
     </message>
     <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="338"/>
+        <location filename="../src/gui/connectionvalidator.cpp" line="343"/>
         <source>Network Error</source>
         <translation type="unfinished"/>
     </message>

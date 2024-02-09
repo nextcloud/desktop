@@ -1457,7 +1457,7 @@ This action will abort any currently running synchronization.</source>
         <translation>請將伺服器端更新到最新版並重新啟動客戶端。</translation>
     </message>
     <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="338"/>
+        <location filename="../src/gui/connectionvalidator.cpp" line="343"/>
         <source>Network Error</source>
         <translation type="unfinished"/>
     </message>

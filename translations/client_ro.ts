@@ -1451,7 +1451,7 @@ Această acțiune va opri toate sincronizările în derulare din acest moment.</
         <translation>Vă rugăm să instalați ultima versiune a serverului și să reporniți clientul</translation>
     </message>
     <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="338"/>
+        <location filename="../src/gui/connectionvalidator.cpp" line="343"/>
         <source>Network Error</source>
         <translation type="unfinished"/>
     </message>

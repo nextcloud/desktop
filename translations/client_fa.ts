@@ -1453,7 +1453,7 @@ This action will abort any currently running synchronization.</translation>
         <translation>لطفا به آخرین سرور به روز رسانی کنید و مشتری را مجددا راه اندازی نمایید.</translation>
     </message>
     <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="338"/>
+        <location filename="../src/gui/connectionvalidator.cpp" line="343"/>
         <source>Network Error</source>
         <translation type="unfinished"/>
     </message>

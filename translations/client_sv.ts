@@ -1457,7 +1457,7 @@ Den här åtgärden avbryter alla synkroniseringar som körs.</translation>
         <translation>Vänligen uppdatera till den senaste servern och starta om klienten.</translation>
     </message>
     <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="338"/>
+        <location filename="../src/gui/connectionvalidator.cpp" line="343"/>
         <source>Network Error</source>
         <translation type="unfinished"/>
     </message>
