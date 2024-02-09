@@ -3579,7 +3579,7 @@ Poznámka: Spouštění aplikace s parametrem přepíše toto nastavení.</trans
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="393"/>
         <source>New Version Available</source>
-        <translation type="unfinished"/>
+        <translation>Je dostupná nová verze</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="399"/>
@@ -3590,27 +3590,27 @@ Poznámka: Spouštění aplikace s parametrem přepíše toto nastavení.</trans
         <location filename="../src/gui/updater/ocupdater.cpp" line="412"/>
         <location filename="../src/gui/updater/ocupdater.cpp" line="460"/>
         <source>Skip this version</source>
-        <translation type="unfinished"/>
+        <translation>Přeskočit tuto verzi</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="413"/>
         <source>Skip this time</source>
-        <translation type="unfinished"/>
+        <translation>Tentokrát přeskočit</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="414"/>
         <source>Get update</source>
-        <translation type="unfinished"/>
+        <translation>Získat aktualizaci</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="441"/>
         <source>Update Failed</source>
-        <translation type="unfinished"/>
+        <translation>Aktualizace selhala</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="447"/>
         <source>&lt;p&gt;A new version of the %1 Client is available but the updating process failed.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; has been downloaded. The installed version is %3.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Je k dispozici nová verze aplikace (%1), ale její aktualizace selhala.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; byla stažena. Nainstalovaná verze je %3.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="461"/>
@@ -3625,7 +3625,7 @@ Poznámka: Spouštění aplikace s parametrem přepíše toto nastavení.</trans
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="463"/>
         <source>Update manually</source>
-        <translation type="unfinished"/>
+        <translation>Manuální aktualizace</translation>
     </message>
 </context>
 <context>

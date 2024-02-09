@@ -3590,7 +3590,7 @@ Beachten Sie, dass Kommandozeilenoptionen zum Logging diese Einstellungen übers
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="393"/>
         <source>New Version Available</source>
-        <translation type="unfinished"/>
+        <translation>Eine neue Version ist verfügbar.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="399"/>
@@ -3601,27 +3601,27 @@ Beachten Sie, dass Kommandozeilenoptionen zum Logging diese Einstellungen übers
         <location filename="../src/gui/updater/ocupdater.cpp" line="412"/>
         <location filename="../src/gui/updater/ocupdater.cpp" line="460"/>
         <source>Skip this version</source>
-        <translation type="unfinished"/>
+        <translation>Diese Version auslassen</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="413"/>
         <source>Skip this time</source>
-        <translation type="unfinished"/>
+        <translation>Dieses Mal überspringen</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="414"/>
         <source>Get update</source>
-        <translation type="unfinished"/>
+        <translation>Update durchführen</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="441"/>
         <source>Update Failed</source>
-        <translation type="unfinished"/>
+        <translation>Update fehlgeschlagen</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="447"/>
         <source>&lt;p&gt;A new version of the %1 Client is available but the updating process failed.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; has been downloaded. The installed version is %3.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Eine neue Version des %1 Clients ist verfügbar, der Aktualisierungs-Prozess ist aber fehlgeschlagen.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; wurde heruntergeladen. Die installierte Version ist %3.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="461"/>
@@ -3636,7 +3636,7 @@ Beachten Sie, dass Kommandozeilenoptionen zum Logging diese Einstellungen übers
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="463"/>
         <source>Update manually</source>
-        <translation type="unfinished"/>
+        <translation>Manuell aktualisieren</translation>
     </message>
 </context>
 <context>

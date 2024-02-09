@@ -3593,7 +3593,7 @@ Note that using any logging command line options will override the settings.</so
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="393"/>
         <source>New Version Available</source>
-        <translation type="unfinished"/>
+        <translation>Налична е нова версия</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="399"/>
@@ -3604,27 +3604,27 @@ Note that using any logging command line options will override the settings.</so
         <location filename="../src/gui/updater/ocupdater.cpp" line="412"/>
         <location filename="../src/gui/updater/ocupdater.cpp" line="460"/>
         <source>Skip this version</source>
-        <translation type="unfinished"/>
+        <translation>Пропускане на тази версия</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="413"/>
         <source>Skip this time</source>
-        <translation type="unfinished"/>
+        <translation>Пропускане този път</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="414"/>
         <source>Get update</source>
-        <translation type="unfinished"/>
+        <translation>Получаване на актуализация</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="441"/>
         <source>Update Failed</source>
-        <translation type="unfinished"/>
+        <translation>Актуализацията не е успешна</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="447"/>
         <source>&lt;p&gt;A new version of the %1 Client is available but the updating process failed.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; has been downloaded. The installed version is %3.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Налична е нова версия на клиент %1, но процесът на актуализиране не бе успешен.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; беше изтеглена. Инсталираната версия е %3.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="461"/>
@@ -3639,7 +3639,7 @@ Note that using any logging command line options will override the settings.</so
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="463"/>
         <source>Update manually</source>
-        <translation type="unfinished"/>
+        <translation>Ръчно актуализиране</translation>
     </message>
 </context>
 <context>

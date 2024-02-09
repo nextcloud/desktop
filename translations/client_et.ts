@@ -3604,7 +3604,7 @@ Pange tähele, et mistahes logimise käsurea suvandite kasutamine tühistab sead
         <location filename="../src/gui/updater/ocupdater.cpp" line="412"/>
         <location filename="../src/gui/updater/ocupdater.cpp" line="460"/>
         <source>Skip this version</source>
-        <translation type="unfinished"/>
+        <translation>Jäta see versioon vahele</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="413"/>
@@ -3624,7 +3624,7 @@ Pange tähele, et mistahes logimise käsurea suvandite kasutamine tühistab sead
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="447"/>
         <source>&lt;p&gt;A new version of the %1 Client is available but the updating process failed.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; has been downloaded. The installed version is %3.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Kliendi %1 uus versioon on saadaval, kuid värskendamine nurjus.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; on alla laaditud. Installitud versioon on %3.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="461"/>
