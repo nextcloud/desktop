@@ -121,11 +121,14 @@ def step(context, username, filename, filesize):
     createFileWithSize(filename, filesize)
 
 
-@When('the user copies the folder "|any|" to "|any|"')
-def step(context, sourceFolder, destinationFolder):
-    source_dir = getResourcePath(sourceFolder)
-    destination_dir = getResourcePath(destinationFolder)
-    shutil.copytree(source_dir, destination_dir)
+@When(r'the user copies the (file|folder) "([^"]*)" to "([^"]*)"', regexp=True)
+def step(context, resource_type, source_dir, destination_dir):
+    source_dir = getResourcePath(source_dir)
+    destination_dir = getResourcePath(destination_dir)
+    if resource_type == 'folder':
+        return shutil.copytree(source_dir, destination_dir)
+    else:
+        return shutil.copy2(source_dir, destination_dir)
 
 
 @When(r'the user renames a (?:file|folder) "([^"]*)" to "([^"]*)"', regexp=True)
@@ -288,6 +291,16 @@ def step(context, fileNumber, fileSize, folderName):
 def step(context, username, resource_type, resource_name):
     source_dir = join(get_config('tempFolderPath'), resource_name)
     destination_dir = getResourcePath('/', username)
+    shutil.move(source_dir, destination_dir)
+
+
+@When(
+    r'user "([^"]*)" moves (folder|file) "([^"]*)" to the temp folder',
+    regexp=True,
+)
+def step(context, username, resource_type, resource_name):
+    source_dir = getResourcePath(resource_name)
+    destination_dir = getTempResourcePath(resource_name)
     shutil.move(source_dir, destination_dir)
 
 
