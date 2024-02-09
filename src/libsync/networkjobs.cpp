@@ -669,6 +669,7 @@ bool PropfindJob::finished()
 
         if (!domDocument.setContent(reply(), true, &errorMsg, &errorLine, &errorColumn)) {
             qCWarning(lcPropfindJob) << "XML parser error: " << errorMsg << errorLine << errorColumn;
+            qCWarning(lcPropfindJob) << "=> reply()->error():" << reply()->error() << "- reply()->errorString():" << reply()->errorString();
             emit finishedWithError(reply());
 
         } else {
@@ -679,6 +680,7 @@ bool PropfindJob::finished()
     } else {
         qCWarning(lcPropfindJob) << "*not* successful, http result code is" << http_result_code
                                  << (http_result_code == 302 ? reply()->header(QNetworkRequest::LocationHeader).toString() : QLatin1String(""));
+        qCWarning(lcPropfindJob) << "=> reply()->error():" << reply()->error() << "- reply()->errorString():" << reply()->errorString();
         emit finishedWithError(reply());
     }
 
@@ -1270,8 +1272,8 @@ void fetchPrivateLinkUrl(AccountPtr account, const QString &remotePath,
             targetFun(oldUrl);
         }
     });
-    QObject::connect(job, &PropfindJob::finishedWithError, target, [=](QNetworkReply *) {
-        targetFun(oldUrl);
+    QObject::connect(job, &PropfindJob::finishedWithError, target, [=](QNetworkReply * reply) {
+        qCWarning(lcPropfindJob) << "=> reply->error():" << reply->error() << "- job->errorString():" << job->errorString();
     });
     job->start();
 }

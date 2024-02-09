@@ -361,6 +361,8 @@ void Folder::etagRetrieved(const QByteArray &etag, const QDateTime &tp)
 {
     // re-enable sync if it was disabled because network was down
     FolderMan::instance()->setSyncEnabled(true);
+    qCInfo(lcFolder) << "=> Etag retrieved: last:" << _lastEtag << ", received:" << etag;
+    qCInfo(lcFolder) << "=> For folder:" << _canonicalLocalPath;
 
     if (_lastEtag != etag) {
         qCInfo(lcFolder) << "Compare etag with previous etag: last:" << _lastEtag << ", received:" << etag << "-> CHANGED";
