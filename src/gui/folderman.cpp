@@ -654,6 +654,7 @@ void FolderMan::forceSyncForFolder(Folder *folder)
     // Terminate and reschedule any running sync
     for (const auto folderInMap : map()) {
         if (folderInMap->isSyncRunning()) {
+            qCWarning(lcFolderMan) << "=> User!! Terminating syncing for" << folderInMap->path();
             folderInMap->slotTerminateSync();
             scheduleFolder(folderInMap);
         }
@@ -679,7 +680,7 @@ void FolderMan::removeE2eFiles(const AccountPtr &account) const
 void FolderMan::slotScheduleAppRestart()
 {
     _appRestartRequired = true;
-    qCInfo(lcFolderMan) << "Application restart requested!";
+    qCInfo(lcFolderMan) << "=> Application restart requested!";
 }
 
 void FolderMan::slotSyncOnceFileUnlocks(const QString &path)
@@ -1339,6 +1340,7 @@ void FolderMan::removeFolder(Folder *f)
     const bool currentlyRunning = f->isSyncRunning();
     if (currentlyRunning) {
         // abort the sync now
+        qCWarning(lcFolderMan) << "=> User?? Abort syncing for" << f->path();
         f->slotTerminateSync();
     }
 
@@ -1929,6 +1931,8 @@ Folder *FolderMan::currentSyncFolder() const
 
 void FolderMan::restartApplication()
 {
+    qCInfo(lcFolderMan) << "Restarting application NOW!!";
+
     if (Utility::isLinux()) {
         // restart:
         qCInfo(lcFolderMan) << "Restarting application NOW, PID" << qApp->applicationPid() << "is ending.";
