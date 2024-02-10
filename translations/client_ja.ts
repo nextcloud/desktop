@@ -39,7 +39,7 @@
     <message>
         <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.ui" line="230"/>
         <source>Restore default value</source>
-        <translation type="unfinished"/>
+        <translation>デフォルト値に戻す</translation>
     </message>
 </context>
 <context>
@@ -61,7 +61,7 @@
     <message>
         <location filename="../src/libsync/appprovider.cpp" line="89"/>
         <source>Failed to open %1 in web. Error: %2.</source>
-        <translation type="unfinished"/>
+        <translation>&quot;%1&quot; をウェブサイトで開くことができませんでした。エラー: %2</translation>
     </message>
 </context>
 <context>
@@ -98,7 +98,8 @@
         <location filename="../src/gui/main.cpp" line="99"/>
         <source>%1 version %2<byte value="xd"/>
 File synchronization desktop utility.</source>
-        <translation type="unfinished"/>
+        <translation>%1バージョン%2&lt;byte value=&quot;xd&quot;/&gt;
+ファイル同期デスクトップユーティリティ。</translation>
     </message>
     <message>
         <location filename="../src/gui/main.cpp" line="107"/>
@@ -109,7 +110,7 @@ File synchronization desktop utility.</source>
     <message>
         <location filename="../src/gui/main.cpp" line="126"/>
         <source>Start with the main window visible, or if it is already running, bring it to the front. By default, the client launches in the background.</source>
-        <translation type="unfinished"/>
+        <translation>メインウィンドウを可視状態で起動します。既に起動している場合は、最前面ウィンドウに変更します。クライアントはデフォルトでバックグラウンドプロセスとして起動します。</translation>
     </message>
     <message>
         <location filename="../src/gui/main.cpp" line="128"/>
@@ -144,12 +145,12 @@ File synchronization desktop utility.</source>
     <message>
         <location filename="../src/gui/main.cpp" line="136"/>
         <source>Forward all arguments to the cmd client. This argument must be the first.</source>
-        <translation type="unfinished"/>
+        <translation>すべての引数を cmd クライアントに転送します。この引数は最初になければなりません。</translation>
     </message>
     <message>
         <location filename="../src/gui/main.cpp" line="139"/>
         <source>Virtual file system file to be opened (optional).</source>
-        <translation type="unfinished"/>
+        <translation>開く仮想ファイルシステムファイル (オプション)</translation>
     </message>
     <message>
         <location filename="../src/gui/main.cpp" line="156"/>
@@ -419,7 +420,7 @@ File synchronization desktop utility.</source>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="118"/>
         <source>Preparing the account</source>
-        <translation type="unfinished"/>
+        <translation>アカウントを修復</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="218"/>
@@ -494,7 +495,7 @@ File synchronization desktop utility.</source>
         <location filename="../src/gui/accountsettings.cpp" line="745"/>
         <location filename="../src/gui/accountsettings.cpp" line="756"/>
         <source>Add Space</source>
-        <translation type="unfinished"/>
+        <translation>スペースを追加する</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="197"/>
@@ -506,7 +507,7 @@ File synchronization desktop utility.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="225"/>
         <source>Reconnect</source>
-        <translation type="unfinished"/>
+        <translation>リコネクト</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="473"/>
@@ -549,22 +550,22 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="585"/>
         <source>The sync operation is running.&lt;br/&gt;Do you want to stop it?</source>
-        <translation type="unfinished"/>
+        <translation>同期ジョブが実行中です。&lt;br/&gt;停止しますか？</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="709"/>
         <source>Updating credentials for %1...</source>
-        <translation type="unfinished"/>
+        <translation>%1 の資格情報を更新しています...</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="713"/>
         <source>Connecting to: %1.</source>
-        <translation type="unfinished"/>
+        <translation>接続中: %1。</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="724"/>
         <source>Disconnected from: %1.</source>
-        <translation type="unfinished"/>
+        <translation>%1 から切断されました</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="696"/>
@@ -574,37 +575,37 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="381"/>
         <source>Disable virtual file support</source>
-        <translation type="unfinished"/>
+        <translation>仮想ファイルのサポートを無効にする.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="387"/>
         <source>Enable virtual file support</source>
-        <translation type="unfinished"/>
+        <translation>仮想ファイルのサポートを有効にする</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="600"/>
         <source>Sync paused by user</source>
-        <translation type="unfinished"/>
+        <translation>ユーザーにより同期が一時停止されました</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="634"/>
         <source>Internet connection is metered</source>
-        <translation type="unfinished"/>
+        <translation>インターネット接続は従量制です</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="635"/>
         <source>Synchronization is paused because the Internet connection is a metered connection&lt;p&gt;Do you really want to force a Synchronization now?</source>
-        <translation type="unfinished"/>
+        <translation>インターネット接続が従量制プランのため、&lt;p&gt;同期は一時停止中です。強制的に同期を開始しますか？ </translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="656"/>
         <source>User triggered force sync</source>
-        <translation type="unfinished"/>
+        <translation>ユーザーによる強制同期のトリガー</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="689"/>
         <source>Sync to %1 is paused due to metered internet connection.</source>
-        <translation type="unfinished"/>
+        <translation>従量制インターネット接続のため、%1 への同期が一時停止されています。</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="700"/>
@@ -634,7 +635,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="746"/>
         <source>Click this button to add a Space.</source>
-        <translation type="unfinished"/>
+        <translation>スペースを追加するには、このボタンをクリックします。</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="749"/>
@@ -644,12 +645,12 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="757"/>
         <source>You need to be connected to add a Space.</source>
-        <translation type="unfinished"/>
+        <translation>スペースを追加するには接続する必要があります。</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="760"/>
         <source>You need to be connected to add a folder.</source>
-        <translation type="unfinished"/>
+        <translation>フォルダーを追加するには接続する必要があります。</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="897"/>
@@ -792,7 +793,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="158"/>
         <source>&lt;br/&gt;%1 does not provide activities.</source>
-        <translation type="unfinished"/>
+        <translation>&lt;br/&gt;%1 はアクティビティを提供しません。</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/activitywidget.cpp" line="296"/>
@@ -832,7 +833,9 @@ This action will abort any currently running synchronization.</source>
         <source>An update is available for this AppImage of %1. Do you want to install this update?
 
 The update will be performed in the background, and overwrite the current AppImage file. You need to restart the app to complete the update.</source>
-        <translation type="unfinished"/>
+        <translation>%1 の AppImage 更新が検出されました。インストールしますか？ 
+
+AppImage の更新はバックグラウンドプロセスで実行され、現在のファイルは上書きされます。アップデートを完了するには、アプリを再起動してください。</translation>
     </message>
 </context>
 <context>
@@ -977,7 +980,7 @@ The update will be performed in the background, and overwrite the current AppIma
     <message>
         <location filename="../src/gui/folder.cpp" line="187"/>
         <source>The path &apos;%1&apos; is too long. Please enable long paths in the Windows settings or choose a different folder.</source>
-        <translation type="unfinished"/>
+        <translation>パス &apos;%1&apos; が長すぎます。Windowsの設定で長いパスを有効にするか、別のフォルダーを選択してください。</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="224"/>
@@ -1043,7 +1046,7 @@ The update will be performed in the background, and overwrite the current AppIma
     <message>
         <location filename="../src/gui/folder.cpp" line="788"/>
         <source>Switching VFS mode on folder &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>フォルダー &apos;%1&apos; の VFS モードを切り替えています</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="950"/>
@@ -1086,7 +1089,11 @@ The update will be performed in the background, and overwrite the current AppIma
 This means that the synchronization client might not upload local changes immediately and will instead only scan for local changes and upload them occasionally (every two hours by default).
 
 %1</source>
-        <translation type="unfinished"/>
+        <translation>同期フォルダの変更を追跡できませんでした。
+
+同期クライアントは、ローカルファイルの変更を検出するとすぐにアップロードせず、一定時間ごとにスキャンを実行して、そのときに変更があればアップロードするように動作します (デフォルトでは2時間ごと)。
+
+%1</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1272"/>
@@ -1139,12 +1146,12 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderman.cpp" line="390"/>
         <source>Account disconnected or paused</source>
-        <translation type="unfinished"/>
+        <translation>アカウントが切断または一時停止されました</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="605"/>
         <source>Folder is about to be removed</source>
-        <translation type="unfinished"/>
+        <translation>フォルダーが削除されようとしています</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="629"/>
@@ -1169,7 +1176,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderman.cpp" line="727"/>
         <source>Folder &apos;%1&apos; is already in use by application %2!</source>
-        <translation type="unfinished"/>
+        <translation>フォルダ &apos;%1&apos; はアプリケーション %2 によってすでに使用されています!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="741"/>
@@ -1259,34 +1266,36 @@ Please consider removing this folder from the account and adding it again.</sour
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="278"/>
         <source>The suffix VFS plugin is deprecated and will be removed in the 7.0 release.</source>
-        <translation type="unfinished"/>
+        <translation>サフィックス VFS プラグインは非推奨であり、7.0 リリースで削除される予定です。</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="279"/>
         <source>Please use the context menu and select &quot;Disable virtual file support&quot; to  ensure future access to your synced files.</source>
-        <translation type="unfinished"/>
+        <translation>同期ファイルへの将来のアクセスを保証するには、コンテキストメニューから「仮想ファイル機能を無効にする」を選択してください。</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="280"/>
         <source>You are going to lose access to your sync folder if you do not do so!</source>
-        <translation type="unfinished"/>
+        <translation>仮想ファイルサポートを無効にしないと、同期フォルダへのアクセスが失われます。</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="355"/>
         <source>%1
 %2</source>
-        <translation type="unfinished"/>
+        <translation>%1
+%2</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="357"/>
         <source>Signed out
 %1</source>
-        <translation type="unfinished"/>
+        <translation>サインアウトしました
+%1</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="941"/>
         <source>Selective sync list changed</source>
-        <translation type="unfinished"/>
+        <translation>選択同期対象リストの変更が検出されました。</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="987"/>
@@ -1301,7 +1310,7 @@ Please consider removing this folder from the account and adding it again.</sour
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="993"/>
         <source>Reconciling changes</source>
-        <translation type="unfinished"/>
+        <translation>変更の調整</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1028"/>
@@ -1339,12 +1348,12 @@ Please consider removing this folder from the account and adding it again.</sour
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1151"/>
         <source>Queued</source>
-        <translation type="unfinished"/>
+        <translation>キューに入れられました</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1222"/>
         <source>User triggered sync-all for selective synced folder</source>
-        <translation type="unfinished"/>
+        <translation>ユーザーが選択同期リスト内のフォルダに対して手動で全同期を実行しました。</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1065"/>
@@ -1509,7 +1518,7 @@ Please consider removing this folder from the account and adding it again.</sour
     <message>
         <location filename="../src/gui/folderwizard/folderwizardselectivesync.cpp" line="47"/>
         <source>Use virtual files instead of downloading content immediately</source>
-        <translation type="unfinished"/>
+        <translation>コンテンツを直接ダウンロードするのではなく、仮想ファイル機能を利用してアクセスします。</translation>
     </message>
 </context>
 <context>
@@ -1570,7 +1579,7 @@ Please consider removing this folder from the account and adding it again.</sour
     <message>
         <location filename="../src/gui/generalsettings.ui" line="126"/>
         <source>Move remotely deleted files to the local trash bin instead of deleting them</source>
-        <translation type="unfinished"/>
+        <translation>リモート削除されたファイルを、永続的に削除する前に、ローカルマシンのゴミ箱に一時的に保存するように設定できます。</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="142"/>
@@ -1683,7 +1692,9 @@ Please consider removing this folder from the account and adding it again.</sour
         <source>The update channel determines which client updates will be offered for installation. The &quot;stable&quot; channel contains only upgrades that are considered reliable, while the versions in the &quot;beta&quot; channel may contain newer features and bugfixes, but have not yet been tested thoroughly.
 
 Note that this selects only what pool upgrades are taken from, and that there are no downgrades: So going back from the beta channel to the stable channel usually cannot be done immediately and means waiting for a stable version that is newer than the currently installed beta version.</source>
-        <translation type="unfinished"/>
+        <translation>更新チャンネルは、クライアントのアップデート内容を制御します。「stable」チャンネルは安定性重視のアップデートのみを提供し、「beta」チャンネルは新機能やバグフィックスを含む可能性がありますが、十分なテストが行われていない可能性があります。
+
+この選択は、提供されるアップグレードのプールのみを決定します。ダウングレードはサポートされていないため、通常、ベータチャンネルから安定チャンネルにロールバックするには、現在インストールされているベータバージョンよりも新しい安定バージョンがリリースされるまで待つ必要があります。</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="229"/>
@@ -1724,7 +1735,7 @@ Note that this selects only what pool upgrades are taken from, and that there ar
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="123"/>
         <source>Please enter your password to log in to the account %1.</source>
-        <translation type="unfinished"/>
+        <translation>アカウント %1 にログインするには、パスワードを入力してください。</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="172"/>
@@ -1861,13 +1872,14 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     <message>
         <location filename="../src/gui/logbrowser.ui" line="53"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;b&gt;The logs contain sensitive information which you should not make publicly available&lt;/b&gt;&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;b&gt;ログファイルには機密情報が含まれており、公開しないでください。&lt;/b&gt;&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.ui" line="71"/>
         <source>The client can write debug logs to a temporary folder. These logs are very helpful for diagnosing problems.
 Since log files can get large, the client will start a new one for each sync run and compress older ones.</source>
-        <translation type="unfinished"/>
+        <translation>クライアントは一時ディレクトリにデバッグログを出力可能です。これらのログは、問題の特定に非常に役立ちます。
+ログファイルは容量が大きくなるおそれがあるため、クライアントは同期ごとに新しいファイルを作成し、古いファイルは圧縮処理を行います。</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.ui" line="116"/>
@@ -1953,7 +1965,7 @@ Note that using any logging command line options will override the settings.</so
     <message>
         <location filename="../src/gui/networksettings.ui" line="20"/>
         <source>Pause synchronization when the Internet connection is metered</source>
-        <translation type="unfinished"/>
+        <translation>インターネット接続が従量制の場合は同期を一時停止する</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="30"/>
@@ -2129,7 +2141,7 @@ Note that using any logging command line options will override the settings.</so
     <message>
         <location filename="../src/libsync/creds/oauth.cpp" line="379"/>
         <source>&lt;h1&gt;Wrong user&lt;/h1&gt;&lt;p&gt;You logged-in with user &lt;em&gt;%1&lt;/em&gt;, but must login with user &lt;em&gt;%2&lt;/em&gt;.&lt;br&gt;Please return to the %3 client and restart the authentication.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;h1&gt;間違ったユーザー&lt;/h1&gt; &lt;p&gt;ユーザーでログインしました &lt;em&gt;%1&lt;/em&gt;, ただし、ユーザーでログインする必要があります &lt;em&gt;%2 &lt;/em&gt;.&lt;br&gt;%3 クライアントに戻り、認証を再開してください。&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/libsync/creds/oauth.cpp" line="383"/>
@@ -2173,7 +2185,7 @@ Note that using any logging command line options will override the settings.</so
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="155"/>
         <source>%1 installed successfully. Restart the application to finish installing the update.</source>
-        <translation type="unfinished"/>
+        <translation>%1 のインストールが成功しました。アップデートを完了させるにはアプリケーションを再起動してください。</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="157"/>
@@ -2309,7 +2321,7 @@ Note that using any logging command line options will override the settings.</so
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1183"/>
         <source>SelectiveSync: Ignored because its path is deselected</source>
-        <translation type="unfinished"/>
+        <translation>SelectiveSync: パスが選択解除されているため無視されます</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1257"/>
@@ -2329,7 +2341,7 @@ Note that using any logging command line options will override the settings.</so
     <message>
         <location filename="../src/libsync/discovery.cpp" line="628"/>
         <source>Error while doing a rename, unhandled status code: %1</source>
-        <translation type="unfinished"/>
+        <translation>名前変更処理中にエラーが発生しました。未処理のステータスコードは %1 です。</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1221"/>
@@ -2349,7 +2361,7 @@ Note that using any logging command line options will override the settings.</so
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1428"/>
         <source>This Space is currently unavailable</source>
-        <translation type="unfinished"/>
+        <translation>このスペースは現在利用できません</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1448"/>
@@ -2401,7 +2413,7 @@ Note that using any logging command line options will override the settings.</so
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="787"/>
         <source>Broken webserver returned empty content length for non-empty file on resume</source>
-        <translation type="unfinished"/>
+        <translation>復元処理中のファイルに対して、不具合なウェブサーバが、空のコンテンツ長を返しました。</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="794"/>
@@ -2489,7 +2501,7 @@ Note that using any logging command line options will override the settings.</so
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="125"/>
         <source>Could not move &apos;%1&apos; to the trash bin</source>
-        <translation type="unfinished"/>
+        <translation>&apos;%1&apos; をゴミ箱に移動できませんでした</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="89"/>
@@ -2528,7 +2540,7 @@ Note that using any logging command line options will override the settings.</so
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="286"/>
         <source>Error setting pin state</source>
-        <translation type="unfinished"/>
+        <translation>ピン状態設定エラー</translation>
     </message>
 </context>
 <context>
@@ -2587,7 +2599,7 @@ Note that using any logging command line options will override the settings.</so
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="213"/>
         <source>Error setting pin state</source>
-        <translation type="unfinished"/>
+        <translation>ピン状態設定エラー</translation>
     </message>
 </context>
 <context>
@@ -2681,7 +2693,7 @@ Note that using any logging command line options will override the settings.</so
     <message>
         <location filename="../src/libsync/propagateuploadtus.cpp" line="119"/>
         <source>Checksum computation failed</source>
-        <translation type="unfinished"/>
+        <translation>チェックサムの計算に失敗しました</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadtus.cpp" line="225"/>
@@ -3292,7 +3304,7 @@ Note that using any logging command line options will override the settings.</so
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1007"/>
         <source>Show file versions in web browser</source>
-        <translation type="unfinished"/>
+        <translation>Web ブラウザにファイルのバージョンを表示する</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1029"/>
@@ -3403,7 +3415,7 @@ Note that using any logging command line options will override the settings.</so
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="871"/>
         <source>Aborted due to %1</source>
-        <translation type="unfinished"/>
+        <translation>%1 により中止されました</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="889"/>
@@ -3424,7 +3436,7 @@ Note that using any logging command line options will override the settings.</so
         <location filename="../src/libsync/syncengine.cpp" line="86"/>
         <source>application exit</source>
         <comment>abort reason</comment>
-        <translation type="unfinished"/>
+        <translation>アプリケーションの終了</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="399"/>
@@ -3468,7 +3480,7 @@ Note that using any logging command line options will override the settings.</so
     <message>
         <location filename="../src/libsync/theme.cpp" line="400"/>
         <source>&lt;p&gt;Version %1. For more information visit &lt;a href=&quot;%2&quot;&gt;https://%3&lt;/a&gt;&lt;/p&gt;&lt;p&gt;For known issues and help, please visit: &lt;a href=&quot;https://central.owncloud.com/c/desktop-client&quot;&gt;https://central.owncloud.com&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;By Klaas Freitag, Daniel Molkentin, Olivier Goffart, Markus Götz,  Jan-Christoph Borchardt, Thomas Müller,&lt;br&gt;Dominik Schmidt, Michael Stingl, Hannah von Reth, Fabian Müller and others.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;Copyright ownCloud GmbH&lt;/p&gt;&lt;p&gt;Distributed by %4 and licensed under the GNU General Public License (GPL) Version 2.0.&lt;br/&gt;%5 and the %5 logo are registered trademarks of %4 in the United States, other countries, or both.&lt;/p&gt;&lt;p&gt;&lt;small&gt;%6&lt;/small&gt;&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;バージョン %1。詳細については、こちらをご覧ください &lt;a href=&quot;%2&quot;&gt;https://%3&lt;/a&gt; &lt;/p&gt; &lt;p&gt;既知の問題とヘルプについては、次のサイトを参照してください。&lt;a href=&quot;https://central.owncloud.com/c/desktop-client&quot;&gt;https://central.owncloud.com&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;By Klaas Freitag, Daniel Molkentin, Olivier Goffart, Markus Götz, Jan-Christoph Borchardt, Thomas Müller,&lt;br&gt;Dominik Schmidt, Michael Stingl, Hannah von Reth, Fabian Müller and others.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;著作権 ownCloud GmbH&lt;/p&gt;&lt;p&gt;%4 によって配布され、GNU General Public License (GPL) バージョン 2.0 に基づいてライセンスされています。&lt;br/&gt;%5 および %5 ロゴは、米国、その他の国、またはその両方における %4 の登録商標です。&lt;/p&gt;&lt;p&gt;&lt;small&gt;%6&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -3496,7 +3508,7 @@ Note that using any logging command line options will override the settings.</so
     <message>
         <location filename="../src/gui/tlserrordialog.cpp" line="68"/>
         <source>&lt;div id=&quot;cert&quot;&gt;&lt;h3&gt;with Certificate %1&lt;/h3&gt;&lt;div id=&quot;ccert&quot;&gt;&lt;p&gt;Organization: %2&lt;br/&gt;Unit: %3&lt;br/&gt;Country: %4&lt;/p&gt;&lt;p&gt;Fingerprint (MD5): &lt;tt&gt;%5&lt;/tt&gt;&lt;br/&gt;Fingerprint (SHA1): &lt;tt&gt;%6&lt;/tt&gt;&lt;br/&gt;Fingerprint (SHA256): &lt;tt&gt;%7&lt;/tt&gt;&lt;br/&gt;&lt;br/&gt;Effective Date: %8Expiration Date: %9&lt;/div&gt;&lt;h3&gt;Issuer: %10&lt;/h3&gt;&lt;div id=&quot;issuer&quot;&gt;&lt;p&gt;Organization: %11&lt;br/&gt;Unit: %12&lt;br/&gt;Country: %13&lt;/p&gt;&lt;/div&gt;&lt;/div&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;div id=&quot;cert&quot;&gt;&lt;h3&gt;証明書 %1 付き&lt;/h3&gt;&lt;div id=&quot;ccert&quot;&gt;&lt;p&gt;組織: %2&lt;br/&gt;ユニット%3&lt;br/&gt;国：%4&lt;/p&gt;&lt;p&gt;指紋 (MD5):&lt;tt&gt;%5&lt;/tt&gt;&lt;br/&gt;指紋 (SHA1):&lt;tt&gt;%6&lt;/tt&gt;&lt;br/&gt;指紋 (SHA256):&lt;tt&gt;%7&lt;/tt&gt;&lt;br/&gt;&lt;br/&gt;発効日: %8有効期限: %9&lt;/div&gt;&lt;h3&gt;発行者: %10&lt;/h3&gt;&lt;div id=&quot;issuer&quot;&gt;&lt;p&gt;組織: %11&lt;br/&gt;ユニット%12&lt;br/&gt;国：%13&lt;/p&gt;&lt;/div&gt;&lt;/div&gt;</translation>
     </message>
 </context>
 <context>
@@ -3504,12 +3516,12 @@ Note that using any logging command line options will override the settings.</so
     <message>
         <location filename="../src/gui/updater/updatedownloadeddialog.cpp" line="41"/>
         <source>Restart later</source>
-        <translation type="unfinished"/>
+        <translation>後で再起動する</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/updatedownloadeddialog.cpp" line="43"/>
         <source>Restart now</source>
-        <translation type="unfinished"/>
+        <translation>今すぐ再起動</translation>
     </message>
 </context>
 <context>
@@ -3532,7 +3544,7 @@ Note that using any logging command line options will override the settings.</so
     <message>
         <location filename="../src/gui/updateurldialog.cpp" line="48"/>
         <source>The url for %1 changed from %2 to %3, do you want to accept the changed url?</source>
-        <translation type="unfinished"/>
+        <translation>&quot;%1&quot; の URL が &quot;%2&quot; から &quot;%3&quot; に変わっちゃったんだけど、新しいリンク先使う？</translation>
     </message>
 </context>
 <context>
@@ -3548,7 +3560,7 @@ Note that using any logging command line options will override the settings.</so
     <message>
         <location filename="../src/common/checksums.cpp" line="388"/>
         <source>The downloaded file does not match the checksum, it will be resumed. &apos;%1&apos; != &apos;%2&apos;</source>
-        <translation type="unfinished"/>
+        <translation>ダウンロードされたファイルのチェックサムが不正です。ダウンロードを再開します。&apos;%1&apos; != &apos;%2&apos;</translation>
     </message>
 </context>
 <context>
@@ -3556,17 +3568,17 @@ Note that using any logging command line options will override the settings.</so
     <message>
         <location filename="../src/common/vfs.cpp" line="86"/>
         <source>The Virtual filesystem feature does not support a drive as sync root</source>
-        <translation type="unfinished"/>
+        <translation>仮想ファイルシステム機能は、同期ルートとしてのドライブをサポートしていません</translation>
     </message>
     <message>
         <location filename="../src/common/vfs.cpp" line="90"/>
         <source>The Virtual filesystem feature requires a NTFS file system, %1 is using %2</source>
-        <translation type="unfinished"/>
+        <translation>仮想ファイルシステム機能を利用するには NTFS ファイルシステムが必要です。%1 は現在 %2 ファイルシステムを使用しています。</translation>
     </message>
     <message>
         <location filename="../src/common/vfs.cpp" line="94"/>
         <source>The Virtual filesystem feature is not supported on network drives</source>
-        <translation type="unfinished"/>
+        <translation>仮想ファイルシステム機能はネットワークドライブではサポートされていません</translation>
     </message>
 </context>
 <context>
@@ -3574,7 +3586,7 @@ Note that using any logging command line options will override the settings.</so
     <message>
         <location filename="../src/plugins/vfs/suffix/vfs_suffix.cpp" line="110"/>
         <source>Cannot create a placeholder because a file with the placeholder name already exist</source>
-        <translation type="unfinished"/>
+        <translation>指定されたプレースホルダー名と同じファイルが既に存在するため、プレースホルダーを作成できません。</translation>
     </message>
 </context>
 <context>
@@ -3636,7 +3648,7 @@ Note that using any logging command line options will override the settings.</so
     <message>
         <location filename="../src/gui/newwizard/states/accountconfiguredsetupwizardstate.cpp" line="82"/>
         <source>Invalid local download directory: %1</source>
-        <translation type="unfinished"/>
+        <translation>無効なローカル ダウンロード ディレクトリ: %1</translation>
     </message>
 </context>
 <context>
@@ -3644,17 +3656,17 @@ Note that using any logging command line options will override the settings.</so
     <message>
         <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.cpp" line="31"/>
         <source>Use &amp;virtual files instead of downloading content immediately</source>
-        <translation type="unfinished"/>
+        <translation>コンテンツを直接ダウンロードするのではなく、仮想ファイル機能を利用してアクセスします。</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.cpp" line="48"/>
         <source>%1 (recommended)</source>
-        <translation type="unfinished"/>
+        <translation>%1(推奨)</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.cpp" line="66"/>
         <source>The virtual filesystem feature is not available for this installation.</source>
-        <translation type="unfinished"/>
+        <translation>このインストールでは、仮想ファイルシステム機能は利用できません。</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.cpp" line="70"/>
@@ -3694,7 +3706,7 @@ Note that using any logging command line options will override the settings.</so
         <location filename="../src/gui/newwizard/pages/legacywebfingersetupwizardpage.cpp" line="51"/>
         <source>Please enter your %1:</source>
         <comment>Please enter your [username, e-mail address, ...]:</comment>
-        <translation type="unfinished"/>
+        <translation>%1 を入力してください:</translation>
     </message>
 </context>
 <context>
@@ -3702,12 +3714,12 @@ Note that using any logging command line options will override the settings.</so
     <message>
         <location filename="../src/gui/newwizard/states/legacywebfingersetupwizardstate.cpp" line="39"/>
         <source>Failed to parse WebFinger response: %1</source>
-        <translation type="unfinished"/>
+        <translation>WebFinger 応答の解析に失敗しました: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/states/legacywebfingersetupwizardstate.cpp" line="44"/>
         <source>WebFinger endpoint did not send href attribute</source>
-        <translation type="unfinished"/>
+        <translation>WebFinger エンドポイントが href 属性を送信しませんでした</translation>
     </message>
 </context>
 <context>
@@ -3733,12 +3745,12 @@ Note that using any logging command line options will override the settings.</so
     <message>
         <location filename="../src/gui/newwizard/states/oauthcredentialssetupwizardstate.cpp" line="50"/>
         <source>Error while trying to log in to OAuth2-enabled server.</source>
-        <translation type="unfinished"/>
+        <translation>OAuth2 対応サーバーにログインしようとしたときにエラーが発生しました。</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/states/oauthcredentialssetupwizardstate.cpp" line="55"/>
         <source>Server reports that OAuth2 is not supported.</source>
-        <translation type="unfinished"/>
+        <translation>サーバーは、OAuth2 がサポートされていないと報告しました。</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/states/oauthcredentialssetupwizardstate.cpp" line="59"/>
@@ -3759,18 +3771,19 @@ Note that using any logging command line options will override the settings.</so
     <message>
         <location filename="../src/gui/newwizard/states/serverurlsetupwizardstate.cpp" line="84"/>
         <source>Invalid server URL</source>
-        <translation type="unfinished"/>
+        <translation>無効なサーバー URL</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/states/serverurlsetupwizardstate.cpp" line="90"/>
         <source>Insecure connection</source>
-        <translation type="unfinished"/>
+        <translation>安全でない接続</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/states/serverurlsetupwizardstate.cpp" line="91"/>
         <source>The connection to %1 is insecure.
 Are you sure you want to proceed?</source>
-        <translation type="unfinished"/>
+        <translation>%1 への接続は安全ではありません。
+続行してもよろしいですか?</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/states/serverurlsetupwizardstate.cpp" line="98"/>
@@ -3780,7 +3793,7 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/gui/newwizard/states/serverurlsetupwizardstate.cpp" line="101"/>
         <source>Insecure server rejected by user</source>
-        <translation type="unfinished"/>
+        <translation>安全でないサーバーがユーザーによって拒否されました</translation>
     </message>
 </context>
 <context>
@@ -3793,7 +3806,7 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/gui/newwizard/setupwizardcontroller.cpp" line="201"/>
         <source>Failed to retrieve user information from server</source>
-        <translation type="unfinished"/>
+        <translation>サーバーからのユーザー情報の取得に失敗しました</translation>
     </message>
 </context>
 <context>
@@ -3801,22 +3814,22 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/gui/newwizard/setupwizardwindow.cpp" line="108"/>
         <source>Finish</source>
-        <translation type="unfinished"/>
+        <translation>仕上げる</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/setupwizardwindow.cpp" line="110"/>
         <source>Next &gt;</source>
-        <translation type="unfinished"/>
+        <translation>次へ &gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/setupwizardwindow.cpp" line="155"/>
         <source>Cancel Setup</source>
-        <translation type="unfinished"/>
+        <translation>セットアップのキャンセル</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/setupwizardwindow.cpp" line="155"/>
         <source>Do you really want to cancel the account setup?</source>
-        <translation type="unfinished"/>
+        <translation>本当にアカウント設定をキャンセルしてもよろしいですか?</translation>
     </message>
 </context>
 <context>
@@ -3834,12 +3847,12 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="337"/>
         <source>Unresolved %1 conflicts</source>
-        <translation type="unfinished"/>
+        <translation>未解決の %1 件の競合</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="340"/>
         <source>Ignored errors %1</source>
-        <translation type="unfinished"/>
+        <translation>無視されたエラー %1</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="355"/>
@@ -3874,18 +3887,18 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="287"/>
         <source>Account %1</source>
-        <translation type="unfinished"/>
+        <translation>アカウント %1</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="385"/>
         <location filename="../src/gui/owncloudgui.cpp" line="618"/>
         <source>Stop synchronization</source>
-        <translation type="unfinished"/>
+        <translation>同期の停止</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="611"/>
         <source>Create a new account</source>
-        <translation type="unfinished"/>
+        <translation>新しいアカウントを作成する</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="731"/>
@@ -3906,7 +3919,7 @@ Are you sure you want to proceed?</source>
         <location filename="../src/gui/owncloudgui.cpp" line="383"/>
         <location filename="../src/gui/owncloudgui.cpp" line="615"/>
         <source>Resume synchronization</source>
-        <translation type="unfinished"/>
+        <translation>同期を再開する</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="664"/>
@@ -3956,7 +3969,7 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="352"/>
         <source>Up to date (%1)</source>
-        <translation type="unfinished"/>
+        <translation>最新 (%1)</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="356"/>
@@ -3966,7 +3979,7 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="607"/>
         <source>Show %1</source>
-        <translation type="unfinished"/>
+        <translation>%1を表示</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="661"/>
@@ -4016,7 +4029,7 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="954"/>
         <source>User paused sync for account &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>ユーザーはアカウント &apos;%1&apos; の同期を一時停止しました</translation>
     </message>
 </context>
 <context>
@@ -4044,7 +4057,7 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/common/utility.cpp" line="352"/>
         <source>less than a minute ago</source>
-        <translation type="unfinished"/>
+        <translation>1分も前に</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="356"/>
@@ -4086,7 +4099,7 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/gui/newwizard/pages/serverurlsetupwizardpage.ui" line="88"/>
         <source>What is your server&apos;s address?</source>
-        <translation type="unfinished"/>
+        <translation>サーバーのアドレスは何ですか?</translation>
     </message>
 </context>
 <context>
@@ -4114,7 +4127,7 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/gui/newwizard/enums.cpp" line="38"/>
         <source>Sync Options</source>
-        <translation type="unfinished"/>
+        <translation>同期オプション</translation>
     </message>
 </context>
 <context>
@@ -4122,7 +4135,7 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/gui/newwizard/setupwizardwindow.ui" line="14"/>
         <source>Add New Account</source>
-        <translation type="unfinished"/>
+        <translation>新しいアカウントを追加</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/setupwizardwindow.ui" line="90"/>
@@ -4137,7 +4150,7 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/gui/newwizard/setupwizardwindow.ui" line="141"/>
         <source>&lt; Back</source>
-        <translation type="unfinished"/>
+        <translation>&lt; 戻る</translation>
     </message>
 </context>
 <context>
@@ -4153,7 +4166,7 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/gui/folderwizard/spacespage.ui" line="17"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;Add a Space&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Select a Space to sync it to your computer.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;スペースを追加する&lt;/span&gt;&lt;/p&gt;&lt;p&gt;スペースを選択してコンピュータに同期します。&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
 </context>
 <context>
@@ -4192,22 +4205,22 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/libsync/syncfileitem.cpp" line="110"/>
         <source>File Ignored</source>
-        <translation type="unfinished"/>
+        <translation>ファイルは無視されました</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncfileitem.cpp" line="112"/>
         <source>Restored</source>
-        <translation type="unfinished"/>
+        <translation>Restored</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncfileitem.cpp" line="116"/>
         <source>Blacklisted</source>
-        <translation type="unfinished"/>
+        <translation>ブロックされたサイト</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncfileitem.cpp" line="118"/>
         <source>Excluded</source>
-        <translation type="unfinished"/>
+        <translation>除外される</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncfileitem.cpp" line="120"/>
@@ -4217,7 +4230,7 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/libsync/syncfileitem.cpp" line="122"/>
         <source>Filename Reserved</source>
-        <translation type="unfinished"/>
+        <translation>ファイル名が予約されています</translation>
     </message>
 </context>
 <context>
@@ -4230,7 +4243,7 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/libsync/theme.cpp" line="651"/>
         <source>E-mail address</source>
-        <translation type="unfinished"/>
+        <translation>メールアドレス</translation>
     </message>
 </context>
 <context>
@@ -4238,12 +4251,12 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/gui/updater/updatedownloadeddialog.ui" line="20"/>
         <source>Update downloaded</source>
-        <translation type="unfinished"/>
+        <translation>ダウンロードされたアップデート</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/updatedownloadeddialog.ui" line="53"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:11pt; font-weight:700;&quot;&gt;Restart required&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:11pt; font-weight:700;&quot;&gt;ダウンロードされたアップデート&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
 </context>
 <context>
@@ -4315,7 +4328,7 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/libsync/theme.cpp" line="384"/>
         <source>%1 %2%7%8Libraries Qt %3, %4%7Using virtual files plugin: %5%7%6</source>
-        <translation type="unfinished"/>
+        <translation>%1 %2%7%8Libraries Qt %3, %4%7仮想ファイルプラグインの使用:%5%7%6</translation>
     </message>
 </context>
 <context>
@@ -4323,7 +4336,7 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/libsync/theme.cpp" line="367"/>
         <source>%1 (Built against Qt %2)</source>
-        <translation type="unfinished"/>
+        <translation>%1 (Qt に対して構築 %2)</translation>
     </message>
 </context>
 <context>
@@ -4349,7 +4362,7 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/common/pinstate.cpp" line="31"/>
         <source>Some available online only</source>
-        <translation type="unfinished"/>
+        <translation>オンラインのみで購入できるものもあります</translation>
     </message>
     <message>
         <location filename="../src/common/pinstate.cpp" line="35"/>
@@ -4367,7 +4380,7 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="35"/>
         <source>Replaced by virtual file</source>
-        <translation type="unfinished"/>
+        <translation>仮想ファイルに置き換えられる</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="37"/>
@@ -4397,7 +4410,7 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="43"/>
         <source>Server version downloaded, local copy was backed up as conflict file</source>
-        <translation type="unfinished"/>
+        <translation>サーバー側最新バージョンをダウンロードしました。競合が発生するため、ローカルコピーを競合ファイルとしてバックアップしました。</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="51"/>
@@ -4481,7 +4494,7 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="95"/>
         <source>Free up local space</source>
-        <translation type="unfinished"/>
+        <translation>ローカルスペースを解放する</translation>
     </message>
 </context>
 <context>
@@ -4489,7 +4502,7 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/gui/main.cpp" line="184"/>
         <source>Some settings were configured in newer versions of this client and use features that are not available in this version</source>
-        <translation type="unfinished"/>
+        <translation>このクライアントの旧バージョン以降に追加された機能を利用する設定が検出されましたが、現在のバージョンではこれらの機能はサポートされていません。</translation>
     </message>
 </context>
 </TS>
