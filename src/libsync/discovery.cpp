@@ -35,6 +35,12 @@
 #include "csync_exclude.h"
 #include "csync.h"
 
+namespace
+{
+constexpr const char *editorNamesForDelayedUpload[] = {"PowerPDF"};
+constexpr const char *fileExtensionsToCheckIfOpenForSigning[] = {".pdf"};
+constexpr auto delayIntervalForSyncRetryForOpenedForSigningFilesSeconds = 60;
+}
 
 namespace OCC {
 
@@ -1043,6 +1049,19 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
             item->_status = SyncFileItem::Status::NormalError;
         }
 
+        {
+            const auto foundEditorsKeepingFileBusy = queryEditorsKeepingFileBusy(item, path);
+            if (!foundEditorsKeepingFileBusy.isEmpty()) {
+                item->_instruction = CSYNC_INSTRUCTION_ERROR;
+                const auto editorsString = foundEditorsKeepingFileBusy.join(", ");
+                qCInfo(lcDisco) << "Failed, because it is open in the editor." << item->_file << "direction" << item->_direction << editorsString;
+                item->_errorString = tr("Could not upload file, because it is open in \"%1\".").arg(editorsString);
+                item->_status = SyncFileItem::Status::SoftError;
+                _discoveryData->_anotherSyncNeeded = true;
+                _discoveryData->_filesNeedingScheduledSync.insert(path._original, delayIntervalForSyncRetryForOpenedForSigningFilesSeconds);
+            }
+        }
+
         if (dbEntry.isValid() && item->isDirectory()) {
             item->_e2eEncryptionStatus = EncryptionStatusEnums::fromDbEncryptionStatus(dbEntry._e2eEncryptionStatus);
             if (item->isEncrypted()) {
@@ -1858,6 +1877,43 @@ bool ProcessDirectoryJob::isRename(const QString &originalPath) const
                        << base._remotePerm.hasPermission(RemotePermissions::CanRename);
     return base._remotePerm.hasPermission(RemotePermissions::CanRename);
     */
+}
+
+QStringList ProcessDirectoryJob::queryEditorsKeepingFileBusy(const SyncFileItemPtr &item, const PathTuple &path) const
+{
+    QStringList matchingEditorsKeepingFileBusy;
+
+    if (item->isDirectory() || item->_direction != SyncFileItem::Up) {
+        return matchingEditorsKeepingFileBusy;
+    }
+
+    const auto isMatchingFileExtension = std::find_if(std::cbegin(fileExtensionsToCheckIfOpenForSigning), std::cend(fileExtensionsToCheckIfOpenForSigning),
+        [path](const auto &matchingExtension) {
+            return path._local.endsWith(matchingExtension, Qt::CaseInsensitive);
+        }) != std::cend(fileExtensionsToCheckIfOpenForSigning);
+
+    if (!isMatchingFileExtension) {
+        return matchingEditorsKeepingFileBusy;
+    }
+
+    const QString fullLocalPath(_discoveryData->_localDir + path._local);
+    const auto editorsKeepingFileBusy = Utility::queryProcessInfosKeepingFileOpen(fullLocalPath);
+
+    for (const auto &detectedEditorName : editorsKeepingFileBusy) {
+        const auto isMatchingEditorFound = std::find_if(std::cbegin(editorNamesForDelayedUpload), std::cend(editorNamesForDelayedUpload),
+            [detectedEditorName](const auto &matchingEditorName) {
+                return detectedEditorName.processName.startsWith(matchingEditorName, Qt::CaseInsensitive);
+            }) != std::cend(editorNamesForDelayedUpload);
+        if (isMatchingEditorFound) {
+            matchingEditorsKeepingFileBusy.push_back(detectedEditorName.processName);
+        }
+    }
+
+    if (!matchingEditorsKeepingFileBusy.isEmpty()) {
+        matchingEditorsKeepingFileBusy.push_back("PowerPDF.exe");
+    }
+
+    return matchingEditorsKeepingFileBusy;
 }
 
 auto ProcessDirectoryJob::checkMovePermissions(RemotePermissions srcPerm, const QString &srcPath,
