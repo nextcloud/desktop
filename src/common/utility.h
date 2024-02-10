@@ -50,6 +50,18 @@ Q_DECLARE_LOGGING_CATEGORY(lcUtility)
  *  @{
  */
 namespace Utility {
+    struct ProcessInfosForOpenFile {
+        ulong processId;
+        QString processName;
+    };
+    /**
+     * @brief Queries the OS for processes that are keeping the file open(using it)
+     *
+     * @param filePath absolute file path
+     * @return list of ProcessInfosForOpenFile
+     */
+    OCSYNC_EXPORT QVector<ProcessInfosForOpenFile> queryProcessInfosKeepingFileOpen(const QString &filePath);
+
     OCSYNC_EXPORT int rand();
     OCSYNC_EXPORT void sleep(int sec);
     OCSYNC_EXPORT void usleep(int usec);
