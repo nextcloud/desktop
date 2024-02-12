@@ -190,3 +190,6 @@ convert.exe
 *-w10startmenu.png
 *state-*.png
 theme.qrc
+
+# Ignore specific folders
+shell_integration/MacOSX/NextcloudIntegration/NextcloudIntegration.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/

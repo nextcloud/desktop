@@ -13,6 +13,9 @@ include(FeatureSummary)
 
 set(BIN_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
 
+set(NMC_RCC_FILE "nmctheme_v1.rcc")
+configure_file(${CMAKE_SOURCE_DIR}/${NMC_RCC_FILE} "${BIN_OUTPUT_DIRECTORY}/${NMC_RCC_FILE}" COPYONLY)
+
 include(${CMAKE_SOURCE_DIR}/NEXTCLOUD.cmake)
 
 # CfAPI Shell Extensions
