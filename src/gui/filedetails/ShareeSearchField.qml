@@ -185,8 +185,7 @@ TextField {
                 interactive: true
 
                 highlight: Rectangle {
-                    width: shareeListView.currentItem.width
-                    height: shareeListView.currentItem.height
+                    anchors.fill: shareeListView.currentItem
                     color: palette.highlight
                 }
                 highlightFollowsCurrentItem: true
@@ -200,8 +199,7 @@ TextField {
 
                 model: root.shareeModel
                 delegate: ShareeDelegate {
-                    anchors.left: parent.left
-                    anchors.right: parent.right
+                    width: shareeListView.contentItem.width
 
                     enabled: model.type !== Sharee.LookupServerSearchResults
                     hoverEnabled: model.type !== Sharee.LookupServerSearchResults

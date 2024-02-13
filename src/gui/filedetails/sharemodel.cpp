@@ -189,6 +189,7 @@ QVariant ShareModel::data(const QModelIndex &index, const int role) const
     // Deal with roles that only return certain values for link or user/group share types
     case NoteEnabledRole:
     case ExpireDateEnabledRole:
+    case HideDownloadEnabledRole:
         return false;
     case LinkRole:
     case LinkShareNameRole:
