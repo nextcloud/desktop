@@ -1604,7 +1604,7 @@ void FolderMan::trayOverallStatus(const QList<Folder *> &folders,
     *status = SyncResult::Undefined;
     *unresolvedConflicts = false;
 
-    int cnt = folders.count();
+    const auto cnt = folders.count();
 
     // if one folder: show the state of the one folder.
     // if more folders:
@@ -1613,7 +1613,7 @@ void FolderMan::trayOverallStatus(const QList<Folder *> &folders,
     // do not show "problem" in the tray
     //
     if (cnt == 1) {
-        Folder *folder = folders.at(0);
+        const auto folder = folders.at(0);
         if (folder) {
             auto syncResult = folder->syncResult();
             if (folder->syncPaused()) {
@@ -1635,52 +1635,66 @@ void FolderMan::trayOverallStatus(const QList<Folder *> &folders,
             *unresolvedConflicts = syncResult.hasUnresolvedConflicts();
         }
     } else {
-        int errorsSeen = 0;
-        int goodSeen = 0;
-        int abortOrPausedSeen = 0;
-        int runSeen = 0;
+        auto errorsSeen = false;
+        auto goodSeen = false;
+        auto abortOrPausedSeen = false;
+        auto runSeen = false;
+        auto various = false;
 
         for (const Folder *folder : qAsConst(folders)) {
-            SyncResult folderResult = folder->syncResult();
+            // We've already seen an error, worst case met.
+            // No need to check the remaining folders.
+            if (errorsSeen) {
+                break;
+            }
+
+            const auto folderResult = folder->syncResult();
+
             if (folder->syncPaused()) {
-                abortOrPausedSeen++;
+                abortOrPausedSeen = true;
             } else {
-                SyncResult::Status syncStatus = folderResult.status();
+                const auto syncStatus = folderResult.status();
 
                 switch (syncStatus) {
                 case SyncResult::Undefined:
                 case SyncResult::NotYetStarted:
+                    various = true;
                     break;
                 case SyncResult::SyncPrepare:
                 case SyncResult::SyncRunning:
-                    runSeen++;
+                    runSeen = true;
                     break;
                 case SyncResult::Problem: // don't show the problem icon in tray.
                 case SyncResult::Success:
-                    goodSeen++;
+                    goodSeen = true;
                     break;
                 case SyncResult::Error:
                 case SyncResult::SetupError:
-                    errorsSeen++;
+                    errorsSeen = true;
                     break;
                 case SyncResult::SyncAbortRequested:
                 case SyncResult::Paused:
-                    abortOrPausedSeen++;
+                    abortOrPausedSeen = true;
                     // no default case on purpose, check compiler warnings
                 }
             }
-            if (folderResult.hasUnresolvedConflicts())
+
+            if (folderResult.hasUnresolvedConflicts()) {
                 *unresolvedConflicts = true;
+            }
         }
-        if (errorsSeen > 0) {
+
+        if (errorsSeen) {
             *status = SyncResult::Error;
-        } else if (abortOrPausedSeen > 0 && abortOrPausedSeen == cnt) {
+        } else if (abortOrPausedSeen) {
             // only if all folders are paused
             *status = SyncResult::Paused;
-        } else if (runSeen > 0) {
+        } else if (runSeen) {
             *status = SyncResult::SyncRunning;
-        } else if (goodSeen > 0) {
+        } else if (goodSeen) {
             *status = SyncResult::Success;
+        } else if (various) {
+            *status = SyncResult::Undefined;
         }
     }
 }
