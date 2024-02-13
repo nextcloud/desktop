@@ -323,20 +323,20 @@ QString AbstractNetworkJob::errorString() const
 
 QString AbstractNetworkJob::errorStringParsingBody(QByteArray *body)
 {
-    QString base = errorString();
+    const auto base = errorString();
     if (base.isEmpty() || !reply()) {
         return QString();
     }
 
-    QByteArray replyBody = reply()->readAll();
+    const auto replyBody = reply()->readAll();
     if (body) {
         *body = replyBody;
     }
 
-    QString extra = extractErrorMessage(replyBody);
+    const auto extra = extractErrorMessage(replyBody);
     // Don't append the XML error message to a OC-ErrorString message.
     if (!extra.isEmpty() && !reply()->hasRawHeader("OC-ErrorString")) {
-        return QString::fromLatin1("%1 (%2)").arg(base, extra);
+        return extra;
     }
 
     return base;
@@ -416,7 +416,7 @@ QString extractErrorMessage(const QByteArray &errorResponse)
     while (!reader.atEnd() && !reader.hasError()) {
         reader.readNextStartElement();
         if (reader.name() == QLatin1String("message")) {
-            QString message = reader.readElementText();
+            const auto message = reader.readElementText();
             if (!message.isEmpty()) {
                 return message;
             }
@@ -457,16 +457,22 @@ QString errorMessage(const QString &baseError, const QByteArray &body)
 
 QString networkReplyErrorString(const QNetworkReply &reply)
 {
-    QString base = reply.errorString();
-    int httpStatus = reply.attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
-    QString httpReason = reply.attribute(QNetworkRequest::HttpReasonPhraseAttribute).toString();
+    const auto base = reply.errorString();
+    const auto httpStatus = reply.attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+    const auto httpReason = reply.attribute(QNetworkRequest::HttpReasonPhraseAttribute).toString();
 
     // Only adjust HTTP error messages of the expected format.
     if (httpReason.isEmpty() || httpStatus == 0 || !base.contains(httpReason)) {
         return base;
     }
 
-    return AbstractNetworkJob::tr(R"(Server replied "%1 %2" to "%3 %4")").arg(QString::number(httpStatus), httpReason, HttpLogger::requestVerb(reply), reply.request().url().toDisplayString());
+    const auto displayString = reply.request().url().toDisplayString();
+    const auto requestVerb = HttpLogger::requestVerb(reply);
+
+    return AbstractNetworkJob::tr(R"(Server replied "%1 %2" to "%3 %4")").arg(QString::number(httpStatus),
+                                                                                httpReason,
+                                                                                requestVerb,
+                                                                                displayString);
 }
 
 void AbstractNetworkJob::retry()
