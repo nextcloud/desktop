@@ -18,6 +18,11 @@ def step(context, accountType):
         Toolbar.openNewAccountSetup()
     account_details = getClientDetails(context)
     AccountConnectionWizard.addAccount(account_details)
+    space = ""
+    if get_config("ocis"):
+        space = "Personal"
+    # wait for files to sync
+    waitForInitialSyncToComplete(getResourcePath('/', account_details["user"], space))
 
 
 @When('the user adds the following wrong user credentials:')
