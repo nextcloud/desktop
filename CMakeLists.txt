@@ -300,6 +300,12 @@ if(BUILD_OWNCLOUD_OSX_BUNDLE)
     configure_file(sync-exclude.lst bin/${OWNCLOUD_OSX_BUNDLE}/Contents/Resources/sync-exclude.lst COPYONLY)
     install(FILES nmctheme_v1.rcc DESTINATION ${OWNCLOUD_OSX_BUNDLE}/Contents/Resources/)
     configure_file(nmctheme_v1.rcc bin/${OWNCLOUD_OSX_BUNDLE}/Contents/Resources/nmctheme_v1.rcc COPYONLY)
+
+    install(FILES nmctheme_v1.rcc DESTINATION ${OWNCLOUD_OSX_BUNDLE}/Contents/)
+    configure_file(nmctheme_v1.rcc bin/${OWNCLOUD_OSX_BUNDLE}/Contents/nmctheme_v1.rcc COPYONLY)
+
+    install(FILES nmctheme_v1.rcc DESTINATION ${OWNCLOUD_OSX_BUNDLE}/)
+    configure_file(nmctheme_v1.rcc bin/${OWNCLOUD_OSX_BUNDLE}/nmctheme_v1.rcc COPYONLY)
 elseif(BUILD_CLIENT)
     install(FILES sync-exclude.lst DESTINATION ${SYSCONFDIR}/${APPLICATION_SHORTNAME} )
     configure_file(sync-exclude.lst bin/sync-exclude.lst COPYONLY)
