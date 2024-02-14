@@ -4381,7 +4381,7 @@ Este é un novo modo experimental. Se decide usalo, agradecémoslle que informe 
         <translation>Entrega segura de ficheiros</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/sharemodel.cpp" line="855"/>
+        <location filename="../src/gui/filedetails/sharemodel.cpp" line="856"/>
         <source>Could not find local folder for %1</source>
         <translation type="unfinished"/>
     </message>

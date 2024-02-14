@@ -4381,7 +4381,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Secure file drop</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/sharemodel.cpp" line="855"/>
+        <location filename="../src/gui/filedetails/sharemodel.cpp" line="856"/>
         <source>Could not find local folder for %1</source>
         <translation>Could not find local folder for %1</translation>
     </message>

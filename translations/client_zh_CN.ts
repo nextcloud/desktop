@@ -4366,7 +4366,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>安全文件拖放</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/sharemodel.cpp" line="855"/>
+        <location filename="../src/gui/filedetails/sharemodel.cpp" line="856"/>
         <source>Could not find local folder for %1</source>
         <translation type="unfinished"/>
     </message>
