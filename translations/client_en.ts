@@ -3412,17 +3412,17 @@ Note that using any logging command line options will override the settings.</so
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="871"/>
+        <location filename="../src/libsync/syncengine.cpp" line="859"/>
         <source>Aborted due to %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="889"/>
+        <location filename="../src/libsync/syncengine.cpp" line="877"/>
         <source>Disk space is low: Downloads that would reduce free space below %1 were skipped.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="896"/>
+        <location filename="../src/libsync/syncengine.cpp" line="884"/>
         <source>There is insufficient space available on the server for some uploads.</source>
         <translation type="unfinished"></translation>
     </message>
