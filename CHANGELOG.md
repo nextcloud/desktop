@@ -53,6 +53,7 @@ ownCloud admins and users.
 * Change - Windows: always use fusion style: [#11275](https://github.com/owncloud/client/issues/11275)
 * Change - Deprecate suffix VFS: [#11325](https://github.com/owncloud/client/issues/11325)
 * Change - Fix three badly styled warning messages: [#11412](https://github.com/owncloud/client/issues/11412)
+* Change - Removed support for limiting sync of big new folder & external storage: [#11517](https://github.com/owncloud/client/pull/11517)
 * Enhancement - Add option to pause synchronization on metered connections: [#4808](https://github.com/owncloud/client/issues/4808)
 * Enhancement - Add option to move files to trash instead of deleting: [#9001](https://github.com/owncloud/client/issues/9001)
 * Enhancement - Prevent same default sync folder for multiple accounts with Spaces: [#11204](https://github.com/owncloud/client/issues/11204)
@@ -146,6 +147,15 @@ ownCloud admins and users.
 
    https://github.com/owncloud/client/issues/11412
    https://github.com/owncloud/client/pull/11470
+
+* Change - Removed support for limiting sync of big new folder & external storage: [#11517](https://github.com/owncloud/client/pull/11517)
+
+   We removed an option which allowed to block new folders bigger than a set limit,
+   from being synchronized automatically, when selective synchronization is used.
+   Additionally, we removed the option that allowed to block automatic
+   synchronization of external storage.
+
+   https://github.com/owncloud/client/pull/11517
 
 * Enhancement - Add option to pause synchronization on metered connections: [#4808](https://github.com/owncloud/client/issues/4808)
 
