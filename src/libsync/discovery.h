@@ -191,6 +191,8 @@ private:
 
     [[nodiscard]] bool isRename(const QString &originalPath) const;
 
+    [[nodiscard]] QStringList queryEditorsKeepingFileBusy(const SyncFileItemPtr &item, const PathTuple &path) const;
+
     struct MovePermissionResult
     {
         // whether moving/renaming the source is ok

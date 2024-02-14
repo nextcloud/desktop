@@ -31,6 +31,12 @@
 
 namespace OCC {
 
+QVector<Utility::ProcessInfosForOpenFile> Utility::queryProcessInfosKeepingFileOpen(const QString &filePath)
+{
+    Q_UNUSED(filePath)
+    return {};
+}
+
 void Utility::setupFavLink(const QString &folder)
 {
     // Nautilus: add to ~/.gtk-bookmarks

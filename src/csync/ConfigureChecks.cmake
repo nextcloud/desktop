@@ -31,7 +31,7 @@ if (NOT LINUX)
 endif (NOT LINUX)
 
 if(WIN32)
-  set(CMAKE_REQUIRED_LIBRARIES ${CMAKE_REQUIRED_LIBRARIES} psapi kernel32)
+  set(CMAKE_REQUIRED_LIBRARIES ${CMAKE_REQUIRED_LIBRARIES} psapi kernel32 Rstrtmgr)
 endif()
 
 check_function_exists(utimes HAVE_UTIMES)
