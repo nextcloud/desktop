@@ -31,6 +31,12 @@
 
 namespace OCC {
 
+QVector<Utility::ProcessInfosForOpenFile> Utility::queryProcessInfosKeepingFileOpen(const QString &filePath)
+{
+    Q_UNUSED(filePath)
+    return {};
+}
+
 void Utility::setupFavLink(const QString &folder)
 {
     // Finder: Place under "Places"/"Favorites" on the left sidebar
