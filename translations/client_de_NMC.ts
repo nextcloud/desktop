@@ -391,6 +391,27 @@
         <source>&lt;a href=&apos;%1&apos; style=&quot;color: #e20074;&quot;&gt;Further Information&lt;/a&gt;</source>
         <translation>&lt;a href=&apos;%1&apos; style=&quot;color: #e20074;&quot;&gt;Mehr Informationen&lt;/a&gt;</translation>
     </message>
+    
+    <message>
+        <source>IMPRESSUM</source>
+        <translation>Impressum</translation>
+    </message>
+    <message>
+        <source>DATA_PROTECTION</source>
+        <translation>Datenschutzbestimmungen</translation>
+    </message>
+    <message>
+        <source>LICENCE</source>
+        <translation>Verwendete OpenSource Software</translation>
+    </message>
+    <message>
+        <source>FURTHER_INFO</source>
+        <translation>Häufig gestellte Fragen</translation>
+    </message>
+    <message>
+        <source>DATA_ANALYSIS</source>
+        <translation>Analyse-Datenerfassung zur bedarfsgerechten Gestaltung</translation>
+    </message>
 
 </context>
 </TS>
