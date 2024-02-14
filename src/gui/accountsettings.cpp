@@ -147,17 +147,10 @@ AccountSettings::AccountSettings(const AccountStatePtr &accountState, QWidget *p
     ui->_folderList->setAttribute(Qt::WA_Hover, true);
     ui->_folderList->installEventFilter(mouseCursorChanger);
 
-    ui->selectiveSyncStatus->hide();
-
     createAccountToolbox();
     connect(ui->_folderList, &QWidget::customContextMenuRequested,
         this, &AccountSettings::slotCustomContextMenuRequested);
-    connect(ui->_folderList, &QAbstractItemView::clicked,
-        this, &AccountSettings::slotFolderListClicked);
-    connect(ui->_folderList, &QTreeView::expanded, this, &AccountSettings::refreshSelectiveSyncStatus);
-    connect(ui->_folderList, &QTreeView::collapsed, this, &AccountSettings::refreshSelectiveSyncStatus);
-    connect(ui->selectiveSyncNotification, &QLabel::linkActivated,
-        this, &AccountSettings::slotLinkActivated);
+    connect(ui->_folderList, &QAbstractItemView::clicked, this, &AccountSettings::slotFolderListClicked);
     QAction *syncNowAction = new QAction(this);
     syncNowAction->setShortcut(QKeySequence(Qt::Key_F6));
     connect(syncNowAction, &QAction::triggered, this, &AccountSettings::slotScheduleCurrentFolder);
@@ -169,17 +162,7 @@ AccountSettings::AccountSettings(const AccountStatePtr &accountState, QWidget *p
     addAction(syncNowWithRemoteDiscovery);
 
 
-    connect(_model, &FolderStatusModel::suggestExpand, this, [this](const QModelIndex &index) {
-        ui->_folderList->expand(_sortModel->mapFromSource(index));
-    });
-    connect(_model, &FolderStatusModel::dirtyChanged, this, &AccountSettings::refreshSelectiveSyncStatus);
-    refreshSelectiveSyncStatus();
-
-    connect(ui->selectiveSyncApply, &QAbstractButton::clicked, _model, &FolderStatusModel::slotApplySelectiveSync);
-    connect(ui->selectiveSyncCancel, &QAbstractButton::clicked, _model, &FolderStatusModel::resetFolders);
-    connect(ui->bigFolderApply, &QAbstractButton::clicked, _model, &FolderStatusModel::slotApplySelectiveSync);
-    connect(ui->bigFolderSyncAll, &QAbstractButton::clicked, _model, &FolderStatusModel::slotSyncAllPendingBigFolders);
-    connect(ui->bigFolderSyncNone, &QAbstractButton::clicked, _model, &FolderStatusModel::slotSyncNoPendingBigFolders);
+    connect(_model, &FolderStatusModel::suggestExpand, this, [this](const QModelIndex &index) { ui->_folderList->expand(_sortModel->mapFromSource(index)); });
 
     connect(FolderMan::instance(), &FolderMan::folderListChanged, _model, &FolderStatusModel::resetFolders);
     connect(this, &AccountSettings::folderChanged, _model, &FolderStatusModel::resetFolders);
@@ -513,7 +496,6 @@ void AccountSettings::slotEnableVfsCurrentFolder()
         // it will schedule its self once set up
 
         ui->_folderList->doItemsLayout();
-        ui->selectiveSyncStatus->setVisible(false);
     }
 }
 
@@ -725,10 +707,6 @@ void AccountSettings::slotAccountStateChanged()
         break;
     }
 
-    // Disabling expansion of folders might require hiding the selective
-    // sync user interface buttons.
-    refreshSelectiveSyncStatus();
-
     _toggleReconnect->setEnabled(!_accountState->isConnected() && !_accountState->isSignedOut());
     // set the correct label for the Account toolbox button
     if (_accountState->isSignedOut()) {
@@ -762,43 +740,6 @@ void AccountSettings::slotAccountStateChanged()
 
         /* check if there are expanded root items, if so, close them */
         ui->_folderList->collapseAll();
-    }
-}
-
-void AccountSettings::slotLinkActivated(const QString &link)
-{
-    // Parse folder alias and filename from the link, calculate the index
-    // and select it if it exists.
-    const QStringList li = link.split(QStringLiteral("?folder="));
-    if (li.count() > 1) {
-        QString myFolder = li[0];
-        const QByteArray id = QUrl::fromPercentEncoding(li[1].toUtf8()).toUtf8();
-        if (myFolder.endsWith(QLatin1Char('/')))
-            myFolder.chop(1);
-
-        // Make sure the folder itself is expanded
-        Folder *folder = FolderMan::instance()->folder(id);
-        if (folder) {
-            QModelIndex folderIndx = _sortModel->mapFromSource(_model->indexForPath(folder, QString()));
-            if (!ui->_folderList->isExpanded(folderIndx)) {
-                ui->_folderList->setExpanded(folderIndx, true);
-            }
-
-            QModelIndex indx = _sortModel->mapFromSource(_model->indexForPath(folder, myFolder));
-            if (indx.isValid()) {
-                // make sure all the parents are expanded
-                for (auto i = indx.parent(); i.isValid(); i = i.parent()) {
-                    if (!ui->_folderList->isExpanded(i)) {
-                        ui->_folderList->setExpanded(i, true);
-                    }
-                }
-                ui->_folderList->setSelectionMode(QAbstractItemView::SingleSelection);
-                ui->_folderList->setCurrentIndex(indx);
-                ui->_folderList->scrollTo(indx);
-            } else {
-                qCWarning(lcAccountSettings) << "Unable to find a valid index for " << myFolder;
-            }
-        }
     }
 }
 
@@ -844,85 +785,6 @@ void AccountSettings::addModalWidget(QWidget *widget, ModalWidgetSizePolicy size
         }
     });
     ocApp()->gui()->settingsDialog()->requestModality(_accountState->account().get());
-}
-
-void AccountSettings::refreshSelectiveSyncStatus()
-{
-    QString msg;
-    int cnt = 0;
-    for (Folder *folder : FolderMan::instance()->folders()) {
-        if (folder->accountState() != _accountState || !folder->isReady()) {
-            continue;
-        }
-
-        bool ok;
-        const auto &undecidedList = folder->journalDb()->getSelectiveSyncList(SyncJournalDb::SelectiveSyncUndecidedList, &ok);
-        for (const auto &it : undecidedList) {
-            // FIXME: add the folder alias in a hoover hint.
-            // folder->alias() + QLatin1String("/")
-            if (cnt++) {
-                msg += QLatin1String(", ");
-            }
-            QString myFolder = (it);
-            if (myFolder.endsWith(QLatin1Char('/'))) {
-                myFolder.chop(1);
-            }
-            QModelIndex theIndx = _sortModel->mapFromSource(_model->indexForPath(folder, myFolder));
-            if (theIndx.isValid()) {
-                msg += QStringLiteral("<a href=\"%1?folder=%2\">%1</a>")
-                           .arg(Utility::escape(myFolder), QString::fromUtf8(QUrl::toPercentEncoding(QString::fromUtf8(folder->id()))));
-            } else {
-                msg += myFolder; // no link because we do not know the index yet.
-            }
-        }
-    }
-
-    // Some selective sync ui (either normal editing or big folder) will show
-    // if this variable ends up true.
-    bool shouldBeVisible = false;
-
-    if (msg.isEmpty()) {
-        // Show the ui if the model is dirty only
-        shouldBeVisible = _model->isDirty() && _accountState->isConnected();
-
-        ui->selectiveSyncButtons->setVisible(true);
-        ui->bigFolderUi->setVisible(false);
-        ui->selectiveSyncApply->setEnabled(_model->isDirty());
-    } else {
-        // There's a reason the big folder ui should be shown
-        shouldBeVisible = _accountState->isConnected();
-
-        ConfigFile cfg;
-        QString info = !cfg.confirmExternalStorage()
-            ? tr("There are folders that were not synchronized because they are too big: ")
-            : !cfg.newBigFolderSizeLimit().first
-                ? tr("There are folders that were not synchronized because they are external storages: ")
-                : tr("There are folders that were not synchronized because they are too big or external storages: ");
-
-        ui->selectiveSyncNotification->setText(info + msg);
-        ui->selectiveSyncButtons->setVisible(false);
-        ui->bigFolderUi->setVisible(true);
-        ui->bigFolderApply->setEnabled(_model->isDirty());
-    }
-
-    bool wasVisible = !ui->selectiveSyncStatus->isHidden();
-    if (wasVisible != shouldBeVisible) {
-        QSize hint = ui->selectiveSyncStatus->sizeHint();
-        if (shouldBeVisible) {
-            ui->selectiveSyncStatus->setMaximumHeight(0);
-            ui->selectiveSyncStatus->setVisible(true);
-            doExpand();
-        }
-        auto anim = new QPropertyAnimation(ui->selectiveSyncStatus, "maximumHeight", ui->selectiveSyncStatus);
-        anim->setEndValue(shouldBeVisible ? hint.height() : 0);
-        anim->start(QAbstractAnimation::DeleteWhenStopped);
-        connect(anim, &QPropertyAnimation::finished, this, [this, shouldBeVisible]() {
-            ui->selectiveSyncStatus->setMaximumHeight(QWIDGETSIZE_MAX);
-            if (!shouldBeVisible) {
-                ui->selectiveSyncStatus->hide();
-            }
-        });
-    }
 }
 
 void AccountSettings::slotDeleteAccount()

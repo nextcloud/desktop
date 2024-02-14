@@ -60,9 +60,6 @@ GeneralSettings::GeneralSettings(QWidget *parent)
     // misc
     connect(_ui->monoIconsCheckBox, &QAbstractButton::toggled, this, &GeneralSettings::saveMiscSettings);
     connect(_ui->crashreporterCheckBox, &QAbstractButton::toggled, this, &GeneralSettings::saveMiscSettings);
-    connect(_ui->newFolderLimitCheckBox, &QAbstractButton::toggled, this, &GeneralSettings::saveMiscSettings);
-    connect(_ui->newFolderLimitSpinBox, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), this, &GeneralSettings::saveMiscSettings);
-    connect(_ui->newExternalStorage, &QAbstractButton::toggled, this, &GeneralSettings::saveMiscSettings);
 
     connect(_ui->languageDropdown, QOverload<int>::of(&QComboBox::activated), this, [this]() {
         // first, store selected language in config file
@@ -86,13 +83,6 @@ GeneralSettings::GeneralSettings(QWidget *parent)
         ConfigFile().setMoveToTrash(checked);
         Q_EMIT syncOptionsChanged();
     });
-
-    /* Set the left contents margin of the layout to zero to make the checkboxes
-     * align properly vertically , fixes bug #3758
-     */
-    int m0, m1, m2, m3;
-    _ui->horizontalLayout_3->getContentsMargins(&m0, &m1, &m2, &m3);
-    _ui->horizontalLayout_3->setContentsMargins(0, m1, m2, m3);
 
     // OEM themes are not obliged to ship mono icons, so there
     // is no point in offering an option
@@ -159,9 +149,6 @@ GeneralSettings::GeneralSettings(QWidget *parent)
     if (!Theme::instance()->aboutShowCopyright()) {
         _ui->copyrightLabel->hide();
     }
-    if (Theme::instance()->forceVirtualFilesOption() && VfsPluginManager::instance().bestAvailableVfsMode() == Vfs::WindowsCfApi) {
-        _ui->groupBox_non_vfs->hide();
-    }
 }
 
 GeneralSettings::~GeneralSettings()
@@ -176,10 +163,6 @@ void GeneralSettings::loadMiscSettings()
     _ui->monoIconsCheckBox->setChecked(cfgFile.monoIcons());
     _ui->desktopNotificationsCheckBox->setChecked(cfgFile.optionalDesktopNotifications());
     _ui->crashreporterCheckBox->setChecked(cfgFile.crashReporter());
-    auto newFolderLimit = cfgFile.newBigFolderSizeLimit();
-    _ui->newFolderLimitCheckBox->setChecked(newFolderLimit.first);
-    _ui->newFolderLimitSpinBox->setValue(newFolderLimit.second);
-    _ui->newExternalStorage->setChecked(cfgFile.confirmExternalStorage());
     _ui->monoIconsCheckBox->setChecked(cfgFile.monoIcons());
 
     // the dropdown has to be populated before we can can pick an entry below based on the stored setting
@@ -260,10 +243,6 @@ void GeneralSettings::saveMiscSettings()
     cfgFile.setMonoIcons(isChecked);
     Theme::instance()->setSystrayUseMonoIcons(isChecked);
     cfgFile.setCrashReporter(_ui->crashreporterCheckBox->isChecked());
-
-    cfgFile.setNewBigFolderSizeLimit(_ui->newFolderLimitCheckBox->isChecked(),
-        _ui->newFolderLimitSpinBox->value());
-    cfgFile.setConfirmExternalStorage(_ui->newExternalStorage->isChecked());
 
     // the first entry, identified by index 0, means "use default", which is a special case handled below
     const QString pickedLocale = _ui->languageDropdown->currentData().toString();

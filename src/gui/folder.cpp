@@ -143,10 +143,7 @@ Folder::Folder(const FolderDefinition &definition, const AccountStatePtr &accoun
         connect(_engine.data(), &SyncEngine::transmissionProgress, this, [this](const ProgressInfo &pi) {
             emit ProgressDispatcher::instance()->progressInfo(this, pi);
         });
-        connect(_engine.data(), &SyncEngine::itemCompleted,
-            this, &Folder::slotItemCompleted);
-        connect(_engine.data(), &SyncEngine::newBigFolder,
-            this, &Folder::slotNewBigFolderDiscovered);
+        connect(_engine.data(), &SyncEngine::itemCompleted, this, &Folder::slotItemCompleted);
         connect(_engine.data(), &SyncEngine::seenLockedFile, FolderMan::instance(), &FolderMan::slotSyncOnceFileUnlocks);
         connect(_engine.data(), &SyncEngine::aboutToPropagate,
             this, &Folder::slotLogPropagationStart);
@@ -250,9 +247,6 @@ SyncOptions Folder::loadSyncOptions()
     SyncOptions opt(_vfs);
     ConfigFile cfgFile;
 
-    auto newFolderLimit = cfgFile.newBigFolderSizeLimit();
-    opt._newBigFolderSizeLimit = newFolderLimit.first ? newFolderLimit.second * 1000LL * 1000LL : -1; // convert from MB to B
-    opt._confirmExternalStorage = cfgFile.confirmExternalStorage();
     opt._moveFilesToTrash = cfgFile.moveToTrash();
     opt._vfs = _vfs;
     opt._parallelNetworkJobs = _accountState->account()->isHttp2Supported() ? 20 : 6;
@@ -1124,41 +1118,6 @@ void Folder::slotItemCompleted(const SyncFileItemPtr &item)
 
     _fileLog->logItem(*item);
     emit ProgressDispatcher::instance()->itemCompleted(this, item);
-}
-
-void Folder::slotNewBigFolderDiscovered(const QString &newF, bool isExternal)
-{
-    auto newFolder = newF;
-    if (!newFolder.endsWith(QLatin1Char('/'))) {
-        newFolder += QLatin1Char('/');
-    }
-    auto journal = journalDb();
-
-    // Add the entry to the blacklist if it is neither in the blacklist or whitelist already
-    bool ok1, ok2;
-    auto blacklist = journal->getSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, &ok1);
-    auto whitelist = journal->getSelectiveSyncList(SyncJournalDb::SelectiveSyncWhiteList, &ok2);
-    if (ok1 && ok2 && !blacklist.contains(newFolder) && !whitelist.contains(newFolder)) {
-        blacklist.insert(newFolder);
-        journal->setSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, blacklist);
-    }
-
-    // And add the entry to the undecided list and signal the UI
-    auto undecidedList = journal->getSelectiveSyncList(SyncJournalDb::SelectiveSyncUndecidedList, &ok1);
-    if (ok1) {
-        if (!undecidedList.contains(newFolder)) {
-            undecidedList.insert(newFolder);
-            journal->setSelectiveSyncList(SyncJournalDb::SelectiveSyncUndecidedList, undecidedList);
-            emit newBigFolderDiscovered(newFolder);
-        }
-        QString message = !isExternal ? (tr("A new folder larger than %1 MB has been added: %2.\n")
-                                                .arg(ConfigFile().newBigFolderSizeLimit().second)
-                                                .arg(newF))
-                                      : (tr("A folder from an external storage has been added.\n"));
-        message += tr("Please go in the settings to select it if you wish to download it.");
-
-        ocApp()->gui()->slotShowOptionalTrayMessage(Theme::instance()->appNameGUI(), message);
-    }
 }
 
 void Folder::slotLogPropagationStart()

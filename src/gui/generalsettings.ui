@@ -24,8 +24,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>765</width>
-        <height>618</height>
+        <width>771</width>
+        <height>636</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_5">
@@ -159,66 +159,6 @@
              </layout>
             </item>
            </layout>
-          </item>
-         </layout>
-        </widget>
-       </item>
-       <item>
-        <widget class="QGroupBox" name="groupBox_non_vfs">
-         <property name="title">
-          <string>Advanced - Approval of folder sync (Non virtual file mode only)</string>
-         </property>
-         <layout class="QVBoxLayout" name="verticalLayout">
-          <item>
-           <layout class="QHBoxLayout" name="horizontalLayout_3">
-            <item>
-             <widget class="QCheckBox" name="newFolderLimitCheckBox">
-              <property name="text">
-               <string>Ask for confirmation before synchronizing folders larger than</string>
-              </property>
-              <property name="checked">
-               <bool>true</bool>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QSpinBox" name="newFolderLimitSpinBox">
-              <property name="maximum">
-               <number>999999</number>
-              </property>
-              <property name="value">
-               <number>99</number>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QLabel" name="label">
-              <property name="text">
-               <string extracomment="Trailing part of &quot;Ask confirmation before syncing folder larger than&quot; ">MB</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <spacer name="horizontalSpacer_3">
-              <property name="orientation">
-               <enum>Qt::Horizontal</enum>
-              </property>
-              <property name="sizeHint" stdset="0">
-               <size>
-                <width>40</width>
-                <height>20</height>
-               </size>
-              </property>
-             </spacer>
-            </item>
-           </layout>
-          </item>
-          <item>
-           <widget class="QCheckBox" name="newExternalStorage">
-            <property name="text">
-             <string>Ask for confirmation before synchronizing external storages</string>
-            </property>
-           </widget>
           </item>
          </layout>
         </widget>
@@ -382,30 +322,10 @@
   <tabstop>crashreporterCheckBox</tabstop>
   <tabstop>ignoredFilesButton</tabstop>
   <tabstop>logSettingsButton</tabstop>
-  <tabstop>newFolderLimitCheckBox</tabstop>
-  <tabstop>newFolderLimitSpinBox</tabstop>
-  <tabstop>newExternalStorage</tabstop>
   <tabstop>updateChannel</tabstop>
   <tabstop>restartButton</tabstop>
   <tabstop>scrollArea</tabstop>
  </tabstops>
  <resources/>
- <connections>
-  <connection>
-   <sender>newFolderLimitCheckBox</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>newFolderLimitSpinBox</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>245</x>
-     <y>139</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>412</x>
-     <y>141</y>
-    </hint>
-   </hints>
-  </connection>
- </connections>
+ <connections/>
 </ui>

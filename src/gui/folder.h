@@ -426,8 +426,6 @@ private slots:
 
     void slotItemCompleted(const SyncFileItemPtr &);
 
-    void slotNewBigFolderDiscovered(const QString &, bool isExternal);
-
     void slotLogPropagationStart();
 
     /** Adjust sync result based on conflict data from IssuesWidget.

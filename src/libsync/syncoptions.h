@@ -36,13 +36,6 @@ public:
     explicit SyncOptions(QSharedPointer<Vfs> vfs);
     ~SyncOptions();
 
-    /** Maximum size (in Bytes) a folder can have without asking for confirmation.
-     * -1 means infinite */
-    qint64 _newBigFolderSizeLimit = -1;
-
-    /** If a confirmation should be asked for external storages */
-    bool _confirmExternalStorage = false;
-
     /** If remotely deleted files are needed to move to trash */
     bool _moveFilesToTrash = false;
 

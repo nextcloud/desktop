@@ -213,11 +213,6 @@ class DiscoveryPhase : public QObject
 
     bool isInSelectiveSyncBlackList(const QString &path) const;
 
-    // Check if the new folder should be deselected or not.
-    // May be async. "Return" via the callback, true if the item is blacklisted
-    void checkSelectiveSyncNewFolder(const QString &path, RemotePermissions rp,
-        const std::function<void(bool)> &callback);
-
     /** Given an original path, return the target path obtained when renaming is done.
      *
      * Note that it only considers parent directory renames. So if A/B got renamed to C/D,
@@ -277,9 +272,6 @@ signals:
     void fatalError(const QString &errorString);
     void itemDiscovered(const SyncFileItemPtr &item);
     void finished();
-
-    // A new folder was discovered and was not synced because of the confirmation feature
-    void newBigFolder(const QString &folder, bool isExternal);
 
     /** For excluded items that don't show up in itemDiscovered()
       *

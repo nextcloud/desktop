@@ -911,10 +911,6 @@ Folder *FolderMan::addFolderFromWizard(const AccountStatePtr &accountStatePtr, F
         if (!newFolder->groupInSidebar()) {
             Utility::setupFavLink(folderDefinition.localPath());
         }
-        if (!ConfigFile().newBigFolderSizeLimit().first) {
-            // The user already accepted the selective sync dialog. everything is in the white list
-            newFolder->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncWhiteList, {QStringLiteral("/")});
-        }
         qCDebug(lcFolderMan) << "Local sync folder" << folderDefinition.localPath() << "successfully created!";
         newFolder->saveToSettings();
     } else {

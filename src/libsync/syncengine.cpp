@@ -448,7 +448,6 @@ void SyncEngine::startSync()
     _discoveryPhase->_ignoreHiddenFiles = ignoreHiddenFiles();
 
     connect(_discoveryPhase.get(), &DiscoveryPhase::itemDiscovered, this, &SyncEngine::slotItemDiscovered);
-    connect(_discoveryPhase.get(), &DiscoveryPhase::newBigFolder, this, &SyncEngine::newBigFolder);
     connect(_discoveryPhase.get(), &DiscoveryPhase::fatalError, this, [this](const QString &errorString) {
         Q_EMIT syncError(errorString);
         finalize(false);

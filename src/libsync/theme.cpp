@@ -317,12 +317,6 @@ QUrl Theme::updateCheckUrl() const
     return QUrl(QStringLiteral(APPLICATION_UPDATE_URL));
 }
 
-qint64 Theme::newBigFolderSizeLimit() const
-{
-    // Default to 500MB
-    return 500;
-}
-
 bool Theme::wizardSkipAdvancedPage() const
 {
     return false;

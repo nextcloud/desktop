@@ -83,11 +83,9 @@ protected slots:
     void slotFolderWizardAccepted();
     void slotDeleteAccount();
     void slotToggleSignInState();
-    [[deprecated]] void refreshSelectiveSyncStatus();
     void slotCustomContextMenuRequested(const QPoint &);
     void slotFolderListClicked(const QModelIndex &indx);
     void doExpand();
-    void slotLinkActivated(const QString &link);
 
 private:
     void showConnectionLabel(const QString &message,

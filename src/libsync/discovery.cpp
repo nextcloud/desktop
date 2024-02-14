@@ -471,18 +471,6 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(
     item->_size = serverEntry.size;
 
     auto postProcessServerNew = [=]() mutable {
-        if (item->isDirectory()) {
-            _pendingAsyncJobs++;
-            _discoveryData->checkSelectiveSyncNewFolder(path._server, serverEntry.remotePerm,
-                [=](bool result) {
-                    --_pendingAsyncJobs;
-                    if (!result) {
-                        processFileAnalyzeLocalInfo(item, path, localEntry, serverEntry, dbEntry, _queryServer);
-                    }
-                    QTimer::singleShot(0, _discoveryData, &DiscoveryPhase::scheduleMoreJobs);
-                });
-            return;
-        }
         // Turn new remote files into virtual files if the option is enabled.
         // TODO: move the decision to the backend
         const auto &opts = _discoveryData->_syncOptions;

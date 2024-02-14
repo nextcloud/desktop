@@ -38,7 +38,6 @@ owncloud_add_test(Blacklist)
 owncloud_add_test(LocalDiscovery)
 owncloud_add_test(RemoteDiscovery)
 owncloud_add_test(Permissions)
-owncloud_add_test(SelectiveSync)
 owncloud_add_test(DatabaseError)
 owncloud_add_test(LockedFiles)
 

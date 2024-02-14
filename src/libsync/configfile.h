@@ -137,11 +137,6 @@ public:
     int downloadLimit() const;
     void setUploadLimit(int kbytes);
     void setDownloadLimit(int kbytes);
-    /** [checked, size in MB] **/
-    QPair<bool, qint64> newBigFolderSizeLimit() const;
-    void setNewBigFolderSizeLimit(bool isChecked, qint64 mbytes);
-    bool confirmExternalStorage() const;
-    void setConfirmExternalStorage(bool);
 
     bool pauseSyncWhenMetered() const;
     void setPauseSyncWhenMetered(bool isChecked);

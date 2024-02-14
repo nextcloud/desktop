@@ -1,0 +1,6 @@
+Change: Removed support for limiting synchronization of big new folder or external storage
+
+We removed an option which allowed to block new folders bigger than a set limit, from being synchronized automatically, when selective synchronization is used.
+Additionally, we removed the option that allowed to block automatic synchronization of external storage.
+
+https://github.com/owncloud/client/pull/11517

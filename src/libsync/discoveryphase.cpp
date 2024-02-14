@@ -74,64 +74,6 @@ bool DiscoveryPhase::isInSelectiveSyncBlackList(const QString &path) const
     return false;
 }
 
-void DiscoveryPhase::checkSelectiveSyncNewFolder(const QString &path, RemotePermissions remotePerm,
-    const std::function<void(bool)> &callback)
-{
-    if (_syncOptions._confirmExternalStorage && _syncOptions._vfs->mode() == Vfs::Off
-        && remotePerm.hasPermission(RemotePermissions::IsMounted)) {
-        // external storage.
-
-        /* Note: DiscoverySingleDirectoryJob::directoryListingIteratedSlot make sure that only the
-         * root of a mounted storage has 'M', all sub entries have 'm' */
-
-        // Only allow it if the white list contains exactly this path (not parents)
-        // We want to ask confirmation for external storage even if the parents where selected
-        if (_selectiveSyncWhiteList.find(path + QLatin1Char('/')) != _selectiveSyncWhiteList.cend()) {
-            return callback(false);
-        }
-
-        emit newBigFolder(path, true);
-        return callback(true);
-    }
-
-    // If this path or the parent is in the white list, then we do not block this file
-    if (findPathInList(_selectiveSyncWhiteList, path)) {
-        return callback(false);
-    }
-
-    auto limit = _syncOptions._newBigFolderSizeLimit;
-    if (limit < 0 || _syncOptions._vfs->mode() != Vfs::Off) {
-        // no limit, everything is allowed;
-        return callback(false);
-    }
-
-    // do a PROPFIND to know the size of this folder
-    auto propfindJob = new PropfindJob(_account, _baseUrl, _remoteFolder + path, PropfindJob::Depth::Zero, this);
-    propfindJob->setProperties(QList<QByteArray>() << "resourcetype"
-                                                   << "http://owncloud.org/ns:size");
-    QObject::connect(propfindJob, &PropfindJob::finishedWithError,
-        this, [=] { return callback(false); });
-    QObject::connect(propfindJob, &PropfindJob::directoryListingIterated, this, [=](const QString, const QMap<QString, QString> &values) {
-        auto result = values.value(QStringLiteral("size")).toLongLong();
-        if (result >= limit) {
-            // we tell the UI there is a new folder
-            emit newBigFolder(path, false);
-            return callback(true);
-        } else {
-            // it is not too big, put it in the white list (so we will not do more query for the children)
-            // and do not block.
-            auto p = path;
-            if (!p.endsWith(QLatin1Char('/')))
-                p += QLatin1Char('/');
-            _selectiveSyncWhiteList.insert(
-                std::upper_bound(_selectiveSyncWhiteList.begin(), _selectiveSyncWhiteList.end(), p),
-                p);
-            return callback(false);
-        }
-    });
-    propfindJob->start();
-}
-
 /* Given a path on the remote, give the path as it is when the rename is done */
 QString DiscoveryPhase::adjustRenamedPath(const QString &original, SyncFileItem::Direction d) const
 {

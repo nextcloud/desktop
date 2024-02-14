@@ -238,13 +238,6 @@ public:
     QUrl updateCheckUrl() const;
 
     /**
-     * Default option for the newBigFolderSizeLimit.
-     * Size in MB of the maximum size of folder before we ask the confirmation.
-     * Set -1 to never ask confirmation.  0 to ask confirmation for every folder.
-     **/
-    virtual qint64 newBigFolderSizeLimit() const;
-
-    /**
      * Skip the advanced page and create a sync with the default settings
      */
     virtual bool wizardSkipAdvancedPage() const;
