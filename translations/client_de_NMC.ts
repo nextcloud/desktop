@@ -392,6 +392,5 @@
         <translation>&lt;a href=&apos;%1&apos; style=&quot;color: #e20074;&quot;&gt;Mehr Informationen&lt;/a&gt;</translation>
     </message>
 
-
 </context>
 </TS>

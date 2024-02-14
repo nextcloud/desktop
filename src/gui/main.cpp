@@ -59,13 +59,13 @@ int main(int argc, char **argv)
     SetDllDirectory(L"");
 #endif
     QResource::registerResource(QDir::toNativeSeparators(QDir::currentPath() + "/nmctheme_v1.rcc"));
-    QString resourcePath = ":/nmctheme_v1.rcc";
-    if (!QResource::registerResource(resourcePath)) {
-        resourcePath = QDir(QCoreApplication::applicationDirPath()).filePath("Contents/Resources/nmctheme_v1.rcc");
-        if (!QResource::registerResource(resourcePath)) {
-            qCritical() << "Failed to register resource:" << resourcePath;
-        }
-    }
+    // QString resourcePath = ":/nmctheme_v1.rcc";
+    // if (!QResource::registerResource(resourcePath)) {
+    //     resourcePath = QDir(QCoreApplication::applicationDirPath()).filePath("Contents/Resources/nmctheme_v1.rcc");
+    //     if (!QResource::registerResource(resourcePath)) {
+    //         qCritical() << "Failed to register resource:" << resourcePath;
+    //     }
+    // }
     Q_INIT_RESOURCE(resources);
     Q_INIT_RESOURCE(theme);
 
