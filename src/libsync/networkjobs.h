@@ -276,7 +276,10 @@ public:
      *    e.g. "ns:with:colons:bar", which is "bar" in the "ns:with:colons" namespace
      */
     void setProperties(QMap<QByteArray, QByteArray> properties);
-    [[nodiscard]] QMap<QByteArray, QByteArray> properties() const;
+    [[nodiscard]] QMap<QByteArray, QByteArray> propertiesToSet() const;
+
+    void removeProperties(QMap<QByteArray, QByteArray> properties);
+    [[nodiscard]] QMap<QByteArray, QByteArray> propertiesToRemove() const;
 
 signals:
     void success();
@@ -286,7 +289,8 @@ private slots:
     bool finished() override;
 
 private:
-    QMap<QByteArray, QByteArray> _properties;
+    QMap<QByteArray, QByteArray> _setproperties;
+    QMap<QByteArray, QByteArray> _removeproperties;
 };
 
 /**

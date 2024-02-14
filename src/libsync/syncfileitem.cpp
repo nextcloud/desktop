@@ -243,18 +243,10 @@ SyncFileItemPtr SyncFileItem::fromProperties(const QString &filePath, const QMap
 
     // Tags
     if (properties.contains(QStringLiteral("tags"))) {
-        QByteArray list =FileTagManager::fromPropertiesToTagList(properties.value("tags"));
-        if(list.size()>0){ // Avoid empty entries!
-            if(item->_tagList.size()>0)item->_tagList.append('\n');
-            item->_tagList.append(list);
-        }
+        FileTagManager::fromPropertiesToTagList(item->_tagList,properties.value("tags"));
     }
     if (properties.contains(QStringLiteral("system-tags"))) {
-        QByteArray list =FileTagManager::fromPropertiesToTagList(properties.value("system-tags"));
-        if(list.size()>0){ // Avoid empty entries!
-            if(item->_tagList.size()>0)item->_tagList.append('\n');
-            item->_tagList.append(list);
-        }
+        FileTagManager::fromPropertiesToTagList(item->_tagList,properties.value("system-tags"));
     }
 
     return item;

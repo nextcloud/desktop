@@ -558,7 +558,6 @@ void Folder::slotWatchedPathChanged(const QString &path, ChangeReason reason)
         qCDebug(lcFolder) << "Changed path is not contained in folder, ignoring:" << path;
         return;
     }
-	printf("RMD Change 2\n");
     auto relativePath = path.midRef(this->path().size());
 
     if (pathIsIgnored(path)) {
@@ -628,7 +627,6 @@ void Folder::slotWatchedPathChanged(const QString &path, ChangeReason reason)
         }
     }
     warnOnNewExcludedItem(record, relativePath);
-	printf("RMD Change 3\n");
     emit watchedFileChangedExternally(path);
 
     // Also schedule this folder for a sync, but only after some delay:

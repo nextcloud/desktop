@@ -263,7 +263,6 @@ void FolderWatcher::changeDetected(const QStringList &paths)
 
     qCInfo(lcFolderWatcher) << "Detected changes in paths:" << changedPaths;
     for (const auto &path : changedPaths) {
-		 printf("RMD Change 1\n");
         emit pathChanged(path);
     }
 }

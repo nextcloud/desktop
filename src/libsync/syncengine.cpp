@@ -116,8 +116,6 @@ SyncEngine::SyncEngine(AccountPtr account,
     connect(this, &SyncEngine::finished, [this](bool /* finished */) {
         _journal->keyValueStoreSet("last_sync", QDateTime::currentSecsSinceEpoch());
     });
-
-    FileTagManager::Init(account,journal);
 }
 
 SyncEngine::~SyncEngine()

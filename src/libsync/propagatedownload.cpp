@@ -1366,7 +1366,9 @@ void PropagateDownloadFile::updateMetadata(bool isConflict)
         qCWarning(lcPropagateDownload) << "WARNING: Unexpectedly slow connection, took" << duration << "msec for" << _item->_size - _resumeStart << "bytes for" << _item->_file;
     }
 
-    FileTagManager::GetInstance()->restoreLocalFileTags(propagator()->localPath(),_item->_file);
+    FileTagManager::restoreLocalFileTags(propagator()->_journal,
+                                         propagator()->localPath(),
+                                         _item->_file);
 }
 
 void PropagateDownloadFile::slotDownloadProgress(qint64 received, qint64)

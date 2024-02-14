@@ -91,7 +91,7 @@ bool FileSystem::fileChanged(const QString &fileName,
 {
     return getSize(fileName) != previousSize
         || getModTime(fileName) != previousMtime
-        || FileTagManager::GetInstance()->readTagListFromLocalFile(fileName) != taglist;
+        || FileTagManager::readTagListFromLocalFile(fileName) != taglist;
 }
 
 bool FileSystem::verifyFileUnchanged(const QString &fileName,

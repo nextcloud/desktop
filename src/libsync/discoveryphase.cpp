@@ -395,7 +395,8 @@ void DiscoverySingleDirectoryJob::start()
           << "http://owncloud.org/ns:permissions"
           << "http://owncloud.org/ns:checksums"
           << "http://owncloud.org/ns:tags"
-          << "http://nextcloud.org/ns:system-tags";
+          << "http://nextcloud.org/ns:system-tags"
+          << "http://nextcloud.org/ns:metadata_etag";
 
     if (_isRootPath)
         props << "http://owncloud.org/ns:data-fingerprint";
@@ -543,11 +544,10 @@ static void propertyMapToRemoteInfo(const QMap<QString, QString> &map, RemoteInf
             }
         }
         if(property == "system-tags" || property == "tags"){
-            QByteArray list =FileTagManager::fromPropertiesToTagList(value);
-            if(list.size()>0){
-                if(result.tagList.size()>0)result.tagList.append('\n');
-                result.tagList.append(list);
-            }
+            FileTagManager::fromPropertiesToTagList(result.tagList,value);
+        }
+        if(property == "metadata_etag"){
+            //TODO: RMD Handle metadata etag for tag synchronization
         }
     }
 

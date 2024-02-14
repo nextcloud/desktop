@@ -495,20 +495,15 @@ void ProcessDirectoryJob::processFile(PathTuple path,
 
     if(localEntry.isValid()
         && dbEntry.isValid()) {
-        FileTagManager* tm = FileTagManager::GetInstance();
 
-        // Try tag pull by default (order pull,push is relevant!)
-        tm->pullTags(_discoveryData->_localDir % path._original,
-                     localEntry,
-                     dbEntry);
-
-        // Only if all three entries are valid, we make a full sync.
-        if(serverEntry.isValid()) {
-            tm->pushTags(_discoveryData->_localDir % path._original,
-                         localEntry,
-                         serverEntry,
-                         dbEntry);
-        }
+        // Tag synchronization
+        FileTagManager::syncTags(_discoveryData->_account,
+                                 _discoveryData->_statedb,
+                                 _discoveryData->_localDir,
+                                 path._original,
+                                 localEntry,
+                                 serverEntry,
+                                 dbEntry);
     }
 
     if (_discoveryData->isRenamed(path._original)) {

@@ -72,99 +72,86 @@ namespace OCC
  * LC/DB or RM/DB, so we have to deal a little bit different, to reach the same approach.
  * To avoid an massive increasment of the network polls, we use following approach:
  *
- * - DB is frequently overridden by the client with the RM value, so we assume, the db value is the
- *   same as remote:
- *  LC DB  What happened   Action
- * 1 -  -  no tags         NOP
- * 2 X  X  tag present     NOP
- * 3 -  X  rm added        ADD (LC)
- * 4 X  -  lc added        ADD (RM)
- *
- * So this kind of sync will not delete tags. That is important to prevent local setted tags befor
- * adding the tag feature will not be deleted. That also means, that it is not possible to "delete"
- * local tags at the moment.
- *
- * In "language" of git, the first sync step with 3 data points available is like a "PULL & COMMIT & PUSH"
- * an the second one is like a "PULL".
- *
- * TODO: CURRENTLY IT SEEMS THAT PROPPATCH IS NOT IMPLEMENTED LOOK AT: https://github.com/nextcloud/server/blob/master/apps/dav/lib/SystemTag/SystemTagPlugin.php
- * TODO: BUT IT IS IMPLEMENTED FOR OC:TAG (NOT SYSTEM:TAG), OC:TAG IS NOT VISIBLE ON THE WEB! WHY?
- * TODO: THAT MEAN IN FACT, THAT JUST A "DOWN-SYNC" IS POSSIBLE, SO WE HAVE TO ENSURE, NOT LOOSING
- * TODO: LOCAL TAGS. AND PROCEED RESEARCH
- *
- *curl 'https://cloud.runtemund.de/remote.php/dav/files/USER/Anleitung.md' \
- --user USER:XXX \
- *  --request PROPPATCH \
- --data '<?xml version="1.0" encoding="UTF-8"?>
-	<d:propertyupdate xmlns:d="DAV:" xmlns:oc="http://owncloud.org/ns" xmlns:nc="http://nextcloud.org/ns">
-  <d:set>   <d:prop>
-		 <oc:tags><oc:tag>Test</oc:tag></oc:tags>
-	  </d:prop>
-</d:set>    </d:propertyupdate>'
+ * - DB is frequently overridden by the client with the RM value, so we cannot say for sure the
+ *   correct sync status
+ *  LC DB  What happened    Action
+ * 1 -  -  no tags          NOP
+ * 2 X  X  tag present      NOP
+ * 3 -  X  rm add or lc del FULL SYNC
+ * 4 X  -  lc add or rm del FULL SYNC
  *
  */
- class OCSYNC_EXPORT FileTagManager : public QObject
- {
-	  Q_OBJECT
+class OCSYNC_EXPORT FileTagManager : public QObject
+{
+    Q_OBJECT
  public:
-	
-	 //! Returns an instance of the FileTagManager
-	 static FileTagManager* GetInstance();
 
-	 //! Initialize the global FileTagManager, must be called as early as possible/necessary.
-	 static void Init(AccountPtr account,SyncJournalDb* journal);
+    /*!
+     * \brief Converts the given XML fragment of system-tag entries to a sorted list of tags.
+     *
+     * The list is a QByteArray with the content. The tags are delimited by 0x0A ('\\n')
+     */
+    static void fromPropertiesToTagList(QByteArray &list,const QString &properties);
 
-/*!
- * \brief Converts the given XML fragment of system-tag entries to a sorted list of tags.
- *
- * The list is a QByteArray with the content. The tags are delimited by 0x0A ('\\n')
- */
-static QByteArray fromPropertiesToTagList(const QString &properties);
+    /*!
+     * \brief Reads the tags from the local file system.
+     */
+    static QByteArray readTagListFromLocalFile(const QString &localpath);
 
-//! Reads the tags from the local file system.
-QByteArray readTagListFromLocalFile(const QString &localpath);
+    /*! Restore the tags in the local file system.
+     * \note: is needed after file download.
+     */
+    static bool restoreLocalFileTags(SyncJournalDb* journal,
+                                 const QString &localdir,
+                                 const QString &file);
 
-/// Restore the tags in the local file system.
-/// \note: is needed after file download,
-bool restoreLocalFileTags(const QString &localdir,const QString &file);
+    /*!
+     * \brief Makes a "full" synchronization. If all data is valid, full synchronization is directly
+     * done. If not, local sync is checked, if data is not synchronized, a full sync is started.
+     */
+    static void syncTags(AccountPtr account,
+                         SyncJournalDb* journal,
+                         const QString &localDir,
+                         const QString &filePath,
+                         const LocalInfo &localEntry,
+                         const RemoteInfo &serverEntry,
+                         const SyncJournalFileRecord &dbEntry);
 
-//! Makes a "full" synchronization. Will only do, if all data entries are valid.
-void pushTags(const QString &fullpath,
-												  const LocalInfo &localEntry,
-											 const RemoteInfo &serverEntry,
-											 const SyncJournalFileRecord &dbEntry);
+private:
 
-//! Makes a "local" synchronization. Will do a server sync, if initial sync is assumed
-void pullTags(const QString &fullpath,
-					const LocalInfo &localEntry,
-					const SyncJournalFileRecord &dbEntry);
+    //! Private constructor. No need for an instance actually.
+    FileTagManager();
 
- private:
-	 
-	 //! Reference to account. Needed for network jobs.
-	 AccountPtr _account;
-	 
-	 //! Reference to sync journal. Needed for database queries.
-	 SyncJournalDb* _journal;
+    //! Needed for QT connect
+    static FileTagManager* GetInstance();
 
-	 //! Private constructor. Needs to be private, to avoid multiple instances (we are a singleton).
-	 //! TODO: It seems, that this approach is not good with multiple accounts.
-	 FileTagManager(AccountPtr account,SyncJournalDb* journal);
-	 
-	 //! Helper method for pushTags
-	 void pushTagsStep1(const QString &fullpath,
-							  QStringList list,
-							  const SyncJournalFileRecord &dbEntry,
-							  bool syncLocal,bool syncDb);
+    //! Helper method for syncTags
+    void syncTagsStep1(AccountPtr account,
+                       SyncJournalDb* journal,
+                       const QString &fullpath,
+                       QStringList list,
+                       const SyncJournalFileRecord &dbEntry,
+                       bool syncLocal,bool syncDb);
 
-	 //! Helper method for pushTags
-	 void pushTagsStep2(const QString &fullpath,
-							  const QByteArray &newTagList,
-							  const SyncJournalFileRecord &dbEntry,
-							  bool syncLocal,bool syncDb);
+    //! Helper method for synTags
+    void syncTagsStep2(SyncJournalDb* journal,
+                       const QString &fullpath,
+                       const QByteArray &newTagList,
+                       const SyncJournalFileRecord &dbEntry,
+                       bool syncLocal,bool syncDb);
 
-	 //! Write the tag list to the local file.
-	 bool writeTagListToLocalFile(const QString &localpath,const QByteArray &taglist);
+    /*!
+     * \brief Makes a "local" synchronization. Will do a server sync, if initial sync is assumed.
+     */
+    static void localSync(AccountPtr account,
+                          SyncJournalDb* journal,
+                          const QString &localDir,
+                          const QString &filePath,
+                          const LocalInfo &localEntry,
+                          const SyncJournalFileRecord &dbEntry);
+
+    //! Write the tag list to the local file.
+    static bool writeTagListToLocalFile(const QString &localpath,const QByteArray &taglist);
 
  };
 

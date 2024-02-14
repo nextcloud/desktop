@@ -861,13 +861,14 @@ ProppatchJob::ProppatchJob(AccountPtr account, const QString &path, QObject *par
 
 void ProppatchJob::start()
 {
-    if (_properties.isEmpty()) {
+    if (_setproperties.isEmpty()) {
         qCWarning(lcProppatchJob) << "Proppatch with no properties!";
     }
     QNetworkRequest req;
 
-    QByteArray propStr;
-    QMapIterator<QByteArray, QByteArray> it(_properties);
+    // Properties which shall be set
+    QByteArray setPropStr;
+    QMapIterator<QByteArray, QByteArray> it(_setproperties);
     while (it.hasNext()) {
         it.next();
         QByteArray keyName = it.key();
@@ -878,20 +879,52 @@ void ProppatchJob::start()
             keyName = keyName.mid(colIdx + 1);
         }
 
-        propStr += "    <" + keyName;
+        setPropStr += "    <" + keyName;
         if (!keyNs.isEmpty()) {
-            propStr += " xmlns=\"" + keyNs + "\" ";
+            setPropStr += " xmlns=\"" + keyNs + "\" ";
         }
-        propStr += ">";
-        propStr += it.value();
-        propStr += "</" + keyName + ">\n";
+        setPropStr += ">";
+        setPropStr += it.value();
+        setPropStr += "</" + keyName + ">\n";
     }
+
+    // Properties which shall be removed
+    QByteArray remPropStr;
+    it = QMapIterator<QByteArray, QByteArray>(_removeproperties);
+    while (it.hasNext()) {
+        it.next();
+        QByteArray keyName = it.key();
+        QByteArray keyNs;
+        if (keyName.contains(':')) {
+            int colIdx = keyName.lastIndexOf(":");
+            keyNs = keyName.left(colIdx);
+            keyName = keyName.mid(colIdx + 1);
+        }
+
+        remPropStr += "    <" + keyName;
+        if (!keyNs.isEmpty()) {
+            remPropStr += " xmlns=\"" + keyNs + "\" ";
+        }
+        remPropStr += ">";
+        remPropStr += it.value();
+        remPropStr += "</" + keyName + ">\n";
+    }
+
     QByteArray xml = "<?xml version=\"1.0\" ?>\n"
-                     "<d:propertyupdate xmlns:d=\"DAV:\">\n"
-                     "  <d:set><d:prop>\n"
-        + propStr + "  </d:prop></d:set>\n"
-                    "</d:propertyupdate>\n";
-	printf("RMD QUERY: %s\n",xml.data());
+                     "<d:propertyupdate xmlns:d=\"DAV:\">\n";
+
+    if(!setPropStr.isEmpty()){
+        xml += "  <d:set><d:prop>\n"
+            + setPropStr + "  </d:prop></d:set>\n";
+    }
+
+    if(!remPropStr.isEmpty()){
+        xml += "  <d:remove><d:prop>\n"
+            + remPropStr + "  </d:prop></d:remove>\n";
+    }
+
+    xml += "</d:propertyupdate>\n";
+
     auto *buf = new QBuffer(this);
     buf->setData(xml);
     buf->open(QIODevice::ReadOnly);
@@ -901,12 +934,22 @@ void ProppatchJob::start()
 
 void ProppatchJob::setProperties(QMap<QByteArray, QByteArray> properties)
 {
-    _properties = properties;
+    _setproperties = properties;
 }
 
-QMap<QByteArray, QByteArray> ProppatchJob::properties() const
+QMap<QByteArray, QByteArray> ProppatchJob::propertiesToSet() const
 {
-    return _properties;
+    return _setproperties;
+}
+
+void ProppatchJob::removeProperties(QMap<QByteArray, QByteArray> properties)
+{
+    _removeproperties = properties;
+}
+
+QMap<QByteArray, QByteArray> ProppatchJob::propertiesToRemove() const
+{
+    return _removeproperties;
 }
 
 bool ProppatchJob::finished()

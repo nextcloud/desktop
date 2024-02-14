@@ -1506,7 +1506,7 @@ bool SyncJournalDb::updateMetadataTagList(const QString &filename,const QByteArr
 {
     QMutexLocker locker(&_mutex);
 
-    qCInfo(lcDb) << "Updating file tag lists " << filename;
+    qCInfo(lcDb) << "Updating file tag list " << filename;
 
     if (!checkConnect()) {
         qCWarning(lcDb) << "Failed to connect database.";
@@ -1525,7 +1525,6 @@ bool SyncJournalDb::updateMetadataTagList(const QString &filename,const QByteArr
     }
     query->bindValue(1, phash);
     query->bindValue(2, *tagList);
-    printf("RMD UPDATE TAG\n");
     return query->exec();
 }
 	
@@ -1552,7 +1551,6 @@ QByteArray SyncJournalDb::tagList(const QString &file)
     if (!next.ok || !next.hasData)return QByteArray();
 
     QByteArray result = query->baValue(0);
-    printf("RMD YES %lld %s!\n",phash,result.data());
     return result;
 }
 
