@@ -218,10 +218,10 @@ void AccountSettings::slotCustomContextMenuRequested(const QPoint &pos)
 
     // Add an action to open the folder on the server in a webbrowser:
 
-    if (auto info = _model->infoForIndex(_sortModel->mapToSource(index))) {
-        if (info->_folder->accountState()->account()->capabilities().privateLinkPropertyAvailable()) {
-            QString path = info->_folder->remotePathTrailingSlash();
-            menu->addAction(CommonStrings::showInWebBrowser(), [path, davUrl = info->_folder->webDavUrl(), this] {
+    if (auto folder = _model->folder(_sortModel->mapToSource(index))) {
+        if (folder->accountState()->account()->capabilities().privateLinkPropertyAvailable()) {
+            QString path = folder->remotePathTrailingSlash();
+            menu->addAction(CommonStrings::showInWebBrowser(), [path, davUrl = folder->webDavUrl(), this] {
                 fetchPrivateLinkUrl(_accountState->account(), davUrl, path, this, [](const QUrl &url) {
                     Utility::openBrowser(url, nullptr);
                 });

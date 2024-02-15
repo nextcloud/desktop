@@ -25,18 +25,22 @@
 #include <QPointer>
 
 class QNetworkReply;
+
+
 namespace OCC {
 
 Q_DECLARE_LOGGING_CATEGORY(lcFolderStatus)
 
 class Folder;
 class PropfindJob;
-
+namespace {
+    class SubFolderInfo;
+}
 /**
  * @brief The FolderStatusModel class
  * @ingroup gui
  */
-class FolderStatusModel : public QAbstractItemModel
+class FolderStatusModel : public QAbstractTableModel
 {
     Q_OBJECT
 public:
@@ -75,138 +79,24 @@ public:
     ~FolderStatusModel() override;
     void setAccountState(const AccountStatePtr &accountState);
 
-    Qt::ItemFlags flags(const QModelIndex &) const override;
     QVariant data(const QModelIndex &index, int role) const override;
     Folder *folder(const QModelIndex &index) const;
-    bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole) override;
     int columnCount(const QModelIndex &parent = QModelIndex()) const override;
     int rowCount(const QModelIndex &parent = QModelIndex()) const override;
-    QModelIndex index(int row, int column = 0, const QModelIndex &parent = QModelIndex()) const override;
-    QModelIndex parent(const QModelIndex &child) const override;
-    bool canFetchMore(const QModelIndex &parent) const override;
-    void fetchMore(const QModelIndex &parent) override;
-    void resetAndFetch(const QModelIndex &parent);
-    bool hasChildren(const QModelIndex &parent = QModelIndex()) const override;
-
-    struct SubFolderInfo
-    {
-        SubFolderInfo()
-            : _folder(nullptr)
-            , _size(0)
-            , _isExternal(false)
-            , _fetched(false)
-            , _hasError(false)
-            , _fetchingLabel(false)
-            , _isUndecided(false)
-            , _checked(Qt::Checked)
-        {
-        }
-        Folder *_folder;
-        QString _name;
-        QString _path;
-        QVector<int> _pathIdx;
-        QVector<SubFolderInfo> _subs;
-        qint64 _size;
-        bool _isExternal;
-
-        bool _fetched; // If we did the LSCOL for this folder already
-        QPointer<PropfindJob> _fetchingJob; // Currently running PropfindJob
-        bool _hasError; // If the last fetching job ended in an error
-        QString _lastErrorString;
-        bool _fetchingLabel; // Whether a 'fetching in progress' label is shown.
-
-        // undecided folders are the big folders that the user has not accepted yet
-        bool _isUndecided;
-
-        Qt::CheckState _checked;
-
-        // Whether this has a FetchLabel subrow
-        bool hasLabel() const;
-
-        // Reset all subfolders and fetch status
-        void resetSubs(FolderStatusModel *model, const QModelIndex &index);
-
-        struct Progress
-        {
-            Progress()
-                : _warningCount(0)
-                , _overallPercent(0)
-            {
-            }
-            bool isNull() const
-            {
-                return _progressString.isEmpty() && _warningCount == 0 && _overallSyncString.isEmpty();
-            }
-            QString _progressString;
-            QString _overallSyncString;
-            int _warningCount;
-            int _overallPercent;
-        };
-        Progress _progress;
-
-        std::chrono::steady_clock::time_point _lastProgressUpdated = std::chrono::steady_clock::now();
-        ProgressInfo::Status _lastProgressUpdateStatus = ProgressInfo::None;
-
-        /**
-         * Integer indicating priority higher value has higher priority
-         */
-        uint32_t _priority = 0;
-    };
-
-
-    SubFolderInfo *infoForIndex(const QModelIndex &index) const;
-
-    // If the selective sync check boxes were changed
-    bool isDirty() { return _dirty; }
-
-    /**
-     * return a QModelIndex for the given path within the given folder.
-     * Note: this method returns an invalid index if the path was not fetched from the server before
-     */
-    QModelIndex indexForPath(Folder *f, const QString &path) const;
 
 public slots:
     void slotUpdateFolderState(Folder *);
     void resetFolders();
-    void slotSyncAllPendingBigFolders();
-    void slotSyncNoPendingBigFolders();
     void slotSetProgress(const ProgressInfo &progress, Folder *f);
 
 private slots:
-    void slotUpdateDirectories(const QStringList &);
-    void slotGatherPermissions(const QString &name, const QMap<QString, QString> &properties);
-    void slotLscolFinishedWithError(QNetworkReply *r);
     void slotFolderSyncStateChange(Folder *f);
 
-    /**
-     * "In progress" labels for fetching data from the server are only
-     * added after some time to avoid popping.
-     */
-    void slotShowFetchProgress();
-
 private:
-    QSet<QString> createBlackList(const OCC::FolderStatusModel::SubFolderInfo &root, const QSet<QString> &oldBlackList) const;
-    void computeProgress(const ProgressInfo &progress, SubFolderInfo::Progress *pi);
     int indexOf(Folder *f) const;
 
     AccountStatePtr _accountState;
-    bool _dirty; // If the selective sync checkboxes were changed
-    QVector<SubFolderInfo> _folders;
-
-    /**
-     * Keeps track of items that are fetching data from the server.
-     *
-     * See slotShowPendingFetchProgress()
-     */
-    QMap<QPersistentModelIndex, QElapsedTimer> _fetchingItems;
-
-signals:
-    void dirtyChanged();
-
-    // Tell the view that this item should be expanded because it has an undecided item
-    void suggestExpand(const QModelIndex &);
-
-    friend struct SubFolderInfo;
+    std::vector<std::unique_ptr<SubFolderInfo>> _folders;
 };
 
 } // namespace OCC
