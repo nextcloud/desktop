@@ -58,7 +58,7 @@ int main(int argc, char **argv)
 #ifdef Q_OS_WIN
     SetDllDirectory(L"");
 #endif
-    QResource::registerResource(QDir::toNativeSeparators(QDir::currentPath() + "/nmctheme_v1.rcc"));
+    QResource::registerResource(QDir::toNativeSeparators(QApplication::applicationDirPath() + "/../Resources/" + "nmctheme_v1.rcc"));
     // QString resourcePath = ":/nmctheme_v1.rcc";
     // if (!QResource::registerResource(resourcePath)) {
     //     resourcePath = QDir(QCoreApplication::applicationDirPath()).filePath("Contents/Resources/nmctheme_v1.rcc");

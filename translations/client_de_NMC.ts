@@ -422,7 +422,7 @@
     </message>
     <message>
         <source>UPDATES_SETTINGS</source>
-        <translation>Updates & Infos</translation>
+        <translation>Updates &amp; Infos</translation>
     </message>
     <message>
         <source>USED_STORAGE_%1</source>
