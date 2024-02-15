@@ -129,8 +129,6 @@ void FolderStatusModel::setAccountState(const AccountStatePtr &accountState)
                 slotSetProgress(progress, f);
             }
         });
-
-        connect(f, &Folder::newBigFolderDiscovered, this, &FolderStatusModel::slotNewBigFolder, Qt::UniqueConnection);
     }
 
     // Set the root _pathIdx after the sorting
@@ -1245,22 +1243,6 @@ void FolderStatusModel::slotSyncNoPendingBigFolders()
     }
 
     resetFolders();
-}
-
-void FolderStatusModel::slotNewBigFolder()
-{
-    auto f = qobject_cast<Folder *>(sender());
-    OC_ASSERT(f);
-
-    const int folderIndex = indexOf(f);
-    if (folderIndex < 0) {
-        return;
-    }
-
-    resetAndFetch(index(folderIndex));
-
-    emit suggestExpand(index(folderIndex));
-    emit dirtyChanged();
 }
 
 void FolderStatusModel::slotShowFetchProgress()

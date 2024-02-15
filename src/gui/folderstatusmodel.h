@@ -186,7 +186,6 @@ private slots:
     void slotGatherPermissions(const QString &name, const QMap<QString, QString> &properties);
     void slotLscolFinishedWithError(QNetworkReply *r);
     void slotFolderSyncStateChange(Folder *f);
-    void slotNewBigFolder();
 
     /**
      * "In progress" labels for fetching data from the server are only

@@ -346,7 +346,6 @@ signals:
     void syncStateChange();
     void syncStarted();
     void syncFinished(const SyncResult &result);
-    void newBigFolderDiscovered(const QString &); // A new folder bigger than the threshold was discovered
     void syncPausedChanged(Folder *, bool paused);
     void canSyncChanged();
 
