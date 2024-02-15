@@ -147,23 +147,10 @@ namespace {
                 //: Example text: "Syncing 'foo.txt', 'bar.txt'"
                 fileProgressString = QApplication::translate("FolderStatus", "Syncing %1").arg(allFilenames.join(QStringLiteral(", ")));
                 if (estimatedDownBw > 0) {
-                    fileProgressString.append(QStringLiteral(", "));
-// ifdefs: https://github.com/owncloud/client/issues/3095#issuecomment-128409294
-#ifdef Q_OS_WIN
-                    //: Example text: "download 24Kb/s"   (%1 is replaced by 24Kb (translated))
-                    fileProgressString.append(QApplication::translate("FolderStatus", "download %1/s").arg(Utility::octetsToString(estimatedDownBw)));
-#else
-                    fileProgressString.append(QApplication::translate("FolderStatus", "\u2193 %1/s").arg(Utility::octetsToString(estimatedDownBw)));
-#endif
+                    fileProgressString.append(QApplication::translate("FolderStatus", ", ⬇️ %1/s").arg(Utility::octetsToString(estimatedDownBw)));
                 }
                 if (estimatedUpBw > 0) {
-                    fileProgressString.append(QStringLiteral(", "));
-#ifdef Q_OS_WIN
-                    //: Example text: "upload 24Kb/s"   (%1 is replaced by 24Kb (translated))
-                    fileProgressString.append(QApplication::translate("FolderStatus", " upload %1/s").arg(Utility::octetsToString(estimatedUpBw)));
-#else
-                    fileProgressString.append(QApplication::translate("FolderStatus", "\u2191 %1/s").arg(Utility::octetsToString(estimatedUpBw)));
-#endif
+                    fileProgressString.append(QApplication::translate("FolderStatus", ", ⬆️ %1/s").arg(Utility::octetsToString(estimatedUpBw)));
                 }
             } else {
                 //: Example text: "uploading foobar.png (2MB of 2MB)"
