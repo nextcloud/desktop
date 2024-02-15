@@ -147,7 +147,7 @@
      <widget class="QWidget" name="folderListPage">
       <layout class="QVBoxLayout" name="verticalLayout_6">
        <item>
-        <widget class="QTreeView" name="_folderList">
+        <widget class="QListView" name="_folderList">
          <property name="sizePolicy">
           <sizepolicy hsizetype="MinimumExpanding" vsizetype="Expanding">
            <horstretch>0</horstretch>
@@ -159,9 +159,6 @@
          </property>
          <property name="editTriggers">
           <set>QAbstractItemView::NoEditTriggers</set>
-         </property>
-         <property name="animated">
-          <bool>true</bool>
          </property>
         </widget>
        </item>

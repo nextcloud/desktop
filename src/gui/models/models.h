@@ -62,12 +62,13 @@ namespace Models {
         /**
          * Set the colum of the model providing the weight
          */
-        void setWeightedColumn(int i);
+        void setWeightedColumn(int i, Qt::SortOrder sortOrder = Qt::DescendingOrder);
 
     protected:
         bool lessThan(const QModelIndex &source_left, const QModelIndex &source_right) const override;
 
         int _weightedColumn = 0;
+        Qt::SortOrder _weightedSortOrder = Qt::DescendingOrder;
     };
 
     /**

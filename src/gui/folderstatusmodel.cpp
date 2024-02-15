@@ -898,61 +898,6 @@ void FolderStatusModel::slotUpdateFolderState(Folder *folder)
     }
 }
 
-void FolderStatusModel::slotApplySelectiveSync()
-{
-    for (const auto &folderInfo : qAsConst(_folders)) {
-        if (!folderInfo._fetched) {
-            folderInfo._folder->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncUndecidedList, {});
-            continue;
-        }
-        const auto folder = folderInfo._folder;
-
-        bool ok;
-        auto oldBlackListSet = folder->journalDb()->getSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, &ok);
-        if (!ok) {
-            qCWarning(lcFolderStatus) << "Could not read selective sync list from db.";
-            continue;
-        }
-        auto blackListSet = createBlackList(folderInfo, oldBlackListSet);
-        folder->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, blackListSet);
-
-
-        // The folders that were undecided or blacklisted and that are now checked should go on the white list.
-        // The user confirmed them already just now.
-        QSet<QString> toAddToWhiteList =
-            ((oldBlackListSet + folder->journalDb()->getSelectiveSyncList(SyncJournalDb::SelectiveSyncUndecidedList, &ok)) - blackListSet);
-
-        if (!toAddToWhiteList.isEmpty()) {
-            auto whiteList = folder->journalDb()->getSelectiveSyncList(SyncJournalDb::SelectiveSyncWhiteList, &ok);
-            if (ok) {
-                whiteList += toAddToWhiteList;
-                folder->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncWhiteList, whiteList);
-            }
-        }
-        // clear the undecided list
-        folder->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncUndecidedList, {});
-
-        // do the sync if there were changes
-        const auto changes = (oldBlackListSet - blackListSet) + (blackListSet - oldBlackListSet);
-        if (!changes.isEmpty()) {
-            if (folder->isSyncRunning()) {
-                folder->slotTerminateSync(tr("Selective sync list changed"));
-            }
-            //The part that changed should not be read from the DB on next sync because there might be new folders
-            // (the ones that are no longer in the blacklist)
-            for (const auto &it : changes) {
-                folder->journalDb()->schedulePathForRemoteDiscovery(it);
-                folder->schedulePathForLocalDiscovery(it);
-            }
-            // Also make sure we see the local file that had been ignored before
-            folder->slotNextSyncFullLocalDiscovery();
-            FolderMan::instance()->scheduler()->enqueueFolder(folder);
-        }
-    }
-
-    resetFolders();
-}
-
 void FolderStatusModel::slotSetProgress(const ProgressInfo &progress, Folder *f)
 {
     if (!qobject_cast<QWidget *>(QObject::parent())->isVisible()) {

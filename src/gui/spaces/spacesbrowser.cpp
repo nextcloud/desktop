@@ -41,7 +41,7 @@ SpacesBrowser::SpacesBrowser(QWidget *parent)
     auto *sortModel = new Models::WeightedQSortFilterProxyModel(this);
     sortModel->setSourceModel(filterModel);
     sortModel->setSortCaseSensitivity(Qt::CaseInsensitive);
-    sortModel->setWeightedColumn(static_cast<int>(SpacesModel::Columns::Priority));
+    sortModel->setWeightedColumn(static_cast<int>(SpacesModel::Columns::Priority), Qt::DescendingOrder);
 
     ui->tableView->setModel(sortModel);
 

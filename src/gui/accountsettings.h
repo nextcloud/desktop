@@ -16,10 +16,6 @@
 #define ACCOUNTSETTINGS_H
 
 #include <QWidget>
-#include <QUrl>
-#include <QPointer>
-#include <QHash>
-#include <QTimer>
 
 #include "folder.h"
 #include "loginrequireddialog.h"
@@ -87,11 +83,12 @@ protected slots:
     void slotToggleSignInState();
     void slotCustomContextMenuRequested(const QPoint &);
     void slotFolderListClicked(const QModelIndex &indx);
-    void doExpand();
 
 private:
+    void showSelectiveSyncDialog(Folder *folder);
     void showConnectionLabel(const QString &message,
         QStringList errors = QStringList());
+
     bool event(QEvent *) override;
     void createAccountToolbox();
     void doForceSyncCurrentFolder(Folder *selectedFolder);

@@ -175,7 +175,6 @@ public:
 
 public slots:
     void slotUpdateFolderState(Folder *);
-    void slotApplySelectiveSync();
     void resetFolders();
     void slotSyncAllPendingBigFolders();
     void slotSyncNoPendingBigFolders();

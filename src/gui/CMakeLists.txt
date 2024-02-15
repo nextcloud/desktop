@@ -65,7 +65,6 @@ set(client_SRCS
     thumbnailjob.cpp
     quotainfo.cpp
     accountstate.cpp
-    tooltipupdater.cpp
     notificationwidget.cpp
     notificationconfirmjob.cpp
     servernotificationhandler.cpp
