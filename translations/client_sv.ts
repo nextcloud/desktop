@@ -2663,7 +2663,7 @@ Om detta var ett misstag och du vill behålla dina filer, kommer de att synkroni
     <message>
         <location filename="../src/gui/generalsettings.ui" line="363"/>
         <source>Usage Documentation</source>
-        <translation>Användningsdokumentation</translation>
+        <translation>Användardokumentation</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="370"/>
@@ -3771,6 +3771,11 @@ Detta är ett nytt experimentellt läge. Om du bestämmer dig för att använda 
         <location filename="../src/libsync/discovery.cpp" line="982"/>
         <source>Cannot sync due to invalid modification time</source>
         <translation>Det går inte att synkronisera på grund av ogiltig ändringstid</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/discovery.cpp" line="1037"/>
+        <source>Could not upload file, because it is open in &quot;%1&quot;.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1010"/>
