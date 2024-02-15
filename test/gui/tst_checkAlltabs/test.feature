@@ -35,8 +35,6 @@ Feature: Visually check all tabs
             | Sync hidden files                                                    |
             | Edit ignored files                                                   |
             | Log settings                                                         |
-            | Ask for confirmation before synchronizing folders larger than 500 MB |
-            | Ask for confirmation before synchronizing external storages          |
         And the settings tab should have the following options in the network section:
             | Proxy Settings     |
             | Download Bandwidth |
