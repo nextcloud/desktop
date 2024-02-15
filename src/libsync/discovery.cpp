@@ -686,6 +686,20 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(const SyncFileItemPtr &it
         }
     }
 
+    if (_discoveryData->_syncOptions._vfs && _discoveryData->_syncOptions._vfs->mode() == Vfs::WindowsCfApi && item->_file.contains("#")) {
+        const auto fileComponents = item->_file.split("/");
+        for (const auto &fileComponent : fileComponents) {
+            if (fileComponent.startsWith("#")) {
+                item->_instruction = CSYNC_INSTRUCTION_ERROR;
+                _childIgnored = true;
+                qCWarning(lcDisco) << "Paths starting with '#' are not supported by virtual files." << item->_originalFile;
+                item->_errorString = tr("Paths starting with '#' are not supported by virtual files.").arg(item->_originalFile);
+                emit _discoveryData->itemDiscovered(item);
+                return;
+            }
+        }
+    }
+
     // We want to check the lock state of this file after the lock time has expired
     if(serverEntry.locked == SyncFileItem::LockStatus::LockedItem && serverEntry.lockTimeout > 0) {
         const auto lockExpirationTime = serverEntry.lockTime + serverEntry.lockTimeout;

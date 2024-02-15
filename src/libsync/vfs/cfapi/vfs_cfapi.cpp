@@ -226,6 +226,18 @@ Result<Vfs::ConvertToPlaceholderResult, QString> VfsCfApi::convertToPlaceholder(
 {
     const auto localPath = QDir::toNativeSeparators(filename);
 
+    const auto fileNameFromNative = QDir::fromNativeSeparators(filename);
+
+    if (mode() == Vfs::WindowsCfApi && fileNameFromNative.contains("#")) {
+        const auto fileComponents = fileNameFromNative.split("/");
+        for (const auto &fileComponent : fileComponents) {
+            if (fileComponent.startsWith("#")) {
+                qCInfo(lcCfApi) << "File \"" << filename << "\" is in a path that contains leading '#'. Not converting it to a placeholder.";
+                return Vfs::ConvertToPlaceholderResult::Ok;
+            }
+        }
+    }
+
     if (item._type != ItemTypeDirectory && OCC::FileSystem::isLnkFile(filename)) {
         qCInfo(lcCfApi) << "File \"" << filename << "\" is a Windows shortcut. Not converting it to a placeholder.";
         const auto pinState = pinStateLocal(localPath);
