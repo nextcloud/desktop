@@ -61,7 +61,6 @@ public:
         IsReady, // boolean
         IsUsingSpaces, // boolean
 
-        ItemType, // ItemType
         Priority, // uint32_t
         IsDeployed, // bool
 
@@ -155,13 +154,6 @@ public:
     };
 
 
-    enum ItemType {
-        RootFolder,
-        SubFolder,
-        FetchLabel
-    };
-    Q_ENUM(ItemType);
-
     SubFolderInfo *infoForIndex(const QModelIndex &index) const;
 
     // If the selective sync check boxes were changed
@@ -196,8 +188,6 @@ private:
     QSet<QString> createBlackList(const OCC::FolderStatusModel::SubFolderInfo &root, const QSet<QString> &oldBlackList) const;
     void computeProgress(const ProgressInfo &progress, SubFolderInfo::Progress *pi);
     int indexOf(Folder *f) const;
-
-    ItemType classify(const QModelIndex &index) const;
 
     AccountStatePtr _accountState;
     bool _dirty; // If the selective sync checkboxes were changed

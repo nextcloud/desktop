@@ -184,13 +184,8 @@ void AccountSettings::slotCustomContextMenuRequested(const QPoint &pos)
         return menu->addAction(tr("Remove folder sync connection"), this, &AccountSettings::slotRemoveCurrentFolder);
     };
 
-    auto classification = index.siblingAtColumn(static_cast<int>(FolderStatusModel::Columns::ItemType)).data().value<FolderStatusModel::ItemType>();
-    if (classification != FolderStatusModel::RootFolder && classification != FolderStatusModel::SubFolder) {
-        return;
-    }
-
     // Only allow removal if the item isn't in "ready" state.
-    if (classification == FolderStatusModel::RootFolder && !index.siblingAtColumn(static_cast<int>(FolderStatusModel::Columns::IsReady)).data().toBool() && !isDeployed) {
+    if (!index.siblingAtColumn(static_cast<int>(FolderStatusModel::Columns::IsReady)).data().toBool() && !isDeployed) {
         QMenu *menu = new QMenu(tv);
         menu->setAttribute(Qt::WA_DeleteOnClose);
         addRemoveFolderAction(menu);
@@ -204,14 +199,8 @@ void AccountSettings::slotCustomContextMenuRequested(const QPoint &pos)
     // Add an action to open the folder in the system's file browser:
 
     QUrl folderUrl;
-    if (classification == FolderStatusModel::SubFolder) {
-        const QString fileName = index.siblingAtColumn(static_cast<int>(FolderStatusModel::Columns::FolderPathRole)).data().toString();
-        folderUrl = QUrl::fromLocalFile(fileName);
-    } else {
-        // the root folder
-        if (auto *folder = selectedFolder()) {
-            folderUrl = QUrl::fromLocalFile(folder->path());
-        }
+    if (auto *folder = selectedFolder()) {
+        folderUrl = QUrl::fromLocalFile(folder->path());
     }
 
     if (!folderUrl.isEmpty()) {
@@ -232,23 +221,12 @@ void AccountSettings::slotCustomContextMenuRequested(const QPoint &pos)
     if (auto info = _model->infoForIndex(_sortModel->mapToSource(index))) {
         if (info->_folder->accountState()->account()->capabilities().privateLinkPropertyAvailable()) {
             QString path = info->_folder->remotePathTrailingSlash();
-            if (classification == FolderStatusModel::SubFolder) {
-                // Only add the path of subfolders, because the remote path is the path of the root folder.
-                path += info->_path;
-            }
             menu->addAction(CommonStrings::showInWebBrowser(), [path, davUrl = info->_folder->webDavUrl(), this] {
                 fetchPrivateLinkUrl(_accountState->account(), davUrl, path, this, [](const QUrl &url) {
                     Utility::openBrowser(url, nullptr);
                 });
             });
         }
-    }
-
-    // For sub-folders we're now done.
-
-    if (index.siblingAtColumn(static_cast<int>(FolderStatusModel::Columns::ItemType)).data().value<FolderStatusModel::ItemType>() == FolderStatusModel::SubFolder) {
-        menu->popup(QCursor::pos());
-        return;
     }
 
     // Root-folder specific actions:
@@ -304,20 +282,17 @@ void AccountSettings::slotCustomContextMenuRequested(const QPoint &pos)
 
 void AccountSettings::slotFolderListClicked(const QModelIndex &indx)
 {
-    const auto itemType = indx.siblingAtColumn(static_cast<int>(FolderStatusModel::Columns::ItemType)).data().value<FolderStatusModel::ItemType>();
-    if (itemType == FolderStatusModel::RootFolder) {
-        // tries to find if we clicked on the '...' button.
-        auto *tv = ui->_folderList;
-        const auto pos = tv->mapFromGlobal(QCursor::pos());
-        const auto rect = tv->visualRect(indx);
-        if (QStyle::visualRect(layoutDirection(), rect, _delegate->computeOptionsButtonRect(rect).toRect()).contains(pos)) {
-            slotCustomContextMenuRequested(pos);
-            return;
-        }
-        if (_delegate->errorsListRect(tv->visualRect(indx), indx).contains(pos)) {
-            emit showIssuesList();
-            return;
-        }
+    // tries to find if we clicked on the '...' button.
+    auto *tv = ui->_folderList;
+    const auto pos = tv->mapFromGlobal(QCursor::pos());
+    const auto rect = tv->visualRect(indx);
+    if (QStyle::visualRect(layoutDirection(), rect, _delegate->computeOptionsButtonRect(rect).toRect()).contains(pos)) {
+        slotCustomContextMenuRequested(pos);
+        return;
+    }
+    if (_delegate->errorsListRect(tv->visualRect(indx), indx).contains(pos)) {
+        emit showIssuesList();
+        return;
     }
 }
 

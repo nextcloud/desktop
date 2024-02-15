@@ -68,7 +68,7 @@ namespace {
         return {};
     }
 
-    int64_t getQuotaOc10(const AccountStatePtr &accountState, const QUrl &davUrl, FolderStatusModel::Columns type)
+    int64_t getQuotaOc10(const AccountStatePtr &accountState, FolderStatusModel::Columns type)
     {
         switch (type) {
         case FolderStatusModel::Columns::QuotaTotal:
@@ -150,17 +150,7 @@ Qt::ItemFlags FolderStatusModel::flags(const QModelIndex &index) const
     // Always enable the item. If it isn't enabled, it cannot be in the selection model, so all
     // actions from the context menu and the pop-up menu will have some other model index than the
     // one under the mouse cursor!
-    const auto flags = Qt::ItemIsEnabled;
-
-    switch (classify(index)) {
-    case FetchLabel:
-        return flags | Qt::ItemNeverHasChildren;
-    case RootFolder:
-        return flags;
-    case SubFolder:
-        return flags | Qt::ItemIsUserCheckable | Qt::ItemIsSelectable;
-    }
-    return Qt::NoItemFlags;
+    return Qt::ItemIsEnabled;
 }
 
 QVariant FolderStatusModel::data(const QModelIndex &index, int role) const
@@ -172,69 +162,10 @@ QVariant FolderStatusModel::data(const QModelIndex &index, int role) const
         return QVariant();
 
     const Columns column = static_cast<Columns>(index.column());
-    const auto itemType = classify(index);
     switch (column) {
-    case Columns::ItemType:
-        return itemType;
     case Columns::IsUsingSpaces:
         return _accountState->supportsSpaces();
     default:
-        break;
-    }
-
-    switch (itemType) {
-    case SubFolder: {
-        const auto &x = static_cast<SubFolderInfo *>(index.internalPointer())->_subs.at(index.row());
-
-        switch (role) {
-        case Qt::DisplayRole:
-            switch (column) {
-            case Columns::FolderPathRole: {
-                auto f = x._folder;
-                if (!f)
-                    return QVariant();
-                return QVariant(f->path() + x._path);
-            }
-            case Columns::IsReady:
-                return x._folder->isReady();
-            case Columns::HeaderRole:
-                return x._size < 0 ? x._name : tr("%1 (%2)", "filename (size)").arg(x._name, Utility::octetsToString(x._size));
-            default:
-                return {};
-            }
-        case Qt::ToolTipRole:
-            return QString(QLatin1String("<qt>") + Utility::escape(x._size < 0 ? x._name : tr("%1 (%2)", "filename (size)").arg(x._name, Utility::octetsToString(x._size))) + QLatin1String("</qt>"));
-        case Qt::CheckStateRole:
-            return x._checked;
-        case Qt::DecorationRole:
-            if (x._isExternal) {
-                return QFileIconProvider().icon(QFileIconProvider::Network);
-            }
-            return Resources::getCoreIcon(QStringLiteral("folder-sync"));
-        case Qt::ForegroundRole:
-            if (x._isUndecided) {
-                return QColor(Qt::red);
-            }
-            break;
-        }
-    }
-        return QVariant();
-    case FetchLabel: {
-        const auto x = static_cast<SubFolderInfo *>(index.internalPointer());
-        switch (role) {
-        case Qt::DisplayRole:
-            if (x->_hasError) {
-                return QVariant(tr("Error while loading the list of folders from the server.")
-                    + QStringLiteral("\n") + x->_lastErrorString);
-            } else {
-                return tr("Fetching folder list from server...");
-            }
-            break;
-        default:
-            return QVariant();
-        }
-    }
-    case RootFolder:
         break;
     }
 
@@ -334,11 +265,9 @@ QVariant FolderStatusModel::data(const QModelIndex &index, int role) const
             if (_accountState->supportsSpaces()) {
                 return QVariant::fromValue(getQuota(_accountState, f->spaceId(), column));
             } else {
-                return QVariant::fromValue(getQuotaOc10(_accountState, f->webDavUrl(), column));
+                return QVariant::fromValue(getQuotaOc10(_accountState, column));
             }
         case Columns::IsUsingSpaces: // handled before
-            [[fallthrough]];
-        case Columns::ItemType: // handled before
             [[fallthrough]];
         case Columns::ColumnCount:
             Q_UNREACHABLE();
@@ -450,19 +379,6 @@ int FolderStatusModel::rowCount(const QModelIndex &parent) const
     return info->_subs.count();
 }
 
-FolderStatusModel::ItemType FolderStatusModel::classify(const QModelIndex &index) const
-{
-    if (auto sub = static_cast<SubFolderInfo *>(index.internalPointer())) {
-        if (sub->hasLabel()) {
-            return FetchLabel;
-        } else {
-            return SubFolder;
-        }
-    }
-
-    return RootFolder;
-}
-
 FolderStatusModel::SubFolderInfo *FolderStatusModel::infoForIndex(const QModelIndex &index) const
 {
     if (!index.isValid())
@@ -538,25 +454,11 @@ QModelIndex FolderStatusModel::index(int row, int column, const QModelIndex &par
     if (!parent.isValid()) {
         return createIndex(row, column /*, nullptr*/);
     }
-    switch (classify(parent)) {
-    case FetchLabel:
-        return QModelIndex();
-    case RootFolder:
-        if (_folders.count() <= parent.row())
-            return QModelIndex(); // should not happen
-        return createIndex(row, column, const_cast<SubFolderInfo *>(&_folders[parent.row()]));
-    case SubFolder: {
-        auto pinfo = static_cast<SubFolderInfo *>(parent.internalPointer());
-        if (pinfo->_subs.count() <= parent.row())
-            return QModelIndex(); // should not happen
-        auto &info = pinfo->_subs[parent.row()];
-        if (!info.hasLabel()
-            && info._subs.count() <= row)
-            return QModelIndex(); // should not happen
-        return createIndex(row, column, &info);
+
+    if (_folders.count() <= parent.row()) {
+        return QModelIndex(); // should not happen
     }
-    }
-    return QModelIndex();
+    return createIndex(row, column, const_cast<SubFolderInfo *>(&_folders[parent.row()]));
 }
 
 QModelIndex FolderStatusModel::parent(const QModelIndex &child) const
@@ -564,28 +466,8 @@ QModelIndex FolderStatusModel::parent(const QModelIndex &child) const
     if (!child.isValid()) {
         return QModelIndex();
     }
-    switch (classify(child)) {
-    case RootFolder:
-        return QModelIndex();
-    case SubFolder:
-        [[fallthrough]];
-    case FetchLabel:
-        break;
-    }
-    auto pathIdx = static_cast<SubFolderInfo *>(child.internalPointer())->_pathIdx;
-    int i = 1;
-    OC_ASSERT(pathIdx.at(0) < _folders.count());
-    if (pathIdx.count() == 1) {
-        return createIndex(pathIdx.at(0), 0 /*, nullptr*/);
-    }
 
-    const SubFolderInfo *info = &_folders[pathIdx.at(0)];
-    while (i < pathIdx.count() - 1) {
-        OC_ASSERT(pathIdx.at(i) < info->_subs.count());
-        info = &info->_subs.at(pathIdx.at(i));
-        ++i;
-    }
-    return createIndex(pathIdx.at(i), 0, const_cast<SubFolderInfo *>(info));
+    return QModelIndex();
 }
 
 bool FolderStatusModel::hasChildren(const QModelIndex &parent) const

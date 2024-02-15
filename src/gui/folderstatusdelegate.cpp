@@ -46,11 +46,6 @@ QSize FolderStatusDelegate::sizeHint(const QStyleOptionViewItem &option,
     const_cast<FolderStatusDelegate *>(this)->updateFont(option.font);
     QFontMetricsF fm(_font);
 
-    const auto classif = index.siblingAtColumn(static_cast<int>(FolderStatusModel::Columns::ItemType)).data().value<FolderStatusModel::ItemType>();
-    if (classif != FolderStatusModel::RootFolder) {
-        return QStyledItemDelegate::sizeHint(option, index);
-    }
-
     // calc height
     qreal h = rootFolderHeightWithoutErrors() + _margin;
     // this already includes the bottom margin
@@ -93,10 +88,6 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
         return;
     }
 
-    if (index.siblingAtColumn(static_cast<int>(FolderStatusModel::Columns::ItemType)).data().value<FolderStatusModel::ItemType>()
-        != FolderStatusModel::RootFolder) {
-        return QStyledItemDelegate::paint(painter, option, index);
-    }
     const_cast<FolderStatusDelegate *>(this)->updateFont(option.font);
     const auto textAlign = Qt::AlignLeft;
 
