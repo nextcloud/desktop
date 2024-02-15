@@ -918,7 +918,7 @@ void ownCloudGui::runNewAccountWizard()
                                         ->gui()
                                         ->settingsDialog()
                                         ->accountSettings(accountStatePtr->account().get())
-                                        ->addModalWidget(folderWizard, AccountSettings::ModalWidgetSizePolicy::Expanding);
+                                        ->addModalLegacyDialog(folderWizard, AccountSettings::ModalWidgetSizePolicy::Expanding);
                                     break;
                                 }
                                 case OCC::Wizard::SyncMode::Invalid:
@@ -1071,7 +1071,11 @@ void ownCloudGui::slotShowShareDialog(const QString &sharePath, const QString &l
             _shareDialogs[localPath] = w;
             connect(w, &QObject::destroyed, this, &ownCloudGui::slotRemoveDestroyedShareDialogs);
         }
-        ocApp()->gui()->settingsDialog()->accountSettings(accountState->account().get())->addModalWidget(w, AccountSettings::ModalWidgetSizePolicy::Expanding);
+        ocApp()
+            ->gui()
+            ->settingsDialog()
+            ->accountSettings(accountState->account().get())
+            ->addModalLegacyDialog(w, AccountSettings::ModalWidgetSizePolicy::Expanding);
     }
 }
 

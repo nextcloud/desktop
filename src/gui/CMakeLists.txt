@@ -25,6 +25,10 @@ set(client_SRCS
     aboutdialog.cpp
     accountmanager.cpp
     accountsettings.cpp
+
+    accountmodalwidget.cpp
+    accountmodalwidget.ui
+
     application.cpp
     fetchserversettings.cpp
     clientproxy.cpp

@@ -140,7 +140,7 @@ void HttpCredentialsGui::showDialog()
         emit fetched();
     });
 
-    ocApp()->gui()->settingsDialog()->accountSettings(_account)->addModalWidget(dialog, AccountSettings::ModalWidgetSizePolicy::Minimum);
+    ocApp()->gui()->settingsDialog()->accountSettings(_account)->addModalLegacyDialog(dialog, AccountSettings::ModalWidgetSizePolicy::Minimum);
     _loginRequiredDialog = dialog;
 }
 
@@ -186,7 +186,8 @@ void HttpCredentialsGui::restartOAuth()
             contentWidget->showRetryFrame();
         });
 
-        ocApp()->gui()->settingsDialog()->accountSettings(_account)->addModalWidget(_loginRequiredDialog, AccountSettings::ModalWidgetSizePolicy::Minimum);
+        ocApp()->gui()->settingsDialog()->accountSettings(_account)->addModalLegacyDialog(
+            _loginRequiredDialog, AccountSettings::ModalWidgetSizePolicy::Minimum);
     }
 
     _asyncAuth.reset(new AccountBasedOAuth(_account->sharedFromThis(), this));

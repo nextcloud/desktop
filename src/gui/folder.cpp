@@ -1270,7 +1270,7 @@ void Folder::slotAboutToRemoveAllFiles(SyncFileItem::Direction direction)
         ->gui()
         ->settingsDialog()
         ->accountSettings(_accountState->account().get())
-        ->addModalWidget(_removeAllFilesDialog, AccountSettings::ModalWidgetSizePolicy::Minimum);
+        ->addModalLegacyDialog(_removeAllFilesDialog, AccountSettings::ModalWidgetSizePolicy::Minimum);
 }
 
 FolderDefinition::FolderDefinition(const QByteArray &id, const QUrl &davUrl, const QString &spaceId, const QString &displayName)

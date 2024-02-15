@@ -29,6 +29,7 @@
 #include "folderstatusdelegate.h"
 #include "folderstatusmodel.h"
 #include "folderwizard/folderwizard.h"
+#include "gui/accountmodalwidget.h"
 #include "gui/models/models.h"
 #include "guiutility.h"
 #include "loginrequireddialog.h"
@@ -418,7 +419,7 @@ void AccountSettings::slotAddFolder()
         FolderMan::instance()->setSyncEnabled(true);
     });
 
-    addModalWidget(folderWizard, AccountSettings::ModalWidgetSizePolicy::Expanding);
+    addModalLegacyDialog(folderWizard, AccountSettings::ModalWidgetSizePolicy::Expanding);
 }
 
 
@@ -749,7 +750,7 @@ AccountSettings::~AccountSettings()
     delete ui;
 }
 
-void AccountSettings::addModalWidget(QWidget *widget, ModalWidgetSizePolicy sizePolicy)
+void AccountSettings::addModalLegacyDialog(QWidget *widget, ModalWidgetSizePolicy sizePolicy)
 {
     // create a widget filling the stacked widget
     // this widget contains a wrapping group box with widget as content
@@ -783,6 +784,18 @@ void AccountSettings::addModalWidget(QWidget *widget, ModalWidgetSizePolicy size
         if (!_goingDown) {
             ocApp()->gui()->settingsDialog()->ceaseModality(_accountState->account().get());
         }
+    });
+    ocApp()->gui()->settingsDialog()->requestModality(_accountState->account().get());
+}
+
+void AccountSettings::addModalWidget(AccountModalWidget *widget)
+{
+    ui->stackedWidget->addWidget(widget);
+    ui->stackedWidget->setCurrentWidget(widget);
+
+    connect(widget, &AccountModalWidget::finished, this, [widget, this] {
+        widget->deleteLater();
+        ocApp()->gui()->settingsDialog()->ceaseModality(_accountState->account().get());
     });
     ocApp()->gui()->settingsDialog()->requestModality(_accountState->account().get());
 }

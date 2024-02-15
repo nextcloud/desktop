@@ -32,6 +32,7 @@ class QLabel;
 class QSortFilterProxyModel;
 
 namespace OCC {
+class AccountModalWidget;
 
 namespace Ui {
     class AccountSettings;
@@ -62,7 +63,8 @@ public:
 
     AccountStatePtr accountsState() const { return _accountState; }
 
-    void addModalWidget(QWidget *widget, ModalWidgetSizePolicy sizePolicy);
+    void addModalLegacyDialog(QWidget *widget, ModalWidgetSizePolicy sizePolicy);
+    void addModalWidget(AccountModalWidget *widget);
 
 signals:
     void folderChanged();
