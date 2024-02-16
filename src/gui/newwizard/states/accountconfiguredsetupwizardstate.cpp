@@ -53,7 +53,9 @@ AccountConfiguredSetupWizardState::AccountConfiguredSetupWizardState(SetupWizard
         return _context->accountBuilder().serverUrl();
     }();
 
-    QString defaultSyncTargetDir = FolderMan::suggestSyncFolder(urlToSuggestSyncFolderFor, _context->accountBuilder().displayName());
+    // We need some sync root, either for spaces, or for OC10. It's never a Space folder.
+    auto folderType = FolderMan::NewFolderType::SpacesSyncRoot;
+    QString defaultSyncTargetDir = FolderMan::suggestSyncFolder(urlToSuggestSyncFolderFor, _context->accountBuilder().displayName(), folderType);
     QString syncTargetDir = _context->accountBuilder().syncTargetDir();
 
     if (syncTargetDir.isEmpty()) {
@@ -86,7 +88,8 @@ void AccountConfiguredSetupWizardState::evaluatePage()
             return;
         }
 
-        QString invalidPathErrorMessage = FolderMan::checkPathValidityRecursive(syncTargetDir);
+        // Doesn't matter wether it's a spaces sync root or a oc10 sync root
+        QString invalidPathErrorMessage = FolderMan::checkPathValidityRecursive(syncTargetDir, FolderMan::NewFolderType::SpacesSyncRoot, {});
         if (!invalidPathErrorMessage.isEmpty()) {
             Q_EMIT evaluationFailed(errorMessageTemplate.arg(invalidPathErrorMessage));
             return;

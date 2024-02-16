@@ -93,7 +93,7 @@ void setUpInitialSyncFolder(AccountStatePtr accountStatePtr, bool useVfs)
                     Utility::setupFavLink(localDir);
                     for (const auto *space : spaces) {
                         const QString name = space->displayName();
-                        const QString folderName = FolderMan::instance()->findGoodPathForNewSyncFolder(localDir, name);
+                        const QString folderName = FolderMan::instance()->findGoodPathForNewSyncFolder(localDir, name, FolderMan::NewFolderType::SpacesFolder);
                         auto folder = addFolder(folderName, {}, QUrl(space->drive().getRoot().getWebDavUrl()), space->drive().getRoot().getId(), name);
                         folder->setPriority(space->priority());
                         // save the new priority

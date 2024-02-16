@@ -83,10 +83,20 @@ class FolderMan : public QObject
 {
     Q_OBJECT
 public:
-    static QString suggestSyncFolder(const QUrl &server, const QString &displayName);
+    /**
+     * For a new folder, the type guides what kind of checks are done to ensure the new folder is not embedded in an existing one.
+     * Or in case of a space folder, that if the new folder is in a Space sync root, it is the sync root of the same account.
+     */
+    enum class NewFolderType {
+        OC10SyncRoot,
+        SpacesSyncRoot,
+        SpacesFolder,
+    };
+
+    static QString suggestSyncFolder(const QUrl &server, const QString &displayName, NewFolderType folderType);
     [[nodiscard]] static bool prepareFolder(const QString &folder);
 
-    static QString checkPathValidityRecursive(const QString &path);
+    static QString checkPathValidityRecursive(const QString &path, FolderMan::NewFolderType folderType, const QUuid &accountUuid);
 
     static std::unique_ptr<FolderMan> createInstance();
     ~FolderMan() override;
@@ -177,7 +187,7 @@ public:
      *
      * @returns an empty string if it is allowed, or an error if it is not allowed
      */
-    QString checkPathValidityForNewFolder(const QString &path) const;
+    QString checkPathValidityForNewFolder(const QString &path, NewFolderType folderType, const QUuid &accountUuid) const;
 
     /**
      * Attempts to find a non-existing, acceptable path for creating a new sync folder.
@@ -188,7 +198,7 @@ public:
      * subfolder of ~ would be a good candidate. When that happens \a basePath
      * is returned.
      */
-    static QString findGoodPathForNewSyncFolder(const QString &basePath, const QString &newFolder);
+    static QString findGoodPathForNewSyncFolder(const QString &basePath, const QString &newFolder, NewFolderType folderType);
 
     /**
      * While ignoring hidden files can theoretically be switched per folder,

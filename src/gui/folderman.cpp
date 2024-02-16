@@ -720,11 +720,29 @@ static QString canonicalPath(const QString &path)
     return selFile.canonicalFilePath();
 }
 
-static QString checkPathForSyncRootMarkingRecursive(const QString &path)
+static QString checkPathForSyncRootMarkingRecursive(const QString &path, FolderMan::NewFolderType folderType, const QUuid &accountUuid)
 {
-    auto existingTag = Utility::getDirectorySyncRootMarking(path);
-    if (!existingTag.isEmpty()) {
-        return FolderMan::tr("Folder '%1' is already in use by application %2!").arg(path, existingTag);
+    std::pair<QString, QUuid> existingTags = Utility::getDirectorySyncRootMarkings(path);
+    if (!existingTags.first.isEmpty()) {
+        if (existingTags.first != Theme::instance()->orgDomainName()) {
+            // another application uses this as spaces root folder
+            return FolderMan::tr("Folder '%1' is already in use by application %2!").arg(path, existingTags.first);
+        }
+
+        // Looks good, it's our app, let's check the account tag:
+        switch (folderType) {
+        case FolderMan::NewFolderType::SpacesFolder:
+            if (existingTags.second == accountUuid) {
+                // Nice, that's what we like, the sync root for our account in our app. No error.
+                return {};
+            }
+            [[fallthrough]];
+        case FolderMan::NewFolderType::OC10SyncRoot:
+            [[fallthrough]];
+        case FolderMan::NewFolderType::SpacesSyncRoot:
+            // It's our application but we don't want to create a spaces folder, so it must be another space root
+            return FolderMan::tr("Folder '%1' is already in use by another account.").arg(path);
+        }
     }
 
     QString parent = QFileInfo(path).path();
@@ -732,10 +750,10 @@ static QString checkPathForSyncRootMarkingRecursive(const QString &path)
         return {};
     }
 
-    return checkPathForSyncRootMarkingRecursive(parent);
+    return checkPathForSyncRootMarkingRecursive(parent, folderType, accountUuid);
 }
 
-QString FolderMan::checkPathValidityRecursive(const QString &path)
+QString FolderMan::checkPathValidityRecursive(const QString &path, FolderMan::NewFolderType folderType, const QUuid &accountUuid)
 {
     if (path.isEmpty()) {
         return FolderMan::tr("No valid folder selected!");
@@ -750,31 +768,45 @@ QString FolderMan::checkPathValidityRecursive(const QString &path)
         return pathLenghtCheck.error();
     }
 
-    const QFileInfo selFile(path);
-    if (numberOfSyncJournals(selFile.filePath()) != 0) {
-        return FolderMan::tr("The folder %1 is used in a folder sync connection!").arg(QDir::toNativeSeparators(selFile.filePath()));
-    }
-
-    if (!selFile.exists()) {
-        const QString parentPath = selFile.path();
+    const QFileInfo selectedPathInfo(path);
+    if (!selectedPathInfo.exists()) {
+        const QString parentPath = selectedPathInfo.path();
         if (parentPath != path) {
-            return checkPathValidityRecursive(parentPath);
+            return checkPathValidityRecursive(parentPath, folderType, accountUuid);
         }
         return FolderMan::tr("The selected path does not exist!");
     }
 
-    if (!selFile.isDir()) {
+    if (numberOfSyncJournals(selectedPathInfo.filePath()) != 0) {
+        return FolderMan::tr("The folder %1 is used in a folder sync connection!").arg(QDir::toNativeSeparators(selectedPathInfo.filePath()));
+    }
+
+    // At this point we know there is no syncdb in the parent hyrarchy, check for spaces sync root.
+
+    if (!selectedPathInfo.isDir()) {
         return FolderMan::tr("The selected path is not a folder!");
     }
 
-    if (!selFile.isWritable()) {
+    if (!selectedPathInfo.isWritable()) {
         return FolderMan::tr("You have no permission to write to the selected folder!");
     }
 
-    return checkPathForSyncRootMarkingRecursive(path);
+    return checkPathForSyncRootMarkingRecursive(path, folderType, accountUuid);
 }
 
-QString FolderMan::checkPathValidityForNewFolder(const QString &path) const
+/*
+ * OC10 folder:
+ *  - sync root not in syncdb folder
+ *  - sync root not in spaces root
+ * with spaces:
+ *  - spaces sync root not in syncdb folder
+ *  - spaces sync root not in another spaces sync root
+ *
+ *  - space not in syncdb folder
+ *  - space *can* be in sync root
+ *  - space not in spaces sync root of other account (check with account uuid)
+ */
+QString FolderMan::checkPathValidityForNewFolder(const QString &path, NewFolderType folderType, const QUuid &accountUuid) const
 {
     // check if the local directory isn't used yet in another ownCloud sync
     const auto cs = Utility::fsCaseSensitivity();
@@ -789,25 +821,25 @@ QString FolderMan::checkPathValidityForNewFolder(const QString &path) const
         }
         if (FileSystem::isChildPathOf(folderDir, userDir)) {
             return tr("The local folder %1 already contains a folder used in a folder sync connection. "
-                      "Please pick another one!")
+                      "Please pick another local folder!")
                 .arg(QDir::toNativeSeparators(path));
         }
 
         if (FileSystem::isChildPathOf(userDir, folderDir)) {
             return tr("The local folder %1 is already contained in a folder used in a folder sync connection. "
-                      "Please pick another one!")
+                      "Please pick another local folder!")
                 .arg(QDir::toNativeSeparators(path));
         }
     }
 
-    const auto result = checkPathValidityRecursive(path);
+    const auto result = checkPathValidityRecursive(path, folderType, accountUuid);
     if (!result.isEmpty()) {
-        return tr("%1 Please pick another one!").arg(result);
+        return tr("%1 Please pick another local folder!").arg(result);
     }
     return {};
 }
 
-QString FolderMan::findGoodPathForNewSyncFolder(const QString &basePath, const QString &newFolder)
+QString FolderMan::findGoodPathForNewSyncFolder(const QString &basePath, const QString &newFolder, FolderMan::NewFolderType folderType)
 {
     // reserve extra characters to allow appending of a number
     const QString normalisedPath = FileSystem::createPortableFileName(basePath, FileSystem::pathEscape(newFolder), std::string_view(" (100)").size());
@@ -825,8 +857,7 @@ QString FolderMan::findGoodPathForNewSyncFolder(const QString &basePath, const Q
     {
         QString folder = normalisedPath;
         for (int attempt = 2; attempt <= 100; ++attempt) {
-            if (!QFileInfo::exists(folder)
-                && FolderMan::instance()->checkPathValidityForNewFolder(folder).isEmpty()) {
+            if (!QFileInfo::exists(folder) && FolderMan::instance()->checkPathValidityForNewFolder(folder, folderType, {}).isEmpty()) {
                 return canonicalPath(folder);
             }
             folder = normalisedPath + QStringLiteral(" (%1)").arg(attempt);
@@ -933,13 +964,13 @@ Folder *FolderMan::addFolderFromFolderWizardResult(const AccountStatePtr &accoun
     return f;
 }
 
-QString FolderMan::suggestSyncFolder(const QUrl &server, const QString &displayName)
+QString FolderMan::suggestSyncFolder(const QUrl &server, const QString &displayName, NewFolderType folderType)
 {
     QString folderName = tr("%1 - %2@%3").arg(Theme::instance()->appName(), displayName, server.host());
     if (!Theme::instance()->multiAccount()) {
         folderName = Theme::instance()->appName();
     }
-    return FolderMan::instance()->findGoodPathForNewSyncFolder(QDir::homePath(), folderName);
+    return FolderMan::instance()->findGoodPathForNewSyncFolder(QDir::homePath(), folderName, folderType);
 }
 
 bool FolderMan::prepareFolder(const QString &folder)

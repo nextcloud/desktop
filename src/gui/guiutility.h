@@ -53,8 +53,8 @@ namespace Utility {
 
     bool internetConnectionIsMetered();
 
-    void markDirectoryAsSyncRoot(const QString &path);
-    QString getDirectorySyncRootMarking(const QString &path);
+    void markDirectoryAsSyncRoot(const QString &path, const QUuid &accountUuid);
+    std::pair<QString, QUuid> getDirectorySyncRootMarkings(const QString &path);
     void unmarkDirectoryAsSyncRoot(const QString &path);
 } // namespace Utility
 } // namespace OCC
