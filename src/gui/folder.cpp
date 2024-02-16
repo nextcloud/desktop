@@ -651,7 +651,7 @@ void Folder::slotFilesLockReleased(const QSet<QString> &files)
         }
         const auto canUnlockFile = isFileRecordValid
             && rec._lockstate._locked
-            && rec._lockstate._lockOwnerType == static_cast<qint64>(SyncFileItem::LockOwnerType::TokenLock)
+            && (!_accountState->account()->capabilities().filesLockTypeAvailable() || rec._lockstate._lockOwnerType == static_cast<qint64>(SyncFileItem::LockOwnerType::TokenLock))
             && rec._lockstate._lockOwnerId == _accountState->account()->davUser();
 
         if (!canUnlockFile) {
