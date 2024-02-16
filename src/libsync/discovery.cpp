@@ -686,14 +686,15 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(const SyncFileItemPtr &it
         }
     }
 
-    if (_discoveryData->_syncOptions._vfs && _discoveryData->_syncOptions._vfs->mode() == Vfs::WindowsCfApi && item->_file.contains("#")) {
+    if (!item->isDirectory() && _discoveryData->_syncOptions._vfs && _discoveryData->_syncOptions._vfs->mode() == Vfs::WindowsCfApi && item->_file.contains("#")) {
         const auto fileComponents = item->_file.split("/");
         for (const auto &fileComponent : fileComponents) {
             if (fileComponent.startsWith("#")) {
                 item->_instruction = CSYNC_INSTRUCTION_ERROR;
                 _childIgnored = true;
-                qCWarning(lcDisco) << "Paths starting with '#' are not supported by virtual files." << item->_originalFile;
-                item->_errorString = tr("Paths starting with '#' are not supported by virtual files.").arg(item->_originalFile);
+                qCWarning(lcDisco) << QStringLiteral("Path \"%1\"has a leading '#'.").arg(item->_originalFile);
+                item->_errorString = tr("Paths beginning with '#' character are not supported in VFS mode.");
+                item->_status = SyncFileItem::Status::NormalError;
                 emit _discoveryData->itemDiscovered(item);
                 return;
             }

@@ -855,7 +855,6 @@ OCC::Result<OCC::Vfs::ConvertToPlaceholderResult, QString> OCC::CfApiWrapper::co
     const auto fileIdentity = QString::fromUtf8(fileId).toStdWString();
     const auto fileIdentitySize = (fileIdentity.length() + 1) * sizeof(wchar_t);
     const qint64 result = CfConvertToPlaceholder(handleForPath(path).get(), fileIdentity.data(), sizeToDWORD(fileIdentitySize), CF_CONVERT_FLAG_MARK_IN_SYNC, nullptr, nullptr);
-    Q_ASSERT(result == S_OK);
     if (result != S_OK) {
         qCCritical(lcCfApiWrapper) << "Couldn't convert to placeholder" << path << ":" << QString::fromWCharArray(_com_error(result).ErrorMessage());
         return { "Couldn't convert to placeholder" };

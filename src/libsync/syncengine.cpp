@@ -1230,9 +1230,12 @@ void SyncEngine::switchToVirtualFiles(const QString &localPath, SyncJournalDb &j
         }
         SyncFileItem item;
         QString localFile = localPath + path;
-        const auto result = vfs.convertToPlaceholder(localFile, item, localFile);
-        if (!result.isValid()) {
-            qCWarning(lcEngine) << "Could not convert file to placeholder" << result.error();
+        if (QFileInfo::exists(localFile)) {
+            const auto result = vfs.convertToPlaceholder(localFile, item, localFile);
+            if (!result.isValid()) {
+                qCWarning(lcEngine) << "Could not convert file to placeholder." << result.error();
+                emit addErrorToGui(SyncFileItem::Status::SoftError, result.error(), path, ErrorCategory::GenericError);
+            }
         }
     });
 

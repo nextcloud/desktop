@@ -38,6 +38,8 @@ constexpr auto appIdRegKey = R"(Software\Classes\AppID\)";
 constexpr auto clsIdRegKey = R"(Software\Classes\CLSID\)";
 const auto rootKey = HKEY_CURRENT_USER;
 
+constexpr auto cfApiUnsupportedLeadingCharacterInPath = "#";
+
 bool registerShellExtension()
 {
     const QList<QPair<QString, QString>> listExtensions = {
@@ -228,12 +230,16 @@ Result<Vfs::ConvertToPlaceholderResult, QString> VfsCfApi::convertToPlaceholder(
 
     const auto fileNameFromNative = QDir::fromNativeSeparators(filename);
 
-    if (mode() == Vfs::WindowsCfApi && fileNameFromNative.contains("#")) {
+    if (mode() == Vfs::WindowsCfApi && fileNameFromNative.contains(cfapi::cfApiUnsupportedLeadingCharacterInPath)) {
         const auto fileComponents = fileNameFromNative.split("/");
         for (const auto &fileComponent : fileComponents) {
-            if (fileComponent.startsWith("#")) {
-                qCInfo(lcCfApi) << "File \"" << filename << "\" is in a path that contains leading '#'. Not converting it to a placeholder.";
-                return Vfs::ConvertToPlaceholderResult::Ok;
+            if (fileComponent.startsWith(cfapi::cfApiUnsupportedLeadingCharacterInPath)) {
+                qCInfo(lcCfApi) << "Path \"" << filename << "\" has a leading '#'. Not converting it to a placeholder.";
+                const auto pinState = pinStateLocal(localPath);
+                if (!pinState || *pinState != PinState::Excluded) {
+                    setPinStateLocal(localPath, PinState::Excluded);
+                }
+                return {tr("Paths beginning with '#' character are not supported in VFS mode.")};
             }
         }
     }

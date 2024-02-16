@@ -812,7 +812,7 @@ void Folder::setRootPinState(PinState state)
 
 void Folder::switchToVirtualFiles()
 {
-    SyncEngine::switchToVirtualFiles(path(), _journal, *_vfs);
+    _engine->switchToVirtualFiles(path(), _journal, *_vfs);
     _hasSwitchedToVfs = true;
 }
 

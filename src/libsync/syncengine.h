@@ -124,7 +124,7 @@ public:
      */
     static void wipeVirtualFiles(const QString &localPath, SyncJournalDb &journal, Vfs &vfs);
 
-    static void switchToVirtualFiles(const QString &localPath, SyncJournalDb &journal, Vfs &vfs);
+    void switchToVirtualFiles(const QString &localPath, SyncJournalDb &journal, Vfs &vfs);
 
     [[nodiscard]] QSharedPointer<OwncloudPropagator> getPropagator() const { return _propagator; } // for the test
     [[nodiscard]] const SyncEngine::SingleItemDiscoveryOptions &singleItemDiscoveryOptions() const;
