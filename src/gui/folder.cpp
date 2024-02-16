@@ -653,8 +653,11 @@ void Folder::slotFilesLockReleased(const QSet<QString> &files)
             && rec._lockstate._lockOwnerId == _accountState->account()->davUser();
 
         if (!canUnlockFile) {
-            qCDebug(lcFolder) << "Skipping file" << file << "with rec.isValid():" << rec.isValid()
-                             << "and rec._lockstate._lockOwnerId:" << rec._lockstate._lockOwnerId << "and davUser:" << _accountState->account()->davUser();
+            qCInfo(lcFolder) << "Skipping file" << file
+                             << "with rec.isValid():" << rec.isValid()
+                             << "and rec._lockstate._lockOwnerId:" << rec._lockstate._lockOwnerId
+                             << "and lock type:" << rec._lockstate._lockOwnerType
+                             << "and davUser:" << _accountState->account()->davUser();
             continue;
         }
         const QString remoteFilePath = remotePathTrailingSlash() + rec.path();
