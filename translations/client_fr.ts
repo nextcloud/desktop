@@ -3773,7 +3773,7 @@ Il s&apos;agit d&apos;un nouveau mode expérimental. Si vous décidez de l&apos;
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1037"/>
         <source>Could not upload file, because it is open in &quot;%1&quot;.</source>
-        <translation type="unfinished"/>
+        <translation>Impossible de téléverser le fichier, car il est ouvert dans « %1 ».</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1010"/>
@@ -5101,7 +5101,7 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
     <message>
         <location filename="../src/libsync/updatee2eefolderusersmetadatajob.cpp" line="92"/>
         <source>Could not fetch public key for user %1</source>
-        <translation type="unfinished"/>
+        <translation>Impossible de récupérer la clé publique pour l&apos;utilisateur %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/updatee2eefolderusersmetadatajob.cpp" line="100"/>

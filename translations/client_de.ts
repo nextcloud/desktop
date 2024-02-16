@@ -3774,7 +3774,7 @@ Dies ist ein neuer, experimenteller Modus. Wenn Sie sich entscheiden, ihn zu ver
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1037"/>
         <source>Could not upload file, because it is open in &quot;%1&quot;.</source>
-        <translation type="unfinished"/>
+        <translation>Datei konnte nicht hochgeladen werden, da sie in &quot;%1&quot; geöffnet ist.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1010"/>

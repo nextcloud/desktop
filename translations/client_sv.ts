@@ -3775,7 +3775,7 @@ Detta är ett nytt experimentellt läge. Om du bestämmer dig för att använda 
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1037"/>
         <source>Could not upload file, because it is open in &quot;%1&quot;.</source>
-        <translation type="unfinished"/>
+        <translation>Kunde inte ladda upp filen eftersom den är öppen i &quot;%1&quot;.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1010"/>

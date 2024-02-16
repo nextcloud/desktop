@@ -17,7 +17,7 @@
     <message>
         <location filename="../src/gui/tray/ActivityItemContent.qml" line="170"/>
         <source>Open file details</source>
-        <translation type="unfinished"/>
+        <translation>ファイル詳細を開く</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/ActivityItemContent.qml" line="203"/>
@@ -158,12 +158,12 @@
     <message>
         <location filename="../src/gui/ConflictDelegate.qml" line="62"/>
         <source>Local version</source>
-        <translation type="unfinished"/>
+        <translation>ローカルバージョン</translation>
     </message>
     <message>
         <location filename="../src/gui/ConflictDelegate.qml" line="77"/>
         <source>Server version</source>
-        <translation type="unfinished"/>
+        <translation>サーバーのバージョン</translation>
     </message>
 </context>
 <context>
@@ -195,7 +195,7 @@
     <message>
         <location filename="../src/gui/filedetails/FileDetailsPage.qml" line="143"/>
         <source>Dismiss</source>
-        <translation type="unfinished"/>
+        <translation>閉じる</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/FileDetailsPage.qml" line="229"/>
@@ -213,7 +213,7 @@
     <message>
         <location filename="../src/gui/filedetails/FileDetailsWindow.qml" line="34"/>
         <source>File details of %1 · %2</source>
-        <translation type="unfinished"/>
+        <translation>ファイルの詳細 %1 · %2</translation>
     </message>
 </context>
 <context>
@@ -346,19 +346,22 @@
         <location filename="../src/gui/accountmanager.cpp" line="184"/>
         <source>An existing configuration from a legacy desktop client was detected.
 Should an account import be attempted?</source>
-        <translation type="unfinished"/>
+        <translation>古いデスクトップクライアントの既存の構成が検出されました。
+アカウントのインポートを試みますか？</translation>
     </message>
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="198"/>
         <source>%1 accounts were detected from a legacy desktop client.
 Should the accounts be imported?</source>
-        <translation type="unfinished"/>
+        <translation>%1 アカウントが古いデスクトプクライアントから検出されました。
+アカウントをインポートしますか？</translation>
     </message>
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="200"/>
         <source>1 account was detected from a legacy desktop client.
 Should the account be imported?</source>
-        <translation type="unfinished"/>
+        <translation>1 アカウントが古いデスクトプクライアントから検出されました。
+アカウントをインポートしますか？</translation>
     </message>
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="186"/>
@@ -370,22 +373,22 @@ Should the account be imported?</source>
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="203"/>
         <source>Import</source>
-        <translation type="unfinished"/>
+        <translation>インポート</translation>
     </message>
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="204"/>
         <source>Skip</source>
-        <translation type="unfinished"/>
+        <translation>スキップ</translation>
     </message>
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="255"/>
         <source>Successfully imported account from legacy client: %1</source>
-        <translation type="unfinished"/>
+        <translation>古いクライアントからアカウントのインポートに成功しました: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="263"/>
         <source>Could not import accounts from legacy client configuration.</source>
-        <translation type="unfinished"/>
+        <translation>古いクライアント構成からアカウントをインポートできませんでした。</translation>
     </message>
 </context>
 <context>
@@ -435,12 +438,12 @@ Should the account be imported?</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="93"/>
         <source>End-to-end Encryption with Virtual Files</source>
-        <translation type="unfinished"/>
+        <translation>仮想ファイルシステムでのエンドツーエンド暗号</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="94"/>
         <source>You seem to have the Virtual Files feature enabled on this folder. At the moment, it is not possible to implicitly download virtual files that are end-to-end encrypted. To get the best experience with virtual files and end-to-end encryption, make sure the encrypted folder is marked with &quot;Make always available locally&quot;.</source>
-        <translation type="unfinished"/>
+        <translation>このフォルダでは仮想ファイル機能が有効になっているようです。現時点では、エンドツーエンドで暗号化された仮想ファイルをバックグラウンドで暗黙的にダウンロードすることはできません。仮想ファイルとエンドツーエンド暗号化を最大限に活用するには、暗号化されたフォルダーに「ローカルで常に利用可能にする」というマークが付いていることを確認してください。</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="102"/>
@@ -455,13 +458,14 @@ Should the account be imported?</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="116"/>
         <source>End-to-end Encryption</source>
-        <translation type="unfinished"/>
+        <translation>End-to-End 暗号化</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="118"/>
         <source>This will encrypt your folder and all files within it. These files will no longer be accessible without your encryption mnemonic key. 
 &lt;b&gt;This process is not reversible. Are you sure you want to proceed?&lt;/b&gt;</source>
-        <translation type="unfinished"/>
+        <translation>これにより、フォルダとその中のすべてのファイルが暗号化されます。これらのファイルは、暗号化 mnemonic キーなしではアクセスできなくなります。
+&lt;b&gt;このプロセスは元に戻せません。続行してもよろしいですか？&lt;/b&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="232"/>
@@ -471,7 +475,7 @@ Should the account be imported?</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="245"/>
         <source>Disable encryption</source>
-        <translation type="unfinished"/>
+        <translation>暗号化を無効化する</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="250"/>

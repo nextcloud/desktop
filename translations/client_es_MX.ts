@@ -17,7 +17,7 @@
     <message>
         <location filename="../src/gui/tray/ActivityItemContent.qml" line="170"/>
         <source>Open file details</source>
-        <translation type="unfinished"/>
+        <translation>Abrir detalles del archivo</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/ActivityItemContent.qml" line="203"/>
@@ -30,7 +30,7 @@
     <message>
         <location filename="../src/gui/tray/ActivityList.qml" line="31"/>
         <source>Activity list</source>
-        <translation type="unfinished"/>
+        <translation>Lista de actividad</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/ActivityList.qml" line="108"/>
@@ -105,12 +105,12 @@
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="164"/>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="226"/>
         <source>No recently changed files</source>
-        <translation type="unfinished"/>
+        <translation>No hay archivos modificados recientemente</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="180"/>
         <source>Sync paused</source>
-        <translation type="unfinished"/>
+        <translation>Sincronización pausada</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="183"/>
@@ -130,7 +130,7 @@
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="238"/>
         <source>Pause synchronization</source>
-        <translation type="unfinished"/>
+        <translation>Pausar sincronización</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="245"/>
@@ -200,12 +200,12 @@
     <message>
         <location filename="../src/gui/filedetails/FileDetailsPage.qml" line="229"/>
         <source>Activity</source>
-        <translation type="unfinished"/>
+        <translation>Actividad</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/FileDetailsPage.qml" line="238"/>
         <source>Sharing</source>
-        <translation type="unfinished"/>
+        <translation>Compartiendo</translation>
     </message>
 </context>
 <context>
@@ -540,19 +540,19 @@ Wait for the new sync, then encrypt it.</source>
         <location filename="../src/gui/accountsettings.cpp" line="535"/>
         <location filename="../src/gui/accountsettings.cpp" line="605"/>
         <source>Edit Ignored Files</source>
-        <translation type="unfinished"/>
+        <translation>Editar archivos ignorados</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="538"/>
         <location filename="../src/gui/accountsettings.cpp" line="608"/>
         <source>Create new folder</source>
-        <translation type="unfinished"/>
+        <translation>Crear nueva carpeta</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="544"/>
         <location filename="../src/gui/accountsettings.cpp" line="634"/>
         <source>Availability</source>
-        <translation type="unfinished"/>
+        <translation>Disponibilidad</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="613"/>
@@ -587,7 +587,7 @@ Wait for the new sync, then encrypt it.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="643"/>
         <source>Disable virtual file support …</source>
-        <translation type="unfinished"/>
+        <translation>Desactivar soporte de archivos virtuales …</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="651"/>
@@ -627,7 +627,7 @@ Wait for the new sync, then encrypt it.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="921"/>
         <source>Disable virtual file support?</source>
-        <translation type="unfinished"/>
+        <translation>¿Desactivar soporte de archivos virtuales?</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="922"/>
@@ -636,7 +636,11 @@ Wait for the new sync, then encrypt it.</source>
 The only advantage of disabling virtual file support is that the selective sync feature will become available again.
 
 This action will abort any currently running synchronization.</source>
-        <translation type="unfinished"/>
+        <translation>Esta acción desactivará el soporte de archivos virtuales. Como consecuencia, se descargarán los contenidos de las carpetas que actualmente estén marcadas como &quot;disponibles solo en línea&quot;.
+      
+      La única ventaja de desactivar el soporte de archivos virtuales es que la función de sincronización selectiva estará disponible nuevamente.
+      
+      Esta acción abortará cualquier sincronización en curso.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="929"/>
@@ -890,7 +894,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/tray/activitylistmodel.cpp" line="579"/>
         <source>Files from the ignore list as well as symbolic links are not synced.</source>
-        <translation type="unfinished"/>
+        <translation>Los archivos de la lista de ignorados, así como los enlaces simbólicos, no se sincronizan.</translation>
     </message>
 </context>
 <context>
@@ -1689,7 +1693,7 @@ This can be an issue with your OpenSSL libraries.</source>
         <location filename="../src/gui/filedetails/filedetails.cpp" line="115"/>
         <source>%1 hour(s) ago</source>
         <comment>hours elapsed since file last modified</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Hace %1 hora(s)</numerusform><numerusform>Hace %1 hora(s)</numerusform><numerusform>Hace %1 hora(s)</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/filedetails/filedetails.cpp" line="118"/>
@@ -2007,7 +2011,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/foldercreationdialog.ui" line="14"/>
         <source>Create new folder</source>
-        <translation type="unfinished"/>
+        <translation>Crear nueva carpeta</translation>
     </message>
     <message>
         <location filename="../src/gui/foldercreationdialog.ui" line="42"/>
@@ -2080,7 +2084,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderman.cpp" line="1618"/>
         <source>Last sync was successful.</source>
-        <translation type="unfinished"/>
+        <translation>La última sincronización fue exitosa.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1624"/>
@@ -2202,12 +2206,12 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="309"/>
         <source>Synchronizing VirtualFiles with local folder</source>
-        <translation type="unfinished"/>
+        <translation>Sincronizando archivos virtuales con la carpeta local</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="311"/>
         <source>Synchronizing with local folder</source>
-        <translation type="unfinished"/>
+        <translation>Sincronizando con la carpeta local</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="993"/>
@@ -2490,7 +2494,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/generalsettings.ui" line="33"/>
         <source>Ask for confirmation before synchronizing new folders larger than</source>
-        <translation type="unfinished"/>
+        <translation>Pedir confirmación antes de sincronizar carpetas nuevas mayores a</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="41"/>
@@ -2744,7 +2748,7 @@ Note that this selects only what pool upgrades are taken from, and that there ar
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="825"/>
         <source>Sharing error</source>
-        <translation type="unfinished"/>
+        <translation>Error al compartir</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="826"/>
@@ -3089,7 +3093,7 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/networksettings.ui" line="48"/>
         <source>No proxy</source>
-        <translation type="unfinished"/>
+        <translation>Sin proxy</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="49"/>
@@ -3104,7 +3108,7 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/networksettings.ui" line="84"/>
         <source>Manually specify proxy</source>
-        <translation type="unfinished"/>
+        <translation>Especificar proxy manualmente</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="80"/>
@@ -4334,12 +4338,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="700"/>
         <source>Link share</source>
-        <translation type="unfinished"/>
+        <translation>Compartir enlace</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="702"/>
         <source>Internal link</source>
-        <translation type="unfinished"/>
+        <translation>Enlace interno</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="704"/>
@@ -4441,7 +4445,7 @@ Server replied with error: %2</source>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1134"/>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1363"/>
         <source>Activity</source>
-        <translation type="unfinished"/>
+        <translation>Actividad</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1136"/>
@@ -4487,7 +4491,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1197"/>
         <source>Copy internal link</source>
-        <translation type="unfinished"/>
+        <translation>Copiar enlace interno</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1234"/>
@@ -4878,7 +4882,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="162"/>
         <source>Sync paused</source>
-        <translation type="unfinished"/>
+        <translation>Sincronización pausada</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="169"/>
@@ -4927,7 +4931,7 @@ Server replied with error: %2</source>
         <location filename="../src/gui/systray.cpp" line="185"/>
         <location filename="../src/gui/systray.cpp" line="195"/>
         <source>Pause sync</source>
-        <translation type="unfinished"/>
+        <translation>Pausar sincronización</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="186"/>
@@ -5671,7 +5675,7 @@ Server replied with error: %2</source>
         <location filename="../src/gui/ResolveConflictsDialog.qml" line="74"/>
         <source>%1 files in conflict</source>
         <comment>indicate the number of conflicts to resolve</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 archivo en conflicto</numerusform><numerusform>%1 archivos en conflicto</numerusform><numerusform>%1 archivos en conflicto</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/ResolveConflictsDialog.qml" line="81"/>
@@ -5704,12 +5708,12 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/filedetails/ShareDelegate.qml" line="161"/>
         <source>Create a new share link</source>
-        <translation type="unfinished"/>
+        <translation>Crear un nuevo enlace de uso compartido</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDelegate.qml" line="195"/>
         <source>Copy share link location</source>
-        <translation type="unfinished"/>
+        <translation>Copiar dirección del enlace de uso compartido</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDelegate.qml" line="197"/>
@@ -5763,7 +5767,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="453"/>
         <source>Allow resharing</source>
-        <translation type="unfinished"/>
+        <translation>Permitir volver a compartir</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="466"/>
@@ -5798,12 +5802,12 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="886"/>
         <source>Share link copied!</source>
-        <translation type="unfinished"/>
+        <translation>¡Enlace de uso compartido copiado!</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="886"/>
         <source>Copy share link</source>
-        <translation type="unfinished"/>
+        <translation>Copiar enlace de uso compartido</translation>
     </message>
 </context>
 <context>
@@ -5821,7 +5825,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/filedetails/ShareView.qml" line="279"/>
         <source>Sharing is disabled</source>
-        <translation type="unfinished"/>
+        <translation>Compartir está deshabilitado</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareView.qml" line="287"/>
@@ -5831,7 +5835,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/filedetails/ShareView.qml" line="296"/>
         <source>Sharing is disabled.</source>
-        <translation type="unfinished"/>
+        <translation>Compartir está deshabilitado.</translation>
     </message>
 </context>
 <context>
@@ -5839,7 +5843,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/filedetails/ShareeSearchField.qml" line="47"/>
         <source>Search for users or groups…</source>
-        <translation type="unfinished"/>
+        <translation>Buscar usuarios o grupos...</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareeSearchField.qml" line="48"/>
@@ -5886,12 +5890,12 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="55"/>
         <source>Open local or group folders</source>
-        <translation type="unfinished"/>
+        <translation>Abrir carpetas locales o de grupo</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="55"/>
         <source>Open local folder</source>
-        <translation type="unfinished"/>
+        <translation>Abrir carpeta local</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="70"/>
@@ -5911,7 +5915,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="184"/>
         <source>Open local folder &quot;%1&quot;</source>
-        <translation type="unfinished"/>
+        <translation>Abrir carpeta local &quot;%1&quot;</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="184"/>
@@ -6002,7 +6006,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="165"/>
         <source>Set status</source>
-        <translation type="unfinished"/>
+        <translation>Establecer estado</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="173"/>
@@ -6087,7 +6091,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="336"/>
         <source>Set status message</source>
-        <translation type="unfinished"/>
+        <translation>Establecer mensaje de estado</translation>
     </message>
 </context>
 <context>
@@ -6238,7 +6242,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="631"/>
         <source>Open local or group folders</source>
-        <translation type="unfinished"/>
+        <translation>Abrir carpetas locales o de grupo</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="641"/>
@@ -6489,12 +6493,12 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="100"/>
         <source>Make always available locally</source>
-        <translation type="unfinished"/>
+        <translation>Hacer que esté siempre disponible localmente</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="105"/>
         <source>Free up local space</source>
-        <translation type="unfinished"/>
+        <translation>Liberar espacio local</translation>
     </message>
 </context>
 <context>

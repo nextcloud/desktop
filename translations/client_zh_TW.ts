@@ -761,7 +761,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1279"/>
         <source>Unable to connect to %1.</source>
-        <translation type="unfinished"/>
+        <translation>無法連線至 %1。</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1264"/>
@@ -1459,7 +1459,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/connectionvalidator.cpp" line="343"/>
         <source>Network Error</source>
-        <translation type="unfinished"/>
+        <translation>網路錯誤</translation>
     </message>
 </context>
 <context>
@@ -1672,7 +1672,7 @@ This can be an issue with your OpenSSL libraries.</source>
     <message>
         <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="147"/>
         <source>Error fetching encrypted folder ID.</source>
-        <translation type="unfinished"/>
+        <translation>擷取已加密資料夾 ID 時發生錯誤。</translation>
     </message>
     <message>
         <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="181"/>
@@ -3775,7 +3775,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1037"/>
         <source>Could not upload file, because it is open in &quot;%1&quot;.</source>
-        <translation type="unfinished"/>
+        <translation>無法上傳檔案，因為其於「%1」開啟。</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1010"/>
@@ -5103,7 +5103,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/libsync/updatee2eefolderusersmetadatajob.cpp" line="92"/>
         <source>Could not fetch public key for user %1</source>
-        <translation type="unfinished"/>
+        <translation>無法擷取使用者 %1 的公鑰</translation>
     </message>
     <message>
         <location filename="../src/libsync/updatee2eefolderusersmetadatajob.cpp" line="100"/>

@@ -761,7 +761,7 @@ Denne handlingen vil avbryte enhver synkronisering som kjører.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1279"/>
         <source>Unable to connect to %1.</source>
-        <translation type="unfinished"/>
+        <translation>Ikke i stand til å koble til %1.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1264"/>
@@ -1459,7 +1459,7 @@ Denne handlingen vil avbryte enhver synkronisering som kjører.</translation>
     <message>
         <location filename="../src/gui/connectionvalidator.cpp" line="343"/>
         <source>Network Error</source>
-        <translation type="unfinished"/>
+        <translation>Nettverksfeil</translation>
     </message>
 </context>
 <context>
@@ -3774,7 +3774,7 @@ Dette er en ny, eksperimentell modus. Hvis du bestemmer deg for å bruke den, ve
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1037"/>
         <source>Could not upload file, because it is open in &quot;%1&quot;.</source>
-        <translation type="unfinished"/>
+        <translation>Kunne ikke laste opp filen, fordi den er åpen i &quot;%1&quot;.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1010"/>
