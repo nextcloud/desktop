@@ -88,7 +88,10 @@ CaseClashFilenameDialog::CaseClashFilenameDialog(AccountPtr account,
 
     _relativeFilePath = filePathFileInfo.path() + QStringLiteral("/");
     _relativeFilePath = _relativeFilePath.replace(folder->path(), QLatin1String());
-    _relativeFilePath = _relativeFilePath.isEmpty() ? QString() : _relativeFilePath + QStringLiteral("/");
+    _relativeFilePath = _relativeFilePath.isEmpty() ? QString() : _relativeFilePath;
+    if (!_relativeFilePath.isEmpty() && !_relativeFilePath.endsWith(QStringLiteral("/"))) {
+        _relativeFilePath += QStringLiteral("/");
+    }
 
     _originalFileName = _relativeFilePath + conflictFileName;
 
@@ -208,7 +211,7 @@ void CaseClashFilenameDialog::updateFileWidgetGroup(const QString &filePath,
     const auto fileSizeString = locale().formattedDataSize(filePathFileInfo.size());
     const auto fileUrl = QUrl::fromLocalFile(filePath).toString();
     const auto linkString = QStringLiteral("<a href='%1'>%2</a>").arg(fileUrl, linkText);
-    const auto mime = QMimeDatabase().mimeTypeForFile(_filePath);
+    const auto mime = QMimeDatabase().mimeTypeForFile(_filePath, QMimeDatabase::MatchExtension);
     QIcon fileTypeIcon;
 
     qCDebug(lcCaseClashConflictFialog) << filePath << filePathFileInfo.exists() << filename << lastModifiedString << fileSizeString << fileUrl << linkString << mime;
