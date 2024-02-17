@@ -193,6 +193,8 @@ private:
 
     [[nodiscard]] QStringList queryEditorsKeepingFileBusy(const SyncFileItemPtr &item, const PathTuple &path) const;
 
+    [[nodiscard]] bool isInvalidPathForCfApi(const QString &path) const;
+
     struct MovePermissionResult
     {
         // whether moving/renaming the source is ok

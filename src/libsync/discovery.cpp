@@ -686,21 +686,6 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(const SyncFileItemPtr &it
         }
     }
 
-    if (!item->isDirectory() && _discoveryData->_syncOptions._vfs && _discoveryData->_syncOptions._vfs->mode() == Vfs::WindowsCfApi && item->_file.contains("#")) {
-        const auto fileComponents = item->_file.split("/");
-        for (const auto &fileComponent : fileComponents) {
-            if (fileComponent.startsWith("#")) {
-                item->_instruction = CSYNC_INSTRUCTION_ERROR;
-                _childIgnored = true;
-                qCWarning(lcDisco) << QStringLiteral("Path \"%1\"has a leading '#'.").arg(item->_originalFile);
-                item->_errorString = tr("Paths beginning with '#' character are not supported in VFS mode.");
-                item->_status = SyncFileItem::Status::NormalError;
-                emit _discoveryData->itemDiscovered(item);
-                return;
-            }
-        }
-    }
-
     // We want to check the lock state of this file after the lock time has expired
     if(serverEntry.locked == SyncFileItem::LockStatus::LockedItem && serverEntry.lockTimeout > 0) {
         const auto lockExpirationTime = serverEntry.lockTime + serverEntry.lockTimeout;
@@ -1443,7 +1428,9 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
     // Technically we should use the permissions from the server, but we'll assume it is the same
     const auto isExternalStorage = base._remotePerm.hasPermission(RemotePermissions::IsMounted);
     const auto movePerms = checkMovePermissions(base._remotePerm, originalPath, item->isDirectory());
-    if (!movePerms.sourceOk || !movePerms.destinationOk || isExternalStorage) {
+    const auto isRenameForbidden = isInvalidPathForCfApi(!item->_renameTarget.isEmpty() ? item->_renameTarget : item->_file);
+
+    if (!movePerms.sourceOk || !movePerms.destinationOk || isExternalStorage || isRenameForbidden) {
         qCInfo(lcDisco) << "Move without permission to rename base file, "
                         << "source:" << movePerms.sourceOk
                         << ", target:" << movePerms.destinationOk
@@ -1458,7 +1445,7 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
         // If the destination upload will work, we're fine with the source deletion.
         // If the source deletion can't work, checkPermissions will error.
         // In case of external storage mounted folders we are never allowed to move/delete them
-        if (movePerms.destinationNewOk && !isExternalStorage) {
+        if (movePerms.destinationNewOk && !isExternalStorage && !isRenameForbidden) {
             return;
         }
 
@@ -1675,12 +1662,26 @@ void ProcessDirectoryJob::processFileFinalize(
     }
 
     if (path._original != path._target && (item->_instruction == CSYNC_INSTRUCTION_UPDATE_METADATA || item->_instruction == CSYNC_INSTRUCTION_NONE)) {
-        ASSERT(_dirItem && _dirItem->_instruction == CSYNC_INSTRUCTION_RENAME);
         // This is because otherwise subitems are not updated!  (ideally renaming a directory could
         // update the database for all items!  See PropagateDirectory::slotSubJobsFinished)
         item->_instruction = CSYNC_INSTRUCTION_RENAME;
         item->_renameTarget = path._target;
         item->_direction = _dirItem->_direction;
+    }
+
+    if (item->_instruction != CSYNC_INSTRUCTION_NONE
+        && item->_instruction != CSYNC_INSTRUCTION_REMOVE
+        && item->_instruction != CSYNC_INSTRUCTION_UPDATE_METADATA
+        && item->_instruction != CSYNC_INSTRUCTION_SYNC
+        && (item->_instruction != CSYNC_INSTRUCTION_RENAME || item->_direction == SyncFileItem::Down))
+    {
+        const auto filePath = item->_instruction == CSYNC_INSTRUCTION_RENAME ? item->_renameTarget : item->_file;
+        if (isInvalidPathForCfApi(filePath)) {
+            item->_instruction = CSYNC_INSTRUCTION_ERROR;
+            qCWarning(lcDisco) << QStringLiteral("Path \"%1\"has a leading '#'.").arg(item->_originalFile);
+            item->_errorString = tr("Paths beginning with '#' character are not supported in VFS mode.");
+            item->_status = SyncFileItem::Status::NormalError;
+        }
     }
 
     {
@@ -1908,6 +1909,22 @@ QStringList ProcessDirectoryJob::queryEditorsKeepingFileBusy(const SyncFileItemP
     }
 
     return matchingEditorsKeepingFileBusy;
+}
+
+bool ProcessDirectoryJob::isInvalidPathForCfApi(const QString &path) const
+{
+    if (!_discoveryData->_syncOptions._vfs || _discoveryData->_syncOptions._vfs->mode() != Vfs::WindowsCfApi) {
+        return false;
+    }
+    if (path.contains("#")) {
+        const auto fileComponents = path.split("/");
+        for (const auto &fileComponent : fileComponents) {
+            if (fileComponent.startsWith("#")) {
+                return true;
+            }
+        }
+    }
+    return false;
 }
 
 auto ProcessDirectoryJob::checkMovePermissions(RemotePermissions srcPerm, const QString &srcPath,
