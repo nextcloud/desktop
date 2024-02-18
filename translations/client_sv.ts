@@ -286,7 +286,7 @@
     <message>
         <location filename="../src/gui/folderwizardtargetpage.ui" line="131"/>
         <source>Select a remote destination folder</source>
-        <translation>Välj en fjärr målmapp</translation>
+        <translation>Välj en målmapp på servern</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizardtargetpage.ui" line="143"/>
@@ -346,21 +346,21 @@
         <location filename="../src/gui/accountmanager.cpp" line="184"/>
         <source>An existing configuration from a legacy desktop client was detected.
 Should an account import be attempted?</source>
-        <translation>En befintlig konfiguration från en äldre skrivbordsklient upptäcktes.
-Ska ett försök av kontoimport göras?</translation>
+        <translation>En befintlig konfiguration från en äldre desktopklient hittades.
+Ska import av kontot försökas?</translation>
     </message>
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="198"/>
         <source>%1 accounts were detected from a legacy desktop client.
 Should the accounts be imported?</source>
-        <translation>%1 konton upptäcktes från en äldre skrivbordsklient.
+        <translation>%1 konton från en äldre desktopklient hittades.
 Ska dessa konton importeras?</translation>
     </message>
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="200"/>
         <source>1 account was detected from a legacy desktop client.
 Should the account be imported?</source>
-        <translation>1 konto upptäcktes från en äldre skrivbordsklient.
+        <translation>1 konto från en äldre desktopklient hittades.
 Ska detta konto importeras?</translation>
     </message>
     <message>
@@ -368,7 +368,7 @@ Ska detta konto importeras?</translation>
         <location filename="../src/gui/accountmanager.cpp" line="254"/>
         <location filename="../src/gui/accountmanager.cpp" line="262"/>
         <source>Legacy import</source>
-        <translation>Äldre import</translation>
+        <translation>Legacyimport</translation>
     </message>
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="203"/>
@@ -438,12 +438,12 @@ Ska detta konto importeras?</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="93"/>
         <source>End-to-end Encryption with Virtual Files</source>
-        <translation>Totalsträckskryptering med virtuella filer</translation>
+        <translation>End-to-end-kryptering med virtuella filer</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="94"/>
         <source>You seem to have the Virtual Files feature enabled on this folder. At the moment, it is not possible to implicitly download virtual files that are end-to-end encrypted. To get the best experience with virtual files and end-to-end encryption, make sure the encrypted folder is marked with &quot;Make always available locally&quot;.</source>
-        <translation>Det verkar som att funktionen &quot;Virtuella filer&quot; är aktiverad för denna mapp. För närvarande är det inte möjligt att ladda ner virtuella filer med totalsträckskryptering. För virtuella filer och totalsträckskryptering, verifiera att &quot;Gör alltid tillgänglig lokalt&quot; är aktiverat på den krypterade mappen.</translation>
+        <translation>Det verkar som att funktionen &quot;Virtuella filer&quot; är aktiverad för denna mapp. För närvarande är det inte möjligt att ladda ner virtuella filer som är end-to-end-krypterade. För att använda virtuella filer med end-to-end-kryptering, säkerställ att &quot;Gör alltid tillgänglig lokalt&quot; är aktiverat på den krypterade mappen.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="102"/>
@@ -458,19 +458,19 @@ Ska detta konto importeras?</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="116"/>
         <source>End-to-end Encryption</source>
-        <translation>Totalsträckskryptering</translation>
+        <translation>End-to-end-kryptering</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="118"/>
         <source>This will encrypt your folder and all files within it. These files will no longer be accessible without your encryption mnemonic key. 
 &lt;b&gt;This process is not reversible. Are you sure you want to proceed?&lt;/b&gt;</source>
-        <translation>Detta kommer att kryptera din mapp och alla filer i den. Dessa filer kommer inte längre att vara tillgängliga utan din krypteringsfras. 
+        <translation>Detta kommer att kryptera din mapp och alla filer den innehåller. Dessa filer kommer inte längre att vara tillgängliga utan dina krypteringsord.
 &lt;b&gt;Denna process går inte att ångra. Är du säker på att du vill fortsätta?&lt;/b&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="232"/>
         <source>No account configured.</source>
-        <translation>Inget konto är konfigurerat.</translation>
+        <translation>Inget konto konfigurerat.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="245"/>
@@ -480,12 +480,12 @@ Ska detta konto importeras?</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="250"/>
         <source>Display mnemonic</source>
-        <translation>Visa mnemonic</translation>
+        <translation>Visa krypteringsord</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="256"/>
         <source>End-to-end encryption has been enabled for this account</source>
-        <translation> Totalsträckskryptering har aktiverats för detta konto</translation>
+        <translation>End-to-end-kryptering har aktiverats för detta konto</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="288"/>
@@ -511,15 +511,15 @@ Ska detta konto importeras?</translation>
         <location filename="../src/gui/accountsettings.cpp" line="341"/>
         <source>End-to-end encryption is not configured on this device. Once it is configured, you will be able to encrypt this folder.
 Would you like to set up end-to-end encryption?</source>
-        <translation>Totalsträckskryptering är inte konfigurerad på den här enheten. När det är konfigurerad kommer du att kunna kryptera den här mappen.
-Vill du aktivera totalsträckskryptering?</translation>
+        <translation>End-to-end-kryptering är inte konfigurerad på den här enheten. När det är konfigurerad kommer du att kunna kryptera den här mappen.
+Vill du konfigurera end-to-end-kryptering?</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="366"/>
         <source>You cannot encrypt a folder with contents, please remove the files.
 Wait for the new sync, then encrypt it.</source>
-        <translation>Du kan inte kryptera en mapp med innehåll, ta bort filerna.
-Vänta på en ny synk, sedan kryptera den.</translation>
+        <translation>Du kan inte kryptera en mapp med innehåll, vänligen ta bort filerna.
+Vänta på en ny synk och kryptera den sedan.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="390"/>
@@ -588,7 +588,7 @@ Vänta på en ny synk, sedan kryptera den.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="630"/>
         <source>Remove folder sync connection</source>
-        <translation>Ta bort anslutning till mappsynkronisering</translation>
+        <translation>Ta bort synkroniseringskoppling för mapp</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="643"/>
@@ -618,7 +618,7 @@ Vänta på en ny synk, sedan kryptera den.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="803"/>
         <source>Confirm Folder Sync Connection Removal</source>
-        <translation>Bekräfta radering av anslutning till mappsynkronisering</translation>
+        <translation>Bekräfta borttagning av synkroniseringskoppling för mapp</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="804"/>
@@ -628,7 +628,7 @@ Vänta på en ny synk, sedan kryptera den.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="810"/>
         <source>Remove Folder Sync Connection</source>
-        <translation>Ta bort anslutning till mappsynkronisering</translation>
+        <translation>Ta bort synkroniseringskoppling för mapp</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="921"/>
@@ -644,39 +644,39 @@ The only advantage of disabling virtual file support is that the selective sync 
 This action will abort any currently running synchronization.</source>
         <translation>Denna åtgärd kommer att inaktivera stöd för virtuella filer. Som en konsekvens kommer innehållet i mappar som för närvarande är markerade som &quot;endast tillgänglig online&quot; att laddas ner.
 
-Den enda fördelen med att inaktivera stöd för virtuella filer är att den selektiva synkroniseringsfunktionen blir tillgänglig igen.
+Den enda fördelen med att inaktivera stödet för virtuella filer är att funktionen för selektiv synkronisering blir tillgänglig igen.
 
-Den här åtgärden avbryter alla synkroniseringar som körs.</translation>
+Den här åtgärden avbryter alla pågående synkroniseringar.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="929"/>
         <source>Disable support</source>
-        <translation>Inaktivera support</translation>
+        <translation>Inaktivera stöd</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1014"/>
         <source>End-to-end encryption mnemonic</source>
-        <translation>Krypteringsord för totalsträckskryptering</translation>
+        <translation>Krypteringsord för end-to-end-kryptering</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1016"/>
         <source>To protect your Cryptographic Identity, we encrypt it with a mnemonic of 12 dictionary words. Please note these down and keep them safe. They will be needed to add other devices to your account (like your mobile phone or laptop).</source>
-        <translation>För att skydda din krypteringsidentitet, krypterar vi den med en mnemoteknisk av 12 ord. Notera dessa krypteringsord och håll dem säkra. De kommer behövas för att lägga till andra enheter till ditt konto (t.ex. mobiltelefon eller laptop).</translation>
+        <translation>För att skydda din krypteringsidentitet, krypterar vi den med en minnesregel av 12 ord. Notera dessa krypteringsord och håll dem säkra. De kommer behövas för att lägga till andra enheter till ditt konto (t.ex. mobiltelefon eller laptop).</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1041"/>
         <source>Disable end-to-end encryption</source>
-        <translation>Inaktivera totalsträckskryptering</translation>
+        <translation>Inaktivera end-to-end-kryptering</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1042"/>
         <source>Disable end-to-end encryption for %1?</source>
-        <translation>Inaktivera totalsträckskryptering för %1?</translation>
+        <translation>Inaktivera end-to-end-kryptering för %1?</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1043"/>
         <source>Removing end-to-end encryption will remove locally-synced files that are encrypted.&lt;br&gt;Encrypted files will remain on the server.</source>
-        <translation>Om du tar bort totalsträckskryptering tar du bort lokalt synkroniserade filer som är krypterade.&lt;br&gt;Krypterade filer kommer att finnas kvar på servern.</translation>
+        <translation>Om du tar bort end-to-end-kryptering tar du bort lokalt synkroniserade filer som är krypterade.&lt;br&gt;Krypterade filer kommer att finnas kvar på servern.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1105"/>
@@ -701,7 +701,7 @@ Den här åtgärden avbryter alla synkroniseringar som körs.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1188"/>
         <source>Currently there is no storage usage information available.</source>
-        <translation>Just nu finns ingen utrymmes information tillgänglig</translation>
+        <translation>För närvarande finns ingen information om lagringsanvändning tillgänglig.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1191"/>
@@ -716,7 +716,7 @@ Den här åtgärden avbryter alla synkroniseringar som körs.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1225"/>
         <source>The server version %1 is unsupported! Proceed at your own risk.</source>
-        <translation>Serverversion %1 stöds inte officiellt! Fortsätt på egen risk.</translation>
+        <translation>Serverversion %1 stöds! Fortsätt på egen risk.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1227"/>
@@ -746,7 +746,7 @@ Den här åtgärden avbryter alla synkroniseringar som körs.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1250"/>
         <source>Obtaining authorization from the browser. &lt;a href=&apos;%1&apos;&gt;Click here&lt;/a&gt; to re-open the browser.</source>
-        <translation>Anskaffar autentisering från webbläsaren. &lt;a href=&apos;%1&apos;&gt;Klicka här &lt;/a&gt; för att öppna webbläsaren igen.</translation>
+        <translation>Inhämtar autentisering från webbläsaren. &lt;a href=&apos;%1&apos;&gt;Klicka här&lt;/a&gt; för att öppna webbläsaren igen.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1254"/>
@@ -766,7 +766,7 @@ Den här åtgärden avbryter alla synkroniseringar som körs.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1264"/>
         <source>Server configuration error: %1 at %2.</source>
-        <translation>Felaktig serverkonfiguration: %1 på %2.</translation>
+        <translation>Felaktig serverkonfiguration: %1 vid %2.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1275"/>
@@ -796,12 +796,12 @@ Den här åtgärden avbryter alla synkroniseringar som körs.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1577"/>
         <source>End-to-end encryption has been enabled on this account with another device.&lt;br&gt;It can be enabled on this device by entering your mnemonic.&lt;br&gt;This will enable synchronisation of existing encrypted folders.</source>
-        <translation>Totalsträckskryptering har aktiverats på det här kontot med en annan enhet.&lt;br&gt;Det kan aktiveras på den här enheten genom att ange ditt krypteringsord.&lt;br&gt;Detta kommer att möjliggöra synkronisering av befintliga krypterade mappar.</translation>
+        <translation>End-to-end-kryptering har aktiverats på det här kontot med en annan enhet.&lt;br&gt;Krypteringen kan aktiveras på den här enheten genom att ange dina krypteringsord.&lt;br&gt;Detta kommer att möjliggöra synkronisering av befintliga krypterade mappar.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1568"/>
         <source>This account supports end-to-end encryption</source>
-        <translation>Detta konto stödjer totalsträckskryptering</translation>
+        <translation>Detta konto stödjer end-to-end-kryptering</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1572"/>
@@ -814,17 +814,17 @@ Den här åtgärden avbryter alla synkroniseringar som körs.</translation>
     <message>
         <location filename="../src/gui/accountsetupfromcommandlinejob.cpp" line="142"/>
         <source>The authenticated request to the server was redirected to &quot;%1&quot;. The URL is bad, the server is misconfigured.</source>
-        <translation>Den autentiserade begäran till servern omdirigerades till &quot;%1&quot;. URL:n är felaktig, servern är felkonfigurerad.</translation>
+        <translation>Den autentiserade begäran till servern omdirigerades till &quot;%1&quot;. URL:en är felaktig, servern är felkonfigurerad.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsetupfromcommandlinejob.cpp" line="152"/>
         <source>Access forbidden by server. To verify that you have proper access, &lt;a href=&quot;%1&quot;&gt;click here&lt;/a&gt; to access the service with your browser.</source>
-        <translation>Åtkomst förbjuden av servern. För att bekräfta att du har korrekta rättigheter, &lt;a href=&quot;%1&quot;&gt;klicka här&lt;/a&gt; för att ansluta till tjänsten med din webb-läsare.</translation>
+        <translation>Åtkomst förbjuden av servern. För att kontrollera att du har korrekta rättigheter, &lt;a href=&quot;%1&quot;&gt;klicka här&lt;/a&gt; för att ansluta till tjänsten med din webb-läsare.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsetupfromcommandlinejob.cpp" line="160"/>
         <source>There was an invalid response to an authenticated WebDAV request</source>
-        <translation>Det var ett ogiltigt svar på en verifierad WebDAV-begäran</translation>
+        <translation>Det kom ett felaktigt svar på en autentiserad WebDAV-begäran</translation>
     </message>
 </context>
 <context>
@@ -895,12 +895,12 @@ Den här åtgärden avbryter alla synkroniseringar som körs.</translation>
     <message>
         <location filename="../src/gui/tray/activitylistmodel.cpp" line="566"/>
         <source>Network error occurred: client will retry syncing.</source>
-        <translation>Nätverksfel uppstod: klienten kommer att försöka synkronisera igen.</translation>
+        <translation>Nätverksfel inträffade: klienten kommer att försöka synkronisera igen.</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/activitylistmodel.cpp" line="579"/>
         <source>Files from the ignore list as well as symbolic links are not synced.</source>
-        <translation>Filer från ignorerings-listan och symboliska länkar synkroniseras inte.</translation>
+        <translation>Filer från undantagslistan och symboliska länkar synkroniseras inte.</translation>
     </message>
 </context>
 <context>
@@ -908,12 +908,12 @@ Den här åtgärden avbryter alla synkroniseringar som körs.</translation>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="17"/>
         <source>SSL client certificate authentication</source>
-        <translation>Klient-SSL-certifikatauktorisering</translation>
+        <translation>SSL klientcertifikat-autentisering</translation>
     </message>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="23"/>
         <source>This server probably requires a SSL client certificate.</source>
-        <translation>Denna server kräver förmodligen Klient-SSL-certifikat</translation>
+        <translation>Denna server kräver förmodligen ett SSL kliencertifikat</translation>
     </message>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="35"/>
@@ -923,7 +923,7 @@ Den här åtgärden avbryter alla synkroniseringar som körs.</translation>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="51"/>
         <source>Browse …</source>
-        <translation>Bläddra …</translation>
+        <translation>Välj …</translation>
     </message>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="60"/>
@@ -968,12 +968,12 @@ Den här åtgärden avbryter alla synkroniseringar som körs.</translation>
     <message>
         <location filename="../src/gui/application.cpp" line="184"/>
         <source>ignoring</source>
-        <translation>ignorerar</translation>
+        <translation>ignorera</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="184"/>
         <source>deleting</source>
-        <translation>raderar</translation>
+        <translation>radera</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="186"/>
@@ -1010,7 +1010,7 @@ Den här åtgärden avbryter alla synkroniseringar som körs.</translation>
     <message>
         <location filename="../src/gui/application.cpp" line="466"/>
         <source>Legacy import</source>
-        <translation>Äldre import</translation>
+        <translation>Legacyimport</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="467"/>
@@ -1028,7 +1028,7 @@ Den här åtgärden avbryter alla synkroniseringar som körs.</translation>
     <message>
         <location filename="../src/gui/application.cpp" line="395"/>
         <source>There was an error while accessing the configuration file at %1. Please make sure the file can be accessed by your system account.</source>
-        <translation>Ett fel uppstod vid läsning av konfigurationsfilen på %1. Kontrollera att filen kan nås av ditt systemkonto.</translation>
+        <translation>Ett fel uppstod vid läsning av konfigurationsfilen vid %1. Kontrollera att filen kan nås av ditt datorkonto.</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="398"/>
@@ -1174,12 +1174,12 @@ Den här åtgärden avbryter alla synkroniseringar som körs.</translation>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="14"/>
         <source>Case Clash Conflict</source>
-        <translation>Skiftlägeskonflikt</translation>
+        <translation>Versaliseringskrock</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="23"/>
         <source>The file could not be synced because it generates a case clash conflict with an existing file on this system.</source>
-        <translation>Filen kunde inte synkroniseras eftersom den skapar en skiftlägeskonflikt med en befintlig fil på detta system.</translation>
+        <translation>Filen kunde inte synkroniseras eftersom den skapar en versaliseringskrock med en befintlig fil på detta system.</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="36"/>
@@ -1217,7 +1217,7 @@ Den här åtgärden avbryter alla synkroniseringar som körs.</translation>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="165"/>
         <source>Case clashing file</source>
-        <translation>Fil med skiftlägeskonflikt.</translation>
+        <translation>Fil med versaliseringskrock</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="172"/>
@@ -1228,12 +1228,12 @@ Den här åtgärden avbryter alla synkroniseringar som körs.</translation>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="227"/>
         <location filename="../src/gui/caseclashfilenamedialog.cpp" line="113"/>
         <source>Open clashing file</source>
-        <translation>Öppna den konfliktande filen</translation>
+        <translation>Öppna filen med krocken</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="268"/>
         <source>Please enter a new name for the clashing file:</source>
-        <translation>Ange ett nytt namn för den konfliktande filen:</translation>
+        <translation>Ange ett nytt namn för filen med krocken:</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="281"/>
@@ -1248,12 +1248,12 @@ Den här åtgärden avbryter alla synkroniseringar som körs.</translation>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.cpp" line="99"/>
         <source>The file &quot;%1&quot; could not be synced because of a case clash conflict with an existing file on this system.</source>
-        <translation>Filen &quot;%1&quot; kunde inte synkroniseras på grund av en skiftlägeskonflikt med en befintlig fil på detta system.</translation>
+        <translation>Filen &quot;%1&quot; kunde inte synkroniseras på grund av en versaliseringskrock med en befintlig fil på detta system.</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.cpp" line="100"/>
         <source>%1 does not support equal file names with only letter casing differences.</source>
-        <translation>%1 stöder inte lika filnamn med endast skiftlägesskillnader.</translation>
+        <translation>%1 stöder inte lika filnamn med endast skillnader i versalisering.</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.cpp" line="243"/>
@@ -1294,7 +1294,7 @@ Den här åtgärden avbryter alla synkroniseringar som körs.</translation>
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1369"/>
         <source>Please enter your end-to-end encryption passphrase:&lt;br&gt;&lt;br&gt;Username: %2&lt;br&gt;Account: %3&lt;br&gt;</source>
-        <translation>Ange din lösenordsfras för totalsträckskryptering:&lt;br&gt;&lt;br&gt;Användarnamn: %2&lt;br&gt;Konto: %3&lt;br&gt;</translation>
+        <translation>Ange din lösenordsfras för end-to-end-kryptering:&lt;br&gt;&lt;br&gt;Användarnamn: %2&lt;br&gt;Konto: %3&lt;br&gt;</translation>
     </message>
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1377"/>
@@ -2149,12 +2149,12 @@ Om detta var ett misstag och du vill behålla dina filer, kommer de att synkroni
     <message>
         <location filename="../src/gui/folderman.cpp" line="1716"/>
         <source>The local folder %1 already contains a folder used in a folder sync connection. Please pick another one!</source>
-        <translation>Den lokala mappen %1 innehåller redan en mapp som synkroniseras. Vänligen välj en annan!</translation>
+        <translation>Den lokala mappen %1 innehåller redan en mapp med en synkroniseringskoppling. Vänligen välj en annan mapp!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1724"/>
         <source>The local folder %1 is already contained in a folder used in a folder sync connection. Please pick another one!</source>
-        <translation>Den lokala mappen %1 finns redan inuti en mapp som synkroniseras. Vänligen välj en annan!</translation>
+        <translation>Den lokala mappen %1 finns redan inuti en mapp med en synkroniseringskoppling. Vänligen välj en annan mapp!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1740"/>
@@ -2167,7 +2167,7 @@ Om detta var ett misstag och du vill behålla dina filer, kommer de att synkroni
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="55"/>
         <source>Add Folder Sync Connection</source>
-        <translation>Lägg till mappsynkroniseringsanslutning</translation>
+        <translation>Lägg till synkroniseringskoppling för mapp</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="299"/>
@@ -2353,12 +2353,12 @@ Om detta var ett misstag och du vill behålla dina filer, kommer de att synkroni
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="684"/>
         <source>Add Folder Sync Connection</source>
-        <translation>Lägg till mappsynkroniseringsanslutning</translation>
+        <translation>Lägg till synkroniseringskoppling för map</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="686"/>
         <source>Add Sync Connection</source>
-        <translation>Lägg till anslutning.</translation>
+        <translation>Lägg till synkroniseringskoppling.</translation>
     </message>
 </context>
 <context>
@@ -3561,7 +3561,7 @@ Observera att om du använder kommandoradsalternativ för loggning kommer den h�
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="619"/>
         <source>A sync connection from %1 to remote directory %2 was set up.</source>
-        <translation>En synkroniseringsanslutning från %1 till fjärrmappen %2 har skapats.</translation>
+        <translation>En synkroniseringskoppling från %1 till extern mapp %2 har skapats.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="624"/>
@@ -4431,7 +4431,7 @@ Detta är ett nytt experimentellt läge. Om du bestämmer dig för att använda 
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="528"/>
         <source>The account %1 does not have end-to-end encryption configured. Please configure this in your account settings to enable folder encryption.</source>
-        <translation>Kontot %1 har inte totalsträckskryptering konfigurerad. Konfigurera detta i dina kontoinställningar för att aktivera mappkryptering.</translation>
+        <translation>Kontot %1 har inte end-to-end-kryptering konfigurerad. Konfigurera detta i dina kontoinställningar för att aktivera mappkryptering.</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="549"/>
@@ -5385,7 +5385,7 @@ Servern svarade med fel: %2</translation>
     <message>
         <location filename="../src/gui/wizard/welcomepage.cpp" line="111"/>
         <source>Host your own server</source>
-        <translation>Körs direkt från din egen dator</translation>
+        <translation>Använd egen server</translation>
     </message>
 </context>
 <context>
