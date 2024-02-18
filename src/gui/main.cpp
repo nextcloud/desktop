@@ -58,8 +58,17 @@ int main(int argc, char **argv)
 #ifdef Q_OS_WIN
     SetDllDirectory(L"");
 #endif
-    QResource::registerResource(QDir::toNativeSeparators(QApplication::applicationDirPath() + "/../Resources/" + "nmctheme_v1.rcc"));
-    QResource::registerResource(QDir::toNativeSeparators(QDir::currentPath() + "/nmctheme_v1.rcc"));
+    bool resourceLoaded = false;
+    const QString currentPath = QDir::currentPath();
+    if(Utility::isMac())
+    {
+        resourceLoaded = QResource::registerResource(QDir::toNativeSeparators("/Applications/MagentaCLOUD.app/Contents/Resources/nmctheme_v1.rcc"));
+    }
+    else if(Utility::isWindows() || !resourceLoaded)
+    {
+        resourceLoaded = QResource::registerResource(QDir::toNativeSeparators(currentPath + "/nmctheme_v1.rcc"));
+    }
+
     Q_INIT_RESOURCE(resources);
     Q_INIT_RESOURCE(theme);
 
