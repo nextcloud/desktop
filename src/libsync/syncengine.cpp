@@ -314,7 +314,6 @@ void SyncEngine::conflictRecordMaintenance()
             }
 
             _journal->setConflictRecord(record);
-            account()->reportClientStatus(ClientStatusReportingStatus::DownloadError_Conflict);
         }
     }
 }
@@ -1268,7 +1267,6 @@ void SyncEngine::slotSummaryError(const QString &message)
 
 void SyncEngine::slotInsufficientLocalStorage()
 {
-    account()->reportClientStatus(ClientStatusReportingStatus::DownloadError_No_Free_Space);
     slotSummaryError(
         tr("Disk space is low: Downloads that would reduce free space "
            "below %1 were skipped.")
@@ -1277,7 +1275,6 @@ void SyncEngine::slotInsufficientLocalStorage()
 
 void SyncEngine::slotInsufficientRemoteStorage()
 {
-    account()->reportClientStatus(ClientStatusReportingStatus::UploadError_No_Free_Space);
     auto msg = tr("There is insufficient space available on the server for some uploads.");
     if (_uniqueErrors.contains(msg))
         return;
