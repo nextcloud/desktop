@@ -136,7 +136,7 @@ QVariantMap ClientStatusReportingNetwork::prepareReport() const
             qCDebug(lcClientStatusReportingNetwork) << "Could not classify status:";
             continue;
         }
-    
+
         if (categoryKey == statusReportCategoryE2eErrors) {
             const auto initialCount = e2eeErrors[QStringLiteral("count")].toInt();
             e2eeErrors[QStringLiteral("count")] = initialCount + record._numOccurences;
@@ -169,18 +169,11 @@ QByteArray ClientStatusReportingNetwork::classifyStatus(const ClientStatusReport
     }
 
     switch (status) {
-    case ClientStatusReportingStatus::DownloadError_Conflict:
     case ClientStatusReportingStatus::DownloadError_ConflictCaseClash:
     case ClientStatusReportingStatus::DownloadError_ConflictInvalidCharacters:
-    case ClientStatusReportingStatus::UploadError_Conflict:
-    case ClientStatusReportingStatus::UploadError_ConflictInvalidCharacters:
         return statusReportCategorySyncConflicts;
-    case ClientStatusReportingStatus::DownloadError_Cannot_Create_File:
-    case ClientStatusReportingStatus::DownloadError_No_Free_Space:
     case ClientStatusReportingStatus::DownloadError_ServerError:
     case ClientStatusReportingStatus::DownloadError_Virtual_File_Hydration_Failure:
-    case ClientStatusReportingStatus::UploadError_No_Free_Space:
-    case ClientStatusReportingStatus::UploadError_No_Write_Permissions:
     case ClientStatusReportingStatus::UploadError_ServerError:
         return statusReportCategoryProblems;
     case ClientStatusReportingStatus::UploadError_Virus_Detected:
