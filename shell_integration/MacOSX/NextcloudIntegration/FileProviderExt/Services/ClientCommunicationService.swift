@@ -86,6 +86,7 @@ class ClientCommunicationService: NSObject, NSFileProviderServiceSource, NSXPCLi
 
     func setFastEnumerationEnabled(_ enabled: Bool) {
         fpExtension.config.fastEnumerationEnabled = enabled
+        Logger.fileProviderExtension.info("Fast enumeration setting changed to: \(enabled, privacy: .public)")
 
         guard enabled else { return }
         // If enabled, start full enumeration
