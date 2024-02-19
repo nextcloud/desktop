@@ -39,6 +39,7 @@ public slots:
     void configureExtensions();
     void authenticateExtension(const QString &extensionAccountId) const;
     void unauthenticateExtension(const QString &extensionAccountId) const;
+    void createDebugArchiveForExtension(const QString &extensionAccountId, const QString &filename) const;
 
 private slots:
     void slotAccountStateChanged(AccountState::State state) const;

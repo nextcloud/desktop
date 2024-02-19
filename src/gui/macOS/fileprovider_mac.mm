@@ -12,13 +12,15 @@
  * for more details.
  */
 
-#import <Foundation/Foundation.h>
+
+#include "fileprovider.h"
 
 #include <QLoggingCategory>
 
-#include "configfile.h"
+#include "libsync/configfile.h"
+#include "gui/macOS/fileproviderxpc.h"
 
-#include "fileprovider.h"
+#import <Foundation/Foundation.h>
 
 namespace OCC {
 
@@ -35,10 +37,6 @@ FileProvider::FileProvider(QObject * const parent)
 
     if (!fileProviderAvailable()) {
         qCInfo(lcMacFileProvider) << "File provider system is not available on this version of macOS.";
-        deleteLater();
-        return;
-    } else if (!ConfigFile().macFileProviderModuleEnabled()) {
-        qCInfo(lcMacFileProvider) << "File provider module is not enabled in application config.";
         deleteLater();
         return;
     }
@@ -64,9 +62,6 @@ FileProvider *FileProvider::instance()
 {
     if (!fileProviderAvailable()) {
         qCInfo(lcMacFileProvider) << "File provider system is not available on this version of macOS.";
-        return nullptr;
-    } else if (!ConfigFile().macFileProviderModuleEnabled()) {
-        qCInfo(lcMacFileProvider) << "File provider module is not enabled in application config.";
         return nullptr;
     }
 
@@ -100,6 +95,11 @@ void FileProvider::configureXPC()
     } else {
         qCWarning(lcMacFileProvider) << "Could not initialise file provider XPC.";
     }
+}
+
+void FileProvider::createDebugArchiveForDomain(const QString &domainIdentifier, const QString &filename) const
+{
+    _xpc->createDebugArchiveForExtension(domainIdentifier, filename);
 }
 
 } // namespace Mac

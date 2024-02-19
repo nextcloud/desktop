@@ -39,6 +39,7 @@
 #include <QWidgetAction>
 #include <QPainter>
 #include <QPainterPath>
+#include <QQuickView>
 
 namespace {
 const QString TOOLBAR_CSS()
@@ -131,8 +132,6 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
     _toolBar->addAction(networkAction);
     auto *networkSettings = new NetworkSettings;
     _ui->stack->addWidget(networkSettings);
-
-    connect(_ui->stack, &QStackedWidget::currentChanged, this, &SettingsDialog::currentPageChanged);
 
     _actionGroupWidgets.insert(generalAction, generalSettings);
     _actionGroupWidgets.insert(networkAction, networkSettings);

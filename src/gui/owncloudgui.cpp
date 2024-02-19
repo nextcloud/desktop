@@ -62,6 +62,10 @@
 #include <QQuickItem>
 #include <QQmlContext>
 
+#ifdef BUILD_FILE_PROVIDER_MODULE
+#include "macOS/fileprovidersettingscontroller.h"
+#endif
+
 namespace OCC {
 
 Q_LOGGING_CATEGORY(lcOwnCloudGui, "com.nextcloud.owncloudgui")
@@ -146,6 +150,10 @@ ownCloudGui::ownCloudGui(Application *parent)
     qmlRegisterSingletonInstance("com.nextcloud.desktopclient", 1, 0, "UserAppsModel", UserAppsModel::instance());
     qmlRegisterSingletonInstance("com.nextcloud.desktopclient", 1, 0, "Theme", Theme::instance());
     qmlRegisterSingletonInstance("com.nextcloud.desktopclient", 1, 0, "Systray", Systray::instance());
+
+#ifdef BUILD_FILE_PROVIDER_MODULE
+    qmlRegisterSingletonInstance("com.nextcloud.desktopclient", 1, 0, "FileProviderSettingsController", Mac::FileProviderSettingsController::instance());
+#endif
 }
 
 void ownCloudGui::createTray()

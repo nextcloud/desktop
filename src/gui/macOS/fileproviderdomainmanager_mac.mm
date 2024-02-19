@@ -19,6 +19,7 @@
 
 #include "config.h"
 #include "fileproviderdomainmanager.h"
+#include "fileprovidersettingscontroller.h"
 #include "pushnotifications.h"
 
 #include "gui/accountmanager.h"
@@ -223,6 +224,8 @@ public:
 
                 NSFileProviderDomain * const domain = _registeredDomains.take(domainId);
                 [domain release];
+
+                _registeredDomains.remove(domainId);
             }];
         }
     }
@@ -437,6 +440,9 @@ void FileProviderDomainManager::start()
         const auto trReason = tr("%1 application has been closed. Reopen to reconnect.").arg(APPLICATION_NAME);
         disconnectFileProviderDomainForAccount(accountState, trReason);
     });
+
+    connect(FileProviderSettingsController::instance(), &FileProviderSettingsController::vfsEnabledAccountsChanged,
+            this, &FileProviderDomainManager::updateFileProviderDomains);
 }
 
 void FileProviderDomainManager::setupFileProviderDomains()
@@ -446,9 +452,31 @@ void FileProviderDomainManager::setupFileProviderDomains()
     }
 
     d->findExistingFileProviderDomains();
+    updateFileProviderDomains();
+}
 
-    for(auto &accountState : AccountManager::instance()->accounts()) {
+void FileProviderDomainManager::updateFileProviderDomains()
+{
+    if (!d) {
+        return;
+    }
+
+    const auto vfsEnabledAccounts = FileProviderSettingsController::instance()->vfsEnabledAccounts();
+    auto configuredDomains = d->configuredDomainIds();
+
+    for (const auto &accountUserIdAtHost : vfsEnabledAccounts) {
+        if (configuredDomains.contains(accountUserIdAtHost)) {
+            configuredDomains.removeAll(accountUserIdAtHost);
+            continue;
+        }
+
+        const auto accountState = AccountManager::instance()->accountFromUserId(accountUserIdAtHost);
         addFileProviderDomainForAccount(accountState.data());
+    }
+
+    for (const auto &remainingDomainUserId : configuredDomains) {
+        const auto accountState = AccountManager::instance()->accountFromUserId(remainingDomainUserId);
+        removeFileProviderDomainForAccount(accountState.data());
     }
 
     emit domainSetupComplete();
@@ -647,6 +675,11 @@ AccountStatePtr FileProviderDomainManager::accountStateFromFileProviderDomainIde
     }
 
     return accountForReceivedDomainIdentifier;
+}
+
+QString FileProviderDomainManager::fileProviderDomainIdentifierFromAccountState(const AccountStatePtr &accountState)
+{
+    return domainIdentifierForAccount(accountState->account());
 }
 
 } // namespace Mac

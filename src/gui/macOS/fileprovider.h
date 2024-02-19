@@ -39,6 +39,9 @@ public:
 
     static bool fileProviderAvailable();
 
+public slots:
+    void createDebugArchiveForDomain(const QString &domainIdentifier, const QString &filename) const;
+
 private slots:
     void configureXPC();
 

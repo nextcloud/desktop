@@ -26,6 +26,12 @@ set_package_properties(Qt5Concurrent PROPERTIES
     TYPE REQUIRED
 )
 
+find_package(Qt5QuickWidgets ${REQUIRED_QT_VERSION} CONFIG QUIET)
+set_package_properties(Qt5QuickWidgets PROPERTIES
+    DESCRIPTION "Qt5 QuickWidgets component."
+    TYPE REQUIRED
+)
+
 find_package(Qt5WebEngineWidgets ${REQUIRED_QT_VERSION} CONFIG QUIET)
 if(NOT BUILD_WITH_WEBENGINE)
     set_package_properties(Qt5WebEngineWidgets PROPERTIES

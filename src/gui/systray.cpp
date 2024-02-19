@@ -59,9 +59,14 @@ Systray *Systray::instance()
     return _instance;
 }
 
+QQmlApplicationEngine *Systray::trayEngine() const
+{
+    return _trayEngine.get();
+}
+
 void Systray::setTrayEngine(QQmlApplicationEngine *trayEngine)
 {
-    _trayEngine = trayEngine;
+    _trayEngine = std::make_unique<QQmlApplicationEngine>(trayEngine);
 
     _trayEngine->setNetworkAccessManagerFactory(&_accessManagerFactory);
 
@@ -112,7 +117,7 @@ void Systray::create()
             _trayEngine->rootContext()->setContextProperty("activityModel", UserModel::instance()->currentActivityModel());
         }
 
-        QQmlComponent trayWindowComponent(_trayEngine, QStringLiteral("qrc:/qml/src/gui/tray/Window.qml"));
+        QQmlComponent trayWindowComponent(trayEngine(), QStringLiteral("qrc:/qml/src/gui/tray/Window.qml"));
 
         if(trayWindowComponent.isError()) {
             qCWarning(lcSystray) << trayWindowComponent.errorString();
@@ -243,7 +248,7 @@ void Systray::createCallDialog(const Activity &callNotification, const AccountSt
             {"link", callNotification._link},
         };
 
-        const auto callDialog = new QQmlComponent(_trayEngine, QStringLiteral("qrc:/qml/src/gui/tray/CallNotificationDialog.qml"));
+        const auto callDialog = new QQmlComponent(trayEngine(), QStringLiteral("qrc:/qml/src/gui/tray/CallNotificationDialog.qml"));
 
         if(callDialog->isError()) {
             qCWarning(lcSystray) << callDialog->errorString();
@@ -265,7 +270,7 @@ void Systray::createEditFileLocallyLoadingDialog(const QString &fileName)
 
     qCDebug(lcSystray) << "Opening a file local editing dialog...";
 
-    const auto editFileLocallyLoadingDialog = new QQmlComponent(_trayEngine, QStringLiteral("qrc:/qml/src/gui/tray/EditFileLocallyLoadingDialog.qml"));
+    const auto editFileLocallyLoadingDialog = new QQmlComponent(trayEngine(), QStringLiteral("qrc:/qml/src/gui/tray/EditFileLocallyLoadingDialog.qml"));
 
     if (editFileLocallyLoadingDialog->isError()) {
         qCWarning(lcSystray) << editFileLocallyLoadingDialog->errorString();
@@ -287,7 +292,7 @@ void Systray::destroyEditFileLocallyLoadingDialog()
 
 void Systray::createResolveConflictsDialog(const OCC::ActivityList &allConflicts)
 {
-    const auto conflictsDialog = std::make_unique<QQmlComponent>(_trayEngine, QStringLiteral("qrc:/qml/src/gui/ResolveConflictsDialog.qml"));
+    const auto conflictsDialog = std::make_unique<QQmlComponent>(trayEngine(), QStringLiteral("qrc:/qml/src/gui/ResolveConflictsDialog.qml"));
     const QVariantMap initialProperties{
                                         {"allConflicts", QVariant::fromValue(allConflicts)},
     };
@@ -378,7 +383,7 @@ void Systray::createFileDetailsDialog(const QString &localPath)
         {"localPath", localPath},
     };
 
-    QQmlComponent fileDetailsDialog(_trayEngine, QStringLiteral("qrc:/qml/src/gui/filedetails/FileDetailsWindow.qml"));
+    QQmlComponent fileDetailsDialog(trayEngine(), QStringLiteral("qrc:/qml/src/gui/filedetails/FileDetailsWindow.qml"));
 
     if (!fileDetailsDialog.isError()) {
         const auto createdDialog = fileDetailsDialog.createWithInitialProperties(initialProperties);

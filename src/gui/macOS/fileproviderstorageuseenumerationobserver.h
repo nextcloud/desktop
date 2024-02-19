@@ -12,20 +12,14 @@
  * for more details.
  */
 
-#ifndef ClientCommunicationProtocol_h
-#define ClientCommunicationProtocol_h
-
 #import <Foundation/Foundation.h>
+#import <FileProvider/FileProvider.h>
 
-@protocol ClientCommunicationProtocol
+typedef void(^UsageEnumerationFinishedHandler)(NSError *const error);
 
-- (void)getExtensionAccountIdWithCompletionHandler:(void(^)(NSString *extensionAccountId, NSError *error))completionHandler;
-- (void)configureAccountWithUser:(NSString *)user
-                       serverUrl:(NSString *)serverUrl
-                        password:(NSString *)password;
-- (void)removeAccountConfig;
-- (void)createDebugLogStringWithCompletionHandler:(void(^)(NSString *debugLogString, NSError *error))completionHandler;
+@interface FileProviderStorageUseEnumerationObserver : NSObject<NSFileProviderEnumerationObserver>
+
+@property (readwrite, strong) UsageEnumerationFinishedHandler enumerationFinishedHandler;
+@property (readonly) NSSet<id<NSFileProviderItem>> *materialisedItems;
 
 @end
-
-#endif /* ClientCommunicationProtocol_h */

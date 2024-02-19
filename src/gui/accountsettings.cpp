@@ -60,6 +60,10 @@
 #include <QJsonDocument>
 #include <QToolTip>
 
+#ifdef BUILD_FILE_PROVIDER_MODULE
+#include "macOS/fileprovider.h"
+#endif
+
 #include "account.h"
 
 namespace {
@@ -192,6 +196,24 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent)
     _ui->_folderList->setMinimumWidth(300);
 #endif
     new ToolTipUpdater(_ui->_folderList);
+
+#if defined(BUILD_FILE_PROVIDER_MODULE)
+    if (Mac::FileProvider::fileProviderAvailable()) {
+        const auto fileProviderTab = _ui->fileProviderTab;
+        const auto fpSettingsLayout = new QVBoxLayout(fileProviderTab);
+        const auto fpAccountUserIdAtHost = _accountState->account()->userIdAtHostWithPort();
+        const auto fpSettingsController = Mac::FileProviderSettingsController::instance();
+        const auto fpSettingsWidget = fpSettingsController->settingsViewWidget(fpAccountUserIdAtHost, fileProviderTab);
+        fpSettingsLayout->setMargin(0);
+        fpSettingsLayout->addWidget(fpSettingsWidget);
+        fileProviderTab->setLayout(fpSettingsLayout);
+    } else {
+        disguiseTabWidget();
+    }
+#else
+    disguiseTabWidget();
+    _ui->tabWidget->setCurrentIndex(0);
+#endif
 
     const auto mouseCursorChanger = new MouseCursorChanger(this);
     mouseCursorChanger->folderList = _ui->_folderList;
@@ -1686,6 +1708,14 @@ void AccountSettings::initializeE2eEncryptionSettingsMessage()
 
     auto *const actionEnableE2e = addActionToEncryptionMessage(tr("Set up encryption"), e2EeUiActionEnableEncryptionId);
     connect(actionEnableE2e, &QAction::triggered, this, &AccountSettings::slotE2eEncryptionGenerateKeys);
+}
+
+void AccountSettings::disguiseTabWidget() const
+{
+    // Ensure all elements of the tab widget are hidden.
+    // Document mode lets the child view take up the whole view.
+    _ui->tabWidget->setDocumentMode(true);
+    _ui->tabWidget->tabBar()->hide();
 }
 
 } // namespace OCC

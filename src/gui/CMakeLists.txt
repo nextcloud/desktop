@@ -1,5 +1,5 @@
 project(gui)
-find_package(Qt5 REQUIRED COMPONENTS Widgets Svg Qml Quick QuickControls2 Xml Network)
+find_package(Qt5 REQUIRED COMPONENTS Widgets Svg Qml Quick QuickControls2 QuickWidgets Xml Network)
 find_package(KF5Archive REQUIRED)
 
 if(QUICK_COMPILER)
@@ -293,15 +293,31 @@ IF( APPLE )
             macOS/fileprovider_mac.mm
             macOS/fileproviderdomainmanager.h
             macOS/fileproviderdomainmanager_mac.mm
+            macOS/fileproviderdomainsyncstatus.h
+            macOS/fileproviderdomainsyncstatus_mac.mm
+            macOS/fileprovideritemmetadata.h
+            macOS/fileprovideritemmetadata.cpp
+            macOS/fileprovideritemmetadata_mac.mm
+            macOS/fileprovidermaterialiseditemsmodel.h
+            macOS/fileprovidermaterialiseditemsmodel.cpp
+            macOS/fileprovidermaterialiseditemsmodel_mac.mm
+            macOS/fileprovidersettingscontroller.h
+            macOS/fileprovidersettingscontroller_mac.mm
             macOS/fileprovidersocketcontroller.h
             macOS/fileprovidersocketcontroller.cpp
             macOS/fileprovidersocketserver.h
             macOS/fileprovidersocketserver.cpp
             macOS/fileprovidersocketserver_mac.mm
+            macOS/fileproviderstorageuseenumerationobserver.h
+            macOS/fileproviderstorageuseenumerationobserver.m
+            macOS/fileproviderutils.h
+            macOS/fileproviderutils_mac.mm
             macOS/fileproviderxpc.h
             macOS/fileproviderxpc_mac.mm
             macOS/fileproviderxpc_mac_utils.h
-            macOS/fileproviderxpc_mac_utils.mm)
+            macOS/fileproviderxpc_mac_utils.mm
+            macOS/progressobserver.h
+            macOS/progressobserver.m)
     endif()
 
     if(SPARKLE_FOUND AND BUILD_UPDATER)
@@ -543,6 +559,7 @@ target_link_libraries(nextcloudCore
   Qt5::Qml
   Qt5::Quick
   Qt5::QuickControls2
+  Qt5::QuickWidgets
   KF5::Archive
   )
 
