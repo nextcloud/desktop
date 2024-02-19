@@ -84,6 +84,12 @@ class TestSyncMove : public QObject
     Q_OBJECT
 
 private slots:
+    void initTestCase()
+    {
+        Logger::instance()->setLogFlush(true);
+        Logger::instance()->setLogDebug(true);
+    }
+
     void testMoveCustomRemoteRoot()
     {
         FileInfo subFolder(QStringLiteral("AS"), { { QStringLiteral("f1"), 4 } });
@@ -140,7 +146,22 @@ private slots:
     void testSelectiveSyncMovedFolder()
     {
         // issue #5224
-        FakeFolder fakeFolder{ FileInfo{ QString(), { FileInfo{ QStringLiteral("parentFolder"), { FileInfo{ QStringLiteral("subFolderA"), { { QStringLiteral("fileA.txt"), 400 } } }, FileInfo{ QStringLiteral("subFolderB"), { { QStringLiteral("fileB.txt"), 400 } } } } } } } };
+        FakeFolder fakeFolder{
+                              FileInfo{QString(), {
+                                      FileInfo{QStringLiteral("parentFolder"), {
+                                              FileInfo{QStringLiteral("subFolderA"), {
+                                                      {QStringLiteral("fileA.txt"), 400}
+                                                  }
+                                              },
+                                              FileInfo{QStringLiteral("subFolderB"), {
+                                                      {QStringLiteral("fileB.txt"), 400}
+                                                  }
+                                              }
+                                          }
+                                      }
+                                  }
+                              }
+        };
 
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
         auto expectedServerState = fakeFolder.currentRemoteState();
