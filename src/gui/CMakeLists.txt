@@ -286,6 +286,9 @@ IF( APPLE )
 
     if (BUILD_FILE_PROVIDER_MODULE)
         list(APPEND client_SRCS
+            # Symlinks to files in shell_integration/MacOSX/NextcloudIntegration/
+            macOS/ClientCommunicationProtocol.h
+            # End of symlink files
             macOS/fileprovider.h
             macOS/fileprovider_mac.mm
             macOS/fileproviderdomainmanager.h
@@ -294,7 +297,11 @@ IF( APPLE )
             macOS/fileprovidersocketcontroller.cpp
             macOS/fileprovidersocketserver.h
             macOS/fileprovidersocketserver.cpp
-            macOS/fileprovidersocketserver_mac.mm)
+            macOS/fileprovidersocketserver_mac.mm
+            macOS/fileproviderxpc.h
+            macOS/fileproviderxpc_mac.mm
+            macOS/fileproviderxpc_mac_utils.h
+            macOS/fileproviderxpc_mac_utils.mm)
     endif()
 
     if(SPARKLE_FOUND AND BUILD_UPDATER)

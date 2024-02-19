@@ -33,6 +33,10 @@ public:
     ~FileProviderDomainManager() override;
 
     static AccountStatePtr accountStateFromFileProviderDomainIdentifier(const QString &domainIdentifier);
+    void start();
+
+signals:
+    void domainSetupComplete();
 
 private slots:
     void setupFileProviderDomains();

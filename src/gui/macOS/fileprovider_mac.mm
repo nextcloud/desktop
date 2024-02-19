@@ -44,14 +44,16 @@ FileProvider::FileProvider(QObject * const parent)
     }
 
     qCInfo(lcMacFileProvider) << "Initialising file provider domain manager.";
-    _domainManager = std::make_unique<FileProviderDomainManager>(new FileProviderDomainManager(this));
+    _domainManager = std::make_unique<FileProviderDomainManager>(this);
 
     if (_domainManager) {
+        connect(_domainManager.get(), &FileProviderDomainManager::domainSetupComplete, this, &FileProvider::configureXPC);
+        _domainManager->start();
         qCDebug(lcMacFileProvider()) << "Initialized file provider domain manager";
     }
 
     qCDebug(lcMacFileProvider) << "Initialising file provider socket server.";
-    _socketServer = std::make_unique<FileProviderSocketServer>(new FileProviderSocketServer(this));
+    _socketServer = std::make_unique<FileProviderSocketServer>(this);
 
     if (_socketServer) {
         qCDebug(lcMacFileProvider) << "Initialised file provider socket server.";
@@ -86,6 +88,18 @@ bool FileProvider::fileProviderAvailable()
     }
 
     return false;
+}
+
+void FileProvider::configureXPC()
+{
+    _xpc = std::make_unique<FileProviderXPC>(new FileProviderXPC(this));
+    if (_xpc) {
+        qCInfo(lcMacFileProvider) << "Initialised file provider XPC.";
+        _xpc->connectToExtensions();
+        _xpc->configureExtensions();
+    } else {
+        qCWarning(lcMacFileProvider) << "Could not initialise file provider XPC.";
+    }
 }
 
 } // namespace Mac

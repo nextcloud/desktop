@@ -15,7 +15,7 @@
 import FileProvider
 import Foundation
 
-class NextcloudAccount: NSObject {
+struct NextcloudAccount: Equatable {
     static let webDavFilesUrlSuffix: String = "/remote.php/dav/files/"
     let username, password, ncKitAccount, serverUrl, davFilesUrl: String
 
@@ -25,7 +25,5 @@ class NextcloudAccount: NSObject {
         ncKitAccount = user + " " + serverUrl
         self.serverUrl = serverUrl
         davFilesUrl = serverUrl + NextcloudAccount.webDavFilesUrlSuffix + user
-
-        super.init()
     }
 }
