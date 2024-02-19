@@ -29,6 +29,11 @@ QtObject {
     readonly property color errorBoxBackgroundColor: Qt.rgba(0.89, 0.18, 0.18, 1)
     readonly property int errorBoxStripeWidth: 4
 
+    // InfoBox colors
+    readonly property color infoBoxBackgroundColor: Qt.rgba(0, 0.51, 0.79, 0.1)
+    readonly property int infoBoxBorderWidth: 1
+    readonly property color infoBoxBorderColor: Qt.rgba(0, 0.51, 0.79, 1)
+
     // Fonts
     // We are using pixel size because this is cross platform comparable, point size isn't
     readonly property int topLinePixelSize: pixelSize

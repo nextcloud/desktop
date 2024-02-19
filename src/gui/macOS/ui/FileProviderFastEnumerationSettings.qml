@@ -30,7 +30,7 @@ Column {
     property bool fastEnumerationSet: false
     property bool fastEnumerationEnabled: true
 
-    padding: 0
+    spacing: 0
 
     CheckBox {
         id: fastEnumerationEnabledCheckBox
@@ -38,5 +38,22 @@ Column {
         text: qsTr("Enable fast sync")
         checked: root.fastEnumerationEnabled
         onClicked: root.fastEnumerationEnabledToggled(checked)
+    }
+
+    EnforcedPlainTextLabel {
+        id: fastEnumerationDescription
+        background: Rectangle {
+            color: Style.infoBoxBackgroundColor
+            border.width: Style.infoBoxBorderWidth
+            border.color: Style.infoBoxBorderColor
+            radius: Style.slightlyRoundedButtonRadius
+        }
+        width: parent.width
+        padding: Style.smallSpacing
+        text: qsTr("Fast sync will only sync changes in files and folders within folders that have been explored. " +
+                    "This can significantly increase responsiveness on initial configuration of virtual files. " +
+                    "However, it will cause redundant downloads of files moved to an unexplored folder. ")
+        wrapMode: Text.Wrap
+        visible: fastEnumerationEnabled
     }
 }
