@@ -1001,27 +1001,6 @@ void Application::setupTranslations()
                 installTranslator(qtTranslator);
             if (!qtkeychainTranslator->isEmpty())
                 installTranslator(qtkeychainTranslator);
-
-            //Make sure, the current language is the last one, because we want to have our language files to be the last ones
-            if(lang.startsWith(QLatin1String("de")))
-            {
-                if(!translator->load(QLatin1String("client_de_NMC"), trPath)){
-                    qCritical(lcApplication) << "Could not find magenta language file";
-                }
-                else{
-                    qInfo(lcApplication) << "Loaded magenta language file";
-                }
-            }
-            else if(lang.startsWith(QLatin1String("en")))
-            {
-                if(!translator->load(QLatin1String("client_en_NMC"), trPath)){
-                    qCritical(lcApplication) << "Could not find magenta language file";
-                }
-                else{
-                    qInfo(lcApplication) << "Loaded magenta language file";
-                }
-            }
-
             break;
         } else {
             qCWarning(lcApplication()) << "translation catalog failed to load";
@@ -1030,6 +1009,30 @@ void Application::setupTranslations()
         }
         if (property("ui_lang").isNull()) {
             setProperty("ui_lang", "C");
+        }
+    }
+
+    const auto trPath = applicationTrPath();
+    for (QString lang : qAsConst(uiLanguages))
+    {
+        //Make sure, the current language is the last one, because we want to have our language files to be the last ones
+        if(lang.startsWith(QLatin1String("de")))
+        {
+            if(!translator->load(QLatin1String("client_de_NMC"), trPath)){
+                qCritical(lcApplication) << "Could not find magenta language file";
+            }
+            else{
+                qInfo(lcApplication) << "Loaded magenta language file";
+            }
+        }
+        else if(lang.startsWith(QLatin1String("en")))
+        {
+            if(!translator->load(QLatin1String("client_en_NMC"), trPath)){
+                qCritical(lcApplication) << "Could not find magenta language file";
+            }
+            else{
+                qInfo(lcApplication) << "Loaded magenta language file";
+            }
         }
     }
 }
