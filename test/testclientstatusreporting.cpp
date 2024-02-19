@@ -75,56 +75,44 @@ private slots:
     void testReportAndSendStatuses()
     {
         for (int i = 0; i < 2; ++i) {
-            // 5 conflicts
-            account->reportClientStatus(OCC::ClientStatusReportingStatus::UploadError_Conflict);
-            account->reportClientStatus(OCC::ClientStatusReportingStatus::UploadError_ConflictInvalidCharacters);
-            account->reportClientStatus(OCC::ClientStatusReportingStatus::DownloadError_Conflict);
+            // 2 conflicts
             account->reportClientStatus(OCC::ClientStatusReportingStatus::DownloadError_ConflictInvalidCharacters);
             account->reportClientStatus(OCC::ClientStatusReportingStatus::DownloadError_ConflictCaseClash);
 
-            // 4 problems
+            // 3 problems
             account->reportClientStatus(OCC::ClientStatusReportingStatus::UploadError_ServerError);
             account->reportClientStatus(OCC::ClientStatusReportingStatus::DownloadError_ServerError);
             account->reportClientStatus(OCC::ClientStatusReportingStatus::DownloadError_Virtual_File_Hydration_Failure);
             // 3 occurances of case ClientStatusReportingStatus::UploadError_No_Write_Permissions
-            account->reportClientStatus(OCC::ClientStatusReportingStatus::UploadError_No_Write_Permissions);
-            account->reportClientStatus(OCC::ClientStatusReportingStatus::UploadError_No_Write_Permissions);
-            account->reportClientStatus(OCC::ClientStatusReportingStatus::UploadError_No_Write_Permissions);
+            account->reportClientStatus(OCC::ClientStatusReportingStatus::DownloadError_Virtual_File_Hydration_Failure);
+            account->reportClientStatus(OCC::ClientStatusReportingStatus::DownloadError_Virtual_File_Hydration_Failure);
 
-            // 3 occurances of case ClientStatusReportingStatus::UploadError_Virus_Detected
-            account->reportClientStatus(OCC::ClientStatusReportingStatus::UploadError_Virus_Detected);
-            account->reportClientStatus(OCC::ClientStatusReportingStatus::UploadError_Virus_Detected);
-            account->reportClientStatus(OCC::ClientStatusReportingStatus::UploadError_Virus_Detected);
-
-            // 2 occurances of E2EeError_GeneralError
-            account->reportClientStatus(OCC::ClientStatusReportingStatus::E2EeError_GeneralError);
-            account->reportClientStatus(OCC::ClientStatusReportingStatus::E2EeError_GeneralError);
             QTest::qWait(OCC::ClientStatusReportingNetwork::clientStatusReportingTrySendTimerInterval + OCC::ClientStatusReportingNetwork::repordSendIntervalMs);
 
             QVERIFY(!bodyReceivedAndParsed.isEmpty());
 
-            // we must have 2 e2ee errors
+            // we must have an empty map of virus_detected category statuses
+            QVERIFY(bodyReceivedAndParsed.contains("virus_detected"));
             const auto virusDetectedErrorsReceived = bodyReceivedAndParsed.value("virus_detected").toMap();
-            QVERIFY(!virusDetectedErrorsReceived.isEmpty());
-            QCOMPARE(virusDetectedErrorsReceived.value("count"), 3);
+            QVERIFY(virusDetectedErrorsReceived.isEmpty());
 
-            // we must have 2 e2ee errors
+            // we must have an empty map of e2ee_errors category statuses
+            QVERIFY(bodyReceivedAndParsed.contains("e2ee_errors"));
             const auto e2eeErrorsReceived = bodyReceivedAndParsed.value("e2ee_errors").toMap();
-            QVERIFY(!e2eeErrorsReceived.isEmpty());
-            QCOMPARE(e2eeErrorsReceived.value("count"), 2);
+            QVERIFY(e2eeErrorsReceived.isEmpty());
 
-            // we must have 5 conflicts
+            // we must have 2 conflicts
             const auto conflictsReceived = bodyReceivedAndParsed.value("sync_conflicts").toMap();
             QVERIFY(!conflictsReceived.isEmpty());
-            QCOMPARE(conflictsReceived.value("count"), 5);
+            QCOMPARE(conflictsReceived.value("count"), 2);
 
-            // we must have 4 problems
+            // we must have 3 problems
             const auto problemsReceived = bodyReceivedAndParsed.value("problems").toMap();
             QVERIFY(!problemsReceived.isEmpty());
-            QCOMPARE(problemsReceived.size(), 4);
-            const auto problemsNoWritePermissions = problemsReceived.value(OCC::clientStatusstatusStringFromNumber(OCC::ClientStatusReportingStatus::UploadError_No_Write_Permissions)).toMap();
-            // among those, 3 occurances of case ClientStatusReportingStatus::UploadError_No_Write_Permissions
-            QCOMPARE(problemsNoWritePermissions.value("count"), 3);
+            QCOMPARE(problemsReceived.size(), 3);
+            const auto specificProblemMultipleOccurances = problemsReceived.value(OCC::clientStatusstatusStringFromNumber(OCC::ClientStatusReportingStatus::DownloadError_Virtual_File_Hydration_Failure)).toMap();
+            // among those, 3 occurances of specific problem
+            QCOMPARE(specificProblemMultipleOccurances.value("count"), 3);
 
             bodyReceivedAndParsed.clear();
         }

@@ -326,37 +326,17 @@ bool PropagateItemJob::hasEncryptedAncestor() const
 
 void PropagateItemJob::reportClientStatuses()
 {
-    if (_item->_status == SyncFileItem::Status::Conflict) {
-        if (_item->_direction == SyncFileItem::Direction::Up) {
-            propagator()->account()->reportClientStatus(ClientStatusReportingStatus::UploadError_Conflict);
-        } else {
-            propagator()->account()->reportClientStatus(ClientStatusReportingStatus::DownloadError_Conflict);
-        }
-    } else if (_item->_status == SyncFileItem::Status::FileNameClash) {
-        if (_item->_direction == SyncFileItem::Direction::Up) {
-            propagator()->account()->reportClientStatus(ClientStatusReportingStatus::UploadError_ConflictInvalidCharacters);
-        } else {
+    if (_item->_status == SyncFileItem::Status::FileNameClash) {
+        if (_item->_direction != SyncFileItem::Direction::Up) {
             propagator()->account()->reportClientStatus(ClientStatusReportingStatus::DownloadError_ConflictInvalidCharacters);
         }
-    } else if (_item->_status == SyncFileItem::Status::FileNameInvalidOnServer) {
-        propagator()->account()->reportClientStatus(ClientStatusReportingStatus::UploadError_ConflictInvalidCharacters);
     } else if (_item->_status == SyncFileItem::Status::FileNameInvalid) {
         propagator()->account()->reportClientStatus(ClientStatusReportingStatus::DownloadError_ConflictInvalidCharacters);
     } else if (_item->_httpErrorCode != HttpErrorCodeNone && _item->_httpErrorCode != HttpErrorCodeSuccess && _item->_httpErrorCode != HttpErrorCodeSuccessCreated
                && _item->_httpErrorCode != HttpErrorCodeSuccessNoContent) {
-        if (_item->_direction == SyncFileItem::Up) {
-            const auto isCodeBadReqOrUnsupportedMediaType = (_item->_httpErrorCode == HttpErrorCodeBadRequest || _item->_httpErrorCode == HttpErrorCodeUnsupportedMediaType);
-            const auto isExceptionInfoPresent = !_item->_errorExceptionName.isEmpty() && !_item->_errorExceptionMessage.isEmpty();
-            if (isCodeBadReqOrUnsupportedMediaType && isExceptionInfoPresent
-                && _item->_errorExceptionName.contains(QStringLiteral("UnsupportedMediaType"))
-                && _item->_errorExceptionMessage.contains(QStringLiteral("virus"), Qt::CaseInsensitive)) {
-                propagator()->account()->reportClientStatus(ClientStatusReportingStatus::UploadError_Virus_Detected);
-            } else {
-                propagator()->account()->reportClientStatus(ClientStatusReportingStatus::UploadError_ServerError);
-            }
-        } else {
-            propagator()->account()->reportClientStatus(ClientStatusReportingStatus::DownloadError_ServerError);
-        }
+        propagator()->account()->reportClientStatus(_item->_direction == SyncFileItem::Up
+            ? ClientStatusReportingStatus::UploadError_ServerError
+            : ClientStatusReportingStatus::DownloadError_ServerError);
     }
 }
 
@@ -982,7 +962,6 @@ bool OwncloudPropagator::createConflict(const SyncFileItemPtr &item,
     }
 
     _journal->setConflictRecord(conflictRecord);
-    account()->reportClientStatus(ClientStatusReportingStatus::DownloadError_Conflict);
 
     // Create a new upload job if the new conflict file should be uploaded
     if (account()->capabilities().uploadConflictFiles()) {

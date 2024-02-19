@@ -149,7 +149,6 @@ void UpdateE2eeFolderMetadataJob::unlockFolder(const EncryptedFolderMetadataHand
     connect(_encryptedFolderMetadataHandler.data(), &EncryptedFolderMetadataHandler::folderUnlocked, [this](const QByteArray &folderId, int httpStatus) {
         if (httpStatus != 200) {
             qCWarning(lcUpdateFileDropMetadataJob) << "Unlock Error" << folderId << httpStatus;
-            propagator()->account()->reportClientStatus(OCC::ClientStatusReportingStatus::E2EeError_GeneralError);
             _item->_errorString = tr("Failed to unlock encrypted folder.");
             finished(SyncFileItem::FatalError);
             return;

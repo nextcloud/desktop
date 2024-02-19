@@ -121,13 +121,12 @@ QVariantMap ClientStatusReportingNetwork::prepareReport() const
     QVariantMap report;
     report[statusReportCategorySyncConflicts] = QVariantMap{};
     report[statusReportCategoryProblems] = QVariantMap{};
+    // last ones must always be present at least empty (we do not have any statuses for thos categories for desktop)
     report[statusReportCategoryVirus] = QVariantMap{};
     report[statusReportCategoryE2eErrors] = QVariantMap{};
 
-    QVariantMap e2eeErrors;
     QVariantMap problems;
     QVariantMap syncConflicts;
-    QVariantMap virusDetectedErrors;
 
     for (const auto &record : records) {
         const auto categoryKey = classifyStatus(static_cast<ClientStatusReportingStatus>(record._status));
@@ -137,12 +136,7 @@ QVariantMap ClientStatusReportingNetwork::prepareReport() const
             continue;
         }
     
-        if (categoryKey == statusReportCategoryE2eErrors) {
-            const auto initialCount = e2eeErrors[QStringLiteral("count")].toInt();
-            e2eeErrors[QStringLiteral("count")] = initialCount + record._numOccurences;
-            e2eeErrors[QStringLiteral("oldest")] = record._lastOccurence;
-            report[categoryKey] = e2eeErrors;
-        } else if (categoryKey == statusReportCategoryProblems) {
+        if (categoryKey == statusReportCategoryProblems) {
             problems[record._name] = QVariantMap{{QStringLiteral("count"), record._numOccurences}, {QStringLiteral("oldest"), record._lastOccurence}};
             report[categoryKey] = problems;
         } else if (categoryKey == statusReportCategorySyncConflicts) {
@@ -150,11 +144,6 @@ QVariantMap ClientStatusReportingNetwork::prepareReport() const
             syncConflicts[QStringLiteral("count")] = initialCount + record._numOccurences;
             syncConflicts[QStringLiteral("oldest")] = record._lastOccurence;
             report[categoryKey] = syncConflicts;
-        } else if (categoryKey == statusReportCategoryVirus) {
-            const auto initialCount = virusDetectedErrors[QStringLiteral("count")].toInt();
-            virusDetectedErrors[QStringLiteral("count")] = initialCount + record._numOccurences;
-            virusDetectedErrors[QStringLiteral("oldest")] = record._lastOccurence;
-            report[categoryKey] = virusDetectedErrors;
         }
     }
     return report;
@@ -169,24 +158,13 @@ QByteArray ClientStatusReportingNetwork::classifyStatus(const ClientStatusReport
     }
 
     switch (status) {
-    case ClientStatusReportingStatus::DownloadError_Conflict:
     case ClientStatusReportingStatus::DownloadError_ConflictCaseClash:
     case ClientStatusReportingStatus::DownloadError_ConflictInvalidCharacters:
-    case ClientStatusReportingStatus::UploadError_Conflict:
-    case ClientStatusReportingStatus::UploadError_ConflictInvalidCharacters:
         return statusReportCategorySyncConflicts;
-    case ClientStatusReportingStatus::DownloadError_Cannot_Create_File:
-    case ClientStatusReportingStatus::DownloadError_No_Free_Space:
     case ClientStatusReportingStatus::DownloadError_ServerError:
     case ClientStatusReportingStatus::DownloadError_Virtual_File_Hydration_Failure:
-    case ClientStatusReportingStatus::UploadError_No_Free_Space:
-    case ClientStatusReportingStatus::UploadError_No_Write_Permissions:
     case ClientStatusReportingStatus::UploadError_ServerError:
         return statusReportCategoryProblems;
-    case ClientStatusReportingStatus::UploadError_Virus_Detected:
-        return statusReportCategoryVirus;
-    case ClientStatusReportingStatus::E2EeError_GeneralError:
-        return statusReportCategoryE2eErrors;
     case ClientStatusReportingStatus::Count:
         return {};
     };
