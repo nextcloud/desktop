@@ -463,6 +463,8 @@ void ProcessDirectoryJob::processFile(PathTuple path,
     const auto hasLocal = localEntry.isValid() ? "true" : _queryLocal == ParentNotChanged ? "db" : "false";
     const auto serverFileIsLocked = (serverEntry.isValid() ? (serverEntry.locked == SyncFileItem::LockStatus::LockedItem ? "locked" : "not locked")  : "");
     const auto localFileIsLocked = dbEntry._lockstate._locked ? "locked" : "not locked";
+    const auto serverFileLockType = serverEntry.isValid() ? QString::number(static_cast<int>(serverEntry.lockOwnerType)) : QStringLiteral("");
+    const auto localFileLockType = dbEntry._lockstate._locked ? QString::number(static_cast<int>(dbEntry._lockstate._lockOwnerType)) : QStringLiteral("");
     qCInfo(lcDisco).nospace() << "Processing " << path._original
                               << " | (db/local/remote)"
                               << " | valid: " << dbEntry.isValid() << "/" << hasLocal << "/" << hasServer
@@ -476,6 +478,7 @@ void ProcessDirectoryJob::processFile(PathTuple path,
                               << " | e2ee: " << dbEntry.isE2eEncrypted() << "/" << serverEntry.isE2eEncrypted()
                               << " | e2eeMangledName: " << dbEntry.e2eMangledName() << "/" << serverEntry.e2eMangledName
                               << " | file lock: " << localFileIsLocked << "//" << serverFileIsLocked
+                              << " | file lock type: " << localFileLockType << "//" << serverFileLockType
                               << " | metadata missing: /" << localEntry.isMetadataMissing << '/';
 
     if (localEntry.isValid()
