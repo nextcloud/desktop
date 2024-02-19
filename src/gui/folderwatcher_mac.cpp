@@ -71,8 +71,9 @@ static void callback(
         | kFSEventStreamEventFlagItemInodeMetaMod // for mtime change
         | kFSEventStreamEventFlagItemRenamed // also coming for moves to trash in finder
         | kFSEventStreamEventFlagItemModified // for content change
-        | kFSEventStreamEventFlagItemCloned; // for cloned items (since 10.13)
-    //We ignore other flags, e.g. for owner change, xattr change, Finder label change etc
+        | kFSEventStreamEventFlagItemCloned // for cloned items (since 10.13)
+        | kFSEventStreamEventFlagItemXattrMod; // for tags change (which are stored as xattr)
+        //We ignore other flags, e.g. for owner change etc.
 
     QStringList paths;
     CFArrayRef eventPaths = (CFArrayRef)eventPathsVoid;
@@ -111,7 +112,7 @@ void FolderWatcherPrivate::startWatching()
         pathsToWatch,
         kFSEventStreamEventIdSinceNow,
         0, // latency
-        kFSEventStreamCreateFlagUseCFTypes | kFSEventStreamCreateFlagFileEvents | kFSEventStreamCreateFlagIgnoreSelf);
+        kFSEventStreamCreateFlagUseCFTypes | kFSEventStreamCreateFlagFileEvents | kFSEventStreamCreateFlagIgnoreSelf | kFSEventStreamEventFlagItemXattrMod);
 
     CFRelease(pathsToWatch);
     CFRelease(folderCF);

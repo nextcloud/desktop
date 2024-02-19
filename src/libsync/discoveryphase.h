@@ -86,6 +86,8 @@ struct RemoteInfo
     QString lockEditorApp;
     qint64 lockTime = 0;
     qint64 lockTimeout = 0;
+
+    QByteArray tagList; // DAV property system-tags
 };
 
 struct LocalInfo
@@ -102,6 +104,9 @@ struct LocalInfo
     bool isVirtualFile = false;
     bool isSymLink = false;
     bool isMetadataMissing = false;
+
+    QByteArray tagList;
+
     [[nodiscard]] bool isValid() const { return !name.isNull(); }
 };
 

@@ -87,6 +87,7 @@ public:
     bool _isShared = false;
     qint64 _lastShareStateFetchedTimestamp = 0;
     bool _sharedByMe = false;
+    QByteArray _tagList;
 };
 
 QDebug& operator<<(QDebug &stream, const SyncJournalFileRecord::EncryptionStatus status);

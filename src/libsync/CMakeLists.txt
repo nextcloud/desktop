@@ -46,6 +46,8 @@ set(libsync_SRCS
     encryptedfoldermetadatahandler.cpp
     filesystem.h
     filesystem.cpp
+    filetags.h
+    filetags.cpp
     helpers.cpp
     httplogger.h
     httplogger.cpp

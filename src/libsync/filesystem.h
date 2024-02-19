@@ -77,7 +77,8 @@ namespace FileSystem {
      */
     bool OWNCLOUDSYNC_EXPORT fileChanged(const QString &fileName,
         qint64 previousSize,
-        time_t previousMtime);
+        time_t previousMtime,
+        const QByteArray &taglist);
 
     /**
      * @brief Like !fileChanged() but with verbose logging if the file *did* change.

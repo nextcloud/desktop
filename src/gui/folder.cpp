@@ -558,7 +558,6 @@ void Folder::slotWatchedPathChanged(const QString &path, ChangeReason reason)
         qCDebug(lcFolder) << "Changed path is not contained in folder, ignoring:" << path;
         return;
     }
-
     auto relativePath = path.midRef(this->path().size());
 
     if (pathIsIgnored(path)) {
@@ -610,7 +609,7 @@ void Folder::slotWatchedPathChanged(const QString &path, ChangeReason reason)
         // an attribute change (pin state) that caused the notification
         bool spurious = false;
         if (record.isValid()
-            && !FileSystem::fileChanged(path, record._fileSize, record._modtime)) {
+            && !FileSystem::fileChanged(path, record._fileSize, record._modtime,record._tagList)) {
             spurious = true;
 
             if (auto pinState = _vfs->pinState(relativePath.toString())) {
@@ -628,7 +627,6 @@ void Folder::slotWatchedPathChanged(const QString &path, ChangeReason reason)
         }
     }
     warnOnNewExcludedItem(record, relativePath);
-
     emit watchedFileChangedExternally(path);
 
     // Also schedule this folder for a sync, but only after some delay:

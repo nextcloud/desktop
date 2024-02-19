@@ -24,6 +24,7 @@
 #include "common/syncfilestatus.h"
 #include "csync_exclude.h"
 #include "filesystem.h"
+#include "filetags.h"
 #include "deletejob.h"
 #include "propagatedownload.h"
 #include "common/asserts.h"

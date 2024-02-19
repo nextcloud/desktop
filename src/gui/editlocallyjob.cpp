@@ -213,7 +213,9 @@ void EditLocallyJob::fetchRemoteFileParentInfo()
                                   QByteArrayLiteral("http://owncloud.org/ns:size"),
                                   QByteArrayLiteral("http://owncloud.org/ns:id"),
                                   QByteArrayLiteral("http://owncloud.org/ns:permissions"),
-                                  QByteArrayLiteral("http://owncloud.org/ns:checksums")};
+                                  QByteArrayLiteral("http://owncloud.org/ns:checksums"),
+                                  QByteArrayLiteral("http://owncloud.org/ns:tags"),
+                                  QByteArrayLiteral("http://nextcloud.org/ns:system-tags")};
 
     job->setProperties(props);
     connect(job, &LsColJob::directoryListingIterated, this, &EditLocallyJob::slotDirectoryListingIterated);
