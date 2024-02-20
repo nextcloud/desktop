@@ -149,5 +149,21 @@
         <source>SETUP_CHANGE_STORAGE_LOCATION</source>
         <translation>Speicherort ändern</translation>
     </message>
+    <message>
+        <source>E2E_ENCRYPTION_ACTIVE</source>
+        <translation>Die Ende-zu-Ende-Verschlüsselung wurde erfolgreich aktiviert. Sie können nun verschlüsselte Inhalte bearbeiten oder neue, leere Ordner verschlüsseln.</translation>
+    </message>
+    <message>
+        <source>E2E_ENCRYPTION_START</source>
+        <translation>Die Ende-zu-Ende-Verschlüsselung wurde mit einem anderen Gerät aktiviert. Bitte geben Sie ihre Passphrase ein um verschlüsselte Ordner sychronisieren zu können.</translation>
+    </message>
+    <message>
+        <source>MORE</source>
+        <translation>Mehr</translation>
+    </message>
+    <message>
+        <source>LOGIN</source>
+        <translation>Einloggen</translation>
+    </message>
 </context>
 </TS>
