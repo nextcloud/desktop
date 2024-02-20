@@ -155,15 +155,6 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
 
     auto palette = option.palette;
 
-    if (qApp->style()->inherits("QWindowsVistaStyle")) {
-        // Hack: Windows Vista's light blue is not contrasting enough for white
-
-        // (code from QWindowsVistaStyle::drawControl for CE_ItemViewItem)
-        palette.setColor(QPalette::All, QPalette::HighlightedText, palette.color(QPalette::Active, QPalette::Text));
-        palette.setColor(QPalette::All, QPalette::Highlight, palette.base().color().darker(108));
-    }
-
-
     QPalette::ColorGroup cg = option.state & QStyle::State_Enabled
         ? QPalette::Normal
         : QPalette::Disabled;
