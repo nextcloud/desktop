@@ -272,7 +272,7 @@ void FolderMetadata::setupExistingMetadataLegacy(const QByteArray &metadata)
 
     const auto metadataKeyFromJson = metadataObj[metadataKeyKey].toString().toLocal8Bit();
     if (!metadataKeyFromJson.isEmpty()) {
-        // parse version 1.2
+        // parse version 1.1 and 1.2 (both must have a single "metadataKey"), not "metadataKeys" as 1.0
         const auto decryptedMetadataKeyBase64 = decryptDataWithPrivateKey(QByteArray::fromBase64(metadataKeyFromJson));
         if (!decryptedMetadataKeyBase64.isEmpty()) {
             // fromBase64() multiple times just to stick with the old wrong way
@@ -280,9 +280,8 @@ void FolderMetadata::setupExistingMetadataLegacy(const QByteArray &metadata)
         }
     }
 
-    if (metadataKeyForDecryption().isEmpty()
-        && _existingMetadataVersion < latestSupportedMetadataVersion()) {
-        // parse version 1.0
+    if (metadataKeyForDecryption().isEmpty() && _existingMetadataVersion < MetadataVersion::Version1_2) {
+        // parse version 1.0 (before security-vulnerability fix for metadata keys was released
         qCDebug(lcCseMetadata()) << "Migrating from" << _existingMetadataVersion << "to"
                                  << latestSupportedMetadataVersion();
         const auto metadataKeys = metadataObj["metadataKeys"].toObject();
@@ -403,7 +402,10 @@ void FolderMetadata::setupVersionFromExistingMetadata(const QByteArray &metadata
         _existingMetadataVersion = MetadataVersion::Version1_2;
     } else if (versionStringFromMetadata == QStringLiteral("2.0") || versionStringFromMetadata == QStringLiteral("2")) {
         _existingMetadataVersion = MetadataVersion::Version2_0;
-    } else if (versionStringFromMetadata == QStringLiteral("1.0") || versionStringFromMetadata == QStringLiteral("1")) {
+    } else if (versionStringFromMetadata == QStringLiteral("1.0")
+        || versionStringFromMetadata == QStringLiteral("1.1")) {
+        // We used to have an intermediate 1.1 after applying a security-vulnerability fix for metadata keys.
+        // It should be treated as MetadataVersion::Version1, as we don't want to change logic related to 1.2, since 1.1 is an edge case.
         _existingMetadataVersion = MetadataVersion::Version1;
     }
 }
