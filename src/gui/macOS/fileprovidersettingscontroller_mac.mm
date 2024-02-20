@@ -442,7 +442,8 @@ QAbstractListModel *FileProviderSettingsController::materialisedItemsModelForAcc
     const auto model = new FileProviderMaterialisedItemsModel(this);
     model->setItems(items);
 
-    connect(this, &FileProviderSettingsController::materialisedItemsForAccountChanged, model, [this, model, userIdAtHost](const QString &accountUserIdAtHost) {
+    connect(this, &FileProviderSettingsController::materialisedItemsForAccountChanged,
+            model, [this, model, userIdAtHost](const QString &accountUserIdAtHost) {
         if (accountUserIdAtHost != userIdAtHost) {
             return;
         }
@@ -464,6 +465,8 @@ void FileProviderSettingsController::createEvictionWindowForAccount(const QStrin
             {fpMaterialisedItemsModelProp, QVariant::fromValue(model)},
     });
     const auto dialog = qobject_cast<QQuickWindow *>(genericDialog);
+    QObject::connect(dialog, SIGNAL(reloadMaterialisedItems(QString)),
+                     this, SLOT(refreshMaterialisedItemsForAccount(QString)));
     Q_ASSERT(dialog);
     dialog->show();
 }

@@ -25,6 +25,8 @@ import com.nextcloud.desktopclient 1.0
 ApplicationWindow {
     id: root
 
+    signal reloadMaterialisedItems(string accountUserIdAtHost)
+
     property var materialisedItemsModel: null
     property string accountUserIdAtHost: ""
 
@@ -32,6 +34,8 @@ ApplicationWindow {
     flags: Qt.Dialog | Qt.WindowStaysOnTopHint
     width: 640
     height: 480
+
+    Component.onCompleted: reloadMaterialisedItems(accountUserIdAtHost)
 
     ColumnLayout {
         anchors.fill: parent
@@ -54,6 +58,7 @@ ApplicationWindow {
                 contentsFont.bold: true
                 bgColor: Style.ncBlue
                 text: qsTr("Reload")
+                onClicked: reloadMaterialisedItems(accountUserIdAtHost)
             }
         }
 
