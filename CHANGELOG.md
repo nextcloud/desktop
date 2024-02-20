@@ -53,6 +53,7 @@ ownCloud admins and users.
 * Change - Remove unused command line option --language: [#11245](https://github.com/owncloud/client/issues/11245)
 * Change - Windows: always use fusion style: [#11275](https://github.com/owncloud/client/issues/11275)
 * Change - Deprecate suffix VFS: [#11325](https://github.com/owncloud/client/issues/11325)
+* Change - Removal of selective sync tree from account status page: [#11357](https://github.com/owncloud/client/issues/11357)
 * Change - Fix three badly styled warning messages: [#11412](https://github.com/owncloud/client/issues/11412)
 * Change - Removed support for limiting sync of big new folder & external storage: [#11517](https://github.com/owncloud/client/pull/11517)
 * Enhancement - Add option to pause synchronization on metered connections: [#4808](https://github.com/owncloud/client/issues/4808)
@@ -147,6 +148,23 @@ ownCloud admins and users.
    removal in 7.0.
 
    https://github.com/owncloud/client/issues/11325
+
+* Change - Removal of selective sync tree from account status page: [#11357](https://github.com/owncloud/client/issues/11357)
+
+   We removed the selective sync support from the main widget and moved it to its
+   own dialog, available through the context menu of the sync folder.
+
+   Having both the sync status and the selective sync settings in the same widget
+   caused a lot of problems and overhead over the years. Additionally, it required
+   us to maintain a lot of special and basically duplicated code, as we already had
+   a dedicated widget to handle selective sync.
+
+   https://github.com/owncloud/client/issues/11357
+   https://github.com/owncloud/client/issues/11357
+   https://github.com/owncloud/client/issues/8102
+   https://github.com/owncloud/client/issues/5423
+   https://github.com/owncloud/client/issues/4080
+   https://github.com/owncloud/client/pull/11524
 
 * Change - Fix three badly styled warning messages: [#11412](https://github.com/owncloud/client/issues/11412)
 
