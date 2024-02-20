@@ -39,7 +39,7 @@
     <message>
         <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.ui" line="230"/>
         <source>Restore default value</source>
-        <translation type="unfinished"/>
+        <translation>Obnovit výchozí hodnotu</translation>
     </message>
 </context>
 <context>
@@ -419,7 +419,7 @@ File synchronization desktop utility.</source>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="118"/>
         <source>Preparing the account</source>
-        <translation type="unfinished"/>
+        <translation>Připravuji účet</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="218"/>
@@ -494,7 +494,7 @@ File synchronization desktop utility.</source>
         <location filename="../src/gui/accountsettings.cpp" line="745"/>
         <location filename="../src/gui/accountsettings.cpp" line="756"/>
         <source>Add Space</source>
-        <translation type="unfinished"/>
+        <translation>Přidat místo</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="197"/>
@@ -584,7 +584,7 @@ Tato akce přeruší momentálně probíhající synchronizaci.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="600"/>
         <source>Sync paused by user</source>
-        <translation type="unfinished"/>
+        <translation>Synchronizace pozastavena uživatelem</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="634"/>
@@ -649,7 +649,7 @@ Tato akce přeruší momentálně probíhající synchronizaci.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="760"/>
         <source>You need to be connected to add a folder.</source>
-        <translation type="unfinished"/>
+        <translation>Pro přidání složky musíte být připojen/a</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="897"/>
@@ -1143,7 +1143,7 @@ Pokud to byl omyl a chcete si soubory ponechat, budou opět synchronizovány ze 
     <message>
         <location filename="../src/gui/folderman.cpp" line="605"/>
         <source>Folder is about to be removed</source>
-        <translation type="unfinished"/>
+        <translation>Adresář se chystá být odstraněn</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="629"/>
@@ -1168,7 +1168,7 @@ Pokud to byl omyl a chcete si soubory ponechat, budou opět synchronizovány ze 
     <message>
         <location filename="../src/gui/folderman.cpp" line="727"/>
         <source>Folder &apos;%1&apos; is already in use by application %2!</source>
-        <translation type="unfinished"/>
+        <translation>Adresář &apos;%1&apos; je již používán aplikací %2!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="741"/>
@@ -1338,7 +1338,7 @@ Please consider removing this folder from the account and adding it again.</sour
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1151"/>
         <source>Queued</source>
-        <translation type="unfinished"/>
+        <translation>Čeká ve frontě</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1222"/>
@@ -1950,7 +1950,7 @@ Poznámka: Spouštění aplikace s parametrem přepíše toto nastavení.</trans
     <message>
         <location filename="../src/gui/networksettings.ui" line="20"/>
         <source>Pause synchronization when the Internet connection is metered</source>
-        <translation type="unfinished"/>
+        <translation>Pozastavit synchronizaci, když je připojení k internetu zpoplatněno</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="30"/>
@@ -2413,7 +2413,7 @@ Poznámka: Spouštění aplikace s parametrem přepíše toto nastavení.</trans
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="908"/>
         <source>File %1 cannot be saved because of a local file name clash with %2!</source>
-        <translation type="unfinished"/>
+        <translation>Soubor %1 nemohl být uložen z důvodu kolize názvu se souborem %2!</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="1026"/>
@@ -2486,7 +2486,7 @@ Poznámka: Spouštění aplikace s parametrem přepíše toto nastavení.</trans
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="125"/>
         <source>Could not move &apos;%1&apos; to the trash bin</source>
-        <translation type="unfinished"/>
+        <translation>Nelze přesunout &apos;%1&apos; do koše</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="89"/>
@@ -3400,7 +3400,7 @@ Poznámka: Spouštění aplikace s parametrem přepíše toto nastavení.</trans
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="871"/>
         <source>Aborted due to %1</source>
-        <translation type="unfinished"/>
+        <translation>Přerušeno kvůli %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="889"/>
@@ -3691,7 +3691,7 @@ Poznámka: Spouštění aplikace s parametrem přepíše toto nastavení.</trans
         <location filename="../src/gui/newwizard/pages/legacywebfingersetupwizardpage.cpp" line="51"/>
         <source>Please enter your %1:</source>
         <comment>Please enter your [username, e-mail address, ...]:</comment>
-        <translation type="unfinished"/>
+        <translation>Prosím zadejte své %1:</translation>
     </message>
 </context>
 <context>
@@ -3883,7 +3883,7 @@ Jste si jisti, že chcete pokračovat?</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="611"/>
         <source>Create a new account</source>
-        <translation type="unfinished"/>
+        <translation>Vytvořit nový účet</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="731"/>
@@ -3904,7 +3904,7 @@ Jste si jisti, že chcete pokračovat?</translation>
         <location filename="../src/gui/owncloudgui.cpp" line="383"/>
         <location filename="../src/gui/owncloudgui.cpp" line="615"/>
         <source>Resume synchronization</source>
-        <translation type="unfinished"/>
+        <translation>Pokračovat v synchronizaci</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="664"/>
@@ -4042,7 +4042,7 @@ Jste si jisti, že chcete pokračovat?</translation>
     <message>
         <location filename="../src/common/utility.cpp" line="352"/>
         <source>less than a minute ago</source>
-        <translation type="unfinished"/>
+        <translation>Méně než před minutou</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="356"/>
@@ -4395,7 +4395,7 @@ Jste si jisti, že chcete pokračovat?</translation>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="43"/>
         <source>Server version downloaded, local copy was backed up as conflict file</source>
-        <translation type="unfinished"/>
+        <translation>Stažena verze ze serveru, změněný místní soubor zkopírován do konfliktního souboru</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="51"/>
