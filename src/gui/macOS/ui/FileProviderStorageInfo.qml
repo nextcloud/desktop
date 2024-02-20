@@ -31,7 +31,7 @@ GridLayout {
     required property real remoteUsedStorage
 
     Layout.fillWidth: true
-    columns: 2
+    columns: 3
 
     EnforcedPlainTextLabel {
         Layout.row: 0
@@ -49,6 +49,14 @@ GridLayout {
         text: qsTr("%1 GB of %2 GB remote files synced").arg(root.localUsedStorage.toFixed(2)).arg(root.remoteUsedStorage.toFixed(2));
         color: Style.ncSecondaryTextColor
         horizontalAlignment: Text.AlignRight
+    }
+
+    CustomButton {
+        Layout.row: 0
+        Layout.column: 2
+        Layout.alignment: Layout.AlignRight | Layout.AlignVCenter
+        text: qsTr("Evict local copies...")
+        onPressed: root.evictDialogRequested()
     }
 
     ProgressBar {
