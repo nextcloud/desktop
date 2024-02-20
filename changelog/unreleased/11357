@@ -1,0 +1,14 @@
+Change: Removal of selective sync tree from account status page
+
+We removed the selective sync support from the main widget and moved it to its own dialog,
+available through the context menu of the sync folder.
+
+Having both the sync status and the selective sync settings in the same widget caused a lot of problems and overhead over the years.
+Additionally, it required us to maintain a lot of special and basically duplicated code, as we already had a dedicated widget to handle selective sync.
+
+https://github.com/owncloud/client/issues/11357
+https://github.com/owncloud/client/issues/11357
+https://github.com/owncloud/client/issues/8102
+https://github.com/owncloud/client/issues/5423
+https://github.com/owncloud/client/issues/4080
+https://github.com/owncloud/client/pull/11524
