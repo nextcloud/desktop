@@ -67,6 +67,9 @@ ApplicationWindow {
             Layout.fillWidth: true
             Layout.fillHeight: true
 
+            Layout.leftMargin: Style.standardSpacing
+            Layout.rightMargin: Style.standardSpacing
+
             clip: true
             model: root.materialisedItemsModel
             delegate: FileProviderFileDelegate {

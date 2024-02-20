@@ -90,11 +90,12 @@ Item {
             id: deleteButton
 
             Layout.minimumWidth: implicitWidth
-            Layout.fillHeight: true
             Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
 
             text: qsTr("Delete")
+            textColorHovered: Style.ncHeaderTextColor
             bgColor: Style.errorBoxBackgroundColor
+            contentsFont.bold: true
             onClicked: root.evictItem(root.identifier, root.domainIdentifier)
         }
     }
