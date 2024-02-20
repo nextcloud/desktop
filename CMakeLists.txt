@@ -20,7 +20,7 @@ set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
 find_package(QT 6.2 NAMES Qt6 COMPONENTS Core REQUIRED)
 
-find_package(Qt6 COMPONENTS Core Concurrent Network Widgets Xml REQUIRED)
+find_package(Qt6 COMPONENTS Core Concurrent Network Widgets Xml Quick QuickWidgets QuickControls2 REQUIRED)
 find_package(Qt6LinguistTools REQUIRED)
 get_target_property (QT_QMAKE_EXECUTABLE Qt::qmake IMPORTED_LOCATION)
 message(STATUS "Using Qt ${QT_VERSION} (${QT_QMAKE_EXECUTABLE})")
@@ -37,6 +37,9 @@ include(ECMSetupVersion)
 include(KDECompilerSettings NO_POLICY_SCOPE)
 include(ECMEnableSanitizers)
 
+# while we use qt_add_qml_module instead of ecm_add_qml_module
+# include ECMQmlModule to set up the policies
+include(ECMQmlModule)
 
 if(UNIT_TESTING)
     message(DEPRECATION "Setting UNIT_TESTING is deprecated please use BUILD_TESTING")

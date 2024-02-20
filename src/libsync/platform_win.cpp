@@ -21,7 +21,7 @@
 #include <QApplication>
 #include <QGuiApplication>
 #include <QIcon>
-#include <QMetaMethod>
+#include <QQuickStyle>
 
 
 #include <chrono>
@@ -67,6 +67,7 @@ void WinPlatform::setApplication(QCoreApplication *application)
 
     if (auto guiApp = qobject_cast<QGuiApplication *>(application)) {
         QApplication::setStyle(QStringLiteral("fusion"));
+        QQuickStyle::setStyle(QStringLiteral("Fusion"));
     }
 }
 

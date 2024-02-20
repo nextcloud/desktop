@@ -17,7 +17,6 @@
 #include "accountstate.h"
 #include "common/asserts.h"
 #include "folderman.h"
-#include "folderstatusdelegate.h"
 #include "gui/quotainfo.h"
 #include "theme.h"
 
@@ -29,6 +28,7 @@
 #include <QApplication>
 #include <QDir>
 #include <QFileIconProvider>
+#include <QRandomGenerator>
 #include <QVarLengthArray>
 
 #include <set>
@@ -45,37 +45,15 @@ namespace {
     // minimum delay between progress updates
     constexpr auto progressUpdateTimeOutC = 1s;
 
-    int64_t getQuota(const AccountStatePtr &accountState, const QString &spaceId, FolderStatusModel::Columns type)
+    QString statusIconName(Folder *f)
     {
-        if (auto spacesManager = accountState->account()->spacesManager()) {
-            const auto *space = spacesManager->space(spaceId);
-            if (space) {
-                const auto quota = space->drive().getQuota();
-                if (quota.isValid()) {
-                    switch (type) {
-                    case FolderStatusModel::Columns::QuotaTotal:
-                        return quota.getTotal();
-                    case FolderStatusModel::Columns::QuotaUsed:
-                        return quota.getUsed();
-                    default:
-                        Q_UNREACHABLE();
-                    }
-                }
-            }
+        auto status = f->syncResult();
+        if (!f->accountState()->isConnected()) {
+            status.setStatus(SyncResult::Status::Offline);
+        } else if (f->syncPaused() || f->accountState()->state() == AccountState::PausedDueToMetered) {
+            status.setStatus(SyncResult::Status::Paused);
         }
-        return {};
-    }
-
-    int64_t getQuotaOc10(const AccountStatePtr &accountState, FolderStatusModel::Columns type)
-    {
-        switch (type) {
-        case FolderStatusModel::Columns::QuotaTotal:
-            return accountState->quotaInfo()->lastQuotaTotalBytes();
-        case FolderStatusModel::Columns::QuotaUsed:
-            return accountState->quotaInfo()->lastQuotaUsedBytes();
-        default:
-            Q_UNREACHABLE();
-        }
+        return Theme::instance()->syncStateIconName(status);
     }
 
     class SubFolderInfo
@@ -85,11 +63,10 @@ namespace {
         {
         public:
             Progress() { }
-            bool isNull() const { return _progressString.isEmpty() && _warningCount == 0 && _overallSyncString.isEmpty(); }
+            bool isNull() const { return _progressString.isEmpty() && _overallSyncString.isEmpty(); }
             QString _progressString;
             QString _overallSyncString;
-            int _warningCount = 0;
-            int _overallPercent = 0;
+            float _overallPercent = 0;
         };
         SubFolderInfo(Folder *folder)
             : _folder(folder)
@@ -209,9 +186,7 @@ FolderStatusModel::FolderStatusModel(QObject *parent)
 {
 }
 
-FolderStatusModel::~FolderStatusModel()
-{
-}
+FolderStatusModel::~FolderStatusModel() { }
 
 void FolderStatusModel::setAccountState(const AccountStatePtr &accountState)
 {
@@ -224,9 +199,16 @@ void FolderStatusModel::setAccountState(const AccountStatePtr &accountState)
         connect(FolderMan::instance(), &FolderMan::folderSyncStateChange, this, &FolderStatusModel::slotFolderSyncStateChange);
 
         if (accountState->supportsSpaces()) {
-            connect(accountState->account()->spacesManager(), &GraphApi::SpacesManager::updated, this, [this] {
-                beginResetModel();
-                endResetModel();
+            connect(accountState->account()->spacesManager(), &GraphApi::SpacesManager::updated, this,
+                [this] { Q_EMIT dataChanged(index(0, 0), index(rowCount() - 1, 0)); });
+            connect(accountState->account()->spacesManager(), &GraphApi::SpacesManager::spaceChanged, this, [this](auto *space) {
+                for (int i = 0; i < rowCount(); ++i) {
+                    auto *f = _folders[i]->_folder;
+                    if (f->accountState()->supportsSpaces() && f->spaceId() == space->drive().getId()) {
+                        Q_EMIT dataChanged(index(i, 0), index(i, 0));
+                        break;
+                    }
+                }
             });
         }
     }
@@ -245,7 +227,7 @@ void FolderStatusModel::setAccountState(const AccountStatePtr &accountState)
         });
     }
 
-    Q_EMIT endResetModel();
+    endResetModel();
 }
 
 QVariant FolderStatusModel::data(const QModelIndex &index, int role) const
@@ -256,21 +238,10 @@ QVariant FolderStatusModel::data(const QModelIndex &index, int role) const
     if (role == Qt::EditRole)
         return QVariant();
 
-    const Columns column = static_cast<Columns>(index.column());
-    switch (column) {
-    case Columns::IsUsingSpaces:
-        return _accountState->supportsSpaces();
-    default:
-        break;
-    }
-
     const auto &folderInfo = _folders.at(index.row());
     auto f = folderInfo->_folder;
     if (!f)
         return QVariant();
-
-    const auto &progress = folderInfo->_progress;
-    const bool accountConnected = _accountState->isConnected();
 
     const auto getSpace = [&]() -> GraphApi::Space * {
         if (_accountState->supportsSpaces()) {
@@ -279,108 +250,98 @@ QVariant FolderStatusModel::data(const QModelIndex &index, int role) const
         return nullptr;
     };
 
-    switch (role) {
-    case Qt::DisplayRole:
-        switch (column) {
-        case Columns::FolderPathRole:
-            return f->shortGuiLocalPath();
-        case Columns::FolderSecondPathRole:
-            return f->remotePath();
-        case Columns::FolderConflictMsg:
-            return (f->syncResult().hasUnresolvedConflicts())
-                ? QStringList(tr("There are unresolved conflicts. Click for details."))
-                : QStringList();
-        case Columns::FolderErrorMsg: {
-            auto errors = f->syncResult().errorStrings();
-            const auto legacyError = FolderMan::instance()->unsupportedConfiguration(f->path());
-            if (!legacyError) {
-                // the error message might contain new lines, the delegate only expect multiple single line values
-                errors.append(legacyError.error().split(QLatin1Char('\n')));
+    switch (static_cast<Roles>(role)) {
+    case Roles::Subtitle: {
+        if (auto *space = getSpace()) {
+            if (!space->drive().getDescription().isEmpty()) {
+                return space->drive().getDescription();
             }
-            if (f->isReady() && f->virtualFilesEnabled() && f->vfs().mode() == Vfs::Mode::WithSuffix) {
-                errors.append({
-                    tr("The suffix VFS plugin is deprecated and will be removed in the 7.0 release."),
-                    tr("Please use the context menu and select \"Disable virtual file support\" to  ensure future access to your synced files."),
-                    tr("You are going to lose access to your sync folder if you do not do so!"),
-                });
-            }
-            return errors;
         }
-        case Columns::SyncRunning:
-            return f->syncResult().status() == SyncResult::SyncRunning;
-        case Columns::HeaderRole: {
-            if (auto *space = getSpace()) {
-                return space->displayName();
-            }
-            return f->displayName();
+        return tr("Local folder: %1").arg(f->shortGuiLocalPath());
+    }
+    case Roles::FolderErrorMsg: {
+        auto errors = f->syncResult().errorStrings();
+        const auto legacyError = FolderMan::instance()->unsupportedConfiguration(f->path());
+        if (!legacyError) {
+            errors.append(legacyError.error());
         }
-        case Columns::FolderImage:
-            if (auto *space = getSpace()) {
-                return space->image();
-            }
-            return Resources::getCoreIcon(QStringLiteral("folder-sync"));
-        case Columns::FolderSyncPaused:
-            return f->syncPaused();
-        case Columns::FolderAccountConnected:
-            return accountConnected;
-        case Columns::FolderStatusIconRole: {
-            auto status = f->syncResult();
-            if (!accountConnected) {
-                status.setStatus(SyncResult::Status::Offline);
-            } else if (f->syncPaused() || f->accountState()->state() == AccountState::PausedDueToMetered) {
-                status.setStatus(SyncResult::Status::Paused);
-            }
-            return Theme::instance()->syncStateIconName(status);
+        if (f->syncResult().hasUnresolvedConflicts()) {
+            errors.append(tr("There are unresolved conflicts. Click for details."));
         }
-        case Columns::SyncProgressItemString:
-            return progress._progressString;
-        case Columns::WarningCount:
-            return progress._warningCount;
-        case Columns::SyncProgressOverallPercent:
-            return progress._overallPercent;
-        case Columns::SyncProgressOverallString:
-            return progress._overallSyncString;
-        case Columns::FolderSyncText: {
-            if (auto *space = getSpace()) {
-                if (!space->drive().getDescription().isEmpty()) {
-                    return space->drive().getDescription();
+        if (f->isReady() && f->virtualFilesEnabled() && f->vfs().mode() == Vfs::Mode::WithSuffix) {
+            errors.append({
+                tr("The suffix VFS plugin is deprecated and will be removed in the 7.0 release.\n"
+                   "Please use the context menu and select \"Disable virtual file support\" to  ensure future access to your synced files.\n"
+                   "You are going to lose access to your sync folder if you do not do so!"),
+            });
+        }
+        return errors;
+    }
+    case Roles::DisplayName: {
+        if (auto *space = getSpace()) {
+            return space->displayName();
+        }
+        return f->displayName();
+    }
+    case Roles::FolderImageUrl:
+        if (f->accountState()->supportsSpaces()) {
+            // TODO: the url hast random parts to enforce a reload
+            return QStringLiteral("image://space/%1/%2").arg(QString::number(QRandomGenerator::global()->generate()), f->spaceId());
+        }
+        return QStringLiteral("image://ownCloud/core/folder-sync");
+    case Roles::FolderStatusUrl:
+        return QStringLiteral("image://ownCloud/core/states/%1").arg(statusIconName(f));
+    case Roles::SyncProgressItemString:
+        return folderInfo->_progress._progressString;
+    case Roles::SyncProgressOverallPercent:
+        return folderInfo->_progress._overallPercent / 100.0;
+    case Roles::SyncProgressOverallString:
+        return folderInfo->_progress._overallSyncString;
+    case Roles::FolderSyncText: {
+        if (auto *space = getSpace()) {
+            if (!space->drive().getDescription().isEmpty()) {
+                return space->drive().getDescription();
+            }
+        }
+        return tr("Local folder: %1").arg(f->shortGuiLocalPath());
+    }
+    case Roles::Priority:
+        // TODO:
+        return QStringLiteral("%1%2").arg(f->priority(), 3, 10, QLatin1Char('0')).arg(f->displayName());
+    case Roles::Quota: {
+        qint64 used{};
+        qint64 total{};
+        if (_accountState->supportsSpaces()) {
+            if (auto spacesManager = f->accountState()->account()->spacesManager()) {
+                const auto *space = spacesManager->space(f->spaceId());
+                if (space) {
+                    const auto quota = space->drive().getQuota();
+                    if (quota.isValid()) {
+                        used = quota.getUsed();
+                        total = quota.getTotal();
+                    }
                 }
             }
-            return tr("Local folder: %1").arg(f->shortGuiLocalPath());
-        }
-        case Columns::IsReady:
-            return f->isReady();
-        case Columns::IsDeployed:
-            return f->isDeployed();
-        case Columns::Priority:
-            return f->priority();
-        case Columns::QuotaTotal:
-            [[fallthrough]];
-        case Columns::QuotaUsed:
-            if (_accountState->supportsSpaces()) {
-                return QVariant::fromValue(getQuota(_accountState, f->spaceId(), column));
-            } else {
-                return QVariant::fromValue(getQuotaOc10(_accountState, column));
-            }
-        case Columns::IsUsingSpaces: // handled before
-            [[fallthrough]];
-        case Columns::ColumnCount:
-            Q_UNREACHABLE();
-            break;
-        }
-        break;
-    case Qt::ToolTipRole: {
-        if (!progress.isNull()) {
-            return progress._progressString;
-        }
-        if (accountConnected) {
-            return tr("%1\n%2").arg(Utility::enumToDisplayName(f->syncResult().status()), QDir::toNativeSeparators(folderInfo->_folder->path()));
         } else {
-            return tr("Signed out\n%1").arg(QDir::toNativeSeparators(folderInfo->_folder->path()));
+            used = f->accountState()->quotaInfo()->lastQuotaUsedBytes();
+            total = f->accountState()->quotaInfo()->lastQuotaTotalBytes();
+        }
+        if (total <= 0) {
+            return {};
+        }
+        return tr("%1 of %2 used").arg(Utility::octetsToString(used), Utility::octetsToString(total));
+    }
+    case Roles::ToolTip: {
+        if (_accountState->isConnected()) {
+            return tr("The status of %1 is %2").arg(f->displayName(), Utility::enumToDisplayName(f->syncResult().status()));
+        } else {
+            return tr("The account %1 is currently not connected.").arg(f->accountState()->account()->displayName());
         }
     }
+    case Roles::Folder:
+        return QVariant::fromValue(f);
     }
-    return QVariant();
+    return {};
 }
 
 Folder *FolderStatusModel::folder(const QModelIndex &index) const
@@ -391,13 +352,31 @@ Folder *FolderStatusModel::folder(const QModelIndex &index) const
 
 int FolderStatusModel::columnCount(const QModelIndex &) const
 {
-    return static_cast<int>(Columns::ColumnCount);
+    return 1;
 }
 
 int FolderStatusModel::rowCount(const QModelIndex &parent) const
 {
     Q_ASSERT(!parent.isValid());
     return static_cast<int>(_folders.size());
+}
+
+QHash<int, QByteArray> FolderStatusModel::roleNames() const
+{
+    return {
+        {static_cast<int>(Roles::DisplayName), "displayName"},
+        {static_cast<int>(Roles::Subtitle), "subTitle"},
+        {static_cast<int>(Roles::FolderImageUrl), "imageUrl"},
+        {static_cast<int>(Roles::FolderStatusUrl), "statusUrl"},
+        {static_cast<int>(Roles::SyncProgressOverallPercent), "progress"},
+        {static_cast<int>(Roles::SyncProgressOverallString), "overallText"},
+        {static_cast<int>(Roles::SyncProgressItemString), "itemText"},
+        {static_cast<int>(Roles::FolderSyncText), "descriptionText"},
+        {static_cast<int>(Roles::FolderErrorMsg), "errorMsg"},
+        {static_cast<int>(Roles::Quota), "quota"},
+        {static_cast<int>(Roles::ToolTip), "toolTip"},
+        {static_cast<int>(Roles::Folder), "folder"},
+    };
 }
 
 void FolderStatusModel::slotUpdateFolderState(Folder *folder)
@@ -424,11 +403,6 @@ void FolderStatusModel::slotSetProgress(const ProgressInfo &progress, Folder *f)
     const auto &folder = _folders.at(folderIndex);
 
     auto *pi = &folder->_progress;
-
-    if (progress.status() == ProgressInfo::Done && !progress._lastCompletedItem.isEmpty()
-        && Progress::isWarningKind(progress._lastCompletedItem._status)) {
-        pi->_warningCount++;
-    }
     // depending on the use of virtual files or small files this slot might be called very often.
     // throttle the model updates to prevent an needlessly high cpu usage used on ui updates.
     if (folder->_lastProgressUpdateStatus != progress.status() || (std::chrono::steady_clock::now() - folder->_lastProgressUpdated > progressUpdateTimeOutC)) {
@@ -502,6 +476,31 @@ void FolderStatusModel::slotFolderSyncStateChange(Folder *f)
 void FolderStatusModel::resetFolders()
 {
     setAccountState(_accountState);
+}
+
+
+SpaceImageProvider::SpaceImageProvider(AccountStatePtr accountStat)
+    : QQuickImageProvider(QQuickImageProvider::Pixmap, QQuickImageProvider::ForceAsynchronousImageLoading)
+    , _accountStat(accountStat)
+{
+}
+
+QPixmap SpaceImageProvider::requestPixmap(const QString &id, QSize *size, const QSize &requestedSize)
+{
+    // TODO: the url hast random parts to enforce a reload
+    const auto ids = id.split(QLatin1Char('/'));
+    const auto *space = _accountStat->account()->spacesManager()->space(ids.last());
+    QIcon icon;
+    if (space) {
+        icon = space->image();
+    } else {
+        icon = Resources::getCoreIcon(QStringLiteral("space"));
+    }
+    const QSize actualSize = requestedSize.isValid() ? requestedSize : icon.availableSizes().first();
+    if (size) {
+        *size = actualSize;
+    }
+    return icon.pixmap(actualSize);
 }
 
 } // namespace OCC

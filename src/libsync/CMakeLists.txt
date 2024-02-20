@@ -87,6 +87,7 @@ target_link_libraries(libsync
         Qt::Core
         Qt::Network
         Qt::Widgets
+        Qt::QuickControls2
 
     PRIVATE
         Qt::Concurrent

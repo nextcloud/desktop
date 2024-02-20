@@ -17,6 +17,7 @@
 
 #include <QIcon>
 #include <QUrl>
+#include <QtQuick/QQuickImageProvider>
 
 namespace OCC::Resources {
 Q_NAMESPACE
@@ -48,4 +49,13 @@ QIcon OWNCLOUDRESOURCES_EXPORT themeIcon(const QString &name, IconType iconType 
  * Returns a universal (non color schema aware) icon.
  */
 QIcon OWNCLOUDRESOURCES_EXPORT themeUniversalIcon(const QString &name, IconType iconType = IconType::BrandedIcon);
+
+class OWNCLOUDRESOURCES_EXPORT CoreImageProvider : public QQuickImageProvider
+{
+    Q_OBJECT
+public:
+    CoreImageProvider();
+
+    QPixmap requestPixmap(const QString &id, QSize *size, const QSize &requestedSize) override;
+};
 }

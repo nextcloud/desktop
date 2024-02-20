@@ -19,10 +19,10 @@
 #include "progressdispatcher.h"
 
 #include <QAbstractItemModel>
-#include <QLoggingCategory>
-#include <QVector>
 #include <QElapsedTimer>
-#include <QPointer>
+#include <QLoggingCategory>
+#include <QQuickImageProvider>
+#include <QtQml/QQmlEngine>
 
 class QNetworkReply;
 
@@ -43,37 +43,24 @@ namespace {
 class FolderStatusModel : public QAbstractTableModel
 {
     Q_OBJECT
+    QML_ELEMENT
 public:
-    enum class Columns {
-        HeaderRole, // must be 0 as it is also used from the default delegate
-        FolderPathRole, // for a SubFolder it's the complete path
-        FolderSecondPathRole,
-        FolderConflictMsg,
+    enum class Roles {
+        ToolTip = Qt::ToolTipRole,
+        DisplayName = Qt::UserRole + 1, // must be 0 as it is also used from the default delegate
+        Subtitle,
         FolderErrorMsg,
-        FolderSyncPaused,
-        FolderStatusIconRole,
-        FolderAccountConnected,
-        FolderImage,
-
         SyncProgressOverallPercent,
         SyncProgressOverallString,
         SyncProgressItemString,
-        WarningCount,
-        SyncRunning,
-
         FolderSyncText,
-        IsReady, // boolean
-        IsUsingSpaces, // boolean
-
-        Priority, // uint32_t
-        IsDeployed, // bool
-
-        QuotaUsed,
-        QuotaTotal,
-
-        ColumnCount
+        Priority,
+        Quota,
+        FolderImageUrl,
+        FolderStatusUrl,
+        Folder
     };
-    Q_ENUMS(Columns);
+    Q_ENUMS(Roles);
 
     FolderStatusModel(QObject *parent = nullptr);
     ~FolderStatusModel() override;
@@ -83,6 +70,8 @@ public:
     Folder *folder(const QModelIndex &index) const;
     int columnCount(const QModelIndex &parent = QModelIndex()) const override;
     int rowCount(const QModelIndex &parent = QModelIndex()) const override;
+
+    QHash<int, QByteArray> roleNames() const override;
 
 public slots:
     void slotUpdateFolderState(Folder *);
@@ -99,6 +88,18 @@ private:
     std::vector<std::unique_ptr<SubFolderInfo>> _folders;
 };
 
-} // namespace OCC
 
+class SpaceImageProvider : public QQuickImageProvider
+{
+    Q_OBJECT
+public:
+    SpaceImageProvider(AccountStatePtr accountStat);
+    QPixmap requestPixmap(const QString &id, QSize *size, const QSize &requestedSize) override;
+
+
+private:
+    AccountStatePtr _accountStat;
+};
+
+} // namespace OCC
 #endif // FOLDERSTATUSMODEL_H

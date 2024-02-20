@@ -1,0 +1,6 @@
+Enhancement: New Folder status
+
+We rewrote the Folder status page.
+
+https://github.com/owncloud/client/pull/11491
+https://github.com/owncloud/client/issues/11527

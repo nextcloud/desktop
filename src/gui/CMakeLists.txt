@@ -37,7 +37,6 @@ set(client_SRCS
     folder.cpp
     folderman.cpp
     folderstatusmodel.cpp
-    folderstatusdelegate.cpp
     folderwatcher.cpp
     generalsettings.cpp
     ignorelisteditor.cpp
@@ -102,16 +101,27 @@ add_subdirectory(loginrequireddialog)
 
 add_library(owncloudCore STATIC ${final_src})
 set_target_properties(owncloudCore PROPERTIES AUTOUIC ON AUTORCC ON)
+# for the generated qml module
+target_include_directories(owncloudCore PRIVATE models)
 target_link_libraries(owncloudCore
     PUBLIC
-        Qt::Widgets Qt::Network Qt::Xml
+        Qt::Widgets Qt::Network Qt::Xml Qt::Quick Qt::QuickWidgets Qt::QuickControls2
         newwizard folderwizard spaces loginrequireddialog
         libsync
         Qt6Keychain::Qt6Keychain
 )
 
 apply_common_target_settings(owncloudCore)
+qt_add_qml_module(owncloudCore
+        URI org.ownCloud.qmlcomponents
+        VERSION 1.0
+        NAMESPACE OCC
+        QML_FILES
+            qml/FolderDelegate.qml
+            qml/FolderError.qml
+)
 
+target_link_libraries(owncloudCore PUBLIC owncloudCoreplugin)
 
 add_subdirectory(spaces)
 
@@ -159,7 +169,7 @@ set_target_properties(owncloud PROPERTIES
     AUTORCC ON
 )
 apply_common_target_settings(owncloud)
-target_link_libraries(owncloud owncloudCore owncloudResources KDAB::kdsingleapplication )
+target_link_libraries(owncloud PUBLIC owncloudCore owncloudResources KDAB::kdsingleapplication )
 
 MESSAGE(STATUS "OWNCLOUD_SIDEBAR_ICONS: ${APPLICATION_ICON_NAME}: ${OWNCLOUD_SIDEBAR_ICONS}")
 

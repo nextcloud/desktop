@@ -26,8 +26,8 @@
 
 #include <QDateTime>
 #include <QObject>
-#include <QStringList>
 #include <QUuid>
+#include <QtQml/QtQml>
 
 #include <chrono>
 #include <memory>
@@ -146,6 +146,7 @@ private:
 class Folder : public QObject
 {
     Q_OBJECT
+    QML_ELEMENT
 
 public:
     enum class ChangeReason {

@@ -52,7 +52,6 @@ constexpr bool isVanilla()
     return std::string_view(APPLICATION_SHORTNAME) == "ownCloud";
 }
 
-
 bool hasTheme(IconType type, const QString &theme)
 {
     // <<is vanilla, theme name>, bool
@@ -79,7 +78,6 @@ bool Resources::hasMonoTheme()
 {
     // mono icons are only supported in vanilla and if a customer provides them
     // no fallback to vanilla
-    qDebug() << hasTheme(Resources::IconType::BrandedIcon, whiteTheme());
     return hasTheme(Resources::IconType::BrandedIcon, whiteTheme());
 }
 
@@ -171,4 +169,30 @@ QIcon OCC::Resources::themeIcon(const QString &name, IconType iconType)
 QIcon OCC::Resources::themeUniversalIcon(const QString &name, IconType iconType)
 {
     return loadIcon(QStringLiteral("universal"), name, iconType);
+}
+
+CoreImageProvider::CoreImageProvider()
+    : QQuickImageProvider(QQuickImageProvider::Pixmap)
+{
+}
+QPixmap CoreImageProvider::requestPixmap(const QString &id, QSize *size, const QSize &requestedSize)
+{
+    const auto [type, path] = [&id] {
+        const QString type = id.mid(0, id.indexOf(QLatin1Char('/')));
+        return std::make_tuple(type, id.mid(type.size()));
+    }();
+    Q_ASSERT(!path.isEmpty());
+    QIcon icon;
+    if (type == QLatin1String("theme")) {
+        icon = themeIcon(path);
+    } else if (type == QLatin1String("core")) {
+        icon = getCoreIcon(path);
+    } else {
+        Q_UNREACHABLE();
+    }
+    const QSize actualSize = requestedSize.isValid() ? requestedSize : icon.availableSizes().first();
+    if (size) {
+        *size = actualSize;
+    }
+    return icon.pixmap(actualSize);
 }

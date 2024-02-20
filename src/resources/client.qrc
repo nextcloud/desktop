@@ -40,6 +40,8 @@
         <file alias="resources/dark/undo.svg">font-awesome/dark/undo-solid.svg</file>
         <file alias="resources/wizard/style.qss">wizard/style.qss</file>
         <file alias="resources/oauth/oauth.html.in">oauth/oauth.html.in</file>
+        <file alias="resources/dark/space.svg">remixicon/dark/space.svg</file>
+        <file alias="resources/light/space.svg">remixicon/light/space.svg</file>
         <file alias="resources/dark/states/error.svg">font-awesome/dark/states/error.svg</file>
         <file alias="resources/dark/states/information.svg">font-awesome/dark/states/information.svg</file>
         <file alias="resources/dark/states/offline.svg">font-awesome/dark/states/offline.svg</file>

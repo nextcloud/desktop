@@ -95,7 +95,7 @@ QUrl Space::imageUrl() const
 QIcon Space::image() const
 {
     if (_image.isNull()) {
-        return Resources::getCoreIcon(QStringLiteral("folder-sync"));
+        return Resources::getCoreIcon(QStringLiteral("space"));
     }
     return _image;
 }

@@ -147,20 +147,7 @@
      <widget class="QWidget" name="folderListPage">
       <layout class="QVBoxLayout" name="verticalLayout_6">
        <item>
-        <widget class="QListView" name="_folderList">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="MinimumExpanding" vsizetype="Expanding">
-           <horstretch>0</horstretch>
-           <verstretch>5</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="contextMenuPolicy">
-          <enum>Qt::CustomContextMenu</enum>
-         </property>
-         <property name="editTriggers">
-          <set>QAbstractItemView::NoEditTriggers</set>
-         </property>
-        </widget>
+        <widget class="QQuickWidget" name="quickWidget"/>
        </item>
        <item>
         <layout class="QHBoxLayout" name="horizontalLayout_5">
@@ -193,6 +180,11 @@
   </layout>
  </widget>
  <customwidgets>
+  <customwidget>
+   <class>QQuickWidget</class>
+   <extends>QWidget</extends>
+   <header location="global">QtQuickWidgets/QQuickWidget</header>
+  </customwidget>
   <customwidget>
    <class>QProgressIndicator</class>
    <extends>QWidget</extends>

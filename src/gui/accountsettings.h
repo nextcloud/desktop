@@ -15,17 +15,19 @@
 #ifndef ACCOUNTSETTINGS_H
 #define ACCOUNTSETTINGS_H
 
-#include <QWidget>
 
 #include "folder.h"
 #include "loginrequireddialog.h"
 #include "owncloudgui.h"
 #include "progressdispatcher.h"
 
+
+#include <QSortFilterProxyModel>
+#include <QWidget>
+
 class QModelIndex;
 class QNetworkReply;
 class QLabel;
-class QSortFilterProxyModel;
 
 namespace OCC {
 class AccountModalWidget;
@@ -49,6 +51,7 @@ class AccountSettings : public QWidget
 {
     Q_OBJECT
     Q_PROPERTY(AccountStatePtr accountState MEMBER _accountState)
+    Q_PROPERTY(QSortFilterProxyModel *model MEMBER _sortModel CONSTANT)
 
 public:
     enum class ModalWidgetSizePolicy { Minimum = QSizePolicy::Minimum, Expanding = QSizePolicy::Expanding };
@@ -62,6 +65,8 @@ public:
     void addModalLegacyDialog(QWidget *widget, ModalWidgetSizePolicy sizePolicy);
     void addModalWidget(AccountModalWidget *widget);
 
+    auto model() { return _sortModel; }
+
 signals:
     void folderChanged();
     void showIssuesList();
@@ -71,18 +76,15 @@ public slots:
 
 protected slots:
     void slotAddFolder();
-    void slotEnableCurrentFolder(bool terminate = false);
-    void slotScheduleCurrentFolder();
-    void slotScheduleCurrentFolderForceFullDiscovery();
-    void slotForceSyncCurrentFolder();
-    void slotRemoveCurrentFolder();
-    void slotEnableVfsCurrentFolder();
-    void slotDisableVfsCurrentFolder();
+    void slotEnableCurrentFolder(Folder *folder, bool terminate = false);
+    void slotForceSyncCurrentFolder(Folder *folder);
+    void slotRemoveCurrentFolder(Folder *folder);
+    void slotEnableVfsCurrentFolder(Folder *folder);
+    void slotDisableVfsCurrentFolder(Folder *folder);
     void slotFolderWizardAccepted();
     void slotDeleteAccount();
     void slotToggleSignInState();
-    void slotCustomContextMenuRequested(const QPoint &);
-    void slotFolderListClicked(const QModelIndex &indx);
+    void slotCustomContextMenuRequested(Folder *folder);
 
 private:
     void showSelectiveSyncDialog(Folder *folder);
@@ -93,13 +95,9 @@ private:
     void createAccountToolbox();
     void doForceSyncCurrentFolder(Folder *selectedFolder);
 
-    /// Returns the alias of the selected folder, empty string if none
-    Folder *selectedFolder() const;
-
     Ui::AccountSettings *ui;
 
     FolderStatusModel *_model;
-    FolderStatusDelegate *_delegate;
     QSortFilterProxyModel *_sortModel;
     bool _wasDisabledBefore;
     AccountStatePtr _accountState;
