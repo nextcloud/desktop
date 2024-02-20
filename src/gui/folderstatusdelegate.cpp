@@ -162,7 +162,11 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
         cg = QPalette::Inactive;
 
     if (option.state & QStyle::State_Selected) {
+#if QT_VERSION >= QT_VERSION_CHECK(6, 6, 0)
+        painter->setPen(palette.color(cg, QPalette::Accent));
+#else
         painter->setPen(palette.color(cg, QPalette::HighlightedText));
+#endif
     } else {
         painter->setPen(palette.color(cg, QPalette::Text));
     }
