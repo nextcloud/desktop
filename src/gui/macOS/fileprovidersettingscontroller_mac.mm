@@ -468,6 +468,12 @@ void FileProviderSettingsController::createEvictionWindowForAccount(const QStrin
     dialog->show();
 }
 
+void FileProviderSettingsController::refreshMaterialisedItemsForAccount(const QString &userIdAtHost)
+{
+    d->enumerateMaterialisedFilesForDomainManager(FileProviderUtils::managerForDomainIdentifier(userIdAtHost),
+                                                  FileProviderUtils::domainForIdentifier(userIdAtHost));
+}
+
 void FileProviderSettingsController::signalFileProviderDomain(const QString &userIdAtHost)
 {
     d->signalFileProviderDomain(userIdAtHost);

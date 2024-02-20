@@ -55,6 +55,7 @@ public slots:
     void setFastEnumerationEnabledForAccount(const QString &userIdAtHost, const bool setEnabled);
 
     void createEvictionWindowForAccount(const QString &userIdAtHost);
+    void refreshMaterialisedItemsForAccount(const QString &userIdAtHost);
     void signalFileProviderDomain(const QString &userIdAtHost);
     void createDebugArchive(const QString &userIdAtHost);
 
