@@ -33,13 +33,41 @@ ApplicationWindow {
     width: 640
     height: 480
 
-    ListView {
+    ColumnLayout {
         anchors.fill: parent
-        model: root.materialisedItemsModel
-        delegate: FileProviderFileDelegate {
-            width: parent.width
-            height: 60
-            onEvictItem: root.materialisedItemsModel.evictItem(identifier, domainIdentifier)
+
+        RowLayout {
+            Layout.fillWidth: true
+            Layout.margins: Style.standardSpacing
+
+            EnforcedPlainTextLabel {
+                text: qsTr("Materialised items")
+                font.bold: true
+                font.pointSize: Style.headerFontPtSize
+                Layout.fillWidth: true
+            }
+
+            CustomButton {
+                padding: Style.smallSpacing
+                textColor: Style.ncTextColor
+                textColorHovered: Style.ncHeaderTextColor
+                contentsFont.bold: true
+                bgColor: Style.ncBlue
+                text: qsTr("Reload")
+            }
+        }
+
+        ListView {
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+
+            clip: true
+            model: root.materialisedItemsModel
+            delegate: FileProviderFileDelegate {
+                width: parent.width
+                height: 60
+                onEvictItem: root.materialisedItemsModel.evictItem(identifier, domainIdentifier)
+            }
         }
     }
 }
