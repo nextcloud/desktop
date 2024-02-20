@@ -48,6 +48,7 @@ ownCloud admins and users.
 * Bugfix - Client stuck in `reconnecting`: [#11467](https://github.com/owncloud/client/pull/11467)
 * Bugfix - Properly encode scope and prompt items in OAuth URL: [#11472](https://github.com/owncloud/client/issues/11472)
 * Bugfix - Client stuck in reconnecting state after application start: [#11478](https://github.com/owncloud/client/pull/11478)
+* Bugfix - Strip user information from new-connection URL: [#11497](https://github.com/owncloud/client/issues/11497)
 * Change - Make messages translatable that occur early in start-up: [#11142](https://github.com/owncloud/client/issues/11142)
 * Change - Remove unused command line option --language: [#11245](https://github.com/owncloud/client/issues/11245)
 * Change - Windows: always use fusion style: [#11275](https://github.com/owncloud/client/issues/11275)
@@ -103,6 +104,15 @@ ownCloud admins and users.
    apparently getting stuck in the "reconnecting" state.
 
    https://github.com/owncloud/client/pull/11478
+
+* Bugfix - Strip user information from new-connection URL: [#11497](https://github.com/owncloud/client/issues/11497)
+
+   Credentials in the URL are not supported for some time. This fix strips them
+   from the URL before storage and using it to authenticate the client to the
+   server.
+
+   https://github.com/owncloud/client/issues/11497
+   https://github.com/owncloud/client/pull/11509
 
 * Change - Make messages translatable that occur early in start-up: [#11142](https://github.com/owncloud/client/issues/11142)
 
