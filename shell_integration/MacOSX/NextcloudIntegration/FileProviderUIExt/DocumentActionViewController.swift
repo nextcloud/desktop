@@ -27,7 +27,7 @@ class DocumentActionViewController: FPUIActionExtensionViewController {
         Logger.actionViewController.info("Preparing for action: \(actionIdentifier)")
 
         if actionIdentifier == "com.nextcloud.desktopclient.FileProviderUIExt.ShareAction" {
-            prepare(childViewController: ShareViewController())
+            prepare(childViewController: ShareViewController(itemIdentifiers))
         }
 
     }
