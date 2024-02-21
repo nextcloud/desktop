@@ -10,9 +10,9 @@
 				<key>NSExtensionFileProviderActionActivationRule</key>
 				<string>TRUEPREDICATE</string>
 				<key>NSExtensionFileProviderActionIdentifier</key>
-				<string>com.mycompany.FileProviderUI.CustomAction</string>
+				<string>com.nextcloud.desktopclient.FileProviderUIExt.ShareAction</string>
 				<key>NSExtensionFileProviderActionName</key>
-				<string>Custom Action</string>
+				<string>Share options</string>
 			</dict>
 		</array>
 		<key>NSExtensionPrincipalClass</key>
