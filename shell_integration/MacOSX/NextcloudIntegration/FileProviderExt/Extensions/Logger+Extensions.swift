@@ -19,6 +19,7 @@ extension Logger {
 
     static let desktopClientConnection = Logger(
         subsystem: subsystem, category: "desktopclientconnection")
+    static let fpUiExtensionService = Logger(subsystem: subsystem, category: "fpUiExtensionService")
     static let enumeration = Logger(subsystem: subsystem, category: "enumeration")
     static let fileProviderExtension = Logger(
         subsystem: subsystem, category: "fileproviderextension")
