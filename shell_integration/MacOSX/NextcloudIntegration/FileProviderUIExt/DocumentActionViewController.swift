@@ -44,15 +44,5 @@ class DocumentActionViewController: FPUIActionExtensionViewController {
     override public func loadView() {
         self.view = NSView()
     }
-
-    @IBAction func doneButtonTapped(_ sender: Any) {
-        // Perform the action and call the completion block. If an unrecoverable error occurs you must still call the completion block with an error. Use the error code FPUIExtensionErrorCode.failed to signal the failure.
-        extensionContext.completeRequest()
-    }
-    
-    @IBAction func cancelButtonTapped(_ sender: Any) {
-        extensionContext.cancelRequest(withError: NSError(domain: FPUIErrorDomain, code: Int(FPUIExtensionErrorCode.userCancelled.rawValue), userInfo: nil))
-    }
-    
 }
 
