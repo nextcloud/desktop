@@ -6,13 +6,17 @@
 //
 
 import FileProviderUI
+import OSLog
 
 class DocumentActionViewController: FPUIActionExtensionViewController {
     
     @IBOutlet weak var identifierLabel: NSTextField!
     @IBOutlet weak var actionTypeLabel: NSTextField!
+    override func prepare(
+        forAction actionIdentifier: String, itemIdentifiers: [NSFileProviderItemIdentifier]
+    ) {
+        Logger.actionViewController.info("Preparing for action: \(actionIdentifier)")
 
-    override func prepare(forAction actionIdentifier: String, itemIdentifiers: [NSFileProviderItemIdentifier]) {
         identifierLabel?.stringValue = actionIdentifier
         actionTypeLabel?.stringValue = "Custom action"
     }
@@ -20,6 +24,7 @@ class DocumentActionViewController: FPUIActionExtensionViewController {
     override func prepare(forError error: Error) {
         identifierLabel?.stringValue = error.localizedDescription
         actionTypeLabel?.stringValue = "Authenticate"
+        Logger.actionViewController.info("Preparing for error: \(error.localizedDescription)")
     }
 
     @IBAction func doneButtonTapped(_ sender: Any) {
