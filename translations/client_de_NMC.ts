@@ -36,7 +36,7 @@
         <source>USED_STORAGE_%1</source>
         <translation>Speicher zu %1% belegt</translation>
     </message>
-<!-- From the original ts file -->
+	<!-- From the original ts file -->
     <message>
         <source>%1 of %2 in use</source>
         <translation>%1 von %2</translation>
