@@ -185,5 +185,12 @@
         <source>LOCAL_FOLDER</source>
         <translation>Lokaler Ordner</translation>
     </message>
+    <message>
+    	<source>E2E_MNEMONIC_TEXT</source>
+        <translation>Für der Verschlüsselung wird ihnen eine aus 12 Wörtern zufällig erzeugte Wortfolge (Passphrase)
+erstellt. Wir empfehlen ihnen, die Passphrase zu notieren und sicher aufzubewahren. \n\n
+Die Passphrase ist ihr persönliches Kennwort mit dem sie auf verschlüsselte Daten in ihrer MagentaCLOUD zugreifen können oder den Zugriff auf diese Dateien auf anderen Geräten wie z.B.
+Smartphones zu ermöglichen.</translation>
+    </message>
 </context>
 </TS>
