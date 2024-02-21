@@ -68,6 +68,9 @@
                                 <font key="font" metaFont="system"/>
                                 <imageReference key="image" image="xmark.circle.fill" catalog="system" symbolScale="large"/>
                             </buttonCell>
+                            <connections>
+                                <action selector="closeAction:" target="-2" id="D9k-gc-AcN"/>
+                            </connections>
                         </button>
                     </subviews>
                     <constraints>
