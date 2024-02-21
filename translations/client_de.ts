@@ -6690,5 +6690,13 @@ Server antwortete mit Fehler: %2</translation>
         <source>UPLOAD_BANDWIDTH</source>
         <translation>Upload-Bandbreite</translation>
     </message>
+    <message>
+        <source>OPEN_WEBSITE</source>
+        <translation>Webseite öffnen</translation>
+    </message>
+    <message>
+        <source>LOCAL_FOLDER</source>
+        <translation>Lokaler Ordner</translation>
+    </message>
 </context>
 </TS>
