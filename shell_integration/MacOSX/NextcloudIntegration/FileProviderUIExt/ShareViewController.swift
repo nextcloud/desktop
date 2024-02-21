@@ -49,37 +49,41 @@ class ShareViewController: NSViewController {
         actionViewController.extensionContext.completeRequest()
     }
 
-    func processItemIdentifier(_ itemIdentifier: NSFileProviderItemIdentifier) async {
+    private func processItemIdentifier(_ itemIdentifier: NSFileProviderItemIdentifier) async {
         guard let manager = NSFileProviderManager(for: actionViewController.domain) else {
             fatalError("NSFileProviderManager isn't expected to fail")
         }
 
         do {
             let itemUrl = try await manager.getUserVisibleURL(for: itemIdentifier)
-            fileNameLabel.stringValue = itemUrl.lastPathComponent
-
-            let request = QLThumbnailGenerator.Request(
-                fileAt: itemUrl,
-                size: CGSize(width: 128, height: 128),
-                scale: 1.0,
-                representationTypes: .icon
-            )
-
-            let generator = QLThumbnailGenerator.shared
-            let fileThumbnail = await withCheckedContinuation { continuation in
-                generator.generateRepresentations(for: request) { thumbnail, type, error in
-                    if thumbnail == nil || error != nil {
-                        Logger.shareViewController.error("Could not get thumbnail: \(error)")
-                    }
-                    continuation.resume(returning: thumbnail)
-                }
-            }
-            fileNameIcon.image = fileThumbnail?.nsImage
+            await updateDisplay(itemUrl: itemUrl)
         } catch let error {
             let errorString = "Error processing item: \(error)"
             Logger.shareViewController.error("\(errorString)")
             fileNameLabel.stringValue = "Unknown item"
             descriptionLabel.stringValue = errorString
         }
+    }
+
+    private func updateDisplay(itemUrl: URL) async {
+        fileNameLabel.stringValue = itemUrl.lastPathComponent
+
+        let request = QLThumbnailGenerator.Request(
+            fileAt: itemUrl,
+            size: CGSize(width: 128, height: 128),
+            scale: 1.0,
+            representationTypes: .icon
+        )
+
+        let generator = QLThumbnailGenerator.shared
+        let fileThumbnail = await withCheckedContinuation { continuation in
+            generator.generateRepresentations(for: request) { thumbnail, type, error in
+                if thumbnail == nil || error != nil {
+                    Logger.shareViewController.error("Could not get thumbnail: \(error)")
+                }
+                continuation.resume(returning: thumbnail)
+            }
+        }
+        fileNameIcon.image = fileThumbnail?.nsImage
     }
 }
