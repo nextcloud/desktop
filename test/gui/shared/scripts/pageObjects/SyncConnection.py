@@ -9,7 +9,7 @@ class SyncConnection:
     FOLDER_SYNC_CONNECTION = {
         "container": names.settings_stack_QStackedWidget,
         "name": "_folderList",
-        "type": "QTreeView",
+        "type": "QListView",
         "visible": 1,
     }
     MENU = {
