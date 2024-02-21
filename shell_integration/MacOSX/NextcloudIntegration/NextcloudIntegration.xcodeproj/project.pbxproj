@@ -24,6 +24,8 @@
 		536EFBF7295CF58100F4CB13 /* FileProviderSocketLineProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 536EFBF6295CF58100F4CB13 /* FileProviderSocketLineProcessor.swift */; };
 		536EFC36295E3C1100F4CB13 /* NextcloudAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 536EFC35295E3C1100F4CB13 /* NextcloudAccount.swift */; };
 		5376307D2B85E2ED0026BFAB /* Logger+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5376307C2B85E2ED0026BFAB /* Logger+Extensions.swift */; };
+		537630912B85F4980026BFAB /* ShareViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 537630902B85F4980026BFAB /* ShareViewController.xib */; };
+		537630932B85F4B00026BFAB /* ShareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 537630922B85F4B00026BFAB /* ShareViewController.swift */; };
 		538E396A27F4765000FA63D5 /* UniformTypeIdentifiers.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 538E396927F4765000FA63D5 /* UniformTypeIdentifiers.framework */; };
 		538E396D27F4765000FA63D5 /* FileProviderExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 538E396C27F4765000FA63D5 /* FileProviderExtension.swift */; };
 		538E396F27F4765000FA63D5 /* FileProviderItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 538E396E27F4765000FA63D5 /* FileProviderItem.swift */; };
@@ -41,7 +43,6 @@
 		53903D37295618A400D0B308 /* LineProcessor.h in Headers */ = {isa = PBXBuildFile; fileRef = 53903D36295618A400D0B308 /* LineProcessor.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		539158AC27BE71A900816F56 /* FinderSyncSocketLineProcessor.m in Sources */ = {isa = PBXBuildFile; fileRef = 539158AB27BE71A900816F56 /* FinderSyncSocketLineProcessor.m */; };
 		53B979812B84C81F002DA742 /* DocumentActionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53B979802B84C81F002DA742 /* DocumentActionViewController.swift */; };
-		53B9798A2B84CB0F002DA742 /* MainInterface.xib in Resources */ = {isa = PBXBuildFile; fileRef = 53B979892B84CB0F002DA742 /* MainInterface.xib */; };
 		53D056312970594F00988392 /* LocalFilesUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53D056302970594F00988392 /* LocalFilesUtils.swift */; };
 		53D666612B70C9A70042C03D /* FileProviderConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53D666602B70C9A70042C03D /* FileProviderConfig.swift */; };
 		53ED472029C5E64200795DB1 /* FileProviderEnumerator+SyncEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53ED471F29C5E64200795DB1 /* FileProviderEnumerator+SyncEngine.swift */; };
@@ -162,6 +163,8 @@
 		536EFC35295E3C1100F4CB13 /* NextcloudAccount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NextcloudAccount.swift; sourceTree = "<group>"; };
 		5376307C2B85E2ED0026BFAB /* Logger+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Logger+Extensions.swift"; sourceTree = "<group>"; };
 		5376307E2B85E5650026BFAB /* FileProviderUIExt.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = FileProviderUIExt.entitlements; sourceTree = "<group>"; };
+		537630902B85F4980026BFAB /* ShareViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ShareViewController.xib; sourceTree = "<group>"; };
+		537630922B85F4B00026BFAB /* ShareViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareViewController.swift; sourceTree = "<group>"; };
 		538E396727F4765000FA63D5 /* FileProviderExt.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = FileProviderExt.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		538E396927F4765000FA63D5 /* UniformTypeIdentifiers.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UniformTypeIdentifiers.framework; path = System/Library/Frameworks/UniformTypeIdentifiers.framework; sourceTree = SDKROOT; };
 		538E396C27F4765000FA63D5 /* FileProviderExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileProviderExtension.swift; sourceTree = "<group>"; };
@@ -180,7 +183,6 @@
 		53B9797E2B84C81F002DA742 /* FileProviderUIExt.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = FileProviderUIExt.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		53B979802B84C81F002DA742 /* DocumentActionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentActionViewController.swift; sourceTree = "<group>"; };
 		53B979852B84C81F002DA742 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		53B979892B84CB0F002DA742 /* MainInterface.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MainInterface.xib; sourceTree = "<group>"; };
 		53D056302970594F00988392 /* LocalFilesUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalFilesUtils.swift; sourceTree = "<group>"; };
 		53D666602B70C9A70042C03D /* FileProviderConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileProviderConfig.swift; sourceTree = "<group>"; };
 		53ED471F29C5E64200795DB1 /* FileProviderEnumerator+SyncEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FileProviderEnumerator+SyncEngine.swift"; sourceTree = "<group>"; };
@@ -333,9 +335,10 @@
 		53B9797F2B84C81F002DA742 /* FileProviderUIExt */ = {
 			isa = PBXGroup;
 			children = (
-				53B979892B84CB0F002DA742 /* MainInterface.xib */,
 				5376307B2B85E2E00026BFAB /* Extensions */,
 				53B979802B84C81F002DA742 /* DocumentActionViewController.swift */,
+				537630922B85F4B00026BFAB /* ShareViewController.swift */,
+				537630902B85F4980026BFAB /* ShareViewController.xib */,
 				5376307E2B85E5650026BFAB /* FileProviderUIExt.entitlements */,
 				53B979852B84C81F002DA742 /* Info.plist */,
 			);
@@ -613,7 +616,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				53B9798A2B84CB0F002DA742 /* MainInterface.xib in Resources */,
+				537630912B85F4980026BFAB /* ShareViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -697,6 +700,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				537630932B85F4B00026BFAB /* ShareViewController.swift in Sources */,
 				53B979812B84C81F002DA742 /* DocumentActionViewController.swift in Sources */,
 				5376307D2B85E2ED0026BFAB /* Logger+Extensions.swift in Sources */,
 			);
