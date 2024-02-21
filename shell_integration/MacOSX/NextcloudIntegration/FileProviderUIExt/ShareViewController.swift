@@ -8,8 +8,10 @@
 import AppKit
 
 class ShareViewController: NSViewController {
-    @IBOutlet weak var identifierLabel: NSTextField!
-    @IBOutlet weak var actionTypeLabel: NSTextField!
+    @IBOutlet weak var fileNameIcon: NSImageView!
+    @IBOutlet weak var fileNameLabel: NSTextField!
+    @IBOutlet weak var descriptionLabel: NSTextField!
+    @IBOutlet weak var closeButton: NSButton!
 
     public override var nibName: NSNib.Name? {
         return NSNib.Name(self.className)
