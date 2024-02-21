@@ -9,6 +9,16 @@ import FileProviderUI
 import OSLog
 
 class DocumentActionViewController: FPUIActionExtensionViewController {
+    var domain: NSFileProviderDomain {
+        guard let identifier = extensionContext.domainIdentifier else {
+            fatalError("not expected to be called with default domain")
+        }
+        return NSFileProviderDomain(
+            identifier: NSFileProviderDomainIdentifier(rawValue: identifier.rawValue),
+            displayName: ""
+        )
+    }
+
     func prepare(childViewController: NSViewController) {
         addChild(childViewController)
         view.addSubview(childViewController.view)
