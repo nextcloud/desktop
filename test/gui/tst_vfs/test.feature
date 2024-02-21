@@ -66,3 +66,15 @@ Feature: Enable/disable virtual file support
         And as "Alice" file "Folder/lorem.txt" should exist in the server
         And as "Alice" file "lorem.txt" should not exist in the server
         And as "Alice" file "sampleFile.txt" should not exist in the server
+
+
+    Scenario: Disable/Enable VFS quickly
+        Given user "Alice" has been created on the server with default attributes and without skeleton files
+        And user "Alice" has set up a client with default settings
+        When user "Alice" creates a file "newfile.txt" with size "100MB" inside the sync folder
+        And the user waits for file "newfile.txt" to be synced
+        When the user disables virtual file support
+        And the user enables virtual file support
+        And the user disables virtual file support
+        And the user enables virtual file support
+        Then the "Disable virtual file support..." button should be available
