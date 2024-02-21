@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="22505" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+    <dependencies>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="22505"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <customObject id="-2" userLabel="File's Owner" customClass="ShareViewController" customModule="FileProviderUIExt" customModuleProvider="target">
+            <connections>
+                <outlet property="actionTypeLabel" destination="slV-H6-zJ3" id="1JN-bb-FG4"/>
+                <outlet property="identifierLabel" destination="gX0-nE-MrU" id="Ltd-Ad-QXu"/>
+                <outlet property="view" destination="Jw6-da-U8j" id="5Ek-F1-w7C"/>
+            </connections>
+        </customObject>
+        <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
+        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
+        <view misplaced="YES" id="Jw6-da-U8j">
+            <rect key="frame" x="0.0" y="0.0" width="480" height="40"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <subviews>
+                <stackView distribution="fill" orientation="vertical" alignment="leading" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9kj-aB-aJh">
+                    <rect key="frame" x="0.0" y="0.0" width="480" height="40"/>
+                    <subviews>
+                        <textField focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="slV-H6-zJ3">
+                            <rect key="frame" x="-2" y="24" width="37" height="16"/>
+                            <textFieldCell key="cell" lineBreakMode="clipping" title="Label" id="Uuo-1j-to8">
+                                <font key="font" usesAppearanceFont="YES"/>
+                                <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                            </textFieldCell>
+                        </textField>
+                        <textField focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="gX0-nE-MrU">
+                            <rect key="frame" x="-2" y="0.0" width="37" height="16"/>
+                            <textFieldCell key="cell" lineBreakMode="clipping" title="Label" id="1GC-Gr-x29">
+                                <font key="font" usesAppearanceFont="YES"/>
+                                <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                            </textFieldCell>
+                        </textField>
+                    </subviews>
+                    <visibilityPriorities>
+                        <integer value="1000"/>
+                        <integer value="1000"/>
+                    </visibilityPriorities>
+                    <customSpacing>
+                        <real value="3.4028234663852886e+38"/>
+                        <real value="3.4028234663852886e+38"/>
+                    </customSpacing>
+                </stackView>
+            </subviews>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="9kj-aB-aJh" secondAttribute="trailing" id="Oyj-Ql-C3b"/>
+                <constraint firstItem="9kj-aB-aJh" firstAttribute="leading" secondItem="Jw6-da-U8j" secondAttribute="leading" id="ThU-hb-3bS"/>
+                <constraint firstItem="9kj-aB-aJh" firstAttribute="top" secondItem="Jw6-da-U8j" secondAttribute="top" id="dEr-yV-R3d"/>
+                <constraint firstAttribute="bottom" secondItem="9kj-aB-aJh" secondAttribute="bottom" id="fEe-1A-sur"/>
+            </constraints>
+            <point key="canvasLocation" x="-319" y="262"/>
+        </view>
+    </objects>
+</document>
