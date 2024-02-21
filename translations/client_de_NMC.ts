@@ -187,10 +187,29 @@
     </message>
     <message>
     	<source>E2E_MNEMONIC_TEXT</source>
-        <translation>Für der Verschlüsselung wird ihnen eine aus 12 Wörtern zufällig erzeugte Wortfolge (Passphrase)
-erstellt. Wir empfehlen ihnen, die Passphrase zu notieren und sicher aufzubewahren. \n\n
+    	<translation>Für der Verschlüsselung wird ihnen eine aus 12 Wörtern zufällig erzeugte Wortfolge (Passphrase)
+erstellt. Wir empfehlen ihnen, die Passphrase zu notieren und sicher aufzubewahren.
+
 Die Passphrase ist ihr persönliches Kennwort mit dem sie auf verschlüsselte Daten in ihrer MagentaCLOUD zugreifen können oder den Zugriff auf diese Dateien auf anderen Geräten wie z.B.
 Smartphones zu ermöglichen.</translation>
+    </message>
+    <message>
+    	<source>E2E_MNEMONIC_TEXT2</source>
+    	<translation>Sie können keine Ordner verschlüsseln, die bereits unverschlüsselt synchronisierte Dateien enthalten. Bitte legen Sie einen neuen, leeren Ordner an und verschlüsseln diesen.</translation>
+    </message>
+    <message>
+    	<source>E2E_MNEMONIC_TEXT3</source>
+    	<translation>Die Ende-zu-Ende Verschlüsselung ist noch nicht eingerichtet. Bitte konfigurieren SIe diese in Ihren EInstellungen, um bereits verschlüsselte Inhalte bearbeiten und neue, leere Ordner verschlüsseln zu können.</translation>
+    </message>
+    <message>
+    	<source>E2E_MNEMONIC_TEXT4</source>
+    	<translation>Möchten Sie die Ende-zu-Ende-Verschlüsselung wirklich deaktivieren?
+    	
+    	Durch das deaktivieren der Verschlüsselung werden verschlüsselte Inhalte nicht länger auf diesem Gerät synchronisiert. Diese Inhalte werden aber nicht gelöscht, sondern verbleiben verschlüsselt auf dem Server und auf Ihren anderen Geräten, wo die Verschlüsselung eingerichtet ist.</translation>
+    </message>
+    <message>
+    	<source>E2E_MNEMONIC_PASSPHRASE</source>
+    	<translation>Bitte geben Sie ihr 12-Wort-Schlüssel (Passphrase) ein.</translation>
     </message>
 </context>
 </TS>
