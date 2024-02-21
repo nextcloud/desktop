@@ -221,7 +221,7 @@
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderEvictionDialog.qml" line="31"/>
         <source>Evict materialised files</source>
-        <translation type="unfinished"/>
+        <translation>Kast ut materialiserte filer</translation>
     </message>
 </context>
 <context>
@@ -229,7 +229,7 @@
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderFileDelegate.qml" line="96"/>
         <source>Delete</source>
-        <translation type="unfinished"/>
+        <translation>Slett</translation>
     </message>
 </context>
 <context>
@@ -237,32 +237,32 @@
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="32"/>
         <source>Virtual files settings</source>
-        <translation type="unfinished"/>
+        <translation>Innstillinger for virtuelle filer</translation>
     </message>
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="71"/>
         <source>General settings</source>
-        <translation type="unfinished"/>
+        <translation>Generelle innstillinger</translation>
     </message>
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="80"/>
         <source>Enable virtual files</source>
-        <translation type="unfinished"/>
+        <translation>Aktiver virtuelle filer</translation>
     </message>
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="132"/>
         <source>Advanced</source>
-        <translation type="unfinished"/>
+        <translation>Avansert</translation>
     </message>
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="139"/>
         <source>Signal file provider domain</source>
-        <translation type="unfinished"/>
+        <translation>Domene for signalfilleverandør</translation>
     </message>
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="144"/>
         <source>Create debug archive</source>
-        <translation type="unfinished"/>
+        <translation>Opprett feilsøkingsarkiv</translation>
     </message>
 </context>
 <context>
@@ -270,12 +270,12 @@
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderStorageInfo.qml" line="41"/>
         <source>Local storage use</source>
-        <translation type="unfinished"/>
+        <translation>Bruk av lokal lagring</translation>
     </message>
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderStorageInfo.qml" line="49"/>
         <source>%1 GB of %2 GB remote files synced</source>
-        <translation type="unfinished"/>
+        <translation>%1 GB av %2 GB eksterne filer synkronisert</translation>
     </message>
 </context>
 <context>
@@ -283,12 +283,12 @@
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderSyncStatus.qml" line="57"/>
         <source>Syncing</source>
-        <translation type="unfinished"/>
+        <translation>Synkroniserer</translation>
     </message>
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderSyncStatus.qml" line="57"/>
         <source>All synced!</source>
-        <translation type="unfinished"/>
+        <translation>Alt synkronisert!</translation>
     </message>
 </context>
 <context>
@@ -513,12 +513,12 @@ Skal kontoen importeres?</translation>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="267"/>
         <source>Standard file sync</source>
-        <translation type="unfinished"/>
+        <translation>Standard filsynkronisering</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="308"/>
         <source>Virtual file sync</source>
-        <translation type="unfinished"/>
+        <translation>Virtuell filsynkronisering</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="93"/>

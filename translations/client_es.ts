@@ -221,7 +221,7 @@
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderEvictionDialog.qml" line="31"/>
         <source>Evict materialised files</source>
-        <translation type="unfinished"/>
+        <translation>Evitar los archivos materializados</translation>
     </message>
 </context>
 <context>
@@ -229,7 +229,7 @@
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderFileDelegate.qml" line="96"/>
         <source>Delete</source>
-        <translation type="unfinished"/>
+        <translation>Borrar</translation>
     </message>
 </context>
 <context>
@@ -237,32 +237,32 @@
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="32"/>
         <source>Virtual files settings</source>
-        <translation type="unfinished"/>
+        <translation>Configuración de archivos virtuales</translation>
     </message>
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="71"/>
         <source>General settings</source>
-        <translation type="unfinished"/>
+        <translation>Configuración general</translation>
     </message>
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="80"/>
         <source>Enable virtual files</source>
-        <translation type="unfinished"/>
+        <translation>Activar archivos virtuales</translation>
     </message>
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="132"/>
         <source>Advanced</source>
-        <translation type="unfinished"/>
+        <translation>Avanzado</translation>
     </message>
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="139"/>
         <source>Signal file provider domain</source>
-        <translation type="unfinished"/>
+        <translation>Dominio del proveedor de archivos de firmas</translation>
     </message>
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="144"/>
         <source>Create debug archive</source>
-        <translation type="unfinished"/>
+        <translation>Crear archivo de depuración</translation>
     </message>
 </context>
 <context>
@@ -270,12 +270,12 @@
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderStorageInfo.qml" line="41"/>
         <source>Local storage use</source>
-        <translation type="unfinished"/>
+        <translation>Uso de almacenamiento local</translation>
     </message>
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderStorageInfo.qml" line="49"/>
         <source>%1 GB of %2 GB remote files synced</source>
-        <translation type="unfinished"/>
+        <translation>%1 GB de %2 GB de archivos remotos sincronizados</translation>
     </message>
 </context>
 <context>
@@ -283,12 +283,12 @@
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderSyncStatus.qml" line="57"/>
         <source>Syncing</source>
-        <translation type="unfinished"/>
+        <translation>Sincronizando</translation>
     </message>
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderSyncStatus.qml" line="57"/>
         <source>All synced!</source>
-        <translation type="unfinished"/>
+        <translation>¡Todo está sincronizado!</translation>
     </message>
 </context>
 <context>
@@ -429,14 +429,14 @@ Should an account import be attempted?</source>
         <location filename="../src/gui/accountmanager.cpp" line="198"/>
         <source>%1 accounts were detected from a legacy desktop client.
 Should the accounts be imported?</source>
-        <translation>%1 cuentas se detectaron de un cliente legado de escritorio.
+        <translation>%1 cuentas se detectaron con un cliente de escritorio antiguo.
 ¿Deben estas cuentas ser importadas?</translation>
     </message>
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="200"/>
         <source>1 account was detected from a legacy desktop client.
 Should the account be imported?</source>
-        <translation>1 cuenta se detectó desde un cliente legado de escritorio.
+        <translation>1 cuenta se detectó desde un cliente de escritorio antiguo.
 ¿Debe importarse esta cuenta?</translation>
     </message>
     <message>
@@ -514,12 +514,12 @@ Should the account be imported?</source>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="267"/>
         <source>Standard file sync</source>
-        <translation type="unfinished"/>
+        <translation>Sincronización de archivos estándar</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="308"/>
         <source>Virtual file sync</source>
-        <translation type="unfinished"/>
+        <translation>Sincronización de archivos virtual</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="93"/>
@@ -847,7 +847,7 @@ Además, esta acción interrumpirá cualquier sincronización en curso.</transla
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1301"/>
         <source>Unable to connect to %1.</source>
-        <translation type="unfinished"/>
+        <translation>No es posible conectarse con %1.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1264"/>
@@ -1545,7 +1545,7 @@ Además, esta acción interrumpirá cualquier sincronización en curso.</transla
     <message>
         <location filename="../src/gui/connectionvalidator.cpp" line="343"/>
         <source>Network Error</source>
-        <translation type="unfinished"/>
+        <translation>Error en la red</translation>
     </message>
 </context>
 <context>
@@ -1758,7 +1758,7 @@ Esto podría ser un problema con tu librería OpenSSL</translation>
     <message>
         <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="147"/>
         <source>Error fetching encrypted folder ID.</source>
-        <translation type="unfinished"/>
+        <translation>Error al obtener el ID de la carpeta cifrada.</translation>
     </message>
     <message>
         <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="181"/>
@@ -3862,7 +3862,7 @@ Esta es un modo nuevo y experimental. Si decides usarlo, por favor, informa de c
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1040"/>
         <source>Could not upload file, because it is open in &quot;%1&quot;.</source>
-        <translation type="unfinished"/>
+        <translation>No es posible subir el archivo, porque está abierto en &quot;%1&quot;.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1010"/>
@@ -5190,7 +5190,7 @@ El servidor respondió con el error: %2</translation>
     <message>
         <location filename="../src/libsync/updatee2eefolderusersmetadatajob.cpp" line="92"/>
         <source>Could not fetch public key for user %1</source>
-        <translation type="unfinished"/>
+        <translation>No se pudo obtener la llave pública para el usuario %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/updatee2eefolderusersmetadatajob.cpp" line="100"/>

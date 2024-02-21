@@ -221,7 +221,7 @@
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderEvictionDialog.qml" line="31"/>
         <source>Evict materialised files</source>
-        <translation type="unfinished"/>
+        <translation>Избаци материјализоване фајлове</translation>
     </message>
 </context>
 <context>
@@ -229,7 +229,7 @@
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderFileDelegate.qml" line="96"/>
         <source>Delete</source>
-        <translation type="unfinished"/>
+        <translation>Обриши</translation>
     </message>
 </context>
 <context>
@@ -237,32 +237,32 @@
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="32"/>
         <source>Virtual files settings</source>
-        <translation type="unfinished"/>
+        <translation>Подешавања виртуелних фајлова</translation>
     </message>
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="71"/>
         <source>General settings</source>
-        <translation type="unfinished"/>
+        <translation>Општа подешавања</translation>
     </message>
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="80"/>
         <source>Enable virtual files</source>
-        <translation type="unfinished"/>
+        <translation>Укључи виртуелне фајлове</translation>
     </message>
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="132"/>
         <source>Advanced</source>
-        <translation type="unfinished"/>
+        <translation>Напредно</translation>
     </message>
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="139"/>
         <source>Signal file provider domain</source>
-        <translation type="unfinished"/>
+        <translation>Наведи домен пружаоца фајла</translation>
     </message>
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="144"/>
         <source>Create debug archive</source>
-        <translation type="unfinished"/>
+        <translation>Креирај дибаг архиву</translation>
     </message>
 </context>
 <context>
@@ -270,12 +270,12 @@
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderStorageInfo.qml" line="41"/>
         <source>Local storage use</source>
-        <translation type="unfinished"/>
+        <translation>Искоришћење локалног складишта</translation>
     </message>
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderStorageInfo.qml" line="49"/>
         <source>%1 GB of %2 GB remote files synced</source>
-        <translation type="unfinished"/>
+        <translation>Синхронизовано је %1 GB од %2 GB удаљених фајлова</translation>
     </message>
 </context>
 <context>
@@ -283,12 +283,12 @@
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderSyncStatus.qml" line="57"/>
         <source>Syncing</source>
-        <translation type="unfinished"/>
+        <translation>Синхронизује се</translation>
     </message>
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderSyncStatus.qml" line="57"/>
         <source>All synced!</source>
-        <translation type="unfinished"/>
+        <translation>Све је синхронизовано!</translation>
     </message>
 </context>
 <context>
@@ -513,12 +513,12 @@ Should the account be imported?</source>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="267"/>
         <source>Standard file sync</source>
-        <translation type="unfinished"/>
+        <translation>Сихрнонизовање стандардног фајла</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="308"/>
         <source>Virtual file sync</source>
-        <translation type="unfinished"/>
+        <translation>Сихрнонизовање виртуелног фајла</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="93"/>

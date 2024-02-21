@@ -229,7 +229,7 @@
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderFileDelegate.qml" line="96"/>
         <source>Delete</source>
-        <translation type="unfinished"/>
+        <translation>Radera</translation>
     </message>
 </context>
 <context>
@@ -237,22 +237,22 @@
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="32"/>
         <source>Virtual files settings</source>
-        <translation type="unfinished"/>
+        <translation>Inställningar virtuella filer</translation>
     </message>
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="71"/>
         <source>General settings</source>
-        <translation type="unfinished"/>
+        <translation>Allmänna inställningar</translation>
     </message>
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="80"/>
         <source>Enable virtual files</source>
-        <translation type="unfinished"/>
+        <translation>Aktivera virtuella filer</translation>
     </message>
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="132"/>
         <source>Advanced</source>
-        <translation type="unfinished"/>
+        <translation>Avancerat</translation>
     </message>
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="139"/>
@@ -262,7 +262,7 @@
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="144"/>
         <source>Create debug archive</source>
-        <translation type="unfinished"/>
+        <translation>Skapa felsökningsarkiv</translation>
     </message>
 </context>
 <context>
@@ -270,12 +270,12 @@
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderStorageInfo.qml" line="41"/>
         <source>Local storage use</source>
-        <translation type="unfinished"/>
+        <translation>Användning lokal lagring</translation>
     </message>
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderStorageInfo.qml" line="49"/>
         <source>%1 GB of %2 GB remote files synced</source>
-        <translation type="unfinished"/>
+        <translation>%1 GB av %2 GB filer synkroniserade</translation>
     </message>
 </context>
 <context>
@@ -283,12 +283,12 @@
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderSyncStatus.qml" line="57"/>
         <source>Syncing</source>
-        <translation type="unfinished"/>
+        <translation>Synkroniserar</translation>
     </message>
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderSyncStatus.qml" line="57"/>
         <source>All synced!</source>
-        <translation type="unfinished"/>
+        <translation>Allt synkroniserat!</translation>
     </message>
 </context>
 <context>
@@ -513,12 +513,12 @@ Ska detta konto importeras?</translation>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="267"/>
         <source>Standard file sync</source>
-        <translation type="unfinished"/>
+        <translation>Filsynkronisering standard</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="308"/>
         <source>Virtual file sync</source>
-        <translation type="unfinished"/>
+        <translation>Filsynkronisering virtuella filer</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="93"/>
@@ -1693,7 +1693,7 @@ Den här åtgärden avbryter alla pågående synkroniseringar.</translation>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="514"/>
         <source>Could not find a remote file info for local editing. Make sure its path is valid.</source>
-        <translation>Kunde inte hitta remote filinformation för lokal redigering. Kontrollera att sökvägen är giltig.</translation>
+        <translation>Kunde inte hitta filinformation för lokal redigering. Kontrollera att sökvägen är giltig.</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="578"/>

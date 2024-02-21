@@ -229,7 +229,7 @@
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderFileDelegate.qml" line="96"/>
         <source>Delete</source>
-        <translation type="unfinished"/>
+        <translation>삭제</translation>
     </message>
 </context>
 <context>
@@ -237,22 +237,22 @@
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="32"/>
         <source>Virtual files settings</source>
-        <translation type="unfinished"/>
+        <translation>가상 파일 설정</translation>
     </message>
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="71"/>
         <source>General settings</source>
-        <translation type="unfinished"/>
+        <translation>일반 설정</translation>
     </message>
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="80"/>
         <source>Enable virtual files</source>
-        <translation type="unfinished"/>
+        <translation>가상 파일 활성화</translation>
     </message>
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="132"/>
         <source>Advanced</source>
-        <translation type="unfinished"/>
+        <translation>고급</translation>
     </message>
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="139"/>
@@ -262,7 +262,7 @@
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="144"/>
         <source>Create debug archive</source>
-        <translation type="unfinished"/>
+        <translation>디버그 아카이브 만들기</translation>
     </message>
 </context>
 <context>
@@ -270,12 +270,12 @@
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderStorageInfo.qml" line="41"/>
         <source>Local storage use</source>
-        <translation type="unfinished"/>
+        <translation>로컬 저장소 사용</translation>
     </message>
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderStorageInfo.qml" line="49"/>
         <source>%1 GB of %2 GB remote files synced</source>
-        <translation type="unfinished"/>
+        <translation>%2GB의 원격 파일 중 %1GB가 동기화 됨</translation>
     </message>
 </context>
 <context>
@@ -283,12 +283,12 @@
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderSyncStatus.qml" line="57"/>
         <source>Syncing</source>
-        <translation type="unfinished"/>
+        <translation>동기화 중</translation>
     </message>
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderSyncStatus.qml" line="57"/>
         <source>All synced!</source>
-        <translation type="unfinished"/>
+        <translation>모두 동기화함!</translation>
     </message>
 </context>
 <context>
@@ -513,12 +513,12 @@ Should the account be imported?</source>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="267"/>
         <source>Standard file sync</source>
-        <translation type="unfinished"/>
+        <translation>표준 파일 동기화</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="308"/>
         <source>Virtual file sync</source>
-        <translation type="unfinished"/>
+        <translation>가상 파일 동기화</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="93"/>
@@ -726,9 +726,9 @@ Wait for the new sync, then encrypt it.</source>
 The only advantage of disabling virtual file support is that the selective sync feature will become available again.
 
 This action will abort any currently running synchronization.</source>
-        <translation>이 동작은 가상 파일 지원을 비활성화 할 것입니다. 결과적으로, 폴더에서 &quot;온라인에서만 사용 가능&quot;한 콘텐츠들이 다운로드 됩니다.
+        <translation>이 동작은 가상 파일 지원을 비활성화 할 것입니다. 결과적으로  &quot;온라인에서만 사용 가능&quot;하도록 지정된 폴더의 콘텐츠들이 다운로드 됩니다.
 
-가상 파일 지원을 비활성화 하는 것의 유일한 장점은 선택적 동기화 기능이 다시 사용 가능하게 된다는 것입니다.
+가상 파일 지원을 비활성화 하는 것의 유일한 이점은 선택적 동기화 기능이 다시 사용 가능하게 된다는 것입니다.
 
 이 동작은 진행 중인 동기화를 모두 취소합니다.</translation>
     </message>
@@ -845,7 +845,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1301"/>
         <source>Unable to connect to %1.</source>
-        <translation type="unfinished"/>
+        <translation>%1에 연결할 수 없습니다.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1264"/>
@@ -1543,7 +1543,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/connectionvalidator.cpp" line="343"/>
         <source>Network Error</source>
-        <translation type="unfinished"/>
+        <translation>네트워크 오류</translation>
     </message>
 </context>
 <context>
@@ -1756,7 +1756,7 @@ OpenSSL 라이브러리 이슈일 수 있습니다.</translation>
     <message>
         <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="147"/>
         <source>Error fetching encrypted folder ID.</source>
-        <translation type="unfinished"/>
+        <translation>암호화된 폴더 ID 가져오기 오류</translation>
     </message>
     <message>
         <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="181"/>
@@ -3861,7 +3861,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1040"/>
         <source>Could not upload file, because it is open in &quot;%1&quot;.</source>
-        <translation type="unfinished"/>
+        <translation>파일이 &quot;%1&quot;에서 열려있기 때문에 업로드할 수 없습니다.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1010"/>
@@ -5116,7 +5116,7 @@ Server replied with error: %2</source>
         <location filename="../src/libsync/theme.cpp" line="570"/>
         <source>&lt;p&gt;%1 desktop client %2&lt;/p&gt;</source>
         <extracomment>Example text: &quot;&lt;p&gt;Nextcloud Desktop Client&lt;/p&gt;&quot; (%1 is the application name)</extracomment>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;%1 데스크톱 클라이언트 %2&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="557"/>
@@ -5189,12 +5189,12 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/libsync/updatee2eefolderusersmetadatajob.cpp" line="92"/>
         <source>Could not fetch public key for user %1</source>
-        <translation type="unfinished"/>
+        <translation>%1 사용자의 공개 키를 가져올 수 없습니다.</translation>
     </message>
     <message>
         <location filename="../src/libsync/updatee2eefolderusersmetadatajob.cpp" line="100"/>
         <source>Could not find root encrypted folder for folder %1</source>
-        <translation type="unfinished"/>
+        <translation>%1 폴더의 루트 암호화된 폴더를 찾을 수 없습니다.</translation>
     </message>
     <message>
         <location filename="../src/libsync/updatee2eefolderusersmetadatajob.cpp" line="121"/>
