@@ -25,16 +25,11 @@ class DocumentActionViewController: FPUIActionExtensionViewController {
         forAction actionIdentifier: String, itemIdentifiers: [NSFileProviderItemIdentifier]
     ) {
         Logger.actionViewController.info("Preparing for action: \(actionIdentifier)")
-        let shareViewController = ShareViewController()
-        addChild(shareViewController)
-        view.addSubview(shareViewController.view)
 
-        NSLayoutConstraint.activate([
-            view.leadingAnchor.constraint(equalTo: shareViewController.view.leadingAnchor),
-            view.trailingAnchor.constraint(equalTo: shareViewController.view.trailingAnchor),
-            view.topAnchor.constraint(equalTo: shareViewController.view.topAnchor),
-            view.bottomAnchor.constraint(equalTo: shareViewController.view.bottomAnchor)
-        ])
+        if actionIdentifier == "com.nextcloud.desktopclient.FileProviderUIExt.ShareAction" {
+            prepare(childViewController: ShareViewController())
+        }
+
     }
     
     override func prepare(forError error: Error) {
