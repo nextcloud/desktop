@@ -221,7 +221,7 @@
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderEvictionDialog.qml" line="31"/>
         <source>Evict materialised files</source>
-        <translation type="unfinished"/>
+        <translation>Materialisierte Dateien löschen</translation>
     </message>
 </context>
 <context>
