@@ -48,6 +48,24 @@ constexpr auto syncRootFlagsNoCfApiContextMenu = 2;
 
 constexpr auto syncRootManagerRegKey = R"(SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\SyncRootManager)";
 
+constexpr auto forbiddenLeadingCharacterInPath = "#";
+
+QString createErrorMessageForPlaceholderUpdateAndCreate(const QString &path, const QString &originalErrorMessage)
+{
+    const auto pathFromNativeSeparators = QDir::fromNativeSeparators(path);
+    if (!pathFromNativeSeparators.contains(QStringLiteral("/%1").arg(forbiddenLeadingCharacterInPath))) {
+        return originalErrorMessage;
+    }
+    const auto fileComponents = pathFromNativeSeparators.split("/");
+    for (const auto &fileComponent : fileComponents) {
+        if (fileComponent.startsWith(forbiddenLeadingCharacterInPath)) {
+            qCInfo(lcCfApiWrapper) << "Failed to create/update a placeholder for path \"" << pathFromNativeSeparators << "\" that has a leading '#'.";
+            return {(originalErrorMessage + QStringLiteral(": ") + QObject::tr("Paths beginning with '#' character are not supported in VFS mode."))};
+        }
+    }
+    return originalErrorMessage;
+}
+
 DWORD sizeToDWORD(size_t size)
 {
     return OCC::Utility::convertSizeToDWORD(size);
@@ -297,8 +315,9 @@ OCC::Result<OCC::Vfs::ConvertToPlaceholderResult, QString> updatePlaceholderStat
                                                   nullptr, 0, CF_UPDATE_FLAG_MARK_IN_SYNC, nullptr, nullptr);
 
         if (result != S_OK) {
-            qCWarning(lcCfApiWrapper) << "Couldn't update placeholder info for" << path << ":" << QString::fromWCharArray(_com_error(result).ErrorMessage()) << replacesPath;
-            return { "Couldn't update placeholder info" };
+            const auto errorMessage = createErrorMessageForPlaceholderUpdateAndCreate(path, "Couldn't update placeholder info");
+            qCWarning(lcCfApiWrapper) << errorMessage << path << ":" << QString::fromWCharArray(_com_error(result).ErrorMessage()) << replacesPath;
+            return errorMessage;
         }
 
                // Pin state tends to be lost on updates, so restore it every time
@@ -827,8 +846,9 @@ OCC::Result<OCC::Vfs::ConvertToPlaceholderResult, QString> OCC::CfApiWrapper::de
                                                   nullptr);
 
         if (result != S_OK) {
-            qCWarning(lcCfApiWrapper) << "Couldn't update placeholder info for" << path << ":" << QString::fromWCharArray(_com_error(result).ErrorMessage());
-            return {"Couldn't update placeholder info"};
+            const auto errorMessage = createErrorMessageForPlaceholderUpdateAndCreate(path, "Couldn't update placeholder info");
+            qCWarning(lcCfApiWrapper) << errorMessage << path << ":" << QString::fromWCharArray(_com_error(result).ErrorMessage());
+            return errorMessage;
         }
     } else {
         const qint64 result = CfConvertToPlaceholder(handleForPath(path).get(),
@@ -839,8 +859,9 @@ OCC::Result<OCC::Vfs::ConvertToPlaceholderResult, QString> OCC::CfApiWrapper::de
                                                      nullptr);
 
         if (result != S_OK) {
-            qCWarning(lcCfApiWrapper) << "Couldn't convert to placeholder" << path << ":" << QString::fromWCharArray(_com_error(result).ErrorMessage());
-            return {"Couldn't convert to placeholder"};
+            const auto errorMessage = createErrorMessageForPlaceholderUpdateAndCreate(path, "Couldn't convert to placeholder");
+            qCWarning(lcCfApiWrapper) << errorMessage << path << ":" << QString::fromWCharArray(_com_error(result).ErrorMessage());
+            return errorMessage;
         }
     }
 
@@ -857,8 +878,9 @@ OCC::Result<OCC::Vfs::ConvertToPlaceholderResult, QString> OCC::CfApiWrapper::co
     const qint64 result = CfConvertToPlaceholder(handleForPath(path).get(), fileIdentity.data(), sizeToDWORD(fileIdentitySize), CF_CONVERT_FLAG_MARK_IN_SYNC, nullptr, nullptr);
     Q_ASSERT(result == S_OK);
     if (result != S_OK) {
-        qCCritical(lcCfApiWrapper) << "Couldn't convert to placeholder" << path << ":" << QString::fromWCharArray(_com_error(result).ErrorMessage());
-        return { "Couldn't convert to placeholder" };
+        const auto errorMessage = createErrorMessageForPlaceholderUpdateAndCreate(path, "Couldn't convert to placeholder");
+        qCWarning(lcCfApiWrapper) << errorMessage << path << ":" << QString::fromWCharArray(_com_error(result).ErrorMessage());
+        return errorMessage;
     }
 
     const auto originalInfo = findPlaceholderInfo(replacesPath);
