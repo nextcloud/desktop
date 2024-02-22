@@ -575,17 +575,17 @@ Deze actie annuleert alle huidig lopende synchronisatie.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="381"/>
         <source>Disable virtual file support</source>
-        <translation type="unfinished"/>
+        <translation>Schakel virtuele bestanden ondersteuning uit</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="387"/>
         <source>Enable virtual file support</source>
-        <translation type="unfinished"/>
+        <translation>Schakel ondersteuning voor virtuele bestanden in</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="600"/>
         <source>Sync paused by user</source>
-        <translation type="unfinished"/>
+        <translation>Synchronisatie gepauzeerd door gebruiker</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="634"/>
@@ -1150,7 +1150,7 @@ Als dit een ongelukje was en u de bestanden wilt behouden, worden ze opnieuw ges
     <message>
         <location filename="../src/gui/folderman.cpp" line="605"/>
         <source>Folder is about to be removed</source>
-        <translation type="unfinished"/>
+        <translation>Map wordt zometeen verwijderd</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="629"/>
@@ -1265,7 +1265,7 @@ Overweeg om deze map te verwijderen van dit account en om hem opnieuw toe te voe
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="278"/>
         <source>The suffix VFS plugin is deprecated and will be removed in the 7.0 release.</source>
-        <translation type="unfinished"/>
+        <translation>De suffix VFS plugin wordt niet meer ondersteund en zal in versie 7.0 verwijderd worden.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="279"/>
@@ -1518,7 +1518,7 @@ Overweeg om deze map te verwijderen van dit account en om hem opnieuw toe te voe
     <message>
         <location filename="../src/gui/folderwizard/folderwizardselectivesync.cpp" line="47"/>
         <source>Use virtual files instead of downloading content immediately</source>
-        <translation type="unfinished"/>
+        <translation>Gebruik virtuele bestanden in plaats van de inhoud meteen te downloaden</translation>
     </message>
 </context>
 <context>
