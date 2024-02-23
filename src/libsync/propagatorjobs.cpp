@@ -129,7 +129,7 @@ void PropagateLocalRemove::start()
     }
     propagator()->reportProgress(*_item, 0);
     if (!propagator()->_journal->deleteFileRecord(_item->_originalFile, _item->isDirectory())) {
-        qCWarning(lcPropagateLocalRename) << "could not delete file from local DB" << _item->_originalFile;
+        qCWarning(lcPropagateLocalRemove()) << "could not delete file from local DB" << _item->_originalFile;
         done(SyncFileItem::NormalError, tr("Could not delete file record %1 from local DB").arg(_item->_originalFile), ErrorCategory::GenericError);
         return;
     }
