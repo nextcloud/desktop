@@ -61,7 +61,7 @@ void BasePropagateRemoteDeleteEncrypted::fetchMetadataForPath(const QString &pat
     _fullFolderRemotePath = _propagator->fullRemotePath(path);
 
     SyncJournalFileRecord rec;
-    if (!_propagator->_journal->getRootE2eFolderRecord(_fullFolderRemotePath, &rec) || !rec.isValid()) {
+    if (!_propagator->_journal->getRootE2eFolderRecord(Utility::fullRemotePathToRemoteSyncRootRelative(_fullFolderRemotePath, _propagator->remotePath()), &rec) || !rec.isValid()) {
         taskFailed();
         return;
     }

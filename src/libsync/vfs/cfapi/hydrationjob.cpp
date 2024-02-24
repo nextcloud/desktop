@@ -370,7 +370,7 @@ void OCC::HydrationJob::handleNewConnectionForEncryptedFile()
     const auto _remoteParentPath = remotePath.left(remotePath.lastIndexOf('/'));
 
     SyncJournalFileRecord rec;
-    if (!_journal->getRootE2eFolderRecord(_remoteParentPath, &rec) || !rec.isValid()) {
+    if (!_journal->getRootE2eFolderRecord(Utility::fullRemotePathToRemoteSyncRootRelative(_remoteParentPath, rootPath), &rec) || !rec.isValid()) {
         emitFinished(Error);
         return;
     }

@@ -36,6 +36,8 @@ public:
     explicit EncryptFolderJob(const AccountPtr &account,
                               SyncJournalDb *journal,
                               const QString &path,
+                              const QString &pathNonEncrypted,
+                              const QString &_remoteSyncRootPath,
                               const QByteArray &fileId,
                               OwncloudPropagator *propagator = nullptr,
                               SyncFileItemPtr item = {},
@@ -46,9 +48,6 @@ public:
 
 signals:
     void finished(int status, EncryptionStatusEnums::ItemEncryptionStatus encryptionStatus);
-
-public slots:
-    void setPathNonEncrypted(const QString &pathNonEncrypted);
 
 private:
     void uploadMetadata();
@@ -64,6 +63,7 @@ private:
     SyncJournalDb *_journal;
     QString _path;
     QString _pathNonEncrypted;
+    QString _remoteSyncRootPath;
     QByteArray _fileId;
     QString _errorString;
     OwncloudPropagator *_propagator = nullptr;

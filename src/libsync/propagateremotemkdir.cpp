@@ -157,9 +157,15 @@ void PropagateRemoteMkdir::finalizeMkColJob(QNetworkReply::NetworkError err, con
             // We're expecting directory path in /Foo/Bar convention...
             Q_ASSERT(jobPath.startsWith('/') && !jobPath.endsWith('/'));
             // But encryption job expect it in Foo/Bar/ convention
-            auto job = new OCC::EncryptFolderJob(propagator()->account(), propagator()->_journal, jobPath.mid(1), _item->_fileId, propagator(), _item);
+            auto job = new OCC::EncryptFolderJob(propagator()->account(),
+                                                 propagator()->_journal,
+                                                 jobPath.mid(1),
+                                                 _item->_file,
+                                                 propagator()->remotePath(),
+                                                 _item->_fileId,
+                                                 propagator(),
+                                                 _item);
             job->setParent(this);
-            job->setPathNonEncrypted(_item->_file);
             connect(job, &OCC::EncryptFolderJob::finished, this, &PropagateRemoteMkdir::slotEncryptFolderFinished);
             job->start();
         }

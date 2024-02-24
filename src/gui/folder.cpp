@@ -271,6 +271,11 @@ QString Folder::remotePathTrailingSlash() const
     return Utility::trailingSlashPath(remotePath());
 }
 
+QString Folder::fulllRemotePathToPathInSyncJournalDb(const QString &fullRemotePath) const
+{
+    return Utility::fullRemotePathToRemoteSyncRootRelative(fullRemotePath, remotePathTrailingSlash());
+}
+
 QUrl Folder::remoteUrl() const
 {
     return Utility::concatUrlPath(_accountState->account()->davUrl(), remotePath());
