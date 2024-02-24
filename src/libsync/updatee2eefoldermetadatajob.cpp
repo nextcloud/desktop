@@ -42,7 +42,7 @@ void UpdateE2eeFolderMetadataJob::start()
     qCDebug(lcUpdateFileDropMetadataJob) << "Folder is encrypted, let's fetch metadata.";
 
     SyncJournalFileRecord rec;
-    if (!propagator()->_journal->getRootE2eFolderRecord(_encryptedRemotePath, &rec) || !rec.isValid()) {
+    if (!propagator()->_journal->getRootE2eFolderRecord(Utility::fullRemotePathToRemoteSyncRootRelative(_encryptedRemotePath, propagator()->remotePath()), &rec) || !rec.isValid()) {
         unlockFolder(EncryptedFolderMetadataHandler::UnlockFolderWithResult::Failure);
         return;
     }
@@ -84,7 +84,8 @@ void UpdateE2eeFolderMetadataJob::slotFetchMetadataJobFinished(int httpReturnCod
     }
 
     SyncJournalFileRecord rec;
-    if (!propagator()->_journal->getRootE2eFolderRecord(_encryptedRemotePath, &rec) || !rec.isValid()) {
+    if (!propagator()->_journal->getRootE2eFolderRecord(Utility::fullRemotePathToRemoteSyncRootRelative(_encryptedRemotePath, propagator()->remotePath()), &rec)
+        || !rec.isValid()) {
         unlockFolder(EncryptedFolderMetadataHandler::UnlockFolderWithResult::Failure);
         return;
     }

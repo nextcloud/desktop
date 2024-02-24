@@ -693,5 +693,29 @@ QString Utility::noLeadingSlashPath(const QString &path)
     return path.startsWith(slash) ? path.mid(1) : path;
 }
 
+QString Utility::noTrailingSlashPath(const QString &path)
+{
+    static const auto slash = QLatin1Char('/');
+    return path.endsWith(slash) ? path.chopped(1) : path;
+}
+
+QString Utility::fullRemotePathToRemoteSyncRootRelative(const QString &fullRemotePath, const QString &remoteSyncRoot)
+{
+    const auto remoteSyncRootNoLeadingSlashWithTrailingSlash = Utility::trailingSlashPath(noLeadingSlashPath(remoteSyncRoot));
+    const auto fullRemotePathNoLeadingSlash = noLeadingSlashPath(fullRemotePath);
+
+    if (remoteSyncRootNoLeadingSlashWithTrailingSlash == QStringLiteral("/")) {
+        return noLeadingSlashPath(noTrailingSlashPath(fullRemotePath));
+    }
+
+    if (!fullRemotePathNoLeadingSlash.startsWith(remoteSyncRootNoLeadingSlashWithTrailingSlash)) {
+        return fullRemotePath;
+    }
+
+    const auto relativePathToRemoteSyncRoot = fullRemotePathNoLeadingSlash.mid(remoteSyncRootNoLeadingSlashWithTrailingSlash.size());
+    Q_ASSERT(!relativePathToRemoteSyncRoot.isEmpty());
+    return noLeadingSlashPath(noTrailingSlashPath(relativePathToRemoteSyncRoot));
+}
+
 
 } // namespace OCC
