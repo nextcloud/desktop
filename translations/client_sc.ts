@@ -140,7 +140,7 @@
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="248"/>
         <source>Settings</source>
-        <translation>Impostatziones</translation>
+        <translation>Cunfiguratzione</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="251"/>
@@ -2012,7 +2012,7 @@ Custu podet èssere un&apos;errore de is librerias tuas OpenSSL.</translation>
     <message>
         <location filename="../src/gui/folder.cpp" line="1229"/>
         <source>Please go in the settings to select it if you wish to download it.</source>
-        <translation>Pro praghere, bae a is impostatziones pro dda seletzionare si dda boles iscarrigare.</translation>
+        <translation>Bae a sa cunfiguratzione pro dda seletzionare si dda boles iscarrigare.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1376"/>
@@ -2752,7 +2752,7 @@ Si custu fiat un&apos;errore e detzides de mantènnere is archìvios tuos, custo
     <message>
         <location filename="../src/gui/generalsettings.ui" line="66"/>
         <source>General Settings</source>
-        <translation>Impostatziones generales</translation>
+        <translation>Cunfiguratzione generale</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="72"/>
@@ -2894,7 +2894,7 @@ Annota chi custu seletzionat isceti dae cale grùstiu prelevare is agiornamentos
     <message>
         <location filename="../src/gui/ignorelisteditor.ui" line="20"/>
         <source>Global Ignore Settings</source>
-        <translation>Impostatziones globales de ignora</translation>
+        <translation>Cunfiguratzione globale de ignora</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.ui" line="26"/>
@@ -3116,8 +3116,8 @@ Si ativados, is log ant a èssere iscritos in %1</translation>
         <location filename="../src/gui/logbrowser.cpp" line="70"/>
         <source>This setting persists across client restarts.
 Note that using any logging command line options will override this setting.</source>
-        <translation>Custa impostatzione abarrat in casu chi si torret a aviare su cliente.
-Càstia chi s&apos;impreu de cale si siat optzione de sa riga de cumandu de registratzione at a sutaiscrìere custa impostatzione.</translation>
+        <translation>Custa cunfiguratzione abarrat in casu chi si torret a aviare su cliente.
+Càstia chi s&apos;impreu de cale si siat optzione de sa riga de cumandu de registratzione at a sutascrìere custa cunfiguratzione.</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="77"/>
@@ -3191,7 +3191,7 @@ Càstia chi s&apos;impreu de cale si siat optzione de sa riga de cumandu de regi
     <message>
         <location filename="../src/gui/networksettings.ui" line="23"/>
         <source>Proxy Settings</source>
-        <translation>Impostatziones de su serbidore intermèdiu</translation>
+        <translation>Cunfiguratzione de su serbidore intermèdiu</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="36"/>
@@ -3231,7 +3231,7 @@ Càstia chi s&apos;impreu de cale si siat optzione de sa riga de cumandu de regi
     <message>
         <location filename="../src/gui/networksettings.ui" line="176"/>
         <source>Note: proxy settings have no effects for accounts on localhost</source>
-        <translation>Avisu: is impostatziones de su serbidore intermèdiu non tenent perunu effetu pro is contos de s&apos;acollidore locale</translation>
+        <translation>Avisu: sa cunfiguratzione de su serbidore intermèdiu non tenet nissunu efetu pro is contos de s&apos;acollidore locale</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="197"/>
@@ -3660,7 +3660,7 @@ Càstia chi s&apos;impreu de cale si siat optzione de sa riga de cumandu de regi
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="645"/>
         <source>Cannot remove and back up the folder because the folder or a file in it is open in another program. Please close the folder or file and hit retry or cancel the setup.</source>
-        <translation>No at fatu a catzare o copiare sa cartella ca sa cartella o s&apos;archìviu in intro est abertu in un àteru programma. Serra sa cartella o s&apos;archìviu e incarca Proa torra o annulla s&apos;impostatzione.</translation>
+        <translation>Impossìbile catzare o copiare sa cartella, ca sa cartella o s&apos;archìviu in intro est abertu in un&apos;àteru programma. Serra sa cartella o s&apos;archìviu e incarca Proa torra o annulla sa cunfiguratzione.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="698"/>
@@ -3699,10 +3699,10 @@ The virtual files mode is mutually exclusive with selective sync. Currently unse
 Switching to this mode will abort any currently running synchronization.
 
 This is a new, experimental mode. If you decide to use it, please report any issues that come up.</source>
-        <translation>Cando sa modalidade &quot;file virtuali&quot; est abilitada, a su cumintzu perunu archìviu at a èssere iscarrigadu. At a èssere un&apos;archìviu minore &quot;%1&quot; pro ogni archìviu chi ddoe est in su serbidore. Is cuntenutos si podent iscarrigare esecutende custos archìvios o impreende su menu de cuntestu issoro.
+        <translation>Cando sa modalidade &quot;archìviu virtuale&quot; est abilitada, a su cumintzu nissunu archìviu at a èssere iscarrigadu. At a èssere un&apos;archìviu minore &quot;%1&quot; pro ogni archìviu chi ddoe est in su serbidore. Is cuntenutos si podent iscarrigare esecutende custos archìvios o impreende su menù de cuntestu issoro.
 
- Sa modalidade de is archìvios virtuales s&apos;escludet a pare cun sa sa sincroniatzione seletiva. Is cartellas immoe non seletzionadas ant a èssere bortadas in cartellas isceti in lìnia e is impostatziones de sincronizatzione seletiva ant a èssere ripristinadas.
-Passende a custa modalidade s&apos;at a interrumpire cale si siat sincronizatzione in esecutzione immoe
+ Sa modalidade de is archìvios virtuales s&apos;escludet a pare cun sa sa sincronizatzione seletiva. Is cartellas immoe non seletzionadas ant a èssere bortadas in cartellas isceti in lìnia e sa cunfiguratzione de sincronizatzione seletiva at a èssere ripristinada.
+Passende a custa modalidade s&apos;at a interrumpire cale si siat sincronizatzione in esecutzione.
 
 Custa est una modalidade noa, isperimentale. Si detzides de dda impreare, sinnala is problemas chi ant a essire a campu.</translation>
     </message>
@@ -4404,13 +4404,13 @@ Custa est una modalidade noa, isperimentale. Si detzides de dda impreare, sinnal
     <message>
         <location filename="../src/gui/settingsdialog.ui" line="14"/>
         <source>Settings</source>
-        <translation>Impostatziones</translation>
+        <translation>Cunfiguratzione</translation>
     </message>
     <message>
         <location filename="../src/gui/settingsdialog.cpp" line="102"/>
         <source>%1 Settings</source>
         <extracomment>This name refers to the application name e.g Nextcloud</extracomment>
-        <translation>impostatziones de %1 </translation>
+        <translation>Cunfiguratzione de %1 </translation>
     </message>
     <message>
         <location filename="../src/gui/settingsdialog.cpp" line="120"/>
@@ -5055,7 +5055,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/systray.cpp" line="187"/>
         <source>Settings</source>
-        <translation>Impostatziones</translation>
+        <translation>Cunfiguratzione</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="188"/>
@@ -6330,7 +6330,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="426"/>
         <source>Settings</source>
-        <translation>Impostatziones</translation>
+        <translation>Cunfiguratzione</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="448"/>
@@ -6355,7 +6355,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="607"/>
         <source>Account switcher and settings menu</source>
-        <translation>Ischertadore de contu e impostatziones de su menu</translation>
+        <translation>Ischertadore de contu e menù de cunfiguratzione</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="631"/>
