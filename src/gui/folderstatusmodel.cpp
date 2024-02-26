@@ -101,6 +101,14 @@ void FolderStatusModel::setAccountState(const AccountState *accountState)
 
     endResetModel();
     emit dirtyChanged();
+
+    // Automatically fetch the subfolders to prevent showing the expansion chevron if there are no subfolders
+    for (auto i = 0; i < _folders.size(); ++i) {
+        const auto idx = index(i);
+        if (canFetchMore(idx)) {
+            fetchMore(idx);
+        }
+    }
 }
 
 
