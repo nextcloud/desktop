@@ -137,23 +137,20 @@ Qt::ItemFlags FolderStatusModel::flags(const QModelIndex &index) const
 
 QVariant FolderStatusModel::data(const QModelIndex &index, int role) const
 {
-    if (!index.isValid())
-        return QVariant();
-
-    if (role == Qt::EditRole)
-        return QVariant();
+    if (!index.isValid() || (role == Qt::EditRole))
+        return {};
 
     switch (classify(index)) {
     case AddButton: {
         if (role == FolderStatusDelegate::AddButton) {
-            return QVariant(true);
+            return true;
         } else if (role == Qt::ToolTipRole) {
             if (!_accountState->isConnected()) {
                 return tr("You need to be connected to add a folder");
             }
             return tr("Click this button to add a folder to synchronize.");
         }
-        return QVariant();
+        return {};
     }
     case SubFolder: {
         const auto &subfolderInfo = static_cast<SubFolderInfo *>(index.internalPointer())->_subs.at(index.row());
@@ -174,7 +171,7 @@ QVariant FolderStatusModel::data(const QModelIndex &index, int role) const
             if (supportsSelectiveSync) {
                 return subfolderInfo._checked;
             } else {
-                return QVariant();
+                return {};
             }
         case Qt::DecorationRole: {
             if (subfolderInfo._isNonDecryptable && subfolderInfo._checked) {
@@ -216,7 +213,7 @@ QVariant FolderStatusModel::data(const QModelIndex &index, int role) const
             }
             break;
         default:
-            return QVariant();
+            return {};
         }
     }
     case RootFolder:
@@ -311,7 +308,7 @@ QVariant FolderStatusModel::data(const QModelIndex &index, int role) const
             return tr("Synchronizing with local folder");
         }
     }
-    return QVariant();
+    return {};
 }
 
 bool FolderStatusModel::setData(const QModelIndex &index, const QVariant &value, int role)
@@ -865,9 +862,9 @@ QStringList FolderStatusModel::createBlackList(const FolderStatusModel::SubFolde
 {
     switch (root._checked) {
     case Qt::Unchecked:
-        return QStringList(root._path);
+        return {root._path};
     case Qt::Checked:
-        return QStringList();
+        return {};
     case Qt::PartiallyChecked:
         break;
     }
