@@ -35,12 +35,12 @@ static const char propertyParentIndexC[] = "oc_parentIndex";
 static const char propertyPermissionMap[] = "oc_permissionMap";
 static const char propertyEncryptionMap[] = "nc_encryptionMap";
 
-static QString removeTrailingSlash(const QString &s)
+static QString removeTrailingSlash(const QString &path)
 {
-    if (s.endsWith('/')) {
-        return s.left(s.size() - 1);
+    if (path.endsWith('/')) {
+        return path.left(path.size() - 1);
     }
-    return s;
+    return path;
 }
 
 FolderStatusModel::FolderStatusModel(QObject *parent)
@@ -196,21 +196,22 @@ QVariant FolderStatusModel::data(const QModelIndex &index, int role) const
         case FileIdRole:
             return subfolderInfo._fileId;
         case FolderStatusDelegate::FolderPathRole: {
-            auto f = subfolderInfo._folder;
-            if (!f)
-                return QVariant();
-            return QVariant(f->path() + subfolderInfo._path);
+            const auto folder = subfolderInfo._folder;
+            if (!folder)
+                return {};
+            return {folder->path() + subfolderInfo._path};
         }
         }
     }
         return QVariant();
     case FetchLabel: {
-        const auto x = static_cast<SubFolderInfo *>(index.internalPointer());
+        const auto folderInfo = static_cast<SubFolderInfo *>(index.internalPointer());
         switch (role) {
         case Qt::DisplayRole:
-            if (x->_hasError) {
-                return QVariant(tr("Error while loading the list of folders from the server.")
-                    + QString("\n") + x->_lastErrorString);
+            if (folderInfo->_hasError) {
+                return {tr("Error while loading the list of folders from the server.")
+                        + QString("\n")
+                        + folderInfo->_lastErrorString};
             } else {
                 return tr("Fetching folder list from server …");
             }
@@ -224,49 +225,47 @@ QVariant FolderStatusModel::data(const QModelIndex &index, int role) const
     }
 
     const SubFolderInfo &folderInfo = _folders.at(index.row());
-    auto f = folderInfo._folder;
-    if (!f)
-        return QVariant();
+    const auto folder = folderInfo._folder;
+    if (!folder)
+        return {};
 
     const SubFolderInfo::Progress &progress = folderInfo._progress;
     const bool accountConnected = _accountState->isConnected();
 
     switch (role) {
     case FolderStatusDelegate::FolderPathRole:
-        return f->shortGuiLocalPath();
+        return folder->shortGuiLocalPath();
     case FolderStatusDelegate::FolderSecondPathRole:
-        return f->remotePath();
+        return folder->remotePath();
     case FolderStatusDelegate::FolderConflictMsg:
-        return (f->syncResult().hasUnresolvedConflicts())
+        return (folder->syncResult().hasUnresolvedConflicts())
             ? QStringList(tr("There are unresolved conflicts. Click for details."))
             : QStringList();
     case FolderStatusDelegate::FolderErrorMsg:
-        return f->syncResult().errorStrings();
+        return folder->syncResult().errorStrings();
     case FolderStatusDelegate::FolderInfoMsg:
-        return f->virtualFilesEnabled() && f->vfs().mode() != Vfs::Mode::WindowsCfApi
+        return folder->virtualFilesEnabled() && folder->vfs().mode() != Vfs::Mode::WindowsCfApi
             ? QStringList(tr("Virtual file support is enabled."))
             : QStringList();
     case FolderStatusDelegate::SyncRunning:
-        return f->syncResult().status() == SyncResult::SyncRunning;
+        return folder->syncResult().status() == SyncResult::SyncRunning;
     case FolderStatusDelegate::SyncDate:
-        return f->syncResult().syncTime();
+        return folder->syncResult().syncTime();
     case FolderStatusDelegate::HeaderRole:
-        return f->shortGuiRemotePathOrAppName();
+        return folder->shortGuiRemotePathOrAppName();
     case FolderStatusDelegate::FolderAliasRole:
-        return f->alias();
+        return folder->alias();
     case FolderStatusDelegate::FolderSyncPaused:
-        return f->syncPaused();
+        return folder->syncPaused();
     case FolderStatusDelegate::FolderAccountConnected:
         return accountConnected;
     case Qt::ToolTipRole: {
-        QString toolTip;
         if (!progress.isNull()) {
             return progress._progressString;
         }
-        if (accountConnected)
-            toolTip = Theme::instance()->statusHeaderText(f->syncResult().status());
-        else
-            toolTip = tr("Signed out");
+        auto toolTip = accountConnected
+            ? Theme::instance()->statusHeaderText(folder->syncResult().status())
+            : tr("Signed out");
         toolTip += "\n";
         toolTip += folderInfo._folder->path();
         return toolTip;
@@ -274,8 +273,8 @@ QVariant FolderStatusModel::data(const QModelIndex &index, int role) const
     case FolderStatusDelegate::FolderStatusIconRole:
         if (accountConnected) {
             auto theme = Theme::instance();
-            auto status = f->syncResult().status();
-            if (f->syncPaused()) {
+            const auto status = folder->syncResult().status();
+            if (folder->syncPaused()) {
                 return theme->folderDisabledIcon();
             } else {
                 if (status == SyncResult::SyncPrepare || status == SyncResult::Undefined) {
@@ -285,7 +284,7 @@ QVariant FolderStatusModel::data(const QModelIndex &index, int role) const
                     // synced, so we show "Success" in these cases. But we
                     // do use the "Problem" *icon* for unresolved conflicts.
                     if (status == SyncResult::Success || status == SyncResult::Problem) {
-                        if (f->syncResult().hasUnresolvedConflicts()) {
+                        if (folder->syncResult().hasUnresolvedConflicts()) {
                             return theme->syncStateIcon(SyncResult::Problem);
                         } else {
                             return theme->syncStateIcon(SyncResult::Success);
@@ -307,7 +306,7 @@ QVariant FolderStatusModel::data(const QModelIndex &index, int role) const
     case FolderStatusDelegate::SyncProgressOverallString:
         return progress._overallSyncString;
     case FolderStatusDelegate::FolderSyncText:
-        if (f->virtualFilesEnabled()) {
+        if (folder->virtualFilesEnabled()) {
             return tr("Synchronizing VirtualFiles with local folder");
         } else {
             return tr("Synchronizing with local folder");
@@ -456,9 +455,9 @@ bool FolderStatusModel::isAnyAncestorEncrypted(const QModelIndex &index) const
     return false;
 }
 
-QModelIndex FolderStatusModel::indexForPath(Folder *f, const QString &path) const
+QModelIndex FolderStatusModel::indexForPath(Folder *folder, const QString &path) const
 {
-    if (!f) {
+    if (!folder) {
         return {};
     }
 
@@ -467,7 +466,7 @@ QModelIndex FolderStatusModel::indexForPath(Folder *f, const QString &path) cons
         // first level folder
         for (int i = 0; i < _folders.size(); ++i) {
             auto &info = _folders.at(i);
-            if (info._folder == f) {
+            if (info._folder == folder) {
                 if (path.isEmpty()) { // the folder object
                     return index(i, 0);
                 }
@@ -834,7 +833,7 @@ void FolderStatusModel::slotUpdateDirectories(const QStringList &list)
     }
 }
 
-void FolderStatusModel::slotLscolFinishedWithError(QNetworkReply *r)
+void FolderStatusModel::slotLscolFinishedWithError(QNetworkReply *reply)
 {
     auto job = qobject_cast<LsColJob *>(sender());
     ASSERT(job);
@@ -844,9 +843,9 @@ void FolderStatusModel::slotLscolFinishedWithError(QNetworkReply *r)
     }
     auto parentInfo = infoForIndex(idx);
     if (parentInfo) {
-        qCDebug(lcFolderStatus) << r->errorString();
-        parentInfo->_lastErrorString = r->errorString();
-        auto error = r->error();
+        qCDebug(lcFolderStatus) << reply->errorString();
+        parentInfo->_lastErrorString = reply->errorString();
+        auto error = reply->error();
 
         parentInfo->resetSubs(this, idx);
 
@@ -956,19 +955,19 @@ void FolderStatusModel::slotApplySelectiveSync()
 
 void FolderStatusModel::slotSetProgress(const ProgressInfo &progress)
 {
-    auto par = qobject_cast<QWidget *>(QObject::parent());
-    if (!par->isVisible()) {
+    const auto parent = qobject_cast<QWidget *>(QObject::parent());
+    if (!parent->isVisible()) {
         return; // for https://github.com/owncloud/client/issues/2648#issuecomment-71377909
     }
 
-    auto *f = qobject_cast<Folder *>(sender());
-    if (!f) {
+    const auto folder = qobject_cast<Folder *>(sender());
+    if (!folder) {
         return;
     }
 
-    int folderIndex = -1;
-    for (int i = 0; i < _folders.count(); ++i) {
-        if (_folders.at(i)._folder == f) {
+    auto folderIndex = -1;
+    for (auto i = 0; i < _folders.count(); ++i) {
+        if (_folders.at(i)._folder == folder) {
             folderIndex = i;
             break;
         }
@@ -1156,15 +1155,15 @@ void FolderStatusModel::e2eInitializationFinished(bool isNewMnemonicGenerated)
     }
 }
 
-void FolderStatusModel::slotFolderSyncStateChange(Folder *f)
+void FolderStatusModel::slotFolderSyncStateChange(Folder *folder)
 {
-    if (!f) {
+    if (!folder) {
         return;
     }
 
-    int folderIndex = -1;
-    for (int i = 0; i < _folders.count(); ++i) {
-        if (_folders.at(i)._folder == f) {
+    auto folderIndex = -1;
+    for (auto i = 0; i < _folders.count(); ++i) {
+        if (_folders.at(i)._folder == folder) {
             folderIndex = i;
             break;
         }
@@ -1175,15 +1174,15 @@ void FolderStatusModel::slotFolderSyncStateChange(Folder *f)
 
     auto &pi = _folders[folderIndex]._progress;
 
-    SyncResult::Status state = f->syncResult().status();
-    if (!f->canSync() || state == SyncResult::Problem || state == SyncResult::Success || state == SyncResult::Error) {
+    const auto state = folder->syncResult().status();
+    if (!folder->canSync() || state == SyncResult::Problem || state == SyncResult::Success || state == SyncResult::Error) {
         // Reset progress info.
         pi = SubFolderInfo::Progress();
     } else if (state == SyncResult::NotYetStarted) {
         FolderMan *folderMan = FolderMan::instance();
-        int pos = folderMan->scheduleQueue().indexOf(f);
+        int pos = folderMan->scheduleQueue().indexOf(folder);
         for (auto other : folderMan->map()) {
-            if (other != f && other->isSyncRunning())
+            if (other != folder && other->isSyncRunning())
                 pos += 1;
         }
         QString message;
@@ -1200,9 +1199,9 @@ void FolderStatusModel::slotFolderSyncStateChange(Folder *f)
     }
 
     // update the icon etc. now
-    slotUpdateFolderState(f);
+    slotUpdateFolderState(folder);
 
-    if (f->syncResult().folderStructureWasChanged()
+    if (folder->syncResult().folderStructureWasChanged()
         && (state == SyncResult::Success || state == SyncResult::Problem)) {
         // There is a new or a removed folder. reset all data
         resetAndFetch(index(folderIndex));
@@ -1212,8 +1211,8 @@ void FolderStatusModel::slotFolderSyncStateChange(Folder *f)
 void FolderStatusModel::slotFolderScheduleQueueChanged()
 {
     // Update messages on waiting folders.
-    for (const auto f : FolderMan::instance()->map()) {
-        slotFolderSyncStateChange(f);
+    for (const auto folder : FolderMan::instance()->map()) {
+        slotFolderSyncStateChange(folder);
     }
 }
 
@@ -1296,12 +1295,12 @@ void FolderStatusModel::slotSyncNoPendingBigFolders()
 
 void FolderStatusModel::slotNewBigFolder()
 {
-    auto f = qobject_cast<Folder *>(sender());
-    ASSERT(f);
+    const auto folder = qobject_cast<Folder *>(sender());
+    ASSERT(folder);
 
     int folderIndex = -1;
     for (int i = 0; i < _folders.count(); ++i) {
-        if (_folders.at(i)._folder == f) {
+        if (_folders.at(i)._folder == folder) {
             folderIndex = i;
             break;
         }
