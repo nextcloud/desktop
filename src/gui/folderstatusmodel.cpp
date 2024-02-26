@@ -688,8 +688,8 @@ void FolderStatusModel::slotUpdateDirectories(const QStringList &list)
 {
     const auto job = qobject_cast<LsColJob *>(sender());
     ASSERT(job);
-    const auto idx = qvariant_cast<QPersistentModelIndex>(job->property(propertyParentIndexC));
-    const auto parentInfo = infoForIndex(idx);
+    const auto parentIdx = qvariant_cast<QPersistentModelIndex>(job->property(propertyParentIndexC));
+    const auto parentInfo = infoForIndex(parentIdx);
     if (!parentInfo) {
         return;
     }
@@ -697,7 +697,7 @@ void FolderStatusModel::slotUpdateDirectories(const QStringList &list)
     ASSERT(parentInfo->_subs.isEmpty());
 
     if (parentInfo->hasLabel()) {
-        beginRemoveRows(idx, 0, 0);
+        beginRemoveRows(parentIdx, 0, 0);
         parentInfo->_hasError = false;
         parentInfo->_fetchingLabel = false;
         endRemoveRows();
@@ -819,13 +819,13 @@ void FolderStatusModel::slotUpdateDirectories(const QStringList &list)
     }
 
     if (!newSubs.isEmpty()) {
-        beginInsertRows(idx, 0, newSubs.size() - 1);
+        beginInsertRows(parentIdx, 0, newSubs.size() - 1);
         parentInfo->_subs = std::move(newSubs);
         endInsertRows();
     }
 
     for (const auto undecidedIndex : qAsConst(undecidedIndexes)) {
-        emit suggestExpand(index(undecidedIndex, 0, idx));
+        emit suggestExpand(index(undecidedIndex, 0, parentIdx));
     }
     /* Try to remove from the undecided lists the items that are not on the server. */
     const auto it = std::remove_if(selectiveSyncUndecidedList.begin(), selectiveSyncUndecidedList.end(),
