@@ -17,6 +17,7 @@ class ShareTableViewDataSource: NSObject, NSTableViewDataSource, NSTableViewDele
     var sharesTableView: NSTableView? {
         didSet {
             sharesTableView?.register(shareItemViewNib, forIdentifier: shareItemViewIdentifier)
+            sharesTableView?.rowHeight = 42.0  // Height of view in ShareTableItemView XIB
             sharesTableView?.dataSource = self
             sharesTableView?.delegate = self
             sharesTableView?.reloadData()
