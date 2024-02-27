@@ -11,6 +11,7 @@ import OSLog
 import QuickLookThumbnailing
 
 class ShareViewController: NSViewController {
+    let shareDataSource = ShareTableViewDataSource()
     let itemIdentifiers: [NSFileProviderItemIdentifier]
 
     @IBOutlet weak var fileNameIcon: NSImageView!
@@ -58,6 +59,8 @@ class ShareViewController: NSViewController {
         do {
             let itemUrl = try await manager.getUserVisibleURL(for: itemIdentifier)
             await updateDisplay(itemUrl: itemUrl)
+            shareDataSource.sharesTableView = tableView
+            shareDataSource.loadItem(identifier: itemIdentifier, url: itemUrl)
         } catch let error {
             let errorString = "Error processing item: \(error)"
             Logger.shareViewController.error("\(errorString)")
