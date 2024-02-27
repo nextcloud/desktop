@@ -201,6 +201,7 @@
 		53ED472729C88E7000795DB1 /* NextcloudItemMetadataTable+NKFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NextcloudItemMetadataTable+NKFile.swift"; sourceTree = "<group>"; };
 		53ED472F29C9CE0B00795DB1 /* FileProviderExtension+ClientInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FileProviderExtension+ClientInterface.swift"; sourceTree = "<group>"; };
 		53FE144F2B8E0658006C4193 /* ShareTableViewDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareTableViewDataSource.swift; sourceTree = "<group>"; };
+		53FE14572B8E3A7C006C4193 /* FileProviderUIExtRelease.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = FileProviderUIExtRelease.entitlements; sourceTree = "<group>"; };
 		C2B573B11B1CD91E00303B36 /* desktopclient.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = desktopclient.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C2B573B51B1CD91E00303B36 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C2B573B91B1CD91E00303B36 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -367,6 +368,7 @@
 				537630922B85F4B00026BFAB /* ShareViewController.swift */,
 				537630902B85F4980026BFAB /* ShareViewController.xib */,
 				5376307E2B85E5650026BFAB /* FileProviderUIExt.entitlements */,
+				53FE14572B8E3A7C006C4193 /* FileProviderUIExtRelease.entitlements */,
 				53B979852B84C81F002DA742 /* Info.plist */,
 			);
 			path = FileProviderUIExt;
@@ -1111,7 +1113,7 @@
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CODE_SIGN_ENTITLEMENTS = FileProviderUIExt/FileProviderUIExt.entitlements;
+				CODE_SIGN_ENTITLEMENTS = FileProviderUIExt/FileProviderUIExtRelease.entitlements;
 				CODE_SIGN_INJECT_BASE_ENTITLEMENTS = NO;
 				CODE_SIGN_STYLE = Manual;
 				COPY_PHASE_STRIP = NO;
