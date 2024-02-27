@@ -31,7 +31,7 @@ class FPUIExtensionServiceSource: NSObject, NSFileProviderServiceSource, NSXPCLi
         _ listener: NSXPCListener,
         shouldAcceptNewConnection newConnection: NSXPCConnection
     ) -> Bool {
-        newConnection.exportedInterface = NSXPCInterface(with: ClientCommunicationProtocol.self)
+        newConnection.exportedInterface = NSXPCInterface(with: FPUIExtensionService.self)
         newConnection.exportedObject = self
         newConnection.resume()
         return true
