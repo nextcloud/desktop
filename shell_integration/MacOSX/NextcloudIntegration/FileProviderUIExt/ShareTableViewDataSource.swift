@@ -18,6 +18,7 @@ class ShareTableViewDataSource: NSObject, NSTableViewDataSource, NSTableViewDele
         didSet {
             sharesTableView?.register(shareItemViewNib, forIdentifier: shareItemViewIdentifier)
             sharesTableView?.dataSource = self
+            sharesTableView?.delegate = self
             sharesTableView?.reloadData()
         }
     }
