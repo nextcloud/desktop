@@ -47,4 +47,8 @@ class FPUIExtensionServiceSource: NSObject, NSFileProviderServiceSource, NSXPCLi
         )
         return await controller.fetch()
     }
+
+    func credentials() async -> NSDictionary {
+        return (fpExtension.ncAccount?.dictionary() ?? [:]) as NSDictionary
+    }
 }

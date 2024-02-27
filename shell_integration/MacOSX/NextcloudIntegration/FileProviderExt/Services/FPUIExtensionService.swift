@@ -14,4 +14,5 @@ let fpUiExtensionServiceName = NSFileProviderServiceName(
 
 @objc protocol FPUIExtensionService {
     func shares(forItemIdentifier itemIdentifier: NSFileProviderItemIdentifier) async -> [NKShare]?
+    func credentials() async -> NSDictionary
 }
