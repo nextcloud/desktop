@@ -59,4 +59,10 @@ class ShareTableViewDataSource: NSObject, NSTableViewDataSource {
         }
         return proxy
     }
+
+    // MARK: - NSTableViewDataSource protocol methods
+
+    @objc func numberOfRows(in tableView: NSTableView) -> Int {
+        shares.count
+    }
 }
