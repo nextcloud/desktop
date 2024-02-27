@@ -87,23 +87,4 @@ class ShareViewController: NSViewController {
         }
         fileNameIcon.image = fileThumbnail?.nsImage
     }
-
-    private func serviceConnection(url: URL) async throws -> FPUIExtensionService {
-        let services = try await FileManager().fileProviderServicesForItem(at: url)
-        guard let service = services[fpUiExtensionServiceName] else {
-            Logger.shareViewController.error("Couldn't get service, required service not present")
-            throw NSFileProviderError(.providerNotFound)
-        }
-        let connection: NSXPCConnection
-        connection = try await service.fileProviderConnection()
-        connection.remoteObjectInterface = NSXPCInterface(with: FPUIExtensionService.self)
-        connection.interruptionHandler = {
-            Logger.shareViewController.error("Service connection interrupted")
-        }
-        connection.resume()
-        guard let proxy = connection.remoteObjectProxy as? FPUIExtensionService else {
-            throw NSFileProviderError(.serverUnreachable)
-        }
-        return proxy
-    }
 }

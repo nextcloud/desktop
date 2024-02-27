@@ -20,4 +20,23 @@ class ShareTableViewDataSource: NSObject, NSTableViewDataSource {
     private var shares: [NKShare] = [] {
         didSet { sharesTableView?.reloadData() }
     }
+
+    private func serviceConnection(url: URL) async throws -> FPUIExtensionService {
+        let services = try await FileManager().fileProviderServicesForItem(at: url)
+        guard let service = services[fpUiExtensionServiceName] else {
+            Logger.sharesDataSource.error("Couldn't get service, required service not present")
+            throw NSFileProviderError(.providerNotFound)
+        }
+        let connection: NSXPCConnection
+        connection = try await service.fileProviderConnection()
+        connection.remoteObjectInterface = NSXPCInterface(with: FPUIExtensionService.self)
+        connection.interruptionHandler = {
+            Logger.sharesDataSource.error("Service connection interrupted")
+        }
+        connection.resume()
+        guard let proxy = connection.remoteObjectProxy as? FPUIExtensionService else {
+            throw NSFileProviderError(.serverUnreachable)
+        }
+        return proxy
+    }
 }
