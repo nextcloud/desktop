@@ -12,8 +12,11 @@ import OSLog
 
 class ShareTableViewDataSource: NSObject, NSTableViewDataSource, NSTableViewDelegate {
     private let shareItemViewIdentifier = NSUserInterfaceItemIdentifier("ShareTableItemView")
+    private let shareItemViewNib = NSNib(nibNamed: "ShareTableItemView", bundle: nil)
+
     var sharesTableView: NSTableView? {
         didSet {
+            sharesTableView?.register(shareItemViewNib, forIdentifier: shareItemViewIdentifier)
             sharesTableView?.dataSource = self
             sharesTableView?.reloadData()
         }
