@@ -5,4 +5,11 @@
 //  Created by Claudio Cambra on 28/2/24.
 //
 
-import Foundation
+import AppKit
+
+class ShareTableItemView: NSTableCellView {
+    @IBOutlet weak var typeImageView: NSImageView!
+    @IBOutlet weak var label: NSTextField!
+    @IBOutlet weak var copyLinkButton: NSButton!
+    @IBOutlet weak var optionsButton: NSButton!
+}
