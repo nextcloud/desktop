@@ -51,4 +51,23 @@ class FPUIExtensionServiceSource: NSObject, NSFileProviderServiceSource, NSXPCLi
     func credentials() async -> NSDictionary {
         return (fpExtension.ncAccount?.dictionary() ?? [:]) as NSDictionary
     }
+
+    func itemServerPath(identifier: NSFileProviderItemIdentifier) async -> NSString? {
+        let rawIdentifier = identifier.rawValue
+        Logger.shares.info("Fetching shares for item \(rawIdentifier, privacy: .public)")
+
+        guard let baseUrl = fpExtension.ncAccount?.davFilesUrl else {
+            Logger.shares.error("Could not fetch shares as ncAccount on parent extension is nil")
+            return nil
+        }
+
+        let dbManager = NextcloudFilesDatabaseManager.shared
+        guard let item = dbManager.itemMetadataFromFileProviderItemIdentifier(identifier) else {
+            Logger.shares.error("No item \(rawIdentifier, privacy: .public) in db, no shares.")
+            return nil
+        }
+
+        let completePath = item.serverUrl + "/" + item.fileName
+        return completePath.replacingOccurrences(of: baseUrl, with: "") as NSString
+    }
 }
