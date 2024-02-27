@@ -96,6 +96,14 @@ def extractZip(zip_file_path, destination_dir):
         zipFile.extractall(destination_dir)
 
 
+def addCopySuffix(resource_path, resource_type):
+    if resource_type == "file":
+        source_dir = resource_path.rsplit('.', 1)
+        return source_dir[0] + " - Copy." + source_dir[-1]
+    else:
+        return resource_path + " - Copy"
+
+
 @When(
     'user "|any|" creates a file "|any|" with the following content inside the sync folder'
 )
@@ -123,12 +131,14 @@ def step(context, username, filename, filesize):
 
 @When(r'the user copies the (file|folder) "([^"]*)" to "([^"]*)"', regexp=True)
 def step(context, resource_type, source_dir, destination_dir):
-    source_dir = getResourcePath(source_dir)
-    destination_dir = getResourcePath(destination_dir)
+    source = getResourcePath(source_dir)
+    destination = getResourcePath(destination_dir)
+    if source == destination and destination_dir != '/':
+        destination = addCopySuffix(source, resource_type)
     if resource_type == 'folder':
-        return shutil.copytree(source_dir, destination_dir)
+        return shutil.copytree(source, destination)
     else:
-        return shutil.copy2(source_dir, destination_dir)
+        return shutil.copy2(source, destination)
 
 
 @When(r'the user renames a (?:file|folder) "([^"]*)" to "([^"]*)"', regexp=True)
