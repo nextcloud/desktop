@@ -39,15 +39,6 @@ class FPUIExtensionServiceSource: NSObject, NSFileProviderServiceSource, NSXPCLi
 
     //MARK: - FPUIExtensionService protocol methods
 
-    func shares(
-        forItemIdentifier itemIdentifier: NSFileProviderItemIdentifier
-    ) async -> [NKShare]? {
-        let controller = ItemSharesController(
-            itemIdentifier: itemIdentifier, parentExtension: fpExtension
-        )
-        return await controller.fetch()
-    }
-
     func credentials() async -> NSDictionary {
         return (fpExtension.ncAccount?.dictionary() ?? [:]) as NSDictionary
     }

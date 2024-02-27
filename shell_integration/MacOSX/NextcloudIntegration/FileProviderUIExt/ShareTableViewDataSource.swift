@@ -21,14 +21,25 @@ class ShareTableViewDataSource: NSObject, NSTableViewDataSource, NSTableViewDele
             sharesTableView?.reloadData()
         }
     }
-    private var itemIdentifier: NSFileProviderItemIdentifier?
+    private var kit: NextcloudKit?
     private var itemURL: URL?
     private var shares: [NKShare] = [] {
         didSet { sharesTableView?.reloadData() }
     }
+    private var account: NextcloudAccount? {
+        didSet {
+            guard let account = account else { return }
+            kit = NextcloudKit()
+            kit?.setup(
+                user: account.username,
+                userId: account.username,
+                password: account.password,
+                urlBase: account.serverUrl
+            )
+        }
+    }
 
-    func loadItem(identifier: NSFileProviderItemIdentifier, url: URL) {
-        itemIdentifier = identifier
+    func loadItem(url: URL) {
         itemURL = url
         Task {
             await reload()
@@ -36,12 +47,37 @@ class ShareTableViewDataSource: NSObject, NSTableViewDataSource, NSTableViewDele
     }
 
     private func reload() async {
-        guard let itemIdentifier = itemIdentifier, let itemURL = itemURL else { return }
+        guard let itemURL = itemURL else { return }
+        guard let itemIdentifier = await withCheckedContinuation({
+            (continuation: CheckedContinuation<NSFileProviderItemIdentifier?, Never>) -> Void in
+            NSFileProviderManager.getIdentifierForUserVisibleFile(
+                at: itemURL
+            ) { identifier, domainIdentifier, error in
+                defer { continuation.resume(returning: identifier) }
+                guard error == nil else {
+                    Logger.sharesDataSource.error("No identifier: \(error, privacy: .public)")
+                    return
+                }
+            }
+        }) else {
+            Logger.sharesDataSource.error("Could not get identifier for item, no shares.")
+            return
+        }
+
         do {
             let connection = try await serviceConnection(url: itemURL)
-            shares = await connection.shares(forItemIdentifier: itemIdentifier) ?? []
+            guard let serverPath = await connection.itemServerPath(identifier: itemIdentifier),
+                  let credentials = await connection.credentials() as? Dictionary<String, String>,
+                  let convertedAccount = NextcloudAccount(dictionary: credentials) else {
+                Logger.sharesDataSource.error("Failed to get details from FileProviderExt")
+                return
+            }
+            account = convertedAccount
+            shares = await fetch(
+                itemIdentifier: itemIdentifier, itemRelativePath: serverPath as String
+            )
         } catch let error {
-            Logger.sharesDataSource.error("Could not reload data: \(error)")
+            Logger.sharesDataSource.error("Could not reload data: \(error, privacy: .public)")
         }
     }
 
@@ -62,6 +98,32 @@ class ShareTableViewDataSource: NSObject, NSTableViewDataSource, NSTableViewDele
             throw NSFileProviderError(.serverUnreachable)
         }
         return proxy
+    }
+
+    private func fetch(
+        itemIdentifier: NSFileProviderItemIdentifier, itemRelativePath: String
+    ) async -> [NKShare] {
+        let rawIdentifier = itemIdentifier.rawValue
+        Logger.sharesDataSource.info("Fetching shares for item \(rawIdentifier, privacy: .public)")
+
+        guard let kit = kit else {
+            Logger.sharesDataSource.error("NextcloudKit instance is nil")
+            return []
+        }
+
+        let parameter = NKShareParameter(path: itemRelativePath)
+
+        return await withCheckedContinuation { continuation in
+            kit.readShares(parameters: parameter) { account, shares, data, error in
+                let shareCount = shares?.count ?? 0
+                Logger.sharesDataSource.info("Received \(shareCount, privacy: .public) shares")
+                defer { continuation.resume(returning: shares ?? []) }
+                guard error == .success else {
+                    Logger.sharesDataSource.error("Error fetching shares: \(error)")
+                    return
+                }
+            }
+        }
     }
 
     // MARK: - NSTableViewDataSource protocol methods
