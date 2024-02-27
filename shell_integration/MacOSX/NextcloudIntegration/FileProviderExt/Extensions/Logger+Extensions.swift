@@ -26,6 +26,7 @@ extension Logger {
     static let fileTransfer = Logger(subsystem: subsystem, category: "filetransfer")
     static let localFileOps = Logger(subsystem: subsystem, category: "localfileoperations")
     static let ncFilesDatabase = Logger(subsystem: subsystem, category: "nextcloudfilesdatabase")
+    static let shares = Logger(subsystem: subsystem, category: "shares")
     static let materialisedFileHandling = Logger(
         subsystem: subsystem, category: "materialisedfilehandling"
     )
