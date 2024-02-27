@@ -17,6 +17,7 @@ class ShareViewController: NSViewController {
     @IBOutlet weak var fileNameLabel: NSTextField!
     @IBOutlet weak var descriptionLabel: NSTextField!
     @IBOutlet weak var closeButton: NSButton!
+    @IBOutlet weak var tableView: NSTableView!
 
     public override var nibName: NSNib.Name? {
         return NSNib.Name(self.className)
