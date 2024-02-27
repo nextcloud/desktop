@@ -60,7 +60,7 @@ class ShareViewController: NSViewController {
             let itemUrl = try await manager.getUserVisibleURL(for: itemIdentifier)
             await updateDisplay(itemUrl: itemUrl)
             shareDataSource.sharesTableView = tableView
-            shareDataSource.loadItem(identifier: itemIdentifier, url: itemUrl)
+            shareDataSource.loadItem(url: itemUrl)
         } catch let error {
             let errorString = "Error processing item: \(error)"
             Logger.shareViewController.error("\(errorString)")
