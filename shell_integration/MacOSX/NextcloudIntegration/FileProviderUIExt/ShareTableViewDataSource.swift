@@ -138,8 +138,14 @@ class ShareTableViewDataSource: NSObject, NSTableViewDataSource, NSTableViewDele
     @objc func tableView(
         _ tableView: NSTableView, viewFor tableColumn: NSTableColumn?, row: Int
     ) -> NSView? {
-        //let share = shares[row]
-        let view = tableView.makeView(withIdentifier: shareItemViewIdentifier, owner: self)
+        let share = shares[row]
+        guard let view = tableView.makeView(
+            withIdentifier: shareItemViewIdentifier, owner: self
+        ) as? ShareTableItemView else {
+            Logger.sharesDataSource.error("Acquired item view from table is not a Share item view!")
+            return nil
+        }
+        view.label.stringValue = share.label
         return view
     }
 }
