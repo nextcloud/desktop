@@ -10,7 +10,8 @@ import FileProvider
 import NextcloudKit
 import OSLog
 
-class ShareTableViewDataSource: NSObject, NSTableViewDataSource {
+class ShareTableViewDataSource: NSObject, NSTableViewDataSource, NSTableViewDelegate {
+    private let shareItemViewIdentifier = NSUserInterfaceItemIdentifier("ShareTableItemView")
     var sharesTableView: NSTableView? {
         didSet {
             sharesTableView?.dataSource = self
@@ -64,5 +65,15 @@ class ShareTableViewDataSource: NSObject, NSTableViewDataSource {
 
     @objc func numberOfRows(in tableView: NSTableView) -> Int {
         shares.count
+    }
+
+    // MARK: - NSTableViewDelegate protocol methods
+
+    @objc func tableView(
+        _ tableView: NSTableView, viewFor tableColumn: NSTableColumn?, row: Int
+    ) -> NSView? {
+        //let share = shares[row]
+        let view = tableView.makeView(withIdentifier: shareItemViewIdentifier, owner: self)
+        return view
     }
 }
