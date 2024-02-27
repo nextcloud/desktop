@@ -12,6 +12,7 @@
 		5307A6EB2965DB8D001E0C6A /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 5307A6EA2965DB8D001E0C6A /* RealmSwift */; };
 		5307A6F229675346001E0C6A /* NextcloudFilesDatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5307A6F129675346001E0C6A /* NextcloudFilesDatabaseManager.swift */; };
 		531522802B8DBBA2002E31BE /* ItemSharesController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5315227F2B8DBBA2002E31BE /* ItemSharesController.swift */; };
+		531522822B8E01C6002E31BE /* ShareTableItemView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 531522812B8E01C6002E31BE /* ShareTableItemView.xib */; };
 		5318AD9129BF42FB00CBB71C /* NextcloudItemMetadataTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5318AD9029BF42FB00CBB71C /* NextcloudItemMetadataTable.swift */; };
 		5318AD9529BF438F00CBB71C /* NextcloudLocalFileMetadataTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5318AD9429BF438F00CBB71C /* NextcloudLocalFileMetadataTable.swift */; };
 		5318AD9729BF493600CBB71C /* FileProviderMaterialisedEnumerationObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5318AD9629BF493600CBB71C /* FileProviderMaterialisedEnumerationObserver.swift */; };
@@ -152,6 +153,7 @@
 /* Begin PBXFileReference section */
 		5307A6F129675346001E0C6A /* NextcloudFilesDatabaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NextcloudFilesDatabaseManager.swift; sourceTree = "<group>"; };
 		5315227F2B8DBBA2002E31BE /* ItemSharesController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemSharesController.swift; sourceTree = "<group>"; };
+		531522812B8E01C6002E31BE /* ShareTableItemView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ShareTableItemView.xib; sourceTree = "<group>"; };
 		5318AD9029BF42FB00CBB71C /* NextcloudItemMetadataTable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NextcloudItemMetadataTable.swift; sourceTree = "<group>"; };
 		5318AD9429BF438F00CBB71C /* NextcloudLocalFileMetadataTable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NextcloudLocalFileMetadataTable.swift; sourceTree = "<group>"; };
 		5318AD9629BF493600CBB71C /* FileProviderMaterialisedEnumerationObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileProviderMaterialisedEnumerationObserver.swift; sourceTree = "<group>"; };
@@ -355,6 +357,7 @@
 			children = (
 				5376307B2B85E2E00026BFAB /* Extensions */,
 				53B979802B84C81F002DA742 /* DocumentActionViewController.swift */,
+				531522812B8E01C6002E31BE /* ShareTableItemView.xib */,
 				537630922B85F4B00026BFAB /* ShareViewController.swift */,
 				537630902B85F4980026BFAB /* ShareViewController.xib */,
 				5376307E2B85E5650026BFAB /* FileProviderUIExt.entitlements */,
@@ -634,6 +637,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				531522822B8E01C6002E31BE /* ShareTableItemView.xib in Resources */,
 				537630912B85F4980026BFAB /* ShareViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
