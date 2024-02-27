@@ -21,7 +21,7 @@ class ItemSharesController {
 
     func fetch() async -> [NKShare]? {
         let rawIdentifier = itemIdentifier.rawValue
-        Logger.shares.info("Fetching shares for item \(rawIdentifier)")
+        Logger.shares.info("Fetching shares for item \(rawIdentifier, privacy: .public)")
 
         guard let baseUrl = parentExtension.ncAccount?.davFilesUrl else {
             Logger.shares.error("Could not fetch shares as ncAccount on parent extension is nil")
@@ -30,7 +30,7 @@ class ItemSharesController {
 
         let dbManager = NextcloudFilesDatabaseManager.shared
         guard let item = dbManager.itemMetadataFromFileProviderItemIdentifier(itemIdentifier) else {
-            Logger.shares.error("No item \(rawIdentifier) in database, no shares.")
+            Logger.shares.error("No item \(rawIdentifier, privacy: .public) in db, no shares.")
             return nil
         }
 
