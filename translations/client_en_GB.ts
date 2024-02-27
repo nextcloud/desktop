@@ -5788,7 +5788,7 @@ Server replied with error: %2</translation>
     <message>
         <location filename="../src/libsync/vfs/cfapi/cfapiwrapper.cpp" line="63"/>
         <source>Paths beginning with &apos;#&apos; character are not supported in VFS mode.</source>
-        <translation type="unfinished"/>
+        <translation>Paths beginning with &apos;#&apos; character are not supported in VFS mode.</translation>
     </message>
 </context>
 <context>
