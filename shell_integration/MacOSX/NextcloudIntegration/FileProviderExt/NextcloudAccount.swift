@@ -14,7 +14,6 @@
 
 import FileProvider
 import Foundation
-import OSLog
 
 let ncAccountDictUsernameKey = "usernameKey"
 let ncAccountDictPasswordKey = "passwordKey"
@@ -41,7 +40,6 @@ struct NextcloudAccount: Equatable {
               let serverUrl = dictionary[ncAccountDictServerUrlKey],
               let davFilesUrl = dictionary[ncAccountDictDavFilesUrlKey]
         else {
-            Logger.ncAccount.error("Could not convert dictionary to NextcloudAccount!")
             return nil
         }
 
