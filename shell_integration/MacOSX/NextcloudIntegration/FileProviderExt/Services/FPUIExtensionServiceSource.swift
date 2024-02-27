@@ -7,6 +7,7 @@
 
 import FileProvider
 import Foundation
+import NextcloudKit
 import OSLog
 
 class FPUIExtensionServiceSource: NSObject, NSFileProviderServiceSource, NSXPCListenerDelegate, FPUIExtensionService {
@@ -38,4 +39,12 @@ class FPUIExtensionServiceSource: NSObject, NSFileProviderServiceSource, NSXPCLi
 
     //MARK: - FPUIExtensionService protocol methods
 
+    func shares(
+        forItemIdentifier itemIdentifier: NSFileProviderItemIdentifier
+    ) async -> [NKShare]? {
+        let controller = ItemSharesController(
+            itemIdentifier: itemIdentifier, parentExtension: fpExtension
+        )
+        return await controller.fetch()
+    }
 }
