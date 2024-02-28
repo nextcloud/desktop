@@ -57,7 +57,7 @@
 		53FE14552B8E28E9006C4193 /* NextcloudAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 536EFC35295E3C1100F4CB13 /* NextcloudAccount.swift */; };
 		53FE14592B8E3F6C006C4193 /* ShareTableItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53FE14582B8E3F6C006C4193 /* ShareTableItemView.swift */; };
 		53FE145B2B8F1305006C4193 /* NKShare+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53FE145A2B8F1305006C4193 /* NKShare+Extensions.swift */; };
-		53FE145D2B8F2AFE006C4193 /* ShareOptionsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 53FE145C2B8F2AFE006C4193 /* ShareOptionsView.xib */; };
+		53FE145F2B8F3771006C4193 /* ShareOptionsWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 53FE145E2B8F3771006C4193 /* ShareOptionsWindow.xib */; };
 		C2B573BA1B1CD91E00303B36 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = C2B573B91B1CD91E00303B36 /* main.m */; };
 		C2B573D21B1CD94B00303B36 /* main.m in Resources */ = {isa = PBXBuildFile; fileRef = C2B573B91B1CD91E00303B36 /* main.m */; };
 		C2B573DE1B1CD9CE00303B36 /* FinderSync.m in Sources */ = {isa = PBXBuildFile; fileRef = C2B573DD1B1CD9CE00303B36 /* FinderSync.m */; };
@@ -205,7 +205,7 @@
 		53FE14572B8E3A7C006C4193 /* FileProviderUIExtRelease.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = FileProviderUIExtRelease.entitlements; sourceTree = "<group>"; };
 		53FE14582B8E3F6C006C4193 /* ShareTableItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareTableItemView.swift; sourceTree = "<group>"; };
 		53FE145A2B8F1305006C4193 /* NKShare+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NKShare+Extensions.swift"; sourceTree = "<group>"; };
-		53FE145C2B8F2AFE006C4193 /* ShareOptionsView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ShareOptionsView.xib; sourceTree = "<group>"; };
+		53FE145E2B8F3771006C4193 /* ShareOptionsWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ShareOptionsWindow.xib; sourceTree = "<group>"; };
 		C2B573B11B1CD91E00303B36 /* desktopclient.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = desktopclient.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C2B573B51B1CD91E00303B36 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C2B573B91B1CD91E00303B36 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -359,7 +359,7 @@
 			children = (
 				5376307B2B85E2E00026BFAB /* Extensions */,
 				53B979802B84C81F002DA742 /* DocumentActionViewController.swift */,
-				53FE145C2B8F2AFE006C4193 /* ShareOptionsView.xib */,
+				53FE145E2B8F3771006C4193 /* ShareOptionsWindow.xib */,
 				53FE14582B8E3F6C006C4193 /* ShareTableItemView.swift */,
 				531522812B8E01C6002E31BE /* ShareTableItemView.xib */,
 				53FE144F2B8E0658006C4193 /* ShareTableViewDataSource.swift */,
@@ -647,8 +647,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				53FE145D2B8F2AFE006C4193 /* ShareOptionsView.xib in Resources */,
 				531522822B8E01C6002E31BE /* ShareTableItemView.xib in Resources */,
+				53FE145F2B8F3771006C4193 /* ShareOptionsWindow.xib in Resources */,
 				537630912B85F4980026BFAB /* ShareViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
