@@ -22,6 +22,8 @@ class ShareViewController: NSViewController, ShareViewDataSourceUIDelegate {
     @IBOutlet weak var tableView: NSTableView!
     @IBOutlet weak var optionsView: NSView!
     @IBOutlet weak var splitView: NSSplitView!
+    @IBOutlet weak var loadingEffectView: NSVisualEffectView!
+    @IBOutlet weak var loadingIndicator: NSProgressIndicator!
 
     public override var nibName: NSNib.Name? {
         return NSNib.Name(self.className)

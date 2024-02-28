@@ -13,6 +13,8 @@
                 <outlet property="descriptionLabel" destination="gX0-nE-MrU" id="RoY-u1-1on"/>
                 <outlet property="fileNameIcon" destination="zSV-DV-Ray" id="336-e0-CEo"/>
                 <outlet property="fileNameLabel" destination="slV-H6-zJ3" id="DPp-sN-Yff"/>
+                <outlet property="loadingEffectView" destination="1ud-mC-gQV" id="HMT-Sb-Axl"/>
+                <outlet property="loadingIndicator" destination="acb-Yu-Zpm" id="9Jf-dE-7LE"/>
                 <outlet property="optionsView" destination="EXb-m8-yzj" id="uAb-lv-EZ4"/>
                 <outlet property="splitView" destination="91w-SP-6sl" id="20T-gQ-SPY"/>
                 <outlet property="tableView" destination="vb0-a6-eeH" id="KQo-eg-dba"/>
@@ -160,7 +162,7 @@
                             <rect key="frame" x="0.0" y="359" width="480" height="281"/>
                             <subviews>
                                 <stackView distribution="fill" orientation="vertical" alignment="leading" spacing="5" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="T4D-9c-PyA">
-                                    <rect key="frame" x="10" y="3" width="460" height="268"/>
+                                    <rect key="frame" x="10" y="10" width="460" height="268"/>
                                     <subviews>
                                         <textField focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="AWy-Qo-wHH">
                                             <rect key="frame" x="-2" y="252" width="464" height="16"/>
@@ -345,17 +347,34 @@ Gw
                         <real value="250"/>
                     </holdingPriorities>
                 </splitView>
+                <visualEffectView blendingMode="behindWindow" material="appearanceBased" state="followsWindowActiveState" translatesAutoresizingMaskIntoConstraints="NO" id="1ud-mC-gQV">
+                    <rect key="frame" x="10" y="299" width="480" height="300"/>
+                    <subviews>
+                        <progressIndicator wantsLayer="YES" maxValue="100" indeterminate="YES" style="spinning" translatesAutoresizingMaskIntoConstraints="NO" id="acb-Yu-Zpm">
+                            <rect key="frame" x="224" y="134" width="32" height="32"/>
+                        </progressIndicator>
+                    </subviews>
+                    <constraints>
+                        <constraint firstItem="acb-Yu-Zpm" firstAttribute="centerY" secondItem="1ud-mC-gQV" secondAttribute="centerY" id="Dhf-yv-2Wr"/>
+                        <constraint firstItem="acb-Yu-Zpm" firstAttribute="centerX" secondItem="1ud-mC-gQV" secondAttribute="centerX" id="Kzb-iw-xCx"/>
+                    </constraints>
+                </visualEffectView>
             </subviews>
             <constraints>
                 <constraint firstAttribute="height" relation="lessThanOrEqual" constant="660" id="709-ZU-ijG"/>
+                <constraint firstItem="1ud-mC-gQV" firstAttribute="bottom" secondItem="ZzY-1Z-3xa" secondAttribute="bottom" id="HTR-Xt-ACu"/>
+                <constraint firstItem="1ud-mC-gQV" firstAttribute="top" secondItem="ZzY-1Z-3xa" secondAttribute="top" id="Hjv-Wk-Rk1"/>
                 <constraint firstItem="91w-SP-6sl" firstAttribute="top" secondItem="Jw6-da-U8j" secondAttribute="top" constant="10" id="JFe-jp-e9y"/>
                 <constraint firstAttribute="width" constant="500" id="KBX-aG-ZDU"/>
+                <constraint firstItem="1ud-mC-gQV" firstAttribute="trailing" secondItem="ZzY-1Z-3xa" secondAttribute="trailing" id="Kpk-6o-ao7"/>
                 <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="380" id="LND-hR-7Co"/>
                 <constraint firstAttribute="trailing" secondItem="91w-SP-6sl" secondAttribute="trailing" constant="10" id="XrV-hl-kxC"/>
                 <constraint firstAttribute="bottom" secondItem="91w-SP-6sl" secondAttribute="bottom" constant="10" id="Z4B-85-NR5"/>
+                <constraint firstItem="1ud-mC-gQV" firstAttribute="height" secondItem="ZzY-1Z-3xa" secondAttribute="height" id="dfF-9z-iG9"/>
                 <constraint firstItem="91w-SP-6sl" firstAttribute="leading" secondItem="Jw6-da-U8j" secondAttribute="leading" constant="10" id="elm-Nc-tc0"/>
+                <constraint firstItem="1ud-mC-gQV" firstAttribute="leading" secondItem="ZzY-1Z-3xa" secondAttribute="leading" id="kSz-tV-EFM"/>
             </constraints>
-            <point key="canvasLocation" x="-270" y="79.5"/>
+            <point key="canvasLocation" x="-270" y="79"/>
         </view>
     </objects>
     <resources>
