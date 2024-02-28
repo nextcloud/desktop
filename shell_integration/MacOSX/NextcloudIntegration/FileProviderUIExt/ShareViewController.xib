@@ -13,6 +13,7 @@
                 <outlet property="descriptionLabel" destination="gX0-nE-MrU" id="RoY-u1-1on"/>
                 <outlet property="fileNameIcon" destination="zSV-DV-Ray" id="336-e0-CEo"/>
                 <outlet property="fileNameLabel" destination="slV-H6-zJ3" id="DPp-sN-Yff"/>
+                <outlet property="optionsTargetView" destination="EXb-m8-yzj" id="gh6-JU-fnq"/>
                 <outlet property="tableView" destination="vb0-a6-eeH" id="KQo-eg-dba"/>
                 <outlet property="view" destination="Jw6-da-U8j" id="5Ek-F1-w7C"/>
             </connections>
