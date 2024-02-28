@@ -158,7 +158,7 @@
                                 <real value="3.4028234663852886e+38"/>
                             </customSpacing>
                         </stackView>
-                        <view translatesAutoresizingMaskIntoConstraints="NO" id="EXb-m8-yzj">
+                        <view translatesAutoresizingMaskIntoConstraints="NO" id="EXb-m8-yzj" customClass="ShareOptionsView" customModule="FileProviderUIExt" customModuleProvider="target">
                             <rect key="frame" x="0.0" y="359" width="480" height="281"/>
                             <subviews>
                                 <stackView distribution="fill" orientation="vertical" alignment="leading" spacing="5" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="T4D-9c-PyA">
@@ -166,7 +166,7 @@
                                     <subviews>
                                         <textField focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="AWy-Qo-wHH">
                                             <rect key="frame" x="-2" y="252" width="464" height="16"/>
-                                            <textFieldCell key="cell" lineBreakMode="clipping" alignment="center" title="Share link options" id="fzf-0v-uHo">
+                                            <textFieldCell key="cell" lineBreakMode="clipping" alignment="center" title="Share options" id="fzf-0v-uHo">
                                                 <font key="font" metaFont="systemBold"/>
                                                 <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -249,37 +249,25 @@
                                             <rect key="frame" x="0.0" y="0.0" width="460" height="32"/>
                                             <subviews>
                                                 <button horizontalHuggingPriority="249" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="PaV-TL-cbq">
-                                                    <rect key="frame" x="-7" y="-7" width="162" height="32"/>
+                                                    <rect key="frame" x="-7" y="-7" width="240" height="32"/>
                                                     <buttonCell key="cell" type="push" title="Save" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="O1I-T0-iRC">
                                                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                         <font key="font" metaFont="system"/>
                                                     </buttonCell>
                                                 </button>
                                                 <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Bmf-yY-Y7V">
-                                                    <rect key="frame" x="149" y="-7" width="162" height="32"/>
+                                                    <rect key="frame" x="227" y="-7" width="240" height="32"/>
                                                     <buttonCell key="cell" type="push" title="Delete" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Kb4-Qg-9Ag">
                                                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                         <font key="font" metaFont="system"/>
-                                                    </buttonCell>
-                                                </button>
-                                                <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="mWE-jk-MOi">
-                                                    <rect key="frame" x="305" y="-7" width="162" height="32"/>
-                                                    <buttonCell key="cell" type="push" title="Cancel" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Kg8-aP-f7s">
-                                                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                                        <font key="font" metaFont="system"/>
-                                                        <string key="keyEquivalent" base64-UTF8="YES">
-Gw
-</string>
                                                     </buttonCell>
                                                 </button>
                                             </subviews>
                                             <visibilityPriorities>
                                                 <integer value="1000"/>
                                                 <integer value="1000"/>
-                                                <integer value="1000"/>
                                             </visibilityPriorities>
                                             <customSpacing>
-                                                <real value="3.4028234663852886e+38"/>
                                                 <real value="3.4028234663852886e+38"/>
                                                 <real value="3.4028234663852886e+38"/>
                                             </customSpacing>
@@ -335,6 +323,19 @@ Gw
                                 <constraint firstAttribute="trailing" secondItem="T4D-9c-PyA" secondAttribute="trailing" constant="10" id="gs6-zf-D6h"/>
                                 <constraint firstAttribute="bottom" secondItem="T4D-9c-PyA" secondAttribute="bottom" constant="10" id="r5C-pm-lv4"/>
                             </constraints>
+                            <connections>
+                                <outlet property="deleteButton" destination="Bmf-yY-Y7V" id="Wd0-LR-DV5"/>
+                                <outlet property="expirationDateCheckbox" destination="HaL-4Z-csA" id="vIf-I8-e3i"/>
+                                <outlet property="expirationDatePicker" destination="46m-5F-ME5" id="eGk-fe-IIf"/>
+                                <outlet property="hideDownloadCheckbox" destination="2TN-96-apv" id="OPr-4x-aiK"/>
+                                <outlet property="labelTextField" destination="CXW-ZO-B2f" id="otQ-jh-Psr"/>
+                                <outlet property="noteForRecipientCheckbox" destination="c10-ub-U31" id="aG6-4P-cBv"/>
+                                <outlet property="noteTextField" destination="io6-Kg-fLl" id="JKm-A1-SqR"/>
+                                <outlet property="passwordProtectCheckbox" destination="ylD-hi-7Oq" id="qdw-aF-uh2"/>
+                                <outlet property="passwordSecureField" destination="pkv-9L-nhv" id="992-i5-CPF"/>
+                                <outlet property="saveButton" destination="PaV-TL-cbq" id="OvF-Le-oQj"/>
+                                <outlet property="uploadEditPermissionCheckbox" destination="luZ-Vf-V24" id="ojW-WP-98U"/>
+                            </connections>
                         </view>
                     </subviews>
                     <constraints>
