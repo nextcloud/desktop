@@ -69,4 +69,29 @@ extension NKShare {
         }
         return image?.withSymbolConfiguration(config)
     }
+
+    var displayString: String {
+        if label != "" {
+            return label
+        }
+
+        switch shareType {
+        case ShareType.user.rawValue:
+            return "User share"
+        case ShareType.group.rawValue:
+            return "Group share"
+        case ShareType.publicLink.rawValue:
+            return "Public link share"
+        case ShareType.email.rawValue:
+            return "Email share"
+        case ShareType.federatedCloud.rawValue:
+            return "Federated cloud share"
+        case ShareType.circle.rawValue:
+            return "Circle share"
+        case ShareType.talkConversation.rawValue:
+            return "Talk conversation share"
+        default:
+            return "Unknown share"
+        }
+    }
 }
