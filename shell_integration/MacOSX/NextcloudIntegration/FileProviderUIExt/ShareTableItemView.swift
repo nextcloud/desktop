@@ -32,4 +32,11 @@ class ShareTableItemView: NSTableCellView {
         copyLinkButton.isHidden = false
         super.prepareForReuse()
     }
+
+    @IBAction func copyShareLink(sender: Any) {
+        guard let share = share else { return }
+        let pasteboard = NSPasteboard.general
+        pasteboard.declareTypes([.string], owner: nil)
+        pasteboard.setString(share.url, forType: .string)
+    }
 }
