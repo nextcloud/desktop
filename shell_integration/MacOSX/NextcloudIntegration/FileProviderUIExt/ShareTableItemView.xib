@@ -30,7 +30,7 @@
                             <color key="contentTintColor" name="AccentColor"/>
                         </imageView>
                         <textField focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="MwZ-er-vB4">
-                            <rect key="frame" x="38" y="8" width="196" height="16"/>
+                            <rect key="frame" x="38" y="8" width="236" height="16"/>
                             <textFieldCell key="cell" lineBreakMode="clipping" alignment="left" title="Share link" id="Bcz-ws-5yW">
                                 <font key="font" metaFont="systemMedium" size="13"/>
                                 <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -38,7 +38,7 @@
                             </textFieldCell>
                         </textField>
                         <button horizontalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="y6i-wm-BtQ">
-                            <rect key="frame" x="240" y="0.0" width="32" height="32"/>
+                            <rect key="frame" x="280" y="0.0" width="32" height="32"/>
                             <buttonCell key="cell" type="inline" title="Copy share link" bezelStyle="inline" image="doc.on.doc.fill" catalog="system" imagePosition="only" alignment="center" controlSize="large" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="ram-fe-8Pt">
                                 <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                 <font key="font" metaFont="smallSystemBold"/>
@@ -50,22 +50,10 @@
                                 <action selector="copyShareLinkWithSender:" target="WWf-Il-fKw" id="dgW-8v-wfd"/>
                             </connections>
                         </button>
-                        <button horizontalHuggingPriority="750" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="e8z-Xl-jOh">
-                            <rect key="frame" x="280" y="0.0" width="32" height="32"/>
-                            <buttonCell key="cell" type="inline" title="Share options" bezelStyle="inline" image="ellipsis.circle.fill" catalog="system" imagePosition="only" alignment="center" controlSize="large" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="olr-aT-s8c">
-                                <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                <font key="font" metaFont="smallSystemBold"/>
-                            </buttonCell>
-                            <constraints>
-                                <constraint firstAttribute="width" secondItem="e8z-Xl-jOh" secondAttribute="height" multiplier="1:1" id="GS3-dU-7sJ"/>
-                            </constraints>
-                        </button>
                     </subviews>
                     <constraints>
                         <constraint firstItem="Ex8-CB-iNc" firstAttribute="top" secondItem="wdu-Dj-FUn" secondAttribute="top" id="2x8-EU-gHs"/>
                         <constraint firstItem="y6i-wm-BtQ" firstAttribute="top" secondItem="wdu-Dj-FUn" secondAttribute="top" id="BjV-lg-nyL"/>
-                        <constraint firstAttribute="bottom" secondItem="e8z-Xl-jOh" secondAttribute="bottom" id="HDb-BX-cna"/>
-                        <constraint firstItem="e8z-Xl-jOh" firstAttribute="top" secondItem="wdu-Dj-FUn" secondAttribute="top" id="QDx-k0-Ds2"/>
                         <constraint firstAttribute="bottom" secondItem="Ex8-CB-iNc" secondAttribute="bottom" id="dd0-Vh-Pbi"/>
                         <constraint firstAttribute="bottom" secondItem="y6i-wm-BtQ" secondAttribute="bottom" id="ha0-oR-OxV"/>
                         <constraint firstItem="MwZ-er-vB4" firstAttribute="centerY" secondItem="Ex8-CB-iNc" secondAttribute="centerY" id="m3A-Tu-qMJ"/>
@@ -75,10 +63,8 @@
                         <integer value="1000"/>
                         <integer value="1000"/>
                         <integer value="1000"/>
-                        <integer value="1000"/>
                     </visibilityPriorities>
                     <customSpacing>
-                        <real value="3.4028234663852886e+38"/>
                         <real value="3.4028234663852886e+38"/>
                         <real value="3.4028234663852886e+38"/>
                         <real value="3.4028234663852886e+38"/>
@@ -94,23 +80,13 @@
             <connections>
                 <outlet property="copyLinkButton" destination="y6i-wm-BtQ" id="8bc-yO-Txo"/>
                 <outlet property="label" destination="MwZ-er-vB4" id="Gba-jf-C8H"/>
-                <outlet property="optionsButton" destination="e8z-Xl-jOh" id="590-WE-kpx"/>
-                <outlet property="popover" destination="x3v-dU-ueI" id="LVR-Vl-K1Q"/>
-                <outlet property="popoverContentViewController" destination="Zdr-Va-J2w" id="gXD-g3-mRR"/>
                 <outlet property="typeImageView" destination="Ex8-CB-iNc" id="T7o-zd-qOo"/>
             </connections>
             <point key="canvasLocation" x="128" y="-22"/>
         </tableCellView>
-        <viewController id="Zdr-Va-J2w" userLabel="Popover View Controller"/>
-        <popover id="x3v-dU-ueI">
-            <connections>
-                <outlet property="contentViewController" destination="Zdr-Va-J2w" id="Ybs-dW-rX2"/>
-            </connections>
-        </popover>
     </objects>
     <resources>
         <image name="doc.on.doc.fill" catalog="system" width="17" height="19"/>
-        <image name="ellipsis.circle.fill" catalog="system" width="15" height="15"/>
         <image name="link.circle.fill" catalog="system" width="20" height="20"/>
         <namedColor name="AccentColor">
             <color red="0.0" green="0.46000000000000002" blue="0.89000000000000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
