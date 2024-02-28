@@ -46,6 +46,9 @@
                             <constraints>
                                 <constraint firstAttribute="width" secondItem="y6i-wm-BtQ" secondAttribute="height" multiplier="1:1" id="BlJ-WU-1y5"/>
                             </constraints>
+                            <connections>
+                                <action selector="copyShareLinkWithSender:" target="WWf-Il-fKw" id="dgW-8v-wfd"/>
+                            </connections>
                         </button>
                         <button horizontalHuggingPriority="750" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="e8z-Xl-jOh">
                             <rect key="frame" x="280" y="0.0" width="32" height="32"/>
