@@ -13,7 +13,7 @@
                 <outlet property="descriptionLabel" destination="gX0-nE-MrU" id="RoY-u1-1on"/>
                 <outlet property="fileNameIcon" destination="zSV-DV-Ray" id="336-e0-CEo"/>
                 <outlet property="fileNameLabel" destination="slV-H6-zJ3" id="DPp-sN-Yff"/>
-                <outlet property="optionsTargetView" destination="EXb-m8-yzj" id="gh6-JU-fnq"/>
+                <outlet property="optionsView" destination="EXb-m8-yzj" id="uAb-lv-EZ4"/>
                 <outlet property="tableView" destination="vb0-a6-eeH" id="KQo-eg-dba"/>
                 <outlet property="view" destination="Jw6-da-U8j" id="5Ek-F1-w7C"/>
             </connections>
@@ -157,6 +157,181 @@
                         </stackView>
                         <view translatesAutoresizingMaskIntoConstraints="NO" id="EXb-m8-yzj">
                             <rect key="frame" x="0.0" y="359" width="480" height="281"/>
+                            <subviews>
+                                <stackView distribution="fill" orientation="vertical" alignment="leading" spacing="5" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="T4D-9c-PyA">
+                                    <rect key="frame" x="10" y="3" width="460" height="268"/>
+                                    <subviews>
+                                        <textField focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="AWy-Qo-wHH">
+                                            <rect key="frame" x="-2" y="252" width="464" height="16"/>
+                                            <textFieldCell key="cell" lineBreakMode="clipping" alignment="center" title="Share link options" id="fzf-0v-uHo">
+                                                <font key="font" metaFont="systemBold"/>
+                                                <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                            </textFieldCell>
+                                        </textField>
+                                        <textField focusRingType="none" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="CXW-ZO-B2f">
+                                            <rect key="frame" x="0.0" y="225" width="460" height="22"/>
+                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" placeholderString="Share label" bezelStyle="round" id="ZsJ-zc-mFT">
+                                                <font key="font" metaFont="system"/>
+                                                <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                            </textFieldCell>
+                                        </textField>
+                                        <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="luZ-Vf-V24">
+                                            <rect key="frame" x="-2" y="203" width="175" height="18"/>
+                                            <buttonCell key="cell" type="check" title="Allow upload and editing" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="vOP-1k-c75">
+                                                <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                                <font key="font" metaFont="system"/>
+                                            </buttonCell>
+                                        </button>
+                                        <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="2TN-96-apv">
+                                            <rect key="frame" x="-2" y="182" width="117" height="18"/>
+                                            <buttonCell key="cell" type="check" title="Hide download" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="6Eu-NS-uZ7">
+                                                <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                                <font key="font" metaFont="system"/>
+                                            </buttonCell>
+                                        </button>
+                                        <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="ylD-hi-7Oq">
+                                            <rect key="frame" x="-2" y="161" width="132" height="18"/>
+                                            <buttonCell key="cell" type="check" title="Password protect" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="MWC-hf-0pc">
+                                                <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                                <font key="font" metaFont="system"/>
+                                            </buttonCell>
+                                        </button>
+                                        <secureTextField focusRingType="none" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="pkv-9L-nhv">
+                                            <rect key="frame" x="0.0" y="135" width="460" height="22"/>
+                                            <secureTextFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" placeholderString="Password" usesSingleLineMode="YES" bezelStyle="round" id="hcA-we-oYG">
+                                                <font key="font" metaFont="system"/>
+                                                <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                <allowedInputSourceLocales>
+                                                    <string>NSAllRomanInputSourcesLocaleIdentifier</string>
+                                                </allowedInputSourceLocales>
+                                            </secureTextFieldCell>
+                                        </secureTextField>
+                                        <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="HaL-4Z-csA">
+                                            <rect key="frame" x="-2" y="113" width="117" height="18"/>
+                                            <buttonCell key="cell" type="check" title="Expiration date" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="r1a-iX-8Xo">
+                                                <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                                <font key="font" metaFont="system"/>
+                                            </buttonCell>
+                                        </button>
+                                        <datePicker verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="46m-5F-ME5">
+                                            <rect key="frame" x="0.0" y="85" width="463" height="28"/>
+                                            <datePickerCell key="cell" borderStyle="bezel" alignment="left" useCurrentDate="YES" id="EHU-Gu-Dfh">
+                                                <font key="font" metaFont="system"/>
+                                                <date key="date" timeIntervalSinceReferenceDate="730819165.23389006">
+                                                    <!--2024-02-28 13:19:25 +0000-->
+                                                </date>
+                                                <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                            </datePickerCell>
+                                        </datePicker>
+                                        <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="c10-ub-U31">
+                                            <rect key="frame" x="-2" y="63" width="132" height="18"/>
+                                            <buttonCell key="cell" type="check" title="Note for recipient" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="oLA-Nu-fzO">
+                                                <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                                <font key="font" metaFont="system"/>
+                                            </buttonCell>
+                                        </button>
+                                        <textField focusRingType="none" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="io6-Kg-fLl">
+                                            <rect key="frame" x="0.0" y="37" width="460" height="22"/>
+                                            <textFieldCell key="cell" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" placeholderString="Note for the recipient" bezelStyle="round" id="z5W-BH-NnM">
+                                                <font key="font" metaFont="system"/>
+                                                <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                            </textFieldCell>
+                                        </textField>
+                                        <stackView distribution="fillEqually" orientation="horizontal" alignment="bottom" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="mWb-eX-nfh">
+                                            <rect key="frame" x="0.0" y="0.0" width="460" height="32"/>
+                                            <subviews>
+                                                <button horizontalHuggingPriority="249" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="PaV-TL-cbq">
+                                                    <rect key="frame" x="-7" y="-7" width="162" height="32"/>
+                                                    <buttonCell key="cell" type="push" title="Save" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="O1I-T0-iRC">
+                                                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                        <font key="font" metaFont="system"/>
+                                                    </buttonCell>
+                                                </button>
+                                                <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Bmf-yY-Y7V">
+                                                    <rect key="frame" x="149" y="-7" width="162" height="32"/>
+                                                    <buttonCell key="cell" type="push" title="Delete" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Kb4-Qg-9Ag">
+                                                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                        <font key="font" metaFont="system"/>
+                                                    </buttonCell>
+                                                </button>
+                                                <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="mWE-jk-MOi">
+                                                    <rect key="frame" x="305" y="-7" width="162" height="32"/>
+                                                    <buttonCell key="cell" type="push" title="Cancel" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Kg8-aP-f7s">
+                                                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                        <font key="font" metaFont="system"/>
+                                                        <string key="keyEquivalent" base64-UTF8="YES">
+Gw
+</string>
+                                                    </buttonCell>
+                                                </button>
+                                            </subviews>
+                                            <visibilityPriorities>
+                                                <integer value="1000"/>
+                                                <integer value="1000"/>
+                                                <integer value="1000"/>
+                                            </visibilityPriorities>
+                                            <customSpacing>
+                                                <real value="3.4028234663852886e+38"/>
+                                                <real value="3.4028234663852886e+38"/>
+                                                <real value="3.4028234663852886e+38"/>
+                                            </customSpacing>
+                                        </stackView>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="46m-5F-ME5" firstAttribute="leading" secondItem="T4D-9c-PyA" secondAttribute="leading" id="5LB-gI-S8e"/>
+                                        <constraint firstItem="io6-Kg-fLl" firstAttribute="leading" secondItem="T4D-9c-PyA" secondAttribute="leading" id="94h-0I-pw6"/>
+                                        <constraint firstAttribute="trailing" secondItem="pkv-9L-nhv" secondAttribute="trailing" id="IFt-uJ-etl"/>
+                                        <constraint firstAttribute="trailing" secondItem="CXW-ZO-B2f" secondAttribute="trailing" id="Uvk-cg-D23"/>
+                                        <constraint firstItem="pkv-9L-nhv" firstAttribute="leading" secondItem="T4D-9c-PyA" secondAttribute="leading" id="bFe-9X-gFR"/>
+                                        <constraint firstItem="AWy-Qo-wHH" firstAttribute="leading" secondItem="T4D-9c-PyA" secondAttribute="leading" id="dyr-SA-Kmy"/>
+                                        <constraint firstAttribute="trailing" secondItem="46m-5F-ME5" secondAttribute="trailing" id="gV6-Jx-VH4"/>
+                                        <constraint firstAttribute="bottom" secondItem="mWb-eX-nfh" secondAttribute="bottom" id="iLe-Zw-oO2"/>
+                                        <constraint firstAttribute="trailing" secondItem="io6-Kg-fLl" secondAttribute="trailing" id="mkY-UE-SAy"/>
+                                        <constraint firstItem="AWy-Qo-wHH" firstAttribute="top" secondItem="T4D-9c-PyA" secondAttribute="top" id="ndl-52-MnV"/>
+                                        <constraint firstItem="CXW-ZO-B2f" firstAttribute="leading" secondItem="T4D-9c-PyA" secondAttribute="leading" id="oWL-JR-HTk"/>
+                                        <constraint firstItem="mWb-eX-nfh" firstAttribute="leading" secondItem="T4D-9c-PyA" secondAttribute="leading" id="wiX-kw-Ohy"/>
+                                        <constraint firstAttribute="trailing" secondItem="mWb-eX-nfh" secondAttribute="trailing" id="yUj-je-uXE"/>
+                                        <constraint firstAttribute="trailing" secondItem="AWy-Qo-wHH" secondAttribute="trailing" id="zxC-eX-HrE"/>
+                                    </constraints>
+                                    <visibilityPriorities>
+                                        <integer value="1000"/>
+                                        <integer value="1000"/>
+                                        <integer value="1000"/>
+                                        <integer value="1000"/>
+                                        <integer value="1000"/>
+                                        <integer value="1000"/>
+                                        <integer value="1000"/>
+                                        <integer value="1000"/>
+                                        <integer value="1000"/>
+                                        <integer value="1000"/>
+                                        <integer value="1000"/>
+                                    </visibilityPriorities>
+                                    <customSpacing>
+                                        <real value="3.4028234663852886e+38"/>
+                                        <real value="3.4028234663852886e+38"/>
+                                        <real value="3.4028234663852886e+38"/>
+                                        <real value="3.4028234663852886e+38"/>
+                                        <real value="3.4028234663852886e+38"/>
+                                        <real value="3.4028234663852886e+38"/>
+                                        <real value="3.4028234663852886e+38"/>
+                                        <real value="3.4028234663852886e+38"/>
+                                        <real value="3.4028234663852886e+38"/>
+                                        <real value="3.4028234663852886e+38"/>
+                                        <real value="3.4028234663852886e+38"/>
+                                    </customSpacing>
+                                </stackView>
+                            </subviews>
+                            <constraints>
+                                <constraint firstItem="T4D-9c-PyA" firstAttribute="leading" secondItem="EXb-m8-yzj" secondAttribute="leading" constant="10" id="Dhe-wL-ygv"/>
+                                <constraint firstItem="T4D-9c-PyA" firstAttribute="top" secondItem="EXb-m8-yzj" secondAttribute="top" constant="10" id="JrC-o6-So3"/>
+                                <constraint firstAttribute="trailing" secondItem="T4D-9c-PyA" secondAttribute="trailing" constant="10" id="gs6-zf-D6h"/>
+                                <constraint firstAttribute="bottom" secondItem="T4D-9c-PyA" secondAttribute="bottom" constant="10" id="r5C-pm-lv4"/>
+                            </constraints>
                         </view>
                     </subviews>
                     <constraints>
