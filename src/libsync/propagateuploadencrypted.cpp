@@ -55,7 +55,9 @@ void PropagateUploadEncrypted::start()
      */
     // Encrypt File!
     SyncJournalFileRecord rec;
-    if (!_propagator->_journal->getRootE2eFolderRecord(_remoteParentAbsolutePath, &rec) || !rec.isValid()) {
+    if (!_propagator->_journal->getRootE2eFolderRecord(Utility::fullRemotePathToRemoteSyncRootRelative(_remoteParentAbsolutePath, _propagator->remotePath()),
+                                                       &rec)
+        || !rec.isValid()) {
         emit error();
         return;
     }

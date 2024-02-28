@@ -425,7 +425,7 @@ void AccountSettings::slotMarkSubfolderEncrypted(FolderStatusModel::SubFolderInf
         Q_ASSERT(!path.startsWith('/') && path.endsWith('/'));
         // But EncryptFolderJob expects directory path Foo/Bar convention
         const auto choppedPath = path.chopped(1);
-        auto job = new OCC::EncryptFolderJob(accountsState()->account(), folder->journalDb(), choppedPath, fileId);
+        auto job = new OCC::EncryptFolderJob(accountsState()->account(), folder->journalDb(), choppedPath, choppedPath, folder->remotePath(), fileId);
         job->setParent(this);
         job->setProperty(propertyFolder, QVariant::fromValue(folder));
         job->setProperty(propertyPath, QVariant::fromValue(path));
