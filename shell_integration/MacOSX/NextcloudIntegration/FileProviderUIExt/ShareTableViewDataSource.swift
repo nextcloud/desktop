@@ -146,7 +146,7 @@ class ShareTableViewDataSource: NSObject, NSTableViewDataSource, NSTableViewDele
             Logger.sharesDataSource.error("Acquired item view from table is not a Share item view!")
             return nil
         }
-        view.label.stringValue = share.label
+        view.share = share
         return view
     }
 }
