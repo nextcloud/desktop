@@ -12,4 +12,11 @@ class ShareTableItemView: NSTableCellView {
     @IBOutlet weak var label: NSTextField!
     @IBOutlet weak var copyLinkButton: NSButton!
     @IBOutlet weak var optionsButton: NSButton!
+
+    override func prepareForReuse() {
+        typeImageView.image = nil
+        label.stringValue = ""
+        copyLinkButton.isHidden = false
+        super.prepareForReuse()
+    }
 }
