@@ -101,6 +101,16 @@ class ShareViewController: NSViewController, ShareViewDataSourceUIDelegate {
         fileNameIcon.image = fileThumbnail?.nsImage
     }
 
+    func fetchStarted() {
+        loadingEffectView.isHidden = false
+        loadingIndicator.startAnimation(self)
+    }
+
+    func fetchFinished() {
+        loadingEffectView.isHidden = true
+        loadingIndicator.stopAnimation(self)
+    }
+
     func hideOptions() {
         splitView.removeArrangedSubview(optionsView)
         optionsView.isHidden = true
