@@ -13,6 +13,9 @@ class ShareTableItemView: NSTableCellView {
     @IBOutlet private weak var label: NSTextField!
     @IBOutlet private weak var copyLinkButton: NSButton!
     @IBOutlet private weak var optionsButton: NSButton!
+    private var originalCopyImage: NSImage?
+    private var copiedButtonImage: NSImage?
+    private var tempButtonTimer: Timer?
 
     var share: NKShare? {
         didSet {
@@ -38,5 +41,25 @@ class ShareTableItemView: NSTableCellView {
         let pasteboard = NSPasteboard.general
         pasteboard.declareTypes([.string], owner: nil)
         pasteboard.setString(share.url, forType: .string)
+
+        guard tempButtonTimer == nil else { return }
+
+        originalCopyImage = copyLinkButton.image
+        copiedButtonImage = NSImage(
+            systemSymbolName: "checkmark.circle.fill",
+            accessibilityDescription: "Public link has been copied icon"
+        )
+        var config = NSImage.SymbolConfiguration(scale: .medium)
+        if #available(macOS 12.0, *) {
+            config = config.applying(.init(hierarchicalColor: .systemGreen))
+        }
+        copiedButtonImage = copiedButtonImage?.withSymbolConfiguration(config)
+        copyLinkButton.image = copiedButtonImage
+        tempButtonTimer = Timer.scheduledTimer(withTimeInterval: 3.0, repeats: false) { timer in
+            self.copyLinkButton.image = self.originalCopyImage
+            self.copiedButtonImage = nil
+            self.tempButtonTimer?.invalidate()
+            self.tempButtonTimer = nil
+        }
     }
 }
