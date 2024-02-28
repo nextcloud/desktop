@@ -14,6 +14,7 @@ class ShareTableViewDataSource: NSObject, NSTableViewDataSource, NSTableViewDele
     private let shareItemViewIdentifier = NSUserInterfaceItemIdentifier("ShareTableItemView")
     private let shareItemViewNib = NSNib(nibNamed: "ShareTableItemView", bundle: nil)
 
+    var uiDelegate: ShareViewDataSourceUIDelegate?
     var sharesTableView: NSTableView? {
         didSet {
             sharesTableView?.register(shareItemViewNib, forIdentifier: shareItemViewIdentifier)
@@ -23,6 +24,7 @@ class ShareTableViewDataSource: NSObject, NSTableViewDataSource, NSTableViewDele
             sharesTableView?.reloadData()
         }
     }
+
     private var kit: NextcloudKit?
     private var itemURL: URL?
     private var shares: [NKShare] = [] {
@@ -148,5 +150,14 @@ class ShareTableViewDataSource: NSObject, NSTableViewDataSource, NSTableViewDele
         }
         view.share = share
         return view
+    }
+
+    @objc func tableViewSelectionDidChange(_ notification: Notification) {
+        guard let selectedRow = sharesTableView?.selectedRow, selectedRow >= 0 else {
+            uiDelegate?.hideOptions()
+            return
+        }
+        let share = shares[selectedRow]
+        uiDelegate?.showOptions(share: share)
     }
 }
