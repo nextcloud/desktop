@@ -37,7 +37,8 @@ PropagateDownloadEncrypted::PropagateDownloadEncrypted(OwncloudPropagator *propa
 void PropagateDownloadEncrypted::start()
 {
     SyncJournalFileRecord rec;
-    if (!_propagator->_journal->getRootE2eFolderRecord(_remoteParentPath, &rec) || !rec.isValid()) {
+    if (!_propagator->_journal->getRootE2eFolderRecord(Utility::fullRemotePathToRemoteSyncRootRelative(_remoteParentPath, _propagator->remotePath()), &rec)
+        || !rec.isValid()) {
         emit failed();
         return;
     }

@@ -45,7 +45,7 @@ UpdateE2eeFolderUsersMetadataJob::UpdateE2eeFolderUsersMetadataJob(const Account
     const auto folderPath = _syncFolderRemotePath + pathSanitized;
 
     SyncJournalFileRecord rec;
-    if (!_journalDb->getRootE2eFolderRecord(_path, &rec) || !rec.isValid()) {
+    if (!_journalDb->getRootE2eFolderRecord(Utility::fullRemotePathToRemoteSyncRootRelative(_path, _syncFolderRemotePath), &rec) || !rec.isValid()) {
         qCDebug(lcUpdateE2eeFolderUsersMetadataJob) << "Could not get root E2ee folder recort for path" << _path;
         return;
     }
@@ -96,7 +96,7 @@ void UpdateE2eeFolderUsersMetadataJob::slotStartE2eeMetadataJobs()
     const auto pathSanitized = _path.startsWith(QLatin1Char('/')) ? _path.mid(1) : _path;
     const auto folderPath = _syncFolderRemotePath + pathSanitized;
     SyncJournalFileRecord rec;
-    if (!_journalDb->getRootE2eFolderRecord(_path, &rec) || !rec.isValid()) {
+    if (!_journalDb->getRootE2eFolderRecord(Utility::fullRemotePathToRemoteSyncRootRelative(_path, _syncFolderRemotePath), &rec) || !rec.isValid()) {
         emit finished(404, tr("Could not find root encrypted folder for folder %1").arg(_path));
         return;
     }

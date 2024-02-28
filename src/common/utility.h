@@ -269,6 +269,8 @@ namespace Utility {
 
     OCSYNC_EXPORT QString trailingSlashPath(const QString &path);
     OCSYNC_EXPORT QString noLeadingSlashPath(const QString &path);
+    OCSYNC_EXPORT QString noTrailingSlashPath(const QString &path);
+    OCSYNC_EXPORT QString fullRemotePathToRemoteSyncRootRelative(const QString &fullRemotePath, const QString &remoteSyncRoot);
 
 #ifdef Q_OS_WIN
     OCSYNC_EXPORT bool registryKeyExists(HKEY hRootKey, const QString &subKey);

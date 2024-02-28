@@ -526,6 +526,8 @@ public:
     Q_REQUIRED_RESULT QString fullRemotePath(const QString &tmp_file_name) const;
     [[nodiscard]] QString remotePath() const;
 
+    [[nodiscard]] QString fulllRemotePathToPathInSyncJournalDb(const QString &fullRemotePath) const;
+
     /** Creates the job for an item.
      */
     PropagateItemJob *createJob(const SyncFileItemPtr &item);

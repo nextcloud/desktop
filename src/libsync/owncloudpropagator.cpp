@@ -1660,6 +1660,15 @@ QString OwncloudPropagator::fullRemotePath(const QString &tmp_file_name) const
     return _remoteFolder + tmp_file_name;
 }
 
+QString OwncloudPropagator::fulllRemotePathToPathInSyncJournalDb(const QString &fullRemotePath) const
+{
+    auto result = _remoteFolder != QStringLiteral("/") ? fullRemotePath.mid(_remoteFolder.size()) : fullRemotePath;
+    if (result.startsWith("/")) {
+        result = result.mid(1);
+    }
+    return result;
+}
+
 QString OwncloudPropagator::remotePath() const
 {
     return _remoteFolder;
