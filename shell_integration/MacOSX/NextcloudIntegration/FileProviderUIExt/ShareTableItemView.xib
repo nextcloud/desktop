@@ -95,10 +95,18 @@
                 <outlet property="copyLinkButton" destination="y6i-wm-BtQ" id="8bc-yO-Txo"/>
                 <outlet property="label" destination="MwZ-er-vB4" id="Gba-jf-C8H"/>
                 <outlet property="optionsButton" destination="e8z-Xl-jOh" id="590-WE-kpx"/>
+                <outlet property="popover" destination="x3v-dU-ueI" id="LVR-Vl-K1Q"/>
+                <outlet property="popoverContentViewController" destination="Zdr-Va-J2w" id="gXD-g3-mRR"/>
                 <outlet property="typeImageView" destination="Ex8-CB-iNc" id="T7o-zd-qOo"/>
             </connections>
             <point key="canvasLocation" x="128" y="-22"/>
         </tableCellView>
+        <viewController id="Zdr-Va-J2w" userLabel="Popover View Controller"/>
+        <popover id="x3v-dU-ueI">
+            <connections>
+                <outlet property="contentViewController" destination="Zdr-Va-J2w" id="Ybs-dW-rX2"/>
+            </connections>
+        </popover>
     </objects>
     <resources>
         <image name="doc.on.doc.fill" catalog="system" width="17" height="19"/>
