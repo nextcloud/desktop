@@ -14,6 +14,7 @@
                 <outlet property="fileNameIcon" destination="zSV-DV-Ray" id="336-e0-CEo"/>
                 <outlet property="fileNameLabel" destination="slV-H6-zJ3" id="DPp-sN-Yff"/>
                 <outlet property="optionsView" destination="EXb-m8-yzj" id="uAb-lv-EZ4"/>
+                <outlet property="splitView" destination="91w-SP-6sl" id="20T-gQ-SPY"/>
                 <outlet property="tableView" destination="vb0-a6-eeH" id="KQo-eg-dba"/>
                 <outlet property="view" destination="Jw6-da-U8j" id="5Ek-F1-w7C"/>
             </connections>

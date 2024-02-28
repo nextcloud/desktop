@@ -7,10 +7,11 @@
 
 import AppKit
 import FileProvider
+import NextcloudKit
 import OSLog
 import QuickLookThumbnailing
 
-class ShareViewController: NSViewController {
+class ShareViewController: NSViewController, ShareViewDataSourceUIDelegate {
     let shareDataSource = ShareTableViewDataSource()
     let itemIdentifiers: [NSFileProviderItemIdentifier]
 
@@ -20,6 +21,7 @@ class ShareViewController: NSViewController {
     @IBOutlet weak var closeButton: NSButton!
     @IBOutlet weak var tableView: NSTableView!
     @IBOutlet weak var optionsView: NSView!
+    @IBOutlet weak var splitView: NSSplitView!
 
     public override var nibName: NSNib.Name? {
         return NSNib.Name(self.className)
@@ -48,6 +50,10 @@ class ShareViewController: NSViewController {
         fatalError("init(coder:) has not been implemented")
     }
 
+    override func viewDidLoad() {
+        hideOptions()
+    }
+
     @IBAction func closeAction(_ sender: Any) {
         actionViewController.extensionContext.completeRequest()
     }
@@ -60,6 +66,7 @@ class ShareViewController: NSViewController {
         do {
             let itemUrl = try await manager.getUserVisibleURL(for: itemIdentifier)
             await updateDisplay(itemUrl: itemUrl)
+            shareDataSource.uiDelegate = self
             shareDataSource.sharesTableView = tableView
             shareDataSource.loadItem(url: itemUrl)
         } catch let error {
@@ -90,5 +97,15 @@ class ShareViewController: NSViewController {
             }
         }
         fileNameIcon.image = fileThumbnail?.nsImage
+    }
+
+    func hideOptions() {
+        splitView.removeArrangedSubview(optionsView)
+        optionsView.isHidden = true
+    }
+
+    func showOptions(share: NKShare) {
+        splitView.addArrangedSubview(optionsView)
+        optionsView.isHidden = false
     }
 }
