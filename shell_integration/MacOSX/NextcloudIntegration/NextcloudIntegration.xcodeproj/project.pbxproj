@@ -56,6 +56,7 @@
 		53FE14542B8E1219006C4193 /* NextcloudKit in Frameworks */ = {isa = PBXBuildFile; productRef = 53FE14532B8E1219006C4193 /* NextcloudKit */; };
 		53FE14552B8E28E9006C4193 /* NextcloudAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 536EFC35295E3C1100F4CB13 /* NextcloudAccount.swift */; };
 		53FE14592B8E3F6C006C4193 /* ShareTableItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53FE14582B8E3F6C006C4193 /* ShareTableItemView.swift */; };
+		53FE145B2B8F1305006C4193 /* NKShare+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53FE145A2B8F1305006C4193 /* NKShare+Extensions.swift */; };
 		C2B573BA1B1CD91E00303B36 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = C2B573B91B1CD91E00303B36 /* main.m */; };
 		C2B573D21B1CD94B00303B36 /* main.m in Resources */ = {isa = PBXBuildFile; fileRef = C2B573B91B1CD91E00303B36 /* main.m */; };
 		C2B573DE1B1CD9CE00303B36 /* FinderSync.m in Sources */ = {isa = PBXBuildFile; fileRef = C2B573DD1B1CD9CE00303B36 /* FinderSync.m */; };
@@ -202,6 +203,7 @@
 		53FE144F2B8E0658006C4193 /* ShareTableViewDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareTableViewDataSource.swift; sourceTree = "<group>"; };
 		53FE14572B8E3A7C006C4193 /* FileProviderUIExtRelease.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = FileProviderUIExtRelease.entitlements; sourceTree = "<group>"; };
 		53FE14582B8E3F6C006C4193 /* ShareTableItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareTableItemView.swift; sourceTree = "<group>"; };
+		53FE145A2B8F1305006C4193 /* NKShare+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NKShare+Extensions.swift"; sourceTree = "<group>"; };
 		C2B573B11B1CD91E00303B36 /* desktopclient.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = desktopclient.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C2B573B51B1CD91E00303B36 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C2B573B91B1CD91E00303B36 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -302,6 +304,7 @@
 			isa = PBXGroup;
 			children = (
 				5376307C2B85E2ED0026BFAB /* Logger+Extensions.swift */,
+				53FE145A2B8F1305006C4193 /* NKShare+Extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -730,6 +733,7 @@
 			files = (
 				537630932B85F4B00026BFAB /* ShareViewController.swift in Sources */,
 				53B979812B84C81F002DA742 /* DocumentActionViewController.swift in Sources */,
+				53FE145B2B8F1305006C4193 /* NKShare+Extensions.swift in Sources */,
 				53FE14592B8E3F6C006C4193 /* ShareTableItemView.swift in Sources */,
 				53FE14552B8E28E9006C4193 /* NextcloudAccount.swift in Sources */,
 				5376307D2B85E2ED0026BFAB /* Logger+Extensions.swift in Sources */,
