@@ -107,6 +107,9 @@ class ShareTableViewDataSource: NSObject, NSTableViewDataSource, NSTableViewDele
     private func fetch(
         itemIdentifier: NSFileProviderItemIdentifier, itemRelativePath: String
     ) async -> [NKShare] {
+        Task { @MainActor in uiDelegate?.fetchStarted() }
+        defer { Task { @MainActor in uiDelegate?.fetchFinished() } }
+
         let rawIdentifier = itemIdentifier.rawValue
         Logger.sharesDataSource.info("Fetching shares for item \(rawIdentifier, privacy: .public)")
 
