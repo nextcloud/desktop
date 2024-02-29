@@ -9,6 +9,10 @@ endif()
 
 project(client)
 
+if(APPLE)
+    set(CMAKE_OSX_DEPLOYMENT_TARGET "12.0" CACHE STRING "Minimum OSX deployment version")
+endif()
+
 include(FeatureSummary)
 
 set(CMAKE_XCODE_ATTRIBUTE_ENABLE_HARDENED_RUNTIME YES)
