@@ -110,7 +110,7 @@ Bestandssynchronisatie desktop software tool.</translation>
     <message>
         <location filename="../src/gui/main.cpp" line="126"/>
         <source>Start with the main window visible, or if it is already running, bring it to the front. By default, the client launches in the background.</source>
-        <translation type="unfinished"/>
+        <translation>Start met het zichtbaar maken van het hoofdvenster, of als het al actief is, breng het naar voren. Standaard wordt de client op de achtergrond gestart.</translation>
     </message>
     <message>
         <location filename="../src/gui/main.cpp" line="128"/>
@@ -145,7 +145,7 @@ Bestandssynchronisatie desktop software tool.</translation>
     <message>
         <location filename="../src/gui/main.cpp" line="136"/>
         <source>Forward all arguments to the cmd client. This argument must be the first.</source>
-        <translation type="unfinished"/>
+        <translation>Alle argumenten doorsturen naar de cmd-client. Dit argument moet het eerste zijn.</translation>
     </message>
     <message>
         <location filename="../src/gui/main.cpp" line="139"/>
@@ -555,7 +555,7 @@ Deze actie annuleert alle huidig lopende synchronisatie.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="709"/>
         <source>Updating credentials for %1...</source>
-        <translation type="unfinished"/>
+        <translation>Inloggegevens voor %1 bijwerken...</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="713"/>
@@ -590,22 +590,22 @@ Deze actie annuleert alle huidig lopende synchronisatie.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="634"/>
         <source>Internet connection is metered</source>
-        <translation type="unfinished"/>
+        <translation>Internetverbinding heeft een datalimiet</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="635"/>
         <source>Synchronization is paused because the Internet connection is a metered connection&lt;p&gt;Do you really want to force a Synchronization now?</source>
-        <translation type="unfinished"/>
+        <translation>Synchronisatie is gepauzeerd omdat de internetverbinding  een verbinding met een datalimiet is.&lt;p&gt;Wilt u nu echt een synchronisatie forceren?</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="656"/>
         <source>User triggered force sync</source>
-        <translation type="unfinished"/>
+        <translation>Door de gebruiker geactiveerde geforceerde synchronisatie</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="689"/>
         <source>Sync to %1 is paused due to metered internet connection.</source>
-        <translation type="unfinished"/>
+        <translation>Synchroniseren met %1 is onderbroken vanwege een internetverbinding met een datalimiet.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="700"/>
@@ -1046,7 +1046,7 @@ De update wordt uitgevoerd op de achtergrond en zal het bestaande AppImage besta
     <message>
         <location filename="../src/gui/folder.cpp" line="788"/>
         <source>Switching VFS mode on folder &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>VFS-modus inschakelen in map &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="950"/>
@@ -1145,7 +1145,7 @@ Als dit een ongelukje was en u de bestanden wilt behouden, worden ze opnieuw ges
     <message>
         <location filename="../src/gui/folderman.cpp" line="390"/>
         <source>Account disconnected or paused</source>
-        <translation type="unfinished"/>
+        <translation>Account losgekoppeld of gepauzeerd</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="605"/>
@@ -1175,7 +1175,7 @@ Als dit een ongelukje was en u de bestanden wilt behouden, worden ze opnieuw ges
     <message>
         <location filename="../src/gui/folderman.cpp" line="727"/>
         <source>Folder &apos;%1&apos; is already in use by application %2!</source>
-        <translation type="unfinished"/>
+        <translation>Map &apos;%1&apos; is al in gebruik door toepassing %2!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="741"/>
@@ -1270,12 +1270,12 @@ Overweeg om deze map te verwijderen van dit account en om hem opnieuw toe te voe
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="279"/>
         <source>Please use the context menu and select &quot;Disable virtual file support&quot; to  ensure future access to your synced files.</source>
-        <translation type="unfinished"/>
+        <translation>Gebruik het contextmenu en selecteer &quot;Ondersteuning voor virtuele bestanden uitschakelen&quot; om toekomstige toegang tot uw gesynchroniseerde bestanden te garanderen.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="280"/>
         <source>You are going to lose access to your sync folder if you do not do so!</source>
-        <translation type="unfinished"/>
+        <translation>Als u dit niet doet, verliest u de toegang tot uw synchronisatiemap!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="355"/>
@@ -1294,7 +1294,7 @@ Overweeg om deze map te verwijderen van dit account en om hem opnieuw toe te voe
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="941"/>
         <source>Selective sync list changed</source>
-        <translation type="unfinished"/>
+        <translation>Selectieve synchronisatielijst is gewijzigd</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="987"/>
@@ -1352,7 +1352,7 @@ Overweeg om deze map te verwijderen van dit account en om hem opnieuw toe te voe
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1222"/>
         <source>User triggered sync-all for selective synced folder</source>
-        <translation type="unfinished"/>
+        <translation>Gebruiker heeft sync-all geactiveerd voor selectief gesynchroniseerde map</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1065"/>
@@ -1579,7 +1579,7 @@ Overweeg om deze map te verwijderen van dit account en om hem opnieuw toe te voe
     <message>
         <location filename="../src/gui/generalsettings.ui" line="126"/>
         <source>Move remotely deleted files to the local trash bin instead of deleting them</source>
-        <translation type="unfinished"/>
+        <translation>Verplaats op afstand verwijderde bestanden naar de lokale prullenbak in plaats van ze te verwijderen</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="142"/>
@@ -1872,7 +1872,7 @@ Items waar verwijderen is toegestaan zullen gewist worden als ze voorkomen dat e
     <message>
         <location filename="../src/gui/logbrowser.ui" line="53"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;b&gt;The logs contain sensitive information which you should not make publicly available&lt;/b&gt;&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;b&gt;De logs bevatten gevoelige informatie die u niet openbaar mag maken&lt;/b&gt;&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.ui" line="71"/>
@@ -1965,7 +1965,7 @@ Let op dat het gebruik van command line logopties deze instelling zullen oversch
     <message>
         <location filename="../src/gui/networksettings.ui" line="20"/>
         <source>Pause synchronization when the Internet connection is metered</source>
-        <translation type="unfinished"/>
+        <translation>Synchronisatie onderbreken wanneer er een datalimiet is voor de internetverbinding</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="30"/>
@@ -2185,7 +2185,7 @@ Let op dat het gebruik van command line logopties deze instelling zullen oversch
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="155"/>
         <source>%1 installed successfully. Restart the application to finish installing the update.</source>
-        <translation type="unfinished"/>
+        <translation>%1 succesvol geïnstalleerd. Start de applicatie opnieuw om de installatie van de update te voltooien.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="157"/>
@@ -2501,7 +2501,7 @@ Let op dat het gebruik van command line logopties deze instelling zullen oversch
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="125"/>
         <source>Could not move &apos;%1&apos; to the trash bin</source>
-        <translation type="unfinished"/>
+        <translation>Kan &apos;%1&apos; niet naar de prullenbak verplaatsen</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="89"/>
@@ -3416,7 +3416,7 @@ Let op dat het gebruik van command line logopties deze instelling zullen oversch
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="871"/>
         <source>Aborted due to %1</source>
-        <translation type="unfinished"/>
+        <translation>Afgebroken vanwege %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="889"/>
@@ -3437,7 +3437,7 @@ Let op dat het gebruik van command line logopties deze instelling zullen oversch
         <location filename="../src/libsync/syncengine.cpp" line="86"/>
         <source>application exit</source>
         <comment>abort reason</comment>
-        <translation type="unfinished"/>
+        <translation>Applicatie afsluiten</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="399"/>
@@ -3481,7 +3481,7 @@ Let op dat het gebruik van command line logopties deze instelling zullen oversch
     <message>
         <location filename="../src/libsync/theme.cpp" line="400"/>
         <source>&lt;p&gt;Version %1. For more information visit &lt;a href=&quot;%2&quot;&gt;https://%3&lt;/a&gt;&lt;/p&gt;&lt;p&gt;For known issues and help, please visit: &lt;a href=&quot;https://central.owncloud.com/c/desktop-client&quot;&gt;https://central.owncloud.com&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;By Klaas Freitag, Daniel Molkentin, Olivier Goffart, Markus Götz,  Jan-Christoph Borchardt, Thomas Müller,&lt;br&gt;Dominik Schmidt, Michael Stingl, Hannah von Reth, Fabian Müller and others.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;Copyright ownCloud GmbH&lt;/p&gt;&lt;p&gt;Distributed by %4 and licensed under the GNU General Public License (GPL) Version 2.0.&lt;br/&gt;%5 and the %5 logo are registered trademarks of %4 in the United States, other countries, or both.&lt;/p&gt;&lt;p&gt;&lt;small&gt;%6&lt;/small&gt;&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Versie %1. Voor meer informatie bezoek: &lt;a href=&quot;%2&quot;&gt;https://%3&lt;/a&gt;&lt;/p&gt;&lt;p&gt;Voor bekende problemen en hulp, bezoek: &lt;a href=&quot;https://central.owncloud.com/c/desktop-client&quot;&gt;https://central.owncloud.com&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;Door Klaas Freitag, Daniel Molkentin, Olivier Goffart, Markus Götz,  Jan-Christoph Borchardt, Thomas Müller,&lt;br&gt;Dominik Schmidt, Michael Stingl, Hannah von Reth, Fabian Müller en anderen.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;Copyright ownCloud GmbH&lt;/p&gt;&lt;p&gt;Distributie door %4 en gelicentieerd onder de GNU General Public License (GPL) versie 2.0.&lt;br/&gt;%5 en de %5 logo zijn geregistreerde handelsmerken van %4 in de Verenigde Staten, andere landen of beiden.&lt;/p&gt;&lt;p&gt;&lt;small&gt;%6&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -3517,12 +3517,12 @@ Let op dat het gebruik van command line logopties deze instelling zullen oversch
     <message>
         <location filename="../src/gui/updater/updatedownloadeddialog.cpp" line="41"/>
         <source>Restart later</source>
-        <translation type="unfinished"/>
+        <translation>Later herstarten</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/updatedownloadeddialog.cpp" line="43"/>
         <source>Restart now</source>
-        <translation type="unfinished"/>
+        <translation>Nu herstarten</translation>
     </message>
 </context>
 <context>
@@ -4030,7 +4030,7 @@ Weet U zeker dat U verder wilt gaan?</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="954"/>
         <source>User paused sync for account &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Synchronisatie van account &apos;%1&apos; door gebruiker onderbroken</translation>
     </message>
 </context>
 <context>
@@ -4058,7 +4058,7 @@ Weet U zeker dat U verder wilt gaan?</translation>
     <message>
         <location filename="../src/common/utility.cpp" line="352"/>
         <source>less than a minute ago</source>
-        <translation type="unfinished"/>
+        <translation>minder dan een minuut geleden</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="356"/>
@@ -4252,12 +4252,12 @@ Weet U zeker dat U verder wilt gaan?</translation>
     <message>
         <location filename="../src/gui/updater/updatedownloadeddialog.ui" line="20"/>
         <source>Update downloaded</source>
-        <translation type="unfinished"/>
+        <translation>Update gedownload</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/updatedownloadeddialog.ui" line="53"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:11pt; font-weight:700;&quot;&gt;Restart required&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:11pt; font-weight:700;&quot;&gt;Herstart vereist&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
 </context>
 <context>
