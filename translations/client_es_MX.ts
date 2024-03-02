@@ -3542,7 +3542,7 @@ Tenga en cuenta que usar la línea de comandos para el registro anulará esta co
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="411"/>
         <source>The authenticated request to the server was redirected to &quot;%1&quot;. The URL is bad, the server is misconfigured.</source>
-        <translation type="unfinished"/>
+        <translation>La solicitud autentificada al servidor fue redirigida a &quot;%1&quot;. La URL es incorrecta, el servidor está mal configurado.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="424"/>
@@ -3552,7 +3552,7 @@ Tenga en cuenta que usar la línea de comandos para el registro anulará esta co
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="433"/>
         <source>There was an invalid response to an authenticated WebDAV request</source>
-        <translation type="unfinished"/>
+        <translation>Hubo una respuesta inválida a una solicitud WebDAV autentificada</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="479"/>
@@ -3649,7 +3649,7 @@ Tenga en cuenta que usar la línea de comandos para el registro anulará esta co
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="645"/>
         <source>Cannot remove and back up the folder because the folder or a file in it is open in another program. Please close the folder or file and hit retry or cancel the setup.</source>
-        <translation type="unfinished"/>
+        <translation>No se puede eliminar ni hacer una copia de seguridad de la carpeta porque la carpeta o un archivo dentro de ella está abierto en otro programa. Por favor, cierre la carpeta o el archivo y pulse reintentar o cancelar la instalación.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="698"/>
@@ -4053,7 +4053,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="254"/>
         <source>File %1 downloaded but it resulted in a local file name clash!</source>
-        <translation type="unfinished"/>
+        <translation>¡El archivo %1 se descargó pero generó un conflicto con un nombre de archivo local!</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="270"/>
@@ -4083,12 +4083,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/libsync/propagatorjobs.cpp" line="321"/>
         <location filename="../src/libsync/propagatorjobs.cpp" line="362"/>
         <source>Could not delete file record %1 from local DB</source>
-        <translation type="unfinished"/>
+        <translation>No se pudo eliminar el registro de archivo %1 de la base de datos local</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="334"/>
         <source>Failed to propagate directory rename in hierarchy</source>
-        <translation type="unfinished"/>
+        <translation>No se pudo propagar el renombrado del directorio en la jerarquía</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="339"/>
@@ -4160,7 +4160,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="260"/>
         <source>Could not delete file record %1 from local DB</source>
-        <translation type="unfinished"/>
+        <translation>No se pudo eliminar el registro de archivo %1 de la base de datos local</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="288"/>
@@ -4206,7 +4206,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/libsync/propagateupload.cpp" line="389"/>
         <location filename="../src/libsync/propagateupload.cpp" line="402"/>
         <source>File %1 has invalid modification time. Do not upload to the server.</source>
-        <translation type="unfinished"/>
+        <translation>El archivo %1 tiene una hora de modificación inválida. No se debe cargar en el servidor.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="386"/>
@@ -4425,7 +4425,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="692"/>
         <source>Secure file drop link</source>
-        <translation type="unfinished"/>
+        <translation>Enlace seguro para entrega de archivos</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="692"/>
@@ -4445,17 +4445,17 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="704"/>
         <source>Secure file drop</source>
-        <translation type="unfinished"/>
+        <translation>Entrega de archivos segura</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="856"/>
         <source>Could not find local folder for %1</source>
-        <translation type="unfinished"/>
+        <translation>No se pudo encontrar una carpeta local para %1</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="993"/>
         <source>Enter a note for the recipient</source>
-        <translation type="unfinished"/>
+        <translation>Ingrese una nota para el destinatario</translation>
     </message>
 </context>
 <context>
@@ -4488,7 +4488,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="527"/>
         <source>Failed to encrypt folder at &quot;%1&quot;</source>
-        <translation type="unfinished"/>
+        <translation>No se pudo cifrar la carpeta en &quot;%1&quot;</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="528"/>
@@ -4498,29 +4498,31 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="549"/>
         <source>Failed to encrypt folder</source>
-        <translation type="unfinished"/>
+        <translation>No se pudo cifrar la carpeta</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="550"/>
         <source>Could not encrypt the following folder: &quot;%1&quot;.
 
 Server replied with error: %2</source>
-        <translation type="unfinished"/>
+        <translation>No se pudo cifrar la siguiente carpeta: &quot;%1&quot;.
+
+El servidor respondió con el error: %2</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="555"/>
         <source>Folder encrypted successfully</source>
-        <translation type="unfinished"/>
+        <translation>Carpeta cifrada exitosamente</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="556"/>
         <source>The following folder was encrypted successfully: &quot;%1&quot;</source>
-        <translation type="unfinished"/>
+        <translation>La siguiente carpeta fue cifrada correctamente: &quot;%1&quot;</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="766"/>
         <source>Context menu share</source>
-        <translation type="unfinished"/>
+        <translation>Compartir desde el menú contextual</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1060"/>
@@ -4552,7 +4554,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1137"/>
         <source>Send private link by email …</source>
-        <translation type="unfinished"/>
+        <translation>Enviar enlace privado por correo electrónico ...</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1162"/>
@@ -4562,17 +4564,17 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1168"/>
         <source>Resharing this file is not allowed</source>
-        <translation type="unfinished"/>
+        <translation>No se permite volver a compartir este archivo</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1168"/>
         <source>Resharing this folder is not allowed</source>
-        <translation type="unfinished"/>
+        <translation>No se permite volver a compartir esta carpeta</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1183"/>
         <source>Copy secure file drop link</source>
-        <translation type="unfinished"/>
+        <translation>Copiar enlace seguro para entrega de archivos</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1185"/>
@@ -4583,7 +4585,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1189"/>
         <source>Copy secure filedrop link</source>
-        <translation type="unfinished"/>
+        <translation>Copiar enlace seguro para entrega de archivos</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1197"/>
@@ -4629,27 +4631,27 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1398"/>
         <source>Resolve conflict …</source>
-        <translation type="unfinished"/>
+        <translation>Resolver conflicto …</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1402"/>
         <source>Move and rename …</source>
-        <translation type="unfinished"/>
+        <translation>Mover y renombrar …</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1405"/>
         <source>Move, rename and upload …</source>
-        <translation type="unfinished"/>
+        <translation>Mover, renombrar y cargar ...</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1407"/>
         <source>Delete local changes</source>
-        <translation type="unfinished"/>
+        <translation>Borrar cambios locales</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1413"/>
         <source>Move and upload …</source>
-        <translation type="unfinished"/>
+        <translation>Mover y cargar ...</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1414"/>
@@ -4766,7 +4768,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="191"/>
         <source>Server version: %1</source>
-        <translation type="unfinished"/>
+        <translation>Versión del servidor: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="205"/>
@@ -4781,7 +4783,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="244"/>
         <source>The connection is not secure</source>
-        <translation type="unfinished"/>
+        <translation>La conexión no es segura</translation>
     </message>
 </context>
 <context>
@@ -4804,7 +4806,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="157"/>
         <source>Additional errors:</source>
-        <translation type="unfinished"/>
+        <translation>Errores adicionales:</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="183"/>
@@ -4844,12 +4846,12 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="211"/>
         <source>Fingerprint (SHA-256): &lt;tt&gt;%1&lt;/tt&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Huella digital (SHA-256): &lt;tt&gt;%1&lt;/tt&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="212"/>
         <source>Fingerprint (SHA-512): &lt;tt&gt;%1&lt;/tt&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Huella digital (SHA-512): &lt;tt&gt;%1&lt;/tt&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="214"/>
@@ -4877,22 +4879,22 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="385"/>
         <source>Could not update file: %1</source>
-        <translation type="unfinished"/>
+        <translation>No se pudo actualizar el archivo: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="410"/>
         <source>Could not update virtual file metadata: %1</source>
-        <translation type="unfinished"/>
+        <translation>No se pudieron actualizar los metadatos del archivo virtual: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="417"/>
         <source>Could not update file metadata: %1</source>
-        <translation type="unfinished"/>
+        <translation>No se pudieron actualizar los metadatos del archivo: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="427"/>
         <source>Could not set file record to local DB: %1</source>
-        <translation type="unfinished"/>
+        <translation>No se pudo establecer el registro del archivo en la base de datos local: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="457"/>
@@ -4913,7 +4915,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="598"/>
         <source>Using virtual files with suffix, but suffix is not set</source>
-        <translation type="unfinished"/>
+        <translation>Usando archivos virtuales con sufijo, pero el sufijo no está establecido</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="610"/>
@@ -4964,7 +4966,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="148"/>
         <source>See below for errors</source>
-        <translation type="unfinished"/>
+        <translation>Ver los errores abajo</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="159"/>
@@ -4974,7 +4976,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="155"/>
         <source>Syncing</source>
-        <translation type="unfinished"/>
+        <translation>Sincronizando</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="162"/>
@@ -4989,17 +4991,17 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="170"/>
         <source>See below for warnings</source>
-        <translation type="unfinished"/>
+        <translation>Ver las advertencias abajo</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="218"/>
         <source>%1 of %2 · %3 left</source>
-        <translation type="unfinished"/>
+        <translation>%1 de %2 · %3 restantes</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="222"/>
         <source>%1 of %2</source>
-        <translation type="unfinished"/>
+        <translation>%1 de %2</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="227"/>
@@ -5012,7 +5014,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/systray.cpp" line="80"/>
         <source>Download</source>
-        <translation type="unfinished"/>
+        <translation>Descargar</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="180"/>
@@ -5034,7 +5036,7 @@ Server replied with error: %2</source>
         <location filename="../src/gui/systray.cpp" line="186"/>
         <location filename="../src/gui/systray.cpp" line="201"/>
         <source>Resume sync</source>
-        <translation type="unfinished"/>
+        <translation>Reanudar sincronización</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="187"/>
@@ -5059,7 +5061,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/systray.cpp" line="201"/>
         <source>Resume sync for all</source>
-        <translation type="unfinished"/>
+        <translation>Reanudar sincronización para todos</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="554"/>
@@ -5073,35 +5075,35 @@ Server replied with error: %2</source>
         <location filename="../src/libsync/theme.cpp" line="553"/>
         <source>&lt;p&gt;%1 Desktop Client&lt;/p&gt;&lt;p&gt;Version %1. For more information please click &lt;a href=&apos;%2&apos;&gt;here&lt;/a&gt;.&lt;/p&gt;</source>
         <extracomment>Example text: &quot;&lt;p&gt;Nextcloud Desktop Client&lt;/p&gt;&quot; (%1 is the application name)</extracomment>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;%1 Cliente de escritorio&lt;/p&gt;&lt;p&gt;Versión %1. Para más información, haga clic &lt;a href=&apos;%2&apos;&gt;aquí&lt;/a&gt;.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="554"/>
         <source>&lt;p&gt;%1 Desktop Client&lt;/p&gt;</source>
         <extracomment>Example text: &quot;&lt;p&gt;Nextcloud Desktop Client&lt;/p&gt;&quot; (%1 is the application name)</extracomment>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;%1 - Cliente de escritorio&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="561"/>
         <source>&lt;p&gt;&lt;small&gt;Using virtual files plugin: %1&lt;/small&gt;&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;&lt;small&gt;Usando el complemento para archivos virtuales: %1&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="570"/>
         <source>&lt;p&gt;%1 desktop client %2&lt;/p&gt;</source>
         <extracomment>Example text: &quot;&lt;p&gt;Nextcloud Desktop Client&lt;/p&gt;&quot; (%1 is the application name)</extracomment>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;%1 cliente de escritorio %2&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="557"/>
         <location filename="../src/libsync/theme.cpp" line="572"/>
         <source>&lt;p&gt;Version %1. For more information please click &lt;a href=&apos;%2&apos;&gt;here&lt;/a&gt;.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Versión %1. Para más información, haga clic &lt;a href=&apos;%2&apos;&gt;aquí&lt;/a&gt;.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="576"/>
         <source>&lt;p&gt;This release was supplied by %1.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Esta versión fue suministrada por %1.&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -5109,22 +5111,22 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/unifiedsearchresultslistmodel.cpp" line="405"/>
         <source>Failed to fetch providers.</source>
-        <translation type="unfinished"/>
+        <translation>No se pudieron obtener los proveedores.</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/unifiedsearchresultslistmodel.cpp" line="416"/>
         <source>Failed to fetch search providers for &apos;%1&apos;. Error: %2</source>
-        <translation type="unfinished"/>
+        <translation>No se pudieron obtener los proveedores de búsqueda para &apos;%1&apos;. Error: %2</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/unifiedsearchresultslistmodel.cpp" line="450"/>
         <source>Search has failed for &apos;%2&apos;.</source>
-        <translation type="unfinished"/>
+        <translation>La búsqueda falló para &apos;%2&apos;.</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/unifiedsearchresultslistmodel.cpp" line="479"/>
         <source>Search has failed for &apos;%1&apos;. Error: %2</source>
-        <translation type="unfinished"/>
+        <translation>La búsqueda falló para &apos;%1&apos;. Error: %2</translation>
     </message>
 </context>
 <context>
@@ -5132,17 +5134,17 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/libsync/updatee2eefoldermetadatajob.cpp" line="131"/>
         <source>Failed to update folder metadata.</source>
-        <translation type="unfinished"/>
+        <translation>No se pudieron actualizar los metadatos de la carpeta.</translation>
     </message>
     <message>
         <location filename="../src/libsync/updatee2eefoldermetadatajob.cpp" line="154"/>
         <source>Failed to unlock encrypted folder.</source>
-        <translation type="unfinished"/>
+        <translation>No se pudo desbloquear la carpeta cifrada.</translation>
     </message>
     <message>
         <location filename="../src/libsync/updatee2eefoldermetadatajob.cpp" line="164"/>
         <source>Failed to finalize item.</source>
-        <translation type="unfinished"/>
+        <translation>No se pudo finalizar el ítem.</translation>
     </message>
 </context>
 <context>
@@ -5158,27 +5160,27 @@ Server replied with error: %2</source>
         <location filename="../src/libsync/updatee2eefolderusersmetadatajob.cpp" line="201"/>
         <location filename="../src/libsync/updatee2eefolderusersmetadatajob.cpp" line="260"/>
         <source>Error updating metadata for a folder %1</source>
-        <translation type="unfinished"/>
+        <translation>Error al actualizar los metadatos de una carpeta %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/updatee2eefolderusersmetadatajob.cpp" line="92"/>
         <source>Could not fetch public key for user %1</source>
-        <translation type="unfinished"/>
+        <translation>No se pudo obtener la llave pública para el usuario %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/updatee2eefolderusersmetadatajob.cpp" line="100"/>
         <source>Could not find root encrypted folder for folder %1</source>
-        <translation type="unfinished"/>
+        <translation>No se pudo encontrar la raíz de la carpeta cifrada para la carpeta %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/updatee2eefolderusersmetadatajob.cpp" line="121"/>
         <source>Could not add or remove a folder user %1, for folder %2</source>
-        <translation type="unfinished"/>
+        <translation>No se pudo añadir o eliminar al usuario de la carpeta %1, para la carpeta %2</translation>
     </message>
     <message>
         <location filename="../src/libsync/updatee2eefolderusersmetadatajob.cpp" line="238"/>
         <source>Failed to unlock a folder.</source>
-        <translation type="unfinished"/>
+        <translation>No se pudo desbloquear una carpeta.</translation>
     </message>
 </context>
 <context>
@@ -5186,13 +5188,13 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="646"/>
         <source>Retry all uploads</source>
-        <translation type="unfinished"/>
+        <translation>Reintentar todas las subidas</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="697"/>
         <location filename="../src/gui/tray/usermodel.cpp" line="838"/>
         <source>Resolve conflict</source>
-        <translation type="unfinished"/>
+        <translation>Resolver conflicto</translation>
     </message>
 </context>
 <context>
@@ -5200,7 +5202,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1403"/>
         <source>Confirm Account Removal</source>
-        <translation type="unfinished"/>
+        <translation>Confirmar la eliminación de la cuenta</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1404"/>
@@ -5210,12 +5212,12 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1408"/>
         <source>Remove connection</source>
-        <translation type="unfinished"/>
+        <translation>Eliminar conexión</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1409"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>Cancelar</translation>
     </message>
 </context>
 <context>
@@ -5254,7 +5256,7 @@ Server replied with error: %2</source>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="360"/>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="467"/>
         <source>Don&apos;t clear</source>
-        <translation type="unfinished"/>
+        <translation>No limpiar</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="363"/>
@@ -5265,34 +5267,34 @@ Server replied with error: %2</source>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="366"/>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="421"/>
         <source>1 hour</source>
-        <translation type="unfinished"/>
+        <translation>1 hora</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="369"/>
         <source>4 hours</source>
-        <translation type="unfinished"/>
+        <translation>4 horas</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="372"/>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="456"/>
         <source>Today</source>
-        <translation type="unfinished"/>
+        <translation>Hoy</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="375"/>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="458"/>
         <source>This week</source>
-        <translation type="unfinished"/>
+        <translation>Esta semana</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="410"/>
         <source>Less than a minute</source>
-        <translation type="unfinished"/>
+        <translation>Menos de un minuto</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="414"/>
         <source>1 minute</source>
-        <translation type="unfinished"/>
+        <translation>1 minuto</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="416"/>
@@ -5302,17 +5304,17 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="423"/>
         <source>%1 hours</source>
-        <translation type="unfinished"/>
+        <translation>%1 horas</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="428"/>
         <source>1 day</source>
-        <translation type="unfinished"/>
+        <translation>1 día</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="430"/>
         <source>%1 days</source>
-        <translation type="unfinished"/>
+        <translation>%1 días</translation>
     </message>
 </context>
 <context>
@@ -5328,37 +5330,37 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/vfsdownloaderrordialog.ui" line="14"/>
         <source>Download error</source>
-        <translation type="unfinished"/>
+        <translation>Error al descargar</translation>
     </message>
     <message>
         <location filename="../src/gui/vfsdownloaderrordialog.ui" line="23"/>
         <source>Error downloading</source>
-        <translation type="unfinished"/>
+        <translation>Error al descargar</translation>
     </message>
     <message>
         <location filename="../src/gui/vfsdownloaderrordialog.ui" line="39"/>
         <source>could not be downloaded</source>
-        <translation type="unfinished"/>
+        <translation>no se pudo descargar</translation>
     </message>
     <message>
         <location filename="../src/gui/vfsdownloaderrordialog.ui" line="61"/>
         <source>&gt; More details</source>
-        <translation type="unfinished"/>
+        <translation>&gt; Más detalles</translation>
     </message>
     <message>
         <location filename="../src/gui/vfsdownloaderrordialog.ui" line="68"/>
         <source>More details</source>
-        <translation type="unfinished"/>
+        <translation>Más detalles</translation>
     </message>
     <message>
         <location filename="../src/gui/vfsdownloaderrordialog.cpp" line="26"/>
         <source>Error downloading %1</source>
-        <translation type="unfinished"/>
+        <translation>Error al descargar %1</translation>
     </message>
     <message>
         <location filename="../src/gui/vfsdownloaderrordialog.cpp" line="27"/>
         <source>%1 could not be downloaded.</source>
-        <translation type="unfinished"/>
+        <translation>no se pudo descargar %1.</translation>
     </message>
 </context>
 <context>
@@ -5384,12 +5386,12 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/wizard/webview.cpp" line="231"/>
         <source>Invalid certificate detected</source>
-        <translation type="unfinished"/>
+        <translation>Certificado inválido detectado</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/webview.cpp" line="232"/>
         <source>The host &quot;%1&quot; provided an invalid certificate. Continue?</source>
-        <translation type="unfinished"/>
+        <translation>El anfitrión &quot;%1&quot; proporcionó un certificado inválido. ¿Continuar?</translation>
     </message>
 </context>
 <context>
@@ -5397,12 +5399,12 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/creds/webflowcredentials.cpp" line="166"/>
         <source>You have been logged out of your account %1 at %2. Please login again.</source>
-        <translation type="unfinished"/>
+        <translation>Ha sido cerrada la sesión de su cuenta %1 en %2. Por favor, inicie sesión de nuevo.</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/webflowcredentials.cpp" line="190"/>
         <source>Please login with the account: %1</source>
-        <translation type="unfinished"/>
+        <translation>Por favor, inicie sesión con la cuenta: %1</translation>
     </message>
 </context>
 <context>
@@ -5410,27 +5412,27 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/wizard/welcomepage.ui" line="20"/>
         <source>Form</source>
-        <translation type="unfinished"/>
+        <translation>Formulario</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/welcomepage.ui" line="143"/>
         <source>Log in</source>
-        <translation type="unfinished"/>
+        <translation>Iniciar sesión</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/welcomepage.ui" line="156"/>
         <source>Sign up with provider</source>
-        <translation type="unfinished"/>
+        <translation>Registrarse con un proveedor</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/welcomepage.cpp" line="68"/>
         <source>Keep your data secure and under your control</source>
-        <translation type="unfinished"/>
+        <translation>Mantenga sus datos seguros y bajo control</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/welcomepage.cpp" line="69"/>
         <source>Secure collaboration &amp; file exchange</source>
-        <translation type="unfinished"/>
+        <translation>Colaboración segura e intercambio de archivos</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/welcomepage.cpp" line="70"/>
@@ -5445,7 +5447,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/wizard/welcomepage.cpp" line="111"/>
         <source>Host your own server</source>
-        <translation type="unfinished"/>
+        <translation>Aloje su propio servidor</translation>
     </message>
 </context>
 <context>
@@ -5514,7 +5516,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="391"/>
         <source>Unresolved conflicts</source>
-        <translation type="unfinished"/>
+        <translation>Conflictos sin resolver</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="393"/>
@@ -5549,7 +5551,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="486"/>
         <source>Syncing %1 of %2 (%3 left)</source>
-        <translation type="unfinished"/>
+        <translation>Sincronizando %1 de %2 (%3 restantes)</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="491"/>
@@ -5582,27 +5584,27 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="98"/>
         <source>Username</source>
-        <translation type="unfinished"/>
+        <translation>Nombre de usuario</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="116"/>
         <source>Local Folder</source>
-        <translation type="unfinished"/>
+        <translation>Carpeta local</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="135"/>
         <source>Choose different folder</source>
-        <translation type="unfinished"/>
+        <translation>Elegir una carpeta diferente</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="228"/>
         <source>Server address</source>
-        <translation type="unfinished"/>
+        <translation>Dirección del servidor</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="244"/>
         <source>Sync Logo</source>
-        <translation type="unfinished"/>
+        <translation>Logotipo de sincronización</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="304"/>
@@ -5633,7 +5635,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="612"/>
         <source>Keep local data</source>
-        <translation type="unfinished"/>
+        <translation>Mantener los datos locales</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="628"/>
@@ -5670,12 +5672,12 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="73"/>
         <source>Logo</source>
-        <translation type="unfinished"/>
+        <translation>Logotipo</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="183"/>
         <source>Server address</source>
-        <translation type="unfinished"/>
+        <translation>Dirección del servidor</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="259"/>
@@ -5688,7 +5690,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/foldercreationdialog.cpp" line="41"/>
         <source>New folder</source>
-        <translation type="unfinished"/>
+        <translation>Nueva carpeta</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="763"/>
@@ -5719,7 +5721,7 @@ Server replied with error: %2</source>
         <location filename="../src/common/utility.cpp" line="482"/>
         <source>%nd</source>
         <comment>delay in days after an activity</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%ndía</numerusform><numerusform>%ndías</numerusform><numerusform>%ndías</numerusform></translation>
     </message>
     <message>
         <location filename="../src/common/utility.cpp" line="486"/>
@@ -5730,7 +5732,7 @@ Server replied with error: %2</source>
         <location filename="../src/common/utility.cpp" line="491"/>
         <source>%nh</source>
         <comment>delay in hours after an activity</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%nhora</numerusform><numerusform>%nhoras</numerusform><numerusform>%nhoras</numerusform></translation>
     </message>
     <message>
         <location filename="../src/common/utility.cpp" line="497"/>
@@ -5741,13 +5743,13 @@ Server replied with error: %2</source>
         <location filename="../src/common/utility.cpp" line="499"/>
         <source>1m</source>
         <comment>one minute after activity date and time</comment>
-        <translation type="unfinished"/>
+        <translation>1min</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="502"/>
         <source>%nm</source>
         <comment>delay in minutes after an activity</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%nmin</numerusform><numerusform>%nmin</numerusform><numerusform>%nmin</numerusform></translation>
     </message>
     <message>
         <location filename="../src/common/utility.cpp" line="506"/>
@@ -5771,7 +5773,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/ResolveConflictsDialog.qml" line="37"/>
         <source>Solve sync conflicts</source>
-        <translation type="unfinished"/>
+        <translation>Resolver los conflictos de sincronización</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/ResolveConflictsDialog.qml" line="74"/>
@@ -5787,22 +5789,22 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/ResolveConflictsDialog.qml" line="97"/>
         <source>All local versions</source>
-        <translation type="unfinished"/>
+        <translation>Todas las versiones locales</translation>
     </message>
     <message>
         <location filename="../src/gui/ResolveConflictsDialog.qml" line="115"/>
         <source>All server versions</source>
-        <translation type="unfinished"/>
+        <translation>Todas las versiones del servidor</translation>
     </message>
     <message>
         <location filename="../src/gui/ResolveConflictsDialog.qml" line="170"/>
         <source>Resolve conflicts</source>
-        <translation type="unfinished"/>
+        <translation>Resolver conflictos</translation>
     </message>
     <message>
         <location filename="../src/gui/ResolveConflictsDialog.qml" line="174"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>Cancelar</translation>
     </message>
 </context>
 <context>
@@ -5820,12 +5822,12 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/filedetails/ShareDelegate.qml" line="197"/>
         <source>Copied!</source>
-        <translation type="unfinished"/>
+        <translation>¡Copiado!</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDelegate.qml" line="244"/>
         <source>Share options</source>
-        <translation type="unfinished"/>
+        <translation>Opciones de uso compartido</translation>
     </message>
 </context>
 <context>
@@ -5843,7 +5845,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="232"/>
         <source>Dismiss</source>
-        <translation type="unfinished"/>
+        <translation>Descartar</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="291"/>
@@ -5859,7 +5861,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="379"/>
         <source>View only</source>
-        <translation type="unfinished"/>
+        <translation>Sólo lectura</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="414"/>
@@ -5874,32 +5876,32 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="466"/>
         <source>Hide download</source>
-        <translation type="unfinished"/>
+        <translation>Ocultar descarga</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="516"/>
         <source>Password protect</source>
-        <translation type="unfinished"/>
+        <translation>Proteger con contraseña</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="649"/>
         <source>Set expiration date</source>
-        <translation type="unfinished"/>
+        <translation>Establecer fecha de caducidad</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="757"/>
         <source>Note to recipient</source>
-        <translation type="unfinished"/>
+        <translation>Nota al destinatario</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="825"/>
         <source>Unshare</source>
-        <translation type="unfinished"/>
+        <translation>Dejar de compartir</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="842"/>
         <source>Add another link</source>
-        <translation type="unfinished"/>
+        <translation>Añadir otro enlace</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="886"/>
@@ -6398,7 +6400,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="33"/>
         <source>Virtual file created</source>
-        <translation type="unfinished"/>
+        <translation>Archivo virtual creado</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="35"/>
@@ -6542,7 +6544,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/libsync/theme.cpp" line="108"/>
         <source>Aborting …</source>
-        <translation type="unfinished"/>
+        <translation>Abortando ...</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="111"/>
@@ -6672,27 +6674,27 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/shareuserline.ui" line="80"/>
         <source>Username</source>
-        <translation type="unfinished"/>
+        <translation>Nombre de usuario</translation>
     </message>
     <message>
         <location filename="../src/gui/shareuserline.ui" line="115"/>
         <source>Can edit</source>
-        <translation type="unfinished"/>
+        <translation>Puede editar</translation>
     </message>
     <message>
         <location filename="../src/gui/shareuserline.ui" line="149"/>
         <source>Note:</source>
-        <translation type="unfinished"/>
+        <translation>Nota:</translation>
     </message>
     <message>
         <location filename="../src/gui/shareuserline.ui" line="205"/>
         <source>Password:</source>
-        <translation type="unfinished"/>
+        <translation>Contraseña:</translation>
     </message>
     <message>
         <location filename="../src/gui/shareuserline.ui" line="277"/>
         <source>Expires:</source>
-        <translation type="unfinished"/>
+        <translation>Caduca:</translation>
     </message>
 </context>
 <context>
@@ -6715,7 +6717,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.ui" line="69"/>
         <source>Copy link</source>
-        <translation type="unfinished"/>
+        <translation>Copiar enlace</translation>
     </message>
 </context>
 <context>
