@@ -172,7 +172,17 @@ void SyncFileStatusTracker::slotPathTouched(const QString &fileName)
 void SyncFileStatusTracker::slotAddSilentlyExcluded(const QString &folderPath)
 {
     _syncProblems[folderPath] = SyncFileStatus::StatusExcluded;
+    _syncSilentExcludes[folderPath] = SyncFileStatus::StatusExcluded;
     emit fileStatusChanged(getSystemDestination(folderPath), resolveSyncAndErrorStatus(folderPath, NotShared));
+}
+
+void SyncFileStatusTracker::slotCheckAndRemoveSilentlyExcluded(const QString &folderPath)
+{
+    const auto foundIt = _syncSilentExcludes.find(folderPath);
+    if (foundIt != _syncSilentExcludes.end()) {
+        _syncSilentExcludes.erase(foundIt);
+        emit fileStatusChanged(getSystemDestination(folderPath), SyncFileStatus::StatusUpToDate);
+    }
 }
 
 void SyncFileStatusTracker::incSyncCountAndEmitStatusChanged(const QString &relativePath, SharedFlag sharedFlag)
@@ -231,9 +241,11 @@ void SyncFileStatusTracker::slotAboutToPropagate(SyncFileItemVector &items)
 
         if (hasErrorStatus(*item)) {
             _syncProblems[item->destination()] = SyncFileStatus::StatusError;
+            _syncSilentExcludes.erase(item->destination());
             invalidateParentPaths(item->destination());
         } else if (hasExcludedStatus(*item)) {
             _syncProblems[item->destination()] = SyncFileStatus::StatusExcluded;
+            _syncSilentExcludes.erase(item->destination());
         }
 
         SharedFlag sharedFlag = item->_remotePerm.hasPermission(RemotePermissions::IsShared) ? Shared : NotShared;
@@ -281,6 +293,7 @@ void SyncFileStatusTracker::slotItemCompleted(const SyncFileItemPtr &item)
     } else {
         _syncProblems.erase(item->destination());
     }
+    _syncSilentExcludes.erase(item->destination());
 
     SharedFlag sharedFlag = item->_remotePerm.hasPermission(RemotePermissions::IsShared) ? Shared : NotShared;
     if (item->_instruction != CSYNC_INSTRUCTION_NONE
