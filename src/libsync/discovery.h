@@ -101,15 +101,15 @@ public:
      * The base pin state is used if the root dir's pin state can't be retrieved.
      */
     explicit ProcessDirectoryJob(DiscoveryPhase *data, PinState basePinState,
-        qint64 lastSyncTimestamp, QObject *parent);
+        qint64 lastSyncTimestamp, bool synchronizeSymlinks, QObject *parent);
 
     /// For creating subjobs
     explicit ProcessDirectoryJob(const PathTuple &path, const SyncFileItemPtr &dirItem,
-        QueryMode queryLocal, QueryMode queryServer, qint64 lastSyncTimestamp,
+        QueryMode queryLocal, QueryMode queryServer, qint64 lastSyncTimestamp, bool synchronizeSymlinks,
         ProcessDirectoryJob *parent);
 
     explicit ProcessDirectoryJob(DiscoveryPhase *data, PinState basePinState, const PathTuple &path, const SyncFileItemPtr &dirItem,
-        QueryMode queryLocal, qint64 lastSyncTimestamp, QObject *parent);
+        QueryMode queryLocal, qint64 lastSyncTimestamp, bool synchronizeSymlinks, QObject *parent);
 
     void start();
     /** Start up to nbJobs, return the number of job started; emit finished() when done */
@@ -298,6 +298,7 @@ private:
     bool _childIgnored = false; // The directory contains ignored item that would prevent deletion
     PinState _pinState = PinState::Unspecified; // The directory's pin-state, see computePinState()
     bool _isInsideEncryptedTree = false; // this directory is encrypted or is within the tree of directories with root directory encrypted
+    const bool _synchronizeSymlinks = false;
 
 signals:
     void finished();

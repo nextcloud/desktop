@@ -20,6 +20,8 @@
 #include "utility.h"
 #include "common/asserts.h"
 
+#include <filesystem>
+
 #include <QDateTime>
 #include <QDir>
 #include <QUrl>
@@ -125,6 +127,15 @@ bool FileSystem::setFileReadOnlyWeak(const QString &filename, bool readonly)
 
     setFileReadOnly(filename, readonly);
     return true;
+}
+
+QByteArray FileSystem::readlink(const QString &filename)
+{
+    if (!QFileInfo(filename).isSymLink()) {
+        return QByteArray();
+    }
+    auto symlinkContent = std::filesystem::read_symlink(filename.toStdString()).string();
+    return QByteArray(symlinkContent.data());
 }
 
 bool FileSystem::rename(const QString &originFileName,
@@ -312,13 +323,13 @@ bool FileSystem::fileExists(const QString &filename, const QFileInfo &fileInfo)
         return fileExistsWin(filename);
     }
 #endif
-    bool re = fileInfo.exists();
+    bool re = fileInfo.exists() || fileInfo.isSymLink();
     // if the filename is different from the filename in fileInfo, the fileInfo is
     // not valid. There needs to be one initialised here. Otherwise the incoming
     // fileInfo is re-used.
     if (fileInfo.filePath() != filename) {
         QFileInfo myFI(filename);
-        re = myFI.exists();
+        re = myFI.exists() || myFI.isSymLink();
     }
     return re;
 }

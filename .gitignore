@@ -51,6 +51,9 @@ bld/
 [Tt]est[Rr]esult*/
 [Bb]uild[Ll]og.*
 
+# clangd cache directory
+.cache/
+
 #NUNIT
 *.VisualState.xml
 TestResult.xml

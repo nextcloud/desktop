@@ -12,11 +12,14 @@
  * for more details.
  */
 #include "checksumcalculator.h"
+#include "filesystembase.h"
 
 #include <zlib.h>
 
+#include <QBuffer>
 #include <QCryptographicHash>
 #include <QFile>
+#include <QFileInfo>
 #include <QLoggingCategory>
 
 namespace
@@ -48,7 +51,7 @@ static QCryptographicHash::Algorithm algorithmTypeToQCryptoHashAlgorithm(Checksu
 }
 
 ChecksumCalculator::ChecksumCalculator(const QString &filePath, const QByteArray &checksumTypeName)
-    : _device(new QFile(filePath))
+    : _device(openFile(filePath))
 {
     if (checksumTypeName == checkSumMD5C) {
         _algorithmType = AlgorithmType::MD5;
@@ -138,6 +141,18 @@ QByteArray ChecksumCalculator::calculate()
     }
 
     return result;
+}
+
+QScopedPointer<QIODevice> ChecksumCalculator::openFile(const QString &filePath)
+{
+    if (QFileInfo(filePath).isSymLink()) {
+        auto symlinkContent = FileSystem::readlink(filePath);
+        QScopedPointer<QBuffer> symlinkDevice(new QBuffer());
+        symlinkDevice->setData(symlinkContent);
+        return QScopedPointer<QIODevice>(symlinkDevice.take());
+    } else {
+        return QScopedPointer<QIODevice>(new QFile(filePath));
+    }
 }
 
 void ChecksumCalculator::initChecksumAlgorithm()

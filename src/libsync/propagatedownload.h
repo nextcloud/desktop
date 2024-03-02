@@ -116,6 +116,7 @@ public:
 
 protected:
     virtual qint64 writeToDevice(const QByteArray &data);
+    virtual bool writeSymlink(const QString &symlinkTarget);
 
 signals:
     void finishedSignal();

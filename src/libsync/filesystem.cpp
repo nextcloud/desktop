@@ -30,6 +30,11 @@ namespace OCC {
 bool FileSystem::fileEquals(const QString &fn1, const QString &fn2)
 {
     // compare two files with given filename and return true if they have the same content
+    auto symlinkTargetFile1 = readlink(fn1);
+    auto symlinkTargetFile2 = readlink(fn2);
+    if (!symlinkTargetFile1.isEmpty() && symlinkTargetFile1 == symlinkTargetFile2) {
+        return true;
+    }
     QFile f1(fn1);
     QFile f2(fn2);
     if (!f1.open(QIODevice::ReadOnly) || !f2.open(QIODevice::ReadOnly)) {
@@ -71,9 +76,9 @@ time_t FileSystem::getModTime(const QString &filename)
 
 bool FileSystem::setModTime(const QString &filename, time_t modTime)
 {
-    struct timeval times[2];
+    struct timespec times[2];
     times[0].tv_sec = times[1].tv_sec = modTime;
-    times[0].tv_usec = times[1].tv_usec = 0;
+    times[0].tv_nsec = times[1].tv_nsec = 0;
     int rc = c_utimes(filename, times);
     if (rc != 0) {
         qCWarning(lcFileSystem) << "Error setting mtime for" << filename
@@ -128,7 +133,11 @@ qint64 FileSystem::getSize(const QString &filename)
         return getSizeWithCsync(filename);
     }
 #endif
-    return QFileInfo(filename).size();
+    QFileInfo info(filename);
+    if (info.isSymLink()) {
+        return readlink(filename).size();
+    }
+    return info.size();
 }
 
 // Code inspired from Qt5's QDir::removeRecursively

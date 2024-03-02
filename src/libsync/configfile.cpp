@@ -103,6 +103,7 @@ static constexpr char useNewBigFolderSizeLimitC[] = "useNewBigFolderSizeLimit";
 static constexpr char notifyExistingFoldersOverLimitC[] = "notifyExistingFoldersOverLimit";
 static constexpr char stopSyncingExistingFoldersOverLimitC[] = "stopSyncingExistingFoldersOverLimit";
 static constexpr char confirmExternalStorageC[] = "confirmExternalStorage";
+static constexpr char synchronizeSymlinksC[] = "synchronizeSymlinks";
 static constexpr char moveToTrashC[] = "moveToTrash";
 
 static constexpr char forceLoginV2C[] = "forceLoginV2";
@@ -956,6 +957,12 @@ bool ConfigFile::confirmExternalStorage() const
     return getPolicySetting(QLatin1String(confirmExternalStorageC), fallback).toBool();
 }
 
+bool ConfigFile::synchronizeSymlinks() const
+{
+    const auto fallback = getValue(synchronizeSymlinksC, QString(), false);
+    return getPolicySetting(QLatin1String(synchronizeSymlinksC), fallback).toBool();
+}
+
 bool ConfigFile::useNewBigFolderSizeLimit() const
 {
     const auto fallback = getValue(useNewBigFolderSizeLimitC, QString(), true);
@@ -988,6 +995,11 @@ void ConfigFile::setStopSyncingExistingFoldersOverLimit(const bool stopSyncing)
 void ConfigFile::setConfirmExternalStorage(bool isChecked)
 {
     setValue(confirmExternalStorageC, isChecked);
+}
+
+void ConfigFile::setSynchronizeSymlinks(bool isChecked)
+{
+    setValue(synchronizeSymlinksC, isChecked);
 }
 
 bool ConfigFile::moveToTrash() const

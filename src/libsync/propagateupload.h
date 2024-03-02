@@ -60,7 +60,7 @@ public:
 
 signals:
 
-private:
+protected:
     /// The local file to read data from
     QFile _file;
 
@@ -233,6 +233,7 @@ protected:
       QString _file; /// I'm still unsure if I should use a SyncFilePtr here.
       QString _path; /// the full path on disk.
       qint64 _size = 0LL;
+      bool _isSymlink = false;
     };
     UploadFileInfo _fileToUpload;
     QByteArray _transmissionChecksumHeader;

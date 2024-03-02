@@ -378,9 +378,13 @@ PropagateItemJob *OwncloudPropagator::createJob(const SyncFileItemPtr &item)
         } //fall through
     case CSYNC_INSTRUCTION_SYNC:
         if (item->_direction != SyncFileItem::Up) {
-            auto job = new PropagateDownloadFile(this, item);
-            job->setDeleteExistingFolder(deleteExisting);
-            return job;
+            if (item->_type != ItemTypeSoftLink || _syncOptions._synchronizeSymlinks) {
+                auto job = new PropagateDownloadFile(this, item);
+                job->setDeleteExistingFolder(deleteExisting);
+                return job;
+            } else {
+                return nullptr;
+            }
         } else {
             if (deleteExisting || !isDelayedUploadItem(item)) {
                 auto job = createUploadJob(item, deleteExisting);
@@ -545,13 +549,13 @@ void OwncloudPropagator::start(SyncFileItemVector &&items)
     _rootJob.reset(new PropagateRootDirectory(this));
     QStack<QPair<QString /* directory name */, PropagateDirectory * /* job */>> directories;
     directories.push(qMakePair(QString(), _rootJob.data()));
-    QVector<PropagatorJob *> directoriesToRemove;
+    QVector<PropagatorJob *> remoteItemsToRemove;
     QString removedDirectory;
     QString maybeConflictDirectory;
     foreach (const SyncFileItemPtr &item, items) {
         if (!removedDirectory.isEmpty() && item->_file.startsWith(removedDirectory)) {
             // this is an item in a directory which is going to be removed.
-            auto *delDirJob = qobject_cast<PropagateDirectory *>(directoriesToRemove.first());
+            auto *delDirJob = qobject_cast<PropagateDirectory *>(remoteItemsToRemove.first());
 
             const auto isNewDirectory = item->isDirectory() &&
                     (item->_instruction == CSYNC_INSTRUCTION_NEW || item->_instruction == CSYNC_INSTRUCTION_TYPE_CHANGE);
@@ -599,19 +603,19 @@ void OwncloudPropagator::start(SyncFileItemVector &&items)
         if (item->isDirectory()) {
             startDirectoryPropagation(item,
                                       directories,
-                                      directoriesToRemove,
+                                      remoteItemsToRemove,
                                       removedDirectory,
                                       items);
         } else if (!directories.top().second->_item->_isFileDropDetected) {
             startFilePropagation(item,
                                  directories,
-                                 directoriesToRemove,
+                                 remoteItemsToRemove,
                                  removedDirectory,
                                  maybeConflictDirectory);
         }
     }
 
-    foreach (PropagatorJob *it, directoriesToRemove) {
+    foreach (PropagatorJob *it, remoteItemsToRemove) {
         _rootJob->appendDirDeletionJob(it);
     }
 
@@ -623,7 +627,7 @@ void OwncloudPropagator::start(SyncFileItemVector &&items)
 
 void OwncloudPropagator::startDirectoryPropagation(const SyncFileItemPtr &item,
                                                    QStack<QPair<QString, PropagateDirectory *>> &directories,
-                                                   QVector<PropagatorJob *> &directoriesToRemove,
+                                                   QVector<PropagatorJob *> &remoteItemsToRemove,
                                                    QString &removedDirectory,
                                                    const SyncFileItemVector &items)
 {
@@ -647,7 +651,7 @@ void OwncloudPropagator::startDirectoryPropagation(const SyncFileItemPtr &item,
     if (item->_instruction == CSYNC_INSTRUCTION_REMOVE) {
         // We do the removal of directories at the end, because there might be moves from
         // these directories that will happen later.
-        directoriesToRemove.prepend(directoryPropagationJob.get());
+        remoteItemsToRemove.prepend(directoryPropagationJob.get());
         removedDirectory = item->_file + "/";
 
         // We should not update the etag of parent directories of the removed directory
@@ -676,15 +680,16 @@ void OwncloudPropagator::startDirectoryPropagation(const SyncFileItemPtr &item,
 
 void OwncloudPropagator::startFilePropagation(const SyncFileItemPtr &item,
                                               QStack<QPair<QString, PropagateDirectory *> > &directories,
-                                              QVector<PropagatorJob *> &directoriesToRemove,
+                                              QVector<PropagatorJob *> &remoteItemsToRemove,
                                               QString &removedDirectory,
                                               QString &maybeConflictDirectory)
 {
     if (item->_instruction == CSYNC_INSTRUCTION_TYPE_CHANGE) {
-        // will delete directories, so defer execution
+        // will delete previous remote item (since directories cannot be overwritten),
+        // so defer execution
         auto job = createJob(item);
         if (job) {
-            directoriesToRemove.prepend(job);
+            remoteItemsToRemove.prepend(job);
         }
         removedDirectory = item->_file + "/";
     } else {

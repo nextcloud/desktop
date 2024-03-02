@@ -68,6 +68,7 @@ struct RemoteInfo
     int64_t size = 0;
     int64_t sizeOfFolder = 0;
     bool isDirectory = false;
+    bool isSymLink = false;
     bool _isE2eEncrypted = false;
     bool isFileDropDetected = false;
     QString e2eMangledName;

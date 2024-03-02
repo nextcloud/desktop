@@ -16,6 +16,7 @@
 #include "common/utility.h"
 #include "configfile.h"
 #include "discovery.h"
+#include "filesystem.h"
 #include "helpers.h"
 #include "progressdispatcher.h"
 
@@ -336,7 +337,7 @@ void DiscoverySingleLocalDirectoryJob::run() {
             continue;
         }
         i.modtime = dirent->modtime;
-        i.size = dirent->size;
+        i.size = FileSystem::getSize(localPath + '/' + dirent->path);
         i.inode = dirent->inode;
         i.isDirectory = dirent->type == ItemTypeDirectory;
         i.isHidden = dirent->is_hidden;
@@ -457,6 +458,7 @@ static void propertyMapToRemoteInfo(const QMap<QString, QString> &map, RemoteInf
         QString value = it.value();
         if (property == QLatin1String("resourcetype")) {
             result.isDirectory = value.contains(QLatin1String("collection"));
+            result.isSymLink = value.contains(QLatin1String("symlink"));
         } else if (property == QLatin1String("getlastmodified")) {
             const auto date = QDateTime::fromString(value, Qt::RFC2822Date);
             Q_ASSERT(date.isValid());

@@ -45,16 +45,17 @@ namespace OCC {
 
 Q_LOGGING_CATEGORY(lcDisco, "nextcloud.sync.discovery", QtInfoMsg)
 
-ProcessDirectoryJob::ProcessDirectoryJob(DiscoveryPhase *data, PinState basePinState, qint64 lastSyncTimestamp, QObject *parent)
+ProcessDirectoryJob::ProcessDirectoryJob(DiscoveryPhase *data, PinState basePinState, qint64 lastSyncTimestamp, bool synchronizeSymlinks, QObject *parent)
     : QObject(parent)
     , _lastSyncTimestamp(lastSyncTimestamp)
     , _discoveryData(data)
+    , _synchronizeSymlinks(synchronizeSymlinks)
 {
     qCDebug(lcDisco) << data;
     computePinState(basePinState);
 }
 
-ProcessDirectoryJob::ProcessDirectoryJob(const PathTuple &path, const SyncFileItemPtr &dirItem, QueryMode queryLocal, QueryMode queryServer, qint64 lastSyncTimestamp, ProcessDirectoryJob *parent)
+ProcessDirectoryJob::ProcessDirectoryJob(const PathTuple &path, const SyncFileItemPtr &dirItem, QueryMode queryLocal, QueryMode queryServer, qint64 lastSyncTimestamp, bool synchronizeSymlinks, ProcessDirectoryJob *parent)
     : QObject(parent)
     , _dirItem(dirItem)
     , _lastSyncTimestamp(lastSyncTimestamp)
@@ -62,18 +63,20 @@ ProcessDirectoryJob::ProcessDirectoryJob(const PathTuple &path, const SyncFileIt
     , _queryLocal(queryLocal)
     , _discoveryData(parent->_discoveryData)
     , _currentFolder(path)
+    , _synchronizeSymlinks(synchronizeSymlinks)
 {
     qCDebug(lcDisco) << path._server << queryServer << path._local << queryLocal << lastSyncTimestamp;
     computePinState(parent->_pinState);
 }
 
-ProcessDirectoryJob::ProcessDirectoryJob(DiscoveryPhase *data, PinState basePinState, const PathTuple &path, const SyncFileItemPtr &dirItem, QueryMode queryLocal, qint64 lastSyncTimestamp, QObject *parent)
+ProcessDirectoryJob::ProcessDirectoryJob(DiscoveryPhase *data, PinState basePinState, const PathTuple &path, const SyncFileItemPtr &dirItem, QueryMode queryLocal, qint64 lastSyncTimestamp, bool synchronizeSymlinks, QObject *parent)
         : QObject(parent)
         , _dirItem(dirItem)
         , _lastSyncTimestamp(lastSyncTimestamp)
         , _queryLocal(queryLocal)
         , _discoveryData(data)
         , _currentFolder(path)
+        , _synchronizeSymlinks(synchronizeSymlinks)
 {
     computePinState(basePinState);
 }
@@ -312,7 +315,9 @@ bool ProcessDirectoryJob::handleExcluded(const QString &path, const Entries &ent
         }
     }
 
-    if (excluded == CSYNC_NOT_EXCLUDED && !entries.localEntry.isSymLink) {
+    bool isSymlink = entries.localEntry.isSymLink || entries.serverEntry.isSymLink;
+    // All not excluded files except for symlinks if symlink synchronization is disabled
+    if (excluded == CSYNC_NOT_EXCLUDED && (!isSymlink || (_synchronizeSymlinks && isSymlink))) {
         return false;
     } else if (excluded == CSYNC_FILE_SILENTLY_EXCLUDED || excluded == CSYNC_FILE_EXCLUDE_AND_REMOVE) {
         emit _discoveryData->silentlyExcluded(path);
@@ -332,9 +337,8 @@ bool ProcessDirectoryJob::handleExcluded(const QString &path, const Entries &ent
         return true;
     }
 
-    if (entries.localEntry.isSymLink) {
-        /* Symbolic links are ignored. */
-        item->_errorString = tr("Symbolic links are not supported in syncing.");
+    if (isSymlink && !_synchronizeSymlinks) {
+        item->_errorString = tr("Symbolic links synchronization is not enabled.");
     } else {
         switch (excluded) {
         case CSYNC_NOT_EXCLUDED:
@@ -632,7 +636,8 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(const SyncFileItemPtr &it
     item->_isShared = serverEntry.remotePerm.hasPermission(RemotePermissions::IsShared) || serverEntry.sharedByMe;
     item->_sharedByMe = serverEntry.sharedByMe;
     item->_lastShareStateFetchedTimestamp = QDateTime::currentMSecsSinceEpoch();
-    item->_type = serverEntry.isDirectory ? ItemTypeDirectory : ItemTypeFile;
+    item->_type = serverEntry.isDirectory ? ItemTypeDirectory :
+                  (serverEntry.isSymLink ? ItemTypeSoftLink : ItemTypeFile);
     item->_etag = serverEntry.etag;
     item->_directDownloadUrl = serverEntry.directDownloadUrl;
     item->_directDownloadCookies = serverEntry.directDownloadCookies;
@@ -725,7 +730,7 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(const SyncFileItemPtr &it
             _discoveryData->checkSelectiveSyncExistingFolder(path._server);
         }
 
-        if (serverEntry.isDirectory != dbEntry.isDirectory()) {
+        if (serverEntry.isSymLink != dbEntry.isSymLink() || serverEntry.isDirectory != dbEntry.isDirectory()) {
             // If the type of the entity changed, it's like NEW, but
             // needs to delete the other entity first.
             item->_instruction = CSYNC_INSTRUCTION_TYPE_CHANGE;
@@ -1104,8 +1109,18 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
 
     item->_inode = localEntry.inode;
 
+
+    auto getItemType = [](const LocalInfo& localEntry, bool allowVirtualFile = false) {
+        return localEntry.isDirectory ? ItemTypeDirectory :
+               localEntry.isSymLink ? ItemTypeSoftLink :
+               localEntry.isVirtualFile && allowVirtualFile ? ItemTypeVirtualFile :
+               ItemTypeFile;
+    };
+
+
     if (dbEntry.isValid()) {
-        bool typeChange = localEntry.isDirectory != dbEntry.isDirectory();
+        bool typeChange = localEntry.isDirectory != dbEntry.isDirectory() ||
+                          localEntry.isSymLink != dbEntry.isSymLink();
         if (!typeChange && localEntry.isVirtualFile) {
             if (noServerEntry) {
                 item->_instruction = CSYNC_INSTRUCTION_REMOVE;
@@ -1175,7 +1190,7 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
             item->_checksumHeader.clear();
             item->_size = localEntry.size;
             item->_modtime = localEntry.modtime;
-            item->_type = localEntry.isDirectory ? ItemTypeDirectory : ItemTypeFile;
+            item->_type = getItemType(localEntry);
             _childModified = true;
         } else if (dbEntry._modtime > 0 && (localEntry.modtime <= 0 || localEntry.modtime >= 0xFFFFFFFF) && dbEntry._fileSize == localEntry.size) {
             item->_instruction = CSYNC_INSTRUCTION_UPDATE_METADATA;
@@ -1183,7 +1198,7 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
             item->_size = localEntry.size > 0 ? localEntry.size : dbEntry._fileSize;
             item->_modtime = dbEntry._modtime;
             item->_previousModtime = dbEntry._modtime;
-            item->_type = localEntry.isDirectory ? ItemTypeDirectory : ItemTypeFile;
+            item->_type = getItemType(localEntry);
             qCDebug(lcDisco) << "CSYNC_INSTRUCTION_SYNC: File" << item->_file << "if (dbEntry._modtime > 0 && localEntry.modtime <= 0)"
                              << "dbEntry._modtime:" << dbEntry._modtime
                              << "localEntry.modtime:" << localEntry.modtime;
@@ -1245,7 +1260,7 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
     item->_checksumHeader.clear();
     item->_size = localEntry.size;
     item->_modtime = localEntry.modtime;
-    item->_type = localEntry.isDirectory ? ItemTypeDirectory : localEntry.isVirtualFile ? ItemTypeVirtualFile : ItemTypeFile;
+    item->_type = getItemType(localEntry, true);
     _childModified = true;
 
     if (!localEntry.caseClashConflictingName.isEmpty()) {
@@ -1358,7 +1373,7 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
             return false;
         }
 
-        if (base.isDirectory() != item->isDirectory()) {
+        if (item->_type != base._type) {
             qCInfo(lcDisco) << "Not a move, types don't match" << base._type << item->_type << localEntry.type;
             return false;
         }
@@ -1693,7 +1708,7 @@ void ProcessDirectoryJob::processFileFinalize(
     }
     if (recurse) {
         auto job = new ProcessDirectoryJob(path, item, recurseQueryLocal, recurseQueryServer,
-            _lastSyncTimestamp, this);
+            _lastSyncTimestamp, _synchronizeSymlinks, this);
         job->setInsideEncryptedTree(isInsideEncryptedTree() || item->isEncrypted());
         if (removed) {
             job->setParent(_discoveryData);
@@ -1737,7 +1752,7 @@ void ProcessDirectoryJob::processBlacklisted(const PathTuple &path, const OCC::L
     qCInfo(lcDisco) << "Discovered (blacklisted) " << item->_file << item->_instruction << item->_direction << item->isDirectory();
 
     if (item->isDirectory() && item->_instruction != CSYNC_INSTRUCTION_IGNORE) {
-        auto job = new ProcessDirectoryJob(path, item, NormalQuery, InBlackList, _lastSyncTimestamp, this);
+        auto job = new ProcessDirectoryJob(path, item, NormalQuery, InBlackList, _lastSyncTimestamp, _synchronizeSymlinks, this);
         connect(job, &ProcessDirectoryJob::finished, this, &ProcessDirectoryJob::subJobFinished);
         _queuedJobs.push_back(job);
     } else {

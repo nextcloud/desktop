@@ -440,13 +440,13 @@ public:
 
     void startDirectoryPropagation(const SyncFileItemPtr &item,
                                    QStack<QPair<QString, PropagateDirectory*>> &directories,
-                                   QVector<PropagatorJob *> &directoriesToRemove,
+                                   QVector<PropagatorJob *> &remoteItemsToRemove,
                                    QString &removedDirectory,
                                    const SyncFileItemVector &items);
 
     void startFilePropagation(const SyncFileItemPtr &item,
                               QStack<QPair<QString, PropagateDirectory*>> &directories,
-                              QVector<PropagatorJob *> &directoriesToRemove,
+                              QVector<PropagatorJob *> &remoteItemsToRemove,
                               QString &removedDirectory,
                               QString &maybeConflictDirectory);
 

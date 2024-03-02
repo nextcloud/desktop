@@ -85,6 +85,16 @@ namespace FileSystem {
     bool OCSYNC_EXPORT fileExists(const QString &filename, const QFileInfo & = QFileInfo());
 
     /**
+     * @brief Return raw content of symlink at given path.
+     *
+     * If the file is not a symlink or does not exist, the returned string will be empty.
+     * In Qt6.6+, QFileInfo::readSymLink() can be used instead.
+     * QFileInfo::symLinkTarget() can *not* be used because it transforms the target to an
+     * absolute path which might break relative symlinks for cross-device synchronization.
+     */
+    QByteArray OCSYNC_EXPORT readlink(const QString &filename);
+
+    /**
      * @brief Rename the file \a originFileName to \a destinationFileName.
      *
      * It behaves as QFile::rename() but handles .lnk files correctly on Windows.

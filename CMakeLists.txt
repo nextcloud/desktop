@@ -7,6 +7,8 @@ if (CLANG_TIDY_EXE)
     set(CMAKE_CXX_CLANG_TIDY ${CLANG_TIDY_EXE} -checks=-*,modernize-use-auto,modernize-use-using,modernize-use-nodiscard,modernize-use-nullptr,modernize-use-override,cppcoreguidelines-pro-type-static-cast-downcast,modernize-use-default-member-init,cppcoreguidelines-pro-type-member-init,cppcoreguidelines-init-variables)
 endif()
 
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
 project(client)
 
 include(FeatureSummary)

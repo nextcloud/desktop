@@ -97,6 +97,8 @@ set(libsync_SRCS
     propagateuploadencrypted.cpp
     propagatedownloadencrypted.h
     propagatedownloadencrypted.cpp
+    symlinkuploaddevice.h
+    symlinkuploaddevice.cpp
     syncengine.h
     syncengine.cpp
     syncfileitem.h

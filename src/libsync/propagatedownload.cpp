@@ -33,6 +33,7 @@
 #include <QFileInfo>
 #include <QDir>
 #include <cmath>
+#include <optional>
 
 #ifdef Q_OS_UNIX
 #include <unistd.h>
@@ -290,12 +291,29 @@ qint64 GETFileJob::writeToDevice(const QByteArray &data)
     return _device->write(data);
 }
 
+bool GETFileJob::writeSymlink(const QString &symlinkTarget)
+{
+    auto file_device = qobject_cast<QFile*>(_device);
+    if (!file_device) {
+        qCWarning(lcGetJob) << "Unable to create symlink on given device!";
+        return false;
+    }
+    file_device->close();
+    FileSystem::remove(file_device->fileName());
+    if (!QFile::link(symlinkTarget, file_device->fileName())) {
+        qCWarning(lcGetJob) << "Error creating symlink '" << file_device->fileName() << '\'';
+        return false;
+    }
+    return true;
+}
+
 void GETFileJob::slotReadyRead()
 {
     if (!reply())
         return;
     int bufferSize = qMin(1024 * 8ll, reply()->bytesAvailable());
     QByteArray buffer(bufferSize, Qt::Uninitialized);
+    std::optional<QString> symlinkTarget;
 
     while (reply()->bytesAvailable() > 0 && _saveBodyToFile) {
         if (_bandwidthChoked) {
@@ -321,14 +339,28 @@ void GETFileJob::slotReadyRead()
             return;
         }
 
-        const qint64 writtenBytes = writeToDevice(QByteArray::fromRawData(buffer.constData(), readBytes));
-        if (writtenBytes != readBytes) {
-            _errorString = _device->errorString();
-            _errorStatus = SyncFileItem::NormalError;
-            qCWarning(lcGetJob) << "Error while writing to file" << writtenBytes << readBytes << _errorString;
-            reply()->abort();
-            return;
+        if (reply()->hasRawHeader("OC-File-Type") &&
+            reply()->rawHeader("OC-File-Type").toInt() == ItemTypeSoftLink) {
+            if (symlinkTarget) {
+                *symlinkTarget += buffer;
+            } else {
+                symlinkTarget = buffer;
+            }
+        } else {
+            const qint64 writtenBytes = writeToDevice(QByteArray::fromRawData(buffer.constData(), readBytes));
+            if (writtenBytes != readBytes) {
+                _errorString = _device->errorString();
+                _errorStatus = SyncFileItem::NormalError;
+                qCWarning(lcGetJob) << "Error while writing to file" << writtenBytes << readBytes << _errorString;
+                reply()->abort();
+                return;
+            }
         }
+    }
+
+    if (symlinkTarget && !writeSymlink(*symlinkTarget)) {
+        reply()->abort();
+        return;
     }
 
     if (reply()->isFinished() && (reply()->bytesAvailable() == 0 || !_saveBodyToFile)) {
@@ -789,7 +821,7 @@ void PropagateDownloadFile::slotGetFinished()
 
         // Don't keep the temporary file if it is empty or we
         // used a bad range header or the file's not on the server anymore.
-        if (_tmpFile.exists() && (_tmpFile.size() == 0 || badRangeHeader || fileNotFound)) {
+        if (!QFileInfo(_tmpFile).isSymLink() && _tmpFile.exists() && (_tmpFile.size() == 0 || badRangeHeader || fileNotFound)) {
             _tmpFile.close();
             FileSystem::remove(_tmpFile.fileName());
             propagator()->_journal->setDownloadInfo(_item->_file, SyncJournalDb::DownloadInfo());
@@ -885,19 +917,21 @@ void PropagateDownloadFile::slotGetFinished()
         return;
     }
 
-    if (bodySize > 0 && bodySize != _tmpFile.size() - job->resumeStart()) {
-        qCDebug(lcPropagateDownload) << bodySize << _tmpFile.size() << job->resumeStart();
-        propagator()->_anotherSyncNeeded = true;
-        done(SyncFileItem::SoftError, tr("The file could not be downloaded completely."), ErrorCategory::GenericError);
-        return;
-    }
+    if (!QFileInfo(_tmpFile).isSymLink()) {
+        if (bodySize > 0 && bodySize != _tmpFile.size() - job->resumeStart()) {
+            qCDebug(lcPropagateDownload) << bodySize << _tmpFile.size() << job->resumeStart();
+            propagator()->_anotherSyncNeeded = true;
+            done(SyncFileItem::SoftError, tr("The file could not be downloaded completely."), ErrorCategory::GenericError);
+            return;
+        }
 
-    if (_tmpFile.size() == 0 && _item->_size > 0) {
-        FileSystem::remove(_tmpFile.fileName());
-        done(SyncFileItem::NormalError,
-            tr("The downloaded file is empty, but the server said it should have been %1.")
-                .arg(Utility::octetsToString(_item->_size)), ErrorCategory::GenericError);
-        return;
+        if (_tmpFile.size() == 0 && _item->_size > 0) {
+            FileSystem::remove(_tmpFile.fileName());
+            done(SyncFileItem::NormalError,
+                tr("The downloaded file is empty, but the server said it should have been %1.")
+                    .arg(Utility::octetsToString(_item->_size)), ErrorCategory::GenericError);
+            return;
+        }
     }
 
     // Did the file come with conflict headers? If so, store them now!
@@ -1074,7 +1108,8 @@ namespace { // Anonymous namespace for the recall feature
     static void preserveGroupOwnership(const QString &fileName, const QFileInfo &fi)
     {
 #ifdef Q_OS_UNIX
-        int chownErr = chown(fileName.toLocal8Bit().constData(), -1, fi.groupId());
+        int chownErr = fchownat(AT_FDCWD, fileName.toLocal8Bit().constData(), -1,
+                                fi.groupId(), AT_SYMLINK_NOFOLLOW);
         if (chownErr) {
             // TODO: Consider further error handling!
             qCWarning(lcPropagateDownload) << QString("preserveGroupOwnership: chown error %1: setting group %2 failed on file %3").arg(chownErr).arg(fi.groupId()).arg(fileName);
@@ -1185,9 +1220,9 @@ void PropagateDownloadFile::downloadFinished()
 
     auto previousFileExists = FileSystem::fileExists(filename) && _item->_instruction != CSYNC_INSTRUCTION_CASE_CLASH_CONFLICT;
     if (previousFileExists) {
-        // Preserve the existing file permissions.
+        // Preserve the existing file permissions (except it was a symlink)
         const auto existingFile = QFileInfo{filename};
-        if (existingFile.permissions() != _tmpFile.permissions()) {
+        if (!existingFile.isSymLink() && existingFile.permissions() != _tmpFile.permissions()) {
             _tmpFile.setPermissions(existingFile.permissions());
         }
         preserveGroupOwnership(_tmpFile.fileName(), existingFile);

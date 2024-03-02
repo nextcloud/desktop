@@ -205,6 +205,11 @@ public:
         return _type == ItemTypeDirectory;
     }
 
+    [[nodiscard]] bool isSymLink() const
+    {
+        return _type == ItemTypeSoftLink;
+    }
+
     /**
      * True if the item had any kind of error.
      */

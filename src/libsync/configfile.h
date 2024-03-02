@@ -149,6 +149,9 @@ public:
     [[nodiscard]] bool confirmExternalStorage() const;
     void setConfirmExternalStorage(bool);
 
+    [[nodiscard]] bool synchronizeSymlinks() const;
+    void setSynchronizeSymlinks(bool);
+
     /** If we should move the files deleted on the server in the trash  */
     [[nodiscard]] bool moveToTrash() const;
     void setMoveToTrash(bool);
