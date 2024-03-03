@@ -145,8 +145,9 @@ Qt::ItemFlags FolderStatusModel::flags(const QModelIndex &index) const
 
 QVariant FolderStatusModel::data(const QModelIndex &index, int role) const
 {
-    if (!index.isValid() || (role == Qt::EditRole))
+    if (!index.isValid() || (role == Qt::EditRole)) {
         return {};
+    }
 
     switch (classify(index)) {
     case AddButton: {
@@ -200,14 +201,13 @@ QVariant FolderStatusModel::data(const QModelIndex &index, int role) const
         case FileIdRole:
             return subfolderInfo._fileId;
         case FolderStatusDelegate::FolderPathRole: {
-            const auto folder = subfolderInfo._folder;
-            if (!folder)
-                return {};
-            return {folder->path() + subfolderInfo._path};
+            if (const auto folder = subfolderInfo._folder) {
+                return {folder->path() + subfolderInfo._path};
+            }
+            return {};
         }
         }
     }
-        return QVariant();
     case FetchLabel: {
         const auto folderInfo = static_cast<SubFolderInfo *>(index.internalPointer());
         switch (role) {
@@ -219,7 +219,6 @@ QVariant FolderStatusModel::data(const QModelIndex &index, int role) const
             } else {
                 return tr("Fetching folder list from server …");
             }
-            break;
         default:
             return {};
         }
@@ -230,8 +229,9 @@ QVariant FolderStatusModel::data(const QModelIndex &index, int role) const
 
     const auto folderInfo = _folders.at(index.row());
     const auto folder = folderInfo._folder;
-    if (!folder)
+    if (!folder) {
         return {};
+    }
 
     const auto progress = folderInfo._progress;
     const auto accountConnected = _accountState->isConnected();
@@ -566,48 +566,39 @@ QModelIndex FolderStatusModel::parent(const QModelIndex &child) const
 
 bool FolderStatusModel::hasChildren(const QModelIndex &parent) const
 {
-    if (!parent.isValid())
+    if (!parent.isValid()) {
         return true;
-
-    const auto info = infoForIndex(parent);
-    if (!info)
+    } else if (const auto info = infoForIndex(parent); !info) {
         return false;
-
-    if (!info->_fetched)
+    } else if (!info->_fetched) {
         return true;
-
-    if (info->_subs.isEmpty())
+    } else if (info->_subs.isEmpty()) {
         return false;
-
-    return true;
+    } else {
+        return true;
+    }
 }
 
 
 bool FolderStatusModel::canFetchMore(const QModelIndex &parent) const
 {
-    if (!_accountState) {
+    if (!_accountState || _accountState->state() != AccountState::Connected) {
         return false;
-    }
-    if (_accountState->state() != AccountState::Connected) {
-        return false;
-    }
-    const auto info = infoForIndex(parent);
-    if (!info || info->_fetched || info->_fetchingJob)
-        return false;
-    if (info->_hasError) {
+    } else if (const auto info = infoForIndex(parent); !info || info->_fetched || info->_fetchingJob || info->_hasError) {
         // Keep showing the error to the user, it will be hidden when the account reconnects
         return false;
+    } else {
+        return true;
     }
-    return true;
 }
 
 
 void FolderStatusModel::fetchMore(const QModelIndex &parent)
 {
     const auto info = infoForIndex(parent);
-
-    if (!info || info->_fetched || info->_fetchingJob)
+    if (!info || info->_fetched || info->_fetchingJob) {
         return;
+    }
     info->resetSubs(this, parent);
     auto path = info->_folder->remotePathTrailingSlash();
 
@@ -659,8 +650,9 @@ void FolderStatusModel::resetAndFetch(const QModelIndex &parent)
 void FolderStatusModel::slotGatherPermissions(const QString &href, const QMap<QString, QString> &map)
 {
     const auto it = map.find("permissions");
-    if (it == map.end())
+    if (it == map.end()) {
         return;
+    }
 
     const auto job = sender();
     auto permissionMap = job->property(propertyPermissionMap).toMap();
@@ -673,8 +665,9 @@ void FolderStatusModel::slotGatherPermissions(const QString &href, const QMap<QS
 void FolderStatusModel::slotGatherEncryptionStatus(const QString &href, const QMap<QString, QString> &properties)
 {
     const auto it = properties.find("is-encrypted");
-    if (it == properties.end())
+    if (it == properties.end()) {
         return;
+    }
 
     const auto job = sender();
     auto encryptionMap = job->property(propertyEncryptionMap).toMap();
@@ -733,8 +726,9 @@ void FolderStatusModel::slotUpdateDirectories(const QStringList &list)
     const auto encryptionMap = job->property(propertyEncryptionMap).toMap();
 
     auto sortedSubfolders = list;
-    if (!sortedSubfolders.isEmpty())
+    if (!sortedSubfolders.isEmpty()) {
         sortedSubfolders.removeFirst(); // skip the parent item (first in the list)
+    }
     Utility::sortFilenames(sortedSubfolders);
 
     QVarLengthArray<int, 10> undecidedIndexes;
@@ -782,8 +776,9 @@ void FolderStatusModel::slotUpdateDirectories(const QStringList &list)
         const auto &folderInfo = job->_folderInfos.value(path);
         newInfo._size = folderInfo.size;
         newInfo._fileId = folderInfo.fileId;
-        if (relativePath.isEmpty())
+        if (relativePath.isEmpty()) {
             continue;
+        }
 
         if (parentInfo->_checked == Qt::Unchecked) {
             newInfo._checked = Qt::Unchecked;
@@ -895,8 +890,10 @@ QStringList FolderStatusModel::createBlackList(const FolderStatusModel::SubFolde
 
 void FolderStatusModel::slotUpdateFolderState(Folder *folder)
 {
-    if (!folder)
+    if (!folder) {
         return;
+    }
+    
     for (auto i = 0; i < _folders.count(); ++i) {
         if (_folders.at(i)._folder == folder) {
             emit dataChanged(index(i), index(i));
