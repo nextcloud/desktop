@@ -845,11 +845,10 @@ void FolderStatusModel::slotLscolFinishedWithError(QNetworkReply *reply)
     if (parentInfo) {
         qCDebug(lcFolderStatus) << reply->errorString();
         parentInfo->_lastErrorString = reply->errorString();
-        auto error = reply->error();
 
         parentInfo->resetSubs(this, idx);
 
-        if (error == QNetworkReply::ContentNotFoundError) {
+        if (reply->error() == QNetworkReply::ContentNotFoundError) {
             parentInfo->_fetched = true;
         } else {
             ASSERT(!parentInfo->hasLabel());
