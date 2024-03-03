@@ -956,8 +956,7 @@ void FolderStatusModel::slotApplySelectiveSync()
 
 void FolderStatusModel::slotSetProgress(const ProgressInfo &progress)
 {
-    const auto parent = qobject_cast<QWidget *>(QObject::parent());
-    if (!parent->isVisible()) {
+    if (const auto parent = qobject_cast<QWidget *>(QObject::parent()); !parent || !parent->isVisible()) {
         return; // for https://github.com/owncloud/client/issues/2648#issuecomment-71377909
     }
 
