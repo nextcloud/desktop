@@ -200,13 +200,15 @@ QVariant FolderStatusModel::data(const QModelIndex &index, int role) const
             break;
         case FileIdRole:
             return subfolderInfo._fileId;
-        case FolderStatusDelegate::FolderPathRole: {
+        case FolderStatusDelegate::FolderPathRole:
+        {
             if (const auto folder = subfolderInfo._folder) {
                 return {folder->path() + subfolderInfo._path};
             }
             return {};
         }
         }
+        return {};
     }
     case FetchLabel: {
         const auto folderInfo = static_cast<SubFolderInfo *>(index.internalPointer());
