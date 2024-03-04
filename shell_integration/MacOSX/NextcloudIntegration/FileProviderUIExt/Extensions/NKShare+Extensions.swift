@@ -94,4 +94,11 @@ extension NKShare {
             return "Unknown share"
         }
     }
+
+    var expirationDateString: String? {
+        guard let date = expirationDate else { return nil }
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "YYYY-MM-dd HH:mm:ss"
+        return dateFormatter.string(from: date as Date)
+    }
 }
