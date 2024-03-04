@@ -403,6 +403,41 @@ void FakeRemoteActivityStorage::initActivityData()
 
         _startingId++;
     }
+
+    for (quint32 i = 0; i < _numItemsToInsert; i++) {
+        QJsonObject activity;
+        activity.insert(QStringLiteral("activity_id"), _startingId);
+        activity.insert(QStringLiteral("object_type"), "remote_share");
+        activity.insert(QStringLiteral("subject"), QStringLiteral("You received document.docx as a remote share from admin@https://example.de"));
+        activity.insert(QStringLiteral("subjectRich"), QStringLiteral("You received {share} as a remote share from {user}"));
+        activity.insert(QStringLiteral("message"), QStringLiteral(""));
+        activity.insert(QStringLiteral("object_name"), QStringLiteral(""));
+        activity.insert(QStringLiteral("datetime"), QDateTime::currentDateTime().toString(Qt::ISODate));
+        activity.insert(QStringLiteral("icon"), QStringLiteral("http://example.de/core/img/actions/share.svg"));
+
+        QJsonArray actionsArray;
+
+        QJsonObject primaryAction;
+        primaryAction.insert(QStringLiteral("label"), QStringLiteral("Accept"));
+        primaryAction.insert(QStringLiteral("link"), QStringLiteral("/ocs/v2.php/apps/files_sharing/api/v1/remote_shares/pending/6"));
+        primaryAction.insert(QStringLiteral("type"), QStringLiteral("POST"));
+        primaryAction.insert(QStringLiteral("primary"), true);
+        actionsArray.push_back(primaryAction);
+
+        QJsonObject secondaryAction;
+        secondaryAction.insert(QStringLiteral("label"), QStringLiteral("Decline"));
+        secondaryAction.insert(QStringLiteral("link"), QString(QStringLiteral("/ocs/v2.php/apps/files_sharing/api/v1/remote_shares/pending/6")));
+        secondaryAction.insert(QStringLiteral("type"), QStringLiteral("DELETE"));
+        secondaryAction.insert(QStringLiteral("primary"), false);
+        actionsArray.push_back(secondaryAction);
+
+        activity.insert(QStringLiteral("actions"), actionsArray);
+
+        _activityData.push_back(activity);
+
+        _startingId++;
+    }
+
     _startingId--;
 }
 
