@@ -13,4 +13,5 @@ protocol ShareViewDataSourceUIDelegate {
     func fetchFinished()
     func hideOptions()
     func showOptions(share: NKShare)
+    func showError(_ errorString: String)
 }
