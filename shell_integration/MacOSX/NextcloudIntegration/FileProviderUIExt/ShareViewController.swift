@@ -117,7 +117,8 @@ class ShareViewController: NSViewController, ShareViewDataSourceUIDelegate {
     }
 
     func showOptions(share: NKShare) {
-        optionsView.share = share
+        guard let kit = shareDataSource.kit else { return }
+        optionsView.controller = ShareController(share: share, kit: kit)
         splitView.addArrangedSubview(optionsView)
         optionsView.isHidden = false
     }
