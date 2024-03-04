@@ -62,4 +62,18 @@ class ShareOptionsView: NSView {
         noteForRecipientCheckbox.state = .off
         noteTextField.isHidden = true
     }
+
+    func setAllFields(enabled: Bool) {
+        labelTextField.isEnabled = enabled
+        uploadEditPermissionCheckbox.isEnabled = enabled
+        hideDownloadCheckbox.isEnabled = enabled
+        passwordProtectCheckbox.isEnabled = enabled
+        passwordSecureField.isEnabled = enabled
+        expirationDateCheckbox.isEnabled = enabled
+        expirationDatePicker.isEnabled = enabled
+        noteForRecipientCheckbox.isEnabled = enabled
+        noteTextField.isEnabled = enabled
+        saveButton.isEnabled = enabled
+        deleteButton.isEnabled = enabled
+    }
 }
