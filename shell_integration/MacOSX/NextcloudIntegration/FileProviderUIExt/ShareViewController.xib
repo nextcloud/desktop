@@ -394,7 +394,7 @@
                         <real value="250"/>
                     </holdingPriorities>
                 </splitView>
-                <visualEffectView blendingMode="behindWindow" material="appearanceBased" state="followsWindowActiveState" translatesAutoresizingMaskIntoConstraints="NO" id="1ud-mC-gQV">
+                <visualEffectView blendingMode="withinWindow" material="HUDWindow" state="followsWindowActiveState" translatesAutoresizingMaskIntoConstraints="NO" id="1ud-mC-gQV">
                     <rect key="frame" x="10" y="287" width="480" height="300"/>
                     <subviews>
                         <progressIndicator wantsLayer="YES" maxValue="100" indeterminate="YES" style="spinning" translatesAutoresizingMaskIntoConstraints="NO" id="acb-Yu-Zpm">
