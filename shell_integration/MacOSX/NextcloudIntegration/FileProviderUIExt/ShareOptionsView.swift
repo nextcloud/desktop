@@ -6,17 +6,34 @@
 //
 
 import AppKit
+import NextcloudKit
 
 class ShareOptionsView: NSView {
-    @IBOutlet weak var labelTextField: NSTextField!
-    @IBOutlet weak var uploadEditPermissionCheckbox: NSButton!
-    @IBOutlet weak var hideDownloadCheckbox: NSButton!
-    @IBOutlet weak var passwordProtectCheckbox: NSButton!
-    @IBOutlet weak var passwordSecureField: NSSecureTextField!
-    @IBOutlet weak var expirationDateCheckbox: NSButton!
-    @IBOutlet weak var expirationDatePicker: NSDatePicker!
-    @IBOutlet weak var noteForRecipientCheckbox: NSButton!
-    @IBOutlet weak var noteTextField: NSTextField!
-    @IBOutlet weak var saveButton: NSButton!
-    @IBOutlet weak var deleteButton: NSButton!
+    @IBOutlet private weak var labelTextField: NSTextField!
+    @IBOutlet private weak var uploadEditPermissionCheckbox: NSButton!
+    @IBOutlet private weak var hideDownloadCheckbox: NSButton!
+    @IBOutlet private weak var passwordProtectCheckbox: NSButton!
+    @IBOutlet private weak var passwordSecureField: NSSecureTextField!
+    @IBOutlet private weak var expirationDateCheckbox: NSButton!
+    @IBOutlet private weak var expirationDatePicker: NSDatePicker!
+    @IBOutlet private weak var noteForRecipientCheckbox: NSButton!
+    @IBOutlet private weak var noteTextField: NSTextField!
+    @IBOutlet private weak var saveButton: NSButton!
+    @IBOutlet private weak var deleteButton: NSButton!
+
+    var share: NKShare? {
+        didSet {
+            guard let share = share else { return }
+            labelTextField.stringValue = share.label
+            uploadEditPermissionCheckbox.state = share.canEdit ? .on : .off
+            hideDownloadCheckbox.state = share.hideDownload ? .on : .off
+            passwordProtectCheckbox.state = share.password.isEmpty ? .off : .on
+            passwordSecureField.isHidden = passwordProtectCheckbox.state == .off
+            expirationDateCheckbox.state = share.expirationDate == nil ? .off : .on
+            expirationDatePicker.isHidden = expirationDateCheckbox.state == .off
+            noteForRecipientCheckbox.state = share.note.isEmpty ? .off : .on
+            noteTextField.isHidden = noteForRecipientCheckbox.state == .off
+            deleteButton.isEnabled = share.canDelete
+        }
+    }
 }
