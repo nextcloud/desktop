@@ -127,7 +127,9 @@ class ShareTableViewDataSource: NSObject, NSTableViewDataSource, NSTableViewDele
                 Logger.sharesDataSource.info("Received \(shareCount, privacy: .public) shares")
                 defer { continuation.resume(returning: shares ?? []) }
                 guard error == .success else {
-                    Logger.sharesDataSource.error("Error fetching shares: \(error)")
+                    let errorString = "Error fetching shares: \(error.errorDescription)"
+                    Logger.sharesDataSource.error("\(errorString)")
+                    Task { @MainActor in self.uiDelegate?.showError(errorString) }
                     return
                 }
             }
