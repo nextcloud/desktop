@@ -50,7 +50,7 @@ class ShareTableViewDataSource: NSObject, NSTableViewDataSource, NSTableViewDele
         }
     }
 
-    private func reload() async {
+    func reload() async {
         guard let itemURL = itemURL else { return }
         guard let itemIdentifier = await withCheckedContinuation({
             (continuation: CheckedContinuation<NSFileProviderItemIdentifier?, Never>) -> Void in

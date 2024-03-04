@@ -71,6 +71,7 @@ class ShareViewController: NSViewController, ShareViewDataSourceUIDelegate {
             shareDataSource.uiDelegate = self
             shareDataSource.sharesTableView = tableView
             shareDataSource.loadItem(url: itemUrl)
+            optionsView.dataSource = shareDataSource
         } catch let error {
             let errorString = "Error processing item: \(error)"
             Logger.shareViewController.error("\(errorString)")

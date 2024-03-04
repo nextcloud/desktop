@@ -22,6 +22,7 @@ class ShareOptionsView: NSView {
     @IBOutlet private weak var saveButton: NSButton!
     @IBOutlet private weak var deleteButton: NSButton!
 
+    var dataSource: ShareTableViewDataSource?
     var controller: ShareController? {
         didSet {
             cancellable?.cancel()
@@ -110,6 +111,7 @@ class ShareOptionsView: NSView {
                 label: label,
                 hideDownload: hideDownload
             )
+            await dataSource?.reload()
         }
     }
 }
