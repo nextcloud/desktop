@@ -30,6 +30,7 @@ class ShareController: ObservableObject {
         attributes: String? = nil,
         options: NKRequestOptions = NKRequestOptions()
     ) async -> NKError? {
+        Logger.shareController.info("Saving share: \(self.share.url)")
         return await withCheckedContinuation { continuation in
             kit.updateShare(
                 idShare: share.idShare,
