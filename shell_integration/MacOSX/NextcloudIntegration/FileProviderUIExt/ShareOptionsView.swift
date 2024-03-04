@@ -104,13 +104,16 @@ class ShareOptionsView: NSView {
             setAllFields(enabled: false)
             deleteButton.isEnabled = false
             saveButton.isEnabled = false
-            _ = await controller?.save(
+            let error = await controller?.save(
                 password: password,
                 expireDate: expireDate,
                 note: note,
                 label: label,
                 hideDownload: hideDownload
             )
+            if let error = error, error != .success {
+                dataSource?.uiDelegate?.showError("Error updating share: \(error.errorDescription)")
+            }
             await dataSource?.reload()
         }
     }
