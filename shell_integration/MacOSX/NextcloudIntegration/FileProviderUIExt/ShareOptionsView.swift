@@ -6,6 +6,7 @@
 //
 
 import AppKit
+import Combine
 import NextcloudKit
 
 class ShareOptionsView: NSView {
@@ -23,10 +24,12 @@ class ShareOptionsView: NSView {
 
     var controller: ShareController? {
         didSet {
+            cancellable?.cancel()
             update()
-
+            cancellable = controller.publisher.sink { _ in self.update() }
         }
     }
+    private var cancellable: AnyCancellable?
 
     private func update() {
         guard let share = controller?.share else {
