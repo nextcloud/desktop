@@ -56,6 +56,7 @@ class ShareViewController: NSViewController, ShareViewDataSourceUIDelegate {
     }
 
     override func viewDidLoad() {
+        dismissError(self)
         hideOptions()
     }
 
@@ -103,6 +104,10 @@ class ShareViewController: NSViewController, ShareViewDataSourceUIDelegate {
             }
         }
         fileNameIcon.image = fileThumbnail?.nsImage
+    }
+
+    @IBAction func dismissError(_ sender: Any) {
+        errorMessageStackView.isHidden = true
     }
 
     func fetchStarted() {
