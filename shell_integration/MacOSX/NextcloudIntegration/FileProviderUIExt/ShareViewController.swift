@@ -20,7 +20,7 @@ class ShareViewController: NSViewController, ShareViewDataSourceUIDelegate {
     @IBOutlet weak var descriptionLabel: NSTextField!
     @IBOutlet weak var closeButton: NSButton!
     @IBOutlet weak var tableView: NSTableView!
-    @IBOutlet weak var optionsView: NSView!
+    @IBOutlet weak var optionsView: ShareOptionsView!
     @IBOutlet weak var splitView: NSSplitView!
     @IBOutlet weak var loadingEffectView: NSVisualEffectView!
     @IBOutlet weak var loadingIndicator: NSProgressIndicator!
@@ -117,6 +117,7 @@ class ShareViewController: NSViewController, ShareViewDataSourceUIDelegate {
     }
 
     func showOptions(share: NKShare) {
+        optionsView.share = share
         splitView.addArrangedSubview(optionsView)
         optionsView.isHidden = false
     }
