@@ -25,7 +25,7 @@ class ShareTableViewDataSource: NSObject, NSTableViewDataSource, NSTableViewDele
         }
     }
 
-    private var kit: NextcloudKit?
+    private(set) var kit: NextcloudKit?
     private var itemURL: URL?
     private var shares: [NKShare] = [] {
         didSet { sharesTableView?.reloadData() }
