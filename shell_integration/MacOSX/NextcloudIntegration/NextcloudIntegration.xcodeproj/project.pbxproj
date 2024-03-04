@@ -24,6 +24,7 @@
 		535AE30E29C0A2CC0042A9BA /* Logger+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 535AE30D29C0A2CC0042A9BA /* Logger+Extensions.swift */; };
 		536EFBF7295CF58100F4CB13 /* FileProviderSocketLineProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 536EFBF6295CF58100F4CB13 /* FileProviderSocketLineProcessor.swift */; };
 		536EFC36295E3C1100F4CB13 /* NextcloudAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 536EFC35295E3C1100F4CB13 /* NextcloudAccount.swift */; };
+		5374FD442B95EE1400C78D54 /* ShareController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5374FD432B95EE1400C78D54 /* ShareController.swift */; };
 		5376307D2B85E2ED0026BFAB /* Logger+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5376307C2B85E2ED0026BFAB /* Logger+Extensions.swift */; };
 		537630912B85F4980026BFAB /* ShareViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 537630902B85F4980026BFAB /* ShareViewController.xib */; };
 		537630932B85F4B00026BFAB /* ShareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 537630922B85F4B00026BFAB /* ShareViewController.swift */; };
@@ -173,6 +174,7 @@
 		535AE30D29C0A2CC0042A9BA /* Logger+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Logger+Extensions.swift"; sourceTree = "<group>"; };
 		536EFBF6295CF58100F4CB13 /* FileProviderSocketLineProcessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileProviderSocketLineProcessor.swift; sourceTree = "<group>"; };
 		536EFC35295E3C1100F4CB13 /* NextcloudAccount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NextcloudAccount.swift; sourceTree = "<group>"; };
+		5374FD432B95EE1400C78D54 /* ShareController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareController.swift; sourceTree = "<group>"; };
 		5376307C2B85E2ED0026BFAB /* Logger+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Logger+Extensions.swift"; sourceTree = "<group>"; };
 		5376307E2B85E5650026BFAB /* FileProviderUIExt.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = FileProviderUIExt.entitlements; sourceTree = "<group>"; };
 		537630902B85F4980026BFAB /* ShareViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ShareViewController.xib; sourceTree = "<group>"; };
@@ -361,6 +363,7 @@
 			children = (
 				5376307B2B85E2E00026BFAB /* Extensions */,
 				53B979802B84C81F002DA742 /* DocumentActionViewController.swift */,
+				5374FD432B95EE1400C78D54 /* ShareController.swift */,
 				53FE14662B8F78B6006C4193 /* ShareOptionsView.swift */,
 				53FE14582B8E3F6C006C4193 /* ShareTableItemView.swift */,
 				531522812B8E01C6002E31BE /* ShareTableItemView.xib */,
@@ -741,6 +744,7 @@
 				53FE14672B8F78B6006C4193 /* ShareOptionsView.swift in Sources */,
 				53FE14652B8F6700006C4193 /* ShareViewDataSourceUIDelegate.swift in Sources */,
 				53B979812B84C81F002DA742 /* DocumentActionViewController.swift in Sources */,
+				5374FD442B95EE1400C78D54 /* ShareController.swift in Sources */,
 				53FE145B2B8F1305006C4193 /* NKShare+Extensions.swift in Sources */,
 				53FE14592B8E3F6C006C4193 /* ShareTableItemView.swift in Sources */,
 				53FE14552B8E28E9006C4193 /* NextcloudAccount.swift in Sources */,
