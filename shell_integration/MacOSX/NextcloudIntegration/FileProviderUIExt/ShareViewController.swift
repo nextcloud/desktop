@@ -126,4 +126,9 @@ class ShareViewController: NSViewController, ShareViewDataSourceUIDelegate {
         splitView.addArrangedSubview(optionsView)
         optionsView.isHidden = false
     }
+
+    func showError(_ errorString: String) {
+        errorMessageStackView.isHidden = false
+        errorTextLabel.stringValue = errorString
+    }
 }
