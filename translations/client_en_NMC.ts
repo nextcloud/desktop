@@ -34,11 +34,10 @@
     </message>
     <message>
         <source>USED_STORAGE_%1</source>
-        <translation>%1 of %2 in use</translation>
+        <translation>%1% of memory used</translation>
     </message>
-    <!-- From the original ts file -->
     <message>
-        <source>%1 of %2 in use</source>
+        <source>%1_OF_%2</source>
         <translation>%1 of %2</translation>
     </message>
     <message>

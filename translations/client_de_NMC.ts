@@ -36,9 +36,8 @@
         <source>USED_STORAGE_%1</source>
         <translation>Speicher zu %1% belegt</translation>
     </message>
-	<!-- From the original ts file -->
     <message>
-        <source>%1 of %2 in use</source>
+        <source>%1_OF_%2</source>
         <translation>%1 von %2</translation>
     </message>
     <message>
@@ -55,11 +54,11 @@
     </message>
     <message>
         <source>LIVE_BACKUPS_DESCRIPTION</source>
-        <translation>Synchronisieren Sie weitere beliebiege lokale Ordner in ihre MagentaCLOUD und schützen Sie damit ihre Onhalte kontienuierlich.</translation>
+        <translation>Synchronisieren Sie weitere beliebiege lokale Ordner in ihre MagentaCLOUD und schützen Sie damit ihre Inhalte kontinuierlich.</translation>
     </message>
     <message>
         <source>LIVE_BACKUP_DESCRIPTION</source>
-        <translation>Synchronisieren Sie weitere beliebiege lokale Ordner in ihre MagentaCLOUD und schützen Sie damit ihre Onhalte kontienuierlich.</translation>
+        <translation>Synchronisieren Sie weitere beliebiege lokale Ordner in ihre MagentaCLOUD und schützen Sie damit ihre Inhalte kontinuierlich.</translation>
     </message>
     <message>
         <source>YOUR_FOLDER_SYNC</source>
@@ -205,7 +204,7 @@ Smartphones zu ermöglichen.</translation>
     	<source>E2E_MNEMONIC_TEXT4</source>
     	<translation>Möchten Sie die Ende-zu-Ende-Verschlüsselung wirklich deaktivieren?
     	
-    	Durch das deaktivieren der Verschlüsselung werden verschlüsselte Inhalte nicht länger auf diesem Gerät synchronisiert. Diese Inhalte werden aber nicht gelöscht, sondern verbleiben verschlüsselt auf dem Server und auf Ihren anderen Geräten, wo die Verschlüsselung eingerichtet ist.</translation>
+Durch das deaktivieren der Verschlüsselung werden verschlüsselte Inhalte nicht länger auf diesem Gerät synchronisiert. Diese Inhalte werden aber nicht gelöscht, sondern verbleiben verschlüsselt auf dem Server und auf Ihren anderen Geräten, wo die Verschlüsselung eingerichtet ist.</translation>
     </message>
     <message>
     	<source>E2E_MNEMONIC_PASSPHRASE</source>
