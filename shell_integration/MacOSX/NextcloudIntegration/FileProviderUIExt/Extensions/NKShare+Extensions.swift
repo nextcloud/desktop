@@ -101,4 +101,10 @@ extension NKShare {
         dateFormatter.dateFormat = "YYYY-MM-dd HH:mm:ss"
         return dateFormatter.string(from: date as Date)
     }
+
+    static func formattedDateString(date: Date) -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "YYYY-MM-dd HH:mm:ss"
+        return dateFormatter.string(from: date)
+    }
 }
