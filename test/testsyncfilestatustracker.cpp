@@ -511,6 +511,52 @@ private slots:
         statusSpy.clear();
     }
 
+    void silentlyExcludedFilesRemovedFromExclude()
+    {
+        FakeFolder fakeFolder{{}};
+        fakeFolder.localModifier().mkdir("A");
+        fakeFolder.localModifier().mkdir("A/photos");
+        fakeFolder.localModifier().insert("A/photos/image.png");
+        fakeFolder.localModifier().insert("A/photos/image1.png");
+        fakeFolder.localModifier().insert("A/photos/image2.png");
+        StatusPushSpy statusSpy(fakeFolder.syncEngine());
+
+        fakeFolder.scheduleSync();
+        fakeFolder.execUntilFinished();
+        verifyThatPushMatchesPull(fakeFolder, statusSpy);
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        QCOMPARE(statusSpy.statusOf("A/photos/image.png"), SyncFileStatus(SyncFileStatus::StatusUpToDate));
+        QCOMPARE(statusSpy.statusOf("A/photos/image1.png"), SyncFileStatus(SyncFileStatus::StatusUpToDate));
+        QCOMPARE(statusSpy.statusOf("A/photos/image2.png"), SyncFileStatus(SyncFileStatus::StatusUpToDate));
+        statusSpy.clear();
+
+        // add ignore pattern for .png files and Allow to Delete
+        fakeFolder.syncEngine().excludedFiles().addManualExclude(QStringLiteral("]*.png"));
+
+        // sync again and make sure .png files are ignored
+        fakeFolder.scheduleSync();
+        fakeFolder.execUntilFinished();
+        verifyThatPushMatchesPull(fakeFolder, statusSpy);
+        QCOMPARE(statusSpy.statusOf("A/photos/image.png"), SyncFileStatus(SyncFileStatus::StatusExcluded));
+        QCOMPARE(statusSpy.statusOf("A/photos/image1.png"), SyncFileStatus(SyncFileStatus::StatusExcluded));
+        QCOMPARE(statusSpy.statusOf("A/photos/image2.png"), SyncFileStatus(SyncFileStatus::StatusExcluded));
+        statusSpy.clear();
+
+        // remove exclude for .png files
+        fakeFolder.syncEngine().excludedFiles().clearManualExcludes();
+        fakeFolder.syncEngine().excludedFiles().reloadExcludeFiles();
+
+        // make sure the status is again correct
+        fakeFolder.scheduleSync();
+        fakeFolder.execUntilFinished();
+        verifyThatPushMatchesPull(fakeFolder, statusSpy);
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        QCOMPARE(statusSpy.statusOf("A/photos/image.png"), SyncFileStatus(SyncFileStatus::StatusUpToDate));
+        QCOMPARE(statusSpy.statusOf("A/photos/image1.png"), SyncFileStatus(SyncFileStatus::StatusUpToDate));
+        QCOMPARE(statusSpy.statusOf("A/photos/image2.png"), SyncFileStatus(SyncFileStatus::StatusUpToDate));
+        statusSpy.clear();
+    }
+
 };
 
 QTEST_GUILESS_MAIN(TestSyncFileStatusTracker)
