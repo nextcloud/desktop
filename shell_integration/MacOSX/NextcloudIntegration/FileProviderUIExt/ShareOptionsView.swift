@@ -85,4 +85,31 @@ class ShareOptionsView: NSView {
         saveButton.isEnabled = enabled
         deleteButton.isEnabled = enabled
     }
+
+    @IBAction func save(_ sender: Any) {
+        Task { @MainActor in
+            let password = passwordProtectCheckbox.state == .on
+                ? passwordSecureField.stringValue
+                : ""
+            let expireDate = expirationDateCheckbox.state == .on
+                ? NKShare.formattedDateString(date: expirationDatePicker.dateValue)
+                : ""
+            let note = noteForRecipientCheckbox.state == .on
+                ? noteTextField.stringValue
+                : ""
+            let label = labelTextField.stringValue
+            let hideDownload = hideDownloadCheckbox.state == .on
+
+            setAllFields(enabled: false)
+            deleteButton.isEnabled = false
+            saveButton.isEnabled = false
+            _ = await controller?.save(
+                password: password,
+                expireDate: expireDate,
+                note: note,
+                label: label,
+                hideDownload: hideDownload
+            )
+        }
+    }
 }
