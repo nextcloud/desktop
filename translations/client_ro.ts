@@ -17,7 +17,7 @@
     <message>
         <location filename="../src/gui/tray/ActivityItemContent.qml" line="170"/>
         <source>Open file details</source>
-        <translation type="unfinished"/>
+        <translation>Deschideți detaliile fișierului</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/ActivityItemContent.qml" line="203"/>
@@ -187,7 +187,7 @@
     <message>
         <location filename="../src/gui/ErrorBox.qml" line="63"/>
         <source>Error</source>
-        <translation type="unfinished"/>
+        <translation>Eroare</translation>
     </message>
 </context>
 <context>
@@ -195,17 +195,17 @@
     <message>
         <location filename="../src/gui/filedetails/FileDetailsPage.qml" line="143"/>
         <source>Dismiss</source>
-        <translation type="unfinished"/>
+        <translation>Respinge</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/FileDetailsPage.qml" line="229"/>
         <source>Activity</source>
-        <translation type="unfinished"/>
+        <translation>Activitate</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/FileDetailsPage.qml" line="238"/>
         <source>Sharing</source>
-        <translation type="unfinished"/>
+        <translation>Partajare</translation>
     </message>
 </context>
 <context>
@@ -213,7 +213,7 @@
     <message>
         <location filename="../src/gui/filedetails/FileDetailsWindow.qml" line="34"/>
         <source>File details of %1 · %2</source>
-        <translation type="unfinished"/>
+        <translation>Detalii fișier %1 · %2</translation>
     </message>
 </context>
 <context>
@@ -229,7 +229,7 @@
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderFileDelegate.qml" line="96"/>
         <source>Delete</source>
-        <translation type="unfinished"/>
+        <translation>Șterge</translation>
     </message>
 </context>
 <context>
@@ -252,7 +252,7 @@
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="132"/>
         <source>Advanced</source>
-        <translation type="unfinished"/>
+        <translation>Avansat</translation>
     </message>
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="139"/>
@@ -283,12 +283,12 @@
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderSyncStatus.qml" line="57"/>
         <source>Syncing</source>
-        <translation type="unfinished"/>
+        <translation>Se sincronizează</translation>
     </message>
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderSyncStatus.qml" line="57"/>
         <source>All synced!</source>
-        <translation type="unfinished"/>
+        <translation>Toate sincronizate!</translation>
     </message>
 </context>
 <context>
@@ -1074,23 +1074,23 @@ Această acțiune va opri toate sincronizările în derulare din acest moment.</
     <message>
         <location filename="../src/gui/application.cpp" line="461"/>
         <source>1 account</source>
-        <translation type="unfinished"/>
+        <translation>1 cont</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="463"/>
         <source>%1 folders</source>
         <comment>number of folders imported</comment>
-        <translation type="unfinished"/>
+        <translation>1 foldere</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="464"/>
         <source>1 folder</source>
-        <translation type="unfinished"/>
+        <translation>1 folder</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="466"/>
         <source>Legacy import</source>
-        <translation type="unfinished"/>
+        <translation>Import mostenit</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="467"/>
@@ -1352,12 +1352,12 @@ Această acțiune va opri toate sincronizările în derulare din acest moment.</
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.cpp" line="253"/>
         <source>Use invalid name</source>
-        <translation type="unfinished"/>
+        <translation>Utilizați un nume nevalid</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.cpp" line="278"/>
         <source>Filename contains illegal characters: %1</source>
-        <translation type="unfinished"/>
+        <translation>Numele fișierului conține caractere ilegale: %1</translation>
     </message>
 </context>
 <context>
@@ -1538,7 +1538,7 @@ Această acțiune va opri toate sincronizările în derulare din acest moment.</
     <message>
         <location filename="../src/gui/connectionvalidator.cpp" line="343"/>
         <source>Network Error</source>
-        <translation type="unfinished"/>
+        <translation>Eroare de rețea</translation>
     </message>
 </context>
 <context>
@@ -1612,7 +1612,7 @@ Această acțiune va opri toate sincronizările în derulare din acest moment.</
         <location filename="../src/gui/editlocallyjob.cpp" line="132"/>
         <location filename="../src/gui/editlocallyjob.cpp" line="588"/>
         <source>Please try again.</source>
-        <translation type="unfinished"/>
+        <translation>Va rog sa incercati din nou.</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="68"/>
@@ -1713,12 +1713,12 @@ Această acțiune va opri toate sincronizările în derulare din acest moment.</
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="680"/>
         <source>File %1 now locked.</source>
-        <translation type="unfinished"/>
+        <translation>Fișierul %1 este acum blocat.</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="689"/>
         <source>File %1 could not be locked.</source>
-        <translation type="unfinished"/>
+        <translation>Fișierul %1 nu a putut fi blocat.</translation>
     </message>
 </context>
 <context>
@@ -1739,14 +1739,14 @@ Aceasta poate fi o problemă cu librariile OpenSSL.</translation>
         <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="171"/>
         <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="199"/>
         <source>Error fetching metadata.</source>
-        <translation type="unfinished"/>
+        <translation>Eroare la preluarea metadatelor.</translation>
     </message>
     <message>
         <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="114"/>
         <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="120"/>
         <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="213"/>
         <source>Error locking folder.</source>
-        <translation type="unfinished"/>
+        <translation>Eroare la blocarea folderului.</translation>
     </message>
     <message>
         <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="147"/>
@@ -2362,7 +2362,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <location filename="../src/gui/folderstatusmodel.cpp" line="1090"/>
         <source>%1 %2 (%3 of %4)</source>
         <extracomment>Example text: &quot;uploading foobar.png (2MB of 2MB)&quot;</extracomment>
-        <translation>%1 %2 (%3 of %4)</translation>
+        <translation>%1 %2 (%3 din %4)</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1094"/>
@@ -2374,23 +2374,23 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <location filename="../src/gui/folderstatusmodel.cpp" line="1115"/>
         <source>A few seconds left, %1 of %2, file %3 of %4</source>
         <extracomment>Example text: &quot;5 minutes left, 12 MB of 345 MB, file 6 of 7&quot;</extracomment>
-        <translation type="unfinished"/>
+        <translation>Câteva secunde rămase, %1 din %2, fișierul %3 din %4</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1120"/>
         <source>%5 left, %1 of %2, file %3 of %4</source>
-        <translation>%5 dreapta, %1 sau %2, fișier %3 sau %4</translation>
+        <translation>%5 ramas, %1 din %2, fișier %3 din %4</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1129"/>
         <source>%1 of %2, file %3 of %4</source>
         <extracomment>Example text: &quot;12 MB of 345 MB, file 6 of 7&quot;</extracomment>
-        <translation>%1 din %2, dișier %3 sau %4</translation>
+        <translation>%1 din %2, fișier %3 din %4</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1136"/>
         <source>file %1 of %2</source>
-        <translation>fișier %1 sau %2</translation>
+        <translation>fișier %1 din %2</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1191"/>
@@ -2590,7 +2590,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/generalsettings.ui" line="33"/>
         <source>Ask for confirmation before synchronizing new folders larger than</source>
-        <translation type="unfinished"/>
+        <translation>Cereți o confirmare înainte de a sincroniza foldere noi mai mari de</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="41"/>
@@ -2621,7 +2621,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/generalsettings.ui" line="96"/>
         <source>Notify when synchronised folders grow larger than specified limit</source>
-        <translation type="unfinished"/>
+        <translation>Notificați când folderele sincronizate cresc mai mult decât limita specificată.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="96"/>
@@ -2641,7 +2641,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/generalsettings.ui" line="123"/>
         <source>Automatically disable synchronisation of folders that overcome limit</source>
-        <translation type="unfinished"/>
+        <translation>Dezactivați automat sincronizarea folderelor care depășesc limita.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="134"/>
@@ -2651,7 +2651,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/generalsettings.ui" line="273"/>
         <source>Ask for confirmation before synchronizing external storages</source>
-        <translation type="unfinished"/>
+        <translation>Solicitați confirmarea înainte de sincronizarea stocărilor externe</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="147"/>
@@ -2687,7 +2687,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/generalsettings.ui" line="218"/>
         <source>Info</source>
-        <translation type="unfinished"/>
+        <translation>Informatii</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="229"/>
@@ -2697,12 +2697,12 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/generalsettings.ui" line="230"/>
         <source>Desktop client x.x.x</source>
-        <translation type="unfinished"/>
+        <translation>Client desktop x.x.x</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="260"/>
         <source>Update channel</source>
-        <translation type="unfinished"/>
+        <translation>Canal pentru actualizări</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="151"/>
@@ -2724,27 +2724,27 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/generalsettings.ui" line="284"/>
         <source>Show sync folders in &amp;Explorer&apos;s Navigation Pane</source>
-        <translation type="unfinished"/>
+        <translation>Afișați folderele de sincronizare în panoul de navigare al &amp;Explorer-ului.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="323"/>
         <source>&amp;Automatically check for updates</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Verificarea automată a actualizărilor</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="339"/>
         <source>Check Now</source>
-        <translation type="unfinished"/>
+        <translation>Verifică acum</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="363"/>
         <source>Usage Documentation</source>
-        <translation type="unfinished"/>
+        <translation>Documentație de utilizare</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="370"/>
         <source>Legal Notice</source>
-        <translation type="unfinished"/>
+        <translation>Aviz juridic</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="66"/>
@@ -2769,7 +2769,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/generalsettings.ui" line="434"/>
         <source>Show server &amp;notifications</source>
-        <translation type="unfinished"/>
+        <translation>Arată &amp;notificările serverului</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="441"/>
@@ -2779,17 +2779,17 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="144"/>
         <source>Server notifications that require attention.</source>
-        <translation type="unfinished"/>
+        <translation>Notificări ale serverului care necesită atenție.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="148"/>
         <source>Show call notification dialogs.</source>
-        <translation type="unfinished"/>
+        <translation>Afișați casetele de dialog pentru notificarea apelurilor.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="162"/>
         <source>You cannot disable autostart because system-wide autostart is enabled.</source>
-        <translation type="unfinished"/>
+        <translation>Nu puteți dezactiva pornirea automată deoarece pornirea automată la nivel de sistem este activată.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="350"/>
@@ -2859,12 +2859,12 @@ Note that this selects only what pool upgrades are taken from, and that there ar
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="97"/>
         <source>Please enter %1 password:&lt;br&gt;&lt;br&gt;Username: %2&lt;br&gt;Account: %3&lt;br&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Vă rugăm să introduceți parola %1:&lt;br&gt;&lt;br&gt;Utilizator: %2&lt;br&gt;Cont: %3&lt;br&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="111"/>
         <source>Reading from keychain failed with error: &quot;%1&quot;</source>
-        <translation type="unfinished"/>
+        <translation>Citirea din keychain a eșuat cu eroarea: &quot;%1&quot;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="118"/>
@@ -2874,7 +2874,7 @@ Note that this selects only what pool upgrades are taken from, and that there ar
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="156"/>
         <source>&lt;a href=&quot;%1&quot;&gt;Click here&lt;/a&gt; to request an app password from the web interface.</source>
-        <translation type="unfinished"/>
+        <translation>&lt;a href=&quot;%1&quot;&gt;Faceți clic aici&lt;/a&gt; pentru a solicita o parolă de aplicație de la interfața web.</translation>
     </message>
 </context>
 <context>
@@ -2892,7 +2892,7 @@ Note that this selects only what pool upgrades are taken from, and that there ar
     <message>
         <location filename="../src/gui/ignorelisteditor.ui" line="26"/>
         <source>Sync hidden files</source>
-        <translation type="unfinished"/>
+        <translation>Sincronizați fișierele ascunse</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.ui" line="36"/>
@@ -3123,7 +3123,7 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/libsync/logger.cpp" line="354"/>
         <source>&lt;nobr&gt;File &quot;%1&quot;&lt;br/&gt;cannot be opened for writing.&lt;br/&gt;&lt;br/&gt;The log output &lt;b&gt;cannot&lt;/b&gt; be saved!&lt;/nobr&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;nobr&gt;Fișierul &quot;%1&quot;&lt;br/&gt;nu poate fi deschis pentru scriere. &lt;br/&gt;&lt;br/&gt;Jurnalul &lt;b&gt;nu poate&lt;/b&gt; fi salvat!&lt;/nobr&gt;</translation>
     </message>
 </context>
 <context>
@@ -3131,7 +3131,7 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="408"/>
         <source>New Version Available</source>
-        <translation type="unfinished"/>
+        <translation>O nouă versiune este disponibilă</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="414"/>
@@ -3141,7 +3141,7 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="427"/>
         <source>Skip this time</source>
-        <translation type="unfinished"/>
+        <translation>Săriți de data aceasta</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="428"/>
@@ -5256,7 +5256,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="363"/>
         <source>30 minutes</source>
-        <translation type="unfinished"/>
+        <translation>30 minute</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="366"/>
@@ -5284,17 +5284,17 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="410"/>
         <source>Less than a minute</source>
-        <translation type="unfinished"/>
+        <translation>Mai putin de un minut</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="414"/>
         <source>1 minute</source>
-        <translation type="unfinished"/>
+        <translation>1 minut</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="416"/>
         <source>%1 minutes</source>
-        <translation type="unfinished"/>
+        <translation>%1 minut</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="423"/>
@@ -6243,7 +6243,7 @@ Server replied with error: %2</source>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="339"/>
         <source>%n minute(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 minut(e)</numerusform><numerusform>%n minut(e)</numerusform><numerusform>%n minut(e)</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="340"/>

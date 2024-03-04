@@ -528,7 +528,7 @@ Should the account be imported?</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="94"/>
         <source>You seem to have the Virtual Files feature enabled on this folder. At the moment, it is not possible to implicitly download virtual files that are end-to-end encrypted. To get the best experience with virtual files and end-to-end encryption, make sure the encrypted folder is marked with &quot;Make always available locally&quot;.</source>
-        <translation type="unfinished"/>
+        <translation>Parece que tiene habilitada la función de archivos virtuales en esta carpeta. En este momento no es posible descargar implícitamente archivos virtuales cifrados punto a punto. Para obtener la mejor experiencia con archivos virtuales y cifrado punto a punto, asegúrese que la carpeta cifrada esté marcada con &quot;Hacer disponible localmente siempre&quot;.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="102"/>
@@ -549,7 +549,8 @@ Should the account be imported?</source>
         <location filename="../src/gui/accountsettings.cpp" line="122"/>
         <source>This will encrypt your folder and all files within it. These files will no longer be accessible without your encryption mnemonic key. 
 &lt;b&gt;This process is not reversible. Are you sure you want to proceed?&lt;/b&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Esto cifrará su carpeta y todos los archivos contenidos en ella. Ya no se podrá acceder a estos archivos sin su llave mnemotécnica de cifrado.
+&lt;b&gt;Este proceso no es reversible. ¿Seguro que desea continuar?&lt;/b&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="232"/>
@@ -595,7 +596,8 @@ Should the account be imported?</source>
         <location filename="../src/gui/accountsettings.cpp" line="341"/>
         <source>End-to-end encryption is not configured on this device. Once it is configured, you will be able to encrypt this folder.
 Would you like to set up end-to-end encryption?</source>
-        <translation type="unfinished"/>
+        <translation>El cifrado punto a punto no está configurado en este dispositivo. Una vez que esté configurado podrá cifrar esta carpeta.
+¿Desea configurar el cifrado punto a punto?</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="366"/>
@@ -744,7 +746,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1016"/>
         <source>To protect your Cryptographic Identity, we encrypt it with a mnemonic of 12 dictionary words. Please note these down and keep them safe. They will be needed to add other devices to your account (like your mobile phone or laptop).</source>
-        <translation type="unfinished"/>
+        <translation>Para proteger su identidad criptográfica, la ciframos con un mnemotécnico de 12 palabras del diccionario. Por favor, anótelas y guárdelas en un lugar seguro. Las necesitará para agregar otros dispositivos a su cuenta (como su teléfono móvil o computadora portátil).</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1041"/>
@@ -879,7 +881,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1577"/>
         <source>End-to-end encryption has been enabled on this account with another device.&lt;br&gt;It can be enabled on this device by entering your mnemonic.&lt;br&gt;This will enable synchronisation of existing encrypted folders.</source>
-        <translation type="unfinished"/>
+        <translation>Se ha habilitado el cifrado punto a punto en esta cuenta con otro dispositivo.&lt;br&gt;Se puede habilitar en este dispositivo ingresando su mnemotécnico.&lt;br&gt;Esto permitirá la sincronización de carpetas cifradas existentes.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1568"/>
@@ -1016,7 +1018,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="79"/>
         <source>An encrypted pkcs12 bundle is strongly recommended as a copy will be stored in the configuration file.</source>
-        <translation type="unfinished"/>
+        <translation>Es altamente recomendado un paquete de cifrado pkcs12 dado que una copia se guardará en el archivo de configuración.</translation>
     </message>
     <message>
         <location filename="../src/gui/addcertificatedialog.cpp" line="38"/>
@@ -1034,7 +1036,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/application.cpp" line="177"/>
         <source>Some settings were configured in %1 versions of this client and use features that are not available in this version.&lt;br&gt;&lt;br&gt;Continuing will mean &lt;b&gt;%2 these settings&lt;/b&gt;.&lt;br&gt;&lt;br&gt;The current configuration file was already backed up to &lt;i&gt;%3&lt;/i&gt;.</source>
-        <translation type="unfinished"/>
+        <translation>Algunas configuraciones fueron configuradas en versiones %1 de este cliente y utilizan características que no están disponibles en esta versión.&lt;br&gt;&lt;br&gt;Continuar significará que &lt;b&gt;%2 estas configuraciones&lt;/b&gt;.&lt;br&gt;&lt;br&gt;El archivo de configuración actual ya se ha respaldado en &lt;i&gt;%3&lt;/i&gt;.</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="183"/>

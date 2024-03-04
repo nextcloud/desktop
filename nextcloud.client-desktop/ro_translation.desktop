@@ -23,5 +23,5 @@ Icon=@APPLICATION_EXECUTABLE@
 # Translations
 Name[ro]=@Numele_aplicației@ Client de sincronizare pentru PC
 Comment[ro]=@APPLICATION_NAME@ client de sincronizare pentru desktop
-GenericName[ro]=Sincronizare director
+GenericName[ro]=Sincronizare folder
 Icon[ro]=@APPLICATION_ICON_NAME@
