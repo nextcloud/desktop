@@ -34,21 +34,30 @@ class ShareOptionsView: NSView {
     private func update() {
         guard let share = controller?.share else {
             reset()
+            setAllFields(enabled: false)
             saveButton.isEnabled = false
             deleteButton.isEnabled = false
             return
         }
-        labelTextField.stringValue = share.label
-        uploadEditPermissionCheckbox.state = share.canEdit ? .on : .off
-        hideDownloadCheckbox.state = share.hideDownload ? .on : .off
-        passwordProtectCheckbox.state = share.password.isEmpty ? .off : .on
-        passwordSecureField.isHidden = passwordProtectCheckbox.state == .off
-        expirationDateCheckbox.state = share.expirationDate == nil ? .off : .on
-        expirationDatePicker.isHidden = expirationDateCheckbox.state == .off
-        noteForRecipientCheckbox.state = share.note.isEmpty ? .off : .on
-        noteTextField.isHidden = noteForRecipientCheckbox.state == .off
+
         deleteButton.isEnabled = share.canDelete
-        saveButton.isEnabled = true
+        saveButton.isEnabled = share.canEdit
+
+        if share.canEdit {
+            setAllFields(enabled: true)
+            labelTextField.stringValue = share.label
+            uploadEditPermissionCheckbox.state = share.canEdit ? .on : .off
+            hideDownloadCheckbox.state = share.hideDownload ? .on : .off
+            passwordProtectCheckbox.state = share.password.isEmpty ? .off : .on
+            passwordSecureField.isHidden = passwordProtectCheckbox.state == .off
+            expirationDateCheckbox.state = share.expirationDate == nil ? .off : .on
+            expirationDatePicker.isHidden = expirationDateCheckbox.state == .off
+            noteForRecipientCheckbox.state = share.note.isEmpty ? .off : .on
+            noteTextField.isHidden = noteForRecipientCheckbox.state == .off
+        } else {
+            setAllFields(enabled: false)
+            reset()
+        }
     }
 
     func reset() {
