@@ -77,6 +77,7 @@ class ShareTableViewDataSource: NSObject, NSTableViewDataSource, NSTableViewDele
                 return
             }
             account = convertedAccount
+            await sharesTableView?.deselectAll(self)
             shares = await fetch(
                 itemIdentifier: itemIdentifier, itemRelativePath: serverPath as String
             )
