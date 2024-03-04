@@ -19,17 +19,29 @@ class ShareController: ObservableObject {
         self.kit = kit
     }
 
-    func save() async -> NKError? {
+    func save(
+        password: String? = nil,
+        expireDate: String? = nil,
+        permissions: Int = 1,
+        publicUpload: Bool = false,
+        note: String? = nil,
+        label: String? = nil,
+        hideDownload: Bool,
+        attributes: String? = nil,
+        options: NKRequestOptions = NKRequestOptions()
+    ) async -> NKError? {
         return await withCheckedContinuation { continuation in
             kit.updateShare(
                 idShare: share.idShare,
-                password: share.password,
-                expireDate: share.expirationDateString ?? "",
-                permissions: share.permissions,
-                note: share.note,
-                label: share.label,
-                hideDownload: share.hideDownload,
-                attributes: share.attributes
+                password: password,
+                expireDate: expireDate,
+                permissions: permissions,
+                publicUpload: publicUpload,
+                note: note,
+                label: label,
+                hideDownload: hideDownload,
+                attributes: attributes,
+                options: options
             ) { account, share, data, error in
                 Logger.shareController.info("Received update response: \(share?.url ?? "")")
                 defer { continuation.resume(returning: error) }
