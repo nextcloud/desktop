@@ -26,6 +26,7 @@ class ShareOptionsView: NSView {
     var controller: ShareController? {
         didSet {
             cancellable?.cancel()
+            createMode = false
             update()
             cancellable = controller.publisher.sink { _ in self.update() }
         }

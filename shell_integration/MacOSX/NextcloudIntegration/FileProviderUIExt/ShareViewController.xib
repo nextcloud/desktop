@@ -46,7 +46,7 @@
                                             <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyUpOrDown" image="doc" catalog="system" id="laO-OA-5sJ"/>
                                         </imageView>
                                         <stackView distribution="fill" orientation="vertical" alignment="leading" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="oSY-fV-uws">
-                                            <rect key="frame" x="51" y="0.0" width="401" height="43"/>
+                                            <rect key="frame" x="51" y="0.0" width="375" height="43"/>
                                             <subviews>
                                                 <textField focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="slV-H6-zJ3">
                                                     <rect key="frame" x="-2" y="24" width="78" height="19"/>
@@ -74,6 +74,17 @@
                                                 <real value="3.4028234663852886e+38"/>
                                             </customSpacing>
                                         </stackView>
+                                        <button translatesAutoresizingMaskIntoConstraints="NO" id="BMA-BP-wHc">
+                                            <rect key="frame" x="434" y="-3.5" width="18.5" height="51"/>
+                                            <buttonCell key="cell" type="bevel" title="Create share" bezelStyle="regularSquare" imagePosition="only" alignment="center" imageScaling="proportionallyDown" inset="2" id="cdh-AC-lt4">
+                                                <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                <font key="font" metaFont="system"/>
+                                                <imageReference key="image" image="plus" catalog="system" symbolScale="large"/>
+                                            </buttonCell>
+                                            <connections>
+                                                <action selector="closeAction:" target="-2" id="WC4-wl-0Bk"/>
+                                            </connections>
+                                        </button>
                                         <button translatesAutoresizingMaskIntoConstraints="NO" id="aDA-n9-Zly">
                                             <rect key="frame" x="460" y="-5" width="20" height="54"/>
                                             <buttonCell key="cell" type="bevel" title="Close" bezelStyle="rounded" imagePosition="only" alignment="center" imageScaling="proportionallyDown" inset="2" id="zNR-DC-3xZ">
@@ -89,15 +100,19 @@
                                     <constraints>
                                         <constraint firstAttribute="height" constant="43" id="C79-af-CZw"/>
                                         <constraint firstItem="oSY-fV-uws" firstAttribute="height" secondItem="9kj-aB-aJh" secondAttribute="height" id="I6w-n6-pgZ"/>
+                                        <constraint firstAttribute="bottom" secondItem="BMA-BP-wHc" secondAttribute="bottom" id="RE6-Rg-yv9"/>
                                         <constraint firstItem="zSV-DV-Ray" firstAttribute="height" secondItem="9kj-aB-aJh" secondAttribute="height" id="X4V-Vr-Q7m"/>
+                                        <constraint firstItem="BMA-BP-wHc" firstAttribute="top" secondItem="9kj-aB-aJh" secondAttribute="top" id="hrc-la-YmY"/>
                                         <constraint firstItem="aDA-n9-Zly" firstAttribute="height" secondItem="9kj-aB-aJh" secondAttribute="height" id="qCh-8Z-jcN"/>
                                     </constraints>
                                     <visibilityPriorities>
                                         <integer value="1000"/>
                                         <integer value="1000"/>
                                         <integer value="1000"/>
+                                        <integer value="1000"/>
                                     </visibilityPriorities>
                                     <customSpacing>
+                                        <real value="3.4028234663852886e+38"/>
                                         <real value="3.4028234663852886e+38"/>
                                         <real value="3.4028234663852886e+38"/>
                                         <real value="3.4028234663852886e+38"/>
@@ -267,8 +282,8 @@
                                             <rect key="frame" x="0.0" y="73" width="463" height="28"/>
                                             <datePickerCell key="cell" borderStyle="bezel" alignment="left" useCurrentDate="YES" id="EHU-Gu-Dfh">
                                                 <font key="font" metaFont="system"/>
-                                                <date key="date" timeIntervalSinceReferenceDate="731323643.29542005">
-                                                    <!--2024-03-05 09:27:23 +0000-->
+                                                <date key="date" timeIntervalSinceReferenceDate="731325563.59052801">
+                                                    <!--2024-03-05 09:59:23 +0000-->
                                                 </date>
                                                 <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                 <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -433,6 +448,7 @@
     <resources>
         <image name="arrow.up.square.fill" catalog="system" width="15" height="14"/>
         <image name="doc" catalog="system" width="14" height="16"/>
+        <image name="plus" catalog="system" width="18" height="17"/>
         <image name="trash.fill" catalog="system" width="15" height="17"/>
         <image name="xmark.circle.fill" catalog="system" width="20" height="20"/>
         <namedColor name="AccentColor">
