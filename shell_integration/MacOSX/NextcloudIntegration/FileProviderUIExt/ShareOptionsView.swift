@@ -47,7 +47,7 @@ class ShareOptionsView: NSView {
         if share.canEdit {
             setAllFields(enabled: true)
             labelTextField.stringValue = share.label
-            uploadEditPermissionCheckbox.state = share.canEdit ? .on : .off
+            uploadEditPermissionCheckbox.state = share.shareesCanEdit ? .on : .off
             hideDownloadCheckbox.state = share.hideDownload ? .on : .off
             passwordProtectCheckbox.state = share.password.isEmpty ? .off : .on
             passwordSecureField.isHidden = passwordProtectCheckbox.state == .off
@@ -89,6 +89,8 @@ class ShareOptionsView: NSView {
 
     @IBAction func save(_ sender: Any) {
         Task { @MainActor in
+            guard let controller = controller else { return }
+            let share = controller.share
             let password = passwordProtectCheckbox.state == .on
                 ? passwordSecureField.stringValue
                 : ""
@@ -100,13 +102,18 @@ class ShareOptionsView: NSView {
                 : ""
             let label = labelTextField.stringValue
             let hideDownload = hideDownloadCheckbox.state == .on
+            let uploadAndEdit = uploadEditPermissionCheckbox.state == .on
+            let permissions = uploadAndEdit
+                ? share.permissions | NKShare.PermissionValues.updateShare.rawValue
+                : share.permissions & ~NKShare.PermissionValues.updateShare.rawValue
 
             setAllFields(enabled: false)
             deleteButton.isEnabled = false
             saveButton.isEnabled = false
-            let error = await controller?.save(
+            let error = await controller.save(
                 password: password,
                 expireDate: expireDate,
+                permissions: permissions,
                 note: note,
                 label: label,
                 hideDownload: hideDownload
