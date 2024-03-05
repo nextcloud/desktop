@@ -1820,7 +1820,7 @@ Esto podría ser un problema con su librería OpenSSL.</translation>
     <message>
         <location filename="../src/gui/creds/flow2auth.cpp" line="102"/>
         <source>The polling URL does not start with HTTPS despite the login URL started with HTTPS. Login will not be possible because this might be a security issue. Please contact your administrator.</source>
-        <translation type="unfinished"/>
+        <translation>La URL de votación no comienza con HTTPS a pesar de que la URL de inicio de sesión sí comenzó con HTTPS. El inicio de sesión no es posible porque esto podría ser un problema de seguridad. Por favor, contacte a su administrador.</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/flow2auth.cpp" line="113"/>
@@ -1849,7 +1849,7 @@ Esto podría ser un problema con su librería OpenSSL.</translation>
     <message>
         <location filename="../src/gui/creds/flow2auth.cpp" line="219"/>
         <source>The returned server URL does not start with HTTPS despite the login URL started with HTTPS. Login will not be possible because this might be a security issue. Please contact your administrator.</source>
-        <translation type="unfinished"/>
+        <translation>La URL del servidor devuelta no comienza con HTTPS a pesar de que la URL de inicio de sesión sí comenzó con HTTPS. El inicio de sesión es posible porque esto podría ser un problema de seguridad. Por favor, contacte a su administrador.</translation>
     </message>
 </context>
 <context>
