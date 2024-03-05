@@ -256,7 +256,7 @@ class DiscoveryPhase : public QObject
      * Useful for avoiding processing of items that have already been claimed in
      * a rename (would otherwise be discovered as deletions).
      */
-    [[nodiscard]] bool isRenamed(const QString &p) const { return _renamedItemsLocal.contains(p) || _renamedItemsRemote.contains(p); }
+    [[nodiscard]] bool isRenamed(const QString &p) const;
 
     int _currentlyActiveJobs = 0;
 
