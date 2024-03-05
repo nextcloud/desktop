@@ -26,7 +26,8 @@ class ShareTableViewDataSource: NSObject, NSTableViewDataSource, NSTableViewDele
     }
 
     private(set) var kit: NextcloudKit?
-    private var itemURL: URL?
+    private(set) var itemURL: URL?
+    private(set) var itemServerRelativePath: String?
     private var shares: [NKShare] = [] {
         didSet { Task { @MainActor in sharesTableView?.reloadData() } }
     }
@@ -76,6 +77,7 @@ class ShareTableViewDataSource: NSObject, NSTableViewDataSource, NSTableViewDele
                 Logger.sharesDataSource.error("Failed to get details from FileProviderExt")
                 return
             }
+            itemServerRelativePath = serverPath as String
             account = convertedAccount
             await sharesTableView?.deselectAll(self)
             shares = await fetch(
