@@ -27,16 +27,16 @@
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
         <view translatesAutoresizingMaskIntoConstraints="NO" id="Jw6-da-U8j">
-            <rect key="frame" x="0.0" y="0.0" width="500" height="696"/>
+            <rect key="frame" x="0.0" y="0.0" width="500" height="766"/>
             <subviews>
                 <splitView arrangesAllSubviews="NO" dividerStyle="thin" translatesAutoresizingMaskIntoConstraints="NO" id="91w-SP-6sl">
-                    <rect key="frame" x="10" y="10" width="480" height="676"/>
+                    <rect key="frame" x="10" y="10" width="480" height="746"/>
                     <subviews>
                         <stackView distribution="fill" orientation="vertical" alignment="leading" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wGI-UV-bB3">
-                            <rect key="frame" x="0.0" y="0.0" width="480" height="399"/>
+                            <rect key="frame" x="0.0" y="0.0" width="480" height="444"/>
                             <subviews>
                                 <stackView distribution="fill" orientation="horizontal" alignment="top" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9kj-aB-aJh">
-                                    <rect key="frame" x="0.0" y="356" width="480" height="43"/>
+                                    <rect key="frame" x="0.0" y="401" width="480" height="43"/>
                                     <subviews>
                                         <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="zSV-DV-Ray">
                                             <rect key="frame" x="0.0" y="-3.5" width="43" height="50"/>
@@ -218,19 +218,45 @@
                             </customSpacing>
                         </stackView>
                         <view translatesAutoresizingMaskIntoConstraints="NO" id="EXb-m8-yzj" customClass="ShareOptionsView" customModule="FileProviderUIExt" customModuleProvider="target">
-                            <rect key="frame" x="0.0" y="400" width="480" height="276"/>
+                            <rect key="frame" x="0.0" y="445" width="480" height="301"/>
                             <subviews>
                                 <stackView distribution="fill" orientation="vertical" alignment="leading" spacing="5" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="T4D-9c-PyA">
-                                    <rect key="frame" x="10" y="10" width="460" height="256"/>
+                                    <rect key="frame" x="10" y="10" width="460" height="281"/>
                                     <subviews>
                                         <textField focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" verticalCompressionResistancePriority="749" translatesAutoresizingMaskIntoConstraints="NO" id="AWy-Qo-wHH">
-                                            <rect key="frame" x="-2" y="240" width="464" height="16"/>
+                                            <rect key="frame" x="-2" y="265" width="464" height="16"/>
                                             <textFieldCell key="cell" lineBreakMode="clipping" alignment="center" title="Share options" id="fzf-0v-uHo">
                                                 <font key="font" metaFont="systemBold"/>
                                                 <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                             </textFieldCell>
                                         </textField>
+                                        <popUpButton verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="aRB-vw-b4r">
+                                            <rect key="frame" x="-3" y="236" width="467" height="25"/>
+                                            <popUpButtonCell key="cell" type="push" title="Public link share" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="JhA-rv-1xy" id="S60-Qi-URJ">
+                                                <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
+                                                <font key="font" metaFont="menu"/>
+                                                <menu key="menu" id="yag-Vc-J7Y">
+                                                    <items>
+                                                        <menuItem title="Public link share" state="on" id="JhA-rv-1xy"/>
+                                                        <menuItem title="User share" id="CpL-qc-lAA"/>
+                                                        <menuItem title="Group share" id="bnp-aV-ZvE"/>
+                                                        <menuItem title="Email share" id="5DB-JD-Ij0">
+                                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                                        </menuItem>
+                                                        <menuItem title="Federated cloud share" id="RZP-ME-baz">
+                                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                                        </menuItem>
+                                                        <menuItem title="Circle share" id="yDE-lS-rJZ">
+                                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                                        </menuItem>
+                                                        <menuItem title="Talk conversation share" id="aHo-Mr-vTn">
+                                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                                        </menuItem>
+                                                    </items>
+                                                </menu>
+                                            </popUpButtonCell>
+                                        </popUpButton>
                                         <textField focusRingType="none" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="CXW-ZO-B2f">
                                             <rect key="frame" x="0.0" y="213" width="460" height="22"/>
                                             <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" placeholderString="Share label" bezelStyle="round" id="ZsJ-zc-mFT">
@@ -346,6 +372,7 @@
                                         <constraint firstItem="io6-Kg-fLl" firstAttribute="leading" secondItem="T4D-9c-PyA" secondAttribute="leading" id="94h-0I-pw6"/>
                                         <constraint firstAttribute="trailing" secondItem="pkv-9L-nhv" secondAttribute="trailing" id="IFt-uJ-etl"/>
                                         <constraint firstAttribute="trailing" secondItem="CXW-ZO-B2f" secondAttribute="trailing" id="Uvk-cg-D23"/>
+                                        <constraint firstAttribute="trailing" secondItem="aRB-vw-b4r" secondAttribute="trailing" id="Zp9-vZ-oxU"/>
                                         <constraint firstItem="pkv-9L-nhv" firstAttribute="leading" secondItem="T4D-9c-PyA" secondAttribute="leading" id="bFe-9X-gFR"/>
                                         <constraint firstItem="AWy-Qo-wHH" firstAttribute="leading" secondItem="T4D-9c-PyA" secondAttribute="leading" id="dyr-SA-Kmy"/>
                                         <constraint firstAttribute="trailing" secondItem="46m-5F-ME5" secondAttribute="trailing" id="gV6-Jx-VH4"/>
@@ -354,6 +381,7 @@
                                         <constraint firstItem="AWy-Qo-wHH" firstAttribute="top" secondItem="T4D-9c-PyA" secondAttribute="top" id="ndl-52-MnV"/>
                                         <constraint firstItem="CXW-ZO-B2f" firstAttribute="leading" secondItem="T4D-9c-PyA" secondAttribute="leading" id="oWL-JR-HTk"/>
                                         <constraint firstItem="mWb-eX-nfh" firstAttribute="leading" secondItem="T4D-9c-PyA" secondAttribute="leading" id="wiX-kw-Ohy"/>
+                                        <constraint firstItem="aRB-vw-b4r" firstAttribute="leading" secondItem="T4D-9c-PyA" secondAttribute="leading" id="xPY-Ll-QCz"/>
                                         <constraint firstAttribute="trailing" secondItem="mWb-eX-nfh" secondAttribute="trailing" id="yUj-je-uXE"/>
                                         <constraint firstAttribute="trailing" secondItem="AWy-Qo-wHH" secondAttribute="trailing" id="zxC-eX-HrE"/>
                                     </constraints>
@@ -369,8 +397,10 @@
                                         <integer value="1000"/>
                                         <integer value="1000"/>
                                         <integer value="1000"/>
+                                        <integer value="1000"/>
                                     </visibilityPriorities>
                                     <customSpacing>
+                                        <real value="3.4028234663852886e+38"/>
                                         <real value="3.4028234663852886e+38"/>
                                         <real value="3.4028234663852886e+38"/>
                                         <real value="3.4028234663852886e+38"/>
@@ -417,7 +447,7 @@
                     </holdingPriorities>
                 </splitView>
                 <visualEffectView blendingMode="withinWindow" material="HUDWindow" state="followsWindowActiveState" translatesAutoresizingMaskIntoConstraints="NO" id="1ud-mC-gQV">
-                    <rect key="frame" x="10" y="287" width="480" height="300"/>
+                    <rect key="frame" x="10" y="312" width="480" height="300"/>
                     <subviews>
                         <progressIndicator wantsLayer="YES" maxValue="100" indeterminate="YES" style="spinning" translatesAutoresizingMaskIntoConstraints="NO" id="acb-Yu-Zpm">
                             <rect key="frame" x="224" y="134" width="32" height="32"/>
