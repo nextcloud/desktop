@@ -45,6 +45,7 @@ class ShareTableViewDataSource: NSObject, NSTableViewDataSource, NSTableViewDele
     }
 
     func loadItem(url: URL) {
+        itemServerRelativePath = nil
         itemURL = url
         Task {
             await reload()
