@@ -4,6 +4,7 @@
         <deployment identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="22505"/>
         <capability name="Image references" minToolsVersion="12.0"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -32,10 +33,10 @@
                     <rect key="frame" x="10" y="10" width="480" height="676"/>
                     <subviews>
                         <stackView distribution="fill" orientation="vertical" alignment="leading" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wGI-UV-bB3">
-                            <rect key="frame" x="0.0" y="0.0" width="480" height="371"/>
+                            <rect key="frame" x="0.0" y="0.0" width="480" height="399"/>
                             <subviews>
                                 <stackView distribution="fill" orientation="horizontal" alignment="top" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9kj-aB-aJh">
-                                    <rect key="frame" x="0.0" y="328" width="480" height="43"/>
+                                    <rect key="frame" x="0.0" y="356" width="480" height="43"/>
                                     <subviews>
                                         <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="zSV-DV-Ray">
                                             <rect key="frame" x="0.0" y="-3.5" width="43" height="50"/>
@@ -103,7 +104,7 @@
                                     </customSpacing>
                                 </stackView>
                                 <stackView distribution="fillProportionally" orientation="horizontal" alignment="top" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" verticalCompressionResistancePriority="1000" detachesHiddenViews="YES" id="dFs-Gh-2WQ">
-                                    <rect key="frame" x="0.0" y="280" width="480" height="40"/>
+                                    <rect key="frame" x="0.0" y="308" width="480" height="40"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                     <subviews>
                                         <textField focusRingType="none" verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="770-HW-oC7">
@@ -141,7 +142,7 @@
                                     </customSpacing>
                                 </stackView>
                                 <scrollView autohidesScrollers="YES" horizontalLineScroll="17" horizontalPageScroll="10" verticalLineScroll="17" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZzY-1Z-3xa">
-                                    <rect key="frame" x="0.0" y="-28" width="480" height="300"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="480" height="300"/>
                                     <clipView key="contentView" drawsBackground="NO" id="Ixg-th-Nw0">
                                         <rect key="frame" x="1" y="1" width="478" height="298"/>
                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -202,10 +203,10 @@
                             </customSpacing>
                         </stackView>
                         <view translatesAutoresizingMaskIntoConstraints="NO" id="EXb-m8-yzj" customClass="ShareOptionsView" customModule="FileProviderUIExt" customModuleProvider="target">
-                            <rect key="frame" x="0.0" y="372" width="480" height="304"/>
+                            <rect key="frame" x="0.0" y="400" width="480" height="276"/>
                             <subviews>
                                 <stackView distribution="fill" orientation="vertical" alignment="leading" spacing="5" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="T4D-9c-PyA">
-                                    <rect key="frame" x="10" y="38" width="460" height="256"/>
+                                    <rect key="frame" x="10" y="10" width="460" height="256"/>
                                     <subviews>
                                         <textField focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" verticalCompressionResistancePriority="749" translatesAutoresizingMaskIntoConstraints="NO" id="AWy-Qo-wHH">
                                             <rect key="frame" x="-2" y="240" width="464" height="16"/>
@@ -266,8 +267,8 @@
                                             <rect key="frame" x="0.0" y="73" width="463" height="28"/>
                                             <datePickerCell key="cell" borderStyle="bezel" alignment="left" useCurrentDate="YES" id="EHU-Gu-Dfh">
                                                 <font key="font" metaFont="system"/>
-                                                <date key="date" timeIntervalSinceReferenceDate="731261895.00995398">
-                                                    <!--2024-03-04 16:18:15 +0000-->
+                                                <date key="date" timeIntervalSinceReferenceDate="731323643.29542005">
+                                                    <!--2024-03-05 09:27:23 +0000-->
                                                 </date>
                                                 <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                 <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -291,22 +292,28 @@
                                         <stackView distribution="fillEqually" orientation="horizontal" alignment="bottom" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="mWb-eX-nfh">
                                             <rect key="frame" x="0.0" y="0.0" width="460" height="20"/>
                                             <subviews>
-                                                <button horizontalHuggingPriority="249" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="PaV-TL-cbq">
+                                                <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Bmf-yY-Y7V">
                                                     <rect key="frame" x="-7" y="-7" width="240" height="32"/>
-                                                    <buttonCell key="cell" type="push" title="Save" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="O1I-T0-iRC">
+                                                    <buttonCell key="cell" type="push" title="Delete" bezelStyle="rounded" image="trash.fill" catalog="system" imagePosition="leading" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Kb4-Qg-9Ag">
                                                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                         <font key="font" metaFont="system"/>
                                                     </buttonCell>
+                                                    <color key="bezelColor" name="systemRedColor" catalog="System" colorSpace="catalog"/>
+                                                    <color key="contentTintColor" name="systemRedColor" catalog="System" colorSpace="catalog"/>
+                                                    <connections>
+                                                        <action selector="delete:" target="EXb-m8-yzj" id="PZq-SH-QVa"/>
+                                                    </connections>
+                                                </button>
+                                                <button horizontalHuggingPriority="249" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="PaV-TL-cbq">
+                                                    <rect key="frame" x="227" y="-7" width="240" height="32"/>
+                                                    <buttonCell key="cell" type="push" title="Save" bezelStyle="rounded" image="arrow.up.square.fill" catalog="system" imagePosition="trailing" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="O1I-T0-iRC">
+                                                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                        <font key="font" metaFont="system"/>
+                                                    </buttonCell>
+                                                    <color key="bezelColor" name="AccentColor"/>
                                                     <connections>
                                                         <action selector="save:" target="EXb-m8-yzj" id="O4N-dj-SlN"/>
                                                     </connections>
-                                                </button>
-                                                <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Bmf-yY-Y7V">
-                                                    <rect key="frame" x="227" y="-7" width="240" height="32"/>
-                                                    <buttonCell key="cell" type="push" title="Delete" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Kb4-Qg-9Ag">
-                                                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                                        <font key="font" metaFont="system"/>
-                                                    </buttonCell>
                                                 </button>
                                             </subviews>
                                             <visibilityPriorities>
@@ -424,7 +431,12 @@
         </view>
     </objects>
     <resources>
+        <image name="arrow.up.square.fill" catalog="system" width="15" height="14"/>
         <image name="doc" catalog="system" width="14" height="16"/>
+        <image name="trash.fill" catalog="system" width="15" height="17"/>
         <image name="xmark.circle.fill" catalog="system" width="20" height="20"/>
+        <namedColor name="AccentColor">
+            <color red="0.0" green="0.46000000000000002" blue="0.89000000000000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
     </resources>
 </document>
