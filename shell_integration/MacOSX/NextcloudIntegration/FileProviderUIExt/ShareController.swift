@@ -54,4 +54,18 @@ class ShareController: ObservableObject {
             }
         }
     }
+
+    func delete() async -> NKError? {
+        Logger.shareController.info("Deleting share: \(self.share.url)")
+        return await withCheckedContinuation { continuation in
+            kit.deleteShare(idShare: share.idShare) { account, error in
+                Logger.shareController.info("Received delete response: \(self.share.url)")
+                defer { continuation.resume(returning: error) }
+                guard error == .success else {
+                    Logger.shareController.error("Error deleting save: \(error.errorDescription)")
+                    return
+                }
+            }
+        }
+    }
 }
