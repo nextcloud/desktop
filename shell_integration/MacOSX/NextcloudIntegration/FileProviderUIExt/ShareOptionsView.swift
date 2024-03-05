@@ -124,4 +124,17 @@ class ShareOptionsView: NSView {
             await dataSource?.reload()
         }
     }
+
+    @IBAction func delete(_ sender: Any) {
+        Task { @MainActor in
+            setAllFields(enabled: false)
+            deleteButton.isEnabled = false
+            saveButton.isEnabled = false
+            let error = await controller?.delete()
+            if let error = error, error != .success {
+                dataSource?.uiDelegate?.showError("Error deleting share: \(error.errorDescription)")
+            }
+            await dataSource?.reload()
+        }
+    }
 }
