@@ -261,6 +261,11 @@ void DiscoveryPhase::setSelectiveSyncWhiteList(const QStringList &list)
     _selectiveSyncWhiteList.sort();
 }
 
+bool DiscoveryPhase::isRenamed(const QString &p) const
+{
+    return _renamedItemsLocal.contains(p) || _renamedItemsRemote.contains(p);
+}
+
 void DiscoveryPhase::scheduleMoreJobs()
 {
     auto limit = qMax(1, _syncOptions._parallelNetworkJobs);

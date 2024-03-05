@@ -224,10 +224,10 @@ void PropagateLocalRename::start()
 
     auto &vfs = propagator()->syncOptions()._vfs;
     const auto previousNameInDb = propagator()->adjustRenamedPath(_item->_file);
-    const auto existingFile = propagator()->fullLocalPath(propagator()->adjustRenamedPath(_item->_file));
+    const auto existingFile = propagator()->fullLocalPath(previousNameInDb);
     const auto targetFile = propagator()->fullLocalPath(_item->_renameTarget);
 
-    const auto fileAlreadyMoved = !QFileInfo::exists(propagator()->fullLocalPath(_item->_originalFile));
+    const auto fileAlreadyMoved = !QFileInfo::exists(propagator()->fullLocalPath(_item->_originalFile)) && QFileInfo::exists(existingFile);
     auto pinState = OCC::PinState::Unspecified;
     if (!fileAlreadyMoved) {
         auto pinStateResult = vfs->pinState(propagator()->adjustRenamedPath(_item->_file));
@@ -239,6 +239,7 @@ void PropagateLocalRename::start()
     // if the file is a file underneath a moved dir, the _item->file is equal
     // to _item->renameTarget and the file is not moved as a result.
     qCDebug(lcPropagateLocalRename) << _item->_file << _item->_renameTarget << _item->_originalFile << previousNameInDb << (fileAlreadyMoved ? "original file has already moved" : "original file is still there");
+    Q_ASSERT(QFileInfo::exists(propagator()->fullLocalPath(_item->_originalFile)) || QFileInfo::exists(existingFile));
     if (_item->_file != _item->_renameTarget) {
         propagator()->reportProgress(*_item, 0);
         qCDebug(lcPropagateLocalRename) << "MOVE " << existingFile << " => " << targetFile;
