@@ -80,6 +80,7 @@ void DiscoveryPhase::checkFolderSizeLimit(const QString &path, const std::functi
                                                    << "http://owncloud.org/ns:size");
 
     connect(propfindJob, &PropfindJob::finishedWithError, this, [=] {
+        qCWarning(lcDiscovery) << "=> propfindJob->reply()->error():" << propfindJob->reply()->error() << "- propfindJob->reply()->errorString():" << propfindJob->reply()->errorString();
         return completionCallback(false);
     });
     connect(propfindJob, &PropfindJob::result, this, [=](const QVariantMap &values) {
@@ -228,8 +229,10 @@ void DiscoveryPhase::enqueueDirectoryToDelete(const QString &path, ProcessDirect
 void DiscoveryPhase::startJob(ProcessDirectoryJob *job)
 {
     ENFORCE(!_currentRootJob);
+    qCWarning(lcDiscovery) << "=> DiscoveryPhase::startJob for:" << job->_dirItem;
     connect(this, &DiscoveryPhase::itemDiscovered, this, &DiscoveryPhase::slotItemDiscovered, Qt::UniqueConnection);
     connect(job, &ProcessDirectoryJob::finished, this, [this, job] {
+        qCWarning(lcDiscovery) << "=> ProcessDirectoryJob::finished for" << job->_dirItem;
         ENFORCE(_currentRootJob == sender());
         _currentRootJob = nullptr;
         if (job->_dirItem)
@@ -271,6 +274,10 @@ void DiscoveryPhase::scheduleMoreJobs()
 
 void DiscoveryPhase::slotItemDiscovered(const OCC::SyncFileItemPtr &item)
 {
+    qCWarning(lcDiscovery) << "=> DiscoveryPhase::slotItemDiscovered:"
+                           << "| item->_file:" << item->_file
+                           << "| item->_direction:" << item->_direction
+                           << "| item->_instruction:" << item->_instruction;
     if (item->_instruction == CSYNC_INSTRUCTION_ERROR && item->_direction == SyncFileItem::Up) {
         _hasUploadErrorItems = true;
     }

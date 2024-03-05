@@ -597,6 +597,7 @@ void Application::slotAccountStateAdded(AccountState *accountState)
 
 void Application::slotCleanup()
 {
+    qCWarning(lcApplication) << "=> User!! Application is about to quite/close!!";
     AccountManager::instance()->save();
     FolderMan::instance()->unloadAndDeleteAllFolders();
 

@@ -36,6 +36,8 @@ constexpr qint64 activityDefaultExpirationTimeMsecs = 1000 * 60 * 10;
 }
 
 namespace OCC {
+
+Q_LOGGING_CATEGORY(lcUserModel, "nextcloud.gui.usermodel", QtInfoMsg)
     
 TrayFolderInfo::TrayFolderInfo(const QString &name, const QString &parentPath, const QString &fullPath, FolderType folderType)
     : _name(name)
@@ -1098,6 +1100,7 @@ void User::slotSendReplyMessage(const int activityIndex, const QString &token, c
 
 void User::forceSyncNow() const
 {
+    qCWarning(lcUserModel) << "=> Force sync now for" << getFolder()->path();
     FolderMan::instance()->forceSyncForFolder(getFolder());
 }
 

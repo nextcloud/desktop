@@ -206,6 +206,8 @@ void ConnectionValidator::slotAuthFailed(QNetworkReply *reply)
     auto job = qobject_cast<PropfindJob *>(sender());
     Status stat = Timeout;
 
+    qCWarning(lcConnectionValidator) << "=> reply->error():" << reply->error() << "- job->errorString():" << job->errorString();
+
     if (reply->error() == QNetworkReply::SslHandshakeFailedError) {
         _errors << job->errorStringParsingBody();
         stat = SslError;

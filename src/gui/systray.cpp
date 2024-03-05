@@ -442,11 +442,13 @@ void Systray::slotCurrentUserChanged()
 
 void Systray::slotUnpauseAllFolders()
 {
+    qCWarning(lcSystray) << "=> User!! Resume/unpause syncing all folders!!";
     setPauseOnAllFoldersHelper(false);
 }
 
 void Systray::slotPauseAllFolders()
 {
+    qCWarning(lcSystray) << "=> User!! Pause syncing all folders!!";
     setPauseOnAllFoldersHelper(true);
 }
 
