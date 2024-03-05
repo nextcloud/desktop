@@ -12,9 +12,6 @@ class ShareTableItemView: NSTableCellView {
     @IBOutlet private weak var typeImageView: NSImageView!
     @IBOutlet private weak var label: NSTextField!
     @IBOutlet private weak var copyLinkButton: NSButton!
-    @IBOutlet private weak var optionsButton: NSButton!
-    @IBOutlet private weak var popover: NSPopover!
-    @IBOutlet private weak var popoverContentViewController: NSViewController!
     private var originalCopyImage: NSImage?
     private var copiedButtonImage: NSImage?
     private var tempButtonTimer: Timer?
