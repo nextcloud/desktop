@@ -19,6 +19,15 @@ extension NKShare {
         case talkConversation = 10
     }
 
+    enum PermissionValues: Int {
+        case readShare = 1
+        case updateShare = 2
+        case createShare = 4
+        case deleteShare = 8
+        case shareShare = 16
+        case all = 31
+    }
+
     var typeImage: NSImage? {
         var image: NSImage?
         switch shareType {
