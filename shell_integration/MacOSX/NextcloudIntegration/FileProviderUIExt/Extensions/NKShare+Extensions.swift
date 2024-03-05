@@ -111,6 +111,17 @@ extension NKShare {
         return dateFormatter.string(from: date as Date)
     }
 
+    var shareesCanEdit: Bool {
+        get { (permissions & PermissionValues.updateShare.rawValue) != 0 }
+        set {
+            if newValue {
+                permissions |= NKShare.PermissionValues.updateShare.rawValue
+            } else {
+                permissions &= ~NKShare.PermissionValues.updateShare.rawValue
+            }
+        }
+    }
+
     static func formattedDateString(date: Date) -> String {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "YYYY-MM-dd HH:mm:ss"
