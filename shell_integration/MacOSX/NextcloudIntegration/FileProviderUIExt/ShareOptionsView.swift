@@ -21,6 +21,14 @@ class ShareOptionsView: NSView {
     @IBOutlet private weak var noteTextField: NSTextField!
     @IBOutlet private weak var saveButton: NSButton!
     @IBOutlet private weak var deleteButton: NSButton!
+    @IBOutlet private weak var shareTypePicker: NSPopUpButton!
+    @IBOutlet private weak var publicLinkShareMenuItem: NSMenuItem!
+    @IBOutlet private weak var userShareMenuItem: NSMenuItem!
+    @IBOutlet private weak var groupShareMenuItem: NSMenuItem!
+    @IBOutlet private weak var emailShareMenuItem: NSMenuItem!
+    @IBOutlet private weak var federatedCloudShareMenuItem: NSMenuItem!
+    @IBOutlet private weak var circleShare: NSMenuItem!
+    @IBOutlet private weak var talkConversationShare: NSMenuItem!
 
     var dataSource: ShareTableViewDataSource?
     var controller: ShareController? {
