@@ -10,6 +10,8 @@ import Combine
 import NextcloudKit
 import OSLog
 
+// TODO: Handle shareWith!
+// TODO: Handle visibility of textfields on relevant checkbox toggle
 class ShareOptionsView: NSView {
     @IBOutlet private weak var optionsTitleTextField: NSTextField!
     @IBOutlet private weak var shareRecipientTextField: NSTextField!  // Hide if public link share
@@ -131,6 +133,10 @@ class ShareOptionsView: NSView {
         noteTextField.isEnabled = enabled
         saveButton.isEnabled = enabled
         deleteButton.isEnabled = enabled
+    }
+
+    @IBAction func passwordCheckboxAction(_ sender: Any) {
+        passwordSecureField.isHidden = passwordProtectCheckbox.state == .off
     }
 
     @IBAction func save(_ sender: Any) {
