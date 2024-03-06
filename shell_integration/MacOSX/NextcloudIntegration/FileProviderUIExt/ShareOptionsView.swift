@@ -8,6 +8,7 @@
 import AppKit
 import Combine
 import NextcloudKit
+import OSLog
 
 class ShareOptionsView: NSView {
     @IBOutlet private weak var labelTextField: NSTextField!
@@ -112,8 +113,6 @@ class ShareOptionsView: NSView {
 
     @IBAction func save(_ sender: Any) {
         Task { @MainActor in
-            guard let controller = controller else { return }
-            let share = controller.share
             let password = passwordProtectCheckbox.state == .on
                 ? passwordSecureField.stringValue
                 : ""
@@ -126,6 +125,75 @@ class ShareOptionsView: NSView {
             let label = labelTextField.stringValue
             let hideDownload = hideDownloadCheckbox.state == .on
             let uploadAndEdit = uploadEditPermissionCheckbox.state == .on
+
+            guard !createMode else {
+                Logger.shareOptionsView.info("Creating new share!")
+
+                guard let dataSource = dataSource,
+                      let kit = dataSource.kit,
+                      let itemServerRelativePath = dataSource.itemServerRelativePath
+                else {
+                    Logger.shareOptionsView.error("Cannot create new share due to missing data.")
+                    Logger.shareOptionsView.error("dataSource: \(self.dataSource)")
+                    Logger.shareOptionsView.error("kit: \(self.dataSource?.kit)")
+                    Logger.shareOptionsView.error(
+                        "path: \(self.dataSource?.itemServerRelativePath ?? "")"
+                    )
+                    return
+                }
+
+                let selectedShareTypeItem = shareTypePicker.selectedItem
+                var selectedShareType = NKShare.ShareType.publicLink
+                if selectedShareTypeItem == publicLinkShareMenuItem {
+                    selectedShareType = .publicLink
+                } else if selectedShareTypeItem == userShareMenuItem {
+                    selectedShareType = .user
+                } else if selectedShareTypeItem == groupShareMenuItem {
+                    selectedShareType = .group
+                } else if selectedShareTypeItem == emailShareMenuItem {
+                    selectedShareType = .email
+                } else if selectedShareTypeItem == federatedCloudShareMenuItem {
+                    selectedShareType = .federatedCloud
+                } else if selectedShareTypeItem == circleShare {
+                    selectedShareType = .circle
+                } else if selectedShareTypeItem == talkConversationShare {
+                    selectedShareType = .talkConversation
+                }
+
+                var permissions = NKShare.PermissionValues.all.rawValue
+                permissions = uploadAndEdit
+                    ? permissions | NKShare.PermissionValues.updateShare.rawValue
+                    : permissions & ~NKShare.PermissionValues.updateShare.rawValue
+
+                setAllFields(enabled: false)
+                deleteButton.isEnabled = false
+                saveButton.isEnabled = false
+                let error = await ShareController.create(
+                    kit: kit,
+                    shareType: selectedShareType,
+                    itemServerRelativePath: itemServerRelativePath,
+                    shareWith: "",
+                    password: password,
+                    expireDate: expireDate,
+                    permissions: permissions,
+                    note: note,
+                    label: label,
+                    hideDownload: hideDownload
+                )
+                if let error = error, error != .success {
+                    dataSource.uiDelegate?.showError("Error creating: \(error.errorDescription)")
+                }
+                await dataSource.reload()
+                return
+            }
+
+            Logger.shareOptionsView.info("Editing existing share!")
+
+            guard let controller = controller else {
+                Logger.shareOptionsView.error("No valid share controller, cannot edit share.")
+                return
+            }
+            let share = controller.share
             let permissions = uploadAndEdit
                 ? share.permissions | NKShare.PermissionValues.updateShare.rawValue
                 : share.permissions & ~NKShare.PermissionValues.updateShare.rawValue
@@ -143,8 +211,11 @@ class ShareOptionsView: NSView {
             )
             if let error = error, error != .success {
                 dataSource?.uiDelegate?.showError("Error updating share: \(error.errorDescription)")
+                setAllFields(enabled: true)
+            } else {
+                dataSource?.uiDelegate?.hideOptions()
+                await dataSource?.reload()
             }
-            await dataSource?.reload()
         }
     }
 
