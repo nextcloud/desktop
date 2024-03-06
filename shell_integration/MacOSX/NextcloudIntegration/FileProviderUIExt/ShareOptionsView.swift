@@ -53,6 +53,7 @@ class ShareOptionsView: NSView {
         didSet {
             Logger.shareOptionsView.info("Create mode set: \(self.createMode)")
             shareTypePicker.isHidden = !createMode
+            shareRecipientTextField.isHidden = !createMode
             labelTextField.isHidden = createMode  // Cannot set label on create API call
             guard createMode else { return }
             optionsTitleTextField.stringValue = "Create new share"
@@ -112,6 +113,8 @@ class ShareOptionsView: NSView {
     }
 
     func setAllFields(enabled: Bool) {
+        shareTypePicker.isEnabled = enabled
+        shareRecipientTextField.isEnabled = enabled
         labelTextField.isEnabled = enabled
         uploadEditPermissionCheckbox.isEnabled = enabled
         hideDownloadCheckbox.isEnabled = enabled
@@ -173,6 +176,7 @@ class ShareOptionsView: NSView {
                 } else if selectedShareTypeItem == talkConversationShare {
                     selectedShareType = .talkConversation
                 }
+                let shareWith = shareRecipientTextField.stringValue
 
                 var permissions = NKShare.PermissionValues.all.rawValue
                 permissions = uploadAndEdit
@@ -186,7 +190,7 @@ class ShareOptionsView: NSView {
                     kit: kit,
                     shareType: selectedShareType,
                     itemServerRelativePath: itemServerRelativePath,
-                    shareWith: "",
+                    shareWith: shareWith,
                     password: password,
                     expireDate: expireDate,
                     permissions: permissions,
