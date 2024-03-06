@@ -315,6 +315,9 @@
                                                 <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                                 <font key="font" metaFont="system"/>
                                             </buttonCell>
+                                            <connections>
+                                                <action selector="expirationDateCheckboxAction:" target="EXb-m8-yzj" id="KHG-U0-rsG"/>
+                                            </connections>
                                         </button>
                                         <datePicker verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="46m-5F-ME5">
                                             <rect key="frame" x="0.0" y="73" width="463" height="28"/>

@@ -139,6 +139,10 @@ class ShareOptionsView: NSView {
         passwordSecureField.isHidden = passwordProtectCheckbox.state == .off
     }
 
+    @IBAction func expirationDateCheckboxAction(_ sender: Any) {
+        expirationDatePicker.isHidden = expirationDateCheckbox.state == .off
+    }
+
     @IBAction func save(_ sender: Any) {
         Task { @MainActor in
             let password = passwordProtectCheckbox.state == .on
