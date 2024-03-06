@@ -341,7 +341,7 @@ void ConnectionValidator::reportResult(Status status)
 
 void ConnectionValidator::showSystrayErrorMessage()
 {
-    Systray::instance()->showMessage(tr("Network Error"),
+    Systray::instance()->showMessage(tr("Connection issue"),
                                      _errors.join("<br>"),
                                      QSystemTrayIcon::Warning);
 }
