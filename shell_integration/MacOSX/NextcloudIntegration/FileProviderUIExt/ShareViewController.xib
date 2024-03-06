@@ -434,6 +434,7 @@
                                 <outlet property="labelTextField" destination="CXW-ZO-B2f" id="otQ-jh-Psr"/>
                                 <outlet property="noteForRecipientCheckbox" destination="c10-ub-U31" id="aG6-4P-cBv"/>
                                 <outlet property="noteTextField" destination="io6-Kg-fLl" id="JKm-A1-SqR"/>
+                                <outlet property="optionsTitleTextField" destination="AWy-Qo-wHH" id="BjX-oW-0Lp"/>
                                 <outlet property="passwordProtectCheckbox" destination="ylD-hi-7Oq" id="qdw-aF-uh2"/>
                                 <outlet property="passwordSecureField" destination="pkv-9L-nhv" id="992-i5-CPF"/>
                                 <outlet property="publicLinkShareMenuItem" destination="JhA-rv-1xy" id="usv-L6-M7k"/>

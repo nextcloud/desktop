@@ -11,6 +11,7 @@ import NextcloudKit
 import OSLog
 
 class ShareOptionsView: NSView {
+    @IBOutlet private weak var optionsTitleTextField: NSTextField!
     @IBOutlet private weak var labelTextField: NSTextField!
     @IBOutlet private weak var uploadEditPermissionCheckbox: NSButton!
     @IBOutlet private weak var hideDownloadCheckbox: NSButton!
@@ -35,6 +36,7 @@ class ShareOptionsView: NSView {
     var controller: ShareController? {
         didSet {
             guard controller != nil else { return }
+            optionsTitleTextField.stringValue = "Share options"
             cancellable?.cancel()
             createMode = false
             update()
@@ -47,6 +49,7 @@ class ShareOptionsView: NSView {
             shareTypePicker.isHidden = !createMode
             labelTextField.isHidden = createMode  // Cannot set label on create API call
             guard createMode else { return }
+            optionsTitleTextField.stringValue = "Create new share"
             cancellable?.cancel()
             cancellable = nil
             controller = nil
