@@ -114,7 +114,7 @@ bool Utility::hasLaunchOnStartup(const QString &appName)
 
     @autoreleasepool {
         NSFileManager *fileManager = [NSFileManager defaultManager];
-        NSString *appIdentifier = QCoreApplication::organizationDomain().toNSString();
+        NSString const *appIdentifier = QCoreApplication::applicationName().toNSString();
         NSString *plistFile = [NSHomeDirectory() stringByAppendingFormat:@"/Library/LaunchAgents/%@.plist", appIdentifier];
 
         if ([fileManager fileExistsAtPath:plistFile]) {
@@ -187,7 +187,7 @@ void Utility::setLaunchOnStartup(const QString &appName, const QString &guiName,
     @autoreleasepool {
         NSFileManager *fileManager = [NSFileManager defaultManager];
         NSString *fullPath = QCoreApplication::applicationFilePath().toNSString();
-        NSString *appIdentifier = QCoreApplication::organizationDomain().toNSString();
+        NSString *const appIdentifier = QCoreApplication::applicationName().toNSString();
         NSString *plistFile = [NSHomeDirectory() stringByAppendingFormat:@"/Library/LaunchAgents/%@.plist", appIdentifier];
 
         // An error might occur in the code below, but we cannot report anything, so we just ignore them.
