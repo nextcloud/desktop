@@ -1569,8 +1569,8 @@ Ekintza honek unean uneko sinkronizazioa bertan behera utziko du.</translation>
         <translation>Zerbitzariko errorea: PROPFINDaren erantzunak ez du XML formaturik!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="668"/>
-        <location filename="../src/libsync/discoveryphase.cpp" line="696"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="673"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="701"/>
         <source>Encrypted metadata setup error!</source>
         <translation type="unfinished"/>
     </message>

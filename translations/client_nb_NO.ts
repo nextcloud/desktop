@@ -1569,8 +1569,8 @@ Denne handlingen vil avbryte enhver synkronisering som kjører.</translation>
         <translation>Serverfeil: PROPFIND-svaret er ikke XML-formatert!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="668"/>
-        <location filename="../src/libsync/discoveryphase.cpp" line="696"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="673"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="701"/>
         <source>Encrypted metadata setup error!</source>
         <translation>Feil ved oppsett av kryptert metadata!</translation>
     </message>

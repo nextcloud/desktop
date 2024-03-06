@@ -1563,8 +1563,8 @@ Custa atzione at a firmare cale si siat sincronizatzione immoe in esecutzione.</
         <translation>Errore de su serbidore: sa risposta PROPFIND no est in formadu XML!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="668"/>
-        <location filename="../src/libsync/discoveryphase.cpp" line="696"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="673"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="701"/>
         <source>Encrypted metadata setup error!</source>
         <translation type="unfinished"/>
     </message>

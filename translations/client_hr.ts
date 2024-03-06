@@ -1563,8 +1563,8 @@ Ova će radnja prekinuti bilo koju trenutačnu sinkronizaciju.</translation>
         <translation>Pogreška poslužitelja: PROPFIND odgovor nije formatiran u XML-u!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="668"/>
-        <location filename="../src/libsync/discoveryphase.cpp" line="696"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="673"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="701"/>
         <source>Encrypted metadata setup error!</source>
         <translation type="unfinished"/>
     </message>

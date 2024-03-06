@@ -1564,8 +1564,8 @@ This action will abort any currently running synchronization.</source>
         <translation>Грешка на сървъра: PROPFIND отговорът не е форматиран в XML!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="668"/>
-        <location filename="../src/libsync/discoveryphase.cpp" line="696"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="673"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="701"/>
         <source>Encrypted metadata setup error!</source>
         <translation type="unfinished"/>
     </message>

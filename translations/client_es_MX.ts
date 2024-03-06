@@ -1569,8 +1569,8 @@ This action will abort any currently running synchronization.</source>
         <translation>Error del servidor: ¡La respuesta PROPFIND no tiene formato XML!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="668"/>
-        <location filename="../src/libsync/discoveryphase.cpp" line="696"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="673"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="701"/>
         <source>Encrypted metadata setup error!</source>
         <translation>¡Hubo un error al configurar los metadatos cifrados!</translation>
     </message>
@@ -2064,7 +2064,11 @@ Esto podría ser un problema con su librería OpenSSL.</translation>
 This means that the synchronization client might not upload local changes immediately and will instead only scan for local changes and upload them occasionally (every two hours by default).
 
 %1</source>
-        <translation type="unfinished"/>
+        <translation>No se puedieron rastrear de manera confiable los cambios en las carpetas sincronizadas.
+
+Esto significa que el cliente de sincronización podría no cargar los cambios locales de inmediato y sólo escaneará los cambios locales y los cargará ocasionalmente (cada dos horas de manera predeterminada).
+
+%1</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1533"/>
@@ -2077,14 +2081,19 @@ This means that the synchronization client might not upload local changes immedi
 These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
 If you decide to restore the files, they will be re-synced with the server if you have rights to do so.
 If you decide to delete the files, they will be unavailable to you, unless you are the owner.</source>
-        <translation type="unfinished"/>
+        <translation>Todos los archivos en la carpeta de sincronización &quot;%1&quot; fueron eliminados en el servidor.
+Estas eliminaciones se sincronizarán con la carpeta de sincronización local, lo que hará que dichos archivos no estén disponibles a menos que tenga el derecho de restaurarlos.
+Si decide restaurar los archivos, se volverán a sincronizar con el servidor si tiene los derechos para hacerlo.
+Si decide eliminar los archivos, no estarán disponibles para ud., a menos que sea el propietario.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1416"/>
         <source>All the files in your local sync folder &quot;%1&quot; were deleted. These deletes will be synchronized with your server, making such files unavailable unless restored.
 Are you sure you want to sync those actions with the server?
 If this was an accident and you decide to keep your files, they will be re-synced from the server.</source>
-        <translation type="unfinished"/>
+        <translation>Todos los archivos en la carpeta de sincronización &quot;%1&quot; serán eliminados. Esta eliminación será sincronizada con el servidor, haciendo que esos archivos no estén disponibles a menos que sean restaurados.
+¿Está seguro que desea sincronizar estas acciones con el servidor?
+Si esto ha sido un accidente y decide mantener sus archivos, serán resincronizados desde el servidor.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1420"/>
@@ -3300,7 +3309,7 @@ Tenga en cuenta que usar la línea de comandos para el registro anulará esta co
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="108"/>
         <source>A new update for %1 is about to be installed. The updater may ask for additional privileges during the process. Your computer may reboot to complete the installation.</source>
-        <translation type="unfinished"/>
+        <translation>Una nueva actualización para %1 está a punto de ser instalada. El programa de actualización puede solicitar privilegios adicionales durante el proceso. Puede ser que deba reiniciar su computadora para completar la instalación.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="152"/>
