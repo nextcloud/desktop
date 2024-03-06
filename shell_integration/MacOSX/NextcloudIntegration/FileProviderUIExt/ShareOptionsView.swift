@@ -25,10 +25,24 @@ class ShareOptionsView: NSView {
     var dataSource: ShareTableViewDataSource?
     var controller: ShareController? {
         didSet {
+            guard controller != nil else { return }
             cancellable?.cancel()
             createMode = false
             update()
             cancellable = controller.publisher.sink { _ in self.update() }
+        }
+    }
+    var createMode = false {
+        didSet {
+            Logger.shareOptionsView.info("Create mode set: \(self.createMode)")
+            shareTypePicker.isHidden = !createMode
+            labelTextField.isHidden = createMode  // Cannot set label on create API call
+            guard createMode else { return }
+            cancellable?.cancel()
+            cancellable = nil
+            controller = nil
+            reset()
+            setAllFields(enabled: true)
         }
     }
     private var cancellable: AnyCancellable?
