@@ -294,6 +294,9 @@
                                                 <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                                 <font key="font" metaFont="system"/>
                                             </buttonCell>
+                                            <connections>
+                                                <action selector="passwordCheckboxAction:" target="EXb-m8-yzj" id="QMn-RM-jdf"/>
+                                            </connections>
                                         </button>
                                         <secureTextField focusRingType="none" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="pkv-9L-nhv">
                                             <rect key="frame" x="0.0" y="123" width="460" height="22"/>
