@@ -17,17 +17,16 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA               *
  ******************************************************************************/
 
-#include <KCoreAddons/KPluginFactory>
-#include <KCoreAddons/KPluginLoader>
-#include <KIOWidgets/kabstractfileitemactionplugin.h>
+#include <KPluginFactory>
+#include <KAbstractFileItemActionPlugin>
 #include <QtNetwork/QLocalSocket>
-#include <KIOCore/kfileitem.h>
-#include <KIOCore/KFileItemListProperties>
-#include <QtWidgets/QAction>
-#include <QtWidgets/QMenu>
-#include <QtCore/QDir>
-#include <QtCore/QTimer>
-#include <QtCore/QEventLoop>
+#include <KFileItem>
+#include <KFileItemListProperties>
+#include <QAction>
+#include <QMenu>
+#include <QDir>
+#include <QTimer>
+#include <QEventLoop>
 #include "ownclouddolphinpluginhelper.h"
 
 class OwncloudDolphinPluginAction : public KAbstractFileItemActionPlugin
@@ -78,12 +77,12 @@ public:
                     action->setDisabled(true);
                 auto call = args.value(1).toLatin1();
                 connect(action, &QAction::triggered, [helper, call, files] {
-                    helper->sendCommand(QByteArray(call + ":" + files + "\n"));
+                    helper->sendCommand(QByteArray(call + ":" + files + "\n").constData());
                 });
             }
         });
         QTimer::singleShot(100, &loop, &QEventLoop::quit); // add a timeout to be sure we don't freeze dolphin
-        helper->sendCommand(QByteArray("GET_MENU_ITEMS:" + files + "\n"));
+        helper->sendCommand(QByteArray("GET_MENU_ITEMS:" + files + "\n").constData());
         loop.exec(QEventLoop::ExcludeUserInputEvents);
         disconnect(con);
         if (menu->actions().isEmpty()) {
@@ -112,20 +111,20 @@ public:
 
         auto shareAction = menu->addAction(helper->shareActionTitle());
         connect(shareAction, &QAction::triggered, this, [localFile, helper] {
-            helper->sendCommand(QByteArray("SHARE:" + localFile.toUtf8() + "\n"));
+            helper->sendCommand(QByteArray("SHARE:" + localFile.toUtf8() + "\n").constData());
         });
 
         if (!helper->copyPrivateLinkTitle().isEmpty()) {
             auto copyPrivateLinkAction = menu->addAction(helper->copyPrivateLinkTitle());
             connect(copyPrivateLinkAction, &QAction::triggered, this, [localFile, helper] {
-                helper->sendCommand(QByteArray("COPY_PRIVATE_LINK:" + localFile.toUtf8() + "\n"));
+                helper->sendCommand(QByteArray("COPY_PRIVATE_LINK:" + localFile.toUtf8() + "\n").constData());
             });
         }
 
         if (!helper->emailPrivateLinkTitle().isEmpty()) {
             auto emailPrivateLinkAction = menu->addAction(helper->emailPrivateLinkTitle());
             connect(emailPrivateLinkAction, &QAction::triggered, this, [localFile, helper] {
-                helper->sendCommand(QByteArray("EMAIL_PRIVATE_LINK:" + localFile.toUtf8() + "\n"));
+                helper->sendCommand(QByteArray("EMAIL_PRIVATE_LINK:" + localFile.toUtf8() + "\n").constData());
             });
         }
         return { menuaction };
