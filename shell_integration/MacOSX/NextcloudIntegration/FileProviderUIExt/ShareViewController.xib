@@ -423,17 +423,25 @@
                                 <constraint firstAttribute="bottom" secondItem="T4D-9c-PyA" secondAttribute="bottom" constant="10" id="r5C-pm-lv4"/>
                             </constraints>
                             <connections>
+                                <outlet property="circleShare" destination="yDE-lS-rJZ" id="yHV-25-RJd"/>
                                 <outlet property="deleteButton" destination="Bmf-yY-Y7V" id="Wd0-LR-DV5"/>
+                                <outlet property="emailShareMenuItem" destination="5DB-JD-Ij0" id="LD5-P8-V2l"/>
                                 <outlet property="expirationDateCheckbox" destination="HaL-4Z-csA" id="vIf-I8-e3i"/>
                                 <outlet property="expirationDatePicker" destination="46m-5F-ME5" id="eGk-fe-IIf"/>
+                                <outlet property="federatedCloudShareMenuItem" destination="RZP-ME-baz" id="quL-N2-y1z"/>
+                                <outlet property="groupShareMenuItem" destination="bnp-aV-ZvE" id="8iU-IP-YXK"/>
                                 <outlet property="hideDownloadCheckbox" destination="2TN-96-apv" id="OPr-4x-aiK"/>
                                 <outlet property="labelTextField" destination="CXW-ZO-B2f" id="otQ-jh-Psr"/>
                                 <outlet property="noteForRecipientCheckbox" destination="c10-ub-U31" id="aG6-4P-cBv"/>
                                 <outlet property="noteTextField" destination="io6-Kg-fLl" id="JKm-A1-SqR"/>
                                 <outlet property="passwordProtectCheckbox" destination="ylD-hi-7Oq" id="qdw-aF-uh2"/>
                                 <outlet property="passwordSecureField" destination="pkv-9L-nhv" id="992-i5-CPF"/>
+                                <outlet property="publicLinkShareMenuItem" destination="JhA-rv-1xy" id="usv-L6-M7k"/>
                                 <outlet property="saveButton" destination="PaV-TL-cbq" id="OvF-Le-oQj"/>
+                                <outlet property="shareTypePicker" destination="aRB-vw-b4r" id="Dfx-Dw-zEM"/>
+                                <outlet property="talkConversationShare" destination="aHo-Mr-vTn" id="hxF-qw-VQO"/>
                                 <outlet property="uploadEditPermissionCheckbox" destination="luZ-Vf-V24" id="ojW-WP-98U"/>
+                                <outlet property="userShareMenuItem" destination="CpL-qc-lAA" id="R2q-dc-og5"/>
                             </connections>
                         </view>
                     </subviews>
