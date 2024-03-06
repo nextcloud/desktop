@@ -37,6 +37,11 @@ class ShareOptionsView: NSView {
         didSet {
             guard controller != nil else { return }
             optionsTitleTextField.stringValue = "Share options"
+            deleteButton.title = "Delete"
+            deleteButton.image = NSImage(
+                systemSymbolName: "trash", accessibilityDescription: "Delete trash icon"
+            )
+            deleteButton.bezelColor = NSColor.systemRed
             cancellable?.cancel()
             createMode = false
             update()
@@ -50,6 +55,11 @@ class ShareOptionsView: NSView {
             labelTextField.isHidden = createMode  // Cannot set label on create API call
             guard createMode else { return }
             optionsTitleTextField.stringValue = "Create new share"
+            deleteButton.title = "Cancel"
+            deleteButton.image = NSImage(
+                systemSymbolName: "xmark.bin", accessibilityDescription: "Cancel create icon"
+            )
+            deleteButton.bezelColor = NSColor.controlColor
             cancellable?.cancel()
             cancellable = nil
             controller = nil
