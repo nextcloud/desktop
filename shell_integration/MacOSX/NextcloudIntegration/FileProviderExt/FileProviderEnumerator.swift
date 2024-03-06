@@ -28,21 +28,24 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
     private static let maxItemsPerFileProviderPage = 100
     let ncAccount: NextcloudAccount
     let ncKit: NextcloudKit
+    let fastEnumeration: Bool
     var serverUrl: String = ""
     var isInvalidated = false
 
     private static func isSystemIdentifier(_ identifier: NSFileProviderItemIdentifier) -> Bool {
         identifier == .rootContainer || identifier == .trashContainer || identifier == .workingSet
     }
-
+    
     init(
         enumeratedItemIdentifier: NSFileProviderItemIdentifier,
         ncAccount: NextcloudAccount,
-        ncKit: NextcloudKit
+        ncKit: NextcloudKit,
+        fastEnumeration: Bool = true
     ) {
         self.enumeratedItemIdentifier = enumeratedItemIdentifier
         self.ncAccount = ncAccount
         self.ncKit = ncKit
+        self.fastEnumeration = fastEnumeration
 
         if FileProviderEnumerator.isSystemIdentifier(enumeratedItemIdentifier) {
             Logger.enumeration.debug(

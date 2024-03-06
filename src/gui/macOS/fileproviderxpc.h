@@ -34,12 +34,17 @@ class FileProviderXPC : public QObject
 public:
     explicit FileProviderXPC(QObject *parent = nullptr);
 
+    // Returns enabled and set state of fast enumeration for the given extension
+    [[nodiscard]] std::optional<std::pair<bool, bool>> fastEnumerationStateForExtension(const QString &extensionAccountId) const;
+
 public slots:
     void connectToExtensions();
     void configureExtensions();
     void authenticateExtension(const QString &extensionAccountId) const;
     void unauthenticateExtension(const QString &extensionAccountId) const;
     void createDebugArchiveForExtension(const QString &extensionAccountId, const QString &filename) const;
+
+    void setFastEnumerationEnabledForExtension(const QString &extensionAccountId, bool enabled) const;
 
 private slots:
     void slotAccountStateChanged(AccountState::State state) const;

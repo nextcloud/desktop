@@ -196,22 +196,30 @@ extension FileProviderEnumerator {
         dispatchGroup.wait()
 
         guard criticalError == nil else {
+            Logger.enumeration.error(
+                "Received critical error stopping further scanning: \(criticalError!.errorDescription, privacy: .public)"
+            )
             return ([], [], [], [], error: criticalError)
         }
 
         var childDirectoriesToScan: [NextcloudItemMetadataTable] = []
-        var candidateMetadatas: [NextcloudItemMetadataTable] =
-            if scanChangesOnly {
-                allUpdatedMetadatas + allNewMetadatas
-            } else {
-                allMetadatas
-            }
+        var candidateMetadatas: [NextcloudItemMetadataTable]
+
+        if scanChangesOnly, fastEnumeration {
+            candidateMetadatas = allUpdatedMetadatas
+        } else if scanChangesOnly {
+            candidateMetadatas = allUpdatedMetadatas + allNewMetadatas
+        } else {
+            candidateMetadatas = allMetadatas
+        }
 
         for candidateMetadata in candidateMetadatas {
             if candidateMetadata.directory {
                 childDirectoriesToScan.append(candidateMetadata)
             }
         }
+
+        Logger.enumeration.debug("Candidate metadatas for further scan: \(candidateMetadatas, privacy: .public)")
 
         if childDirectoriesToScan.isEmpty {
             return (
@@ -221,11 +229,12 @@ extension FileProviderEnumerator {
         }
 
         for childDirectory in childDirectoriesToScan {
+            Logger.enumeration.debug(
+                "About to recursively scan: \(childDirectory.urlBase, privacy: .public) with etag: \(childDirectory.etag, privacy: .public)"
+            )
             let childScanResult = scanRecursively(
-                childDirectory,
-                ncAccount: ncAccount,
-                ncKit: ncKit,
-                scanChangesOnly: scanChangesOnly)
+                childDirectory, ncAccount: ncAccount, ncKit: ncKit, scanChangesOnly: scanChangesOnly
+            )
 
             allMetadatas += childScanResult.metadatas
             allNewMetadatas += childScanResult.newMetadatas

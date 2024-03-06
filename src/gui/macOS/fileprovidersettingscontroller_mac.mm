@@ -362,6 +362,44 @@ void FileProviderSettingsController::setVfsEnabledForAccount(const QString &user
     }
 }
 
+bool FileProviderSettingsController::fastEnumerationSetForAccount(const QString &userIdAtHost) const
+{
+    const auto xpc = FileProvider::instance()->xpc();
+    if (!xpc) {
+        return false;
+    }
+    if (const auto state = xpc->fastEnumerationStateForExtension(userIdAtHost)) {
+        return state->second;
+    }
+    return false;
+}
+
+bool FileProviderSettingsController::fastEnumerationEnabledForAccount(const QString &userIdAtHost) const
+{
+    const auto xpc = FileProvider::instance()->xpc();
+    if (!xpc) {
+        return true;
+    }
+    if (const auto fastEnumerationState = xpc->fastEnumerationStateForExtension(userIdAtHost)) {
+        return fastEnumerationState->first;
+    }
+    return true;
+}
+
+void FileProviderSettingsController::setFastEnumerationEnabledForAccount(const QString &userIdAtHost, const bool setEnabled)
+{
+    const auto xpc = FileProvider::instance()->xpc();
+    if (!xpc) {
+        // Reset state of UI elements
+        emit fastEnumerationEnabledForAccountChanged(userIdAtHost);
+        emit fastEnumerationSetForAccountChanged(userIdAtHost);
+        return;
+    }
+    xpc->setFastEnumerationEnabledForExtension(userIdAtHost, setEnabled);
+    emit fastEnumerationEnabledForAccountChanged(userIdAtHost);
+    emit fastEnumerationSetForAccountChanged(userIdAtHost);
+}
+
 unsigned long long FileProviderSettingsController::localStorageUsageForAccount(const QString &userIdAtHost) const
 {
     return d->localStorageUsageForAccount(userIdAtHost);
@@ -437,7 +475,13 @@ void FileProviderSettingsController::createDebugArchive(const QString &userIdAtH
     if (filename.isEmpty()) {
         return;
     }
-    FileProvider::instance()->createDebugArchiveForDomain(userIdAtHost, filename);
+
+    const auto xpc = FileProvider::instance()->xpc();
+    if (!xpc) {
+        qCWarning(lcFileProviderSettingsController) << "Could not create debug archive, FileProviderXPC is not available.";
+        return;
+    }
+    xpc->createDebugArchiveForExtension(userIdAtHost, filename);
 }
 
 FileProviderDomainSyncStatus *FileProviderSettingsController::domainSyncStatusForAccount(const QString &userIdAtHost) const

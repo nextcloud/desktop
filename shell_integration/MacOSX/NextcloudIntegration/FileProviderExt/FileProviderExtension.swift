@@ -25,16 +25,17 @@ import OSLog
     lazy var ncKitBackground = NKBackground(nkCommonInstance: ncKit.nkCommonInstance)
     lazy var socketClient: LocalSocketClient? = {
         guard let containerUrl = pathForAppGroupContainer() else {
-            Logger.fileProviderExtension.critical("Won't start client, no container url")
-            return nil
+            Logger.fileProviderExtension.critical("Won't start socket client, no container url")
+            return nil;
         }
+
         let socketPath = containerUrl.appendingPathComponent(
             ".fileprovidersocket", conformingTo: .archive)
         let lineProcessor = FileProviderSocketLineProcessor(delegate: self)
         return LocalSocketClient(socketPath: socketPath.path, lineProcessor: lineProcessor)
     }()
 
-    let urlSessionIdentifier: String = "com.nextcloud.session.upload.fileproviderext"
+    let urlSessionIdentifier = "com.nextcloud.session.upload.fileproviderext"
     let urlSessionMaximumConnectionsPerHost = 5
     lazy var urlSession: URLSession = {
         let configuration = URLSessionConfiguration.background(withIdentifier: urlSessionIdentifier)
@@ -46,13 +47,28 @@ import OSLog
         configuration.sharedContainerIdentifier = appGroupIdentifier
 
         let session = URLSession(
-            configuration: configuration, delegate: ncKitBackground,
-            delegateQueue: OperationQueue.main)
+            configuration: configuration,
+            delegate: ncKitBackground,
+            delegateQueue: OperationQueue.main
+        )
         return session
     }()
 
+    // Whether or not we are going to recursively scan new folders when they are discovered.
+    // Apple's recommendation is that we should always scan the file hierarchy fully.
+    // This does lead to long load times when a file provider domain is initially configured.
+    // We can instead do a fast enumeration where we only scan folders as the user navigates through
+    // them, thereby avoiding this issue; the trade-off is that we will be unable to detect
+    // materialised file moves to unexplored folders, therefore deleting the item when we could have
+    // just moved it instead.
+    //
+    // Since it's not desirable to cancel a long recursive enumeration half-way through, we do the
+    // fast enumeration by default. We prompt the user on the client side to run a proper, full
+    // enumeration if they want for safety.
+    lazy var config = FileProviderConfig(domainIdentifier: domain.identifier)
+
     required init(domain: NSFileProviderDomain) {
-        // The containing application must create a domain using
+        // The containing application must create a domain using 
         // `NSFileProviderManager.add(_:, completionHandler:)`. The system will then launch the
         // application extension process, call `FileProviderExtension.init(domain:)` to instantiate
         // the extension for that domain, and call methods on the instance.
@@ -64,7 +80,8 @@ import OSLog
     func invalidate() {
         // TODO: cleanup any resources
         Logger.fileProviderExtension.debug(
-            "Extension for domain \(self.domain.displayName, privacy: .public) is being torn down")
+            "Extension for domain \(self.domain.displayName, privacy: .public) is being torn down"
+        )
     }
 
     // MARK: NSFileProviderReplicatedExtension protocol methods
@@ -787,7 +804,11 @@ import OSLog
         }
 
         return FileProviderEnumerator(
-            enumeratedItemIdentifier: containerItemIdentifier, ncAccount: ncAccount, ncKit: ncKit)
+            enumeratedItemIdentifier: containerItemIdentifier,
+            ncAccount: ncAccount,
+            ncKit: ncKit,
+            fastEnumeration: config.fastEnumerationEnabled
+        )
     }
 
     func materializedItemsDidChange(completionHandler: @escaping () -> Void) {

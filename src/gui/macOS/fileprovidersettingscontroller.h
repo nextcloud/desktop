@@ -44,12 +44,15 @@ public:
     [[nodiscard]] Q_INVOKABLE float localStorageUsageGbForAccount(const QString &userIdAtHost) const;
     [[nodiscard]] unsigned long long remoteStorageUsageForAccount(const QString &userIdAtHost) const;
     [[nodiscard]] Q_INVOKABLE float remoteStorageUsageGbForAccount(const QString &userIdAtHost) const;
+    [[nodiscard]] Q_INVOKABLE bool fastEnumerationEnabledForAccount(const QString &userIdAtHost) const;
+    [[nodiscard]] Q_INVOKABLE bool fastEnumerationSetForAccount(const QString &userIdAtHost) const;
 
     [[nodiscard]] Q_INVOKABLE QAbstractListModel *materialisedItemsModelForAccount(const QString &userIdAtHost);
     [[nodiscard]] Q_INVOKABLE FileProviderDomainSyncStatus *domainSyncStatusForAccount(const QString &userIdAtHost) const;
 
 public slots:
     void setVfsEnabledForAccount(const QString &userIdAtHost, const bool setEnabled);
+    void setFastEnumerationEnabledForAccount(const QString &userIdAtHost, const bool setEnabled);
 
     void createEvictionWindowForAccount(const QString &userIdAtHost);
     void signalFileProviderDomain(const QString &userIdAtHost);
@@ -60,6 +63,8 @@ signals:
     void localStorageUsageForAccountChanged(const QString &userIdAtHost);
     void remoteStorageUsageForAccountChanged(const QString &userIdAtHost);
     void materialisedItemsForAccountChanged(const QString &userIdAtHost);
+    void fastEnumerationEnabledForAccountChanged(const QString &userIdAtHost);
+    void fastEnumerationSetForAccountChanged(const QString &userIdAtHost);
 
 private:
     explicit FileProviderSettingsController(QObject *parent = nullptr);

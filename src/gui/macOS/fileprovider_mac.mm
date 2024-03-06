@@ -97,9 +97,9 @@ void FileProvider::configureXPC()
     }
 }
 
-void FileProvider::createDebugArchiveForDomain(const QString &domainIdentifier, const QString &filename) const
+FileProviderXPC *FileProvider::xpc() const
 {
-    _xpc->createDebugArchiveForExtension(domainIdentifier, filename);
+    return _xpc.get();
 }
 
 } // namespace Mac
