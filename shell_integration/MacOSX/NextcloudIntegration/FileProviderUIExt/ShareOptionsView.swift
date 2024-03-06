@@ -200,8 +200,11 @@ class ShareOptionsView: NSView {
                 )
                 if let error = error, error != .success {
                     dataSource.uiDelegate?.showError("Error creating: \(error.errorDescription)")
+                    setAllFields(enabled: true)
+                } else {
+                    dataSource.uiDelegate?.hideOptions()
+                    await dataSource.reload()
                 }
-                await dataSource.reload()
                 return
             }
 
