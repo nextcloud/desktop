@@ -101,15 +101,20 @@ class ShareOptionsView: NSView {
     }
 
     func reset() {
+        shareTypePicker.select(publicLinkShareMenuItem)
+        shareRecipientTextField.stringValue = ""
         labelTextField.stringValue = ""
         uploadEditPermissionCheckbox.state = .off
         hideDownloadCheckbox.state = .off
         passwordProtectCheckbox.state = .off
         passwordSecureField.isHidden = true
+        passwordSecureField.stringValue = ""
         expirationDateCheckbox.state = .off
         expirationDatePicker.isHidden = true
+        expirationDatePicker.dateValue = NSDate.now
         noteForRecipientCheckbox.state = .off
         noteTextField.isHidden = true
+        noteTextField.stringValue = ""
     }
 
     func setAllFields(enabled: Bool) {
