@@ -135,15 +135,16 @@
     </message>
     <message>
         <source>SETUP_DESCRIPTION_TEXT_1</source>
-        <translation>Wechseln SIe bitte zu Ihrem Browser und melden Sie sich dort an um ihr Konto zu verbinden. Oder Sie erstellen ein Konto mit dem für Sie passenden Tarif.</translation>
+        <translation>Wechseln Sie bitte zu Ihrem Browser und melden Sie sich dort an um ihr Konto zu verbinden. Oder Sie erstellen ein Konto mit dem für Sie passenden Tarif.</translation>
     </message>
     <message>
         <source>SETUP_HEADER_TEXT_2</source>
-        <translation>Ihr lokaler Ordner für MagentaCLOUD</translation>
+        <translation>Ihr lokaler Ordner für
+        MagentaCLOUD</translation>
     </message>
     <message>
         <source>SETUP_DESCRIPTION_TEXT_2</source>
-        <translation>Überprüfen Sie bitte den Speicherort und ändern Sie ihn, falls Sie schon einen bestehenden MagentaCLOUD Ordner aus einer früheren Installation wiederverwenden möchten.</translation>
+        <translation>Überprüfen Sie den Speicherort und ändern Sie ihn, falls Sie schon einen bestehenden MagentaCLOUD Ordner aus einer früheren Installation wiederverwenden möchten.</translation>
     </message>
     <message>
         <source>SETUP_CHANGE_STORAGE_LOCATION</source>
