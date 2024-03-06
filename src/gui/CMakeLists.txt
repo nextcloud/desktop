@@ -1,6 +1,7 @@
 project(gui)
 find_package(Qt5 REQUIRED COMPONENTS Widgets Svg Qml Quick QuickControls2 QuickWidgets Xml Network)
 find_package(KF5Archive REQUIRED)
+find_package(KF5GuiAddons)
 
 if(QUICK_COMPILER)
         find_package(Qt5QuickCompiler)
@@ -562,6 +563,14 @@ target_link_libraries(nextcloudCore
   Qt5::QuickWidgets
   KF5::Archive
   )
+
+if(KF5GuiAddons_FOUND)
+  target_link_libraries(nextcloudCore
+    PUBLIC
+    KF5::GuiAddons
+  )
+  add_definitions(-DHAVE_KGUIADDONS)
+endif()
 
 add_subdirectory(socketapi)
 
