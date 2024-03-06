@@ -12,6 +12,7 @@ import OSLog
 
 class ShareOptionsView: NSView {
     @IBOutlet private weak var optionsTitleTextField: NSTextField!
+    @IBOutlet private weak var shareRecipientTextField: NSTextField!  // Hide if public link share
     @IBOutlet private weak var labelTextField: NSTextField!
     @IBOutlet private weak var uploadEditPermissionCheckbox: NSButton!
     @IBOutlet private weak var hideDownloadCheckbox: NSButton!
