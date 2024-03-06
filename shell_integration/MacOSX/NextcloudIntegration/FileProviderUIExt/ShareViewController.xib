@@ -11,6 +11,7 @@
         <customObject id="-2" userLabel="File's Owner" customClass="ShareViewController" customModule="FileProviderUIExt" customModuleProvider="target">
             <connections>
                 <outlet property="closeButton" destination="aDA-n9-Zly" id="niR-Ad-FEa"/>
+                <outlet property="createButton" destination="BMA-BP-wHc" id="HEq-bN-i9V"/>
                 <outlet property="descriptionLabel" destination="gX0-nE-MrU" id="RoY-u1-1on"/>
                 <outlet property="errorMessageStackView" destination="dFs-Gh-2WQ" id="kkQ-Uq-xk7"/>
                 <outlet property="errorTextLabel" destination="770-HW-oC7" id="gfn-SV-TNM"/>
@@ -82,7 +83,7 @@
                                                 <imageReference key="image" image="plus" catalog="system" symbolScale="large"/>
                                             </buttonCell>
                                             <connections>
-                                                <action selector="closeAction:" target="-2" id="WC4-wl-0Bk"/>
+                                                <action selector="createShare:" target="-2" id="NLV-ZM-y1w"/>
                                             </connections>
                                         </button>
                                         <button translatesAutoresizingMaskIntoConstraints="NO" id="aDA-n9-Zly">
