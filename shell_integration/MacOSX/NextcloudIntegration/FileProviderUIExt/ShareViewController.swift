@@ -18,6 +18,7 @@ class ShareViewController: NSViewController, ShareViewDataSourceUIDelegate {
     @IBOutlet weak var fileNameIcon: NSImageView!
     @IBOutlet weak var fileNameLabel: NSTextField!
     @IBOutlet weak var descriptionLabel: NSTextField!
+    @IBOutlet weak var createButton: NSButton!
     @IBOutlet weak var closeButton: NSButton!
     @IBOutlet weak var tableView: NSTableView!
     @IBOutlet weak var optionsView: ShareOptionsView!
@@ -26,7 +27,6 @@ class ShareViewController: NSViewController, ShareViewDataSourceUIDelegate {
     @IBOutlet weak var loadingIndicator: NSProgressIndicator!
     @IBOutlet weak var errorMessageStackView: NSStackView!
     @IBOutlet weak var errorTextLabel: NSTextField!
-    @IBOutlet weak var errorDismissLabel: NSButton!
 
     public override var nibName: NSNib.Name? {
         return NSNib.Name(self.className)
@@ -108,6 +108,13 @@ class ShareViewController: NSViewController, ShareViewDataSourceUIDelegate {
 
     @IBAction func dismissError(_ sender: Any) {
         errorMessageStackView.isHidden = true
+    }
+
+    @IBAction func createShare(_ sender: Any) {
+        tableView.deselectAll(self)
+        optionsView.createMode = true
+        splitView.addArrangedSubview(optionsView)
+        optionsView.isHidden = false
     }
 
     func fetchStarted() {
