@@ -34,7 +34,11 @@ class ShareController: ObservableObject {
             if shareType == .publicLink {
                 kit.createShareLink(
                     path: itemServerRelativePath,
-                    publicUpload: publicUpload
+                    hideDownload: hideDownload,
+                    publicUpload: publicUpload,
+                    password: password,
+                    permissions: permissions,
+                    options: options
                 ) { account, share, data, error in
                     defer { continuation.resume(returning: error) }
                     guard error == .success else {
@@ -54,7 +58,11 @@ class ShareController: ObservableObject {
                 kit.createShare(
                     path: itemServerRelativePath,
                     shareType: shareType.rawValue,
-                    shareWith: shareWith
+                    shareWith: shareWith,
+                    password: password,
+                    permissions: permissions,
+                    options: options,
+                    attributes: attributes
                 ) { account, share, data, error in
                     defer { continuation.resume(returning: error) }
                     guard error == .success else {
