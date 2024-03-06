@@ -234,6 +234,12 @@ class ShareOptionsView: NSView {
 
     @IBAction func delete(_ sender: Any) {
         Task { @MainActor in
+            guard !createMode else {
+                dataSource?.uiDelegate?.hideOptions()
+                reset()
+                return
+            }
+
             setAllFields(enabled: false)
             deleteButton.isEnabled = false
             saveButton.isEnabled = false
