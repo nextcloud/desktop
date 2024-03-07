@@ -41,7 +41,7 @@ secrets = {
     "CACHE_BUCKET": "cache_public_s3_bucket",
     "AWS_ACCESS_KEY_ID": "cache_public_s3_access_key",
     "AWS_SECRET_ACCESS_KEY": "cache_public_s3_secret_key",
-    "ROCKETCHAT_WEBHOOK": "rocketchat_chat_webhook",
+    "ROCKETCHAT_WEBHOOK": "rocketchat_talk_webhook",
 }
 
 dir = {
@@ -53,7 +53,7 @@ dir = {
 }
 
 notify_channels = {
-    "desktop-internal": {
+    "desktop-ci": {
         "type": "channel",
     },
 }
