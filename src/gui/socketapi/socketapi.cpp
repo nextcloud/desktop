@@ -67,7 +67,6 @@
 #include <QJsonObject>
 #include <QWidget>
 
-#include <QClipboard>
 #include <QDesktopServices>
 
 #include <QProcess>
@@ -77,6 +76,12 @@
 #include <CoreFoundation/CoreFoundation.h>
 #endif
 
+#ifdef HAVE_KGUIADDONS
+#include <QMimeData>
+#include <KSystemClipboard>
+#else
+#include <QClipboard>
+#endif
 
 // This is the version that is returned when the client asks for the VERSION.
 // The first number should be changed if there is an incompatible change that breaks old clients.
@@ -193,6 +198,17 @@ static QString buildMessage(const QString &verb, const QString &path, const QStr
         msg.append(QDir::toNativeSeparators(fi.absoluteFilePath()));
     }
     return msg;
+}
+
+void setClipboardText(const QString &text)
+{
+#ifdef HAVE_KGUIADDONS
+    auto mimeData = new QMimeData();
+    mimeData->setText(text);
+    KSystemClipboard::instance()->setMimeData(mimeData, QClipboard::Clipboard);
+#else
+    QApplication::clipboard()->setText(text);
+#endif
 }
 }
 
@@ -902,7 +918,7 @@ void SocketApi::command_COPY_PUBLIC_LINK(const QString &localFile, SocketListene
 #ifdef Q_OS_WIN
 void SocketApi::command_COPYASPATH(const QString &localFile, SocketListener *)
 {
-    QApplication::clipboard()->setText(localFile);
+    setClipboardText(localFile);
 }
 
 void SocketApi::command_OPENNEWWINDOW(const QString &localFile, SocketListener *)
@@ -995,7 +1011,7 @@ void SocketApi::command_MAKE_ONLINE_ONLY(const QString &filesArg, SocketListener
 
 void SocketApi::copyUrlToClipboard(const QString &link)
 {
-    QApplication::clipboard()->setText(link);
+    setClipboardText(link);
 }
 
 void SocketApi::command_RESOLVE_CONFLICT(const QString &localFile, SocketListener *)
