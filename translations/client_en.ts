@@ -71,7 +71,7 @@
         <translation>End-to-End Encryption</translation>
     </message>
     <message>
-        <source>More</source>
+        <source>MORE</source>
         <translation>More</translation>
     </message>
     <message>
@@ -97,6 +97,10 @@
     <message>
         <source>ADD_LIVE_BACKUP_PAGE3_DESCRIPTION</source>
         <translation>Please select the subfolders that should not be synchronized and backed up.</translation>
+    </message>
+    <message>
+        <source>ADD_LIVE_BACKUP_PLACEHOLDER_TEXT</source>
+        <translation>Please select a folder</translation>
     </message>
     <message>
         <source>START_NOW</source>

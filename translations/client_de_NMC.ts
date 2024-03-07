@@ -69,7 +69,7 @@
         <translation>E2E-Verschlüsselung</translation>
     </message>
     <message>
-        <source>More</source>
+        <source>MORE</source>
         <translation>Mehr</translation>
     </message>
     <message>
@@ -95,6 +95,10 @@
     <message>
         <source>ADD_LIVE_BACKUP_PAGE3_DESCRIPTION</source>
         <translation>Bitte wählen Sie die Unterordner ab, die nicht synchronisiert und gesichert werden sollen.</translation>
+    </message>
+    <message>
+        <source>ADD_LIVE_BACKUP_PLACEHOLDER_TEXT</source>
+        <translation>Bitte wählen Sie einen Ordner aus</translation>
     </message>
     <message>
         <source>START_NOW</source>
