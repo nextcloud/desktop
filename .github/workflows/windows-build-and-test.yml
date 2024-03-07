@@ -32,7 +32,6 @@ jobs:
           craft --add-blueprint-repository [git]https://github.com/nextcloud/desktop-client-blueprints.git
           craft craft
           craft --install-deps nextcloud-client
-          choco install inkscape
           
       - name: Cache Install OpenCppCoverage
         id: cache-install-opencppcoverage
@@ -46,6 +45,19 @@ jobs:
         shell: pwsh
         run: |
           choco install opencppcoverage
+
+      - name: Cache Install inkscape
+        id: cache-install-inkscape
+        uses: actions/cache@v4
+        with:
+          path: C:\Program Files\inkscape
+          key: ${{ runner.os }}-cache-install-inkscape
+
+      - name: Install inkscape
+        if: steps.cache-install-inkscape.outputs.cache-hit != 'true'
+        shell: pwsh
+        run: |
+          choco install inkscape
 
       - name: Setup PATH
         shell: pwsh
