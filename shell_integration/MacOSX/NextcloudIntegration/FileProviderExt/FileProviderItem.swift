@@ -32,13 +32,25 @@ class FileProviderItem: NSObject, NSFileProviderItem {
 
     var capabilities: NSFileProviderItemCapabilities {
         guard !metadata.directory else {
-            return [
-                .allowsAddingSubItems,
-                .allowsContentEnumerating,
-                .allowsReading,
-                .allowsDeleting,
-                .allowsRenaming,
-            ]
+            if #available(macOS 13.0, *) {
+                // .allowsEvicting deprecated on macOS 13.0+, use contentPolicy instead
+                return [
+                    .allowsAddingSubItems,
+                    .allowsContentEnumerating,
+                    .allowsReading,
+                    .allowsDeleting,
+                    .allowsRenaming
+                ]
+            } else {
+                return [
+                    .allowsAddingSubItems,
+                    .allowsContentEnumerating,
+                    .allowsReading,
+                    .allowsDeleting,
+                    .allowsRenaming,
+                    .allowsEvicting
+                ]
+            }
         }
         guard !metadata.lock else {
             return [.allowsReading]
@@ -49,6 +61,7 @@ class FileProviderItem: NSObject, NSFileProviderItem {
             .allowsDeleting,
             .allowsRenaming,
             .allowsReparenting,
+            .allowsEvicting
         ]
     }
 
@@ -131,6 +144,11 @@ class FileProviderItem: NSObject, NSFileProviderItem {
         } else {
             nil
         }
+    }
+
+    @available(macOSApplicationExtension 13.0, *)
+    var contentPolicy: NSFileProviderContentPolicy {
+        .downloadLazily
     }
 
     required init(

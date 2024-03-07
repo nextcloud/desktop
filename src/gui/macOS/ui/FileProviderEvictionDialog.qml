@@ -25,21 +25,58 @@ import com.nextcloud.desktopclient 1.0
 ApplicationWindow {
     id: root
 
+    signal reloadMaterialisedItems(string accountUserIdAtHost)
+
     property var materialisedItemsModel: null
     property string accountUserIdAtHost: ""
 
     title: qsTr("Evict materialised files")
+    color: Style.backgroundColor
     flags: Qt.Dialog | Qt.WindowStaysOnTopHint
     width: 640
     height: 480
 
-    ListView {
+    Component.onCompleted: reloadMaterialisedItems(accountUserIdAtHost)
+
+    ColumnLayout {
         anchors.fill: parent
-        model: root.materialisedItemsModel
-        delegate: FileProviderFileDelegate {
-            width: parent.width
-            height: 60
-            onEvictItem: root.materialisedItemsModel.evictItem(identifier, domainIdentifier)
+
+        RowLayout {
+            Layout.fillWidth: true
+            Layout.margins: Style.standardSpacing
+
+            EnforcedPlainTextLabel {
+                text: qsTr("Materialised items")
+                font.bold: true
+                font.pointSize: Style.headerFontPtSize
+                Layout.fillWidth: true
+            }
+
+            CustomButton {
+                padding: Style.smallSpacing
+                textColor: Style.ncTextColor
+                textColorHovered: Style.ncHeaderTextColor
+                contentsFont.bold: true
+                bgColor: Style.ncBlue
+                text: qsTr("Reload")
+                onClicked: reloadMaterialisedItems(accountUserIdAtHost)
+            }
+        }
+
+        ListView {
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+
+            Layout.leftMargin: Style.standardSpacing
+            Layout.rightMargin: Style.standardSpacing
+
+            clip: true
+            model: root.materialisedItemsModel
+            delegate: FileProviderFileDelegate {
+                width: parent.width
+                height: 60
+                onEvictItem: root.materialisedItemsModel.evictItem(identifier, domainIdentifier)
+            }
         }
     }
 }
