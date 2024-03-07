@@ -225,6 +225,19 @@
     </message>
 </context>
 <context>
+    <name>FileProviderFastEnumerationSettings</name>
+    <message>
+        <location filename="../src/gui/macOS/ui/FileProviderFastEnumerationSettings.qml" line="38"/>
+        <source>Enable fast sync</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/macOS/ui/FileProviderFastEnumerationSettings.qml" line="53"/>
+        <source>Fast sync will only sync changes in files and folders within folders that have been explored. This can significantly increase responsiveness on initial configuration of virtual files. However, it will cause redundant downloads of files moved to an unexplored folder. </source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>FileProviderFileDelegate</name>
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderFileDelegate.qml" line="96"/>
@@ -240,27 +253,27 @@
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="71"/>
+        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="73"/>
         <source>General settings</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="80"/>
+        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="82"/>
         <source>Enable virtual files</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="132"/>
+        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="167"/>
         <source>Advanced</source>
         <translation>Avansat</translation>
     </message>
     <message>
-        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="139"/>
+        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="174"/>
         <source>Signal file provider domain</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="144"/>
+        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="179"/>
         <source>Create debug archive</source>
         <translation type="unfinished"/>
     </message>
