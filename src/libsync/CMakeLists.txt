@@ -83,11 +83,12 @@ set_target_properties(libsync PROPERTIES EXPORT_NAME SyncCore)
 target_link_libraries(libsync
     PUBLIC
         csync
+        owncloudResources
         Qt::Core
         Qt::Network
         Qt::Widgets
+
     PRIVATE
-        owncloudResources
         Qt::Concurrent
         ZLIB::ZLIB
         Qt6Keychain::Qt6Keychain

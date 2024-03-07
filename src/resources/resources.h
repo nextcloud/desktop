@@ -16,13 +16,36 @@
 #include "resources/owncloudresources.h"
 
 #include <QIcon>
+#include <QUrl>
 
 namespace OCC::Resources {
+Q_NAMESPACE
+/**
+ * Wehther we allow a fallback to a vanilla icon
+ */
+enum class IconType { BrandedIcon, BrandedIconWithFallbackToVanillaIcon, VanillaIcon };
+Q_ENUM_NS(IconType);
+
 /**
  * Whether use the dark icon theme
  * The function also ensures the theme supports the dark theme
  */
 bool OWNCLOUDRESOURCES_EXPORT isUsingDarkTheme();
 
+bool OWNCLOUDRESOURCES_EXPORT hasDarkTheme();
+
+/** Whether the theme provides monochrome tray icons
+ */
+bool OWNCLOUDRESOURCES_EXPORT hasMonoTheme();
+
+QUrl OWNCLOUDRESOURCES_EXPORT getCoreIconUrl(const QString &icon_name);
 QIcon OWNCLOUDRESOURCES_EXPORT getCoreIcon(const QString &icon_name);
+
+QIcon OWNCLOUDRESOURCES_EXPORT loadIcon(const QString &flavor, const QString &name, IconType iconType);
+QIcon OWNCLOUDRESOURCES_EXPORT themeIcon(const QString &name, IconType iconType = IconType::BrandedIconWithFallbackToVanillaIcon);
+
+/**
+ * Returns a universal (non color schema aware) icon.
+ */
+QIcon OWNCLOUDRESOURCES_EXPORT themeUniversalIcon(const QString &name, IconType iconType = IconType::BrandedIcon);
 }

@@ -40,8 +40,6 @@
         <file alias="resources/dark/undo.svg">font-awesome/dark/undo-solid.svg</file>
         <file alias="resources/wizard/style.qss">wizard/style.qss</file>
         <file alias="resources/oauth/oauth.html.in">oauth/oauth.html.in</file>
-        <file alias="resources/dark/space.svg">remixicon/dark/space.svg</file>
-        <file alias="resources/light/space.svg">remixicon/light/space.svg</file>
         <file alias="resources/dark/states/error.svg">font-awesome/dark/states/error.svg</file>
         <file alias="resources/dark/states/information.svg">font-awesome/dark/states/information.svg</file>
         <file alias="resources/dark/states/offline.svg">font-awesome/dark/states/offline.svg</file>
@@ -49,7 +47,6 @@
         <file alias="resources/dark/states/pause.svg">font-awesome/dark/states/pause.svg</file>
         <file alias="resources/dark/states/sync.svg">font-awesome/dark/states/sync.svg</file>
         <file alias="resources/dark/states/warning.svg">font-awesome/dark/states/warning.svg</file>
-
         <file alias="resources/light/states/error.svg">font-awesome/light/states/error.svg</file>
         <file alias="resources/light/states/information.svg">font-awesome/light/states/information.svg</file>
         <file alias="resources/light/states/offline.svg">font-awesome/light/states/offline.svg</file>

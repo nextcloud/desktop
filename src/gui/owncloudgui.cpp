@@ -120,15 +120,14 @@ ownCloudGui::ownCloudGui(Application *parent)
     , _recentActionsMenu(nullptr)
     , _app(parent)
 {
-    // for the beginning, set the offline icon until the account was verified
-    _tray->setIcon(Theme::instance()->syncStateIcon(SyncResult::Status::Offline, true, false));
-
     connect(_tray, &QSystemTrayIcon::activated,
         this, &ownCloudGui::slotTrayClicked);
 
     setupActions();
     setupContextMenu();
 
+    // init systry
+    slotComputeOverallSyncStatus();
     _tray->show();
 
     ProgressDispatcher *pd = ProgressDispatcher::instance();
@@ -238,6 +237,8 @@ void ownCloudGui::slotTrayMessageIfServerUnsupported(Account *account)
 
 void ownCloudGui::slotComputeOverallSyncStatus()
 {
+    auto getIcon = [this](const SyncResult &result) { return Theme::instance()->themeTrayIcon(result, contextMenuVisible()); };
+    auto getIconFromStatus = [getIcon, this](const SyncResult::Status &status) { return getIcon(SyncResult{status}); };
     bool allSignedOut = true;
     bool allPaused = true;
     bool allDisconnected = true;
@@ -268,7 +269,7 @@ void ownCloudGui::slotComputeOverallSyncStatus()
     }
 
     if (!problemAccounts.empty()) {
-        _tray->setIcon(Theme::instance()->syncStateIcon(SyncResult::Status::Offline, true, contextMenuVisible()));
+        _tray->setIcon(getIconFromStatus(SyncResult::Status::Offline));
         if (allDisconnected) {
             setStatusText(tr("Disconnected"));
         } else {
@@ -297,12 +298,12 @@ void ownCloudGui::slotComputeOverallSyncStatus()
     }
 
     if (allSignedOut) {
-        _tray->setIcon(Theme::instance()->syncStateIcon(SyncResult::Status::Offline, true, contextMenuVisible()));
+        _tray->setIcon(getIconFromStatus(SyncResult::Status::Offline));
         _tray->setToolTip(tr("Please sign in"));
         setStatusText(tr("Signed out"));
         return;
     } else if (allPaused) {
-        _tray->setIcon(Theme::instance()->syncStateIcon(SyncResult::Paused, true, contextMenuVisible()));
+        _tray->setIcon(getIconFromStatus(SyncResult::Paused));
         _tray->setToolTip(tr("Account synchronization is disabled"));
         setStatusText(tr("Synchronization is paused"));
         return;
@@ -313,7 +314,7 @@ void ownCloudGui::slotComputeOverallSyncStatus()
 
     auto trayOverallStatusResult = FolderMan::trayOverallStatus(map);
 
-    const QIcon statusIcon = Theme::instance()->syncStateIcon(trayOverallStatusResult.overallStatus(), true, contextMenuVisible());
+    const QIcon statusIcon = getIcon(trayOverallStatusResult.overallStatus());
     _tray->setIcon(statusIcon);
 
     // create the tray blob message, check if we have an defined state
@@ -694,7 +695,7 @@ void ownCloudGui::updateContextMenuNeeded()
 void ownCloudGui::slotShowTrayMessage(const QString &title, const QString &msg, const QIcon &icon)
 {
     // SyncResult::Problem is returns the info icon
-    _tray->showMessage(title, msg, icon.isNull() ? Theme::instance()->syncStateIcon(SyncResult::Problem) : icon);
+    _tray->showMessage(title, msg, icon.isNull() ? Resources::getCoreIcon(QStringLiteral("states/error")) : icon);
 }
 
 void ownCloudGui::slotShowOptionalTrayMessage(const QString &title, const QString &msg, const QIcon &icon)

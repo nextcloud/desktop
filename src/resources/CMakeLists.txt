@@ -13,6 +13,7 @@ set(OWNCLOUD_SIDEBAR_ICONS ${OWNCLOUD_SIDEBAR_ICONS} CACHE INTERNAL "Sidebar ico
 target_link_libraries(owncloudResources PUBLIC Qt::Core Qt::Gui)
 apply_common_target_settings(owncloudResources)
 target_include_directories(owncloudResources PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/..> $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/..>)
+target_compile_definitions(owncloudResources PRIVATE APPLICATION_SHORTNAME="${APPLICATION_SHORTNAME}")
 
 set_target_properties(owncloudResources PROPERTIES
     OUTPUT_NAME "${APPLICATION_EXECUTABLE}Resources"

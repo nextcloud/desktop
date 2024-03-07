@@ -469,10 +469,10 @@ ActivitySettings::ActivitySettings(QWidget *parent)
     connect(_activityWidget, &ActivityWidget::newNotification, this, &ActivitySettings::slotShowActivityTab);
 
     _protocolWidget = new ProtocolWidget(this);
-    _protocolTabId = _tab->addTab(_protocolWidget, Theme::instance()->syncStateIcon(SyncResult::Success), tr("Sync Protocol"));
+    _protocolTabId = _tab->addTab(_protocolWidget, Resources::getCoreIcon(QStringLiteral("states/ok")), tr("Sync Protocol"));
 
     _issuesWidget = new IssuesWidget(this);
-    _syncIssueTabId = _tab->addTab(_issuesWidget, Theme::instance()->syncStateIcon(SyncResult::Problem), QString());
+    _syncIssueTabId = _tab->addTab(_issuesWidget, Resources::getCoreIcon(QStringLiteral("states/error")), QString());
     slotShowIssueItemCount(0); // to display the label.
     connect(_issuesWidget, &IssuesWidget::issueCountUpdated,
         this, &ActivitySettings::slotShowIssueItemCount);

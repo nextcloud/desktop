@@ -14,10 +14,74 @@
 
 #include "resources.h"
 
+#include <QDebug>
+#include <QFileInfo>
 #include <QPalette>
 
 using namespace OCC;
 using namespace Resources;
+namespace {
+
+QString vanillaThemePath()
+{
+    return QStringLiteral(":/client/ownCloud/theme");
+}
+
+QString brandThemePath()
+{
+    return QStringLiteral(":/client/" APPLICATION_SHORTNAME "/theme");
+}
+
+QString darkTheme()
+{
+    return QStringLiteral("dark");
+}
+
+QString coloredTheme()
+{
+    return QStringLiteral("colored");
+}
+
+QString whiteTheme()
+{
+    return QStringLiteral("white");
+}
+
+constexpr bool isVanilla()
+{
+    return std::string_view(APPLICATION_SHORTNAME) == "ownCloud";
+}
+
+
+bool hasTheme(IconType type, const QString &theme)
+{
+    // <<is vanilla, theme name>, bool
+    // caches the availability of themes for branded and unbranded themes
+    static QMap<QPair<bool, QString>, bool> _themeCache;
+    const auto key = qMakePair(type != IconType::VanillaIcon, theme);
+    auto it = _themeCache.constFind(key);
+    if (it == _themeCache.cend()) {
+        return _themeCache[key] = QFileInfo(QStringLiteral("%1/%2/").arg(type == IconType::VanillaIcon ? vanillaThemePath() : brandThemePath(), theme)).isDir();
+    }
+    return it.value();
+}
+
+}
+
+bool OCC::Resources::hasDarkTheme()
+{
+    static bool _hasBrandedColored = hasTheme(IconType::BrandedIcon, coloredTheme());
+    static bool _hasBrandedDark = hasTheme(IconType::BrandedIcon, darkTheme());
+    return _hasBrandedColored == _hasBrandedDark;
+}
+
+bool Resources::hasMonoTheme()
+{
+    // mono icons are only supported in vanilla and if a customer provides them
+    // no fallback to vanilla
+    qDebug() << hasTheme(Resources::IconType::BrandedIcon, whiteTheme());
+    return hasTheme(Resources::IconType::BrandedIcon, whiteTheme());
+}
 
 bool OCC::Resources::isUsingDarkTheme()
 {
@@ -26,15 +90,85 @@ bool OCC::Resources::isUsingDarkTheme()
     return forceDark || QPalette().base().color().lightnessF() <= 0.5;
 }
 
-QIcon OCC::Resources::getCoreIcon(const QString &icon_name)
+QUrl Resources::getCoreIconUrl(const QString &icon_name)
 {
     if (icon_name.isEmpty()) {
         return {};
     }
     const QString theme = Resources::isUsingDarkTheme() ? QStringLiteral("dark") : QStringLiteral("light");
-    const QString path = QStringLiteral(":/client/resources/%1/%2").arg(theme, icon_name);
-    const QIcon icon(path);
+    return QUrl(QStringLiteral("qrc:/client/resources/%1/%2").arg(theme, icon_name));
+}
+
+QIcon OCC::Resources::getCoreIcon(const QString &icon_name)
+{
+    if (icon_name.isEmpty()) {
+        return {};
+    }
+    // QIcon doesn't like qrc:// urls...
+    const QIcon icon(QLatin1Char(':') + getCoreIconUrl(icon_name).path());
     // were we able to load the file?
     Q_ASSERT(icon.actualSize({100, 100}).isValid());
     return icon;
+}
+
+
+/*
+ * helper to load a icon from either the icon theme the desktop provides or from
+ * the apps Qt resources.
+ */
+QIcon OCC::Resources::loadIcon(const QString &flavor, const QString &name, IconType iconType)
+{
+    static QMap<QString, QIcon> _iconCache;
+    // prevent recusion
+    const bool useCoreIcon = (iconType == IconType::VanillaIcon) || isVanilla();
+    const QString path = useCoreIcon ? vanillaThemePath() : brandThemePath();
+    const QString key = name + QLatin1Char(',') + flavor;
+    QIcon &cached = _iconCache[key]; // Take reference, this will also "set" the cache entry
+    if (cached.isNull()) {
+        if (isVanilla() && QIcon::hasThemeIcon(name)) {
+            // use from theme
+            return cached = QIcon::fromTheme(name);
+        }
+        const QString svg = QStringLiteral("%1/%2/%3.svg").arg(path, flavor, name);
+        if (QFile::exists(svg)) {
+            return cached = QIcon(svg);
+        }
+
+        const QString png = QStringLiteral("%1/%2/%3.png").arg(path, flavor, name);
+        if (QFile::exists(png)) {
+            return cached = QIcon(png);
+        }
+
+        const QList<int> sizes{16, 22, 32, 48, 64, 128, 256, 512, 1024};
+        QString previousIcon;
+        for (int size : sizes) {
+            QString pixmapName = QStringLiteral("%1/%2/%3-%4.png").arg(path, flavor, name, QString::number(size));
+            if (QFile::exists(pixmapName)) {
+                previousIcon = pixmapName;
+                cached.addFile(pixmapName, {size, size});
+            } else if (size >= 128) {
+                if (!previousIcon.isEmpty()) {
+                    qWarning() << "Upscaling:" << previousIcon << "to" << size;
+                    cached.addPixmap(QPixmap(previousIcon).scaled({size, size}, Qt::KeepAspectRatio, Qt::SmoothTransformation));
+                }
+            }
+        }
+    }
+    if (cached.isNull()) {
+        if (!useCoreIcon && iconType == IconType::BrandedIconWithFallbackToVanillaIcon) {
+            return loadIcon(flavor, name, IconType::VanillaIcon);
+        }
+        qWarning() << "Failed to locate the icon" << name;
+    }
+    return cached;
+}
+
+QIcon OCC::Resources::themeIcon(const QString &name, IconType iconType)
+{
+    return loadIcon((Resources::isUsingDarkTheme() && hasDarkTheme()) ? darkTheme() : coloredTheme(), name, iconType);
+}
+
+QIcon OCC::Resources::themeUniversalIcon(const QString &name, IconType iconType)
+{
+    return loadIcon(QStringLiteral("universal"), name, iconType);
 }

@@ -230,7 +230,7 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
     const auto appNameGui = Theme::instance()->appNameGUI();
 
     for (const auto &[iconName, name, url] : Theme::instance()->urlButtons()) {
-        auto urlAction = new ToolButtonAction(Theme::instance()->themeUniversalIcon(QStringLiteral("urlIcons/%1").arg(iconName)), name, this);
+        auto urlAction = new ToolButtonAction(Resources::themeUniversalIcon(QStringLiteral("urlIcons/%1").arg(iconName)), name, this);
         urlAction->setCheckable(false);
         connect(urlAction, &QAction::triggered, this, [url = url] {
             if (!QDesktopServices::openUrl(url)) {

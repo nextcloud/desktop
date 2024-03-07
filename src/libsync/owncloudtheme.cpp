@@ -41,11 +41,11 @@ QColor ownCloudTheme::wizardHeaderTitleColor() const
 
 QIcon ownCloudTheme::wizardHeaderLogo() const
 {
-    return themeUniversalIcon(QStringLiteral("wizard_logo"));
+    return Resources::themeUniversalIcon(QStringLiteral("wizard_logo"));
 }
 
 QIcon ownCloudTheme::aboutIcon() const
 {
-    return themeUniversalIcon(QStringLiteral("oc-image-about"));
+    return Resources::themeUniversalIcon(QStringLiteral("oc-image-about"));
 }
 }

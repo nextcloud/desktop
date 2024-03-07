@@ -16,6 +16,7 @@
 #define _THEME_H
 
 #include "common/utility.h"
+#include "resources/resources.h"
 #include "syncresult.h"
 
 #include <QFileInfo>
@@ -97,37 +98,17 @@ public:
     virtual QString configFileName() const;
 
     /**
-     * Wehther we allow a fallback to a vanilla icon
-     */
-    enum class IconType {
-        BrandedIcon,
-        BrandedIconWithFallbackToVanillaIcon,
-        VanillaIcon
-    };
-    Q_ENUM(IconType)
-
-    /**
      * get an sync state icon
      */
-    QIcon syncStateIcon(SyncResult::Status result, bool sysTray = false, bool sysTrayMenuVisible = false) const;
-    QIcon syncStateIcon(const SyncResult &status, bool sysTray = false, bool sysTrayMenuVisible = false) const;
-    QIcon syncStateIcon(const QString &iconName, bool sysTray = false, bool sysTrayMenuVisible = false) const;
+
+    QIcon themeTrayIcon(const SyncResult &result, bool sysTrayMenuVisible = false,
+        Resources::IconType iconType = Resources::IconType::BrandedIconWithFallbackToVanillaIcon) const;
 
     QString syncStateIconName(const SyncResult &result) const;
-
-    /**
-     * Returns a universal (non color schema aware) icon.
-     */
-    QIcon themeUniversalIcon(const QString &name, IconType iconType = IconType::BrandedIcon) const;
 
     virtual QIcon applicationIcon() const;
     virtual QString applicationIconName() const;
     virtual QIcon aboutIcon() const;
-
-    /**
-    * Whether the branding allows the dark theme
-    */
-    bool allowDarkTheme() const;
 
     /**
      * Characteristics: bool if more than one sync folder is allowed
@@ -188,8 +169,6 @@ public:
      */
     virtual QString defaultServerFolder() const;
 
-    /** colored, white or black */
-    QString systrayIconFlavor(bool mono, bool sysTrayMenuVisible = false) const;
 
     /** @return color for the setup wizard */
     virtual QColor wizardHeaderTitleColor() const;
@@ -226,11 +205,6 @@ public:
      * Retrieve wether to use mono icons for systray
      */
     bool systrayUseMonoIcons() const;
-
-    /**
-     * Check if mono icons are available
-     */
-    bool monoIconsAvailable() const;
 
     /**
      * @brief Where to check for new Updates.
@@ -439,14 +413,9 @@ public:
      */
     bool enableCernBranding() const;
 
-
-    QIcon themeIcon(const QString &name, IconType iconType = IconType::BrandedIconWithFallbackToVanillaIcon) const;
-
     bool withCrashReporter() const;
 
 protected:
-    QIcon themeTrayIcon(const QString &name, bool sysTrayMenuVisible = false, IconType iconType = IconType::BrandedIconWithFallbackToVanillaIcon) const;
-
     Theme();
 
 signals:
@@ -456,18 +425,8 @@ private:
     Theme(Theme const &);
     Theme &operator=(Theme const &);
 
-    QIcon loadIcon(const QString &flavor, const QString &name, IconType iconType) const;
-    // whether or not a theme is available
-    bool hasTheme(IconType type, const QString &theme) const;
-
     static Theme *_instance;
     bool _mono = false;
-    mutable QMap<QString, QIcon> _iconCache;
-    // <<is vanilla, theme name>, bool
-    // caches the availability of themes for branded and unbranded themes
-    mutable QMap<QPair<bool, QString>, bool> _themeCache;
-    const bool _hasBrandedColored = hasTheme(IconType::BrandedIcon, QStringLiteral("colored"));
-    const bool _hasBrandedDark = hasTheme(IconType::BrandedIcon, QStringLiteral("dark"));
 };
 
 template <>
