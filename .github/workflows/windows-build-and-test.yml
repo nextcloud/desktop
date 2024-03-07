@@ -32,6 +32,7 @@ jobs:
           craft --add-blueprint-repository [git]https://github.com/nextcloud/desktop-client-blueprints.git
           craft craft
           craft --install-deps nextcloud-client
+          choco install inkscape
           
       - name: Cache Install OpenCppCoverage
         id: cache-install-opencppcoverage
