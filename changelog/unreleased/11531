@@ -1,0 +1,7 @@
+Change: Set the 'No' button as default action in the Unknown Certificate dialog
+
+When an unknown certificate is used by the server, the safe action is to
+reject this certificate. So the default action for this dialog should be
+not to accept this unknown certificate.
+
+https://github.com/owncloud/client/issues/11531

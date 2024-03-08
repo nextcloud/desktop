@@ -40,6 +40,11 @@ TlsErrorDialog::TlsErrorDialog(const QList<QSslError> &sslErrors, const QString 
 
     connect(_ui->buttonBox, &QDialogButtonBox::accepted, this, &TlsErrorDialog::accept);
     connect(_ui->buttonBox, &QDialogButtonBox::rejected, this, &TlsErrorDialog::reject);
+
+    // Try to set the No-button (which will also emit the reject signal when cliced) as the default
+    if (QPushButton *noButton = _ui->buttonBox->button(QDialogButtonBox::No)) {
+        noButton->setDefault(true);
+    }
 }
 
 TlsErrorDialog::~TlsErrorDialog()
