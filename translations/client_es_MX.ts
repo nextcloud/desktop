@@ -219,9 +219,19 @@
 <context>
     <name>FileProviderEvictionDialog</name>
     <message>
-        <location filename="../src/gui/macOS/ui/FileProviderEvictionDialog.qml" line="31"/>
+        <location filename="../src/gui/macOS/ui/FileProviderEvictionDialog.qml" line="33"/>
         <source>Evict materialised files</source>
         <translation>Desahuciar archivos materializados</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/macOS/ui/FileProviderEvictionDialog.qml" line="49"/>
+        <source>Materialised items</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/macOS/ui/FileProviderEvictionDialog.qml" line="61"/>
+        <source>Reload</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -240,7 +250,7 @@
 <context>
     <name>FileProviderFileDelegate</name>
     <message>
-        <location filename="../src/gui/macOS/ui/FileProviderFileDelegate.qml" line="96"/>
+        <location filename="../src/gui/macOS/ui/FileProviderFileDelegate.qml" line="95"/>
         <source>Delete</source>
         <translation>Eliminar</translation>
     </message>
@@ -289,6 +299,11 @@
         <location filename="../src/gui/macOS/ui/FileProviderStorageInfo.qml" line="49"/>
         <source>%1 GB of %2 GB remote files synced</source>
         <translation>%1 GB de %2 GB de archivos remotos sincronizados</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/macOS/ui/FileProviderStorageInfo.qml" line="58"/>
+        <source>Evict local copies...</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>

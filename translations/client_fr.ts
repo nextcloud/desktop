@@ -219,8 +219,18 @@
 <context>
     <name>FileProviderEvictionDialog</name>
     <message>
-        <location filename="../src/gui/macOS/ui/FileProviderEvictionDialog.qml" line="31"/>
+        <location filename="../src/gui/macOS/ui/FileProviderEvictionDialog.qml" line="33"/>
         <source>Evict materialised files</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/macOS/ui/FileProviderEvictionDialog.qml" line="49"/>
+        <source>Materialised items</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/macOS/ui/FileProviderEvictionDialog.qml" line="61"/>
+        <source>Reload</source>
         <translation type="unfinished"/>
     </message>
 </context>
@@ -229,18 +239,18 @@
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderFastEnumerationSettings.qml" line="38"/>
         <source>Enable fast sync</source>
-        <translation type="unfinished"/>
+        <translation>Activer la sync. rapide</translation>
     </message>
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderFastEnumerationSettings.qml" line="53"/>
         <source>Fast sync will only sync changes in files and folders within folders that have been explored. This can significantly increase responsiveness on initial configuration of virtual files. However, it will cause redundant downloads of files moved to an unexplored folder. </source>
-        <translation type="unfinished"/>
+        <translation>La synchronisation rapide va uniquement synchroniser les modifications des fichiers et des dossiers dans les dossiers qui ont été explorés. Ceci peut significativement augmenter la réactivité sur la configuration initiale des fichiers virtuelles. Cependant, cela va causer des téléchargements redondants de fichiers déplacés dans un dossier non exploré.</translation>
     </message>
 </context>
 <context>
     <name>FileProviderFileDelegate</name>
     <message>
-        <location filename="../src/gui/macOS/ui/FileProviderFileDelegate.qml" line="96"/>
+        <location filename="../src/gui/macOS/ui/FileProviderFileDelegate.qml" line="95"/>
         <source>Delete</source>
         <translation>Supprimer</translation>
     </message>
@@ -283,12 +293,17 @@
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderStorageInfo.qml" line="41"/>
         <source>Local storage use</source>
-        <translation type="unfinished"/>
+        <translation>Utilisation du stockage local</translation>
     </message>
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderStorageInfo.qml" line="49"/>
         <source>%1 GB of %2 GB remote files synced</source>
         <translation>%1 Go sur %2 Go de fichiers distants synchronisés</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/macOS/ui/FileProviderStorageInfo.qml" line="58"/>
+        <source>Evict local copies...</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -1773,7 +1788,7 @@ Cela peut être un problème avec vos bibliothèques OpenSSL.</translation>
     <message>
         <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="181"/>
         <source>Error parsing or decrypting metadata.</source>
-        <translation type="unfinished"/>
+        <translation>Erreur lors du parsing ou du déchiffrement des métadonnées.</translation>
     </message>
     <message>
         <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="323"/>
@@ -5064,7 +5079,7 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
         <location filename="../src/gui/systray.cpp" line="185"/>
         <location filename="../src/gui/systray.cpp" line="195"/>
         <source>Pause sync</source>
-        <translation>Suspendre la synchro</translation>
+        <translation>Suspendre la synchronisation</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="186"/>

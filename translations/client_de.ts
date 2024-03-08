@@ -219,9 +219,19 @@
 <context>
     <name>FileProviderEvictionDialog</name>
     <message>
-        <location filename="../src/gui/macOS/ui/FileProviderEvictionDialog.qml" line="31"/>
+        <location filename="../src/gui/macOS/ui/FileProviderEvictionDialog.qml" line="33"/>
         <source>Evict materialised files</source>
         <translation>Materialisierte Dateien löschen</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/macOS/ui/FileProviderEvictionDialog.qml" line="49"/>
+        <source>Materialised items</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/macOS/ui/FileProviderEvictionDialog.qml" line="61"/>
+        <source>Reload</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -229,18 +239,18 @@
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderFastEnumerationSettings.qml" line="38"/>
         <source>Enable fast sync</source>
-        <translation type="unfinished"/>
+        <translation>Schnelle Synchronisierung altivieren</translation>
     </message>
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderFastEnumerationSettings.qml" line="53"/>
         <source>Fast sync will only sync changes in files and folders within folders that have been explored. This can significantly increase responsiveness on initial configuration of virtual files. However, it will cause redundant downloads of files moved to an unexplored folder. </source>
-        <translation type="unfinished"/>
+        <translation>Bei der schnellen Synchronisierung werden nur Änderungen an Dateien und Ordnern innerhalb der Ordner synchronisiert, die bereits untersucht wurden. Dies kann die Reaktionsfähigkeit bei der Erstkonfiguration virtueller Dateien erheblich erhöhen. Allerdings führt dies zu redundanten Downloads von Dateien, die in einen unerforschten Ordner verschoben wurden.</translation>
     </message>
 </context>
 <context>
     <name>FileProviderFileDelegate</name>
     <message>
-        <location filename="../src/gui/macOS/ui/FileProviderFileDelegate.qml" line="96"/>
+        <location filename="../src/gui/macOS/ui/FileProviderFileDelegate.qml" line="95"/>
         <source>Delete</source>
         <translation>Löschen</translation>
     </message>
@@ -289,6 +299,11 @@
         <location filename="../src/gui/macOS/ui/FileProviderStorageInfo.qml" line="49"/>
         <source>%1 GB of %2 GB remote files synced</source>
         <translation>%1 GB von %2 GB der entfernten Dateien synchronisiert</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/macOS/ui/FileProviderStorageInfo.qml" line="58"/>
+        <source>Evict local copies...</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>

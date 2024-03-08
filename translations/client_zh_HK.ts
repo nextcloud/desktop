@@ -219,9 +219,19 @@
 <context>
     <name>FileProviderEvictionDialog</name>
     <message>
-        <location filename="../src/gui/macOS/ui/FileProviderEvictionDialog.qml" line="31"/>
+        <location filename="../src/gui/macOS/ui/FileProviderEvictionDialog.qml" line="33"/>
         <source>Evict materialised files</source>
         <translation>驅逐已實體化的檔案</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/macOS/ui/FileProviderEvictionDialog.qml" line="49"/>
+        <source>Materialised items</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/macOS/ui/FileProviderEvictionDialog.qml" line="61"/>
+        <source>Reload</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -229,18 +239,18 @@
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderFastEnumerationSettings.qml" line="38"/>
         <source>Enable fast sync</source>
-        <translation type="unfinished"/>
+        <translation>啟用快速同步</translation>
     </message>
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderFastEnumerationSettings.qml" line="53"/>
         <source>Fast sync will only sync changes in files and folders within folders that have been explored. This can significantly increase responsiveness on initial configuration of virtual files. However, it will cause redundant downloads of files moved to an unexplored folder. </source>
-        <translation type="unfinished"/>
+        <translation>快速同步僅同步已瀏覽的資料夾內的檔案與資料夾中的變更。這可以顯著提昇虛擬檔案初始設定的回應能力。但是，這會導致移動到未探索的資料夾的檔案被重複下載。</translation>
     </message>
 </context>
 <context>
     <name>FileProviderFileDelegate</name>
     <message>
-        <location filename="../src/gui/macOS/ui/FileProviderFileDelegate.qml" line="96"/>
+        <location filename="../src/gui/macOS/ui/FileProviderFileDelegate.qml" line="95"/>
         <source>Delete</source>
         <translation>刪除</translation>
     </message>
@@ -289,6 +299,11 @@
         <location filename="../src/gui/macOS/ui/FileProviderStorageInfo.qml" line="49"/>
         <source>%1 GB of %2 GB remote files synced</source>
         <translation>%1 GB / %2 GB 遠端檔案已同步</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/macOS/ui/FileProviderStorageInfo.qml" line="58"/>
+        <source>Evict local copies...</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
