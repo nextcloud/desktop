@@ -75,24 +75,17 @@ jobs:
           
           craft --src-dir ${{ github.workspace }} nextcloud-client
           
-      - name: Run tests
+      - name: Run tests with coverage
         shell: pwsh
         run: |
-          function runTestsAndCreateCoverage() {
+          function runTests() {
               $buildFolder = "${{ github.workspace }}\${{ env.CRAFT_TARGET }}\build\nextcloud-client\work\build"
 
               cd $buildFolder
 
               $binFolder = "$buildFolder\bin"
 
-              & OpenCppCoverage.exe --optimized_build --quiet --sources ${{ github.workspace }} --modules $binFolder\*.dll* --export_type cobertura:${{ env.COBERTURA_COVERAGE_FILE }} --cover_children -- ctest --output-on-failure --timeout 300
+              & ctest --output-on-failure --timeout 300
           }
           
-          runTestsAndCreateCoverage
-
-      - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v4
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }}
-          directory: ${{ github.workspace }}\cobertura_coverage
-          fail_ci_if_error: true
+          runTests
