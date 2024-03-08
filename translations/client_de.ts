@@ -135,7 +135,7 @@
     <message>
         <source>SETUP_HEADER_TEXT_1</source>
         <translation>Melden Sie sich an um
-        direkt loszulegen</translation>
+direkt loszulegen</translation>
     </message>
     <message>
         <source>SETUP_DESCRIPTION_TEXT_1</source>
@@ -144,7 +144,7 @@
     <message>
         <source>SETUP_HEADER_TEXT_2</source>
         <translation>Ihr lokaler Ordner für
-        MagentaCLOUD</translation>
+MagentaCLOUD</translation>
     </message>
     <message>
         <source>SETUP_DESCRIPTION_TEXT_2</source>

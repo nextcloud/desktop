@@ -134,7 +134,8 @@
     </message>
     <message>
         <source>SETUP_HEADER_TEXT_1</source>
-        <translation>Sign in to get started immediately</translation>
+        <translation>Sign in to get 
+started immediately</translation>
     </message>
     <message>
         <source>SETUP_DESCRIPTION_TEXT_1</source>
@@ -142,7 +143,8 @@
     </message>
     <message>
         <source>SETUP_HEADER_TEXT_2</source>
-        <translation>Your Local Folder for MagentaCLOUD</translation>
+        <translation>Your Local Folder for 
+MagentaCLOUD</translation>
     </message>
     <message>
         <source>SETUP_DESCRIPTION_TEXT_2</source>
