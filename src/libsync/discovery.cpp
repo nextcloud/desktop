@@ -2024,10 +2024,11 @@ void ProcessDirectoryJob::chopVirtualFileSuffix(QString &str) const
 DiscoverySingleDirectoryJob *ProcessDirectoryJob::startAsyncServerQuery()
 {
     if (_dirItem && _dirItem->isEncrypted() && _dirItem->_encryptedFileName.isEmpty()) {
-        _discoveryData->_topLevelE2eeFolderPaths.insert(QLatin1Char('/') + _dirItem->_file);
+        _discoveryData->_topLevelE2eeFolderPaths.insert(_discoveryData->_remoteFolder + _dirItem->_file);
     }
     auto serverJob = new DiscoverySingleDirectoryJob(_discoveryData->_account,
-                                                     _discoveryData->_remoteFolder + _currentFolder._server,
+                                                     _currentFolder._server,
+                                                     _discoveryData->_remoteFolder,
                                                      _discoveryData->_topLevelE2eeFolderPaths,
                                                      this);
     if (!_dirItem) {

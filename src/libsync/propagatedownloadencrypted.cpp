@@ -15,14 +15,7 @@ PropagateDownloadEncrypted::PropagateDownloadEncrypted(OwncloudPropagator *propa
     , _item(item)
     , _info(_item->_file)
 {
-    const auto rootPath = [=]() {
-        const auto result = _propagator->remotePath();
-        if (result.startsWith('/')) {
-            return result.mid(1);
-        } else {
-            return result;
-        }
-    }();
+    const auto rootPath = Utility::noLeadingSlashPath(_propagator->remotePath());
     const auto remoteFilename = _item->_encryptedFileName.isEmpty() ? _item->_file : _item->_encryptedFileName;
     const auto remotePath = QString(rootPath + remoteFilename);
     const auto remoteParentPath = remotePath.left(remotePath.lastIndexOf('/'));
@@ -42,8 +35,7 @@ void PropagateDownloadEncrypted::start()
         emit failed();
         return;
     }
-    _encryptedFolderMetadataHandler.reset(
-        new EncryptedFolderMetadataHandler(_propagator->account(), _remoteParentPath, _propagator->_journal, rec.path()));
+    _encryptedFolderMetadataHandler.reset(new EncryptedFolderMetadataHandler(_propagator->account(), _remoteParentPath, _propagator->remotePath(), _propagator->_journal, rec.path()));
 
     connect(_encryptedFolderMetadataHandler.data(),
             &EncryptedFolderMetadataHandler::fetchFinished,

@@ -60,21 +60,25 @@ bool FolderMetadata::EncryptedFile::isDirectory() const
     return mimetype.isEmpty() || mimetype == QByteArrayLiteral("inode/directory") || mimetype == QByteArrayLiteral("httpd/unix-directory");
 }
 
-FolderMetadata::FolderMetadata(AccountPtr account, FolderType folderType)
-    : _account(account),
+FolderMetadata::FolderMetadata(AccountPtr account, const QString &remoteFolderRoot, FolderType folderType) :
+    _account(account),
+    _remoteFolderRoot(Utility::noLeadingSlashPath(Utility::noTrailingSlashPath(remoteFolderRoot))),
     _isRootEncryptedFolder(folderType == FolderType::Root)
 {
+    Q_ASSERT(!_remoteFolderRoot.isEmpty());
     qCInfo(lcCseMetadata()) << "Setting up an Empty Metadata";
     initEmptyMetadata();
 }
 
 FolderMetadata::FolderMetadata(AccountPtr account,
+                               const QString &remoteFolderRoot,
                                const QByteArray &metadata,
                                const RootEncryptedFolderInfo &rootEncryptedFolderInfo,
                                const QByteArray &signature,
                                QObject *parent)
     : QObject(parent)
     , _account(account)
+    , _remoteFolderRoot(Utility::noLeadingSlashPath(Utility::noTrailingSlashPath(remoteFolderRoot)))
     , _initialMetadata(metadata)
     , _isRootEncryptedFolder(rootEncryptedFolderInfo.path == QStringLiteral("/"))
     , _metadataKeyForEncryption(rootEncryptedFolderInfo.keyForEncryption)
@@ -82,6 +86,7 @@ FolderMetadata::FolderMetadata(AccountPtr account,
     , _keyChecksums(rootEncryptedFolderInfo.keyChecksums)
     , _initialSignature(signature)
 {
+    Q_ASSERT(!_remoteFolderRoot.isEmpty());
     setupVersionFromExistingMetadata(metadata);
 
     const auto doc = QJsonDocument::fromJson(metadata);
@@ -987,7 +992,8 @@ bool FolderMetadata::moveFromFileDropToFiles()
 
 void FolderMetadata::startFetchRootE2eeFolderMetadata(const QString &path)
 {
-    _encryptedFolderMetadataHandler.reset(new EncryptedFolderMetadataHandler(_account, path, nullptr, "/"));
+    Q_ASSERT(!_remoteFolderRoot.isEmpty());
+    _encryptedFolderMetadataHandler.reset(new EncryptedFolderMetadataHandler(_account, Utility::trailingSlashPath(_remoteFolderRoot) + path, _remoteFolderRoot, nullptr, "/"));
 
     connect(_encryptedFolderMetadataHandler.data(),
             &EncryptedFolderMetadataHandler::fetchFinished,

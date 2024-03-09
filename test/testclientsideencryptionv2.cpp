@@ -96,7 +96,7 @@ private slots:
 
     void testInitializeNewRootFolderMetadataThenEncryptAndDecrypt()
     {
-        QScopedPointer<FolderMetadata> metadata(new FolderMetadata(_account, FolderMetadata::FolderType::Root));
+        QScopedPointer<FolderMetadata> metadata(new FolderMetadata(_account, "/", FolderMetadata::FolderType::Root));
         QSignalSpy metadataSetupCompleteSpy(metadata.data(), &FolderMetadata::setupComplete);
         metadataSetupCompleteSpy.wait();
         QCOMPARE(metadataSetupCompleteSpy.count(), 1);
@@ -178,7 +178,7 @@ private slots:
         QJsonDocument ocsDoc = QJsonDocument::fromJson(QStringLiteral("{\"ocs\": {\"data\": {\"meta-data\": \"%1\"}}}").arg(QString::fromUtf8(encryptedMetadataCopy)).toUtf8());
         
 
-        QScopedPointer<FolderMetadata> metadataFromJson(new FolderMetadata(_account,
+        QScopedPointer<FolderMetadata> metadataFromJson(new FolderMetadata(_account, "/",
             ocsDoc.toJson(),
             RootEncryptedFolderInfo::makeDefault(), signature));
         QSignalSpy metadataSetupExistingCompleteSpy(metadataFromJson.data(), &FolderMetadata::setupComplete);
@@ -190,7 +190,7 @@ private slots:
     void testE2EeFolderMetadataSharing()
     {
         // instantiate empty metadata, add a file, and share with a second user "sharee"
-        QScopedPointer<FolderMetadata> metadata(new FolderMetadata(_account, FolderMetadata::FolderType::Root));
+        QScopedPointer<FolderMetadata> metadata(new FolderMetadata(_account, "/", FolderMetadata::FolderType::Root));
         QSignalSpy metadataSetupCompleteSpy(metadata.data(), &FolderMetadata::setupComplete);
         metadataSetupCompleteSpy.wait();
         QCOMPARE(metadataSetupCompleteSpy.count(), 1);
@@ -280,7 +280,7 @@ private slots:
         QJsonDocument ocsDoc =
             QJsonDocument::fromJson(QStringLiteral("{\"ocs\": {\"data\": {\"meta-data\": \"%1\"}}}").arg(QString::fromUtf8(encryptedMetadataCopy)).toUtf8());
 
-        QScopedPointer<FolderMetadata> metadataFromJsonForSecondUser(new FolderMetadata(_secondAccount, ocsDoc.toJson(), RootEncryptedFolderInfo::makeDefault(), signature));
+        QScopedPointer<FolderMetadata> metadataFromJsonForSecondUser(new FolderMetadata(_secondAccount, "/", ocsDoc.toJson(), RootEncryptedFolderInfo::makeDefault(), signature));
         QSignalSpy metadataSetupExistingCompleteSpy(metadataFromJsonForSecondUser.data(), &FolderMetadata::setupComplete);
         metadataSetupExistingCompleteSpy.wait();
         QCOMPARE(metadataSetupExistingCompleteSpy.count(), 1);
@@ -303,7 +303,7 @@ private slots:
         QJsonDocument ocsDocFromSecondUser = QJsonDocument::fromJson(
             QStringLiteral("{\"ocs\": {\"data\": {\"meta-data\": \"%1\"}}}").arg(QString::fromUtf8(encryptedMetadataFromSecondUser)).toUtf8());
 
-        QScopedPointer<FolderMetadata> metadataFromJsonForFirstUserToCheckCrossSharing(new FolderMetadata(_account,
+        QScopedPointer<FolderMetadata> metadataFromJsonForFirstUserToCheckCrossSharing(new FolderMetadata(_account, "/",
                                                                                                           ocsDocFromSecondUser.toJson(),
                                                                                                           RootEncryptedFolderInfo::makeDefault(),
                                                                                                           signatureAfterSecondUserModification));

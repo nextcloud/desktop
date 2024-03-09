@@ -416,7 +416,7 @@ public:
         /**
      * Tell the manager to create and start new UpdateE2eeShareMetadataJob job
      *
-     * @param path The path of the share relative to the user folder on the server
+     * @param fullRemotePath The path of the share relative to the user folder on the server
      * @param shareType The type of share (TypeUser, TypeGroup, TypeRemote)
      * @param Permissions The share permissions
      * @param folderId The id for an E2EE folder
@@ -425,7 +425,7 @@ public:
      * On success the signal shareCreated is emitted
      * In case of a server error the serverError signal is emitted
      */
-    void createE2EeShareJob(const QString &path,
+    void createE2EeShareJob(const QString &fullRemotePath,
                             const ShareePtr sharee,
                             const Share::Permissions permissions,
                             const QString &password = "");

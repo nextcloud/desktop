@@ -28,28 +28,26 @@ UpdateE2eeFolderUsersMetadataJob::UpdateE2eeFolderUsersMetadataJob(const Account
                                                        SyncJournalDb *journalDb,
                                                        const QString &syncFolderRemotePath,
                                                        const Operation operation,
-                                                       const QString &path,
+                                                       const QString &fullRemotePath,
                                                        const QString &folderUserId,
                                                        const QSslCertificate &certificate,
                                                        QObject *parent)
     : QObject(parent)
     , _account(account)
     , _journalDb(journalDb)
-    , _syncFolderRemotePath(syncFolderRemotePath)
+    , _syncFolderRemotePath(Utility::noLeadingSlashPath(Utility::noTrailingSlashPath(syncFolderRemotePath)))
     , _operation(operation)
-    , _path(path)
+    , _fullRemotePath(Utility::noLeadingSlashPath(fullRemotePath))
     , _folderUserId(folderUserId)
     , _folderUserCertificate(certificate)
 {
-    const auto pathSanitized = _path.startsWith(QLatin1Char('/')) ? _path.mid(1) : _path;
-    const auto folderPath = _syncFolderRemotePath + pathSanitized;
-
+    Q_ASSERT(_syncFolderRemotePath == QStringLiteral("/") || _fullRemotePath.startsWith(_syncFolderRemotePath));
     SyncJournalFileRecord rec;
-    if (!_journalDb->getRootE2eFolderRecord(Utility::fullRemotePathToRemoteSyncRootRelative(_path, _syncFolderRemotePath), &rec) || !rec.isValid()) {
-        qCDebug(lcUpdateE2eeFolderUsersMetadataJob) << "Could not get root E2ee folder recort for path" << _path;
+    if (!_journalDb->getRootE2eFolderRecord(Utility::fullRemotePathToRemoteSyncRootRelative(_fullRemotePath, _syncFolderRemotePath), &rec) || !rec.isValid()) {
+        qCDebug(lcUpdateE2eeFolderUsersMetadataJob) << "Could not get root E2ee folder recort for path" << _fullRemotePath;
         return;
     }
-    _encryptedFolderMetadataHandler.reset(new EncryptedFolderMetadataHandler(_account, folderPath, _journalDb, rec.path()));
+    _encryptedFolderMetadataHandler.reset(new EncryptedFolderMetadataHandler(_account, _fullRemotePath, _syncFolderRemotePath, _journalDb, rec.path()));
 }
 
 void UpdateE2eeFolderUsersMetadataJob::start(const bool keepLock)
@@ -57,7 +55,7 @@ void UpdateE2eeFolderUsersMetadataJob::start(const bool keepLock)
     qCWarning(lcUpdateE2eeFolderUsersMetadataJob) << "[DEBUG_LEAVE_SHARE]: UpdateE2eeFolderUsersMetadataJob::start";
 
     if (!_encryptedFolderMetadataHandler) {
-        emit finished(-1, tr("Error updating metadata for a folder %1").arg(_path));
+        emit finished(-1, tr("Error updating metadata for a folder %1").arg(_fullRemotePath));
         return;
     }
 
@@ -68,7 +66,7 @@ void UpdateE2eeFolderUsersMetadataJob::start(const bool keepLock)
     }
     _keepLock = keepLock;
     if (_operation != Operation::Add && _operation != Operation::Remove && _operation != Operation::ReEncrypt) {
-        emit finished(-1, tr("Error updating metadata for a folder %1").arg(_path));
+        emit finished(-1, tr("Error updating metadata for a folder %1").arg(_fullRemotePath));
         return;
     }
 
@@ -93,15 +91,14 @@ void UpdateE2eeFolderUsersMetadataJob::slotStartE2eeMetadataJobs()
         return;
     }
 
-    const auto pathSanitized = _path.startsWith(QLatin1Char('/')) ? _path.mid(1) : _path;
-    const auto folderPath = _syncFolderRemotePath + pathSanitized;
+    const auto folderPathRelative = Utility::fullRemotePathToRemoteSyncRootRelative(_fullRemotePath, _syncFolderRemotePath);
     SyncJournalFileRecord rec;
-    if (!_journalDb->getRootE2eFolderRecord(Utility::fullRemotePathToRemoteSyncRootRelative(_path, _syncFolderRemotePath), &rec) || !rec.isValid()) {
-        emit finished(404, tr("Could not find root encrypted folder for folder %1").arg(_path));
+    if (!_journalDb->getRootE2eFolderRecord(Utility::fullRemotePathToRemoteSyncRootRelative(folderPathRelative, _syncFolderRemotePath), &rec) || !rec.isValid()) {
+        emit finished(404, tr("Could not find root encrypted folder for folder %1").arg(_fullRemotePath));
         return;
     }
 
-    const auto rootEncFolderInfo = RootEncryptedFolderInfo(RootEncryptedFolderInfo::createRootPath(folderPath, rec.path()), _metadataKeyForEncryption, _metadataKeyForDecryption, _keyChecksums);
+    const auto rootEncFolderInfo = RootEncryptedFolderInfo(RootEncryptedFolderInfo::createRootPath(folderPathRelative, rec.path()), _metadataKeyForEncryption, _metadataKeyForDecryption, _keyChecksums);
     connect(_encryptedFolderMetadataHandler.data(), &EncryptedFolderMetadataHandler::fetchFinished,
             this, &UpdateE2eeFolderUsersMetadataJob::slotFetchMetadataJobFinished);
     _encryptedFolderMetadataHandler->fetchMetadata(rootEncFolderInfo, EncryptedFolderMetadataHandler::FetchMode::AllowEmptyMetadata);
@@ -113,12 +110,12 @@ void UpdateE2eeFolderUsersMetadataJob::slotFetchMetadataJobFinished(int statusCo
 
     if (statusCode != 200) {
         qCritical(lcUpdateE2eeFolderUsersMetadataJob) << "fetch metadata finished with error" << statusCode << message;
-        emit finished(-1, tr("Error updating metadata for a folder %1").arg(_path));
+        emit finished(-1, tr("Error updating metadata for a folder %1").arg(_fullRemotePath));
         return;
     }
 
     if (!_encryptedFolderMetadataHandler->folderMetadata() || !_encryptedFolderMetadataHandler->folderMetadata()->isValid()) {
-        emit finished(403, tr("Could not add or remove a folder user %1, for folder %2").arg(_folderUserId).arg(_path));
+        emit finished(403, tr("Could not add or remove a folder user %1, for folder %2").arg(_folderUserId).arg(_fullRemotePath));
         return;
     }
     startUpdate();
@@ -128,14 +125,14 @@ void UpdateE2eeFolderUsersMetadataJob::startUpdate()
 {
     if (_operation == Operation::Invalid) {
         qCDebug(lcUpdateE2eeFolderUsersMetadataJob) << "Invalid operation";
-        emit finished(-1, tr("Error updating metadata for a folder %1").arg(_path));
+        emit finished(-1, tr("Error updating metadata for a folder %1").arg(_fullRemotePath));
         return;
     }
 
     if (_operation == Operation::Add || _operation == Operation::Remove) {
         if (!_encryptedFolderMetadataHandler->folderMetadata()) {
             qCDebug(lcUpdateE2eeFolderUsersMetadataJob) << "Metadata is null";
-            emit finished(-1, tr("Error updating metadata for a folder %1").arg(_path));
+            emit finished(-1, tr("Error updating metadata for a folder %1").arg(_fullRemotePath));
             return;
         }
 
@@ -145,7 +142,7 @@ void UpdateE2eeFolderUsersMetadataJob::startUpdate()
 
         if (!result) {
             qCDebug(lcUpdateE2eeFolderUsersMetadataJob) << "Could not perform operation" << _operation << "on metadata";
-            emit finished(-1, tr("Error updating metadata for a folder %1").arg(_path));
+            emit finished(-1, tr("Error updating metadata for a folder %1").arg(_fullRemotePath));
             return;
         }
 
@@ -166,7 +163,7 @@ void UpdateE2eeFolderUsersMetadataJob::slotUpdateMetadataFinished(int code, cons
             qCDebug(lcUpdateE2eeFolderUsersMetadataJob()) << "Unlocking the folder.";
             unlockFolder(EncryptedFolderMetadataHandler::UnlockFolderWithResult::Failure);
         } else {
-            emit finished(code, tr("Error updating metadata for a folder %1").arg(_path) + QStringLiteral(":%1").arg(message));
+            emit finished(code, tr("Error updating metadata for a folder %1").arg(_fullRemotePath) + QStringLiteral(":%1").arg(message));
         }
         return;
     }
@@ -198,16 +195,16 @@ void UpdateE2eeFolderUsersMetadataJob::scheduleSubJobs()
             unlockFolder(EncryptedFolderMetadataHandler::UnlockFolderWithResult::Failure);
         } else {
             qCWarning(lcUpdateE2eeFolderUsersMetadataJob()) << "Metadata is invalid.";
-            emit finished(-1, tr("Error updating metadata for a folder %1").arg(_path));
+            emit finished(-1, tr("Error updating metadata for a folder %1").arg(_fullRemotePath));
         }
         return;
     }
 
-    const auto pathInDb = _path.mid(_syncFolderRemotePath.size());
+    const auto pathInDb = Utility::fullRemotePathToRemoteSyncRootRelative(_fullRemotePath, _syncFolderRemotePath);
     [[maybe_unused]] const auto result = _journalDb->getFilesBelowPath(pathInDb.toUtf8(), [this](const SyncJournalFileRecord &record) {
         if (record.isDirectory()) {
             const auto folderMetadata = _encryptedFolderMetadataHandler->folderMetadata();
-            const auto subJob = new UpdateE2eeFolderUsersMetadataJob(_account, _journalDb, _syncFolderRemotePath, UpdateE2eeFolderUsersMetadataJob::ReEncrypt, QString::fromUtf8(record._e2eMangledName));
+            const auto subJob = new UpdateE2eeFolderUsersMetadataJob(_account, _journalDb, _syncFolderRemotePath, UpdateE2eeFolderUsersMetadataJob::ReEncrypt, Utility::trailingSlashPath(_syncFolderRemotePath) + QString::fromUtf8(record._e2eMangledName));
             subJob->setMetadataKeyForEncryption(folderMetadata->metadataKeyForEncryption());
             subJob->setMetadataKeyForDecryption(folderMetadata->metadataKeyForDecryption());
             subJob->setKeyChecksums(folderMetadata->keyChecksums());
@@ -257,7 +254,7 @@ void UpdateE2eeFolderUsersMetadataJob::slotSubJobFinished(int code, const QStrin
     Q_ASSERT(job);
     if (!job) {
         qCWarning(lcUpdateE2eeFolderUsersMetadataJob) << "slotSubJobFinished must be invoked by signal";
-        emit finished(-1, tr("Error updating metadata for a folder %1").arg(_path) + QStringLiteral(":%1").arg(message));
+        emit finished(-1, tr("Error updating metadata for a folder %1").arg(_fullRemotePath) + QStringLiteral(":%1").arg(message));
         subJobsFinished(false);
         return;
     }
@@ -346,7 +343,7 @@ void UpdateE2eeFolderUsersMetadataJob::setSubJobSyncItems(const QHash<QString, S
 
 const QString &UpdateE2eeFolderUsersMetadataJob::path() const
 {
-    return _path;
+    return _fullRemotePath;
 }
 
 const UpdateE2eeFolderUsersMetadataJob::UserData &UpdateE2eeFolderUsersMetadataJob::userData() const
