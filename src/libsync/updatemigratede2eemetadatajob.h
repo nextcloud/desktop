@@ -33,7 +33,7 @@ public:
 
     [[nodiscard]] JobParallelism parallelism() const override;
 
-    [[nodiscard]] QString path() const;
+    [[nodiscard]] QString fullRemotePath() const;
 
     void addSubJobItem(const QString &key, const SyncFileItemPtr &syncFileItem);
 
@@ -43,7 +43,7 @@ private slots:
 private:
     SyncFileItemPtr _item;
     QHash<QString, SyncFileItemPtr> _subJobItems;
-    QString _path;
+    QString _fullRemotePath;
     QString _folderRemotePath;
 };
 

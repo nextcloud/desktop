@@ -1537,7 +1537,7 @@ void FolderMan::leaveShare(const QString &localFile)
 {
     const auto localFileNoTrailingSlash = localFile.endsWith('/') ? localFile.chopped(1) : localFile;
     if (const auto folder = FolderMan::instance()->folderForPath(localFileNoTrailingSlash)) {
-        const auto filePathRelative = QString(localFileNoTrailingSlash).remove(folder->path());
+        const auto filePathRelative = Utility::noLeadingSlashPath(QString(localFileNoTrailingSlash).remove(folder->path()));
 
         SyncJournalFileRecord rec;
         if (folder->journalDb()->getFileRecord(filePathRelative, &rec)
@@ -1551,8 +1551,7 @@ void FolderMan::leaveShare(const QString &localFile)
                                                                                  folder->journalDb(),
                                                                                  folder->remotePath(),
                                                                                  UpdateE2eeFolderUsersMetadataJob::Remove,
-                //TODO: Might need to add a slash to "filePathRelative" once the server is working
-                                                                                 filePathRelative,
+                                                                                 folder->remotePathTrailingSlash() + filePathRelative,
                                                                                  folder->accountState()->account()->davUser());
             _removeE2eeShareJob->setParent(this);
             _removeE2eeShareJob->start(true);

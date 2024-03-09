@@ -857,6 +857,9 @@ void ShareModel::slotDeleteE2EeShare(const SharePtr &share) const
         return;
     }
 
+    Q_ASSERT(folder->remotePath() == QStringLiteral("/")
+             || Utility::noLeadingSlashPath(share->path()).startsWith(Utility::noLeadingSlashPath(Utility::noTrailingSlashPath(folder->remotePath()))));
+
     const auto removeE2eeShareJob = new UpdateE2eeFolderUsersMetadataJob(account,
                                                                          folder->journalDb(),
                                                                          folder->remotePath(),

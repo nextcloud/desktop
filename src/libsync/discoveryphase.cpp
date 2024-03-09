@@ -371,13 +371,16 @@ void DiscoverySingleLocalDirectoryJob::run() {
 
 DiscoverySingleDirectoryJob::DiscoverySingleDirectoryJob(const AccountPtr &account,
                                                          const QString &path,
+                                                         const QString &remoteRootFolderPath,
                                                          const QSet<QString> &topLevelE2eeFolderPaths,
                                                          QObject *parent)
     : QObject(parent)
-    , _subPath(path)
+    , _subPath(remoteRootFolderPath + path)
+    , _remoteRootFolderPath(remoteRootFolderPath)
     , _account(account)
     , _topLevelE2eeFolderPaths(topLevelE2eeFolderPaths)
 {
+    Q_ASSERT(!_remoteRootFolderPath.isEmpty());
 }
 
 void DiscoverySingleDirectoryJob::start()
@@ -692,8 +695,9 @@ void DiscoverySingleDirectoryJob::metadataReceived(const QJsonDocument &json, in
     }
 
     const auto e2EeFolderMetadata = new FolderMetadata(_account,
+                                                 _remoteRootFolderPath,
                                                  statusCode == 404 ? QByteArray{} : json.toJson(QJsonDocument::Compact),
-                                                 RootEncryptedFolderInfo(topLevelFolderPath),
+                                                 RootEncryptedFolderInfo(Utility::fullRemotePathToRemoteSyncRootRelative(topLevelFolderPath, _remoteRootFolderPath)),
                                                  job->signature());
     connect(e2EeFolderMetadata, &FolderMetadata::setupComplete, this, [this, e2EeFolderMetadata] {
         e2EeFolderMetadata->deleteLater();

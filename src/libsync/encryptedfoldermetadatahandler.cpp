@@ -32,17 +32,22 @@ Q_LOGGING_CATEGORY(lcFetchAndUploadE2eeFolderMetadataJob, "nextcloud.sync.propag
 namespace OCC {
 
 EncryptedFolderMetadataHandler::EncryptedFolderMetadataHandler(const AccountPtr &account,
-                                                                         const QString &folderPath,
+                                                                         const QString &folderFullRemotePath,
+                                                                         const QString &remoteFolderRoot,
                                                                          SyncJournalDb *const journalDb,
                                                                          const QString &pathForTopLevelFolder,
                                                                          QObject *parent)
     : QObject(parent)
     , _account(account)
-    , _folderPath(folderPath)
     , _journalDb(journalDb)
+    , _folderFullRemotePath(Utility::noLeadingSlashPath(Utility::noTrailingSlashPath(folderFullRemotePath)))
+    , _remoteFolderRoot(Utility::noLeadingSlashPath(Utility::noTrailingSlashPath(remoteFolderRoot)))
 {
-    _rootEncryptedFolderInfo = RootEncryptedFolderInfo(
-        RootEncryptedFolderInfo::createRootPath(folderPath, pathForTopLevelFolder));
+    Q_ASSERT(!_remoteFolderRoot.isEmpty());
+    Q_ASSERT(_remoteFolderRoot == QStringLiteral("/") || _folderFullRemotePath.startsWith(_remoteFolderRoot));
+
+    const auto folderRelativePath = Utility::fullRemotePathToRemoteSyncRootRelative(_folderFullRemotePath, _remoteFolderRoot);
+    _rootEncryptedFolderInfo = RootEncryptedFolderInfo(RootEncryptedFolderInfo::createRootPath(folderRelativePath, pathForTopLevelFolder));
 }
 
 void EncryptedFolderMetadataHandler::fetchMetadata(const FetchMode fetchMode)
@@ -53,9 +58,22 @@ void EncryptedFolderMetadataHandler::fetchMetadata(const FetchMode fetchMode)
 
 void EncryptedFolderMetadataHandler::fetchMetadata(const RootEncryptedFolderInfo &rootEncryptedFolderInfo, const FetchMode fetchMode)
 {
+    Q_ASSERT(!rootEncryptedFolderInfo.path.isEmpty());
+    if (rootEncryptedFolderInfo.path.isEmpty()) {
+        qCWarning(lcFetchAndUploadE2eeFolderMetadataJob) << "Error fetching metadata for" << _folderFullRemotePath << ". Invalid rootEncryptedFolderInfo!";
+        emit fetchFinished(-1, tr("Error fetching metadata."));
+        return;
+    }
+
     _rootEncryptedFolderInfo = rootEncryptedFolderInfo;
     if (_rootEncryptedFolderInfo.path.isEmpty()) {
-        qCWarning(lcFetchAndUploadE2eeFolderMetadataJob) << "Error fetching metadata for" << _folderPath << ". Invalid _rootEncryptedFolderInfo!";
+        qCWarning(lcFetchAndUploadE2eeFolderMetadataJob) << "Error fetching metadata for" << _folderFullRemotePath << ". Invalid _rootEncryptedFolderInfo!";
+        emit fetchFinished(-1, tr("Error fetching metadata."));
+        return;
+    }
+    if (_remoteFolderRoot != QStringLiteral("/") && !_folderFullRemotePath.startsWith(_remoteFolderRoot)) {
+        qCWarning(lcFetchAndUploadE2eeFolderMetadataJob) << "Error fetching metadata for" << _folderFullRemotePath
+            << " and remote root" << _remoteFolderRoot << ". Invalid _remoteFolderRoot or _folderFullRemotePath!";
         emit fetchFinished(-1, tr("Error fetching metadata."));
         return;
     }
@@ -99,7 +117,7 @@ void EncryptedFolderMetadataHandler::startFetchMetadata()
 void EncryptedFolderMetadataHandler::fetchFolderEncryptedId()
 {
     qCDebug(lcFetchAndUploadE2eeFolderMetadataJob) << "Folder is encrypted, let's get the Id from it.";
-    const auto job = new LsColJob(_account, _folderPath);
+    const auto job = new LsColJob(_account, _folderFullRemotePath);
     job->setProperties({"resourcetype", "http://owncloud.org/ns:fileid"});
     connect(job, &LsColJob::directoryListingSubfolders, this, &EncryptedFolderMetadataHandler::slotFolderEncryptedIdReceived);
     connect(job, &LsColJob::finishedWithError, this, &EncryptedFolderMetadataHandler::slotFolderEncryptedIdError);
@@ -167,17 +185,17 @@ void EncryptedFolderMetadataHandler::slotMetadataReceived(const QJsonDocument &j
 
     if (statusCode != 200 && statusCode != 404) {
         // neither successfully fetched, nor a folder without a metadata, fail further logic
-        qCDebug(lcFetchAndUploadE2eeFolderMetadataJob) << "Error fetching metadata for folder" << _folderPath;
+        qCDebug(lcFetchAndUploadE2eeFolderMetadataJob) << "Error fetching metadata for folder" << _folderFullRemotePath;
         emit fetchFinished(statusCode, tr("Error fetching metadata."));
         return;
     }
 
     const auto rawMetadata = statusCode == 404
         ? QByteArray{} : json.toJson(QJsonDocument::Compact);
-    const auto metadata(QSharedPointer<FolderMetadata>::create(_account, rawMetadata, _rootEncryptedFolderInfo, job->signature()));
+    const auto metadata(QSharedPointer<FolderMetadata>::create(_account, _remoteFolderRoot, rawMetadata, _rootEncryptedFolderInfo, job->signature()));
     connect(metadata.data(), &FolderMetadata::setupComplete, this, [this, metadata] {
         if (!metadata->isValid()) {
-            qCDebug(lcFetchAndUploadE2eeFolderMetadataJob) << "Error parsing or decrypting metadata for folder" << _folderPath;
+            qCDebug(lcFetchAndUploadE2eeFolderMetadataJob) << "Error parsing or decrypting metadata for folder" << _folderFullRemotePath;
             emit fetchFinished(-1, tr("Error parsing or decrypting metadata."));
             return;
         }

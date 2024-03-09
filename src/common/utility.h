@@ -266,7 +266,8 @@ namespace Utility {
      * @brief Registers the desktop app as a handler for a custom URI to enable local editing
      */
     OCSYNC_EXPORT void registerUriHandlerForLocalEditing();
-
+    
+    OCSYNC_EXPORT QString leadingSlashPath(const QString &path);
     OCSYNC_EXPORT QString trailingSlashPath(const QString &path);
     OCSYNC_EXPORT QString noLeadingSlashPath(const QString &path);
     OCSYNC_EXPORT QString noTrailingSlashPath(const QString &path);

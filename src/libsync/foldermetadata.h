@@ -93,13 +93,14 @@ public:
     };
     Q_ENUM(FolderType)
 
-    FolderMetadata(AccountPtr account, FolderType folderType = FolderType::Nested);
+    FolderMetadata(AccountPtr account, const QString &remoteFolderRoot, FolderType folderType = FolderType::Nested);
     /*
     * construct metadata based on RootEncryptedFolderInfo
     * as per E2EE V2, the encryption key and users that have access are only stored in root(top-level) encrypted folder's metadata
     * see: https://github.com/nextcloud/end_to_end_encryption_rfc/blob/v2.1/RFC.md
     */
     FolderMetadata(AccountPtr account,
+                   const QString &remoteFolderRoot,
                    const QByteArray &metadata,
                    const RootEncryptedFolderInfo &rootEncryptedFolderInfo,
                    const QByteArray &signature,
@@ -197,6 +198,7 @@ signals:
 
 private:
     AccountPtr _account;
+    QString _remoteFolderRoot;
     QByteArray _initialMetadata;
 
     bool _isRootEncryptedFolder = false;
