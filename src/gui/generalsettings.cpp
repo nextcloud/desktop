@@ -94,56 +94,6 @@ GeneralSettings::GeneralSettings(QWidget *parent)
         ocApp()->gui()->slotToggleLogBrowser();
     });
 
-    // Only our standard brandings currently support beta channel
-#ifdef WITH_AUTO_UPDATER
-    if (Theme::instance()->appName() != QLatin1String("testpilotcloud")) {
-#ifdef Q_OS_MAC
-        // Because we don't have any statusString from the SparkleUpdater anyway we can hide the whole thing
-        _ui->updaterWidget->hide();
-#else
-        _ui->updateChannelLabel->hide();
-        _ui->updateChannel->hide();
-        if (ConfigFile().updateChannel() != QLatin1String("stable")) {
-            ConfigFile().setUpdateChannel(QStringLiteral("stable"));
-        }
-#endif
-    }
-    // we want to attach the known english identifiers which are also used within the configuration file as user data inside the data model
-    // that way, when we intend to reset to the original selection when the dialog, we can look up the config file's stored value in the data model
-    _ui->updateChannel->addItem(tr("stable"), QStringLiteral("stable"));
-    _ui->updateChannel->addItem(tr("beta"), QStringLiteral("beta"));
-
-    if (!ConfigFile().skipUpdateCheck() && Updater::instance()) {
-        // Channel selection
-        _ui->updateChannel->setCurrentIndex(_ui->updateChannel->findData(ConfigFile().updateChannel()));
-        connect(_ui->updateChannel, static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, &GeneralSettings::slotUpdateChannelChanged);
-
-        // Note: the sparkle-updater is not an OCUpdater
-        if (auto *ocupdater = qobject_cast<OCUpdater *>(Updater::instance())) {
-            auto updateInfo = [ocupdater, this] {
-                _ui->updateStateLabel->setText(ocupdater->statusString());
-                _ui->restartButton->setVisible(ocupdater->downloadState() == OCUpdater::DownloadComplete);
-            };
-            connect(ocupdater, &OCUpdater::downloadStateChanged, this, updateInfo);
-            if (auto *nsisupdater = qobject_cast<WindowsUpdater *>(ocupdater)) {
-                connect(_ui->restartButton, &QAbstractButton::clicked, nsisupdater, &WindowsUpdater::startInstallerAndQuit);
-            } else {
-                connect(_ui->restartButton, &QAbstractButton::clicked, this, [] { RestartManager::requestRestart(); });
-            }
-            updateInfo();
-        }
-#ifdef HAVE_SPARKLE
-        if (SparkleUpdater *sparkleUpdater = qobject_cast<SparkleUpdater *>(Updater::instance())) {
-            _ui->updateStateLabel->setText(sparkleUpdater->statusString());
-            _ui->restartButton->setVisible(false);
-        }
-#endif
-    } else {
-        _ui->updaterWidget->hide();
-    }
-#else
-    _ui->updaterWidget->hide();
-#endif
     connect(_ui->about_pushButton, &QPushButton::clicked, this, &GeneralSettings::showAbout);
 
     if (!Theme::instance()->aboutShowCopyright()) {
@@ -176,62 +126,6 @@ void GeneralSettings::loadMiscSettings()
 void GeneralSettings::showEvent(QShowEvent *)
 {
     reloadConfig();
-}
-
-void GeneralSettings::slotUpdateChannelChanged([[maybe_unused]] int index)
-{
-#ifdef WITH_AUTO_UPDATER
-    QString channel;
-    if (index < 0) {
-        // invalid index reset to stable
-        channel = QStringLiteral("stable");
-    } else {
-        channel = _ui->updateChannel->itemData(index).toString();
-    }
-    if (channel == ConfigFile().updateChannel())
-        return;
-
-    auto msgBox = new QMessageBox(
-        QMessageBox::Warning,
-        tr("Change update channel?"),
-        tr("The update channel determines which client updates will be offered "
-           "for installation. The \"stable\" channel contains only upgrades that "
-           "are considered reliable, while the versions in the \"beta\" channel "
-           "may contain newer features and bugfixes, but have not yet been tested "
-           "thoroughly."
-           "\n\n"
-           "Note that this selects only what pool upgrades are taken from, and that "
-           "there are no downgrades: So going back from the beta channel to "
-           "the stable channel usually cannot be done immediately and means waiting "
-           "for a stable version that is newer than the currently installed beta "
-           "version."),
-        QMessageBox::NoButton,
-        this);
-    auto acceptButton = msgBox->addButton(tr("Change update channel"), QMessageBox::AcceptRole);
-    msgBox->addButton(tr("Cancel"), QMessageBox::RejectRole);
-    connect(msgBox, &QMessageBox::finished, msgBox, [this, channel, msgBox, acceptButton, index] {
-        msgBox->deleteLater();
-        if (msgBox->clickedButton() == acceptButton) {
-            ConfigFile().setUpdateChannel(channel);
-            if (OCUpdater *updater = qobject_cast<OCUpdater *>(Updater::instance())) {
-                updater->setUpdateUrl(Updater::updateUrl());
-                updater->checkForUpdate();
-            }
-#if defined(Q_OS_MAC) && defined(HAVE_SPARKLE)
-            else if (SparkleUpdater *updater = qobject_cast<SparkleUpdater *>(Updater::instance())) {
-                updater->setUpdateUrl(Updater::updateUrl());
-                updater->checkForUpdate();
-            }
-#endif
-        } else {
-            const auto oldChannel = _ui->updateChannel->findData(ConfigFile().updateChannel());
-            Q_ASSERT(oldChannel >= 0);
-            Q_ASSERT(oldChannel <= 1);
-            _ui->updateChannel->setCurrentIndex(oldChannel);
-        }
-    });
-    msgBox->open();
-#endif
 }
 
 void GeneralSettings::saveMiscSettings()

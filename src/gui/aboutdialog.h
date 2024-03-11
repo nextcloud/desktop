@@ -34,6 +34,10 @@ public:
 private:
     void openBrowser(const QString &s);
     void openBrowserFromUrl(const QUrl &s);
+    void setupUpdaterWidget();
+
+private Q_SLOTS:
+    void slotUpdateChannelChanged(int index);
 
 private:
     Ui::AboutDialog *ui;
