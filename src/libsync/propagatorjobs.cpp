@@ -60,6 +60,7 @@ bool PropagateLocalRemove::removeRecursively(const QString &path)
     QString absolute = propagator()->fullLocalPath(_item->_file + path);
     QStringList errors;
     QList<QPair<QString, bool>> deleted;
+    FileSystem::setFolderPermissions(absolute, FileSystem::FolderPermissions::ReadWrite);
     bool success = FileSystem::removeRecursively(
         absolute,
         [&deleted](const QString &path, bool isDir) {
