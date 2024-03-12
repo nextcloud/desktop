@@ -24,11 +24,6 @@ class TestUtility : public QObject
     Q_OBJECT
 
 private slots:
-    void testFormatFingerprint()
-    {
-        QVERIFY2(formatFingerprint("68ac906495480a3404beee4874ed853a037a7a8f") == QStringLiteral("68:ac:90:64:95:48:0a:34:04:be:ee:48:74:ed:85:3a:03:7a:7a:8f"),
-            "Utility::formatFingerprint() is broken");
-    }
     void testOctetsToString()
     {
         QLocale::setDefault(QLocale(QStringLiteral("en")));

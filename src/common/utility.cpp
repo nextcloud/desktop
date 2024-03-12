@@ -64,24 +64,6 @@ namespace OCC {
 
 Q_LOGGING_CATEGORY(lcUtility, "sync.utility", QtMsgType::QtInfoMsg)
 
-QString Utility::formatFingerprint(const QByteArray &fmhash, bool colonSeparated)
-{
-    QByteArray hash;
-    int steps = fmhash.length() / 2;
-    for (int i = 0; i < steps; i++) {
-        hash.append(fmhash[i * 2]);
-        hash.append(fmhash[i * 2 + 1]);
-        hash.append(' ');
-    }
-
-    QString fp = QString::fromLatin1(hash.trimmed());
-    if (colonSeparated) {
-        fp.replace(QLatin1Char(' '), QLatin1Char(':'));
-    }
-
-    return fp;
-}
-
 QString Utility::octetsToString(qint64 octets)
 {
     OC_ASSERT(octets >= 0)
