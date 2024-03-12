@@ -694,7 +694,7 @@ QByteArray FolderMetadata::encryptedMetadataLegacy()
     // multiple toBase64() just to keep with the old (wrong way)
     const auto encryptedMetadataKey = encryptDataWithPublicKey(metadataKeyForEncryption().toBase64().toBase64(), _account->e2e()->_publicKey).toBase64();
     const QJsonObject metadata{
-        {versionKey, QString::number(version, 'f', 1)},
+        {versionKey, version},
         {metadataKeyKey, QJsonValue::fromVariant(encryptedMetadataKey)},
         {"checksum", QJsonValue::fromVariant(computeMetadataKeyChecksum(encryptedMetadataKey))},
     };
