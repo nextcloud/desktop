@@ -336,6 +336,9 @@
                                                 <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                                 <font key="font" metaFont="system"/>
                                             </buttonCell>
+                                            <connections>
+                                                <action selector="noteForRecipientCheckboxAction:" target="EXb-m8-yzj" id="j7a-Tc-uiu"/>
+                                            </connections>
                                         </button>
                                         <textField focusRingType="none" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="io6-Kg-fLl">
                                             <rect key="frame" x="0.0" y="25" width="460" height="22"/>

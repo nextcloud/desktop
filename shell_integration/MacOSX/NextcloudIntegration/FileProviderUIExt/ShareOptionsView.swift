@@ -143,6 +143,10 @@ class ShareOptionsView: NSView {
         expirationDatePicker.isHidden = expirationDateCheckbox.state == .off
     }
 
+    @IBAction func noteForRecipientCheckboxAction(_ sender: Any) {
+        noteTextField.isHidden = noteForRecipientCheckbox.state == .off
+    }
+
     @IBAction func save(_ sender: Any) {
         Task { @MainActor in
             let password = passwordProtectCheckbox.state == .on
