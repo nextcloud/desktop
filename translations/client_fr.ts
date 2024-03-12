@@ -2723,7 +2723,7 @@ S&apos;il s&apos;agissait d&apos;un accident et que vous choisissiez de conserve
     <message>
         <location filename="../src/gui/generalsettings.ui" line="218"/>
         <source>Info</source>
-        <translation>Info</translation>
+        <translation>Informations</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="229"/>
