@@ -15,15 +15,20 @@
 #include "filesystem.h"
 
 #include "common/utility.h"
+#include "csync.h"
+#include "vio/csync_vio_local.h"
+#include "std/c_time.h"
+
 #include <QFile>
 #include <QFileInfo>
 #include <QDir>
 #include <QDirIterator>
 #include <QCoreApplication>
 
-#include "csync.h"
-#include "vio/csync_vio_local.h"
-#include "std/c_time.h"
+#ifdef Q_OS_WIN
+#include <securitybaseapi.h>
+#include <sddl.h>
+#endif
 
 namespace OCC {
 
@@ -187,6 +192,174 @@ bool FileSystem::getInode(const QString &filename, quint64 *inode)
         return true;
     }
     return false;
+}
+
+bool FileSystem::setFolderPermissions(const QString &path,
+                                      FileSystem::FolderPermissions permissions) noexcept
+{
+    try {
+        switch (permissions) {
+        case OCC::FileSystem::FolderPermissions::ReadOnly:
+            std::filesystem::permissions(path.toStdWString(), std::filesystem::perms::owner_write | std::filesystem::perms::group_write | std::filesystem::perms::others_write, std::filesystem::perm_options::remove);
+            break;
+        case OCC::FileSystem::FolderPermissions::ReadWrite:
+            break;
+        }
+    }
+    catch (const std::filesystem::filesystem_error &e)
+    {
+        qCWarning(lcFileSystem()) << "exception when modifying folder permissions" << e.what() << e.path1().c_str() << e.path2().c_str();
+        return false;
+    }
+
+#ifdef Q_OS_WIN
+    SECURITY_INFORMATION info = DACL_SECURITY_INFORMATION;
+    std::unique_ptr<char[]> securityDescriptor;
+    auto neededLength = 0ul;
+
+    if (!GetFileSecurityW(path.toStdWString().c_str(), info, nullptr, 0, &neededLength)) {
+        const auto lastError = GetLastError();
+        if (lastError != ERROR_INSUFFICIENT_BUFFER) {
+            qCWarning(lcFileSystem) << "error when calling GetFileSecurityW" << path << lastError;
+            return false;
+        }
+
+        securityDescriptor.reset(new char[neededLength]);
+
+        if (!GetFileSecurityW(path.toStdWString().c_str(), info, securityDescriptor.get(), neededLength, &neededLength)) {
+            qCWarning(lcFileSystem) << "error when calling GetFileSecurityW" << path << GetLastError();
+            return false;
+        }
+    }
+
+    int daclPresent = false, daclDefault = false;
+    PACL resultDacl = nullptr;
+    if (!GetSecurityDescriptorDacl(securityDescriptor.get(), &daclPresent, &resultDacl, &daclDefault)) {
+        qCWarning(lcFileSystem) << "error when calling GetSecurityDescriptorDacl" << path << GetLastError();
+        return false;
+    }
+    if (!daclPresent) {
+        qCWarning(lcFileSystem) << "error when calling DACL needed to set a folder read-only or read-write is missing" << path;
+        return false;
+    }
+
+    PSID sid = nullptr;
+    if (!ConvertStringSidToSidW(L"S-1-5-32-545", &sid))
+    {
+        qCWarning(lcFileSystem) << "error when calling ConvertStringSidToSidA" << path << GetLastError();
+        return false;
+    }
+
+    ACL_SIZE_INFORMATION aclSize;
+    if (!GetAclInformation(resultDacl, &aclSize, sizeof(aclSize), AclSizeInformation)) {
+        qCWarning(lcFileSystem) << "error when calling GetAclInformation" << path << GetLastError();
+        return false;
+    }
+
+    const auto newAclSize = aclSize.AclBytesInUse + sizeof(ACCESS_DENIED_ACE) + GetLengthSid(sid);
+    qCDebug(lcFileSystem) << "allocated a new DACL object of size" << newAclSize;
+
+    std::unique_ptr<ACL> newDacl{reinterpret_cast<PACL>(new char[newAclSize])};
+    if (!InitializeAcl(newDacl.get(), newAclSize, ACL_REVISION)) {
+        const auto lastError = GetLastError();
+        if (lastError != ERROR_INSUFFICIENT_BUFFER) {
+            qCWarning(lcFileSystem) << "insufficient memory error when calling InitializeAcl" << path;
+            return false;
+        }
+
+        qCWarning(lcFileSystem) << "error when calling InitializeAcl" << path << lastError;
+        return false;
+    }
+
+    if (permissions == FileSystem::FolderPermissions::ReadOnly) {
+        qCInfo(lcFileSystem) << path << "will be read only";
+        if (!AddAccessDeniedAce(newDacl.get(), ACL_REVISION, FILE_WRITE_DATA | FILE_WRITE_ATTRIBUTES | FILE_WRITE_EA | FILE_APPEND_DATA | FILE_DELETE_CHILD, sid)) {
+            qCWarning(lcFileSystem) << "error when calling AddAccessDeniedAce << path" << GetLastError();
+            return false;
+        }
+    }
+
+    for (int i = 0; i < aclSize.AceCount; ++i) {
+        void *currentAce = nullptr;
+        if (!GetAce(resultDacl, i, &currentAce)) {
+            qCWarning(lcFileSystem) << "error when calling GetAce" << path << GetLastError();
+            return false;
+        }
+
+        const auto currentAceHeader = reinterpret_cast<PACE_HEADER>(currentAce);
+
+        if (permissions == FileSystem::FolderPermissions::ReadWrite) {
+            qCInfo(lcFileSystem) << path << "will be read write";
+        }
+        if (permissions == FileSystem::FolderPermissions::ReadWrite && (ACCESS_DENIED_ACE_TYPE == (currentAceHeader->AceType & ACCESS_DENIED_ACE_TYPE))) {
+            qCWarning(lcFileSystem) << "AceHeader" << path << currentAceHeader->AceFlags << currentAceHeader->AceSize << currentAceHeader->AceType;
+            continue;
+        }
+
+        if (!AddAce(newDacl.get(), ACL_REVISION, i + 1, currentAce, currentAceHeader->AceSize)) {
+            const auto lastError = GetLastError();
+            if (lastError != ERROR_INSUFFICIENT_BUFFER) {
+                qCWarning(lcFileSystem) << "insufficient memory error when calling AddAce" << path;
+                return false;
+            }
+
+            if (lastError != ERROR_INVALID_PARAMETER) {
+                qCWarning(lcFileSystem) << "invalid parameter error when calling AddAce" << path << "ACL size" << newAclSize;
+                return false;
+            }
+
+            qCWarning(lcFileSystem) << "error when calling AddAce" << path << lastError << "acl index" << (i + 1);
+            return false;
+        }
+    }
+
+    SECURITY_DESCRIPTOR newSecurityDescriptor;
+    if (!InitializeSecurityDescriptor(&newSecurityDescriptor, SECURITY_DESCRIPTOR_REVISION)) {
+        qCWarning(lcFileSystem) << "error when calling InitializeSecurityDescriptor" << path << GetLastError();
+        return false;
+    }
+
+    if (!SetSecurityDescriptorDacl(&newSecurityDescriptor, true, newDacl.get(), false)) {
+        qCWarning(lcFileSystem) << "error when calling SetSecurityDescriptorDacl" << path << GetLastError();
+        return false;
+    }
+
+    if (!SetFileSecurityW(path.toStdWString().c_str(), info, &newSecurityDescriptor)) {
+        qCWarning(lcFileSystem) << "error when calling SetFileSecurityW" << path << GetLastError();
+        return false;
+    }
+#endif
+
+    try {
+        switch (permissions) {
+        case OCC::FileSystem::FolderPermissions::ReadOnly:
+            break;
+        case OCC::FileSystem::FolderPermissions::ReadWrite:
+            std::filesystem::permissions(path.toStdWString(), std::filesystem::perms::owner_write, std::filesystem::perm_options::add);
+            break;
+        }
+    }
+    catch (const std::filesystem::filesystem_error &e)
+    {
+        qCWarning(lcFileSystem()) << "exception when modifying folder permissions" << e.what() << e.path1().c_str() << e.path2().c_str();
+        return false;
+    }
+
+    return true;
+}
+
+bool FileSystem::isFolderReadOnly(const std::filesystem::path &path) noexcept
+{
+    try {
+        const auto folderStatus = std::filesystem::status(path);
+        const auto folderPermissions = folderStatus.permissions();
+        return (folderPermissions & std::filesystem::perms::owner_write) != std::filesystem::perms::owner_write;
+    }
+    catch (const std::filesystem::filesystem_error &e)
+    {
+        qCWarning(lcFileSystem()) << "exception when checking folder permissions" << e.what() << e.path1().c_str() << e.path2().c_str();
+        return false;
+    }
 }
 
 

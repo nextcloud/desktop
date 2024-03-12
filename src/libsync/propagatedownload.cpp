@@ -32,11 +32,8 @@
 #include <QNetworkAccessManager>
 #include <QFileInfo>
 #include <QDir>
-#include <cmath>
 
-#ifdef Q_OS_UNIX
-#include <unistd.h>
-#endif
+#include <cmath>
 
 namespace OCC {
 
@@ -672,8 +669,26 @@ void PropagateDownloadFile::startDownload()
 
     // Can't open(Append) read-only files, make sure to make
     // file writable if it exists.
-    if (_tmpFile.exists())
+    if (_tmpFile.exists()) {
         FileSystem::setFileReadOnly(_tmpFile.fileName(), false);
+    }
+
+    try {
+        const auto newDirPath = std::filesystem::path{_tmpFile.fileName().toStdWString()};
+        Q_ASSERT(newDirPath.has_parent_path());
+        _parentPath = newDirPath.parent_path();
+    }
+    catch (const std::filesystem::filesystem_error &e)
+    {
+        qCWarning(lcPropagateDownload) << "exception when checking parent folder access rights" << e.what() << e.path1().c_str() << e.path2().c_str();
+    }
+
+    if (FileSystem::isFolderReadOnly(_parentPath)) {
+        FileSystem::setFolderPermissions(QString::fromStdWString(_parentPath.wstring()), FileSystem::FolderPermissions::ReadWrite);
+        emit propagator()->touchedFile(QString::fromStdWString(_parentPath.wstring()));
+        _needParentFolderRestorePermissions = true;
+    }
+
     if (!_tmpFile.open(QIODevice::Append | QIODevice::Unbuffered)) {
         qCWarning(lcPropagateDownload) << "could not open temporary file" << _tmpFile.fileName();
         done(SyncFileItem::NormalError, _tmpFile.errorString(), ErrorCategory::GenericError);
@@ -1270,6 +1285,12 @@ void PropagateDownloadFile::downloadFinished()
 
         done(SyncFileItem::SoftError, error, ErrorCategory::GenericError);
         return;
+    }
+
+    if (_needParentFolderRestorePermissions) {
+        FileSystem::setFolderPermissions(QString::fromStdWString(_parentPath.wstring()), FileSystem::FolderPermissions::ReadWrite);
+        emit propagator()->touchedFile(QString::fromStdWString(_parentPath.wstring()));
+        _needParentFolderRestorePermissions = false;
     }
 
     FileSystem::setFileHidden(filename, false);

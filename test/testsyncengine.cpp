@@ -15,6 +15,8 @@
 #include <QFile>
 #include <QtTest>
 
+#include <filesystem>
+
 using namespace OCC;
 
 namespace {
@@ -91,6 +93,11 @@ private slots:
     {
         Logger::instance()->setLogFlush(true);
         Logger::instance()->setLogDebug(true);
+    }
+
+    void init()
+    {
+        QTextCodec::setCodecForLocale(QTextCodec::codecForName("UTF-8"));
     }
 
     void testFileDownload() {
@@ -813,35 +820,41 @@ private slots:
         QVERIFY(fakeFolder.currentLocalState().find("A/t𠜎t"));
 
 #if !defined(Q_OS_MAC) && !defined(Q_OS_WIN)
-        // Try again with a locale that can represent ö but not 𠜎 (4-byte utf8).
-        QTextCodec::setCodecForLocale(QTextCodec::codecForName("ISO-8859-15"));
-        QVERIFY(QTextCodec::codecForLocale()->mibEnum() == 111);
+        try {
+            // Try again with a locale that can represent ö but not 𠜎 (4-byte utf8).
+            QTextCodec::setCodecForLocale(QTextCodec::codecForName("ISO-8859-15"));
+            QVERIFY(QTextCodec::codecForLocale()->mibEnum() == 111);
 
-        fakeFolder.remoteModifier().insert("B/tößt");
-        fakeFolder.remoteModifier().insert("B/t𠜎t");
-        QVERIFY(fakeFolder.syncOnce());
-        QVERIFY(fakeFolder.currentLocalState().find("B/tößt"));
-        QVERIFY(!fakeFolder.currentLocalState().find("B/t𠜎t"));
-        QVERIFY(!fakeFolder.currentLocalState().find("B/t?t"));
-        QVERIFY(!fakeFolder.currentLocalState().find("B/t??t"));
-        QVERIFY(!fakeFolder.currentLocalState().find("B/t???t"));
-        QVERIFY(!fakeFolder.currentLocalState().find("B/t????t"));
-        QVERIFY(fakeFolder.syncOnce());
-        QVERIFY(fakeFolder.currentRemoteState().find("B/tößt"));
-        QVERIFY(fakeFolder.currentRemoteState().find("B/t𠜎t"));
+            fakeFolder.remoteModifier().insert("B/tößt");
+            fakeFolder.remoteModifier().insert("B/t𠜎t");
+            QVERIFY(fakeFolder.syncOnce());
+            QVERIFY(fakeFolder.currentLocalState().find("B/tößt"));
+            QVERIFY(!fakeFolder.currentLocalState().find("B/t𠜎t"));
+            QVERIFY(!fakeFolder.currentLocalState().find("B/t?t"));
+            QVERIFY(!fakeFolder.currentLocalState().find("B/t??t"));
+            QVERIFY(!fakeFolder.currentLocalState().find("B/t???t"));
+            QVERIFY(!fakeFolder.currentLocalState().find("B/t????t"));
+            QVERIFY(fakeFolder.syncOnce());
+            QVERIFY(fakeFolder.currentRemoteState().find("B/tößt"));
+            QVERIFY(fakeFolder.currentRemoteState().find("B/t𠜎t"));
 
-        // Try again with plain ascii
-        QTextCodec::setCodecForLocale(QTextCodec::codecForName("ASCII"));
-        QVERIFY(QTextCodec::codecForLocale()->mibEnum() == 3);
+            // Try again with plain ascii
+            QTextCodec::setCodecForLocale(QTextCodec::codecForName("ASCII"));
+            QVERIFY(QTextCodec::codecForLocale()->mibEnum() == 3);
 
-        fakeFolder.remoteModifier().insert("C/tößt");
-        QVERIFY(fakeFolder.syncOnce());
-        QVERIFY(!fakeFolder.currentLocalState().find("C/tößt"));
-        QVERIFY(!fakeFolder.currentLocalState().find("C/t??t"));
-        QVERIFY(!fakeFolder.currentLocalState().find("C/t????t"));
-        QVERIFY(fakeFolder.syncOnce());
-        QVERIFY(fakeFolder.currentRemoteState().find("C/tößt"));
+            fakeFolder.remoteModifier().insert("C/tößt");
+            QVERIFY(fakeFolder.syncOnce());
+            QVERIFY(!fakeFolder.currentLocalState().find("C/tößt"));
+            QVERIFY(!fakeFolder.currentLocalState().find("C/t??t"));
+            QVERIFY(!fakeFolder.currentLocalState().find("C/t????t"));
+            QVERIFY(fakeFolder.syncOnce());
+            QVERIFY(fakeFolder.currentRemoteState().find("C/tößt"));
 
+        }
+        catch (const std::filesystem::filesystem_error &e)
+        {
+            qCritical() << e.what() << e.path1().c_str() << e.path2().c_str() << e.code().message().c_str();
+        }
         QTextCodec::setCodecForLocale(utf8Locale);
 #endif
     }

@@ -17,8 +17,7 @@
 #include <QJsonValue>
 
 #include <memory>
-
-
+#include <filesystem>
 
 PathComponents::PathComponents(const char *path)
     : PathComponents { QString::fromUtf8(path) }
@@ -48,10 +47,13 @@ PathComponents PathComponents::subComponents() const &
 void DiskFileModifier::remove(const QString &relativePath)
 {
     QFileInfo fi { _rootDir.filePath(relativePath) };
-    if (fi.isFile())
+    if (fi.isFile()) {
         QVERIFY(_rootDir.remove(relativePath));
-    else
-        QVERIFY(QDir { fi.filePath() }.removeRecursively());
+    } else {
+        const auto pathToDelete = fi.filePath().toStdWString();
+        std::filesystem::permissions(pathToDelete, std::filesystem::perms::owner_exec, std::filesystem::perm_options::add);
+        QVERIFY(std::filesystem::remove_all(pathToDelete));
+    }
 }
 
 void DiskFileModifier::insert(const QString &relativePath, qint64 size, char contentChar)

@@ -214,6 +214,11 @@ target_link_libraries(nextcloudsync
   KF5::Archive
 )
 
+target_compile_features(nextcloudsync
+    PRIVATE
+        cxx_std_17
+)
+
 find_package(Qt5 REQUIRED COMPONENTS Gui Widgets Svg)
 target_link_libraries(nextcloudsync PUBLIC Qt5::Gui Qt5::Widgets Qt5::Svg)
 

@@ -16,13 +16,14 @@
 
 #include "config.h"
 
+#include "owncloudlib.h"
+#include "common/filesystembase.h"
+
 #include <QString>
+
 #include <ctime>
 #include <functional>
-
-#include <owncloudlib.h>
-// Chain in the base include and extend the namespace
-#include "common/filesystembase.h"
+#include <filesystem>
 
 class QFile;
 
@@ -96,6 +97,11 @@ namespace FileSystem {
     bool OWNCLOUDSYNC_EXPORT removeRecursively(const QString &path,
         const std::function<void(const QString &path, bool isDir)> &onDeleted = nullptr,
         QStringList *errors = nullptr);
+
+    bool OWNCLOUDSYNC_EXPORT setFolderPermissions(const QString &path,
+                                                  FileSystem::FolderPermissions permissions) noexcept;
+
+    bool OWNCLOUDSYNC_EXPORT isFolderReadOnly(const std::filesystem::path &path) noexcept;
 }
 
 /** @} */

@@ -6,7 +6,7 @@ jobs:
   build:
     name: Linux Clang compilation and tests
     runs-on: ubuntu-22.04
-    container: ghcr.io/nextcloud/continuous-integration-client:client-5.15-14
+    container: ghcr.io/nextcloud/continuous-integration-client:client-5.15-15
     steps:
       - uses: actions/checkout@v4
         with:

@@ -32,6 +32,7 @@
 #include <qstack.h>
 #include <QCoreApplication>
 
+#include <filesystem>
 #include <ctime>
 
 
@@ -59,6 +60,7 @@ bool PropagateLocalRemove::removeRecursively(const QString &path)
     QString absolute = propagator()->fullLocalPath(_item->_file + path);
     QStringList errors;
     QList<QPair<QString, bool>> deleted;
+    FileSystem::setFolderPermissions(absolute, FileSystem::FolderPermissions::ReadWrite);
     bool success = FileSystem::removeRecursively(
         absolute,
         [&deleted](const QString &path, bool isDir) {
@@ -129,7 +131,7 @@ void PropagateLocalRemove::start()
     }
     propagator()->reportProgress(*_item, 0);
     if (!propagator()->_journal->deleteFileRecord(_item->_originalFile, _item->isDirectory())) {
-        qCWarning(lcPropagateLocalRename) << "could not delete file from local DB" << _item->_originalFile;
+        qCWarning(lcPropagateLocalRemove()) << "could not delete file from local DB" << _item->_originalFile;
         done(SyncFileItem::NormalError, tr("Could not delete file record %1 from local DB").arg(_item->_originalFile), ErrorCategory::GenericError);
         return;
     }
@@ -181,11 +183,56 @@ void PropagateLocalMkdir::startLocalMkdir()
         done(SyncFileItem::FileNameClash, tr("Folder %1 cannot be created because of a local file or folder name clash!").arg(newDirStr), ErrorCategory::GenericError);
         return;
     }
+
+    auto parentFolderPath = std::filesystem::path{};
+    auto parentNeedRollbackPermissions = false;
+    try {
+        const auto newDirPath = std::filesystem::path{newDirStr.toStdWString()};
+        Q_ASSERT(newDirPath.has_parent_path());
+        parentFolderPath = newDirPath.parent_path();
+        if (FileSystem::isFolderReadOnly(parentFolderPath)) {
+            FileSystem::setFolderPermissions(QString::fromStdWString(parentFolderPath.wstring()), FileSystem::FolderPermissions::ReadWrite);
+            parentNeedRollbackPermissions = true;
+            emit propagator()->touchedFile(QString::fromStdWString(parentFolderPath.wstring()));
+        }
+    }
+    catch (const std::filesystem::filesystem_error &e)
+    {
+        qCWarning(lcPropagateLocalMkdir) << "exception when checking parent folder access rights" << e.what() << e.path1().c_str() << e.path2().c_str();
+    }
+
     emit propagator()->touchedFile(newDirStr);
     QDir localDir(propagator()->localPath());
     if (!localDir.mkpath(_item->_file)) {
         done(SyncFileItem::NormalError, tr("Could not create folder %1").arg(newDirStr), ErrorCategory::GenericError);
         return;
+    }
+
+    if (!_item->_remotePerm.isNull() &&
+        !_item->_remotePerm.hasPermission(RemotePermissions::CanAddFile) &&
+        !_item->_remotePerm.hasPermission(RemotePermissions::CanRename) &&
+        !_item->_remotePerm.hasPermission(RemotePermissions::CanMove) &&
+        !_item->_remotePerm.hasPermission(RemotePermissions::CanAddSubDirectories)) {
+        try {
+            FileSystem::setFolderPermissions(newDirStr, FileSystem::FolderPermissions::ReadOnly);
+        }
+        catch (const std::filesystem::filesystem_error &e)
+        {
+            qCWarning(lcPropagateLocalMkdir) << "exception when checking parent folder access rights" << e.what() << e.path1().c_str() << e.path2().c_str();
+            done(SyncFileItem::NormalError, tr("The folder %1 cannot be made read-only: %2").arg(_item->_file, e.what()), ErrorCategory::GenericError);
+            return;
+        }
+    }
+
+    try {
+        if (parentNeedRollbackPermissions) {
+            FileSystem::setFolderPermissions(QString::fromStdWString(parentFolderPath.wstring()), FileSystem::FolderPermissions::ReadOnly);
+            emit propagator()->touchedFile(QString::fromStdWString(parentFolderPath.wstring()));
+        }
+    }
+    catch (const std::filesystem::filesystem_error &e)
+    {
+        qCWarning(lcPropagateLocalMkdir) << "exception when checking parent folder access rights" << e.what() << e.path1().c_str() << e.path2().c_str();
     }
 
     // Insert the directory into the database. The correct etag will be set later,
@@ -257,11 +304,70 @@ void PropagateLocalRename::start()
             return;
         }
 
+        auto targetParentFolderPath = std::filesystem::path{};
+        auto targetParentFolderWasReadOnly = false;
+        try {
+            const auto newDirPath = std::filesystem::path{targetFile.toStdWString()};
+            Q_ASSERT(newDirPath.has_parent_path());
+            targetParentFolderPath = newDirPath.parent_path();
+            if (FileSystem::isFolderReadOnly(targetParentFolderPath)) {
+                targetParentFolderWasReadOnly = true;
+                FileSystem::setFolderPermissions(QString::fromStdWString(targetParentFolderPath.wstring()), FileSystem::FolderPermissions::ReadWrite);
+                emit propagator()->touchedFile(QString::fromStdWString(targetParentFolderPath.wstring()));
+            }
+        }
+        catch (const std::filesystem::filesystem_error &e)
+        {
+            qCWarning(lcPropagateLocalRename) << "exception when checking parent folder access rights" << e.what() << e.path1().c_str() << e.path2().c_str();
+        }
+
+        auto originParentFolderPath = std::filesystem::path{};
+        auto originParentFolderWasReadOnly = false;
+        try {
+            const auto newDirPath = std::filesystem::path{existingFile.toStdWString()};
+            Q_ASSERT(newDirPath.has_parent_path());
+            originParentFolderPath = newDirPath.parent_path();
+            if (FileSystem::isFolderReadOnly(originParentFolderPath)) {
+                originParentFolderWasReadOnly = true;
+                FileSystem::setFolderPermissions(QString::fromStdWString(originParentFolderPath.wstring()), FileSystem::FolderPermissions::ReadWrite);
+                emit propagator()->touchedFile(QString::fromStdWString(originParentFolderPath.wstring()));
+            }
+        }
+        catch (const std::filesystem::filesystem_error &e)
+        {
+            qCWarning(lcPropagateLocalRename) << "exception when checking parent folder access rights" << e.what() << e.path1().c_str() << e.path2().c_str();
+        }
+
+        const auto restoreTargetPermissions = [this] (const auto &parentFolderPath) {
+            try {
+                FileSystem::setFolderPermissions(QString::fromStdWString(parentFolderPath.wstring()), FileSystem::FolderPermissions::ReadOnly);
+                emit propagator()->touchedFile(QString::fromStdWString(parentFolderPath.wstring()));
+            }
+            catch (const std::filesystem::filesystem_error &e)
+            {
+                qCWarning(lcPropagateLocalRename) << "exception when checking parent folder access rights" << e.what() << e.path1().c_str() << e.path2().c_str();
+            }
+        };
+
         emit propagator()->touchedFile(existingFile);
         emit propagator()->touchedFile(targetFile);
         if (QString renameError; !FileSystem::rename(existingFile, targetFile, &renameError)) {
+            if (targetParentFolderWasReadOnly) {
+                restoreTargetPermissions(targetParentFolderPath);
+            }
+            if (originParentFolderWasReadOnly) {
+                restoreTargetPermissions(originParentFolderPath);
+            }
+
             done(SyncFileItem::NormalError, renameError, ErrorCategory::GenericError);
             return;
+        }
+
+        if (targetParentFolderWasReadOnly) {
+            restoreTargetPermissions(targetParentFolderPath);
+        }
+        if (originParentFolderWasReadOnly) {
+            restoreTargetPermissions(originParentFolderPath);
         }
     }
 
