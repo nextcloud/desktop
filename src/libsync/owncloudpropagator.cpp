@@ -1069,16 +1069,16 @@ Result<Vfs::ConvertToPlaceholderResult, QString> OwncloudPropagator::staticUpdat
                                                                                           Vfs::UpdateMetadataTypes updateType)
 {
     const QString fsPath = localDir + item.destination();
+    auto record = item.toSyncJournalFileRecordWithInode(fsPath);
+    const auto dBresult = journal->setFileRecord(record);
+    if (!dBresult) {
+        return dBresult.error();
+    }
     const auto result = vfs->convertToPlaceholder(fsPath, item, {}, updateType);
     if (!result) {
         return result.error();
     } else if (*result == Vfs::ConvertToPlaceholderResult::Locked) {
         return Vfs::ConvertToPlaceholderResult::Locked;
-    }
-    auto record = item.toSyncJournalFileRecordWithInode(fsPath);
-    const auto dBresult = journal->setFileRecord(record);
-    if (!dBresult) {
-        return dBresult.error();
     }
     return Vfs::ConvertToPlaceholderResult::Ok;
 }
