@@ -694,8 +694,7 @@ void ownCloudGui::updateContextMenuNeeded()
 
 void ownCloudGui::slotShowTrayMessage(const QString &title, const QString &msg, const QIcon &icon)
 {
-    // SyncResult::Problem is returns the info icon
-    _tray->showMessage(title, msg, icon.isNull() ? Resources::getCoreIcon(QStringLiteral("states/error")) : icon);
+    _tray->showMessage(title, msg, icon.isNull() ? Resources::getCoreIcon(QStringLiteral("states/information")) : icon);
 }
 
 void ownCloudGui::slotShowOptionalTrayMessage(const QString &title, const QString &msg, const QIcon &icon)
