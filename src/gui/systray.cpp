@@ -74,7 +74,7 @@ void Systray::setTrayEngine(QQmlApplicationEngine *trayEngine)
 Systray::Systray()
     : QSystemTrayIcon(nullptr)
 {
-#if defined(Q_OS_MACOS) && defined(BUILD_OWNCLOUD_OSX_BUNDLE)
+#if defined(Q_OS_MACOS) && __MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_14 && defined(BUILD_OWNCLOUD_OSX_BUNDLE)
     setUserNotificationCenterDelegate();
     checkNotificationAuth(MacNotificationAuthorizationOptions::Default); // No provisional auth, ask user explicitly first time
     registerNotificationCategories(QString(tr("Download")));
@@ -517,7 +517,7 @@ void Systray::showMessage(const QString &title, const QString &message, MessageI
         QDBusConnection::sessionBus().asyncCall(method);
     } else
 #endif
-#if defined(Q_OS_MACOS) && defined(BUILD_OWNCLOUD_OSX_BUNDLE)
+#if defined(Q_OS_MACOS) && __MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_14 && defined(BUILD_OWNCLOUD_OSX_BUNDLE)
         if (canOsXSendUserNotification()) {
         sendOsXUserNotification(title, message);
     } else
@@ -529,7 +529,7 @@ void Systray::showMessage(const QString &title, const QString &message, MessageI
 
 void Systray::showUpdateMessage(const QString &title, const QString &message, const QUrl &webUrl)
 {
-#if defined(Q_OS_MACOS) && defined(BUILD_OWNCLOUD_OSX_BUNDLE)
+#if defined(Q_OS_MACOS) && __MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_14 && defined(BUILD_OWNCLOUD_OSX_BUNDLE)
     sendOsXUpdateNotification(title, message, webUrl);
 #else // TODO: Implement custom notifications (i.e. actionable) for other OSes
     Q_UNUSED(webUrl);
@@ -539,7 +539,7 @@ void Systray::showUpdateMessage(const QString &title, const QString &message, co
 
 void Systray::showTalkMessage(const QString &title, const QString &message, const QString &token, const QString &replyTo, const AccountStatePtr &accountState)
 {
-#if defined(Q_OS_MACOS) && defined(BUILD_OWNCLOUD_OSX_BUNDLE)
+#if defined(Q_OS_MACOS) && __MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_14 && defined(BUILD_OWNCLOUD_OSX_BUNDLE)
     sendOsXTalkNotification(title, message, token, replyTo, accountState);
 #else // TODO: Implement custom notifications (i.e. actionable) for other OSes
     Q_UNUSED(replyTo)

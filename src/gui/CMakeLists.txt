@@ -282,7 +282,11 @@ endif()
 
 IF( APPLE )
     list(APPEND client_SRCS cocoainitializer_mac.mm)
-    list(APPEND client_SRCS systray.mm)
+    list(APPEND client_SRCS systray_mac_common.mm)
+
+    if (CMAKE_OSX_DEPLOYMENT_TARGET VERSION_GREATER_EQUAL 10.14)
+        list(APPEND client_SRCS systray_mac_usernotifications.mm)
+    endif()
 
     if (BUILD_FILE_PROVIDER_MODULE)
         list(APPEND client_SRCS
@@ -678,8 +682,10 @@ if (APPLE)
 
     if (BUILD_FILE_PROVIDER_MODULE)
         target_link_libraries(nextcloudCore PUBLIC Qt5::MacExtras "-framework UserNotifications -framework FileProvider")
-    else()
+    elseif(CMAKE_OSX_DEPLOYMENT_TARGET VERSION_GREATER_EQUAL 10.14)
         target_link_libraries(nextcloudCore PUBLIC Qt5::MacExtras "-framework UserNotifications")
+    else()
+        target_link_libraries(nextcloudCore PUBLIC Qt5::MacExtras)
     endif()
 endif()
 
