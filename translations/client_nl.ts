@@ -3951,6 +3951,12 @@ Dit is een nieuwe, experimentele modus. Als je besluit het te gebruiken, vragen 
         <translation>Fout bij bijwerken metadata door ongeldige laatste wijziging datum</translation>
     </message>
     <message>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1469"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1494"/>
+        <source>The folder %1 cannot be made read-only: %2</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1387"/>
         <source>Error updating metadata: %1</source>
         <translation>Fout bij bijwerken metadata: %1</translation>
@@ -4066,6 +4072,11 @@ Dit is een nieuwe, experimentele modus. Als je besluit het te gebruiken, vragen 
         <location filename="../src/libsync/propagatorjobs.cpp" line="187"/>
         <source>Could not create folder %1</source>
         <translation>Kon map %1 niet maken</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="222"/>
+        <source>The folder %1 cannot be made read-only: %2</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="200"/>

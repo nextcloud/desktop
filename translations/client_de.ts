@@ -3958,6 +3958,12 @@ Dies ist ein neuer, experimenteller Modus. Wenn Sie sich entscheiden, ihn zu ver
         <translation>Fehler beim Aktualisieren der Metadaten aufgrund einer ungültigen Änderungszeit</translation>
     </message>
     <message>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1469"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1494"/>
+        <source>The folder %1 cannot be made read-only: %2</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1387"/>
         <source>Error updating metadata: %1</source>
         <translation>Fehler beim Aktualisieren der Metadaten: %1</translation>
@@ -4073,6 +4079,11 @@ Dies ist ein neuer, experimenteller Modus. Wenn Sie sich entscheiden, ihn zu ver
         <location filename="../src/libsync/propagatorjobs.cpp" line="187"/>
         <source>Could not create folder %1</source>
         <translation>Ordner %1 konnte nicht erstellt werden </translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="222"/>
+        <source>The folder %1 cannot be made read-only: %2</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="200"/>
