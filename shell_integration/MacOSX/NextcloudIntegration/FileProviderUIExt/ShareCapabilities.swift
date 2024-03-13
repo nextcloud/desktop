@@ -12,6 +12,13 @@ struct ShareCapabilities {
     struct EmailCapabilities {
         private(set) var passwordEnabled = false
         private(set) var passwordEnforced = false
+
+        init(dict: [String: Any]) {
+            if let passwordCapabilities = dict["password"] as? [String : Any] {
+                passwordEnabled = passwordCapabilities["enabled"] as? Bool ?? false
+                passwordEnforced = passwordCapabilities["enforced"] as? Bool ?? false
+            }
+        }
     }
 
     struct PublicLinkCapabilities {
@@ -38,8 +45,8 @@ struct ShareCapabilities {
     private(set) var apiEnabled = false
     private(set) var resharing = false
     private(set) var defaultPermissions = 0
-    private(set) var email = EmailCapabilities()
     private(set) var publicLink = PublicLinkCapabilities()
     private(set) var internalShares = InternalCapabilities()
     private(set) var remote = RemoteCapabilities()
+    private(set) var email = EmailCapabilities(dict: [:])
 }
