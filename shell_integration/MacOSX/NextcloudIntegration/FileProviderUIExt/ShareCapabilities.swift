@@ -6,23 +6,40 @@
 //
 
 import Foundation
+import OSLog
 
 struct ShareCapabilities {
-    private(set) var shareApiEnabled = false
-    private(set) var shareEmailPasswordEnabled = false
-    private(set) var shareEmailPasswordEnforced = false
-    private(set) var sharePublicLinkEnabled = false
-    private(set) var sharePublicLinkAllowUpload = false
-    private(set) var sharePublicLinkSupportsUploadOnly = false
-    private(set) var sharePublicLinkAskOptionalPassword = false
-    private(set) var sharePublicLinkEnforcePassword = false
-    private(set) var sharePublicLinkEnforceExpireDate = 0
-    private(set) var sharePublicLinkExpireDateDays = false
-    private(set) var shareInternalEnforceExpireDate = false
-    private(set) var shareInternalExpireDateDays = 0
-    private(set) var shareRemoteEnforceExpireDate = false
-    private(set) var shareRemoteExpireDateDays = 0
-    private(set) var sharePublicLinkMultiple = false
-    private(set) var shareResharing = false
-    private(set) var shareDefaultPermissions = 0
+    struct EmailCapabilities {
+        private(set) var passwordEnabled = false
+        private(set) var passwordEnforced = false
+    }
+
+    struct PublicLinkCapabilities {
+        private(set) var enabled = false
+        private(set) var allowUpload = false
+        private(set) var supportsUploadOnly = false
+        private(set) var askOptionalPassword = false
+        private(set) var enforcePassword = false
+        private(set) var enforceExpireDate = false
+        private(set) var expireDateDays = 0
+        private(set) var multipleAllowed = false
+    }
+
+    struct InternalCapabilities {
+        private(set) var enforceExpireDate = false
+        private(set) var expireDateDays = 0
+    }
+
+    struct RemoteCapabilities {
+        private(set) var enforceExpireDate = false
+        private(set) var expireDateDays = 0
+    }
+
+    private(set) var apiEnabled = false
+    private(set) var resharing = false
+    private(set) var defaultPermissions = 0
+    private(set) var email = EmailCapabilities()
+    private(set) var publicLink = PublicLinkCapabilities()
+    private(set) var internalShares = InternalCapabilities()
+    private(set) var remote = RemoteCapabilities()
 }
