@@ -3962,7 +3962,7 @@ Este es un modo nuevo y experimental. Si decide usarlo, por favor informe cualqu
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1469"/>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1494"/>
         <source>The folder %1 cannot be made read-only: %2</source>
-        <translation type="unfinished"/>
+        <translation>La carpeta %1 no se puede hacer de sólo lectura: %2</translation>
     </message>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1387"/>
@@ -4084,7 +4084,7 @@ Este es un modo nuevo y experimental. Si decide usarlo, por favor informe cualqu
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="222"/>
         <source>The folder %1 cannot be made read-only: %2</source>
-        <translation type="unfinished"/>
+        <translation>La carpeta %1 no se puede hacer de sólo lectura: %2</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="200"/>
