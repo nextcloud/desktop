@@ -5,7 +5,7 @@ on:
 jobs:
   build:
     name: Linux GCC compilation and tests
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     container: ghcr.io/nextcloud/continuous-integration-client:client-5.15-15
     steps:
       - uses: actions/checkout@v4
