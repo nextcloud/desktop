@@ -56,6 +56,7 @@ ownCloud admins and users.
 * Change - Removal of selective sync tree from account status page: [#11357](https://github.com/owncloud/client/issues/11357)
 * Change - Fix three badly styled warning messages: [#11412](https://github.com/owncloud/client/issues/11412)
 * Change - Removed support for limiting sync of big new folder & external storage: [#11517](https://github.com/owncloud/client/pull/11517)
+* Change - Set the 'No' button as default action in the Unknown Certificate dialog: [#11531](https://github.com/owncloud/client/issues/11531)
 * Enhancement - Add option to pause synchronization on metered connections: [#4808](https://github.com/owncloud/client/issues/4808)
 * Enhancement - Add option to move files to trash instead of deleting: [#9001](https://github.com/owncloud/client/issues/9001)
 * Enhancement - Prevent same default sync folder for multiple accounts with Spaces: [#11204](https://github.com/owncloud/client/issues/11204)
@@ -185,6 +186,14 @@ ownCloud admins and users.
    synchronization of external storage.
 
    https://github.com/owncloud/client/pull/11517
+
+* Change - Set the 'No' button as default action in the Unknown Certificate dialog: [#11531](https://github.com/owncloud/client/issues/11531)
+
+   When an unknown certificate is used by the server, the safe action is to reject
+   this certificate. So the default action for this dialog should be not to accept
+   this unknown certificate.
+
+   https://github.com/owncloud/client/issues/11531
 
 * Enhancement - Add option to pause synchronization on metered connections: [#4808](https://github.com/owncloud/client/issues/4808)
 
