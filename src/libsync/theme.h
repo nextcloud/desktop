@@ -418,6 +418,12 @@ public:
 protected:
     Theme();
 
+    // compat with legacy themes
+    [[deprecated("Use Resources::themeUniversalIcon")]] auto themeUniversalIcon(const QString &iconName) const
+    {
+        return Resources::themeUniversalIcon(iconName);
+    }
+
 signals:
     void systrayUseMonoIconsChanged(bool);
 
