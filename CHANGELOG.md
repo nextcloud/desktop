@@ -64,6 +64,7 @@ ownCloud admins and users.
 * Enhancement - Include recent changes in scheduled syncs: [#11347](https://github.com/owncloud/client/pull/11347)
 * Enhancement - Improve handling of a server blocking an unsupported client: [#11424](https://github.com/owncloud/client/issues/11424)
 * Enhancement - Ask user to restart application when update is available on Windows: [#11442](https://github.com/owncloud/client/pull/11442)
+* Enhancement - New Folder status: [#11491](https://github.com/owncloud/client/pull/11491)
 
 ## Details
 
@@ -246,6 +247,13 @@ ownCloud admins and users.
    the application and apply the update immediately, adding a bit of user comfort.
 
    https://github.com/owncloud/client/pull/11442
+
+* Enhancement - New Folder status: [#11491](https://github.com/owncloud/client/pull/11491)
+
+   We rewrote the Folder status page.
+
+   https://github.com/owncloud/client/issues/11527
+   https://github.com/owncloud/client/pull/11491
 
 # Changelog for ownCloud Desktop Client [5.2.1] (2024-01-04)
 
