@@ -32,16 +32,11 @@
    <item>
     <widget class="QStackedWidget" name="contentWidget">
      <widget class="QWidget" name="transitionPage">
-      <widget class="QProgressIndicator" name="transitionProgressIndicator" native="true">
-       <property name="geometry">
-        <rect>
-         <x>320</x>
-         <y>280</y>
-         <width>120</width>
-         <height>80</height>
-        </rect>
-       </property>
-      </widget>
+      <layout class="QGridLayout" name="gridLayout">
+       <item row="0" column="0">
+        <widget class="QProgressIndicator" name="transitionProgressIndicator" native="true"/>
+       </item>
+      </layout>
      </widget>
     </widget>
    </item>
