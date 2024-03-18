@@ -135,6 +135,27 @@ class ShareOptionsView: NSView {
         deleteButton.isEnabled = enabled
     }
 
+    func pickedShareType() -> NKShare.ShareType {
+        let selectedShareTypeItem = shareTypePicker.selectedItem
+        var selectedShareType = NKShare.ShareType.publicLink
+        if selectedShareTypeItem == publicLinkShareMenuItem {
+            selectedShareType = .publicLink
+        } else if selectedShareTypeItem == userShareMenuItem {
+            selectedShareType = .user
+        } else if selectedShareTypeItem == groupShareMenuItem {
+            selectedShareType = .group
+        } else if selectedShareTypeItem == emailShareMenuItem {
+            selectedShareType = .email
+        } else if selectedShareTypeItem == federatedCloudShareMenuItem {
+            selectedShareType = .federatedCloud
+        } else if selectedShareTypeItem == circleShare {
+            selectedShareType = .circle
+        } else if selectedShareTypeItem == talkConversationShare {
+            selectedShareType = .talkConversation
+        }
+        return selectedShareType
+    }
+
     @IBAction func passwordCheckboxAction(_ sender: Any) {
         passwordSecureField.isHidden = passwordProtectCheckbox.state == .off
     }
@@ -178,23 +199,7 @@ class ShareOptionsView: NSView {
                     return
                 }
 
-                let selectedShareTypeItem = shareTypePicker.selectedItem
-                var selectedShareType = NKShare.ShareType.publicLink
-                if selectedShareTypeItem == publicLinkShareMenuItem {
-                    selectedShareType = .publicLink
-                } else if selectedShareTypeItem == userShareMenuItem {
-                    selectedShareType = .user
-                } else if selectedShareTypeItem == groupShareMenuItem {
-                    selectedShareType = .group
-                } else if selectedShareTypeItem == emailShareMenuItem {
-                    selectedShareType = .email
-                } else if selectedShareTypeItem == federatedCloudShareMenuItem {
-                    selectedShareType = .federatedCloud
-                } else if selectedShareTypeItem == circleShare {
-                    selectedShareType = .circle
-                } else if selectedShareTypeItem == talkConversationShare {
-                    selectedShareType = .talkConversation
-                }
+                let selectedShareType = pickedShareType()
                 let shareWith = shareRecipientTextField.stringValue
 
                 var permissions = NKShare.PermissionValues.all.rawValue
