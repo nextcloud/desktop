@@ -43,6 +43,7 @@ class ShareTableViewDataSource: NSObject, NSTableViewDataSource, NSTableViewDele
             )
         }
     }
+    private var shareCapabilities = ShareCapabilities()
 
     func loadItem(url: URL) {
         itemServerRelativePath = nil
@@ -81,6 +82,7 @@ class ShareTableViewDataSource: NSObject, NSTableViewDataSource, NSTableViewDele
             itemServerRelativePath = serverPath as String
             account = convertedAccount
             await sharesTableView?.deselectAll(self)
+            shareCapabilities = await fetchCapabilities()
             shares = await fetch(
                 itemIdentifier: itemIdentifier, itemRelativePath: serverPath as String
             )
@@ -135,6 +137,22 @@ class ShareTableViewDataSource: NSObject, NSTableViewDataSource, NSTableViewDele
                     Task { @MainActor in self.uiDelegate?.showError(errorString) }
                     return
                 }
+            }
+        }
+    }
+
+    private func fetchCapabilities() async -> ShareCapabilities {
+        return await withCheckedContinuation { continuation in
+            kit?.getCapabilities { account, capabilitiesJson, error in
+                guard error == .success, let capabilitiesJson = capabilitiesJson else {
+                    let errorString = "Error getting server capabilities: \(error.errorDescription)"
+                    Logger.sharesDataSource.error("\(errorString)")
+                    Task { @MainActor in self.uiDelegate?.showError(errorString) }
+                    continuation.resume(returning: ShareCapabilities())
+                    return
+                }
+                Logger.sharesDataSource.info("Successfully retrieved server share capabilities")
+                continuation.resume(returning: ShareCapabilities(json: capabilitiesJson))
             }
         }
     }
