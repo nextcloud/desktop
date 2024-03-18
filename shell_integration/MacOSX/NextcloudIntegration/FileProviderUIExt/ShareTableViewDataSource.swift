@@ -83,6 +83,12 @@ class ShareTableViewDataSource: NSObject, NSTableViewDataSource, NSTableViewDele
             account = convertedAccount
             await sharesTableView?.deselectAll(self)
             shareCapabilities = await fetchCapabilities()
+            guard shareCapabilities.apiEnabled else {
+                let errorMsg = "Server does not support shares."
+                Logger.sharesDataSource.info("\(errorMsg)")
+                uiDelegate?.showError(errorMsg)
+                return
+            }
             shares = await fetch(
                 itemIdentifier: itemIdentifier, itemRelativePath: serverPath as String
             )
