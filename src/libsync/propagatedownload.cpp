@@ -1371,7 +1371,12 @@ void PropagateDownloadFile::updateMetadata(bool isConflict)
         handleRecallFile(fn, propagator()->localPath(), *propagator()->_journal);
     }
 
-    if (_item->_locked == SyncFileItem::LockStatus::LockedItem && (_item->_lockOwnerType != SyncFileItem::LockOwnerType::UserLock || _item->_lockOwnerId != propagator()->account()->davUser())) {
+    const auto isLockOwnedByCurrentUser = _item->_lockOwnerId == propagator()->account()->davUser();
+
+    const auto isUserLockOwnedByCurrentUser = (_item->_lockOwnerType == SyncFileItem::LockOwnerType::UserLock && isLockOwnedByCurrentUser);
+    const auto isTokenLockOwnedByCurrentUser = (_item->_lockOwnerType == SyncFileItem::LockOwnerType::TokenLock && isLockOwnedByCurrentUser);
+
+    if (_item->_locked == SyncFileItem::LockStatus::LockedItem && !isUserLockOwnedByCurrentUser && !isTokenLockOwnedByCurrentUser) {
         qCDebug(lcPropagateDownload()) << fn << "file is locked: making it read only";
         FileSystem::setFileReadOnly(fn, true);
     } else {
