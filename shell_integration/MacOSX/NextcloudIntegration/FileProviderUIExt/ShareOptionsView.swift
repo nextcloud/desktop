@@ -126,7 +126,7 @@ class ShareOptionsView: NSView {
         setAllFields(enabled: true)
 
         let type = pickedShareType()
-        shareRecipientTextField.isHidden = type != .publicLink
+        shareRecipientTextField.isHidden = type == .publicLink
 
         if let caps = dataSource?.shareCapabilities {
             uploadEditPermissionCheckbox.state =
@@ -137,7 +137,7 @@ class ShareOptionsView: NSView {
             case .publicLink:
                 passwordProtectCheckbox.isHidden = false
                 passwordProtectCheckbox.state = caps.publicLink.enforcePassword ? .on : .off
-                passwordProtectCheckbox.isEnabled = !caps.publicLink.enforceExpireDate
+                passwordProtectCheckbox.isEnabled = !caps.publicLink.enforcePassword
                 expirationDateCheckbox.state = caps.publicLink.enforceExpireDate ? .on : .off
                 expirationDateCheckbox.isEnabled = !caps.publicLink.enforceExpireDate
                 expirationDatePicker.dateValue = Date(
@@ -151,6 +151,8 @@ class ShareOptionsView: NSView {
                 passwordProtectCheckbox.isHidden = !caps.email.passwordEnabled
                 passwordProtectCheckbox.state = caps.email.passwordEnforced ? .on : .off
             default:
+                passwordProtectCheckbox.isHidden = true
+                passwordProtectCheckbox.state = .off
                 break
             }
         }
