@@ -75,11 +75,24 @@ struct ShareCapabilities {
     }
 
     init(json: Data) {
-        guard let anyJson = try? JSONSerialization.jsonObject(with: json, options: []),
-              let jsonDict = anyJson as? [String : Any],
-              let sharingCapabilities = jsonDict["files_sharing"] as? [String : Any]
+        guard let anyJson = try? JSONSerialization.jsonObject(with: json, options: []) else {
+            let jsonString = String(data: json, encoding: .utf8) ?? "UNKNOWN"
+            Logger.shareCapabilities.error(
+                "Received capabilities is not valid JSON! \(jsonString, privacy: .public)"
+            )
+            return
+        }
+
+        guard let jsonDict = anyJson as? [String : Any],
+              let ocsData = jsonDict["ocs"] as? [String : Any],
+              let receivedData = ocsData["data"] as? [String : Any],
+              let capabilities = receivedData["capabilities"] as? [String : Any],
+              let sharingCapabilities = capabilities["files_sharing"] as? [String : Any]
         else {
-            Logger.shareCapabilities.error("Could not parse share capabilities!")
+            let jsonString = anyJson as? [String : Any] ?? ["UNKNOWN" : "UNKNOWN"]
+            Logger.shareCapabilities.error(
+                "Could not parse share capabilities! \(jsonString, privacy: .public)"
+            )
             return
         }
         apiEnabled = sharingCapabilities["api_enabled"] as? Bool ?? false
