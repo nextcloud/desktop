@@ -41,9 +41,9 @@ struct ShareCapabilities {
             supportsUploadOnly = dict["supports_upload_only"] as? Bool ?? false
             multipleAllowed = dict["multiple"] as? Bool ?? false
 
-            if let passwordCapabilities = dict["password"] as? [String : Any] {
-                askOptionalPassword = dict["askForOptionalPassword"] as? Bool ?? false
-                enforcePassword = dict["enforced"] as? Bool ?? false
+            if let passwordCaps = dict["password"] as? [String : Any] {
+                askOptionalPassword = passwordCaps["askForOptionalPassword"] as? Bool ?? false
+                enforcePassword = passwordCaps["enforced"] as? Bool ?? false
             }
 
             if let expireDateCapabilities = dict["expire_date"] as? [String: Any] {
