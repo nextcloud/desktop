@@ -68,7 +68,7 @@ class ShareOptionsView: NSView {
             cancellable = nil
             controller = nil
             reset()
-            setAllFields(enabled: true)
+            setupCreateForm()
         }
     }
     private var cancellable: AnyCancellable?
@@ -120,6 +120,45 @@ class ShareOptionsView: NSView {
         noteTextField.stringValue = ""
     }
 
+    private func setupCreateForm() {
+        guard createMode else { return }
+
+        setAllFields(enabled: true)
+
+        let type = pickedShareType()
+        shareRecipientTextField.isHidden = type != .publicLink
+
+        if let caps = dataSource?.shareCapabilities {
+            uploadEditPermissionCheckbox.state =
+                caps.defaultPermissions & NKShare.PermissionValues.updateShare.rawValue != 0
+                ? .on : .off
+
+            switch type {
+            case .publicLink:
+                passwordProtectCheckbox.isHidden = false
+                passwordProtectCheckbox.state = caps.publicLink.enforcePassword ? .on : .off
+                passwordProtectCheckbox.isEnabled = !caps.publicLink.enforceExpireDate
+                expirationDateCheckbox.state = caps.publicLink.enforceExpireDate ? .on : .off
+                expirationDateCheckbox.isEnabled = !caps.publicLink.enforceExpireDate
+                expirationDatePicker.dateValue = Date(
+                    timeIntervalSinceNow: 
+                        TimeInterval(caps.publicLink.expireDateDays * 24 * 60 * 60)
+                )
+                if caps.publicLink.enforceExpireDate {
+                    expirationDatePicker.maxDate = expirationDatePicker.dateValue
+                }
+            case .email:
+                passwordProtectCheckbox.isHidden = !caps.email.passwordEnabled
+                passwordProtectCheckbox.state = caps.email.passwordEnforced ? .on : .off
+            default:
+                break
+            }
+        }
+
+        passwordSecureField.isHidden = passwordProtectCheckbox.state == .off
+        expirationDatePicker.isHidden = expirationDateCheckbox.state == .off
+    }
+
     func setAllFields(enabled: Bool) {
         shareTypePicker.isEnabled = enabled
         shareRecipientTextField.isEnabled = enabled
@@ -136,7 +175,7 @@ class ShareOptionsView: NSView {
         deleteButton.isEnabled = enabled
     }
 
-    func pickedShareType() -> NKShare.ShareType {
+    private func pickedShareType() -> NKShare.ShareType {
         let selectedShareTypeItem = shareTypePicker.selectedItem
         var selectedShareType = NKShare.ShareType.publicLink
         if selectedShareTypeItem == publicLinkShareMenuItem {

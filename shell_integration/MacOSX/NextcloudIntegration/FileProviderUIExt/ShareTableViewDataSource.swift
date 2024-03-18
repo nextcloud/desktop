@@ -24,6 +24,7 @@ class ShareTableViewDataSource: NSObject, NSTableViewDataSource, NSTableViewDele
             sharesTableView?.reloadData()
         }
     }
+    var shareCapabilities = ShareCapabilities()
 
     private(set) var kit: NextcloudKit?
     private(set) var itemURL: URL?
@@ -43,7 +44,6 @@ class ShareTableViewDataSource: NSObject, NSTableViewDataSource, NSTableViewDele
             )
         }
     }
-    private var shareCapabilities = ShareCapabilities()
 
     func loadItem(url: URL) {
         itemServerRelativePath = nil
