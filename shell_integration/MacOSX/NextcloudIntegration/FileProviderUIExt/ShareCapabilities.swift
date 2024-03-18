@@ -68,4 +68,23 @@ struct ShareCapabilities {
     private(set) var defaultPermissions = 0
     private(set) var email = EmailCapabilities(dict: [:])
     private(set) var publicLink = PublicLinkCapabilities(dict: [:])
+
+    init(json: Data) {
+        guard let anyJson = try? JSONSerialization.jsonObject(with: json, options: []),
+              let jsonDict = anyJson as? [String : Any],
+              let sharingCapabilities = jsonDict["files_sharing"] as? [String : Any]
+        else {
+            Logger.shareCapabilities.error("Could not parse share capabilities!")
+            return
+        }
+        apiEnabled = sharingCapabilities["api_enabled"] as? Bool ?? false
+
+        if let emailCapabilities = sharingCapabilities["sharebymail"] as? [String : Any] {
+            email = EmailCapabilities(dict: emailCapabilities)
+        }
+
+        if let publicLinkCapabilities = sharingCapabilities["public"] as? [String : Any] {
+            publicLink = PublicLinkCapabilities(dict: publicLinkCapabilities)
+        }
+    }
 }
