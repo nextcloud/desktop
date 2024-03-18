@@ -69,6 +69,11 @@ struct ShareCapabilities {
     private(set) var email = EmailCapabilities(dict: [:])
     private(set) var publicLink = PublicLinkCapabilities(dict: [:])
 
+
+    init() {
+        Logger.shareCapabilities.warning("Providing defaulted share capabilities!")
+    }
+
     init(json: Data) {
         guard let anyJson = try? JSONSerialization.jsonObject(with: json, options: []),
               let jsonDict = anyJson as? [String : Any],
@@ -86,5 +91,7 @@ struct ShareCapabilities {
         if let publicLinkCapabilities = sharingCapabilities["public"] as? [String : Any] {
             publicLink = PublicLinkCapabilities(dict: publicLinkCapabilities)
         }
+
+        Logger.shareCapabilities.debug("Parses share capabilities.")
     }
 }
