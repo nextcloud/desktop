@@ -5,7 +5,7 @@ on:
 jobs:
   build:
     name: SonarCloud analysis
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     container: ghcr.io/nextcloud/continuous-integration-client:client-5.15-15
     env:
       SONAR_SERVER_URL: "https://sonarcloud.io"
@@ -25,7 +25,7 @@ jobs:
         run: |
           mkdir build
           cd build
-          cmake .. -G Ninja -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_BUILD_TYPE=Debug -DCMAKE_C_COMPILER=gcc-11 -DCMAKE_CXX_COMPILER=g++-11 -DBUILD_UPDATER=ON -DBUILD_TESTING=1 -DBUILD_COVERAGE=ON -DOPENSSL_ROOT_DIR=/usr/local/lib64
+          cmake .. -G Ninja -DCMAKE_C_COMPILER=gcc-11 -DCMAKE_CXX_COMPILER=g++-11 -DCMAKE_BUILD_TYPE=Debug -DQUICK_COMPILER=ON -DBUILD_UPDATER=ON -DBUILD_TESTING=1 -DCMAKE_CXX_FLAGS=-Werror -DOPENSSL_ROOT_DIR=/usr/local/lib64 -DBUILD_COVERAGE=ON -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
           build-wrapper-linux-x86-64 --out-dir ${{ env.BUILD_WRAPPER_OUT_DIR }} ninja
       - name: Run tests
         run: |

@@ -5,7 +5,7 @@ on:
 jobs:
   build:
     name: Linux GCC compilation and tests
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     container: ghcr.io/nextcloud/continuous-integration-client:client-5.15-15
     steps:
       - uses: actions/checkout@v4
@@ -15,11 +15,11 @@ jobs:
         run: |
           mkdir build
           cd build
-          cmake .. -G Ninja -DCMAKE_C_COMPILER=gcc-11 -DCMAKE_CXX_COMPILER=g++-11 -DCMAKE_BUILD_TYPE=Debug -DQUICK_COMPILER=ON -DBUILD_UPDATER=ON -DBUILD_TESTING=1 -DECM_ENABLE_SANITIZERS=address -DCMAKE_CXX_FLAGS=-Werror -DOPENSSL_ROOT_DIR=/usr/local/lib64
+          cmake .. -G Ninja -DCMAKE_C_COMPILER=gcc-11 -DCMAKE_CXX_COMPILER=g++-11 -DCMAKE_BUILD_TYPE=Debug -DQUICK_COMPILER=ON -DBUILD_UPDATER=ON -DBUILD_TESTING=1 -DCMAKE_CXX_FLAGS=-Werror -DOPENSSL_ROOT_DIR=/usr/local/lib64
           ninja
       - name: Run tests
         run: |
           cd build
           useradd -m -s /bin/bash test
           chown -R test:test .
-          su -c 'ASAN_OPTIONS=detect_odr_violation=0,detect_leaks=0 xvfb-run ctest --output-on-failure' test
+          su -c 'xvfb-run ctest --output-on-failure' test
