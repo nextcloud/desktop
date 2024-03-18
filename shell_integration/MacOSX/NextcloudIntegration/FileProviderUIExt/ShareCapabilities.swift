@@ -14,6 +14,8 @@ struct ShareCapabilities {
         private(set) var passwordEnforced = false
 
         init(dict: [String: Any]) {
+            Logger.shareCapabilities.debug("Parsing email capabilities: \(dict, privacy: .public)")
+
             if let passwordCapabilities = dict["password"] as? [String : Any] {
                 passwordEnabled = passwordCapabilities["enabled"] as? Bool ?? false
                 passwordEnforced = passwordCapabilities["enforced"] as? Bool ?? false
@@ -36,6 +38,8 @@ struct ShareCapabilities {
         private(set) var multipleAllowed = false
 
         init(dict: [String: Any]) {
+            Logger.shareCapabilities.debug("Parsing link capabilities: \(dict, privacy: .public)")
+
             enabled = dict["enabled"] as? Bool ?? false
             allowUpload = dict["upload"] as? Bool ?? false
             supportsUploadOnly = dict["supports_upload_only"] as? Bool ?? false
