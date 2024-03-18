@@ -28,25 +28,44 @@ struct ShareCapabilities {
         private(set) var askOptionalPassword = false
         private(set) var enforcePassword = false
         private(set) var enforceExpireDate = false
-        private(set) var expireDateDays = 0
+        private(set) var expireDateDays = 1
+        private(set) var internalEnforceExpireDate = false
+        private(set) var internalExpireDateDays = 1
+        private(set) var remoteEnforceExpireDate = false
+        private(set) var remoteExpireDateDays = 1
         private(set) var multipleAllowed = false
-    }
 
-    struct InternalCapabilities {
-        private(set) var enforceExpireDate = false
-        private(set) var expireDateDays = 0
-    }
+        init(dict: [String: Any]) {
+            enabled = dict["enabled"] as? Bool ?? false
+            allowUpload = dict["upload"] as? Bool ?? false
+            supportsUploadOnly = dict["supports_upload_only"] as? Bool ?? false
+            multipleAllowed = dict["multiple"] as? Bool ?? false
 
-    struct RemoteCapabilities {
-        private(set) var enforceExpireDate = false
-        private(set) var expireDateDays = 0
+            if let passwordCapabilities = dict["password"] as? [String : Any] {
+                askOptionalPassword = dict["askForOptionalPassword"] as? Bool ?? false
+                enforcePassword = dict["enforced"] as? Bool ?? false
+            }
+
+            if let expireDateCapabilities = dict["expire_date"] as? [String: Any] {
+                expireDateDays = expireDateCapabilities["days"] as? Int ?? 1
+                enforceExpireDate = expireDateCapabilities["enforced"] as? Bool ?? false
+            }
+
+            if let internalExpDateCaps = dict["expire_date_internal"] as? [String: Any] {
+                internalExpireDateDays = internalExpDateCaps["days"] as? Int ?? 1
+                internalEnforceExpireDate = internalExpDateCaps["enforced"] as? Bool ?? false
+            }
+
+            if let remoteExpDateCaps = dict["expire_date_remote"] as? [String: Any] {
+                remoteExpireDateDays = remoteExpDateCaps["days"] as? Int ?? 1
+                remoteEnforceExpireDate = remoteExpDateCaps["enforced"] as? Bool ?? false
+            }
+        }
     }
 
     private(set) var apiEnabled = false
     private(set) var resharing = false
     private(set) var defaultPermissions = 0
-    private(set) var publicLink = PublicLinkCapabilities()
-    private(set) var internalShares = InternalCapabilities()
-    private(set) var remote = RemoteCapabilities()
     private(set) var email = EmailCapabilities(dict: [:])
+    private(set) var publicLink = PublicLinkCapabilities(dict: [:])
 }
