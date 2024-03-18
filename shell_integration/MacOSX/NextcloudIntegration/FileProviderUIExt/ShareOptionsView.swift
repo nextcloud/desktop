@@ -196,6 +196,12 @@ class ShareOptionsView: NSView {
         return selectedShareType
     }
 
+    @IBAction func shareTypePickerAction(_ sender: Any) {
+        if createMode {
+            setupCreateForm()
+        }
+    }
+
     @IBAction func passwordCheckboxAction(_ sender: Any) {
         passwordSecureField.isHidden = passwordProtectCheckbox.state == .off
     }
