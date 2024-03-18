@@ -504,7 +504,7 @@ void GeneralSettings::slotCreateDebugArchive()
     }
 
     createDebugArchive(filename);
-    QMessageBox::information(this, tr("Debug Archive Created"), tr("Debug archive is created at %1").arg(filename));
+    QMessageBox::information(this, tr("Debug Archive Created"), tr("Redact information deemed sensitive before sharing! Debug archive created at %1").arg(filename));
 }
 
 void GeneralSettings::slotShowLegalNotice()
