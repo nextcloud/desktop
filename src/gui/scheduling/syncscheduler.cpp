@@ -66,7 +66,8 @@ public:
         while (!_queue.empty() && !out) {
             // could be a nullptr by now
             out = _queue.top().folder;
-            _scheduledFolders.erase(_queue.top().rawFolder);
+            [[maybe_unused]] auto removed = _scheduledFolders.erase(_queue.top().rawFolder);
+            Q_ASSERT(removed = 1);
             _queue.pop();
         }
         return out;
