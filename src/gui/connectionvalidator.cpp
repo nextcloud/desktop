@@ -37,8 +37,9 @@ Q_LOGGING_CATEGORY(lcConnectionValidator, "nextcloud.sync.connectionvalidator", 
 // This makes sure we get tried often enough without "ConnectionValidator already running"
 static qint64 timeoutToUseMsec = qMax(1000, ConnectionValidator::DefaultCallingIntervalMsec - 5 * 1000);
 
-ConnectionValidator::ConnectionValidator(AccountStatePtr accountState, QObject *parent)
+ConnectionValidator::ConnectionValidator(AccountStatePtr accountState, const QStringList &previousErrors, QObject *parent)
     : QObject(parent)
+    , _previousErrors(previousErrors)
     , _accountState(accountState)
     , _account(accountState->account())
 {
@@ -331,7 +332,7 @@ void ConnectionValidator::reportResult(Status status)
     emit connectionResult(status, _errors);
 
     // notify user of errors
-    if (!_errors.isEmpty()) {
+    if (!_errors.isEmpty() && _previousErrors != _errors) {
        showSystrayErrorMessage();
     }
 

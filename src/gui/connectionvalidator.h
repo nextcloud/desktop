@@ -79,7 +79,9 @@ class ConnectionValidator : public QObject
 {
     Q_OBJECT
 public:
-    explicit ConnectionValidator(AccountStatePtr accountState, QObject *parent = nullptr);
+    explicit ConnectionValidator(AccountStatePtr accountState,
+                                 const QStringList &previousErrors,
+                                 QObject *parent = nullptr);
 
     enum Status {
         Undefined,
@@ -142,6 +144,7 @@ private:
      */
     bool setAndCheckServerVersion(const QString &version);
 
+    const QStringList _previousErrors;
     QStringList _errors;
     AccountStatePtr _accountState;
     AccountPtr _account;
