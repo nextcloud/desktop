@@ -173,8 +173,33 @@ class ShareTableViewDataSource: NSObject, NSTableViewDataSource, NSTableViewDele
     }
 
     private func fetchItemMetadata(itemRelativePath: String) async -> NKFile? {
+        guard let kit = kit else {
+            let errorString = "Could not fetch item metadata as nckit unavailable"
+            Logger.sharesDataSource.error("\(errorString, privacy: .public)")
+            Task { @MainActor in self.uiDelegate?.showError(errorString) }
+            return nil
+        }
+
+        func slashlessPath(_ string: String) -> String {
+            var strCopy = string
+            if strCopy.hasPrefix("/") {
+                strCopy.removeFirst()
+            }
+            if strCopy.hasSuffix("/") {
+                strCopy.removeLast()
+            }
+            return strCopy
+        }
+
+        let nkCommon = kit.nkCommonInstance
+        let urlBase = slashlessPath(nkCommon.urlBase)
+        let davSuffix = slashlessPath(nkCommon.dav)
+        let userId = nkCommon.userId
+        let itemRelPath = slashlessPath(itemRelativePath)
+
+        let itemFullServerPath = "\(urlBase)/\(davSuffix)/files/\(userId)/\(itemRelPath)"
         return await withCheckedContinuation { continuation in
-            kit?.readFileOrFolder(serverUrlFileName: itemRelativePath, depth: "0") {
+            kit.readFileOrFolder(serverUrlFileName: itemFullServerPath, depth: "0") {
                 account, files, data, error in
                 guard error == .success else {
                     let errorString = "Error getting item metadata: \(error.errorDescription)"
