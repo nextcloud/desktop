@@ -13,6 +13,7 @@ import OSLog
 class ShareTableViewDataSource: NSObject, NSTableViewDataSource, NSTableViewDelegate {
     private let shareItemViewIdentifier = NSUserInterfaceItemIdentifier("ShareTableItemView")
     private let shareItemViewNib = NSNib(nibNamed: "ShareTableItemView", bundle: nil)
+    private let reattemptInterval: TimeInterval = 3.0
 
     var uiDelegate: ShareViewDataSourceUIDelegate?
     var sharesTableView: NSTableView? {
@@ -54,6 +55,14 @@ class ShareTableViewDataSource: NSObject, NSTableViewDataSource, NSTableViewDele
         }
     }
 
+    func reattempt() {
+        DispatchQueue.main.async {
+            Timer.scheduledTimer(withTimeInterval: self.reattemptInterval, repeats: false) { _ in
+                Task { await self.reload() }
+            }
+        }
+    }
+
     func reload() async {
         guard let itemURL = itemURL else { return }
         guard let itemIdentifier = await withCheckedContinuation({
@@ -76,8 +85,11 @@ class ShareTableViewDataSource: NSObject, NSTableViewDataSource, NSTableViewDele
             let connection = try await serviceConnection(url: itemURL)
             guard let serverPath = await connection.itemServerPath(identifier: itemIdentifier),
                   let credentials = await connection.credentials() as? Dictionary<String, String>,
-                  let convertedAccount = NextcloudAccount(dictionary: credentials) else {
-                presentError("Failed to get details from FileProviderExt")
+                  let convertedAccount = NextcloudAccount(dictionary: credentials),
+                  !convertedAccount.password.isEmpty
+            else {
+                presentError("Failed to get details from File Provider Extension. Retrying.")
+                reattempt()
                 return
             }
             let serverPathString = serverPath as String
@@ -98,7 +110,8 @@ class ShareTableViewDataSource: NSObject, NSTableViewDataSource, NSTableViewDele
                 itemIdentifier: itemIdentifier, itemRelativePath: serverPathString
             )
         } catch let error {
-            presentError("Could not reload data: \(error)")
+            presentError("Could not reload data: \(error), will try again.")
+            reattempt()
         }
     }
 
