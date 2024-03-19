@@ -16,10 +16,14 @@
 
 #include <QDebug>
 #include <QFileInfo>
+#include <QLoggingCategory>
 #include <QPalette>
 
 using namespace OCC;
 using namespace Resources;
+
+Q_LOGGING_CATEGORY(lcResources, "sync.resoruces", QtInfoMsg)
+
 namespace {
 
 QString vanillaThemePath()
@@ -146,7 +150,7 @@ QIcon OCC::Resources::loadIcon(const QString &flavor, const QString &name, IconT
                 cached.addFile(pixmapName, {size, size});
             } else if (size >= 128) {
                 if (!previousIcon.isEmpty()) {
-                    qWarning() << "Upscaling:" << previousIcon << "to" << size;
+                    qCWarning(lcResources) << "Upscaling:" << previousIcon << "to" << size;
                     cached.addPixmap(QPixmap(previousIcon).scaled({size, size}, Qt::KeepAspectRatio, Qt::SmoothTransformation));
                 }
             }
@@ -156,7 +160,8 @@ QIcon OCC::Resources::loadIcon(const QString &flavor, const QString &name, IconT
         if (!useCoreIcon && iconType == IconType::BrandedIconWithFallbackToVanillaIcon) {
             return loadIcon(flavor, name, IconType::VanillaIcon);
         }
-        qWarning() << "Failed to locate the icon" << name;
+        qCWarning(lcResources) << "Failed to locate the icon" << name;
+        Q_ASSERT(false);
     }
     return cached;
 }
