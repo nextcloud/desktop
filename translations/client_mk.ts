@@ -1559,7 +1559,7 @@ This action will abort any currently running synchronization.</source>
         <translation>Ве молиме ажурирајте ја верзијата на серверот и рестатирајте го клиентот.</translation>
     </message>
     <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="343"/>
+        <location filename="../src/gui/connectionvalidator.cpp" line="344"/>
         <source>Network Error</source>
         <translation type="unfinished"/>
     </message>

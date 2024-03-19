@@ -1563,7 +1563,7 @@ Dit zal alle synchronisaties, die op dit moment bezig zijn, afbreken.</translati
         <translation>Werk de server bij naar de nieuwste versie en herstart het programma.</translation>
     </message>
     <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="343"/>
+        <location filename="../src/gui/connectionvalidator.cpp" line="344"/>
         <source>Network Error</source>
         <translation type="unfinished"/>
     </message>

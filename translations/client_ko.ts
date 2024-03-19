@@ -1569,7 +1569,7 @@ This action will abort any currently running synchronization.</source>
         <translation>최신 서버로 업데이트 후 클라이언트를 다시 시작해주십시오.</translation>
     </message>
     <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="343"/>
+        <location filename="../src/gui/connectionvalidator.cpp" line="344"/>
         <source>Network Error</source>
         <translation>네트워크 오류</translation>
     </message>

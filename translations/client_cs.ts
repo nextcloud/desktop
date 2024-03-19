@@ -1569,7 +1569,7 @@ Současně tato akce zruší jakoukoli právě probíhající synchronizaci.</tr
         <translation>Aktualizujte server na nejnovější verzi a pak klienta restartujte.</translation>
     </message>
     <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="343"/>
+        <location filename="../src/gui/connectionvalidator.cpp" line="344"/>
         <source>Network Error</source>
         <translation type="unfinished"/>
     </message>

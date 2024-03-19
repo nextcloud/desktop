@@ -1570,7 +1570,7 @@ Bu işlem şu anda yürütülmekte olan eşitleme işlemlerini durdurur.</transl
         <translation>Lütfen sunucuyu en son sürüme güncelleyin ve istemciyi yeniden başlatın.</translation>
     </message>
     <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="343"/>
+        <location filename="../src/gui/connectionvalidator.cpp" line="344"/>
         <source>Network Error</source>
         <translation>Ağ sorunu</translation>
     </message>

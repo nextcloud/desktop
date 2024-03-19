@@ -1571,7 +1571,7 @@ Además, esta acción interrumpirá cualquier sincronización en curso.</transla
         <translation>Por favor, actualice a la última versión del servidor y reinicie el cliente.</translation>
     </message>
     <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="343"/>
+        <location filename="../src/gui/connectionvalidator.cpp" line="344"/>
         <source>Network Error</source>
         <translation>Error en la red</translation>
     </message>

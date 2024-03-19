@@ -1566,7 +1566,7 @@ Esta ação irá cancelar qualquer sincronização atualmente em execução.</tr
         <translation>Por favor, atualize para a última versão e reinicie o cliente.</translation>
     </message>
     <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="343"/>
+        <location filename="../src/gui/connectionvalidator.cpp" line="344"/>
         <source>Network Error</source>
         <translation>Erro de rede</translation>
     </message>

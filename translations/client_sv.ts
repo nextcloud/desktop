@@ -1570,7 +1570,7 @@ Den här åtgärden avbryter alla pågående synkroniseringar.</translation>
         <translation>Vänligen uppdatera till den senaste servern och starta om klienten.</translation>
     </message>
     <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="343"/>
+        <location filename="../src/gui/connectionvalidator.cpp" line="344"/>
         <source>Network Error</source>
         <translation>Nätverksfel</translation>
     </message>

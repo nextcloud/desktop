@@ -1570,7 +1570,7 @@ This action will abort any currently running synchronization.</translation>
         <translation>Please update to the latest server and restart the client.</translation>
     </message>
     <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="343"/>
+        <location filename="../src/gui/connectionvalidator.cpp" line="344"/>
         <source>Network Error</source>
         <translation>Network Error</translation>
     </message>

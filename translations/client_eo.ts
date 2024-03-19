@@ -1557,7 +1557,7 @@ This action will abort any currently running synchronization.</source>
         <translation>Bv. ĝisdatigi la servilon, kaj remalfermi la klienton.</translation>
     </message>
     <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="343"/>
+        <location filename="../src/gui/connectionvalidator.cpp" line="344"/>
         <source>Network Error</source>
         <translation type="unfinished"/>
     </message>

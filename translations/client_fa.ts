@@ -1150,7 +1150,7 @@ This action will abort any currently running synchronization.</translation>
     <message>
         <location filename="../src/gui/authenticationdialog.cpp" line="30"/>
         <source>Authentication Required</source>
-        <translation>نیازمند تاییدیه</translation>
+        <translation>احراز هویت الزامی است</translation>
     </message>
     <message>
         <location filename="../src/gui/authenticationdialog.cpp" line="32"/>
@@ -1566,7 +1566,7 @@ This action will abort any currently running synchronization.</translation>
         <translation>لطفا به آخرین سرور به روز رسانی کنید و مشتری را مجددا راه اندازی نمایید.</translation>
     </message>
     <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="343"/>
+        <location filename="../src/gui/connectionvalidator.cpp" line="344"/>
         <source>Network Error</source>
         <translation type="unfinished"/>
     </message>
