@@ -63,12 +63,12 @@ class ShareTableViewDataSource: NSObject, NSTableViewDataSource, NSTableViewDele
             ) { identifier, domainIdentifier, error in
                 defer { continuation.resume(returning: identifier) }
                 guard error == nil else {
-                    Logger.sharesDataSource.error("No identifier: \(error, privacy: .public)")
+                    self.presentError("No item with identifier: \(error.debugDescription)")
                     return
                 }
             }
         }) else {
-            Logger.sharesDataSource.error("Could not get identifier for item, no shares.")
+            presentError("Could not get identifier for item, no shares can be acquired.")
             return
         }
 
@@ -77,7 +77,7 @@ class ShareTableViewDataSource: NSObject, NSTableViewDataSource, NSTableViewDele
             guard let serverPath = await connection.itemServerPath(identifier: itemIdentifier),
                   let credentials = await connection.credentials() as? Dictionary<String, String>,
                   let convertedAccount = NextcloudAccount(dictionary: credentials) else {
-                Logger.sharesDataSource.error("Failed to get details from FileProviderExt")
+                presentError("Failed to get details from FileProviderExt")
                 return
             }
             let serverPathString = serverPath as String
@@ -86,23 +86,19 @@ class ShareTableViewDataSource: NSObject, NSTableViewDataSource, NSTableViewDele
             await sharesTableView?.deselectAll(self)
             shareCapabilities = await fetchCapabilities()
             guard shareCapabilities.apiEnabled else {
-                let errorMsg = "Server does not support shares."
-                Logger.sharesDataSource.info("\(errorMsg)")
-                uiDelegate?.showError(errorMsg)
+                presentError("Server does not support shares.")
                 return
             }
             itemMetadata = await fetchItemMetadata(itemRelativePath: serverPathString)
             guard itemMetadata?.permissions.contains("R") == true else {
-                let errorMsg = "This file cannot be shared."
-                Logger.sharesDataSource.warning("\(errorMsg)")
-                uiDelegate?.showError(errorMsg)
+                presentError("This file cannot be shared.")
                 return
             }
             shares = await fetch(
                 itemIdentifier: itemIdentifier, itemRelativePath: serverPathString
             )
         } catch let error {
-            Logger.sharesDataSource.error("Could not reload data: \(error, privacy: .public)")
+            presentError("Could not reload data: \(error)")
         }
     }
 
@@ -135,7 +131,7 @@ class ShareTableViewDataSource: NSObject, NSTableViewDataSource, NSTableViewDele
         Logger.sharesDataSource.info("Fetching shares for item \(rawIdentifier, privacy: .public)")
 
         guard let kit = kit else {
-            Logger.sharesDataSource.error("NextcloudKit instance is nil")
+            self.presentError("NextcloudKit instance is unavailable, cannot fetch shares!")
             return []
         }
 
@@ -147,9 +143,7 @@ class ShareTableViewDataSource: NSObject, NSTableViewDataSource, NSTableViewDele
                 Logger.sharesDataSource.info("Received \(shareCount, privacy: .public) shares")
                 defer { continuation.resume(returning: shares ?? []) }
                 guard error == .success else {
-                    let errorString = "Error fetching shares: \(error.errorDescription)"
-                    Logger.sharesDataSource.error("\(errorString)")
-                    Task { @MainActor in self.uiDelegate?.showError(errorString) }
+                    self.presentError("Error fetching shares: \(error.errorDescription)")
                     return
                 }
             }
@@ -160,9 +154,7 @@ class ShareTableViewDataSource: NSObject, NSTableViewDataSource, NSTableViewDele
         return await withCheckedContinuation { continuation in
             kit?.getCapabilities { account, capabilitiesJson, error in
                 guard error == .success, let capabilitiesJson = capabilitiesJson else {
-                    let errorString = "Error getting server capabilities: \(error.errorDescription)"
-                    Logger.sharesDataSource.error("\(errorString, privacy: .public)")
-                    Task { @MainActor in self.uiDelegate?.showError(errorString) }
+                    self.presentError("Error getting server capabilities: \(error.errorDescription)")
                     continuation.resume(returning: ShareCapabilities())
                     return
                 }
@@ -174,9 +166,7 @@ class ShareTableViewDataSource: NSObject, NSTableViewDataSource, NSTableViewDele
 
     private func fetchItemMetadata(itemRelativePath: String) async -> NKFile? {
         guard let kit = kit else {
-            let errorString = "Could not fetch item metadata as nckit unavailable"
-            Logger.sharesDataSource.error("\(errorString, privacy: .public)")
-            Task { @MainActor in self.uiDelegate?.showError(errorString) }
+            presentError("Could not fetch item metadata as NextcloudKit instance is unavailable")
             return nil
         }
 
@@ -202,9 +192,7 @@ class ShareTableViewDataSource: NSObject, NSTableViewDataSource, NSTableViewDele
             kit.readFileOrFolder(serverUrlFileName: itemFullServerPath, depth: "0") {
                 account, files, data, error in
                 guard error == .success else {
-                    let errorString = "Error getting item metadata: \(error.errorDescription)"
-                    Logger.sharesDataSource.error("\(errorString, privacy: .public)")
-                    Task { @MainActor in self.uiDelegate?.showError(errorString) }
+                    self.presentError("Error getting item metadata: \(error.errorDescription)")
                     continuation.resume(returning: nil)
                     return
                 }
@@ -212,6 +200,11 @@ class ShareTableViewDataSource: NSObject, NSTableViewDataSource, NSTableViewDele
                 continuation.resume(returning: files.first)
             }
         }
+    }
+
+    private func presentError(_ errorString: String) {
+        Logger.sharesDataSource.error("\(errorString, privacy: .public)")
+        Task { @MainActor in self.uiDelegate?.showError(errorString) }
     }
 
     // MARK: - NSTableViewDataSource protocol methods
@@ -229,7 +222,7 @@ class ShareTableViewDataSource: NSObject, NSTableViewDataSource, NSTableViewDele
         guard let view = tableView.makeView(
             withIdentifier: shareItemViewIdentifier, owner: self
         ) as? ShareTableItemView else {
-            Logger.sharesDataSource.error("Acquired item view from table is not a Share item view!")
+            Logger.sharesDataSource.error("Acquired item view from table is not a share item view!")
             return nil
         }
         view.share = share
