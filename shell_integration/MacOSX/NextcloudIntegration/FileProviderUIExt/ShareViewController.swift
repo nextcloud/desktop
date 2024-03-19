@@ -57,7 +57,7 @@ class ShareViewController: NSViewController, ShareViewDataSourceUIDelegate {
 
     override func viewDidLoad() {
         dismissError(self)
-        hideOptions()
+        hideOptions(self)
     }
 
     @IBAction func closeAction(_ sender: Any) {
@@ -111,10 +111,12 @@ class ShareViewController: NSViewController, ShareViewDataSourceUIDelegate {
     }
 
     @IBAction func createShare(_ sender: Any) {
-        tableView.deselectAll(self)
         optionsView.createMode = true
-        splitView.addArrangedSubview(optionsView)
-        optionsView.isHidden = false
+        tableView.deselectAll(self)
+        if !splitView.arrangedSubviews.contains(optionsView) {
+            splitView.addArrangedSubview(optionsView)
+            optionsView.isHidden = false
+        }
     }
 
     func fetchStarted() {
@@ -127,16 +129,24 @@ class ShareViewController: NSViewController, ShareViewDataSourceUIDelegate {
         loadingIndicator.stopAnimation(self)
     }
 
-    func hideOptions() {
+    func hideOptions(_ sender: Any) {
+        if sender as? ShareTableViewDataSource == shareDataSource, optionsView.createMode {
+            // Do not hide options if the table view has had everything deselected when we set the
+            // options view to be in create mode
+            return
+        }
         splitView.removeArrangedSubview(optionsView)
         optionsView.isHidden = true
+
     }
 
     func showOptions(share: NKShare) {
         guard let kit = shareDataSource.kit else { return }
         optionsView.controller = ShareController(share: share, kit: kit)
-        splitView.addArrangedSubview(optionsView)
-        optionsView.isHidden = false
+        if !splitView.arrangedSubviews.contains(optionsView) {
+            splitView.addArrangedSubview(optionsView)
+            optionsView.isHidden = false
+        }
     }
 
     func showError(_ errorString: String) {

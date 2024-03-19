@@ -274,7 +274,7 @@ class ShareOptionsView: NSView {
                     dataSource.uiDelegate?.showError("Error creating: \(error.errorDescription)")
                     setAllFields(enabled: true)
                 } else {
-                    dataSource.uiDelegate?.hideOptions()
+                    dataSource.uiDelegate?.hideOptions(self)
                     await dataSource.reload()
                 }
                 return
@@ -306,7 +306,7 @@ class ShareOptionsView: NSView {
                 dataSource?.uiDelegate?.showError("Error updating share: \(error.errorDescription)")
                 setAllFields(enabled: true)
             } else {
-                dataSource?.uiDelegate?.hideOptions()
+                dataSource?.uiDelegate?.hideOptions(self)
                 await dataSource?.reload()
             }
         }
@@ -315,7 +315,7 @@ class ShareOptionsView: NSView {
     @IBAction func delete(_ sender: Any) {
         Task { @MainActor in
             guard !createMode else {
-                dataSource?.uiDelegate?.hideOptions()
+                dataSource?.uiDelegate?.hideOptions(self)
                 reset()
                 return
             }
