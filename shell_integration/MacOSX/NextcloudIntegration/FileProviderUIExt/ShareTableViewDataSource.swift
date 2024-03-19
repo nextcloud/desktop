@@ -25,6 +25,7 @@ class ShareTableViewDataSource: NSObject, NSTableViewDataSource, NSTableViewDele
         }
     }
     var shareCapabilities = ShareCapabilities()
+    var itemMetadata: NKFile?
 
     private(set) var kit: NextcloudKit?
     private(set) var itemURL: URL?
@@ -79,7 +80,8 @@ class ShareTableViewDataSource: NSObject, NSTableViewDataSource, NSTableViewDele
                 Logger.sharesDataSource.error("Failed to get details from FileProviderExt")
                 return
             }
-            itemServerRelativePath = serverPath as String
+            let serverPathString = serverPath as String
+            itemServerRelativePath = serverPathString
             account = convertedAccount
             await sharesTableView?.deselectAll(self)
             shareCapabilities = await fetchCapabilities()
@@ -89,8 +91,15 @@ class ShareTableViewDataSource: NSObject, NSTableViewDataSource, NSTableViewDele
                 uiDelegate?.showError(errorMsg)
                 return
             }
+            itemMetadata = await fetchItemMetadata(itemRelativePath: serverPathString)
+            guard itemMetadata?.permissions.contains("S") == true else {
+                let errorMsg = "This file cannot be shared."
+                Logger.sharesDataSource.warning("\(errorMsg)")
+                uiDelegate?.showError(errorMsg)
+                return
+            }
             shares = await fetch(
-                itemIdentifier: itemIdentifier, itemRelativePath: serverPath as String
+                itemIdentifier: itemIdentifier, itemRelativePath: serverPathString
             )
         } catch let error {
             Logger.sharesDataSource.error("Could not reload data: \(error, privacy: .public)")
