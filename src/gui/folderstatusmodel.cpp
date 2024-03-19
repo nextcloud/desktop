@@ -266,7 +266,7 @@ QVariant FolderStatusModel::data(const QModelIndex &index, int role) const
             errors.append(legacyError.error());
         }
         if (f->syncResult().hasUnresolvedConflicts()) {
-            errors.append(tr("There are unresolved conflicts. Click for details."));
+            errors.append(tr("There are unresolved conflicts."));
         }
         if (f->isReady() && f->virtualFilesEnabled() && f->vfs().mode() == Vfs::Mode::WithSuffix) {
             errors.append({
