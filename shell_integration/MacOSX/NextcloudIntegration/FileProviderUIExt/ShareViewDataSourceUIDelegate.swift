@@ -11,7 +11,7 @@ import NextcloudKit
 protocol ShareViewDataSourceUIDelegate {
     func fetchStarted()
     func fetchFinished()
-    func hideOptions()
+    func hideOptions(_ sender: Any)
     func showOptions(share: NKShare)
     func showError(_ errorString: String)
 }

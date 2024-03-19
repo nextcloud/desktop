@@ -238,7 +238,7 @@ class ShareTableViewDataSource: NSObject, NSTableViewDataSource, NSTableViewDele
 
     @objc func tableViewSelectionDidChange(_ notification: Notification) {
         guard let selectedRow = sharesTableView?.selectedRow, selectedRow >= 0 else {
-            Task { @MainActor in uiDelegate?.hideOptions() }
+            Task { @MainActor in uiDelegate?.hideOptions(self) }
             return
         }
         let share = shares[selectedRow]
