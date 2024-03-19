@@ -128,7 +128,7 @@ class ShareOptionsView: NSView {
         let type = pickedShareType()
         shareRecipientTextField.isHidden = type == .publicLink
 
-        if let caps = dataSource?.shareCapabilities {
+        if let caps = dataSource?.capabilities?.filesSharing {
             uploadEditPermissionCheckbox.state =
                 caps.defaultPermissions & NKShare.PermissionValues.updateShare.rawValue != 0
                 ? .on : .off
@@ -136,20 +136,20 @@ class ShareOptionsView: NSView {
             switch type {
             case .publicLink:
                 passwordProtectCheckbox.isHidden = false
-                passwordProtectCheckbox.state = caps.publicLink.enforcePassword ? .on : .off
-                passwordProtectCheckbox.isEnabled = !caps.publicLink.enforcePassword
-                expirationDateCheckbox.state = caps.publicLink.enforceExpireDate ? .on : .off
-                expirationDateCheckbox.isEnabled = !caps.publicLink.enforceExpireDate
+                passwordProtectCheckbox.state = caps.publicLink?.passwordEnforced == true ? .on : .off
+                passwordProtectCheckbox.isEnabled = caps.publicLink?.passwordEnforced == false
+                expirationDateCheckbox.state = caps.publicLink?.expireDateEnforced == true ? .on : .off
+                expirationDateCheckbox.isEnabled = caps.publicLink?.expireDateEnforced == false
                 expirationDatePicker.dateValue = Date(
                     timeIntervalSinceNow: 
-                        TimeInterval(caps.publicLink.expireDateDays * 24 * 60 * 60)
+                        TimeInterval((caps.publicLink?.expireDateDays ?? 1) * 24 * 60 * 60)
                 )
-                if caps.publicLink.enforceExpireDate {
+                if caps.publicLink?.expireDateEnforced == true {
                     expirationDatePicker.maxDate = expirationDatePicker.dateValue
                 }
             case .email:
-                passwordProtectCheckbox.isHidden = !caps.email.passwordEnabled
-                passwordProtectCheckbox.state = caps.email.passwordEnforced ? .on : .off
+                passwordProtectCheckbox.isHidden = caps.email?.passwordEnabled == false
+                passwordProtectCheckbox.state = caps.email?.passwordEnforced == true ? .on : .off
             default:
                 passwordProtectCheckbox.isHidden = true
                 passwordProtectCheckbox.state = .off
