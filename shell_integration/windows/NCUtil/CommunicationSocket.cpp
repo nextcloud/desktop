@@ -81,8 +81,10 @@ bool CommunicationSocket::Connect(const std::wstring &pipename)
     return true;
 }
 
-bool CommunicationSocket::SendMsg(const wchar_t* message) const
+bool CommunicationSocket::SendMsg(const wchar_t* message, std::ofstream &logger) const
 {
+    logger << "CommunicationSocket::SendMsg: " << (*message) << std::endl;
+
     auto utf8_msg = StringUtil::toUtf8(message);
 
     DWORD numBytesWritten = 0;

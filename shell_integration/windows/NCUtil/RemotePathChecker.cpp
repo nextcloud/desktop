@@ -30,7 +30,7 @@
 using namespace std;
 
 // This code is run in a thread
-void RemotePathChecker::workerThreadLoop()
+void RemotePathChecker::workerThreadLoop(ofstream &logger)
 {
     auto pipename = CommunicationSocket::DefaultPipePath();
     bool connected = false;
@@ -62,7 +62,7 @@ void RemotePathChecker::workerThreadLoop()
                 lock.unlock();
                 if (!asked.count(filePath)) {
                     asked.insert(filePath);
-                    socket.SendMsg(wstring(L"RETRIEVE_FILE_STATUS:" + filePath + L'\n').data());
+                    socket.SendMsg(wstring(L"RETRIEVE_FILE_STATUS:" + filePath + L'\n').data(), logger);
                 }
                 lock.lock();
             }
@@ -162,12 +162,12 @@ void RemotePathChecker::workerThreadLoop()
 
 
 
-RemotePathChecker::RemotePathChecker()
+RemotePathChecker::RemotePathChecker(ofstream &logger)
     : _stop(false)
     , _watchedDirectories(make_shared<const vector<wstring>>())
     , _connected(false)
     , _newQueries(CreateEvent(nullptr, FALSE, FALSE, nullptr))
-    , _thread([this]{ this->workerThreadLoop(); })
+    , _thread([this, &logger]{ this->workerThreadLoop(logger); })
 {
 }
 
