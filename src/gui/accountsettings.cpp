@@ -75,13 +75,12 @@ AccountSettings::AccountSettings(const AccountStatePtr &accountState, QWidget *p
     ui->quickWidget->engine()->addImageProvider(QStringLiteral("space"), new SpaceImageProvider(_accountState));
     ui->quickWidget->engine()->addImageProvider(QStringLiteral("ownCloud"), new Resources::CoreImageProvider());
     ui->quickWidget->setResizeMode(QQuickWidget::SizeRootObjectToView);
-    ui->quickWidget->setSource(QUrl::fromLocalFile(QStringLiteral(":/qt/qml/org/ownCloud/qmlcomponents/qml/FolderDelegate.qml")));
+    ui->quickWidget->setSource(QUrl(QStringLiteral("qrc:/qt/qml/org/ownCloud/qmlcomponents/qml/FolderDelegate.qml")));
     if (!ui->quickWidget->errors().isEmpty()) {
-        qCCritical(lcAccountSettings) << "A qml error occured" << ui->quickWidget->errors();
         auto box = new QMessageBox(QMessageBox::Critical, QStringLiteral("QML Error"), QDebug::toString(ui->quickWidget->errors()));
         box->setAttribute(Qt::WA_DeleteOnClose);
         box->exec();
-        qApp->quit();
+        qFatal("A qml error occured %s", qPrintable(QDebug::toString(ui->quickWidget->errors())));
     }
 
     createAccountToolbox();
