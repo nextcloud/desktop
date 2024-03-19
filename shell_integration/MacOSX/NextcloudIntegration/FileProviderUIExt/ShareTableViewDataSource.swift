@@ -163,6 +163,23 @@ class ShareTableViewDataSource: NSObject, NSTableViewDataSource, NSTableViewDele
         }
     }
 
+    private func fetchItemMetadata(itemRelativePath: String) async -> NKFile? {
+        return await withCheckedContinuation { continuation in
+            kit?.readFileOrFolder(serverUrlFileName: itemRelativePath, depth: "0") {
+                account, files, data, error in
+                guard error == .success else {
+                    let errorString = "Error getting item metadata: \(error.errorDescription)"
+                    Logger.sharesDataSource.error("\(errorString)")
+                    Task { @MainActor in self.uiDelegate?.showError(errorString) }
+                    continuation.resume(returning: nil)
+                    return
+                }
+                Logger.sharesDataSource.info("Successfully retrieved item metadata")
+                continuation.resume(returning: files.first)
+            }
+        }
+    }
+
     // MARK: - NSTableViewDataSource protocol methods
 
     @objc func numberOfRows(in tableView: NSTableView) -> Int {
