@@ -1346,7 +1346,7 @@ SocketApi::FileData SocketApi::FileData::parentFolder() const
 
 void SocketApi::command_GET_MENU_ITEMS(const QString &argument, OCC::SocketListener *listener)
 {
-    listener->sendMessage(QString("GET_MENU_ITEMS:BEGIN"));
+    listener->sendMessage(QString("GET_MENU_ITEMS:BEGIN"), true);
     const QStringList files = split(argument);
 
     // Find the common sync folder.
