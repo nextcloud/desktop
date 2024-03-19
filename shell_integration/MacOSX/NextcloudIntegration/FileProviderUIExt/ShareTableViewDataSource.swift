@@ -161,7 +161,7 @@ class ShareTableViewDataSource: NSObject, NSTableViewDataSource, NSTableViewDele
             kit?.getCapabilities { account, capabilitiesJson, error in
                 guard error == .success, let capabilitiesJson = capabilitiesJson else {
                     let errorString = "Error getting server capabilities: \(error.errorDescription)"
-                    Logger.sharesDataSource.error("\(errorString)")
+                    Logger.sharesDataSource.error("\(errorString, privacy: .public)")
                     Task { @MainActor in self.uiDelegate?.showError(errorString) }
                     continuation.resume(returning: ShareCapabilities())
                     return
@@ -178,7 +178,7 @@ class ShareTableViewDataSource: NSObject, NSTableViewDataSource, NSTableViewDele
                 account, files, data, error in
                 guard error == .success else {
                     let errorString = "Error getting item metadata: \(error.errorDescription)"
-                    Logger.sharesDataSource.error("\(errorString)")
+                    Logger.sharesDataSource.error("\(errorString, privacy: .public)")
                     Task { @MainActor in self.uiDelegate?.showError(errorString) }
                     continuation.resume(returning: nil)
                     return
