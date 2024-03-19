@@ -92,7 +92,7 @@ class ShareTableViewDataSource: NSObject, NSTableViewDataSource, NSTableViewDele
                 return
             }
             itemMetadata = await fetchItemMetadata(itemRelativePath: serverPathString)
-            guard itemMetadata?.permissions.contains("S") == true else {
+            guard itemMetadata?.permissions.contains("R") == true else {
                 let errorMsg = "This file cannot be shared."
                 Logger.sharesDataSource.warning("\(errorMsg)")
                 uiDelegate?.showError(errorMsg)
