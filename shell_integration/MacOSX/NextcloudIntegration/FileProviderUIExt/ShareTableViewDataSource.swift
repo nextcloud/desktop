@@ -8,6 +8,7 @@
 import AppKit
 import FileProvider
 import NextcloudKit
+import NextcloudCapabilitiesKit
 import OSLog
 
 class ShareTableViewDataSource: NSObject, NSTableViewDataSource, NSTableViewDelegate {
@@ -25,7 +26,7 @@ class ShareTableViewDataSource: NSObject, NSTableViewDataSource, NSTableViewDele
             sharesTableView?.reloadData()
         }
     }
-    var shareCapabilities = ShareCapabilities()
+    var capabilities: Capabilities?
     var itemMetadata: NKFile?
 
     private(set) var kit: NextcloudKit?
@@ -96,8 +97,8 @@ class ShareTableViewDataSource: NSObject, NSTableViewDataSource, NSTableViewDele
             itemServerRelativePath = serverPathString
             account = convertedAccount
             await sharesTableView?.deselectAll(self)
-            shareCapabilities = await fetchCapabilities()
-            guard shareCapabilities.apiEnabled else {
+            capabilities = await fetchCapabilities()
+            guard capabilities?.filesSharing?.apiEnabled == true else {
                 presentError("Server does not support shares.")
                 return
             }
@@ -163,16 +164,16 @@ class ShareTableViewDataSource: NSObject, NSTableViewDataSource, NSTableViewDele
         }
     }
 
-    private func fetchCapabilities() async -> ShareCapabilities {
+    private func fetchCapabilities() async -> Capabilities? {
         return await withCheckedContinuation { continuation in
             kit?.getCapabilities { account, capabilitiesJson, error in
                 guard error == .success, let capabilitiesJson = capabilitiesJson else {
-                    self.presentError("Error getting server capabilities: \(error.errorDescription)")
-                    continuation.resume(returning: ShareCapabilities())
+                    self.presentError("Error getting server caps: \(error.errorDescription)")
+                    continuation.resume(returning: nil)
                     return
                 }
                 Logger.sharesDataSource.info("Successfully retrieved server share capabilities")
-                continuation.resume(returning: ShareCapabilities(json: capabilitiesJson))
+                continuation.resume(returning: Capabilities(data: capabilitiesJson))
             }
         }
     }
