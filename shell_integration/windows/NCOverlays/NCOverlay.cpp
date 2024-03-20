@@ -35,22 +35,24 @@ namespace {
 
 unique_ptr<RemotePathChecker> s_instance;
 
-RemotePathChecker *getGlobalChecker()
+RemotePathChecker *getGlobalChecker(ofstream &logger)
 {
     // On Vista we'll run into issue #2680 if we try to create the thread+pipe connection
     // on any DllGetClassObject of our registered classes.
     // Work around the issue by creating the static RemotePathChecker only once actually needed.
     static once_flag s_onceFlag;
-    call_once(s_onceFlag, [] { s_instance.reset(new RemotePathChecker); });
+    call_once(s_onceFlag, [&logger] { s_instance.reset(new RemotePathChecker{logger}); });
 
     return s_instance.get();
 }
 
 }
-NCOverlay::NCOverlay(int state) 
+NCOverlay::NCOverlay(int state)
     : _referenceCount(1)
     , _state(state)
 {
+    m_logger.open("c:\\testOverlay.log");
+    m_logger << "hello world" << std::endl;
 }
 
 NCOverlay::~NCOverlay(void)
@@ -120,7 +122,7 @@ IFACEMETHODIMP NCOverlay::GetPriority(int *pPriority)
 
 IFACEMETHODIMP NCOverlay::IsMemberOf(PCWSTR pwszPath, DWORD dwAttrib)
 {
-    RemotePathChecker* checker = getGlobalChecker();
+    RemotePathChecker* checker = getGlobalChecker(m_logger);
     std::shared_ptr<const std::vector<std::wstring>> watchedDirectories = checker->WatchedDirectories();
 
     if (watchedDirectories->empty()) {

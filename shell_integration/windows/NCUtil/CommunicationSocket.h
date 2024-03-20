@@ -21,6 +21,7 @@
 
 #include <string>
 #include <vector>
+#include <fstream>
 #include <WinSock2.h>
 
 class __declspec(dllexport) CommunicationSocket
@@ -34,7 +35,7 @@ public:
     bool Connect(const std::wstring& pipename);
     bool Close();
 
-    bool SendMsg(const wchar_t*) const;
+    bool SendMsg(const wchar_t*, std::ofstream &logger) const;
     bool ReadLine(std::wstring*);
 
     HANDLE Event() { return _pipe; }
