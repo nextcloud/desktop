@@ -182,7 +182,7 @@ void SetupWizardWindow::slotHideErrorMessageWidget()
 
 void SetupWizardWindow::showErrorMessage(const QString &errorMessage)
 {
-    _ui->errorMessageLabel->setText(errorMessage);
+    _ui->errorMessageLabel->setText(QStringLiteral("<b>%1</b>").arg(errorMessage));
     _ui->errorMessageLabel->setWordWrap(true);
     _ui->errorMessageWidget->show();
 }
