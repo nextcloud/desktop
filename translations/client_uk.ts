@@ -1099,34 +1099,34 @@ This action will abort any currently running synchronization.</source>
         <translation>Продовжити</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="460"/>
+        <location filename="../src/gui/application.cpp" line="461"/>
         <source>%1 accounts</source>
         <comment>number of accounts imported</comment>
         <translation>%1 облікових записів</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="461"/>
+        <location filename="../src/gui/application.cpp" line="462"/>
         <source>1 account</source>
         <translation>1 обліковий запис</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="463"/>
+        <location filename="../src/gui/application.cpp" line="464"/>
         <source>%1 folders</source>
         <comment>number of folders imported</comment>
         <translation>%1 каталогів</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="464"/>
+        <location filename="../src/gui/application.cpp" line="465"/>
         <source>1 folder</source>
         <translation>1 каталог</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="466"/>
+        <location filename="../src/gui/application.cpp" line="467"/>
         <source>Legacy import</source>
         <translation>Імпорт застарілих записів</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="467"/>
+        <location filename="../src/gui/application.cpp" line="468"/>
         <source>Imported %1 and %2 from a legacy desktop client.
 %3</source>
         <comment>number of accounts and folders imported. list of users.</comment>
@@ -1597,8 +1597,8 @@ This action will abort any currently running synchronization.</source>
         <translation>Помилка серверу: PROPFIND reply is not XML formatted!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="673"/>
-        <location filename="../src/libsync/discoveryphase.cpp" line="701"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="676"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="705"/>
         <source>Encrypted metadata setup error!</source>
         <translation>Помилка з налаштуванням шифрування метаданих!</translation>
     </message>
@@ -1768,32 +1768,34 @@ This can be an issue with your OpenSSL libraries.</source>
 <context>
     <name>OCC::EncryptedFolderMetadataHandler</name>
     <message>
-        <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="59"/>
-        <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="162"/>
-        <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="171"/>
-        <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="199"/>
+        <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="64"/>
+        <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="71"/>
+        <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="77"/>
+        <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="180"/>
+        <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="189"/>
+        <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="217"/>
         <source>Error fetching metadata.</source>
         <translation>Помилка з отриманням метаданих.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="114"/>
-        <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="120"/>
-        <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="213"/>
+        <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="132"/>
+        <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="138"/>
+        <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="231"/>
         <source>Error locking folder.</source>
         <translation>Помилка з блокуванням каталогу.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="147"/>
+        <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="165"/>
         <source>Error fetching encrypted folder ID.</source>
         <translation>Помилка з отриманням ідентифікатора зашифрованого каталогу.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="181"/>
+        <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="199"/>
         <source>Error parsing or decrypting metadata.</source>
         <translation>Помилка з опрацюванням або розшифровуванням метаданих.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="323"/>
+        <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="341"/>
         <source>Failed to upload metadata</source>
         <translation>Не вдалося завантажити метадані</translation>
     </message>
@@ -3906,6 +3908,11 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Виявлено конфлікт під час завантаження файлу. Конфліктний файл буде вилучено!</translation>
     </message>
     <message>
+        <location filename="../src/libsync/discovery.cpp" line="1711"/>
+        <source>Moved to invalid target, restoring</source>
+        <translation>Пересунено до недійсного призначення, буде відновлено</translation>
+    </message>
+    <message>
         <location filename="../src/libsync/discovery.cpp" line="1637"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
         <translation>Проігноровано, оскільки те, що вибрано для синхронізації, міститься у чорному списку</translation>
@@ -3924,11 +3931,6 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/libsync/discovery.cpp" line="1689"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation>Не дозволено завантажити цей файл, оскільки він має ознаку у хмарі лише для читання, файл буде відновлено</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/discovery.cpp" line="1711"/>
-        <source>Moved to invalid target, restoring</source>
-        <translation>Пересунено до недійсного призначення, буде відновлено</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1725"/>
@@ -4477,7 +4479,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::ShareManager</name>
     <message>
-        <location filename="../src/gui/sharemanager.cpp" line="681"/>
+        <location filename="../src/gui/sharemanager.cpp" line="684"/>
         <source>Error</source>
         <translation>Помилка</translation>
     </message>
@@ -5194,17 +5196,17 @@ Server replied with error: %2</source>
 <context>
     <name>OCC::UpdateE2eeFolderMetadataJob</name>
     <message>
-        <location filename="../src/libsync/updatee2eefoldermetadatajob.cpp" line="131"/>
+        <location filename="../src/libsync/updatee2eefoldermetadatajob.cpp" line="132"/>
         <source>Failed to update folder metadata.</source>
         <translation>Не вдалося оновити метадані каталогу.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/updatee2eefoldermetadatajob.cpp" line="154"/>
+        <location filename="../src/libsync/updatee2eefoldermetadatajob.cpp" line="155"/>
         <source>Failed to unlock encrypted folder.</source>
         <translation>Не вдалося розблокувати зашифрований каталог.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/updatee2eefoldermetadatajob.cpp" line="164"/>
+        <location filename="../src/libsync/updatee2eefoldermetadatajob.cpp" line="165"/>
         <source>Failed to finalize item.</source>
         <translation>Не вдалося фіналізувати ресурс.</translation>
     </message>
@@ -5212,35 +5214,35 @@ Server replied with error: %2</source>
 <context>
     <name>OCC::UpdateE2eeFolderUsersMetadataJob</name>
     <message>
-        <location filename="../src/libsync/updatee2eefolderusersmetadatajob.cpp" line="60"/>
-        <location filename="../src/libsync/updatee2eefolderusersmetadatajob.cpp" line="71"/>
-        <location filename="../src/libsync/updatee2eefolderusersmetadatajob.cpp" line="116"/>
-        <location filename="../src/libsync/updatee2eefolderusersmetadatajob.cpp" line="131"/>
-        <location filename="../src/libsync/updatee2eefolderusersmetadatajob.cpp" line="138"/>
-        <location filename="../src/libsync/updatee2eefolderusersmetadatajob.cpp" line="148"/>
-        <location filename="../src/libsync/updatee2eefolderusersmetadatajob.cpp" line="169"/>
-        <location filename="../src/libsync/updatee2eefolderusersmetadatajob.cpp" line="201"/>
-        <location filename="../src/libsync/updatee2eefolderusersmetadatajob.cpp" line="260"/>
+        <location filename="../src/libsync/updatee2eefolderusersmetadatajob.cpp" line="58"/>
+        <location filename="../src/libsync/updatee2eefolderusersmetadatajob.cpp" line="69"/>
+        <location filename="../src/libsync/updatee2eefolderusersmetadatajob.cpp" line="113"/>
+        <location filename="../src/libsync/updatee2eefolderusersmetadatajob.cpp" line="128"/>
+        <location filename="../src/libsync/updatee2eefolderusersmetadatajob.cpp" line="135"/>
+        <location filename="../src/libsync/updatee2eefolderusersmetadatajob.cpp" line="145"/>
+        <location filename="../src/libsync/updatee2eefolderusersmetadatajob.cpp" line="166"/>
+        <location filename="../src/libsync/updatee2eefolderusersmetadatajob.cpp" line="198"/>
+        <location filename="../src/libsync/updatee2eefolderusersmetadatajob.cpp" line="257"/>
         <source>Error updating metadata for a folder %1</source>
         <translation>Помилка під час оновлення метаданих для каталогу %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/updatee2eefolderusersmetadatajob.cpp" line="92"/>
+        <location filename="../src/libsync/updatee2eefolderusersmetadatajob.cpp" line="90"/>
         <source>Could not fetch public key for user %1</source>
         <translation>Не вдалося отримати публічний ключ для користувача %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/updatee2eefolderusersmetadatajob.cpp" line="100"/>
+        <location filename="../src/libsync/updatee2eefolderusersmetadatajob.cpp" line="97"/>
         <source>Could not find root encrypted folder for folder %1</source>
         <translation>Не вдалося знайти кореневий зашифрований каталог для каталогу %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/updatee2eefolderusersmetadatajob.cpp" line="121"/>
+        <location filename="../src/libsync/updatee2eefolderusersmetadatajob.cpp" line="118"/>
         <source>Could not add or remove a folder user %1, for folder %2</source>
         <translation>Не вдалося створити або вилучити каталог користувача %1, для каталогу %2</translation>
     </message>
     <message>
-        <location filename="../src/libsync/updatee2eefolderusersmetadatajob.cpp" line="238"/>
+        <location filename="../src/libsync/updatee2eefolderusersmetadatajob.cpp" line="235"/>
         <source>Failed to unlock a folder.</source>
         <translation>Не вдалося розблокувати каталог.</translation>
     </message>
