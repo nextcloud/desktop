@@ -145,6 +145,7 @@ class DiscoverySingleDirectoryJob : public QObject
 public:
     explicit DiscoverySingleDirectoryJob(const AccountPtr &account,
                                          const QString &path,
+                                         const QString &remoteRootFolderPath,
         /* TODO for topLevelE2eeFolderPaths, from review: I still do not get why giving the whole QSet instead of just the parent of the folder we are in
         sounds to me like it would be much more efficient to just have the e2ee parent folder that we are
         inside*/
@@ -179,6 +180,7 @@ private:
 
     QVector<RemoteInfo> _results;
     QString _subPath;
+    QString _remoteRootFolderPath;
     QByteArray _firstEtag;
     QByteArray _fileId;
     QByteArray _localFileId;

@@ -42,7 +42,7 @@ public:
         QString password;
     };
     
-    explicit UpdateE2eeFolderUsersMetadataJob(const AccountPtr &account, SyncJournalDb *journalDb,const QString &syncFolderRemotePath, const Operation operation, const QString &path = {}, const QString &folderUserId = {}, const QSslCertificate &certificate = QSslCertificate{}, QObject *parent = nullptr);
+    explicit UpdateE2eeFolderUsersMetadataJob(const AccountPtr &account, SyncJournalDb *journalDb,const QString &syncFolderRemotePath, const Operation operation, const QString &fullRemotePath = {}, const QString &folderUserId = {}, const QSslCertificate &certificate = QSslCertificate{}, QObject *parent = nullptr);
     ~UpdateE2eeFolderUsersMetadataJob() override = default;
 
 public:
@@ -91,7 +91,7 @@ private:
     QPointer<SyncJournalDb> _journalDb;
     QString _syncFolderRemotePath;
     Operation _operation = Invalid;
-    QString _path;
+    QString _fullRemotePath;
     QString _folderUserId;
     QSslCertificate _folderUserCertificate;
     QByteArray _folderToken;

@@ -681,6 +681,12 @@ bool Utility::isCaseClashConflictFile(const QString &name)
     return bname.contains(QStringLiteral("(case clash from"));
 }
 
+QString Utility::leadingSlashPath(const QString &path)
+{
+    static const auto slash = QLatin1Char('/');
+    return !path.startsWith(slash) ? QString(slash + path) : path;
+}
+
 QString Utility::trailingSlashPath(const QString &path)
 {
     static const auto slash = QLatin1Char('/');
@@ -690,13 +696,13 @@ QString Utility::trailingSlashPath(const QString &path)
 QString Utility::noLeadingSlashPath(const QString &path)
 {
     static const auto slash = QLatin1Char('/');
-    return path.startsWith(slash) ? path.mid(1) : path;
+    return path.size() > 1 && path.startsWith(slash) ? path.mid(1) : path;
 }
 
 QString Utility::noTrailingSlashPath(const QString &path)
 {
     static const auto slash = QLatin1Char('/');
-    return path.endsWith(slash) ? path.chopped(1) : path;
+    return path.size() > 1 && path.endsWith(slash) ? path.chopped(1) : path;
 }
 
 QString Utility::fullRemotePathToRemoteSyncRootRelative(const QString &fullRemotePath, const QString &remoteSyncRoot)
