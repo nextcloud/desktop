@@ -1354,10 +1354,6 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
             return false;
         }
 
-        if (base.isE2eEncrypted() || isInsideEncryptedTree()) {
-            return false;
-        }
-
         if (base.isDirectory() != item->isDirectory()) {
             qCInfo(lcDisco) << "Not a move, types don't match" << base._type << item->_type << localEntry.type;
             return false;
@@ -1400,9 +1396,22 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
 
         return true;
     };
+    const auto isMove = moveCheck();
+    const auto isE2eeMove = isMove && (base.isE2eEncrypted() || isInsideEncryptedTree());
+    const auto isCfApiVfsMode = _discoveryData->_syncOptions._vfs && _discoveryData->_syncOptions._vfs->mode() == Vfs::WindowsCfApi;
+    const bool isOnlineOnlyItem = isCfApiVfsMode && (localEntry.isDirectory || _discoveryData->_syncOptions._vfs->isDehydratedPlaceholder(_discoveryData->_localDir + path._local));
+    const auto isE2eeMoveOnlineOnlyItemWithCfApi = isE2eeMove && isOnlineOnlyItem;
 
+    if (isE2eeMoveOnlineOnlyItemWithCfApi) {
+        item->_instruction = CSYNC_INSTRUCTION_NEW;
+        item->_direction = SyncFileItem::Down;
+        item->_isRestoration = true;
+        item->_errorString = tr("Moved to invalid target, restoring");
+    }
+
+    //
     // If it's not a move it's just a local-NEW
-    if (!moveCheck()) {
+    if (!isMove || (isE2eeMove && !isE2eeMoveOnlineOnlyItemWithCfApi)) {
         if (base.isE2eEncrypted()) {
             // renaming the encrypted folder is done via remove + re-upload hence we need to mark the newly created folder as encrypted
             // base is a record in the SyncJournal database that contains the data about the being-renamed folder with it's old name and encryption information
@@ -1431,7 +1440,7 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
     // Technically we should use the permissions from the server, but we'll assume it is the same
     const auto isExternalStorage = base._remotePerm.hasPermission(RemotePermissions::IsMounted);
     const auto movePerms = checkMovePermissions(base._remotePerm, originalPath, item->isDirectory());
-    if (!movePerms.sourceOk || !movePerms.destinationOk || isExternalStorage) {
+    if (!movePerms.sourceOk || !movePerms.destinationOk || isExternalStorage || isE2eeMoveOnlineOnlyItemWithCfApi) {
         qCInfo(lcDisco) << "Move without permission to rename base file, "
                         << "source:" << movePerms.sourceOk
                         << ", target:" << movePerms.destinationOk
@@ -1446,7 +1455,7 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
         // If the destination upload will work, we're fine with the source deletion.
         // If the source deletion can't work, checkPermissions will error.
         // In case of external storage mounted folders we are never allowed to move/delete them
-        if (movePerms.destinationNewOk && !isExternalStorage) {
+        if (movePerms.destinationNewOk && !isExternalStorage && !isE2eeMoveOnlineOnlyItemWithCfApi) {
             return;
         }
 
