@@ -488,7 +488,7 @@ void ShareManager::createShare(const QString &path,
     job->getSharedWithMe();
 }
 
-void ShareManager::createE2EeShareJob(const QString &path,
+void ShareManager::createE2EeShareJob(const QString &fullRemotePath,
                                       const ShareePtr sharee,
                                       const Share::Permissions permissions,
                                       const QString &password)
@@ -506,11 +506,14 @@ void ShareManager::createE2EeShareJob(const QString &path,
         return;
     }
 
+    Q_ASSERT(folder->remotePath() == QStringLiteral("/") ||
+        Utility::noLeadingSlashPath(fullRemotePath).startsWith(Utility::noLeadingSlashPath(Utility::noTrailingSlashPath(folder->remotePath()))));
+
     const auto createE2eeShareJob = new UpdateE2eeFolderUsersMetadataJob(_account,
                                                                          folder->journalDb(),
                                                                          folder->remotePath(),
                                                                          UpdateE2eeFolderUsersMetadataJob::Add,
-                                                                         path,
+                                                                         fullRemotePath,
                                                                          sharee->shareWith(),
                                                                          QSslCertificate{},
                                                                          this);

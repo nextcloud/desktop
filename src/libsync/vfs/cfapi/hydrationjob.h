@@ -46,8 +46,8 @@ public:
     AccountPtr account() const;
     void setAccount(const AccountPtr &account);
 
-    QString remotePath() const;
-    void setRemotePath(const QString &remotePath);
+    [[nodiscard]] QString remoteSyncRootPath() const;
+    void setRemoteSyncRootPath(const QString &path);
 
     QString localPath() const;
     void setLocalPath(const QString &localPath);
@@ -99,7 +99,7 @@ private:
     void startServerAndWaitForConnections();
 
     AccountPtr _account;
-    QString _remotePath;
+    QString _remoteSyncRootPath;
     QString _localPath;
     SyncJournalDb *_journal = nullptr;
     bool _isCancelled = false;

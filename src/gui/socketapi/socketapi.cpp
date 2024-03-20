@@ -550,13 +550,7 @@ void SocketApi::processEncryptRequest(const QString &localFile)
     auto path = rec._path;
     // Folder records have directory paths in Foo/Bar/ convention...
     // But EncryptFolderJob expects directory path Foo/Bar convention
-    auto choppedPath = path;
-    if (choppedPath.endsWith('/') && choppedPath != QStringLiteral("/")) {
-        choppedPath.chop(1);
-    }
-    if (choppedPath.startsWith('/') && choppedPath != QStringLiteral("/")) {
-        choppedPath = choppedPath.mid(1);
-    }
+    const auto choppedPath = Utility::noTrailingSlashPath(Utility::noLeadingSlashPath(path));
 
     auto job = new OCC::EncryptFolderJob(account, folder->journalDb(), choppedPath, choppedPath, folder->remotePath(), rec.numericFileId());
     job->setParent(this);

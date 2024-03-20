@@ -37,8 +37,10 @@ EncryptFolderJob::EncryptFolderJob(const AccountPtr &account, SyncJournalDb *jou
 {
     SyncJournalFileRecord rec;
     const auto currentPath = !_pathNonEncrypted.isEmpty() ? _pathNonEncrypted : _path;
+    const auto currentPathRelative = Utility::fullRemotePathToRemoteSyncRootRelative(currentPath, _remoteSyncRootPath);
+    const QString fullRemotePath = Utility::trailingSlashPath(Utility::noLeadingSlashPath(_remoteSyncRootPath)) + currentPathRelative;
     [[maybe_unused]] const auto result = _journal->getRootE2eFolderRecord(Utility::fullRemotePathToRemoteSyncRootRelative(currentPath, _remoteSyncRootPath), &rec);
-    _encryptedFolderMetadataHandler.reset(new EncryptedFolderMetadataHandler(account, _path, _journal, rec.path()));
+    _encryptedFolderMetadataHandler.reset(new EncryptedFolderMetadataHandler(account, fullRemotePath, _remoteSyncRootPath, _journal, rec.path()));
 }
 
 void EncryptFolderJob::slotSetEncryptionFlag()
@@ -102,16 +104,18 @@ void EncryptFolderJob::slotEncryptionFlagError(const QByteArray &fileId,
 void EncryptFolderJob::uploadMetadata()
 {
     const auto currentPath = !_pathNonEncrypted.isEmpty() ? _pathNonEncrypted : _path;
+    const auto currentPathRelative = Utility::fullRemotePathToRemoteSyncRootRelative(currentPath, _remoteSyncRootPath);
     SyncJournalFileRecord rec;
-    if (!_journal->getRootE2eFolderRecord(Utility::fullRemotePathToRemoteSyncRootRelative(currentPath, _remoteSyncRootPath), &rec)) {
+    if (!_journal->getRootE2eFolderRecord(currentPathRelative, &rec)) {
         emit finished(Error, EncryptionStatusEnums::ItemEncryptionStatus::NotEncrypted);
         return;
     }
 
     const auto emptyMetadata(QSharedPointer<FolderMetadata>::create(
         _account,
+        _remoteSyncRootPath,
         QByteArray{},
-        RootEncryptedFolderInfo(RootEncryptedFolderInfo::createRootPath(currentPath, rec.path())),
+        RootEncryptedFolderInfo(RootEncryptedFolderInfo::createRootPath(currentPathRelative, rec.path())),
         QByteArray{}));
 
     connect(emptyMetadata.data(), &FolderMetadata::setupComplete, this, [this, emptyMetadata] {

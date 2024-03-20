@@ -32,8 +32,9 @@ namespace OCC {
 UpdateE2eeFolderMetadataJob::UpdateE2eeFolderMetadataJob(OwncloudPropagator *propagator, const SyncFileItemPtr &item, const QString &encryptedRemotePath)
     : PropagatorJob(propagator),
     _item(item),
-    _encryptedRemotePath(encryptedRemotePath)
+    _encryptedRemotePath(Utility::noLeadingSlashPath(propagator->fullRemotePath(encryptedRemotePath)))
 {
+    Q_ASSERT(propagator->remotePath() == QStringLiteral("/") || _encryptedRemotePath.startsWith(Utility::noLeadingSlashPath(propagator->remotePath())));
 }
 
 void UpdateE2eeFolderMetadataJob::start()
@@ -47,7 +48,7 @@ void UpdateE2eeFolderMetadataJob::start()
         return;
     }
     _encryptedFolderMetadataHandler.reset(
-            new EncryptedFolderMetadataHandler(propagator()->account(), _encryptedRemotePath, propagator()->_journal, rec.path()));
+        new EncryptedFolderMetadataHandler(propagator()->account(), _encryptedRemotePath, propagator()->remotePath() , propagator()->_journal, rec.path()));
 
     connect(_encryptedFolderMetadataHandler.data(), &EncryptedFolderMetadataHandler::fetchFinished,
             this, &UpdateE2eeFolderMetadataJob::slotFetchMetadataJobFinished);

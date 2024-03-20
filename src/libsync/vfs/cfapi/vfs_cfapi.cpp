@@ -445,7 +445,7 @@ void VfsCfApi::scheduleHydrationJob(const QString &requestId, const QString &fol
 
     auto job = new HydrationJob(this);
     job->setAccount(params().account);
-    job->setRemotePath(params().remotePath);
+    job->setRemoteSyncRootPath(params().remotePath);
     job->setLocalPath(params().filesystemPath);
     job->setJournal(params().journal);
     job->setRequestId(requestId);
