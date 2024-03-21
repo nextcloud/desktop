@@ -1565,8 +1565,8 @@ Această acțiune va opri toate sincronizările în derulare din acest moment.</
     </message>
     <message>
         <location filename="../src/gui/connectionvalidator.cpp" line="344"/>
-        <source>Network Error</source>
-        <translation>Eroare de rețea</translation>
+        <source>Connection issue</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>

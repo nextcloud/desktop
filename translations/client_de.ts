@@ -1570,8 +1570,8 @@ Diese Aktion bricht jede derzeit laufende Synchronisierung ab.</translation>
     </message>
     <message>
         <location filename="../src/gui/connectionvalidator.cpp" line="344"/>
-        <source>Network Error</source>
-        <translation>Netzwerkfehler</translation>
+        <source>Connection issue</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>

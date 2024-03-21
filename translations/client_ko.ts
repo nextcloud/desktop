@@ -1570,8 +1570,8 @@ This action will abort any currently running synchronization.</source>
     </message>
     <message>
         <location filename="../src/gui/connectionvalidator.cpp" line="344"/>
-        <source>Network Error</source>
-        <translation>네트워크 오류</translation>
+        <source>Connection issue</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -5915,7 +5915,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="291"/>
         <source>Share label</source>
-        <translation>공유 레이블</translation>
+        <translation>공유 이름</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="346"/>
@@ -6745,7 +6745,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/shareuserline.ui" line="115"/>
         <source>Can edit</source>
-        <translation>편집할 수 있음</translation>
+        <translation>수정할 수 있음</translation>
     </message>
     <message>
         <location filename="../src/gui/shareuserline.ui" line="149"/>

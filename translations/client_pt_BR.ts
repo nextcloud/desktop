@@ -1567,8 +1567,8 @@ Esta ação irá cancelar qualquer sincronização atualmente em execução.</tr
     </message>
     <message>
         <location filename="../src/gui/connectionvalidator.cpp" line="344"/>
-        <source>Network Error</source>
-        <translation>Erro de rede</translation>
+        <source>Connection issue</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>

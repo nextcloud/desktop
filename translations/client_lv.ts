@@ -1571,7 +1571,7 @@ Vienīgā priekšrocība, izslēdzot virtuālo datņu atbalstu, ir tas, ka atkal
     </message>
     <message>
         <location filename="../src/gui/connectionvalidator.cpp" line="344"/>
-        <source>Network Error</source>
+        <source>Connection issue</source>
         <translation type="unfinished"/>
     </message>
 </context>

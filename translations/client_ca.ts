@@ -1566,7 +1566,7 @@ Aquesta acció anul·larà qualsevol sincronització en execució.</translation>
     </message>
     <message>
         <location filename="../src/gui/connectionvalidator.cpp" line="344"/>
-        <source>Network Error</source>
+        <source>Connection issue</source>
         <translation type="unfinished"/>
     </message>
 </context>

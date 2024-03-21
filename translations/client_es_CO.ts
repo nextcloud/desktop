@@ -1558,7 +1558,7 @@ This action will abort any currently running synchronization.</source>
     </message>
     <message>
         <location filename="../src/gui/connectionvalidator.cpp" line="344"/>
-        <source>Network Error</source>
+        <source>Connection issue</source>
         <translation type="unfinished"/>
     </message>
 </context>

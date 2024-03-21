@@ -1571,8 +1571,8 @@ Denne handlingen vil avbryte enhver synkronisering som kjører.</translation>
     </message>
     <message>
         <location filename="../src/gui/connectionvalidator.cpp" line="344"/>
-        <source>Network Error</source>
-        <translation>Nettverksfeil</translation>
+        <source>Connection issue</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
