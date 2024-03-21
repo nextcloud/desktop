@@ -18,7 +18,7 @@ OC_CI_NODEJS = "owncloudci/nodejs:16"
 OC_CI_PHP = "owncloudci/php:%s"
 OC_CI_WAIT_FOR = "owncloudci/wait-for:latest"
 OC_OCIS = "owncloud/ocis:%s"
-OC_TEST_MIDDLEWARE = "owncloud/owncloud-test-middleware:1.8.3"
+OC_TEST_MIDDLEWARE = "owncloud/owncloud-test-middleware:1.8.7"
 OC_UBUNTU = "owncloud/ubuntu:20.04"
 
 # Eventually, we have to use image built on ubuntu
@@ -93,7 +93,7 @@ config = {
                 "skip": False,
             },
             "ocis": {
-                "version": "4",
+                "version": "5.0.0",
                 # comma separated list of tags to be used for filtering. E.g. "@tag1,@tag2"
                 "tags": "~@skipOnOCIS",
                 "skip": False,
@@ -567,11 +567,11 @@ def ocisService(server_version = "latest"):
             "IDM_ADMIN_PASSWORD": "admin",
             "STORAGE_HOME_DRIVER": "ocis",
             "STORAGE_USERS_DRIVER": "ocis",
-            "OCIS_INSECURE": "true",
+            "OCIS_INSECURE": True,
             "PROXY_ENABLE_BASIC_AUTH": True,
             "OCIS_LOG_LEVEL": "error",
-            "OCIS_LOG_PRETTY": "true",
-            "OCIS_LOG_COLOR": "true",
+            "OCIS_LOG_PRETTY": True,
+            "OCIS_LOG_COLOR": True,
         },
         "commands": [
             "/usr/bin/ocis init",
