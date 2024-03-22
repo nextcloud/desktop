@@ -49,6 +49,7 @@ ownCloud admins and users.
 * Bugfix - Properly encode scope and prompt items in OAuth URL: [#11472](https://github.com/owncloud/client/issues/11472)
 * Bugfix - Client stuck in reconnecting state after application start: [#11478](https://github.com/owncloud/client/pull/11478)
 * Bugfix - Strip user information from new-connection URL: [#11497](https://github.com/owncloud/client/issues/11497)
+* Bugfix - Ensure folder are scheduled only once: [#11552](https://github.com/owncloud/client/issues/11552)
 * Change - Make messages translatable that occur early in start-up: [#11142](https://github.com/owncloud/client/issues/11142)
 * Change - Remove unused command line option --language: [#11245](https://github.com/owncloud/client/issues/11245)
 * Change - Windows: always use fusion style: [#11275](https://github.com/owncloud/client/issues/11275)
@@ -116,6 +117,12 @@ ownCloud admins and users.
 
    https://github.com/owncloud/client/issues/11497
    https://github.com/owncloud/client/pull/11509
+
+* Bugfix - Ensure folder are scheduled only once: [#11552](https://github.com/owncloud/client/issues/11552)
+
+   We fixed a bug where a folder could be scheduled multiple times.
+
+   https://github.com/owncloud/client/issues/11552
 
 * Change - Make messages translatable that occur early in start-up: [#11142](https://github.com/owncloud/client/issues/11142)
 
