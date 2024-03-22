@@ -42,6 +42,11 @@ System Volume Information
 *.unison
 .nfs*
 
+# (default) metadata files created by Syncthing
+.stfolder
+.stignore
+.stversions
+
 My Saved Places.
 
 \#*#
