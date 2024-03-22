@@ -1365,37 +1365,37 @@ private slots:
         QVERIFY(fakeFolder.syncOnce());
 
         // root is unspecified
-        QCOMPARE(*vfs->availability("file1" DVSUFFIX), VfsItemAvailability::AllDehydrated);
-        QCOMPARE(*vfs->availability("local"), VfsItemAvailability::AlwaysLocal);
-        QCOMPARE(*vfs->availability("local/file1"), VfsItemAvailability::AlwaysLocal);
-        QCOMPARE(*vfs->availability("online"), VfsItemAvailability::OnlineOnly);
-        QCOMPARE(*vfs->availability("online/file1" DVSUFFIX), VfsItemAvailability::OnlineOnly);
-        QCOMPARE(*vfs->availability("unspec"), VfsItemAvailability::AllDehydrated);
-        QCOMPARE(*vfs->availability("unspec/file1" DVSUFFIX), VfsItemAvailability::AllDehydrated);
+        QCOMPARE(*vfs->availability("file1" DVSUFFIX, Vfs::AvailabilityRecursivity::RecursiveAvailability), VfsItemAvailability::AllDehydrated);
+        QCOMPARE(*vfs->availability("local", Vfs::AvailabilityRecursivity::RecursiveAvailability), VfsItemAvailability::AlwaysLocal);
+        QCOMPARE(*vfs->availability("local/file1", Vfs::AvailabilityRecursivity::RecursiveAvailability), VfsItemAvailability::AlwaysLocal);
+        QCOMPARE(*vfs->availability("online", Vfs::AvailabilityRecursivity::RecursiveAvailability), VfsItemAvailability::OnlineOnly);
+        QCOMPARE(*vfs->availability("online/file1" DVSUFFIX, Vfs::AvailabilityRecursivity::RecursiveAvailability), VfsItemAvailability::OnlineOnly);
+        QCOMPARE(*vfs->availability("unspec", Vfs::AvailabilityRecursivity::RecursiveAvailability), VfsItemAvailability::AllDehydrated);
+        QCOMPARE(*vfs->availability("unspec/file1" DVSUFFIX, Vfs::AvailabilityRecursivity::RecursiveAvailability), VfsItemAvailability::AllDehydrated);
 
         // Subitem pin states can ruin "pure" availabilities
         setPin("local/sub", PinState::OnlineOnly);
-        QCOMPARE(*vfs->availability("local"), VfsItemAvailability::AllHydrated);
+        QCOMPARE(*vfs->availability("local", Vfs::AvailabilityRecursivity::RecursiveAvailability), VfsItemAvailability::AllHydrated);
         setPin("online/sub", PinState::Unspecified);
-        QCOMPARE(*vfs->availability("online"), VfsItemAvailability::AllDehydrated);
+        QCOMPARE(*vfs->availability("online", Vfs::AvailabilityRecursivity::RecursiveAvailability), VfsItemAvailability::AllDehydrated);
 
         triggerDownload(fakeFolder, "unspec/file1");
         setPin("local/file2", PinState::OnlineOnly);
         setPin("online/file2" DVSUFFIX, PinState::AlwaysLocal);
         QVERIFY(fakeFolder.syncOnce());
 
-        QCOMPARE(*vfs->availability("unspec"), VfsItemAvailability::AllHydrated);
-        QCOMPARE(*vfs->availability("local"), VfsItemAvailability::Mixed);
-        QCOMPARE(*vfs->availability("online"), VfsItemAvailability::Mixed);
+        QCOMPARE(*vfs->availability("unspec", Vfs::AvailabilityRecursivity::RecursiveAvailability), VfsItemAvailability::AllHydrated);
+        QCOMPARE(*vfs->availability("local", Vfs::AvailabilityRecursivity::RecursiveAvailability), VfsItemAvailability::Mixed);
+        QCOMPARE(*vfs->availability("online", Vfs::AvailabilityRecursivity::RecursiveAvailability), VfsItemAvailability::Mixed);
 
         QVERIFY(vfs->setPinState("local", PinState::AlwaysLocal));
         QVERIFY(vfs->setPinState("online", PinState::OnlineOnly));
         QVERIFY(fakeFolder.syncOnce());
 
-        QCOMPARE(*vfs->availability("online"), VfsItemAvailability::OnlineOnly);
-        QCOMPARE(*vfs->availability("local"), VfsItemAvailability::AlwaysLocal);
+        QCOMPARE(*vfs->availability("online", Vfs::AvailabilityRecursivity::RecursiveAvailability), VfsItemAvailability::OnlineOnly);
+        QCOMPARE(*vfs->availability("local", Vfs::AvailabilityRecursivity::RecursiveAvailability), VfsItemAvailability::AlwaysLocal);
 
-        auto r = vfs->availability("nonexistent");
+        auto r = vfs->availability("nonexistent", Vfs::AvailabilityRecursivity::RecursiveAvailability);
         QVERIFY(!r);
         QCOMPARE(r.error(), Vfs::AvailabilityError::NoSuchItem);
     }
