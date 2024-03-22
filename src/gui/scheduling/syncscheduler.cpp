@@ -58,14 +58,13 @@ public:
 
     void enqueueFolder(Folder *folder, SyncScheduler::Priority priority)
     {
-        auto old = _scheduledFolders.find(folder);
-        if (old == _scheduledFolders.cend()) {
+        const auto [it, inserted] = _scheduledFolders.emplace(folder, priority);
+        if (inserted) {
             // the folder is not yet scheduled
             _queue.emplace(folder, priority);
         } else {
-            _scheduledFolders.insert({folder, priority});
             // if the new priority is higher we need to rebuild the queue
-            if (priority > old->second) {
+            if (priority > it->second) {
                 // we need to reorder the queue
                 // this is expensive
                 decltype(_queue) out;
@@ -78,6 +77,8 @@ public:
                     }
                 }
                 _queue = std::move(out);
+                // replace the the old priority
+                _scheduledFolders[folder] = priority;
             }
         }
     }
@@ -91,7 +92,8 @@ public:
         while (!_queue.empty() && !out.folder) {
             // could be a nullptr by now
             out = _queue.top();
-            _scheduledFolders.erase(_queue.top().rawFolder);
+            [[maybe_unused]] auto removed = _scheduledFolders.erase(_queue.top().rawFolder);
+            Q_ASSERT(removed = 1);
             _queue.pop();
         }
         return std::make_pair(out.folder, out.priority);
