@@ -89,6 +89,12 @@ function(generate_theme TARGET OWNCLOUD_SIDEBAR_ICONS_OUT)
 
         __addUrlIcons(${QRC_PATH})
 
+        foreach(theme IN ITEMS colored dark black white)
+            foreach(state IN ITEMS ok error information offline pause sync)
+                __addIcon(${QRC_PATH} ${theme} "state-${state}")
+            endforeach()
+        endforeach()
+
         __write_qrc_file_footer(${QRC_PATH})
 
         target_sources(${TARGET} PRIVATE ${QRC_PATH})
