@@ -147,6 +147,7 @@ class Folder : public QObject
 {
     Q_OBJECT
     QML_ELEMENT
+    QML_UNCREATABLE("Folders can only be created by the FolderManager")
 
 public:
     enum class ChangeReason {
