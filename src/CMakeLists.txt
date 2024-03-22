@@ -1,4 +1,5 @@
 include(ECMEnableSanitizers)
+include(CompilerCaching)
 
 set(REQUIRED_QT_VERSION "5.15.0")
 
