@@ -166,7 +166,7 @@ private:
     bool notificationAlreadyShown(const long notificationId);
     bool canShowNotification(const long notificationId);
 
-    void checkAndRemoveSeenActivities(const ActivityList &list, const int numChatNotificationsReceived);
+    void checkAndRemoveSeenActivities(const ActivityList &list, const int numTalkNotificationsReceived);
 
     AccountStatePtr _account;
     bool _isCurrentUser;
@@ -188,7 +188,7 @@ private:
     // no query for notifications is started.
     int _notificationRequestsRunning = 0;
 
-    int _lastChatNotificationsReceivedCount = 0;
+    int _lastTalkNotificationsReceivedCount = 0;
 
     bool _isNotificationFetchRunning = false;
 };
