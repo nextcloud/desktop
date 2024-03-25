@@ -731,6 +731,17 @@ int Account::serverVersionInt() const
         components.value(2).toInt());
 }
 
+bool Account::serverHasMountRootProperty() const
+{
+    if (serverVersionInt() == 0) {
+        return false;
+    }
+
+    return serverVersionInt() >= Account::makeServerVersion(NEXTCLOUD_SERVER_VERSION_MOUNT_ROOT_PROPERTY_SUPPORTED_MAJOR,
+                                                            NEXTCLOUD_SERVER_VERSION_MOUNT_ROOT_PROPERTY_SUPPORTED_MINOR,
+                                                            NEXTCLOUD_SERVER_VERSION_MOUNT_ROOT_PROPERTY_SUPPORTED_PATCH);
+}
+
 bool Account::serverVersionUnsupported() const
 {
     if (serverVersionInt() == 0) {

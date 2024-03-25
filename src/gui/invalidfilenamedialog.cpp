@@ -117,7 +117,7 @@ InvalidFilenameDialog::~InvalidFilenameDialog() = default;
 void InvalidFilenameDialog::checkIfAllowedToRename()
 {
     const auto propfindJob = new PropfindJob(_account, QDir::cleanPath(_folder->remotePath() + _originalFileName));
-    propfindJob->setProperties({ "http://owncloud.org/ns:permissions" });
+    propfindJob->setProperties({"http://owncloud.org/ns:permissions", "http://nextcloud.org/ns:is-mount-root"});
     connect(propfindJob, &PropfindJob::result, this, &InvalidFilenameDialog::onPropfindPermissionSuccess);
     connect(propfindJob, &PropfindJob::finishedWithError, this, &InvalidFilenameDialog::onPropfindPermissionError);
     propfindJob->start();

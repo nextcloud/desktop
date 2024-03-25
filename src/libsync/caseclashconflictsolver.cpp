@@ -220,7 +220,7 @@ void CaseClashConflictSolver::processLeadingOrTrailingSpacesError(const QString 
 void CaseClashConflictSolver::checkIfAllowedToRename()
 {
     const auto propfindJob = new PropfindJob(_account, QDir::cleanPath(remoteTargetFilePath()));
-    propfindJob->setProperties({ "http://owncloud.org/ns:permissions" });
+    propfindJob->setProperties({"http://owncloud.org/ns:permissions", "http://nextcloud.org/ns:is-mount-root"});
     connect(propfindJob, &PropfindJob::result, this, &CaseClashConflictSolver::onPropfindPermissionSuccess);
     connect(propfindJob, &PropfindJob::finishedWithError, this, &CaseClashConflictSolver::onPropfindPermissionError);
     propfindJob->start();
