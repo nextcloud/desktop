@@ -1,6 +1,5 @@
 import json
 from urllib import parse
-from os import path
 
 from helpers.ConfigHelper import get_config
 from helpers.api.utils import url_join

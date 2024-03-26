@@ -10,7 +10,7 @@ from pageObjects.AccountSetting import AccountSetting
 
 from helpers.SetupClientHelper import getResourcePath, getTempResourcePath
 from helpers.SyncHelper import waitForClientToBeReady
-from helpers.ConfigHelper import get_config, isWindows
+from helpers.ConfigHelper import get_config
 from helpers.FilesHelper import (
     buildConflictedRegex,
     sanitizePath,

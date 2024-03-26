@@ -54,7 +54,7 @@ Feature: Syncing files
             client content
             """
 
-    @skipOnOCIS
+
     Scenario: Sync all is selected by default
         Given user "Alice" has created folder "simple-folder" in the server
         And user "Alice" has created folder "large-folder" in the server
@@ -66,6 +66,7 @@ Feature: Syncing files
             | user     | Alice          |
             | password | 1234           |
         When the user selects manual sync folder option in advanced section
+        And the user selects "Personal" space in sync connection wizard
         And the user sets the sync path in sync connection wizard
         And the user selects "ownCloud" as a remote destination folder
         And the user disables VFS support for Windows
@@ -78,7 +79,7 @@ Feature: Syncing files
         But the folder "simple-folder" should not exist on the file system
         And the folder "large-folder" should not exist on the file system
 
-    @skipOnOCIS
+
     Scenario: Sync only one folder from the server
         Given user "Alice" has created folder "simple-folder" in the server
         And user "Alice" has created folder "large-folder" in the server
@@ -88,6 +89,7 @@ Feature: Syncing files
             | user     | Alice          |
             | password | 1234           |
         When the user selects manual sync folder option in advanced section
+        And the user selects "Personal" space in sync connection wizard
         And the user sets the sync path in sync connection wizard
         And the user selects "ownCloud" as a remote destination folder
         And the user disables VFS support for Windows
@@ -111,7 +113,7 @@ Feature: Syncing files
         Then as "Alice" folder "simple-folder" should not exist in the server
 
 
-    @issue-9733 @skipOnOCIS
+    @issue-9733
     Scenario: sort folders list by name and size
         Given user "Alice" has created folder "123Folder" in the server
         And user "Alice" has uploaded file on the server with content "small" to "123Folder/lorem.txt"
@@ -124,6 +126,7 @@ Feature: Syncing files
             | user     | Alice          |
             | password | 1234           |
         When the user selects manual sync folder option in advanced section
+        And the user selects "Personal" space in sync connection wizard
         And the user sets the sync path in sync connection wizard
         And the user selects "ownCloud" as a remote destination folder
         And the user disables VFS support for Windows
@@ -358,8 +361,8 @@ Feature: Syncing files
             | filename                                                                                                                                                                                                                     |
             | thisIsAVeryLongFileNameToCheckThatItWorks-thisIsAVeryLongFileNameToCheckThatItWorks-thisIsAVeryLongFileNameToCheckThatItWorks-thisIsAVeryLongFileNameToCheckThatItWorks-thisIsAVeryLongFileNameToCheckThatItWorks-thisIs.txt |
 
-    @skipOnOCIS @issue-11104 @skip
-    Scenario Outline: File with long name (233 characters) is blacklisted
+    @skipOnOCIS @issue-11104
+    Scenario Outline: File with long name (233 characters) is blacklisted (oC10)
         Given user "Alice" has set up a client with default settings
         When user "Alice" creates a file "<filename>" with the following content inside the sync folder
             """
@@ -435,7 +438,6 @@ Feature: Syncing files
         And as "Alice" the file "file2.txt" should have the content "Test file2" in the server
 
 
-    @skipOnOCIS
     Scenario: sync remote folder to a local sync folder having special characters
         Given user "Alice" has created folder "~`!@#$^&()-_=+{[}];',)" in the server
         And user "Alice" has created folder "simple-folder" in the server
@@ -450,6 +452,7 @@ Feature: Syncing files
             | user     | Alice          |
             | password | 1234           |
         When the user selects manual sync folder option in advanced section
+        And the user selects "Personal" space in sync connection wizard
         And the user sets the temp folder "~`!@#$^&()-_=+{[}];',)PRN%" as local sync path in sync connection wizard
         And the user selects "ownCloud" as a remote destination folder
         And the user disables VFS support for Windows
