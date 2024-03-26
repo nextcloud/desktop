@@ -1443,6 +1443,7 @@ void PropagateDirectory::slotSubJobsFinished(SyncFileItem::Status status)
             || _item->_instruction == CSYNC_INSTRUCTION_NEW
             || _item->_instruction == CSYNC_INSTRUCTION_UPDATE_METADATA) {
 
+#if !defined(Q_OS_MACOS) || __MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_15
             if (!_item->_remotePerm.isNull() &&
                 !_item->_remotePerm.hasPermission(RemotePermissions::CanAddFile) &&
                 !_item->_remotePerm.hasPermission(RemotePermissions::CanRename) &&
@@ -1494,6 +1495,7 @@ void PropagateDirectory::slotSubJobsFinished(SyncFileItem::Status status)
                     _item->_errorString = tr("The folder %1 cannot be made read-only: %2").arg(e.path1().c_str(), e.what());
                 }
             }
+#endif
 
             const auto result = propagator()->updateMetadata(*_item);
             if (!result) {
