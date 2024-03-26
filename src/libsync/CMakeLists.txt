@@ -219,6 +219,8 @@ target_compile_features(nextcloudsync
         cxx_std_17
 )
 
+target_compile_definitions(nextcloudsync PRIVATE OPENSSL_SUPPRESS_DEPRECATED)
+
 find_package(Qt5 REQUIRED COMPONENTS Gui Widgets Svg)
 target_link_libraries(nextcloudsync PUBLIC Qt5::Gui Qt5::Widgets Qt5::Svg)
 
