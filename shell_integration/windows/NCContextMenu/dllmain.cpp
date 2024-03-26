@@ -21,11 +21,6 @@
 HINSTANCE   g_hInst = nullptr;
 long        g_cDllRef = 0;
 
-HWND hHiddenWnd = nullptr;
-DWORD WINAPI MessageLoopThread(LPVOID lpParameter);
-LRESULT CALLBACK HiddenWndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
-void CreateHiddenWindowAndLaunchMessageLoop();
-
 BOOL APIENTRY DllMain(HMODULE hModule, DWORD dwReason, LPVOID lpReserved)
 {
     switch (dwReason)
@@ -35,7 +30,6 @@ BOOL APIENTRY DllMain(HMODULE hModule, DWORD dwReason, LPVOID lpReserved)
         // path of the DLL to register the component.
         g_hInst = hModule;
         DisableThreadLibraryCalls(hModule);
-        CreateHiddenWindowAndLaunchMessageLoop();
         break;
     case DLL_THREAD_ATTACH:
     case DLL_THREAD_DETACH:
@@ -127,64 +121,4 @@ STDAPI DllUnregisterServer(void)
     }
 
     return hr;
-}
-
-void CreateHiddenWindowAndLaunchMessageLoop()
-{
-    const WNDCLASSEX hiddenWindowClass{sizeof(WNDCLASSEX),
-                                       CS_CLASSDC,
-                                       HiddenWndProc,
-                                       0L,
-                                       0L,
-                                       GetModuleHandle(NULL),
-                                       NULL,
-                                       NULL,
-                                       NULL,
-                                       NULL,
-                                       NCCONTEXTMENU_SHELLEXT_WINDOW_CLASS_NAME,
-                                       NULL};
-
-    RegisterClassEx(&hiddenWindowClass);
-
-    hHiddenWnd = CreateWindow(hiddenWindowClass.lpszClassName,
-                              L"",
-                              WS_OVERLAPPEDWINDOW,
-                              CW_USEDEFAULT,
-                              CW_USEDEFAULT,
-                              CW_USEDEFAULT,
-                              CW_USEDEFAULT,
-                              NULL,
-                              NULL,
-                              hiddenWindowClass.hInstance,
-                              NULL);
-
-    ShowWindow(hHiddenWnd, SW_HIDE);
-    UpdateWindow(hHiddenWnd);
-
-    const auto hMessageLoopThread = CreateThread(NULL, 0, MessageLoopThread, NULL, 0, NULL);
-    if (hMessageLoopThread) {
-        CloseHandle(hMessageLoopThread);
-    }
-}
-
-DWORD WINAPI MessageLoopThread(LPVOID lpParameter)
-{
-    MSG msg;
-    while (GetMessage(&msg, NULL, 0, 0)) {
-        TranslateMessage(&msg);
-        DispatchMessage(&msg);
-    }
-    return 0;
-}
-
-LRESULT CALLBACK HiddenWndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
-{
-    switch (msg) {
-    case WM_CLOSE:
-        FreeLibrary(g_hInst);
-        break;
-    default:
-        return DefWindowProc(hwnd, msg, wParam, lParam);
-    }
-    return 0;
 }
