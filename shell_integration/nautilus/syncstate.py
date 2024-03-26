@@ -30,7 +30,7 @@ from gi.repository import GObject, Nautilus
 
 # Note: setappname.sh will search and replace 'ownCloud' on this file to update this line and other
 # occurrences of the name
-appname = 'Nextcloud'
+appname = 'ownCloud'
 
 print("Initializing "+appname+"-client-nautilus extension")
 print("Using python version {}".format(sys.version_info))
