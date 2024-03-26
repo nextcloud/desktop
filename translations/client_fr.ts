@@ -1785,7 +1785,7 @@ Cela peut être un problème avec vos bibliothèques OpenSSL.</translation>
     <message>
         <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="165"/>
         <source>Error fetching encrypted folder ID.</source>
-        <translation>Erreur dans la récupération de l&apos;ID du dossier chiffré.</translation>
+        <translation>Erreur dans la récupération de l’ID du dossier chiffré.</translation>
     </message>
     <message>
         <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="199"/>
@@ -5242,7 +5242,7 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
     <message>
         <location filename="../src/libsync/updatee2eefolderusersmetadatajob.cpp" line="235"/>
         <source>Failed to unlock a folder.</source>
-        <translation>Échec du déverrouillage d&apos;un dossier.</translation>
+        <translation>Échec du déverrouillage d’un dossier.</translation>
     </message>
 </context>
 <context>

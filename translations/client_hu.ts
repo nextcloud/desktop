@@ -479,7 +479,7 @@ Should the account be imported?</source>
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="204"/>
         <source>Skip</source>
-        <translation>Kihagy</translation>
+        <translation>Kihagyás</translation>
     </message>
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="255"/>
@@ -569,7 +569,7 @@ Should the account be imported?</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="120"/>
         <source>End-to-end Encryption</source>
-        <translation>Végpontok közötti titkosítás</translation>
+        <translation>Végpontok közti titkosítás</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="122"/>
@@ -2070,7 +2070,7 @@ Ezt a problémát valószínűleg az OpenSSL programkönyvtárakban kell keresni
     <message>
         <location filename="../src/gui/folder.cpp" line="1412"/>
         <source>Would you like to stop syncing this folder?</source>
-        <translation>Meg szeretné szakítani a mappa szinkronizációját?</translation>
+        <translation>Leállítja a mappa szinkronizációját?</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1294"/>
@@ -2624,7 +2624,7 @@ Ha ez véletlen volt, és úgy dönt, hogy megtartja ezeket a fájlokat, akkor �
     <message>
         <location filename="../src/gui/generalsettings.ui" line="33"/>
         <source>Ask for confirmation before synchronizing new folders larger than</source>
-        <translation>Kérjen megerősítést, mielőtt szinkronizálna új mappákat, amelyek nagyobbak, mint</translation>
+        <translation>Megerősítés kérése az ennél nagyobb új mappák szinkronizálása előtt:</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="41"/>
@@ -2690,7 +2690,7 @@ Ha ez véletlen volt, és úgy dönt, hogy megtartja ezeket a fájlokat, akkor �
     <message>
         <location filename="../src/gui/generalsettings.ui" line="147"/>
         <source>Move removed files to trash</source>
-        <translation>Az eltávolított fájlok kukába mozgatása</translation>
+        <translation>Az eltávolított fájlok kukába helyezése</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="158"/>
@@ -5031,7 +5031,7 @@ A kiszolgáló hibával válaszolt: %2</translation>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="159"/>
         <source>Preparing sync</source>
-        <translation>Szinkronizáslás előkészítése</translation>
+        <translation>Szinkronizálás előkészítése</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="155"/>
@@ -5415,12 +5415,12 @@ A kiszolgáló hibával válaszolt: %2</translation>
     <message>
         <location filename="../src/gui/vfsdownloaderrordialog.cpp" line="26"/>
         <source>Error downloading %1</source>
-        <translation>Hiba %1 letöltése közben</translation>
+        <translation>Hiba a(z) %1 letöltése során</translation>
     </message>
     <message>
         <location filename="../src/gui/vfsdownloaderrordialog.cpp" line="27"/>
         <source>%1 could not be downloaded.</source>
-        <translation>%1 nem tölthető le.</translation>
+        <translation>A(z) %1 nem tölthető le.</translation>
     </message>
 </context>
 <context>
@@ -6431,7 +6431,7 @@ A kiszolgáló hibával válaszolt: %2</translation>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="894"/>
         <source>New activities</source>
-        <translation>Új tevékenység</translation>
+        <translation>Új tevékenységek</translation>
     </message>
 </context>
 <context>
