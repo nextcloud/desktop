@@ -43,7 +43,7 @@ public Q_SLOTS:
     void slotStatusChanged(Flow2Auth::PollStatus status, int secondsLeft);
     void slotStyleChanged();
 
-signals:
+Q_SIGNALS:
     void authResult(Flow2Auth::Result, const QString &errorString, const QString &user, const QString &appPassword);
     void pollNow();
 
@@ -52,7 +52,7 @@ private:
     QScopedPointer<Flow2Auth> _asyncAuth;
     Ui_Flow2AuthWidget _ui{};
 
-protected slots:
+protected Q_SLOTS:
     void slotOpenBrowser();
     void slotCopyLinkToClipboard();
 
