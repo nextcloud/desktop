@@ -32,7 +32,9 @@
 #include <qstack.h>
 #include <QCoreApplication>
 
+#if !defined(Q_OS_MACOS) || __MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_15
 #include <filesystem>
+#endif
 #include <ctime>
 
 
@@ -60,7 +62,9 @@ bool PropagateLocalRemove::removeRecursively(const QString &path)
     QString absolute = propagator()->fullLocalPath(_item->_file + path);
     QStringList errors;
     QList<QPair<QString, bool>> deleted;
+#if !defined(Q_OS_MACOS) || __MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_15
     FileSystem::setFolderPermissions(absolute, FileSystem::FolderPermissions::ReadWrite);
+#endif
     bool success = FileSystem::removeRecursively(
         absolute,
         [&deleted](const QString &path, bool isDir) {
@@ -184,6 +188,7 @@ void PropagateLocalMkdir::startLocalMkdir()
         return;
     }
 
+#if !defined(Q_OS_MACOS) || __MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_15
     auto parentFolderPath = std::filesystem::path{};
     auto parentNeedRollbackPermissions = false;
     try {
@@ -200,6 +205,7 @@ void PropagateLocalMkdir::startLocalMkdir()
     {
         qCWarning(lcPropagateLocalMkdir) << "exception when checking parent folder access rights" << e.what() << e.path1().c_str() << e.path2().c_str();
     }
+#endif
 
     emit propagator()->touchedFile(newDirStr);
     QDir localDir(propagator()->localPath());
@@ -208,6 +214,7 @@ void PropagateLocalMkdir::startLocalMkdir()
         return;
     }
 
+#if !defined(Q_OS_MACOS) || __MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_15
     if (!_item->_remotePerm.isNull() &&
         !_item->_remotePerm.hasPermission(RemotePermissions::CanAddFile) &&
         !_item->_remotePerm.hasPermission(RemotePermissions::CanRename) &&
@@ -234,6 +241,7 @@ void PropagateLocalMkdir::startLocalMkdir()
     {
         qCWarning(lcPropagateLocalMkdir) << "exception when checking parent folder access rights" << e.what() << e.path1().c_str() << e.path2().c_str();
     }
+#endif
 
     // Insert the directory into the database. The correct etag will be set later,
     // once all contents have been propagated, because should_update_metadata is true.
@@ -304,6 +312,7 @@ void PropagateLocalRename::start()
             return;
         }
 
+#if !defined(Q_OS_MACOS) || __MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_15
         auto targetParentFolderPath = std::filesystem::path{};
         auto targetParentFolderWasReadOnly = false;
         try {
@@ -348,27 +357,31 @@ void PropagateLocalRename::start()
                 qCWarning(lcPropagateLocalRename) << "exception when checking parent folder access rights" << e.what() << e.path1().c_str() << e.path2().c_str();
             }
         };
+#endif
 
         emit propagator()->touchedFile(existingFile);
         emit propagator()->touchedFile(targetFile);
         if (QString renameError; !FileSystem::rename(existingFile, targetFile, &renameError)) {
+#if !defined(Q_OS_MACOS) || __MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_15
             if (targetParentFolderWasReadOnly) {
                 restoreTargetPermissions(targetParentFolderPath);
             }
             if (originParentFolderWasReadOnly) {
                 restoreTargetPermissions(originParentFolderPath);
             }
-
+#endif
             done(SyncFileItem::NormalError, renameError, ErrorCategory::GenericError);
             return;
         }
 
+#if !defined(Q_OS_MACOS) || __MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_15
         if (targetParentFolderWasReadOnly) {
             restoreTargetPermissions(targetParentFolderPath);
         }
         if (originParentFolderWasReadOnly) {
             restoreTargetPermissions(originParentFolderPath);
         }
+#endif
     }
 
     SyncJournalFileRecord oldRecord;

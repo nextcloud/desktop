@@ -194,6 +194,7 @@ bool FileSystem::getInode(const QString &filename, quint64 *inode)
     return false;
 }
 
+#if !defined(Q_OS_MACOS) || __MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_15
 bool FileSystem::setFolderPermissions(const QString &path,
                                       FileSystem::FolderPermissions permissions) noexcept
 {
@@ -330,6 +331,7 @@ bool FileSystem::setFolderPermissions(const QString &path,
     }
 #endif
 
+#if !defined(Q_OS_MACOS) || __MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_15
     try {
         switch (permissions) {
         case OCC::FileSystem::FolderPermissions::ReadOnly:
@@ -344,6 +346,7 @@ bool FileSystem::setFolderPermissions(const QString &path,
         qCWarning(lcFileSystem()) << "exception when modifying folder permissions" << e.what() << e.path1().c_str() << e.path2().c_str();
         return false;
     }
+#endif
 
     return true;
 }
@@ -361,6 +364,6 @@ bool FileSystem::isFolderReadOnly(const std::filesystem::path &path) noexcept
         return false;
     }
 }
-
+#endif
 
 } // namespace OCC

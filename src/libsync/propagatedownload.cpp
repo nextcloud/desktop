@@ -673,6 +673,7 @@ void PropagateDownloadFile::startDownload()
         FileSystem::setFileReadOnly(_tmpFile.fileName(), false);
     }
 
+#if !defined(Q_OS_MACOS) || __MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_15
     try {
         const auto newDirPath = std::filesystem::path{_tmpFile.fileName().toStdWString()};
         Q_ASSERT(newDirPath.has_parent_path());
@@ -688,6 +689,7 @@ void PropagateDownloadFile::startDownload()
         emit propagator()->touchedFile(QString::fromStdWString(_parentPath.wstring()));
         _needParentFolderRestorePermissions = true;
     }
+#endif
 
     if (!_tmpFile.open(QIODevice::Append | QIODevice::Unbuffered)) {
         qCWarning(lcPropagateDownload) << "could not open temporary file" << _tmpFile.fileName();
@@ -1287,11 +1289,13 @@ void PropagateDownloadFile::downloadFinished()
         return;
     }
 
+#if !defined(Q_OS_MACOS) || __MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_15
     if (_needParentFolderRestorePermissions) {
         FileSystem::setFolderPermissions(QString::fromStdWString(_parentPath.wstring()), FileSystem::FolderPermissions::ReadWrite);
         emit propagator()->touchedFile(QString::fromStdWString(_parentPath.wstring()));
         _needParentFolderRestorePermissions = false;
     }
+#endif
 
     FileSystem::setFileHidden(filename, false);
 

@@ -23,7 +23,9 @@
 
 #include <ctime>
 #include <functional>
+#if !defined(Q_OS_MACOS) || __MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_15
 #include <filesystem>
+#endif
 
 class QFile;
 
@@ -101,7 +103,9 @@ namespace FileSystem {
     bool OWNCLOUDSYNC_EXPORT setFolderPermissions(const QString &path,
                                                   FileSystem::FolderPermissions permissions) noexcept;
 
+#if !defined(Q_OS_MACOS) || __MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_15
     bool OWNCLOUDSYNC_EXPORT isFolderReadOnly(const std::filesystem::path &path) noexcept;
+#endif
 }
 
 /** @} */
