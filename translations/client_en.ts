@@ -1210,64 +1210,69 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="727"/>
+        <location filename="../src/gui/folderman.cpp" line="729"/>
         <source>Folder &apos;%1&apos; is already in use by application %2!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="741"/>
+        <location filename="../src/gui/folderman.cpp" line="744"/>
+        <source>Folder &apos;%1&apos; is already in use by another account.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/folderman.cpp" line="759"/>
         <source>No valid folder selected!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="755"/>
+        <location filename="../src/gui/folderman.cpp" line="781"/>
         <source>The folder %1 is used in a folder sync connection!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="763"/>
+        <location filename="../src/gui/folderman.cpp" line="823"/>
+        <source>The local folder %1 already contains a folder used in a folder sync connection. Please pick another local folder!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/folderman.cpp" line="829"/>
+        <source>The local folder %1 is already contained in a folder used in a folder sync connection. Please pick another local folder!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/folderman.cpp" line="837"/>
+        <source>%1 Please pick another local folder!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/folderman.cpp" line="777"/>
         <source>The selected path does not exist!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="767"/>
+        <location filename="../src/gui/folderman.cpp" line="787"/>
         <source>The selected path is not a folder!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="771"/>
+        <location filename="../src/gui/folderman.cpp" line="791"/>
         <source>You have no permission to write to the selected folder!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="787"/>
+        <location filename="../src/gui/folderman.cpp" line="819"/>
         <source>There is already a sync from the server to this local folder. Please pick another local folder!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="791"/>
-        <source>The local folder %1 already contains a folder used in a folder sync connection. Please pick another one!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/gui/folderman.cpp" line="797"/>
-        <source>The local folder %1 is already contained in a folder used in a folder sync connection. Please pick another one!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/gui/folderman.cpp" line="805"/>
-        <source>%1 Please pick another one!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/gui/folderman.cpp" line="863"/>
+        <location filename="../src/gui/folderman.cpp" line="894"/>
         <source>Multiple accounts are sharing the folder %1.
 This configuration is know to lead to dataloss and is no longer supported.
 Please consider removing this folder from the account and adding it again.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="938"/>
+        <location filename="../src/gui/folderman.cpp" line="969"/>
         <source>%1 - %2@%3</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1347,17 +1352,17 @@ You are going to lose access to your sync folder if you do not do so!</source>
 <context>
     <name>OCC::FolderWizard</name>
     <message>
-        <location filename="../src/gui/folderwizard/folderwizard.cpp" line="160"/>
+        <location filename="../src/gui/folderwizard/folderwizard.cpp" line="162"/>
         <source>Virtual files are not available for the selected folder</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard/folderwizard.cpp" line="173"/>
+        <location filename="../src/gui/folderwizard/folderwizard.cpp" line="175"/>
         <source>Add Folder Sync Connection</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard/folderwizard.cpp" line="175"/>
+        <location filename="../src/gui/folderwizard/folderwizard.cpp" line="177"/>
         <source>Add Sync Connection</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1375,7 +1380,7 @@ You are going to lose access to your sync folder if you do not do so!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard/folderwizardlocalpath.cpp" line="100"/>
+        <location filename="../src/gui/folderwizard/folderwizardlocalpath.cpp" line="102"/>
         <source>Select the local folder</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3539,7 +3544,7 @@ Note that using any logging command line options will override the settings.</so
 <context>
     <name>OCC::Wizard::AccountConfiguredSetupWizardState</name>
     <message>
-        <location filename="../src/gui/newwizard/states/accountconfiguredsetupwizardstate.cpp" line="82"/>
+        <location filename="../src/gui/newwizard/states/accountconfiguredsetupwizardstate.cpp" line="84"/>
         <source>Invalid local download directory: %1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4039,17 +4044,17 @@ Are you sure you want to proceed?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/newwizard/setupwizardwindow.ui" line="85"/>
+        <location filename="../src/gui/newwizard/setupwizardwindow.ui" line="104"/>
         <source>Dismiss</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/newwizard/setupwizardwindow.ui" line="100"/>
+        <location filename="../src/gui/newwizard/setupwizardwindow.ui" line="119"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/newwizard/setupwizardwindow.ui" line="136"/>
+        <location filename="../src/gui/newwizard/setupwizardwindow.ui" line="155"/>
         <source>&lt; Back</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4386,32 +4391,32 @@ Are you sure you want to proceed?</source>
 <context>
     <name>utility</name>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="52"/>
+        <location filename="../src/gui/guiutility.cpp" line="57"/>
         <source>Could not open browser</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="53"/>
+        <location filename="../src/gui/guiutility.cpp" line="58"/>
         <source>There was an error when launching the browser to go to URL %1. Maybe no default browser is configured?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="76"/>
+        <location filename="../src/gui/guiutility.cpp" line="81"/>
         <source>Could not open email client</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="77"/>
+        <location filename="../src/gui/guiutility.cpp" line="82"/>
         <source>There was an error when launching the email client to create a new message. Maybe no default email client is configured?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="90"/>
+        <location filename="../src/gui/guiutility.cpp" line="95"/>
         <source>Make always available locally</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="95"/>
+        <location filename="../src/gui/guiutility.cpp" line="100"/>
         <source>Free up local space</source>
         <translation type="unfinished"></translation>
     </message>
