@@ -128,6 +128,7 @@ void Systray::create()
     hideWindow();
     emit activated(QSystemTrayIcon::ActivationReason::Unknown);
     slotUpdateSyncPausedState();
+    connect(FolderMan::instance(), &FolderMan::folderListChanged, this, &Systray::slotUpdateSyncPausedState);
 }
 
 void Systray::showWindow(WindowPosition position)
