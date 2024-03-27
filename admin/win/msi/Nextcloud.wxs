@@ -60,33 +60,18 @@
 		    <FileSearch Id="LegacyUninstallFileName" Name="Uninstall.exe"/>
 	    </RegistrySearch>
     </Property>
-      
-    <Property Id="IS_PREV_VERSION_SHELL_EXT_CLOSE_SUPPORTED">
-        <RegistrySearch Id="RegIsPrevVersionShellExtCloseSupported" Type="raw" Root="HKLM" Key="Software\$(var.AppVendor)\$(var.AppName)" Name="isShellExtCloseSupported" Win64="$(var.PlatformWin64)" />
-    </Property>
 
     <!-- Property to disable update checks -->
     <Property Id="SKIPAUTOUPDATE" Value="0" />
 
     <!-- Quit / restart application -->
     <util:RestartResource ProcessName="$(var.AppExe)" />
-     
-    <Property Id="WNDCLASSNAMETOCLOSE" Value="$(var.CfApiShellextWndClassName)" />
-    <CustomAction Id="SetCfApiWindowClassName" Property="WNDCLASSNAMETOCLOSE" Value="$(var.CfApiShellextWndClassName)" />
-    <CustomAction Id="SetNCContextMenuWindowClassName" Property="WNDCLASSNAMETOCLOSE" Value="$(var.NCContextMenuShellextWndClassName)" />
-    <CustomAction Id="SetNCOverlaysWindowClassName" Property="WNDCLASSNAMETOCLOSE" Value="$(var.NCOverlaysShellextWndClassName)" />
 
-      <!-- Helper DLL Custom Actions -->
+    <!-- Helper DLL Custom Actions -->
     <SetProperty Id="ExecNsisUninstaller" Value="&quot;$(var.AppShortName)&quot; &quot;[NSIS_UNINSTALLEXE]&quot;" Before="ExecNsisUninstaller" Sequence="execute" />
     <SetProperty Id="RemoveNavigationPaneEntries" Value="&quot;$(var.AppName)&quot;" Before="RemoveNavigationPaneEntries" Sequence="execute" />
 
     <InstallExecuteSequence>
-      <Custom Action="SetCfApiWindowClassName" Before="InstallValidate"/>
-      <Custom Action="CloseCfApiShellExtension" After="SetCfApiWindowClassName" />
-      <Custom Action="SetNCContextMenuWindowClassName" After="CloseCfApiShellExtension"/>
-      <Custom Action="CloseNCContextMenuShellExtension" After="SetNCContextMenuWindowClassName" />
-      <Custom Action="SetNCOverlaysWindowClassName" After="CloseNCContextMenuShellExtension"/>
-      <Custom Action="CloseNCOverlaysShellExtension" After="SetNCOverlaysWindowClassName" />
         <!-- Install: Remove previous NSIS installation, if detected -->
         <Custom Action="ExecNsisUninstaller" Before="ProcessComponents">NSIS_UNINSTALLEXE AND NOT Installed</Custom>
 
@@ -95,8 +80,9 @@
 		
 		<!-- Uninstall: Cleanup the Registry -->
 		<Custom Action="RegistryCleanupCustomAction" After="RemoveFiles">(NOT UPGRADINGPRODUCTCODE) AND (REMOVE="ALL")</Custom>
-        <!-- Schedule Reboot for the Shell Extensions (only if SCHEDULE_REBOOT argument is set or if th version is less than 3.12.2 -->
-      <ScheduleReboot After="InstallFinalize">(SCHEDULE_REBOOT=1) OR ((NOT (UILevel=2)) AND (NOT IS_PREV_VERSION_SHELL_EXT_CLOSE_SUPPORTED))</ScheduleReboot>
+
+        <!-- Schedule Reboot for the Shell Extensions (in silent installation mode only, or if SCHEDULE_REBOOT argument is set-->
+        <ScheduleReboot After="InstallFinalize">(SCHEDULE_REBOOT=1) OR NOT (UILevel=2)</ScheduleReboot>
     </InstallExecuteSequence>
 
     <!-- "Add or Remove" Programs Entries -->
@@ -198,11 +184,6 @@
                 <RegistryValue Type="string" Name="InstallerProductCode" Value="[ProductCode]" />
             </RegistryKey>
         </Component>
-      <Component Id="RegistryMiscInfo" Guid="*" Win64="$(var.PlatformWin64)">
-        <RegistryKey Root="HKLM" Key="Software\$(var.AppVendor)\$(var.AppName)">
-          <RegistryValue Type="integer" Name="isShellExtCloseSupported" Value="1" />
-        </RegistryKey>
-      </Component>
 
         <!-- Platform bitness-dependent settings -->
         <Component Id="RegistryDefaultSettings" Guid="*" Win64="$(var.PlatformWin64)">
@@ -232,7 +213,6 @@
         <ComponentGroupRef Id="ClientFiles" />
 
         <ComponentRef Id="RegistryVersionInfo" />
-        <ComponentRef Id="RegistryMiscInfo" />
         <ComponentRef Id="RegistryDefaultSettings" />
 		<ComponentRef Id="RegistryUriHandler" />
 
