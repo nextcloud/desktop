@@ -616,6 +616,7 @@ void FolderStatusModel::fetchMore(const QModelIndex &parent)
     auto props = QList<QByteArray>() << "resourcetype"
                                      << "http://owncloud.org/ns:size"
                                      << "http://owncloud.org/ns:permissions"
+                                     << "http://nextcloud.org/ns:is-mount-root"
                                      << "http://owncloud.org/ns:fileid";
     if (_accountState->account()->capabilities().clientSideEncryptionAvailable()) {
         props << "http://nextcloud.org/ns:is-encrypted";
