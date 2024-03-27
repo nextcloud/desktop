@@ -78,11 +78,11 @@ Feature: Sharing
         And user "Alice" has set up a client with default settings
         When the user opens the sharing dialog of "textfile.txt" using the client-UI
         And the user searches for collaborator "Brian Murphy" using the client-UI
-        Then the error "No results for 'Brian Murphy'" should be displayed
+        Then the error "No results for 'Brian Murphy'" should be displayed in the sharing dialog
         When the user closes the sharing dialog
         And the user opens the sharing dialog of "SharedFolder" using the client-UI
         And the user searches for collaborator "Brian Murphy" using the client-UI
-        Then the error "No results for 'Brian Murphy'" should be displayed
+        Then the error "No results for 'Brian Murphy'" should be displayed in the sharing dialog
         And the user closes the sharing dialog
 
 
@@ -92,11 +92,11 @@ Feature: Sharing
         And user "Alice" has set up a client with default settings
         When the user opens the sharing dialog of "textfile.txt" using the client-UI
         And the user selects "Alice Hansen" as collaborator of resource "textfile.txt" using the client-UI
-        Then the error "Can't share with yourself" should be displayed
+        Then the error "Can't share with yourself" should be displayed in the sharing dialog
         When the user closes the sharing dialog
         And the user opens the sharing dialog of "OwnFolder" using the client-UI
         And the user selects "Alice Hansen" as collaborator of resource "OwnFolder" using the client-UI
-        Then the error "Can't share with yourself" should be displayed
+        Then the error "Can't share with yourself" should be displayed in the sharing dialog
         And the user closes the sharing dialog
 
 
@@ -200,10 +200,10 @@ Feature: Sharing
         And user "Alice" has shared folder "Folder" on the server with group "grp1" with "read, share, update" permission
         And user "Brian" has set up a client with default settings
         When the user tires to share resource "textfile0.txt" with the group "grp1" using the client-UI
-        Then the error "Path already shared with this group" should be displayed
+        Then the error "Path already shared with this group" should be displayed in the sharing dialog
         When the user closes the sharing dialog
         And the user tires to share resource "Folder" with the group "grp1" using the client-UI
-        Then the error "Path already shared with this group" should be displayed
+        Then the error "Path already shared with this group" should be displayed in the sharing dialog
         And the user closes the sharing dialog
 
 

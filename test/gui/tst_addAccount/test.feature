@@ -49,7 +49,7 @@ Feature: adding accounts
         When the user adds the following wrong user credentials:
             | user     | Alice |
             | password | 12345 |
-        Then error "Invalid credentials" should be displayed
+        Then the error "Invalid credentials" should be displayed in the account connection wizard
 
 
     Scenario: Adding account with self signed certificate for the first time

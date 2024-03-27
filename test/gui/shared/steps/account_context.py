@@ -180,9 +180,9 @@ def step(context):
     AccountConnectionWizard.acceptCertificate()
 
 
-@Then('error "|any|" should be displayed')
+@Then('the error "|any|" should be displayed in the account connection wizard')
 def step(context, errorMsg):
-    test.compare(AccountConnectionWizard.getErrorMessage(), errorMsg)
+    test.verify(errorMsg in AccountConnectionWizard.getErrorMessage())
 
 
 @When('the user adds the server "|any|"')

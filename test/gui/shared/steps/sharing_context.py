@@ -305,7 +305,7 @@ def step(context, permissions, user, resource):
         test.compare(shareChecked, False)
 
 
-@Then('the error "|any|" should be displayed')
+@Then('the error "|any|" should be displayed in the sharing dialog')
 def step(context, errorMessage):
     test.compare(SharingDialog.getErrorText(), errorMessage)
 
