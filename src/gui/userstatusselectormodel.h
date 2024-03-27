@@ -93,7 +93,7 @@ public:
 
     Q_REQUIRED_RESULT QVariantList clearStageTypes() const;
     Q_REQUIRED_RESULT QString clearAtDisplayString() const;
-    Q_INVOKABLE [[nodiscard]] QString clearAtReadable(const OCC::UserStatus &status) const;
+    [[nodiscard]] Q_INVOKABLE QString clearAtReadable(const OCC::UserStatus &status) const;
 
     Q_REQUIRED_RESULT QString errorMessage() const;
 
