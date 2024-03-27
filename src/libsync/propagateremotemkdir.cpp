@@ -139,10 +139,13 @@ void PropagateRemoteMkdir::finalizeMkColJob(QNetworkReply::NetworkError err, con
 
     propagator()->_activeJobList.append(this);
     auto propfindJob = new PropfindJob(propagator()->account(), jobPath, this);
-    propfindJob->setProperties({QByteArrayLiteral("http://owncloud.org/ns:share-types"), QByteArrayLiteral("http://owncloud.org/ns:permissions")});
+    propfindJob->setProperties({QByteArrayLiteral("http://owncloud.org/ns:share-types"), QByteArrayLiteral("http://owncloud.org/ns:permissions"), QByteArrayLiteral("http://nextcloud.org/ns:is-mount-root")});
     connect(propfindJob, &PropfindJob::result, this, [this, jobPath](const QVariantMap &result){
         propagator()->_activeJobList.removeOne(this);
-        _item->_remotePerm = RemotePermissions::fromServerString(result.value(QStringLiteral("permissions")).toString());
+        _item->_remotePerm = RemotePermissions::fromServerString(result.value(QStringLiteral("permissions")).toString(),
+                                                                 propagator()->account()->serverHasMountRootProperty() ? RemotePermissions::MountedPermissionAlgorithm::UseMountRootProperty : RemotePermissions::MountedPermissionAlgorithm::WildGuessMountedSubProperty,
+                                                                 result);
+
         _item->_sharedByMe = !result.value(QStringLiteral("share-types")).toString().isEmpty();
         _item->_isShared = _item->_remotePerm.hasPermission(RemotePermissions::IsShared) || _item->_sharedByMe;
         _item->_lastShareStateFetchedTimestamp = QDateTime::currentMSecsSinceEpoch();
@@ -231,6 +234,7 @@ void PropagateRemoteMkdir::slotMkcolJobFinished()
 
     _item->_fileId = _job->reply()->rawHeader("OC-FileId");
 
+    qCInfo(lcPropagateRemoteMkdir()) << "mkcol job error string:" << _item->_errorString << _job->errorString();
     _item->_errorString = _job->errorString();
 
     const auto jobHttpReasonPhraseString = _job->reply()->attribute(QNetworkRequest::HttpReasonPhraseAttribute).toString();

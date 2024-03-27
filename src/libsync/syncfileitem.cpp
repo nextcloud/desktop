@@ -169,7 +169,7 @@ SyncFileItemPtr SyncFileItem::fromSyncJournalFileRecord(const SyncJournalFileRec
     return item;
 }
 
-SyncFileItemPtr SyncFileItem::fromProperties(const QString &filePath, const QMap<QString, QString> &properties)
+SyncFileItemPtr SyncFileItem::fromProperties(const QString &filePath, const QMap<QString, QString> &properties, RemotePermissions::MountedPermissionAlgorithm algorithm)
 {
     SyncFileItemPtr item(new SyncFileItem);
     item->_file = filePath;
@@ -182,7 +182,7 @@ SyncFileItemPtr SyncFileItem::fromProperties(const QString &filePath, const QMap
     item->_fileId = properties.value(QStringLiteral("id")).toUtf8();
 
     if (properties.contains(QStringLiteral("permissions"))) {
-        item->_remotePerm = RemotePermissions::fromServerString(properties.value("permissions"));
+        item->_remotePerm = RemotePermissions::fromServerString(properties.value("permissions"), algorithm, properties);
     }
 
     if (!properties.value(QStringLiteral("share-types")).isEmpty()) {
