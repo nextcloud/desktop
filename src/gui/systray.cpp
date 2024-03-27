@@ -431,12 +431,17 @@ void Systray::slotCurrentUserChanged()
 void Systray::slotUpdateSyncPausedState()
 {
     const auto folderMap = FolderMan::instance()->map();
-    for (const auto *folder : folderMap) {
+    for (const auto folder : folderMap) {
+        connect(folder, &Folder::syncPausedChanged, this, &Systray::slotUpdateSyncPausedState, Qt::UniqueConnection);
         if (!folder->syncPaused()) {
             _syncIsPaused = false;
-            break;
+            emit syncIsPausedChanged();
+            return;
         }
     }
+
+    _syncIsPaused = true;
+    emit syncIsPausedChanged();
 }
 
 void Systray::slotUnpauseAllFolders()
