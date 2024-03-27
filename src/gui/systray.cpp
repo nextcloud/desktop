@@ -127,14 +127,7 @@ void Systray::create()
     }
     hideWindow();
     emit activated(QSystemTrayIcon::ActivationReason::Unknown);
-
-    const auto folderMap = FolderMan::instance()->map();
-    for (const auto *folder : folderMap) {
-        if (!folder->syncPaused()) {
-            _syncIsPaused = false;
-            break;
-        }
-    }
+    slotUpdateSyncPausedState();
 }
 
 void Systray::showWindow(WindowPosition position)
@@ -438,6 +431,17 @@ void Systray::slotCurrentUserChanged()
 
     // Rebuild App list
     UserAppsModel::instance()->buildAppList();
+}
+
+void Systray::slotUpdateSyncPausedState()
+{
+    const auto folderMap = FolderMan::instance()->map();
+    for (const auto *folder : folderMap) {
+        if (!folder->syncPaused()) {
+            _syncIsPaused = false;
+            break;
+        }
+    }
 }
 
 void Systray::slotUnpauseAllFolders()
