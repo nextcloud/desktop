@@ -39,24 +39,5 @@
                     Execute="deferred"
                     Impersonate="yes" />
 
-      <CustomAction Id="CloseCfApiShellExtension"
-                    Return="ignore"
-                    BinaryKey="NCMsiHelper"
-                    DllEntry="CloseWindowByClassName"
-                    Execute="immediate"
-                    Impersonate="yes" />
-      <CustomAction Id="CloseNCContextMenuShellExtension"
-                     Return="ignore"
-                     BinaryKey="NCMsiHelper"
-                     DllEntry="CloseWindowByClassName"
-                     Execute="immediate"
-                     Impersonate="yes" />
-      <CustomAction Id="CloseNCOverlaysShellExtension"
-                    Return="ignore"
-                    BinaryKey="NCMsiHelper"
-                    DllEntry="CloseWindowByClassName"
-                    Execute="immediate"
-                    Impersonate="yes" />
-
     </Fragment>
 </Wix>
