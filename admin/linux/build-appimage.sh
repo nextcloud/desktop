@@ -85,7 +85,7 @@ chmod a+x linuxdeployqt.AppImage
 rm ./linuxdeployqt.AppImage
 cp -r ./squashfs-root ./linuxdeployqt-squashfs-root
 unset QTDIR; unset QT_PLUGIN_PATH ; unset LD_LIBRARY_PATH
-export LD_LIBRARY_PATH=/usr/local/lib/x86_64-linux-gnu
+export LD_LIBRARY_PATH=/usr/local/lib:/usr/local/lib/x86_64-linux-gnu
 ./squashfs-root/AppRun ${DESKTOP_FILE} -bundle-non-qt-libs -qmldir=${DESKTOP_CLIENT_ROOT}/src/gui
 
 # Set origin
