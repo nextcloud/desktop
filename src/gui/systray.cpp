@@ -576,6 +576,7 @@ void Systray::setSyncIsPaused(const bool syncIsPaused)
     } else {
         slotUnpauseAllFolders();
     }
+    emit syncIsPausedChanged();
 }
 
 /********************************************************************************************/
