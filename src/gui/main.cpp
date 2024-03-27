@@ -87,6 +87,15 @@ int main(int argc, char **argv)
     if (app.devicePixelRatio() > 1)
         QApplication::setStyle(QStringLiteral("fusion"));
 #endif // Q_OS_WIN
+    
+    QCoreApplication::setAttribute(Qt::AA_UseHighDpiPixmaps, true);
+#ifdef Q_OS_WIN
+    QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling, true);
+#endif // !Q_OS_WIN
+    if(_configFile->scaleForHighDPIDisplay->scale == true) {
+        setHighDpiScaleFactorRoundingPolicy(Qt::HighDpiScaleFactorRoundingPolicy::PassThrough); // == 5
+    }
+
 
 #ifndef Q_OS_WIN
     signal(SIGPIPE, SIG_IGN);
