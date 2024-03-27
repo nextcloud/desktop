@@ -188,8 +188,9 @@ Optional<PinState> VfsXAttr::pinState(const QString &folderPath)
     return pinStateInDb(folderPath);
 }
 
-Vfs::AvailabilityResult VfsXAttr::availability(const QString &folderPath)
+Vfs::AvailabilityResult VfsXAttr::availability(const QString &folderPath, const AvailabilityRecursivity recursiveCheck)
 {
+    Q_UNUSED(recursiveCheck)
     return availabilityInDb(folderPath);
 }
 

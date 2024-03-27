@@ -1443,7 +1443,7 @@ void SocketApi::command_GET_MENU_ITEMS(const QString &argument, OCC::SocketListe
         };
         for (const auto &file : files) {
             auto fileData = FileData::get(file);
-            auto availability = syncFolder->vfs().availability(fileData.folderRelativePath);
+            auto availability = syncFolder->vfs().availability(fileData.folderRelativePath, Vfs::AvailabilityRecursivity::NotRecursiveAvailability);
             if (!availability) {
                 if (availability.error() == Vfs::AvailabilityError::DbError)
                     availability = VfsItemAvailability::Mixed;

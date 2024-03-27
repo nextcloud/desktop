@@ -334,28 +334,47 @@ Optional<PinState> VfsCfApi::pinStateLocal(const QString &localPath) const
     return info.pinState();
 }
 
-Vfs::AvailabilityResult VfsCfApi::availability(const QString &folderPath)
+Vfs::AvailabilityResult VfsCfApi::availability(const QString &folderPath, const AvailabilityRecursivity recursiveCheck)
 {
     const auto basePinState = pinState(folderPath);
-    const auto hydrationAndPinStates = computeRecursiveHydrationAndPinStates(folderPath, basePinState);
-
-    const auto pin = hydrationAndPinStates.pinState;
-    const auto hydrationStatus = hydrationAndPinStates.hydrationStatus;
-
-    if (hydrationStatus.hasDehydrated) {
-        if (hydrationStatus.hasHydrated)
-            return VfsItemAvailability::Mixed;
-        if (pin && *pin == PinState::OnlineOnly)
-            return VfsItemAvailability::OnlineOnly;
-        else
-            return VfsItemAvailability::AllDehydrated;
-    } else if (hydrationStatus.hasHydrated) {
-        if (pin && *pin == PinState::AlwaysLocal)
+    if (basePinState && recursiveCheck == Vfs::AvailabilityRecursivity::NotRecursiveAvailability) {
+        switch (*basePinState)
+        {
+        case OCC::PinState::AlwaysLocal:
             return VfsItemAvailability::AlwaysLocal;
-        else
-            return VfsItemAvailability::AllHydrated;
+            break;
+        case OCC::PinState::Excluded:
+            break;
+        case OCC::PinState::Inherited:
+            break;
+        case OCC::PinState::OnlineOnly:
+            return VfsItemAvailability::OnlineOnly;
+            break;
+        case OCC::PinState::Unspecified:
+            break;
+        };
+        return VfsItemAvailability::Mixed;
+    } else {
+        const auto hydrationAndPinStates = computeRecursiveHydrationAndPinStates(folderPath, basePinState);
+
+        const auto pin = hydrationAndPinStates.pinState;
+        const auto hydrationStatus = hydrationAndPinStates.hydrationStatus;
+
+        if (hydrationStatus.hasDehydrated) {
+            if (hydrationStatus.hasHydrated)
+                return VfsItemAvailability::Mixed;
+            if (pin && *pin == PinState::OnlineOnly)
+                return VfsItemAvailability::OnlineOnly;
+            else
+                return VfsItemAvailability::AllDehydrated;
+        } else if (hydrationStatus.hasHydrated) {
+            if (pin && *pin == PinState::AlwaysLocal)
+                return VfsItemAvailability::AlwaysLocal;
+            else
+                return VfsItemAvailability::AllHydrated;
+        }
+        return AvailabilityError::NoSuchItem;
     }
-    return AvailabilityError::NoSuchItem;
 }
 
 HydrationJob *VfsCfApi::findHydrationJob(const QString &requestId) const
