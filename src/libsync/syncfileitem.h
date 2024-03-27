@@ -293,6 +293,7 @@ public:
     QString _errorExceptionMessage; // Contains a server exception message string only in case of error
     QByteArray _responseTimeStamp;
     QByteArray _requestId; // X-Request-Id of the failed request
+    qint64 _requestBodySize = -1; // the number of bytes sent. -1 if unknown.
     quint32 _affectedItems = 1; // the number of affected items by the operation on this item.
     // usually this value is 1, but for removes on dirs, it might be much higher.
 
