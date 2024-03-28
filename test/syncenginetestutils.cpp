@@ -17,7 +17,9 @@
 #include <QJsonValue>
 
 #include <memory>
+#if !defined(Q_OS_MACOS) || __MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_15
 #include <filesystem>
+#endif
 
 PathComponents::PathComponents(const char *path)
     : PathComponents { QString::fromUtf8(path) }
@@ -50,9 +52,11 @@ void DiskFileModifier::remove(const QString &relativePath)
     if (fi.isFile()) {
         QVERIFY(_rootDir.remove(relativePath));
     } else {
+#if !defined(Q_OS_MACOS) || __MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_15
         const auto pathToDelete = fi.filePath().toStdWString();
         std::filesystem::permissions(pathToDelete, std::filesystem::perms::owner_exec, std::filesystem::perm_options::add);
         QVERIFY(std::filesystem::remove_all(pathToDelete));
+#endif
     }
 }
 
