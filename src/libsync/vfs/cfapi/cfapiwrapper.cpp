@@ -92,6 +92,7 @@ OCC::PinState cfPinStateToPinState(CF_PIN_STATE state)
 
 void cfApiSendTransferInfo(const CF_CONNECTION_KEY &connectionKey, const CF_TRANSFER_KEY &transferKey, NTSTATUS status, void *buffer, qint64 offset, qint64 currentBlockLength, qint64 totalLength)
 {
+    qCInfo(lcCfApiWrapper) << status << buffer << offset << currentBlockLength << totalLength;
 
     CF_OPERATION_INFO opInfo = { 0 };
     CF_OPERATION_PARAMETERS opParams = { 0 };
@@ -113,6 +114,7 @@ void cfApiSendTransferInfo(const CF_CONNECTION_KEY &connectionKey, const CF_TRAN
 
     const auto isDownloadFinished = ((offset + currentBlockLength) == totalLength);
     if (isDownloadFinished) {
+        qCInfo(lcCfApiWrapper) << "download is finished";
         return;
     }
 
@@ -132,7 +134,7 @@ void cfApiSendTransferInfo(const CF_CONNECTION_KEY &connectionKey, const CF_TRAN
 
 void CALLBACK cfApiFetchDataCallback(const CF_CALLBACK_INFO *callbackInfo, const CF_CALLBACK_PARAMETERS *callbackParameters)
 {
-    qDebug(lcCfApiWrapper) << "Fetch data callback called. File size:" << callbackInfo->FileSize.QuadPart;
+    qCDebug(lcCfApiWrapper) << "Fetch data callback called. File size:" << callbackInfo->FileSize.QuadPart;
     const auto sendTransferError = [=] {
         cfApiSendTransferInfo(callbackInfo->ConnectionKey,
                               callbackInfo->TransferKey,
@@ -185,6 +187,7 @@ void CALLBACK cfApiFetchDataCallback(const CF_CALLBACK_INFO *callbackInfo, const
     qCInfo(lcCfApiWrapper) << "VFS replied for hydration of" << path << requestId << "status was:" << hydrationRequestResult;
 
     if (!hydrationRequestResult) {
+        qCInfo(lcCfApiWrapper) << "calling sendTransferError";
         sendTransferError();
         return;
     }
@@ -232,6 +235,7 @@ void CALLBACK cfApiFetchDataCallback(const CF_CALLBACK_INFO *callbackInfo, const
         protrudingData = data.right(protudingSize);
         data.chop(protudingSize);
 
+        qCInfo(lcCfApiWrapper) << "calling sendTransferInfo" << dataOffset;
         sendTransferInfo(data, dataOffset);
         dataOffset += data.size();
     };
@@ -254,7 +258,7 @@ void CALLBACK cfApiFetchDataCallback(const CF_CALLBACK_INFO *callbackInfo, const
     });
 
     QObject::connect(vfs, &OCC::VfsCfApi::hydrationRequestFinished, &loop, [&](const QString &id) {
-        qDebug(lcCfApiWrapper) << "Hydration finished for request" << id;
+        qCDebug(lcCfApiWrapper) << "Hydration finished for request" << id;
         if (requestId == id) {
             loop.quit();
         }
@@ -263,19 +267,24 @@ void CALLBACK cfApiFetchDataCallback(const CF_CALLBACK_INFO *callbackInfo, const
     loop.exec();
 
     if (!hydrationRequestCancelled && !protrudingData.isEmpty()) {
-        qDebug(lcCfApiWrapper) << "Send remaining protruding data. Size:" << protrudingData.size();
+        qCInfo(lcCfApiWrapper) << "Send remaining protruding data. Size:" << protrudingData.size();
+        qCInfo(lcCfApiWrapper) << "calling sendTransferInfo" << dataOffset;
         sendTransferInfo(protrudingData, dataOffset);
     }
 
-    int hydrationJobResult = OCC::HydrationJob::Status::Error;
-    const auto invokeFinalizeResult = QMetaObject::invokeMethod(
-        vfs, [=] { vfs->finalizeHydrationJob(requestId); }, Qt::BlockingQueuedConnection,
+    auto hydrationJobResult = OCC::HydrationJob::Status::Error;
+    const auto invokeFinalizeResult = QMetaObject::invokeMethod(vfs,
+        [=] () -> OCC::HydrationJob::Status {
+            return vfs->finalizeHydrationJob(requestId);
+        },
+        Qt::BlockingQueuedConnection,
         &hydrationJobResult);
     if (!invokeFinalizeResult) {
-        qCritical(lcCfApiWrapper) << "Failed to finalize hydration job for" << path << requestId;
+        qCCritical(lcCfApiWrapper) << "Failed to finalize hydration job for" << path << requestId;
     }
 
-    if (static_cast<OCC::HydrationJob::Status>(hydrationJobResult) != OCC::HydrationJob::Success) {
+    if (hydrationJobResult != OCC::HydrationJob::Success) {
+        qCInfo(lcCfApiWrapper) << "calling sendTransferError";
         sendTransferError();
     }
 }
@@ -333,16 +342,19 @@ void CALLBACK cfApiCancelFetchData(const CF_CALLBACK_INFO *callbackInfo, const C
 {
     const auto path = QString(QString::fromWCharArray(callbackInfo->VolumeDosName) + QString::fromWCharArray(callbackInfo->NormalizedPath));
 
-    qInfo(lcCfApiWrapper) << "Cancel fetch data of" << path;
+    qCInfo(lcCfApiWrapper) << "Cancel fetch data of" << path;
 
     auto vfs = reinterpret_cast<OCC::VfsCfApi *>(callbackInfo->CallbackContext);
     Q_ASSERT(vfs->metaObject()->className() == QByteArrayLiteral("OCC::VfsCfApi"));
     const auto requestId = QString::number(callbackInfo->TransferKey.QuadPart, 16);
 
-    const auto invokeResult = QMetaObject::invokeMethod(
-        vfs, [=] { vfs->cancelHydration(requestId, path); }, Qt::QueuedConnection);
+    const auto invokeResult = QMetaObject::invokeMethod(vfs,
+        [=] () {
+            vfs->cancelHydration(requestId, path);
+        },
+        Qt::QueuedConnection);
     if (!invokeResult) {
-        qCritical(lcCfApiWrapper) << "Failed to cancel hydration for" << path << requestId;
+        qCCritical(lcCfApiWrapper) << "Failed to cancel hydration for" << path << requestId;
     }
 }
 
