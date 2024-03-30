@@ -1547,7 +1547,7 @@ Aquesta acció anul·larà qualsevol sincronització en execució.</translation>
     <message>
         <location filename="../src/gui/connectionvalidator.cpp" line="178"/>
         <source>Timeout</source>
-        <translation>Temps d&apos;espera</translation>
+        <translation>S&apos;ha esgotat el temps d&apos;espera</translation>
     </message>
     <message>
         <location filename="../src/gui/connectionvalidator.cpp" line="215"/>
