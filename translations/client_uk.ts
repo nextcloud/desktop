@@ -231,7 +231,7 @@
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderEvictionDialog.qml" line="61"/>
         <source>Reload</source>
-        <translation>Перевантажити</translation>
+        <translation>Перезавантажити</translation>
     </message>
 </context>
 <context>
@@ -2645,7 +2645,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/generalsettings.ui" line="75"/>
         <source>Use &amp;Monochrome Icons</source>
-        <translation>Використовувати &amp;монохромні піктограми</translation>
+        <translation>Використовувати &amp;чорно-білі значки</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="82"/>

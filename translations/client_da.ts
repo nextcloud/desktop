@@ -5051,7 +5051,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/systray.cpp" line="80"/>
         <source>Download</source>
-        <translation type="unfinished"/>
+        <translation>Download</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="180"/>
@@ -5067,13 +5067,13 @@ Server replied with error: %2</source>
         <location filename="../src/gui/systray.cpp" line="185"/>
         <location filename="../src/gui/systray.cpp" line="195"/>
         <source>Pause sync</source>
-        <translation type="unfinished"/>
+        <translation>Pause sync</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="186"/>
         <location filename="../src/gui/systray.cpp" line="201"/>
         <source>Resume sync</source>
-        <translation type="unfinished"/>
+        <translation>Genoptag sync</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="187"/>
@@ -5083,7 +5083,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/systray.cpp" line="188"/>
         <source>Help</source>
-        <translation type="unfinished"/>
+        <translation>Hjælp</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="189"/>
@@ -5093,12 +5093,12 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/systray.cpp" line="195"/>
         <source>Pause sync for all</source>
-        <translation type="unfinished"/>
+        <translation>Sæt alle synkroniseringer på pause</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="201"/>
         <source>Resume sync for all</source>
-        <translation type="unfinished"/>
+        <translation>Genoptag synkronisering for alle</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="554"/>
@@ -6447,7 +6447,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="37"/>
         <source>Downloaded</source>
-        <translation>Hentet</translation>
+        <translation>Downloadet</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="40"/>
