@@ -107,7 +107,7 @@ QVector<ZipEntry> createDebugArchiveFileList()
     return list;
 }
 
-void createDebugArchive(const QString &filename)
+bool createDebugArchive(const QString &filename)
 {
     const auto fileInfo = QFileInfo(filename);
     const auto dirInfo = QFileInfo(fileInfo.dir().absolutePath());
@@ -117,7 +117,7 @@ void createDebugArchive(const QString &filename)
             QObject::tr("Failed to create debug archive"),
             QObject::tr("Could not create debug archive in selected location!")
         );
-        return;
+        return false;
     }
 
     const auto entries = createDebugArchiveFileList();
@@ -138,7 +138,9 @@ void createDebugArchive(const QString &filename)
     zip.prepareWriting("__nextcloud_client_buildinfo.txt", {}, {}, buildInfo.size());
     zip.writeData(buildInfo, buildInfo.size());
     zip.finishWriting(buildInfo.size());
+    return true;
 }
+
 }
 
 namespace OCC {
@@ -520,8 +522,13 @@ void GeneralSettings::slotCreateDebugArchive()
         return;
     }
 
-    createDebugArchive(filename);
-    QMessageBox::information(this, tr("Debug Archive Created"), tr("Debug archive is created at %1").arg(filename));
+    if (createDebugArchive(filename)) {
+        QMessageBox::information(
+            this,
+            tr("Debug Archive Created"),
+            tr("Debug archive is created at %1").arg(filename)
+        );
+    }
 }
 
 void GeneralSettings::slotShowLegalNotice()
