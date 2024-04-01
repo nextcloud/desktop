@@ -100,7 +100,7 @@ Then, in Terminal:
 
    .. code-block:: bash
 
-      % xcode-select –install
+      % xcode-select --install
 
 3. Install Homebrew from `brew.sh`_ (which will just give you the following):
 
@@ -128,7 +128,18 @@ Then, in Terminal:
 
    .. code-block:: bash
 
-      % brew install git qt qtkeychain cmake openssl glib cmocka
+      % brew install git qt5 qtkeychain cmake openssl glib cmocka
+
+.. note:: Currently the build process will fail if you have both Qt 5
+   and Qt 6 installed. In order to remove Qt 6, run the following:
+
+   .. code-block:: bash
+
+      % brew remove qt6
+
+   Unfortunately, removing Qt 6 will break any other Homebrew packages
+   that depend on it. An update fixing the build process so that it will
+   work with both packages installed is forthcoming.
 
 5. Certain Homebrew packages are not automatically linked in places where
    the build scripts can find them, so you can create a shell-profile script
@@ -137,8 +148,9 @@ Then, in Terminal:
    .. code-block:: bash
 
       % echo 'export OPENSSL_ROOT_DIR=$(brew --prefix openssl)' >> ~/.nextcloud_build_variables
-      % echo 'export QT_PATH=$(brew --prefix qt5)/bin' >> ~/.nextcloud_build_variables
+      % echo 'export Qt5_DIR=$(brew --prefix qt5)/lib/cmake/Qt5/' >> ~/.nextcloud_build_variables
       % echo 'export Qt5LinguistTools_DIR=$(brew --prefix qt5)/lib/cmake/Qt5LinguistTools/' >> ~/.nextcloud_build_variables
+      % echo 'export Qt5Keychain_DIR=$(brew --prefix qtkeychain)/lib/cmake/' >> ~/.nextcloud_build_variables
    
    .. note:: The name ``~/.nextcloud_build_variables`` is just a suggestion for
       convenience. You can use a different file or create an entire shell
