@@ -109,6 +109,17 @@ QVector<ZipEntry> createDebugArchiveFileList()
 
 void createDebugArchive(const QString &filename)
 {
+    const auto fileInfo = QFileInfo(filename);
+    const auto dirInfo = QFileInfo(fileInfo.dir().absolutePath());
+    if (!dirInfo.isWritable()) {
+        QMessageBox::critical(
+            nullptr,
+            QObject::tr("Failed to create debug archive"),
+            QObject::tr("Could not create debug archive in selected location!")
+        );
+        return;
+    }
+
     const auto entries = createDebugArchiveFileList();
 
     KZip zip(filename);
