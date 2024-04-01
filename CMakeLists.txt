@@ -9,6 +9,7 @@ endif()
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED 17)
+set(QT_NO_CREATE_VERSIONLESS_FUNCTIONS ON)
 
 include(FeatureSummary)
 
