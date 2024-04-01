@@ -498,7 +498,13 @@ void GeneralSettings::slotIgnoreFilesEditor()
 
 void GeneralSettings::slotCreateDebugArchive()
 {
-    const auto filename = QFileDialog::getSaveFileName(this, tr("Create Debug Archive"), QString(), tr("Zip Archives") + " (*.zip)");
+    const auto filename = QFileDialog::getSaveFileName(
+        this,
+        tr("Create Debug Archive"),
+        QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation),
+        tr("Zip Archives") + " (*.zip)"
+    );
+
     if (filename.isEmpty()) {
         return;
     }
