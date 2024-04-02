@@ -50,6 +50,7 @@ ownCloud admins and users.
 * Bugfix - Client stuck in reconnecting state after application start: [#11478](https://github.com/owncloud/client/pull/11478)
 * Bugfix - Strip user information from new-connection URL: [#11497](https://github.com/owncloud/client/issues/11497)
 * Bugfix - Ensure folder are scheduled only once: [#11552](https://github.com/owncloud/client/issues/11552)
+* Change - Revert local folder name back to pre 3.0 behavior: [#6390](https://github.com/owncloud/enterprise/issues/6390)
 * Change - Make messages translatable that occur early in start-up: [#11142](https://github.com/owncloud/client/issues/11142)
 * Change - Remove unused command line option --language: [#11245](https://github.com/owncloud/client/issues/11245)
 * Change - Windows: always use fusion style: [#11275](https://github.com/owncloud/client/issues/11275)
@@ -123,6 +124,26 @@ ownCloud admins and users.
    We fixed a bug where a folder could be scheduled multiple times.
 
    https://github.com/owncloud/client/issues/11552
+
+* Change - Revert local folder name back to pre 3.0 behavior: [#6390](https://github.com/owncloud/enterprise/issues/6390)
+
+   Due to user requests, we reverted the folder name from
+
+   ```
+   ownCloud - Albert@owncloud.com
+   ownCloud - Katherine@owncloud.org
+   ownCloud - Marie@owncloud.com
+   ```
+
+   Back to
+
+   ```
+   ownCloud
+   ownCloud (1)
+   ownCloud (2)
+   ```
+
+   https://github.com/owncloud/enterprise/issues/6390
 
 * Change - Make messages translatable that occur early in start-up: [#11142](https://github.com/owncloud/client/issues/11142)
 
