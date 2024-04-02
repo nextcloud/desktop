@@ -18,4 +18,23 @@ class ShareeSuggestionsDataSource: SuggestionsDataSource {
     init(kit: NextcloudKit) {
         self.kit = kit
     }
+
+    private func fetchSharees(search: String) async -> [NKSharee] {
+        return await withCheckedContinuation { continuation in
+            kit.searchSharees(
+                search: inputString,
+                page: 1,
+                perPage: 20,
+                completion: { account, sharees, data, error in
+                    defer { continuation.resume(returning: sharees ?? []) }
+                    guard error == .success else {
+                        Logger.shareeDataSource.error(
+                            "Error fetching sharees: \(error.description, privacy: .public)"
+                        )
+                        return
+                    }
+                }
+            )
+        }
+    }
 }
