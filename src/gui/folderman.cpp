@@ -966,11 +966,7 @@ Folder *FolderMan::addFolderFromFolderWizardResult(const AccountStatePtr &accoun
 
 QString FolderMan::suggestSyncFolder(const QUrl &server, const QString &displayName, NewFolderType folderType)
 {
-    QString folderName = tr("%1 - %2@%3").arg(Theme::instance()->appName(), displayName, server.host());
-    if (!Theme::instance()->multiAccount()) {
-        folderName = Theme::instance()->appName();
-    }
-    return FolderMan::instance()->findGoodPathForNewSyncFolder(QDir::homePath(), folderName, folderType);
+    return FolderMan::instance()->findGoodPathForNewSyncFolder(QDir::homePath(), Theme::instance()->appName(), folderType);
 }
 
 bool FolderMan::prepareFolder(const QString &folder)
