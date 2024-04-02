@@ -138,8 +138,6 @@ Folder::Folder(const FolderDefinition &definition, const AccountStatePtr &accoun
         connect(_engine.data(), &SyncEngine::started, this, &Folder::slotSyncStarted, Qt::QueuedConnection);
         connect(_engine.data(), &SyncEngine::finished, this, &Folder::slotSyncFinished, Qt::QueuedConnection);
 
-        connect(_engine.data(), &SyncEngine::aboutToRemoveAllFiles,
-            this, &Folder::slotAboutToRemoveAllFiles);
         connect(_engine.data(), &SyncEngine::transmissionProgress, this, [this](const ProgressInfo &pi) {
             emit ProgressDispatcher::instance()->progressInfo(this, pi);
         });
@@ -613,16 +611,6 @@ void Folder::slotDiscardDownloadProgress()
     }
 }
 
-int Folder::downloadInfoCount()
-{
-    return _journal.downloadInfoCount();
-}
-
-int Folder::errorBlackListEntryCount()
-{
-    return _journal.errorBlackListEntryCount();
-}
-
 int Folder::slotWipeErrorBlacklist()
 {
     return _journal.wipeErrorBlacklist();
@@ -973,13 +961,6 @@ void Folder::startSync()
     }
 
     _engine->setIgnoreHiddenFiles(_definition.ignoreHiddenFiles);
-    if (_allowRemoveAllOnce) {
-        _engine->setPromtRemoveAllFiles(false);
-        _allowRemoveAllOnce = false;
-    } else {
-        _engine->setPromtRemoveAllFiles(ConfigFile().promptDeleteFiles());
-    }
-
     QMetaObject::invokeMethod(_engine.data(), &SyncEngine::startSync, Qt::QueuedConnection);
 
     emit syncStarted();
@@ -1218,59 +1199,6 @@ void Folder::registerFolderWatcher()
 bool Folder::virtualFilesEnabled() const
 {
     return _definition.virtualFilesMode != Vfs::Off;
-}
-
-void Folder::slotAboutToRemoveAllFiles(SyncFileItem::Direction direction)
-{
-    if (_removeAllFilesDialog) {
-        ownCloudGui::raise();
-        return;
-    }
-    const QString msg = [direction] {
-        if (direction == SyncFileItem::Down) {
-            return tr("All files in the sync folder '%1' folder were deleted on the server.\n"
-                      "These deletes will be synchronized to your local sync folder, making such files "
-                      "unavailable unless you have a right to restore. \n"
-                      "If you decide to keep the files, they will be re-synced with the server if you have rights to do so.\n"
-                      "If you decide to delete the files, they will be unavailable to you, unless you are the owner.");
-        } else {
-            return tr("All the files in your local sync folder '%1' were deleted. These deletes will be "
-                      "synchronized with your server, making such files unavailable unless restored.\n"
-                      "Are you sure you want to sync those actions with the server?\n"
-                      "If this was an accident and you decide to keep your files, they will be re-synced from the server.");
-        }
-    }();
-    _removeAllFilesDialog =
-        new QMessageBox(QMessageBox::Warning, tr("Remove All Files?"), msg.arg(shortGuiLocalPath()), QMessageBox::NoButton, ocApp()->gui()->settingsDialog());
-    _removeAllFilesDialog->setAttribute(Qt::WA_DeleteOnClose);
-    _removeAllFilesDialog->setWindowFlags(_removeAllFilesDialog->windowFlags() | Qt::WindowStaysOnTopHint);
-    _removeAllFilesDialog->addButton(tr("Remove all files"), QMessageBox::DestructiveRole);
-    QPushButton *keepBtn = _removeAllFilesDialog->addButton(tr("Keep files"), QMessageBox::AcceptRole);
-    _removeAllFilesDialog->setDefaultButton(keepBtn);
-    setSyncPaused(true);
-    connect(_removeAllFilesDialog, &QMessageBox::finished, this, [keepBtn, this] {
-        if (_removeAllFilesDialog->clickedButton() == keepBtn) {
-            // reset the db upload all local files or download all remote files
-            FileSystem::setFolderMinimumPermissions(path());
-            // will remove all dehydrated placeholders
-            _vfs->wipeDehydratedVirtualFiles();
-            journalDb()->clearFileTable();
-        }
-        // if all local files where placeholders, they might be gone after the next sync
-        // therefor we need to allow removal off all files in the next sync even if we selected keep
-        _allowRemoveAllOnce = true;
-        // the only way we end up in here is that the folder was not paused
-        setSyncPaused(false);
-        if (canSync()) {
-            FolderMan::instance()->scheduler()->enqueueFolder(this);
-        }
-    });
-    connect(this, &Folder::destroyed, _removeAllFilesDialog, &QMessageBox::deleteLater);
-    ocApp()
-        ->gui()
-        ->settingsDialog()
-        ->accountSettings(_accountState->account().get())
-        ->addModalLegacyDialog(_removeAllFilesDialog, AccountSettings::ModalWidgetSizePolicy::Minimum);
 }
 
 FolderDefinition::FolderDefinition(const QByteArray &id, const QUrl &davUrl, const QString &spaceId, const QString &displayName)

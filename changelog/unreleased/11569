@@ -1,0 +1,6 @@
+Change: Remove `Remove all files` dialog
+
+We no longer ask the user whether all files should be removed but just sync.
+
+https://github.com/owncloud/client/issues/11569
+https://github.com/owncloud/client/issues/7304

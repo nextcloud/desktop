@@ -143,7 +143,6 @@ void sync(const SyncCTX &ctx)
         ctx.account, ctx.options.target_url, ctx.options.source_dir, ctx.options.remoteFolder, db);
     engine->setSyncOptions(opt);
     engine->setParent(db);
-    engine->setPromtRemoveAllFiles(ctx.options.interactive);
 
     QObject::connect(engine, &SyncEngine::finished, engine, [engine, ctx, restartCount = std::make_shared<int>(0)](bool result) {
         if (!result) {
@@ -163,37 +162,6 @@ void sync(const SyncCTX &ctx)
             }
         }
     });
-    QObject::connect(
-        engine, &SyncEngine::aboutToRemoveAllFiles, engine, [ctx = ctx](OCC::SyncFileItem::Direction dir) mutable {
-            if (dir == SyncFileItem::Down) {
-                qInfo() << "All files in the sync folder '" << ctx.options.remoteFolder << "' folder were deleted on the server.";
-                qInfo() << "These deletes will be synchronized to your local sync folder, making such files "
-                        << "unavailable unless you have a right to restore.";
-                qInfo() << "If you decide to keep the files, they will be re-synced with the server if you have rights to do so.";
-                qInfo() << "If you decide to delete the files, they will be unavailable to you, unless you are the owner.";
-
-
-            } else {
-                qInfo() << "All the files in your local sync folder '" << ctx.options.source_dir << "' were deleted. These deletes will be "
-                        << "synchronized with your server, making such files unavailable unless restored.";
-                qInfo() << "Are you sure you want to sync those actions with the server?";
-                qInfo() << "If this was an accident and you decide to keep your files, they will be re-synced from the server.";
-            }
-            std::string s;
-            while (true) {
-                qInfo() << "Remove all files? [y,n]";
-                std::getline(std::cin, s);
-                if (s == "y") {
-                    ctx.promptRemoveAllFiles = true;
-                    sync(ctx);
-                } else if (s == "n") {
-                    return;
-                } else {
-                    continue;
-                }
-                return;
-            }
-        });
     QObject::connect(engine, &SyncEngine::syncError, engine,
         [](const QString &error) { qWarning() << "Sync error:" << error; });
     engine->setIgnoreHiddenFiles(ctx.options.ignoreHiddenFiles);

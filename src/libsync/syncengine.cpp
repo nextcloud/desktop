@@ -60,8 +60,6 @@ SyncEngine::SyncEngine(AccountPtr account, const QUrl &baseUrl, const QString &l
     , _remotePath(remotePath)
     , _journal(journal)
     , _progressInfo(new ProgressInfo)
-    , _hasNoneFiles(false)
-    , _hasRemoveFile(false)
     , _uploadLimit(0)
     , _downloadLimit(0)
 {
@@ -272,10 +270,7 @@ void OCC::SyncEngine::slotItemDiscovered(const OCC::SyncFileItemPtr &item)
 {
     if (Utility::isConflictFile(item->_file))
         _seenConflictFiles.insert(item->_file);
-    if (item->instruction() == CSYNC_INSTRUCTION_UPDATE_METADATA && !item->isDirectory()) {
-        _hasNoneFiles = true;
-    } else if (item->instruction() == CSYNC_INSTRUCTION_NONE) {
-        _hasNoneFiles = true;
+    if (item->instruction() == CSYNC_INSTRUCTION_NONE) {
         if (_account->capabilities().uploadConflictFiles() && Utility::isConflictFile(item->_file)) {
             // For uploaded conflict files, files with no action performed on them should
             // be displayed: but we mustn't overwrite the instruction if something happens
@@ -285,16 +280,6 @@ void OCC::SyncEngine::slotItemDiscovered(const OCC::SyncFileItemPtr &item)
             item->_status = SyncFileItem::Conflict;
         }
         return;
-    } else if (item->instruction() == CSYNC_INSTRUCTION_REMOVE && !item->_isSelectiveSync) {
-        _hasRemoveFile = true;
-    } else if (item->instruction() == CSYNC_INSTRUCTION_RENAME) {
-        _hasNoneFiles = true; // If a file (or every file) has been renamed, it means not al files where deleted
-    } else if (item->instruction() & (CSYNC_INSTRUCTION_TYPE_CHANGE & CSYNC_INSTRUCTION_SYNC)) {
-        if (item->_direction == SyncFileItem::Up) {
-            // An upload of an existing file means that the file was left unchanged on the server
-            // This counts as a NONE for detecting if all the files on the server were changed
-            _hasNoneFiles = true;
-        }
     }
 
     // check for blacklisting of this item.
@@ -332,8 +317,6 @@ void SyncEngine::startSync()
     _syncRunning = true;
     _anotherSyncNeeded = false;
 
-    _hasNoneFiles = false;
-    _hasRemoveFile = false;
     _seenConflictFiles.clear();
 
     _progressInfo->reset();
@@ -619,21 +602,6 @@ void SyncEngine::slotDiscoveryFinished()
         qCInfo(lcEngine) << "#### Post-Reconcile end ####################################################" << _duration.duration();
     };
 
-    if (!_hasNoneFiles && _hasRemoveFile) {
-        qCInfo(lcEngine) << "All the files are going to be changed, asking the user";
-
-        if (_promptRemoveAllFiles) {
-            int side = 0; // > 0 means more deleted on the server.  < 0 means more deleted on the client
-            for (const auto &it : qAsConst(_syncItems)) {
-                if (it->instruction() == CSYNC_INSTRUCTION_REMOVE) {
-                    side += it->_direction == SyncFileItem::Down ? 1 : -1;
-                }
-            }
-            emit aboutToRemoveAllFiles(side >= 0 ? SyncFileItem::Down : SyncFileItem::Up);
-            finalize(false);
-            return;
-        }
-    }
     finish();
 }
 
@@ -886,16 +854,6 @@ void SyncEngine::slotInsufficientRemoteStorage()
 
     _uniqueErrors.insert(msg);
     emit syncError(msg, ErrorCategory::InsufficientRemoteStorage);
-}
-
-bool SyncEngine::isPromtRemoveAllFiles() const
-{
-    return _promptRemoveAllFiles;
-}
-
-void SyncEngine::setPromtRemoveAllFiles(bool promtRemoveAllFiles)
-{
-    _promptRemoveAllFiles = promtRemoveAllFiles;
 }
 
 bool SyncEngine::isExcluded(QStringView filePath) const

@@ -364,9 +364,6 @@ public slots:
        */
     void slotTerminateSync(const QString &reason);
 
-    // connected to the corresponding signals in the SyncEngine
-    void slotAboutToRemoveAllFiles(SyncFileItem::Direction);
-
     /**
       * Starts a sync operation
       *
@@ -375,9 +372,7 @@ public slots:
     void startSync();
 
     void slotDiscardDownloadProgress();
-    int downloadInfoCount();
     int slotWipeErrorBlacklist();
-    int errorBlackListEntryCount();
 
     /**
        * Triggered by the folder watcher when a file/dir in this folder
@@ -517,11 +512,6 @@ private:
      * The vfs mode instance (created by plugin) to use. Never null.
      */
     QSharedPointer<Vfs> _vfs;
-
-    QPointer<QMessageBox> _removeAllFilesDialog;
-
-    // allow that all files are removed in the next run
-    bool _allowRemoveAllOnce = false;
 
     friend class SpaceMigration;
 };
