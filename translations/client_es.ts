@@ -6332,7 +6332,7 @@ El servidor respondió con el error: %2</translation>
     <message>
         <location filename="../src/common/checksums.cpp" line="256"/>
         <source>The checksum header is malformed.</source>
-        <translation>El encabezado del checksum tiene un formato incorrecto.</translation>
+        <translation>El encabezado de checksum está malformado.</translation>
     </message>
     <message>
         <location filename="../src/common/checksums.cpp" line="297"/>
