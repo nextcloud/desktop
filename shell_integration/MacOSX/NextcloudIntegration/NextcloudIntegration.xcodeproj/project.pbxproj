@@ -23,6 +23,7 @@
 		5352E85B29B7BFE6002CE85C /* Progress+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5352E85A29B7BFE6002CE85C /* Progress+Extensions.swift */; };
 		5358F2B92BAA0F5300E3C729 /* NextcloudCapabilitiesKit in Frameworks */ = {isa = PBXBuildFile; productRef = 5358F2B82BAA0F5300E3C729 /* NextcloudCapabilitiesKit */; };
 		535AE30E29C0A2CC0042A9BA /* Logger+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 535AE30D29C0A2CC0042A9BA /* Logger+Extensions.swift */; };
+		53651E442BBC0CA300ECAC29 /* SuggestionsTextFieldKit in Frameworks */ = {isa = PBXBuildFile; productRef = 53651E432BBC0CA300ECAC29 /* SuggestionsTextFieldKit */; };
 		536EFBF7295CF58100F4CB13 /* FileProviderSocketLineProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 536EFBF6295CF58100F4CB13 /* FileProviderSocketLineProcessor.swift */; };
 		536EFC36295E3C1100F4CB13 /* NextcloudAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 536EFC35295E3C1100F4CB13 /* NextcloudAccount.swift */; };
 		5374FD442B95EE1400C78D54 /* ShareController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5374FD432B95EE1400C78D54 /* ShareController.swift */; };
@@ -250,6 +251,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5358F2B92BAA0F5300E3C729 /* NextcloudCapabilitiesKit in Frameworks */,
+				53651E442BBC0CA300ECAC29 /* SuggestionsTextFieldKit in Frameworks */,
 				53FE14542B8E1219006C4193 /* NextcloudKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -523,6 +525,7 @@
 			packageProductDependencies = (
 				53FE14532B8E1219006C4193 /* NextcloudKit */,
 				5358F2B82BAA0F5300E3C729 /* NextcloudCapabilitiesKit */,
+				53651E432BBC0CA300ECAC29 /* SuggestionsTextFieldKit */,
 			);
 			productName = FileProviderUIExt;
 			productReference = 53B9797E2B84C81F002DA742 /* FileProviderUIExt.appex */;
@@ -624,6 +627,7 @@
 				5307A6E42965C6FA001E0C6A /* XCRemoteSwiftPackageReference "NextcloudKit" */,
 				5307A6E92965DB57001E0C6A /* XCRemoteSwiftPackageReference "realm-swift" */,
 				5358F2B72BAA045E00E3C729 /* XCRemoteSwiftPackageReference "NextcloudCapabilitiesKit" */,
+				53651E422BBC0C7F00ECAC29 /* XCRemoteSwiftPackageReference "SuggestionsTextFieldKit" */,
 			);
 			productRefGroup = C2B573B21B1CD91E00303B36 /* Products */;
 			projectDirPath = "";
@@ -1539,6 +1543,14 @@
 				kind = branch;
 			};
 		};
+		53651E422BBC0C7F00ECAC29 /* XCRemoteSwiftPackageReference "SuggestionsTextFieldKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/claucambra/SuggestionsTextFieldKit.git";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -1561,6 +1573,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 5358F2B72BAA045E00E3C729 /* XCRemoteSwiftPackageReference "NextcloudCapabilitiesKit" */;
 			productName = NextcloudCapabilitiesKit;
+		};
+		53651E432BBC0CA300ECAC29 /* SuggestionsTextFieldKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 53651E422BBC0C7F00ECAC29 /* XCRemoteSwiftPackageReference "SuggestionsTextFieldKit" */;
+			productName = SuggestionsTextFieldKit;
 		};
 		53FE14512B8E1213006C4193 /* NextcloudKit */ = {
 			isa = XCSwiftPackageProductDependency;
