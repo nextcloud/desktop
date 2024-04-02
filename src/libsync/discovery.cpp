@@ -355,12 +355,13 @@ bool ProcessDirectoryJob::handleExcluded(const QString &path, const Entries &ent
                         break;
                     }
                 }
+                const auto itemTypeName = (isDirectory ? tr("Folder", "name of folder entity to use when warning about invalid name") : tr("File", "name of folder entity to use when warning about invalid name"));
                 if (invalid) {
-                    item->_errorString = tr("File names containing the character \"%1\" are not supported on this file system.").arg(QLatin1Char(invalid));
+                    item->_errorString = tr("%1 name containing the character \"%2\" is not supported on this file system.", "folder or file impossible to sync due to an invalid name, placeholders will be file or folder and the invalid character").arg(itemTypeName, QChar(invalid));
                 } else if (isInvalidPattern) {
-                    item->_errorString = tr("File name contains at least one invalid character");
+                    item->_errorString = tr("%1 name contains at least one invalid character").arg(itemTypeName);
                 } else {
-                    item->_errorString = tr("The file name is a reserved name on this file system.");
+                    item->_errorString = tr("%1 name is a reserved name on this file system.").arg(itemTypeName);
                 }
             }
             item->_status = SyncFileItem::FileNameInvalid;
