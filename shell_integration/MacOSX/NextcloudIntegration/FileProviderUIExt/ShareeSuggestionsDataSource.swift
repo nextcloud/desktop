@@ -13,10 +13,17 @@ import SuggestionsTextFieldKit
 class ShareeSuggestionsDataSource: SuggestionsDataSource {
     let kit: NextcloudKit
     var suggestions: [SuggestionsTextFieldKit.Suggestion] = []
-    var inputString: String = ""
+    var inputString: String = "" {
+        didSet { Task { await updateSuggestions() } }
+    }
 
     init(kit: NextcloudKit) {
         self.kit = kit
+    }
+
+    private func updateSuggestions() async {
+        let sharees = await fetchSharees(search: inputString)
+        suggestions = suggestionsFromSharees(sharees)
     }
 
     private func fetchSharees(search: String) async -> [NKSharee] {
