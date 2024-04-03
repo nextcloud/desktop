@@ -35,6 +35,22 @@ class ShareOptionsView: NSView {
     @IBOutlet private weak var circleShare: NSMenuItem!
     @IBOutlet private weak var talkConversationShare: NSMenuItem!
 
+    var kit: NextcloudKit? {
+        didSet {
+            Logger.shareOptionsView.info("Setting up the kit.")
+            guard let kit = kit else {
+                Logger.shareOptionsView.error("Could not configure suggestions data source.")
+                return
+            }
+            suggestionsWindowController.dataSource = ShareeSuggestionsDataSource(kit: kit)
+            suggestionsWindowController.parentTextField = shareRecipientTextField
+
+            suggestionsTextFieldDelegate.suggestionsWindowController = suggestionsWindowController
+            shareRecipientTextField.delegate = suggestionsTextFieldDelegate
+
+            suggestionsWindowController.begin(for: shareRecipientTextField)
+        }
+    }
     var dataSource: ShareTableViewDataSource?
     var controller: ShareController? {
         didSet {
@@ -72,6 +88,8 @@ class ShareOptionsView: NSView {
         }
     }
     private var cancellable: AnyCancellable?
+    private var suggestionsWindowController = SuggestionsWindowController()
+    private var suggestionsTextFieldDelegate = SuggestionsTextFieldDelegate()
 
     private func update() {
         guard let share = controller?.share else {
@@ -161,7 +179,7 @@ class ShareOptionsView: NSView {
         expirationDatePicker.isHidden = expirationDateCheckbox.state == .off
     }
 
-    func setAllFields(enabled: Bool) {
+    private func setAllFields(enabled: Bool) {
         shareTypePicker.isEnabled = enabled
         shareRecipientTextField.isEnabled = enabled
         labelTextField.isEnabled = enabled
@@ -235,12 +253,12 @@ class ShareOptionsView: NSView {
                 Logger.shareOptionsView.info("Creating new share!")
 
                 guard let dataSource = dataSource,
-                      let kit = dataSource.kit,
+                      let kit = kit,
                       let itemServerRelativePath = dataSource.itemServerRelativePath
                 else {
                     Logger.shareOptionsView.error("Cannot create new share due to missing data.")
                     Logger.shareOptionsView.error("dataSource: \(self.dataSource)")
-                    Logger.shareOptionsView.error("kit: \(self.dataSource?.kit)")
+                    Logger.shareOptionsView.error("kit: \(self.kit)")
                     Logger.shareOptionsView.error(
                         "path: \(self.dataSource?.itemServerRelativePath ?? "")"
                     )

@@ -111,6 +111,8 @@ class ShareViewController: NSViewController, ShareViewDataSourceUIDelegate {
     }
 
     @IBAction func createShare(_ sender: Any) {
+        guard let kit = shareDataSource.kit else { return }
+        optionsView.kit = kit
         optionsView.createMode = true
         tableView.deselectAll(self)
         if !splitView.arrangedSubviews.contains(optionsView) {
@@ -137,11 +139,11 @@ class ShareViewController: NSViewController, ShareViewDataSourceUIDelegate {
         }
         splitView.removeArrangedSubview(optionsView)
         optionsView.isHidden = true
-
     }
 
     func showOptions(share: NKShare) {
         guard let kit = shareDataSource.kit else { return }
+        optionsView.kit = kit
         optionsView.controller = ShareController(share: share, kit: kit)
         if !splitView.arrangedSubviews.contains(optionsView) {
             splitView.addArrangedSubview(optionsView)
