@@ -1036,7 +1036,7 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
             item->_status = SyncFileItem::Status::NormalError;
         }
 
-        {
+        if (item->_type != CSyncEnums::ItemTypeVirtualFile) {
             const auto foundEditorsKeepingFileBusy = queryEditorsKeepingFileBusy(item, path);
             if (!foundEditorsKeepingFileBusy.isEmpty()) {
                 item->_instruction = CSYNC_INSTRUCTION_ERROR;
