@@ -23,11 +23,13 @@ class ShareeSuggestionsDataSource: SuggestionsDataSource {
 
     private func updateSuggestions() async {
         let sharees = await fetchSharees(search: inputString)
+        Logger.shareeDataSource.info("Fetched \(sharees.count, privacy: .public) sharees.")
         suggestions = suggestionsFromSharees(sharees)
         NotificationCenter.default.post(name: SuggestionsChangedNotificationName, object: self)
     }
 
     private func fetchSharees(search: String) async -> [NKSharee] {
+        Logger.shareeDataSource.debug("Searching sharees with: \(search, privacy: .public)")
         return await withCheckedContinuation { continuation in
             kit.searchSharees(
                 search: inputString,
