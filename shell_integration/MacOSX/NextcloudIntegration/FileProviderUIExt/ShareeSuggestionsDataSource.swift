@@ -8,11 +8,10 @@
 import Foundation
 import NextcloudKit
 import OSLog
-import SuggestionsTextFieldKit
 
 class ShareeSuggestionsDataSource: SuggestionsDataSource {
     let kit: NextcloudKit
-    var suggestions: [SuggestionsTextFieldKit.Suggestion] = []
+    var suggestions: [Suggestion] = []
     var inputString: String = "" {
         didSet { Task { await updateSuggestions() } }
     }
