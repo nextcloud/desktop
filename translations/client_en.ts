@@ -1271,11 +1271,6 @@ This configuration is know to lead to dataloss and is no longer supported.
 Please consider removing this folder from the account and adding it again.</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <location filename="../src/gui/folderman.cpp" line="969"/>
-        <source>%1 - %2@%3</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>OCC::FolderStatusModel</name>
