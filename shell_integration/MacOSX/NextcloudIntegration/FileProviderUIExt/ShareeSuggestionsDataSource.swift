@@ -24,6 +24,7 @@ class ShareeSuggestionsDataSource: SuggestionsDataSource {
     private func updateSuggestions() async {
         let sharees = await fetchSharees(search: inputString)
         suggestions = suggestionsFromSharees(sharees)
+        NotificationCenter.default.post(name: SuggestionsChangedNotificationName, object: self)
     }
 
     private func fetchSharees(search: String) async -> [NKSharee] {
