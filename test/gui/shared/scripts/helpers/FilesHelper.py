@@ -13,12 +13,21 @@ def buildConflictedRegex(filename):
             namepart,
             extpart,
         )
-    else:
-        return '%s \(conflicted copy \d{4}-\d{2}-\d{2} \d{6}\)' % (filename)
+    return '%s \(conflicted copy \d{4}-\d{2}-\d{2} \d{6}\)' % (filename)
 
 
 def sanitizePath(path):
     return path.replace('//', '/')
+
+
+def prefix_path_namespace(path):
+    if isWindows():
+        # https://learn.microsoft.com/en-us/windows/win32/fileio/naming-a-file?redirectedfrom=MSDN#win32-file-namespaces
+        # disable string parsing
+        #  - long path
+        #  - trailing whitespaces
+        return '\\\\?\\' + path
+    return path
 
 
 def can_read(resource):

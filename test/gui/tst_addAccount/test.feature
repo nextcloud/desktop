@@ -59,7 +59,7 @@ Feature: adding accounts
         Then credentials wizard should be visible
 
     @skipOnLinux
-    Scenario: Adding account with vfs disabled
+    Scenario: Adding account with vfs disabled (Windows only)
         Given the user has started the client
         And the user has entered the following account information:
             | server   | %local_server% |

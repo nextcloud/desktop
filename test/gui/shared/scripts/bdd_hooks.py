@@ -32,6 +32,7 @@ from helpers.ConfigHelper import (
     isLinux,
 )
 from helpers.api.utils import url_join
+from helpers.FilesHelper import prefix_path_namespace
 from datetime import datetime
 from pageObjects.Toolbar import Toolbar
 from pageObjects.AccountSetting import AccountSetting
@@ -235,9 +236,9 @@ def teardown_client():
         test.log("Deleting: " + entry.name)
         try:
             if entry.is_file() or entry.is_symlink():
-                os.unlink(entry.path)
+                os.unlink(prefix_path_namespace(entry.path))
             elif entry.is_dir():
-                shutil.rmtree(entry.path)
+                shutil.rmtree(prefix_path_namespace(entry.path))
         except Exception as e:
             test.log(f'Failed to delete{entry.name}. Reason: {e}.')
 

@@ -22,6 +22,11 @@ def step(context):
     SyncConnection.resumeSync()
 
 
+@When('the user force syncs the files')
+def step(context):
+    SyncConnection.forceSync()
+
+
 @When('the user waits for the files to sync')
 def step(context):
     waitForFileOrFolderToSync(getResourcePath('/'))
@@ -91,11 +96,12 @@ def step(context, filename):
 
 @Then('the file "|any|" should be blacklisted')
 def step(context, filename):
-    test.compare(
-        True,
-        Activity.checkBlackListedResourceExist(filename),
-        "File is blacklisted",
-    )
+    test.compare(True, Activity.resourceIsBlacklisted(filename), "File is Blacklisted")
+
+
+@Then('the file "|any|" should be ignored')
+def step(context, filename):
+    test.compare(True, Activity.resourceIsIgnored(filename), "File is Ignored")
 
 
 @When('the user selects "|any|" tab in the activity')
