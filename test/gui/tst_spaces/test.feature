@@ -17,14 +17,26 @@ Feature: Project spaces
         Then user "Alice" should be able to open the file "testfile.txt" on the file system
         And as "Alice" the file "testfile.txt" should have content "some content" on the file system
 
-
-    Scenario: User with Viewer role cannot edit the file
+    @skipOnWindows
+    Scenario: User with Viewer role cannot edit the file (Linux only)
         Given the administrator has created a folder "planning" in space "Project101"
         And the administrator has uploaded a file "testfile.txt" with content "some content" inside space "Project101"
         And the administrator has added user "Alice" to space "Project101" with role "viewer"
         And user "Alice" has set up a client with space "Project101"
         Then user "Alice" should not be able to edit the file "testfile.txt" on the file system
         Then as "Alice" the file "testfile.txt" in the space "Project101" should have content "some content" in the server
+
+    @skipOnLinux
+    Scenario: User with Viewer role cannot edit the file (Windows only)
+        Given the administrator has created a folder "planning" in space "Project101"
+        And the administrator has uploaded a file "testfile.txt" with content "some content" inside space "Project101"
+        And the administrator has added user "Alice" to space "Project101" with role "viewer"
+        And user "Alice" has set up a client with space "Project101"
+        When the user overwrites the file "testfile.txt" with content "overwrite some content"
+        And the user clicks on the activity tab
+        And the user selects "Not Synced" tab in the activity
+        Then the file "testfile.txt" should be blacklisted
+        And as "Alice" the file "testfile.txt" in the space "Project101" should have content "some content" in the server
 
 
     Scenario: User with Editor role can edit the file

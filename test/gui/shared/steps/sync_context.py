@@ -4,11 +4,12 @@ from pageObjects.Toolbar import Toolbar
 from pageObjects.Activity import Activity
 from pageObjects.Settings import Settings
 
-from helpers.ConfigHelper import get_config, isWindows
+from helpers.ConfigHelper import get_config, isWindows, set_config
 from helpers.SyncHelper import (
     waitForFileOrFolderToSync,
     waitForFileOrFolderToHaveSyncError,
 )
+from helpers.SetupClientHelper import getTempResourcePath, setCurrentUserSyncPath
 
 
 @Given('the user has paused the file sync')
@@ -19,6 +20,11 @@ def step(context):
 @When('the user resumes the file sync on the client')
 def step(context):
     SyncConnection.resumeSync()
+
+
+@When('the user force syncs the files')
+def step(context):
+    SyncConnection.forceSync()
 
 
 @When('the user waits for the files to sync')
@@ -90,11 +96,12 @@ def step(context, filename):
 
 @Then('the file "|any|" should be blacklisted')
 def step(context, filename):
-    test.compare(
-        True,
-        Activity.checkBlackListedResourceExist(filename),
-        "File is blacklisted",
-    )
+    test.compare(True, Activity.resourceIsBlacklisted(filename), "File is Blacklisted")
+
+
+@Then('the file "|any|" should be ignored')
+def step(context, filename):
+    test.compare(True, Activity.resourceIsIgnored(filename), "File is Ignored")
 
 
 @When('the user selects "|any|" tab in the activity')
@@ -144,6 +151,14 @@ def step(context):
         rowIndex += 1
 
 
+@When('the user selects "|any|" space in sync connection wizard')
+def step(context, space_name):
+    if get_config("ocis"):
+        SyncConnectionWizard.selectSpaceToSync(space_name)
+        SyncConnectionWizard.nextStep()
+        set_config('syncConnectionName', space_name)
+
+
 @When('the user sets the sync path in sync connection wizard')
 def step(context):
     SyncConnectionWizard.setSyncPathInSyncConnectionWizard()
@@ -153,12 +168,19 @@ def step(context):
     'the user sets the temp folder "|any|" as local sync path in sync connection wizard'
 )
 def step(context, folderName):
-    SyncConnectionWizard.setSyncPathInSyncConnectionWizard(folderName)
+    sync_path = getTempResourcePath(folderName)
+    SyncConnectionWizard.setSyncPathInSyncConnectionWizard(sync_path)
+    if get_config("ocis"):
+        # empty connection name when using temporary locations
+        set_config('syncConnectionName', '')
+        setCurrentUserSyncPath(sync_path)
 
 
 @When('the user selects "|any|" as a remote destination folder')
 def step(context, folderName):
-    SyncConnectionWizard.selectRemoteDestinationFolder(folderName)
+    # There's no remote destination section with oCIS server
+    if not get_config("ocis"):
+        SyncConnectionWizard.selectRemoteDestinationFolder(folderName)
 
 
 @When('the user syncs the "|any|" space')

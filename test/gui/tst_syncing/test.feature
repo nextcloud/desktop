@@ -54,7 +54,7 @@ Feature: Syncing files
             client content
             """
 
-    @skipOnOCIS
+
     Scenario: Sync all is selected by default
         Given user "Alice" has created folder "simple-folder" in the server
         And user "Alice" has created folder "large-folder" in the server
@@ -66,6 +66,7 @@ Feature: Syncing files
             | user     | Alice          |
             | password | 1234           |
         When the user selects manual sync folder option in advanced section
+        And the user selects "Personal" space in sync connection wizard
         And the user sets the sync path in sync connection wizard
         And the user selects "ownCloud" as a remote destination folder
         And the user disables VFS support for Windows
@@ -78,7 +79,7 @@ Feature: Syncing files
         But the folder "simple-folder" should not exist on the file system
         And the folder "large-folder" should not exist on the file system
 
-    @skipOnOCIS
+
     Scenario: Sync only one folder from the server
         Given user "Alice" has created folder "simple-folder" in the server
         And user "Alice" has created folder "large-folder" in the server
@@ -88,6 +89,7 @@ Feature: Syncing files
             | user     | Alice          |
             | password | 1234           |
         When the user selects manual sync folder option in advanced section
+        And the user selects "Personal" space in sync connection wizard
         And the user sets the sync path in sync connection wizard
         And the user selects "ownCloud" as a remote destination folder
         And the user disables VFS support for Windows
@@ -111,7 +113,7 @@ Feature: Syncing files
         Then as "Alice" folder "simple-folder" should not exist in the server
 
 
-    @issue-9733 @skipOnOCIS
+    @issue-9733
     Scenario: sort folders list by name and size
         Given user "Alice" has created folder "123Folder" in the server
         And user "Alice" has uploaded file on the server with content "small" to "123Folder/lorem.txt"
@@ -124,6 +126,7 @@ Feature: Syncing files
             | user     | Alice          |
             | password | 1234           |
         When the user selects manual sync folder option in advanced section
+        And the user selects "Personal" space in sync connection wizard
         And the user sets the sync path in sync connection wizard
         And the user selects "ownCloud" as a remote destination folder
         And the user disables VFS support for Windows
@@ -168,7 +171,7 @@ Feature: Syncing files
             | "really long folder name with some spaces and special char such as $%ñ&" |
 
     @skipOnWindows
-    Scenario Outline: Syncing a folder having space at the end
+    Scenario Outline: Syncing a folder having space at the end (Linux only)
         Given user "Alice" has set up a client with default settings
         When user "Alice" creates a folder <foldername> inside the sync folder
         And the user waits for folder <foldername> to be synced
@@ -176,6 +179,17 @@ Feature: Syncing files
         Examples:
             | foldername                  |
             | "folder with space at end " |
+
+    @skipOnLinux
+    Scenario: Try to sync files having space at the end (Windows only)
+        Given user "Alice" has uploaded file on the server with content "lorem epsum" to "trailing-space.txt "
+        And user "Alice" has set up a client with default settings
+        When user "Alice" creates a folder "folder with space at end " inside the sync folder
+        And the user force syncs the files
+        When the user clicks on the activity tab
+        And the user selects "Not Synced" tab in the activity
+        Then the file "trailing-space.txt " should be ignored
+        And the file "folder with space at end " should be ignored
 
 
     Scenario: Many subfolders can be synced
@@ -251,7 +265,7 @@ Feature: Syncing files
         And as "Alice" folder "Folder1/subFolder1/subFolder2" should exist in the server
 
     @skipOnWindows
-    Scenario: Filenames that are rejected by the server are reported
+    Scenario: Filenames that are rejected by the server are reported (Linux only)
         Given user "Alice" has created folder "Folder1" in the server
         And user "Alice" has set up a client with default settings
         When user "Alice" creates a file "Folder1/a\\a.txt" with the following content inside the sync folder
@@ -263,7 +277,7 @@ Feature: Syncing files
         Then the file "Folder1/a\\a.txt" should exist on the file system
         And the file "Folder1/a\\a.txt" should be blacklisted
 
-    @skipOnWindows
+
     Scenario Outline: Sync long nested folder
         Given user "Alice" has created folder "<foldername>" in the server
         And user "Alice" has set up a client with default settings
@@ -281,7 +295,7 @@ Feature: Syncing files
             | An empty folder which name is obviously more than 59 characters |
 
     @skipOnWindows
-    Scenario: Invalid system names are synced in linux
+    Scenario: Invalid system names are synced (Linux only)
         Given user "Alice" has created folder "CON" in the server
         And user "Alice" has created folder "test%" in the server
         And user "Alice" has uploaded file on the server with content "server content" to "/PRN"
@@ -297,7 +311,7 @@ Feature: Syncing files
         And as "Alice" file "/foo%" should exist in the server
 
     @skipOnLinux
-    Scenario: Sync invalid system names in windows
+    Scenario: Sync invalid system names (Windows only)
         Given user "Alice" has created folder "CON" in the server
         And user "Alice" has created folder "test%" in the server
         And user "Alice" has uploaded file on the server with content "server content" to "/PRN"
@@ -358,8 +372,8 @@ Feature: Syncing files
             | filename                                                                                                                                                                                                                     |
             | thisIsAVeryLongFileNameToCheckThatItWorks-thisIsAVeryLongFileNameToCheckThatItWorks-thisIsAVeryLongFileNameToCheckThatItWorks-thisIsAVeryLongFileNameToCheckThatItWorks-thisIsAVeryLongFileNameToCheckThatItWorks-thisIs.txt |
 
-    @skipOnOCIS @issue-11104 @skip
-    Scenario Outline: File with long name (233 characters) is blacklisted
+    @skipOnOCIS @issue-11104
+    Scenario Outline: File with long name (233 characters) is blacklisted (oC10)
         Given user "Alice" has set up a client with default settings
         When user "Alice" creates a file "<filename>" with the following content inside the sync folder
             """
@@ -435,7 +449,6 @@ Feature: Syncing files
         And as "Alice" the file "file2.txt" should have the content "Test file2" in the server
 
 
-    @skipOnOCIS
     Scenario: sync remote folder to a local sync folder having special characters
         Given user "Alice" has created folder "~`!@#$^&()-_=+{[}];',)" in the server
         And user "Alice" has created folder "simple-folder" in the server
@@ -450,6 +463,7 @@ Feature: Syncing files
             | user     | Alice          |
             | password | 1234           |
         When the user selects manual sync folder option in advanced section
+        And the user selects "Personal" space in sync connection wizard
         And the user sets the temp folder "~`!@#$^&()-_=+{[}];',)PRN%" as local sync path in sync connection wizard
         And the user selects "ownCloud" as a remote destination folder
         And the user disables VFS support for Windows

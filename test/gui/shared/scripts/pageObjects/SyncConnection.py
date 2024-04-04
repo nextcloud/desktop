@@ -56,6 +56,10 @@ class SyncConnection:
         squish.activateItem(squish.waitForObjectItem(SyncConnection.MENU, action))
 
     @staticmethod
+    def forceSync():
+        SyncConnection.performAction("Force sync now")
+
+    @staticmethod
     def pauseSync():
         SyncConnection.performAction("Pause sync")
 

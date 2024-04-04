@@ -10,7 +10,7 @@ from pageObjects.AccountSetting import AccountSetting
 
 from helpers.SetupClientHelper import getResourcePath, getTempResourcePath
 from helpers.SyncHelper import waitForClientToBeReady
-from helpers.ConfigHelper import get_config, isWindows
+from helpers.ConfigHelper import get_config
 from helpers.FilesHelper import (
     buildConflictedRegex,
     sanitizePath,
@@ -19,6 +19,7 @@ from helpers.FilesHelper import (
     read_file_content,
     is_empty_sync_folder,
     get_size_in_bytes,
+    prefix_path_namespace,
 )
 from helpers.SetupClientHelper import (
     getTempResourcePath,
@@ -46,7 +47,7 @@ def createFolder(foldername, username=None, isTempFolder=False):
         folder_path = join(get_config('tempFolderPath'), foldername)
     else:
         folder_path = getResourcePath(foldername, username)
-    os.makedirs(folder_path)
+    os.makedirs(prefix_path_namespace(folder_path))
 
 
 def renameFileFolder(source, destination):
@@ -60,13 +61,13 @@ def createFileWithSize(filename, filesize, isTempFolder=False):
         file = join(get_config('tempFolderPath'), filename)
     else:
         file = getResourcePath(filename)
-    with open(file, "wb") as f:
+    with open(prefix_path_namespace(file), "wb") as f:
         f.seek(get_size_in_bytes(filesize) - 1)
         f.write(b'\0')
 
 
 def writeFile(resource, content):
-    f = open(resource, "w")
+    f = open(prefix_path_namespace(resource), "w")
     f.write(content)
     f.close()
 
@@ -100,8 +101,7 @@ def addCopySuffix(resource_path, resource_type):
     if resource_type == "file":
         source_dir = resource_path.rsplit('.', 1)
         return source_dir[0] + " - Copy." + source_dir[-1]
-    else:
-        return resource_path + " - Copy"
+    return resource_path + " - Copy"
 
 
 @When(

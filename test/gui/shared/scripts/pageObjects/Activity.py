@@ -92,23 +92,29 @@ class Activity:
         )
 
     @staticmethod
-    def checkBlackListedResourceExist(filename):
+    def resourceIsBlacklisted(filename):
         result = squish.waitFor(
-            lambda: Activity.isResourceBlackListed(filename),
+            lambda: Activity.hasSyncStatus(filename, "Blacklisted"),
             get_config('maxSyncTimeout') * 1000,
         )
-
         return result
 
     @staticmethod
-    def isResourceBlackListed(filename):
+    def resourceIsIgnored(filename):
+        result = squish.waitFor(
+            lambda: Activity.hasSyncStatus(filename, "File Ignored"),
+            get_config('maxSyncTimeout') * 1000,
+        )
+        return result
+
+    @staticmethod
+    def hasSyncStatus(filename, status):
         try:
-            # The blacklisted file does not have text like (conflicted copy) appended to it in the not synced table.
             fileRow = squish.waitForObject(
                 Activity.getNotSyncedFileSelector(filename),
                 get_config('lowestSyncTimeout') * 1000,
             )["row"]
-            if Activity.getNotSyncedStatus(fileRow) == "Blacklisted":
+            if Activity.getNotSyncedStatus(fileRow) == status:
                 return True
             return False
         except:
