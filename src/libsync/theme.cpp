@@ -212,11 +212,6 @@ void Theme::setSystrayUseMonoIcons(bool mono)
     emit systrayUseMonoIconsChanged(mono);
 }
 
-bool Theme::systrayUseMonoIcons() const
-{
-    return _mono;
-}
-
 QUrl Theme::updateCheckUrl() const
 {
     return QUrl(QStringLiteral(APPLICATION_UPDATE_URL));
