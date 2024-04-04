@@ -112,12 +112,10 @@ target_link_libraries(owncloudGui
 )
 
 apply_common_target_settings(owncloudGui)
-qt_add_qml_module(owncloudGui
-        URI org.ownCloud.qmlcomponents
+ecm_add_qml_module(owncloudGui
+        URI org.ownCloud.gui
         VERSION 1.0
         NAMESPACE OCC
-        # compat to qt < 6.5
-        RESOURCE_PREFIX "/qt/qml/"
         QML_FILES
             qml/SpaceDelegate.qml
             qml/FolderDelegate.qml
@@ -206,6 +204,7 @@ else()
 endif()
 
 install(TARGETS owncloud owncloudGui ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
+ecm_finalize_qml_module(owncloudGui DESTINATION ${KDE_INSTALL_QMLDIR})
 
 if(UNIX AND NOT APPLE)
     configure_file(${CMAKE_SOURCE_DIR}/owncloud.desktop.in

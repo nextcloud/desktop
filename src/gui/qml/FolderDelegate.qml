@@ -15,7 +15,7 @@
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
-import org.ownCloud.qmlcomponents 1.0
+import org.ownCloud.gui 1.0
 
 Pane {
     // TODO: not cool
