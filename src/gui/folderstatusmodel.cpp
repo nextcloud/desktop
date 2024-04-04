@@ -297,14 +297,6 @@ QVariant FolderStatusModel::data(const QModelIndex &index, int role) const
         return folderInfo->_progress._overallPercent / 100.0;
     case Roles::SyncProgressOverallString:
         return folderInfo->_progress._overallSyncString;
-    case Roles::FolderSyncText: {
-        if (auto *space = getSpace()) {
-            if (!space->drive().getDescription().isEmpty()) {
-                return space->drive().getDescription();
-            }
-        }
-        return tr("Local folder: %1").arg(f->shortGuiLocalPath());
-    }
     case Roles::Priority:
         // TODO:
         return QStringLiteral("%1%2").arg(f->priority(), 3, 10, QLatin1Char('0')).arg(f->displayName());
@@ -365,13 +357,12 @@ QHash<int, QByteArray> FolderStatusModel::roleNames() const
 {
     return {
         {static_cast<int>(Roles::DisplayName), "displayName"},
-        {static_cast<int>(Roles::Subtitle), "subTitle"},
+        {static_cast<int>(Roles::Subtitle), "subtitle"},
         {static_cast<int>(Roles::FolderImageUrl), "imageUrl"},
         {static_cast<int>(Roles::FolderStatusUrl), "statusUrl"},
         {static_cast<int>(Roles::SyncProgressOverallPercent), "progress"},
         {static_cast<int>(Roles::SyncProgressOverallString), "overallText"},
         {static_cast<int>(Roles::SyncProgressItemString), "itemText"},
-        {static_cast<int>(Roles::FolderSyncText), "descriptionText"},
         {static_cast<int>(Roles::FolderErrorMsg), "errorMsg"},
         {static_cast<int>(Roles::Quota), "quota"},
         {static_cast<int>(Roles::ToolTip), "toolTip"},

@@ -53,7 +53,6 @@ public:
         SyncProgressOverallPercent,
         SyncProgressOverallString,
         SyncProgressItemString,
-        FolderSyncText,
         Priority,
         Quota,
         FolderImageUrl,

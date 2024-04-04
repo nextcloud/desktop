@@ -38,7 +38,7 @@ Pane {
                 id: folderDelegate
 
                 required property string displayName
-                required property string descriptionText
+                required property string subtitle
                 required property url imageUrl
                 required property url statusUrl
                 required property double progress
