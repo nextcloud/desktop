@@ -648,8 +648,8 @@ void ActivityListModel::addNotificationToActivityList(const Activity &activity)
 void ActivityListModel::addSyncFileItemToActivityList(const Activity &activity)
 {
     qCDebug(lcActivity) << "Successfully added to the activity list: " << activity._subject;
-    addEntriesToActivityList({activity});
-    _syncFileItemLists.prepend(activity);
+    // addEntriesToActivityList({activity});
+    // _syncFileItemLists.prepend(activity);
 }
 
 void ActivityListModel::removeActivityFromActivityList(int row)

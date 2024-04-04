@@ -82,7 +82,10 @@ Logger::Logger(QObject *parent)
     _crashLog.resize(CrashLogSize);
 #ifndef NO_MSG_HANDLER
     qInstallMessageHandler([](QtMsgType type, const QMessageLogContext &ctx, const QString &message) {
-        Logger::instance()->doLog(type, ctx, message);
+        Q_UNUSED(type)
+        Q_UNUSED(ctx)
+        Q_UNUSED(message)
+        //Logger::instance()->doLog(type, ctx, message);
     });
 #endif
 }

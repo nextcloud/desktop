@@ -980,6 +980,7 @@ void SyncEngine::slotPropagationFinished(OCC::SyncFileItem::Status status)
     emit transmissionProgress(*_progressInfo);
 
     finalize(status == SyncFileItem::Success);
+    qApp->quit();
 }
 
 void SyncEngine::finalize(bool success)
