@@ -13,16 +13,17 @@
  */
 
 
-#ifndef FOLDERMAN_H
-#define FOLDERMAN_H
+#pragma once
 
-#include <QObject>
-#include <QQueue>
-#include <QList>
+#include "gui/owncloudguilib.h"
 
 #include "folder.h"
 #include "folderwizard/folderwizard.h"
 #include "scheduling/syncscheduler.h"
+
+#include <QList>
+#include <QObject>
+#include <QQueue>
 
 class TestFolderMigration;
 
@@ -79,7 +80,7 @@ private:
  *   (_timeScheduler and slotScheduleFolderByTime()
  *    and Folder::slotSyncFinished())
  */
-class FolderMan : public QObject
+class OWNCLOUDGUI_EXPORT FolderMan : public QObject
 {
     Q_OBJECT
 public:
@@ -331,4 +332,3 @@ private:
 };
 
 } // namespace OCC
-#endif // FOLDERMAN_H

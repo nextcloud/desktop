@@ -12,8 +12,9 @@
  * for more details.
  */
 
-#ifndef SOCKETAPI_H
-#define SOCKETAPI_H
+#pragma once
+
+#include "gui/owncloudguilib.h"
 
 #include "syncfileitem.h"
 #include "common/syncfilestatus.h"
@@ -45,7 +46,7 @@ Q_DECLARE_LOGGING_CATEGORY(lcSocketApi)
  * @brief The SocketApi class
  * @ingroup gui
  */
-class SocketApi : public QObject
+class OWNCLOUDGUI_EXPORT SocketApi : public QObject
 {
     Q_OBJECT
 
@@ -164,5 +165,3 @@ private:
     SocketApiServer _localServer;
 };
 }
-
-#endif // SOCKETAPI_H

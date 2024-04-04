@@ -12,10 +12,9 @@
  * for more details.
  */
 
-#ifndef OWNCLOUDGUI_H
-#define OWNCLOUDGUI_H
-
+#pragma once
 #include "account.h"
+#include "gui/owncloudguilib.h"
 #include "progressdispatcher.h"
 #include "systray.h"
 
@@ -48,7 +47,7 @@ enum class ShareDialogStartPage {
  * @brief The ownCloudGui class
  * @ingroup gui
  */
-class ownCloudGui : public QObject
+class OWNCLOUDGUI_EXPORT ownCloudGui : public QObject
 {
     Q_OBJECT
 public:
@@ -149,5 +148,3 @@ private:
 };
 
 } // namespace OCC
-
-#endif // OWNCLOUDGUI_H

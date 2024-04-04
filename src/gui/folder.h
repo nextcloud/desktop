@@ -14,8 +14,9 @@
  * for more details.
  */
 
-#ifndef MIRALL_FOLDER_H
-#define MIRALL_FOLDER_H
+#pragma once
+
+#include "gui/owncloudguilib.h"
 
 #include "accountstate.h"
 #include "common/syncjournaldb.h"
@@ -48,7 +49,7 @@ class LocalDiscoveryTracker;
  * @brief The FolderDefinition class
  * @ingroup gui
  */
-class FolderDefinition
+class OWNCLOUDGUI_EXPORT FolderDefinition
 {
 public:
     static auto createNewFolderDefinition(const QUrl &davUrl, const QString &spaceId, const QString &displayName = {})
@@ -143,7 +144,7 @@ private:
  * @brief The Folder class
  * @ingroup gui
  */
-class Folder : public QObject
+class OWNCLOUDGUI_EXPORT Folder : public QObject
 {
     Q_OBJECT
     QML_ELEMENT
@@ -516,5 +517,3 @@ private:
     friend class SpaceMigration;
 };
 }
-
-#endif

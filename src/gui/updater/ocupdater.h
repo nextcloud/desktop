@@ -12,8 +12,13 @@
  * for more details.
  */
 
-#ifndef OCUPDATER_H
-#define OCUPDATER_H
+#pragma once
+#include "gui/owncloudguilib.h"
+
+#include "application.h"
+#include "updater/updatedownloadeddialog.h"
+#include "updater/updateinfo.h"
+#include "updater/updater.h"
 
 #include <QDateTime>
 #include <QObject>
@@ -23,10 +28,6 @@
 #include <QUrl>
 #include <QVersionNumber>
 
-#include "application.h"
-#include "updater/updatedownloadeddialog.h"
-#include "updater/updateinfo.h"
-#include "updater/updater.h"
 
 class QNetworkAccessManager;
 class QNetworkReply;
@@ -69,7 +70,7 @@ namespace OCC {
  *                +-------------+
  */
 
-class UpdaterScheduler : public QObject
+class OWNCLOUDGUI_EXPORT UpdaterScheduler : public QObject
 {
     Q_OBJECT
 public:
@@ -98,7 +99,7 @@ private:
  * @brief Class that uses an ownCloud proprietary XML format to fetch update information
  * @ingroup gui
  */
-class OCUpdater : public Updater
+class OWNCLOUDGUI_EXPORT OCUpdater : public Updater
 {
     Q_OBJECT
 public:
@@ -167,7 +168,7 @@ private:
  * @brief Windows Updater Using NSIS
  * @ingroup gui
  */
-class WindowsUpdater : public OCUpdater
+class OWNCLOUDGUI_EXPORT WindowsUpdater : public OCUpdater
 {
     Q_OBJECT
 public:
@@ -212,5 +213,3 @@ private:
     const QDateTime _initialAppMTime;
 };
 }
-
-#endif // OC_UPDATER

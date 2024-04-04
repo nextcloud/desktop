@@ -12,15 +12,16 @@
  * for more details.
  */
 
-#ifndef GUIUTILITY_H
-#define GUIUTILITY_H
+#pragma once
+
+#include "gui/owncloudguilib.h"
+
+#include "common/pinstate.h"
 
 #include <QLoggingCategory>
 #include <QString>
 #include <QUrl>
 #include <QWidget>
-
-#include "common/pinstate.h"
 
 namespace OCC {
 
@@ -53,10 +54,8 @@ namespace Utility {
 
     bool internetConnectionIsMetered();
 
-    void markDirectoryAsSyncRoot(const QString &path, const QUuid &accountUuid);
+    OWNCLOUDGUI_EXPORT void markDirectoryAsSyncRoot(const QString &path, const QUuid &accountUuid);
     std::pair<QString, QUuid> getDirectorySyncRootMarkings(const QString &path);
     void unmarkDirectoryAsSyncRoot(const QString &path);
 } // namespace Utility
 } // namespace OCC
-
-#endif

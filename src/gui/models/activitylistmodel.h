@@ -12,13 +12,14 @@
  * for more details.
  */
 
-#ifndef ACTIVITYLISTMODEL_H
-#define ACTIVITYLISTMODEL_H
+#pragma once
 
-#include <QtCore>
+#include "gui/owncloudguilib.h"
 
 #include "accountstate.h"
 #include "activitydata.h"
+
+#include <QtCore>
 
 class QJsonDocument;
 
@@ -33,7 +34,7 @@ Q_DECLARE_LOGGING_CATEGORY(lcActivity)
  * Simple list model to provide the list view with data.
  */
 
-class ActivityListModel : public QAbstractTableModel
+class OWNCLOUDGUI_EXPORT ActivityListModel : public QAbstractTableModel
 {
     Q_OBJECT
 public:
@@ -80,4 +81,3 @@ private:
     friend class TestActivityModel;
 };
 }
-#endif // ACTIVITYLISTMODEL_H

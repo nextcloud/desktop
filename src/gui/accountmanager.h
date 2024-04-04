@@ -14,6 +14,8 @@
 
 #pragma once
 
+#include "gui/owncloudguilib.h"
+
 #include "account.h"
 #include "accountstate.h"
 
@@ -23,7 +25,7 @@ namespace OCC {
    @brief The AccountManager class
    @ingroup gui
 */
-class AccountManager : public QObject
+class OWNCLOUDGUI_EXPORT AccountManager : public QObject
 {
     Q_OBJECT
 public:

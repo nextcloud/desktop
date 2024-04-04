@@ -13,7 +13,9 @@
  */
 #pragma once
 
-#include "folder.h"
+#include "gui/owncloudguilib.h"
+
+#include "gui/folder.h"
 
 #include "csync/csync.h"
 #include "libsync/syncfileitem.h"
@@ -22,7 +24,7 @@
 
 namespace OCC {
 
-class ProtocolItem
+class OWNCLOUDGUI_EXPORT ProtocolItem
 {
     Q_GADGET
 public:

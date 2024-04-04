@@ -12,20 +12,11 @@
  * for more details.
  */
 
-#ifndef LOGBROWSER_H
-#define LOGBROWSER_H
+#pragma once
 
-#include <QCheckBox>
-#include <QPlainTextEdit>
-#include <QTextStream>
-#include <QFile>
-#include <QObject>
-#include <QList>
-#include <QDateTime>
+#include "gui/owncloudguilib.h"
+
 #include <QDialog>
-#include <QLineEdit>
-#include <QPushButton>
-#include <QLabel>
 
 namespace OCC {
 
@@ -37,7 +28,7 @@ namespace Ui {
  * @brief The LogBrowser class
  * @ingroup gui
  */
-class LogBrowser : public QDialog
+class OWNCLOUDGUI_EXPORT LogBrowser : public QDialog
 {
     Q_OBJECT
 public:
@@ -59,5 +50,3 @@ private:
 };
 
 } // namespace
-
-#endif // LOGBROWSER_H

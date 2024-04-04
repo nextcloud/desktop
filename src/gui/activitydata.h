@@ -12,12 +12,13 @@
  * for more details.
  */
 
-#ifndef ACTIVITYDATA_H
-#define ACTIVITYDATA_H
+#pragma once
 
-#include <QtCore>
+#include "gui/owncloudguilib.h"
 
 #include "account.h"
+
+#include <QtCore>
 
 namespace OCC {
 /**
@@ -43,7 +44,7 @@ public:
  * contains all the information describing a single activity.
  */
 
-class Activity
+class OWNCLOUDGUI_EXPORT Activity
 {
 public:
     enum Type {
@@ -102,5 +103,3 @@ private:
 
 typedef QList<Activity> ActivityList;
 }
-
-#endif // ACTIVITYDATA_H

@@ -12,8 +12,10 @@
  * for more details.
  */
 
-#ifndef MIRALL_FOLDERWATCHER_H
-#define MIRALL_FOLDERWATCHER_H
+#pragma once
+
+#include "gui/owncloudguilib.h"
+
 
 #include <QElapsedTimer>
 #include <QHash>
@@ -44,7 +46,7 @@ class Folder;
  * @ingroup gui
  */
 
-class FolderWatcher : public QObject
+class OWNCLOUDGUI_EXPORT FolderWatcher : public QObject
 {
     Q_OBJECT
 public:
@@ -125,5 +127,3 @@ private:
     friend class FolderWatcherPrivate;
 };
 }
-
-#endif

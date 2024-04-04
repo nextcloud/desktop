@@ -15,7 +15,7 @@ function(owncloud_add_test test_class)
         ${ARGN}
         TEST_NAME "${OWNCLOUD_TEST_CLASS}Test"
         LINK_LIBRARIES
-        owncloudCore syncenginetestutils testutilsloader Qt::Test
+        owncloudGui syncenginetestutils testutilsloader Qt::Test
     )
     apply_common_target_settings(${OWNCLOUD_TEST_CLASS}Test)
     target_compile_definitions(${OWNCLOUD_TEST_CLASS}Test PRIVATE SOURCEDIR="${PROJECT_SOURCE_DIR}" QT_FORCE_ASSERTS)

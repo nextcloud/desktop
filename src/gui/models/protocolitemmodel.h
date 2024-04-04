@@ -13,16 +13,17 @@
  */
 #pragma once
 
-#include <QAbstractTableModel>
-
-#include "protocolitem.h"
+#include "gui/owncloudguilib.h"
 
 #include "common/fixedsizeringbuffer.h"
+#include "protocolitem.h"
+
+#include <QAbstractTableModel>
 
 
 namespace OCC {
 
-class ProtocolItemModel : public QAbstractTableModel
+class OWNCLOUDGUI_EXPORT ProtocolItemModel : public QAbstractTableModel
 {
     Q_OBJECT
 public:

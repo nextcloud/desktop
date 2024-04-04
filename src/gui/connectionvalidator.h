@@ -12,8 +12,9 @@
  * for more details.
  */
 
-#ifndef CONNECTIONVALIDATOR_H
-#define CONNECTIONVALIDATOR_H
+#pragma once
+
+#include "gui/owncloudguilib.h"
 
 #include "common/chronoelapsedtimer.h"
 #include "gui/guiutility.h"
@@ -75,7 +76,7 @@ namespace OCC {
 
     \endcode
  */
-class ConnectionValidator : public QObject
+class OWNCLOUDGUI_EXPORT ConnectionValidator : public QObject
 {
     Q_OBJECT
 public:
@@ -137,12 +138,6 @@ protected Q_SLOTS:
 private:
     void reportResult(Status status);
 
-    /** Sets the account's server version
-     *
-     * Returns false and reports ServerVersionMismatch for very old servers.
-     */
-    bool checkServerInfo();
-
     QStringList _errors;
     AccountPtr _account;
     bool _clearCookies = false;
@@ -153,6 +148,3 @@ private:
     ConnectionValidator::ValidationMode _mode = ConnectionValidator::ValidationMode::ValidateAuthAndUpdate;
 };
 }
-
-
-#endif // CONNECTIONVALIDATOR_H

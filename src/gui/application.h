@@ -12,17 +12,18 @@
  * for more details.
  */
 
-#ifndef APPLICATION_H
-#define APPLICATION_H
+#pragma once
 
-#include <QPointer>
-#include <QQueue>
-#include <QTimer>
+#include "gui/owncloudguilib.h"
 
 #include "clientproxy.h"
 #include "folderman.h"
 #include "owncloudgui.h"
 #include "platform.h"
+
+#include <QPointer>
+#include <QQueue>
+#include <QTimer>
 
 class QMessageBox;
 class QSystemTrayIcon;
@@ -43,7 +44,7 @@ class Folder;
  * @brief The Application class
  * @ingroup gui
  */
-class Application : public QObject
+class OWNCLOUDGUI_EXPORT Application : public QObject
 {
     Q_OBJECT
 public:
@@ -93,5 +94,3 @@ inline Application *ocApp()
 }
 
 } // namespace OCC
-
-#endif // APPLICATION_H

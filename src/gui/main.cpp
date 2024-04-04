@@ -268,7 +268,7 @@ void loadQNetworkInformationBackend()
     qCDebug(lcMain) << "Available backends:" << QNetworkInformation::availableBackends().join(QStringLiteral(", "));
     if (auto qni = QNetworkInformation::instance()) {
         QObject::connect(qni, &QNetworkInformation::reachabilityChanged,
-            [](QNetworkInformation::Reachability reachability) { qCInfo(lcApplication) << "Connection Status changed to:" << reachability; });
+            [](QNetworkInformation::Reachability reachability) { qCInfo(lcMain) << "Connection Status changed to:" << reachability; });
     }
 #else
     qCWarning(lcMain) << "QNetworkInformation is not available on this platform";

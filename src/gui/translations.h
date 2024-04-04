@@ -12,8 +12,9 @@
  * for more details.
  */
 
-#ifndef TRANSLATIONSMANAGER_H
-#define TRANSLATIONSMANAGER_H
+#pragma once
+
+#include "gui/owncloudguilib.h"
 
 #include <QSet>
 #include <QString>
@@ -25,25 +26,23 @@ namespace Translations {
     /**
     * @return translation files' filename prefix
     */
-    const QString translationsFilePrefix();
+    OWNCLOUDGUI_EXPORT const QString translationsFilePrefix();
 
     /**
     * @returntranslation files' filename suffix
     */
-    const QString translationsFileSuffix();
+    OWNCLOUDGUI_EXPORT const QString translationsFileSuffix();
 
     /**
      * @return path to translation files
      */
-    QString translationsDirectoryPath();
+    OWNCLOUDGUI_EXPORT QString translationsDirectoryPath();
 
     /**
      * @return list of locales for which translations are available
      */
-    QSet<QString> listAvailableTranslations();
+    OWNCLOUDGUI_EXPORT QSet<QString> listAvailableTranslations();
 
 } // namespace Translations
 
 } // namespace OCC
-
-#endif // TRANSLATIONSMANAGER_H

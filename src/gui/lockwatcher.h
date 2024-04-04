@@ -14,6 +14,8 @@
 
 #pragma once
 
+#include "gui/owncloudguilib.h"
+
 #include "filesystem.h"
 
 #include <QList>
@@ -41,7 +43,7 @@ namespace OCC {
  * @ingroup gui
  */
 
-class LockWatcher : public QObject
+class OWNCLOUDGUI_EXPORT LockWatcher : public QObject
 {
     Q_OBJECT
 public:
