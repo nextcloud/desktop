@@ -37,6 +37,9 @@ Pane {
             delegate: Pane {
                 id: folderDelegate
 
+                // model index
+                required property int index
+
                 required property string displayName
                 required property string subtitle
                 required property url imageUrl
@@ -54,129 +57,96 @@ Pane {
                 width: ListView.view.width - scrollView.ScrollBar.vertical.width - 10
 
                 implicitHeight: normalSize
-                background: Rectangle {
-                    color: scrollView.palette.base
-                }
-
-                hoverEnabled: true
 
                 ToolTip.text: folderDelegate.toolTip
                 ToolTip.visible: hovered
                 ToolTip.delay: 1000
                 ToolTip.timeout: 5000
-
-                ColumnLayout {
-                    id: colLayout
-                    anchors.fill: parent
-                    spacing: 10
-
-                    RowLayout {
-                        Layout.alignment: Qt.AlignTop
-                        Layout.fillWidth: true
-
-                        Pane {
-                            Layout.preferredHeight: normalSize - 20
-                            Layout.preferredWidth: normalSize - 20
-                            Layout.alignment: Qt.AlignTop
-                            background: Rectangle {
-                                color: scrollView.palette.alternateBase
-                            }
-                            Image {
-                                anchors.fill: parent
-                                fillMode: Image.PreserveAspectFit
-                                source: imageUrl
-                            }
-                        }
-                        ColumnLayout {
-                            spacing: 6
-                            Layout.alignment: Qt.AlignTop | Qt.AlignLeft
-                            Layout.fillWidth: true
-
-                            RowLayout {
-                                Layout.fillWidth: true
-                                Image {
-                                    Layout.preferredHeight: 16
-                                    Layout.preferredWidth: 16
-                                    source: statusUrl
-                                }
-                                Label {
-                                    Layout.fillWidth: true
-                                    text: folderDelegate.displayName
-                                    font.bold: true
-                                    font.pointSize: 15
-                                    elide: Text.ElideRight
-                                }
-                            }
-                            Label {
-                                Layout.fillWidth: true
-                                text: folderDelegate.descriptionText
-                                elide: Text.ElideRight
-                            }
-                            // we will either display quota or overallText
-                            Label {
-                                Layout.fillWidth: true
-                                text: folderDelegate.quota
-                                elide: Text.ElideRight
-                                visible: folderDelegate.quota && !folderDelegate.overallText
-                            }
-
-                            Item {
-                                // ensure the progress bar always consumes its space
-                                Layout.preferredHeight: 10
-                                Layout.fillWidth: true
-                                ProgressBar {
-                                    anchors.fill: parent
-                                    value: folderDelegate.progress
-                                    visible: folderDelegate.overallText || folderDelegate.itemText
-                                }
-                            }
-
-                            Label {
-
-                                Layout.fillWidth: true
-                                text: folderDelegate.overallText
-                                elide: Text.ElideMiddle
-                            }
-
-                            Label {
-                                Layout.fillWidth: true
-                                text: folderDelegate.itemText
-                                elide: Text.ElideMiddle
-                                // only display the item text if we don't have errors
-                                // visible:  !folderDelegate.errorMsg.length
-                            }
-
-                            FolderError {
-                                Layout.fillWidth: true
-                                errorMessages: folderDelegate.errorMsg
-                                onCollapsedChanged: {
-                                    if (!collapsed) {
-                                        // TODO: not cool
-                                        folderDelegate.implicitHeight = normalSize + implicitHeight + 10;
-                                    } else {
-                                        folderDelegate.implicitHeight = normalSize;
-                                    }
-                                }
-                            }
-                        }
-                        Button {
-                            Layout.alignment: Qt.AlignVCenter | Qt.AlignRight
-                            Layout.maximumHeight: 30
-                            display: AbstractButton.IconOnly
-                            icon.source: "image://ownCloud/core/more"
-                            onClicked: {
-                                ctx.slotCustomContextMenuRequested(folder);
-                            }
-                        }
-                    }
+                hoverEnabled: true
+                background: Rectangle {
+                    color: folderDelegate.ListView.isCurrentItem ? scrollView.palette.highlight : scrollView.palette.base
                 }
 
                 MouseArea {
                     anchors.fill: parent
-                    acceptedButtons: Qt.RightButton
+                    acceptedButtons: Qt.LeftButton | Qt.RightButton
+                    onClicked: mouse => {
+                        if (mouse.button === Qt.RightButton) {
+                            ctx.slotCustomContextMenuRequested(folder);
+                        }
+                        folderDelegate.ListView.view.currentIndex = folderDelegate.index;
+                        folderDelegate.forceActiveFocus();
+                    }
+                }
 
-                    onClicked: {
-                        ctx.slotCustomContextMenuRequested(folder);
+                RowLayout {
+                    anchors.fill: parent
+
+                    spacing: 10
+                    SpaceDelegate {
+                        Layout.fillWidth: true
+                        Layout.fillHeight: true
+
+                        title: displayName
+                        description: subtitle
+                        imageSource: imageUrl
+                        statusSource: statusUrl
+
+                        // we will either display quota or overallText
+                        Label {
+                            Layout.fillWidth: true
+                            text: folderDelegate.quota
+                            elide: Text.ElideRight
+                            visible: folderDelegate.quota && !folderDelegate.overallText
+                        }
+
+                        Item {
+                            // ensure the progress bar always consumes its space
+                            Layout.preferredHeight: 10
+                            Layout.fillWidth: true
+                            ProgressBar {
+                                anchors.fill: parent
+                                value: folderDelegate.progress
+                                visible: folderDelegate.overallText || folderDelegate.itemText
+                            }
+                        }
+
+                        Label {
+
+                            Layout.fillWidth: true
+                            text: folderDelegate.overallText
+                            elide: Text.ElideMiddle
+                        }
+
+                        Label {
+                            Layout.fillWidth: true
+                            text: folderDelegate.itemText
+                            elide: Text.ElideMiddle
+                            // only display the item text if we don't have errors
+                            // visible:  !folderDelegate.errorMsg.length
+                        }
+
+                        FolderError {
+                            Layout.fillWidth: true
+                            errorMessages: folderDelegate.errorMsg
+                            onCollapsedChanged: {
+                                if (!collapsed) {
+                                    // TODO: not cool
+                                    folderDelegate.implicitHeight = normalSize + implicitHeight + 10;
+                                } else {
+                                    folderDelegate.implicitHeight = normalSize;
+                                }
+                            }
+                        }
+                    }
+                    Button {
+                        Layout.alignment: Qt.AlignVCenter | Qt.AlignRight
+                        Layout.maximumHeight: 30
+                        display: AbstractButton.IconOnly
+                        icon.source: "image://ownCloud/core/more"
+                        onClicked: {
+                            ctx.slotCustomContextMenuRequested(folder);
+                        }
                     }
                 }
             }

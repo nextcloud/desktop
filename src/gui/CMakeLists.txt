@@ -119,6 +119,7 @@ qt_add_qml_module(owncloudCore
         # compat to qt < 6.5
         RESOURCE_PREFIX "/qt/qml/"
         QML_FILES
+            qml/SpaceDelegate.qml
             qml/FolderDelegate.qml
             qml/FolderError.qml
 )
