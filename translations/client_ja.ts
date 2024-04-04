@@ -231,7 +231,7 @@
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderEvictionDialog.qml" line="61"/>
         <source>Reload</source>
-        <translation type="unfinished"/>
+        <translation>更新</translation>
     </message>
 </context>
 <context>
@@ -239,12 +239,12 @@
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderFastEnumerationSettings.qml" line="38"/>
         <source>Enable fast sync</source>
-        <translation type="unfinished"/>
+        <translation>高速同期を有効にする</translation>
     </message>
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderFastEnumerationSettings.qml" line="53"/>
         <source>Fast sync will only sync changes in files and folders within folders that have been explored. This can significantly increase responsiveness on initial configuration of virtual files. However, it will cause redundant downloads of files moved to an unexplored folder. </source>
-        <translation type="unfinished"/>
+        <translation>高速同期では、探索されたフォルダー内のファイルとフォルダーの変更のみが同期されます。 これにより、仮想ファイルの初期構成時の応答性が大幅に向上します。 ただし、未探索のフォルダーに移動されたファイルのダウンロードが重複して行われます。</translation>
     </message>
 </context>
 <context>
@@ -303,7 +303,7 @@
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderStorageInfo.qml" line="58"/>
         <source>Evict local copies...</source>
-        <translation type="unfinished"/>
+        <translation>ローカルコピーを削除します...</translation>
     </message>
 </context>
 <context>
@@ -1572,7 +1572,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/connectionvalidator.cpp" line="344"/>
         <source>Connection issue</source>
-        <translation type="unfinished"/>
+        <translation>接続の問題</translation>
     </message>
 </context>
 <context>
@@ -3963,7 +3963,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1470"/>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1495"/>
         <source>The folder %1 cannot be made read-only: %2</source>
-        <translation type="unfinished"/>
+        <translation>フォルダ %1 を読み取り専用にできません: %2</translation>
     </message>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1387"/>
@@ -4085,7 +4085,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="229"/>
         <source>The folder %1 cannot be made read-only: %2</source>
-        <translation type="unfinished"/>
+        <translation>フォルダ %1 を読み取り専用にできません: %2</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="200"/>
