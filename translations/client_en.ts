@@ -978,45 +978,45 @@ The update will be performed in the background, and overwrite the current AppIma
 <context>
     <name>OCC::Folder</name>
     <message>
-        <location filename="../src/gui/folder.cpp" line="227"/>
+        <location filename="../src/gui/folder.cpp" line="225"/>
         <source>Local folder %1 does not exist.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="229"/>
+        <location filename="../src/gui/folder.cpp" line="227"/>
         <source>%1 should be a folder but is not.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="231"/>
+        <location filename="../src/gui/folder.cpp" line="229"/>
         <source>%1 is not readable.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="490"/>
+        <location filename="../src/gui/folder.cpp" line="488"/>
         <source>%1 has been removed.</source>
         <comment>%1 names a file.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="504"/>
+        <location filename="../src/gui/folder.cpp" line="502"/>
         <source>%1 has been updated.</source>
         <comment>%1 names a file.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="511"/>
+        <location filename="../src/gui/folder.cpp" line="509"/>
         <source>%1 has been renamed to %2.</source>
         <comment>%1 and %2 name files.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="518"/>
+        <location filename="../src/gui/folder.cpp" line="516"/>
         <source>%1 has been moved to %2.</source>
         <translation type="unfinished"></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="488"/>
+        <location filename="../src/gui/folder.cpp" line="486"/>
         <source>%1 and %n other file(s) have been removed.</source>
         <translation type="unfinished">
             <numerusform></numerusform>
@@ -1024,22 +1024,22 @@ The update will be performed in the background, and overwrite the current AppIma
         </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="184"/>
+        <location filename="../src/gui/folder.cpp" line="182"/>
         <source>The path &apos;%1&apos; is too long. Please enable long paths in the Windows settings or choose a different folder.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="221"/>
+        <location filename="../src/gui/folder.cpp" line="219"/>
         <source>%1 failed to open the database.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="233"/>
+        <location filename="../src/gui/folder.cpp" line="231"/>
         <source>%1 is not writable.</source>
         <translation type="unfinished"></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="495"/>
+        <location filename="../src/gui/folder.cpp" line="493"/>
         <source>%1 and %n other file(s) have been added.</source>
         <translation type="unfinished">
             <numerusform></numerusform>
@@ -1047,13 +1047,13 @@ The update will be performed in the background, and overwrite the current AppIma
         </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="497"/>
+        <location filename="../src/gui/folder.cpp" line="495"/>
         <source>%1 has been added.</source>
         <comment>%1 names a file.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="502"/>
+        <location filename="../src/gui/folder.cpp" line="500"/>
         <source>%1 and %n other file(s) have been updated.</source>
         <translation type="unfinished">
             <numerusform></numerusform>
@@ -1061,7 +1061,7 @@ The update will be performed in the background, and overwrite the current AppIma
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="509"/>
+        <location filename="../src/gui/folder.cpp" line="507"/>
         <source>%1 has been renamed to %2 and %n other file(s) have been renamed.</source>
         <translation type="unfinished">
             <numerusform></numerusform>
@@ -1069,7 +1069,7 @@ The update will be performed in the background, and overwrite the current AppIma
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="516"/>
+        <location filename="../src/gui/folder.cpp" line="514"/>
         <source>%1 has been moved to %2 and %n other file(s) have been moved.</source>
         <translation type="unfinished">
             <numerusform></numerusform>
@@ -1077,7 +1077,7 @@ The update will be performed in the background, and overwrite the current AppIma
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="523"/>
+        <location filename="../src/gui/folder.cpp" line="521"/>
         <source>%1 has and %n other file(s) have sync conflicts.</source>
         <translation type="unfinished">
             <numerusform></numerusform>
@@ -1085,12 +1085,12 @@ The update will be performed in the background, and overwrite the current AppIma
         </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="525"/>
+        <location filename="../src/gui/folder.cpp" line="523"/>
         <source>%1 has a sync conflict. Please check the conflict file!</source>
         <translation type="unfinished"></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="530"/>
+        <location filename="../src/gui/folder.cpp" line="528"/>
         <source>%1 and %n other file(s) could not be synced due to errors. See the log for details.</source>
         <translation type="unfinished">
             <numerusform></numerusform>
@@ -1098,72 +1098,42 @@ The update will be performed in the background, and overwrite the current AppIma
         </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="532"/>
+        <location filename="../src/gui/folder.cpp" line="530"/>
         <source>%1 could not be synced due to an error. See the log for details.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="538"/>
+        <location filename="../src/gui/folder.cpp" line="536"/>
         <source>Sync Activity</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="782"/>
+        <location filename="../src/gui/folder.cpp" line="770"/>
         <source>Switching VFS mode on folder &apos;%1&apos;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="944"/>
+        <location filename="../src/gui/folder.cpp" line="932"/>
         <source>Could not read system exclude file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1171"/>
+        <location filename="../src/gui/folder.cpp" line="1152"/>
         <source>The folder %1 was created but was excluded from synchronization previously. Data inside it will not be synchronized.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1174"/>
+        <location filename="../src/gui/folder.cpp" line="1155"/>
         <source>The file %1 was created but was excluded from synchronization previously. It will not be synchronized.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1186"/>
+        <location filename="../src/gui/folder.cpp" line="1167"/>
         <source>Changes in synchronized folders could not be tracked reliably.
 
 This means that the synchronization client might not upload local changes immediately and will instead only scan for local changes and upload them occasionally (every two hours by default).
 
 %1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/gui/folder.cpp" line="1231"/>
-        <source>All files in the sync folder &apos;%1&apos; folder were deleted on the server.
-These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
-If you decide to keep the files, they will be re-synced with the server if you have rights to do so.
-If you decide to delete the files, they will be unavailable to you, unless you are the owner.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/gui/folder.cpp" line="1237"/>
-        <source>All the files in your local sync folder &apos;%1&apos; were deleted. These deletes will be synchronized with your server, making such files unavailable unless restored.
-Are you sure you want to sync those actions with the server?
-If this was an accident and you decide to keep your files, they will be re-synced from the server.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/gui/folder.cpp" line="1244"/>
-        <source>Remove All Files?</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/gui/folder.cpp" line="1247"/>
-        <source>Remove all files</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/gui/folder.cpp" line="1248"/>
-        <source>Keep files</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1287,43 +1257,42 @@ You are going to lose access to your sync folder if you do not do so!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="332"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="324"/>
         <source>%1 of %2 used</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="336"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="328"/>
         <source>The status of %1 is %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="338"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="330"/>
         <source>The account %1 is currently not connected.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="417"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="408"/>
         <source>Checking for changes in remote &apos;%1&apos;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="419"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="410"/>
         <source>Checking for changes in local &apos;%1&apos;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="423"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="414"/>
         <source>Reconciling changes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="463"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="454"/>
         <source>Queued</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="260"/>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="306"/>
         <source>Local folder: %1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3290,64 +3259,64 @@ Note that using any logging command line options will override the settings.</so
 <context>
     <name>OCC::SyncEngine</name>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="158"/>
+        <location filename="../src/libsync/syncengine.cpp" line="156"/>
         <source>%1 (skipped due to earlier error, trying again in %2)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="355"/>
+        <location filename="../src/libsync/syncengine.cpp" line="338"/>
         <source>Only %1 are available, need at least %2 to start</source>
         <comment>Placeholders are postfixed with file sizes using Utility::octetsToString()</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="383"/>
+        <location filename="../src/libsync/syncengine.cpp" line="366"/>
         <source>Unable to open or create the local sync database. Make sure you have write access in the sync folder.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="858"/>
+        <location filename="../src/libsync/syncengine.cpp" line="826"/>
         <source>Aborted due to %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="876"/>
+        <location filename="../src/libsync/syncengine.cpp" line="844"/>
         <source>Disk space is low: Downloads that would reduce free space below %1 were skipped.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="883"/>
+        <location filename="../src/libsync/syncengine.cpp" line="851"/>
         <source>There is insufficient space available on the server for some uploads.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="283"/>
+        <location filename="../src/libsync/syncengine.cpp" line="278"/>
         <source>Unresolved conflict.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="86"/>
+        <location filename="../src/libsync/syncengine.cpp" line="84"/>
         <source>application exit</source>
         <comment>abort reason</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="399"/>
+        <location filename="../src/libsync/syncengine.cpp" line="382"/>
         <source>Using virtual files with suffix, but suffix is not set</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="411"/>
+        <location filename="../src/libsync/syncengine.cpp" line="394"/>
         <source>Unable to read the blacklist from the local database</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="438"/>
+        <location filename="../src/libsync/syncengine.cpp" line="421"/>
         <source>Unable to read from the sync journal.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="512"/>
+        <location filename="../src/libsync/syncengine.cpp" line="495"/>
         <source>Cannot open the sync journal</source>
         <translation type="unfinished"></translation>
     </message>

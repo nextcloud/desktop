@@ -9,7 +9,7 @@
     <message>
         <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.ui" line="68"/>
         <source>Advanced configuration</source>
-        <translation type="unfinished"/>
+        <translation>Расширенная конфигурация</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.ui" line="140"/>
@@ -29,17 +29,17 @@
     <message>
         <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.ui" line="160"/>
         <source>Configure synchronization manually</source>
-        <translation type="unfinished"/>
+        <translation>Настройте синхронизацию вручную</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.ui" line="207"/>
         <source>Choose local download directory:</source>
-        <translation type="unfinished"/>
+        <translation>Выберите локальный каталог загрузки:</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.ui" line="230"/>
         <source>Restore default value</source>
-        <translation type="unfinished"/>
+        <translation>Восстановить значение по умолчанию</translation>
     </message>
 </context>
 <context>
