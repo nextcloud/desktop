@@ -259,7 +259,7 @@ void AccountState::setState(State state)
             connect(_fetchCapabilitiesJob.get(), &FetchServerSettingsJob::finishedSignal, this, [oldState, this] {
                 if (oldState == Connected || _state == Connected) {
                     _fetchCapabilitiesJob.clear();
-                    emit isConnectedChanged();
+                    Q_EMIT isConnectedChanged();
                 }
             });
             _fetchCapabilitiesJob->start();
@@ -268,7 +268,7 @@ void AccountState::setState(State state)
     // don't anounce a state change from connected to connected
     // https://github.com/owncloud/client/commit/2c6c21d7532f0cbba4b768fde47810f6673ed931
     if (oldState != state || state != Connected) {
-        emit stateChanged(_state);
+        Q_EMIT stateChanged(_state);
     }
 }
 

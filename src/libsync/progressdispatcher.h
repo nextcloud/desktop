@@ -227,7 +227,7 @@ public:
      */
     Estimates fileProgress(const SyncFileItem &item) const;
 
-private slots:
+private Q_SLOTS:
     /**
      * Called every second once started, this function updates the
      * estimates.
@@ -296,7 +296,7 @@ public:
     static ProgressDispatcher *instance();
     ~ProgressDispatcher() override;
 
-signals:
+Q_SIGNALS:
     /**
       @brief Signals the progress of data transmission.
 

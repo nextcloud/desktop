@@ -32,9 +32,9 @@ class ThumbnailJob : public AbstractNetworkJob
     Q_OBJECT
 public:
     explicit ThumbnailJob(const QString &path, AccountPtr account, QObject *parent = nullptr);
-public slots:
+public Q_SLOTS:
     void start() override;
-signals:
+Q_SIGNALS:
     /**
      * @param statusCode the HTTP status code
      * @param reply the content of the reply
@@ -43,7 +43,7 @@ signals:
      * If the status code is different the content is invalid.
      */
     void jobFinished(int statusCode, QPixmap reply);
-private slots:
+private Q_SLOTS:
     void finished() override;
 };
 }

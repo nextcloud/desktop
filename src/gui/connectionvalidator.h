@@ -113,18 +113,18 @@ public:
      */
     void setClearCookies(bool clearCookies);
 
-public slots:
+public Q_SLOTS:
     /// Checks the server and the authentication.
     void checkServer(ConnectionValidator::ValidationMode mode = ConnectionValidator::ValidationMode::ValidateAuthAndUpdate);
 
     void systemProxyLookupDone(const QNetworkProxy &proxy);
 
-signals:
+Q_SIGNALS:
     void connectionResult(ConnectionValidator::Status status, const QStringList &errors);
 
     void sslErrors(const QList<QSslError> &errors);
 
-protected slots:
+protected Q_SLOTS:
     /// Checks authentication only.
     void checkAuthentication();
     void slotCheckServerAndAuth();

@@ -193,7 +193,7 @@ void CredentialJob::start()
 {
     if (!_parent->contains(_key)) {
         _error = QKeychain::EntryNotFound;
-        // QKeychain is started delayed, emit the signal delayed to make sure we are connected
+        // QKeychain is started delayed, Q_EMIT the signal delayed to make sure we are connected
         qCDebug(lcCredentialsManager) << "We don't know" << _key << "skipping retrieval from keychain";
         QTimer::singleShot(0, this, &CredentialJob::finished);
         return;

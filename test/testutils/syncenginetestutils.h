@@ -461,7 +461,7 @@ public:
     using QNetworkReply::setAttribute;
     using QNetworkReply::setError;
 
-public slots:
+public Q_SLOTS:
     void slotSetFinished();
 
 public:

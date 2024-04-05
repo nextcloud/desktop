@@ -48,7 +48,7 @@ public:
     Optional<PinState> pinState(const QString &) override;
     AvailabilityResult availability(const QString &) override;
 
-public slots:
+public Q_SLOTS:
     void fileStatusChanged(const QString &, SyncFileStatus) override;
 
 protected:

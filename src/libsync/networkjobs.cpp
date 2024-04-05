@@ -202,7 +202,7 @@ bool LsColXMLParser::parse(const QByteArray &xml, QHash<QString, qint64> *sizes,
                     if (currentHref.endsWith(QLatin1Char('/'))) {
                         currentHref.chop(1);
                     }
-                    emit directoryListingIterated(currentHref, currentHttp200Properties);
+                    Q_EMIT directoryListingIterated(currentHref, currentHttp200Properties);
                     currentHref.clear();
                     currentHttp200Properties.clear();
                 } else if (reader.name() == QLatin1String("propstat")) {
@@ -226,8 +226,8 @@ bool LsColXMLParser::parse(const QByteArray &xml, QHash<QString, qint64> *sizes,
         qCWarning(lcPropfindJob) << "ERROR no WebDAV response?" << xml;
         return false;
     } else {
-        emit directoryListingSubfolders(folders);
-        emit finishedWithoutError();
+        Q_EMIT directoryListingSubfolders(folders);
+        Q_EMIT finishedWithoutError();
     }
     return true;
 }
@@ -325,14 +325,14 @@ void PropfindJob::finished()
         QString expectedPath = reply()->request().url().path(); // something like "/owncloud/remote.php/webdav/folder"
         if (!parser.parse(reply()->readAll(), &_sizes, expectedPath)) {
             // XML parse error
-            emit finishedWithError(reply());
+            Q_EMIT finishedWithError(reply());
         }
     } else if (httpCode == 207) {
         // wrong content type
-        emit finishedWithError(reply());
+        Q_EMIT finishedWithError(reply());
     } else {
         // wrong HTTP code or any other network error
-        emit finishedWithError(reply());
+        Q_EMIT finishedWithError(reply());
     }
 }
 
@@ -389,7 +389,7 @@ void AvatarJob::finished()
             }
         }
     }
-    emit avatarPixmap(avImage);
+    Q_EMIT avatarPixmap(avImage);
 }
 
 /*********************************************************************************************/
@@ -407,7 +407,7 @@ void EntityExistsJob::start()
 
 void EntityExistsJob::finished()
 {
-    emit exists(reply());
+    Q_EMIT exists(reply());
 }
 
 /*********************************************************************************************/
@@ -443,7 +443,7 @@ void DetermineAuthTypeJob::finished()
         qCWarning(lcDetermineAuthTypeJob) << "Did not receive WWW-Authenticate reply to auth-test PROPFIND";
     }
     qCInfo(lcDetermineAuthTypeJob) << "Auth type for" << _account->davUrl() << "is" << result;
-    emit this->authType(result);
+    Q_EMIT this->authType(result);
 }
 
 SimpleNetworkJob::SimpleNetworkJob(AccountPtr account, const QUrl &rootUrl, const QString &path, const QByteArray &verb, const QNetworkRequest &req, QObject *parent)

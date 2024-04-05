@@ -64,7 +64,7 @@ public:
     void forgetSensitiveData() override;
     QString fetchUser();
 
-    /* If we still have a valid refresh token, try to refresh it assynchronously and emit fetched()
+    /* If we still have a valid refresh token, try to refresh it assynchronously and Q_EMIT fetched()
      * otherwise return false
      */
     bool refreshAccessToken();

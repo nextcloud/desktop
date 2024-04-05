@@ -135,7 +135,7 @@ void PropagateUploadFileCommon::start()
     if (_item->_size > quotaGuess) {
         // Necessary for blacklisting logic
         _item->_httpErrorCode = 507;
-        emit propagator()->insufficientRemoteStorage();
+        Q_EMIT propagator()->insufficientRemoteStorage();
         done(SyncFileItem::DetailError, tr("Upload of %1 exceeds the quota for the folder").arg(Utility::octetsToString(_item->_size)));
         return;
     }
@@ -177,7 +177,7 @@ void PropagateUploadFileCommon::slotComputeContentChecksum()
 
     // we must be able to read the file
     if (FileSystem::isFileLocked(filePath, FileSystem::LockMode::SharedRead)) {
-        emit propagator()->seenLockedFile(filePath, FileSystem::LockMode::SharedRead);
+        Q_EMIT propagator()->seenLockedFile(filePath, FileSystem::LockMode::SharedRead);
         abortWithError(SyncFileItem::SoftError, tr("%1 the file is currently in use").arg(filePath));
         return;
     }
@@ -208,7 +208,7 @@ void PropagateUploadFileCommon::slotComputeTransmissionChecksum(CheckSums::Algor
     const QString filePath = propagator()->fullLocalPath(_item->_file);
     // we must be able to read the file
     if (FileSystem::isFileLocked(filePath, FileSystem::LockMode::SharedRead)) {
-        emit propagator()->seenLockedFile(filePath, FileSystem::LockMode::SharedRead);
+        Q_EMIT propagator()->seenLockedFile(filePath, FileSystem::LockMode::SharedRead);
         abortWithError(SyncFileItem::SoftError, tr("%1 the file is currently in use").arg(filePath));
         return;
     }
@@ -484,7 +484,7 @@ void PropagateUploadFileCommon::commonErrorHandling(AbstractNetworkJob *job)
         // Set up the error
         status = SyncFileItem::DetailError;
         errorString = tr("Upload of %1 exceeds the quota for the folder").arg(Utility::octetsToString(_item->_size));
-        emit propagator()->insufficientRemoteStorage();
+        Q_EMIT propagator()->insufficientRemoteStorage();
     }
 
     abortWithError(status, errorString);
@@ -619,13 +619,13 @@ void PropagateUploadFileCommon::abortNetworkJobs(
         return;
     _aborting = true;
 
-    // Count the number of jobs that need aborting, and emit the overall
+    // Count the number of jobs that need aborting, and Q_EMIT the overall
     // abort signal when they're all done.
     QSharedPointer<int> runningCount(new int(0));
     auto oneAbortFinished = [this, runningCount]() {
         (*runningCount)--;
         if (*runningCount == 0) {
-            emit this->abortFinished();
+            Q_EMIT this->abortFinished();
         }
     };
 
@@ -656,6 +656,6 @@ void PropagateUploadFileCommon::abortNetworkJobs(
     }
 
     if (*runningCount == 0 && abortType == AbortType::Asynchronous)
-        emit abortFinished();
+        Q_EMIT abortFinished();
 }
 }

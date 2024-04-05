@@ -182,16 +182,16 @@ void OCUpdater::setDownloadState(DownloadState state)
 {
     auto oldState = _state;
     _state = state;
-    emit downloadStateChanged();
+    Q_EMIT downloadStateChanged();
 
     // show the notification if the download is complete (on every check)
     // or once for system based updates.
     if (_state == OCUpdater::DownloadComplete) {
-        emit updateDownloaded();
+        Q_EMIT updateDownloaded();
     }
 
     if (oldState != OCUpdater::UpdateOnlyAvailableThroughSystem && _state == OCUpdater::UpdateOnlyAvailableThroughSystem) {
-        emit updateAvailableThroughSystem();
+        Q_EMIT updateAvailableThroughSystem();
     }
 }
 
@@ -567,7 +567,7 @@ void PassiveUpdateNotifier::backgroundCheckForUpdate()
         if (currentMTime != _initialAppMTime) {
             qCInfo(lcUpdater) << "Binary mtime changed since application started, requesting restart";
             setDownloadState(DownloadState::DownloadComplete);
-            emit updateDownloaded();
+            Q_EMIT updateDownloaded();
         }
     }
 

@@ -58,7 +58,7 @@ public:
 
     AccountStatePtr addNewAccount(AccountPtr newAccount);
 
-public slots:
+public Q_SLOTS:
     /**
      * Will download a virtual file, and open the result.
      * The argument is the filename of the virtual file (including the extension)
@@ -68,7 +68,7 @@ public slots:
 protected:
     bool eventFilter(QObject *obj, QEvent *event) override;
 
-protected slots:
+protected Q_SLOTS:
     void slotUseMonoIconsChanged(bool);
     void slotCleanup();
     void slotAccountStateAdded(AccountStatePtr accountState) const;

@@ -44,7 +44,7 @@ namespace Models {
 
         void setFilterFixedStringSignalled(const QString &pattern);
 
-    signals:
+    Q_SIGNALS:
         void filterChanged();
     };
 

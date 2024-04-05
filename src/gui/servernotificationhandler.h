@@ -29,10 +29,10 @@ class ServerNotificationHandler : public QObject
 public:
     explicit ServerNotificationHandler(QObject *parent = nullptr);
 
-signals:
+Q_SIGNALS:
     void newNotificationList(ActivityList);
 
-public slots:
+public Q_SLOTS:
     void slotFetchNotifications(AccountStatePtr ptr);
 
 private:

@@ -209,7 +209,7 @@ QString Theme::forceConfigAuthType() const
 void Theme::setSystrayUseMonoIcons(bool mono)
 {
     _mono = mono;
-    emit systrayUseMonoIconsChanged(mono);
+    Q_EMIT systrayUseMonoIconsChanged(mono);
 }
 
 QUrl Theme::updateCheckUrl() const

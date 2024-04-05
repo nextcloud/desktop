@@ -68,7 +68,7 @@ void HttpCredentialsGui::askFromUser()
                     showDialog();
                 } else {
                     qCWarning(lcHttpCredentialsGui) << "Bad http auth type:" << type;
-                    emit fetched();
+                    Q_EMIT fetched();
                 }
             });
             job->start();
@@ -106,7 +106,7 @@ void HttpCredentialsGui::asyncAuthResult(OAuth::Result r, const QString &token, 
     _refreshToken = refreshToken;
     _ready = true;
     persist();
-    emit fetched();
+    Q_EMIT fetched();
 }
 
 void HttpCredentialsGui::showDialog()
@@ -137,7 +137,7 @@ void HttpCredentialsGui::showDialog()
         } else {
             Q_EMIT requestLogout();
         }
-        emit fetched();
+        Q_EMIT fetched();
     });
 
     ocApp()->gui()->settingsDialog()->accountSettings(_account)->addModalLegacyDialog(dialog, AccountSettings::ModalWidgetSizePolicy::Minimum);

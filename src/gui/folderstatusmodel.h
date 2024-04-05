@@ -72,12 +72,12 @@ public:
 
     QHash<int, QByteArray> roleNames() const override;
 
-public slots:
+public Q_SLOTS:
     void slotUpdateFolderState(Folder *);
     void resetFolders();
     void slotSetProgress(const ProgressInfo &progress, Folder *f);
 
-private slots:
+private Q_SLOTS:
     void slotFolderSyncStateChange(Folder *f);
 
 private:

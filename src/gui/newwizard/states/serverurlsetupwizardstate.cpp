@@ -168,7 +168,7 @@ void ServerUrlSetupWizardState::evaluatePage()
     });
 
     // instead of defining a lambda that we could call from here as well as the message box, we can put the
-    // handler into the accepted() signal handler, and emit that signal here
+    // handler into the accepted() signal handler, and Q_EMIT that signal here
     if (serverUrl.scheme() == QStringLiteral("https")) {
         Q_EMIT messageBox->accepted();
     } else {

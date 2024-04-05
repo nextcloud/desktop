@@ -59,7 +59,7 @@ public:
     bool isChoked() { return _choked; }
     void giveBandwidthQuota(qint64 bwq);
 
-signals:
+Q_SIGNALS:
 
 private:
     /// The local file to read data from
@@ -79,7 +79,7 @@ private:
     bool _bandwidthLimited; // if _bandwidthQuota will be used
     bool _choked; // if upload is paused (readData() will return 0)
     friend class BandwidthManager;
-public slots:
+public Q_SLOTS:
     void slotJobUploadProgress(qint64 sent, qint64 t);
 };
 
@@ -126,7 +126,7 @@ public:
 protected:
     void newReplyHook(QNetworkReply *reply) override;
 
-signals:
+Q_SIGNALS:
     void uploadProgress(qint64, qint64);
 
 };
@@ -192,7 +192,7 @@ public:
 
     bool isLikelyFinishedQuickly() override { return _item->_size < propagator()->smallFileSize(); }
 
-private slots:
+private Q_SLOTS:
     void slotComputeContentChecksum();
     // Content checksum computed, compute the transmission checksum
     void slotComputeTransmissionChecksum(CheckSums::Algorithm contentChecksumType, const QByteArray &contentChecksum);
@@ -300,9 +300,9 @@ public:
     }
 
     void doStartUpload() override;
-public slots:
+public Q_SLOTS:
     void abort(PropagatorJob::AbortType abortType) override;
-private slots:
+private Q_SLOTS:
     void startNextChunk();
     void slotPutFinished();
     void slotUploadProgress(qint64, qint64);
@@ -381,9 +381,9 @@ private:
     void startNewUpload();
     void startNextChunk();
     void doFinalMove();
-public slots:
+public Q_SLOTS:
     void abort(AbortType abortType) override;
-private slots:
+private Q_SLOTS:
     void slotPropfindFinished();
     void slotPropfindFinishedWithError();
     void slotPropfindIterate(const QString &name, const QMap<QString, QString> &properties);

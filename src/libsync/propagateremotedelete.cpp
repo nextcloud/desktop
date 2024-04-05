@@ -62,7 +62,7 @@ void PropagateRemoteDelete::abort(PropagatorJob::AbortType abortType)
         _job->abort();
     }
     if (abortType == AbortType::Asynchronous) {
-        emit abortFinished();
+        Q_EMIT abortFinished();
     }
 }
 

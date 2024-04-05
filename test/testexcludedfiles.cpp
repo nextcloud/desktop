@@ -52,7 +52,7 @@ class TestExcludedFiles: public QObject
 
     static auto check_dir_traversal(const QString &path) { return excludedFiles->traversalPatternMatch(path, ItemTypeDirectory); }
 
-private slots:
+private Q_SLOTS:
     void testFun()
     {
         ExcludedFiles excluded;

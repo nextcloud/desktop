@@ -148,7 +148,7 @@ public:
         return n;
     }
 
-private slots:
+private Q_SLOTS:
     void init()
     {
         _pathChangedSpy->clear();

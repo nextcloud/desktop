@@ -93,10 +93,10 @@ void Share::setPermissions(Permissions permissions)
     auto *job = OcsShareJob::setPermissions(_account, this, getId(), permissions);
     connect(job, &JsonApiJob::finishedSignal, this, [job, permissions, this] {
         if (!job->ocsSuccess()) {
-            emit serverError(job->ocsStatus(), job->ocsMessage());
+            Q_EMIT serverError(job->ocsStatus(), job->ocsMessage());
         } else {
             _permissions = permissions;
-            emit permissionsSet();
+            Q_EMIT permissionsSet();
         }
     });
     job->start();
@@ -112,9 +112,9 @@ void Share::deleteShare()
     auto *job = OcsShareJob::deleteShare(_account, this, getId());
     connect(job, &JsonApiJob::finishedSignal, this, [job, this] {
         if (!job->ocsSuccess()) {
-            emit serverError(job->ocsStatus(), job->ocsMessage());
+            Q_EMIT serverError(job->ocsStatus(), job->ocsMessage());
         } else {
-            emit shareDeleted();
+            Q_EMIT shareDeleted();
             updateFolder(_account, _path);
         }
     });
@@ -181,10 +181,10 @@ void LinkShare::setName(const QString &name)
     auto *job = OcsShareJob::setName(_account, this, getId(), name);
     connect(job, &JsonApiJob::finishedSignal, this, [job, name, this] {
         if (!job->ocsSuccess()) {
-            emit serverError(job->ocsStatus(), job->ocsMessage());
+            Q_EMIT serverError(job->ocsStatus(), job->ocsMessage());
         } else {
             _name = name;
-            emit nameSet();
+            Q_EMIT nameSet();
         }
     });
     job->start();
@@ -200,10 +200,10 @@ void LinkShare::setPassword(const QString &password)
     auto *job = OcsShareJob::setPassword(_account, this, getId(), password);
     connect(job, &JsonApiJob::finishedSignal, this, [job, password, this] {
         if (!job->ocsSuccess()) {
-            emit passwordSetError(job->ocsStatus(), job->ocsMessage());
+            Q_EMIT passwordSetError(job->ocsStatus(), job->ocsMessage());
         } else {
             _passwordSet = !password.isEmpty();
-            emit passwordSet();
+            Q_EMIT passwordSet();
         }
     });
     job->start();
@@ -214,7 +214,7 @@ void LinkShare::setExpireDate(const QDate &date)
     auto *job = OcsShareJob::setExpireDate(_account, this, getId(), date);
     connect(job, &JsonApiJob::finishedSignal, this, [job, date, this] {
         if (!job->ocsSuccess()) {
-            emit serverError(job->ocsStatus(), job->ocsMessage());
+            Q_EMIT serverError(job->ocsStatus(), job->ocsMessage());
         } else {
             auto data = job->data().value(QStringLiteral("ocs")).toObject().value(QStringLiteral("data")).toObject();
             /*
@@ -226,7 +226,7 @@ void LinkShare::setExpireDate(const QDate &date)
             } else {
                 _expireDate = date;
             }
-            emit expireDateSet();
+            Q_EMIT expireDateSet();
         }
     });
     job->start();
@@ -249,15 +249,15 @@ void ShareManager::createLinkShare(const QString &path,
         if (job->ocsStatus() == 403) {
             // A 403 generally means some of the settings for the share are not allowed.
             // Maybe a password is required, or the expire date isn't acceptable.
-            emit linkShareCreationForbidden(job->ocsMessage());
+            Q_EMIT linkShareCreationForbidden(job->ocsMessage());
         } else if (!job->ocsSuccess()) {
-            emit serverError(job->ocsStatus(), job->ocsMessage());
+            Q_EMIT serverError(job->ocsStatus(), job->ocsMessage());
         } else {
             // Parse share
             auto data = job->data().value(QStringLiteral("ocs")).toObject().value(QStringLiteral("data")).toObject();
             QSharedPointer<LinkShare> share(parseLinkShare(data));
 
-            emit linkShareCreated(share);
+            Q_EMIT linkShareCreated(share);
 
             updateFolder(_account, share->path());
         }
@@ -273,7 +273,7 @@ void ShareManager::createShare(const QString &path,
     auto *job = OcsShareJob::getSharedWithMe(_account, this);
     connect(job, &JsonApiJob::finishedSignal, this, [=] {
         if (!job->ocsSuccess()) {
-            emit serverError(job->ocsStatus(), job->ocsMessage());
+            Q_EMIT serverError(job->ocsStatus(), job->ocsMessage());
         } else {
             // Note: The following code attempts to determine if the item was shared with
             // the user and what the permissions were. It doesn't do a good job at it since
@@ -305,13 +305,13 @@ void ShareManager::createShare(const QString &path,
             auto *job2 = OcsShareJob::createShare(_account, this, path, shareType, shareWith, validPermissions);
             connect(job2, &JsonApiJob::finishedSignal, this, [job2, this] {
             if (!job2->ocsSuccess()) {
-                emit serverError(job2->ocsStatus(), job2->ocsMessage());
+                Q_EMIT serverError(job2->ocsStatus(), job2->ocsMessage());
             } else {
                 //Parse share
                 auto data = job2->data().value(QStringLiteral("ocs")).toObject().value(QStringLiteral("data")).toObject();
                 QSharedPointer<Share> share(parseShare(data));
 
-                emit shareCreated(share);
+                Q_EMIT shareCreated(share);
                 updateFolder(_account, share->path());
 
             } });
@@ -327,9 +327,9 @@ void ShareManager::fetchShares(const QString &path)
     connect(job, &JsonApiJob::finishedSignal, this, [job, path, this] {
         // 404 seems to be ok according to refactored code
         if (job->ocsStatus() == 404) {
-            emit sharesFetched({});
+            Q_EMIT sharesFetched({});
         } else if (!job->ocsSuccess()) {
-            emit serverError(job->ocsStatus(), job->ocsMessage());
+            Q_EMIT serverError(job->ocsStatus(), job->ocsMessage());
         } else {
             const auto &tmpShares = job->data().value(QLatin1String("ocs")).toObject().value(QLatin1String("data")).toArray();
             qCDebug(lcSharing) << "Fetched" << tmpShares.count() << "shares";
@@ -351,7 +351,7 @@ void ShareManager::fetchShares(const QString &path)
                 shares.append(QSharedPointer<Share>(newShare));
             }
             qCDebug(lcSharing) << "Sending " << shares.count() << "shares";
-            emit sharesFetched(shares);
+            Q_EMIT sharesFetched(shares);
         }
     });
     job->start();

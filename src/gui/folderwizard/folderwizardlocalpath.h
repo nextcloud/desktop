@@ -40,7 +40,7 @@ public:
     void initializePage() override;
 
     QString localPath() const;
-protected slots:
+protected Q_SLOTS:
     void slotChooseLocalFolder();
 
 private:

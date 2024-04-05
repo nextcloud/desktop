@@ -37,7 +37,7 @@ class SyncJournalDb;
  *
  * This job is tightly coupled with the DiscoveryPhase class.
  *
- * After being start()'ed this job will perform work asynchronously and emit finished() when done.
+ * After being start()'ed this job will perform work asynchronously and Q_EMIT finished() when done.
  *
  * Internally, this job will call DiscoveryPhase::scheduleMoreJobs when one of its sub-jobs is
  * finished. DiscoveryPhase::scheduleMoreJobs will call processSubJobs() to continue work until
@@ -85,7 +85,7 @@ public:
     }
 
     void start();
-    /** Start up to nbJobs, return the number of job started; emit finished() when done */
+    /** Start up to nbJobs, return the number of job started; Q_EMIT finished() when done */
     int processSubJobs(int nbJobs);
 
     SyncFileItemPtr _dirItem;
@@ -274,7 +274,7 @@ private:
     bool _childIgnored = false; // The directory contains ignored item that would prevent deletion
     PinState _pinState = PinState::Unspecified; // The directory's pin-state, see computePinState()
 
-signals:
+Q_SIGNALS:
     void finished();
     // The root etag of this directory was fetched
     void etag(const QString &, const QDateTime &time);

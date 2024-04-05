@@ -69,7 +69,7 @@ public:
                 saveFilter();
             }
             invalidateFilter();
-            emit filterChanged();
+            Q_EMIT filterChanged();
         }
     }
 
@@ -336,7 +336,7 @@ void IssuesWidget::slotProgressInfo(Folder *folder, const ProgressInfo &progress
                 conflicts.append(rawData.path());
             }
         }
-        emit ProgressDispatcher::instance()->folderConflicts(folder, conflicts);
+        Q_EMIT ProgressDispatcher::instance()->folderConflicts(folder, conflicts);
 
         _ui->_conflictHelp->setHidden(Theme::instance()->conflictHelpUrl().isEmpty() || conflicts.isEmpty());
     }

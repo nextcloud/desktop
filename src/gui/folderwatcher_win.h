@@ -49,7 +49,7 @@ protected:
     void processEntries(FILE_NOTIFY_INFORMATION *curEntry);
     void closeHandle();
 
-signals:
+Q_SIGNALS:
     void changed(const QSet<QString> &path);
     void lostChanges();
 

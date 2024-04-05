@@ -41,6 +41,6 @@ void ThumbnailJob::finished()
             qWarning() << Q_FUNC_INFO << "Invalid thumbnail";
         }
     }
-    emit jobFinished(result, p);
+    Q_EMIT jobFinished(result, p);
 }
 }

@@ -52,11 +52,11 @@ public:
     static void showContextMenu(QWidget *parent, ProtocolItemModel *model, const QModelIndexList &items);
     static QMenu *showFilterMenu(QWidget *parent, Models::SignalledQSortFilterProxyModel *model, int role, const QString &columnName);
 
-public slots:
+public Q_SLOTS:
     void slotItemCompleted(Folder *folder, const SyncFileItemPtr &item);
     void filterDidChange();
 
-private slots:
+private Q_SLOTS:
     void slotItemContextMenu();
 
 private:

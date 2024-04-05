@@ -60,12 +60,12 @@ public:
     /** Whether the path is being watched for lock-changes */
     bool contains(const QString &path, OCC::FileSystem::LockMode mode) const;
 
-signals:
+Q_SIGNALS:
     /** Emitted when one of the watched files is no longer
      *  being locked. */
     void fileUnlocked(const QString &path, OCC::FileSystem::LockMode mode);
 
-private slots:
+private Q_SLOTS:
     void checkFiles();
 
 private:

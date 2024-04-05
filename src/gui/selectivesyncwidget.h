@@ -51,7 +51,7 @@ public:
 
     void setDavUrl(const QUrl &davUrl);
 
-private slots:
+private Q_SLOTS:
     void slotUpdateDirectories(QStringList);
     void slotItemExpanded(QTreeWidgetItem *);
     void slotItemChanged(QTreeWidgetItem *, int);

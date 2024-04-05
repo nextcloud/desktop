@@ -79,7 +79,7 @@ void NotificationWidget::setActivity(const Activity &activity)
         connect(b, &QAbstractButton::clicked, this, [this]{
             QString doneText = tr("Closing in a few seconds...");
             _ui->_timeLabel->setText(doneText);
-            emit requestCleanupAndBlacklist(_myActivity);
+            Q_EMIT requestCleanupAndBlacklist(_myActivity);
             return;
         });
     } else {
@@ -106,7 +106,7 @@ void NotificationWidget::slotButtonClicked(QPushButton *buttonWidget, const Acti
     if (!triggeredLink._link.isEmpty()) {
         qCInfo(lcNotifications) << "Notification Link: " << triggeredLink._verb << triggeredLink._link;
         _progressIndi->startAnimation();
-        emit sendNotificationRequest(_accountName, triggeredLink._link, triggeredLink._verb);
+        Q_EMIT sendNotificationRequest(_accountName, triggeredLink._link, triggeredLink._verb);
     }
 }
 

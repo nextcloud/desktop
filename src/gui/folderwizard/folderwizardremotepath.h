@@ -50,7 +50,7 @@ public:
 
     const QString &targetPath() const;
 
-protected slots:
+protected Q_SLOTS:
 
     void showWarn(const QString & = QString()) const;
     void slotAddRemoteFolder();

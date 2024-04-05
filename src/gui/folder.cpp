@@ -138,9 +138,8 @@ Folder::Folder(const FolderDefinition &definition, const AccountStatePtr &accoun
         connect(_engine.data(), &SyncEngine::started, this, &Folder::slotSyncStarted, Qt::QueuedConnection);
         connect(_engine.data(), &SyncEngine::finished, this, &Folder::slotSyncFinished, Qt::QueuedConnection);
 
-        connect(_engine.data(), &SyncEngine::transmissionProgress, this, [this](const ProgressInfo &pi) {
-            emit ProgressDispatcher::instance()->progressInfo(this, pi);
-        });
+        connect(_engine.data(), &SyncEngine::transmissionProgress, this,
+            [this](const ProgressInfo &pi) { Q_EMIT ProgressDispatcher::instance()->progressInfo(this, pi); });
         connect(_engine.data(), &SyncEngine::itemCompleted, this, &Folder::slotItemCompleted);
         connect(_engine.data(), &SyncEngine::seenLockedFile, FolderMan::instance(), &FolderMan::slotSyncOnceFileUnlocks);
         connect(_engine.data(), &SyncEngine::aboutToPropagate,
@@ -412,13 +411,13 @@ void Folder::setSyncPaused(bool paused)
     _definition.paused = paused;
     saveToSettings();
 
-    emit syncPausedChanged(this, paused);
+    Q_EMIT syncPausedChanged(this, paused);
     if (!paused) {
         setSyncState(SyncResult::NotYetStarted);
     } else {
         setSyncState(SyncResult::Paused);
     }
-    emit canSyncChanged();
+    Q_EMIT canSyncChanged();
 }
 
 void Folder::setSyncState(SyncResult::Status state)
@@ -675,7 +674,7 @@ void Folder::slotWatchedPathsChanged(const QSet<QString> &paths, ChangeReason re
         }
         warnOnNewExcludedItem(record, relativePath);
 
-        emit watchedFileChangedExternally(path);
+        Q_EMIT watchedFileChangedExternally(path);
         needSync = true;
     }
     if (needSync && canSync()) {
@@ -963,7 +962,7 @@ void Folder::startSync()
     _engine->setIgnoreHiddenFiles(_definition.ignoreHiddenFiles);
     QMetaObject::invokeMethod(_engine.data(), &SyncEngine::startSync, Qt::QueuedConnection);
 
-    emit syncStarted();
+    Q_EMIT syncStarted();
 }
 
 void Folder::setDirtyNetworkLimits()
@@ -997,7 +996,7 @@ void Folder::reloadSyncOptions()
 void Folder::slotSyncError(const QString &message, ErrorCategory category)
 {
     _syncResult.appendErrorString(message);
-    emit ProgressDispatcher::instance()->syncError(this, message, category);
+    Q_EMIT ProgressDispatcher::instance()->syncError(this, message, category);
 }
 
 void Folder::slotSyncStarted()
@@ -1098,7 +1097,7 @@ void Folder::slotItemCompleted(const SyncFileItemPtr &item)
     _syncResult.processCompletedItem(item);
 
     _fileLog->logItem(*item);
-    emit ProgressDispatcher::instance()->itemCompleted(this, item);
+    Q_EMIT ProgressDispatcher::instance()->itemCompleted(this, item);
 }
 
 void Folder::slotLogPropagationStart()

@@ -99,13 +99,16 @@ namespace TestUtils {
             }
             return out;
         }();
-        return {{"core",
-                    QVariantMap{{"status",
-                        QVariantMap{{"installed", "1"}, {"maintenance", "0"}, {"needsDbUpgrade", "0"}, {"version", "10.11.0.0"}, {"versionstring", "10.11.0"},
-                            {"edition", "Community"}, {"productname", "Infinite Scale"}, {"product", "Infinite Scale"},
-                            {"productversion", "2.0.0-beta1+7c2e3201b"}}}}},
-            {"files", QVariantList{}}, {"dav", QVariantMap{{"chunking", "1.0"}}},
-            {"checksums", QVariantMap{{"preferredUploadType", Utility::enumToString(algo)}, {"supportedTypes", algorithmNames}}}};
+        return {{QStringLiteral("core"),
+                    QVariantMap{{QStringLiteral("status"),
+                        QVariantMap{{QStringLiteral("installed"), QStringLiteral("1")}, {QStringLiteral("maintenance"), QStringLiteral("0")},
+                            {QStringLiteral("needsDbUpgrade"), QStringLiteral("0")}, {QStringLiteral("version"), QStringLiteral("10.11.0.0")},
+                            {QStringLiteral("versionstring"), QStringLiteral("10.11.0")}, {QStringLiteral("edition"), QStringLiteral("Community")},
+                            {QStringLiteral("productname"), QStringLiteral("Infinite Scale")}, {QStringLiteral("product"), QStringLiteral("Infinite Scale")},
+                            {QStringLiteral("productversion"), QStringLiteral("2.0.0-beta1+7c2e3201b")}}}}},
+            {QStringLiteral("files"), QVariantList{}}, {QStringLiteral("dav"), QVariantMap{{QStringLiteral("chunking"), QStringLiteral("1.0")}}},
+            {QStringLiteral("checksums"),
+                QVariantMap{{QStringLiteral("preferredUploadType"), Utility::enumToString(algo)}, {QStringLiteral("supportedTypes"), algorithmNames}}}};
     }
 
     void TestUtilsPrivate::accountStateDeleter(OCC::AccountState *acc)

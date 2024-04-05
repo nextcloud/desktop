@@ -36,7 +36,7 @@ public:
 
     ~AppImageUpdateAvailableDialog() override;
 
-signals:
+Q_SIGNALS:
     /**
      * Emitted when an update is explicitly skipped by the user.
      */

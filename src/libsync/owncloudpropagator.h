@@ -116,21 +116,21 @@ public:
 
     const QString path() { return _path; }
 
-public slots:
+public Q_SLOTS:
     /*
-     * Asynchronous abort requires emit of abortFinished() signal,
+     * Asynchronous abort requires Q_EMIT of abortFinished() signal,
      * while synchronous is expected to abort immedietaly.
-    */
+     */
     virtual void abort(PropagatorJob::AbortType abortType) {
         if (abortType == AbortType::Asynchronous)
-            emit abortFinished();
+            Q_EMIT abortFinished();
     }
 
     /** Starts this job, or a new subjob
      * returns true if a job was started.
      */
     virtual bool scheduleSelfOrChild() = 0;
-signals:
+Q_SIGNALS:
     /**
      * Emitted when the job is fully finished
      */
@@ -179,7 +179,7 @@ public:
     bool scheduleSelfOrChild() override;
 
     const SyncFileItem &item() const { return *_item.data(); }
-public slots:
+public Q_SLOTS:
     virtual void start() = 0;
 };
 
@@ -226,7 +226,7 @@ public:
                 j->abort(abortType);
             }
         } else if (abortType == AbortType::Asynchronous){
-            emit abortFinished();
+            Q_EMIT abortFinished();
         }
     }
 
@@ -237,7 +237,7 @@ public:
     const QVector<PropagatorJob *> &jobsToDo() { return _jobsToDo; }
     void setJobsToDo(const QVector<PropagatorJob *> &todo) { _jobsToDo = todo; }
 
-private slots:
+private Q_SLOTS:
     void slotSubJobAbortFinished();
     bool possiblyRunNextJob(PropagatorJob *next)
     {
@@ -313,7 +313,7 @@ public:
         return _item;
     }
 
-private slots:
+private Q_SLOTS:
     void start() override {};
     void slotFirstJobFinished(SyncFileItem::Status status);
     virtual void slotSubJobsFinished(const SyncFileItem::Status status);
@@ -340,7 +340,7 @@ public:
 
     void addDeleteJob(PropagatorJob *job);
 
-private slots:
+private Q_SLOTS:
     void slotSubJobsFinished(SyncFileItem::Status status) override;
     void slotDirDeletionJobsFinished(SyncFileItem::Status status);
 
@@ -536,7 +536,7 @@ public:
      * Will also trigger a Vfs::updateMetadata.
      */
     Result<Vfs::ConvertToPlaceholderResult, QString> updatePlaceholder(const SyncFileItem &item, const QString &fileName, const QString &replacesFile);
-private slots:
+private Q_SLOTS:
 
     void abortTimeout()
     {
@@ -549,13 +549,13 @@ private slots:
     void emitFinished(SyncFileItem::Status status)
     {
         if (!_finishedEmited)
-            emit finished(status == SyncFileItem::Success);
+            Q_EMIT finished(status == SyncFileItem::Success);
         _finishedEmited = true;
     }
 
     void scheduleNextJobImpl();
 
-signals:
+Q_SIGNALS:
     void newItem(const SyncFileItemPtr &);
     void itemCompleted(const SyncFileItemPtr &);
     void progress(const SyncFileItem &, qint64 bytes);

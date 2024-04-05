@@ -6,7 +6,7 @@ include(VERSION.cmake)
 project(owncloud-client LANGUAGES CXX C VERSION ${MIRALL_VERSION_MAJOR}.${MIRALL_VERSION_MINOR}.${MIRALL_VERSION_PATCH})
 include(FeatureSummary)
 
-find_package(ECM 5.50.0 REQUIRED NO_MODULE)
+find_package(ECM 6.0.0 REQUIRED NO_MODULE)
 
 set_package_properties(ECM PROPERTIES TYPE REQUIRED DESCRIPTION "Extra CMake Modules." URL "https://projects.kde.org/projects/kdesupport/extra-cmake-modules")
 feature_summary(WHAT REQUIRED_PACKAGES_NOT_FOUND FATAL_ON_MISSING_REQUIRED_PACKAGES)
@@ -18,7 +18,7 @@ set(APPLE_SUPPRESS_X11_WARNING ON)
 
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
-find_package(QT 6.2 NAMES Qt6 COMPONENTS Core REQUIRED)
+find_package(QT 6.5 NAMES Qt6 COMPONENTS Core REQUIRED)
 
 find_package(Qt6 COMPONENTS Core Concurrent Network Widgets Xml Quick QuickWidgets QuickControls2 REQUIRED)
 find_package(Qt6LinguistTools REQUIRED)

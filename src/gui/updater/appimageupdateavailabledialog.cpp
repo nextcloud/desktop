@@ -50,7 +50,7 @@ AppImageUpdateAvailableDialog::AppImageUpdateAvailableDialog(const QVersionNumbe
     setMinimumSize(sizeHint());
 
     connect(_ui->skipButton, &QPushButton::clicked, this, [this]() {
-        emit skipUpdateButtonClicked();
+        Q_EMIT skipUpdateButtonClicked();
         reject();
     });
 }

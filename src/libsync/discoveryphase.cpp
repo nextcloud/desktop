@@ -150,7 +150,7 @@ void DiscoveryPhase::startJob(ProcessDirectoryJob *job)
         OC_ENFORCE(_currentRootJob == sender());
         _currentRootJob = nullptr;
         if (job->_dirItem)
-            emit itemDiscovered(job->_dirItem);
+            Q_EMIT itemDiscovered(job->_dirItem);
         job->deleteLater();
 
         // Once the main job has finished recurse here to execute the remaining
@@ -159,7 +159,7 @@ void DiscoveryPhase::startJob(ProcessDirectoryJob *job)
             auto nextJob = _queuedDeletedDirectories.take(_queuedDeletedDirectories.firstKey());
             startJob(nextJob);
         } else {
-            emit finished();
+            Q_EMIT finished();
         }
     });
     _currentRootJob = job;
@@ -211,7 +211,7 @@ void DiscoverySingleLocalDirectoryJob::run() {
         QString errorString = tr("Error while opening directory %1").arg(localPath);
         if (errno == EACCES) {
             errorString = tr("Directory not accessible on client, permission denied");
-            emit finishedNonFatalError(errorString);
+            Q_EMIT finishedNonFatalError(errorString);
             return;
         } else if (errno == ENOENT) {
             errorString = tr("Directory not found: %1").arg(localPath);
@@ -220,7 +220,7 @@ void DiscoverySingleLocalDirectoryJob::run() {
             // Just consider it is empty
             return;
         }
-        emit finishedFatalError(errorString);
+        Q_EMIT finishedFatalError(errorString);
         return;
     }
 
@@ -249,7 +249,7 @@ void DiscoverySingleLocalDirectoryJob::run() {
 
         // Note: Windows vio converts any error into EACCES
         qCWarning(lcDiscovery) << "readdir failed for file in " << localPath << " - errno: " << errno;
-        emit finishedFatalError(tr("Error while reading directory %1").arg(localPath));
+        Q_EMIT finishedFatalError(tr("Error while reading directory %1").arg(localPath));
         return;
     }
 
@@ -259,7 +259,7 @@ void DiscoverySingleLocalDirectoryJob::run() {
         qCWarning(lcDiscovery) << "closedir failed for file in " << localPath << " - errno: " << errno;
     }
 
-    emit finished(results);
+    Q_EMIT finished(results);
 }
 
 DiscoverySingleDirectoryJob::DiscoverySingleDirectoryJob(const AccountPtr &account, const QUrl &baseUrl, const QString &path, QObject *parent)
@@ -364,7 +364,7 @@ void DiscoverySingleDirectoryJob::directoryListingIteratedSlot(const QString &fi
         _ignoredFirst = true;
         if (auto it = Utility::optionalFind(map, QStringLiteral("permissions"))) {
             auto perm = RemotePermissions::fromServerString(it->value());
-            emit firstDirectoryPermissions(perm);
+            Q_EMIT firstDirectoryPermissions(perm);
             _isExternalStorage = perm.hasPermission(RemotePermissions::IsMounted);
         }
         if (auto it = Utility::optionalFind(map, QStringLiteral("data-fingerprint"))) {
@@ -407,16 +407,16 @@ void DiscoverySingleDirectoryJob::lsJobFinishedWithoutErrorSlot()
     if (!_ignoredFirst) {
         // This is a sanity check, if we haven't _ignoredFirst then it means we never received any directoryListingIteratedSlot
         // which means somehow the server XML was bogus
-        emit finished(HttpError{ 0, tr("Server error: PROPFIND reply is not XML formatted!") });
+        Q_EMIT finished(HttpError{0, tr("Server error: PROPFIND reply is not XML formatted!")});
         deleteLater();
         return;
     } else if (!_error.isEmpty()) {
-        emit finished(HttpError{ 0, _error });
+        Q_EMIT finished(HttpError{0, _error});
         deleteLater();
         return;
     }
-    emit etag(_firstEtag, _proFindJob->responseQTimeStamp());
-    emit finished(_results);
+    Q_EMIT etag(_firstEtag, _proFindJob->responseQTimeStamp());
+    Q_EMIT finished(_results);
     deleteLater();
 }
 
@@ -433,7 +433,7 @@ void DiscoverySingleDirectoryJob::lsJobFinishedWithErrorSlot(QNetworkReply *r)
     } else if (_proFindJob->timedOut()) {
         msg = tr("Connection timed out");
     }
-    emit finished(HttpError{ httpCode, msg });
+    Q_EMIT finished(HttpError{httpCode, msg});
     deleteLater();
 }
 }

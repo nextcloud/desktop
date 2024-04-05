@@ -448,7 +448,7 @@ void SocketApi::processShareRequest(const QString &localFile, SocketListener *li
         const QString message = QLatin1String("SHARE:OK:") + QDir::toNativeSeparators(localFile);
         listener->sendMessage(message);
 
-        emit shareCommandReceived(remotePath, fileData.localPath, startPage);
+        Q_EMIT shareCommandReceived(remotePath, fileData.localPath, startPage);
     }
 }
 
@@ -536,7 +536,7 @@ public:
         _shareManager.fetchShares(_serverPath);
     }
 
-private slots:
+private Q_SLOTS:
     void sharesFetched(const QList<QSharedPointer<Share>> &shares)
     {
         auto shareName = SocketApi::tr("Context menu share");
@@ -576,25 +576,25 @@ private slots:
     void linkShareCreationForbidden(const QString &message)
     {
         qCInfo(lcPublicLink) << "Could not create link share:" << message;
-        emit error(message);
+        Q_EMIT error(message);
         deleteLater();
     }
 
     void serverError(int code, const QString &message)
     {
         qCWarning(lcPublicLink) << "Share fetch/create error" << code << message;
-        emit error(message);
+        Q_EMIT error(message);
         deleteLater();
     }
 
-signals:
+Q_SIGNALS:
     void done(const QString &link);
     void error(const QString &message);
 
 private:
     void success(const QString &link)
     {
-        emit done(link);
+        Q_EMIT done(link);
         deleteLater();
     }
 
@@ -614,7 +614,7 @@ void SocketApi::command_COPY_PUBLIC_LINK(const QString &localFile, SocketListene
     connect(job, &GetOrCreatePublicLinkShare::done, this,
         [](const QString &url) { copyUrlToClipboard(QUrl(url)); });
     connect(job, &GetOrCreatePublicLinkShare::error, this,
-        [=]() { emit shareCommandReceived(fileData.serverRelativePath, fileData.localPath, ShareDialogStartPage::PublicLinks); });
+        [=]() { Q_EMIT shareCommandReceived(fileData.serverRelativePath, fileData.localPath, ShareDialogStartPage::PublicLinks); });
     job->run();
 }
 

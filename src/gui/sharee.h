@@ -74,7 +74,7 @@ public:
 
     QString currentSearch() const { return _search; }
 
-signals:
+Q_SIGNALS:
     void shareesReady();
     void displayErrorMessage(int code, const QString &);
 

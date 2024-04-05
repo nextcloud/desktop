@@ -30,7 +30,7 @@ private:
         return TestUtils::folderMan()->addFolder(accountState, d);
     }
 
-private slots:
+private Q_SLOTS:
     void test()
     {
         FakeFolder fakeFolder({});

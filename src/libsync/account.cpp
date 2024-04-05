@@ -123,7 +123,7 @@ void Account::setDavUser(const QString &newDavUser)
     if (_davUser == newDavUser)
         return;
     _davUser = newDavUser;
-    emit wantsAccountSaved(this);
+    Q_EMIT wantsAccountSaved(this);
 }
 
 QPixmap Account::avatar() const
@@ -133,7 +133,7 @@ QPixmap Account::avatar() const
 void Account::setAvatar(const QPixmap &img)
 {
     _avatarImg = img;
-    emit accountChangedAvatar();
+    Q_EMIT accountChangedAvatar();
 }
 
 QString Account::displayName() const
@@ -157,7 +157,7 @@ QString Account::davDisplayName() const
 void Account::setDavDisplayName(const QString &newDisplayName)
 {
     _displayName = newDisplayName;
-    emit accountChangedDisplayName();
+    Q_EMIT accountChangedDisplayName();
 }
 
 QString Account::id() const
@@ -198,7 +198,7 @@ void Account::setCredentials(AbstractCredentials *cred)
         _am->setCookieJar(jar);
     }
     connect(_credentials.data(), &AbstractCredentials::fetched, this, [this] {
-        emit credentialsFetched();
+        Q_EMIT credentialsFetched();
         _queueGuard.unblock();
     });
     connect(_credentials.data(), &AbstractCredentials::authenticationStarted, this, [this] {

@@ -95,7 +95,7 @@ public:
     {
     }
 
-public slots:
+public Q_SLOTS:
     void closureSlot()
     {
         callback_();

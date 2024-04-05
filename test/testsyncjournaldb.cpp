@@ -31,7 +31,7 @@ public:
         return Utility::qDateTimeToTime_t(time);
     }
 
-private slots:
+private Q_SLOTS:
 
     void initTestCase()
     {

@@ -56,13 +56,13 @@ public:
 
     /** Trigger (async) fetching of credential information
      *
-     * Should set _wasFetched = true, and later emit fetched() when done.
+     * Should set _wasFetched = true, and later Q_EMIT fetched() when done.
      */
     virtual void fetchFromKeychain() = 0;
 
     /** Ask credentials from the user (typically async)
      *
-     * Should emit asked() when done.
+     * Should Q_EMIT asked() when done.
      */
     virtual void askFromUser() = 0;
 

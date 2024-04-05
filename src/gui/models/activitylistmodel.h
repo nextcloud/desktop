@@ -61,11 +61,11 @@ public:
     ActivityList activityList() { return _finalList; }
 
 
-public slots:
+public Q_SLOTS:
     void slotRefreshActivity(const AccountStatePtr &ast);
     void slotRemoveAccount(AccountStatePtr ast);
 
-signals:
+Q_SIGNALS:
     void activityJobStatusCode(AccountStatePtr ast, int statusCode);
 
 private:

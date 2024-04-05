@@ -100,7 +100,7 @@ private:
     // Adds an account to the tracked list, emitting accountAdded()
     AccountStatePtr addAccountState(std::unique_ptr<AccountState> &&accountState);
 
-public slots:
+public Q_SLOTS:
     /// Saves account data, not including the credentials
     void saveAccount(Account *account, bool saveCredentials);
 

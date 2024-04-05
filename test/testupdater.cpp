@@ -15,7 +15,7 @@ class TestUpdater : public QObject
 {
     Q_OBJECT
 
-private slots:
+private Q_SLOTS:
     void testDownload_data()
     {
         QTest::addColumn<QString>("url");

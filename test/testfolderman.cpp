@@ -29,7 +29,7 @@ using namespace OCC;
 class TestFolderMan: public QObject
 {
     Q_OBJECT
-private slots:
+private Q_SLOTS:
     void testCheckPathValidityForNewFolder()
     {
 #ifdef Q_OS_WIN

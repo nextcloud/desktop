@@ -226,7 +226,7 @@ void AbstractNetworkJob::slotFinished()
         if (_reply->error() == QNetworkReply::OperationCanceledError && !_aborted) {
             _timedout = true;
         }
-        emit networkError(_reply);
+        Q_EMIT networkError(_reply);
     }
 
     // get the Date timestamp from reply

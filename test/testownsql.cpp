@@ -18,7 +18,7 @@ class TestOwnSql : public QObject
     Q_OBJECT
     const QTemporaryDir _tempDir = TestUtils::createTempDir();
 
-private slots:
+private Q_SLOTS:
     void testOpenDb() {
         QFileInfo fi(_tempDir.path() + QStringLiteral("/testdb.sqlite"));
         QVERIFY( !fi.exists() ); // must not exist

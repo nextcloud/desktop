@@ -56,13 +56,13 @@ bool LockWatcher::contains(const QString &path, OCC::FileSystem::LockMode mode) 
 
 void LockWatcher::checkFiles()
 {
-    // copy as emit fileUnlocked might trigger a new insert
+    // copy as Q_EMIT fileUnlocked might trigger a new insert
     const auto watchedPathsCopy = _watchedPaths;
     decltype(_watchedPaths) unlocked;
     for (const auto &p : watchedPathsCopy) {
         if (!FileSystem::isFileLocked(p.first, p.second)) {
             qCInfo(lcLockWatcher) << "Lock of" << p.first << p.second << "was released";
-            emit fileUnlocked(p.first, p.second);
+            Q_EMIT fileUnlocked(p.first, p.second);
             unlocked.insert(p);
         }
     }

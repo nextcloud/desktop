@@ -132,7 +132,7 @@ public:
     auto getPropagator() { return _propagator; } // for the test
 
 
-signals:
+Q_SIGNALS:
     // During update, before reconcile
     void rootEtag(const QString &, const QDateTime &);
 
@@ -157,7 +157,7 @@ signals:
      */
     void seenLockedFile(const QString &fileName, FileSystem::LockMode mode);
 
-private slots:
+private Q_SLOTS:
     void slotFolderDiscovered(bool local, const QString &folder);
     void slotRootEtagReceived(const QString &, const QDateTime &time);
 
@@ -200,7 +200,7 @@ private:
     // Removes stale and adds missing conflict records after sync
     void conflictRecordMaintenance();
 
-    // cleanup and emit the finished signal
+    // cleanup and Q_EMIT the finished signal
     void finalize(bool success);
 
     // Must only be acessed during update and reconcile

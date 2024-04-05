@@ -19,7 +19,7 @@ using namespace OCC;
 class DesktopServiceHook : public QObject
 {
     Q_OBJECT
-signals:
+Q_SIGNALS:
     void hooked(const QUrl &);
 
 public:
@@ -52,16 +52,16 @@ public:
     Q_INVOKABLE virtual void respond() {
         if (aborted) {
             setError(OperationCanceledError, QStringLiteral("Operation Canceled"));
-            emit metaDataChanged();
-            emit finished();
+            Q_EMIT metaDataChanged();
+            Q_EMIT finished();
             return;
         }
         setHeader(QNetworkRequest::ContentLengthHeader, payload->size());
         setAttribute(QNetworkRequest::HttpStatusCodeAttribute, 200);
-        emit metaDataChanged();
+        Q_EMIT metaDataChanged();
         if (bytesAvailable())
-            emit readyRead();
-        emit finished();
+            Q_EMIT readyRead();
+        Q_EMIT finished();
     }
 
     void abort() override {
@@ -289,7 +289,7 @@ class TestOAuth: public QObject
 {
     Q_OBJECT
 
-private slots:
+private Q_SLOTS:
     void testBasic()
     {
         OAuthTestCase test;

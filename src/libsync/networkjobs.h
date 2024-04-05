@@ -46,10 +46,10 @@ public:
     explicit EntityExistsJob(AccountPtr account, const QUrl &rootUrl, const QString &path, QObject *parent = nullptr);
     void start() override;
 
-signals:
+Q_SIGNALS:
     void exists(QNetworkReply *);
 
-private slots:
+private Q_SLOTS:
     void finished() override;
 };
 
@@ -65,7 +65,7 @@ public:
 
     bool parse(const QByteArray &xml, QHash<QString, qint64> *sizes, const QString &expectedPath);
 
-signals:
+Q_SIGNALS:
     void directoryListingSubfolders(const QStringList &items);
     void directoryListingIterated(const QString &name, const QMap<QString, QString> &properties);
     void finishedWithError(QNetworkReply *reply);
@@ -97,13 +97,13 @@ public:
     // TODO: document...
     const QHash<QString, qint64> &sizes() const;
 
-signals:
+Q_SIGNALS:
     void directoryListingSubfolders(const QStringList &items);
     void directoryListingIterated(const QString &name, const QMap<QString, QString> &properties);
     void finishedWithError(QNetworkReply *reply);
     void finishedWithoutError();
 
-private slots:
+private Q_SLOTS:
     void finished() override;
 
 private:
@@ -135,14 +135,14 @@ public:
     /** The retrieved avatar images don't have the circle shape by default */
     static QPixmap makeCircularAvatar(const QPixmap &baseAvatar);
 
-signals:
+Q_SIGNALS:
     /**
      * @brief avatarPixmap - returns either a valid pixmap or not.
      */
 
     void avatarPixmap(const QPixmap &);
 
-private slots:
+private Q_SLOTS:
     void finished() override;
 };
 
@@ -160,7 +160,7 @@ public:
         const HeaderMap &extraHeaders, QObject *parent = nullptr);
     void start() override;
 
-signals:
+Q_SIGNALS:
     void finishedWithError(QNetworkReply *reply);
     void finishedWithoutError();
 
@@ -200,7 +200,7 @@ public:
 
     explicit DetermineAuthTypeJob(AccountPtr account, QObject *parent = nullptr);
     void start() override;
-signals:
+Q_SIGNALS:
     void authType(AuthType);
 
 protected Q_SLOTS:

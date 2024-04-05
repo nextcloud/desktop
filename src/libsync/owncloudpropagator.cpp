@@ -304,13 +304,13 @@ void PropagateItemJob::done(SyncFileItem::Status statusArg, const QString &error
         // we are either not a directory or we are a PropagateDirectory job
         // and an actual instruction was performed for this directory.
         Q_ASSERT(!_item->_relevantDirectoyInstruction || qobject_cast<PropagateDirectory *>(this));
-        emit propagator()->itemCompleted(_item);
+        Q_EMIT propagator()->itemCompleted(_item);
     } else {
         // the directoy needs to call done() in PropagateDirectory::slotSubJobsFinished
         // we don't notify itemCompleted yet as the directory is only complete once its child items are complete.
         _item->_relevantDirectoyInstruction = true;
     }
-    emit finished(_item->_status);
+    Q_EMIT finished(_item->_status);
     if (_item->_status == SyncFileItem::FatalError) {
         // Abort all remaining jobs.
         propagator()->abort();
@@ -690,7 +690,7 @@ void OwncloudPropagator::scheduleNextJobImpl()
 
 void OwncloudPropagator::reportFileTotal(const SyncFileItem &item, qint64 newSize)
 {
-    emit updateFileTotal(item, newSize);
+    Q_EMIT updateFileTotal(item, newSize);
 }
 
 void OwncloudPropagator::abort()
@@ -718,7 +718,7 @@ void OwncloudPropagator::abort()
 
 void OwncloudPropagator::reportProgress(const SyncFileItem &item, qint64 bytes)
 {
-    emit progress(item, bytes);
+    Q_EMIT progress(item, bytes);
 }
 
 AccountPtr OwncloudPropagator::account() const
@@ -761,7 +761,7 @@ bool OwncloudPropagator::createConflict(const SyncFileItemPtr &item,
     // If the file is locked, we want to retry this sync when it
     // becomes available again.
     if (FileSystem::isFileLocked(fn, FileSystem::LockMode::Exclusive)) {
-        emit seenLockedFile(fn, FileSystem::LockMode::Exclusive);
+        Q_EMIT seenLockedFile(fn, FileSystem::LockMode::Exclusive);
         if (error)
             *error = tr("File %1 is currently in use").arg(fn);
         return false;
@@ -801,7 +801,7 @@ bool OwncloudPropagator::createConflict(const SyncFileItemPtr &item,
             conflictItem->setInstruction(CSYNC_INSTRUCTION_NEW);
             conflictItem->_modtime = conflictModTime;
             conflictItem->_size = item->_previousSize;
-            emit newItem(conflictItem);
+            Q_EMIT newItem(conflictItem);
             composite->appendTask(conflictItem);
         } else {
             // Directories we can't process in one go. The next sync run
@@ -887,7 +887,7 @@ void PropagatorCompositeJob::slotSubJobAbortFinished()
 
     // Emit abort if last job has been aborted
     if (_abortsCount == 0) {
-        emit abortFinished();
+        Q_EMIT abortFinished();
     }
 }
 
@@ -997,7 +997,7 @@ void PropagatorCompositeJob::finalize()
         return;
 
     _state = Finished;
-    emit finished(_errorPaths.empty() ? SyncFileItem::Success : _errorPaths.last());
+    Q_EMIT finished(_errorPaths.empty() ? SyncFileItem::Success : _errorPaths.last());
 }
 
 qint64 PropagatorCompositeJob::committedDiskSpace() const
@@ -1141,9 +1141,9 @@ void PropagateDirectory::slotSubJobsFinished(const SyncFileItem::Status status)
     // and we don't want error handling for this folder for an error that happend on a child
     Q_ASSERT(_state != Finished);
     _state = Finished;
-    emit finished(status);
+    Q_EMIT finished(status);
     if (_item->_relevantDirectoyInstruction) {
-        emit propagator()->itemCompleted(_item);
+        Q_EMIT propagator()->itemCompleted(_item);
     }
 }
 
@@ -1182,12 +1182,12 @@ void PropagateRootDirectory::abort(PropagatorJob::AbortType abortType)
         connect(&_subJobs, &PropagatorCompositeJob::abortFinished, this, [this, abortStatus]() {
             abortStatus->subJobsFinished = true;
             if (abortStatus->subJobsFinished && abortStatus->dirDeletionFinished)
-                emit abortFinished();
+                Q_EMIT abortFinished();
         });
         connect(&_dirDeletionJobs, &PropagatorCompositeJob::abortFinished, this, [this, abortStatus]() {
             abortStatus->dirDeletionFinished = true;
             if (abortStatus->subJobsFinished && abortStatus->dirDeletionFinished)
-                emit abortFinished();
+                Q_EMIT abortFinished();
         });
     }
     _subJobs.abort(abortType);
@@ -1256,7 +1256,7 @@ void PropagateRootDirectory::slotSubJobsFinished(SyncFileItem::Status status)
 void PropagateRootDirectory::slotDirDeletionJobsFinished(SyncFileItem::Status status)
 {
     _state = Finished;
-    emit finished(_status != SyncFileItem::NoStatus ? _status : status);
+    Q_EMIT finished(_status != SyncFileItem::NoStatus ? _status : status);
 }
 
 void PropagateRootDirectory::addDeleteJob(PropagatorJob *job)

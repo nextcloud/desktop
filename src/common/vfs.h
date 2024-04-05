@@ -232,7 +232,7 @@ public:
      */
     void wipeDehydratedVirtualFiles();
 
-public slots:
+public Q_SLOTS:
     /** Update in-sync state based on SyncFileStatusTracker signal.
      *
      * For some vfs plugins the icons aren't based on SocketAPI but rather on data shared
@@ -241,7 +241,7 @@ public slots:
      */
     virtual void fileStatusChanged(const QString &systemFileName, SyncFileStatus fileStatus) = 0;
 
-signals:
+Q_SIGNALS:
     /// start complete
     void started();
 

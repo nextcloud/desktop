@@ -58,7 +58,7 @@ public:
     ~ShareLinkWidget() override;
     void getShares();
 
-private slots:
+private Q_SLOTS:
     void slotSharesFetched(const QList<QSharedPointer<Share>> &shares);
     void slotShareSelectionChanged();
 

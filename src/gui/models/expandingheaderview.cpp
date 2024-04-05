@@ -29,7 +29,7 @@ ExpandingHeaderView::ExpandingHeaderView(const QString &objectName, QWidget *par
     setSectionsClickable(true);
     setHighlightSections(true);
 
-    connect(this, &QHeaderView::sectionCountChanged, this, &ExpandingHeaderView::resizeColumns);
+    connect(this, &QHeaderView::sectionCountChanged, this, [this] { resizeColumns(false); });
 
     setObjectName(objectName);
     ConfigFile cfg;

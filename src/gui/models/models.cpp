@@ -26,7 +26,7 @@
 void OCC::Models::SignalledQSortFilterProxyModel::setFilterFixedStringSignalled(const QString &pattern)
 {
     setFilterFixedString(pattern);
-    emit filterChanged();
+    Q_EMIT filterChanged();
 }
 
 QString OCC::Models::formatSelection(const QModelIndexList &items, int dataRole)

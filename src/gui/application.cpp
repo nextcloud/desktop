@@ -143,7 +143,7 @@ void Application::slotAccountStateRemoved() const
 
 void Application::slotAccountStateAdded(AccountStatePtr accountState) const
 {
-    // Hook up the GUI slots to the account state's signals:
+    // Hook up the GUI slots to the account state's Q_SIGNALS:
     connect(accountState.data(), &AccountState::stateChanged,
         _gui.data(), &ownCloudGui::slotAccountStateChanged);
     connect(accountState->account().data(), &Account::serverVersionChanged,
@@ -151,7 +151,7 @@ void Application::slotAccountStateAdded(AccountStatePtr accountState) const
             _gui->slotTrayMessageIfServerUnsupported(account);
         });
 
-    // Hook up the folder manager slots to the account state's signals:
+    // Hook up the folder manager slots to the account state's Q_SIGNALS:
     connect(accountState.data(), &AccountState::isConnectedChanged, FolderMan::instance(), &FolderMan::slotIsConnectedChanged);
     connect(accountState->account().data(), &Account::serverVersionChanged, FolderMan::instance(),
         [account = accountState->account().data()] { FolderMan::instance()->slotServerVersionChanged(account); });

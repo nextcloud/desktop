@@ -869,7 +869,7 @@ void ownCloudGui::runNewAccountWizard()
                                     OAuth::saveDynamicRegistrationDataForAccount(accountStatePtr->account(), dynamicRegistrationData);
                                 }
 
-                                // the account is now ready, emulate a normal account loading and emit that the credentials are ready
+                                // the account is now ready, emulate a normal account loading and Q_EMIT that the credentials are ready
                                 Q_EMIT accountStatePtr->account()->credentialsFetched();
 
                                 switch (syncMode) {

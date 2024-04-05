@@ -113,7 +113,7 @@ void QuotaInfo::slotUpdateLastQuota(const QString &, const QMap<QString, QString
     _lastQuotaUsedBytes = result[QStringLiteral("quota-used-bytes")].toDouble();
     // negative value of the available quota have special meaning (#3940)
     _lastQuotaTotalBytes = avail >= 0 ? _lastQuotaUsedBytes + avail : avail;
-    emit quotaUpdated(_lastQuotaTotalBytes, _lastQuotaUsedBytes);
+    Q_EMIT quotaUpdated(_lastQuotaTotalBytes, _lastQuotaUsedBytes);
     _jobRestartTimer.start(defaultIntervalT);
     _lastQuotaRecieved = QDateTime::currentDateTime();
 }

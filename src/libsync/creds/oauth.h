@@ -46,7 +46,7 @@ class JsonJob;
  *                +-> Request the user_id is not present
  *                |     |
  *                v     v
- *              finalize(...): emit result(...)
+ *              finalize(...): Q_EMIT result(...)
  *
  */
 class OWNCLOUDSYNC_EXPORT OAuth : public QObject

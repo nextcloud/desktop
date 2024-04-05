@@ -56,7 +56,7 @@ public:
     }
     AvailabilityResult availability(const QString &folderPath) override;
 
-public slots:
+public Q_SLOTS:
     void fileStatusChanged(const QString &, SyncFileStatus) override { }
 
 protected:

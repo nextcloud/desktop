@@ -61,7 +61,7 @@ public:
 
     QWidget* currentPage();
 
-public slots:
+public Q_SLOTS:
     void showFirstPage();
     void showActivityPage();
     void showIssuesList();
@@ -73,7 +73,7 @@ protected:
     void changeEvent(QEvent *) override;
     void setVisible(bool visible) override;
 
-private slots:
+private Q_SLOTS:
     void accountAdded(AccountStatePtr);
     void accountRemoved(AccountStatePtr);
 

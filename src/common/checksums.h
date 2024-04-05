@@ -125,10 +125,10 @@ public:
      */
     static QByteArray computeNowOnFile(const QString &filePath, CheckSums::Algorithm checksumType);
 
-signals:
+Q_SIGNALS:
     void done(CheckSums::Algorithm checksumType, const QByteArray &checksum);
 
-private slots:
+private Q_SLOTS:
     void slotCalculationDone();
 
 private:
@@ -169,11 +169,11 @@ public:
      */
     void start(std::unique_ptr<QIODevice> device, const QByteArray &checksumHeader);
 
-signals:
+Q_SIGNALS:
     void validated(CheckSums::Algorithm checksumType, const QByteArray &checksum);
     void validationFailed(const QString &errMsg);
 
-private slots:
+private Q_SLOTS:
     void slotChecksumCalculated(CheckSums::Algorithm checksumType, const QByteArray &checksum);
 
 private:

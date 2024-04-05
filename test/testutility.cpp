@@ -23,7 +23,7 @@ class TestUtility : public QObject
 {
     Q_OBJECT
 
-private slots:
+private Q_SLOTS:
     void testOctetsToString()
     {
         QLocale::setDefault(QLocale(QStringLiteral("en")));

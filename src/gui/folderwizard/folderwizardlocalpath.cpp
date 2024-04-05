@@ -105,5 +105,5 @@ void FolderWizardLocalPath::slotChooseLocalFolder()
         // set the last directory component name as alias
         _ui->localFolderLineEdit->setText(QDir::toNativeSeparators(dir));
     }
-    emit completeChanged();
+    Q_EMIT completeChanged();
 }

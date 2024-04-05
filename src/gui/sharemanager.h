@@ -104,7 +104,7 @@ public:
      */
     void deleteShare();
 
-signals:
+Q_SIGNALS:
     void permissionsSet();
     void shareDeleted();
     void serverError(int code, const QString &message);
@@ -201,7 +201,7 @@ public:
      */
     void setExpireDate(const QDate &expireDate);
 
-signals:
+Q_SIGNALS:
     void expireDateSet();
     void passwordSet();
     void passwordSetError(int statusCode, const QString &message);
@@ -270,7 +270,7 @@ public:
      */
     void fetchShares(const QString &path);
 
-signals:
+Q_SIGNALS:
     void shareCreated(const QSharedPointer<Share> &share);
     void linkShareCreated(const QSharedPointer<LinkShare> &share);
     void sharesFetched(const QList<QSharedPointer<Share>> &shares);

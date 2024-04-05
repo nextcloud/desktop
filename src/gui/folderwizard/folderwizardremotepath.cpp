@@ -259,7 +259,7 @@ void FolderWizardRemotePath::slotCurrentItemChanged(QTreeWidgetItem *item)
         _ui->folderEntry->setText(dir);
     }
 
-    emit completeChanged();
+    Q_EMIT completeChanged();
 }
 
 void FolderWizardRemotePath::slotFolderEntryEdited(const QString &text)

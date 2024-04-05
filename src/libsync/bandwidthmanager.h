@@ -50,7 +50,7 @@ public:
     qint64 currentUploadLimit() const;
     void setCurrentUploadLimit(qint64 newCurrentUploadLimit);
 
-public slots:
+public Q_SLOTS:
     void registerUploadDevice(UploadDevice *);
     void unregisterUploadDevice(QObject *);
 

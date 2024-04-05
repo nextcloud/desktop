@@ -44,7 +44,7 @@ public:
 
     const QSet<QString> &selectiveSyncBlackList() const;
 
-private slots:
+private Q_SLOTS:
     void virtualFilesCheckboxClicked();
 
 private:

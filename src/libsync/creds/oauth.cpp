@@ -258,7 +258,7 @@ void OAuth::startAuthentication()
     }
     if (!_server.isListening()) {
         qCDebug(lcOauth) << "server is not listening";
-        emit result(Error, {});
+        Q_EMIT result(Error, {});
         return;
     }
 
@@ -354,7 +354,7 @@ void OAuth::startAuthentication()
                         qCWarning(lcOauth) << "Error when getting the accessToken" << errorReason;
                         httpReplyAndClose(socket, QStringLiteral("500 Internal Server Error"),
                             tr("Login Error"), tr("<h1>Login Error</h1><p>%1</p>").arg(errorReason));
-                        emit result(Error);
+                        Q_EMIT result(Error);
                         return;
                     }
 
@@ -365,7 +365,7 @@ void OAuth::startAuthentication()
                             if (!job->success()) {
                                 httpReplyAndClose(socket, QStringLiteral("500 Internal Server Error"), tr("Login Error"),
                                     tr("<h1>Login Error</h1><p>%1</p>").arg(job->errorMessage()));
-                                emit result(Error);
+                                Q_EMIT result(Error);
                             } else {
                                 auto fetchUserInfo = job->result().value<FetchUserInfoResult>();
 
@@ -381,7 +381,7 @@ void OAuth::startAuthentication()
                                                                "Please return to the %3 client and restart the authentication.</p>")
                                                                 .arg(fetchUserInfo.userName(), _davUser, Theme::instance()->appNameGUI());
                                     httpReplyAndClose(socket, QStringLiteral("403 Forbidden"), tr("Wrong user"), message);
-                                    emit result(Error);
+                                    Q_EMIT result(Error);
                                 } else {
                                     finalize(socket, accessToken, refreshToken, messageUrl);
                                 }
@@ -406,7 +406,7 @@ void OAuth::finalize(const QPointer<QTcpSocket> &socket, const QString &accessTo
     } else {
         httpReplyAndClose(socket, QStringLiteral("200 OK"), loginSuccessfulTitle, loginSuccessfulHtml);
     }
-    emit result(LoggedIn, accessToken, refreshToken);
+    Q_EMIT result(LoggedIn, accessToken, refreshToken);
 }
 
 QNetworkReply *OAuth::postTokenRequest(const QList<QPair<QString, QString>> &queryItems)
@@ -585,7 +585,7 @@ void OAuth::openBrowser()
     if (!QDesktopServices::openUrl(authorisationLink())) {
         qCWarning(lcOauth) << "QDesktopServices::openUrl Failed";
         // We cannot open the browser, then we claim we don't support OAuth.
-        emit result(NotSupported, QString());
+        Q_EMIT result(NotSupported, QString());
     }
 }
 

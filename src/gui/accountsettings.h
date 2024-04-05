@@ -67,14 +67,14 @@ public:
 
     auto model() { return _sortModel; }
 
-signals:
+Q_SIGNALS:
     void folderChanged();
     void showIssuesList();
 
-public slots:
+public Q_SLOTS:
     void slotAccountStateChanged();
 
-protected slots:
+protected Q_SLOTS:
     void slotAddFolder();
     void slotEnableCurrentFolder(Folder *folder, bool terminate = false);
     void slotForceSyncCurrentFolder(Folder *folder);

@@ -420,7 +420,7 @@ protected:
         return Resources::themeUniversalIcon(iconName);
     }
 
-signals:
+Q_SIGNALS:
     void systrayUseMonoIconsChanged(bool);
 
 private:

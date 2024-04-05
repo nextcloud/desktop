@@ -149,7 +149,7 @@ public:
      */
     void setCacheLoadControl(QNetworkRequest::CacheLoadControl cacheLoadControl);
 
-signals:
+Q_SIGNALS:
     /** Emitted on network error.
      *
      * \a reply is never null
@@ -267,4 +267,3 @@ QString OWNCLOUDSYNC_EXPORT errorMessage(const QString &baseError, const QByteAr
 QString OWNCLOUDSYNC_EXPORT networkReplyErrorString(const QNetworkReply &reply);
 
 } // namespace OCC
-

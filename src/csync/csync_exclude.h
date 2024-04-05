@@ -141,7 +141,7 @@ public:
      */
     CSYNC_EXCLUDE_TYPE traversalPatternMatch(QStringView path, ItemType filetype) const;
 
-public slots:
+public Q_SLOTS:
     /**
      * Reloads the exclude patterns from the registered paths.
      */

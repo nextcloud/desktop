@@ -90,7 +90,7 @@ public:
 {
     if (self.wrapper) {
         self.wrapper->inBuffer += QByteArray::fromRawNSData(msg);
-        emit self.wrapper->q_ptr->readyRead();
+        Q_EMIT self.wrapper->q_ptr->readyRead();
     }
 }
 
@@ -101,7 +101,7 @@ public:
 
     if (self.wrapper) {
         self.wrapper->disconnectRemote();
-        emit self.wrapper->q_ptr->disconnected();
+        Q_EMIT self.wrapper->q_ptr->disconnected();
     }
 }
 @end
@@ -126,7 +126,7 @@ public:
     SocketApiSocketPrivate *socketPrivate = new SocketApiSocketPrivate(remoteEnd);
     SocketApiSocket *socket = new SocketApiSocket(server, socketPrivate);
     self.wrapper->pendingConnections.append(socket);
-    emit server->newConnection();
+    Q_EMIT server->newConnection();
 
     [remoteEnd registerTransmitter:socketPrivate->localEnd];
 }
@@ -181,7 +181,7 @@ qint64 SocketApiSocket::writeData(const char *data, qint64 len)
     } @catch (NSException *) {
         // connectionDidDie can be notified too late, also interpret any sending exception as a disconnection.
         d->disconnectRemote();
-        emit disconnected();
+        Q_EMIT disconnected();
         return -1;
     }
 }

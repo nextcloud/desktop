@@ -36,11 +36,11 @@ public:
     bool readyToClose();
     Activity activity() const;
 
-signals:
+Q_SIGNALS:
     void sendNotificationRequest(const QString &, const QString &link, const QByteArray &verb);
     void requestCleanupAndBlacklist(const Activity &activity);
 
-public slots:
+public Q_SLOTS:
     void setActivity(const Activity &activity);
     void slotNotificationRequestFinished(bool success);
 

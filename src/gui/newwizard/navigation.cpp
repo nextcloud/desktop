@@ -30,7 +30,7 @@ void Navigation::setEntries(const QList<SetupWizardState> &newEntries)
             // clicks to the current state button should be ignored
             // this used to be handled by disabling the button
             if (state != _activeState) {
-                emit paginationEntryClicked(state);
+                Q_EMIT paginationEntryClicked(state);
             }
         });
     }

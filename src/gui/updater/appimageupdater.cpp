@@ -100,7 +100,7 @@ public:
             _logStatusMessages();
 
             if (_updater.isDone()) {
-                emit finished(!_updater.hasError());
+                Q_EMIT finished(!_updater.hasError());
                 timer->stop();
             }
         });
@@ -109,7 +109,7 @@ public:
         timer->start();
     }
 
-signals:
+Q_SIGNALS:
     void finished(bool successfully);
 
 private:

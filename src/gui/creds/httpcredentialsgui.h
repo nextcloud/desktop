@@ -60,11 +60,11 @@ public:
      */
     void restartOAuth();
 
-private slots:
+private Q_SLOTS:
     void asyncAuthResult(OAuth::Result, const QString &accessToken, const QString &refreshToken);
     void showDialog();
 
-signals:
+Q_SIGNALS:
     void oAuthErrorOccurred();
 
 private:

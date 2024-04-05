@@ -219,10 +219,10 @@ bool ProcessDirectoryJob::handleExcluded(const QString &path, const QString &loc
     if (excluded == CSYNC_NOT_EXCLUDED && !isSymlink) {
         return false;
     } else if (excluded == CSYNC_FILE_SILENTLY_EXCLUDED || excluded == CSYNC_FILE_EXCLUDE_AND_REMOVE) {
-        emit _discoveryData->silentlyExcluded(path);
+        Q_EMIT _discoveryData->silentlyExcluded(path);
         return true;
     } else if (excluded == CSYNC_FILE_EXCLUDE_RESERVED) {
-        emit _discoveryData->excluded(path);
+        Q_EMIT _discoveryData->excluded(path);
         return true;
     }
 
@@ -300,7 +300,7 @@ bool ProcessDirectoryJob::handleExcluded(const QString &path, const QString &loc
     }
 
     _childIgnored = true;
-    emit _discoveryData->itemDiscovered(item);
+    Q_EMIT _discoveryData->itemDiscovered(item);
     return true;
 }
 
@@ -409,7 +409,7 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(
             item->setInstruction(CSYNC_INSTRUCTION_ERROR);
             _childIgnored = true;
             item->_errorString = tr("server reported no %1").arg(missingData.join(QLatin1String(", ")));
-            emit _discoveryData->itemDiscovered(item);
+            Q_EMIT _discoveryData->itemDiscovered(item);
             return;
         }
     }
@@ -1147,7 +1147,7 @@ void ProcessDirectoryJob::processFileFinalize(
             || (item->_type == ItemTypeVirtualFile && item->instruction() == CSYNC_INSTRUCTION_NEW)) {
             _discoveryData->_deletedItem[path._original] = item;
         }
-        emit _discoveryData->itemDiscovered(item);
+        Q_EMIT _discoveryData->itemDiscovered(item);
     }
 }
 
@@ -1179,7 +1179,7 @@ void ProcessDirectoryJob::processBlacklisted(const PathTuple &path, const OCC::L
         connect(job, &ProcessDirectoryJob::finished, this, &ProcessDirectoryJob::subJobFinished);
         _queuedJobs.push_back(job);
     } else {
-        emit _discoveryData->itemDiscovered(item);
+        Q_EMIT _discoveryData->itemDiscovered(item);
     }
 }
 
@@ -1312,7 +1312,7 @@ void ProcessDirectoryJob::subJobFinished()
     _childModified |= job->_childModified;
 
     if (job->_dirItem)
-        emit _discoveryData->itemDiscovered(job->_dirItem);
+        Q_EMIT _discoveryData->itemDiscovered(job->_dirItem);
 
     int count = _runningJobs.removeAll(job);
     OC_ASSERT(count == 1);
@@ -1323,7 +1323,7 @@ void ProcessDirectoryJob::subJobFinished()
 int ProcessDirectoryJob::processSubJobs(int nbJobs)
 {
     if (_queuedJobs.empty() && _runningJobs.empty() && _pendingAsyncJobs == 0) {
-        _pendingAsyncJobs = -1; // We're finished, we don't want to emit finished again
+        _pendingAsyncJobs = -1; // We're finished, we don't want to Q_EMIT finished again
         if (_dirItem) {
             if (_childModified && _dirItem->instruction() == CSYNC_INSTRUCTION_REMOVE) {
                 // re-create directory that has modified contents
@@ -1343,7 +1343,7 @@ int ProcessDirectoryJob::processSubJobs(int nbJobs)
                 _dirItem->setInstruction(CSYNC_INSTRUCTION_NONE);
             }
         }
-        emit finished();
+        Q_EMIT finished();
     }
 
     int started = 0;
@@ -1428,13 +1428,14 @@ DiscoverySingleDirectoryJob *ProcessDirectoryJob::startAsyncServerQuery()
                     // Similarly, the server might also return 404 or 50x in case of bugs. #7199 #7586
                     _dirItem->setInstruction(CSYNC_INSTRUCTION_IGNORE);
                     _dirItem->_errorString = results.error().message;
-                    emit this->finished();
+                    Q_EMIT this->finished();
                     return;
                 }
             }
             // Fatal for the root job since it has no SyncFileItem, or for the network errors
-            emit _discoveryData->fatalError(tr("Server replied with an error while reading directory '%1' : %2")
-                                                .arg(_currentFolder._server.isEmpty() ? QStringLiteral("/") : _currentFolder._server, results.error().message));
+            Q_EMIT _discoveryData->fatalError(
+                tr("Server replied with an error while reading directory '%1' : %2")
+                    .arg(_currentFolder._server.isEmpty() ? QStringLiteral("/") : _currentFolder._server, results.error().message));
         }
     });
     connect(serverJob, &DiscoverySingleDirectoryJob::firstDirectoryPermissions, this,
@@ -1463,7 +1464,7 @@ void ProcessDirectoryJob::startAsyncLocalQuery()
         if (_serverJob)
             _serverJob->abort();
 
-        emit _discoveryData->fatalError(msg);
+        Q_EMIT _discoveryData->fatalError(msg);
     });
 
     connect(localJob, &DiscoverySingleLocalDirectoryJob::finishedNonFatalError, this, [this](const QString &msg) {
@@ -1473,10 +1474,10 @@ void ProcessDirectoryJob::startAsyncLocalQuery()
         if (_dirItem) {
             _dirItem->setInstruction(CSYNC_INSTRUCTION_IGNORE);
             _dirItem->_errorString = msg;
-            emit this->finished();
+            Q_EMIT this->finished();
         } else {
             // Fatal for the root job since it has no SyncFileItem
-            emit _discoveryData->fatalError(msg);
+            Q_EMIT _discoveryData->fatalError(msg);
         }
     });
 

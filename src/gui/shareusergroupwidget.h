@@ -60,10 +60,10 @@ public:
         QWidget *parent = nullptr);
     ~ShareUserGroupWidget() override;
 
-public slots:
+public Q_SLOTS:
     void getShares();
 
-private slots:
+private Q_SLOTS:
     void slotSharesFetched(const QList<QSharedPointer<Share>> &shares);
 
     void on_shareeLineEdit_textChanged(const QString &text);
@@ -117,11 +117,11 @@ public:
 
     QSharedPointer<Share> share() const;
 
-signals:
+Q_SIGNALS:
     void visualDeletionDone();
     void resizeRequested();
 
-private slots:
+private Q_SLOTS:
     void on_deleteShareButton_clicked();
     void slotPermissionsChanged();
     void slotEditPermissionsChanged();

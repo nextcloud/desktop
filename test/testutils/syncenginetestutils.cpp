@@ -48,7 +48,7 @@ PathComponents PathComponents::subComponents() const &
 
 void DiskFileModifier::remove(const QString &relativePath)
 {
-    _processArguments.append({ "remove", relativePath });
+    _processArguments.append({QStringLiteral("remove"), relativePath});
 }
 
 void DiskFileModifier::insert(const QString &relativePath, quint64 size, char contentChar)
@@ -58,32 +58,32 @@ void DiskFileModifier::insert(const QString &relativePath, quint64 size, char co
     // up with a negative int when converting from quint64 -> int.
     Q_ASSERT(size <= std::numeric_limits<int>::max());
 
-    _processArguments.append({ "insert", relativePath, QString::number(size), QChar::fromLatin1(contentChar) });
+    _processArguments.append({QStringLiteral("insert"), relativePath, QString::number(size), QChar::fromLatin1(contentChar)});
 }
 
 void DiskFileModifier::setContents(const QString &relativePath, quint64 newSize, char contentChar)
 {
-    _processArguments.append({ "contents", relativePath, QString::number(newSize), QChar::fromLatin1(contentChar) });
+    _processArguments.append({QStringLiteral("contents"), relativePath, QString::number(newSize), QChar::fromLatin1(contentChar)});
 }
 
 void DiskFileModifier::appendByte(const QString &relativePath, char contentChar)
 {
-    _processArguments.append({ "appendbyte", relativePath, QChar::fromLatin1(contentChar) });
+    _processArguments.append({QStringLiteral("appendbyte"), relativePath, QChar::fromLatin1(contentChar)});
 }
 
 void DiskFileModifier::mkdir(const QString &relativePath)
 {
-    _processArguments.append({ "mkdir", relativePath });
+    _processArguments.append({QStringLiteral("mkdir"), relativePath});
 }
 
 void DiskFileModifier::rename(const QString &from, const QString &to)
 {
-    _processArguments.append({ "rename", from, to });
+    _processArguments.append({QStringLiteral("rename"), from, to});
 }
 
 void DiskFileModifier::setModTime(const QString &relativePath, const QDateTime &modTime)
 {
-    _processArguments.append({ "mtime", relativePath, QString::number(modTime.toSecsSinceEpoch()) });
+    _processArguments.append({QStringLiteral("mtime"), relativePath, QString::number(modTime.toSecsSinceEpoch())});
 }
 
 class HelperProcess : public QProcess
@@ -368,7 +368,7 @@ FakePropfindReply::FakePropfindReply(FileInfo &remoteRootFileInfo, QNetworkAcces
         QMetaObject::invokeMethod(this, &FakePropfindReply::respond404, Qt::QueuedConnection);
         return;
     }
-    const QString prefix = request.url().path().left(request.url().path().size() - fileName.size());
+    const auto prefix = QUrl(request.url().path().left(request.url().path().size() - fileName.size()));
 
     // Don't care about the request and just return a full propfind
     const QString davUri { QStringLiteral("DAV:") };
@@ -429,18 +429,18 @@ void FakePropfindReply::respond()
     setHeader(QNetworkRequest::ContentTypeHeader, QByteArrayLiteral("application/xml; charset=utf-8"));
     setAttribute(QNetworkRequest::HttpStatusCodeAttribute, 207);
     setFinished(true);
-    emit metaDataChanged();
+    Q_EMIT metaDataChanged();
     if (bytesAvailable())
-        emit readyRead();
-    emit finished();
+        Q_EMIT readyRead();
+    Q_EMIT finished();
 }
 
 void FakePropfindReply::respond404()
 {
     setAttribute(QNetworkRequest::HttpStatusCodeAttribute, 404);
     setError(InternalServerError, QStringLiteral("Not Found"));
-    emit metaDataChanged();
-    emit finished();
+    Q_EMIT metaDataChanged();
+    Q_EMIT finished();
 }
 
 qint64 FakePropfindReply::bytesAvailable() const
@@ -487,14 +487,14 @@ FileInfo *FakePutReply::perform(FileInfo &remoteRootFileInfo, const QNetworkRequ
 
 void FakePutReply::respond()
 {
-    emit uploadProgress(fileInfo->contentSize, fileInfo->contentSize);
+    Q_EMIT uploadProgress(fileInfo->contentSize, fileInfo->contentSize);
     setRawHeader("OC-ETag", fileInfo->etag);
     setRawHeader("ETag", fileInfo->etag);
     setRawHeader("OC-FileID", fileInfo->fileId);
     setRawHeader("X-OC-MTime", "accepted"); // Prevents Q_ASSERT(!_runningNow) since we'll call PropagateItemJob::done twice in that case.
     setAttribute(QNetworkRequest::HttpStatusCodeAttribute, 200);
-    emit metaDataChanged();
-    emit finished();
+    Q_EMIT metaDataChanged();
+    Q_EMIT finished();
 }
 
 FakeMkcolReply::FakeMkcolReply(FileInfo &remoteRootFileInfo, QNetworkAccessManager::Operation op, const QNetworkRequest &request, QObject *parent)
@@ -521,8 +521,8 @@ void FakeMkcolReply::respond()
     if (error() == QNetworkReply::NoError) {
         setRawHeader("OC-FileId", fileInfo->fileId);
         setAttribute(QNetworkRequest::HttpStatusCodeAttribute, 201);
-        emit metaDataChanged();
-        emit finished();
+        Q_EMIT metaDataChanged();
+        Q_EMIT finished();
     }
 }
 
@@ -543,8 +543,8 @@ FakeDeleteReply::FakeDeleteReply(FileInfo &remoteRootFileInfo, QNetworkAccessMan
 void FakeDeleteReply::respond()
 {
     setAttribute(QNetworkRequest::HttpStatusCodeAttribute, 204);
-    emit metaDataChanged();
-    emit finished();
+    Q_EMIT metaDataChanged();
+    Q_EMIT finished();
 }
 
 FakeMoveReply::FakeMoveReply(FileInfo &remoteRootFileInfo, QNetworkAccessManager::Operation op, const QNetworkRequest &request, QObject *parent)
@@ -567,8 +567,8 @@ void FakeMoveReply::respond()
 {
     if (error() == QNetworkReply::NoError) {
         setAttribute(QNetworkRequest::HttpStatusCodeAttribute, 201);
-        emit metaDataChanged();
-        emit finished();
+        Q_EMIT metaDataChanged();
+        Q_EMIT finished();
     }
 }
 
@@ -622,7 +622,7 @@ void FakeGetReply::respond()
         case State::FileNotFound:
             setAttribute(QNetworkRequest::HttpStatusCodeAttribute, 404);
             setError(ContentNotFoundError, QStringLiteral("File Not Found"));
-            emit metaDataChanged();
+            Q_EMIT metaDataChanged();
             break;
         case State::Ok:
             payload = fileInfo->contentChar;
@@ -643,12 +643,12 @@ void FakeGetReply::respond()
             setRawHeader("OC-FileId", fileInfo->fileId);
             setRawHeader("X-OC-Mtime", QByteArray::number(fileInfo->lastModifiedInSecondsUTC()));
 
-            emit metaDataChanged();
+            Q_EMIT metaDataChanged();
             if (bytesAvailable()) {
-                emit readyRead();
+                Q_EMIT readyRead();
             }
         }
-        emit finished();
+        Q_EMIT finished();
     }
 }
 
@@ -762,16 +762,16 @@ void FakeChunkMoveReply::respond()
     setRawHeader("OC-ETag", fileInfo->etag);
     setRawHeader("ETag", fileInfo->etag);
     setRawHeader("OC-FileId", fileInfo->fileId);
-    emit metaDataChanged();
-    emit finished();
+    Q_EMIT metaDataChanged();
+    Q_EMIT finished();
 }
 
 void FakeChunkMoveReply::respondPreconditionFailed()
 {
     setAttribute(QNetworkRequest::HttpStatusCodeAttribute, 412);
     setError(InternalServerError, QStringLiteral("Precondition Failed"));
-    emit metaDataChanged();
-    emit finished();
+    Q_EMIT metaDataChanged();
+    Q_EMIT finished();
 }
 
 FakePayloadReply::FakePayloadReply(QNetworkAccessManager::Operation op, const QNetworkRequest &request, const QByteArray &body, QObject *parent)
@@ -790,10 +790,10 @@ void FakePayloadReply::respond()
     if (error() == QNetworkReply::NoError) {
         setAttribute(QNetworkRequest::HttpStatusCodeAttribute, 200);
         setHeader(QNetworkRequest::ContentLengthHeader, _body.size());
-        emit metaDataChanged();
-        emit readyRead();
+        Q_EMIT metaDataChanged();
+        Q_EMIT readyRead();
         setFinished(true);
-        emit finished();
+        Q_EMIT finished();
     }
 }
 
@@ -834,8 +834,8 @@ FakeErrorReply::FakeErrorReply(QNetworkAccessManager::Operation op, const QNetwo
 
 void FakeErrorReply::respond()
 {
-    emit metaDataChanged();
-    emit readyRead();
+    Q_EMIT metaDataChanged();
+    Q_EMIT readyRead();
     // finishing can come strictly after readyRead was called
     QTimer::singleShot(5ms, this, &FakeErrorReply::slotSetFinished);
 }
@@ -843,7 +843,7 @@ void FakeErrorReply::respond()
 void FakeErrorReply::slotSetFinished()
 {
     setFinished(true);
-    emit finished();
+    Q_EMIT finished();
 }
 
 qint64 FakeErrorReply::readData(char *buf, qint64 max)
@@ -967,7 +967,7 @@ FakeFolder::FakeFolder(const FileInfo &fileTemplate, OCC::Vfs::Mode vfsMode, boo
     if (vfsMode != OCC::Vfs::Off) {
         const auto pinState = filesAreDehydrated ? OCC::PinState::OnlineOnly : OCC::PinState::AlwaysLocal;
         syncJournal().internalPinStates().setForPath("", pinState);
-        OC_ENFORCE(vfs->setPinState("", pinState));
+        OC_ENFORCE(vfs->setPinState(QString(), pinState));
     }
 
     // A new folder will update the local file state database on first sync.
@@ -1209,7 +1209,7 @@ FakeReply::FakeReply(QObject *parent)
 #if QT_VERSION >= QT_VERSION_CHECK(6, 3, 0)
     QTimer::singleShot(0, this, [this] {
         // emulate the real world
-        // don't emit if we where already aborted
+        // don't Q_EMIT if we where already aborted
         if (!isFinished() && error() != QNetworkReply::OperationCanceledError) {
             Q_EMIT requestSent();
         }
@@ -1223,7 +1223,7 @@ void FakeReply::abort()
 {
     if (!isFinished()) {
         setError(OperationCanceledError, QStringLiteral("Operation Canceled"));
-        emit metaDataChanged();
+        Q_EMIT metaDataChanged();
         Q_EMIT finished();
     }
 }

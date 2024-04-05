@@ -49,7 +49,7 @@ public:
         QWidget *parent);
     ~ShareDialog() override;
 
-private slots:
+private Q_SLOTS:
     void slotPropfindReceived(const QString &, const QMap<QString, QString> &result);
     void slotPropfindError();
     void slotThumbnailFetched(const int &statusCode, const QPixmap &reply);

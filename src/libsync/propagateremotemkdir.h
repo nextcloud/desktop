@@ -48,7 +48,7 @@ public:
      */
     void setDeleteExisting(bool enabled);
 
-private slots:
+private Q_SLOTS:
     void slotStartMkcolJob();
     void slotMkcolJobFinished();
     void success();

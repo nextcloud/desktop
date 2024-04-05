@@ -85,7 +85,7 @@ bool PropagateLocalRemove::removeRecursively(const QString &absolute)
             errorList.reserve(errors.size());
             for (const auto &l : locked) {
                 // unlock is handled in hack in `void Folder::slotWatchedPathChanged`
-                emit propagator()->seenLockedFile(l.path, FileSystem::LockMode::Exclusive);
+                Q_EMIT propagator()->seenLockedFile(l.path, FileSystem::LockMode::Exclusive);
                 errorList.append(tr("%1 the file is currently in use").arg(QDir::toNativeSeparators(l.path)));
             }
             done(SyncFileItem::SoftError, errorList.join(QStringLiteral(", ")));
@@ -112,7 +112,7 @@ void PropagateLocalRemove::start()
 
     if (FileSystem::fileExists(filename)) {
         if (FileSystem::isFileLocked(filename, FileSystem::LockMode::Exclusive)) {
-            emit propagator()->seenLockedFile(filename, FileSystem::LockMode::Exclusive);
+            Q_EMIT propagator()->seenLockedFile(filename, FileSystem::LockMode::Exclusive);
             done(SyncFileItem::SoftError, tr("%1 the file is currently in use").arg(QDir::toNativeSeparators(filename)));
             return;
         }
@@ -240,7 +240,7 @@ void PropagateLocalRename::start()
             return;
         }
         if (FileSystem::isFileLocked(existingFile, FileSystem::LockMode::Exclusive)) {
-            emit propagator()->seenLockedFile(existingFile, FileSystem::LockMode::Exclusive);
+            Q_EMIT propagator()->seenLockedFile(existingFile, FileSystem::LockMode::Exclusive);
             done(SyncFileItem::SoftError, tr("Could not rename %1 to %2, the file is currently in use").arg(existingFile, targetFile));
             return;
         }

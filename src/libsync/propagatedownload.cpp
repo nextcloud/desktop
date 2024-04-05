@@ -544,7 +544,7 @@ void PropagateDownloadFile::startDownload()
     // becomes available again
     const auto targetFile = propagator()->fullLocalPath(_item->_file);
     if (FileSystem::isFileLocked(targetFile, FileSystem::LockMode::Exclusive)) {
-        emit propagator()->seenLockedFile(targetFile, FileSystem::LockMode::Exclusive);
+        Q_EMIT propagator()->seenLockedFile(targetFile, FileSystem::LockMode::Exclusive);
         done(SyncFileItem::SoftError, tr("The file %1 is currently in use").arg(QDir::toNativeSeparators(_item->_file)));
         return;
     }
@@ -596,7 +596,7 @@ void PropagateDownloadFile::startDownload()
             // these detail errors only in the error view.
             done(SyncFileItem::DetailError,
                 tr("The download would reduce free local disk space below the limit"));
-            emit propagator()->insufficientLocalStorage();
+            Q_EMIT propagator()->insufficientLocalStorage();
         } else if (diskSpaceResult == OwncloudPropagator::DiskSpaceCritical) {
             done(SyncFileItem::FatalError,
                 tr("Free space on disk is less than %1").arg(Utility::octetsToString(criticalFreeSpaceLimit())));
@@ -825,7 +825,7 @@ void PropagateDownloadFile::slotGetFinished()
     }
 
     // Do checksum validation for the download. If there is no checksum header, the validator
-    // will also emit the validated() signal to continue the flow in slot transmissionChecksumValidated()
+    // will also Q_EMIT the validated() signal to continue the flow in slot transmissionChecksumValidated()
     // as this is (still) also correct.
     ValidateChecksumHeader *validator = new ValidateChecksumHeader(this);
     connect(validator, &ValidateChecksumHeader::validated,
@@ -960,7 +960,7 @@ void PropagateDownloadFile::downloadFinished()
     // If the file is locked, we want to retry this sync when it
     // becomes available again
     if (FileSystem::isFileLocked(fn, FileSystem::LockMode::Exclusive)) {
-        emit propagator()->seenLockedFile(fn, FileSystem::LockMode::Exclusive);
+        Q_EMIT propagator()->seenLockedFile(fn, FileSystem::LockMode::Exclusive);
         done(SyncFileItem::SoftError, tr("The file %1 is currently in use").arg(fn));
         return;
     }
@@ -1065,7 +1065,7 @@ void PropagateDownloadFile::abort(PropagatorJob::AbortType abortType)
         _job->abort();
     }
     if (abortType == AbortType::Asynchronous) {
-        emit abortFinished();
+        Q_EMIT abortFinished();
     }
 }
 }

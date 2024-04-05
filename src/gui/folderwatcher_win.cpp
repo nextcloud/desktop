@@ -75,7 +75,7 @@ WatcherThread::WatchChanges WatcherThread::watchChanges(size_t fileNotifyBufferS
             const DWORD errorCode = GetLastError();
             if (errorCode == ERROR_NOTIFY_ENUM_DIR) {
                 qCDebug(lcFolderWatcher) << "The buffer for changes overflowed! Triggering a generic change and resizing";
-                emit changed({_path});
+                Q_EMIT changed({_path});
                 return WatchChanges::NeedBiggerBuffer;
             } else {
                 qCWarning(lcFolderWatcher) << "ReadDirectoryChangesW error" << Utility::formatWinError(errorCode);
@@ -105,8 +105,8 @@ WatcherThread::WatchChanges WatcherThread::watchChanges(size_t fileNotifyBufferS
             const DWORD errorCode = GetLastError();
             if (errorCode == ERROR_NOTIFY_ENUM_DIR) {
                 qCDebug(lcFolderWatcher) << "The buffer for changes overflowed! Triggering a generic change and resizing";
-                emit lostChanges();
-                emit changed({_path});
+                Q_EMIT lostChanges();
+                Q_EMIT changed({_path});
                 return WatchChanges::NeedBiggerBuffer;
             } else {
                 qCWarning(lcFolderWatcher) << "GetOverlappedResult error" << Utility::formatWinError(errorCode);

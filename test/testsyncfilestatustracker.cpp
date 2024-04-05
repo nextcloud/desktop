@@ -74,7 +74,7 @@ class TestSyncFileStatusTracker : public QObject
         }
     }
 
-private slots:
+private Q_SLOTS:
     void parentsGetSyncStatusUploadDownload() {
         FakeFolder fakeFolder{FileInfo::A12_B12_C12_S12()};
         fakeFolder.localModifier().appendByte(QStringLiteral("B/b1"));

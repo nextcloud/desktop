@@ -119,9 +119,9 @@ void SystemProxyRunnable::run()
     QList<QNetworkProxy> proxies = QNetworkProxyFactory::systemProxyForQuery(QNetworkProxyQuery(_url));
 
     if (proxies.isEmpty()) {
-        emit systemProxyLookedUp(QNetworkProxy(QNetworkProxy::NoProxy));
+        Q_EMIT systemProxyLookedUp(QNetworkProxy(QNetworkProxy::NoProxy));
     } else {
-        emit systemProxyLookedUp(proxies.first());
+        Q_EMIT systemProxyLookedUp(proxies.first());
         // FIXME Would we really ever return more?
     }
 }

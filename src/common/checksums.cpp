@@ -332,9 +332,9 @@ void ComputeChecksum::slotCalculationDone()
 {
     QByteArray checksum = _watcher.future().result();
     if (!checksum.isNull()) {
-        emit done(_checksumType, checksum);
+        Q_EMIT done(_checksumType, checksum);
     } else {
-        emit done(CheckSums::Algorithm::PARSE_ERROR, QByteArray());
+        Q_EMIT done(CheckSums::Algorithm::PARSE_ERROR, QByteArray());
     }
 }
 
@@ -348,13 +348,13 @@ ComputeChecksum *ValidateChecksumHeader::prepareStart(const QByteArray &checksum
 {
     // If the incoming header is empty no validation can happen. Just continue.
     if (checksumHeader.isEmpty()) {
-        emit validated(CheckSums::Algorithm::PARSE_ERROR, QByteArray());
+        Q_EMIT validated(CheckSums::Algorithm::PARSE_ERROR, QByteArray());
         return nullptr;
     }
     _expectedChecksum = ChecksumHeader::parseChecksumHeader(checksumHeader);
     if (!_expectedChecksum.isValid()) {
         qCWarning(lcChecksums) << "Checksum header malformed:" << checksumHeader;
-        emit validationFailed(_expectedChecksum.error());
+        Q_EMIT validationFailed(_expectedChecksum.error());
         return nullptr;
     }
 
@@ -381,13 +381,14 @@ void ValidateChecksumHeader::slotChecksumCalculated(CheckSums::Algorithm checksu
     const QByteArray &checksum)
 {
     if (_expectedChecksum.type() == CheckSums::Algorithm::PARSE_ERROR) {
-        emit validationFailed(_expectedChecksum.error());
+        Q_EMIT validationFailed(_expectedChecksum.error());
         return;
     }
     if (checksum != _expectedChecksum.checksum()) {
-        emit validationFailed(tr("The downloaded file does not match the checksum, it will be resumed. '%1' != '%2'").arg(QString::fromUtf8(_expectedChecksum.checksum()), QString::fromUtf8(checksum)));
+        Q_EMIT validationFailed(tr("The downloaded file does not match the checksum, it will be resumed. '%1' != '%2'")
+                                    .arg(QString::fromUtf8(_expectedChecksum.checksum()), QString::fromUtf8(checksum)));
         return;
     }
-    emit validated(checksumType, checksum);
+    Q_EMIT validated(checksumType, checksum);
 }
 }

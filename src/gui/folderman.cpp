@@ -151,7 +151,7 @@ void FolderMan::unloadAndDeleteAllFolders()
         _socketApi->slotUnregisterPath(folder);
         folder->deleteLater();
     }
-    emit folderListChanged();
+    Q_EMIT folderListChanged();
 }
 
 void FolderMan::registerFolderWithSocketApi(Folder *folder)
@@ -210,7 +210,7 @@ std::optional<qsizetype> FolderMan::setupFolders()
         settings->endGroup(); // Finished processing this account.
     }
 
-    emit folderListChanged();
+    Q_EMIT folderListChanged();
 
     return _folders.size();
 }
@@ -275,7 +275,7 @@ bool FolderMan::setupFoldersHelper(QSettings &settings, AccountStatePtr account)
         if (Folder *f = addFolderInternal(std::move(folderDefinition), account, std::move(vfs))) {
             // save possible changes from the migration
             f->saveToSettings();
-            emit folderSyncStateChange(f);
+            Q_EMIT folderSyncStateChange(f);
         }
         settings.endGroup();
     }
@@ -504,8 +504,8 @@ Folder *FolderMan::addFolder(const AccountStatePtr &accountState, const FolderDe
 
     if (folder) {
         folder->saveToSettings();
-        emit folderSyncStateChange(folder);
-        emit folderListChanged();
+        Q_EMIT folderSyncStateChange(folder);
+        Q_EMIT folderListChanged();
     }
 
     return folder;
@@ -615,7 +615,7 @@ void FolderMan::removeFolder(Folder *f)
     f->deleteLater();
 
     Q_EMIT folderRemoved(f);
-    emit folderListChanged();
+    Q_EMIT folderListChanged();
 }
 
 QString FolderMan::getBackupName(QString fullPathName) const

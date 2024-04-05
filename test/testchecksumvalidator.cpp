@@ -31,7 +31,7 @@ using namespace OCC::Utility;
         bool           _successDown;
         bool           _errorSeen;
 
-    public slots:
+    public Q_SLOTS:
 
         void slotUpValidated(CheckSums::Algorithm type, const QByteArray &checksum)
         {
@@ -66,7 +66,7 @@ using namespace OCC::Utility;
         return sumShell;
     }
 
-    private slots:
+private Q_SLOTS:
 
     void initTestCase() {
         _testfile = _root.path() + QStringLiteral("/csFile");

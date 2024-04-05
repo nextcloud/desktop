@@ -53,7 +53,7 @@ FolderWatcher::FolderWatcher(Folder *folder)
         auto paths = popChangeSet();
         if (!paths.isEmpty()) {
             qCInfo(lcFolderWatcher) << "Detected changes in paths:" << paths;
-            emit pathChanged(paths);
+            Q_EMIT pathChanged(paths);
         }
     });
 }
@@ -123,7 +123,7 @@ void FolderWatcher::startNotificationTestWhenReady()
 
     QTimer::singleShot(notificationTimeoutC + 5s, this, [this]() {
         if (!_testNotificationPath.isEmpty())
-            emit becameUnreliable(tr("The watcher did not receive a test notification."));
+            Q_EMIT becameUnreliable(tr("The watcher did not receive a test notification."));
         _testNotificationPath.clear();
     });
 }

@@ -42,7 +42,7 @@ static QueryItems make(const QString &key1, const QString &value1,
 class TestConcatUrl: public QObject
 {
     Q_OBJECT
-private slots:
+private Q_SLOTS:
     void testFolder()
     {
         QFETCH(QString, base);

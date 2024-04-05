@@ -48,15 +48,15 @@ public:
     explicit IssuesWidget(QWidget *parent = nullptr);
     ~IssuesWidget() override;
 
-public slots:
+public Q_SLOTS:
     void slotProgressInfo(Folder *folder, const ProgressInfo &progress);
     void slotItemCompleted(Folder *folder, const SyncFileItemPtr &item);
     void filterDidChange();
 
-signals:
+Q_SIGNALS:
     void issueCountUpdated(int);
 
-private slots:
+private Q_SLOTS:
     QMenu *showFilterMenu(QWidget *parent);
     void slotItemContextMenu();
 

@@ -64,7 +64,7 @@ class TestChunkingNG : public QObject
 {
     Q_OBJECT
 
-private slots:
+private Q_SLOTS:
 
     void testFileUpload() {
         FakeFolder fakeFolder{FileInfo::A12_B12_C12_S12()};

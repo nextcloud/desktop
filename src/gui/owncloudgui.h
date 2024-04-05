@@ -73,10 +73,10 @@ public:
 
     void runNewAccountWizard();
 
-signals:
+Q_SIGNALS:
     void setupProxy();
 
-public slots:
+public Q_SLOTS:
     void setupContextMenu();
     void updateContextMenu();
     void updateContextMenuNeeded();

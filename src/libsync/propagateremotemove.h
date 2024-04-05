@@ -59,7 +59,7 @@ public:
      */
     static bool adjustSelectiveSync(SyncJournalDb *journal, const QString &from, const QString &to);
 
-private slots:
+private Q_SLOTS:
     void slotMoveJobFinished();
     void finalize();
 };

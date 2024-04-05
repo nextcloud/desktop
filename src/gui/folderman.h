@@ -241,7 +241,7 @@ public:
     /** If the folder configuration is no longer supported this will return an error string */
     Result<void, QString> unsupportedConfiguration(const QString &path) const;
 
-signals:
+Q_SIGNALS:
     /**
       * signal to indicate a folder has changed its sync state.
       *
@@ -255,7 +255,7 @@ signals:
     void folderListChanged();
     void folderRemoved(Folder *folder);
 
-public slots:
+public Q_SLOTS:
 
     /**
      * Schedules folders of newly connected accounts, terminates and
@@ -274,7 +274,7 @@ public slots:
     /// This slot will tell all sync engines to reload the sync options.
     void slotReloadSyncOptions();
 
-private slots:
+private Q_SLOTS:
     void slotFolderSyncPaused(Folder *, bool paused);
     void slotFolderCanSyncChanged();
     void slotFolderSyncStarted();

@@ -355,7 +355,7 @@ void AccountManager::deleteAccount(AccountStatePtr account)
     auto settings = ConfigFile::settingsWithGroup(accountsC());
     settings->remove(account->account()->id());
 
-    emit accountRemoved(account);
+    Q_EMIT accountRemoved(account);
     account->deleteLater();
 }
 
@@ -369,7 +369,7 @@ void AccountManager::shutdown()
 {
     const auto accounts = std::move(_accounts);
     for (const auto &acc : accounts) {
-        emit accountRemoved(acc);
+        Q_EMIT accountRemoved(acc);
     }
 }
 
@@ -407,7 +407,7 @@ AccountStatePtr AccountManager::addAccountState(std::unique_ptr<AccountState> &&
 
     AccountStatePtr statePtr = accountState.release();
     _accounts.insert(statePtr->account()->uuid(), statePtr);
-    emit accountAdded(statePtr);
+    Q_EMIT accountAdded(statePtr);
     return statePtr;
 }
 }

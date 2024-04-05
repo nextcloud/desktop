@@ -19,7 +19,7 @@ private:
   QStringList _subdirs;
   QStringList _items;
 
-public slots:
+  public Q_SLOTS:
   void slotDirectoryListingSubFolders(const QStringList& list)
   {
      qDebug() << "subfolders: " << list;
@@ -37,13 +37,14 @@ public slots:
       _success = true;
   }
 
-private slots:
-    void init() {
-        qDebug() << Q_FUNC_INFO;
+  private Q_SLOTS:
+  void init()
+  {
+      qDebug() << Q_FUNC_INFO;
       _success = false;
       _subdirs.clear();
       _items.clear();
-    }
+  }
 
     void cleanup() {
     }

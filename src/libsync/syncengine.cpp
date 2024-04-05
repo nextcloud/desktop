@@ -400,7 +400,7 @@ void SyncEngine::startSync()
     qCInfo(lcEngine) << "Server" << account()->capabilities().status().versionString()
                      << (account()->isHttp2Supported() ? "Using HTTP/2" : "");
     _progressInfo->_status = ProgressInfo::Discovery;
-    emit transmissionProgress(*_progressInfo);
+    Q_EMIT transmissionProgress(*_progressInfo);
 
     // TODO: add a constructor to DiscoveryPhase
     // pass a syncEngine object rather than copying everyhting to another object
@@ -463,7 +463,7 @@ void SyncEngine::slotFolderDiscovered(bool local, const QString &folder)
         _progressInfo->_currentDiscoveredRemoteFolder = folder;
         _progressInfo->_currentDiscoveredLocalFolder.clear();
     }
-    emit transmissionProgress(*_progressInfo);
+    Q_EMIT transmissionProgress(*_progressInfo);
 }
 
 void SyncEngine::slotRootEtagReceived(const QString &e, const QDateTime &time)
@@ -471,7 +471,7 @@ void SyncEngine::slotRootEtagReceived(const QString &e, const QDateTime &time)
     if (_remoteRootEtag.isEmpty()) {
         qCDebug(lcEngine) << "Root etag:" << e;
         _remoteRootEtag = e;
-        emit rootEtag(_remoteRootEtag, time);
+        Q_EMIT rootEtag(_remoteRootEtag, time);
     }
 }
 
@@ -503,7 +503,7 @@ void SyncEngine::slotDiscoveryFinished()
     _progressInfo->_currentDiscoveredRemoteFolder.clear();
     _progressInfo->_currentDiscoveredLocalFolder.clear();
     _progressInfo->_status = ProgressInfo::Reconcile;
-    emit transmissionProgress(*_progressInfo);
+    Q_EMIT transmissionProgress(*_progressInfo);
 
     //    qCInfo(lcEngine) << "Permissions of the root folder: " << _csync_ctx->remote.root_perms.toString();
     auto finish = [this]{
@@ -559,13 +559,13 @@ void SyncEngine::slotDiscoveryFinished()
         _localDiscoveryPaths.clear();
 
         // To announce the beginning of the sync
-        emit aboutToPropagate(_syncItems);
+        Q_EMIT aboutToPropagate(_syncItems);
 
         qCInfo(lcEngine) << "#### Reconcile (aboutToPropagate OK) ####################################################" << _duration.duration();
 
         // it's important to do this before ProgressInfo::start(), to announce start of new sync
         _progressInfo->_status = ProgressInfo::Propagation;
-        emit transmissionProgress(*_progressInfo);
+        Q_EMIT transmissionProgress(*_progressInfo);
         _progressInfo->startEstimateUpdates();
 
         // do a database commit
@@ -636,8 +636,8 @@ void SyncEngine::slotItemCompleted(const SyncFileItemPtr &item)
 
     _progressInfo->setProgressComplete(*item);
 
-    emit transmissionProgress(*_progressInfo);
-    emit itemCompleted(item);
+    Q_EMIT transmissionProgress(*_progressInfo);
+    Q_EMIT itemCompleted(item);
 }
 
 void SyncEngine::slotPropagationFinished(bool success)
@@ -666,7 +666,7 @@ void SyncEngine::slotPropagationFinished(bool success)
     // so we don't count this twice (like Recent Files)
     _progressInfo->_lastCompletedItem = SyncFileItem();
     _progressInfo->_status = ProgressInfo::Done;
-    emit transmissionProgress(*_progressInfo);
+    Q_EMIT transmissionProgress(*_progressInfo);
 
     finalize(success);
 }
@@ -680,7 +680,7 @@ void SyncEngine::finalize(bool success)
         _discoveryPhase.release()->deleteLater();
     }
     _syncRunning = false;
-    emit finished(success);
+    Q_EMIT finished(success);
 
     // Delete the propagator only after emitting the signal.
     _propagator.clear();
@@ -693,13 +693,13 @@ void SyncEngine::finalize(bool success)
 void SyncEngine::slotProgress(const SyncFileItem &item, qint64 current)
 {
     _progressInfo->setProgressItem(item, current);
-    emit transmissionProgress(*_progressInfo);
+    Q_EMIT transmissionProgress(*_progressInfo);
 }
 
 void SyncEngine::updateFileTotal(const SyncFileItem &item, qint64 newSize)
 {
     _progressInfo->updateTotalsForFile(item, newSize);
-    emit transmissionProgress(*_progressInfo);
+    Q_EMIT transmissionProgress(*_progressInfo);
 }
 void SyncEngine::restoreOldFiles(SyncFileItemSet &syncItems)
 {
@@ -835,7 +835,7 @@ void SyncEngine::slotSummaryError(const QString &message)
         return;
 
     _uniqueErrors.insert(message);
-    emit syncError(message, ErrorCategory::Normal);
+    Q_EMIT syncError(message, ErrorCategory::Normal);
 }
 
 void SyncEngine::slotInsufficientLocalStorage()
@@ -853,7 +853,7 @@ void SyncEngine::slotInsufficientRemoteStorage()
         return;
 
     _uniqueErrors.insert(msg);
-    emit syncError(msg, ErrorCategory::InsufficientRemoteStorage);
+    Q_EMIT syncError(msg, ErrorCategory::InsufficientRemoteStorage);
 }
 
 bool SyncEngine::isExcluded(QStringView filePath) const

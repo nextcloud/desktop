@@ -35,7 +35,7 @@ public:
     qint64 bytesAvailable() const override;
     bool canReadLine() const override;
 
-signals:
+Q_SIGNALS:
     void disconnected();
 
 private:
@@ -58,7 +58,7 @@ public:
 
     static bool removeServer(const QString &) { return false; }
 
-signals:
+Q_SIGNALS:
     void newConnection();
 
 private:

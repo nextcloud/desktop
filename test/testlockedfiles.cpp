@@ -41,7 +41,7 @@ class TestLockedFiles : public QObject
 {
     Q_OBJECT
 
-private slots:
+private Q_SLOTS:
     void initTestCase_data()
     {
         QTest::addColumn<Vfs::Mode>("vfsMode");

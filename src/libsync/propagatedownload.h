@@ -73,11 +73,11 @@ public:
     SyncFileItem::Status errorStatus() { return _errorStatus; }
     void setErrorStatus(const SyncFileItem::Status &s) { _errorStatus = s; }
 
-private slots:
+private Q_SLOTS:
     void slotReadyRead();
     void slotMetaDataChanged();
 
-signals:
+Q_SIGNALS:
     void downloadProgress(qint64, qint64);
 
 protected:
@@ -167,7 +167,7 @@ public:
      */
     void setDeleteExistingFolder(bool enabled);
 
-private slots:
+private Q_SLOTS:
     /// Called when ComputeChecksum on the local file finishes,
     /// maybe the local and remote checksums are identical?
     void conflictChecksumComputed(CheckSums::Algorithm checksumType, const QByteArray &checksum);

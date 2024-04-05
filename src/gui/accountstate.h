@@ -159,7 +159,7 @@ public:
     bool isSettingUp() const;
     void setSettingUp(bool settingUp);
 
-public slots:
+public Q_SLOTS:
     /// Triggers a ping to the server to update state and
     /// connection status and errors.
     /// verifyServerState indicates that we must check the server
@@ -171,7 +171,7 @@ private:
 
     void setState(State state);
 
-signals:
+Q_SIGNALS:
     void stateChanged(State state);
     void isConnectedChanged();
     void urlUpdated();

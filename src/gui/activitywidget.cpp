@@ -189,7 +189,7 @@ void ActivityWidget::checkActivityTabVisibility()
     _ui->_notifyLabel->setVisible(hasNotifications);
     _ui->_notifyScroll->setVisible(hasNotifications);
 
-    emit hideActivityTab(!hasAccountsWithActivity && !hasNotifications);
+    Q_EMIT hideActivityTab(!hasAccountsWithActivity && !hasNotifications);
 }
 
 // GUI: Display the notifications.
@@ -305,11 +305,11 @@ void ActivityWidget::slotBuildNotificationDisplay(const ActivityList &list)
             }
         }
         const QString log = tr("Open the activity view for details.");
-        emit guiLog(msg, log);
+        Q_EMIT guiLog(msg, log);
     }
 
     if (newNotificationShown) {
-        emit newNotification();
+        Q_EMIT newNotification();
     }
 }
 

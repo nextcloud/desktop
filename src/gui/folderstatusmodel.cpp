@@ -376,7 +376,7 @@ void FolderStatusModel::slotUpdateFolderState(Folder *folder)
         return;
     for (int i = 0; i < _folders.size(); ++i) {
         if (_folders.at(i)->_folder == folder) {
-            emit dataChanged(index(i, 0), index(i, 0));
+            Q_EMIT dataChanged(index(i, 0), index(i, 0));
         }
     }
 }
@@ -418,7 +418,7 @@ void FolderStatusModel::slotSetProgress(const ProgressInfo &progress, Folder *f)
         case ProgressInfo::Done:
             computeProgress(progress, pi);
         }
-        emit dataChanged(index(folderIndex, 0), index(folderIndex, 0));
+        Q_EMIT dataChanged(index(folderIndex, 0), index(folderIndex, 0));
         folder->_lastProgressUpdated = std::chrono::steady_clock::now();
     }
 }

@@ -537,8 +537,8 @@ void ShareUserLine::slotPermissionsChanged()
 
 void ShareUserLine::slotDeleteAnimationFinished()
 {
-    emit resizeRequested();
-    emit visualDeletionDone();
+    Q_EMIT resizeRequested();
+    Q_EMIT visualDeletionDone();
     deleteLater();
 
     // There is a painting bug where a small line of this widget isn't

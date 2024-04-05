@@ -19,7 +19,7 @@ class TestInotifyWatcher: public FolderWatcherPrivate
 private:
     QString _root;
 
-private slots:
+private Q_SLOTS:
     void initTestCase() {
         _root = QDir::tempPath() + QStringLiteral("/test_") + QString::number(QRandomGenerator::global()->generate());
         qDebug() << "creating test directory tree in " << _root;

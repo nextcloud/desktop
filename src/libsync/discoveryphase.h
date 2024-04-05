@@ -89,14 +89,14 @@ public:
     explicit DiscoverySingleLocalDirectoryJob(const AccountPtr &account, const QString &localPath, OCC::Vfs *vfs, QObject *parent = nullptr);
 
     void run() override;
-signals:
+Q_SIGNALS:
     void finished(QVector<LocalInfo> result);
     void finishedFatalError(QString errorString);
     void finishedNonFatalError(QString errorString);
 
     void itemDiscovered(SyncFileItemPtr item);
     void childIgnored(bool b);
-private slots:
+private Q_SLOTS:
 private:
     QString _localPath;
     AccountPtr _account;
@@ -122,12 +122,12 @@ public:
     void abort();
 
     // This is not actually a network job, it is just a job
-signals:
+Q_SIGNALS:
     void firstDirectoryPermissions(RemotePermissions);
     void etag(const QString &, const QDateTime &time);
     void finished(const HttpResult<QVector<RemoteInfo>> &result);
 
-private slots:
+private Q_SLOTS:
     void directoryListingIteratedSlot(const QString &, const QMap<QString, QString> &);
     void lsJobFinishedWithoutErrorSlot();
     void lsJobFinishedWithErrorSlot(QNetworkReply *);
@@ -268,7 +268,7 @@ public:
      */
     bool isSpace() const;
 
-signals:
+Q_SIGNALS:
     void fatalError(const QString &errorString);
     void itemDiscovered(const SyncFileItemPtr &item);
     void finished();

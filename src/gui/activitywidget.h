@@ -72,20 +72,20 @@ public:
      */
     void checkActivityTabVisibility();
 
-public slots:
+public Q_SLOTS:
     void slotRefreshActivities(const AccountStatePtr &ptr);
     void slotRefreshNotifications(const AccountStatePtr &ptr);
     void slotRemoveAccount(const AccountStatePtr &ptr);
     void slotAccountActivityStatus(AccountStatePtr ast, int statusCode);
     void slotRequestCleanupAndBlacklist(const Activity &blacklistActivity);
 
-signals:
+Q_SIGNALS:
     void guiLog(const QString &, const QString &);
     void dataChanged();
     void hideActivityTab(bool);
     void newNotification();
 
-private slots:
+private Q_SLOTS:
     void slotBuildNotificationDisplay(const ActivityList &list);
     void slotSendNotificationRequest(const QString &accountName, const QString &link, const QByteArray &verb);
     void endNotificationRequest(NotificationWidget *widget, bool success);
@@ -132,7 +132,7 @@ public:
     explicit ActivitySettings(QWidget *parent = nullptr);
     ~ActivitySettings() override;
 
-public slots:
+public Q_SLOTS:
     void slotRefresh(AccountStatePtr ptr);
     void slotRemoveAccount(const AccountStatePtr &ptr);
 
@@ -140,13 +140,13 @@ public slots:
 
     void slotShowIssuesTab();
 
-private slots:
+private Q_SLOTS:
     void setActivityTabHidden(bool hidden);
     void slotRegularNotificationCheck();
     void slotShowIssueItemCount(int cnt);
     void slotShowActivityTab();
 
-signals:
+Q_SIGNALS:
     void guiLog(const QString &, const QString &);
 
 private:

@@ -211,11 +211,11 @@ public:
 
     ResourcesCache *resourcesCache() const;
 
-public slots:
+public Q_SLOTS:
     /// Used when forgetting credentials
     void clearAMCache();
 
-signals:
+Q_SIGNALS:
     /// Triggered by invalidCredentialsEncountered()
     // this signal is emited when a network job failed due to invalid credentials
     void invalidCredentials(QPrivateSignal);

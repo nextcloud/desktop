@@ -282,7 +282,7 @@ void ConnectionValidator::reportResult(Status status)
     if (OC_ENSURE(!_finished)) {
         _finished = true;
         qCDebug(lcConnectionValidator) << status << _duration.duration();
-        emit connectionResult(status, _errors);
+        Q_EMIT connectionResult(status, _errors);
         deleteLater();
     }
 }

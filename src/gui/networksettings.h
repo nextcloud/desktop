@@ -38,7 +38,7 @@ public:
     explicit NetworkSettings(QWidget *parent = nullptr);
     ~NetworkSettings() override;
 
-private slots:
+private Q_SLOTS:
     void saveProxySettings();
     void saveBWLimitSettings();
     void saveMeteredSettings();

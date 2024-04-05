@@ -210,7 +210,7 @@ void ActivityListModel::startFetchJob(AccountStatePtr ast)
              * to support this new behavior, we have to fake the expected status code
              */
             if (job->reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt() != 200) {
-                emit activityJobStatusCode(ast, 999);
+                Q_EMIT activityJobStatusCode(ast, 999);
                 return;
             }
 
@@ -226,7 +226,7 @@ void ActivityListModel::startFetchJob(AccountStatePtr ast)
 
             _activityLists[ast] = std::move(list);
 
-            emit activityJobStatusCode(ast, job->ocsStatus());
+            Q_EMIT activityJobStatusCode(ast, job->ocsStatus());
 
             combineActivityLists();
         });

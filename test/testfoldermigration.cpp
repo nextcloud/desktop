@@ -53,7 +53,7 @@ private:
 
         return settings;
     }
-private slots:
+private Q_SLOTS:
     void testFolderMigrationMissingJournalPath_data()
     {
         QTest::addColumn<QStringList>("journalPaths");

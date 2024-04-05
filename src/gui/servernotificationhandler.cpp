@@ -110,6 +110,6 @@ void ServerNotificationHandler::slotNotificationsReceived(JsonApiJob *job, const
             QDateTime::fromString(json.value(QStringLiteral("datetime")).toString(), Qt::ISODate),
             std::move(linkList) });
     }
-    emit newNotificationList(list);
+    Q_EMIT newNotificationList(list);
 }
 }

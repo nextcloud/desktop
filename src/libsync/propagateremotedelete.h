@@ -51,7 +51,7 @@ public:
 
     bool isLikelyFinishedQuickly() override { return !_item->isDirectory(); }
 
-private slots:
+private Q_SLOTS:
     void slotDeleteJobFinished();
 };
 }

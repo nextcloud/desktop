@@ -37,7 +37,7 @@ public:
     explicit IgnoreListEditor(QWidget *parent = nullptr);
     ~IgnoreListEditor() override;
 
-private slots:
+private Q_SLOTS:
     void slotItemSelectionChanged();
     void slotRemoveCurrentItem();
     void slotUpdateLocalIgnoreList();
