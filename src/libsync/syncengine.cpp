@@ -797,7 +797,7 @@ bool SyncEngine::shouldDiscoverLocally(const QString &path) const
 
     // Maybe a parent folder of something in the list?
     // check for a prefix + / match
-    forever {
+    while (true) {
         if (it->size() > path.size() && it->at(path.size()) == QLatin1Char('/'))
             return true;
         ++it;

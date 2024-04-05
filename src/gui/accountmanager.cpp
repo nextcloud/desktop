@@ -388,7 +388,7 @@ bool AccountManager::isAccountIdAvailable(const QString &id) const
 QString AccountManager::generateFreeAccountId() const
 {
     int i = 0;
-    forever {
+    while (true) {
         QString id = QString::number(i);
         if (isAccountIdAvailable(id)) {
             return id;

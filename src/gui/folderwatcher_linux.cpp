@@ -129,7 +129,7 @@ void FolderWatcherPrivate::slotReceivedNotification(int fd)
     int len;
     QVarLengthArray<char, 2048> buffer(2048);
 
-    forever {
+    while (true) {
         len = read(fd, buffer.data(), buffer.size());
         auto error = errno;
         /**

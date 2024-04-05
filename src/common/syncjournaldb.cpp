@@ -1041,7 +1041,7 @@ bool SyncJournalDb::getFileRecordsByFileId(const QByteArray &fileId, const std::
     if (!query->exec())
         return false;
 
-    forever {
+    while (true) {
         auto next = query->next();
         if (!next.ok)
             return false;
@@ -1071,7 +1071,7 @@ bool SyncJournalDb::getFilesBelowPath(const QByteArray &path, const std::functio
             return false;
         }
 
-        forever {
+        while (true) {
             auto next = query.next();
             if (!next.ok)
                 return false;
@@ -1135,7 +1135,7 @@ bool SyncJournalDb::listFilesInPath(const QByteArray& path,
     if (!query->exec())
         return false;
 
-    forever {
+    while (true) {
         auto next = query->next();
         if (!next.ok)
             return false;
@@ -1220,7 +1220,7 @@ Optional<SyncJournalDb::HasHydratedDehydrated> SyncJournalDb::hasHydratedOrDehyd
         return {};
 
     HasHydratedDehydrated result;
-    forever {
+    while (true) {
         auto next = query->next();
         if (!next.ok)
             return {};
@@ -1727,7 +1727,7 @@ QSet<QString> SyncJournalDb::getSelectiveSyncList(SyncJournalDb::SelectiveSyncLi
         *ok = false;
         return result;
     }
-    forever {
+    while (true) {
         auto next = query->next();
         if (!next.ok) {
             *ok = false;
@@ -2144,7 +2144,7 @@ Optional<PinState> SyncJournalDb::PinStateInterface::effectiveForPathRecursive(c
     query->exec();
 
     // Check if they are all identical
-    forever {
+    while (true) {
         auto next = query->next();
         if (!next.ok)
             return {};
@@ -2204,7 +2204,7 @@ SyncJournalDb::PinStateInterface::rawList()
     query.exec();
 
     QVector<QPair<QByteArray, PinState>> result;
-    forever {
+    while (true) {
         auto next = query.next();
         if (!next.ok)
             return {};
