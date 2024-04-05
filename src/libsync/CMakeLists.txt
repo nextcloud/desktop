@@ -1,5 +1,5 @@
 project(libsync)
-find_package(KF5Archive REQUIRED)
+find_package(KF6Archive REQUIRED)
 include(DefinePlatformDefaults)
 
 set(CMAKE_AUTOMOC TRUE)
@@ -211,7 +211,7 @@ target_link_libraries(nextcloudsync
   Qt::WebSockets
   Qt::Xml
   Qt::Sql
-  KF5::Archive
+  KF6::Archive
   Qt::Core5Compat
 )
 
@@ -221,9 +221,6 @@ target_compile_features(nextcloudsync
 )
 
 target_compile_definitions(nextcloudsync PRIVATE OPENSSL_SUPPRESS_DEPRECATED)
-
-find_package(Qt5 REQUIRED COMPONENTS Gui Widgets Svg)
-target_link_libraries(nextcloudsync PUBLIC Qt5::Gui Qt5::Widgets Qt5::Svg)
 
 if (NOT TOKEN_AUTH_ONLY)
     find_package(Qt${QT_MAJOR_VERSION} COMPONENTS REQUIRED Widgets Svg)

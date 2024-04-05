@@ -530,7 +530,7 @@ void Application::setupConfigFile()
     QT_WARNING_POP
     setApplicationName(_theme->appName());
 
-    auto oldDir = QStandardPaths::writableLocation(QStandardPaths::DataLocation);
+    auto oldDir = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
 
     // macOS 10.11.x does not like trailing slash for rename/move.
     if (oldDir.endsWith('/')) {

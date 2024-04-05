@@ -599,7 +599,7 @@ QByteArray FolderMetadata::encryptedMetadata()
 
     QJsonObject files, folders;
     for (auto it = _files.constBegin(), end = _files.constEnd(); it != end; ++it) {
-        const auto file = convertFileToJsonObject(it);
+        const auto file = convertFileToJsonObject(&(*it));
         if (file.isEmpty()) {
             qCDebug(lcCseMetadata) << "Metadata generation failed for file" << it->encryptedFilename;
             return {};

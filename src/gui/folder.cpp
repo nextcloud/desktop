@@ -572,6 +572,7 @@ void Folder::slotWatchedPathChanged(const QStringView &path, const ChangeReason 
             if (!pinState || *pinState != PinState::Excluded) {
                 if (!_vfs->setPinState(relativePath.toString(), PinState::Excluded)) {
                     qCWarning(lcFolder) << "Could not set pin state of" << relativePath << "to excluded";
+                }
             }
             return;
         } else {

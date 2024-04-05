@@ -51,19 +51,6 @@ else()
     )
 endif()
 
-find_package(Qt${QT_MAJOR_VERSION}WebEngine ${REQUIRED_QT_VERSION} CONFIG QUIET)
-if(NOT BUILD_WITH_WEBENGINE)
-    set_package_properties(Qt${QT_MAJOR_VERSION}WebEngine PROPERTIES
-        DESCRIPTION "Qt${QT_MAJOR_VERSION} WebEngine component."
-        TYPE RECOMMENDED
-    )
-else()
-    set_package_properties(Qt${QT_MAJOR_VERSION}WebEngine PROPERTIES
-        DESCRIPTION "Qt${QT_MAJOR_VERSION} WebEngine component."
-        TYPE REQUIRED
-    )
-endif()
-
 find_package(Qt${QT_VERSION_MAJOR}WebEngineCore ${REQUIRED_QT_VERSION} CONFIG QUIET)
 if(APPLE)
     set_package_properties(Qt${QT_VERSION_MAJOR}WebEngineCore PROPERTIES

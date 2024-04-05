@@ -1,18 +1,7 @@
 project(gui)
 find_package(Qt${QT_MAJOR_VERSION} REQUIRED COMPONENTS Widgets Svg Qml Quick QuickControls2 QuickWidgets Xml Network)
-find_package(KF5Archive REQUIRED)
-find_package(KF5GuiAddons)
-
-if(QUICK_COMPILER)
-    if (${QT_VERSION_MAJOR} STREQUAL "5")
-        set(REQUIRED_QT_VERSION "5.15.0")
-        find_package(Qt${QT_MAJOR_VERSION} ${REQUIRED_QT_VERSION} CONFIG REQUIRED QuickCompiler)
-        set_package_properties(Qt5QuickCompiler PROPERTIES
-                DESCRIPTION "Compile QML at build time"
-                TYPE REQUIRED
-        )
-    endif()
-endif()
+find_package(KF6Archive REQUIRED)
+find_package(KF6GuiAddons)
 
 if (NOT TARGET Qt::GuiPrivate)
     message(FATAL_ERROR "Could not find GuiPrivate component of Qt. It might be shipped as a separate package, please check that.")
@@ -58,11 +47,7 @@ set(client_UI_SRCS
     wizard/welcomepage.ui
 )
 
-if(Qt5QuickCompiler_FOUND)
-    qtquick_compiler_add_resources(client_UI_SRCS ../../resources.qrc ${CMAKE_SOURCE_DIR}/theme.qrc)
-else()
-    qt_add_resources(client_UI_SRCS ../../resources.qrc ${CMAKE_SOURCE_DIR}/theme.qrc)
-endif()
+qt_add_resources(client_UI_SRCS ../../resources.qrc ${CMAKE_SOURCE_DIR}/theme.qrc)
 
 set(client_SRCS
     accountmanager.h
@@ -406,7 +391,7 @@ set( final_src
 )
 
 if(Qt${QT_MAJOR_VERSION}Keychain_FOUND)
-    list(APPEND libsync_LINK_TARGETS qt5keychain)
+    list(APPEND libsync_LINK_TARGETS Qt6::keychain)
 endif()
 
 # add executable icon on windows and osx
@@ -568,13 +553,13 @@ target_link_libraries(nextcloudCore
   Qt::Quick
   Qt::QuickControls2
   Qt::QuickWidgets
-  KF5::Archive
+  KF6::Archive
   )
 
-if(KF5GuiAddons_FOUND)
+if(KF6GuiAddons_FOUND)
   target_link_libraries(nextcloudCore
     PUBLIC
-    KF5::GuiAddons
+    KF6::GuiAddons
   )
   add_definitions(-DHAVE_KGUIADDONS)
 endif()
@@ -591,7 +576,7 @@ foreach(FILE IN LISTS client_UI_SRCS)
 	set_property(SOURCE ${FILE} PROPERTY SKIP_UNITY_BUILD_INCLUSION ON)
 endforeach()
 
-if(Qt5WebEngine_FOUND AND Qt5WebEngineWidgets_FOUND)
+if(Qt6WebEngine_FOUND AND Qt6WebEngineWidgets_FOUND)
   target_link_libraries(nextcloudCore PUBLIC Qt::WebEngineWidgets)
 endif()
 

@@ -26,6 +26,8 @@
 #include <QObject>
 #include <QStringList>
 #include <QUuid>
+#include <QSet>
+
 #include <set>
 #include <chrono>
 #include <memory>

@@ -321,7 +321,7 @@ void AccountState::checkConnectivity()
 
         // If we don't reset the ssl config a second CheckServerJob can produce a
         // ssl config that does not have a sensible certificate chain.
-        account()->setSslConfiguration(QSslConfiguration());
+        account()->setSslConfiguration(QSslConfiguration::defaultConfiguration());
         //#endif
         conValidator->checkServerAndAuth();
     }
