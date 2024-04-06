@@ -104,6 +104,22 @@ class ShareViewController: NSViewController, ShareViewDataSourceUIDelegate {
             }
         }
         fileNameIcon.image = fileThumbnail?.nsImage
+
+        let resourceValues = try? itemUrl.resourceValues(
+            forKeys: [.fileSizeKey, .contentModificationDateKey]
+        )
+        var sizeDesc = "Unknown size"
+        var modDesc = "Unknown modification date"
+        if let fileSize = resourceValues?.fileSize {
+            sizeDesc = ByteCountFormatter().string(fromByteCount: Int64(fileSize))
+        }
+        if let modificationDate = resourceValues?.contentModificationDate {
+            let modDateString = DateFormatter.localizedString(
+                from: modificationDate, dateStyle: .short, timeStyle: .short
+            )
+            modDesc = "Last modified: \(modDateString)"
+        }
+        descriptionLabel.stringValue = "\(sizeDesc) · \(modDesc)"
     }
 
     @IBAction func dismissError(_ sender: Any) {
