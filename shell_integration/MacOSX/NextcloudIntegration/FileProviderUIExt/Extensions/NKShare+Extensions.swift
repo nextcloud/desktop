@@ -86,19 +86,19 @@ extension NKShare {
 
         switch shareType {
         case ShareType.user.rawValue:
-            return "User share"
+            return "User share (\(shareWith))"
         case ShareType.group.rawValue:
-            return "Group share"
+            return "Group share (\(shareWith))"
         case ShareType.publicLink.rawValue:
             return "Public link share"
         case ShareType.email.rawValue:
-            return "Email share"
+            return "Email share (\(shareWith))"
         case ShareType.federatedCloud.rawValue:
-            return "Federated cloud share"
+            return "Federated cloud share (\(shareWith))"
         case ShareType.circle.rawValue:
-            return "Circle share"
+            return "Circle share (\(shareWith))"
         case ShareType.talkConversation.rawValue:
-            return "Talk conversation share"
+            return "Talk conversation share (\(shareWith))"
         default:
             return "Unknown share"
         }
