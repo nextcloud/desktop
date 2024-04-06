@@ -42,13 +42,16 @@ class ShareOptionsView: NSView {
                 Logger.shareOptionsView.error("Could not configure suggestions data source.")
                 return
             }
-            suggestionsWindowController.dataSource = ShareeSuggestionsDataSource(kit: kit)
-            suggestionsWindowController.parentTextField = shareRecipientTextField
 
-            suggestionsTextFieldDelegate.suggestionsWindowController = suggestionsWindowController
-            shareRecipientTextField.delegate = suggestionsTextFieldDelegate
-
-            suggestionsWindowController.begin(for: shareRecipientTextField)
+            suggestionsTextFieldDelegate.suggestionsDataSource = ShareeSuggestionsDataSource(
+                kit: kit
+            )
+            suggestionsTextFieldDelegate.confirmationHandler = { suggestion in
+                guard let sharee = suggestion?.data as? NKSharee else { return }
+                self.shareRecipientTextField.stringValue = sharee.shareWith
+                Logger.shareOptionsView.debug("Chose sharee \(sharee.shareWith, privacy: .public)")
+            }
+            suggestionsTextFieldDelegate.targetTextField = shareRecipientTextField
         }
     }
     var dataSource: ShareTableViewDataSource?
