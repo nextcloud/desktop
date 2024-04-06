@@ -48,6 +48,12 @@ class ShareeSuggestionsDataSource: SuggestionsDataSource {
     }
 
     private func suggestionsFromSharees(_ sharees: [NKSharee]) -> [Suggestion] {
-        sharees.map { Suggestion(imageName: "person.fill", displayText: $0.name, data: $0) }
+        return sharees.map {
+            Suggestion(
+                imageName: "person.fill",
+                displayText: $0.label.isEmpty ? $0.name : $0.label,
+                data: $0
+            )
+        }
     } // TODO: Improve img
 }
