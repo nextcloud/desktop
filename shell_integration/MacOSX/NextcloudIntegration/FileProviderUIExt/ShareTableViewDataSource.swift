@@ -32,7 +32,7 @@ class ShareTableViewDataSource: NSObject, NSTableViewDataSource, NSTableViewDele
     private(set) var kit: NextcloudKit?
     private(set) var itemURL: URL?
     private(set) var itemServerRelativePath: String?
-    private var shares: [NKShare] = [] {
+    private(set) var shares: [NKShare] = [] {
         didSet { Task { @MainActor in sharesTableView?.reloadData() } }
     }
     private var account: NextcloudAccount? {
