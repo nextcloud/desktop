@@ -9,6 +9,7 @@ import AppKit
 import Combine
 import NextcloudKit
 import OSLog
+import SuggestionsTextFieldKit
 
 // TODO: Handle shareWith!
 // TODO: Handle visibility of textfields on relevant checkbox toggle
