@@ -158,12 +158,12 @@
     <message>
         <location filename="../src/gui/ConflictDelegate.qml" line="62"/>
         <source>Local version</source>
-        <translation type="unfinished"/>
+        <translation>Paikallinen versio</translation>
     </message>
     <message>
         <location filename="../src/gui/ConflictDelegate.qml" line="77"/>
         <source>Server version</source>
-        <translation type="unfinished"/>
+        <translation>Palvelimen versio</translation>
     </message>
 </context>
 <context>
@@ -252,7 +252,7 @@
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderFileDelegate.qml" line="95"/>
         <source>Delete</source>
-        <translation type="unfinished"/>
+        <translation>Poista</translation>
     </message>
 </context>
 <context>
@@ -265,7 +265,7 @@
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="73"/>
         <source>General settings</source>
-        <translation type="unfinished"/>
+        <translation>Yleiset asetukset</translation>
     </message>
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="82"/>
@@ -473,12 +473,12 @@ Should the account be imported?</source>
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="203"/>
         <source>Import</source>
-        <translation type="unfinished"/>
+        <translation>Tuo</translation>
     </message>
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="204"/>
         <source>Skip</source>
-        <translation type="unfinished"/>
+        <translation>Ohita</translation>
     </message>
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="255"/>
@@ -568,7 +568,7 @@ Should the account be imported?</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="120"/>
         <source>End-to-end Encryption</source>
-        <translation type="unfinished"/>
+        <translation>Päästä päähän -salaus</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="122"/>
@@ -964,7 +964,7 @@ Tämä toiminto peruu kaikki tämänhetkiset synkronoinnit.</translation>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="158"/>
         <source>Redirect detected</source>
-        <translation type="unfinished"/>
+        <translation>Uudelleenohjaus havaittu</translation>
     </message>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="160"/>
@@ -1096,23 +1096,23 @@ Tämä toiminto peruu kaikki tämänhetkiset synkronoinnit.</translation>
         <location filename="../src/gui/application.cpp" line="461"/>
         <source>%1 accounts</source>
         <comment>number of accounts imported</comment>
-        <translation type="unfinished"/>
+        <translation>%1 tiliä</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="462"/>
         <source>1 account</source>
-        <translation type="unfinished"/>
+        <translation>1 tili</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="464"/>
         <source>%1 folders</source>
         <comment>number of folders imported</comment>
-        <translation type="unfinished"/>
+        <translation>%1 kansiota</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="465"/>
         <source>1 folder</source>
-        <translation type="unfinished"/>
+        <translation>1 kansio</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="467"/>
@@ -1565,7 +1565,7 @@ Tämä toiminto peruu kaikki tämänhetkiset synkronoinnit.</translation>
     <message>
         <location filename="../src/gui/connectionvalidator.cpp" line="344"/>
         <source>Connection issue</source>
-        <translation type="unfinished"/>
+        <translation>Yhteysongelma</translation>
     </message>
 </context>
 <context>
@@ -2724,7 +2724,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/generalsettings.ui" line="260"/>
         <source>Update channel</source>
-        <translation type="unfinished"/>
+        <translation>Päivityskanava</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="151"/>
@@ -2751,12 +2751,12 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/generalsettings.ui" line="323"/>
         <source>&amp;Automatically check for updates</source>
-        <translation type="unfinished"/>
+        <translation>Tarkista päivitykset &amp;automaattisesti</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="339"/>
         <source>Check Now</source>
-        <translation type="unfinished"/>
+        <translation>Tarkista nyt</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="363"/>
@@ -2781,12 +2781,12 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/generalsettings.ui" line="420"/>
         <source>Use &amp;monochrome icons</source>
-        <translation type="unfinished"/>
+        <translation>Käytä &amp;mustavalkoisia kuvakkeita</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="427"/>
         <source>&amp;Launch on system startup</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Käynnistä järjestelmän käynnistyessä</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="434"/>
@@ -4505,7 +4505,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/filedetails/shareemodel.cpp" line="286"/>
         <source>No results found</source>
-        <translation type="unfinished"/>
+        <translation>Ei tuloksia</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/shareemodel.cpp" line="286"/>
@@ -6033,17 +6033,17 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="55"/>
         <source>Open local folder</source>
-        <translation type="unfinished"/>
+        <translation>Avaa paikallinen kansio</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="70"/>
         <source>Connected</source>
-        <translation type="unfinished"/>
+        <translation>Yhdistetty</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="70"/>
         <source>Disconnected</source>
-        <translation type="unfinished"/>
+        <translation>Yhteys katkaistu</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="109"/>
