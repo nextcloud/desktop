@@ -27,6 +27,7 @@ class ShareViewController: NSViewController, ShareViewDataSourceUIDelegate {
     @IBOutlet weak var loadingIndicator: NSProgressIndicator!
     @IBOutlet weak var errorMessageStackView: NSStackView!
     @IBOutlet weak var errorTextLabel: NSTextField!
+    @IBOutlet weak var noSharesLabel: NSTextField!
 
     public override var nibName: NSNib.Name? {
         return NSNib.Name(self.className)
@@ -143,6 +144,7 @@ class ShareViewController: NSViewController, ShareViewDataSourceUIDelegate {
     }
 
     func fetchFinished() {
+        noSharesLabel.isHidden = !shareDataSource.shares.isEmpty
         loadingEffectView.isHidden = true
         loadingIndicator.stopAnimation(self)
     }
