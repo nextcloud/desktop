@@ -11,8 +11,6 @@ import NextcloudKit
 import OSLog
 import SuggestionsTextFieldKit
 
-// TODO: Handle shareWith!
-// TODO: Handle visibility of textfields on relevant checkbox toggle
 class ShareOptionsView: NSView {
     @IBOutlet private weak var optionsTitleTextField: NSTextField!
     @IBOutlet private weak var shareRecipientTextField: NSTextField!  // Hide if public link share

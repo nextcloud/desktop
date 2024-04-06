@@ -56,5 +56,5 @@ class ShareeSuggestionsDataSource: SuggestionsDataSource {
                 data: $0
             )
         }
-    } // TODO: Improve img
+    }
 }
