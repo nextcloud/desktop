@@ -1527,8 +1527,8 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/nextcloud/NextcloudKit.git";
 			requirement = {
-				branch = develop;
-				kind = branch;
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.5.9;
 			};
 		};
 		5307A6E92965DB57001E0C6A /* XCRemoteSwiftPackageReference "realm-swift" */ = {
