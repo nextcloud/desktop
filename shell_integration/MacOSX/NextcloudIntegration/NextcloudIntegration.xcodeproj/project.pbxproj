@@ -1543,8 +1543,8 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/claucambra/NextcloudCapabilitiesKit.git";
 			requirement = {
-				branch = main;
-				kind = branch;
+				kind = exactVersion;
+				version = 1.0.0;
 			};
 		};
 		53651E422BBC0C7F00ECAC29 /* XCRemoteSwiftPackageReference "SuggestionsTextFieldKit" */ = {
