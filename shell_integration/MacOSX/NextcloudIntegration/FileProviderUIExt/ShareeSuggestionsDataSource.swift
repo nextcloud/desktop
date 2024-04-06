@@ -8,6 +8,7 @@
 import Foundation
 import NextcloudKit
 import OSLog
+import SuggestionsTextFieldKit
 
 class ShareeSuggestionsDataSource: SuggestionsDataSource {
     let kit: NextcloudKit
