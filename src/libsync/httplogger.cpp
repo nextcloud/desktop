@@ -18,6 +18,7 @@
 #include "common/utility.h"
 
 #include <QBuffer>
+#include <QJsonArray>
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QLoggingCategory>
@@ -42,12 +43,21 @@ bool isTextBody(const QString &s)
 struct HttpContext
 {
     HttpContext(const QNetworkRequest &request)
-        : url(request.url().toString())
+        : originalUrl(request.url().toString())
+        , lastUrl(request.url())
         , id(QString::fromUtf8(request.rawHeader(QByteArrayLiteral("X-Request-ID"))))
     {
     }
 
-    const QString url;
+    void addRedirect(const QUrl &url)
+    {
+        lastUrl = url;
+        redirectUrls.append(url.toString());
+    }
+
+    const QString originalUrl;
+    QUrl lastUrl;
+    QStringList redirectUrls;
     const QString id;
 
     OCC::Utility::ChronoElapsedTimer timer;
@@ -66,7 +76,11 @@ void logHttp(const QByteArray &verb, HttpContext *ctx, QJsonObject &&header, QIO
         header.insert(authKey, auth.startsWith(QStringLiteral("Bearer ")) ? QStringLiteral("Bearer [redacted]") : QStringLiteral("Basic [redacted]"));
     }
 
-    QJsonObject info{{QStringLiteral("method"), QString::fromUtf8(verb)}, {QStringLiteral("id"), ctx->id}, {QStringLiteral("url"), ctx->url}};
+    QJsonObject info{{QStringLiteral("method"), QString::fromUtf8(verb)}, {QStringLiteral("id"), ctx->id}, {QStringLiteral("url"), ctx->originalUrl}};
+
+    if (!ctx->redirectUrls.isEmpty()) {
+        info.insert(QStringLiteral("redirects"), QJsonArray::fromStringList(ctx->redirectUrls));
+    }
 
     if (reply) {
         // respond
@@ -130,9 +144,17 @@ void HttpLogger::logRequest(QNetworkReply *reply, QNetworkAccessManager::Operati
     // device should still exist, lets still use a qpointer to ensure we have valid data
     const auto logSend = [ctx = ctx.get(), operation, reply, device = QPointer<QIODevice>(device), deviceRaw = device](bool cached = false) {
         Q_ASSERT(!deviceRaw || device);
-        Q_ASSERT(!ctx->send);
-        ctx->send = true;
-        ctx->timer.reset();
+        if (!ctx->send) {
+            ctx->send = true;
+            ctx->timer.reset();
+        } else {
+            // this is a redirect
+            if (ctx->lastUrl != reply->url()) {
+                ctx->addRedirect(reply->url());
+            } else {
+                Q_UNREACHABLE();
+            }
+        }
 
         const auto request = reply->request();
         QJsonObject header;
@@ -141,19 +163,23 @@ void HttpLogger::logRequest(QNetworkReply *reply, QNetworkAccessManager::Operati
         }
         logHttp(requestVerb(operation, request), ctx, std::move(header), device, cached);
     };
-    QObject::connect(reply, &QNetworkReply::requestSent, reply, logSend);
+    QObject::connect(reply, &QNetworkReply::requestSent, reply, logSend, Qt::DirectConnection);
 
-    QObject::connect(reply, &QNetworkReply::finished, reply, [reply, ctx = std::move(ctx), logSend] {
-        ctx->timer.stop();
-        if (!ctx->send) {
-            logSend(true);
-        }
-        QJsonObject header;
-        for (const auto &[key, value] : reply->rawHeaderPairs()) {
-            header[QString::fromUtf8(key)] = QString::fromUtf8(value);
-        }
-        logHttp(requestVerb(*reply), ctx.get(), std::move(header), reply);
-    });
+
+    QObject::connect(
+        reply, &QNetworkReply::finished, reply,
+        [reply, ctx = std::move(ctx), logSend] {
+            ctx->timer.stop();
+            if (!ctx->send) {
+                logSend(true);
+            }
+            QJsonObject header;
+            for (const auto &[key, value] : reply->rawHeaderPairs()) {
+                header[QString::fromUtf8(key)] = QString::fromUtf8(value);
+            }
+            logHttp(requestVerb(*reply), ctx.get(), std::move(header), reply);
+        },
+        Qt::DirectConnection);
 }
 
 QByteArray HttpLogger::requestVerb(QNetworkAccessManager::Operation operation, const QNetworkRequest &request)

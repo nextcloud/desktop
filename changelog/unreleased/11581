@@ -1,0 +1,5 @@
+Bugfix: Support logging redirect
+
+We now log when all urls when a request was redirected.
+
+https://github.com/owncloud/client/pull/11581
