@@ -15,12 +15,12 @@
 #ifndef SYSTRAY_H
 #define SYSTRAY_H
 
-#include <QSystemTrayIcon>
-
 #include "accountmanager.h"
 #include "tray/usermodel.h"
 
+#include <QSystemTrayIcon>
 #include <QQmlNetworkAccessManagerFactory>
+#include <QStringListModel>
 
 class QScreen;
 class QQmlApplicationEngine;
@@ -189,6 +189,8 @@ private:
     QSet<qlonglong> _callsAlreadyNotified;
     QPointer<QObject> _editFileLocallyLoadingDialog;
     QVector<QQuickWindow*> _fileDetailDialogs;
+
+    QStringListModel _fakeActivityModel;
 };
 
 } // namespace OCC

@@ -485,7 +485,7 @@ ApplicationWindow {
                             Layout.leftMargin: Style.trayHorizontalMargin
                             verticalAlignment: Qt.AlignCenter
                             cache: false
-                            source: UserModel.currentUser.avatar != "" ? UserModel.currentUser.avatar : "image://avatars/fallbackWhite"
+                            source: (UserModel.currentUser && UserModel.currentUser.avatar !== "") ? UserModel.currentUser.avatar : "image://avatars/fallbackWhite"
                             Layout.preferredHeight: Style.accountAvatarSize
                             Layout.preferredWidth: Style.accountAvatarSize
 
@@ -494,7 +494,7 @@ ApplicationWindow {
 
                             Rectangle {
                                 id: currentAccountStatusIndicatorBackground
-                                visible: UserModel.currentUser.isConnected
+                                visible: UserModel.currentUser && UserModel.currentUser.isConnected
                                          && UserModel.currentUser.serverHasUserStatus
                                 width: Style.accountAvatarStateIndicatorSize +  + Style.trayFolderStatusIndicatorSizeOffset
                                 height: width
@@ -506,7 +506,7 @@ ApplicationWindow {
 
                             Rectangle {
                                 id: currentAccountStatusIndicatorMouseHover
-                                visible: UserModel.currentUser.isConnected
+                                visible: UserModel.currentUser && UserModel.currentUser.isConnected
                                          && UserModel.currentUser.serverHasUserStatus
                                 width: Style.accountAvatarStateIndicatorSize +  + Style.trayFolderStatusIndicatorSizeOffset
                                 height: width
@@ -519,9 +519,9 @@ ApplicationWindow {
 
                             Image {
                                 id: currentAccountStatusIndicator
-                                visible: UserModel.currentUser.isConnected
+                                visible: UserModel.currentUser && UserModel.currentUser.isConnected
                                          && UserModel.currentUser.serverHasUserStatus
-                                source: UserModel.currentUser.statusIcon
+                                source: UserModel.currentUser ? UserModel.currentUser.statusIcon : ""
                                 cache: false
                                 x: currentAccountStatusIndicatorBackground.x + 1
                                 y: currentAccountStatusIndicatorBackground.y + 1
@@ -545,7 +545,7 @@ ApplicationWindow {
                                 id: currentAccountUser
                                 Layout.alignment: Qt.AlignLeft | Qt.AlignBottom
                                 width: Style.currentAccountLabelWidth
-                                text: UserModel.currentUser.name
+                                text: UserModel.currentUser ? UserModel.currentUser.name : ""
                                 elide: Text.ElideRight
                                 color: Style.currentUserHeaderTextColor
 
@@ -557,7 +557,7 @@ ApplicationWindow {
                                 id: currentAccountServer
                                 Layout.alignment: Qt.AlignLeft | Qt.AlignBottom
                                 width: Style.currentAccountLabelWidth
-                                text: UserModel.currentUser.server
+                                text: UserModel.currentUser ? UserModel.currentUser.server : ""
                                 elide: Text.ElideRight
                                 color: Style.currentUserHeaderTextColor
                                 visible: UserModel.numUsers() > 1
@@ -565,26 +565,26 @@ ApplicationWindow {
 
                             RowLayout {
                                 id: currentUserStatus
-                                visible: UserModel.currentUser.isConnected &&
+                                visible: UserModel.currentUser && UserModel.currentUser.isConnected &&
                                          UserModel.currentUser.serverHasUserStatus
                                 spacing: Style.accountLabelsSpacing
                                 width: parent.width
 
                                 EnforcedPlainTextLabel {
                                     id: emoji
-                                    visible: UserModel.currentUser.statusEmoji !== ""
+                                    visible: UserModel.currentUser && UserModel.currentUser.statusEmoji !== ""
                                     width: Style.userStatusEmojiSize
-                                    text: UserModel.currentUser.statusEmoji
+                                    text: UserModel.currentUser ? UserModel.currentUser.statusEmoji : ""
                                 }
                                 EnforcedPlainTextLabel {
                                     id: message
                                     Layout.alignment: Qt.AlignLeft | Qt.AlignBottom
                                     Layout.fillWidth: true
-                                    visible: UserModel.currentUser.statusMessage !== ""
+                                    visible: UserModel.currentUser && UserModel.currentUser.statusMessage !== ""
                                     width: Style.currentAccountLabelWidth
-                                    text: UserModel.currentUser.statusMessage !== ""
+                                    text: UserModel.currentUser && UserModel.currentUser.statusMessage !== ""
                                           ? UserModel.currentUser.statusMessage
-                                          : UserModel.currentUser.server
+                                          : UserModel.currentUser ? UserModel.currentUser.server : ""
                                     elide: Text.ElideRight
                                     color: Style.currentUserHeaderTextColor
                                     font.pixelSize: Style.subLinePixelSize
@@ -639,7 +639,7 @@ ApplicationWindow {
                 HeaderButton {
                     id: trayWindowTalkButton
 
-                    visible: UserModel.currentUser.serverHasTalk
+                    visible: UserModel.currentUser && UserModel.currentUser.serverHasTalk
                     icon.source: "qrc:///client/theme/white/talk-app.svg"
                     icon.color: Style.currentUserHeaderTextColor
                     onClicked: UserModel.openCurrentAccountTalk()
@@ -736,21 +736,17 @@ ApplicationWindow {
 
         UnifiedSearchInputContainer {
             id: trayWindowUnifiedSearchInputContainer
-            height: Style.unifiedSearchInputContainerHeight +
-                    topInset +
-                    bottomInset +
-                    bottomUnifiedSearchInputSeparator.height
+            height: Style.trayWindowHeaderHeight * 0.65
 
-            anchors.top: trayWindowHeaderBackground.bottom
-            anchors.left: trayWindowMainItem.left
-            anchors.right: trayWindowMainItem.right
+            anchors {
+                top: trayWindowHeaderBackground.bottom
+                left: trayWindowMainItem.left
+                right: trayWindowMainItem.right
 
-            topInset: Style.trayHorizontalMargin + controlRoot.padding
-            leftInset: Style.trayHorizontalMargin + controlRoot.padding
-            rightInset: Style.trayHorizontalMargin + controlRoot.padding
-            bottomInset: bottomUnifiedSearchInputSeparator.visible ?
-                             Style.trayHorizontalMargin + controlRoot.padding + bottomUnifiedSearchInputSeparator.height :
-                             0
+                topMargin: Style.trayHorizontalMargin + controlRoot.padding
+                leftMargin: Style.trayHorizontalMargin + controlRoot.padding
+                rightMargin: Style.trayHorizontalMargin + controlRoot.padding
+            }
 
             text: UserModel.currentUser.unifiedSearchResultsListModel.searchTerm
             readOnly: !UserModel.currentUser.isConnected || UserModel.currentUser.unifiedSearchResultsListModel.currentFetchMoreInProgressProviderId
@@ -880,9 +876,8 @@ ApplicationWindow {
             Rectangle {
                 id: syncStatusSeparator
 
-                anchors.left: parent.left
-                anchors.right: parent.right
-                anchors.bottom: parent.bottom
+                Layout.fillWidth: true
+                Layout.preferredHeight: 1
 
                 height: 1
                 color: Style.menuBorder
@@ -966,7 +961,7 @@ ApplicationWindow {
             }
             Connections {
                 target: activityModel
-                onInteractiveActivityReceived: {
+                function onInteractiveActivityReceived() {
                     if (!activityList.atYBeginning) {
                         newActivitiesButtonLoader.active = true;
                     }
