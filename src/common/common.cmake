@@ -21,9 +21,6 @@ set(common_SOURCES
     ${CMAKE_CURRENT_BINARY_DIR}/version.cpp
 )
 
-set_source_files_properties(${CMAKE_CURRENT_LIST_DIR}/plugin.cpp PROPERTIES COMPILE_DEFINITIONS APPLICATION_EXECUTABLE="${APPLICATION_EXECUTABLE}")
-
-
 if(WIN32)
     list(APPEND common_SOURCES
         ${CMAKE_CURRENT_LIST_DIR}/utility_win.cpp

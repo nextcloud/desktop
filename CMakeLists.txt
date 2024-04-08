@@ -52,8 +52,6 @@ include(OCApplyCommonSettings)
 
 include("${CMAKE_CURRENT_LIST_DIR}/THEME.cmake")
 
-set(synclib_NAME "${APPLICATION_EXECUTABLE}sync")
-
 if(NOT WITH_CRASHREPORTER)
     message(STATUS "Build of crashreporter disabled.")
 else()

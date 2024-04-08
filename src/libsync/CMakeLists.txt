@@ -130,7 +130,7 @@ GENERATE_EXPORT_HEADER(libsync
 )
 
 set_target_properties(libsync PROPERTIES
-        OUTPUT_NAME "${synclib_NAME}"
+        OUTPUT_NAME "ownCloudLibSync"
         VERSION ${MIRALL_VERSION}
         SOVERSION ${MIRALL_SOVERSION}
 )

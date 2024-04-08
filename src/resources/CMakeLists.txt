@@ -16,7 +16,7 @@ target_include_directories(owncloudResources PUBLIC $<BUILD_INTERFACE:${CMAKE_CU
 target_compile_definitions(owncloudResources PRIVATE APPLICATION_SHORTNAME="${APPLICATION_SHORTNAME}")
 
 set_target_properties(owncloudResources PROPERTIES
-    OUTPUT_NAME "${APPLICATION_EXECUTABLE}Resources"
+    OUTPUT_NAME "ownCloudResources"
     AUTOUIC ON
     AUTORCC ON
     VERSION ${MIRALL_VERSION}
