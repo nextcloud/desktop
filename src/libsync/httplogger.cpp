@@ -141,11 +141,7 @@ void HttpLogger::logRequest(QNetworkReply *reply, QNetworkAccessManager::Operati
         }
         logHttp(requestVerb(operation, request), ctx, std::move(header), device, cached);
     };
-#if QT_VERSION >= QT_VERSION_CHECK(6, 3, 0)
     QObject::connect(reply, &QNetworkReply::requestSent, reply, logSend);
-#else
-    logSend();
-#endif
 
     QObject::connect(reply, &QNetworkReply::finished, reply, [reply, ctx = std::move(ctx), logSend] {
         ctx->timer.stop();

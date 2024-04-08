@@ -1206,7 +1206,6 @@ FakeReply::FakeReply(QObject *parent)
     : QNetworkReply(parent)
 {
     setRawHeader(QByteArrayLiteral("Date"), OCC::Utility::formatRFC1123Date(QDateTime::currentDateTimeUtc()).toUtf8());
-#if QT_VERSION >= QT_VERSION_CHECK(6, 3, 0)
     QTimer::singleShot(0, this, [this] {
         // emulate the real world
         // don't Q_EMIT if we where already aborted
@@ -1214,7 +1213,6 @@ FakeReply::FakeReply(QObject *parent)
             Q_EMIT requestSent();
         }
     });
-#endif
 }
 
 FakeReply::~FakeReply() { }

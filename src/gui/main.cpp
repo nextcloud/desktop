@@ -251,7 +251,6 @@ void setupLogging(const CommandLineOptions &options)
 
 void loadQNetworkInformationBackend()
 {
-#if QT_VERSION >= QT_VERSION_CHECK(6, 3, 0)
     if (!QNetworkInformation::loadDefaultBackend()) {
         qCWarning(lcMain) << "Failed to load default backend of QNetworkInformation.";
         if (!QNetworkInformation::loadBackendByFeatures(QNetworkInformation::Feature::Metered)) {
@@ -270,9 +269,6 @@ void loadQNetworkInformationBackend()
         QObject::connect(qni, &QNetworkInformation::reachabilityChanged,
             [](QNetworkInformation::Reachability reachability) { qCInfo(lcMain) << "Connection Status changed to:" << reachability; });
     }
-#else
-    qCWarning(lcMain) << "QNetworkInformation is not available on this platform";
-#endif
 }
 
 QString setupTranslations(QApplication *app)
