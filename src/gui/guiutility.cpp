@@ -152,16 +152,3 @@ void Utility::unmarkDirectoryAsSyncRoot(const QString &path)
         qCWarning(lcGuiUtility) << "Failed to remove uuid tag on" << path;
     }
 }
-
-void Utility::initQuickWidget(QQuickWidget *widget, const QUrl &src)
-{
-    widget->engine()->addImageProvider(QStringLiteral("ownCloud"), new Resources::CoreImageProvider());
-    widget->setResizeMode(QQuickWidget::SizeRootObjectToView);
-    widget->setSource(src);
-    if (!widget->errors().isEmpty()) {
-        auto box = new QMessageBox(QMessageBox::Critical, QStringLiteral("QML Error"), QDebug::toString(widget->errors()));
-        box->setAttribute(Qt::WA_DeleteOnClose);
-        box->exec();
-        qFatal("A qml error occured %s", qPrintable(QDebug::toString(widget->errors())));
-    }
-}

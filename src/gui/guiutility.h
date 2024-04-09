@@ -23,9 +23,6 @@
 #include <QUrl>
 #include <QWidget>
 
-
-class QQuickWidget;
-
 namespace OCC {
 
 Q_DECLARE_LOGGING_CATEGORY(lcGuiUtility)
@@ -60,8 +57,5 @@ namespace Utility {
     OWNCLOUDGUI_EXPORT void markDirectoryAsSyncRoot(const QString &path, const QUuid &accountUuid);
     std::pair<QString, QUuid> getDirectorySyncRootMarkings(const QString &path);
     void unmarkDirectoryAsSyncRoot(const QString &path);
-
-    void initQuickWidget(QQuickWidget *widget, const QUrl &src);
-
 } // namespace Utility
 } // namespace OCC

@@ -30,12 +30,12 @@
 #include "folderwizard/folderwizard.h"
 #include "gui/accountmodalwidget.h"
 #include "gui/models/models.h"
+#include "gui/qmlutils.h"
 #include "gui/selectivesyncwidget.h"
 #include "gui/spaces/spaceimageprovider.h"
 #include "guiutility.h"
 #include "oauthloginwidget.h"
 #include "quotainfo.h"
-#include "resources/resources.h"
 #include "scheduling/syncscheduler.h"
 #include "settingsdialog.h"
 #include "theme.h"
@@ -74,7 +74,7 @@ AccountSettings::AccountSettings(const AccountStatePtr &accountState, QWidget *p
 
     ui->quickWidget->rootContext()->setContextProperty(QStringLiteral("ctx"), this);
     ui->quickWidget->engine()->addImageProvider(QStringLiteral("space"), new Spaces::SpaceImageProvider(_accountState->account()));
-    Utility::initQuickWidget(ui->quickWidget, QUrl(QStringLiteral("qrc:/qt/qml/org/ownCloud/gui/qml/FolderDelegate.qml")));
+    QmlUtils::initQuickWidget(ui->quickWidget, QUrl(QStringLiteral("qrc:/qt/qml/org/ownCloud/gui/qml/FolderDelegate.qml")));
 
     createAccountToolbox();
     connect(FolderMan::instance(), &FolderMan::folderListChanged, _model, &FolderStatusModel::resetFolders);

@@ -96,6 +96,13 @@ target_link_libraries(libsync
 )
 
 apply_common_target_settings(libsync)
+ecm_add_qml_module(libsync
+        URI org.ownCloud.libsync
+        VERSION 1.0
+        NAMESPACE OCC
+)
+
+ecm_finalize_qml_module(libsync DESTINATION ${KDE_INSTALL_QMLDIR})
 
 set_source_files_properties(configfile.cpp
     PROPERTIES

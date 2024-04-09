@@ -26,7 +26,7 @@ SpacesPage::SpacesPage(AccountPtr acc, QWidget *parent)
 
     ui->widget->setAccount(acc);
 
-    connect(ui->widget, &Spaces::SpacesBrowser::selectionChanged, this, &QWizardPage::completeChanged);
+    connect(ui->widget, &Spaces::SpacesBrowser::currentSpaceChanged, this, &QWizardPage::completeChanged);
 }
 
 SpacesPage::~SpacesPage()
@@ -36,10 +36,10 @@ SpacesPage::~SpacesPage()
 
 bool OCC::SpacesPage::isComplete() const
 {
-    return ui->widget->currentSpace().isValid();
+    return ui->widget->currentSpace();
 }
 
-QVariant OCC::SpacesPage::selectedSpaceData(Spaces::SpacesModel::Columns column) const
+GraphApi::Space *OCC::SpacesPage::currentSpace() const
 {
-    return ui->widget->currentSpace().siblingAtColumn(static_cast<int>(column)).data();
+    return ui->widget->currentSpace();
 }

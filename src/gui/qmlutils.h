@@ -11,35 +11,14 @@
  * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
  * for more details.
  */
+
 #pragma once
 
-#include "gui/spaces/spacesmodel.h"
 
-#include "accountfwd.h"
+class QQuickWidget;
+class QUrl;
 
-#include <QWizardPage>
+namespace OCC::QmlUtils {
 
-
-namespace Ui {
-class SpacesPage;
-}
-
-namespace OCC {
-class SpacesPage : public QWizardPage
-{
-    Q_OBJECT
-
-public:
-    explicit SpacesPage(AccountPtr acc, QWidget *parent = nullptr);
-    ~SpacesPage();
-
-    bool isComplete() const override;
-
-
-    GraphApi::Space *currentSpace() const;
-
-private:
-    Ui::SpacesPage *ui;
-};
-
+void initQuickWidget(QQuickWidget *widget, const QUrl &src);
 }

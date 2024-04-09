@@ -14,16 +14,18 @@
 #include "spacesbrowser.h"
 #include "ui_spacesbrowser.h"
 
-#include "spacesdelegate.h"
 #include "spacesmodel.h"
 
-#include "gui/models/expandingheaderview.h"
-#include "gui/models/models.h"
+#include "gui/accountmanager.h"
+#include "gui/qmlutils.h"
+#include "gui/spaces/spaceimageprovider.h"
+#include "resources/resources.h"
 
-#include <QCursor>
 #include <QMenu>
+#include <QQmlContext>
 #include <QSortFilterProxyModel>
 
+using namespace OCC;
 using namespace OCC::Spaces;
 
 SpacesBrowser::SpacesBrowser(QWidget *parent)
@@ -33,40 +35,16 @@ SpacesBrowser::SpacesBrowser(QWidget *parent)
     ui->setupUi(this);
     _model = new SpacesModel(this);
 
-    auto *filterModel = new Models::FilteringProxyModel(this);
-    filterModel->setSourceModel(_model);
-    filterModel->setFilterRole(Models::DataRoles::FilterRole);
-    filterModel->setFilterKeyColumn(static_cast<int>(SpacesModel::Columns::Enabled));
 
-    auto *sortModel = new Models::WeightedQSortFilterProxyModel(this);
-    sortModel->setSourceModel(filterModel);
-    sortModel->setSortCaseSensitivity(Qt::CaseInsensitive);
-    sortModel->setWeightedColumn(static_cast<int>(SpacesModel::Columns::Priority), Qt::DescendingOrder);
+    _sortModel = new QSortFilterProxyModel(this);
+    _sortModel->setFilterRole(static_cast<int>(SpacesModel::Roles::Enabled));
+    _sortModel->setSourceModel(_model);
+    _sortModel->setSortCaseSensitivity(Qt::CaseInsensitive);
+    _sortModel->setSortRole(static_cast<int>(SpacesModel::Roles::Priority));
+    _sortModel->sort(0, Qt::DescendingOrder);
 
-    ui->tableView->setModel(sortModel);
-
-    connect(ui->tableView->selectionModel(), &QItemSelectionModel::selectionChanged, this, &SpacesBrowser::selectionChanged);
-
-    ui->tableView->setItemDelegate(new SpacesDelegate);
-    ui->tableView->verticalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
-    auto *header = new OCC::ExpandingHeaderView(QStringLiteral("SpacesBrowserHeader2"), ui->tableView);
-    ui->tableView->setHorizontalHeader(header);
-    header->setResizeToContent(true);
-    header->setSortIndicator(static_cast<int>(SpacesModel::Columns::Name), Qt::DescendingOrder);
-    header->setExpandingColumn(static_cast<int>(SpacesModel::Columns::Name));
-    header->hideSection(static_cast<int>(SpacesModel::Columns::WebDavUrl));
-    // part of the name (see the delegate)
-    header->hideSection(static_cast<int>(SpacesModel::Columns::Subtitle));
-    header->hideSection(static_cast<int>(SpacesModel::Columns::Priority));
-    header->hideSection(static_cast<int>(SpacesModel::Columns::Enabled));
-    header->hideSection(static_cast<int>(SpacesModel::Columns::SpaceId));
-    header->setContextMenuPolicy(Qt::CustomContextMenu);
-    connect(header, &QHeaderView::customContextMenuRequested, header, [header, this] {
-        auto menu = new QMenu(this);
-        menu->setAttribute(Qt::WA_DeleteOnClose);
-        header->addResetActionToMenu(menu);
-        menu->popup(QCursor::pos());
-    });
+    ui->quickWidget->rootContext()->setContextProperty(QStringLiteral("spacesBrowser"), this);
+    QmlUtils::initQuickWidget(ui->quickWidget, QUrl(QStringLiteral("qrc:/qt/qml/org/ownCloud/gui/spaces/qml/SpacesView.qml")));
 }
 
 SpacesBrowser::~SpacesBrowser()
@@ -79,11 +57,16 @@ void SpacesBrowser::setAccount(OCC::AccountPtr acc)
     _acc = acc;
     if (acc) {
         _model->setSpacesManager(acc->spacesManager());
+        ui->quickWidget->engine()->addImageProvider(QStringLiteral("space"), new Spaces::SpaceImageProvider(acc));
     }
 }
 
-QModelIndex SpacesBrowser::currentSpace()
+GraphApi::Space *SpacesBrowser::currentSpace()
 {
-    const auto spaces = ui->tableView->selectionModel()->selectedRows();
-    return spaces.isEmpty() ? QModelIndex {} : spaces.first();
+    return _currentSpace;
+}
+
+QSortFilterProxyModel *SpacesBrowser::model()
+{
+    return _sortModel;
 }

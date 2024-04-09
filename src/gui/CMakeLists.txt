@@ -99,6 +99,12 @@ add_subdirectory(newwizard)
 add_subdirectory(folderwizard)
 add_subdirectory(loginrequireddialog)
 
+# TODO: find a proper home
+add_library(qmlutils STATIC qmlutils.cpp)
+target_link_libraries(qmlutils PUBLIC owncloudResources Qt::QuickWidgets)
+set_target_properties(qmlutils PROPERTIES AUTOUIC ON AUTORCC ON)
+apply_common_target_settings(qmlutils)
+
 add_library(owncloudGui SHARED ${final_src})
 set_target_properties(owncloudGui PROPERTIES AUTOUIC ON AUTORCC ON)
 # for the generated qml module
@@ -106,9 +112,12 @@ target_include_directories(owncloudGui PRIVATE models)
 target_link_libraries(owncloudGui
     PUBLIC
         Qt::Widgets Qt::Network Qt::Xml Qt::Quick Qt::QuickWidgets Qt::QuickControls2
-        newwizard folderwizard spaces loginrequireddialog
+        newwizard folderwizard loginrequireddialog
         libsync
         Qt6Keychain::Qt6Keychain
+    PRIVATE
+        ownCloudSpaces
+        qmlutils
 )
 
 apply_common_target_settings(owncloudGui)
@@ -117,7 +126,6 @@ ecm_add_qml_module(owncloudGui
         VERSION 1.0
         NAMESPACE OCC
         QML_FILES
-            qml/SpaceDelegate.qml
             qml/FolderDelegate.qml
             qml/FolderError.qml
 )

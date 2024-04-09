@@ -99,3 +99,13 @@ QIcon Space::image() const
     }
     return _image;
 }
+
+QString Space::id()
+{
+    return _drive.getRoot().getId();
+}
+
+QUrl Space::webdavUrl() const
+{
+    return QUrl(_drive.getRoot().getWebDavUrl());
+}

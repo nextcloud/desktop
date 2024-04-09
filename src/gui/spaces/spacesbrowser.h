@@ -12,9 +12,12 @@
  * for more details.
  */
 #pragma once
+#include "gui/spaces/spaceslib.h"
 
-#include "account.h"
+#include "libsync/account.h"
+#include "libsync/graphapi/space.h"
 
+#include <QSortFilterProxyModel>
 #include <QWidget>
 
 namespace Ui {
@@ -24,26 +27,32 @@ class SpacesBrowser;
 namespace OCC::Spaces {
 class SpacesModel;
 
-class SpacesBrowser : public QWidget
+class SPACES_EXPORT SpacesBrowser : public QWidget
 {
     Q_OBJECT
-
+    Q_PROPERTY(QSortFilterProxyModel *model MEMBER _sortModel READ model CONSTANT)
+    Q_PROPERTY(GraphApi::Space *currentSpace MEMBER _currentSpace READ currentSpace NOTIFY currentSpaceChanged)
+    QML_ELEMENT
 public:
     explicit SpacesBrowser(QWidget *parent = nullptr);
     ~SpacesBrowser();
 
     void setAccount(OCC::AccountPtr acc);
 
-    QModelIndex currentSpace();
+    GraphApi::Space *currentSpace();
+
+    QSortFilterProxyModel *model();
 
 Q_SIGNALS:
-    void selectionChanged();
+    void currentSpaceChanged(GraphApi::Space *space);
 
 private:
     Ui::SpacesBrowser *ui;
 
     OCC::AccountPtr _acc;
     SpacesModel *_model;
+    QSortFilterProxyModel *_sortModel;
+    GraphApi::Space *_currentSpace = nullptr;
 };
 
 }

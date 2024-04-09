@@ -21,6 +21,7 @@
 #include <OAIDrive.h>
 
 #include <QIcon>
+#include <QtQmlIntegration>
 
 namespace OCC {
 namespace GraphApi {
@@ -29,6 +30,8 @@ namespace GraphApi {
     class OWNCLOUDSYNC_EXPORT Space : public QObject
     {
         Q_OBJECT
+        QML_ELEMENT
+        QML_UNCREATABLE("Spaces can only be created by the SpacesManager")
     public:
         /***
          * Returns the display name of the drive.
@@ -36,6 +39,8 @@ namespace GraphApi {
          * Exceptions: Personal spaces
          */
         QString displayName() const;
+
+        QString id();
 
 
         OpenAPI::OAIDrive drive() const;
@@ -56,6 +61,8 @@ namespace GraphApi {
         QUrl imageUrl() const;
 
         QIcon image() const;
+
+        QUrl webdavUrl() const;
 
     private:
         Space(SpacesManager *spaceManager, const OpenAPI::OAIDrive &drive);

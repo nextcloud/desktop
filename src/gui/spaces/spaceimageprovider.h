@@ -13,13 +13,14 @@
  */
 
 #pragma once
+#include "gui/spaces/spaceslib.h"
 
 #include "libsync/account.h"
 
 #include <QQuickImageProvider>
 
 namespace OCC::Spaces {
-class SpaceImageProvider : public QQuickImageProvider
+class SPACES_EXPORT SpaceImageProvider : public QQuickImageProvider
 {
     Q_OBJECT
 public:

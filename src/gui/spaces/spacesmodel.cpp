@@ -26,6 +26,7 @@
 
 #include <QIcon>
 #include <QPixmap>
+#include <QRandomGenerator>
 
 namespace {
 constexpr QSize ImageSizeC(128, 128);
@@ -37,39 +38,6 @@ using namespace OCC::Spaces;
 SpacesModel::SpacesModel(QObject *parent)
     : QAbstractTableModel(parent)
 {
-}
-
-QVariant SpacesModel::headerData(int section, Qt::Orientation orientation, int role) const
-{
-    if (orientation == Qt::Horizontal) {
-        const auto actionRole = static_cast<Columns>(section);
-        switch (role) {
-        case Qt::DisplayRole:
-            switch (actionRole) {
-            case Columns::Sync:
-                return tr("Sync");
-            case Columns::Name:
-                return tr("Name");
-            case Columns::Subtitle:
-                return tr("Subtitle");
-            case Columns::WebUrl:
-                return tr("Web URL");
-            case Columns::WebDavUrl:
-                return tr("Web Dav URL");
-            case Columns::Image:
-                return tr("Image");
-            case Columns::Priority:
-                return tr("Priority");
-            case Columns::Enabled:
-                return tr("Enabled");
-            case Columns::SpaceId:
-                return QStringLiteral("Space Id"); // Hidden column, no need for a translatable string.
-            case Columns::ColumnCount:
-                Q_UNREACHABLE();
-            }
-        }
-    }
-    return QAbstractTableModel::headerData(section, orientation, role);
 }
 
 int SpacesModel::rowCount(const QModelIndex &parent) const
@@ -86,72 +54,34 @@ int SpacesModel::columnCount(const QModelIndex &parent) const
     if (parent.isValid()) {
         return 0;
     }
-    return static_cast<int>(Columns::ColumnCount);
+    return 1;
 }
 
 QVariant SpacesModel::data(const QModelIndex &index, int role) const
 {
     Q_ASSERT(checkIndex(index, QAbstractItemModel::CheckIndexOption::IndexIsValid));
 
-    const auto column = static_cast<Columns>(index.column());
     const auto *space = _spacesList.at(index.row());
-    switch (role) {
-    case Qt::DisplayRole:
-        switch (column) {
-        case Columns::Sync:
-            // TODO: return true if we alreaddy sync the space
-            return false;
-        case Columns::Name:
-            return space->displayName();
-        case Columns::Subtitle:
-            return space->drive().getDescription();
-        case Columns::WebUrl:
-            return space->drive().getWebUrl();
-        case Columns::WebDavUrl:
-            return space->drive().getRoot().getWebDavUrl();
-        case Columns::Image:
-            return {};
-        case Columns::Priority:
-            return space->priority();
-        case Columns::SpaceId:
-            return space->drive().getRoot().getId();
-        case Columns::Enabled:
-            return !space->disabled();
-        case Columns::ColumnCount:
-            Q_UNREACHABLE();
-        }
-        break;
-    case Qt::DecorationRole:
-        switch (column) {
-        case Columns::Image: {
-            return space->image();
-        }
-        default:
-            return {};
-        }
-    case Qt::SizeHintRole: {
-        switch (column) {
-        case Columns::Image:
-            return ImageSizeC + ImageMarginC;
-        default:
-            return {};
-        }
-    }
-    case Models::UnderlyingDataRole:
-        switch (column) {
-        case Columns::Image: {
-            return space->imageUrl();
-        }
-        default:
-            return data(index, Qt::DisplayRole);
-        }
-    case Models::FilterRole:
-        switch (column) {
-        case Columns::Enabled:
-            return !space->disabled();
-        default:
-            Q_UNREACHABLE();
-        }
+    switch (static_cast<Roles>(role)) {
+    case Roles::Sync:
+        // TODO: return true if we alreaddy sync the space
+        return false;
+    case Roles::Name:
+        return space->displayName();
+    case Roles::Subtitle:
+        return space->drive().getDescription();
+    case Roles::WebUrl:
+        return space->drive().getWebUrl();
+    case Roles::WebDavUrl:
+        return space->webdavUrl();
+    case Roles::Image:
+        return QStringLiteral("image://space/%1/%2").arg(QString::number(QRandomGenerator::global()->generate()), space->drive().getRoot().getId());
+    case Roles::Priority:
+        return space->priority();
+    case Roles::Space:
+        return QVariant::fromValue(space);
+    case Roles::Enabled:
+        return !space->disabled();
     }
     return {};
 }
@@ -176,7 +106,16 @@ void SpacesModel::setSpacesManager(GraphApi::SpacesManager *spacesManager)
         const auto row = _spacesList.indexOf(space);
         if (row != -1) {
             const auto index = createIndex(row, 0);
-            Q_EMIT dataChanged(index, index.siblingAtColumn(static_cast<int>(SpacesModel::Columns::ColumnCount) - 1));
+            Q_EMIT dataChanged(index, index);
         }
     });
+}
+QHash<int, QByteArray> SpacesModel::roleNames() const
+{
+    return {
+        {static_cast<int>(Roles::Name), "name"},
+        {static_cast<int>(Roles::Subtitle), "subtitle"},
+        {static_cast<int>(Roles::Image), "imageUrl"},
+        {static_cast<int>(Roles::Space), "space"},
+    };
 }

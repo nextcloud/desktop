@@ -31,6 +31,8 @@
 #include "gui/folderman.h"
 #include "gui/spaces/spacesmodel.h"
 
+#include "libsync/graphapi/space.h"
+
 #include <QDesktopServices>
 #include <QDir>
 #include <QEvent>
@@ -97,8 +99,7 @@ FolderWizardPrivate::FolderWizardPrivate(FolderWizard *q, const AccountStatePtr 
 QString FolderWizardPrivate::initialLocalPath() const
 {
     if (_account->supportsSpaces()) {
-        return FolderMan::findGoodPathForNewSyncFolder(
-            defaultSyncRoot(), _spacesPage->selectedSpaceData(Spaces::SpacesModel::Columns::Name).toString(), FolderMan::NewFolderType::SpacesSyncRoot);
+        return FolderMan::findGoodPathForNewSyncFolder(defaultSyncRoot(), _spacesPage->currentSpace()->displayName(), FolderMan::NewFolderType::SpacesSyncRoot);
     }
 
     // Split default sync root:
@@ -114,7 +115,7 @@ QString FolderWizardPrivate::remotePath() const
 uint32_t FolderWizardPrivate::priority() const
 {
     if (_account->supportsSpaces()) {
-        return _spacesPage->selectedSpaceData(Spaces::SpacesModel::Columns::Priority).toUInt();
+        return _spacesPage->currentSpace()->priority();
     }
     return 0;
 }
@@ -122,7 +123,7 @@ uint32_t FolderWizardPrivate::priority() const
 QUrl FolderWizardPrivate::davUrl() const
 {
     if (_account->supportsSpaces()) {
-        auto url = _spacesPage->selectedSpaceData(Spaces::SpacesModel::Columns::WebDavUrl).toUrl();
+        auto url = _spacesPage->currentSpace()->webdavUrl();
         if (!url.path().endsWith(QLatin1Char('/'))) {
             url.setPath(url.path() + QLatin1Char('/'));
         }
@@ -134,7 +135,7 @@ QUrl FolderWizardPrivate::davUrl() const
 QString FolderWizardPrivate::spaceId() const
 {
     if (_account->supportsSpaces()) {
-        return _spacesPage->selectedSpaceData(Spaces::SpacesModel::Columns::SpaceId).toString();
+        return _spacesPage->currentSpace()->id();
     }
     return {};
 }
@@ -142,7 +143,7 @@ QString FolderWizardPrivate::spaceId() const
 QString FolderWizardPrivate::displayName() const
 {
     if (_account->supportsSpaces()) {
-        return _spacesPage->selectedSpaceData(Spaces::SpacesModel::Columns::Name).toString();
+        return _spacesPage->currentSpace()->displayName();
     }
     return QString();
 }

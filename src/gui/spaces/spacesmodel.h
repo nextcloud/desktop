@@ -28,23 +28,19 @@ class SpacesModel : public QAbstractTableModel
     Q_OBJECT
 
 public:
-    enum class Columns {
-        Sync,
-        Image,
+    enum class Roles {
+        Sync = Qt::UserRole + 1,
         Name,
         Subtitle,
+        Image,
         WebUrl,
         WebDavUrl,
         Priority,
         Enabled,
-        SpaceId,
-
-        ColumnCount,
+        Space,
     };
-    Q_ENUM(Columns)
+    Q_ENUM(Roles)
     explicit SpacesModel(QObject *parent = nullptr);
-
-    QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
 
     int rowCount(const QModelIndex &parent = QModelIndex()) const override;
     int columnCount(const QModelIndex &parent = QModelIndex()) const override;
@@ -52,6 +48,8 @@ public:
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
 
     void setSpacesManager(GraphApi::SpacesManager *spacesManager);
+
+    QHash<int, QByteArray> roleNames() const override;
 
 private:
     GraphApi::SpacesManager *_spacesManager = nullptr;
