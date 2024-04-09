@@ -469,29 +469,4 @@ void FolderStatusModel::resetFolders()
     setAccountState(_accountState);
 }
 
-
-SpaceImageProvider::SpaceImageProvider(AccountStatePtr accountStat)
-    : QQuickImageProvider(QQuickImageProvider::Pixmap, QQuickImageProvider::ForceAsynchronousImageLoading)
-    , _accountStat(accountStat)
-{
-}
-
-QPixmap SpaceImageProvider::requestPixmap(const QString &id, QSize *size, const QSize &requestedSize)
-{
-    // TODO: the url hast random parts to enforce a reload
-    const auto ids = id.split(QLatin1Char('/'));
-    const auto *space = _accountStat->account()->spacesManager()->space(ids.last());
-    QIcon icon;
-    if (space) {
-        icon = space->image();
-    } else {
-        icon = Resources::getCoreIcon(QStringLiteral("space"));
-    }
-    const QSize actualSize = requestedSize.isValid() ? requestedSize : icon.availableSizes().first();
-    if (size) {
-        *size = actualSize;
-    }
-    return icon.pixmap(actualSize);
-}
-
 } // namespace OCC

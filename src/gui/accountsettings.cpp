@@ -31,6 +31,7 @@
 #include "gui/accountmodalwidget.h"
 #include "gui/models/models.h"
 #include "gui/selectivesyncwidget.h"
+#include "gui/spaces/spaceimageprovider.h"
 #include "guiutility.h"
 #include "oauthloginwidget.h"
 #include "quotainfo.h"
@@ -72,7 +73,7 @@ AccountSettings::AccountSettings(const AccountStatePtr &accountState, QWidget *p
     _sortModel = weightedModel;
 
     ui->quickWidget->rootContext()->setContextProperty(QStringLiteral("ctx"), this);
-    ui->quickWidget->engine()->addImageProvider(QStringLiteral("space"), new SpaceImageProvider(_accountState));
+    ui->quickWidget->engine()->addImageProvider(QStringLiteral("space"), new Spaces::SpaceImageProvider(_accountState->account()));
     ui->quickWidget->engine()->addImageProvider(QStringLiteral("ownCloud"), new Resources::CoreImageProvider());
     ui->quickWidget->setResizeMode(QQuickWidget::SizeRootObjectToView);
     ui->quickWidget->setSource(QUrl(QStringLiteral("qrc:/qt/qml/org/ownCloud/gui/qml/FolderDelegate.qml")));

@@ -88,17 +88,5 @@ private:
 };
 
 
-class SpaceImageProvider : public QQuickImageProvider
-{
-    Q_OBJECT
-public:
-    SpaceImageProvider(AccountStatePtr accountStat);
-    QPixmap requestPixmap(const QString &id, QSize *size, const QSize &requestedSize) override;
-
-
-private:
-    AccountStatePtr _accountStat;
-};
-
 } // namespace OCC
 #endif // FOLDERSTATUSMODEL_H
