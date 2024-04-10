@@ -68,7 +68,6 @@ public:
     auto model() { return _sortModel; }
 
 Q_SIGNALS:
-    void folderChanged();
     void showIssuesList();
 
 public Q_SLOTS:

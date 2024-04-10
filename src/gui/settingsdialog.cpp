@@ -451,7 +451,7 @@ void SettingsDialog::accountAdded(AccountStatePtr accountStatePtr)
     _actionForAccount.insert(accountStatePtr->account().data(), accountAction);
     accountAction->trigger();
 
-    connect(accountSettings, &AccountSettings::folderChanged, _gui, &ownCloudGui::slotFoldersChanged);
+    connect(FolderMan::instance(), &FolderMan::folderListChanged, _gui, &ownCloudGui::slotFoldersChanged);
     connect(accountSettings, &AccountSettings::showIssuesList, this, &SettingsDialog::showIssuesList);
     connect(accountStatePtr->account().data(), &Account::accountChangedAvatar, this, &SettingsDialog::slotAccountAvatarChanged);
     connect(accountStatePtr->account().data(), &Account::accountChangedDisplayName, this, &SettingsDialog::slotAccountDisplayNameChanged);

@@ -77,7 +77,6 @@ AccountSettings::AccountSettings(const AccountStatePtr &accountState, QWidget *p
 
     createAccountToolbox();
     connect(FolderMan::instance(), &FolderMan::folderListChanged, _model, &FolderStatusModel::resetFolders);
-    connect(this, &AccountSettings::folderChanged, _model, &FolderStatusModel::resetFolders);
 
     ui->connectLabel->clear();
 
@@ -279,8 +278,7 @@ void AccountSettings::slotFolderWizardAccepted()
         folder->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, config.selectiveSyncBlackList);
 
         // The user already accepted the selective sync dialog. everything is in the white list
-        folder->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncWhiteList, { QLatin1String("/") });
-        Q_EMIT folderChanged();
+        folder->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncWhiteList, {QLatin1String("/")});
     }
     FolderMan::instance()->setSyncEnabled(true);
     FolderMan::instance()->scheduleAllFolders();
@@ -302,8 +300,6 @@ void AccountSettings::slotRemoveCurrentFolder(Folder *folder)
     connect(messageBox, &QMessageBox::finished, this, [messageBox, yesButton, folder, this] {
         if (messageBox->clickedButton() == yesButton) {
             FolderMan::instance()->removeFolder(folder);
-            // single folder fix to show add-button and hide remove-button
-            Q_EMIT folderChanged();
         }
     });
     messageBox->open();
