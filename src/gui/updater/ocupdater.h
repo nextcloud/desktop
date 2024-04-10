@@ -125,6 +125,8 @@ public:
     DownloadState downloadState() const;
     void setDownloadState(DownloadState state);
 
+    QString availableVersionString() const;
+
 Q_SIGNALS:
     void downloadStateChanged();
 

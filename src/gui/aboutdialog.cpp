@@ -89,7 +89,29 @@ void AboutDialog::setupUpdaterWidget()
         // Note: the sparkle-updater is not an OCUpdater
         if (auto *ocupdater = qobject_cast<OCUpdater *>(Updater::instance())) {
             auto updateInfo = [ocupdater, this] {
-                ui->updateStateLabel->setText(ocupdater->statusString());
+                QString statusString = ocupdater->statusString();
+                switch (ocupdater->downloadState()) {
+                case OCUpdater::Unknown:
+                    [[fallthrough]];
+                case OCUpdater::CheckingServer:
+                    [[fallthrough]];
+                case OCUpdater::UpToDate:
+                    // No update, leave the status string as is.
+                    break;
+                case OCUpdater::Downloading:
+                    [[fallthrough]];
+                case OCUpdater::DownloadComplete:
+                    [[fallthrough]];
+                case OCUpdater::DownloadFailed:
+                    [[fallthrough]];
+                case OCUpdater::DownloadTimedOut:
+                    [[fallthrough]];
+                case OCUpdater::UpdateOnlyAvailableThroughSystem:
+                    statusString = QStringLiteral("Version %1 is available. %2").arg(ocupdater->availableVersionString(), statusString);
+                    break;
+                }
+
+                ui->updateStateLabel->setText(statusString);
                 ui->restartButton->setVisible(ocupdater->downloadState() == OCUpdater::DownloadComplete);
             };
             connect(ocupdater, &OCUpdater::downloadStateChanged, this, updateInfo);

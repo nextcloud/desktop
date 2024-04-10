@@ -195,6 +195,11 @@ void OCUpdater::setDownloadState(DownloadState state)
     }
 }
 
+QString OCUpdater::availableVersionString() const
+{
+    return _updateInfo.versionString();
+}
+
 void OCUpdater::checkForUpdate()
 {
     QNetworkReply *reply = _accessManager->get(QNetworkRequest(_updateUrl));
