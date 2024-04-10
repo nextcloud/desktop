@@ -21,7 +21,12 @@
 
 #ifdef WITH_AUTO_UPDATER
 #include "updater/ocupdater.h"
+#ifdef Q_OS_MAC
+// FIXME We should unify those, but Sparkle does everything behind the scene transparently
+#include "updater/sparkleupdater.h"
 #endif
+#endif
+
 
 namespace OCC {
 

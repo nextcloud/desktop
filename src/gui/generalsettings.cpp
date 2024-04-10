@@ -15,31 +15,16 @@
 #include "generalsettings.h"
 #include "ui_generalsettings.h"
 
-#include "accountmanager.h"
-#include "application.h"
 #include "common/restartmanager.h"
 #include "common/version.h"
-#include "configfile.h"
-#include "theme.h"
-
+#include "gui/application.h"
+#include "gui/ignorelisteditor.h"
 #include "gui/settingsdialog.h"
+#include "gui/translations.h"
+#include "libsync/configfile.h"
+#include "libsync/theme.h"
 
-#ifdef WITH_AUTO_UPDATER
-#include "updater/updater.h"
-#include "updater/ocupdater.h"
-#ifdef Q_OS_MAC
-// FIXME We should unify those, but Sparkle does everything behind the scene transparently
-#include "updater/sparkleupdater.h"
-#endif
-#endif
-
-#include "ignorelisteditor.h"
-
-#include "translations.h"
-
-#include <QDir>
 #include <QMessageBox>
-#include <QNetworkProxy>
 #include <QOperatingSystemVersion>
 #include <QScopedValueRollback>
 
