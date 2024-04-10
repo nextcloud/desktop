@@ -36,6 +36,7 @@
 #include <QString>
 #include <QFileInfo>
 #include <QDir>
+#include <QVariant>
 
 /** Expands C-like escape sequences (in place)
  */

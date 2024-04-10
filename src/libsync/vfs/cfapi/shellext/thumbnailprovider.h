@@ -14,10 +14,14 @@
 
 #pragma once
 #include "thumbnailprovideripc.h"
-#include <thumbcache.h>
-#include <comdef.h>
+
 #include "config.h"
+#include "thumbcache.h"
+
 #include <QString>
+
+#include <ntstatus.h>
+#include <comdef.h>
 
 namespace VfsShellExtensions {
 std::pair<HBITMAP, WTS_ALPHATYPE> hBitmapAndAlphaTypeFromData(const QByteArray &thumbnailData);
