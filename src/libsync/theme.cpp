@@ -201,11 +201,6 @@ QString Theme::overrideServerUrlV2() const
     return serverOverride;
 }
 
-QString Theme::forceConfigAuthType() const
-{
-    return QString();
-}
-
 void Theme::setSystrayUseMonoIcons(bool mono)
 {
     _mono = mono;
