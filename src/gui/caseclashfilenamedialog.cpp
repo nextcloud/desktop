@@ -19,6 +19,7 @@
 
 #include "account.h"
 #include "folder.h"
+#include "common/filesystembase.h"
 
 #include <QPushButton>
 #include <QDir>
@@ -180,12 +181,12 @@ QString CaseClashFilenameDialog::caseClashConflictFile(const QString &conflictFi
     while(it.hasNext()) {
         const auto filePath = it.next();
         qCDebug(lcCaseClashConflictFialog) << filePath;
-        QFileInfo fileInfo(filePath);
 
-        if(fileInfo.isDir()) {
+        if (FileSystem::isDir(filePath)) {
             continue;
         }
 
+        QFileInfo fileInfo(filePath);
         const auto currentFileName = fileInfo.fileName();
         if (currentFileName.compare(conflictFileName, Qt::CaseInsensitive) == 0 &&
                 currentFileName != conflictFileName) {

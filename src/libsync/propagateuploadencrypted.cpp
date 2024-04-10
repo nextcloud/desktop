@@ -4,6 +4,7 @@
 #include "clientsideencryption.h"
 #include "foldermetadata.h"
 #include "encryptedfoldermetadatahandler.h"
+#include "filesystem.h"
 #include "account.h"
 #include <QFileInfo>
 #include <QDir>
@@ -182,7 +183,7 @@ void PropagateUploadEncrypted::slotUploadMetadataFinished(int statusCode, const 
     qCDebug(lcPropagateUploadEncrypted) << "Finalizing the upload part, now the actuall uploader will take over";
     emit finalized(Utility::trailingSlashPath(outputInfo.path()) + outputInfo.fileName(),
                    Utility::trailingSlashPath(_remoteParentPath) + outputInfo.fileName(),
-                   outputInfo.size());
+                   FileSystem::getSize(_completeFileName));
 }
 
 } // namespace OCC

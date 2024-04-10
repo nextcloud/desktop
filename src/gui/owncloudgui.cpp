@@ -40,6 +40,7 @@
 #include "tray/sortedactivitylistmodel.h"
 #include "tray/syncstatussummary.h"
 #include "tray/unifiedsearchresultslistmodel.h"
+#include "filesystem.h"
 
 #ifdef WITH_LIBCLOUDPROVIDERS
 #include "cloudproviders/cloudprovidermanager.h"
@@ -513,7 +514,7 @@ void ownCloudGui::slotUpdateProgress(const QString &folder, const ProgressInfo &
         Folder *f = FolderMan::instance()->folder(folder);
         if (f) {
             QString fullPath = f->path() + '/' + progress._lastCompletedItem._file;
-            if (QFile(fullPath).exists()) {
+            if (FileSystem::fileExists(fullPath)) {
                 connect(action, &QAction::triggered, this, [this, fullPath] { this->slotOpenPath(fullPath); });
             } else {
                 action->setEnabled(false);
