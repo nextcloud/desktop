@@ -13,22 +13,18 @@
  */
 
 #include "guiutility.h"
-#include "application.h"
-#include "settingsdialog.h"
+#include "gui/application.h"
+#include "gui/settingsdialog.h"
+#include "libsync/filesystem.h"
+#include "libsync/theme.h"
 
 #include <QApplication>
-#include <QClipboard>
 #include <QDesktopServices>
-#include <QIcon>
 #include <QLoggingCategory>
 #include <QMessageBox>
 #include <QNetworkInformation>
+#include <QQuickWidget>
 #include <QUrlQuery>
-
-#include "theme.h"
-
-#include "common/asserts.h"
-#include "libsync/filesystem.h"
 
 namespace OCC {
 Q_LOGGING_CATEGORY(lcGuiUtility, "gui.utility", QtInfoMsg)
@@ -154,5 +150,18 @@ void Utility::unmarkDirectoryAsSyncRoot(const QString &path)
     }
     if (!FileSystem::Tags::remove(path, uuidTag())) {
         qCWarning(lcGuiUtility) << "Failed to remove uuid tag on" << path;
+    }
+}
+
+void Utility::initQuickWidget(QQuickWidget *widget, const QUrl &src)
+{
+    widget->engine()->addImageProvider(QStringLiteral("ownCloud"), new Resources::CoreImageProvider());
+    widget->setResizeMode(QQuickWidget::SizeRootObjectToView);
+    widget->setSource(src);
+    if (!widget->errors().isEmpty()) {
+        auto box = new QMessageBox(QMessageBox::Critical, QStringLiteral("QML Error"), QDebug::toString(widget->errors()));
+        box->setAttribute(Qt::WA_DeleteOnClose);
+        box->exec();
+        qFatal("A qml error occured %s", qPrintable(QDebug::toString(widget->errors())));
     }
 }

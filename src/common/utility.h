@@ -36,6 +36,7 @@
 #include <optional>
 
 class QSettings;
+class QQuickWidget;
 
 namespace OCC {
 

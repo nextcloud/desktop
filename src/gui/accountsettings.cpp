@@ -74,15 +74,7 @@ AccountSettings::AccountSettings(const AccountStatePtr &accountState, QWidget *p
 
     ui->quickWidget->rootContext()->setContextProperty(QStringLiteral("ctx"), this);
     ui->quickWidget->engine()->addImageProvider(QStringLiteral("space"), new Spaces::SpaceImageProvider(_accountState->account()));
-    ui->quickWidget->engine()->addImageProvider(QStringLiteral("ownCloud"), new Resources::CoreImageProvider());
-    ui->quickWidget->setResizeMode(QQuickWidget::SizeRootObjectToView);
-    ui->quickWidget->setSource(QUrl(QStringLiteral("qrc:/qt/qml/org/ownCloud/gui/qml/FolderDelegate.qml")));
-    if (!ui->quickWidget->errors().isEmpty()) {
-        auto box = new QMessageBox(QMessageBox::Critical, QStringLiteral("QML Error"), QDebug::toString(ui->quickWidget->errors()));
-        box->setAttribute(Qt::WA_DeleteOnClose);
-        box->exec();
-        qFatal("A qml error occured %s", qPrintable(QDebug::toString(ui->quickWidget->errors())));
-    }
+    Utility::initQuickWidget(ui->quickWidget, QUrl(QStringLiteral("qrc:/qt/qml/org/ownCloud/gui/qml/FolderDelegate.qml")));
 
     createAccountToolbox();
     connect(FolderMan::instance(), &FolderMan::folderListChanged, _model, &FolderStatusModel::resetFolders);
