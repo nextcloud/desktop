@@ -1363,9 +1363,8 @@ private slots:
         QVERIFY(!localFileLocked.isWritable());
     }
 
-    void testLinkFileDoesNotConvertToPlaceholder()
+    void testLinkFileDownload()
     {
-        // inspired by GH issue #6041
         FakeFolder fakeFolder{FileInfo{}};
         auto vfs = setupVfs(fakeFolder);
 
@@ -1375,8 +1374,11 @@ private slots:
         QVERIFY(fakeFolder.syncOnce());
         ItemCompletedSpy completeSpy(fakeFolder);
         QVERIFY(fakeFolder.syncOnce());
-        QVERIFY(!vfs->pinState("linkfile.lnk").isValid() || vfs->pinState("linkfile.lnk").get() == PinState::Excluded);
+        QVERIFY(vfs->pinState("linkfile.lnk").isValid());
         QVERIFY(itemInstruction(completeSpy, "linkfile.lnk", CSYNC_INSTRUCTION_NONE));
+        triggerDownload(fakeFolder, "linkfile.lnk");
+        QVERIFY(fakeFolder.syncOnce());
+        QVERIFY(itemInstruction(completeSpy, "linkfile.lnk", CSYNC_INSTRUCTION_SYNC));
     }
 
     void testFolderDoesNotUpdatePlaceholderMetadata()

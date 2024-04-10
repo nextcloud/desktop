@@ -1320,7 +1320,7 @@ QStringList FolderMan::findFileInLocalFolders(const QString &relPath, const Acco
 
         QString path = folder->cleanPath() + '/';
         path += serverPath.mid(folder->remotePathTrailingSlash().length());
-        if (QFile::exists(path)) {
+        if (FileSystem::fileExists(path)) {
             re.append(path);
         }
     }
@@ -1754,19 +1754,19 @@ static QString checkPathValidityRecursive(const QString &path)
 #endif
     const QFileInfo selFile(path);
 
-    if (!selFile.exists()) {
+    if (!FileSystem::fileExists(path)) {
         QString parentPath = selFile.dir().path();
         if (parentPath != path)
             return checkPathValidityRecursive(parentPath);
         return FolderMan::tr("The selected path does not exist!");
     }
 
-    if (!selFile.isDir()) {
+    if (!FileSystem::isDir(path)) {
         return FolderMan::tr("The selected path is not a folder!");
     }
 
     #ifdef Q_OS_WIN
-    if (!selFile.isWritable()) {
+    if (!FileSystem::isWritable(path)) {
         // isWritable() doesn't cover all NTFS permissions
         // try creating and removing a test file, and make sure it is excluded from sync
         if (!Utility::canCreateFileInPath(path)) {
@@ -1774,7 +1774,7 @@ static QString checkPathValidityRecursive(const QString &path)
         }
     }
     #else
-    if (!selFile.isWritable()) {
+    if (!FileSystem::isWritable(path)) {
         return FolderMan::tr("You have no permission to write to the selected folder!");
     }
     #endif
@@ -1787,7 +1787,7 @@ static QString checkPathValidityRecursive(const QString &path)
 static QString canonicalPath(const QString &path)
 {
     QFileInfo selFile(path);
-    if (!selFile.exists()) {
+    if (!FileSystem::fileExists(path)) {
         const auto parentPath = selFile.dir().path();
 
         // It's possible for the parentPath to match the path
@@ -1880,7 +1880,7 @@ QString FolderMan::findGoodPathForNewSyncFolder(const QString &basePath, const Q
     int attempt = 1;
     forever {
         const auto isGood = FolderMan::instance()->checkPathValidityForNewFolder(folder, serverUrl).second.isEmpty() &&
-            (allowExisting == GoodPathStrategy::AllowOverrideExistingPath || !QFileInfo::exists(folder));
+            (allowExisting == GoodPathStrategy::AllowOverrideExistingPath || !FileSystem::fileExists(folder));
         if (isGood) {
             break;
         }

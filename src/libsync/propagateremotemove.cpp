@@ -18,6 +18,7 @@
 #include "account.h"
 #include "common/syncjournalfilerecord.h"
 #include "filesystem.h"
+#include "common/filesystembase.h"
 #include "common/asserts.h"
 #include <QFileInfo>
 #include <QFile>
@@ -253,7 +254,7 @@ void PropagateRemoteMove::finalize()
 
     const auto targetFile = propagator()->fullLocalPath(_item->_renameTarget);
 
-    if (QFileInfo::exists(targetFile)) {
+    if (FileSystem::fileExists(targetFile)) {
         // Delete old db data.
         if (!propagator()->_journal->deleteFileRecord(_item->_originalFile)) {
             qCWarning(lcPropagateRemoteMove) << "could not delete file from local DB" << _item->_originalFile;
@@ -277,7 +278,7 @@ void PropagateRemoteMove::finalize()
         }
     }
 
-    if (!QFileInfo::exists(targetFile)) {
+    if (!FileSystem::fileExists(targetFile)) {
         propagator()->_journal->commit("Remote Rename");
         done(SyncFileItem::Success, {}, ErrorCategory::NoError);
         return;

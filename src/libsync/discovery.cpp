@@ -606,7 +606,6 @@ void ProcessDirectoryJob::postProcessServerNew(const SyncFileItemPtr &item,
     if (!localEntry.isValid() &&
         item->_type == ItemTypeFile &&
         opts._vfs->mode() != Vfs::Off &&
-        !FileSystem::isLnkFile(item->_file) &&
         _pinState != PinState::AlwaysLocal &&
         !FileSystem::isExcludeFile(item->_file)) {
 
@@ -2165,7 +2164,7 @@ bool ProcessDirectoryJob::isVfsWithSuffix() const
 void ProcessDirectoryJob::computePinState(PinState parentState)
 {
     _pinState = parentState;
-    if (_queryLocal != ParentDontExist && QFileInfo::exists(_discoveryData->_localDir + _currentFolder._local)) {
+    if (_queryLocal != ParentDontExist && FileSystem::fileExists(_discoveryData->_localDir + _currentFolder._local)) {
         if (auto state = _discoveryData->_syncOptions._vfs->pinState(_currentFolder._local)) // ouch! pin local or original?
             _pinState = *state;
     }

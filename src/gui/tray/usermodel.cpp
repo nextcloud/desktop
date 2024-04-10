@@ -1,5 +1,6 @@
 #include "notificationhandler.h"
 #include "usermodel.h"
+#include "common/filesystembase.h"
 
 #include "accountmanager.h"
 #include "owncloudgui.h"
@@ -576,24 +577,24 @@ void User::slotProgressInfo(const QString &folder, const ProgressInfo &progress)
                 continue;
             }
 
-            if (activity._syncFileItemStatus == SyncFileItem::Conflict && !QFileInfo::exists(f->path() + activity._file)) {
+            if (activity._syncFileItemStatus == SyncFileItem::Conflict && !FileSystem::fileExists(f->path() + activity._file)) {
                 _activityModel->removeActivityFromActivityList(activity);
                 continue;
             }
 
-            if (activity._syncFileItemStatus == SyncFileItem::FileLocked && !QFileInfo::exists(f->path() + activity._file)) {
-                _activityModel->removeActivityFromActivityList(activity);
-                continue;
-            }
-
-
-            if (activity._syncFileItemStatus == SyncFileItem::FileIgnored && !QFileInfo::exists(f->path() + activity._file)) {
+            if (activity._syncFileItemStatus == SyncFileItem::FileLocked && !FileSystem::fileExists(f->path() + activity._file)) {
                 _activityModel->removeActivityFromActivityList(activity);
                 continue;
             }
 
 
-            if (!QFileInfo::exists(f->path() + activity._file)) {
+            if (activity._syncFileItemStatus == SyncFileItem::FileIgnored && !FileSystem::fileExists(f->path() + activity._file)) {
+                _activityModel->removeActivityFromActivityList(activity);
+                continue;
+            }
+
+
+            if (!FileSystem::fileExists(f->path() + activity._file)) {
                 _activityModel->removeActivityFromActivityList(activity);
                 continue;
             }
