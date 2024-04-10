@@ -1418,7 +1418,7 @@ Vous prenez vos propres risques.</translation>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="14"/>
         <source>Sync Conflict</source>
-        <translation>Conflit de synchro</translation>
+        <translation>Conflit de synchronisation</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="20"/>
@@ -3838,7 +3838,7 @@ Il s&apos;agit d&apos;un nouveau mode expérimental. Si vous décidez de l&apos;
     <message>
         <location filename="../src/libsync/discovery.cpp" line="383"/>
         <source>Conflict: Server version downloaded, local copy renamed and not uploaded.</source>
-        <translation>Conflit : La version du serveur a été téléchargée, la version locale renommée et non téléversée.</translation>
+        <translation>Conflit : la version du serveur a été téléchargée, la version locale renommée et non téléversée.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="387"/>
@@ -4693,7 +4693,7 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1398"/>
         <source>Resolve conflict …</source>
-        <translation>Résoudre le conflit ...</translation>
+        <translation>Résoudre le conflit…</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1402"/>
@@ -5023,7 +5023,7 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="147"/>
         <source>Some files couldn&apos;t be synced!</source>
-        <translation>Certains fichiers n&apos;ont pas pu être synchronisés !</translation>
+        <translation>Certains fichiers n’ont pas pu être synchronisés !</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="148"/>
@@ -5048,7 +5048,7 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="169"/>
         <source>Some files could not be synced!</source>
-        <translation>Certains fichiers n&apos;ont pas pu être synchronisés!</translation>
+        <translation>Certains fichiers n’ont pas pu être synchronisés !</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="170"/>
