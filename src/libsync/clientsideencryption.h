@@ -1,7 +1,10 @@
 #ifndef CLIENTSIDEENCRYPTION_H
 #define CLIENTSIDEENCRYPTION_H
 
+#include "owncloudlib.h"
+
 #include "clientsideencryptionprimitives.h"
+#include "accountfwd.h"
 
 #include <QString>
 #include <QObject>
@@ -12,11 +15,9 @@
 #include <QFile>
 #include <QVector>
 #include <QMap>
+#include <QHash>
 
 #include <openssl/evp.h>
-
-#include "accountfwd.h"
-#include "networkjobs.h"
 
 namespace QKeychain {
 class Job;

@@ -13,6 +13,7 @@
  */
 
 #include "accountstate.h"
+
 #include "accountmanager.h"
 #include "remotewipe.h"
 #include "account.h"
@@ -23,6 +24,7 @@
 #include "ocsnavigationappsjob.h"
 #include "ocsuserstatusconnector.h"
 #include "pushnotifications.h"
+#include "networkjobs.h"
 
 #include <QSettings>
 #include <QTimer>

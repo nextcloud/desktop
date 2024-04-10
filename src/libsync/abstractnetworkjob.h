@@ -16,6 +16,10 @@
 #pragma once
 
 #include "owncloudlib.h"
+
+#include "accountfwd.h"
+#include "common/asserts.h"
+
 #include <QObject>
 #include <QNetworkRequest>
 #include <QNetworkReply>
@@ -23,8 +27,6 @@
 #include <QElapsedTimer>
 #include <QDateTime>
 #include <QTimer>
-#include "accountfwd.h"
-#include "common/asserts.h"
 
 class QUrl;
 

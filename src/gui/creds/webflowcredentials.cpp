@@ -2,6 +2,15 @@
 
 #include "creds/httpcredentials.h"
 #include "creds/keychainchunk.h"
+#include "accessmanager.h"
+#include "account.h"
+#include "configfile.h"
+#include "theme.h"
+#ifdef WITH_WEBENGINE
+#include "wizard/webview.h"
+#endif // WITH_WEBENGINE
+#include "webflowcredentialsdialog.h"
+#include "networkjobs.h"
 
 #include <QAuthenticator>
 #include <QNetworkAccessManager>
@@ -11,15 +20,6 @@
 #include <QDialog>
 #include <QVBoxLayout>
 #include <QLabel>
-
-#include "accessmanager.h"
-#include "account.h"
-#include "configfile.h"
-#include "theme.h"
-#ifdef WITH_WEBENGINE
-#include "wizard/webview.h"
-#endif // WITH_WEBENGINE
-#include "webflowcredentialsdialog.h"
 
 using namespace QKeychain;
 

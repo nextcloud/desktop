@@ -1,5 +1,7 @@
 #include "talkreply.h"
+
 #include "accountstate.h"
+#include "networkjobs.h"
 
 #include <QJsonDocument>
 #include <QJsonObject>

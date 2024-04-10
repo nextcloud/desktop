@@ -16,6 +16,12 @@
 #ifndef SERVERCONNECTION_H
 #define SERVERCONNECTION_H
 
+#include "capabilities.h"
+#include "clientsideencryption.h"
+#include "clientstatusreporting.h"
+#include "common/utility.h"
+#include "syncfileitem.h"
+
 #include <QByteArray>
 #include <QUrl>
 #include <QNetworkCookie>
@@ -26,16 +32,12 @@
 #include <QSslCipher>
 #include <QSslError>
 #include <QSharedPointer>
+#include <QHttpMultiPart>
+#include <QTimer>
 
 #ifndef TOKEN_AUTH_ONLY
 #include <QPixmap>
 #endif
-
-#include "capabilities.h"
-#include "clientsideencryption.h"
-#include "clientstatusreporting.h"
-#include "common/utility.h"
-#include "syncfileitem.h"
 
 #include <memory>
 
