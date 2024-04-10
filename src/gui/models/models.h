@@ -50,28 +50,6 @@ namespace Models {
 
 
     /**
-     * A WeightedQSortFilterProxyModel
-     * The weighted rpws will always be displayed on top, based on their weight.
-     */
-    class WeightedQSortFilterProxyModel : public QSortFilterProxyModel
-    {
-        Q_OBJECT
-    public:
-        using QSortFilterProxyModel::QSortFilterProxyModel;
-
-        /**
-         * Set the colum of the model providing the weight
-         */
-        void setWeightedColumn(int i, Qt::SortOrder sortOrder = Qt::DescendingOrder);
-
-    protected:
-        bool lessThan(const QModelIndex &source_left, const QModelIndex &source_right) const override;
-
-        int _weightedColumn = 0;
-        Qt::SortOrder _weightedSortOrder = Qt::DescendingOrder;
-    };
-
-    /**
      * Returns a cvs representation of a table
      */
     QString formatSelection(const QModelIndexList &items, int dataRole = Qt::DisplayRole);
