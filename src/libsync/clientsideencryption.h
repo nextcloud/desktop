@@ -153,9 +153,9 @@ public:
 public slots:
     void initialize(const OCC::AccountPtr &account);
     void forgetSensitiveData(const OCC::AccountPtr &account);
-    void getUsersPublicKeyFromServer(const AccountPtr &account, const QStringList &userIds);
+    void getUsersPublicKeyFromServer(const OCC::AccountPtr &account, const QStringList &userIds);
     void fetchCertificateFromKeyChain(const OCC::AccountPtr &account, const QString &userId);
-    void writeCertificate(const AccountPtr &account, const QString &userId, const QSslCertificate &certificate);
+    void writeCertificate(const OCC::AccountPtr &account, const QString &userId, const QSslCertificate &certificate);
 
 private slots:
     void generateKeyPair(const OCC::AccountPtr &account);
