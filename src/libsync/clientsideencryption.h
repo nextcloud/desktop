@@ -125,6 +125,27 @@ private:
 };
 }
 
+class OWNCLOUDSYNC_EXPORT NextcloudSslCertificate
+{
+public:
+    NextcloudSslCertificate();
+    NextcloudSslCertificate(const NextcloudSslCertificate &other);
+    NextcloudSslCertificate(const QSslCertificate &certificate);
+    NextcloudSslCertificate(QSslCertificate &&certificate);
+
+    operator QSslCertificate();
+    operator QSslCertificate() const;
+
+    QSslCertificate& get();
+    const QSslCertificate &get() const;
+
+    NextcloudSslCertificate &operator=(const NextcloudSslCertificate &other);
+    NextcloudSslCertificate &operator=(NextcloudSslCertificate &&other);
+
+private:
+    QSslCertificate _certificate;
+};
+
 class OWNCLOUDSYNC_EXPORT ClientSideEncryption : public QObject {
     Q_OBJECT
 public:
@@ -144,7 +165,7 @@ signals:
     void mnemonicDeleted();
     void publicKeyDeleted();
     void certificateFetchedFromKeychain(QSslCertificate certificate);
-    void certificatesFetchedFromServer(const QHash<QString, QSslCertificate> &results);
+    void certificatesFetchedFromServer(const QHash<QString, OCC::NextcloudSslCertificate> &results);
     void certificateWriteComplete(const QSslCertificate &certificate);
 
 public:

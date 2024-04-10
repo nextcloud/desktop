@@ -78,7 +78,7 @@ private slots:
     void slotFolderUnlocked(const QByteArray &folderId, int httpStatus);
 
     void slotUpdateMetadataFinished(int code, const QString &message = {});
-    void slotCertificatesFetchedFromServer(const QHash<QString, QSslCertificate> &results);
+    void slotCertificatesFetchedFromServer(const QHash<QString, OCC::NextcloudSslCertificate> &results);
     void slotCertificateFetchedFromKeychain(const QSslCertificate &certificate);
 
 private: signals:

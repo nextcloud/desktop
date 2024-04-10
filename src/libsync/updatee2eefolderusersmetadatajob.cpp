@@ -299,11 +299,11 @@ void UpdateE2eeFolderUsersMetadataJob::slotCertificateFetchedFromKeychain(const 
     emit certificateReady();
 }
 
-void UpdateE2eeFolderUsersMetadataJob::slotCertificatesFetchedFromServer(const QHash<QString, QSslCertificate> &results)
+void UpdateE2eeFolderUsersMetadataJob::slotCertificatesFetchedFromServer(const QHash<QString, NextcloudSslCertificate> &results)
 {
-    const auto certificate = results.isEmpty() ? QSslCertificate{} : results.value(_folderUserId);
+    const auto certificate = results.isEmpty() ? NextcloudSslCertificate{} : results.value(_folderUserId);
     _folderUserCertificate = certificate;
-    if (certificate.isNull()) {
+    if (certificate.get().isNull()) {
         emit certificateReady();
         return;
     }
