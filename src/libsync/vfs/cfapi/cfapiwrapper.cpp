@@ -29,9 +29,9 @@
 #include <QUuid>
 
 #include <sddl.h>
+#include <ntstatus.h>
 #include <cfapi.h>
 #include <comdef.h>
-#include <ntstatus.h>
 
 #include "config.h"
 

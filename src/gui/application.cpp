@@ -129,7 +129,7 @@ namespace {
 #ifdef Q_OS_WIN
 class WindowsNativeEventFilter : public QAbstractNativeEventFilter {
 public:
-    bool nativeEventFilter(const QByteArray &eventType, void *message, long *result) override {
+    bool nativeEventFilter(const QByteArray &eventType, void *message, qintptr *result) override {
         const auto msg = static_cast<MSG *>(message);
         if(msg->message == WM_SYSCOLORCHANGE || msg->message == WM_SETTINGCHANGE) {
             if (const auto ptr = qobject_cast<QGuiApplication *>(QGuiApplication::instance())) {

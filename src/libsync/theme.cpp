@@ -933,11 +933,13 @@ QVariantMap Theme::systemPalette()
 {
     connectToPaletteSignal();
 #if defined(Q_OS_WIN)
+    auto systemPalette = QGuiApplication::palette();
     if(darkMode()) {
-        return reserveDarkPalette;
+        systemPalette = reserveDarkPalette;
     }
-#endif
+#else
     const auto systemPalette = QGuiApplication::palette();
+#endif
 
     return QVariantMap {
         { QStringLiteral("base"), systemPalette.base().color() },
