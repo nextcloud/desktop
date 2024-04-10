@@ -67,7 +67,6 @@ AccountSettings::AccountSettings(const AccountStatePtr &accountState, QWidget *p
     auto weightedModel = new QSortFilterProxyModel(this);
     weightedModel->setSourceModel(_model);
     weightedModel->setSortRole(static_cast<int>(FolderStatusModel::Roles::Priority));
-    weightedModel->setSortCaseSensitivity(Qt::CaseInsensitive);
     weightedModel->sort(0, Qt::DescendingOrder);
 
     _sortModel = weightedModel;

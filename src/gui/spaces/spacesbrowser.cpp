@@ -39,7 +39,6 @@ SpacesBrowser::SpacesBrowser(QWidget *parent)
     _sortModel = new QSortFilterProxyModel(this);
     _sortModel->setFilterRole(static_cast<int>(SpacesModel::Roles::Enabled));
     _sortModel->setSourceModel(_model);
-    _sortModel->setSortCaseSensitivity(Qt::CaseInsensitive);
     _sortModel->setSortRole(static_cast<int>(SpacesModel::Roles::Priority));
     _sortModel->sort(0, Qt::DescendingOrder);
 
