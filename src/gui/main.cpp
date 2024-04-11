@@ -19,6 +19,7 @@
 #include "common/utility.h"
 #include "gui/application.h"
 #include "gui/logbrowser.h"
+#include "gui/networkinformation.h"
 #include "libsync/configfile.h"
 #include "libsync/platform.h"
 #include "libsync/theme.h"
@@ -39,7 +40,6 @@
 #include <QCommandLineParser>
 #include <QLibraryInfo>
 #include <QMessageBox>
-#include <QNetworkInformation>
 #include <QProcess>
 #include <QTimer>
 #include <QTranslator>
@@ -247,28 +247,6 @@ void setupLogging(const CommandLineOptions &options)
     qCInfo(lcMain) << "##################" << Theme::instance()->appName() << "locale:" << QLocale::system().name()
                    << "version:" << Theme::instance()->aboutVersions(Theme::VersionFormat::OneLiner);
     qCInfo(lcMain) << "Arguments:" << qApp->arguments();
-}
-
-void loadQNetworkInformationBackend()
-{
-    if (!QNetworkInformation::loadDefaultBackend()) {
-        qCWarning(lcMain) << "Failed to load default backend of QNetworkInformation.";
-        if (!QNetworkInformation::loadBackendByFeatures(QNetworkInformation::Feature::Metered)) {
-            qCWarning(lcMain) << "Failed to load backend of QNetworkInformation by metered feature.";
-            if (!QNetworkInformation::loadBackendByFeatures(QNetworkInformation::Feature::Reachability)) {
-                qCWarning(lcMain) << "Failed to load backend of QNetworkInformation by reachability feature.";
-                qCWarning(lcMain) << "Available backends:" << QNetworkInformation::availableBackends().join(QStringLiteral(", "));
-                return;
-            }
-        }
-    }
-    qCDebug(lcMain) << "Loaded network information backend:" << QNetworkInformation::instance()->backendName();
-    qCDebug(lcMain) << "Supported features:" << QNetworkInformation::instance()->supportedFeatures();
-    qCDebug(lcMain) << "Available backends:" << QNetworkInformation::availableBackends().join(QStringLiteral(", "));
-    if (auto qni = QNetworkInformation::instance()) {
-        QObject::connect(qni, &QNetworkInformation::reachabilityChanged,
-            [](QNetworkInformation::Reachability reachability) { qCInfo(lcMain) << "Connection Status changed to:" << reachability; });
-    }
 }
 
 QString setupTranslations(QApplication *app)
@@ -489,7 +467,7 @@ int main(int argc, char **argv)
         }
 
         setupLogging(options);
-        loadQNetworkInformationBackend();
+        NetworkInformation::initialize();
 
         platform->setApplication(&app);
 

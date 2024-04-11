@@ -30,6 +30,7 @@
 #include "folderwizard/folderwizard.h"
 #include "gui/accountmodalwidget.h"
 #include "gui/models/models.h"
+#include "gui/networkinformation.h"
 #include "gui/qmlutils.h"
 #include "gui/selectivesyncwidget.h"
 #include "gui/spaces/spaceimageprovider.h"
@@ -397,7 +398,7 @@ void AccountSettings::slotEnableCurrentFolder(Folder *folder, bool terminate)
 
 void AccountSettings::slotForceSyncCurrentFolder(Folder *folder)
 {
-    if (Utility::internetConnectionIsMetered() && ConfigFile().pauseSyncWhenMetered()) {
+    if (NetworkInformation::instance()->isMetered() && ConfigFile().pauseSyncWhenMetered()) {
         auto messageBox = new QMessageBox(QMessageBox::Question, tr("Internet connection is metered"),
             tr("Synchronization is paused because the Internet connection is a metered connection"
                "<p>Do you really want to force a Synchronization now?"),

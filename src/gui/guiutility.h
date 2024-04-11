@@ -52,8 +52,6 @@ namespace Utility {
 
     QString socketApiSocketPath();
 
-    bool internetConnectionIsMetered();
-
     OWNCLOUDGUI_EXPORT void markDirectoryAsSyncRoot(const QString &path, const QUuid &accountUuid);
     std::pair<QString, QUuid> getDirectorySyncRootMarkings(const QString &path);
     void unmarkDirectoryAsSyncRoot(const QString &path);

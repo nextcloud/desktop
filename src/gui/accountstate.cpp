@@ -23,6 +23,7 @@
 #include "libsync/creds/abstractcredentials.h"
 #include "libsync/creds/httpcredentials.h"
 
+#include "gui/networkinformation.h"
 #include "gui/quotainfo.h"
 #include "gui/settingsdialog.h"
 #include "gui/spacemigration.h"
@@ -34,7 +35,6 @@
 #include "theme.h"
 
 #include <QFontMetrics>
-#include <QNetworkInformation>
 #include <QRandomGenerator>
 #include <QSettings>
 #include <QTimer>
@@ -113,40 +113,39 @@ AccountState::AccountState(AccountPtr account)
         },
         Qt::QueuedConnection);
 
-    if (QNetworkInformation *qNetInfo = QNetworkInformation::instance()) {
-        connect(qNetInfo, &QNetworkInformation::reachabilityChanged, this, [this](QNetworkInformation::Reachability reachability) {
-            switch (reachability) {
-            case QNetworkInformation::Reachability::Online:
-                [[fallthrough]];
-            case QNetworkInformation::Reachability::Site:
-                [[fallthrough]];
-            case QNetworkInformation::Reachability::Unknown:
-                // the connection might not yet be established
-                QTimer::singleShot(0, this, [this] { checkConnectivity(false); });
-                break;
-            case QNetworkInformation::Reachability::Disconnected:
-                // explicitly set disconnected, this way a successful checkConnectivity call above will trigger a local discover
-                if (state() != State::SignedOut) {
-                    setState(State::Disconnected);
-                }
-                [[fallthrough]];
-            case QNetworkInformation::Reachability::Local:
-                break;
+    connect(NetworkInformation::instance(), &NetworkInformation::reachabilityChanged, this, [this](NetworkInformation::Reachability reachability) {
+        switch (reachability) {
+        case NetworkInformation::Reachability::Online:
+            [[fallthrough]];
+        case NetworkInformation::Reachability::Site:
+            [[fallthrough]];
+        case NetworkInformation::Reachability::Unknown:
+            // the connection might not yet be established
+            QTimer::singleShot(0, this, [this] { checkConnectivity(false); });
+            break;
+        case NetworkInformation::Reachability::Disconnected:
+            // explicitly set disconnected, this way a successful checkConnectivity call above will trigger a local discover
+            if (state() != State::SignedOut) {
+                setState(State::Disconnected);
             }
-        });
+            [[fallthrough]];
+        case NetworkInformation::Reachability::Local:
+            break;
+        }
+    });
 
-        connect(qNetInfo, &QNetworkInformation::isMeteredChanged, this, [this](bool isMetered) {
-            if (ConfigFile().pauseSyncWhenMetered()) {
-                if (state() == State::Connected && isMetered) {
-                    qCInfo(lcAccountState) << "Network switched to a metered connection, setting account state to PausedDueToMetered";
-                    setState(State::PausedDueToMetered);
-                } else if (state() == State::PausedDueToMetered && !isMetered) {
-                    qCInfo(lcAccountState) << "Network switched to a NON-metered connection, setting account state to Connected";
-                    setState(State::Connected);
-                }
+    connect(NetworkInformation::instance(), &NetworkInformation::isMeteredChanged, this, [this](bool isMetered) {
+        if (ConfigFile().pauseSyncWhenMetered()) {
+            if (state() == State::Connected && isMetered) {
+                qCInfo(lcAccountState) << "Network switched to a metered connection, setting account state to PausedDueToMetered";
+                setState(State::PausedDueToMetered);
+            } else if (state() == State::PausedDueToMetered && !isMetered) {
+                qCInfo(lcAccountState) << "Network switched to a NON-metered connection, setting account state to Connected";
+                setState(State::Connected);
             }
-        });
-    }
+        }
+    });
+
     // as a fallback and to recover after server issues we also poll
     auto timer = new QTimer(this);
     timer->setInterval(ConnectionValidator::DefaultCallingInterval);
@@ -240,7 +239,7 @@ void AccountState::setState(State state)
             _connectionValidator->deleteLater();
             _connectionValidator.clear();
             checkConnectivity();
-        } else if (_state == Connected && Utility::internetConnectionIsMetered() && ConfigFile().pauseSyncWhenMetered()) {
+        } else if (_state == Connected && NetworkInformation::instance()->isMetered() && ConfigFile().pauseSyncWhenMetered()) {
             _state = PausedDueToMetered;
         }
     }

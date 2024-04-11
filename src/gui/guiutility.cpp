@@ -22,7 +22,6 @@
 #include <QDesktopServices>
 #include <QLoggingCategory>
 #include <QMessageBox>
-#include <QNetworkInformation>
 #include <QQuickWidget>
 #include <QUrlQuery>
 
@@ -94,15 +93,6 @@ QString Utility::vfsPinActionText()
 QString Utility::vfsFreeSpaceActionText()
 {
     return QCoreApplication::translate("utility", "Free up local space");
-}
-
-bool Utility::internetConnectionIsMetered()
-{
-    if (auto *qNetInfo = QNetworkInformation::instance()) {
-        return qNetInfo->isMetered();
-    }
-
-    return false;
 }
 
 void Utility::markDirectoryAsSyncRoot(const QString &path, const QUuid &accountUuid)

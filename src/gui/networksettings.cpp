@@ -13,6 +13,7 @@
  */
 
 #include "networksettings.h"
+#include "networkinformation.h"
 #include "ui_networksettings.h"
 
 #include "accountmanager.h"
@@ -22,7 +23,6 @@
 #include "theme.h"
 
 #include <QList>
-#include <QNetworkInformation>
 #include <QNetworkProxy>
 #include <QString>
 #include <QtGui/QtEvents>
@@ -186,13 +186,11 @@ void NetworkSettings::loadBWLimitSettings()
 
 void NetworkSettings::loadMeteredSettings()
 {
-    if (QNetworkInformation *qNetInfo = QNetworkInformation::instance()) {
-        if (Utility::isWindows() // The backend implements the metered feature, but does not report it as supported.
-                                 // See https://bugreports.qt.io/browse/QTBUG-118741
-            || qNetInfo->supports(QNetworkInformation::Feature::Metered)) {
-            _ui->pauseSyncWhenMeteredCheckbox->setChecked(ConfigFile().pauseSyncWhenMetered());
-            return;
-        }
+    if (Utility::isWindows() // The backend implements the metered feature, but does not report it as supported.
+                             // See https://bugreports.qt.io/browse/QTBUG-118741
+        || NetworkInformation::instance()->supports(NetworkInformation::Feature::Metered)) {
+        _ui->pauseSyncWhenMeteredCheckbox->setChecked(ConfigFile().pauseSyncWhenMetered());
+        return;
     }
 
     _ui->pauseSyncWhenMeteredCheckbox->setVisible(false);

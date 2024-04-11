@@ -15,13 +15,12 @@
 #include "gui/scheduling/syncscheduler.h"
 
 #include "gui/folderman.h"
+#include "gui/networkinformation.h"
 #include "gui/scheduling/etagwatcher.h"
 #include "libsync/configfile.h"
 #include "libsync/syncengine.h"
 
 #include "guiutility.h"
-
-#include <QNetworkInformation>
 
 using namespace std::chrono_literals;
 
@@ -168,7 +167,7 @@ void SyncScheduler::startNext()
     auto syncPriority = nextSync.second;
 
     if (!_currentSync.isNull()) {
-        if (_pauseSyncWhenMetered && Utility::internetConnectionIsMetered()) {
+        if (_pauseSyncWhenMetered && NetworkInformation::instance()->isMetered()) {
             if (syncPriority == Priority::High) {
                 qCInfo(lcSyncScheduler) << "Scheduler is paused due to metered internet connection, BUT next sync is HIGH priority, so allow sync to start";
             } else {

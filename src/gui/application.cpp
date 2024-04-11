@@ -48,8 +48,6 @@
 #include <QMessageBox>
 #include <QPushButton>
 
-#include <QNetworkInformation>
-
 namespace OCC {
 
 Q_LOGGING_CATEGORY(lcApplication, "gui.application", QtInfoMsg)
