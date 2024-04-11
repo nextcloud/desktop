@@ -481,7 +481,11 @@ void AccountSettings::slotAccountStateChanged()
         break;
     }
     case AccountState::Connecting:
-        showConnectionLabel(tr("Connecting to: %1.").arg(server));
+        if (NetworkInformation::instance()->isBehindCaptivePortal()) {
+            showConnectionLabel(tr("Captive portal prevents connections to %1.").arg(server));
+        } else {
+            showConnectionLabel(tr("Connecting to: %1.").arg(server));
+        }
         break;
     case AccountState::ConfigurationError:
         showConnectionLabel(tr("Server configuration error: %1.")

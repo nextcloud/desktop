@@ -46,7 +46,9 @@ static void loadQNetworkInformationBackend()
 
 void NetworkInformation::initialize()
 {
-    Q_ASSERT(!_instance);
+    if (_instance) {
+        return;
+    }
 
     _instance = new NetworkInformation;
 
@@ -55,6 +57,7 @@ void NetworkInformation::initialize()
     if (auto qni = QNetworkInformation::instance()) {
         connect(qni, &QNetworkInformation::isMeteredChanged, _instance, &NetworkInformation::isMeteredChanged);
         connect(qni, &QNetworkInformation::reachabilityChanged, _instance, &NetworkInformation::reachabilityChanged);
+        connect(qni, &QNetworkInformation::isBehindCaptivePortalChanged, _instance, &NetworkInformation::slotIsBehindCaptivePortalChanged);
     }
 }
 
@@ -79,4 +82,47 @@ bool NetworkInformation::supports(Features features) const
     }
 
     return false;
+}
+
+bool NetworkInformation::isForcedCaptivePortal() const
+{
+    return _forcedCaptivePortal;
+}
+
+void NetworkInformation::setForcedCaptivePortal(bool onoff)
+{
+    if (_forcedCaptivePortal != onoff) {
+        _forcedCaptivePortal = onoff;
+        qCDebug(lcNetInfo) << "Switching forced captive portal to" << onoff;
+
+        bool behindCaptivePortal = false;
+
+        if (auto *qNetInfo = QNetworkInformation::instance()) {
+            behindCaptivePortal = qNetInfo->isBehindCaptivePortal();
+        }
+
+        if (behindCaptivePortal != _forcedCaptivePortal) {
+            Q_EMIT isBehindCaptivePortalChanged(_forcedCaptivePortal);
+        }
+    }
+}
+
+bool NetworkInformation::isBehindCaptivePortal() const
+{
+    if (_forcedCaptivePortal) {
+        return true;
+    }
+
+    if (auto *qNetInfo = QNetworkInformation::instance()) {
+        return qNetInfo->isBehindCaptivePortal();
+    }
+
+    return false;
+}
+
+void NetworkInformation::slotIsBehindCaptivePortalChanged(bool state)
+{
+    if (!_forcedCaptivePortal) {
+        Q_EMIT isBehindCaptivePortalChanged(state);
+    }
 }

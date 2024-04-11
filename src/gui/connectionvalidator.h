@@ -101,9 +101,10 @@ public:
         ServiceUnavailable, // 503 on authed request
         MaintenanceMode, // maintenance enabled in status.php
         Timeout, // actually also used for other errors on the authed request
-        ClientUnsupported // The server blocks us as an unsupported client
+        ClientUnsupported, // The server blocks us as an unsupported client
+        CaptivePortal, // We're stuck behind a captive portal and (will) get SSL certificate problems
     };
-    Q_ENUM(Status);
+    Q_ENUM(Status)
 
     // How often should the Application ask this object to check for the connection?
     static constexpr auto DefaultCallingInterval = std::chrono::seconds(62);

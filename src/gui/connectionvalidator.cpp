@@ -14,6 +14,7 @@
 #include "gui/connectionvalidator.h"
 #include "gui/clientproxy.h"
 #include "gui/fetchserversettings.h"
+#include "gui/networkinformation.h"
 #include "gui/tlserrordialog.h"
 #include "libsync/account.h"
 #include "libsync/cookiejar.h"
@@ -132,7 +133,7 @@ void ConnectionValidator::slotCheckServerAndAuth()
                 reportResult(Timeout);
                 return;
             case QNetworkReply::SslHandshakeFailedError:
-                reportResult(SslError);
+                reportResult(NetworkInformation::instance()->isBehindCaptivePortal() ? CaptivePortal : SslError);
                 return;
             case QNetworkReply::TooManyRedirectsError:
                 reportResult(MaintenanceMode);
@@ -214,7 +215,7 @@ void ConnectionValidator::slotAuthFailed()
 
     if (job->reply()->error() == QNetworkReply::SslHandshakeFailedError) {
         _errors << job->errorStringParsingBody();
-        stat = SslError;
+        stat = NetworkInformation::instance()->isBehindCaptivePortal() ? CaptivePortal : SslError;
 
     } else if (job->reply()->error() == QNetworkReply::AuthenticationRequiredError || !_account->credentials()->stillValid(job->reply())) {
         qCWarning(lcConnectionValidator) << "******** Password is wrong!" << job->reply()->error() << job;

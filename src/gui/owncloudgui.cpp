@@ -26,6 +26,7 @@
 #include "folderwizard/folderwizard.h"
 #include "gui/accountsettings.h"
 #include "gui/commonstrings.h"
+#include "gui/networkinformation.h"
 #include "guiutility.h"
 #include "libsync/theme.h"
 #include "logbrowser.h"
@@ -650,6 +651,11 @@ void ownCloudGui::updateContextMenu()
         debugMenu->addAction(QStringLiteral("Crash now - OC_ENFORCE()"), _app, [] { OC_ENFORCE(false); });
         debugMenu->addAction(QStringLiteral("Crash now - qFatal"), _app, [] { qFatal("la Qt fatale"); });
         debugMenu->addAction(QStringLiteral("Restart now"), _app, [] { RestartManager::requestRestart(); });
+        debugMenu->addSeparator();
+        auto captivePortalCheckbox = debugMenu->addAction(QStringLiteral("Behind Captive Portal"));
+        captivePortalCheckbox->setCheckable(true);
+        captivePortalCheckbox->setChecked(NetworkInformation::instance()->isForcedCaptivePortal());
+        connect(captivePortalCheckbox, &QAction::triggered, [](bool checked) { NetworkInformation::instance()->setForcedCaptivePortal(checked); });
     }
 
     _contextMenu->addSeparator();

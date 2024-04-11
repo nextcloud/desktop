@@ -146,6 +146,12 @@ AccountState::AccountState(AccountPtr account)
         }
     });
 
+    connect(NetworkInformation::instance(), &NetworkInformation::isBehindCaptivePortalChanged, this, [this](bool) {
+        // A direct connect is not possible, because then the state parameter of `isBehindCaptivePortalChanged`
+        // would become the `verifyServerState` argument to `checkConnectivity`.
+        QTimer::singleShot(0, this, [this] { checkConnectivity(false); });
+    });
+
     // as a fallback and to recover after server issues we also poll
     auto timer = new QTimer(this);
     timer->setInterval(ConnectionValidator::DefaultCallingInterval);
@@ -166,6 +172,22 @@ AccountState::AccountState(AccountPtr account)
         ownCloudGui::raise();
         msgBox->open();
     });
+
+
+    connect(NetworkInformation::instance(), &NetworkInformation::isBehindCaptivePortalChanged, this, [this](bool onoff) {
+        if (onoff) {
+            _queueGuard.block();
+        } else {
+            // TODO: empty queue?
+            _queueGuard.unblock();
+        }
+    });
+    if (NetworkInformation::instance()->isBehindCaptivePortal()) {
+        _queueGuard.block();
+    } else {
+        // TODO: empty queue?
+        _queueGuard.unblock();
+    }
 }
 
 AccountState::~AccountState() { }
@@ -363,6 +385,9 @@ void AccountState::checkConnectivity(bool blockJobs)
         this, &AccountState::slotConnectionValidatorResult);
 
     connect(_connectionValidator, &ConnectionValidator::sslErrors, this, [blockJobs, this](const QList<QSslError> &errors) {
+        if (NetworkInformation::instance()->isBehindCaptivePortal()) {
+            return;
+        }
         if (!_tlsDialog) {
             // ignore errors for already accepted certificates
             auto filteredErrors = _account->accessManager()->filterSslErrors(errors);
@@ -478,6 +503,7 @@ void AccountState::slotConnectionValidatorResult(ConnectionValidator::Status sta
         setState(Connected);
         break;
     case ConnectionValidator::Undefined:
+        [[fallthrough]];
     case ConnectionValidator::NotConfigured:
         setState(Disconnected);
         break;
@@ -493,6 +519,7 @@ void AccountState::slotConnectionValidatorResult(ConnectionValidator::Status sta
         setState(NetworkError);
         break;
     case ConnectionValidator::CredentialsWrong:
+        [[fallthrough]];
     case ConnectionValidator::CredentialsNotReady:
         slotInvalidCredentials();
         break;
@@ -509,6 +536,9 @@ void AccountState::slotConnectionValidatorResult(ConnectionValidator::Status sta
         break;
     case ConnectionValidator::Timeout:
         setState(NetworkError);
+        break;
+    case ConnectionValidator::CaptivePortal:
+        setState(Connecting);
         break;
     }
 }

@@ -11,6 +11,7 @@
 #include "common/utility.h"
 #include "configfile.h"
 #include "folderman.h"
+#include "gui/networkinformation.h"
 #include "testutils/testutils.h"
 
 using namespace OCC;
@@ -91,6 +92,7 @@ private Q_SLOTS:
 
         // init folder man
         std::ignore = TestUtils::folderMan();
+        NetworkInformation::initialize();
         AccountManager::instance()->restore();
 
         settings->beginGroup(QStringLiteral("0/Folders"));

@@ -20,6 +20,12 @@
 
 namespace OCC {
 
+/**
+ * @brief Wrapper class for QNetworkInformation
+ *
+ * This class is used instead of QNetworkInformation so we do not need to check for an instance,
+ * and to facilitate debugging by being able to force certain network states (i.e. captive portal).
+ */
 class OWNCLOUDGUI_EXPORT NetworkInformation : public QObject
 {
     Q_OBJECT
@@ -36,12 +42,22 @@ public:
 
     bool supports(Features features) const;
 
+    bool isForcedCaptivePortal() const;
+    void setForcedCaptivePortal(bool onoff);
+    bool isBehindCaptivePortal() const;
+
 Q_SIGNALS:
     void isMeteredChanged(bool isMetered);
     void reachabilityChanged(NetworkInformation::Reachability reachability);
+    void isBehindCaptivePortalChanged(bool state);
+
+private Q_SLOTS:
+    void slotIsBehindCaptivePortalChanged(bool state);
 
 private:
     static NetworkInformation *_instance;
+
+    bool _forcedCaptivePortal = false;
 };
 
 }
