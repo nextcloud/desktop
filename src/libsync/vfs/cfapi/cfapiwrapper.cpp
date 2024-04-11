@@ -285,7 +285,12 @@ enum class CfApiUpdateMetadataType {
     AllMetadata,
 };
 
-OCC::Result<OCC::Vfs::ConvertToPlaceholderResult, QString> updatePlaceholderState(const QString &path, time_t modtime, qint64 size, const QByteArray &fileId, const QString &replacesPath, CfApiUpdateMetadataType updateType)
+OCC::Result<OCC::Vfs::ConvertToPlaceholderResult, QString> updatePlaceholderState(const QString &path,
+                                                                                  time_t modtime,
+                                                                                  qint64 size,
+                                                                                  const QByteArray &fileId,
+                                                                                  const QString &replacesPath,
+                                                                                  CfApiUpdateMetadataType updateType)
 {
     if (updateType == CfApiUpdateMetadataType::AllMetadata && modtime <= 0) {
             return {QString{"Could not update metadata due to invalid modification time for %1: %2"}.arg(path).arg(modtime)};
@@ -899,4 +904,13 @@ OCC::Result<OCC::Vfs::ConvertToPlaceholderResult, QString> OCC::CfApiWrapper::co
 OCC::Result<OCC::Vfs::ConvertToPlaceholderResult, QString> OCC::CfApiWrapper::updatePlaceholderMarkInSync(const QString &path, const QByteArray &fileId, const QString &replacesPath)
 {
     return updatePlaceholderState(path, {}, {}, fileId, replacesPath, CfApiUpdateMetadataType::OnlyBasicMetadata);
+}
+
+bool OCC::CfApiWrapper::isPlaceHolderInSync(const QString &filePath)
+{
+    if (const auto originalInfo = findPlaceholderInfo(filePath)) {
+        return originalInfo->InSyncState == CF_IN_SYNC_STATE_IN_SYNC;
+    }
+
+    return true;
 }
