@@ -414,6 +414,17 @@ public:
     void start() override;
 };
 
+class PropagateVfsUpdateMetadataJob : public PropagateItemJob
+{
+    Q_OBJECT
+public:
+    PropagateVfsUpdateMetadataJob(OwncloudPropagator *propagator, const SyncFileItemPtr &item)
+        : PropagateItemJob(propagator, item)
+    {
+    }
+    void start() override;
+};
+
 class PropagateUploadFileCommon;
 
 class OWNCLOUDSYNC_EXPORT OwncloudPropagator : public QObject
