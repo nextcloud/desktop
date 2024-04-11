@@ -184,6 +184,9 @@ option(BUILD_GUI "BUILD_GUI" ON)
 # build the tests
 option(BUILD_TESTING "BUILD_TESTING" ON)
 
+# allows to run nextclouddev in parallel to nextcloud + logs
+option(NEXTCLOUD_DEV "NEXTCLOUD_DEV" OFF)
+
 option(ENABLE_CLANG_TIDY "ENABLE_CLANG_TIDY" OFF)
 if(ENABLE_CLANG_TIDY)
     find_program(CLANG_TIDY_EXE NAMES "clang-tidy")
