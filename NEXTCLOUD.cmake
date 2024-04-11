@@ -78,5 +78,5 @@ if(WIN32)
 endif()
 
 if (APPLE AND CMAKE_OSX_DEPLOYMENT_TARGET VERSION_GREATER_EQUAL 11.0)
-    option( BUILD_FILE_PROVIDER_MODULE "Build the macOS virtual files File Provider module" OFF )
+    option( BUILD_FILE_PROVIDER_MODULE "Build the macOS virtual files File Provider module" ON )
 endif()
