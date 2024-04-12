@@ -29,13 +29,11 @@
 
 #include "gui/accountstate.h"
 #include "gui/folderman.h"
-#include "gui/spaces/spacesmodel.h"
 
 #include "libsync/graphapi/space.h"
 
 #include <QDesktopServices>
 #include <QDir>
-#include <QEvent>
 #include <QFileInfo>
 #include <QUrl>
 
@@ -81,16 +79,13 @@ FolderWizardPrivate::FolderWizardPrivate(FolderWizard *q, const AccountStatePtr 
     if (account->supportsSpaces()) {
         _spacesPage = new SpacesPage(account->account(), q);
         q->setPage(FolderWizard::Page_Space, _spacesPage);
-        _spacesPage->installEventFilter(q);
     }
     q->setPage(FolderWizard::Page_Source, _folderWizardSourcePage);
-    _folderWizardSourcePage->installEventFilter(q);
 
     // for now spaces are meant to be synced as a whole
     if (!_account->supportsSpaces() && !Theme::instance()->singleSyncFolder()) {
         _folderWizardTargetPage = new FolderWizardRemotePath(this);
         q->setPage(FolderWizard::Page_Target, _folderWizardTargetPage);
-        _folderWizardTargetPage->installEventFilter(q);
     }
 
     q->setPage(FolderWizard::Page_SelectiveSync, _folderWizardSelectiveSyncPage);
@@ -181,29 +176,6 @@ FolderWizard::FolderWizard(const AccountStatePtr &account, QWidget *parent)
 
 FolderWizard::~FolderWizard()
 {
-}
-
-bool FolderWizard::eventFilter(QObject *watched, QEvent *event)
-{
-    if (event->type() == QEvent::LayoutRequest) {
-        // Workaround QTBUG-3396:  forces QWizardPrivate::updateLayout()
-        QTimer::singleShot(0, this, [this] { setTitleFormat(titleFormat()); });
-    }
-    return QWizard::eventFilter(watched, event);
-}
-
-void FolderWizard::resizeEvent(QResizeEvent *event)
-{
-    QWizard::resizeEvent(event);
-
-    // workaround for QTBUG-22819: when the error label word wrap, the minimum height is not adjusted
-    if (auto page = currentPage()) {
-        int hfw = page->heightForWidth(page->width());
-        if (page->height() < hfw) {
-            page->setMinimumSize(page->minimumSizeHint().width(), hfw);
-            setTitleFormat(titleFormat()); // And another workaround for QTBUG-3396
-        }
-    }
 }
 
 FolderWizard::Result FolderWizard::result()

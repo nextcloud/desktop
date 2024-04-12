@@ -14,8 +14,6 @@
 
 #pragma once
 
-#include <QNetworkReply>
-#include <QTimer>
 #include <QWizard>
 
 #include "accountfwd.h"
@@ -88,9 +86,6 @@ public:
     ~FolderWizard() override;
 
     Result result();
-
-    bool eventFilter(QObject *watched, QEvent *event) override;
-    void resizeEvent(QResizeEvent *event) override;
 
     Q_DECLARE_PRIVATE(FolderWizard);
 
