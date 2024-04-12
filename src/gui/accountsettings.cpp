@@ -581,6 +581,7 @@ void AccountSettings::addModalLegacyDialog(QWidget *widget, ModalWidgetSizePolic
             ocApp()->gui()->settingsDialog()->ceaseModality(_accountState->account().get());
         }
     });
+    widget->setVisible(true);
     ocApp()->gui()->settingsDialog()->requestModality(_accountState->account().get());
 }
 
