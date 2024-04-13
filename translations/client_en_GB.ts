@@ -110,7 +110,7 @@ File synchronisation desktop utility.</translation>
     <message>
         <location filename="../src/gui/main.cpp" line="126"/>
         <source>Start with the main window visible, or if it is already running, bring it to the front. By default, the client launches in the background.</source>
-        <translation type="unfinished"/>
+        <translation>Start with the main window visible, or if it is already running, bring it to the front. By default, the client launches in the background.</translation>
     </message>
     <message>
         <location filename="../src/gui/main.cpp" line="128"/>
@@ -145,7 +145,7 @@ File synchronisation desktop utility.</translation>
     <message>
         <location filename="../src/gui/main.cpp" line="136"/>
         <source>Forward all arguments to the cmd client. This argument must be the first.</source>
-        <translation type="unfinished"/>
+        <translation>Forward all arguments to the cmd client. This argument must be the first.</translation>
     </message>
     <message>
         <location filename="../src/gui/main.cpp" line="139"/>
@@ -555,7 +555,7 @@ This action will abort any currently running synchronisation.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="709"/>
         <source>Updating credentials for %1...</source>
-        <translation type="unfinished"/>
+        <translation>Updating credentials for %1...</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="713"/>
@@ -575,37 +575,37 @@ This action will abort any currently running synchronisation.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="381"/>
         <source>Disable virtual file support</source>
-        <translation type="unfinished"/>
+        <translation>Disable virtual file support</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="387"/>
         <source>Enable virtual file support</source>
-        <translation type="unfinished"/>
+        <translation>Enable virtual file support</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="600"/>
         <source>Sync paused by user</source>
-        <translation type="unfinished"/>
+        <translation>Sync paused by user</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="634"/>
         <source>Internet connection is metered</source>
-        <translation type="unfinished"/>
+        <translation>Internet connection is metered</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="635"/>
         <source>Synchronization is paused because the Internet connection is a metered connection&lt;p&gt;Do you really want to force a Synchronization now?</source>
-        <translation type="unfinished"/>
+        <translation>Synchronisation is paused because the Internet connection is a metered connection&lt;p&gt;Do you really want to force a Synchronisation now?</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="656"/>
         <source>User triggered force sync</source>
-        <translation type="unfinished"/>
+        <translation>User triggered force sync</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="689"/>
         <source>Sync to %1 is paused due to metered internet connection.</source>
-        <translation type="unfinished"/>
+        <translation>Sync to %1 is paused due to metered Internet connection.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="700"/>
@@ -1046,7 +1046,7 @@ The update will be performed in the background, and overwrite the current AppIma
     <message>
         <location filename="../src/gui/folder.cpp" line="788"/>
         <source>Switching VFS mode on folder &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Switching VFS mode on folder &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="950"/>
@@ -1146,12 +1146,12 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderman.cpp" line="390"/>
         <source>Account disconnected or paused</source>
-        <translation type="unfinished"/>
+        <translation>Account disconnected or paused</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="605"/>
         <source>Folder is about to be removed</source>
-        <translation type="unfinished"/>
+        <translation>Folder is about to be removed</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="629"/>
@@ -1176,7 +1176,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderman.cpp" line="727"/>
         <source>Folder &apos;%1&apos; is already in use by application %2!</source>
-        <translation type="unfinished"/>
+        <translation>Folder &apos;%1&apos; is already in use by application %2!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="741"/>
@@ -1266,17 +1266,17 @@ Please consider removing this folder from the account and adding it again.</tran
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="278"/>
         <source>The suffix VFS plugin is deprecated and will be removed in the 7.0 release.</source>
-        <translation type="unfinished"/>
+        <translation>The suffix VFS plugin is deprecated and will be removed in the 7.0 release.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="279"/>
         <source>Please use the context menu and select &quot;Disable virtual file support&quot; to  ensure future access to your synced files.</source>
-        <translation type="unfinished"/>
+        <translation>Please use the context menu and select &quot;Disable virtual file support&quot; to  ensure future access to your synced files.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="280"/>
         <source>You are going to lose access to your sync folder if you do not do so!</source>
-        <translation type="unfinished"/>
+        <translation>You are going to lose access to your sync folder if you do not do so!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="355"/>
@@ -1295,7 +1295,7 @@ Please consider removing this folder from the account and adding it again.</tran
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="941"/>
         <source>Selective sync list changed</source>
-        <translation type="unfinished"/>
+        <translation>Selective sync list changed</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="987"/>
@@ -1353,7 +1353,7 @@ Please consider removing this folder from the account and adding it again.</tran
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1222"/>
         <source>User triggered sync-all for selective synced folder</source>
-        <translation type="unfinished"/>
+        <translation>User triggered sync-all for selective synced folder</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1065"/>
@@ -1518,7 +1518,7 @@ Please consider removing this folder from the account and adding it again.</tran
     <message>
         <location filename="../src/gui/folderwizard/folderwizardselectivesync.cpp" line="47"/>
         <source>Use virtual files instead of downloading content immediately</source>
-        <translation type="unfinished"/>
+        <translation>Use virtual files instead of downloading content immediately</translation>
     </message>
 </context>
 <context>
@@ -1579,7 +1579,7 @@ Please consider removing this folder from the account and adding it again.</tran
     <message>
         <location filename="../src/gui/generalsettings.ui" line="126"/>
         <source>Move remotely deleted files to the local trash bin instead of deleting them</source>
-        <translation type="unfinished"/>
+        <translation>Move remotely deleted files to the local trash bin instead of deleting them</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="142"/>
@@ -1872,7 +1872,7 @@ Items, where deletion is allowed, will be deleted if they prevent a directory fr
     <message>
         <location filename="../src/gui/logbrowser.ui" line="53"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;b&gt;The logs contain sensitive information which you should not make publicly available&lt;/b&gt;&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;b&gt;The logs contain sensitive information which you should not make publicly available&lt;/b&gt;&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.ui" line="71"/>
@@ -1965,7 +1965,7 @@ Note that using any logging command line options will override the settings.</tr
     <message>
         <location filename="../src/gui/networksettings.ui" line="20"/>
         <source>Pause synchronization when the Internet connection is metered</source>
-        <translation type="unfinished"/>
+        <translation>Pause synchronization when the Internet connection is metered</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="30"/>
@@ -2185,7 +2185,7 @@ Note that using any logging command line options will override the settings.</tr
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="155"/>
         <source>%1 installed successfully. Restart the application to finish installing the update.</source>
-        <translation type="unfinished"/>
+        <translation>%1 installed successfully. Restart the application to finish installing the update.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="157"/>
@@ -2341,7 +2341,7 @@ Note that using any logging command line options will override the settings.</tr
     <message>
         <location filename="../src/libsync/discovery.cpp" line="628"/>
         <source>Error while doing a rename, unhandled status code: %1</source>
-        <translation type="unfinished"/>
+        <translation>Error while doing a rename, unhandled status code: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1221"/>
@@ -2501,7 +2501,7 @@ Note that using any logging command line options will override the settings.</tr
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="125"/>
         <source>Could not move &apos;%1&apos; to the trash bin</source>
-        <translation type="unfinished"/>
+        <translation>Could not move &apos;%1&apos; to the Rubbish Bin</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="89"/>
@@ -3415,7 +3415,7 @@ Note that using any logging command line options will override the settings.</tr
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="871"/>
         <source>Aborted due to %1</source>
-        <translation type="unfinished"/>
+        <translation>Aborted due to %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="889"/>
@@ -3436,7 +3436,7 @@ Note that using any logging command line options will override the settings.</tr
         <location filename="../src/libsync/syncengine.cpp" line="86"/>
         <source>application exit</source>
         <comment>abort reason</comment>
-        <translation type="unfinished"/>
+        <translation>application exit</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="399"/>
@@ -3516,12 +3516,12 @@ Note that using any logging command line options will override the settings.</tr
     <message>
         <location filename="../src/gui/updater/updatedownloadeddialog.cpp" line="41"/>
         <source>Restart later</source>
-        <translation type="unfinished"/>
+        <translation>Restart later</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/updatedownloadeddialog.cpp" line="43"/>
         <source>Restart now</source>
-        <translation type="unfinished"/>
+        <translation>Restart now</translation>
     </message>
 </context>
 <context>
@@ -4029,7 +4029,7 @@ Are you sure you want to proceed?</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="954"/>
         <source>User paused sync for account &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>User paused sync for account &apos;%1&apos;</translation>
     </message>
 </context>
 <context>
@@ -4057,7 +4057,7 @@ Are you sure you want to proceed?</translation>
     <message>
         <location filename="../src/common/utility.cpp" line="352"/>
         <source>less than a minute ago</source>
-        <translation type="unfinished"/>
+        <translation>less than a minute ago</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="356"/>
@@ -4251,12 +4251,12 @@ Are you sure you want to proceed?</translation>
     <message>
         <location filename="../src/gui/updater/updatedownloadeddialog.ui" line="20"/>
         <source>Update downloaded</source>
-        <translation type="unfinished"/>
+        <translation>Update downloaded</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/updatedownloadeddialog.ui" line="53"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:11pt; font-weight:700;&quot;&gt;Restart required&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:11pt; font-weight:700;&quot;&gt;Restart required&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
 </context>
 <context>

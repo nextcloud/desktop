@@ -312,22 +312,22 @@ File synchronization desktop utility.</source>
 <context>
     <name>FolderWizard</name>
     <message>
-        <location filename="../src/gui/folderwizard/folderwizard.cpp" line="52"/>
+        <location filename="../src/gui/folderwizard/folderwizard.cpp" line="50"/>
         <source>&lt;b&gt;Error:&lt;/b&gt; %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard/folderwizard.cpp" line="52"/>
+        <location filename="../src/gui/folderwizard/folderwizard.cpp" line="50"/>
         <source>&lt;b&gt;Warning:&lt;/b&gt; %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard/folderwizard.cpp" line="58"/>
+        <location filename="../src/gui/folderwizard/folderwizard.cpp" line="56"/>
         <source>&lt;b&gt;Error:&lt;/b&gt;&lt;ul&gt;%1&lt;/ul&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard/folderwizard.cpp" line="59"/>
+        <location filename="../src/gui/folderwizard/folderwizard.cpp" line="57"/>
         <source>&lt;b&gt;Warning:&lt;/b&gt;&lt;ul&gt;%1&lt;/ul&gt;</source>
         <translation type="unfinished"></translation>
     </message>
@@ -555,7 +555,7 @@ Note that this selects only what pool upgrades are taken from, and that there ar
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="302"/>
         <location filename="../src/gui/accountsettings.cpp" line="342"/>
-        <location filename="../src/gui/accountsettings.cpp" line="611"/>
+        <location filename="../src/gui/accountsettings.cpp" line="612"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
@@ -754,17 +754,17 @@ This action will abort any currently running synchronization.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="604"/>
+        <location filename="../src/gui/accountsettings.cpp" line="605"/>
         <source>Confirm Account Removal</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="605"/>
+        <location filename="../src/gui/accountsettings.cpp" line="606"/>
         <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="610"/>
+        <location filename="../src/gui/accountsettings.cpp" line="611"/>
         <source>Remove connection</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1363,17 +1363,17 @@ You are going to lose access to your sync folder if you do not do so!</source>
 <context>
     <name>OCC::FolderWizard</name>
     <message>
-        <location filename="../src/gui/folderwizard/folderwizard.cpp" line="163"/>
+        <location filename="../src/gui/folderwizard/folderwizard.cpp" line="158"/>
         <source>Virtual files are not available for the selected folder</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard/folderwizard.cpp" line="176"/>
+        <location filename="../src/gui/folderwizard/folderwizard.cpp" line="171"/>
         <source>Add Folder Sync Connection</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard/folderwizard.cpp" line="178"/>
+        <location filename="../src/gui/folderwizard/folderwizard.cpp" line="173"/>
         <source>Add Sync Connection</source>
         <translation type="unfinished"></translation>
     </message>
