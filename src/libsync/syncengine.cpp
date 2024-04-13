@@ -932,6 +932,33 @@ void SyncEngine::slotCleanPollsJobAborted(const QString &error, const ErrorCateg
     finalize(false);
 }
 
+void SyncEngine::detectFileLock(const SyncFileItemPtr &item)
+{
+    const auto isNewlyUploadedFile = !item->isDirectory() &&
+        item->_instruction == CSYNC_INSTRUCTION_NEW &&
+        item->_direction == SyncFileItem::Up && item->_status == SyncFileItem::Success;
+
+    if (isNewlyUploadedFile && item->_locked != SyncFileItem::LockStatus::LockedItem && _account->capabilities().filesLockAvailable() &&
+        FileSystem::isMatchingOfficeFileExtension(item->_file)) {
+        {
+            SyncJournalFileRecord rec;
+            if (!_journal->getFileRecord(item->_file, &rec) || !rec.isValid()) {
+                qCWarning(lcEngine) << "Newly-created office file just uploaded but not in sync journal. Not going to lock it." << item->_file;
+                return;
+            }
+        }
+        const auto localFilePath = _propagator->fullLocalPath(item->_file);
+        const auto allMatchingLockFiles = FileSystem::findAllLockFilesInDir(QFileInfo(localFilePath).absolutePath());
+        for (const auto &lockFilePath : allMatchingLockFiles) {
+            const auto checkResult = FileSystem::lockFileTargetFilePath(lockFilePath, FileSystem::filePathLockFilePatternMatch(lockFilePath));
+            if (checkResult.type == FileSystem::FileLockingInfo::Type::Locked && checkResult.path == localFilePath) {
+                qCInfo(lcEngine) << "Newly-created office file lock detected. Let FolderWatcher take it from here..." << item->_file;
+                emit lockFileDetected(lockFilePath);
+            }
+        }
+    }
+}
+
 void SyncEngine::setNetworkLimits(int upload, int download)
 {
     _uploadLimit = upload;
@@ -954,6 +981,8 @@ void SyncEngine::slotItemCompleted(const SyncFileItemPtr &item, const ErrorCateg
 
     emit transmissionProgress(*_progressInfo);
     emit itemCompleted(item, category);
+
+    detectFileLock(item);
 }
 
 void SyncEngine::slotPropagationFinished(OCC::SyncFileItem::Status status)
