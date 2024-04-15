@@ -447,7 +447,6 @@ extension Item {
     private func modifyContents(
         contents newContents: URL?,
         remotePath: String,
-        parentItemRemotePath: String,
         domain: NSFileProviderDomain?,
         progress: Progress
     ) async -> (Item?, Error?) {
@@ -486,7 +485,7 @@ extension Item {
             )
         }
 
-        let (account, etag, date, size, error) = await withCheckedContinuation { continuation in
+        let (etag, date, size, error) = await withCheckedContinuation { continuation in
             self.ncKit.upload(
                 serverUrlFileName: remotePath,
                 fileNameLocalPath: localPath,
@@ -503,9 +502,9 @@ extension Item {
                 progressHandler: { uploadProgress in
                     uploadProgress.copyCurrentStateToProgress(progress)
                 }
-            ) { account, _, etag, date, size, _, _, error in
+            ) { _, _, etag, date, size, _, _, error in
                 continuation.resume(
-                    returning: (account, etag, date, size, error.fileProviderError)
+                    returning: (etag, date, size, error.fileProviderError)
                 )
             }
         }
@@ -544,15 +543,15 @@ extension Item {
 
         let newMetadata = ItemMetadata()
         newMetadata.date = (date ?? NSDate()) as Date
-        newMetadata.etag = etag ?? ""
-        newMetadata.account = account
-        newMetadata.fileName = self.filename
-        newMetadata.fileNameView = self.filename
+        newMetadata.etag = etag ?? metadata.etag
+        newMetadata.account = metadata.account
+        newMetadata.fileName = metadata.fileName
+        newMetadata.fileNameView = metadata.fileNameView
         newMetadata.ocId = ocId
         newMetadata.size = size
-        newMetadata.contentType = self.contentType.preferredMIMEType ?? ""
-        newMetadata.directory = self.metadata.directory
-        newMetadata.serverUrl = parentItemRemotePath
+        newMetadata.contentType = metadata.contentType
+        newMetadata.directory = metadata.directory
+        newMetadata.serverUrl = metadata.serverUrl
         newMetadata.session = ""
         newMetadata.sessionError = ""
         newMetadata.sessionTaskIdentifier = 0
@@ -712,7 +711,6 @@ extension Item {
             let (contentModifiedItem, contentError) = await modifiedItem.modifyContents(
                 contents: newContents,
                 remotePath: newServerUrlFileName,
-                parentItemRemotePath: parentItemServerUrl,
                 domain: domain,
                 progress: progress
             )
