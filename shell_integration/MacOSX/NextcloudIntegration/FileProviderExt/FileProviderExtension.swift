@@ -116,25 +116,25 @@ import OSLog
             metadata.classFile = NKCommon.TypeClassFile.directory.rawValue
 
             completionHandler(
-                FileProviderItem(
-                    metadata: metadata,
-                    parentItemIdentifier: NSFileProviderItemIdentifier.rootContainer,
-                    ncKit: ncKit), nil)
+                Item(metadata: metadata, parentItemIdentifier: .rootContainer, ncKit: ncKit),
+                nil
+            )
             return Progress()
         }
 
         let dbManager = FilesDatabaseManager.shared
 
         guard let metadata = dbManager.itemMetadataFromFileProviderItemIdentifier(identifier),
-            let parentItemIdentifier = dbManager.parentItemIdentifierFromMetadata(metadata)
+              let parentItemIdentifier = dbManager.parentItemIdentifierFromMetadata(metadata)
         else {
             completionHandler(nil, NSFileProviderError(.noSuchItem))
             return Progress()
         }
 
         completionHandler(
-            FileProviderItem(
-                metadata: metadata, parentItemIdentifier: parentItemIdentifier, ncKit: ncKit), nil)
+            Item(metadata: metadata, parentItemIdentifier: parentItemIdentifier, ncKit: ncKit),
+            nil
+        )
         return Progress()
     }
 
@@ -236,17 +236,18 @@ import OSLog
                         dbManager.addLocalFileMetadataFromItemMetadata(updatedMetadata)
                         dbManager.addItemMetadata(updatedMetadata)
 
-                        guard
-                            let parentItemIdentifier = dbManager.parentItemIdentifierFromMetadata(
-                                updatedMetadata)
-                        else {
+                        guard let parentItemIdentifier = dbManager.parentItemIdentifierFromMetadata(
+                            updatedMetadata
+                        ) else {
                             completionHandler(nil, nil, NSFileProviderError(.noSuchItem))
                             return
                         }
 
-                        let fpItem = FileProviderItem(
-                            metadata: updatedMetadata, parentItemIdentifier: parentItemIdentifier,
-                            ncKit: self.ncKit)
+                        let fpItem = Item(
+                            metadata: updatedMetadata, 
+                            parentItemIdentifier: parentItemIdentifier,
+                            ncKit: self.ncKit
+                        )
 
                         completionHandler(fileNameLocalPath, fpItem, nil)
                     } else {
@@ -378,10 +379,11 @@ import OSLog
 
                             dbManager.addItemMetadata(directoryMetadata)
 
-                            let fpItem = FileProviderItem(
+                            let fpItem = Item(
                                 metadata: directoryMetadata,
                                 parentItemIdentifier: parentItemIdentifier,
-                                ncKit: self.ncKit)
+                                ncKit: self.ncKit
+                            )
 
                             completionHandler(fpItem, [], true, nil)
                         }
@@ -446,7 +448,7 @@ import OSLog
             dbManager.addLocalFileMetadataFromItemMetadata(newMetadata)
             dbManager.addItemMetadata(newMetadata)
 
-            let fpItem = FileProviderItem(
+            let fpItem = Item(
                 metadata: newMetadata, parentItemIdentifier: parentItemIdentifier, ncKit: self.ncKit
             )
 
@@ -586,8 +588,8 @@ import OSLog
                         return
                     }
 
-                    modifiedItem = FileProviderItem(
-                        metadata: newMetadata, 
+                    modifiedItem = Item(
+                        metadata: newMetadata,
                         parentItemIdentifier: parentItemIdentifier,
                         ncKit: self.ncKit
                     )
@@ -707,8 +709,9 @@ import OSLog
                             dbManager.addLocalFileMetadataFromItemMetadata(newMetadata)
                             dbManager.addItemMetadata(newMetadata)
 
-                            modifiedItem = FileProviderItem(
-                                metadata: newMetadata, parentItemIdentifier: parentItemIdentifier,
+                            modifiedItem = Item(
+                                metadata: newMetadata,
+                                parentItemIdentifier: parentItemIdentifier,
                                 ncKit: self.ncKit
                             )
                             completionHandler(modifiedItem, [], false, nil)
