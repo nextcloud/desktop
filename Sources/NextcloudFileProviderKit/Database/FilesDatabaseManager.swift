@@ -402,7 +402,14 @@ public class FilesDatabaseManager {
 
         guard let itemParentDirectory = parentDirectoryMetadataForItem(metadata) else {
             Self.logger.error(
-                "Could not get item parent directory metadata for metadata. ocID: \(metadata.ocId, privacy: .public), etag: \(metadata.etag, privacy: .public), fileName: \(metadata.fileName, privacy: .public)"
+                """
+                Could not get item parent directory metadata for metadata.
+                ocID: \(metadata.ocId, privacy: .public),
+                etag: \(metadata.etag, privacy: .public),
+                fileName: \(metadata.fileName, privacy: .public),
+                serverUrl: \(metadata.serverUrl, privacy: .public),
+                account: \(metadata.account, privacy: .public),
+                """
             )
             return nil
         }
@@ -412,7 +419,14 @@ public class FilesDatabaseManager {
         }
 
         Self.logger.error(
-            "Could not get item parent directory item metadata for metadata. ocID: \(metadata.ocId, privacy: .public), etag: \(metadata.etag, privacy: .public), fileName: \(metadata.fileName, privacy: .public)"
+            """
+            Could not get item parent directory item metadata for metadata.
+            ocID: \(metadata.ocId, privacy: .public),
+            etag: \(metadata.etag, privacy: .public), 
+            fileName: \(metadata.fileName, privacy: .public),
+            serverUrl: \(metadata.serverUrl, privacy: .public),
+            account: \(metadata.account, privacy: .public),
+            """
         )
         return nil
     }
