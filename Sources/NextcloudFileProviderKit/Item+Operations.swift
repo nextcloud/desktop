@@ -168,10 +168,10 @@ extension Item {
 
     public static func create(
         basedOn itemTemplate: NSFileProviderItem,
-        fields: NSFileProviderItemFields,
+        fields: NSFileProviderItemFields = NSFileProviderItemFields(),
         contents url: URL?,
         options: NSFileProviderCreateItemOptions = [],
-        request: NSFileProviderRequest,
+        request: NSFileProviderRequest = NSFileProviderRequest(),
         domain: NSFileProviderDomain? = nil,
         ncKit: NextcloudKit,
         ncAccount: Account,
