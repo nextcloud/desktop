@@ -92,37 +92,11 @@ import OSLog
         request _: NSFileProviderRequest,
         completionHandler: @escaping (NSFileProviderItem?, Error?) -> Void
     ) -> Progress {
-        // resolve the given identifier to a record in the model
-
-        Logger.fileProviderExtension.debug(
-            "Received item request for item with identifier: \(identifier.rawValue, privacy: .public)"
-        )
-
-        if identifier == .rootContainer {
-            guard ncAccount != nil else {
-                Logger.fileProviderExtension.error(
-                    "Not providing item: \(identifier.rawValue, privacy: .public) as account not set up yet"
-                )
-                completionHandler(nil, NSFileProviderError(.notAuthenticated))
-                return Progress()
-            }
-
-            completionHandler(Item.rootContainer(ncKit: ncKit), nil)
-            return Progress()
-        }
-
-        let dbManager = FilesDatabaseManager.shared
-
-        guard let metadata = dbManager.itemMetadataFromFileProviderItemIdentifier(identifier),
-              let parentItemIdentifier = dbManager.parentItemIdentifierFromMetadata(metadata)
-        else {
+        if let item = Item.storedItem(identifier: identifier, usingKit: ncKit) {
+            completionHandler(item, nil)
+        } else {
             completionHandler(nil, NSFileProviderError(.noSuchItem))
-            return Progress()
         }
-
-        completionHandler(
-            Item(metadata: metadata, parentItemIdentifier: parentItemIdentifier, ncKit: ncKit), nil
-        )
         return Progress()
     }
 
