@@ -43,8 +43,10 @@ extension NKError {
         errorCode == NKError.noChangesErrorCode
     }
 
-    var fileProviderError: NSFileProviderError {
-        if isNotFoundError {
+    var fileProviderError: NSFileProviderError? {
+        if self == .success {
+            nil
+        } else if isNotFoundError {
             NSFileProviderError(.noSuchItem)
         } else if isCouldntConnectError {
             // Provide something the file provider can do something with

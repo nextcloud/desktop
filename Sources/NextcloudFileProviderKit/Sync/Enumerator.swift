@@ -142,7 +142,9 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
                     )
 
                     let nkReadError = NKError(error: readError!)
-                    observer.finishEnumeratingWithError(nkReadError.fileProviderError)
+                    let error =
+                        nkReadError.fileProviderError ?? NSFileProviderError(.cannotSynchronize)
+                    observer.finishEnumeratingWithError(error)
                     return
                 }
 
@@ -212,7 +214,9 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
                     Self.logger.info(
                         "Finished recursive change enumeration of working set for user: \(self.ncAccount.ncKitAccount, privacy: .public) with error: \(error!.errorDescription, privacy: .public)"
                     )
-                    observer.finishEnumeratingWithError(error!.fileProviderError)
+                    let fpError =
+                        error?.fileProviderError ?? NSFileProviderError(.cannotSynchronize)
+                    observer.finishEnumeratingWithError(fpError)
                     return
                 }
 
@@ -261,7 +265,7 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
                 )
 
                 let nkReadError = NKError(error: readError!)
-                let fpError = nkReadError.fileProviderError
+                let error = nkReadError.fileProviderError ?? NSFileProviderError(.cannotSynchronize)
 
                 if nkReadError.isNotFoundError {
                     Self.logger.info(
@@ -272,7 +276,7 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
                         Self.logger.error(
                             "Invalid enumeratedItemMetadata, could not delete metadata nor report deletion"
                         )
-                        observer.finishEnumeratingWithError(fpError)
+                        observer.finishEnumeratingWithError(error)
                         return
                     }
 
@@ -306,7 +310,7 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
                     return
                 }
 
-                observer.finishEnumeratingWithError(fpError)
+                observer.finishEnumeratingWithError(error)
                 return
             }
 
