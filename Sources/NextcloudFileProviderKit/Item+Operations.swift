@@ -393,7 +393,7 @@ extension Item {
                 """
                 Could not move file or folder: \(oldRemotePath, privacy: .public)
                 to \(newRemotePath, privacy: .public),
-                received error: \(moveError, privacy: .public)
+                received error: \(moveError?.localizedDescription ?? "", privacy: .public)
                 """
             )
             return (nil, moveError)
@@ -505,7 +505,7 @@ extension Item {
                 """
                 Could not upload item \(ocId, privacy: .public)
                 with filename: \(self.filename, privacy: .public),
-                received error: \(error, privacy: .public)
+                received error: \(error?.localizedDescription ?? "", privacy: .public)
                 """
             )
 
@@ -621,10 +621,10 @@ extension Item {
 
         Self.logger.debug(
             """
-            About to upload modified item with identifier: \(ocId, privacy: .public)
+            About to modify item with identifier: \(ocId, privacy: .public)
             of type: \(self.contentType.identifier)
-            (is folder: \(isFolder ? "yes" : "no")
-            and filename: \(self.filename, privacy: .public)
+            (is folder: \(isFolder ? "yes" : "no", privacy: .public)
+            and filename: \(itemTarget.filename, privacy: .public)
             to server url: \(newServerUrlFileName, privacy: .public)
             with contents located at: \(newContents?.path ?? "", privacy: .public)
             """
@@ -637,7 +637,11 @@ extension Item {
                 """
                 Changed fields for item \(ocId, privacy: .public)
                 with filename \(self.filename, privacy: .public)
-                includes filename or parentitemidentifier...
+                includes filename or parentitemidentifier.
+                old filename: \(self.filename, privacy: .public)
+                new filename: \(itemTarget.filename, privacy: .public)
+                old parent identifier: \(parentItemIdentifier.rawValue, privacy: .public)
+                new parent identifier: \(itemTarget.parentItemIdentifier.rawValue, privacy: .public)
                 """
             )
 
@@ -652,7 +656,7 @@ extension Item {
                     Could not rename item with ocID \(ocId, privacy: .public)
                     (\(self.filename, privacy: .public)) to 
                     \(newServerUrlFileName, privacy: .public),
-                    received error: \(renameError, privacy: .public)
+                    received error: \(renameError?.localizedDescription ?? "", privacy: .public)
                     """
                 )
                 return (nil, renameError)
@@ -664,6 +668,8 @@ extension Item {
                 Self.logger.debug(
                     """
                     Rename of folder \(ocId, privacy: .public) (\(self.filename, privacy: .public))
+                    to \(itemTarget.filename, privacy: .public)
+                    at \(newServerUrlFileName, privacy: .public)
                     complete. Only handling renaming for folder and no other procedures.
                     """
                 )
@@ -685,7 +691,8 @@ extension Item {
         if changedFields.contains(.contents) {
             Self.logger.debug(
                 """
-                Item modification for \(ocId, privacy: .public) \(self.filename, privacy: .public)
+                Item modification for \(ocId, privacy: .public)
+                \(modifiedItem.filename, privacy: .public)
                 includes contents. Will begin upload.
                 """
             )
@@ -702,9 +709,9 @@ extension Item {
                 Self.logger.error(
                     """
                     Could not modify contents for item with ocID \(ocId, privacy: .public)
-                    (\(self.filename, privacy: .public)) to
+                    (\(modifiedItem.filename, privacy: .public)) to
                     \(newServerUrlFileName, privacy: .public),
-                    received error: \(contentError, privacy: .public)
+                    received error: \(contentError?.localizedDescription ?? "", privacy: .public)
                     """
                 )
                 return (nil, contentError)
@@ -716,7 +723,7 @@ extension Item {
         Self.logger.debug(
             """
             Nothing more to do with \(ocId, privacy: .public)
-            \(self.filename, privacy: .public), modifications complete
+            \(modifiedItem.filename, privacy: .public), modifications complete
             """
         )
         return (modifiedItem, nil)
