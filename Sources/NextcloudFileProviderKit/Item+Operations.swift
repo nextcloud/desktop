@@ -582,7 +582,7 @@ extension Item {
             return (nil, NSFileProviderError(.noSuchItem))
         }
 
-        let parentIdentifier = itemTarget.parentItemIdentifier
+        let parentItemIdentifier = itemTarget.parentItemIdentifier
         let dbManager = FilesDatabaseManager.shared
         let isFolder = contentType == .folder || contentType == .directory
 
@@ -598,17 +598,17 @@ extension Item {
         // The target parent should already be present in our database. The system will have synced
         // remote changes and then, upon user interaction, will try to modify the item.
         // That is, if the parent item has changed at all (it might not have)
-        if parentIdentifier == .rootContainer {
+        if parentItemIdentifier == .rootContainer {
             parentItemServerUrl = ncAccount.davFilesUrl
         } else {
             guard let parentItemMetadata = dbManager.directoryMetadata(
-                ocId: parentIdentifier.rawValue
+                ocId: parentItemIdentifier.rawValue
             ) else {
                 Self.logger.error(
                     """
                     Not modifying item: \(ocId, privacy: .public),
                     could not find metadata for target parentItemIdentifier
-                        \(parentIdentifier.rawValue, privacy: .public)
+                        \(parentItemIdentifier.rawValue, privacy: .public)
                     """
                 )
                 return (nil, NSFileProviderError(.noSuchItem))
