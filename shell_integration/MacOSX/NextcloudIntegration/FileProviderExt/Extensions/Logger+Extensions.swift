@@ -24,9 +24,6 @@ extension Logger {
         subsystem: subsystem, category: "fileproviderextension")
     static let fileTransfer = Logger(subsystem: subsystem, category: "filetransfer")
     static let shares = Logger(subsystem: subsystem, category: "shares")
-    static let materialisedFileHandling = Logger(
-        subsystem: subsystem, category: "materialisedfilehandling"
-    )
     static let logger = Logger(subsystem: subsystem, category: "logger")
 
     @available(macOSApplicationExtension 12.0, *)
