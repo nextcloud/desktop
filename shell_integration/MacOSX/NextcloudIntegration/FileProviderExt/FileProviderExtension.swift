@@ -704,61 +704,36 @@ import OSLog
     }
 
     func deleteItem(
-        identifier: NSFileProviderItemIdentifier, baseVersion _: NSFileProviderItemVersion,
-        options _: NSFileProviderDeleteItemOptions = [], request _: NSFileProviderRequest,
+        identifier: NSFileProviderItemIdentifier, 
+        baseVersion _: NSFileProviderItemVersion,
+        options _: NSFileProviderDeleteItemOptions = [], 
+        request _: NSFileProviderRequest,
         completionHandler: @escaping (Error?) -> Void
     ) -> Progress {
         Logger.fileProviderExtension.debug(
-            "Received delete item request for item with identifier: \(identifier.rawValue, privacy: .public)"
+            "Received delete request for item: \(identifier.rawValue, privacy: .public)"
         )
 
         guard ncAccount != nil else {
             Logger.fileProviderExtension.error(
-                "Not deleting item: \(identifier.rawValue, privacy: .public) as account not set up yet"
+                "Not deleting item \(identifier.rawValue, privacy: .public), account not set up yet"
             )
             completionHandler(NSFileProviderError(.notAuthenticated))
             return Progress()
         }
 
-        let dbManager = FilesDatabaseManager.shared
-        let ocId = identifier.rawValue
-        guard let itemMetadata = dbManager.itemMetadataFromOcId(ocId) else {
+
+        guard let item = Item.storedItem(identifier: identifier, usingKit: ncKit) else {
             completionHandler(NSFileProviderError(.noSuchItem))
             return Progress()
         }
 
-        let serverFileNameUrl = itemMetadata.serverUrl + "/" + itemMetadata.fileName
-        guard serverFileNameUrl != "" else {
-            completionHandler(NSFileProviderError(.noSuchItem))
-            return Progress()
+        let progress = Progress(totalUnitCount: 1)
+        Task {
+            completionHandler(await item.delete())
+            progress.completedUnitCount = 1
         }
-
-        ncKit.deleteFileOrFolder(serverUrlFileName: serverFileNameUrl) { _, error in
-            guard error == .success else {
-                Logger.fileTransfer.error(
-                    "Could not delete item with ocId \(identifier.rawValue, privacy: .public) at \(serverFileNameUrl, privacy: .public), received error: \(error.errorDescription, privacy: .public)"
-                )
-                completionHandler(error.fileProviderError)
-                return
-            }
-
-            Logger.fileTransfer.info(
-                "Successfully deleted item with identifier: \(identifier.rawValue, privacy: .public) at: \(serverFileNameUrl, privacy: .public)"
-            )
-
-            if itemMetadata.directory {
-                _ = dbManager.deleteDirectoryAndSubdirectoriesMetadata(ocId: ocId)
-            } else {
-                dbManager.deleteItemMetadata(ocId: ocId)
-                if dbManager.localFileMetadataFromOcId(ocId) != nil {
-                    dbManager.deleteLocalFileMetadata(ocId: ocId)
-                }
-            }
-
-            completionHandler(nil)
-        }
-
-        return Progress()
+        return progress
     }
 
     func enumerator(
