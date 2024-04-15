@@ -16,21 +16,21 @@ import FileProvider
 import NextcloudKit
 import UniformTypeIdentifiers
 
-class FileProviderItem: NSObject, NSFileProviderItem {
-    enum FileProviderItemTransferError: Error {
+public class FileProviderItem: NSObject, NSFileProviderItem {
+    public enum FileProviderItemTransferError: Error {
         case downloadError
         case uploadError
     }
 
-    let metadata: ItemMetadata
-    let parentItemIdentifier: NSFileProviderItemIdentifier
-    let ncKit: NextcloudKit
+    public let metadata: ItemMetadata
+    public let parentItemIdentifier: NSFileProviderItemIdentifier
+    public let ncKit: NextcloudKit
 
-    var itemIdentifier: NSFileProviderItemIdentifier {
+    public var itemIdentifier: NSFileProviderItemIdentifier {
         NSFileProviderItemIdentifier(metadata.ocId)
     }
 
-    var capabilities: NSFileProviderItemCapabilities {
+    public var capabilities: NSFileProviderItemCapabilities {
         guard !metadata.directory else {
             if #available(macOS 13.0, *) {
                 // .allowsEvicting deprecated on macOS 13.0+, use contentPolicy instead
@@ -65,17 +65,17 @@ class FileProviderItem: NSObject, NSFileProviderItem {
         ]
     }
 
-    var itemVersion: NSFileProviderItemVersion {
+    public var itemVersion: NSFileProviderItemVersion {
         NSFileProviderItemVersion(
             contentVersion: metadata.etag.data(using: .utf8)!,
             metadataVersion: metadata.etag.data(using: .utf8)!)
     }
 
-    var filename: String {
+    public var filename: String {
         metadata.fileNameView
     }
 
-    var contentType: UTType {
+    public var contentType: UTType {
         if itemIdentifier == .rootContainer || metadata.directory {
             return .folder
         }
@@ -87,47 +87,47 @@ class FileProviderItem: NSObject, NSFileProviderItem {
         return UTType(filenameExtension: internalType.ext) ?? .content
     }
 
-    var documentSize: NSNumber? {
+    public var documentSize: NSNumber? {
         NSNumber(value: metadata.size)
     }
 
-    var creationDate: Date? {
+    public var creationDate: Date? {
         metadata.creationDate as Date
     }
 
-    var lastUsedDate: Date? {
+    public var lastUsedDate: Date? {
         metadata.date as Date
     }
 
-    var contentModificationDate: Date? {
+    public var contentModificationDate: Date? {
         metadata.date as Date
     }
 
-    var isDownloaded: Bool {
+    public var isDownloaded: Bool {
         metadata.directory
             || FilesDatabaseManager.shared.localFileMetadataFromOcId(metadata.ocId) != nil
     }
 
-    var isDownloading: Bool {
+    public var isDownloading: Bool {
         metadata.status == ItemMetadata.Status.downloading.rawValue
     }
 
-    var downloadingError: Error? {
+    public var downloadingError: Error? {
         if metadata.status == ItemMetadata.Status.downloadError.rawValue {
             return FileProviderItemTransferError.downloadError
         }
         return nil
     }
 
-    var isUploaded: Bool {
+    public var isUploaded: Bool {
         FilesDatabaseManager.shared.localFileMetadataFromOcId(metadata.ocId) != nil
     }
 
-    var isUploading: Bool {
+    public var isUploading: Bool {
         metadata.status == ItemMetadata.Status.uploading.rawValue
     }
 
-    var uploadingError: Error? {
+    public var uploadingError: Error? {
         if metadata.status == ItemMetadata.Status.uploadError.rawValue {
             FileProviderItemTransferError.uploadError
         } else {
@@ -135,7 +135,7 @@ class FileProviderItem: NSObject, NSFileProviderItem {
         }
     }
 
-    var childItemCount: NSNumber? {
+    public var childItemCount: NSNumber? {
         if metadata.directory {
             NSNumber(
                 integerLiteral: FilesDatabaseManager.shared.childItemsForDirectory(
@@ -147,11 +147,11 @@ class FileProviderItem: NSObject, NSFileProviderItem {
     }
 
     @available(macOS 13.0, *)
-    var contentPolicy: NSFileProviderContentPolicy {
+    public var contentPolicy: NSFileProviderContentPolicy {
         .downloadLazily
     }
 
-    required init(
+    public required init(
         metadata: ItemMetadata,
         parentItemIdentifier: NSFileProviderItemIdentifier,
         ncKit: NextcloudKit
