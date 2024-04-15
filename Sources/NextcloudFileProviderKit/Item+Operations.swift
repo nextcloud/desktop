@@ -685,7 +685,7 @@ extension Item {
                 This is not supported.
                 """
             )
-            return (nil, NSError(domain: NSCocoaErrorDomain, code: NSFeatureUnsupportedError))
+            return (modifiedItem, nil)
         }
 
         if changedFields.contains(.contents) {
