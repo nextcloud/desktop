@@ -340,8 +340,12 @@ void GeneralSettings::slotUpdateInfo()
     }
 #endif
 
-    // Channel selection
-    _ui->updateChannel->setCurrentIndex(ConfigFile().updateChannel() == "beta" ? 1 : 0);
+    // stable, beta, daily
+    ConfigFile config;
+    const auto validUpdateChannels = config.validUpdateChannels();
+    const auto currentUpdateChannelIndex = validUpdateChannels.indexOf(config.updateChannel());
+    _ui->updateChannel->addItems(validUpdateChannels);
+    _ui->updateChannel->setCurrentIndex(currentUpdateChannelIndex);
     connect(_ui->updateChannel, &QComboBox::currentTextChanged,
         this, &GeneralSettings::slotUpdateChannelChanged, Qt::UniqueConnection);
 }
@@ -355,17 +359,24 @@ void GeneralSettings::slotUpdateChannelChanged()
             decodedTranslatedChannel = tr("stable");
         } else if (channel == QStringLiteral("beta")) {
             decodedTranslatedChannel = tr("beta");
+        } else if (channel == QStringLiteral("daily")) {
+            decodedTranslatedChannel = tr("daily");
         }
 
         return decodedTranslatedChannel;
     };
 
     const auto updateChannelFromLocalized = [](const int index) {
-        if (index == 1) {
+        switch(index) {
+        case 1:
             return QStringLiteral("beta");
+            break;
+        case 2:
+            return QStringLiteral("daily");
+            break;
+        default:
+            return QStringLiteral("stable");
         }
-
-        return QStringLiteral("stable");
     };
 
     const auto channel = updateChannelFromLocalized(_ui->updateChannel->currentIndex());
