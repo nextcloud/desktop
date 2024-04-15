@@ -375,7 +375,10 @@ extension Item {
     }
 
     func move(
-        newRemotePath: String, parentItemRemotePath: String
+        newFileName: String,
+        newRemotePath: String,
+        newParentItemIdentifier: NSFileProviderItemIdentifier,
+        newParentItemRemotePath: String
     ) async -> (Item?, Error?) {
         let ocId = itemIdentifier.rawValue
         let isFolder = contentType == .folder || contentType == .directory
@@ -408,13 +411,13 @@ extension Item {
             _ = dbManager.renameDirectoryAndPropagateToChildren(
                 ocId: ocId,
                 newServerUrl: newRemotePath,
-                newFileName: filename
+                newFileName: newFileName
             )
         } else {
             dbManager.renameItemMetadata(
                 ocId: ocId,
-                newServerUrl: parentItemRemotePath,
-                newFileName: filename
+                newServerUrl: newParentItemRemotePath,
+                newFileName: newFileName
             )
         }
 
@@ -430,7 +433,7 @@ extension Item {
 
         let modifiedItem = Item(
             metadata: newMetadata,
-            parentItemIdentifier: parentItemIdentifier,
+            parentItemIdentifier: newParentItemIdentifier,
             ncKit: self.ncKit
         )
         return (modifiedItem, nil)
@@ -648,8 +651,10 @@ extension Item {
             )
 
             let (renameModifiedItem, renameError) = await modifiedItem.move(
+                newFileName: itemTarget.filename,
                 newRemotePath: newServerUrlFileName,
-                parentItemRemotePath: parentItemServerUrl
+                newParentItemIdentifier: parentItemIdentifier,
+                newParentItemRemotePath: parentItemServerUrl
             )
 
             guard renameError == nil, let renameModifiedItem else {
