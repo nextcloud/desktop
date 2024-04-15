@@ -151,6 +151,18 @@ public class Item: NSObject, NSFileProviderItem {
         .downloadLazily
     }
 
+    public static func rootContainer(ncKit: NextcloudKit) -> Item {
+        let metadata = ItemMetadata()
+        metadata.account = ncKit.nkCommonInstance.account
+        metadata.directory = true
+        metadata.ocId = NSFileProviderItemIdentifier.rootContainer.rawValue
+        metadata.fileName = "root"
+        metadata.fileNameView = "root"
+        metadata.serverUrl = ncKit.nkCommonInstance.urlBase
+        metadata.classFile = NKCommon.TypeClassFile.directory.rawValue
+        return Item(metadata: metadata, parentItemIdentifier: .rootContainer, ncKit: ncKit)
+    }
+
     public required init(
         metadata: ItemMetadata,
         parentItemIdentifier: NSFileProviderItemIdentifier,
