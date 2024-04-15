@@ -16,12 +16,14 @@ import FileProvider
 import Foundation
 import OSLog
 
+fileprivate let lfuLogger = Logger(subsystem: Logger.subsystem, category: "localfileutils")
+
 public func pathForAppGroupContainer() -> URL? {
     guard
         let appGroupIdentifier = Bundle.main.object(forInfoDictionaryKey: "SocketApiPrefix")
             as? String
     else {
-        Logger.localFileOps.critical(
+        lfuLogger.critical(
             "Could not get container url as missing SocketApiPrefix info in app Info.plist")
         return nil
     }
@@ -37,7 +39,7 @@ public func pathForFileProviderExtData() -> URL? {
 
 public func pathForFileProviderTempFilesForDomain(_ domain: NSFileProviderDomain) throws -> URL? {
     guard let fpManager = NSFileProviderManager(for: domain) else {
-        Logger.localFileOps.error(
+        lfuLogger.error(
             "Unable to get file provider manager for domain: \(domain.displayName, privacy: .public)"
         )
         throw NSFileProviderError(.providerNotFound)
@@ -51,7 +53,7 @@ public func localPathForNCFile(ocId _: String, fileNameView: String, domain: NSF
     -> URL
 {
     guard let fileProviderFilesPathUrl = try pathForFileProviderTempFilesForDomain(domain) else {
-        Logger.localFileOps.error(
+        lfuLogger.error(
             "Unable to get path for file provider temp files for domain: \(domain.displayName, privacy: .public)"
         )
         throw URLError(.badURL)
