@@ -28,7 +28,7 @@ extension Item {
             Self.logger.error(
                 """
                 Could not create new folder at: \(remotePath, privacy: .public),
-                received error: \(createError, privacy: .public)
+                received error: \(createError?.localizedDescription ?? "", privacy: .public)
                 """
             )
             return (nil, createError)
@@ -47,7 +47,7 @@ extension Item {
             Self.logger.error(
                 """
                 Could not read new folder at: \(remotePath, privacy: .public),
-                received error: \(readError, privacy: .public)
+                received error: \(readError?.localizedDescription ?? "", privacy: .public)
                 """
             )
             return (nil, readError)
@@ -113,7 +113,7 @@ extension Item {
             Self.logger.error(
                 """
                 Could not upload item with filename: \(itemTemplate.filename, privacy: .public),
-                received error: \(error, privacy: .public)
+                received error: \(error?.localizedDescription ?? "", privacy: .public)
                 received ocId: \(ocId ?? "empty", privacy: .public)
                 """
             )
@@ -278,7 +278,7 @@ extension Item {
             Self.logger.error(
                 """
                 Could not find local path for file \(self.metadata.fileName, privacy: .public),
-                received error: \(error, privacy: .public)
+                received error: \(error.localizedDescription, privacy: .public)
                 """
             )
             return (nil, nil, NSFileProviderError(.cannotSynchronize))
@@ -335,6 +335,8 @@ extension Item {
                 """
                 Could not acquire contents of item with identifier: \(ocId, privacy: .public)
                 and fileName: \(updatedMetadata.fileName, privacy: .public)
+                at \(serverUrlFileName, privacy: .public)
+                error: \(fpError.localizedDescription, privacy: .public)
                 """
             )
 
@@ -748,7 +750,7 @@ extension Item {
                 """
                 Could not delete item with ocId \(ocId, privacy: .public)...
                 at \(serverFileNameUrl, privacy: .public)...
-                received error: \(error, privacy: .public)
+                received error: \(error?.localizedDescription ?? "", privacy: .public)
                 """
             )
             return error
