@@ -18,7 +18,7 @@ import NextcloudKit
 import OSLog
 import RealmSwift
 
-class NextcloudFilesDatabaseManager: NSObject {
+class NextcloudFilesDatabaseManager {
     static let shared = NextcloudFilesDatabaseManager()
 
     let relativeDatabaseFolderPath = "Database/"
@@ -31,10 +31,7 @@ class NextcloudFilesDatabaseManager: NSObject {
     override init() {
         relativeDatabaseFilePath = relativeDatabaseFolderPath + databaseFilename
 
-        guard let fileProviderDataDirUrl = pathForFileProviderExtData() else {
-            super.init()
-            return
-        }
+        guard let fileProviderDataDirUrl = pathForFileProviderExtData() else { return }
 
         databasePath = fileProviderDataDirUrl.appendingPathComponent(relativeDatabaseFilePath)
 
