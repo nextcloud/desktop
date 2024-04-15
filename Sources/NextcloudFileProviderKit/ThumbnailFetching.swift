@@ -34,10 +34,8 @@ public func fetchThumbnails(
     }
 
     for itemIdentifier in itemIdentifiers {
-        logger.debug("Fetching thumbnail for item: \(itemIdentifier.rawValue, privacy: .public)")
-        let dbManager = FilesDatabaseManager.shared
-        guard let metadata = dbManager.itemMetadataFromFileProviderItemIdentifier(itemIdentifier),
-              let thumbnailUrl = metadata.thumbnailUrl(size: size)
+        guard let item = Item.storedItem(identifier: itemIdentifier, usingKit: ncKit),
+              let thumbnailUrl = item.metadata.thumbnailUrl(size: size)
         else {
             logger.debug("Unknown thumbnail URL for: \(itemIdentifier.rawValue, privacy: .public)")
             finishCurrent()
@@ -45,7 +43,7 @@ public func fetchThumbnails(
         }
 
         logger.debug(
-            "Fetching thumbnail for: \(metadata.fileName) at: \(thumbnailUrl, privacy: .public)"
+            "Fetching thumbnail for: \(item.metadata.fileName) (\(thumbnailUrl, privacy: .public))"
         )
 
         ncKit.getPreview(url: thumbnailUrl) { _, data, error in
