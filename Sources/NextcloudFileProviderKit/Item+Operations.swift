@@ -79,11 +79,10 @@ extension Item {
         parentItemRemotePath: String,
         domain: NSFileProviderDomain? = nil,
         ncKit: NextcloudKit,
+        ncAccount: Account,
         progress: Progress
     ) async -> (Item?, Error?) {
-        let (account, ocId, etag, date, size, error) = await withCheckedContinuation { 
-            continuation in
-            
+        let (ocId, etag, date, size, error) = await withCheckedContinuation {  continuation in
             ncKit.upload(
                 serverUrlFileName: remotePath,
                 fileNameLocalPath: localPath,
@@ -102,9 +101,10 @@ extension Item {
                 progressHandler: { uploadProgress in
                     uploadProgress.copyCurrentStateToProgress(progress)
                 }
-            ) { account, ocId, etag, date, size, _, _, error in
+            ) { _, ocId, etag, date, size, _, _, error in
+                // The account string in this completion handler can be empty! (see HACK below)
                 continuation.resume(
-                    returning: (account, ocId, etag, date, size, error.fileProviderError)
+                    returning: (ocId, etag, date, size, error.fileProviderError)
                 )
             }
         }
@@ -128,7 +128,6 @@ extension Item {
             etag: \(etag ?? "", privacy: .public)
             date: \(date ?? NSDate(), privacy: .public)
             size: \(size, privacy: .public)
-            account: \(account, privacy: .public)
             """
         )
 
@@ -145,7 +144,7 @@ extension Item {
         let newMetadata = ItemMetadata()
         newMetadata.date = (date ?? NSDate()) as Date
         newMetadata.etag = etag ?? ""
-        newMetadata.account = account
+        newMetadata.account = ncAccount.ncKitAccount // HACK: Workaround empty account from NCKit
         newMetadata.fileName = itemTemplate.filename
         newMetadata.fileNameView = itemTemplate.filename
         newMetadata.ocId = ocId
@@ -256,6 +255,7 @@ extension Item {
             parentItemRemotePath: parentItemRemotePath,
             domain: domain,
             ncKit: ncKit,
+            ncAccount: ncAccount,
             progress: progress
         )
     }
