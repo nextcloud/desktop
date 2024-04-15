@@ -31,7 +31,6 @@ class OWNCLOUDGUI_EXPORT NetworkInformation : public QObject
     Q_OBJECT
 
 public:
-    static void initialize();
     static NetworkInformation *instance();
 
     bool isMetered();
@@ -55,6 +54,8 @@ private Q_SLOTS:
     void slotIsBehindCaptivePortalChanged(bool state);
 
 private:
+    NetworkInformation();
+
     static NetworkInformation *_instance;
 
     bool _forcedCaptivePortal = false;

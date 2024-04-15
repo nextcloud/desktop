@@ -456,9 +456,6 @@ void AccountSettings::slotAccountStateChanged()
                                .arg(Utility::escape(safeUrl.toString()));
 
     switch (state) {
-    case AccountState::PausedDueToMetered:
-        showConnectionLabel(tr("Sync to %1 is paused due to metered internet connection.").arg(server));
-        break;
     case AccountState::Connected: {
         QStringList errors;
         if (account->serverSupportLevel() != Account::ServerSupportLevel::Supported) {
@@ -483,6 +480,8 @@ void AccountSettings::slotAccountStateChanged()
     case AccountState::Connecting:
         if (NetworkInformation::instance()->isBehindCaptivePortal()) {
             showConnectionLabel(tr("Captive portal prevents connections to %1.").arg(server));
+        } else if (NetworkInformation::instance()->isMetered()) {
+            showConnectionLabel(tr("Sync to %1 is paused due to metered internet connection.").arg(server));
         } else {
             showConnectionLabel(tr("Connecting to: %1.").arg(server));
         }

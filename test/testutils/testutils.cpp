@@ -2,7 +2,6 @@
 
 #include "common/checksums.h"
 #include "gui/accountmanager.h"
-#include "gui/networkinformation.h"
 #include "libsync/creds/httpcredentials.h"
 
 #include <QCoreApplication>
@@ -28,8 +27,6 @@ namespace OCC {
 namespace TestUtils {
     TestUtilsPrivate::AccountStateRaii createDummyAccount()
     {
-        // ensure we have an instance of NetworkInformation
-        NetworkInformation::initialize();
         // ensure we have an instance of folder man
         std::ignore = folderMan();
         // don't use the account manager to create the account, it would try to use widgets

@@ -20,6 +20,7 @@
 #include "common/asserts.h"
 #include "configfile.h"
 #include "folder.h"
+#include "gui/networkinformation.h"
 #include "guiutility.h"
 #include "libsync/syncengine.h"
 #include "lockwatcher.h"
@@ -73,7 +74,9 @@ void TrayOverallStatusResult::addResult(Folder *f)
         lastSyncDone = time;
     }
 
-    auto status = f->syncPaused() || f->accountState()->state() == AccountState::PausedDueToMetered ? SyncResult::Paused : f->syncResult().status();
+    auto status = f->syncPaused() || NetworkInformation::instance()->isBehindCaptivePortal() || NetworkInformation::instance()->isMetered()
+        ? SyncResult::Paused
+        : f->syncResult().status();
     if (status == SyncResult::Undefined) {
         status = SyncResult::Problem;
     }

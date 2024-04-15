@@ -138,19 +138,38 @@ AccountState::AccountState(AccountPtr account)
         if (ConfigFile().pauseSyncWhenMetered()) {
             if (state() == State::Connected && isMetered) {
                 qCInfo(lcAccountState) << "Network switched to a metered connection, setting account state to PausedDueToMetered";
-                setState(State::PausedDueToMetered);
-            } else if (state() == State::PausedDueToMetered && !isMetered) {
+                setState(State::Connecting);
+            } else if (state() == State::Connecting && !isMetered) {
                 qCInfo(lcAccountState) << "Network switched to a NON-metered connection, setting account state to Connected";
                 setState(State::Connected);
             }
         }
     });
 
-    connect(NetworkInformation::instance(), &NetworkInformation::isBehindCaptivePortalChanged, this, [this](bool) {
+    connect(NetworkInformation::instance(), &NetworkInformation::isBehindCaptivePortalChanged, this, [this](bool onoff) {
+        if (onoff) {
+            // Block jobs from starting: they will fail because of the captive portal.
+            // Note: this includes the `Drives` jobs started periodically by the `SpacesManager`.
+            _queueGuard.block();
+        } else {
+            // Empty the jobs queue before unblocking it. The client might have been behind a captive
+            // portal for hours, so a whole bunch of jobs might have queued up. If we wouldn't
+            // clear the queue, unleashing all those jobs might look like a DoS attack. Most of them
+            // are also not very useful anymore (e.g. `Drives` jobs), and the important ones (PUT jobs)
+            // will be rescheduled by a directory scan.
+            _account->jobQueue()->clear();
+            _queueGuard.unblock();
+        }
+
         // A direct connect is not possible, because then the state parameter of `isBehindCaptivePortalChanged`
         // would become the `verifyServerState` argument to `checkConnectivity`.
+        // The call is also made for when we "go behind" a captive portal. That ensures that not
+        // only the status is set to `Connecting`, but also makes the UI show that syncing is paused.
         QTimer::singleShot(0, this, [this] { checkConnectivity(false); });
     });
+    if (NetworkInformation::instance()->isBehindCaptivePortal()) {
+        _queueGuard.block();
+    }
 
     // as a fallback and to recover after server issues we also poll
     auto timer = new QTimer(this);
@@ -172,22 +191,6 @@ AccountState::AccountState(AccountPtr account)
         ownCloudGui::raise();
         msgBox->open();
     });
-
-
-    connect(NetworkInformation::instance(), &NetworkInformation::isBehindCaptivePortalChanged, this, [this](bool onoff) {
-        if (onoff) {
-            _queueGuard.block();
-        } else {
-            // TODO: empty queue?
-            _queueGuard.unblock();
-        }
-    });
-    if (NetworkInformation::instance()->isBehindCaptivePortal()) {
-        _queueGuard.block();
-    } else {
-        // TODO: empty queue?
-        _queueGuard.unblock();
-    }
 }
 
 AccountState::~AccountState() { }
@@ -261,8 +264,11 @@ void AccountState::setState(State state)
             _connectionValidator->deleteLater();
             _connectionValidator.clear();
             checkConnectivity();
-        } else if (_state == Connected && NetworkInformation::instance()->isMetered() && ConfigFile().pauseSyncWhenMetered()) {
-            _state = PausedDueToMetered;
+        } else if (_state == Connected) {
+            if ((NetworkInformation::instance()->isMetered() && ConfigFile().pauseSyncWhenMetered())
+                || NetworkInformation::instance()->isBehindCaptivePortal()) {
+                _state = Connecting;
+            }
         }
     }
 
@@ -323,7 +329,7 @@ void AccountState::signIn()
 
 bool AccountState::isConnected() const
 {
-    return _state == Connected || _state == PausedDueToMetered;
+    return _state == Connected;
 }
 
 void AccountState::tagLastSuccessfullETagRequest(const QDateTime &tp)

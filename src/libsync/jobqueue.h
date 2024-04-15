@@ -47,13 +47,14 @@ public:
 
     size_t size() const;
 
-private:
-    void block();
-    void unblock();
     /**
      * Clear the queue and abort all jobs
      */
     void clear();
+
+private:
+    void block();
+    void unblock();
 
     Account *_account;
     uint _blocked = 0;

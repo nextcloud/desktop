@@ -92,7 +92,6 @@ private Q_SLOTS:
 
         // init folder man
         std::ignore = TestUtils::folderMan();
-        NetworkInformation::initialize();
         AccountManager::instance()->restore();
 
         settings->beginGroup(QStringLiteral("0/Folders"));

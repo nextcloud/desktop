@@ -82,11 +82,6 @@ public:
         /// We are currently asking the user for credentials
         AskingCredentials,
 
-        /// We are on a metered internet connection, and the user preference
-        /// is to pause syncing in this case. This state is entered from and
-        /// left to a `Connected` state.
-        PausedDueToMetered,
-
         Connecting
     };
     Q_ENUM(State)

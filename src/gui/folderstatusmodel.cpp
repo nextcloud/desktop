@@ -16,6 +16,7 @@
 #include "account.h"
 #include "accountstate.h"
 #include "folderman.h"
+#include "gui/networkinformation.h"
 #include "gui/quotainfo.h"
 #include "theme.h"
 
@@ -49,7 +50,7 @@ namespace {
         auto status = f->syncResult();
         if (!f->accountState()->isConnected()) {
             status.setStatus(SyncResult::Status::Offline);
-        } else if (f->syncPaused() || f->accountState()->state() == AccountState::PausedDueToMetered) {
+        } else if (f->syncPaused() || NetworkInformation::instance()->isBehindCaptivePortal() || NetworkInformation::instance()->isMetered()) {
             status.setStatus(SyncResult::Status::Paused);
         }
         return QStringLiteral("states/%1").arg(Theme::instance()->syncStateIconName(status));

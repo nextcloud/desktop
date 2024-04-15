@@ -1,4 +1,5 @@
 #include "configfile.h"
+#include "gui/networkinformation.h"
 #include "logger.h"
 #include "resources/loadresources.h"
 #include "testutils.h"
@@ -19,6 +20,9 @@ void setUpTests()
     OCC::Logger::instance()->setLogDebug(true);
 
     OCC::Account::setCommonCacheDirectory(QStringLiteral("%1/cache").arg(dir.path()));
+
+    // ensure we have an instance of NetworkInformation
+    OCC::NetworkInformation::instance();
 }
 Q_COREAPP_STARTUP_FUNCTION(setUpTests)
 }

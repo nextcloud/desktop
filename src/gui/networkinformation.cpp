@@ -20,9 +20,11 @@ using namespace OCC;
 
 Q_LOGGING_CATEGORY(lcNetInfo, "gui.netinfo", QtInfoMsg)
 
-NetworkInformation *NetworkInformation::_instance;
+NetworkInformation *NetworkInformation::_instance = nullptr;
 
-static void loadQNetworkInformationBackend()
+namespace {
+
+void loadQNetworkInformationBackend()
 {
     if (!QNetworkInformation::loadDefaultBackend()) {
         qCWarning(lcNetInfo) << "Failed to load default backend of QNetworkInformation.";
@@ -44,25 +46,24 @@ static void loadQNetworkInformationBackend()
     }
 }
 
-void NetworkInformation::initialize()
-{
-    if (_instance) {
-        return;
-    }
+} // anonymous namespace
 
-    _instance = new NetworkInformation;
-
-    loadQNetworkInformationBackend();
-
-    if (auto qni = QNetworkInformation::instance()) {
-        connect(qni, &QNetworkInformation::isMeteredChanged, _instance, &NetworkInformation::isMeteredChanged);
-        connect(qni, &QNetworkInformation::reachabilityChanged, _instance, &NetworkInformation::reachabilityChanged);
-        connect(qni, &QNetworkInformation::isBehindCaptivePortalChanged, _instance, &NetworkInformation::slotIsBehindCaptivePortalChanged);
-    }
-}
+NetworkInformation::NetworkInformation() { }
 
 NetworkInformation *NetworkInformation::instance()
 {
+    if (!_instance) {
+        _instance = new NetworkInformation;
+
+        loadQNetworkInformationBackend();
+
+        if (auto qni = QNetworkInformation::instance()) {
+            connect(qni, &QNetworkInformation::isMeteredChanged, _instance, &NetworkInformation::isMeteredChanged);
+            connect(qni, &QNetworkInformation::reachabilityChanged, _instance, &NetworkInformation::reachabilityChanged);
+            connect(qni, &QNetworkInformation::isBehindCaptivePortalChanged, _instance, &NetworkInformation::slotIsBehindCaptivePortalChanged);
+        }
+    }
+
     return _instance;
 }
 
