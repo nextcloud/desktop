@@ -22,7 +22,6 @@ extension Logger {
     static let fpUiExtensionService = Logger(subsystem: subsystem, category: "fpUiExtensionService")
     static let fileProviderExtension = Logger(
         subsystem: subsystem, category: "fileproviderextension")
-    static let fileTransfer = Logger(subsystem: subsystem, category: "filetransfer")
     static let shares = Logger(subsystem: subsystem, category: "shares")
     static let logger = Logger(subsystem: subsystem, category: "logger")
 
