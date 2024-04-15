@@ -534,7 +534,7 @@ extension Item {
         if size != documentSize as? Int64 {
             Self.logger.warning(
                 """
-                Created item upload reported as successful,
+                Item content modification upload reported as successful,
                 but there are differences between the received file size (\(size, privacy: .public))
                 and the original file size (\(self.documentSize?.int64Value ?? 0))
                 """
