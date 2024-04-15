@@ -76,7 +76,6 @@ extension Item {
         remotePath: String,
         localPath: String,
         itemTemplate: NSFileProviderItem,
-        parentItemIdentifier: NSFileProviderItemIdentifier,
         parentItemRemotePath: String,
         domain: NSFileProviderDomain? = nil,
         ncKit: NextcloudKit,
@@ -157,7 +156,9 @@ extension Item {
         dbManager.addItemMetadata(newMetadata)
 
         let fpItem = Item(
-            metadata: newMetadata, parentItemIdentifier: parentItemIdentifier, ncKit: ncKit
+            metadata: newMetadata,
+            parentItemIdentifier: itemTemplate.parentItemIdentifier,
+            ncKit: ncKit
         )
 
         return (fpItem, nil)
@@ -244,7 +245,6 @@ extension Item {
             remotePath: newServerUrlFileName,
             localPath: fileNameLocalPath,
             itemTemplate: itemTemplate,
-            parentItemIdentifier: parentItemIdentifier,
             parentItemRemotePath: parentItemRemotePath,
             domain: domain,
             ncKit: ncKit,
