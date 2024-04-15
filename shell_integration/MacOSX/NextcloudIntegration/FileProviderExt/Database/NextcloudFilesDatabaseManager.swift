@@ -19,57 +19,50 @@ import OSLog
 import RealmSwift
 
 class NextcloudFilesDatabaseManager {
-    static let shared = NextcloudFilesDatabaseManager()
+    static let shared = NextcloudFilesDatabaseManager()!
 
-    let relativeDatabaseFolderPath = "Database/"
-    let databaseFilename = "fileproviderextdatabase.realm"
-    let relativeDatabaseFilePath: String
-    var databasePath: URL?
+    private static let relativeDatabaseFolderPath = "Database/"
+    private static let databaseFilename = "fileproviderextdatabase.realm"
+    private static let schemaVersion: UInt64 = 100
 
-    let schemaVersion: UInt64 = 100
+    init(realmConfig: Realm.Configuration = Realm.Configuration.defaultConfiguration) {
+        Realm.Configuration.defaultConfiguration = realmConfig
 
-    override init() {
-        relativeDatabaseFilePath = relativeDatabaseFolderPath + databaseFilename
+        do {
+            _ = try Realm()
+            Logger.ncFilesDatabase.info("Successfully started Realm db for FileProviderExt")
+        } catch let error {
+            Logger.ncFilesDatabase.error("Error opening Realm db: \(error, privacy: .public)")
+        }
+    }
 
-        guard let fileProviderDataDirUrl = pathForFileProviderExtData() else { return }
-
-        databasePath = fileProviderDataDirUrl.appendingPathComponent(relativeDatabaseFilePath)
+    convenience init?() {
+        let relativeDatabaseFilePath = Self.relativeDatabaseFolderPath + Self.databaseFilename
+        guard let fileProviderDataDirUrl = pathForFileProviderExtData() else { return nil }
+        let databasePath = fileProviderDataDirUrl.appendingPathComponent(relativeDatabaseFilePath)
 
         // Disable file protection for directory DB
-        // https://docs.mongodb.com/realm/sdk/ios/examples/configure-and-open-a-realm/#std-label-ios-open-a-local-realm
-        let dbFolder = fileProviderDataDirUrl.appendingPathComponent(relativeDatabaseFolderPath)
+        // https://docs.mongodb.com/realm/sdk/ios/examples/configure-and-open-a-realm/
+        let dbFolder = fileProviderDataDirUrl.appendingPathComponent(Self.relativeDatabaseFolderPath)
         let dbFolderPath = dbFolder.path
         do {
             try FileManager.default.createDirectory(at: dbFolder, withIntermediateDirectories: true)
             try FileManager.default.setAttributes(
-                [
-                    FileAttributeKey.protectionKey: FileProtectionType
-                        .completeUntilFirstUserAuthentication
-                ],
-                ofItemAtPath: dbFolderPath)
+                [.protectionKey: FileProtectionType.completeUntilFirstUserAuthentication],
+                ofItemAtPath: dbFolderPath
+            )
         } catch {
             Logger.ncFilesDatabase.error(
-                "Could not set permission level for File Provider database folder, received error: \(error.localizedDescription, privacy: .public)"
+                "Could not set permission level for db folder: \(error, privacy: .public)"
             )
         }
 
         let config = Realm.Configuration(
             fileURL: databasePath,
-            schemaVersion: schemaVersion,
+            schemaVersion: Self.schemaVersion,
             objectTypes: [NextcloudItemMetadataTable.self, NextcloudLocalFileMetadataTable.self]
         )
-
-        Realm.Configuration.defaultConfiguration = config
-
-        do {
-            _ = try Realm()
-            Logger.ncFilesDatabase.info("Successfully started Realm db for FileProviderExt")
-        } catch let error as NSError {
-            Logger.ncFilesDatabase.error(
-                "Error opening Realm db: \(error.localizedDescription, privacy: .public)")
-        }
-
-        super.init()
+        self.init(realmConfig: config)
     }
 
     func ncDatabase() -> Realm {
