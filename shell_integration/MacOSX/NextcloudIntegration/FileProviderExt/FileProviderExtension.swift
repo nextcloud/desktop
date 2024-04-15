@@ -85,10 +85,11 @@ import OSLog
         )
     }
 
-    // MARK: NSFileProviderReplicatedExtension protocol methods
+    // MARK: - NSFileProviderReplicatedExtension protocol methods
 
     func item(
-        for identifier: NSFileProviderItemIdentifier, request _: NSFileProviderRequest,
+        for identifier: NSFileProviderItemIdentifier, 
+        request _: NSFileProviderRequest,
         completionHandler: @escaping (NSFileProviderItem?, Error?) -> Void
     ) -> Progress {
         // resolve the given identifier to a record in the model
@@ -96,8 +97,9 @@ import OSLog
         Logger.fileProviderExtension.debug(
             "Received item request for item with identifier: \(identifier.rawValue, privacy: .public)"
         )
+
         if identifier == .rootContainer {
-            guard let ncAccount else {
+            guard ncAccount != nil else {
                 Logger.fileProviderExtension.error(
                     "Not providing item: \(identifier.rawValue, privacy: .public) as account not set up yet"
                 )
@@ -105,20 +107,7 @@ import OSLog
                 return Progress()
             }
 
-            let metadata = ItemMetadata()
-
-            metadata.account = ncAccount.ncKitAccount
-            metadata.directory = true
-            metadata.ocId = NSFileProviderItemIdentifier.rootContainer.rawValue
-            metadata.fileName = "root"
-            metadata.fileNameView = "root"
-            metadata.serverUrl = ncAccount.serverUrl
-            metadata.classFile = NKCommon.TypeClassFile.directory.rawValue
-
-            completionHandler(
-                Item(metadata: metadata, parentItemIdentifier: .rootContainer, ncKit: ncKit),
-                nil
-            )
+            completionHandler(Item.rootContainer(ncKit: ncKit), nil)
             return Progress()
         }
 
@@ -132,8 +121,7 @@ import OSLog
         }
 
         completionHandler(
-            Item(metadata: metadata, parentItemIdentifier: parentItemIdentifier, ncKit: ncKit),
-            nil
+            Item(metadata: metadata, parentItemIdentifier: parentItemIdentifier, ncKit: ncKit), nil
         )
         return Progress()
     }
