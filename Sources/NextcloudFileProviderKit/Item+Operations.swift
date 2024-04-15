@@ -81,7 +81,9 @@ extension Item {
         ncKit: NextcloudKit,
         progress: Progress
     ) async -> (Item?, Error?) {
-        let (account, ocId, etag, date, size, error) = await withCheckedContinuation { continuation in
+        let (account, ocId, etag, date, size, error) = await withCheckedContinuation { 
+            continuation in
+            
             ncKit.upload(
                 serverUrlFileName: remotePath,
                 fileNameLocalPath: localPath,
@@ -207,7 +209,8 @@ extension Item {
                 Self.logger.error(
                     """
                     Not creating item: \(itemTemplate.itemIdentifier.rawValue, privacy: .public),
-                    could not find metadata for parentItemIdentifier \(parentItemIdentifier.rawValue, privacy: .public)
+                    could not find metadata for parentItemIdentifier:
+                        \(parentItemIdentifier.rawValue, privacy: .public)
                     """
                 )
                 return (nil, NSFileProviderError(.noSuchItem))
