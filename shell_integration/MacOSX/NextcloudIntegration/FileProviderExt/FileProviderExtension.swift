@@ -587,8 +587,10 @@ import OSLog
                     }
 
                     modifiedItem = FileProviderItem(
-                        metadata: newMetadata, parentItemIdentifier: parentItemIdentifier,
-                        ncKit: self.ncKit)
+                        metadata: newMetadata, 
+                        parentItemIdentifier: parentItemIdentifier,
+                        ncKit: self.ncKit
+                    )
                     moveFileOrFolderDispatchGroup.leave()
                 }
 
