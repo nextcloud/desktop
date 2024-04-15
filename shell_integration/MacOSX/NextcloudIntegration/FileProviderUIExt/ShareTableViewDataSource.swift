@@ -8,6 +8,7 @@
 import AppKit
 import FileProvider
 import NextcloudKit
+import NextcloudFileProviderKit
 import NextcloudCapabilitiesKit
 import OSLog
 
