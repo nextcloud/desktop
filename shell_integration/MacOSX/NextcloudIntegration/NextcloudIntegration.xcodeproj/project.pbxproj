@@ -34,6 +34,7 @@
 		537630952B860D560026BFAB /* FPUIExtensionServiceSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 537630942B860D560026BFAB /* FPUIExtensionServiceSource.swift */; };
 		537630972B860D920026BFAB /* FPUIExtensionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 537630962B860D920026BFAB /* FPUIExtensionService.swift */; };
 		537630982B8612F00026BFAB /* FPUIExtensionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 537630962B860D920026BFAB /* FPUIExtensionService.swift */; };
+		5388E8AA2BCD0E0B00557E8A /* FileProviderExtTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5388E8A92BCD0E0B00557E8A /* FileProviderExtTests.swift */; };
 		538E396A27F4765000FA63D5 /* UniformTypeIdentifiers.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 538E396927F4765000FA63D5 /* UniformTypeIdentifiers.framework */; };
 		538E396D27F4765000FA63D5 /* FileProviderExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 538E396C27F4765000FA63D5 /* FileProviderExtension.swift */; };
 		538E396F27F4765000FA63D5 /* FileProviderItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 538E396E27F4765000FA63D5 /* FileProviderItem.swift */; };
@@ -75,6 +76,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		5388E8AB2BCD0E0B00557E8A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C2B573951B1CD88000303B36 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = C2B573B01B1CD91E00303B36;
+			remoteInfo = desktopclient;
+		};
 		538E397427F4765000FA63D5 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = C2B573951B1CD88000303B36 /* Project object */;
@@ -185,6 +193,8 @@
 		537630922B85F4B00026BFAB /* ShareViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareViewController.swift; sourceTree = "<group>"; };
 		537630942B860D560026BFAB /* FPUIExtensionServiceSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FPUIExtensionServiceSource.swift; sourceTree = "<group>"; };
 		537630962B860D920026BFAB /* FPUIExtensionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FPUIExtensionService.swift; sourceTree = "<group>"; };
+		5388E8A72BCD0E0B00557E8A /* FileProviderExtTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FileProviderExtTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		5388E8A92BCD0E0B00557E8A /* FileProviderExtTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileProviderExtTests.swift; sourceTree = "<group>"; };
 		538E396727F4765000FA63D5 /* FileProviderExt.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = FileProviderExt.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		538E396927F4765000FA63D5 /* UniformTypeIdentifiers.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UniformTypeIdentifiers.framework; path = System/Library/Frameworks/UniformTypeIdentifiers.framework; sourceTree = SDKROOT; };
 		538E396C27F4765000FA63D5 /* FileProviderExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileProviderExtension.swift; sourceTree = "<group>"; };
@@ -230,6 +240,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		5388E8A42BCD0E0B00557E8A /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		538E396427F4765000FA63D5 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -321,6 +338,14 @@
 			path = Extensions;
 			sourceTree = "<group>";
 		};
+		5388E8A82BCD0E0B00557E8A /* FileProviderExtTests */ = {
+			isa = PBXGroup;
+			children = (
+				5388E8A92BCD0E0B00557E8A /* FileProviderExtTests.swift */,
+			);
+			path = FileProviderExtTests;
+			sourceTree = "<group>";
+		};
 		538E396827F4765000FA63D5 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -391,6 +416,7 @@
 				C2B573B31B1CD91E00303B36 /* desktopclient */,
 				C2B573D81B1CD9CE00303B36 /* FinderSyncExt */,
 				538E396B27F4765000FA63D5 /* FileProviderExt */,
+				5388E8A82BCD0E0B00557E8A /* FileProviderExtTests */,
 				53B9797F2B84C81F002DA742 /* FileProviderUIExt */,
 				53903D0D2956164F00D0B308 /* NCDesktopClientSocketKit */,
 				538E396827F4765000FA63D5 /* Frameworks */,
@@ -406,6 +432,7 @@
 				538E396727F4765000FA63D5 /* FileProviderExt.appex */,
 				53903D0C2956164F00D0B308 /* NCDesktopClientSocketKit.framework */,
 				53B9797E2B84C81F002DA742 /* FileProviderUIExt.appex */,
+				5388E8A72BCD0E0B00557E8A /* FileProviderExtTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -470,6 +497,24 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
+		5388E8A62BCD0E0B00557E8A /* FileProviderExtTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 5388E8AD2BCD0E0B00557E8A /* Build configuration list for PBXNativeTarget "FileProviderExtTests" */;
+			buildPhases = (
+				5388E8A32BCD0E0B00557E8A /* Sources */,
+				5388E8A42BCD0E0B00557E8A /* Frameworks */,
+				5388E8A52BCD0E0B00557E8A /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				5388E8AC2BCD0E0B00557E8A /* PBXTargetDependency */,
+			);
+			name = FileProviderExtTests;
+			productName = FileProviderExtTests;
+			productReference = 5388E8A72BCD0E0B00557E8A /* FileProviderExtTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		538E396627F4765000FA63D5 /* FileProviderExt */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 538E397927F4765000FA63D5 /* Build configuration list for PBXNativeTarget "FileProviderExt" */;
@@ -586,9 +631,13 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = YES;
-				LastSwiftUpdateCheck = 1520;
+				LastSwiftUpdateCheck = 1530;
 				LastUpgradeCheck = 1240;
 				TargetAttributes = {
+					5388E8A62BCD0E0B00557E8A = {
+						CreatedOnToolsVersion = 15.3;
+						TestTargetID = C2B573B01B1CD91E00303B36;
+					};
 					538E396627F4765000FA63D5 = {
 						CreatedOnToolsVersion = 13.3;
 					};
@@ -641,11 +690,19 @@
 				538E396627F4765000FA63D5 /* FileProviderExt */,
 				53B9797D2B84C81F002DA742 /* FileProviderUIExt */,
 				53903D0B2956164F00D0B308 /* NCDesktopClientSocketKit */,
+				5388E8A62BCD0E0B00557E8A /* FileProviderExtTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		5388E8A52BCD0E0B00557E8A /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		538E396527F4765000FA63D5 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -709,6 +766,14 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		5388E8A32BCD0E0B00557E8A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5388E8AA2BCD0E0B00557E8A /* FileProviderExtTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		538E396327F4765000FA63D5 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -786,6 +851,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		5388E8AC2BCD0E0B00557E8A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = C2B573B01B1CD91E00303B36 /* desktopclient */;
+			targetProxy = 5388E8AB2BCD0E0B00557E8A /* PBXContainerItemProxy */;
+		};
 		538E397527F4765000FA63D5 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 538E396627F4765000FA63D5 /* FileProviderExt */;
@@ -818,6 +888,97 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
+		5388E8AE2BCD0E0B00557E8A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = NKUJUXUJ3B;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GENERATE_INFOPLIST_FILE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 14.2;
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.nextcloud.FileProviderExtTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/desktopclient.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/desktopclient";
+			};
+			name = Debug;
+		};
+		5388E8AF2BCD0E0B00557E8A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = NKUJUXUJ3B;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GENERATE_INFOPLIST_FILE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 14.2;
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.nextcloud.FileProviderExtTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/desktopclient.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/desktopclient";
+			};
+			name = Release;
+		};
 		538E397727F4765000FA63D5 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1466,6 +1627,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		5388E8AD2BCD0E0B00557E8A /* Build configuration list for PBXNativeTarget "FileProviderExtTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5388E8AE2BCD0E0B00557E8A /* Debug */,
+				5388E8AF2BCD0E0B00557E8A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		538E397927F4765000FA63D5 /* Build configuration list for PBXNativeTarget "FileProviderExt" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
