@@ -109,8 +109,6 @@ static constexpr char forceLoginV2C[] = "forceLoginV2";
 
 static constexpr char certPath[] = "http_certificatePath";
 static constexpr char certPasswd[] = "http_certificatePasswd";
-
-static const QSet validUpdateChannels { QStringLiteral("stable"), QStringLiteral("beta") };
 }
 
 namespace OCC {
@@ -700,7 +698,7 @@ QString ConfigFile::updateChannel() const
 
     QSettings settings(configFile(), QSettings::IniFormat);
     const auto channel = settings.value(QLatin1String(updateChannelC), defaultUpdateChannel).toString();
-    if (!validUpdateChannels.contains(channel)) {
+    if (!validUpdateChannels().contains(channel)) {
         qCWarning(lcConfigFile()) << "Received invalid update channel from confog:"
                                   << channel
                                   << "defaulting to:"
@@ -711,12 +709,17 @@ QString ConfigFile::updateChannel() const
     return channel;
 }
 
+QStringList ConfigFile::validUpdateChannels() const
+{
+    return { QStringLiteral("stable"), QStringLiteral("beta"), QStringLiteral("daily") };
+}
+
 void ConfigFile::setUpdateChannel(const QString &channel)
 {
-    if (!validUpdateChannels.contains(channel)) {
+    if (!validUpdateChannels().contains(channel)) {
         qCWarning(lcConfigFile()) << "Received invalid update channel:"
                                   << channel
-                                  << "can only accept 'stable' or 'beta'. Ignoring.";
+                                  << "can only accept 'stable', 'beta' or 'daily'. Ignoring.";
         return;
     }
 

@@ -196,6 +196,7 @@ public:
     [[nodiscard]] int updateSegment() const;
 
     [[nodiscard]] QString updateChannel() const;
+    [[nodiscard]] QStringList validUpdateChannels() const;
     void setUpdateChannel(const QString &channel);
 
     [[nodiscard]] QString overrideServerUrl() const;
