@@ -109,7 +109,7 @@ extension Item {
             }
         }
 
-        guard error == nil, let ocId = ocId else {
+        guard error == nil, let ocId else {
             Self.logger.error(
                 """
                 Could not upload item with filename: \(itemTemplate.filename, privacy: .public),
@@ -123,7 +123,12 @@ extension Item {
         Self.logger.info(
             """
             Successfully uploaded item with identifier: \(ocId, privacy: .public)
-            and filename: \(itemTemplate.filename, privacy: .public)
+            filename: \(itemTemplate.filename, privacy: .public)
+            ocId: \(ocId, privacy: .public)
+            etag: \(etag ?? "", privacy: .public)
+            date: \(date ?? NSDate(), privacy: .public)
+            size: \(size, privacy: .public)
+            account: \(account, privacy: .public)
             """
         )
 
@@ -138,7 +143,6 @@ extension Item {
         }
 
         let newMetadata = ItemMetadata()
-        newMetadata.account = account
         newMetadata.date = (date ?? NSDate()) as Date
         newMetadata.etag = etag ?? ""
         newMetadata.account = account
