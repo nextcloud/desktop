@@ -804,7 +804,7 @@ import OSLog
             throw NSFileProviderError(.notAuthenticated)
         }
 
-        return FileProviderEnumerator(
+        return Enumerator(
             enumeratedItemIdentifier: containerItemIdentifier,
             ncAccount: ncAccount,
             ncKit: ncKit,
