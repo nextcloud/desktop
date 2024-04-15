@@ -831,7 +831,7 @@ import OSLog
         }
 
         let materialisedEnumerator = fpManager.enumeratorForMaterializedItems()
-        let materialisedObserver = FileProviderMaterialisedEnumerationObserver(
+        let materialisedObserver = MaterialisedEnumerationObserver(
             ncKitAccount: ncAccount.ncKitAccount
         ) { _ in
             completionHandler()
