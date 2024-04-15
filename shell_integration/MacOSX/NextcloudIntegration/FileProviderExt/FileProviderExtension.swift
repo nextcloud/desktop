@@ -243,7 +243,7 @@ import OSLog
             return Progress()
         }
 
-        guard let item = Item.storedItem(identifier: identifier, usingKit: ncKit) else {
+        guard let existingItem = Item.storedItem(identifier: identifier, usingKit: ncKit) else {
             Logger.fileProviderExtension.error(
                 "Not modifying item: \(ocId, privacy: .public) as item not found."
             )
@@ -253,7 +253,8 @@ import OSLog
 
         let progress = Progress()
         Task {
-            let (modifiedItem, error) = await item.modify(
+            let (modifiedItem, error) = await existingItem.modify(
+                itemTarget: item,
                 baseVersion: baseVersion,
                 changedFields: changedFields,
                 contents: newContents,
