@@ -138,6 +138,7 @@ extension Item {
         }
 
         let newMetadata = ItemMetadata()
+        newMetadata.account = account
         newMetadata.date = (date ?? NSDate()) as Date
         newMetadata.etag = etag ?? ""
         newMetadata.account = account
