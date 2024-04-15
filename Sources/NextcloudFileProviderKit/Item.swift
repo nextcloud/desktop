@@ -16,7 +16,7 @@ import FileProvider
 import NextcloudKit
 import UniformTypeIdentifiers
 
-public class FileProviderItem: NSObject, NSFileProviderItem {
+public class Item: NSObject, NSFileProviderItem {
     public enum FileProviderItemTransferError: Error {
         case downloadError
         case uploadError

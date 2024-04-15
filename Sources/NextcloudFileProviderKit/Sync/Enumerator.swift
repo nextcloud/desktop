@@ -351,12 +351,15 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
                     return
                 }
 
-                if let parentItemIdentifier = FilesDatabaseManager.shared
-                    .parentItemIdentifierFromMetadata(itemMetadata)
-                {
-                    let item = FileProviderItem(
-                        metadata: itemMetadata, parentItemIdentifier: parentItemIdentifier,
-                        ncKit: ncKit)
+                let dbManager = FilesDatabaseManager.shared
+                if let parentItemIdentifier = dbManager.parentItemIdentifierFromMetadata(
+                    itemMetadata
+                ) {
+                    let item = Item(
+                        metadata: itemMetadata, 
+                        parentItemIdentifier: parentItemIdentifier,
+                        ncKit: ncKit
+                    )
                     Self.logger.debug(
                         "Will enumerate item with ocId: \(itemMetadata.ocId, privacy: .public) and name: \(itemMetadata.fileName, privacy: .public)"
                     )
