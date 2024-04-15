@@ -15,6 +15,7 @@
 import FileProvider
 import NextcloudKit
 import UniformTypeIdentifiers
+import OSLog
 
 public class Item: NSObject, NSFileProviderItem {
     public enum FileProviderItemTransferError: Error {
@@ -163,6 +164,8 @@ public class Item: NSObject, NSFileProviderItem {
         return Item(metadata: metadata, parentItemIdentifier: .rootContainer, ncKit: ncKit)
     }
 
+    private static let logger = Logger(subsystem: Logger.subsystem, category: "item")
+
     public required init(
         metadata: ItemMetadata,
         parentItemIdentifier: NSFileProviderItemIdentifier,
@@ -172,5 +175,25 @@ public class Item: NSObject, NSFileProviderItem {
         self.parentItemIdentifier = parentItemIdentifier
         self.ncKit = ncKit
         super.init()
+    }
+
+    public static func storedItem(
+        identifier: NSFileProviderItemIdentifier,
+        usingKit ncKit: NextcloudKit
+    ) -> Item? {
+        // resolve the given identifier to a record in the model
+        Self.logger.debug(
+            "Received request for item with identifier: \(identifier.rawValue, privacy: .public)"
+        )
+
+        guard identifier != .rootContainer else { return Item.rootContainer(ncKit: ncKit) }
+
+        let dbManager = FilesDatabaseManager.shared
+
+        guard let metadata = dbManager.itemMetadataFromFileProviderItemIdentifier(identifier),
+              let parentItemIdentifier = dbManager.parentItemIdentifierFromMetadata(metadata)
+        else { return nil }
+
+        return Item(metadata: metadata, parentItemIdentifier: parentItemIdentifier, ncKit: ncKit)
     }
 }
