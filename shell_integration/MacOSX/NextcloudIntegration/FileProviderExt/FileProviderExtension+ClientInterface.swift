@@ -16,6 +16,7 @@ import FileProvider
 import Foundation
 import NCDesktopClientSocketKit
 import NextcloudKit
+import NextcloudFileProviderKit
 import OSLog
 
 extension FileProviderExtension: NSFileProviderServicing {
@@ -89,7 +90,7 @@ extension FileProviderExtension: NSFileProviderServicing {
     }
 
     @objc func setupDomainAccount(user: String, serverUrl: String, password: String) {
-        let newNcAccount = NextcloudAccount(user: user, serverUrl: serverUrl, password: password)
+        let newNcAccount = Account(user: user, serverUrl: serverUrl, password: password)
         guard newNcAccount != ncAccount else { return }
         ncAccount = newNcAccount
         ncKit.setup(

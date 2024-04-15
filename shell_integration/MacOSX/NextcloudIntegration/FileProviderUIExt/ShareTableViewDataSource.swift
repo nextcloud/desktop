@@ -35,7 +35,7 @@ class ShareTableViewDataSource: NSObject, NSTableViewDataSource, NSTableViewDele
     private(set) var shares: [NKShare] = [] {
         didSet { Task { @MainActor in sharesTableView?.reloadData() } }
     }
-    private var account: NextcloudAccount? {
+    private var account: Account? {
         didSet {
             guard let account = account else { return }
             kit = NextcloudKit()
@@ -86,7 +86,7 @@ class ShareTableViewDataSource: NSObject, NSTableViewDataSource, NSTableViewDele
             let connection = try await serviceConnection(url: itemURL)
             guard let serverPath = await connection.itemServerPath(identifier: itemIdentifier),
                   let credentials = await connection.credentials() as? Dictionary<String, String>,
-                  let convertedAccount = NextcloudAccount(dictionary: credentials),
+                  let convertedAccount = Account(dictionary: credentials),
                   !convertedAccount.password.isEmpty
             else {
                 presentError("Failed to get details from File Provider Extension. Retrying.")

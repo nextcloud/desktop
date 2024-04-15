@@ -15,13 +15,14 @@
 import FileProvider
 import NCDesktopClientSocketKit
 import NextcloudKit
+import NextcloudFileProviderKit
 import OSLog
 
 @objc class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKCommonDelegate {
     let domain: NSFileProviderDomain
     let ncKit = NextcloudKit()
     let appGroupIdentifier = Bundle.main.object(forInfoDictionaryKey: "SocketApiPrefix") as? String
-    var ncAccount: NextcloudAccount?
+    var ncAccount: Account?
     lazy var ncKitBackground = NKBackground(nkCommonInstance: ncKit.nkCommonInstance)
     lazy var socketClient: LocalSocketClient? = {
         guard let containerUrl = pathForAppGroupContainer() else {
@@ -104,7 +105,7 @@ import OSLog
                 return Progress()
             }
 
-            let metadata = NextcloudItemMetadataTable()
+            let metadata = ItemMetadata()
 
             metadata.account = ncAccount.ncKitAccount
             metadata.directory = true
@@ -122,7 +123,7 @@ import OSLog
             return Progress()
         }
 
-        let dbManager = NextcloudFilesDatabaseManager.shared
+        let dbManager = FilesDatabaseManager.shared
 
         guard let metadata = dbManager.itemMetadataFromFileProviderItemIdentifier(identifier),
             let parentItemIdentifier = dbManager.parentItemIdentifierFromMetadata(metadata)
@@ -164,7 +165,7 @@ import OSLog
             return Progress()
         }
 
-        let dbManager = NextcloudFilesDatabaseManager.shared
+        let dbManager = FilesDatabaseManager.shared
         let ocId = itemIdentifier.rawValue
         guard let metadata = dbManager.itemMetadataFromOcId(ocId) else {
             Logger.fileProviderExtension.error(
@@ -196,7 +197,7 @@ import OSLog
                 ocId: metadata.ocId, fileNameView: metadata.fileNameView, domain: domain)
 
             dbManager.setStatusForItemMetadata(
-                metadata, status: NextcloudItemMetadataTable.Status.downloading
+                metadata, status: ItemMetadata.Status.downloading
             ) { updatedMetadata in
 
                 guard let updatedMetadata else {
@@ -227,7 +228,7 @@ import OSLog
                             "Acquired contents of item with identifier: \(itemIdentifier.rawValue, privacy: .public) and filename: \(updatedMetadata.fileName, privacy: .public)"
                         )
 
-                        updatedMetadata.status = NextcloudItemMetadataTable.Status.normal.rawValue
+                        updatedMetadata.status = ItemMetadata.Status.normal.rawValue
                         updatedMetadata.sessionError = ""
                         updatedMetadata.date = (date ?? NSDate()) as Date
                         updatedMetadata.etag = etag ?? ""
@@ -254,7 +255,7 @@ import OSLog
                         )
 
                         updatedMetadata.status =
-                            NextcloudItemMetadataTable.Status.downloadError.rawValue
+                            ItemMetadata.Status.downloadError.rawValue
                         updatedMetadata.sessionError = error.errorDescription
 
                         dbManager.addItemMetadata(updatedMetadata)
@@ -305,7 +306,7 @@ import OSLog
             return Progress()
         }
 
-        let dbManager = NextcloudFilesDatabaseManager.shared
+        let dbManager = FilesDatabaseManager.shared
         let parentItemIdentifier = itemTemplate.parentItemIdentifier
         let itemTemplateIsFolder =
             itemTemplate.contentType == .folder || itemTemplate.contentType == .directory
@@ -370,7 +371,7 @@ import OSLog
                     }
 
                     DispatchQueue.global().async {
-                        NextcloudItemMetadataTable.metadatasFromDirectoryReadNKFiles(
+                        ItemMetadata.metadatasFromDirectoryReadNKFiles(
                             files, account: account
                         ) {
                             directoryMetadata, _, _ in
@@ -426,7 +427,7 @@ import OSLog
                 )
             }
 
-            let newMetadata = NextcloudItemMetadataTable()
+            let newMetadata = ItemMetadata()
             newMetadata.date = (date ?? NSDate()) as Date
             newMetadata.etag = etag ?? ""
             newMetadata.account = account
@@ -440,7 +441,7 @@ import OSLog
             newMetadata.session = ""
             newMetadata.sessionError = ""
             newMetadata.sessionTaskIdentifier = 0
-            newMetadata.status = NextcloudItemMetadataTable.Status.normal.rawValue
+            newMetadata.status = ItemMetadata.Status.normal.rawValue
 
             dbManager.addLocalFileMetadataFromItemMetadata(newMetadata)
             dbManager.addItemMetadata(newMetadata)
@@ -478,7 +479,7 @@ import OSLog
             return Progress()
         }
 
-        let dbManager = NextcloudFilesDatabaseManager.shared
+        let dbManager = FilesDatabaseManager.shared
         let parentItemIdentifier = item.parentItemIdentifier
         let itemTemplateIsFolder = item.contentType == .folder || item.contentType == .directory
 
@@ -650,7 +651,7 @@ import OSLog
                 }
 
                 dbManager.setStatusForItemMetadata(
-                    metadata, status: NextcloudItemMetadataTable.Status.uploading
+                    metadata, status: ItemMetadata.Status.uploading
                 ) { updatedMetadata in
 
                     if updatedMetadata == nil {
@@ -685,7 +686,7 @@ import OSLog
                                 )
                             }
 
-                            let newMetadata = NextcloudItemMetadataTable()
+                            let newMetadata = ItemMetadata()
                             newMetadata.date = (date ?? NSDate()) as Date
                             newMetadata.etag = etag ?? ""
                             newMetadata.account = account
@@ -699,7 +700,7 @@ import OSLog
                             newMetadata.session = ""
                             newMetadata.sessionError = ""
                             newMetadata.sessionTaskIdentifier = 0
-                            newMetadata.status = NextcloudItemMetadataTable.Status.normal.rawValue
+                            newMetadata.status = ItemMetadata.Status.normal.rawValue
 
                             dbManager.addLocalFileMetadataFromItemMetadata(newMetadata)
                             dbManager.addItemMetadata(newMetadata)
@@ -714,7 +715,7 @@ import OSLog
                                 "Could not upload item \(item.itemIdentifier.rawValue, privacy: .public) with filename: \(item.filename, privacy: .public), received error: \(error.errorDescription, privacy: .public)"
                             )
 
-                            metadata.status = NextcloudItemMetadataTable.Status.uploadError.rawValue
+                            metadata.status = ItemMetadata.Status.uploadError.rawValue
                             metadata.sessionError = error.errorDescription
 
                             dbManager.addItemMetadata(metadata)
@@ -752,7 +753,7 @@ import OSLog
             return Progress()
         }
 
-        let dbManager = NextcloudFilesDatabaseManager.shared
+        let dbManager = FilesDatabaseManager.shared
         let ocId = identifier.rawValue
         guard let itemMetadata = dbManager.itemMetadataFromOcId(ocId) else {
             completionHandler(NSFileProviderError(.noSuchItem))

@@ -15,6 +15,7 @@
 import FileProvider
 import Foundation
 import NextcloudKit
+import NextcloudFileProviderKit
 import OSLog
 
 extension FileProviderExtension: NSFileProviderThumbnailing {
@@ -44,7 +45,7 @@ extension FileProviderExtension: NSFileProviderThumbnailing {
                 "Fetching thumbnail for item with identifier:\(itemIdentifier.rawValue, privacy: .public)"
             )
             guard
-                let metadata = NextcloudFilesDatabaseManager.shared
+                let metadata = FilesDatabaseManager.shared
                     .itemMetadataFromFileProviderItemIdentifier(itemIdentifier),
                 let thumbnailUrl = metadata.thumbnailUrl(size: size)
             else {
