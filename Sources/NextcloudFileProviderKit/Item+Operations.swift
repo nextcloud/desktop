@@ -372,6 +372,68 @@ extension Item {
         return (fileNameLocalPath, fpItem, nil)
     }
 
+    func move(
+        newRemotePath: String, parentItemRemotePath: String
+    ) async -> (Item?, Error?) {
+        let ocId = itemIdentifier.rawValue
+        let isFolder = contentType == .folder || contentType == .directory
+        let oldRemotePath = metadata.serverUrl + "/" + metadata.fileName
+        let moveError = await withCheckedContinuation { continuation in
+            self.ncKit.moveFileOrFolder(
+                serverUrlFileNameSource: oldRemotePath,
+                serverUrlFileNameDestination: newRemotePath,
+                overwrite: false
+            ) { _, error in
+                continuation.resume(returning: error.fileProviderError)
+            }
+        }
+
+        guard moveError == nil else {
+            Self.logger.error(
+                """
+                Could not move file or folder: \(oldRemotePath, privacy: .public)
+                to \(newRemotePath, privacy: .public),
+                received error: \(moveError, privacy: .public)
+                """
+            )
+            return (nil, moveError)
+        }
+
+        // Remember that a folder metadata's serverUrl is its direct server URL, while for
+        // an item metadata the server URL is the parent folder's URL
+        let dbManager = FilesDatabaseManager.shared
+        if isFolder {
+            _ = dbManager.renameDirectoryAndPropagateToChildren(
+                ocId: ocId,
+                newServerUrl: newRemotePath,
+                newFileName: filename
+            )
+        } else {
+            dbManager.renameItemMetadata(
+                ocId: ocId,
+                newServerUrl: parentItemRemotePath,
+                newFileName: filename
+            )
+        }
+
+        guard let newMetadata = dbManager.itemMetadataFromOcId(ocId) else {
+            Self.logger.error(
+                """
+                Could not acquire metadata of item with identifier: \(ocId, privacy: .public),
+                cannot correctly inform of modification
+                """
+            )
+            return (nil, NSFileProviderError(.noSuchItem))
+        }
+
+        let modifiedItem = Item(
+            metadata: newMetadata,
+            parentItemIdentifier: parentItemIdentifier,
+            ncKit: self.ncKit
+        )
+        return (modifiedItem, nil)
+    }
+
     public func delete() async -> Error? {
         let serverFileNameUrl = metadata.serverUrl + "/" + metadata.fileName
         guard serverFileNameUrl != "" else {
