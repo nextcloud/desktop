@@ -102,7 +102,8 @@ import OSLog
 
     func fetchContents(
         for itemIdentifier: NSFileProviderItemIdentifier,
-        version requestedVersion: NSFileProviderItemVersion?, request: NSFileProviderRequest,
+        version requestedVersion: NSFileProviderItemVersion?, 
+        request: NSFileProviderRequest,
         completionHandler: @escaping (URL?, NSFileProviderItem?, Error?) -> Void
     ) -> Progress {
         Logger.fileProviderExtension.debug(
@@ -112,10 +113,13 @@ import OSLog
         guard requestedVersion == nil else {
             // TODO: Add proper support for file versioning
             Logger.fileProviderExtension.error(
-                "Can't return contents for specific version as this is not supported.")
+                "Can't return contents for a specific version as this is not supported."
+            )
             completionHandler(
-                nil, nil,
-                NSError(domain: NSCocoaErrorDomain, code: NSFeatureUnsupportedError, userInfo: [:]))
+                nil, 
+                nil,
+                NSError(domain: NSCocoaErrorDomain, code: NSFeatureUnsupportedError)
+            )
             return Progress()
         }
 
@@ -127,113 +131,13 @@ import OSLog
             return Progress()
         }
 
-        let dbManager = FilesDatabaseManager.shared
-        let ocId = itemIdentifier.rawValue
-        guard let metadata = dbManager.itemMetadataFromOcId(ocId) else {
-            Logger.fileProviderExtension.error(
-                "Could not acquire metadata of item with identifier: \(itemIdentifier.rawValue, privacy: .public)"
-            )
-            completionHandler(nil, nil, NSFileProviderError(.noSuchItem))
-            return Progress()
-        }
-
-        guard !metadata.isDocumentViewableOnly else {
-            Logger.fileProviderExtension.error(
-                "Could not get contents of item as is readonly: \(itemIdentifier.rawValue, privacy: .public) \(metadata.fileName, privacy: .public)"
-            )
-            completionHandler(nil, nil, NSFileProviderError(.cannotSynchronize))
-            return Progress()
-        }
-
-        let serverUrlFileName = metadata.serverUrl + "/" + metadata.fileName
-
-        Logger.fileProviderExtension.debug(
-            "Fetching file with name \(metadata.fileName, privacy: .public) at URL: \(serverUrlFileName, privacy: .public)"
-        )
-
         let progress = Progress()
-
-        // TODO: Handle folders nicely
-        do {
-            let fileNameLocalPath = try localPathForNCFile(
-                ocId: metadata.ocId, fileNameView: metadata.fileNameView, domain: domain)
-
-            dbManager.setStatusForItemMetadata(
-                metadata, status: ItemMetadata.Status.downloading
-            ) { updatedMetadata in
-
-                guard let updatedMetadata else {
-                    Logger.fileProviderExtension.error(
-                        "Could not acquire updated metadata of item with identifier: \(itemIdentifier.rawValue, privacy: .public), unable to update item status to downloading"
-                    )
-                    completionHandler(nil, nil, NSFileProviderError(.noSuchItem))
-                    return
-                }
-
-                self.ncKit.download(
-                    serverUrlFileName: serverUrlFileName,
-                    fileNameLocalPath: fileNameLocalPath.path,
-                    requestHandler: { request in
-                        progress.setHandlersFromAfRequest(request)
-                    },
-                    taskHandler: { task in
-                        NSFileProviderManager(for: self.domain)?.register(
-                            task, forItemWithIdentifier: itemIdentifier, completionHandler: { _ in }
-                        )
-                    },
-                    progressHandler: { downloadProgress in
-                        downloadProgress.copyCurrentStateToProgress(progress)
-                    }
-                ) { _, etag, date, _, _, _, error in
-                    if error == .success {
-                        Logger.fileTransfer.debug(
-                            "Acquired contents of item with identifier: \(itemIdentifier.rawValue, privacy: .public) and filename: \(updatedMetadata.fileName, privacy: .public)"
-                        )
-
-                        updatedMetadata.status = ItemMetadata.Status.normal.rawValue
-                        updatedMetadata.sessionError = ""
-                        updatedMetadata.date = (date ?? NSDate()) as Date
-                        updatedMetadata.etag = etag ?? ""
-
-                        dbManager.addLocalFileMetadataFromItemMetadata(updatedMetadata)
-                        dbManager.addItemMetadata(updatedMetadata)
-
-                        guard let parentItemIdentifier = dbManager.parentItemIdentifierFromMetadata(
-                            updatedMetadata
-                        ) else {
-                            completionHandler(nil, nil, NSFileProviderError(.noSuchItem))
-                            return
-                        }
-
-                        let fpItem = Item(
-                            metadata: updatedMetadata, 
-                            parentItemIdentifier: parentItemIdentifier,
-                            ncKit: self.ncKit
-                        )
-
-                        completionHandler(fileNameLocalPath, fpItem, nil)
-                    } else {
-                        Logger.fileTransfer.error(
-                            "Could not acquire contents of item with identifier: \(itemIdentifier.rawValue, privacy: .public) and fileName: \(updatedMetadata.fileName, privacy: .public)"
-                        )
-
-                        updatedMetadata.status =
-                            ItemMetadata.Status.downloadError.rawValue
-                        updatedMetadata.sessionError = error.errorDescription
-
-                        dbManager.addItemMetadata(updatedMetadata)
-
-                        completionHandler(nil, nil, error.fileProviderError)
-                    }
-                }
-            }
-        } catch {
-            Logger.fileProviderExtension.error(
-                "Could not find local path for file \(metadata.fileName, privacy: .public), received error: \(error.localizedDescription, privacy: .public)"
+        Task {
+            let (localUrl, updatedItem, error) = Item.fetchContents(
+                domain: self.domain, progress: progress
             )
-            completionHandler(nil, nil, NSFileProviderError(.cannotSynchronize))
+            completionHandler(localUrl, updatedItem, error)
         }
-
         return progress
     }
 
