@@ -560,6 +560,7 @@ extension Item {
     }
 
     public func modify(
+        itemTarget: NSFileProviderItem,
         baseVersion: NSFileProviderItemVersion = NSFileProviderItemVersion(),
         changedFields: NSFileProviderItemFields,
         contents newContents: URL?,
@@ -570,6 +571,18 @@ extension Item {
         progress: Progress
     ) async -> (Item?, Error?) {
         let ocId = itemIdentifier.rawValue
+        guard itemTarget.itemIdentifier == itemIdentifier else {
+            Self.logger.error(
+                """
+                Could not modify item: \(ocId, privacy: .public), different identifier to the
+                item the modification was targeting 
+                (\(itemTarget.itemIdentifier.rawValue, privacy: .public))
+                """
+            )
+            return (nil, NSFileProviderError(.noSuchItem))
+        }
+
+        let parentIdentifier = itemTarget.parentItemIdentifier
         let dbManager = FilesDatabaseManager.shared
         let isFolder = contentType == .folder || contentType == .directory
 
@@ -582,17 +595,20 @@ extension Item {
 
         var parentItemServerUrl: String
 
-        if parentItemIdentifier == .rootContainer {
+        // The target parent should already be present in our database. The system will have synced
+        // remote changes and then, upon user interaction, will try to modify the item.
+        // That is, if the parent item has changed at all (it might not have)
+        if parentIdentifier == .rootContainer {
             parentItemServerUrl = ncAccount.davFilesUrl
         } else {
             guard let parentItemMetadata = dbManager.directoryMetadata(
-                ocId: parentItemIdentifier.rawValue)
-            else {
+                ocId: parentIdentifier.rawValue
+            ) else {
                 Self.logger.error(
                     """
                     Not modifying item: \(ocId, privacy: .public),
-                    could not find metadata for parentItemIdentifier
-                        \(self.parentItemIdentifier.rawValue, privacy: .public)
+                    could not find metadata for target parentItemIdentifier
+                        \(parentIdentifier.rawValue, privacy: .public)
                     """
                 )
                 return (nil, NSFileProviderError(.noSuchItem))
@@ -601,7 +617,7 @@ extension Item {
             parentItemServerUrl = parentItemMetadata.serverUrl + "/" + parentItemMetadata.fileName
         }
 
-        let newServerUrlFileName = parentItemServerUrl + "/" + filename
+        let newServerUrlFileName = parentItemServerUrl + "/" + itemTarget.filename
 
         Self.logger.debug(
             """
