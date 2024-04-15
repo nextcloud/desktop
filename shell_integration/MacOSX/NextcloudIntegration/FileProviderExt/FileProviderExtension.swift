@@ -213,285 +213,58 @@ import OSLog
     }
 
     func modifyItem(
-        _ item: NSFileProviderItem, baseVersion _: NSFileProviderItemVersion,
-        changedFields: NSFileProviderItemFields, contents newContents: URL?,
-        options: NSFileProviderModifyItemOptions = [], request: NSFileProviderRequest,
-        completionHandler: @escaping (NSFileProviderItem?, NSFileProviderItemFields, Bool, Error?)
-            ->
-            Void
+        _ item: NSFileProviderItem, 
+        baseVersion: NSFileProviderItemVersion,
+        changedFields: NSFileProviderItemFields, 
+        contents newContents: URL?,
+        options: NSFileProviderModifyItemOptions = [], 
+        request: NSFileProviderRequest,
+        completionHandler: @escaping (
+            NSFileProviderItem?, NSFileProviderItemFields, Bool, Error?
+        ) -> Void
     ) -> Progress {
         // An item was modified on disk, process the item's modification
         // TODO: Handle finder things like tags, other possible item changed fields
 
+        let identifier = item.itemIdentifier
+        let ocId = identifier.rawValue
         Logger.fileProviderExtension.debug(
-            "Received modify item request for item with identifier: \(item.itemIdentifier.rawValue, privacy: .public) and filename: \(item.filename, privacy: .public)"
+            """
+            Received modify item request for item with identifier: \(ocId, privacy: .public)
+            and filename: \(item.filename, privacy: .public)
+            """
         )
 
         guard let ncAccount else {
             Logger.fileProviderExtension.error(
-                "Not modifying item: \(item.itemIdentifier.rawValue, privacy: .public) as account not set up yet"
+                "Not modifying item: \(ocId, privacy: .public) as account not set up yet."
             )
             completionHandler(item, [], false, NSFileProviderError(.notAuthenticated))
             return Progress()
         }
 
-        let dbManager = FilesDatabaseManager.shared
-        let parentItemIdentifier = item.parentItemIdentifier
-        let itemTemplateIsFolder = item.contentType == .folder || item.contentType == .directory
-
-        if options.contains(.mayAlreadyExist) {
-            // TODO: This needs to be properly handled with a check in the db
-            Logger.fileProviderExtension.warning(
-                "Modification for item: \(item.itemIdentifier.rawValue, privacy: .public) may already exist"
+        guard let item = Item.storedItem(identifier: identifier, usingKit: ncKit) else {
+            Logger.fileProviderExtension.error(
+                "Not modifying item: \(ocId, privacy: .public) as item not found."
             )
-        }
-
-        var parentItemServerUrl: String
-
-        if parentItemIdentifier == .rootContainer {
-            parentItemServerUrl = ncAccount.davFilesUrl
-        } else {
-            guard
-                let parentItemMetadata = dbManager.directoryMetadata(
-                    ocId: parentItemIdentifier.rawValue)
-            else {
-                Logger.fileProviderExtension.error(
-                    "Not modifying item: \(item.itemIdentifier.rawValue, privacy: .public), could not find metadata for parentItemIdentifier \(parentItemIdentifier.rawValue, privacy: .public)"
-                )
-                completionHandler(item, [], false, NSFileProviderError(.noSuchItem))
-                return Progress()
-            }
-
-            parentItemServerUrl = parentItemMetadata.serverUrl + "/" + parentItemMetadata.fileName
-        }
-
-        let fileNameLocalPath = newContents?.path ?? ""
-        let newServerUrlFileName = parentItemServerUrl + "/" + item.filename
-
-        Logger.fileProviderExtension.debug(
-            "About to upload modified item with identifier: \(item.itemIdentifier.rawValue, privacy: .public) of type: \(item.contentType?.identifier ?? "UNKNOWN") (is folder: \(itemTemplateIsFolder ? "yes" : "no") and filename: \(item.filename, privacy: .public) to server url: \(newServerUrlFileName, privacy: .public) with contents located at: \(fileNameLocalPath, privacy: .public)"
-        )
-
-        var modifiedItem = item
-
-        // Create a serial dispatch queue
-        // We want to wait for network operations to finish before we fire off subsequent network
-        // operations, or we might cause explosions (e.g. trying to modify items that have just been
-        // moved elsewhere)
-        let dispatchQueue = DispatchQueue(label: "modifyItemQueue", qos: .userInitiated)
-
-        if changedFields.contains(.filename) || changedFields.contains(.parentItemIdentifier) {
-            dispatchQueue.async {
-                let ocId = item.itemIdentifier.rawValue
-                Logger.fileProviderExtension.debug(
-                    "Changed fields for item \(ocId, privacy: .public) with filename \(item.filename, privacy: .public) includes filename or parentitemidentifier..."
-                )
-
-                guard let metadata = dbManager.itemMetadataFromOcId(ocId) else {
-                    Logger.fileProviderExtension.error(
-                        "Could not acquire metadata of item with identifier: \(item.itemIdentifier.rawValue, privacy: .public)"
-                    )
-                    completionHandler(item, [], false, NSFileProviderError(.noSuchItem))
-                    return
-                }
-
-                var renameError: NSFileProviderError?
-                let oldServerUrlFileName = metadata.serverUrl + "/" + metadata.fileName
-
-                let moveFileOrFolderDispatchGroup = DispatchGroup()  // Make this block wait until done
-                moveFileOrFolderDispatchGroup.enter()
-
-                self.ncKit.moveFileOrFolder(
-                    serverUrlFileNameSource: oldServerUrlFileName,
-                    serverUrlFileNameDestination: newServerUrlFileName,
-                    overwrite: false
-                ) { _, error in
-                    guard error == .success else {
-                        Logger.fileTransfer.error(
-                            "Could not move file or folder: \(oldServerUrlFileName, privacy: .public) to \(newServerUrlFileName, privacy: .public), received error: \(error.errorDescription, privacy: .public)"
-                        )
-                        renameError = error.fileProviderError
-                        moveFileOrFolderDispatchGroup.leave()
-                        return
-                    }
-
-                    // Remember that a folder metadata's serverUrl is its direct server URL, while for
-                    // an item metadata the server URL is the parent folder's URL
-                    if itemTemplateIsFolder {
-                        _ = dbManager.renameDirectoryAndPropagateToChildren(
-                            ocId: ocId, newServerUrl: newServerUrlFileName,
-                            newFileName: item.filename)
-                        self.signalEnumerator { error in
-                            if error != nil {
-                                Logger.fileTransfer.error(
-                                    "Error notifying change in moved directory: \(error)")
-                            }
-                        }
-                    } else {
-                        dbManager.renameItemMetadata(
-                            ocId: ocId, newServerUrl: parentItemServerUrl,
-                            newFileName: item.filename)
-                    }
-
-                    guard let newMetadata = dbManager.itemMetadataFromOcId(ocId) else {
-                        Logger.fileTransfer.error(
-                            "Could not acquire metadata of item with identifier: \(ocId, privacy: .public), cannot correctly inform of modification"
-                        )
-                        renameError = NSFileProviderError(.noSuchItem)
-                        moveFileOrFolderDispatchGroup.leave()
-                        return
-                    }
-
-                    modifiedItem = Item(
-                        metadata: newMetadata,
-                        parentItemIdentifier: parentItemIdentifier,
-                        ncKit: self.ncKit
-                    )
-                    moveFileOrFolderDispatchGroup.leave()
-                }
-
-                moveFileOrFolderDispatchGroup.wait()
-
-                guard renameError == nil else {
-                    Logger.fileTransfer.error(
-                        "Stopping rename of item with ocId \(ocId, privacy: .public) due to error: \(renameError!.localizedDescription, privacy: .public)"
-                    )
-                    completionHandler(modifiedItem, [], false, renameError)
-                    return
-                }
-
-                guard !itemTemplateIsFolder else {
-                    Logger.fileTransfer.debug(
-                        "Only handling renaming for folders. ocId: \(ocId, privacy: .public)")
-                    completionHandler(modifiedItem, [], false, nil)
-                    return
-                }
-            }
-
-            // Return the progress if item is folder here while the async block runs
-            guard !itemTemplateIsFolder else {
-                return Progress()
-            }
-        }
-
-        guard !itemTemplateIsFolder else {
-            Logger.fileTransfer.debug(
-                "System requested modification for folder with ocID \(item.itemIdentifier.rawValue, privacy: .public) (\(newServerUrlFileName, privacy: .public)) of something other than folder name."
-            )
-            completionHandler(modifiedItem, [], false, nil)
+            completionHandler(item, [], false, NSFileProviderError(.noSuchItem))
             return Progress()
         }
 
         let progress = Progress()
-
-        if changedFields.contains(.contents) {
-            dispatchQueue.async {
-                Logger.fileProviderExtension.debug(
-                    "Item modification for \(item.itemIdentifier.rawValue, privacy: .public) \(item.filename, privacy: .public) includes contents"
-                )
-
-                guard newContents != nil else {
-                    Logger.fileProviderExtension.warning(
-                        "WARNING. Could not upload modified contents as was provided nil contents url. ocId: \(item.itemIdentifier.rawValue, privacy: .public)"
-                    )
-                    completionHandler(modifiedItem, [], false, NSFileProviderError(.noSuchItem))
-                    return
-                }
-
-                let ocId = item.itemIdentifier.rawValue
-                guard let metadata = dbManager.itemMetadataFromOcId(ocId) else {
-                    Logger.fileProviderExtension.error(
-                        "Could not acquire metadata of item with identifier: \(ocId, privacy: .public)"
-                    )
-                    completionHandler(
-                        item, NSFileProviderItemFields(), false, NSFileProviderError(.noSuchItem))
-                    return
-                }
-
-                dbManager.setStatusForItemMetadata(
-                    metadata, status: ItemMetadata.Status.uploading
-                ) { updatedMetadata in
-
-                    if updatedMetadata == nil {
-                        Logger.fileProviderExtension.warning(
-                            "Could not acquire updated metadata of item with identifier: \(ocId, privacy: .public), unable to update item status to uploading"
-                        )
-                    }
-
-                    self.ncKit.upload(
-                        serverUrlFileName: newServerUrlFileName,
-                        fileNameLocalPath: fileNameLocalPath,
-                        requestHandler: { request in
-                            progress.setHandlersFromAfRequest(request)
-                        },
-                        taskHandler: { task in
-                            NSFileProviderManager(for: self.domain)?.register(
-                                task, forItemWithIdentifier: item.itemIdentifier,
-                                completionHandler: { _ in })
-                        },
-                        progressHandler: { uploadProgress in
-                            uploadProgress.copyCurrentStateToProgress(progress)
-                        }
-                    ) { account, ocId, etag, date, size, _, _, error in
-                        if error == .success, let ocId {
-                            Logger.fileProviderExtension.info(
-                                "Successfully uploaded item with identifier: \(ocId, privacy: .public) and filename: \(item.filename, privacy: .public)"
-                            )
-
-                            if size != item.documentSize as? Int64 {
-                                Logger.fileTransfer.warning(
-                                    "Created item upload reported as successful, but there are differences between the received file size (\(size, privacy: .public)) and the original file size (\(item.documentSize??.int64Value ?? 0))"
-                                )
-                            }
-
-                            let newMetadata = ItemMetadata()
-                            newMetadata.date = (date ?? NSDate()) as Date
-                            newMetadata.etag = etag ?? ""
-                            newMetadata.account = account
-                            newMetadata.fileName = item.filename
-                            newMetadata.fileNameView = item.filename
-                            newMetadata.ocId = ocId
-                            newMetadata.size = size
-                            newMetadata.contentType = item.contentType?.preferredMIMEType ?? ""
-                            newMetadata.directory = itemTemplateIsFolder
-                            newMetadata.serverUrl = parentItemServerUrl
-                            newMetadata.session = ""
-                            newMetadata.sessionError = ""
-                            newMetadata.sessionTaskIdentifier = 0
-                            newMetadata.status = ItemMetadata.Status.normal.rawValue
-
-                            dbManager.addLocalFileMetadataFromItemMetadata(newMetadata)
-                            dbManager.addItemMetadata(newMetadata)
-
-                            modifiedItem = Item(
-                                metadata: newMetadata,
-                                parentItemIdentifier: parentItemIdentifier,
-                                ncKit: self.ncKit
-                            )
-                            completionHandler(modifiedItem, [], false, nil)
-                        } else {
-                            Logger.fileTransfer.error(
-                                "Could not upload item \(item.itemIdentifier.rawValue, privacy: .public) with filename: \(item.filename, privacy: .public), received error: \(error.errorDescription, privacy: .public)"
-                            )
-
-                            metadata.status = ItemMetadata.Status.uploadError.rawValue
-                            metadata.sessionError = error.errorDescription
-
-                            dbManager.addItemMetadata(metadata)
-
-                            completionHandler(modifiedItem, [], false, error.fileProviderError)
-                            return
-                        }
-                    }
-                }
-            }
-        } else {
-            Logger.fileProviderExtension.debug(
-                "Nothing more to do with \(item.itemIdentifier.rawValue, privacy: .public) \(item.filename, privacy: .public), modifications complete"
+        Task {
+            let (modifiedItem, error) = await item.modify(
+                baseVersion: baseVersion,
+                changedFields: changedFields,
+                contents: newContents,
+                options: options,
+                request: request,
+                ncAccount: ncAccount,
+                domain: domain,
+                progress: progress
             )
-            completionHandler(modifiedItem, [], false, nil)
+            completionHandler(modifiedItem ?? item, [], false, error)
         }
-
         return progress
     }
 
