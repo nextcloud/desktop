@@ -32,7 +32,7 @@ public class FilesDatabaseManager {
 
         do {
             _ = try Realm()
-            Self.logger.info("Successfully started Realm db for FileProviderExt")
+            Self.logger.info("Successfully started Realm db for NextcloudFileProviderKit")
         } catch let error {
             Self.logger.error("Error opening Realm db: \(error, privacy: .public)")
         }
