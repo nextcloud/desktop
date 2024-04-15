@@ -164,7 +164,7 @@ public class Item: NSObject, NSFileProviderItem {
         return Item(metadata: metadata, parentItemIdentifier: .rootContainer, ncKit: ncKit)
     }
 
-    private static let logger = Logger(subsystem: Logger.subsystem, category: "item")
+    static let logger = Logger(subsystem: Logger.subsystem, category: "item")
 
     public required init(
         metadata: ItemMetadata,
