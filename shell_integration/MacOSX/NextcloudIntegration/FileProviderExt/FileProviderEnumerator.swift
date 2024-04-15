@@ -14,11 +14,12 @@
 
 import FileProvider
 import NextcloudKit
+import NextcloudFileProviderKit
 import OSLog
 
 class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
     private let enumeratedItemIdentifier: NSFileProviderItemIdentifier
-    private var enumeratedItemMetadata: NextcloudItemMetadataTable?
+    private var enumeratedItemMetadata: ItemMetadata?
     private var enumeratingSystemIdentifier: Bool {
         FileProviderEnumerator.isSystemIdentifier(enumeratedItemIdentifier)
     }
@@ -26,7 +27,7 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
     // TODO: actually use this in NCKit and server requests
     private let anchor = NSFileProviderSyncAnchor(Date().description.data(using: .utf8)!)
     private static let maxItemsPerFileProviderPage = 100
-    let ncAccount: NextcloudAccount
+    let ncAccount: Account
     let ncKit: NextcloudKit
     let fastEnumeration: Bool
     var serverUrl: String = ""
@@ -38,7 +39,7 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
     
     init(
         enumeratedItemIdentifier: NSFileProviderItemIdentifier,
-        ncAccount: NextcloudAccount,
+        ncAccount: Account,
         ncKit: NextcloudKit,
         fastEnumeration: Bool = true
     ) {
@@ -56,7 +57,7 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
             Logger.enumeration.debug(
                 "Providing enumerator for item with identifier: \(enumeratedItemIdentifier.rawValue, privacy: .public)"
             )
-            let dbManager = NextcloudFilesDatabaseManager.shared
+            let dbManager = FilesDatabaseManager.shared
 
             enumeratedItemMetadata = dbManager.itemMetadataFromFileProviderItemIdentifier(
                 enumeratedItemIdentifier)
@@ -258,7 +259,7 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
         ) { _, newMetadatas, updatedMetadatas, deletedMetadatas, readError in
 
             // If we get a 404 we might add more deleted metadatas
-            var currentDeletedMetadatas: [NextcloudItemMetadataTable] = []
+            var currentDeletedMetadatas: [ItemMetadata] = []
             if let notNilDeletedMetadatas = deletedMetadatas {
                 currentDeletedMetadatas = notNilDeletedMetadatas
             }
@@ -284,7 +285,7 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
                         return
                     }
 
-                    let dbManager = NextcloudFilesDatabaseManager.shared
+                    let dbManager = FilesDatabaseManager.shared
                     if itemMetadata.directory {
                         if let deletedDirectoryMetadatas =
                             dbManager.deleteDirectoryAndSubdirectoriesMetadata(
@@ -338,7 +339,7 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
     // MARK: - Helper methods
 
     private static func metadatasToFileProviderItems(
-        _ itemMetadatas: [NextcloudItemMetadataTable], ncKit: NextcloudKit,
+        _ itemMetadatas: [ItemMetadata], ncKit: NextcloudKit,
         completionHandler: @escaping (_ items: [NSFileProviderItem]) -> Void
     ) {
         var items: [NSFileProviderItem] = []
@@ -357,7 +358,7 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
                     return
                 }
 
-                if let parentItemIdentifier = NextcloudFilesDatabaseManager.shared
+                if let parentItemIdentifier = FilesDatabaseManager.shared
                     .parentItemIdentifierFromMetadata(itemMetadata)
                 {
                     let item = FileProviderItem(
@@ -389,7 +390,7 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
 
     private static func completeEnumerationObserver(
         _ observer: NSFileProviderEnumerationObserver, ncKit: NextcloudKit, numPage: Int,
-        itemMetadatas: [NextcloudItemMetadataTable]
+        itemMetadatas: [ItemMetadata]
     ) {
         metadatasToFileProviderItems(itemMetadatas, ncKit: ncKit) { items in
             observer.didEnumerate(items)
@@ -412,9 +413,9 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
     private static func completeChangesObserver(
         _ observer: NSFileProviderChangeObserver, anchor: NSFileProviderSyncAnchor,
         ncKit: NextcloudKit,
-        newMetadatas: [NextcloudItemMetadataTable]?,
-        updatedMetadatas: [NextcloudItemMetadataTable]?,
-        deletedMetadatas: [NextcloudItemMetadataTable]?
+        newMetadatas: [ItemMetadata]?,
+        updatedMetadatas: [ItemMetadata]?,
+        deletedMetadatas: [ItemMetadata]?
     ) {
         guard newMetadatas != nil || updatedMetadatas != nil || deletedMetadatas != nil else {
             Logger.enumeration.error(
@@ -425,8 +426,8 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
         }
 
         // Observer does not care about new vs updated, so join
-        var allUpdatedMetadatas: [NextcloudItemMetadataTable] = []
-        var allDeletedMetadatas: [NextcloudItemMetadataTable] = []
+        var allUpdatedMetadatas: [ItemMetadata] = []
+        var allDeletedMetadatas: [ItemMetadata] = []
 
         if let newMetadatas {
             allUpdatedMetadatas += newMetadatas

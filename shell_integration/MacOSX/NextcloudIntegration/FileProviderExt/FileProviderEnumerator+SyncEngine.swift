@@ -14,22 +14,23 @@
 
 import FileProvider
 import NextcloudKit
+import NextcloudFileProviderKit
 import OSLog
 
 extension FileProviderEnumerator {
     func fullRecursiveScan(
-        ncAccount: NextcloudAccount,
+        ncAccount: Account,
         ncKit: NextcloudKit,
         scanChangesOnly: Bool,
         completionHandler: @escaping (
-            _ metadatas: [NextcloudItemMetadataTable],
-            _ newMetadatas: [NextcloudItemMetadataTable],
-            _ updatedMetadatas: [NextcloudItemMetadataTable],
-            _ deletedMetadatas: [NextcloudItemMetadataTable],
+            _ metadatas: [ItemMetadata],
+            _ newMetadatas: [ItemMetadata],
+            _ updatedMetadatas: [ItemMetadata],
+            _ deletedMetadatas: [ItemMetadata],
             _ error: NKError?
         ) -> Void
     ) {
-        let rootContainerDirectoryMetadata = NextcloudItemMetadataTable()
+        let rootContainerDirectoryMetadata = ItemMetadata()
         rootContainerDirectoryMetadata.directory = true
         rootContainerDirectoryMetadata.ocId = NSFileProviderItemIdentifier.rootContainer.rawValue
 
@@ -70,15 +71,15 @@ extension FileProviderEnumerator {
     }
 
     private func scanRecursively(
-        _ directoryMetadata: NextcloudItemMetadataTable,
-        ncAccount: NextcloudAccount,
+        _ directoryMetadata: ItemMetadata,
+        ncAccount: Account,
         ncKit: NextcloudKit,
         scanChangesOnly: Bool
     ) -> (
-        metadatas: [NextcloudItemMetadataTable],
-        newMetadatas: [NextcloudItemMetadataTable],
-        updatedMetadatas: [NextcloudItemMetadataTable],
-        deletedMetadatas: [NextcloudItemMetadataTable],
+        metadatas: [ItemMetadata],
+        newMetadatas: [ItemMetadata],
+        updatedMetadatas: [ItemMetadata],
+        deletedMetadatas: [ItemMetadata],
         error: NKError?
     ) {
         if isInvalidated {
@@ -88,12 +89,12 @@ extension FileProviderEnumerator {
         assert(directoryMetadata.directory, "Can only recursively scan a directory.")
 
         // Will include results of recursive calls
-        var allMetadatas: [NextcloudItemMetadataTable] = []
-        var allNewMetadatas: [NextcloudItemMetadataTable] = []
-        var allUpdatedMetadatas: [NextcloudItemMetadataTable] = []
-        var allDeletedMetadatas: [NextcloudItemMetadataTable] = []
+        var allMetadatas: [ItemMetadata] = []
+        var allNewMetadatas: [ItemMetadata] = []
+        var allUpdatedMetadatas: [ItemMetadata] = []
+        var allDeletedMetadatas: [ItemMetadata] = []
 
-        let dbManager = NextcloudFilesDatabaseManager.shared
+        let dbManager = FilesDatabaseManager.shared
         let dispatchGroup = DispatchGroup()  // TODO: Maybe own thread?
 
         dispatchGroup.enter()
@@ -202,8 +203,8 @@ extension FileProviderEnumerator {
             return ([], [], [], [], error: criticalError)
         }
 
-        var childDirectoriesToScan: [NextcloudItemMetadataTable] = []
-        var candidateMetadatas: [NextcloudItemMetadataTable]
+        var childDirectoriesToScan: [ItemMetadata] = []
+        var candidateMetadatas: [ItemMetadata]
 
         if scanChangesOnly, fastEnumeration {
             candidateMetadatas = allUpdatedMetadatas
@@ -251,14 +252,14 @@ extension FileProviderEnumerator {
 
     static func handleDepth1ReadFileOrFolder(
         serverUrl: String,
-        ncAccount: NextcloudAccount,
+        ncAccount: Account,
         files: [NKFile],
         error: NKError,
         completionHandler: @escaping (
-            _ metadatas: [NextcloudItemMetadataTable]?,
-            _ newMetadatas: [NextcloudItemMetadataTable]?,
-            _ updatedMetadatas: [NextcloudItemMetadataTable]?,
-            _ deletedMetadatas: [NextcloudItemMetadataTable]?,
+            _ metadatas: [ItemMetadata]?,
+            _ newMetadatas: [ItemMetadata]?,
+            _ updatedMetadatas: [ItemMetadata]?,
+            _ deletedMetadatas: [ItemMetadata]?,
             _ readError: Error?
         ) -> Void
     ) {
@@ -274,10 +275,10 @@ extension FileProviderEnumerator {
             "Starting async conversion of NKFiles for serverUrl: \(serverUrl, privacy: .public) for user: \(ncAccount.ncKitAccount, privacy: .public)"
         )
 
-        let dbManager = NextcloudFilesDatabaseManager.shared
+        let dbManager = FilesDatabaseManager.shared
 
         DispatchQueue.global(qos: .userInitiated).async {
-            NextcloudItemMetadataTable.metadatasFromDirectoryReadNKFiles(
+            ItemMetadata.metadatasFromDirectoryReadNKFiles(
                 files, account: ncAccount.ncKitAccount
             ) { directoryMetadata, _, metadatas in
 
@@ -309,19 +310,19 @@ extension FileProviderEnumerator {
 
     static func readServerUrl(
         _ serverUrl: String,
-        ncAccount: NextcloudAccount,
+        ncAccount: Account,
         ncKit: NextcloudKit,
         stopAtMatchingEtags: Bool = false,
         depth: String = "1",
         completionHandler: @escaping (
-            _ metadatas: [NextcloudItemMetadataTable]?,
-            _ newMetadatas: [NextcloudItemMetadataTable]?,
-            _ updatedMetadatas: [NextcloudItemMetadataTable]?,
-            _ deletedMetadatas: [NextcloudItemMetadataTable]?,
+            _ metadatas: [ItemMetadata]?,
+            _ newMetadatas: [ItemMetadata]?,
+            _ updatedMetadatas: [ItemMetadata]?,
+            _ deletedMetadatas: [ItemMetadata]?,
             _ readError: Error?
         ) -> Void
     ) {
-        let dbManager = NextcloudFilesDatabaseManager.shared
+        let dbManager = FilesDatabaseManager.shared
         let ncKitAccount = ncAccount.ncKitAccount
 
         Logger.enumeration.debug(
@@ -350,7 +351,7 @@ extension FileProviderEnumerator {
                 Logger.enumeration.debug(
                     "Read item is a file. Converting NKfile for serverUrl: \(serverUrl, privacy: .public) for user: \(ncAccount.ncKitAccount, privacy: .public)"
                 )
-                let itemMetadata = NextcloudItemMetadataTable.fromNKFile(
+                let itemMetadata = ItemMetadata.fromNKFile(
                     receivedFile, account: ncKitAccount)
                 dbManager.addItemMetadata(itemMetadata)  // TODO: Return some value when it is an update
                 completionHandler([itemMetadata], nil, nil, nil, error.error)
@@ -383,7 +384,7 @@ extension FileProviderEnumerator {
 
             if depth == "0" {
                 if serverUrl != ncAccount.davFilesUrl {
-                    let metadata = NextcloudItemMetadataTable.fromNKFile(
+                    let metadata = ItemMetadata.fromNKFile(
                         receivedFile, account: ncKitAccount)
                     let isNew = dbManager.itemMetadataFromOcId(metadata.ocId) == nil
                     let updatedMetadatas = isNew ? [] : [metadata]

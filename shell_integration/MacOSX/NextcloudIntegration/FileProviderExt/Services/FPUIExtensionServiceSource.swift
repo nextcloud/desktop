@@ -8,6 +8,7 @@
 import FileProvider
 import Foundation
 import NextcloudKit
+import NextcloudFileProviderKit
 import OSLog
 
 class FPUIExtensionServiceSource: NSObject, NSFileProviderServiceSource, NSXPCListenerDelegate, FPUIExtensionService {
@@ -52,7 +53,7 @@ class FPUIExtensionServiceSource: NSObject, NSFileProviderServiceSource, NSXPCLi
             return nil
         }
 
-        let dbManager = NextcloudFilesDatabaseManager.shared
+        let dbManager = FilesDatabaseManager.shared
         guard let item = dbManager.itemMetadataFromFileProviderItemIdentifier(identifier) else {
             Logger.shares.error("No item \(rawIdentifier, privacy: .public) in db, no shares.")
             return nil

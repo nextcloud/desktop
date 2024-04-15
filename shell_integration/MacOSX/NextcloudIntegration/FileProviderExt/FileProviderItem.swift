@@ -14,6 +14,7 @@
 
 import FileProvider
 import NextcloudKit
+import NextcloudFileProviderKit
 import UniformTypeIdentifiers
 
 class FileProviderItem: NSObject, NSFileProviderItem {
@@ -22,7 +23,7 @@ class FileProviderItem: NSObject, NSFileProviderItem {
         case uploadError
     }
 
-    let metadata: NextcloudItemMetadataTable
+    let metadata: ItemMetadata
     let parentItemIdentifier: NSFileProviderItemIdentifier
     let ncKit: NextcloudKit
 
@@ -105,30 +106,30 @@ class FileProviderItem: NSObject, NSFileProviderItem {
 
     var isDownloaded: Bool {
         metadata.directory
-            || NextcloudFilesDatabaseManager.shared.localFileMetadataFromOcId(metadata.ocId) != nil
+            || FilesDatabaseManager.shared.localFileMetadataFromOcId(metadata.ocId) != nil
     }
 
     var isDownloading: Bool {
-        metadata.status == NextcloudItemMetadataTable.Status.downloading.rawValue
+        metadata.status == ItemMetadata.Status.downloading.rawValue
     }
 
     var downloadingError: Error? {
-        if metadata.status == NextcloudItemMetadataTable.Status.downloadError.rawValue {
+        if metadata.status == ItemMetadata.Status.downloadError.rawValue {
             return FileProviderItemTransferError.downloadError
         }
         return nil
     }
 
     var isUploaded: Bool {
-        NextcloudFilesDatabaseManager.shared.localFileMetadataFromOcId(metadata.ocId) != nil
+        FilesDatabaseManager.shared.localFileMetadataFromOcId(metadata.ocId) != nil
     }
 
     var isUploading: Bool {
-        metadata.status == NextcloudItemMetadataTable.Status.uploading.rawValue
+        metadata.status == ItemMetadata.Status.uploading.rawValue
     }
 
     var uploadingError: Error? {
-        if metadata.status == NextcloudItemMetadataTable.Status.uploadError.rawValue {
+        if metadata.status == ItemMetadata.Status.uploadError.rawValue {
             FileProviderItemTransferError.uploadError
         } else {
             nil
@@ -138,7 +139,7 @@ class FileProviderItem: NSObject, NSFileProviderItem {
     var childItemCount: NSNumber? {
         if metadata.directory {
             NSNumber(
-                integerLiteral: NextcloudFilesDatabaseManager.shared.childItemsForDirectory(
+                integerLiteral: FilesDatabaseManager.shared.childItemsForDirectory(
                     metadata
                 ).count)
         } else {
@@ -152,7 +153,7 @@ class FileProviderItem: NSObject, NSFileProviderItem {
     }
 
     required init(
-        metadata: NextcloudItemMetadataTable,
+        metadata: ItemMetadata,
         parentItemIdentifier: NSFileProviderItemIdentifier,
         ncKit: NextcloudKit
     ) {
