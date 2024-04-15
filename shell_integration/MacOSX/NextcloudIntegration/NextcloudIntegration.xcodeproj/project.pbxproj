@@ -1551,8 +1551,8 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/claucambra/SuggestionsTextFieldKit.git";
 			requirement = {
-				kind = exactVersion;
-				version = 1.0.0;
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
