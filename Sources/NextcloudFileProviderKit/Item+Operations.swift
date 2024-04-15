@@ -434,6 +434,278 @@ extension Item {
         return (modifiedItem, nil)
     }
 
+    private func modifyContents(
+        contents newContents: URL?,
+        remotePath: String,
+        parentItemRemotePath: String,
+        domain: NSFileProviderDomain?,
+        progress: Progress
+    ) async -> (Item?, Error?) {
+        let ocId = itemIdentifier.rawValue
+
+        guard newContents != nil, let localPath = newContents?.path else {
+            Self.logger.error(
+                """
+                ERROR. Could not upload modified contents as was provided nil contents url.
+                ocId: \(ocId, privacy: .public) filename: \(self.filename, privacy: .public)
+                """
+            )
+            return (nil, NSFileProviderError(.noSuchItem))
+        }
+
+        let dbManager = FilesDatabaseManager.shared
+        guard let metadata = dbManager.itemMetadataFromOcId(ocId) else {
+            Self.logger.error(
+                "Could not acquire metadata of item with identifier: \(ocId, privacy: .public)"
+            )
+            return (nil, NSFileProviderError(.noSuchItem))
+        }
+
+        let updatedMetadata = await withCheckedContinuation { continuation in
+            dbManager.setStatusForItemMetadata(
+                metadata, status: ItemMetadata.Status.uploading
+            ) { continuation.resume(returning: $0) }
+        }
+
+        if updatedMetadata == nil {
+            Self.logger.warning(
+                """
+                Could not acquire updated metadata of item: \(ocId, privacy: .public),
+                unable to update item status to uploading
+                """
+            )
+        }
+
+        let (account, etag, date, size, error) = await withCheckedContinuation { continuation in
+            self.ncKit.upload(
+                serverUrlFileName: remotePath,
+                fileNameLocalPath: localPath,
+                requestHandler: { progress.setHandlersFromAfRequest($0) },
+                taskHandler: { task in
+                    if let domain {
+                        NSFileProviderManager(for: domain)?.register(
+                            task,
+                            forItemWithIdentifier: self.itemIdentifier,
+                            completionHandler: { _ in }
+                        )
+                    }
+                },
+                progressHandler: { uploadProgress in
+                    uploadProgress.copyCurrentStateToProgress(progress)
+                }
+            ) { account, _, etag, date, size, _, _, error in
+                continuation.resume(
+                    returning: (account, etag, date, size, error.fileProviderError)
+                )
+            }
+        }
+
+        guard error == nil else {
+            Self.logger.error(
+                """
+                Could not upload item \(ocId, privacy: .public)
+                with filename: \(self.filename, privacy: .public),
+                received error: \(error, privacy: .public)
+                """
+            )
+
+            metadata.status = ItemMetadata.Status.uploadError.rawValue
+            metadata.sessionError = error?.localizedDescription ?? ""
+            dbManager.addItemMetadata(metadata)
+            return (nil, error)
+        }
+
+        Self.logger.info(
+            """
+            Successfully uploaded item with identifier: \(ocId, privacy: .public)
+            and filename: \(self.filename, privacy: .public)
+            """
+        )
+
+        if size != documentSize as? Int64 {
+            Self.logger.warning(
+                """
+                Created item upload reported as successful,
+                but there are differences between the received file size (\(size, privacy: .public))
+                and the original file size (\(self.documentSize?.int64Value ?? 0))
+                """
+            )
+        }
+
+        let newMetadata = ItemMetadata()
+        newMetadata.date = (date ?? NSDate()) as Date
+        newMetadata.etag = etag ?? ""
+        newMetadata.account = account
+        newMetadata.fileName = self.filename
+        newMetadata.fileNameView = self.filename
+        newMetadata.ocId = ocId
+        newMetadata.size = size
+        newMetadata.contentType = self.contentType.preferredMIMEType ?? ""
+        newMetadata.directory = self.metadata.directory
+        newMetadata.serverUrl = parentItemRemotePath
+        newMetadata.session = ""
+        newMetadata.sessionError = ""
+        newMetadata.sessionTaskIdentifier = 0
+        newMetadata.status = ItemMetadata.Status.normal.rawValue
+
+        dbManager.addLocalFileMetadataFromItemMetadata(newMetadata)
+        dbManager.addItemMetadata(newMetadata)
+
+        let modifiedItem = Item(
+            metadata: newMetadata,
+            parentItemIdentifier: parentItemIdentifier,
+            ncKit: self.ncKit
+        )
+        return (modifiedItem, nil)
+    }
+
+    public func modify(
+        baseVersion: NSFileProviderItemVersion = NSFileProviderItemVersion(),
+        changedFields: NSFileProviderItemFields,
+        contents newContents: URL?,
+        options: NSFileProviderModifyItemOptions = [],
+        request: NSFileProviderRequest = NSFileProviderRequest(),
+        ncAccount: Account,
+        domain: NSFileProviderDomain? = nil,
+        progress: Progress
+    ) async -> (Item?, Error?) {
+        let ocId = itemIdentifier.rawValue
+        let dbManager = FilesDatabaseManager.shared
+        let isFolder = contentType == .folder || contentType == .directory
+
+        if options.contains(.mayAlreadyExist) {
+            // TODO: This needs to be properly handled with a check in the db
+            Self.logger.warning(
+                "Modification for item: \(ocId, privacy: .public) may already exist"
+            )
+        }
+
+        var parentItemServerUrl: String
+
+        if parentItemIdentifier == .rootContainer {
+            parentItemServerUrl = ncAccount.davFilesUrl
+        } else {
+            guard let parentItemMetadata = dbManager.directoryMetadata(
+                ocId: parentItemIdentifier.rawValue)
+            else {
+                Self.logger.error(
+                    """
+                    Not modifying item: \(ocId, privacy: .public),
+                    could not find metadata for parentItemIdentifier
+                        \(self.parentItemIdentifier.rawValue, privacy: .public)
+                    """
+                )
+                return (nil, NSFileProviderError(.noSuchItem))
+            }
+
+            parentItemServerUrl = parentItemMetadata.serverUrl + "/" + parentItemMetadata.fileName
+        }
+
+        let newServerUrlFileName = parentItemServerUrl + "/" + filename
+
+        Self.logger.debug(
+            """
+            About to upload modified item with identifier: \(ocId, privacy: .public)
+            of type: \(self.contentType.identifier)
+            (is folder: \(isFolder ? "yes" : "no")
+            and filename: \(self.filename, privacy: .public)
+            to server url: \(newServerUrlFileName, privacy: .public)
+            with contents located at: \(newContents?.path ?? "", privacy: .public)
+            """
+        )
+
+        var modifiedItem = self
+
+        if changedFields.contains(.filename) || changedFields.contains(.parentItemIdentifier) {
+            Self.logger.debug(
+                """
+                Changed fields for item \(ocId, privacy: .public)
+                with filename \(self.filename, privacy: .public)
+                includes filename or parentitemidentifier...
+                """
+            )
+
+            let (renameModifiedItem, renameError) = await modifiedItem.move(
+                newRemotePath: newServerUrlFileName,
+                parentItemRemotePath: parentItemServerUrl
+            )
+
+            guard renameError == nil, let renameModifiedItem else {
+                Self.logger.error(
+                    """
+                    Could not rename item with ocID \(ocId, privacy: .public)
+                    (\(self.filename, privacy: .public)) to 
+                    \(newServerUrlFileName, privacy: .public),
+                    received error: \(renameError, privacy: .public)
+                    """
+                )
+                return (nil, renameError)
+            }
+
+            modifiedItem = renameModifiedItem
+
+            guard !isFolder else {
+                Self.logger.debug(
+                    """
+                    Rename of folder \(ocId, privacy: .public) (\(self.filename, privacy: .public))
+                    complete. Only handling renaming for folder and no other procedures.
+                    """
+                )
+                return (modifiedItem, nil)
+            }
+        }
+
+        guard !isFolder else {
+            Self.logger.debug(
+                """
+                System requested modification for folder with ocID \(ocId, privacy: .public)
+                (\(newServerUrlFileName, privacy: .public)) of something other than folder name.
+                This is not supported.
+                """
+            )
+            return (nil, NSError(domain: NSCocoaErrorDomain, code: NSFeatureUnsupportedError))
+        }
+
+        if changedFields.contains(.contents) {
+            Self.logger.debug(
+                """
+                Item modification for \(ocId, privacy: .public) \(self.filename, privacy: .public)
+                includes contents. Will begin upload.
+                """
+            )
+
+            let (contentModifiedItem, contentError) = await modifiedItem.modifyContents(
+                contents: newContents,
+                remotePath: newServerUrlFileName,
+                parentItemRemotePath: parentItemServerUrl,
+                domain: domain,
+                progress: progress
+            )
+
+            guard contentError == nil, let contentModifiedItem else {
+                Self.logger.error(
+                    """
+                    Could not modify contents for item with ocID \(ocId, privacy: .public)
+                    (\(self.filename, privacy: .public)) to
+                    \(newServerUrlFileName, privacy: .public),
+                    received error: \(contentError, privacy: .public)
+                    """
+                )
+                return (nil, contentError)
+            }
+
+            modifiedItem = contentModifiedItem
+        }
+
+        Self.logger.debug(
+            """
+            Nothing more to do with \(ocId, privacy: .public)
+            \(self.filename, privacy: .public), modifications complete
+            """
+        )
+        return (modifiedItem, nil)
+    }
+
     public func delete() async -> Error? {
         let serverFileNameUrl = metadata.serverUrl + "/" + metadata.fileName
         guard serverFileNameUrl != "" else {
