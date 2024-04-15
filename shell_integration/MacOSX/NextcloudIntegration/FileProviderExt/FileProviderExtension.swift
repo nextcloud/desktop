@@ -125,15 +125,29 @@ import OSLog
 
         guard ncAccount != nil else {
             Logger.fileProviderExtension.error(
-                "Not fetching contents item: \(itemIdentifier.rawValue, privacy: .public) as account not set up yet"
+                """
+                Not fetching contents for item: \(itemIdentifier.rawValue, privacy: .public)
+                as account not set up yet.
+                """
             )
             completionHandler(nil, nil, NSFileProviderError(.notAuthenticated))
             return Progress()
         }
 
+        guard let item = Item.storedItem(identifier: itemIdentifier, usingKit: ncKit) else {
+            Logger.fileProviderExtension.error(
+                """
+                Not fetching contents for item: \(itemIdentifier.rawValue, privacy: .public)
+                as item not found.
+                """
+            )
+            completionHandler(nil, nil, NSFileProviderError(.noSuchItem))
+            return Progress()
+        }
+
         let progress = Progress()
         Task {
-            let (localUrl, updatedItem, error) = Item.fetchContents(
+            let (localUrl, updatedItem, error) = await item.fetchContents(
                 domain: self.domain, progress: progress
             )
             completionHandler(localUrl, updatedItem, error)
@@ -142,185 +156,59 @@ import OSLog
     }
 
     func createItem(
-        basedOn itemTemplate: NSFileProviderItem, fields _: NSFileProviderItemFields,
-        contents url: URL?, options: NSFileProviderCreateItemOptions = [],
+        basedOn itemTemplate: NSFileProviderItem, 
+        fields: NSFileProviderItemFields,
+        contents url: URL?, 
+        options: NSFileProviderCreateItemOptions = [],
         request: NSFileProviderRequest,
-        completionHandler: @escaping (NSFileProviderItem?, NSFileProviderItemFields, Bool, Error?)
-            ->
-            Void
+        completionHandler: @escaping ( 
+            NSFileProviderItem?, NSFileProviderItemFields, Bool, Error?
+        ) -> Void
     ) -> Progress {
-        // TODO: a new item was created on disk, process the item's creation
 
+        let tempId = itemTemplate.itemIdentifier.rawValue
         Logger.fileProviderExtension.debug(
-            "Received create item request for item with identifier: \(itemTemplate.itemIdentifier.rawValue, privacy: .public) and filename: \(itemTemplate.filename, privacy: .public)"
+            """
+            Received create item request for item with identifier: \(tempId, privacy: .public)
+            and filename: \(itemTemplate.filename, privacy: .public)
+            """
         )
-
-        guard itemTemplate.contentType != .symbolicLink else {
-            Logger.fileProviderExtension.error("Cannot create item, symbolic links not supported.")
-            completionHandler(
-                itemTemplate, NSFileProviderItemFields(), false,
-                NSError(domain: NSCocoaErrorDomain, code: NSFeatureUnsupportedError, userInfo: [:]))
-            return Progress()
-        }
 
         guard let ncAccount else {
             Logger.fileProviderExtension.error(
-                "Not creating item: \(itemTemplate.itemIdentifier.rawValue, privacy: .public) as account not set up yet"
+                """
+                Not creating item: \(itemTemplate.itemIdentifier.rawValue, privacy: .public)
+                as account not set up yet
+                """
             )
             completionHandler(
-                itemTemplate, NSFileProviderItemFields(), false,
-                NSFileProviderError(.notAuthenticated))
-            return Progress()
-        }
-
-        let dbManager = FilesDatabaseManager.shared
-        let parentItemIdentifier = itemTemplate.parentItemIdentifier
-        let itemTemplateIsFolder =
-            itemTemplate.contentType == .folder || itemTemplate.contentType == .directory
-
-        if options.contains(.mayAlreadyExist) {
-            // TODO: This needs to be properly handled with a check in the db
-            Logger.fileProviderExtension.info(
-                "Not creating item: \(itemTemplate.itemIdentifier.rawValue, privacy: .public) as it may already exist"
+                itemTemplate, 
+                NSFileProviderItemFields(),
+                false,
+                NSFileProviderError(.notAuthenticated)
             )
-            completionHandler(
-                itemTemplate, NSFileProviderItemFields(), false, NSFileProviderError(.noSuchItem))
-            return Progress()
-        }
-
-        var parentItemServerUrl: String
-
-        if parentItemIdentifier == .rootContainer {
-            parentItemServerUrl = ncAccount.davFilesUrl
-        } else {
-            guard
-                let parentItemMetadata = dbManager.directoryMetadata(
-                    ocId: parentItemIdentifier.rawValue)
-            else {
-                Logger.fileProviderExtension.error(
-                    "Not creating item: \(itemTemplate.itemIdentifier.rawValue, privacy: .public), could not find metadata for parentItemIdentifier \(parentItemIdentifier.rawValue, privacy: .public)"
-                )
-                completionHandler(
-                    itemTemplate, NSFileProviderItemFields(), false,
-                    NSFileProviderError(.noSuchItem))
-                return Progress()
-            }
-
-            parentItemServerUrl = parentItemMetadata.serverUrl + "/" + parentItemMetadata.fileName
-        }
-
-        let fileNameLocalPath = url?.path ?? ""
-        let newServerUrlFileName = parentItemServerUrl + "/" + itemTemplate.filename
-
-        Logger.fileProviderExtension.debug(
-            "About to upload item with identifier: \(itemTemplate.itemIdentifier.rawValue, privacy: .public) of type: \(itemTemplate.contentType?.identifier ?? "UNKNOWN") (is folder: \(itemTemplateIsFolder ? "yes" : "no") and filename: \(itemTemplate.filename) to server url: \(newServerUrlFileName, privacy: .public) with contents located at: \(fileNameLocalPath, privacy: .public)"
-        )
-
-        if itemTemplateIsFolder {
-            ncKit.createFolder(serverUrlFileName: newServerUrlFileName) { account, _, _, error in
-                guard error == .success else {
-                    Logger.fileTransfer.error(
-                        "Could not create new folder with name: \(itemTemplate.filename, privacy: .public), received error: \(error.errorDescription, privacy: .public)"
-                    )
-                    completionHandler(itemTemplate, [], false, error.fileProviderError)
-                    return
-                }
-
-                // Read contents after creation
-                self.ncKit.readFileOrFolder(
-                    serverUrlFileName: newServerUrlFileName, depth: "0", showHiddenFiles: true
-                ) { account, files, _, error in
-                    guard error == .success else {
-                        Logger.fileTransfer.error(
-                            "Could not read new folder with name: \(itemTemplate.filename, privacy: .public), received error: \(error.errorDescription, privacy: .public)"
-                        )
-                        return
-                    }
-
-                    DispatchQueue.global().async {
-                        ItemMetadata.metadatasFromDirectoryReadNKFiles(
-                            files, account: account
-                        ) {
-                            directoryMetadata, _, _ in
-
-                            dbManager.addItemMetadata(directoryMetadata)
-
-                            let fpItem = Item(
-                                metadata: directoryMetadata,
-                                parentItemIdentifier: parentItemIdentifier,
-                                ncKit: self.ncKit
-                            )
-
-                            completionHandler(fpItem, [], true, nil)
-                        }
-                    }
-                }
-            }
-
             return Progress()
         }
 
         let progress = Progress()
-
-        ncKit.upload(
-            serverUrlFileName: newServerUrlFileName,
-            fileNameLocalPath: fileNameLocalPath,
-            requestHandler: { request in
-                progress.setHandlersFromAfRequest(request)
-            },
-            taskHandler: { task in
-                NSFileProviderManager(for: self.domain)?.register(
-                    task, forItemWithIdentifier: itemTemplate.itemIdentifier,
-                    completionHandler: { _ in })
-            },
-            progressHandler: { uploadProgress in
-                uploadProgress.copyCurrentStateToProgress(progress)
-            }
-        ) { account, ocId, etag, date, size, _, _, error in
-            guard error == .success, let ocId else {
-                Logger.fileTransfer.error(
-                    "Could not upload item with filename: \(itemTemplate.filename, privacy: .public), received error: \(error.errorDescription, privacy: .public)"
-                )
-                completionHandler(itemTemplate, [], false, error.fileProviderError)
-                return
-            }
-
-            Logger.fileTransfer.info(
-                "Successfully uploaded item with identifier: \(ocId, privacy: .public) and filename: \(itemTemplate.filename, privacy: .public)"
+        Task {
+            let (item, error) = await Item.create(
+                basedOn: itemTemplate,
+                fields: fields,
+                contents: url,
+                request: request,
+                domain: self.domain,
+                ncKit: ncKit,
+                ncAccount: ncAccount,
+                progress: progress
             )
-
-            if size != itemTemplate.documentSize as? Int64 {
-                Logger.fileTransfer.warning(
-                    "Created item upload reported as successful, but there are differences between the received file size (\(size, privacy: .public)) and the original file size (\(itemTemplate.documentSize??.int64Value ?? 0))"
-                )
-            }
-
-            let newMetadata = ItemMetadata()
-            newMetadata.date = (date ?? NSDate()) as Date
-            newMetadata.etag = etag ?? ""
-            newMetadata.account = account
-            newMetadata.fileName = itemTemplate.filename
-            newMetadata.fileNameView = itemTemplate.filename
-            newMetadata.ocId = ocId
-            newMetadata.size = size
-            newMetadata.contentType = itemTemplate.contentType?.preferredMIMEType ?? ""
-            newMetadata.directory = itemTemplateIsFolder
-            newMetadata.serverUrl = parentItemServerUrl
-            newMetadata.session = ""
-            newMetadata.sessionError = ""
-            newMetadata.sessionTaskIdentifier = 0
-            newMetadata.status = ItemMetadata.Status.normal.rawValue
-
-            dbManager.addLocalFileMetadataFromItemMetadata(newMetadata)
-            dbManager.addItemMetadata(newMetadata)
-
-            let fpItem = Item(
-                metadata: newMetadata, parentItemIdentifier: parentItemIdentifier, ncKit: self.ncKit
+            completionHandler(
+                item ?? itemTemplate,
+                NSFileProviderItemFields(),
+                false,
+                error
             )
-
-            completionHandler(fpItem, [], false, nil)
         }
-
         return progress
     }
 
