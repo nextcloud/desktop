@@ -12,7 +12,6 @@
  * for more details.
  */
 
-import FileProvider
 import Foundation
 import NextcloudKit
 import RealmSwift
