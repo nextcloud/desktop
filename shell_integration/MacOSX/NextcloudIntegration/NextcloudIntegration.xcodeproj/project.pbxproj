@@ -43,6 +43,7 @@
 		539158AC27BE71A900816F56 /* FinderSyncSocketLineProcessor.m in Sources */ = {isa = PBXBuildFile; fileRef = 539158AB27BE71A900816F56 /* FinderSyncSocketLineProcessor.m */; };
 		53B979812B84C81F002DA742 /* DocumentActionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53B979802B84C81F002DA742 /* DocumentActionViewController.swift */; };
 		53C331B22BCD28C30093D38B /* NextcloudFileProviderKit in Frameworks */ = {isa = PBXBuildFile; productRef = 53C331B12BCD28C30093D38B /* NextcloudFileProviderKit */; };
+		53C331B62BCD3AFF0093D38B /* NextcloudFileProviderKit in Frameworks */ = {isa = PBXBuildFile; productRef = 53C331B52BCD3AFF0093D38B /* NextcloudFileProviderKit */; };
 		53D666612B70C9A70042C03D /* FileProviderConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53D666602B70C9A70042C03D /* FileProviderConfig.swift */; };
 		53ED473029C9CE0B00795DB1 /* FileProviderExtension+ClientInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53ED472F29C9CE0B00795DB1 /* FileProviderExtension+ClientInterface.swift */; };
 		53FE14502B8E0658006C4193 /* ShareTableViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53FE144F2B8E0658006C4193 /* ShareTableViewDataSource.swift */; };
@@ -230,6 +231,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5358F2B92BAA0F5300E3C729 /* NextcloudCapabilitiesKit in Frameworks */,
+				53C331B62BCD3AFF0093D38B /* NextcloudFileProviderKit in Frameworks */,
 				53651E442BBC0CA300ECAC29 /* SuggestionsTextFieldKit in Frameworks */,
 				53FE14542B8E1219006C4193 /* NextcloudKit in Frameworks */,
 			);
@@ -487,6 +489,7 @@
 				53FE14532B8E1219006C4193 /* NextcloudKit */,
 				5358F2B82BAA0F5300E3C729 /* NextcloudCapabilitiesKit */,
 				53651E432BBC0CA300ECAC29 /* SuggestionsTextFieldKit */,
+				53C331B52BCD3AFF0093D38B /* NextcloudFileProviderKit */,
 			);
 			productName = FileProviderUIExt;
 			productReference = 53B9797E2B84C81F002DA742 /* FileProviderUIExt.appex */;
@@ -1538,6 +1541,11 @@
 			productName = SuggestionsTextFieldKit;
 		};
 		53C331B12BCD28C30093D38B /* NextcloudFileProviderKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 53C331B02BCD28C30093D38B /* XCRemoteSwiftPackageReference "NextcloudFileProviderKit" */;
+			productName = NextcloudFileProviderKit;
+		};
+		53C331B52BCD3AFF0093D38B /* NextcloudFileProviderKit */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 53C331B02BCD28C30093D38B /* XCRemoteSwiftPackageReference "NextcloudFileProviderKit" */;
 			productName = NextcloudFileProviderKit;
