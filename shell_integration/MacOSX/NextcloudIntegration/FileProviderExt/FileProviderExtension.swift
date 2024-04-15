@@ -289,6 +289,9 @@ import OSLog
 
 
         guard let item = Item.storedItem(identifier: identifier, usingKit: ncKit) else {
+            Logger.fileProviderExtension.error(
+                "Not deleting item \(identifier.rawValue, privacy: .public), item not found"
+            )
             completionHandler(NSFileProviderError(.noSuchItem))
             return Progress()
         }
