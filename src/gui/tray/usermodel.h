@@ -57,6 +57,7 @@ class User : public QObject
     Q_PROPERTY(bool desktopNotificationsAllowed READ isDesktopNotificationsAllowed NOTIFY desktopNotificationsAllowedChanged)
     Q_PROPERTY(bool hasLocalFolder READ hasLocalFolder NOTIFY hasLocalFolderChanged)
     Q_PROPERTY(bool serverHasTalk READ serverHasTalk NOTIFY serverHasTalkChanged)
+    Q_PROPERTY(bool isNcAssistantEnabled READ isNcAssistantEnabled NOTIFY ncAssistantAvailabityChanged)
     Q_PROPERTY(QString avatar READ avatarUrl NOTIFY avatarChanged)
     Q_PROPERTY(bool isConnected READ isConnected NOTIFY accountStateChanged)
     Q_PROPERTY(UnifiedSearchResultsListModel* unifiedSearchResultsListModel READ getUnifiedSearchResultsListModel CONSTANT)
@@ -83,6 +84,7 @@ public:
     [[nodiscard]] bool serverHasUserStatus() const;
     [[nodiscard]] AccountApp *talkApp() const;
     [[nodiscard]] bool hasActivities() const;
+    [[nodiscard]] bool isNcAssistantEnabled() const;
     [[nodiscard]] QColor accentColor() const;
     [[nodiscard]] QColor headerColor() const;
     [[nodiscard]] QColor headerTextColor() const;
@@ -113,6 +115,7 @@ signals:
     void accentColorChanged();
     void sendReplyMessage(const int activityIndex, const QString &conversationToken, const QString &message, const QString &replyTo);
     void groupFoldersChanged();
+    void ncAssistantAvailabityChanged();
 
 public slots:
     void slotItemCompleted(const QString &folder, const OCC::SyncFileItemPtr &item);
@@ -251,6 +254,7 @@ public slots:
     void openCurrentAccountTalk();
     void openCurrentAccountServer();
     void openCurrentAccountFolderFromTrayInfo(const QString &fullRemotePath);
+    void openCurrentAccountNcAssistant();
     void setCurrentUserId(const int id);
     void login(const int id);
     void logout(const int id);

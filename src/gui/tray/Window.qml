@@ -642,16 +642,15 @@ ApplicationWindow {
                     visible: UserModel.currentUser.serverHasTalk
                     icon.source: "qrc:///client/theme/white/talk-app.svg"
                     icon.color: Style.currentUserHeaderTextColor
-                    onClicked: UserModel.openCurrentAccountTalk()
+                    onClicked: UserModel.currentUser.isNcAssistantEnabled ? UserModel.openCurrentAccountNcAssistant() : UserModel.openCurrentAccountTalk()
 
                     Accessible.role: Accessible.Button
-                    Accessible.name: qsTr("Open Nextcloud Talk in browser")
-                    Accessible.onPressAction: trayWindowTalkButton.clicked()
+                    Accessible.name: UserModel.currentUser.isNcAssistantEnabled ? qsTr("Open Nextcloud Assistant in browser") : qsTr("Open Nextcloud Talk in browser")
+                    Accessible.onPressAction: trayWindowFeaturedAppButton.clicked()
 
                     Layout.alignment: Qt.AlignRight
                     Layout.preferredWidth:  Style.trayWindowHeaderHeight
                     Layout.preferredHeight: Style.trayWindowHeaderHeight
-
                 }
 
                 HeaderButton {
