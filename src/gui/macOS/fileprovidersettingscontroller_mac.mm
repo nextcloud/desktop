@@ -122,7 +122,7 @@ public:
         NSArray<NSString *> *const modifiedVfsAccounts = mutableVfsAccounts.copy;
         [_userDefaults setObject:modifiedVfsAccounts forKey:_accountsKey];
 
-        Q_ASSERT(vfsEnabledForAccount(userIdAtHost) == userIdAtHost);
+        Q_ASSERT(vfsEnabledForAccount(userIdAtHost) == setEnabled);
 
         return VfsAccountsAction::VfsAccountsEnabledChanged;
     }
