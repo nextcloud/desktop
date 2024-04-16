@@ -16,6 +16,10 @@ let package = Package(
             targets: ["NextcloudFileProviderKit"]),
     ],
     dependencies: [
+        .package(
+            url: "https://github.com/claucambra/NextcloudCapabilitiesKit.git",
+                .upToNextMajor(from: "2.0.0")
+        ),
         .package(url: "https://github.com/nextcloud/NextcloudKit", .upToNextMajor(from: "2.9.9")),
         .package(url: "https://github.com/realm/realm-swift.git", .upToNextMajor(from: "10.33.0")),
     ],
@@ -25,6 +29,7 @@ let package = Package(
         .target(
             name: "NextcloudFileProviderKit",
             dependencies: [
+                .product(name: "NextcloudCapabilitiesKit", package: "NextcloudCapabilitiesKit"),
                 .product(name: "NextcloudKit", package: "NextcloudKit"),
                 .product(name: "RealmSwift", package: "realm-swift")]),
         .testTarget(
