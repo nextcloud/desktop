@@ -23,6 +23,7 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
         Self.isSystemIdentifier(enumeratedItemIdentifier)
     }
 
+    // TODO: actually use this in NCKit and server requests
     private let anchor = NSFileProviderSyncAnchor(Date().description.data(using: .utf8)!)
     private static let maxItemsPerFileProviderPage = 100
     static let logger = Logger(subsystem: Logger.subsystem, category: "enumerator")
@@ -92,6 +93,8 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
             "Received enumerate items request for enumerator with user: \(self.ncAccount.ncKitAccount, privacy: .public) with serverUrl: \(self.serverUrl, privacy: .public)"
         )
         /*
+         - inspect the page to determine whether this is an initial or a follow-up request (TODO)
+
          If this is an enumerator for a directory, the root container or all directories:
          - perform a server request to fetch directory contents
          If this is an enumerator for the working set:
@@ -106,6 +109,7 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
             Self.logger.debug(
                 "Enumerating trash set for user: \(self.ncAccount.ncKitAccount, privacy: .public) with serverUrl: \(self.serverUrl, privacy: .public)"
             )
+            // TODO!
 
             observer.finishEnumerating(upTo: nil)
             return
@@ -126,6 +130,7 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
             return
         }
 
+        // TODO: Make better use of pagination and handle paging properly
         if page == NSFileProviderPage.initialPageSortedByDate as NSFileProviderPage
             || page == NSFileProviderPage.initialPageSortedByName as NSFileProviderPage
         {
@@ -141,6 +146,7 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
                         "Finishing enumeration for user: \(self.ncAccount.ncKitAccount, privacy: .public) with serverUrl: \(self.serverUrl, privacy: .public) with error \(readError!.localizedDescription, privacy: .public)"
                     )
 
+                    // TODO: Refactor for conciseness
                     let nkReadError = NKError(error: readError!)
                     let error =
                         nkReadError.fileProviderError ?? NSFileProviderError(.cannotSynchronize)
@@ -172,6 +178,8 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
         Self.logger.debug(
             "Enumerating page \(numPage, privacy: .public) for user: \(self.ncAccount.ncKitAccount, privacy: .public) with serverUrl: \(self.serverUrl, privacy: .public)"
         )
+        // TODO: Handle paging properly
+        // Self.completeObserver(observer, ncKit: ncKit, numPage: numPage, itemMetadatas: nil)
         observer.finishEnumerating(upTo: nil)
     }
 
@@ -182,6 +190,8 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
             "Received enumerate changes request for enumerator for user: \(self.ncAccount.ncKitAccount, privacy: .public) with serverUrl: \(self.serverUrl, privacy: .public)"
         )
         /*
+         - query the server for updates since the passed-in sync anchor (TODO)
+
          If this is an enumerator for the working set:
          - note the changes in your local database
 
@@ -214,6 +224,7 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
                     Self.logger.info(
                         "Finished recursive change enumeration of working set for user: \(self.ncAccount.ncKitAccount, privacy: .public) with error: \(error!.errorDescription, privacy: .public)"
                     )
+                    // TODO: Refactor for conciseness
                     let fpError =
                         error?.fileProviderError ?? NSFileProviderError(.cannotSynchronize)
                     observer.finishEnumeratingWithError(fpError)
@@ -238,6 +249,7 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
             Self.logger.debug(
                 "Enumerating changes in trash set for user: \(self.ncAccount.ncKitAccount, privacy: .public)"
             )
+            // TODO!
 
             observer.finishEnumeratingChanges(upTo: anchor, moreComing: false)
             return
@@ -249,6 +261,7 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
 
         // No matter what happens here we finish enumeration in some way, either from the error
         // handling below or from the completeChangesObserver
+        // TODO: Move to the sync engine extension
         Self.readServerUrl(
             serverUrl, ncAccount: ncAccount, ncKit: ncKit, stopAtMatchingEtags: true
         ) { _, newMetadatas, updatedMetadatas, deletedMetadatas, readError in
@@ -264,6 +277,7 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
                     "Finishing enumeration of changes for user: \(self.ncAccount.ncKitAccount, privacy: .public) with serverUrl: \(self.serverUrl, privacy: .public) with error: \(readError!.localizedDescription, privacy: .public)"
                 )
 
+                // TODO: Refactir for conciseness
                 let nkReadError = NKError(error: readError!)
                 let error = nkReadError.fileProviderError ?? NSFileProviderError(.cannotSynchronize)
 
@@ -395,6 +409,17 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
         metadatasToFileProviderItems(itemMetadatas, ncKit: ncKit) { items in
             observer.didEnumerate(items)
             Self.logger.info("Did enumerate \(items.count) items")
+
+            // TODO: Handle paging properly
+            /*
+             if items.count == maxItemsPerFileProviderPage {
+             let nextPage = numPage + 1
+             let providerPage = NSFileProviderPage("\(nextPage)".data(using: .utf8)!)
+             observer.finishEnumerating(upTo: providerPage)
+             } else {
+             observer.finishEnumerating(upTo: nil)
+             }
+             */
             observer.finishEnumerating(upTo: fileProviderPageforNumPage(numPage))
         }
     }

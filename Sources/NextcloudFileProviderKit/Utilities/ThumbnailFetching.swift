@@ -34,6 +34,7 @@ public func fetchThumbnails(
     }
 
     for itemIdentifier in itemIdentifiers {
+        // TODO: Move directly to item?
         guard let item = Item.storedItem(identifier: itemIdentifier, usingKit: ncKit),
               let thumbnailUrl = item.metadata.thumbnailUrl(size: size)
         else {
