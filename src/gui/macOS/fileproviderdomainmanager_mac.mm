@@ -20,7 +20,6 @@
 #include "config.h"
 #include "fileproviderdomainmanager.h"
 #include "fileprovidersettingscontroller.h"
-#include "pushnotifications.h"
 
 #include "gui/accountmanager.h"
 #include "libsync/account.h"
@@ -65,14 +64,6 @@ API_AVAILABLE(macos(11.0))
 QString accountIdFromDomain(NSFileProviderDomain * const domain)
 {
     return accountIdFromDomainId(domain.identifier);
-}
-
-bool accountFilesPushNotificationsReady(const OCC::AccountPtr &account)
-{
-    const auto pushNotifications = account->pushNotifications();
-    const auto pushNotificationsCapability = account->capabilities().availablePushNotifications() & OCC::PushNotificationType::Files;
-
-    return pushNotificationsCapability && pushNotifications && pushNotifications->isReady();
 }
 
 }
@@ -420,11 +411,6 @@ FileProviderDomainManager::~FileProviderDomainManager() = default;
 void FileProviderDomainManager::start()
 {
     ConfigFile cfg;
-    std::chrono::milliseconds polltime = cfg.remotePollInterval();
-    _enumeratorSignallingTimer.setInterval(polltime.count());
-    connect(&_enumeratorSignallingTimer, &QTimer::timeout,
-            this, &FileProviderDomainManager::slotEnumeratorSignallingTimerTimeout);
-    _enumeratorSignallingTimer.start();
 
     setupFileProviderDomains();
 
@@ -498,54 +484,6 @@ void FileProviderDomainManager::addFileProviderDomainForAccount(const AccountSta
     connect(accountState, &AccountState::stateChanged, this, [this, accountState] {
         slotAccountStateChanged(accountState);
     });
-
-    // Setup push notifications
-    const auto accountCapabilities = account->capabilities().isValid();
-    if (!accountCapabilities) {
-        connect(account.get(), &Account::capabilitiesChanged, this, [this, account] {
-            trySetupPushNotificationsForAccount(account.get());
-        });
-        return;
-    }
-
-    trySetupPushNotificationsForAccount(account.get());
-}
-
-void FileProviderDomainManager::trySetupPushNotificationsForAccount(const Account * const account)
-{
-    if (!d) {
-        return;
-    }
-
-    Q_ASSERT(account);
-
-    const auto pushNotifications = account->pushNotifications();
-    const auto pushNotificationsCapability = account->capabilities().availablePushNotifications() & PushNotificationType::Files;
-
-    if (pushNotificationsCapability && pushNotifications && pushNotifications->isReady()) {
-        qCDebug(lcMacFileProviderDomainManager) << "Push notifications already ready, connecting them to enumerator signalling."
-                                                << account->displayName();
-        setupPushNotificationsForAccount(account);
-    } else if (pushNotificationsCapability) {
-        qCDebug(lcMacFileProviderDomainManager) << "Push notifications not yet ready, will connect to signalling when ready."
-                                                << account->displayName();
-        connect(account, &Account::pushNotificationsReady, this, &FileProviderDomainManager::setupPushNotificationsForAccount);
-    }
-}
-
-void FileProviderDomainManager::setupPushNotificationsForAccount(const Account * const account)
-{
-    if (!d) {
-        return;
-    }
-
-    Q_ASSERT(account);
-
-    qCDebug(lcMacFileProviderDomainManager) << "Setting up push notifications for file provider domain for account:"
-                                            << account->displayName();
-
-    connect(account->pushNotifications(), &PushNotifications::filesChanged, this, &FileProviderDomainManager::signalEnumeratorChanged);
-    disconnect(account, &Account::pushNotificationsReady, this, &FileProviderDomainManager::setupPushNotificationsForAccount);
 }
 
 void FileProviderDomainManager::signalEnumeratorChanged(const Account * const account)
@@ -569,13 +507,6 @@ void FileProviderDomainManager::removeFileProviderDomainForAccount(const Account
     Q_ASSERT(account);
 
     d->removeFileProviderDomain(accountState);
-
-    if (accountFilesPushNotificationsReady(account)) {
-        const auto pushNotifications = account->pushNotifications();
-        disconnect(pushNotifications, &PushNotifications::filesChanged, this, &FileProviderDomainManager::signalEnumeratorChanged);
-    } else if (const auto hasFilesPushNotificationsCapability = account->capabilities().availablePushNotifications() & PushNotificationType::Files) {
-        disconnect(account.get(), &Account::pushNotificationsReady, this, &FileProviderDomainManager::setupPushNotificationsForAccount);
-    }
 }
 
 void FileProviderDomainManager::disconnectFileProviderDomainForAccount(const AccountState * const accountState, const QString &reason)
@@ -636,27 +567,6 @@ void FileProviderDomainManager::slotAccountStateChanged(const AccountState * con
         // Provide credentials
         reconnectFileProviderDomainForAccount(accountState);
         break;
-    }
-}
-
-void FileProviderDomainManager::slotEnumeratorSignallingTimerTimeout()
-{
-    if (!d) {
-        return;
-    }
-
-    qCDebug(lcMacFileProviderDomainManager) << "Enumerator signalling timer timed out, notifying domains for accounts without push notifications";
-
-    const auto registeredDomainIds = d->configuredDomainIds();
-    for (const auto &domainId : registeredDomainIds) {
-        const auto accountUserId = accountIdFromDomainId(domainId);
-        const auto accountState = AccountManager::instance()->accountFromUserId(accountUserId);
-        const auto account = accountState->account();
-
-        if (!accountFilesPushNotificationsReady(account)) {
-            qCDebug(lcMacFileProviderDomainManager) << "Notifying domain for account:" << account->userIdAtHostWithPort();
-            d->signalEnumeratorChanged(account.get());
-        }
     }
 }
 
