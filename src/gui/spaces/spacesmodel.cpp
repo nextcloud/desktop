@@ -13,23 +13,11 @@
  */
 #include "spacesmodel.h"
 
-#include "common/utility.h"
-#include "networkjobs.h"
-
-#include "libsync/account.h"
-
 #include "libsync/graphapi/spacesmanager.h"
-
-#include "resources/resources.h"
 
 #include <QIcon>
 #include <QPixmap>
 #include <QRandomGenerator>
-
-namespace {
-constexpr QSize ImageSizeC(128, 128);
-constexpr QSize ImageMarginC(ImageSizeC * 0.1);
-}
 
 using namespace OCC::Spaces;
 

@@ -34,7 +34,7 @@ public:
     void startServices() override;
 
 private:
-    Q_DECLARE_PRIVATE(MacPlatform);
+    Q_DECLARE_PRIVATE(MacPlatform)
     QScopedPointer<MacPlatformPrivate> d_ptr;
 };
 

@@ -238,7 +238,7 @@ void ownCloudGui::slotTrayMessageIfServerUnsupported(Account *account)
 void ownCloudGui::slotComputeOverallSyncStatus()
 {
     auto getIcon = [this](const SyncResult &result) { return Theme::instance()->themeTrayIcon(result, contextMenuVisible()); };
-    auto getIconFromStatus = [getIcon, this](const SyncResult::Status &status) { return getIcon(SyncResult{status}); };
+    auto getIconFromStatus = [getIcon](const SyncResult::Status &status) { return getIcon(SyncResult{status}); };
     bool allSignedOut = true;
     bool allPaused = true;
     bool allDisconnected = true;

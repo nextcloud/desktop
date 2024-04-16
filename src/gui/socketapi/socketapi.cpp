@@ -665,7 +665,7 @@ void SocketApi::command_OPEN_PRIVATE_LINK_VERSIONS(const QString &localFile, Soc
             Utility::openBrowser(queryUrl, nullptr);
         });
     } else {
-        fetchPrivateLinkUrlHelper(localFile, [this](const QUrl &link) {
+        fetchPrivateLinkUrlHelper(localFile, [](const QUrl &link) {
             Utility::openBrowser(Utility::concatUrlPath(link, {}, {{QStringLiteral("details"), QStringLiteral("versionsTabView")}}), nullptr);
         });
     }

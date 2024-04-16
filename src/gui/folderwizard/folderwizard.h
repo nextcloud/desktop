@@ -14,11 +14,10 @@
 
 #pragma once
 
+#include <QUrl>
 #include <QWizard>
 
 #include "accountfwd.h"
-
-#include "gui/folder.h"
 
 class QCheckBox;
 class QTreeWidgetItem;
@@ -43,7 +42,7 @@ public:
         Page_Target,
         Page_SelectiveSync
     };
-    Q_ENUM(PageType);
+    Q_ENUM(PageType)
 
     struct Result
     {
@@ -87,7 +86,7 @@ public:
 
     Result result();
 
-    Q_DECLARE_PRIVATE(FolderWizard);
+    Q_DECLARE_PRIVATE(FolderWizard)
 
 private:
     QScopedPointer<FolderWizardPrivate> d_ptr;

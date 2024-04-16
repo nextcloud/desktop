@@ -297,7 +297,7 @@ void AccountSettings::slotRemoveCurrentFolder(Folder *folder)
     messageBox->setAttribute(Qt::WA_DeleteOnClose);
     QPushButton *yesButton = messageBox->addButton(tr("Remove Folder Sync Connection"), QMessageBox::YesRole);
     messageBox->addButton(tr("Cancel"), QMessageBox::NoRole);
-    connect(messageBox, &QMessageBox::finished, this, [messageBox, yesButton, folder, this] {
+    connect(messageBox, &QMessageBox::finished, this, [messageBox, yesButton, folder] {
         if (messageBox->clickedButton() == yesButton) {
             FolderMan::instance()->removeFolder(folder);
         }
@@ -335,7 +335,7 @@ void AccountSettings::slotDisableVfsCurrentFolder(Folder *folder)
            "This action will abort any currently running synchronization."));
     auto acceptButton = msgBox->addButton(tr("Disable support"), QMessageBox::AcceptRole);
     msgBox->addButton(tr("Cancel"), QMessageBox::RejectRole);
-    connect(msgBox, &QMessageBox::finished, msgBox, [this, msgBox, folder, acceptButton] {
+    connect(msgBox, &QMessageBox::finished, msgBox, [msgBox, folder, acceptButton] {
         msgBox->deleteLater();
         if (msgBox->clickedButton() != acceptButton || !folder) {
             return;

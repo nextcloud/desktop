@@ -23,6 +23,7 @@
 #include "libsync/accountfwd.h"
 
 #include <QCoreApplication>
+#include <QLoggingCategory>
 #include <QStringList>
 
 namespace OCC {
@@ -50,7 +51,7 @@ public:
     const AccountStatePtr &accountState();
 
 private:
-    Q_DECLARE_PUBLIC(FolderWizard);
+    Q_DECLARE_PUBLIC(FolderWizard)
     FolderWizard *q_ptr;
 
     AccountStatePtr _account;

@@ -15,6 +15,7 @@
 #ifndef SERVERFWD_H
 #define SERVERFWD_H
 
+#include <QPointer>
 #include <QSharedPointer>
 
 namespace OCC {
