@@ -1,7 +1,7 @@
 # This workflow will build a Swift project
 # For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-swift
 
-name: Swift
+name: Xcodebuild build and test
 
 on:
   push:
@@ -16,17 +16,15 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-    - uses: swift-actions/setup-swift@v2
-    - name: Build
-      run: swift build -v
-    - name: Run tests
-      run: swift test --enable-code-coverage -v
+
     - name: List Xcode installations
       run: sudo ls -1 /Applications | grep "Xcode"
     - name: Select Xcode 15.3
       run: sudo xcode-select -s /Applications/Xcode_15.3.app/Contents/Developer
+    - name: Build and test
+      run: xcodebuild clean build test -scheme NextcloudFileProviderKit -destination "platform=macOS,name=Any Mac" -enableCodeCoverage YES -derivedDataPath build/
     - name: Gather code coverage
-      run: xcrun llvm-cov export -format="lcov" .build/debug/NextcloudCapabilitiesKitPackageTests.xctest/Contents/MacOS/NextcloudFileProviderKitPackageTests -instr-profile .build/debug/codecov/default.profdata > coverage_report.lcov
+      run: xcrun llvm-cov export -format="lcov" build/Build/Products/Febug/NextcloudFileProviderKitPackageTests.xctest/Contents/MacOS/NextcloudFileProviderKitPackageTests -instr-profile build/Build/debug/codecov/default.profdata > coverage_report.lcov
     - name: Upload coverage to Codecov
       uses: codecov/codecov-action@v2
       with:
