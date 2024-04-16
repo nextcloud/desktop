@@ -108,7 +108,12 @@ extension Enumerator {
         Self.logger.debug("About to read: \(itemServerUrl, privacy: .public)")
 
         Self.readServerUrl(
-            itemServerUrl, ncAccount: ncAccount, ncKit: ncKit, stopAtMatchingEtags: scanChangesOnly
+            itemServerUrl, 
+            ncAccount: ncAccount,
+            ncKit: ncKit,
+            domain: domain,
+            enumeratedItemIdentifier: enumeratedItemIdentifier,
+            stopAtMatchingEtags: scanChangesOnly
         ) { metadatas, newMetadatas, updatedMetadatas, deletedMetadatas, readError in
 
             if readError != nil {
@@ -313,6 +318,8 @@ extension Enumerator {
         _ serverUrl: String,
         ncAccount: Account,
         ncKit: NextcloudKit,
+        domain: NSFileProviderDomain? = nil,
+        enumeratedItemIdentifier: NSFileProviderItemIdentifier? = nil,
         stopAtMatchingEtags: Bool = false,
         depth: String = "1",
         completionHandler: @escaping (
@@ -330,7 +337,20 @@ extension Enumerator {
             "Starting to read serverUrl: \(serverUrl, privacy: .public) for user: \(ncAccount.ncKitAccount, privacy: .public) at depth \(depth, privacy: .public). NCKit info: userId: \(ncKit.nkCommonInstance.user, privacy: .public), password is empty: \(ncKit.nkCommonInstance.password == "" ? "EMPTY PASSWORD" : "NOT EMPTY PASSWORD"), urlBase: \(ncKit.nkCommonInstance.urlBase, privacy: .public), ncVersion: \(ncKit.nkCommonInstance.nextcloudVersion, privacy: .public)"
         )
 
-        ncKit.readFileOrFolder(serverUrlFileName: serverUrl, depth: depth, showHiddenFiles: true) {
+        ncKit.readFileOrFolder(
+            serverUrlFileName: serverUrl,
+            depth: depth,
+            showHiddenFiles: true,
+            taskHandler: { task in
+                if let domain, let enumeratedItemIdentifier {
+                    NSFileProviderManager(for: domain)?.register(
+                        task,
+                        forItemWithIdentifier: enumeratedItemIdentifier,
+                        completionHandler: { _ in }
+                    )
+                }
+            }
+        ) {
             _, files, _, error in
             guard error == .success else {
                 Self.logger.error(

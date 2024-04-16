@@ -17,11 +17,12 @@ import NextcloudKit
 import OSLog
 
 public class Enumerator: NSObject, NSFileProviderEnumerator {
-    private let enumeratedItemIdentifier: NSFileProviderItemIdentifier
+    let enumeratedItemIdentifier: NSFileProviderItemIdentifier
     private var enumeratedItemMetadata: ItemMetadata?
     private var enumeratingSystemIdentifier: Bool {
         Self.isSystemIdentifier(enumeratedItemIdentifier)
     }
+    let domain: NSFileProviderDomain?
 
     // TODO: actually use this in NCKit and server requests
     private let anchor = NSFileProviderSyncAnchor(Date().description.data(using: .utf8)!)
@@ -41,11 +42,13 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
         enumeratedItemIdentifier: NSFileProviderItemIdentifier,
         ncAccount: Account,
         ncKit: NextcloudKit,
+        domain: NSFileProviderDomain? = nil,
         fastEnumeration: Bool = true
     ) {
         self.enumeratedItemIdentifier = enumeratedItemIdentifier
         self.ncAccount = ncAccount
         self.ncKit = ncKit
+        self.domain = domain
         self.fastEnumeration = fastEnumeration
 
         if Self.isSystemIdentifier(enumeratedItemIdentifier) {
