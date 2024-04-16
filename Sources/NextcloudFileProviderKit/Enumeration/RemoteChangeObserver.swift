@@ -83,9 +83,11 @@ public class RemoteChangeObserver:
             logger.error(
                 """
                 Exceeded authentication failures for notify push websocket
-                \(self.ncAccount, privacy: .public)
+                \(self.ncAccount, privacy: .public),
+                will poll instead.
                 """
             )
+            startPollingTimer()
             return
         }
         Task { await self.configureNotifyPush() }
@@ -100,22 +102,24 @@ public class RemoteChangeObserver:
     }
 
     private func configureNotifyPush() async {
-        let capabilitiesData: Data? = await withCheckedContinuation { continuation in
+        let (capabilitiesData, error) = await withCheckedContinuation { continuation in
             ncKit.getCapabilities { account, data, error in
-                guard error == .success else {
-                    self.logger.error(
-                        """
-                        Could not get \(self.ncAccount, privacy: .public) capabilities:
-                        \(error.errorCode, privacy: .public)
-                        \(error.errorDescription, privacy: .public)
-                        """
-                    )
-                    continuation.resume(returning: nil)
-                    return
-                }
-                continuation.resume(returning: data)
+                continuation.resume(returning: (data, error))
             }
         }
+
+        guard error == .success else {
+            self.logger.error(
+                """
+                Could not get \(self.ncAccount, privacy: .public) capabilities:
+                \(error.errorCode, privacy: .public)
+                \(error.errorDescription, privacy: .public)
+                """
+            )
+            reconnectWebSocket()
+            return
+        }
+
         guard let capabilitiesData = capabilitiesData,
               let capabilities = Capabilities(data: capabilitiesData),
               let websocketEndpoint = capabilities.notifyPush?.endpoints?.websocket
