@@ -15,12 +15,12 @@ fileprivate let NotifyPushWebSocketPingIntervalNanoseconds: UInt64 = 30 * 1_000_
 fileprivate let NotifyPushWebSocketPingFailLimit = 8
 fileprivate let NotifyPushWebSocketAuthenticationFailLimit = 3
 
-class RemoteChangeObserver:
+public class RemoteChangeObserver:
     NSObject, NKCommonDelegate, URLSessionDelegate, URLSessionWebSocketDelegate
 {
-    let ncKit: NextcloudKit
-    let domain: NSFileProviderDomain
-    var ncAccount: String { ncKit.nkCommonInstance.account }
+    public let ncKit: NextcloudKit
+    public let domain: NSFileProviderDomain
+    public var ncAccount: String { ncKit.nkCommonInstance.account }
 
     private let logger = Logger(subsystem: Logger.subsystem, category: "changeobserver")
 
@@ -41,7 +41,7 @@ class RemoteChangeObserver:
         }
     }
 
-    init(ncKit: NextcloudKit, domain: NSFileProviderDomain) {
+    public init(ncKit: NextcloudKit, domain: NSFileProviderDomain) {
         self.ncKit = ncKit
         self.domain = domain
         super.init()
