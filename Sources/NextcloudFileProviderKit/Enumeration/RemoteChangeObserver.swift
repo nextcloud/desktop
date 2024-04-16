@@ -62,7 +62,12 @@ public class RemoteChangeObserver:
     private func signalEnumerator() {
         NSFileProviderManager(for: domain)?.signalEnumerator(for: .rootContainer) { error in
             if let error = error {
-                self.logger.error("Could not signal enumerator for \(self.ncAccount): \(error)")
+                self.logger.error(
+                    """
+                    Could not signal enumerator for \(self.ncAccount, privacy: .public):
+                    \(error.localizedDescription, privacy: .public)
+                    """
+                )
             }
         }
     }
@@ -76,7 +81,10 @@ public class RemoteChangeObserver:
         }
         guard webSocketAuthenticationFailCount < NotifyPushWebSocketAuthenticationFailLimit else {
             logger.error(
-                "Exceeded authentication failures for notify push websocket \(self.ncAccount)"
+                """
+                Exceeded authentication failures for notify push websocket
+                \(self.ncAccount, privacy: .public)
+                """
             )
             return
         }
@@ -95,7 +103,13 @@ public class RemoteChangeObserver:
         let capabilitiesData: Data? = await withCheckedContinuation { continuation in
             ncKit.getCapabilities { account, data, error in
                 guard error == .success else {
-                    self.logger.error("Could not get \(self.ncAccount) capabilities: \(error)")
+                    self.logger.error(
+                        """
+                        Could not get \(self.ncAccount, privacy: .public) capabilities:
+                        \(error.errorCode, privacy: .public)
+                        \(error.errorDescription, privacy: .public)
+                        """
+                    )
                     continuation.resume(returning: nil)
                     return
                 }
@@ -106,13 +120,21 @@ public class RemoteChangeObserver:
               let capabilities = Capabilities(data: capabilitiesData),
               let websocketEndpoint = capabilities.notifyPush?.endpoints?.websocket
         else {
-            logger.error("Could not get notifyPush websocket \(self.ncAccount), polling.")
+            logger.error(
+                """
+                Could not get notifyPush websocket \(self.ncAccount, privacy: .public), polling.
+                """
+            )
             startPollingTimer()
             return
         }
 
         guard let websocketEndpointUrl = URL(string: websocketEndpoint) else {
-            logger.error("Received notifyPush endpoint is invalid: \(websocketEndpoint)")
+            logger.error(
+                """
+                Received notifyPush endpoint is invalid: \(websocketEndpoint, privacy: .public)
+                """
+            )
             return
         }
         webSocketOperationQueue.isSuspended = false
@@ -123,7 +145,11 @@ public class RemoteChangeObserver:
         )
         webSocketTask = webSocketUrlSession?.webSocketTask(with: websocketEndpointUrl)
         webSocketTask?.resume()
-        logger.info("Successfully configured push notifications for \(self.ncAccount)")
+        logger.info(
+            """
+            Successfully configured push notifications for \(self.ncAccount, privacy: .public)
+            """
+        )
     }
 
     public func urlSession(
@@ -132,7 +158,7 @@ public class RemoteChangeObserver:
         completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void
     ) {
         let authMethod = challenge.protectionSpace.authenticationMethod
-        logger.debug("Received authentication challenge with method: \(authMethod)")
+        logger.debug("Received auth challenge with method: \(authMethod, privacy: .public)")
         if authMethod == NSURLAuthenticationMethodHTTPBasic {
             let credential = URLCredential(
                 user: ncKit.nkCommonInstance.userId,
@@ -150,7 +176,7 @@ public class RemoteChangeObserver:
             let credential = URLCredential(trust: serverTrust)
             completionHandler(.useCredential, credential)
         } else {
-            logger.warning("Unhandled auth method: \(authMethod)")
+            logger.warning("Unhandled auth method: \(authMethod, privacy: .public)")
             // Handle other authentication methods or cancel the challenge
             completionHandler(.cancelAuthenticationChallenge, nil)
         }
@@ -161,7 +187,7 @@ public class RemoteChangeObserver:
         webSocketTask: URLSessionWebSocketTask,
         didOpenWithProtocol protocol: String?
     ) {
-        logger.debug("Websocket connected for \(self.ncAccount), sending auth details")
+        logger.debug("Websocket connected \(self.ncAccount, privacy: .public) sending auth details")
         Task { await authenticateWebSocket() }
     }
 
@@ -171,11 +197,11 @@ public class RemoteChangeObserver:
         didCloseWith closeCode: URLSessionWebSocketTask.CloseCode,
         reason: Data?
     ) {
-        logger.debug("Socket connection closed for \(self.ncAccount).")
+        logger.debug("Socket connection closed for \(self.ncAccount, privacy: .public).")
         if let reason = reason {
-            logger.debug("Reason: \(String(data: reason, encoding: .utf8) ?? "unknown")")
+            logger.debug("Reason: \(String(data: reason, encoding: .utf8) ?? "", privacy: .public)")
         }
-        logger.debug("Retrying websocket connection for \(self.ncAccount).")
+        logger.debug("Retrying websocket connection for \(self.ncAccount, privacy: .public).")
         reconnectWebSocket()
     }
 
@@ -184,20 +210,29 @@ public class RemoteChangeObserver:
             try await webSocketTask?.send(.string(ncKit.nkCommonInstance.userId))
             try await webSocketTask?.send(.string(ncKit.nkCommonInstance.password))
         } catch let error {
-            logger.error("Error authenticating websocket for \(self.ncAccount): \(error)")
+            logger.error(
+                """
+                Error authenticating websocket for \(self.ncAccount, privacy: .public):
+                \(error.localizedDescription, privacy: .public)
+                """
+            )
         }
         readWebSocket()
     }
 
     private func pingWebSocket() {  // Keep the socket connection alive
         guard networkReachability != .notReachable else {
-            logger.error("Not pinging \(self.ncAccount) as network is unreachable")
+            logger.error("Not pinging \(self.ncAccount, privacy: .public), network is unreachable")
             return
         }
 
         webSocketTask?.sendPing { error in
             guard error == nil else {
-                self.logger.warning("Websocket ping failed: \(error)")
+                self.logger.warning(
+                    """
+                    Websocket ping failed: \(error?.localizedDescription ?? "", privacy: .public)
+                    """
+                )
                 self.webSocketPingFailCount += 1
                 if self.webSocketPingFailCount > NotifyPushWebSocketPingFailLimit {
                     self.reconnectWebSocket()
@@ -213,7 +248,10 @@ public class RemoteChangeObserver:
                     try await Task.sleep(nanoseconds: NotifyPushWebSocketPingIntervalNanoseconds)
                 } catch let error {
                     self.logger.error(
-                        "Could not sleep websocket ping for \(self.ncAccount): \(error)"
+                        """
+                        Could not sleep websocket ping for \(self.ncAccount, privacy: .public):
+                        \(error.localizedDescription, privacy: .public)
+                        """
                     )
                 }
                 self.pingWebSocket()
@@ -225,7 +263,7 @@ public class RemoteChangeObserver:
         webSocketTask?.receive { result in
             switch result {
             case .failure:
-                self.logger.debug("Failed to read websocket for \(self.ncAccount)")
+                self.logger.debug("Failed to read websocket \(self.ncAccount, privacy: .public)")
                 self.reconnectWebSocket()
             case .success(let message):
                 switch message {
@@ -243,30 +281,40 @@ public class RemoteChangeObserver:
 
     private func processWebsocket(data: Data) {
         guard let string = String(data: data, encoding: .utf8) else {
-            logger.error("Could not convert websocket data to string for id: \(self.ncAccount)")
+            logger.error("Could parse websocket data for id: \(self.ncAccount, privacy: .public)")
             return
         }
         processWebsocket(string: string)
     }
 
     private func processWebsocket(string: String) {
-        logger.debug("Received websocket string: \(string)")
+        logger.debug("Received websocket string: \(string, privacy: .public)")
         if string == "notify_file" {
-            logger.debug("Received file notification for \(self.ncAccount)")
+            logger.debug("Received file notification for \(self.ncAccount, privacy: .public)")
             signalEnumerator()
         } else if string == "notify_activity" {
-            logger.debug("Received activity notification, ignoring: \(self.ncAccount)")
+            logger.debug("Ignoring activity notification: \(self.ncAccount, privacy: .public)")
         } else if string == "notify_notification" {
-            logger.debug("Received notification notification, ignoring: \(self.ncAccount)")
+            logger.debug("Ignoring notification: \(self.ncAccount, privacy: .public)")
         } else if string == "authenticated" {
-            logger.debug("Correctly authenticated websocket for \(self.ncAccount), pinging")
+            logger.debug("Correctly authed websocket \(self.ncAccount, privacy: .public), pinging")
             pingWebSocket()
         } else if string == "err: Invalid credentials" {
-            logger.debug("Invalid creds for websocket for \(self.ncAccount), reattempting auth")
+            logger.debug(
+                """
+                Invalid creds for websocket for \(self.ncAccount, privacy: .public),
+                reattempting auth.
+                """
+            )
             webSocketAuthenticationFailCount += 1
             reconnectWebSocket()
         } else {
-            logger.warning("Received unknown string from websocket \(self.ncAccount): \(string)")
+            logger.warning(
+                """
+                Received unknown string from websocket \(self.ncAccount, privacy: .public):
+                \(string, privacy: .public)
+                """
+            )
         }
     }
 }
