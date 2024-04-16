@@ -103,6 +103,8 @@ extension FileProviderExtension: NSFileProviderServicing {
             nextcloudVersion: 25,
             delegate: nil) // TODO: add delegate methods for self
 
+        changeObserver = RemoteChangeObserver(ncKit: ncKit, domain: domain)
+
         Logger.fileProviderExtension.info(
             "Nextcloud account set up in File Provider extension for user: \(user, privacy: .public) at server: \(serverUrl, privacy: .public)"
         )

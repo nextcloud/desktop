@@ -23,6 +23,7 @@ import OSLog
     let ncKit = NextcloudKit()
     let appGroupIdentifier = Bundle.main.object(forInfoDictionaryKey: "SocketApiPrefix") as? String
     var ncAccount: Account?
+    var changeObserver: RemoteChangeObserver?
     lazy var ncKitBackground = NKBackground(nkCommonInstance: ncKit.nkCommonInstance)
     lazy var socketClient: LocalSocketClient? = {
         guard let containerUrl = pathForAppGroupContainer() else {
