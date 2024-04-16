@@ -33,18 +33,19 @@ extension Item {
                     }
                 }
             ) { account, _, _, error in
-                continuation.resume(returning: (account, error.fileProviderError))
+                continuation.resume(returning: (account, error))
             }
         }
         
-        guard createError == nil else {
+        guard createError == .success else {
             Self.logger.error(
                 """
                 Could not create new folder at: \(remotePath, privacy: .public),
-                received error: \(createError?.localizedDescription ?? "", privacy: .public)
+                received error: \(createError.errorCode, privacy: .public)
+                \(createError.errorDescription, privacy: .public)
                 """
             )
-            return (nil, createError)
+            return (nil, createError.fileProviderError)
         }
         
         // Read contents after creation
@@ -63,18 +64,19 @@ extension Item {
                     }
                 }
             ) { account, files, _, error in
-                continuation.resume(returning: (files, error.fileProviderError))
+                continuation.resume(returning: (files, error))
             }
         }
         
-        guard readError == nil else {
+        guard readError == .success else {
             Self.logger.error(
                 """
                 Could not read new folder at: \(remotePath, privacy: .public),
-                received error: \(readError?.localizedDescription ?? "", privacy: .public)
+                received error: \(readError.errorCode, privacy: .public)
+                \(readError.errorDescription, privacy: .public)
                 """
             )
-            return (nil, readError)
+            return (nil, readError.fileProviderError)
         }
         
         let directoryMetadata = await withCheckedContinuation { continuation in
@@ -129,22 +131,22 @@ extension Item {
                     uploadProgress.copyCurrentStateToProgress(progress)
                 }
             ) { account, ocId, etag, date, size, _, _, error in
-                // The account string in this completion handler can be empty! (see HACK below)
                 continuation.resume(
-                    returning: (account, ocId, etag, date, size, error.fileProviderError)
+                    returning: (account, ocId, etag, date, size, error)
                 )
             }
         }
         
-        guard error == nil, let ocId else {
+        guard error == .success, let ocId else {
             Self.logger.error(
                 """
                 Could not upload item with filename: \(itemTemplate.filename, privacy: .public),
-                received error: \(error?.localizedDescription ?? "", privacy: .public)
+                received error: \(error.errorCode, privacy: .public)
+                \(error.errorDescription, privacy: .public)
                 received ocId: \(ocId ?? "empty", privacy: .public)
                 """
             )
-            return (nil, error)
+            return (nil, error.fileProviderError)
         }
         
         Self.logger.info(

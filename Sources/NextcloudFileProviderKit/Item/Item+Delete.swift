@@ -19,22 +19,22 @@ public extension Item {
         }
         let ocId = itemIdentifier.rawValue
 
-        let error = await withCheckedContinuation { 
-            (continuation: CheckedContinuation<Error?, Never>) -> Void in
+        let error = await withCheckedContinuation { continuation in
             ncKit.deleteFileOrFolder(serverUrlFileName: serverFileNameUrl) { _, error in
-                continuation.resume(returning: error.fileProviderError)
+                continuation.resume(returning: error)
             }
         }
 
-        guard error == nil else {
+        guard error == .success else {
             Self.logger.error(
                 """
                 Could not delete item with ocId \(ocId, privacy: .public)...
                 at \(serverFileNameUrl, privacy: .public)...
-                received error: \(error?.localizedDescription ?? "", privacy: .public)
+                received error: \(error.errorCode, privacy: .public)
+                \(error.errorDescription, privacy: .public)
                 """
             )
-            return error
+            return error.fileProviderError
         }
 
         Self.logger.info(

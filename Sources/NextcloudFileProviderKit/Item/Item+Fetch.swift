@@ -87,20 +87,21 @@ public extension Item {
             }
         }
 
-        if let fpError = error.fileProviderError {
+        if error != .success {
             Self.logger.error(
                 """
                 Could not acquire contents of item with identifier: \(ocId, privacy: .public)
                 and fileName: \(updatedMetadata.fileName, privacy: .public)
                 at \(serverUrlFileName, privacy: .public)
-                error: \(fpError.localizedDescription, privacy: .public)
+                error: \(error.errorCode, privacy: .public)
+                \(error.errorDescription, privacy: .public)
                 """
             )
 
             updatedMetadata.status = ItemMetadata.Status.downloadError.rawValue
             updatedMetadata.sessionError = error.errorDescription
             dbManager.addItemMetadata(updatedMetadata)
-            return (nil, nil, fpError)
+            return (nil, nil, error.fileProviderError)
         }
 
         Self.logger.debug(
@@ -120,7 +121,14 @@ public extension Item {
 
         guard let parentItemIdentifier = dbManager.parentItemIdentifierFromMetadata(
             updatedMetadata
-        ) else { return (nil, nil, NSFileProviderError(.noSuchItem)) }
+        ) else {
+            Self.logger.error(
+                """
+                Could not find parent item id for file \(self.metadata.fileName, privacy: .public)
+                """
+            )
+            return (nil, nil, NSFileProviderError(.noSuchItem))
+        }
 
         let fpItem = Item(
             metadata: updatedMetadata,
@@ -146,10 +154,25 @@ public extension Item {
             "Fetching thumbnail for: \(self.filename) at (\(thumbnailUrl, privacy: .public))"
         )
 
-        return await withCheckedContinuation { continuation in
+        let (data, error) = await withCheckedContinuation { continuation in
             self.ncKit.getPreview(url: thumbnailUrl) { _, data, error in
-                continuation.resume(returning: (data, error.fileProviderError))
+                continuation.resume(returning: (data, error))
             }
         }
+
+        if error != .success {
+            Self.logger.error(
+                """
+                Could not acquire thumbnail for item with identifier: 
+                \(self.itemIdentifier.rawValue, privacy: .public)
+                and fileName: \(self.filename, privacy: .public)
+                at \(thumbnailUrl, privacy: .public)
+                error: \(error.errorCode, privacy: .public)
+                \(error.errorDescription, privacy: .public)
+                """
+            )
+        }
+
+        return (data, error.fileProviderError)
     }
 }

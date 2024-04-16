@@ -27,19 +27,20 @@ public extension Item {
                 serverUrlFileNameDestination: newRemotePath,
                 overwrite: false
             ) { _, error in
-                continuation.resume(returning: error.fileProviderError)
+                continuation.resume(returning: error)
             }
         }
 
-        guard moveError == nil else {
+        guard moveError == .success else {
             Self.logger.error(
                 """
                 Could not move file or folder: \(oldRemotePath, privacy: .public)
                 to \(newRemotePath, privacy: .public),
-                received error: \(moveError?.localizedDescription ?? "", privacy: .public)
+                received error: \(moveError.errorCode, privacy: .public)
+                \(moveError.errorDescription, privacy: .public)
                 """
             )
-            return (nil, moveError)
+            return (nil, moveError.fileProviderError)
         }
 
         // Remember that a folder metadata's serverUrl is its direct server URL, while for
@@ -137,24 +138,25 @@ public extension Item {
                 }
             ) { _, _, etag, date, size, _, _, error in
                 continuation.resume(
-                    returning: (etag, date, size, error.fileProviderError)
+                    returning: (etag, date, size, error)
                 )
             }
         }
 
-        guard error == nil else {
+        guard error == .success else {
             Self.logger.error(
                 """
                 Could not upload item \(ocId, privacy: .public)
                 with filename: \(self.filename, privacy: .public),
-                received error: \(error?.localizedDescription ?? "", privacy: .public)
+                received error: \(error.errorCode, privacy: .public),
+                \(error.errorDescription, privacy: .public)
                 """
             )
 
             metadata.status = ItemMetadata.Status.uploadError.rawValue
-            metadata.sessionError = error?.localizedDescription ?? ""
+            metadata.sessionError = error.errorDescription
             dbManager.addItemMetadata(metadata)
-            return (nil, error)
+            return (nil, error.fileProviderError)
         }
 
         Self.logger.info(
