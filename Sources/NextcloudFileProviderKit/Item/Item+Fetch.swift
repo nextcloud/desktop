@@ -151,7 +151,7 @@ public extension Item {
         }
 
         Self.logger.debug(
-            "Fetching thumbnail for: \(self.filename) at (\(thumbnailUrl, privacy: .public))"
+            "Fetching thumbnail for: \(self.filename, privacy: .public) at (\(thumbnailUrl, privacy: .public))"
         )
 
         let (data, error) = await withCheckedContinuation { continuation in
