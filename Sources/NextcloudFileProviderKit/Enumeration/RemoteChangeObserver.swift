@@ -60,7 +60,7 @@ public class RemoteChangeObserver:
     }
 
     private func signalEnumerator() {
-        NSFileProviderManager(for: domain)?.signalEnumerator(for: .rootContainer) { error in
+        NSFileProviderManager(for: domain)?.signalEnumerator(for: .workingSet) { error in
             if let error = error {
                 self.logger.error(
                     """
