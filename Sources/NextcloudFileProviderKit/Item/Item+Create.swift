@@ -13,13 +13,26 @@ import OSLog
 extension Item {
     
     private static func createNewFolder(
+        itemTemplate: NSFileProviderItem?,
         remotePath: String,
         parentItemIdentifier: NSFileProviderItemIdentifier,
+        domain: NSFileProviderDomain? = nil,
         ncKit: NextcloudKit,
         progress: Progress
     ) async -> (Item?, Error?) {
         let (account, createError) = await withCheckedContinuation { continuation in
-            ncKit.createFolder(serverUrlFileName: remotePath) { account, _, _, error in
+            ncKit.createFolder(
+                serverUrlFileName: remotePath,
+                taskHandler: { task in
+                    if let domain, let itemTemplate {
+                        NSFileProviderManager(for: domain)?.register(
+                            task,
+                            forItemWithIdentifier: itemTemplate.itemIdentifier,
+                            completionHandler: { _ in }
+                        )
+                    }
+                }
+            ) { account, _, _, error in
                 continuation.resume(returning: (account, error.fileProviderError))
             }
         }
@@ -244,8 +257,10 @@ extension Item {
         
         guard !itemTemplateIsFolder else  {
             return await Self.createNewFolder(
+                itemTemplate: itemTemplate,
                 remotePath: newServerUrlFileName,
                 parentItemIdentifier: parentItemIdentifier,
+                domain: domain,
                 ncKit: ncKit,
                 progress: progress
             )
