@@ -100,6 +100,8 @@ extension Item {
             ncKit.upload(
                 serverUrlFileName: remotePath,
                 fileNameLocalPath: localPath,
+                dateCreationFile: itemTemplate.creationDate as? Date,
+                dateModificationFile: itemTemplate.contentModificationDate as? Date,
                 requestHandler: { request in
                     progress.setHandlersFromAfRequest(request)
                 },
