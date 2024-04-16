@@ -202,6 +202,9 @@ import OSLog
                 ncAccount: ncAccount,
                 progress: progress
             )
+            if error != nil {
+                signalEnumerator(completionHandler: { _ in })
+            }
             completionHandler(
                 item ?? itemTemplate,
                 NSFileProviderItemFields(),
@@ -264,6 +267,9 @@ import OSLog
                 domain: domain,
                 progress: progress
             )
+            if error != nil {
+                signalEnumerator(completionHandler: { _ in })
+            }
             completionHandler(modifiedItem ?? item, [], false, error)
         }
         return progress
@@ -299,8 +305,12 @@ import OSLog
 
         let progress = Progress(totalUnitCount: 1)
         Task {
-            completionHandler(await item.delete())
+            let error = await item.delete()
+            if error != nil {
+                signalEnumerator(completionHandler: { _ in })
+            }
             progress.completedUnitCount = 1
+            completionHandler(await item.delete())
         }
         return progress
     }
