@@ -24,7 +24,13 @@ jobs:
     - name: Build and test
       run: xcodebuild clean build test -scheme NextcloudFileProviderKit -destination "platform=macOS,name=Any Mac" -enableCodeCoverage YES -derivedDataPath "$PWD/.derivedData"
     - name: Gather code coverage
-      run: xcrun llvm-cov export -format="lcov" "$PWD/.derivedData/Build/Products/Debug/NextcloudFileProviderKitTests.xctest/Contents/MacOS/NextcloudFileProviderKitTests" -instr-profile "$PWD/.derivedData/Build/Debug/codecov/default.profdata" > coverage_report.lcov
+      run: |
+        cd "$PWD/.derivedData/Build/ProfileData"
+        cd $(ls -d */|head -n 1)
+        directory=${PWD##*/}
+        pathCoverage="$PWD/.derivedData/Build/ProfileData/${directory}/Coverage.profdata"
+        cd ../../../../
+        xcrun llvm-cov export -format="lcov" -instr-profile $pathCoverage "$PWD/.derivedData/Build/Products/Debug/NextcloudFileProviderKitTests.xctest/Contents/MacOS/NextcloudFileProviderKitTests" > coverage_report.lcov
     - name: Upload coverage to Codecov
       uses: codecov/codecov-action@v2
       with:
