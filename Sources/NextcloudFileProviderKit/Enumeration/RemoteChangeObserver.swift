@@ -15,9 +15,7 @@ fileprivate let NotifyPushWebSocketPingIntervalNanoseconds: UInt64 = 30 * 1_000_
 fileprivate let NotifyPushWebSocketPingFailLimit = 8
 fileprivate let NotifyPushWebSocketAuthenticationFailLimit = 3
 
-public class RemoteChangeObserver:
-    NSObject, NKCommonDelegate, URLSessionDelegate, URLSessionWebSocketDelegate
-{
+public class RemoteChangeObserver: NSObject, NKCommonDelegate, URLSessionWebSocketDelegate {
     public let ncKit: NextcloudKit
     public let domain: NSFileProviderDomain
     public var ncAccount: String { ncKit.nkCommonInstance.account }
@@ -156,7 +154,7 @@ public class RemoteChangeObserver:
         )
     }
 
-    public func urlSession(
+    public func authenticationChallenge(
         _ session: URLSession,
         didReceive challenge: URLAuthenticationChallenge,
         completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void
@@ -182,7 +180,7 @@ public class RemoteChangeObserver:
         } else {
             logger.warning("Unhandled auth method: \(authMethod, privacy: .public)")
             // Handle other authentication methods or cancel the challenge
-            completionHandler(.cancelAuthenticationChallenge, nil)
+            completionHandler(.performDefaultHandling, nil)
         }
     }
 
