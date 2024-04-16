@@ -75,14 +75,6 @@ auto minimumSizeHint(const QWidget *w)
     return min;
 }
 
-const QString TOOLBAR_CSS()
-{
-    return QStringLiteral("QToolBar { background: %1; margin: 0; padding: 0; border: none; border-bottom: 1px solid %2; spacing: 0; } "
-                          "QToolBar QToolButton { background: %1; border: none; border-bottom: 1px solid %2; margin: 0; padding: 5px; } "
-                          "QToolBar QToolBarExtension { padding:0; } "
-                          "QToolBar QToolButton:checked { background: %3; color: %4; }");
-}
-
 const float BUTTONSIZERATIO = 1.618f; // golden ratio
 
 
@@ -526,12 +518,6 @@ void SettingsDialog::accountRemoved(AccountStatePtr s)
 
 void SettingsDialog::customizeStyle()
 {
-    QString highlightColor(palette().highlight().color().name());
-    QString highlightTextColor(palette().highlightedText().color().name());
-    QString dark(palette().dark().color().name());
-    QString background(palette().base().color().name());
-    _ui->toolBar->setStyleSheet(TOOLBAR_CSS().arg(background, dark, highlightColor, highlightTextColor));
-
     const auto &toolButtonActions = findChildren<ToolButtonAction *>();
     for (auto *a : toolButtonActions) {
         a->updateIcon();
