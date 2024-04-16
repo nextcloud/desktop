@@ -29,7 +29,7 @@ jobs:
         cd $(ls -d */|head -n 1)
         directory=${PWD##*/}
         pathCoverage="$PWD/.derivedData/Build/ProfileData/${directory}/Coverage.profdata"
-        cd ../../../../
+        cd ../../../../../
         xcrun llvm-cov export -format="lcov" -instr-profile $pathCoverage "$PWD/.derivedData/Build/Products/Debug/NextcloudFileProviderKitTests.xctest/Contents/MacOS/NextcloudFileProviderKitTests" > coverage_report.lcov
     - name: Upload coverage to Codecov
       uses: codecov/codecov-action@v2
