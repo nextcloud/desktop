@@ -43,6 +43,10 @@ extension NKError {
         errorCode == NKError.noChangesErrorCode
     }
 
+    var matchesCollisionError: Bool {
+        errorCode == 405
+    }
+
     var fileProviderError: NSFileProviderError? {
         if self == .success {
             nil

@@ -40,7 +40,11 @@ public extension Item {
                 \(moveError.errorDescription, privacy: .public)
                 """
             )
-            return (nil, moveError.fileProviderError)
+            return (
+                nil,
+                moveError.matchesCollisionError ?
+                    NSFileProviderError(.filenameCollision) : moveError.fileProviderError
+            )
         }
 
         // Remember that a folder metadata's serverUrl is its direct server URL, while for

@@ -45,7 +45,11 @@ extension Item {
                 \(createError.errorDescription, privacy: .public)
                 """
             )
-            return (nil, createError.fileProviderError)
+            return (
+                nil,
+                createError.matchesCollisionError ?
+                    NSFileProviderError(.filenameCollision) : createError.fileProviderError
+            )
         }
         
         // Read contents after creation
@@ -146,7 +150,11 @@ extension Item {
                 received ocId: \(ocId ?? "empty", privacy: .public)
                 """
             )
-            return (nil, error.fileProviderError)
+            return (
+                nil,
+                error.matchesCollisionError ?
+                    NSFileProviderError(.filenameCollision) : error.fileProviderError
+            )
         }
         
         Self.logger.info(
