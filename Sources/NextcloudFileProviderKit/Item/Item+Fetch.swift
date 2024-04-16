@@ -130,4 +130,26 @@ public extension Item {
 
         return (fileNameLocalPath, fpItem, nil)
     }
+
+    func fetchThumbnail(size: CGSize) async -> (Data?, Error?) {
+        guard let thumbnailUrl = metadata.thumbnailUrl(size: size) else {
+            Self.logger.debug(
+                """
+                Unknown thumbnail URL for: \(self.itemIdentifier.rawValue, privacy: .public)
+                fileName: \(self.filename, privacy: .public)
+                """
+            )
+            return (nil, NSFileProviderError(.noSuchItem))
+        }
+
+        Self.logger.debug(
+            "Fetching thumbnail for: \(self.filename) at (\(thumbnailUrl, privacy: .public))"
+        )
+
+        return await withCheckedContinuation { continuation in
+            self.ncKit.getPreview(url: thumbnailUrl) { _, data, error in
+                continuation.resume(returning: (data, error.fileProviderError))
+            }
+        }
+    }
 }

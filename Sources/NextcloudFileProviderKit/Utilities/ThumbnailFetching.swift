@@ -25,7 +25,7 @@ public func fetchThumbnails(
 ) -> Progress {
     let progress = Progress(totalUnitCount: Int64(itemIdentifiers.count))
 
-    func finishCurrent() {
+    @Sendable func finishCurrent() {
         progress.completedUnitCount += 1
 
         if progress.completedUnitCount == progress.totalUnitCount {
@@ -34,26 +34,21 @@ public func fetchThumbnails(
     }
 
     for itemIdentifier in itemIdentifiers {
-        // TODO: Move directly to item?
-        guard let item = Item.storedItem(identifier: itemIdentifier, usingKit: ncKit),
-              let thumbnailUrl = item.metadata.thumbnailUrl(size: size)
-        else {
-            logger.debug("Unknown thumbnail URL for: \(itemIdentifier.rawValue, privacy: .public)")
+        guard let item = Item.storedItem(identifier: itemIdentifier, usingKit: ncKit) else {
+            logger.error(
+                """
+                Could not find item with identifier: \(itemIdentifier.rawValue, privacy: .public),
+                unable to download thumbnail!
+                """
+            )
+            perThumbnailCompletionHandler(itemIdentifier, nil, NSFileProviderError(.noSuchItem))
             finishCurrent()
             continue
         }
 
-        logger.debug(
-            "Fetching thumbnail for: \(item.metadata.fileName) (\(thumbnailUrl, privacy: .public))"
-        )
-
-        ncKit.getPreview(url: thumbnailUrl) { _, data, error in
-            if error == .success, data != nil {
-                perThumbnailCompletionHandler(itemIdentifier, data, nil)
-            } else {
-                perThumbnailCompletionHandler(
-                    itemIdentifier, nil, NSFileProviderError(.serverUnreachable))
-            }
+        Task {
+            let (data, error) = await item.fetchThumbnail(size: size)
+            perThumbnailCompletionHandler(itemIdentifier, data, error)
             finishCurrent()
         }
     }
