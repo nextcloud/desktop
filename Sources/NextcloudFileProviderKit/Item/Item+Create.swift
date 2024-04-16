@@ -50,7 +50,18 @@ extension Item {
         // Read contents after creation
         let (files, readError) = await withCheckedContinuation { continuation in
             ncKit.readFileOrFolder(
-                serverUrlFileName: remotePath, depth: "0", showHiddenFiles: true
+                serverUrlFileName: remotePath, 
+                depth: "0",
+                showHiddenFiles: true,
+                taskHandler: { task in
+                    if let domain, let itemTemplate {
+                        NSFileProviderManager(for: domain)?.register(
+                            task,
+                            forItemWithIdentifier: itemTemplate.itemIdentifier,
+                            completionHandler: { _ in }
+                        )
+                    }
+                }
             ) { account, files, _, error in
                 continuation.resume(returning: (files, error.fileProviderError))
             }
