@@ -76,7 +76,8 @@ QVariant SpacesModel::data(const QModelIndex &index, int role) const
         return QStringLiteral("image://space/%1/%2").arg(QString::number(QRandomGenerator::global()->generate()), space->drive().getRoot().getId());
     case Roles::Priority:
         // everything will be sorted in descending order, multiply the priority by 100 and prefer A over Z by appling a negative factor
-        return space->priority() * 100 - (space->displayName().isEmpty() ? 0 : static_cast<int64_t>(space->displayName().at(0).toLower().unicode()));
+        return QVariant::fromValue(
+            space->priority() * 100 - (space->displayName().isEmpty() ? 0 : static_cast<int64_t>(space->displayName().at(0).toLower().unicode())));
     case Roles::Space:
         return QVariant::fromValue(space);
     case Roles::Enabled:
