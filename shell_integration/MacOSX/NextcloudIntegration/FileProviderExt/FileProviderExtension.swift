@@ -319,6 +319,7 @@ import OSLog
             enumeratedItemIdentifier: containerItemIdentifier,
             ncAccount: ncAccount,
             ncKit: ncKit,
+            domain: domain,
             fastEnumeration: config.fastEnumerationEnabled
         )
     }
