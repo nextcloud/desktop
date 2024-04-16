@@ -94,10 +94,11 @@ extension FileProviderExtension: NSFileProviderServicing {
         guard newNcAccount != ncAccount else { return }
         ncAccount = newNcAccount
         ncKit.setup(
-            user: ncAccount!.username,
-            userId: ncAccount!.username,
-            password: ncAccount!.password,
-            urlBase: ncAccount!.serverUrl,
+            account: newNcAccount.ncKitAccount,
+            user: newNcAccount.username,
+            userId: newNcAccount.username,
+            password: newNcAccount.password,
+            urlBase: newNcAccount.serverUrl,
             userAgent: "Nextcloud-macOS/FileProviderExt",
             nextcloudVersion: 25,
             delegate: nil) // TODO: add delegate methods for self
