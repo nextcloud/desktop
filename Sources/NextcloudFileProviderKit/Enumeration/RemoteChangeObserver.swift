@@ -15,7 +15,7 @@ fileprivate let NotifyPushWebSocketPingIntervalNanoseconds: UInt64 = 30 * 1_000_
 fileprivate let NotifyPushWebSocketPingFailLimit = 8
 fileprivate let NotifyPushWebSocketAuthenticationFailLimit = 3
 
-class RemoteChangeObserver: 
+class RemoteChangeObserver:
     NSObject, NKCommonDelegate, URLSessionDelegate, URLSessionWebSocketDelegate
 {
     let ncKit: NextcloudKit
@@ -30,9 +30,11 @@ class RemoteChangeObserver:
     private var webSocketPingFailCount = 0
     private var webSocketAuthenticationFailCount = 0
 
+    private var pollingTimer: Timer?
+
     private var networkReachability: NKCommon.TypeReachability = .unknown {
         didSet {
-            if oldValue == .notReachable {
+            if oldValue == .notReachable, networkReachability != .notReachable {
                 reconnectWebSocket()
                 signalEnumerator()
             }
@@ -46,6 +48,17 @@ class RemoteChangeObserver:
         reconnectWebSocket()
     }
 
+    private func startPollingTimer() {
+        pollingTimer = Timer.scheduledTimer(withTimeInterval: 60, repeats: true) { _ in
+            self.signalEnumerator()
+        }
+    }
+
+    private func stopPollingTimer() {
+        pollingTimer?.invalidate()
+        pollingTimer = nil
+    }
+
     private func signalEnumerator() {
         NSFileProviderManager(for: domain)?.signalEnumerator(for: .rootContainer) { error in
             if let error = error {
@@ -55,15 +68,16 @@ class RemoteChangeObserver:
     }
 
     private func reconnectWebSocket() {
+        stopPollingTimer()
         resetWebSocket()
+        guard networkReachability != .notReachable else {
+            logger.error("Network unreachable, will retry when reconnected")
+            return
+        }
         guard webSocketAuthenticationFailCount < NotifyPushWebSocketAuthenticationFailLimit else {
             logger.error(
                 "Exceeded authentication failures for notify push websocket \(self.ncAccount)"
             )
-            return
-        }
-        guard networkReachability != .notReachable else {
-            logger.error("Network unreachable, will retry when reconnected")
             return
         }
         Task { await self.configureNotifyPush() }
@@ -92,7 +106,8 @@ class RemoteChangeObserver:
               let capabilities = Capabilities(data: capabilitiesData),
               let websocketEndpoint = capabilities.notifyPush?.endpoints?.websocket
         else {
-            logger.error("Could not get notifyPush websocket \(self.ncAccount).")
+            logger.error("Could not get notifyPush websocket \(self.ncAccount), polling.")
+            startPollingTimer()
             return
         }
 
