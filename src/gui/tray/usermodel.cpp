@@ -471,6 +471,7 @@ void User::slotRefreshNotifications()
 void User::slotRebuildNavigationAppList()
 {
     emit serverHasTalkChanged();
+    emit ncAssistantAvailabityChanged();
     // Rebuild App list
     UserAppsModel::instance()->buildAppList();
 }
@@ -1046,6 +1047,11 @@ bool User::hasActivities() const
     return _account->account()->capabilities().hasActivities();
 }
 
+bool User::isNcAssistantEnabled() const
+{
+    return _account->account()->capabilities().ncAssistantEnabled();
+}
+
 QColor User::headerColor() const
 {
     return _account->account()->headerColor();
@@ -1364,6 +1370,20 @@ void UserModel::openCurrentAccountFolderFromTrayInfo(const QString &fullRemotePa
     _users[_currentUserId]->openFolderLocallyOrInBrowser(fullRemotePath);
 }
 
+void UserModel::openCurrentAccountNcAssistant()
+{
+    if (!currentUser()) {
+        return;
+    }
+
+    if (currentUser()->isNcAssistantEnabled()) {
+        QDesktopServices::openUrl(QUrl(_users[_currentUserId]->server(false).append("/apps/assistant/")));
+    } else {
+        qCWarning(lcActivity) << "The Nextcloud Assistant app is not enabled on" << currentUser()->server();
+    }
+}
+
+
 void UserModel::setCurrentUserId(const int id)
 {
     Q_ASSERT(id < _users.size());
@@ -1630,10 +1650,11 @@ void UserAppsModel::buildAppList()
 
     if (UserModel::instance()->appList().count() > 0) {
         const auto talkApp = UserModel::instance()->currentUser()->talkApp();
-        foreach (AccountApp *app, UserModel::instance()->appList()) {
+        for (auto &app : UserModel::instance()->appList()) {
             // Filter out Talk because we have a dedicated button for it
-            if (talkApp && app->id() == talkApp->id())
+            if (talkApp && app->id() == talkApp->id() && !UserModel::instance()->currentUser()->isNcAssistantEnabled()) {
                 continue;
+            }
 
             beginInsertRows(QModelIndex(), rowCount(), rowCount());
             _apps << app;

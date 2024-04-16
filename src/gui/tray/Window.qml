@@ -621,21 +621,21 @@ ApplicationWindow {
                 }
 
                 HeaderButton {
-                    id: trayWindowTalkButton
-
-                    visible: UserModel.currentUser && UserModel.currentUser.serverHasTalk
-                    icon.source: "image://svgimage-custom-color/talk-app.svg" + "/" + Style.currentUserHeaderTextColor
+                    id: trayWindowFeaturedAppButton
+                    visible: UserModel.currentUser.isNcAssistantEnabled || UserModel.currentUser.serverHasTalk
+                    icon.source: UserModel.currentUser.isNcAssistantEnabled
+                                 ? "image:///client/theme/white/nc-assistant-app.svg" + "/" + Style.currentUserHeaderTextColor
+                                 : "image:///client/theme/white/talk-app.svg" + "/" + Style.currentUserHeaderTextColor
                     icon.color: Style.currentUserHeaderTextColor
-                    onClicked: UserModel.openCurrentAccountTalk()
+                    onClicked: UserModel.currentUser.isNcAssistantEnabled ? UserModel.openCurrentAccountNcAssistant() : UserModel.openCurrentAccountTalk()
 
                     Accessible.role: Accessible.Button
-                    Accessible.name: qsTr("Open Nextcloud Talk in browser")
-                    Accessible.onPressAction: trayWindowTalkButton.clicked()
+                    Accessible.name: UserModel.currentUser.isNcAssistantEnabled ? qsTr("Open Nextcloud Assistant in browser") : qsTr("Open Nextcloud Talk in browser")
+                    Accessible.onPressAction: trayWindowFeaturedAppButton.clicked()
 
                     Layout.alignment: Qt.AlignRight
                     Layout.preferredWidth:  Style.trayWindowHeaderHeight
                     Layout.preferredHeight: Style.trayWindowHeaderHeight
-
                 }
 
                 HeaderButton {
