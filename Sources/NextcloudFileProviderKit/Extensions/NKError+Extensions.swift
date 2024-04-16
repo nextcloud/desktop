@@ -43,6 +43,10 @@ extension NKError {
         errorCode == NKError.noChangesErrorCode
     }
 
+    var isUnauthorizedError: Bool {
+        errorCode == 401
+    }
+
     var matchesCollisionError: Bool {
         errorCode == 405
     }
@@ -55,7 +59,7 @@ extension NKError {
         } else if isCouldntConnectError {
             // Provide something the file provider can do something with
             NSFileProviderError(.serverUnreachable)
-        } else if isUnauthenticatedError {
+        } else if isUnauthenticatedError || isUnauthorizedError {
             NSFileProviderError(.notAuthenticated)
         } else if isGoingOverQuotaError {
             NSFileProviderError(.insufficientQuota)
