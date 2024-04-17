@@ -57,7 +57,7 @@ HRESULT RegDelnodeRecurse(HKEY hKeyRoot, LPTSTR lpSubKey)
     // Enumerate the keys
 
     dwSize = MAX_PATH;
-    lResult = RegEnumKeyEx(hKey, 0, szName, &dwSize, NULL, NULL, NULL, &ftWrite);
+    lResult = RegEnumKeyEx(hKey, 0, szName, &dwSize, nullptr, nullptr, nullptr, &ftWrite);
 
     if (lResult == ERROR_SUCCESS) {
         do {
@@ -69,7 +69,7 @@ HRESULT RegDelnodeRecurse(HKEY hKeyRoot, LPTSTR lpSubKey)
 
             dwSize = MAX_PATH;
 
-            lResult = RegEnumKeyEx(hKey, 0, szName, &dwSize, NULL, NULL, NULL, &ftWrite);
+            lResult = RegEnumKeyEx(hKey, 0, szName, &dwSize, nullptr, nullptr, nullptr, &ftWrite);
 
         } while (lResult == ERROR_SUCCESS);
     }
