@@ -19,12 +19,15 @@ extension Logger {
 
     static let desktopClientConnection = Logger(
         subsystem: subsystem, category: "desktopclientconnection")
+    static let fpUiExtensionService = Logger(subsystem: subsystem, category: "fpUiExtensionService")
     static let enumeration = Logger(subsystem: subsystem, category: "enumeration")
     static let fileProviderExtension = Logger(
         subsystem: subsystem, category: "fileproviderextension")
     static let fileTransfer = Logger(subsystem: subsystem, category: "filetransfer")
     static let localFileOps = Logger(subsystem: subsystem, category: "localfileoperations")
     static let ncFilesDatabase = Logger(subsystem: subsystem, category: "nextcloudfilesdatabase")
+    static let shares = Logger(subsystem: subsystem, category: "shares")
+    static let ncAccount = Logger(subsystem: subsystem, category: "ncAccount")
     static let materialisedFileHandling = Logger(
         subsystem: subsystem, category: "materialisedfilehandling"
     )

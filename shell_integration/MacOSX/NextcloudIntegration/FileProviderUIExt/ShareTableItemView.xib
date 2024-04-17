@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="22505" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+    <dependencies>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="22505"/>
+        <capability name="Image references" minToolsVersion="12.0"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <customObject id="-2" userLabel="File's Owner"/>
+        <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
+        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
+        <tableCellView id="WWf-Il-fKw" customClass="ShareTableItemView" customModule="FileProviderUIExt" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="322" height="42"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <stackView distribution="fill" orientation="horizontal" alignment="top" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wdu-Dj-FUn">
+                    <rect key="frame" x="5" y="5" width="312" height="32"/>
+                    <subviews>
+                        <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Ex8-CB-iNc">
+                            <rect key="frame" x="0.0" y="-5" width="32" height="43"/>
+                            <constraints>
+                                <constraint firstAttribute="width" secondItem="Ex8-CB-iNc" secondAttribute="height" multiplier="1:1" id="5ak-dc-HzR"/>
+                                <constraint firstAttribute="height" constant="32" id="Cus-qI-uen"/>
+                            </constraints>
+                            <imageCell key="cell" controlSize="large" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyUpOrDown" id="0Xf-Au-QjJ">
+                                <imageReference key="image" image="link.circle.fill" catalog="system" symbolScale="large"/>
+                            </imageCell>
+                            <color key="contentTintColor" name="AccentColor"/>
+                        </imageView>
+                        <textField focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="MwZ-er-vB4">
+                            <rect key="frame" x="38" y="8" width="236" height="16"/>
+                            <textFieldCell key="cell" lineBreakMode="clipping" alignment="left" title="Share link" id="Bcz-ws-5yW">
+                                <font key="font" metaFont="systemMedium" size="13"/>
+                                <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                            </textFieldCell>
+                        </textField>
+                        <button horizontalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="y6i-wm-BtQ">
+                            <rect key="frame" x="280" y="0.0" width="32" height="32"/>
+                            <buttonCell key="cell" type="inline" title="Copy share link" bezelStyle="inline" image="doc.on.doc.fill" catalog="system" imagePosition="only" alignment="center" controlSize="large" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="ram-fe-8Pt">
+                                <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                <font key="font" metaFont="smallSystemBold"/>
+                            </buttonCell>
+                            <constraints>
+                                <constraint firstAttribute="width" secondItem="y6i-wm-BtQ" secondAttribute="height" multiplier="1:1" id="BlJ-WU-1y5"/>
+                            </constraints>
+                            <connections>
+                                <action selector="copyShareLinkWithSender:" target="WWf-Il-fKw" id="dgW-8v-wfd"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <constraints>
+                        <constraint firstItem="Ex8-CB-iNc" firstAttribute="top" secondItem="wdu-Dj-FUn" secondAttribute="top" id="2x8-EU-gHs"/>
+                        <constraint firstItem="y6i-wm-BtQ" firstAttribute="top" secondItem="wdu-Dj-FUn" secondAttribute="top" id="BjV-lg-nyL"/>
+                        <constraint firstAttribute="bottom" secondItem="Ex8-CB-iNc" secondAttribute="bottom" id="dd0-Vh-Pbi"/>
+                        <constraint firstAttribute="bottom" secondItem="y6i-wm-BtQ" secondAttribute="bottom" id="ha0-oR-OxV"/>
+                        <constraint firstItem="MwZ-er-vB4" firstAttribute="centerY" secondItem="Ex8-CB-iNc" secondAttribute="centerY" id="m3A-Tu-qMJ"/>
+                        <constraint firstItem="Ex8-CB-iNc" firstAttribute="leading" secondItem="wdu-Dj-FUn" secondAttribute="leading" id="o1t-TB-uhe"/>
+                    </constraints>
+                    <visibilityPriorities>
+                        <integer value="1000"/>
+                        <integer value="1000"/>
+                        <integer value="1000"/>
+                    </visibilityPriorities>
+                    <customSpacing>
+                        <real value="3.4028234663852886e+38"/>
+                        <real value="3.4028234663852886e+38"/>
+                        <real value="3.4028234663852886e+38"/>
+                    </customSpacing>
+                </stackView>
+            </subviews>
+            <constraints>
+                <constraint firstItem="wdu-Dj-FUn" firstAttribute="top" secondItem="WWf-Il-fKw" secondAttribute="top" constant="5" id="HIY-8X-dM2"/>
+                <constraint firstItem="wdu-Dj-FUn" firstAttribute="leading" secondItem="WWf-Il-fKw" secondAttribute="leading" constant="5" id="g7a-hl-t5g"/>
+                <constraint firstAttribute="bottom" secondItem="wdu-Dj-FUn" secondAttribute="bottom" constant="5" id="gAZ-x8-C4K"/>
+                <constraint firstAttribute="trailing" secondItem="wdu-Dj-FUn" secondAttribute="trailing" constant="5" id="grc-5X-tMi"/>
+            </constraints>
+            <connections>
+                <outlet property="copyLinkButton" destination="y6i-wm-BtQ" id="8bc-yO-Txo"/>
+                <outlet property="label" destination="MwZ-er-vB4" id="Gba-jf-C8H"/>
+                <outlet property="typeImageView" destination="Ex8-CB-iNc" id="T7o-zd-qOo"/>
+            </connections>
+            <point key="canvasLocation" x="128" y="-22"/>
+        </tableCellView>
+    </objects>
+    <resources>
+        <image name="doc.on.doc.fill" catalog="system" width="17" height="19"/>
+        <image name="link.circle.fill" catalog="system" width="20" height="20"/>
+        <namedColor name="AccentColor">
+            <color red="0.0" green="0.46000000000000002" blue="0.89000000000000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+    </resources>
+</document>
