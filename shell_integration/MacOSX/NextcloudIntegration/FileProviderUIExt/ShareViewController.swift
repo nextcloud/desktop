@@ -79,7 +79,7 @@ class ShareViewController: NSViewController, ShareViewDataSourceUIDelegate {
             optionsView.dataSource = shareDataSource
         } catch let error {
             let errorString = "Error processing item: \(error)"
-            Logger.shareViewController.error("\(errorString)")
+            Logger.shareViewController.error("\(errorString, privacy: .public)")
             fileNameLabel.stringValue = "Unknown item"
             descriptionLabel.stringValue = errorString
         }
@@ -99,7 +99,11 @@ class ShareViewController: NSViewController, ShareViewDataSourceUIDelegate {
         let fileThumbnail = await withCheckedContinuation { continuation in
             generator.generateRepresentations(for: request) { thumbnail, type, error in
                 if thumbnail == nil || error != nil {
-                    Logger.shareViewController.error("Could not get thumbnail: \(error)")
+                    Logger.shareViewController.error(
+                        """
+                        Could not get thumbnail: \(error, privacy: .public)
+                        """
+                    )
                 }
                 continuation.resume(returning: thumbnail)
             }
