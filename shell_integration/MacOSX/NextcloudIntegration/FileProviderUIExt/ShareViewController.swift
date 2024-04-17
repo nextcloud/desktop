@@ -47,6 +47,13 @@ class ShareViewController: NSViewController, ShareViewDataSourceUIDelegate {
             return
         }
 
+        Logger.shareViewController.info(
+            """
+            Instantiated with itemIdentifiers: 
+            \(itemIdentifiers.map { $0.rawValue }, privacy: .public)
+            """
+        )
+
         Task {
             await processItemIdentifier(firstItem)
         }
@@ -72,11 +79,16 @@ class ShareViewController: NSViewController, ShareViewDataSourceUIDelegate {
 
         do {
             let itemUrl = try await manager.getUserVisibleURL(for: itemIdentifier)
+            guard itemUrl.startAccessingSecurityScopedResource() else {
+                Logger.shareViewController.error("Could not access scoped resource for item url!")
+                return
+            }
             await updateDisplay(itemUrl: itemUrl)
             shareDataSource.uiDelegate = self
             shareDataSource.sharesTableView = tableView
             shareDataSource.loadItem(url: itemUrl)
             optionsView.dataSource = shareDataSource
+            itemUrl.stopAccessingSecurityScopedResource()
         } catch let error {
             let errorString = "Error processing item: \(error)"
             Logger.shareViewController.error("\(errorString, privacy: .public)")
