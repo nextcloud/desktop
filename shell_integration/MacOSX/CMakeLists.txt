@@ -44,6 +44,7 @@ if(APPLE)
             "OC_APPLICATION_NAME=${APPLICATION_NAME}"
             "OC_APPLICATION_REV_DOMAIN=${APPLICATION_REV_DOMAIN}"
             "OC_SOCKETAPI_TEAM_IDENTIFIER_PREFIX=${SOCKETAPI_TEAM_IDENTIFIER_PREFIX}"
+            DEPENDS mac_fileproviderplugin
             COMMENT building macOS File Provider UI extension
             VERBATIM)
 
