@@ -270,17 +270,10 @@ bool FileSystem::openAndSeekFileSharedRead(QFile *file, QString *errorOrNull, qi
     DWORD creationDisp = OPEN_EXISTING;
 
     // Create the file handle.
-    SECURITY_ATTRIBUTES securityAtts = { sizeof(SECURITY_ATTRIBUTES), NULL, FALSE };
+    SECURITY_ATTRIBUTES securityAtts = {sizeof(SECURITY_ATTRIBUTES), nullptr, FALSE};
     QString fName = longWinPath(file->fileName());
 
-    HANDLE fileHandle = CreateFileW(
-        (const wchar_t *)fName.utf16(),
-        accessRights,
-        shareMode,
-        &securityAtts,
-        creationDisp,
-        FILE_ATTRIBUTE_NORMAL,
-        NULL);
+    HANDLE fileHandle = CreateFileW((const wchar_t *)fName.utf16(), accessRights, shareMode, &securityAtts, creationDisp, FILE_ATTRIBUTE_NORMAL, nullptr);
 
     // Bail out on error.
     if (fileHandle == INVALID_HANDLE_VALUE) {
@@ -371,11 +364,7 @@ QString FileSystem::fileSystemForPath(const QString &path)
     const size_t fileSystemBufferSize = 4096;
     TCHAR fileSystemBuffer[fileSystemBufferSize];
 
-    if (!GetVolumeInformationW(
-            reinterpret_cast<LPCWSTR>(drive.utf16()),
-            NULL, 0,
-            NULL, NULL, NULL,
-            fileSystemBuffer, fileSystemBufferSize)) {
+    if (!GetVolumeInformationW(reinterpret_cast<LPCWSTR>(drive.utf16()), nullptr, 0, nullptr, nullptr, nullptr, fileSystemBuffer, fileSystemBufferSize)) {
         return QString();
     }
     return QString::fromUtf16(reinterpret_cast<const char16_t *>(fileSystemBuffer));
@@ -496,7 +485,8 @@ bool FileSystem::isJunction(const QString &filename)
 {
 #ifdef Q_OS_WIN
     WIN32_FIND_DATA findData;
-    HANDLE hFind = FindFirstFileEx(reinterpret_cast<const wchar_t *>(longWinPath(filename).utf16()), FindExInfoBasic, &findData, FindExSearchNameMatch, NULL, 0);
+    HANDLE hFind =
+        FindFirstFileEx(reinterpret_cast<const wchar_t *>(longWinPath(filename).utf16()), FindExInfoBasic, &findData, FindExSearchNameMatch, nullptr, 0);
     if (hFind != INVALID_HANDLE_VALUE) {
         FindClose(hFind);
         return false;

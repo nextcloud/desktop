@@ -77,7 +77,7 @@ IFACEMETHODIMP OCOverlay::QueryInterface(REFIID riid, void **ppv)
     else
     {
         hr = E_NOINTERFACE;
-        *ppv = NULL;
+        *ppv = nullptr;
     }
 
     if (*ppv)

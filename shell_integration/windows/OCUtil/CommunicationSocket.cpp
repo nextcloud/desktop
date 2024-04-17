@@ -75,7 +75,7 @@ bool CommunicationSocket::Close()
 
 bool CommunicationSocket::Connect(const std::wstring &pipename)
 {
-    _pipe = CreateFile(pipename.data(), GENERIC_READ | GENERIC_WRITE, 0, NULL, OPEN_EXISTING, FILE_FLAG_OVERLAPPED, NULL);
+    _pipe = CreateFile(pipename.data(), GENERIC_READ | GENERIC_WRITE, 0, nullptr, OPEN_EXISTING, FILE_FLAG_OVERLAPPED, nullptr);
 
     if (_pipe == INVALID_HANDLE_VALUE) {
         return false;
@@ -127,7 +127,7 @@ bool CommunicationSocket::ReadLine(wstring *response) const
         DWORD numBytesRead = 0;
         DWORD totalBytesAvailable = 0;
 
-        if (!PeekNamedPipe(_pipe, NULL, 0, 0, &totalBytesAvailable, 0)) {
+        if (!PeekNamedPipe(_pipe, nullptr, 0, nullptr, &totalBytesAvailable, nullptr)) {
             return false;
         }
         if (totalBytesAvailable == 0) {

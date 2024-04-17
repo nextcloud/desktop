@@ -186,9 +186,7 @@ int csync_vio_local_stat(const QString &uri, csync_file_stat_t *buf)
     ULARGE_INTEGER FileIndex;
 
     h = CreateFileW(reinterpret_cast<const wchar_t *>(OCC::FileSystem::longWinPath(uri).utf16()), 0, FILE_SHARE_WRITE | FILE_SHARE_READ | FILE_SHARE_DELETE,
-        NULL, OPEN_EXISTING,
-        FILE_ATTRIBUTE_NORMAL | FILE_FLAG_BACKUP_SEMANTICS | FILE_FLAG_OPEN_REPARSE_POINT,
-        NULL);
+        nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL | FILE_FLAG_BACKUP_SEMANTICS | FILE_FLAG_OPEN_REPARSE_POINT, nullptr);
     if (h == INVALID_HANDLE_VALUE) {
         errno = GetLastError();
         qCCritical(lcCSyncVIOLocal) << "CreateFileW failed on" << uri << OCC::Utility::formatWinError(errno);

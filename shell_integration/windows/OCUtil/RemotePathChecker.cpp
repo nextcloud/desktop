@@ -91,7 +91,7 @@ void RemotePathChecker::workerThreadLoop()
                 // We don't keep track of all files and can't know which file is currently visible
                 // to the user, but at least reload the root dir so that any shortcut to the root
                 // is updated without the user needing to refresh.
-                SHChangeNotify(SHCNE_UPDATEDIR, SHCNF_PATH | SHCNF_FLUSHNOWAIT, responsePath.data(), NULL);
+                SHChangeNotify(SHCNE_UPDATEDIR, SHCNF_PATH | SHCNF_FLUSHNOWAIT, responsePath.data(), nullptr);
             } else if (StringUtil::begins_with(response, wstring(L"UNREGISTER_PATH:"))) {
                 wstring responsePath = response.substr(16); // length of UNREGISTER_PATH:
 
@@ -115,7 +115,7 @@ void RemotePathChecker::workerThreadLoop()
                     }
                 }
                 for (auto& path : removedPaths)
-                    SHChangeNotify(SHCNE_UPDATEITEM, SHCNF_PATH | SHCNF_FLUSHNOWAIT, path.data(), NULL);
+                    SHChangeNotify(SHCNE_UPDATEITEM, SHCNF_PATH | SHCNF_FLUSHNOWAIT, path.data(), nullptr);
             } else if (StringUtil::begins_with(response, wstring(L"STATUS:")) ||
                     StringUtil::begins_with(response, wstring(L"BROADCAST:"))) {
 
@@ -143,7 +143,7 @@ void RemotePathChecker::workerThreadLoop()
                     it->second = state;
                 }
                 if (updateView) {
-                    SHChangeNotify(SHCNE_UPDATEITEM, SHCNF_PATH | SHCNF_FLUSHNOWAIT, responsePath.data(), NULL);
+                    SHChangeNotify(SHCNE_UPDATEITEM, SHCNF_PATH | SHCNF_FLUSHNOWAIT, responsePath.data(), nullptr);
                 }
             }
         }
@@ -159,7 +159,7 @@ void RemotePathChecker::workerThreadLoop()
             lock.unlock();
             // Let explorer know about each invalidated cache entry that needs to get its icon removed.
             for (auto it = cache.begin(); it != cache.end(); ++it) {
-                SHChangeNotify(SHCNE_UPDATEITEM, SHCNF_PATH | SHCNF_FLUSHNOWAIT, it->first.data(), NULL);
+                SHChangeNotify(SHCNE_UPDATEITEM, SHCNF_PATH | SHCNF_FLUSHNOWAIT, it->first.data(), nullptr);
             }
         }
 
@@ -173,13 +173,12 @@ void RemotePathChecker::workerThreadLoop()
 }
 
 
-
 RemotePathChecker::RemotePathChecker()
     : _stop(false)
     , _watchedDirectories(make_shared<const vector<wstring>>())
     , _connected(false)
-    , _newQueries(CreateEvent(NULL, FALSE, FALSE, NULL))
-    , _thread([this]{ this->workerThreadLoop(); })
+    , _newQueries(CreateEvent(nullptr, FALSE, FALSE, nullptr))
+    , _thread([this] { this->workerThreadLoop(); })
 {
 }
 

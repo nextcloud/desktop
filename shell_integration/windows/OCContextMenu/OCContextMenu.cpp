@@ -39,11 +39,10 @@ OCContextMenu::~OCContextMenu(void)
 // Query to the interface the component supported.
 IFACEMETHODIMP OCContextMenu::QueryInterface(REFIID riid, void **ppv)
 {
-    static const QITAB qit[] =
-    {
+    static const QITAB qit[] = {
         QITABENT(OCContextMenu, IContextMenu),
         QITABENT(OCContextMenu, IShellExtInit),
-        { 0 },
+        {nullptr},
     };
     return QISearch(this, qit, riid, ppv);
 }
@@ -80,14 +79,14 @@ IFACEMETHODIMP OCContextMenu::Initialize(
         return E_INVALIDARG;
     }
 
-    FORMATETC fe = { CF_HDROP, NULL, DVASPECT_CONTENT, -1, TYMED_HGLOBAL };
+    FORMATETC fe = {CF_HDROP, nullptr, DVASPECT_CONTENT, -1, TYMED_HGLOBAL};
     STGMEDIUM stm;
 
     if (SUCCEEDED(pDataObj->GetData(&fe, &stm))) {
         // Get an HDROP handle.
         HDROP hDrop = static_cast<HDROP>(GlobalLock(stm.hGlobal));
         if (hDrop) {
-            UINT nFiles = DragQueryFile(hDrop, 0xFFFFFFFF, NULL, 0);
+            UINT nFiles = DragQueryFile(hDrop, 0xFFFFFFFF, nullptr, 0);
             for (UINT i = 0; i < nFiles; ++i) {
                 // Get the path of the file.
                 wchar_t buffer[MAX_PATH];

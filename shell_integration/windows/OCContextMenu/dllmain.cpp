@@ -22,7 +22,7 @@
 // {841A0AAD-AA11-4B50-84D9-7F8E727D77D7}
 static const GUID CLSID_FileContextMenuExt = { 0x841a0aad, 0xaa11, 0x4b50, { 0x84, 0xd9, 0x7f, 0x8e, 0x72, 0x7d, 0x77, 0xd7 } };
 
-HINSTANCE   g_hInst = NULL;
+HINSTANCE g_hInst = nullptr;
 long        g_cDllRef = 0;
 
 BOOL APIENTRY DllMain(HMODULE hModule, DWORD dwReason, LPVOID lpReserved)

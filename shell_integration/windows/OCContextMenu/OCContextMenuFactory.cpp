@@ -37,7 +37,10 @@ OCContextMenuFactory::~OCContextMenuFactory()
 
 IFACEMETHODIMP OCContextMenuFactory::QueryInterface(REFIID riid, void **ppv)
 {
-    static const QITAB qit[] =  { QITABENT(OCContextMenuFactory, IClassFactory), { 0 }, };
+    static const QITAB qit[] = {
+        QITABENT(OCContextMenuFactory, IClassFactory),
+        {nullptr},
+    };
     return QISearch(this, qit, riid, ppv);
 }
 
@@ -63,7 +66,7 @@ IFACEMETHODIMP OCContextMenuFactory::CreateInstance(IUnknown *pUnkOuter, REFIID 
     HRESULT hr = CLASS_E_NOAGGREGATION;
 
     // pUnkOuter is used for aggregation. We do not support it in the sample.
-    if (pUnkOuter == NULL) {
+    if (pUnkOuter == nullptr) {
         hr = E_OUTOFMEMORY;
 
         // Create the COM component.

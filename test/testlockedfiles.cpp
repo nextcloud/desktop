@@ -23,13 +23,7 @@ Utility::Handle makeHandle(const QString &file, int shareMode)
 {
     const auto fName = FileSystem::longWinPath(file);
     const wchar_t *wuri = reinterpret_cast<const wchar_t *>(fName.utf16());
-    auto handle = CreateFileW(
-        wuri,
-        GENERIC_READ | GENERIC_WRITE,
-        shareMode,
-        NULL, OPEN_EXISTING,
-        FILE_ATTRIBUTE_NORMAL,
-        NULL);
+    auto handle = CreateFileW(wuri, GENERIC_READ | GENERIC_WRITE, shareMode, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr);
     if (handle == INVALID_HANDLE_VALUE) {
         qWarning() << GetLastError();
     }

@@ -31,19 +31,14 @@ namespace OCC {
 
 WatcherThread::WatchChanges WatcherThread::watchChanges(size_t fileNotifyBufferSize)
 {
-    _directory = CreateFileW(
-        reinterpret_cast<const wchar_t *>(_longPath.utf16()), // QString stores UTF-16 internally, so use that here.
-        FILE_LIST_DIRECTORY,
-        FILE_SHARE_WRITE | FILE_SHARE_READ | FILE_SHARE_DELETE,
-        NULL,
-        OPEN_EXISTING,
-        FILE_FLAG_BACKUP_SEMANTICS | FILE_FLAG_OVERLAPPED,
-        NULL);
+    _directory = CreateFileW(reinterpret_cast<const wchar_t *>(_longPath.utf16()), // QString stores UTF-16 internally, so use that here.
+        FILE_LIST_DIRECTORY, FILE_SHARE_WRITE | FILE_SHARE_READ | FILE_SHARE_DELETE, nullptr, OPEN_EXISTING, FILE_FLAG_BACKUP_SEMANTICS | FILE_FLAG_OVERLAPPED,
+        nullptr);
 
     if (_directory == INVALID_HANDLE_VALUE) {
         const auto error = GetLastError();
         qCWarning(lcFolderWatcher) << "Failed to create handle for" << _path << ", error:" << Utility::formatWinError(error);
-        _directory = 0;
+        _directory = nullptr;
         return WatchChanges::Error;
     }
 
@@ -167,14 +162,14 @@ void WatcherThread::closeHandle()
 {
     if (_directory) {
         CloseHandle(_directory);
-        _directory = NULL;
+        _directory = nullptr;
     }
 }
 
 void WatcherThread::run()
 {
-    _resultEvent = CreateEvent(NULL, true, false, NULL);
-    _stopEvent = CreateEvent(NULL, true, false, NULL);
+    _resultEvent = CreateEvent(nullptr, true, false, nullptr);
+    _stopEvent = CreateEvent(nullptr, true, false, nullptr);
 
     // If this buffer fills up before we've extracted its data we will lose
     // change information. Therefore start big.
@@ -204,9 +199,9 @@ WatcherThread::WatcherThread(FolderWatcherPrivate *parent, const QString &path)
     , _parent(parent)
     , _path(path + (path.endsWith(QLatin1Char('/')) ? QString() : QStringLiteral("/")))
     , _longPath(FileSystem::longWinPath(_path))
-    , _directory(0)
-    , _resultEvent(0)
-    , _stopEvent(0)
+    , _directory(nullptr)
+    , _resultEvent(nullptr)
+    , _stopEvent(nullptr)
 {
 }
 

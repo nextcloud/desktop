@@ -80,7 +80,7 @@ Logger::Logger(QObject *parent)
 Logger::~Logger()
 {
 #ifndef NO_MSG_HANDLER
-    qInstallMessageHandler(0);
+    qInstallMessageHandler(nullptr);
 #endif
 }
 
