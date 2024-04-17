@@ -34,7 +34,7 @@ class DocumentActionViewController: FPUIActionExtensionViewController {
     override func prepare(
         forAction actionIdentifier: String, itemIdentifiers: [NSFileProviderItemIdentifier]
     ) {
-        Logger.actionViewController.info("Preparing for action: \(actionIdentifier)")
+        Logger.actionViewController.info("Preparing action: \(actionIdentifier, privacy: .public)")
 
         if actionIdentifier == "com.nextcloud.desktopclient.FileProviderUIExt.ShareAction" {
             prepare(childViewController: ShareViewController(itemIdentifiers))
@@ -43,7 +43,11 @@ class DocumentActionViewController: FPUIActionExtensionViewController {
     }
     
     override func prepare(forError error: Error) {
-        Logger.actionViewController.info("Preparing for error: \(error.localizedDescription)")
+        Logger.actionViewController.info(
+            """
+            Preparing for error: \(error.localizedDescription, privacy: .public)
+            """
+        )
     }
 
     override public func loadView() {
