@@ -15,6 +15,12 @@
 import FileProvider
 import Foundation
 
+let ncAccountDictUsernameKey = "usernameKey"
+let ncAccountDictPasswordKey = "passwordKey"
+let ncAccountDictNcKitAccountKey = "ncKitAccountKey"
+let ncAccountDictServerUrlKey = "serverUrlKey"
+let ncAccountDictDavFilesUrlKey = "davFilesUrlKey"
+
 struct NextcloudAccount: Equatable {
     static let webDavFilesUrlSuffix: String = "/remote.php/dav/files/"
     let username, password, ncKitAccount, serverUrl, davFilesUrl: String
@@ -25,5 +31,32 @@ struct NextcloudAccount: Equatable {
         ncKitAccount = user + " " + serverUrl
         self.serverUrl = serverUrl
         davFilesUrl = serverUrl + NextcloudAccount.webDavFilesUrlSuffix + user
+    }
+
+    init?(dictionary: Dictionary<String, String>) {
+        guard let username = dictionary[ncAccountDictUsernameKey],
+              let password = dictionary[ncAccountDictPasswordKey],
+              let ncKitAccount = dictionary[ncAccountDictNcKitAccountKey],
+              let serverUrl = dictionary[ncAccountDictServerUrlKey],
+              let davFilesUrl = dictionary[ncAccountDictDavFilesUrlKey]
+        else {
+            return nil
+        }
+
+        self.username = username
+        self.password = password
+        self.ncKitAccount = ncKitAccount
+        self.serverUrl = serverUrl
+        self.davFilesUrl = davFilesUrl
+    }
+
+    func dictionary() -> Dictionary<String, String> {
+        return [
+            ncAccountDictUsernameKey: username,
+            ncAccountDictPasswordKey: password,
+            ncAccountDictNcKitAccountKey: ncKitAccount,
+            ncAccountDictServerUrlKey: serverUrl,
+            ncAccountDictDavFilesUrlKey: davFilesUrl
+        ]
     }
 }

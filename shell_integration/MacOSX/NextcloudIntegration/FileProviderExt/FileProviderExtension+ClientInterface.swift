@@ -39,7 +39,8 @@ extension FileProviderExtension: NSFileProviderServicing {
     ) -> Progress {
         Logger.desktopClientConnection.debug("Serving supported service sources")
         let clientCommService = ClientCommunicationService(fpExtension: self)
-        let services = [clientCommService]
+        let fpuiExtService = FPUIExtensionServiceSource(fpExtension: self)
+        let services: [NSFileProviderServiceSource] = [clientCommService, fpuiExtService]
         completionHandler(services, nil)
         let progress = Progress()
         progress.cancellationHandler = {
