@@ -16,6 +16,7 @@ import FileProvider
 import Foundation
 import NCDesktopClientSocketKit
 import NextcloudKit
+import NextcloudFileProviderKit
 import OSLog
 
 extension FileProviderExtension: NSFileProviderServicing {
@@ -89,17 +90,21 @@ extension FileProviderExtension: NSFileProviderServicing {
     }
 
     @objc func setupDomainAccount(user: String, serverUrl: String, password: String) {
-        let newNcAccount = NextcloudAccount(user: user, serverUrl: serverUrl, password: password)
+        let newNcAccount = Account(user: user, serverUrl: serverUrl, password: password)
         guard newNcAccount != ncAccount else { return }
         ncAccount = newNcAccount
         ncKit.setup(
-            user: ncAccount!.username,
-            userId: ncAccount!.username,
-            password: ncAccount!.password,
-            urlBase: ncAccount!.serverUrl,
+            account: newNcAccount.ncKitAccount,
+            user: newNcAccount.username,
+            userId: newNcAccount.username,
+            password: newNcAccount.password,
+            urlBase: newNcAccount.serverUrl,
             userAgent: "Nextcloud-macOS/FileProviderExt",
             nextcloudVersion: 25,
             delegate: nil) // TODO: add delegate methods for self
+
+        changeObserver = RemoteChangeObserver(ncKit: ncKit, domain: domain)
+        ncKit.setup(delegate: changeObserver)
 
         Logger.fileProviderExtension.info(
             "Nextcloud account set up in File Provider extension for user: \(user, privacy: .public) at server: \(serverUrl, privacy: .public)"
