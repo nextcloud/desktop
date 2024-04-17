@@ -10,6 +10,5 @@ enum class ChangeReason {
     Default,
     EvaluationFailed,
 };
-Q_ENUM_NS(ChangeReason)
-
+Q_ENUM_NS(ChangeReason);
 }
