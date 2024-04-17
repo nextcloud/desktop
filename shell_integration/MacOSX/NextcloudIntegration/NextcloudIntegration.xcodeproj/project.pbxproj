@@ -1021,7 +1021,6 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = FileProviderUIExt/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = FileProviderUIExt;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INFOPLIST_OUTPUT_FORMAT = "same-as-input";
 				INFOPLIST_PREPROCESS = NO;
@@ -1082,7 +1081,6 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = FileProviderUIExt/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = FileProviderUIExt;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INFOPLIST_OUTPUT_FORMAT = "same-as-input";
 				INFOPLIST_PREPROCESS = NO;
