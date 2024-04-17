@@ -42,14 +42,18 @@ class ShareController: ObservableObject {
                 ) { account, share, data, error in
                     defer { continuation.resume(returning: error) }
                     guard error == .success else {
-                        Logger.shareController.error("Error creating link share: \(error)")
+                        Logger.shareController.error(
+                            """
+                            Error creating link share: \(error.errorDescription, privacy: .public)
+                            """
+                        )
                         return
                     }
                 }
             } else {
                 guard let shareWith = shareWith else {
                     let errorString = "No recipient for share!"
-                    Logger.shareController.error("\(errorString)")
+                    Logger.shareController.error("\(errorString, privacy: .public)")
                     let error = NKError(statusCode: 0, fallbackDescription: errorString)
                     continuation.resume(returning: error)
                     return
@@ -66,7 +70,11 @@ class ShareController: ObservableObject {
                 ) { account, share, data, error in
                     defer { continuation.resume(returning: error) }
                     guard error == .success else {
-                        Logger.shareController.error("Error creating share: \(error)")
+                        Logger.shareController.error(
+                            """
+                            Error creating share: \(error.errorDescription, privacy: .public)
+                            """
+                        )
                         return
                     }
                 }
@@ -90,7 +98,7 @@ class ShareController: ObservableObject {
         attributes: String? = nil,
         options: NKRequestOptions = NKRequestOptions()
     ) async -> NKError? {
-        Logger.shareController.info("Saving share: \(self.share.url)")
+        Logger.shareController.info("Saving share: \(self.share.url, privacy: .public)")
         return await withCheckedContinuation { continuation in
             kit.updateShare(
                 idShare: share.idShare,
@@ -104,10 +112,18 @@ class ShareController: ObservableObject {
                 attributes: attributes,
                 options: options
             ) { account, share, data, error in
-                Logger.shareController.info("Received update response: \(share?.url ?? "")")
+                Logger.shareController.info(
+                    """
+                    Received update response: \(share?.url ?? "", privacy: .public)
+                    """
+                )
                 defer { continuation.resume(returning: error) }
                 guard error == .success, let share = share else {
-                    Logger.shareController.error("Error updating save: \(error.errorDescription)")
+                    Logger.shareController.error(
+                        """
+                        Error updating save: \(error.errorDescription, privacy: .public)
+                        """
+                    )
                     return
                 }
                 self.share = share
@@ -116,13 +132,21 @@ class ShareController: ObservableObject {
     }
 
     func delete() async -> NKError? {
-        Logger.shareController.info("Deleting share: \(self.share.url)")
+        Logger.shareController.info("Deleting share: \(self.share.url, privacy: .public)")
         return await withCheckedContinuation { continuation in
             kit.deleteShare(idShare: share.idShare) { account, error in
-                Logger.shareController.info("Received delete response: \(self.share.url)")
+                Logger.shareController.info(
+                    """
+                    Received delete response: \(self.share.url, privacy: .public)
+                    """
+                )
                 defer { continuation.resume(returning: error) }
                 guard error == .success else {
-                    Logger.shareController.error("Error deleting save: \(error.errorDescription)")
+                    Logger.shareController.error(
+                        """
+                        Error deleting save: \(error.errorDescription, privacy: .public)
+                        """
+                    )
                     return
                 }
             }
