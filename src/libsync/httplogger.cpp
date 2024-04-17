@@ -73,7 +73,9 @@ void logHttp(const QByteArray &verb, HttpContext *ctx, QJsonObject &&header, QIO
     if (redact) {
         const QString authKey = QStringLiteral("Authorization");
         const QString auth = header.value(authKey).toString();
-        header.insert(authKey, auth.startsWith(QStringLiteral("Bearer ")) ? QStringLiteral("Bearer [redacted]") : QStringLiteral("Basic [redacted]"));
+        if (!auth.isEmpty()) {
+            header.insert(authKey, auth.startsWith(QStringLiteral("Bearer ")) ? QStringLiteral("Bearer [redacted]") : QStringLiteral("Basic [redacted]"));
+        }
     }
 
     QJsonObject info{{QStringLiteral("method"), QString::fromUtf8(verb)}, {QStringLiteral("id"), ctx->id}, {QStringLiteral("url"), ctx->originalUrl}};
