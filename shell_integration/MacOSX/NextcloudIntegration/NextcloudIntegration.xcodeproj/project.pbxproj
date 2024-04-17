@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		5307A6E62965C6FA001E0C6A /* NextcloudKit in Frameworks */ = {isa = PBXBuildFile; productRef = 5307A6E52965C6FA001E0C6A /* NextcloudKit */; };
 		5307A6E82965DAD8001E0C6A /* NextcloudKit in Frameworks */ = {isa = PBXBuildFile; productRef = 5307A6E72965DAD8001E0C6A /* NextcloudKit */; };
-		5307A6EB2965DB8D001E0C6A /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 5307A6EA2965DB8D001E0C6A /* RealmSwift */; };
 		531522822B8E01C6002E31BE /* ShareTableItemView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 531522812B8E01C6002E31BE /* ShareTableItemView.xib */; };
 		5350E4E92B0C534A00F276CB /* ClientCommunicationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5350E4E82B0C534A00F276CB /* ClientCommunicationService.swift */; };
 		5352B36C29DC44B50011CE03 /* FileProviderExtension+Thumbnailing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5352B36B29DC44B50011CE03 /* FileProviderExtension+Thumbnailing.swift */; };
@@ -207,7 +206,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5307A6EB2965DB8D001E0C6A /* RealmSwift in Frameworks */,
 				5307A6E82965DAD8001E0C6A /* NextcloudKit in Frameworks */,
 				538E396A27F4765000FA63D5 /* UniformTypeIdentifiers.framework in Frameworks */,
 				53903D302956173F00D0B308 /* NCDesktopClientSocketKit.framework in Frameworks */,
@@ -440,7 +438,6 @@
 			name = FileProviderExt;
 			packageProductDependencies = (
 				5307A6E72965DAD8001E0C6A /* NextcloudKit */,
-				5307A6EA2965DB8D001E0C6A /* RealmSwift */,
 				53C331B12BCD28C30093D38B /* NextcloudFileProviderKit */,
 			);
 			productName = FileProviderExt;
@@ -583,7 +580,6 @@
 			mainGroup = C2B573941B1CD88000303B36;
 			packageReferences = (
 				5307A6E42965C6FA001E0C6A /* XCRemoteSwiftPackageReference "NextcloudKit" */,
-				5307A6E92965DB57001E0C6A /* XCRemoteSwiftPackageReference "realm-swift" */,
 				5358F2B72BAA045E00E3C729 /* XCRemoteSwiftPackageReference "NextcloudCapabilitiesKit" */,
 				53651E422BBC0C7F00ECAC29 /* XCRemoteSwiftPackageReference "SuggestionsTextFieldKit" */,
 				53C331B02BCD28C30093D38B /* XCRemoteSwiftPackageReference "NextcloudFileProviderKit" */,
@@ -1472,14 +1468,6 @@
 				minimumVersion = 2.5.9;
 			};
 		};
-		5307A6E92965DB57001E0C6A /* XCRemoteSwiftPackageReference "realm-swift" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/realm/realm-swift.git";
-			requirement = {
-				kind = exactVersion;
-				version = 10.33.0;
-			};
-		};
 		5358F2B72BAA045E00E3C729 /* XCRemoteSwiftPackageReference "NextcloudCapabilitiesKit" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/claucambra/NextcloudCapabilitiesKit.git";
@@ -1516,11 +1504,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 5307A6E42965C6FA001E0C6A /* XCRemoteSwiftPackageReference "NextcloudKit" */;
 			productName = NextcloudKit;
-		};
-		5307A6EA2965DB8D001E0C6A /* RealmSwift */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 5307A6E92965DB57001E0C6A /* XCRemoteSwiftPackageReference "realm-swift" */;
-			productName = RealmSwift;
 		};
 		5358F2B82BAA0F5300E3C729 /* NextcloudCapabilitiesKit */ = {
 			isa = XCSwiftPackageProductDependency;
