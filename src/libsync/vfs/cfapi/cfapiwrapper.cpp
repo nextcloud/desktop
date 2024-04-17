@@ -269,7 +269,7 @@ void CALLBACK cfApiFetchDataCallback(const CF_CALLBACK_INFO *callbackInfo, const
 
     int hydrationJobResult = OCC::HydrationJob::Status::Error;
     const auto invokeFinalizeResult = QMetaObject::invokeMethod(
-        vfs, [=] { vfs->finalizeHydrationJob(requestId); }, Qt::BlockingQueuedConnection,
+        vfs, [&hydrationJobResult, vfs, requestId] { return vfs->finalizeHydrationJob(requestId); }, Qt::BlockingQueuedConnection,
         &hydrationJobResult);
     if (!invokeFinalizeResult) {
         qCritical(lcCfApiWrapper) << "Failed to finalize hydration job for" << path << requestId;
