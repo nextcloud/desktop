@@ -59,6 +59,11 @@ public:
         PermissionsCount = IsMountedSub
     };
 
+    enum class MountedPermissionAlgorithm {
+        UseMountRootProperty,
+        WildGuessMountedSubProperty,
+    };
+
     /// null permissions
     RemotePermissions() = default;
 
@@ -72,7 +77,14 @@ public:
     static RemotePermissions fromDbValue(const QByteArray &);
 
     /// read a permissions string received from the server, never null
-    static RemotePermissions fromServerString(const QString &);
+    static RemotePermissions fromServerString(const QString &value,
+                                              MountedPermissionAlgorithm algorithm = MountedPermissionAlgorithm::WildGuessMountedSubProperty,
+                                              const QMap<QString, QString> &otherProperties = {});
+
+    /// read a permissions string received from the server, never null
+    static RemotePermissions fromServerString(const QString &value,
+                                              MountedPermissionAlgorithm algorithm,
+                                              const QVariantMap &otherProperties = {});
 
     [[nodiscard]] bool hasPermission(Permissions p) const
     {
@@ -101,6 +113,13 @@ public:
     {
         return dbg << p.toString();
     }
+
+private:
+
+    template <typename T>
+    static RemotePermissions internalFromServerString(const QString &value,
+                                                      const T&otherProperties,
+                                                      MountedPermissionAlgorithm algorithm);
 };
 
 

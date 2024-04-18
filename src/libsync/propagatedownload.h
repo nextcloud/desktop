@@ -23,6 +23,10 @@
 #include <QBuffer>
 #include <QFile>
 
+#if !defined(Q_OS_MACOS) || __MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_15
+#include <filesystem>
+#endif
+
 namespace OCC {
 class PropagateDownloadEncrypted;
 
@@ -260,5 +264,10 @@ private:
     QElapsedTimer _stopwatch;
 
     PropagateDownloadEncrypted *_downloadEncryptedHelper = nullptr;
+
+#if !defined(Q_OS_MACOS) || __MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_15
+    std::filesystem::path _parentPath;
+#endif
+    bool _needParentFolderRestorePermissions = false;
 };
 }

@@ -35,7 +35,20 @@ if(APPLE)
             COMMENT building macOS File Provider extension
             VERBATIM)
 
-        add_dependencies(mac_overlayplugin mac_fileproviderplugin nextcloud) # for the ownCloud.icns to be generated
+        add_custom_target( mac_fileprovideruiplugin ALL
+            xcodebuild ARCHS=${CMAKE_OSX_ARCHITECTURES} ONLY_ACTIVE_ARCH=NO
+            -project ${CMAKE_SOURCE_DIR}/shell_integration/MacOSX/NextcloudIntegration/NextcloudIntegration.xcodeproj
+            -target FileProviderUIExt -configuration ${XCODE_TARGET_CONFIGURATION} "SYMROOT=${CMAKE_CURRENT_BINARY_DIR}"
+            "OC_APPLICATION_EXECUTABLE_NAME=${APPLICATION_EXECUTABLE}"
+            "OC_APPLICATION_VENDOR=${APPLICATION_VENDOR}"
+            "OC_APPLICATION_NAME=${APPLICATION_NAME}"
+            "OC_APPLICATION_REV_DOMAIN=${APPLICATION_REV_DOMAIN}"
+            "OC_SOCKETAPI_TEAM_IDENTIFIER_PREFIX=${SOCKETAPI_TEAM_IDENTIFIER_PREFIX}"
+            DEPENDS mac_fileproviderplugin
+            COMMENT building macOS File Provider UI extension
+            VERBATIM)
+
+        add_dependencies(mac_overlayplugin mac_fileproviderplugin mac_fileprovideruiplugin nextcloud) # for the ownCloud.icns to be generated
     else()
         add_dependencies(mac_overlayplugin nextcloud) # for the ownCloud.icns to be generated
     endif()
@@ -55,6 +68,10 @@ if(APPLE)
             install(DIRECTORY ${OSX_PLUGINS_BINARY_DIR}/FileProviderExt.appex
                 DESTINATION ${OSX_PLUGINS_INSTALL_DIR}
                 USE_SOURCE_PERMISSIONS)
+
+            install(DIRECTORY ${OSX_PLUGINS_BINARY_DIR}/FileProviderUIExt.appex
+                    DESTINATION ${OSX_PLUGINS_INSTALL_DIR}
+                    USE_SOURCE_PERMISSIONS)
         endif()
     endif()
 endif()

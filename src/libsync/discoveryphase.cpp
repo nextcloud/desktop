@@ -261,6 +261,11 @@ void DiscoveryPhase::setSelectiveSyncWhiteList(const QStringList &list)
     _selectiveSyncWhiteList.sort();
 }
 
+bool DiscoveryPhase::isRenamed(const QString &p) const
+{
+    return _renamedItemsLocal.contains(p) || _renamedItemsRemote.contains(p);
+}
+
 void DiscoveryPhase::scheduleMoreJobs()
 {
     auto limit = qMax(1, _syncOptions._parallelNetworkJobs);
@@ -366,13 +371,16 @@ void DiscoverySingleLocalDirectoryJob::run() {
 
 DiscoverySingleDirectoryJob::DiscoverySingleDirectoryJob(const AccountPtr &account,
                                                          const QString &path,
+                                                         const QString &remoteRootFolderPath,
                                                          const QSet<QString> &topLevelE2eeFolderPaths,
                                                          QObject *parent)
     : QObject(parent)
-    , _subPath(path)
+    , _subPath(remoteRootFolderPath + path)
+    , _remoteRootFolderPath(remoteRootFolderPath)
     , _account(account)
     , _topLevelE2eeFolderPaths(topLevelE2eeFolderPaths)
 {
+    Q_ASSERT(!_remoteRootFolderPath.isEmpty());
 }
 
 void DiscoverySingleDirectoryJob::start()
@@ -411,6 +419,7 @@ void DiscoverySingleDirectoryJob::start()
               << "http://nextcloud.org/ns:lock-time"
               << "http://nextcloud.org/ns:lock-timeout";
     }
+    props << "http://nextcloud.org/ns:is-mount-root";
 
     lsColJob->setProperties(props);
 
@@ -450,7 +459,7 @@ SyncFileItem::EncryptionStatus DiscoverySingleDirectoryJob::requiredEncryptionSt
     return _encryptionStatusRequired;
 }
 
-static void propertyMapToRemoteInfo(const QMap<QString, QString> &map, RemoteInfo &result)
+static void propertyMapToRemoteInfo(const QMap<QString, QString> &map, RemotePermissions::MountedPermissionAlgorithm algorithm, RemoteInfo &result)
 {
     for (auto it = map.constBegin(); it != map.constEnd(); ++it) {
         QString property = it.key();
@@ -482,7 +491,7 @@ static void propertyMapToRemoteInfo(const QMap<QString, QString> &map, RemoteInf
         } else if (property == "dDC") {
             result.directDownloadCookies = value;
         } else if (property == "permissions") {
-            result.remotePerm = RemotePermissions::fromServerString(value);
+            result.remotePerm = RemotePermissions::fromServerString(value, algorithm, map);
         } else if (property == "checksums") {
             result.checksumHeader = findBestChecksum(value.toUtf8());
         } else if (property == "share-types" && !value.isEmpty()) {
@@ -552,7 +561,10 @@ void DiscoverySingleDirectoryJob::directoryListingIteratedSlot(const QString &fi
         // The first entry is for the folder itself, we should process it differently.
         _ignoredFirst = true;
         if (map.contains("permissions")) {
-            auto perm = RemotePermissions::fromServerString(map.value("permissions"));
+            auto perm = RemotePermissions::fromServerString(map.value("permissions"),
+                                                            _account->serverHasMountRootProperty() ? RemotePermissions::MountedPermissionAlgorithm::UseMountRootProperty : RemotePermissions::MountedPermissionAlgorithm::WildGuessMountedSubProperty,
+                                                            map);
+            qCInfo(lcDiscovery()) << file << map.value("permissions") << map;
             emit firstDirectoryPermissions(perm);
             _isExternalStorage = perm.hasPermission(RemotePermissions::IsMounted);
         }
@@ -577,22 +589,17 @@ void DiscoverySingleDirectoryJob::directoryListingIteratedSlot(const QString &fi
             _size = map.value("size").toInt();
         }
     } else {
-
         RemoteInfo result;
         int slash = file.lastIndexOf('/');
         result.name = file.mid(slash + 1);
         result.size = -1;
-        propertyMapToRemoteInfo(map, result);
+        propertyMapToRemoteInfo(map,
+                                _account->serverHasMountRootProperty() ? RemotePermissions::MountedPermissionAlgorithm::UseMountRootProperty : RemotePermissions::MountedPermissionAlgorithm::WildGuessMountedSubProperty,
+                                result);
         if (result.isDirectory)
             result.size = 0;
 
-        if (_isExternalStorage && result.remotePerm.hasPermission(RemotePermissions::IsMounted)) {
-            /* All the entries in a external storage have 'M' in their permission. However, for all
-               purposes in the desktop client, we only need to know about the mount points.
-               So replace the 'M' by a 'm' for every sub entries in an external storage */
-            result.remotePerm.unsetPermission(RemotePermissions::IsMounted);
-            result.remotePerm.setPermission(RemotePermissions::IsMountedSub);
-        }
+        qCInfo(lcDiscovery()) << file << map.value("permissions") << result.remotePerm.toString() << map;
         _results.push_back(std::move(result));
     }
 
@@ -687,8 +694,9 @@ void DiscoverySingleDirectoryJob::metadataReceived(const QJsonDocument &json, in
     }
 
     const auto e2EeFolderMetadata = new FolderMetadata(_account,
+                                                 _remoteRootFolderPath,
                                                  statusCode == 404 ? QByteArray{} : json.toJson(QJsonDocument::Compact),
-                                                 RootEncryptedFolderInfo(topLevelFolderPath),
+                                                 RootEncryptedFolderInfo(Utility::fullRemotePathToRemoteSyncRootRelative(topLevelFolderPath, _remoteRootFolderPath)),
                                                  job->signature());
     connect(e2EeFolderMetadata, &FolderMetadata::setupComplete, this, [this, e2EeFolderMetadata] {
         e2EeFolderMetadata->deleteLater();

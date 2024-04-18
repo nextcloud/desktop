@@ -32,11 +32,8 @@
 #include <QNetworkAccessManager>
 #include <QFileInfo>
 #include <QDir>
-#include <cmath>
 
-#ifdef Q_OS_UNIX
-#include <unistd.h>
-#endif
+#include <cmath>
 
 namespace OCC {
 
@@ -672,10 +669,29 @@ void PropagateDownloadFile::startDownload()
 
     // Can't open(Append) read-only files, make sure to make
     // file writable if it exists.
-    if (_tmpFile.exists())
+    if (_tmpFile.exists()) {
         FileSystem::setFileReadOnly(_tmpFile.fileName(), false);
+    }
+
+#if !defined(Q_OS_MACOS) || __MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_15
+    try {
+        const auto newDirPath = std::filesystem::path{_tmpFile.fileName().toStdWString()};
+        Q_ASSERT(newDirPath.has_parent_path());
+        _parentPath = newDirPath.parent_path();
+    }
+    catch (const std::filesystem::filesystem_error &e)
+    {
+        qCWarning(lcPropagateDownload) << "exception when checking parent folder access rights" << e.what() << e.path1().c_str() << e.path2().c_str();
+    }
+
+    if (FileSystem::isFolderReadOnly(_parentPath)) {
+        FileSystem::setFolderPermissions(QString::fromStdWString(_parentPath.wstring()), FileSystem::FolderPermissions::ReadWrite);
+        emit propagator()->touchedFile(QString::fromStdWString(_parentPath.wstring()));
+        _needParentFolderRestorePermissions = true;
+    }
+#endif
+
     if (!_tmpFile.open(QIODevice::Append | QIODevice::Unbuffered)) {
-        propagator()->account()->reportClientStatus(ClientStatusReportingStatus::DownloadError_Cannot_Create_File);
         qCWarning(lcPropagateDownload) << "could not open temporary file" << _tmpFile.fileName();
         done(SyncFileItem::NormalError, _tmpFile.errorString(), ErrorCategory::GenericError);
         return;
@@ -1260,7 +1276,6 @@ void PropagateDownloadFile::downloadFinished()
     emit propagator()->touchedFile(filename);
     // The fileChanged() check is done above to generate better error messages.
     if (!FileSystem::uncheckedRenameReplace(_tmpFile.fileName(), filename, &error)) {
-        propagator()->account()->reportClientStatus(ClientStatusReportingStatus::DownloadError_Cannot_Create_File);
         qCWarning(lcPropagateDownload) << QString("Rename failed: %1 => %2").arg(_tmpFile.fileName()).arg(filename);
         // If the file is locked, we want to retry this sync when it
         // becomes available again, otherwise try again directly
@@ -1273,6 +1288,14 @@ void PropagateDownloadFile::downloadFinished()
         done(SyncFileItem::SoftError, error, ErrorCategory::GenericError);
         return;
     }
+
+#if !defined(Q_OS_MACOS) || __MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_15
+    if (_needParentFolderRestorePermissions) {
+        FileSystem::setFolderPermissions(QString::fromStdWString(_parentPath.wstring()), FileSystem::FolderPermissions::ReadWrite);
+        emit propagator()->touchedFile(QString::fromStdWString(_parentPath.wstring()));
+        _needParentFolderRestorePermissions = false;
+    }
+#endif
 
     FileSystem::setFileHidden(filename, false);
 
@@ -1352,7 +1375,12 @@ void PropagateDownloadFile::updateMetadata(bool isConflict)
         handleRecallFile(fn, propagator()->localPath(), *propagator()->_journal);
     }
 
-    if (_item->_locked == SyncFileItem::LockStatus::LockedItem && (_item->_lockOwnerType != SyncFileItem::LockOwnerType::UserLock || _item->_lockOwnerId != propagator()->account()->davUser())) {
+    const auto isLockOwnedByCurrentUser = _item->_lockOwnerId == propagator()->account()->davUser();
+
+    const auto isUserLockOwnedByCurrentUser = (_item->_lockOwnerType == SyncFileItem::LockOwnerType::UserLock && isLockOwnedByCurrentUser);
+    const auto isTokenLockOwnedByCurrentUser = (_item->_lockOwnerType == SyncFileItem::LockOwnerType::TokenLock && isLockOwnedByCurrentUser);
+
+    if (_item->_locked == SyncFileItem::LockStatus::LockedItem && !isUserLockOwnedByCurrentUser && !isTokenLockOwnedByCurrentUser) {
         qCDebug(lcPropagateDownload()) << fn << "file is locked: making it read only";
         FileSystem::setFileReadOnly(fn, true);
     } else {

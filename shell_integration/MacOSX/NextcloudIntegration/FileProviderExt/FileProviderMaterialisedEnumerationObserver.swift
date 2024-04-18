@@ -14,6 +14,7 @@
 
 import FileProvider
 import Foundation
+import NextcloudFileProviderKit
 import OSLog
 
 class FileProviderMaterialisedEnumerationObserver: NSObject, NSFileProviderEnumerationObserver {
@@ -59,7 +60,7 @@ class FileProviderMaterialisedEnumerationObserver: NSObject, NSFileProviderEnume
         _ itemIds: Set<String>, account: String,
         completionHandler: @escaping (_ deletedOcIds: Set<String>) -> Void
     ) {
-        let dbManager = NextcloudFilesDatabaseManager.shared
+        let dbManager = FilesDatabaseManager.shared
         let databaseLocalFileMetadatas = dbManager.localFileMetadatas(account: account)
         var noLongerMaterialisedIds = Set<String>()
 

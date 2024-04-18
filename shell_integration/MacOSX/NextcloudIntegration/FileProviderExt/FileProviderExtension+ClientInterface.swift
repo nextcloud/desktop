@@ -16,10 +16,42 @@ import FileProvider
 import Foundation
 import NCDesktopClientSocketKit
 import NextcloudKit
+import NextcloudFileProviderKit
 import OSLog
 
-extension FileProviderExtension {
-    func sendFileProviderDomainIdentifier() {
+extension FileProviderExtension: NSFileProviderServicing {
+    /*
+     This FileProviderExtension extension contains everything needed to communicate with the client.
+     We have two systems for communicating between the extensions and the client.
+
+     Apple's XPC based File Provider APIs let us easily communicate client -> extension.
+     This is what ClientCommunicationService is for.
+
+     We also use sockets, because the File Provider XPC system does not let us easily talk from
+     extension->client.
+     We need this because the extension needs to be able to request account details. We can't
+     reliably do this via XPC because the extensions get torn down by the system, out of the control
+     of the app, and we can receive nil/no services from NSFileProviderManager. Once this is done
+     then XPC works ok.
+    */
+    func supportedServiceSources(
+        for itemIdentifier: NSFileProviderItemIdentifier,
+        completionHandler: @escaping ([NSFileProviderServiceSource]?, Error?) -> Void
+    ) -> Progress {
+        Logger.desktopClientConnection.debug("Serving supported service sources")
+        let clientCommService = ClientCommunicationService(fpExtension: self)
+        let fpuiExtService = FPUIExtensionServiceSource(fpExtension: self)
+        let services: [NSFileProviderServiceSource] = [clientCommService, fpuiExtService]
+        completionHandler(services, nil)
+        let progress = Progress()
+        progress.cancellationHandler = {
+            let error = NSError(domain: NSCocoaErrorDomain, code: NSUserCancelledError)
+            completionHandler(nil, error)
+        }
+        return progress
+    }
+
+    @objc func sendFileProviderDomainIdentifier() {
         let command = "FILE_PROVIDER_DOMAIN_IDENTIFIER_REQUEST_REPLY"
         let argument = domain.identifier.rawValue
         let message = command + ":" + argument + "\n"
@@ -57,16 +89,22 @@ extension FileProviderExtension {
         }
     }
 
-    func setupDomainAccount(user: String, serverUrl: String, password: String) {
-        ncAccount = NextcloudAccount(user: user, serverUrl: serverUrl, password: password)
+    @objc func setupDomainAccount(user: String, serverUrl: String, password: String) {
+        let newNcAccount = Account(user: user, serverUrl: serverUrl, password: password)
+        guard newNcAccount != ncAccount else { return }
+        ncAccount = newNcAccount
         ncKit.setup(
-            user: ncAccount!.username,
-            userId: ncAccount!.username,
-            password: ncAccount!.password,
-            urlBase: ncAccount!.serverUrl,
+            account: newNcAccount.ncKitAccount,
+            user: newNcAccount.username,
+            userId: newNcAccount.username,
+            password: newNcAccount.password,
+            urlBase: newNcAccount.serverUrl,
             userAgent: "Nextcloud-macOS/FileProviderExt",
             nextcloudVersion: 25,
-            delegate: nil)  // TODO: add delegate methods for self
+            delegate: nil) // TODO: add delegate methods for self
+
+        changeObserver = RemoteChangeObserver(ncKit: ncKit, domain: domain)
+        ncKit.setup(delegate: changeObserver)
 
         Logger.fileProviderExtension.info(
             "Nextcloud account set up in File Provider extension for user: \(user, privacy: .public) at server: \(serverUrl, privacy: .public)"
@@ -75,7 +113,7 @@ extension FileProviderExtension {
         signalEnumeratorAfterAccountSetup()
     }
 
-    func removeAccountConfig() {
+    @objc func removeAccountConfig() {
         Logger.fileProviderExtension.info(
             "Received instruction to remove account data for user \(self.ncAccount!.username, privacy: .public) at server \(self.ncAccount!.serverUrl, privacy: .public)"
         )

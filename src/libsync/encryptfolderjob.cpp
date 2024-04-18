@@ -23,20 +23,24 @@ namespace OCC {
 
 Q_LOGGING_CATEGORY(lcEncryptFolderJob, "nextcloud.sync.propagator.encryptfolder", QtInfoMsg)
 
-EncryptFolderJob::EncryptFolderJob(const AccountPtr &account, SyncJournalDb *journal, const QString &path, const QByteArray &fileId, OwncloudPropagator *propagator, SyncFileItemPtr item,
+EncryptFolderJob::EncryptFolderJob(const AccountPtr &account, SyncJournalDb *journal, const QString &path, const QString &pathNonEncrypted, const QString &remoteSyncRootPath, const QByteArray &fileId, OwncloudPropagator *propagator, SyncFileItemPtr item,
     QObject * parent)
     : QObject(parent)
     , _account(account)
     , _journal(journal)
     , _path(path)
+    , _pathNonEncrypted(pathNonEncrypted)
+    , _remoteSyncRootPath(remoteSyncRootPath)
     , _fileId(fileId)
     , _propagator(propagator)
     , _item(item)
 {
     SyncJournalFileRecord rec;
     const auto currentPath = !_pathNonEncrypted.isEmpty() ? _pathNonEncrypted : _path;
-    [[maybe_unused]] const auto result = _journal->getRootE2eFolderRecord(currentPath, &rec);
-    _encryptedFolderMetadataHandler.reset(new EncryptedFolderMetadataHandler(account, _path, _journal, rec.path()));
+    const auto currentPathRelative = Utility::fullRemotePathToRemoteSyncRootRelative(currentPath, _remoteSyncRootPath);
+    const QString fullRemotePath = Utility::trailingSlashPath(Utility::noLeadingSlashPath(_remoteSyncRootPath)) + currentPathRelative;
+    [[maybe_unused]] const auto result = _journal->getRootE2eFolderRecord(Utility::fullRemotePathToRemoteSyncRootRelative(currentPath, _remoteSyncRootPath), &rec);
+    _encryptedFolderMetadataHandler.reset(new EncryptedFolderMetadataHandler(account, fullRemotePath, _remoteSyncRootPath, _journal, rec.path()));
 }
 
 void EncryptFolderJob::slotSetEncryptionFlag()
@@ -55,11 +59,6 @@ void EncryptFolderJob::start()
 QString EncryptFolderJob::errorString() const
 {
     return _errorString;
-}
-
-void EncryptFolderJob::setPathNonEncrypted(const QString &pathNonEncrypted)
-{
-    _pathNonEncrypted = pathNonEncrypted;
 }
 
 void EncryptFolderJob::slotEncryptionFlagSuccess(const QByteArray &fileId)
@@ -105,16 +104,18 @@ void EncryptFolderJob::slotEncryptionFlagError(const QByteArray &fileId,
 void EncryptFolderJob::uploadMetadata()
 {
     const auto currentPath = !_pathNonEncrypted.isEmpty() ? _pathNonEncrypted : _path;
+    const auto currentPathRelative = Utility::fullRemotePathToRemoteSyncRootRelative(currentPath, _remoteSyncRootPath);
     SyncJournalFileRecord rec;
-    if (!_journal->getRootE2eFolderRecord(currentPath, &rec)) {
+    if (!_journal->getRootE2eFolderRecord(currentPathRelative, &rec)) {
         emit finished(Error, EncryptionStatusEnums::ItemEncryptionStatus::NotEncrypted);
         return;
     }
 
     const auto emptyMetadata(QSharedPointer<FolderMetadata>::create(
         _account,
+        _remoteSyncRootPath,
         QByteArray{},
-        RootEncryptedFolderInfo(RootEncryptedFolderInfo::createRootPath(currentPath, rec.path())),
+        RootEncryptedFolderInfo(RootEncryptedFolderInfo::createRootPath(currentPathRelative, rec.path())),
         QByteArray{}));
 
     connect(emptyMetadata.data(), &FolderMetadata::setupComplete, this, [this, emptyMetadata] {

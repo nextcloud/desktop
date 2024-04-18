@@ -27,6 +27,10 @@
 #include "owncloudgui.h"
 #include "folderstatusmodel.h"
 
+#ifdef BUILD_FILE_PROVIDER_MODULE
+#include "macOS/fileprovidersettingscontroller.h"
+#endif
+
 class QModelIndex;
 class QNetworkReply;
 class QListWidgetItem;
@@ -136,6 +140,8 @@ private:
 
     /// Returns the alias of the selected folder, empty string if none
     [[nodiscard]] QString selectedFolderAlias() const;
+
+    void disguiseTabWidget() const;
 
     Ui::AccountSettings *_ui;
 

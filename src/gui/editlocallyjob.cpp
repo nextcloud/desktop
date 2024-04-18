@@ -213,7 +213,8 @@ void EditLocallyJob::fetchRemoteFileParentInfo()
                                   QByteArrayLiteral("http://owncloud.org/ns:size"),
                                   QByteArrayLiteral("http://owncloud.org/ns:id"),
                                   QByteArrayLiteral("http://owncloud.org/ns:permissions"),
-                                  QByteArrayLiteral("http://owncloud.org/ns:checksums")};
+                                  QByteArrayLiteral("http://owncloud.org/ns:checksums"),
+                                  QByteArrayLiteral("http://nextcloud.org/ns:is-mount-root")};
 
     job->setProperties(props);
     connect(job, &LsColJob::directoryListingIterated, this, &EditLocallyJob::slotDirectoryListingIterated);
@@ -545,7 +546,9 @@ void EditLocallyJob::slotDirectoryListingIterated(const QString &name, const QMa
         const auto cleanName = nameWithoutDavPath.startsWith(remoteFolderPathWithoutLeadingSlash)
             ? nameWithoutDavPath.mid(remoteFolderPathWithoutLeadingSlash.size()) : nameWithoutDavPath;
         disconnect(job, &LsColJob::directoryListingIterated, this, &EditLocallyJob::slotDirectoryListingIterated);
-        _fileParentItem = SyncFileItem::fromProperties(cleanName, properties);
+        _fileParentItem = SyncFileItem::fromProperties(cleanName,
+                                                       properties,
+                                                       _accountState->account()->serverHasMountRootProperty() ? RemotePermissions::MountedPermissionAlgorithm::UseMountRootProperty : RemotePermissions::MountedPermissionAlgorithm::WildGuessMountedSubProperty);
     }
 }
 

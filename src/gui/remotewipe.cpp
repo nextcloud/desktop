@@ -34,10 +34,13 @@ RemoteWipe::RemoteWipe(AccountPtr account, QObject *parent)
                      this, [=](AccountState *) {
         _accountRemoved = true;
     });
-    QObject::connect(this, &RemoteWipe::authorized, FolderMan::instance(),
-                     &FolderMan::slotWipeFolderForAccount);
-    QObject::connect(FolderMan::instance(), &FolderMan::wipeDone, this,
-                     &RemoteWipe::notifyServerSuccessJob);
+    if (FolderMan::instance()) {
+        QObject::connect(this, &RemoteWipe::authorized, FolderMan::instance(),
+                         &FolderMan::slotWipeFolderForAccount);
+        QObject::connect(FolderMan::instance(), &FolderMan::wipeDone, this,
+                         &RemoteWipe::notifyServerSuccessJob);
+    }
+
     QObject::connect(_account.data(), &Account::appPasswordRetrieved, this,
                      &RemoteWipe::startCheckJobWithAppPassword);
 }
@@ -109,13 +112,12 @@ void RemoteWipe::checkJobSlot()
         _account->setRemoteWipeRequested_HACK();
         // <-- FIXME MS@2019-12-07
 
-        // delete account
-        manager->deleteAccount(accountState);
-        manager->save();
-
         // delete data
         emit authorized(accountState);
 
+        // delete account
+        manager->deleteAccount(accountState);
+        manager->save();
     } else {
         // ask user for his credentials again
         accountState->handleInvalidCredentials();

@@ -133,7 +133,7 @@ public:
 
     /** Creates a basic SyncFileItem from remote properties
      */
-    [[nodiscard]] static SyncFileItemPtr fromProperties(const QString &filePath, const QMap<QString, QString> &properties);
+    [[nodiscard]] static SyncFileItemPtr fromProperties(const QString &filePath, const QMap<QString, QString> &properties, RemotePermissions::MountedPermissionAlgorithm algorithm);
 
 
     SyncFileItem()

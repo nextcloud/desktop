@@ -326,29 +326,19 @@ bool PropagateItemJob::hasEncryptedAncestor() const
 
 void PropagateItemJob::reportClientStatuses()
 {
-    if (_item->_status == SyncFileItem::Status::Conflict) {
-        if (_item->_direction == SyncFileItem::Direction::Up) {
-            propagator()->account()->reportClientStatus(ClientStatusReportingStatus::UploadError_Conflict);
-        } else {
-            propagator()->account()->reportClientStatus(ClientStatusReportingStatus::DownloadError_Conflict);
-        }
-    } else if (_item->_status == SyncFileItem::Status::FileNameClash) {
-        if (_item->_direction == SyncFileItem::Direction::Up) {
-            propagator()->account()->reportClientStatus(ClientStatusReportingStatus::UploadError_ConflictInvalidCharacters);
-        } else {
+    if (_item->_status == SyncFileItem::Status::FileNameClash) {
+        if (_item->_direction != SyncFileItem::Direction::Up) {
             propagator()->account()->reportClientStatus(ClientStatusReportingStatus::DownloadError_ConflictInvalidCharacters);
         }
-    } else if (_item->_status == SyncFileItem::Status::FileNameInvalidOnServer) {
-        propagator()->account()->reportClientStatus(ClientStatusReportingStatus::UploadError_ConflictInvalidCharacters);
     } else if (_item->_status == SyncFileItem::Status::FileNameInvalid) {
         propagator()->account()->reportClientStatus(ClientStatusReportingStatus::DownloadError_ConflictInvalidCharacters);
-    } else if (_item->_httpErrorCode != HttpErrorCodeNone && _item->_httpErrorCode != HttpErrorCodeSuccess && _item->_httpErrorCode != HttpErrorCodeSuccessCreated
-               && _item->_httpErrorCode != HttpErrorCodeSuccessNoContent) {
+    } else if (_item->_httpErrorCode != HttpErrorCodeNone && _item->_httpErrorCode != HttpErrorCodeSuccess
+               && _item->_httpErrorCode != HttpErrorCodeSuccessCreated && _item->_httpErrorCode != HttpErrorCodeSuccessNoContent) {
         if (_item->_direction == SyncFileItem::Up) {
-            const auto isCodeBadReqOrUnsupportedMediaType = (_item->_httpErrorCode == HttpErrorCodeBadRequest || _item->_httpErrorCode == HttpErrorCodeUnsupportedMediaType);
+            const auto isCodeBadReqOrUnsupportedMediaType =
+                (_item->_httpErrorCode == HttpErrorCodeBadRequest || _item->_httpErrorCode == HttpErrorCodeUnsupportedMediaType);
             const auto isExceptionInfoPresent = !_item->_errorExceptionName.isEmpty() && !_item->_errorExceptionMessage.isEmpty();
-            if (isCodeBadReqOrUnsupportedMediaType && isExceptionInfoPresent
-                && _item->_errorExceptionName.contains(QStringLiteral("UnsupportedMediaType"))
+            if (isCodeBadReqOrUnsupportedMediaType && isExceptionInfoPresent && _item->_errorExceptionName.contains(QStringLiteral("UnsupportedMediaType"))
                 && _item->_errorExceptionMessage.contains(QStringLiteral("virus"), Qt::CaseInsensitive)) {
                 propagator()->account()->reportClientStatus(ClientStatusReportingStatus::UploadError_Virus_Detected);
             } else {
@@ -982,7 +972,6 @@ bool OwncloudPropagator::createConflict(const SyncFileItemPtr &item,
     }
 
     _journal->setConflictRecord(conflictRecord);
-    account()->reportClientStatus(ClientStatusReportingStatus::DownloadError_Conflict);
 
     // Create a new upload job if the new conflict file should be uploaded
     if (account()->capabilities().uploadConflictFiles()) {
@@ -1080,16 +1069,16 @@ Result<Vfs::ConvertToPlaceholderResult, QString> OwncloudPropagator::staticUpdat
                                                                                           Vfs::UpdateMetadataTypes updateType)
 {
     const QString fsPath = localDir + item.destination();
+    auto record = item.toSyncJournalFileRecordWithInode(fsPath);
+    const auto dBresult = journal->setFileRecord(record);
+    if (!dBresult) {
+        return dBresult.error();
+    }
     const auto result = vfs->convertToPlaceholder(fsPath, item, {}, updateType);
     if (!result) {
         return result.error();
     } else if (*result == Vfs::ConvertToPlaceholderResult::Locked) {
         return Vfs::ConvertToPlaceholderResult::Locked;
-    }
-    auto record = item.toSyncJournalFileRecordWithInode(fsPath);
-    const auto dBresult = journal->setFileRecord(record);
-    if (!dBresult) {
-        return dBresult.error();
     }
     return Vfs::ConvertToPlaceholderResult::Ok;
 }
@@ -1453,6 +1442,61 @@ void PropagateDirectory::slotSubJobsFinished(SyncFileItem::Status status)
         if (_item->_instruction == CSYNC_INSTRUCTION_RENAME
             || _item->_instruction == CSYNC_INSTRUCTION_NEW
             || _item->_instruction == CSYNC_INSTRUCTION_UPDATE_METADATA) {
+
+#if !defined(Q_OS_MACOS) || __MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_15
+            if (!_item->_remotePerm.isNull() &&
+                !_item->_remotePerm.hasPermission(RemotePermissions::CanAddFile) &&
+                !_item->_remotePerm.hasPermission(RemotePermissions::CanRename) &&
+                !_item->_remotePerm.hasPermission(RemotePermissions::CanMove) &&
+                !_item->_remotePerm.hasPermission(RemotePermissions::CanAddSubDirectories)) {
+                try {
+                    if (QFileInfo::exists(propagator()->fullLocalPath(_item->_file))) {
+                        FileSystem::setFolderPermissions(propagator()->fullLocalPath(_item->_file), FileSystem::FolderPermissions::ReadOnly);
+                        qCDebug(lcDirectory) << "old permissions" << static_cast<int>(std::filesystem::status(propagator()->fullLocalPath(_item->_file).toStdWString()).permissions());
+                        std::filesystem::permissions(propagator()->fullLocalPath(_item->_file).toStdWString(), std::filesystem::perms::owner_write | std::filesystem::perms::group_write | std::filesystem::perms::others_write, std::filesystem::perm_options::remove);
+                        qCDebug(lcDirectory) << "new permissions" << static_cast<int>(std::filesystem::status(propagator()->fullLocalPath(_item->_file).toStdWString()).permissions());
+                    }
+                    if (!_item->_renameTarget.isEmpty() && QFileInfo::exists(propagator()->fullLocalPath(_item->_renameTarget))) {
+                        FileSystem::setFolderPermissions(propagator()->fullLocalPath(_item->_renameTarget), FileSystem::FolderPermissions::ReadOnly);
+                        qCDebug(lcDirectory) << "old permissions" << static_cast<int>(std::filesystem::status(propagator()->fullLocalPath(_item->_renameTarget).toStdWString()).permissions());
+                        std::filesystem::permissions(propagator()->fullLocalPath(_item->_renameTarget).toStdWString(), std::filesystem::perms::owner_write | std::filesystem::perms::group_write | std::filesystem::perms::others_write, std::filesystem::perm_options::remove);
+                        qCDebug(lcDirectory) << "new permissions" << static_cast<int>(std::filesystem::status(propagator()->fullLocalPath(_item->_renameTarget).toStdWString()).permissions());
+                    }
+                }
+                catch (const std::filesystem::filesystem_error &e)
+                {
+                    qCWarning(lcDirectory) << "exception when checking parent folder access rights" << e.what() << e.path1().c_str() << e.path2().c_str();
+                    _item->_status = SyncFileItem::NormalError;
+                    _item->_errorString = tr("The folder %1 cannot be made read-only: %2").arg(_item->_file, e.what());
+                }
+            } else if (!_item->_remotePerm.isNull() &&
+                       (_item->_remotePerm.hasPermission(RemotePermissions::CanAddFile) ||
+                        !_item->_remotePerm.hasPermission(RemotePermissions::CanRename) ||
+                        !_item->_remotePerm.hasPermission(RemotePermissions::CanMove) ||
+                        !_item->_remotePerm.hasPermission(RemotePermissions::CanAddSubDirectories))) {
+                try {
+                    if (QFileInfo::exists(propagator()->fullLocalPath(_item->_file))) {
+                        FileSystem::setFolderPermissions(propagator()->fullLocalPath(_item->_file), FileSystem::FolderPermissions::ReadWrite);
+                        qCDebug(lcDirectory) << "old permissions" << static_cast<int>(std::filesystem::status(propagator()->fullLocalPath(_item->_file).toStdWString()).permissions());
+                        std::filesystem::permissions(propagator()->fullLocalPath(_item->_file).toStdWString(), std::filesystem::perms::owner_write, std::filesystem::perm_options::add);
+                        qCDebug(lcDirectory) << "new permissions" << static_cast<int>(std::filesystem::status(propagator()->fullLocalPath(_item->_file).toStdWString()).permissions());
+                    }
+                    if (!_item->_renameTarget.isEmpty() && QFileInfo::exists(propagator()->fullLocalPath(_item->_renameTarget))) {
+                        FileSystem::setFolderPermissions(propagator()->fullLocalPath(_item->_renameTarget), FileSystem::FolderPermissions::ReadWrite);
+                        qCDebug(lcDirectory) << "old permissions" << static_cast<int>(std::filesystem::status(propagator()->fullLocalPath(_item->_renameTarget).toStdWString()).permissions());
+                        std::filesystem::permissions(propagator()->fullLocalPath(_item->_renameTarget).toStdWString(), std::filesystem::perms::owner_write, std::filesystem::perm_options::add);
+                        qCDebug(lcDirectory) << "new permissions" << static_cast<int>(std::filesystem::status(propagator()->fullLocalPath(_item->_renameTarget).toStdWString()).permissions());
+                    }
+                }
+                catch (const std::filesystem::filesystem_error &e)
+                {
+                    qCWarning(lcDirectory) << "exception when checking parent folder access rights" << e.what() << e.path1().c_str() << e.path2().c_str();
+                    _item->_status = SyncFileItem::NormalError;
+                    _item->_errorString = tr("The folder %1 cannot be made read-only: %2").arg(e.path1().c_str(), e.what());
+                }
+            }
+#endif
+
             const auto result = propagator()->updateMetadata(*_item);
             if (!result) {
                 status = _item->_status = SyncFileItem::FatalError;
@@ -1465,7 +1509,7 @@ void PropagateDirectory::slotSubJobsFinished(SyncFileItem::Status status)
         }
     }
     _state = Finished;
-    qCInfo(lcPropagator) << "PropagateDirectory::slotSubJobsFinished" << "emit finished" << status;
+    qCInfo(lcPropagator) << "PropagateDirectory::slotSubJobsFinished" << "emit finished" << status << _item->_file;
     emit finished(status);
 }
 
@@ -1669,6 +1713,15 @@ QString OwncloudPropagator::fullRemotePath(const QString &tmp_file_name) const
 {
     // TODO: should this be part of the _item (SyncFileItemPtr)?
     return _remoteFolder + tmp_file_name;
+}
+
+QString OwncloudPropagator::fulllRemotePathToPathInSyncJournalDb(const QString &fullRemotePath) const
+{
+    auto result = _remoteFolder != QStringLiteral("/") ? fullRemotePath.mid(_remoteFolder.size()) : fullRemotePath;
+    if (result.startsWith("/")) {
+        result = result.mid(1);
+    }
+    return result;
 }
 
 QString OwncloudPropagator::remotePath() const

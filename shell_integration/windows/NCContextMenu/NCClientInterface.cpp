@@ -48,7 +48,10 @@ NCClientInterface::ContextMenuInfo NCClientInterface::FetchInfo(const std::wstri
     ContextMenuInfo info;
     std::wstring response;
     int sleptCount = 0;
-    while (sleptCount < 20) {
+    constexpr auto noReplyTimeout = 20;
+    constexpr auto replyTimeout = 200;
+    bool receivedReplyFromDesktopClient = false;
+    while ((!receivedReplyFromDesktopClient && sleptCount < noReplyTimeout) || (receivedReplyFromDesktopClient && sleptCount < replyTimeout)) {
         if (socket.ReadLine(&response)) {
             if (StringUtil::begins_with(response, wstring(L"REGISTER_PATH:"))) {
                 wstring responsePath = response.substr(14); // length of REGISTER_PATH
@@ -65,6 +68,9 @@ NCClientInterface::ContextMenuInfo NCClientInterface::FetchInfo(const std::wstri
                 if (!StringUtil::extractChunks(response, commandName, flags, title))
                     continue;
                 info.menuItems.push_back({ commandName, flags, title });
+            } else if (StringUtil::begins_with(response, wstring(L"GET_MENU_ITEMS:BEGIN"))) {
+                receivedReplyFromDesktopClient = true;
+                continue;
             } else if (StringUtil::begins_with(response, wstring(L"GET_MENU_ITEMS:END"))) {
                 break; // Stop once we completely received the last sent request
             }

@@ -51,7 +51,7 @@ public Q_SLOTS:
     void slotPollNow();
     void slotStyleChanged();
 
-signals:
+Q_SIGNALS:
     void connectToOCUrl(const QString &);
     void pollNow();
     void styleChanged();

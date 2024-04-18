@@ -43,7 +43,7 @@ public:
 protected:
     void closeEvent(QCloseEvent *) override;
 
-protected slots:
+protected Q_SLOTS:
     void togglePermanentLogging(bool enabled);
 };
 

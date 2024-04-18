@@ -189,6 +189,7 @@ QVariant ShareModel::data(const QModelIndex &index, const int role) const
     // Deal with roles that only return certain values for link or user/group share types
     case NoteEnabledRole:
     case ExpireDateEnabledRole:
+    case HideDownloadEnabledRole:
         return false;
     case LinkRole:
     case LinkShareNameRole:
@@ -855,6 +856,9 @@ void ShareModel::slotDeleteE2EeShare(const SharePtr &share) const
         emit serverError(404, tr("Could not find local folder for %1").arg(share->path()));
         return;
     }
+
+    Q_ASSERT(folder->remotePath() == QStringLiteral("/")
+             || Utility::noLeadingSlashPath(share->path()).startsWith(Utility::noLeadingSlashPath(Utility::noTrailingSlashPath(folder->remotePath()))));
 
     const auto removeE2eeShareJob = new UpdateE2eeFolderUsersMetadataJob(account,
                                                                          folder->journalDb(),

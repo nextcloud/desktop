@@ -30,13 +30,14 @@ namespace OCC {
 
 UpdateMigratedE2eeMetadataJob::UpdateMigratedE2eeMetadataJob(OwncloudPropagator *propagator,
                                                              const SyncFileItemPtr &syncFileItem,
-                                                             const QString &path,
+                                                             const QString &fullRemotePath,
                                                              const QString &folderRemotePath)
     : PropagatorJob(propagator)
     , _item(syncFileItem)
-    , _path(path)
-    , _folderRemotePath(folderRemotePath)
+    , _fullRemotePath(fullRemotePath)
+    , _folderRemotePath(Utility::noLeadingSlashPath(Utility::noTrailingSlashPath(folderRemotePath)))
 {
+    Q_ASSERT(_fullRemotePath == QStringLiteral("/") || _fullRemotePath.startsWith(_folderRemotePath));
 }
 
 void UpdateMigratedE2eeMetadataJob::start()
@@ -45,7 +46,7 @@ void UpdateMigratedE2eeMetadataJob::start()
                                                                                      propagator()->_journal,
                                                                                      _folderRemotePath,
                                                                                      UpdateE2eeFolderUsersMetadataJob::Add,
-                                                                                     _path,
+                                                                                     _fullRemotePath,
                                                                                      propagator()->account()->davUser(),
                                                                                      propagator()->account()->e2e()->_certificate);
     updateMedatadaAndSubfoldersJob->setParent(this);
@@ -83,9 +84,9 @@ PropagatorJob::JobParallelism UpdateMigratedE2eeMetadataJob::parallelism() const
     return PropagatorJob::JobParallelism::WaitForFinished;
 }
 
-QString UpdateMigratedE2eeMetadataJob::path() const
+QString UpdateMigratedE2eeMetadataJob::fullRemotePath() const
 {
-    return _path;
+    return _fullRemotePath;
 }
 
 void UpdateMigratedE2eeMetadataJob::addSubJobItem(const QString &key, const SyncFileItemPtr &syncFileItem)

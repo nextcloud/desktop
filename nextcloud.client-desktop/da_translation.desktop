@@ -23,5 +23,5 @@ Icon=@APPLICATION_EXECUTABLE@
 # Translations
 Name[da]=Skrivebordsklient til @APPLICATION_NAME@
 Comment[da]=Klient til @APPLICATION_NAME@-skrivebordssynkronisering
-GenericName[da]=Mappesynkronisering
+GenericName[da]=Mappe Synkronisering
 Icon[da]=@APPLICATION_ICON_NAME@

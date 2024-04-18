@@ -12,13 +12,15 @@
  * for more details.
  */
 
-#import <Foundation/Foundation.h>
+
+#include "fileprovider.h"
 
 #include <QLoggingCategory>
 
-#include "configfile.h"
+#include "libsync/configfile.h"
+#include "gui/macOS/fileproviderxpc.h"
 
-#include "fileprovider.h"
+#import <Foundation/Foundation.h>
 
 namespace OCC {
 
@@ -37,21 +39,19 @@ FileProvider::FileProvider(QObject * const parent)
         qCInfo(lcMacFileProvider) << "File provider system is not available on this version of macOS.";
         deleteLater();
         return;
-    } else if (!ConfigFile().macFileProviderModuleEnabled()) {
-        qCInfo(lcMacFileProvider) << "File provider module is not enabled in application config.";
-        deleteLater();
-        return;
     }
 
     qCInfo(lcMacFileProvider) << "Initialising file provider domain manager.";
-    _domainManager = std::make_unique<FileProviderDomainManager>(new FileProviderDomainManager(this));
+    _domainManager = std::make_unique<FileProviderDomainManager>(this);
 
     if (_domainManager) {
+        connect(_domainManager.get(), &FileProviderDomainManager::domainSetupComplete, this, &FileProvider::configureXPC);
+        _domainManager->start();
         qCDebug(lcMacFileProvider()) << "Initialized file provider domain manager";
     }
 
     qCDebug(lcMacFileProvider) << "Initialising file provider socket server.";
-    _socketServer = std::make_unique<FileProviderSocketServer>(new FileProviderSocketServer(this));
+    _socketServer = std::make_unique<FileProviderSocketServer>(this);
 
     if (_socketServer) {
         qCDebug(lcMacFileProvider) << "Initialised file provider socket server.";
@@ -62,9 +62,6 @@ FileProvider *FileProvider::instance()
 {
     if (!fileProviderAvailable()) {
         qCInfo(lcMacFileProvider) << "File provider system is not available on this version of macOS.";
-        return nullptr;
-    } else if (!ConfigFile().macFileProviderModuleEnabled()) {
-        qCInfo(lcMacFileProvider) << "File provider module is not enabled in application config.";
         return nullptr;
     }
 
@@ -86,6 +83,23 @@ bool FileProvider::fileProviderAvailable()
     }
 
     return false;
+}
+
+void FileProvider::configureXPC()
+{
+    _xpc = std::make_unique<FileProviderXPC>(new FileProviderXPC(this));
+    if (_xpc) {
+        qCInfo(lcMacFileProvider) << "Initialised file provider XPC.";
+        _xpc->connectToExtensions();
+        _xpc->configureExtensions();
+    } else {
+        qCWarning(lcMacFileProvider) << "Could not initialise file provider XPC.";
+    }
+}
+
+FileProviderXPC *FileProvider::xpc() const
+{
+    return _xpc.get();
 }
 
 } // namespace Mac

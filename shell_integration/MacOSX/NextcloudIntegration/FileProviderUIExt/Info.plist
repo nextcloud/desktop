@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>CFBundleName</key>
+    <string>$(PRODUCT_NAME)</string>
+    <key>CFBundleDisplayName</key>
+    <string>$(OC_APPLICATION_NAME) File Provider UI Extension</string>
+    <key>CFBundleIdentifier</key>
+    <string>$(OC_APPLICATION_REV_DOMAIN).$(PRODUCT_NAME)</string>
+	<key>NSExtension</key>
+	<dict>
+		<key>NSExtensionFileProviderActions</key>
+		<array>
+			<dict>
+				<key>NSExtensionFileProviderActionActivationRule</key>
+				<string>TRUEPREDICATE</string>
+				<key>NSExtensionFileProviderActionIdentifier</key>
+				<string>com.nextcloud.desktopclient.FileProviderUIExt.ShareAction</string>
+				<key>NSExtensionFileProviderActionName</key>
+				<string>Share options</string>
+			</dict>
+		</array>
+		<key>NSExtensionPointIdentifier</key>
+		<string>com.apple.fileprovider-actionsui</string>
+		<key>NSExtensionPrincipalClass</key>
+		<string>$(PRODUCT_MODULE_NAME).DocumentActionViewController</string>
+	</dict>
+</dict>
+</plist>

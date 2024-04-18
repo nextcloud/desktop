@@ -12,6 +12,7 @@
         <file>src/gui/filedetails/FileDetailsView.qml</file>
         <file>src/gui/filedetails/FileDetailsWindow.qml</file>
         <file>src/gui/filedetails/FileTag.qml</file>
+        <file>src/gui/filedetails/NCInputDateField.qml</file>
         <file>src/gui/filedetails/NCInputTextEdit.qml</file>
         <file>src/gui/filedetails/NCInputTextField.qml</file>
         <file>src/gui/filedetails/NCTabButton.qml</file>
@@ -61,6 +62,11 @@
         <file>src/gui/ResolveConflictsDialog.qml</file>
         <file>src/gui/ConflictDelegate.qml</file>
         <file>src/gui/ConflictItemFileInfo.qml</file>
-        <file>src/gui/filedetails/NCInputDateField.qml</file>
+        <file>src/gui/macOS/ui/FileProviderSettings.qml</file>
+        <file>src/gui/macOS/ui/FileProviderFileDelegate.qml</file>
+        <file>src/gui/macOS/ui/FileProviderEvictionDialog.qml</file>
+        <file>src/gui/macOS/ui/FileProviderSyncStatus.qml</file>
+        <file>src/gui/macOS/ui/FileProviderStorageInfo.qml</file>
+        <file>src/gui/macOS/ui/FileProviderFastEnumerationSettings.qml</file>
     </qresource>
 </RCC>

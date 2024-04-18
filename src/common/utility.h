@@ -50,6 +50,18 @@ Q_DECLARE_LOGGING_CATEGORY(lcUtility)
  *  @{
  */
 namespace Utility {
+    struct ProcessInfosForOpenFile {
+        ulong processId;
+        QString processName;
+    };
+    /**
+     * @brief Queries the OS for processes that are keeping the file open(using it)
+     *
+     * @param filePath absolute file path
+     * @return list of ProcessInfosForOpenFile
+     */
+    OCSYNC_EXPORT QVector<ProcessInfosForOpenFile> queryProcessInfosKeepingFileOpen(const QString &filePath);
+
     OCSYNC_EXPORT int rand();
     OCSYNC_EXPORT void sleep(int sec);
     OCSYNC_EXPORT void usleep(int usec);
@@ -254,9 +266,12 @@ namespace Utility {
      * @brief Registers the desktop app as a handler for a custom URI to enable local editing
      */
     OCSYNC_EXPORT void registerUriHandlerForLocalEditing();
-
+    
+    OCSYNC_EXPORT QString leadingSlashPath(const QString &path);
     OCSYNC_EXPORT QString trailingSlashPath(const QString &path);
     OCSYNC_EXPORT QString noLeadingSlashPath(const QString &path);
+    OCSYNC_EXPORT QString noTrailingSlashPath(const QString &path);
+    OCSYNC_EXPORT QString fullRemotePathToRemoteSyncRootRelative(const QString &fullRemotePath, const QString &remoteSyncRoot);
 
 #ifdef Q_OS_WIN
     OCSYNC_EXPORT bool registryKeyExists(HKEY hRootKey, const QString &subKey);

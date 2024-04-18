@@ -20,7 +20,7 @@
 #include <KOverlayIconPlugin>
 #include <KPluginFactory>
 #include <QtNetwork/QLocalSocket>
-#include <KIOCore/kfileitem.h>
+#include <KFileItem>
 #include <QDir>
 #include <QTimer>
 #include "ownclouddolphinpluginhelper.h"
@@ -50,7 +50,7 @@ public:
         QDir localPath(url.toLocalFile());
         const QByteArray localFile = localPath.canonicalPath().toUtf8();
 
-        helper->sendCommand(QByteArray("RETRIEVE_FILE_STATUS:" + localFile + "\n"));
+        helper->sendCommand(QByteArray("RETRIEVE_FILE_STATUS:" + localFile + "\n").constData());
 
         StatusMap::iterator it = m_status.find(localFile);
         if (it != m_status.constEnd()) {
@@ -66,16 +66,16 @@ private:
             return r;
 
         if (status.startsWith("OK"))
-            r << "vcs-normal";
+            r << QStringLiteral("vcs-normal");
         if (status.startsWith("SYNC") || status.startsWith("NEW"))
-            r << "vcs-update-required";
+            r << QStringLiteral("vcs-update-required");
         if (status.startsWith("IGNORE") || status.startsWith("WARN"))
-            r << "vcs-locally-modified-unstaged";
+            r << QStringLiteral("vcs-locally-modified-unstaged");
         if (status.startsWith("ERROR"))
-            r << "vcs-conflicting";
+            r << QStringLiteral("vcs-conflicting");
 
         if (status.contains("+SWM"))
-            r << "document-share";
+            r << QStringLiteral("document-share");
 
         return r;
     }
@@ -98,7 +98,7 @@ private:
             return;
         status = tokens[1];
 
-        emit overlaysChanged(QUrl::fromLocalFile(QString::fromUtf8(name)), overlaysForString(status));
+        Q_EMIT overlaysChanged(QUrl::fromLocalFile(QString::fromUtf8(name)), overlaysForString(status));
     }
 };
 

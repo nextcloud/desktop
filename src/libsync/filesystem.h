@@ -16,13 +16,17 @@
 
 #include "config.h"
 
+#include "owncloudlib.h"
+#include "common/filesystembase.h"
+
 #include <QString>
+#include <QStringList>
+
 #include <ctime>
 #include <functional>
-
-#include <owncloudlib.h>
-// Chain in the base include and extend the namespace
-#include "common/filesystembase.h"
+#if !defined(Q_OS_MACOS) || __MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_15
+#include <filesystem>
+#endif
 
 class QFile;
 
@@ -39,6 +43,20 @@ class SyncJournal;
  * @brief This file contains file system helper
  */
 namespace FileSystem {
+    struct OWNCLOUDSYNC_EXPORT FileLockingInfo {
+        enum class Type { Unset = -1, Locked, Unlocked };
+        QString path;
+        Type type = Type::Unset;
+    };
+
+    // match file path with lock pattern
+    QString OWNCLOUDSYNC_EXPORT filePathLockFilePatternMatch(const QString &path);
+    // check if it is an office file (by extension), ONLY call it for files
+    bool OWNCLOUDSYNC_EXPORT isMatchingOfficeFileExtension(const QString &path);
+    // finds and fetches FileLockingInfo for the corresponding file that we are locking/unlocking
+    FileLockingInfo OWNCLOUDSYNC_EXPORT lockFileTargetFilePath(const QString &lockFilePath, const QString &lockFileNamePattern);
+    // lists all files matching a lockfile pattern in dirPath
+    QStringList OWNCLOUDSYNC_EXPORT findAllLockFilesInDir(const QString &dirPath);
 
     /**
      * @brief compare two files with given filename and return true if they have the same content
@@ -96,6 +114,13 @@ namespace FileSystem {
     bool OWNCLOUDSYNC_EXPORT removeRecursively(const QString &path,
         const std::function<void(const QString &path, bool isDir)> &onDeleted = nullptr,
         QStringList *errors = nullptr);
+
+    bool OWNCLOUDSYNC_EXPORT setFolderPermissions(const QString &path,
+                                                  FileSystem::FolderPermissions permissions) noexcept;
+
+#if !defined(Q_OS_MACOS) || __MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_15
+    bool OWNCLOUDSYNC_EXPORT isFolderReadOnly(const std::filesystem::path &path) noexcept;
+#endif
 }
 
 /** @} */

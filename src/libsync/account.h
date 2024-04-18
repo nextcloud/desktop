@@ -247,6 +247,8 @@ public:
      */
     [[nodiscard]] int serverVersionInt() const;
 
+    [[nodiscard]] bool serverHasMountRootProperty() const;
+
     static constexpr int makeServerVersion(const int majorVersion, const int minorVersion, const int patchVersion) {
         return (majorVersion << 16) + (minorVersion << 8) + patchVersion;
     };

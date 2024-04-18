@@ -43,14 +43,14 @@ void OCC::HydrationJob::setAccount(const AccountPtr &account)
     _account = account;
 }
 
-QString OCC::HydrationJob::remotePath() const
+QString OCC::HydrationJob::remoteSyncRootPath() const
 {
-    return _remotePath;
+    return _remoteSyncRootPath;
 }
 
-void OCC::HydrationJob::setRemotePath(const QString &remotePath)
+void OCC::HydrationJob::setRemoteSyncRootPath(const QString &path)
 {
-    _remotePath = remotePath;
+    _remoteSyncRootPath = Utility::noLeadingSlashPath(path);
 }
 
 QString OCC::HydrationJob::localPath() const
@@ -137,10 +137,10 @@ void OCC::HydrationJob::start()
 {
     Q_ASSERT(_account);
     Q_ASSERT(_journal);
-    Q_ASSERT(!_remotePath.isEmpty() && !_localPath.isEmpty());
+    Q_ASSERT(!_remoteSyncRootPath.isEmpty() && !_localPath.isEmpty());
     Q_ASSERT(!_requestId.isEmpty() && !_folderPath.isEmpty());
 
-    Q_ASSERT(_remotePath.endsWith('/'));
+    Q_ASSERT(_remoteSyncRootPath.endsWith('/'));
     Q_ASSERT(_localPath.endsWith('/'));
     Q_ASSERT(!_folderPath.startsWith('/'));
 
@@ -305,7 +305,7 @@ void OCC::HydrationJob::slotFetchMetadataJobFinished(int statusCode, const QStri
         if (encryptedFileExactName == file.encryptedFilename) {
             qCDebug(lcHydration) << "Found matching encrypted metadata for file, starting download" << _requestId << _folderPath;
             _transferDataSocket = _transferDataServer->nextPendingConnection();
-            _job = new GETEncryptedFileJob(_account, _remotePath + e2eMangledName(), _transferDataSocket, {}, {}, 0, file, this);
+            _job = new GETEncryptedFileJob(_account, Utility::trailingSlashPath(_remoteSyncRootPath) + e2eMangledName(), _transferDataSocket, {}, {}, 0, file, this);
 
             connect(qobject_cast<GETEncryptedFileJob *>(_job), &GETEncryptedFileJob::finishedSignal, this, &HydrationJob::onGetFinished);
             _job->start();
@@ -347,7 +347,7 @@ void OCC::HydrationJob::handleNewConnection()
 {
     qCInfo(lcHydration) << "Got new connection starting GETFileJob" << _requestId << _folderPath;
     _transferDataSocket = _transferDataServer->nextPendingConnection();
-    _job = new GETFileJob(_account, _remotePath + _folderPath, _transferDataSocket, {}, {}, 0, this);
+    _job = new GETFileJob(_account, Utility::trailingSlashPath(_remoteSyncRootPath) + _folderPath, _transferDataSocket, {}, {}, 0, this);
     connect(_job, &GETFileJob::finishedSignal, this, &HydrationJob::onGetFinished);
     _job->start();
 }
@@ -356,25 +356,17 @@ void OCC::HydrationJob::handleNewConnectionForEncryptedFile()
 {
     // TODO: the following code is borrowed from PropagateDownloadEncrypted (should we factor it out and reuse? YES! Should we do it now? Probably not, as, this would imply modifying PropagateDownloadEncrypted, so we need a separate PR)
     qCInfo(lcHydration) << "Got new connection for encrypted file. Getting required info for decryption...";
-    const auto rootPath = [=]() {
-        const auto result = _remotePath;
-        if (result.startsWith('/')) {
-            return result.mid(1);
-        } else {
-            return result;
-        }
-    }();
-
     const auto remoteFilename = e2eMangledName();
-    const auto remotePath = QString(rootPath + remoteFilename);
-    const auto _remoteParentPath = remotePath.left(remotePath.lastIndexOf('/'));
+    const QString fullRemotePath = Utility::trailingSlashPath(_remoteSyncRootPath) + remoteFilename;
+    const auto containingFolderFullRemotePath = fullRemotePath.left(fullRemotePath.lastIndexOf('/'));
 
     SyncJournalFileRecord rec;
-    if (!_journal->getRootE2eFolderRecord(_remoteParentPath, &rec) || !rec.isValid()) {
+    if (!_journal->getRootE2eFolderRecord(Utility::fullRemotePathToRemoteSyncRootRelative(containingFolderFullRemotePath, _remoteSyncRootPath), &rec) || !rec.isValid()) {
         emitFinished(Error);
         return;
     }
-    _encryptedFolderMetadataHandler.reset(new EncryptedFolderMetadataHandler(_account, _remoteParentPath, _journal, rec.path()));
+    _encryptedFolderMetadataHandler.reset(
+        new EncryptedFolderMetadataHandler(_account, containingFolderFullRemotePath, _remoteSyncRootPath, _journal, rec.path()));
     connect(_encryptedFolderMetadataHandler.data(),
             &EncryptedFolderMetadataHandler::fetchFinished,
             this,

@@ -19,12 +19,29 @@ extension Logger {
 
     static let desktopClientConnection = Logger(
         subsystem: subsystem, category: "desktopclientconnection")
-    static let enumeration = Logger(subsystem: subsystem, category: "enumeration")
+    static let fpUiExtensionService = Logger(subsystem: subsystem, category: "fpUiExtensionService")
     static let fileProviderExtension = Logger(
         subsystem: subsystem, category: "fileproviderextension")
-    static let fileTransfer = Logger(subsystem: subsystem, category: "filetransfer")
-    static let localFileOps = Logger(subsystem: subsystem, category: "localfileoperations")
-    static let ncFilesDatabase = Logger(subsystem: subsystem, category: "nextcloudfilesdatabase")
-    static let materialisedFileHandling = Logger(
-        subsystem: subsystem, category: "materialisedfilehandling")
+    static let shares = Logger(subsystem: subsystem, category: "shares")
+    static let logger = Logger(subsystem: subsystem, category: "logger")
+
+    @available(macOSApplicationExtension 12.0, *)
+    static func logEntries(interval: TimeInterval = -3600) -> (Array<String>?, Error?) {
+        do {
+            let logStore = try OSLogStore(scope: .currentProcessIdentifier)
+            let timeDate = Date().addingTimeInterval(interval)
+            let logPosition = logStore.position(date: timeDate)
+            let entries = try logStore.getEntries(at: logPosition)
+
+            return (entries
+                .compactMap { $0 as? OSLogEntryLog }
+                .filter { $0.subsystem == Logger.subsystem }
+                .map { $0.composedMessage }, nil)
+
+        } catch let error {
+            Logger.logger.error("Could not acquire os log store: \(error)");
+            return (nil, error)
+        }
+    }
 }
+

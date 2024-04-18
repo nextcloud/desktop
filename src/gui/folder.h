@@ -162,6 +162,8 @@ public:
      */
     QString remotePathTrailingSlash() const;
 
+    [[nodiscard]] QString fulllRemotePathToPathInSyncJournalDb(const QString &fullRemotePath) const;
+
     void setNavigationPaneClsid(const QUuid &clsid) { _definition.navigationPaneClsid = clsid; }
     QUuid navigationPaneClsid() const { return _definition.navigationPaneClsid; }
 
@@ -400,6 +402,11 @@ public slots:
 private slots:
     void slotSyncStarted();
     void slotSyncFinished(bool);
+    /*
+     * Disconnects all the slots from the FolderWatcher
+     * Needs to be called each time a folder is removed
+     */
+    void disconnectFolderWatcher();
 
     /** Adds a error message that's not tied to a specific item.
      */

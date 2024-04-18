@@ -271,6 +271,11 @@ QString Folder::remotePathTrailingSlash() const
     return Utility::trailingSlashPath(remotePath());
 }
 
+QString Folder::fulllRemotePathToPathInSyncJournalDb(const QString &fullRemotePath) const
+{
+    return Utility::fullRemotePathToRemoteSyncRootRelative(fullRemotePath, remotePathTrailingSlash());
+}
+
 QUrl Folder::remoteUrl() const
 {
     return Utility::concatUrlPath(_accountState->account()->davUrl(), remotePath());
@@ -561,19 +566,21 @@ void Folder::slotWatchedPathChanged(const QString &path, ChangeReason reason)
 
     auto relativePath = path.midRef(this->path().size());
 
-    if (pathIsIgnored(path)) {
-        const auto pinState = _vfs->pinState(relativePath.toString());
-        if (!pinState || *pinState != PinState::Excluded) {
-            if (!_vfs->setPinState(relativePath.toString(), PinState::Excluded)) {
-                qCWarning(lcFolder) << "Could not set pin state of" << relativePath << "to excluded";
+    if (_vfs) {
+        if (pathIsIgnored(path)) {
+            const auto pinState = _vfs->pinState(relativePath.toString());
+            if (!pinState || *pinState != PinState::Excluded) {
+                if (!_vfs->setPinState(relativePath.toString(), PinState::Excluded)) {
+                    qCWarning(lcFolder) << "Could not set pin state of" << relativePath << "to excluded";
+                }
             }
-        }
-        return;
-    } else {
-        const auto pinState = _vfs->pinState(relativePath.toString());
-        if (pinState && *pinState == PinState::Excluded) {
-            if (!_vfs->setPinState(relativePath.toString(), PinState::Inherited)) {
-                qCWarning(lcFolder) << "Could not switch pin state of" << relativePath << "from" << *pinState << "to inherited";
+            return;
+        } else {
+            const auto pinState = _vfs->pinState(relativePath.toString());
+            if (pinState && *pinState == PinState::Excluded) {
+                if (!_vfs->setPinState(relativePath.toString(), PinState::Inherited)) {
+                    qCWarning(lcFolder) << "Could not switch pin state of" << relativePath << "from" << *pinState << "to inherited";
+                }
             }
         }
     }
@@ -610,7 +617,7 @@ void Folder::slotWatchedPathChanged(const QString &path, ChangeReason reason)
         // an attribute change (pin state) that caused the notification
         bool spurious = false;
         if (record.isValid()
-            && !FileSystem::fileChanged(path, record._fileSize, record._modtime)) {
+            && !FileSystem::fileChanged(path, record._fileSize, record._modtime) && _vfs) {
             spurious = true;
 
             if (auto pinState = _vfs->pinState(relativePath.toString())) {
@@ -649,12 +656,15 @@ void Folder::slotFilesLockReleased(const QSet<QString> &files)
         }
         const auto canUnlockFile = isFileRecordValid
             && rec._lockstate._locked
-            && rec._lockstate._lockOwnerType == static_cast<qint64>(SyncFileItem::LockOwnerType::TokenLock)
+            && (!_accountState->account()->capabilities().filesLockTypeAvailable() || rec._lockstate._lockOwnerType == static_cast<qint64>(SyncFileItem::LockOwnerType::TokenLock))
             && rec._lockstate._lockOwnerId == _accountState->account()->davUser();
 
         if (!canUnlockFile) {
-            qCDebug(lcFolder) << "Skipping file" << file << "with rec.isValid():" << rec.isValid()
-                             << "and rec._lockstate._lockOwnerId:" << rec._lockstate._lockOwnerId << "and davUser:" << _accountState->account()->davUser();
+            qCInfo(lcFolder) << "Skipping file" << file
+                             << "with rec.isValid():" << rec.isValid()
+                             << "and rec._lockstate._lockOwnerId:" << rec._lockstate._lockOwnerId
+                             << "and lock type:" << rec._lockstate._lockOwnerType
+                             << "and davUser:" << _accountState->account()->davUser();
             continue;
         }
         const QString remoteFilePath = remotePathTrailingSlash() + rec.path();
@@ -970,6 +980,8 @@ void Folder::wipeForRemoval()
 {
     // Delete files that have been partially downloaded.
     slotDiscardDownloadProgress();
+
+    disconnectFolderWatcher();
 
     // Unregister the socket API so it does not keep the .sync_journal file open
     FolderMan::instance()->socketApi()->slotUnregisterPath(alias());
@@ -1586,6 +1598,22 @@ void Folder::registerFolderWatcher()
     connect(_folderWatcher.data(), &FolderWatcher::filesLockImposed, this, &Folder::slotFilesLockImposed, Qt::UniqueConnection);
     _folderWatcher->init(path());
     _folderWatcher->startNotificatonTest(path() + QLatin1String(".nextcloudsync.log"));
+    connect(_engine.data(), &SyncEngine::lockFileDetected, _folderWatcher.data(), &FolderWatcher::slotLockFileDetectedExternally);
+}
+
+void Folder::disconnectFolderWatcher()
+{
+    if (!_folderWatcher) {
+        return;
+    }
+    disconnect(_folderWatcher.data(), &FolderWatcher::pathChanged, nullptr, nullptr);
+    disconnect(_folderWatcher.data(), &FolderWatcher::lostChanges, this, &Folder::slotNextSyncFullLocalDiscovery);
+    disconnect(_folderWatcher.data(), &FolderWatcher::becameUnreliable, this, &Folder::slotWatcherUnreliable);
+    if (_accountState->account()->capabilities().filesLockAvailable()) {
+        disconnect(_folderWatcher.data(), &FolderWatcher::filesLockReleased, this, &Folder::slotFilesLockReleased);
+        disconnect(_folderWatcher.data(), &FolderWatcher::lockedFilesFound, this, &Folder::slotLockedFilesFound);
+    }
+    disconnect(_folderWatcher.data(), &FolderWatcher::filesLockImposed, this, &Folder::slotFilesLockImposed);
 }
 
 bool Folder::virtualFilesEnabled() const

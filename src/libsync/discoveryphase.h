@@ -145,6 +145,7 @@ class DiscoverySingleDirectoryJob : public QObject
 public:
     explicit DiscoverySingleDirectoryJob(const AccountPtr &account,
                                          const QString &path,
+                                         const QString &remoteRootFolderPath,
         /* TODO for topLevelE2eeFolderPaths, from review: I still do not get why giving the whole QSet instead of just the parent of the folder we are in
         sounds to me like it would be much more efficient to just have the e2ee parent folder that we are
         inside*/
@@ -179,6 +180,7 @@ private:
 
     QVector<RemoteInfo> _results;
     QString _subPath;
+    QString _remoteRootFolderPath;
     QByteArray _firstEtag;
     QByteArray _fileId;
     QByteArray _localFileId;
@@ -256,7 +258,7 @@ class DiscoveryPhase : public QObject
      * Useful for avoiding processing of items that have already been claimed in
      * a rename (would otherwise be discovered as deletions).
      */
-    [[nodiscard]] bool isRenamed(const QString &p) const { return _renamedItemsLocal.contains(p) || _renamedItemsRemote.contains(p); }
+    [[nodiscard]] bool isRenamed(const QString &p) const;
 
     int _currentlyActiveJobs = 0;
 

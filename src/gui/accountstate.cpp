@@ -117,7 +117,6 @@ void AccountState::setState(State state)
 
         if (_state == SignedOut) {
             _connectionStatus = ConnectionValidator::Undefined;
-            _connectionErrors.clear();
         } else if (oldState == SignedOut && _state == Disconnected) {
             // If we stop being voluntarily signed-out, try to connect and
             // auth right now!
@@ -297,8 +296,9 @@ void AccountState::checkConnectivity()
         return;
     }
 
-    auto *conValidator = new ConnectionValidator(AccountStatePtr(this));
+    auto *conValidator = new ConnectionValidator(AccountStatePtr(this), _connectionErrors);
     _connectionValidator = conValidator;
+    _connectionErrors.clear();
     connect(conValidator, &ConnectionValidator::connectionResult,
         this, &AccountState::slotConnectionValidatorResult);
     if (isConnected()) {

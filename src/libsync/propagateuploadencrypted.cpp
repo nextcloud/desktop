@@ -20,26 +20,12 @@ Q_LOGGING_CATEGORY(lcPropagateUploadEncrypted, "nextcloud.sync.propagator.upload
 PropagateUploadEncrypted::PropagateUploadEncrypted(OwncloudPropagator *propagator, const QString &remoteParentPath, SyncFileItemPtr item, QObject *parent)
     : QObject(parent)
     , _propagator(propagator)
-    , _remoteParentPath(remoteParentPath)
+    , _remoteParentPath(Utility::noLeadingSlashPath(remoteParentPath))
     , _item(item)
 {
-    const auto rootPath = [=]() {
-        const auto result = _propagator->remotePath();
-        if (result.startsWith('/')) {
-            return result.mid(1);
-        } else {
-            return result;
-        }
-    }();
-    _remoteParentAbsolutePath = [=] {
-        auto path = QString(rootPath + _remoteParentPath);
-        if (path.endsWith('/')) {
-            path.chop(1);
-        }
-        return path;
-    }();
+    const auto rootPath = Utility::trailingSlashPath(Utility::noLeadingSlashPath(_propagator->remotePath()));
+    _remoteParentAbsolutePath = Utility::noTrailingSlashPath(rootPath + _remoteParentPath);
 }
-
 
 void PropagateUploadEncrypted::start()
 {
@@ -55,12 +41,15 @@ void PropagateUploadEncrypted::start()
      */
     // Encrypt File!
     SyncJournalFileRecord rec;
-    if (!_propagator->_journal->getRootE2eFolderRecord(_remoteParentAbsolutePath, &rec) || !rec.isValid()) {
+    if (!_propagator->_journal->getRootE2eFolderRecord(Utility::fullRemotePathToRemoteSyncRootRelative(_remoteParentAbsolutePath, _propagator->remotePath()),
+                                                       &rec)
+        || !rec.isValid()) {
         emit error();
         return;
     }
     _encryptedFolderMetadataHandler.reset(new EncryptedFolderMetadataHandler(_propagator->account(),
                                                                                        _remoteParentAbsolutePath,
+                                                                                       _propagator->remotePath(),
                                                                                        _propagator->_journal,
                                                                                        rec.path()));
 
@@ -141,7 +130,7 @@ void PropagateUploadEncrypted::slotFetchMetadataJobFinished(int statusCode, cons
 
     encryptedFile.initializationVector = EncryptionHelper::generateRandom(16);
 
-    _item->_encryptedFileName = _remoteParentPath + QLatin1Char('/') + encryptedFile.encryptedFilename;
+    _item->_encryptedFileName =  Utility::trailingSlashPath(_remoteParentPath) + encryptedFile.encryptedFilename;
     _item->_e2eEncryptionStatusRemote = metadata->existingMetadataEncryptionStatus();
     _item->_e2eEncryptionServerCapability =
         EncryptionStatusEnums::fromEndToEndEncryptionApiVersion(_propagator->account()->capabilities().clientSideEncryptionVersion());
@@ -191,8 +180,8 @@ void PropagateUploadEncrypted::slotUploadMetadataFinished(int statusCode, const 
 
     qCDebug(lcPropagateUploadEncrypted) << "Encrypted Info:" << outputInfo.path() << outputInfo.fileName() << outputInfo.size();
     qCDebug(lcPropagateUploadEncrypted) << "Finalizing the upload part, now the actuall uploader will take over";
-    emit finalized(outputInfo.path() + QLatin1Char('/') + outputInfo.fileName(),
-                   _remoteParentPath + QLatin1Char('/') + outputInfo.fileName(),
+    emit finalized(Utility::trailingSlashPath(outputInfo.path()) + outputInfo.fileName(),
+                   Utility::trailingSlashPath(_remoteParentPath) + outputInfo.fileName(),
                    outputInfo.size());
 }
 

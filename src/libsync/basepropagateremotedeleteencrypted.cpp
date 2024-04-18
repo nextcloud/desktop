@@ -57,17 +57,17 @@ void BasePropagateRemoteDeleteEncrypted::storeFirstErrorString(const QString &er
 
 void BasePropagateRemoteDeleteEncrypted::fetchMetadataForPath(const QString &path)
 {
-    qCDebug(ABSTRACT_PROPAGATE_REMOVE_ENCRYPTED) << "Folder is encrypted, let's its metadata.";
-    _fullFolderRemotePath = _propagator->fullRemotePath(path);
-
+    qCDebug(ABSTRACT_PROPAGATE_REMOVE_ENCRYPTED) << "Folder is encrypted, let's fetch its metadata.";
+ 
     SyncJournalFileRecord rec;
-    if (!_propagator->_journal->getRootE2eFolderRecord(_fullFolderRemotePath, &rec) || !rec.isValid()) {
+    if (!_propagator->_journal->getRootE2eFolderRecord(Utility::noLeadingSlashPath(path), &rec) || !rec.isValid()) {
         taskFailed();
         return;
     }
 
     _encryptedFolderMetadataHandler.reset(new EncryptedFolderMetadataHandler(_propagator->account(),
-                                                                                       _fullFolderRemotePath,
+                                                                                       _propagator->fullRemotePath(path),
+                                                                                       _propagator->remotePath(),
                                                                                        _propagator->_journal,
                                                                                        rec.path()));
 

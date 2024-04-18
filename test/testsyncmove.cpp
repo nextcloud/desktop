@@ -84,6 +84,12 @@ class TestSyncMove : public QObject
     Q_OBJECT
 
 private slots:
+    void initTestCase()
+    {
+        Logger::instance()->setLogFlush(true);
+        Logger::instance()->setLogDebug(true);
+    }
+
     void testMoveCustomRemoteRoot()
     {
         FileInfo subFolder(QStringLiteral("AS"), { { QStringLiteral("f1"), 4 } });
@@ -140,7 +146,22 @@ private slots:
     void testSelectiveSyncMovedFolder()
     {
         // issue #5224
-        FakeFolder fakeFolder{ FileInfo{ QString(), { FileInfo{ QStringLiteral("parentFolder"), { FileInfo{ QStringLiteral("subFolderA"), { { QStringLiteral("fileA.txt"), 400 } } }, FileInfo{ QStringLiteral("subFolderB"), { { QStringLiteral("fileB.txt"), 400 } } } } } } } };
+        FakeFolder fakeFolder{
+                              FileInfo{QString(), {
+                                      FileInfo{QStringLiteral("parentFolder"), {
+                                              FileInfo{QStringLiteral("subFolderA"), {
+                                                      {QStringLiteral("fileA.txt"), 400}
+                                                  }
+                                              },
+                                              FileInfo{QStringLiteral("subFolderB"), {
+                                                      {QStringLiteral("fileB.txt"), 400}
+                                                  }
+                                              }
+                                          }
+                                      }
+                                  }
+                              }
+        };
 
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
         auto expectedServerState = fakeFolder.currentRemoteState();
@@ -1037,6 +1058,66 @@ private slots:
         auto fileDMoved = fakeFolder.remoteModifier().find("FolA/FolB2/FolB/FolC/FolD/FileD.txt");
         QVERIFY(fileDMoved);
         fileDMoved->extraDavProperties = "<oc:checksums><checksum>SHA1:22596363b3de40b06f981fb85d82312e8c0ed522</checksum></oc:checksums>";
+        fakeFolder.syncEngine().setLocalDiscoveryOptions(OCC::LocalDiscoveryStyle::FilesystemOnly);
+        QVERIFY(fakeFolder.syncOnce());
+
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+    }
+
+    void testRenameSameFileInMultiplePaths()
+    {
+        FakeFolder fakeFolder{FileInfo{}};
+
+        fakeFolder.remoteModifier().mkdir("FolderA");
+        fakeFolder.remoteModifier().mkdir("FolderA/folderParent");
+        fakeFolder.remoteModifier().mkdir("FolderB");
+        fakeFolder.remoteModifier().mkdir("FolderB/folderChild");
+        fakeFolder.remoteModifier().insert("FolderB/folderChild/FileA.txt");
+        fakeFolder.remoteModifier().mkdir("FolderC");
+
+        const auto folderParentFileInfo = fakeFolder.remoteModifier().find("FolderA/folderParent");
+        const auto folderParentSharedFolderFileId = folderParentFileInfo->fileId;
+        const auto folderParentSharedFolderEtag = folderParentFileInfo->etag;
+        const auto folderChildFileInfo = fakeFolder.remoteModifier().find("FolderB/folderChild");
+        const auto folderChildInFolderAFolderFileId = folderChildFileInfo->fileId;
+        const auto folderChildInFolderAEtag = folderChildFileInfo->etag;
+        const auto fileAFileInfo = fakeFolder.remoteModifier().find("FolderB/folderChild/FileA.txt");
+        const auto fileAInFolderAFolderFileId = fileAFileInfo->fileId;
+        const auto fileAInFolderAEtag = fileAFileInfo->etag;
+
+        auto folderCFileInfo = fakeFolder.remoteModifier().find("FolderC");
+        folderCFileInfo->fileId = folderParentSharedFolderFileId;
+        folderCFileInfo->etag = folderParentSharedFolderEtag;
+
+        QVERIFY(fakeFolder.syncOnce());
+
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+
+        fakeFolder.remoteModifier().remove("FolderB/folderChild");
+        fakeFolder.remoteModifier().mkdir("FolderA/folderParent/folderChild");
+        fakeFolder.remoteModifier().insert("FolderA/folderParent/folderChild/FileA.txt");
+        fakeFolder.remoteModifier().mkdir("FolderC/folderChild");
+        fakeFolder.remoteModifier().insert("FolderC/folderChild/FileA.txt");
+
+        auto folderChildInFolderParentFileInfo = fakeFolder.remoteModifier().find("FolderA/folderParent/folderChild");
+        folderChildInFolderParentFileInfo->fileId = folderChildInFolderAFolderFileId;
+        folderChildInFolderParentFileInfo->etag = folderChildInFolderAEtag;
+
+        auto fileAInFolderParentFileInfo = fakeFolder.remoteModifier().find("FolderA/folderParent/folderChild/FileA.txt");
+        fileAInFolderParentFileInfo->fileId = fileAInFolderAFolderFileId;
+        fileAInFolderParentFileInfo->etag = fileAInFolderAEtag;
+
+        auto folderChildInFolderCFileInfo = fakeFolder.remoteModifier().find("FolderC/folderChild");
+        folderChildInFolderCFileInfo->fileId = folderChildInFolderAFolderFileId;
+        folderChildInFolderCFileInfo->etag = folderChildInFolderAEtag;
+
+        auto fileAInFolderCFileInfo = fakeFolder.remoteModifier().find("FolderC/folderChild/FileA.txt");
+        fileAInFolderCFileInfo->fileId = fileAInFolderAFolderFileId;
+        fileAInFolderCFileInfo->etag = fileAInFolderAEtag;
+
+        fakeFolder.syncEngine().setLocalDiscoveryOptions(OCC::LocalDiscoveryStyle::FilesystemOnly);
+        QVERIFY(fakeFolder.syncOnce());
+
         fakeFolder.syncEngine().setLocalDiscoveryOptions(OCC::LocalDiscoveryStyle::FilesystemOnly);
         QVERIFY(fakeFolder.syncOnce());
 

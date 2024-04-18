@@ -332,7 +332,7 @@ Page {
                         mid: Style.darkerHover
                         dark: Style.menuBorder
                         button: Style.buttonBackgroundColor
-                        window: palette.dark // NOTE: Fusion theme uses darker window colour for the border of the checkbox
+                        window: Style.menuBorder
                         base: Style.backgroundColor
                         toolTipBase: Style.backgroundColor
                         toolTipText: Style.ncTextColor
@@ -549,7 +549,7 @@ Page {
                     mid: Style.darkerHover
                     dark: Style.menuBorder
                     button: Style.buttonBackgroundColor
-                    window: palette.dark // NOTE: Fusion theme uses darker window colour for the border of the checkbox
+                    window: Style.menuBorder
                     base: Style.backgroundColor
                     toolTipBase: Style.backgroundColor
                     toolTipText: Style.ncTextColor
@@ -682,7 +682,7 @@ Page {
                     mid: Style.darkerHover
                     dark: Style.menuBorder
                     button: Style.buttonBackgroundColor
-                    window: palette.dark // NOTE: Fusion theme uses darker window colour for the border of the checkbox
+                    window: Style.menuBorder
                     base: Style.backgroundColor
                     toolTipBase: Style.backgroundColor
                     toolTipText: Style.ncTextColor
@@ -790,7 +790,7 @@ Page {
                     mid: Style.darkerHover
                     dark: Style.menuBorder
                     button: Style.buttonBackgroundColor
-                    window: palette.dark // NOTE: Fusion theme uses darker window colour for the border of the checkbox
+                    window: Style.menuBorder
                     base: Style.backgroundColor
                     toolTipBase: Style.backgroundColor
                     toolTipText: Style.ncTextColor

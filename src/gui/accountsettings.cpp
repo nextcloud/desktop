@@ -60,6 +60,10 @@
 #include <QJsonDocument>
 #include <QToolTip>
 
+#ifdef BUILD_FILE_PROVIDER_MODULE
+#include "macOS/fileprovider.h"
+#endif
+
 #include "account.h"
 
 namespace {
@@ -192,6 +196,24 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent)
     _ui->_folderList->setMinimumWidth(300);
 #endif
     new ToolTipUpdater(_ui->_folderList);
+
+#if defined(BUILD_FILE_PROVIDER_MODULE)
+    if (Mac::FileProvider::fileProviderAvailable()) {
+        const auto fileProviderTab = _ui->fileProviderTab;
+        const auto fpSettingsLayout = new QVBoxLayout(fileProviderTab);
+        const auto fpAccountUserIdAtHost = _accountState->account()->userIdAtHostWithPort();
+        const auto fpSettingsController = Mac::FileProviderSettingsController::instance();
+        const auto fpSettingsWidget = fpSettingsController->settingsViewWidget(fpAccountUserIdAtHost, fileProviderTab);
+        fpSettingsLayout->setMargin(0);
+        fpSettingsLayout->addWidget(fpSettingsWidget);
+        fileProviderTab->setLayout(fpSettingsLayout);
+    } else {
+        disguiseTabWidget();
+    }
+#else
+    disguiseTabWidget();
+    _ui->tabWidget->setCurrentIndex(0);
+#endif
 
     const auto mouseCursorChanger = new MouseCursorChanger(this);
     mouseCursorChanger->folderList = _ui->_folderList;
@@ -425,7 +447,7 @@ void AccountSettings::slotMarkSubfolderEncrypted(FolderStatusModel::SubFolderInf
         Q_ASSERT(!path.startsWith('/') && path.endsWith('/'));
         // But EncryptFolderJob expects directory path Foo/Bar convention
         const auto choppedPath = path.chopped(1);
-        auto job = new OCC::EncryptFolderJob(accountsState()->account(), folder->journalDb(), choppedPath, fileId);
+        auto job = new OCC::EncryptFolderJob(accountsState()->account(), folder->journalDb(), choppedPath, choppedPath, folder->remotePath(), fileId);
         job->setParent(this);
         job->setProperty(propertyFolder, QVariant::fromValue(folder));
         job->setProperty(propertyPath, QVariant::fromValue(path));
@@ -1105,10 +1127,10 @@ void AccountSettings::showConnectionLabel(const QString &message, QStringList er
         _ui->connectLabel->setStyleSheet({});
     } else {
         errors.prepend(message);
-        auto msg = errors.join(QLatin1String("\n"));
-        qCDebug(lcAccountSettings) << msg;
-        Theme::replaceLinkColorString(msg, QColor("#c1c8e6"));
-        _ui->connectLabel->setText(msg);
+        auto userFriendlyMsg = errors.join(QLatin1String("<br>"));
+        qCDebug(lcAccountSettings) << userFriendlyMsg;
+        Theme::replaceLinkColorString(userFriendlyMsg, QColor("#c1c8e6"));
+        _ui->connectLabel->setText(userFriendlyMsg);
         _ui->connectLabel->setToolTip({});
         _ui->connectLabel->setStyleSheet(errStyle);
     }
@@ -1276,9 +1298,9 @@ void AccountSettings::slotAccountStateChanged()
             break;
         }
         case AccountState::NetworkError:
-            showConnectionLabel(tr("No connection to %1 at %2.")
-                                    .arg(Utility::escape(Theme::instance()->appNameGUI()), server),
-                _accountState->connectionErrors());
+            showConnectionLabel(tr("Unable to connect to %1.")
+                                    .arg(Utility::escape(Theme::instance()->appNameGUI())),
+                                _accountState->connectionErrors());
             break;
         case AccountState::ConfigurationError:
             showConnectionLabel(tr("Server configuration error: %1 at %2.")
@@ -1686,6 +1708,14 @@ void AccountSettings::initializeE2eEncryptionSettingsMessage()
 
     auto *const actionEnableE2e = addActionToEncryptionMessage(tr("Set up encryption"), e2EeUiActionEnableEncryptionId);
     connect(actionEnableE2e, &QAction::triggered, this, &AccountSettings::slotE2eEncryptionGenerateKeys);
+}
+
+void AccountSettings::disguiseTabWidget() const
+{
+    // Ensure all elements of the tab widget are hidden.
+    // Document mode lets the child view take up the whole view.
+    _ui->tabWidget->setDocumentMode(true);
+    _ui->tabWidget->tabBar()->hide();
 }
 
 } // namespace OCC

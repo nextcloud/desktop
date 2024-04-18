@@ -50,12 +50,6 @@ class FolderWatcher : public QObject
 {
     Q_OBJECT
 
-    struct FileLockingInfo {
-        enum class Type { Unset = -1, Locked, Unlocked };
-        QString path;
-        Type type = Type::Unset;
-    };
-
 public:
     // Construct, connect signals, call init()
     explicit FolderWatcher(Folder *folder = nullptr);
@@ -86,6 +80,11 @@ public:
     /// For testing linux behavior only
     [[nodiscard]] int testLinuxWatchCount() const;
 
+    void slotLockFileDetectedExternally(const QString &lockFile);
+
+    void setShouldWatchForFileUnlocking(bool shouldWatchForFileUnlocking);
+    [[nodiscard]] int lockChangeDebouncingTimout() const;
+
 signals:
     /** Emitted when one of the watched directories or one
      *  of the contained files is changed. */
@@ -100,8 +99,6 @@ signals:
      * Emitted when lock files were added
      */
     void filesLockImposed(const QSet<QString> &files);
-
-    void lockFilesFound(const QSet<QString> &files);
 
     void lockedFilesFound(const QSet<QString> &files);
 
@@ -144,11 +141,6 @@ private:
     bool _shouldWatchForFileUnlocking = false;
 
     void appendSubPaths(QDir dir, QStringList& subPaths);
-
-    [[nodiscard]] FileLockingInfo lockFileTargetFilePath(const QString &path, const QString &lockFileNamePattern) const;
-    [[nodiscard]] QString findMatchingUnlockedFileInDir(const QString &dirPath, const QString &lockFileName) const;
-
-    QString findMatchingUnlockedFileInDir(const QString &dirPath, const QString &lockFileName);
 
     /* Check if the path should be ignored by the FolderWatcher. */
     [[nodiscard]] bool pathIsIgnored(const QString &path) const;

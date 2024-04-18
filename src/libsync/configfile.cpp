@@ -111,8 +111,6 @@ static constexpr char certPath[] = "http_certificatePath";
 static constexpr char certPasswd[] = "http_certificatePasswd";
 
 static const QSet validUpdateChannels { QStringLiteral("stable"), QStringLiteral("beta") };
-
-static constexpr auto macFileProviderModuleEnabledC = "macFileProviderModuleEnabled";
 }
 
 namespace OCC {
@@ -406,14 +404,14 @@ QString ConfigFile::excludeFileFromSystem()
 {
     QFileInfo fi;
 #ifdef Q_OS_WIN
-    fi.setFile(QCoreApplication::applicationDirPath(), exclFile);
+    fi.setFile(QCoreApplication::applicationDirPath(), syncExclFile);
 #endif
 #ifdef Q_OS_UNIX
-    fi.setFile(QString(SYSCONFDIR "/" + Theme::instance()->appName()), exclFile);
+    fi.setFile(QString(SYSCONFDIR "/" + Theme::instance()->appName()), syncExclFile);
     if (!fi.exists()) {
         // Prefer to return the preferred path! Only use the fallback location
         // if the other path does not exist and the fallback is valid.
-        QFileInfo nextToBinary(QCoreApplication::applicationDirPath(), exclFile);
+        QFileInfo nextToBinary(QCoreApplication::applicationDirPath(), syncExclFile);
         if (nextToBinary.exists()) {
             fi = nextToBinary;
         } else {
@@ -423,7 +421,7 @@ QString ConfigFile::excludeFileFromSystem()
             d.cdUp(); // go out of usr
             if (!d.isRoot()) { // it is really a mountpoint
                 if (d.cd("etc") && d.cd(Theme::instance()->appName())) {
-                    QFileInfo inMountDir(d, exclFile);
+                    QFileInfo inMountDir(d, syncExclFile);
                     if (inMountDir.exists()) {
                         fi = inMountDir;
                     }
@@ -435,7 +433,7 @@ QString ConfigFile::excludeFileFromSystem()
 #ifdef Q_OS_MAC
     // exec path is inside the bundle
     fi.setFile(QCoreApplication::applicationDirPath(),
-        QLatin1String("../Resources/") + exclFile);
+        QLatin1String("../Resources/") + syncExclFile);
 #endif
 
     return fi.absoluteFilePath();
@@ -1227,18 +1225,6 @@ void ConfigFile::setDiscoveredLegacyConfigPath(const QString &discoveredLegacyCo
     }
 
     _discoveredLegacyConfigPath = discoveredLegacyConfigPath;
-}
-
-bool ConfigFile::macFileProviderModuleEnabled() const
-{
-    QSettings settings(configFile(), QSettings::IniFormat);
-    return settings.value(macFileProviderModuleEnabledC, false).toBool();
-}
-
-void ConfigFile::setMacFileProviderModuleEnabled(const bool moduleEnabled)
-{
-    QSettings settings(configFile(), QSettings::IniFormat);
-    settings.setValue(QLatin1String(macFileProviderModuleEnabledC), moduleEnabled);
 }
 
 }

@@ -169,7 +169,7 @@ void ShellExtensionsServer::processCustomStateRequest(QLocalSocket *socket, cons
     }));
 
     auto *const lsColJob = new LsColJob(folder->accountState()->account(), QDir::cleanPath(folder->remotePath() + lsColJobPath));
-    lsColJob->setProperties({QByteArrayLiteral("http://owncloud.org/ns:share-types"), QByteArrayLiteral("http://owncloud.org/ns:permissions")});
+    lsColJob->setProperties({QByteArrayLiteral("http://owncloud.org/ns:share-types"), QByteArrayLiteral("http://owncloud.org/ns:permissions"), QByteArrayLiteral("http://nextcloud.org/ns:is-mount-root")});
 
     const auto folderAlias = customStateRequestInfo.folderAlias;
 

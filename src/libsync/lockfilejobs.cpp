@@ -47,7 +47,9 @@ LockFileJob::LockFileJob(const AccountPtr account,
 
 void LockFileJob::start()
 {
-    qCInfo(lcLockFileJob()) << "start" << path() << _requestedLockState;
+    qCInfo(lcLockFileJob()) << "start with path:" << path()
+                            << "lock state:" <<  _requestedLockState
+                            << "lock owner type:" << _requestedLockOwnerType;
 
     QNetworkRequest request;
     request.setRawHeader(QByteArrayLiteral("X-User-Lock"), QByteArrayLiteral("1"));
@@ -77,7 +79,7 @@ void LockFileJob::start()
 bool LockFileJob::finished()
 {
     if (reply()->error() != QNetworkReply::NoError) {
-        qCInfo(lcLockFileJob()) << "finished with error" << reply()->error() << reply()->errorString();
+        qCInfo(lcLockFileJob()) << "finished with error" << reply()->error() << reply()->errorString() << _requestedLockState << _requestedLockOwnerType;
         const auto httpErrorCode = reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
         if (httpErrorCode == LOCKED_HTTP_ERROR_CODE) {
             const auto record = handleReply();
@@ -97,7 +99,7 @@ bool LockFileJob::finished()
             Q_EMIT finishedWithError(httpErrorCode, reply()->errorString(), {});
         }
     } else {
-        qCInfo(lcLockFileJob()) << "success" << path();
+        qCInfo(lcLockFileJob()) << "success" << path() << _requestedLockState << _requestedLockOwnerType;
         handleReply();
         Q_EMIT finishedWithoutError();
     }

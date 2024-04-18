@@ -10,6 +10,7 @@ QtObject {
 
     // Colors
     readonly property color ncBlue:      Theme.wizardHeaderBackgroundColor
+    readonly property color ncHeaderTextColor: Theme.wizardHeaderTitleColor
     readonly property color ncTextColor: Theme.systemPalette.windowText
     readonly property color ncTextBrightColor: "white"
     readonly property color ncSecondaryTextColor: "#808080"
@@ -29,10 +30,19 @@ QtObject {
     readonly property color errorBoxBackgroundColor: Qt.rgba(0.89, 0.18, 0.18, 1)
     readonly property int errorBoxStripeWidth: 4
 
+    // InfoBox colors
+    readonly property color infoBoxBackgroundColor: Qt.rgba(0, 0.51, 0.79, 0.1)
+    readonly property int infoBoxBorderWidth: 1
+    readonly property color infoBoxBorderColor: Qt.rgba(0, 0.51, 0.79, 1)
+
     // Fonts
     // We are using pixel size because this is cross platform comparable, point size isn't
     readonly property int topLinePixelSize: pixelSize
     readonly property int subLinePixelSize: topLinePixelSize - 2
+    readonly property int defaultFontPtSize: fontMetrics.font.pointSize
+    readonly property int subheaderFontPtSize: defaultFontPtSize + 2
+    readonly property int headerFontPtSize: defaultFontPtSize + 4
+    readonly property int titleFontPtSize: defaultFontPtSize + 8
 
     // Dimensions and sizes
     property int trayWindowWidth: variableSize(400)

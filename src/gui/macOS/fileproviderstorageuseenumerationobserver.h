@@ -12,18 +12,14 @@
  * for more details.
  */
 
-import Foundation
-import RealmSwift
+#import <Foundation/Foundation.h>
+#import <FileProvider/FileProvider.h>
 
-class NextcloudLocalFileMetadataTable: Object {
-    @Persisted(primaryKey: true) var ocId: String
-    @Persisted var account = ""
-    @Persisted var etag = ""
-    @Persisted var exifDate: Date?
-    @Persisted var exifLatitude = ""
-    @Persisted var exifLongitude = ""
-    @Persisted var exifLensModel: String?
-    @Persisted var favorite: Bool = false
-    @Persisted var fileName = ""
-    @Persisted var offline: Bool = false
-}
+typedef void(^UsageEnumerationFinishedHandler)(NSError *const error);
+
+@interface FileProviderStorageUseEnumerationObserver : NSObject<NSFileProviderEnumerationObserver>
+
+@property (readwrite, strong) UsageEnumerationFinishedHandler enumerationFinishedHandler;
+@property (readonly) NSSet<id<NSFileProviderItem>> *materialisedItems;
+
+@end

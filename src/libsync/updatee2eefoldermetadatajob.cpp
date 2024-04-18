@@ -32,8 +32,9 @@ namespace OCC {
 UpdateE2eeFolderMetadataJob::UpdateE2eeFolderMetadataJob(OwncloudPropagator *propagator, const SyncFileItemPtr &item, const QString &encryptedRemotePath)
     : PropagatorJob(propagator),
     _item(item),
-    _encryptedRemotePath(encryptedRemotePath)
+    _encryptedRemotePath(Utility::noLeadingSlashPath(propagator->fullRemotePath(encryptedRemotePath)))
 {
+    Q_ASSERT(propagator->remotePath() == QStringLiteral("/") || _encryptedRemotePath.startsWith(Utility::noLeadingSlashPath(propagator->remotePath())));
 }
 
 void UpdateE2eeFolderMetadataJob::start()
@@ -42,12 +43,12 @@ void UpdateE2eeFolderMetadataJob::start()
     qCDebug(lcUpdateFileDropMetadataJob) << "Folder is encrypted, let's fetch metadata.";
 
     SyncJournalFileRecord rec;
-    if (!propagator()->_journal->getRootE2eFolderRecord(_encryptedRemotePath, &rec) || !rec.isValid()) {
+    if (!propagator()->_journal->getRootE2eFolderRecord(Utility::fullRemotePathToRemoteSyncRootRelative(_encryptedRemotePath, propagator()->remotePath()), &rec) || !rec.isValid()) {
         unlockFolder(EncryptedFolderMetadataHandler::UnlockFolderWithResult::Failure);
         return;
     }
     _encryptedFolderMetadataHandler.reset(
-            new EncryptedFolderMetadataHandler(propagator()->account(), _encryptedRemotePath, propagator()->_journal, rec.path()));
+        new EncryptedFolderMetadataHandler(propagator()->account(), _encryptedRemotePath, propagator()->remotePath() , propagator()->_journal, rec.path()));
 
     connect(_encryptedFolderMetadataHandler.data(), &EncryptedFolderMetadataHandler::fetchFinished,
             this, &UpdateE2eeFolderMetadataJob::slotFetchMetadataJobFinished);
@@ -84,7 +85,8 @@ void UpdateE2eeFolderMetadataJob::slotFetchMetadataJobFinished(int httpReturnCod
     }
 
     SyncJournalFileRecord rec;
-    if (!propagator()->_journal->getRootE2eFolderRecord(_encryptedRemotePath, &rec) || !rec.isValid()) {
+    if (!propagator()->_journal->getRootE2eFolderRecord(Utility::fullRemotePathToRemoteSyncRootRelative(_encryptedRemotePath, propagator()->remotePath()), &rec)
+        || !rec.isValid()) {
         unlockFolder(EncryptedFolderMetadataHandler::UnlockFolderWithResult::Failure);
         return;
     }

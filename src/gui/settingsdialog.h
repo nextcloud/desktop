@@ -28,11 +28,11 @@ class QStandardItemModel;
 
 namespace OCC {
 
-class AccountState;
-
 namespace Ui {
     class SettingsDialog;
 }
+
+class AccountState;
 class AccountSettings;
 class Application;
 class FolderMan;

@@ -195,6 +195,8 @@ signals:
      */
     void seenLockedFile(const QString &fileName);
 
+    void lockFileDetected(const QString &lockFile);
+
 private slots:
     void slotFolderDiscovered(bool local, const QString &folder);
     void slotRootEtagReceived(const QByteArray &, const QDateTime &time);
@@ -215,6 +217,7 @@ private slots:
     void slotPropagationFinished(SyncFileItem::Status status);
     void slotProgress(const OCC::SyncFileItem &item, qint64 current);
     void slotCleanPollsJobAborted(const QString &error, const OCC::ErrorCategory category);
+    void detectFileLock(const OCC::SyncFileItemPtr &item);
 
     /** Records that a file was touched by a job. */
     void slotAddTouchedFile(const QString &fn);

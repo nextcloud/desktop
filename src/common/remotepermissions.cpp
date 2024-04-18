@@ -17,9 +17,14 @@
  */
 
 #include "remotepermissions.h"
+
+#include <QLoggingCategory>
+
 #include <cstring>
 
 namespace OCC {
+
+Q_LOGGING_CATEGORY(lcRemotePermissions, "nextcloud.sync.remotepermissions", QtInfoMsg)
 
 static const char letters[] = " WDNVCKRSMm";
 
@@ -68,11 +73,43 @@ RemotePermissions RemotePermissions::fromDbValue(const QByteArray &value)
     return perm;
 }
 
-RemotePermissions RemotePermissions::fromServerString(const QString &value)
+template <typename T>
+RemotePermissions RemotePermissions::internalFromServerString(const QString &value,
+                                                              const T&otherProperties,
+                                                              MountedPermissionAlgorithm algorithm)
 {
     RemotePermissions perm;
     perm.fromArray(value.utf16());
+
+    if (algorithm == MountedPermissionAlgorithm::WildGuessMountedSubProperty) {
+        return perm;
+    }
+
+    if ((otherProperties.contains(QStringLiteral("is-mount-root")) && otherProperties.value(QStringLiteral("is-mount-root")) == QStringLiteral("false") && perm.hasPermission(RemotePermissions::IsMounted)) ||
+        (!otherProperties.contains(QStringLiteral("is-mount-root")) && perm.hasPermission(RemotePermissions::IsMounted))) {
+        /* All the entries in a external storage have 'M' in their permission. However, for all
+           purposes in the desktop client, we only need to know about the mount points.
+           So replace the 'M' by a 'm' for every sub entries in an external storage */
+        perm.unsetPermission(RemotePermissions::IsMounted);
+        perm.setPermission(RemotePermissions::IsMountedSub);
+        qCInfo(lcRemotePermissions()) << otherProperties.value(QStringLiteral("permissions")) << "replacing M permissions by m for subfolders inside a group folder";
+    }
+
     return perm;
+}
+
+RemotePermissions RemotePermissions::fromServerString(const QString &value,
+                                                      MountedPermissionAlgorithm algorithm,
+                                                      const QMap<QString, QString> &otherProperties)
+{
+    return internalFromServerString(value, otherProperties, algorithm);
+}
+
+RemotePermissions RemotePermissions::fromServerString(const QString &value,
+                                                      MountedPermissionAlgorithm algorithm,
+                                                      const QVariantMap &otherProperties)
+{
+    return internalFromServerString(value, otherProperties, algorithm);
 }
 
 } // namespace OCC

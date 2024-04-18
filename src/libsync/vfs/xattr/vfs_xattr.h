@@ -53,7 +53,7 @@ public:
 
     bool setPinState(const QString &folderPath, PinState state) override;
     Optional<PinState> pinState(const QString &folderPath) override;
-    AvailabilityResult availability(const QString &folderPath) override;
+    AvailabilityResult availability(const QString &folderPath, const AvailabilityRecursivity recursiveCheck) override;
 
 public slots:
     void fileStatusChanged(const QString &systemFileName, OCC::SyncFileStatus fileStatus) override;
