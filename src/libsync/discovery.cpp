@@ -1136,7 +1136,12 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
             } else if (dbEntry._type == ItemTypeVirtualFileDehydration || localEntry.type == ItemTypeVirtualFileDehydration) {
                 item->_direction = SyncFileItem::Down;
                 item->_instruction = CSYNC_INSTRUCTION_SYNC;
-                item->_type = ItemTypeVirtualFileDehydration;
+                const auto pinState = _discoveryData->_syncOptions._vfs->pinState(path._local);
+                if (FileSystem::isLnkFile(path._local) && !_discoveryData->_syncOptions._vfs->pinState(path._local).isValid()) {
+                    item->_type = ItemTypeVirtualFileDownload;
+                } else {
+                    item->_type = ItemTypeVirtualFileDehydration;
+                }
             } else if (!serverModified
                 && (dbEntry._inode != localEntry.inode
                     || (localEntry.isMetadataMissing && item->_type == ItemTypeFile && !FileSystem::isLnkFile(item->_file))
