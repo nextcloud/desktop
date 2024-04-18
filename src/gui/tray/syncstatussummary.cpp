@@ -154,7 +154,7 @@ void SyncStatusSummary::setSyncStateForFolder(const Folder *folder)
         break;
     case SyncResult::SyncRunning:
     case SyncResult::NotYetStarted:
-        setSyncing(true);
+        setSyncing(false);
         if (totalFiles() <= 0) {
             setSyncStatusString(tr("Preparing sync"));
         } else {
