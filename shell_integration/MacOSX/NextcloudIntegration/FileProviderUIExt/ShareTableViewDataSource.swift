@@ -99,6 +99,7 @@ class ShareTableViewDataSource: NSObject, NSTableViewDataSource, NSTableViewDele
             account = convertedAccount
             await sharesTableView?.deselectAll(self)
             capabilities = await fetchCapabilities()
+            guard capabilities != nil else { return }
             guard capabilities?.filesSharing?.apiEnabled == true else {
                 presentError("Server does not support shares.")
                 return
