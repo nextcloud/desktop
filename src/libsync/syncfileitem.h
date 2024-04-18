@@ -335,6 +335,8 @@ public:
     bool _isFileDropDetected = false;
 
     bool _isEncryptedMetadataNeedUpdate = false;
+
+    bool _isCaseClashFolder = false;
 };
 
 inline bool operator<(const SyncFileItemPtr &item1, const SyncFileItemPtr &item2)
