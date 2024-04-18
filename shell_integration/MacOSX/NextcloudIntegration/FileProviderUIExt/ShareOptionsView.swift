@@ -71,7 +71,7 @@ class ShareOptionsView: NSView {
     }
     var createMode = false {
         didSet {
-            Logger.shareOptionsView.info("Create mode set: \(self.createMode)")
+            Logger.shareOptionsView.info("Create mode set: \(self.createMode, privacy: .public)")
             shareTypePicker.isHidden = !createMode
             shareRecipientTextField.isHidden = !createMode
             labelTextField.isHidden = createMode  // Cannot set label on create API call
@@ -259,10 +259,10 @@ class ShareOptionsView: NSView {
                       let itemServerRelativePath = dataSource.itemServerRelativePath
                 else {
                     Logger.shareOptionsView.error("Cannot create new share due to missing data.")
-                    Logger.shareOptionsView.error("dataSource: \(self.dataSource)")
-                    Logger.shareOptionsView.error("kit: \(self.kit)")
+                    Logger.shareOptionsView.error("dataSource: \(self.dataSource, privacy: .public)")
+                    Logger.shareOptionsView.error("kit: \(self.kit, privacy: .public)")
                     Logger.shareOptionsView.error(
-                        "path: \(self.dataSource?.itemServerRelativePath ?? "")"
+                        "path: \(self.dataSource?.itemServerRelativePath ?? "", privacy: .public)"
                     )
                     return
                 }
