@@ -1291,6 +1291,11 @@ void PropagatorCompositeJob::slotSubJobFinished(SyncFileItem::Status status)
     auto *subJob = dynamic_cast<PropagatorJob *>(sender());
     ASSERT(subJob);
 
+    if (!_isAnyCaseClashSubFolder) {
+        if (const auto propagateDirectoryjob = qobject_cast<PropagateDirectory *>(subJob)) {
+            _isAnyCaseClashSubFolder = propagateDirectoryjob->_item && propagateDirectoryjob->_item->_isCaseClashFolder;
+        }
+    }
     // Delete the job and remove it from our list of jobs.
     subJob->deleteLater();
     int i = _runningJobs.indexOf(subJob);
@@ -1496,15 +1501,16 @@ void PropagateDirectory::slotSubJobsFinished(SyncFileItem::Status status)
                 }
             }
 #endif
-
-            const auto result = propagator()->updateMetadata(*_item);
-            if (!result) {
-                status = _item->_status = SyncFileItem::FatalError;
-                _item->_errorString = tr("Error updating metadata: %1").arg(result.error());
-                qCWarning(lcDirectory) << "Error writing to the database for file" << _item->_file << "with" << result.error();
-            } else if (*result == Vfs::ConvertToPlaceholderResult::Locked) {
-                _item->_status = SyncFileItem::SoftError;
-                _item->_errorString = tr("File is currently in use");
+            if (!_subJobs._isAnyCaseClashSubFolder) {
+                const auto result = propagator()->updateMetadata(*_item);
+                if (!result) {
+                    status = _item->_status = SyncFileItem::FatalError;
+                    _item->_errorString = tr("Error updating metadata: %1").arg(result.error());
+                    qCWarning(lcDirectory) << "Error writing to the database for file" << _item->_file << "with" << result.error();
+                } else if (*result == Vfs::ConvertToPlaceholderResult::Locked) {
+                    _item->_status = SyncFileItem::SoftError;
+                    _item->_errorString = tr("File is currently in use");
+                }
             }
         }
     }

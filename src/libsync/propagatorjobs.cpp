@@ -183,6 +183,7 @@ void PropagateLocalMkdir::startLocalMkdir()
     }
 
     if (Utility::fsCasePreserving() && propagator()->localFileNameClash(_item->_file)) {
+        _item->_isCaseClashFolder = true;
         qCWarning(lcPropagateLocalMkdir) << "New folder to create locally already exists with different case:" << _item->_file;
         done(SyncFileItem::FileNameClash, tr("Folder %1 cannot be created because of a local file or folder name clash!").arg(newDirStr), ErrorCategory::GenericError);
         return;
@@ -302,7 +303,17 @@ void PropagateLocalRename::start()
         if (QString::compare(_item->_file, _item->_renameTarget, Qt::CaseInsensitive) != 0
             && propagator()->localFileNameClash(_item->_renameTarget)) {
 
-            qCInfo(lcPropagateLocalRename) << "renaming a case clashed file" << _item->_file << _item->_renameTarget;
+            qCInfo(lcPropagateLocalRename) << "renaming a case clashed item" << _item->_file << _item->_renameTarget;
+            if (_item->isDirectory()) {
+                // #HotFix
+                // fix a crash (we can not create a conflicted copy for folders)
+                // right now, the conflict resolution will not even work for this scenario with folders,
+                // but, let's fix it step by step, this will be a second stage
+                done(SyncFileItem::FileNameClash,
+                     tr("Folder %1 cannot be renamed because of a local file or folder name clash!").arg(_item->_file),
+                     ErrorCategory::GenericError);
+                return;
+            }
             const auto caseClashConflictResult = propagator()->createCaseClashConflict(_item, existingFile);
             if (caseClashConflictResult) {
                 done(SyncFileItem::SoftError, *caseClashConflictResult, ErrorCategory::GenericError);
