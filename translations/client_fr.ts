@@ -1193,17 +1193,17 @@ Vous prenez vos propres risques.</translation>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="175"/>
         <source>File %1 has invalid modified time. Do not upload to the server.</source>
-        <translation>Le fichier %1 présente une date de modification invalide. Envoi au serveur impossible.</translation>
+        <translation>Le fichier %1 présente une heure de modification invalide. Téléversement vers le serveur impossible.</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="296"/>
         <source>File Removed (start upload) %1</source>
-        <translation>Fichier supprimé (démarrer l&apos;envoi) %1</translation>
+        <translation>Fichier retiré (début du téléversement) %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="308"/>
         <source>File %1 has invalid modification time. Do not upload to the server.</source>
-        <translation>Le fichier %1 présente une date de modification invalide. Envoi au serveur impossible.</translation>
+        <translation>Le fichier %1 présente une heure de modification invalide. Téléversement vers le serveur impossible.</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="320"/>
@@ -2389,7 +2389,7 @@ S&apos;il s&apos;agissait d&apos;un accident et que vous choisissiez de conserve
         <location filename="../src/gui/folderstatusmodel.cpp" line="1082"/>
         <source>upload %1/s</source>
         <extracomment>Example text: &quot;upload 24Kb/s&quot; (%1 is replaced by 24Kb (translated))</extracomment>
-        <translation>Envoi %1/s</translation>
+        <translation>téléversement %1/s</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1084"/>
@@ -3898,12 +3898,12 @@ Il s&apos;agit d&apos;un nouveau mode expérimental. Si vous décidez de l&apos;
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1265"/>
         <source>Conflict when uploading a folder. It&apos;s going to get cleared!</source>
-        <translation>Conflit lors de l&apos;envoi d&apos;un dossier. Il va être supprimé !</translation>
+        <translation>Conflit lors du téléversement d&apos;un dossier. Il va être vidé !</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1268"/>
         <source>Conflict when uploading a file. It&apos;s going to get removed!</source>
-        <translation>Conflit lors de l&apos;envoi d&apos;un fichier. Il va être supprimé !</translation>
+        <translation>Conflit lors du téléversement d&apos;un fichier. Il va être supprimé !</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1711"/>
@@ -4250,7 +4250,7 @@ Il s&apos;agit d&apos;un nouveau mode expérimental. Si vous décidez de l&apos;
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="233"/>
         <source>Failed to upload encrypted file.</source>
-        <translation>Échec d&apos;envoi du fichier chiffré.</translation>
+        <translation>Échec de téléversement du fichier chiffré.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="266"/>
@@ -4261,14 +4261,14 @@ Il s&apos;agit d&apos;un nouveau mode expérimental. Si vous décidez de l&apos;
         <location filename="../src/libsync/propagateupload.cpp" line="277"/>
         <location filename="../src/libsync/propagateupload.cpp" line="695"/>
         <source>Upload of %1 exceeds the quota for the folder</source>
-        <translation>L&apos;envoi de %1 amène un dépassement de quota pour le dossier</translation>
+        <translation>Le téléversement de %1 provoque un dépassement du quota du dossier</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="314"/>
         <location filename="../src/libsync/propagateupload.cpp" line="389"/>
         <location filename="../src/libsync/propagateupload.cpp" line="402"/>
         <source>File %1 has invalid modification time. Do not upload to the server.</source>
-        <translation>Le fichier %1 présente une date de modification invalide. Envoi au serveur impossible.</translation>
+        <translation>Le fichier %1 présente une heure de modification invalide. Ne téléversez pas sur le serveur.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="386"/>
@@ -5002,7 +5002,7 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1263"/>
         <source>There is insufficient space available on the server for some uploads.</source>
-        <translation>Il n&apos;y a pas suffisamment d’espace disponible sur le serveur pour certains envois.</translation>
+        <translation>Il n&apos;y a pas suffisamment d’espace disponible sur le serveur pour certains téléversements.</translation>
     </message>
 </context>
 <context>
@@ -5250,7 +5250,7 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="646"/>
         <source>Retry all uploads</source>
-        <translation>Relancer tous les envois</translation>
+        <translation>Réessayer tous les téléversements</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="697"/>
@@ -5928,7 +5928,7 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="414"/>
         <source>File drop (upload only)</source>
-        <translation>Dépôt de fichiers (envoi uniquement)</translation>
+        <translation>Dépôt de fichiers (téléversement seulement)</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="453"/>
@@ -6477,7 +6477,7 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="40"/>
         <source>Uploaded</source>
-        <translation>Envoyé</translation>
+        <translation>Téléversé</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="43"/>
@@ -6533,7 +6533,7 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="77"/>
         <source>uploading</source>
-        <translation>envoi</translation>
+        <translation>téléversement en cours</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="79"/>
