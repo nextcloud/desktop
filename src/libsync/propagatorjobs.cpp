@@ -183,7 +183,6 @@ void PropagateLocalMkdir::startLocalMkdir()
     }
 
     if (Utility::fsCasePreserving() && propagator()->localFileNameClash(_item->_file)) {
-        _item->_isCaseClashFolder = true;
         qCWarning(lcPropagateLocalMkdir) << "New folder to create locally already exists with different case:" << _item->_file;
         done(SyncFileItem::FileNameClash, tr("Folder %1 cannot be created because of a local file or folder name clash!").arg(newDirStr), ErrorCategory::GenericError);
         return;

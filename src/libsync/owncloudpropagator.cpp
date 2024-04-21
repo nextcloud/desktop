@@ -1291,12 +1291,16 @@ void PropagatorCompositeJob::slotSubJobFinished(SyncFileItem::Status status)
     auto *subJob = dynamic_cast<PropagatorJob *>(sender());
     ASSERT(subJob);
 
-    if (!_isAnyChildInConflict) {
+    if (!_isAnyInvalidCharChild || !_isAnyCaseClashChild) {
+        SyncFileItemPtr childDirItem;
         if (const auto propagateDirectoryjob = qobject_cast<PropagateDirectory *>(subJob)) {
-            _isAnyChildInConflict = propagateDirectoryjob->_item && propagateDirectoryjob->_item->_status == SyncFileItem::FileNameClash;
+            childDirItem = propagateDirectoryjob->_item;
         } else if (const auto propagateIgnoreJob = qobject_cast<PropagateIgnoreJob *>(subJob)) {
-            _isAnyChildInConflict =
-                propagateIgnoreJob->_item && propagateIgnoreJob->_item->_status == SyncFileItem::FileNameInvalid;
+            childDirItem = propagateIgnoreJob->_item;
+        }
+        if (childDirItem) {
+            _isAnyCaseClashChild = _isAnyCaseClashChild || childDirItem->_status == SyncFileItem::FileNameClash || childDirItem->_isAnyCaseClashChild;
+            _isAnyInvalidCharChild = _isAnyInvalidCharChild || childDirItem->_status == SyncFileItem::FileNameInvalid || childDirItem->_isAnyInvalidCharChild;  
         }
     }
 
@@ -1416,6 +1420,8 @@ void PropagateDirectory::slotFirstJobFinished(SyncFileItem::Status status)
 void PropagateDirectory::slotSubJobsFinished(SyncFileItem::Status status)
 {
     if (!_item->isEmpty() && status == SyncFileItem::Success) {
+        _item->_isAnyCaseClashChild = _item->_isAnyCaseClashChild || _subJobs._isAnyCaseClashChild;
+        _item->_isAnyInvalidCharChild = _item->_isAnyInvalidCharChild || _subJobs._isAnyInvalidCharChild;
         // If a directory is renamed, recursively delete any stale items
         // that may still exist below the old path.
         if (_item->_instruction == CSYNC_INSTRUCTION_RENAME && _item->_originalFile != _item->_renameTarget) {
@@ -1505,7 +1511,7 @@ void PropagateDirectory::slotSubJobsFinished(SyncFileItem::Status status)
                 }
             }
 #endif
-            if (!_subJobs._isAnyChildInConflict) {
+            if (!_item->_isAnyCaseClashChild && !_item->_isAnyInvalidCharChild) {
                 const auto result = propagator()->updateMetadata(*_item);
                 if (!result) {
                     status = _item->_status = SyncFileItem::FatalError;
