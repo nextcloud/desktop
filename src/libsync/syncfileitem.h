@@ -337,6 +337,8 @@ public:
     bool _isEncryptedMetadataNeedUpdate = false;
 
     bool _isCaseClashFolder = false;
+
+    bool _isAnyInvalidCharChild = false;
 };
 
 inline bool operator<(const SyncFileItemPtr &item1, const SyncFileItemPtr &item2)

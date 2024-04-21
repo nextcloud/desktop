@@ -404,6 +404,11 @@ bool ProcessDirectoryJob::handleExcluded(const QString &path, const Entries &ent
         }
     }
 
+    if (item->_status == SyncFileItem::FileNameInvalid && !item->isDirectory()) {
+        _dirItem->_isAnyInvalidCharChild = true;
+    }
+
+
     _childIgnored = true;
     emit _discoveryData->itemDiscovered(item);
     return true;
