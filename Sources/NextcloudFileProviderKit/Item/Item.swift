@@ -149,7 +149,11 @@ public class Item: NSObject, NSFileProviderItem {
 
     @available(macOS 13.0, *)
     public var contentPolicy: NSFileProviderContentPolicy {
+        #if os(macOS)
         .downloadLazily
+        #else
+        .downloadLazilyAndEvictOnRemoteUpdate
+        #endif
     }
 
     public static func rootContainer(ncKit: NextcloudKit) -> Item {
