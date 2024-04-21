@@ -19,12 +19,12 @@ import OSLog
 fileprivate let lfuLogger = Logger(subsystem: Logger.subsystem, category: "localfileutils")
 
 public func pathForAppGroupContainer() -> URL? {
-    guard
-        let appGroupIdentifier = Bundle.main.object(forInfoDictionaryKey: "SocketApiPrefix")
-            as? String
-    else {
+    guard let appGroupIdentifier = Bundle.main.object(
+        forInfoDictionaryKey: "NCFPKAppGroupIdentifier"
+    ) as? String else {
         lfuLogger.critical(
-            "Could not get container url as missing SocketApiPrefix info in app Info.plist")
+            "Could not get app group container url as Info.plist missing NCFPKAppGroupIdentifier!"
+        )
         return nil
     }
 
