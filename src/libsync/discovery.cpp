@@ -404,10 +404,11 @@ bool ProcessDirectoryJob::handleExcluded(const QString &path, const Entries &ent
         }
     }
 
-    if (item->_status == SyncFileItem::FileNameInvalid && !item->isDirectory()) {
+    if (item->_status == SyncFileItem::FileNameInvalid) {
         _dirItem->_isAnyInvalidCharChild = true;
+    } else if (item->_status == SyncFileItem::FileNameClash) {
+        _dirItem->_isAnyCaseClashChild = true;
     }
-
 
     _childIgnored = true;
     emit _discoveryData->itemDiscovered(item);
