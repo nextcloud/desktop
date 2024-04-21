@@ -1291,11 +1291,15 @@ void PropagatorCompositeJob::slotSubJobFinished(SyncFileItem::Status status)
     auto *subJob = dynamic_cast<PropagatorJob *>(sender());
     ASSERT(subJob);
 
-    if (!_isAnyCaseClashSubFolder) {
+    if (!_isAnyChildInConflict) {
         if (const auto propagateDirectoryjob = qobject_cast<PropagateDirectory *>(subJob)) {
-            _isAnyCaseClashSubFolder = propagateDirectoryjob->_item && propagateDirectoryjob->_item->_isCaseClashFolder;
+            _isAnyChildInConflict = propagateDirectoryjob->_item && propagateDirectoryjob->_item->_status == SyncFileItem::FileNameClash;
+        } else if (const auto propagateIgnoreJob = qobject_cast<PropagateIgnoreJob *>(subJob)) {
+            _isAnyChildInConflict =
+                propagateIgnoreJob->_item && propagateIgnoreJob->_item->_status == SyncFileItem::FileNameInvalid;
         }
     }
+
     // Delete the job and remove it from our list of jobs.
     subJob->deleteLater();
     int i = _runningJobs.indexOf(subJob);
@@ -1501,7 +1505,7 @@ void PropagateDirectory::slotSubJobsFinished(SyncFileItem::Status status)
                 }
             }
 #endif
-            if (!_subJobs._isAnyCaseClashSubFolder) {
+            if (!_subJobs._isAnyChildInConflict) {
                 const auto result = propagator()->updateMetadata(*_item);
                 if (!result) {
                     status = _item->_status = SyncFileItem::FatalError;
