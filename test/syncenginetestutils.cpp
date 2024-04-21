@@ -260,7 +260,7 @@ FileInfo *FileInfo::find(PathComponents pathComponents, const bool invalidateEta
 
 FileInfo FileInfo::findRecursive(PathComponents pathComponents, const bool invalidateEtags)
 {
-    auto result = find({pathComponents.takeFirst()});
+    auto result = find({pathComponents.takeFirst()}, invalidateEtags);
     if (!result) {
         return *result;
     }
