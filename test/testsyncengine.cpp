@@ -1740,37 +1740,37 @@ private slots:
 #else
         constexpr auto shouldHaveCaseClashConflict = true;
 #endif
-
-        ItemCompletedSpy completeSpy(fakeFolder);
-
-        fakeFolder.syncEngine().setLocalDiscoveryOptions(OCC::LocalDiscoveryStyle::DatabaseAndFilesystem);
-        QVERIFY(fakeFolder.syncOnce());
-
-        // verify the parent of a folder where caseclash and invalidchar conflicts were found, has corresponding flags set (conflict info must get propagated to the very top)
-        const auto diverseConflicttsFolderParent = completeSpy.findItem(conflictsFolderPathComponents.first());
-        QVERIFY(diverseConflicttsFolderParent);
-        QVERIFY(diverseConflicttsFolderParent->_isAnyCaseClashChild);
-        QVERIFY(diverseConflicttsFolderParent->_isAnyInvalidCharChild);
-        completeSpy.clear();
-
-        auto diverseConflictsFolderInfo = fakeFolder.currentLocalState().findRecursive(diverseConflictsFolderPath);
-        QVERIFY(!diverseConflictsFolderInfo.name.isEmpty());
-
-        auto conflictsFile = findCaseClashConflicts(diverseConflictsFolderInfo);
-        QCOMPARE(conflictsFile.size(), shouldHaveCaseClashConflict ? 1 : 0);
-        const auto hasFileCaseClashConflict = expectConflict(diverseConflictsFolderInfo, testLowerCaseFile);
-        QCOMPARE(hasFileCaseClashConflict, shouldHaveCaseClashConflict ? true : false);
-
-        fakeFolder.syncEngine().setLocalDiscoveryOptions(OCC::LocalDiscoveryStyle::DatabaseAndFilesystem);
-        QVERIFY(fakeFolder.syncOnce());
-
-        diverseConflictsFolderInfo = fakeFolder.currentLocalState().findRecursive(diverseConflictsFolderPath);
-        QVERIFY(!diverseConflictsFolderInfo.name.isEmpty());
-
-        conflictsFile = findCaseClashConflicts(diverseConflictsFolderInfo);
-        QCOMPARE(conflictsFile.size(), shouldHaveCaseClashConflict ? 1 : 0);
-
         if (shouldHaveCaseClashConflict) {
+            ItemCompletedSpy completeSpy(fakeFolder);
+
+            fakeFolder.syncEngine().setLocalDiscoveryOptions(OCC::LocalDiscoveryStyle::DatabaseAndFilesystem);
+            QVERIFY(fakeFolder.syncOnce());
+
+            // verify the parent of a folder where caseclash and invalidchar conflicts were found, has corresponding flags set (conflict info must get
+            // propagated to the very top)
+            const auto diverseConflictsFolderParent = completeSpy.findItem(conflictsFolderPathComponents.first());
+            QVERIFY(diverseConflictsFolderParent);
+            QVERIFY(diverseConflictsFolderParent->_isAnyCaseClashChild);
+            QVERIFY(diverseConflictsFolderParent->_isAnyInvalidCharChild);
+            completeSpy.clear();
+
+            auto diverseConflictsFolderInfo = fakeFolder.currentLocalState().findRecursive(diverseConflictsFolderPath);
+            QVERIFY(!diverseConflictsFolderInfo.name.isEmpty());
+
+            auto conflictsFile = findCaseClashConflicts(diverseConflictsFolderInfo);
+            QCOMPARE(conflictsFile.size(), shouldHaveCaseClashConflict ? 1 : 0);
+            const auto hasFileCaseClashConflict = expectConflict(diverseConflictsFolderInfo, testLowerCaseFile);
+            QCOMPARE(hasFileCaseClashConflict, shouldHaveCaseClashConflict ? true : false);
+
+            fakeFolder.syncEngine().setLocalDiscoveryOptions(OCC::LocalDiscoveryStyle::DatabaseAndFilesystem);
+            QVERIFY(fakeFolder.syncOnce());
+
+            diverseConflictsFolderInfo = fakeFolder.currentLocalState().findRecursive(diverseConflictsFolderPath);
+            QVERIFY(!diverseConflictsFolderInfo.name.isEmpty());
+
+            conflictsFile = findCaseClashConflicts(diverseConflictsFolderInfo);
+            QCOMPARE(conflictsFile.size(), shouldHaveCaseClashConflict ? 1 : 0);
+
             const auto conflictFileName = QString{conflictsFile.constFirst()};
             qDebug() << conflictFileName;
             CaseClashConflictSolver conflictSolver(fakeFolder.localPath() + diverseConflictsFolderPath + "/" + testLowerCaseFile,
@@ -1809,8 +1809,9 @@ private slots:
             auto caseClashConflictFolderItemLower = completeSpy.findItem(diverseConflictsFolderPath + "/" + testLowerCaseFolder);
             auto caseClashConflictFolderItemUpper = completeSpy.findItem(diverseConflictsFolderPath + "/" + testUpperCaseFolder);
             completeSpy.clear();
-   
-            // we always create UPPERCASE folder in current syncengine logic for now and then create a conflict for a lowercase folder, but this may change, so keep this check more future proof
+
+            // we always create UPPERCASE folder in current syncengine logic for now and then create a conflict for a lowercase folder, but this may change, so
+            // keep this check more future proof
             const auto upperOrLowerCaseFolderCaseClashFound =
                 (caseClashConflictFolderItemLower && caseClashConflictFolderItemLower->_status == SyncFileItem::FileNameClash)
                 || (caseClashConflictFolderItemUpper && caseClashConflictFolderItemUpper->_status == SyncFileItem::FileNameClash);
@@ -1819,11 +1820,11 @@ private slots:
 
             // solve case clash folders conflict
             CaseClashConflictSolver conflictSolverCaseClashForFolder(fakeFolder.localPath() + diverseConflictsFolderPath + "/" + testLowerCaseFolder,
-                                                    fakeFolder.localPath() + diverseConflictsFolderPath + "/" + testUpperCaseFolder,
-                                                   QStringLiteral("/"),
-                                                   fakeFolder.localPath(),
-                                                   fakeFolder.account(),
-                                                   &fakeFolder.syncJournal());
+                                                                     fakeFolder.localPath() + diverseConflictsFolderPath + "/" + testUpperCaseFolder,
+                                                                     QStringLiteral("/"),
+                                                                     fakeFolder.localPath(),
+                                                                     fakeFolder.account(),
+                                                                     &fakeFolder.syncJournal());
 
             QSignalSpy conflictSolverCaseClashForFolderDone(&conflictSolverCaseClashForFolder, &CaseClashConflictSolver::done);
             conflictSolverCaseClashForFolder.solveConflict("testfolder1");
