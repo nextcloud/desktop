@@ -24,7 +24,8 @@ mkdir build-client
 cd build-client
 cmake \
     -G Ninja \
-    -DQT_MAJOR_VERSION=6 \
+    -DCMAKE_PREFIX_PATH=/opt/qt6.6.3 \
+    -DOPENSSL_ROOT_DIR=/usr/local/lib64 \
     -DCMAKE_INSTALL_PREFIX=/usr \
     -DBUILD_TESTING=OFF \
     -DBUILD_UPDATER=$BUILD_UPDATER \
@@ -67,33 +68,23 @@ wget -O ${APPIMAGE_NAME} --ca-directory=/etc/ssl/certs -c "https://github.com/li
 chmod a+x ${APPIMAGE_NAME}
 ./${APPIMAGE_NAME} --appimage-extract
 rm ./${APPIMAGE_NAME}
-cp -r ./squashfs-root ./linuxdeployqt-squashfs-root
-export LD_LIBRARY_PATH=/app/usr/lib:/usr/local/lib/x86_64-linux-gnu:/usr/local/lib:/usr/local/lib64
-./squashfs-root/AppRun -bundle-non-qt-libs -qmldir=${DESKTOP_CLIENT_ROOT}/src/gui --desktop-file=${DESKTOP_FILE} --icon-file=usr/share/icons/hicolor/512x512/apps/${APPNAME}.png --executable=usr/bin/${EXECUTABLE_NAME} --appdir=AppDir --output appimage
+cp -r ./squashfs-root ./linuxdeploy-squashfs-root
+
+export LD_LIBRARY_PATH=/app/usr/lib:/opt/qt6.6.3/lib:/usr/local/lib/x86_64-linux-gnu:/usr/local/lib:/usr/local/lib64
+export PATH=/opt/qt6.6.3/bin:${PATH}
+./linuxdeploy-squashfs-root/AppRun --desktop-file=${DESKTOP_FILE} --icon-file=usr/share/icons/hicolor/512x512/apps/${APPNAME}.png --executable=usr/bin/${EXECUTABLE_NAME} --appdir=AppDir
 
 # Use linuxdeploy-plugin-qt to deploy qt dependencies
-#export APPIMAGE_NAME=linuxdeploy-plugin-qt-x86_64.AppImage
-#wget -O ${APPIMAGE_NAME} --ca-directory=/etc/ssl/certs -c "https://github.com/linuxdeploy/linuxdeploy-plugin-qt/releases/download/continuous/linuxdeploy-plugin-qt-x86_64.AppImage"
-#chmod a+x ${APPIMAGE_NAME}
-#./${APPIMAGE_NAME} --appimage-extract
-#rm ./${APPIMAGE_NAME}
-#cp -r ./squashfs-root ./linuxdeployqt-squashfs-root
-#./squashfs-root/AppRun --appdir AppDir
+export APPIMAGE_NAME=linuxdeploy-plugin-qt-x86_64.AppImage
+wget -O ${APPIMAGE_NAME} --ca-directory=/etc/ssl/certs -c "https://github.com/linuxdeploy/linuxdeploy-plugin-qt/releases/download/continuous/linuxdeploy-plugin-qt-x86_64.AppImage"
+chmod a+x ${APPIMAGE_NAME}
+./${APPIMAGE_NAME} --appimage-extract
+rm ./${APPIMAGE_NAME}
+cp -r ./squashfs-root ./linuxdeploy-plugin-qt-squashfs-root
 
-# Set origin
-#./squashfs-root/usr/bin/patchelf --set-rpath '$ORIGIN/' /app/usr/lib/lib*sync.so.0
+./linuxdeploy-plugin-qt-squashfs-root/AppRun --appdir=AppDir
 
-# Build AppImage
-#./squashfs-root/AppRun ${DESKTOP_FILE} -appimage -updateinformation="gh-releases-zsync|nextcloud-releases|desktop|latest|Nextcloud-*-x86_64.AppImage.zsync"
-
-# Workaround issue #103
-#rm -rf ./squashfs-root
-#APPIMAGE=$(ls *.AppImage)
-#"./${APPIMAGE}" --appimage-extract
-#rm "./${APPIMAGE}"
-#rm ./squashfs-root/usr/lib/libglib-2.0.so.0
-#rm ./squashfs-root/usr/lib/libgobject-2.0.so.0
-#PATH=./linuxdeployqt-squashfs-root/usr/bin:$PATH appimagetool -n ./squashfs-root "$APPIMAGE"
+./linuxdeploy-squashfs-root/AppRun --desktop-file=${DESKTOP_FILE} --icon-file=usr/share/icons/hicolor/512x512/apps/${APPNAME}.png --executable=usr/bin/${EXECUTABLE_NAME} --appdir=AppDir --output appimage
 
 #move AppImage
 if [ ! -z "$DRONE_COMMIT" ]
