@@ -187,7 +187,7 @@ class TestSetUserStatusDialog : public QObject
 private slots:
     void testCtor_fetchStatusAndPredefinedStatuses()
     {
-        const QDateTime currentDateTime(QDateTime::currentDateTime());
+        const QDateTime currentDateTime(QDateTime::currentDateTimeUtc());
 
         const QString userStatusId("fake-id");
         const QString userStatusMessage("Some status");
