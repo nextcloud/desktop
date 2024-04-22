@@ -285,7 +285,7 @@
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="179"/>
         <source>Create debug archive</source>
-        <translation>Créer l&apos;archive de débogage</translation>
+        <translation>Créer une archive de débogage</translation>
     </message>
 </context>
 <context>
@@ -449,8 +449,8 @@
         <location filename="../src/gui/accountmanager.cpp" line="184"/>
         <source>An existing configuration from a legacy desktop client was detected.
 Should an account import be attempted?</source>
-        <translation>Un configuration existante du client d&apos;origine a été détectée
-Est-ce qu&apos;une tentative d&apos;importation du compte doit être lancée ?</translation>
+        <translation>Une configuration existante d&apos;un ancien client de bureau a été détectée.
+Faut-il tenter d&apos;importer un compte ?</translation>
     </message>
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="198"/>
@@ -658,7 +658,7 @@ Wait for the new sync, then encrypt it.</source>
         <location filename="../src/gui/accountsettings.cpp" line="535"/>
         <location filename="../src/gui/accountsettings.cpp" line="605"/>
         <source>Edit Ignored Files</source>
-        <translation>Modifier les fichiers ignorés</translation>
+        <translation>Modifier les fichiers exclus</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="538"/>
@@ -2299,7 +2299,7 @@ S&apos;il s&apos;agissait d&apos;un accident et que vous choisissiez de conserve
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="153"/>
         <source>Click this button to add a folder to synchronize.</source>
-        <translation>Cliquez ce bouton pour ajouter un dossier à synchroniser.</translation>
+        <translation>Cliquez sur ce bouton pour ajouter un dossier à synchroniser.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="166"/>
@@ -2467,7 +2467,7 @@ S&apos;il s&apos;agissait d&apos;un accident et que vous choisissiez de conserve
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="684"/>
         <source>Add Folder Sync Connection</source>
-        <translation>Ajouter une synchronisation de dossier</translation>
+        <translation>Ajouter une connexion de synchronisation de dossiers</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="686"/>
@@ -2659,12 +2659,12 @@ S&apos;il s&apos;agissait d&apos;un accident et que vous choisissiez de conserve
     <message>
         <location filename="../src/gui/generalsettings.ui" line="96"/>
         <source>Notify when synchronised folders grow larger than specified limit</source>
-        <translation>Notifier quand des dossiers synchronisés deviennent plus grand que la limite spécifiée</translation>
+        <translation>Notifier lorsque les dossiers synchronisés dépassent la limite spécifiée</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="96"/>
         <source>Show Call Notifications</source>
-        <translation>Afficher les notifications des appels</translation>
+        <translation>Afficher les notifications d&apos;appel</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="106"/>
@@ -2674,12 +2674,12 @@ S&apos;il s&apos;agissait d&apos;un accident et que vous choisissiez de conserve
     <message>
         <location filename="../src/gui/generalsettings.ui" line="114"/>
         <source>&amp;Automatically check for Updates</source>
-        <translation>&amp;Vérifier automatiquement la présence de nouvelles mises à jour</translation>
+        <translation>&amp;Vérifier automatiquement les mises à jour</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="123"/>
         <source>Automatically disable synchronisation of folders that overcome limit</source>
-        <translation>Désactiver automatiquement la synchronisation des dossiers qui dépassent la limite</translation>
+        <translation>Désactiver automatiquement la synchronisation des dossiers qui dépassent la limite fixée</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="134"/>
@@ -2715,7 +2715,7 @@ S&apos;il s&apos;agissait d&apos;un accident et que vous choisissiez de conserve
         <location filename="../src/gui/generalsettings.ui" line="319"/>
         <location filename="../src/gui/generalsettings.cpp" line="469"/>
         <source>Create Debug Archive</source>
-        <translation>Créer l’archive de débogage</translation>
+        <translation>Créer une archive de débogage</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="198"/>
@@ -2767,7 +2767,7 @@ S&apos;il s&apos;agissait d&apos;un accident et que vous choisissiez de conserve
     <message>
         <location filename="../src/gui/generalsettings.ui" line="323"/>
         <source>&amp;Automatically check for updates</source>
-        <translation>&amp;Vérifier automatiquement les nouvelles mises à jour</translation>
+        <translation>&amp;Vérifier automatiquement les mises à jour</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="339"/>
@@ -2812,12 +2812,12 @@ S&apos;il s&apos;agissait d&apos;un accident et que vous choisissiez de conserve
     <message>
         <location filename="../src/gui/generalsettings.ui" line="441"/>
         <source>Show call notifications</source>
-        <translation>Afficher les notifications des appels</translation>
+        <translation>Afficher les notifications d&apos;appel</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="144"/>
         <source>Server notifications that require attention.</source>
-        <translation>Les notifications du serveur requérant votre attention.</translation>
+        <translation>Notifications du serveur requérant votre attention.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="148"/>
@@ -2861,12 +2861,12 @@ Notez que cela ne permet seulement que de sélectionner où sont récupérées l
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="475"/>
         <source>Debug Archive Created</source>
-        <translation>Archive de déboggage créée</translation>
+        <translation>Archive de débogage créée</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="475"/>
         <source>Debug archive is created at %1</source>
-        <translation>Archive de déboggage créée à %1</translation>
+        <translation>Archive de débogage créée à %1</translation>
     </message>
 </context>
 <context>
@@ -2934,12 +2934,12 @@ Notez que cela ne permet seulement que de sélectionner où sont récupérées l
     <message>
         <location filename="../src/gui/ignorelisteditor.ui" line="26"/>
         <source>Sync hidden files</source>
-        <translation>Synchroniser les fichiers masqués</translation>
+        <translation>Synchroniser les fichiers cachés</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.ui" line="36"/>
         <source>Files Ignored by Patterns</source>
-        <translation>Fichiers exclus sur motif de nom</translation>
+        <translation>Fichiers ignorés par modèles</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.cpp" line="40"/>
@@ -2952,7 +2952,7 @@ Notez que cela ne permet seulement que de sélectionner où sont récupérées l
     <message>
         <location filename="../src/gui/ignorelisttablewidget.ui" line="33"/>
         <source>Pattern</source>
-        <translation>Motif</translation>
+        <translation>Modèle</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisttablewidget.ui" line="38"/>
@@ -2967,20 +2967,20 @@ Notez que cela ne permet seulement que de sélectionner où sont récupérées l
     <message>
         <location filename="../src/gui/ignorelisttablewidget.ui" line="59"/>
         <source>Remove</source>
-        <translation>Supprimer</translation>
+        <translation>Retirer</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisttablewidget.ui" line="66"/>
         <source>Remove all</source>
-        <translation>Supprimer tout</translation>
+        <translation>Tout retirer</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisttablewidget.cpp" line="24"/>
         <source>Files or folders matching a pattern will not be synchronized.
 
 Items where deletion is allowed will be deleted if they prevent a directory from being removed. This is useful for meta data.</source>
-        <translation>Les fichiers ou dossiers correspondant à un motif ne seront pas synchronisés.
-Les éléments ayant l&apos;option « Autoriser la suppression » pourront être supprimés pour ne pas bloquer la suppression d&apos;un dossier. Utile pour les méta-données.</translation>
+        <translation>Les fichiers ou dossiers correspondant à un modèle ne seront pas synchronisés.
+Les éléments dont la suppression est autorisée seront supprimés s&apos;ils empêchent la suppression d&apos;un répertoire. Cette fonction est utile pour les métadonnées.</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisttablewidget.cpp" line="93"/>
@@ -2995,12 +2995,12 @@ Les éléments ayant l&apos;option « Autoriser la suppression » pourront être
     <message>
         <location filename="../src/gui/ignorelisttablewidget.cpp" line="112"/>
         <source>Add Ignore Pattern</source>
-        <translation>Ajouter un motif d&apos;exclusion</translation>
+        <translation>Ajouter un modèle d&apos;exclusion</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisttablewidget.cpp" line="113"/>
         <source>Add a new ignore pattern:</source>
-        <translation>Ajouter un nouveau motif d&apos;exclusion :</translation>
+        <translation>Ajouter un nouveau modèle d&apos;exclusion :</translation>
     </message>
 </context>
 <context>
@@ -3783,7 +3783,7 @@ Il s&apos;agit d&apos;un nouveau mode expérimental. Si vous décidez de l&apos;
     <message>
         <location filename="../src/libsync/discovery.cpp" line="337"/>
         <source>File is listed on the ignore list.</source>
-        <translation>Le fichier est présent dans la liste des fichiers ignorés.</translation>
+        <translation>Le fichier est présent dans la liste des fichiers exclus.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="341"/>
@@ -3828,7 +3828,7 @@ Il s&apos;agit d&apos;un nouveau mode expérimental. Si vous décidez de l&apos;
     <message>
         <location filename="../src/libsync/discovery.cpp" line="377"/>
         <source>File/Folder is ignored because it&apos;s hidden.</source>
-        <translation>Le fichier ou dossier a été ignoré car il est masqué.</translation>
+        <translation>Le fichier/dossier est exclu, car il est caché.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="380"/>
@@ -3913,7 +3913,7 @@ Il s&apos;agit d&apos;un nouveau mode expérimental. Si vous décidez de l&apos;
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1637"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
-        <translation>Ignoré en raison de la liste noire &quot;Sélectionner le contenu à synchroniser&quot;.</translation>
+        <translation>Exclus en raison de la liste noire &quot;Sélectionner le contenu à synchroniser&quot;.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1671"/>
@@ -5154,7 +5154,7 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
         <location filename="../src/libsync/theme.cpp" line="570"/>
         <source>&lt;p&gt;%1 desktop client %2&lt;/p&gt;</source>
         <extracomment>Example text: &quot;&lt;p&gt;Nextcloud Desktop Client&lt;/p&gt;&quot; (%1 is the application name)</extracomment>
-        <translation>&lt;p&gt;client de bureau %1 %2&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;Client de bureau %1 %2&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="557"/>
@@ -5484,7 +5484,7 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
     <message>
         <location filename="../src/gui/wizard/welcomepage.ui" line="156"/>
         <source>Sign up with provider</source>
-        <translation>Se connecter avec un fournisseur</translation>
+        <translation>S&apos;inscrire auprès d&apos;un fournisseur</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/welcomepage.cpp" line="68"/>
@@ -6502,7 +6502,7 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="52"/>
         <source>Ignored</source>
-        <translation>Ignoré</translation>
+        <translation>Exclu</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="54"/>
@@ -6586,7 +6586,7 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
     <message>
         <location filename="../src/libsync/theme.cpp" line="96"/>
         <source>Sync Success, some files were ignored.</source>
-        <translation>Synchronisation terminée avec succès, certains fichiers ont été ignorés.</translation>
+        <translation>Synchronisation terminée avec succès, certains fichiers ont été exclus.</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="99"/>
