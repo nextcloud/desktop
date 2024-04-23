@@ -1290,6 +1290,19 @@ void PropagatorCompositeJob::slotSubJobFinished(SyncFileItem::Status status)
 {
     auto *subJob = dynamic_cast<PropagatorJob *>(sender());
     ASSERT(subJob);
+    
+    if (!_isAnyInvalidCharChild || !_isAnyCaseClashChild) {
+        SyncFileItemPtr childDirItem;
+        if (const auto propagateDirectoryjob = qobject_cast<PropagateDirectory *>(subJob)) {
+            childDirItem = propagateDirectoryjob->_item;
+        } else if (const auto propagateIgnoreJob = qobject_cast<PropagateIgnoreJob *>(subJob)) {
+            childDirItem = propagateIgnoreJob->_item;
+        }
+        if (childDirItem) {
+            _isAnyCaseClashChild = _isAnyCaseClashChild || childDirItem->_status == SyncFileItem::FileNameClash || childDirItem->_isAnyCaseClashChild;
+            _isAnyInvalidCharChild = _isAnyInvalidCharChild || childDirItem->_status == SyncFileItem::FileNameInvalid || childDirItem->_isAnyInvalidCharChild;
+        }
+    }
 
     // Delete the job and remove it from our list of jobs.
     subJob->deleteLater();
@@ -1407,6 +1420,8 @@ void PropagateDirectory::slotFirstJobFinished(SyncFileItem::Status status)
 void PropagateDirectory::slotSubJobsFinished(SyncFileItem::Status status)
 {
     if (!_item->isEmpty() && status == SyncFileItem::Success) {
+        _item->_isAnyCaseClashChild = _item->_isAnyCaseClashChild || _subJobs._isAnyCaseClashChild;
+        _item->_isAnyInvalidCharChild = _item->_isAnyInvalidCharChild || _subJobs._isAnyInvalidCharChild;
         // If a directory is renamed, recursively delete any stale items
         // that may still exist below the old path.
         if (_item->_instruction == CSYNC_INSTRUCTION_RENAME && _item->_originalFile != _item->_renameTarget) {
@@ -1442,14 +1457,16 @@ void PropagateDirectory::slotSubJobsFinished(SyncFileItem::Status status)
         if (_item->_instruction == CSYNC_INSTRUCTION_RENAME
             || _item->_instruction == CSYNC_INSTRUCTION_NEW
             || _item->_instruction == CSYNC_INSTRUCTION_UPDATE_METADATA) {
-            const auto result = propagator()->updateMetadata(*_item);
-            if (!result) {
-                status = _item->_status = SyncFileItem::FatalError;
-                _item->_errorString = tr("Error updating metadata: %1").arg(result.error());
-                qCWarning(lcDirectory) << "Error writing to the database for file" << _item->_file << "with" << result.error();
-            } else if (*result == Vfs::ConvertToPlaceholderResult::Locked) {
-                _item->_status = SyncFileItem::SoftError;
-                _item->_errorString = tr("File is currently in use");
+            if (!_item->_isAnyCaseClashChild && !_item->_isAnyInvalidCharChild) {
+                const auto result = propagator()->updateMetadata(*_item);
+                if (!result) {
+                    status = _item->_status = SyncFileItem::FatalError;
+                    _item->_errorString = tr("Error updating metadata: %1").arg(result.error());
+                    qCWarning(lcDirectory) << "Error writing to the database for file" << _item->_file << "with" << result.error();
+                } else if (*result == Vfs::ConvertToPlaceholderResult::Locked) {
+                    _item->_status = SyncFileItem::SoftError;
+                    _item->_errorString = tr("File is currently in use");
+                }
             }
         }
     }

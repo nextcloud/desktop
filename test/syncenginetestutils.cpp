@@ -252,6 +252,21 @@ FileInfo *FileInfo::find(PathComponents pathComponents, const bool invalidateEta
     return nullptr;
 }
 
+FileInfo FileInfo::findRecursive(PathComponents pathComponents, const bool invalidateEtags)
+{
+    auto result = find({pathComponents.takeFirst()}, invalidateEtags);
+    if (!result) {
+        return *result;
+    }
+    for (const auto &pathComponent : pathComponents) {
+        if (!result) {
+            break;
+        }
+        result = result->find({pathComponent});
+    }
+    return *result;
+}
+
 FileInfo *FileInfo::createDir(const QString &relativePath)
 {
     const PathComponents pathComponents { relativePath };
