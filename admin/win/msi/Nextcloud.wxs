@@ -194,14 +194,14 @@
         </Component>
 		<!-- Register URI handler -->
         <Component Id="RegistryUriHandler" Guid="*" Win64="$(var.PlatformWin64)">
-            <RegistryKey Root="HKCU" Key="Software\Classes\$(var.AppCommandOpenUrlScheme)" ForceCreateOnInstall="yes" ForceDeleteOnUninstall="yes">
+            <RegistryKey Root="HKLM" Key="Software\Classes\$(var.AppCommandOpenUrlScheme)" ForceCreateOnInstall="yes" ForceDeleteOnUninstall="yes">
                 <RegistryValue Type="string" Value="URL:$(var.AppName) Protocol" />
 				<RegistryValue Type="string" Name="URL Protocol" Value="" />
             </RegistryKey>
-            <RegistryKey Root="HKCU" Key="Software\Classes\$(var.AppCommandOpenUrlScheme)\DefaultIcon" ForceCreateOnInstall="yes" ForceDeleteOnUninstall="yes">
+            <RegistryKey Root="HKLM" Key="Software\Classes\$(var.AppCommandOpenUrlScheme)\DefaultIcon" ForceCreateOnInstall="yes" ForceDeleteOnUninstall="yes">
                 <RegistryValue Type="string" Value="[INSTALLDIR]$(var.AppExe)" />
             </RegistryKey>
-            <RegistryKey Root="HKCU" Key="Software\Classes\$(var.AppCommandOpenUrlScheme)\shell\open\command" ForceCreateOnInstall="yes" ForceDeleteOnUninstall="yes">
+            <RegistryKey Root="HKLM" Key="Software\Classes\$(var.AppCommandOpenUrlScheme)\shell\open\command" ForceCreateOnInstall="yes" ForceDeleteOnUninstall="yes">
                 <RegistryValue Type="string" Value="&quot;[INSTALLDIR]$(var.AppExe)&quot; &quot;%1&quot;" />
             </RegistryKey>
         </Component>
