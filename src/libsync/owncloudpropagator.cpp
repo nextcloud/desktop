@@ -396,6 +396,8 @@ PropagateItemJob *OwncloudPropagator::createJob(const SyncFileItemPtr &item)
         } else {
             return new PropagateLocalRename(this, item);
         }
+    case CSYNC_INSTRUCTION_UPDATE_VFS_METADATA:
+        return new PropagateVfsUpdateMetadataJob(this, item);
     case CSYNC_INSTRUCTION_IGNORE:
     case CSYNC_INSTRUCTION_ERROR:
         return new PropagateIgnoreJob(this, item);
@@ -1708,6 +1710,17 @@ void PropagateIgnoreJob::start()
         }
     }
     done(status, _item->_errorString, ErrorCategory::NoError);
+}
+
+void PropagateVfsUpdateMetadataJob::start()
+{
+    const auto fullFileName = propagator()->fullLocalPath(_item->_file);
+    const auto result = propagator()->syncOptions()._vfs->updatePlaceholderMarkInSync(fullFileName, _item->_fileId);
+    emit propagator()->touchedFile(fullFileName);
+    if (!result) {
+        qCWarning(lcPropagator()) << "error when updating VFS metadata" << result.error();
+    }
+    done(SyncFileItem::Success, {}, {});
 }
 
 }
