@@ -16,6 +16,7 @@
 #import <FileProvider/FileProvider.h>
 
 #include <QLoggingCategory>
+#include <QRegularExpression>
 
 #include "config.h"
 #include "fileproviderdomainmanager.h"
@@ -31,7 +32,8 @@ namespace {
 QString domainIdentifierForAccount(const OCC::Account * const account)
 {
     Q_ASSERT(account);
-    return account->userIdAtHostWithPort();
+    static const QRegularExpression illegalChars("[:/]");
+    return account->userIdAtHostWithPort().replace(illegalChars, "-");
 }
 
 QString domainIdentifierForAccount(const OCC::AccountPtr account)
