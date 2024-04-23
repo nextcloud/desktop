@@ -56,6 +56,8 @@ QString Progress::asResultString(const SyncFileItem &item)
         return QCoreApplication::translate("progress", "Error");
     case CSYNC_INSTRUCTION_UPDATE_METADATA:
         return QCoreApplication::translate("progress", "Updated local metadata");
+    case CSYNC_INSTRUCTION_UPDATE_VFS_METADATA:
+        return QCoreApplication::translate("progress", "Updated local virtual files metadata");
     case CSYNC_INSTRUCTION_NONE:
     case CSYNC_INSTRUCTION_EVAL:
         return QCoreApplication::translate("progress", "Unknown");
@@ -87,6 +89,8 @@ QString Progress::asActionString(const SyncFileItem &item)
         return QCoreApplication::translate("progress", "error");
     case CSYNC_INSTRUCTION_UPDATE_METADATA:
         return QCoreApplication::translate("progress", "updating local metadata");
+    case CSYNC_INSTRUCTION_UPDATE_VFS_METADATA:
+        return QCoreApplication::translate("progress", "updating local virtual files metadata");
     case CSYNC_INSTRUCTION_NONE:
     case CSYNC_INSTRUCTION_EVAL:
         break;
