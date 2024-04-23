@@ -105,21 +105,22 @@ class ShareOptionsView: NSView {
         deleteButton.isEnabled = share.canDelete
         saveButton.isEnabled = share.canEdit
 
-        if share.canEdit {
-            setAllFields(enabled: true)
-            labelTextField.stringValue = share.label
-            uploadEditPermissionCheckbox.state = share.shareesCanEdit ? .on : .off
-            hideDownloadCheckbox.state = share.hideDownload ? .on : .off
-            passwordProtectCheckbox.state = share.password.isEmpty ? .off : .on
-            passwordSecureField.isHidden = passwordProtectCheckbox.state == .off
-            expirationDateCheckbox.state = share.expirationDate == nil ? .off : .on
-            expirationDatePicker.isHidden = expirationDateCheckbox.state == .off
-            noteForRecipientCheckbox.state = share.note.isEmpty ? .off : .on
-            noteTextField.isHidden = noteForRecipientCheckbox.state == .off
-        } else {
-            setAllFields(enabled: false)
-            reset()
-        }
+        setAllFields(enabled: share.canEdit)
+        reset()
+
+        shareRecipientTextField.stringValue = share.shareWithDisplayname
+        labelTextField.stringValue = share.label
+        uploadEditPermissionCheckbox.state = share.shareesCanEdit ? .on : .off
+        hideDownloadCheckbox.state = share.hideDownload ? .on : .off
+        passwordProtectCheckbox.state = share.password.isEmpty ? .off : .on
+        passwordSecureField.isHidden = passwordProtectCheckbox.state == .off
+        passwordSecureField.stringValue = share.password
+        expirationDateCheckbox.state = share.expirationDate == nil ? .off : .on
+        expirationDatePicker.isHidden = expirationDateCheckbox.state == .off
+        expirationDatePicker.dateValue = share.expirationDate as? Date ?? Date()
+        noteForRecipientCheckbox.state = share.note.isEmpty ? .off : .on
+        noteTextField.isHidden = noteForRecipientCheckbox.state == .off
+        noteForRecipientCheckbox.stringValue = share.note
     }
 
     private func reset() {
