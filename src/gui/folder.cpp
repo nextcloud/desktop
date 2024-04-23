@@ -621,11 +621,16 @@ void Folder::slotWatchedPathChanged(const QString &path, ChangeReason reason)
             spurious = true;
 
             if (auto pinState = _vfs->pinState(relativePath.toString())) {
-                if (*pinState == PinState::AlwaysLocal && record.isVirtualFile())
+                if (*pinState == PinState::AlwaysLocal && record.isVirtualFile()) {
                     spurious = false;
-                if (*pinState == PinState::OnlineOnly && record.isFile())
+                }
+                if (*pinState == PinState::OnlineOnly && record.isFile()) {
                     spurious = false;
+                }
             } else {
+                spurious = false;
+            }
+            if (spurious && !_vfs->isPlaceHolderInSync(path)) {
                 spurious = false;
             }
         }

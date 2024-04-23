@@ -198,6 +198,16 @@ Result<void, QString> VfsCfApi::updateMetadata(const QString &filePath, time_t m
     }
 }
 
+Result<Vfs::ConvertToPlaceholderResult, QString> VfsCfApi::updatePlaceholderMarkInSync(const QString &filePath, const QByteArray &fileId)
+{
+    return cfapi::updatePlaceholderMarkInSync(filePath, fileId, {});
+}
+
+bool VfsCfApi::isPlaceHolderInSync(const QString &filePath) const
+{
+    return cfapi::isPlaceHolderInSync(filePath);
+}
+
 Result<void, QString> VfsCfApi::createPlaceholder(const SyncFileItem &item)
 {
     Q_ASSERT(params().filesystemPath.endsWith('/'));

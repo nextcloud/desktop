@@ -187,7 +187,11 @@ public:
      * If the remote metadata changes, the local placeholder's metadata should possibly
      * change as well.
      */
-    Q_REQUIRED_RESULT virtual Result<void, QString> updateMetadata(const QString &filePath, time_t modtime, qint64 size, const QByteArray &fileId) = 0;
+    [[nodiscard]] virtual Result<void, QString> updateMetadata(const QString &filePath, time_t modtime, qint64 size, const QByteArray &fileId) = 0;
+
+    [[nodiscard]] virtual Result<Vfs::ConvertToPlaceholderResult, QString> updatePlaceholderMarkInSync(const QString &filePath, const QByteArray &fileId) = 0;
+
+    [[nodiscard]] virtual bool isPlaceHolderInSync(const QString &filePath) const = 0;
 
     /// Create a new dehydrated placeholder. Called from PropagateDownload.
     Q_REQUIRED_RESULT virtual Result<void, QString> createPlaceholder(const SyncFileItem &item) = 0;
@@ -325,6 +329,8 @@ public:
     [[nodiscard]] bool isHydrating() const override { return false; }
 
     Result<void, QString> updateMetadata(const QString &, time_t, qint64, const QByteArray &) override { return {}; }
+    Result<Vfs::ConvertToPlaceholderResult, QString> updatePlaceholderMarkInSync(const QString &filePath, const QByteArray &fileId) override {Q_UNUSED(filePath) Q_UNUSED(fileId) return {QString{}};}
+    [[nodiscard]] bool isPlaceHolderInSync(const QString &filePath) const override { Q_UNUSED(filePath) return true; }
     Result<void, QString> createPlaceholder(const SyncFileItem &) override { return {}; }
     Result<void, QString> dehydratePlaceholder(const SyncFileItem &) override { return {}; }
     Result<ConvertToPlaceholderResult, QString> convertToPlaceholder(const QString &, const SyncFileItem &, const QString &, const UpdateMetadataTypes) override { return ConvertToPlaceholderResult::Ok; }
