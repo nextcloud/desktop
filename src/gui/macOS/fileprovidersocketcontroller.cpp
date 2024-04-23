@@ -200,7 +200,7 @@ void FileProviderSocketController::sendAccountDetails() const
 
     const auto credentials = account->credentials();
     Q_ASSERT(credentials);
-    const auto accountUser = credentials->user();
+    const auto accountUser = account->davUser();
     const auto accountUrl = account->url().toString();
     const auto accountPassword = credentials->password();
 
