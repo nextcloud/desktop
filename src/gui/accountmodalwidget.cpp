@@ -16,6 +16,7 @@
 #include "ui_accountmodalwidget.h"
 
 namespace OCC {
+
 AccountModalWidget::AccountModalWidget(const QString &title, QWidget *widget, QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::AccountModalWidget)
@@ -24,13 +25,30 @@ AccountModalWidget::AccountModalWidget(const QString &title, QWidget *widget, QW
     ui->groupBox->setTitle(title);
     ui->groupBox->layout()->addWidget(widget);
 
-    connect(ui->buttonBox, &QDialogButtonBox::accepted, this, [this] {
-        Q_EMIT accepted();
-        Q_EMIT finished();
-    });
-    connect(ui->buttonBox, &QDialogButtonBox::rejected, this, [this] {
-        Q_EMIT rejected();
-        Q_EMIT finished();
-    });
+    connect(ui->buttonBox, &QDialogButtonBox::accepted, this, &AccountModalWidget::accept);
+    connect(ui->buttonBox, &QDialogButtonBox::rejected, this, &AccountModalWidget::reject);
 }
+
+void AccountModalWidget::setStandardButtons(QDialogButtonBox::StandardButtons buttons)
+{
+    ui->buttonBox->setStandardButtons(buttons);
+}
+
+QPushButton *AccountModalWidget::addButton(const QString &text, QDialogButtonBox::ButtonRole role)
+{
+    return ui->buttonBox->addButton(text, role);
+}
+
+void AccountModalWidget::accept()
+{
+    Q_EMIT accepted();
+    Q_EMIT finished(Accepted);
+}
+
+void AccountModalWidget::reject()
+{
+    Q_EMIT rejected();
+    Q_EMIT finished(Rejected);
+}
+
 } // OCC

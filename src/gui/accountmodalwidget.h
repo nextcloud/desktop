@@ -13,7 +13,8 @@
  */
 
 #pragma once
-#include <QWidget>
+
+#include <QDialogButtonBox>
 
 namespace OCC {
 
@@ -27,10 +28,19 @@ class AccountModalWidget : public QWidget
 public:
     AccountModalWidget(const QString &title, QWidget *widget, QWidget *parent);
 
+    enum DialogCode { Rejected, Accepted };
+
+    void setStandardButtons(QDialogButtonBox::StandardButtons buttons);
+    QPushButton *addButton(const QString &text, QDialogButtonBox::ButtonRole role);
+
+public Q_SLOTS:
+    void accept();
+    void reject();
+
 Q_SIGNALS:
     void accepted();
     void rejected();
-    void finished();
+    void finished(DialogCode result);
 
 private:
     Ui::AccountModalWidget *ui;

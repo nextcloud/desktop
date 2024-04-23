@@ -54,7 +54,7 @@ class OWNCLOUDGUI_EXPORT AccountSettings : public QWidget
 
 public:
     enum class ModalWidgetSizePolicy { Minimum = QSizePolicy::Minimum, Expanding = QSizePolicy::Expanding };
-    Q_ENUM(ModalWidgetSizePolicy);
+    Q_ENUM(ModalWidgetSizePolicy)
 
     explicit AccountSettings(const AccountStatePtr &accountState, QWidget *parent = nullptr);
     ~AccountSettings() override;

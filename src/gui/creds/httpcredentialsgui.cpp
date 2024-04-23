@@ -15,6 +15,7 @@
 
 #include "creds/httpcredentialsgui.h"
 #include "account.h"
+#include "accountmodalwidget.h"
 #include "application.h"
 #include "common/asserts.h"
 #include "gui/accountsettings.h"
@@ -23,7 +24,6 @@
 #include "gui/loginrequireddialog/oauthloginwidget.h"
 #include "networkjobs.h"
 #include "settingsdialog.h"
-#include "theme.h"
 
 #include <QClipboard>
 #include <QDesktopServices>
@@ -96,9 +96,7 @@ void HttpCredentialsGui::asyncAuthResult(OAuth::Result r, const QString &token, 
         Q_EMIT oAuthErrorOccurred();
         return;
     case OAuth::LoggedIn:
-        if (_loginRequiredDialog) {
-            _loginRequiredDialog->accept();
-        }
+        Q_EMIT oAuthLoginAccepted();
         break;
     }
 
@@ -125,11 +123,13 @@ void HttpCredentialsGui::showDialog()
     auto *contentWidget = qobject_cast<BasicLoginWidget *>(dialog->contentWidget());
     contentWidget->forceUsername(user());
 
-    // in this case, we want to use the login button
-    dialog->addLogInButton();
-
-    connect(dialog, &LoginRequiredDialog::finished, ocApp()->gui()->settingsDialog(), [this, contentWidget](const int result) {
-        if (result == QDialog::Accepted) {
+    auto *modalWidget = new AccountModalWidget(tr("Login required"), dialog, ocApp()->gui()->settingsDialog());
+    modalWidget->setAttribute(Qt::WA_DeleteOnClose);
+    modalWidget->addButton(tr("Log out"), QDialogButtonBox::RejectRole);
+    modalWidget->addButton(tr("Log in"), QDialogButtonBox::AcceptRole); // in this case, we want to use the login button
+    connect(this, &HttpCredentialsGui::oAuthLoginAccepted, modalWidget, &AccountModalWidget::accept);
+    connect(modalWidget, &AccountModalWidget::finished, ocApp()->gui()->settingsDialog(), [this, contentWidget](AccountModalWidget::DialogCode result) {
+        if (result == AccountModalWidget::Accepted) {
             _password = contentWidget->password();
             _refreshToken.clear();
             _ready = true;
@@ -140,7 +140,7 @@ void HttpCredentialsGui::showDialog()
         Q_EMIT fetched();
     });
 
-    ocApp()->gui()->settingsDialog()->accountSettings(_account)->addModalLegacyDialog(dialog, AccountSettings::ModalWidgetSizePolicy::Minimum);
+    ocApp()->gui()->settingsDialog()->accountSettings(_account)->addModalWidget(modalWidget);
     _loginRequiredDialog = dialog;
 }
 
@@ -173,7 +173,6 @@ void HttpCredentialsGui::restartOAuth()
 
         auto *contentWidget = qobject_cast<OAuthLoginWidget *>(_loginRequiredDialog->contentWidget());
         connect(contentWidget, &OAuthLoginWidget::openBrowserButtonClicked, this, &HttpCredentialsGui::openBrowser);
-        connect(_loginRequiredDialog, &LoginRequiredDialog::rejected, this, &HttpCredentials::requestLogout);
 
         connect(contentWidget, &OAuthLoginWidget::retryButtonClicked, _loginRequiredDialog, [contentWidget, this]() {
             restartOAuth();
@@ -186,8 +185,13 @@ void HttpCredentialsGui::restartOAuth()
             contentWidget->showRetryFrame();
         });
 
-        ocApp()->gui()->settingsDialog()->accountSettings(_account)->addModalLegacyDialog(
-            _loginRequiredDialog, AccountSettings::ModalWidgetSizePolicy::Minimum);
+        auto *modalWidget = new AccountModalWidget(tr("Login required"), _loginRequiredDialog, ocApp()->gui()->settingsDialog());
+        modalWidget->setAttribute(Qt::WA_DeleteOnClose);
+        modalWidget->addButton(tr("Log out"), QDialogButtonBox::RejectRole);
+        connect(this, &HttpCredentialsGui::oAuthLoginAccepted, modalWidget, &AccountModalWidget::accept);
+        connect(modalWidget, &AccountModalWidget::rejected, this, &HttpCredentials::requestLogout);
+
+        ocApp()->gui()->settingsDialog()->accountSettings(_account)->addModalWidget(modalWidget);
     }
 
     _asyncAuth.reset(new AccountBasedOAuth(_account->sharedFromThis(), this));

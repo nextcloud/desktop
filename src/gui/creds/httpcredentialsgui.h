@@ -20,6 +20,7 @@
 #include <QPointer>
 
 namespace OCC {
+
 class LoginRequiredDialog;
 
 /**
@@ -34,6 +35,7 @@ public:
         : HttpCredentials()
     {
     }
+
     HttpCredentialsGui(const QString &loginUser, const QString &password)
         : HttpCredentials(DetermineAuthTypeJob::AuthType::Basic, loginUser, password)
     {
@@ -65,6 +67,7 @@ private Q_SLOTS:
     void showDialog();
 
 Q_SIGNALS:
+    void oAuthLoginAccepted();
     void oAuthErrorOccurred();
 
 private:
