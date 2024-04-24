@@ -151,6 +151,7 @@ public slots:
     void presentShareViewInTray(const QString &localPath);
 
 private slots:
+    void slotUpdateSyncPausedState();
     void slotUnpauseAllFolders();
     void slotPauseAllFolders();
 
