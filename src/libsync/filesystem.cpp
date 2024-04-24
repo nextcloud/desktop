@@ -25,7 +25,130 @@
 #include "vio/csync_vio_local.h"
 #include "std/c_time.h"
 
+#include <array>
+#include <string_view>
+#ifdef Q_OS_WIN
+#include <securitybaseapi.h>
+#include <sddl.h>
+#endif
+namespace
+{
+constexpr std::array<const char *, 2> lockFilePatterns = {{".~lock.", "~$"}};
+constexpr std::array<std::string_view, 8> officeFileExtensions = {"doc", "docx", "xls", "xlsx", "ppt", "pptx", "odt", "odp"};
+// iterates through the dirPath to find the matching fileName
+QString findMatchingUnlockedFileInDir(const QString &dirPath, const QString &lockFileName)
+{
+    QString foundFilePath;
+    const QDir dir(dirPath);
+    const auto entryList = dir.entryInfoList(QDir::Files);
+    for (const auto &candidateUnlockedFileInfo : entryList) {
+        const auto candidateUnlockFileName = candidateUnlockedFileInfo.fileName();
+        const auto lockFilePatternFoundIt = std::find_if(std::cbegin(lockFilePatterns), std::cend(lockFilePatterns), [&candidateUnlockFileName](std::string_view pattern) {
+            return candidateUnlockFileName.contains(QString::fromStdString(std::string(pattern)));
+        });
+        if (lockFilePatternFoundIt != std::cend(lockFilePatterns)) {
+            continue;
+        }
+        if (candidateUnlockFileName.contains(lockFileName)) {
+            foundFilePath = candidateUnlockedFileInfo.absoluteFilePath();
+            break;
+        }
+    }
+    return foundFilePath;
+}
+}
+
 namespace OCC {
+    
+QString FileSystem::filePathLockFilePatternMatch(const QString &path)
+{
+    qCDebug(OCC::lcFileSystem) << "Checking if it is a lock file:" << path;
+
+    const auto pathSplit = path.split(QLatin1Char('/'), Qt::SkipEmptyParts);
+    if (pathSplit.isEmpty()) {
+        return {};
+    }
+    QString lockFilePatternFound;
+    for (const auto &lockFilePattern : lockFilePatterns) {
+        if (pathSplit.last().startsWith(lockFilePattern)) {
+            lockFilePatternFound = lockFilePattern;
+            break;
+        }
+    }
+
+    if (!lockFilePatternFound.isEmpty()) {
+        qCDebug(OCC::lcFileSystem) << "Found a lock file with prefix:" << lockFilePatternFound << "in path:" << path;
+    }
+
+    return lockFilePatternFound;
+}
+
+bool FileSystem::isMatchingOfficeFileExtension(const QString &path)
+{
+    const auto pathSplit = path.split(QLatin1Char('.'));
+    const auto extension = pathSplit.size() > 1 ? pathSplit.last().toStdString() : std::string{};
+    return std::find(std::cbegin(officeFileExtensions), std::cend(officeFileExtensions), extension) != std::cend(officeFileExtensions);
+}
+
+FileSystem::FileLockingInfo FileSystem::lockFileTargetFilePath(const QString &lockFilePath, const QString &lockFileNamePattern)
+{
+    FileLockingInfo result;
+
+    if (lockFileNamePattern.isEmpty()) {
+        return result;
+    }
+
+    const auto lockFilePathWithoutPrefix = QString(lockFilePath).replace(lockFileNamePattern, QStringLiteral(""));
+    auto lockFilePathWithoutPrefixSplit = lockFilePathWithoutPrefix.split(QLatin1Char('.'));
+
+    if (lockFilePathWithoutPrefixSplit.size() < 2) {
+        return result;
+    }
+
+    auto extensionSanitized = lockFilePathWithoutPrefixSplit.takeLast().toStdString();
+    // remove possible non-alphabetical characters at the end of the extension
+    extensionSanitized.erase(std::remove_if(extensionSanitized.begin(),
+                                            extensionSanitized.end(),
+                                            [](const auto &ch) {
+                                                return !std::isalnum(ch);
+                                            }),
+                             extensionSanitized.end());
+
+    lockFilePathWithoutPrefixSplit.push_back(QString::fromStdString(extensionSanitized));
+    const auto lockFilePathWithoutPrefixNew = lockFilePathWithoutPrefixSplit.join(QLatin1Char('.'));
+
+    qCDebug(lcFileSystem) << "Assumed locked/unlocked file path" << lockFilePathWithoutPrefixNew << "Going to try to find matching file";
+    auto splitFilePath = lockFilePathWithoutPrefixNew.split(QLatin1Char('/'));
+    if (splitFilePath.size() > 1) {
+        const auto lockFileNameWithoutPrefix = splitFilePath.takeLast();
+        // some software will modify lock file name such that it does not correspond to original file (removing some symbols from the name, so we will
+        // search for a matching file
+        result.path = findMatchingUnlockedFileInDir(splitFilePath.join(QLatin1Char('/')), lockFileNameWithoutPrefix);
+    }
+
+    if (result.path.isEmpty() || !QFile::exists(result.path)) {
+        result.path.clear();
+        return result;
+    }
+    result.type = QFile::exists(lockFilePath) ? FileLockingInfo::Type::Locked : FileLockingInfo::Type::Unlocked;
+    return result;
+}
+
+QStringList FileSystem::findAllLockFilesInDir(const QString &dirPath)
+{
+    QStringList results;
+    const QDir dir(dirPath);
+    const auto entryList = dir.entryInfoList(QDir::Files | QDir::Hidden | QDir::NoDotAndDotDot);
+    for (const auto &candidateLockFile : entryList) {
+        const auto filePath = candidateLockFile.filePath();
+        const auto isLockFile = !filePathLockFilePatternMatch(filePath).isEmpty();
+        if (isLockFile) {
+            results.push_back(filePath);
+        }
+    }
+
+    return results;
+}
 
 bool FileSystem::fileEquals(const QString &fn1, const QString &fn2)
 {
