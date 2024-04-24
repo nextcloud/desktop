@@ -42,13 +42,13 @@ QPushButton *AccountModalWidget::addButton(const QString &text, QDialogButtonBox
 void AccountModalWidget::accept()
 {
     Q_EMIT accepted();
-    Q_EMIT finished(Accepted);
+    Q_EMIT finished(Result::Accepted);
 }
 
 void AccountModalWidget::reject()
 {
     Q_EMIT rejected();
-    Q_EMIT finished(Rejected);
+    Q_EMIT finished(Result::Rejected);
 }
 
 } // OCC

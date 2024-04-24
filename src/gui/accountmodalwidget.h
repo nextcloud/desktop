@@ -28,7 +28,8 @@ class AccountModalWidget : public QWidget
 public:
     AccountModalWidget(const QString &title, QWidget *widget, QWidget *parent);
 
-    enum DialogCode { Rejected, Accepted };
+    enum class Result { Rejected, Accepted };
+    Q_ENUM(Result)
 
     void setStandardButtons(QDialogButtonBox::StandardButtons buttons);
     QPushButton *addButton(const QString &text, QDialogButtonBox::ButtonRole role);
@@ -40,7 +41,7 @@ public Q_SLOTS:
 Q_SIGNALS:
     void accepted();
     void rejected();
-    void finished(DialogCode result);
+    void finished(Result result);
 
 private:
     Ui::AccountModalWidget *ui;
