@@ -54,7 +54,9 @@ int main(int argc, char **argv)
 {
 #ifdef Q_OS_WIN
     SetDllDirectory(L"");
+    qputenv("QML_IMPORT_PATH", (QDir::currentPath() + QStringLiteral("/qml")).toLatin1());
 #endif
+
     Q_INIT_RESOURCE(resources);
     Q_INIT_RESOURCE(theme);
 
