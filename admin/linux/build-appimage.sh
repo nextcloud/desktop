@@ -71,7 +71,6 @@ rm ./${APPIMAGE_NAME}
 cp -r ./squashfs-root ./linuxdeploy-squashfs-root
 
 export LD_LIBRARY_PATH=/app/usr/lib:/opt/qt6.6.3/lib:/usr/local/lib/x86_64-linux-gnu:/usr/local/lib:/usr/local/lib64
-export PATH=/opt/qt6.6.3/bin:${PATH}
 ./linuxdeploy-squashfs-root/AppRun --desktop-file=${DESKTOP_FILE} --icon-file=usr/share/icons/hicolor/512x512/apps/${APPNAME}.png --executable=usr/bin/${EXECUTABLE_NAME} --appdir=AppDir
 
 # Use linuxdeploy-plugin-qt to deploy qt dependencies
@@ -82,6 +81,8 @@ chmod a+x ${APPIMAGE_NAME}
 rm ./${APPIMAGE_NAME}
 cp -r ./squashfs-root ./linuxdeploy-plugin-qt-squashfs-root
 
+export PATH=/opt/qt6.6.3/bin:${PATH}
+export QML_SOURCES_PATHS=${DESKTOP_CLIENT_ROOT}/src/gui
 ./linuxdeploy-plugin-qt-squashfs-root/AppRun --appdir=AppDir
 
 ./linuxdeploy-squashfs-root/AppRun --desktop-file=${DESKTOP_FILE} --icon-file=usr/share/icons/hicolor/512x512/apps/${APPNAME}.png --executable=usr/bin/${EXECUTABLE_NAME} --appdir=AppDir --output appimage
