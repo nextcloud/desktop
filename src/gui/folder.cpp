@@ -630,7 +630,7 @@ void Folder::slotWatchedPathChanged(const QStringView &path, const ChangeReason 
             } else {
                 spurious = false;
             }
-            if (spurious && !_vfs->isPlaceHolderInSync(path)) {
+            if (spurious && !_vfs->isPlaceHolderInSync(path.toString())) {
                 spurious = false;
             }
         }
