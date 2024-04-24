@@ -24,7 +24,7 @@
 #include <QFile>
 
 #if !defined(Q_OS_MACOS) || __MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_15
-#include <filesystem>
+#include "filesystem.h"
 #endif
 
 namespace OCC {
