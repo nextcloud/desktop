@@ -10,6 +10,9 @@ endif()
 target_sources(owncloudGui PRIVATE
     ocupdater.cpp
     ocupdater.h
+    newversionavailabledialog.cpp
+    newversionavailabledialog.h
+    newversionavailabledialog.ui
     updateinfo.cpp
     updateinfo.h
     updater.cpp

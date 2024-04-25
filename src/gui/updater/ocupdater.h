@@ -186,7 +186,7 @@ private Q_SLOTS:
 
 private:
     void wipeUpdateData();
-    void showNoUrlDialog(const UpdateInfo &info);
+    void showNewVersionAvailableDialog(const UpdateInfo &info);
     void showUpdateErrorDialog(const QString &targetVersion);
     void versionInfoArrived(const UpdateInfo &info) override;
     QScopedPointer<QTemporaryFile> _file;

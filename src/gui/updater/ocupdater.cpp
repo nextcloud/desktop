@@ -22,6 +22,7 @@
 
 #include "settingsdialog.h"
 #include "updatedownloadeddialog.h"
+#include "updater/newversionavailabledialog.h"
 #include "updater/ocupdater.h"
 #include "updater/updater_private.h"
 
@@ -52,10 +53,10 @@ UpdaterScheduler::UpdaterScheduler(Application *app, QObject *parent)
             // prevent dialog from being displayed twice (rather unlikely, but it won't hurt)
             if (_updateDownloadedDialog == nullptr) {
                 _updateDownloadedDialog = new UpdateDownloadedDialog(app->gui()->settingsDialog(), updater->statusString());
-                _updateDownloadedDialog->setAttribute(Qt::WA_DeleteOnClose);
                 ocApp()->gui()->settingsDialog()->addModalWidget(_updateDownloadedDialog);
 
                 connect(_updateDownloadedDialog, &UpdateDownloadedDialog::accepted, this, []() { RestartManager::requestRestart(); });
+                connect(_updateDownloadedDialog, &UpdateDownloadedDialog::finished, this, [this]() { delete _updateDownloadedDialog.data(); });
             }
         });
 
@@ -353,7 +354,7 @@ void WindowsUpdater::versionInfoArrived(const UpdateInfo &info)
     } else {
         const QString url = info.downloadUrl();
         if (url.isEmpty()) {
-            showNoUrlDialog(info);
+            showNewVersionAvailableDialog(info);
         } else {
             _targetFile = ConfigFile::configPath() + url.mid(url.lastIndexOf(QLatin1Char('/')) + 1);
             if (QFile::exists(_targetFile)) {
@@ -373,53 +374,20 @@ void WindowsUpdater::versionInfoArrived(const UpdateInfo &info)
     }
 }
 
-void WindowsUpdater::showNoUrlDialog(const UpdateInfo &info)
+void WindowsUpdater::showNewVersionAvailableDialog(const UpdateInfo &info)
 {
     // if the version tag is set, there is a newer version.
-    QDialog *msgBox = new QDialog;
-    msgBox->setAttribute(Qt::WA_DeleteOnClose);
-
-    QIcon infoIcon = msgBox->style()->standardIcon(QStyle::SP_MessageBoxInformation);
-    int iconSize = msgBox->style()->pixelMetric(QStyle::PM_MessageBoxIconSize);
-
-    msgBox->setWindowIcon(infoIcon);
-
-    QVBoxLayout *layout = new QVBoxLayout(msgBox);
-    QHBoxLayout *hlayout = new QHBoxLayout;
-    layout->addLayout(hlayout);
-
-    msgBox->setWindowTitle(tr("New Version Available"));
-
-    QLabel *ico = new QLabel;
-    ico->setFixedSize(iconSize, iconSize);
-    ico->setPixmap(infoIcon.pixmap(iconSize));
-    QLabel *lbl = new QLabel;
     QString txt = tr("<p>A new version of the %1 Client is available.</p>"
                      "<p><b>%2</b> is available for download. The installed version is %3.</p>")
                       .arg(Utility::escape(Theme::instance()->appNameGUI()),
                           Utility::escape(info.versionString()), Utility::escape(Version::versionWithBuildNumber().toString()));
+    auto *widget = new NewVersionAvailableDialog(ocApp()->gui()->settingsDialog(), txt);
 
-    lbl->setText(txt);
-    lbl->setTextFormat(Qt::RichText);
-    lbl->setWordWrap(true);
+    connect(widget, &NewVersionAvailableDialog::versionSkipped, this, &WindowsUpdater::slotSetPreviouslySkippedVersion);
+    connect(widget, &NewVersionAvailableDialog::updateNow, this, &WindowsUpdater::slotOpenUpdateUrl);
+    connect(widget, &NewVersionAvailableDialog::finished, this, [widget]() { delete widget; });
 
-    hlayout->addWidget(ico);
-    hlayout->addWidget(lbl);
-
-    QDialogButtonBox *bb = new QDialogButtonBox;
-    QPushButton *skip = bb->addButton(tr("Skip this version"), QDialogButtonBox::ResetRole);
-    QPushButton *reject = bb->addButton(tr("Skip this time"), QDialogButtonBox::AcceptRole);
-    QPushButton *getupdate = bb->addButton(tr("Get update"), QDialogButtonBox::AcceptRole);
-
-    connect(skip, &QAbstractButton::clicked, msgBox, &QDialog::reject);
-    connect(reject, &QAbstractButton::clicked, msgBox, &QDialog::reject);
-    connect(getupdate, &QAbstractButton::clicked, msgBox, &QDialog::accept);
-
-    connect(skip, &QAbstractButton::clicked, this, &WindowsUpdater::slotSetPreviouslySkippedVersion);
-    connect(getupdate, &QAbstractButton::clicked, this, &WindowsUpdater::slotOpenUpdateUrl);
-
-    layout->addWidget(bb);
-    ocApp()->gui()->settingsDialog()->addModalWidget(msgBox);
+    ocApp()->gui()->settingsDialog()->addModalWidget(widget);
 }
 
 void WindowsUpdater::showUpdateErrorDialog(const QString &targetVersion)
