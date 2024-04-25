@@ -28,6 +28,47 @@ private slots:
         AccountPtr account = Account::create();
         [[maybe_unused]] const auto davPath = account->davPath();
     }
+
+    void testAccountMaxRequestSize_initial_minusOne()
+    {
+        QCOMPARE( Account::create()->getMaxRequestSize(), -1 );
+    }
+
+    void testAccountMaxRequestSize_readWrite()
+    {
+        auto account = Account::create();
+        QVERIFY( account->getMaxRequestSize() == -1 );
+
+        for (qint64 i = -2; i < 100000000000; i += 100000) {
+            QVERIFY( i != account->getMaxRequestSize() );
+
+            account->setMaxRequestSize(i);
+            QCOMPARE( i, account->getMaxRequestSize() );
+        }
+    }
+
+    void testAccountMaxRequestSize_writeIfLower()
+    {
+        using Test = std::pair<qint64,qint64>; // <input,expected-output>
+        std::vector<Test> tests{
+            Test(10000, 10000),
+            Test(-1, -1), // reset with -1
+            Test(1, 1),
+            Test(2, 1),
+            Test(0, 0), // reset with 0
+            Test(1000, 1000),
+            Test(1100, 1000),
+            Test(900, 900),
+            Test(80, 80),
+            Test(1000, 80),
+        };
+
+        auto account = Account::create();
+        for (auto test : tests) {
+            account->setMaxRequestSizeIfLower(test.first);
+            QCOMPARE( test.second, account->getMaxRequestSize() );
+        }
+    }
 };
 
 QTEST_APPLESS_MAIN(TestAccount)

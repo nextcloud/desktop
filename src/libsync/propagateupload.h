@@ -351,7 +351,7 @@ private:
     [[nodiscard]] qint64 chunkSize() const {
         // Old chunking does not use dynamic chunking algorithm, and does not adjusts the chunk size respectively,
         // thus this value should be used as the one classifing item to be chunked
-        return propagator()->syncOptions()._initialChunkSize;
+        return propagator()->syncOptions().initialChunkSize();
     }
 
 public:

@@ -55,7 +55,7 @@ SocketUploadJob::SocketUploadJob(const QSharedPointer<SocketApiJobV2> &job)
 
     SyncOptions opt;
     opt.fillFromEnvironmentVariables();
-    opt.verifyChunkSizes();
+    opt.fillFromAccount(account->account());
     _engine = new SyncEngine(account->account(), Utility::trailingSlashPath(_localPath), opt, _remotePath, _db);
     _engine->setParent(_db);
 

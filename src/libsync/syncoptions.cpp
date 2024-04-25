@@ -13,6 +13,7 @@
  */
 
 #include "syncoptions.h"
+#include "account.h"
 #include "common/utility.h"
 
 #include <QRegularExpression>
@@ -31,9 +32,10 @@ qint64 SyncOptions::minChunkSize() const
     return _minChunkSize;
 }
 
-void SyncOptions::setMinChunkSize(const qint64 minChunkSize)
+void SyncOptions::setMinChunkSize(const qint64 value)
 {
-    _minChunkSize = ::qBound(_minChunkSize, minChunkSize, _maxChunkSize);
+    _minChunkSize = qBound(chunkV2MinChunkSize, value, _maxChunkSize);
+    setInitialChunkSize(_initialChunkSize);
 }
 
 qint64 SyncOptions::maxChunkSize() const
@@ -41,24 +43,35 @@ qint64 SyncOptions::maxChunkSize() const
     return _maxChunkSize;
 }
 
-void SyncOptions::setMaxChunkSize(const qint64 maxChunkSize)
+void SyncOptions::setMaxChunkSize(const qint64 value)
 {
-    _maxChunkSize = ::qBound(_minChunkSize, maxChunkSize, _maxChunkSize);
+    _maxChunkSize = qBound(_minChunkSize, value, chunkV2MaxChunkSize);
+    setInitialChunkSize(_initialChunkSize);
+}
+
+qint64 SyncOptions::initialChunkSize() const
+{
+    return _initialChunkSize;
+}
+
+void SyncOptions::setInitialChunkSize(const qint64 value)
+{
+    _initialChunkSize = toValidChunkSize(value);
 }
 
 void SyncOptions::fillFromEnvironmentVariables()
 {
-    QByteArray chunkSizeEnv = qgetenv("OWNCLOUD_CHUNK_SIZE");
-    if (!chunkSizeEnv.isEmpty())
-        _initialChunkSize = chunkSizeEnv.toUInt();
-
     QByteArray minChunkSizeEnv = qgetenv("OWNCLOUD_MIN_CHUNK_SIZE");
     if (!minChunkSizeEnv.isEmpty())
-        _minChunkSize = minChunkSizeEnv.toUInt();
+        setMinChunkSize(minChunkSizeEnv.toUInt());
 
     QByteArray maxChunkSizeEnv = qgetenv("OWNCLOUD_MAX_CHUNK_SIZE");
     if (!maxChunkSizeEnv.isEmpty())
-        _maxChunkSize = maxChunkSizeEnv.toUInt();
+        setMaxChunkSize(maxChunkSizeEnv.toUInt());
+
+    QByteArray chunkSizeEnv = qgetenv("OWNCLOUD_CHUNK_SIZE");
+    if (!chunkSizeEnv.isEmpty())
+        setInitialChunkSize(chunkSizeEnv.toUInt());
 
     QByteArray targetChunkUploadDurationEnv = qgetenv("OWNCLOUD_TARGET_CHUNK_UPLOAD_DURATION");
     if (!targetChunkUploadDurationEnv.isEmpty())
@@ -69,10 +82,37 @@ void SyncOptions::fillFromEnvironmentVariables()
         _parallelNetworkJobs = maxParallel;
 }
 
-void SyncOptions::verifyChunkSizes()
+void SyncOptions::fillFromAccount(const AccountPtr account)
 {
-    _minChunkSize = qMin(_minChunkSize, _initialChunkSize);
-    _maxChunkSize = qMax(_maxChunkSize, _initialChunkSize);
+    if (!account) {
+        return;
+    }
+
+    if (account->isHttp2Supported() && _parallelNetworkJobs == defaultParallelNetworkJobs) {
+        _parallelNetworkJobs = defaultParallelNetworkJobsH2;
+    }
+
+    if (const auto size = account->getMaxRequestSize(); size > 0) {
+        setMaxChunkSize(size);
+    }
+
+    if (account->capabilities().chunkingNg()) {
+        // read last used chunk size and use it as initial value
+        if (const auto size = account->getLastChunkSize(); size > 0) {
+            setInitialChunkSize(size);
+        }
+    } else {
+        // disable dynamic chunk sizing as it is not supported for this account
+        _targetChunkUploadDuration = std::chrono::milliseconds(0);
+    }
+}
+
+qint64 SyncOptions::predictedGoodChunkSize(const qint64 currentChunkSize, const std::chrono::milliseconds uploadTime) const
+{
+    if (isDynamicChunkSize() && uploadTime.count() > 0) {
+        return (currentChunkSize * _targetChunkUploadDuration) / uploadTime;
+    }
+    return currentChunkSize;
 }
 
 QRegularExpression SyncOptions::fileRegex() const
