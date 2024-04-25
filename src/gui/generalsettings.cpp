@@ -107,8 +107,19 @@ QVector<ZipEntry> createDebugArchiveFileList()
     return list;
 }
 
-void createDebugArchive(const QString &filename)
+bool createDebugArchive(const QString &filename)
 {
+    const auto fileInfo = QFileInfo(filename);
+    const auto dirInfo = QFileInfo(fileInfo.dir().absolutePath());
+    if (!dirInfo.isWritable()) {
+        QMessageBox::critical(
+            nullptr,
+            QObject::tr("Failed to create debug archive"),
+            QObject::tr("Could not create debug archive in selected location!")
+        );
+        return false;
+    }
+
     const auto entries = createDebugArchiveFileList();
 
     KZip zip(filename);
@@ -127,7 +138,9 @@ void createDebugArchive(const QString &filename)
     zip.prepareWriting("__nextcloud_client_buildinfo.txt", {}, {}, buildInfo.size());
     zip.writeData(buildInfo, buildInfo.size());
     zip.finishWriting(buildInfo.size());
+    return true;
 }
+
 }
 
 namespace OCC {
@@ -498,13 +511,24 @@ void GeneralSettings::slotIgnoreFilesEditor()
 
 void GeneralSettings::slotCreateDebugArchive()
 {
-    const auto filename = QFileDialog::getSaveFileName(this, tr("Create Debug Archive"), QString(), tr("Zip Archives") + " (*.zip)");
+    const auto filename = QFileDialog::getSaveFileName(
+        this,
+        tr("Create Debug Archive"),
+        QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation),
+        tr("Zip Archives") + " (*.zip)"
+    );
+
     if (filename.isEmpty()) {
         return;
     }
 
-    createDebugArchive(filename);
-    QMessageBox::information(this, tr("Debug Archive Created"), tr("Debug archive is created at %1").arg(filename));
+    if (createDebugArchive(filename)) {
+        QMessageBox::information(
+            this,
+            tr("Debug Archive Created"),
+            tr("Debug archive is created at %1").arg(filename)
+        );
+    }
 }
 
 void GeneralSettings::slotShowLegalNotice()
