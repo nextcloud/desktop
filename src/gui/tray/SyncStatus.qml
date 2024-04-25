@@ -34,7 +34,7 @@ RowLayout {
         padding: 0
 
         imageSource: syncStatus.syncIcon
-        running: syncStatus.syncing
+        running: false // hotfix for download speed slowdown when tray is open
     }
 
     ColumnLayout {
