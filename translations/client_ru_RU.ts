@@ -3481,7 +3481,7 @@ Note that using any logging command line options will override the settings.</so
     <message>
         <location filename="../src/libsync/theme.cpp" line="400"/>
         <source>&lt;p&gt;Version %1. For more information visit &lt;a href=&quot;%2&quot;&gt;https://%3&lt;/a&gt;&lt;/p&gt;&lt;p&gt;For known issues and help, please visit: &lt;a href=&quot;https://central.owncloud.com/c/desktop-client&quot;&gt;https://central.owncloud.com&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;By Klaas Freitag, Daniel Molkentin, Olivier Goffart, Markus Götz,  Jan-Christoph Borchardt, Thomas Müller,&lt;br&gt;Dominik Schmidt, Michael Stingl, Hannah von Reth, Fabian Müller and others.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;Copyright ownCloud GmbH&lt;/p&gt;&lt;p&gt;Distributed by %4 and licensed under the GNU General Public License (GPL) Version 2.0.&lt;br/&gt;%5 and the %5 logo are registered trademarks of %4 in the United States, other countries, or both.&lt;/p&gt;&lt;p&gt;&lt;small&gt;%6&lt;/small&gt;&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Версия %1. Более подробная информация по адресу &lt;a href=&quot;%2&quot;&gt;https://%3&lt;/a&gt;&lt;/p&gt;&lt;p&gt;Для сведений об известных проблемах и помощи, пожалуйста посетите: &lt;a href=&quot;https://central.owncloud.org/c/desktop-client&quot;&gt;https://central.owncloud.org&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;Авторы — Клаас Фрейтаг, Даниэль Молкентин, Оливье Гоффар, Маркус Гётц,  Жан-Кристоф Бошар, Томас Мюллер, Доминик Шмидт, Михаэль Штингль, Ханна фон Рет, и другие.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;Авторское право ownCloud GmbH&lt;/p&gt;&lt;p&gt;Распространяется %4 и лицензируется согласно Общей Публичной Лицензии GNU (GPL) версии 2.0.&lt;br/&gt;Логотипы %5 и %5 являются зарегистрированными торговыми марками %4 в США, других странах, или и там, и там.&lt;/p&gt;&lt;p&gt;&lt;small&gt;%6&lt;/small&gt;&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;Версия %1. Более подробная информация по адресу &lt;a href=&quot;%2&quot;&gt;https://%3&lt;/a&gt;&lt;/p&gt;&lt;p&gt;Для сведений об известных проблемах и помощи, пожалуйста посетите: https://central.owncloud.org&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;Авторы — Клаас Фрейтаг, Даниэль Молкентин, Оливье Гоффар, Маркус Гётц,  Жан-Кристоф Бошар, Томас Мюллер, Доминик Шмидт, Михаэль Штингль, Ханна фон Рет, и другие.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;Авторское право ownCloud GmbH&lt;/p&gt;&lt;p&gt;Распространяется %4 и лицензируется согласно Общей Публичной Лицензии GNU (GPL) версии 2.0.&lt;br/&gt;Логотипы %5 и %5 являются зарегистрированными торговыми марками %4 в США, других странах, или и там, и там.&lt;/p&gt;&lt;p&gt;&lt;small&gt;%6&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -3579,7 +3579,7 @@ Note that using any logging command line options will override the settings.</so
     <message>
         <location filename="../src/common/vfs.cpp" line="94"/>
         <source>The Virtual filesystem feature is not supported on network drives</source>
-        <translation type="unfinished"/>
+        <translation>Возможность Виртуальная файловая система не поддерживается на сетевых дисках</translation>
     </message>
 </context>
 <context>
@@ -3587,7 +3587,7 @@ Note that using any logging command line options will override the settings.</so
     <message>
         <location filename="../src/plugins/vfs/suffix/vfs_suffix.cpp" line="110"/>
         <source>Cannot create a placeholder because a file with the placeholder name already exist</source>
-        <translation type="unfinished"/>
+        <translation>Не удается создать заполнитель, поскольку файл с таким именем уже существует</translation>
     </message>
 </context>
 <context>
@@ -3595,12 +3595,12 @@ Note that using any logging command line options will override the settings.</so
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="393"/>
         <source>New Version Available</source>
-        <translation type="unfinished"/>
+        <translation>Доступна новая версия</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="399"/>
         <source>&lt;p&gt;A new version of the %1 Client is available.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; is available for download. The installed version is %3.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Доступна новая версия приложения %1.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; доступна для загрузки. Установленная версия: %3.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="412"/>
@@ -3611,37 +3611,37 @@ Note that using any logging command line options will override the settings.</so
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="413"/>
         <source>Skip this time</source>
-        <translation type="unfinished"/>
+        <translation>Пропустить в этот раз</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="414"/>
         <source>Get update</source>
-        <translation type="unfinished"/>
+        <translation>Получить обновление</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="441"/>
         <source>Update Failed</source>
-        <translation type="unfinished"/>
+        <translation>Обновление не удалось</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="447"/>
         <source>&lt;p&gt;A new version of the %1 Client is available but the updating process failed.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; has been downloaded. The installed version is %3.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Доступна новая версия клиента %1, но процесс обновления не удался. &lt;/p&gt;&lt;p&gt;Было скачано &lt;b&gt;%2&lt;/b&gt;. Установленная версия — %3.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="461"/>
         <source>Ask again later</source>
-        <translation type="unfinished"/>
+        <translation>Попросить снова позже</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="462"/>
         <source>Restart and update</source>
-        <translation type="unfinished"/>
+        <translation>Перезапустить и продолжить</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="463"/>
         <source>Update manually</source>
-        <translation type="unfinished"/>
+        <translation>Обновить вручную</translation>
     </message>
 </context>
 <context>
@@ -3649,7 +3649,7 @@ Note that using any logging command line options will override the settings.</so
     <message>
         <location filename="../src/gui/newwizard/states/accountconfiguredsetupwizardstate.cpp" line="82"/>
         <source>Invalid local download directory: %1</source>
-        <translation type="unfinished"/>
+        <translation>Недопустимый локальный каталог загрузки:% 1</translation>
     </message>
 </context>
 <context>
@@ -3657,17 +3657,17 @@ Note that using any logging command line options will override the settings.</so
     <message>
         <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.cpp" line="31"/>
         <source>Use &amp;virtual files instead of downloading content immediately</source>
-        <translation type="unfinished"/>
+        <translation>Использовать &amp;виртуальные файлы вместо немедленного скачивания содержимого</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.cpp" line="48"/>
         <source>%1 (recommended)</source>
-        <translation type="unfinished"/>
+        <translation>% 1 (рекомендуется)</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.cpp" line="66"/>
         <source>The virtual filesystem feature is not available for this installation.</source>
-        <translation type="unfinished"/>
+        <translation>Функция виртуальной файловой системы недоступна для данной установки.</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.cpp" line="70"/>
@@ -3680,12 +3680,12 @@ Note that using any logging command line options will override the settings.</so
     <message>
         <location filename="../src/gui/newwizard/pages/basiccredentialssetupwizardpage.cpp" line="27"/>
         <source>Please enter your credentials to log in to your account.</source>
-        <translation type="unfinished"/>
+        <translation>Пожалуйста, введите свои учетные данные для входа в свою учетную запись.</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/pages/basiccredentialssetupwizardpage.cpp" line="34"/>
         <source>Connecting to &lt;a href=&apos;%1&apos; style=&apos;color: %2;&apos;&gt;%1&lt;/a&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Подключение к &lt;a href=&apos;%1&apos; style=&apos;color: %2;&apos;&gt;%1&lt;/a&gt;</translation>
     </message>
 </context>
 <context>
@@ -3693,7 +3693,7 @@ Note that using any logging command line options will override the settings.</so
     <message>
         <location filename="../src/gui/newwizard/states/basiccredentialssetupwizardstate.cpp" line="42"/>
         <source>Invalid credentials</source>
-        <translation type="unfinished"/>
+        <translation>Неверные учетные данные</translation>
     </message>
 </context>
 <context>
@@ -3701,13 +3701,13 @@ Note that using any logging command line options will override the settings.</so
     <message>
         <location filename="../src/gui/newwizard/pages/legacywebfingersetupwizardpage.cpp" line="28"/>
         <source>Connecting to &lt;a href=&apos;%1&apos; style=&apos;color: %2;&apos;&gt;%1&lt;/a&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Подключение к &lt;a href=&apos;%1&apos; style=&apos;color: %2;&apos;&gt;%1&lt;/a&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/pages/legacywebfingersetupwizardpage.cpp" line="51"/>
         <source>Please enter your %1:</source>
         <comment>Please enter your [username, e-mail address, ...]:</comment>
-        <translation type="unfinished"/>
+        <translation>Пожалуйста, введите свой% 1:</translation>
     </message>
 </context>
 <context>
@@ -3715,12 +3715,12 @@ Note that using any logging command line options will override the settings.</so
     <message>
         <location filename="../src/gui/newwizard/states/legacywebfingersetupwizardstate.cpp" line="39"/>
         <source>Failed to parse WebFinger response: %1</source>
-        <translation type="unfinished"/>
+        <translation>Не удалось проанализировать ответ WebFinger:% 1</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/states/legacywebfingersetupwizardstate.cpp" line="44"/>
         <source>WebFinger endpoint did not send href attribute</source>
-        <translation type="unfinished"/>
+        <translation>Конечная точка WebFinger не отправила атрибут href</translation>
     </message>
 </context>
 <context>
@@ -3728,17 +3728,17 @@ Note that using any logging command line options will override the settings.</so
     <message>
         <location filename="../src/gui/newwizard/pages/oauthcredentialssetupwizardpage.cpp" line="33"/>
         <source>Connecting to &lt;a href=&apos;%1&apos; style=&apos;color: %2;&apos;&gt;%1&lt;/a&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Подключение к &lt;a href=&apos;%1&apos; style=&apos;color: %2;&apos;&gt;%1&lt;/a&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/pages/oauthcredentialssetupwizardpage.cpp" line="43"/>
         <source>Reopen Browser</source>
-        <translation type="unfinished"/>
+        <translation>Снова откройте браузер</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/pages/oauthcredentialssetupwizardpage.cpp" line="47"/>
         <source>Please use your browser to log in to %1.</source>
-        <translation type="unfinished"/>
+        <translation>Пожалуйста, используйте ваш браузер для входа в систему %1.</translation>
     </message>
 </context>
 <context>
@@ -3746,17 +3746,17 @@ Note that using any logging command line options will override the settings.</so
     <message>
         <location filename="../src/gui/newwizard/states/oauthcredentialssetupwizardstate.cpp" line="50"/>
         <source>Error while trying to log in to OAuth2-enabled server.</source>
-        <translation type="unfinished"/>
+        <translation>Ошибка при попытке войти на сервер с поддержкой OAuth2.</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/states/oauthcredentialssetupwizardstate.cpp" line="55"/>
         <source>Server reports that OAuth2 is not supported.</source>
-        <translation type="unfinished"/>
+        <translation>Сервер сообщает, что OAuth2 не поддерживается.</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/states/oauthcredentialssetupwizardstate.cpp" line="59"/>
         <source>Oauth2 authentication requires a secured connection.</source>
-        <translation type="unfinished"/>
+        <translation>Для аутентификации по Oauth2 требуется безопасное соединение.</translation>
     </message>
 </context>
 <context>
@@ -3772,18 +3772,19 @@ Note that using any logging command line options will override the settings.</so
     <message>
         <location filename="../src/gui/newwizard/states/serverurlsetupwizardstate.cpp" line="84"/>
         <source>Invalid server URL</source>
-        <translation type="unfinished"/>
+        <translation>Недопустимый URL-адрес сервера</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/states/serverurlsetupwizardstate.cpp" line="90"/>
         <source>Insecure connection</source>
-        <translation type="unfinished"/>
+        <translation>Небезопасное соединение</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/states/serverurlsetupwizardstate.cpp" line="91"/>
         <source>The connection to %1 is insecure.
 Are you sure you want to proceed?</source>
-        <translation type="unfinished"/>
+        <translation>Соединение с %1 небезопасно.
+Вы уверены, что хотите продолжить?</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/states/serverurlsetupwizardstate.cpp" line="98"/>
@@ -3793,7 +3794,7 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/gui/newwizard/states/serverurlsetupwizardstate.cpp" line="101"/>
         <source>Insecure server rejected by user</source>
-        <translation type="unfinished"/>
+        <translation>Небезопасный сервер отклонен пользователем</translation>
     </message>
 </context>
 <context>
@@ -3801,12 +3802,12 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/gui/newwizard/setupwizardcontroller.cpp" line="198"/>
         <source>Invalid credentials</source>
-        <translation type="unfinished"/>
+        <translation>Неверные учетные данные</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/setupwizardcontroller.cpp" line="201"/>
         <source>Failed to retrieve user information from server</source>
-        <translation type="unfinished"/>
+        <translation>Не удалось получить информацию о пользователе с сервера</translation>
     </message>
 </context>
 <context>
@@ -3814,22 +3815,22 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/gui/newwizard/setupwizardwindow.cpp" line="108"/>
         <source>Finish</source>
-        <translation type="unfinished"/>
+        <translation>Отделка</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/setupwizardwindow.cpp" line="110"/>
         <source>Next &gt;</source>
-        <translation type="unfinished"/>
+        <translation>Следующий&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/setupwizardwindow.cpp" line="155"/>
         <source>Cancel Setup</source>
-        <translation type="unfinished"/>
+        <translation>отменить настроить</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/setupwizardwindow.cpp" line="155"/>
         <source>Do you really want to cancel the account setup?</source>
-        <translation type="unfinished"/>
+        <translation>Вы действительно хотите отменить настройку своей учетной записи?</translation>
     </message>
 </context>
 <context>
@@ -3837,32 +3838,32 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="300"/>
         <source>Please sign in</source>
-        <translation type="unfinished"/>
+        <translation>Пожалуйста войдите в систему</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="328"/>
         <source>Folder %1: %2</source>
-        <translation type="unfinished"/>
+        <translation>Каталог %1: %2</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="337"/>
         <source>Unresolved %1 conflicts</source>
-        <translation type="unfinished"/>
+        <translation>Неразрешённые конфликты %1</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="340"/>
         <source>Ignored errors %1</source>
-        <translation type="unfinished"/>
+        <translation>Проигнорировано ошибок %1</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="355"/>
         <source>There are no sync folders configured.</source>
-        <translation type="unfinished"/>
+        <translation>Нет настроенных каталогов для синхронизации.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="389"/>
         <source>Log in...</source>
-        <translation type="unfinished"/>
+        <translation>Вход...</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="391"/>
@@ -3872,43 +3873,43 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="488"/>
         <source>Recent Changes</source>
-        <translation type="unfinished"/>
+        <translation>Недавние изменения</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="378"/>
         <source>Open folder &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Открыть каталог &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="231"/>
         <source>The server on account %1 runs an unsupported version %2. Using this client with unsupported server versions is untested and potentially dangerous. Proceed at your own risk.</source>
-        <translation type="unfinished"/>
+        <translation>Учётная запись сервера %1 работает с неподдерживаемой версией %2. Использование клиента с неподдерживаемой версией сервера не тестировалось и потенциально опасно. Продолжайте на свой страх и риск.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="287"/>
         <source>Account %1</source>
-        <translation type="unfinished"/>
+        <translation>Аккаунт %1</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="385"/>
         <location filename="../src/gui/owncloudgui.cpp" line="618"/>
         <source>Stop synchronization</source>
-        <translation type="unfinished"/>
+        <translation>Остановить синхронизацию</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="611"/>
         <source>Create a new account</source>
-        <translation type="unfinished"/>
+        <translation>Создайте новый аккаунт</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="731"/>
         <source>Unknown status</source>
-        <translation type="unfinished"/>
+        <translation>Неизвестный статус</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="747"/>
         <source>Details...</source>
-        <translation type="unfinished"/>
+        <translation>Детали...</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="657"/>
@@ -3919,7 +3920,7 @@ Are you sure you want to proceed?</source>
         <location filename="../src/gui/owncloudgui.cpp" line="383"/>
         <location filename="../src/gui/owncloudgui.cpp" line="615"/>
         <source>Resume synchronization</source>
-        <translation type="unfinished"/>
+        <translation>Возобновление синхронизации</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="664"/>
@@ -3929,67 +3930,67 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="282"/>
         <source>Disconnected from %1</source>
-        <translation type="unfinished"/>
+        <translation>Отключен от %1</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="230"/>
         <source>Unsupported Server Version</source>
-        <translation type="unfinished"/>
+        <translation>Версия сервера не поддерживается</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="272"/>
         <source>Disconnected</source>
-        <translation type="unfinished"/>
+        <translation>Отключено</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="274"/>
         <source>Disconnected from some accounts</source>
-        <translation type="unfinished"/>
+        <translation>Отключено от некоторых учётных записей</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="285"/>
         <source>Disconnected from accounts:</source>
-        <translation type="unfinished"/>
+        <translation>Отключен от учетных записей:</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="301"/>
         <source>Signed out</source>
-        <translation type="unfinished"/>
+        <translation>Вышли из аккаунта</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="305"/>
         <source>Account synchronization is disabled</source>
-        <translation type="unfinished"/>
+        <translation>Синхронизация учётной записи отключена</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="306"/>
         <source>Synchronization is paused</source>
-        <translation type="unfinished"/>
+        <translation>Синхронизация приостановлена</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="352"/>
         <source>Up to date (%1)</source>
-        <translation type="unfinished"/>
+        <translation>Синхронизировано (%1)</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="356"/>
         <source>No sync folders configured</source>
-        <translation type="unfinished"/>
+        <translation>Не настроено ни одного каталога для синхронизации</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="607"/>
         <source>Show %1</source>
-        <translation type="unfinished"/>
+        <translation>Показывать %1</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="661"/>
         <source>About %1</source>
-        <translation type="unfinished"/>
+        <translation>Про %1</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="744"/>
         <source>No items synced recently</source>
-        <translation type="unfinished"/>
+        <translation>Недавно ничего не синхронизировалось</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="761"/>
@@ -4004,17 +4005,17 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="779"/>
         <source>Syncing %1 of %2  (%3 left)</source>
-        <translation type="unfinished"/>
+        <translation>Синхронизация %1 из %2  (осталось %3)</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="784"/>
         <source>Syncing %1 of %2</source>
-        <translation type="unfinished"/>
+        <translation>Синхронизирую %1 из %2</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="793"/>
         <source>Syncing %1 (%2 left)</source>
-        <translation type="unfinished"/>
+        <translation>Синхронизация %1 (осталось %2)</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="796"/>
@@ -4024,12 +4025,12 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="805"/>
         <source>%1 (%2, %3)</source>
-        <translation type="unfinished"/>
+        <translation>%1 (%2, %3)</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="954"/>
         <source>User paused sync for account &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Пользователь приостановил синхронизацию для учетной записи &quot;%1&quot;</translation>
     </message>
 </context>
 <context>
@@ -4037,7 +4038,7 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/common/utility.cpp" line="339"/>
         <source>in the future</source>
-        <translation type="unfinished"/>
+        <translation>в будущем</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="334"/>
@@ -4052,12 +4053,12 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/common/utility.cpp" line="350"/>
         <source>now</source>
-        <translation type="unfinished"/>
+        <translation>сейчас</translation>
     </message>
     <message>
         <location filename="../src/common/utility.cpp" line="352"/>
         <source>less than a minute ago</source>
-        <translation type="unfinished"/>
+        <translation>менее минуты назад</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="356"/>
@@ -4076,17 +4077,17 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/gui/newwizard/jobs/resolveurljobfactory.cpp" line="57"/>
         <source>Could not detect compatible server at %1</source>
-        <translation type="unfinished"/>
+        <translation>Не удалось найти совместимый сервер по адресу %1</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/jobs/resolveurljobfactory.cpp" line="86"/>
         <source>User rejected redirect from %1 to %2</source>
-        <translation type="unfinished"/>
+        <translation>Пользователь отклонил перенаправление с %1 на %2</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/jobs/resolveurljobfactory.cpp" line="114"/>
         <source>User rejected invalid SSL certificate</source>
-        <translation type="unfinished"/>
+        <translation>Пользователь отклонил недействительный сертификат SSL</translation>
     </message>
 </context>
 <context>
@@ -4099,7 +4100,7 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/gui/newwizard/pages/serverurlsetupwizardpage.ui" line="88"/>
         <source>What is your server&apos;s address?</source>
-        <translation type="unfinished"/>
+        <translation>Какой адрес у вашего сервера?</translation>
     </message>
 </context>
 <context>
@@ -4107,7 +4108,7 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/gui/newwizard/enums.cpp" line="29"/>
         <source>Server URL</source>
-        <translation type="unfinished"/>
+        <translation>URL сервера</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/enums.cpp" line="31"/>
@@ -4127,7 +4128,7 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/gui/newwizard/enums.cpp" line="38"/>
         <source>Sync Options</source>
-        <translation type="unfinished"/>
+        <translation>Параметры синхронизации</translation>
     </message>
 </context>
 <context>
@@ -4135,7 +4136,7 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/gui/newwizard/setupwizardwindow.ui" line="14"/>
         <source>Add New Account</source>
-        <translation type="unfinished"/>
+        <translation>Добавить новый аккаунт</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/setupwizardwindow.ui" line="90"/>
@@ -4150,7 +4151,7 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/gui/newwizard/setupwizardwindow.ui" line="141"/>
         <source>&lt; Back</source>
-        <translation type="unfinished"/>
+        <translation>&lt;Назад</translation>
     </message>
 </context>
 <context>
@@ -4174,7 +4175,7 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/libsync/syncfileitem.cpp" line="98"/>
         <source>Undefined</source>
-        <translation type="unfinished"/>
+        <translation>Неопределенный</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncfileitem.cpp" line="100"/>
@@ -4190,7 +4191,7 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/libsync/syncfileitem.cpp" line="104"/>
         <source>Info</source>
-        <translation type="unfinished"/>
+        <translation>Инфо</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncfileitem.cpp" line="106"/>
@@ -4205,22 +4206,22 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/libsync/syncfileitem.cpp" line="110"/>
         <source>File Ignored</source>
-        <translation type="unfinished"/>
+        <translation>Файл игнорируется</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncfileitem.cpp" line="112"/>
         <source>Restored</source>
-        <translation type="unfinished"/>
+        <translation>Восстановленный</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncfileitem.cpp" line="116"/>
         <source>Blacklisted</source>
-        <translation type="unfinished"/>
+        <translation>Занесен в черный список</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncfileitem.cpp" line="118"/>
         <source>Excluded</source>
-        <translation type="unfinished"/>
+        <translation>Исключенный</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncfileitem.cpp" line="120"/>
@@ -4230,7 +4231,7 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/libsync/syncfileitem.cpp" line="122"/>
         <source>Filename Reserved</source>
-        <translation type="unfinished"/>
+        <translation>Имя файла зарезервировано</translation>
     </message>
 </context>
 <context>
@@ -4243,7 +4244,7 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/libsync/theme.cpp" line="651"/>
         <source>E-mail address</source>
-        <translation type="unfinished"/>
+        <translation>E-mail адрес </translation>
     </message>
 </context>
 <context>
@@ -4251,12 +4252,13 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/gui/updater/updatedownloadeddialog.ui" line="20"/>
         <source>Update downloaded</source>
-        <translation type="unfinished"/>
+        <translation>Обновление загружено</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/updatedownloadeddialog.ui" line="53"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:11pt; font-weight:700;&quot;&gt;Restart required&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:11pt; font-weight:700;&quot;&gt;Требуется перезагрузка
+&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
 </context>
 <context>
@@ -4299,7 +4301,7 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/libsync/platform_win.cpp" line="110"/>
         <source>Shutting down %1</source>
-        <translation type="unfinished"/>
+        <translation>Выключение %1</translation>
     </message>
 </context>
 <context>
@@ -4315,12 +4317,12 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/gui/main.cpp" line="472"/>
         <source>Error accessing the configuration file</source>
-        <translation type="unfinished"/>
+        <translation>Ошибка при доступе к файлу конфигурации</translation>
     </message>
     <message>
         <location filename="../src/gui/main.cpp" line="473"/>
         <source>There was an error while accessing the configuration file at %1.</source>
-        <translation type="unfinished"/>
+        <translation>При обращении к файлу конфигурации %1 произошла ошибка.</translation>
     </message>
 </context>
 <context>
@@ -4328,7 +4330,7 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/libsync/theme.cpp" line="384"/>
         <source>%1 %2%7%8Libraries Qt %3, %4%7Using virtual files plugin: %5%7%6</source>
-        <translation type="unfinished"/>
+        <translation>%1 %2 %3 %4%8Библиотеки QT %5, %6%8Используется плагин виртуальных файлов: %7%8</translation>
     </message>
 </context>
 <context>
@@ -4336,7 +4338,7 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/libsync/theme.cpp" line="367"/>
         <source>%1 (Built against Qt %2)</source>
-        <translation type="unfinished"/>
+        <translation>%1 (Собрано с Qt %2)</translation>
     </message>
 </context>
 <context>
@@ -4352,22 +4354,22 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/common/pinstate.cpp" line="27"/>
         <source>Always available locally</source>
-        <translation type="unfinished"/>
+        <translation>Всегда доступно локально</translation>
     </message>
     <message>
         <location filename="../src/common/pinstate.cpp" line="29"/>
         <source>Currently available locally</source>
-        <translation type="unfinished"/>
+        <translation>Сейчас доступно локально</translation>
     </message>
     <message>
         <location filename="../src/common/pinstate.cpp" line="31"/>
         <source>Some available online only</source>
-        <translation type="unfinished"/>
+        <translation>Часть доступна локально</translation>
     </message>
     <message>
         <location filename="../src/common/pinstate.cpp" line="35"/>
         <source>Available online only</source>
-        <translation type="unfinished"/>
+        <translation>Доступно только при наличии сети</translation>
     </message>
 </context>
 <context>
@@ -4375,17 +4377,17 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="33"/>
         <source>Virtual file created</source>
-        <translation type="unfinished"/>
+        <translation>Виртуальный файл создан</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="35"/>
         <source>Replaced by virtual file</source>
-        <translation type="unfinished"/>
+        <translation>Заменено виртуальным файлом</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="37"/>
         <source>Downloaded</source>
-        <translation type="unfinished"/>
+        <translation>Скачано</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="40"/>
@@ -4395,22 +4397,22 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="45"/>
         <source>Deleted</source>
-        <translation type="unfinished"/>
+        <translation>Удалено</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="47"/>
         <source>%1 moved to %2</source>
-        <translation type="unfinished"/>
+        <translation>%1 Перемещено в %2</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="49"/>
         <source>Ignored</source>
-        <translation type="unfinished"/>
+        <translation>Проигнорирован</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="43"/>
         <source>Server version downloaded, local copy was backed up as conflict file</source>
-        <translation type="unfinished"/>
+        <translation>Серверная версия загружена, локальная копия сохранена как файл конфликта</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="51"/>
@@ -4420,7 +4422,7 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="53"/>
         <source>Updated local metadata</source>
-        <translation type="unfinished"/>
+        <translation>Обновлены локальные метаданные</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="55"/>
@@ -4431,37 +4433,37 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="68"/>
         <source>downloading</source>
-        <translation type="unfinished"/>
+        <translation>скачивание</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="70"/>
         <source>uploading</source>
-        <translation type="unfinished"/>
+        <translation>загрузка</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="72"/>
         <source>deleting</source>
-        <translation type="unfinished"/>
+        <translation>удаление</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="74"/>
         <source>moving</source>
-        <translation type="unfinished"/>
+        <translation>перемещение</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="76"/>
         <source>ignoring</source>
-        <translation type="unfinished"/>
+        <translation>игнорирование</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="78"/>
         <source>error</source>
-        <translation type="unfinished"/>
+        <translation>ошибка</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="80"/>
         <source>updating local metadata</source>
-        <translation type="unfinished"/>
+        <translation>обновление локальных метаданных</translation>
     </message>
 </context>
 <context>
@@ -4469,32 +4471,32 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="52"/>
         <source>Could not open browser</source>
-        <translation type="unfinished"/>
+        <translation>Невозможно открыть браузер</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="53"/>
         <source>There was an error when launching the browser to go to URL %1. Maybe no default browser is configured?</source>
-        <translation type="unfinished"/>
+        <translation>При запуске браузера чтобы открыть адрес %1 произошла ошибка. Может быть не настроен браузер по умолчанию?</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="76"/>
         <source>Could not open email client</source>
-        <translation type="unfinished"/>
+        <translation>Не удалось открыть почтового клиента</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="77"/>
         <source>There was an error when launching the email client to create a new message. Maybe no default email client is configured?</source>
-        <translation type="unfinished"/>
+        <translation>При запуске почтового клиента для создания нового сообщения произошла ошибка. Возможно, почтовый клиент по умолчанию не настроен?</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="90"/>
         <source>Make always available locally</source>
-        <translation type="unfinished"/>
+        <translation>Сделать всегда доступным локально</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="95"/>
         <source>Free up local space</source>
-        <translation type="unfinished"/>
+        <translation>Освободить локальное место</translation>
     </message>
 </context>
 <context>
@@ -4502,7 +4504,7 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/gui/main.cpp" line="184"/>
         <source>Some settings were configured in newer versions of this client and use features that are not available in this version</source>
-        <translation type="unfinished"/>
+        <translation>Некоторые параметры были настроены в более новых версиях этого клиента и используют функции, недоступные в этой версии</translation>
     </message>
 </context>
 </TS>

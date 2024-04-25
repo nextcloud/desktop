@@ -444,11 +444,6 @@ File synchronization desktop utility.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/aboutdialog.ui" line="96"/>
-        <source>Updates</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../src/gui/aboutdialog.ui" line="108"/>
         <source>&amp;Update Channel</source>
         <translation type="unfinished"></translation>
@@ -474,24 +469,24 @@ File synchronization desktop utility.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/aboutdialog.cpp" line="131"/>
+        <location filename="../src/gui/aboutdialog.cpp" line="153"/>
         <source>Change update channel?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/aboutdialog.cpp" line="132"/>
+        <location filename="../src/gui/aboutdialog.cpp" line="154"/>
         <source>The update channel determines which client updates will be offered for installation. The &quot;stable&quot; channel contains only upgrades that are considered reliable, while the versions in the &quot;beta&quot; channel may contain newer features and bugfixes, but have not yet been tested thoroughly.
 
 Note that this selects only what pool upgrades are taken from, and that there are no downgrades: So going back from the beta channel to the stable channel usually cannot be done immediately and means waiting for a stable version that is newer than the currently installed beta version.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/aboutdialog.cpp" line="144"/>
+        <location filename="../src/gui/aboutdialog.cpp" line="166"/>
         <source>Change update channel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/aboutdialog.cpp" line="145"/>
+        <location filename="../src/gui/aboutdialog.cpp" line="167"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3403,53 +3398,53 @@ Note that using any logging command line options will override the settings.</so
 <context>
     <name>OCC::WindowsUpdater</name>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="386"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="391"/>
         <source>New Version Available</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="392"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="397"/>
         <source>&lt;p&gt;A new version of the %1 Client is available.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; is available for download. The installed version is %3.&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="405"/>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="453"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="410"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="458"/>
         <source>Skip this version</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="406"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="411"/>
         <source>Skip this time</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="407"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="412"/>
         <source>Get update</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="434"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="439"/>
         <source>Update Failed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="440"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="445"/>
         <source>&lt;p&gt;A new version of the %1 Client is available but the updating process failed.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; has been downloaded. The installed version is %3.&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="454"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="459"/>
         <source>Ask again later</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="455"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="460"/>
         <source>Restart and update</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="456"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="461"/>
         <source>Update manually</source>
         <translation type="unfinished"></translation>
     </message>
