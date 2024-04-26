@@ -102,7 +102,13 @@ public class RemoteChangeObserver: NSObject, NKCommonDelegate, URLSessionWebSock
 
     private func configureNotifyPush() async {
         let (_, capabilitiesData, error) = await remoteInterface.fetchCapabilities(
-            options: .init(), taskHandler: { _ in }
+            options: .init(), 
+            taskHandler: { task in
+                NSFileProviderManager(for: self.domain)?.register(
+                    task,
+                    forItemWithIdentifier: .rootContainer,
+                    completionHandler: { _ in })
+            }
         )
 
         guard error == .success else {
