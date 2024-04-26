@@ -7,7 +7,7 @@ jobs:
     name: macOS Build and Test
     runs-on: macos-latest
     env:
-      CRAFT_TARGET: macos-64-clang
+      CRAFT_TARGET: macos-clang-arm64
       CRAFT_MASTER_LOCATION: ${{ github.workspace }}/CraftMaster
       CRAFT_MASTER_CONFIG: ${{ github.workspace }}/craftmaster.ini
     steps:
