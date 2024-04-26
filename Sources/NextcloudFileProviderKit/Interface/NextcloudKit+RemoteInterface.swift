@@ -202,4 +202,15 @@ extension NextcloudKit: RemoteInterface {
             fileName: fileName, mimeType: mimeType, directory: directory
         )
     }
+
+    public func fetchCapabilities(
+        options: NKRequestOptions = .init(),
+        taskHandler: @escaping (_ task: URLSessionTask) -> Void = { _ in }
+    ) async -> (account: String, data: Data?, error: NKError) {
+        return await withCheckedContinuation { continuation in
+            getCapabilities(options: options, taskHandler: taskHandler) { account, data, error in
+                continuation.resume(returning: (account, data, error))
+            }
+        }
+    }
 }

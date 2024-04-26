@@ -92,4 +92,8 @@ public protocol RemoteInterface {
         options: NKRequestOptions,
         taskHandler: @escaping (_ task: URLSessionTask) -> Void
     ) async -> (account: String, data: Data?, error: NKError)
+
+    func fetchCapabilities(
+        options: NKRequestOptions, taskHandler: @escaping (_ task: URLSessionTask) -> Void
+    ) async -> (account: String, data: Data?, error: NKError)
 }
