@@ -192,21 +192,6 @@ extension NextcloudKit: RemoteInterface {
         }
     }
 
-    public func getInternalType(
-        fileName: String, mimeType: String, directory: Bool
-    ) -> (
-        mimeType: String,
-        classFile: String,
-        iconName: String,
-        typeIdentifier: String,
-        fileNameWithoutExt: String,
-        ext: String
-    ) {
-        return nkCommonInstance.getInternalType(
-            fileName: fileName, mimeType: mimeType, directory: directory
-        )
-    }
-
     public func fetchCapabilities(
         options: NKRequestOptions = .init(),
         taskHandler: @escaping (_ task: URLSessionTask) -> Void = { _ in }
