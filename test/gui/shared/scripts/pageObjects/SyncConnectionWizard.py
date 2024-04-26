@@ -71,9 +71,9 @@ class SyncConnectionWizard:
         "visible": 1,
     }
     SPACE_NAME_SELECTOR = {
-        "column": 2,
-        "container": names.add_Folder_Sync_Connection_tableView_QTableView,
-        "type": "QModelIndex",
+        "container": names.quickWidget_scrollView_ScrollView,
+        "type": "Label",
+        "visible": True,
     }
 
     @staticmethod
