@@ -7,7 +7,6 @@
 
 import Alamofire
 import Foundation
-import NextcloudKit
 
 public enum EnumerateDepth: String {
     case target = "0"
@@ -21,7 +20,7 @@ public protocol RemoteInterface {
 
     func createFolder(
         remotePath: String,
-        options: NKRequestOptions,
+        options: RemoteRequestOptions,
         taskHandler: @escaping (_ task: URLSessionTask) -> Void
     ) async -> (account: String, ocId: String?, date: NSDate?, error: Error?)
 
@@ -30,7 +29,7 @@ public protocol RemoteInterface {
         localPath: String,
         creationDate: Date?,
         modificationDate: Date?,
-        options: NKRequestOptions,
+        options: RemoteRequestOptions,
         requestHandler: @escaping (_ request: UploadRequest) -> Void,
         taskHandler: @escaping (_ task: URLSessionTask) -> Void,
         progressHandler: @escaping (_ progress: Progress) -> Void
@@ -48,7 +47,7 @@ public protocol RemoteInterface {
     func download(
         remotePath: String,
         localPath: String,
-        options: NKRequestOptions,
+        options: RemoteRequestOptions,
         requestHandler: @escaping (_ request: DownloadRequest) -> Void,
         taskHandler: @escaping (_ task: URLSessionTask) -> Void,
         progressHandler: @escaping (_ progress: Progress) -> Void
@@ -68,19 +67,19 @@ public protocol RemoteInterface {
         showHiddenFiles: Bool,
         includeHiddenFiles: [String],
         requestBody: Data?,
-        options: NKRequestOptions,
+        options: RemoteRequestOptions,
         taskHandler: @escaping (_ task: URLSessionTask) -> Void
-    ) async -> (account: String, files: [NKFile], data: Data?, error: Error?)
+    ) async -> (account: String, files: [RemoteFileMetadata], data: Data?, error: Error?)
 
     func delete(
         remotePath: String,
-        options: NKRequestOptions,
+        options: RemoteRequestOptions,
         taskHandler: @escaping (_ task: URLSessionTask) -> Void
     ) async -> (account: String, error: Error?)
 
     func downloadThumbnail(
         url: URL,
-        options: NKRequestOptions,
+        options: RemoteRequestOptions,
         taskHandler: @escaping (_ task: URLSessionTask) -> Void
     ) async -> (account: String, data: Data?, error: Error?)
 
