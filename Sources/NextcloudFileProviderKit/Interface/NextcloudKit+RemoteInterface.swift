@@ -80,6 +80,26 @@ extension NextcloudKit: RemoteInterface {
         }
     }
 
+    public func move(
+        remotePathSource: String,
+        remotePathDestination: String,
+        overwrite: Bool,
+        options: NKRequestOptions,
+        taskHandler: @escaping (URLSessionTask) -> Void
+    ) async -> (account: String, error: NKError) {
+        return await withCheckedContinuation { continuation in
+            moveFileOrFolder(
+                serverUrlFileNameSource: remotePathSource,
+                serverUrlFileNameDestination: remotePathDestination,
+                overwrite: overwrite,
+                options: options,
+                taskHandler: taskHandler
+            ) { account, error in
+                continuation.resume(returning: (account, error))
+            }
+        }
+    }
+
     public func download(
         remotePath: String,
         localPath: String,

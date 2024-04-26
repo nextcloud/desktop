@@ -46,6 +46,14 @@ public protocol RemoteInterface {
         remoteError: NKError
     )
 
+    func move(
+        remotePathSource: String,
+        remotePathDestination: String,
+        overwrite: Bool,
+        options: NKRequestOptions,
+        taskHandler: @escaping (_ task: URLSessionTask) -> Void
+    ) async -> (account: String, error: NKError)
+
     func download(
         remotePath: String,
         localPath: String,
