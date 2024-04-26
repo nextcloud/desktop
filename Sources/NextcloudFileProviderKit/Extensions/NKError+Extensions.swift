@@ -17,54 +17,33 @@ import Foundation
 import NextcloudKit
 
 extension NKError {
-    static var noChangesErrorCode: Int {
-        -200
-    }
 
-    var isCouldntConnectError: Bool {
-        errorCode == -9999 || errorCode == -1001 || errorCode == -1004 || errorCode == -1005
-            || errorCode == -1009 || errorCode == -1012 || errorCode == -1200 || errorCode == -1202
-            || errorCode == 500 || errorCode == 503 || errorCode == 200
-    }
-
-    var isUnauthenticatedError: Bool {
-        errorCode == -1013
-    }
-
-    var isGoingOverQuotaError: Bool {
-        errorCode == 507
-    }
-
-    var isNotFoundError: Bool {
-        errorCode == 404
-    }
-
-    var isNoChangesError: Bool {
-        errorCode == NKError.noChangesErrorCode
-    }
-
-    var isUnauthorizedError: Bool {
-        errorCode == 401
-    }
-
-    var matchesCollisionError: Bool {
-        errorCode == 405
-    }
-
+    var isCouldntConnectError: Bool { RemoteErrorType(code: errorCode) == .couldNotConnect }
+    var isUnauthenticatedError: Bool { RemoteErrorType(code: errorCode) == .unauthorised }
+    var isGoingOverQuotaError: Bool { RemoteErrorType(code: errorCode) == .overQuota }
+    var isNotFoundError: Bool { RemoteErrorType(code: errorCode) == .notFound }
+    var isNoChangesError: Bool { RemoteErrorType(code: errorCode) == .noChanges }
+    var isUnauthorizedError: Bool { isUnauthenticatedError }
+    var matchesCollisionError: Bool { RemoteErrorType(code: errorCode) == .collision }
+    
     var fileProviderError: NSFileProviderError? {
         if self == .success {
-            nil
-        } else if isNotFoundError {
-            NSFileProviderError(.noSuchItem)
-        } else if isCouldntConnectError {
+            return nil
+        }
+
+        let errorType = RemoteErrorType(code: self.errorCode)
+        switch (errorType) {
+        case .notFound:
+            return NSFileProviderError(.noSuchItem)
+        case .couldNotConnect:
             // Provide something the file provider can do something with
-            NSFileProviderError(.serverUnreachable)
-        } else if isUnauthenticatedError || isUnauthorizedError {
-            NSFileProviderError(.notAuthenticated)
-        } else if isGoingOverQuotaError {
-            NSFileProviderError(.insufficientQuota)
-        } else {
-            NSFileProviderError(.cannotSynchronize)
+            return NSFileProviderError(.serverUnreachable)
+        case .unauthorised:
+            return NSFileProviderError(.notAuthenticated)
+        case .overQuota:
+            return NSFileProviderError(.insufficientQuota)
+        default:
+            return NSFileProviderError(.cannotSynchronize)
         }
     }
 }
