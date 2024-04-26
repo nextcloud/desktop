@@ -6,6 +6,7 @@
 //
 
 import Alamofire
+import FileProvider
 import Foundation
 import NextcloudKit
 
@@ -23,7 +24,7 @@ extension NextcloudKit: RemoteInterface {
         remotePath: String,
         options: RemoteRequestOptions = .init(),
         taskHandler: @escaping (URLSessionTask) -> Void = { _ in }
-    ) async -> (account: String, ocId: String?, date: NSDate?, error: Error?) {
+    ) async -> (account: String, ocId: String?, date: NSDate?, error: NSFileProviderError?) {
         return await withCheckedContinuation { continuation in
             createFolder(
                 serverUrlFileName: remotePath,
@@ -52,7 +53,7 @@ extension NextcloudKit: RemoteInterface {
         size: Int64,
         allHeaderFields: [AnyHashable : Any]?,
         afError: AFError?,
-        remoteError: Error?
+        remoteError: NSFileProviderError?
     ) {
         return await withCheckedContinuation { continuation in
             upload(
@@ -93,7 +94,7 @@ extension NextcloudKit: RemoteInterface {
         length: Int64,
         allHeaderFields: [AnyHashable : Any]?,
         afError: AFError?,
-        remoteError: Error?
+        remoteError: NSFileProviderError?
     ) {
         return await withCheckedContinuation { continuation in
             download(
@@ -125,7 +126,9 @@ extension NextcloudKit: RemoteInterface {
         requestBody: Data? = nil,
         options: RemoteRequestOptions = .init(),
         taskHandler: @escaping (URLSessionTask) -> Void = { _ in }
-    ) async -> (account: String, files: [RemoteFileMetadata], data: Data?, error: Error?) {
+    ) async -> (
+        account: String, files: [RemoteFileMetadata], data: Data?, error: NSFileProviderError?
+    ) {
         return await withCheckedContinuation { continuation in
             readFileOrFolder(
                 serverUrlFileName: remotePath,
@@ -145,7 +148,7 @@ extension NextcloudKit: RemoteInterface {
         remotePath: String,
         options: RemoteRequestOptions = .init(),
         taskHandler: @escaping (URLSessionTask) -> Void = { _ in }
-    ) async -> (account: String, error: Error?) {
+    ) async -> (account: String, error: NSFileProviderError?) {
         return await withCheckedContinuation { continuation in
             deleteFileOrFolder(serverUrlFileName: remotePath) { account, error in
                 continuation.resume(returning: (account, error.fileProviderError))
@@ -155,7 +158,7 @@ extension NextcloudKit: RemoteInterface {
 
     public func downloadThumbnail(
         url: URL, options: RemoteRequestOptions, taskHandler: @escaping (URLSessionTask) -> Void
-    ) async -> (account: String, data: Data?, error: Error?) {
+    ) async -> (account: String, data: Data?, error: NSFileProviderError?) {
         await withCheckedContinuation { continuation in
             getPreview(
                 url: url, options: options.toNKRequestOptions(), taskHandler: taskHandler

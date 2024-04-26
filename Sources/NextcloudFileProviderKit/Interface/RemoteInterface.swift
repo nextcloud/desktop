@@ -6,6 +6,7 @@
 //
 
 import Alamofire
+import FileProvider
 import Foundation
 
 public enum EnumerateDepth: String {
@@ -22,7 +23,7 @@ public protocol RemoteInterface {
         remotePath: String,
         options: RemoteRequestOptions,
         taskHandler: @escaping (_ task: URLSessionTask) -> Void
-    ) async -> (account: String, ocId: String?, date: NSDate?, error: Error?)
+    ) async -> (account: String, ocId: String?, date: NSDate?, error: NSFileProviderError?)
 
     func upload(
         remotePath: String,
@@ -41,7 +42,7 @@ public protocol RemoteInterface {
         size: Int64,
         allHeaderFields: [AnyHashable: Any]?,
         afError: AFError?, 
-        remoteError: Error?
+        remoteError: NSFileProviderError?
     )
 
     func download(
@@ -58,7 +59,7 @@ public protocol RemoteInterface {
         length: Int64,
         allHeaderFields: [AnyHashable: Any]?,
         afError: AFError?,
-        remoteError: Error?
+        remoteError: NSFileProviderError?
     )
 
     func enumerate(
@@ -69,19 +70,21 @@ public protocol RemoteInterface {
         requestBody: Data?,
         options: RemoteRequestOptions,
         taskHandler: @escaping (_ task: URLSessionTask) -> Void
-    ) async -> (account: String, files: [RemoteFileMetadata], data: Data?, error: Error?)
+    ) async -> (
+        account: String, files: [RemoteFileMetadata], data: Data?, error: NSFileProviderError?
+    )
 
     func delete(
         remotePath: String,
         options: RemoteRequestOptions,
         taskHandler: @escaping (_ task: URLSessionTask) -> Void
-    ) async -> (account: String, error: Error?)
+    ) async -> (account: String, error: NSFileProviderError?)
 
     func downloadThumbnail(
         url: URL,
         options: RemoteRequestOptions,
         taskHandler: @escaping (_ task: URLSessionTask) -> Void
-    ) async -> (account: String, data: Data?, error: Error?)
+    ) async -> (account: String, data: Data?, error: NSFileProviderError?)
 
     func getInternalType(
         fileName: String,
