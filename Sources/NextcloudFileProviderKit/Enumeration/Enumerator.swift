@@ -141,8 +141,10 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
                 "Enumerating initial page for user: \(self.ncAccount.ncKitAccount, privacy: .public) with serverUrl: \(self.serverUrl, privacy: .public)"
             )
 
-            Self.readServerUrl(serverUrl, ncAccount: ncAccount, ncKit: ncKit) {
-                metadatas, _, _, _, readError in
+            Task {
+                let (metadatas, _, _, _, readError) = await Self.readServerUrl(
+                    serverUrl, ncAccount: ncAccount, ncKit: ncKit
+                )
 
                 guard readError == nil else {
                     Self.logger.error(
@@ -209,15 +211,19 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
 
             // Unlike when enumerating items we can't progressively enumerate items as we need to wait to resolve which items are truly deleted and which
             // have just been moved elsewhere.
-            fullRecursiveScan(
-                ncAccount: ncAccount,
-                ncKit: ncKit,
-                scanChangesOnly: true
-            ) { _, newMetadatas, updatedMetadatas, deletedMetadatas, error in
+            Task {
+                let (
+                    _, newMetadatas, updatedMetadatas, deletedMetadatas, error
+                ) = await fullRecursiveScan(
+                    ncAccount: ncAccount, ncKit: ncKit, scanChangesOnly: true
+                )
 
                 if self.isInvalidated {
                     Self.logger.info(
-                        "Enumerator invalidated during working set change scan. For user: \(self.ncAccount.ncKitAccount, privacy: .public)"
+                        """
+                        Enumerator invalidated during working set change scan.
+                        For user: \(self.ncAccount.ncKitAccount, privacy: .public)
+                        """
                     )
                     observer.finishEnumeratingWithError(NSFileProviderError(.cannotSynchronize))
                     return
@@ -225,7 +231,11 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
 
                 guard error == nil else {
                     Self.logger.info(
-                        "Finished recursive change enumeration of working set for user: \(self.ncAccount.ncKitAccount, privacy: .public) with error: \(error!.errorDescription, privacy: .public)"
+                        """
+                        Finished recursive change enumeration of working set for user:
+                        \(self.ncAccount.ncKitAccount, privacy: .public)
+                        with error: \(error!.errorDescription, privacy: .public)
+                        """
                     )
                     // TODO: Refactor for conciseness
                     let fpError =
@@ -235,7 +245,10 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
                 }
 
                 Self.logger.info(
-                    "Finished recursive change enumeration of working set for user: \(self.ncAccount.ncKitAccount, privacy: .public). Enumerating items."
+                    """
+                    Finished recursive change enumeration of working set for user:
+                    \(self.ncAccount.ncKitAccount, privacy: .public). Enumerating items.
+                    """
                 )
 
                 Self.completeChangesObserver(
@@ -265,9 +278,12 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
         // No matter what happens here we finish enumeration in some way, either from the error
         // handling below or from the completeChangesObserver
         // TODO: Move to the sync engine extension
-        Self.readServerUrl(
-            serverUrl, ncAccount: ncAccount, ncKit: ncKit, stopAtMatchingEtags: true
-        ) { _, newMetadatas, updatedMetadatas, deletedMetadatas, readError in
+        Task {
+            let (
+                _, newMetadatas, updatedMetadatas, deletedMetadatas, readError
+            ) = await Self.readServerUrl(
+                serverUrl, ncAccount: ncAccount, ncKit: ncKit, stopAtMatchingEtags: true
+            )
 
             // If we get a 404 we might add more deleted metadatas
             var currentDeletedMetadatas: [ItemMetadata] = []
