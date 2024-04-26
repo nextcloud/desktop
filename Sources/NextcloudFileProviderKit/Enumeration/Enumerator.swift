@@ -393,7 +393,7 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
                     let item = Item(
                         metadata: itemMetadata, 
                         parentItemIdentifier: parentItemIdentifier,
-                        ncKit: ncKit
+                        remoteInterface: ncKit
                     )
                     Self.logger.debug(
                         "Will enumerate item with ocId: \(itemMetadata.ocId, privacy: .public) and name: \(itemMetadata.fileName, privacy: .public)"

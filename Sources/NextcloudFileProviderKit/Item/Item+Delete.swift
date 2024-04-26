@@ -12,18 +12,23 @@ import OSLog
 
 public extension Item {
 
-    func delete() async -> Error? {
+    func delete(domain: NSFileProviderDomain? = nil) async -> Error? {
         let serverFileNameUrl = metadata.serverUrl + "/" + metadata.fileName
         guard serverFileNameUrl != "" else {
             return NSFileProviderError(.noSuchItem)
         }
         let ocId = itemIdentifier.rawValue
 
-        let error = await withCheckedContinuation { continuation in
-            ncKit.deleteFileOrFolder(serverUrlFileName: serverFileNameUrl) { _, error in
-                continuation.resume(returning: error)
-            }
-        }
+        let (_, error) = await remoteInterface.delete(
+            remotePath: serverFileNameUrl, options: .init(), taskHandler: { task in
+                if let domain {
+                    NSFileProviderManager(for: domain)?.register(
+                        task,
+                        forItemWithIdentifier: self.itemIdentifier,
+                        completionHandler: { _ in }
+                    )
+                }
+        })
 
         guard error == .success else {
             Self.logger.error(

@@ -16,20 +16,27 @@ public extension Item {
         newFileName: String,
         newRemotePath: String,
         newParentItemIdentifier: NSFileProviderItemIdentifier,
-        newParentItemRemotePath: String
+        newParentItemRemotePath: String,
+        domain: NSFileProviderDomain? = nil
     ) async -> (Item?, Error?) {
         let ocId = itemIdentifier.rawValue
         let isFolder = contentType == .folder || contentType == .directory
         let oldRemotePath = metadata.serverUrl + "/" + metadata.fileName
-        let moveError = await withCheckedContinuation { continuation in
-            self.ncKit.moveFileOrFolder(
-                serverUrlFileNameSource: oldRemotePath,
-                serverUrlFileNameDestination: newRemotePath,
-                overwrite: false
-            ) { _, error in
-                continuation.resume(returning: error)
+        let (_, moveError) = await remoteInterface.move(
+            remotePathSource: oldRemotePath,
+            remotePathDestination: newRemotePath,
+            overwrite: false,
+            options: .init(),
+            taskHandler: { task in
+                if let domain {
+                    NSFileProviderManager(for: domain)?.register(
+                        task,
+                        forItemWithIdentifier: self.itemIdentifier,
+                        completionHandler: { _ in }
+                    )
+                }
             }
-        }
+        )
 
         guard moveError == .success else {
             Self.logger.error(
@@ -77,7 +84,7 @@ public extension Item {
         let modifiedItem = Item(
             metadata: newMetadata,
             parentItemIdentifier: newParentItemIdentifier,
-            ncKit: self.ncKit
+            remoteInterface: remoteInterface
         )
         return (modifiedItem, nil)
     }
@@ -123,29 +130,24 @@ public extension Item {
             )
         }
 
-        let (etag, date, size, error) = await withCheckedContinuation { continuation in
-            self.ncKit.upload(
-                serverUrlFileName: remotePath,
-                fileNameLocalPath: localPath,
-                requestHandler: { progress.setHandlersFromAfRequest($0) },
-                taskHandler: { task in
-                    if let domain {
-                        NSFileProviderManager(for: domain)?.register(
-                            task,
-                            forItemWithIdentifier: self.itemIdentifier,
-                            completionHandler: { _ in }
-                        )
-                    }
-                },
-                progressHandler: { uploadProgress in
-                    uploadProgress.copyCurrentStateToProgress(progress)
+        let (_, _, etag, date, size, _, _, error) = await remoteInterface.upload(
+            remotePath: remotePath,
+            localPath: localPath,
+            creationDate: creationDate,
+            modificationDate: contentModificationDate,
+            options: .init(),
+            requestHandler: { progress.setHandlersFromAfRequest($0) },
+            taskHandler: { task in
+                if let domain {
+                    NSFileProviderManager(for: domain)?.register(
+                        task,
+                        forItemWithIdentifier: self.itemIdentifier,
+                        completionHandler: { _ in }
+                    )
                 }
-            ) { _, _, etag, date, size, _, _, error in
-                continuation.resume(
-                    returning: (etag, date, size, error)
-                )
-            }
-        }
+            },
+            progressHandler: { $0.copyCurrentStateToProgress(progress) }
+        )
 
         guard error == .success else {
             Self.logger.error(
@@ -202,7 +204,7 @@ public extension Item {
         let modifiedItem = Item(
             metadata: newMetadata,
             parentItemIdentifier: parentItemIdentifier,
-            ncKit: self.ncKit
+            remoteInterface: remoteInterface
         )
         return (modifiedItem, nil)
     }

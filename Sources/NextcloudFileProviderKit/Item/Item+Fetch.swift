@@ -43,27 +43,21 @@ public extension Item {
             return (nil, nil, NSFileProviderError(.noSuchItem))
         }
 
-        let (etag, date, error) = await withCheckedContinuation { continuation in
-            self.ncKit.download(
-                serverUrlFileName: serverUrlFileName,
-                fileNameLocalPath: localPath.path,
-                requestHandler: {  progress.setHandlersFromAfRequest($0) },
-                taskHandler: { task in
-                    if let domain {
-                        NSFileProviderManager(for: domain)?.register(
-                            task,
-                            forItemWithIdentifier: self.itemIdentifier,
-                            completionHandler: { _ in }
-                        )
-                    }
-                },
-                progressHandler: { downloadProgress in
-                    downloadProgress.copyCurrentStateToProgress(progress)
+        let (_, etag, date, size, _, _, error) = await remoteInterface.download(
+            remotePath: serverUrlFileName,
+            localPath: localPath.path,
+            options: .init(),
+            requestHandler: { progress.setHandlersFromAfRequest($0) },
+            taskHandler: { task in
+                if let domain {
+                    NSFileProviderManager(for: domain)?.register(
+                        task,
+                        forItemWithIdentifier: self.itemIdentifier,
+                        completionHandler: { _ in }
+                    )
                 }
-            ) { _, etag, date, _, _, _, error in
-                continuation.resume(returning: (etag, date, error))
-            }
-        }
+            }, progressHandler: { $0.copyCurrentStateToProgress(progress) }
+        )
 
         if error != .success {
             Self.logger.error(
@@ -111,13 +105,15 @@ public extension Item {
         let fpItem = Item(
             metadata: updatedMetadata,
             parentItemIdentifier: parentItemIdentifier,
-            ncKit: self.ncKit
+            remoteInterface: remoteInterface
         )
 
         return (localPath, fpItem, nil)
     }
 
-    func fetchThumbnail(size: CGSize) async -> (Data?, Error?) {
+    func fetchThumbnail(
+        size: CGSize, domain: NSFileProviderDomain? = nil
+    ) async -> (Data?, Error?) {
         guard let thumbnailUrl = metadata.thumbnailUrl(size: size) else {
             Self.logger.debug(
                 """
@@ -129,14 +125,23 @@ public extension Item {
         }
 
         Self.logger.debug(
-            "Fetching thumbnail for: \(self.filename, privacy: .public) at (\(thumbnailUrl, privacy: .public))"
+            """
+            Fetching thumbnail for: \(self.filename, privacy: .public)
+            at (\(thumbnailUrl, privacy: .public))
+            """
         )
 
-        let (data, error) = await withCheckedContinuation { continuation in
-            self.ncKit.getPreview(url: thumbnailUrl) { _, data, error in
-                continuation.resume(returning: (data, error))
+        let (_, data, error) = await remoteInterface.downloadThumbnail(
+            url: thumbnailUrl, options: .init(), taskHandler: { task in
+                if let domain {
+                    NSFileProviderManager(for: domain)?.register(
+                        task,
+                        forItemWithIdentifier: self.itemIdentifier,
+                        completionHandler: { _ in }
+                    )
+                }
             }
-        }
+        )
 
         if error != .success {
             Self.logger.error(

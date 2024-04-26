@@ -96,7 +96,7 @@ extension Item {
         let fpItem = Item(
             metadata: directoryMetadata,
             parentItemIdentifier: parentItemIdentifier,
-            ncKit: ncKit
+            remoteInterface: ncKit
         )
         
         return (fpItem, nil)
@@ -179,7 +179,6 @@ extension Item {
             )
         }
         
-        // TODO: Fix what's broken with me
         let newMetadata = ItemMetadata()
         newMetadata.date = (date ?? NSDate()) as Date
         newMetadata.etag = etag ?? ""
@@ -203,7 +202,7 @@ extension Item {
         let fpItem = Item(
             metadata: newMetadata,
             parentItemIdentifier: itemTemplate.parentItemIdentifier,
-            ncKit: ncKit
+            remoteInterface: ncKit
         )
         
         return (fpItem, nil)

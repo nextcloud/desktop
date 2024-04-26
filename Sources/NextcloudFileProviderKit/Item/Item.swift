@@ -25,7 +25,7 @@ public class Item: NSObject, NSFileProviderItem {
 
     public let metadata: ItemMetadata
     public let parentItemIdentifier: NSFileProviderItemIdentifier
-    public let ncKit: NextcloudKit
+    public let remoteInterface: RemoteInterface
 
     public var itemIdentifier: NSFileProviderItemIdentifier {
         NSFileProviderItemIdentifier(metadata.ocId)
@@ -81,11 +81,8 @@ public class Item: NSObject, NSFileProviderItem {
             return .folder
         }
 
-        let internalType = ncKit.nkCommonInstance.getInternalType(
-            fileName: metadata.fileNameView,
-            mimeType: "",
-            directory: metadata.directory)
-        return UTType(filenameExtension: internalType.ext) ?? .content
+        let filenameExtension = filename.components(separatedBy: ".").last ?? ""
+        return UTType(filenameExtension: filenameExtension) ?? .content
     }
 
     public var documentSize: NSNumber? {
@@ -156,16 +153,20 @@ public class Item: NSObject, NSFileProviderItem {
         #endif
     }
 
-    public static func rootContainer(ncKit: NextcloudKit) -> Item {
+    public static func rootContainer(remoteInterface: RemoteInterface) -> Item {
         let metadata = ItemMetadata()
-        metadata.account = ncKit.nkCommonInstance.account
+        metadata.account = remoteInterface.account.ncKitAccount
         metadata.directory = true
         metadata.ocId = NSFileProviderItemIdentifier.rootContainer.rawValue
         metadata.fileName = "/"
         metadata.fileNameView = "/"
-        metadata.serverUrl = ncKit.nkCommonInstance.urlBase
+        metadata.serverUrl = remoteInterface.account.davFilesUrl
         metadata.classFile = NKCommon.TypeClassFile.directory.rawValue
-        return Item(metadata: metadata, parentItemIdentifier: .rootContainer, ncKit: ncKit)
+        return Item(
+            metadata: metadata,
+            parentItemIdentifier: .rootContainer,
+            remoteInterface: remoteInterface
+        )
     }
 
     static let logger = Logger(subsystem: Logger.subsystem, category: "item")
@@ -173,24 +174,26 @@ public class Item: NSObject, NSFileProviderItem {
     public required init(
         metadata: ItemMetadata,
         parentItemIdentifier: NSFileProviderItemIdentifier,
-        ncKit: NextcloudKit
+        remoteInterface: RemoteInterface
     ) {
         self.metadata = ItemMetadata(value: metadata) // Safeguard against active items
         self.parentItemIdentifier = parentItemIdentifier
-        self.ncKit = ncKit
+        self.remoteInterface = remoteInterface
         super.init()
     }
 
     public static func storedItem(
         identifier: NSFileProviderItemIdentifier,
-        usingKit ncKit: NextcloudKit
+        remoteInterface: RemoteInterface
     ) -> Item? {
         // resolve the given identifier to a record in the model
         Self.logger.debug(
             "Received request for item with identifier: \(identifier.rawValue, privacy: .public)"
         )
 
-        guard identifier != .rootContainer else { return Item.rootContainer(ncKit: ncKit) }
+        guard identifier != .rootContainer else {
+            return Item.rootContainer(remoteInterface: remoteInterface)
+        }
 
         let dbManager = FilesDatabaseManager.shared
 
@@ -198,6 +201,10 @@ public class Item: NSObject, NSFileProviderItem {
               let parentItemIdentifier = dbManager.parentItemIdentifierFromMetadata(metadata)
         else { return nil }
 
-        return Item(metadata: metadata, parentItemIdentifier: parentItemIdentifier, ncKit: ncKit)
+        return Item(
+            metadata: metadata,
+            parentItemIdentifier: parentItemIdentifier,
+            remoteInterface: remoteInterface
+        )
     }
 }
