@@ -105,22 +105,20 @@ extension Enumerator {
             stopAtMatchingEtags: scanChangesOnly
         )
 
-        if let readError {
-            let nkReadError = NKError(error: readError)
-
+        if let readError, readError != .success {
             // Is the error is that we have found matching etags on this item, then ignore it
             // if we are doing a full rescan
-            if nkReadError.isNoChangesError && scanChangesOnly {
+            if readError.isNoChangesError && scanChangesOnly {
                 Self.logger.info("No changes in \(self.serverUrl) and only scanning changes.")
             } else {
                 Self.logger.error(
                     """
                     Finishing enumeration of changes at \(itemServerUrl, privacy: .public)
-                    with \(readError.localizedDescription, privacy: .public)
+                    with \(readError.errorDescription, privacy: .public)
                     """
                 )
 
-                if nkReadError.isNotFoundError {
+                if readError.isNotFoundError {
                     Self.logger.info(
                         """
                         404 error means item no longer exists.
@@ -141,16 +139,16 @@ extension Enumerator {
                         )
                     }
 
-                } else if nkReadError.isNoChangesError {  // All is well, just no changed etags
+                } else if readError.isNoChangesError {  // All is well, just no changed etags
                     Self.logger.info(
                         "Error was to say no changed files, not bad error. Won't check children."
                     )
 
-                } else if nkReadError.isUnauthenticatedError || nkReadError.isCouldntConnectError {
+                } else if readError.isUnauthenticatedError || readError.isCouldntConnectError {
                     Self.logger.error(
                         "Error will affect next enumerated items, so stopping enumeration."
                     )
-                    return ([], [] , [], [], nkReadError)
+                    return ([], [] , [], [], readError)
                 }
             }
         }
@@ -266,7 +264,7 @@ extension Enumerator {
         newMetadatas: [ItemMetadata]?,
         updatedMetadatas: [ItemMetadata]?,
         deletedMetadatas: [ItemMetadata]?,
-        readError: NSFileProviderError?
+        readError: NKError?
     ) {
         Self.logger.debug(
             """
@@ -327,7 +325,7 @@ extension Enumerator {
         newMetadatas: [ItemMetadata]?,
         updatedMetadatas: [ItemMetadata]?,
         deletedMetadatas: [ItemMetadata]?,
-        readError: NSFileProviderError?
+        readError: NKError?
     ) {
         let dbManager = FilesDatabaseManager.shared
         let ncKitAccount = ncAccount.ncKitAccount
@@ -370,7 +368,7 @@ extension Enumerator {
                 did not complete successfully, error: \(error.errorDescription, privacy: .public)
                 """
             )
-            return (nil, nil, nil, nil, error.fileProviderError)
+            return (nil, nil, nil, nil, error)
         }
 
         guard let receivedFile = files.first else {
@@ -380,7 +378,7 @@ extension Enumerator {
                 not much we can do...
                 """
             )
-            return (nil, nil, nil, nil, error.fileProviderError)
+            return (nil, nil, nil, nil, error)
         }
 
         guard receivedFile.directory else {
@@ -393,7 +391,7 @@ extension Enumerator {
             let itemMetadata = ItemMetadata.fromNKFile(receivedFile, account: ncKitAccount)
             dbManager.addItemMetadata(itemMetadata)  // TODO: Return some value when it is an update
             let inactiveItemMetadataCopy = ItemMetadata(value: itemMetadata)
-            return ([inactiveItemMetadataCopy], nil, nil, nil, error.fileProviderError)
+            return ([inactiveItemMetadataCopy], nil, nil, nil, error)
         }
 
         if stopAtMatchingEtags, let directoryMetadata = dbManager.directoryMetadata(
@@ -410,10 +408,12 @@ extension Enumerator {
                 )
 
                 let description = "Fetched directory etag same as local copy. Ignoring child items."
-                let nkError = NKError(errorCode: -200, errorDescription: description) // TODO: num
+                let nkError = NKError(
+                    errorCode: NKError.noChangesErrorCode, errorDescription: description
+                )
                 let metadatas = dbManager.itemMetadatas(account: ncKitAccount, serverUrl: serverUrl)
 
-                return (metadatas, nil, nil, nil, nkError.fileProviderError)
+                return (metadatas, nil, nil, nil, nkError)
             }
         }
 

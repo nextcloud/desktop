@@ -8,6 +8,7 @@
 import Alamofire
 import FileProvider
 import Foundation
+import NextcloudKit
 
 public enum EnumerateDepth: String {
     case target = "0"
@@ -21,16 +22,16 @@ public protocol RemoteInterface {
 
     func createFolder(
         remotePath: String,
-        options: RemoteRequestOptions,
+        options: NKRequestOptions,
         taskHandler: @escaping (_ task: URLSessionTask) -> Void
-    ) async -> (account: String, ocId: String?, date: NSDate?, error: NSFileProviderError?)
+    ) async -> (account: String, ocId: String?, date: NSDate?, error: NKError)
 
     func upload(
         remotePath: String,
         localPath: String,
         creationDate: Date?,
         modificationDate: Date?,
-        options: RemoteRequestOptions,
+        options: NKRequestOptions,
         requestHandler: @escaping (_ request: UploadRequest) -> Void,
         taskHandler: @escaping (_ task: URLSessionTask) -> Void,
         progressHandler: @escaping (_ progress: Progress) -> Void
@@ -42,13 +43,13 @@ public protocol RemoteInterface {
         size: Int64,
         allHeaderFields: [AnyHashable: Any]?,
         afError: AFError?, 
-        remoteError: NSFileProviderError?
+        remoteError: NKError
     )
 
     func download(
         remotePath: String,
         localPath: String,
-        options: RemoteRequestOptions,
+        options: NKRequestOptions,
         requestHandler: @escaping (_ request: DownloadRequest) -> Void,
         taskHandler: @escaping (_ task: URLSessionTask) -> Void,
         progressHandler: @escaping (_ progress: Progress) -> Void
@@ -59,7 +60,7 @@ public protocol RemoteInterface {
         length: Int64,
         allHeaderFields: [AnyHashable: Any]?,
         afError: AFError?,
-        remoteError: NSFileProviderError?
+        remoteError: NKError
     )
 
     func enumerate(
@@ -68,23 +69,21 @@ public protocol RemoteInterface {
         showHiddenFiles: Bool,
         includeHiddenFiles: [String],
         requestBody: Data?,
-        options: RemoteRequestOptions,
+        options: NKRequestOptions,
         taskHandler: @escaping (_ task: URLSessionTask) -> Void
-    ) async -> (
-        account: String, files: [RemoteFileMetadata], data: Data?, error: NSFileProviderError?
-    )
+    ) async -> (account: String, files: [NKFile], data: Data?, error: NKError)
 
     func delete(
         remotePath: String,
-        options: RemoteRequestOptions,
+        options: NKRequestOptions,
         taskHandler: @escaping (_ task: URLSessionTask) -> Void
-    ) async -> (account: String, error: NSFileProviderError?)
+    ) async -> (account: String, error: NKError)
 
     func downloadThumbnail(
         url: URL,
-        options: RemoteRequestOptions,
+        options: NKRequestOptions,
         taskHandler: @escaping (_ task: URLSessionTask) -> Void
-    ) async -> (account: String, data: Data?, error: NSFileProviderError?)
+    ) async -> (account: String, data: Data?, error: NKError)
 
     func getInternalType(
         fileName: String,

@@ -148,13 +148,12 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
 
                 guard readError == nil else {
                     Self.logger.error(
-                        "Finishing enumeration for user: \(self.ncAccount.ncKitAccount, privacy: .public) with serverUrl: \(self.serverUrl, privacy: .public) with error \(readError!.localizedDescription, privacy: .public)"
+                        "Finishing enumeration for user: \(self.ncAccount.ncKitAccount, privacy: .public) with serverUrl: \(self.serverUrl, privacy: .public) with error \(readError!.errorDescription, privacy: .public)"
                     )
 
                     // TODO: Refactor for conciseness
-                    let nkReadError = NKError(error: readError!)
                     let error =
-                        nkReadError.fileProviderError ?? NSFileProviderError(.cannotSynchronize)
+                        readError?.fileProviderError ?? NSFileProviderError(.cannotSynchronize)
                     observer.finishEnumeratingWithError(error)
                     return
                 }
@@ -293,14 +292,12 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
 
             guard readError == nil else {
                 Self.logger.error(
-                    "Finishing enumeration of changes for user: \(self.ncAccount.ncKitAccount, privacy: .public) with serverUrl: \(self.serverUrl, privacy: .public) with error: \(readError!.localizedDescription, privacy: .public)"
+                    "Finishing enumeration of changes for user: \(self.ncAccount.ncKitAccount, privacy: .public) with serverUrl: \(self.serverUrl, privacy: .public) with error: \(readError!.errorDescription, privacy: .public)"
                 )
 
-                // TODO: Refactir for conciseness
-                let nkReadError = NKError(error: readError!)
-                let error = nkReadError.fileProviderError ?? NSFileProviderError(.cannotSynchronize)
+                let error = readError!.fileProviderError ?? NSFileProviderError(.cannotSynchronize)
 
-                if nkReadError.isNotFoundError {
+                if readError!.isNotFoundError {
                     Self.logger.info(
                         "404 error means item no longer exists. Deleting metadata and reporting \(self.serverUrl, privacy: .public) as deletion without error"
                     )
@@ -335,7 +332,7 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
                         deletedMetadatas: [itemMetadata]
                     )
                     return
-                } else if nkReadError.isNoChangesError {  // All is well, just no changed etags
+                } else if readError!.isNoChangesError {  // All is well, just no changed etags
                     Self.logger.info(
                         "Error was to say no changed files -- not bad error. Finishing change enumeration."
                     )
