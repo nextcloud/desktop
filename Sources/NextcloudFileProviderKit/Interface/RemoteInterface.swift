@@ -20,6 +20,8 @@ public protocol RemoteInterface {
 
     var account: Account { get }
 
+    func setDelegate(_ delegate: NKCommonDelegate)
+
     func createFolder(
         remotePath: String,
         options: NKRequestOptions,

@@ -20,6 +20,10 @@ extension NextcloudKit: RemoteInterface {
         )
     }
 
+    public func setDelegate(_ delegate: any NKCommonDelegate) {
+        setup(delegate: delegate)
+    }
+
     public func createFolder(
         remotePath: String,
         options: NKRequestOptions = .init(),
