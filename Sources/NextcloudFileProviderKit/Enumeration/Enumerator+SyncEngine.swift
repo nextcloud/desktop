@@ -18,7 +18,7 @@ import OSLog
 
 extension Enumerator {
     func fullRecursiveScan(
-        ncAccount: Account, ncKit: NextcloudKit, scanChangesOnly: Bool
+        ncAccount: Account, remoteInterface: RemoteInterface, scanChangesOnly: Bool
     ) async -> (
         metadatas: [ItemMetadata],
         newMetadatas: [ItemMetadata],
@@ -33,7 +33,7 @@ extension Enumerator {
         let results = await self.scanRecursively(
             rootContainerDirectoryMetadata,
             ncAccount: ncAccount,
-            ncKit: ncKit,
+            remoteInterface: remoteInterface,
             scanChangesOnly: scanChangesOnly
         )
 
@@ -64,7 +64,7 @@ extension Enumerator {
     private func scanRecursively(
         _ directoryMetadata: ItemMetadata,
         ncAccount: Account,
-        ncKit: NextcloudKit,
+        remoteInterface: RemoteInterface,
         scanChangesOnly: Bool
     ) async -> (
         metadatas: [ItemMetadata],
@@ -99,7 +99,7 @@ extension Enumerator {
         ) = await Self.readServerUrl(
             itemServerUrl,
             ncAccount: ncAccount,
-            ncKit: ncKit,
+            remoteInterface: remoteInterface,
             domain: domain,
             enumeratedItemIdentifier: enumeratedItemIdentifier,
             stopAtMatchingEtags: scanChangesOnly
@@ -241,7 +241,10 @@ extension Enumerator {
                 """
             )
             let childScanResult = await scanRecursively(
-                childDirectory, ncAccount: ncAccount, ncKit: ncKit, scanChangesOnly: scanChangesOnly
+                childDirectory,
+                ncAccount: ncAccount,
+                remoteInterface: remoteInterface,
+                scanChangesOnly: scanChangesOnly
             )
 
             allMetadatas += childScanResult.metadatas
@@ -315,11 +318,11 @@ extension Enumerator {
     static func readServerUrl(
         _ serverUrl: String,
         ncAccount: Account,
-        ncKit: NextcloudKit,
+        remoteInterface: RemoteInterface,
         domain: NSFileProviderDomain? = nil,
         enumeratedItemIdentifier: NSFileProviderItemIdentifier? = nil,
         stopAtMatchingEtags: Bool = false,
-        depth: String = "1"
+        depth: EnumerateDepth = .targetAndDirectChildren
     ) async -> (
         metadatas: [ItemMetadata]?,
         newMetadatas: [ItemMetadata]?,
@@ -334,37 +337,35 @@ extension Enumerator {
             """
             Starting to read serverUrl: \(serverUrl, privacy: .public)
             for user: \(ncAccount.ncKitAccount, privacy: .public)
-            at depth \(depth, privacy: .public).
-            NCKit info: userId: \(ncKit.nkCommonInstance.user, privacy: .public),
-            password is empty: \(ncKit.nkCommonInstance.password == "" ? "EMPTY" : "NOT EMPTY"),
-            urlBase: \(ncKit.nkCommonInstance.urlBase, privacy: .public),
-            ncVersion: \(ncKit.nkCommonInstance.nextcloudVersion, privacy: .public)
+            at depth \(depth.rawValue, privacy: .public).
+            username: \(ncAccount.username, privacy: .public),
+            password is empty: \(ncAccount.password == "" ? "EMPTY" : "NOT EMPTY"),
+            serverUrl: \(ncAccount.serverUrl, privacy: .public)
             """
         )
 
-        let (files, error) = await withCheckedContinuation { continuation in
-            ncKit.readFileOrFolder(
-                serverUrlFileName: serverUrl,
-                depth: depth,
-                showHiddenFiles: true,
-                taskHandler: { task in
-                    if let domain, let enumeratedItemIdentifier {
-                        NSFileProviderManager(for: domain)?.register(
-                            task,
-                            forItemWithIdentifier: enumeratedItemIdentifier,
-                            completionHandler: { _ in }
-                        )
-                    }
+        let (_, files, _, error) = await remoteInterface.enumerate(
+            remotePath: serverUrl,
+            depth: depth,
+            showHiddenFiles: true,
+            includeHiddenFiles: [],
+            requestBody: nil,
+            options: .init(),
+            taskHandler: { task in
+                if let domain, let enumeratedItemIdentifier {
+                    NSFileProviderManager(for: domain)?.register(
+                        task,
+                        forItemWithIdentifier: enumeratedItemIdentifier,
+                        completionHandler: { _ in }
+                    )
                 }
-            ) { _, files, _, error in
-                continuation.resume(returning: (files, error))
             }
-        }
+        )
 
         guard error == .success else {
             Self.logger.error(
                 """
-                \(depth, privacy: .public) depth read of url: \(serverUrl, privacy: .public)
+                \(depth.rawValue, privacy: .public) depth read of url \(serverUrl, privacy: .public)
                 did not complete successfully, error: \(error.errorDescription, privacy: .public)
                 """
             )
@@ -417,7 +418,7 @@ extension Enumerator {
             }
         }
 
-        if depth == "0" {
+        if depth == .target {
             if serverUrl == ncAccount.davFilesUrl {
                 return (nil, nil, nil, nil, nil)
             } else {

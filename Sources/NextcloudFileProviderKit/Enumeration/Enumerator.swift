@@ -143,7 +143,7 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
 
             Task {
                 let (metadatas, _, _, _, readError) = await Self.readServerUrl(
-                    serverUrl, ncAccount: ncAccount, ncKit: ncKit
+                    serverUrl, ncAccount: ncAccount, remoteInterface: ncKit
                 )
 
                 guard readError == nil else {
@@ -214,7 +214,7 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
                 let (
                     _, newMetadatas, updatedMetadatas, deletedMetadatas, error
                 ) = await fullRecursiveScan(
-                    ncAccount: ncAccount, ncKit: ncKit, scanChangesOnly: true
+                    ncAccount: ncAccount, remoteInterface: ncKit, scanChangesOnly: true
                 )
 
                 if self.isInvalidated {
@@ -281,7 +281,7 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
             let (
                 _, newMetadatas, updatedMetadatas, deletedMetadatas, readError
             ) = await Self.readServerUrl(
-                serverUrl, ncAccount: ncAccount, ncKit: ncKit, stopAtMatchingEtags: true
+                serverUrl, ncAccount: ncAccount, remoteInterface: ncKit, stopAtMatchingEtags: true
             )
 
             // If we get a 404 we might add more deleted metadatas
@@ -365,6 +365,7 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
 
     // MARK: - Helper methods
 
+    // TODO: Use async group
     private static func metadatasToFileProviderItems(
         _ itemMetadatas: [ItemMetadata], ncKit: NextcloudKit,
         completionHandler: @escaping (_ items: [NSFileProviderItem]) -> Void
