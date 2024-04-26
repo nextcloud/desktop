@@ -92,16 +92,4 @@ public protocol RemoteInterface {
         options: NKRequestOptions,
         taskHandler: @escaping (_ task: URLSessionTask) -> Void
     ) async -> (account: String, data: Data?, error: NKError)
-
-    func getInternalType(
-        fileName: String,
-        mimeType: String, directory: Bool
-    ) -> (
-        mimeType: String,
-        classFile: String,
-        iconName: String,
-        typeIdentifier: String,
-        fileNameWithoutExt: String,
-        ext: String
-    )
 }
