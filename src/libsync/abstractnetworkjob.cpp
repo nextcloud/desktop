@@ -408,7 +408,7 @@ QString extractErrorMessage(const QByteArray &errorResponse)
 {
     QXmlStreamReader reader(errorResponse);
     reader.readNextStartElement();
-    if (reader.name() != "error") {
+    if (reader.name() != QStringLiteral("error")) {
         return QString();
     }
 

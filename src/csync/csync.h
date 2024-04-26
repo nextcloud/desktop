@@ -43,6 +43,8 @@
 #include <functional>
 #include <memory>
 #include <QByteArray>
+#include <QVariant>
+
 #include "common/remotepermissions.h"
 
 namespace OCC {

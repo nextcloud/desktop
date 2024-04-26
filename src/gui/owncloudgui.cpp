@@ -102,7 +102,7 @@ ownCloudGui::ownCloudGui(Application *parent)
         this, &ownCloudGui::slotShowSettings);
 
     connect(_tray.data(), &Systray::shutdown,
-        this, &ownCloudGui::slotShutdown);
+        this, &QCoreApplication::quit);
 
     ProgressDispatcher *pd = ProgressDispatcher::instance();
     connect(pd, &ProgressDispatcher::progressInfo, this,
@@ -137,8 +137,7 @@ ownCloudGui::ownCloudGui(Application *parent)
     qmlRegisterUncreatableType<UserStatus>("com.nextcloud.desktopclient", 1, 0, "UserStatus", "Access to Status enum");
     qmlRegisterUncreatableType<Sharee>("com.nextcloud.desktopclient", 1, 0, "Sharee", "Access to Type enum");
 
-    qRegisterMetaTypeStreamOperators<Emoji>();
-
+    qRegisterMetaType<ActivityListModel *>("ActivityListModel*");
     qRegisterMetaType<UnifiedSearchResultsListModel *>("UnifiedSearchResultsListModel*");
     qRegisterMetaType<UserStatus>("UserStatus");
     qRegisterMetaType<SharePtr>("SharePtr");
@@ -600,13 +599,11 @@ void ownCloudGui::slotShutdown()
 {
     // explicitly close windows. This is somewhat of a hack to ensure
     // that saving the geometries happens ASAP during a OS shutdown
-
     // those do delete on close
     if (!_settingsDialog.isNull())
         _settingsDialog->close();
     if (!_logBrowser.isNull())
         _logBrowser->deleteLater();
-    _app->quit();
 }
 
 void ownCloudGui::slotToggleLogBrowser()

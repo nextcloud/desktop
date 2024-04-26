@@ -15,6 +15,7 @@
 #include "editlocallymanager.h"
 
 #include <QUrl>
+#include <QUrlQuery>
 #include <QLoggingCategory>
 
 namespace OCC {

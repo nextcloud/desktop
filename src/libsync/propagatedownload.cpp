@@ -887,8 +887,7 @@ void PropagateDownloadFile::slotGetFinished()
     // of the compressed data. See QTBUG-73364.
     const auto contentEncoding = job->reply()->rawHeader("content-encoding").toLower();
     if ((contentEncoding == "gzip" || contentEncoding == "deflate")
-        && (job->reply()->attribute(QNetworkRequest::Http2WasUsedAttribute).toBool()
-         || job->reply()->attribute(QNetworkRequest::SpdyWasUsedAttribute).toBool())) {
+        && job->reply()->attribute(QNetworkRequest::Http2WasUsedAttribute).toBool()) {
         bodySize = 0;
         hasSizeHeader = false;
     }
@@ -1218,10 +1217,10 @@ void PropagateDownloadFile::downloadFinished()
     }
 
     if (_item->_locked == SyncFileItem::LockStatus::LockedItem && (_item->_lockOwnerType != SyncFileItem::LockOwnerType::UserLock || _item->_lockOwnerId != propagator()->account()->davUser())) {
-        qCDebug(lcPropagateDownload()) << _tmpFile << "file is locked: making it read only";
+        qCDebug(lcPropagateDownload()) << _tmpFile.fileName() << "file is locked: making it read only";
         FileSystem::setFileReadOnly(_tmpFile.fileName(), true);
     } else {
-        qCDebug(lcPropagateDownload()) << _tmpFile << "file is not locked: making it"
+        qCDebug(lcPropagateDownload()) << _tmpFile.fileName() << "file is not locked: making it"
                                        << ((!_item->_remotePerm.isNull() && !_item->_remotePerm.hasPermission(RemotePermissions::CanWrite)) ? "read only"
                                                                                                                                             : "read write");
         FileSystem::setFileReadOnlyWeak(_tmpFile.fileName(), (!_item->_remotePerm.isNull() && !_item->_remotePerm.hasPermission(RemotePermissions::CanWrite)));

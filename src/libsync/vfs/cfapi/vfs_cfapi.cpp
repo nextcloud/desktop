@@ -24,6 +24,7 @@
 #include "common/syncjournaldb.h"
 #include "config.h"
 
+#include <ntstatus.h>
 #include <cfapi.h>
 #include <comdef.h>
 

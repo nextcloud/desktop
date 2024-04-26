@@ -52,19 +52,15 @@ void warnSystray()
 
 int main(int argc, char **argv)
 {
-    qputenv("QTWEBENGINE_CHROMIUM_FLAGS", "--disable-gpu --no-sandbox");
-    QCoreApplication::setAttribute(Qt::AA_UseOpenGLES);
-
 #ifdef Q_OS_WIN
     SetDllDirectory(L"");
+    qputenv("QML_IMPORT_PATH", (QDir::currentPath() + QStringLiteral("/qml")).toLatin1());
 #endif
+
     Q_INIT_RESOURCE(resources);
     Q_INIT_RESOURCE(theme);
 
     // OpenSSL 1.1.0: No explicit initialisation or de-initialisation is necessary.
-
-    QCoreApplication::setAttribute(Qt::AA_UseHighDpiPixmaps, true);
-    QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling, true);
 #ifdef Q_OS_MAC
     Mac::CocoaInitializer cocoaInit; // RIIA
 #endif

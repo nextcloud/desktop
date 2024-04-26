@@ -55,14 +55,14 @@ public:
 
 public slots:
     void start(const bool keepLock = false);
-    void setUserData(const UserData &userData);
+    void setUserData(const UpdateE2eeFolderUsersMetadataJob::UserData &userData);
 
     void setFolderToken(const QByteArray &folderToken);
     void setMetadataKeyForEncryption(const QByteArray &metadataKey);
     void setMetadataKeyForDecryption(const QByteArray &metadataKey);
     void setKeyChecksums(const QSet<QByteArray> &keyChecksums);
 
-    void setSubJobSyncItems(const QHash<QString, SyncFileItemPtr> &subJobSyncItems);
+    void setSubJobSyncItems(const QHash<QString, OCC::SyncFileItemPtr> &subJobSyncItems);
 
 private:
     void scheduleSubJobs();
@@ -78,7 +78,7 @@ private slots:
     void slotFolderUnlocked(const QByteArray &folderId, int httpStatus);
 
     void slotUpdateMetadataFinished(int code, const QString &message = {});
-    void slotCertificatesFetchedFromServer(const QHash<QString, QSslCertificate> &results);
+    void slotCertificatesFetchedFromServer(const QHash<QString, OCC::NextcloudSslCertificate> &results);
     void slotCertificateFetchedFromKeychain(const QSslCertificate &certificate);
 
 private: signals:

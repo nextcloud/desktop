@@ -38,6 +38,7 @@
 #include <QEvent>
 #include <QCheckBox>
 #include <QMessageBox>
+#include <QStandardPaths>
 
 #include <cstdlib>
 

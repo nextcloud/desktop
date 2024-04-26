@@ -18,6 +18,7 @@
 
 #include "remotepermissions.h"
 
+#include <QVariant>
 #include <QLoggingCategory>
 
 #include <cstring>

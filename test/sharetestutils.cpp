@@ -237,7 +237,7 @@ QNetworkReply *ShareTestHelper::qnamOverride(QNetworkAccessManager::Operation op
 
     // Properly formatted PROPFIND URL goes something like:
     // https://cloud.nextcloud.com/remote.php/dav/files/claudio/Readme.md
-    if(reqPath.endsWith(testFileName) && req.attribute(QNetworkRequest::CustomVerbAttribute) == "PROPFIND") {
+    if(reqPath.endsWith(testFileName) && req.attribute(QNetworkRequest::CustomVerbAttribute).toString() == "PROPFIND") {
 
         reply = new FakePropfindReply(fakeFolder.remoteModifier(), op, req, this);
 
@@ -247,13 +247,13 @@ QNetworkReply *ShareTestHelper::qnamOverride(QNetworkAccessManager::Operation op
         if (op == QNetworkAccessManager::PostOperation) {
             reply = handleSharePostOperation(op, req, device);
 
-        } else if(req.attribute(QNetworkRequest::CustomVerbAttribute) == "DELETE") {
+        } else if(req.attribute(QNetworkRequest::CustomVerbAttribute).toString() == "DELETE") {
             reply = handleShareDeleteOperation(op, req, reqPath);
 
         } else if(op == QNetworkAccessManager::PutOperation) {
             reply = handleSharePutOperation(op, req, reqPath, device);
 
-        } else if(req.attribute(QNetworkRequest::CustomVerbAttribute) == "GET") {
+        } else if(req.attribute(QNetworkRequest::CustomVerbAttribute).toString() == "GET") {
             reply = handleShareGetOperation(op, req, reqPath);
         }
     } else {

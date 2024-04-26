@@ -115,6 +115,8 @@ void Systray::create()
     if (_trayEngine) {
         if (!AccountManager::instance()->accounts().isEmpty()) {
             _trayEngine->rootContext()->setContextProperty("activityModel", UserModel::instance()->currentActivityModel());
+        } else {
+            _trayEngine->rootContext()->setContextProperty("activityModel", &_fakeActivityModel);
         }
 
         QQmlComponent trayWindowComponent(trayEngine(), QStringLiteral("qrc:/qml/src/gui/tray/Window.qml"));

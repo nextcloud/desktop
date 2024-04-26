@@ -19,7 +19,9 @@
 #include <common/checksums.h>
 #include "wordlist.h"
 
-#include <qt5keychain/keychain.h>
+#include <qt6keychain/keychain.h>
+
+#include <KCompressionDevice>
 
 #include <QDebug>
 #include <QLoggingCategory>
@@ -36,8 +38,6 @@
 #include <QRandomGenerator>
 #include <QJsonArray>
 #include <QCryptographicHash>
-
-#include <KCompressionDevice>
 
 #include <map>
 #include <string>
@@ -1195,7 +1195,7 @@ void ClientSideEncryption::getUsersPublicKeyFromServer(const AccountPtr &account
     const auto job = new JsonApiJob(account, e2eeBaseUrl(account) + QStringLiteral("public-key"), this);
     connect(job, &JsonApiJob::jsonReceived, [this, account, userIds](const QJsonDocument &doc, int retCode) {
         if (retCode == 200) {
-            QHash<QString, QSslCertificate> results;
+            QHash<QString, NextcloudSslCertificate> results;
             const auto publicKeys = doc.object()[QStringLiteral("ocs")].toObject()[QStringLiteral("data")].toObject()[QStringLiteral("public-keys")].toObject();
             for (const auto &userId : publicKeys.keys()) {
                 if (userIds.contains(userId)) {
@@ -2302,4 +2302,57 @@ bool EncryptionHelper::StreamingDecryptor::isFinished() const
 {
     return _isFinished;
 }
+
+NextcloudSslCertificate::NextcloudSslCertificate() = default;
+
+NextcloudSslCertificate::NextcloudSslCertificate(const NextcloudSslCertificate &other) = default;
+
+NextcloudSslCertificate::NextcloudSslCertificate(const QSslCertificate &certificate)
+    : _certificate(certificate)
+{
+}
+
+NextcloudSslCertificate::NextcloudSslCertificate(QSslCertificate &&certificate)
+    : _certificate(std::move(certificate))
+{
+}
+
+OCC::NextcloudSslCertificate::operator QSslCertificate()
+{
+    return _certificate;
+}
+
+QSslCertificate &NextcloudSslCertificate::get()
+{
+    return _certificate;
+}
+
+const QSslCertificate &NextcloudSslCertificate::get() const
+{
+    return _certificate;
+}
+
+NextcloudSslCertificate &NextcloudSslCertificate::operator=(const NextcloudSslCertificate &other)
+{
+    if (this != &other) {
+        _certificate = other._certificate;
+    }
+
+    return *this;
+}
+
+NextcloudSslCertificate &NextcloudSslCertificate::operator=(NextcloudSslCertificate &&other)
+{
+    if (this != &other) {
+        _certificate = std::move(other._certificate);
+    }
+
+    return *this;
+}
+
+OCC::NextcloudSslCertificate::operator QSslCertificate() const
+{
+    return _certificate;
+}
+
 }

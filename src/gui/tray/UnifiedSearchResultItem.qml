@@ -16,7 +16,7 @@ import QtQml 2.15
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.15
-import QtGraphicalEffects 1.15
+import Qt5Compat.GraphicalEffects
 
 import Style 1.0
 

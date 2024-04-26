@@ -5,6 +5,9 @@
  *
  */
 
+#include <QtTest>
+#include <QTextCodec>
+
 #include "syncenginetestutils.h"
 
 #include "caseclashconflictsolver.h"
@@ -1697,8 +1700,7 @@ private slots:
         conflicts = findCaseClashConflicts(fakeFolder.currentLocalState());
         QCOMPARE(conflicts.size(), 0);
 
-        // remove both files from the server(lower and UPPER case)
-        fakeFolder.remoteModifier().remove(testLowerCaseFile);
+        // remove the other file
         fakeFolder.remoteModifier().remove(testUpperCaseFile);
         QVERIFY(fakeFolder.syncOnce());
     }
