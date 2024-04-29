@@ -7,6 +7,8 @@ export EXECUTABLE_NAME=${EXECUTABLE_NAME:-nextcloud}
 export BUILD_UPDATER=${BUILD_UPDATER:-OFF}
 export BUILDNR=${BUILDNR:-0000}
 export DESKTOP_CLIENT_ROOT=${DESKTOP_CLIENT_ROOT:-/home/user}
+export QT_BASE_DIR=${QT_BASE_DIR:-/usr}
+export OPENSSL_ROOT_DIR=${OPENSSL_ROOT_DIR:-/usr/lib/x86_64-linux-gnu}
 
 # Set defaults
 export SUFFIX=${DRONE_PULL_REQUEST:=master}
@@ -24,8 +26,8 @@ mkdir build-client
 cd build-client
 cmake \
     -G Ninja \
-    -DCMAKE_PREFIX_PATH=/opt/qt6.6.3 \
-    -DOPENSSL_ROOT_DIR=/usr/local/lib64 \
+    -DCMAKE_PREFIX_PATH=${QT_BASE_DIR} \
+    -DOPENSSL_ROOT_DIR=${OPENSSL_ROOT_DIR} \
     -DCMAKE_INSTALL_PREFIX=/usr \
     -DBUILD_TESTING=OFF \
     -DBUILD_UPDATER=$BUILD_UPDATER \
@@ -70,8 +72,8 @@ chmod a+x ${APPIMAGE_NAME}
 rm ./${APPIMAGE_NAME}
 cp -r ./squashfs-root ./linuxdeploy-squashfs-root
 
-export LD_LIBRARY_PATH=/app/usr/lib:/opt/qt6.6.3/lib:/usr/local/lib/x86_64-linux-gnu:/usr/local/lib:/usr/local/lib64
-./linuxdeploy-squashfs-root/AppRun --desktop-file=${DESKTOP_FILE} --icon-file=usr/share/icons/hicolor/512x512/apps/${APPNAME}.png --executable=usr/bin/${EXECUTABLE_NAME} --appdir=AppDir
+export LD_LIBRARY_PATH=/app/usr/lib:${QT_BASE_DIR}/lib:/usr/local/lib/x86_64-linux-gnu:/usr/local/lib:/usr/local/lib64
+./linuxdeploy-squashfs-root/AppRun --desktop-file=${DESKTOP_FILE} --icon-file=usr/share/icons/hicolor/512x512/apps/Nextcloud.png --executable=usr/bin/${EXECUTABLE_NAME} --appdir=AppDir
 
 # Use linuxdeploy-plugin-qt to deploy qt dependencies
 export APPIMAGE_NAME=linuxdeploy-plugin-qt-x86_64.AppImage
@@ -81,11 +83,11 @@ chmod a+x ${APPIMAGE_NAME}
 rm ./${APPIMAGE_NAME}
 cp -r ./squashfs-root ./linuxdeploy-plugin-qt-squashfs-root
 
-export PATH=/opt/qt6.6.3/bin:${PATH}
+export PATH=${QT_BASE_DIR}/bin:${PATH}
 export QML_SOURCES_PATHS=${DESKTOP_CLIENT_ROOT}/src/gui
 ./linuxdeploy-plugin-qt-squashfs-root/AppRun --appdir=AppDir
 
-./linuxdeploy-squashfs-root/AppRun --desktop-file=${DESKTOP_FILE} --icon-file=usr/share/icons/hicolor/512x512/apps/${APPNAME}.png --executable=usr/bin/${EXECUTABLE_NAME} --appdir=AppDir --output appimage
+./linuxdeploy-squashfs-root/AppRun --desktop-file=${DESKTOP_FILE} --icon-file=usr/share/icons/hicolor/512x512/apps/Nextcloud.png --executable=usr/bin/${EXECUTABLE_NAME} --appdir=AppDir --output appimage
 
 #move AppImage
 if [ ! -z "$DRONE_COMMIT" ]
