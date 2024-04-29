@@ -73,7 +73,7 @@ rm ./${APPIMAGE_NAME}
 cp -r ./squashfs-root ./linuxdeploy-squashfs-root
 
 export LD_LIBRARY_PATH=/app/usr/lib:${QT_BASE_DIR}/lib:/usr/local/lib/x86_64-linux-gnu:/usr/local/lib:/usr/local/lib64
-./linuxdeploy-squashfs-root/AppRun --desktop-file=${DESKTOP_FILE} --icon-file=usr/share/icons/hicolor/512x512/apps/${APPNAME}.png --executable=usr/bin/${EXECUTABLE_NAME} --appdir=AppDir
+./linuxdeploy-squashfs-root/AppRun --desktop-file=${DESKTOP_FILE} --icon-file=usr/share/icons/hicolor/512x512/apps/Nextcloud.png --executable=usr/bin/${EXECUTABLE_NAME} --appdir=AppDir
 
 # Use linuxdeploy-plugin-qt to deploy qt dependencies
 export APPIMAGE_NAME=linuxdeploy-plugin-qt-x86_64.AppImage
@@ -87,7 +87,7 @@ export PATH=${QT_BASE_DIR}/bin:${PATH}
 export QML_SOURCES_PATHS=${DESKTOP_CLIENT_ROOT}/src/gui
 ./linuxdeploy-plugin-qt-squashfs-root/AppRun --appdir=AppDir
 
-./linuxdeploy-squashfs-root/AppRun --desktop-file=${DESKTOP_FILE} --icon-file=usr/share/icons/hicolor/512x512/apps/${APPNAME}.png --executable=usr/bin/${EXECUTABLE_NAME} --appdir=AppDir --output appimage
+./linuxdeploy-squashfs-root/AppRun --desktop-file=${DESKTOP_FILE} --icon-file=usr/share/icons/hicolor/512x512/apps/Nextcloud.png --executable=usr/bin/${EXECUTABLE_NAME} --appdir=AppDir --output appimage
 
 #move AppImage
 if [ ! -z "$DRONE_COMMIT" ]
