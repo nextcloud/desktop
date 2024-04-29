@@ -9,6 +9,7 @@ export BUILDNR=${BUILDNR:-0000}
 export DESKTOP_CLIENT_ROOT=${DESKTOP_CLIENT_ROOT:-/home/user}
 export QT_BASE_DIR=${QT_BASE_DIR:-/usr}
 export OPENSSL_ROOT_DIR=${OPENSSL_ROOT_DIR:-/usr/lib/x86_64-linux-gnu}
+export VERSION_SUFFIX=${VERSION_SUFFIX:stable}
 
 # Set defaults
 export SUFFIX=${DRONE_PULL_REQUEST:=master}
