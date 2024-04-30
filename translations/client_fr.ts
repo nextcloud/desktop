@@ -3809,29 +3809,29 @@ Il s&apos;agit d&apos;un nouveau mode expérimental. Si vous décidez de l&apos;
         <location filename="../src/libsync/discovery.cpp" line="358"/>
         <source>Folder</source>
         <comment>name of folder entity to use when warning about invalid name</comment>
-        <translation type="unfinished"/>
+        <translation>Dossier</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="358"/>
         <source>File</source>
         <comment>name of folder entity to use when warning about invalid name</comment>
-        <translation type="unfinished"/>
+        <translation>Fichier</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="360"/>
         <source>%1 name containing the character &quot;%2&quot; is not supported on this file system.</source>
         <comment>folder or file impossible to sync due to an invalid name, placeholders will be file or folder and the invalid character</comment>
-        <translation type="unfinished"/>
+        <translation>Le nom %1 contenant le caractère « %2 » n’est pas supporté sur ce système de fichiers.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="362"/>
         <source>%1 name contains at least one invalid character</source>
-        <translation type="unfinished"/>
+        <translation>Le nom %1 contient au moins un caractère invalide</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="364"/>
         <source>%1 name is a reserved name on this file system.</source>
-        <translation type="unfinished"/>
+        <translation>Le nom %1 est un nom réservé sur ce système de fichiers.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="361"/>

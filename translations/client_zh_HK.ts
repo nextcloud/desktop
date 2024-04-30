@@ -3812,29 +3812,29 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/libsync/discovery.cpp" line="358"/>
         <source>Folder</source>
         <comment>name of folder entity to use when warning about invalid name</comment>
-        <translation type="unfinished"/>
+        <translation>資料夾</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="358"/>
         <source>File</source>
         <comment>name of folder entity to use when warning about invalid name</comment>
-        <translation type="unfinished"/>
+        <translation>檔案</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="360"/>
         <source>%1 name containing the character &quot;%2&quot; is not supported on this file system.</source>
         <comment>folder or file impossible to sync due to an invalid name, placeholders will be file or folder and the invalid character</comment>
-        <translation type="unfinished"/>
+        <translation>此檔案系統不支援包含字符 &quot;%2&quot; 的 %1 名稱。</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="362"/>
         <source>%1 name contains at least one invalid character</source>
-        <translation type="unfinished"/>
+        <translation>%1 名稱含有不無效的字元</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="364"/>
         <source>%1 name is a reserved name on this file system.</source>
-        <translation type="unfinished"/>
+        <translation>在檔案件系統中，%1 名稱是保留的名稱，無法使用。</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="361"/>
@@ -5273,7 +5273,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/libsync/updatee2eefolderusersmetadatajob.cpp" line="118"/>
         <source>Could not add or remove user %1 to access folder %2</source>
-        <translation type="unfinished"/>
+        <translation>無法添加或移除用戶 %1 存取資料夾 %2 的權限</translation>
     </message>
     <message>
         <location filename="../src/libsync/updatee2eefolderusersmetadatajob.cpp" line="235"/>

@@ -179,7 +179,7 @@
     <message>
         <location filename="../src/gui/EmojiPicker.qml" line="136"/>
         <source>No recent emojis</source>
-        <translation>Ще не було емоційок</translation>
+        <translation>Поки відсутні емоційки</translation>
     </message>
 </context>
 <context>
