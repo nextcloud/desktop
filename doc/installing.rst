@@ -33,13 +33,13 @@ download page.
 System Requirements
 ----------------------------------
 
-- Windows 8.1+
-- macOS 12+ (64-bit only)
-- Linux
-- FreeBSD
+- Windows 10+ (64-bits only)
+- macOS 11.4+ (64-bits only)
+- Linux (ubuntu 22.04 or openSUSE 15.5 or ...) (64-bits only)
 
 .. note::
-   For Linux distributions, we support, if technically feasible, the latest 2 versions per platform and the previous LTS.
+   For Linux distributions, we support, if technically feasible, the current LTS releases.
+   For BSD, we support them if technically feasible but we do not test
 
 Customizing the Windows Installation
 ------------------------------------
