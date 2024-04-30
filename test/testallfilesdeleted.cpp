@@ -32,6 +32,13 @@ class TestAllFilesDeleted : public QObject
     Q_OBJECT
 
 private slots:
+    void initTestCase()
+    {
+        OCC::Logger::instance()->setLogFlush(true);
+        OCC::Logger::instance()->setLogDebug(true);
+
+        QStandardPaths::setTestModeEnabled(true);
+    }
 
     void testAllFilesDeletedKeep_data()
     {

@@ -10,6 +10,7 @@
 
 #include "common/syncjournaldb.h"
 #include "common/syncjournalfilerecord.h"
+#include "logger.h"
 
 using namespace OCC;
 
@@ -32,9 +33,12 @@ public:
     }
 
 private slots:
-
     void initTestCase()
     {
+        OCC::Logger::instance()->setLogFlush(true);
+        OCC::Logger::instance()->setLogDebug(true);
+
+        QStandardPaths::setTestModeEnabled(true);
     }
 
     void cleanupTestCase()

@@ -14,8 +14,11 @@
 
 #include "gui/filedetails/datefieldbackend.h"
 
+#include "logger.h"
+
 #include <QTest>
 #include <QSignalSpy>
+#include <QStandardPaths>
 
 using namespace OCC;
 
@@ -27,6 +30,14 @@ private:
     static constexpr auto dateStringFormat = "dd/MM/yyyy";
 
 private slots:
+    void initTestCase()
+    {
+        OCC::Logger::instance()->setLogFlush(true);
+        OCC::Logger::instance()->setLogDebug(true);
+
+        QStandardPaths::setTestModeEnabled(true);
+    }
+
     void testDefaultBehaviour()
     {
         Quick::DateFieldBackend backend;

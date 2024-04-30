@@ -81,6 +81,11 @@ signals:
 private slots:
     void initTestCase()
     {
+        OCC::Logger::instance()->setLogFlush(true);
+        OCC::Logger::instance()->setLogDebug(true);
+
+        QStandardPaths::setTestModeEnabled(true);
+
         QTemporaryDir dir;
         ConfigFile::setConfDir(dir.path());
 

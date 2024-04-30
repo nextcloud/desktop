@@ -9,6 +9,7 @@
 
 #include "common/utility.h"
 #include "config.h"
+#include "logger.h"
 
 using namespace OCC::Utility;
 
@@ -23,6 +24,9 @@ class TestUtility : public QObject
 private slots:
     void initTestCase()
     {
+        OCC::Logger::instance()->setLogFlush(true);
+        OCC::Logger::instance()->setLogDebug(true);
+
         QStandardPaths::setTestModeEnabled(true);
     }
 

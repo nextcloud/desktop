@@ -112,6 +112,14 @@ class TestSyncCfApi : public QObject
     Q_OBJECT
 
 private slots:
+    void initTestCase()
+    {
+        Logger::instance()->setLogFlush(true);
+        Logger::instance()->setLogDebug(true);
+
+        QStandardPaths::setTestModeEnabled(true);
+    }
+
     void testVirtualFileLifecycle_data()
     {
         QTest::addColumn<bool>("doLocalDiscovery");

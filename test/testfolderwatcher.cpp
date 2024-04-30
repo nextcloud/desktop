@@ -9,6 +9,7 @@
 
 #include "folderwatcher.h"
 #include "common/utility.h"
+#include "logger.h"
 
 void touch(const QString &file)
 {
@@ -135,6 +136,14 @@ public:
     }
 
 private slots:
+    void initTestCase()
+    {
+        OCC::Logger::instance()->setLogFlush(true);
+        OCC::Logger::instance()->setLogDebug(true);
+
+        QStandardPaths::setTestModeEnabled(true);
+    }
+
     void init()
     {
         _pathChangedSpy->clear();

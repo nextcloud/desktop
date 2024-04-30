@@ -11,6 +11,7 @@
 #include <QString>
 
 #include "account.h"
+#include "logger.h"
 
 using namespace OCC;
 
@@ -43,6 +44,14 @@ class TestConcatUrl: public QObject
 {
     Q_OBJECT
 private slots:
+    void initTestCase()
+    {
+        OCC::Logger::instance()->setLogFlush(true);
+        OCC::Logger::instance()->setLogDebug(true);
+
+        QStandardPaths::setTestModeEnabled(true);
+    }
+
     void testFolder()
     {
         QFETCH(QString, base);

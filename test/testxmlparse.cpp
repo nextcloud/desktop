@@ -7,6 +7,7 @@
 #include <QtTest>
 
 #include "networkjobs.h"
+#include "logger.h"
 
 using namespace OCC;
 
@@ -38,6 +39,14 @@ public slots:
   }
 
 private slots:
+    void initTestCase()
+    {
+        OCC::Logger::instance()->setLogFlush(true);
+        OCC::Logger::instance()->setLogDebug(true);
+
+        QStandardPaths::setTestModeEnabled(true);
+    }
+
     void init() {
         qDebug() << Q_FUNC_INFO;
       _success = false;
