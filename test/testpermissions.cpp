@@ -120,47 +120,65 @@ private slots:
         qInfo("Do some changes and see how they propagate");
 
         const auto removeReadOnly = [&] (const QString &file)  {
-            const auto fileInfoToDelete = QFileInfo(fakeFolder.localPath() + file);
-            QFile(fakeFolder.localPath() + file).setPermissions(QFile::WriteOwner | QFile::ReadOwner);
-            const auto isReadOnly = !static_cast<bool>(std::filesystem::status(fileInfoToDelete.absolutePath().toStdWString()).permissions() & std::filesystem::perms::owner_write);
-            if (isReadOnly) {
-                std::filesystem::permissions(fileInfoToDelete.absolutePath().toStdWString(), std::filesystem::perms::owner_write, std::filesystem::perm_options::add);
+            try {
+                const auto fileInfoToDelete = QFileInfo(fakeFolder.localPath() + file);
+                QFile(fakeFolder.localPath() + file).setPermissions(QFile::WriteOwner | QFile::ReadOwner);
+                const auto isReadOnly = !static_cast<bool>(std::filesystem::status(fileInfoToDelete.absolutePath().toStdWString()).permissions() & std::filesystem::perms::owner_write);
+                if (isReadOnly) {
+                    std::filesystem::permissions(fileInfoToDelete.absolutePath().toStdWString(), std::filesystem::perms::owner_write, std::filesystem::perm_options::add);
+                }
+                fakeFolder.localModifier().remove(file);
+                if (isReadOnly) {
+                    std::filesystem::permissions(fileInfoToDelete.absolutePath().toStdWString(), std::filesystem::perms::owner_write, std::filesystem::perm_options::remove);
+                }
             }
-            fakeFolder.localModifier().remove(file);
-            if (isReadOnly) {
-                std::filesystem::permissions(fileInfoToDelete.absolutePath().toStdWString(), std::filesystem::perms::owner_write, std::filesystem::perm_options::remove);
+            catch (const std::exception& e)
+            {
+                qWarning() << e.what();
             }
         };
 
         const auto renameReadOnly = [&] (const QString &relativePath, const QString &relativeDestinationDirectory)  {
-            const auto sourceFileInfo = QFileInfo(fakeFolder.localPath() + relativePath);
-            const auto destinationFileInfo = QFileInfo(fakeFolder.localPath() + relativeDestinationDirectory);
-            const auto isSourceReadOnly = !static_cast<bool>(std::filesystem::status(sourceFileInfo.absolutePath().toStdWString()).permissions() & std::filesystem::perms::owner_write);
-            const auto isDestinationReadOnly = !static_cast<bool>(std::filesystem::status(destinationFileInfo.absolutePath().toStdWString()).permissions() & std::filesystem::perms::owner_write);
-            if (isSourceReadOnly) {
-                std::filesystem::permissions(sourceFileInfo.absolutePath().toStdWString(), std::filesystem::perms::owner_write, std::filesystem::perm_options::add);
+            try {
+                const auto sourceFileInfo = QFileInfo(fakeFolder.localPath() + relativePath);
+                const auto destinationFileInfo = QFileInfo(fakeFolder.localPath() + relativeDestinationDirectory);
+                const auto isSourceReadOnly = !static_cast<bool>(std::filesystem::status(sourceFileInfo.absolutePath().toStdWString()).permissions() & std::filesystem::perms::owner_write);
+                const auto isDestinationReadOnly = !static_cast<bool>(std::filesystem::status(destinationFileInfo.absolutePath().toStdWString()).permissions() & std::filesystem::perms::owner_write);
+                if (isSourceReadOnly) {
+                    std::filesystem::permissions(sourceFileInfo.absolutePath().toStdWString(), std::filesystem::perms::owner_write, std::filesystem::perm_options::add);
+                }
+                if (isDestinationReadOnly) {
+                    std::filesystem::permissions(destinationFileInfo.absolutePath().toStdWString(), std::filesystem::perms::owner_write, std::filesystem::perm_options::add);
+                }
+                fakeFolder.localModifier().rename(relativePath, relativeDestinationDirectory);
+                if (isSourceReadOnly) {
+                    std::filesystem::permissions(sourceFileInfo.absolutePath().toStdWString(), std::filesystem::perms::owner_write, std::filesystem::perm_options::remove);
+                }
+                if (isDestinationReadOnly) {
+                    std::filesystem::permissions(destinationFileInfo.absolutePath().toStdWString(), std::filesystem::perms::owner_write, std::filesystem::perm_options::remove);
+                }
             }
-            if (isDestinationReadOnly) {
-                std::filesystem::permissions(destinationFileInfo.absolutePath().toStdWString(), std::filesystem::perms::owner_write, std::filesystem::perm_options::add);
-            }
-            fakeFolder.localModifier().rename(relativePath, relativeDestinationDirectory);
-            if (isSourceReadOnly) {
-                std::filesystem::permissions(sourceFileInfo.absolutePath().toStdWString(), std::filesystem::perms::owner_write, std::filesystem::perm_options::remove);
-            }
-            if (isDestinationReadOnly) {
-                std::filesystem::permissions(destinationFileInfo.absolutePath().toStdWString(), std::filesystem::perms::owner_write, std::filesystem::perm_options::remove);
+            catch (const std::exception& e)
+            {
+                qWarning() << e.what();
             }
         };
 
         const auto insertReadOnly = [&] (const QString &file, const int fileSize) {
-            const auto fileInfo = QFileInfo(fakeFolder.localPath() + file);
-            const auto isReadOnly = !static_cast<bool>(std::filesystem::status(fileInfo.absolutePath().toStdWString()).permissions() & std::filesystem::perms::owner_write);
-            if (isReadOnly) {
-                std::filesystem::permissions(fileInfo.absolutePath().toStdWString(), std::filesystem::perms::owner_write, std::filesystem::perm_options::add);
+            try {
+                const auto fileInfo = QFileInfo(fakeFolder.localPath() + file);
+                const auto isReadOnly = !static_cast<bool>(std::filesystem::status(fileInfo.absolutePath().toStdWString()).permissions() & std::filesystem::perms::owner_write);
+                if (isReadOnly) {
+                    std::filesystem::permissions(fileInfo.absolutePath().toStdWString(), std::filesystem::perms::owner_write, std::filesystem::perm_options::add);
+                }
+                fakeFolder.localModifier().insert(file, fileSize);
+                if (isReadOnly) {
+                    std::filesystem::permissions(fileInfo.absolutePath().toStdWString(), std::filesystem::perms::owner_write, std::filesystem::perm_options::remove);
+                }
             }
-            fakeFolder.localModifier().insert(file, fileSize);
-            if (isReadOnly) {
-                std::filesystem::permissions(fileInfo.absolutePath().toStdWString(), std::filesystem::perms::owner_write, std::filesystem::perm_options::remove);
+            catch (const std::exception& e)
+            {
+                qWarning() << e.what();
             }
         };
 
