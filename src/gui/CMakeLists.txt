@@ -126,6 +126,8 @@ ecm_add_qml_module(owncloudGui
         VERSION 1.0
         NAMESPACE OCC
         QML_FILES
+            qml/AccountBar.qml
+            qml/AccountButton.qml
             qml/FolderDelegate.qml
             qml/FolderError.qml
 )

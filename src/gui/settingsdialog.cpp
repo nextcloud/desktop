@@ -21,29 +21,12 @@
 #include "application.h"
 #include "configfile.h"
 #include "generalsettings.h"
+#include "gui/qmlutils.h"
 #include "owncloudgui.h"
+#include "resources/resources.h"
 #include "theme.h"
 
-#include "resources/resources.h"
-
-#include <QActionGroup>
-#include <QDesktopServices>
-#include <QImage>
-#include <QLabel>
-#include <QLayout>
-#include <QMessageBox>
-#include <QPainter>
-#include <QPainterPath>
-#include <QPixmap>
-#include <QPushButton>
 #include <QScreen>
-#include <QSettings>
-#include <QStackedWidget>
-#include <QStandardItemModel>
-#include <QToolBar>
-#include <QToolButton>
-#include <QVBoxLayout>
-#include <QWidgetAction>
 #include <QWindow>
 
 #ifdef Q_OS_MAC
@@ -74,207 +57,58 @@ auto minimumSizeHint(const QWidget *w)
     }
     return min;
 }
-
-const float BUTTONSIZERATIO = 1.618f; // golden ratio
-
-
-/** display name with two lines that is displayed in the settings
- */
-QString shortDisplayNameForSettings(OCC::Account *account)
-{
-    QString user = account->davDisplayName();
-    if (user.isEmpty()) {
-        user = account->credentials()->user();
-    }
-    QString host = account->url().host();
-    int port = account->url().port();
-    if (port > 0 && port != 80 && port != 443) {
-        host.append(QLatin1Char(':'));
-        host.append(QString::number(port));
-    }
-    return QStringLiteral("%1\n%2").arg(user, host);
-}
 }
 
 
 namespace OCC {
-
-class ToolButtonAction : public QWidgetAction
-{
-    Q_OBJECT
-public:
-    explicit ToolButtonAction(const QIcon &icon, const QString &text, QObject *parent)
-        : QWidgetAction(parent)
-    {
-        setIcon(icon);
-        setText(text);
-        setCheckable(true);
-    }
-
-    explicit ToolButtonAction(const QString &icon, const QString &text, QObject *parent)
-        : QWidgetAction(parent)
-    {
-        setText(text);
-        setIconName(icon);
-        setCheckable(true);
-    }
-
-
-    QWidget *createWidget(QWidget *parent) override
-    {
-        auto toolbar = qobject_cast<QToolBar *>(parent);
-        if (!toolbar) {
-            // this means we are in the extention menu, no special action here
-            return nullptr;
-        }
-
-        QToolButton *btn = new QToolButton(toolbar);
-        QString objectName = QStringLiteral("settingsdialog_toolbutton_");
-        objectName += text();
-        btn->setObjectName(objectName);
-
-        btn->setDefaultAction(this);
-        btn->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
-        btn->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::MinimumExpanding);
-        // icon size is fixed, we can't use the toolbars actual size hint as it might not be defined yet
-        btn->setMinimumWidth(toolbar->iconSize().height() * BUTTONSIZERATIO);
-        return btn;
-    }
-
-    QString iconName() const
-    {
-        return _iconName;
-    }
-
-    void setIconName(const QString &iconName)
-    {
-        if (_iconName != iconName) {
-            _iconName = iconName;
-            updateIcon();
-        }
-    }
-
-    void updateIcon()
-    {
-        if (!_iconName.isEmpty()) {
-            setIcon(Resources::getCoreIcon(_iconName));
-        }
-    }
-
-private:
-    QString _iconName;
-};
 
 SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
     : QMainWindow(parent)
     , _ui(new Ui::SettingsDialog)
     , _gui(gui)
 {
-    ConfigFile cfg;
-    _ui->setupUi(this);
-
-    // People perceive this as a Window, so also make Ctrl+W work
-    QAction *closeWindowAction = new QAction(this);
-    closeWindowAction->setShortcut(QKeySequence(QStringLiteral("Ctrl+W")));
-    connect(closeWindowAction, &QAction::triggered, this, &SettingsDialog::hide);
-    addAction(closeWindowAction);
-
     setObjectName(QStringLiteral("Settings")); // required as group for saveGeometry call
     setWindowTitle(Theme::instance()->appNameGUI());
+    _ui->setupUi(this);
 
-    _actionGroup = new QActionGroup(this);
-    _actionGroup->setExclusive(true);
+    setMinimumSize(::minimumSizeHint(this));
 
+    // People perceive this as a Window, so also make Ctrl+W work
+    addAction(tr("Hide"), Qt::CTRL | Qt::Key_W, this, &SettingsDialog::hide);
 
-    _addAccountAction = new ToolButtonAction(QStringLiteral("plus-solid"), tr("Add account"), this);
-    _addAccountAction->setCheckable(false);
-    connect(_addAccountAction, &QAction::triggered, this, [] {
-        // don't directly connect here, ocApp might not be defined yet
-        ocApp()->gui()->runNewAccountWizard();
-    });
-    _ui->toolBar->addAction(_addAccountAction);
+    _ui->quickWidget->rootContext()->setContextProperty(QStringLiteral("settingsDialog"), this);
+    // TODO: fix sizing
+    _ui->quickWidget->setFixedHeight(minimumHeight() * 0.15);
+    QmlUtils::initQuickWidget(_ui->quickWidget, QUrl(QStringLiteral("qrc:/qt/qml/org/ownCloud/gui/qml/AccountBar.qml")));
+    connect(
+        _ui->quickWidget->engine(), &QQmlEngine::quit, QApplication::instance(),
+        [this] {
+            auto box = new QMessageBox(QMessageBox::Question, tr("Quit %1").arg(Theme::instance()->appNameGUI()),
+                tr("Are you sure you want to quit %1?").arg(Theme::instance()->appNameGUI()), QMessageBox::Yes | QMessageBox::No, this);
+            box->setAttribute(Qt::WA_DeleteOnClose);
+            connect(box, &QMessageBox::accepted, this, [] {
+                // delay quit to prevent a Qt 6.6 crash in the destructor of the dialog
+                QTimer::singleShot(0, qApp, &QCoreApplication::quit);
+            });
+            box->open();
+        },
+        Qt::QueuedConnection);
 
-    // Note: all the actions have a '\n' because the account name is in two lines and
-    // all buttons must have the same size in order to keep a good layout
-    _activityAction = new ToolButtonAction(QStringLiteral("activity"), tr("Activity"), this);
-    _actionGroup->addAction(_activityAction);
-    _ui->toolBar->addAction(_activityAction);
     _activitySettings = new ActivitySettings;
     _ui->stack->addWidget(_activitySettings);
     connect(_activitySettings, &ActivitySettings::guiLog, _gui,
         [this](const QString &title, const QString &msg) {
             _gui->slotShowOptionalTrayMessage(title, msg);
         });
+    ConfigFile cfg;
     _activitySettings->setNotificationRefreshInterval(cfg.notificationRefreshInterval());
 
-    QAction *generalAction = new ToolButtonAction(QStringLiteral("settings"), tr("Settings"), this);
-    _actionGroup->addAction(generalAction);
-    _ui->toolBar->addAction(generalAction);
-    GeneralSettings *generalSettings = new GeneralSettings;
-    _ui->stack->addWidget(generalSettings);
-    QObject::connect(generalSettings, &GeneralSettings::showAbout, gui, &ownCloudGui::slotAbout);
-    QObject::connect(generalSettings, &GeneralSettings::syncOptionsChanged, FolderMan::instance(), &FolderMan::slotReloadSyncOptions);
-
-    QWidget *spacer = new QWidget();
-    spacer->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Minimum);
-    _ui->toolBar->addWidget(spacer);
-
-    const auto appNameGui = Theme::instance()->appNameGUI();
-
-    for (const auto &[iconName, name, url] : Theme::instance()->urlButtons()) {
-        auto urlAction = new ToolButtonAction(Resources::themeUniversalIcon(QStringLiteral("urlIcons/%1").arg(iconName)), name, this);
-        urlAction->setCheckable(false);
-        connect(urlAction, &QAction::triggered, this, [url = url] {
-            if (!QDesktopServices::openUrl(url)) {
-                qWarning(lcSettingsDialog) << "Failed to open" << url;
-            }
-        });
-        _ui->toolBar->addAction(urlAction);
-    }
-
-    QAction *quitAction = new ToolButtonAction(QStringLiteral("quit"), tr("Quit %1").arg(appNameGui), this);
-    quitAction->setCheckable(false);
-    connect(quitAction, &QAction::triggered, this, [this, appNameGui] {
-        auto box = new QMessageBox(QMessageBox::Question, tr("Quit %1").arg(appNameGui),
-            tr("Are you sure you want to quit %1?").arg(appNameGui), QMessageBox::Yes | QMessageBox::No, this);
-        box->setAttribute(Qt::WA_DeleteOnClose);
-        connect(box, &QMessageBox::accepted, this, [] {
-            // delay quit to prevent a Qt 6.6 crash in the destructor of the dialog
-            QTimer::singleShot(0, qApp, &QCoreApplication::quit);
-        });
-        box->open();
-    });
-    _ui->toolBar->addAction(quitAction);
-
-    _actionGroupWidgets.insert(_activityAction, _activitySettings);
-    _actionGroupWidgets.insert(generalAction, generalSettings);
-
-    connect(_actionGroup, &QActionGroup::triggered, this, &SettingsDialog::slotSwitchPage);
-
-    connect(AccountManager::instance(), &AccountManager::accountAdded,
-        this, &SettingsDialog::accountAdded);
-    connect(AccountManager::instance(), &AccountManager::accountRemoved,
-        this, &SettingsDialog::accountRemoved);
-    for (const auto &ai : AccountManager::instance()->accounts()) {
-        accountAdded(ai);
-    }
-
-    QTimer::singleShot(0, this, &SettingsDialog::showFirstPage);
-
-    QAction *showLogWindow = new QAction(this);
-    showLogWindow->setShortcut(QKeySequence(QStringLiteral("F12")));
-    connect(showLogWindow, &QAction::triggered, gui, &ownCloudGui::slotToggleLogBrowser);
-    addAction(showLogWindow);
-
-    QAction *showLogWindow2 = new QAction(this);
-    showLogWindow2->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_L));
-    connect(showLogWindow2, &QAction::triggered, gui, &ownCloudGui::slotToggleLogBrowser);
-    addAction(showLogWindow2);
-
-    customizeStyle();
+    _generalSettings = new GeneralSettings;
+    _ui->stack->addWidget(_generalSettings);
+    connect(_generalSettings, &GeneralSettings::showAbout, gui, &ownCloudGui::slotAbout);
+    connect(_generalSettings, &GeneralSettings::syncOptionsChanged, FolderMan::instance(), &FolderMan::slotReloadSyncOptions);
 
     cfg.restoreGeometry(this);
-    setMinimumSize(::minimumSizeHint(this));
 #ifdef Q_OS_MAC
     setActivationPolicy(ActivationPolicy::Accessory);
 #endif
@@ -285,6 +119,28 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
             setWindowTitle(tr("%1 - %2").arg(Theme::instance()->appNameGUI(), w->windowTitle()));
         } else {
             setWindowTitle(Theme::instance()->appNameGUI());
+        }
+    });
+
+    setCurrentPage(SettingsPage::Settings);
+    auto addAccount = [this](AccountStatePtr accountStatePtr) {
+        auto accountSettings = new AccountSettings(accountStatePtr, this);
+        _ui->stack->addWidget(accountSettings);
+        _widgetForAccount.insert(accountStatePtr->account().data(), accountSettings);
+        // select the first added account
+        if (_widgetForAccount.size() == 1) {
+            setCurrentAccount(accountStatePtr->account().data());
+        }
+    };
+    for (const auto &accountState : AccountManager::instance()->accounts()) {
+        addAccount(accountState);
+    }
+    connect(AccountManager::instance(), &AccountManager::accountAdded, this, addAccount);
+    connect(AccountManager::instance(), &AccountManager::accountRemoved, this, [this](AccountStatePtr accountStatePtr) {
+        _ui->stack->removeWidget(accountSettings(accountStatePtr->account().data()));
+        // go to the settings page if the last account was removed
+        if (_widgetForAccount.isEmpty()) {
+            _ui->stack->setCurrentWidget(_generalSettings);
         }
     });
 }
@@ -305,11 +161,9 @@ void SettingsDialog::addModalWidget(QWidget *w)
 
 void SettingsDialog::requestModality(Account *account)
 {
-    _ui->toolBar->setEnabled(false);
+    _ui->quickWidget->setEnabled(false);
     if (_modalStack.isEmpty()) {
-        if (auto *action = _actionForAccount.value(account)) {
-            action->trigger();
-        }
+        setCurrentAccount(account);
     }
     _modalStack.append(account);
     ownCloudGui::raise();
@@ -320,45 +174,20 @@ void SettingsDialog::ceaseModality(Account *account)
     if (_modalStack.contains(account)) {
         _modalStack.removeOne(account);
         if (!_modalStack.isEmpty()) {
-            if (auto *action = _actionForAccount.value(_modalStack.first())) {
-                action->trigger();
-            } else {
-                ceaseModality(account);
-            }
+            setCurrentAccount(_modalStack.first());
         }
     }
-    _ui->toolBar->setEnabled(_modalStack.isEmpty());
+    _ui->quickWidget->setEnabled(_modalStack.isEmpty());
 }
 
-AccountSettings *SettingsDialog::accountSettings(Account *account)
+AccountSettings *SettingsDialog::accountSettings(Account *account) const
 {
-    return qobject_cast<AccountSettings *>(_actionGroupWidgets.value(_actionForAccount.value(account, {}), {}));
-}
-
-QWidget *SettingsDialog::currentPage()
-{
-    return _ui->stack->currentWidget();
-}
-
-void SettingsDialog::changeEvent(QEvent *e)
-{
-    switch (e->type()) {
-    case QEvent::StyleChange:
-    case QEvent::PaletteChange:
-    case QEvent::ThemeChange:
-        customizeStyle();
-        break;
-    default:
-        break;
-    }
-
-    QMainWindow::changeEvent(e);
+    return _widgetForAccount.value(account, nullptr);
 }
 
 void SettingsDialog::setVisible(bool visible)
 {
-    if (!visible)
-    {
+    if (!visible) {
         ConfigFile cfg;
         cfg.saveGeometry(this);
     }
@@ -373,158 +202,62 @@ void SettingsDialog::setVisible(bool visible)
     QMainWindow::setVisible(visible);
 }
 
-void SettingsDialog::slotSwitchPage(QAction *action)
+void SettingsDialog::setCurrentPage(SettingsPage currentPage)
 {
-    _ui->stack->setCurrentWidget(_actionGroupWidgets.value(action));
+    _currentPage = currentPage;
+    _currentAccount = nullptr;
+    switch (_currentPage) {
+    case SettingsPage::Activity:
+        _ui->stack->setCurrentWidget(_activitySettings);
+        break;
+    case SettingsPage::Settings:
+        _ui->stack->setCurrentWidget(_generalSettings);
+        break;
+    case SettingsPage::Account:
+        // handled by set account
+        [[fallthrough]];
+    case SettingsPage::None:
+        Q_UNREACHABLE();
+    }
+    Q_EMIT currentAccountChanged();
+    Q_EMIT currentPageChanged();
 }
 
-void SettingsDialog::showFirstPage()
+SettingsDialog::SettingsPage SettingsDialog::currentPage() const
 {
-    if (!_accountActions.isEmpty()) {
-        _accountActions.first()->trigger();
-    } else {
-        Q_ASSERT(!_ui->toolBar->actions().isEmpty());
-        // the first page is always the add button, so select the second
-        _ui->toolBar->actions().at(1)->trigger();
-    }
+    return _currentPage;
 }
 
-void SettingsDialog::showActivityPage()
+
+void SettingsDialog::setCurrentAccount(Account *account)
 {
-    if (_activityAction) {
-        _activityAction->trigger();
-    }
+    _currentAccount = account;
+    _ui->stack->setCurrentWidget(accountSettings(account));
+    _currentPage = SettingsPage::Account;
+
+    Q_EMIT currentAccountChanged();
+    Q_EMIT currentPageChanged();
 }
 
-void SettingsDialog::showIssuesList()
+Account *SettingsDialog::currentAccount() const
 {
-    if (!_activityAction)
-        return;
-    _activityAction->trigger();
-    _activitySettings->slotShowIssuesTab();
+    return _currentAccount;
 }
 
-void SettingsDialog::accountAdded(AccountStatePtr accountStatePtr)
+void SettingsDialog::addAccount()
 {
-    bool brandingSingleAccount = !Theme::instance()->multiAccount();
-
-    if (brandingSingleAccount) {
-        _ui->toolBar->removeAction(_addAccountAction);
-    }
-
-    QAction *accountAction;
-    const QPixmap avatar = accountStatePtr->account()->avatar();
-    const QString actionText = brandingSingleAccount ? tr("Account") : accountStatePtr->account()->displayName();
-    if (avatar.isNull()) {
-        accountAction = new ToolButtonAction(QStringLiteral("account"), actionText, this);
-    } else {
-        const QIcon icon(AvatarJob::makeCircularAvatar(avatar));
-        accountAction = new ToolButtonAction(icon, actionText, this);
-    }
-    _accountActions.append(accountAction);
-
-    if (!brandingSingleAccount) {
-        accountAction->setToolTip(accountStatePtr->account()->displayName());
-        accountAction->setIconText(shortDisplayNameForSettings(accountStatePtr->account().data()));
-    }
-
-    // For single account: the add button is removed, place the account tab as the first item.
-    // For multi account: we keep the add button on the left, but place the account(s) right after the add button.
-    _ui->toolBar->insertAction(brandingSingleAccount ? _ui->toolBar->actions().at(0) : _ui->toolBar->actions().at(1), accountAction);
-
-    auto accountSettings = new AccountSettings(accountStatePtr, this);
-    QString objectName = QStringLiteral("accountSettings_");
-    objectName += accountStatePtr->account()->displayName();
-    accountSettings->setObjectName(objectName);
-    _ui->stack->insertWidget(0 , accountSettings);
-
-    _actionGroup->addAction(accountAction);
-    _actionGroupWidgets.insert(accountAction, accountSettings);
-    _actionForAccount.insert(accountStatePtr->account().data(), accountAction);
-    accountAction->trigger();
-
-    connect(FolderMan::instance(), &FolderMan::folderListChanged, _gui, &ownCloudGui::slotFoldersChanged);
-    connect(accountSettings, &AccountSettings::showIssuesList, this, &SettingsDialog::showIssuesList);
-    connect(accountStatePtr->account().data(), &Account::accountChangedAvatar, this, &SettingsDialog::slotAccountAvatarChanged);
-    connect(accountStatePtr->account().data(), &Account::accountChangedDisplayName, this, &SettingsDialog::slotAccountDisplayNameChanged);
-
-    // Refresh immediatly when getting online
-    connect(accountStatePtr.data(), &AccountState::isConnectedChanged, _activitySettings,
-        [this, accountStatePtr] { _activitySettings->slotRefresh(accountStatePtr); });
-    _activitySettings->slotRefresh(accountStatePtr);
+    ocApp()->gui()->runNewAccountWizard();
 }
 
-void SettingsDialog::slotAccountAvatarChanged()
+void SettingsDialog::focusNext()
 {
-    Account *account = static_cast<Account *>(sender());
-    if (account && _actionForAccount.contains(account)) {
-        QAction *action = _actionForAccount[account];
-        if (action) {
-            const QPixmap pix = account->avatar();
-            if (!pix.isNull()) {
-                action->setIcon(AvatarJob::makeCircularAvatar(pix));
-            }
-        }
-    }
+    focusNextChild();
 }
 
-void SettingsDialog::slotAccountDisplayNameChanged()
+void SettingsDialog::focusPrevious()
 {
-    Account *account = static_cast<Account *>(sender());
-    if (account && _actionForAccount.contains(account)) {
-        QAction *action = _actionForAccount[account];
-        if (action) {
-            QString displayName = account->displayName();
-            action->setText(displayName);
-            action->setIconText(shortDisplayNameForSettings(account));
-        }
-    }
-}
-
-void SettingsDialog::accountRemoved(AccountStatePtr s)
-{
-    while (_modalStack.contains(s->account().data())) {
-        ceaseModality(s->account().get());
-    }
-    if (!Theme::instance()->multiAccount()) {
-        _ui->toolBar->insertAction(_activityAction, _addAccountAction);
-    }
-
-    for (auto it = _actionGroupWidgets.begin(); it != _actionGroupWidgets.end(); ++it) {
-        auto as = qobject_cast<AccountSettings *>(*it);
-        if (!as) {
-            continue;
-        }
-        if (as->accountsState() == s) {
-            _ui->toolBar->removeAction(it.key());
-            _accountActions.removeAll(it.key());
-
-            if (_ui->stack->currentWidget() == it.value()) {
-                showFirstPage();
-            }
-
-            it.key()->deleteLater();
-            it.value()->deleteLater();
-            _actionGroupWidgets.erase(it);
-            break;
-        }
-    }
-
-    if (_actionForAccount.contains(s->account().data())) {
-        _actionForAccount.remove(s->account().data());
-    }
-    _activitySettings->slotRemoveAccount(s);
-}
-
-void SettingsDialog::customizeStyle()
-{
-    const auto &toolButtonActions = findChildren<ToolButtonAction *>();
-    for (auto *a : toolButtonActions) {
-        a->updateIcon();
-    }
+    focusPreviousChild();
 }
 
 
 } // namespace OCC
-
-#include "settingsdialog.moc"

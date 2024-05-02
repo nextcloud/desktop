@@ -44,7 +44,14 @@
          <number>0</number>
         </property>
         <item>
-         <widget class="QToolBar" name="toolBar"/>
+         <widget class="QQuickWidget" name="quickWidget">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>0</height>
+           </size>
+          </property>
+         </widget>
         </item>
         <item>
          <widget class="QStackedWidget" name="stack"/>
@@ -56,6 +63,13 @@
    </layout>
   </widget>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>QQuickWidget</class>
+   <extends>QWidget</extends>
+   <header location="global">QtQuickWidgets/QQuickWidget</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>
