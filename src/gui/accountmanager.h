@@ -19,6 +19,11 @@
 #include "account.h"
 #include "accountstate.h"
 
+#include <QtQmlIntegration/QtQmlIntegration>
+
+
+class QJSEngine;
+class QQmlEngine;
 namespace OCC {
 
 /**
@@ -28,8 +33,13 @@ namespace OCC {
 class OWNCLOUDGUI_EXPORT AccountManager : public QObject
 {
     Q_OBJECT
+    Q_PROPERTY(QList<AccountState *> accounts READ accountsRaw() NOTIFY accountsChanged);
+    QML_SINGLETON
+    QML_ELEMENT
 public:
     static AccountManager *instance();
+
+    static AccountManager *create(QQmlEngine *qmlEngine, QJSEngine *);
     ~AccountManager() override {}
 
     /**
@@ -57,10 +67,9 @@ public:
     void shutdown();
 
     /**
-     * Return a map of all accounts.
-     * (this is a map of QSharedPointer for internal reasons, one should normally not keep a copy of them)
+     * Return a list of all accounts.
      */
-    const QMap<QUuid, AccountStatePtr> &accounts() { return _accounts; }
+    const QList<AccountStatePtr> accounts() { return _accounts.values(); }
 
     /**
      * Return the account state pointer for an account identified by its display name
@@ -90,6 +99,9 @@ public:
     QStringList accountNames() const;
 
 private:
+    // expose raw pointers to qml
+    QList<AccountState *> accountsRaw() const;
+
     // saving and loading Account to settings
     void saveAccountHelper(Account *account, QSettings &settings, bool saveCredentials = true);
     AccountPtr loadAccountHelper(QSettings &settings);
@@ -109,6 +121,7 @@ public Q_SLOTS:
 Q_SIGNALS:
     void accountAdded(AccountStatePtr account);
     void accountRemoved(AccountStatePtr account);
+    void accountsChanged();
 
 private:
     AccountManager() {}

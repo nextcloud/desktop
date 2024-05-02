@@ -613,11 +613,9 @@ void ownCloudGui::updateContextMenu()
         _contextMenu->addAction(tr("Create a new account"), this, &ownCloudGui::runNewAccountWizard);
     } else {
         if (atLeastOnePaused) {
-            _contextMenu->addAction(
-                tr("Resume synchronization"), this, [this] { setPauseOnAllFoldersHelper(AccountManager::instance()->accounts().values(), false); });
+            _contextMenu->addAction(tr("Resume synchronization"), this, [this] { setPauseOnAllFoldersHelper(AccountManager::instance()->accounts(), false); });
         } else {
-            _contextMenu->addAction(
-                tr("Stop synchronization"), this, [this] { setPauseOnAllFoldersHelper(AccountManager::instance()->accounts().values(), true); });
+            _contextMenu->addAction(tr("Stop synchronization"), this, [this] { setPauseOnAllFoldersHelper(AccountManager::instance()->accounts(), true); });
         }
         _contextMenu->addSeparator();
 

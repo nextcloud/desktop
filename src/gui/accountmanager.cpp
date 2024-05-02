@@ -97,6 +97,13 @@ AccountManager *AccountManager::instance()
     return &instance;
 }
 
+AccountManager *AccountManager::create(QQmlEngine *qmlEngine, QJSEngine *)
+{
+    Q_ASSERT(qmlEngine->thread() == AccountManager::instance()->thread());
+    QJSEngine::setObjectOwnership(AccountManager::instance(), QJSEngine::CppOwnership);
+    return instance();
+}
+
 bool AccountManager::restore()
 {
     auto settings = ConfigFile::settingsWithGroup(accountsC());
@@ -270,6 +277,16 @@ QStringList AccountManager::accountNames() const
     return accounts;
 }
 
+QList<AccountState *> AccountManager::accountsRaw() const
+{
+    QList<AccountState *> out;
+    out.reserve(_accounts.size());
+    for (auto &x : _accounts.values()) {
+        out.append(x);
+    }
+    return out;
+}
+
 AccountPtr AccountManager::loadAccountHelper(QSettings &settings)
 {
     auto urlConfig = settings.value(urlC());
@@ -356,6 +373,7 @@ void AccountManager::deleteAccount(AccountStatePtr account)
     settings->remove(account->account()->id());
 
     Q_EMIT accountRemoved(account);
+    Q_EMIT accountsChanged();
     account->deleteLater();
 }
 
@@ -408,6 +426,7 @@ AccountStatePtr AccountManager::addAccountState(std::unique_ptr<AccountState> &&
     AccountStatePtr statePtr = accountState.release();
     _accounts.insert(statePtr->account()->uuid(), statePtr);
     Q_EMIT accountAdded(statePtr);
+    Q_EMIT accountsChanged();
     return statePtr;
 }
 }
