@@ -19,7 +19,7 @@ Feature: Enable/disable virtual file support
         And the placeholder of file "folder2/lorem.txt" should exist on the file system
         And the "Choose what to sync" button should not be available
         When the user disables virtual file support
-        Then the "Enable virtual file support..." button should be available
+        Then the "Enable virtual file support" button should be available
         And the file "testFile.txt" should be downloaded
         And the file "folder1/lorem.txt" should be downloaded
         And the file "folder2/lorem.txt" should be downloaded
@@ -28,7 +28,7 @@ Feature: Enable/disable virtual file support
         Then the folder "folder1" should not exist on the file system
         And the file "folder2/lorem.txt" should exist on the file system
         When the user enables virtual file support
-        Then the "Disable virtual file support..." button should be available
+        Then the "Disable virtual file support" button should be available
         And the placeholder of file "folder1/lorem.txt" should exist on the file system
         And the file "testFile.txt" should be downloaded
         And the file "folder2/lorem.txt" should be downloaded
@@ -84,4 +84,4 @@ Feature: Enable/disable virtual file support
         And the user enables virtual file support
         And the user disables virtual file support
         And the user enables virtual file support
-        Then the "Disable virtual file support..." button should be available
+        Then the "Disable virtual file support" button should be available

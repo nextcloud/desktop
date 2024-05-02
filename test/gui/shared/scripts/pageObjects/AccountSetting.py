@@ -22,13 +22,6 @@ class AccountSetting:
         "unnamed": 1,
         "visible": 1,
     }
-    REMOVE_ALL_FILES = {
-        "window": names.remove_All_Files_QMessageBox,
-        "text": "Remove all files",
-        "type": "QPushButton",
-        "unnamed": 1,
-        "visible": 1,
-    }
     ACCOUNT_CONNECTION_LABEL = {
         "container": names.settings_stack_QStackedWidget,
         "name": "connectLabel",
@@ -167,10 +160,6 @@ class AccountSetting:
                 + " milliseconds"
             )
         return result
-
-    @staticmethod
-    def confirmRemoveAllFiles():
-        squish.clickButton(squish.waitForObject(AccountSetting.REMOVE_ALL_FILES))
 
     @staticmethod
     def pressKey(key):

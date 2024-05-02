@@ -69,11 +69,11 @@ class SyncConnection:
 
     @staticmethod
     def enableVFS():
-        SyncConnection.performAction("Enable virtual file support...")
+        SyncConnection.performAction("Enable virtual file support")
 
     @staticmethod
     def disableVFS():
-        SyncConnection.performAction("Disable virtual file support...")
+        SyncConnection.performAction("Disable virtual file support")
         squish.clickButton(
             squish.waitForObject(SyncConnection.DISABLE_VFS_CONFIRMATION_BUTTON)
         )

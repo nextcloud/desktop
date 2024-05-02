@@ -257,14 +257,6 @@ def step(context, itemType, resource):
     else:
         raise Exception("No such item type for resource")
 
-    # if the sync folder is empty after deleting file,
-    # a dialog will popup asking to confirm "Remove all files"
-    if is_empty_sync_folder(getResourcePath()):
-        try:
-            AccountSetting.confirmRemoveAllFiles()
-        except:
-            pass
-
 
 @When('user "|any|" creates the following files inside the sync folder:')
 def step(context, username):

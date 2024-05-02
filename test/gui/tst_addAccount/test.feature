@@ -66,7 +66,7 @@ Feature: adding accounts
             | user     | Alice          |
             | password | 1234           |
         When the user selects download everything option in advanced section
-        Then the "Enable virtual file support..." button should be available
+        Then the "Enable virtual file support" button should be available
 
     @skipOnOC10
     Scenario: Add space manually from sync connection window

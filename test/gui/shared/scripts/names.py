@@ -28,7 +28,6 @@ settings_settingsdialog_toolbutton_Add_account_QToolButton = {"name": "settingsd
 settings_settingsdialog_toolbutton_Activity_QToolButton = {"name": "settingsdialog_toolbutton_Activity", "type": "QToolButton", "visible": 1, "window": settings_OCC_SettingsDialog}
 disable_virtual_file_support_QMessageBox = {"type": "QMessageBox", "unnamed": 1, "visible": 1, "windowTitle": "Disable virtual file support?"}
 owncloudWizard_urlLabel_QLabel = {"name": "urlLabel", "type": "QLabel", "visible": 1, "window": owncloudWizard_OCC_OwncloudWizard}
-remove_All_Files_QMessageBox = {"type": "QMessageBox", "unnamed": 1, "visible": 1, "windowTitle": "Remove All Files?"}
 setupWizardWindow_OCC_Wizard_SetupWizardWindow = {"name": "SetupWizardWindow", "type": "OCC::Wizard::SetupWizardWindow", "visible": 1}
 setupWizardWindow_contentWidget_QStackedWidget = {"name": "contentWidget", "type": "QStackedWidget", "visible": 1, "window": setupWizardWindow_OCC_Wizard_SetupWizardWindow}
 insecure_connection_QMessageBox = {"type": "QMessageBox", "unnamed": 1, "visible": 1, "windowTitle": "Insecure connection"}
