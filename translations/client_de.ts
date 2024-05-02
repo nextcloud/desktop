@@ -3832,7 +3832,7 @@ Dies ist ein neuer, experimenteller Modus. Wenn Sie sich entscheiden, ihn zu ver
     <message>
         <location filename="../src/libsync/discovery.cpp" line="364"/>
         <source>%1 name is a reserved name on this file system.</source>
-        <translation>%1 Der Dateiname ist in diesem Dateisystem ein reservierter Name.</translation>
+        <translation>%1 Der Name ist in diesem Dateisystem ein reservierter Name.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="361"/>
