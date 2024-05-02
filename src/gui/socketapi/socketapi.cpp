@@ -909,7 +909,7 @@ void SocketApi::sendSharingContextMenuOptions(const FileData &fileData, SocketLi
                 listener->sendMessage(QStringLiteral("MENU_ITEM:COPY_PUBLIC_LINK") + flagString + tr("Create and copy public link to clipboard"));
             }
         } else if (publicLinksEnabled) {
-            listener->sendMessage(QStringLiteral("MENU_ITEM:MANAGE_PUBLIC_LINKS") + flagString + tr("Copy public link to clipboard"));
+            listener->sendMessage(QStringLiteral("MENU_ITEM:MANAGE_PUBLIC_LINKS") + flagString + tr("Manage public links"));
         }
     }
 
