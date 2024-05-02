@@ -36,6 +36,7 @@
 #include <QSslSocket>
 #include <QUrl>
 #include <QUuid>
+#include <QtQmlIntegration/QtQmlIntegration>
 
 #include <memory>
 
@@ -71,8 +72,10 @@ class OWNCLOUDSYNC_EXPORT Account : public QObject
     Q_OBJECT
     Q_PROPERTY(QString id MEMBER _id)
     Q_PROPERTY(QString davUser MEMBER _davUser)
-    Q_PROPERTY(QString displayName MEMBER _displayName)
+    Q_PROPERTY(QString displayName READ displayName CONSTANT)
     Q_PROPERTY(QUrl url MEMBER _url)
+    QML_ELEMENT
+    QML_UNCREATABLE("Only created in the C++ code")
 
 public:
     /**

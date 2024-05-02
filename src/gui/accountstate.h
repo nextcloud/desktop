@@ -44,7 +44,9 @@ class FetchServerSettingsJob;
 class OWNCLOUDGUI_EXPORT AccountState : public QObject
 {
     Q_OBJECT
-    Q_PROPERTY(AccountPtr account MEMBER _account READ account)
+    Q_PROPERTY(Account *account READ accountForQml CONSTANT)
+    QML_ELEMENT
+    QML_UNCREATABLE("Only created by AccountManager")
 
 public:
     enum State {
@@ -183,6 +185,7 @@ protected Q_SLOTS:
     void slotCredentialsAsked();
 
 private:
+    Account *accountForQml() const;
     AccountPtr _account;
     JobQueueGuard _queueGuard;
     State _state;
