@@ -64,12 +64,28 @@ namespace OCC {
 
 Theme *Theme::_instance = nullptr;
 
+QmlUrlButton::QmlUrlButton() { }
+
+QmlUrlButton::QmlUrlButton(const std::tuple<QString, QString, QUrl> &tuple)
+    : icon(QUrl(QStringLiteral("image://ownCloud/theme/universal/urlIcons/%1").arg(std::get<0>(tuple))))
+    , name(std::get<1>(tuple))
+    , url(std::get<2>(tuple))
+{
+}
+
 Theme *Theme::instance()
 {
     if (!_instance) {
         _instance = new THEME_CLASS;
     }
     return _instance;
+}
+
+Theme *Theme::create(QQmlEngine *qmlEngine, QJSEngine *)
+{
+    Q_ASSERT(qmlEngine->thread() == Theme::instance()->thread());
+    QJSEngine::setObjectOwnership(Theme::instance(), QJSEngine::CppOwnership);
+    return instance();
 }
 
 Theme::~Theme()
@@ -151,6 +167,17 @@ QIcon Theme::themeTrayIcon(const SyncResult &result, bool sysTrayMenuVisible, Re
 Theme::Theme()
     : QObject(nullptr)
 {
+}
+
+QList<QmlUrlButton> Theme::qmlUrlButtons() const
+{
+    const auto urls = urlButtons();
+    QList<QmlUrlButton> out;
+    out.reserve(urls.size());
+    for (const auto &u : urls) {
+        out.append(QmlUrlButton(u));
+    }
+    return out;
 }
 
 // If this option returns true, the client only supports one folder to sync.

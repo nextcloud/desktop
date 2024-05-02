@@ -37,9 +37,31 @@ class SyncResult;
  * @brief The Theme class
  * @ingroup libsync
  */
+
+class QmlUrlButton
+{
+    Q_GADGET
+    Q_PROPERTY(QUrl icon MEMBER icon CONSTANT);
+    Q_PROPERTY(QString name MEMBER name CONSTANT);
+    Q_PROPERTY(QUrl url MEMBER url CONSTANT);
+    QML_VALUE_TYPE(UrlButtonData)
+
+public:
+    QmlUrlButton();
+    QmlUrlButton(const std::tuple<QString, QString, QUrl> &tuple);
+
+    QUrl icon;
+    QString name;
+    QUrl url;
+};
+
 class OWNCLOUDSYNC_EXPORT Theme : public QObject
 {
     Q_OBJECT
+    Q_PROPERTY(bool multiAccount READ multiAccount FINAL CONSTANT)
+    Q_PROPERTY(QList<QmlUrlButton> urlButtons READ qmlUrlButtons FINAL CONSTANT)
+    QML_SINGLETON
+    QML_ELEMENT
 public:
     enum class VersionFormat {
         Plain,
@@ -51,6 +73,7 @@ public:
 
     /* returns a singleton instance. */
     static Theme *instance();
+    static Theme *create(QQmlEngine *qmlEngine, QJSEngine *);
 
     ~Theme() override;
 
@@ -418,6 +441,7 @@ Q_SIGNALS:
     void systrayUseMonoIconsChanged(bool);
 
 private:
+    QList<QmlUrlButton> qmlUrlButtons() const;
     Theme(Theme const &);
     Theme &operator=(Theme const &);
 
