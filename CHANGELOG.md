@@ -44,6 +44,7 @@ ownCloud admins and users.
 ## Summary
 
 * Bugfix - Schedule syncs after an abort: [#11396](https://github.com/owncloud/client/pull/11396)
+* Bugfix - Fix description of manage public links action: [#11450](https://github.com/owncloud/client/issues/11450)
 * Bugfix - Fix early-use crash in the folder watcher on Linux: [#11460](https://github.com/owncloud/client/issues/11460)
 * Bugfix - Client stuck in `reconnecting`: [#11467](https://github.com/owncloud/client/pull/11467)
 * Bugfix - Properly encode scope and prompt items in OAuth URL: [#11472](https://github.com/owncloud/client/issues/11472)
@@ -80,6 +81,10 @@ ownCloud admins and users.
    aborted.
 
    https://github.com/owncloud/client/pull/11396
+
+* Bugfix - Fix description of manage public links action: [#11450](https://github.com/owncloud/client/issues/11450)
+
+   https://github.com/owncloud/client/issues/11450
 
 * Bugfix - Fix early-use crash in the folder watcher on Linux: [#11460](https://github.com/owncloud/client/issues/11460)
 
