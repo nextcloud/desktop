@@ -3150,7 +3150,7 @@ Note that using any logging command line options will override the settings.</so
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="912"/>
-        <source>Copy public link to clipboard</source>
+        <source>Manage public links</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
