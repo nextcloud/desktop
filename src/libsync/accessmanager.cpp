@@ -143,10 +143,8 @@ CookieJar *AccessManager::ownCloudCookieJar() const
 QList<QSslError> AccessManager::filterSslErrors(const QList<QSslError> &errors) const
 {
     auto filtered = errors;
-    filtered.erase(std::remove_if(
-                       filtered.begin(), filtered.end(), [this](const QSslError &e) {
-                           return _customTrustedCaCertificates.contains(e.certificate());
-                       }),
+    filtered.erase(std::remove_if(filtered.begin(), filtered.end(),
+                       [this](const QSslError &e) { return e.certificate().isNull() || _customTrustedCaCertificates.contains(e.certificate()); }),
         filtered.end());
     return filtered;
 }

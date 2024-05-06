@@ -1,0 +1,3 @@
+Bugfix: Don't store null certificates in the account
+
+https://github.com/owncloud/client/issues/11621

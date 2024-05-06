@@ -97,25 +97,35 @@ CoreJob *ResolveUrlJobFactory::startJob(const QUrl &url, QObject *parent)
     QObject::connect(job->reply(), &QNetworkReply::finished, job, makeFinishedHandler(job->reply()));
 
     QObject::connect(job->reply(), &QNetworkReply::sslErrors, job, [req, job, makeFinishedHandler, nam = nam()](const QList<QSslError> &errors) mutable {
-        auto *tlsErrorDialog = new TlsErrorDialog(errors, job->reply()->url().host(), ocApp()->gui()->settingsDialog());
-
-        job->reply()->setProperty(abortedBySslErrorHandlerC, true);
-        job->reply()->abort();
-
-        QObject::connect(tlsErrorDialog, &TlsErrorDialog::accepted, job, [job, req, errors, nam, makeFinishedHandler]() mutable {
+        // the tls error dialog can only handle untrusted certificates not general ssl errors
+        auto filtered = errors;
+        filtered.erase(std::remove_if(filtered.begin(), filtered.end(), [](const QSslError &e) { return e.certificate().isNull(); }), filtered.end());
+        if (filtered.isEmpty()) {
+            QStringList sslErrorString;
             for (const auto &error : errors) {
-                Q_EMIT job->caCertificateAccepted(error.certificate());
+                sslErrorString << error.errorString();
             }
-            auto *reply = nam->get(req);
-            QObject::connect(reply, &QNetworkReply::finished, job, makeFinishedHandler(reply));
-        });
+            setJobError(job, QApplication::translate("ResolveUrlJobFactory", "SSL Error: %1").arg(sslErrorString.join(QLatin1Char('\n'))));
+        } else {
+            auto *tlsErrorDialog = new TlsErrorDialog(filtered, job->reply()->url().host(), ocApp()->gui()->settingsDialog());
 
-        QObject::connect(tlsErrorDialog, &TlsErrorDialog::rejected, job, [job]() {
-            setJobError(job, QApplication::translate("ResolveUrlJobFactory", "User rejected invalid SSL certificate"));
-        });
+            job->reply()->setProperty(abortedBySslErrorHandlerC, true);
+            job->reply()->abort();
 
-        ownCloudGui::raise();
-        tlsErrorDialog->open();
+            QObject::connect(tlsErrorDialog, &TlsErrorDialog::accepted, job, [job, req, filtered, nam, makeFinishedHandler]() mutable {
+                for (const auto &error : filtered) {
+                    Q_EMIT job->caCertificateAccepted(error.certificate());
+                }
+                auto *reply = nam->get(req);
+                QObject::connect(reply, &QNetworkReply::finished, job, makeFinishedHandler(reply));
+            });
+
+            QObject::connect(tlsErrorDialog, &TlsErrorDialog::rejected, job,
+                [job]() { setJobError(job, QApplication::translate("ResolveUrlJobFactory", "User rejected invalid SSL certificate")); });
+
+            ownCloudGui::raise();
+            tlsErrorDialog->open();
+        }
     });
 
     makeRequest();
