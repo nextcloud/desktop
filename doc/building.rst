@@ -207,58 +207,93 @@ Then, in Terminal:
 Windows Development Build
 -------------------------
 
-If you want to test some changes and deploy them locally, you can build natively
-on Windows using MinGW. If you want to generate an installer for deployment, please
-follow `Windows Installer Build (Cross-Compile)`_ instead.
+Compiling with Qt6
+-------------------
 
-1. Get the required dependencies:
+System requirements
+-------------------
+- Windows 10 or Windows 11
+- `The desktop client code <https://github.com/nextcloud/desktop>`_  
+- Python 3
+- PowerShell
+- Microsoft Visual Studio 2022 and tools to compile C++
+- `KDE Craft <https://community.kde.org/Craft>`_
 
-   * Make sure that you have CMake_ and Git_.
-   * Download the Qt_ MinGW package. You will use the MinGW version bundled with it.
-   * Download an `OpenSSL Windows Build`_ (the non-"Light" version)
+Setting up Microsoft Visual Studio
+----------------------------------
 
-2. Get the QtKeychain_ sources as well as the latest versions of the Nextcloud client
-   from Git as follows
+- Click on 'Modify' in the Visual Studio Installer:
 
-   .. code-block:: bash
-   
-      git clone https://github.com/frankosterfeld/qtkeychain.git
-      git clone git://github.com/nextcloud/client.git
+  .. image:: ./images/building/visual-studio-installer.png
+    :alt: Visual Studio Installer
 
-3. Open the Qt MinGW shortcut console from the Start Menu
+- Select 'Desktop development with C++'
 
-4. Make sure that OpenSSL's ``bin`` directory as well as your qtkeychain source
-   directories are in your PATH. This will allow CMake to find the library and
-   headers, as well as allow the Nextcloud client to find the DLLs at runtime::
+  .. image:: ./images/building/desktop-development-with-cpp.png
+    :alt: Desktop development with C++
 
-    set PATH=C:\<OpenSSL Install Dir>\bin;%PATH%
-    set PATH=C:\<qtkeychain Clone Dir>;%PATH%
+Handling the dependencies 
+-------------------------
 
-5. Build qtkeychain **directly in the source directory** so that the DLL is built
-   in the same directory as the headers to let CMake find them together through PATH::
+We decided to use `KDE Craft <https://community.kde.org/Craft>`_ to get all binary dependencies of the desktop client.
+because it is convenient to mantain and to set it up.
 
-    cd <qtkeychain Clone Dir>
-    cmake -G "MinGW Makefiles" .
-    mingw32-make
-    cd ..
+- Set up KDE Craft as instructed in `Get Involved/development/Windows - KDE Community Wiki <https://community.kde.org/Get_Involved/development/Windows>`_ -  it requires Python 3 and PowerShell.
+- After running:
 
-6. Create the build directory::
+.. code-block:: winbatch
 
-     mkdir client-build
-     cd client-build
+   C:\CraftRoot\craft\craftenv.ps1
 
-7. Build the client::
+- Add the `desktop client blueprints <https://github.com/nextcloud/desktop-client-blueprints>`_ - the instructions to handle the client dependencies:
 
-     cmake -G "MinGW Makefiles" ../client
-     mingw32-make
+.. code-block:: winbatch
 
-   .. note:: You can try using ninja to build in parallel using
-      ``cmake -G Ninja ../client`` and ``ninja`` instead.
-   .. note:: Refer to the :ref:`generic-build-instructions` section for additional options.
+  craft --add-blueprint-repository [git]https://github.com/nextcloud/desktop-client-blueprints.git
+  craft craft
 
-   The Nextcloud binary will appear in the ``bin`` directory.
+- Install all client dependencies:
 
-.. _`Windows Installer Build (Cross-Compile)`:
+.. code-block:: winbatch
+
+  craft --install-deps nextcloud-client
+
+Compiling
+---------
+
+- Make sure your environment variable %PATH% has the possible minimum 
+- Open the Command Prompt (cmd.exe)
+- Run:
+
+.. code-block:: winbatch
+
+  "C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Auxiliary\Build\vcvarsall.bat" x64
+
+- To use the tools installed with Visual Studio, you need the following in your %PATH%:
+
+  .. image:: ./images/building/path.png
+    :alt: Windows environment variables    
+
+- Alternatively you can use the tools installed with KDE Craft by adding them to %PATH%:
+
+.. code-block:: winbatch
+
+  set "PATH=C:\CraftRoot\bin;C:\CraftRoot\dev-utils\bin;%PATH%"
+
+.. note::
+  C:\CraftRoot is the path used by default by KDE Craft. When you are setting it up you may choose a different folder.
+
+- Create build folder, run cmake, compile and install:
+
+.. code-block:: winbatch
+
+  cd <desktop-repo-path>
+  mkdir build
+  cd build
+  cmake .. -G Ninja -DCMAKE_INSTALL_PREFIX=. -DCMAKE_PREFIX_PATH=C:\CraftRoot -DCMAKE_BUILD_TYPE=RelWithDebInfo
+  cmake --build . --target install
+  
+After this, you can use `Qt Creator <https://doc.qt.io/qtcreator>`_ to import the build folder with its configurations to be able to work with the code.
 
 Windows Installer (i.e. Deployment) Build (Cross-Compile)
 ---------------------------------------------------------
