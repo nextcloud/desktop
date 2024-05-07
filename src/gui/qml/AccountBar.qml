@@ -20,6 +20,7 @@ import org.ownCloud.libsync 1.0
 
 Pane {
     id: bar
+    Accessible.name: qsTr("Navigation bar")
 
     RowLayout {
         anchors.fill: parent
@@ -34,6 +35,7 @@ Pane {
 
                 Layout.fillWidth: true
                 Layout.maximumWidth: widthHint
+                Accessible.role: Accessible.PageTab
                 checked: settingsDialog.currentAccount === accountState.account
                 icon.source: "image://ownCloud/core/account"
                 text: accountState.account.displayName.replace("@", "\n")
@@ -81,6 +83,7 @@ Pane {
 
             Layout.fillWidth: true
             Layout.maximumWidth: widthHint
+            Accessible.role: Accessible.PageTab
             checked: settingsDialog.currentPage === SettingsDialog.Activity
             icon.source: "image://ownCloud/core/activity"
             text: qsTr("Activity")
@@ -94,6 +97,7 @@ Pane {
 
             Layout.fillWidth: true
             Layout.maximumWidth: widthHint
+            Accessible.role: Accessible.PageTab
             checked: settingsDialog.currentPage === SettingsDialog.Settings
             icon.source: "image://ownCloud/core/settings"
             text: qsTr("Settings")
