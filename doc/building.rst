@@ -128,7 +128,7 @@ Then, in Terminal:
 
    .. code-block:: bash
 
-      % brew install git qt qtkeychain cmake openssl glib cmocka
+      % brew install git qt qtkeychain cmake openssl glib cmocka karchive
 
 5. Certain Homebrew packages are not automatically linked in places where
    the build scripts can find them, so you can create a shell-profile script
@@ -136,9 +136,8 @@ Then, in Terminal:
 
    .. code-block:: bash
 
-      % echo 'export OPENSSL_ROOT_DIR=$(brew --prefix openssl)' >> ~/.nextcloud_build_variables
-      % echo 'export QT_PATH=$(brew --prefix qt5)/bin' >> ~/.nextcloud_build_variables
-      % echo 'export Qt5LinguistTools_DIR=$(brew --prefix qt5)/lib/cmake/Qt5LinguistTools/' >> ~/.nextcloud_build_variables
+      % echo 'export QT_PATH=$(brew --prefix qt6)/bin' >> ~/.nextcloud_build_variables
+      % echo 'export CMAKE_PREFIX_PATH=$(brew --prefix qt6);$(brew --prefix karchive)' >> ~/.nextcloud_build_variables
    
    .. note:: The name ``~/.nextcloud_build_variables`` is just a suggestion for
       convenience. You can use a different file or create an entire shell
@@ -206,9 +205,6 @@ Then, in Terminal:
 
 Windows Development Build
 -------------------------
-
-Compiling with Qt6
--------------------
 
 System requirements
 -------------------
@@ -390,7 +386,7 @@ To build the most up-to-date version of the client:
 
    .. note:: qtkeychain must be compiled with the same prefix e.g ``CMAKE_INSTALL_PREFIX=/Users/path/to/client/install/ .``
 
-   .. note:: Example:: ``cmake -DCMAKE_PREFIX_PATH=/usr/local/opt/qt5 -DCMAKE_INSTALL_PREFIX=/Users/path/to/client/install/``
+   .. note:: Example:: ``cmake -DCMAKE_PREFIX_PATH=/usr/local/opt/qt6 -DCMAKE_INSTALL_PREFIX=/Users/path/to/client/install/``
 
 4. Call ``make``.
 
@@ -406,8 +402,7 @@ The following are known cmake parameters:
    You need to compile QtKeychain with the same Qt version.
 * ``WITH_DOC=TRUE``: Creates doc and manpages through running ``make``; also adds install statements,
   providing the ability to install using ``make install``.
-* ``CMAKE_PREFIX_PATH=/path/to/Qt5.2.0/5.2.0/yourarch/lib/cmake/``: Builds using Qt5.
-* ``BUILD_WITH_QT4=ON``: Builds using Qt4 (even if Qt5 is found).
+* ``CMAKE_PREFIX_PATH=/path/to/Qt6/6.7.0/yourarch/lib/cmake/``: Builds using Qt6.
 * ``CMAKE_INSTALL_PREFIX=path``: Set an install prefix. This is mandatory on Mac OS
 
 Address Sanitizer
