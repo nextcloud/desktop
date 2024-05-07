@@ -230,9 +230,7 @@ Setting up Microsoft Visual Studio
 
 Handling the dependencies 
 -------------------------
-
-We decided to use `KDE Craft <https://community.kde.org/Craft>`_ to get all binary dependencies of the desktop client.
-because it is convenient to mantain and to set it up.
+We handle the dependencies using `KDE Craft <https://community.kde.org/Craft>`_ because it is easy to set it up and it makes the maintenance much more reliable in all platforms.
 
 1. Set up KDE Craft as instructed in `Get Involved/development/Windows - KDE Community Wiki <https://community.kde.org/Get_Involved/development/Windows>`_ -  it requires Python 3 and PowerShell.
 2. After running:
@@ -257,7 +255,7 @@ because it is convenient to mantain and to set it up.
 Compiling
 ---------
 
-1. Make sure your environment variable %PATH% has the possible minimum 
+1. Make sure your environment variable %PATH% has no conflicting information to the environment you will use to compile the client. For instance, if you have installed OpenSSL previously and have added it to %PATH%, the OpenSSL installed might be a different version than what was installed via KDE Craft.
 2. Open the Command Prompt (cmd.exe)
 3. Run:
 
