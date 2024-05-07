@@ -182,16 +182,21 @@ CoreImageProvider::CoreImageProvider()
 }
 QPixmap CoreImageProvider::requestPixmap(const QString &id, QSize *size, const QSize &requestedSize)
 {
-    const auto [type, path] = [&id] {
-        const QString type = id.mid(0, id.indexOf(QLatin1Char('/')));
-        return std::make_tuple(type, id.mid(type.size()));
+    const auto sep = QLatin1Char('/');
+    const auto [type, elements] = [&] {
+        auto out = id.split(sep);
+        return std::make_tuple(out[0], out.mid(1));
     }();
-    Q_ASSERT(!path.isEmpty());
+    Q_ASSERT(!elements.isEmpty());
     QIcon icon;
     if (type == QLatin1String("theme")) {
-        icon = themeIcon(path);
+        if (elements[0] == QLatin1String("universal")) {
+            icon = themeUniversalIcon(elements.mid(1).join(sep));
+        } else {
+            icon = themeIcon(elements.join(sep));
+        }
     } else if (type == QLatin1String("core")) {
-        icon = getCoreIcon(path);
+        icon = getCoreIcon(elements.join(sep));
     } else {
         Q_UNREACHABLE();
     }
