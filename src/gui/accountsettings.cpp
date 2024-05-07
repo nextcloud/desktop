@@ -75,9 +75,7 @@ AccountSettings::AccountSettings(const AccountStatePtr &accountState, QWidget *p
     ui->quickWidget->engine()->addImageProvider(QStringLiteral("space"), new Spaces::SpaceImageProvider(_accountState->account()));
     QmlUtils::initQuickWidget(ui->quickWidget, QUrl(QStringLiteral("qrc:/qt/qml/org/ownCloud/gui/qml/FolderDelegate.qml")));
 
-    createAccountToolbox();
     connect(FolderMan::instance(), &FolderMan::folderListChanged, _model, &FolderStatusModel::resetFolders);
-
     ui->connectLabel->clear();
 
     connect(_accountState.data(), &AccountState::stateChanged, this, &AccountSettings::slotAccountStateChanged);
@@ -94,6 +92,19 @@ AccountSettings::AccountSettings(const AccountStatePtr &accountState, QWidget *p
     connect(_model, &FolderStatusModel::dataChanged, [this]() {
         ui->addButton->setVisible(!Theme::instance()->singleSyncFolder() || _model->rowCount() == 0);
     });
+    connect(ui->accountToolButton, &QToolButton::clicked, this, [this] {
+        QMenu *menu = new QMenu(this);
+        menu->setAttribute(Qt::WA_DeleteOnClose);
+        menu->setAccessibleName(tr("Account options menu"));
+        menu->addAction(_accountState->isSignedOut() ? tr("Log in") : tr("Log out"), this, &AccountSettings::slotToggleSignInState);
+        auto *reconnectAction = menu->addAction(tr("Reconnect"), this, [this] { _accountState->checkConnectivity(true); });
+        reconnectAction->setEnabled(!_accountState->isConnected() && !_accountState->isSignedOut());
+        menu->addAction(tr("Remove"), this, &AccountSettings::slotDeleteAccount);
+        menu->popup(mapToGlobal(ui->accountToolButton->pos()));
+
+        // set the focus for accessability
+        menu->setFocus();
+    });
 
     connect(_accountState.get(), &AccountState::isSettingUpChanged, this, [this] {
         if (_accountState->isSettingUp()) {
@@ -105,29 +116,6 @@ AccountSettings::AccountSettings(const AccountStatePtr &accountState, QWidget *p
         }
     });
     ui->stackedWidget->setCurrentWidget(ui->folderListPage);
-}
-
-
-void AccountSettings::createAccountToolbox()
-{
-    QMenu *menu = new QMenu(ui->_accountToolbox);
-
-    _toggleSignInOutAction = new QAction(tr("Log out"), this);
-    connect(_toggleSignInOutAction, &QAction::triggered, this, &AccountSettings::slotToggleSignInState);
-    menu->addAction(_toggleSignInOutAction);
-
-    _toggleReconnect = menu->addAction(tr("Reconnect"));
-    connect(_toggleReconnect, &QAction::triggered, this, [this] {
-        _accountState->checkConnectivity(true);
-    });
-
-    QAction *action = new QAction(tr("Remove"), this);
-    menu->addAction(action);
-    connect(action, &QAction::triggered, this, &AccountSettings::slotDeleteAccount);
-
-    ui->_accountToolbox->setText(tr("Account") + QLatin1Char(' '));
-    ui->_accountToolbox->setMenu(menu);
-    ui->_accountToolbox->setPopupMode(QToolButton::InstantPopup);
 }
 
 void AccountSettings::slotToggleSignInState()
@@ -503,13 +491,6 @@ void AccountSettings::slotAccountStateChanged()
     case AccountState::Disconnected:
         showConnectionLabel(tr("Disconnected from: %1.").arg(server));
         break;
-    }
-    _toggleReconnect->setEnabled(!_accountState->isConnected() && !_accountState->isSignedOut());
-    // set the correct label for the Account toolbox button
-    if (_accountState->isSignedOut()) {
-        _toggleSignInOutAction->setText(tr("Log in"));
-    } else {
-        _toggleSignInOutAction->setText(tr("Log out"));
     }
 
     if (state == AccountState::Connected) {

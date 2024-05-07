@@ -17,7 +17,6 @@
 #include "gui/owncloudguilib.h"
 
 #include "folder.h"
-#include "loginrequireddialog.h"
 #include "owncloudgui.h"
 #include "progressdispatcher.h"
 
@@ -91,7 +90,6 @@ private:
         QStringList errors = QStringList());
 
     bool event(QEvent *) override;
-    void createAccountToolbox();
     void doForceSyncCurrentFolder(Folder *selectedFolder);
 
     Ui::AccountSettings *ui;
@@ -100,8 +98,6 @@ private:
     QSortFilterProxyModel *_sortModel;
     bool _wasDisabledBefore;
     AccountStatePtr _accountState;
-    QAction *_toggleSignInOutAction;
-    QAction *_toggleReconnect;
     // are we already in the destructor
     bool _goingDown = false;
 };
