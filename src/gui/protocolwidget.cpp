@@ -94,9 +94,12 @@ QMenu *ProtocolWidget::showFilterMenu(QWidget *parent, Models::SignalledQSortFil
 {
     auto menu = new QMenu(parent);
     menu->setAttribute(Qt::WA_DeleteOnClose);
+    menu->setAccessibleName(tr("Filter menu"));
     Models::addFilterMenuItems(menu, AccountManager::instance()->accountNames(), model, role, columnName, Qt::DisplayRole);
     QTimer::singleShot(0, menu, [menu] {
         menu->popup(QCursor::pos());
+        // accassability
+        menu->setFocus();
     });
     return menu;
 }
@@ -105,6 +108,7 @@ void ProtocolWidget::showContextMenu(QWidget *parent, ProtocolItemModel *model, 
 {
     auto menu = new QMenu(parent);
     menu->setAttribute(Qt::WA_DeleteOnClose);
+    menu->setAccessibleName(tr("Protocol item actions menu"));
 
     // keep in sync with ActivityWidget::slotItemContextMenu
     menu->addAction(CommonStrings::copyToClipBoard(), parent, [text = Models::formatSelection(items)] {
@@ -154,6 +158,8 @@ void ProtocolWidget::showContextMenu(QWidget *parent, ProtocolItemModel *model, 
         }
     }
     menu->popup(QCursor::pos());
+    // accassability
+    menu->setFocus();
 }
 
 void ProtocolWidget::slotItemContextMenu()

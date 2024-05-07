@@ -138,12 +138,15 @@ void AccountSettings::slotCustomContextMenuRequested(Folder *folder)
 
 
     auto *menu = new QMenu(ui->quickWidget);
+    menu->setAccessibleName(tr("Sync options menu"));
     menu->setAttribute(Qt::WA_DeleteOnClose);
     connect(folder, &OCC::Folder::destroyed, menu, &QMenu::close);
     // Only allow removal if the item isn't in "ready" state.
     if (!folder->isReady() && !isDeployed) {
         addRemoveFolderAction(menu);
         menu->popup(QCursor::pos());
+        // accassebility
+        menu->setFocus();
         return;
     }
     // Add an action to open the folder in the system's file browser:
@@ -213,6 +216,8 @@ void AccountSettings::slotCustomContextMenuRequested(Folder *folder)
                 menu->addAction(tr("Choose what to sync"), this, [folder, this] { showSelectiveSyncDialog(folder); });
             }
             menu->popup(QCursor::pos());
+            // accassebility
+            menu->setFocus();
         } else {
             menu->deleteLater();
         }

@@ -429,6 +429,7 @@ void ActivityWidget::slotItemContextMenu()
 {
     auto rows = _ui->_activityList->selectionModel()->selectedRows();
     auto menu = new QMenu(this);
+    menu->setAccessibleName(tr("Activity item menu"));
     menu->setAttribute(Qt::WA_DeleteOnClose);
 
     // keep in sync with ProtocolWidget::showContextMenu
@@ -448,6 +449,8 @@ void ActivityWidget::slotItemContextMenu()
         }
     }
     menu->popup(QCursor::pos());
+    // accassebility
+    menu->setFocus();
 }
 
 

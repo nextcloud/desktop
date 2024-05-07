@@ -270,6 +270,7 @@ QMenu *IssuesWidget::showFilterMenu(QWidget *parent)
 {
     auto menu = new QMenu(parent);
     menu->setAttribute(Qt::WA_DeleteOnClose);
+    menu->setAccessibleName(tr("Filter menu"));
 
     auto accountFilterReset = Models::addFilterMenuItems(menu, AccountManager::instance()->accountNames(), _sortModel, static_cast<int>(ProtocolItemModel::ProtocolItemRole::Account), tr("Account"), Qt::DisplayRole);
     menu->addSeparator();
@@ -279,6 +280,8 @@ QMenu *IssuesWidget::showFilterMenu(QWidget *parent)
 
     QTimer::singleShot(0, menu, [menu] {
         menu->popup(QCursor::pos());
+        // accassebility
+        menu->setFocus();
     });
 
     return menu;
