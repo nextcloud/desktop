@@ -72,6 +72,7 @@ ownCloud admins and users.
 * Enhancement - Improve handling of a server blocking an unsupported client: [#11424](https://github.com/owncloud/client/issues/11424)
 * Enhancement - Ask user to restart application when update is available on Windows: [#11442](https://github.com/owncloud/client/pull/11442)
 * Enhancement - New Folder status: [#11491](https://github.com/owncloud/client/pull/11491)
+* Enhancement - Don't poll the Avatar endpoint with ocis: [#11615](https://github.com/owncloud/client/pull/11615)
 
 ## Details
 
@@ -316,6 +317,13 @@ ownCloud admins and users.
 
    https://github.com/owncloud/client/issues/11527
    https://github.com/owncloud/client/pull/11491
+
+* Enhancement - Don't poll the Avatar endpoint with ocis: [#11615](https://github.com/owncloud/client/pull/11615)
+
+   Ocis has no Avatar implemented yet and when it will be added we will require a
+   different approach.
+
+   https://github.com/owncloud/client/pull/11615
 
 # Changelog for ownCloud Desktop Client [5.2.1] (2024-01-04)
 
