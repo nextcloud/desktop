@@ -218,12 +218,12 @@ System requirements
 Setting up Microsoft Visual Studio
 ----------------------------------
 
-- Click on 'Modify' in the Visual Studio Installer:
+1. Click on 'Modify' in the Visual Studio Installer:
 
   .. image:: ./images/building/visual-studio-installer.png
     :alt: Visual Studio Installer
 
-- Select 'Desktop development with C++'
+2. Select 'Desktop development with C++'
 
   .. image:: ./images/building/desktop-development-with-cpp.png
     :alt: Desktop development with C++
@@ -234,21 +234,21 @@ Handling the dependencies
 We decided to use `KDE Craft <https://community.kde.org/Craft>`_ to get all binary dependencies of the desktop client.
 because it is convenient to mantain and to set it up.
 
-- Set up KDE Craft as instructed in `Get Involved/development/Windows - KDE Community Wiki <https://community.kde.org/Get_Involved/development/Windows>`_ -  it requires Python 3 and PowerShell.
-- After running:
+1. Set up KDE Craft as instructed in `Get Involved/development/Windows - KDE Community Wiki <https://community.kde.org/Get_Involved/development/Windows>`_ -  it requires Python 3 and PowerShell.
+2. After running:
 
 .. code-block:: winbatch
 
    C:\CraftRoot\craft\craftenv.ps1
 
-- Add the `desktop client blueprints <https://github.com/nextcloud/desktop-client-blueprints>`_ - the instructions to handle the client dependencies:
+3. Add the `desktop client blueprints <https://github.com/nextcloud/desktop-client-blueprints>`_ - the instructions to handle the client dependencies:
 
 .. code-block:: winbatch
 
   craft --add-blueprint-repository [git]https://github.com/nextcloud/desktop-client-blueprints.git
   craft craft
 
-- Install all client dependencies:
+4. Install all client dependencies:
 
 .. code-block:: winbatch
 
@@ -257,20 +257,20 @@ because it is convenient to mantain and to set it up.
 Compiling
 ---------
 
-- Make sure your environment variable %PATH% has the possible minimum 
-- Open the Command Prompt (cmd.exe)
-- Run:
+1. Make sure your environment variable %PATH% has the possible minimum 
+2. Open the Command Prompt (cmd.exe)
+3. Run:
 
 .. code-block:: winbatch
 
   "C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Auxiliary\Build\vcvarsall.bat" x64
 
-- To use the tools installed with Visual Studio, you need the following in your %PATH%:
+4. To use the tools installed with Visual Studio, you need the following in your %PATH%:
 
   .. image:: ./images/building/path.png
     :alt: Windows environment variables    
 
-- Alternatively you can use the tools installed with KDE Craft by adding them to %PATH%:
+5. Alternatively you can use the tools installed with KDE Craft by adding them to %PATH%:
 
 .. code-block:: winbatch
 
@@ -279,7 +279,7 @@ Compiling
 .. note::
   C:\CraftRoot is the path used by default by KDE Craft. When you are setting it up you may choose a different folder.
 
-- Create build folder, run cmake, compile and install:
+6. Create build folder, run cmake, compile and install:
 
 .. code-block:: winbatch
 
@@ -289,7 +289,7 @@ Compiling
   cmake .. -G Ninja -DCMAKE_INSTALL_PREFIX=. -DCMAKE_PREFIX_PATH=C:\CraftRoot -DCMAKE_BUILD_TYPE=RelWithDebInfo
   cmake --build . --target install
   
-After this, you can use `Qt Creator <https://doc.qt.io/qtcreator>`_ to import the build folder with its configurations to be able to work with the code.
+7. Now you can use `Qt Creator <https://doc.qt.io/qtcreator>`_ to import the build folder with its configurations to be able to work with the code.
 
 Windows Installer (i.e. Deployment) Build (Cross-Compile)
 ---------------------------------------------------------
