@@ -22,7 +22,6 @@
 #include <QCoreApplication>
 #include <QDir>
 #include <QLoggingCategory>
-#include <QtMacExtras/QtMacExtras>
 
 #include <CoreFoundation/CoreFoundation.h>
 #include <CoreServices/CoreServices.h>
