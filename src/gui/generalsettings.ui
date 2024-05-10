@@ -24,8 +24,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>771</width>
-        <height>636</height>
+        <width>765</width>
+        <height>618</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_5">
@@ -72,6 +72,9 @@
               <property name="text">
                <string>Language</string>
               </property>
+              <property name="buddy">
+               <cstring>languageDropdown</cstring>
+              </property>
              </widget>
             </item>
             <item>
@@ -81,6 +84,9 @@
                 <horstretch>0</horstretch>
                 <verstretch>0</verstretch>
                </sizepolicy>
+              </property>
+              <property name="accessibleName">
+               <string>Language selector</string>
               </property>
               <property name="currentText">
                <string/>
@@ -257,11 +263,14 @@
   <tabstop>autostartCheckBox</tabstop>
   <tabstop>desktopNotificationsCheckBox</tabstop>
   <tabstop>monoIconsCheckBox</tabstop>
+  <tabstop>languageDropdown</tabstop>
   <tabstop>syncHiddenFilesCheckBox</tabstop>
   <tabstop>crashreporterCheckBox</tabstop>
+  <tabstop>moveToTrashCheckBox</tabstop>
   <tabstop>ignoredFilesButton</tabstop>
   <tabstop>logSettingsButton</tabstop>
   <tabstop>scrollArea</tabstop>
+  <tabstop>about_pushButton</tabstop>
  </tabstops>
  <resources/>
  <connections/>
