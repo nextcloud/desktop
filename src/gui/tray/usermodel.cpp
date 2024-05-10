@@ -925,11 +925,9 @@ UnifiedSearchResultsListModel *User::getUnifiedSearchResultsListModel() const
     return _unifiedSearchResultsModel;
 }
 
-void User::openLocalFolder()
+void User::openLocalFolder() const
 {
-    const auto folder = getFolder();
-
-    if (folder) {
+    if (const auto folder = getFolder()) {
         QDesktopServices::openUrl(QUrl::fromLocalFile(folder->path()));
     }
 }
