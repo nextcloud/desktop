@@ -455,6 +455,8 @@ public:
                               QString &removedDirectory,
                               QString &maybeConflictDirectory);
 
+    void addBulkPropagateDownloadItem(const SyncFileItemPtr &item, QStack<QPair<QString, PropagateDirectory *>> &directories);
+
     void processE2eeMetadataMigration(const SyncFileItemPtr &item, QStack<QPair<QString, PropagateDirectory *>> &directories);
 
     [[nodiscard]] const SyncOptions &syncOptions() const;

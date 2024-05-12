@@ -90,6 +90,8 @@ set(libsync_SRCS
     propagateuploadng.cpp
     bulkpropagatorjob.h
     bulkpropagatorjob.cpp
+    bulkpropagatordownloadjob.h
+    bulkpropagatordownloadjob.cpp
     putmultifilejob.h
     putmultifilejob.cpp
     propagateremotedelete.h
