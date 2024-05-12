@@ -390,7 +390,11 @@ void OCC::SyncEngine::slotItemDiscovered(const OCC::SyncFileItemPtr &item)
             }
 
             if (item->_type == CSyncEnums::ItemTypeVirtualFile) {
-                if (item->_locked == SyncFileItem::LockStatus::LockedItem && (item->_lockOwnerType != SyncFileItem::LockOwnerType::TokenLock || item->_lockOwnerId != account()->davUser())) {
+                const auto lockOwnerTypeToSkipReadonly = _account->capabilities().filesLockTypeAvailable()
+                    ? SyncFileItem::LockOwnerType::TokenLock
+                    : SyncFileItem::LockOwnerType::UserLock;
+                if (item->_locked == SyncFileItem::LockStatus::LockedItem
+                    && (item->_lockOwnerType != lockOwnerTypeToSkipReadonly || item->_lockOwnerId != account()->davUser())) {
                     qCDebug(lcEngine()) << filePath << "file is locked: making it read only";
                     FileSystem::setFileReadOnly(filePath, true);
                 } else {
