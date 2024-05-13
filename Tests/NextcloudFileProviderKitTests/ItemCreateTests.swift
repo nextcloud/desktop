@@ -16,9 +16,11 @@ final class ItemCreateTests: XCTestCase {
     static let account = Account(
         user: "testUser", serverUrl: "https://mock.nc.com", password: "abcd"
     )
-    static let rootItem = MockRemoteItem(
+
+    lazy var rootItem = MockRemoteItem(
         identifier: NSFileProviderItemIdentifier.rootContainer.rawValue,
         name: "root",
+        remotePath: Self.account.davFilesUrl,
         directory: true
     )
     static let dbManager = FilesDatabaseManager(realmConfig: .defaultConfiguration)
@@ -29,11 +31,11 @@ final class ItemCreateTests: XCTestCase {
     }
 
     override func tearDown() {
-        Self.rootItem.children = []
+        rootItem.children = []
     }
 
     func testCreateFolder() async throws {
-        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: Self.rootItem)
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
         let folderItemMetadata = ItemMetadata()
         folderItemMetadata.name = "folder"
         folderItemMetadata.fileName = "folder"
@@ -62,11 +64,11 @@ final class ItemCreateTests: XCTestCase {
         XCTAssertEqual(createdItem.metadata.fileName, folderItemMetadata.fileName)
         XCTAssertEqual(createdItem.metadata.directory, true)
 
-        XCTAssertNotNil(Self.rootItem.children.first { $0.name == folderItemMetadata.name })
+        XCTAssertNotNil(rootItem.children.first { $0.name == folderItemMetadata.name })
         XCTAssertNotNil(
-            Self.rootItem.children.first { $0.identifier == createdItem.itemIdentifier.rawValue }
+            rootItem.children.first { $0.identifier == createdItem.itemIdentifier.rawValue }
         )
-        let remoteItem = Self.rootItem.children.first { $0.name == folderItemMetadata.name }
+        let remoteItem = rootItem.children.first { $0.name == folderItemMetadata.name }
         XCTAssertTrue(remoteItem?.directory ?? false)
 
         let dbItem = try XCTUnwrap(
@@ -75,12 +77,12 @@ final class ItemCreateTests: XCTestCase {
         XCTAssertEqual(dbItem.fileName, folderItemMetadata.fileName)
         XCTAssertEqual(dbItem.fileNameView, folderItemMetadata.fileNameView)
         XCTAssertEqual(dbItem.directory, folderItemMetadata.directory)
-        XCTAssertEqual(dbItem.serverUrl, "") // NCKit BUG: should be folderItemMetadata.serverUrl
+        XCTAssertEqual(dbItem.serverUrl, folderItemMetadata.serverUrl)
         XCTAssertEqual(dbItem.ocId, createdItem.itemIdentifier.rawValue)
     }
 
     func testCreateFile() async throws {
-        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: Self.rootItem)
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
         let fileItemMetadata = ItemMetadata()
         fileItemMetadata.fileName = "file"
         fileItemMetadata.fileNameView = "file"
@@ -112,7 +114,7 @@ final class ItemCreateTests: XCTestCase {
         XCTAssertEqual(createdItem.metadata.directory, fileItemMetadata.directory)
 
         let remoteItem = try XCTUnwrap(
-            Self.rootItem.children.first { $0.identifier == createdItem.itemIdentifier.rawValue }
+            rootItem.children.first { $0.identifier == createdItem.itemIdentifier.rawValue }
         )
         XCTAssertEqual(remoteItem.name, fileItemMetadata.fileName)
         XCTAssertEqual(remoteItem.directory, fileItemMetadata.directory)
@@ -128,7 +130,7 @@ final class ItemCreateTests: XCTestCase {
     }
 
     func testCreateFileIntoFolder() async throws {
-        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: Self.rootItem)
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
 
         let folderItemMetadata = ItemMetadata()
         folderItemMetadata.name = "folder"
@@ -156,12 +158,13 @@ final class ItemCreateTests: XCTestCase {
         XCTAssertNil(folderError)
         let createdFolderItem = try XCTUnwrap(createdFolderItemMaybe)
 
+        let fileRelativeRemotePath = "/folder"
         let fileItemMetadata = ItemMetadata()
         fileItemMetadata.name = "file"
         fileItemMetadata.fileName = "file"
         fileItemMetadata.fileNameView = "file"
         fileItemMetadata.directory = false
-        fileItemMetadata.serverUrl = Self.account.davFilesUrl + "/folder"
+        fileItemMetadata.serverUrl = Self.account.davFilesUrl + fileRelativeRemotePath
         fileItemMetadata.classFile = NKCommon.TypeClassFile.document.rawValue
 
         let fileItemTemplate = Item(
@@ -173,7 +176,7 @@ final class ItemCreateTests: XCTestCase {
         let tempUrl = FileManager.default.temporaryDirectory.appendingPathComponent("file")
         try Data("Hello world".utf8).write(to: tempUrl)
 
-        let (createdFileItem, fileError) = await Item.create(
+        let (createdFileItemMaybe, fileError) = await Item.create(
             basedOn: fileItemTemplate,
             contents: tempUrl,
             remoteInterface: remoteInterface,
@@ -181,11 +184,12 @@ final class ItemCreateTests: XCTestCase {
             progress: Progress(),
             dbManager: Self.dbManager
         )
+        let createdFileItem = try XCTUnwrap(createdFileItemMaybe)
 
         XCTAssertNil(fileError)
         XCTAssertNotNil(createdFileItem)
         
-        let remoteFolderItem = Self.rootItem.children.first { $0.name == "folder" }
+        let remoteFolderItem = rootItem.children.first { $0.name == "folder" }
         XCTAssertNotNil(remoteFolderItem)
         XCTAssertFalse(remoteFolderItem?.children.isEmpty ?? true)
     }

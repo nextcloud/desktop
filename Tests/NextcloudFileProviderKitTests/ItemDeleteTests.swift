@@ -16,9 +16,10 @@ final class ItemDeleteTests: XCTestCase {
     static let account = Account(
         user: "testUser", serverUrl: "https://mock.nc.com", password: "abcd"
     )
-    static let rootItem = MockRemoteItem(
+    lazy var rootItem = MockRemoteItem(
         identifier: NSFileProviderItemIdentifier.rootContainer.rawValue,
         name: "root",
+        remotePath: Self.account.davFilesUrl,
         directory: true
     )
     static let dbManager = FilesDatabaseManager(realmConfig: .defaultConfiguration)
@@ -29,17 +30,19 @@ final class ItemDeleteTests: XCTestCase {
     }
 
     override func tearDown() {
-        Self.rootItem.children = []
+        rootItem.children = []
     }
 
     func testDeleteFile() async {
-        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: Self.rootItem)
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
         let itemIdentifier = "file"
-        let remoteItem = MockRemoteItem(identifier: itemIdentifier, name: "file")
-        remoteItem.parent = Self.rootItem
-        Self.rootItem.children = [remoteItem]
+        let remoteItem = MockRemoteItem(
+            identifier: itemIdentifier, name: "file", remotePath: Self.account.davFilesUrl + "/file"
+        )
+        remoteItem.parent = rootItem
+        rootItem.children = [remoteItem]
 
-        XCTAssertFalse(Self.rootItem.children.isEmpty)
+        XCTAssertFalse(rootItem.children.isEmpty)
 
         let itemMetadata = ItemMetadata()
         itemMetadata.ocId = itemIdentifier
@@ -51,19 +54,26 @@ final class ItemDeleteTests: XCTestCase {
 
         let (error) = await item.delete(dbManager: Self.dbManager)
         XCTAssertNil(error)
-        XCTAssertTrue(Self.rootItem.children.isEmpty)
+        XCTAssertTrue(rootItem.children.isEmpty)
     }
 
     func testDeleteFolderAndContents() async {
-        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: Self.rootItem)
-        let remoteFolder = MockRemoteItem(identifier: "folder", name: "folder", directory: true)
-        let remoteItem = MockRemoteItem(identifier: "file", name: "file")
-        Self.rootItem.children = [remoteFolder]
-        remoteFolder.parent = Self.rootItem
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+        let remoteFolder = MockRemoteItem(
+            identifier: "folder",
+            name: "folder",
+            remotePath: Self.account.davFilesUrl + "/folder",
+            directory: true
+        )
+        let remoteItem = MockRemoteItem(
+            identifier: "file", name: "file", remotePath: Self.account.davFilesUrl + "/folder/file"
+        )
+        rootItem.children = [remoteFolder]
+        remoteFolder.parent = rootItem
         remoteFolder.children = [remoteItem]
         remoteItem.parent = remoteFolder
 
-        XCTAssertFalse(Self.rootItem.children.isEmpty)
+        XCTAssertFalse(rootItem.children.isEmpty)
         XCTAssertFalse(remoteFolder.children.isEmpty)
 
         let folderMetadata = ItemMetadata()
@@ -76,6 +86,6 @@ final class ItemDeleteTests: XCTestCase {
 
         let (error) = await folder.delete(dbManager: Self.dbManager)
         XCTAssertNil(error)
-        XCTAssertTrue(Self.rootItem.children.isEmpty)
+        XCTAssertTrue(rootItem.children.isEmpty)
     }
 }

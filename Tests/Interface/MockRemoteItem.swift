@@ -15,6 +15,7 @@ public class MockRemoteItem: Equatable {
     public let identifier: String
     public let versionIdentifier: String
     public var name: String
+    public var remotePath: String
     public let directory: Bool
     public let creationDate: Date
     public var modificationDate: Date
@@ -28,6 +29,7 @@ public class MockRemoteItem: Equatable {
         file.directory = directory
         file.etag = versionIdentifier
         file.ocId = identifier
+        file.serverUrl = parent?.remotePath ?? remotePath
         return file
     }
 
@@ -47,6 +49,7 @@ public class MockRemoteItem: Equatable {
         identifier: String,
         versionIdentifier: String = "0",
         name: String,
+        remotePath: String,
         directory: Bool = false,
         creationDate: Date = Date(),
         modificationDate: Date = Date(),
@@ -55,6 +58,7 @@ public class MockRemoteItem: Equatable {
         self.identifier = identifier
         self.versionIdentifier = versionIdentifier
         self.name = name
+        self.remotePath = remotePath
         self.directory = directory
         self.creationDate = creationDate
         self.modificationDate = modificationDate

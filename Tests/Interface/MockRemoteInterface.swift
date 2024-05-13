@@ -33,6 +33,9 @@ public class MockRemoteInterface: RemoteInterface {
         if sanitisedPath != "/", sanitisedPath.last == "/" {
             sanitisedPath = String(sanitisedPath.dropLast())
         }
+        if sanitisedPath.isEmpty {
+            sanitisedPath = "/"
+        }
         return sanitisedPath
     }
 
@@ -40,7 +43,6 @@ public class MockRemoteInterface: RemoteInterface {
         guard let rootItem, !remotePath.isEmpty else { return nil }
 
         let sanitisedPath = sanitisedPath(remotePath)
-        print(remotePath, sanitisedPath)
         guard sanitisedPath != "/" else { return rootItem }
 
         var pathComponents = sanitisedPath.components(separatedBy: "/")
@@ -66,7 +68,7 @@ public class MockRemoteInterface: RemoteInterface {
         if pathComponents.first?.isEmpty == true { pathComponents.removeFirst() }
         guard !pathComponents.isEmpty else { return "/" }
         pathComponents.removeLast()
-        return "/" + pathComponents.joined(separator: "/")
+        return account.davFilesUrl + "/" + pathComponents.joined(separator: "/")
     }
 
     func parentItem(path: String) -> MockRemoteItem? {
@@ -106,7 +108,10 @@ public class MockRemoteInterface: RemoteInterface {
         }
 
         let item = MockRemoteItem(
-            identifier: randomIdentifier(), name: itemName, directory: true
+            identifier: randomIdentifier(),
+            name: itemName,
+            remotePath: remotePath,
+            directory: true
         )
         guard let parent = parentItem(path: remotePath) else {
             return (accountString, nil, nil, .urlError)
@@ -152,7 +157,7 @@ public class MockRemoteInterface: RemoteInterface {
         }
 
         let item = MockRemoteItem(
-            identifier: randomIdentifier(), name: itemName, data: itemData
+            identifier: randomIdentifier(), name: itemName, remotePath: remotePath, data: itemData
         )
         guard let parent = parentItem(path: remotePath) else {
             return (accountString, nil, nil, nil, 0, nil, nil, .urlError)
@@ -190,6 +195,7 @@ public class MockRemoteInterface: RemoteInterface {
         sourceItem.parent?.children.removeAll(where: { $0.identifier == sourceItem.identifier })
         sourceItem.parent = destinationParent
         destinationParent.children.append(sourceItem)
+        sourceItem.remotePath = remotePathDestination
 
         return (accountString, .success)
     }
