@@ -27,7 +27,8 @@ public class MockRemoteInterface: RemoteInterface {
         var currentNode = rootItem
         guard remotePath != "/" else { return currentNode }
 
-        var pathComponents = remotePath.components(separatedBy: "/")
+        let sanitisedPath = remotePath.last == "/" ? String(remotePath.dropLast()) : remotePath
+        var pathComponents = sanitisedPath.components(separatedBy: "/")
         if pathComponents.first?.isEmpty == true { pathComponents.removeFirst() }
 
         while !pathComponents.isEmpty {
@@ -70,13 +71,16 @@ public class MockRemoteInterface: RemoteInterface {
 taskHandler: @escaping (URLSessionTask) -> Void = { _ in }
     ) async -> (account: String, ocId: String?, date: NSDate?, error: NKError) {
         guard !remotePath.isEmpty else { return (accountString, nil, nil, .urlError) }
-        let splitPath = remotePath.split(separator: "/")
+
+        let sanitisedPath = remotePath.last == "/" ? String(remotePath.dropLast()) : remotePath
+        let splitPath = sanitisedPath.split(separator: "/")
         let name = String(splitPath.last!)
         guard !name.isEmpty else { return (accountString, nil, nil, .urlError) }
         let item = MockRemoteItem(
             identifier: randomIdentifier(), name: name, directory: true
         )
-        let parent = parentItem(path: remotePath)
+
+        let parent = parentItem(path: sanitisedPath)
         parent?.children.append(item)
         item.parent = parent
         return (accountString, item.identifier, item.creationDate as NSDate, .success)
