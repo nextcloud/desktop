@@ -53,4 +53,29 @@ final class ItemDeleteTests: XCTestCase {
         XCTAssertNil(error)
         XCTAssertTrue(Self.rootItem.children.isEmpty)
     }
+
+    func testDeleteFolderAndContents() async {
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: Self.rootItem)
+        let remoteFolder = MockRemoteItem(identifier: "folder", name: "folder", directory: true)
+        let remoteItem = MockRemoteItem(identifier: "file", name: "file")
+        Self.rootItem.children = [remoteFolder]
+        remoteFolder.parent = Self.rootItem
+        remoteFolder.children = [remoteItem]
+        remoteItem.parent = remoteFolder
+
+        XCTAssertFalse(Self.rootItem.children.isEmpty)
+        XCTAssertFalse(remoteFolder.children.isEmpty)
+
+        let folderMetadata = ItemMetadata()
+        folderMetadata.ocId = remoteFolder.identifier
+        let folder = Item(
+            metadata: folderMetadata,
+            parentItemIdentifier: .rootContainer,
+            remoteInterface: remoteInterface
+        )
+
+        let (error) = await folder.delete(dbManager: Self.dbManager)
+        XCTAssertNil(error)
+        XCTAssertTrue(Self.rootItem.children.isEmpty)
+    }
 }
