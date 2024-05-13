@@ -25,19 +25,18 @@ public class MockRemoteInterface: RemoteInterface {
     func item(remotePath: String) -> MockRemoteItem? {
         guard let rootItem else { return nil }
         var currentNode = rootItem
+        guard remotePath != "/" else { return currentNode }
+
         var pathComponents = remotePath.components(separatedBy: "/")
         if pathComponents.first?.isEmpty == true { pathComponents.removeFirst() }
 
         while !pathComponents.isEmpty {
             let component = pathComponents.removeFirst()
-            assert(!component.isEmpty)
-            guard let nextNode = currentNode.children.first(where: { $0.name == component }) else {
-                return nil
-            }
+            guard !component.isEmpty,
+                  let nextNode = currentNode.children.first(where: { $0.name == component })
+            else { return nil }
 
-            guard !pathComponents.isEmpty else { // This is the target
-                return nextNode
-            }
+            guard !pathComponents.isEmpty else { return nextNode } // This is the target
             currentNode = nextNode
         }
 
