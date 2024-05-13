@@ -38,6 +38,8 @@ SetupWizardWindow::SetupWizardWindow(SettingsDialog *parent)
     setWindowFlag(Qt::WindowCloseButtonHint, false);
 
     _ui->setupUi(this);
+    _ui->backButton->setText(Utility::isMac() ? tr("Back") : tr("< &Back"));
+    _ui->backButton->setAccessibleName(tr("Back"));
 
     slotHideErrorMessageWidget();
 
@@ -105,9 +107,11 @@ void SetupWizardWindow::displayPage(AbstractSetupWizardPage *page, SetupWizardSt
     }
 
     if (state == SetupWizardState::FinalState) {
-        _ui->nextButton->setText(tr("Finish"));
+        _ui->nextButton->setText(Utility::isMac() ? tr("Done") : tr("&Finish"));
+        _ui->nextButton->setAccessibleName(Utility::isMac() ? tr("Done") : tr("Finish"));
     } else {
-        _ui->nextButton->setText(tr("Next >"));
+        _ui->nextButton->setText(Utility::isMac() ? tr("Continue") : tr("&Next >"));
+        _ui->nextButton->setAccessibleName(Utility::isMac() ? tr("Continue") : tr("Next"));
     }
 
     _currentPage = page;
