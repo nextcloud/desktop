@@ -82,17 +82,17 @@ public class MockRemoteInterface: RemoteInterface {
         options: NKRequestOptions = .init(),
 taskHandler: @escaping (URLSessionTask) -> Void = { _ in }
     ) async -> (account: String, ocId: String?, date: NSDate?, error: NKError) {
-        guard !remotePath.isEmpty else { return (accountString, nil, nil, .urlError) }
-
-        let sanitisedPath = remotePath.last == "/" ? String(remotePath.dropLast()) : remotePath
-        let splitPath = sanitisedPath.split(separator: "/")
-        let name = String(splitPath.last!)
-        guard !name.isEmpty else { return (accountString, nil, nil, .urlError) }
+        var itemName: String
+        do {
+            itemName = try name(from: remotePath)
+        } catch {
+            return (accountString, nil, nil, .urlError)
+        }
 
         let item = MockRemoteItem(
-            identifier: randomIdentifier(), name: name, directory: true
+            identifier: randomIdentifier(), name: itemName, directory: true
         )
-        guard let parent = parentItem(path: sanitisedPath) else {
+        guard let parent = parentItem(path: remotePath) else {
             return (accountString, nil, nil, .urlError)
         }
 
