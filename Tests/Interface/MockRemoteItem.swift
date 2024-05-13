@@ -7,7 +7,7 @@
 
 import Foundation
 
-public class MockRemoteItem {
+public class MockRemoteItem: Equatable {
     public var parent: MockRemoteItem?
     public var children: [MockRemoteItem] = []
 
@@ -19,14 +19,26 @@ public class MockRemoteItem {
     public let creationDate: Date
     public let modificationDate: Date
 
+    public static func == (lhs: MockRemoteItem, rhs: MockRemoteItem) -> Bool {
+        lhs.parent == rhs.parent &&
+        lhs.children == rhs.children &&
+        lhs.identifier == rhs.identifier &&
+        lhs.versionIdentifier == rhs.versionIdentifier &&
+        lhs.name == rhs.name &&
+        lhs.directory == rhs.directory &&
+        lhs.size == rhs.size &&
+        lhs.creationDate == rhs.creationDate &&
+        lhs.modificationDate == rhs.modificationDate
+    }
+
     public init(
         identifier: String,
-        versionIdentifier: String,
+        versionIdentifier: String = "0",
         name: String,
-        directory: Bool,
-        size: Int64,
-        creationDate: Date,
-        modificationDate: Date
+        directory: Bool = false,
+        size: Int64 = 0,
+        creationDate: Date = Date(),
+        modificationDate: Date = Date()
     ) {
         self.identifier = identifier
         self.versionIdentifier = versionIdentifier
