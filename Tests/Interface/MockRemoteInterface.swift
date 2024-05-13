@@ -66,11 +66,20 @@ public class MockRemoteInterface: RemoteInterface {
 
     public func createFolder(
         remotePath: String,
-        options: NKRequestOptions,
-        taskHandler: @escaping (URLSessionTask) -> Void
+        options: NKRequestOptions = .init(),
+taskHandler: @escaping (URLSessionTask) -> Void = { _ in }
     ) async -> (account: String, ocId: String?, date: NSDate?, error: NKError) {
-        let folderIdentifier = "" // TODO: Implement folder creation
-        return (accountString, folderIdentifier, NSDate(), .success)
+        guard !remotePath.isEmpty else { return (accountString, nil, nil, .urlError) }
+        let splitPath = remotePath.split(separator: "/")
+        let name = String(splitPath.last!)
+        guard !name.isEmpty else { return (accountString, nil, nil, .urlError) }
+        let item = MockRemoteItem(
+            identifier: randomIdentifier(), name: name, directory: true
+        )
+        let parent = parentItem(path: remotePath)
+        parent?.children.append(item)
+        item.parent = parent
+        return (accountString, item.identifier, item.creationDate as NSDate, .success)
     }
 
     public func upload(
