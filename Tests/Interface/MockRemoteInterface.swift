@@ -45,7 +45,8 @@ public class MockRemoteInterface: RemoteInterface {
     }
 
     func parentPath(path: String) -> String {
-        var pathComponents = path.components(separatedBy: "/")
+        let sanitisedPath = path.last == "/" ? String(path.dropLast()) : path
+        var pathComponents = sanitisedPath.components(separatedBy: "/")
         if pathComponents.first?.isEmpty == true { pathComponents.removeFirst() }
         guard !pathComponents.isEmpty else { return "/" }
         pathComponents.removeLast()
