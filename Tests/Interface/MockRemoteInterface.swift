@@ -51,6 +51,11 @@ public class MockRemoteInterface: RemoteInterface {
         return "/" + pathComponents.joined(separator: "/")
     }
 
+    func parentItem(path: String) -> MockRemoteItem? {
+        let parentRemotePath = parentPath(path: path)
+        return item(remotePath: parentRemotePath)
+    }
+
     func randomIdentifier() -> String {
         UUID().uuidString
     }
