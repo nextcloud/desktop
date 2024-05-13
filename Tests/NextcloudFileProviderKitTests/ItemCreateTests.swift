@@ -192,5 +192,22 @@ final class ItemCreateTests: XCTestCase {
         let remoteFolderItem = rootItem.children.first { $0.name == "folder" }
         XCTAssertNotNil(remoteFolderItem)
         XCTAssertFalse(remoteFolderItem?.children.isEmpty ?? true)
+
+        let dbItem = try XCTUnwrap(
+            Self.dbManager.itemMetadataFromOcId(createdFileItem.itemIdentifier.rawValue)
+        )
+        XCTAssertEqual(dbItem.fileName, fileItemMetadata.fileName)
+        XCTAssertEqual(dbItem.fileNameView, fileItemMetadata.fileNameView)
+        XCTAssertEqual(dbItem.directory, fileItemMetadata.directory)
+        XCTAssertEqual(dbItem.serverUrl, fileItemMetadata.serverUrl)
+        XCTAssertEqual(dbItem.ocId, createdFileItem.itemIdentifier.rawValue)
+
+        let parentDbItem = try XCTUnwrap(
+            Self.dbManager.itemMetadataFromOcId(createdFolderItem.itemIdentifier.rawValue)
+        )
+        XCTAssertEqual(parentDbItem.fileName, folderItemMetadata.fileName)
+        XCTAssertEqual(parentDbItem.fileNameView, folderItemMetadata.fileNameView)
+        XCTAssertEqual(parentDbItem.directory, folderItemMetadata.directory)
+        XCTAssertEqual(parentDbItem.serverUrl, folderItemMetadata.serverUrl)
     }
 }
