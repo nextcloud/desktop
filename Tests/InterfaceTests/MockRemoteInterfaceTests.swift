@@ -119,4 +119,30 @@ final class MockRemoteInterfaceTests: XCTestCase {
         XCTAssertEqual(remoteItem?.data, fileData)
         XCTAssertEqual(result.size, fileSize)
     }
+
+    func testMove() async {
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: Self.rootItem)
+        let itemA = MockRemoteItem(identifier: "a", name: "a", directory: true)
+        let itemB = MockRemoteItem(identifier: "b", name: "b", directory: true)
+        let itemC = MockRemoteItem(identifier: "c", name: "c", directory: true)
+        let targetItem = MockRemoteItem(identifier: "target", name: "target")
+
+        remoteInterface.rootItem?.children = [itemA, itemB]
+        itemA.parent = remoteInterface.rootItem
+        itemA.children = [itemC]
+        itemC.parent = itemA
+        itemB.parent = remoteInterface.rootItem
+
+        itemC.children = [targetItem]
+        targetItem.parent = itemC
+
+        let result = await remoteInterface.move(
+            remotePathSource: "/a/c/target", remotePathDestination: "/b/targetRenamed"
+        )
+        XCTAssertEqual(result.error, .success)
+        XCTAssertEqual(itemB.children, [targetItem])
+        XCTAssertEqual(itemC.children, [])
+        XCTAssertEqual(targetItem.parent, itemB)
+        XCTAssertEqual(targetItem.name, "targetRenamed")
+    }
 }
