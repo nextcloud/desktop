@@ -104,12 +104,12 @@ taskHandler: @escaping (URLSessionTask) -> Void = { _ in }
     public func upload(
         remotePath: String,
         localPath: String,
-        creationDate: Date?,
-        modificationDate: Date?,
-        options: NKRequestOptions,
-        requestHandler: @escaping (Alamofire.UploadRequest) -> Void,
-        taskHandler: @escaping (URLSessionTask) -> Void,
-        progressHandler: @escaping (Progress) -> Void
+        creationDate: Date? = .init(),
+        modificationDate: Date? = .init(),
+        options: NKRequestOptions = .init(),
+        requestHandler: @escaping (Alamofire.UploadRequest) -> Void = { _ in },
+        taskHandler: @escaping (URLSessionTask) -> Void = { _ in },
+        progressHandler: @escaping (Progress) -> Void = { _ in }
     ) async -> (
         account: String,
         ocId: String?,
@@ -120,11 +120,41 @@ taskHandler: @escaping (URLSessionTask) -> Void = { _ in }
         afError: AFError?,
         remoteError: NKError
     ) {
+        var itemName: String
+        do {
+            itemName = try name(from: localPath)
+        } catch {
+            return (accountString, nil, nil, nil, 0, nil, nil, .urlError)
+        }
 
-        let itemIdentifier = "" // TODO: Implement upload
-        let itemVersion = ""
-        let itemSize = Int64(0)
-        return (accountString, itemIdentifier, itemVersion, NSDate(), itemSize, nil, nil, .success)
+        let itemLocalUrl = URL(fileURLWithPath: localPath)
+        var itemData: Data
+        do {
+            itemData = try Data(contentsOf: itemLocalUrl)
+        } catch {
+            return (accountString, nil, nil, nil, 0, nil, nil, .urlError)
+        }
+
+        let item = MockRemoteItem(
+            identifier: randomIdentifier(), name: itemName, data: itemData
+        )
+        guard let parent = parentItem(path: remotePath) else {
+            return (accountString, nil, nil, nil, 0, nil, nil, .urlError)
+        }
+
+        parent.children.append(item)
+        item.parent = parent
+
+        return (
+            accountString,
+            item.identifier,
+            item.versionIdentifier,
+            item.creationDate as NSDate,
+            item.size,
+            nil,
+            nil,
+            .success
+        )
     }
 
     public func move(
