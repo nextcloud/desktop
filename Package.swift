@@ -33,8 +33,17 @@ let package = Package(
                 .product(name: "NextcloudCapabilitiesKit", package: "NextcloudCapabilitiesKit"),
                 .product(name: "NextcloudKit", package: "NextcloudKit"),
                 .product(name: "RealmSwift", package: "realm-swift")]),
+        .target(
+            name: "TestInterface",
+            dependencies: ["NextcloudFileProviderKit"],
+            path: "Tests/Interface"),
+        .testTarget(
+            name: "TestInterfaceTests",
+            dependencies: ["NextcloudFileProviderKit", "TestInterface"],
+            path: "Tests/InterfaceTests"
+        ),
         .testTarget(
             name: "NextcloudFileProviderKitTests",
-            dependencies: ["NextcloudFileProviderKit"]),
+            dependencies: ["NextcloudFileProviderKit", "TestInterface"]),
     ]
 )
