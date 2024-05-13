@@ -699,14 +699,10 @@ if( UNIX AND NOT APPLE )
 endif()
 
 if (APPLE)
-    find_package(Qt${QT_MAJOR_VERSION} COMPONENTS MacExtras)
-
     if (BUILD_FILE_PROVIDER_MODULE)
-        target_link_libraries(nextcloudCore PUBLIC Qt::MacExtras "-framework UserNotifications -framework FileProvider")
+        target_link_libraries(nextcloudCore PUBLIC "-framework UserNotifications -framework FileProvider")
     elseif(CMAKE_OSX_DEPLOYMENT_TARGET VERSION_GREATER_EQUAL 10.14)
-        target_link_libraries(nextcloudCore PUBLIC Qt::MacExtras "-framework UserNotifications")
-    else()
-        target_link_libraries(nextcloudCore PUBLIC Qt::MacExtras)
+        target_link_libraries(nextcloudCore PUBLIC "-framework UserNotifications")
     endif()
 endif()
 

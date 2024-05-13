@@ -204,7 +204,6 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent)
         const auto fpAccountUserIdAtHost = _accountState->account()->userIdAtHostWithPort();
         const auto fpSettingsController = Mac::FileProviderSettingsController::instance();
         const auto fpSettingsWidget = fpSettingsController->settingsViewWidget(fpAccountUserIdAtHost, fileProviderTab);
-        fpSettingsLayout->setMargin(0);
         fpSettingsLayout->addWidget(fpSettingsWidget);
         fileProviderTab->setLayout(fpSettingsLayout);
     } else {
