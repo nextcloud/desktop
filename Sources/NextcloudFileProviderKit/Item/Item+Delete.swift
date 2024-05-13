@@ -12,7 +12,10 @@ import OSLog
 
 public extension Item {
 
-    func delete(domain: NSFileProviderDomain? = nil) async -> Error? {
+    func delete(
+        domain: NSFileProviderDomain? = nil,
+        dbManager: FilesDatabaseManager = .shared
+    ) async -> Error? {
         let serverFileNameUrl = metadata.serverUrl + "/" + metadata.fileName
         guard serverFileNameUrl != "" else {
             return NSFileProviderError(.noSuchItem)
@@ -48,8 +51,6 @@ public extension Item {
             at: \(serverFileNameUrl, privacy: .public)
             """
         )
-
-        let dbManager = FilesDatabaseManager.shared
 
         if self.metadata.directory {
             _ = dbManager.deleteDirectoryAndSubdirectoriesMetadata(ocId: ocId)
