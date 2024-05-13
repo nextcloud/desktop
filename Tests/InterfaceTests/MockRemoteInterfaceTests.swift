@@ -49,4 +49,11 @@ final class MockRemoteInterfaceTests: XCTestCase {
 
         XCTAssertEqual(remoteInterface.item(remotePath: "/a/b/target"), targetItem)
     }
+
+    func testPathParentPath() {
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: Self.rootItem)
+        let testPath = "/a/B/c/d"
+        let expectedPath = "/a/B/c"
+        XCTAssertEqual(remoteInterface.parentPath(remotePath: testPath), expectedPath)
+    }
 }
