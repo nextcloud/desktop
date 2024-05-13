@@ -241,4 +241,25 @@ final class MockRemoteInterfaceTests: XCTestCase {
             [itemC.identifier, itemC_A.identifier, itemC_A_A.identifier]
         )
     }
+
+    func testDelete() async {
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: Self.rootItem)
+        let itemA = MockRemoteItem(identifier: "a", name: "a", directory: true)
+        let itemB = MockRemoteItem(identifier: "b", name: "b", directory: true)
+        let itemA_C = MockRemoteItem(identifier: "c", name: "c", directory: true)
+        let itemA_C_D = MockRemoteItem(identifier: "d", name: "d")
+
+        remoteInterface.rootItem?.children = [itemA, itemB]
+        itemA.parent = remoteInterface.rootItem
+        itemA.children = [itemA_C]
+        itemA_C.parent = itemA
+        itemB.parent = remoteInterface.rootItem
+
+        itemA_C.children = [itemA_C_D]
+        itemA_C_D.parent = itemA_C
+
+        let result = await remoteInterface.delete(remotePath: "/a/c")
+        XCTAssertEqual(result.error, .success)
+        XCTAssertEqual(itemA.children, [])
+    }
 }
