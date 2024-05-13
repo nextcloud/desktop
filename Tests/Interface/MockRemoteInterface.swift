@@ -80,7 +80,7 @@ public class MockRemoteInterface: RemoteInterface {
     public func createFolder(
         remotePath: String,
         options: NKRequestOptions = .init(),
-taskHandler: @escaping (URLSessionTask) -> Void = { _ in }
+        taskHandler: @escaping (URLSessionTask) -> Void = { _ in }
     ) async -> (account: String, ocId: String?, date: NSDate?, error: NKError) {
         var itemName: String
         do {
@@ -252,10 +252,16 @@ taskHandler: @escaping (URLSessionTask) -> Void = { _ in }
 
     public func delete(
         remotePath: String,
-        options: NKRequestOptions,
-        taskHandler: @escaping (URLSessionTask) -> Void
+        options: NKRequestOptions = .init(),
+        taskHandler: @escaping (URLSessionTask) -> Void = { _ in }
     ) async -> (account: String, error: NKError) {
-        // TODO: Implement delete
+        guard let item = item(remotePath: remotePath) else {
+            return (accountString, .urlError)
+        }
+
+        item.children = []
+        item.parent?.children.removeAll(where: { $0.identifier == item.identifier })
+        item.parent = nil
         return (accountString, .success)
     }
 
