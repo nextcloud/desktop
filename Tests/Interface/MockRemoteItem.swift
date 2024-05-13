@@ -13,10 +13,10 @@ public class MockRemoteItem: Equatable {
 
     public let identifier: String
     public let versionIdentifier: String
-    public let name: String
+    public var name: String
     public let directory: Bool
     public let creationDate: Date
-    public let modificationDate: Date
+    public var modificationDate: Date
     public let data: Data?
     public var size: Int64 { Int64(data?.count ?? 0) }
 
