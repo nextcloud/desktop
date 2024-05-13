@@ -22,6 +22,28 @@ public class MockRemoteInterface: RemoteInterface {
         self.rootItem = rootItem
     }
 
+    func item(remotePath: String) -> MockRemoteItem? {
+        guard let rootItem else { return nil }
+        var currentNode = rootItem
+        var pathComponents = remotePath.components(separatedBy: "/")
+        if pathComponents.first?.isEmpty == true { pathComponents.removeFirst() }
+
+        while !pathComponents.isEmpty {
+            let component = pathComponents.removeFirst()
+            assert(!component.isEmpty)
+            guard let nextNode = currentNode.children.first(where: { $0.name == component }) else {
+                return nil
+            }
+
+            guard !pathComponents.isEmpty else { // This is the target
+                return nextNode
+            }
+            currentNode = nextNode
+        }
+
+        return nil
+    }
+
     public func setDelegate(_ delegate: any NKCommonDelegate) {
         self.delegate = delegate
     }
