@@ -76,12 +76,15 @@ taskHandler: @escaping (URLSessionTask) -> Void = { _ in }
         let splitPath = sanitisedPath.split(separator: "/")
         let name = String(splitPath.last!)
         guard !name.isEmpty else { return (accountString, nil, nil, .urlError) }
+
         let item = MockRemoteItem(
             identifier: randomIdentifier(), name: name, directory: true
         )
+        guard let parent = parentItem(path: sanitisedPath) else {
+            return (accountString, nil, nil, .urlError)
+        }
 
-        let parent = parentItem(path: sanitisedPath)
-        parent?.children.append(item)
+        parent.children.append(item)
         item.parent = parent
         return (accountString, item.identifier, item.creationDate as NSDate, .success)
     }
