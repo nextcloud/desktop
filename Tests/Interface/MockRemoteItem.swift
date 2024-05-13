@@ -15,9 +15,10 @@ public class MockRemoteItem: Equatable {
     public let versionIdentifier: String
     public let name: String
     public let directory: Bool
-    public let size: Int64
     public let creationDate: Date
     public let modificationDate: Date
+    public let data: Data?
+    public var size: Int64 { Int64(data?.count ?? 0) }
 
     public static func == (lhs: MockRemoteItem, rhs: MockRemoteItem) -> Bool {
         lhs.parent == rhs.parent &&
@@ -36,16 +37,16 @@ public class MockRemoteItem: Equatable {
         versionIdentifier: String = "0",
         name: String,
         directory: Bool = false,
-        size: Int64 = 0,
         creationDate: Date = Date(),
-        modificationDate: Date = Date()
+        modificationDate: Date = Date(),
+        data: Data? = nil
     ) {
         self.identifier = identifier
         self.versionIdentifier = versionIdentifier
         self.name = name
         self.directory = directory
-        self.size = size
         self.creationDate = creationDate
         self.modificationDate = modificationDate
+        self.data = data
     }
 }
