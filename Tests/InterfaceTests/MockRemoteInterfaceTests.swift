@@ -54,6 +54,7 @@ final class MockRemoteInterfaceTests: XCTestCase {
         let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: Self.rootItem)
         let testPath = "/a/B/c/d"
         let expectedPath = "/a/B/c"
-        XCTAssertEqual(remoteInterface.parentPath(remotePath: testPath), expectedPath)
+
+        XCTAssertEqual(remoteInterface.parentPath(path: testPath), expectedPath)
     }
 }
