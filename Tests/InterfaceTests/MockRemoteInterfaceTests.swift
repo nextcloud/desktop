@@ -160,4 +160,85 @@ final class MockRemoteInterfaceTests: XCTestCase {
         let downloadedData = try Data(contentsOf: fileUrl)
         XCTAssertEqual(downloadedData, fileData)
     }
+
+    func testEnumerate() async {
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: Self.rootItem)
+        let itemA = MockRemoteItem(identifier: "a", name: "a", directory: true)
+        let itemB = MockRemoteItem(identifier: "b", name: "b", directory: true)
+        let itemC = MockRemoteItem(identifier: "c", name: "c", directory: true)
+        let itemA_A = MockRemoteItem(identifier: "a_a", name: "a", directory: true)
+        let itemA_B = MockRemoteItem(identifier: "a_b", name: "b", directory: true)
+        let itemC_A = MockRemoteItem(identifier: "c_a", name: "a", directory: true)
+        let itemC_A_A = MockRemoteItem(identifier: "c_a_a", name: "a", directory: true)
+
+        remoteInterface.rootItem?.children = [itemA, itemB, itemC]
+        itemA.parent = remoteInterface.rootItem
+        itemB.parent = remoteInterface.rootItem
+        itemC.parent = remoteInterface.rootItem
+
+        itemA.children = [itemA_A, itemA_B]
+        itemA_A.parent = itemA
+        itemA_B.parent = itemA
+
+        itemC.children = [itemC_A]
+        itemC_A.parent = itemC
+
+        itemC_A.children = [itemC_A_A]
+        itemC_A_A.parent = itemC_A
+
+        let result = await remoteInterface.enumerate(remotePath: "/", depth: .target)
+        XCTAssertEqual(result.error, .success)
+        XCTAssertEqual(result.files.count, 1)
+        let targetRootFile = result.files.first
+        let expectedRoot = remoteInterface.rootItem
+        XCTAssertEqual(targetRootFile?.ocId, expectedRoot?.identifier)
+        XCTAssertEqual(targetRootFile?.fileName, expectedRoot?.name)
+        XCTAssertEqual(targetRootFile?.date, expectedRoot?.creationDate as? NSDate)
+        XCTAssertEqual(targetRootFile?.etag, expectedRoot?.versionIdentifier)
+
+        let resultChildren = await remoteInterface.enumerate(
+            remotePath: "/", depth: .targetAndDirectChildren
+        )
+        XCTAssertEqual(resultChildren.error, .success)
+        XCTAssertEqual(resultChildren.files.count, 4)
+        XCTAssertEqual(
+            resultChildren.files.map(\.ocId),
+            [
+                remoteInterface.rootItem?.identifier,
+                itemA.identifier,
+                itemB.identifier,
+                itemC.identifier,
+            ]
+        )
+
+        let resultAChildren = await remoteInterface.enumerate(
+            remotePath: "/a", depth: .targetAndDirectChildren
+        )
+        XCTAssertEqual(resultAChildren.error, .success)
+        XCTAssertEqual(resultAChildren.files.count, 3)
+        XCTAssertEqual(
+            resultAChildren.files.map(\.ocId),
+            [itemA.identifier, itemA_A.identifier, itemA_B.identifier]
+        )
+
+        let resultCChildren = await remoteInterface.enumerate(
+            remotePath: "/c", depth: .targetAndDirectChildren
+        )
+        XCTAssertEqual(resultCChildren.error, .success)
+        XCTAssertEqual(resultCChildren.files.count, 2)
+        XCTAssertEqual(
+            resultCChildren.files.map(\.ocId),
+            [itemC.identifier, itemC_A.identifier]
+        )
+
+        let resultCRecursiveChildren = await remoteInterface.enumerate(
+            remotePath: "/c", depth: .targetAndAllChildren
+        )
+        XCTAssertEqual(resultCRecursiveChildren.error, .success)
+        XCTAssertEqual(resultCRecursiveChildren.files.count, 3)
+        XCTAssertEqual(
+            resultCRecursiveChildren.files.map(\.ocId),
+            [itemC.identifier, itemC_A.identifier, itemC_A_A.identifier]
+        )
+    }
 }
