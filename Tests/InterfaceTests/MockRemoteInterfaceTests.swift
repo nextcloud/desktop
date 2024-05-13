@@ -145,4 +145,19 @@ final class MockRemoteInterfaceTests: XCTestCase {
         XCTAssertEqual(targetItem.parent, itemB)
         XCTAssertEqual(targetItem.name, "targetRenamed")
     }
+
+    func testDownload() async throws {
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: Self.rootItem)
+        let fileUrl = URL.temporaryDirectory.appendingPathComponent("file.txt", conformingTo: .text)
+        let fileData = Data("Hello, World!".utf8)
+        let _ = await remoteInterface.upload(remotePath: "/", localPath: fileUrl.path)
+
+        let result = await remoteInterface.download(
+            remotePath: "/file.txt", localPath: fileUrl.path
+        )
+        XCTAssertEqual(result.remoteError, .success)
+
+        let downloadedData = try Data(contentsOf: fileUrl)
+        XCTAssertEqual(downloadedData, fileData)
+    }
 }
