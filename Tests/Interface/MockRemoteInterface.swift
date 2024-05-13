@@ -160,11 +160,21 @@ taskHandler: @escaping (URLSessionTask) -> Void = { _ in }
     public func move(
         remotePathSource: String,
         remotePathDestination: String,
-        overwrite: Bool,
-        options: NKRequestOptions,
-        taskHandler: @escaping (URLSessionTask) -> Void
+        overwrite: Bool = false,
+        options: NKRequestOptions = .init(),
+        taskHandler: @escaping (URLSessionTask) -> Void = { _ in }
     ) async -> (account: String, error: NKError) {
-        // TODO: Implement move
+        guard let itemNewName = try? name(from: remotePathDestination),
+              let sourceItem = item(remotePath: remotePathSource),
+              let destinationParent = parentItem(path: remotePathDestination),
+              (overwrite || !destinationParent.children.contains(where: { $0.name == itemNewName }))
+        else { return (accountString, .urlError) }
+
+        sourceItem.name = itemNewName
+        sourceItem.parent?.children.removeAll(where: { $0.identifier == sourceItem.identifier })
+        sourceItem.parent = destinationParent
+        destinationParent.children.append(sourceItem)
+
         return (accountString, .success)
     }
 
