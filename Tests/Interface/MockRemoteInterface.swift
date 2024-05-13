@@ -51,6 +51,10 @@ public class MockRemoteInterface: RemoteInterface {
         return "/" + pathComponents.joined(separator: "/")
     }
 
+    func randomIdentifier() -> String {
+        UUID().uuidString
+    }
+
     public func setDelegate(_ delegate: any NKCommonDelegate) {
         self.delegate = delegate
     }
