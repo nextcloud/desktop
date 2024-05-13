@@ -220,14 +220,34 @@ taskHandler: @escaping (URLSessionTask) -> Void = { _ in }
     public func enumerate(
         remotePath: String,
         depth: EnumerateDepth,
-        showHiddenFiles: Bool,
-        includeHiddenFiles: [String],
-        requestBody: Data?,
-        options: NKRequestOptions,
-        taskHandler: @escaping (URLSessionTask) -> Void
+        showHiddenFiles: Bool = true,
+        includeHiddenFiles: [String] = [],
+        requestBody: Data? = nil,
+        options: NKRequestOptions = .init(),
+        taskHandler: @escaping (URLSessionTask) -> Void = { _ in }
     ) async -> (account: String, files: [NKFile], data: Data?, error: NKError) {
-        // TODO: Implement enumerate
-        return (accountString, [], nil, .success)
+        guard let item = item(remotePath: remotePath) else {
+            return (accountString, [], nil, .urlError)
+        }
+
+        switch depth {
+        case .target:
+            return (accountString, [item.nkfile], nil, .success)
+        case .targetAndDirectChildren:
+            return (accountString, [item.nkfile] + item.children.map { $0.nkfile }, nil, .success)
+        case .targetAndAllChildren:
+            var files = [NKFile]()
+            var queue = [item]
+            while !queue.isEmpty {
+                var nextQueue = [MockRemoteItem]()
+                for item in queue {
+                    files.append(item.nkfile)
+                    nextQueue.append(contentsOf: item.children)
+                }
+                queue = nextQueue
+            }
+            return (accountString, files, nil, .success)
+        }
     }
 
     public func delete(
