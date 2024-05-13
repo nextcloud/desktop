@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import NextcloudKit
 
 public class MockRemoteItem: Equatable {
     public var parent: MockRemoteItem?
@@ -19,6 +20,16 @@ public class MockRemoteItem: Equatable {
     public var modificationDate: Date
     public let data: Data?
     public var size: Int64 { Int64(data?.count ?? 0) }
+    public var nkfile: NKFile {
+        let file = NKFile()
+        file.fileName = name
+        file.size = size
+        file.date = creationDate as NSDate
+        file.directory = directory
+        file.etag = versionIdentifier
+        file.ocId = identifier
+        return file
+    }
 
     public static func == (lhs: MockRemoteItem, rhs: MockRemoteItem) -> Bool {
         lhs.parent == rhs.parent &&
