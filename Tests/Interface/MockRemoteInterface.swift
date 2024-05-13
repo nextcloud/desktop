@@ -181,10 +181,10 @@ taskHandler: @escaping (URLSessionTask) -> Void = { _ in }
     public func download(
         remotePath: String,
         localPath: String,
-        options: NKRequestOptions,
-        requestHandler: @escaping (DownloadRequest) -> Void,
-        taskHandler: @escaping (URLSessionTask) -> Void,
-        progressHandler: @escaping (Progress) -> Void
+        options: NKRequestOptions = .init(),
+        requestHandler: @escaping (DownloadRequest) -> Void = { _ in },
+        taskHandler: @escaping (URLSessionTask) -> Void = { _ in },
+        progressHandler: @escaping (Progress) -> Void = { _ in }
     ) async -> (
         account: String,
         etag: String?,
@@ -194,8 +194,27 @@ taskHandler: @escaping (URLSessionTask) -> Void = { _ in }
         afError: AFError?,
         remoteError: NKError
     ) {
-        // TODO: Implement download
-        return (accountString, "", NSDate(), 0, nil, nil, .success)
+        guard let item = item(remotePath: remotePath) else {
+            return (accountString, nil, nil, 0, nil, nil, .urlError)
+        }
+
+        let localUrl = URL(fileURLWithPath: localPath)
+        do {
+            try item.data?.write(to: localUrl, options: .atomic)
+        } catch let error {
+            print("Could not write item data: \(error)")
+            return (accountString, nil, nil, 0, nil, nil, .urlError)
+        }
+
+        return (
+            accountString,
+            item.versionIdentifier,
+            item.creationDate as NSDate,
+            item.size,
+            nil,
+            nil,
+            .success
+        )
     }
 
     public func enumerate(
