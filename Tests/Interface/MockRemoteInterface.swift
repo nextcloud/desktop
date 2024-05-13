@@ -44,6 +44,14 @@ public class MockRemoteInterface: RemoteInterface {
         return nil
     }
 
+    func parentPath(path: String) -> String {
+        var pathComponents = path.components(separatedBy: "/")
+        if pathComponents.first?.isEmpty == true { pathComponents.removeFirst() }
+        guard !pathComponents.isEmpty else { return "/" }
+        pathComponents.removeLast()
+        return "/" + pathComponents.joined(separator: "/")
+    }
+
     public func setDelegate(_ delegate: any NKCommonDelegate) {
         self.delegate = delegate
     }
@@ -76,6 +84,7 @@ public class MockRemoteInterface: RemoteInterface {
         afError: AFError?,
         remoteError: NKError
     ) {
+
         let itemIdentifier = "" // TODO: Implement upload
         let itemVersion = ""
         let itemSize = Int64(0)
