@@ -100,4 +100,23 @@ final class MockRemoteInterfaceTests: XCTestCase {
         XCTAssertEqual(itemA_B?.name, "B")
         XCTAssertTrue(itemA_B?.directory ?? false)
     }
+
+    func testUpload() async throws {
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: Self.rootItem)
+        let fileUrl = URL.temporaryDirectory.appendingPathComponent("file.txt", conformingTo: .text)
+        let fileData = Data("Hello, World!".utf8)
+        let fileSize = Int64(fileData.count)
+        try fileData.write(to: fileUrl)
+
+        let result = await remoteInterface.upload(remotePath: "/", localPath: fileUrl.path)
+        XCTAssertEqual(result.remoteError, .success)
+
+        let remoteItem = remoteInterface.item(remotePath: "/file.txt")
+        XCTAssertNotNil(remoteItem)
+
+        XCTAssertEqual(remoteItem?.name, "file.txt")
+        XCTAssertEqual(remoteItem?.size, fileSize)
+        XCTAssertEqual(remoteItem?.data, fileData)
+        XCTAssertEqual(result.size, fileSize)
+    }
 }
