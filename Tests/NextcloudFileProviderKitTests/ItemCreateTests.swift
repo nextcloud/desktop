@@ -25,9 +25,6 @@ final class ItemCreateTests: XCTestCase {
 
     override func setUp() {
         super.setUp()
-        Bundle.main.object(
-            forInfoDictionaryKey: "NCFPKAppGroupIdentifier"
-        )
         Realm.Configuration.defaultConfiguration.inMemoryIdentifier = name
     }
 
