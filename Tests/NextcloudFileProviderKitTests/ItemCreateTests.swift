@@ -71,4 +71,43 @@ final class ItemCreateTests: XCTestCase {
         let remoteItem = Self.rootItem.children.first { $0.name == "folder" }
         XCTAssertTrue(remoteItem?.directory ?? false)
     }
+
+    func testCreateFile() async throws {
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: Self.rootItem)
+        let fileItemMetadata = ItemMetadata()
+        fileItemMetadata.name = "file"
+        fileItemMetadata.fileName = "file"
+        fileItemMetadata.fileNameView = "file"
+        fileItemMetadata.directory = false
+        fileItemMetadata.serverUrl = Self.account.davFilesUrl
+        fileItemMetadata.classFile = NKCommon.TypeClassFile.document.rawValue
+
+        let tempUrl = FileManager.default.temporaryDirectory.appendingPathComponent("file")
+        try Data("Hello world".utf8).write(to: tempUrl)
+
+        let fileItemTemplate = Item(
+            metadata: fileItemMetadata,
+            parentItemIdentifier: .rootContainer,
+            remoteInterface: remoteInterface
+        )
+        let (createdItem, error) = await Item.create(
+            basedOn: fileItemTemplate,
+            contents: tempUrl,
+            remoteInterface: remoteInterface,
+            ncAccount: Self.account,
+            progress: Progress(),
+            dbManager: Self.dbManager
+        )
+
+        XCTAssertNil(error)
+        XCTAssertNotNil(createdItem)
+        XCTAssertEqual(createdItem?.metadata.fileName, "file")
+        XCTAssertEqual(createdItem?.metadata.directory, false)
+        XCTAssertNotNil(Self.rootItem.children.first { $0.name == "file" })
+        XCTAssertNotNil(
+            Self.rootItem.children.first { $0.identifier == createdItem?.itemIdentifier.rawValue }
+        )
+        let remoteItem = Self.rootItem.children.first { $0.name == "file" }
+        XCTAssertFalse(remoteItem?.directory ?? true)
+    }
 }
