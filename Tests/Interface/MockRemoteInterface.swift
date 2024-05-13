@@ -22,14 +22,30 @@ public class MockRemoteInterface: RemoteInterface {
         self.rootItem = rootItem
     }
 
-    func item(remotePath: String) -> MockRemoteItem? {
-        guard let rootItem else { return nil }
-        var currentNode = rootItem
-        guard remotePath != "/" else { return currentNode }
+    func sanitisedPath(_ path: String) -> String {
+        var sanitisedPath = path
+        let filesPath = account.davFilesUrl
+        if sanitisedPath.hasPrefix(filesPath) {
+            // Keep the leading slash for root path
+            let trimCount = filesPath.last == "/" ? filesPath.count - 1 : filesPath.count
+            sanitisedPath = String(sanitisedPath.dropFirst(trimCount))
+        }
+        if sanitisedPath != "/", sanitisedPath.last == "/" {
+            sanitisedPath = String(sanitisedPath.dropLast())
+        }
+        return sanitisedPath
+    }
 
-        let sanitisedPath = remotePath.last == "/" ? String(remotePath.dropLast()) : remotePath
+    func item(remotePath: String) -> MockRemoteItem? {
+        guard let rootItem, !remotePath.isEmpty else { return nil }
+
+        let sanitisedPath = sanitisedPath(remotePath)
+        print(remotePath, sanitisedPath)
+        guard sanitisedPath != "/" else { return rootItem }
+
         var pathComponents = sanitisedPath.components(separatedBy: "/")
         if pathComponents.first?.isEmpty == true { pathComponents.removeFirst() }
+        var currentNode = rootItem
 
         while !pathComponents.isEmpty {
             let component = pathComponents.removeFirst()
@@ -45,7 +61,7 @@ public class MockRemoteInterface: RemoteInterface {
     }
 
     func parentPath(path: String) -> String {
-        let sanitisedPath = path.last == "/" ? String(path.dropLast()) : path
+        let sanitisedPath = sanitisedPath(path)
         var pathComponents = sanitisedPath.components(separatedBy: "/")
         if pathComponents.first?.isEmpty == true { pathComponents.removeFirst() }
         guard !pathComponents.isEmpty else { return "/" }
@@ -277,7 +293,7 @@ public class MockRemoteInterface: RemoteInterface {
     public func fetchCapabilities(
         options: NKRequestOptions,
         taskHandler: @escaping (URLSessionTask) -> Void
-    ) async -> (account: String, data: Data?, error: 	NKError) {
+    ) async -> (account: String, data: Data?, error: NKError) {
         // TODO: Implement fetchCapabilities
         return (accountString, nil, .success)
     }
