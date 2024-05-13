@@ -110,4 +110,67 @@ final class ItemCreateTests: XCTestCase {
         let remoteItem = Self.rootItem.children.first { $0.name == "file" }
         XCTAssertFalse(remoteItem?.directory ?? true)
     }
+
+    func testCreateFileIntoFolder() async throws {
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: Self.rootItem)
+
+        let folderItemMetadata = ItemMetadata()
+        folderItemMetadata.name = "folder"
+        folderItemMetadata.fileName = "folder"
+        folderItemMetadata.fileNameView = "folder"
+        folderItemMetadata.directory = true
+        folderItemMetadata.serverUrl = Self.account.davFilesUrl
+        folderItemMetadata.classFile = NKCommon.TypeClassFile.directory.rawValue
+
+        let folderItemTemplate = Item(
+            metadata: folderItemMetadata,
+            parentItemIdentifier: .rootContainer,
+            remoteInterface: remoteInterface
+        )
+
+        let (createdFolderItemMaybe, folderError) = await Item.create(
+            basedOn: folderItemTemplate,
+            contents: nil,
+            remoteInterface: remoteInterface,
+            ncAccount: Self.account,
+            progress: Progress(),
+            dbManager: Self.dbManager
+        )
+
+        XCTAssertNil(folderError)
+        let createdFolderItem = try XCTUnwrap(createdFolderItemMaybe)
+
+        let fileItemMetadata = ItemMetadata()
+        fileItemMetadata.name = "file"
+        fileItemMetadata.fileName = "file"
+        fileItemMetadata.fileNameView = "file"
+        fileItemMetadata.directory = false
+        fileItemMetadata.serverUrl = Self.account.davFilesUrl + "/folder"
+        fileItemMetadata.classFile = NKCommon.TypeClassFile.document.rawValue
+
+        let fileItemTemplate = Item(
+            metadata: fileItemMetadata,
+            parentItemIdentifier: createdFolderItem.itemIdentifier,
+            remoteInterface: remoteInterface
+        )
+
+        let tempUrl = FileManager.default.temporaryDirectory.appendingPathComponent("file")
+        try Data("Hello world".utf8).write(to: tempUrl)
+
+        let (createdFileItem, fileError) = await Item.create(
+            basedOn: fileItemTemplate,
+            contents: tempUrl,
+            remoteInterface: remoteInterface,
+            ncAccount: Self.account,
+            progress: Progress(),
+            dbManager: Self.dbManager
+        )
+
+        XCTAssertNil(fileError)
+        XCTAssertNotNil(createdFileItem)
+        
+        let remoteFolderItem = Self.rootItem.children.first { $0.name == "folder" }
+        XCTAssertNotNil(remoteFolderItem)
+        XCTAssertFalse(remoteFolderItem?.children.isEmpty ?? true)
+    }
 }
