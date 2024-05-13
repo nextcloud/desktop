@@ -18,7 +18,8 @@ extension Item {
         parentItemIdentifier: NSFileProviderItemIdentifier,
         domain: NSFileProviderDomain? = nil,
         remoteInterface: RemoteInterface,
-        progress: Progress
+        progress: Progress,
+        dbManager: FilesDatabaseManager
     ) async -> (Item?, Error?) {
 
         let (account, _, _, createError) = await remoteInterface.createFolder(
@@ -86,8 +87,8 @@ extension Item {
             }
         }
         
-        FilesDatabaseManager.shared.addItemMetadata(directoryMetadata)
-        
+        dbManager.addItemMetadata(directoryMetadata)
+
         let fpItem = Item(
             metadata: directoryMetadata,
             parentItemIdentifier: parentItemIdentifier,
@@ -104,7 +105,8 @@ extension Item {
         parentItemRemotePath: String,
         domain: NSFileProviderDomain? = nil,
         remoteInterface: RemoteInterface,
-        progress: Progress
+        progress: Progress,
+        dbManager: FilesDatabaseManager
     ) async -> (Item?, Error?) {
         let (account, ocId, etag, date, size, _, _, error) = await remoteInterface.upload(
             remotePath: remotePath,
@@ -179,7 +181,6 @@ extension Item {
         newMetadata.sessionTaskIdentifier = 0
         newMetadata.status = ItemMetadata.Status.normal.rawValue
         
-        let dbManager = FilesDatabaseManager.shared
         dbManager.addLocalFileMetadataFromItemMetadata(newMetadata)
         dbManager.addItemMetadata(newMetadata)
         
@@ -201,7 +202,8 @@ extension Item {
         domain: NSFileProviderDomain? = nil,
         remoteInterface: RemoteInterface,
         ncAccount: Account,
-        progress: Progress
+        progress: Progress,
+        dbManager: FilesDatabaseManager = .shared
     ) async -> (Item?, Error?) {
         let tempId = itemTemplate.itemIdentifier.rawValue
         
@@ -230,7 +232,7 @@ extension Item {
         if parentItemIdentifier == .rootContainer {
             parentItemRemotePath = ncAccount.davFilesUrl
         } else {
-            guard let parentItemMetadata = FilesDatabaseManager.shared.directoryMetadata(
+            guard let parentItemMetadata = dbManager.directoryMetadata(
                 ocId: parentItemIdentifier.rawValue
             ) else {
                 Self.logger.error(
@@ -268,7 +270,8 @@ extension Item {
                 parentItemIdentifier: parentItemIdentifier,
                 domain: domain,
                 remoteInterface: remoteInterface,
-                progress: progress
+                progress: progress,
+                dbManager: dbManager
             )
         }
         
@@ -280,7 +283,8 @@ extension Item {
             parentItemRemotePath: parentItemRemotePath,
             domain: domain,
             remoteInterface: remoteInterface,
-            progress: progress
+            progress: progress,
+            dbManager: dbManager
         )
     }
 }
