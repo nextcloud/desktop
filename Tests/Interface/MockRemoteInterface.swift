@@ -62,6 +62,17 @@ public class MockRemoteInterface: RemoteInterface {
         UUID().uuidString
     }
 
+    func name(from path: String) throws -> String {
+        guard !path.isEmpty else { throw URLError(.badURL) }
+
+        let sanitisedPath = path.last == "/" ? String(path.dropLast()) : path
+        let splitPath = sanitisedPath.split(separator: "/")
+        let name = String(splitPath.last!)
+        guard !name.isEmpty else { throw URLError(.badURL) }
+
+        return name
+    }
+
     public func setDelegate(_ delegate: any NKCommonDelegate) {
         self.delegate = delegate
     }
