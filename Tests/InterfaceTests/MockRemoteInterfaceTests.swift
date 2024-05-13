@@ -71,6 +71,14 @@ final class MockRemoteInterfaceTests: XCTestCase {
         XCTAssertEqual(remoteInterface.parentPath(path: testPath), expectedPath)
     }
 
+    func testNameFromPath() throws {
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: Self.rootItem)
+        let testPath = "/a/b/c/d"
+        let expectedName = "d"
+        let name = try remoteInterface.name(from: testPath)
+        XCTAssertEqual(name, expectedName)
+    }
+
     func testCreateFolder() async {
         let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: Self.rootItem)
         let newFolderAPath = "/A"
