@@ -92,6 +92,8 @@ public extension Item {
     private func modifyContents(
         contents newContents: URL?,
         remotePath: String,
+        newCreationDate: Date?,
+        newContentModificationDate: Date?,
         domain: NSFileProviderDomain?,
         progress: Progress,
         dbManager: FilesDatabaseManager
@@ -133,8 +135,8 @@ public extension Item {
         let (_, _, etag, date, size, _, _, error) = await remoteInterface.upload(
             remotePath: remotePath,
             localPath: localPath,
-            creationDate: creationDate,
-            modificationDate: contentModificationDate,
+            creationDate: newCreationDate,
+            modificationDate: newContentModificationDate,
             options: .init(),
             requestHandler: { progress.setHandlersFromAfRequest($0) },
             taskHandler: { task in
@@ -350,9 +352,14 @@ public extension Item {
                 """
             )
 
+            let newCreationDate = itemTarget.creationDate ?? creationDate
+            let newContentModificationDate = 
+                itemTarget.contentModificationDate ?? contentModificationDate
             let (contentModifiedItem, contentError) = await modifiedItem.modifyContents(
                 contents: newContents,
                 remotePath: newServerUrlFileName,
+                newCreationDate: newCreationDate,
+                newContentModificationDate: newContentModificationDate,
                 domain: domain,
                 progress: progress,
                 dbManager: dbManager
