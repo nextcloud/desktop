@@ -85,6 +85,8 @@ public extension Item {
     private func modifyContents(
         contents newContents: URL?,
         remotePath: String,
+        newCreationDate: Date?,
+        newContentModificationDate: Date?,
         domain: NSFileProviderDomain?,
         progress: Progress
     ) async -> (Item?, Error?) {
@@ -127,6 +129,8 @@ public extension Item {
             self.ncKit.upload(
                 serverUrlFileName: remotePath,
                 fileNameLocalPath: localPath,
+                dateCreationFile: newCreationDate,
+                dateModificationFile: newContentModificationDate,
                 requestHandler: { progress.setHandlersFromAfRequest($0) },
                 taskHandler: { task in
                     if let domain {
@@ -347,9 +351,14 @@ public extension Item {
                 """
             )
 
+            let newCreationDate = itemTarget.creationDate ?? creationDate
+            let newContentModificationDate = 
+                itemTarget.contentModificationDate ?? contentModificationDate
             let (contentModifiedItem, contentError) = await modifiedItem.modifyContents(
                 contents: newContents,
                 remotePath: newServerUrlFileName,
+                newCreationDate: newCreationDate,
+                newContentModificationDate: newContentModificationDate,
                 domain: domain,
                 progress: progress
             )
