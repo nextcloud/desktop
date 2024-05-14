@@ -48,23 +48,3 @@ public func pathForFileProviderTempFilesForDomain(_ domain: NSFileProviderDomain
     let fileProviderDataUrl = try fpManager.temporaryDirectoryURL()
     return fileProviderDataUrl.appendingPathComponent("TemporaryNextcloudFiles/")
 }
-
-public func localPathForNCFile(ocId _: String, fileNameView: String, domain: NSFileProviderDomain) throws
-    -> URL
-{
-    guard let fileProviderFilesPathUrl = try pathForFileProviderTempFilesForDomain(domain) else {
-        lfuLogger.error(
-            "Unable to get path for file provider temp files for domain: \(domain.displayName, privacy: .public)"
-        )
-        throw URLError(.badURL)
-    }
-
-    let filePathUrl = fileProviderFilesPathUrl.appendingPathComponent(fileNameView)
-    let filePath = filePathUrl.path
-
-    if !FileManager.default.fileExists(atPath: filePath) {
-        FileManager.default.createFile(atPath: filePath, contents: nil)
-    }
-
-    return filePathUrl
-}
