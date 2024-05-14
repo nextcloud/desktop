@@ -97,6 +97,7 @@ extension FilesDatabaseManager {
         }
 
         let directoryMetadataCopy = ItemMetadata(value: directoryMetadata)
+        let directoryOcId = directoryMetadata.ocId
         let directoryUrlPath = directoryMetadata.serverUrl + "/" + directoryMetadata.fileName
         let directoryAccount = directoryMetadata.account
         let directoryEtag = directoryMetadata.etag
@@ -107,7 +108,12 @@ extension FilesDatabaseManager {
 
         guard deleteItemMetadata(ocId: directoryMetadata.ocId) else {
             Self.logger.debug(
-                "Failure to delete root directory metadata in recursive delete. ocID: \(directoryMetadata.ocId, privacy: .public), etag: \(directoryEtag, privacy: .public), serverUrl: \(directoryUrlPath, privacy: .public)"
+                """
+                Failure to delete root directory metadata in recursive delete.
+                ocID: \(directoryOcId, privacy: .public),
+                etag: \(directoryEtag, privacy: .public),
+                serverUrl: \(directoryUrlPath, privacy: .public)
+                """
             )
             return nil
         }
@@ -118,18 +124,25 @@ extension FilesDatabaseManager {
             "account == %@ AND serverUrl BEGINSWITH %@", directoryAccount, directoryUrlPath)
 
         for result in results {
-            let successfulItemMetadataDelete = deleteItemMetadata(ocId: result.ocId)
-            if successfulItemMetadataDelete {
-                deletedMetadatas.append(ItemMetadata(value: result))
+            let resultOcId = result.ocId
+            let inactiveItemMetadata = ItemMetadata(value: result)
+
+            if deleteItemMetadata(ocId: result.ocId) {
+                deletedMetadatas.append(inactiveItemMetadata)
             }
 
-            if localFileMetadataFromOcId(result.ocId) != nil {
-                deleteLocalFileMetadata(ocId: result.ocId)
+            if localFileMetadataFromOcId(resultOcId) != nil {
+                deleteLocalFileMetadata(ocId: resultOcId)
             }
         }
 
         Self.logger.debug(
-            "Completed deletions in directory recursive delete. ocID: \(directoryMetadata.ocId, privacy: .public), etag: \(directoryEtag, privacy: .public), serverUrl: \(directoryUrlPath, privacy: .public)"
+            """
+            Completed deletions in directory recursive delete.
+            ocID: \(directoryOcId, privacy: .public),
+            etag: \(directoryEtag, privacy: .public),
+            serverUrl: \(directoryUrlPath, privacy: .public)
+            """
         )
 
         return deletedMetadatas
