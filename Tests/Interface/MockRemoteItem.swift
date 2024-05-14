@@ -19,7 +19,7 @@ public class MockRemoteItem: Equatable {
     public let directory: Bool
     public let creationDate: Date
     public var modificationDate: Date
-    public let data: Data?
+    public var data: Data?
     public var size: Int64 { Int64(data?.count ?? 0) }
     public var nkfile: NKFile {
         let file = NKFile()
