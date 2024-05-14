@@ -26,49 +26,48 @@ final class EnumeratorTests: XCTestCase {
         username: Self.account.username,
         serverUrl: Self.account.serverUrl
     )
+    lazy var remoteFolder = MockRemoteItem(
+        identifier: "folder",
+        versionIdentifier: "NEW",
+        name: "folder",
+        remotePath: Self.account.davFilesUrl + "/folder",
+        directory: true,
+        account: Self.account.ncKitAccount,
+        username: Self.account.username,
+        serverUrl: Self.account.serverUrl
+    )
+    lazy var remoteItemA = MockRemoteItem(
+        identifier: "itemA",
+        name: "itemA",
+        remotePath: Self.account.davFilesUrl + "/folder/itemA",
+        account: Self.account.ncKitAccount,
+        username: Self.account.username,
+        serverUrl: Self.account.serverUrl
+    )
+    lazy var remoteItemB = MockRemoteItem(
+        identifier: "itemB",
+        name: "itemB",
+        remotePath: Self.account.davFilesUrl + "/folder/itemB",
+        account: Self.account.ncKitAccount,
+        username: Self.account.username,
+        serverUrl: Self.account.serverUrl
+    )
+
     static let dbManager = FilesDatabaseManager(realmConfig: .defaultConfiguration)
 
     override func setUp() {
         super.setUp()
         Realm.Configuration.defaultConfiguration.inMemoryIdentifier = name
-    }
 
-    override func tearDown() {
-        rootItem.children = []
-    }
-
-    func testRootEnumeration() async throws {
-        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
-        let remoteFolder = MockRemoteItem(
-            identifier: "folder",
-            name: "folder",
-            remotePath: Self.account.davFilesUrl + "/folder",
-            directory: true,
-            account: Self.account.ncKitAccount,
-            username: Self.account.username,
-            serverUrl: Self.account.serverUrl
-        )
-        let remoteItemA = MockRemoteItem(
-            identifier: "itemA",
-            name: "itemA",
-            remotePath: Self.account.davFilesUrl + "/folder/itemA",
-            account: Self.account.ncKitAccount,
-            username: Self.account.username,
-            serverUrl: Self.account.serverUrl
-        )
-        let remoteItemB = MockRemoteItem(
-            identifier: "itemB",
-            name: "itemB",
-            remotePath: Self.account.davFilesUrl + "/folder/itemB",
-            account: Self.account.ncKitAccount,
-            username: Self.account.username,
-            serverUrl: Self.account.serverUrl
-        )
         rootItem.children = [remoteFolder]
         remoteFolder.parent = rootItem
         remoteFolder.children = [remoteItemA, remoteItemB]
         remoteItemA.parent = remoteFolder
         remoteItemB.parent = remoteFolder
+    }
+
+    func testRootEnumeration() async throws {
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
 
         let enumerator = Enumerator(
             enumeratedItemIdentifier: .rootContainer,
@@ -91,37 +90,6 @@ final class EnumeratorTests: XCTestCase {
     @MainActor
     func testFolderEnumeration() async throws {
         let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
-        let remoteFolder = MockRemoteItem(
-            identifier: "folder",
-            versionIdentifier: "NEW",
-            name: "folder",
-            remotePath: Self.account.davFilesUrl + "/folder",
-            directory: true,
-            account: Self.account.ncKitAccount,
-            username: Self.account.username,
-            serverUrl: Self.account.serverUrl
-        )
-        let remoteItemA = MockRemoteItem(
-            identifier: "itemA",
-            name: "itemA",
-            remotePath: Self.account.davFilesUrl + "/folder/itemA",
-            account: Self.account.ncKitAccount,
-            username: Self.account.username,
-            serverUrl: Self.account.serverUrl
-        )
-        let remoteItemB = MockRemoteItem(
-            identifier: "itemB",
-            name: "itemB",
-            remotePath: Self.account.davFilesUrl + "/folder/itemB",
-            account: Self.account.ncKitAccount,
-            username: Self.account.username,
-            serverUrl: Self.account.serverUrl
-        )
-        rootItem.children = [remoteFolder]
-        remoteFolder.parent = rootItem
-        remoteFolder.children = [remoteItemA, remoteItemB]
-        remoteItemA.parent = remoteFolder
-        remoteItemB.parent = remoteFolder
 
         let oldEtag = "OLD"
         let folderMetadata = ItemMetadata()
