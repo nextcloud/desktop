@@ -20,7 +20,10 @@ final class ItemDeleteTests: XCTestCase {
         identifier: NSFileProviderItemIdentifier.rootContainer.rawValue,
         name: "root",
         remotePath: Self.account.davFilesUrl,
-        directory: true
+        directory: true,
+        account: Self.account.ncKitAccount,
+        username: Self.account.username,
+        serverUrl: Self.account.serverUrl
     )
     static let dbManager = FilesDatabaseManager(realmConfig: .defaultConfiguration)
 
@@ -37,7 +40,12 @@ final class ItemDeleteTests: XCTestCase {
         let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
         let itemIdentifier = "file"
         let remoteItem = MockRemoteItem(
-            identifier: itemIdentifier, name: "file", remotePath: Self.account.davFilesUrl + "/file"
+            identifier: itemIdentifier, 
+            name: "file",
+            remotePath: Self.account.davFilesUrl + "/file",
+            account: Self.account.ncKitAccount,
+            username: Self.account.username,
+            serverUrl: Self.account.serverUrl
         )
         remoteItem.parent = rootItem
         rootItem.children = [remoteItem]
@@ -69,10 +77,18 @@ final class ItemDeleteTests: XCTestCase {
             identifier: "folder",
             name: "folder",
             remotePath: Self.account.davFilesUrl + "/folder",
-            directory: true
+            directory: true,
+            account: Self.account.ncKitAccount,
+            username: Self.account.username,
+            serverUrl: Self.account.serverUrl
         )
         let remoteItem = MockRemoteItem(
-            identifier: "file", name: "file", remotePath: Self.account.davFilesUrl + "/folder/file"
+            identifier: "file", 
+            name: "file",
+            remotePath: Self.account.davFilesUrl + "/folder/file",
+            account: Self.account.ncKitAccount,
+            username: Self.account.username,
+            serverUrl: Self.account.serverUrl
         )
         rootItem.children = [remoteFolder]
         remoteFolder.parent = rootItem

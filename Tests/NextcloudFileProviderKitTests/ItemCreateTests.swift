@@ -21,7 +21,10 @@ final class ItemCreateTests: XCTestCase {
         identifier: NSFileProviderItemIdentifier.rootContainer.rawValue,
         name: "root",
         remotePath: Self.account.davFilesUrl,
-        directory: true
+        directory: true,
+        account: Self.account.ncKitAccount,
+        username: Self.account.username,
+        serverUrl: Self.account.serverUrl
     )
     static let dbManager = FilesDatabaseManager(realmConfig: .defaultConfiguration)
 

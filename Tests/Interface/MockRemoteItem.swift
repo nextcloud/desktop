@@ -21,6 +21,9 @@ public class MockRemoteItem: Equatable {
     public var modificationDate: Date
     public var data: Data?
     public var size: Int64 { Int64(data?.count ?? 0) }
+    public var account: String
+    public var username: String
+    public var serverUrl: String
     public var nkfile: NKFile {
         let file = NKFile()
         file.fileName = name
@@ -30,6 +33,10 @@ public class MockRemoteItem: Equatable {
         file.etag = versionIdentifier
         file.ocId = identifier
         file.serverUrl = parent?.remotePath ?? remotePath
+        file.account = account
+        file.user = username
+        file.userId = username
+        file.urlBase = serverUrl
         return file
     }
 
@@ -40,9 +47,13 @@ public class MockRemoteItem: Equatable {
         lhs.versionIdentifier == rhs.versionIdentifier &&
         lhs.name == rhs.name &&
         lhs.directory == rhs.directory &&
+        lhs.data == rhs.data &&
         lhs.size == rhs.size &&
         lhs.creationDate == rhs.creationDate &&
-        lhs.modificationDate == rhs.modificationDate
+        lhs.modificationDate == rhs.modificationDate &&
+        lhs.account == rhs.account &&
+        lhs.username == rhs.username &&
+        lhs.serverUrl == rhs.serverUrl
     }
 
     public init(
@@ -53,7 +64,10 @@ public class MockRemoteItem: Equatable {
         directory: Bool = false,
         creationDate: Date = Date(),
         modificationDate: Date = Date(),
-        data: Data? = nil
+        data: Data? = nil,
+        account: String,
+        username: String,
+        serverUrl: String
     ) {
         self.identifier = identifier
         self.versionIdentifier = versionIdentifier
@@ -63,5 +77,8 @@ public class MockRemoteItem: Equatable {
         self.creationDate = creationDate
         self.modificationDate = modificationDate
         self.data = data
+        self.account = account
+        self.username = username
+        self.serverUrl = serverUrl
     }
 }

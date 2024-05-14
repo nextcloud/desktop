@@ -21,7 +21,10 @@ final class ItemFetchTests: XCTestCase {
         identifier: NSFileProviderItemIdentifier.rootContainer.rawValue,
         name: "root",
         remotePath: Self.account.davFilesUrl,
-        directory: true
+        directory: true,
+        account: Self.account.ncKitAccount,
+        username: Self.account.username,
+        serverUrl: Self.account.serverUrl
     )
     static let dbManager = FilesDatabaseManager(realmConfig: .defaultConfiguration)
 
@@ -41,7 +44,10 @@ final class ItemFetchTests: XCTestCase {
             versionIdentifier: "0",
             name: "item.txt",
             remotePath: Self.account.davFilesUrl + "/item.txt",
-            data: "Hello, World!".data(using: .utf8)
+            data: "Hello, World!".data(using: .utf8),
+            account: Self.account.ncKitAccount,
+            username: Self.account.username,
+            serverUrl: Self.account.serverUrl
         )
         rootItem.children = [remoteItem]
         remoteItem.parent = rootItem
@@ -73,7 +79,7 @@ final class ItemFetchTests: XCTestCase {
         let localPath = try XCTUnwrap(localPathMaybe)
         let fetchedItem = try XCTUnwrap(fetchedItemMaybe)
         let contents = try Data(contentsOf: localPath)
-        
+
         XCTAssertNotNil(Self.dbManager.itemMetadataFromOcId(itemMetadata.ocId))
 
         fetchedItem.dbManager = Self.dbManager

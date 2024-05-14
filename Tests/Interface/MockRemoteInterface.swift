@@ -111,7 +111,10 @@ public class MockRemoteInterface: RemoteInterface {
             identifier: randomIdentifier(),
             name: itemName,
             remotePath: remotePath,
-            directory: true
+            directory: true,
+            account: account.ncKitAccount,
+            username: account.username,
+            serverUrl: account.serverUrl
         )
         guard let parent = parentItem(path: remotePath) else {
             return (accountString, nil, nil, .urlError)
@@ -173,7 +176,10 @@ public class MockRemoteInterface: RemoteInterface {
                 remotePath: remotePath,
                 creationDate: creationDate ?? .init(),
                 modificationDate: modificationDate ?? .init(),
-                data: itemData
+                data: itemData,
+                account: account.ncKitAccount,
+                username: account.username,
+                serverUrl: account.serverUrl
             )
 
             parent.children.append(item)

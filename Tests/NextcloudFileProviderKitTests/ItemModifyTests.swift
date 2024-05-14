@@ -21,7 +21,10 @@ final class ItemModifyTests: XCTestCase {
         identifier: NSFileProviderItemIdentifier.rootContainer.rawValue,
         name: "root",
         remotePath: Self.account.davFilesUrl,
-        directory: true
+        directory: true,
+        account: Self.account.ncKitAccount,
+        username: Self.account.username,
+        serverUrl: Self.account.serverUrl
     )
     static let dbManager = FilesDatabaseManager(realmConfig: .defaultConfiguration)
 
@@ -41,13 +44,19 @@ final class ItemModifyTests: XCTestCase {
             versionIdentifier: "0",
             name: "item.txt",
             remotePath: Self.account.davFilesUrl + "/item.txt",
-            data: "Hello, World!".data(using: .utf8)
+            data: "Hello, World!".data(using: .utf8),
+            account: Self.account.ncKitAccount,
+            username: Self.account.username,
+            serverUrl: Self.account.serverUrl
         )
         let remoteFolder = MockRemoteItem(
             identifier: "folder",
             name: "folder",
             remotePath: Self.account.davFilesUrl + "/folder",
-            directory: true
+            directory: true,
+            account: Self.account.ncKitAccount,
+            username: Self.account.username,
+            serverUrl: Self.account.serverUrl
         )
         rootItem.children = [remoteItem, remoteFolder]
         remoteItem.parent = rootItem
