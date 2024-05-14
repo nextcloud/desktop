@@ -212,6 +212,8 @@ public class MockRemoteInterface: RemoteInterface {
         destinationParent.children.append(sourceItem)
         sourceItem.remotePath = remotePathDestination
 
+        print("Moved \(sourceItem.name) to \(remotePathDestination)")
+
         return (accountString, .success)
     }
 
