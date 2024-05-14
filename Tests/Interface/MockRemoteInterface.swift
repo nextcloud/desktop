@@ -170,7 +170,7 @@ public class MockRemoteInterface: RemoteInterface {
             accountString,
             item.identifier,
             item.versionIdentifier,
-            item.creationDate as NSDate,
+            item.modificationDate as NSDate,
             item.size,
             nil,
             nil,
