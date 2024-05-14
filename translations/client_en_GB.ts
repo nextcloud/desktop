@@ -606,17 +606,17 @@ Should the account be imported?</translation>
         <translation>Warning</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="378"/>
+        <location filename="../src/gui/accountsettings.cpp" line="377"/>
         <source>Please wait for the folder to sync before trying to encrypt it.</source>
         <translation>Please wait for the folder to sync before trying to encrypt it.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="380"/>
+        <location filename="../src/gui/accountsettings.cpp" line="379"/>
         <source>The folder has a minor sync problem. Encryption of this folder will be possible once it has synced successfully</source>
         <translation>The folder has a minor sync problem. Encryption of this folder will be possible once it has synced successfully</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="382"/>
+        <location filename="../src/gui/accountsettings.cpp" line="381"/>
         <source>The folder has a sync error. Encryption of this folder will be possible once it has synced successfully</source>
         <translation>The folder has a sync error. Encryption of this folder will be possible once it has synced successfully</translation>
     </message>
@@ -872,7 +872,7 @@ This action will abort any currently running synchronization.</translation>
         <translation>No connection to %1 at %2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1301"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1300"/>
         <source>Unable to connect to %1.</source>
         <translation>Unable to connect to %1.</translation>
     </message>
@@ -902,7 +902,7 @@ This action will abort any currently running synchronization.</translation>
         <translation>There are folders that were not synchronised because they are too big or external storages: </translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1595"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1594"/>
         <source>There are folders that have grown in size beyond %1MB: %2</source>
         <translation>There are folders that have grown in size beyond %1MB: %2</translation>
     </message>

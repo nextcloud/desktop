@@ -604,17 +604,17 @@ Should the account be imported?</source>
         <translation>تحذير</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="378"/>
+        <location filename="../src/gui/accountsettings.cpp" line="377"/>
         <source>Please wait for the folder to sync before trying to encrypt it.</source>
         <translation>رجاءً، إنتظر حتى تنتهي عملية مزامنة المجلد قبل محاولة تشفيره.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="380"/>
+        <location filename="../src/gui/accountsettings.cpp" line="379"/>
         <source>The folder has a minor sync problem. Encryption of this folder will be possible once it has synced successfully</source>
         <translation>عملية مزامنة هذا المجلد كان فيها بعض الأخطاء الطفيفة. لا يمكن البدء في تشفير المجلد إلاّ بعد اكتمال عملية المزامنة بالشكل الصحيح.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="382"/>
+        <location filename="../src/gui/accountsettings.cpp" line="381"/>
         <source>The folder has a sync error. Encryption of this folder will be possible once it has synced successfully</source>
         <translation>عملية مزامنة هذا المجلد فيها بعض الأخطاء. لا يمكن البدء في تشفير المجلد إلاّ بعد اكتمال عملية المزامنة بالشكل الصحيح.</translation>
     </message>
@@ -867,7 +867,7 @@ This action will abort any currently running synchronization.</source>
         <translation>لا يوجد اتصال مع %1 فى %2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1301"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1300"/>
         <source>Unable to connect to %1.</source>
         <translation>تعذّر الاتصال بـ %1.</translation>
     </message>
@@ -897,7 +897,7 @@ This action will abort any currently running synchronization.</source>
         <translation>هنالك مجلدات لم تتم مزامنتها لأن حجمها كبيرٌ جدًا أو لأنها وحدات تخزين خارجية:</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1595"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1594"/>
         <source>There are folders that have grown in size beyond %1MB: %2</source>
         <translation>هنالك مجلدات تجاوز حجمها  %1ميغا بايت: %2</translation>
     </message>
