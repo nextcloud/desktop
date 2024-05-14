@@ -156,15 +156,30 @@ public class MockRemoteInterface: RemoteInterface {
             return (accountString, nil, nil, nil, 0, nil, nil, .urlError)
         }
 
-        let item = MockRemoteItem(
-            identifier: randomIdentifier(), name: itemName, remotePath: remotePath, data: itemData
-        )
         guard let parent = parentItem(path: remotePath) else {
             return (accountString, nil, nil, nil, 0, nil, nil, .urlError)
         }
 
-        parent.children.append(item)
-        item.parent = parent
+        var item: MockRemoteItem
+        if let existingItem = parent.children.first(where: { $0.remotePath == remotePath }) {
+            item = existingItem
+            item.data = itemData
+            item.modificationDate = modificationDate ?? .init()
+            print("Updated item \(item.name)")
+        } else {
+            item = MockRemoteItem(
+                identifier: randomIdentifier(), 
+                name: itemName,
+                remotePath: remotePath,
+                creationDate: creationDate ?? .init(),
+                modificationDate: modificationDate ?? .init(),
+                data: itemData
+            )
+
+            parent.children.append(item)
+            item.parent = parent
+            print("Created item \(item.name)")
+        }
 
         return (
             accountString,
