@@ -23,6 +23,7 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
         Self.isSystemIdentifier(enumeratedItemIdentifier)
     }
     let domain: NSFileProviderDomain?
+    let dbManager: FilesDatabaseManager
 
     // TODO: actually use this in NCKit and server requests
     private let anchor = NSFileProviderSyncAnchor(Date().description.data(using: .utf8)!)
@@ -42,12 +43,14 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
         enumeratedItemIdentifier: NSFileProviderItemIdentifier,
         ncAccount: Account,
         remoteInterface: RemoteInterface,
+        dbManager: FilesDatabaseManager = .shared,
         domain: NSFileProviderDomain? = nil,
         fastEnumeration: Bool = true
     ) {
         self.enumeratedItemIdentifier = enumeratedItemIdentifier
         self.ncAccount = ncAccount
         self.remoteInterface = remoteInterface
+        self.dbManager = dbManager
         self.domain = domain
         self.fastEnumeration = fastEnumeration
 
@@ -60,7 +63,6 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
             Self.logger.debug(
                 "Providing enumerator for item with identifier: \(enumeratedItemIdentifier.rawValue, privacy: .public)"
             )
-            let dbManager = FilesDatabaseManager.shared
 
             enumeratedItemMetadata = dbManager.itemMetadataFromFileProviderItemIdentifier(
                 enumeratedItemIdentifier)
@@ -143,7 +145,10 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
 
             Task {
                 let (metadatas, _, _, _, readError) = await Self.readServerUrl(
-                    serverUrl, ncAccount: ncAccount, remoteInterface: remoteInterface
+                    serverUrl, 
+                    ncAccount: ncAccount, 
+                    remoteInterface: remoteInterface,
+                    dbManager: dbManager
                 )
 
                 guard readError == nil else {
@@ -173,6 +178,7 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
                 Self.completeEnumerationObserver(
                     observer, 
                     remoteInterface: remoteInterface,
+                    dbManager: dbManager,
                     numPage: 1,
                     itemMetadatas: metadatas
                 )
@@ -217,7 +223,10 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
                 let (
                     _, newMetadatas, updatedMetadatas, deletedMetadatas, error
                 ) = await fullRecursiveScan(
-                    ncAccount: ncAccount, remoteInterface: remoteInterface, scanChangesOnly: true
+                    ncAccount: ncAccount, 
+                    remoteInterface: remoteInterface,
+                    dbManager: dbManager,
+                    scanChangesOnly: true
                 )
 
                 if self.isInvalidated {
@@ -257,6 +266,7 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
                     observer,
                     anchor: anchor,
                     remoteInterface: remoteInterface,
+                    dbManager: dbManager,
                     newMetadatas: newMetadatas,
                     updatedMetadatas: updatedMetadatas,
                     deletedMetadatas: deletedMetadatas
@@ -287,6 +297,7 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
                 serverUrl,
                 ncAccount: ncAccount,
                 remoteInterface: remoteInterface,
+                dbManager: dbManager,
                 stopAtMatchingEtags: true
             )
 
@@ -316,7 +327,6 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
                         return
                     }
 
-                    let dbManager = FilesDatabaseManager.shared
                     if itemMetadata.directory {
                         if let deletedDirectoryMetadatas =
                             dbManager.deleteDirectoryAndSubdirectoriesMetadata(
@@ -336,6 +346,7 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
                         observer, 
                         anchor: anchor,
                         remoteInterface: remoteInterface,
+                        dbManager: dbManager,
                         newMetadatas: nil,
                         updatedMetadatas: nil,
                         deletedMetadatas: [itemMetadata]
@@ -361,6 +372,7 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
                 observer,
                 anchor: anchor,
                 remoteInterface: remoteInterface,
+                dbManager: dbManager,
                 newMetadatas: newMetadatas,
                 updatedMetadatas: updatedMetadatas,
                 deletedMetadatas: deletedMetadatas
@@ -378,6 +390,7 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
     private static func metadatasToFileProviderItems(
         _ itemMetadatas: [ItemMetadata], 
         remoteInterface: RemoteInterface,
+        dbManager: FilesDatabaseManager,
         completionHandler: @escaping (_ items: [NSFileProviderItem]) -> Void
     ) {
         var items: [NSFileProviderItem] = []
@@ -396,7 +409,6 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
                     return
                 }
 
-                let dbManager = FilesDatabaseManager.shared
                 if let parentItemIdentifier = dbManager.parentItemIdentifierFromMetadata(
                     itemMetadata
                 ) {
@@ -432,10 +444,13 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
     private static func completeEnumerationObserver(
         _ observer: NSFileProviderEnumerationObserver, 
         remoteInterface: RemoteInterface,
+        dbManager: FilesDatabaseManager,
         numPage: Int,
         itemMetadatas: [ItemMetadata]
     ) {
-        metadatasToFileProviderItems(itemMetadatas, remoteInterface: remoteInterface) { items in
+        metadatasToFileProviderItems(
+            itemMetadatas, remoteInterface: remoteInterface, dbManager: dbManager
+        ) { items in
             observer.didEnumerate(items)
             Self.logger.info("Did enumerate \(items.count) items")
 
@@ -454,8 +469,10 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
     }
 
     private static func completeChangesObserver(
-        _ observer: NSFileProviderChangeObserver, anchor: NSFileProviderSyncAnchor,
+        _ observer: NSFileProviderChangeObserver, 
+        anchor: NSFileProviderSyncAnchor,
         remoteInterface: RemoteInterface,
+        dbManager: FilesDatabaseManager,
         newMetadatas: [ItemMetadata]?,
         updatedMetadatas: [ItemMetadata]?,
         deletedMetadatas: [ItemMetadata]?
@@ -491,7 +508,7 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
         }
 
         metadatasToFileProviderItems(
-            allUpdatedMetadatas, remoteInterface: remoteInterface
+            allUpdatedMetadatas, remoteInterface: remoteInterface, dbManager: dbManager
         ) { updatedItems in
 
             if !updatedItems.isEmpty {

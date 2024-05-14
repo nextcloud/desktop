@@ -18,7 +18,10 @@ import OSLog
 
 extension Enumerator {
     func fullRecursiveScan(
-        ncAccount: Account, remoteInterface: RemoteInterface, scanChangesOnly: Bool
+        ncAccount: Account, 
+        remoteInterface: RemoteInterface,
+        dbManager: FilesDatabaseManager,
+        scanChangesOnly: Bool
     ) async -> (
         metadatas: [ItemMetadata],
         newMetadatas: [ItemMetadata],
@@ -34,6 +37,7 @@ extension Enumerator {
             rootContainerDirectoryMetadata,
             ncAccount: ncAccount,
             remoteInterface: remoteInterface,
+            dbManager: dbManager,
             scanChangesOnly: scanChangesOnly
         )
 
@@ -65,6 +69,7 @@ extension Enumerator {
         _ directoryMetadata: ItemMetadata,
         ncAccount: Account,
         remoteInterface: RemoteInterface,
+        dbManager: FilesDatabaseManager,
         scanChangesOnly: Bool
     ) async -> (
         metadatas: [ItemMetadata],
@@ -85,8 +90,6 @@ extension Enumerator {
         var allUpdatedMetadatas: [ItemMetadata] = []
         var allDeletedMetadatas: [ItemMetadata] = []
 
-        let dbManager = FilesDatabaseManager.shared
-
         let itemServerUrl =
             directoryMetadata.ocId == NSFileProviderItemIdentifier.rootContainer.rawValue
                 ? ncAccount.davFilesUrl
@@ -100,6 +103,7 @@ extension Enumerator {
             itemServerUrl,
             ncAccount: ncAccount,
             remoteInterface: remoteInterface,
+            dbManager: dbManager,
             domain: domain,
             enumeratedItemIdentifier: enumeratedItemIdentifier,
             stopAtMatchingEtags: scanChangesOnly
@@ -244,6 +248,7 @@ extension Enumerator {
                 childDirectory,
                 ncAccount: ncAccount,
                 remoteInterface: remoteInterface,
+                dbManager: dbManager,
                 scanChangesOnly: scanChangesOnly
             )
 
@@ -261,7 +266,10 @@ extension Enumerator {
     }
 
     static func handleDepth1ReadFileOrFolder(
-        serverUrl: String, ncAccount: Account, files: [NKFile]
+        serverUrl: String,
+        ncAccount: Account,
+        dbManager: FilesDatabaseManager,
+        files: [NKFile]
     ) async -> (
         metadatas: [ItemMetadata]?,
         newMetadatas: [ItemMetadata]?,
@@ -284,8 +292,6 @@ extension Enumerator {
                 continuation.resume(returning: (directoryMetadata, metadatas))
             }
         }
-
-        let dbManager = FilesDatabaseManager.shared
 
         // STORE DATA FOR CURRENTLY SCANNED DIRECTORY
         // We have now scanned this directory's contents, so update with etag in order to not check 
@@ -319,6 +325,7 @@ extension Enumerator {
         _ serverUrl: String,
         ncAccount: Account,
         remoteInterface: RemoteInterface,
+        dbManager: FilesDatabaseManager,
         domain: NSFileProviderDomain? = nil,
         enumeratedItemIdentifier: NSFileProviderItemIdentifier? = nil,
         stopAtMatchingEtags: Bool = false,
@@ -330,7 +337,6 @@ extension Enumerator {
         deletedMetadatas: [ItemMetadata]?,
         readError: NKError?
     ) {
-        let dbManager = FilesDatabaseManager.shared
         let ncKitAccount = ncAccount.ncKitAccount
 
         Self.logger.debug(
@@ -435,7 +441,10 @@ extension Enumerator {
             let (
                 allMetadatas, newMetadatas, updatedMetadatas, deletedMetadatas, readError
             ) = await handleDepth1ReadFileOrFolder(
-                serverUrl: serverUrl, ncAccount: ncAccount, files: files
+                serverUrl: serverUrl, 
+                ncAccount: ncAccount,
+                dbManager: dbManager,
+                files: files
             )
 
             return (allMetadatas, newMetadatas, updatedMetadatas, deletedMetadatas, readError)
