@@ -23,6 +23,8 @@ public class Item: NSObject, NSFileProviderItem {
         case uploadError
     }
 
+    lazy var dbManager: FilesDatabaseManager = .shared
+
     public let metadata: ItemMetadata
     public let parentItemIdentifier: NSFileProviderItemIdentifier
     public let remoteInterface: RemoteInterface
@@ -102,8 +104,7 @@ public class Item: NSObject, NSFileProviderItem {
     }
 
     public var isDownloaded: Bool {
-        metadata.directory
-            || FilesDatabaseManager.shared.localFileMetadataFromOcId(metadata.ocId) != nil
+        metadata.directory || dbManager.localFileMetadataFromOcId(metadata.ocId) != nil
     }
 
     public var isDownloading: Bool {
@@ -118,7 +119,7 @@ public class Item: NSObject, NSFileProviderItem {
     }
 
     public var isUploaded: Bool {
-        FilesDatabaseManager.shared.localFileMetadataFromOcId(metadata.ocId) != nil
+        dbManager.localFileMetadataFromOcId(metadata.ocId) != nil
     }
 
     public var isUploading: Bool {
@@ -135,10 +136,7 @@ public class Item: NSObject, NSFileProviderItem {
 
     public var childItemCount: NSNumber? {
         if metadata.directory {
-            NSNumber(
-                integerLiteral: FilesDatabaseManager.shared.childItemsForDirectory(
-                    metadata
-                ).count)
+            NSNumber(integerLiteral: dbManager.childItemsForDirectory(metadata).count)
         } else {
             nil
         }
@@ -184,7 +182,8 @@ public class Item: NSObject, NSFileProviderItem {
 
     public static func storedItem(
         identifier: NSFileProviderItemIdentifier,
-        remoteInterface: RemoteInterface
+        remoteInterface: RemoteInterface,
+        dbManager: FilesDatabaseManager = .shared
     ) -> Item? {
         // resolve the given identifier to a record in the model
         Self.logger.debug(
@@ -194,8 +193,6 @@ public class Item: NSObject, NSFileProviderItem {
         guard identifier != .rootContainer else {
             return Item.rootContainer(remoteInterface: remoteInterface)
         }
-
-        let dbManager = FilesDatabaseManager.shared
 
         guard let metadata = dbManager.itemMetadataFromFileProviderItemIdentifier(identifier),
               let parentItemIdentifier = dbManager.parentItemIdentifierFromMetadata(metadata)
