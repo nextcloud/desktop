@@ -46,6 +46,10 @@ final class ItemDeleteTests: XCTestCase {
 
         let itemMetadata = ItemMetadata()
         itemMetadata.ocId = itemIdentifier
+
+        Self.dbManager.addItemMetadata(itemMetadata)
+        XCTAssertNotNil(Self.dbManager.itemMetadataFromOcId(itemIdentifier))
+
         let item = Item(
             metadata: itemMetadata,
             parentItemIdentifier: .rootContainer,
@@ -55,6 +59,8 @@ final class ItemDeleteTests: XCTestCase {
         let (error) = await item.delete(dbManager: Self.dbManager)
         XCTAssertNil(error)
         XCTAssertTrue(rootItem.children.isEmpty)
+
+        XCTAssertNil(Self.dbManager.itemMetadataFromOcId(itemIdentifier))
     }
 
     func testDeleteFolderAndContents() async {
