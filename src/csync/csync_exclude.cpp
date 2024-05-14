@@ -134,9 +134,9 @@ static CSYNC_EXCLUDE_TYPE _csync_excluded_common(const QString &path, bool exclu
 {
     /* split up the path */
     QStringView bname(path);
-    int lastSlash = path.lastIndexOf(QLatin1Char('/'));
+    int lastSlash = bname.lastIndexOf(QLatin1Char('/'));
     if (lastSlash >= 0) {
-        bname = path.mid(lastSlash + 1);
+        bname = bname.mid(lastSlash + 1);
     }
 
     qsizetype blen = bname.size();
