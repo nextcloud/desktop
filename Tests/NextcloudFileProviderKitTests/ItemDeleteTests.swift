@@ -84,6 +84,20 @@ final class ItemDeleteTests: XCTestCase {
 
         let folderMetadata = ItemMetadata()
         folderMetadata.ocId = remoteFolder.identifier
+        folderMetadata.fileName = remoteFolder.name
+        folderMetadata.directory = true
+        folderMetadata.serverUrl = Self.account.davFilesUrl
+
+        let remoteItemMetadata = ItemMetadata()
+        remoteItemMetadata.ocId = remoteItem.identifier
+        remoteItemMetadata.fileName = remoteItem.name
+        remoteItemMetadata.serverUrl = remoteFolder.remotePath
+
+        Self.dbManager.addItemMetadata(folderMetadata)
+        Self.dbManager.addItemMetadata(remoteItemMetadata)
+        XCTAssertNotNil(Self.dbManager.itemMetadataFromOcId(remoteFolder.identifier))
+        XCTAssertNotNil(Self.dbManager.itemMetadataFromOcId(remoteItem.identifier))
+
         let folder = Item(
             metadata: folderMetadata,
             parentItemIdentifier: .rootContainer,
@@ -93,5 +107,8 @@ final class ItemDeleteTests: XCTestCase {
         let (error) = await folder.delete(dbManager: Self.dbManager)
         XCTAssertNil(error)
         XCTAssertTrue(rootItem.children.isEmpty)
+
+        XCTAssertNil(Self.dbManager.itemMetadataFromOcId(remoteFolder.identifier))
+        XCTAssertNil(Self.dbManager.itemMetadataFromOcId(remoteItem.identifier))
     }
 }
