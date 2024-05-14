@@ -13,7 +13,9 @@ import OSLog
 public extension Item {
     
     func fetchContents(
-        domain: NSFileProviderDomain? = nil, progress: Progress = .init()
+        domain: NSFileProviderDomain? = nil,
+        progress: Progress = .init(),
+        dbManager: FilesDatabaseManager = .shared
     ) async -> (URL?, Item?, Error?) {
         let ocId = itemIdentifier.rawValue
         let serverUrlFileName = metadata.serverUrl + "/" + metadata.fileName
@@ -26,7 +28,6 @@ public extension Item {
         )
 
         let localPath = FileManager.default.temporaryDirectory.appendingPathComponent(metadata.ocId)
-        let dbManager = FilesDatabaseManager.shared
         let updatedMetadata = await withCheckedContinuation { continuation in
             dbManager.setStatusForItemMetadata(metadata, status: .downloading) { updatedMeta in
                 continuation.resume(returning: updatedMeta)
@@ -43,7 +44,7 @@ public extension Item {
             return (nil, nil, NSFileProviderError(.noSuchItem))
         }
 
-        let (_, etag, date, size, _, _, error) = await remoteInterface.download(
+        let (_, etag, date, _, _, _, error) = await remoteInterface.download(
             remotePath: serverUrlFileName,
             localPath: localPath.path,
             options: .init(),
