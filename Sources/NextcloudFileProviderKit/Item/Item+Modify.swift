@@ -17,7 +17,8 @@ public extension Item {
         newRemotePath: String,
         newParentItemIdentifier: NSFileProviderItemIdentifier,
         newParentItemRemotePath: String,
-        domain: NSFileProviderDomain? = nil
+        domain: NSFileProviderDomain? = nil,
+        dbManager: FilesDatabaseManager = .shared
     ) async -> (Item?, Error?) {
         let ocId = itemIdentifier.rawValue
         let isFolder = contentType == .folder || contentType == .directory
@@ -56,7 +57,6 @@ public extension Item {
 
         // Remember that a folder metadata's serverUrl is its direct server URL, while for
         // an item metadata the server URL is the parent folder's URL
-        let dbManager = FilesDatabaseManager.shared
         if isFolder {
             _ = dbManager.renameDirectoryAndPropagateToChildren(
                 ocId: ocId,
@@ -93,7 +93,8 @@ public extension Item {
         contents newContents: URL?,
         remotePath: String,
         domain: NSFileProviderDomain?,
-        progress: Progress
+        progress: Progress,
+        dbManager: FilesDatabaseManager
     ) async -> (Item?, Error?) {
         let ocId = itemIdentifier.rawValue
 
@@ -107,7 +108,6 @@ public extension Item {
             return (nil, NSFileProviderError(.noSuchItem))
         }
 
-        let dbManager = FilesDatabaseManager.shared
         guard let metadata = dbManager.itemMetadataFromOcId(ocId) else {
             Self.logger.error(
                 "Could not acquire metadata of item with identifier: \(ocId, privacy: .public)"
@@ -218,7 +218,8 @@ public extension Item {
         request: NSFileProviderRequest = NSFileProviderRequest(),
         ncAccount: Account,
         domain: NSFileProviderDomain? = nil,
-        progress: Progress
+        progress: Progress = .init(),
+        dbManager: FilesDatabaseManager = .shared
     ) async -> (Item?, Error?) {
         let ocId = itemIdentifier.rawValue
         guard itemTarget.itemIdentifier == itemIdentifier else {
@@ -233,7 +234,6 @@ public extension Item {
         }
 
         let parentItemIdentifier = itemTarget.parentItemIdentifier
-        let dbManager = FilesDatabaseManager.shared
         let isFolder = contentType == .folder || contentType == .directory
 
         if options.contains(.mayAlreadyExist) {
@@ -299,7 +299,8 @@ public extension Item {
                 newFileName: itemTarget.filename,
                 newRemotePath: newServerUrlFileName,
                 newParentItemIdentifier: parentItemIdentifier,
-                newParentItemRemotePath: parentItemServerUrl
+                newParentItemRemotePath: parentItemServerUrl,
+                dbManager: dbManager
             )
 
             guard renameError == nil, let renameModifiedItem else {
@@ -353,7 +354,8 @@ public extension Item {
                 contents: newContents,
                 remotePath: newServerUrlFileName,
                 domain: domain,
-                progress: progress
+                progress: progress,
+                dbManager: dbManager
             )
 
             guard contentError == nil, let contentModifiedItem else {
