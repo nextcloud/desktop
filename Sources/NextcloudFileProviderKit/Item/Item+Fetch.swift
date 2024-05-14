@@ -13,7 +13,7 @@ import OSLog
 public extension Item {
     
     func fetchContents(
-        domain: NSFileProviderDomain, progress: Progress
+        domain: NSFileProviderDomain? = nil, progress: Progress = .init()
     ) async -> (URL?, Item?, Error?) {
         let ocId = itemIdentifier.rawValue
         let serverUrlFileName = metadata.serverUrl + "/" + metadata.fileName
@@ -25,31 +25,7 @@ public extension Item {
             """
         )
 
-        // TODO: Handle folders nicely
-        var fileNameLocalPath: URL?
-        do {
-            fileNameLocalPath = try localPathForNCFile(
-                ocId: metadata.ocId, fileNameView: metadata.fileNameView, domain: domain
-            )
-        } catch {
-            Self.logger.error(
-                """
-                Could not find local path for file \(self.metadata.fileName, privacy: .public),
-                received error: \(error.localizedDescription, privacy: .public)
-                """
-            )
-            return (nil, nil, NSFileProviderError(.cannotSynchronize))
-        }
-
-        guard let fileNameLocalPath = fileNameLocalPath else {
-            Self.logger.error(
-                """
-                Could not find local path for file \(self.metadata.fileName, privacy: .public)
-                """
-            )
-            return (nil, nil, NSFileProviderError(.cannotSynchronize))
-        }
-
+        let localPath = FileManager.default.temporaryDirectory.appendingPathComponent(metadata.ocId)
         let dbManager = FilesDatabaseManager.shared
         let updatedMetadata = await withCheckedContinuation { continuation in
             dbManager.setStatusForItemMetadata(metadata, status: .downloading) { updatedMeta in
@@ -70,14 +46,16 @@ public extension Item {
         let (etag, date, error) = await withCheckedContinuation { continuation in
             self.ncKit.download(
                 serverUrlFileName: serverUrlFileName,
-                fileNameLocalPath: fileNameLocalPath.path,
+                fileNameLocalPath: localPath.path,
                 requestHandler: {  progress.setHandlersFromAfRequest($0) },
                 taskHandler: { task in
-                    NSFileProviderManager(for: domain)?.register(
-                        task,
-                        forItemWithIdentifier: self.itemIdentifier,
-                        completionHandler: { _ in }
-                    )
+                    if let domain {
+                        NSFileProviderManager(for: domain)?.register(
+                            task,
+                            forItemWithIdentifier: self.itemIdentifier,
+                            completionHandler: { _ in }
+                        )
+                    }
                 },
                 progressHandler: { downloadProgress in
                     downloadProgress.copyCurrentStateToProgress(progress)
@@ -136,7 +114,7 @@ public extension Item {
             ncKit: self.ncKit
         )
 
-        return (fileNameLocalPath, fpItem, nil)
+        return (localPath, fpItem, nil)
     }
 
     func fetchThumbnail(size: CGSize) async -> (Data?, Error?) {
