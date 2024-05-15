@@ -143,7 +143,6 @@ final class EnumeratorTests: XCTestCase {
     }
 
     func testEnumerateFile() async throws {
-        let dbManager = FilesDatabaseManager(realmConfig: .defaultConfiguration)
         let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
 
         let folderMetadata = ItemMetadata()
@@ -171,16 +170,16 @@ final class EnumeratorTests: XCTestCase {
         itemAMetadata.userId = Self.account.username
         itemAMetadata.urlBase = Self.account.serverUrl
 
-        dbManager.addItemMetadata(folderMetadata)
-        dbManager.addItemMetadata(itemAMetadata)
-        XCTAssertNotNil(dbManager.itemMetadataFromOcId(remoteFolder.identifier))
-        XCTAssertNotNil(dbManager.itemMetadataFromOcId(remoteItemA.identifier))
+        Self.dbManager.addItemMetadata(folderMetadata)
+        Self.dbManager.addItemMetadata(itemAMetadata)
+        XCTAssertNotNil(Self.dbManager.itemMetadataFromOcId(remoteFolder.identifier))
+        XCTAssertNotNil(Self.dbManager.itemMetadataFromOcId(remoteItemA.identifier))
 
         let enumerator = Enumerator(
             enumeratedItemIdentifier: .init(remoteItemA.identifier),
             ncAccount: Self.account,
             remoteInterface: remoteInterface,
-            dbManager: dbManager
+            dbManager: Self.dbManager
         )
         let observer = MockEnumerationObserver(enumerator: enumerator)
         try await observer.enumerateItems()
