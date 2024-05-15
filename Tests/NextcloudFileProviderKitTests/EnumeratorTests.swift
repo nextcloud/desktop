@@ -87,7 +87,6 @@ final class EnumeratorTests: XCTestCase {
         XCTAssertEqual(retrievedFolderItem.contentModificationDate, remoteFolder.modificationDate)
     }
 
-    @MainActor
     func testFolderEnumeration() async throws {
         let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
 
@@ -105,7 +104,7 @@ final class EnumeratorTests: XCTestCase {
         folderMetadata.urlBase = Self.account.serverUrl
 
         Self.dbManager.addItemMetadata(folderMetadata)
-        XCTAssertNotNil(Self.dbManager.itemMetadataFromOcId(folderMetadata.ocId))
+        XCTAssertNotNil(Self.dbManager.itemMetadataFromOcId(remoteFolder.identifier))
 
         let enumerator = Enumerator(
             enumeratedItemIdentifier: .init(remoteFolder.identifier),
@@ -119,11 +118,11 @@ final class EnumeratorTests: XCTestCase {
 
         // A pass of enumerating a target should update the target too. Let's check.
         let dbFolderMetadata = try XCTUnwrap(
-            Self.dbManager.itemMetadataFromOcId(folderMetadata.ocId)
+            Self.dbManager.itemMetadataFromOcId(remoteFolder.identifier)
         )
         let storedFolderItem = try XCTUnwrap(
             Item.storedItem(
-                identifier: .init(folderMetadata.ocId),
+                identifier: .init(remoteFolder.identifier),
                 remoteInterface: remoteInterface,
                 dbManager: Self.dbManager
             )
