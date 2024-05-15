@@ -1,15 +1,40 @@
 FAQ
 ===
 
-How the "Edit locally" functionality works when running the desktop client AppImage
------------------------------------------------------------------------------------
+How the "Edit locally" functionality works
+------------------------------------------
+This functionality depends on the desktop client ability to register the mime to handle the nc:// scheme. That is the handler used by the server to open a file locally. This will allow the desktop client to open a document with the local editor when you click on the option "Edit locally" in your Nextcloud instance. 
 
-This functionality depends on the desktop client ability to register the mime to handle the nc:// scheme. That is the handler used by the server to open a file locally.
+.. note:: 
+   Without properly registering the mime, independent of the browser and distro being used, the desktop client will fail to open a document with the local editor when you click on the option "Edit locally" in your Nextcloud instance.
+   
+   The browser will warn you of the failure: "Failed to launch 'nc://...' because the scheme does not have a registered handler."
 
-We use AppImage due to its universal compatibility but to take full advantage of the desktop client features you will need a third part software to integrate the AppImage in your system.
-We have tested `AppImageLauncher <https://github.com/TheAssassin/AppImageLauncher>`_ and alternatively there is `Go AppImage <https://github.com/probonopd/go-appimage>`_.
+How to enable it
+^^^^^^^^^^^^^^^^^
 
-Without it, independent of the browser and distro being used, the desktop client will fail to open a document with the local editor when you click on the option "Edit locally" in your Nextcloud instance.
+In order to do that, you need to install the desktop client with the MSI installer on Windows or use a third party software to integrate the AppImage in your system on Linux.
+
+On Linux
+^^^^^^^^
+
+We use AppImage due to its universal compatibility but to take full advantage of the desktop client features you will need a third part software to integrate the AppImage in your system: we have tested `AppImageLauncher <https://github.com/TheAssassin/AppImageLauncher>`_ and alternatively there is `Go AppImage <https://github.com/probonopd/go-appimage>`_.
+
+On Windows
+^^^^^^^^^^
+
+The MSI installer will alter your system registry to register the mime to handle the nc:// scheme. 
+
+Alternatively, you can manually register the mime to handle the nc:// scheme:
+
+1. Save the following content to a .reg file:
+```
+Windows Registry Editor Version 5.00
+
+[HKEY_CLASSES_ROOT\nc\shell\open\command]
+@="\"C:\\Program Files\\Nextcloud\\nextcloud.exe\" \"%1\""
+```
+2. Double click on the .reg file to import it into the registry.
 
 See https://nextcloud.com/blog/nextcloud-office-release-solves-document-compatibility-overhauls-knowledge-management/ for more information.
 
