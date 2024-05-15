@@ -4494,7 +4494,7 @@ Il s&apos;agit d&apos;un nouveau mode expérimental. Si vous décidez de l&apos;
     <message>
         <location filename="../src/gui/settingsdialog.cpp" line="120"/>
         <source>General</source>
-        <translation>Paramètres</translation>
+        <translation>Général</translation>
     </message>
     <message>
         <location filename="../src/gui/settingsdialog.cpp" line="129"/>
