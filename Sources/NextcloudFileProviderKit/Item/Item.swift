@@ -157,8 +157,6 @@ public class Item: NSObject, NSFileProviderItem {
         metadata.account = ncKit.nkCommonInstance.account
         metadata.directory = true
         metadata.ocId = NSFileProviderItemIdentifier.rootContainer.rawValue
-        metadata.fileName = "root"
-        metadata.fileNameView = "root"
         metadata.serverUrl = ncKit.nkCommonInstance.urlBase
         metadata.classFile = NKCommon.TypeClassFile.directory.rawValue
         return Item(metadata: metadata, parentItemIdentifier: .rootContainer, ncKit: ncKit)
