@@ -472,7 +472,7 @@ ActivitySettings::ActivitySettings(QWidget *parent)
     connect(_activityWidget, &ActivityWidget::newNotification, this, &ActivitySettings::slotShowActivityTab);
 
     _protocolWidget = new ProtocolWidget(this);
-    _protocolTabId = _tab->addTab(_protocolWidget, Resources::getCoreIcon(QStringLiteral("states/ok")), tr("Sync Protocol"));
+    _protocolTabId = _tab->addTab(_protocolWidget, Resources::getCoreIcon(QStringLiteral("states/ok")), tr("Local Activity"));
 
     _issuesWidget = new IssuesWidget(this);
     _syncIssueTabId = _tab->addTab(_issuesWidget, Resources::getCoreIcon(QStringLiteral("states/error")), QString());

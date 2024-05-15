@@ -10,22 +10,9 @@
     <height>515</height>
    </rect>
   </property>
-  <property name="windowTitle">
-   <string>Form</string>
-  </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout">
-     <item>
-      <widget class="QLabel" name="_headerLabel">
-       <property name="text">
-        <string>Local sync protocol</string>
-       </property>
-       <property name="textFormat">
-        <enum>Qt::PlainText</enum>
-       </property>
-      </widget>
-     </item>
      <item>
       <spacer name="horizontalSpacer">
        <property name="orientation">
@@ -53,6 +40,9 @@
      <property name="contextMenuPolicy">
       <enum>Qt::CustomContextMenu</enum>
      </property>
+     <property name="accessibleName">
+      <string>Local activity table</string>
+     </property>
      <property name="alternatingRowColors">
       <bool>true</bool>
      </property>
@@ -72,9 +62,6 @@
       <bool>false</bool>
      </attribute>
     </widget>
-   </item>
-   <item>
-    <widget class="QDialogButtonBox" name="_dialogButtonBox"/>
    </item>
   </layout>
  </widget>
