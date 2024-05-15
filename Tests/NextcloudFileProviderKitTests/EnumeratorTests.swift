@@ -141,4 +141,56 @@ final class EnumeratorTests: XCTestCase {
         XCTAssertEqual(retrievedItemA.creationDate, remoteItemA.creationDate)
         XCTAssertEqual(retrievedItemA.contentModificationDate, remoteItemA.modificationDate)
     }
+
+    func testEnumerateFile() async throws {
+        let dbManager = FilesDatabaseManager(realmConfig: .defaultConfiguration)
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+
+        let folderMetadata = ItemMetadata()
+        folderMetadata.ocId = remoteFolder.identifier
+        folderMetadata.etag = remoteFolder.versionIdentifier
+        folderMetadata.directory = true
+        folderMetadata.name = remoteFolder.name
+        folderMetadata.fileName = remoteFolder.name
+        folderMetadata.fileNameView = remoteFolder.name
+        folderMetadata.serverUrl = Self.account.davFilesUrl
+        folderMetadata.account = Self.account.ncKitAccount
+        folderMetadata.user = Self.account.username
+        folderMetadata.userId = Self.account.username
+        folderMetadata.urlBase = Self.account.serverUrl
+
+        let itemAMetadata = ItemMetadata()
+        itemAMetadata.ocId = remoteItemA.identifier
+        itemAMetadata.etag = remoteItemA.versionIdentifier
+        itemAMetadata.name = remoteItemA.name
+        itemAMetadata.fileName = remoteItemA.name
+        itemAMetadata.fileNameView = remoteItemA.name
+        itemAMetadata.serverUrl = remoteFolder.remotePath
+        itemAMetadata.account = Self.account.ncKitAccount
+        itemAMetadata.user = Self.account.username
+        itemAMetadata.userId = Self.account.username
+        itemAMetadata.urlBase = Self.account.serverUrl
+
+        dbManager.addItemMetadata(folderMetadata)
+        dbManager.addItemMetadata(itemAMetadata)
+        XCTAssertNotNil(dbManager.itemMetadataFromOcId(remoteFolder.identifier))
+        XCTAssertNotNil(dbManager.itemMetadataFromOcId(remoteItemA.identifier))
+
+        let enumerator = Enumerator(
+            enumeratedItemIdentifier: .init(remoteItemA.identifier),
+            ncAccount: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: dbManager
+        )
+        let observer = MockEnumerationObserver(enumerator: enumerator)
+        try await observer.enumerateItems()
+        XCTAssertEqual(observer.items.count, 1)
+
+        let retrievedItemAItem = try XCTUnwrap(observer.items.first)
+        XCTAssertEqual(retrievedItemAItem.itemIdentifier.rawValue, remoteItemA.identifier)
+        XCTAssertEqual(retrievedItemAItem.filename, remoteItemA.name)
+        XCTAssertEqual(retrievedItemAItem.parentItemIdentifier.rawValue, remoteFolder.identifier)
+        XCTAssertEqual(retrievedItemAItem.creationDate, remoteItemA.creationDate)
+        XCTAssertEqual(retrievedItemAItem.contentModificationDate, remoteItemA.modificationDate)
+    }
 }
