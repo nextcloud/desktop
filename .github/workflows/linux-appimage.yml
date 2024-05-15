@@ -1,0 +1,17 @@
+name: Linux Appimage Package
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+jobs:
+  build:
+    name: Linux Appimage Package
+    runs-on: ubuntu-latest
+    container: ghcr.io/nextcloud/continuous-integration-client-appimage-qt6:client-appimage-6.6.3-2
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - name: Configure, compile and package
+        run: |
+            BUILDNR=${GITHUB_RUN_ID} VERSION_SUFFIX=${GITHUB_HEAD_REF} BUILD_UPDATER=ON DESKTOP_CLIENT_ROOT=`pwd` EXECUTABLE_NAME=nextcloud QT_BASE_DIR=/opt/qt6.6.3 OPENSSL_ROOT_DIR=/usr/local/lib64  /bin/bash -c "./admin/linux/build-appimage.sh"
+            BUILDNR=${GITHUB_RUN_ID} VERSION_SUFFIX=${GITHUB_HEAD_REF} DESKTOP_CLIENT_ROOT=`pwd` /bin/bash -c "./admin/linux/upload-appimage.sh" || echo "Upload failed, however this is an optional step."
