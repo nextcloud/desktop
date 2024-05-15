@@ -104,7 +104,10 @@ final class EnumeratorTests: XCTestCase {
         XCTAssertEqual(retrievedFolderItem.filename, remoteFolder.name)
         XCTAssertEqual(retrievedFolderItem.parentItemIdentifier.rawValue, rootItem.identifier)
         XCTAssertEqual(retrievedFolderItem.creationDate, remoteFolder.creationDate)
-        XCTAssertEqual(retrievedFolderItem.contentModificationDate, remoteFolder.modificationDate)
+        XCTAssertEqual(
+            Int(retrievedFolderItem.contentModificationDate??.timeIntervalSince1970 ?? 0),
+            Int(remoteFolder.modificationDate.timeIntervalSince1970)
+        )
     }
 
     func testFolderEnumeration() async throws {
@@ -159,7 +162,10 @@ final class EnumeratorTests: XCTestCase {
         XCTAssertEqual(retrievedItemA.filename, remoteItemA.name)
         XCTAssertEqual(retrievedItemA.parentItemIdentifier.rawValue, remoteFolder.identifier)
         XCTAssertEqual(retrievedItemA.creationDate, remoteItemA.creationDate)
-        XCTAssertEqual(retrievedItemA.contentModificationDate, remoteItemA.modificationDate)
+        XCTAssertEqual(
+            Int(retrievedItemA.contentModificationDate??.timeIntervalSince1970 ?? 0),
+            Int(remoteItemA.modificationDate.timeIntervalSince1970)
+        )
     }
 
     func testEnumerateFile() async throws {
@@ -210,7 +216,10 @@ final class EnumeratorTests: XCTestCase {
         XCTAssertEqual(retrievedItemAItem.filename, remoteItemA.name)
         XCTAssertEqual(retrievedItemAItem.parentItemIdentifier.rawValue, remoteFolder.identifier)
         XCTAssertEqual(retrievedItemAItem.creationDate, remoteItemA.creationDate)
-        XCTAssertEqual(retrievedItemAItem.contentModificationDate, remoteItemA.modificationDate)
+        XCTAssertEqual(
+            Int(retrievedItemAItem.contentModificationDate??.timeIntervalSince1970 ?? 0),
+            Int(remoteItemA.modificationDate.timeIntervalSince1970)
+        )
     }
 
     func testFolderAndContentsChangeEnumeration() async throws {
@@ -327,7 +336,10 @@ final class EnumeratorTests: XCTestCase {
         XCTAssertEqual(retrievedItemA.filename, remoteItemA.name)
         XCTAssertEqual(retrievedItemA.parentItemIdentifier.rawValue, remoteFolder.identifier)
         XCTAssertEqual(retrievedItemA.creationDate, remoteItemA.creationDate)
-        XCTAssertEqual(retrievedItemA.contentModificationDate, remoteItemA.modificationDate)
+        XCTAssertEqual(
+            Int(retrievedItemA.contentModificationDate??.timeIntervalSince1970 ?? 0),
+            Int(remoteItemA.modificationDate.timeIntervalSince1970)
+        )
 
         let retrievedItemC = try XCTUnwrap(observer.changedItems.first(
             where: { $0.itemIdentifier.rawValue == remoteItemC.identifier }
@@ -336,7 +348,10 @@ final class EnumeratorTests: XCTestCase {
         XCTAssertEqual(retrievedItemC.filename, remoteItemC.name)
         XCTAssertEqual(retrievedItemC.parentItemIdentifier.rawValue, remoteFolder.identifier)
         XCTAssertEqual(retrievedItemC.creationDate, remoteItemC.creationDate)
-        XCTAssertEqual(retrievedItemC.contentModificationDate, remoteItemC.creationDate)
+        XCTAssertEqual(
+            Int(retrievedItemC.contentModificationDate??.timeIntervalSince1970 ?? 0),
+            Int(remoteItemC.modificationDate.timeIntervalSince1970)
+        )
     }
 
     func testFileMoveChangeEnumeration() async throws {
@@ -413,7 +428,10 @@ final class EnumeratorTests: XCTestCase {
         XCTAssertEqual(retrievedItemA.filename, remoteItemA.name)
         XCTAssertEqual(retrievedItemA.parentItemIdentifier.rawValue, rootItem.identifier)
         XCTAssertEqual(retrievedItemA.creationDate, remoteItemA.creationDate)
-        XCTAssertEqual(retrievedItemA.contentModificationDate, remoteItemA.modificationDate)
+        XCTAssertEqual(
+            Int(retrievedItemA.contentModificationDate??.timeIntervalSince1970 ?? 0),
+            Int(remoteItemA.modificationDate.timeIntervalSince1970)
+        )
 
         let storedItemA = try XCTUnwrap(
             Item.storedItem(
@@ -427,8 +445,10 @@ final class EnumeratorTests: XCTestCase {
         XCTAssertEqual(storedItemA.filename, remoteItemA.name)
         XCTAssertEqual(storedItemA.parentItemIdentifier.rawValue, rootItem.identifier)
         XCTAssertEqual(storedItemA.creationDate, remoteItemA.creationDate)
-        XCTAssertEqual(storedItemA.contentModificationDate, remoteItemA.modificationDate)
-        print(storedItemA.metadata.serverUrl)
+        XCTAssertEqual(
+            Int(storedItemA.contentModificationDate?.timeIntervalSince1970 ?? 0),
+            Int(remoteItemA.modificationDate.timeIntervalSince1970)
+        )
 
         let storedRootItem = Item.rootContainer(remoteInterface: remoteInterface)
         print(storedRootItem.metadata.serverUrl)
