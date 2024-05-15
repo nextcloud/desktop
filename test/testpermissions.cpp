@@ -227,9 +227,6 @@ private slots:
         //2.
         // File should be deleted
         QVERIFY(!currentLocalState.find("normalDirectory_PERM_CKDNV_/canBeRemoved_PERM_D_.data"));
-#ifdef Q_OS_WINDOWS
-        QEXPECT_FAIL("", "", Abort);
-#endif
         QVERIFY(!currentLocalState.find("readonlyDirectory_PERM_M_/canBeRemoved_PERM_D_.data"));
 
         //3.
