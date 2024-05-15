@@ -175,7 +175,7 @@ public class Item: NSObject, NSFileProviderItem {
         parentItemIdentifier: NSFileProviderItemIdentifier,
         ncKit: NextcloudKit
     ) {
-        self.metadata = metadata
+        self.metadata = ItemMetadata(value: metadata) // Safeguard against active items
         self.parentItemIdentifier = parentItemIdentifier
         self.ncKit = ncKit
         super.init()
