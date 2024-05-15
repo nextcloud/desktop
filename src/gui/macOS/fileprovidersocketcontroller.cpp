@@ -101,7 +101,11 @@ void FileProviderSocketController::sendMessage(const QString &message) const
         return;
     }
 
-    qCInfo(lcFileProviderSocketController) << "Sending File Provider socket message:" << message;
+    if (message.contains("ACCOUNT_DETAILS:")) {
+        qCDebug(lcFileProviderSocketController) << "Sending File Provider socket message: ACCOUNT_DETAILS:****";
+    } else {
+        qCDebug(lcFileProviderSocketController) << "Sending File Provider socket message:" << message;
+    }
     const auto lineEndChar = '\n';
     const auto messageToSend = message.endsWith(lineEndChar) ? message : message + lineEndChar;
     const auto bytesToSend = messageToSend.toUtf8();
