@@ -12,6 +12,7 @@
  * for more details.
  */
 
+import FileProvider
 import Foundation
 import OSLog
 
@@ -40,9 +41,15 @@ extension FilesDatabaseManager {
     }
 
     public func childItemsForDirectory(_ directoryMetadata: ItemMetadata) -> [ItemMetadata] {
-        let directoryServerUrl = directoryMetadata.serverUrl + "/" + directoryMetadata.fileName
+        var directoryServerUrl: String
+        if directoryMetadata.ocId == NSFileProviderItemIdentifier.rootContainer.rawValue {
+            directoryServerUrl = directoryMetadata.serverUrl
+        } else {
+            directoryServerUrl = directoryMetadata.serverUrl + "/" + directoryMetadata.fileName
+        }
         let metadatas = ncDatabase().objects(ItemMetadata.self).filter(
-            "serverUrl BEGINSWITH %@", directoryServerUrl)
+            "serverUrl BEGINSWITH %@", directoryServerUrl
+        )
         return sortedItemMetadatas(metadatas)
     }
 
