@@ -5,6 +5,7 @@
 //  Created by Claudio Cambra on 15/5/24.
 //
 
+import FileProvider
 import Foundation
 import RealmSwift
 import XCTest
@@ -98,7 +99,9 @@ final class FilesDatabaseManagerTests: XCTestCase {
         }
 
         let expectedStatus = ItemMetadata.Status.uploadError
-        Self.dbManager.setStatusForItemMetadata(metadata, status: expectedStatus) { updatedMetadata in
+        Self.dbManager.setStatusForItemMetadata(
+            metadata, status: expectedStatus
+        ) { updatedMetadata in
             XCTAssertEqual(
                 updatedMetadata?.status,
                 expectedStatus.rawValue,
@@ -307,4 +310,308 @@ final class FilesDatabaseManagerTests: XCTestCase {
             XCTAssertNotNil(resultsI, "Metadata \(i) should be saved even under concurrency")
         }
     }
+
+    func testDirectoryMetadataRetrieval() throws {
+        let account = "TestAccount"
+        let serverUrl = "https://cloud.example.com/files/documents"
+        let directoryFileName = "documents"
+        let metadata = ItemMetadata()
+        metadata.ocId = "dir-1"
+        metadata.account = account
+        metadata.serverUrl = "https://cloud.example.com/files"
+        metadata.fileName = directoryFileName
+        metadata.directory = true
+
+        let realm = Self.dbManager.ncDatabase()
+        try realm.write {
+            realm.add(metadata)
+        }
+
+        let retrievedMetadata = Self.dbManager.directoryMetadata(
+            account: account, serverUrl: serverUrl
+        )
+        XCTAssertNotNil(retrievedMetadata, "Should retrieve directory metadata")
+        XCTAssertEqual(
+            retrievedMetadata?.fileName, directoryFileName, "Should match the directory file name"
+        )
+    }
+
+    func testChildItemsForDirectory() throws {
+        let directoryMetadata = ItemMetadata()
+        directoryMetadata.ocId = "dir-1"
+        directoryMetadata.account = "TestAccount"
+        directoryMetadata.serverUrl = "https://cloud.example.com/files"
+        directoryMetadata.fileName = "documents"
+        directoryMetadata.directory = true
+
+        let childMetadata = ItemMetadata()
+        childMetadata.ocId = "item-1"
+        childMetadata.account = "TestAccount"
+        childMetadata.serverUrl = "https://cloud.example.com/files/documents"
+        childMetadata.fileName = "report.pdf"
+
+        let realm = Self.dbManager.ncDatabase()
+        try realm.write {
+            realm.add(directoryMetadata)
+            realm.add(childMetadata)
+        }
+
+        let children = Self.dbManager.childItemsForDirectory(directoryMetadata)
+        XCTAssertEqual(children.count, 1, "Should return one child item")
+        XCTAssertEqual(
+            children.first?.fileName, "report.pdf", "Should match the child item's file name"
+        )
+    }
+
+    func testDeleteDirectoryAndSubdirectoriesMetadata() throws {
+        let directoryMetadata = ItemMetadata()
+        directoryMetadata.ocId = "dir-1"
+        directoryMetadata.account = "TestAccount"
+        directoryMetadata.serverUrl = "https://cloud.example.com/files"
+        directoryMetadata.fileName = "documents"
+        directoryMetadata.directory = true
+
+        let childMetadata = ItemMetadata()
+        childMetadata.ocId = "item-1"
+        childMetadata.account = "TestAccount"
+        childMetadata.serverUrl = "https://cloud.example.com/files/documents"
+        childMetadata.fileName = "report.pdf"
+
+        let realm = Self.dbManager.ncDatabase()
+        try realm.write {
+            realm.add(directoryMetadata)
+            realm.add(childMetadata)
+        }
+
+        let deletedMetadatas = Self.dbManager.deleteDirectoryAndSubdirectoriesMetadata(
+            ocId: "dir-1"
+        )
+        XCTAssertNotNil(deletedMetadatas, "Should return a list of deleted metadatas")
+        XCTAssertEqual(deletedMetadatas?.count, 2, "Should delete the directory and its child")
+    }
+
+    func testRenameDirectoryAndPropagateToChildren() throws {
+        let directoryMetadata = ItemMetadata()
+        directoryMetadata.ocId = "dir-1"
+        directoryMetadata.account = "TestAccount"
+        directoryMetadata.serverUrl = "https://cloud.example.com/files"
+        directoryMetadata.fileName = "documents"
+        directoryMetadata.directory = true
+
+        let childMetadata = ItemMetadata()
+        childMetadata.ocId = "item-1"
+        childMetadata.account = "TestAccount"
+        childMetadata.serverUrl = "https://cloud.example.com/files/documents"
+        childMetadata.fileName = "report.pdf"
+
+        let realm = Self.dbManager.ncDatabase()
+        try realm.write {
+            realm.add(directoryMetadata)
+            realm.add(childMetadata)
+        }
+
+        let updatedChildren = Self.dbManager.renameDirectoryAndPropagateToChildren(
+            ocId: "dir-1",
+            newServerUrl: "https://cloud.example.com/office",
+            newFileName: "files"
+        )
+
+        XCTAssertNotNil(updatedChildren, "Should return updated children metadatas")
+        XCTAssertEqual(updatedChildren?.count, 1, "Should include one child")
+        XCTAssertEqual(
+            updatedChildren?.first?.serverUrl,
+            "https://cloud.example.com/office/files",
+            "Should update serverUrl of child items"
+        )
+    }
+
+    func testErrorOnDirectoryMetadataNotFound() throws {
+        let nonExistentServerUrl = "https://cloud.example.com/nonexistent"
+        let directoryMetadata = Self.dbManager.directoryMetadata(
+            account: "TestAccount", serverUrl: nonExistentServerUrl
+        )
+        XCTAssertNil(directoryMetadata, "Should return nil when directory metadata is not found")
+    }
+
+    func testChildItemsForRootDirectory() throws {
+        let rootMetadata = ItemMetadata() // Do not write, we do not track root containe itself
+        rootMetadata.ocId = NSFileProviderItemIdentifier.rootContainer.rawValue
+        rootMetadata.account = "TestAccount"
+        rootMetadata.serverUrl = "https://cloud.example.com/files"
+        rootMetadata.directory = true
+
+        let childMetadata = ItemMetadata()
+        childMetadata.ocId = "item-1"
+        childMetadata.account = "TestAccount"
+        childMetadata.serverUrl = "https://cloud.example.com/files/report.pdf"
+        childMetadata.fileName = "report.pdf"
+
+        let realm = Self.dbManager.ncDatabase()
+        try realm.write {
+            realm.add(childMetadata)
+        }
+
+        let children = Self.dbManager.childItemsForDirectory(rootMetadata)
+        XCTAssertEqual(children.count, 1, "Should return one child item for the root directory")
+        XCTAssertEqual(
+            children.first?.fileName,
+            "report.pdf",
+            "Should match the child item's file name for root directory"
+        )
+    }
+
+    func testDeleteNestedDirectoriesAndSubdirectoriesMetadata() throws {
+        // Create nested directories and their child items
+        let rootDirectoryMetadata = ItemMetadata()
+        rootDirectoryMetadata.ocId = "dir-1"
+        rootDirectoryMetadata.account = "TestAccount"
+        rootDirectoryMetadata.serverUrl = "https://cloud.example.com/files"
+        rootDirectoryMetadata.fileName = "documents"
+        rootDirectoryMetadata.directory = true
+
+        let nestedDirectoryMetadata = ItemMetadata()
+        nestedDirectoryMetadata.ocId = "dir-2"
+        nestedDirectoryMetadata.account = "TestAccount"
+        nestedDirectoryMetadata.serverUrl = "https://cloud.example.com/files/documents"
+        nestedDirectoryMetadata.fileName = "projects"
+        nestedDirectoryMetadata.directory = true
+
+        let childMetadata = ItemMetadata()
+        childMetadata.ocId = "item-1"
+        childMetadata.account = "TestAccount"
+        childMetadata.serverUrl = "https://cloud.example.com/files/documents/projects"
+        childMetadata.fileName = "report.pdf"
+
+        let realm = Self.dbManager.ncDatabase()
+        try realm.write {
+            realm.add(rootDirectoryMetadata)
+            realm.add(nestedDirectoryMetadata)
+            realm.add(childMetadata)
+        }
+
+        let deletedMetadatas = Self.dbManager.deleteDirectoryAndSubdirectoriesMetadata(
+            ocId: "dir-1"
+        )
+        XCTAssertNotNil(deletedMetadatas, "Should return a list of deleted metadatas")
+        XCTAssertEqual(
+            deletedMetadatas?.count,
+            3, 
+            "Should delete the root directory, nested directory, and its child"
+        )
+    }
+
+    func testRecursiveRenameOfDirectoriesAndChildItems() throws {
+        // Setup a complex directory structure
+        let rootDirectoryMetadata = ItemMetadata()
+        rootDirectoryMetadata.ocId = "dir-1"
+        rootDirectoryMetadata.account = "TestAccount"
+        rootDirectoryMetadata.serverUrl = "https://cloud.example.com/files"
+        rootDirectoryMetadata.fileName = "documents"
+        rootDirectoryMetadata.directory = true
+
+        let nestedDirectoryMetadata = ItemMetadata()
+        nestedDirectoryMetadata.ocId = "dir-2"
+        nestedDirectoryMetadata.account = "TestAccount"
+        nestedDirectoryMetadata.serverUrl = "https://cloud.example.com/files/documents"
+        nestedDirectoryMetadata.fileName = "projects"
+        nestedDirectoryMetadata.directory = true
+
+        let childMetadata = ItemMetadata()
+        childMetadata.ocId = "item-1"
+        childMetadata.account = "TestAccount"
+        childMetadata.serverUrl = "https://cloud.example.com/files/documents/projects"
+        childMetadata.fileName = "report.pdf"
+
+        let realm = Self.dbManager.ncDatabase()
+        try realm.write {
+            realm.add(rootDirectoryMetadata)
+            realm.add(nestedDirectoryMetadata)
+            realm.add(childMetadata)
+        }
+
+        let updatedChildren = Self.dbManager.renameDirectoryAndPropagateToChildren(
+            ocId: "dir-1",
+            newServerUrl: "https://cloud.example.com/storage",
+            newFileName: "files"
+        )
+
+        XCTAssertNotNil(updatedChildren, "Should return updated children metadatas")
+        XCTAssertEqual(updatedChildren?.count, 2, "Should include the nested directory and child item")
+        XCTAssertTrue(
+            updatedChildren?.contains { $0.serverUrl.contains("/storage/files/") } ?? false,
+            "Should update serverUrl of all child items to reflect new directory path")
+    }
+
+    func testDeletingDirectoryWithNoChildren() throws {
+        let directoryMetadata = ItemMetadata()
+        directoryMetadata.ocId = "dir-1"
+        directoryMetadata.account = "TestAccount"
+        directoryMetadata.serverUrl = "https://cloud.example.com/files"
+        directoryMetadata.fileName = "empty"
+        directoryMetadata.directory = true
+
+        let realm = Self.dbManager.ncDatabase()
+        try realm.write {
+            realm.add(directoryMetadata)
+        }
+
+        let deletedMetadatas = Self.dbManager.deleteDirectoryAndSubdirectoriesMetadata(
+            ocId: "dir-1"
+        )
+        XCTAssertNotNil(
+            deletedMetadatas,
+            "Should return a list of deleted metadatas even if the directory has no children"
+        )
+        XCTAssertEqual(
+            deletedMetadatas?.count,
+            1,
+            "Should only delete the directory itself as there are no children"
+        )
+    }
+
+    func testRenamingDirectoryWithComplexNestedStructure() throws {
+        // Create a complex nested directory structure
+        let rootDirectoryMetadata = ItemMetadata()
+        rootDirectoryMetadata.ocId = "dir-1"
+        rootDirectoryMetadata.account = "TestAccount"
+        rootDirectoryMetadata.serverUrl = "https://cloud.example.com/files"
+        rootDirectoryMetadata.fileName = "dir-1"
+        rootDirectoryMetadata.directory = true
+
+        let nestedDirectoryMetadata = ItemMetadata()
+        nestedDirectoryMetadata.ocId = "dir-2"
+        nestedDirectoryMetadata.account = "TestAccount"
+        nestedDirectoryMetadata.serverUrl = "https://cloud.example.com/files/dir-1"
+        nestedDirectoryMetadata.fileName = "dir-2"
+        nestedDirectoryMetadata.directory = true
+
+        let deepNestedDirectoryMetadata = ItemMetadata()
+        deepNestedDirectoryMetadata.ocId = "dir-3"
+        deepNestedDirectoryMetadata.account = "TestAccount"
+        deepNestedDirectoryMetadata.serverUrl = "https://cloud.example.com/files/dir-1/dir-2"
+        deepNestedDirectoryMetadata.fileName = "dir-3"
+        deepNestedDirectoryMetadata.directory = true
+
+        let realm = Self.dbManager.ncDatabase()
+        try realm.write {
+            realm.add(rootDirectoryMetadata)
+            realm.add(nestedDirectoryMetadata)
+            realm.add(deepNestedDirectoryMetadata)
+        }
+
+        let updatedChildren = Self.dbManager.renameDirectoryAndPropagateToChildren(
+            ocId: "dir-1",
+            newServerUrl: "https://cloud.example.com/storage",
+            newFileName: "archives"
+        )
+
+        XCTAssertNotNil(updatedChildren, "Should return updated children metadatas")
+        XCTAssertEqual(updatedChildren?.count, 2, "Should include both nested directories")
+        XCTAssertTrue(
+            updatedChildren?.allSatisfy { $0.serverUrl.contains("/storage/archives") } ?? false,
+            "All children should have their serverUrl updated correctly"
+        )
+    }
+
+    
 }
