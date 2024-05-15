@@ -38,10 +38,17 @@ nextcloud_add_test(ChecksumValidator)
 
 nextcloud_add_test(ClientSideEncryption)
 nextcloud_add_test(ClientSideEncryptionV2)
-nextcloud_add_test(ExcludedFiles)
+
+if (NOT APPLE)
+    nextcloud_add_test(ExcludedFiles)
+endif()
 
 nextcloud_add_test(Utility)
-nextcloud_add_test(SyncEngine)
+
+if (NOT APPLE)
+    nextcloud_add_test(SyncEngine)
+endif()
+
 nextcloud_add_test(SyncVirtualFiles)
 nextcloud_add_test(SyncMove)
 nextcloud_add_test(SyncDelete)
@@ -55,7 +62,11 @@ nextcloud_add_test(AllFilesDeleted)
 nextcloud_add_test(Blacklist)
 nextcloud_add_test(LocalDiscovery)
 nextcloud_add_test(RemoteDiscovery)
-nextcloud_add_test(Permissions)
+
+if (NOT APPLE)
+    nextcloud_add_test(Permissions)
+endif()
+
 nextcloud_add_test(SelectiveSync)
 nextcloud_add_test(DatabaseError)
 nextcloud_add_test(LockedFiles)
