@@ -59,7 +59,11 @@ nextcloud_add_test(Permissions)
 nextcloud_add_test(SelectiveSync)
 nextcloud_add_test(DatabaseError)
 nextcloud_add_test(LockedFiles)
-nextcloud_add_test(FolderWatcher)
+
+if (NOT WIN32)
+    nextcloud_add_test(FolderWatcher)
+endif()
+
 nextcloud_add_test(Capabilities)
 nextcloud_add_test(PushNotifications)
 nextcloud_add_test(Theme)
