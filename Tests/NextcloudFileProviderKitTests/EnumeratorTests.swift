@@ -335,6 +335,7 @@ final class EnumeratorTests: XCTestCase {
         remoteFolder.children.removeAll(where: { $0.identifier == remoteItemA.identifier })
         rootItem.children.append(remoteItemA)
         remoteItemA.parent = rootItem
+        remoteItemA.remotePath = rootItem.remotePath + "/\(remoteItemA.name)"
 
         let folderMetadata = ItemMetadata()
         folderMetadata.ocId = remoteFolder.identifier
@@ -422,7 +423,7 @@ final class EnumeratorTests: XCTestCase {
         let storedRootItem = Item.rootContainer(remoteInterface: remoteInterface)
         print(storedRootItem.metadata.serverUrl)
         storedRootItem.dbManager = Self.dbManager
-        XCTAssertEqual(storedRootItem.childItemCount?.intValue, rootItem.children.count)
+        XCTAssertEqual(storedRootItem.childItemCount?.intValue, 3) // All items
 
         let storedFolder = try XCTUnwrap(
             Item.storedItem(
