@@ -64,9 +64,9 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
 
             enumeratedItemMetadata = dbManager.itemMetadataFromFileProviderItemIdentifier(
                 enumeratedItemIdentifier)
-            if enumeratedItemMetadata != nil {
+            if let enumeratedItemMetadata {
                 serverUrl =
-                    enumeratedItemMetadata!.serverUrl + "/" + enumeratedItemMetadata!.fileName
+                    enumeratedItemMetadata.serverUrl + "/" + enumeratedItemMetadata.fileName
             } else {
                 Self.logger.error(
                     "Could not find itemMetadata for file with identifier: \(enumeratedItemIdentifier.rawValue, privacy: .public)"
