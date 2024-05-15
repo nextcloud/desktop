@@ -291,6 +291,15 @@ final class EnumeratorTests: XCTestCase {
         XCTAssertNotEqual(dbFolderMetadata.etag, oldFolderEtag)
         XCTAssertEqual(dbItemAMetadata.etag, remoteItemA.versionIdentifier)
         XCTAssertNotEqual(dbItemAMetadata.etag, oldItemAEtag)
+        XCTAssertEqual(dbItemCMetadata.ocId, remoteItemC.identifier)
+        XCTAssertEqual(dbItemCMetadata.etag, remoteItemC.versionIdentifier)
+        XCTAssertEqual(dbItemCMetadata.fileName, remoteItemC.name)
+        XCTAssertEqual(dbItemCMetadata.fileNameView, remoteItemC.name)
+        XCTAssertEqual(dbItemCMetadata.serverUrl, remoteFolder.remotePath)
+        XCTAssertEqual(dbItemCMetadata.account, Self.account.ncKitAccount)
+        XCTAssertEqual(dbItemCMetadata.user, Self.account.username)
+        XCTAssertEqual(dbItemCMetadata.userId, Self.account.username)
+        XCTAssertEqual(dbItemCMetadata.urlBase, Self.account.serverUrl)
 
         let storedFolderItem = try XCTUnwrap(
             Item.storedItem(
@@ -317,7 +326,7 @@ final class EnumeratorTests: XCTestCase {
         XCTAssertEqual(retrievedItemC.filename, remoteItemC.name)
         XCTAssertEqual(retrievedItemC.parentItemIdentifier.rawValue, remoteFolder.identifier)
         XCTAssertEqual(retrievedItemC.creationDate, remoteItemC.creationDate)
-        XCTAssertEqual(retrievedItemC.contentModificationDate, remoteItemC.modificationDate)
+        XCTAssertEqual(retrievedItemC.contentModificationDate, remoteItemC.creationDate)
     }
 
     func testFileMoveChangeEnumeration() async throws {
@@ -341,7 +350,7 @@ final class EnumeratorTests: XCTestCase {
         folderMetadata.urlBase = Self.account.serverUrl
 
         let oldEtag = "OLD"
-        let oldServerUrl = Self.account.davFilesUrl
+        let oldServerUrl = remoteFolder.remotePath
         let oldName = "oldItemA"
         let itemAMetadata = ItemMetadata()
         itemAMetadata.ocId = remoteItemA.identifier
@@ -395,5 +404,35 @@ final class EnumeratorTests: XCTestCase {
         XCTAssertEqual(retrievedItemA.creationDate, remoteItemA.creationDate)
         XCTAssertEqual(retrievedItemA.contentModificationDate, remoteItemA.modificationDate)
 
+        let storedItemA = try XCTUnwrap(
+            Item.storedItem(
+                identifier: .init(remoteItemA.identifier),
+                remoteInterface: remoteInterface,
+                dbManager: Self.dbManager
+            )
+        )
+        storedItemA.dbManager = Self.dbManager
+        XCTAssertEqual(storedItemA.itemIdentifier.rawValue, remoteItemA.identifier)
+        XCTAssertEqual(storedItemA.filename, remoteItemA.name)
+        XCTAssertEqual(storedItemA.parentItemIdentifier.rawValue, rootItem.identifier)
+        XCTAssertEqual(storedItemA.creationDate, remoteItemA.creationDate)
+        XCTAssertEqual(storedItemA.contentModificationDate, remoteItemA.modificationDate)
+        print(storedItemA.metadata.serverUrl)
+
+        let storedRootItem = Item.rootContainer(remoteInterface: remoteInterface)
+        print(storedRootItem.metadata.serverUrl)
+        storedRootItem.dbManager = Self.dbManager
+        XCTAssertEqual(storedRootItem.childItemCount?.intValue, rootItem.children.count)
+
+        let storedFolder = try XCTUnwrap(
+            Item.storedItem(
+                identifier: .init(remoteFolder.identifier),
+                remoteInterface: remoteInterface,
+                dbManager: Self.dbManager
+            )
+        )
+        storedFolder.dbManager = Self.dbManager
+        XCTAssertEqual(storedFolder.childItemCount?.intValue, remoteFolder.children.count)
+    }
     }
 }
