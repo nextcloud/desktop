@@ -319,4 +319,81 @@ final class EnumeratorTests: XCTestCase {
         XCTAssertEqual(retrievedItemC.creationDate, remoteItemC.creationDate)
         XCTAssertEqual(retrievedItemC.contentModificationDate, remoteItemC.modificationDate)
     }
+
+    func testFileMoveChangeEnumeration() async throws {
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+
+        remoteFolder.children.removeAll(where: { $0.identifier == remoteItemA.identifier })
+        rootItem.children.append(remoteItemA)
+        remoteItemA.parent = rootItem
+
+        let folderMetadata = ItemMetadata()
+        folderMetadata.ocId = remoteFolder.identifier
+        folderMetadata.etag = "OLD"
+        folderMetadata.directory = true
+        folderMetadata.name = remoteFolder.name
+        folderMetadata.fileName = remoteFolder.name
+        folderMetadata.fileNameView = remoteFolder.name
+        folderMetadata.serverUrl = Self.account.davFilesUrl
+        folderMetadata.account = Self.account.ncKitAccount
+        folderMetadata.user = Self.account.username
+        folderMetadata.userId = Self.account.username
+        folderMetadata.urlBase = Self.account.serverUrl
+
+        let oldEtag = "OLD"
+        let oldServerUrl = Self.account.davFilesUrl
+        let oldName = "oldItemA"
+        let itemAMetadata = ItemMetadata()
+        itemAMetadata.ocId = remoteItemA.identifier
+        itemAMetadata.etag = oldEtag
+        itemAMetadata.name = oldName
+        itemAMetadata.fileName = oldName
+        itemAMetadata.fileNameView = oldName
+        itemAMetadata.serverUrl = oldServerUrl
+        itemAMetadata.account = Self.account.ncKitAccount
+        itemAMetadata.user = Self.account.username
+        itemAMetadata.userId = Self.account.username
+        itemAMetadata.urlBase = Self.account.serverUrl
+
+        let itemBMetadata = ItemMetadata()
+        itemBMetadata.ocId = remoteItemB.identifier
+        itemBMetadata.etag = remoteItemB.versionIdentifier
+        itemBMetadata.name = remoteItemB.name
+        itemBMetadata.fileName = remoteItemB.name
+        itemBMetadata.fileNameView = remoteItemB.name
+        itemBMetadata.serverUrl = remoteFolder.remotePath
+        itemBMetadata.account = Self.account.ncKitAccount
+        itemBMetadata.user = Self.account.username
+        itemBMetadata.userId = Self.account.username
+        itemBMetadata.urlBase = Self.account.serverUrl
+
+        Self.dbManager.addItemMetadata(folderMetadata)
+        Self.dbManager.addItemMetadata(itemAMetadata)
+        Self.dbManager.addItemMetadata(itemBMetadata)
+        XCTAssertNotNil(Self.dbManager.itemMetadataFromOcId(remoteFolder.identifier))
+        XCTAssertNotNil(Self.dbManager.itemMetadataFromOcId(remoteItemA.identifier))
+        XCTAssertNotNil(Self.dbManager.itemMetadataFromOcId(remoteItemB.identifier))
+
+        let enumerator = Enumerator(
+            enumeratedItemIdentifier: .rootContainer,
+            ncAccount: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+        let observer = MockChangeObserver(enumerator: enumerator)
+        try await observer.enumerateChanges()
+        // rootContainer has changed, folder has changed, itemA has changed
+        XCTAssertEqual(observer.changedItems.count, 2) // Not including target (TODO)
+        XCTAssertTrue(observer.deletedItemIdentifiers.isEmpty)
+
+        let retrievedItemA = try XCTUnwrap(observer.changedItems.first(
+            where: { $0.itemIdentifier.rawValue == remoteItemA.identifier }
+        ))
+        XCTAssertEqual(retrievedItemA.itemIdentifier.rawValue, remoteItemA.identifier)
+        XCTAssertEqual(retrievedItemA.filename, remoteItemA.name)
+        XCTAssertEqual(retrievedItemA.parentItemIdentifier.rawValue, rootItem.identifier)
+        XCTAssertEqual(retrievedItemA.creationDate, remoteItemA.creationDate)
+        XCTAssertEqual(retrievedItemA.contentModificationDate, remoteItemA.modificationDate)
+
+    }
 }
