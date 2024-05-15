@@ -384,7 +384,6 @@ private slots:
             loop.exec();
             t.detach();
         }
-        QEXPECT_FAIL("", "", Continue);
         QVERIFY(propfindRequestedSpy.count() == dummyFileStates.size());
     }
 

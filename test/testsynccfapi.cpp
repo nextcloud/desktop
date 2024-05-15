@@ -1280,22 +1280,22 @@ private slots:
         loop.exec();
         t.detach();
 
-        // if (errorKind == NoError) {
-        //     CFVERIFY_NONVIRTUAL(fakeFolder, "online/sub/file1");
-        // } else {
-        //     CFVERIFY_VIRTUAL(fakeFolder, "online/sub/file1");
-        // }
+        if (errorKind == NoError) {
+            CFVERIFY_NONVIRTUAL(fakeFolder, "online/sub/file1");
+        } else {
+            CFVERIFY_VIRTUAL(fakeFolder, "online/sub/file1");
+        }
 
         // Nothing should change
         ItemCompletedSpy completeSpy(fakeFolder);
         QVERIFY(fakeFolder.syncOnce());
         QVERIFY(completeSpy.isEmpty());
 
-        // if (errorKind == NoError) {
-        //     CFVERIFY_NONVIRTUAL(fakeFolder, "online/sub/file1");
-        // } else {
-        //     CFVERIFY_VIRTUAL(fakeFolder, "online/sub/file1");
-        // }
+        if (errorKind == NoError) {
+            CFVERIFY_NONVIRTUAL(fakeFolder, "online/sub/file1");
+        } else {
+            CFVERIFY_VIRTUAL(fakeFolder, "online/sub/file1");
+        }
     }
 
     void testDataFingerPrint()
