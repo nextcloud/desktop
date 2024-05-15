@@ -17,56 +17,66 @@ final class EnumeratorTests: XCTestCase {
         user: "testUser", serverUrl: "https://mock.nc.com", password: "abcd"
     )
 
-    lazy var rootItem = MockRemoteItem(
-        identifier: NSFileProviderItemIdentifier.rootContainer.rawValue,
-        name: "root",
-        remotePath: Self.account.davFilesUrl,
-        directory: true,
-        account: Self.account.ncKitAccount,
-        username: Self.account.username,
-        serverUrl: Self.account.serverUrl
-    )
-    lazy var remoteFolder = MockRemoteItem(
-        identifier: "folder",
-        versionIdentifier: "NEW",
-        name: "folder",
-        remotePath: Self.account.davFilesUrl + "/folder",
-        directory: true,
-        account: Self.account.ncKitAccount,
-        username: Self.account.username,
-        serverUrl: Self.account.serverUrl
-    )
-    lazy var remoteItemA = MockRemoteItem(
-        identifier: "itemA",
-        versionIdentifier: "NEW",
-        name: "itemA",
-        remotePath: Self.account.davFilesUrl + "/folder/itemA",
-        account: Self.account.ncKitAccount,
-        username: Self.account.username,
-        serverUrl: Self.account.serverUrl
-    )
-    lazy var remoteItemB = MockRemoteItem(
-        identifier: "itemB",
-        name: "itemB",
-        remotePath: Self.account.davFilesUrl + "/folder/itemB",
-        account: Self.account.ncKitAccount,
-        username: Self.account.username,
-        serverUrl: Self.account.serverUrl
-    )
-    lazy var remoteItemC = MockRemoteItem(
-        identifier: "itemC",
-        name: "itemC",
-        remotePath: Self.account.davFilesUrl + "/folder/itemC",
-        account: Self.account.ncKitAccount,
-        username: Self.account.username,
-        serverUrl: Self.account.serverUrl
-    )
+    var rootItem: MockRemoteItem!
+    var remoteFolder: MockRemoteItem!
+    var remoteItemA: MockRemoteItem!
+    var remoteItemB: MockRemoteItem!
+    var remoteItemC: MockRemoteItem!
 
     static let dbManager = FilesDatabaseManager(realmConfig: .defaultConfiguration)
 
     override func setUp() {
         super.setUp()
         Realm.Configuration.defaultConfiguration.inMemoryIdentifier = name
+
+        rootItem = MockRemoteItem(
+            identifier: NSFileProviderItemIdentifier.rootContainer.rawValue,
+            name: "root",
+            remotePath: Self.account.davFilesUrl,
+            directory: true,
+            account: Self.account.ncKitAccount,
+            username: Self.account.username,
+            serverUrl: Self.account.serverUrl
+        )
+
+        remoteFolder = MockRemoteItem(
+            identifier: "folder",
+            versionIdentifier: "NEW",
+            name: "folder",
+            remotePath: Self.account.davFilesUrl + "/folder",
+            directory: true,
+            account: Self.account.ncKitAccount,
+            username: Self.account.username,
+            serverUrl: Self.account.serverUrl
+        )
+
+        remoteItemA = MockRemoteItem(
+            identifier: "itemA",
+            versionIdentifier: "NEW",
+            name: "itemA",
+            remotePath: Self.account.davFilesUrl + "/folder/itemA",
+            account: Self.account.ncKitAccount,
+            username: Self.account.username,
+            serverUrl: Self.account.serverUrl
+        )
+
+        remoteItemB = MockRemoteItem(
+            identifier: "itemB",
+            name: "itemB",
+            remotePath: Self.account.davFilesUrl + "/folder/itemB",
+            account: Self.account.ncKitAccount,
+            username: Self.account.username,
+            serverUrl: Self.account.serverUrl
+        )
+
+        remoteItemC = MockRemoteItem(
+            identifier: "itemC",
+            name: "itemC",
+            remotePath: Self.account.davFilesUrl + "/folder/itemC",
+            account: Self.account.ncKitAccount,
+            username: Self.account.username,
+            serverUrl: Self.account.serverUrl
+        )
 
         rootItem.children = [remoteFolder]
         remoteFolder.parent = rootItem
