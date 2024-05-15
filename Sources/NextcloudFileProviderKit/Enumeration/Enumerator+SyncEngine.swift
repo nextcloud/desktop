@@ -375,7 +375,8 @@ extension Enumerator {
                 let itemMetadata = ItemMetadata.fromNKFile(
                     receivedFile, account: ncKitAccount)
                 dbManager.addItemMetadata(itemMetadata)  // TODO: Return some value when it is an update
-                completionHandler([itemMetadata], nil, nil, nil, error.error)
+                let inactiveItemMetadataCopy = ItemMetadata(value: itemMetadata)
+                completionHandler([inactiveItemMetadataCopy], nil, nil, nil, error.error)
                 return
             }
 
