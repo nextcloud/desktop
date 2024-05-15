@@ -88,6 +88,8 @@ private slots:
     {
         Logger::instance()->setLogFlush(true);
         Logger::instance()->setLogDebug(true);
+
+        QStandardPaths::setTestModeEnabled(true);
     }
 
     void testMoveCustomRemoteRoot()

@@ -5,15 +5,21 @@ on:
 jobs:
   build:
     name: macOS Build and Test
-    runs-on: macos-latest
+    runs-on: macos-14
     env:
-      CRAFT_TARGET: macos-64-clang
+      CRAFT_TARGET: macos-clang-arm64
       CRAFT_MASTER_LOCATION: ${{ github.workspace }}/CraftMaster
       CRAFT_MASTER_CONFIG: ${{ github.workspace }}/craftmaster.ini
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 1
+
+      - name: List Xcode installations
+        run: sudo ls -1 /Applications | grep "Xcode"
+        
+      - name: Select Xcode 15.3
+        run: sudo xcode-select -s /Applications/Xcode_15.3.app/Contents/Developer
 
       - name: Restore cache
         uses: actions/cache@v4

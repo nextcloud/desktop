@@ -9,6 +9,7 @@
 #include <sqlite3.h>
 
 #include "common/ownsql.h"
+#include "logger.h"
 
 using namespace OCC;
 
@@ -18,6 +19,14 @@ class TestOwnSql : public QObject
     QTemporaryDir _tempDir;
 
 private slots:
+    void initTestCase()
+    {
+        OCC::Logger::instance()->setLogFlush(true);
+        OCC::Logger::instance()->setLogDebug(true);
+
+        QStandardPaths::setTestModeEnabled(true);
+    }
+
     void testOpenDb() {
         QFileInfo fi( _tempDir.path() + "/testdb.sqlite" );
         QVERIFY( !fi.exists() ); // must not exist

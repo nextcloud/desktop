@@ -19,8 +19,11 @@
 #include "gui/accountstate.h"
 #include "gui/folderman.h"
 #include "common/utility.h"
+#include "logger.h"
 
 #include "endtoendtestutils.h"
+
+#include <QStandardPaths>
 
 class E2eFileTransferTest : public QObject
 {
@@ -34,6 +37,11 @@ private:
 private slots:
     void initTestCase()
     {
+        OCC::Logger::instance()->setLogFlush(true);
+        OCC::Logger::instance()->setLogDebug(true);
+
+        QStandardPaths::setTestModeEnabled(true);
+
         qRegisterMetaType<OCC::SyncResult>("OCC::SyncResult");
     }
 

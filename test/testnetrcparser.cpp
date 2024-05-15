@@ -7,6 +7,7 @@
 #include <QtTest>
 
 #include "cmd/netrcparser.h"
+#include "logger.h"
 
 using namespace OCC;
 
@@ -23,7 +24,13 @@ class TestNetrcParser : public QObject
     Q_OBJECT
 
 private slots:
-    void initTestCase() {
+    void initTestCase()
+    {
+        OCC::Logger::instance()->setLogFlush(true);
+        OCC::Logger::instance()->setLogDebug(true);
+
+        QStandardPaths::setTestModeEnabled(true);
+
        QFile netrc(testfileC);
        QVERIFY(netrc.open(QIODevice::WriteOnly));
        netrc.write("machine foo login bar password baz\n");

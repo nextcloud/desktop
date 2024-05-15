@@ -9,6 +9,7 @@
 #include <QTemporaryDir>
 
 #include "csync_exclude.h"
+#include "logger.h"
 
 using namespace OCC;
 
@@ -64,6 +65,14 @@ static auto check_dir_traversal(const char *path)
 
 
 private slots:
+    void initTestCase()
+    {
+        OCC::Logger::instance()->setLogFlush(true);
+        OCC::Logger::instance()->setLogDebug(true);
+
+        QStandardPaths::setTestModeEnabled(true);
+    }
+
     void testFun()
     {
         ExcludedFiles excluded;

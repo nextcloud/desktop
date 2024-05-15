@@ -205,6 +205,11 @@ public:
 private slots:
     void initTestCase()
     {
+        OCC::Logger::instance()->setLogFlush(true);
+        OCC::Logger::instance()->setLogDebug(true);
+
+        QStandardPaths::setTestModeEnabled(true);
+
         account = OCC::Account::create();
         account->setCredentials(new FakeCredentials{fakeQnam.data()});
         account->setUrl(QUrl(("http://example.de")));

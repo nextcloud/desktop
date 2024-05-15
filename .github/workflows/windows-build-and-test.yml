@@ -5,9 +5,9 @@ on:
 jobs:
   build:
     name: Windows Build and Test
-    runs-on: windows-2019
+    runs-on: windows-2022
     env:
-      CRAFT_TARGET: windows-msvc2019_64-cl
+      CRAFT_TARGET: windows-msvc2022_64-cl
       COBERTURA_COVERAGE_FILE: ${{ github.workspace }}\cobertura_coverage\coverage.xml
       CRAFT_MASTER_LOCATION: ${{ github.workspace }}\CraftMaster
       CRAFT_MASTER_CONFIG: ${{ github.workspace }}\craftmaster.ini

@@ -1685,6 +1685,7 @@ void ProcessDirectoryJob::processFileFinalize(
 
     if (_discoveryData->_syncOptions._vfs &&
         item->_type == CSyncEnums::ItemTypeFile &&
+        item->_instruction == CSyncEnums::CSYNC_INSTRUCTION_NONE &&
         !_discoveryData->_syncOptions._vfs->isPlaceHolderInSync(_discoveryData->_localDir + path._local)) {
         item->_instruction = CSyncEnums::CSYNC_INSTRUCTION_UPDATE_VFS_METADATA;
     }
