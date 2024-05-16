@@ -23,6 +23,7 @@ let package = Package(
         ),
         .package(url: "https://github.com/nextcloud/NextcloudKit", .upToNextMajor(from: "2.9.9")),
         .package(url: "https://github.com/realm/realm-swift.git", .upToNextMajor(from: "10.33.0")),
+        .package(url: "https://github.com/apple/swift-nio.git", from: "2.0.0")
     ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
@@ -35,7 +36,13 @@ let package = Package(
                 .product(name: "RealmSwift", package: "realm-swift")]),
         .target(
             name: "TestInterface",
-            dependencies: ["NextcloudFileProviderKit"],
+            dependencies: [
+                "NextcloudFileProviderKit",
+                .product(name: "NIOCore", package: "swift-nio"),
+                .product(name: "NIOPosix", package: "swift-nio"),
+                .product(name: "NIOHTTP1", package: "swift-nio"),
+                .product(name: "NIOWebSocket", package: "swift-nio")
+            ],
             path: "Tests/Interface"),
         .testTarget(
             name: "TestInterfaceTests",
