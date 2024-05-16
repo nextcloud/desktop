@@ -92,6 +92,7 @@ public class RemoteChangeObserver: NSObject, NKCommonDelegate, URLSessionWebSock
     }
 
     private func resetWebSocket() {
+        webSocketTask?.cancel()
         webSocketUrlSession = nil
         webSocketTask = nil
         webSocketOperationQueue.cancelAllOperations()
