@@ -17,6 +17,7 @@ fileprivate let NotifyPushWebSocketAuthenticationFailLimit = 3
 
 public class RemoteChangeObserver: NSObject, NKCommonDelegate, URLSessionWebSocketDelegate {
     public let remoteInterface: RemoteInterface
+    public let changeNotificationInterface: ChangeNotificationInterface
     public let domain: NSFileProviderDomain?
     public var accountId: String { remoteInterface.account.ncKitAccount }
 
@@ -34,13 +35,18 @@ public class RemoteChangeObserver: NSObject, NKCommonDelegate, URLSessionWebSock
         didSet {
             if oldValue == .notReachable, networkReachability != .notReachable {
                 reconnectWebSocket()
-                signalEnumerator()
+                changeNotificationInterface.notifyChange()
             }
         }
     }
 
-    public init(remoteInterface: RemoteInterface, domain: NSFileProviderDomain) {
+    public init(
+        remoteInterface: RemoteInterface,
+        changeNotificationInterface: ChangeNotificationInterface,
+        domain: NSFileProviderDomain?
+    ) {
         self.remoteInterface = remoteInterface
+        self.changeNotificationInterface = changeNotificationInterface
         self.domain = domain
         super.init()
         reconnectWebSocket()
@@ -48,27 +54,13 @@ public class RemoteChangeObserver: NSObject, NKCommonDelegate, URLSessionWebSock
 
     private func startPollingTimer() {
         pollingTimer = Timer.scheduledTimer(withTimeInterval: 60, repeats: true) { _ in
-            self.signalEnumerator()
+            self.changeNotificationInterface.notifyChange()
         }
     }
 
     private func stopPollingTimer() {
         pollingTimer?.invalidate()
         pollingTimer = nil
-    }
-
-    private func signalEnumerator() {
-        guard let domain else { return }
-        NSFileProviderManager(for: domain)?.signalEnumerator(for: .workingSet) { error in
-            if let error = error {
-                self.logger.error(
-                    """
-                    Could not signal enumerator for \(self.accountId, privacy: .public):
-                    \(error.localizedDescription, privacy: .public)
-                    """
-                )
-            }
-        }
     }
 
     private func reconnectWebSocket() {
@@ -303,7 +295,7 @@ public class RemoteChangeObserver: NSObject, NKCommonDelegate, URLSessionWebSock
         logger.debug("Received websocket string: \(string, privacy: .public)")
         if string == "notify_file" {
             logger.debug("Received file notification for \(self.accountId, privacy: .public)")
-            signalEnumerator()
+            changeNotificationInterface.notifyChange()
         } else if string == "notify_activity" {
             logger.debug("Ignoring activity notification: \(self.accountId, privacy: .public)")
         } else if string == "notify_notification" {
