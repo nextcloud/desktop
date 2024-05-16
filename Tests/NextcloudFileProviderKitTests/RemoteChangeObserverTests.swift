@@ -172,4 +172,45 @@ final class RemoteChangeObserverTests: XCTestCase {
         }
         XCTAssertTrue(notified)
     }
+
+    func testIgnoreNonFileNotifications() async throws {
+        let remoteInterface = MockRemoteInterface(account: Self.account)
+        remoteInterface.capabilities = mockCapabilities
+
+        var authenticated = false
+        var notified = false
+
+        NotificationCenter.default.addObserver(
+            forName: NotifyPushAuthenticatedNotificationName, object: nil, queue: nil
+        ) { _ in
+            authenticated = true
+        }
+
+        let notificationInterface = MockChangeNotificationInterface()
+        notificationInterface.changeHandler = { notified = true }
+        remoteChangeObserver = RemoteChangeObserver(
+            remoteInterface: remoteInterface,
+            changeNotificationInterface: notificationInterface,
+            domain: nil
+        )
+
+        for _ in 0...Self.timeout {
+            try await Task.sleep(nanoseconds: 1_000_000)
+            if authenticated {
+                break
+            }
+        }
+        XCTAssertTrue(authenticated)
+
+        Self.notifyPushServer.send(message: "random")
+        Self.notifyPushServer.send(message: "notify_activity")
+        Self.notifyPushServer.send(message: "notify_notification")
+        for _ in 0...Self.timeout {
+            try await Task.sleep(nanoseconds: 1_000_000)
+            if notified {
+                break
+            }
+        }
+        XCTAssertFalse(notified)
+    }
 }
