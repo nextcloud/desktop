@@ -229,7 +229,8 @@ public class RemoteChangeObserver: NSObject, NKCommonDelegate, URLSessionWebSock
             return
         }
 
-        webSocketTask?.sendPing { error in
+        webSocketTask?.sendPing { [weak self] error in
+            guard let self else { return }
             guard error == nil else {
                 self.logger.warning(
                     """
