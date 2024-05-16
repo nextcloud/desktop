@@ -44,6 +44,12 @@ public class MockNotifyPushServer {
         self.password = password
     }
 
+    public func reset() {
+        self.usernameReceived = false
+        self.passwordReceived = false
+        self.delay = nil
+    }
+
     /// This method starts the server and handles incoming connections.
     public func run() async throws {
         let channel: NIOAsyncChannel<EventLoopFuture<UpgradeResult>, Never> = try await ServerBootstrap(group: self.eventLoopGroup)
