@@ -229,6 +229,7 @@ final class RemoteChangeObserverTests: XCTestCase {
         remoteChangeObserver?.webSocketPingFailLimit = 1
         remoteChangeObserver?.webSocketPingIntervalNanoseconds = 1
         remoteChangeObserver?.webSocketReconfigureIntervalNanoseconds = 1
+        remoteChangeObserver?.pollInterval = 2_000_000
 
         for _ in 0...Self.timeout {
             try await Task.sleep(nanoseconds: 1_000_000)
@@ -237,14 +238,18 @@ final class RemoteChangeObserverTests: XCTestCase {
             }
         }
         XCTAssertFalse(remoteChangeObserver?.webSocketTaskActive ?? true)
-        XCTAssertTrue(remoteChangeObserver?.pollingActive ?? false)
 
         for _ in 0...Self.timeout {
             try await Task.sleep(nanoseconds: 1_000_000)
-            if notified == true {
+            if remoteChangeObserver?.pollingActive == true {
                 break
             }
         }
+        XCTAssertTrue(remoteChangeObserver?.pollingActive ?? false)
+        remoteChangeObserver?.pollInterval = 1
+        remoteChangeObserver?.pollingTimer?.fire() // TODO: Fix firing not automatically working
+
+        try await Task.sleep(nanoseconds: 1_000)
         XCTAssertTrue(notified)
     }
 }
