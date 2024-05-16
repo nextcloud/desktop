@@ -23,20 +23,23 @@ final class RemoteChangeObserverTests: XCTestCase {
     static let account = Account(
         user: username, serverUrl: serverUrl, password: password
     )
-    let notifyPushServer = MockNotifyPushServer(
+    static let notifyPushServer = MockNotifyPushServer(
         host: serverUrl,
         port: 8888,
         username: username,
         password: password,
         eventLoopGroup: .singleton
     )
+    var remoteChangeObserver: RemoteChangeObserver?
 
     override func setUp() {
-        Task { try await notifyPushServer.run() }
+        Task { try await Self.notifyPushServer.run() }
     }
 
     override func tearDown() async throws {
-        notifyPushServer.reset()
+        remoteChangeObserver?.resetWebSocket()
+        remoteChangeObserver = nil
+        Self.notifyPushServer.reset()
     }
 
     func testAuthentication() async throws {
@@ -51,7 +54,7 @@ final class RemoteChangeObserverTests: XCTestCase {
             authenticated = true
         }
 
-        let remoteChangeObserver = RemoteChangeObserver(
+        remoteChangeObserver = RemoteChangeObserver(
             remoteInterface: remoteInterface,
             changeNotificationInterface: MockChangeNotificationInterface(),
             domain: nil
@@ -64,11 +67,10 @@ final class RemoteChangeObserverTests: XCTestCase {
             }
         }
         XCTAssertTrue(authenticated)
-        remoteChangeObserver.resetWebSocket()
     }
 
     func testRetryAuthentication() async throws {
-        notifyPushServer.delay = 1_000_000
+        Self.notifyPushServer.delay = 1_000_000
 
         var authenticated = false
 
@@ -81,11 +83,12 @@ final class RemoteChangeObserverTests: XCTestCase {
         let incorrectAccount = Account(user: username, serverUrl: serverUrl, password: "wrong!")
         let remoteInterface = MockRemoteInterface(account: incorrectAccount)
         remoteInterface.capabilities = mockCapabilities
-        let remoteChangeObserver = RemoteChangeObserver(
+        remoteChangeObserver = RemoteChangeObserver(
             remoteInterface: remoteInterface,
             changeNotificationInterface: MockChangeNotificationInterface(),
             domain: nil
         )
+        let remoteChangeObserver = remoteChangeObserver!
 
         for _ in 0...Self.timeout {
             try await Task.sleep(nanoseconds: 1_000_001)
@@ -104,5 +107,30 @@ final class RemoteChangeObserverTests: XCTestCase {
         }
         XCTAssertTrue(authenticated)
         remoteChangeObserver.resetWebSocket()
+    }
+
+    func testStopRetryingConnection() async throws {
+        let incorrectAccount = Account(user: username, serverUrl: serverUrl, password: "wrong!")
+        let remoteInterface = MockRemoteInterface(account: incorrectAccount)
+        remoteInterface.capabilities = mockCapabilities
+        let remoteChangeObserver = RemoteChangeObserver(
+            remoteInterface: remoteInterface,
+            changeNotificationInterface: MockChangeNotificationInterface(),
+            domain: nil
+        )
+
+        for _ in 0...Self.timeout {
+            try await Task.sleep(nanoseconds: 1_000_000)
+            if remoteChangeObserver.webSocketAuthenticationFailCount ==
+                remoteChangeObserver.webSocketAuthenticationFailLimit
+            {
+                break
+            }
+        }
+        XCTAssertEqual(
+            remoteChangeObserver.webSocketAuthenticationFailCount,
+            remoteChangeObserver.webSocketAuthenticationFailLimit
+        )
+        XCTAssertFalse(remoteChangeObserver.webSocketTaskActive)
     }
 }
