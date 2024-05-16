@@ -33,7 +33,15 @@ public class RemoteChangeObserver: NSObject, NKCommonDelegate, URLSessionWebSock
     private(set) var webSocketPingFailCount = 0
     private(set) var webSocketAuthenticationFailCount = 0
 
-    private var pollingTimer: Timer?
+    private(set) var pollingTimer: Timer?
+    public var pollInterval: TimeInterval = 60 {
+        didSet {
+            if pollingActive {
+                stopPollingTimer()
+                startPollingTimer()
+            }
+        }
+    }
     public var pollingActive: Bool { pollingTimer != nil }
 
     private var networkReachability: NKCommon.TypeReachability = .unknown {
@@ -58,9 +66,12 @@ public class RemoteChangeObserver: NSObject, NKCommonDelegate, URLSessionWebSock
     }
 
     private func startPollingTimer() {
-        pollingTimer = Timer.scheduledTimer(withTimeInterval: 60, repeats: true) { _ in
-            self.changeNotificationInterface.notifyChange()
+        pollingTimer = Timer.scheduledTimer(
+            withTimeInterval: pollInterval, repeats: true
+        ) { [weak self] _ in
+            self?.changeNotificationInterface.notifyChange()
         }
+        RunLoop.current.add(pollingTimer!, forMode: .common)
     }
 
     private func stopPollingTimer() {

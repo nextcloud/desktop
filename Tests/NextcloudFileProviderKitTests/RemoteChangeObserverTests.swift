@@ -213,4 +213,38 @@ final class RemoteChangeObserverTests: XCTestCase {
         }
         XCTAssertFalse(notified)
     }
+
+    func testPolling() async throws {
+        var notified = false
+        let remoteInterface = MockRemoteInterface(account: Self.account)
+        remoteInterface.capabilities = ""
+        let notificationInterface = MockChangeNotificationInterface()
+        notificationInterface.changeHandler = { notified = true }
+        remoteChangeObserver = RemoteChangeObserver(
+            remoteInterface: remoteInterface,
+            changeNotificationInterface: notificationInterface,
+            domain: nil
+        )
+        remoteChangeObserver?.webSocketAuthenticationFailLimit = 1
+        remoteChangeObserver?.webSocketPingFailLimit = 1
+        remoteChangeObserver?.webSocketPingIntervalNanoseconds = 1
+        remoteChangeObserver?.webSocketReconfigureIntervalNanoseconds = 1
+
+        for _ in 0...Self.timeout {
+            try await Task.sleep(nanoseconds: 1_000_000)
+            if remoteChangeObserver?.webSocketTaskActive == false {
+                break
+            }
+        }
+        XCTAssertFalse(remoteChangeObserver?.webSocketTaskActive ?? true)
+        XCTAssertTrue(remoteChangeObserver?.pollingActive ?? false)
+
+        for _ in 0...Self.timeout {
+            try await Task.sleep(nanoseconds: 1_000_000)
+            if notified == true {
+                break
+            }
+        }
+        XCTAssertTrue(notified)
+    }
 }
