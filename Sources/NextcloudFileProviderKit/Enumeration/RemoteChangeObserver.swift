@@ -17,7 +17,7 @@ fileprivate let NotifyPushWebSocketAuthenticationFailLimit = 3
 
 public class RemoteChangeObserver: NSObject, NKCommonDelegate, URLSessionWebSocketDelegate {
     public let remoteInterface: RemoteInterface
-    public let domain: NSFileProviderDomain
+    public let domain: NSFileProviderDomain?
     public var accountId: String { remoteInterface.account.ncKitAccount }
 
     private let logger = Logger(subsystem: Logger.subsystem, category: "changeobserver")
@@ -58,6 +58,7 @@ public class RemoteChangeObserver: NSObject, NKCommonDelegate, URLSessionWebSock
     }
 
     private func signalEnumerator() {
+        guard let domain else { return }
         NSFileProviderManager(for: domain)?.signalEnumerator(for: .workingSet) { error in
             if let error = error {
                 self.logger.error(
@@ -104,10 +105,13 @@ public class RemoteChangeObserver: NSObject, NKCommonDelegate, URLSessionWebSock
         let (_, capabilitiesData, error) = await remoteInterface.fetchCapabilities(
             options: .init(), 
             taskHandler: { task in
-                NSFileProviderManager(for: self.domain)?.register(
-                    task,
-                    forItemWithIdentifier: .rootContainer,
-                    completionHandler: { _ in })
+                if let domain = self.domain {
+                    NSFileProviderManager(for: domain)?.register(
+                        task,
+                        forItemWithIdentifier: .rootContainer,
+                        completionHandler: { _ in }
+                    )
+                }
             }
         )
 
