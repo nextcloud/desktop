@@ -163,18 +163,24 @@ public class MockNotifyPushServer {
                         case .text:
                             var frameData = frame.unmaskedData
                             let receivedText = frameData.readString(length: frameData.readableBytes)
+                            print("Received text: \(receivedText ?? "nil")")
+                            print("Username received: \(self.usernameReceived)")
+                            print("Password received: \(self.passwordReceived)")
+                            print("Instance: \(ObjectIdentifier(self))")
 
                             if !self.usernameReceived {
                                 self.usernameReceived = true
                             } else if !self.passwordReceived {
                                 let matchingPassword = receivedText == self.password
                                 if matchingPassword {
+                                    print("Correct auth")
                                     self.passwordReceived = true
                                     var buffer = channel.channel.allocator.buffer(capacity: 16)
                                     buffer.writeString("authenticated")
                                     let frame = WebSocketFrame(fin: true, opcode: .text, data: buffer)
                                     try await outbound.write(frame)
                                 } else {
+                                    print("Incorrect auth")
                                     self.usernameReceived = false
                                     var buffer = channel.channel.allocator.buffer(capacity: 32)
                                     buffer.writeString("err: Invalid credentials")
