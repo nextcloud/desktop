@@ -12,6 +12,7 @@ import NextcloudKit
 import OSLog
 
 fileprivate let NotifyPushWebSocketPingIntervalNanoseconds: UInt64 = 3 * 1_000_000_000
+fileprivate let NotifyPushWebSocketReconfigureIntervalNanoseconds: UInt64 = 1 * 1_000_000_000
 fileprivate let NotifyPushWebSocketPingFailLimit = 8
 fileprivate let NotifyPushWebSocketAuthenticationFailLimit = 3
 
@@ -83,7 +84,10 @@ public class RemoteChangeObserver: NSObject, NKCommonDelegate, URLSessionWebSock
             startPollingTimer()
             return
         }
-        Task { await self.configureNotifyPush() }
+        Task {
+            try await Task.sleep(nanoseconds: NotifyPushWebSocketReconfigureIntervalNanoseconds)
+            await self.configureNotifyPush()
+        }
     }
 
     public func resetWebSocket() {
