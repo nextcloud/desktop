@@ -14,6 +14,7 @@ fileprivate let mockCapabilities = ##"{"ocs":{"meta":{"status":"ok","statuscode"
 
 public class MockRemoteInterface: RemoteInterface {
     public var account: Account
+    public var capabilities = mockCapabilities
     public var rootItem: MockRemoteItem?
     public var delegate: (any NKCommonDelegate)?
 
@@ -325,6 +326,6 @@ public class MockRemoteInterface: RemoteInterface {
         options: NKRequestOptions,
         taskHandler: @escaping (URLSessionTask) -> Void
     ) async -> (account: String, data: Data?, error: NKError) {
-        return (accountString, mockCapabilities.data(using: .utf8), .success)
+        return (accountString, capabilities.data(using: .utf8), .success)
     }
 }
