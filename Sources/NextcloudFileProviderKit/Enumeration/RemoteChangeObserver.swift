@@ -23,6 +23,7 @@ public class RemoteChangeObserver: NSObject, NKCommonDelegate, URLSessionWebSock
     public var webSocketReconfigureIntervalNanoseconds: UInt64 = 1 * 1_000_000_000
     public var webSocketPingFailLimit = 8
     public var webSocketAuthenticationFailLimit = 3
+    public var webSocketTaskActive: Bool { webSocketTask != nil }
 
     private let logger = Logger(subsystem: Logger.subsystem, category: "changeobserver")
 
