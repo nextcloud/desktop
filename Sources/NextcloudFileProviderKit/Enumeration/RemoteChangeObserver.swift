@@ -11,7 +11,7 @@ import NextcloudCapabilitiesKit
 import NextcloudKit
 import OSLog
 
-fileprivate let NotifyPushWebSocketPingIntervalNanoseconds: UInt64 = 30 * 1_000_000
+fileprivate let NotifyPushWebSocketPingIntervalNanoseconds: UInt64 = 3 * 1_000_000_000
 fileprivate let NotifyPushWebSocketPingFailLimit = 8
 fileprivate let NotifyPushWebSocketAuthenticationFailLimit = 3
 
