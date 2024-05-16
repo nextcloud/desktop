@@ -28,8 +28,8 @@ public class RemoteChangeObserver: NSObject, NKCommonDelegate, URLSessionWebSock
     private var webSocketUrlSession: URLSession?
     private var webSocketTask: URLSessionWebSocketTask?
     private var webSocketOperationQueue = OperationQueue()
-    private var webSocketPingFailCount = 0
-    private var webSocketAuthenticationFailCount = 0
+    private(set) var webSocketPingFailCount = 0
+    private(set) var webSocketAuthenticationFailCount = 0
 
     private var pollingTimer: Timer?
 
@@ -65,7 +65,7 @@ public class RemoteChangeObserver: NSObject, NKCommonDelegate, URLSessionWebSock
         pollingTimer = nil
     }
 
-    private func reconnectWebSocket() {
+    public func reconnectWebSocket() {
         stopPollingTimer()
         resetWebSocket()
         guard networkReachability != .notReachable else {
@@ -86,7 +86,7 @@ public class RemoteChangeObserver: NSObject, NKCommonDelegate, URLSessionWebSock
         Task { await self.configureNotifyPush() }
     }
 
-    private func resetWebSocket() {
+    public func resetWebSocket() {
         webSocketTask?.cancel()
         webSocketUrlSession = nil
         webSocketTask = nil
