@@ -34,6 +34,7 @@ public class RemoteChangeObserver: NSObject, NKCommonDelegate, URLSessionWebSock
     private(set) var webSocketAuthenticationFailCount = 0
 
     private var pollingTimer: Timer?
+    public var pollingActive: Bool { pollingTimer != nil }
 
     private var networkReachability: NKCommon.TypeReachability = .unknown {
         didSet {
