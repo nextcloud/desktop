@@ -23,6 +23,7 @@ public class MockNotifyPushServer {
     private let password: String
     private var usernameReceived = false
     private var passwordReceived = false
+    public var delay: Int?
 
     enum UpgradeResult {
         case websocket(NIOAsyncChannel<WebSocketFrame, WebSocketFrame>)
@@ -93,6 +94,9 @@ public class MockNotifyPushServer {
             try await channel.executeThenClose { inbound in
                 for try await upgradeResult in inbound {
                     group.addTask {
+                        if let delay = self.delay {
+                            try await Task.sleep(nanoseconds: .init(delay))
+                        }
                         await self.handleUpgradeResult(upgradeResult)
                     }
                 }
