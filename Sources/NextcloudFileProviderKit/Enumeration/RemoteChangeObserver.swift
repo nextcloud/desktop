@@ -15,6 +15,8 @@ fileprivate let NotifyPushWebSocketPingIntervalNanoseconds: UInt64 = 30 * 1_000_
 fileprivate let NotifyPushWebSocketPingFailLimit = 8
 fileprivate let NotifyPushWebSocketAuthenticationFailLimit = 3
 
+public let NotifyPushAuthenticatedNotificationName = Notification.Name("NotifyPushAuthenticated")
+
 public class RemoteChangeObserver: NSObject, NKCommonDelegate, URLSessionWebSocketDelegate {
     public let remoteInterface: RemoteInterface
     public let changeNotificationInterface: ChangeNotificationInterface
@@ -302,6 +304,9 @@ public class RemoteChangeObserver: NSObject, NKCommonDelegate, URLSessionWebSock
             logger.debug("Ignoring notification: \(self.accountId, privacy: .public)")
         } else if string == "authenticated" {
             logger.debug("Correctly authed websocket \(self.accountId, privacy: .public), pinging")
+            NotificationCenter.default.post(
+                name: NotifyPushAuthenticatedNotificationName, object: self
+            )
             pingWebSocket()
         } else if string == "err: Invalid credentials" {
             logger.debug(
