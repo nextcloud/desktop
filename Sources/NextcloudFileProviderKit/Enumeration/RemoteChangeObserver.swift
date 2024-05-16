@@ -11,11 +11,6 @@ import NextcloudCapabilitiesKit
 import NextcloudKit
 import OSLog
 
-fileprivate let NotifyPushWebSocketPingIntervalNanoseconds: UInt64 = 3 * 1_000_000_000
-fileprivate let NotifyPushWebSocketReconfigureIntervalNanoseconds: UInt64 = 1 * 1_000_000_000
-fileprivate let NotifyPushWebSocketPingFailLimit = 8
-fileprivate let NotifyPushWebSocketAuthenticationFailLimit = 3
-
 public let NotifyPushAuthenticatedNotificationName = Notification.Name("NotifyPushAuthenticated")
 
 public class RemoteChangeObserver: NSObject, NKCommonDelegate, URLSessionWebSocketDelegate {
@@ -23,6 +18,11 @@ public class RemoteChangeObserver: NSObject, NKCommonDelegate, URLSessionWebSock
     public let changeNotificationInterface: ChangeNotificationInterface
     public let domain: NSFileProviderDomain?
     public var accountId: String { remoteInterface.account.ncKitAccount }
+
+    public var webSocketPingIntervalNanoseconds: UInt64 = 3 * 1_000_000_000
+    public var webSocketReconfigureIntervalNanoseconds: UInt64 = 1 * 1_000_000_000
+    public var webSocketPingFailLimit = 8
+    public var webSocketAuthenticationFailLimit = 3
 
     private let logger = Logger(subsystem: Logger.subsystem, category: "changeobserver")
 
@@ -73,7 +73,7 @@ public class RemoteChangeObserver: NSObject, NKCommonDelegate, URLSessionWebSock
             logger.error("Network unreachable, will retry when reconnected")
             return
         }
-        guard webSocketAuthenticationFailCount < NotifyPushWebSocketAuthenticationFailLimit else {
+        guard webSocketAuthenticationFailCount < webSocketAuthenticationFailLimit else {
             logger.error(
                 """
                 Exceeded authentication failures for notify push websocket
@@ -85,7 +85,7 @@ public class RemoteChangeObserver: NSObject, NKCommonDelegate, URLSessionWebSock
             return
         }
         Task {
-            try await Task.sleep(nanoseconds: NotifyPushWebSocketReconfigureIntervalNanoseconds)
+            try await Task.sleep(nanoseconds: webSocketReconfigureIntervalNanoseconds)
             await self.configureNotifyPush()
         }
     }
@@ -244,7 +244,7 @@ public class RemoteChangeObserver: NSObject, NKCommonDelegate, URLSessionWebSock
                     """
                 )
                 self.webSocketPingFailCount += 1
-                if self.webSocketPingFailCount > NotifyPushWebSocketPingFailLimit {
+                if self.webSocketPingFailCount > self.webSocketPingFailLimit {
                     self.reconnectWebSocket()
                 } else {
                     self.pingWebSocket()
@@ -255,7 +255,7 @@ public class RemoteChangeObserver: NSObject, NKCommonDelegate, URLSessionWebSock
             // TODO: Stop on auth change
             Task {
                 do {
-                    try await Task.sleep(nanoseconds: NotifyPushWebSocketPingIntervalNanoseconds)
+                    try await Task.sleep(nanoseconds: self.webSocketPingIntervalNanoseconds)
                 } catch let error {
                     self.logger.error(
                         """
