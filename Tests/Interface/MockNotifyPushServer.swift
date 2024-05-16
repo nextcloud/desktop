@@ -23,6 +23,7 @@ public class MockNotifyPushServer {
     private let password: String
     private var usernameReceived = false
     private var passwordReceived = false
+    private var connectedClients: [NIOAsyncChannel<WebSocketFrame, WebSocketFrame>] = []
     public var delay: Int?
 
     enum UpgradeResult {
@@ -48,6 +49,7 @@ public class MockNotifyPushServer {
         self.usernameReceived = false
         self.passwordReceived = false
         self.delay = nil
+        self.connectedClients = []
     }
 
     /// This method starts the server and handles incoming connections.
@@ -119,9 +121,10 @@ public class MockNotifyPushServer {
             switch try await upgradeResult.get() {
             case .websocket(let websocketChannel):
                 print("Handling websocket connection")
+                self.connectedClients.append(websocketChannel)
                 try await self.handleWebsocketChannel(websocketChannel)
                 print("Done handling websocket connection")
-            case .notUpgraded(let httpChannel):
+            case .notUpgraded:
                 print("Done handling HTTP connection")
             }
         } catch {
@@ -198,6 +201,16 @@ public class MockNotifyPushServer {
                 try await group.next()
                 group.cancelAll()
             }
+        }
+    }
+
+    public func send(message: String) {
+        let buffer = ByteBuffer(string: message)
+        let messageFrame = WebSocketFrame(fin: true, opcode: .text, data: buffer)
+
+        // Send a message to all connected WebSocket clients
+        for client in connectedClients {
+            _ = client.channel.write(messageFrame)
         }
     }
 }
