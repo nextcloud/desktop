@@ -221,6 +221,7 @@ final class MockRemoteInterfaceTests: XCTestCase {
         let fileUrl = FileManager.default.temporaryDirectory.appendingPathComponent(
             "file.txt", conformingTo: .text
         )
+        XCTAssertTrue(FileManager.default.isWritableFile(atPath: fileUrl.path))
         let fileData = Data("Hello, World!".utf8)
         let _ = await remoteInterface.upload(remotePath: "/", localPath: fileUrl.path)
 
