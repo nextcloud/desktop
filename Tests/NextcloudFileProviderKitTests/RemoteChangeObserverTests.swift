@@ -252,4 +252,43 @@ final class RemoteChangeObserverTests: XCTestCase {
         try await Task.sleep(nanoseconds: 1_000)
         XCTAssertTrue(notified)
     }
+
+    func testRetryOnRemoteClose() async throws {
+        let remoteInterface = MockRemoteInterface(account: Self.account)
+        remoteInterface.capabilities = mockCapabilities
+
+        var authenticated = false
+
+        NotificationCenter.default.addObserver(
+            forName: NotifyPushAuthenticatedNotificationName, object: nil, queue: nil
+        ) { _ in
+            authenticated = true
+        }
+
+        remoteChangeObserver = RemoteChangeObserver(
+            remoteInterface: remoteInterface,
+            changeNotificationInterface: MockChangeNotificationInterface(),
+            domain: nil
+        )
+
+        for _ in 0...Self.timeout {
+            try await Task.sleep(nanoseconds: 1_000_000)
+            if authenticated {
+                break
+            }
+        }
+        XCTAssertTrue(authenticated)
+        authenticated = false
+
+        Self.notifyPushServer.resetCredentialsState()
+        Self.notifyPushServer.closeConnections()
+
+        for _ in 0...Self.timeout {
+            try await Task.sleep(nanoseconds: 1_000_000)
+            if authenticated {
+                break
+            }
+        }
+        XCTAssertTrue(authenticated)
+    }
 }
