@@ -25,6 +25,7 @@ public class MockNotifyPushServer {
     private var passwordReceived = false
     private var connectedClients: [NIOAsyncChannel<WebSocketFrame, WebSocketFrame>] = []
     public var delay: Int?
+    public var refuse = false
 
     enum UpgradeResult {
         case websocket(NIOAsyncChannel<WebSocketFrame, WebSocketFrame>)
@@ -53,6 +54,7 @@ public class MockNotifyPushServer {
     public func reset() {
         resetCredentialsState()
         self.delay = nil
+        self.refuse = false
         self.connectedClients = []
     }
 
@@ -67,7 +69,12 @@ public class MockNotifyPushServer {
                 channel.eventLoop.makeCompletedFuture {
                     let upgrader = NIOTypedWebSocketServerUpgrader<UpgradeResult>(
                         shouldUpgrade: { (channel, head) in
-                            channel.eventLoop.makeSucceededFuture(HTTPHeaders())
+                            if self.refuse {
+                                print("Refusing connection upgrade \(channel.localAddress?.description ?? "")")
+                                return channel.eventLoop.makeSucceededFuture(nil)
+                            } else {
+                                return channel.eventLoop.makeSucceededFuture(HTTPHeaders())
+                            }
                         },
                         upgradePipelineHandler: { (channel, _) in
                             channel.eventLoop.makeCompletedFuture {
