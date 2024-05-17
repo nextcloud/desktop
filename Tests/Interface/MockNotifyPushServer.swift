@@ -45,9 +45,13 @@ public class MockNotifyPushServer {
         self.password = password
     }
 
-    public func reset() {
+    public func resetCredentialsState() {
         self.usernameReceived = false
         self.passwordReceived = false
+    }
+
+    public func reset() {
+        resetCredentialsState()
         self.delay = nil
         self.connectedClients = []
     }
