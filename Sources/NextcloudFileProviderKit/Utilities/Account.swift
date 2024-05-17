@@ -14,11 +14,11 @@
 
 import Foundation
 
-fileprivate let AccountDictUsernameKey = "usernameKey"
-fileprivate let AccountDictPasswordKey = "passwordKey"
-fileprivate let AccountDictNcKitAccountKey = "ncKitAccountKey"
-fileprivate let AccountDictServerUrlKey = "serverUrlKey"
-fileprivate let AccountDictDavFilesUrlKey = "davFilesUrlKey"
+let AccountDictUsernameKey = "usernameKey"
+let AccountDictPasswordKey = "passwordKey"
+let AccountDictNcKitAccountKey = "ncKitAccountKey"
+let AccountDictServerUrlKey = "serverUrlKey"
+let AccountDictDavFilesUrlKey = "davFilesUrlKey"
 
 public struct Account: Equatable {
     public static let webDavFilesUrlSuffix: String = "/remote.php/dav/files/"
