@@ -287,7 +287,7 @@ public class RemoteChangeObserver: NSObject, NKCommonDelegate, URLSessionWebSock
             switch result {
             case .failure:
                 self.logger.debug("Failed to read websocket \(self.accountId, privacy: .public)")
-                self.reconnectWebSocket()
+                // Do not reconnect here, delegate methods will handle reconnecting
             case .success(let message):
                 switch message {
                 case .data(let data):
