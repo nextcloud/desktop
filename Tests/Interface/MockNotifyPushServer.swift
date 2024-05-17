@@ -217,6 +217,22 @@ public class MockNotifyPushServer {
             _ = client.channel.write(messageFrame)
         }
     }
+
+    public func closeConnections() {
+        for client in connectedClients {
+            print("Closing connection \(client.channel.localAddress?.description ?? "")")
+            var buffer = client.channel.allocator.buffer(capacity: 2)
+            buffer.write(webSocketErrorCode: .normalClosure)
+
+            let closeFrame = WebSocketFrame(fin: true, opcode: .connectionClose, data: buffer)
+            client.channel.writeAndFlush(closeFrame).whenComplete { _ in
+                client.channel.close(mode: .all).whenComplete { _ in
+                    print("Channel closed.")
+                }
+            }
+        }
+        connectedClients = []
+    }
 }
 
 final class HTTPByteBufferResponsePartHandler: ChannelOutboundHandler {
