@@ -15,7 +15,7 @@ fileprivate let logger = Logger(subsystem: Logger.subsystem, category: "thumbnai
 public func fetchThumbnails(
     for itemIdentifiers: [NSFileProviderItemIdentifier],
     requestedSize size: CGSize,
-    usingKit ncKit: NextcloudKit,
+    usingRemoteInterface remoteInterface: RemoteInterface,
     perThumbnailCompletionHandler: @escaping (
         NSFileProviderItemIdentifier,
         Data?,
@@ -34,7 +34,9 @@ public func fetchThumbnails(
     }
 
     for itemIdentifier in itemIdentifiers {
-        guard let item = Item.storedItem(identifier: itemIdentifier, usingKit: ncKit) else {
+        guard let item = Item.storedItem(
+            identifier: itemIdentifier, remoteInterface: remoteInterface
+        ) else {
             logger.error(
                 """
                 Could not find item with identifier: \(itemIdentifier.rawValue, privacy: .public),

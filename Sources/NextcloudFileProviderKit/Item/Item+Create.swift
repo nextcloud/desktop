@@ -17,26 +17,23 @@ extension Item {
         remotePath: String,
         parentItemIdentifier: NSFileProviderItemIdentifier,
         domain: NSFileProviderDomain? = nil,
-        ncKit: NextcloudKit,
-        progress: Progress
+        remoteInterface: RemoteInterface,
+        progress: Progress,
+        dbManager: FilesDatabaseManager
     ) async -> (Item?, Error?) {
-        let (account, createError) = await withCheckedContinuation { continuation in
-            ncKit.createFolder(
-                serverUrlFileName: remotePath,
-                taskHandler: { task in
-                    if let domain, let itemTemplate {
-                        NSFileProviderManager(for: domain)?.register(
-                            task,
-                            forItemWithIdentifier: itemTemplate.itemIdentifier,
-                            completionHandler: { _ in }
-                        )
-                    }
+
+        let (account, _, _, createError) = await remoteInterface.createFolder(
+            remotePath: remotePath, options: .init(), taskHandler: { task in
+                if let domain, let itemTemplate {
+                    NSFileProviderManager(for: domain)?.register(
+                        task,
+                        forItemWithIdentifier: itemTemplate.itemIdentifier,
+                        completionHandler: { _ in }
+                    )
                 }
-            ) { account, _, _, error in
-                continuation.resume(returning: (account, error))
             }
-        }
-        
+        )
+
         guard createError == .success else {
             Self.logger.error(
                 """
@@ -53,25 +50,24 @@ extension Item {
         }
         
         // Read contents after creation
-        let (files, readError) = await withCheckedContinuation { continuation in
-            ncKit.readFileOrFolder(
-                serverUrlFileName: remotePath, 
-                depth: "0",
-                showHiddenFiles: true,
-                taskHandler: { task in
-                    if let domain, let itemTemplate {
-                        NSFileProviderManager(for: domain)?.register(
-                            task,
-                            forItemWithIdentifier: itemTemplate.itemIdentifier,
-                            completionHandler: { _ in }
-                        )
-                    }
+        let (_, files, _, readError) = await remoteInterface.enumerate(
+            remotePath: remotePath,
+            depth: .target,
+            showHiddenFiles: true,
+            includeHiddenFiles: [],
+            requestBody: nil,
+            options: .init(),
+            taskHandler: { task in
+                if let domain, let itemTemplate {
+                    NSFileProviderManager(for: domain)?.register(
+                        task,
+                        forItemWithIdentifier: itemTemplate.itemIdentifier,
+                        completionHandler: { _ in }
+                    )
                 }
-            ) { account, files, _, error in
-                continuation.resume(returning: (files, error))
             }
-        }
-        
+        )
+
         guard readError == .success else {
             Self.logger.error(
                 """
@@ -91,12 +87,12 @@ extension Item {
             }
         }
         
-        FilesDatabaseManager.shared.addItemMetadata(directoryMetadata)
-        
+        dbManager.addItemMetadata(directoryMetadata)
+
         let fpItem = Item(
             metadata: directoryMetadata,
             parentItemIdentifier: parentItemIdentifier,
-            ncKit: ncKit
+            remoteInterface: remoteInterface
         )
         
         return (fpItem, nil)
@@ -108,38 +104,28 @@ extension Item {
         itemTemplate: NSFileProviderItem,
         parentItemRemotePath: String,
         domain: NSFileProviderDomain? = nil,
-        ncKit: NextcloudKit,
-        progress: Progress
+        remoteInterface: RemoteInterface,
+        progress: Progress,
+        dbManager: FilesDatabaseManager
     ) async -> (Item?, Error?) {
-        let (account, ocId, etag, date, size, error) = await withCheckedContinuation {
-            continuation in
-
-            ncKit.upload(
-                serverUrlFileName: remotePath,
-                fileNameLocalPath: localPath,
-                dateCreationFile: itemTemplate.creationDate as? Date,
-                dateModificationFile: itemTemplate.contentModificationDate as? Date,
-                requestHandler: { request in
-                    progress.setHandlersFromAfRequest(request)
-                },
-                taskHandler: { task in
-                    if let domain = domain {
-                        NSFileProviderManager(for: domain)?.register(
-                            task,
-                            forItemWithIdentifier: itemTemplate.itemIdentifier,
-                            completionHandler: { _ in }
-                        )
-                    }
-                },
-                progressHandler: { uploadProgress in
-                    uploadProgress.copyCurrentStateToProgress(progress)
+        let (account, ocId, etag, date, size, _, _, error) = await remoteInterface.upload(
+            remotePath: remotePath,
+            localPath: localPath,
+            creationDate: itemTemplate.creationDate as? Date,
+            modificationDate: itemTemplate.contentModificationDate as? Date,
+            options: .init(),
+            requestHandler: { progress.setHandlersFromAfRequest($0) },
+            taskHandler: { task in
+                if let domain = domain {
+                    NSFileProviderManager(for: domain)?.register(
+                        task,
+                        forItemWithIdentifier: itemTemplate.itemIdentifier,
+                        completionHandler: { _ in }
+                    )
                 }
-            ) { account, ocId, etag, date, size, _, _, error in
-                continuation.resume(
-                    returning: (account, ocId, etag, date, size, error)
-                )
-            }
-        }
+            },
+            progressHandler: { $0.copyCurrentStateToProgress(progress) }
+        )
         
         guard error == .success, let ocId else {
             Self.logger.error(
@@ -179,7 +165,6 @@ extension Item {
             )
         }
         
-        // TODO: Fix what's broken with me
         let newMetadata = ItemMetadata()
         newMetadata.date = (date ?? NSDate()) as Date
         newMetadata.etag = etag ?? ""
@@ -196,14 +181,13 @@ extension Item {
         newMetadata.sessionTaskIdentifier = 0
         newMetadata.status = ItemMetadata.Status.normal.rawValue
         
-        let dbManager = FilesDatabaseManager.shared
         dbManager.addLocalFileMetadataFromItemMetadata(newMetadata)
         dbManager.addItemMetadata(newMetadata)
         
         let fpItem = Item(
             metadata: newMetadata,
             parentItemIdentifier: itemTemplate.parentItemIdentifier,
-            ncKit: ncKit
+            remoteInterface: remoteInterface
         )
         
         return (fpItem, nil)
@@ -216,9 +200,10 @@ extension Item {
         options: NSFileProviderCreateItemOptions = [],
         request: NSFileProviderRequest = NSFileProviderRequest(),
         domain: NSFileProviderDomain? = nil,
-        ncKit: NextcloudKit,
+        remoteInterface: RemoteInterface,
         ncAccount: Account,
-        progress: Progress
+        progress: Progress,
+        dbManager: FilesDatabaseManager = .shared
     ) async -> (Item?, Error?) {
         let tempId = itemTemplate.itemIdentifier.rawValue
         
@@ -247,7 +232,7 @@ extension Item {
         if parentItemIdentifier == .rootContainer {
             parentItemRemotePath = ncAccount.davFilesUrl
         } else {
-            guard let parentItemMetadata = FilesDatabaseManager.shared.directoryMetadata(
+            guard let parentItemMetadata = dbManager.directoryMetadata(
                 ocId: parentItemIdentifier.rawValue
             ) else {
                 Self.logger.error(
@@ -284,8 +269,9 @@ extension Item {
                 remotePath: newServerUrlFileName,
                 parentItemIdentifier: parentItemIdentifier,
                 domain: domain,
-                ncKit: ncKit,
-                progress: progress
+                remoteInterface: remoteInterface,
+                progress: progress,
+                dbManager: dbManager
             )
         }
         
@@ -296,8 +282,9 @@ extension Item {
             itemTemplate: itemTemplate,
             parentItemRemotePath: parentItemRemotePath,
             domain: domain,
-            ncKit: ncKit,
-            progress: progress
+            remoteInterface: remoteInterface,
+            progress: progress,
+            dbManager: dbManager
         )
     }
 }

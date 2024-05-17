@@ -23,13 +23,14 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
         Self.isSystemIdentifier(enumeratedItemIdentifier)
     }
     let domain: NSFileProviderDomain?
+    let dbManager: FilesDatabaseManager
 
     // TODO: actually use this in NCKit and server requests
     private let anchor = NSFileProviderSyncAnchor(Date().description.data(using: .utf8)!)
     private static let maxItemsPerFileProviderPage = 100
     static let logger = Logger(subsystem: Logger.subsystem, category: "enumerator")
     let ncAccount: Account
-    let ncKit: NextcloudKit
+    let remoteInterface: RemoteInterface
     let fastEnumeration: Bool
     var serverUrl: String = ""
     var isInvalidated = false
@@ -41,13 +42,15 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
     public init(
         enumeratedItemIdentifier: NSFileProviderItemIdentifier,
         ncAccount: Account,
-        ncKit: NextcloudKit,
+        remoteInterface: RemoteInterface,
+        dbManager: FilesDatabaseManager = .shared,
         domain: NSFileProviderDomain? = nil,
         fastEnumeration: Bool = true
     ) {
         self.enumeratedItemIdentifier = enumeratedItemIdentifier
         self.ncAccount = ncAccount
-        self.ncKit = ncKit
+        self.remoteInterface = remoteInterface
+        self.dbManager = dbManager
         self.domain = domain
         self.fastEnumeration = fastEnumeration
 
@@ -60,7 +63,6 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
             Self.logger.debug(
                 "Providing enumerator for item with identifier: \(enumeratedItemIdentifier.rawValue, privacy: .public)"
             )
-            let dbManager = FilesDatabaseManager.shared
 
             enumeratedItemMetadata = dbManager.itemMetadataFromFileProviderItemIdentifier(
                 enumeratedItemIdentifier)
@@ -141,18 +143,22 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
                 "Enumerating initial page for user: \(self.ncAccount.ncKitAccount, privacy: .public) with serverUrl: \(self.serverUrl, privacy: .public)"
             )
 
-            Self.readServerUrl(serverUrl, ncAccount: ncAccount, ncKit: ncKit) {
-                metadatas, _, _, _, readError in
+            Task {
+                let (metadatas, _, _, _, readError) = await Self.readServerUrl(
+                    serverUrl, 
+                    ncAccount: ncAccount, 
+                    remoteInterface: remoteInterface,
+                    dbManager: dbManager
+                )
 
                 guard readError == nil else {
                     Self.logger.error(
-                        "Finishing enumeration for user: \(self.ncAccount.ncKitAccount, privacy: .public) with serverUrl: \(self.serverUrl, privacy: .public) with error \(readError!.localizedDescription, privacy: .public)"
+                        "Finishing enumeration for user: \(self.ncAccount.ncKitAccount, privacy: .public) with serverUrl: \(self.serverUrl, privacy: .public) with error \(readError!.errorDescription, privacy: .public)"
                     )
 
                     // TODO: Refactor for conciseness
-                    let nkReadError = NKError(error: readError!)
                     let error =
-                        nkReadError.fileProviderError ?? NSFileProviderError(.cannotSynchronize)
+                        readError?.fileProviderError ?? NSFileProviderError(.cannotSynchronize)
                     observer.finishEnumeratingWithError(error)
                     return
                 }
@@ -170,7 +176,11 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
                 )
 
                 Self.completeEnumerationObserver(
-                    observer, ncKit: self.ncKit, numPage: 1, itemMetadatas: metadatas
+                    observer, 
+                    remoteInterface: remoteInterface,
+                    dbManager: dbManager,
+                    numPage: 1,
+                    itemMetadatas: metadatas
                 )
             }
 
@@ -209,15 +219,22 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
 
             // Unlike when enumerating items we can't progressively enumerate items as we need to wait to resolve which items are truly deleted and which
             // have just been moved elsewhere.
-            fullRecursiveScan(
-                ncAccount: ncAccount,
-                ncKit: ncKit,
-                scanChangesOnly: true
-            ) { _, newMetadatas, updatedMetadatas, deletedMetadatas, error in
+            Task {
+                let (
+                    _, newMetadatas, updatedMetadatas, deletedMetadatas, error
+                ) = await fullRecursiveScan(
+                    ncAccount: ncAccount, 
+                    remoteInterface: remoteInterface,
+                    dbManager: dbManager,
+                    scanChangesOnly: true
+                )
 
                 if self.isInvalidated {
                     Self.logger.info(
-                        "Enumerator invalidated during working set change scan. For user: \(self.ncAccount.ncKitAccount, privacy: .public)"
+                        """
+                        Enumerator invalidated during working set change scan.
+                        For user: \(self.ncAccount.ncKitAccount, privacy: .public)
+                        """
                     )
                     observer.finishEnumeratingWithError(NSFileProviderError(.cannotSynchronize))
                     return
@@ -225,7 +242,11 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
 
                 guard error == nil else {
                     Self.logger.info(
-                        "Finished recursive change enumeration of working set for user: \(self.ncAccount.ncKitAccount, privacy: .public) with error: \(error!.errorDescription, privacy: .public)"
+                        """
+                        Finished recursive change enumeration of working set for user:
+                        \(self.ncAccount.ncKitAccount, privacy: .public)
+                        with error: \(error!.errorDescription, privacy: .public)
+                        """
                     )
                     // TODO: Refactor for conciseness
                     let fpError =
@@ -235,13 +256,17 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
                 }
 
                 Self.logger.info(
-                    "Finished recursive change enumeration of working set for user: \(self.ncAccount.ncKitAccount, privacy: .public). Enumerating items."
+                    """
+                    Finished recursive change enumeration of working set for user:
+                    \(self.ncAccount.ncKitAccount, privacy: .public). Enumerating items.
+                    """
                 )
 
                 Self.completeChangesObserver(
                     observer,
                     anchor: anchor,
-                    ncKit: self.ncKit,
+                    remoteInterface: remoteInterface,
+                    dbManager: dbManager,
                     newMetadatas: newMetadatas,
                     updatedMetadatas: updatedMetadatas,
                     deletedMetadatas: deletedMetadatas
@@ -265,9 +290,16 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
         // No matter what happens here we finish enumeration in some way, either from the error
         // handling below or from the completeChangesObserver
         // TODO: Move to the sync engine extension
-        Self.readServerUrl(
-            serverUrl, ncAccount: ncAccount, ncKit: ncKit, stopAtMatchingEtags: true
-        ) { _, newMetadatas, updatedMetadatas, deletedMetadatas, readError in
+        Task {
+            let (
+                _, newMetadatas, updatedMetadatas, deletedMetadatas, readError
+            ) = await Self.readServerUrl(
+                serverUrl,
+                ncAccount: ncAccount,
+                remoteInterface: remoteInterface,
+                dbManager: dbManager,
+                stopAtMatchingEtags: true
+            )
 
             // If we get a 404 we might add more deleted metadatas
             var currentDeletedMetadatas: [ItemMetadata] = []
@@ -277,14 +309,12 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
 
             guard readError == nil else {
                 Self.logger.error(
-                    "Finishing enumeration of changes for user: \(self.ncAccount.ncKitAccount, privacy: .public) with serverUrl: \(self.serverUrl, privacy: .public) with error: \(readError!.localizedDescription, privacy: .public)"
+                    "Finishing enumeration of changes for user: \(self.ncAccount.ncKitAccount, privacy: .public) with serverUrl: \(self.serverUrl, privacy: .public) with error: \(readError!.errorDescription, privacy: .public)"
                 )
 
-                // TODO: Refactir for conciseness
-                let nkReadError = NKError(error: readError!)
-                let error = nkReadError.fileProviderError ?? NSFileProviderError(.cannotSynchronize)
+                let error = readError!.fileProviderError ?? NSFileProviderError(.cannotSynchronize)
 
-                if nkReadError.isNotFoundError {
+                if readError!.isNotFoundError {
                     Self.logger.info(
                         "404 error means item no longer exists. Deleting metadata and reporting \(self.serverUrl, privacy: .public) as deletion without error"
                     )
@@ -297,7 +327,6 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
                         return
                     }
 
-                    let dbManager = FilesDatabaseManager.shared
                     if itemMetadata.directory {
                         if let deletedDirectoryMetadatas =
                             dbManager.deleteDirectoryAndSubdirectoriesMetadata(
@@ -314,12 +343,16 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
                     }
 
                     Self.completeChangesObserver(
-                        observer, anchor: anchor, ncKit: self.ncKit, newMetadatas: nil,
+                        observer, 
+                        anchor: anchor,
+                        remoteInterface: remoteInterface,
+                        dbManager: dbManager,
+                        newMetadatas: nil,
                         updatedMetadatas: nil,
                         deletedMetadatas: [itemMetadata]
                     )
                     return
-                } else if nkReadError.isNoChangesError {  // All is well, just no changed etags
+                } else if readError!.isNoChangesError {  // All is well, just no changed etags
                     Self.logger.info(
                         "Error was to say no changed files -- not bad error. Finishing change enumeration."
                     )
@@ -338,7 +371,8 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
             Self.completeChangesObserver(
                 observer,
                 anchor: anchor,
-                ncKit: self.ncKit,
+                remoteInterface: remoteInterface,
+                dbManager: dbManager,
                 newMetadatas: newMetadatas,
                 updatedMetadatas: updatedMetadatas,
                 deletedMetadatas: deletedMetadatas
@@ -352,8 +386,11 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
 
     // MARK: - Helper methods
 
+    // TODO: Use async group
     private static func metadatasToFileProviderItems(
-        _ itemMetadatas: [ItemMetadata], ncKit: NextcloudKit,
+        _ itemMetadatas: [ItemMetadata], 
+        remoteInterface: RemoteInterface,
+        dbManager: FilesDatabaseManager,
         completionHandler: @escaping (_ items: [NSFileProviderItem]) -> Void
     ) {
         var items: [NSFileProviderItem] = []
@@ -372,14 +409,13 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
                     return
                 }
 
-                let dbManager = FilesDatabaseManager.shared
                 if let parentItemIdentifier = dbManager.parentItemIdentifierFromMetadata(
                     itemMetadata
                 ) {
                     let item = Item(
                         metadata: itemMetadata, 
                         parentItemIdentifier: parentItemIdentifier,
-                        ncKit: ncKit
+                        remoteInterface: remoteInterface
                     )
                     Self.logger.debug(
                         "Will enumerate item with ocId: \(itemMetadata.ocId, privacy: .public) and name: \(itemMetadata.fileName, privacy: .public)"
@@ -406,10 +442,15 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
     }
 
     private static func completeEnumerationObserver(
-        _ observer: NSFileProviderEnumerationObserver, ncKit: NextcloudKit, numPage: Int,
+        _ observer: NSFileProviderEnumerationObserver, 
+        remoteInterface: RemoteInterface,
+        dbManager: FilesDatabaseManager,
+        numPage: Int,
         itemMetadatas: [ItemMetadata]
     ) {
-        metadatasToFileProviderItems(itemMetadatas, ncKit: ncKit) { items in
+        metadatasToFileProviderItems(
+            itemMetadatas, remoteInterface: remoteInterface, dbManager: dbManager
+        ) { items in
             observer.didEnumerate(items)
             Self.logger.info("Did enumerate \(items.count) items")
 
@@ -428,8 +469,10 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
     }
 
     private static func completeChangesObserver(
-        _ observer: NSFileProviderChangeObserver, anchor: NSFileProviderSyncAnchor,
-        ncKit: NextcloudKit,
+        _ observer: NSFileProviderChangeObserver, 
+        anchor: NSFileProviderSyncAnchor,
+        remoteInterface: RemoteInterface,
+        dbManager: FilesDatabaseManager,
         newMetadatas: [ItemMetadata]?,
         updatedMetadatas: [ItemMetadata]?,
         deletedMetadatas: [ItemMetadata]?
@@ -464,7 +507,9 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
             observer.didDeleteItems(withIdentifiers: allFpItemDeletionsIdentifiers)
         }
 
-        metadatasToFileProviderItems(allUpdatedMetadatas, ncKit: ncKit) { updatedItems in
+        metadatasToFileProviderItems(
+            allUpdatedMetadatas, remoteInterface: remoteInterface, dbManager: dbManager
+        ) { updatedItems in
 
             if !updatedItems.isEmpty {
                 observer.didUpdate(updatedItems)

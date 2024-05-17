@@ -23,9 +23,11 @@ public class Item: NSObject, NSFileProviderItem {
         case uploadError
     }
 
+    lazy var dbManager: FilesDatabaseManager = .shared
+
     public let metadata: ItemMetadata
     public let parentItemIdentifier: NSFileProviderItemIdentifier
-    public let ncKit: NextcloudKit
+    public let remoteInterface: RemoteInterface
 
     public var itemIdentifier: NSFileProviderItemIdentifier {
         NSFileProviderItemIdentifier(metadata.ocId)
@@ -81,11 +83,8 @@ public class Item: NSObject, NSFileProviderItem {
             return .folder
         }
 
-        let internalType = ncKit.nkCommonInstance.getInternalType(
-            fileName: metadata.fileNameView,
-            mimeType: "",
-            directory: metadata.directory)
-        return UTType(filenameExtension: internalType.ext) ?? .content
+        let filenameExtension = filename.components(separatedBy: ".").last ?? ""
+        return UTType(filenameExtension: filenameExtension) ?? .content
     }
 
     public var documentSize: NSNumber? {
@@ -105,8 +104,7 @@ public class Item: NSObject, NSFileProviderItem {
     }
 
     public var isDownloaded: Bool {
-        metadata.directory
-            || FilesDatabaseManager.shared.localFileMetadataFromOcId(metadata.ocId) != nil
+        metadata.directory || dbManager.localFileMetadataFromOcId(metadata.ocId) != nil
     }
 
     public var isDownloading: Bool {
@@ -121,7 +119,7 @@ public class Item: NSObject, NSFileProviderItem {
     }
 
     public var isUploaded: Bool {
-        FilesDatabaseManager.shared.localFileMetadataFromOcId(metadata.ocId) != nil
+        dbManager.localFileMetadataFromOcId(metadata.ocId) != nil
     }
 
     public var isUploading: Bool {
@@ -138,10 +136,7 @@ public class Item: NSObject, NSFileProviderItem {
 
     public var childItemCount: NSNumber? {
         if metadata.directory {
-            NSNumber(
-                integerLiteral: FilesDatabaseManager.shared.childItemsForDirectory(
-                    metadata
-                ).count)
+            NSNumber(integerLiteral: dbManager.childItemsForDirectory(metadata).count)
         } else {
             nil
         }
@@ -156,16 +151,20 @@ public class Item: NSObject, NSFileProviderItem {
         #endif
     }
 
-    public static func rootContainer(ncKit: NextcloudKit) -> Item {
+    public static func rootContainer(remoteInterface: RemoteInterface) -> Item {
         let metadata = ItemMetadata()
-        metadata.account = ncKit.nkCommonInstance.account
+        metadata.account = remoteInterface.account.ncKitAccount
         metadata.directory = true
         metadata.ocId = NSFileProviderItemIdentifier.rootContainer.rawValue
         metadata.fileName = "/"
         metadata.fileNameView = "/"
-        metadata.serverUrl = ncKit.nkCommonInstance.urlBase
+        metadata.serverUrl = remoteInterface.account.davFilesUrl
         metadata.classFile = NKCommon.TypeClassFile.directory.rawValue
-        return Item(metadata: metadata, parentItemIdentifier: .rootContainer, ncKit: ncKit)
+        return Item(
+            metadata: metadata,
+            parentItemIdentifier: .rootContainer,
+            remoteInterface: remoteInterface
+        )
     }
 
     static let logger = Logger(subsystem: Logger.subsystem, category: "item")
@@ -173,31 +172,36 @@ public class Item: NSObject, NSFileProviderItem {
     public required init(
         metadata: ItemMetadata,
         parentItemIdentifier: NSFileProviderItemIdentifier,
-        ncKit: NextcloudKit
+        remoteInterface: RemoteInterface
     ) {
         self.metadata = ItemMetadata(value: metadata) // Safeguard against active items
         self.parentItemIdentifier = parentItemIdentifier
-        self.ncKit = ncKit
+        self.remoteInterface = remoteInterface
         super.init()
     }
 
     public static func storedItem(
         identifier: NSFileProviderItemIdentifier,
-        usingKit ncKit: NextcloudKit
+        remoteInterface: RemoteInterface,
+        dbManager: FilesDatabaseManager = .shared
     ) -> Item? {
         // resolve the given identifier to a record in the model
         Self.logger.debug(
             "Received request for item with identifier: \(identifier.rawValue, privacy: .public)"
         )
 
-        guard identifier != .rootContainer else { return Item.rootContainer(ncKit: ncKit) }
-
-        let dbManager = FilesDatabaseManager.shared
+        guard identifier != .rootContainer else {
+            return Item.rootContainer(remoteInterface: remoteInterface)
+        }
 
         guard let metadata = dbManager.itemMetadataFromFileProviderItemIdentifier(identifier),
               let parentItemIdentifier = dbManager.parentItemIdentifierFromMetadata(metadata)
         else { return nil }
 
-        return Item(metadata: metadata, parentItemIdentifier: parentItemIdentifier, ncKit: ncKit)
+        return Item(
+            metadata: metadata,
+            parentItemIdentifier: parentItemIdentifier,
+            remoteInterface: remoteInterface
+        )
     }
 }

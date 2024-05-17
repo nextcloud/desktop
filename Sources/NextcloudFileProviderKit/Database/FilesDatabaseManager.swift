@@ -14,7 +14,6 @@
 
 import FileProvider
 import Foundation
-import NextcloudKit
 import OSLog
 import RealmSwift
 
