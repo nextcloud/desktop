@@ -218,7 +218,9 @@ final class MockRemoteInterfaceTests: XCTestCase {
 
     func testDownload() async throws {
         let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
-        let fileUrl = URL.temporaryDirectory.appendingPathComponent("file.txt", conformingTo: .text)
+        let fileUrl = FileManager.default.temporaryDirectory.appendingPathComponent(
+            "file.txt", conformingTo: .text
+        )
         let fileData = Data("Hello, World!".utf8)
         let _ = await remoteInterface.upload(remotePath: "/", localPath: fileUrl.path)
 
