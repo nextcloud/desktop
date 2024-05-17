@@ -62,7 +62,7 @@ public class RemoteChangeObserver: NSObject, NKCommonDelegate, URLSessionWebSock
         self.changeNotificationInterface = changeNotificationInterface
         self.domain = domain
         super.init()
-        reconnectWebSocket()
+        connect()
     }
 
     private func startPollingTimer() {
@@ -79,7 +79,15 @@ public class RemoteChangeObserver: NSObject, NKCommonDelegate, URLSessionWebSock
         pollingTimer = nil
     }
 
-    public func reconnectWebSocket() {
+    public func connect() {
+        // Authentication fixes require some type of user or external change.
+        // We don't want to reset the auth tries within reconnect web socket as this is called
+        // internally
+        webSocketAuthenticationFailCount = 0
+        reconnectWebSocket()
+    }
+
+    private func reconnectWebSocket() {
         stopPollingTimer()
         resetWebSocket()
         guard networkReachability != .notReachable else {
