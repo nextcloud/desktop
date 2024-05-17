@@ -219,7 +219,8 @@ SyncFileItemPtr SyncFileItem::fromProperties(const QString &filePath, const QMap
         const auto intConvertedValue = properties.value(QStringLiteral("lock-timeout")).toULongLong(&ok);
         item->_lockTimeout = ok ? intConvertedValue : 0;
     }
-    const auto lastModifiedValue = properties.value(QStringLiteral("getlastmodified")).replace("GMT", "+0000");
+    auto getlastmodified = properties.value(QStringLiteral("getlastmodified"));
+    const auto lastModifiedValue = getlastmodified.replace(QStringLiteral("GMT"), QStringLiteral("+0000"));
     const auto date = QDateTime::fromString(lastModifiedValue, Qt::RFC2822Date);
     Q_ASSERT(date.isValid());
     if (date.toSecsSinceEpoch() > 0) {
