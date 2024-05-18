@@ -860,7 +860,7 @@ This action will abort any currently running synchronization.</source>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="475"/>
-        <source>Sync Protocol</source>
+        <source>Local Activity</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1545,32 +1545,37 @@ You are going to lose access to your sync folder if you do not do so!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="106"/>
+        <location filename="../src/gui/generalsettings.ui" line="89"/>
+        <source>Language selector</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.ui" line="112"/>
         <source>Sync hidden files</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="126"/>
+        <location filename="../src/gui/generalsettings.ui" line="132"/>
         <source>Move remotely deleted files to the local trash bin instead of deleting them</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="142"/>
+        <location filename="../src/gui/generalsettings.ui" line="148"/>
         <source>Log Settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="169"/>
+        <location filename="../src/gui/generalsettings.ui" line="175"/>
         <source>Network</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="239"/>
+        <location filename="../src/gui/generalsettings.ui" line="245"/>
         <source>About</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="98"/>
+        <location filename="../src/gui/generalsettings.ui" line="104"/>
         <source>Advanced</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1585,12 +1590,12 @@ You are going to lose access to your sync folder if you do not do so!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="135"/>
+        <location filename="../src/gui/generalsettings.ui" line="141"/>
         <source>Edit &amp;Ignored Files</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="119"/>
+        <location filename="../src/gui/generalsettings.ui" line="125"/>
         <source>S&amp;how crash reporter</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1885,92 +1890,120 @@ Note that using any logging command line options will override the settings.</so
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/networksettings.ui" line="61"/>
-        <source>Specify proxy manually as</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/gui/networksettings.ui" line="91"/>
+        <location filename="../src/gui/networksettings.ui" line="114"/>
         <source>Host</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/networksettings.ui" line="111"/>
+        <location filename="../src/gui/networksettings.ui" line="130"/>
+        <source>Proxy Hostname</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/networksettings.ui" line="140"/>
         <source>:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/networksettings.ui" line="142"/>
+        <location filename="../src/gui/networksettings.ui" line="153"/>
+        <source>Proxy Port Number</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/networksettings.ui" line="174"/>
         <source>Proxy server requires authentication</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/networksettings.ui" line="187"/>
+        <location filename="../src/gui/networksettings.ui" line="219"/>
         <source>Note: proxy settings have no effects for accounts on localhost</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/networksettings.ui" line="208"/>
+        <location filename="../src/gui/networksettings.ui" line="240"/>
         <source>Download Bandwidth</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/networksettings.ui" line="236"/>
-        <location filename="../src/gui/networksettings.ui" line="315"/>
-        <source>Limit to</source>
+        <location filename="../src/gui/networksettings.ui" line="360"/>
+        <source>Upload bandwidth in kilobytes per second</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/networksettings.ui" line="291"/>
+        <location filename="../src/gui/networksettings.ui" line="376"/>
+        <source>KBytes/s</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/networksettings.ui" line="246"/>
+        <location filename="../src/gui/networksettings.ui" line="328"/>
+        <source>No limit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/networksettings.ui" line="59"/>
+        <source>Specify proxy manually</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/networksettings.ui" line="80"/>
+        <source>Proxy type</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="256"/>
         <location filename="../src/gui/networksettings.ui" line="338"/>
-        <source>KBytes/s</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/gui/networksettings.ui" line="214"/>
-        <location filename="../src/gui/networksettings.ui" line="293"/>
-        <source>No limit</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/gui/networksettings.ui" line="224"/>
-        <location filename="../src/gui/networksettings.ui" line="303"/>
         <source>Limit to 3/4 of estimated bandwidth</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/networksettings.ui" line="287"/>
+        <location filename="../src/gui/networksettings.ui" line="268"/>
+        <location filename="../src/gui/networksettings.ui" line="350"/>
+        <source>Manual limit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/networksettings.ui" line="278"/>
+        <source>Download bandwidth in kilobytes per second</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/networksettings.ui" line="322"/>
         <source>Upload Bandwidth</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/networksettings.ui" line="227"/>
-        <location filename="../src/gui/networksettings.ui" line="306"/>
+        <location filename="../src/gui/networksettings.ui" line="259"/>
+        <location filename="../src/gui/networksettings.ui" line="341"/>
         <source>Limit automatically</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.cpp" line="47"/>
+        <location filename="../src/gui/networksettings.cpp" line="48"/>
         <source>Hostname of proxy server</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/networksettings.cpp" line="48"/>
+        <location filename="../src/gui/networksettings.cpp" line="49"/>
+        <location filename="../src/gui/networksettings.cpp" line="50"/>
         <source>Username for proxy server</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/networksettings.cpp" line="49"/>
+        <location filename="../src/gui/networksettings.cpp" line="51"/>
+        <location filename="../src/gui/networksettings.cpp" line="52"/>
         <source>Password for proxy server</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/networksettings.cpp" line="51"/>
+        <location filename="../src/gui/networksettings.cpp" line="54"/>
         <source>HTTP(S) proxy</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/networksettings.cpp" line="52"/>
+        <location filename="../src/gui/networksettings.cpp" line="55"/>
         <source>SOCKS5 proxy</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2671,18 +2704,13 @@ Note that using any logging command line options will override the settings.</so
 <context>
     <name>OCC::ProtocolWidget</name>
     <message>
-        <location filename="../src/gui/protocolwidget.ui" line="14"/>
-        <source>Form</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/gui/protocolwidget.ui" line="22"/>
-        <source>Local sync protocol</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/gui/protocolwidget.ui" line="45"/>
+        <location filename="../src/gui/protocolwidget.ui" line="32"/>
         <source>Filter</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/protocolwidget.ui" line="44"/>
+        <source>Local activity table</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
