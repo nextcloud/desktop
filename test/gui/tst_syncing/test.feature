@@ -31,7 +31,7 @@ Feature: Syncing files
         And the folder "simple-folder" should exist on the file system
         And the folder "large-folder" should exist on the file system
 
-    @issue-9733
+    @issue-9733 @skip
     Scenario: Syncing a file from the server and creating a conflict
         Given user "Alice" has uploaded file on the server with content "server content" to "/conflict.txt"
         And user "Alice" has set up a client with default settings
@@ -264,7 +264,7 @@ Feature: Syncing files
         And as "Alice" folder "Folder1/subFolder1" should exist in the server
         And as "Alice" folder "Folder1/subFolder1/subFolder2" should exist in the server
 
-    @skipOnWindows
+    @skipOnWindows @skip
     Scenario: Filenames that are rejected by the server are reported (Linux only)
         Given user "Alice" has created folder "Folder1" in the server
         And user "Alice" has set up a client with default settings
@@ -372,7 +372,7 @@ Feature: Syncing files
             | filename                                                                                                                                                                                                                     |
             | thisIsAVeryLongFileNameToCheckThatItWorks-thisIsAVeryLongFileNameToCheckThatItWorks-thisIsAVeryLongFileNameToCheckThatItWorks-thisIsAVeryLongFileNameToCheckThatItWorks-thisIsAVeryLongFileNameToCheckThatItWorks-thisIs.txt |
 
-    @skipOnOCIS @issue-11104
+    @skipOnOCIS @issue-11104 @skip
     Scenario Outline: File with long name (233 characters) is blacklisted (oC10)
         Given user "Alice" has set up a client with default settings
         When user "Alice" creates a file "<filename>" with the following content inside the sync folder

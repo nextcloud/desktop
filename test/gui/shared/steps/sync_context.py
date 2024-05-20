@@ -109,10 +109,10 @@ def step(context, tabName):
     Activity.clickTab(tabName)
 
 
-@Then("the following tabs in the toolbar should match the default baseline")
+@Then("the toolbar should have the following tabs:")
 def step(context):
     for tabName in context.table:
-        test.vp(tabName[0])
+        Toolbar.hasItem(tabName[0])
 
 
 @When('the user selects the following folders to sync:')

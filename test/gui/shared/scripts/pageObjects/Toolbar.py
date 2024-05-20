@@ -1,13 +1,39 @@
 import squish, object, names
 from helpers.SetupClientHelper import wait_until_app_killed
+from helpers.ObjectHelper import get_center_coordinates
+from helpers.ConfigHelper import get_config
 
 
 class Toolbar:
     TOOLBAR = {
-        "name": "toolBar",
-        "type": "QToolBar",
+        "container": names.settings_dialogStack_QStackedWidget,
+        "name": "quickWidget",
+        "type": "QQuickWidget",
         "visible": 1,
-        "window": names.settings_OCC_SettingsDialog,
+    }
+    ADD_ACCOUNT_BUTTON = {
+        "container": names.dialogStack_quickWidget_QQuickWidget,
+        "id": "addAccountButton",
+        "type": "AccountButton",
+        "visible": True,
+    }
+    ACTIVITY_BUTTON = {
+        "container": names.dialogStack_quickWidget_QQuickWidget,
+        "id": "logButton",
+        "type": "AccountButton",
+        "visible": True,
+    }
+    SETTINGS_BUTTON = {
+        "container": names.dialogStack_quickWidget_QQuickWidget,
+        "id": "settingsButton",
+        "type": "AccountButton",
+        "visible": True,
+    }
+    QUIT_BUTTON = {
+        "container": names.dialogStack_quickWidget_QQuickWidget,
+        "id": "quitButton",
+        "type": "AccountButton",
+        "visible": True,
     }
     QUIT_CONFIRMATION_DIALOG = {
         "type": "QMessageBox",
@@ -23,46 +49,72 @@ class Toolbar:
         "window": QUIT_CONFIRMATION_DIALOG,
     }
 
-    TOOLBAR_ITEMS = ["Add account", "Activity", "Settings", "Quit ownCloud"]
+    TOOLBAR_ITEMS = ["Add Account", "Activity", "Settings", "Quit"]
 
     @staticmethod
     def getItemSelector(item_name):
         return {
-            "name": "settingsdialog_toolbutton_%s" % item_name,
-            "type": "QToolButton",
-            "visible": 1,
+            "container": names.dialogStack_quickWidget_QQuickWidget,
+            "text": item_name,
+            "type": "Label",
+            "visible": True,
         }
 
     @staticmethod
+    def hasItem(item_name, timeout=get_config("minSyncTimeout") * 1000):
+        try:
+            squish.waitForObject(Toolbar.getItemSelector(item_name), timeout)
+            return True
+        except:
+            return False
+
+    @staticmethod
     def openActivity():
-        squish.clickButton(squish.waitForObject(Toolbar.getItemSelector("Activity")))
+        x, y = get_center_coordinates(squish.waitForObject(Toolbar.ACTIVITY_BUTTON))
+        squish.mouseClick(
+            squish.waitForObject(Toolbar.ACTIVITY_BUTTON), x, y, squish.Qt.LeftButton
+        )
 
     @staticmethod
     def openNewAccountSetup():
-        squish.clickButton(squish.waitForObject(Toolbar.getItemSelector("Add account")))
+        x, y = get_center_coordinates(squish.waitForObject(Toolbar.ADD_ACCOUNT_BUTTON))
+        squish.mouseClick(
+            squish.waitForObject(Toolbar.ADD_ACCOUNT_BUTTON), x, y, squish.Qt.LeftButton
+        )
 
     @staticmethod
     def openAccount(displayname, host):
-        squish.clickButton(
-            squish.waitForObject(Toolbar.getItemSelector(displayname + "@" + host))
+        account_title = displayname + "\n" + host
+        x, y = get_center_coordinates(
+            squish.waitForObject(Toolbar.getItemSelector(account_title))
+        )
+        squish.mouseClick(
+            squish.waitForObject(Toolbar.getItemSelector(account_title)),
+            x,
+            y,
+            squish.Qt.LeftButton,
         )
 
     @staticmethod
     def getDisplayedAccountText(displayname, host):
         return str(
             squish.waitForObjectExists(
-                Toolbar.getItemSelector(displayname + "@" + host)
+                Toolbar.getItemSelector(displayname + "\n" + host)
             ).text
         )
 
     @staticmethod
     def open_settings_tab():
-        squish.clickButton(squish.waitForObject(Toolbar.getItemSelector("Settings")))
+        x, y = get_center_coordinates(squish.waitForObject(Toolbar.SETTINGS_BUTTON))
+        squish.mouseClick(
+            squish.waitForObject(Toolbar.SETTINGS_BUTTON), x, y, squish.Qt.LeftButton
+        )
 
     @staticmethod
     def quit_owncloud():
-        squish.clickButton(
-            squish.waitForObject(Toolbar.getItemSelector("Quit ownCloud"))
+        x, y = get_center_coordinates(squish.waitForObject(Toolbar.QUIT_BUTTON))
+        squish.mouseClick(
+            squish.waitForObject(Toolbar.QUIT_BUTTON), x, y, squish.Qt.LeftButton
         )
         squish.clickButton(squish.waitForObject(Toolbar.CONFIRM_QUIT_BUTTON))
         for ctx in squish.applicationContextList():

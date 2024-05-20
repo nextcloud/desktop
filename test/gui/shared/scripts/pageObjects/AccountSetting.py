@@ -3,9 +3,9 @@ import squish
 
 
 class AccountSetting:
-    ACCOUNT_BUTTON = {
+    MANAGE_ACCOUNT_BUTTON = {
         "container": names.settings_stack_QStackedWidget,
-        "name": "_accountToolbox",
+        "name": "accountToolButton",
         "type": "QToolButton",
         "visible": 1,
     }
@@ -56,16 +56,7 @@ class AccountSetting:
 
     @staticmethod
     def accountAction(action):
-        squish.sendEvent(
-            "QMouseEvent",
-            squish.waitForObject(AccountSetting.ACCOUNT_BUTTON),
-            squish.QEvent.MouseButtonPress,
-            0,
-            0,
-            squish.Qt.LeftButton,
-            0,
-            0,
-        )
+        squish.clickButton(squish.waitForObject(AccountSetting.MANAGE_ACCOUNT_BUTTON))
         squish.activateItem(
             squish.waitForObjectItem(AccountSetting.ACCOUNT_MENU, action)
         )

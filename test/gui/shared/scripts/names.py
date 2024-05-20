@@ -49,3 +49,5 @@ stack_stackedWidget_QStackedWidget = {"container": settings_stack_QStackedWidget
 stackedWidget_quickWidget_QQuickWidget = {"container": stack_stackedWidget_QStackedWidget, "name": "quickWidget", "type": "QQuickWidget", "visible": 1}
 quickWidget_scrollView_ScrollView = {"container": stackedWidget_quickWidget_QQuickWidget, "id": "scrollView", "type": "ScrollView", "unnamed": 1, "visible": True}
 scrollView_ListView = {"container": quickWidget_scrollView_ScrollView, "type": "ListView", "unnamed": 1, "visible": True}
+settings_dialogStack_QStackedWidget = {"name": "dialogStack", "type": "QStackedWidget", "visible": 1, "window": settings_OCC_SettingsDialog}
+dialogStack_quickWidget_QQuickWidget = {"container": settings_dialogStack_QStackedWidget, "name": "quickWidget", "type": "QQuickWidget", "visible": 1}

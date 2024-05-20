@@ -6,17 +6,16 @@ from helpers.ConfigHelper import get_config
 
 
 class Activity:
+    TAB_CONTAINER = {
+        "container": names.settings_stack_QStackedWidget,
+        "type": "QTabWidget",
+        "unnamed": 1,
+        "visible": 1,
+    }
     SUBTAB_CONTAINER = {
         "container": names.settings_stack_QStackedWidget,
         "name": "qt_tabwidget_tabbar",
         "type": "QTabBar",
-        "visible": 1,
-    }
-
-    SUBTAB = {
-        "container": names.settings_stack_QStackedWidget,
-        "type": "QTabWidget",
-        "unnamed": 1,
         "visible": 1,
     }
     NOT_SYNCED_TABLE = {
@@ -71,13 +70,7 @@ class Activity:
 
             if tabName in tabText:
                 tabFound = True
-                squish.mouseClick(
-                    squish.waitForObjectExists(Activity.getTabObject(index)),
-                    0,
-                    0,
-                    squish.Qt.NoModifier,
-                    squish.Qt.LeftButton,
-                )
+                squish.clickTab(Activity.TAB_CONTAINER, tabText)
                 break
 
         if not tabFound:

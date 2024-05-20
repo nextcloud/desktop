@@ -48,9 +48,13 @@ def step(context, displayname, host):
 def step(context, displayname, host):
     displayname = substituteInLineCodes(displayname)
     host = substituteInLineCodes(host)
+    account_title = displayname + "\n" + host
+    timeout = get_config("lowestSyncTimeout") * 1000
 
-    waitFor(
-        lambda: (not object.exists(Toolbar.getItemSelector(displayname + "@" + host))),
+    test.compare(
+        False,
+        Toolbar.hasItem(account_title, timeout),
+        f"Expected account '{displayname}' to be removed",
     )
 
 
@@ -163,6 +167,7 @@ def step(context, username, host):
     displayname = substituteInLineCodes(displayname)
     host = substituteInLineCodes(host)
 
+    Toolbar.openAccount(displayname, host)
     AccountSetting.removeAccountConnection()
 
 
