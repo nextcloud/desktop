@@ -38,7 +38,8 @@ Feature: adding accounts
             | server   | %local_server% |
             | user     | Brian          |
             | password | AaBb2Cc3Dd4    |
-        Then the account with displayname "Alice Hansen" and host "%local_server_hostname%" should be displayed
+        Then "Brian Murphy" account should be opened
+        And the account with displayname "Alice Hansen" and host "%local_server_hostname%" should be displayed
         And the account with displayname "Brian Murphy" and host "%local_server_hostname%" should be displayed
 
     @skipOnOCIS

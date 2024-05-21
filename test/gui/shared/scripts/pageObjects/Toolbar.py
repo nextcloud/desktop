@@ -11,6 +11,12 @@ class Toolbar:
         "type": "QQuickWidget",
         "visible": 1,
     }
+    ACCOUNT_BUTTON = {
+        "checkable": False,
+        "container": names.dialogStack_quickWidget_QQuickWidget,
+        "type": "AccountButton",
+        "visible": True,
+    }
     ADD_ACCOUNT_BUTTON = {
         "container": names.dialogStack_quickWidget_QQuickWidget,
         "id": "addAccountButton",
@@ -133,3 +139,9 @@ class Toolbar:
                 if not obj.text in Toolbar.TOOLBAR_ITEMS:
                     accounts.append(str(obj.text))
         return accounts
+
+    @staticmethod
+    def account_has_focus(account):
+        account_locator = Toolbar.ACCOUNT_BUTTON.copy()
+        account_locator.update({"text": account})
+        return squish.waitForObjectExists(account_locator).checked is True

@@ -290,3 +290,14 @@ def step(context, username):
 @When("the user quits the client")
 def step(context):
     Toolbar.quit_owncloud()
+
+
+@Then('"|any|" account should be opened')
+def step(context, displayname):
+    displayname = substituteInLineCodes(displayname)
+    host = substituteInLineCodes("%local_server_hostname%")
+    account = displayname + "\n" + host
+
+    has_focus = Toolbar.account_has_focus(account)
+    if not has_focus:
+        raise LookupError(f"Account '{displayname}' should be opened, but it is not")
