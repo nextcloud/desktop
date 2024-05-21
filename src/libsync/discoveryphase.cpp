@@ -623,10 +623,13 @@ void DiscoverySingleDirectoryJob::lsJobFinishedWithoutErrorSlot()
         emit finished(HttpError{ 0, _error });
         deleteLater();
         return;
-    } else if (isE2eEncrypted()) {
+    } else if (isE2eEncrypted() && _account->capabilities().clientSideEncryptionAvailable()) {
         emit etag(_firstEtag, QDateTime::fromString(QString::fromUtf8(_lsColJob->responseTimestamp()), Qt::RFC2822Date));
         fetchE2eMetadata();
         return;
+    } else if (isE2eEncrypted() && !_account->capabilities().clientSideEncryptionAvailable()) {
+        emit etag(_firstEtag, QDateTime::fromString(QString::fromUtf8(_lsColJob->responseTimestamp()), Qt::RFC2822Date));
+        emit finished(_results);
     }
     emit etag(_firstEtag, QDateTime::fromString(QString::fromUtf8(_lsColJob->responseTimestamp()), Qt::RFC2822Date));
     emit finished(_results);
