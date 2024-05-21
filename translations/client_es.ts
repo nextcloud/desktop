@@ -3813,29 +3813,29 @@ Esta es un modo nuevo y experimental. Si decides usarlo, por favor, informa de c
         <location filename="../src/libsync/discovery.cpp" line="358"/>
         <source>Folder</source>
         <comment>name of folder entity to use when warning about invalid name</comment>
-        <translation type="unfinished"/>
+        <translation>Carpeta</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="358"/>
         <source>File</source>
         <comment>name of folder entity to use when warning about invalid name</comment>
-        <translation type="unfinished"/>
+        <translation>Archivo</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="360"/>
         <source>%1 name containing the character &quot;%2&quot; is not supported on this file system.</source>
         <comment>folder or file impossible to sync due to an invalid name, placeholders will be file or folder and the invalid character</comment>
-        <translation type="unfinished"/>
+        <translation>El nombre %1 que contiene el carácter &quot;%2&quot; no está soportado en este sistema de archivos.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="362"/>
         <source>%1 name contains at least one invalid character</source>
-        <translation type="unfinished"/>
+        <translation>El nombre %1 contiene al menos un carácter inválido</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="364"/>
         <source>%1 name is a reserved name on this file system.</source>
-        <translation type="unfinished"/>
+        <translation>El nombre %1 es un nombre reservado en este sistema de archivos.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="361"/>
@@ -4147,7 +4147,7 @@ Esta es un modo nuevo y experimental. Si decides usarlo, por favor, informa de c
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="312"/>
         <source>Folder %1 cannot be renamed because of a local file or folder name clash!</source>
-        <translation type="unfinished"/>
+        <translation>¡La carpeta %1 no puede ser renombrada ya que un archivo o carpeta local causa un conflicto de nombre!</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="254"/>
@@ -5274,7 +5274,7 @@ El servidor respondió con el error: %2</translation>
     <message>
         <location filename="../src/libsync/updatee2eefolderusersmetadatajob.cpp" line="118"/>
         <source>Could not add or remove user %1 to access folder %2</source>
-        <translation type="unfinished"/>
+        <translation>No se ha podido añadir o eliminar al usuario %1 para acceder a la carpeta %2</translation>
     </message>
     <message>
         <location filename="../src/libsync/updatee2eefolderusersmetadatajob.cpp" line="235"/>
@@ -5794,12 +5794,12 @@ El servidor respondió con el error: %2</translation>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="117"/>
         <source>Failed to create debug archive</source>
-        <translation type="unfinished"/>
+        <translation>Fallo al crear archivo de depuración</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="118"/>
         <source>Could not create debug archive in selected location!</source>
-        <translation type="unfinished"/>
+        <translation>¡No se pudo crear el archivo de depuración en la ubicación seleccionada!</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="763"/>
@@ -6569,7 +6569,7 @@ El servidor respondió con el error: %2</translation>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="60"/>
         <source>Updated local virtual files metadata</source>
-        <translation type="unfinished"/>
+        <translation>Se han actualizado los metadatos para los archivos virtuales</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="61"/>
@@ -6615,7 +6615,7 @@ El servidor respondió con el error: %2</translation>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="93"/>
         <source>updating local virtual files metadata</source>
-        <translation type="unfinished"/>
+        <translation>actualizando los metadatos para los archivos virtuales</translation>
     </message>
 </context>
 <context>

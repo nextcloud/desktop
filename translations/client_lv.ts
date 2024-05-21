@@ -4403,7 +4403,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/proxyauthdialog.ui" line="50"/>
         <source>Password:</source>
-        <translation type="unfinished"/>
+        <translation>Parole:</translation>
     </message>
 </context>
 <context>
@@ -6194,7 +6194,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="165"/>
         <source>Set status</source>
-        <translation>Iestatīt statusu</translation>
+        <translation>Iestatīt stāvokli</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="173"/>
@@ -6279,7 +6279,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="336"/>
         <source>Set status message</source>
-        <translation>Iestatīt statusa ziņojumu</translation>
+        <translation>Iestatīt stāvokļa ziņojumu</translation>
     </message>
 </context>
 <context>
