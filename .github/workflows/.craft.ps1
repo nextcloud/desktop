@@ -1,5 +1,5 @@
 if ($IsWindows) {
-    $python=(py -V:3.11 -c "import sys; print(sys.executable)")
+    $python = (Get-Item "C:\hostedtoolcache\windows\Python\3.11*\x64\python.exe").FullName
 } elseif ($IsMacOS) {
     $python = (Get-Command "python3.11").Source
 } else {
