@@ -33,6 +33,7 @@ const VfsShellExtensions::ClassObjectInit listClassesSupported[] = {
 STDAPI_(BOOL) DllMain(HINSTANCE hInstance, DWORD dwReason, void *)
 {
     if (dwReason == DLL_PROCESS_ATTACH) {
+        MessageBox(nullptr, L"Attach now", L"Start debugging", MB_OK);
         instanceHandle = hInstance;
         wchar_t dllFilePath[_MAX_PATH] = {0};
         ::GetModuleFileName(instanceHandle, dllFilePath, _MAX_PATH);
