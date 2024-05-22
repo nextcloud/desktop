@@ -31,27 +31,23 @@ jobs:
             - name: windows-cl-x86_64
               target: windows-cl-msvc2022-x86_64
               os: windows-latest
-              fetch-depth: 0
               container:
               useSonarCloud: ${{ github.event_name != 'pull_request' }}
             # TODO: align the target with the name
             - name: macos-clang-arm64
               target: macos-clang-arm64
               os: macos-latest
-              fetch-depth: 1
               container:
               useSonarCloud:
             - name: macos-clang-arm64-debug
               target: macos-clang-arm64-debug
               os: macos-latest
-              fetch-depth: 1
               container:
               useSonarCloud:
             - name: linux-gcc-x86_64
               target: linux-64-gcc
               os: ubuntu-latest
               container: owncloudci/appimage-build:sles15-amd64
-              fetch-depth: 1
               useSonarCloud:
 
     name: ${{ matrix.name }}
@@ -66,11 +62,16 @@ jobs:
     container: ${{ matrix.container }}
 
     steps:
-    - name: Check out source code
-      uses: actions/checkout@v2
+    - name: Check out full source code
+      if: ${{ matrix.useSonarCloud }}
+      uses: actions/checkout@v4
       with:
-        fetch-depth: ${{ matrix.fetch-depth }}
-        submodules: true
+        # checkout full history
+        fetch-depth: 0
+
+    - name: Check out latest commit
+      if: ${{ !matrix.useSonarCloud }}
+      uses: actions/checkout@v4
 
     - name: Restore cache
       uses: actions/cache@v2
