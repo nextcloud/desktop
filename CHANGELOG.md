@@ -73,6 +73,7 @@ ownCloud admins and users.
 * Enhancement - Ask user to restart application when update is available on Windows: [#11442](https://github.com/owncloud/client/pull/11442)
 * Enhancement - New Folder status: [#11491](https://github.com/owncloud/client/pull/11491)
 * Enhancement - Don't poll the Avatar endpoint with ocis: [#11615](https://github.com/owncloud/client/pull/11615)
+* Enhancement - Support `Active Directory Federation Service` as identity provider: [#11646](https://github.com/owncloud/client/issues/11646)
 
 ## Details
 
@@ -324,6 +325,12 @@ ownCloud admins and users.
    different approach.
 
    https://github.com/owncloud/client/pull/11615
+
+* Enhancement - Support `Active Directory Federation Service` as identity provider: [#11646](https://github.com/owncloud/client/issues/11646)
+
+   We changed the OAuth workflow to support `Active Directory Federation Service`
+
+   https://github.com/owncloud/client/issues/11646
 
 # Changelog for ownCloud Desktop Client [5.2.1] (2024-01-04)
 
