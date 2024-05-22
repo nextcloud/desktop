@@ -34,13 +34,13 @@ jobs:
               fetch-depth: 0
               container:
             # TODO: align the target with the name
-            - name: macos-clang-x86_64
-              target: macos-64-clang
+            - name: macos-clang-arm64
+              target: macos-clang-arm64
               os: macos-latest
               fetch-depth: 1
               container:
-            - name: macos-clang-x86_64-debug
-              target: macos-64-clang-debug
+            - name: macos-clang-arm64-debug
+              target: macos-clang-arm64-debug
               os: macos-latest
               fetch-depth: 1
               container:
