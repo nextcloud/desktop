@@ -46,7 +46,7 @@ void ResourceJob::finished()
 
     // storing the file on disk enables Qt to apply some optimizations, e.g., in QIcon
     // also, specifically for icons, loading from disk allows easy management of scalable and non-scalable entities
-    if (reply()->size() > 0) {
+    if (httpStatusCode() == 200 && reply()->size() > 0) {
         const QString path = _cache->path(_cacheKey);
 
         qCDebug(lcResources) << "cache file path:" << path;
