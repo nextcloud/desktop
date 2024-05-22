@@ -409,22 +409,26 @@ void OAuth::finalize(const QPointer<QTcpSocket> &socket, const QString &accessTo
     Q_EMIT result(LoggedIn, accessToken, refreshToken);
 }
 
-QNetworkReply *OAuth::postTokenRequest(const QList<QPair<QString, QString>> &queryItems)
+QNetworkReply *OAuth::postTokenRequest(QUrlQuery &&queryItems)
 {
     const QUrl requestTokenUrl = _tokenEndpoint.isEmpty() ? Utility::concatUrlPath(_serverUrl, QStringLiteral("/index.php/apps/oauth2/api/v1/token")) : _tokenEndpoint;
     QNetworkRequest req;
     req.setTransferTimeout(defaultTimeoutMs());
-    const QByteArray basicAuth = QStringLiteral("%1:%2").arg(_clientId, _clientSecret).toUtf8().toBase64();
-    req.setRawHeader("Authorization", "Basic " + basicAuth);
+    switch (_endpointAuthMethod) {
+    case TokenEndpointAuthMethods::client_secret_basic:
+        req.setRawHeader("Authorization", "Basic " + QStringLiteral("%1:%2").arg(_clientId, _clientSecret).toUtf8().toBase64());
+        break;
+    case TokenEndpointAuthMethods::client_secret_post:
+        queryItems.addQueryItem(QStringLiteral("client_id"), _clientId);
+        queryItems.addQueryItem(QStringLiteral("client_secret"), _clientSecret);
+        break;
+    }
     req.setHeader(QNetworkRequest::ContentTypeHeader, QStringLiteral("application/x-www-form-urlencoded; charset=UTF-8"));
     req.setAttribute(HttpCredentials::DontAddCredentialsAttribute, true);
 
-    QUrlQuery arguments;
-    arguments.setQueryItems(QList<QPair<QString, QString>>{{QStringLiteral("client_id"), _clientId}, {QStringLiteral("client_secret"), _clientSecret},
-                                {QStringLiteral("scope"), QString::fromUtf8(QUrl::toPercentEncoding(Theme::instance()->openIdConnectScopes()))}}
-        << queryItems);
+    queryItems.addQueryItem(QStringLiteral("scope"), QString::fromUtf8(QUrl::toPercentEncoding(Theme::instance()->openIdConnectScopes())));
     req.setUrl(requestTokenUrl);
-    return _networkAccessManager->post(req, arguments.toString(QUrl::FullyEncoded).toUtf8());
+    return _networkAccessManager->post(req, queryItems.toString(QUrl::FullyEncoded).toUtf8());
 }
 
 QByteArray OAuth::generateRandomString(size_t size) const
@@ -535,6 +539,16 @@ void OAuth::fetchWellKnown()
                 _tokenEndpoint = QUrl::fromEncoded(data[QStringLiteral("token_endpoint")].toString().toUtf8());
                 _registrationEndpoint = QUrl::fromEncoded(data[QStringLiteral("registration_endpoint")].toString().toUtf8());
                 _redirectUrl = QStringLiteral("http://127.0.0.1");
+
+                const auto authMethods = data.value(QStringLiteral("token_endpoint_auth_methods_supported")).toArray();
+                if (authMethods.contains(QStringLiteral("client_secret_basic"))) {
+                    _endpointAuthMethod = TokenEndpointAuthMethods::client_secret_basic;
+                } else if (authMethods.contains(QStringLiteral("client_secret_post"))) {
+                    _endpointAuthMethod = TokenEndpointAuthMethods::client_secret_post;
+                } else {
+                    OC_ASSERT_X(false, qPrintable(QStringLiteral("Unsupported token_endpoint_auth_methods_supported: %1").arg(QDebug::toString(authMethods))));
+                }
+
                 qCDebug(lcOauth) << "parsing .well-known reply successful, auth endpoint" << _authEndpoint
                                  << "and token endpoint" << _tokenEndpoint
                                  << "and registration endpoint" << _registrationEndpoint;
