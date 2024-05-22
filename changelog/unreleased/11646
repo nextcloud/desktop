@@ -1,0 +1,5 @@
+Enhancement: Support `Active Directory Federation Service` as identity provider
+
+We changed the OAuth workflow to support `Active Directory Federation Service` 
+
+https://github.com/owncloud/client/issues/11646

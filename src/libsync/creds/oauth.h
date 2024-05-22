@@ -54,7 +54,9 @@ class OWNCLOUDSYNC_EXPORT OAuth : public QObject
     Q_OBJECT
 public:
     enum Result { NotSupported, LoggedIn, Error, ErrorInsecureUrl };
-    Q_ENUM(Result);
+    Q_ENUM(Result)
+    enum class TokenEndpointAuthMethods { client_secret_basic, client_secret_post };
+    Q_ENUM(TokenEndpointAuthMethods)
 
     OAuth(const QUrl &serverUrl, const QString &davUser, QNetworkAccessManager *networkAccessManager, const QVariantMap &dynamicRegistrationData, QObject *parent);
     ~OAuth() override;
@@ -95,7 +97,7 @@ protected:
 
     virtual void fetchWellKnown();
 
-    QNetworkReply *postTokenRequest(const QList<QPair<QString, QString>> &queryItems);
+    QNetworkReply *postTokenRequest(QUrlQuery &&queryItems);
 
 
 private:
@@ -111,6 +113,8 @@ private:
     QString _redirectUrl;
     QByteArray _pkceCodeVerifier;
     QByteArray _state;
+
+    TokenEndpointAuthMethods _endpointAuthMethod = TokenEndpointAuthMethods::client_secret_basic;
 };
 
 /**

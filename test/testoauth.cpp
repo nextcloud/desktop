@@ -415,7 +415,9 @@ private slots:
                 QJsonDocument jsondata(QJsonObject{
                     {QStringLiteral("authorization_endpoint"),
                         QJsonValue(QStringLiteral("oauthtest://openidserver") + sOAuthTestServer.path() + QStringLiteral("/index.php/apps/oauth2/authorize"))},
-                    {QStringLiteral("token_endpoint"), QStringLiteral("oauthtest://openidserver/token_endpoint")}});
+                    {QStringLiteral("token_endpoint"), QStringLiteral("oauthtest://openidserver/token_endpoint")},
+                    {QStringLiteral("token_endpoint_auth_methods_supported"), QJsonArray{QStringLiteral("client_secret_post")}},
+                });
                 return new FakePayloadReply(op, req, jsondata.toJson(), fakeAm);
             }
 
@@ -490,7 +492,9 @@ private slots:
                     {QStringLiteral("authorization_endpoint"),
                         QJsonValue(QStringLiteral("oauthtest://openidserver") + sOAuthTestServer.path() + QStringLiteral("/index.php/apps/oauth2/authorize"))},
                     {QStringLiteral("token_endpoint"), QStringLiteral("oauthtest://openidserver/token_endpoint")},
-                    {QStringLiteral("registration_endpoint"), QStringLiteral("%1/clients-registrations").arg(localHost)}});
+                    {QStringLiteral("registration_endpoint"), QStringLiteral("%1/clients-registrations").arg(localHost)},
+                    {QStringLiteral("token_endpoint_auth_methods_supported"), QJsonArray{QStringLiteral("client_secret_basic")}},
+                });
                 return new FakePayloadReply(op, req, jsondata.toJson(), fakeAm);
             }
 
@@ -531,7 +535,10 @@ private slots:
                     {QStringLiteral("authorization_endpoint"),
                         QJsonValue(QStringLiteral("oauthtest://openidserver") + sOAuthTestServer.path() + QStringLiteral("/index.php/apps/oauth2/authorize"))},
                     {QStringLiteral("token_endpoint"), QStringLiteral("oauthtest://openidserver/token_endpoint")},
-                    {QStringLiteral("registration_endpoint"), QStringLiteral("%1/clients-registrations").arg(localHost)}});
+                    {QStringLiteral("registration_endpoint"), QStringLiteral("%1/clients-registrations").arg(localHost)},
+                    {QStringLiteral("token_endpoint_auth_methods_supported"),
+                        QJsonArray{QStringLiteral("client_secret_basic"), QStringLiteral("client_secret_post")}},
+                });
                 return new FakePayloadReply(op, req, jsondata.toJson(), fakeAm);
             }
 
@@ -582,7 +589,10 @@ private slots:
                     {QStringLiteral("authorization_endpoint"),
                         QJsonValue(QStringLiteral("oauthtest://openidserver") + sOAuthTestServer.path() + QStringLiteral("/index.php/apps/oauth2/authorize"))},
                     {QStringLiteral("token_endpoint"), QStringLiteral("oauthtest://openidserver/token_endpoint")},
-                    {QStringLiteral("registration_endpoint"), QStringLiteral("%1/clients-registrations").arg(localHost)}});
+                    {QStringLiteral("registration_endpoint"), QStringLiteral("%1/clients-registrations").arg(localHost)},
+                    {QStringLiteral("token_endpoint_auth_methods_supported"), QJsonArray{QStringLiteral("client_secret_basic")}},
+
+                });
                 return new FakePayloadReply(op, req, jsondata.toJson(), fakeAm);
             }
 
@@ -636,7 +646,10 @@ private slots:
                     {QStringLiteral("authorization_endpoint"),
                         QJsonValue(QStringLiteral("oauthtest://openidserver") + sOAuthTestServer.path() + QStringLiteral("/index.php/apps/oauth2/authorize"))},
                     {QStringLiteral("token_endpoint"), QStringLiteral("oauthtest://openidserver/token_endpoint")},
-                    {QStringLiteral("registration_endpoint"), QStringLiteral("%1/clients-registrations").arg(localHost)}});
+                    {QStringLiteral("registration_endpoint"), QStringLiteral("%1/clients-registrations").arg(localHost)},
+                    // this test explicitly check for the client secret in the post body
+                    {QStringLiteral("token_endpoint_auth_methods_supported"), QJsonArray{QStringLiteral("client_secret_post")}},
+                });
                 return new FakePayloadReply(op, req, jsondata.toJson(), fakeAm);
             }
 
@@ -712,7 +725,10 @@ private slots:
                     {QStringLiteral("authorization_endpoint"),
                         QJsonValue(QStringLiteral("oauthtest://openidserver") + sOAuthTestServer.path() + QStringLiteral("/index.php/apps/oauth2/authorize"))},
                     {QStringLiteral("token_endpoint"), QStringLiteral("oauthtest://openidserver/token_endpoint")},
-                    {QStringLiteral("registration_endpoint"), QStringLiteral("%1/clients-registrations").arg(localHost)}});
+                    {QStringLiteral("registration_endpoint"), QStringLiteral("%1/clients-registrations").arg(localHost)},
+                    // this test explicitly check for the client secret in the post body
+                    {QStringLiteral("token_endpoint_auth_methods_supported"), QJsonArray{QStringLiteral("client_secret_post")}},
+                });
                 return new FakePayloadReply(op, req, jsondata.toJson(), fakeAm);
             }
 
