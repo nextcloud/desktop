@@ -71,6 +71,8 @@ void EditLocallyVerificationJob::responseReceived(const int statusCode)
         emit error(tr("Could not start editing locally."), 
                    tr("An error occurred trying to verify the request to edit locally."));
     }
+
+    deleteLater();
 }
 
 }
