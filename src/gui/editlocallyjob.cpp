@@ -44,9 +44,9 @@ void EditLocallyJob::startSetup()
 {
     if (_token.isEmpty() || _relPath.isEmpty() || _userId.isEmpty()) {
         qCWarning(lcEditLocallyJob) << "Could not start setup."
-                                        << "token:" << _token
-                                        << "relPath:" << _relPath
-                                        << "userId" << _userId;
+                                    << "token:" << _token
+                                    << "relPath:" << _relPath
+                                    << "userId" << _userId;
         return;
     }
 
@@ -54,35 +54,14 @@ void EditLocallyJob::startSetup()
     // verified the token
     Systray::instance()->createEditFileLocallyLoadingDialog({});
 
-    // We check the input data locally first, without modifying any state or
-    // showing any potentially misleading data to the user
-    if (!isTokenValid(_token)) {
-        qCWarning(lcEditLocallyJob) << "Edit locally request is missing a valid token, will not open file. "
-                                        << "Token received was:" << _token;
-        showError(tr("Invalid token received."), tr("Please try again."));
-        return;
-    }
-
-    if (!isRelPathValid(_relPath)) {
-        qCWarning(lcEditLocallyJob) << "Provided relPath was:" << _relPath << "which is not canonical.";
-        showError(tr("Invalid file path was provided."), tr("Please try again."));
-        return;
-    }
-
     _accountState = AccountManager::instance()->accountFromUserId(_userId);
-
-    if (!_accountState) {
-        qCWarning(lcEditLocallyJob) << "Could not find an account " << _userId << " to edit file " << _relPath << " locally.";
-        showError(tr("Could not find an account for local editing."), tr("Please try again."));
-        return;
-    }
 
     // We now ask the server to verify the token, before we again modify any
     // state or look at local files
-    startTokenRemoteCheck();
+    startCheck();
 }
 
-void EditLocallyJob::startTokenRemoteCheck()
+void EditLocallyJob::startCheck()
 {
     const auto verificationJob = new EditLocallyVerificationJob(_accountState, _relPath, _token);
     connect(verificationJob, &EditLocallyVerificationJob::error, this, &EditLocallyJob::showError);
@@ -298,43 +277,6 @@ const QString EditLocallyJob::getRelativePathParent() const
         return relativePathToRemoteRootSplit.join(QLatin1Char('/'));
     }
     return QStringLiteral("/");
-}
-
-bool EditLocallyJob::isTokenValid(const QString &token)
-{
-    if (token.isEmpty()) {
-        return false;
-    }
-
-    // Token is an alphanumeric string 128 chars long.
-    // Ensure that is what we received and what we are sending to the server.
-    static const QRegularExpression tokenRegex("^[a-zA-Z0-9]{128}$");
-    const auto regexMatch = tokenRegex.match(token);
-
-    return regexMatch.hasMatch();
-}
-
-bool EditLocallyJob::isRelPathValid(const QString &relPath)
-{
-    if (relPath.isEmpty()) {
-        return false;
-    }
-
-    // We want to check that the path is canonical and not relative
-    // (i.e. that it doesn't contain ../../) but we always receive
-    // a relative path, so let's make it absolute by prepending a
-    // slash
-    const auto slashPrefixedPath = prefixSlashToPath(relPath);
-
-    // Let's check that the filepath is canonical, and that the request
-    // contains no funny behaviour regarding paths
-    const auto cleanedPath = QDir::cleanPath(slashPrefixedPath);
-
-    if (cleanedPath != slashPrefixedPath) {
-        return false;
-    }
-
-    return true;
 }
 
 OCC::Folder *EditLocallyJob::findFolderForFile(const QString &relPath, const QString &userId)

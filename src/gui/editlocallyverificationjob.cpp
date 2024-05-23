@@ -14,10 +14,20 @@
 
 #include "editlocallyverificationjob.h"
 
+#include <QDir>
 #include <QLoggingCategory>
 #include <QUrlQuery>
 
 #include "libsync/networkjobs.h"
+
+namespace {
+
+QString prefixSlashToPath(const QString &path)
+{
+    return path.startsWith('/') ? path : '/' + path;
+}
+
+}
 
 namespace OCC
 {
@@ -35,16 +45,64 @@ EditLocallyVerificationJob::EditLocallyVerificationJob(const AccountStatePtr &ac
 {
 }
 
+bool EditLocallyVerificationJob::isTokenValid(const QString &token)
+{
+    if (token.isEmpty()) {
+        return false;
+    }
+
+    // Token is an alphanumeric string 128 chars long.
+    // Ensure that is what we received and what we are sending to the server.
+    static const QRegularExpression tokenRegex("^[a-zA-Z0-9]{128}$");
+    const auto regexMatch = tokenRegex.match(token);
+
+    return regexMatch.hasMatch();
+}
+
+bool EditLocallyVerificationJob::isRelPathValid(const QString &relPath)
+{
+    if (relPath.isEmpty()) {
+        return false;
+    }
+
+    // We want to check that the path is canonical and not relative
+    // (i.e. that it doesn't contain ../../) but we always receive
+    // a relative path, so let's make it absolute by prepending a
+    // slash
+    const auto slashPrefixedPath = prefixSlashToPath(relPath);
+
+    // Let's check that the filepath is canonical, and that the request
+    // contains no funny behaviour regarding paths
+    const auto cleanedPath = QDir::cleanPath(slashPrefixedPath);
+
+    if (cleanedPath != slashPrefixedPath) {
+        return false;
+    }
+
+    return true;
+}
+
 void EditLocallyVerificationJob::start()
 {
-    if (!_accountState || _relPath.isEmpty() || _token.isEmpty()) {
-        qCWarning(lcEditLocallyVerificationJob) << "Could not start token check."
-                                                << "accountState:" << _accountState 
-                                                << "relPath:" << _relPath 
-                                                << "token:" << _token;
+    // We check the input data locally first, without modifying any state or
+    // showing any potentially misleading data to the user
+    if (!isTokenValid(_token)) {
+        qCWarning(lcEditLocallyVerificationJob) << "Edit locally request is missing a valid token, will not open file. "
+                                                << "Token received was:" << _token;
+        emit error(tr("Invalid token received."), tr("Please try again."));
+        return;
+    }
 
-        emit error(tr("Could not start editing locally."), 
-                   tr("An error occurred trying to verify the request to edit locally."));
+    if (!isRelPathValid(_relPath)) {
+        qCWarning(lcEditLocallyVerificationJob) << "Provided relPath was:" << _relPath 
+                                                << "which is not canonical.";
+        emit error(tr("Invalid file path was provided."), tr("Please try again."));
+        return;
+    }
+
+    if (!_accountState) {
+        qCWarning(lcEditLocallyVerificationJob) << "No account found to edit file " << _relPath << " locally.";
+        emit error(tr("Could not find an account for local editing."), tr("Please try again."));
         return;
     }
 
@@ -52,7 +110,7 @@ void EditLocallyVerificationJob::start()
     const auto encodedRelPath = QUrl::toPercentEncoding(_relPath); // Sanitise the relPath
     const auto checkTokenJob = new SimpleApiJob(_accountState->account(), 
                                                 QStringLiteral("/ocs/v2.php/apps/files/api/v1/openlocaleditor/%1").arg(encodedToken));
-    const auto slashedPath = encodedRelPath.startsWith('/') ? encodedRelPath : '/' + encodedRelPath;
+    const auto slashedPath = prefixSlashToPath(encodedRelPath);
 
     QUrlQuery params;
     params.addQueryItem(QStringLiteral("path"), slashedPath);

@@ -30,6 +30,9 @@ public:
                                         const QString &token,
                                         QObject *const parent = nullptr);
 
+    [[nodiscard]] static bool isTokenValid(const QString &token);
+    [[nodiscard]] static bool isRelPathValid(const QString &relPath);
+
 signals:
     void error(const QString &message, const QString &informativeText);
     void finished();
