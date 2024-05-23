@@ -34,6 +34,12 @@ signals:
     void error(const QString &message, const QString &informativeText);
     void finished();
 
+public slots:
+    void start();
+
+private slots:
+    void responseReceived(const int statusCode);
+
 private:
     AccountStatePtr _accountState;
     QString _relPath; // full remote path for a file (as on the server)
