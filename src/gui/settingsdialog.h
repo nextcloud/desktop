@@ -42,8 +42,8 @@ class GeneralSettings;
 class SettingsDialog : public QMainWindow
 {
     Q_OBJECT
-    Q_PROPERTY(SettingsPage currentPage READ currentPage WRITE setCurrentPage NOTIFY currentPageChanged);
-    Q_PROPERTY(Account *currentAccount READ currentAccount WRITE setCurrentAccount NOTIFY currentAccountChanged);
+    Q_PROPERTY(SettingsPage currentPage READ currentPage WRITE setCurrentPage NOTIFY currentPageChanged)
+    Q_PROPERTY(Account *currentAccount READ currentAccount WRITE setCurrentAccount NOTIFY currentAccountChanged)
     QML_ELEMENT
     QML_UNCREATABLE("C++ only")
 public:

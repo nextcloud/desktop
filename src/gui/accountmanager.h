@@ -33,7 +33,7 @@ namespace OCC {
 class OWNCLOUDGUI_EXPORT AccountManager : public QObject
 {
     Q_OBJECT
-    Q_PROPERTY(QList<AccountState *> accounts READ accountsRaw() NOTIFY accountsChanged);
+    Q_PROPERTY(QList<AccountState *> accounts READ accountsRaw() NOTIFY accountsChanged)
     QML_SINGLETON
     QML_ELEMENT
 public:

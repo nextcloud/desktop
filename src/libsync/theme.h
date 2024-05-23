@@ -41,9 +41,9 @@ class SyncResult;
 class QmlUrlButton
 {
     Q_GADGET
-    Q_PROPERTY(QUrl icon MEMBER icon CONSTANT);
-    Q_PROPERTY(QString name MEMBER name CONSTANT);
-    Q_PROPERTY(QUrl url MEMBER url CONSTANT);
+    Q_PROPERTY(QUrl icon MEMBER icon CONSTANT)
+    Q_PROPERTY(QString name MEMBER name CONSTANT)
+    Q_PROPERTY(QUrl url MEMBER url CONSTANT)
     QML_VALUE_TYPE(UrlButtonData)
 
 public:
