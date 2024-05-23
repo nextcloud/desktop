@@ -37,8 +37,6 @@ public:
                             const QString &token,
                             QObject *parent = nullptr);
 
-    [[nodiscard]] static bool isTokenValid(const QString &token);
-    [[nodiscard]] static bool isRelPathValid(const QString &relPath);
     [[nodiscard]] static OCC::Folder *findFolderForFile(const QString &relPath, const QString &userId);
     [[nodiscard]] static QString prefixSlashToPath(const QString &path);
 
@@ -55,7 +53,7 @@ private slots:
     void fetchRemoteFileParentInfo();
     void startSyncBeforeOpening();
 
-    void startTokenRemoteCheck();
+    void startCheck();
     void proceedWithSetup();
     void findAfolderAndConstructPaths();
 
