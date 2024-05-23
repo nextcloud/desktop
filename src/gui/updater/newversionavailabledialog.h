@@ -29,6 +29,7 @@ class NewVersionAvailableDialog : public QWidget
 
 public:
     explicit NewVersionAvailableDialog(QWidget *parent, const QString &statusMessage);
+    ~NewVersionAvailableDialog();
 
 private Q_SLOTS:
     void skipVersion();
@@ -42,7 +43,7 @@ Q_SIGNALS:
     void finished();
 
 private:
-    QScopedPointer<::Ui::Ui_NewVersionAvailableDialog> _ui;
+    ::Ui::Ui_NewVersionAvailableDialog *_ui;
 };
 
 }

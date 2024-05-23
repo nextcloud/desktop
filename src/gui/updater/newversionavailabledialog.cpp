@@ -39,6 +39,11 @@ NewVersionAvailableDialog::NewVersionAvailableDialog(QWidget *parent, const QStr
     connect(getUpdateButton, &QAbstractButton::clicked, this, &NewVersionAvailableDialog::getUpdate);
 }
 
+NewVersionAvailableDialog::~NewVersionAvailableDialog()
+{
+    delete _ui;
+}
+
 void NewVersionAvailableDialog::skipVersion()
 {
     Q_EMIT versionSkipped();
