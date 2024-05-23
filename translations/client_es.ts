@@ -557,7 +557,7 @@ Should the account be imported?</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="94"/>
         <source>You seem to have the Virtual Files feature enabled on this folder. At the moment, it is not possible to implicitly download virtual files that are end-to-end encrypted. To get the best experience with virtual files and end-to-end encryption, make sure the encrypted folder is marked with &quot;Make always available locally&quot;.</source>
-        <translation>Parece que tienes la función de Archivos Virtuales activada en esta carpeta. Por el momento, no es posible descargar implícitamente los archivos virtuales que están cifrados de extremo a extremo. Para obtener la mejor experiencia con los archivos virtuales y el cifrado de extremo a extremo, asegúrate de que la carpeta cifrada está marcada con &quot;Hacer que esté siempre disponible localmente&quot;.</translation>
+        <translation>Parece que tiene la función de Archivos Virtuales activada en esta carpeta. Por el momento, no es posible descargar implícitamente los archivos virtuales que están cifrados de extremo a extremo. Para obtener la mejor experiencia con los archivos virtuales y el cifrado de extremo a extremo, asegúrese de que la carpeta cifrada está marcada con &quot;Hacer que esté siempre disponible localmente&quot;.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="102"/>

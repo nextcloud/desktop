@@ -265,7 +265,7 @@
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="73"/>
         <source>General settings</source>
-        <translation type="unfinished"/>
+        <translation>Obecná nastavení</translation>
     </message>
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="82"/>
@@ -275,7 +275,7 @@
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="167"/>
         <source>Advanced</source>
-        <translation type="unfinished"/>
+        <translation>Pokročilé</translation>
     </message>
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="174"/>
@@ -293,7 +293,7 @@
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderStorageInfo.qml" line="41"/>
         <source>Local storage use</source>
-        <translation type="unfinished"/>
+        <translation>Využití místního úložiště</translation>
     </message>
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderStorageInfo.qml" line="49"/>
@@ -316,7 +316,7 @@
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderSyncStatus.qml" line="57"/>
         <source>All synced!</source>
-        <translation type="unfinished"/>
+        <translation>Vše synchronizováno!</translation>
     </message>
 </context>
 <context>
@@ -3815,7 +3815,7 @@ Toto je nový, experimentální režim. Pokud se jej rozhodnete používat, pros
         <location filename="../src/libsync/discovery.cpp" line="358"/>
         <source>File</source>
         <comment>name of folder entity to use when warning about invalid name</comment>
-        <translation type="unfinished"/>
+        <translation>Soubor</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="360"/>
@@ -4512,7 +4512,7 @@ Toto je nový, experimentální režim. Pokud se jej rozhodnete používat, pros
     <message>
         <location filename="../src/gui/sharemanager.cpp" line="684"/>
         <source>Error</source>
-        <translation type="unfinished"/>
+        <translation>Chyba</translation>
     </message>
 </context>
 <context>
@@ -6313,7 +6313,7 @@ Server odpověděl chybou: %2</translation>
     <message>
         <location filename="../src/common/utility.cpp" line="116"/>
         <source>%L1 TB</source>
-        <translation type="unfinished"/>
+        <translation>%L1 TB</translation>
     </message>
     <message>
         <location filename="../src/common/utility.cpp" line="136"/>

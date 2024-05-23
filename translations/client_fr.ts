@@ -5790,12 +5790,12 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="117"/>
         <source>Failed to create debug archive</source>
-        <translation type="unfinished"/>
+        <translation>Échec lors de la création de l&apos;archive de déboguage</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="118"/>
         <source>Could not create debug archive in selected location!</source>
-        <translation type="unfinished"/>
+        <translation>Impossible de créer l&apos;archive de débogage à l&apos;emplacement indiqué !</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="763"/>
@@ -6565,7 +6565,7 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="60"/>
         <source>Updated local virtual files metadata</source>
-        <translation type="unfinished"/>
+        <translation>Fichiers locaux virtuels de métadonnées mis à jour</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="61"/>
@@ -6611,7 +6611,7 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="93"/>
         <source>updating local virtual files metadata</source>
-        <translation type="unfinished"/>
+        <translation>Mise à jour des fichiers locaux virtuels de métadonnées</translation>
     </message>
 </context>
 <context>

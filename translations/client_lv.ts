@@ -171,7 +171,7 @@
     <message>
         <location filename="../src/gui/tray/EditFileLocallyLoadingDialog.qml" line="95"/>
         <source>Opening file for local editing</source>
-        <translation>Atvēru datni lokālai rediģēšanai</translation>
+        <translation>Atver datni vietējai labošanai</translation>
     </message>
 </context>
 <context>
@@ -659,7 +659,7 @@ Gaidiet jaunu sinhronizāciju, tad to šifrējiet.</translation>
         <location filename="../src/gui/accountsettings.cpp" line="535"/>
         <location filename="../src/gui/accountsettings.cpp" line="605"/>
         <source>Edit Ignored Files</source>
-        <translation>Rediģēt ignorētos failus</translation>
+        <translation>Labot vērā neņemtās datnes</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="538"/>
@@ -1668,7 +1668,7 @@ Vienīgā priekšrocība, izslēdzot virtuālo datņu atbalstu, ir tas, ka atkal
         <location filename="../src/gui/editlocallyjob.cpp" line="557"/>
         <location filename="../src/gui/editlocallyjob.cpp" line="577"/>
         <source>Could not start editing locally.</source>
-        <translation>Nevarēja sākt lokālo rediģēšanu.</translation>
+        <translation>Nevarēja uzsāk vietējo labošanu.</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="94"/>
@@ -1706,7 +1706,7 @@ Vienīgā priekšrocība, izslēdzot virtuālo datņu atbalstu, ir tas, ka atkal
         <location filename="../src/gui/editlocallyjob.cpp" line="261"/>
         <location filename="../src/gui/editlocallyjob.cpp" line="558"/>
         <source>An error occurred trying to synchronise the file to edit locally.</source>
-        <translation>Radās kļūda, mēģinot sinhronizēt datni, lai to rediģētu lokāli.</translation>
+        <translation>Atgadījās kļūda datnes sinhronizēšanas mēģinājumā, lai to labotu vietēji.</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="466"/>
@@ -2700,7 +2700,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/generalsettings.ui" line="312"/>
         <source>Edit &amp;Ignored Files</source>
-        <translation>Rediģēt &amp;ignorētās datnes</translation>
+        <translation>Labot vērā neņemtās datnes</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="319"/>
@@ -4697,7 +4697,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1369"/>
         <source>Edit</source>
-        <translation>Rediģēt</translation>
+        <translation>Labot</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1371"/>
@@ -5478,7 +5478,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/creds/webflowcredentials.cpp" line="190"/>
         <source>Please login with the account: %1</source>
-        <translation type="unfinished"/>
+        <translation>Lūgums pieteikties ar kontu: %1</translation>
     </message>
 </context>
 <context>
@@ -5924,7 +5924,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="216"/>
         <source>Edit share</source>
-        <translation>Rediģēt koplietošanu</translation>
+        <translation>Labot koplietojumu</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="232"/>
@@ -5940,7 +5940,7 @@ Server replied with error: %2</source>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="346"/>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="393"/>
         <source>Allow upload and editing</source>
-        <translation>Atļaut augšupielādi un rediģēšanu</translation>
+        <translation>Atļaut augšupielādi un labošanu</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="379"/>
@@ -6773,7 +6773,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/shareuserline.ui" line="115"/>
         <source>Can edit</source>
-        <translation>Var rediģēt</translation>
+        <translation>Var labot</translation>
     </message>
     <message>
         <location filename="../src/gui/shareuserline.ui" line="149"/>
