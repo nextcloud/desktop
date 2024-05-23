@@ -964,7 +964,7 @@ Folder *FolderMan::addFolderFromFolderWizardResult(const AccountStatePtr &accoun
     return f;
 }
 
-QString FolderMan::suggestSyncFolder(const QUrl &server, const QString &displayName, NewFolderType folderType)
+QString FolderMan::suggestSyncFolder(NewFolderType folderType)
 {
     return FolderMan::instance()->findGoodPathForNewSyncFolder(QDir::homePath(), Theme::instance()->appName(), folderType);
 }

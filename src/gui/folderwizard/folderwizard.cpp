@@ -63,8 +63,8 @@ QString FolderWizardPrivate::formatWarnings(const QStringList &warnings, bool is
 QString FolderWizardPrivate::defaultSyncRoot() const
 {
     if (!_account->account()->hasDefaultSyncRoot()) {
-        auto folderType = _account->supportsSpaces() ? FolderMan::NewFolderType::SpacesSyncRoot : FolderMan::NewFolderType::OC10SyncRoot;
-        return FolderMan::suggestSyncFolder(_account->account()->url(), _account->account()->davDisplayName(), folderType);
+        const auto folderType = _account->supportsSpaces() ? FolderMan::NewFolderType::SpacesSyncRoot : FolderMan::NewFolderType::OC10SyncRoot;
+        return FolderMan::suggestSyncFolder(folderType);
     } else {
         return _account->account()->defaultSyncRoot();
     }

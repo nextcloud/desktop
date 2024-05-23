@@ -43,19 +43,8 @@ AccountConfiguredSetupWizardState::AccountConfiguredSetupWizardState(SetupWizard
         break;
     }
 
-    const auto urlToSuggestSyncFolderFor = [this]() {
-        const auto selectedInstance = _context->accountBuilder().webFingerSelectedInstance();
-
-        if (!selectedInstance.isEmpty()) {
-            return selectedInstance;
-        }
-
-        return _context->accountBuilder().serverUrl();
-    }();
-
     // We need some sync root, either for spaces, or for OC10. It's never a Space folder.
-    auto folderType = FolderMan::NewFolderType::SpacesSyncRoot;
-    QString defaultSyncTargetDir = FolderMan::suggestSyncFolder(urlToSuggestSyncFolderFor, _context->accountBuilder().displayName(), folderType);
+    const QString defaultSyncTargetDir = FolderMan::suggestSyncFolder(FolderMan::NewFolderType::SpacesSyncRoot);
     QString syncTargetDir = _context->accountBuilder().syncTargetDir();
 
     if (syncTargetDir.isEmpty()) {

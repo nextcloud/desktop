@@ -94,7 +94,7 @@ public:
         SpacesFolder,
     };
 
-    static QString suggestSyncFolder(const QUrl &server, const QString &displayName, NewFolderType folderType);
+    static QString suggestSyncFolder(NewFolderType folderType);
     [[nodiscard]] static bool prepareFolder(const QString &folder);
 
     static QString checkPathValidityRecursive(const QString &path, FolderMan::NewFolderType folderType, const QUuid &accountUuid);
