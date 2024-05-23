@@ -18,7 +18,7 @@
 #include <QDesktopServices>
 #include <QtConcurrent>
 
-#include "editlocallymanager.h"
+#include "editlocallyverificationjob.h"
 #include "folder.h"
 #include "folderman.h"
 #include "syncengine.h"
@@ -84,45 +84,9 @@ void EditLocallyJob::startSetup()
 
 void EditLocallyJob::startTokenRemoteCheck()
 {
-    if (!_accountState || _relPath.isEmpty() || _token.isEmpty()) {
-        qCWarning(lcEditLocallyJob) << "Could not start token check."
-                                        << "accountState:" << _accountState
-                                        << "relPath:" << _relPath
-                                        << "token:" << _token;
-
-        showError(tr("Could not start editing locally."),
-                  tr("An error occurred trying to verify the request to edit locally."));
-        return;
-    }
-
-    const auto encodedToken = QString::fromUtf8(QUrl::toPercentEncoding(_token)); // Sanitise the token
-    const auto encodedRelPath = QUrl::toPercentEncoding(_relPath); // Sanitise the relPath
-
-    const auto checkTokenJob = new SimpleApiJob(_accountState->account(),
-                                          QStringLiteral("/ocs/v2.php/apps/files/api/v1/openlocaleditor/%1").arg(encodedToken));
-
-    QUrlQuery params;
-    params.addQueryItem(QStringLiteral("path"), prefixSlashToPath(encodedRelPath));
-    checkTokenJob->addQueryParams(params);
-    checkTokenJob->setVerb(SimpleApiJob::Verb::Post);
-    connect(checkTokenJob, &SimpleApiJob::resultReceived, this, &EditLocallyJob::remoteTokenCheckResultReceived);
-
-    checkTokenJob->start();
-}
-
-void EditLocallyJob::remoteTokenCheckResultReceived(const int statusCode)
-{
-    qCInfo(lcEditLocallyJob) << "token check result" << statusCode;
-
-    constexpr auto HTTP_OK_CODE = 200;
-    _tokenVerified = statusCode == HTTP_OK_CODE;
-
-    if (!_tokenVerified) {
-        showError(tr("Could not validate the request to open a file from server."), tr("Please try again."));
-        return;
-    }
-
-    findAfolderAndConstructPaths();
+    const auto verificationJob = new EditLocallyVerificationJob(_accountState, _relPath, _token);
+    connect(verificationJob, &EditLocallyVerificationJob::error, this, &EditLocallyJob::showError);
+    connect(verificationJob, &EditLocallyVerificationJob::finished, this, &EditLocallyJob::findAfolderAndConstructPaths);
 }
 
 void EditLocallyJob::proceedWithSetup()

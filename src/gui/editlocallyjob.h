@@ -63,7 +63,6 @@ private slots:
     void showErrorNotification(const QString &message, const QString &informativeText) const;
     void showErrorMessageBox(const QString &message, const QString &informativeText) const;
 
-    void remoteTokenCheckResultReceived(const int statusCode);
     void slotItemDiscovered(const OCC::SyncFileItemPtr &item);
     void slotItemCompleted(const OCC::SyncFileItemPtr &item);
 
