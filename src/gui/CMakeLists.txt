@@ -76,6 +76,8 @@ set(client_SRCS
     editlocallyjob.cpp
     editlocallymanager.h
     editlocallymanager.cpp
+    editlocallyverificationjob.h
+    editlocallyverificationjob.cpp
     filetagmodel.h
     filetagmodel.cpp
     folder.h
