@@ -15,9 +15,14 @@ class EnterPassword:
     LOGIN_BUTTON = {
         "text": "Log in",
         "type": "QPushButton",
-        "unnamed": 1,
         "visible": 1,
-        "window": names.loginRequiredDialog_OCC_LoginRequiredDialog,
+        "window": names.stack_stackedWidget_QStackedWidget,
+    }
+    LOGOUT_BUTTON = {
+        "text": "Log out",
+        "type": "QPushButton",
+        "visible": 1,
+        "window": names.stack_stackedWidget_QStackedWidget,
     }
     COPY_URL_TO_CLIPBOARD_BUTTON = {
         "container": names.loginRequiredDialog_contentWidget_QStackedWidget,
@@ -68,3 +73,7 @@ class EnterPassword:
             EnterPassword.oidcReLogin(username, password)
         else:
             EnterPassword.enterPassword(password)
+
+    @staticmethod
+    def logout():
+        squish.clickButton(squish.waitForObject(EnterPassword.LOGOUT_BUTTON))

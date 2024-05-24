@@ -284,7 +284,7 @@ def step(context):
 
 @When('user "|any|" logs out from the login required dialog')
 def step(context, username):
-    AccountSetting.logoutFromLoginRequiredDialog()
+    EnterPassword.logout()
 
 
 @When("the user quits the client")
