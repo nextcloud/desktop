@@ -1345,6 +1345,7 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
     const auto originalPath = base.path();
 
     // Function to gradually check conditions for accepting a move-candidate
+    const auto isExternalStorage = base._remotePerm.hasPermission(RemotePermissions::IsMounted);
     auto moveCheck = [&]() {
         if (!base.isValid()) {
             qCInfo(lcDisco) << "Not a move, no item in db with inode" << localEntry.inode;
@@ -1393,6 +1394,19 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
 
         return true;
     };
+
+    auto isExternalStorageRename = [&] {
+        OCC::SyncJournalFileRecord dbRecord;
+        const auto validRecord = _discoveryData->_statedb->getFileRecordByInode(localEntry.inode, &dbRecord);
+        qCInfo(lcDisco) << "File is already saved in DB?" << validRecord;
+        if (validRecord && isExternalStorage) {
+            qCInfo(lcDisco) << "File is already saved in DB with inode" << dbRecord._inode;
+            qCInfo(lcDisco) << "Try to process rename for" << dbRecord._path;
+            return true;
+        }
+
+        return false;
+    };
     const auto isMove = moveCheck();
     const auto isE2eeMove = isMove && (base.isE2eEncrypted() || isInsideEncryptedTree());
     const auto isCfApiVfsMode = _discoveryData->_syncOptions._vfs && _discoveryData->_syncOptions._vfs->mode() == Vfs::WindowsCfApi;
@@ -1406,77 +1420,77 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
         item->_errorString = tr("Moved to invalid target, restoring");
     }
 
-    //
-    // If it's not a move it's just a local-NEW
-    if (!isMove || (isE2eeMove && !isE2eeMoveOnlineOnlyItemWithCfApi)) {
-        if (base.isE2eEncrypted()) {
-            // renaming the encrypted folder is done via remove + re-upload hence we need to mark the newly created folder as encrypted
-            // base is a record in the SyncJournal database that contains the data about the being-renamed folder with it's old name and encryption information
-            item->_e2eEncryptionStatus = EncryptionStatusEnums::fromDbEncryptionStatus(base._e2eEncryptionStatus);
-            item->_e2eEncryptionServerCapability = EncryptionStatusEnums::fromEndToEndEncryptionApiVersion(_discoveryData->_account->capabilities().clientSideEncryptionVersion());
-        }
-        postProcessLocalNew();
-        /*if (item->isDirectory() && item->_instruction == CSYNC_INSTRUCTION_NEW && item->_direction == SyncFileItem::Up
-            && _discoveryData->_account->capabilities().clientSideEncryptionVersion() >= 2.0) {
-            OCC::SyncJournalFileRecord rec;
-            _discoveryData->_statedb->findEncryptedAncestorForRecord(item->_file, &rec);
-            if (rec.isValid() && rec._e2eEncryptionStatus >= OCC::SyncJournalFileRecord::EncryptionStatus::EncryptedMigratedV2_0) {
-                qCDebug(lcDisco) << "Attempting to create a subfolder in top-level E2EE V2 folder. Ignoring.";
-                item->_instruction = CSYNC_INSTRUCTION_IGNORE;
-                item->_direction = SyncFileItem::None;
-                item->_status = SyncFileItem::NormalError;
-                item->_errorString = tr("Creating nested encrypted folders is not supported yet.");
+    // If it's not a move/rename, it's just a local-NEW
+    if (!isExternalStorageRename()) {
+        if ((!isMove || (isE2eeMove && !isE2eeMoveOnlineOnlyItemWithCfApi))) {
+            if (base.isE2eEncrypted()) {
+                // renaming the encrypted folder is done via remove + re-upload hence we need to mark the newly created folder as encrypted
+                // base is a record in the SyncJournal database that contains the data about the being-renamed folder with it's old name and encryption information
+                item->_e2eEncryptionStatus = EncryptionStatusEnums::fromDbEncryptionStatus(base._e2eEncryptionStatus);
+                item->_e2eEncryptionServerCapability = EncryptionStatusEnums::fromEndToEndEncryptionApiVersion(_discoveryData->_account->capabilities().clientSideEncryptionVersion());
             }
-        }*/
+            postProcessLocalNew();
+            /*if (item->isDirectory() && item->_instruction == CSYNC_INSTRUCTION_NEW && item->_direction == SyncFileItem::Up
+                && _discoveryData->_account->capabilities().clientSideEncryptionVersion() >= 2.0) {
+                OCC::SyncJournalFileRecord rec;
+                _discoveryData->_statedb->findEncryptedAncestorForRecord(item->_file, &rec);
+                if (rec.isValid() && rec._e2eEncryptionStatus >= OCC::SyncJournalFileRecord::EncryptionStatus::EncryptedMigratedV2_0) {
+                    qCDebug(lcDisco) << "Attempting to create a subfolder in top-level E2EE V2 folder. Ignoring.";
+                    item->_instruction = CSYNC_INSTRUCTION_IGNORE;
+                    item->_direction = SyncFileItem::None;
+                    item->_status = SyncFileItem::NormalError;
+                    item->_errorString = tr("Creating nested encrypted folders is not supported yet.");
+                }
+            }*/
 
-        finalize();
-        return;
-    }
-
-    // Check local permission if we are allowed to put move the file here
-    // Technically we should use the permissions from the server, but we'll assume it is the same
-    const auto serverHasMountRootProperty = _discoveryData->_account->serverHasMountRootProperty();
-    const auto isExternalStorage = base._remotePerm.hasPermission(RemotePermissions::IsMounted);
-    const auto movePerms = checkMovePermissions(base._remotePerm, originalPath, item->isDirectory());
-    if (!movePerms.sourceOk || !movePerms.destinationOk || (serverHasMountRootProperty && isExternalStorage) || isE2eeMoveOnlineOnlyItemWithCfApi) {
-        qCInfo(lcDisco) << "Move without permission to rename base file, "
-                        << "source:" << movePerms.sourceOk
-                        << ", target:" << movePerms.destinationOk
-                        << ", targetNew:" << movePerms.destinationNewOk
-                        << ", isExternalStorage:" << isExternalStorage
-                        << ", serverHasMountRootProperty:" << serverHasMountRootProperty
-                        << ", base._remotePerm:" << base._remotePerm.toString()
-                        << ", base.path():" << base.path();
-
-        // If we can create the destination, do that.
-        // Permission errors on the destination will be handled by checkPermissions later.
-        postProcessLocalNew();
-        finalize();
-
-        // If the destination upload will work, we're fine with the source deletion.
-        // If the source deletion can't work, checkPermissions will error.
-        // In case of external storage mounted folders we are never allowed to move/delete them
-        if (movePerms.destinationNewOk && !isExternalStorage && !isE2eeMoveOnlineOnlyItemWithCfApi) {
+            finalize();
             return;
         }
 
-        // Here we know the new location can't be uploaded: must prevent the source delete.
-        // Two cases: either the source item was already processed or not.
-        auto wasDeletedOnClient = _discoveryData->findAndCancelDeletedJob(originalPath);
-        if (wasDeletedOnClient.first) {
-            // More complicated. The REMOVE is canceled. Restore will happen next sync.
-            qCInfo(lcDisco) << "Undid remove instruction on source" << originalPath;
-            if (!_discoveryData->_statedb->deleteFileRecord(originalPath, true)) {
-                qCWarning(lcDisco) << "Failed to delete a file record from the local DB" << originalPath;
+        // Check local permission if we are allowed to put move the file here
+        // Technically we should use the permissions from the server, but we'll assume it is the same
+        const auto serverHasMountRootProperty = _discoveryData->_account->serverHasMountRootProperty();
+        const auto movePerms = checkMovePermissions(base._remotePerm, originalPath, item->isDirectory());
+        if (!movePerms.sourceOk || !movePerms.destinationOk || (serverHasMountRootProperty && isExternalStorage) || isE2eeMoveOnlineOnlyItemWithCfApi) {
+            qCInfo(lcDisco) << "Move without permission to rename base file, "
+                            << "source:" << movePerms.sourceOk
+                            << ", target:" << movePerms.destinationOk
+                            << ", targetNew:" << movePerms.destinationNewOk
+                            << ", isExternalStorage:" << isExternalStorage
+                            << ", serverHasMountRootProperty:" << serverHasMountRootProperty
+                            << ", base._remotePerm:" << base._remotePerm.toString()
+                            << ", base.path():" << base.path();
+
+            // If we can create the destination, do that.
+            // Permission errors on the destination will be handled by checkPermissions later.
+            postProcessLocalNew();
+            finalize();
+
+            // If the destination upload will work, we're fine with the source deletion.
+            // If the source deletion can't work, checkPermissions will error.
+            // In case of external storage mounted folders we are never allowed to move/delete them
+            if (movePerms.destinationNewOk && !isExternalStorage && !isE2eeMoveOnlineOnlyItemWithCfApi) {
+                return;
             }
-            _discoveryData->_statedb->schedulePathForRemoteDiscovery(originalPath);
-            _discoveryData->_anotherSyncNeeded = true;
-        } else {
-            // Signal to future checkPermissions() to forbid the REMOVE and set to restore instead
-            qCInfo(lcDisco) << "Preventing future remove on source" << originalPath;
-            _discoveryData->_forbiddenDeletes[originalPath + '/'] = true;
+
+            // Here we know the new location can't be uploaded: must prevent the source delete.
+            // Two cases: either the source item was already processed or not.
+            auto wasDeletedOnClient = _discoveryData->findAndCancelDeletedJob(originalPath);
+            if (wasDeletedOnClient.first) {
+                // More complicated. The REMOVE is canceled. Restore will happen next sync.
+                qCInfo(lcDisco) << "Undid remove instruction on source" << originalPath;
+                if (!_discoveryData->_statedb->deleteFileRecord(originalPath, true)) {
+                    qCWarning(lcDisco) << "Failed to delete a file record from the local DB" << originalPath;
+                }
+                _discoveryData->_statedb->schedulePathForRemoteDiscovery(originalPath);
+                _discoveryData->_anotherSyncNeeded = true;
+            } else {
+                // Signal to future checkPermissions() to forbid the REMOVE and set to restore instead
+                qCInfo(lcDisco) << "Preventing future remove on source" << originalPath;
+                _discoveryData->_forbiddenDeletes[originalPath + '/'] = true;
+            }
+            return;
         }
-        return;
     }
 
     auto wasDeletedOnClient = _discoveryData->findAndCancelDeletedJob(originalPath);
