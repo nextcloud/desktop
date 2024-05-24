@@ -44,6 +44,11 @@ UpdateDownloadedDialog::UpdateDownloadedDialog(QWidget *parent, const QString &s
     yesButton->setDefault(true);
 }
 
+UpdateDownloadedDialog::~UpdateDownloadedDialog()
+{
+    delete _ui;
+}
+
 void UpdateDownloadedDialog::accept()
 {
     Q_EMIT accepted();

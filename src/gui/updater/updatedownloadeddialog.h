@@ -29,6 +29,7 @@ class UpdateDownloadedDialog : public QWidget
 
 public:
     explicit UpdateDownloadedDialog(QWidget *parent, const QString &statusMessage);
+    ~UpdateDownloadedDialog();
 
 public Q_SLOTS:
     void accept();
@@ -39,7 +40,7 @@ Q_SIGNALS:
     void finished();
 
 private:
-    QScopedPointer<::Ui::UpdateDownloadedDialog> _ui;
+    ::Ui::UpdateDownloadedDialog *_ui;
 };
 
 }
