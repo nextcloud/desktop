@@ -631,8 +631,8 @@ Vai vēlaties iestatīt end-to-end šifrēšanu?</translation>
         <location filename="../src/gui/accountsettings.cpp" line="366"/>
         <source>You cannot encrypt a folder with contents, please remove the files.
 Wait for the new sync, then encrypt it.</source>
-        <translation>Jūs nevarat šifrēt mapi ar saturu, lūdzu, noņemiet failus.
-Gaidiet jaunu sinhronizāciju, tad to šifrējiet.</translation>
+        <translation>Nevar šifrēt mapi ar saturu. Lūgums noņemt datnes.
+Jāgaida jauna sinhronizācija, tad tā jāšifrē.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="390"/>
@@ -642,7 +642,7 @@ Gaidiet jaunu sinhronizāciju, tad to šifrējiet.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="390"/>
         <source>Could not encrypt folder because the folder does not exist anymore</source>
-        <translation>Nevarēja šifrēt mapi, jo mape vairs neeksistē.</translation>
+        <translation>Nevarēja šifrēt mapi, jo mape vairs nepastāv.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="510"/>
@@ -746,7 +746,7 @@ Gaidiet jaunu sinhronizāciju, tad to šifrējiet.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="921"/>
         <source>Disable virtual file support?</source>
-        <translation>Vai izslēgt virtuālo failu atbalstu?</translation>
+        <translation>Atspējot virtuālo datņu atbalstu?</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="922"/>
@@ -1249,7 +1249,7 @@ Vienīgā priekšrocība, izslēdzot virtuālo datņu atbalstu, ir tas, ka atkal
     <message>
         <location filename="../src/libsync/caseclashconflictsolver.cpp" line="78"/>
         <source>Cannot rename file because a file with the same name already exists on the server. Please pick another name.</source>
-        <translation>Nevar pārdēvēt datni, jo serverī jau eksistē datne ar tādu pašu nosaukumu. Lūdzu, izvēlieties citu nosaukumu.</translation>
+        <translation>Nevar pārdēvēt datni, jo serverī jau ir datne ar tādu pašu nosaukumu. Lūgums izvēlēties citu nosaukumu.</translation>
     </message>
     <message>
         <location filename="../src/libsync/caseclashconflictsolver.cpp" line="121"/>
@@ -1925,7 +1925,7 @@ Varētu būt problēma ar jūsu OpenSSL bibliotēkām.</translation>
     <message>
         <location filename="../src/gui/folder.cpp" line="179"/>
         <source>Local folder %1 does not exist.</source>
-        <translation>Lokālā mape %1 neeksistē.</translation>
+        <translation>Vietējā mape %1 nepastāv.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="182"/>
@@ -2146,7 +2146,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/foldercreationdialog.ui" line="61"/>
         <source>Folder already exists</source>
-        <translation>Mape jau eksistē</translation>
+        <translation>Mape jau pastāv</translation>
     </message>
     <message>
         <location filename="../src/gui/foldercreationdialog.cpp" line="80"/>
