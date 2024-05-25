@@ -1559,7 +1559,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/connectionvalidator.cpp" line="344"/>
         <source>Connection issue</source>
-        <translation type="unfinished"/>
+        <translation>Problèma de connectivitat</translation>
     </message>
 </context>
 <context>
@@ -2624,7 +2624,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/generalsettings.ui" line="82"/>
         <source>&amp;Launch on System Startup</source>
-        <translation>Lançar a l’aviada del sistèma</translation>
+        <translation>&amp;Lançar a l’aviada del sistèma</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="89"/>
@@ -2772,22 +2772,22 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/generalsettings.ui" line="420"/>
         <source>Use &amp;monochrome icons</source>
-        <translation type="unfinished"/>
+        <translation>Utilizar las icònas &amp;monocròmas</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="427"/>
         <source>&amp;Launch on system startup</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Lançar a l’aviada del sistèma</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="434"/>
         <source>Show server &amp;notifications</source>
-        <translation type="unfinished"/>
+        <translation>Mostrar las _notificacions del servidor</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="441"/>
         <source>Show call notifications</source>
-        <translation type="unfinished"/>
+        <translation>Mostrar las notificacions de sonadas</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="144"/>
@@ -3202,7 +3202,7 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/networksettings.ui" line="48"/>
         <source>No proxy</source>
-        <translation type="unfinished"/>
+        <translation>Cap de servidor mandatari</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="49"/>
@@ -3217,7 +3217,7 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/networksettings.ui" line="84"/>
         <source>Manually specify proxy</source>
-        <translation type="unfinished"/>
+        <translation>Indicar manualament un servidor mandatari</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="80"/>
@@ -4491,7 +4491,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="700"/>
         <source>Link share</source>
-        <translation type="unfinished"/>
+        <translation>Partatge via ligam</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="702"/>
@@ -5876,7 +5876,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/filedetails/ShareDelegate.qml" line="161"/>
         <source>Create a new share link</source>
-        <translation type="unfinished"/>
+        <translation>Crear un ligam de partiment novèl</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDelegate.qml" line="195"/>
