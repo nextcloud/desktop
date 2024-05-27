@@ -106,17 +106,32 @@ void EditLocallyManager::verify(const AccountStatePtr &accountState,
                                 const QString &relPath, 
                                 const QString &token)
 {
-    const auto removeJob = [this, token] { _verificationJobs.remove(token); };
-    const auto startEditLocally = [this, accountState, relPath, token, removeJob] {
-        removeJob();
+    // Show the loading dialog but don't show the filename until we have
+    // verified the token
+    Systray::instance()->createEditFileLocallyLoadingDialog({});
+    
+    const auto finishedHandler = [this, token] {
+        Systray::instance()->destroyEditFileLocallyLoadingDialog();
+        _verificationJobs.remove(token); 
+    };
+    const auto errorEditLocally = [finishedHandler] {
+        finishedHandler();
+        showError(tr("Could not validate the request to open a file from server."), 
+                  tr("Please try again."));
+    };
+    const auto startEditLocally = [this, accountState, relPath, token, finishedHandler] {
+        finishedHandler();
         editLocally(accountState, relPath, token);
     };
     const auto verificationJob = EditLocallyVerificationJobPtr(
         new EditLocallyVerificationJob(accountState, relPath, token)
     );
     _verificationJobs.insert(token, verificationJob);
-    connect(verificationJob.data(), &EditLocallyVerificationJob::error, this, removeJob);
+    connect(verificationJob.data(), &EditLocallyVerificationJob::error, this, errorEditLocally);
     connect(verificationJob.data(), &EditLocallyVerificationJob::finished, this, startEditLocally);
+    
+    // We now ask the server to verify the token, before we again modify any
+    // state or look at local files
     verificationJob->start();
 }
 
