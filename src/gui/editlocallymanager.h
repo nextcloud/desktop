@@ -28,6 +28,7 @@ class EditLocallyManager : public QObject
 
 public:
     [[nodiscard]] static EditLocallyManager *instance();
+    static void showError(const QString &message, const QString &informativeText);
 
 public slots:
     void handleRequest(const QUrl &url);
@@ -50,6 +51,8 @@ private:
         QString token;
     };
 
+    static void showErrorNotification(const QString &message, const QString &informativeText);
+    static void showErrorMessageBox(const QString &message, const QString &informativeText);
     [[nodiscard]] static EditLocallyInputData parseEditLocallyUrl(const QUrl &url);
 
     QHash<QString, EditLocallyVerificationJobPtr> _verificationJobs;
