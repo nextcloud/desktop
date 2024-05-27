@@ -34,7 +34,6 @@ class EditLocallyJob : public QObject
 public:
     explicit EditLocallyJob(const AccountStatePtr &accountState,
                             const QString &relPath,
-                            const QString &token,
                             QObject *parent = nullptr);
 
     [[nodiscard]] static OCC::Folder *findFolderForFile(const QString &relPath, const QString &userId);
@@ -86,15 +85,12 @@ private:
 
     [[nodiscard]] bool isFileParentItemValid() const;
 
-    bool _tokenVerified = false;
-
     bool _shouldScheduleFolderSyncAfterFileIsOpened = false;
 
     AccountStatePtr _accountState;
     QString _relPath; // full remote path for a file (as on the server)
     QString _relativePathToRemoteRoot; // (relative path - Folder::remotePath()) for folders pointing to a non-root remote path e.g. '/subfolder' instead of '/'
     QString _relPathParent; // a folder where the file resides ('/' if it is in the first level of a remote root, or e.g. a '/subfolder/a/b/c if it resides in a nested folder)
-    QString _token;
     SyncFileItemPtr _fileParentItem;
 
     QString _fileName;
