@@ -52,6 +52,7 @@ ownCloud admins and users.
 * Bugfix - Strip user information from new-connection URL: [#11497](https://github.com/owncloud/client/issues/11497)
 * Bugfix - Ensure folder are scheduled only once: [#11552](https://github.com/owncloud/client/issues/11552)
 * Bugfix - Support logging redirect: [#11581](https://github.com/owncloud/client/pull/11581)
+* Bugfix - Don't store null certificates in the account: [#11621](https://github.com/owncloud/client/issues/11621)
 * Change - Revert local folder name back to pre 3.0 behavior: [#6390](https://github.com/owncloud/enterprise/issues/6390)
 * Change - Make messages translatable that occur early in start-up: [#11142](https://github.com/owncloud/client/issues/11142)
 * Change - Remove unused command line option --language: [#11245](https://github.com/owncloud/client/issues/11245)
@@ -140,6 +141,10 @@ ownCloud admins and users.
    We now log when all urls when a request was redirected.
 
    https://github.com/owncloud/client/pull/11581
+
+* Bugfix - Don't store null certificates in the account: [#11621](https://github.com/owncloud/client/issues/11621)
+
+   https://github.com/owncloud/client/issues/11621
 
 * Change - Revert local folder name back to pre 3.0 behavior: [#6390](https://github.com/owncloud/enterprise/issues/6390)
 
