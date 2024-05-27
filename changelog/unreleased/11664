@@ -1,0 +1,5 @@
+Bugfix: Fix crash for folders that could not be initialized
+
+We fixed a bug where interacting with a folder in the file browser could lead to a crash if the folder was not properly initialized.
+
+https://github.com/owncloud/client/pull/11664

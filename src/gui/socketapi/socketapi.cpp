@@ -952,8 +952,9 @@ bool OCC::SocketApi::FileData::isSyncFolder() const
 
 SyncFileStatus SocketApi::FileData::syncFileStatus() const
 {
-    if (!folder)
+    if (!folder || !folder->canSync()) {
         return SyncFileStatus::StatusNone;
+    }
     return folder->syncEngine().syncFileStatusTracker().fileStatus(folderRelativePath);
 }
 
