@@ -14,12 +14,14 @@
 
 #include "editlocallymanager.h"
 
+#include <QLoggingCategory>
+#include <QMessageBox>
 #include <QUrl>
 #include <QUrlQuery>
-#include <QLoggingCategory>
 
 #include "accountmanager.h"
 #include "editlocallyverificationjob.h"
+#include "systray.h"
 
 namespace OCC {
 
@@ -38,6 +40,34 @@ EditLocallyManager *EditLocallyManager::instance()
         _instance = new EditLocallyManager();
     }
     return _instance;
+}
+
+void EditLocallyManager::showError(const QString &message, const QString &informativeText)
+{
+    showErrorNotification(message, informativeText);
+    // to make sure the error is not missed, show a message box in addition
+    showErrorMessageBox(message, informativeText);
+    qCWarning(lcEditLocallyManager) << message << informativeText;
+}
+
+void EditLocallyManager::showErrorNotification(const QString &message, 
+                                               const QString &informativeText)
+{
+    Systray::instance()->showMessage(message, informativeText, Systray::MessageIcon::Critical); 
+}
+
+void EditLocallyManager::showErrorMessageBox(const QString &message, 
+                                             const QString &informativeText)
+{
+    const auto messageBox = new QMessageBox;
+    messageBox->setAttribute(Qt::WA_DeleteOnClose);
+    messageBox->setText(message);
+    messageBox->setInformativeText(informativeText);
+    messageBox->setIcon(QMessageBox::Warning);
+    messageBox->addButton(QMessageBox::StandardButton::Ok);
+    messageBox->show();
+    messageBox->activateWindow();
+    messageBox->raise();
 }
 
 void EditLocallyManager::handleRequest(const QUrl &url)

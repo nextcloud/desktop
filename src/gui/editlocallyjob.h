@@ -57,8 +57,6 @@ private slots:
     void findAfolderAndConstructPaths();
 
     void showError(const QString &message, const QString &informativeText);
-    void showErrorNotification(const QString &message, const QString &informativeText) const;
-    void showErrorMessageBox(const QString &message, const QString &informativeText) const;
 
     void slotItemDiscovered(const OCC::SyncFileItemPtr &item);
     void slotItemCompleted(const OCC::SyncFileItemPtr &item);

@@ -18,6 +18,7 @@
 #include <QDesktopServices>
 #include <QtConcurrent>
 
+#include "editlocallymanager.h"
 #include "editlocallyverificationjob.h"
 #include "folder.h"
 #include "folderman.h"
@@ -318,40 +319,9 @@ OCC::Folder *EditLocallyJob::findFolderForFile(const QString &relPath, const QSt
 
 void EditLocallyJob::showError(const QString &message, const QString &informativeText)
 {
-    Systray::instance()->destroyEditFileLocallyLoadingDialog();
-    showErrorNotification(message, informativeText);
-    // to make sure the error is not missed, show a message box in addition
-    showErrorMessageBox(message, informativeText);
+    Systray::instance()->destroyEditFileLocallyLoadingDialog();  
+    EditLocallyManager::showError(message, informativeText);
     Q_EMIT error(message, informativeText);
-}
-
-void EditLocallyJob::showErrorNotification(const QString &message, const QString &informativeText) const
-{
-    if (!_accountState || !_accountState->account()) {
-        return;
-    }
-
-    const auto folderMap = FolderMan::instance()->map();
-    const auto foundFolder = std::find_if(folderMap.cbegin(), folderMap.cend(), [this](const auto &folder) {
-        return _accountState->account()->davUrl() == folder->remoteUrl();
-    });
-
-    if (foundFolder != folderMap.cend()) {
-        emit (*foundFolder)->syncEngine().addErrorToGui(SyncFileItem::SoftError, message, informativeText, OCC::ErrorCategory::GenericError);
-    }
-}
-
-void EditLocallyJob::showErrorMessageBox(const QString &message, const QString &informativeText) const
-{
-    const auto messageBox = new QMessageBox;
-    messageBox->setAttribute(Qt::WA_DeleteOnClose);
-    messageBox->setText(message);
-    messageBox->setInformativeText(informativeText);
-    messageBox->setIcon(QMessageBox::Warning);
-    messageBox->addButton(QMessageBox::StandardButton::Ok);
-    messageBox->show();
-    messageBox->activateWindow();
-    messageBox->raise();
 }
 
 void EditLocallyJob::startEditLocally()
