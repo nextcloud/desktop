@@ -31,29 +31,24 @@ Q_LOGGING_CATEGORY(lcEditLocallyJob, "nextcloud.gui.editlocallyjob", QtInfoMsg)
 
 EditLocallyJob::EditLocallyJob(const AccountStatePtr &accountState,
                                const QString &relPath,
-                               const QString &token,
                                QObject *parent)
     : QObject{parent}
     , _accountState(accountState)
     , _relPath(relPath)
-    , _token(token)
 {
     connect(this, &EditLocallyJob::callShowError, this, &EditLocallyJob::showError, Qt::QueuedConnection);
 }
 
 void EditLocallyJob::startSetup()
 {
-    if (_token.isEmpty() || _relPath.isEmpty() || !_accountState) {
+    if (_relPath.isEmpty() || !_accountState) {
         qCWarning(lcEditLocallyJob) << "Could not start setup."
-                                    << "token:" << _token
                                     << "relPath:" << _relPath
                                     << "accountState:" << _accountState;
         showError(tr("Could not start editing locally."), tr("An error occurred during setup."));
         return;
     }
 
-    // Show the loading dialog but don't show the filename until we have
-    // verified the token
     Systray::instance()->createEditFileLocallyLoadingDialog({});
     findAfolderAndConstructPaths();
 }
@@ -125,12 +120,6 @@ void EditLocallyJob::fetchRemoteFileParentInfo()
 
 void EditLocallyJob::proceedWithSetup()
 {
-    if (!_tokenVerified) {
-        qCWarning(lcEditLocallyJob) << "Could not proceed with setup as token is not verified.";
-        showError(tr("Could not validate the request to open a file from server."), tr("Please try again."));
-        return;
-    }
-
     const auto relPathSplit = _relPath.split(QLatin1Char('/'));
     if (relPathSplit.isEmpty()) {
         showError(tr("Could not find a file for local editing. Make sure its path is valid and it is synced locally."), _relPath);

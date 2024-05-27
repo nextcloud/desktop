@@ -127,7 +127,8 @@ void EditLocallyManager::editLocally(const AccountStatePtr &accountState,
     if (_editLocallyJobs.contains(token)) {
         return;
     }
-    const EditLocallyJobPtr job(new EditLocallyJob(accountState, relPath, token));
+
+    const EditLocallyJobPtr job(new EditLocallyJob(accountState, relPath));
     // We need to make sure the job sticks around until it is finished
     _editLocallyJobs.insert(token, job);
 
