@@ -963,7 +963,7 @@ void Application::handleEditLocallyFromOptions()
         return;
     }
 
-    EditLocallyManager::instance()->editLocally(_editFileLocallyUrl);
+    EditLocallyManager::instance()->handleRequest(_editFileLocallyUrl);
     _editFileLocallyUrl.clear();
 }
 
@@ -1125,7 +1125,7 @@ bool Application::event(QEvent *event)
             // On macOS, Qt does not handle receiving a custom URI as it does on other systems (as an application argument).
             // Instead, it sends out a QFileOpenEvent. We therefore need custom handling for our URI handling on macOS.
             qCInfo(lcApplication) << "macOS: Opening local file for editing: " << openEvent->url();
-            EditLocallyManager::instance()->editLocally(openEvent->url());
+            EditLocallyManager::instance()->handleRequest(openEvent->url());
         } else {
             const auto errorParsingLocalFileEditingUrl = QStringLiteral("The supplied url for local file editing '%1' is invalid!").arg(openEvent->url().toString());
             qCInfo(lcApplication) << errorParsingLocalFileEditingUrl;

@@ -18,6 +18,7 @@
 #include <QHash>
 
 #include "editlocallyjob.h"
+#include "editlocallyverificationjob.h"
 
 namespace OCC {
 
@@ -29,12 +30,15 @@ public:
     [[nodiscard]] static EditLocallyManager *instance();
 
 public slots:
-    void editLocally(const QUrl &url);
+    void handleRequest(const QUrl &url);
 
 private slots:
-    void createJob(const QString &userId,
-                   const QString &relPath,
-                   const QString &token);
+    void verify(const AccountStatePtr &accountState,
+                const QString &relPath,
+                const QString &token);
+    void editLocally(const AccountStatePtr &accountState,
+                     const QString &relPath,
+                     const QString &token);
 
 private:
     explicit EditLocallyManager(QObject *parent = nullptr);
@@ -48,7 +52,8 @@ private:
 
     [[nodiscard]] static EditLocallyInputData parseEditLocallyUrl(const QUrl &url);
 
-    QHash<QString, EditLocallyJobPtr> _jobs;
+    QHash<QString, EditLocallyVerificationJobPtr> _verificationJobs;
+    QHash<QString, EditLocallyJobPtr> _editLocallyJobs;
 };
 
 }
