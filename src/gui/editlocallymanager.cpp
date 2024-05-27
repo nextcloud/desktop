@@ -18,6 +18,8 @@
 #include <QUrlQuery>
 #include <QLoggingCategory>
 
+#include "accountmanager.h"
+
 namespace OCC {
 
 Q_LOGGING_CATEGORY(lcEditLocallyManager, "nextcloud.gui.editlocallymanager", QtInfoMsg)
@@ -40,7 +42,8 @@ EditLocallyManager *EditLocallyManager::instance()
 void EditLocallyManager::editLocally(const QUrl &url)
 {
     const auto inputs = parseEditLocallyUrl(url);
-    createJob(inputs.userId, inputs.relPath, inputs.token);
+    const auto accountState = AccountManager::instance()->accountFromUserId(inputs.userId); 
+    createJob(accountState, inputs.relPath, inputs.token);
 }
 
 EditLocallyManager::EditLocallyInputData EditLocallyManager::parseEditLocallyUrl(const QUrl &url)
@@ -68,14 +71,14 @@ EditLocallyManager::EditLocallyInputData EditLocallyManager::parseEditLocallyUrl
     return {userId, fileRemotePath, token};
 }
 
-void EditLocallyManager::createJob(const QString &userId,
                                        const QString &relPath,
                                        const QString &token)
+void EditLocallyManager::createJob(const AccountStatePtr &accountState,
 {
     if (_jobs.contains(token)) {
         return;
     }
-    const EditLocallyJobPtr job(new EditLocallyJob(userId, relPath, token));
+    const EditLocallyJobPtr job(new EditLocallyJob(accountState, relPath, token));
     // We need to make sure the job sticks around until it is finished
     _jobs.insert(token, job);
 

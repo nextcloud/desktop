@@ -28,12 +28,12 @@ namespace OCC {
 
 Q_LOGGING_CATEGORY(lcEditLocallyJob, "nextcloud.gui.editlocallyjob", QtInfoMsg)
 
-EditLocallyJob::EditLocallyJob(const QString &userId,
-                                       const QString &relPath,
-                                       const QString &token,
-                                       QObject *parent)
+EditLocallyJob::EditLocallyJob(const AccountStatePtr &accountState,
+                               const QString &relPath,
+                               const QString &token,
+                               QObject *parent)
     : QObject{parent}
-    , _userId(userId)
+    , _accountState(accountState)
     , _relPath(relPath)
     , _token(token)
 {
@@ -42,11 +42,11 @@ EditLocallyJob::EditLocallyJob(const QString &userId,
 
 void EditLocallyJob::startSetup()
 {
-    if (_token.isEmpty() || _relPath.isEmpty() || _userId.isEmpty()) {
+    if (_token.isEmpty() || _relPath.isEmpty() || !_accountState) {
         qCWarning(lcEditLocallyJob) << "Could not start setup."
                                     << "token:" << _token
                                     << "relPath:" << _relPath
-                                    << "userId" << _userId;
+                                    << "accountState:" << _accountState;
         showError(tr("Could not start editing locally."), tr("An error occurred during setup."));
         return;
     }
@@ -54,8 +54,6 @@ void EditLocallyJob::startSetup()
     // Show the loading dialog but don't show the filename until we have
     // verified the token
     Systray::instance()->createEditFileLocallyLoadingDialog({});
-
-    _accountState = AccountManager::instance()->accountFromUserId(_userId);
 
     // We now ask the server to verify the token, before we again modify any
     // state or look at local files
@@ -84,7 +82,7 @@ void EditLocallyJob::proceedWithSetup()
     }
 
     _fileName = relPathSplit.last();
-    _folderForFile = findFolderForFile(_relPath, _userId);
+    _folderForFile = findFolderForFile(_relPath, _accountState->account()->userIdAtHostWithPort());
 
     if (!_folderForFile) {
         showError(tr("Could not find a file for local editing. Make sure it is not excluded via selective sync."), _relPath);
@@ -104,7 +102,7 @@ void EditLocallyJob::proceedWithSetup()
 
 void EditLocallyJob::findAfolderAndConstructPaths()
 {
-    _folderForFile = findFolderForFile(_relPath, _userId);
+    _folderForFile = findFolderForFile(_relPath, _accountState->account()->userIdAtHostWithPort());
 
     if (!_folderForFile) {
         showError(tr("Could not find a file for local editing. Make sure it is not excluded via selective sync."), _relPath);
@@ -287,19 +285,22 @@ OCC::Folder *EditLocallyJob::findFolderForFile(const QString &relPath, const QSt
     }
 
     const auto folderMap = FolderMan::instance()->map();
-
     const auto relPathSplit = relPath.split(QLatin1Char('/'));
 
     // a file is on the first level of remote root, so, we just need a proper folder that points to a remote root
     if (relPathSplit.size() == 1) {
-        const auto foundIt = std::find_if(std::begin(folderMap), std::end(folderMap), [&userId](const OCC::Folder *folder) {
-            return folder->remotePath() == QStringLiteral("/") && folder->accountState()->account()->userIdAtHostWithPort() == userId;
+        const auto foundIt = std::find_if(std::begin(folderMap), 
+                                          std::end(folderMap), 
+                                          [&userId](const OCC::Folder *folder) {
+            const auto folderUserId = folder->accountState()->account()->userIdAtHostWithPort();
+            return folder->remotePath() == QStringLiteral("/") && folderUserId == userId;
         });
 
         return foundIt != std::end(folderMap) ? foundIt.value() : nullptr;
     }
 
-    const auto relPathWithSlash = relPath.startsWith(QStringLiteral("/")) ? relPath : QStringLiteral("/") + relPath;
+    const auto relPathWithSlash = 
+        relPath.startsWith(QStringLiteral("/")) ? relPath : QStringLiteral("/") + relPath;
 
     for (const auto &folder : folderMap) {
         // make sure we properly handle folders with non-root(nested) remote paths
