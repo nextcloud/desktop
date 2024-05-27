@@ -47,6 +47,7 @@ void EditLocallyJob::startSetup()
                                     << "token:" << _token
                                     << "relPath:" << _relPath
                                     << "userId" << _userId;
+        showError(tr("Could not start editing locally."), tr("An error occurred during setup."));
         return;
     }
 
