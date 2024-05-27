@@ -32,7 +32,7 @@ class EditLocallyJob : public QObject
     Q_OBJECT
 
 public:
-    explicit EditLocallyJob(const QString &userId,
+    explicit EditLocallyJob(const AccountStatePtr &accountState,
                             const QString &relPath,
                             const QString &token,
                             QObject *parent = nullptr);
