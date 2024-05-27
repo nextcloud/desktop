@@ -20,6 +20,9 @@
 
 namespace OCC {
 
+class EditLocallyVerificationJob;
+using EditLocallyVerificationJobPtr = QSharedPointer<EditLocallyVerificationJob>;
+
 class EditLocallyVerificationJob : public QObject
 {
     Q_OBJECT
