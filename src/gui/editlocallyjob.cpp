@@ -19,7 +19,6 @@
 #include <QtConcurrent>
 
 #include "editlocallymanager.h"
-#include "editlocallyverificationjob.h"
 #include "folder.h"
 #include "folderman.h"
 #include "syncengine.h"
@@ -49,7 +48,15 @@ void EditLocallyJob::startSetup()
         return;
     }
 
-    Systray::instance()->createEditFileLocallyLoadingDialog({});
+    const auto relPathSplit = _relPath.split(QLatin1Char('/'));
+    if (relPathSplit.isEmpty()) {
+        showError(tr("Could not find a file for local editing."
+                     "Make sure its path is valid and it is synced locally."), _relPath);
+        return;
+    }
+
+    _fileName = relPathSplit.last();
+    Systray::instance()->createEditFileLocallyLoadingDialog(_fileName);
     findAfolderAndConstructPaths();
 }
 
@@ -120,15 +127,8 @@ void EditLocallyJob::fetchRemoteFileParentInfo()
 
 void EditLocallyJob::proceedWithSetup()
 {
-    const auto relPathSplit = _relPath.split(QLatin1Char('/'));
-    if (relPathSplit.isEmpty()) {
-        showError(tr("Could not find a file for local editing. Make sure its path is valid and it is synced locally."), _relPath);
-        return;
-    }
-
-    _fileName = relPathSplit.last();
     _folderForFile = findFolderForFile(_relPath, _accountState->account()->userIdAtHostWithPort());
-
+    
     if (!_folderForFile) {
         showError(tr("Could not find a file for local editing. Make sure it is not excluded via selective sync."), _relPath);
         return;
@@ -141,7 +141,6 @@ void EditLocallyJob::proceedWithSetup()
 
     _localFilePath = _folderForFile->path() + _relativePathToRemoteRoot;
 
-    Systray::instance()->destroyEditFileLocallyLoadingDialog();
     startEditLocally();
 }
 
@@ -324,8 +323,6 @@ void EditLocallyJob::startEditLocally()
         showError(tr("Could not start editing locally."), tr("An error occurred during setup."));
         return;
     }
-
-    Systray::instance()->createEditFileLocallyLoadingDialog(_fileName);
 
     if (_folderForFile->isSyncRunning()) {
         // in case sync is already running - terminate it and start a new one
