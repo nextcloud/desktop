@@ -54,50 +54,7 @@ void EditLocallyJob::startSetup()
     // Show the loading dialog but don't show the filename until we have
     // verified the token
     Systray::instance()->createEditFileLocallyLoadingDialog({});
-
-    // We now ask the server to verify the token, before we again modify any
-    // state or look at local files
-    startCheck();
-}
-
-void EditLocallyJob::startCheck()
-{
-    const auto verificationJob = new EditLocallyVerificationJob(_accountState, _relPath, _token);
-    connect(verificationJob, &EditLocallyVerificationJob::error, this, &EditLocallyJob::showError);
-    connect(verificationJob, &EditLocallyVerificationJob::finished, this, &EditLocallyJob::findAfolderAndConstructPaths);
-}
-
-void EditLocallyJob::proceedWithSetup()
-{
-    if (!_tokenVerified) {
-        qCWarning(lcEditLocallyJob) << "Could not proceed with setup as token is not verified.";
-        showError(tr("Could not validate the request to open a file from server."), tr("Please try again."));
-        return;
-    }
-
-    const auto relPathSplit = _relPath.split(QLatin1Char('/'));
-    if (relPathSplit.isEmpty()) {
-        showError(tr("Could not find a file for local editing. Make sure its path is valid and it is synced locally."), _relPath);
-        return;
-    }
-
-    _fileName = relPathSplit.last();
-    _folderForFile = findFolderForFile(_relPath, _accountState->account()->userIdAtHostWithPort());
-
-    if (!_folderForFile) {
-        showError(tr("Could not find a file for local editing. Make sure it is not excluded via selective sync."), _relPath);
-        return;
-    }
-
-    if (!isFileParentItemValid()) {
-        showError(tr("Could not find a file for local editing. Make sure its path is valid and it is synced locally."), _relPath);
-        return;
-    }
-
-    _localFilePath = _folderForFile->path() + _relativePathToRemoteRoot;
-
-    Systray::instance()->destroyEditFileLocallyLoadingDialog();
-    startEditLocally();
+    findAfolderAndConstructPaths();
 }
 
 void EditLocallyJob::findAfolderAndConstructPaths()
@@ -163,6 +120,39 @@ void EditLocallyJob::fetchRemoteFileParentInfo()
     connect(job, &LsColJob::finishedWithoutError, this, &EditLocallyJob::proceedWithSetup);
     connect(job, &LsColJob::finishedWithError, this, &EditLocallyJob::slotLsColJobFinishedWithError);
     job->start();
+}
+
+void EditLocallyJob::proceedWithSetup()
+{
+    if (!_tokenVerified) {
+        qCWarning(lcEditLocallyJob) << "Could not proceed with setup as token is not verified.";
+        showError(tr("Could not validate the request to open a file from server."), tr("Please try again."));
+        return;
+    }
+
+    const auto relPathSplit = _relPath.split(QLatin1Char('/'));
+    if (relPathSplit.isEmpty()) {
+        showError(tr("Could not find a file for local editing. Make sure its path is valid and it is synced locally."), _relPath);
+        return;
+    }
+
+    _fileName = relPathSplit.last();
+    _folderForFile = findFolderForFile(_relPath, _accountState->account()->userIdAtHostWithPort());
+
+    if (!_folderForFile) {
+        showError(tr("Could not find a file for local editing. Make sure it is not excluded via selective sync."), _relPath);
+        return;
+    }
+
+    if (!isFileParentItemValid()) {
+        showError(tr("Could not find a file for local editing. Make sure its path is valid and it is synced locally."), _relPath);
+        return;
+    }
+
+    _localFilePath = _folderForFile->path() + _relativePathToRemoteRoot;
+
+    Systray::instance()->destroyEditFileLocallyLoadingDialog();
+    startEditLocally();
 }
 
 bool EditLocallyJob::checkIfFileParentSyncIsNeeded()

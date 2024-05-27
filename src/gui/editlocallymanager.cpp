@@ -19,6 +19,7 @@
 #include <QLoggingCategory>
 
 #include "accountmanager.h"
+#include "editlocallyverificationjob.h"
 
 namespace OCC {
 
@@ -39,11 +40,11 @@ EditLocallyManager *EditLocallyManager::instance()
     return _instance;
 }
 
-void EditLocallyManager::editLocally(const QUrl &url)
+void EditLocallyManager::handleRequest(const QUrl &url)
 {
     const auto inputs = parseEditLocallyUrl(url);
     const auto accountState = AccountManager::instance()->accountFromUserId(inputs.userId); 
-    createJob(accountState, inputs.relPath, inputs.token);
+    verify(accountState, inputs.relPath, inputs.token);
 }
 
 EditLocallyManager::EditLocallyInputData EditLocallyManager::parseEditLocallyUrl(const QUrl &url)
@@ -71,18 +72,36 @@ EditLocallyManager::EditLocallyInputData EditLocallyManager::parseEditLocallyUrl
     return {userId, fileRemotePath, token};
 }
 
-                                       const QString &relPath,
-                                       const QString &token)
-void EditLocallyManager::createJob(const AccountStatePtr &accountState,
+void EditLocallyManager::verify(const AccountStatePtr &accountState, 
+                                const QString &relPath, 
+                                const QString &token)
 {
-    if (_jobs.contains(token)) {
+    const auto removeJob = [this, token] { _verificationJobs.remove(token); };
+    const auto startEditLocally = [this, accountState, relPath, token, removeJob] {
+        removeJob();
+        editLocally(accountState, relPath, token);
+    };
+    const auto verificationJob = EditLocallyVerificationJobPtr(
+        new EditLocallyVerificationJob(accountState, relPath, token)
+    );
+    _verificationJobs.insert(token, verificationJob);
+    connect(verificationJob.data(), &EditLocallyVerificationJob::error, this, removeJob);
+    connect(verificationJob.data(), &EditLocallyVerificationJob::finished, this, startEditLocally);
+    verificationJob->start();
+}
+
+void EditLocallyManager::editLocally(const AccountStatePtr &accountState,
+                                     const QString &relPath,
+                                     const QString &token)
+{
+    if (_editLocallyJobs.contains(token)) {
         return;
     }
     const EditLocallyJobPtr job(new EditLocallyJob(accountState, relPath, token));
     // We need to make sure the job sticks around until it is finished
-    _jobs.insert(token, job);
+    _editLocallyJobs.insert(token, job);
 
-    const auto removeJob = [this, token] { _jobs.remove(token); };
+    const auto removeJob = [this, token] { _editLocallyJobs.remove(token); };
 
     connect(job.data(), &EditLocallyJob::error, this, removeJob);
     connect(job.data(), &EditLocallyJob::finished, this, removeJob);

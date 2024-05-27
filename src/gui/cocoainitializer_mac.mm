@@ -59,7 +59,7 @@
 {
     NSURL* url = [NSURL URLWithString:[[event paramDescriptorForKeyword:keyDirectObject] stringValue]];
     const auto qtUrl = QUrl::fromNSURL(url);
-    OCC::EditLocallyManager::instance()->editLocally(qtUrl);
+    OCC::EditLocallyManager::instance()->handleRequest(qtUrl);
 }
 
 @end

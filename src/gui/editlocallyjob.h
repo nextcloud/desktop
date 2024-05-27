@@ -53,7 +53,6 @@ private slots:
     void fetchRemoteFileParentInfo();
     void startSyncBeforeOpening();
 
-    void startCheck();
     void proceedWithSetup();
     void findAfolderAndConstructPaths();
 
@@ -94,7 +93,6 @@ private:
     bool _shouldScheduleFolderSyncAfterFileIsOpened = false;
 
     AccountStatePtr _accountState;
-    QString _userId;
     QString _relPath; // full remote path for a file (as on the server)
     QString _relativePathToRemoteRoot; // (relative path - Folder::remotePath()) for folders pointing to a non-root remote path e.g. '/subfolder' instead of '/'
     QString _relPathParent; // a folder where the file resides ('/' if it is in the first level of a remote root, or e.g. a '/subfolder/a/b/c if it resides in a nested folder)
