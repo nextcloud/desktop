@@ -33,6 +33,9 @@ public:
                                         const QString &relPath,
                                         QObject * const parent = nullptr);
 
+public slots:
+    void start();
+
 signals:
     void error(const QString &message, const QString &informativeText);
     void notAvailable();

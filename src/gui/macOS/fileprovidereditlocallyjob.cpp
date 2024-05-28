@@ -17,6 +17,8 @@
 #include <QLoggingCategory>
 
 #include "editlocallymanager.h"
+#include "systray.h"
+
 namespace OCC::Mac {
 
 Q_LOGGING_CATEGORY(lcFileProviderEditLocallyJob, "nextcloud.gui.fileprovidereditlocally", QtInfoMsg)
@@ -28,6 +30,27 @@ FileProviderEditLocallyJob::FileProviderEditLocallyJob(const AccountStatePtr &ac
     , _accountState(accountState)
     , _relPath(relPath)
 {
+}
+
+void FileProviderEditLocallyJob::start()
+{
+    if (_relPath.isEmpty() || !_accountState) {
+        qCWarning(lcFileProviderEditLocallyJob) << "Could not start setup."
+                                                << "relPath:" << _relPath
+                                                << "accountState:" << _accountState;
+        showError(tr("Could not start editing locally."), tr("An error occurred during setup."));
+        return;
+    }
+
+    const auto relPathSplit = _relPath.split(QLatin1Char('/'));
+    if (relPathSplit.isEmpty()) {
+        showError(tr("Could not find a file for local editing."
+                     "Make sure its path is valid and it is synced locally."), _relPath);
+        return;
+    }
+
+    const auto filename = relPathSplit.last();
+    Systray::instance()->createEditFileLocallyLoadingDialog(filename);
 }
 
 void FileProviderEditLocallyJob::showError(const QString &message, 
