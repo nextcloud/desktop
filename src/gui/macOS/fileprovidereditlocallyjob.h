@@ -33,6 +33,11 @@ public:
                                         const QString &relPath,
                                         QObject * const parent = nullptr);
 
+signals:
+    void error(const QString &message, const QString &informativeText);
+    void notAvailable();
+    void finished();
+
 private:
     AccountStatePtr _accountState;
     QString _relPath;
