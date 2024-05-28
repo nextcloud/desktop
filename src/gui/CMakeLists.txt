@@ -292,6 +292,7 @@ IF( APPLE )
             macOS/fileproviderdomainsyncstatus_mac.mm
             macOS/fileprovidereditlocallyjob.h
             macOS/fileprovidereditlocallyjob.cpp
+            macOS/fileprovidereditlocallyjob_mac.mm
             macOS/fileprovideritemmetadata.h
             macOS/fileprovideritemmetadata.cpp
             macOS/fileprovideritemmetadata_mac.mm
