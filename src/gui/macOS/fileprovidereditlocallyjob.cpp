@@ -67,9 +67,9 @@ void FileProviderEditLocallyJob::showError(const QString &message,
     Q_EMIT error(message, informativeText);
 }
 
-void FileProviderEditLocallyJob::idGetError(const QNetworkReply &reply)
+void FileProviderEditLocallyJob::idGetError(const QNetworkReply * const reply)
 {
-    const auto errorString = reply.errorString();
+    const auto errorString = reply == nullptr ? "Unknown error" : reply->errorString();
     qCWarning(lcFileProviderEditLocallyJob) << "Could not get file ocId." << errorString;
     showError(tr("Could not get file id."), errorString);
 }

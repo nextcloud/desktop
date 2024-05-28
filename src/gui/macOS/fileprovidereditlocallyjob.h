@@ -44,7 +44,7 @@ signals:
 
 private slots:
     void showError(const QString &message, const QString &informativeText);
-    void idGetError(const QNetworkReply &reply);
+    void idGetError(const QNetworkReply *const reply);
     void idGetFinished(const QVariantMap &data);
 
 private:
