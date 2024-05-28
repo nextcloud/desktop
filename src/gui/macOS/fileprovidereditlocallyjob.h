@@ -21,6 +21,9 @@
 
 namespace OCC::Mac {
 
+class FileProviderEditLocallyJob;
+using FileProviderEditLocallyJobPtr = QSharedPointer<FileProviderEditLocallyJob>;
+
 class FileProviderEditLocallyJob : public QObject
 {
     Q_OBJECT
