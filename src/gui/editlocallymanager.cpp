@@ -152,7 +152,7 @@ void EditLocallyManager::editLocallyFileProvider(const AccountStatePtr &accountS
     qCDebug(lcEditLocallyManager) << "Starting to edit file locally with file provider" << relPath 
                                   << "with token" << token;
 
-    const auto removeJob = [this, token] { _editLocallyFpJobs.remove(token); };
+    const auto removeJob = [&] { _editLocallyFpJobs.remove(token); };
     const auto tryStandardJob = [this, accountState, relPath, token, removeJob] {
         removeJob();
         editLocally(accountState, relPath, token);
