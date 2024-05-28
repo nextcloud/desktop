@@ -39,6 +39,7 @@ public slots:
 
 signals:
     void error(const QString &message, const QString &informativeText);
+    void ocIdAcquired(const QString &ocId);
     void notAvailable();
     void finished();
 
