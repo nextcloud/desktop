@@ -17,6 +17,7 @@
 #include <QLoggingCategory>
 
 #include "editlocallymanager.h"
+#include "networkjobs.h"
 #include "systray.h"
 
 namespace OCC::Mac {
@@ -51,6 +52,11 @@ void FileProviderEditLocallyJob::start()
 
     const auto filename = relPathSplit.last();
     Systray::instance()->createEditFileLocallyLoadingDialog(filename);
+
+    const auto idJob = new PropfindJob(_accountState->account(), _relPath, this);
+    idJob->setProperties({ QByteArrayLiteral("http://owncloud.org/ns:id") });
+    connect(idJob, &PropfindJob::finishedWithError, this, &FileProviderEditLocallyJob::idGetError);
+    connect(idJob, &PropfindJob::result, this, &FileProviderEditLocallyJob::idGetFinished);
 }
 
 void FileProviderEditLocallyJob::showError(const QString &message, 
@@ -59,6 +65,24 @@ void FileProviderEditLocallyJob::showError(const QString &message,
     Systray::instance()->destroyEditFileLocallyLoadingDialog();  
     EditLocallyManager::showError(message, informativeText);
     Q_EMIT error(message, informativeText);
+}
+
+void FileProviderEditLocallyJob::idGetError(const QNetworkReply &reply)
+{
+    const auto errorString = reply.errorString();
+    qCWarning(lcFileProviderEditLocallyJob) << "Could not get file ocId." << errorString;
+    showError(tr("Could not get file id."), errorString);
+}
+
+void FileProviderEditLocallyJob::idGetFinished(const QVariantMap &data)
+{
+    const auto ocId = data.value("id").toString();
+    if (ocId.isEmpty()) {
+        qCWarning(lcFileProviderEditLocallyJob) << "Could not get file ocId.";
+        showError(tr("Could not get file identifier."), tr("The file identifier is empty."));
+        return;
+    }
+
 }
 
 } // namespace OCC::Mac

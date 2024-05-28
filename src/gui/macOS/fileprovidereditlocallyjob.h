@@ -14,6 +14,7 @@
 
 #pragma once
 
+#include <QNetworkReply>
 #include <QObject>
 #include <QString>
 
@@ -43,6 +44,8 @@ signals:
 
 private slots:
     void showError(const QString &message, const QString &informativeText);
+    void idGetError(const QNetworkReply &reply);
+    void idGetFinished(const QVariantMap &data);
 
 private:
     AccountStatePtr _accountState;
