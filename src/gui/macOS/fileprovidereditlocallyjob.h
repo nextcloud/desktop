@@ -38,6 +38,9 @@ signals:
     void notAvailable();
     void finished();
 
+private slots:
+    void showError(const QString &message, const QString &informativeText);
+
 private:
     AccountStatePtr _accountState;
     QString _relPath;
