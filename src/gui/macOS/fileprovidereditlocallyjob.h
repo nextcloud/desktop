@@ -47,6 +47,7 @@ private slots:
     void showError(const QString &message, const QString &informativeText);
     void idGetError(const QNetworkReply *const reply);
     void idGetFinished(const QVariantMap &data);
+    void openFileProviderFile(const QString &ocId);
 
 private:
     AccountStatePtr _accountState;

@@ -53,10 +53,17 @@ void FileProviderEditLocallyJob::start()
     const auto filename = relPathSplit.last();
     Systray::instance()->createEditFileLocallyLoadingDialog(filename);
 
+    qCDebug(lcFileProviderEditLocallyJob) << "Getting file ocId for" << _relPath;
+
     const auto idJob = new PropfindJob(_accountState->account(), _relPath, this);
     idJob->setProperties({ QByteArrayLiteral("http://owncloud.org/ns:id") });
     connect(idJob, &PropfindJob::finishedWithError, this, &FileProviderEditLocallyJob::idGetError);
     connect(idJob, &PropfindJob::result, this, &FileProviderEditLocallyJob::idGetFinished);
+
+    connect(this, &FileProviderEditLocallyJob::ocIdAcquired, 
+            this, &FileProviderEditLocallyJob::openFileProviderFile);
+
+    idJob->start();
 }
 
 void FileProviderEditLocallyJob::showError(const QString &message, 
@@ -83,6 +90,8 @@ void FileProviderEditLocallyJob::idGetFinished(const QVariantMap &data)
         return;
     }
 
+    qCDebug(lcFileProviderEditLocallyJob) << "Got file ocId for" << _relPath << ocId;
+    emit ocIdAcquired(ocId);
 }
 
 } // namespace OCC::Mac
