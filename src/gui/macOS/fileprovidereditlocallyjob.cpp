@@ -16,6 +16,7 @@
 
 #include <QLoggingCategory>
 
+#include "editlocallymanager.h"
 namespace OCC::Mac {
 
 Q_LOGGING_CATEGORY(lcFileProviderEditLocallyJob, "nextcloud.gui.fileprovidereditlocally", QtInfoMsg)
@@ -27,6 +28,14 @@ FileProviderEditLocallyJob::FileProviderEditLocallyJob(const AccountStatePtr &ac
     , _accountState(accountState)
     , _relPath(relPath)
 {
+}
+
+void FileProviderEditLocallyJob::showError(const QString &message, 
+                                           const QString &informativeText)
+{
+    Systray::instance()->destroyEditFileLocallyLoadingDialog();  
+    EditLocallyManager::showError(message, informativeText);
+    Q_EMIT error(message, informativeText);
 }
 
 } // namespace OCC::Mac
