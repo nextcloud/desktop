@@ -23,6 +23,10 @@
 #include "editlocallyverificationjob.h"
 #include "systray.h"
 
+#ifdef BUILD_FILE_PROVIDER_MODULE
+#include "macOS/fileprovidereditlocallyjob.h"
+#endif
+
 namespace OCC {
 
 Q_LOGGING_CATEGORY(lcEditLocallyManager, "nextcloud.gui.editlocallymanager", QtInfoMsg)
@@ -121,7 +125,11 @@ void EditLocallyManager::verify(const AccountStatePtr &accountState,
     };
     const auto startEditLocally = [this, accountState, relPath, token, finishedHandler] {
         finishedHandler();
-        editLocally(accountState, relPath, token);
+#ifdef BUILD_FILE_PROVIDER_MODULE
+        editLocallyFileProvider(accountState, relPath, token);
+#else
+        editLocally(accountState, relPath, token);    
+#endif
     };
     const auto verificationJob = EditLocallyVerificationJobPtr(
         new EditLocallyVerificationJob(accountState, relPath, token)
@@ -135,6 +143,32 @@ void EditLocallyManager::verify(const AccountStatePtr &accountState,
     verificationJob->start();
 }
 
+#ifdef BUILD_FILE_PROVIDER_MODULE
+void EditLocallyManager::editLocallyFileProvider(const AccountStatePtr &accountState,
+                                                 const QString &relPath,
+                                                 const QString &token)
+{
+    if (_editLocallyFpJobs.contains(token)) {
+        return;
+    }
+
+    const auto removeJob = [this, token] { _editLocallyFpJobs.remove(token); };
+    const auto tryStandardJob = [this, accountState, relPath, token, removeJob] {
+        removeJob();
+        editLocally(accountState, relPath, token);
+    };
+    const Mac::FileProviderEditLocallyJobPtr job(
+        new Mac::FileProviderEditLocallyJob(accountState, relPath)
+    );
+    // We need to make sure the job sticks around until it is finished
+    _editLocallyFpJobs.insert(token, job);
+
+    connect(job.data(), &Mac::FileProviderEditLocallyJob::error, this, removeJob);
+    connect(job.data(), &Mac::FileProviderEditLocallyJob::notAvailable, this, tryStandardJob);
+    connect(job.data(), &Mac::FileProviderEditLocallyJob::finished, this, removeJob);
+}
+#endif
+
 void EditLocallyManager::editLocally(const AccountStatePtr &accountState,
                                      const QString &relPath,
                                      const QString &token)
@@ -143,12 +177,11 @@ void EditLocallyManager::editLocally(const AccountStatePtr &accountState,
         return;
     }
 
+    const auto removeJob = [this, token] { _editLocallyJobs.remove(token); };
     const EditLocallyJobPtr job(new EditLocallyJob(accountState, relPath));
     // We need to make sure the job sticks around until it is finished
     _editLocallyJobs.insert(token, job);
-
-    const auto removeJob = [this, token] { _editLocallyJobs.remove(token); };
-
+ 
     connect(job.data(), &EditLocallyJob::error, this, removeJob);
     connect(job.data(), &EditLocallyJob::finished, this, removeJob);
 

@@ -17,8 +17,13 @@
 #include <QObject>
 #include <QHash>
 
+#include "config.h"
 #include "editlocallyjob.h"
 #include "editlocallyverificationjob.h"
+
+#ifdef BUILD_FILE_PROVIDER_MODULE
+#include "macOS/fileprovidereditlocallyjob.h"
+#endif
 
 namespace OCC {
 
@@ -40,6 +45,13 @@ private slots:
     void editLocally(const AccountStatePtr &accountState,
                      const QString &relPath,
                      const QString &token);
+    
+#ifdef BUILD_FILE_PROVIDER_MODULE
+    void editLocallyFileProvider(const AccountStatePtr &accountState,
+                                 const QString &relPath,
+                                 const QString &token);
+#endif
+
 
 private:
     explicit EditLocallyManager(QObject *parent = nullptr);
@@ -57,6 +69,10 @@ private:
 
     QHash<QString, EditLocallyVerificationJobPtr> _verificationJobs;
     QHash<QString, EditLocallyJobPtr> _editLocallyJobs;
+
+#ifdef BUILD_FILE_PROVIDER_MODULE
+    QHash<QString, Mac::FileProviderEditLocallyJobPtr> _editLocallyFpJobs;
+#endif
 };
 
 }
