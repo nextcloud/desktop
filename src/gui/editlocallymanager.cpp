@@ -120,6 +120,8 @@ void EditLocallyManager::verify(const AccountStatePtr &accountState,
     };
     const auto startEditLocally = [this, accountState, relPath, token, finishedHandler] {
         finishedHandler();
+        qCDebug(lcEditLocallyManager) << "Starting to edit file locally" << relPath 
+                                      << "with token" << token;
 #ifdef BUILD_FILE_PROVIDER_MODULE
         editLocallyFileProvider(accountState, relPath, token);
 #else
@@ -147,6 +149,9 @@ void EditLocallyManager::editLocallyFileProvider(const AccountStatePtr &accountS
         return;
     }
 
+    qCDebug(lcEditLocallyManager) << "Starting to edit file locally with file provider" << relPath 
+                                  << "with token" << token;
+
     const auto removeJob = [this, token] { _editLocallyFpJobs.remove(token); };
     const auto tryStandardJob = [this, accountState, relPath, token, removeJob] {
         removeJob();
@@ -171,6 +176,9 @@ void EditLocallyManager::editLocally(const AccountStatePtr &accountState,
     if (_editLocallyJobs.contains(token)) {
         return;
     }
+
+    qCDebug(lcEditLocallyManager) << "Starting to edit file locally" << relPath 
+                                  << "with token" << token;
 
     const auto removeJob = [this, token] { _editLocallyJobs.remove(token); };
     const EditLocallyJobPtr job(new EditLocallyJob(accountState, relPath));
