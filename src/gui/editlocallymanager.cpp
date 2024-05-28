@@ -20,12 +20,7 @@
 #include <QUrlQuery>
 
 #include "accountmanager.h"
-#include "editlocallyverificationjob.h"
 #include "systray.h"
-
-#ifdef BUILD_FILE_PROVIDER_MODULE
-#include "macOS/fileprovidereditlocallyjob.h"
-#endif
 
 namespace OCC {
 
