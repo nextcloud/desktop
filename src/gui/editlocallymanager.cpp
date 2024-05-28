@@ -166,6 +166,8 @@ void EditLocallyManager::editLocallyFileProvider(const AccountStatePtr &accountS
     connect(job.data(), &Mac::FileProviderEditLocallyJob::error, this, removeJob);
     connect(job.data(), &Mac::FileProviderEditLocallyJob::notAvailable, this, tryStandardJob);
     connect(job.data(), &Mac::FileProviderEditLocallyJob::finished, this, removeJob);
+
+    job->start();
 }
 #endif
 
