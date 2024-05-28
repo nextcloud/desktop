@@ -36,6 +36,7 @@ public:
     static QString fileProviderDomainIdentifierFromAccountState(const AccountStatePtr &accountState);
     
     void start();
+    void* domainForAccount(const OCC::AccountState * const accountState);
 
 signals:
     void domainSetupComplete();
