@@ -127,6 +127,7 @@ QNetworkReply *AbstractNetworkJob::addTimer(QNetworkReply *reply)
 QNetworkReply *AbstractNetworkJob::sendRequest(const QByteArray &verb, const QUrl &url,
     QNetworkRequest req, QIODevice *requestBody)
 {
+    req.setAttribute(QNetworkRequest::RedirectPolicyAttribute, QNetworkRequest::NoLessSafeRedirectPolicy);
     auto reply = _account->sendRawRequest(verb, url, req, requestBody);
     _requestBody = requestBody;
     if (_requestBody) {
@@ -139,6 +140,7 @@ QNetworkReply *AbstractNetworkJob::sendRequest(const QByteArray &verb, const QUr
 QNetworkReply *AbstractNetworkJob::sendRequest(const QByteArray &verb, const QUrl &url,
     QNetworkRequest req, const QByteArray &requestBody)
 {
+    req.setAttribute(QNetworkRequest::RedirectPolicyAttribute, QNetworkRequest::NoLessSafeRedirectPolicy);
     auto reply = _account->sendRawRequest(verb, url, req, requestBody);
     _requestBody = nullptr;
     adoptRequest(reply);
@@ -150,6 +152,7 @@ QNetworkReply *AbstractNetworkJob::sendRequest(const QByteArray &verb,
                                                QNetworkRequest req,
                                                QHttpMultiPart *requestBody)
 {
+    req.setAttribute(QNetworkRequest::RedirectPolicyAttribute, QNetworkRequest::NoLessSafeRedirectPolicy);
     auto reply = _account->sendRawRequest(verb, url, req, requestBody);
     _requestBody = nullptr;
     adoptRequest(reply);
