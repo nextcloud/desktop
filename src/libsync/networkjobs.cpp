@@ -522,12 +522,6 @@ void CheckServerJob::metaDataChangedSlot()
 
 bool CheckServerJob::finished()
 {
-    if (reply()->request().url().scheme() == QLatin1String("https")
-        && reply()->sslConfiguration().sessionTicket().isEmpty()
-        && reply()->error() == QNetworkReply::NoError) {
-        qCWarning(lcCheckServerJob) << "No SSL session identifier / session ticket is used, this might impact sync performance negatively.";
-    }
-
     mergeSslConfigurationForSslButton(reply()->sslConfiguration(), account());
 
     // The server installs to /owncloud. Let's try that if the file wasn't found
@@ -540,14 +534,14 @@ bool CheckServerJob::finished()
         return false;
     }
 
-    QByteArray body = reply()->peek(4 * 1024);
-    int httpStatus = reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+    const auto body = reply()->peek(4 * 1024);
+    const auto httpStatus = reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
     if (body.isEmpty() || httpStatus != 200) {
         qCWarning(lcCheckServerJob) << "error: status.php replied " << httpStatus << body;
         emit instanceNotFound(reply());
     } else {
         QJsonParseError error{};
-        auto status = QJsonDocument::fromJson(body, &error);
+        const auto status = QJsonDocument::fromJson(body, &error);
         // empty or invalid response
         if (error.error != QJsonParseError::NoError || status.isNull()) {
             qCWarning(lcCheckServerJob) << "status.php from server is not valid JSON!" << body << reply()->request().url() << error.errorString();
