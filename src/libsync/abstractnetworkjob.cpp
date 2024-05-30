@@ -184,10 +184,11 @@ void AbstractNetworkJob::slotFinished()
     if (_reply->error() == QNetworkReply::SslHandshakeFailedError) {
         qCWarning(lcNetworkJob) << "SslHandshakeFailedError: " << errorString() << " : can be caused by a webserver wanting SSL client certificates";
     }
-    // Qt doesn't yet transparently resend HTTP2 requests, do so here
+
+    // TODO: this could be removed with Qt6
     const auto maxHttp2Resends = 3;
-    QByteArray verb = HttpLogger::requestVerb(*reply());
-    if (_reply->error() == QNetworkReply::ContentReSendError
+    if (const auto verb = HttpLogger::requestVerb(*reply());
+        _reply->error() == QNetworkReply::ContentReSendError
         && _reply->attribute(QNetworkRequest::Http2WasUsedAttribute).toBool()) {
 
         if ((_requestBody && !_requestBody->isSequential()) || verb.isEmpty()) {
@@ -216,9 +217,9 @@ void AbstractNetworkJob::slotFinished()
     }
 
     if (_reply->error() != QNetworkReply::NoError) {
-
-        if (_account->credentials()->retryIfNeeded(this))
+        if (_account->credentials()->retryIfNeeded(this)) {
             return;
+        }
 
         if (!_ignoreCredentialFailure || _reply->error() != QNetworkReply::AuthenticationRequiredError) {
             qCWarning(lcNetworkJob) << _reply->error() << errorString()
@@ -233,68 +234,11 @@ void AbstractNetworkJob::slotFinished()
     // get the Date timestamp from reply
     _responseTimestamp = _reply->rawHeader("Date");
 
-    QUrl requestedUrl = reply()->request().url();
-    QUrl redirectUrl = reply()->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl();
-    if (_followRedirects && !redirectUrl.isEmpty()) {
-        // Redirects may be relative
-        if (redirectUrl.isRelative())
-            redirectUrl = requestedUrl.resolved(redirectUrl);
-
-        // For POST requests where the target url has query arguments, Qt automatically
-        // moves these arguments to the body if no explicit body is specified.
-        // This can cause problems with redirected requests, because the redirect url
-        // will no longer contain these query arguments.
-        if (reply()->operation() == QNetworkAccessManager::PostOperation
-            && requestedUrl.hasQuery()
-            && !redirectUrl.hasQuery()
-            && !_requestBody) {
-            qCWarning(lcNetworkJob) << "Redirecting a POST request with an implicit body loses that body";
-        }
-
-        // ### some of the qWarnings here should be exported via displayErrors() so they
-        // ### can be presented to the user if the job executor has a GUI
-        if (requestedUrl.scheme() == QLatin1String("https") && redirectUrl.scheme() == QLatin1String("http")) {
-            qCWarning(lcNetworkJob) << this << "HTTPS->HTTP downgrade detected!";
-        } else if (requestedUrl == redirectUrl || _redirectCount + 1 >= maxRedirects()) {
-            qCWarning(lcNetworkJob) << this << "Redirect loop detected!";
-        } else if (_requestBody && _requestBody->isSequential()) {
-            qCWarning(lcNetworkJob) << this << "cannot redirect request with sequential body";
-        } else if (verb.isEmpty()) {
-            qCWarning(lcNetworkJob) << this << "cannot redirect request: could not detect original verb";
-        } else {
-            emit redirected(_reply, redirectUrl, _redirectCount);
-
-            // The signal emission may have changed this value
-            if (_followRedirects) {
-                _redirectCount++;
-
-                // Create the redirected request and send it
-                qCInfo(lcNetworkJob) << "Redirecting" << verb << requestedUrl << redirectUrl;
-                resetTimeout();
-                if (_requestBody) {
-                    if(!_requestBody->isOpen()) {
-                        // Avoid the QIODevice::seek (QBuffer): The device is not open warning message
-                       _requestBody->open(QIODevice::ReadOnly);
-                    }
-                    _requestBody->seek(0);
-                }
-                sendRequest(
-                    verb,
-                    redirectUrl,
-                    reply()->request(),
-                    _requestBody);
-                return;
-            }
-        }
-    }
-
-    AbstractCredentials *creds = _account->credentials();
-    if (!creds->stillValid(_reply) && !_ignoreCredentialFailure) {
+    if (auto *creds = _account->credentials();!creds->stillValid(_reply) && !_ignoreCredentialFailure) {
         _account->handleInvalidCredentials();
     }
 
-    bool discard = finished();
-    if (discard) {
+    if (const auto discard = finished()) {
         qCDebug(lcNetworkJob) << "Network job" << metaObject()->className() << "finished for" << path();
         deleteLater();
     }
