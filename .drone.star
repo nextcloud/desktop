@@ -88,6 +88,10 @@ config = {
                         "enabled": False,
                         "command": "make dist",
                     },
+                    "activity": {
+                        "enabled": True,
+                        "command": "make dist",
+                    },
                 },
                 "skip_in_pr": True,
                 "skip": False,

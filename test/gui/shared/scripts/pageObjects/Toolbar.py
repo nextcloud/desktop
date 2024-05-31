@@ -1,6 +1,5 @@
 import squish, object, names
 from helpers.SetupClientHelper import wait_until_app_killed
-from helpers.ObjectHelper import get_center_coordinates
 from helpers.ConfigHelper import get_config
 
 
@@ -76,30 +75,16 @@ class Toolbar:
 
     @staticmethod
     def openActivity():
-        x, y = get_center_coordinates(squish.waitForObject(Toolbar.ACTIVITY_BUTTON))
-        squish.mouseClick(
-            squish.waitForObject(Toolbar.ACTIVITY_BUTTON), x, y, squish.Qt.LeftButton
-        )
+        squish.mouseClick(squish.waitForObject(Toolbar.ACTIVITY_BUTTON))
 
     @staticmethod
     def openNewAccountSetup():
-        x, y = get_center_coordinates(squish.waitForObject(Toolbar.ADD_ACCOUNT_BUTTON))
-        squish.mouseClick(
-            squish.waitForObject(Toolbar.ADD_ACCOUNT_BUTTON), x, y, squish.Qt.LeftButton
-        )
+        squish.mouseClick(squish.waitForObject(Toolbar.ADD_ACCOUNT_BUTTON))
 
     @staticmethod
     def openAccount(displayname, host):
         account_title = displayname + "\n" + host
-        x, y = get_center_coordinates(
-            squish.waitForObject(Toolbar.getItemSelector(account_title))
-        )
-        squish.mouseClick(
-            squish.waitForObject(Toolbar.getItemSelector(account_title)),
-            x,
-            y,
-            squish.Qt.LeftButton,
-        )
+        squish.mouseClick(squish.waitForObject(Toolbar.getItemSelector(account_title)))
 
     @staticmethod
     def getDisplayedAccountText(displayname, host):
@@ -111,17 +96,11 @@ class Toolbar:
 
     @staticmethod
     def open_settings_tab():
-        x, y = get_center_coordinates(squish.waitForObject(Toolbar.SETTINGS_BUTTON))
-        squish.mouseClick(
-            squish.waitForObject(Toolbar.SETTINGS_BUTTON), x, y, squish.Qt.LeftButton
-        )
+        squish.mouseClick(squish.waitForObject(Toolbar.SETTINGS_BUTTON))
 
     @staticmethod
     def quit_owncloud():
-        x, y = get_center_coordinates(squish.waitForObject(Toolbar.QUIT_BUTTON))
-        squish.mouseClick(
-            squish.waitForObject(Toolbar.QUIT_BUTTON), x, y, squish.Qt.LeftButton
-        )
+        squish.mouseClick(squish.waitForObject(Toolbar.QUIT_BUTTON))
         squish.clickButton(squish.waitForObject(Toolbar.CONFIRM_QUIT_BUTTON))
         for ctx in squish.applicationContextList():
             pid = ctx.pid

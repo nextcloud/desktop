@@ -70,11 +70,7 @@ class SharingDialog:
     @staticmethod
     def searchCollaborator(collaborator):
         squish.mouseClick(
-            squish.waitForObject(SharingDialog.SHARE_WITH_COLLABORATOR_INPUT_FIELD),
-            0,
-            0,
-            squish.Qt.NoModifier,
-            squish.Qt.LeftButton,
+            squish.waitForObject(SharingDialog.SHARE_WITH_COLLABORATOR_INPUT_FIELD)
         )
         squish.type(
             squish.waitForObject(SharingDialog.SHARE_WITH_COLLABORATOR_INPUT_FIELD),
@@ -133,11 +129,7 @@ class SharingDialog:
             squish.waitForObjectItem(
                 SharingDialog.SUGGESTED_COLLABORATOR,
                 escapedReceiverName + postFixInSuggestion,
-            ),
-            0,
-            0,
-            squish.Qt.NoModifier,
-            squish.Qt.LeftButton,
+            )
         )
 
     @staticmethod

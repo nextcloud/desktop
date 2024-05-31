@@ -120,13 +120,7 @@ class PublicLinkDialog:
 
     @staticmethod
     def openPublicLinkTab():
-        squish.mouseClick(
-            squish.waitForObject(PublicLinkDialog.PUBLIC_LINKS_TAB),
-            0,
-            0,
-            squish.Qt.NoModifier,
-            squish.Qt.LeftButton,
-        )
+        squish.mouseClick(squish.waitForObject(PublicLinkDialog.PUBLIC_LINKS_TAB))
 
     @staticmethod
     def createPublicLink(password='', permissions='', expireDate='', linkName=''):
@@ -164,13 +158,7 @@ class PublicLinkDialog:
         if not enabled:
             PublicLinkDialog.togglePassword()
 
-        squish.mouseClick(
-            squish.waitForObject(PublicLinkDialog.PASSWORD_INPUT_FIELD),
-            0,
-            0,
-            squish.Qt.NoModifier,
-            squish.Qt.LeftButton,
-        )
+        squish.mouseClick(squish.waitForObject(PublicLinkDialog.PASSWORD_INPUT_FIELD))
         squish.type(
             squish.waitForObject(PublicLinkDialog.PASSWORD_INPUT_FIELD),
             password,
@@ -192,11 +180,7 @@ class PublicLinkDialog:
             expDate = datetime.strptime(expireDate, '%Y-%m-%d')
             expYear = expDate.year - 2000
             squish.mouseClick(
-                squish.waitForObject(PublicLinkDialog.EXPIRATION_DATE_FIELD),
-                0,
-                0,
-                squish.Qt.NoModifier,
-                squish.Qt.LeftButton,
+                squish.waitForObject(PublicLinkDialog.EXPIRATION_DATE_FIELD)
             )
             # Move the cursor to year (last) field and enter the year
             squish.nativeType("<Ctrl+Right>")
@@ -252,13 +236,7 @@ class PublicLinkDialog:
     # See for more details: https://github.com/owncloud/client/issues/9218
     @staticmethod
     def setExpirationDateWithWorkaround(year, month, day):
-        squish.mouseClick(
-            squish.waitForObject(PublicLinkDialog.EXPIRATION_DATE_FIELD),
-            0,
-            0,
-            squish.Qt.NoModifier,
-            squish.Qt.LeftButton,
-        )
+        squish.mouseClick(squish.waitForObject(PublicLinkDialog.EXPIRATION_DATE_FIELD))
 
         # date can only be set to future date. But sometimes it can not modify the month field in first attempt.
         # date format is 'm/d/yy', so we have to edit 'month' first

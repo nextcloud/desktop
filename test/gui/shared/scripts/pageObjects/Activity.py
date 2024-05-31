@@ -65,16 +65,34 @@ class Activity:
         # Because files count will be appended like "Not Synced (2)"
         # So to overcome this the following approach has been implemented
         tabCount = squish.waitForObjectExists(Activity.SUBTAB_CONTAINER).count
+        tabs = []
         for index in range(tabCount):
             tabText = Activity.getTabText(index)
+            tabs.append(tabText)
 
             if tabName in tabText:
                 tabFound = True
-                squish.clickTab(Activity.TAB_CONTAINER, tabText)
+                # clickTab becomes flaky with "Not Synced" tab
+                # because the tab text changes. e.g. "Not Synced (2)"
+                # squish.clickTab(Activity.TAB_CONTAINER, tabText)
+
+                # NOTE: If only the objectOrName is specified,
+                # the object is clicked in the middle by the Qt::LeftButton button
+                # and with no keyboard modifiers pressed.
+                squish.mouseClick(
+                    squish.waitForObjectExists(Activity.getTabObject(index))
+                )
                 break
 
         if not tabFound:
-            raise Exception("Tab not found: " + tabName)
+            raise Exception(
+                "Tab not found: "
+                + tabName
+                + " in "
+                + str(tabs)
+                + ". Tabs count: "
+                + str(tabCount)
+            )
 
     @staticmethod
     def checkFileExist(filename):
