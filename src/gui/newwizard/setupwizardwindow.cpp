@@ -75,9 +75,6 @@ SetupWizardWindow::SetupWizardWindow(SettingsDialog *parent)
 
     _ui->transitionProgressIndicator->setFixedSize(32, 32);
     _ui->transitionProgressIndicator->setColor(Theme::instance()->wizardHeaderTitleColor());
-
-    // handle user pressing enter/return key
-    installEventFilter(this);
 }
 
 void SetupWizardWindow::loadStylesheet()
@@ -199,30 +196,6 @@ void SetupWizardWindow::setNavigationEntries(const QList<SetupWizardState> &entr
 void SetupWizardWindow::slotUpdateNextButton()
 {
     _ui->nextButton->setEnabled(_currentPage->validateInput());
-}
-
-bool SetupWizardWindow::eventFilter(QObject *obj, QEvent *event)
-{
-    if (!_transitioning) {
-        if (obj == _currentPage || obj == this) {
-            if (event->type() == QEvent::KeyPress) {
-                auto keyEvent = dynamic_cast<QKeyEvent *>(event);
-
-                switch (keyEvent->key()) {
-                case Qt::Key_Enter:
-                    Q_FALLTHROUGH();
-                case Qt::Key_Return:
-                    slotMoveToNextPage();
-                    return true;
-                default:
-                    // no action required, give other handlers a chance
-                    break;
-                }
-            }
-        }
-    }
-
-    return QDialog::eventFilter(obj, event);
 }
 
 void SetupWizardWindow::disableNextButton()

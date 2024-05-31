@@ -61,9 +61,6 @@ public:
 
     void disableNextButton();
 
-protected:
-    bool eventFilter(QObject *obj, QEvent *event) override;
-
 Q_SIGNALS:
     void navigationEntryClicked(SetupWizardState clickedState);
     void nextButtonClicked();
