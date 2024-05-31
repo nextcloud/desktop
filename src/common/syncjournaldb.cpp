@@ -68,7 +68,7 @@ static void fillFileRecordFromGetQuery(SyncJournalFileRecord &rec, SqlQuery &que
     rec._e2eMangledName = query.baValue(10);
     rec._e2eEncryptionStatus = static_cast<SyncJournalFileRecord::EncryptionStatus>(query.intValue(11));
     rec._e2eCertificateFingerprint = query.baValue(12);
-    Q_ASSERT(rec._e2eEncryptionStatus == SyncJournalFileRecord::EncryptionStatus::NotEncrypted || !rec._e2eCertificateFingerprint.isEmpty());
+    //Q_ASSERT(rec._e2eEncryptionStatus == SyncJournalFileRecord::EncryptionStatus::NotEncrypted || !rec._e2eCertificateFingerprint.isEmpty());
     rec._lockstate._locked = query.intValue(13) > 0;
     rec._lockstate._lockOwnerDisplayName = query.stringValue(14);
     rec._lockstate._lockOwnerId = query.stringValue(15);

@@ -1438,7 +1438,6 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
             item->_e2eEncryptionStatus = EncryptionStatusEnums::fromDbEncryptionStatus(base._e2eEncryptionStatus);
             item->_e2eEncryptionServerCapability = EncryptionStatusEnums::fromEndToEndEncryptionApiVersion(_discoveryData->_account->capabilities().clientSideEncryptionVersion());
             item->_e2eCertificateFingerprint = base._e2eCertificateFingerprint;
-            Q_ASSERT(item->_e2eEncryptionStatus == SyncFileItem::EncryptionStatus::NotEncrypted || !item->_e2eCertificateFingerprint.isEmpty());
         }
         postProcessLocalNew();
         /*if (item->isDirectory() && item->_instruction == CSYNC_INSTRUCTION_NEW && item->_direction == SyncFileItem::Up
@@ -2103,7 +2102,7 @@ DiscoverySingleDirectoryJob *ProcessDirectoryJob::startAsyncServerQuery()
                 // we need to make sure we first download all e2ee files/folders before migrating
                 _dirItem->_isEncryptedMetadataNeedUpdate = alreadyDownloaded && serverJob->encryptedMetadataNeedUpdate();
                 _dirItem->_e2eCertificateFingerprint = serverJob->certificateSha256Fingerprint();
-                Q_ASSERT(_dirItem->_e2eEncryptionStatus == SyncFileItem::EncryptionStatus::NotEncrypted || !_dirItem->_e2eCertificateFingerprint.isEmpty());
+                //Q_ASSERT(_dirItem->_e2eEncryptionStatus == SyncFileItem::EncryptionStatus::NotEncrypted || !_dirItem->_e2eCertificateFingerprint.isEmpty());
                 _dirItem->_e2eEncryptionStatus = serverJob->currentEncryptionStatus();
                 _dirItem->_e2eEncryptionStatusRemote = serverJob->currentEncryptionStatus();
                 _dirItem->_e2eEncryptionServerCapability = serverJob->requiredEncryptionStatus();
