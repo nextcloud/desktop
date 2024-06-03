@@ -32,6 +32,8 @@ ServerUrlSetupWizardPage::ServerUrlSetupWizardPage(const QUrl &serverUrl)
 
     _ui->logoLabel->setText(QString());
     _ui->logoLabel->setPixmap(Theme::instance()->wizardHeaderLogo().pixmap(200, 200));
+    //: This is the accessibility text for the logo in the setup wizard page. The parameter is the name for the (branded) application.
+    _ui->logoLabel->setAccessibleName(tr("%1 logo").arg(Theme::instance()->appNameGUI()));
 
     if (!Theme::instance()->wizardUrlPostfix().isEmpty()) {
         _ui->urlLineEdit->setPostfix(Theme::instance()->wizardUrlPostfix());

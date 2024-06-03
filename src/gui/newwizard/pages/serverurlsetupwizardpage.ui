@@ -32,9 +32,6 @@
    </item>
    <item>
     <widget class="QLabel" name="logoLabel">
-     <property name="text">
-      <string notr="true">logoLabel (placeholder)</string>
-     </property>
      <property name="alignment">
       <set>Qt::AlignCenter</set>
      </property>
@@ -89,6 +86,9 @@
      </property>
      <property name="alignment">
       <set>Qt::AlignCenter</set>
+     </property>
+     <property name="buddy">
+      <cstring>urlLineEdit</cstring>
      </property>
     </widget>
    </item>
