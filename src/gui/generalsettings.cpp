@@ -391,6 +391,7 @@ void GeneralSettings::slotUpdateChannelChanged()
         return;
     }
 
+    const auto enterprise = _ui->updateChannel->count() > 3 ? "- enterprise: contains stable versions for customers.\n" : "";
     auto msgBox = new QMessageBox(
         QMessageBox::Warning,
         tr("Changing update channel?"),
@@ -398,8 +399,8 @@ void GeneralSettings::slotUpdateChannelChanged()
            "- stable: contains tested versions considered reliable\n"
            "- beta: contains versions with new features that may not be tested thoroughly\n"
            "- daily: contains versions created daily only for testing and development\n\n"
-           "- enterprise: contains stable versions for customers.\n\n"
-           "Downgrading versions is not possible immediately: changing from beta to stable means waiting for the new stable version."),
+           "%1\n"
+           "Downgrading versions is not possible immediately: changing from beta to stable means waiting for the new stable version.").arg(enterprise),
         QMessageBox::NoButton,
         this);
     const auto acceptButton = msgBox->addButton(tr("Change update channel"), QMessageBox::AcceptRole);
