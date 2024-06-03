@@ -398,6 +398,7 @@ void GeneralSettings::slotUpdateChannelChanged()
            "- stable: contains tested versions considered reliable\n"
            "- beta: contains versions with new features that may not be tested thoroughly\n"
            "- daily: contains versions created daily only for testing and development\n\n"
+           "- enterprise: contains stable versions for customers.\n\n"
            "Downgrading versions is not possible immediately: changing from beta to stable means waiting for the new stable version."),
         QMessageBox::NoButton,
         this);
