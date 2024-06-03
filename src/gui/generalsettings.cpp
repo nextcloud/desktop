@@ -279,6 +279,14 @@ void GeneralSettings::loadMiscSettings()
     _ui->stopExistingFolderNowBigSyncCheckBox->setChecked(_ui->existingFolderLimitCheckBox->isChecked() && cfgFile.stopSyncingExistingFoldersOverLimit());
     _ui->newExternalStorage->setChecked(cfgFile.confirmExternalStorage());
     _ui->monoIconsCheckBox->setChecked(cfgFile.monoIcons());
+
+#if defined(BUILD_UPDATER)
+    auto validUpdateChannels = cfgFile.validUpdateChannels();
+    _ui->updateChannel->addItems(validUpdateChannels);
+    const auto currentUpdateChannelIndex = validUpdateChannels.indexOf(cfgFile.updateChannel());
+    _ui->updateChannel->setCurrentIndex(currentUpdateChannelIndex != -1? currentUpdateChannelIndex : 0);
+    connect(_ui->updateChannel, &QComboBox::currentTextChanged, this, &GeneralSettings::slotUpdateChannelChanged);
+#endif
 }
 
 #if defined(BUILD_UPDATER)
@@ -291,9 +299,6 @@ void GeneralSettings::slotUpdateInfo()
         _ui->updatesContainer->setVisible(false);
         return;
     }
-
-    const auto validUpdateChannels = config.validUpdateChannels();
-    _ui->updateChannel->addItems(validUpdateChannels);
 
     if (updater) {
         connect(_ui->updateButton,
@@ -338,11 +343,6 @@ void GeneralSettings::slotUpdateInfo()
         _ui->updateButton->setEnabled(enableUpdateButton);
     }
 #endif
-
-    const auto currentUpdateChannelIndex = validUpdateChannels.indexOf(config.updateChannel());
-    _ui->updateChannel->setCurrentIndex(currentUpdateChannelIndex != -1? currentUpdateChannelIndex : 0);
-    connect(_ui->updateChannel, &QComboBox::currentTextChanged,
-        this, &GeneralSettings::slotUpdateChannelChanged, Qt::UniqueConnection);
 }
 
 void GeneralSettings::slotUpdateChannelChanged()
