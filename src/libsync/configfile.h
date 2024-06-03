@@ -227,6 +227,9 @@ public:
     [[nodiscard]] bool launchOnSystemStartup() const;
     void setLaunchOnSystemStartup(const bool autostart);
 
+    [[nodiscard]] bool serverHasValidSubscription();
+    void setServerHasValidSubscription(const bool valid);
+
     /**  Returns a new settings pre-set in a specific group.  The Settings will be created
          with the given parent. If no parent is specified, the caller must destroy the settings */
     static std::unique_ptr<QSettings> settingsWithGroup(const QString &group, QObject *parent = nullptr);

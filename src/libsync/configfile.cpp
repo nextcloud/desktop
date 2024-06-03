@@ -112,6 +112,7 @@ static constexpr char certPasswd[] = "http_certificatePasswd";
 
 static const QStringList validUpdateChannelsList { QStringLiteral("stable"), QStringLiteral("beta"), QStringLiteral("daily") };
 static constexpr char defaultUpdateChannelName[] = "stable";
+static constexpr char serverHasValidSubscriptionC[] = "serverHasValidSubscription";
 }
 
 namespace OCC {
@@ -1174,6 +1175,18 @@ void ConfigFile::setLaunchOnSystemStartup(const bool autostart)
 {
     QSettings settings(configFile(), QSettings::IniFormat);
     settings.setValue(QLatin1String(launchOnSystemStartupC), autostart);
+}
+
+bool ConfigFile::serverHasValidSubscription()
+{
+    QSettings settings(configFile(), QSettings::IniFormat);
+    return settings.value(QLatin1String(serverHasValidSubscriptionC), false).toBool();
+}
+
+void ConfigFile::setServerHasValidSubscription(const bool valid)
+{
+    QSettings settings(configFile(), QSettings::IniFormat);
+    settings.setValue(QLatin1String(serverHasValidSubscriptionC), valid);
 }
 
 Q_GLOBAL_STATIC(QString, g_configFileName)
