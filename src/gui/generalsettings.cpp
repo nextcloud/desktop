@@ -190,8 +190,6 @@ GeneralSettings::GeneralSettings(QWidget *parent)
     });
 
     loadMiscSettings();
-    // updater info now set in: customizeStyle
-    //slotUpdateInfo();
 
     // misc
     connect(_ui->monoIconsCheckBox, &QAbstractButton::toggled, this, &GeneralSettings::saveMiscSettings);
@@ -286,33 +284,36 @@ void GeneralSettings::loadMiscSettings()
 #if defined(BUILD_UPDATER)
 void GeneralSettings::slotUpdateInfo()
 {
+    ConfigFile config;
     const auto updater = Updater::instance();
-    if (ConfigFile().skipUpdateCheck() || !updater) {
+    if (config.skipUpdateCheck() || !updater) {
         // updater disabled on compile
         _ui->updatesContainer->setVisible(false);
         return;
     }
 
+    const auto validUpdateChannels = config.validUpdateChannels();
+    _ui->updateChannel->addItems(validUpdateChannels);
+
     if (updater) {
         connect(_ui->updateButton,
                 &QAbstractButton::clicked,
                 this,
-
                 &GeneralSettings::slotUpdateCheckNow,
                 Qt::UniqueConnection);
         connect(_ui->autoCheckForUpdatesCheckBox, &QAbstractButton::toggled, this,
                 &GeneralSettings::slotToggleAutoUpdateCheck, Qt::UniqueConnection);
-        _ui->autoCheckForUpdatesCheckBox->setChecked(ConfigFile().autoUpdateCheck());
+        _ui->autoCheckForUpdatesCheckBox->setChecked(config.autoUpdateCheck());
     }
 
     // Note: the sparkle-updater is not an OCUpdater
-    auto *ocupdater = qobject_cast<OCUpdater *>(updater);
+    const auto *ocupdater = qobject_cast<OCUpdater *>(updater);
     if (ocupdater) {
         connect(ocupdater, &OCUpdater::downloadStateChanged, this, &GeneralSettings::slotUpdateInfo, Qt::UniqueConnection);
         connect(_ui->restartButton, &QAbstractButton::clicked, ocupdater, &OCUpdater::slotStartInstaller, Qt::UniqueConnection);
         //connect(_ui->restartButton, &QAbstractButton::clicked, qApp, &QApplication::quit, Qt::UniqueConnection);
 
-        QString status = ocupdater->statusString(OCUpdater::UpdateStatusStringFormat::Html);
+        auto status = ocupdater->statusString(OCUpdater::UpdateStatusStringFormat::Html);
         Theme::replaceLinkColorStringBackgroundAware(status);
 
         _ui->updateStateLabel->setOpenExternalLinks(false);
@@ -320,9 +321,7 @@ void GeneralSettings::slotUpdateInfo()
             Utility::openBrowser(QUrl(link));
         });
         _ui->updateStateLabel->setText(status);
-
         _ui->restartButton->setVisible(ocupdater->downloadState() == OCUpdater::DownloadComplete);
-
         _ui->updateButton->setEnabled(ocupdater->downloadState() != OCUpdater::CheckingServer &&
                                       ocupdater->downloadState() != OCUpdater::Downloading &&
                                       ocupdater->downloadState() != OCUpdater::DownloadComplete);
@@ -340,12 +339,8 @@ void GeneralSettings::slotUpdateInfo()
     }
 #endif
 
-    // stable, beta, daily
-    ConfigFile config;
-    const auto validUpdateChannels = config.validUpdateChannels();
     const auto currentUpdateChannelIndex = validUpdateChannels.indexOf(config.updateChannel());
-    _ui->updateChannel->addItems(validUpdateChannels);
-    _ui->updateChannel->setCurrentIndex(currentUpdateChannelIndex);
+    _ui->updateChannel->setCurrentIndex(currentUpdateChannelIndex != -1? currentUpdateChannelIndex : 0);
     connect(_ui->updateChannel, &QComboBox::currentTextChanged,
         this, &GeneralSettings::slotUpdateChannelChanged, Qt::UniqueConnection);
 }
@@ -353,17 +348,19 @@ void GeneralSettings::slotUpdateInfo()
 void GeneralSettings::slotUpdateChannelChanged()
 {
     const auto updateChannelToLocalized = [](const QString &channel) {
-        auto decodedTranslatedChannel = QString{};
-
         if (channel == QStringLiteral("stable")) {
-            decodedTranslatedChannel = tr("stable");
-        } else if (channel == QStringLiteral("beta")) {
-            decodedTranslatedChannel = tr("beta");
-        } else if (channel == QStringLiteral("daily")) {
-            decodedTranslatedChannel = tr("daily");
+            return tr("stable");
         }
 
-        return decodedTranslatedChannel;
+        if (channel == QStringLiteral("beta")) {
+            return tr("beta");
+        }
+
+        if (channel == QStringLiteral("daily")) {
+            return tr("daily");
+        }
+
+        return QString{};
     };
 
     const auto updateChannelFromLocalized = [](const int index) {
@@ -374,9 +371,9 @@ void GeneralSettings::slotUpdateChannelChanged()
         case 2:
             return QStringLiteral("daily");
             break;
-        default:
-            return QStringLiteral("stable");
         }
+
+        return QStringLiteral("stable");
     };
 
     const auto channel = updateChannelFromLocalized(_ui->updateChannel->currentIndex());
