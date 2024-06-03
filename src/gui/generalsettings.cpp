@@ -283,7 +283,7 @@ void GeneralSettings::loadMiscSettings()
 #if defined(BUILD_UPDATER)
     auto validUpdateChannels = cfgFile.validUpdateChannels();
     if (const auto serverHasValidSubscription = cfgFile.serverHasValidSubscription();
-        serverHasValidSubscription) {
+        serverHasValidSubscription && !Theme::instance()->isBranded()) {
         validUpdateChannels << QStringLiteral("enterprise");
     }
     _ui->updateChannel->addItems(validUpdateChannels);
