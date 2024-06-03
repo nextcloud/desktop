@@ -172,6 +172,8 @@ public:
 
     [[nodiscard]] bool groupFoldersAvailable() const;
 
+    [[nodiscard]] bool serverHasValidSubscription() const;
+
     // Direct Editing
     void addDirectEditor(DirectEditor* directEditor);
     DirectEditor* getDirectEditorForMimetype(const QMimeType &mimeType);
