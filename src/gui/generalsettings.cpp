@@ -398,7 +398,8 @@ void GeneralSettings::slotUpdateChannelChanged()
         tr("The channel determines which upgrades will be offered to install:\n"
            "- stable: contains versions considered reliable.\n"
            "- beta: contains versions with new features in test.\n"
-           "- daily: contains versions created daily only for testing.\n\n"
+           "- daily: contains versions created daily only for testing.\n"
+           "- enterprise: contains stable versions for customers.\n\n"
            "Downgrading is not possible: changing from beta to stable means waiting for a newer "
            "version than the one installed."),
         QMessageBox::NoButton,
