@@ -686,9 +686,9 @@ int ConfigFile::updateSegment() const
 
 QString ConfigFile::updateChannel() const
 {
-    QString defaultUpdateChannel = QStringLiteral("stable");
-    QString suffix = QString::fromLatin1(MIRALL_STRINGIFY(MIRALL_VERSION_SUFFIX));
-    if (suffix.startsWith("daily")
+    auto defaultUpdateChannel = QStringLiteral("stable");
+    if (const auto suffix = QString::fromLatin1(MIRALL_STRINGIFY(MIRALL_VERSION_SUFFIX));
+        suffix.startsWith("daily")
         || suffix.startsWith("nightly")
         || suffix.startsWith("alpha")
         || suffix.startsWith("rc")
@@ -699,7 +699,7 @@ QString ConfigFile::updateChannel() const
     QSettings settings(configFile(), QSettings::IniFormat);
     const auto channel = settings.value(QLatin1String(updateChannelC), defaultUpdateChannel).toString();
     if (!validUpdateChannels().contains(channel)) {
-        qCWarning(lcConfigFile()) << "Received invalid update channel from confog:"
+        qCWarning(lcConfigFile()) << "Received invalid update channel from config:"
                                   << channel
                                   << "defaulting to:"
                                   << defaultUpdateChannel;
