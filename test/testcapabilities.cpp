@@ -282,6 +282,20 @@ private slots:
 
         QCOMPARE(filesLockAvailable, true);
     }
+
+    void testSupport_hasValidSubscription_returnTrue()
+    {
+        QVariantMap supportMap;
+        supportMap["hasValidSubscription"] = "true";
+
+        QVariantMap capabilitiesMap;
+        capabilitiesMap["support"] = supportMap;
+
+        const auto &capabilities = OCC::Capabilities(capabilitiesMap);
+        const auto serverHasValidSubscription = capabilities.serverHasValidSubscription();
+
+        QCOMPARE(serverHasValidSubscription, true);
+    }
 };
 
 QTEST_GUILESS_MAIN(TestCapabilities)
