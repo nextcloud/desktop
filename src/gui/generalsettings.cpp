@@ -282,6 +282,10 @@ void GeneralSettings::loadMiscSettings()
 
 #if defined(BUILD_UPDATER)
     auto validUpdateChannels = cfgFile.validUpdateChannels();
+    if (const auto serverHasValidSubscription = cfgFile.serverHasValidSubscription();
+        serverHasValidSubscription) {
+        validUpdateChannels << QStringLiteral("enterprise");
+    }
     _ui->updateChannel->addItems(validUpdateChannels);
     const auto currentUpdateChannelIndex = validUpdateChannels.indexOf(cfgFile.currentUpdateChannel());
     _ui->updateChannel->setCurrentIndex(currentUpdateChannelIndex != -1? currentUpdateChannelIndex : 0);
@@ -359,6 +363,10 @@ void GeneralSettings::slotUpdateChannelChanged()
             return tr("daily");
         }
 
+        if (channel == QStringLiteral("enterprise")) {
+            return tr("enterprise");
+        }
+
         return QString{};
     };
 
@@ -369,6 +377,9 @@ void GeneralSettings::slotUpdateChannelChanged()
             break;
         case 2:
             return QStringLiteral("daily");
+            break;
+        case 3:
+            return QStringLiteral("enterprise");
             break;
         default:
             return QStringLiteral("stable");
