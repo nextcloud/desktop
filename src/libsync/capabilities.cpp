@@ -388,6 +388,11 @@ bool Capabilities::groupFoldersAvailable() const
     return _capabilities[QStringLiteral("groupfolders")].toMap().value(QStringLiteral("hasGroupFolders"), false).toBool();
 }
 
+bool Capabilities::serverHasValidSubscription() const
+{
+    return _capabilities[QStringLiteral("support")].toMap().value(QStringLiteral("hasValidSubscription"), false).toBool();
+}
+
 QStringList Capabilities::blacklistedFiles() const
 {
     return _capabilities["files"].toMap()["blacklisted_files"].toStringList();
