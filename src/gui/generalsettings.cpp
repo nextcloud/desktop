@@ -386,21 +386,16 @@ void GeneralSettings::slotUpdateChannelChanged()
 
     auto msgBox = new QMessageBox(
         QMessageBox::Warning,
-        tr("Change update channel?"),
-        tr("The update channel determines which client updates will be offered "
-           "for installation. The \"stable\" channel contains only upgrades that "
-           "are considered reliable, while the versions in the \"beta\" channel "
-           "may contain newer features and bugfixes, but have not yet been tested "
-           "thoroughly."
-           "\n\n"
-           "Note that this selects only what pool upgrades are taken from, and that "
-           "there are no downgrades: So going back from the beta channel to "
-           "the stable channel usually cannot be done immediately and means waiting "
-           "for a stable version that is newer than the currently installed beta "
-           "version."),
+        tr("Changing update channel?"),
+        tr("The channel determines which upgrades will be offered to install:\n"
+           "- stable: contains versions considered reliable.\n"
+           "- beta: contains versions with new features in test.\n"
+           "- daily: contains versions created daily only for testing.\n\n"
+           "Downgrading is not possible: changing from beta to stable means waiting for a newer "
+           "version than the one installed."),
         QMessageBox::NoButton,
         this);
-    auto acceptButton = msgBox->addButton(tr("Change update channel"), QMessageBox::AcceptRole);
+    const auto acceptButton = msgBox->addButton(tr("Change update channel"), QMessageBox::AcceptRole);
     msgBox->addButton(tr("Cancel"), QMessageBox::RejectRole);
     connect(msgBox, &QMessageBox::finished, msgBox, [this, channel, msgBox, acceptButton, updateChannelToLocalized] {
         msgBox->deleteLater();
