@@ -237,3 +237,12 @@ def step(context, action):
 def step(context, folder_name):
     SyncConnection.choose_what_to_sync()
     SyncConnection.unselect_folder_in_selective_sync(folder_name)
+
+
+@Then("the sync folder should not be added")
+def step(context):
+    test.compare(
+        0,
+        SyncConnection.get_folder_connection_count(),
+        "Sync connections should be empty",
+    )

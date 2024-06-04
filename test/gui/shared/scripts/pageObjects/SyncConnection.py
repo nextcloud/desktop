@@ -4,6 +4,11 @@ import object
 
 
 class SyncConnection:
+    FOLDER_SYNC_CONNECTION_LIST = {
+        "container": names.quickWidget_scrollView_ScrollView,
+        "type": "ListView",
+        "visible": True,
+    }
     FOLDER_SYNC_CONNECTION = {
         "container": names.settings_stack_QStackedWidget,
         "name": "_folderList",
@@ -113,3 +118,7 @@ class SyncConnection:
         squish.clickButton(
             squish.waitForObject(SyncConnection.SELECTIVE_SYNC_APPLY_BUTTON)
         )
+
+    @staticmethod
+    def get_folder_connection_count():
+        return squish.waitForObject(SyncConnection.FOLDER_SYNC_CONNECTION_LIST).count
