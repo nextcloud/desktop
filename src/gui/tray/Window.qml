@@ -645,7 +645,7 @@ ApplicationWindow {
                     onClicked: UserModel.currentUser.isNcAssistantEnabled ? UserModel.openCurrentAccountNcAssistant() : UserModel.openCurrentAccountTalk()
 
                     Accessible.role: Accessible.Button
-                    Accessible.name: UserModel.currentUser.isNcAssistantEnabled ? qsTr("Open Nextcloud Assistant in browser") : qsTr("Open Nextcloud Talk in browser")
+                    Accessible.name: UserModel.currentUser.featuredAppAccessibleName
                     Accessible.onPressAction: trayWindowFeaturedAppButton.clicked()
 
                     Layout.alignment: Qt.AlignRight
