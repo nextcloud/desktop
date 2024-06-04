@@ -1628,12 +1628,6 @@ bool Folder::virtualFilesEnabled() const
 
 void Folder::slotAboutToRemoveAllFiles(SyncFileItem::Direction dir, std::function<void(bool)> callback)
 {
-    ConfigFile cfgFile;
-    if (!cfgFile.promptDeleteFiles()) {
-        callback(false);
-        return;
-    }
-
     const QString msg = dir == SyncFileItem::Down ? tr("All files in the sync folder \"%1\" folder were deleted on the server.\n"
                                                  "These deletes will be synchronized to your local sync folder, making such files "
                                                  "unavailable unless you have a right to restore. \n"
@@ -1644,7 +1638,7 @@ void Folder::slotAboutToRemoveAllFiles(SyncFileItem::Direction dir, std::functio
                                                  "Are you sure you want to sync those actions with the server?\n"
                                                  "If this was an accident and you decide to keep your files, they will be re-synced from the server.");
     auto msgBox = new QMessageBox(QMessageBox::Warning, tr("Remove All Files?"),
-        msg.arg(shortGuiLocalPath()), QMessageBox::NoButton);
+    msg.arg(shortGuiLocalPath()), QMessageBox::NoButton);
     msgBox->setAttribute(Qt::WA_DeleteOnClose);
     msgBox->setWindowFlags(msgBox->windowFlags() | Qt::WindowStaysOnTopHint);
     msgBox->addButton(tr("Remove all files"), QMessageBox::DestructiveRole);
