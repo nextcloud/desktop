@@ -6,7 +6,6 @@
         "oauth-login": "playwright test --grep @oauth"
     },
     "devDependencies": {
-        "@playwright/test": "^1.27.1",
-        "playwright": "^1.27.1"
+        "@playwright/test": "^1.43.0"
     }
 }
