@@ -529,10 +529,10 @@ restart_sync:
         selectiveSyncFixup(&db, selectiveSyncList);
     }
 
-    SyncOptions opt;
-    opt.fillFromEnvironmentVariables();
-    opt.verifyChunkSizes();
-    SyncEngine engine(account, options.source_dir, opt, folder, &db);
+    SyncOptions syncOptions;
+    syncOptions.fillFromEnvironmentVariables();
+    syncOptions.verifyChunkSizes();
+    SyncEngine engine(account, options.source_dir, syncOptions, folder, &db);
     engine.setIgnoreHiddenFiles(options.ignoreHiddenFiles);
     engine.setNetworkLimits(options.uplimit, options.downlimit);
     QObject::connect(&engine, &SyncEngine::finished,
