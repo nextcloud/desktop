@@ -622,15 +622,12 @@ ApplicationWindow {
 
                 HeaderButton {
                     id: trayWindowFeaturedAppButton
-                    visible: UserModel.currentUser.isNcAssistantEnabled || UserModel.currentUser.serverHasTalk
-                    icon.source: UserModel.currentUser.isNcAssistantEnabled
-                                 ? "image:///client/theme/white/nc-assistant-app.svg" + "/" + Style.currentUserHeaderTextColor
-                                 : "image:///client/theme/white/talk-app.svg" + "/" + Style.currentUserHeaderTextColor
-                    icon.color: Style.currentUserHeaderTextColor
-                    onClicked: UserModel.currentUser.isNcAssistantEnabled ? UserModel.openCurrentAccountNcAssistant() : UserModel.openCurrentAccountTalk()
+                    visible: UserModel.currentUser.isFeaturedAppEnabled
+                    icon.source: UserModel.currentUser.featuredAppIcon + "/" + Style.currentUserHeaderTextColor
+                    onClicked: UserModel.openCurrentAccountFeaturedApp()
 
                     Accessible.role: Accessible.Button
-                    Accessible.name: UserModel.currentUser.isNcAssistantEnabled ? qsTr("Open Nextcloud Assistant in browser") : qsTr("Open Nextcloud Talk in browser")
+                    Accessible.name: UserModel.currentUser.featuredAppAccessibleName
                     Accessible.onPressAction: trayWindowFeaturedAppButton.clicked()
 
                     Layout.alignment: Qt.AlignRight

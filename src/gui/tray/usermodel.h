@@ -56,8 +56,9 @@ class User : public QObject
     Q_PROPERTY(QString statusMessage READ statusMessage NOTIFY statusChanged)
     Q_PROPERTY(bool desktopNotificationsAllowed READ isDesktopNotificationsAllowed NOTIFY desktopNotificationsAllowedChanged)
     Q_PROPERTY(bool hasLocalFolder READ hasLocalFolder NOTIFY hasLocalFolderChanged)
-    Q_PROPERTY(bool serverHasTalk READ serverHasTalk NOTIFY serverHasTalkChanged)
-    Q_PROPERTY(bool isNcAssistantEnabled READ isNcAssistantEnabled NOTIFY ncAssistantAvailabityChanged)
+    Q_PROPERTY(bool isFeaturedAppEnabled READ isFeaturedAppEnabled NOTIFY featuredAppChanged)
+    Q_PROPERTY(QString featuredAppIcon READ featuredAppIcon NOTIFY featuredAppChanged)
+    Q_PROPERTY(QString featuredAppAccessibleName READ featuredAppAccessibleName NOTIFY featuredAppChanged)
     Q_PROPERTY(QString avatar READ avatarUrl NOTIFY avatarChanged)
     Q_PROPERTY(bool isConnected READ isConnected NOTIFY accountStateChanged)
     Q_PROPERTY(UnifiedSearchResultsListModel* unifiedSearchResultsListModel READ getUnifiedSearchResultsListModel CONSTANT)
@@ -80,7 +81,9 @@ public:
     [[nodiscard]] QString name() const;
     [[nodiscard]] QString server(bool shortened = true) const;
     [[nodiscard]] bool hasLocalFolder() const;
-    [[nodiscard]] bool serverHasTalk() const;
+    [[nodiscard]] bool isFeaturedAppEnabled() const;
+    [[nodiscard]] QString featuredAppIcon() const;
+    [[nodiscard]] QString featuredAppAccessibleName() const;
     [[nodiscard]] bool serverHasUserStatus() const;
     [[nodiscard]] AccountApp *talkApp() const;
     [[nodiscard]] bool hasActivities() const;
@@ -105,7 +108,7 @@ public:
 signals:
     void nameChanged();
     void hasLocalFolderChanged();
-    void serverHasTalkChanged();
+    void featuredAppChanged();
     void avatarChanged();
     void accountStateChanged();
     void statusChanged();
@@ -115,7 +118,6 @@ signals:
     void accentColorChanged();
     void sendReplyMessage(const int activityIndex, const QString &conversationToken, const QString &message, const QString &replyTo);
     void groupFoldersChanged();
-    void ncAssistantAvailabityChanged();
 
 public slots:
     void slotItemCompleted(const QString &folder, const OCC::SyncFileItemPtr &item);
@@ -170,6 +172,8 @@ private:
     bool canShowNotification(const long notificationId);
 
     void checkAndRemoveSeenActivities(const ActivityList &list, const int numTalkNotificationsReceived);
+
+    [[nodiscard]] bool serverHasTalk() const;
 
     AccountStatePtr _account;
     bool _isCurrentUser;
@@ -251,10 +255,9 @@ signals:
 public slots:
     void fetchCurrentActivityModel();
     void openCurrentAccountLocalFolder();
-    void openCurrentAccountTalk();
     void openCurrentAccountServer();
     void openCurrentAccountFolderFromTrayInfo(const QString &fullRemotePath);
-    void openCurrentAccountNcAssistant();
+    void openCurrentAccountFeaturedApp();
     void setCurrentUserId(const int id);
     void login(const int id);
     void logout(const int id);
