@@ -163,7 +163,7 @@
     <message>
         <location filename="../src/gui/ConflictDelegate.qml" line="77"/>
         <source>Server version</source>
-        <translation>Version du serveur</translation>
+        <translation>Version serveur</translation>
     </message>
 </context>
 <context>
