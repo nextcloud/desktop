@@ -19,7 +19,7 @@
     <message>
         <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.ui" line="147"/>
         <source>Download everything</source>
-        <translation type="unfinished"/>
+        <translation>Загрузить всё</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.ui" line="157"/>
@@ -495,7 +495,7 @@ File synchronization desktop utility.</source>
         <location filename="../src/gui/accountsettings.cpp" line="745"/>
         <location filename="../src/gui/accountsettings.cpp" line="756"/>
         <source>Add Space</source>
-        <translation type="unfinished"/>
+        <translation>Добавить пространство</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="197"/>
@@ -635,7 +635,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="746"/>
         <source>Click this button to add a Space.</source>
-        <translation type="unfinished"/>
+        <translation>Щелкнете по кнопке для добавления пространства</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="749"/>
@@ -645,7 +645,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="757"/>
         <source>You need to be connected to add a Space.</source>
-        <translation type="unfinished"/>
+        <translation>Для добавления пространства требуется подключение.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="760"/>
@@ -1144,7 +1144,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderman.cpp" line="390"/>
         <source>Account disconnected or paused</source>
-        <translation type="unfinished"/>
+        <translation>Аккаунт отключен или приостановлен</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="605"/>
@@ -2354,7 +2354,7 @@ Note that using any logging command line options will override the settings.</so
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1428"/>
         <source>This Space is currently unavailable</source>
-        <translation type="unfinished"/>
+        <translation>Это пространство сейчас недоступно</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1448"/>
@@ -4158,7 +4158,7 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/gui/folderwizard/spacespage.ui" line="17"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;Add a Space&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Select a Space to sync it to your computer.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;Добавить пространство&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Выберите пространство, чтобы синхронизировать его с компьютером.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
 </context>
 <context>
