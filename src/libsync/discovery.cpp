@@ -1398,10 +1398,10 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
     auto isExternalStorageRename = [&] {
         OCC::SyncJournalFileRecord dbRecord;
         const auto validRecord = _discoveryData->_statedb->getFileRecordByInode(localEntry.inode, &dbRecord);
-        qCInfo(lcDisco) << "File is already saved in DB?" << validRecord;
+        qCInfo(lcDisco) << "File is saved in DB:" << validRecord;
+        qCInfo(lcDisco) << "File is in external storage:" << isExternalStorage;
         if (validRecord && isExternalStorage) {
-            qCInfo(lcDisco) << "File is already saved in DB with inode" << dbRecord._inode;
-            qCInfo(lcDisco) << "Try to process rename for" << dbRecord._path;
+            qCInfo(lcDisco) << "Try to process rename for path" << dbRecord._path << "and inode" << dbRecord._inode;
             return true;
         }
 
