@@ -8,10 +8,13 @@ export BUILDNR=${BUILDNR:-0000}
 export DESKTOP_CLIENT_ROOT=${DESKTOP_CLIENT_ROOT:-/home/user}
 
 #Set Qt-5.15
+
 export QT_BASE_DIR=/opt/kdeqt5.15
 
 export QTDIR=$QT_BASE_DIR
 export PATH=$QT_BASE_DIR/bin:$PATH
+
+export VERSION_SUFFIX=${VERSION_SUFFIX:stable}
 
 # Set defaults
 export SUFFIX=${DRONE_PULL_REQUEST:=master}
