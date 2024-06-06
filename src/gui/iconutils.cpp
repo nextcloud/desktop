@@ -108,9 +108,11 @@ QImage createSvgImageWithCustomColor(const QString &fileName,
         return {};
     }
 
+    const auto sizeToUse = requestedSize.isValid() || originalSize == nullptr ? requestedSize : *originalSize;
+
     // some icons are present in white or black only, so, we need to check both when needed
     const auto iconBaseColors = QStringList{QStringLiteral("black"), QStringLiteral("white")};
-    const auto customColorImage = findImageWithCustomColor(fileName, customColor, iconBaseColors, requestedSize);
+    const auto customColorImage = findImageWithCustomColor(fileName, customColor, iconBaseColors, sizeToUse);
 
     if (!customColorImage.isNull()) {
         return customColorImage;
@@ -125,7 +127,7 @@ QImage createSvgImageWithCustomColor(const QString &fileName,
         return {};
     }
 
-    const auto result = drawSvgWithCustomFillColor(sourceSvg, customColor, originalSize, requestedSize);
+    const auto result = drawSvgWithCustomFillColor(sourceSvg, customColor, originalSize, sizeToUse);
     Q_ASSERT(!result.isNull());
 
     if (result.isNull()) {
