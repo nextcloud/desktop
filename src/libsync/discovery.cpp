@@ -1433,19 +1433,6 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
                 item->_e2eEncryptionServerCapability = EncryptionStatusEnums::fromEndToEndEncryptionApiVersion(_discoveryData->_account->capabilities().clientSideEncryptionVersion());
             }
             postProcessLocalNew();
-            /*if (item->isDirectory() && item->_instruction == CSYNC_INSTRUCTION_NEW && item->_direction == SyncFileItem::Up
-                && _discoveryData->_account->capabilities().clientSideEncryptionVersion() >= 2.0) {
-                OCC::SyncJournalFileRecord rec;
-                _discoveryData->_statedb->findEncryptedAncestorForRecord(item->_file, &rec);
-                if (rec.isValid() && rec._e2eEncryptionStatus >= OCC::SyncJournalFileRecord::EncryptionStatus::EncryptedMigratedV2_0) {
-                    qCDebug(lcDisco) << "Attempting to create a subfolder in top-level E2EE V2 folder. Ignoring.";
-                    item->_instruction = CSYNC_INSTRUCTION_IGNORE;
-                    item->_direction = SyncFileItem::None;
-                    item->_status = SyncFileItem::NormalError;
-                    item->_errorString = tr("Creating nested encrypted folders is not supported yet.");
-                }
-            }*/
-
             finalize();
             return;
         }
