@@ -108,7 +108,7 @@ QImage createSvgImageWithCustomColor(const QString &fileName,
         return {};
     }
 
-    const auto sizeToUse = requestedSize.isValid() ? requestedSize : *originalSize;
+    const auto sizeToUse = requestedSize.isValid() || originalSize == nullptr ? requestedSize : *originalSize;
 
     // some icons are present in white or black only, so, we need to check both when needed
     const auto iconBaseColors = QStringList{QStringLiteral("black"), QStringLiteral("white")};
