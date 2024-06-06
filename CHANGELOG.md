@@ -1,6 +1,7 @@
 # Table of Contents
 
 * [Changelog for unreleased](#changelog-for-owncloud-desktop-client-unreleased-unreleased)
+* [Changelog for 5.3.0](#changelog-for-owncloud-desktop-client-530-2024-06-06)
 * [Changelog for 5.2.1](#changelog-for-owncloud-desktop-client-521-2024-01-04)
 * [Changelog for 5.2.0](#changelog-for-owncloud-desktop-client-520-2023-11-27)
 * [Changelog for 5.1.2](#changelog-for-owncloud-desktop-client-512-2023-11-10)
@@ -39,18 +40,16 @@
 The following sections list the changes in ownCloud Desktop Client unreleased relevant to
 ownCloud admins and users.
 
-[unreleased]: https://github.com/owncloud/client/compare/v5.2.1...master
+[unreleased]: https://github.com/owncloud/client/compare/v5.3.0...master
 
 ## Summary
 
 * Bugfix - Schedule syncs after an abort: [#11396](https://github.com/owncloud/client/pull/11396)
 * Bugfix - Fix description of manage public links action: [#11450](https://github.com/owncloud/client/issues/11450)
 * Bugfix - Fix early-use crash in the folder watcher on Linux: [#11460](https://github.com/owncloud/client/issues/11460)
-* Bugfix - Client stuck in `reconnecting`: [#11467](https://github.com/owncloud/client/pull/11467)
 * Bugfix - Properly encode scope and prompt items in OAuth URL: [#11472](https://github.com/owncloud/client/issues/11472)
 * Bugfix - Client stuck in reconnecting state after application start: [#11478](https://github.com/owncloud/client/pull/11478)
 * Bugfix - Strip user information from new-connection URL: [#11497](https://github.com/owncloud/client/issues/11497)
-* Bugfix - Ensure folders are scheduled only once: [#11552](https://github.com/owncloud/client/issues/11552)
 * Bugfix - Support logging redirect: [#11581](https://github.com/owncloud/client/pull/11581)
 * Bugfix - Don't store null certificates in the account: [#11621](https://github.com/owncloud/client/issues/11621)
 * Change - Revert local folder name back to pre 3.0 behavior: [#6390](https://github.com/owncloud/enterprise/issues/6390)
@@ -67,14 +66,12 @@ ownCloud admins and users.
 * Enhancement - Add option to pause synchronization on metered connections: [#4808](https://github.com/owncloud/client/issues/4808)
 * Enhancement - Add option to move files to trash instead of deleting: [#9001](https://github.com/owncloud/client/issues/9001)
 * Enhancement - Prevent same default sync folder for multiple accounts with Spaces: [#11204](https://github.com/owncloud/client/issues/11204)
-* Enhancement - Add support to provide a list of ports for the OAuth process: [#11276](https://github.com/owncloud/client/issues/11276)
 * Enhancement - Use less modal dialogs: [#11304](https://github.com/owncloud/client/issues/11304)
 * Enhancement - Include recent changes in scheduled syncs: [#11347](https://github.com/owncloud/client/pull/11347)
 * Enhancement - Improve handling of a server blocking an unsupported client: [#11424](https://github.com/owncloud/client/issues/11424)
 * Enhancement - Ask user to restart application when update is available on Windows: [#11442](https://github.com/owncloud/client/pull/11442)
 * Enhancement - New Folder status: [#11491](https://github.com/owncloud/client/pull/11491)
 * Enhancement - Don't poll the Avatar endpoint with ocis: [#11615](https://github.com/owncloud/client/pull/11615)
-* Enhancement - Support `Active Directory Federation Service` as identity provider: [#11646](https://github.com/owncloud/client/issues/11646)
 
 ## Details
 
@@ -97,13 +94,6 @@ ownCloud admins and users.
 
    https://github.com/owncloud/client/issues/11460
    https://github.com/owncloud/client/pull/11475
-
-* Bugfix - Client stuck in `reconnecting`: [#11467](https://github.com/owncloud/client/pull/11467)
-
-   Properly handle errors during the update of the server settings. Due to an
-   unhandled result, the client could get stuck in a `reconnecting` state.
-
-   https://github.com/owncloud/client/pull/11467
 
 * Bugfix - Properly encode scope and prompt items in OAuth URL: [#11472](https://github.com/owncloud/client/issues/11472)
 
@@ -129,12 +119,6 @@ ownCloud admins and users.
 
    https://github.com/owncloud/client/issues/11497
    https://github.com/owncloud/client/pull/11509
-
-* Bugfix - Ensure folders are scheduled only once: [#11552](https://github.com/owncloud/client/issues/11552)
-
-   We fixed a bug where a folder could be scheduled multiple times.
-
-   https://github.com/owncloud/client/issues/11552
 
 * Bugfix - Support logging redirect: [#11581](https://github.com/owncloud/client/pull/11581)
 
@@ -280,13 +264,6 @@ ownCloud admins and users.
    https://github.com/owncloud/client/issues/11204
    https://github.com/owncloud/client/pull/11364
 
-* Enhancement - Add support to provide a list of ports for the OAuth process: [#11276](https://github.com/owncloud/client/issues/11276)
-
-   We added a branding option that enables us to specify a list of ports that are
-   used for the local server during the OAuth process.
-
-   https://github.com/owncloud/client/issues/11276
-
 * Enhancement - Use less modal dialogs: [#11304](https://github.com/owncloud/client/issues/11304)
 
    As the rather high number of modal dialogs we used caused different issues on
@@ -330,6 +307,73 @@ ownCloud admins and users.
    different approach.
 
    https://github.com/owncloud/client/pull/11615
+
+# Changelog for ownCloud Desktop Client [5.3.0] (2024-06-06)
+
+The following sections list the changes in ownCloud Desktop Client 5.3.0 relevant to
+ownCloud admins and users.
+
+[5.3.0]: https://github.com/owncloud/client/compare/v5.2.1...v5.3.0
+
+## Summary
+
+* Bugfix - Fix early-use crash in the folder watcher on Linux: [#11460](https://github.com/owncloud/client/issues/11460)
+* Bugfix - Client stuck in `reconnecting`: [#11467](https://github.com/owncloud/client/pull/11467)
+* Bugfix - Ensure folders are scheduled only once: [#11552](https://github.com/owncloud/client/issues/11552)
+* Change - Revert local folder name back to pre 3.0 behavior: [#6390](https://github.com/owncloud/enterprise/issues/6390)
+* Enhancement - Add support to provide a list of ports for the OAuth process: [#11276](https://github.com/owncloud/client/issues/11276)
+* Enhancement - Support `Active Directory Federation Service` as identity provider: [#11646](https://github.com/owncloud/client/issues/11646)
+
+## Details
+
+* Bugfix - Fix early-use crash in the folder watcher on Linux: [#11460](https://github.com/owncloud/client/issues/11460)
+
+   In a few error scenarios, the folder watcher on Linux shows a dialog with an
+   error message. A crash has been fixed where this occurred before the GUI was
+   fully initialised.
+
+   https://github.com/owncloud/client/issues/11460
+   https://github.com/owncloud/client/pull/11475
+
+* Bugfix - Client stuck in `reconnecting`: [#11467](https://github.com/owncloud/client/pull/11467)
+
+   Properly handle errors during the update of the server settings. Due to an
+   unhandled result, the client could get stuck in a `reconnecting` state.
+
+   https://github.com/owncloud/client/pull/11467
+
+* Bugfix - Ensure folders are scheduled only once: [#11552](https://github.com/owncloud/client/issues/11552)
+
+   We fixed a bug where a folder could be scheduled multiple times.
+
+   https://github.com/owncloud/client/issues/11552
+
+* Change - Revert local folder name back to pre 3.0 behavior: [#6390](https://github.com/owncloud/enterprise/issues/6390)
+
+   Due to user requests, we reverted the folder name from
+
+   ```
+   ownCloud - Albert@owncloud.com
+   ownCloud - Katherine@owncloud.org
+   ownCloud - Marie@owncloud.com
+   ```
+
+   Back to
+
+   ```
+   ownCloud
+   ownCloud (1)
+   ownCloud (2)
+   ```
+
+   https://github.com/owncloud/enterprise/issues/6390
+
+* Enhancement - Add support to provide a list of ports for the OAuth process: [#11276](https://github.com/owncloud/client/issues/11276)
+
+   We added a branding option that enables us to specify a list of ports that are
+   used for the local server during the OAuth process.
+
+   https://github.com/owncloud/client/issues/11276
 
 * Enhancement - Support `Active Directory Federation Service` as identity provider: [#11646](https://github.com/owncloud/client/issues/11646)
 
