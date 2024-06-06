@@ -1,4 +1,4 @@
-Bugfix: Ensure folder are scheduled only once
+Bugfix: Ensure folders are scheduled only once
 
 We fixed a bug where a folder could be scheduled multiple times.
 
