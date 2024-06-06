@@ -640,7 +640,7 @@ ApplicationWindow {
                     id: trayWindowTalkButton
 
                     visible: UserModel.currentUser && UserModel.currentUser.serverHasTalk
-                    icon.source: "qrc:///client/theme/white/talk-app.svg"
+                    icon.source: "image://svgimage-custom-color/talk-app.svg" + "/" + Style.currentUserHeaderTextColor
                     icon.color: Style.currentUserHeaderTextColor
                     onClicked: UserModel.openCurrentAccountTalk()
 
@@ -656,8 +656,7 @@ ApplicationWindow {
 
                 HeaderButton {
                     id: trayWindowAppsButton
-                    icon.source: "qrc:///client/theme/white/more-apps.svg"
-                    icon.color: Style.currentUserHeaderTextColor
+                    icon.source: "image://svgimage-custom-color/more-apps.svg" + "/" + Style.currentUserHeaderTextColor
 
                     onClicked: {
                         if(appsMenuListView.count <= 0) {
