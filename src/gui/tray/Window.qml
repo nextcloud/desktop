@@ -312,22 +312,6 @@ ApplicationWindow {
                             radius: Style.currentAccountButtonRadius
                         }
 
-                        contentItem: ScrollView {
-                            id: accMenuScrollView
-                            ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
-
-                            data: WheelHandler {
-                                target: accMenuScrollView.contentItem
-                            }
-                            ListView {
-                                implicitHeight: contentHeight
-                                model: accountMenu.contentModel
-                                interactive: true
-                                clip: true
-                                currentIndex: accountMenu.currentIndex
-                            }
-                        }
-
                         onClosed: {
                             // HACK: reload account Instantiator immediately by restting it - could be done better I guess
                             // see also onVisibleChanged above
