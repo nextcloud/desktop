@@ -656,8 +656,7 @@ ApplicationWindow {
 
                 HeaderButton {
                     id: trayWindowAppsButton
-                    icon.source: "qrc:///client/theme/white/more-apps.svg"
-                    icon.color: Style.currentUserHeaderTextColor
+                    icon.source: "image://svgimage-custom-color/more-apps.svg" + "/" + Style.currentUserHeaderTextColor
 
                     onClicked: {
                         if(appsMenuListView.count <= 0) {
