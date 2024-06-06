@@ -4826,59 +4826,61 @@ D&apos;fhreagair an freastalaí le hearráid: % 2</translation>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="112"/>
         <source>SHA-256:</source>
-        <translation type="unfinished"/>
+        <translation>SHA-256:</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="113"/>
         <source>SHA-1:</source>
-        <translation type="unfinished"/>
+        <translation>SHA-1:</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="117"/>
         <source>&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This certificate was manually approved&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;&lt;b&gt;Nóta:&lt;/b&gt; Ceadaíodh an teastas seo de láimh&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="137"/>
         <source>%1 (self-signed)</source>
-        <translation type="unfinished"/>
+        <translation>% 1 (féinsínithe)</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="139"/>
         <source>%1</source>
-        <translation type="unfinished"/>
+        <translation>%1</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="174"/>
         <source>This connection is encrypted using %1 bit %2.
 </source>
-        <translation type="unfinished"/>
+        <translation>Tá an ceangal seo criptithe le % 1 giotán % 2.
+</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="177"/>
         <source>This connection is NOT secure as it is not encrypted.
 </source>
-        <translation type="unfinished"/>
+        <translation>NACH bhfuil an nasc seo slán mar níl sé criptithe.
+</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="191"/>
         <source>Server version: %1</source>
-        <translation type="unfinished"/>
+        <translation>Leagan an fhreastalaí: % 1</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="205"/>
         <source>No support for SSL session tickets/identifiers</source>
-        <translation type="unfinished"/>
+        <translation>Níl aon tacaíocht le haghaidh ticéid seisiúin SSL / aitheantóirí</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="215"/>
         <source>Certificate information:</source>
-        <translation type="unfinished"/>
+        <translation>Eolas teastais:</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="244"/>
         <source>The connection is not secure</source>
-        <translation type="unfinished"/>
+        <translation>Níl an nasc slán</translation>
     </message>
 </context>
 <context>
@@ -4886,82 +4888,82 @@ D&apos;fhreagair an freastalaí le hearráid: % 2</translation>
     <message>
         <location filename="../src/gui/sslerrordialog.ui" line="25"/>
         <source>Trust this certificate anyway</source>
-        <translation type="unfinished"/>
+        <translation>Cuir muinín sa teastas seo ar aon nós</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="65"/>
         <source>Untrusted Certificate</source>
-        <translation type="unfinished"/>
+        <translation>Teastas Neamhiontaofa</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="138"/>
         <source>Cannot connect securely to &lt;i&gt;%1&lt;/i&gt;:</source>
-        <translation type="unfinished"/>
+        <translation>Ní féidir ceangal slán a dhéanamh leis&lt;i&gt;%1&lt;/i&gt;:</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="157"/>
         <source>Additional errors:</source>
-        <translation type="unfinished"/>
+        <translation>Earráidí breise:</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="183"/>
         <source>with Certificate %1</source>
-        <translation type="unfinished"/>
+        <translation>le Teastas %1</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="192"/>
         <location filename="../src/gui/sslerrordialog.cpp" line="194"/>
         <location filename="../src/gui/sslerrordialog.cpp" line="196"/>
         <source>&amp;lt;not specified&amp;gt;</source>
-        <translation type="unfinished"/>
+        <translation>&amp;lt;níor sonraítear&amp;gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="197"/>
         <location filename="../src/gui/sslerrordialog.cpp" line="222"/>
         <source>Organization: %1</source>
-        <translation type="unfinished"/>
+        <translation>Eagraíocht: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="198"/>
         <location filename="../src/gui/sslerrordialog.cpp" line="223"/>
         <source>Unit: %1</source>
-        <translation type="unfinished"/>
+        <translation>Aonad: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="199"/>
         <location filename="../src/gui/sslerrordialog.cpp" line="224"/>
         <source>Country: %1</source>
-        <translation type="unfinished"/>
+        <translation>Tír: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="206"/>
         <source>Fingerprint (SHA1): &lt;tt&gt;%1&lt;/tt&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Méarloirg (SHA1): &lt;tt&gt;%1&lt;/tt&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="211"/>
         <source>Fingerprint (SHA-256): &lt;tt&gt;%1&lt;/tt&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Méarloirg (SHA-256): &lt;tt&gt;%1&lt;/tt&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="212"/>
         <source>Fingerprint (SHA-512): &lt;tt&gt;%1&lt;/tt&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Méarloirg (SHA-512): &lt;tt&gt;%1&lt;/tt&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="214"/>
         <source>Effective Date: %1</source>
-        <translation type="unfinished"/>
+        <translation>Dáta Éifeachtach: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="215"/>
         <source>Expiration Date: %1</source>
-        <translation type="unfinished"/>
+        <translation>Dáta Éaga: % 1</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="219"/>
         <source>Issuer: %1</source>
-        <translation type="unfinished"/>
+        <translation>Eisitheoir: %1</translation>
     </message>
 </context>
 <context>
@@ -4969,73 +4971,73 @@ D&apos;fhreagair an freastalaí le hearráid: % 2</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="197"/>
         <source>%1 (skipped due to earlier error, trying again in %2)</source>
-        <translation type="unfinished"/>
+        <translation>% 1 (scipeáladh mar gheall ar earráid níos luaithe, ag iarraidh arís i % 2)</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="385"/>
         <source>Could not update file: %1</source>
-        <translation type="unfinished"/>
+        <translation>Níorbh fhéidir an comhad a nuashonrú: % 1</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="410"/>
         <source>Could not update virtual file metadata: %1</source>
-        <translation type="unfinished"/>
+        <translation>Níorbh fhéidir meiteashonraí comhaid fhíorúla a nuashonrú: % 1</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="417"/>
         <source>Could not update file metadata: %1</source>
-        <translation type="unfinished"/>
+        <translation>Níorbh fhéidir meiteashonraí comhaid a nuashonrú: % 1</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="427"/>
         <source>Could not set file record to local DB: %1</source>
-        <translation type="unfinished"/>
+        <translation>Níorbh fhéidir taifead comhaid a shocrú go DB logánta: % 1</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="457"/>
         <source>Unresolved conflict.</source>
-        <translation type="unfinished"/>
+        <translation>Coimhlint gan réiteach.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="549"/>
         <source>Only %1 are available, need at least %2 to start</source>
         <comment>Placeholders are postfixed with file sizes using Utility::octetsToString()</comment>
-        <translation type="unfinished"/>
+        <translation>Níl ach % 1 ar fáil, teastaíonn % 2 ar a laghad chun tosú</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="582"/>
         <source>Unable to open or create the local sync database. Make sure you have write access in the sync folder.</source>
-        <translation type="unfinished"/>
+        <translation>Ní féidir an bunachar sonraí sioncronaithe áitiúil a oscailt ná a chruthú. Cinntigh go bhfuil rochtain scríofa agat san fhillteán sioncronaithe.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="598"/>
         <source>Using virtual files with suffix, but suffix is not set</source>
-        <translation type="unfinished"/>
+        <translation>Comhaid fhíorúla a úsáid le hiarmhír, ach níl iarmhír socraithe</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="610"/>
         <source>Unable to read the blacklist from the local database</source>
-        <translation type="unfinished"/>
+        <translation>Ní féidir an liosta dubh a léamh ón mbunachar sonraí áitiúil</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="653"/>
         <source>Unable to read from the sync journal.</source>
-        <translation type="unfinished"/>
+        <translation>Ní féidir a léamh ón dialann sioncronaithe.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="782"/>
         <source>Cannot open the sync journal</source>
-        <translation type="unfinished"/>
+        <translation>Ní féidir an dialann sioncronaithe a oscailt</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1256"/>
         <source>Disk space is low: Downloads that would reduce free space below %1 were skipped.</source>
-        <translation type="unfinished"/>
+        <translation>Tá spás diosca íseal: Ní raibh íosluchtú déanta a laghdódh spás saor faoi % 1.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1263"/>
         <source>There is insufficient space available on the server for some uploads.</source>
-        <translation type="unfinished"/>
+        <translation>Níl go leor spáis ar fáil ar an bhfreastalaí le haghaidh roinnt uaslódála.</translation>
     </message>
 </context>
 <context>
@@ -5044,64 +5046,64 @@ D&apos;fhreagair an freastalaí le hearráid: % 2</translation>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="124"/>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="313"/>
         <source>Offline</source>
-        <translation type="unfinished"/>
+        <translation>As líne</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="138"/>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="316"/>
         <location filename="../src/gui/tray/syncstatussummary.h" line="89"/>
         <source>All synced!</source>
-        <translation type="unfinished"/>
+        <translation>Gach sioncronaithe!</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="147"/>
         <source>Some files couldn&apos;t be synced!</source>
-        <translation type="unfinished"/>
+        <translation>Níorbh fhéidir roinnt comhad a shioncronú!</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="148"/>
         <source>See below for errors</source>
-        <translation type="unfinished"/>
+        <translation>Féach thíos le haghaidh earráidí</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="159"/>
         <source>Preparing sync</source>
-        <translation type="unfinished"/>
+        <translation>Sioncronú á ullmhú</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="155"/>
         <source>Syncing</source>
-        <translation type="unfinished"/>
+        <translation>Ag sioncronú</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="162"/>
         <source>Sync paused</source>
-        <translation type="unfinished"/>
+        <translation>Cuireadh an sioncronú ar sos</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="169"/>
         <source>Some files could not be synced!</source>
-        <translation type="unfinished"/>
+        <translation>Níorbh fhéidir roinnt comhad a shioncronú!</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="170"/>
         <source>See below for warnings</source>
-        <translation type="unfinished"/>
+        <translation>Féach thíos le haghaidh rabhaidh</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="218"/>
         <source>%1 of %2 · %3 left</source>
-        <translation type="unfinished"/>
+        <translation>% 1 de % 2 · % 3 fágtha</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="222"/>
         <source>%1 of %2</source>
-        <translation type="unfinished"/>
+        <translation>% 1 as % 2</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="227"/>
         <source>Syncing file %1 of %2</source>
-        <translation type="unfinished"/>
+        <translation>Comhad % 1 de % 2 á shioncronú</translation>
     </message>
 </context>
 <context>
@@ -5109,59 +5111,59 @@ D&apos;fhreagair an freastalaí le hearráid: % 2</translation>
     <message>
         <location filename="../src/gui/systray.cpp" line="80"/>
         <source>Download</source>
-        <translation type="unfinished"/>
+        <translation>Íosluchtaigh</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="180"/>
         <source>Add account</source>
-        <translation type="unfinished"/>
+        <translation>Cuir cuntas leis</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="182"/>
         <source>Open main dialog</source>
-        <translation type="unfinished"/>
+        <translation>Oscail príomhdhialóg</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="185"/>
         <location filename="../src/gui/systray.cpp" line="195"/>
         <source>Pause sync</source>
-        <translation type="unfinished"/>
+        <translation>Cuir an sioncronú ar sos</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="186"/>
         <location filename="../src/gui/systray.cpp" line="201"/>
         <source>Resume sync</source>
-        <translation type="unfinished"/>
+        <translation>Lean an sioncronú</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="187"/>
         <source>Settings</source>
-        <translation type="unfinished"/>
+        <translation>Socruithe</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="188"/>
         <source>Help</source>
-        <translation type="unfinished"/>
+        <translation>Cabhrú</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="189"/>
         <source>Exit %1</source>
-        <translation type="unfinished"/>
+        <translation>Scoir % 1</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="195"/>
         <source>Pause sync for all</source>
-        <translation type="unfinished"/>
+        <translation>Cuir an sioncronú ar sos do chách</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="201"/>
         <source>Resume sync for all</source>
-        <translation type="unfinished"/>
+        <translation>Lean an sioncronú do chách</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="554"/>
         <source>%1: %2</source>
-        <translation type="unfinished"/>
+        <translation>%1: %2</translation>
     </message>
 </context>
 <context>
@@ -5170,35 +5172,35 @@ D&apos;fhreagair an freastalaí le hearráid: % 2</translation>
         <location filename="../src/libsync/theme.cpp" line="553"/>
         <source>&lt;p&gt;%1 Desktop Client&lt;/p&gt;&lt;p&gt;Version %1. For more information please click &lt;a href=&apos;%2&apos;&gt;here&lt;/a&gt;.&lt;/p&gt;</source>
         <extracomment>Example text: &quot;&lt;p&gt;Nextcloud Desktop Client&lt;/p&gt;&quot; (%1 is the application name)</extracomment>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;%1 Cliant Deisce&lt;/p&gt;&lt;p&gt;Leagan %1. Chun tuilleadh eolais a fháil cliceáil le do thoil ar &lt;a href=&apos;%2&apos;&gt;anseo&lt;/a&gt;.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="554"/>
         <source>&lt;p&gt;%1 Desktop Client&lt;/p&gt;</source>
         <extracomment>Example text: &quot;&lt;p&gt;Nextcloud Desktop Client&lt;/p&gt;&quot; (%1 is the application name)</extracomment>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;%1 Cliant Deisce&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="561"/>
         <source>&lt;p&gt;&lt;small&gt;Using virtual files plugin: %1&lt;/small&gt;&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;&lt;small&gt;Ag úsáid an breiseáin comhaid fhíorúil: %1&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="570"/>
         <source>&lt;p&gt;%1 desktop client %2&lt;/p&gt;</source>
         <extracomment>Example text: &quot;&lt;p&gt;Nextcloud Desktop Client&lt;/p&gt;&quot; (%1 is the application name)</extracomment>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;%1 cliant deisce %2&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="557"/>
         <location filename="../src/libsync/theme.cpp" line="572"/>
         <source>&lt;p&gt;Version %1. For more information please click &lt;a href=&apos;%2&apos;&gt;here&lt;/a&gt;.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Leagan % 1. Le haghaidh tuilleadh eolais cliceáil le do thoil &lt;a href=&apos;%2&apos;&gt;anseo&lt;/a&gt;.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="576"/>
         <source>&lt;p&gt;This release was supplied by %1.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Soláthraíodh an scaoileadh seo ag %1.&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -5206,22 +5208,22 @@ D&apos;fhreagair an freastalaí le hearráid: % 2</translation>
     <message>
         <location filename="../src/gui/tray/unifiedsearchresultslistmodel.cpp" line="405"/>
         <source>Failed to fetch providers.</source>
-        <translation type="unfinished"/>
+        <translation>Theip ar sholáthraithe a fháil.</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/unifiedsearchresultslistmodel.cpp" line="416"/>
         <source>Failed to fetch search providers for &apos;%1&apos;. Error: %2</source>
-        <translation type="unfinished"/>
+        <translation>Theip ar sholáthraithe cuardaigh a fháil le haghaidh &apos;%1&apos;. Earráid: %2</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/unifiedsearchresultslistmodel.cpp" line="450"/>
         <source>Search has failed for &apos;%2&apos;.</source>
-        <translation type="unfinished"/>
+        <translation>Theip ar an gcuardach do &apos;% 2&apos;.</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/unifiedsearchresultslistmodel.cpp" line="479"/>
         <source>Search has failed for &apos;%1&apos;. Error: %2</source>
-        <translation type="unfinished"/>
+        <translation>Theip ar an gcuardach do &apos;% 1&apos;. Earráid: % 2</translation>
     </message>
 </context>
 <context>
@@ -5229,17 +5231,17 @@ D&apos;fhreagair an freastalaí le hearráid: % 2</translation>
     <message>
         <location filename="../src/libsync/updatee2eefoldermetadatajob.cpp" line="132"/>
         <source>Failed to update folder metadata.</source>
-        <translation type="unfinished"/>
+        <translation>Theip ar mheiteashonraí an fhillteáin a nuashonrú.</translation>
     </message>
     <message>
         <location filename="../src/libsync/updatee2eefoldermetadatajob.cpp" line="155"/>
         <source>Failed to unlock encrypted folder.</source>
-        <translation type="unfinished"/>
+        <translation>Theip ar dhíghlasáil fillteán criptithe.</translation>
     </message>
     <message>
         <location filename="../src/libsync/updatee2eefoldermetadatajob.cpp" line="165"/>
         <source>Failed to finalize item.</source>
-        <translation type="unfinished"/>
+        <translation>Theip ar an mír a thabhairt chun críche.</translation>
     </message>
 </context>
 <context>
@@ -5255,27 +5257,27 @@ D&apos;fhreagair an freastalaí le hearráid: % 2</translation>
         <location filename="../src/libsync/updatee2eefolderusersmetadatajob.cpp" line="198"/>
         <location filename="../src/libsync/updatee2eefolderusersmetadatajob.cpp" line="257"/>
         <source>Error updating metadata for a folder %1</source>
-        <translation type="unfinished"/>
+        <translation>Earráid agus meiteashonraí á nuashonrú d&apos;fhillteán % 1</translation>
     </message>
     <message>
         <location filename="../src/libsync/updatee2eefolderusersmetadatajob.cpp" line="90"/>
         <source>Could not fetch public key for user %1</source>
-        <translation type="unfinished"/>
+        <translation>Níorbh fhéidir eochair phoiblí a fháil d&apos;úsáideoir % 1</translation>
     </message>
     <message>
         <location filename="../src/libsync/updatee2eefolderusersmetadatajob.cpp" line="97"/>
         <source>Could not find root encrypted folder for folder %1</source>
-        <translation type="unfinished"/>
+        <translation>Níorbh fhéidir fillteán fréimhe criptithe a aimsiú don fhillteán % 1</translation>
     </message>
     <message>
         <location filename="../src/libsync/updatee2eefolderusersmetadatajob.cpp" line="118"/>
         <source>Could not add or remove user %1 to access folder %2</source>
-        <translation type="unfinished"/>
+        <translation>Níorbh fhéidir úsáideoir % 1 a chur leis nó a bhaint chun fillteán % 2 a rochtain</translation>
     </message>
     <message>
         <location filename="../src/libsync/updatee2eefolderusersmetadatajob.cpp" line="235"/>
         <source>Failed to unlock a folder.</source>
-        <translation type="unfinished"/>
+        <translation>Theip ar dhíghlasáil fillteán.</translation>
     </message>
 </context>
 <context>
@@ -5283,13 +5285,13 @@ D&apos;fhreagair an freastalaí le hearráid: % 2</translation>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="646"/>
         <source>Retry all uploads</source>
-        <translation type="unfinished"/>
+        <translation>Bain triail eile as gach uaslódáil</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="697"/>
         <location filename="../src/gui/tray/usermodel.cpp" line="838"/>
         <source>Resolve conflict</source>
-        <translation type="unfinished"/>
+        <translation>Réitigh coinbhleacht</translation>
     </message>
 </context>
 <context>
@@ -5297,22 +5299,22 @@ D&apos;fhreagair an freastalaí le hearráid: % 2</translation>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1403"/>
         <source>Confirm Account Removal</source>
-        <translation type="unfinished"/>
+        <translation>Deimhnigh Bain Cuntas</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1404"/>
         <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;An bhfuil tú cinnte gur mhaith leat an ceangal leis an gcuntas &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Nóta:&lt;/b&gt; Ní scriosfaidh &lt;b&gt;sé seo&lt;/b&gt; aon chomhad.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1408"/>
         <source>Remove connection</source>
-        <translation type="unfinished"/>
+        <translation>Bain nasc</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1409"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>Cealaigh</translation>
     </message>
 </context>
 <context>
@@ -5320,96 +5322,96 @@ D&apos;fhreagair an freastalaí le hearráid: % 2</translation>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="155"/>
         <source>Could not fetch predefined statuses. Make sure you are connected to the server.</source>
-        <translation type="unfinished"/>
+        <translation>Níorbh fhéidir stádais réamhshainithe a fháil. Déan cinnte go bhfuil tú ceangailte leis an bhfreastalaí.</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="159"/>
         <source>Could not fetch status. Make sure you are connected to the server.</source>
-        <translation type="unfinished"/>
+        <translation>Níorbh fhéidir an stádas a fháil. Déan cinnte go bhfuil tú ceangailte leis an bhfreastalaí.</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="163"/>
         <source>Status feature is not supported. You will not be able to set your status.</source>
-        <translation type="unfinished"/>
+        <translation>Ní thacaítear leis an ngné stádais. Ní bheidh tú in ann do stádas a shocrú.</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="167"/>
         <source>Emojis are not supported. Some status functionality may not work.</source>
-        <translation type="unfinished"/>
+        <translation>Ní thacaítear le emojis. Seans nach n-oibreoidh roinnt feidhmiúlacht stádais.</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="171"/>
         <source>Could not set status. Make sure you are connected to the server.</source>
-        <translation type="unfinished"/>
+        <translation>Níorbh fhéidir an stádas a shocrú. Déan cinnte go bhfuil tú ceangailte leis an bhfreastalaí.</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="175"/>
         <source>Could not clear status message. Make sure you are connected to the server.</source>
-        <translation type="unfinished"/>
+        <translation>Níorbh fhéidir an teachtaireacht stádais a ghlanadh. Déan cinnte go bhfuil tú ceangailte leis an bhfreastalaí.</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="360"/>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="467"/>
         <source>Don&apos;t clear</source>
-        <translation type="unfinished"/>
+        <translation>Ná soiléir</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="363"/>
         <source>30 minutes</source>
-        <translation type="unfinished"/>
+        <translation>30 nóiméad</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="366"/>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="421"/>
         <source>1 hour</source>
-        <translation type="unfinished"/>
+        <translation>1 uair</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="369"/>
         <source>4 hours</source>
-        <translation type="unfinished"/>
+        <translation>4 uair an chloig</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="372"/>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="456"/>
         <source>Today</source>
-        <translation type="unfinished"/>
+        <translation>Inniu</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="375"/>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="458"/>
         <source>This week</source>
-        <translation type="unfinished"/>
+        <translation>An tseachtain seo</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="410"/>
         <source>Less than a minute</source>
-        <translation type="unfinished"/>
+        <translation>Níos lú ná nóiméad</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="414"/>
         <source>1 minute</source>
-        <translation type="unfinished"/>
+        <translation>1 nóiméad</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="416"/>
         <source>%1 minutes</source>
-        <translation type="unfinished"/>
+        <translation>%1 nóiméad</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="423"/>
         <source>%1 hours</source>
-        <translation type="unfinished"/>
+        <translation>%1 uair</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="428"/>
         <source>1 day</source>
-        <translation type="unfinished"/>
+        <translation>1 lá</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="430"/>
         <source>%1 days</source>
-        <translation type="unfinished"/>
+        <translation>% 1 laethanta</translation>
     </message>
 </context>
 <context>
@@ -5417,7 +5419,7 @@ D&apos;fhreagair an freastalaí le hearráid: % 2</translation>
     <message>
         <location filename="../src/common/vfs.cpp" line="75"/>
         <source>The Virtual filesystem feature requires a NTFS file system, %1 is using %2</source>
-        <translation type="unfinished"/>
+        <translation>Teastaíonn córas comhaid NTFS ón ngné Chórais Fíorúil, tá % 1 ag úsáid % 2</translation>
     </message>
 </context>
 <context>
@@ -5425,37 +5427,37 @@ D&apos;fhreagair an freastalaí le hearráid: % 2</translation>
     <message>
         <location filename="../src/gui/vfsdownloaderrordialog.ui" line="14"/>
         <source>Download error</source>
-        <translation type="unfinished"/>
+        <translation>Earráid íoslódáil</translation>
     </message>
     <message>
         <location filename="../src/gui/vfsdownloaderrordialog.ui" line="23"/>
         <source>Error downloading</source>
-        <translation type="unfinished"/>
+        <translation>Earráid íosluchtaithe</translation>
     </message>
     <message>
         <location filename="../src/gui/vfsdownloaderrordialog.ui" line="39"/>
         <source>could not be downloaded</source>
-        <translation type="unfinished"/>
+        <translation>Níorbh fhéidir a íoslódáil</translation>
     </message>
     <message>
         <location filename="../src/gui/vfsdownloaderrordialog.ui" line="61"/>
         <source>&gt; More details</source>
-        <translation type="unfinished"/>
+        <translation>&gt; Tuilleadh sonraí</translation>
     </message>
     <message>
         <location filename="../src/gui/vfsdownloaderrordialog.ui" line="68"/>
         <source>More details</source>
-        <translation type="unfinished"/>
+        <translation>Tuilleadh sonraí</translation>
     </message>
     <message>
         <location filename="../src/gui/vfsdownloaderrordialog.cpp" line="26"/>
         <source>Error downloading %1</source>
-        <translation type="unfinished"/>
+        <translation>Earráid agus % 1 á íosluchtú</translation>
     </message>
     <message>
         <location filename="../src/gui/vfsdownloaderrordialog.cpp" line="27"/>
         <source>%1 could not be downloaded.</source>
-        <translation type="unfinished"/>
+        <translation>Níorbh fhéidir % 1 a íosluchtú.</translation>
     </message>
 </context>
 <context>
@@ -5464,7 +5466,7 @@ D&apos;fhreagair an freastalaí le hearráid: % 2</translation>
         <location filename="../src/libsync/vfs/suffix/vfs_suffix.cpp" line="80"/>
         <location filename="../src/libsync/vfs/suffix/vfs_suffix.cpp" line="90"/>
         <source>Error updating metadata due to invalid modification time</source>
-        <translation type="unfinished"/>
+        <translation>Earráid agus meiteashonraí á nuashonrú mar gheall ar am modhnuithe neamhbhailí</translation>
     </message>
 </context>
 <context>
@@ -5473,7 +5475,7 @@ D&apos;fhreagair an freastalaí le hearráid: % 2</translation>
         <location filename="../src/libsync/vfs/xattr/vfs_xattr.cpp" line="75"/>
         <location filename="../src/libsync/vfs/xattr/vfs_xattr.cpp" line="85"/>
         <source>Error updating metadata due to invalid modification time</source>
-        <translation type="unfinished"/>
+        <translation>Earráid agus meiteashonraí á nuashonrú mar gheall ar am modhnuithe neamhbhailí</translation>
     </message>
 </context>
 <context>
@@ -5481,12 +5483,12 @@ D&apos;fhreagair an freastalaí le hearráid: % 2</translation>
     <message>
         <location filename="../src/gui/wizard/webview.cpp" line="231"/>
         <source>Invalid certificate detected</source>
-        <translation type="unfinished"/>
+        <translation>Braitheadh ​​teastas neamhbhailí</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/webview.cpp" line="232"/>
         <source>The host &quot;%1&quot; provided an invalid certificate. Continue?</source>
-        <translation type="unfinished"/>
+        <translation>Chuir an t-óstach &quot;% 1&quot; teastas neamhbhailí ar fáil. Leanúint ar aghaidh?</translation>
     </message>
 </context>
 <context>
@@ -5494,12 +5496,12 @@ D&apos;fhreagair an freastalaí le hearráid: % 2</translation>
     <message>
         <location filename="../src/gui/creds/webflowcredentials.cpp" line="166"/>
         <source>You have been logged out of your account %1 at %2. Please login again.</source>
-        <translation type="unfinished"/>
+        <translation>Logáladh amach as do chuntas % 1 ag % 2 thú. Logáil isteach arís le do thoil.</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/webflowcredentials.cpp" line="190"/>
         <source>Please login with the account: %1</source>
-        <translation type="unfinished"/>
+        <translation>Logáil isteach leis an gcuntas: % 1</translation>
     </message>
 </context>
 <context>
@@ -5507,42 +5509,42 @@ D&apos;fhreagair an freastalaí le hearráid: % 2</translation>
     <message>
         <location filename="../src/gui/wizard/welcomepage.ui" line="20"/>
         <source>Form</source>
-        <translation type="unfinished"/>
+        <translation>Foirm</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/welcomepage.ui" line="143"/>
         <source>Log in</source>
-        <translation type="unfinished"/>
+        <translation>Logáil isteach</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/welcomepage.ui" line="156"/>
         <source>Sign up with provider</source>
-        <translation type="unfinished"/>
+        <translation>Cláraigh leis an soláthraí</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/welcomepage.cpp" line="68"/>
         <source>Keep your data secure and under your control</source>
-        <translation type="unfinished"/>
+        <translation>Coinnigh do shonraí slán agus faoi do smacht</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/welcomepage.cpp" line="69"/>
         <source>Secure collaboration &amp; file exchange</source>
-        <translation type="unfinished"/>
+        <translation>Comhoibriú slán &amp; malartú comhad</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/welcomepage.cpp" line="70"/>
         <source>Easy-to-use web mail, calendaring &amp; contacts</source>
-        <translation type="unfinished"/>
+        <translation>Ríomhphost gréasáin, féilire &amp; teagmhálaithe atá éasca le húsáid</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/welcomepage.cpp" line="71"/>
         <source>Screensharing, online meetings &amp; web conferences</source>
-        <translation type="unfinished"/>
+        <translation>Comhroinnt scáileáin, cruinnithe ar líne &amp; comhdhálacha gréasáin</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/welcomepage.cpp" line="111"/>
         <source>Host your own server</source>
-        <translation type="unfinished"/>
+        <translation>Óstáil do fhreastalaí féin</translation>
     </message>
 </context>
 <context>
@@ -5550,123 +5552,123 @@ D&apos;fhreagair an freastalaí le hearráid: % 2</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="266"/>
         <source>Unsupported Server Version</source>
-        <translation type="unfinished"/>
+        <translation>Leagan Freastalaí gan tacaíocht</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="267"/>
         <source>The server on account %1 runs an unsupported version %2. Using this client with unsupported server versions is untested and potentially dangerous. Proceed at your own risk.</source>
-        <translation type="unfinished"/>
+        <translation>Ritheann an freastalaí ar chuntas % 1 leagan % 2 nach dtacaítear leis. Tá úsáid an chliaint seo le leaganacha freastalaí nach dtacaítear leo gan tástáil agus d&apos;fhéadfadh sé a bheith contúirteach. Lean ar aghaidh ar do phriacal féin.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="308"/>
         <source>Disconnected</source>
-        <translation type="unfinished"/>
+        <translation>Dícheangailte</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="310"/>
         <source>Disconnected from some accounts</source>
-        <translation type="unfinished"/>
+        <translation>Dícheangailte ó roinnt cuntas</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="318"/>
         <source>Disconnected from %1</source>
-        <translation type="unfinished"/>
+        <translation>Dícheangailte ó % 1</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="321"/>
         <source>Disconnected from accounts:</source>
-        <translation type="unfinished"/>
+        <translation>Dícheangailte ó chuntais:</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="323"/>
         <source>Account %1: %2</source>
-        <translation type="unfinished"/>
+        <translation>Cuntas % 1: % 2</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="337"/>
         <source>Please sign in</source>
-        <translation type="unfinished"/>
+        <translation>Sínigh isteach le do thoil</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="338"/>
         <source>Signed out</source>
-        <translation type="unfinished"/>
+        <translation>Sínithe amach</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="342"/>
         <source>Account synchronization is disabled</source>
-        <translation type="unfinished"/>
+        <translation>Tá sioncronú cuntais díchumasaithe</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="343"/>
         <location filename="../src/gui/owncloudgui.cpp" line="396"/>
         <source>Synchronization is paused</source>
-        <translation type="unfinished"/>
+        <translation>Tá sioncrónú ar sos</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="383"/>
         <source>Folder %1: %2</source>
-        <translation type="unfinished"/>
+        <translation>Fillteán % 1: % 2</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="391"/>
         <source>Unresolved conflicts</source>
-        <translation type="unfinished"/>
+        <translation>Coinbhleachtaí gan réiteach</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="393"/>
         <source>Up to date</source>
-        <translation type="unfinished"/>
+        <translation>Suas chun dáta</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="398"/>
         <source>Error during synchronization</source>
-        <translation type="unfinished"/>
+        <translation>Earráid le linn sioncrónaithe</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="401"/>
         <source>There are no sync folders configured.</source>
-        <translation type="unfinished"/>
+        <translation>Níl aon fillteáin sioncronaithe cumraithe.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="402"/>
         <source>No sync folders configured</source>
-        <translation type="unfinished"/>
+        <translation>Níl aon fhillteán sioncronaithe cumraithe</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="467"/>
         <source>Checking for changes in remote &quot;%1&quot;</source>
-        <translation type="unfinished"/>
+        <translation>Ag seiceáil le haghaidh athruithe i gcian&quot;% 1&quot;</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="470"/>
         <source>Checking for changes in local &quot;%1&quot;</source>
-        <translation type="unfinished"/>
+        <translation>Ag seiceáil le haghaidh athruithe i logánta &quot;% 1&quot;</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="486"/>
         <source>Syncing %1 of %2 (%3 left)</source>
-        <translation type="unfinished"/>
+        <translation>% 1 de % 2 á shioncronú (% 3 fágtha)</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="491"/>
         <source>Syncing %1 of %2</source>
-        <translation type="unfinished"/>
+        <translation>% 1 de % 2 á shioncronú</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="500"/>
         <source>Syncing %1 (%2 left)</source>
-        <translation type="unfinished"/>
+        <translation>% 1 á shioncronú (% 2 fágtha)</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="503"/>
         <source>Syncing %1</source>
-        <translation type="unfinished"/>
+        <translation>% 1 á shioncronú</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="513"/>
         <source>%1 (%2, %3)</source>
-        <translation type="unfinished"/>
+        <translation>%1 (%2, %3)</translation>
     </message>
 </context>
 <context>
@@ -5674,73 +5676,73 @@ D&apos;fhreagair an freastalaí le hearráid: % 2</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="77"/>
         <source>&amp;Local Folder</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Fillteán Áitiúil</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="98"/>
         <source>Username</source>
-        <translation type="unfinished"/>
+        <translation>Ainm úsáideora</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="116"/>
         <source>Local Folder</source>
-        <translation type="unfinished"/>
+        <translation>Fillteán Áitiúil</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="135"/>
         <source>Choose different folder</source>
-        <translation type="unfinished"/>
+        <translation>Roghnaigh fillteán difriúil</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="228"/>
         <source>Server address</source>
-        <translation type="unfinished"/>
+        <translation>Seoladh an fhreastalaí</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="244"/>
         <source>Sync Logo</source>
-        <translation type="unfinished"/>
+        <translation>Lógó Sioncronaigh</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="304"/>
         <source>Synchronize everything from server</source>
-        <translation type="unfinished"/>
+        <translation>Sioncrónaigh gach rud ón bhfreastalaí</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="360"/>
         <source>Ask before syncing folders larger than</source>
-        <translation type="unfinished"/>
+        <translation>Fiafraigh roimh shioncronú fillteáin níos mó ná</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="386"/>
         <source>MB</source>
         <extracomment>Trailing part of &quot;Ask confirmation before syncing folder larger than&quot; </extracomment>
-        <translation type="unfinished"/>
+        <translation>MB</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="432"/>
         <source>Ask before syncing external storages</source>
-        <translation type="unfinished"/>
+        <translation>Fiafraigh sula ndéantar stórais sheachtracha a shioncronú</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="475"/>
         <source>Choose what to sync</source>
-        <translation type="unfinished"/>
+        <translation>Roghnaigh cad atá le sioncronú</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="612"/>
         <source>Keep local data</source>
-        <translation type="unfinished"/>
+        <translation>Coinnigh sonraí áitiúla</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="628"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If this box is checked, existing content in the local folder will be erased to start a clean sync from the server.&lt;/p&gt;&lt;p&gt;Do not check this if the local content should be uploaded to the servers folder.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Má dhéantar an bosca seo a sheiceáil, scriosfar ábhar atá san fhillteán logánta cheana féin chun sioncronú glan a thosú ón bhfreastalaí.&lt;/p&gt;&lt;p&gt;Ná seiceáil é seo ar cheart an t-ábhar logánta a uaslódáil chuig fillteán an fhreastalaí.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="631"/>
         <source>Erase local folder and start a clean sync</source>
-        <translation type="unfinished"/>
+        <translation>Scrios an fillteán áitiúil agus cuir tús le sioncronú glan</translation>
     </message>
 </context>
 <context>
@@ -5748,12 +5750,12 @@ D&apos;fhreagair an freastalaí le hearráid: % 2</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudhttpcredspage.ui" line="73"/>
         <source>&amp;Username</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Ainm Úsáideora</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudhttpcredspage.ui" line="83"/>
         <source>&amp;Password</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Focal Faire</translation>
     </message>
 </context>
 <context>
@@ -5762,22 +5764,22 @@ D&apos;fhreagair an freastalaí le hearráid: % 2</translation>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="32"/>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="353"/>
         <source>TextLabel</source>
-        <translation type="unfinished"/>
+        <translation>Lipéad Téacs</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="73"/>
         <source>Logo</source>
-        <translation type="unfinished"/>
+        <translation>Lógó</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="183"/>
         <source>Server address</source>
-        <translation type="unfinished"/>
+        <translation>Seoladh an fhreastalaí</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="259"/>
         <source>This is the link to your %1 web interface when you open it in the browser.</source>
-        <translation type="unfinished"/>
+        <translation>Seo nasc chuig do chomhéadan gréasáin % 1 nuair a osclaíonn tú é sa bhrabhsálaí.</translation>
     </message>
 </context>
 <context>
@@ -5785,92 +5787,92 @@ D&apos;fhreagair an freastalaí le hearráid: % 2</translation>
     <message>
         <location filename="../src/gui/foldercreationdialog.cpp" line="41"/>
         <source>New folder</source>
-        <translation type="unfinished"/>
+        <translation>Fillteán nua</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="117"/>
         <source>Failed to create debug archive</source>
-        <translation type="unfinished"/>
+        <translation>Theip ar chruthú cartlann dífhabhtaithe</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="118"/>
         <source>Could not create debug archive in selected location!</source>
-        <translation type="unfinished"/>
+        <translation>Níorbh fhéidir cartlann dífhabhtaithe a chruthú sa suíomh roghnaithe!</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="763"/>
         <source>You renamed %1</source>
-        <translation type="unfinished"/>
+        <translation>D&apos;athainmnigh tú % 1</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="765"/>
         <source>You deleted %1</source>
-        <translation type="unfinished"/>
+        <translation>Scrios tú % 1</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="767"/>
         <source>You created %1</source>
-        <translation type="unfinished"/>
+        <translation>Chruthaigh tú % 1</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="769"/>
         <source>You changed %1</source>
-        <translation type="unfinished"/>
+        <translation>D&apos;athraigh tú % 1</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="793"/>
         <source>Synced %1</source>
-        <translation type="unfinished"/>
+        <translation>Sioncronaithe % 1</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="482"/>
         <source>%nd</source>
         <comment>delay in days after an activity</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%nd</numerusform><numerusform>%nd</numerusform><numerusform>%nd</numerusform><numerusform>%nd</numerusform><numerusform>% nd</numerusform></translation>
     </message>
     <message>
         <location filename="../src/common/utility.cpp" line="486"/>
         <source>in the future</source>
-        <translation type="unfinished"/>
+        <translation>sa todhchaí</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="491"/>
         <source>%nh</source>
         <comment>delay in hours after an activity</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%nh</numerusform><numerusform>%nh</numerusform><numerusform>%nh</numerusform><numerusform>%nh</numerusform><numerusform>%nh</numerusform></translation>
     </message>
     <message>
         <location filename="../src/common/utility.cpp" line="497"/>
         <source>now</source>
-        <translation type="unfinished"/>
+        <translation>anois</translation>
     </message>
     <message>
         <location filename="../src/common/utility.cpp" line="499"/>
         <source>1m</source>
         <comment>one minute after activity date and time</comment>
-        <translation type="unfinished"/>
+        <translation>1m</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="502"/>
         <source>%nm</source>
         <comment>delay in minutes after an activity</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%nm</numerusform><numerusform>%nm</numerusform><numerusform>%nm</numerusform><numerusform>%nm</numerusform><numerusform>%nm</numerusform></translation>
     </message>
     <message>
         <location filename="../src/common/utility.cpp" line="506"/>
         <source>Some time ago</source>
-        <translation type="unfinished"/>
+        <translation>Tamall ó shin</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncresult.cpp" line="139"/>
         <source>%1: %2</source>
         <extracomment>this displays an error string (%2) for a file %1</extracomment>
-        <translation type="unfinished"/>
+        <translation>%1: %2</translation>
     </message>
     <message>
         <location filename="../src/libsync/vfs/cfapi/cfapiwrapper.cpp" line="63"/>
         <source>Paths beginning with &apos;#&apos; character are not supported in VFS mode.</source>
-        <translation type="unfinished"/>
+        <translation>Ní thacaítear le conairí a thosaíonn le carachtar &apos;#&apos; sa mhód VFS.</translation>
     </message>
 </context>
 <context>
@@ -5878,38 +5880,38 @@ D&apos;fhreagair an freastalaí le hearráid: % 2</translation>
     <message>
         <location filename="../src/gui/ResolveConflictsDialog.qml" line="37"/>
         <source>Solve sync conflicts</source>
-        <translation type="unfinished"/>
+        <translation>Réitigh coinbhleachtaí sioncronaithe</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/ResolveConflictsDialog.qml" line="74"/>
         <source>%1 files in conflict</source>
         <comment>indicate the number of conflicts to resolve</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>% 1 comhad coinbhleachta</numerusform><numerusform>% 1 comhad coinbhleachta</numerusform><numerusform>% 1 comhad coinbhleachta</numerusform><numerusform>% 1 comhad coinbhleachta</numerusform><numerusform>% 1 comhad coinbhleachta</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/ResolveConflictsDialog.qml" line="81"/>
         <source>Choose if you want to keep the local version, server version, or both. If you choose both, the local file will have a number added to its name.</source>
-        <translation type="unfinished"/>
+        <translation>Roghnaigh más mian leat an leagan áitiúil, an leagan freastalaí, nó an dá cheann a choinneáil. Má roghnaíonn tú an dá cheann, cuirfear uimhir leis an gcomhad áitiúil lena ainm.</translation>
     </message>
     <message>
         <location filename="../src/gui/ResolveConflictsDialog.qml" line="97"/>
         <source>All local versions</source>
-        <translation type="unfinished"/>
+        <translation>Gach leagan áitiúil</translation>
     </message>
     <message>
         <location filename="../src/gui/ResolveConflictsDialog.qml" line="115"/>
         <source>All server versions</source>
-        <translation type="unfinished"/>
+        <translation>Gach leagan freastalaí</translation>
     </message>
     <message>
         <location filename="../src/gui/ResolveConflictsDialog.qml" line="170"/>
         <source>Resolve conflicts</source>
-        <translation type="unfinished"/>
+        <translation>Réitigh coinbhleachtaí</translation>
     </message>
     <message>
         <location filename="../src/gui/ResolveConflictsDialog.qml" line="174"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>Cealaigh</translation>
     </message>
 </context>
 <context>
@@ -5917,22 +5919,22 @@ D&apos;fhreagair an freastalaí le hearráid: % 2</translation>
     <message>
         <location filename="../src/gui/filedetails/ShareDelegate.qml" line="161"/>
         <source>Create a new share link</source>
-        <translation type="unfinished"/>
+        <translation>Cruthaigh nasc comhroinnte nua</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDelegate.qml" line="195"/>
         <source>Copy share link location</source>
-        <translation type="unfinished"/>
+        <translation>Cóipeáil suíomh naisc comhroinnte</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDelegate.qml" line="197"/>
         <source>Copied!</source>
-        <translation type="unfinished"/>
+        <translation>Cóipeáladh!</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDelegate.qml" line="244"/>
         <source>Share options</source>
-        <translation type="unfinished"/>
+        <translation>Comhroinn roghanna</translation>
     </message>
 </context>
 <context>
@@ -5940,83 +5942,83 @@ D&apos;fhreagair an freastalaí le hearráid: % 2</translation>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="97"/>
         <source>An error occurred setting the share password.</source>
-        <translation type="unfinished"/>
+        <translation>Tharla earráid agus an focal faire roinnte á shocrú.</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="216"/>
         <source>Edit share</source>
-        <translation type="unfinished"/>
+        <translation>Cuir roinnt in eagar</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="232"/>
         <source>Dismiss</source>
-        <translation type="unfinished"/>
+        <translation>Díbhe</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="291"/>
         <source>Share label</source>
-        <translation type="unfinished"/>
+        <translation>Comhroinn lipéad</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="346"/>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="393"/>
         <source>Allow upload and editing</source>
-        <translation type="unfinished"/>
+        <translation>Ceadaigh uaslódáil agus eagarthóireacht</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="379"/>
         <source>View only</source>
-        <translation type="unfinished"/>
+        <translation>Amharc amháin</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="414"/>
         <source>File drop (upload only)</source>
-        <translation type="unfinished"/>
+        <translation>Scaoileadh comhaid (uaslódáil amháin)</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="453"/>
         <source>Allow resharing</source>
-        <translation type="unfinished"/>
+        <translation>Ceadaigh athroinnt</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="466"/>
         <source>Hide download</source>
-        <translation type="unfinished"/>
+        <translation>Folaigh íoslódáil</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="516"/>
         <source>Password protect</source>
-        <translation type="unfinished"/>
+        <translation>Pasfhocal a chosaint</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="649"/>
         <source>Set expiration date</source>
-        <translation type="unfinished"/>
+        <translation>Socraigh dáta éaga</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="757"/>
         <source>Note to recipient</source>
-        <translation type="unfinished"/>
+        <translation>Nóta don fhaighteoir</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="825"/>
         <source>Unshare</source>
-        <translation type="unfinished"/>
+        <translation>Díroinnte</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="842"/>
         <source>Add another link</source>
-        <translation type="unfinished"/>
+        <translation>Cuir nasc eile leis</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="886"/>
         <source>Share link copied!</source>
-        <translation type="unfinished"/>
+        <translation>Comhroinn nasc cóipeáilte!</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="886"/>
         <source>Copy share link</source>
-        <translation type="unfinished"/>
+        <translation>Cóipeáil nasc comhroinnte</translation>
     </message>
 </context>
 <context>
@@ -6024,27 +6026,27 @@ D&apos;fhreagair an freastalaí le hearráid: % 2</translation>
     <message>
         <location filename="../src/gui/filedetails/ShareView.qml" line="91"/>
         <source>Password required for new share</source>
-        <translation type="unfinished"/>
+        <translation>Pasfhocal ag teastáil le haghaidh roinnt nua</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareView.qml" line="118"/>
         <source>Share password</source>
-        <translation type="unfinished"/>
+        <translation>Roinn pasfhocal</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareView.qml" line="279"/>
         <source>Sharing is disabled</source>
-        <translation type="unfinished"/>
+        <translation>Tá roinnt díchumasaithe</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareView.qml" line="287"/>
         <source>This item cannot be shared.</source>
-        <translation type="unfinished"/>
+        <translation>Ní féidir an mhír seo a roinnt.</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareView.qml" line="296"/>
         <source>Sharing is disabled.</source>
-        <translation type="unfinished"/>
+        <translation>Tá roinnt díchumasaithe.</translation>
     </message>
 </context>
 <context>
@@ -6052,12 +6054,12 @@ D&apos;fhreagair an freastalaí le hearráid: % 2</translation>
     <message>
         <location filename="../src/gui/filedetails/ShareeSearchField.qml" line="47"/>
         <source>Search for users or groups…</source>
-        <translation type="unfinished"/>
+        <translation>Cuardaigh úsáideoirí nó grúpaí…</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareeSearchField.qml" line="48"/>
         <source>Sharing is not available for this folder</source>
-        <translation type="unfinished"/>
+        <translation>Níl roinnt ar fáil don fhillteán seo</translation>
     </message>
 </context>
 <context>
@@ -6065,7 +6067,7 @@ D&apos;fhreagair an freastalaí le hearráid: % 2</translation>
     <message>
         <location filename="../src/common/syncjournaldb.cpp" line="931"/>
         <source>Failed to connect database.</source>
-        <translation type="unfinished"/>
+        <translation>Theip ar an mbunachar sonraí a nascadh.</translation>
     </message>
 </context>
 <context>
@@ -6073,12 +6075,12 @@ D&apos;fhreagair an freastalaí le hearráid: % 2</translation>
     <message>
         <location filename="../src/gui/tray/SyncStatus.qml" line="101"/>
         <source>Sync now</source>
-        <translation type="unfinished"/>
+        <translation>Sioncrónaigh anois</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/SyncStatus.qml" line="128"/>
         <source>Resolve conflicts</source>
-        <translation type="unfinished"/>
+        <translation>Réitigh coinbhleachtaí</translation>
     </message>
 </context>
 <context>
@@ -6086,12 +6088,12 @@ D&apos;fhreagair an freastalaí le hearráid: % 2</translation>
     <message>
         <location filename="../src/gui/tray/TalkReplyTextField.qml" line="16"/>
         <source>Reply to …</source>
-        <translation type="unfinished"/>
+        <translation>Freagair…</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/TalkReplyTextField.qml" line="52"/>
         <source>Send reply to chat message</source>
-        <translation type="unfinished"/>
+        <translation>Seol freagra ar theachtaireacht chomhrá</translation>
     </message>
 </context>
 <context>
@@ -6099,47 +6101,47 @@ D&apos;fhreagair an freastalaí le hearráid: % 2</translation>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="55"/>
         <source>Open local or group folders</source>
-        <translation type="unfinished"/>
+        <translation>Oscail fillteáin áitiúla nó grúpa</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="55"/>
         <source>Open local folder</source>
-        <translation type="unfinished"/>
+        <translation>Oscail fillteán áitiúil</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="70"/>
         <source>Connected</source>
-        <translation type="unfinished"/>
+        <translation>Ceangailte</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="70"/>
         <source>Disconnected</source>
-        <translation type="unfinished"/>
+        <translation>Dícheangailte</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="109"/>
         <source>Group folder button</source>
-        <translation type="unfinished"/>
+        <translation>Cnaipe fillteán grúpa</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="184"/>
         <source>Open local folder &quot;%1&quot;</source>
-        <translation type="unfinished"/>
+        <translation>Oscail fillteán logánta&quot;% 1&quot;</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="184"/>
         <source>Open group folder &quot;%1&quot;</source>
-        <translation type="unfinished"/>
+        <translation>Oscail fillteán grúpa&quot;% 1&quot;</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="198"/>
         <source>Open %1 in file explorer</source>
-        <translation type="unfinished"/>
+        <translation>Oscail % 1 i taiscéalaí comhad</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="203"/>
         <source>User group and local folders menu</source>
-        <translation type="unfinished"/>
+        <translation>Roghchlár grúpa úsáideoirí agus fillteáin áitiúla</translation>
     </message>
 </context>
 <context>
@@ -6147,7 +6149,7 @@ D&apos;fhreagair an freastalaí le hearráid: % 2</translation>
     <message>
         <location filename="../src/gui/tray/UnifiedSearchInputContainer.qml" line="43"/>
         <source>Search files, messages, events …</source>
-        <translation type="unfinished"/>
+        <translation>Cuardaigh comhaid, teachtaireachtaí, imeachtaí…</translation>
     </message>
 </context>
 <context>
@@ -6155,7 +6157,7 @@ D&apos;fhreagair an freastalaí le hearráid: % 2</translation>
     <message>
         <location filename="../src/gui/tray/UnifiedSearchResultFetchMoreTrigger.qml" line="45"/>
         <source>Load more results</source>
-        <translation type="unfinished"/>
+        <translation>Íoslódáil níos mó torthaí</translation>
     </message>
 </context>
 <context>
@@ -6163,7 +6165,7 @@ D&apos;fhreagair an freastalaí le hearráid: % 2</translation>
     <message>
         <location filename="../src/gui/tray/UnifiedSearchResultItemSkeleton.qml" line="29"/>
         <source>Search result skeleton.</source>
-        <translation type="unfinished"/>
+        <translation>creatlach toradh cuardaigh.</translation>
     </message>
 </context>
 <context>
@@ -6171,7 +6173,7 @@ D&apos;fhreagair an freastalaí le hearráid: % 2</translation>
     <message>
         <location filename="../src/gui/tray/UnifiedSearchResultListItem.qml" line="43"/>
         <source>Load more results</source>
-        <translation type="unfinished"/>
+        <translation>Íoslódáil níos mó torthaí</translation>
     </message>
 </context>
 <context>
@@ -6179,7 +6181,7 @@ D&apos;fhreagair an freastalaí le hearráid: % 2</translation>
     <message>
         <location filename="../src/gui/tray/UnifiedSearchResultNothingFound.qml" line="40"/>
         <source>No results for</source>
-        <translation type="unfinished"/>
+        <translation>Gan torthaí le haghaidh</translation>
     </message>
 </context>
 <context>
@@ -6187,7 +6189,7 @@ D&apos;fhreagair an freastalaí le hearráid: % 2</translation>
     <message>
         <location filename="../src/gui/tray/UnifiedSearchResultSectionItem.qml" line="34"/>
         <source>Search results section %1</source>
-        <translation type="unfinished"/>
+        <translation>Cuid torthaí cuardaigh % 1</translation>
     </message>
 </context>
 <context>
@@ -6195,44 +6197,44 @@ D&apos;fhreagair an freastalaí le hearráid: % 2</translation>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="33"/>
         <source>Switch to account</source>
-        <translation type="unfinished"/>
+        <translation>Athraigh go cuntas</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="80"/>
         <source>Current account status is online</source>
-        <translation type="unfinished"/>
+        <translation>Tá stádas cuntais reatha ar líne</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="80"/>
         <source>Current account status is do not disturb</source>
-        <translation type="unfinished"/>
+        <translation>Níl aon chur isteach ar stádas an chuntais reatha</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="148"/>
         <source>Account actions</source>
-        <translation type="unfinished"/>
+        <translation>Gníomhartha cuntais</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="165"/>
         <source>Set status</source>
-        <translation type="unfinished"/>
+        <translation>Socraigh stádas</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="173"/>
         <location filename="../src/gui/tray/UserLine.qml" line="193"/>
         <source>Log out</source>
-        <translation type="unfinished"/>
+        <translation>Logáil Amach</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="173"/>
         <location filename="../src/gui/tray/UserLine.qml" line="193"/>
         <source>Log in</source>
-        <translation type="unfinished"/>
+        <translation>Logáil isteach</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="207"/>
         <source>Remove account</source>
-        <translation type="unfinished"/>
+        <translation>Bain cuntas</translation>
     </message>
 </context>
 <context>
@@ -6240,67 +6242,67 @@ D&apos;fhreagair an freastalaí le hearráid: % 2</translation>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="40"/>
         <source>Online status</source>
-        <translation type="unfinished"/>
+        <translation>Stádas ar líne</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="60"/>
         <source>Online</source>
-        <translation type="unfinished"/>
+        <translation>Ar líne</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="71"/>
         <source>Away</source>
-        <translation type="unfinished"/>
+        <translation>Amach</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="83"/>
         <source>Do not disturb</source>
-        <translation type="unfinished"/>
+        <translation>Ná cur as</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="84"/>
         <source>Mute all notifications</source>
-        <translation type="unfinished"/>
+        <translation>Balbhaigh gach fógra</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="99"/>
         <source>Invisible</source>
-        <translation type="unfinished"/>
+        <translation>Dofheicthe</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="100"/>
         <source>Appear offline</source>
-        <translation type="unfinished"/>
+        <translation>Le feiceáil as líne</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="124"/>
         <source>Status message</source>
-        <translation type="unfinished"/>
+        <translation>Teachtaireacht stádais</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="212"/>
         <source>What is your status?</source>
-        <translation type="unfinished"/>
+        <translation>Cad é do stádas?</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="284"/>
         <source>Clear status message after</source>
-        <translation type="unfinished"/>
+        <translation>Glan an teachtaireacht stádais ina dhiaidh</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="321"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>Cealaigh</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="328"/>
         <source>Clear status message</source>
-        <translation type="unfinished"/>
+        <translation>Glan teachtaireacht stádais</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="336"/>
         <source>Set status message</source>
-        <translation type="unfinished"/>
+        <translation>Socraigh teachtaireacht stádais</translation>
     </message>
 </context>
 <context>
@@ -6308,62 +6310,62 @@ D&apos;fhreagair an freastalaí le hearráid: % 2</translation>
     <message>
         <location filename="../src/common/utility.cpp" line="147"/>
         <source>%L1 B</source>
-        <translation type="unfinished"/>
+        <translation>%L1 B</translation>
     </message>
     <message>
         <location filename="../src/common/utility.cpp" line="116"/>
         <source>%L1 TB</source>
-        <translation type="unfinished"/>
+        <translation>%L1 TB</translation>
     </message>
     <message>
         <location filename="../src/common/utility.cpp" line="136"/>
         <source>%L1 GB</source>
-        <translation type="unfinished"/>
+        <translation>%L1 GB</translation>
     </message>
     <message>
         <location filename="../src/common/utility.cpp" line="140"/>
         <source>%L1 MB</source>
-        <translation type="unfinished"/>
+        <translation>%L1 MB</translation>
     </message>
     <message>
         <location filename="../src/common/utility.cpp" line="144"/>
         <source>%L1 KB</source>
-        <translation type="unfinished"/>
+        <translation>%L1 KB</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="335"/>
         <source>%n year(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n bliain(na)</numerusform><numerusform>%n bliain(na)</numerusform><numerusform>%n bliain(na)</numerusform><numerusform>%n bliain(na)</numerusform><numerusform>%n bliain(na)</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="336"/>
         <source>%n month(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n mí(os)</numerusform><numerusform>%n mí(os)</numerusform><numerusform>%n mí(os)</numerusform><numerusform>%n mí(os)</numerusform><numerusform>%n mí(os)</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="337"/>
         <source>%n day(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n lá(thanta)</numerusform><numerusform>%n lá(thanta)</numerusform><numerusform>%n lá(thanta)</numerusform><numerusform>%n lá(thanta)</numerusform><numerusform>%n lá(thanta)</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="338"/>
         <source>%n hour(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n uair(eanta)</numerusform><numerusform>%n uair(eanta)</numerusform><numerusform>%n uair(eanta)</numerusform><numerusform>%n uair(eanta)</numerusform><numerusform>%n uair(eanta)</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="339"/>
         <source>%n minute(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n nóiméad(ta)</numerusform><numerusform>%n nóiméad(ta)</numerusform><numerusform>%n nóiméad(ta)</numerusform><numerusform>%n nóiméad(ta)</numerusform><numerusform>%n nóiméad(ta)</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="340"/>
         <source>%n second(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n soicind(eanna)</numerusform><numerusform>%n soicind(eanna)</numerusform><numerusform>%n soicind(eanna)</numerusform><numerusform>%n soicind(eanna)</numerusform><numerusform>%n soicind(eanna)</numerusform></translation>
     </message>
     <message>
         <location filename="../src/common/utility.cpp" line="364"/>
         <source>%1 %2</source>
-        <translation type="unfinished"/>
+        <translation>%1 %2</translation>
     </message>
 </context>
 <context>
@@ -6371,17 +6373,17 @@ D&apos;fhreagair an freastalaí le hearráid: % 2</translation>
     <message>
         <location filename="../src/common/checksums.cpp" line="256"/>
         <source>The checksum header is malformed.</source>
-        <translation type="unfinished"/>
+        <translation>Tá an ceanntásc seiceála míchumtha.</translation>
     </message>
     <message>
         <location filename="../src/common/checksums.cpp" line="297"/>
         <source>The checksum header contained an unknown checksum type &quot;%1&quot;</source>
-        <translation type="unfinished"/>
+        <translation>Bhí cineál seiceála anaithnid &quot;% 1&quot; sa cheanntásc seiceála</translation>
     </message>
     <message>
         <location filename="../src/common/checksums.cpp" line="302"/>
         <source>The downloaded file does not match the checksum, it will be resumed. &quot;%1&quot; != &quot;%2&quot;</source>
-        <translation type="unfinished"/>
+        <translation>Ní mheaitseálann an comhad íoslódála leis an tseiceáil, déanfar é a atosú. &quot;%1&quot; != &quot;% 2&quot;</translation>
     </message>
 </context>
 <context>
@@ -6389,94 +6391,94 @@ D&apos;fhreagair an freastalaí le hearráid: % 2</translation>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="256"/>
         <source>Nextcloud desktop main dialog</source>
-        <translation type="unfinished"/>
+        <translation>Príomhdhialóg deisce Nextcloud</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="282"/>
         <source>Current account</source>
-        <translation type="unfinished"/>
+        <translation>Cuntas reatha</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="288"/>
         <location filename="../src/gui/tray/Window.qml" line="420"/>
         <source>Resume sync for all</source>
-        <translation type="unfinished"/>
+        <translation>Lean an sioncronú do chách</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="288"/>
         <location filename="../src/gui/tray/Window.qml" line="420"/>
         <source>Pause sync for all</source>
-        <translation type="unfinished"/>
+        <translation>Cuir an sioncronú ar sos do chách</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="380"/>
         <source>Add account</source>
-        <translation type="unfinished"/>
+        <translation>Cuir cuntas leis</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="392"/>
         <source>Add new account</source>
-        <translation type="unfinished"/>
+        <translation>Cuir cuntas nua leis</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="426"/>
         <source>Settings</source>
-        <translation type="unfinished"/>
+        <translation>Socruithe</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="448"/>
         <source>Exit</source>
-        <translation type="unfinished"/>
+        <translation>An slí amach</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="492"/>
         <source>Current account avatar</source>
-        <translation type="unfinished"/>
+        <translation>Avatar cuntas reatha</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="531"/>
         <source>Current account status is online</source>
-        <translation type="unfinished"/>
+        <translation>Tá stádas cuntais reatha ar líne</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="531"/>
         <source>Current account status is do not disturb</source>
-        <translation type="unfinished"/>
+        <translation>Níl aon chur isteach ar stádas an chuntais reatha</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="607"/>
         <source>Account switcher and settings menu</source>
-        <translation type="unfinished"/>
+        <translation>Malartóir cuntais agus roghchlár socruithe</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="631"/>
         <source>Open local or group folders</source>
-        <translation type="unfinished"/>
+        <translation>Oscail fillteáin áitiúla nó grúpa</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="641"/>
         <source>Open Nextcloud Talk in browser</source>
-        <translation type="unfinished"/>
+        <translation>Oscail Nextcloud Talk sa bhrabhsálaí</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="661"/>
         <source>More apps</source>
-        <translation type="unfinished"/>
+        <translation>Tuilleadh aipeanna</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="715"/>
         <source>Open %1 in browser</source>
-        <translation type="unfinished"/>
+        <translation>Oscail % 1 sa bhrabhsálaí</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="821"/>
         <source>Unified search results list</source>
-        <translation type="unfinished"/>
+        <translation>Liosta torthaí cuardaigh aontaithe</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="916"/>
         <source>New activities</source>
-        <translation type="unfinished"/>
+        <translation>Gníomhaíochtaí nua</translation>
     </message>
 </context>
 <context>
@@ -6484,12 +6486,12 @@ D&apos;fhreagair an freastalaí le hearráid: % 2</translation>
     <message>
         <location filename="../src/gui/main.cpp" line="45"/>
         <source>System Tray not available</source>
-        <translation type="unfinished"/>
+        <translation>Níl Tráidire Córais ar fáil</translation>
     </message>
     <message>
         <location filename="../src/gui/main.cpp" line="46"/>
         <source>%1 requires on a working system tray. If you are running XFCE, please follow &lt;a href=&quot;http://docs.xfce.org/xfce/xfce4-panel/systray&quot;&gt;these instructions&lt;/a&gt;. Otherwise, please install a system tray application such as &quot;trayer&quot; and try again.</source>
-        <translation type="unfinished"/>
+        <translation>Teastaíonn % 1 ar thráidire córais oibre. Má tá XFCE á rith agat, lean na &lt;a href=&quot;http://docs.xfce.org/xfce/xfce4-panel/systray&quot;&gt;treoracha seo&lt;/a&gt;. Seachas sin, suiteáil feidhmchlár tráidire córais ar nós &quot;tráidire&quot; agus bain triail eile as.</translation>
     </message>
 </context>
 <context>
@@ -6497,7 +6499,7 @@ D&apos;fhreagair an freastalaí le hearráid: % 2</translation>
     <message>
         <location filename="../src/libsync/theme.cpp" line="533"/>
         <source>&lt;p&gt;&lt;small&gt;Built from Git revision &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; on %3, %4 using Qt %5, %6&lt;/small&gt;&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;&lt;small&gt;Tógtha ó athbhreithniú Git &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; ar %3, %4 ag úsáid %5, %6&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -6505,113 +6507,113 @@ D&apos;fhreagair an freastalaí le hearráid: % 2</translation>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="33"/>
         <source>Virtual file created</source>
-        <translation type="unfinished"/>
+        <translation>Comhad fíorúil cruthaithe</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="35"/>
         <source>Replaced by virtual file</source>
-        <translation type="unfinished"/>
+        <translation>Comhad fíorúil curtha ina ionad</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="37"/>
         <source>Downloaded</source>
-        <translation type="unfinished"/>
+        <translation>Íosluchtaithe</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="40"/>
         <source>Uploaded</source>
-        <translation type="unfinished"/>
+        <translation>uaslódáilte</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="43"/>
         <source>Server version downloaded, copied changed local file into conflict file</source>
-        <translation type="unfinished"/>
+        <translation>Íoslódáladh leagan an fhreastalaí, cóipeáil athraigh an comhad áitiúil isteach i gcomhad coinbhleachta</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="45"/>
         <source>Server version downloaded, copied changed local file into case conflict conflict file</source>
-        <translation type="unfinished"/>
+        <translation>Íoslódáltar leagan an fhreastalaí, athraíodh an comhad áitiúil cóipeáilte ina chomhad cás coinbhleachta</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="47"/>
         <source>Deleted</source>
-        <translation type="unfinished"/>
+        <translation>Scriosta</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="50"/>
         <source>Moved to %1</source>
-        <translation type="unfinished"/>
+        <translation>Bogtha go % 1</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="52"/>
         <source>Ignored</source>
-        <translation type="unfinished"/>
+        <translation>Neamhaird</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="54"/>
         <source>Filesystem access error</source>
-        <translation type="unfinished"/>
+        <translation>Earráid rochtana córas comhaid</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="56"/>
         <source>Error</source>
-        <translation type="unfinished"/>
+        <translation>Earráid</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="58"/>
         <source>Updated local metadata</source>
-        <translation type="unfinished"/>
+        <translation>Meiteashonraí áitiúla nuashonraithe</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="60"/>
         <source>Updated local virtual files metadata</source>
-        <translation type="unfinished"/>
+        <translation>Meiteashonraí comhaid fhíorúla áitiúla nuashonraithe</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="61"/>
         <location filename="../src/libsync/progressdispatcher.cpp" line="63"/>
         <source>Unknown</source>
-        <translation type="unfinished"/>
+        <translation>Anaithnid</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="75"/>
         <source>downloading</source>
-        <translation type="unfinished"/>
+        <translation>ag íoslódáil</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="77"/>
         <source>uploading</source>
-        <translation type="unfinished"/>
+        <translation>ag uaslódáil</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="79"/>
         <source>deleting</source>
-        <translation type="unfinished"/>
+        <translation>ag scriosadh</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="82"/>
         <source>moving</source>
-        <translation type="unfinished"/>
+        <translation>ag gluaiseacht</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="84"/>
         <source>ignoring</source>
-        <translation type="unfinished"/>
+        <translation>neamhaird</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="87"/>
         <source>error</source>
-        <translation type="unfinished"/>
+        <translation>earráid</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="89"/>
         <source>updating local metadata</source>
-        <translation type="unfinished"/>
+        <translation>meiteashonraí áitiúla a nuashonrú</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="93"/>
         <source>updating local virtual files metadata</source>
-        <translation type="unfinished"/>
+        <translation>meiteashonraí comhaid fhíorúla áitiúla a nuashonrú</translation>
     </message>
 </context>
 <context>
@@ -6619,52 +6621,52 @@ D&apos;fhreagair an freastalaí le hearráid: % 2</translation>
     <message>
         <location filename="../src/libsync/theme.cpp" line="84"/>
         <source>Status undefined</source>
-        <translation type="unfinished"/>
+        <translation>Stádas neamhshainithe</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="87"/>
         <source>Waiting to start sync</source>
-        <translation type="unfinished"/>
+        <translation>Ag fanacht le sioncronú a thosú</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="90"/>
         <source>Sync is running</source>
-        <translation type="unfinished"/>
+        <translation>Tá Sync ar siúl</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="93"/>
         <source>Sync Success</source>
-        <translation type="unfinished"/>
+        <translation>Sync Rath</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="96"/>
         <source>Sync Success, some files were ignored.</source>
-        <translation type="unfinished"/>
+        <translation>Sync Rath, tugadh neamhaird ar roinnt comhad.</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="99"/>
         <source>Sync Error</source>
-        <translation type="unfinished"/>
+        <translation>Earráid Sioncronaithe</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="102"/>
         <source>Setup Error</source>
-        <translation type="unfinished"/>
+        <translation>Earráid Socraithe</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="105"/>
         <source>Preparing to sync</source>
-        <translation type="unfinished"/>
+        <translation>Ag ullmhú chun sioncronaithe</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="108"/>
         <source>Aborting …</source>
-        <translation type="unfinished"/>
+        <translation>Ag éirí as…</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="111"/>
         <source>Sync is paused</source>
-        <translation type="unfinished"/>
+        <translation>Tá an sioncronú ar sos</translation>
     </message>
 </context>
 <context>
@@ -6672,52 +6674,52 @@ D&apos;fhreagair an freastalaí le hearráid: % 2</translation>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="46"/>
         <source>Could not open browser</source>
-        <translation type="unfinished"/>
+        <translation>Níorbh fhéidir an brabhsálaí a oscailt</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="47"/>
         <source>There was an error when launching the browser to go to URL %1. Maybe no default browser is configured?</source>
-        <translation type="unfinished"/>
+        <translation>Tharla earráid agus an brabhsálaí á sheoladh chun dul go URL % 1. B&apos;fhéidir nach bhfuil aon bhrabhsálaí réamhshocraithe cumraithe?</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="70"/>
         <source>Could not open email client</source>
-        <translation type="unfinished"/>
+        <translation>Níorbh fhéidir an cliant ríomhphoist a oscailt</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="71"/>
         <source>There was an error when launching the email client to create a new message. Maybe no default email client is configured?</source>
-        <translation type="unfinished"/>
+        <translation>Tharla earráid agus an cliant ríomhphoist á sheoladh chun teachtaireacht nua a chruthú. B&apos;fhéidir nach bhfuil aon chliant ríomhphoist réamhshocraithe cumraithe?</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="86"/>
         <source>Always available locally</source>
-        <translation type="unfinished"/>
+        <translation>Ar fáil go háitiúil i gcónaí</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="88"/>
         <source>Currently available locally</source>
-        <translation type="unfinished"/>
+        <translation>Ar fáil go háitiúil faoi láthair</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="90"/>
         <source>Some available online only</source>
-        <translation type="unfinished"/>
+        <translation>Tá cuid acu ar fáil ar líne amháin</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="93"/>
         <source>Available online only</source>
-        <translation type="unfinished"/>
+        <translation>Ar fáil ar líne amháin</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="100"/>
         <source>Make always available locally</source>
-        <translation type="unfinished"/>
+        <translation>Cuir ar fáil go háitiúil i gcónaí</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="105"/>
         <source>Free up local space</source>
-        <translation type="unfinished"/>
+        <translation>Saor suas spás áitiúil</translation>
     </message>
 </context>
 <context>
@@ -6725,12 +6727,12 @@ D&apos;fhreagair an freastalaí le hearráid: % 2</translation>
     <message>
         <location filename="../src/libsync/abstractpropagateremotedeleteencrypted.cpp" line="139"/>
         <source>Wrong HTTP code returned by server. Expected 204, but received &quot;%1 %2&quot;.</source>
-        <translation type="unfinished"/>
+        <translation>Cód HTTP mícheart curtha ar ais ag an bhfreastalaí. Bhíothas ag súil le 204, ach fuarthas &quot;% 1 % 2&quot;.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractpropagateremotedeleteencrypted.cpp" line="183"/>
         <source>&quot;%1 Failed to unlock encrypted folder %2&quot;.</source>
-        <translation type="unfinished"/>
+        <translation>msgstr &quot;Theip ar % 1 fillteán criptithe % 2 a dhíghlasáil.&quot;</translation>
     </message>
 </context>
 <context>
@@ -6738,37 +6740,37 @@ D&apos;fhreagair an freastalaí le hearráid: % 2</translation>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="115"/>
         <source>Error returned from the server: &lt;em&gt;%1&lt;/em&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Earráid curtha ar ais ón bhfreastalaí: &lt;em&gt;%1&lt;/em&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="118"/>
         <source>There was an error accessing the &quot;token&quot; endpoint: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Tharla earráid agus an críochphointe &quot;comhartha&quot; á rochtain:&lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="122"/>
         <source>Empty JSON from OAuth2 redirect</source>
-        <translation type="unfinished"/>
+        <translation>JSON folamh ó OAuth2 atreorú</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="127"/>
         <source>Could not parse the JSON returned from the server: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Níorbh fhéidir an JSON a cuireadh ar ais ón bhfreastalaí a pharsáil: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="130"/>
         <source>The reply from the server did not contain all expected fields</source>
-        <translation type="unfinished"/>
+        <translation>Ní raibh gach réimse ionchais sa fhreagra ón bhfreastalaí</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="134"/>
         <source>&lt;h1&gt;Login Error&lt;/h1&gt;&lt;p&gt;%1&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;h1&gt;Earráid Logála Isteach&lt;/h1&gt;&lt;p&gt;%1&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="140"/>
         <source>&lt;h1&gt;Wrong account&lt;/h1&gt;&lt;p&gt;You logged in with the account &lt;em&gt;%1&lt;/em&gt;, but must log in with the account &lt;em&gt;%2&lt;/em&gt;.&lt;br&gt;Please log out of %3 in another tab, then &lt;a href=&apos;%4&apos;&gt;click here&lt;/a&gt; and log in with %2.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;h1&gt;Cuntas mícheart&lt;/h1&gt;&lt;p&gt;Logáil tú isteach leis an gcuntas &lt;em&gt;%1&lt;/em&gt;, ach caithfidh tú logáil isteach leis an gcuntas &lt;em&gt;%2&lt;/em&gt;.&lt;br&gt;Logáil amach as %3  i gcluaisín eile, ansin &lt;a href=&apos;%4&apos;&gt;cliceáil anseo&lt;/a&gt; agus logáil isteach le %2.&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -6776,12 +6778,12 @@ D&apos;fhreagair an freastalaí le hearráid: % 2</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.cpp" line="45"/>
         <source>Connect to %1</source>
-        <translation type="unfinished"/>
+        <translation>Ceangail le % 1</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.cpp" line="46"/>
         <source>Login in your browser</source>
-        <translation type="unfinished"/>
+        <translation>Logáil isteach i do bhrabhsálaí</translation>
     </message>
 </context>
 <context>
@@ -6789,27 +6791,27 @@ D&apos;fhreagair an freastalaí le hearráid: % 2</translation>
     <message>
         <location filename="../src/gui/shareuserline.ui" line="80"/>
         <source>Username</source>
-        <translation type="unfinished"/>
+        <translation>Ainm úsáideora</translation>
     </message>
     <message>
         <location filename="../src/gui/shareuserline.ui" line="115"/>
         <source>Can edit</source>
-        <translation type="unfinished"/>
+        <translation>Is féidir eagarthóireacht a dhéanamh</translation>
     </message>
     <message>
         <location filename="../src/gui/shareuserline.ui" line="149"/>
         <source>Note:</source>
-        <translation type="unfinished"/>
+        <translation>Nóta:</translation>
     </message>
     <message>
         <location filename="../src/gui/shareuserline.ui" line="205"/>
         <source>Password:</source>
-        <translation type="unfinished"/>
+        <translation>Pasfhocal:</translation>
     </message>
     <message>
         <location filename="../src/gui/shareuserline.ui" line="277"/>
         <source>Expires:</source>
-        <translation type="unfinished"/>
+        <translation>In éag:</translation>
     </message>
 </context>
 <context>
@@ -6817,22 +6819,22 @@ D&apos;fhreagair an freastalaí le hearráid: % 2</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.ui" line="36"/>
         <source>Please switch to your browser to proceed.</source>
-        <translation type="unfinished"/>
+        <translation>Athraigh go dtí do bhrabhsálaí chun leanúint ar aghaidh le do thoil.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.ui" line="46"/>
         <source>An error occurred while connecting. Please try again.</source>
-        <translation type="unfinished"/>
+        <translation>Tharla earráid agus ceangal á dhéanamh. Arís, le do thoil.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.ui" line="56"/>
         <source>Re-open Browser</source>
-        <translation type="unfinished"/>
+        <translation>Brabhsálaí a athoscailt</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.ui" line="69"/>
         <source>Copy link</source>
-        <translation type="unfinished"/>
+        <translation>Cóipeáil an nasc</translation>
     </message>
 </context>
 <context>
@@ -6840,7 +6842,7 @@ D&apos;fhreagair an freastalaí le hearráid: % 2</translation>
     <message>
         <location filename="../src/libsync/theme.cpp" line="533"/>
         <source>&lt;p&gt;&lt;small&gt;Built from Git revision &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; on %3, %4 using Qt %5, %6&lt;/small&gt;&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;&lt;small&gt;Tógtha ó athbhreithniú Git &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; ar %3, %4 ag úsáid Qt %5, %6&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
 </context>
 </TS>
