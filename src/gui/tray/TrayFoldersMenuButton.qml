@@ -124,7 +124,7 @@ HeaderButton {
                 width: imageWidth
                 height: imageHeight
 
-                anchors.verticalCenter: parent
+                anchors.verticalCenter: parent.verticalCenter
             }
 
 
