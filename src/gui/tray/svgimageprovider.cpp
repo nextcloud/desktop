@@ -45,6 +45,10 @@ namespace Ui {
             return {};
         }
 
+        if (size != nullptr && (size->width() <= 0 || size->height() <= 0)) {
+            *size = QSize(64, 64);
+        }
+
         return IconUtils::createSvgImageWithCustomColor(pixmapName, pixmapColor, size, requestedSize);
     }
 }
