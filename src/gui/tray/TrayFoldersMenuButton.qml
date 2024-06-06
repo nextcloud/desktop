@@ -146,7 +146,7 @@ HeaderButton {
                     cache: true
 
                     source: "image://svgimage-custom-color/caret-down.svg/" + Style.currentUserHeaderTextColor
-                    sourceSize: {
+                    sourceSize {
                         width: openLocalFolderButtonCaretIconLoader.imageWidth
                         height: openLocalFolderButtonCaretIconLoader.imageHeight
                     }
