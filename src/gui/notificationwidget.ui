@@ -29,7 +29,7 @@
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_3">
      <item>
-      <widget class="QLabel" name="_notifIcon">
+      <widget class="QLabel" name="_notificationIcon">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
          <horstretch>0</horstretch>
@@ -48,11 +48,14 @@
          <height>48</height>
         </size>
        </property>
+       <property name="accessibleName">
+        <string>Notification icon</string>
+       </property>
        <property name="text">
         <string/>
        </property>
        <property name="pixmap">
-        <pixmap resource="../../client.qrc">:/client/resources/light/bell.svg</pixmap>
+        <pixmap resource="../resources/client.qrc">:/client/resources/light/bell.svg</pixmap>
        </property>
        <property name="scaledContents">
         <bool>true</bool>
@@ -126,7 +129,7 @@
   </layout>
  </widget>
  <resources>
-  <include location="../../client.qrc"/>
+  <include location="../resources/client.qrc"/>
  </resources>
  <connections/>
 </ui>

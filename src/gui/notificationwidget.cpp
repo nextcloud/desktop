@@ -142,7 +142,7 @@ void NotificationWidget::changeEvent(QEvent *e)
     case QEvent::StyleChange:
     case QEvent::PaletteChange:
     case QEvent::ThemeChange:
-        _ui->_notifIcon->setPixmap(Resources::getCoreIcon(QStringLiteral("bell")).pixmap(_ui->_notifIcon->size()));
+        _ui->_notificationIcon->setPixmap(Resources::getCoreIcon(QStringLiteral("bell")).pixmap(_ui->_notificationIcon->size()));
         break;
     default:
         break;
