@@ -6447,7 +6447,7 @@ Server replied with error: %2</source>
         <translation>Переключение уч. записей и настройки</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="631"/>
+        <location filename="../src/gui/tray/Window.qml" line="615"/>
         <source>Open local or group folders</source>
         <translation>Открыть локальную или групповую папку</translation>
     </message>
@@ -6472,7 +6472,7 @@ Server replied with error: %2</source>
         <translation>Единый список результатов поиска</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="916"/>
+        <location filename="../src/gui/tray/Window.qml" line="899"/>
         <source>New activities</source>
         <translation>Новые события</translation>
     </message>

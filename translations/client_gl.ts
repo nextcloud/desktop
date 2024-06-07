@@ -6451,7 +6451,7 @@ O servidor respondeu co erro: %2</translation>
         <translation>Cambiador de contas e menú de axustes</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="631"/>
+        <location filename="../src/gui/tray/Window.qml" line="615"/>
         <source>Open local or group folders</source>
         <translation>Abrir cartafoles locais ou de grupo</translation>
     </message>
@@ -6476,7 +6476,7 @@ O servidor respondeu co erro: %2</translation>
         <translation>Lista de resultados da busca unificada</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="916"/>
+        <location filename="../src/gui/tray/Window.qml" line="899"/>
         <source>New activities</source>
         <translation>Novas actividades</translation>
     </message>

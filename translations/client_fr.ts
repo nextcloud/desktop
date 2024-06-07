@@ -6449,7 +6449,7 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
         <translation>Sélecteur de compte et menu des paramètres</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="631"/>
+        <location filename="../src/gui/tray/Window.qml" line="615"/>
         <source>Open local or group folders</source>
         <translation>Ouvrir des dossiers locaux ou de groupe</translation>
     </message>
@@ -6474,7 +6474,7 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
         <translation>Liste de résultats de recherche unifiée</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="916"/>
+        <location filename="../src/gui/tray/Window.qml" line="899"/>
         <source>New activities</source>
         <translation>Nouvelles activités</translation>
     </message>

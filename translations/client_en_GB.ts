@@ -6451,7 +6451,7 @@ Server replied with error: %2</translation>
         <translation>Account switcher and settings menu</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="631"/>
+        <location filename="../src/gui/tray/Window.qml" line="615"/>
         <source>Open local or group folders</source>
         <translation>Open local or group folders</translation>
     </message>
@@ -6476,7 +6476,7 @@ Server replied with error: %2</translation>
         <translation>Unified search results list</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="916"/>
+        <location filename="../src/gui/tray/Window.qml" line="899"/>
         <source>New activities</source>
         <translation>New activities</translation>
     </message>

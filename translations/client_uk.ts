@@ -6451,7 +6451,7 @@ Server replied with error: %2</source>
         <translation>Перемикання обліковок та меню налаштування</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="631"/>
+        <location filename="../src/gui/tray/Window.qml" line="615"/>
         <source>Open local or group folders</source>
         <translation>Перейти до каталогів на пристрої або групових каталогів</translation>
     </message>
@@ -6476,7 +6476,7 @@ Server replied with error: %2</source>
         <translation>Список результатів універсального пошуку</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="916"/>
+        <location filename="../src/gui/tray/Window.qml" line="899"/>
         <source>New activities</source>
         <translation>Нові дії</translation>
     </message>

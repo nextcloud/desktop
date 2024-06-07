@@ -6451,7 +6451,7 @@ Servern svarade med fel: %2</translation>
         <translation>Kontobytare och inställningsmeny</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="631"/>
+        <location filename="../src/gui/tray/Window.qml" line="615"/>
         <source>Open local or group folders</source>
         <translation>Öppna lokala eller gruppmappar</translation>
     </message>
@@ -6476,7 +6476,7 @@ Servern svarade med fel: %2</translation>
         <translation>Sammanlagda sökresultat</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="916"/>
+        <location filename="../src/gui/tray/Window.qml" line="899"/>
         <source>New activities</source>
         <translation>Nya aktiviteter</translation>
     </message>

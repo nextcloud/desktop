@@ -6445,7 +6445,7 @@ Servidor respondeu com erro: %2</translation>
         <translation>Alternador de conta e menu de configurações</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="631"/>
+        <location filename="../src/gui/tray/Window.qml" line="615"/>
         <source>Open local or group folders</source>
         <translation>Abra pastas locais ou de grupo</translation>
     </message>
@@ -6470,7 +6470,7 @@ Servidor respondeu com erro: %2</translation>
         <translation>Lista unificada de resultados de pesquisa </translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="916"/>
+        <location filename="../src/gui/tray/Window.qml" line="899"/>
         <source>New activities</source>
         <translation>Novas atividades</translation>
     </message>

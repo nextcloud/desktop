@@ -6451,7 +6451,7 @@ Server replied with error: %2</source>
         <translation>Пребацивач налога и мени подешавања</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="631"/>
+        <location filename="../src/gui/tray/Window.qml" line="615"/>
         <source>Open local or group folders</source>
         <translation>Отвори локалне или фолдере групе</translation>
     </message>
@@ -6476,7 +6476,7 @@ Server replied with error: %2</source>
         <translation>Обједињена листа резултата претраге</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="916"/>
+        <location filename="../src/gui/tray/Window.qml" line="899"/>
         <source>New activities</source>
         <translation>Нове активности</translation>
     </message>

@@ -6451,7 +6451,7 @@ El servidor respondió con el error: %2</translation>
         <translation>Menú de cambiar cuentas y configuración</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="631"/>
+        <location filename="../src/gui/tray/Window.qml" line="615"/>
         <source>Open local or group folders</source>
         <translation>Abrir carpetas locales o de grupo</translation>
     </message>
@@ -6476,7 +6476,7 @@ El servidor respondió con el error: %2</translation>
         <translation>Lista unificada de resultados de búsqueda</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="916"/>
+        <location filename="../src/gui/tray/Window.qml" line="899"/>
         <source>New activities</source>
         <translation>Nuevas actividades</translation>
     </message>

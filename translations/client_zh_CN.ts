@@ -6436,7 +6436,7 @@ Server replied with error: %2</source>
         <translation>账号切换器和设置菜单</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="631"/>
+        <location filename="../src/gui/tray/Window.qml" line="615"/>
         <source>Open local or group folders</source>
         <translation>打开本地或群组文件夹</translation>
     </message>
@@ -6461,7 +6461,7 @@ Server replied with error: %2</source>
         <translation>统一的搜索结果列表</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="916"/>
+        <location filename="../src/gui/tray/Window.qml" line="899"/>
         <source>New activities</source>
         <translation>新动态</translation>
     </message>

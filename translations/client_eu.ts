@@ -6451,7 +6451,7 @@ Zerbitzariak errorearekin erantzun du: %2</translation>
         <translation>Kontu txandakatze eta ezarpenen menua</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="631"/>
+        <location filename="../src/gui/tray/Window.qml" line="615"/>
         <source>Open local or group folders</source>
         <translation>Ireki karpeta lokalak edo taldeenak</translation>
     </message>
@@ -6476,7 +6476,7 @@ Zerbitzariak errorearekin erantzun du: %2</translation>
         <translation>Bateratutako bilaketaren emaitzen zerrenda</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="916"/>
+        <location filename="../src/gui/tray/Window.qml" line="899"/>
         <source>New activities</source>
         <translation>Jarduera berriak</translation>
     </message>

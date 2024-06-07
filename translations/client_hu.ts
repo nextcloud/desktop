@@ -6447,7 +6447,7 @@ A kiszolgáló hibával válaszolt: %2</translation>
         <translation>Fiókváltó és beállítások menü</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="631"/>
+        <location filename="../src/gui/tray/Window.qml" line="615"/>
         <source>Open local or group folders</source>
         <translation type="unfinished"/>
     </message>
@@ -6472,7 +6472,7 @@ A kiszolgáló hibával válaszolt: %2</translation>
         <translation>Egyesített keresési találatlista</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="916"/>
+        <location filename="../src/gui/tray/Window.qml" line="899"/>
         <source>New activities</source>
         <translation>Új tevékenységek</translation>
     </message>

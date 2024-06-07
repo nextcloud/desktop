@@ -6428,7 +6428,7 @@ Server replied with error: %2</source>
         <translation>Konta pārslēdzējs un iestatījumu izvēlne</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="631"/>
+        <location filename="../src/gui/tray/Window.qml" line="615"/>
         <source>Open local or group folders</source>
         <translation>Atvērt lokālās vai grupas mapes</translation>
     </message>
@@ -6453,7 +6453,7 @@ Server replied with error: %2</source>
         <translation>Vienots meklēšanas rezultātu saraksts</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="916"/>
+        <location filename="../src/gui/tray/Window.qml" line="899"/>
         <source>New activities</source>
         <translation>Jaunas darbības</translation>
     </message>

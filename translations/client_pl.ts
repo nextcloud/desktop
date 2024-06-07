@@ -6451,7 +6451,7 @@ Serwer odpowiedział błędem: %2</translation>
         <translation>Przełączenie konta i menu ustawień</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="631"/>
+        <location filename="../src/gui/tray/Window.qml" line="615"/>
         <source>Open local or group folders</source>
         <translation>Otwórz katalogi lokalne lub grupowe</translation>
     </message>
@@ -6476,7 +6476,7 @@ Serwer odpowiedział błędem: %2</translation>
         <translation>Ujednolicona lista wyników wyszukiwania</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="916"/>
+        <location filename="../src/gui/tray/Window.qml" line="899"/>
         <source>New activities</source>
         <translation>Nowe aktywności</translation>
     </message>

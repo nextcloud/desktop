@@ -6451,7 +6451,7 @@ Server odpovedal chybou: %2</translation>
         <translation>Prepínač účtov a menu nastavení</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="631"/>
+        <location filename="../src/gui/tray/Window.qml" line="615"/>
         <source>Open local or group folders</source>
         <translation>Otvoriť miestne alebo skupinové priečinky</translation>
     </message>
@@ -6476,7 +6476,7 @@ Server odpovedal chybou: %2</translation>
         <translation>Jednotný zoznam výsledkov vyhľadávania</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="916"/>
+        <location filename="../src/gui/tray/Window.qml" line="899"/>
         <source>New activities</source>
         <translation>Nové aktivity</translation>
     </message>

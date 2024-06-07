@@ -6451,7 +6451,7 @@ D&apos;fhreagair an freastalaí le hearráid: % 2</translation>
         <translation>Malartóir cuntais agus roghchlár socruithe</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="631"/>
+        <location filename="../src/gui/tray/Window.qml" line="615"/>
         <source>Open local or group folders</source>
         <translation>Oscail fillteáin áitiúla nó grúpa</translation>
     </message>
@@ -6476,7 +6476,7 @@ D&apos;fhreagair an freastalaí le hearráid: % 2</translation>
         <translation>Liosta torthaí cuardaigh aontaithe</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="916"/>
+        <location filename="../src/gui/tray/Window.qml" line="899"/>
         <source>New activities</source>
         <translation>Gníomhaíochtaí nua</translation>
     </message>

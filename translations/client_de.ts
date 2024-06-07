@@ -6450,7 +6450,7 @@ Server antwortete mit Fehler: %2</translation>
         <translation>Konto-Umschalter und Einstellungsmenü</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="631"/>
+        <location filename="../src/gui/tray/Window.qml" line="615"/>
         <source>Open local or group folders</source>
         <translation>Lokalen oder Gruppenordner öffnen</translation>
     </message>
@@ -6475,7 +6475,7 @@ Server antwortete mit Fehler: %2</translation>
         <translation>Einheitliche Suchergebnisliste</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="916"/>
+        <location filename="../src/gui/tray/Window.qml" line="899"/>
         <source>New activities</source>
         <translation>Neue Aktivitäten</translation>
     </message>
