@@ -81,17 +81,6 @@ AccountSettings::AccountSettings(const AccountStatePtr &accountState, QWidget *p
     connect(_accountState.data(), &AccountState::stateChanged, this, &AccountSettings::slotAccountStateChanged);
     slotAccountStateChanged();
 
-    connect(ui->addButton, &QPushButton::clicked, this, &AccountSettings::slotAddFolder);
-
-    if (_accountState->supportsSpaces()) {
-        ui->addButton->setText(tr("Add Space"));
-    } else {
-        ui->addButton->setText(tr("Add Folder"));
-    }
-
-    connect(_model, &FolderStatusModel::dataChanged, [this]() {
-        ui->addButton->setVisible(!Theme::instance()->singleSyncFolder() || _model->rowCount() == 0);
-    });
     connect(ui->accountToolButton, &QToolButton::clicked, this, [this] {
         QMenu *menu = new QMenu(this);
         menu->setAttribute(Qt::WA_DeleteOnClose);
@@ -112,10 +101,10 @@ AccountSettings::AccountSettings(const AccountStatePtr &accountState, QWidget *p
             ui->stackedWidget->setCurrentWidget(ui->loadingPage);
         } else {
             ui->spinner->stopAnimation();
-            ui->stackedWidget->setCurrentWidget(ui->folderListPage);
+            ui->stackedWidget->setCurrentWidget(ui->quickWidget);
         }
     });
-    ui->stackedWidget->setCurrentWidget(ui->folderListPage);
+    ui->stackedWidget->setCurrentWidget(ui->quickWidget);
 }
 
 void AccountSettings::slotToggleSignInState()
@@ -497,28 +486,6 @@ void AccountSettings::slotAccountStateChanged()
     case AccountState::Disconnected:
         showConnectionLabel(tr("Disconnected from: %1.").arg(server));
         break;
-    }
-
-    if (state == AccountState::Connected) {
-        ui->addButton->setEnabled(true);
-
-        if (_accountState->supportsSpaces()) {
-            ui->addButton->setText(tr("Add Space"));
-            ui->addButton->setToolTip(tr("Click this button to add a Space."));
-        } else {
-            ui->addButton->setText(tr("Add Folder"));
-            ui->addButton->setToolTip(tr("Click this button to add a folder to synchronize."));
-        }
-    } else {
-        ui->addButton->setEnabled(false);
-
-        if (_accountState->supportsSpaces()) {
-            ui->addButton->setText(tr("Add Space"));
-            ui->addButton->setToolTip(tr("You need to be connected to add a Space."));
-        } else {
-            ui->addButton->setText(tr("Add Folder"));
-            ui->addButton->setToolTip(tr("You need to be connected to add a folder."));
-        }
     }
 }
 

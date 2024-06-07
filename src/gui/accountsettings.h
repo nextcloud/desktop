@@ -17,9 +17,9 @@
 #include "gui/owncloudguilib.h"
 
 #include "folder.h"
+#include "gui/qmlutils.h"
 #include "owncloudgui.h"
 #include "progressdispatcher.h"
-
 
 #include <QSortFilterProxyModel>
 #include <QWidget>
@@ -49,8 +49,11 @@ class FolderStatusDelegate;
 class OWNCLOUDGUI_EXPORT AccountSettings : public QWidget
 {
     Q_OBJECT
-    Q_PROPERTY(AccountStatePtr accountState MEMBER _accountState)
+    Q_PROPERTY(AccountState *accountState MEMBER _accountState CONSTANT)
     Q_PROPERTY(QSortFilterProxyModel *model MEMBER _sortModel CONSTANT)
+    OC_DECLARE_WIDGET_FOCUS
+    QML_ELEMENT
+    QML_UNCREATABLE("C++ only")
 
 public:
     enum class ModalWidgetSizePolicy { Minimum = QSizePolicy::Minimum, Expanding = QSizePolicy::Expanding };

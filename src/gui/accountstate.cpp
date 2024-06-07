@@ -258,6 +258,7 @@ void AccountState::setState(State state)
                 if (oldState == Connected || _state == Connected) {
                     _fetchCapabilitiesJob.clear();
                     Q_EMIT isConnectedChanged();
+                    Q_EMIT supportsSpacesChanged();
                 }
             });
             _fetchCapabilitiesJob->start();

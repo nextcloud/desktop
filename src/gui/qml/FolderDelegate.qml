@@ -17,139 +17,170 @@ import QtQuick.Controls
 import QtQuick.Layouts
 import org.ownCloud.gui 1.0
 import org.ownCloud.gui.spaces 1.0
+import org.ownCloud.libsync 1.0
 
 Pane {
+    id: folderSyncPanel
     // TODO: not cool
     readonly property real normalSize: 170
+    readonly property AccountSettings accountSettings: ctx
 
-    ScrollView {
-        id: scrollView
+    Accessible.role: Accessible.List
+    Accessible.name: qsTr("Folder Sync")
+
+    ColumnLayout {
         anchors.fill: parent
-        clip: true
-        ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
-        ScrollBar.vertical.policy: ScrollBar.AlwaysOn
 
-        ListView {
-            anchors.fill: parent
-            model: ctx.model
+        ScrollView {
+            id: scrollView
+            Layout.fillHeight: true
+            Layout.fillWidth: true
+            clip: true
+            ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
+            ScrollBar.vertical.policy: ScrollBar.AlwaysOn
 
-            spacing: 20
+            ListView {
+                anchors.fill: parent
+                model: ctx.model
 
-            delegate: Pane {
-                id: folderDelegate
+                spacing: 20
 
-                // model index
-                required property int index
+                delegate: Pane {
+                    id: folderDelegate
 
-                required property string displayName
-                required property string subtitle
-                required property url imageUrl
-                required property url statusUrl
-                required property double progress
-                required property string overallText
-                required property string itemText
-                required property var errorMsg
-                required property string quota
-                required property string toolTip
+                    // model index
+                    required property int index
 
-                required property Folder folder
+                    required property string displayName
+                    required property string subtitle
+                    required property url imageUrl
+                    required property url statusUrl
+                    required property double progress
+                    required property string overallText
+                    required property string itemText
+                    required property var errorMsg
+                    required property string quota
+                    required property string toolTip
 
-                clip: true
-                width: ListView.view.width - scrollView.ScrollBar.vertical.width - 10
+                    required property Folder folder
 
-                implicitHeight: normalSize
+                    clip: true
+                    width: ListView.view.width - scrollView.ScrollBar.vertical.width - 10
 
-                ToolTip.text: folderDelegate.toolTip
-                ToolTip.visible: hovered
-                ToolTip.delay: 1000
-                ToolTip.timeout: 5000
-                hoverEnabled: true
-                background: Rectangle {
-                    color: folderDelegate.ListView.isCurrentItem ? scrollView.palette.highlight : scrollView.palette.base
-                }
+                    implicitHeight: normalSize
 
-                MouseArea {
-                    anchors.fill: parent
-                    acceptedButtons: Qt.LeftButton | Qt.RightButton
-                    onClicked: mouse => {
-                        if (mouse.button === Qt.RightButton) {
-                            ctx.slotCustomContextMenuRequested(folder);
-                        }
-                        folderDelegate.ListView.view.currentIndex = folderDelegate.index;
-                        folderDelegate.forceActiveFocus();
+                    ToolTip.text: folderDelegate.toolTip
+                    ToolTip.visible: hovered
+                    ToolTip.delay: 1000
+                    ToolTip.timeout: 5000
+                    hoverEnabled: true
+                    background: Rectangle {
+                        color: folderDelegate.ListView.isCurrentItem ? scrollView.palette.highlight : scrollView.palette.base
                     }
-                }
 
-                RowLayout {
-                    anchors.fill: parent
-
-                    spacing: 10
-                    SpaceDelegate {
-                        Layout.fillWidth: true
-                        Layout.fillHeight: true
-
-                        title: displayName
-                        description: subtitle
-                        imageSource: imageUrl
-                        statusSource: statusUrl
-
-                        // we will either display quota or overallText
-                        Label {
-                            Layout.fillWidth: true
-                            text: folderDelegate.quota
-                            elide: Text.ElideRight
-                            visible: folderDelegate.quota && !folderDelegate.overallText
-                        }
-
-                        Item {
-                            // ensure the progress bar always consumes its space
-                            Layout.preferredHeight: 10
-                            Layout.fillWidth: true
-                            ProgressBar {
-                                anchors.fill: parent
-                                value: folderDelegate.progress
-                                visible: folderDelegate.overallText || folderDelegate.itemText
+                    MouseArea {
+                        anchors.fill: parent
+                        acceptedButtons: Qt.LeftButton | Qt.RightButton
+                        onClicked: mouse => {
+                            if (mouse.button === Qt.RightButton) {
+                                ctx.slotCustomContextMenuRequested(folder);
                             }
+                            folderDelegate.ListView.view.currentIndex = folderDelegate.index;
+                            folderDelegate.forceActiveFocus();
                         }
+                    }
 
-                        Label {
+                    RowLayout {
+                        anchors.fill: parent
 
+                        spacing: 10
+                        SpaceDelegate {
                             Layout.fillWidth: true
-                            text: folderDelegate.overallText
-                            elide: Text.ElideMiddle
-                        }
+                            Layout.fillHeight: true
 
-                        Label {
-                            Layout.fillWidth: true
-                            text: folderDelegate.itemText
-                            elide: Text.ElideMiddle
-                            // only display the item text if we don't have errors
-                            // visible:  !folderDelegate.errorMsg.length
-                        }
+                            title: displayName
+                            description: subtitle
+                            imageSource: imageUrl
+                            statusSource: statusUrl
 
-                        FolderError {
-                            Layout.fillWidth: true
-                            errorMessages: folderDelegate.errorMsg
-                            onCollapsedChanged: {
-                                if (!collapsed) {
-                                    // TODO: not cool
-                                    folderDelegate.implicitHeight = normalSize + implicitHeight + 10;
-                                } else {
-                                    folderDelegate.implicitHeight = normalSize;
+                            // we will either display quota or overallText
+                            Label {
+                                Layout.fillWidth: true
+                                text: folderDelegate.quota
+                                elide: Text.ElideRight
+                                visible: folderDelegate.quota && !folderDelegate.overallText
+                            }
+
+                            Item {
+                                // ensure the progress bar always consumes its space
+                                Layout.preferredHeight: 10
+                                Layout.fillWidth: true
+                                ProgressBar {
+                                    anchors.fill: parent
+                                    value: folderDelegate.progress
+                                    visible: folderDelegate.overallText || folderDelegate.itemText
+                                }
+                            }
+
+                            Label {
+
+                                Layout.fillWidth: true
+                                text: folderDelegate.overallText
+                                elide: Text.ElideMiddle
+                            }
+
+                            Label {
+                                Layout.fillWidth: true
+                                text: folderDelegate.itemText
+                                elide: Text.ElideMiddle
+                                // only display the item text if we don't have errors
+                                // visible:  !folderDelegate.errorMsg.length
+                            }
+
+                            FolderError {
+                                Layout.fillWidth: true
+                                errorMessages: folderDelegate.errorMsg
+                                onCollapsedChanged: {
+                                    if (!collapsed) {
+                                        // TODO: not cool
+                                        folderDelegate.implicitHeight = normalSize + implicitHeight + 10;
+                                    } else {
+                                        folderDelegate.implicitHeight = normalSize;
+                                    }
                                 }
                             }
                         }
-                    }
-                    Button {
-                        Layout.alignment: Qt.AlignVCenter | Qt.AlignRight
-                        Layout.maximumHeight: 30
-                        display: AbstractButton.IconOnly
-                        icon.source: "image://ownCloud/core/more"
-                        onClicked: {
-                            ctx.slotCustomContextMenuRequested(folder);
+                        Button {
+                            Layout.alignment: Qt.AlignVCenter | Qt.AlignRight
+                            Layout.maximumHeight: 30
+                            display: AbstractButton.IconOnly
+                            icon.source: "image://ownCloud/core/more"
+                            onClicked: {
+                                ctx.slotCustomContextMenuRequested(folder);
+                            }
                         }
                     }
                 }
+            }
+        }
+        Button {
+            id: addSyncButton
+            text: accountSettings.accountState.supportsSpaces ? qsTr("Add Space") : qsTr("Add Folder")
+            palette.highlight: folderSyncPanel.palette.highlight
+
+            onClicked: {
+                accountSettings.slotAddFolder();
+            }
+            enabled: accountSettings.accountState.state === AccountState.Connected
+
+            visible: listView.count === 0 || !Theme.singleSyncFolder
+
+            Keys.onBacktabPressed: {
+                listView.currentItem.forceActiveFocus(Qt.TabFocusReason);
+            }
+
+            Keys.onTabPressed: {
+                accountSettings.focusNext();
             }
         }
     }
