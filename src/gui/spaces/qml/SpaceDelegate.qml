@@ -45,6 +45,8 @@ Item {
                     id: image
                     anchors.fill: parent
                     fillMode: Image.PreserveAspectFit
+                    sourceSize.width: width
+                    sourceSize.height: height
                 }
             }
             ColumnLayout {
@@ -60,6 +62,8 @@ Item {
                         Layout.preferredHeight: 16
                         Layout.preferredWidth: 16
                         visible: statusSource
+                        sourceSize.width: width
+                        sourceSize.height: height
                     }
                     Label {
                         id: title

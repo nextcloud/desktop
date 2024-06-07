@@ -38,6 +38,8 @@ ToolButton {
             Layout.preferredWidth: control.icon.width
             fillMode: Image.PreserveAspectFit
             source: control.icon.source
+            sourceSize.height: control.icon.height
+            sourceSize.width: control.icon.width
         }
         Label {
             Layout.fillHeight: true

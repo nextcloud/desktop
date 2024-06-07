@@ -200,7 +200,9 @@ QPixmap CoreImageProvider::requestPixmap(const QString &id, QSize *size, const Q
     } else {
         Q_UNREACHABLE();
     }
-    const QSize actualSize = requestedSize.isValid() ? requestedSize : icon.availableSizes().first();
+    // the sourceSize of the Image must be provided
+    Q_ASSERT(requestedSize.isValid());
+    const QSize actualSize = requestedSize.isValid() ? requestedSize : icon.availableSizes().constFirst();
     if (size) {
         *size = actualSize;
     }

@@ -28,6 +28,8 @@ ColumnLayout {
             source: "image://ownCloud/core/warning"
             Layout.maximumHeight: 16
             Layout.maximumWidth: 16
+            sourceSize.width: width
+            sourceSize.height: height
         }
         Label {
             id: label
