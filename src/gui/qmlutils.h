@@ -18,6 +18,19 @@
 class QQuickWidget;
 class QUrl;
 
+#define OC_DECLARE_WIDGET_FOCUS                                                                                                                                \
+public:                                                                                                                                                        \
+    Q_INVOKABLE void focusNext()                                                                                                                               \
+    {                                                                                                                                                          \
+        focusNextChild();                                                                                                                                      \
+    }                                                                                                                                                          \
+    Q_INVOKABLE void focusPrevious()                                                                                                                           \
+    {                                                                                                                                                          \
+        focusPreviousChild();                                                                                                                                  \
+    }                                                                                                                                                          \
+                                                                                                                                                               \
+private:
+
 namespace OCC::QmlUtils {
 
 void initQuickWidget(QQuickWidget *widget, const QUrl &src);

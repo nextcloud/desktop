@@ -12,16 +12,15 @@
  * for more details.
  */
 
-#ifndef SETTINGSDIALOG_H
-#define SETTINGSDIALOG_H
-
-#include <QDialog>
-#include <QMainWindow>
-#include <QStyledItemDelegate>
+#pragma once
 
 #include "accountstate.h"
+#include "gui/qmlutils.h"
 #include "owncloudgui.h"
 #include "progressdispatcher.h"
+
+#include <QMainWindow>
+#include <QStyledItemDelegate>
 
 namespace OCC {
 
@@ -46,6 +45,7 @@ class SettingsDialog : public QMainWindow
     Q_PROPERTY(Account *currentAccount READ currentAccount WRITE setCurrentAccount NOTIFY currentAccountChanged)
     QML_ELEMENT
     QML_UNCREATABLE("C++ only")
+    OC_DECLARE_WIDGET_FOCUS
 public:
     enum class SettingsPage { None, Activity, Settings, Account };
     Q_ENUM(SettingsPage)
@@ -69,9 +69,6 @@ public:
 
 public Q_SLOTS:
     void addAccount();
-
-    void focusNext();
-    void focusPrevious();
 
 
 Q_SIGNALS:
@@ -97,5 +94,3 @@ private:
     Account *_currentAccount = nullptr;
 };
 }
-
-#endif // SETTINGSDIALOG_H

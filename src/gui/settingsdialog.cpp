@@ -249,15 +249,4 @@ void SettingsDialog::addAccount()
     ocApp()->gui()->runNewAccountWizard();
 }
 
-void SettingsDialog::focusNext()
-{
-    focusNextChild();
-}
-
-void SettingsDialog::focusPrevious()
-{
-    focusPreviousChild();
-}
-
-
 } // namespace OCC
