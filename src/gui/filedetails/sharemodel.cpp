@@ -26,7 +26,6 @@
 #include "sharepermissions.h"
 #include "theme.h"
 #include "updatee2eefolderusersmetadatajob.h"
-#include "wordlist.h"
 
 namespace {
 
@@ -263,6 +262,12 @@ void ShareModel::updateData()
         && !fileRecord._remotePerm.hasPermission(RemotePermissions::CanReshare)) {
         qCInfo(lcShareModel) << "File record says resharing not allowed";
         resharingAllowed = false;
+    }
+
+    if (fileRecord.isVirtualFile() && _synchronizationFolder->vfs().mode() == Vfs::WithSuffix) {
+        if (const auto suffix = _synchronizationFolder->vfs().fileSuffix(); !suffix.isEmpty() && _sharePath.endsWith(suffix)) {
+            _sharePath.chop(suffix.length());
+        }
     }
 
     _maxSharingPermissions = resharingAllowed ? SharePermissions(_accountState->account()->capabilities().shareDefaultPermissions()) : SharePermissions({});
