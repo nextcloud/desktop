@@ -16,6 +16,9 @@
 
 #include <QDir>
 #include <QLoggingCategory>
+#include <QUrlQuery>
+
+#include "libsync/networkjobs.h"
 
 namespace {
 
