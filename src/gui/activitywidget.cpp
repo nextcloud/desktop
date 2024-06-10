@@ -66,8 +66,7 @@ ActivityWidget::ActivityWidget(QWidget *parent)
     header->setSectionResizeMode(QHeaderView::Interactive);
     header->setSortIndicator(static_cast<int>(ActivityListModel::ActivityRole::PointInTime), Qt::DescendingOrder);
 
-    _ui->_notifyLabel->hide();
-    _ui->_notifyScroll->hide();
+    _ui->_notifyGroupBox->hide();
 
     // Create a widget container for the notifications. The ui file defines
     // a scroll area that get a widget with a layout as children
@@ -146,19 +145,15 @@ void ActivityWidget::slotRemoveAccount(const AccountStatePtr &ptr)
 
 void ActivityWidget::showLabels()
 {
-    QString t = tr("Server Activities");
-    _ui->_headerLabel->setTextFormat(Qt::RichText);
-    _ui->_headerLabel->setText(t);
+    _ui->_activityGroupBox->setTitle(tr("&Server Activities"));
+    _ui->_notifyGroupBox->setTitle(tr("&Notifications"));
 
-    _ui->_notifyLabel->setText(tr("Notifications"));
-
-    t.clear();
+    QString bottomText;
     QSetIterator<QString> i(_accountsWithoutActivities);
     while (i.hasNext()) {
-        t.append(tr("<br/>%1 does not provide activities.").arg(i.next()));
+        bottomText.append(tr("<br/>%1 does not provide activities.").arg(i.next()));
     }
-    _ui->_bottomLabel->setTextFormat(Qt::RichText);
-    _ui->_bottomLabel->setText(t);
+    _ui->_bottomLabel->setText(bottomText);
 }
 
 void ActivityWidget::slotAccountActivityStatus(AccountStatePtr ast, int statusCode)
@@ -183,11 +178,8 @@ void ActivityWidget::checkActivityTabVisibility()
         _accountsWithoutActivities.count() != accountCount;
     bool hasNotifications = !_widgetForNotifId.isEmpty();
 
-    _ui->_headerLabel->setVisible(hasAccountsWithActivity);
-    _ui->_activityList->setVisible(hasAccountsWithActivity);
-
-    _ui->_notifyLabel->setVisible(hasNotifications);
-    _ui->_notifyScroll->setVisible(hasNotifications);
+    _ui->_activityGroupBox->setVisible(hasAccountsWithActivity);
+    _ui->_notifyGroupBox->setVisible(hasNotifications);
 
     Q_EMIT hideActivityTab(!hasAccountsWithActivity && !hasNotifications);
 }
@@ -420,8 +412,7 @@ void ActivityWidget::slotCheckToCleanWidgets()
 
     // check to see if the whole notification pane should be hidden
     if (_widgetForNotifId.isEmpty()) {
-        _ui->_notifyLabel->setHidden(true);
-        _ui->_notifyScroll->setHidden(true);
+        _ui->_notifyGroupBox->setHidden(true);
     }
 }
 
