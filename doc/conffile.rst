@@ -51,7 +51,7 @@ Some interesting values that can be set on the configuration file are:
 |                                  |                          | The client adjusts the chunk size until each chunk upload takes approximately this long.               |
 |                                  |                          | Set to 0 to disable dynamic chunk sizing.                                                              |
 +----------------------------------+--------------------------+--------------------------------------------------------------------------------------------------------+
-| ``promptDeleteAllFiles``         | ``false``                 | If a UI prompt should ask for confirmation if it was detected that all files and folders were deleted. |
+| ``promptDeleteAllFiles``         | ``false``                | If a UI prompt should ask for confirmation if it was detected that all files and folders were deleted. |
 +----------------------------------+--------------------------+--------------------------------------------------------------------------------------------------------+
 | ``timeout``                      | ``300``                  | The timeout for network connections in seconds.                                                        |
 +----------------------------------+--------------------------+--------------------------------------------------------------------------------------------------------+
