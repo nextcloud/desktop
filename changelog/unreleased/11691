@@ -1,0 +1,5 @@
+Bugfix: Ensure the Windows shell extension is linked statically
+
+We fixed a regression where https://cmake.org/cmake/help/latest/policy/CMP0091.html caused our shell extension no longer to be linked statically.
+
+https://github.com/owncloud/client/issues/11691
