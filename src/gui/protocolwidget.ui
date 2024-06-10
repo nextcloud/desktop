@@ -65,6 +65,10 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>_filterButton</tabstop>
+  <tabstop>_tableView</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>
