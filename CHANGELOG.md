@@ -1,6 +1,7 @@
 # Table of Contents
 
 * [Changelog for unreleased](#changelog-for-owncloud-desktop-client-unreleased-unreleased)
+* [Changelog for 5.3.0](#changelog-for-owncloud-desktop-client-530-2024-06-11)
 * [Changelog for 5.3.0](#changelog-for-owncloud-desktop-client-530-2024-06-06)
 * [Changelog for 5.2.1](#changelog-for-owncloud-desktop-client-521-2024-01-04)
 * [Changelog for 5.2.0](#changelog-for-owncloud-desktop-client-520-2023-11-27)
@@ -308,18 +309,19 @@ ownCloud admins and users.
 
    https://github.com/owncloud/client/pull/11615
 
-# Changelog for ownCloud Desktop Client [5.3.0] (2024-06-06)
+# Changelog for ownCloud Desktop Client [5.3.0] (2024-06-11)
 
 The following sections list the changes in ownCloud Desktop Client 5.3.0 relevant to
 ownCloud admins and users.
 
-[5.3.0]: https://github.com/owncloud/client/compare/v5.2.1...v5.3.0
+[5.3.0]: https://github.com/owncloud/client/compare/v5.3.0...v5.3.0
 
 ## Summary
 
 * Bugfix - Fix early-use crash in the folder watcher on Linux: [#11460](https://github.com/owncloud/client/issues/11460)
 * Bugfix - Client stuck in `reconnecting`: [#11467](https://github.com/owncloud/client/pull/11467)
 * Bugfix - Ensure folders are scheduled only once: [#11552](https://github.com/owncloud/client/issues/11552)
+* Bugfix - Ensure the Windows shell extension is linked statically: [#11691](https://github.com/owncloud/client/issues/11691)
 * Change - Revert local folder name back to pre 3.0 behavior: [#6390](https://github.com/owncloud/enterprise/issues/6390)
 * Enhancement - Add support to provide a list of ports for the OAuth process: [#11276](https://github.com/owncloud/client/issues/11276)
 * Enhancement - Support `Active Directory Federation Service` as identity provider: [#11646](https://github.com/owncloud/client/issues/11646)
@@ -347,6 +349,96 @@ ownCloud admins and users.
    We fixed a bug where a folder could be scheduled multiple times.
 
    https://github.com/owncloud/client/issues/11552
+
+* Bugfix - Ensure the Windows shell extension is linked statically: [#11691](https://github.com/owncloud/client/issues/11691)
+
+   We fixed a regression where
+   https://cmake.org/cmake/help/latest/policy/CMP0091.html caused our shell
+   extension no longer to be linked statically.
+
+   https://github.com/owncloud/client/issues/11691
+
+* Change - Revert local folder name back to pre 3.0 behavior: [#6390](https://github.com/owncloud/enterprise/issues/6390)
+
+   Due to user requests, we reverted the folder name from
+
+   ```
+   ownCloud - Albert@owncloud.com
+   ownCloud - Katherine@owncloud.org
+   ownCloud - Marie@owncloud.com
+   ```
+
+   Back to
+
+   ```
+   ownCloud
+   ownCloud (1)
+   ownCloud (2)
+   ```
+
+   https://github.com/owncloud/enterprise/issues/6390
+
+* Enhancement - Add support to provide a list of ports for the OAuth process: [#11276](https://github.com/owncloud/client/issues/11276)
+
+   We added a branding option that enables us to specify a list of ports that are
+   used for the local server during the OAuth process.
+
+   https://github.com/owncloud/client/issues/11276
+
+* Enhancement - Support `Active Directory Federation Service` as identity provider: [#11646](https://github.com/owncloud/client/issues/11646)
+
+   We changed the OAuth workflow to support `Active Directory Federation Service`
+
+   https://github.com/owncloud/client/issues/11646
+
+# Changelog for ownCloud Desktop Client [5.3.0] (2024-06-06)
+
+The following sections list the changes in ownCloud Desktop Client 5.3.0 relevant to
+ownCloud admins and users.
+
+[5.3.0]: https://github.com/owncloud/client/compare/v5.2.1...v5.3.0
+
+## Summary
+
+* Bugfix - Fix early-use crash in the folder watcher on Linux: [#11460](https://github.com/owncloud/client/issues/11460)
+* Bugfix - Client stuck in `reconnecting`: [#11467](https://github.com/owncloud/client/pull/11467)
+* Bugfix - Ensure folders are scheduled only once: [#11552](https://github.com/owncloud/client/issues/11552)
+* Bugfix - Ensure the Windows shell extension is linked statically: [#11691](https://github.com/owncloud/client/issues/11691)
+* Change - Revert local folder name back to pre 3.0 behavior: [#6390](https://github.com/owncloud/enterprise/issues/6390)
+* Enhancement - Add support to provide a list of ports for the OAuth process: [#11276](https://github.com/owncloud/client/issues/11276)
+* Enhancement - Support `Active Directory Federation Service` as identity provider: [#11646](https://github.com/owncloud/client/issues/11646)
+
+## Details
+
+* Bugfix - Fix early-use crash in the folder watcher on Linux: [#11460](https://github.com/owncloud/client/issues/11460)
+
+   In a few error scenarios, the folder watcher on Linux shows a dialog with an
+   error message. A crash has been fixed where this occurred before the GUI was
+   fully initialised.
+
+   https://github.com/owncloud/client/issues/11460
+   https://github.com/owncloud/client/pull/11475
+
+* Bugfix - Client stuck in `reconnecting`: [#11467](https://github.com/owncloud/client/pull/11467)
+
+   Properly handle errors during the update of the server settings. Due to an
+   unhandled result, the client could get stuck in a `reconnecting` state.
+
+   https://github.com/owncloud/client/pull/11467
+
+* Bugfix - Ensure folders are scheduled only once: [#11552](https://github.com/owncloud/client/issues/11552)
+
+   We fixed a bug where a folder could be scheduled multiple times.
+
+   https://github.com/owncloud/client/issues/11552
+
+* Bugfix - Ensure the Windows shell extension is linked statically: [#11691](https://github.com/owncloud/client/issues/11691)
+
+   We fixed a regression where
+   https://cmake.org/cmake/help/latest/policy/CMP0091.html caused our shell
+   extension no longer to be linked statically.
+
+   https://github.com/owncloud/client/issues/11691
 
 * Change - Revert local folder name back to pre 3.0 behavior: [#6390](https://github.com/owncloud/enterprise/issues/6390)
 
