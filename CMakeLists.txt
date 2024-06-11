@@ -221,7 +221,7 @@ if(BUILD_CLIENT)
     find_package(PdfLatex)
     find_package(OpenSSL 1.1 REQUIRED )
     find_package(PkgConfig REQUIRED)
-    pkg_check_modules(OPENSC-LIBP11 libp11 IMPORTED_TARGET)
+    pkg_check_modules(OPENSC-LIBP11 libp11 REQUIRED IMPORTED_TARGET)
 
     set(ENCRYPTION_HARDWARE_TOKEN_DRIVER_PATH "c:/Windows/System32/eTPKCS11.dll" CACHE PATH "Path to the driver for end-to-end encryption token")
     option(CLIENTSIDEENCRYPTION_ENFORCE_USB_TOKEN "Enforce use of an hardware token for end-to-end encryption" true)
