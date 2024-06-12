@@ -570,4 +570,100 @@ final class EnumeratorTests: XCTestCase {
         storedFolder.dbManager = Self.dbManager
         XCTAssertEqual(storedFolder.childItemCount?.intValue, remoteFolder.children.count)
     }
+
+    func testFileLockStateEnumeration() async throws {
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+
+        remoteFolder.children.append(remoteItemC)
+        remoteItemC.parent = remoteFolder
+
+        remoteItemA.locked = true
+        remoteItemA.lockOwner = Self.account.username
+        remoteItemA.lockTimeOut = Date.now.advanced(by: 1_000_000_000_000)
+
+        remoteItemB.locked = true
+        remoteItemB.lockOwner = "other different account"
+        remoteItemB.lockTimeOut = Date.now.advanced(by: 1_000_000_000_000)
+
+        remoteItemC.locked = true
+        remoteItemC.lockOwner = "other different account"
+        remoteItemC.lockTimeOut = Date.now.advanced(by: -1_000_000_000_000)
+
+        let folderMetadata = ItemMetadata()
+        folderMetadata.ocId = remoteFolder.identifier
+        folderMetadata.etag = "OLD"
+        folderMetadata.directory = true
+        folderMetadata.name = remoteFolder.name
+        folderMetadata.fileName = remoteFolder.name
+        folderMetadata.fileNameView = remoteFolder.name
+        folderMetadata.serverUrl = Self.account.davFilesUrl
+        folderMetadata.account = Self.account.ncKitAccount
+        folderMetadata.user = Self.account.username
+        folderMetadata.userId = Self.account.username
+        folderMetadata.urlBase = Self.account.serverUrl
+
+        Self.dbManager.addItemMetadata(folderMetadata)
+        XCTAssertNotNil(Self.dbManager.itemMetadataFromOcId(remoteFolder.identifier))
+
+        let enumerator = Enumerator(
+            enumeratedItemIdentifier: .init(remoteFolder.identifier),
+            ncAccount: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+        let observer = MockChangeObserver(enumerator: enumerator)
+        try await observer.enumerateChanges()
+        XCTAssertEqual(observer.changedItems.count, 3)
+
+        let dbItemAMetadata = try XCTUnwrap(
+            Self.dbManager.itemMetadataFromOcId(remoteItemA.identifier)
+        )
+        let dbItemBMetadata = try XCTUnwrap(
+            Self.dbManager.itemMetadataFromOcId(remoteItemB.identifier)
+        )
+        let dbItemCMetadata = try XCTUnwrap(
+            Self.dbManager.itemMetadataFromOcId(remoteItemC.identifier)
+        )
+
+        XCTAssertEqual(dbItemAMetadata.lock, remoteItemA.locked)
+        XCTAssertEqual(dbItemAMetadata.lockOwner, remoteItemA.lockOwner)
+        XCTAssertEqual(dbItemAMetadata.lockTimeOut, remoteItemA.lockTimeOut)
+
+        XCTAssertEqual(dbItemBMetadata.lock, remoteItemB.locked)
+        XCTAssertEqual(dbItemBMetadata.lockOwner, remoteItemB.lockOwner)
+        XCTAssertEqual(dbItemBMetadata.lockTimeOut, remoteItemB.lockTimeOut)
+
+        XCTAssertEqual(dbItemCMetadata.lock, remoteItemC.locked)
+        XCTAssertEqual(dbItemCMetadata.lockOwner, remoteItemC.lockOwner)
+        XCTAssertEqual(dbItemCMetadata.lockTimeOut, remoteItemC.lockTimeOut)
+
+        let storedItemA = try XCTUnwrap(
+            Item.storedItem(
+                identifier: .init(remoteItemA.identifier),
+                remoteInterface: remoteInterface,
+                dbManager: Self.dbManager
+            )
+        )
+        let storedItemB = try XCTUnwrap(
+            Item.storedItem(
+                identifier: .init(remoteItemB.identifier),
+                remoteInterface: remoteInterface,
+                dbManager: Self.dbManager
+            )
+        )
+        let storedItemC = try XCTUnwrap(
+            Item.storedItem(
+                identifier: .init(remoteItemC.identifier),
+                remoteInterface: remoteInterface,
+                dbManager: Self.dbManager
+            )
+        )
+
+        // Should be able to write to files locked by self
+        XCTAssertTrue(storedItemA.fileSystemFlags.contains(.userWritable))
+        // Should not be able to write to files locked by someone else
+        XCTAssertFalse(storedItemB.fileSystemFlags.contains(.userWritable))
+        // Should be able to write to files with an expired lock
+        XCTAssertTrue(storedItemC.fileSystemFlags.contains(.userWritable))
+    }
 }
