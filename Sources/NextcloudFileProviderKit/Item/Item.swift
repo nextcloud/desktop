@@ -143,7 +143,10 @@ public class Item: NSObject, NSFileProviderItem {
     }
 
     public var fileSystemFlags: NSFileProviderFileSystemFlags {
-        if metadata.lock, metadata.lockOwner != metadata.userId {
+        if metadata.lock,
+           metadata.lockOwner != metadata.userId,
+           metadata.lockTimeOut ?? Date() > Date()
+        {
             return [.userReadable]
         }
         return [.userReadable, .userWritable]
