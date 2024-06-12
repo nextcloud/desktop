@@ -1031,9 +1031,12 @@ void ClientSideEncryption::initializeHardwareTokenEncryption(QWidget *settingsDi
         return;
     }
 
-    auto deleter = [&ctx, tokensCount] (PKCS11_SLOT* pointer) noexcept -> void {
+    auto deleter = [ctx = static_cast<PKCS11_CTX*>(ctx), tokensCount] (PKCS11_SLOT* pointer) noexcept -> void {
         qCWarning(lcCse()) << "destructor" << pointer << ctx;
-        PKCS11_release_all_slots(ctx, pointer, tokensCount);
+        if (pointer) {
+            qCWarning(lcCse()) << "destructor" << pointer << ctx;
+            PKCS11_release_all_slots(ctx, pointer, tokensCount);
+        }
     };
 
     auto tokenSlots = decltype(_tokenSlots){tempTokenSlots, deleter};
@@ -1190,8 +1193,8 @@ void ClientSideEncryption::initializeHardwareTokenEncryption(QWidget *settingsDi
 
         emit initializationFinished();
 
-        _context = std::move(ctx);
         _tokenSlots = std::move(tokenSlots);
+        _context = std::move(ctx);
 
         return;
     }
@@ -1693,7 +1696,8 @@ void ClientSideEncryption::forgetSensitiveData(const AccountPtr &account)
     _usbTokenInformation.setSha256Fingerprint({});
     account->setEncryptionCertificateFingerprint({});
     _encryptionCertificate.clear();
-    //_tokenSlots.reset();
+    _otherCertificates.clear();
+    _tokenSlots.reset();
     _context = Pkcs11Context{Pkcs11Context::State::EmptyContext};
     Q_EMIT canDecryptChanged();
     Q_EMIT canEncryptChanged();
@@ -2918,6 +2922,7 @@ void CertificateInformation::clear()
 {
     _hardwarePublicKey = nullptr;
     _hardwarePrivateKey = nullptr;
+    _privateKeyData.clear();
     _certificate.clear();
     _certificateExpired = true;
     _certificateNotYetValid = true;
