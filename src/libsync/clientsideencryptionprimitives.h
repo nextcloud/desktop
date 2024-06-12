@@ -117,7 +117,6 @@ public:
 
     Pkcs11Context(const Pkcs11Context&) = delete;
 
-
     ~Pkcs11Context();
 
     Pkcs11Context& operator=(Pkcs11Context &&otherContext);
