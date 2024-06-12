@@ -237,3 +237,37 @@ def step(context, action):
 def step(context, folder_name):
     SyncConnection.choose_what_to_sync()
     SyncConnection.unselect_folder_in_selective_sync(folder_name)
+
+
+@When('the user navigates back in the sync connection wizard')
+def step(context):
+    SyncConnectionWizard.back()
+
+
+@When('the user creates a folder "|any|" in the remote destination wizard')
+def step(context, folder_name):
+    if not get_config("ocis"):
+        SyncConnectionWizard.create_folder_in_remote_destination(folder_name)
+
+
+@When('the user refreshes the remote destination in the sync connection wizard')
+def step(context):
+    if not get_config("ocis"):
+        SyncConnectionWizard.refresh_remote()
+
+
+@Then(
+    r'the folder "([^"]*)" should be present and (selected|not selected) in the remote destination wizard',
+    regexp=True,
+)
+def step(context, folder_name, selected):
+    if not get_config("ocis"):
+        has_folder, folder_selector = SyncConnectionWizard.has_remote_folder(
+            folder_name
+        )
+        test.compare(True, has_folder, "Folder should be in the remote list")
+        test.compare(
+            selected == 'selected',
+            SyncConnectionWizard.is_remote_folder_selected(folder_selector),
+            "Folder should be selected",
+        )

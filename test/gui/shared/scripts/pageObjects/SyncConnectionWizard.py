@@ -1,5 +1,6 @@
 import names
 import squish
+import object
 from os import path
 from helpers.SetupClientHelper import (
     getCurrentUserSyncPath,
@@ -21,11 +22,17 @@ class SyncConnectionWizard:
         "visible": 1,
         "window": names.add_Folder_Sync_Connection_OCC_FolderWizard,
     }
-    NEXT_BUTTON = {
-        "name": "__qt__passive_wizardbutton1",
-        "type": "QPushButton",
-        "visible": 1,
+    BACK_BUTTON = {
         "window": names.add_Folder_Sync_Connection_OCC_FolderWizard,
+        "type": "QPushButton",
+        "text": "< &Back",
+        "visible": 1,
+    }
+    NEXT_BUTTON = {
+        "window": names.add_Folder_Sync_Connection_OCC_FolderWizard,
+        "type": "QPushButton",
+        "text": "&Next >",
+        "visible": 1,
     }
     SELECTIVE_SYNC_ROOT_FOLDER = {
         "column": 0,
@@ -75,6 +82,37 @@ class SyncConnectionWizard:
         "container": names.add_Folder_Sync_Connection_tableView_QTableView,
         "type": "QModelIndex",
     }
+    CREATE_REMOTE_FOLDER_BUTTON = {
+        "container": names.add_Folder_Sync_Connection_groupBox_QGroupBox,
+        "name": "addFolderButton",
+        "type": "QPushButton",
+        "visible": 1,
+    }
+    CREATE_REMOTE_FOLDER_INPUT = {
+        "buddy": names.create_Remote_Folder_Enter_the_name_of_the_new_folder_to_be_created_below_QLabel,
+        "type": "QLineEdit",
+        "unnamed": 1,
+        "visible": 1,
+    }
+    CREATE_REMOTE_FOLDER_CONFIRM_BUTTON = {
+        "text": "OK",
+        "type": "QPushButton",
+        "unnamed": 1,
+        "visible": 1,
+        "window": names.create_Remote_Folder_QInputDialog,
+    }
+    REFRESH_BUTTON = {
+        "container": names.add_Folder_Sync_Connection_groupBox_QGroupBox,
+        "name": "refreshButton",
+        "type": "QPushButton",
+        "visible": 1,
+    }
+    REMOTE_FOLDER_SELECTION_INPUT = {
+        "name": "folderEntry",
+        "type": "QLineEdit",
+        "visible": 1,
+        "window": names.add_Folder_Sync_Connection_OCC_FolderWizard,
+    }
 
     @staticmethod
     def setSyncPathInSyncConnectionWizardOc10(sync_path=''):
@@ -100,6 +138,10 @@ class SyncConnectionWizard:
     @staticmethod
     def nextStep():
         squish.clickButton(squish.waitForObject(SyncConnectionWizard.NEXT_BUTTON))
+
+    @staticmethod
+    def back():
+        squish.clickButton(squish.waitForObject(SyncConnectionWizard.BACK_BUTTON))
 
     @staticmethod
     def selectRemoteDestinationFolder(folder):
@@ -251,3 +293,60 @@ class SyncConnectionWizard:
             path.join(getCurrentUserSyncPath(), spaceName)
         )
         SyncConnectionWizard.addSyncConnection()
+
+    @staticmethod
+    def create_folder_in_remote_destination(folder_name):
+        squish.clickButton(
+            squish.waitForObject(SyncConnectionWizard.CREATE_REMOTE_FOLDER_BUTTON)
+        )
+        squish.type(
+            squish.waitForObject(SyncConnectionWizard.CREATE_REMOTE_FOLDER_INPUT),
+            folder_name,
+        )
+        squish.clickButton(
+            squish.waitForObject(
+                SyncConnectionWizard.CREATE_REMOTE_FOLDER_CONFIRM_BUTTON
+            )
+        )
+
+    @staticmethod
+    def refresh_remote():
+        squish.clickButton(squish.waitForObject(SyncConnectionWizard.REFRESH_BUTTON))
+
+    @staticmethod
+    def generate_remote_folder_selector(folder_name, parent_container=None):
+        if not parent_container:
+            parent_container = {
+                "container": names.groupBox_folderTreeWidget_QTreeWidget,
+                "text": "ownCloud",
+                "type": "QModelIndex",
+            }
+        return {
+            "container": parent_container,
+            "text": folder_name,
+            "type": "QModelIndex",
+        }
+
+    @staticmethod
+    def has_remote_folder(folder_name):
+        folder_tree = folder_name.strip("/").split("/")
+        parent_container = None
+
+        for folder in folder_tree:
+            folder_selector = SyncConnectionWizard.generate_remote_folder_selector(
+                folder, parent_container
+            )
+            try:
+                if parent_container:
+                    squish.doubleClick(parent_container)
+
+                squish.waitForObject(folder_selector)
+
+                parent_container = folder_selector
+            except:
+                return False, None
+        return True, parent_container
+
+    @staticmethod
+    def is_remote_folder_selected(folder_selector):
+        return squish.waitForObjectExists(folder_selector).selected

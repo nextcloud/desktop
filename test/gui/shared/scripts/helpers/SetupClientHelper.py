@@ -127,6 +127,7 @@ def setUpClient(username, displayName, space="Personal"):
     0/url={local_server}
     0/user={displayUserFirstName}
     0/version=1
+    0/supportsSpaces={supportsSpaces}
     version=2
     '''
 
@@ -154,6 +155,7 @@ def setUpClient(username, displayName, space="Personal"):
         'local_server': server_url,
         'oauth': 'true' if is_ocis else 'false',
         'vfs': 'wincfapi' if isWindows() else 'off',
+        'supportsSpaces': 'true' if is_ocis else 'false',
     }
     userSetting = userSetting.format(**args)
 
