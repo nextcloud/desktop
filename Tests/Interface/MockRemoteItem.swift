@@ -20,6 +20,9 @@ public class MockRemoteItem: Equatable {
     public let creationDate: Date
     public var modificationDate: Date
     public var data: Data?
+    public var locked: Bool
+    public var lockOwner: String
+    public var lockTimeOut: Date?
     public var size: Int64 { Int64(data?.count ?? 0) }
     public var account: String
     public var username: String
@@ -37,6 +40,9 @@ public class MockRemoteItem: Equatable {
         file.user = username
         file.userId = username
         file.urlBase = serverUrl
+        file.lock = locked
+        file.lockOwner = lockOwner
+        file.lockTimeOut = lockTimeOut
         return file
     }
 
@@ -47,6 +53,9 @@ public class MockRemoteItem: Equatable {
         lhs.versionIdentifier == rhs.versionIdentifier &&
         lhs.name == rhs.name &&
         lhs.directory == rhs.directory &&
+        lhs.locked == rhs.locked &&
+        lhs.lockOwner == rhs.lockOwner &&
+        lhs.lockTimeOut == rhs.lockTimeOut &&
         lhs.data == rhs.data &&
         lhs.size == rhs.size &&
         lhs.creationDate == rhs.creationDate &&
@@ -65,6 +74,9 @@ public class MockRemoteItem: Equatable {
         creationDate: Date = Date(),
         modificationDate: Date = Date(),
         data: Data? = nil,
+        locked: Bool = false,
+        lockOwner: String = "",
+        lockTimeOut: Date? = nil,
         account: String,
         username: String,
         serverUrl: String
@@ -77,6 +89,9 @@ public class MockRemoteItem: Equatable {
         self.creationDate = creationDate
         self.modificationDate = modificationDate
         self.data = data
+        self.locked = locked
+        self.lockOwner = lockOwner
+        self.lockTimeOut = lockTimeOut
         self.account = account
         self.username = username
         self.serverUrl = serverUrl
