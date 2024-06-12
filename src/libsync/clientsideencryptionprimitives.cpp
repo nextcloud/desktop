@@ -11,11 +11,18 @@
  * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
  * for more details.
  */
+
 #include "clientsideencryptionprimitives.h"
+
+#include <QLoggingCategory>
+
 #include <openssl/pem.h>
 
 namespace OCC
 {
+
+Q_LOGGING_CATEGORY(lcCseUtility, "nextcloud.sync.clientsideencryption.utility", QtInfoMsg)
+
 Bio::operator const BIO *() const
 {
     return _bio;
@@ -109,6 +116,47 @@ PKey::operator EVP_PKEY *()
 PKey::operator EVP_PKEY *() const
 {
     return _pkey;
+}
+
+Pkcs11Context::Pkcs11Context(State initState)
+    : _pkcsS11Ctx(initState == State::CreateContext ? PKCS11_CTX_new() : nullptr)
+{
+    qCDebug(lcCseUtility()) << "[[Pkcs11Context]] constructor" << this << _pkcsS11Ctx;
+}
+
+Pkcs11Context::Pkcs11Context(Pkcs11Context &&otherContext)
+    : _pkcsS11Ctx(otherContext._pkcsS11Ctx)
+{
+    otherContext._pkcsS11Ctx = nullptr;
+    qCDebug(lcCseUtility()) << "[[Pkcs11Context]] constructor" << this << _pkcsS11Ctx;
+}
+
+Pkcs11Context::~Pkcs11Context()
+{
+    qCDebug(lcCseUtility()) << "[[Pkcs11Context]] destructor" << this << _pkcsS11Ctx;
+    if (_pkcsS11Ctx) {
+        qCDebug(lcCseUtility()) << "[[Pkcs11Context]] PKCS11_CTX_free" << _pkcsS11Ctx;
+        PKCS11_CTX_free(_pkcsS11Ctx);
+        _pkcsS11Ctx = nullptr;
+    } else {
+        qCDebug(lcCseUtility()) << "destructor" << this << "nullptr";
+    }
+}
+
+Pkcs11Context &Pkcs11Context::operator=(Pkcs11Context &&otherContext)
+{
+    qCDebug(lcCseUtility()) << "[[Pkcs11Context]] operator=" << this << _pkcsS11Ctx;
+    qCDebug(lcCseUtility()) << "[[Pkcs11Context]] operator=" << &otherContext << otherContext._pkcsS11Ctx;
+    if (&otherContext != this) {
+        if (_pkcsS11Ctx) {
+            qCDebug(lcCseUtility()) << "[[Pkcs11Context]] PKCS11_CTX_free" << _pkcsS11Ctx;
+            PKCS11_CTX_free(_pkcsS11Ctx);
+            _pkcsS11Ctx = nullptr;
+        }
+        std::swap(_pkcsS11Ctx, otherContext._pkcsS11Ctx);
+    }
+
+    return *this;
 }
 
 }

@@ -120,18 +120,7 @@ public:
 
     ~Pkcs11Context();
 
-    Pkcs11Context& operator=(Pkcs11Context &&otherContext)
-    {
-        if (&otherContext != this) {
-            if (_pkcsS11Ctx) {
-                PKCS11_CTX_free(_pkcsS11Ctx);
-                _pkcsS11Ctx = nullptr;
-            }
-            std::swap(_pkcsS11Ctx, otherContext._pkcsS11Ctx);
-        }
-
-        return *this;
-    }
+    Pkcs11Context& operator=(Pkcs11Context &&otherContext);
 
     Pkcs11Context& operator=(const Pkcs11Context&) = delete;
 
