@@ -27,6 +27,7 @@
 #endif
 #include <QSslSocket>
 #include <QSvgRenderer>
+#include <QPainter>
 
 #include "nextcloudtheme.h"
 
