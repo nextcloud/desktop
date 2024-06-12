@@ -829,23 +829,23 @@ This action will abort any currently running synchronization.</source>
 <context>
     <name>OCC::ActivitySettings</name>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="469"/>
-        <location filename="../src/gui/activitywidget.cpp" line="516"/>
+        <location filename="../src/gui/activitywidget.cpp" line="460"/>
+        <location filename="../src/gui/activitywidget.cpp" line="507"/>
         <source>Server Activity</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="475"/>
+        <location filename="../src/gui/activitywidget.cpp" line="466"/>
         <source>Local Activity</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="524"/>
+        <location filename="../src/gui/activitywidget.cpp" line="515"/>
         <source>Not Synced</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="527"/>
+        <location filename="../src/gui/activitywidget.cpp" line="518"/>
         <source>Not Synced (%1)</source>
         <extracomment>%1 is the number of not synced files.</extracomment>
         <translation type="unfinished"></translation>
@@ -859,33 +859,33 @@ This action will abort any currently running synchronization.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.ui" line="90"/>
+        <location filename="../src/gui/activitywidget.ui" line="73"/>
         <source>Filter</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="102"/>
-        <location filename="../src/gui/activitywidget.cpp" line="108"/>
+        <location filename="../src/gui/activitywidget.cpp" line="101"/>
+        <location filename="../src/gui/activitywidget.cpp" line="107"/>
         <source>Account</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../src/gui/activitywidget.cpp" line="148"/>
+        <source>&amp;Server Activities</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../src/gui/activitywidget.cpp" line="149"/>
-        <source>Server Activities</source>
+        <source>&amp;Notifications</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="153"/>
-        <source>Notifications</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/gui/activitywidget.cpp" line="158"/>
+        <location filename="../src/gui/activitywidget.cpp" line="154"/>
         <source>&lt;br/&gt;%1 does not provide activities.</source>
         <translation type="unfinished"></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/activitywidget.cpp" line="296"/>
+        <location filename="../src/gui/activitywidget.cpp" line="288"/>
         <source>%n notifications(s) for %1.</source>
         <translation type="unfinished">
             <numerusform></numerusform>
@@ -893,7 +893,7 @@ This action will abort any currently running synchronization.</source>
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/activitywidget.cpp" line="302"/>
+        <location filename="../src/gui/activitywidget.cpp" line="294"/>
         <source>%n notifications(s) for %1 and %2.</source>
         <translation type="unfinished">
             <numerusform></numerusform>
@@ -901,17 +901,17 @@ This action will abort any currently running synchronization.</source>
         </translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="304"/>
+        <location filename="../src/gui/activitywidget.cpp" line="296"/>
         <source>New notifications for %1, %2 and other accounts.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="307"/>
+        <location filename="../src/gui/activitywidget.cpp" line="299"/>
         <source>Open the activity view for details.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="432"/>
+        <location filename="../src/gui/activitywidget.cpp" line="423"/>
         <source>Activity item menu</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3617,6 +3617,12 @@ Note that using any logging command line options will override the settings.</so
         <source>Welcome to %1</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <location filename="../src/gui/newwizard/pages/serverurlsetupwizardpage.cpp" line="36"/>
+        <source>%1 logo</source>
+        <extracomment>This is the accessibility text for the logo in the setup wizard page. The parameter is the name for the (branded) application.</extracomment>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>OCC::Wizard::ServerUrlSetupWizardState</name>
@@ -3995,7 +4001,7 @@ Are you sure you want to proceed?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/newwizard/pages/serverurlsetupwizardpage.ui" line="88"/>
+        <location filename="../src/gui/newwizard/pages/serverurlsetupwizardpage.ui" line="85"/>
         <source>What is your server&apos;s address?</source>
         <translation type="unfinished"></translation>
     </message>
