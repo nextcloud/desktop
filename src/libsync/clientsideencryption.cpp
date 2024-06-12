@@ -1693,6 +1693,8 @@ void ClientSideEncryption::forgetSensitiveData(const AccountPtr &account)
     _usbTokenInformation.setSha256Fingerprint({});
     account->setEncryptionCertificateFingerprint({});
     _encryptionCertificate.clear();
+    //_tokenSlots.reset();
+    _context = Pkcs11Context{Pkcs11Context::State::EmptyContext};
     Q_EMIT canDecryptChanged();
     Q_EMIT canEncryptChanged();
     Q_EMIT userCertificateNeedsMigrationChanged();
@@ -3101,28 +3103,6 @@ void CertificateInformation::checkEncryptionCertificate()
         case QSslError::NoError:
             break;
         }
-    }
-}
-
-Pkcs11Context::Pkcs11Context(State initState)
-    : _pkcsS11Ctx(initState == State::CreateContext ? PKCS11_CTX_new() : nullptr)
-{
-}
-
-Pkcs11Context::Pkcs11Context(Pkcs11Context &&otherContext)
-    : _pkcsS11Ctx(otherContext._pkcsS11Ctx)
-{
-    otherContext._pkcsS11Ctx = nullptr;
-}
-
-Pkcs11Context::~Pkcs11Context()
-{
-    qCWarning(lcCse()) << "destructor" << this;
-    if (_pkcsS11Ctx) {
-        PKCS11_CTX_free(_pkcsS11Ctx);
-        _pkcsS11Ctx = nullptr;
-    } else {
-        qCWarning(lcCse()) << "destructor" << this << "nullptr";
     }
 }
 
