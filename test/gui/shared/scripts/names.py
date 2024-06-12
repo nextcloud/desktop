@@ -51,3 +51,6 @@ quickWidget_scrollView_ScrollView = {"container": stackedWidget_quickWidget_QQui
 scrollView_ListView = {"container": quickWidget_scrollView_ScrollView, "type": "ListView", "unnamed": 1, "visible": True}
 settings_dialogStack_QStackedWidget = {"name": "dialogStack", "type": "QStackedWidget", "visible": 1, "window": settings_OCC_SettingsDialog}
 dialogStack_quickWidget_QQuickWidget = {"container": settings_dialogStack_QStackedWidget, "name": "quickWidget", "type": "QQuickWidget", "visible": 1}
+create_Remote_Folder_QInputDialog = {"type": "QInputDialog", "unnamed": 1, "visible": 1, "windowTitle": "Create Remote Folder"}
+create_Remote_Folder_Enter_the_name_of_the_new_folder_to_be_created_below_QLabel = {"text": "Enter the name of the new folder to be created below '/':", "type": "QLabel", "unnamed": 1, "visible": 1, "window": create_Remote_Folder_QInputDialog}
+groupBox_folderTreeWidget_QTreeWidget = {"container": add_Folder_Sync_Connection_groupBox_QGroupBox, "name": "folderTreeWidget", "type": "QTreeWidget", "visible": 1}
