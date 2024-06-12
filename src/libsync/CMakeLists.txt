@@ -195,7 +195,7 @@ IF (NOT APPLE)
     )
 ENDIF(NOT APPLE)
 
-find_package(Qt${QT_MAJOR_VERSION} REQUIRED COMPONENTS WebSockets Xml Sql)
+find_package(Qt${QT_MAJOR_VERSION} REQUIRED COMPONENTS WebSockets Xml Sql Gui Svg Widgets)
 
 add_library(nextcloudsync SHARED ${libsync_SRCS})
 add_library(Nextcloud::sync ALIAS nextcloudsync)
@@ -211,6 +211,9 @@ target_link_libraries(nextcloudsync
   Qt::WebSockets
   Qt::Xml
   Qt::Sql
+  Qt::Gui
+  Qt::Svg
+  Qt::Widgets
   KF6::Archive
   Qt::Core5Compat
 )
