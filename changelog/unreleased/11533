@@ -1,0 +1,9 @@
+Enhancement: Pause sync when behind a captive portal
+
+When the operating system detects a captive portal, stop all outgoing
+network requests. These requests will fail with an SSL certificate
+mismatch error. When the captive portal is "gone", synchronisation will
+be restarted.
+
+https://github.com/owncloud/client/issues/11533
+https://github.com/owncloud/client/pull/11567
