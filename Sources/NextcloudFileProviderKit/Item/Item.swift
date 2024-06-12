@@ -142,6 +142,16 @@ public class Item: NSObject, NSFileProviderItem {
         }
     }
 
+    public var fileSystemFlags: NSFileProviderFileSystemFlags {
+        if metadata.lock,
+           metadata.lockOwner != metadata.userId,
+           metadata.lockTimeOut ?? Date() > Date()
+        {
+            return [.userReadable]
+        }
+        return [.userReadable, .userWritable]
+    }
+
     @available(macOS 13.0, *)
     public var contentPolicy: NSFileProviderContentPolicy {
         #if os(macOS)
