@@ -156,6 +156,17 @@ void CALLBACK cfApiFetchDataCallback(const CF_CALLBACK_INFO *callbackInfo, const
                               callbackInfo->FileSize.QuadPart);
     };
 
+    // The operation that was requested is pending completion.
+    const auto pendingTransferInfo = [=] {
+        cfApiSendTransferInfo(callbackInfo->ConnectionKey,
+                              callbackInfo->TransferKey,
+                              STATUS_PENDING,
+                              nullptr,
+                              callbackParameters->FetchData.RequiredFileOffset.QuadPart,
+                              callbackParameters->FetchData.RequiredLength.QuadPart,
+                              callbackInfo->FileSize.QuadPart);
+    };
+
     auto vfs = reinterpret_cast<OCC::VfsCfApi *>(callbackInfo->CallbackContext);
     Q_ASSERT(vfs->metaObject()->className() == QByteArrayLiteral("OCC::VfsCfApi"));
     const auto path = QString(QString::fromWCharArray(callbackInfo->VolumeDosName) + QString::fromWCharArray(callbackInfo->NormalizedPath));
@@ -170,6 +181,7 @@ void CALLBACK cfApiFetchDataCallback(const CF_CALLBACK_INFO *callbackInfo, const
         return;
     }
 
+    pendingTransferInfo();
     qCDebug(lcCfApiWrapper) << "Successfully triggered hydration for" << path << requestId;
 
     // Block and wait for vfs to signal back the hydration is ready
