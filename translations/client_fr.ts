@@ -4,7 +4,7 @@
     <message>
         <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.ui" line="33"/>
         <source>✓ You&apos;re all set!</source>
-        <translation type="unfinished"/>
+        <translation>✓ C&apos;est bon!</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.ui" line="68"/>
@@ -14,7 +14,7 @@
     <message>
         <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.ui" line="140"/>
         <source>Configure files download:</source>
-        <translation type="unfinished"/>
+        <translation>Configurer le téléchargement de fichiers:</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.ui" line="147"/>
@@ -29,12 +29,12 @@
     <message>
         <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.ui" line="160"/>
         <source>Configure synchronization manually</source>
-        <translation type="unfinished"/>
+        <translation>Configurer la synchronisation manuellement</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.ui" line="207"/>
         <source>Choose local download directory:</source>
-        <translation type="unfinished"/>
+        <translation>Sélectionner le dossier de téléchargement local:</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.ui" line="230"/>
@@ -104,7 +104,7 @@ File synchronization desktop utility.</source>
         <location filename="../src/gui/main.cpp" line="107"/>
         <source>For more information, see %1</source>
         <comment>link to homepage</comment>
-        <translation type="unfinished"/>
+        <translation>Pour plus d&apos;informations, voir %1</translation>
     </message>
     <message>
         <location filename="../src/gui/main.cpp" line="126"/>
@@ -139,7 +139,7 @@ File synchronization desktop utility.</source>
     <message>
         <location filename="../src/gui/main.cpp" line="135"/>
         <source>Enable debug mode.</source>
-        <translation type="unfinished"/>
+        <translation>Activer le mode débogage.</translation>
     </message>
     <message>
         <location filename="../src/gui/main.cpp" line="136"/>
@@ -167,12 +167,12 @@ File synchronization desktop utility.</source>
     <message>
         <location filename="../src/gui/commonstrings.cpp" line="33"/>
         <source>Show in %1</source>
-        <translation type="unfinished"/>
+        <translation>Afficher dans %1</translation>
     </message>
     <message>
         <location filename="../src/gui/commonstrings.cpp" line="38"/>
         <source>Show in web browser</source>
-        <translation type="unfinished"/>
+        <translation>Afficher dans le navigateur</translation>
     </message>
     <message>
         <location filename="../src/gui/commonstrings.cpp" line="43"/>
@@ -219,7 +219,7 @@ File synchronization desktop utility.</source>
     <message>
         <location filename="../src/libsync/networkjobs/fetchuserinfojobfactory.cpp" line="67"/>
         <source>Failed to retrieve user info</source>
-        <translation type="unfinished"/>
+        <translation>Echec de la récupération des informations de l&apos;utilisateur</translation>
     </message>
 </context>
 <context>
@@ -4206,7 +4206,7 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/libsync/syncfileitem.cpp" line="116"/>
         <source>Blacklisted</source>
-        <translation type="unfinished"/>
+        <translation>Blacklisté</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncfileitem.cpp" line="118"/>
@@ -4242,7 +4242,7 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/gui/updater/updatedownloadeddialog.ui" line="20"/>
         <source>Update downloaded</source>
-        <translation type="unfinished"/>
+        <translation>Mise à jour téléchargé</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/updatedownloadeddialog.ui" line="53"/>
@@ -4298,7 +4298,7 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/gui/newwizard/jobs/webfingeruserinfojobfactory.cpp" line="59"/>
         <source>Failed to retrieve user info</source>
-        <translation type="unfinished"/>
+        <translation>Echec de la récupération des informations de l&apos;utilisateur</translation>
     </message>
 </context>
 <context>
@@ -4391,7 +4391,7 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="47"/>
         <source>%1 moved to %2</source>
-        <translation type="unfinished"/>
+        <translation>%1 déplacé vers %2</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="49"/>
@@ -4493,7 +4493,7 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/gui/main.cpp" line="184"/>
         <source>Some settings were configured in newer versions of this client and use features that are not available in this version</source>
-        <translation type="unfinished"/>
+        <translation>Certains paramètres ont été configurés dans une version ultérieure de ce client et utilisent des fonctionnalités qui ne sont pas disponibles dans cette version.</translation>
     </message>
 </context>
 </TS>

@@ -3216,48 +3216,48 @@ Note that using any logging command line options will override the settings.</so
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="996"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="997"/>
         <source>Open in %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1007"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1008"/>
         <source>Show file versions in web browser</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1029"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1030"/>
         <source>Rename...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1032"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1033"/>
         <source>Rename and upload...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1037"/>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1041"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1038"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1042"/>
         <source>Move and rename...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1044"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1045"/>
         <source>Move, rename and upload...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1047"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1048"/>
         <source>Delete local changes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1052"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1053"/>
         <source>Move and upload...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1053"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1054"/>
         <source>Delete</source>
         <translation type="unfinished"></translation>
     </message>
