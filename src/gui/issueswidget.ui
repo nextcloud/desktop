@@ -10,22 +10,9 @@
     <height>578</height>
    </rect>
   </property>
-  <property name="windowTitle">
-   <string>Form</string>
-  </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout">
-     <item>
-      <widget class="QLabel" name="_headerLabel">
-       <property name="text">
-        <string>List of issues</string>
-       </property>
-       <property name="textFormat">
-        <enum>Qt::PlainText</enum>
-       </property>
-      </widget>
-     </item>
      <item>
       <spacer name="horizontalSpacer">
        <property name="orientation">
@@ -48,6 +35,9 @@
     <widget class="QTableView" name="_tableView">
      <property name="contextMenuPolicy">
       <enum>Qt::CustomContextMenu</enum>
+     </property>
+     <property name="accessibleName">
+      <string>Issues table</string>
      </property>
      <property name="alternatingRowColors">
       <bool>true</bool>

@@ -16,9 +16,6 @@
     <verstretch>0</verstretch>
    </sizepolicy>
   </property>
-  <property name="windowTitle">
-   <string>Form</string>
-  </property>
   <layout class="QVBoxLayout" name="verticalLayout_2">
    <property name="topMargin">
     <number>0</number>
@@ -111,7 +108,11 @@
           </widget>
          </item>
          <item>
-          <widget class="QDialogButtonBox" name="_buttonBox"/>
+          <widget class="QDialogButtonBox" name="_buttonBox">
+           <property name="accessibleName">
+            <string>Action button group</string>
+           </property>
+          </widget>
          </item>
         </layout>
        </item>

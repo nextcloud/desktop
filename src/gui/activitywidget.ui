@@ -10,8 +10,8 @@
     <height>556</height>
    </rect>
   </property>
-  <property name="windowTitle">
-   <string>Form</string>
+  <property name="accessibleName">
+   <string>Server activities</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_2">
    <item>
@@ -37,7 +37,7 @@
            <x>0</x>
            <y>0</y>
            <width>637</width>
-           <height>16</height>
+           <height>72</height>
           </rect>
          </property>
          <property name="autoFillBackground">
@@ -86,6 +86,9 @@
         </property>
         <property name="contextMenuPolicy">
          <enum>Qt::CustomContextMenu</enum>
+        </property>
+        <property name="accessibleName">
+         <string>Server activity table</string>
         </property>
         <property name="alternatingRowColors">
          <bool>true</bool>
