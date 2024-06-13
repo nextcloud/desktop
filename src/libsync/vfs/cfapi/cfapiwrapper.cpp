@@ -373,9 +373,57 @@ void CALLBACK cfApiCancelFetchData(const CF_CALLBACK_INFO *callbackInfo, const C
     }
 }
 
+void CALLBACK cfApiNotifyFileOpenCompletion(const CF_CALLBACK_INFO *callbackInfo, const CF_CALLBACK_PARAMETERS * /*callbackParameters*/)
+{
+    const auto path = QString(QString::fromWCharArray(callbackInfo->VolumeDosName) + QString::fromWCharArray(callbackInfo->NormalizedPath));
+
+    auto vfs = reinterpret_cast<OCC::VfsCfApi *>(callbackInfo->CallbackContext);
+    Q_ASSERT(vfs->metaObject()->className() == QByteArrayLiteral("OCC::VfsCfApi"));
+    const auto requestId = QString::number(callbackInfo->TransferKey.QuadPart, 16);
+
+    qCDebug(lcCfApiWrapper) << "Open file completion:" << path << requestId;
+}
+
+void CALLBACK cfApiValidateData(const CF_CALLBACK_INFO *callbackInfo, const CF_CALLBACK_PARAMETERS * /*callbackParameters*/)
+{
+    const auto path = QString(QString::fromWCharArray(callbackInfo->VolumeDosName) + QString::fromWCharArray(callbackInfo->NormalizedPath));
+
+    auto vfs = reinterpret_cast<OCC::VfsCfApi *>(callbackInfo->CallbackContext);
+    Q_ASSERT(vfs->metaObject()->className() == QByteArrayLiteral("OCC::VfsCfApi"));
+    const auto requestId = QString::number(callbackInfo->TransferKey.QuadPart, 16);
+
+    qCDebug(lcCfApiWrapper) << "Validate data:" << path << requestId;
+}
+
+void CALLBACK cfApiCancelFetchPlaceHolders(const CF_CALLBACK_INFO *callbackInfo, const CF_CALLBACK_PARAMETERS * /*callbackParameters*/)
+{
+    const auto path = QString(QString::fromWCharArray(callbackInfo->VolumeDosName) + QString::fromWCharArray(callbackInfo->NormalizedPath));
+
+    auto vfs = reinterpret_cast<OCC::VfsCfApi *>(callbackInfo->CallbackContext);
+    Q_ASSERT(vfs->metaObject()->className() == QByteArrayLiteral("OCC::VfsCfApi"));
+    const auto requestId = QString::number(callbackInfo->TransferKey.QuadPart, 16);
+
+    qCDebug(lcCfApiWrapper) << "Cancel fetch placeholder:" << path << requestId;
+}
+
+void CALLBACK cfApiNotifyFileCloseCompletion(const CF_CALLBACK_INFO *callbackInfo, const CF_CALLBACK_PARAMETERS * /*callbackParameters*/)
+{
+    const auto path = QString(QString::fromWCharArray(callbackInfo->VolumeDosName) + QString::fromWCharArray(callbackInfo->NormalizedPath));
+
+    auto vfs = reinterpret_cast<OCC::VfsCfApi *>(callbackInfo->CallbackContext);
+    Q_ASSERT(vfs->metaObject()->className() == QByteArrayLiteral("OCC::VfsCfApi"));
+    const auto requestId = QString::number(callbackInfo->TransferKey.QuadPart, 16);
+
+    qCDebug(lcCfApiWrapper) << "Close file completion:" << path << requestId;
+}
+
 CF_CALLBACK_REGISTRATION cfApiCallbacks[] = {
     { CF_CALLBACK_TYPE_FETCH_DATA, cfApiFetchDataCallback },
     { CF_CALLBACK_TYPE_CANCEL_FETCH_DATA, cfApiCancelFetchData },
+    { CF_CALLBACK_TYPE_NOTIFY_FILE_OPEN_COMPLETION, cfApiNotifyFileOpenCompletion },
+    { CF_CALLBACK_TYPE_NOTIFY_FILE_CLOSE_COMPLETION, cfApiNotifyFileCloseCompletion },
+    { CF_CALLBACK_TYPE_VALIDATE_DATA, cfApiValidateData },
+    { CF_CALLBACK_TYPE_CANCEL_FETCH_PLACEHOLDERS, cfApiCancelFetchPlaceHolders },
     CF_CALLBACK_REGISTRATION_END
 };
 
