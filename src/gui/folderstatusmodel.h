@@ -46,7 +46,7 @@ class FolderStatusModel : public QAbstractListModel
     QML_ELEMENT
 public:
     enum class Roles {
-        ToolTip = Qt::ToolTipRole,
+        AccessibleDescriptionRole = Qt::AccessibleDescriptionRole,
         DisplayName = Qt::UserRole + 1, // must be 0 as it is also used from the default delegate
         Subtitle,
         FolderErrorMsg,

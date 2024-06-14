@@ -27,7 +27,8 @@ ToolButton {
     implicitWidth: Math.min(implicitContentWidth + leftPadding + rightPadding, widthHint)
 
     // make the current button pop
-    palette.button: palette.highlight
+    // don't get highlight from our own palette else we create a binding loop
+    palette.button: parent.palette.highlight
 
     contentItem: ColumnLayout {
         spacing: control.spacing

@@ -35,6 +35,7 @@ Item {
             Layout.fillWidth: true
 
             Pane {
+                Accessible.ignored: true
                 Layout.preferredHeight: normalSize - 20
                 Layout.preferredWidth: normalSize - 20
                 Layout.alignment: Qt.AlignTop
@@ -67,6 +68,7 @@ Item {
                     }
                     Label {
                         id: title
+                        Accessible.ignored: true
                         Layout.fillWidth: true
                         font.bold: true
                         font.pointSize: 15
@@ -75,6 +77,7 @@ Item {
                 }
                 Label {
                     id: description
+                    Accessible.ignored: true
                     Layout.fillWidth: true
                     elide: Text.ElideRight
                 }

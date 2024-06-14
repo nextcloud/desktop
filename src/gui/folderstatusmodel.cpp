@@ -243,23 +243,7 @@ QVariant FolderStatusModel::data(const QModelIndex &index, int role) const
     if (!f)
         return QVariant();
 
-    const auto getSpace = [&]() -> GraphApi::Space * {
-        if (_accountState->supportsSpaces()) {
-            return _accountState->account()->spacesManager()->space(f->spaceId());
-        }
-        return nullptr;
-    };
-
-    switch (static_cast<Roles>(role)) {
-    case Roles::Subtitle: {
-        if (auto *space = getSpace()) {
-            if (!space->drive().getDescription().isEmpty()) {
-                return space->drive().getDescription();
-            }
-        }
-        return tr("Local folder: %1").arg(f->shortGuiLocalPath());
-    }
-    case Roles::FolderErrorMsg: {
+    auto getErrors = [f] {
         auto errors = f->syncResult().errorStrings();
         const auto legacyError = FolderMan::instance()->unsupportedConfiguration(f->path());
         if (!legacyError) {
@@ -276,13 +260,24 @@ QVariant FolderStatusModel::data(const QModelIndex &index, int role) const
             });
         }
         return errors;
-    }
-    case Roles::DisplayName: {
-        if (auto *space = getSpace()) {
-            return space->displayName();
+    };
+
+    auto getDescription = [f] {
+        if (auto *space = f->space()) {
+            if (!space->drive().getDescription().isEmpty()) {
+                return space->drive().getDescription();
+            }
         }
+        return tr("Local folder: %1").arg(f->shortGuiLocalPath());
+    };
+
+    switch (static_cast<Roles>(role)) {
+    case Roles::Subtitle:
+        return getDescription();
+    case Roles::FolderErrorMsg:
+        return getErrors();
+    case Roles::DisplayName:
         return f->displayName();
-    }
     case Roles::FolderImageUrl:
         if (f->accountState()->supportsSpaces()) {
             // TODO: the url hast random parts to enforce a reload
@@ -323,15 +318,17 @@ QVariant FolderStatusModel::data(const QModelIndex &index, int role) const
         }
         return tr("%1 of %2 used").arg(Utility::octetsToString(used), Utility::octetsToString(total));
     }
-    case Roles::ToolTip: {
-        if (_accountState->isConnected()) {
-            return tr("The status of %1 is %2").arg(f->displayName(), Utility::enumToDisplayName(f->syncResult().status()));
-        } else {
-            return tr("The account %1 is currently not connected.").arg(f->accountState()->account()->displayName());
-        }
-    }
     case Roles::Folder:
         return QVariant::fromValue(f);
+    case Roles::AccessibleDescriptionRole: {
+        QStringList desc = {f->displayName(), Utility::enumToDisplayName(f->syncResult().status())};
+        desc << getErrors();
+        if (f->syncResult().status() == SyncResult::SyncRunning) {
+            desc << folderInfo->_progress._overallSyncString << QStringLiteral("%1%").arg(QString::number(folderInfo->_progress._overallPercent));
+        }
+        desc << getDescription();
+        return desc.join(QLatin1Char(','));
+    }
     }
     return {};
 }
@@ -360,8 +357,8 @@ QHash<int, QByteArray> FolderStatusModel::roleNames() const
         {static_cast<int>(Roles::SyncProgressItemString), "itemText"},
         {static_cast<int>(Roles::FolderErrorMsg), "errorMsg"},
         {static_cast<int>(Roles::Quota), "quota"},
-        {static_cast<int>(Roles::ToolTip), "toolTip"},
         {static_cast<int>(Roles::Folder), "folder"},
+        {static_cast<int>(Roles::AccessibleDescriptionRole), "accessibleDescription"},
     };
 }
 
