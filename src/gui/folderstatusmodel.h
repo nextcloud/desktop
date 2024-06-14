@@ -40,7 +40,7 @@ namespace {
  * @brief The FolderStatusModel class
  * @ingroup gui
  */
-class FolderStatusModel : public QAbstractTableModel
+class FolderStatusModel : public QAbstractListModel
 {
     Q_OBJECT
     QML_ELEMENT
@@ -65,11 +65,10 @@ public:
     ~FolderStatusModel() override;
     void setAccountState(const AccountStatePtr &accountState);
 
-    QVariant data(const QModelIndex &index, int role) const override;
     Folder *folder(const QModelIndex &index) const;
-    int columnCount(const QModelIndex &parent = QModelIndex()) const override;
-    int rowCount(const QModelIndex &parent = QModelIndex()) const override;
 
+    QVariant data(const QModelIndex &index, int role) const override;
+    int rowCount(const QModelIndex &parent = QModelIndex()) const override;
     QHash<int, QByteArray> roleNames() const override;
 
 public Q_SLOTS:

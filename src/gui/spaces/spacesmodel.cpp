@@ -22,7 +22,7 @@
 using namespace OCC::Spaces;
 
 SpacesModel::SpacesModel(QObject *parent)
-    : QAbstractTableModel(parent)
+    : QAbstractListModel(parent)
 {
 }
 
@@ -32,15 +32,6 @@ int SpacesModel::rowCount(const QModelIndex &parent) const
     if (parent.isValid())
         return 0;
     return static_cast<int>(_spacesList.size());
-}
-
-int SpacesModel::columnCount(const QModelIndex &parent) const
-{
-    Q_ASSERT(checkIndex(parent));
-    if (parent.isValid()) {
-        return 0;
-    }
-    return 1;
 }
 
 QVariant SpacesModel::data(const QModelIndex &index, int role) const

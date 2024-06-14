@@ -23,7 +23,7 @@ class Space;
 };
 
 namespace OCC::Spaces {
-class SpacesModel : public QAbstractTableModel
+class SpacesModel : public QAbstractListModel
 {
     Q_OBJECT
 
@@ -43,13 +43,10 @@ public:
     explicit SpacesModel(QObject *parent = nullptr);
 
     int rowCount(const QModelIndex &parent = QModelIndex()) const override;
-    int columnCount(const QModelIndex &parent = QModelIndex()) const override;
-
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
+    QHash<int, QByteArray> roleNames() const override;
 
     void setSpacesManager(GraphApi::SpacesManager *spacesManager);
-
-    QHash<int, QByteArray> roleNames() const override;
 
 private:
     GraphApi::SpacesManager *_spacesManager = nullptr;

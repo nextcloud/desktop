@@ -181,7 +181,7 @@ namespace {
 
 
 FolderStatusModel::FolderStatusModel(QObject *parent)
-    : QAbstractTableModel(parent)
+    : QAbstractListModel(parent)
     , _accountState(nullptr)
 {
 }
@@ -340,11 +340,6 @@ Folder *FolderStatusModel::folder(const QModelIndex &index) const
 {
     Q_ASSERT(checkIndex(index, QAbstractItemModel::CheckIndexOption::IndexIsValid));
     return _folders.at(index.row())->_folder;
-}
-
-int FolderStatusModel::columnCount(const QModelIndex &) const
-{
-    return 1;
 }
 
 int FolderStatusModel::rowCount(const QModelIndex &parent) const
