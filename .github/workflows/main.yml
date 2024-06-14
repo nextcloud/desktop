@@ -106,6 +106,17 @@ jobs:
       run: |
         & "${env:GITHUB_WORKSPACE}/.github/workflows/.craft.ps1" -c --install-deps owncloud/owncloud-client
 
+    - name: QML format lint
+      if: matrix.name  == 'linux-gcc-x86_64'
+      run: |
+        & "${env:GITHUB_WORKSPACE}/.github/workflows/.craft.ps1" -c libs/qt6/qttools
+        & "${env:GITHUB_WORKSPACE}/.github/workflows/.craft.ps1" -c --run pwsh -c "git ls-files *.qml | %{ qmlformat -i `$_}"
+        $diff = git diff
+        if ($diff) {
+          $diff
+          exit 1
+        }
+
     - name: Build
       if: ${{ !matrix.useSonarCloud }}
       run: |
