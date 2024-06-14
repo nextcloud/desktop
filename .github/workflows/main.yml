@@ -62,15 +62,14 @@ jobs:
     container: ${{ matrix.container }}
 
     steps:
-    - name: Check out full source code
-      if: ${{ matrix.useSonarCloud }}
+    - name: Check out full source code for tooling
+      if: ${{ matrix.useSonarCloud || matrix.name  == 'linux-gcc-x86_64' }}
       uses: actions/checkout@v4
       with:
-        # checkout full history
         fetch-depth: 0
 
     - name: Check out latest commit
-      if: ${{ !matrix.useSonarCloud }}
+      if: ${{ !matrix.useSonarCloud && matrix.name  != 'linux-gcc-x86_64' }}
       uses: actions/checkout@v4
 
     - name: Restore cache
@@ -111,6 +110,17 @@ jobs:
       run: |
         & "${env:GITHUB_WORKSPACE}/.github/workflows/.craft.ps1" -c libs/qt6/qttools
         & "${env:GITHUB_WORKSPACE}/.github/workflows/.craft.ps1" -c --run pwsh -c "git ls-files *.qml | %{ qmlformat -i `$_}"
+        $diff = git diff
+        if ($diff) {
+          $diff
+          exit 1
+        }
+
+    - name: clang-format format lint
+      if: matrix.name  == 'linux-gcc-x86_64'
+      run: |
+        & "${env:GITHUB_WORKSPACE}/.github/workflows/.craft.ps1" -c libs/llvm
+        & "${env:GITHUB_WORKSPACE}/.github/workflows/.craft.ps1" -c --run git clang-format --force  ${{ github.event.pull_request.base.sha }}..${{ github.event.pull_request.head.sha }}
         $diff = git diff
         if ($diff) {
           $diff
