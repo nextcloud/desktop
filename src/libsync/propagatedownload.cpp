@@ -767,14 +767,14 @@ void PropagateDownloadFile::slotGetFinished()
      * truncated, as described here: https://github.com/owncloud/mirall/issues/2528
      */
     const QByteArray sizeHeader("Content-Length");
-    qint64 bodySize = job->reply()->rawHeader(sizeHeader).toLongLong();
-    bool hasSizeHeader = !job->reply()->rawHeader(sizeHeader).isEmpty();
+    bool hasSizeHeader = true;
+    qint64 bodySize = job->reply()->rawHeader(sizeHeader).toLongLong(&hasSizeHeader);
 
     // Qt removes the content-length header for transparently decompressed HTTP1 replies
     // but not for HTTP2 or SPDY replies. For these it remains and contains the size
     // of the compressed data. See QTBUG-73364.
     const auto contentEncoding = job->reply()->rawHeader("content-encoding").toLower();
-    if ((contentEncoding == "gzip" || contentEncoding == "deflate") && (job->reply()->attribute(QNetworkRequest::Http2WasUsedAttribute).toBool())) {
+    if ((job->reply()->attribute(QNetworkRequest::Http2WasUsedAttribute).toBool()) && (contentEncoding == "gzip" || contentEncoding == "deflate")) {
         bodySize = 0;
         hasSizeHeader = false;
     }
