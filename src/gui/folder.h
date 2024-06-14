@@ -44,6 +44,9 @@ class SyncEngine;
 class SyncRunFileLog;
 class FolderWatcher;
 class LocalDiscoveryTracker;
+namespace GraphApi {
+    class Space;
+}
 
 /**
  * @brief The FolderDefinition class
@@ -344,6 +347,12 @@ public:
     }
 
     static Result<void, QString> checkPathLength(const QString &path);
+
+    /**
+     *
+     * @return The corresponding space object or null
+     */
+    GraphApi::Space *space() const;
 
 Q_SIGNALS:
     void syncStateChange();

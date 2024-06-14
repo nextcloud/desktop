@@ -187,6 +187,14 @@ Result<void, QString> Folder::checkPathLength(const QString &path)
     return {};
 }
 
+GraphApi::Space *Folder::space() const
+{
+    if (_accountState->supportsSpaces()) {
+        return _accountState->account()->spacesManager()->space(spaceId());
+    }
+    return nullptr;
+}
+
 bool Folder::checkLocalPath()
 {
 #ifdef Q_OS_WIN
@@ -302,6 +310,9 @@ QByteArray Folder::id() const
 
 QString Folder::displayName() const
 {
+    if (auto *s = space()) {
+        return s->displayName();
+    }
     return _definition.displayName();
 }
 
