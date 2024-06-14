@@ -36,16 +36,16 @@ Pane {
             id: listView
             anchors.fill: parent
             spacing: 20
-            focus:true
+            focus: true
 
             Component.onCompleted: {
                 // clear the selection delayed, else the palette is messed up
-                currentIndex = -1
+                currentIndex = -1;
             }
 
             model: spacesBrowser.model
             onCurrentItemChanged: {
-                spacesBrowser.currentSpace = currentItem ? currentItem.space : null
+                spacesBrowser.currentSpace = currentItem ? currentItem.space : null;
             }
 
             delegate: Pane {
@@ -63,7 +63,7 @@ Pane {
 
                 implicitHeight: normalSize
                 background: Rectangle {
-                    color: spaceDelegate.ListView.isCurrentItem ?  scrollView.palette.highlight : scrollView.palette.base
+                    color: spaceDelegate.ListView.isCurrentItem ? scrollView.palette.highlight : scrollView.palette.base
                 }
 
                 RowLayout {
@@ -78,15 +78,14 @@ Pane {
                         description: spaceDelegate.subtitle
                         imageSource: spaceDelegate.imageUrl
                         descriptionWrapMode: Label.WordWrap
-
                     }
                 }
 
                 MouseArea {
                     anchors.fill: parent
                     onClicked: {
-                        spaceDelegate.ListView.view.currentIndex = spaceDelegate.index
-                        spaceDelegate.forceActiveFocus()
+                        spaceDelegate.ListView.view.currentIndex = spaceDelegate.index;
+                        spaceDelegate.forceActiveFocus();
                     }
                 }
             }
