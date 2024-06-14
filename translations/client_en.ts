@@ -446,12 +446,17 @@ File synchronization desktop utility.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/notificationwidget.ui" line="73"/>
+        <location filename="../src/gui/notificationwidget.ui" line="52"/>
+        <source>Notification icon</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/notificationwidget.ui" line="76"/>
         <source>Lorem ipsum dolor sit amet</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/notificationwidget.ui" line="86"/>
+        <location filename="../src/gui/notificationwidget.ui" line="89"/>
         <source>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod temporm </source>
         <translation type="unfinished"></translation>
     </message>
