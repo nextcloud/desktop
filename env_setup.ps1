@@ -1,0 +1,1 @@
+choco install -y git msys2 cmake vscode
