@@ -216,7 +216,19 @@ void PropagateRemoteMove::slotMoveJobFinished()
             qCWarning(lcPropagateRemoteMove)
                 << "Could not MOVE file" << filePathOriginal << " to" << filePath
                 << " with error:" << _job->errorString() << " and successfully restored it.";
+
+            auto restoredItem = *_item;
+            restoredItem._renameTarget = _item->_originalFile;
+            const auto result = propagator()->updateMetadata(restoredItem);
+            if (!result) {
+                done(SyncFileItem::FatalError, tr("Error updating metadata: %1").arg(result.error()), ErrorCategory::GenericError);
+                return;
+            } else if (*result == Vfs::ConvertToPlaceholderResult::Locked) {
+                done(SyncFileItem::SoftError, tr("The file %1 is currently in use").arg(restoredItem._file), ErrorCategory::GenericError);
+                return;
+            }
         }
+
         done(status, _job->errorString(), ErrorCategory::GenericError);
         return;
     }
