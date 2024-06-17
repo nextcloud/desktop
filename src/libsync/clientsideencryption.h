@@ -84,11 +84,11 @@ public:
 
     [[nodiscard]] QSslKey getSslPublicKey() const;
 
-    [[nodiscard]] PKCS11_KEY* getPublicKey() const;
+    [[nodiscard]] PKCS11_KEY* getPkcs11PublicKey() const;
 
     [[nodiscard]] PKey getEvpPublicKey() const;
 
-    [[nodiscard]] PKCS11_KEY* getPrivateKey() const;
+    [[nodiscard]] PKCS11_KEY* getPkcs11PrivateKey() const;
 
     [[nodiscard]] PKey getEvpPrivateKey() const;
 

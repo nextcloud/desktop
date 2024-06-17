@@ -562,8 +562,9 @@ std::optional<QByteArray> encryptStringAsymmetric(const CertificateInformation &
     Q_UNUSED(key)
 
     if (encryptionEngine.useTokenBasedEncryption()) {
+        qCDebug(lcCseEncryption()) << "use certificate on hardware token";
         auto encryptedBase64Result = internals::encryptStringAsymmetricWithToken(encryptionEngine.sslEngine(),
-                                                                                 selectedCertificate.getPublicKey(),
+                                                                                 selectedCertificate.getPkcs11PublicKey(),
                                                                                  binaryData);
 
         if (!encryptedBase64Result) {
@@ -578,6 +579,7 @@ std::optional<QByteArray> encryptStringAsymmetric(const CertificateInformation &
 
         return encryptedBase64Result;
     } else {
+        qCDebug(lcCseEncryption()) << "use certificate on software storage";
         const auto publicKey = selectedCertificate.getEvpPublicKey();
         Q_ASSERT(publicKey);
 
@@ -603,41 +605,43 @@ std::optional<QByteArray> decryptStringAsymmetric(const CertificateInformation &
                                                   const QByteArray &expectedCertificateSha256Fingerprint)
 {
     if (!encryptionEngine.isInitialized()) {
-        qCWarning(lcCse()) << "end-to-end encryption is disabled";
+        qCWarning(lcCseDecryption()) << "end-to-end encryption is disabled";
         return {};
     }
 
     if (encryptionEngine.useTokenBasedEncryption()) {
+        qCDebug(lcCseDecryption()) << "use certificate on hardware token";
         if (selectedCertificate.sha256Fingerprint() != expectedCertificateSha256Fingerprint) {
-            qCWarning(lcCse()) << "wrong certificate: cannot decrypt what has been encrypted with another certificate:" << expectedCertificateSha256Fingerprint << "current certificate" << selectedCertificate.sha256Fingerprint();
+            qCWarning(lcCseDecryption()) << "wrong certificate: cannot decrypt what has been encrypted with another certificate:" << expectedCertificateSha256Fingerprint << "current certificate" << selectedCertificate.sha256Fingerprint();
             return {};
         }
 
         const auto decryptBase64Result = internals::decryptStringAsymmetricWithToken(encryptionEngine.sslEngine(),
-                                                                                     selectedCertificate.getPrivateKey(),
+                                                                                     selectedCertificate.getPkcs11PrivateKey(),
                                                                                      QByteArray::fromBase64(base64Data));
         if (!decryptBase64Result) {
-            qCWarning(lcCse()) << "decrypt failed";
+            qCWarning(lcCseDecryption()) << "decrypt failed";
             return {};
         }
 
         if (decryptBase64Result->isEmpty()) {
-            qCDebug(lcCse()) << "ERROR. Could not decrypt data";
+            qCDebug(lcCseDecryption()) << "ERROR. Could not decrypt data";
             return {};
         }
         return decryptBase64Result;
     } else {
+        qCDebug(lcCseDecryption()) << "use certificate on software storage";
         const auto key = selectedCertificate.getEvpPrivateKey();
         Q_ASSERT(key);
 
         const auto decryptBase64Result = internals::decryptStringAsymmetric(encryptionEngine.sslEngine(), key, RSA_PKCS1_OAEP_PADDING, QByteArray::fromBase64(base64Data));
         if (!decryptBase64Result) {
-            qCWarning(lcCse()) << "decrypt failed";
+            qCWarning(lcCseDecryption()) << "decrypt failed";
             return {};
         }
 
         if (decryptBase64Result->isEmpty()) {
-            qCDebug(lcCse()) << "ERROR. Could not decrypt data";
+            qCDebug(lcCseDecryption()) << "ERROR. Could not decrypt data";
             return {};
         }
         return decryptBase64Result;
@@ -843,14 +847,28 @@ std::optional<QByteArray> encryptStringAsymmetricWithToken(ENGINE *sslEngine,
                                                            PKCS11_KEY *publicKey,
                                                            const QByteArray& binaryData)
 {
-    return encryptStringAsymmetric(sslEngine, PKCS11_get_public_key(publicKey), RSA_PKCS1_PADDING, binaryData);
+    qCDebug(lcCseEncryption()) << "encrypt asymetric with pkcs11 public key" << publicKey;
+    const auto evpPublicKey = PKCS11_get_public_key(publicKey);
+    qCDebug(lcCseEncryption()) << "got the evp key pointer for" << publicKey << evpPublicKey;
+    if (!evpPublicKey) {
+        return {};
+    }
+
+    return encryptStringAsymmetric(sslEngine, evpPublicKey, RSA_PKCS1_PADDING, binaryData);
 }
 
 std::optional<QByteArray> decryptStringAsymmetricWithToken(ENGINE *sslEngine,
                                                            PKCS11_KEY *privateKey,
                                                            const QByteArray &binaryData)
 {
-    return decryptStringAsymmetric(sslEngine, PKCS11_get_private_key(privateKey), RSA_PKCS1_PADDING, binaryData);
+    qCDebug(lcCseDecryption()) << "encrypt asymetric with pkcs11 private key" << privateKey;
+    const auto evpPrivateKey = PKCS11_get_private_key(privateKey);
+    qCDebug(lcCseDecryption()) << "got the evp key pointer for" << privateKey << evpPrivateKey;
+    if (!evpPrivateKey) {
+        return {};
+    }
+
+    return decryptStringAsymmetric(sslEngine, evpPrivateKey, RSA_PKCS1_PADDING, binaryData);
 }
 
 }
@@ -909,7 +927,7 @@ CertificateInformation ClientSideEncryption::getTokenCertificateByFingerprint(co
 
 bool ClientSideEncryption::useTokenBasedEncryption() const
 {
-    return _encryptionCertificate.getPublicKey() && _encryptionCertificate.getPrivateKey();
+    return _encryptionCertificate.getPkcs11PublicKey() && _encryptionCertificate.getPkcs11PrivateKey();
 }
 
 const QString &ClientSideEncryption::getMnemonic() const
@@ -998,7 +1016,7 @@ void ClientSideEncryption::initialize(QWidget *settingsDialog,
             connect(futureTokenDiscoveryResult, &QFutureWatcher<void>::finished,
                     this, [this, settingsDialog, account, futureTokenDiscoveryResult] () {
                 completeHardwareTokenInitialization(settingsDialog, account);
-                delete futureTokenDiscoveryResult;
+                futureTokenDiscoveryResult->deleteLater();
                 Q_EMIT finishedDiscoveryEncryptionUsbToken();
             });
         } else {
@@ -1167,7 +1185,7 @@ void ClientSideEncryption::initializeHardwareTokenEncryption(QWidget *settingsDi
         }
 
         if (!_usbTokenInformation.sha256Fingerprint().isEmpty() && oneCertificateInformation.sha256Fingerprint() != _usbTokenInformation.sha256Fingerprint()) {
-            qCInfo(lcCse()) << "skipping certificate from" << "with fingerprint" << oneCertificateInformation.sha256Fingerprint() << "different from" << _usbTokenInformation.sha256Fingerprint();
+            qCDebug(lcCse()) << "skipping certificate from" << "with fingerprint" << oneCertificateInformation.sha256Fingerprint() << "different from" << _usbTokenInformation.sha256Fingerprint();
             continue;
         }
 
@@ -1276,6 +1294,7 @@ bool ClientSideEncryption::checkPublicKeyValidity(const AccountPtr &account) con
 
 bool ClientSideEncryption::checkEncryptionIsWorking() const
 {
+    qCInfo(lcCse) << "check encryption is working before enabling end-to-end encryption feature";
     QByteArray data = EncryptionHelper::generateRandom(64);
 
     auto encryptedData = EncryptionHelper::encryptStringAsymmetric(getCertificateInformation(), *this, getPublicKey(), data);
@@ -1284,17 +1303,24 @@ bool ClientSideEncryption::checkEncryptionIsWorking() const
         return false;
     }
 
+    qCDebug(lcCse) << "encryption is working";
+
     const auto decryptionResult = EncryptionHelper::decryptStringAsymmetric(getCertificateInformation(), *this, *encryptedData, certificateSha256Fingerprint());
     if (!decryptionResult) {
         qCWarning(lcCse()) << "encryption error";
         return false;
     }
+
+    qCDebug(lcCse) << "decryption is working";
+
     QByteArray decryptResult = QByteArray::fromBase64(*decryptionResult);
 
     if (data != decryptResult) {
-        qCInfo(lcCse()) << "invalid private key";
+        qCInfo(lcCse()) << "recovered data does not match the initial data after encryption and decryption of it";
         return false;
     }
+
+    qCInfo(lcCse) << "encryption is working";
 
     return true;
 }
@@ -2974,7 +3000,7 @@ QSslKey CertificateInformation::getSslPublicKey() const
     return _certificate.publicKey();
 }
 
-PKCS11_KEY *CertificateInformation::getPublicKey() const
+PKCS11_KEY *CertificateInformation::getPkcs11PublicKey() const
 {
     return _hardwarePublicKey;
 }
@@ -2996,7 +3022,7 @@ PKey CertificateInformation::getEvpPublicKey() const
     }
 }
 
-PKCS11_KEY *CertificateInformation::getPrivateKey() const
+PKCS11_KEY *CertificateInformation::getPkcs11PrivateKey() const
 {
     return canDecrypt() ? _hardwarePrivateKey : nullptr;
 }
