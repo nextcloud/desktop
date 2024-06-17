@@ -298,38 +298,37 @@ void PropfindJob::finished()
     qCInfo(lcPropfindJob) << "LSCOL of" << reply()->request().url() << "FINISHED WITH STATUS"
                           << replyStatusString();
 
-    QString contentType = reply()->header(QNetworkRequest::ContentTypeHeader).toString();
-    int httpCode = reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
-    if (httpCode == 207 && contentType.contains(QLatin1String("application/xml; charset=utf-8"))) {
-        LsColXMLParser parser;
-        connect(&parser, &LsColXMLParser::directoryListingSubfolders,
-            this, &PropfindJob::directoryListingSubfolders);
-        connect(&parser, &LsColXMLParser::directoryListingIterated,
-            this, &PropfindJob::directoryListingIterated);
-        connect(&parser, &LsColXMLParser::finishedWithError,
-            this, &PropfindJob::finishedWithError);
-        connect(&parser, &LsColXMLParser::finishedWithoutError,
-            this, &PropfindJob::finishedWithoutError);
-        if (_depth == Depth::Zero) {
-            connect(&parser, &LsColXMLParser::directoryListingIterated, [&parser, counter = 0, this](const QString &name, const QMap<QString, QString> &) mutable {
-                counter++;
-                // With a depths of 0 we must receive only one listing
-                if (OC_ENSURE(counter == 1)) {
-                    disconnect(&parser, &LsColXMLParser::directoryListingIterated, this, &PropfindJob::directoryListingIterated);
-                } else {
-                    qCCritical(lcPropfindJob) << "Received superfluous directory listing for depth 0 propfind" << counter << "Path:" << name;
-                }
-            });
-        }
+    const QString contentType = reply()->header(QNetworkRequest::ContentTypeHeader).toString();
+    if (httpStatusCode() == 207) {
+        if (contentType.contains(QLatin1String("application/xml; charset=utf-8"))) {
+            LsColXMLParser parser;
+            connect(&parser, &LsColXMLParser::directoryListingSubfolders, this, &PropfindJob::directoryListingSubfolders);
+            connect(&parser, &LsColXMLParser::directoryListingIterated, this, &PropfindJob::directoryListingIterated);
+            connect(&parser, &LsColXMLParser::finishedWithError, this, &PropfindJob::finishedWithError);
+            connect(&parser, &LsColXMLParser::finishedWithoutError, this, &PropfindJob::finishedWithoutError);
+            if (_depth == Depth::Zero) {
+                connect(&parser, &LsColXMLParser::directoryListingIterated,
+                    [&parser, counter = 0, this](const QString &name, const QMap<QString, QString> &) mutable {
+                        counter++;
+                        // With a depths of 0 we must receive only one listing
+                        if (OC_ENSURE(counter == 1)) {
+                            disconnect(&parser, &LsColXMLParser::directoryListingIterated, this, &PropfindJob::directoryListingIterated);
+                        } else {
+                            qCCritical(lcPropfindJob) << "Received superfluous directory listing for depth 0 propfind" << counter << "Path:" << name;
+                        }
+                    });
+            }
 
-        QString expectedPath = reply()->request().url().path(); // something like "/owncloud/remote.php/webdav/folder"
-        if (!parser.parse(reply()->readAll(), &_sizes, expectedPath)) {
-            // XML parse error
+            const QString expectedPath = reply()->request().url().path(); // something like "/owncloud/remote.php/webdav/folder"
+            if (!parser.parse(reply()->readAll(), &_sizes, expectedPath)) {
+                // XML parse error
+                Q_EMIT finishedWithError(reply());
+            }
+        } else {
+            // wrong content type
+            qCWarning(lcPropfindJob) << "Unexpected ContentTypeHeader:" << contentType;
             Q_EMIT finishedWithError(reply());
         }
-    } else if (httpCode == 207) {
-        // wrong content type
-        Q_EMIT finishedWithError(reply());
     } else {
         // wrong HTTP code or any other network error
         Q_EMIT finishedWithError(reply());
