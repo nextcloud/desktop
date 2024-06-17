@@ -1178,15 +1178,11 @@ void ClientSideEncryption::initializeHardwareTokenEncryption(QWidget *settingsDi
 
         setEncryptionCertificate(oneCertificateInformation);
 
-        if (canEncrypt() && !checkEncryptionIsWorking()) {
+        if ((canEncrypt() && !checkEncryptionIsWorking()) || !canEncrypt()) {
             qCWarning(lcCse()) << "encryption is not properly setup";
 
             failedToInitialize(account);
             return;
-        }
-
-        if (!canEncrypt()) {
-            Q_EMIT userCertificateNeedsMigrationChanged();
         }
 
         saveCertificateIdentification(account);
