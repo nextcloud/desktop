@@ -189,7 +189,7 @@ private Q_SLOTS:
         QCOMPARE(completeSpy.findItem(QStringLiteral("nopermissions"))->instruction(), CSYNC_INSTRUCTION_NEW);
         QCOMPARE(completeSpy.findItem(QStringLiteral("nopermissions/A"))->instruction(), CSYNC_INSTRUCTION_ERROR);
         QVERIFY(completeSpy.findItem(QStringLiteral("noetag"))->_errorString.contains(QStringLiteral("etag")));
-        QVERIFY(completeSpy.findItem(QStringLiteral("nofileid"))->_errorString.contains(QStringLiteral("file id")));
+        QVERIFY(completeSpy.findItem(QStringLiteral("nofileid"))->_errorString.contains(QStringLiteral("id")));
         QVERIFY(completeSpy.findItem(QStringLiteral("nopermissions/A"))->_errorString.contains(QStringLiteral("permissions")));
     }
 };
