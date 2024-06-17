@@ -294,7 +294,6 @@ void ClientSideEncryptionTokenSelector::discoverCertificates(const AccountPtr &a
         }
     }
 
-    Q_EMIT discoveredCertificatesChanged();
     processDiscoveredCertificates();
 }
 
