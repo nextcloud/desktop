@@ -337,7 +337,8 @@ void OCC::SyncEngine::slotItemDiscovered(const OCC::SyncFileItemPtr &item)
 {
     emit itemDiscovered(item);
 
-    _hasNoneFiles |= (item->_instruction == CSYNC_INSTRUCTION_UPDATE_METADATA
+    _hasNoneFiles |= (item->_instruction == CSYNC_INSTRUCTION_NEW
+                      || item->_instruction == CSYNC_INSTRUCTION_UPDATE_METADATA
                       || item->_instruction == CSYNC_INSTRUCTION_NONE
                       // If a file (or every file) has been renamed, it means not all files where deleted
                       || item->_instruction == CSYNC_INSTRUCTION_RENAME
