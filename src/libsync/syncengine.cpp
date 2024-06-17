@@ -337,6 +337,18 @@ void OCC::SyncEngine::slotItemDiscovered(const OCC::SyncFileItemPtr &item)
 {
     emit itemDiscovered(item);
 
+    _hasNoneFiles |= (item->_instruction == CSYNC_INSTRUCTION_UPDATE_METADATA
+                      || item->_instruction == CSYNC_INSTRUCTION_NONE
+                      // If a file (or every file) has been renamed, it means not all files where deleted
+                      || item->_instruction == CSYNC_INSTRUCTION_RENAME
+                      // An upload of an existing file means that the file was left unchanged on the server
+                      // This counts as a NONE for detecting if all the files on the server were changed
+                      || ((item->_instruction == CSYNC_INSTRUCTION_TYPE_CHANGE
+                           || item->_instruction == CSYNC_INSTRUCTION_SYNC)
+                          && item->_direction == SyncFileItem::Up));
+
+    _hasRemoveFile |= item->_instruction == CSYNC_INSTRUCTION_REMOVE && !item->_isSelectiveSync;
+
     if (Utility::isConflictFile(item->_file))
         _seenConflictFiles.insert(item->_file);
     if (item->_instruction == CSYNC_INSTRUCTION_UPDATE_METADATA && !item->isDirectory()) {
@@ -450,10 +462,8 @@ void OCC::SyncEngine::slotItemDiscovered(const OCC::SyncFileItemPtr &item)
                 qCWarning(lcEngine) << "Could not update local metadata for file" << item->_file;
             }
         }
-        _hasNoneFiles = true;
         return;
     } else if (item->_instruction == CSYNC_INSTRUCTION_NONE) {
-        _hasNoneFiles = true;
         _syncFileStatusTracker->slotCheckAndRemoveSilentlyExcluded(item->_file);
         if (_account->capabilities().uploadConflictFiles() && Utility::isConflictFile(item->_file)) {
             // For uploaded conflict files, files with no action performed on them should
@@ -464,17 +474,6 @@ void OCC::SyncEngine::slotItemDiscovered(const OCC::SyncFileItemPtr &item)
             item->_status = SyncFileItem::Conflict;
         }
         return;
-    } else if (item->_instruction == CSYNC_INSTRUCTION_REMOVE && !item->_isSelectiveSync) {
-        _hasRemoveFile = true;
-    } else if (item->_instruction == CSYNC_INSTRUCTION_RENAME) {
-        _hasNoneFiles = true; // If a file (or every file) has been renamed, it means not al files where deleted
-    } else if (item->_instruction == CSYNC_INSTRUCTION_TYPE_CHANGE
-        || item->_instruction == CSYNC_INSTRUCTION_SYNC) {
-        if (item->_direction == SyncFileItem::Up) {
-            // An upload of an existing file means that the file was left unchanged on the server
-            // This counts as a NONE for detecting if all the files on the server were changed
-            _hasNoneFiles = true;
-        }
     }
 
     // check for blacklisting of this item.
@@ -859,7 +858,7 @@ void SyncEngine::slotDiscoveryFinished()
                 const auto scriptExecutable = scriptArgs.takeFirst();
                 QProcess::execute(scriptExecutable, scriptArgs);
             }
-#else
+    #else
             qCWarning(lcEngine) << "**** Attention: POST_UPDATE_SCRIPT installed, but not executed because compiled with NDEBUG";
     #endif
         }
