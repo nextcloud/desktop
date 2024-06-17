@@ -5,5 +5,4 @@ collectStepDefinitions('./steps', '../shared/steps')
 
 
 def main():
-    testSettings.throwOnFailure = True
     runFeatureFile('test.feature')

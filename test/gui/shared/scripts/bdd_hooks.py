@@ -38,6 +38,12 @@ from pageObjects.Toolbar import Toolbar
 from pageObjects.AccountSetting import AccountSetting
 from pageObjects.AccountConnectionWizard import AccountConnectionWizard
 
+# Squish test settings:
+# This controls whether a test (scenario) should stop execution on failure or not
+# If set to True, the scenario will stop on the first step failure and remaining steps will not be executed
+# If set to False, the scenario will continue to execute all steps and report all failures at the end
+testSettings.throwOnFailure = True
+
 # this will reset in every test suite
 previousFailResultCount = 0
 previousErrorResultCount = 0
@@ -151,25 +157,16 @@ def hook(context):
 
     # capture a screenshot if there is error or test failure in the current scenario execution
     if scenarioFailed() and os.getenv('CI') and isLinux():
-        import gi
-
-        gi.require_version('Gtk', '3.0')
-        from gi.repository import Gdk
-
-        window = Gdk.get_default_root_window()
-        pb = Gdk.pixbuf_get_from_window(window, *window.get_geometry())
-
         # scenario name can have "/" which is invalid filename
         filename = (
             context._data["title"].replace(" ", "_").replace("/", "_").strip(".")
             + ".png"
         )
         directory = os.path.join(get_config('guiTestReportDir'), "screenshots")
-
         if not os.path.exists(directory):
             os.makedirs(directory)
 
-        pb.savev(os.path.join(directory, filename), "png", [], [])
+        saveDesktopScreenshot(os.path.join(directory, filename))
 
     # teardown accounts and configs
     teardown_client()

@@ -14,7 +14,7 @@ OC_CI_BAZEL_BUILDIFIER = "owncloudci/bazel-buildifier"
 OC_CI_CLIENT = "owncloudci/client:latest"
 OC_CI_CORE = "owncloudci/core"
 OC_CI_DRONE_SKIP_PIPELINE = "owncloudci/drone-skip-pipeline"
-OC_CI_NODEJS = "owncloudci/nodejs:16"
+OC_CI_NODEJS = "owncloudci/nodejs:18"
 OC_CI_PHP = "owncloudci/php:%s"
 OC_CI_WAIT_FOR = "owncloudci/wait-for:latest"
 OC_OCIS = "owncloud/ocis:%s"
@@ -50,6 +50,7 @@ dir = {
     "guiTest": "/drone/src/test/gui",
     "guiTestReport": "/drone/src/test/gui/guiReportUpload",
     "build": "/drone/src/build",
+    "pythonModules": "/usr/local/lib/python3.10/site-packages",
 }
 
 notify_channels = {
@@ -76,6 +77,15 @@ build_config = {
     "command": "ninja",
 }
 
+pip_pipeline_volume = [{
+    "name": "python",
+    "temp": {},
+}]
+pip_step_volume = [{
+    "name": "python",
+    "path": dir["pythonModules"],
+}]
+
 config = {
     "gui-tests": {
         "servers": {
@@ -97,7 +107,7 @@ config = {
                 "skip": False,
             },
             "ocis": {
-                "version": "5.0.0",
+                "version": "5.0",
                 # comma separated list of tags to be used for filtering. E.g. "@tag1,@tag2"
                 "tags": "~@skipOnOCIS",
                 "skip": False,
@@ -209,6 +219,7 @@ def gui_test_pipeline(ctx):
                      waitForOcisService()
 
         steps += installPnpm() + \
+                 install_python_modules() + \
                  setGuiTestReportDir() + \
                  gui_tests(squish_parameters, server) + \
                  uploadGuiTestLogs(ctx, server) + \
@@ -231,7 +242,7 @@ def gui_test_pipeline(ctx):
                     "name": "uploads",
                     "temp": {},
                 },
-            ],
+            ] + pip_pipeline_volume,
         })
     return pipelines
 
@@ -297,7 +308,10 @@ def gui_tests(squish_parameters = "", server_type = "oc10"):
             "STACKTRACE_FILE": "%s/stacktrace.log" % dir["guiTestReport"],
             "PLAYWRIGHT_BROWSERS_PATH": "%s/.playwright" % dir["base"],
             "OWNCLOUD_CORE_DUMP": 1,
+            # allow to use any available pnpm version
+            "COREPACK_ENABLE_STRICT": 0,
         },
+        "volumes": pip_step_volume,
     }]
 
 def gui_tests_format():
@@ -600,15 +614,25 @@ def installPnpm():
         "image": OC_CI_NODEJS,
         "environment": {
             "PLAYWRIGHT_BROWSERS_PATH": "%s/.playwright" % dir["base"],
-            "PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD": "true",
         },
         "commands": [
-            "cd %s/webUI" % dir["guiTest"],
-            "pnpm config set store-dir ./.pnpm-store",
-            "pnpm install",
+            'npm i -s -g -f "$(jq -r ".packageManager" < %s/webUI/package.json)"' % dir["guiTest"],
+            "pnpm config set store-dir %s/.pnpm-store" % dir["base"],
+            "make -C %s pnpm-install" % dir["guiTest"],
             # install required browser
-            "npx playwright install chromium",
+            "make -C %s pnpm-install-chromium" % dir["guiTest"],
         ],
+    }]
+
+def install_python_modules():
+    return [{
+        "name": "install-python-modules",
+        "image": OC_CI_SQUISH,
+        "user": "0:0",
+        "commands": [
+            "make -C %s pip-install" % dir["guiTest"],
+        ],
+        "volumes": pip_step_volume,
     }]
 
 def setGuiTestReportDir():

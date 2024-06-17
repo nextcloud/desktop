@@ -15,6 +15,21 @@
 #	-see what changes will be done
 #
 
+.PHONY: install
+install: pnpm-install pnpm-install-chromium pip-install
+
+.PHONY: pnpm-install
+pnpm-install:
+	cd webUI && pnpm install
+
+.PHONY: pnpm-install-chromium
+pnpm-install-chromium:
+	pnpm dlx playwright install chromium
+
+.PHONY: pip-install
+pip-install:
+	python3.10 -m pip install -r requirements.txt
+
 .PHONY: test-python-style
 test-python-style:
 	black .

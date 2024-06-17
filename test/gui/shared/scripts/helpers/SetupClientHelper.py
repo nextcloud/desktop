@@ -1,6 +1,6 @@
-from urllib.parse import urlparse
 import squish, test
-import subprocess
+import psutil
+from urllib.parse import urlparse
 from os import makedirs
 from os.path import exists, join
 from helpers.SpaceHelper import get_space_id
@@ -166,19 +166,11 @@ def setUpClient(username, displayName, space="Personal"):
 
 
 def is_app_killed(pid):
-    if isWindows():
-        cmd = 'tasklist /FI "PID eq {}"'.format(pid)
-    else:
-        cmd = 'ps -p {}'.format(pid)
     try:
-        output = subprocess.check_output(cmd, shell=True)
-        output = output.decode('utf-8')
-        if str(pid) in output:
-            return False
-    except subprocess.CalledProcessError:
+        psutil.Process(pid)
+        return False
+    except psutil.NoSuchProcess:
         return True
-
-    return True
 
 
 def wait_until_app_killed(pid=0):
