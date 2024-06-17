@@ -461,6 +461,7 @@ ActivitySettings::ActivitySettings(QWidget *parent)
     connect(_activityWidget, &ActivityWidget::hideActivityTab, this, &ActivitySettings::setActivityTabHidden);
     connect(_activityWidget, &ActivityWidget::guiLog, this, &ActivitySettings::guiLog);
     connect(_activityWidget, &ActivityWidget::newNotification, this, &ActivitySettings::slotShowActivityTab);
+    setActivityTabHidden(true);
 
     _protocolWidget = new ProtocolWidget(this);
     _protocolTabId = _tab->addTab(_protocolWidget, Resources::getCoreIcon(QStringLiteral("states/ok")), tr("Local Activity"));
