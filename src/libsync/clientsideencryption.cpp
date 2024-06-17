@@ -1622,11 +1622,16 @@ void ClientSideEncryption::setEncryptionCertificate(CertificateInformation certi
         return;
     }
 
+    const auto oldValueForUserCertificateNeedsMigration = _encryptionCertificate.userCertificateNeedsMigration();
+
     _encryptionCertificate = std::move(certificateInfo);
 
     Q_EMIT canEncryptChanged();
     Q_EMIT canDecryptChanged();
-    Q_EMIT userCertificateNeedsMigrationChanged();
+
+    if (oldValueForUserCertificateNeedsMigration != _encryptionCertificate.userCertificateNeedsMigration()) {
+        Q_EMIT userCertificateNeedsMigrationChanged();
+    }
 }
 
 void ClientSideEncryption::generateMnemonic()
