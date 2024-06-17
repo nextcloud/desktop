@@ -540,7 +540,7 @@ namespace internals {
                                                                 const QByteArray& binaryData);
 
 [[nodiscard]] std::optional<QByteArray> encryptStringAsymmetricWithToken(ENGINE *sslEngine,
-                                                                         PKCS11_KEY *publicKey,
+                                                                         EVP_PKEY *publicKey,
                                                                          const QByteArray& binaryData);
 
 [[nodiscard]] std::optional<QByteArray> decryptStringAsymmetric(ENGINE *sslEngine,
@@ -564,7 +564,7 @@ std::optional<QByteArray> encryptStringAsymmetric(const CertificateInformation &
     if (encryptionEngine.useTokenBasedEncryption()) {
         qCDebug(lcCseEncryption()) << "use certificate on hardware token";
         auto encryptedBase64Result = internals::encryptStringAsymmetricWithToken(encryptionEngine.sslEngine(),
-                                                                                 selectedCertificate.getPkcs11PublicKey(),
+                                                                                 selectedCertificate.getEvpPublicKey(),
                                                                                  binaryData);
 
         if (!encryptedBase64Result) {
@@ -844,16 +844,9 @@ void debugOpenssl()
 namespace internals {
 
 std::optional<QByteArray> encryptStringAsymmetricWithToken(ENGINE *sslEngine,
-                                                           PKCS11_KEY *publicKey,
+                                                           EVP_PKEY *evpPublicKey,
                                                            const QByteArray& binaryData)
 {
-    qCDebug(lcCseEncryption()) << "encrypt asymetric with pkcs11 public key" << publicKey;
-    const auto evpPublicKey = PKCS11_get_public_key(publicKey);
-    qCDebug(lcCseEncryption()) << "got the evp key pointer for" << publicKey << evpPublicKey;
-    if (!evpPublicKey) {
-        return {};
-    }
-
     return encryptStringAsymmetric(sslEngine, evpPublicKey, RSA_PKCS1_PADDING, binaryData);
 }
 
@@ -1073,6 +1066,13 @@ void ClientSideEncryption::initializeHardwareTokenEncryption(QWidget *settingsDi
         qCDebug(lcCse()) << "Slot token model.......:" << currentSlot->token->model;
         qCDebug(lcCse()) << "Slot token serialnr....:" << currentSlot->token->serialnr;
 
+        if (PKCS11_open_session(currentSlot, 0) != 0) {
+            qCWarning(lcCse()) << "PKCS11_open_session failed" << ERR_reason_error_string(ERR_get_error());
+
+            failedToInitialize(account);
+            return;
+        }
+
         auto logged_in = 0;
         if (PKCS11_is_logged_in(currentSlot, 0, &logged_in) != 0) {
             qCWarning(lcCse()) << "PKCS11_is_logged_in failed" << ERR_reason_error_string(ERR_get_error());
@@ -1173,6 +1173,9 @@ void ClientSideEncryption::initializeHardwareTokenEncryption(QWidget *settingsDi
                 failedToInitialize(account);
                 return;
             }
+
+            qCDebug(lcCse) << "checking the type of the key associated to the certificate";
+            qCDebug(lcCse) << "key type" << Qt::hex << PKCS11_get_key_type(certificateKey);
 
             _otherCertificates.emplace_back(certificateKey, certificateKey, std::move(sslCertificate));
         }
@@ -3007,19 +3010,15 @@ PKCS11_KEY *CertificateInformation::getPkcs11PublicKey() const
 
 PKey CertificateInformation::getEvpPublicKey() const
 {
-    if (_hardwarePublicKey) {
-        return PKey::readHardwarePublicKey(_hardwarePublicKey);
-    } else {
-        const auto publicKey = _certificate.publicKey();
-        Q_ASSERT(!publicKey.isNull());
-        if (publicKey.isNull()) {
-            qCDebug(lcCse) << "Public key is null. Could not encrypt.";
-        }
-        Bio publicKeyBio;
-        const auto publicKeyPem = publicKey.toPem();
-        BIO_write(publicKeyBio, publicKeyPem.constData(), publicKeyPem.size());
-        return PKey::readPublicKey(publicKeyBio);
+    const auto publicKey = _certificate.publicKey();
+    Q_ASSERT(!publicKey.isNull());
+    if (publicKey.isNull()) {
+        qCDebug(lcCse) << "Public key is null. Could not encrypt.";
     }
+    Bio publicKeyBio;
+    const auto publicKeyPem = publicKey.toPem();
+    BIO_write(publicKeyBio, publicKeyPem.constData(), publicKeyPem.size());
+    return PKey::readPublicKey(publicKeyBio);
 }
 
 PKCS11_KEY *CertificateInformation::getPkcs11PrivateKey() const
