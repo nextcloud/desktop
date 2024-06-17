@@ -317,7 +317,7 @@ void ClientSideEncryptionTokenSelector::processDiscoveredCertificates()
         }
 
         const auto &sha256Fingerprint = sslCertificate.digest(QCryptographicHash::Sha256).toBase64();
-        qCInfo(lcCseSelector()) << "certificate is valid" << certificateData[QStringLiteral("subject")] << "from" << certificateData[QStringLiteral("issuer")] << "fingerprint" << sha256Fingerprint;
+        qCInfo(lcCseSelector()) << "selected certificate" << certificateData[QStringLiteral("subject")] << "from" << certificateData[QStringLiteral("issuer")] << "fingerprint" << sha256Fingerprint << "serialNumber" << sslCertificate.serialNumber();
 
         setSha256Fingerprint(sha256Fingerprint);
         Q_EMIT isSetupChanged();
