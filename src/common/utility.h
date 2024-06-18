@@ -96,7 +96,7 @@ OCSYNC_EXPORT Q_DECLARE_LOGGING_CATEGORY(lcUtility)
 
     /**
      * @brief Convert milliseconds duration to human readable string.
-     * @param quint64 msecs the milliseconds to convert to string.
+     * @param msecs the milliseconds to convert to string.
      * @return an HMS representation of the milliseconds value.
      *
      * durationToDescriptiveString1 describes the duration in a single
@@ -105,8 +105,8 @@ OCSYNC_EXPORT Q_DECLARE_LOGGING_CATEGORY(lcUtility)
      * durationToDescriptiveString2 uses two units where possible, so
      * "5 minutes 43 seconds" or "1 month 3 days".
      */
-    OCSYNC_EXPORT QString durationToDescriptiveString1(quint64 msecs);
-    OCSYNC_EXPORT QString durationToDescriptiveString2(quint64 msecs);
+    OCSYNC_EXPORT QString durationToDescriptiveString1(std::chrono::milliseconds msecs);
+    OCSYNC_EXPORT QString durationToDescriptiveString2(std::chrono::milliseconds msecs);
 
     /**
      * @brief hasDarkSystray - determines whether the systray is dark or light.

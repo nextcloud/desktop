@@ -199,46 +199,36 @@ qint64 Utility::qDateTimeToTime_t(const QDateTime &t)
 }
 
 namespace {
-    struct Period
+    constexpr struct
     {
-        const char *name;
-        quint64 msec;
-
-        QString description(quint64 value) const
-        {
-            return QCoreApplication::translate("Utility", name, nullptr, value);
-        }
-    };
-// QTBUG-3945 and issue #4855: QT_TRANSLATE_NOOP does not work with plural form because lupdate
-// limitation unless we fake more arguments
-// (it must be in the form ("context", "source", "comment", n)
-#undef QT_TRANSLATE_NOOP
-#define QT_TRANSLATE_NOOP(ctx, str, ...) str
-    Q_DECL_CONSTEXPR Period periods[] = {
-        { QT_TRANSLATE_NOOP("Utility", "%n year(s)", 0, _), 365 * 24 * 3600 * 1000LL },
-        { QT_TRANSLATE_NOOP("Utility", "%n month(s)", 0, _), 30 * 24 * 3600 * 1000LL },
-        { QT_TRANSLATE_NOOP("Utility", "%n day(s)", 0, _), 24 * 3600 * 1000LL },
-        { QT_TRANSLATE_NOOP("Utility", "%n hour(s)", 0, _), 3600 * 1000LL },
-        { QT_TRANSLATE_NOOP("Utility", "%n minute(s)", 0, _), 60 * 1000LL },
-        { QT_TRANSLATE_NOOP("Utility", "%n second(s)", 0, _), 1000LL },
-        { nullptr, 0 }
+        const char *const name;
+        const std::chrono::milliseconds msec;
+        QString description(int value) const { return QCoreApplication::translate("Utility", name, nullptr, value); }
+    } periods[] = {
+        {QT_TRANSLATE_N_NOOP("Utility", "%n year(s)"), 24h * 365},
+        {QT_TRANSLATE_N_NOOP("Utility", "%n month(s)"), 24h * 30},
+        {QT_TRANSLATE_N_NOOP("Utility", "%n day(s)"), 24h},
+        {QT_TRANSLATE_N_NOOP("Utility", "%n hour(s)"), 1h},
+        {QT_TRANSLATE_N_NOOP("Utility", "%n minute(s)"), 1min},
+        {QT_TRANSLATE_N_NOOP("Utility", "%n second(s)"), 1s},
+        {nullptr, {}},
     };
 } // anonymous namespace
 
-QString Utility::durationToDescriptiveString2(quint64 msecs)
+QString Utility::durationToDescriptiveString2(std::chrono::milliseconds msecs)
 {
     int p = 0;
     while (periods[p + 1].name && msecs < periods[p].msec) {
         p++;
     }
 
-    auto firstPart = periods[p].description(int(msecs / periods[p].msec));
+    const QString firstPart = periods[p].description(static_cast<int>(msecs / periods[p].msec));
 
     if (!periods[p + 1].name) {
         return firstPart;
     }
 
-    quint64 secondPartNum = qRound(double(msecs % periods[p].msec) / periods[p + 1].msec);
+    const quint64 secondPartNum = qRound(static_cast<double>(msecs.count() % periods[p].msec.count()) / periods[p + 1].msec.count());
 
     if (secondPartNum == 0) {
         return firstPart;
@@ -247,15 +237,13 @@ QString Utility::durationToDescriptiveString2(quint64 msecs)
     return QCoreApplication::translate("Utility", "%1 %2").arg(firstPart, periods[p + 1].description(secondPartNum));
 }
 
-QString Utility::durationToDescriptiveString1(quint64 msecs)
+QString Utility::durationToDescriptiveString1(std::chrono::milliseconds msecs)
 {
     int p = 0;
     while (periods[p + 1].name && msecs < periods[p].msec) {
         p++;
     }
-
-    quint64 amount = qRound(double(msecs) / periods[p].msec);
-    return periods[p].description(amount);
+    return periods[p].description(qRound(static_cast<double>(msecs.count()) / periods[p].msec.count()));
 }
 
 QString Utility::fileNameForGuiUse(const QString &fName)

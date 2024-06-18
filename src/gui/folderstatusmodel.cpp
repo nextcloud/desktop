@@ -157,7 +157,7 @@ namespace {
                                         .arg(s1, s2)
                                         .arg(currentFile)
                                         .arg(totalFileCount)
-                                        .arg(Utility::durationToDescriptiveString1(progress.totalProgress().estimatedEta));
+                                        .arg(Utility::durationToDescriptiveString1(std::chrono::milliseconds(progress.totalProgress().estimatedEta)));
 
             } else {
                 //: Example text: "12 MB of 345 MB, file 6 of 7"

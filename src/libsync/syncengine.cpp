@@ -152,7 +152,7 @@ bool SyncEngine::checkErrorBlacklisting(SyncFileItem &item)
     } else {
         item._status = SyncFileItem::BlacklistedError;
 
-        auto waitSecondsStr = Utility::durationToDescriptiveString1(1000 * waitSeconds);
+        auto waitSecondsStr = Utility::durationToDescriptiveString1(std::chrono::seconds(waitSeconds));
         item._errorString = tr("%1 (skipped due to earlier error, trying again in %2)").arg(entry._errorString, waitSecondsStr);
 
         if (entry._errorCategory == SyncJournalErrorBlacklistRecord::Category::InsufficientRemoteStorage) {

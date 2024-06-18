@@ -13,6 +13,8 @@
 #include "common/filesystembase.h"
 #include "common/utility.h"
 
+using namespace std::chrono_literals;
+
 using namespace OCC::Utility;
 
 namespace OCC {
@@ -67,38 +69,34 @@ private Q_SLOTS:
         QLocale::setDefault(QLocale(QStringLiteral("C")));
         //NOTE: in order for the plural to work we would need to load the english translation
 
-        quint64 sec = 1000;
-        quint64 hour = 3600 * sec;
+        const QDateTime current = QDateTime::currentDateTimeUtc();
 
-        QDateTime current = QDateTime::currentDateTimeUtc();
-
-        QCOMPARE(durationToDescriptiveString2(0), QString::fromLatin1("0 second(s)"));
-        QCOMPARE(durationToDescriptiveString2(5), QString::fromLatin1("0 second(s)"));
-        QCOMPARE(durationToDescriptiveString2(1000), QString::fromLatin1("1 second(s)"));
-        QCOMPARE(durationToDescriptiveString2(1005), QString::fromLatin1("1 second(s)"));
-        QCOMPARE(durationToDescriptiveString2(56123), QString::fromLatin1("56 second(s)"));
-        QCOMPARE(durationToDescriptiveString2(90 * sec), QString::fromLatin1("1 minute(s) 30 second(s)"));
-        QCOMPARE(durationToDescriptiveString2(3 * hour), QString::fromLatin1("3 hour(s)"));
-        QCOMPARE(durationToDescriptiveString2(3 * hour + 20 * sec), QString::fromLatin1("3 hour(s)"));
-        QCOMPARE(durationToDescriptiveString2(3 * hour + 70 * sec), QString::fromLatin1("3 hour(s) 1 minute(s)"));
-        QCOMPARE(durationToDescriptiveString2(3 * hour + 100 * sec), QString::fromLatin1("3 hour(s) 2 minute(s)"));
-        QCOMPARE(durationToDescriptiveString2(current.msecsTo(current.addYears(4).addMonths(5).addDays(2).addSecs(23 * 60 * 60))),
+        QCOMPARE(durationToDescriptiveString2(0ms), QString::fromLatin1("0 second(s)"));
+        QCOMPARE(durationToDescriptiveString2(5ms), QString::fromLatin1("0 second(s)"));
+        QCOMPARE(durationToDescriptiveString2(1s), QString::fromLatin1("1 second(s)"));
+        QCOMPARE(durationToDescriptiveString2(1005ms), QString::fromLatin1("1 second(s)"));
+        QCOMPARE(durationToDescriptiveString2(56123ms), QString::fromLatin1("56 second(s)"));
+        QCOMPARE(durationToDescriptiveString2(90s), QString::fromLatin1("1 minute(s) 30 second(s)"));
+        QCOMPARE(durationToDescriptiveString2(3h), QString::fromLatin1("3 hour(s)"));
+        QCOMPARE(durationToDescriptiveString2(3h + 20s), QString::fromLatin1("3 hour(s)"));
+        QCOMPARE(durationToDescriptiveString2(3h + 70s), QString::fromLatin1("3 hour(s) 1 minute(s)"));
+        QCOMPARE(durationToDescriptiveString2(3h + 100s), QString::fromLatin1("3 hour(s) 2 minute(s)"));
+        QCOMPARE(durationToDescriptiveString2(current.addYears(4).addMonths(5).addDays(2).addSecs(23 * 60 * 60) - current),
             QString::fromLatin1("4 year(s) 5 month(s)"));
-        QCOMPARE(durationToDescriptiveString2(current.msecsTo(current.addDays(2).addSecs(23 * 60 * 60))), QString::fromLatin1("2 day(s) 23 hour(s)"));
+        QCOMPARE(durationToDescriptiveString2(current.addDays(2).addSecs(23 * 60 * 60) - current), QString::fromLatin1("2 day(s) 23 hour(s)"));
 
-        QCOMPARE(durationToDescriptiveString1(0), QString::fromLatin1("0 second(s)"));
-        QCOMPARE(durationToDescriptiveString1(5), QString::fromLatin1("0 second(s)"));
-        QCOMPARE(durationToDescriptiveString1(1000), QString::fromLatin1("1 second(s)"));
-        QCOMPARE(durationToDescriptiveString1(1005), QString::fromLatin1("1 second(s)"));
-        QCOMPARE(durationToDescriptiveString1(56123), QString::fromLatin1("56 second(s)"));
-        QCOMPARE(durationToDescriptiveString1(90 * sec), QString::fromLatin1("2 minute(s)"));
-        QCOMPARE(durationToDescriptiveString1(3 * hour), QString::fromLatin1("3 hour(s)"));
-        QCOMPARE(durationToDescriptiveString1(3 * hour + 20 * sec), QString::fromLatin1("3 hour(s)"));
-        QCOMPARE(durationToDescriptiveString1(3 * hour + 70 * sec), QString::fromLatin1("3 hour(s)"));
-        QCOMPARE(durationToDescriptiveString1(3 * hour + 100 * sec), QString::fromLatin1("3 hour(s)"));
-        QCOMPARE(
-            durationToDescriptiveString1(current.msecsTo(current.addYears(4).addMonths(5).addDays(2).addSecs(23 * 60 * 60))), QString::fromLatin1("4 year(s)"));
-        QCOMPARE(durationToDescriptiveString1(current.msecsTo(current.addDays(2).addSecs(23 * 60 * 60))), QString::fromLatin1("3 day(s)"));
+        QCOMPARE(durationToDescriptiveString1(0s), QString::fromLatin1("0 second(s)"));
+        QCOMPARE(durationToDescriptiveString1(5ms), QString::fromLatin1("0 second(s)"));
+        QCOMPARE(durationToDescriptiveString1(1s), QString::fromLatin1("1 second(s)"));
+        QCOMPARE(durationToDescriptiveString1(1005ms), QString::fromLatin1("1 second(s)"));
+        QCOMPARE(durationToDescriptiveString1(56123ms), QString::fromLatin1("56 second(s)"));
+        QCOMPARE(durationToDescriptiveString1(90s), QString::fromLatin1("2 minute(s)"));
+        QCOMPARE(durationToDescriptiveString1(3h), QString::fromLatin1("3 hour(s)"));
+        QCOMPARE(durationToDescriptiveString1(3h + 20s), QString::fromLatin1("3 hour(s)"));
+        QCOMPARE(durationToDescriptiveString1(3h + 70s), QString::fromLatin1("3 hour(s)"));
+        QCOMPARE(durationToDescriptiveString1(3h + 100s), QString::fromLatin1("3 hour(s)"));
+        QCOMPARE(durationToDescriptiveString1(current.addYears(4).addMonths(5).addDays(2).addSecs(23 * 60 * 60) - current), QString::fromLatin1("4 year(s)"));
+        QCOMPARE(durationToDescriptiveString1(current.addDays(2).addSecs(23 * 60 * 60) - current), QString::fromLatin1("3 day(s)"));
     }
 
     void testTimeAgo()

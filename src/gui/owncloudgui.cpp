@@ -779,7 +779,7 @@ void ownCloudGui::slotUpdateProgress(Folder *folder, const ProgressInfo &progres
             msg = tr("Syncing %1 of %2  (%3 left)")
                       .arg(currentFile)
                       .arg(totalFileCount)
-                      .arg(Utility::durationToDescriptiveString2(progress.totalProgress().estimatedEta));
+                      .arg(Utility::durationToDescriptiveString2(std::chrono::milliseconds(progress.totalProgress().estimatedEta)));
         } else {
             msg = tr("Syncing %1 of %2")
                       .arg(currentFile)
@@ -791,7 +791,7 @@ void ownCloudGui::slotUpdateProgress(Folder *folder, const ProgressInfo &progres
         QString msg;
         if (progress.trustEta()) {
             msg = tr("Syncing %1 (%2 left)")
-                      .arg(totalSizeStr, Utility::durationToDescriptiveString2(progress.totalProgress().estimatedEta));
+                      .arg(totalSizeStr, Utility::durationToDescriptiveString2(std::chrono::milliseconds(progress.totalProgress().estimatedEta)));
         } else {
             msg = tr("Syncing %1")
                       .arg(totalSizeStr);
