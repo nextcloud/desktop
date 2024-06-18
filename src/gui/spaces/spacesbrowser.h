@@ -12,6 +12,7 @@
  * for more details.
  */
 #pragma once
+#include "gui/qmlutils.h"
 #include "gui/spaces/spaceslib.h"
 
 #include "libsync/account.h"
@@ -33,6 +34,8 @@ class SPACES_EXPORT SpacesBrowser : public QWidget
     Q_PROPERTY(QSortFilterProxyModel *model MEMBER _sortModel READ model CONSTANT)
     Q_PROPERTY(GraphApi::Space *currentSpace MEMBER _currentSpace READ currentSpace NOTIFY currentSpaceChanged)
     QML_ELEMENT
+    QML_UNCREATABLE("C++ only")
+    OC_DECLARE_WIDGET_FOCUS
 public:
     explicit SpacesBrowser(QWidget *parent = nullptr);
     ~SpacesBrowser();

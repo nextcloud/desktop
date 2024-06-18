@@ -29,6 +29,7 @@ class SpacesModel : public QAbstractListModel
 
 public:
     enum class Roles {
+        AccessibleDescriptionRole = Qt::AccessibleDescriptionRole,
         Sync = Qt::UserRole + 1,
         Name,
         Subtitle,

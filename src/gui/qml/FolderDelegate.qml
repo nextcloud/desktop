@@ -108,14 +108,6 @@ Pane {
                             border.color: delegatePane.visualFocus || folderDelegate.ListView.isCurrentItem ? scrollView.palette.highlight : scrollView.palette.base
                         }
 
-                        Keys.onDownPressed: {
-                            folderDelegate.ListView.view.incrementCurrentIndex();
-                        }
-
-                        Keys.onUpPressed: {
-                            folderDelegate.ListView.view.decrementCurrentIndex();
-                        }
-
                         Keys.onBacktabPressed: {
                             accountSettings.focusPrevious();
                         }

@@ -61,6 +61,8 @@ QVariant SpacesModel::data(const QModelIndex &index, int role) const
         return QVariant::fromValue(space);
     case Roles::Enabled:
         return !space->disabled();
+    case Roles::AccessibleDescriptionRole:
+        return QStringLiteral("%1,%2").arg(space->displayName(), space->drive().getDescription());
     }
     return {};
 }
@@ -96,5 +98,6 @@ QHash<int, QByteArray> SpacesModel::roleNames() const
         {static_cast<int>(Roles::Subtitle), "subtitle"},
         {static_cast<int>(Roles::Image), "imageUrl"},
         {static_cast<int>(Roles::Space), "space"},
+        {static_cast<int>(Roles::AccessibleDescriptionRole), "accessibleDescription"},
     };
 }

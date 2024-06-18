@@ -21,10 +21,14 @@ import org.ownCloud.libsync 1.0
 import org.ownCloud.gui.spaces 1.0
 
 Pane {
+    id: spacesView
     // TODO: not cool
     readonly property real normalSize: 170
 
     readonly property SpacesBrowser spacesBrowser: ocContext
+
+    Accessible.role: Accessible.List
+    Accessible.name: qsTr("Spaces")
 
     ScrollView {
         id: scrollView
@@ -33,60 +37,103 @@ Pane {
         ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
         ScrollBar.vertical.policy: ScrollBar.AlwaysOn
 
+        Connections {
+            target: spacesBrowser
+
+            function onFocusFirst() {
+                listView.currentIndex = 0;
+            }
+
+            function onFocusLast() {
+                listView.currentIndex = listView.count - 1;
+            }
+        }
+
         ListView {
             id: listView
             anchors.fill: parent
             spacing: 20
             focus: true
 
+            model: spacesBrowser.model
+
             Component.onCompleted: {
                 // clear the selection delayed, else the palette is messed up
                 currentIndex = -1;
             }
 
-            model: spacesBrowser.model
             onCurrentItemChanged: {
-                spacesBrowser.currentSpace = currentItem ? currentItem.space : null;
+                if (currentItem) {
+                    spacesBrowser.currentSpace = currentItem.space;
+                    listView.currentItem.forceActiveFocus(Qt.TabFocusReason);
+                } else {
+                    // clear the selected item
+                    spacesBrowser.currentSpace = null;
+                }
             }
 
-            delegate: Pane {
+            delegate: FocusScope {
                 id: spaceDelegate
-
-                required property int index
-
                 required property string name
                 required property string subtitle
+                required property string accessibleDescription
                 required property url imageUrl
                 required property Space space
 
-                clip: true
+                required property int index
+
                 width: ListView.view.width - scrollView.ScrollBar.vertical.width - 10
 
                 implicitHeight: normalSize
-                background: Rectangle {
-                    color: spaceDelegate.ListView.isCurrentItem ? scrollView.palette.highlight : scrollView.palette.base
-                }
 
-                RowLayout {
+                Pane {
+                    id: delegatePane
+
                     anchors.fill: parent
 
-                    spacing: 10
-                    SpaceDelegate {
-                        Layout.fillWidth: true
-                        Layout.fillHeight: true
+                    Accessible.description: spaceDelegate.accessibleDescription
+                    Accessible.name: Accessible.description
+                    Accessible.role: Accessible.ListItem
+                    Accessible.selectable: true
+                    Accessible.selected: space === spacesBrowser.currentSpace
 
-                        title: spaceDelegate.name
-                        description: spaceDelegate.subtitle
-                        imageSource: spaceDelegate.imageUrl
-                        descriptionWrapMode: Label.WordWrap
+                    clip: true
+
+                    activeFocusOnTab: true
+                    focus: true
+
+                    Keys.onBacktabPressed: {
+                        spacesBrowser.focusPrevious();
                     }
-                }
 
-                MouseArea {
-                    anchors.fill: parent
-                    onClicked: {
-                        spaceDelegate.ListView.view.currentIndex = spaceDelegate.index;
-                        spaceDelegate.forceActiveFocus();
+                    Keys.onTabPressed: {
+                        spacesBrowser.focusNext();
+                    }
+
+                    background: Rectangle {
+                        color: spaceDelegate.ListView.isCurrentItem ? scrollView.palette.highlight : scrollView.palette.base
+                    }
+
+                    RowLayout {
+                        anchors.fill: parent
+
+                        spacing: 10
+                        SpaceDelegate {
+                            Layout.fillWidth: true
+                            Layout.fillHeight: true
+
+                            title: spaceDelegate.name
+                            description: spaceDelegate.subtitle
+                            imageSource: spaceDelegate.imageUrl
+                            descriptionWrapMode: Label.WordWrap
+                        }
+                    }
+
+                    MouseArea {
+                        anchors.fill: parent
+                        onClicked: {
+                            spaceDelegate.ListView.view.currentIndex = spaceDelegate.index;
+                        }
                     }
                 }
             }

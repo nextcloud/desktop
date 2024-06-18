@@ -17,7 +17,6 @@
 #include "spacesmodel.h"
 
 #include "gui/accountmanager.h"
-#include "gui/qmlutils.h"
 #include "gui/spaces/spaceimageprovider.h"
 #include "resources/resources.h"
 

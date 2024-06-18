@@ -144,22 +144,26 @@
        </item>
       </layout>
      </widget>
-     <widget class="OCC::QmlUtils::OCQuickWidget" name="quickWidget"/>
+     <widget class="OCC::QmlUtils::OCQuickWidget" name="quickWidget">
+      <property name="accessibleName">
+       <string>Sync connections</string>
+      </property>
+     </widget>
     </widget>
    </item>
   </layout>
  </widget>
  <customwidgets>
   <customwidget>
-   <class>QProgressIndicator</class>
-   <extends>QWidget</extends>
-   <header>QProgressIndicator.h</header>
-   <container>1</container>
-  </customwidget>
-  <customwidget>
    <class>OCC::QmlUtils::OCQuickWidget</class>
    <extends>QWidget</extends>
    <header>gui/qmlutils.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>QProgressIndicator</class>
+   <extends>QWidget</extends>
+   <header>QProgressIndicator.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>
