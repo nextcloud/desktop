@@ -4041,7 +4041,7 @@ Möchten Sie fortfahren?</translation>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="334"/>
         <source>%n day(s) ago</source>
-        <translation><numerusform>vor %n Tage(n)</numerusform><numerusform>vor %n Tage(n)</numerusform></translation>
+        <translation><numerusform>vor %n Tage</numerusform><numerusform>vor %n Tagen</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="344"/>
@@ -4061,7 +4061,7 @@ Möchten Sie fortfahren?</translation>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="356"/>
         <source>%n minute(s) ago</source>
-        <translation><numerusform>vor %n Minute(n)</numerusform><numerusform>Vor %n Minute(n)</numerusform></translation>
+        <translation><numerusform>vor %n Minute</numerusform><numerusform>Vor %n Minuten</numerusform></translation>
     </message>
     <message>
         <location filename="../src/libsync/syncresult.cpp" line="115"/>
@@ -4263,17 +4263,17 @@ Möchten Sie fortfahren?</translation>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="236"/>
         <source>%n year(s)</source>
-        <translation><numerusform>%n Jahr</numerusform><numerusform>%n Jahr(e)</numerusform></translation>
+        <translation><numerusform>%n Jahr</numerusform><numerusform>%n Jahre</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="237"/>
         <source>%n month(s)</source>
-        <translation><numerusform>%n Monat</numerusform><numerusform>%n Monat(e)</numerusform></translation>
+        <translation><numerusform>%n Monat</numerusform><numerusform>%n Monate</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="238"/>
         <source>%n day(s)</source>
-        <translation><numerusform>%n Tag</numerusform><numerusform>%n Tag(e)</numerusform></translation>
+        <translation><numerusform>%n Tag</numerusform><numerusform>%n Tag</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="239"/>
@@ -4283,12 +4283,12 @@ Möchten Sie fortfahren?</translation>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="240"/>
         <source>%n minute(s)</source>
-        <translation><numerusform>%n Minute</numerusform><numerusform>%n Minute(n)</numerusform></translation>
+        <translation><numerusform>%n Minute</numerusform><numerusform>%n Minuten</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="241"/>
         <source>%n second(s)</source>
-        <translation><numerusform>%n Sekunde</numerusform><numerusform>%n Sekunde(n)</numerusform></translation>
+        <translation><numerusform>%n Sekunde</numerusform><numerusform>%n Sekunden</numerusform></translation>
     </message>
     <message>
         <location filename="../src/common/utility.cpp" line="265"/>

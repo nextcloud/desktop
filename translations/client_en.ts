@@ -279,12 +279,12 @@ File synchronization desktop utility.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/qml/FolderDelegate.qml" line="168"/>
+        <location filename="../src/gui/qml/FolderDelegate.qml" line="224"/>
         <source>Add Space</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/qml/FolderDelegate.qml" line="168"/>
+        <location filename="../src/gui/qml/FolderDelegate.qml" line="224"/>
         <source>Add Folder</source>
         <translation type="unfinished"></translation>
     </message>
@@ -441,23 +441,23 @@ File synchronization desktop utility.</source>
 <context>
     <name>NotificationWidget</name>
     <message>
-        <location filename="../src/gui/notificationwidget.ui" line="20"/>
-        <source>Form</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/gui/notificationwidget.ui" line="52"/>
+        <location filename="../src/gui/notificationwidget.ui" line="49"/>
         <source>Notification icon</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/notificationwidget.ui" line="76"/>
+        <location filename="../src/gui/notificationwidget.ui" line="73"/>
         <source>Lorem ipsum dolor sit amet</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/notificationwidget.ui" line="89"/>
+        <location filename="../src/gui/notificationwidget.ui" line="86"/>
         <source>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod temporm </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/notificationwidget.ui" line="113"/>
+        <source>Action button group</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -860,12 +860,17 @@ This action will abort any currently running synchronization.</source>
     <name>OCC::ActivityWidget</name>
     <message>
         <location filename="../src/gui/activitywidget.ui" line="14"/>
-        <source>Form</source>
+        <source>Server activities</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.ui" line="73"/>
         <source>Filter</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/activitywidget.ui" line="91"/>
+        <source>Server activity table</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1305,54 +1310,44 @@ Please consider removing this folder from the account and adding it again.</sour
 <context>
     <name>OCC::FolderStatusModel</name>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="269"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="253"/>
         <source>There are unresolved conflicts.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="273"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="257"/>
         <source>The suffix VFS plugin is deprecated and will be removed in the 7.0 release.
 Please use the context menu and select &quot;Disable virtual file support&quot; to  ensure future access to your synced files.
 You are going to lose access to your sync folder if you do not do so!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="324"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="319"/>
         <source>%1 of %2 used</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="328"/>
-        <source>The status of %1 is %2</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="330"/>
-        <source>The account %1 is currently not connected.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="403"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="400"/>
         <source>Checking for changes in remote &apos;%1&apos;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="405"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="402"/>
         <source>Checking for changes in local &apos;%1&apos;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="409"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="406"/>
         <source>Reconciling changes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="449"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="446"/>
         <source>Queued</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="260"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="271"/>
         <source>Local folder: %1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1719,27 +1714,22 @@ Items where deletion is allowed will be deleted if they prevent a directory from
 <context>
     <name>OCC::IssuesWidget</name>
     <message>
-        <location filename="../src/gui/issueswidget.ui" line="14"/>
-        <source>Form</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/gui/issueswidget.ui" line="22"/>
-        <source>List of issues</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../src/gui/issueswidget.cpp" line="364"/>
         <source>Filter</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/issueswidget.ui" line="79"/>
+        <location filename="../src/gui/issueswidget.ui" line="40"/>
+        <source>Issues table</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/issueswidget.ui" line="69"/>
         <source>There were too many issues. Not all will be visible here.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/issueswidget.ui" line="89"/>
+        <location filename="../src/gui/issueswidget.ui" line="79"/>
         <source>There were conflicts. Check the documentation on how to resolve them.</source>
         <translation type="unfinished"></translation>
     </message>
