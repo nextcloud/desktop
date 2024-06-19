@@ -76,4 +76,13 @@ installIfMissing("python3", "brew install pyenv && pyenv install 3.12.4")
 print("Build tooling configured.")
 print("Configuring KDE Craft.")
 
+let fm = FileManager.default
+let currentDir = fm.currentDirectoryPath
+let craftDir = "\(currentDir)/craftmaster"
 
+if fm.fileExists(atPath: craftDir) {
+    print("KDE Craft is already cloned.")
+} else {
+    print("Cloning KDE Craft...")
+    shell("git clone -q --depth=1 https://invent.kde.org/packaging/craftmaster.git")
+}
