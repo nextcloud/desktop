@@ -75,7 +75,7 @@ public class Item: NSObject, NSFileProviderItem {
     }
 
     public var filename: String {
-        metadata.fileNameView
+        metadata.fileNameView.isEmpty ? "unnamed file" : metadata.fileNameView
     }
 
     public var contentType: UTType {
