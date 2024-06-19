@@ -64,39 +64,65 @@ private Q_SLOTS:
         QVERIFY(hasLaunchOnStartup(appName) == false);
     }
 
-    void testDurationToDescriptiveString()
+    void testDurationToDescriptiveString_data()
     {
-        QLocale::setDefault(QLocale(QStringLiteral("C")));
-        //NOTE: in order for the plural to work we would need to load the english translation
+        QTest::addColumn<bool>("useTranslation");
+        QTest::addColumn<std::chrono::milliseconds>("input");
+        QTest::addColumn<QString>("output1");
+        QTest::addColumn<QString>("output2");
+
 
         const QDateTime current = QDateTime::currentDateTimeUtc();
+        QTest::newRow("0ms") << false << std::chrono::milliseconds(0ms) << QStringLiteral("0 second(s)") << QString();
+        QTest::newRow("5ms") << false << std::chrono::milliseconds(5ms) << QStringLiteral("0 second(s)") << QString();
+        QTest::newRow("1s") << false << std::chrono::milliseconds(1s) << QStringLiteral("1 second(s)") << QString();
+        QTest::newRow("1005ms") << false << std::chrono::milliseconds(1005ms) << QStringLiteral("1 second(s)") << QString();
+        QTest::newRow("56123ms") << false << std::chrono::milliseconds(56123ms) << QStringLiteral("56 second(s)") << QString();
+        QTest::newRow("90s") << false << std::chrono::milliseconds(90s) << QStringLiteral("2 minute(s)") << QStringLiteral("1 minute(s) 30 second(s)");
+        QTest::newRow("3h") << false << std::chrono::milliseconds(3h) << QStringLiteral("3 hour(s)") << QString();
+        QTest::newRow("3h + 20s") << false << std::chrono::milliseconds(3h + 20s) << QStringLiteral("3 hour(s)") << QString();
+        QTest::newRow("3h + 70s") << false << std::chrono::milliseconds(3h + 70s) << QStringLiteral("3 hour(s)") << QStringLiteral("3 hour(s) 1 minute(s)");
+        QTest::newRow("3h + 100s") << false << std::chrono::milliseconds(3h + 100s) << QStringLiteral("3 hour(s)") << QStringLiteral("3 hour(s) 2 minute(s)");
+        QTest::newRow("4years") << false << std::chrono::milliseconds(current.addYears(4).addMonths(5).addDays(2).addSecs(23 * 60 * 60) - current)
+                                << QStringLiteral("4 year(s)") << QStringLiteral("4 year(s) 5 month(s)");
+        QTest::newRow("2days") << false << std::chrono::milliseconds(current.addDays(2).addSecs(23 * 60 * 60) - current) << QStringLiteral("3 day(s)")
+                               << QStringLiteral("2 day(s) 23 hour(s)");
 
-        QCOMPARE(durationToDescriptiveString2(0ms), QString::fromLatin1("0 second(s)"));
-        QCOMPARE(durationToDescriptiveString2(5ms), QString::fromLatin1("0 second(s)"));
-        QCOMPARE(durationToDescriptiveString2(1s), QString::fromLatin1("1 second(s)"));
-        QCOMPARE(durationToDescriptiveString2(1005ms), QString::fromLatin1("1 second(s)"));
-        QCOMPARE(durationToDescriptiveString2(56123ms), QString::fromLatin1("56 second(s)"));
-        QCOMPARE(durationToDescriptiveString2(90s), QString::fromLatin1("1 minute(s) 30 second(s)"));
-        QCOMPARE(durationToDescriptiveString2(3h), QString::fromLatin1("3 hour(s)"));
-        QCOMPARE(durationToDescriptiveString2(3h + 20s), QString::fromLatin1("3 hour(s)"));
-        QCOMPARE(durationToDescriptiveString2(3h + 70s), QString::fromLatin1("3 hour(s) 1 minute(s)"));
-        QCOMPARE(durationToDescriptiveString2(3h + 100s), QString::fromLatin1("3 hour(s) 2 minute(s)"));
-        QCOMPARE(durationToDescriptiveString2(current.addYears(4).addMonths(5).addDays(2).addSecs(23 * 60 * 60) - current),
-            QString::fromLatin1("4 year(s) 5 month(s)"));
-        QCOMPARE(durationToDescriptiveString2(current.addDays(2).addSecs(23 * 60 * 60) - current), QString::fromLatin1("2 day(s) 23 hour(s)"));
 
-        QCOMPARE(durationToDescriptiveString1(0s), QString::fromLatin1("0 second(s)"));
-        QCOMPARE(durationToDescriptiveString1(5ms), QString::fromLatin1("0 second(s)"));
-        QCOMPARE(durationToDescriptiveString1(1s), QString::fromLatin1("1 second(s)"));
-        QCOMPARE(durationToDescriptiveString1(1005ms), QString::fromLatin1("1 second(s)"));
-        QCOMPARE(durationToDescriptiveString1(56123ms), QString::fromLatin1("56 second(s)"));
-        QCOMPARE(durationToDescriptiveString1(90s), QString::fromLatin1("2 minute(s)"));
-        QCOMPARE(durationToDescriptiveString1(3h), QString::fromLatin1("3 hour(s)"));
-        QCOMPARE(durationToDescriptiveString1(3h + 20s), QString::fromLatin1("3 hour(s)"));
-        QCOMPARE(durationToDescriptiveString1(3h + 70s), QString::fromLatin1("3 hour(s)"));
-        QCOMPARE(durationToDescriptiveString1(3h + 100s), QString::fromLatin1("3 hour(s)"));
-        QCOMPARE(durationToDescriptiveString1(current.addYears(4).addMonths(5).addDays(2).addSecs(23 * 60 * 60) - current), QString::fromLatin1("4 year(s)"));
-        QCOMPARE(durationToDescriptiveString1(current.addDays(2).addSecs(23 * 60 * 60) - current), QString::fromLatin1("3 day(s)"));
+        QTest::newRow("0ms translated") << true << std::chrono::milliseconds(0ms) << QStringLiteral("0 seconds") << QString();
+        QTest::newRow("5ms translated") << true << std::chrono::milliseconds(5ms) << QStringLiteral("0 seconds") << QString();
+        QTest::newRow("1s translated") << true << std::chrono::milliseconds(1s) << QStringLiteral("1 second") << QString();
+        QTest::newRow("1005ms translated") << true << std::chrono::milliseconds(1005ms) << QStringLiteral("1 second") << QString();
+        QTest::newRow("56123ms translated") << true << std::chrono::milliseconds(56123ms) << QStringLiteral("56 seconds") << QString();
+        QTest::newRow("90s translated") << true << std::chrono::milliseconds(90s) << QStringLiteral("2 minutes") << QStringLiteral("1 minute 30 seconds");
+        QTest::newRow("3h translated") << true << std::chrono::milliseconds(3h) << QStringLiteral("3 hours") << QString();
+        QTest::newRow("3h + 20s translated") << true << std::chrono::milliseconds(3h + 20s) << QStringLiteral("3 hours") << QString();
+        QTest::newRow("3h + 70s translated") << true << std::chrono::milliseconds(3h + 70s) << QStringLiteral("3 hours") << QStringLiteral("3 hours 1 minute");
+        QTest::newRow("3h + 100s translated") << true << std::chrono::milliseconds(3h + 100s) << QStringLiteral("3 hours")
+                                              << QStringLiteral("3 hours 2 minutes");
+        QTest::newRow("4years translated") << true << std::chrono::milliseconds(current.addYears(4).addMonths(5).addDays(2).addSecs(23 * 60 * 60) - current)
+                                           << QStringLiteral("4 years") << QStringLiteral("4 years 5 months");
+        QTest::newRow("2days translated") << true << std::chrono::milliseconds(current.addDays(2).addSecs(23 * 60 * 60) - current) << QStringLiteral("3 days")
+                                          << QStringLiteral("2 days 23 hours");
+    }
+
+
+    void testDurationToDescriptiveString()
+    {
+        QFETCH(bool, useTranslation);
+        QFETCH(std::chrono::milliseconds, input);
+        QFETCH(QString, output1);
+        QFETCH(QString, output2);
+
+        QScopedPointer<QTranslator> translator;
+        if (useTranslation) {
+            translator.reset(new QTranslator(QCoreApplication::instance()));
+            QVERIFY(translator->load(QStringLiteral("client_en.ts"), QStringLiteral(":/client/translations/")));
+            QCoreApplication::instance()->installTranslator(translator.data());
+        }
+
+        QCOMPARE(durationToDescriptiveString1(input), output1);
+        QCOMPARE(durationToDescriptiveString2(input), output2.isEmpty() ? output1 : output2);
     }
 
     void testTimeAgo()
