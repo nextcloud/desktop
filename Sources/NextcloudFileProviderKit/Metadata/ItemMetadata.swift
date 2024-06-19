@@ -105,8 +105,9 @@ public class ItemMetadata: Object {
     @Persisted public var uploadDate = Date()
     @Persisted public var url = ""
     @Persisted public var urlBase = ""
-    @Persisted public var user = ""
-    @Persisted public var userId = ""
+    @Persisted public var user = "" // The user who owns the file (Nextcloud username)
+    @Persisted public var userId = "" // The user who owns the file (backend user id)
+                                      // (relevant for alt. backends like LDAP)
 
     public var fileExtension: String {
         (fileNameView as NSString).pathExtension
