@@ -87,7 +87,7 @@ public class ItemMetadata: Object {
     @Persisted public var quotaAvailableBytes: Int64 = 0
     @Persisted public var resourceType = ""
     @Persisted public var richWorkspace: String?
-    @Persisted public var serverUrl = ""  // For parent directory!!
+    @Persisted public var serverUrl = ""  // For parent folder! Build remote url by adding fileName
     @Persisted public var session = ""
     @Persisted public var sessionError = ""
     @Persisted public var sessionSelector = ""
