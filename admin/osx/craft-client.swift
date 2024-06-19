@@ -60,3 +60,14 @@ if commandExists("brew") {
     }
     print("Brew installed.")
 }
+
+if commandExists("inkscape") {
+    print("Inkscape is installed.")
+} else {
+    guard shell("brew install inkscape") == 0 else {
+        print("Failed to install Inkscape.")
+        exit(1)
+    }
+    print("Inkscape installed.")
+}
+
