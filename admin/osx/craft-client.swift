@@ -47,6 +47,16 @@ func commandExists(_ command: String) -> Bool {
 
 print("Configuring build tooling.")
 
+if commandExists("git") {
+    print("Git is installed.")
+} else {
+    print("Git is missing. Installing xcode command line tools.")
+    guard shell("xcode-select --install") == 0 else {
+        print("Failed to install xcode command line tools.")
+        exit(1)
+    }
+}
+
 if commandExists("brew") {
     print("Brew is installed.")
 } else {
