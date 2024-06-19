@@ -9,7 +9,6 @@ class Activity:
     TAB_CONTAINER = {
         "container": names.settings_stack_QStackedWidget,
         "type": "QTabWidget",
-        "unnamed": 1,
         "visible": 1,
     }
     SUBTAB_CONTAINER = {
@@ -60,6 +59,12 @@ class Activity:
     @staticmethod
     def clickTab(tabName):
         tabFound = False
+
+        # NOTE: Some activity tabs are loaded dynamically
+        # and the tab index changes after all the tabs are loaded properly
+        # So wait for a second to let the UI render the tabs properly
+        # before trying to click the tab
+        squish.snooze(get_config("lowestSyncTimeout"))
 
         # Selecting tab by name fails for "Not Synced" when there are no unsynced files
         # Because files count will be appended like "Not Synced (2)"
