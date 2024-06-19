@@ -87,6 +87,8 @@ final class EnumeratorTests: XCTestCase {
     }
 
     func testRootEnumeration() async throws {
+        let db = Self.dbManager.ncDatabase() // Strong ref for in memory test db
+        debugPrint(db) // Avoid build-time warning about unused variable, ensure compiler won't free
         let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
 
         let enumerator = Enumerator(
@@ -108,6 +110,35 @@ final class EnumeratorTests: XCTestCase {
             Int(retrievedFolderItem.contentModificationDate??.timeIntervalSince1970 ?? 0),
             Int(remoteFolder.modificationDate.timeIntervalSince1970)
         )
+
+        // Important to keep in mind. Default behaviour is fast enumeration, not deep enumeration
+        let dbFolder = try XCTUnwrap(Self.dbManager.itemMetadataFromOcId(remoteFolder.identifier))
+        XCTAssertEqual(dbFolder.etag, "") // Folder is not visited yet, should not have etag
+        XCTAssertEqual(dbFolder.fileName, remoteFolder.name)
+        XCTAssertEqual(dbFolder.fileNameView, remoteFolder.name)
+        XCTAssertEqual(dbFolder.serverUrl + "/" + dbFolder.fileName, remoteFolder.remotePath)
+        XCTAssertEqual(dbFolder.account, Self.account.ncKitAccount)
+        XCTAssertEqual(dbFolder.user, Self.account.username)
+        XCTAssertEqual(dbFolder.userId, Self.account.username)
+        XCTAssertEqual(dbFolder.urlBase, Self.account.serverUrl)
+
+        let storedFolderItem = try XCTUnwrap(
+            Item.storedItem(
+                identifier: .init(remoteFolder.identifier),
+                remoteInterface: remoteInterface,
+                dbManager: Self.dbManager
+            )
+        )
+        storedFolderItem.dbManager = Self.dbManager
+        XCTAssertEqual(storedFolderItem.itemIdentifier.rawValue, remoteFolder.identifier)
+        XCTAssertEqual(storedFolderItem.filename, remoteFolder.name)
+        XCTAssertEqual(storedFolderItem.parentItemIdentifier.rawValue, rootItem.identifier)
+        XCTAssertEqual(storedFolderItem.creationDate, remoteFolder.creationDate)
+        XCTAssertEqual(
+            Int(storedFolderItem.contentModificationDate?.timeIntervalSince1970 ?? 0),
+            Int(remoteFolder.modificationDate.timeIntervalSince1970)
+        )
+        XCTAssertEqual(storedFolderItem.childItemCount?.intValue, 0) // Not visited yet, so no kids
     }
 
     func testWorkingSetEnumeration() async throws {
