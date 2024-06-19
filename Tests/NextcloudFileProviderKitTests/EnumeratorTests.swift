@@ -666,4 +666,47 @@ final class EnumeratorTests: XCTestCase {
         // Should be able to write to files with an expired lock
         XCTAssertTrue(storedItemC.fileSystemFlags.contains(.userWritable))
     }
+
+    // File Provider system will panic if we give it an NSFileProviderItem with an empty filename.
+    // Test that we have a fallback to avoid this, even if something catastrophic happens in the
+    // server and the file has no filename
+    func testEnsureNoEmptyItemNameEnumeration() async throws {
+        let db = Self.dbManager.ncDatabase() // Strong ref for in memory test db
+        debugPrint(db) // Avoid build-time warning about unused variable, ensure compiler won't free
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+
+        remoteItemA.name = ""
+        remoteItemA.parent = remoteInterface.rootItem
+        rootItem.children = [remoteItemA]
+
+        let enumerator = Enumerator(
+            enumeratedItemIdentifier: .rootContainer,
+            ncAccount: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+        let observer = MockChangeObserver(enumerator: enumerator)
+        try await observer.enumerateChanges()
+        // rootContainer has changed, itemA has changed
+        XCTAssertEqual(observer.changedItems.count, 1)
+        print(Self.dbManager.ncDatabase().objects(ItemMetadata.self).count)
+
+        let dbItemAMetadata = try XCTUnwrap(
+            Self.dbManager.itemMetadataFromOcId(remoteItemA.identifier)
+        )
+        XCTAssertEqual(dbItemAMetadata.ocId, remoteItemA.identifier)
+        XCTAssertEqual(dbItemAMetadata.fileName, remoteItemA.name)
+
+        let storedItemA = try XCTUnwrap(
+            Item.storedItem(
+                identifier: .init(remoteItemA.identifier),
+                remoteInterface: remoteInterface,
+                dbManager: Self.dbManager
+            )
+        )
+        storedItemA.dbManager = Self.dbManager
+        XCTAssertEqual(storedItemA.itemIdentifier.rawValue, remoteItemA.identifier)
+        XCTAssertNotEqual(storedItemA.filename, remoteItemA.name)
+        XCTAssertFalse(storedItemA.filename.isEmpty)
+    }
 }
