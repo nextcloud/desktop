@@ -44,3 +44,19 @@ func shell(_ commands: String..., env: [String: String]? = nil, quiet: Bool = fa
 func commandExists(_ command: String) -> Bool {
     return run("/usr/bin/type", command, quiet: true) == 0
 }
+
+print("Configuring build tooling.")
+
+if commandExists("brew") {
+    print("Brew is installed.")
+} else {
+    print("Installing Homebrew...")
+    guard shell(
+        "curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh | /bin/bash", 
+        env: ["NONINTERACTIVE": "1"]
+    ) == 0 else {
+        print("Failed to install Homebrew.")
+        exit(1)
+    }
+    print("Brew installed.")
+}
