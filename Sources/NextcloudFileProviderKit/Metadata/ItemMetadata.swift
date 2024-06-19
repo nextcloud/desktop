@@ -79,8 +79,8 @@ public class ItemMetadata: Object {
     @Persisted public var lockOwnerEditor = ""
     @Persisted public var lockOwnerType = 0
     @Persisted public var lockOwnerDisplayName = ""
-    @Persisted public var lockTime: Date?
-    @Persisted public var lockTimeOut: Date?
+    @Persisted public var lockTime: Date? // Time the file was locked
+    @Persisted public var lockTimeOut: Date? // Time the file's lock will expire
     @Persisted public var path = ""
     @Persisted public var permissions = ""
     @Persisted public var quotaUsedBytes: Int64 = 0
