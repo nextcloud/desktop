@@ -86,3 +86,22 @@ if fm.fileExists(atPath: craftDir) {
     print("Cloning KDE Craft...")
     shell("git clone -q --depth=1 https://invent.kde.org/packaging/craftmaster.git \(craftDir)")
 }
+
+print("Configuring Nextcloud Desktop Client blueprints for KDE Craft...")
+
+let repoRootDir = "\(currentDir)/../.."
+let craftMasterIni = "\(repoRootDir)/craftmaster.ini"
+let craftMasterPy = "\(craftDir)/CraftMaster.py"
+let craftTarget = "macos-clang-arm64"
+let craftCommand = "python3 \(craftMasterPy) --config \(craftMasterIni) --target \(craftTarget) -c"
+let clientBlueprintsGitUrl = "https://github.com/nextcloud/desktop-client-blueprints.git"
+shell("\(craftCommand) --add-blueprint-repository \(clientBlueprintsGitUrl)")
+
+print("Crafting KDE Craft...")
+shell("\(craftCommand) craft")
+
+print("Crafting Nextcloud Desktop Client dependencies...")
+shell("\(craftCommand) --install-deps nextcloud-client")
+
+print("Crafting Nextcloud Desktop Client...")
+shell("\(craftCommand) --src-dir \(repoRootDir) nextcloud-client")
