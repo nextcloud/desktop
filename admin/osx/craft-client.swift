@@ -26,3 +26,17 @@ func run(
     task.waitUntilExit()
     return task.terminationStatus
 }
+
+func run(
+    _ launchPath: String, 
+    _ args: String..., 
+    env: [String: String]? = nil, 
+    quiet: Bool = false
+) -> Int32 {
+    return run(launchPath, args, env: env, quiet: quiet)
+}
+
+@discardableResult
+func shell(_ commands: String..., env: [String: String]? = nil, quiet: Bool = false) -> Int32 {
+    return run("/bin/zsh", ["-c"] + commands, env: env, quiet: quiet)
+}
