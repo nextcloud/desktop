@@ -81,3 +81,20 @@ if commandExists("inkscape") {
     print("Inkscape installed.")
 }
 
+if commandExists("python3") {
+    print("Python 3 is installed.")
+} else {
+    if commandExists("pyenv") {
+        print("Pyenv is installed.")
+    } else {
+        guard shell("brew install pyenv") == 0 else {
+            print("Failed to install Pyenv.")
+            exit(1)
+        }
+    }
+
+    guard shell ("pyenv install 3.12.4") == 0 else {
+        print("Failed to install Python 3.")
+        exit(1)
+    }
+}
