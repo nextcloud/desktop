@@ -40,3 +40,7 @@ func run(
 func shell(_ commands: String..., env: [String: String]? = nil, quiet: Bool = false) -> Int32 {
     return run("/bin/zsh", ["-c"] + commands, env: env, quiet: quiet)
 }
+
+func commandExists(_ command: String) -> Bool {
+    return run("/usr/bin/type", command, quiet: true) == 0
+}
