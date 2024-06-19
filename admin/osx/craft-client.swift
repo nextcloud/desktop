@@ -45,56 +45,35 @@ func commandExists(_ command: String) -> Bool {
     return run("/usr/bin/type", command, quiet: true) == 0
 }
 
-print("Configuring build tooling.")
-
-if commandExists("git") {
-    print("Git is installed.")
-} else {
-    print("Git is missing. Installing xcode command line tools.")
-    guard shell("xcode-select --install") == 0 else {
-        print("Failed to install xcode command line tools.")
-        exit(1)
-    }
-}
-
-if commandExists("brew") {
-    print("Brew is installed.")
-} else {
-    print("Installing Homebrew...")
-    guard shell(
-        "curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh | /bin/bash", 
-        env: ["NONINTERACTIVE": "1"]
-    ) == 0 else {
-        print("Failed to install Homebrew.")
-        exit(1)
-    }
-    print("Brew installed.")
-}
-
-if commandExists("inkscape") {
-    print("Inkscape is installed.")
-} else {
-    guard shell("brew install inkscape") == 0 else {
-        print("Failed to install Inkscape.")
-        exit(1)
-    }
-    print("Inkscape installed.")
-}
-
-if commandExists("python3") {
-    print("Python 3 is installed.")
-} else {
-    if commandExists("pyenv") {
-        print("Pyenv is installed.")
+func installIfMissing(
+    _ command: String, 
+    _ installCommand: String, 
+    installCommandEnv: [String: String]? = nil
+) {
+    if commandExists(command) {
+        print("\(command) is installed.")
     } else {
-        guard shell("brew install pyenv") == 0 else {
-            print("Failed to install Pyenv.")
+        print("\(command) is missing. Installing...")
+        guard shell(installCommand, env: installCommandEnv) == 0 else {
+            print("Failed to install \(command).")
             exit(1)
         }
-    }
-
-    guard shell ("pyenv install 3.12.4") == 0 else {
-        print("Failed to install Python 3.")
-        exit(1)
-    }
+        print("\(command) installed.")
+    } 
 }
+
+print("Configuring build tooling.")
+
+installIfMissing("git", "xcode-select --install")
+installIfMissing(
+    "brew", 
+    "curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh | /bin/bash", 
+    installCommandEnv: ["NONINTERACTIVE": "1"]
+)
+installIfMissing("inkscape", "brew install inkscape")
+installIfMissing("python3", "brew install pyenv && pyenv install 3.12.4")
+
+print("Build tooling configured.")
+print("Configuring KDE Craft.")
+
+
