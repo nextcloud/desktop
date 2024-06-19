@@ -84,5 +84,5 @@ if fm.fileExists(atPath: craftDir) {
     print("KDE Craft is already cloned.")
 } else {
     print("Cloning KDE Craft...")
-    shell("git clone -q --depth=1 https://invent.kde.org/packaging/craftmaster.git")
+    shell("git clone -q --depth=1 https://invent.kde.org/packaging/craftmaster.git \(craftDir)")
 }
