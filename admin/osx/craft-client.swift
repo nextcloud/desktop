@@ -62,6 +62,19 @@ func installIfMissing(
     } 
 }
 
+func codesign(
+    identity: String,
+    path: String,
+    options: String = "--timestamp --force --preserve-metadata=entitlements --verbose=4 --options runtime"
+) {
+    print("Code-signing \(path)...")
+    let command = "codesign -s \"\(identity)\" \(options) \(path)"
+    guard shell(command) == 0 else {
+        print("Failed to code-sign \(path).")
+        exit(1)
+    }
+}
+
 print("Configuring build tooling.")
 
 installIfMissing("git", "xcode-select --install")
