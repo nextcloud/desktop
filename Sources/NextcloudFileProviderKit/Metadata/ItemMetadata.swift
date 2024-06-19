@@ -62,8 +62,8 @@ public class ItemMetadata: Object {
     @Persisted public var etagResource = ""
     @Persisted public var favorite: Bool = false
     @Persisted public var fileId = ""
-    @Persisted public var fileName = ""
-    @Persisted public var fileNameView = ""
+    @Persisted public var fileName = "" // What the file's real file name is
+    @Persisted public var fileNameView = "" // What the user sees (usually same as fileName)
     @Persisted public var hasPreview: Bool = false
     @Persisted public var iconName = ""
     @Persisted public var iconUrl = ""
