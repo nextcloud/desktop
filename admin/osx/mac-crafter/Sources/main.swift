@@ -42,6 +42,9 @@ struct MacCrafter: ParsableCommand {
     @Option(name: [.long], help: "Nextcloud Desktop Client git url.")
     var clientBlueprintsGitUrl = "https://github.com/nextcloud/desktop-client-blueprints.git"
 
+    @Option(name: [.long], help: "Build type (e.g. Release, RelWithDebInfo, MinSizeRel, Debug).")
+    var buildType = "RelWithDebInfo"
+
     mutating func run() throws {
         print("Configuring build tooling.")
 
@@ -106,7 +109,7 @@ struct MacCrafter: ParsableCommand {
         }
 
         print("Crafting Nextcloud Desktop Client...")
-        shell("\(craftCommand) --src-dir \(repoRootDir) nextcloud-client")
+        shell("\(craftCommand) --src-dir \(repoRootDir) -i --build-type \(buildType) nextcloud-client")
     }
 }
 
