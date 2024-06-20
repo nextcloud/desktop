@@ -25,6 +25,7 @@ struct MacCrafter: ParsableCommand {
     }
 
     @Argument var codeSignIdentity: String
+    @Argument var buildPath = FileManager.default.currentDirectoryPath
 
     mutating func run() throws {
         print("Configuring build tooling.")
@@ -41,9 +42,8 @@ struct MacCrafter: ParsableCommand {
         print("Build tooling configured.")
         print("Configuring KDE Craft.")
 
+        let craftMasterDir = "\(self.buildPath)/craftmaster"
         let fm = FileManager.default
-        let currentDir = fm.currentDirectoryPath
-        let craftMasterDir = "\(currentDir)/craftmaster"
 
         if fm.fileExists(atPath: craftMasterDir) {
             print("KDE Craft is already cloned.")
@@ -70,7 +70,7 @@ struct MacCrafter: ParsableCommand {
 
         print("Code-signing Nextcloud Desktop Client libraries and frameworks...")
 
-        let craftLibDir = "\(currentDir)/\(craftTarget)/lib"
+        let craftLibDir = "\(self.buildPath)/\(craftTarget)/lib"
         let craftLibs = try fm.contentsOfDirectory(atPath: craftLibDir)
         for lib in craftLibs {
             guard isLibrary(lib) else { continue }
