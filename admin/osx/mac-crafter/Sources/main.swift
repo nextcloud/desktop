@@ -55,7 +55,7 @@ struct MacCrafter: ParsableCommand {
     mutating func run() throws {
         print("Configuring build tooling.")
 
-        if let codeSignIdentity {
+        if codeSignIdentity != nil {
             guard commandExists("codesign") else {
                 throw MacCrafterError.environmentError("codesign not found, cannot proceed.")
             }
