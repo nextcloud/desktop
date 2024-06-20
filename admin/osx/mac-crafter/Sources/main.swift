@@ -78,6 +78,17 @@ struct MacCrafter: ParsableCommand {
             try codesign(identity: codeSignIdentity, path: libPath)
         }
 
+        let craftPluginsDir = "\(currentDir)/\(craftTarget)/plugins"
+        guard let craftPluginsEnumerator = fm.enumerator(atPath: craftPluginsDir) else {
+            throw MacCrafterError.failedEnumeration("Failed to list craft plugins directory.")
+        }
+
+        for case let plugin as String in craftPluginsEnumerator {
+            let pluginPath = "\(craftPluginsDir)/\(plugin)"
+            guard plugin.hasSuffix(".dylib") || plugin.hasSuffix(".framework") else { continue }
+            try codesign(identity: codeSignIdentity, path: pluginPath)
+        }
+
         print("Crafting Nextcloud Desktop Client...")
         shell("\(craftCommand) --src-dir \(repoRootDir) nextcloud-client")
     }
