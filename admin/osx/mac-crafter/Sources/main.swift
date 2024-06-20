@@ -48,6 +48,9 @@ struct MacCrafter: ParsableCommand {
     @Option(name: [.long], help: "Skip code-signing dependency libraries and plugins.")
     var skipDependencyCodeSigning = false
 
+    @Option(name: [.long], help: "The application's branded name.")
+    var appName = "Nextcloud"
+
     mutating func run() throws {
         print("Configuring build tooling.")
 
@@ -113,6 +116,12 @@ struct MacCrafter: ParsableCommand {
 
         print("Crafting Nextcloud Desktop Client...")
         shell("\(craftCommand) --src-dir \(repoRootDir) -i --build-type \(buildType) nextcloud-client")
+
+        if let codeSignIdentity {
+            let clientAppDir =
+                "\(buildPath)/\(craftTarget)/build/nextcloud-client/image-\(buildType)-master/\(appName).app"
+            try codesign(identity: codeSignIdentity, path: clientAppDir)
+        }
     }
 }
 
