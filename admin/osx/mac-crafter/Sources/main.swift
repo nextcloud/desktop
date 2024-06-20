@@ -24,14 +24,23 @@ struct MacCrafter: ParsableCommand {
         case failedEnumeration(String)
     }
 
-    @Argument var codeSignIdentity: String
-    @Argument var buildPath = FileManager.default.currentDirectoryPath
-    @Argument var brewInstallShUrl =
-        "https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh"
-    @Argument var craftMasterGitUrl =
-        "https://invent.kde.org/packaging/craftmaster.git"
-    @Argument var clientBlueprintsGitUrl =
-        "https://github.com/nextcloud/desktop-client-blueprints.git"
+    @Argument(help: "Path to the root directory of the Nextcloud Desktop Client git repository.")
+    var repoRootDir = "\(FileManager.default.currentDirectoryPath)/../../.."
+
+    @Option(name: [.short, .long], help: "Code signing identity for desktop client and libs.")
+    var codeSignIdentity: String?
+
+    @Option(name: [.short, .customLong("buildPath")], help: "Path for build files to be written.")
+    var buildPath = "\(FileManager.default.currentDirectoryPath)/build"
+
+    @Option(name: [.long], help: "Brew installation script URL.")
+    var brewInstallShUrl = "https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh"
+
+    @Option(name: [.long], help: "CraftMaster git url.")
+    var craftMasterGitUrl = "https://invent.kde.org/packaging/craftmaster.git"
+
+    @Option(name: [.long], help: "Nextcloud Desktop Client git url.")
+    var clientBlueprintsGitUrl = "https://github.com/nextcloud/desktop-client-blueprints.git"
 
     mutating func run() throws {
         print("Configuring build tooling.")
@@ -75,23 +84,25 @@ struct MacCrafter: ParsableCommand {
         print("Crafting Nextcloud Desktop Client dependencies...")
         shell("\(craftCommand) --install-deps nextcloud-client")
 
-        print("Code-signing Nextcloud Desktop Client libraries and frameworks...")
+        if let codeSignIdentity {
+            print("Code-signing Nextcloud Desktop Client libraries and frameworks...")
 
-        let craftLibDir = "\(self.buildPath)/\(craftTarget)/lib"
-        let craftLibs = try fm.contentsOfDirectory(atPath: craftLibDir)
-        for lib in craftLibs {
-            guard isLibrary(lib) else { continue }
-            try codesign(identity: codeSignIdentity, path: "\(craftLibDir)/\(lib)")
-        }
+            let craftLibDir = "\(self.buildPath)/\(craftTarget)/lib"
+            let craftLibs = try fm.contentsOfDirectory(atPath: craftLibDir)
+            for lib in craftLibs {
+                guard isLibrary(lib) else { continue }
+                try codesign(identity: codeSignIdentity, path: "\(craftLibDir)/\(lib)")
+            }
 
-        let craftPluginsDir = "\(currentDir)/\(craftTarget)/plugins"
-        guard let craftPluginsEnumerator = fm.enumerator(atPath: craftPluginsDir) else {
-            throw MacCrafterError.failedEnumeration("Failed to list craft plugins directory.")
-        }
+            let craftPluginsDir = "\(currentDir)/\(craftTarget)/plugins"
+            guard let craftPluginsEnumerator = fm.enumerator(atPath: craftPluginsDir) else {
+                throw MacCrafterError.failedEnumeration("Failed to list craft plugins directory.")
+            }
 
-        for case let plugin as String in craftPluginsEnumerator {
-            guard isLibrary(plugin) else { continue }
-            try codesign(identity: codeSignIdentity, path: "\(craftPluginsDir)/\(plugin)")
+            for case let plugin as String in craftPluginsEnumerator {
+                guard isLibrary(plugin) else { continue }
+                try codesign(identity: codeSignIdentity, path: "\(craftPluginsDir)/\(plugin)")
+            }
         }
 
         print("Crafting Nextcloud Desktop Client...")
