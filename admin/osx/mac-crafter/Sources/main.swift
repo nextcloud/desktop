@@ -27,14 +27,14 @@ struct MacCrafter: ParsableCommand {
     mutating func run() throws {
         print("Configuring build tooling.")
 
-        installIfMissing("git", "xcode-select --install")
-        installIfMissing(
+        try installIfMissing("git", "xcode-select --install")
+        try installIfMissing(
             "brew",
             "curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh | /bin/bash",
             installCommandEnv: ["NONINTERACTIVE": "1"]
         )
-        installIfMissing("inkscape", "brew install inkscape")
-        installIfMissing("python3", "brew install pyenv && pyenv install 3.12.4")
+        try installIfMissing("inkscape", "brew install inkscape")
+        try installIfMissing("python3", "brew install pyenv && pyenv install 3.12.4")
 
         print("Build tooling configured.")
         print("Configuring KDE Craft.")
