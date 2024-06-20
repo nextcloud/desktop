@@ -125,8 +125,9 @@ struct MacCrafter: ParsableCommand {
         shell("\(craftCommand) --src-dir \(repoRootDir) -i --buildtype \(buildType) nextcloud-client")
 
         if let codeSignIdentity {
+            let craftBuildDir = "\(buildPath)/\(craftTarget)/build"
             let clientAppDir =
-                "\(buildPath)/\(craftTarget)/build/nextcloud-client/image-\(buildType)-master/\(appName).app"
+                "\(craftBuildDir)/nextcloud-client/image-\(buildType)-master/\(appName).app"
             try codesign(identity: codeSignIdentity, path: clientAppDir)
         }
     }
