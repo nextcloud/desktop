@@ -48,7 +48,7 @@ struct MacCrafter: ParsableCommand {
         try installIfMissing("git", "xcode-select --install")
         try installIfMissing(
             "brew",
-            "curl -fsSL \(self.brewInstallShUrl) | /bin/bash",
+            "curl -fsSL \(brewInstallShUrl) | /bin/bash",
             installCommandEnv: ["NONINTERACTIVE": "1"]
         )
         try installIfMissing("inkscape", "brew install inkscape")
@@ -57,7 +57,7 @@ struct MacCrafter: ParsableCommand {
         print("Build tooling configured.")
         print("Configuring KDE Craft.")
 
-        let craftMasterDir = "\(self.buildPath)/craftmaster"
+        let craftMasterDir = "\(buildPath)/craftmaster"
         let fm = FileManager.default
 
         if fm.fileExists(atPath: craftMasterDir) {
@@ -69,8 +69,6 @@ struct MacCrafter: ParsableCommand {
 
         print("Configuring Nextcloud Desktop Client blueprints for KDE Craft...")
 
-        let currentDir = fm.currentDirectoryPath
-        let repoRootDir = "\(currentDir)../../../.."
         let craftMasterIni = "\(repoRootDir)/craftmaster.ini"
         let craftMasterPy = "\(craftMasterDir)/CraftMaster.py"
         let craftTarget = "macos-clang-arm64"
@@ -87,16 +85,18 @@ struct MacCrafter: ParsableCommand {
         if let codeSignIdentity {
             print("Code-signing Nextcloud Desktop Client libraries and frameworks...")
 
-            let craftLibDir = "\(self.buildPath)/\(craftTarget)/lib"
+            let craftLibDir = "\(buildPath)/\(craftTarget)/lib"
             let craftLibs = try fm.contentsOfDirectory(atPath: craftLibDir)
             for lib in craftLibs {
                 guard isLibrary(lib) else { continue }
                 try codesign(identity: codeSignIdentity, path: "\(craftLibDir)/\(lib)")
             }
 
-            let craftPluginsDir = "\(currentDir)/\(craftTarget)/plugins"
+            let craftPluginsDir = "\(buildPath)/\(craftTarget)/plugins"
             guard let craftPluginsEnumerator = fm.enumerator(atPath: craftPluginsDir) else {
-                throw MacCrafterError.failedEnumeration("Failed to list craft plugins directory.")
+                throw MacCrafterError.failedEnumeration(
+                    "Failed to list craft plugins directory at \(craftPluginsDir)."
+                )
             }
 
             for case let plugin as String in craftPluginsEnumerator {
