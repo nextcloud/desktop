@@ -17,7 +17,7 @@ import Foundation
 
 struct MacCrafter: ParsableCommand {
     static let configuration = CommandConfiguration(
-        abstract: "A Swift command-line tool to manage blog post banners"
+        abstract: "A tool to easily build a fully-functional Nextcloud Desktop Client for macOS."
     )
 
     enum MacCrafterError: Error {
