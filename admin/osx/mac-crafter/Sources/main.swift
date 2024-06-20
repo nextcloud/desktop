@@ -115,7 +115,7 @@ struct MacCrafter: ParsableCommand {
         }
 
         print("Crafting Nextcloud Desktop Client...")
-        shell("\(craftCommand) --src-dir \(repoRootDir) -i --build-type \(buildType) nextcloud-client")
+        shell("\(craftCommand) --src-dir \(repoRootDir) -i --buildtype \(buildType) nextcloud-client")
 
         if let codeSignIdentity {
             let clientAppDir =
