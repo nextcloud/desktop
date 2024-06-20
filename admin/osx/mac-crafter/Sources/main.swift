@@ -26,6 +26,12 @@ struct MacCrafter: ParsableCommand {
 
     @Argument var codeSignIdentity: String
     @Argument var buildPath = FileManager.default.currentDirectoryPath
+    @Argument var brewInstallShUrl =
+        "https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh"
+    @Argument var craftMasterGitUrl =
+        "https://invent.kde.org/packaging/craftmaster.git"
+    @Argument var clientBlueprintsGitUrl =
+        "https://github.com/nextcloud/desktop-client-blueprints.git"
 
     mutating func run() throws {
         print("Configuring build tooling.")
@@ -33,7 +39,7 @@ struct MacCrafter: ParsableCommand {
         try installIfMissing("git", "xcode-select --install")
         try installIfMissing(
             "brew",
-            "curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh | /bin/bash",
+            "curl -fsSL \(self.brewInstallShUrl) | /bin/bash",
             installCommandEnv: ["NONINTERACTIVE": "1"]
         )
         try installIfMissing("inkscape", "brew install inkscape")
@@ -49,17 +55,18 @@ struct MacCrafter: ParsableCommand {
             print("KDE Craft is already cloned.")
         } else {
             print("Cloning KDE Craft...")
-            shell("git clone --depth=1 https://invent.kde.org/packaging/craftmaster.git \(craftMasterDir)")
+            shell("git clone --depth=1 \(craftMasterGitUrl) \(craftMasterDir)")
         }
 
         print("Configuring Nextcloud Desktop Client blueprints for KDE Craft...")
 
-        let repoRootDir = "\(currentDir)/../.."
+        let currentDir = fm.currentDirectoryPath
+        let repoRootDir = "\(currentDir)../../../.."
         let craftMasterIni = "\(repoRootDir)/craftmaster.ini"
         let craftMasterPy = "\(craftMasterDir)/CraftMaster.py"
         let craftTarget = "macos-clang-arm64"
-        let craftCommand = "python3 \(craftMasterPy) --config \(craftMasterIni) --target \(craftTarget) -c"
-        let clientBlueprintsGitUrl = "https://github.com/nextcloud/desktop-client-blueprints.git"
+        let craftCommand = 
+            "python3 \(craftMasterPy) --config \(craftMasterIni) --target \(craftTarget) -c"
         shell("\(craftCommand) --add-blueprint-repository \(clientBlueprintsGitUrl)")
 
         print("Crafting KDE Craft...")
