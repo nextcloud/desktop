@@ -528,7 +528,7 @@ void Folder::createGuiLog(const QString &filename, LogStatus status, int count,
             break;
         case LogStatusConflict:
             if (count > 1) {
-                text = tr("%1 has and %n other file(s) have sync conflicts.", "", count - 1).arg(file);
+                text = tr("%1 and %n other file(s) have sync conflicts.", "", count - 1).arg(file);
             } else {
                 text = tr("%1 has a sync conflict. Please check the conflict file!").arg(file);
             }

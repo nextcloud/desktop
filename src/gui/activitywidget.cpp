@@ -285,13 +285,13 @@ void ActivityWidget::slotBuildNotificationDisplay(const ActivityList &list)
         // Assemble a tray notification
         QString msg;
         if (newGuiLogCount == 1) {
-            msg = tr("%n notifications(s) for %1.", "", accNotified.begin().value()).arg(accNotified.begin().key());
+            msg = tr("%n notification(s) for %1.", "", accNotified.begin().value()).arg(accNotified.begin().key());
         } else if (newGuiLogCount >= 2) {
             const auto acc1 = accNotified.begin();
             const auto acc2 = ++accNotified.begin();
             if (newGuiLogCount == 2) {
                 const int notiCount = acc1.value() + acc2.value();
-                msg = tr("%n notifications(s) for %1 and %2.", "", notiCount).arg(acc1.key(), acc2.key());
+                msg = tr("%n notification(s) for %1 and %2.", "", notiCount).arg(acc1.key(), acc2.key());
             } else {
                 msg = tr("New notifications for %1, %2 and other accounts.").arg(acc1.key(), acc2.key());
             }

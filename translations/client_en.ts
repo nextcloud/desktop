@@ -212,9 +212,9 @@ File synchronization desktop utility.</source>
     <message numerus="yes">
         <location filename="../src/gui/commonstrings.cpp" line="48"/>
         <source>%n Filter(s)</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%n Filter</numerusform>
+            <numerusform>%n Filters</numerusform>
         </translation>
     </message>
 </context>
@@ -896,18 +896,18 @@ This action will abort any currently running synchronization.</source>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/activitywidget.cpp" line="288"/>
-        <source>%n notifications(s) for %1.</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <source>%n notification(s) for %1.</source>
+        <translation>
+            <numerusform>%n notification for %1.</numerusform>
+            <numerusform>%n notifications for %1.</numerusform>
         </translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/activitywidget.cpp" line="294"/>
-        <source>%n notifications(s) for %1 and %2.</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <source>%n notification(s) for %1 and %2.</source>
+        <translation>
+            <numerusform>%n notification for %1 and %2.</numerusform>
+            <numerusform>%n notifications for %1 and %2.</numerusform>
         </translation>
     </message>
     <message>
@@ -1083,9 +1083,9 @@ The update will be performed in the background, and overwrite the current AppIma
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="496"/>
         <source>%1 and %n other file(s) have been removed.</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%1 and %n other file have been removed.</numerusform>
+            <numerusform>%1 and %n other files have been removed.</numerusform>
         </translation>
     </message>
     <message>
@@ -1106,9 +1106,9 @@ The update will be performed in the background, and overwrite the current AppIma
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="503"/>
         <source>%1 and %n other file(s) have been added.</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%1 and %n other file have been added.</numerusform>
+            <numerusform>%1 and %n other files have been added.</numerusform>
         </translation>
     </message>
     <message>
@@ -1120,33 +1120,33 @@ The update will be performed in the background, and overwrite the current AppIma
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="510"/>
         <source>%1 and %n other file(s) have been updated.</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%1 and %n other file have been updated.</numerusform>
+            <numerusform>%1 and %n other files have been updated.</numerusform>
         </translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="517"/>
         <source>%1 has been renamed to %2 and %n other file(s) have been renamed.</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%1 has been renamed to %2 and %n other file have been renamed.</numerusform>
+            <numerusform>%1 has been renamed to %2 and %n other files have been renamed.</numerusform>
         </translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="524"/>
         <source>%1 has been moved to %2 and %n other file(s) have been moved.</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%1 has been moved to %2 and %n other file have been moved.</numerusform>
+            <numerusform>%1 has been moved to %2 and %n other files have been moved.</numerusform>
         </translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="531"/>
-        <source>%1 has and %n other file(s) have sync conflicts.</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <source>%1 and %n other file(s) have sync conflicts.</source>
+        <translation>
+            <numerusform>%1 and %n other file have sync conflicts.</numerusform>
+            <numerusform>%1 and %n other files have sync conflicts.</numerusform>
         </translation>
     </message>
     <message>
@@ -1157,9 +1157,9 @@ The update will be performed in the background, and overwrite the current AppIma
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="538"/>
         <source>%1 and %n other file(s) could not be synced due to errors. See the log for details.</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%1 and %n other file could not be synced due to errors. See the log for details.</numerusform>
+            <numerusform>%1 and %n other files could not be synced due to errors. See the log for details.</numerusform>
         </translation>
     </message>
     <message>
