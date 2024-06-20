@@ -49,6 +49,9 @@ struct MacCrafter: ParsableCommand {
     @Option(name: [.long], help: "Skip code-signing dependency libraries and plugins.")
     var skipDependencyCodeSigning = false
 
+    @Option(name: [.long], help: "Skip craft configuration.")
+    var skipCraftConfiguration = false
+
     @Option(name: [.long], help: "The application's branded name.")
     var appName = "Nextcloud"
 
@@ -71,34 +74,36 @@ struct MacCrafter: ParsableCommand {
         try installIfMissing("python3", "brew install pyenv && pyenv install 3.12.4")
 
         print("Build tooling configured.")
-        print("Configuring KDE Craft.")
 
-        let craftMasterDir = "\(buildPath)/craftmaster"
         let fm = FileManager.default
-
-        if fm.fileExists(atPath: craftMasterDir) {
-            print("KDE Craft is already cloned.")
-        } else {
-            print("Cloning KDE Craft...")
-            shell("git clone --depth=1 \(craftMasterGitUrl) \(craftMasterDir)")
-        }
-
-        print("Configuring Nextcloud Desktop Client blueprints for KDE Craft...")
-
+        let craftMasterDir = "\(buildPath)/craftmaster"
         let craftMasterIni = "\(repoRootDir)/craftmaster.ini"
         let craftMasterPy = "\(craftMasterDir)/CraftMaster.py"
         let craftTarget = "macos-clang-arm64"
-        let craftCommand = 
+        let craftCommand =
             "python3 \(craftMasterPy) --config \(craftMasterIni) --target \(craftTarget) -c"
-        shell("\(craftCommand) --add-blueprint-repository \(clientBlueprintsGitUrl)")
 
-        print("Crafting KDE Craft...")
-        shell("\(craftCommand) craft")
+        if !skipCraftConfiguration {
+            print("Configuring KDE Craft.")
 
-        print("Crafting Nextcloud Desktop Client dependencies...")
-        shell("\(craftCommand) --install-deps nextcloud-client")
+            if fm.fileExists(atPath: craftMasterDir) {
+                print("KDE Craft is already cloned.")
+            } else {
+                print("Cloning KDE Craft...")
+                shell("git clone --depth=1 \(craftMasterGitUrl) \(craftMasterDir)")
+            }
 
-        if !skipDependencyCodeSigning, let codeSignIdentity {
+            print("Configuring Nextcloud Desktop Client blueprints for KDE Craft...")
+            shell("\(craftCommand) --add-blueprint-repository \(clientBlueprintsGitUrl)")
+
+            print("Crafting KDE Craft...")
+            shell("\(craftCommand) craft")
+
+            print("Crafting Nextcloud Desktop Client dependencies...")
+            shell("\(craftCommand) --install-deps nextcloud-client")
+        }
+
+        if !skipCraftConfiguration, !skipDependencyCodeSigning, let codeSignIdentity {
             print("Code-signing Nextcloud Desktop Client libraries and frameworks...")
 
             let craftLibDir = "\(buildPath)/\(craftTarget)/lib"
@@ -125,6 +130,7 @@ struct MacCrafter: ParsableCommand {
         shell("\(craftCommand) --src-dir \(repoRootDir) -i --buildtype \(buildType) nextcloud-client")
 
         if let codeSignIdentity {
+            print("Code-signing Nextcloud Desktop Client app bundle...")
             let craftBuildDir = "\(buildPath)/\(craftTarget)/build"
             let clientAppDir =
                 "\(craftBuildDir)/nextcloud-client/image-\(buildType)-master/\(appName).app"
