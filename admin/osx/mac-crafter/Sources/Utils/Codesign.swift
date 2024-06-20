@@ -14,15 +14,18 @@
 
 import Foundation
 
+enum CodeSigningError: Error {
+    case failedToCodeSign(String)
+}
+
 func codesign(
     identity: String,
     path: String,
     options: String = "--timestamp --force --preserve-metadata=entitlements --verbose=4 --options runtime"
-) {
+) throws {
     print("Code-signing \(path)...")
     let command = "codesign -s \"\(identity)\" \(options) \(path)"
     guard shell(command) == 0 else {
-        print("Failed to code-sign \(path).")
-        exit(1)
+        throw CodeSigningError.failedToCodeSign("Failed to code-sign \(path).")
     }
 }
