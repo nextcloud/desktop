@@ -22,6 +22,7 @@ struct MacCrafter: ParsableCommand {
 
     enum MacCrafterError: Error {
         case failedEnumeration(String)
+        case environmentError(String)
     }
 
     @Argument(help: "Path to the root directory of the Nextcloud Desktop Client git repository.")
@@ -53,6 +54,12 @@ struct MacCrafter: ParsableCommand {
 
     mutating func run() throws {
         print("Configuring build tooling.")
+
+        if let codeSignIdentity {
+            guard commandExists("codesign") else {
+                throw MacCrafterError.environmentError("codesign not found, cannot proceed.")
+            }
+        }
 
         try installIfMissing("git", "xcode-select --install")
         try installIfMissing(
