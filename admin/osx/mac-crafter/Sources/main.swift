@@ -12,48 +12,63 @@
  * for more details.
  */
 
+import ArgumentParser
 import Foundation
 
-print("Configuring build tooling.")
+struct MacCrafter: ParsableCommand {
+    static let configuration = CommandConfiguration(
+        abstract: "A Swift command-line tool to manage blog post banners"
+    )
 
-installIfMissing("git", "xcode-select --install")
-installIfMissing(
-    "brew",
-    "curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh | /bin/bash",
-    installCommandEnv: ["NONINTERACTIVE": "1"]
-)
-installIfMissing("inkscape", "brew install inkscape")
-installIfMissing("python3", "brew install pyenv && pyenv install 3.12.4")
+    enum MacCrafterError: Error {
+        case failedEnumeration(String)
+    }
 
-print("Build tooling configured.")
-print("Configuring KDE Craft.")
+    mutating func run() throws {
+        print("Configuring build tooling.")
 
-let fm = FileManager.default
-let currentDir = fm.currentDirectoryPath
-let craftMasterDir = "\(currentDir)/craftmaster"
+        installIfMissing("git", "xcode-select --install")
+        installIfMissing(
+            "brew",
+            "curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh | /bin/bash",
+            installCommandEnv: ["NONINTERACTIVE": "1"]
+        )
+        installIfMissing("inkscape", "brew install inkscape")
+        installIfMissing("python3", "brew install pyenv && pyenv install 3.12.4")
 
-if fm.fileExists(atPath: craftMasterDir) {
-    print("KDE Craft is already cloned.")
-} else {
-    print("Cloning KDE Craft...")
-    shell("git clone --depth=1 https://invent.kde.org/packaging/craftmaster.git \(craftMasterDir)")
+        print("Build tooling configured.")
+        print("Configuring KDE Craft.")
+
+        let fm = FileManager.default
+        let currentDir = fm.currentDirectoryPath
+        let craftMasterDir = "\(currentDir)/craftmaster"
+
+        if fm.fileExists(atPath: craftMasterDir) {
+            print("KDE Craft is already cloned.")
+        } else {
+            print("Cloning KDE Craft...")
+            shell("git clone --depth=1 https://invent.kde.org/packaging/craftmaster.git \(craftMasterDir)")
+        }
+
+        print("Configuring Nextcloud Desktop Client blueprints for KDE Craft...")
+
+        let repoRootDir = "\(currentDir)/../.."
+        let craftMasterIni = "\(repoRootDir)/craftmaster.ini"
+        let craftMasterPy = "\(craftMasterDir)/CraftMaster.py"
+        let craftTarget = "macos-clang-arm64"
+        let craftCommand = "python3 \(craftMasterPy) --config \(craftMasterIni) --target \(craftTarget) -c"
+        let clientBlueprintsGitUrl = "https://github.com/nextcloud/desktop-client-blueprints.git"
+        shell("\(craftCommand) --add-blueprint-repository \(clientBlueprintsGitUrl)")
+
+        print("Crafting KDE Craft...")
+        shell("\(craftCommand) craft")
+
+        print("Crafting Nextcloud Desktop Client dependencies...")
+        shell("\(craftCommand) --install-deps nextcloud-client")
+
+        print("Crafting Nextcloud Desktop Client...")
+        shell("\(craftCommand) --src-dir \(repoRootDir) nextcloud-client")
+    }
 }
 
-print("Configuring Nextcloud Desktop Client blueprints for KDE Craft...")
-
-let repoRootDir = "\(currentDir)/../.."
-let craftMasterIni = "\(repoRootDir)/craftmaster.ini"
-let craftMasterPy = "\(craftMasterDir)/CraftMaster.py"
-let craftTarget = "macos-clang-arm64"
-let craftCommand = "python3 \(craftMasterPy) --config \(craftMasterIni) --target \(craftTarget) -c"
-let clientBlueprintsGitUrl = "https://github.com/nextcloud/desktop-client-blueprints.git"
-shell("\(craftCommand) --add-blueprint-repository \(clientBlueprintsGitUrl)")
-
-print("Crafting KDE Craft...")
-shell("\(craftCommand) craft")
-
-print("Crafting Nextcloud Desktop Client dependencies...")
-shell("\(craftCommand) --install-deps nextcloud-client")
-
-print("Crafting Nextcloud Desktop Client...")
-shell("\(craftCommand) --src-dir \(repoRootDir) nextcloud-client")
+MacCrafter.main()
