@@ -24,6 +24,8 @@ struct MacCrafter: ParsableCommand {
         case failedEnumeration(String)
     }
 
+    @Argument var codeSignIdentity: String
+
     mutating func run() throws {
         print("Configuring build tooling.")
 
@@ -65,6 +67,16 @@ struct MacCrafter: ParsableCommand {
 
         print("Crafting Nextcloud Desktop Client dependencies...")
         shell("\(craftCommand) --install-deps nextcloud-client")
+
+        print("Code-signing Nextcloud Desktop Client libraries and frameworks...")
+
+        let craftLibDir = "\(currentDir)/\(craftTarget)/lib"
+        let craftLibs = try fm.contentsOfDirectory(atPath: craftLibDir)
+        for lib in craftLibs {
+            let libPath = "\(craftLibDir)/\(lib)"
+            guard lib.hasSuffix(".dylib") || lib.hasSuffix(".framework") else { continue }
+            try codesign(identity: codeSignIdentity, path: libPath)
+        }
 
         print("Crafting Nextcloud Desktop Client...")
         shell("\(craftCommand) --src-dir \(repoRootDir) nextcloud-client")
