@@ -45,6 +45,9 @@ struct MacCrafter: ParsableCommand {
     @Option(name: [.long], help: "Build type (e.g. Release, RelWithDebInfo, MinSizeRel, Debug).")
     var buildType = "RelWithDebInfo"
 
+    @Option(name: [.long], help: "Skip code-signing dependency libraries and plugins.")
+    var skipDependencyCodeSigning = false
+
     mutating func run() throws {
         print("Configuring build tooling.")
 
@@ -85,7 +88,7 @@ struct MacCrafter: ParsableCommand {
         print("Crafting Nextcloud Desktop Client dependencies...")
         shell("\(craftCommand) --install-deps nextcloud-client")
 
-        if let codeSignIdentity {
+        if !skipDependencyCodeSigning, let codeSignIdentity {
             print("Code-signing Nextcloud Desktop Client libraries and frameworks...")
 
             let craftLibDir = "\(buildPath)/\(craftTarget)/lib"
