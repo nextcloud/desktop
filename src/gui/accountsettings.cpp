@@ -443,6 +443,7 @@ void AccountSettings::slotAccountStateChanged()
 {
     const AccountState::State state = _accountState->state();
     const AccountPtr account = _accountState->account();
+    qCDebug(lcAccountSettings) << "Account state changed to" << state << "for account" << account;
 
     // in 2023 there should never be credentials encoded in the url, but we never know...
     const auto safeUrl = account->url().adjusted(QUrl::RemoveUserInfo);
@@ -480,7 +481,7 @@ void AccountSettings::slotAccountStateChanged()
     case AccountState::Connecting:
         if (NetworkInformation::instance()->isBehindCaptivePortal()) {
             showConnectionLabel(tr("Captive portal prevents connections to %1.").arg(server));
-        } else if (NetworkInformation::instance()->isMetered()) {
+        } else if (NetworkInformation::instance()->isMetered() && ConfigFile().pauseSyncWhenMetered()) {
             showConnectionLabel(tr("Sync to %1 is paused due to metered internet connection.").arg(server));
         } else {
             showConnectionLabel(tr("Connecting to: %1.").arg(server));
