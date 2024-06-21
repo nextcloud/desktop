@@ -52,6 +52,13 @@ struct MacCrafter: ParsableCommand {
     @Option(name: [.long], help: "The application's branded name.")
     var appName = "Nextcloud"
 
+    @Option(name: [.long], help: "Build with Sparkle auto-updater.")
+    var buildAutoUpdater = true
+
+    @Option(name: [.long], help: "Sparkle download URL.")
+    var sparkleDownloadUrl =
+        "https://github.com/sparkle-project/Sparkle/releases/download/1.27.3/Sparkle-1.27.3.tar.xz"
+
     mutating func run() throws {
         print("Configuring build tooling.")
 
@@ -100,8 +107,39 @@ struct MacCrafter: ParsableCommand {
             shell("\(craftCommand) --install-deps nextcloud-client")
         }
 
+        var craftOptions: [String] = []
+
+        if buildAutoUpdater {
+            print("Configuring Sparkle auto-updater.")
+
+            let fm = FileManager.default
+            guard fm.fileExists(atPath: "\(buildPath)/Sparkle.tar.xz") ||
+                  shell("wget \(sparkleDownloadUrl) -O \(buildPath)/Sparkle.tar.xz") == 0
+            else {
+                throw MacCrafterError.environmentError("Error downloading sparkle.")
+            }
+
+            guard fm.fileExists(atPath: "\(buildPath)/Sparkle.framework") ||
+                  shell("tar -xvf \(buildPath)/Sparkle.tar.xz -C \(buildPath)") == 0
+            else {
+                throw MacCrafterError.environmentError("Error unpacking sparkle.")
+            }
+
+            craftOptions.append("sparkleLibPath=\(buildPath)/Sparkle.framework")
+        }
+
         print("Crafting Nextcloud Desktop Client...")
-        shell("\(craftCommand) --src-dir \(repoRootDir) -i --buildtype \(buildType) nextcloud-client")
+
+        if !craftOptions.isEmpty {
+            let craftOptionsArg = craftOptions.map { "--set \"\($0)\"" }
+            for option in craftOptions {
+                shell("\(craftCommand) \(option) nextcloud-client")
+            }
+        }
+
+        shell(
+            "\(craftCommand) --src-dir \(repoRootDir) --buildtype \(buildType) -i nextcloud-client"
+        )
 
         guard let codeSignIdentity else {
             print("Crafted Nextcloud Desktop Client. Not codesigned.")
