@@ -854,7 +854,7 @@ std::optional<QByteArray> decryptStringAsymmetricWithToken(ENGINE *sslEngine,
                                                            PKCS11_KEY *privateKey,
                                                            const QByteArray &binaryData)
 {
-    qCDebug(lcCseDecryption()) << "encrypt asymetric with pkcs11 private key" << privateKey;
+    qCDebug(lcCseDecryption()) << "decrypt asymetric with pkcs11 private key" << privateKey;
     const auto evpPrivateKey = PKCS11_get_private_key(privateKey);
     qCDebug(lcCseDecryption()) << "got the evp key pointer for" << privateKey << evpPrivateKey;
     if (!evpPrivateKey) {
@@ -1206,9 +1206,7 @@ void ClientSideEncryption::initializeHardwareTokenEncryption(QWidget *settingsDi
             return;
         }
 
-        saveCertificateIdentification(account);
-
-        emit initializationFinished();
+        sendPublicKey(account);
 
         _tokenSlots = std::move(tokenSlots);
         _context = std::move(ctx);
@@ -1992,7 +1990,7 @@ void ClientSideEncryption::sendSignRequestCSR(const AccountPtr &account,
     auto job = new SignPublicKeyApiJob(account, e2eeBaseUrl(account) + "public-key", this);
     job->setCsr(csrContent);
 
-    connect(job, &SignPublicKeyApiJob::jsonReceived, [this, account, keyPair = std::move(keyPair)](const QJsonDocument& json, const int retCode) {
+    connect(job, &SignPublicKeyApiJob::jsonReceived, job, [this, account, keyPair = std::move(keyPair)](const QJsonDocument& json, const int retCode) {
         if (retCode == 200) {
             const auto cert = json.object().value("ocs").toObject().value("data").toObject().value("public-key").toString();
             _encryptionCertificate = CertificateInformation{_encryptionCertificate.getPrivateKeyData(), QSslCertificate{cert.toLocal8Bit(), QSsl::Pem}};
@@ -2014,6 +2012,28 @@ void ClientSideEncryption::sendSignRequestCSR(const AccountPtr &account,
             qCWarning(lcCse()) << retCode;
             failedToInitialize(account);
             return;
+        }
+    });
+    job->start();
+}
+
+void ClientSideEncryption::sendPublicKey(const AccountPtr &account)
+{
+    // Send public key to the server
+    auto job = new StorePublicKeyApiJob(account, e2eeBaseUrl(account) + "public-key", this);
+    job->setPublicKey(_encryptionCertificate.getCertificate().toPem());
+    connect(job, &StorePublicKeyApiJob::jsonReceived, [this, account](const QJsonDocument& doc, int retCode) {
+        Q_UNUSED(doc);
+        switch(retCode) {
+        case 200:
+        case 409:
+            saveCertificateIdentification(account);
+            emit initializationFinished();
+
+            break;
+        default:
+            qCWarning(lcCse) << "Store certificate failed, return code:" << retCode;
+            failedToInitialize(account);
         }
     });
     job->start();

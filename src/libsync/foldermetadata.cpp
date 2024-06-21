@@ -437,6 +437,7 @@ QByteArray FolderMetadata::decryptDataWithPrivateKey(const QByteArray &base64Dat
     if (!decryptBase64Result) {
         qCDebug(lcCseMetadata()) << "ERROR. Could not decrypt the metadata key";
         _account->reportClientStatus(OCC::ClientStatusReportingStatus::E2EeError_GeneralError);
+        return {};
     }
     qCDebug(lcCseMetadata()) << "decryptDataWithPrivateKey" << base64Data << *decryptBase64Result;
     return *decryptBase64Result;
