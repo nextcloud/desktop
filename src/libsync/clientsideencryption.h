@@ -362,6 +362,8 @@ private:
                             PKey keyPair,
                             const QByteArray &csrContent);
 
+    void sendPublicKey(const AccountPtr &account);
+
     void writeKeyPair(const AccountPtr &account,
                       PKey keyPair,
                       const QByteArray &csrContent);

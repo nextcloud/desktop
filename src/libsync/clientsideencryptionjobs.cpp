@@ -20,6 +20,7 @@
 #include "common/syncjournaldb.h"
 
 Q_LOGGING_CATEGORY(lcSignPublicKeyApiJob, "nextcloud.sync.networkjob.sendcsr", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcStorePublicKeyApiJob, "nextcloud.sync.networkjob.storepublickey", QtInfoMsg)
 Q_LOGGING_CATEGORY(lcStorePrivateKeyApiJob, "nextcloud.sync.networkjob.storeprivatekey", QtInfoMsg)
 Q_LOGGING_CATEGORY(lcCseJob, "nextcloud.sync.networkjob.clientsideencrypt", QtInfoMsg)
 
@@ -421,6 +422,45 @@ bool SetEncryptionFlagApiJob::finished()
         qCInfo(lcCseJob()) << "Setting the encrypted flag failed with" << path() << errorString() << retCode;
         emit error(_fileId, retCode, errorString());
     }
+    return true;
+}
+
+StorePublicKeyApiJob::StorePublicKeyApiJob(const AccountPtr& account, const QString& path, QObject* parent)
+    : AbstractNetworkJob(account, path, parent)
+{
+}
+
+void StorePublicKeyApiJob::setPublicKey(const QByteArray& publicKey)
+{
+    QByteArray data = "publicKey=";
+    data += QUrl::toPercentEncoding(publicKey);
+    _publicKey.setData(data);
+}
+
+void StorePublicKeyApiJob::start()
+{
+    QNetworkRequest req;
+    req.setRawHeader("OCS-APIREQUEST", "true");
+    req.setHeader(QNetworkRequest::ContentTypeHeader, QByteArrayLiteral("application/x-www-form-urlencoded"));
+    QUrlQuery query;
+    query.addQueryItem(QLatin1String("format"), QLatin1String("json"));
+    QUrl url = Utility::concatUrlPath(account()->url(), path());
+    url.setQuery(query);
+
+    qCDebug(lcStorePublicKeyApiJob) << "Sending the public key";
+    sendRequest("PUT", url, req, &_publicKey);
+    AbstractNetworkJob::start();
+}
+
+bool StorePublicKeyApiJob::finished()
+{
+    int retCode = reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+    if (retCode != 200)
+        qCInfo(lcStorePublicKeyApiJob()) << "Sending public key ended with"  << path() << errorString() << retCode;
+
+    QJsonParseError error{};
+    auto json = QJsonDocument::fromJson(reply()->readAll(), &error);
+    emit jsonReceived(json, reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt());
     return true;
 }
 
