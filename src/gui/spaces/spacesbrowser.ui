@@ -27,19 +27,16 @@
     <number>0</number>
    </property>
    <item>
-    <widget class="QQuickWidget" name="quickWidget">
-     <property name="resizeMode">
-      <enum>QQuickWidget::SizeRootObjectToView</enum>
-     </property>
-    </widget>
+    <widget class="OCC::QmlUtils::OCQuickWidget" name="quickWidget" native="true"/>
    </item>
   </layout>
  </widget>
  <customwidgets>
   <customwidget>
-   <class>QQuickWidget</class>
+   <class>OCC::QmlUtils::OCQuickWidget</class>
    <extends>QWidget</extends>
-   <header location="global">QtQuickWidgets/QQuickWidget</header>
+   <header>gui/qmlutils.h</header>
+   <container>1</container>
   </customwidget>
  </customwidgets>
  <resources/>

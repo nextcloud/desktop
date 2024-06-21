@@ -144,7 +144,7 @@
        </item>
       </layout>
      </widget>
-     <widget class="QQuickWidget" name="quickWidget"/>
+     <widget class="OCC::QmlUtils::OCQuickWidget" name="quickWidget"/>
     </widget>
    </item>
   </layout>
@@ -154,6 +154,12 @@
    <class>QProgressIndicator</class>
    <extends>QWidget</extends>
    <header>QProgressIndicator.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>OCC::QmlUtils::OCQuickWidget</class>
+   <extends>QWidget</extends>
+   <header>gui/qmlutils.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

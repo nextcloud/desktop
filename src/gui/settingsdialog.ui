@@ -44,14 +44,7 @@
          <number>0</number>
         </property>
         <item>
-         <widget class="QQuickWidget" name="quickWidget">
-          <property name="minimumSize">
-           <size>
-            <width>0</width>
-            <height>0</height>
-           </size>
-          </property>
-         </widget>
+         <widget class="OCC::QmlUtils::OCQuickWidget" name="quickWidget" native="true"/>
         </item>
         <item>
          <widget class="QStackedWidget" name="stack"/>
@@ -65,9 +58,10 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>QQuickWidget</class>
+   <class>OCC::QmlUtils::OCQuickWidget</class>
    <extends>QWidget</extends>
-   <header location="global">QtQuickWidgets/QQuickWidget</header>
+   <header>gui/qmlutils.h</header>
+   <container>1</container>
   </customwidget>
  </customwidgets>
  <resources/>

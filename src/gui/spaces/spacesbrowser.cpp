@@ -42,8 +42,7 @@ SpacesBrowser::SpacesBrowser(QWidget *parent)
     _sortModel->setSortRole(static_cast<int>(SpacesModel::Roles::Priority));
     _sortModel->sort(0, Qt::DescendingOrder);
 
-    ui->quickWidget->rootContext()->setContextProperty(QStringLiteral("spacesBrowser"), this);
-    QmlUtils::initQuickWidget(ui->quickWidget, QUrl(QStringLiteral("qrc:/qt/qml/org/ownCloud/gui/spaces/qml/SpacesView.qml")));
+    QmlUtils::initQuickWidget(ui->quickWidget, QUrl(QStringLiteral("qrc:/qt/qml/org/ownCloud/gui/spaces/qml/SpacesView.qml")), this);
 }
 
 SpacesBrowser::~SpacesBrowser()

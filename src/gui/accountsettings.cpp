@@ -71,9 +71,8 @@ AccountSettings::AccountSettings(const AccountStatePtr &accountState, QWidget *p
 
     _sortModel = weightedModel;
 
-    ui->quickWidget->rootContext()->setContextProperty(QStringLiteral("ctx"), this);
     ui->quickWidget->engine()->addImageProvider(QStringLiteral("space"), new Spaces::SpaceImageProvider(_accountState->account()));
-    QmlUtils::initQuickWidget(ui->quickWidget, QUrl(QStringLiteral("qrc:/qt/qml/org/ownCloud/gui/qml/FolderDelegate.qml")));
+    QmlUtils::initQuickWidget(ui->quickWidget, QUrl(QStringLiteral("qrc:/qt/qml/org/ownCloud/gui/qml/FolderDelegate.qml")), this);
 
     connect(FolderMan::instance(), &FolderMan::folderListChanged, _model, &FolderStatusModel::resetFolders);
     ui->connectLabel->clear();

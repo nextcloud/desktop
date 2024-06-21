@@ -13,9 +13,8 @@
  */
 
 #pragma once
+#include <QtQuickWidgets/QQuickWidget>
 
-
-class QQuickWidget;
 class QUrl;
 
 #define OC_DECLARE_WIDGET_FOCUS                                                                                                                                \
@@ -29,9 +28,26 @@ public:                                                                         
         focusPreviousChild();                                                                                                                                  \
     }                                                                                                                                                          \
                                                                                                                                                                \
+Q_SIGNALS:                                                                                                                                                     \
+    void focusFirst();                                                                                                                                         \
+    void focusLast();                                                                                                                                          \
+                                                                                                                                                               \
 private:
 
 namespace OCC::QmlUtils {
+class OCQuickWidget : public QQuickWidget
+{
+    Q_OBJECT
+public:
+    using QQuickWidget::QQuickWidget;
 
-void initQuickWidget(QQuickWidget *widget, const QUrl &src);
+Q_SIGNALS:
+    void focusFirst();
+    void focusLast();
+
+protected:
+    void focusInEvent(QFocusEvent *event) override;
+};
+
+void initQuickWidget(OCQuickWidget *widget, const QUrl &src, QObject *ocContext);
 }

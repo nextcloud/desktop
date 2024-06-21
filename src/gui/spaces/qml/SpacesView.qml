@@ -18,12 +18,13 @@ import QtQuick.Layouts
 
 import org.ownCloud.gui 1.0
 import org.ownCloud.libsync 1.0
+import org.ownCloud.gui.spaces 1.0
 
 Pane {
     // TODO: not cool
     readonly property real normalSize: 170
 
-    //property SpacesBrowser spacesBrowser
+    readonly property SpacesBrowser spacesBrowser: ocContext
 
     ScrollView {
         id: scrollView

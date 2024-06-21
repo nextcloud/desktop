@@ -76,10 +76,9 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
     // People perceive this as a Window, so also make Ctrl+W work
     addAction(tr("Hide"), Qt::CTRL | Qt::Key_W, this, &SettingsDialog::hide);
 
-    _ui->quickWidget->rootContext()->setContextProperty(QStringLiteral("settingsDialog"), this);
     // TODO: fix sizing
     _ui->quickWidget->setFixedHeight(minimumHeight() * 0.15);
-    QmlUtils::initQuickWidget(_ui->quickWidget, QUrl(QStringLiteral("qrc:/qt/qml/org/ownCloud/gui/qml/AccountBar.qml")));
+    QmlUtils::initQuickWidget(_ui->quickWidget, QUrl(QStringLiteral("qrc:/qt/qml/org/ownCloud/gui/qml/AccountBar.qml")), this);
     connect(
         _ui->quickWidget->engine(), &QQmlEngine::quit, QApplication::instance(),
         [this] {

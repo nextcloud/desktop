@@ -23,10 +23,26 @@ Pane {
     id: folderSyncPanel
     // TODO: not cool
     readonly property real normalSize: 170
-    readonly property AccountSettings accountSettings: ctx
+    readonly property AccountSettings accountSettings: ocContext
 
     Accessible.role: Accessible.List
     Accessible.name: qsTr("Folder Sync")
+
+    Connections {
+        target: accountSettings
+
+        function onFocusFirst() {
+            listView.currentIndex = 0;
+        }
+
+        function onFocusLast() {
+            if (addSyncButton.enabled) {
+                addSyncButton.forceActiveFocus(Qt.TabFocusReason);
+            } else {
+                listView.currentIndex = listView.count - 1;
+            }
+        }
+    }
 
     ColumnLayout {
         anchors.fill: parent

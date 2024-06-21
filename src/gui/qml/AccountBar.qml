@@ -20,7 +20,24 @@ import org.ownCloud.libsync 1.0
 
 Pane {
     id: bar
+    readonly property SettingsDialog settingsDialog: ocContext
     Accessible.name: qsTr("Navigation bar")
+
+    Connections {
+        target: settingsDialog
+
+        function onFocusFirst() {
+            if (accountButtons.count === 0) {
+                addAccountButton.forceActiveFocus(Qt.TabFocusReason);
+            } else {
+                accountButtons.itemAt(0).forceActiveFocus(Qt.TabFocusReason);
+            }
+        }
+
+        function onFocusLast() {
+            quitButton.forceActiveFocus(Qt.TabFocusReason);
+        }
+    }
 
     RowLayout {
         anchors.fill: parent
