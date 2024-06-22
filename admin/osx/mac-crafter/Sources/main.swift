@@ -40,8 +40,11 @@ struct MacCrafter: ParsableCommand {
     @Option(name: [.long], help: "CraftMaster git url.")
     var craftMasterGitUrl = "https://invent.kde.org/packaging/craftmaster.git"
 
-    @Option(name: [.long], help: "Nextcloud Desktop Client git url.")
+    @Option(name: [.long], help: "Nextcloud Desktop Client craft blueprint git url.")
     var clientBlueprintsGitUrl = "https://github.com/nextcloud/desktop-client-blueprints.git"
+
+    @Option(name: [.long], help: "Nextcloud Desktop Client craft blueprint name.")
+    var craftBlueprintName = "nextcloud-client"
 
     @Option(name: [.long], help: "Build type (e.g. Release, RelWithDebInfo, MinSizeRel, Debug).")
     var buildType = "RelWithDebInfo"
@@ -104,7 +107,7 @@ struct MacCrafter: ParsableCommand {
             shell("\(craftCommand) craft")
 
             print("Crafting Nextcloud Desktop Client dependencies...")
-            shell("\(craftCommand) --install-deps nextcloud-client")
+            shell("\(craftCommand) --install-deps \(craftBlueprintName)")
         }
 
         var craftOptions: [String] = []
@@ -133,7 +136,7 @@ struct MacCrafter: ParsableCommand {
         if !craftOptions.isEmpty {
             let craftOptionsArg = craftOptions.map { "--set \"\($0)\"" }
             for option in craftOptions {
-                shell("\(craftCommand) \(option) nextcloud-client")
+                shell("\(craftCommand) \(option) \(craftBlueprintName)")
             }
         }
 
@@ -150,7 +153,7 @@ struct MacCrafter: ParsableCommand {
 
         let craftBuildDir = "\(buildPath)/\(craftTarget)/build"
         let clientAppDir =
-            "\(craftBuildDir)/nextcloud-client/image-\(buildType)-master/\(appName).app"
+            "\(craftBuildDir)/\(craftBlueprintName)/image-\(buildType)-master/\(appName).app"
         try codesignClientAppBundle(at: clientAppDir, withCodeSignIdentity: codeSignIdentity)
 
         print("Done!")
