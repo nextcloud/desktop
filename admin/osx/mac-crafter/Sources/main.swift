@@ -49,8 +49,8 @@ struct MacCrafter: ParsableCommand {
     @Option(name: [.long], help: "Build type (e.g. Release, RelWithDebInfo, MinSizeRel, Debug).")
     var buildType = "RelWithDebInfo"
 
-    @Option(name: [.long], help: "Skip craft configuration.")
-    var skipCraftConfiguration = false
+    @Option(name: [.long], help: "Reconfigure craft.")
+    var reconfigureCraft = false
 
     @Option(name: [.long], help: "The application's branded name.")
     var appName = "Nextcloud"
@@ -90,7 +90,7 @@ struct MacCrafter: ParsableCommand {
         let craftCommand =
             "python3 \(craftMasterPy) --config \(craftMasterIni) --target \(craftTarget) -c"
 
-        if !skipCraftConfiguration {
+        if !fm.fileExists(atPath: craftMasterDir) || reconfigureCraft {
             print("Configuring KDE Craft.")
 
             if fm.fileExists(atPath: craftMasterDir) {
