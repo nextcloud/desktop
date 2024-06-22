@@ -62,6 +62,9 @@ struct MacCrafter: ParsableCommand {
     var sparkleDownloadUrl =
         "https://github.com/sparkle-project/Sparkle/releases/download/1.27.3/Sparkle-1.27.3.tar.xz"
 
+    @Option(name: [.long], help: "Git clone command; include options such as depth.")
+    var gitCloneCommand = "git clone --depth=1"
+
     mutating func run() throws {
         print("Configuring build tooling.")
 
@@ -97,7 +100,7 @@ struct MacCrafter: ParsableCommand {
                 print("KDE Craft is already cloned.")
             } else {
                 print("Cloning KDE Craft...")
-                shell("git clone --depth=1 \(craftMasterGitUrl) \(craftMasterDir)")
+                shell("\(gitCloneCommand) \(craftMasterGitUrl) \(craftMasterDir)")
             }
 
             print("Configuring Nextcloud Desktop Client blueprints for KDE Craft...")
