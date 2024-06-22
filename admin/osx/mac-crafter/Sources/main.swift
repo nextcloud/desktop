@@ -23,6 +23,8 @@ struct MacCrafter: ParsableCommand {
     enum MacCrafterError: Error {
         case failedEnumeration(String)
         case environmentError(String)
+        case gitError(String)
+        case craftError(String)
     }
 
     @Argument(help: "Path to the root directory of the Nextcloud Desktop Client git repository.")
@@ -100,17 +102,25 @@ struct MacCrafter: ParsableCommand {
                 print("KDE Craft is already cloned.")
             } else {
                 print("Cloning KDE Craft...")
-                shell("\(gitCloneCommand) \(craftMasterGitUrl) \(craftMasterDir)")
+                guard shell("\(gitCloneCommand) \(craftMasterGitUrl) \(craftMasterDir)") == 0 else {
+                    throw MacCrafterError.gitError("Error cloning craftmaster.")
+                }
             }
 
             print("Configuring Nextcloud Desktop Client blueprints for KDE Craft...")
-            shell("\(craftCommand) --add-blueprint-repository \(clientBlueprintsGitUrl)")
+            guard shell("\(craftCommand) --add-blueprint-repository \(clientBlueprintsGitUrl)") == 0 else {
+                throw MacCrafterError.craftError("Error adding blueprint repository.")
+            }
 
             print("Crafting KDE Craft...")
-            shell("\(craftCommand) craft")
+            guard shell("\(craftCommand) craft") == 0 else {
+                throw MacCrafterError.craftError("Error crafting KDE Craft.")
+            }
 
             print("Crafting Nextcloud Desktop Client dependencies...")
-            shell("\(craftCommand) --install-deps \(craftBlueprintName)")
+            guard shell("\(craftCommand) --install-deps \(craftBlueprintName)") == 0 else {
+                throw MacCrafterError.craftError("Error installing dependencies.")
+            }
         }
 
         var craftOptions = ["\(craftBlueprintName).srcDir=\(repoRootDir)"]
@@ -140,9 +150,11 @@ struct MacCrafter: ParsableCommand {
 
         let allOptionsString = craftOptions.map({ "--options \"\($0)\"" }).joined(separator: " ")
         
-        shell(
+        guard shell(
             "\(craftCommand) --buildtype \(buildType) --compile --install \(allOptionsString) \(craftBlueprintName)"
-        )
+        ) == 0 else {
+            throw MacCrafterError.craftError("Error crafting Nextcloud Desktop Client.")
+        }
 
         guard let codeSignIdentity else {
             print("Crafted Nextcloud Desktop Client. Not codesigned.")
