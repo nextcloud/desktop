@@ -141,7 +141,7 @@ struct MacCrafter: ParsableCommand {
         let allOptionsString = craftOptions.map({ "--options \"\($0)\"" }).joined(separator: " ")
         
         shell(
-            "\(craftCommand) --buildtype \(buildType) -i \(allOptionsString) \(craftBlueprintName)"
+            "\(craftCommand) --buildtype \(buildType) --compile --install \(allOptionsString) \(craftBlueprintName)"
         )
 
         guard let codeSignIdentity else {
