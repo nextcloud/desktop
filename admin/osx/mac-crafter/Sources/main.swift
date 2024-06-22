@@ -73,6 +73,9 @@ struct MacCrafter: ParsableCommand {
     @Option(name: [.long], help: "Git clone command; include options such as depth.")
     var gitCloneCommand = "git clone --depth=1"
 
+    @Option(name: [.long], help: "Run a full rebuild.")
+    var fullRebuild = false
+
     mutating func run() throws {
         print("Configuring build tooling.")
 
@@ -160,8 +163,9 @@ struct MacCrafter: ParsableCommand {
 
         let allOptionsString = craftOptions.map({ "--options \"\($0)\"" }).joined(separator: " ")
         
+        let buildMode = fullRebuild ? "-i" : buildAppBundle ? "--compile --install" : "--compile"
         guard shell(
-            "\(craftCommand) --buildtype \(buildType) --compile --install \(allOptionsString) \(craftBlueprintName)"
+            "\(craftCommand) --buildtype \(buildType) \(buildMode) \(allOptionsString) \(craftBlueprintName)"
         ) == 0 else {
             throw MacCrafterError.craftError("Error crafting Nextcloud Desktop Client.")
         }
