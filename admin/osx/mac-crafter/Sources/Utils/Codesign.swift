@@ -19,7 +19,15 @@ enum CodeSigningError: Error {
 }
 
 enum AppBundleSigningError: Error {
-    case couldNotEnumeratePlugins(String)
+    case couldNotEnumerate(String)
+}
+
+func isLibrary(_ path: String) -> Bool {
+    path.hasSuffix(".dylib") || path.hasSuffix(".framework")
+}
+
+func isAppExtension(_ path: String) -> Bool {
+    path.hasSuffix(".appex")
 }
 
 func codesign(
@@ -34,30 +42,30 @@ func codesign(
     }
 }
 
-func codesignClientAppBundle(
-    at clientAppDir: String, withCodeSignIdentity codeSignIdentity: String
-) throws {
-    print("Code-signing Nextcloud Desktop Client libraries and frameworks...")
-
-    let clientFrameworksDir = "\(clientAppDir)/Contents/Frameworks"
+func recursivelyCodesign(path: String, identity: String) throws {
     let fm = FileManager.default
-    let clientLibs = try fm.contentsOfDirectory(atPath: clientFrameworksDir)
-    for lib in clientLibs {
-        guard isLibrary(lib) else { continue }
-        try codesign(identity: codeSignIdentity, path: "\(clientFrameworksDir)/\(lib)")
-    }
-
-    let clientPluginsDir = "\(clientAppDir)/Contents/PlugIns"
-    guard let clientPluginsEnumerator = fm.enumerator(atPath: clientPluginsDir) else {
-        throw AppBundleSigningError.couldNotEnumeratePlugins(
-            "Failed to list craft plugins directory at \(clientPluginsDir)."
+    guard let pathEnumerator = fm.enumerator(atPath: path) else {
+        throw AppBundleSigningError.couldNotEnumerate(
+            "Failed to enumerate directory at \(path)."
         )
     }
 
-    for case let plugin as String in clientPluginsEnumerator {
-        guard isLibrary(plugin) else { continue }
-        try codesign(identity: codeSignIdentity, path: "\(clientPluginsDir)/\(plugin)")
+    for case let enumeratedItem as String in pathEnumerator {
+        guard isLibrary(enumeratedItem) || isAppExtension(enumeratedItem) else { continue }
+        try codesign(identity: identity, path: "\(path)/\(enumeratedItem)")
     }
+}
+
+func codesignClientAppBundle(
+    at clientAppDir: String, withCodeSignIdentity codeSignIdentity: String
+) throws {
+    print("Code-signing Nextcloud Desktop Client libraries, frameworks and plugins...")
+
+    let clientContentsDir = "\(clientAppDir)/Contents"
+
+    try recursivelyCodesign(path: "\(clientContentsDir)/Frameworks", identity: codeSignIdentity)
+    try recursivelyCodesign(path: "\(clientContentsDir)/PlugIns", identity: codeSignIdentity)
+    try recursivelyCodesign(path: "\(clientContentsDir)/Resources", identity: codeSignIdentity)
 
     print("Code-signing Nextcloud Desktop Client app bundle...")
     try codesign(identity: codeSignIdentity, path: clientAppDir)
