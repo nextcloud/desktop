@@ -110,7 +110,7 @@ struct MacCrafter: ParsableCommand {
             shell("\(craftCommand) --install-deps \(craftBlueprintName)")
         }
 
-        var craftOptions: [String] = []
+        var craftOptions = ["\(craftBlueprintName).srcDir=\(repoRootDir)"]
 
         if buildAutoUpdater {
             print("Configuring Sparkle auto-updater.")
@@ -128,20 +128,17 @@ struct MacCrafter: ParsableCommand {
                 throw MacCrafterError.environmentError("Error unpacking sparkle.")
             }
 
-            craftOptions.append("sparkleLibPath=\(buildPath)/Sparkle.framework")
+            craftOptions.append(
+                "\(craftBlueprintName).sparkleLibPath=\(buildPath)/Sparkle.framework"
+            )
         }
 
         print("Crafting Nextcloud Desktop Client...")
 
-        if !craftOptions.isEmpty {
-            let craftOptionsArg = craftOptions.map { "--set \"\($0)\"" }
-            for option in craftOptions {
-                shell("\(craftCommand) \(option) \(craftBlueprintName)")
-            }
-        }
-
+        let allOptionsString = craftOptions.map({ "--options \"\($0)\"" }).joined(separator: " ")
+        
         shell(
-            "\(craftCommand) --src-dir \(repoRootDir) --buildtype \(buildType) -i nextcloud-client"
+            "\(craftCommand) --buildtype \(buildType) -i \(allOptionsString) \(craftBlueprintName)"
         )
 
         guard let codeSignIdentity else {
