@@ -64,6 +64,12 @@ struct MacCrafter: ParsableCommand {
     var sparkleDownloadUrl =
         "https://github.com/sparkle-project/Sparkle/releases/download/1.27.3/Sparkle-1.27.3.tar.xz"
 
+    @Option(name: [.long], help: "Build App Bundle.")
+    var buildAppBundle = true
+
+    @Option(name: [.long], help: "Build File Provider Module.")
+    var buildFileProviderModule = false
+
     @Option(name: [.long], help: "Git clone command; include options such as depth.")
     var gitCloneCommand = "git clone --depth=1"
 
@@ -123,7 +129,11 @@ struct MacCrafter: ParsableCommand {
             }
         }
 
-        var craftOptions = ["\(craftBlueprintName).srcDir=\(repoRootDir)"]
+        var craftOptions = [
+            "\(craftBlueprintName).srcDir=\(repoRootDir)",
+            "\(craftBlueprintName).buildMacOSBundle=\(buildAppBundle ? "True" : "False")",
+            "\(craftBlueprintName).buildFileProviderModule=\(buildFileProviderModule ? "True" : "False")"
+        ]
 
         if buildAutoUpdater {
             print("Configuring Sparkle auto-updater.")
