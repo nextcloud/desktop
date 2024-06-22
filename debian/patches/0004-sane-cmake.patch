@@ -1,8 +1,8 @@
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index 687733588..da979ecbb 100644
+index 3c278aa19..2913da8f5 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
-@@ -103,29 +103,12 @@ include(GNUInstallDirs)
+@@ -106,10 +106,6 @@ include(GNUInstallDirs)
  include(DefineInstallationPaths)
  include(GenerateExportHeader)
  
@@ -11,8 +11,9 @@ index 687733588..da979ecbb 100644
 -get_git_head_revision(GIT_REFSPEC GIT_SHA1)
 -
  add_definitions(
-     -DQT_DISABLE_DEPRECATED_BEFORE=0x000000
-     -DQT_USE_QSTRINGBUILDER
+     -DQT_DISABLE_DEPRECATED_BEFORE=0x051200
+     -DQT_DEPRECATED_WARNINGS
+@@ -117,19 +113,6 @@ add_definitions(
      -DQT_MESSAGELOGCONTEXT #enable function name and line number in debug output
  )
  
@@ -32,7 +33,7 @@ index 687733588..da979ecbb 100644
  set(SYSCONFDIR ${SYSCONF_INSTALL_DIR})
  set(SHAREDIR ${CMAKE_INSTALL_FULL_DATADIR})
  
-@@ -246,7 +229,47 @@ if (NOT DEFINED APPLICATION_ICON_NAME)
+@@ -253,7 +236,47 @@ if (NOT DEFINED APPLICATION_ICON_NAME)
      set(APPLICATION_ICON_NAME ${APPLICATION_SHORTNAME})
  endif()
  
@@ -151,7 +152,7 @@ index 0682090c0..000000000
 -set(CPACK_PROJECT_CONFIG_FILE "${CMAKE_BINARY_DIR}/CPackOptions.cmake") # File included at cpack time, once per generator after setting CPACK_GENERATOR to the actual generator being used; allows per-generator setting of CPACK_* variables at cpack time.  ${PROJECT_BINARY_DIR}/CPackOptions.cmake
 -include(CPack)
 diff --git a/VERSION.cmake b/VERSION.cmake
-index 2045ea0ed..d52b4169b 100644
+index 50bd2dfc2..d645cc742 100644
 --- a/VERSION.cmake
 +++ b/VERSION.cmake
 @@ -17,22 +17,40 @@ set(NEXTCLOUD_SERVER_VERSION_MOUNT_ROOT_PROPERTY_SUPPORTED_MAJOR 28)
@@ -171,14 +172,15 @@ index 2045ea0ed..d52b4169b 100644
 -# Composite defines
 -# Used e.g. for libraries Keep at x.y.z.
 -set( MIRALL_VERSION "${MIRALL_VERSION_MAJOR}.${MIRALL_VERSION_MINOR}.${MIRALL_VERSION_PATCH}" )
-+
- # Version with Build ID. Used in the installer
+-# Version with Build ID. Used in the installer
 -set( MIRALL_VERSION_FULL ${MIRALL_VERSION} )
 -set( MIRALL_VERSION_STRING ${MIRALL_VERSION} )
 -set( MIRALL_VERSION_FULL "${MIRALL_VERSION_FULL}.${MIRALL_VERSION_BUILD}" )
-+set( MIRALL_VERSION_FULL "${MIRALL_VERSION}.${MIRALL_VERSION_BUILD}" )
  
 -set( MIRALL_VERSION_STRING "${MIRALL_VERSION}${MIRALL_VERSION_SUFFIX}" )
++# Version with Build ID. Used in the installer
++set( MIRALL_VERSION_FULL "${MIRALL_VERSION}.${MIRALL_VERSION_BUILD}" )
++
 +# External version or version with suffix
 +if ( NOT DEFINED EXTERNAL_VERSION )
 +    if ( NOT DEFINED MIRALL_VERSION_SUFFIX )
