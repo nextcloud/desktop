@@ -162,7 +162,16 @@ struct MacCrafter: ParsableCommand {
         print("Crafting Nextcloud Desktop Client...")
 
         let allOptionsString = craftOptions.map({ "--options \"\($0)\"" }).joined(separator: " ")
-        
+
+        let clientBuildDir = "\(buildPath)/\(craftTarget)/build/\(craftBlueprintName)"
+        if fullRebuild {
+            do {
+                try fm.removeItem(atPath: clientBuildDir)
+            } catch let error {
+                print("WARNING! Error removing build directory: \(error)")
+            }
+        }
+
         let buildMode = fullRebuild ? "-i" : buildAppBundle ? "--compile --install" : "--compile"
         guard shell(
             "\(craftCommand) --buildtype \(buildType) \(buildMode) \(allOptionsString) \(craftBlueprintName)"
@@ -177,9 +186,8 @@ struct MacCrafter: ParsableCommand {
 
         print("Code-signing Nextcloud Desktop Client libraries and frameworks...")
 
-        let craftBuildDir = "\(buildPath)/\(craftTarget)/build"
-        let clientAppDir =
-            "\(craftBuildDir)/\(craftBlueprintName)/image-\(buildType)-master/\(appName).app"
+
+        let clientAppDir = "\(clientBuildDir)/image-\(buildType)-master/\(appName).app"
         try codesignClientAppBundle(at: clientAppDir, withCodeSignIdentity: codeSignIdentity)
 
         print("Done!")
