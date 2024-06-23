@@ -76,6 +76,9 @@ struct MacCrafter: ParsableCommand {
     @Option(name: [.long], help: "Run a full rebuild.")
     var fullRebuild = false
 
+    @Option(name: [.long], help: "Build test suite.")
+    var buildTests = true
+
     mutating func run() throws {
         print("Configuring build tooling.")
 
@@ -134,6 +137,7 @@ struct MacCrafter: ParsableCommand {
 
         var craftOptions = [
             "\(craftBlueprintName).srcDir=\(repoRootDir)",
+            "\(craftBlueprintName).buildTests=\(buildTests ? "True" : "False")",
             "\(craftBlueprintName).buildMacOSBundle=\(buildAppBundle ? "True" : "False")",
             "\(craftBlueprintName).buildFileProviderModule=\(buildFileProviderModule ? "True" : "False")"
         ]
