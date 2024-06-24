@@ -51,33 +51,33 @@ struct MacCrafter: ParsableCommand {
     @Option(name: [.long], help: "Build type (e.g. Release, RelWithDebInfo, MinSizeRel, Debug).")
     var buildType = "RelWithDebInfo"
 
-    @Option(name: [.long], help: "Reconfigure craft.")
-    var reconfigureCraft = false
-
     @Option(name: [.long], help: "The application's branded name.")
     var appName = "Nextcloud"
-
-    @Option(name: [.long], help: "Build with Sparkle auto-updater.")
-    var buildAutoUpdater = true
 
     @Option(name: [.long], help: "Sparkle download URL.")
     var sparkleDownloadUrl =
         "https://github.com/sparkle-project/Sparkle/releases/download/1.27.3/Sparkle-1.27.3.tar.xz"
 
-    @Option(name: [.long], help: "Build App Bundle.")
-    var buildAppBundle = true
-
-    @Option(name: [.long], help: "Build File Provider Module.")
-    var buildFileProviderModule = false
-
     @Option(name: [.long], help: "Git clone command; include options such as depth.")
     var gitCloneCommand = "git clone --depth=1"
 
-    @Option(name: [.long], help: "Run a full rebuild.")
-    var fullRebuild = false
+    @Flag(help: "Reconfigure KDE Craft.")
+    var reconfigureCraft = false
 
-    @Option(name: [.long], help: "Build test suite.")
-    var buildTests = true
+    @Flag(help: "Build test suite.")
+    var buildTests = false
+
+    @Flag(name: [.long], help: "Do not build App Bundle.")
+    var disableAppBundle = false
+
+    @Flag(help: "Build File Provider Module.")
+    var buildFileProviderModule = false
+
+    @Flag(help: "Build without Sparkle auto-updater.")
+    var disableAutoUpdater = false
+
+    @Flag(help: "Run a full rebuild.")
+    var fullRebuild = false
 
     mutating func run() throws {
         print("Configuring build tooling.")
@@ -138,11 +138,11 @@ struct MacCrafter: ParsableCommand {
         var craftOptions = [
             "\(craftBlueprintName).srcDir=\(repoRootDir)",
             "\(craftBlueprintName).buildTests=\(buildTests ? "True" : "False")",
-            "\(craftBlueprintName).buildMacOSBundle=\(buildAppBundle ? "True" : "False")",
+            "\(craftBlueprintName).buildMacOSBundle=\(disableAppBundle ? "False" : "True")",
             "\(craftBlueprintName).buildFileProviderModule=\(buildFileProviderModule ? "True" : "False")"
         ]
 
-        if buildAutoUpdater {
+        if !disableAutoUpdater {
             print("Configuring Sparkle auto-updater.")
 
             let fm = FileManager.default
@@ -176,7 +176,7 @@ struct MacCrafter: ParsableCommand {
             }
         }
 
-        let buildMode = fullRebuild ? "-i" : buildAppBundle ? "--compile --install" : "--compile"
+        let buildMode = fullRebuild ? "-i" : disableAppBundle ? "compile" : "--compile --install"
         guard shell(
             "\(craftCommand) --buildtype \(buildType) \(buildMode) \(allOptionsString) \(craftBlueprintName)"
         ) == 0 else {
