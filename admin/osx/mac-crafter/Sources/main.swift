@@ -64,6 +64,9 @@ struct MacCrafter: ParsableCommand {
     @Flag(help: "Reconfigure KDE Craft.")
     var reconfigureCraft = false
 
+    @Flag(help: "Run build offline (i.e. do not update craft)")
+    var offline = false
+
     @Flag(help: "Build test suite.")
     var buildTests = false
 
@@ -177,8 +180,9 @@ struct MacCrafter: ParsableCommand {
         }
 
         let buildMode = fullRebuild ? "-i" : disableAppBundle ? "compile" : "--compile --install"
+        let offlineMode = offline ? "--offline" : ""
         guard shell(
-            "\(craftCommand) --buildtype \(buildType) \(buildMode) \(allOptionsString) \(craftBlueprintName)"
+            "\(craftCommand) --buildtype \(buildType) \(buildMode) \(offlineMode) \(allOptionsString) \(craftBlueprintName)"
         ) == 0 else {
             throw MacCrafterError.craftError("Error crafting Nextcloud Desktop Client.")
         }
