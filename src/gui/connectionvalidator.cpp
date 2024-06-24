@@ -228,6 +228,8 @@ void ConnectionValidator::slotAuthFailed(QNetworkReply *reply)
         }
     }
 
+    _errors << tr("Test error");
+    stat = SslError;
     reportResult(stat);
 }
 
@@ -331,9 +333,10 @@ void ConnectionValidator::reportResult(Status status)
 {
     emit connectionResult(status, _errors);
 
-    // notify user of errors
+    // notify user of errors - TODO: only show the new ones
     if (!_errors.isEmpty() && _previousErrors != _errors) {
-       showSystrayErrorMessage();
+        showSystrayErrorMessage();
+        _errors.clear();
     }
 
     deleteLater();
