@@ -238,7 +238,7 @@ void AbstractNetworkJob::slotFinished()
         _account->handleInvalidCredentials();
     }
 
-    if (const auto discard = finished()) {
+    if (finished()) {
         qCDebug(lcNetworkJob) << "Network job" << metaObject()->className() << "finished for" << path();
         deleteLater();
     }
