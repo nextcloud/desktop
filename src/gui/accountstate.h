@@ -89,14 +89,8 @@ public:
     using ConnectionStatus = ConnectionValidator::Status;
 
     /// Use the account as parent
-    explicit AccountState(AccountPtr account);
+    explicit AccountState(const AccountPtr &account);
     ~AccountState() override;
-
-    /** Creates an account state from settings and an Account object.
-     *
-     * Use from AccountManager with a prepared QSettings object only.
-     */
-    static AccountState *loadFromSettings(AccountPtr account, QSettings &settings);
 
     AccountPtr account() const;
 

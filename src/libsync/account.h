@@ -16,6 +16,7 @@
 #ifndef SERVERCONNECTION_H
 #define SERVERCONNECTION_H
 
+#include "accountfwd.h"
 #include "capabilities.h"
 #include "clientsideencryption.h"
 #include "clientstatusreporting.h"
@@ -55,8 +56,6 @@ class ReadPasswordJob;
 namespace OCC {
 
 class AbstractCredentials;
-class Account;
-using AccountPtr = QSharedPointer<Account>;
 class AccessManager;
 class SimpleNetworkJob;
 class PushNotifications;

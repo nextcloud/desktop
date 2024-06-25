@@ -42,7 +42,7 @@ namespace OCC {
 
 Q_LOGGING_CATEGORY(lcAccountState, "nextcloud.gui.account.state", QtInfoMsg)
 
-AccountState::AccountState(AccountPtr account)
+AccountState::AccountState(const AccountPtr &account)
     : QObject()
     , _account(account)
     , _state(AccountState::Disconnected)
@@ -84,12 +84,6 @@ AccountState::AccountState(AccountPtr account)
 }
 
 AccountState::~AccountState() = default;
-
-AccountState *AccountState::loadFromSettings(AccountPtr account, QSettings & /*settings*/)
-{
-    auto accountState = new AccountState(account);
-    return accountState;
-}
 
 AccountPtr AccountState::account() const
 {
