@@ -458,8 +458,9 @@ void FileProviderDomainManager::updateFileProviderDomains()
             continue;
         }
 
-        const auto accountState = AccountManager::instance()->accountFromUserId(accountUserIdAtHost);
-        addFileProviderDomainForAccount(accountState.data());
+        if (const auto accountState = AccountManager::instance()->accountFromUserId(accountUserIdAtHost)) {
+            addFileProviderDomainForAccount(accountState.data());
+        }
     }
 
     for (const auto &remainingDomainUserId : configuredDomains) {
