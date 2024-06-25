@@ -85,12 +85,6 @@ AccountState::AccountState(const AccountPtr &account)
 
 AccountState::~AccountState() = default;
 
-AccountState *AccountState::loadFromSettings(AccountPtr account, QSettings & /*settings*/)
-{
-    auto accountState = new AccountState(account);
-    return accountState;
-}
-
 AccountPtr AccountState::account() const
 {
     return _account;
