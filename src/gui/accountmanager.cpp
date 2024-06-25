@@ -568,11 +568,12 @@ QString AccountManager::generateFreeAccountId() const
     }
 }
 
-void AccountManager::addAccountState(AccountState *accountState)
+void AccountManager::addAccountState(AccountState *const accountState)
 {
-    QObject::connect(accountState->account().data(),
-        &Account::wantsAccountSaved,
-        this, &AccountManager::saveAccount);
+    Q_ASSERT(accountState);
+    Q_ASSERT(accountState->account());
+
+    QObject::connect(accountState->account().data(), &Account::wantsAccountSaved, this, &AccountManager::saveAccount);
 
     AccountStatePtr ptr(accountState);
     _accounts << ptr;
