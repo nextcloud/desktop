@@ -322,45 +322,41 @@ private slots:
 
     void testLocalExternalStorageRenameDetection()
     {
-        FakeFolder fakeFolder { FileInfo { QString(), { FileInfo { QStringLiteral("external") } } }};
-
-        int nPUT = 0;
-        int nDELETE = 0;
-        fakeFolder.setServerOverride([&](QNetworkAccessManager::Operation op, const QNetworkRequest &, QIODevice *) {
-            if (op == QNetworkAccessManager::PutOperation) {
-                ++nPUT;
-            }
-
-            if (op == QNetworkAccessManager::DeleteOperation) {
-                ++nDELETE;
-            }
-            return nullptr;
-        });
-
-        fakeFolder.remoteModifier().permissions.setPermission(OCC::RemotePermissions::IsMounted);
-        fakeFolder.remoteModifier().permissions.setPermission(OCC::RemotePermissions::CanMove);
-        fakeFolder.remoteModifier().permissions.setPermission(OCC::RemotePermissions::CanWrite);
+        FakeFolder fakeFolder{{}};
+        fakeFolder.remoteModifier().mkdir("external-storage");
+        auto externalStorage = fakeFolder.remoteModifier().find("external-storage");
+        externalStorage->extraDavProperties = "<nc:is-mount-root>true</nc:is-mount-root>";
+        setAllPerm(externalStorage, RemotePermissions::fromServerString("WDNVCKRM"));
         QVERIFY(fakeFolder.syncOnce());
-        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.remoteModifier());
 
-        fakeFolder.localModifier().insert("external/file", 100);
+        OperationCounter operationCounter;
+        fakeFolder.setServerOverride(operationCounter.functor());
+
+        fakeFolder.localModifier().insert("external-storage/file", 100);
         QVERIFY(fakeFolder.syncOnce());
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
         QCOMPARE(printDbData(fakeFolder.dbState()), printDbData(fakeFolder.remoteModifier()));
-        QCOMPARE(nPUT, 1);
+        QCOMPARE(operationCounter.nPUT, 1);
 
-        fakeFolder.localModifier().rename("external/file", "external/file2");
-        fakeFolder.localModifier().rename("external/file2", "external/file3");
+        const auto firstFileId = fakeFolder.remoteModifier().find("external-storage/file")->fileId;
+
+        fakeFolder.localModifier().rename("external-storage/file", "external-storage/file2");
         QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(operationCounter.nMOVE, 1);
+
+        fakeFolder.localModifier().rename("external-storage/file2", "external-storage/file3");
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(operationCounter.nMOVE, 2);
+
+        const auto renamedFileId = fakeFolder.remoteModifier().find("external-storage/file3")->fileId;
+
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
         QCOMPARE(printDbData(fakeFolder.dbState()), printDbData(fakeFolder.remoteModifier()));
-        QCOMPARE(fakeFolder.remoteModifier().children.size(), 1);
 
-        QCOMPARE(fakeFolder.remoteModifier().children.size(), 1);
-        QCOMPARE(fakeFolder.remoteModifier().children.value("external").children.size(), 1);
-        QCOMPARE(fakeFolder.remoteModifier().children.value("external").children.value("file3").name, QStringLiteral("file3"));
-        QCOMPARE(nPUT, 1);
-        QCOMPARE(nDELETE, 0);
+        QCOMPARE(fakeFolder.remoteModifier().find("external-storage/file"), nullptr);
+        QCOMPARE(fakeFolder.remoteModifier().find("external-storage/file2"), nullptr);
+        QVERIFY(fakeFolder.remoteModifier().find("external-storage/file3"));
+        QCOMPARE(firstFileId, renamedFileId);
     }
 
     void testDuplicateFileId_data()
