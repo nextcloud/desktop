@@ -470,7 +470,7 @@ void User::slotRefreshNotifications()
 
 void User::slotRebuildNavigationAppList()
 {
-    emit serverHasTalkChanged();
+    emit featuredAppChanged();
     // Rebuild App list
     UserAppsModel::instance()->buildAppList();
 }
@@ -1036,6 +1036,22 @@ bool User::serverHasTalk() const
     return talkApp() != nullptr;
 }
 
+bool User::isFeaturedAppEnabled() const
+{
+    return isNcAssistantEnabled() || serverHasTalk();
+}
+
+QString User::featuredAppIcon() const
+{
+    return isNcAssistantEnabled() ? "image://svgimage-custom-color/nc-assistant-app.svg"
+                                  : "image://svgimage-custom-color/talk-app.svg";
+}
+
+QString User::featuredAppAccessibleName() const
+{
+    return isNcAssistantEnabled() ? tr("Open Nextcloud Assistant in browser") : tr("Open Nextcloud Talk in browser");
+}
+
 AccountApp *User::talkApp() const
 {
     return _account->findApp(QStringLiteral("spreed"));
@@ -1044,6 +1060,11 @@ AccountApp *User::talkApp() const
 bool User::hasActivities() const
 {
     return _account->account()->capabilities().hasActivities();
+}
+
+bool User::isNcAssistantEnabled() const
+{
+    return _account->account()->capabilities().ncAssistantEnabled();
 }
 
 QColor User::headerColor() const
@@ -1329,19 +1350,6 @@ void UserModel::openCurrentAccountLocalFolder()
     _users[_currentUserId]->openLocalFolder();
 }
 
-void UserModel::openCurrentAccountTalk()
-{
-    if (!currentUser())
-        return;
-
-    const auto talkApp = currentUser()->talkApp();
-    if (talkApp) {
-        Utility::openBrowser(talkApp->url());
-    } else {
-        qCWarning(lcActivity) << "The Talk app is not enabled on" << currentUser()->server();
-    }
-}
-
 void UserModel::openCurrentAccountServer()
 {
     if (_currentUserId < 0 || _currentUserId >= _users.size())
@@ -1363,6 +1371,30 @@ void UserModel::openCurrentAccountFolderFromTrayInfo(const QString &fullRemotePa
 
     _users[_currentUserId]->openFolderLocallyOrInBrowser(fullRemotePath);
 }
+
+void UserModel::openCurrentAccountFeaturedApp()
+{
+    if (!currentUser()) {
+        return;
+    }
+
+    if (!currentUser()->isFeaturedAppEnabled()) {
+        qCWarning(lcActivity) << "There is no feature app enabled on" << currentUser()->server();
+        return;
+    }
+
+    if (currentUser()->isNcAssistantEnabled()) {
+        auto serverUrl = currentUser()->server(false);
+        const auto assistanceUrl = serverUrl.append("/apps/assistant/");
+        QDesktopServices::openUrl(QUrl::fromUserInput(assistanceUrl));
+        return;
+    }
+
+    if (const auto talkApp = currentUser()->talkApp()) {
+        Utility::openBrowser(talkApp->url());
+    }
+}
+
 
 void UserModel::setCurrentUserId(const int id)
 {
@@ -1630,10 +1662,11 @@ void UserAppsModel::buildAppList()
 
     if (UserModel::instance()->appList().count() > 0) {
         const auto talkApp = UserModel::instance()->currentUser()->talkApp();
-        foreach (AccountApp *app, UserModel::instance()->appList()) {
+        for (const auto &app : UserModel::instance()->appList()) {
             // Filter out Talk because we have a dedicated button for it
-            if (talkApp && app->id() == talkApp->id())
+            if (talkApp && app->id() == talkApp->id() && !UserModel::instance()->currentUser()->isNcAssistantEnabled()) {
                 continue;
+            }
 
             beginInsertRows(QModelIndex(), rowCount(), rowCount());
             _apps << app;

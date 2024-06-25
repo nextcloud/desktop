@@ -621,21 +621,18 @@ ApplicationWindow {
                 }
 
                 HeaderButton {
-                    id: trayWindowTalkButton
-
-                    visible: UserModel.currentUser && UserModel.currentUser.serverHasTalk
-                    icon.source: "image://svgimage-custom-color/talk-app.svg" + "/" + Style.currentUserHeaderTextColor
-                    icon.color: Style.currentUserHeaderTextColor
-                    onClicked: UserModel.openCurrentAccountTalk()
+                    id: trayWindowFeaturedAppButton
+                    visible: UserModel.currentUser.isFeaturedAppEnabled
+                    icon.source: UserModel.currentUser.featuredAppIcon + "/" + Style.currentUserHeaderTextColor
+                    onClicked: UserModel.openCurrentAccountFeaturedApp()
 
                     Accessible.role: Accessible.Button
-                    Accessible.name: qsTr("Open Nextcloud Talk in browser")
-                    Accessible.onPressAction: trayWindowTalkButton.clicked()
+                    Accessible.name: UserModel.currentUser.featuredAppAccessibleName
+                    Accessible.onPressAction: trayWindowFeaturedAppButton.clicked()
 
                     Layout.alignment: Qt.AlignRight
                     Layout.preferredWidth:  Style.trayWindowHeaderHeight
                     Layout.preferredHeight: Style.trayWindowHeaderHeight
-
                 }
 
                 HeaderButton {
