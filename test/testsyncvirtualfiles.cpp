@@ -175,17 +175,14 @@ private slots:
         QCOMPARE(dbRecord(fakeFolder, "A/a1" DVSUFFIX)._fileSize, 65);
         cleanup();
 
-        // If the local virtual file file is removed, it'll just be recreated
+        // If the local virtual file is removed, it should be gone remotely too
         if (!doLocalDiscovery)
             fakeFolder.syncEngine().setLocalDiscoveryOptions(LocalDiscoveryStyle::DatabaseAndFilesystem, { "A" });
         fakeFolder.localModifier().remove("A/a1" DVSUFFIX);
         QVERIFY(fakeFolder.syncOnce());
         QVERIFY(!fakeFolder.currentLocalState().find("A/a1"));
-        QVERIFY(fakeFolder.currentLocalState().find("A/a1" DVSUFFIX));
-        QVERIFY(fakeFolder.currentRemoteState().find("A/a1"));
-        QVERIFY(itemInstruction(completeSpy, "A/a1" DVSUFFIX, CSYNC_INSTRUCTION_NEW));
-        QCOMPARE(dbRecord(fakeFolder, "A/a1" DVSUFFIX)._type, ItemTypeVirtualFile);
-        QCOMPARE(dbRecord(fakeFolder, "A/a1" DVSUFFIX)._fileSize, 65);
+        QVERIFY(!fakeFolder.currentLocalState().find("A/a1" DVSUFFIX));
+        QVERIFY(!fakeFolder.currentRemoteState().find("A/a1"));
         cleanup();
 
         // Remote rename is propagated
