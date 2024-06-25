@@ -898,7 +898,8 @@ void SyncEngine::slotDiscoveryFinished()
         qCInfo(lcEngine) << "#### Post-Reconcile end #################################################### " << _stopWatch.addLapTime(QStringLiteral("Post-Reconcile Finished")) << "ms";
     };
 
-    if (!_hasNoneFiles && _hasRemoveFile && ConfigFile().promptDeleteFiles()) {
+    const auto displayDialog = ConfigFile().promptDeleteFiles() && !_syncOptions.isCmd();
+    if (!_hasNoneFiles && _hasRemoveFile && displayDialog) {
         qCInfo(lcEngine) << "All the files are going to be changed, asking the user";
         int side = 0; // > 0 means more deleted on the server.  < 0 means more deleted on the client
         for (const auto &it : _syncItems) {

@@ -532,6 +532,7 @@ restart_sync:
     SyncOptions syncOptions;
     syncOptions.fillFromEnvironmentVariables();
     syncOptions.verifyChunkSizes();
+    syncOptions.setIsCmd(true);
     SyncEngine engine(account, options.source_dir, syncOptions, folder, &db);
     engine.setIgnoreHiddenFiles(options.ignoreHiddenFiles);
     engine.setNetworkLimits(options.uplimit, options.downlimit);
