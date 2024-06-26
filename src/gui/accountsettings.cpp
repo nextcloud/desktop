@@ -103,6 +103,8 @@ AccountSettings::AccountSettings(const AccountStatePtr &accountState, QWidget *p
             ui->stackedWidget->setCurrentWidget(ui->quickWidget);
         }
     });
+    connect(ui->stackedWidget, &QStackedWidget::currentChanged, this,
+        [this] { ui->accountToolButton->setEnabled(ui->stackedWidget->currentWidget() == ui->quickWidget); });
     ui->stackedWidget->setCurrentWidget(ui->quickWidget);
 }
 
