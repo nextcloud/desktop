@@ -31,6 +31,7 @@
 #include <QPixmap>
 #endif
 
+#include "accountfwd.h"
 #include "capabilities.h"
 #include "clientsideencryption.h"
 #include "clientstatusreporting.h"
@@ -53,8 +54,6 @@ class ReadPasswordJob;
 namespace OCC {
 
 class AbstractCredentials;
-class Account;
-using AccountPtr = QSharedPointer<Account>;
 class AccessManager;
 class SimpleNetworkJob;
 class PushNotifications;

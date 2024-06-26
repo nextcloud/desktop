@@ -453,13 +453,19 @@ void FileProviderDomainManager::updateFileProviderDomains()
     auto configuredDomains = d->configuredDomainIds();
 
     for (const auto &accountUserIdAtHost : vfsEnabledAccounts) {
+        // If the domain has already been set up for this account, then don't set it up again
         if (configuredDomains.contains(accountUserIdAtHost)) {
             configuredDomains.removeAll(accountUserIdAtHost);
             continue;
         }
 
-        const auto accountState = AccountManager::instance()->accountFromUserId(accountUserIdAtHost);
-        addFileProviderDomainForAccount(accountState.data());
+        if (const auto accountState = AccountManager::instance()->accountFromUserId(accountUserIdAtHost)) {
+            addFileProviderDomainForAccount(accountState.data());
+        } else {
+            qCWarning(lcMacFileProviderDomainManager) << "Could not find account for file provider domain:" << accountUserIdAtHost
+                                                      << "removing account from list of vfs-enabled accounts.";
+            FileProviderSettingsController::instance()->setVfsEnabledForAccount(accountUserIdAtHost, false);
+        }
     }
 
     for (const auto &remainingDomainUserId : configuredDomains) {

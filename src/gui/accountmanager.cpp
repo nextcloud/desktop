@@ -105,14 +105,13 @@ AccountManager::AccountsRestoreResult AccountManager::restore(const bool alsoRes
         if (!skipSettingsKeys.contains(settings->group())) {
             if (const auto acc = loadAccountHelper(*settings)) {
                 acc->_id = accountId;
-                if (auto accState = AccountState::loadFromSettings(acc, *settings)) {
-                    auto jar = qobject_cast<CookieJar*>(acc->_am->cookieJar());
-                    ASSERT(jar);
-                    if (jar) {
-                        jar->restore(acc->cookieJarPath());
-                    }
-                    addAccountState(accState);
+                const auto accState = new AccountState(acc);
+                const auto jar = qobject_cast<CookieJar*>(acc->_am->cookieJar());
+                Q_ASSERT(jar);
+                if (jar) {
+                    jar->restore(acc->cookieJarPath());
                 }
+                addAccountState(accState);
             }
         } else {
             qCInfo(lcAccountManager) << "Account" << accountId << "is too new, ignoring";
@@ -569,11 +568,12 @@ QString AccountManager::generateFreeAccountId() const
     }
 }
 
-void AccountManager::addAccountState(AccountState *accountState)
+void AccountManager::addAccountState(AccountState *const accountState)
 {
-    QObject::connect(accountState->account().data(),
-        &Account::wantsAccountSaved,
-        this, &AccountManager::saveAccount);
+    Q_ASSERT(accountState);
+    Q_ASSERT(accountState->account());
+
+    QObject::connect(accountState->account().data(), &Account::wantsAccountSaved, this, &AccountManager::saveAccount);
 
     AccountStatePtr ptr(accountState);
     _accounts << ptr;
