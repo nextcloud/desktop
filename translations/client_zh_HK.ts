@@ -453,14 +453,14 @@ Should an account import be attempted?</source>
 應該嘗試匯入帳號嗎？</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountmanager.cpp" line="198"/>
+        <location filename="../src/gui/accountmanager.cpp" line="197"/>
         <source>%1 accounts were detected from a legacy desktop client.
 Should the accounts be imported?</source>
         <translation>檢測到 %1 個來自舊版桌面客戶端的帳戶。
 是否應該導入這些帳戶？</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountmanager.cpp" line="200"/>
+        <location filename="../src/gui/accountmanager.cpp" line="199"/>
         <source>1 account was detected from a legacy desktop client.
 Should the account be imported?</source>
         <translation>檢測到 1 個來自舊版桌面客戶端的帳戶。
@@ -474,12 +474,12 @@ Should the account be imported?</source>
         <translation>舊版匯入</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountmanager.cpp" line="203"/>
+        <location filename="../src/gui/accountmanager.cpp" line="202"/>
         <source>Import</source>
         <translation>導入</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountmanager.cpp" line="204"/>
+        <location filename="../src/gui/accountmanager.cpp" line="203"/>
         <source>Skip</source>
         <translation>略過</translation>
     </message>
@@ -5294,6 +5294,16 @@ Server replied with error: %2</source>
         <source>Resolve conflict</source>
         <translation>解決抵觸</translation>
     </message>
+    <message>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1052"/>
+        <source>Open Nextcloud Assistant in browser</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1052"/>
+        <source>Open Nextcloud Talk in browser</source>
+        <translation type="unfinished"/>
+    </message>
 </context>
 <context>
     <name>OCC::UserModel</name>
@@ -6477,7 +6487,7 @@ Server replied with error: %2</source>
         <translation>統一搜索結果列表</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="899"/>
+        <location filename="../src/gui/tray/Window.qml" line="896"/>
         <source>New activities</source>
         <translation>新活動</translation>
     </message>

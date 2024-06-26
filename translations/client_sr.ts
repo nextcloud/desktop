@@ -453,14 +453,14 @@ Should an account import be attempted?</source>
 Да ли да се покуша увоз налога?</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountmanager.cpp" line="198"/>
+        <location filename="../src/gui/accountmanager.cpp" line="197"/>
         <source>%1 accounts were detected from a legacy desktop client.
 Should the accounts be imported?</source>
         <translation>Откривено је %1 налога са десктоп клијента старе верзије.
 Да ли би требало да се увезу?</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountmanager.cpp" line="200"/>
+        <location filename="../src/gui/accountmanager.cpp" line="199"/>
         <source>1 account was detected from a legacy desktop client.
 Should the account be imported?</source>
         <translation>Откривен је 1 налог са десктоп клијента старе верзије.
@@ -474,12 +474,12 @@ Should the account be imported?</source>
         <translation>Увоз старе верзије</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountmanager.cpp" line="203"/>
+        <location filename="../src/gui/accountmanager.cpp" line="202"/>
         <source>Import</source>
         <translation>Увези</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountmanager.cpp" line="204"/>
+        <location filename="../src/gui/accountmanager.cpp" line="203"/>
         <source>Skip</source>
         <translation>Прескочи</translation>
     </message>
@@ -5293,6 +5293,16 @@ Server replied with error: %2</source>
         <source>Resolve conflict</source>
         <translation>Разреши конфликт</translation>
     </message>
+    <message>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1052"/>
+        <source>Open Nextcloud Assistant in browser</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1052"/>
+        <source>Open Nextcloud Talk in browser</source>
+        <translation type="unfinished"/>
+    </message>
 </context>
 <context>
     <name>OCC::UserModel</name>
@@ -6476,7 +6486,7 @@ Server replied with error: %2</source>
         <translation>Обједињена листа резултата претраге</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="899"/>
+        <location filename="../src/gui/tray/Window.qml" line="896"/>
         <source>New activities</source>
         <translation>Нове активности</translation>
     </message>

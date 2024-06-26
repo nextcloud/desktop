@@ -453,14 +453,14 @@ Should an account import be attempted?</source>
 Faut-il tenter d&apos;importer un compte ?</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountmanager.cpp" line="198"/>
+        <location filename="../src/gui/accountmanager.cpp" line="197"/>
         <source>%1 accounts were detected from a legacy desktop client.
 Should the accounts be imported?</source>
         <translation>%1 comptes ont été détectés à partir d&apos;un ancien client de bureau.
 Doivent-ils être importés ?</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountmanager.cpp" line="200"/>
+        <location filename="../src/gui/accountmanager.cpp" line="199"/>
         <source>1 account was detected from a legacy desktop client.
 Should the account be imported?</source>
         <translation>1 compte a été détecté à partir d&apos;un ancien client de bureau.
@@ -474,12 +474,12 @@ Le compte doit-il être importé ?</translation>
         <translation>Importation de l&apos;héritage</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountmanager.cpp" line="203"/>
+        <location filename="../src/gui/accountmanager.cpp" line="202"/>
         <source>Import</source>
         <translation>Importer</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountmanager.cpp" line="204"/>
+        <location filename="../src/gui/accountmanager.cpp" line="203"/>
         <source>Skip</source>
         <translation>Ignorer</translation>
     </message>
@@ -5291,6 +5291,16 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
         <source>Resolve conflict</source>
         <translation>Résoudre le conflit</translation>
     </message>
+    <message>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1052"/>
+        <source>Open Nextcloud Assistant in browser</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1052"/>
+        <source>Open Nextcloud Talk in browser</source>
+        <translation type="unfinished"/>
+    </message>
 </context>
 <context>
     <name>OCC::UserModel</name>
@@ -6474,7 +6484,7 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
         <translation>Liste de résultats de recherche unifiée</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="899"/>
+        <location filename="../src/gui/tray/Window.qml" line="896"/>
         <source>New activities</source>
         <translation>Nouvelles activités</translation>
     </message>

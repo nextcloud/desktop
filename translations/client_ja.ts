@@ -453,14 +453,14 @@ Should an account import be attempted?</source>
 アカウントのインポートを試みますか？</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountmanager.cpp" line="198"/>
+        <location filename="../src/gui/accountmanager.cpp" line="197"/>
         <source>%1 accounts were detected from a legacy desktop client.
 Should the accounts be imported?</source>
         <translation>%1 アカウントが古いデスクトプクライアントから検出されました。
 アカウントをインポートしますか？</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountmanager.cpp" line="200"/>
+        <location filename="../src/gui/accountmanager.cpp" line="199"/>
         <source>1 account was detected from a legacy desktop client.
 Should the account be imported?</source>
         <translation>1 アカウントが古いデスクトプクライアントから検出されました。
@@ -474,12 +474,12 @@ Should the account be imported?</source>
         <translation>レガシーインポート(過去設定の取り込み)</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountmanager.cpp" line="203"/>
+        <location filename="../src/gui/accountmanager.cpp" line="202"/>
         <source>Import</source>
         <translation>インポート</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountmanager.cpp" line="204"/>
+        <location filename="../src/gui/accountmanager.cpp" line="203"/>
         <source>Skip</source>
         <translation>スキップ</translation>
     </message>
@@ -5292,6 +5292,16 @@ Server replied with error: %2</source>
         <source>Resolve conflict</source>
         <translation>競合の解決</translation>
     </message>
+    <message>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1052"/>
+        <source>Open Nextcloud Assistant in browser</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1052"/>
+        <source>Open Nextcloud Talk in browser</source>
+        <translation type="unfinished"/>
+    </message>
 </context>
 <context>
     <name>OCC::UserModel</name>
@@ -6475,7 +6485,7 @@ Server replied with error: %2</source>
         <translation>統合検索結果</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="899"/>
+        <location filename="../src/gui/tray/Window.qml" line="896"/>
         <source>New activities</source>
         <translation>新しいアクティビティ</translation>
     </message>
