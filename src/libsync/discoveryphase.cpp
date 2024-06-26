@@ -399,16 +399,14 @@ void DiscoverySingleDirectoryJob::start()
           << "http://owncloud.org/ns:downloadURL"
           << "http://owncloud.org/ns:dDC"
           << "http://owncloud.org/ns:permissions"
-          << "http://owncloud.org/ns:checksums";
+          << "http://owncloud.org/ns:checksums"
+          << "http://nextcloud.org/ns:is-encrypted";
 
     if (_isRootPath)
         props << "http://owncloud.org/ns:data-fingerprint";
     if (_account->serverVersionInt() >= Account::makeServerVersion(10, 0, 0)) {
         // Server older than 10.0 have performances issue if we ask for the share-types on every PROPFIND
         props << "http://owncloud.org/ns:share-types";
-    }
-    if (_account->capabilities().clientSideEncryptionAvailable()) {
-        props << "http://nextcloud.org/ns:is-encrypted";
     }
     if (_account->capabilities().filesLockAvailable()) {
         props << "http://nextcloud.org/ns:lock"
@@ -625,10 +623,13 @@ void DiscoverySingleDirectoryJob::lsJobFinishedWithoutErrorSlot()
         emit finished(HttpError{ 0, _error });
         deleteLater();
         return;
-    } else if (isE2eEncrypted()) {
+    } else if (isE2eEncrypted() && _account->capabilities().clientSideEncryptionAvailable()) {
         emit etag(_firstEtag, QDateTime::fromString(QString::fromUtf8(_lsColJob->responseTimestamp()), Qt::RFC2822Date));
         fetchE2eMetadata();
         return;
+    } else if (isE2eEncrypted() && !_account->capabilities().clientSideEncryptionAvailable()) {
+        emit etag(_firstEtag, QDateTime::fromString(QString::fromUtf8(_lsColJob->responseTimestamp()), Qt::RFC2822Date));
+        emit finished(_results);
     }
     emit etag(_firstEtag, QDateTime::fromString(QString::fromUtf8(_lsColJob->responseTimestamp()), Qt::RFC2822Date));
     emit finished(_results);

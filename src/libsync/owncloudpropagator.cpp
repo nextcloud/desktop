@@ -315,10 +315,6 @@ void PropagateItemJob::slotRestoreJobFinished(SyncFileItem::Status status)
 
 bool PropagateItemJob::hasEncryptedAncestor() const
 {
-    if (!propagator()->account()->capabilities().clientSideEncryptionAvailable()) {
-        return false;
-    }
-
     SyncJournalFileRecord rec;
     return propagator()->_journal->findEncryptedAncestorForRecord(_item->_file, &rec)
         && rec.isValid() && rec.isE2eEncrypted();
@@ -1098,8 +1094,7 @@ bool OwncloudPropagator::isDelayedUploadItem(const SyncFileItemPtr &item) const
 
         const auto accountPtr = account();
 
-        if (!accountPtr->capabilities().clientSideEncryptionAvailable() ||
-            !parentRec.isValid() ||
+        if (!parentRec.isValid() ||
             !parentRec.isE2eEncrypted()) {
             return false;
         }

@@ -135,6 +135,9 @@ Qt::ItemFlags FolderStatusModel::flags(const QModelIndex &index) const
         return Qt::ItemIsEnabled;
     case SubFolder:
         if (supportsSelectiveSync) {
+            if (info && info->_isEncrypted && !_accountState->account()->capabilities().clientSideEncryptionAvailable()) {
+                return Qt::ItemIsUserCheckable | Qt::ItemIsSelectable;
+            }
             return Qt::ItemIsEnabled | Qt::ItemIsUserCheckable | Qt::ItemIsSelectable;
         } else {
             return Qt::ItemIsEnabled | Qt::ItemIsSelectable;
@@ -613,14 +616,12 @@ void FolderStatusModel::fetchMore(const QModelIndex &parent)
 
     const auto job = new LsColJob(_accountState->account(), path);
     info->_fetchingJob = job;
-    auto props = QList<QByteArray>() << "resourcetype"
-                                     << "http://owncloud.org/ns:size"
-                                     << "http://owncloud.org/ns:permissions"
-                                     << "http://nextcloud.org/ns:is-mount-root"
-                                     << "http://owncloud.org/ns:fileid";
-    if (_accountState->account()->capabilities().clientSideEncryptionAvailable()) {
-        props << "http://nextcloud.org/ns:is-encrypted";
-    }
+    const auto props = QList<QByteArray>() << "resourcetype"
+                                           << "http://owncloud.org/ns:size"
+                                           << "http://owncloud.org/ns:permissions"
+                                           << "http://nextcloud.org/ns:is-mount-root"
+                                           << "http://owncloud.org/ns:fileid"
+                                           << "http://nextcloud.org/ns:is-encrypted";
     job->setProperties(props);
 
     job->setTimeout(60 * 1000);

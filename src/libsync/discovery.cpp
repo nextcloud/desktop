@@ -1664,6 +1664,13 @@ void ProcessDirectoryJob::processFileFinalize(
     const SyncFileItemPtr &item, PathTuple path, bool recurse,
     QueryMode recurseQueryLocal, QueryMode recurseQueryServer)
 {
+    if (item->isEncrypted() && !_discoveryData->_account->capabilities().clientSideEncryptionAvailable()) {
+        item->_instruction = CSyncEnums::CSYNC_INSTRUCTION_IGNORE;
+        item->_direction = SyncFileItem::None;
+        emit _discoveryData->itemDiscovered(item);
+        return;
+    }
+
     // Adjust target path for virtual-suffix files
     if (isVfsWithSuffix()) {
         if (item->_type == ItemTypeVirtualFile) {
