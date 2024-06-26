@@ -686,16 +686,7 @@ int ConfigFile::updateSegment() const
 
 QString ConfigFile::updateChannel() const
 {
-    auto defaultUpdateChannel = QStringLiteral("stable");
-    if (const auto suffix = QString::fromLatin1(MIRALL_STRINGIFY(MIRALL_VERSION_SUFFIX));
-        suffix.startsWith("daily")
-        || suffix.startsWith("nightly")
-        || suffix.startsWith("alpha")
-        || suffix.startsWith("rc")
-        || suffix.startsWith("beta")) {
-        defaultUpdateChannel = QStringLiteral("beta");
-    }
-
+    auto defaultUpdateChannel = QString::fromLatin1(MIRALL_STRINGIFY(MIRALL_VERSION_SUFFIX));
     QSettings settings(configFile(), QSettings::IniFormat);
     const auto channel = settings.value(QLatin1String(updateChannelC), defaultUpdateChannel).toString();
     if (!validUpdateChannels().contains(channel)) {
