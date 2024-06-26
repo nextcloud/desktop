@@ -328,9 +328,7 @@ bool FileSystem::setFolderPermissions(const QString &path,
         case OCC::FileSystem::FolderPermissions::ReadWrite:
             break;
         }
-    }
-    catch (const std::filesystem::filesystem_error &e)
-    {
+    } catch (const std::filesystem::filesystem_error &e) {
         qCWarning(lcFileSystem()) << "exception when modifying folder permissions" << e.what() << e.path1().c_str() << e.path2().c_str();
         return false;
     }
@@ -453,7 +451,6 @@ bool FileSystem::setFolderPermissions(const QString &path,
     }
 #endif
 
-#if !defined(Q_OS_MACOS) || __MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_15
     try {
         switch (permissions) {
         case OCC::FileSystem::FolderPermissions::ReadOnly:
@@ -462,13 +459,10 @@ bool FileSystem::setFolderPermissions(const QString &path,
             std::filesystem::permissions(stdStrPath, writePerms, std::filesystem::perm_options::add);
             break;
         }
-    }
-    catch (const std::filesystem::filesystem_error &e)
-    {
+    } catch (const std::filesystem::filesystem_error &e) {
         qCWarning(lcFileSystem()) << "exception when modifying folder permissions" << e.what() << e.path1().c_str() << e.path2().c_str();
         return false;
     }
-#endif
 
     return true;
 }
