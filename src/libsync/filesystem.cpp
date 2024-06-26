@@ -319,10 +319,11 @@ bool FileSystem::setFolderPermissions(const QString &path,
                                       FileSystem::FolderPermissions permissions) noexcept
 {
     static constexpr auto writePerms = std::filesystem::perms::owner_write | std::filesystem::perms::group_write | std::filesystem::perms::others_write;
+    const auto stdStrPath = path.toStdWString();
     try {
         switch (permissions) {
         case OCC::FileSystem::FolderPermissions::ReadOnly:
-            std::filesystem::permissions(path.toStdWString(), writePerms, std::filesystem::perm_options::remove);
+            std::filesystem::permissions(stdStrPath, writePerms, std::filesystem::perm_options::remove);
             break;
         case OCC::FileSystem::FolderPermissions::ReadWrite:
             break;
@@ -458,7 +459,7 @@ bool FileSystem::setFolderPermissions(const QString &path,
         case OCC::FileSystem::FolderPermissions::ReadOnly:
             break;
         case OCC::FileSystem::FolderPermissions::ReadWrite:
-            std::filesystem::permissions(path.toStdWString(), writePerms, std::filesystem::perm_options::add);
+            std::filesystem::permissions(stdStrPath, writePerms, std::filesystem::perm_options::add);
             break;
         }
     }
