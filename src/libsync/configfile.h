@@ -171,7 +171,7 @@ public:
     void setShowChatNotifications(bool show);
 
     [[nodiscard]] bool showCallNotifications() const;
-    void setShowCallNotifications(const bool show);
+    void setShowCallNotifications(bool show);
 
     [[nodiscard]] bool showInExplorerNavigationPane() const;
     void setShowInExplorerNavigationPane(bool show);
