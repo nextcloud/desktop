@@ -196,6 +196,7 @@ public:
 
     [[nodiscard]] QString statusHeaderText(SyncResult::Status) const;
     [[nodiscard]] QString version() const;
+    [[nodiscard]] QString versionSuffix() const;
 
     /**
      * Characteristics: bool if more than one sync folder is allowed

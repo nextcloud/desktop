@@ -99,7 +99,7 @@ QUrlQuery Updater::getQueryParams()
     query.addQueryItem(QStringLiteral("buildArch"), QSysInfo::buildCpuArchitecture());
     query.addQueryItem(QStringLiteral("currentArch"), QSysInfo::currentCpuArchitecture());
 
-    const auto suffix = QStringLiteral(MIRALL_STRINGIFY(MIRALL_VERSION_SUFFIX));
+    const auto suffix = Theme::instance()->versionSuffix();
     query.addQueryItem(QStringLiteral("versionsuffix"), suffix);
 
     ConfigFile config;

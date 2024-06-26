@@ -686,7 +686,7 @@ int ConfigFile::updateSegment() const
 
 QString ConfigFile::updateChannel() const
 {
-    auto defaultUpdateChannel = QString::fromLatin1(MIRALL_STRINGIFY(MIRALL_VERSION_SUFFIX));
+    auto defaultUpdateChannel = Theme::instance()->versionSuffix();
     QSettings settings(configFile(), QSettings::IniFormat);
     const auto channel = settings.value(QLatin1String(updateChannelC), defaultUpdateChannel).toString();
     if (!validUpdateChannels().contains(channel)) {

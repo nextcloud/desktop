@@ -195,6 +195,11 @@ QString Theme::version() const
     return MIRALL_VERSION_STRING;
 }
 
+QString Theme::versionSuffix() const
+{
+    return QString::fromLatin1(MIRALL_STRINGIFY(MIRALL_VERSION_SUFFIX));
+}
+
 QString Theme::configFileName() const
 {
     return QStringLiteral(APPLICATION_CONFIG_NAME ".cfg");
