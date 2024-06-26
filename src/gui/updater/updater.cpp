@@ -98,22 +98,14 @@ QUrlQuery Updater::getQueryParams()
     query.addQueryItem(QStringLiteral("oem"), Theme::instance()->appName());
     query.addQueryItem(QStringLiteral("buildArch"), QSysInfo::buildCpuArchitecture());
     query.addQueryItem(QStringLiteral("currentArch"), QSysInfo::currentCpuArchitecture());
-
-    const auto suffix = Theme::instance()->versionSuffix();
-    query.addQueryItem(QStringLiteral("versionsuffix"), suffix);
+    query.addQueryItem(QStringLiteral("versionsuffix"), Theme::instance()->versionSuffix());
 
     ConfigFile config;
-    if (const auto channel = config.updateChannel();
-        channel != QLatin1String("stable")) {
-        query.addQueryItem(QStringLiteral("channel"), channel);
-    }
-
-    const auto updateSegment = config.updateSegment();
-    query.addQueryItem(QLatin1String("updatesegment"), QString::number(updateSegment));
+    query.addQueryItem(QStringLiteral("channel"), config.currentUpdateChannel());
+    query.addQueryItem(QLatin1String("updatesegment"), QString::number(config.updateSegment()));
 
     return query;
 }
-
 
 QString Updater::getSystemInfo()
 {

@@ -283,7 +283,7 @@ void GeneralSettings::loadMiscSettings()
 #if defined(BUILD_UPDATER)
     auto validUpdateChannels = cfgFile.validUpdateChannels();
     _ui->updateChannel->addItems(validUpdateChannels);
-    const auto currentUpdateChannelIndex = validUpdateChannels.indexOf(cfgFile.updateChannel());
+    const auto currentUpdateChannelIndex = validUpdateChannels.indexOf(cfgFile.currentUpdateChannel());
     _ui->updateChannel->setCurrentIndex(currentUpdateChannelIndex != -1? currentUpdateChannelIndex : 0);
     connect(_ui->updateChannel, &QComboBox::currentTextChanged, this, &GeneralSettings::slotUpdateChannelChanged);
 #endif
@@ -377,7 +377,7 @@ void GeneralSettings::slotUpdateChannelChanged()
     };
 
     const auto channel = updateChannelFromLocalized(_ui->updateChannel->currentIndex());
-    if (channel == ConfigFile().updateChannel()) {
+    if (channel == ConfigFile().currentUpdateChannel()) {
         return;
     }
 
@@ -409,7 +409,7 @@ void GeneralSettings::slotUpdateChannelChanged()
             }
 #endif
         } else {
-            _ui->updateChannel->setCurrentText(updateChannelToLocalized(ConfigFile().updateChannel()));
+            _ui->updateChannel->setCurrentText(updateChannelToLocalized(ConfigFile().currentUpdateChannel()));
         }
     });
     msgBox->open();

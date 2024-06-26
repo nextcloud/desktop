@@ -109,6 +109,9 @@ static constexpr char forceLoginV2C[] = "forceLoginV2";
 
 static constexpr char certPath[] = "http_certificatePath";
 static constexpr char certPasswd[] = "http_certificatePasswd";
+
+static const QStringList validUpdateChannelsList { QStringLiteral("stable"), QStringLiteral("beta"), QStringLiteral("daily") };
+static const char stableUpdateChannel[] = "stable";
 }
 
 namespace OCC {
@@ -684,25 +687,31 @@ int ConfigFile::updateSegment() const
     return segment;
 }
 
-QString ConfigFile::updateChannel() const
-{
-    auto defaultUpdateChannel = Theme::instance()->versionSuffix();
-    QSettings settings(configFile(), QSettings::IniFormat);
-    const auto channel = settings.value(QLatin1String(updateChannelC), defaultUpdateChannel).toString();
-    if (!validUpdateChannels().contains(channel)) {
-        qCWarning(lcConfigFile()) << "Received invalid update channel from config:"
-                                  << channel
-                                  << "defaulting to:"
-                                  << defaultUpdateChannel;
-        return defaultUpdateChannel;
-    }
-
-    return channel;
-}
-
 QStringList ConfigFile::validUpdateChannels() const
 {
-    return { QStringLiteral("stable"), QStringLiteral("beta"), QStringLiteral("daily") };
+    return validUpdateChannelsList;
+}
+
+QString ConfigFile::defaultUpdateChannel() const
+{
+    if (const auto currentVersionSuffix = Theme::instance()->versionSuffix();validUpdateChannels().contains(currentVersionSuffix)) {
+        qCWarning(lcConfigFile()) << "Enforcing update channel" << currentVersionSuffix << "because of the version suffix of the current client.";
+        return currentVersionSuffix;
+    }
+
+    return stableUpdateChannel;
+}
+
+QString ConfigFile::currentUpdateChannel() const
+{
+    QSettings settings(configFile(), QSettings::IniFormat);
+    if (const auto configUpdateChannel = settings.value(QLatin1String(updateChannelC), defaultUpdateChannel()).toString();
+        validUpdateChannels().contains(configUpdateChannel)) {
+        qCWarning(lcConfigFile()) << "Config file has a valid update channel:" << configUpdateChannel;
+        return configUpdateChannel;
+    }
+
+    return defaultUpdateChannel();
 }
 
 void ConfigFile::setUpdateChannel(const QString &channel)
