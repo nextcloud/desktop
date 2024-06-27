@@ -43,6 +43,8 @@
 #include <QDir>
 #include <QScopedValueRollback>
 #include <QMessageBox>
+#include <QButtongroup>
+#include <QRadioButton>
 
 #include <KZip>
 
@@ -281,11 +283,33 @@ void GeneralSettings::loadMiscSettings()
     _ui->monoIconsCheckBox->setChecked(cfgFile.monoIcons());
 
 #if defined(BUILD_UPDATER)
-    auto validUpdateChannels = cfgFile.validUpdateChannels();
-    _ui->updateChannel->addItems(validUpdateChannels);
-    const auto currentUpdateChannelIndex = validUpdateChannels.indexOf(cfgFile.currentUpdateChannel());
-    _ui->updateChannel->setCurrentIndex(currentUpdateChannelIndex != -1? currentUpdateChannelIndex : 0);
-    connect(_ui->updateChannel, &QComboBox::currentTextChanged, this, &GeneralSettings::slotUpdateChannelChanged);
+    const auto updateChannelToLocalized = [](const QString &channel) {
+        if (channel == QStringLiteral("stable")) {
+            return tr("stable");
+        }
+
+        if (channel == QStringLiteral("beta")) {
+            return tr("beta");
+        }
+
+        if (channel == QStringLiteral("daily")) {
+            return tr("daily");
+        }
+
+        return QString{};
+    };
+
+    _updateChannelGroup = new QButtonGroup(this);
+    auto position = _ui->updateChannelLayout->indexOf(_ui->updateChannelLabel);
+    for (const auto &channel : cfgFile.validUpdateChannels()) {
+        auto channelRadioButton = new QRadioButton(updateChannelToLocalized(channel), this);
+        _updateChannelGroup->addButton(channelRadioButton, cfgFile.validUpdateChannels().indexOf(channel));
+        position++;
+        _ui->updateChannelLayout->insertWidget(position, channelRadioButton);
+        channelRadioButton->setChecked(cfgFile.currentUpdateChannel() == channel);
+    }
+    connect(_updateChannelGroup, &QButtonGroup::idClicked, this, &GeneralSettings::slotUpdateChannelChanged);
+
 #endif
 }
 
@@ -345,38 +369,23 @@ void GeneralSettings::slotUpdateInfo()
 #endif
 }
 
-void GeneralSettings::slotUpdateChannelChanged()
+void GeneralSettings::slotUpdateChannelChanged(const int id)
 {
-    const auto updateChannelToLocalized = [](const QString &channel) {
-        if (channel == QStringLiteral("stable")) {
-            return tr("stable");
-        }
+    auto updateChannelselected = _updateChannelGroup->button(id);
+    const auto updateChannelFromLocalized = [](const QString &channel) {
 
-        if (channel == QStringLiteral("beta")) {
-            return tr("beta");
-        }
-
-        if (channel == QStringLiteral("daily")) {
-            return tr("daily");
-        }
-
-        return QString{};
-    };
-
-    const auto updateChannelFromLocalized = [](const int index) {
-        switch(index) {
-        case 1:
-            return QStringLiteral("beta");
-            break;
-        case 2:
+        if (channel == tr("daily")) {
             return QStringLiteral("daily");
-            break;
+        }
+
+        if (channel == tr("beta")) {
+            return QStringLiteral("beta");
         }
 
         return QStringLiteral("stable");
     };
 
-    const auto channel = updateChannelFromLocalized(_ui->updateChannel->currentIndex());
+    const auto channel = updateChannelFromLocalized(updateChannelselected->text());
     if (channel == ConfigFile().currentUpdateChannel()) {
         return;
     }
@@ -393,7 +402,7 @@ void GeneralSettings::slotUpdateChannelChanged()
         this);
     const auto acceptButton = msgBox->addButton(tr("Change update channel"), QMessageBox::AcceptRole);
     msgBox->addButton(tr("Cancel"), QMessageBox::RejectRole);
-    connect(msgBox, &QMessageBox::finished, msgBox, [this, channel, msgBox, acceptButton, updateChannelToLocalized] {
+    connect(msgBox, &QMessageBox::finished, msgBox, [this, channel, msgBox, acceptButton] {
         msgBox->deleteLater();
         if (msgBox->clickedButton() == acceptButton) {
             ConfigFile().setUpdateChannel(channel);
@@ -408,7 +417,8 @@ void GeneralSettings::slotUpdateChannelChanged()
             }
 #endif
         } else {
-            _ui->updateChannel->setCurrentText(updateChannelToLocalized(ConfigFile().currentUpdateChannel()));
+            auto currentUpdateChannel = _updateChannelGroup->button(ConfigFile().validUpdateChannels().indexOf(ConfigFile().currentUpdateChannel()));
+            currentUpdateChannel->setChecked(true);
         }
     });
     msgBox->open();
