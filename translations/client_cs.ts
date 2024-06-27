@@ -1596,8 +1596,8 @@ Současně tato akce zruší jakoukoli právě probíhající synchronizaci.</tr
         <translation>Chyba serveru: odpověď PROPFIND není ve formátu XML!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="677"/>
-        <location filename="../src/libsync/discoveryphase.cpp" line="706"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="678"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="707"/>
         <source>Encrypted metadata setup error!</source>
         <translation type="unfinished"/>
     </message>
@@ -3987,8 +3987,8 @@ Toto je nový, experimentální režim. Pokud se jej rozhodnete používat, pros
         <translation>Chyba při aktualizaci metadat z důvodu neplatného času změny</translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1485"/>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1510"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1480"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1505"/>
         <source>The folder %1 cannot be made read-only: %2</source>
         <translation type="unfinished"/>
     </message>

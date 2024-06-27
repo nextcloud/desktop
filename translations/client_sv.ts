@@ -1597,8 +1597,8 @@ Den här åtgärden avbryter alla pågående synkroniseringar.</translation>
         <translation>Serverfel: PROPFIND-svar är inte XML-formaterat!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="677"/>
-        <location filename="../src/libsync/discoveryphase.cpp" line="706"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="678"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="707"/>
         <source>Encrypted metadata setup error!</source>
         <translation>Inställningsfel för krypterad metadata!</translation>
     </message>
@@ -3989,8 +3989,8 @@ Detta är ett nytt experimentellt läge. Om du bestämmer dig för att använda 
         <translation>Fel vid uppdatering av metadata på grund av ogiltig ändringstid</translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1485"/>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1510"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1480"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1505"/>
         <source>The folder %1 cannot be made read-only: %2</source>
         <translation>Mappen %1 kan inte göras skrivskyddad: %2</translation>
     </message>

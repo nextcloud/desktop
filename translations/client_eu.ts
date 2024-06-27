@@ -1597,8 +1597,8 @@ Ekintza honek unean uneko sinkronizazioa bertan behera utziko du.</translation>
         <translation>Zerbitzariko errorea: PROPFINDaren erantzunak ez du XML formaturik!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="677"/>
-        <location filename="../src/libsync/discoveryphase.cpp" line="706"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="678"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="707"/>
         <source>Encrypted metadata setup error!</source>
         <translation>Zifratutako metadatuen konfigurazio errorea!</translation>
     </message>
@@ -3989,8 +3989,8 @@ Modu hau berria eta experimentala da. Erabiltzea erabakitzen baduzu, agertzen di
         <translation>Errorea metadatuak eguneratzen aldaketa-data baliogabeagatik</translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1485"/>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1510"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1480"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1505"/>
         <source>The folder %1 cannot be made read-only: %2</source>
         <translation>%1 karpeta ezin da irakurtzeko soilik bihurtu: %2</translation>
     </message>

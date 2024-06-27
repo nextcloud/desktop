@@ -1596,8 +1596,8 @@ Diese Aktion bricht jede derzeit laufende Synchronisierung ab.</translation>
         <translation>Serverantwort: PROPFIND-Antwort ist nicht im XML-Format!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="677"/>
-        <location filename="../src/libsync/discoveryphase.cpp" line="706"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="678"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="707"/>
         <source>Encrypted metadata setup error!</source>
         <translation>Einrichtungsfehler für verschlüsselte Metadaten!</translation>
     </message>
@@ -3988,8 +3988,8 @@ Dies ist ein neuer, experimenteller Modus. Wenn Sie sich entscheiden, ihn zu ver
         <translation>Fehler beim Aktualisieren der Metadaten aufgrund einer ungültigen Änderungszeit</translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1485"/>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1510"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1480"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1505"/>
         <source>The folder %1 cannot be made read-only: %2</source>
         <translation>Der Ordner %1 kann nicht schreibgeschützt werden: %2</translation>
     </message>
@@ -5295,12 +5295,12 @@ Server antwortete mit Fehler: %2</translation>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1052"/>
         <source>Open Nextcloud Assistant in browser</source>
-        <translation type="unfinished"/>
+        <translation>Nextcloud-Assistent im Browser öffnen</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1052"/>
         <source>Open Nextcloud Talk in browser</source>
-        <translation type="unfinished"/>
+        <translation>Nextcloud-Talk im Browser öffnen</translation>
     </message>
 </context>
 <context>

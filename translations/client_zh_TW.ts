@@ -1597,8 +1597,8 @@ This action will abort any currently running synchronization.</source>
         <translation>伺服器錯誤：PROPFIND 回覆未使用 XML 格式！</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="677"/>
-        <location filename="../src/libsync/discoveryphase.cpp" line="706"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="678"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="707"/>
         <source>Encrypted metadata setup error!</source>
         <translation>已加密的詮釋資料設定錯誤！</translation>
     </message>
@@ -3989,8 +3989,8 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>因為修改時間無效，所以更新詮釋資料時發生錯誤</translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1485"/>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1510"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1480"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1505"/>
         <source>The folder %1 cannot be made read-only: %2</source>
         <translation>無法將資料夾 %1 設為唯讀：%2</translation>
     </message>

@@ -1592,8 +1592,8 @@ This action will abort any currently running synchronization.</source>
         <translation>خطأ خادوم: رد PROPFIND ليس على نسق XML!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="677"/>
-        <location filename="../src/libsync/discoveryphase.cpp" line="706"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="678"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="707"/>
         <source>Encrypted metadata setup error!</source>
         <translation>خطأ في إعدادات البيانات الوصفية المشفرة!</translation>
     </message>
@@ -3969,8 +3969,8 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>خطأ في تحديث البيانات الوصفية metadata بسبب أن &quot;آخر وقت تعديل للملف&quot; غير صالح</translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1485"/>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1510"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1480"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1505"/>
         <source>The folder %1 cannot be made read-only: %2</source>
         <translation>المجلد %1؛ لا يمكن جعله للقراءة فقط: %2</translation>
     </message>
@@ -5274,12 +5274,12 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1052"/>
         <source>Open Nextcloud Assistant in browser</source>
-        <translation type="unfinished"/>
+        <translation>إفتَح &quot;مُساعِد نكست كلاود&quot; Assistant في المُستعرِض</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1052"/>
         <source>Open Nextcloud Talk in browser</source>
-        <translation type="unfinished"/>
+        <translation>إفتَح &quot;مُحادثة نكست كلاود&quot; Talk في المُستعرِض</translation>
     </message>
 </context>
 <context>

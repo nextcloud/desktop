@@ -1597,8 +1597,8 @@ Táto akcia zruší všetky prebiehajúce synchronizácie.</translation>
         <translation>Chyba servera: odpoveď PROPFIND nie je vo formáte XML.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="677"/>
-        <location filename="../src/libsync/discoveryphase.cpp" line="706"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="678"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="707"/>
         <source>Encrypted metadata setup error!</source>
         <translation>Chyba nastavenia šifrovaných metadát!</translation>
     </message>
@@ -3989,8 +3989,8 @@ Toto je nový experimentálny režim. Ak sa ho rozhodnete použiť, nahláste v�
         <translation>Chyba pri aktualizácii metadát z dôvodu neplatného času poslednej zmeny</translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1485"/>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1510"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1480"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1505"/>
         <source>The folder %1 cannot be made read-only: %2</source>
         <translation>Priečinok %1 nemôže byť nastavený len na čítanie: %2</translation>
     </message>

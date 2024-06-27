@@ -1597,8 +1597,8 @@ This action will abort any currently running synchronization.</source>
         <translation>Error del servidor: ¡La respuesta PROPFIND no tiene formato XML!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="677"/>
-        <location filename="../src/libsync/discoveryphase.cpp" line="706"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="678"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="707"/>
         <source>Encrypted metadata setup error!</source>
         <translation>¡Hubo un error al configurar los metadatos cifrados!</translation>
     </message>
@@ -3989,8 +3989,8 @@ Este es un modo nuevo y experimental. Si decide usarlo, por favor informe cualqu
         <translation>Error al actualizar los metadatos debido a una hora de modificación inválida</translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1485"/>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1510"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1480"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1505"/>
         <source>The folder %1 cannot be made read-only: %2</source>
         <translation>La carpeta %1 no se puede hacer de sólo lectura: %2</translation>
     </message>

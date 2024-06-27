@@ -1597,8 +1597,8 @@ Cuirfidh an gníomh seo deireadh le haon sioncrónú atá ar siúl faoi láthair
         <translation>Earráid fhreastalaí: Níl an freagra PROPFIND formáidithe XML!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="677"/>
-        <location filename="../src/libsync/discoveryphase.cpp" line="706"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="678"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="707"/>
         <source>Encrypted metadata setup error!</source>
         <translation>Earráid socraithe meiteashonraí criptithe!</translation>
     </message>
@@ -3989,8 +3989,8 @@ Is modh turgnamhach nua é seo. Má shocraíonn tú é a úsáid, cuir in iúl l
         <translation>Earráid agus meiteashonraí á nuashonrú mar gheall ar am modhnuithe neamhbhailí</translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1485"/>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1510"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1480"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1505"/>
         <source>The folder %1 cannot be made read-only: %2</source>
         <translation>Ní féidir fillteán % 1 a dhéanamh inléite amháin: % 2</translation>
     </message>
@@ -5296,12 +5296,12 @@ D&apos;fhreagair an freastalaí le hearráid: % 2</translation>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1052"/>
         <source>Open Nextcloud Assistant in browser</source>
-        <translation type="unfinished"/>
+        <translation>Oscail Nextcloud Assistant sa bhrabhsálaí</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1052"/>
         <source>Open Nextcloud Talk in browser</source>
-        <translation type="unfinished"/>
+        <translation>Oscail Nextcloud Talk sa bhrabhsálaí</translation>
     </message>
 </context>
 <context>

@@ -1597,8 +1597,8 @@ Esta acción interromperá calquera sincronización que estea a executarse actua
         <translation>Erro do servidor: a resposta PROPFIND non está formatada en XML.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="677"/>
-        <location filename="../src/libsync/discoveryphase.cpp" line="706"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="678"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="707"/>
         <source>Encrypted metadata setup error!</source>
         <translation>Produciuse un erro na configuración dos metadatos cifrados!</translation>
     </message>
@@ -3989,8 +3989,8 @@ Este é un novo modo experimental. Se decide usalo, agradecémoslle que informe 
         <translation>Produciuse un erro ao actualizar os metadatos por mor dunha hora de modificación incorrecta</translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1485"/>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1510"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1480"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1505"/>
         <source>The folder %1 cannot be made read-only: %2</source>
         <translation>Non é posíbel facer que o cartafol %1 sexa de só lectura: %2</translation>
     </message>
@@ -5296,12 +5296,12 @@ O servidor respondeu co erro: %2</translation>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1052"/>
         <source>Open Nextcloud Assistant in browser</source>
-        <translation type="unfinished"/>
+        <translation>Abrir o Asistente de Nextcloud no navegador</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1052"/>
         <source>Open Nextcloud Talk in browser</source>
-        <translation type="unfinished"/>
+        <translation>Abrir Nextcloud Talk no navegador</translation>
     </message>
 </context>
 <context>

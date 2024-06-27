@@ -1597,8 +1597,8 @@ Denne handlingen vil avbryte enhver synkronisering som kjører.</translation>
         <translation>Serverfeil: PROPFIND-svaret er ikke XML-formatert!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="677"/>
-        <location filename="../src/libsync/discoveryphase.cpp" line="706"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="678"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="707"/>
         <source>Encrypted metadata setup error!</source>
         <translation>Feil ved oppsett av kryptert metadata!</translation>
     </message>
@@ -3810,29 +3810,29 @@ Dette er en ny, eksperimentell modus. Hvis du bestemmer deg for å bruke den, ve
         <location filename="../src/libsync/discovery.cpp" line="358"/>
         <source>Folder</source>
         <comment>name of folder entity to use when warning about invalid name</comment>
-        <translation type="unfinished"/>
+        <translation>Mappe</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="358"/>
         <source>File</source>
         <comment>name of folder entity to use when warning about invalid name</comment>
-        <translation type="unfinished"/>
+        <translation>Fil</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="360"/>
         <source>%1 name containing the character &quot;%2&quot; is not supported on this file system.</source>
         <comment>folder or file impossible to sync due to an invalid name, placeholders will be file or folder and the invalid character</comment>
-        <translation type="unfinished"/>
+        <translation>%1 navn som inneholder tegnet &quot;%2&quot; støttes ikke på dette filsystemet.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="362"/>
         <source>%1 name contains at least one invalid character</source>
-        <translation type="unfinished"/>
+        <translation>%1 navn inneholder minst ett ugyldig tegn</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="364"/>
         <source>%1 name is a reserved name on this file system.</source>
-        <translation type="unfinished"/>
+        <translation>%1 navn er reservert på dette filsystemet.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="361"/>
@@ -3988,8 +3988,8 @@ Dette er en ny, eksperimentell modus. Hvis du bestemmer deg for å bruke den, ve
         <translation>Feil under oppdatering av metadata på grunn av ugyldig endringstid</translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1485"/>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1510"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1480"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1505"/>
         <source>The folder %1 cannot be made read-only: %2</source>
         <translation>Mappen %1 kan ikke gjøres skrivebeskyttet: %2</translation>
     </message>
@@ -4144,7 +4144,7 @@ Dette er en ny, eksperimentell modus. Hvis du bestemmer deg for å bruke den, ve
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="312"/>
         <source>Folder %1 cannot be renamed because of a local file or folder name clash!</source>
-        <translation type="unfinished"/>
+        <translation>Mappe %1 kan ikke omdøpes på grunn av et lokalt fil- eller mappenavn-sammenstøt!</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="254"/>
@@ -5271,7 +5271,7 @@ Server svarte med feil: %2</translation>
     <message>
         <location filename="../src/libsync/updatee2eefolderusersmetadatajob.cpp" line="118"/>
         <source>Could not add or remove user %1 to access folder %2</source>
-        <translation type="unfinished"/>
+        <translation>Kan ikke legge til eller fjerne bruker %1 for tilgang til mappe %2</translation>
     </message>
     <message>
         <location filename="../src/libsync/updatee2eefolderusersmetadatajob.cpp" line="235"/>
@@ -5295,12 +5295,12 @@ Server svarte med feil: %2</translation>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1052"/>
         <source>Open Nextcloud Assistant in browser</source>
-        <translation type="unfinished"/>
+        <translation>Åpne Nextcloud Assistant i nettleser</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1052"/>
         <source>Open Nextcloud Talk in browser</source>
-        <translation type="unfinished"/>
+        <translation>Åpne Nextcloud Talk i nettleser</translation>
     </message>
 </context>
 <context>
@@ -5801,12 +5801,12 @@ Server svarte med feil: %2</translation>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="117"/>
         <source>Failed to create debug archive</source>
-        <translation type="unfinished"/>
+        <translation>Kan ikke opprette feilsøkingsarkiv</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="118"/>
         <source>Could not create debug archive in selected location!</source>
-        <translation type="unfinished"/>
+        <translation>Kan ikke opprette feilsøkingsarkiv på valgt plassering!</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="763"/>
@@ -6576,7 +6576,7 @@ Server svarte med feil: %2</translation>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="60"/>
         <source>Updated local virtual files metadata</source>
-        <translation type="unfinished"/>
+        <translation>Oppdaterte lokale metadata for virtuelle filer</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="61"/>
@@ -6622,7 +6622,7 @@ Server svarte med feil: %2</translation>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="93"/>
         <source>updating local virtual files metadata</source>
-        <translation type="unfinished"/>
+        <translation>oppdaterer lokal metadata for virtuelle filer</translation>
     </message>
 </context>
 <context>
