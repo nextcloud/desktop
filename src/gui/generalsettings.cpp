@@ -316,7 +316,6 @@ void GeneralSettings::slotUpdateInfo()
     if (ocupdater) {
         connect(ocupdater, &OCUpdater::downloadStateChanged, this, &GeneralSettings::slotUpdateInfo, Qt::UniqueConnection);
         connect(_ui->restartButton, &QAbstractButton::clicked, ocupdater, &OCUpdater::slotStartInstaller, Qt::UniqueConnection);
-        //connect(_ui->restartButton, &QAbstractButton::clicked, qApp, &QApplication::quit, Qt::UniqueConnection);
 
         auto status = ocupdater->statusString(OCUpdater::UpdateStatusStringFormat::Html);
         Theme::replaceLinkColorStringBackgroundAware(status);
