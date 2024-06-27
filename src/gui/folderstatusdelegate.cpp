@@ -332,6 +332,17 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
         painter->setFont(progressFont);
 
         painter->drawText(QStyle::visualRect(option.direction, option.rect, overallProgressRect), Qt::AlignLeft | Qt::AlignVCenter, overallString);
+
+        // More detailed sync progress
+        QRect itemStringRect;
+        itemStringRect.setTop(overallProgressRect.bottom());
+        itemStringRect.setHeight(fileNameTextHeight);
+        itemStringRect.setLeft(overallProgressRect.left());
+        itemStringRect.setWidth(overallProgressRect.width());
+        painter->setFont(progressFont);
+
+        painter->drawText(QStyle::visualRect(option.direction, option.rect, itemStringRect), Qt::AlignLeft | Qt::AlignVCenter, itemString);
+
         painter->restore();
     }
 

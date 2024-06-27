@@ -332,7 +332,7 @@ void GETFileJob::slotReadyRead()
     }
 
     if (reply()->isFinished() && (reply()->bytesAvailable() == 0 || !_saveBodyToFile)) {
-        qCDebug(lcGetJob) << "Actually finished!";
+        qCDebug(lcGetJob) << "Get file job finished bytesAvailable/_saveBodyToFile:" << reply()->bytesAvailable() << "/" << _saveBodyToFile ;
         if (_bandwidthManager) {
             _bandwidthManager->unregisterDownloadJob(this);
         }
@@ -1115,7 +1115,8 @@ void PropagateDownloadFile::contentChecksumComputed(const QByteArray &checksumTy
     SyncJournalFileRecord record;
     if (_item->_instruction != CSYNC_INSTRUCTION_CONFLICT && FileSystem::fileExists(localFilePath)
         && (propagator()->_journal->getFileRecord(_item->_file, &record) && record.isValid())
-        && (record._modtime == _item->_modtime && record._etag != _item->_etag)) {
+        && (record._modtime == _item->_modtime && record._etag != _item->_etag)
+        && _item->_type == ItemTypeFile) {
         const auto computeChecksum = new ComputeChecksum(this);
         computeChecksum->setChecksumType(checksumType);
         connect(computeChecksum, &ComputeChecksum::done, this, &PropagateDownloadFile::localFileContentChecksumComputed);

@@ -592,6 +592,7 @@ void ownCloudGui::slotShutdown()
 {
     // explicitly close windows. This is somewhat of a hack to ensure
     // that saving the geometries happens ASAP during a OS shutdown
+    qCWarning(lcApplication) << "=> Shutting down!!";
 
     // those do delete on close
     if (!_settingsDialog.isNull())

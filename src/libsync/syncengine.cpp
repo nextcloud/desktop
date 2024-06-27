@@ -679,6 +679,7 @@ void SyncEngine::startSync()
     connect(_discoveryPhase.data(), &DiscoveryPhase::existingFolderNowBig, this, &SyncEngine::existingFolderNowBig);
     connect(_discoveryPhase.data(), &DiscoveryPhase::fatalError, this, [this](const QString &errorString, ErrorCategory errorCategory) {
         Q_EMIT syncError(errorString, errorCategory);
+        qCWarning(lcEngine) << "=> SyncEngine DiscoveryPhase::fatalError emitted:" << errorString;
         finalize(false);
     });
     connect(_discoveryPhase.data(), &DiscoveryPhase::finished, this, &SyncEngine::slotDiscoveryFinished);

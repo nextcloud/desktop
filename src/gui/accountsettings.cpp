@@ -650,6 +650,7 @@ void AccountSettings::slotCustomContextMenuRequested(const QPoint &pos)
     if (!folderPaused) {
         ac = menu->addAction(tr("Force sync now"));
         if (folder && folder->isSyncRunning()) {
+            qCWarning(lcAccountSettings) << "=> Restart syncing for" << selectedFolderAlias();
             ac->setText(tr("Restart sync"));
         }
         ac->setEnabled(folderConnected);
@@ -1117,6 +1118,7 @@ void AccountSettings::showConnectionLabel(const QString &message, QStringList er
 
 void AccountSettings::slotEnableCurrentFolder(bool terminate)
 {
+    qCWarning(lcAccountSettings) << "=> User!! resuming or pausing sync: terminate value is" << terminate;
     const auto alias = selectedFolderAlias();
 
     if (!alias.isEmpty()) {
@@ -1173,8 +1175,9 @@ void AccountSettings::slotScheduleCurrentFolder()
 
 void AccountSettings::slotScheduleCurrentFolderForceRemoteDiscovery()
 {
-    const auto folderMan = FolderMan::instance();
+    const auto folderMan = FolderMan::instance();    
     if (auto folder = folderMan->folder(selectedFolderAlias())) {
+        qCWarning(lcAccountSettings) << "=> Schedule current folder" << selectedFolderAlias() << "RemoteDiscovery";
         folder->slotWipeErrorBlacklist();
         folder->journalDb()->forceRemoteDiscoveryNextSync();
         folderMan->scheduleFolder(folder);
@@ -1185,6 +1188,7 @@ void AccountSettings::slotForceSyncCurrentFolder()
 {
     FolderMan *folderMan = FolderMan::instance();
     auto selectedFolder = folderMan->folder(selectedFolderAlias());
+    qCWarning(lcAccountSettings) << "=> Force syncing for" << selectedFolderAlias();
     folderMan->forceSyncForFolder(selectedFolder);
 }
 
