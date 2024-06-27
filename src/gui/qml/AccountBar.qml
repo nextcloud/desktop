@@ -17,6 +17,7 @@ import QtQuick.Controls
 import QtQuick.Layouts
 import org.ownCloud.gui 1.0
 import org.ownCloud.libsync 1.0
+import org.ownCloud.resources 1.0
 
 Pane {
     id: bar
@@ -54,7 +55,7 @@ Pane {
                 Layout.maximumWidth: widthHint
                 Accessible.role: Accessible.PageTab
                 checked: settingsDialog.currentAccount === accountState.account
-                icon.source: "image://ownCloud/core/account"
+                icon.source: QMLResources.resourcePath("core", "account", enabled)
                 text: accountState.account.displayName.replace("@", "\n")
 
                 Keys.onBacktabPressed: event => {
@@ -75,7 +76,7 @@ Pane {
 
             Layout.fillWidth: true
             Layout.maximumWidth: widthHint
-            icon.source: "image://ownCloud/core/plus-solid"
+            icon.source: QMLResources.resourcePath("core", "plus-solid", enabled)
             text: qsTr("Add Account")
             visible: Theme.multiAccount || AccountManager.accounts.length === 0
 
@@ -102,7 +103,7 @@ Pane {
             Layout.maximumWidth: widthHint
             Accessible.role: Accessible.PageTab
             checked: settingsDialog.currentPage === SettingsDialog.Activity
-            icon.source: "image://ownCloud/core/activity"
+            icon.source: QMLResources.resourcePath("core", "activity", enabled)
             text: qsTr("Activity")
 
             onClicked: {
@@ -116,7 +117,7 @@ Pane {
             Layout.maximumWidth: widthHint
             Accessible.role: Accessible.PageTab
             checked: settingsDialog.currentPage === SettingsDialog.Settings
-            icon.source: "image://ownCloud/core/settings"
+            icon.source: QMLResources.resourcePath("core", "settings", enabled)
             text: qsTr("Settings")
 
             onClicked: {
@@ -132,7 +133,7 @@ Pane {
 
                 Layout.fillWidth: true
                 Layout.maximumWidth: widthHint
-                icon.source: urlButton.icon
+                icon.source: QMLResources.resourcePath("universal", urlButton.icon, enabled)
                 text: urlButton.name
 
                 onClicked: {
@@ -145,7 +146,7 @@ Pane {
 
             Layout.fillWidth: true
             Layout.maximumWidth: widthHint
-            icon.source: "image://ownCloud/core/quit"
+            icon.source: QMLResources.resourcePath("core", "quit", enabled)
             text: qsTr("Quit")
 
             Keys.onTabPressed: {

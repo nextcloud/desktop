@@ -3,6 +3,8 @@ add_library(owncloudResources SHARED
     core_theme.qrc
     loadresources.cpp
     resources.cpp
+    qmlresources.cpp
+    qmlresources.h
 )
 
 generate_theme(owncloudResources OWNCLOUD_SIDEBAR_ICONS)
@@ -37,5 +39,13 @@ add_resources_to_target(
     PREFIX translations
     FILES "${client_compiled_translations}"
 )
+
+ecm_add_qml_module(owncloudResources
+        URI org.ownCloud.resources
+        VERSION 1.0
+        NAMESPACE OCC
+)
+
+ecm_finalize_qml_module(owncloudResources DESTINATION ${KDE_INSTALL_QMLDIR})
 
 install(TARGETS owncloudResources EXPORT ${APPLICATION_SHORTNAME}Config ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})

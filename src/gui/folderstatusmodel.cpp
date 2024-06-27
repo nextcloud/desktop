@@ -15,7 +15,6 @@
 #include "folderstatusmodel.h"
 #include "account.h"
 #include "accountstate.h"
-#include "common/asserts.h"
 #include "folderman.h"
 #include "gui/quotainfo.h"
 #include "theme.h"
@@ -53,7 +52,7 @@ namespace {
         } else if (f->syncPaused() || f->accountState()->state() == AccountState::PausedDueToMetered) {
             status.setStatus(SyncResult::Status::Paused);
         }
-        return Theme::instance()->syncStateIconName(status);
+        return QStringLiteral("states/%1").arg(Theme::instance()->syncStateIconName(status));
     }
 
     class SubFolderInfo
@@ -283,9 +282,9 @@ QVariant FolderStatusModel::data(const QModelIndex &index, int role) const
             // TODO: the url hast random parts to enforce a reload
             return QStringLiteral("image://space/%1/%2").arg(QString::number(QRandomGenerator::global()->generate()), f->spaceId());
         }
-        return QStringLiteral("image://ownCloud/core/folder-sync");
-    case Roles::FolderStatusUrl:
-        return QStringLiteral("image://ownCloud/core/states/%1").arg(statusIconName(f));
+        return QStringLiteral("folder-sync");
+    case Roles::FolderStatusIcon:
+        return statusIconName(f);
     case Roles::SyncProgressItemString:
         return folderInfo->_progress._progressString;
     case Roles::SyncProgressOverallPercent:
@@ -351,7 +350,7 @@ QHash<int, QByteArray> FolderStatusModel::roleNames() const
         {static_cast<int>(Roles::DisplayName), "displayName"},
         {static_cast<int>(Roles::Subtitle), "subtitle"},
         {static_cast<int>(Roles::FolderImageUrl), "imageUrl"},
-        {static_cast<int>(Roles::FolderStatusUrl), "statusUrl"},
+        {static_cast<int>(Roles::FolderStatusIcon), "statusIcon"},
         {static_cast<int>(Roles::SyncProgressOverallPercent), "progress"},
         {static_cast<int>(Roles::SyncProgressOverallString), "overallText"},
         {static_cast<int>(Roles::SyncProgressItemString), "itemText"},

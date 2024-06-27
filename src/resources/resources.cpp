@@ -16,6 +16,8 @@
 
 #include <QDebug>
 #include <QFileInfo>
+#include <QJsonDocument>
+#include <QJsonObject>
 #include <QLoggingCategory>
 #include <QPalette>
 
@@ -182,29 +184,25 @@ CoreImageProvider::CoreImageProvider()
 }
 QPixmap CoreImageProvider::requestPixmap(const QString &id, QSize *size, const QSize &requestedSize)
 {
-    const auto sep = QLatin1Char('/');
-    const auto [type, elements] = [&] {
-        auto out = id.split(sep);
-        return std::make_tuple(out[0], out.mid(1));
-    }();
-    Q_ASSERT(!elements.isEmpty());
+    const auto data = QJsonDocument::fromJson(QByteArray::fromBase64(id.toUtf8())).object();
+    const auto theme = data.value(QLatin1String("theme")).toString();
+    const auto iconName = data.value(QLatin1String("icon")).toString();
+    const auto enabled = data.value(QLatin1String("enabled")).toBool();
+    Q_ASSERT(!iconName.isEmpty());
     QIcon icon;
-    if (type == QLatin1String("theme")) {
-        if (elements[0] == QLatin1String("universal")) {
-            icon = themeUniversalIcon(elements.mid(1).join(sep));
-        } else {
-            icon = themeIcon(elements.join(sep));
-        }
-    } else if (type == QLatin1String("core")) {
-        icon = getCoreIcon(elements.join(sep));
+    if (theme == QLatin1String("core")) {
+        icon = getCoreIcon(iconName);
+    } else if (theme == QLatin1String("universal")) {
+        icon = themeUniversalIcon(iconName);
     } else {
-        Q_UNREACHABLE();
+        icon = themeIcon(iconName);
     }
+
     // the sourceSize of the Image must be provided
     Q_ASSERT(requestedSize.isValid());
     const QSize actualSize = requestedSize.isValid() ? requestedSize : icon.availableSizes().constFirst();
     if (size) {
         *size = actualSize;
     }
-    return icon.pixmap(actualSize);
+    return icon.pixmap(actualSize, enabled ? QIcon::Normal : QIcon::Disabled);
 }

@@ -16,6 +16,8 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 
+import org.ownCloud.resources 1.0
+
 ColumnLayout {
     property bool collapsed: true
     required property var errorMessages
@@ -25,7 +27,7 @@ ColumnLayout {
         property alias maximumLineCount: label.maximumLineCount
         Image {
             Layout.alignment: Qt.AlignTop
-            source: "image://ownCloud/core/warning"
+            source: QMLResources.resourcePath("core", "warning", enabled)
             Layout.maximumHeight: 16
             Layout.maximumWidth: 16
             sourceSize.width: width

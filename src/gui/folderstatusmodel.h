@@ -56,7 +56,7 @@ public:
         Priority,
         Quota,
         FolderImageUrl,
-        FolderStatusUrl,
+        FolderStatusIcon,
         Folder
     };
     Q_ENUMS(Roles)

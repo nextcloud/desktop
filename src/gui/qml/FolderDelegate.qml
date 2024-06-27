@@ -18,6 +18,7 @@ import QtQuick.Layouts
 import org.ownCloud.gui 1.0
 import org.ownCloud.gui.spaces 1.0
 import org.ownCloud.libsync 1.0
+import org.ownCloud.resources 1.0
 
 Pane {
     id: folderSyncPanel
@@ -85,7 +86,7 @@ Pane {
                     required property double progress
                     required property string quota
                     required property string accessibleDescription
-                    required property url statusUrl
+                    required property string statusIcon
                     required property string subtitle
                     // model index
                     required property int index
@@ -137,7 +138,7 @@ Pane {
                                 Layout.fillWidth: true
                                 description: subtitle
                                 imageSource: imageUrl
-                                statusSource: statusUrl
+                                statusSource: QMLResources.resourcePath("core", statusIcon, enabled)
                                 title: displayName
 
                                 // we will either display quota or overallText
@@ -194,7 +195,7 @@ Pane {
                                 Layout.alignment: Qt.AlignVCenter | Qt.AlignRight
                                 Layout.maximumHeight: 30
                                 display: AbstractButton.IconOnly
-                                icon.source: "image://ownCloud/core/more"
+                                icon.source: QMLResources.resourcePath("core", "more", enabled)
                                 // this should have no effect, but without it the higlight is not displayed in Qt 6.7 on Windows
                                 palette.highlight: folderSyncPanel.palette.higlight
 

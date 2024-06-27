@@ -20,6 +20,7 @@
 #include "config.h"
 #include "configfile.h"
 
+#include "resources/qmlresources.h"
 #include "resources/resources.h"
 
 #include <QtCore>
@@ -67,7 +68,7 @@ Theme *Theme::_instance = nullptr;
 QmlUrlButton::QmlUrlButton() { }
 
 QmlUrlButton::QmlUrlButton(const std::tuple<QString, QString, QUrl> &tuple)
-    : icon(QUrl(QStringLiteral("image://ownCloud/theme/universal/urlIcons/%1").arg(std::get<0>(tuple))))
+    : icon(QStringLiteral("urlIcons/%1").arg(std::get<0>(tuple)))
     , name(std::get<1>(tuple))
     , url(std::get<2>(tuple))
 {
@@ -146,7 +147,7 @@ QIcon Theme::themeTrayIcon(const SyncResult &result, bool sysTrayMenuVisible, Re
 
 #ifdef Q_OS_MAC
             if (sysTrayMenuVisible) {
-                flavor = QLatin1String("white");
+                flavor = whiteTheme();
             }
 #endif
         } else {
