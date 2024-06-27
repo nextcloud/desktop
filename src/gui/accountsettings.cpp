@@ -42,6 +42,7 @@
 #include "syncresult.h"
 #include "ignorelisttablewidget.h"
 #include "wizard/owncloudwizard.h"
+#include "networksettings.h"
 #include "ui_mnemonicdialog.h"
 
 #include <cmath>
@@ -206,13 +207,16 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent)
         const auto fpSettingsWidget = fpSettingsController->settingsViewWidget(fpAccountUserIdAtHost, fileProviderTab);
         fpSettingsLayout->addWidget(fpSettingsWidget);
         fileProviderTab->setLayout(fpSettingsLayout);
-    } else {
-        disguiseTabWidget();
     }
 #else
-    disguiseTabWidget();
     _ui->tabWidget->setCurrentIndex(0);
 #endif
+
+    const auto connectionSettingsTab = _ui->connectionSettingsTab;
+    const auto connectionSettingsLayout = new QVBoxLayout(connectionSettingsTab);
+    const auto networkSettings = new NetworkSettings(connectionSettingsTab);
+    connectionSettingsLayout->addWidget(networkSettings);
+    connectionSettingsTab->setLayout(connectionSettingsLayout);
 
     const auto mouseCursorChanger = new MouseCursorChanger(this);
     mouseCursorChanger->folderList = _ui->_folderList;
