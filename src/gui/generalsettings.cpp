@@ -385,11 +385,10 @@ void GeneralSettings::slotUpdateChannelChanged()
         QMessageBox::Warning,
         tr("Changing update channel?"),
         tr("The channel determines which upgrades will be offered to install:\n"
-           "- stable: contains versions considered reliable.\n"
-           "- beta: contains versions with new features in test.\n"
-           "- daily: contains versions created daily only for testing.\n\n"
-           "Downgrading is not possible: changing from beta to stable means waiting for a newer "
-           "version than the one installed."),
+           "- stable: contains tested versions considered reliable\n"
+           "- beta: contains versions with new features that may not be tested thoroughly\n"
+           "- daily: contains versions created daily only for testing and development\n\n"
+           "Downgrading versions is not possible immediately: changing from beta to stable means waiting for the new stable version."),
         QMessageBox::NoButton,
         this);
     const auto acceptButton = msgBox->addButton(tr("Change update channel"), QMessageBox::AcceptRole);
