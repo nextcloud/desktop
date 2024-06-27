@@ -259,8 +259,11 @@
    </item>
    <item row="3" column="0">
     <widget class="QTabWidget" name="tabWidget">
+     <property name="tabShape">
+      <enum>QTabWidget::Rounded</enum>
+     </property>
      <property name="currentIndex">
-      <number>1</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="standardSyncTab">
       <attribute name="title">
@@ -306,6 +309,11 @@
      <widget class="QWidget" name="fileProviderTab">
       <attribute name="title">
        <string>Virtual file sync</string>
+      </attribute>
+     </widget>
+     <widget class="QWidget" name="connectionSettingsTab">
+      <attribute name="title">
+       <string>Connection settings</string>
       </attribute>
      </widget>
     </widget>
