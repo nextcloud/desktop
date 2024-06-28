@@ -1,0 +1,95 @@
+/**
+ * FIX THE DESIGN OF THE RTD THEME
+ */
+
+/* NC blue */
+.wy-side-nav-search {
+	background-color: #0082c9;
+}
+
+/* Reduce size of logo in top left */
+.wy-side-nav-search > a img.logo {
+	max-width: 180px;
+}
+
+/* Remove unwanted background on top left logo on hover */
+.wy-side-nav-search > a:hover {
+	background: none;
+}
+
+/* Remove unwanted data on the bottom left sidebar */
+.rst-versions.shift-up .rst-other-versions > dl:not(:nth-child(1)),
+.rst-versions.shift-up .rst-other-versions > a,
+.rst-versions.shift-up .rst-other-versions > hr {
+	display:none
+}
+.rst-versions.shift-up .rst-other-versions {
+	color: transparent;
+	font-size: 0px;
+}
+.rst-versions.shift-up .rst-other-versions dt,.rst-versions.shift-up .rst-other-versions dl {
+	color: #808080;
+	font-size: 15px;
+}
+
+/* Remove readthedocs title in the sidebar bottom left section */
+.rst-versions .rst-current-version .fa-book {
+	display: none;
+}
+.rst-versions .rst-current-version:before {
+	content: 'Nextcloud';
+	margin-right: auto;
+}
+.rst-versions .rst-current-version {
+	display: flex;
+	align-items: center;
+	color: #0082c9;
+}
+.rst-versions .rst-current-version .fa-caret-down {
+	margin-left: 5px;
+}
+
+/* Code blocks */
+.highlight {
+	/* nc blue */
+	background: rgba(0, 130, 201, 0.1)
+}
+
+/* ICONS LIST */
+div#list-of-available-icons > blockquote {
+	margin: 0;
+}
+
+div#list-of-available-icons > blockquote > div {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-around;
+}
+
+div#list-of-available-icons > blockquote > div > div {
+	width: 120px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	margin-bottom: 30px;
+}
+
+div#list-of-available-icons > blockquote > div > div > a {
+	border-radius: 50%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 60px;
+	height: 60px;
+}
+
+div#list-of-available-icons > blockquote > div > div > a.white-icon {
+	background-color: #343131;
+}
+
+div#list-of-available-icons > blockquote > div > div > p {
+	margin-top: 5px;
+	font-size: 90%;
+	font-style: normal;
+	text-align: center;
+}
