@@ -252,24 +252,44 @@ void NetworkSettings::saveProxySettings()
 
 void NetworkSettings::saveBWLimitSettings()
 {
-    ConfigFile cfgFile;
+    const auto downloadLimit = _ui->downloadSpinBox->value();
+    const auto uploadLimit = _ui->uploadSpinBox->value();
+
+    auto useDownloadLimit = 0;
+    auto useUploadLimit = 0;
+
     if (_ui->downloadLimitRadioButton->isChecked()) {
-        cfgFile.setUseDownloadLimit(1);
+        useDownloadLimit = 1;
     } else if (_ui->noDownloadLimitRadioButton->isChecked()) {
-        cfgFile.setUseDownloadLimit(0);
+        useDownloadLimit = 0;
     } else if (_ui->autoDownloadLimitRadioButton->isChecked()) {
-        cfgFile.setUseDownloadLimit(-1);
+        useDownloadLimit = -1;
+    } else if (_account && _ui->globalDownloadSettingsRadioButton->isChecked()) {
+        useDownloadLimit = -2;
     }
-    cfgFile.setDownloadLimit(_ui->downloadSpinBox->value());
 
     if (_ui->uploadLimitRadioButton->isChecked()) {
-        cfgFile.setUseUploadLimit(1);
+        useUploadLimit = 1;
     } else if (_ui->noUploadLimitRadioButton->isChecked()) {
-        cfgFile.setUseUploadLimit(0);
+        useUploadLimit = 0;
     } else if (_ui->autoUploadLimitRadioButton->isChecked()) {
-        cfgFile.setUseUploadLimit(-1);
+        useUploadLimit = -1;
+    } else if (_account && _ui->globalUploadSettingsRadioButton->isChecked()) {
+        useUploadLimit = -2;
     }
-    cfgFile.setUploadLimit(_ui->uploadSpinBox->value());
+
+    if (_account) {
+        _account->setDownloadLimitSetting(static_cast<Account::AccountNetworkTransferLimitSetting>(useDownloadLimit));
+        _account->setDownloadLimit(downloadLimit);
+        _account->setUploadLimitSetting(static_cast<Account::AccountNetworkTransferLimitSetting>(useUploadLimit));
+        _account->setUploadLimit(uploadLimit);
+    } else {
+        ConfigFile cfg;
+        cfg.setUseDownloadLimit(useDownloadLimit);
+        cfg.setUseUploadLimit(useUploadLimit);
+        cfg.setDownloadLimit(downloadLimit);
+        cfg.setUploadLimit(uploadLimit);
+    }
 
     FolderMan::instance()->setDirtyNetworkLimits();
 }
