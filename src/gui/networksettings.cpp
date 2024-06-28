@@ -15,12 +15,12 @@
 #include "networksettings.h"
 #include "ui_networksettings.h"
 
-#include "theme.h"
-#include "configfile.h"
+#include "account.h"
+#include "accountmanager.h"
 #include "application.h"
 #include "configfile.h"
 #include "folderman.h"
-#include "accountmanager.h"
+#include "theme.h"
 
 #include <QNetworkProxy>
 #include <QString>
@@ -28,15 +28,22 @@
 
 namespace OCC {
 
-NetworkSettings::NetworkSettings(QWidget *parent)
+NetworkSettings::NetworkSettings(Account *const account, QWidget *parent)
     : QWidget(parent)
     , _ui(new Ui::NetworkSettings)
+    , _account(account)
 {
     _ui->setupUi(this);
 
     _ui->manualSettings->setVisible(_ui->manualProxyRadioButton->isChecked());
 
     _ui->proxyGroupBox->setVisible(!Theme::instance()->doNotUseProxy());
+
+    if (account == nullptr) {
+        _ui->globalProxySettingsRadioButton->setVisible(false);
+        _ui->globalDownloadSettingsRadioButton->setVisible(false);
+        _ui->globalUploadSettingsRadioButton->setVisible(false);
+    }
 
     if (!Theme::instance()->doNotUseProxy()) {
         _ui->hostLineEdit->setPlaceholderText(tr("Hostname of proxy server"));
@@ -60,10 +67,8 @@ NetworkSettings::NetworkSettings(QWidget *parent)
 
         loadProxySettings();
 
-        connect(_ui->typeComboBox, static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this,
-            &NetworkSettings::saveProxySettings);
-        connect(_ui->proxyButtonGroup, &QButtonGroup::buttonClicked, this,
-            &NetworkSettings::saveProxySettings);
+        connect(_ui->typeComboBox, static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, &NetworkSettings::saveProxySettings);
+        connect(_ui->proxyButtonGroup, &QButtonGroup::buttonClicked, this, &NetworkSettings::saveProxySettings);
         connect(_ui->hostLineEdit, &QLineEdit::editingFinished, this, &NetworkSettings::saveProxySettings);
         connect(_ui->userLineEdit, &QLineEdit::editingFinished, this, &NetworkSettings::saveProxySettings);
         connect(_ui->passwordLineEdit, &QLineEdit::editingFinished, this, &NetworkSettings::saveProxySettings);
@@ -85,9 +90,11 @@ NetworkSettings::NetworkSettings(QWidget *parent)
     _ui->uploadSpinBox->setVisible(_ui->uploadLimitRadioButton->isChecked());
     _ui->uploadSpinBoxLabel->setVisible(_ui->uploadLimitRadioButton->isChecked());
 
+    connect(_ui->globalUploadSettingsRadioButton, &QAbstractButton::clicked, this, &NetworkSettings::saveBWLimitSettings);
     connect(_ui->uploadLimitRadioButton, &QAbstractButton::clicked, this, &NetworkSettings::saveBWLimitSettings);
     connect(_ui->noUploadLimitRadioButton, &QAbstractButton::clicked, this, &NetworkSettings::saveBWLimitSettings);
     connect(_ui->autoUploadLimitRadioButton, &QAbstractButton::clicked, this, &NetworkSettings::saveBWLimitSettings);
+    connect(_ui->globalDownloadSettingsRadioButton, &QAbstractButton::clicked, this, &NetworkSettings::saveBWLimitSettings);
     connect(_ui->downloadLimitRadioButton, &QAbstractButton::clicked, this, &NetworkSettings::saveBWLimitSettings);
     connect(_ui->noDownloadLimitRadioButton, &QAbstractButton::clicked, this, &NetworkSettings::saveBWLimitSettings);
     connect(_ui->autoDownloadLimitRadioButton, &QAbstractButton::clicked, this, &NetworkSettings::saveBWLimitSettings);
