@@ -100,6 +100,14 @@ public:
     };
     Q_ENUM(AccountNetworkProxySetting)
 
+    enum class AccountNetworkTransferLimitSetting {
+        GlobalLimit = 0,
+        NoLimit,
+        ManualLimit,
+        AutoLimit
+    };
+    Q_ENUM(AccountNetworkTransferLimitSetting)
+
     static AccountPtr create();
     ~Account() override;
 
