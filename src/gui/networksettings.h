@@ -19,6 +19,7 @@
 
 
 namespace OCC {
+class Account;
 
 namespace Ui {
     class NetworkSettings;
@@ -33,7 +34,7 @@ class NetworkSettings : public QWidget
     Q_OBJECT
 
 public:
-    explicit NetworkSettings(QWidget *parent = nullptr);
+    explicit NetworkSettings(Account *const account = nullptr, QWidget *parent = nullptr);
     ~NetworkSettings() override;
     [[nodiscard]] QSize sizeHint() const override;
 
@@ -54,6 +55,7 @@ private:
     void loadBWLimitSettings();
 
     Ui::NetworkSettings *_ui;
+    Account *_account;
 };
 
 
