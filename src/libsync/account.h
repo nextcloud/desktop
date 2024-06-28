@@ -92,6 +92,14 @@ class OWNCLOUDSYNC_EXPORT Account : public QObject
     Q_PROPERTY(bool askUserForMnemonic READ askUserForMnemonic WRITE setAskUserForMnemonic NOTIFY askUserForMnemonicChanged)
 
 public:
+    enum class AccountNetworkProxySetting {
+        GlobalProxy = 0,
+        NoProxy,
+        ManualProxy,
+        AutoProxy
+    };
+    Q_ENUM(AccountNetworkProxySetting)
+
     static AccountPtr create();
     ~Account() override;
 
