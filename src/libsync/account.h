@@ -90,6 +90,7 @@ class OWNCLOUDSYNC_EXPORT Account : public QObject
     Q_PROPERTY(QUrl url MEMBER _url)
     Q_PROPERTY(bool e2eEncryptionKeysGenerationAllowed MEMBER _e2eEncryptionKeysGenerationAllowed)
     Q_PROPERTY(bool askUserForMnemonic READ askUserForMnemonic WRITE setAskUserForMnemonic NOTIFY askUserForMnemonicChanged)
+    Q_PROPERTY(AccountNetworkProxySetting networkProxySetting READ networkProxySetting WRITE setNetworkProxySetting NOTIFY networkProxySettingChanged)
 
 public:
     enum class AccountNetworkProxySetting {
@@ -351,6 +352,10 @@ public:
 
     [[nodiscard]] bool askUserForMnemonic() const;
 
+    // Network-related settings
+    [[nodiscard]] AccountNetworkProxySetting networkProxySetting() const;
+    void setNetworkProxySetting(AccountNetworkProxySetting networkProxySetting);
+
 public slots:
     /// Used when forgetting credentials
     void clearQNAMCache();
@@ -394,6 +399,8 @@ signals:
 
     void lockFileSuccess();
     void lockFileError(const QString&);
+
+    void networkProxySettingChanged();
 
 protected Q_SLOTS:
     void slotCredentialsFetched();
@@ -470,6 +477,7 @@ private:
 
     QHash<QString, QVector<SyncFileItem::LockStatus>> _lockStatusChangeInprogress;
 
+    AccountNetworkProxySetting _networkProxySetting = AccountNetworkProxySetting::GlobalProxy;
     /* IMPORTANT - remove later - FIXME MS@2019-12-07 -->
      * TODO: For "Log out" & "Remove account": Remove client CA certs and KEY!
      *

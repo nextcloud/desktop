@@ -1068,4 +1068,19 @@ void Account::setAskUserForMnemonic(const bool ask)
     emit askUserForMnemonicChanged();
 }
 
+Account::AccountNetworkProxySetting Account::networkProxySetting() const
+{
+    return _networkProxySetting;
+}
+
+void Account::setNetworkProxySetting(const AccountNetworkProxySetting setting)
+{
+    if (setting == _networkProxySetting) {
+        return;
+    }
+
+    _networkProxySetting = setting;
+    emit networkProxySettingChanged();
+}
+
 } // namespace OCC
