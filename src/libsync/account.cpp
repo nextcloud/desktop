@@ -1163,4 +1163,19 @@ void Account::setProxyNeedsAuth(const bool needsAuth)
     emit proxyNeedsAuthChanged();
 }
 
+QString Account::proxyUser() const
+{
+    return _proxyUser;
+}
+
+void Account::setProxyUser(const QString &user)
+{
+    if (_proxyUser == user) {
+        return;
+    }
+
+    _proxyUser = user;
+    emit proxyUserChanged();
+}
+
 } // namespace OCC
