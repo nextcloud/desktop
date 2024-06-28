@@ -194,33 +194,61 @@ void NetworkSettings::saveProxySettings()
     ConfigFile cfgFile;
 
     checkEmptyProxyHost();
+
+    const auto useGlobalProxy = _ui->globalProxySettingsRadioButton->isChecked();
+    const auto user = _ui->userLineEdit->text();
+    const auto password = _ui->passwordLineEdit->text();
+    const auto host = _ui->hostLineEdit->text();
+    const auto port = _ui->portSpinBox->value();
+    const auto needsAuth = _ui->authRequiredcheckBox->isChecked();
+
+    auto proxyType = QNetworkProxy::NoProxy;
+
     if (_ui->noProxyRadioButton->isChecked()) {
-        cfgFile.setProxyType(QNetworkProxy::NoProxy);
+        proxyType = QNetworkProxy::NoProxy;
     } else if (_ui->systemProxyRadioButton->isChecked()) {
-        cfgFile.setProxyType(QNetworkProxy::DefaultProxy);
+        proxyType = QNetworkProxy::DefaultProxy;
     } else if (_ui->manualProxyRadioButton->isChecked()) {
-        int type = _ui->typeComboBox->itemData(_ui->typeComboBox->currentIndex()).toInt();
-        QString host = _ui->hostLineEdit->text();
-        if (host.isEmpty())
-            type = QNetworkProxy::NoProxy;
-        bool needsAuth = _ui->authRequiredcheckBox->isChecked();
-        QString user = _ui->userLineEdit->text();
-        QString pass = _ui->passwordLineEdit->text();
-        cfgFile.setProxyType(type, _ui->hostLineEdit->text(),
-            _ui->portSpinBox->value(), needsAuth, user, pass);
+        proxyType = _ui->typeComboBox->itemData(_ui->typeComboBox->currentIndex()).value<QNetworkProxy::ProxyType>();
+        if (host.isEmpty()) {
+            proxyType = QNetworkProxy::NoProxy;
+        }
     }
 
-    ClientProxy proxy;
-    proxy.setupQtProxyFromConfig(); // Refresh the Qt proxy settings as the
-    // quota check can happen all the time.
+    if (_account) { // We must be setting up network proxy for a specific account
+        _account->setNetworkProxySetting(useGlobalProxy ? Account::AccountNetworkProxySetting::GlobalProxy : Account::AccountNetworkProxySetting::AccountSpecificProxy);
+        _account->setProxyType(proxyType);
+        _account->setProxyHostName(host);
+        _account->setProxyPort(_ui->portSpinBox->value());
+        _account->setProxyNeedsAuth(needsAuth);
+        _account->setProxyUser(user);
+        _account->setProxyPassword(password);
 
-    // ...and set the folders dirty, they refresh their proxy next time they
-    // start the sync.
-    FolderMan::instance()->setDirtyProxy();
+        if (useGlobalProxy) {
+            _account->networkAccessManager()->setProxy(QNetworkProxy(QNetworkProxy::DefaultProxy));
+        } else {
+            const auto proxy = QNetworkProxy(proxyType, host, port, user, password);
+            _account->networkAccessManager()->setProxy(proxy);
+        }
 
-    const auto accounts = AccountManager::instance()->accounts();
-    for (auto account : accounts) {
-        account->freshConnectionAttempt();
+        const auto accountState = AccountManager::instance()->accountFromUserId(_account->userIdAtHostWithPort());
+        accountState->freshConnectionAttempt();
+    } else {
+        cfgFile.setProxyType(proxyType, host, port, needsAuth, user, password);
+        ClientProxy proxy;
+        proxy.setupQtProxyFromConfig(); // Refresh the Qt proxy settings as the
+        // quota check can happen all the time.
+
+        // ...and set the folders dirty, they refresh their proxy next time they
+        // start the sync.
+        FolderMan::instance()->setDirtyProxy();
+
+        const auto accounts = AccountManager::instance()->accounts();
+        for (const auto &accountState : accounts) {
+            if (accountState->account()->networkProxySetting() == Account::AccountNetworkProxySetting::GlobalProxy) {
+                accountState->freshConnectionAttempt();
+            }
+        }
     }
 }
 
