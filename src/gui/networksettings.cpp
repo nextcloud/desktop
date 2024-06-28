@@ -15,12 +15,12 @@
 #include "networksettings.h"
 #include "ui_networksettings.h"
 
-#include "theme.h"
-#include "configfile.h"
+#include "account.h"
+#include "accountmanager.h"
 #include "application.h"
 #include "configfile.h"
 #include "folderman.h"
-#include "accountmanager.h"
+#include "theme.h"
 
 #include <QNetworkProxy>
 #include <QString>
