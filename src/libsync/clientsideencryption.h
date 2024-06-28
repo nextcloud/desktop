@@ -151,7 +151,6 @@ OWNCLOUDSYNC_EXPORT QByteArray decryptStringSymmetric(
 [[nodiscard]] OWNCLOUDSYNC_EXPORT std::optional<QByteArray> encryptStringAsymmetric(const CertificateInformation &selectedCertificate,
                                                                                     int paddingMode,
                                                                                     const ClientSideEncryption &encryptionEngine,
-                                                                                    const QSslKey &key,
                                                                                     const QByteArray &binaryData);
 
 [[nodiscard]] OWNCLOUDSYNC_EXPORT std::optional<QByteArray> decryptStringAsymmetric(const CertificateInformation &selectedCertificate,

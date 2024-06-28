@@ -549,11 +549,8 @@ namespace internals {
 std::optional<QByteArray> encryptStringAsymmetric(const CertificateInformation &selectedCertificate,
                                                   const int paddingMode,
                                                   const ClientSideEncryption &encryptionEngine,
-                                                  const QSslKey &key,
                                                   const QByteArray &binaryData)
 {
-    Q_UNUSED(key)
-
     if (!encryptionEngine.isInitialized()) {
         qCWarning(lcCseDecryption()) << "end-to-end encryption is disabled";
         return {};
@@ -1216,7 +1213,7 @@ bool ClientSideEncryption::checkPublicKeyValidity(const AccountPtr &account) con
     BIO_write(publicKeyBio, publicKeyPem.constData(), publicKeyPem.size());
     auto publicKey = PKey::readPublicKey(publicKeyBio);
 
-    auto encryptedData = EncryptionHelper::encryptStringAsymmetric(account->e2e()->getCertificateInformation(), account->e2e()->paddingMode(), *account->e2e(), account->e2e()->getPublicKey(), data.toBase64());
+    auto encryptedData = EncryptionHelper::encryptStringAsymmetric(account->e2e()->getCertificateInformation(), account->e2e()->paddingMode(), *account->e2e(), data.toBase64());
     if (!encryptedData) {
         qCWarning(lcCse()) << "encryption error";
         return false;
@@ -1244,7 +1241,7 @@ bool ClientSideEncryption::checkEncryptionIsWorking() const
     qCInfo(lcCse) << "check encryption is working before enabling end-to-end encryption feature";
     QByteArray data = EncryptionHelper::generateRandom(64);
 
-    auto encryptedData = EncryptionHelper::encryptStringAsymmetric(getCertificateInformation(), paddingMode(), *this, getPublicKey(), data);
+    auto encryptedData = EncryptionHelper::encryptStringAsymmetric(getCertificateInformation(), paddingMode(), *this, data);
     if (!encryptedData) {
         qCWarning(lcCse()) << "encryption error";
         return false;

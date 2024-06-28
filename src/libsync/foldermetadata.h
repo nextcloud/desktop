@@ -153,7 +153,7 @@ private:
     [[nodiscard]] bool verifyMetadataKey(const QByteArray &metadataKey) const;
 
     [[nodiscard]] QByteArray encryptDataWithPublicKey(const QByteArray &data,
-                                                      const QSslKey &key) const;
+                                                      const CertificateInformation &shareUserCertificate) const;
     [[nodiscard]] QByteArray decryptDataWithPrivateKey(const QByteArray &data) const;
 
     [[nodiscard]] QByteArray encryptJsonObject(const QByteArray& obj, const QByteArray pass) const;
