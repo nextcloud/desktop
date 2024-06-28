@@ -280,7 +280,7 @@
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="174"/>
         <source>Signal file provider domain</source>
-        <translation>Dominio do provedor de ficheiros de sinal</translation>
+        <translation>Dominio do provedor de ficheiros de Signal</translation>
     </message>
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="179"/>
@@ -721,7 +721,7 @@ Agarde a nova sincronización e logo cífreo.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="745"/>
         <source>Folder creation failed</source>
-        <translation>Non foi posíbel crear o cartafol</translation>
+        <translation>Produciuse un fallo ao crear o cartafol</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="746"/>
@@ -3691,7 +3691,7 @@ Teña en conta que o uso de calquera opción da liña de ordes anulara este axus
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="644"/>
         <source>Folder rename failed</source>
-        <translation>Non foi posíbel renomear o cartafol</translation>
+        <translation>Produciuse un fallo ao renomear o cartafol</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="645"/>
