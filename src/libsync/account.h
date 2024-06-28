@@ -93,6 +93,7 @@ class OWNCLOUDSYNC_EXPORT Account : public QObject
     Q_PROPERTY(bool askUserForMnemonic READ askUserForMnemonic WRITE setAskUserForMnemonic NOTIFY askUserForMnemonicChanged)
     Q_PROPERTY(AccountNetworkProxySetting networkProxySetting READ networkProxySetting WRITE setNetworkProxySetting NOTIFY networkProxySettingChanged)
     Q_PROPERTY(QNetworkProxy::ProxyType proxyType READ proxyType WRITE setProxyType NOTIFY proxyTypeChanged)
+    Q_PROPERTY(QString proxyHostName READ proxyHostName WRITE setProxyHostName NOTIFY proxyHostNameChanged)
 
 public:
     enum class AccountNetworkProxySetting {
@@ -364,6 +365,9 @@ public:
     [[nodiscard]] QNetworkProxy::ProxyType proxyType() const;
     void setProxyType(QNetworkProxy::ProxyType proxyType);
 
+    [[nodiscard]] QString proxyHostName() const;
+    void setProxyHostName(const QString &host);
+
 public slots:
     /// Used when forgetting credentials
     void clearQNAMCache();
@@ -410,6 +414,7 @@ signals:
 
     void networkProxySettingChanged();
     void proxyTypeChanged();
+    void proxyHostNameChanged();
 
 protected Q_SLOTS:
     void slotCredentialsFetched();
@@ -488,6 +493,7 @@ private:
 
     AccountNetworkProxySetting _networkProxySetting = AccountNetworkProxySetting::GlobalProxy;
     QNetworkProxy::ProxyType _proxyType = QNetworkProxy::NoProxy;
+    QString _proxyHostName;
     /* IMPORTANT - remove later - FIXME MS@2019-12-07 -->
      * TODO: For "Log out" & "Remove account": Remove client CA certs and KEY!
      *
