@@ -1208,4 +1208,19 @@ void Account::setUploadLimitSetting(const AccountNetworkTransferLimitSetting set
     emit uploadLimitSettingChanged();
 }
 
+Account::AccountNetworkTransferLimitSetting Account::downloadLimitSetting() const
+{
+    return _downloadLimitSetting;
+}
+
+void Account::setDownloadLimitSetting(const AccountNetworkTransferLimitSetting setting)
+{
+    if (setting == _downloadLimitSetting) {
+        return;
+    }
+    
+    _downloadLimitSetting = setting;
+    emit downloadLimitSettingChanged();
+}
+
 } // namespace OCC
