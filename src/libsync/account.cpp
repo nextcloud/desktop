@@ -1158,4 +1158,19 @@ void Account::setProxyUser(const QString &user)
     emit proxyUserChanged();
 }
 
+QString Account::proxyPassword() const
+{
+    return _proxyPassword;
+}
+
+void Account::setProxyPassword(const QString &password)
+{
+    if (_proxyPassword == password) {
+        return;
+    }
+
+    _proxyPassword = password;
+    emit proxyPasswordChanged();
+}
+
 } // namespace OCC
