@@ -24,6 +24,7 @@
 #include "configfile.h"
 #include "accessmanager.h"
 #include "callstatechecker.h"
+#include "clientsideencryptiontokenselector.h"
 
 #include <QCursor>
 #include <QGuiApplication>
@@ -34,6 +35,8 @@
 #include <QScreen>
 #include <QMenu>
 #include <QGuiApplication>
+#include <QQuickView>
+#include <QMessageBox>
 
 #ifdef USE_FDO_NOTIFICATIONS
 #include <QDBusConnection>
@@ -314,6 +317,34 @@ void Systray::createResolveConflictsDialog(const OCC::ActivityList &allConflicts
     dialogWindow->raise();
     dialogWindow->requestActivate();
     dialog.take();
+}
+
+void Systray::createEncryptionTokenDiscoveryDialog()
+{
+    if (_encryptionTokenDiscoveryDialog) {
+        return;
+    }
+
+    qCDebug(lcSystray) << "Opening an encryption token discovery dialog...";
+
+    const auto encryptionTokenDiscoveryDialog = new QQmlComponent(_trayEngine.get(), QStringLiteral("qrc:/qml/src/gui/tray/EncryptionTokenDiscoveryDialog.qml"));
+
+    if (encryptionTokenDiscoveryDialog->isError()) {
+        qCWarning(lcSystray) << encryptionTokenDiscoveryDialog->errorString();
+        return;
+    }
+
+    _encryptionTokenDiscoveryDialog = encryptionTokenDiscoveryDialog->createWithInitialProperties(QVariantMap{});
+}
+
+void Systray::destroyEncryptionTokenDiscoveryDialog()
+{
+    if (!_encryptionTokenDiscoveryDialog) {
+        return;
+    }
+    qCDebug(lcSystray) << "Closing an encryption token discovery dialog...";
+    _encryptionTokenDiscoveryDialog->deleteLater();
+    _encryptionTokenDiscoveryDialog = nullptr;
 }
 
 bool Systray::raiseDialogs()

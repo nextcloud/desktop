@@ -124,8 +124,10 @@ void Logger::doLog(QtMsgType type, const QMessageLogContext &ctx, const QString 
         QString prefix;
         switch (type) {
         case QtDebugMsg:
+            prefix = QStringLiteral("[DEBUG] ");
             break;
         case QtInfoMsg:
+            prefix = QStringLiteral("[INFO] ");
             break;
         case QtWarningMsg:
             prefix = QStringLiteral("[WARNING] ");
@@ -137,7 +139,7 @@ void Logger::doLog(QtMsgType type, const QMessageLogContext &ctx, const QString 
             prefix = QStringLiteral("[FATAL ERROR] ");
             break;
         }
-        auto msgW = QString(prefix + message).toStdWString();
+        auto msgW = QString(prefix + msg).toStdWString();
         msgW.append(L"\n");
         OutputDebugString(msgW.c_str());
     }

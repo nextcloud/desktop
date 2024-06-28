@@ -19,6 +19,7 @@
 #include "tray/usermodel.h"
 
 #include <QSystemTrayIcon>
+#include <QQuickImageProvider>
 #include <QQmlNetworkAccessManagerFactory>
 #include <QStringListModel>
 
@@ -30,6 +31,8 @@ class QQuickWindow;
 class QGuiApplication;
 
 namespace OCC {
+
+class ClientSideEncryptionTokenSelector;
 
 class AccessManagerFactory : public QQmlNetworkAccessManagerFactory
 {
@@ -115,6 +118,8 @@ signals:
     void syncIsPausedChanged();
     void isOpenChanged();
 
+    void hideSettingsDialog();
+
 public slots:
     void setTrayEngine(QQmlApplicationEngine *trayEngine);
     void create();
@@ -128,6 +133,8 @@ public slots:
     void createEditFileLocallyLoadingDialog(const QString &fileName);
     void destroyEditFileLocallyLoadingDialog();
     void createResolveConflictsDialog(const OCC::ActivityList &allConflicts);
+    void createEncryptionTokenDiscoveryDialog();
+    void destroyEncryptionTokenDiscoveryDialog();
 
     void slotCurrentUserChanged();
 
@@ -188,7 +195,9 @@ private:
 
     QSet<qlonglong> _callsAlreadyNotified;
     QPointer<QObject> _editFileLocallyLoadingDialog;
+    QPointer<QObject> _encryptionTokenDiscoveryDialog;
     QVector<QQuickWindow*> _fileDetailDialogs;
+    QQuickWindow* _tokenInitDialog = nullptr;
 
     QStringListModel _fakeActivityModel;
 };

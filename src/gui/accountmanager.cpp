@@ -46,6 +46,7 @@ constexpr auto serverVersionC = "serverVersion";
 constexpr auto serverColorC = "serverColor";
 constexpr auto serverTextColorC = "serverTextColor";
 constexpr auto skipE2eeMetadataChecksumValidationC = "skipE2eeMetadataChecksumValidation";
+constexpr auto encryptionCertificateSha256FingerprintC = "encryptionCertificateSha256Fingerprint";
 constexpr auto generalC = "General";
 
 constexpr auto dummyAuthTypeC = "dummy";
@@ -321,6 +322,7 @@ void AccountManager::saveAccountHelper(Account *acc, QSettings &settings, bool s
     settings.setValue(QLatin1String(serverVersionC), acc->_serverVersion);
     settings.setValue(QLatin1String(serverColorC), acc->_serverColor);
     settings.setValue(QLatin1String(serverTextColorC), acc->_serverTextColor);
+    settings.setValue(QLatin1String(encryptionCertificateSha256FingerprintC), acc->encryptionCertificateFingerprint());
     if (!acc->_skipE2eeMetadataChecksumValidation) {
         settings.remove(QLatin1String(skipE2eeMetadataChecksumValidationC));
     } else {
@@ -446,6 +448,8 @@ AccountPtr AccountManager::loadAccountHelper(QSettings &settings)
     }
 
     acc->setCredentials(CredentialsFactory::create(authType));
+
+    acc->setEncryptionCertificateFingerprint(settings.value(QLatin1String(encryptionCertificateSha256FingerprintC)).toByteArray());
 
     // now the server cert, it is in the general group
     settings.beginGroup(QLatin1String(generalC));

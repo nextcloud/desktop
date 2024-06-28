@@ -90,6 +90,9 @@ class OWNCLOUDSYNC_EXPORT Account : public QObject
     Q_PROPERTY(QUrl url MEMBER _url)
     Q_PROPERTY(bool e2eEncryptionKeysGenerationAllowed MEMBER _e2eEncryptionKeysGenerationAllowed)
     Q_PROPERTY(bool askUserForMnemonic READ askUserForMnemonic WRITE setAskUserForMnemonic NOTIFY askUserForMnemonicChanged)
+    Q_PROPERTY(bool enforceUseHardwareTokenEncryption READ enforceUseHardwareTokenEncryption NOTIFY enforceUseHardwareTokenEncryptionChanged)
+    Q_PROPERTY(QString encryptionHardwareTokenDriverPath READ encryptionHardwareTokenDriverPath NOTIFY encryptionHardwareTokenDriverPathChanged)
+    Q_PROPERTY(QByteArray encryptionCertificateFingerprint READ encryptionCertificateFingerprint WRITE setEncryptionCertificateFingerprint NOTIFY encryptionCertificateFingerprintChanged)
 
 public:
     static AccountPtr create();
@@ -335,6 +338,14 @@ public:
 
     [[nodiscard]] bool askUserForMnemonic() const;
 
+    [[nodiscard]] bool enforceUseHardwareTokenEncryption() const;
+
+    [[nodiscard]] QString encryptionHardwareTokenDriverPath() const;
+
+    [[nodiscard]] QByteArray encryptionCertificateFingerprint() const;
+
+    void setEncryptionCertificateFingerprint(const QByteArray &fingerprint);
+
 public slots:
     /// Used when forgetting credentials
     void clearQNAMCache();
@@ -357,12 +368,16 @@ signals:
     // e.g. when the approved SSL certificates changed
     void wantsAccountSaved(OCC::Account *acc);
 
+    void wantsFoldersSynced();
+
     void serverVersionChanged(OCC::Account *account, const QString &newVersion, const QString &oldVersion);
 
     void accountChangedAvatar();
     void accountChangedDisplayName();
     void prettyNameChanged();
     void askUserForMnemonicChanged();
+    void enforceUseHardwareTokenEncryptionChanged();
+    void encryptionHardwareTokenDriverPathChanged();
 
     /// Used in RemoteWipe
     void appPasswordRetrieved(QString);
@@ -378,6 +393,9 @@ signals:
 
     void lockFileSuccess();
     void lockFileError(const QString&);
+
+    void encryptionCertificateFingerprintChanged();
+    void userCertificateNeedsMigrationChanged();
 
 protected Q_SLOTS:
     void slotCredentialsFetched();
@@ -453,6 +471,8 @@ private:
     std::shared_ptr<UserStatusConnector> _userStatusConnector;
 
     QHash<QString, QVector<SyncFileItem::LockStatus>> _lockStatusChangeInprogress;
+
+    QByteArray _encryptionCertificateFingerprint;
 
     /* IMPORTANT - remove later - FIXME MS@2019-12-07 -->
      * TODO: For "Log out" & "Remove account": Remove client CA certs and KEY!
