@@ -1148,4 +1148,19 @@ void Account::setProxyPort(const int port)
     emit proxyPortChanged();
 }
 
+bool Account::proxyNeedsAuth() const
+{
+    return _proxyNeedsAuth;
+}
+
+void Account::setProxyNeedsAuth(const bool needsAuth)
+{
+    if (_proxyNeedsAuth == needsAuth) {
+        return;
+    }
+
+    _proxyNeedsAuth = needsAuth;
+    emit proxyNeedsAuthChanged();
+}
+
 } // namespace OCC
