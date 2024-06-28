@@ -1511,13 +1511,14 @@ void FolderMan::setDirtyProxy()
 {
     const auto folderMapValues = _folderMap.values();
     for (const auto folder : folderMapValues) {
-        if (folder) {
-            if (folder->accountState() && folder->accountState()->account()
-                && folder->accountState()->account()->networkAccessManager()) {
-                // Need to do this so we do not use the old determined system proxy
-                folder->accountState()->account()->networkAccessManager()->setProxy(
-                    QNetworkProxy(QNetworkProxy::DefaultProxy));
-            }
+        if (folder 
+            && folder->accountState() 
+            && folder->accountState()->account()
+            && folder->accountState()->account()->networkAccessManager()
+            && folder->accountState()->account()->networkProxySetting() == Account::AccountNetworkProxySetting::GlobalProxy) {
+            // Need to do this so we do not use the old determined system proxy
+            const auto proxy = QNetworkProxy(QNetworkProxy::DefaultProxy);
+            folder->accountState()->account()->networkAccessManager()->setProxy(proxy);
         }
     }
 }
