@@ -29,6 +29,7 @@
 
 class QPushButton;
 class QSortFilterProxyModel;
+class QTableView;
 
 namespace OCC {
 class ExpandingHeaderView;
@@ -49,7 +50,8 @@ public:
     explicit ProtocolWidget(QWidget *parent = nullptr);
     ~ProtocolWidget() override;
 
-    static void showContextMenu(QWidget *parent, ProtocolItemModel *model, const QModelIndexList &items);
+    static void showContextMenu(QWidget *parent, QTableView *table, Models::SignalledQSortFilterProxyModel *sortModel, ProtocolItemModel *itemModel,
+        const QModelIndexList &items, const QPoint &pos);
     static QMenu *showFilterMenu(QWidget *parent, Models::SignalledQSortFilterProxyModel *model, int role, const QString &columnName);
 
 public Q_SLOTS:
@@ -57,7 +59,7 @@ public Q_SLOTS:
     void filterDidChange();
 
 private Q_SLOTS:
-    void slotItemContextMenu();
+    void slotItemContextMenu(const QPoint &pos);
 
 private:
     ProtocolItemModel *_model;

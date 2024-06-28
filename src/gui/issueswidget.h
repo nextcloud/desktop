@@ -58,7 +58,7 @@ Q_SIGNALS:
 
 private Q_SLOTS:
     QMenu *showFilterMenu(QWidget *parent);
-    void slotItemContextMenu();
+    void slotItemContextMenu(const QPoint &pos);
 
 private:
     static void addResetFiltersAction(QMenu *menu, const QList<std::function<void()>> &resetFunctions);

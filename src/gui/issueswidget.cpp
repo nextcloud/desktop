@@ -279,6 +279,7 @@ QMenu *IssuesWidget::showFilterMenu(QWidget *parent)
     addResetFiltersAction(menu, { accountFilterReset, statusFilterReset });
 
     QTimer::singleShot(0, menu, [menu] {
+        // FIXME: when activated by the keyboard, this position can be anywhere.
         menu->popup(QCursor::pos());
         // accassebility
         menu->setFocus();
@@ -364,14 +365,14 @@ void IssuesWidget::filterDidChange()
     _ui->_filterButton->setText(filterCount > 0 ? CommonStrings::filterButtonText(filterCount) : tr("Filter"));
 }
 
-void IssuesWidget::slotItemContextMenu()
+void IssuesWidget::slotItemContextMenu(const QPoint &pos)
 {
     auto rows = _ui->_tableView->selectionModel()->selectedRows();
     for (int i = 0; i < rows.size(); ++i) {
         rows[i] = _statusSortModel->mapToSource(rows[i]);
         rows[i] = _sortModel->mapToSource(rows[i]);
     }
-    ProtocolWidget::showContextMenu(this, _model, rows);
+    ProtocolWidget::showContextMenu(this, _ui->_tableView, _sortModel, _model, rows, pos);
 }
 
 std::function<void(void)> IssuesWidget::addStatusFilter(QMenu *menu)

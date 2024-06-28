@@ -104,11 +104,12 @@ QMenu *ProtocolWidget::showFilterMenu(QWidget *parent, Models::SignalledQSortFil
     return menu;
 }
 
-void ProtocolWidget::showContextMenu(QWidget *parent, ProtocolItemModel *model, const QModelIndexList &items)
+void ProtocolWidget::showContextMenu(QWidget *parent, QTableView *table, Models::SignalledQSortFilterProxyModel *sortModel, ProtocolItemModel *itemModel,
+    const QModelIndexList &items, const QPoint &pos)
 {
     auto menu = new QMenu(parent);
     menu->setAttribute(Qt::WA_DeleteOnClose);
-    menu->setAccessibleName(tr("Protocol item actions menu"));
+    menu->setAccessibleName(tr("Actions menu"));
 
     // keep in sync with ActivityWidget::slotItemContextMenu
     menu->addAction(CommonStrings::copyToClipBoard(), parent, [text = Models::formatSelection(items)] {
@@ -116,59 +117,89 @@ void ProtocolWidget::showContextMenu(QWidget *parent, ProtocolItemModel *model, 
     });
 
     if (items.size() == 1) {
-        const auto &data = model->protocolItem(items.first());
-        {
-            const QString localPath = data.folder()->path() + data.path();
+        const auto &data = itemModel->protocolItem(items.first());
+
+        // Show in file browser action
+        const QString localPath = data.folder()->path() + data.path();
+        // keep in sync with ActivityWidget::slotItemContextMenu
+        auto showInFileBrowserAction = menu->addAction(CommonStrings::showInFileBrowser(), parent, [localPath] {
+            // Double-check if the file still exists
             if (QFileInfo::exists(localPath)) {
-                // keep in sync with ActivityWidget::slotItemContextMenu
-                menu->addAction(CommonStrings::showInFileBrowser(), parent, [localPath] {
-                    if (QFileInfo::exists(localPath)) {
-                        showInFileManager(localPath);
-                    }
-                });
+                showInFileManager(localPath);
             }
-            // "Open in Browser" action
-            {
-                fetchPrivateLinkUrl(data.folder()->accountState()->account(), data.folder()->webDavUrl(), data.folder()->remotePathTrailingSlash() + data.path(), parent, [parent, menu = QPointer<QMenu>(menu)](const QUrl &url) {
-                    // as fetchPrivateLinkUrl is async we need to check the menu still exists
-                    if (menu) {
-                        menu->addAction(CommonStrings::showInWebBrowser(), parent, [url, parent] {
-                            Utility::openBrowser(url, parent);
-                        });
-                    }
-                });
-            }
-            {
-                switch (data.status()) {
-                case SyncFileItem::DetailError:
-                    Q_FALLTHROUGH();
-                case SyncFileItem::SoftError:
-                    Q_FALLTHROUGH();
-                case SyncFileItem::BlacklistedError:
-                    menu->addAction(tr("Retry sync"), parent, [data, folder = QPointer<Folder>(data.folder())] {
-                        if (folder) {
-                            folder->journalDb()->wipeErrorBlacklistEntry(data.path());
-                            FolderMan::instance()->scheduler()->enqueueFolder(folder, SyncScheduler::Priority::Medium);
-                        }
-                    });
-                default:
-                    break;
+        });
+        if (!QFileInfo::exists(localPath)) {
+            showInFileBrowserAction->setEnabled(false);
+        }
+
+        // "Open in Browser" action
+        auto showInWebBrowserAction = menu->addAction(CommonStrings::showInWebBrowser());
+        showInWebBrowserAction->setEnabled(false);
+        fetchPrivateLinkUrl(data.folder()->accountState()->account(), data.folder()->webDavUrl(), data.folder()->remotePathTrailingSlash() + data.path(),
+            parent, [showInWebBrowserAction, parent, pos = menu->actions().size(), menu = QPointer<QMenu>(menu)](const QUrl &url) {
+                // as fetchPrivateLinkUrl is async we need to check the menu still exists
+                if (menu) {
+                    connect(showInWebBrowserAction, &QAction::triggered, [url, parent] { Utility::openBrowser(url, parent); });
+                    showInWebBrowserAction->setEnabled(true);
                 }
+            });
+
+        menu->addSeparator();
+
+        // Sort actions
+        auto sortActions = new QActionGroup(menu);
+        int columnNr = table->columnAt(pos.x());
+        QString columnName = itemModel->headerData(columnNr, Qt::Horizontal, Qt::DisplayRole).toString();
+        auto ascendingAction =
+            menu->addAction(tr("Sort ascending by %1").arg(columnName), [table, columnNr]() { table->sortByColumn(columnNr, Qt::AscendingOrder); });
+        ascendingAction->setCheckable(true);
+        sortActions->addAction(ascendingAction);
+        auto descendingAction =
+            menu->addAction(tr("Sort descending by %1").arg(columnName), [table, columnNr]() { table->sortByColumn(columnNr, Qt::DescendingOrder); });
+        descendingAction->setCheckable(true);
+        sortActions->addAction(descendingAction);
+        if (columnNr == sortModel->sortColumn()) {
+            switch (sortModel->sortOrder()) {
+            case Qt::AscendingOrder:
+                ascendingAction->setChecked(true);
+                break;
+            case Qt::DescendingOrder:
+                descendingAction->setChecked(true);
+                break;
             }
         }
+
+        // Retry action
+        switch (data.status()) {
+        case SyncFileItem::DetailError:
+            Q_FALLTHROUGH();
+        case SyncFileItem::SoftError:
+            Q_FALLTHROUGH();
+        case SyncFileItem::BlacklistedError:
+            menu->addSeparator();
+            menu->addAction(tr("Retry sync"), parent, [data, folder = QPointer<Folder>(data.folder())] {
+                if (folder) {
+                    folder->journalDb()->wipeErrorBlacklistEntry(data.path());
+                    FolderMan::instance()->scheduler()->enqueueFolder(folder, SyncScheduler::Priority::Medium);
+                }
+            });
+            break;
+        default:
+            break;
+        }
     }
-    menu->popup(QCursor::pos());
-    // accassability
-    menu->setFocus();
+
+    menu->popup(table->mapToGlobal(pos));
+    menu->setFocus(); // For accassability
 }
 
-void ProtocolWidget::slotItemContextMenu()
+void ProtocolWidget::slotItemContextMenu(const QPoint &pos)
 {
     auto rows = _ui->_tableView->selectionModel()->selectedRows();
     for (int i = 0; i < rows.size(); ++i) {
         rows[i] = _sortModel->mapToSource(rows[i]);
     }
-    showContextMenu(this, _model, rows);
+    showContextMenu(this, _ui->_tableView, _sortModel, _model, rows, pos);
 }
 
 void ProtocolWidget::slotItemCompleted(Folder *folder, const SyncFileItemPtr &item)
