@@ -122,10 +122,18 @@ void NetworkSettings::loadProxySettings()
         _ui->proxyGroupBox->setEnabled(false);
         return;
     }
+
+    const auto useGlobalProxy = _account == nullptr || _account->networkProxySetting() == Account::AccountNetworkProxySetting::GlobalProxy;
+    const auto cfgFile = ConfigFile();
+    const auto proxyType = useGlobalProxy ? cfgFile.proxyType() : _account->proxyType();
+    const auto proxyPort = useGlobalProxy ? cfgFile.proxyPort() : _account->proxyPort();
+    const auto proxyHostName = useGlobalProxy ? cfgFile.proxyHostName() : _account->proxyHostName();
+    const auto proxyNeedsAuth = useGlobalProxy ? cfgFile.proxyNeedsAuth() : _account->proxyNeedsAuth();
+    const auto proxyUser = useGlobalProxy ? cfgFile.proxyUser() : _account->proxyUser();
+    const auto proxyPassword = useGlobalProxy ? cfgFile.proxyPassword() : _account->proxyPassword();
+
     // load current proxy settings
-    OCC::ConfigFile cfgFile;
-    int type = cfgFile.proxyType();
-    switch (type) {
+    switch (proxyType) {
     case QNetworkProxy::NoProxy:
         _ui->noProxyRadioButton->setChecked(true);
         break;
@@ -134,21 +142,18 @@ void NetworkSettings::loadProxySettings()
         break;
     case QNetworkProxy::Socks5Proxy:
     case QNetworkProxy::HttpProxy:
-        _ui->typeComboBox->setCurrentIndex(_ui->typeComboBox->findData(type));
+        _ui->typeComboBox->setCurrentIndex(_ui->typeComboBox->findData(proxyType));
         _ui->manualProxyRadioButton->setChecked(true);
         break;
     default:
         break;
     }
 
-    _ui->hostLineEdit->setText(cfgFile.proxyHostName());
-    int port = cfgFile.proxyPort();
-    if (port == 0)
-        port = 8080;
-    _ui->portSpinBox->setValue(port);
-    _ui->authRequiredcheckBox->setChecked(cfgFile.proxyNeedsAuth());
-    _ui->userLineEdit->setText(cfgFile.proxyUser());
-    _ui->passwordLineEdit->setText(cfgFile.proxyPassword());
+    _ui->hostLineEdit->setText(proxyHostName);
+    _ui->portSpinBox->setValue(proxyPort == 0 ? 8080 : proxyPort);
+    _ui->authRequiredcheckBox->setChecked(proxyNeedsAuth);
+    _ui->userLineEdit->setText(proxyUser);
+    _ui->passwordLineEdit->setText(proxyPassword);
 }
 
 void NetworkSettings::loadBWLimitSettings()
