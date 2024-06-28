@@ -191,8 +191,6 @@ void NetworkSettings::loadBWLimitSettings()
 
 void NetworkSettings::saveProxySettings()
 {
-    ConfigFile cfgFile;
-
     checkEmptyProxyHost();
 
     const auto useGlobalProxy = _ui->globalProxySettingsRadioButton->isChecked();
@@ -219,7 +217,7 @@ void NetworkSettings::saveProxySettings()
         _account->setNetworkProxySetting(useGlobalProxy ? Account::AccountNetworkProxySetting::GlobalProxy : Account::AccountNetworkProxySetting::AccountSpecificProxy);
         _account->setProxyType(proxyType);
         _account->setProxyHostName(host);
-        _account->setProxyPort(_ui->portSpinBox->value());
+        _account->setProxyPort(port);
         _account->setProxyNeedsAuth(needsAuth);
         _account->setProxyUser(user);
         _account->setProxyPassword(password);
@@ -234,7 +232,7 @@ void NetworkSettings::saveProxySettings()
         const auto accountState = AccountManager::instance()->accountFromUserId(_account->userIdAtHostWithPort());
         accountState->freshConnectionAttempt();
     } else {
-        cfgFile.setProxyType(proxyType, host, port, needsAuth, user, password);
+        ConfigFile().setProxyType(proxyType, host, port, needsAuth, user, password);
         ClientProxy proxy;
         proxy.setupQtProxyFromConfig(); // Refresh the Qt proxy settings as the
         // quota check can happen all the time.
