@@ -104,19 +104,19 @@ class OWNCLOUDSYNC_EXPORT Account : public QObject
     Q_PROPERTY(unsigned int downloadLimit READ downloadLimit WRITE setDownloadLimit NOTIFY downloadLimitChanged)
 
 public:
+    // We need to decide whether to use the client's global proxy settings or whether to use
+    // a specific setting for each account. Hence this enum
     enum class AccountNetworkProxySetting {
         GlobalProxy = 0,
-        NoProxy,
-        ManualProxy,
-        AutoProxy
+        AccountSpecificProxy,
     };
     Q_ENUM(AccountNetworkProxySetting)
 
     enum class AccountNetworkTransferLimitSetting {
-        GlobalLimit = 0,
+        GlobalLimit = -2,
+        AutoLimit, // Value under 0 is interpreted as auto in general
         NoLimit,
         ManualLimit,
-        AutoLimit
     };
     Q_ENUM(AccountNetworkTransferLimitSetting)
 
