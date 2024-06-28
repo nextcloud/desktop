@@ -1133,4 +1133,19 @@ void Account::setProxyHostName(const QString &hostName)
     emit proxyHostNameChanged();
 }
 
+int Account::proxyPort() const
+{
+    return _proxyPort;
+}
+
+void Account::setProxyPort(const int port)
+{
+    if (_proxyPort == port) {
+        return;
+    }
+
+    _proxyPort = port;
+    emit proxyPortChanged();
+}
+
 } // namespace OCC
