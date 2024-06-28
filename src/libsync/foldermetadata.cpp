@@ -424,9 +424,9 @@ void FolderMetadata::emitSetupComplete()
 
 // RSA/ECB/OAEPWithSHA-256AndMGF1Padding using private / public key.
 QByteArray FolderMetadata::encryptDataWithPublicKey(const QByteArray &binaryData,
-                                                    const QSslKey &key) const
+                                                    const CertificateInformation &shareUserCertificate) const
 {
-    const auto encryptBase64Result = EncryptionHelper::encryptStringAsymmetric(_account->e2e()->getCertificateInformation(), _account->e2e()->paddingMode(), *_account->e2e(), key, binaryData);
+    const auto encryptBase64Result = EncryptionHelper::encryptStringAsymmetric(shareUserCertificate, _account->e2e()->paddingMode(), *_account->e2e(), binaryData);
     qCDebug(lcCseMetadata()) << "encryptDataWithPublicKey" << binaryData.toBase64() << *encryptBase64Result;
     return *encryptBase64Result;
 }
@@ -693,7 +693,7 @@ QByteArray FolderMetadata::encryptedMetadataLegacy()
     }
     const auto version = _account->capabilities().clientSideEncryptionVersion();
     // multiple toBase64() just to keep with the old (wrong way)
-    const auto encryptedMetadataKey = encryptDataWithPublicKey(metadataKeyForEncryption().toBase64().toBase64(), _account->e2e()->getPublicKey()).toBase64();
+    const auto encryptedMetadataKey = encryptDataWithPublicKey(metadataKeyForEncryption().toBase64().toBase64(), _account->e2e()->getCertificateInformation()).toBase64();
     const QJsonObject metadata{
         {versionKey, version},
         {metadataKeyKey, QJsonValue::fromVariant(encryptedMetadataKey)},
@@ -1038,8 +1038,8 @@ bool FolderMetadata::addUser(const QString &userId, const QSslCertificate &certi
         return false;
     }
 
-    const auto certificatePublicKey = certificate.publicKey();
-    if (userId.isEmpty() || certificate.isNull() || certificatePublicKey.isNull()) {
+    const auto shareUserCertificate = CertificateInformation{{}, QSslCertificate{certificate}};
+    if (userId.isEmpty() || certificate.isNull() || !shareUserCertificate.canEncrypt()) {
         qCWarning(lcCseMetadata()) << "Could not add a folder user. Invalid userId or certificate.";
         return false;
     }
@@ -1048,7 +1048,7 @@ bool FolderMetadata::addUser(const QString &userId, const QSslCertificate &certi
     UserWithFolderAccess newFolderUser;
     newFolderUser.userId = userId;
     newFolderUser.certificatePem = certificate.toPem();
-    newFolderUser.encryptedMetadataKey = encryptDataWithPublicKey(metadataKeyForEncryption(), certificatePublicKey);
+    newFolderUser.encryptedMetadataKey = encryptDataWithPublicKey(metadataKeyForEncryption(), shareUserCertificate);
     _folderUsers[userId] = newFolderUser;
     updateUsersEncryptedMetadataKey();
 
@@ -1091,13 +1091,9 @@ void FolderMetadata::updateUsersEncryptedMetadataKey()
         auto folderUser = it.value();
 
         const QSslCertificate certificate(folderUser.certificatePem);
-        const auto certificatePublicKey = certificate.publicKey();
-        if (certificate.isNull() || certificatePublicKey.isNull()) {
-            qCWarning(lcCseMetadata()) << "Could not update folder users with null certificatePublicKey!";
-            continue;
-        }
+        CertificateInformation shareUserCertificate = CertificateInformation{{}, QSslCertificate{certificate}};
 
-        const auto encryptedMetadataKey = encryptDataWithPublicKey(metadataKeyForEncryption(), certificatePublicKey);
+        const auto encryptedMetadataKey = encryptDataWithPublicKey(metadataKeyForEncryption(), shareUserCertificate);
         if (encryptedMetadataKey.isEmpty()) {
             qCWarning(lcCseMetadata()) << "Could not update folder users with empty encryptedMetadataKey!";
             continue;
