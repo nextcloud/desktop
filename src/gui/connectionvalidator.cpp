@@ -57,10 +57,10 @@ void ConnectionValidator::checkServerAndAuth()
     _isCheckingServerAndAuth = true;
 
     // Lookup system proxy in a thread https://github.com/owncloud/client/issues/2993
-    if (ClientProxy::isUsingSystemDefault()) {
+    if ((ClientProxy::isUsingSystemDefault() && _account->networkProxySetting() == Account::AccountNetworkProxySetting::GlobalProxy)
+        || _account->proxyType() == QNetworkProxy::DefaultProxy) {
         qCDebug(lcConnectionValidator) << "Trying to look up system proxy";
-        ClientProxy::lookupSystemProxyAsync(_account->url(),
-            this, SLOT(systemProxyLookupDone(QNetworkProxy)));
+        ClientProxy::lookupSystemProxyAsync(_account->url(), this, SLOT(systemProxyLookupDone(QNetworkProxy)));
     } else {
         // We want to reset the QNAM proxy so that the global proxy settings are used (via ClientProxy settings)
         _account->networkAccessManager()->setProxy(QNetworkProxy(QNetworkProxy::DefaultProxy));
