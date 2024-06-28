@@ -1098,4 +1098,19 @@ void Account::setProxyType(QNetworkProxy::ProxyType proxyType)
     emit proxyTypeChanged();
 }
 
+QString Account::proxyHostName() const
+{
+    return _proxyHostName;
+}
+
+void Account::setProxyHostName(const QString &hostName)
+{
+    if (_proxyHostName == hostName) {
+        return;
+    }
+
+    _proxyHostName = hostName;
+    emit proxyHostNameChanged();
+}
+
 } // namespace OCC
