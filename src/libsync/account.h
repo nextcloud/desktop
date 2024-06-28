@@ -26,6 +26,7 @@
 #include <QByteArray>
 #include <QUrl>
 #include <QNetworkCookie>
+#include <QNetworkProxy>
 #include <QNetworkRequest>
 #include <QSslSocket>
 #include <QSslCertificate>
@@ -91,6 +92,7 @@ class OWNCLOUDSYNC_EXPORT Account : public QObject
     Q_PROPERTY(bool e2eEncryptionKeysGenerationAllowed MEMBER _e2eEncryptionKeysGenerationAllowed)
     Q_PROPERTY(bool askUserForMnemonic READ askUserForMnemonic WRITE setAskUserForMnemonic NOTIFY askUserForMnemonicChanged)
     Q_PROPERTY(AccountNetworkProxySetting networkProxySetting READ networkProxySetting WRITE setNetworkProxySetting NOTIFY networkProxySettingChanged)
+    Q_PROPERTY(QNetworkProxy::ProxyType proxyType READ proxyType WRITE setProxyType NOTIFY proxyTypeChanged)
 
 public:
     enum class AccountNetworkProxySetting {
@@ -359,6 +361,9 @@ public:
     [[nodiscard]] AccountNetworkProxySetting networkProxySetting() const;
     void setNetworkProxySetting(AccountNetworkProxySetting networkProxySetting);
 
+    [[nodiscard]] QNetworkProxy::ProxyType proxyType() const;
+    void setProxyType(QNetworkProxy::ProxyType proxyType);
+
 public slots:
     /// Used when forgetting credentials
     void clearQNAMCache();
@@ -404,6 +409,7 @@ signals:
     void lockFileError(const QString&);
 
     void networkProxySettingChanged();
+    void proxyTypeChanged();
 
 protected Q_SLOTS:
     void slotCredentialsFetched();
@@ -481,6 +487,7 @@ private:
     QHash<QString, QVector<SyncFileItem::LockStatus>> _lockStatusChangeInprogress;
 
     AccountNetworkProxySetting _networkProxySetting = AccountNetworkProxySetting::GlobalProxy;
+    QNetworkProxy::ProxyType _proxyType = QNetworkProxy::NoProxy;
     /* IMPORTANT - remove later - FIXME MS@2019-12-07 -->
      * TODO: For "Log out" & "Remove account": Remove client CA certs and KEY!
      *

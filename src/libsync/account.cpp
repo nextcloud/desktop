@@ -1103,4 +1103,19 @@ void Account::setNetworkProxySetting(const AccountNetworkProxySetting setting)
     emit networkProxySettingChanged();
 }
 
+QNetworkProxy::ProxyType Account::proxyType() const
+{
+    return _proxyType;
+}
+
+void Account::setProxyType(QNetworkProxy::ProxyType proxyType)
+{
+    if (_proxyType == proxyType) {
+        return;
+    }
+
+    _proxyType = proxyType;
+    emit proxyTypeChanged();
+}
+
 } // namespace OCC
