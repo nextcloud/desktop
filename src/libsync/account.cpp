@@ -1095,6 +1095,13 @@ void Account::setProxyType(QNetworkProxy::ProxyType proxyType)
     }
 
     _proxyType = proxyType;
+
+    if (networkProxySetting() == AccountNetworkProxySetting::AccountSpecificProxy) {
+        auto proxy = _am->proxy();
+        proxy.setType(proxyType);
+        _am->setProxy(proxy);
+    }
+
     emit proxyTypeChanged();
 }
 
@@ -1110,6 +1117,13 @@ void Account::setProxyHostName(const QString &hostName)
     }
 
     _proxyHostName = hostName;
+
+    if (networkProxySetting() == AccountNetworkProxySetting::AccountSpecificProxy) {
+        auto proxy = _am->proxy();
+        proxy.setHostName(hostName);
+        _am->setProxy(proxy);
+    }
+
     emit proxyHostNameChanged();
 }
 
@@ -1125,6 +1139,13 @@ void Account::setProxyPort(const int port)
     }
 
     _proxyPort = port;
+
+    if (networkProxySetting() == AccountNetworkProxySetting::AccountSpecificProxy) {
+        auto proxy = _am->proxy();
+        proxy.setPort(port);
+        _am->setProxy(proxy);
+    }
+
     emit proxyPortChanged();
 }
 
@@ -1155,6 +1176,13 @@ void Account::setProxyUser(const QString &user)
     }
 
     _proxyUser = user;
+
+    if (networkProxySetting() == AccountNetworkProxySetting::AccountSpecificProxy) {
+        auto proxy = _am->proxy();
+        proxy.setUser(user);
+        _am->setProxy(proxy);
+    }
+
     emit proxyUserChanged();
 }
 
@@ -1170,6 +1198,13 @@ void Account::setProxyPassword(const QString &password)
     }
 
     _proxyPassword = password;
+
+    if (networkProxySetting() == AccountNetworkProxySetting::AccountSpecificProxy) {
+        auto proxy = _am->proxy();
+        proxy.setPassword(password);
+        _am->setProxy(proxy);
+    }
+
     emit proxyPasswordChanged();
 }
 
