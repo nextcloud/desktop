@@ -26,6 +26,7 @@
 #include <QByteArray>
 #include <QUrl>
 #include <QNetworkCookie>
+#include <QNetworkProxy>
 #include <QNetworkRequest>
 #include <QSslSocket>
 #include <QSslCertificate>
