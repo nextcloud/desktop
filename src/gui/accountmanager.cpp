@@ -29,6 +29,7 @@
 #include <QNetworkAccessManager>
 #include <QMessageBox>
 #include <QPushButton>
+#include <type_traits>
 
 namespace {
 constexpr auto urlC = "url";
@@ -46,6 +47,17 @@ constexpr auto serverVersionC = "serverVersion";
 constexpr auto serverColorC = "serverColor";
 constexpr auto serverTextColorC = "serverTextColor";
 constexpr auto skipE2eeMetadataChecksumValidationC = "skipE2eeMetadataChecksumValidation";
+constexpr auto networkProxySettingC = "networkProxySetting";
+constexpr auto networkProxyTypeC = "networkProxyType";
+constexpr auto networkProxyHostNameC = "networkProxyHostName";
+constexpr auto networkProxyPortC = "networkProxyPort";
+constexpr auto networkProxyNeedsAuthC = "networkProxyNeedsAuth";
+constexpr auto networkProxyUserC = "networkProxyUser";
+constexpr auto networkProxyPasswordC = "networkProxyPassword";
+constexpr auto networkUploadLimitSettingC = "networkUploadLimitSetting";
+constexpr auto networkDownloadLimitSettingC = "networkDownloadLimitSetting";
+constexpr auto networkUploadLimitC = "networkUploadLimit";
+constexpr auto networkDownloadLimitC = "networkDownloadLimit";
 constexpr auto generalC = "General";
 
 constexpr auto dummyAuthTypeC = "dummy";
@@ -330,6 +342,17 @@ void AccountManager::saveAccountHelper(Account *acc, QSettings &settings, bool s
     } else {
         settings.setValue(QLatin1String(skipE2eeMetadataChecksumValidationC), acc->_skipE2eeMetadataChecksumValidation);
     }
+    settings.setValue(networkProxySettingC, static_cast<std::underlying_type_t<Account::AccountNetworkProxySetting>>(acc->networkProxySetting()));
+    settings.setValue(networkProxyTypeC, acc->proxyType());
+    settings.setValue(networkProxyHostNameC, acc->proxyHostName());
+    settings.setValue(networkProxyPortC, acc->proxyPort());
+    settings.setValue(networkProxyNeedsAuthC, acc->proxyNeedsAuth());
+    settings.setValue(networkProxyUserC, acc->proxyUser());
+    settings.setValue(networkProxyPasswordC, acc->proxyPassword());
+    settings.setValue(networkUploadLimitSettingC, static_cast<std::underlying_type_t<Account::AccountNetworkTransferLimitSetting>>(acc->uploadLimitSetting()));
+    settings.setValue(networkDownloadLimitSettingC, static_cast<std::underlying_type_t<Account::AccountNetworkTransferLimitSetting>>(acc->downloadLimitSetting()));
+    settings.setValue(networkUploadLimitC, acc->uploadLimit());
+    settings.setValue(networkDownloadLimitC, acc->downloadLimit());
 
     if (acc->_credentials) {
         if (saveCredentials) {
@@ -450,6 +473,18 @@ AccountPtr AccountManager::loadAccountHelper(QSettings &settings)
     }
 
     acc->setCredentials(CredentialsFactory::create(authType));
+
+    acc->setNetworkProxySetting(settings.value(networkProxySettingC).value<Account::AccountNetworkProxySetting>());
+    acc->setProxyType(settings.value(networkProxyTypeC).value<QNetworkProxy::ProxyType>());
+    acc->setProxyHostName(settings.value(networkProxyHostNameC).toString());
+    acc->setProxyPort(settings.value(networkProxyPortC).toInt());
+    acc->setProxyNeedsAuth(settings.value(networkProxyNeedsAuthC).toBool());
+    acc->setProxyUser(settings.value(networkProxyUserC).toString());
+    acc->setProxyPassword(settings.value(networkProxyPasswordC).toString());
+    acc->setUploadLimitSetting(settings.value(networkUploadLimitSettingC).value<Account::AccountNetworkTransferLimitSetting>());
+    acc->setDownloadLimitSetting(settings.value(networkDownloadLimitSettingC).value<Account::AccountNetworkTransferLimitSetting>());
+    acc->setUploadLimit(settings.value(networkUploadLimitC).toInt());
+    acc->setDownloadLimit(settings.value(networkDownloadLimitC).toInt());
 
     // now the server cert, it is in the general group
     settings.beginGroup(QLatin1String(generalC));
