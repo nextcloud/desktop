@@ -25,6 +25,7 @@
 #include <QNetworkProxy>
 #include <QString>
 #include <QList>
+#include <type_traits>
 
 namespace OCC {
 
@@ -158,27 +159,34 @@ void NetworkSettings::loadProxySettings()
 
 void NetworkSettings::loadBWLimitSettings()
 {
-    ConfigFile cfgFile;
+    const auto useGlobalLimit = _account == nullptr || _account->downloadLimitSetting() == Account::AccountNetworkTransferLimitSetting::GlobalLimit;
+    const auto cfgFile = ConfigFile();
+    const auto useDownloadLimit = useGlobalLimit ? cfgFile.useDownloadLimit() : static_cast<std::underlying_type_t<Account::AccountNetworkTransferLimitSetting>>(_account->downloadLimitSetting());
+    const auto downloadLimit = useGlobalLimit ? cfgFile.downloadLimit() : _account->downloadLimit();
+    const auto useUploadLimit = useGlobalLimit ? cfgFile.useUploadLimit() : static_cast<std::underlying_type_t<Account::AccountNetworkTransferLimitSetting>>(_account->uploadLimitSetting());
+    const auto uploadLimit = useGlobalLimit ? cfgFile.uploadLimit() : _account->uploadLimit();
 
-    int useDownloadLimit = cfgFile.useDownloadLimit();
-    if (useDownloadLimit >= 1) {
+    if (_account != nullptr && _account->downloadLimitSetting() == Account::AccountNetworkTransferLimitSetting::GlobalLimit) {
+        _ui->globalDownloadSettingsRadioButton->setChecked(true);
+    } else if (useDownloadLimit >= 1) {
         _ui->downloadLimitRadioButton->setChecked(true);
     } else if (useDownloadLimit == 0) {
         _ui->noDownloadLimitRadioButton->setChecked(true);
     } else {
         _ui->autoDownloadLimitRadioButton->setChecked(true);
     }
-    _ui->downloadSpinBox->setValue(cfgFile.downloadLimit());
+    _ui->downloadSpinBox->setValue(downloadLimit);
 
-    int useUploadLimit = cfgFile.useUploadLimit();
-    if (useUploadLimit >= 1) {
+    if (_account != nullptr && _account->uploadLimitSetting() == Account::AccountNetworkTransferLimitSetting::GlobalLimit) {
+        _ui->globalUploadSettingsRadioButton->setChecked(true);
+    } else if (useUploadLimit >= 1) {
         _ui->uploadLimitRadioButton->setChecked(true);
     } else if (useUploadLimit == 0) {
         _ui->noUploadLimitRadioButton->setChecked(true);
     } else {
         _ui->autoUploadLimitRadioButton->setChecked(true);
     }
-    _ui->uploadSpinBox->setValue(cfgFile.uploadLimit());
+    _ui->uploadSpinBox->setValue(uploadLimit);
 }
 
 void NetworkSettings::saveProxySettings()
