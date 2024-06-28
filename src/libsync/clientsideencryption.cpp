@@ -539,70 +539,54 @@ namespace internals {
                                                                 int pad_mode,
                                                                 const QByteArray& binaryData);
 
-[[nodiscard]] std::optional<QByteArray> encryptStringAsymmetricWithToken(ENGINE *sslEngine,
-                                                                         EVP_PKEY *publicKey,
-                                                                         const QByteArray& binaryData);
-
 [[nodiscard]] std::optional<QByteArray> decryptStringAsymmetric(ENGINE *sslEngine,
                                                                 EVP_PKEY *privateKey,
                                                                 int pad_mode,
                                                                 const QByteArray& binaryData);
 
-[[nodiscard]] std::optional<QByteArray> decryptStringAsymmetricWithToken(ENGINE *sslEngine,
-                                                                         PKCS11_KEY *privateKey,
-                                                                         const QByteArray &binaryData);
-
 }
 
 std::optional<QByteArray> encryptStringAsymmetric(const CertificateInformation &selectedCertificate,
+                                                  const int paddingMode,
                                                   const ClientSideEncryption &encryptionEngine,
                                                   const QSslKey &key,
                                                   const QByteArray &binaryData)
 {
     Q_UNUSED(key)
 
+    if (!encryptionEngine.isInitialized()) {
+        qCWarning(lcCseDecryption()) << "end-to-end encryption is disabled";
+        return {};
+    }
+
     if (encryptionEngine.useTokenBasedEncryption()) {
         qCDebug(lcCseEncryption()) << "use certificate on hardware token";
-        auto encryptedBase64Result = internals::encryptStringAsymmetricWithToken(encryptionEngine.sslEngine(),
-                                                                                 selectedCertificate.getEvpPublicKey(),
-                                                                                 binaryData);
-
-        if (!encryptedBase64Result) {
-            qCWarning(lcCseEncryption()) << "encrypt failed";
-            return {};
-        }
-
-        if (encryptedBase64Result->isEmpty()) {
-            qCDebug(lcCseEncryption()) << "ERROR. Could not encrypt data";
-            return {};
-        }
-
-        return encryptedBase64Result;
     } else {
         qCDebug(lcCseEncryption()) << "use certificate on software storage";
-        const auto publicKey = selectedCertificate.getEvpPublicKey();
-        Q_ASSERT(publicKey);
-
-        auto encryptedBase64Result = internals::encryptStringAsymmetric(encryptionEngine.sslEngine(), publicKey, RSA_PKCS1_OAEP_PADDING, binaryData);
-
-        if (!encryptedBase64Result) {
-            qCWarning(lcCseEncryption()) << "encrypt failed";
-            return {};
-        }
-
-        if (encryptedBase64Result->isEmpty()) {
-            qCDebug(lcCseEncryption()) << "ERROR. Could not encrypt data";
-            return {};
-        }
-
-        return encryptedBase64Result;
     }
+
+    const auto publicKey = selectedCertificate.getEvpPublicKey();
+    Q_ASSERT(publicKey);
+
+    auto encryptedBase64Result = internals::encryptStringAsymmetric(encryptionEngine.sslEngine(), publicKey, paddingMode, binaryData);
+
+    if (!encryptedBase64Result) {
+        qCWarning(lcCseEncryption()) << "encrypt failed";
+        return {};
+    }
+
+    if (encryptedBase64Result->isEmpty()) {
+        qCDebug(lcCseEncryption()) << "ERROR. Could not encrypt data";
+        return {};
+    }
+
+    return encryptedBase64Result;
 }
 
 std::optional<QByteArray> decryptStringAsymmetric(const CertificateInformation &selectedCertificate,
+                                                  const int paddingMode,
                                                   const ClientSideEncryption &encryptionEngine,
-                                                  const QByteArray &base64Data,
-                                                  const QByteArray &expectedCertificateSha256Fingerprint)
+                                                  const QByteArray &base64Data)
 {
     if (!encryptionEngine.isInitialized()) {
         qCWarning(lcCseDecryption()) << "end-to-end encryption is disabled";
@@ -611,41 +595,23 @@ std::optional<QByteArray> decryptStringAsymmetric(const CertificateInformation &
 
     if (encryptionEngine.useTokenBasedEncryption()) {
         qCDebug(lcCseDecryption()) << "use certificate on hardware token";
-        if (selectedCertificate.sha256Fingerprint() != expectedCertificateSha256Fingerprint) {
-            qCWarning(lcCseDecryption()) << "wrong certificate: cannot decrypt what has been encrypted with another certificate:" << expectedCertificateSha256Fingerprint << "current certificate" << selectedCertificate.sha256Fingerprint();
-            return {};
-        }
-
-        const auto decryptBase64Result = internals::decryptStringAsymmetricWithToken(encryptionEngine.sslEngine(),
-                                                                                     selectedCertificate.getPkcs11PrivateKey(),
-                                                                                     QByteArray::fromBase64(base64Data));
-        if (!decryptBase64Result) {
-            qCWarning(lcCseDecryption()) << "decrypt failed";
-            return {};
-        }
-
-        if (decryptBase64Result->isEmpty()) {
-            qCDebug(lcCseDecryption()) << "ERROR. Could not decrypt data";
-            return {};
-        }
-        return decryptBase64Result;
     } else {
         qCDebug(lcCseDecryption()) << "use certificate on software storage";
-        const auto key = selectedCertificate.getEvpPrivateKey();
-        Q_ASSERT(key);
-
-        const auto decryptBase64Result = internals::decryptStringAsymmetric(encryptionEngine.sslEngine(), key, RSA_PKCS1_OAEP_PADDING, QByteArray::fromBase64(base64Data));
-        if (!decryptBase64Result) {
-            qCWarning(lcCseDecryption()) << "decrypt failed";
-            return {};
-        }
-
-        if (decryptBase64Result->isEmpty()) {
-            qCDebug(lcCseDecryption()) << "ERROR. Could not decrypt data";
-            return {};
-        }
-        return decryptBase64Result;
     }
+    const auto key = selectedCertificate.getEvpPrivateKey();
+    Q_ASSERT(key);
+
+    const auto decryptBase64Result = internals::decryptStringAsymmetric(encryptionEngine.sslEngine(), key, paddingMode, QByteArray::fromBase64(base64Data));
+    if (!decryptBase64Result) {
+        qCWarning(lcCseDecryption()) << "decrypt failed";
+        return {};
+    }
+
+    if (decryptBase64Result->isEmpty()) {
+        qCDebug(lcCseDecryption()) << "ERROR. Could not decrypt data";
+        return {};
+    }
+    return decryptBase64Result;
 }
 
 QByteArray encryptStringSymmetric(const QByteArray& key, const QByteArray& data) {
@@ -841,31 +807,6 @@ void debugOpenssl()
     }
 }
 
-namespace internals {
-
-std::optional<QByteArray> encryptStringAsymmetricWithToken(ENGINE *sslEngine,
-                                                           EVP_PKEY *evpPublicKey,
-                                                           const QByteArray& binaryData)
-{
-    return encryptStringAsymmetric(sslEngine, evpPublicKey, RSA_PKCS1_PADDING, binaryData);
-}
-
-std::optional<QByteArray> decryptStringAsymmetricWithToken(ENGINE *sslEngine,
-                                                           PKCS11_KEY *privateKey,
-                                                           const QByteArray &binaryData)
-{
-    qCDebug(lcCseDecryption()) << "decrypt asymetric with pkcs11 private key" << privateKey;
-    const auto evpPrivateKey = PKCS11_get_private_key(privateKey);
-    qCDebug(lcCseDecryption()) << "got the evp key pointer for" << privateKey << evpPrivateKey;
-    if (!evpPrivateKey) {
-        return {};
-    }
-
-    return decryptStringAsymmetric(sslEngine, evpPrivateKey, RSA_PKCS1_PADDING, binaryData);
-}
-
-}
-
 }
 
 
@@ -896,6 +837,11 @@ void ClientSideEncryption::setPrivateKey(const QByteArray &privateKey)
 const CertificateInformation &ClientSideEncryption::getCertificateInformation() const
 {
     return _encryptionCertificate;
+}
+
+int ClientSideEncryption::paddingMode() const
+{
+    return RSA_PKCS1_PADDING;
 }
 
 CertificateInformation ClientSideEncryption::getTokenCertificateByFingerprint(const QByteArray &expectedFingerprint) const
@@ -1270,7 +1216,7 @@ bool ClientSideEncryption::checkPublicKeyValidity(const AccountPtr &account) con
     BIO_write(publicKeyBio, publicKeyPem.constData(), publicKeyPem.size());
     auto publicKey = PKey::readPublicKey(publicKeyBio);
 
-    auto encryptedData = EncryptionHelper::encryptStringAsymmetric(account->e2e()->getCertificateInformation(), *account->e2e(), account->e2e()->getPublicKey(), data.toBase64());
+    auto encryptedData = EncryptionHelper::encryptStringAsymmetric(account->e2e()->getCertificateInformation(), account->e2e()->paddingMode(), *account->e2e(), account->e2e()->getPublicKey(), data.toBase64());
     if (!encryptedData) {
         qCWarning(lcCse()) << "encryption error";
         return false;
@@ -1278,7 +1224,7 @@ bool ClientSideEncryption::checkPublicKeyValidity(const AccountPtr &account) con
 
     auto key = _encryptionCertificate.getEvpPrivateKey();
 
-    const auto decryptionResult = EncryptionHelper::decryptStringAsymmetric(account->e2e()->getCertificateInformation(), *account->e2e(), *encryptedData, account->e2e()->certificateSha256Fingerprint());
+    const auto decryptionResult = EncryptionHelper::decryptStringAsymmetric(account->e2e()->getCertificateInformation(), account->e2e()->paddingMode(), *account->e2e(), *encryptedData);
     if (!decryptionResult) {
         qCWarning(lcCse()) << "encryption error";
         return false;
@@ -1298,7 +1244,7 @@ bool ClientSideEncryption::checkEncryptionIsWorking() const
     qCInfo(lcCse) << "check encryption is working before enabling end-to-end encryption feature";
     QByteArray data = EncryptionHelper::generateRandom(64);
 
-    auto encryptedData = EncryptionHelper::encryptStringAsymmetric(getCertificateInformation(), *this, getPublicKey(), data);
+    auto encryptedData = EncryptionHelper::encryptStringAsymmetric(getCertificateInformation(), paddingMode(), *this, getPublicKey(), data);
     if (!encryptedData) {
         qCWarning(lcCse()) << "encryption error";
         return false;
@@ -1306,7 +1252,7 @@ bool ClientSideEncryption::checkEncryptionIsWorking() const
 
     qCDebug(lcCse) << "encryption is working";
 
-    const auto decryptionResult = EncryptionHelper::decryptStringAsymmetric(getCertificateInformation(), *this, *encryptedData, certificateSha256Fingerprint());
+    const auto decryptionResult = EncryptionHelper::decryptStringAsymmetric(getCertificateInformation(), paddingMode(), *this, *encryptedData);
     if (!decryptionResult) {
         qCWarning(lcCse()) << "encryption error";
         return false;

@@ -426,14 +426,14 @@ void FolderMetadata::emitSetupComplete()
 QByteArray FolderMetadata::encryptDataWithPublicKey(const QByteArray &binaryData,
                                                     const QSslKey &key) const
 {
-    const auto encryptBase64Result = EncryptionHelper::encryptStringAsymmetric(_account->e2e()->getCertificateInformation(), *_account->e2e(), key, binaryData);
+    const auto encryptBase64Result = EncryptionHelper::encryptStringAsymmetric(_account->e2e()->getCertificateInformation(), _account->e2e()->paddingMode(), *_account->e2e(), key, binaryData);
     qCDebug(lcCseMetadata()) << "encryptDataWithPublicKey" << binaryData.toBase64() << *encryptBase64Result;
     return *encryptBase64Result;
 }
 
 QByteArray FolderMetadata::decryptDataWithPrivateKey(const QByteArray &base64Data) const
 {
-    const auto decryptBase64Result = EncryptionHelper::decryptStringAsymmetric(_account->e2e()->getCertificateInformation(), *_account->e2e(), base64Data, _account->e2e()->certificateSha256Fingerprint());
+    const auto decryptBase64Result = EncryptionHelper::decryptStringAsymmetric(_account->e2e()->getCertificateInformation(), _account->e2e()->paddingMode(), *_account->e2e(), base64Data);
     if (!decryptBase64Result) {
         qCDebug(lcCseMetadata()) << "ERROR. Could not decrypt the metadata key";
         _account->reportClientStatus(OCC::ClientStatusReportingStatus::E2EeError_GeneralError);
