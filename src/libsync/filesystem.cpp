@@ -318,17 +318,17 @@ bool FileSystem::getInode(const QString &filename, quint64 *inode)
 bool FileSystem::setFolderPermissions(const QString &path,
                                       FileSystem::FolderPermissions permissions) noexcept
 {
+    static constexpr auto writePerms = std::filesystem::perms::owner_write | std::filesystem::perms::group_write | std::filesystem::perms::others_write;
+    const auto stdStrPath = path.toStdWString();
     try {
         switch (permissions) {
         case OCC::FileSystem::FolderPermissions::ReadOnly:
-            std::filesystem::permissions(path.toStdWString(), std::filesystem::perms::owner_write | std::filesystem::perms::group_write | std::filesystem::perms::others_write, std::filesystem::perm_options::remove);
+            std::filesystem::permissions(stdStrPath, writePerms, std::filesystem::perm_options::remove);
             break;
         case OCC::FileSystem::FolderPermissions::ReadWrite:
             break;
         }
-    }
-    catch (const std::filesystem::filesystem_error &e)
-    {
+    } catch (const std::filesystem::filesystem_error &e) {
         qCWarning(lcFileSystem()) << "exception when modifying folder permissions" << e.what() << e.path1().c_str() << e.path2().c_str();
         return false;
     }
@@ -451,22 +451,18 @@ bool FileSystem::setFolderPermissions(const QString &path,
     }
 #endif
 
-#if !defined(Q_OS_MACOS) || __MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_15
     try {
         switch (permissions) {
         case OCC::FileSystem::FolderPermissions::ReadOnly:
             break;
         case OCC::FileSystem::FolderPermissions::ReadWrite:
-            std::filesystem::permissions(path.toStdWString(), std::filesystem::perms::owner_write, std::filesystem::perm_options::add);
+            std::filesystem::permissions(stdStrPath, writePerms, std::filesystem::perm_options::add);
             break;
         }
-    }
-    catch (const std::filesystem::filesystem_error &e)
-    {
+    } catch (const std::filesystem::filesystem_error &e) {
         qCWarning(lcFileSystem()) << "exception when modifying folder permissions" << e.what() << e.path1().c_str() << e.path2().c_str();
         return false;
     }
-#endif
 
     return true;
 }
