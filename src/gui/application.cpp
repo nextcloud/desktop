@@ -298,6 +298,11 @@ Application::Application(int &argc, char **argv)
 
     if (_theme->doNotUseProxy()) {
         ConfigFile().setProxyType(QNetworkProxy::NoProxy);
+        for (const auto &accountState : AccountManager::instance()->accounts()) {
+            if (accountState && accountState->account()) {
+                accountState->account()->setNetworkProxySetting(Account::AccountNetworkProxySetting::GlobalProxy);
+            }
+        }
     }
 
     parseOptions(arguments());
