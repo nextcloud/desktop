@@ -97,6 +97,7 @@ class OWNCLOUDSYNC_EXPORT Account : public QObject
     Q_PROPERTY(bool proxyNeedsAuth READ proxyNeedsAuth WRITE setProxyNeedsAuth NOTIFY proxyNeedsAuthChanged)
     Q_PROPERTY(QString proxyUser READ proxyUser WRITE setProxyUser NOTIFY proxyUserChanged)
     Q_PROPERTY(QString proxyPassword READ proxyPassword WRITE setProxyPassword NOTIFY proxyPasswordChanged)
+    Q_PROPERTY(AccountNetworkTransferLimitSetting uploadLimitSetting READ uploadLimitSetting WRITE setUploadLimitSetting NOTIFY uploadLimitSettingChanged)
 
 public:
     enum class AccountNetworkProxySetting {
@@ -380,6 +381,9 @@ public:
     [[nodiscard]] QString proxyPassword() const;
     void setProxyPassword(const QString &password);
 
+    [[nodiscard]] AccountNetworkTransferLimitSetting uploadLimitSetting() const;
+    void setUploadLimitSetting(AccountNetworkTransferLimitSetting setting);
+
 public slots:
     /// Used when forgetting credentials
     void clearQNAMCache();
@@ -431,6 +435,7 @@ signals:
     void proxyNeedsAuthChanged();
     void proxyUserChanged();
     void proxyPasswordChanged();
+    void uploadLimitSettingChanged();
 
 protected Q_SLOTS:
     void slotCredentialsFetched();
@@ -514,6 +519,7 @@ private:
     bool _proxyNeedsAuth = false;
     QString _proxyUser;
     QString _proxyPassword;
+    AccountNetworkTransferLimitSetting _uploadLimitSetting = AccountNetworkTransferLimitSetting::GlobalLimit;
     /* IMPORTANT - remove later - FIXME MS@2019-12-07 -->
      * TODO: For "Log out" & "Remove account": Remove client CA certs and KEY!
      *

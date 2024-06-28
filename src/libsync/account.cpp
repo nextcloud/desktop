@@ -1173,4 +1173,19 @@ void Account::setProxyPassword(const QString &password)
     emit proxyPasswordChanged();
 }
 
+Account::AccountNetworkTransferLimitSetting Account::uploadLimitSetting() const
+{
+    return _uploadLimitSetting;
+}
+
+void Account::setUploadLimitSetting(const AccountNetworkTransferLimitSetting setting)
+{
+    if (setting == _uploadLimitSetting) {
+        return;
+    }
+
+    _uploadLimitSetting = setting;
+    emit uploadLimitSettingChanged();
+}
+
 } // namespace OCC
