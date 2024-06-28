@@ -97,6 +97,7 @@ class OWNCLOUDSYNC_EXPORT Account : public QObject
     Q_PROPERTY(int proxyPort READ proxyPort WRITE setProxyPort NOTIFY proxyPortChanged)
     Q_PROPERTY(bool proxyNeedsAuth READ proxyNeedsAuth WRITE setProxyNeedsAuth NOTIFY proxyNeedsAuthChanged)
     Q_PROPERTY(QString proxyUser READ proxyUser WRITE setProxyUser NOTIFY proxyUserChanged)
+    Q_PROPERTY(QString proxyPassword READ proxyPassword WRITE setProxyPassword NOTIFY proxyPasswordChanged)
 
 public:
     enum class AccountNetworkProxySetting {
@@ -380,6 +381,9 @@ public:
     [[nodiscard]] QString proxyUser() const;
     void setProxyUser(const QString &user);
 
+    [[nodiscard]] QString proxyPassword() const;
+    void setProxyPassword(const QString &password);
+
 public slots:
     /// Used when forgetting credentials
     void clearQNAMCache();
@@ -430,6 +434,7 @@ signals:
     void proxyPortChanged();
     void proxyNeedsAuthChanged();
     void proxyUserChanged();
+    void proxyPasswordChanged();
 
 protected Q_SLOTS:
     void slotCredentialsFetched();
@@ -512,6 +517,7 @@ private:
     int _proxyPort = 0;
     bool _proxyNeedsAuth = false;
     QString _proxyUser;
+    QString _proxyPassword;
     /* IMPORTANT - remove later - FIXME MS@2019-12-07 -->
      * TODO: For "Log out" & "Remove account": Remove client CA certs and KEY!
      *
