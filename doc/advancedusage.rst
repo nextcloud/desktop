@@ -10,7 +10,7 @@ Options
 .. include:: options.rst
 
 Mass Deployment And Account Creation
--------
+------------------------------------
 .. index:: mass deployment
 .. include:: massdeploymentcommandline.rst
 
@@ -35,6 +35,6 @@ Low Disk Space
 .. include:: lowdiskspace.rst
 
 Wizard Account Setup Command-line Options
--------
+-----------------------------------------
 .. index:: wizard accountsetup command-line
 .. include:: wizardaccountsetupcommandline.rst
