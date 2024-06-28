@@ -1218,4 +1218,19 @@ void Account::setUploadLimit(const unsigned int limit)
     emit uploadLimitChanged();
 }
 
+unsigned int Account::downloadLimit() const
+{
+    return _downloadLimit;
+}
+
+void Account::setDownloadLimit(const unsigned int limit)
+{
+    if (_downloadLimit == limit) {
+        return;
+    }
+
+    _downloadLimit = limit;
+    emit downloadLimitChanged();
+}
+
 } // namespace OCC
