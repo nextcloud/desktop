@@ -2068,9 +2068,29 @@ Féadfaidh sé seo a bheith ina fhadhb le do leabharlanna OpenSSL.</translation>
         <translation>Stop sioncronú</translation>
     </message>
     <message>
+        <location filename="../src/gui/folder.cpp" line="1411"/>
+        <source>All files in the sync folder &quot;%1&quot; folder were deleted on the server.
+These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
+If you decide to restore the files, they will be re-synced with the server if you have rights to do so.
+If you decide to delete the files, they will be unavailable to you, unless you are the owner.</source>
+        <translation>Scriosadh gach comhad san fhillteán sioncronaithe &quot;% 1&quot; ar an bhfreastalaí.
+Déanfar na scriosanna seo a shioncronú le d&apos;fhillteán sioncronaithe áitiúil, rud a fhágann nach mbeidh na comhaid sin ar fáil ach amháin má tá sé de cheart agat iad a athchóiriú.
+Má shocraíonn tú na comhaid a chur ar ais, déanfar iad a athshioncronú leis an bhfreastalaí má tá cearta agat é sin a dhéanamh.
+Má shocraíonn tú na comhaid a scriosadh, ní bheidh siad ar fáil duit, ach amháin más tusa an t-úinéir.</translation>
+    </message>
+    <message>
         <location filename="../src/gui/folder.cpp" line="1416"/>
         <source>The folder %1 has surpassed the set folder size limit of %2MB.</source>
         <translation>Sháraigh fillteán % 1 an teorainn méide fillteáin de % 2MB.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/folder.cpp" line="1416"/>
+        <source>All the files in your local sync folder &quot;%1&quot; were deleted. These deletes will be synchronized with your server, making such files unavailable unless restored.
+Are you sure you want to sync those actions with the server?
+If this was an accident and you decide to keep your files, they will be re-synced from the server.</source>
+        <translation>Scriosadh na comhaid go léir i d&apos;fhillteán sioncronaithe logánta &quot;% 1&quot;. Déanfar na scriosanna seo a shioncronú le do fhreastalaí, rud a fhágann nach mbeidh comhaid dá leithéid ar fáil mura n-aischuirfear iad.
+An bhfuil tú cinnte gur mhaith leat na gníomhartha sin a shioncronú leis an bhfreastalaí?
+Más timpiste a bhí ann agus má shocraíonn tú do chuid comhad a choinneáil, déanfar iad a athshioncronú ón bhfreastalaí.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1417"/>
@@ -2101,31 +2121,6 @@ Ciallaíonn sé seo go bhféadfadh sé nach ndéanfaidh an cliant sioncrónaithe
 % 1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1538"/>
-        <source>Virtual file download failed with code &quot;%1&quot;, status &quot;%2&quot; and error message &quot;%3&quot;</source>
-        <translation>Theip ar íosluchtú an chomhaid fhíorúil le cód &quot;% 1&quot;, stádas &quot;% 2&quot; agus teachtaireacht earráide &quot;% 3&quot;</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/folder.cpp" line="1411"/>
-        <source>All files in the sync folder &quot;%1&quot; folder were deleted on the server.
-These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
-If you decide to restore the files, they will be re-synced with the server if you have rights to do so.
-If you decide to delete the files, they will be unavailable to you, unless you are the owner.</source>
-        <translation>Scriosadh gach comhad san fhillteán sioncronaithe &quot;% 1&quot; ar an bhfreastalaí.
-Déanfar na scriosanna seo a shioncronú le d&apos;fhillteán sioncronaithe áitiúil, rud a fhágann nach mbeidh na comhaid sin ar fáil ach amháin má tá sé de cheart agat iad a athchóiriú.
-Má shocraíonn tú na comhaid a chur ar ais, déanfar iad a athshioncronú leis an bhfreastalaí má tá cearta agat é sin a dhéanamh.
-Má shocraíonn tú na comhaid a scriosadh, ní bheidh siad ar fáil duit, ach amháin más tusa an t-úinéir.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/folder.cpp" line="1416"/>
-        <source>All the files in your local sync folder &quot;%1&quot; were deleted. These deletes will be synchronized with your server, making such files unavailable unless restored.
-Are you sure you want to sync those actions with the server?
-If this was an accident and you decide to keep your files, they will be re-synced from the server.</source>
-        <translation>Scriosadh na comhaid go léir i d&apos;fhillteán sioncronaithe logánta &quot;% 1&quot;. Déanfar na scriosanna seo a shioncronú le do fhreastalaí, rud a fhágann nach mbeidh comhaid dá leithéid ar fáil mura n-aischuirfear iad.
-An bhfuil tú cinnte gur mhaith leat na gníomhartha sin a shioncronú leis an bhfreastalaí?
-Más timpiste a bhí ann agus má shocraíonn tú do chuid comhad a choinneáil, déanfar iad a athshioncronú ón bhfreastalaí.</translation>
-    </message>
-    <message>
         <location filename="../src/gui/folder.cpp" line="1420"/>
         <source>Remove All Files?</source>
         <translation>Bain Gach Comhad?</translation>
@@ -2139,6 +2134,40 @@ Más timpiste a bhí ann agus má shocraíonn tú do chuid comhad a choinneáil,
         <location filename="../src/gui/folder.cpp" line="1425"/>
         <source>Keep files</source>
         <translation>Coinnigh comhaid</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/folder.cpp" line="1538"/>
+        <source>Virtual file download failed with code &quot;%1&quot;, status &quot;%2&quot; and error message &quot;%3&quot;</source>
+        <translation>Theip ar íosluchtú an chomhaid fhíorúil le cód &quot;% 1&quot;, stádas &quot;% 2&quot; agus teachtaireacht earráide &quot;% 3&quot;</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/folder.cpp" line="1631"/>
+        <source>All files in the server folder &quot;%1&quot; were deleted.
+
+If you restore the files, they will be uploaded again to the server.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/folder.cpp" line="1632"/>
+        <source>All files in the local folder &quot;%1&quot; were deleted.
+
+If you restore the files, they will be downloaded again from the server.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/folder.cpp" line="1633"/>
+        <source>Remove all files?</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/folder.cpp" line="1637"/>
+        <source>Proceed to remove all files</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/folder.cpp" line="1638"/>
+        <source>Restore files</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -4545,7 +4574,7 @@ Is modh turgnamhach nua é seo. Má shocraíonn tú é a úsáid, cuir in iúl l
         <translation>Titim comhad slán</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/sharemodel.cpp" line="857"/>
+        <location filename="../src/gui/filedetails/sharemodel.cpp" line="862"/>
         <source>Could not find local folder for %1</source>
         <translation>Níorbh fhéidir fillteán logánta le haghaidh % 1 a aimsiú</translation>
     </message>
