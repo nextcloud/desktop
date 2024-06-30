@@ -2145,29 +2145,33 @@ This means that the synchronization client might not upload local changes immedi
         <source>All files in the server folder &quot;%1&quot; were deleted.
 
 If you restore the files, they will be uploaded again to the server.</source>
-        <translation type="unfinished"/>
+        <translation>All files in the server folder &quot;%1&quot; were deleted.
+
+If you restore the files, they will be uploaded again to the server.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1632"/>
         <source>All files in the local folder &quot;%1&quot; were deleted.
 
 If you restore the files, they will be downloaded again from the server.</source>
-        <translation type="unfinished"/>
+        <translation>All files in the local folder &quot;%1&quot; were deleted.
+
+If you restore the files, they will be downloaded again from the server.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1633"/>
         <source>Remove all files?</source>
-        <translation type="unfinished"/>
+        <translation>Remove all files?</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1637"/>
         <source>Proceed to remove all files</source>
-        <translation type="unfinished"/>
+        <translation>Proceed to remove all files</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1638"/>
         <source>Restore files</source>
-        <translation type="unfinished"/>
+        <translation>Restore files</translation>
     </message>
 </context>
 <context>

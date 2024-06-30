@@ -2144,29 +2144,33 @@ Dies bedeutet, dass der Synchronisierungs-Client lokale Änderungen möglicherwe
         <source>All files in the server folder &quot;%1&quot; were deleted.
 
 If you restore the files, they will be uploaded again to the server.</source>
-        <translation type="unfinished"/>
+        <translation>Alle Dateien im Serverordner &quot;%1“ wurden gelöscht.
+
+Wenn Sie die Dateien wiederherstellen, werden sie erneut auf den Server hochgeladen.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1632"/>
         <source>All files in the local folder &quot;%1&quot; were deleted.
 
 If you restore the files, they will be downloaded again from the server.</source>
-        <translation type="unfinished"/>
+        <translation>Alle Dateien im lokalen Ordner &quot;%1“ wurden gelöscht.
+
+Wenn Sie die Dateien wiederherstellen, werden sie erneut vom Server heruntergeladen.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1633"/>
         <source>Remove all files?</source>
-        <translation type="unfinished"/>
+        <translation>Alle Dateien entfernen?</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1637"/>
         <source>Proceed to remove all files</source>
-        <translation type="unfinished"/>
+        <translation>Mit dem entfernen aller Dateien fortfahren</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1638"/>
         <source>Restore files</source>
-        <translation type="unfinished"/>
+        <translation>Dateien wiederherstellen</translation>
     </message>
 </context>
 <context>

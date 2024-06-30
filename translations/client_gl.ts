@@ -2145,29 +2145,33 @@ Isto significa que o cliente de sincronización podería non enviar os cambios i
         <source>All files in the server folder &quot;%1&quot; were deleted.
 
 If you restore the files, they will be uploaded again to the server.</source>
-        <translation type="unfinished"/>
+        <translation>Elimináronse todos os ficheiros do cartafol do servidor «%1».
+
+Se restaura os ficheiros, enviaranse de novo ao servidor.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1632"/>
         <source>All files in the local folder &quot;%1&quot; were deleted.
 
 If you restore the files, they will be downloaded again from the server.</source>
-        <translation type="unfinished"/>
+        <translation>Elimináronse todos os ficheiros do cartafol local «%1».
+
+Se restaura os ficheiros, descargaranse de novo do servidor.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1633"/>
         <source>Remove all files?</source>
-        <translation type="unfinished"/>
+        <translation>Retirar todos os ficheiros?</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1637"/>
         <source>Proceed to remove all files</source>
-        <translation type="unfinished"/>
+        <translation>Proceder a retirar todos os ficheiros</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1638"/>
         <source>Restore files</source>
-        <translation type="unfinished"/>
+        <translation>Restaurar os ficheiros</translation>
     </message>
 </context>
 <context>

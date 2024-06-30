@@ -2144,29 +2144,33 @@ Dette betyr at synkroniseringsklienten kanskje ikke laster opp lokale endringer 
         <source>All files in the server folder &quot;%1&quot; were deleted.
 
 If you restore the files, they will be uploaded again to the server.</source>
-        <translation type="unfinished"/>
+        <translation>Alle filer i servermappen &quot;%1&quot; ble slettet.
+
+Hvis du gjenoppretter filene, blir de lastet opp igjen til serveren.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1632"/>
         <source>All files in the local folder &quot;%1&quot; were deleted.
 
 If you restore the files, they will be downloaded again from the server.</source>
-        <translation type="unfinished"/>
+        <translation>Alle filer i den lokale mappen &quot;%1&quot; ble slettet.
+
+Hvis du gjenoppretter filene, blir de lastet ned igjen fra serveren.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1633"/>
         <source>Remove all files?</source>
-        <translation type="unfinished"/>
+        <translation>Fjerne alle filer?</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1637"/>
         <source>Proceed to remove all files</source>
-        <translation type="unfinished"/>
+        <translation>Fortsett med å fjerne alle filer</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1638"/>
         <source>Restore files</source>
-        <translation type="unfinished"/>
+        <translation>Gjenopprett filer</translation>
     </message>
 </context>
 <context>
