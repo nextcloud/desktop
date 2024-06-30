@@ -13,6 +13,8 @@
 
 import sys, os
 
+#import sphinx_rtd_theme
+
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
@@ -25,7 +27,7 @@ import sys, os
 
 # Add any Sphinx extension module names here, as strings. They can be extensions
 # coming with Sphinx (named 'sphinx.ext.*') or your custom ones.
-extensions = ['sphinx.ext.todo']
+extensions = ['sphinx_rtd_theme', 'sphinx_rtd_dark_mode', 'sphinx.ext.todo']
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_shared_assets/templates']
@@ -71,7 +73,7 @@ exclude_patterns = ['_build','scripts/*']
 
 # If true, '()' will be appended to :func: etc. cross-reference text.
 #add_function_parentheses = True
-2
+
 # If true, the current module name will be prepended to all description
 # unit titles (such as .. function::).
 #add_module_names = True
@@ -92,15 +94,20 @@ pygments_style = 'sphinx'
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
 # documentation.
-#html_theme_options = {}
+html_theme_options = {
+        'logo_only': True,
+        'style_external_links': True,
+        'display_version': False,
+}
 
 # Add any paths that contain custom themes here, relative to this directory.
-html_theme_path = ['_shared_assets/themes']
+#html_theme_path = ['_shared_assets/themes']
 
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #html_theme = 'bootstrap'
-html_theme = 'default'
+#html_theme = 'default'
+html_theme = 'sphinx-rtd-theme'
 # The name for this set of Sphinx documents.  If None, it defaults to
 # "<project> v<release> documentation".
 #html_title = None
@@ -110,7 +117,7 @@ html_short_title = "Client Manual"
 
 # The name of an image file (relative to this directory) to place at the top
 # of the sidebar.
-#html_logo = None
+html_logo = "_shared_assets/static/logo-white.png"
 
 # The name of an image file (within the static path) to use as favicon of the
 # docs.  This file should be a Windows icon file (.ico) being 16x16 or 32x32
@@ -290,3 +297,11 @@ epub_copyright = u'2013-2018, The Nextcloud developers'
 todo_include_todos = True
 
 rst_epilog =  '.. |version| replace:: %s' % version
+
+html_context = {
+    'current_version': version,
+	'READTHEDOCS': True,
+	'extra_css_files': ['_static/custom.css'],
+}
+
+default_dark_mode = False
