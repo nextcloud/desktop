@@ -1,0 +1,38 @@
+diff --git a/shell_integration/libcloudproviders/CMakeLists.txt b/shell_integration/libcloudproviders/CMakeLists.txt
+index 02035d863..ba2438305 100644
+--- a/shell_integration/libcloudproviders/CMakeLists.txt
++++ b/shell_integration/libcloudproviders/CMakeLists.txt
+@@ -26,6 +26,7 @@ endmacro(libcloudproviders_add_config _sources)
+ 
+ 
+ if (Qt6_FOUND)
++    set(QT_NO_CREATE_VERSIONLESS_TARGETS TRUE)
+     find_package(Qt6 COMPONENTS COMPONENTS DBus)
+ else()
+     set(REQUIRED_QT_VERSION "5.15.0")
+diff --git a/src/CMakeLists.txt b/src/CMakeLists.txt
+index 75c6f4582..d170fbf78 100644
+--- a/src/CMakeLists.txt
++++ b/src/CMakeLists.txt
+@@ -68,7 +68,7 @@ if(Qt${QT_MAJOR_VERSION}WebEngine_FOUND AND Qt${QT_MAJOR_VERSION}WebEngineWidget
+   add_compile_definitions(WITH_WEBENGINE=1)
+ endif()
+ 
+-get_target_property (QT_QMAKE_EXECUTABLE Qt::qmake IMPORTED_LOCATION)
++get_target_property (QT_QMAKE_EXECUTABLE Qt6::qmake IMPORTED_LOCATION)
+ message(STATUS "Using Qt ${Qt${QT_MAJOR_VERSION}Core_VERSION} (${QT_QMAKE_EXECUTABLE})")
+ 
+ if(NOT TOKEN_AUTH_ONLY)
+diff --git a/src/gui/CMakeLists.txt b/src/gui/CMakeLists.txt
+index 290e16e94..3069057a1 100644
+--- a/src/gui/CMakeLists.txt
++++ b/src/gui/CMakeLists.txt
+@@ -3,7 +3,7 @@ find_package(Qt${QT_MAJOR_VERSION} REQUIRED COMPONENTS Widgets Svg Qml Quick Qui
+ find_package(KF6Archive REQUIRED)
+ find_package(KF6GuiAddons)
+ 
+-if (NOT TARGET Qt::GuiPrivate)
++if (NOT TARGET Qt6::GuiPrivate)
+     message(FATAL_ERROR "Could not find GuiPrivate component of Qt. It might be shipped as a separate package, please check that.")
+ endif()
+ 
