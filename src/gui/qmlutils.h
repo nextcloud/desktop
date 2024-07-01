@@ -47,6 +47,8 @@ Q_SIGNALS:
 
 protected:
     void focusInEvent(QFocusEvent *event) override;
+
+    bool event(QEvent *event) override;
 };
 
 void initQuickWidget(OCQuickWidget *widget, const QUrl &src, QObject *ocContext);

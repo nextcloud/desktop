@@ -18,6 +18,7 @@
 
 #include <QMessageBox>
 #include <QQmlContext>
+#include <QQuickItem>
 #include <QQuickWidget>
 
 void OCC::QmlUtils::initQuickWidget(OCQuickWidget *widget, const QUrl &src, QObject *ocContext)
@@ -51,4 +52,12 @@ void OCC::QmlUtils::OCQuickWidget::focusInEvent(QFocusEvent *event)
         break;
     }
     QQuickWidget::focusInEvent(event);
+}
+bool OCC::QmlUtils::OCQuickWidget::event(QEvent *event)
+{
+    if (event->type() == QEvent::EnabledChange) {
+        rootObject()->setEnabled(isEnabled());
+    }
+
+    return QQuickWidget::event(event);
 }
