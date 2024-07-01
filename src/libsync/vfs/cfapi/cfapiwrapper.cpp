@@ -237,25 +237,18 @@ void CALLBACK cfApiFetchDataCallback(const CF_CALLBACK_INFO *callbackInfo, const
 
     const auto alignAndSendData = [&](const QByteArray &receivedData) {
         QByteArray data = protrudingData + receivedData;
-        qCWarning(lcCfApiWrapper) << "protrudingData + receivedData:" << data;
         protrudingData.clear();
         if (data.size() < cfapiBlockSize) {
             protrudingData = data;
-            qCWarning(lcCfApiWrapper) << "protrudingData:" << protrudingData;
             sendTransferInfo(data, dataOffset);
             dataOffset += data.size();
             return;
         }
         const auto protudingSize = data.size() % cfapiBlockSize;
-        qCWarning(lcCfApiWrapper) << "protudingSize:" << protudingSize;
         protrudingData = data.right(protudingSize);
-        qCWarning(lcCfApiWrapper) << "data.right(protudingSize):" << protrudingData;
         data.chop(protudingSize);
-        qCWarning(lcCfApiWrapper) << "data.chop(protudingSize)" << data;
-        qCWarning(lcCfApiWrapper) << "sendTransferInfo(data:" << data << ", dataOffset:" << dataOffset << ")";
         sendTransferInfo(data, dataOffset);
         dataOffset += data.size();
-        qCWarning(lcCfApiWrapper) << "dataOffset:" << dataOffset;
     };
 
     QObject::connect(&socket, &QLocalSocket::readyRead, &loop, [&] {
