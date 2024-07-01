@@ -2145,7 +2145,9 @@ This means that the synchronization client might not upload local changes immedi
         <source>All files in the server folder &quot;%1&quot; were deleted.
 
 If you restore the files, they will be uploaded again to the server.</source>
-        <translation type="unfinished"/>
+        <translation>Обрисани су сви фајлови фолдеру „%1” на серверу.
+
+Ако вратите фајлове, они ће се поново отпремити на сервер.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1632"/>
