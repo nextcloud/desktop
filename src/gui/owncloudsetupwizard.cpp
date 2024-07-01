@@ -362,7 +362,6 @@ void OwncloudSetupWizard::slotConnectToOCUrl(const QString &url)
 void OwncloudSetupWizard::testOwnCloudConnect()
 {
     AccountPtr account = _ocWizard->account();
-
     auto *job = new PropfindJob(account, "/", this);
     job->setIgnoreCredentialFailure(true);
     // There is custom redirect handling in the error handler,
