@@ -62,6 +62,7 @@ static constexpr char promptDeleteC[] = "promptDeleteAllFiles";
 static constexpr char crashReporterC[] = "crashReporter";
 static constexpr char optionalServerNotificationsC[] = "optionalServerNotifications";
 static constexpr char showCallNotificationsC[] = "showCallNotifications";
+static constexpr char showChatNotificationsC[] = "showChatNotifications";
 static constexpr char showInExplorerNavigationPaneC[] = "showInExplorerNavigationPane";
 static constexpr char skipUpdateCheckC[] = "skipUpdateCheck";
 static constexpr char autoUpdateCheckC[] = "autoUpdateCheck";
@@ -199,6 +200,19 @@ bool ConfigFile::optionalServerNotifications() const
 {
     QSettings settings(configFile(), QSettings::IniFormat);
     return settings.value(QLatin1String(optionalServerNotificationsC), true).toBool();
+}
+
+bool ConfigFile::showChatNotifications() const
+{
+    const QSettings settings(configFile(), QSettings::IniFormat);
+    return settings.value(QLatin1String(showChatNotificationsC), true).toBool() && optionalServerNotifications();
+}
+
+void ConfigFile::setShowChatNotifications(const bool show)
+{
+    QSettings settings(configFile(), QSettings::IniFormat);
+    settings.setValue(QLatin1String(showChatNotificationsC), show);
+    settings.sync();
 }
 
 bool ConfigFile::showCallNotifications() const

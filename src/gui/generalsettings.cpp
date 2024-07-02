@@ -155,6 +155,10 @@ GeneralSettings::GeneralSettings(QWidget *parent)
         this, &GeneralSettings::slotToggleOptionalServerNotifications);
     _ui->serverNotificationsCheckBox->setToolTip(tr("Server notifications that require attention."));
 
+    connect(_ui->chatNotificationsCheckBox, &QAbstractButton::toggled,
+            this, &GeneralSettings::slotToggleChatNotifications);
+    _ui->chatNotificationsCheckBox->setToolTip(tr("Show chat notification dialogs."));
+
     connect(_ui->callNotificationsCheckBox, &QAbstractButton::toggled,
         this, &GeneralSettings::slotToggleCallNotifications);
     _ui->callNotificationsCheckBox->setToolTip(tr("Show call notification dialogs."));
@@ -264,7 +268,9 @@ void GeneralSettings::loadMiscSettings()
 
     _ui->monoIconsCheckBox->setChecked(cfgFile.monoIcons());
     _ui->serverNotificationsCheckBox->setChecked(cfgFile.optionalServerNotifications());
-    _ui->callNotificationsCheckBox->setEnabled(_ui->serverNotificationsCheckBox->isEnabled());
+    _ui->chatNotificationsCheckBox->setEnabled(cfgFile.optionalServerNotifications());
+    _ui->chatNotificationsCheckBox->setChecked(cfgFile.showChatNotifications());
+    _ui->callNotificationsCheckBox->setEnabled(cfgFile.optionalServerNotifications());
     _ui->callNotificationsCheckBox->setChecked(cfgFile.showCallNotifications());
     _ui->showInExplorerNavigationPaneCheckBox->setChecked(cfgFile.showInExplorerNavigationPane());
     _ui->crashreporterCheckBox->setChecked(cfgFile.crashReporter());
@@ -480,7 +486,14 @@ void GeneralSettings::slotToggleOptionalServerNotifications(bool enable)
 {
     ConfigFile cfgFile;
     cfgFile.setOptionalServerNotifications(enable);
+    _ui->chatNotificationsCheckBox->setEnabled(enable);
     _ui->callNotificationsCheckBox->setEnabled(enable);
+}
+
+void GeneralSettings::slotToggleChatNotifications(bool enable)
+{
+    ConfigFile cfgFile;
+    cfgFile.setShowChatNotifications(enable);
 }
 
 void GeneralSettings::slotToggleCallNotifications(bool enable)
