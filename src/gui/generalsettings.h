@@ -20,6 +20,8 @@
 #include <QWidget>
 #include <QPointer>
 
+class QButtonGroup;
+
 namespace OCC {
 class IgnoreListEditor;
 class SyncLogDialog;
@@ -56,7 +58,7 @@ private slots:
     void slotShowLegalNotice();
 #if defined(BUILD_UPDATER)
     void slotUpdateInfo();
-    void slotUpdateChannelChanged();
+    void slotUpdateChannelChanged(const int id);
     void slotUpdateCheckNow();
     void slotToggleAutoUpdateCheck();
 #endif
@@ -67,6 +69,7 @@ private:
     Ui::GeneralSettings *_ui;
     QPointer<IgnoreListEditor> _ignoreEditor;
     bool _currentlyLoading = false;
+    QButtonGroup *_updateChannelGroup;
 };
 
 

@@ -75,9 +75,7 @@ QUrl Updater::updateUrl()
 
 QUrlQuery Updater::getQueryParams()
 {
-    QUrlQuery query;
-    Theme *theme = Theme::instance();
-    QString platform = QStringLiteral("stranger");
+    auto platform = QStringLiteral("stranger");
     if (Utility::isLinux()) {
         platform = QStringLiteral("linux");
     } else if (Utility::isBSD()) {
@@ -88,8 +86,8 @@ QUrlQuery Updater::getQueryParams()
         platform = QStringLiteral("macos");
     }
 
-    QString sysInfo = getSystemInfo();
-    if (!sysInfo.isEmpty()) {
+    QUrlQuery query;
+    if (const auto sysInfo = getSystemInfo(); !sysInfo.isEmpty()) {
         query.addQueryItem(QStringLiteral("client"), sysInfo);
     }
     query.addQueryItem(QStringLiteral("version"), clientVersion());
@@ -97,26 +95,17 @@ QUrlQuery Updater::getQueryParams()
     query.addQueryItem(QStringLiteral("osRelease"), QSysInfo::productType());
     query.addQueryItem(QStringLiteral("osVersion"), QSysInfo::productVersion());
     query.addQueryItem(QStringLiteral("kernelVersion"), QSysInfo::kernelVersion());
-    query.addQueryItem(QStringLiteral("oem"), theme->appName());
+    query.addQueryItem(QStringLiteral("oem"), Theme::instance()->appName());
     query.addQueryItem(QStringLiteral("buildArch"), QSysInfo::buildCpuArchitecture());
     query.addQueryItem(QStringLiteral("currentArch"), QSysInfo::currentCpuArchitecture());
+    query.addQueryItem(QStringLiteral("versionsuffix"), Theme::instance()->versionSuffix());
 
-    QString suffix = QStringLiteral(MIRALL_STRINGIFY(MIRALL_VERSION_SUFFIX));
-    query.addQueryItem(QStringLiteral("versionsuffix"), suffix);
-
-    auto channel = ConfigFile().updateChannel();
-    if (channel != QLatin1String("stable")) {
-        query.addQueryItem(QStringLiteral("channel"), channel);
-    }
-
-    // updateSegment (see configfile.h)
-    ConfigFile cfg;
-    auto updateSegment = cfg.updateSegment();
-    query.addQueryItem(QLatin1String("updatesegment"), QString::number(updateSegment));
+    ConfigFile config;
+    query.addQueryItem(QStringLiteral("channel"), config.currentUpdateChannel());
+    query.addQueryItem(QLatin1String("updatesegment"), QString::number(config.updateSegment()));
 
     return query;
 }
-
 
 QString Updater::getSystemInfo()
 {

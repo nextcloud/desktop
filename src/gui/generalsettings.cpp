@@ -43,6 +43,8 @@
 #include <QDir>
 #include <QScopedValueRollback>
 #include <QMessageBox>
+#include <QButtongroup>
+#include <QRadioButton>
 
 #include <KZip>
 
@@ -190,8 +192,6 @@ GeneralSettings::GeneralSettings(QWidget *parent)
     });
 
     loadMiscSettings();
-    // updater info now set in: customizeStyle
-    //slotUpdateInfo();
 
     // misc
     connect(_ui->monoIconsCheckBox, &QAbstractButton::toggled, this, &GeneralSettings::saveMiscSettings);
@@ -281,13 +281,44 @@ void GeneralSettings::loadMiscSettings()
     _ui->stopExistingFolderNowBigSyncCheckBox->setChecked(_ui->existingFolderLimitCheckBox->isChecked() && cfgFile.stopSyncingExistingFoldersOverLimit());
     _ui->newExternalStorage->setChecked(cfgFile.confirmExternalStorage());
     _ui->monoIconsCheckBox->setChecked(cfgFile.monoIcons());
+
+#if defined(BUILD_UPDATER)
+    const auto updateChannelToLocalized = [](const QString &channel) {
+        if (channel == QStringLiteral("stable")) {
+            return tr("stable");
+        }
+
+        if (channel == QStringLiteral("beta")) {
+            return tr("beta");
+        }
+
+        if (channel == QStringLiteral("daily")) {
+            return tr("daily");
+        }
+
+        return QString{};
+    };
+
+    _updateChannelGroup = new QButtonGroup(this);
+    auto position = _ui->updateChannelLayout->indexOf(_ui->updateChannelLabel);
+    for (const auto &channel : cfgFile.validUpdateChannels()) {
+        auto channelRadioButton = new QRadioButton(updateChannelToLocalized(channel), this);
+        _updateChannelGroup->addButton(channelRadioButton, cfgFile.validUpdateChannels().indexOf(channel));
+        position++;
+        _ui->updateChannelLayout->insertWidget(position, channelRadioButton);
+        channelRadioButton->setChecked(cfgFile.currentUpdateChannel() == channel);
+    }
+    connect(_updateChannelGroup, &QButtonGroup::idClicked, this, &GeneralSettings::slotUpdateChannelChanged);
+
+#endif
 }
 
 #if defined(BUILD_UPDATER)
 void GeneralSettings::slotUpdateInfo()
 {
+    ConfigFile config;
     const auto updater = Updater::instance();
-    if (ConfigFile().skipUpdateCheck() || !updater) {
+    if (config.skipUpdateCheck() || !updater) {
         // updater disabled on compile
         _ui->updatesContainer->setVisible(false);
         return;
@@ -297,22 +328,20 @@ void GeneralSettings::slotUpdateInfo()
         connect(_ui->updateButton,
                 &QAbstractButton::clicked,
                 this,
-
                 &GeneralSettings::slotUpdateCheckNow,
                 Qt::UniqueConnection);
         connect(_ui->autoCheckForUpdatesCheckBox, &QAbstractButton::toggled, this,
                 &GeneralSettings::slotToggleAutoUpdateCheck, Qt::UniqueConnection);
-        _ui->autoCheckForUpdatesCheckBox->setChecked(ConfigFile().autoUpdateCheck());
+        _ui->autoCheckForUpdatesCheckBox->setChecked(config.autoUpdateCheck());
     }
 
     // Note: the sparkle-updater is not an OCUpdater
-    auto *ocupdater = qobject_cast<OCUpdater *>(updater);
+    const auto *ocupdater = qobject_cast<OCUpdater *>(updater);
     if (ocupdater) {
         connect(ocupdater, &OCUpdater::downloadStateChanged, this, &GeneralSettings::slotUpdateInfo, Qt::UniqueConnection);
         connect(_ui->restartButton, &QAbstractButton::clicked, ocupdater, &OCUpdater::slotStartInstaller, Qt::UniqueConnection);
-        //connect(_ui->restartButton, &QAbstractButton::clicked, qApp, &QApplication::quit, Qt::UniqueConnection);
 
-        QString status = ocupdater->statusString(OCUpdater::UpdateStatusStringFormat::Html);
+        auto status = ocupdater->statusString(OCUpdater::UpdateStatusStringFormat::Html);
         Theme::replaceLinkColorStringBackgroundAware(status);
 
         _ui->updateStateLabel->setOpenExternalLinks(false);
@@ -320,9 +349,7 @@ void GeneralSettings::slotUpdateInfo()
             Utility::openBrowser(QUrl(link));
         });
         _ui->updateStateLabel->setText(status);
-
         _ui->restartButton->setVisible(ocupdater->downloadState() == OCUpdater::DownloadComplete);
-
         _ui->updateButton->setEnabled(ocupdater->downloadState() != OCUpdater::CheckingServer &&
                                       ocupdater->downloadState() != OCUpdater::Downloading &&
                                       ocupdater->downloadState() != OCUpdater::DownloadComplete);
@@ -339,59 +366,42 @@ void GeneralSettings::slotUpdateInfo()
         _ui->updateButton->setEnabled(enableUpdateButton);
     }
 #endif
-
-    // Channel selection
-    _ui->updateChannel->setCurrentIndex(ConfigFile().updateChannel() == "beta" ? 1 : 0);
-    connect(_ui->updateChannel, &QComboBox::currentTextChanged,
-        this, &GeneralSettings::slotUpdateChannelChanged, Qt::UniqueConnection);
 }
 
-void GeneralSettings::slotUpdateChannelChanged()
+void GeneralSettings::slotUpdateChannelChanged(const int id)
 {
-    const auto updateChannelToLocalized = [](const QString &channel) {
-        auto decodedTranslatedChannel = QString{};
+    auto updateChannelselected = _updateChannelGroup->button(id);
+    const auto updateChannelFromLocalized = [](const QString &channel) {
 
-        if (channel == QStringLiteral("stable")) {
-            decodedTranslatedChannel = tr("stable");
-        } else if (channel == QStringLiteral("beta")) {
-            decodedTranslatedChannel = tr("beta");
+        if (channel == tr("daily")) {
+            return QStringLiteral("daily");
         }
 
-        return decodedTranslatedChannel;
-    };
-
-    const auto updateChannelFromLocalized = [](const int index) {
-        if (index == 1) {
+        if (channel == tr("beta")) {
             return QStringLiteral("beta");
         }
 
         return QStringLiteral("stable");
     };
 
-    const auto channel = updateChannelFromLocalized(_ui->updateChannel->currentIndex());
-    if (channel == ConfigFile().updateChannel()) {
+    const auto channel = updateChannelFromLocalized(updateChannelselected->text());
+    if (channel == ConfigFile().currentUpdateChannel()) {
         return;
     }
 
     auto msgBox = new QMessageBox(
         QMessageBox::Warning,
-        tr("Change update channel?"),
-        tr("The update channel determines which client updates will be offered "
-           "for installation. The \"stable\" channel contains only upgrades that "
-           "are considered reliable, while the versions in the \"beta\" channel "
-           "may contain newer features and bugfixes, but have not yet been tested "
-           "thoroughly."
-           "\n\n"
-           "Note that this selects only what pool upgrades are taken from, and that "
-           "there are no downgrades: So going back from the beta channel to "
-           "the stable channel usually cannot be done immediately and means waiting "
-           "for a stable version that is newer than the currently installed beta "
-           "version."),
+        tr("Changing update channel?"),
+        tr("The channel determines which upgrades will be offered to install:\n"
+           "- stable: contains tested versions considered reliable\n"
+           "- beta: contains versions with new features that may not be tested thoroughly\n"
+           "- daily: contains versions created daily only for testing and development\n\n"
+           "Downgrading versions is not possible immediately: changing from beta to stable means waiting for the new stable version."),
         QMessageBox::NoButton,
         this);
-    auto acceptButton = msgBox->addButton(tr("Change update channel"), QMessageBox::AcceptRole);
+    const auto acceptButton = msgBox->addButton(tr("Change update channel"), QMessageBox::AcceptRole);
     msgBox->addButton(tr("Cancel"), QMessageBox::RejectRole);
-    connect(msgBox, &QMessageBox::finished, msgBox, [this, channel, msgBox, acceptButton, updateChannelToLocalized] {
+    connect(msgBox, &QMessageBox::finished, msgBox, [this, channel, msgBox, acceptButton] {
         msgBox->deleteLater();
         if (msgBox->clickedButton() == acceptButton) {
             ConfigFile().setUpdateChannel(channel);
@@ -406,7 +416,8 @@ void GeneralSettings::slotUpdateChannelChanged()
             }
 #endif
         } else {
-            _ui->updateChannel->setCurrentText(updateChannelToLocalized(ConfigFile().updateChannel()));
+            auto currentUpdateChannel = _updateChannelGroup->button(ConfigFile().validUpdateChannels().indexOf(ConfigFile().currentUpdateChannel()));
+            currentUpdateChannel->setChecked(true);
         }
     });
     msgBox->open();
