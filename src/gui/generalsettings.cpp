@@ -190,8 +190,6 @@ GeneralSettings::GeneralSettings(QWidget *parent)
     });
 
     loadMiscSettings();
-    // updater info now set in: customizeStyle
-    //slotUpdateInfo();
 
     // misc
     connect(_ui->monoIconsCheckBox, &QAbstractButton::toggled, this, &GeneralSettings::saveMiscSettings);
@@ -281,13 +279,26 @@ void GeneralSettings::loadMiscSettings()
     _ui->stopExistingFolderNowBigSyncCheckBox->setChecked(_ui->existingFolderLimitCheckBox->isChecked() && cfgFile.stopSyncingExistingFoldersOverLimit());
     _ui->newExternalStorage->setChecked(cfgFile.confirmExternalStorage());
     _ui->monoIconsCheckBox->setChecked(cfgFile.monoIcons());
+
+#if defined(BUILD_UPDATER)
+    auto validUpdateChannels = cfgFile.validUpdateChannels();
+    if (const auto serverHasValidSubscription = cfgFile.serverHasValidSubscription();
+        serverHasValidSubscription && !Theme::instance()->isBranded()) {
+        validUpdateChannels << QStringLiteral("enterprise");
+    }
+    _ui->updateChannel->addItems(validUpdateChannels);
+    const auto currentUpdateChannelIndex = validUpdateChannels.indexOf(cfgFile.updateChannel());
+    _ui->updateChannel->setCurrentIndex(currentUpdateChannelIndex != -1? currentUpdateChannelIndex : 0);
+    connect(_ui->updateChannel, &QComboBox::currentTextChanged, this, &GeneralSettings::slotUpdateChannelChanged);
+#endif
 }
 
 #if defined(BUILD_UPDATER)
 void GeneralSettings::slotUpdateInfo()
 {
+    ConfigFile config;
     const auto updater = Updater::instance();
-    if (ConfigFile().skipUpdateCheck() || !updater) {
+    if (config.skipUpdateCheck() || !updater) {
         // updater disabled on compile
         _ui->updatesContainer->setVisible(false);
         return;
@@ -297,22 +308,21 @@ void GeneralSettings::slotUpdateInfo()
         connect(_ui->updateButton,
                 &QAbstractButton::clicked,
                 this,
-
                 &GeneralSettings::slotUpdateCheckNow,
                 Qt::UniqueConnection);
         connect(_ui->autoCheckForUpdatesCheckBox, &QAbstractButton::toggled, this,
                 &GeneralSettings::slotToggleAutoUpdateCheck, Qt::UniqueConnection);
-        _ui->autoCheckForUpdatesCheckBox->setChecked(ConfigFile().autoUpdateCheck());
+        _ui->autoCheckForUpdatesCheckBox->setChecked(config.autoUpdateCheck());
     }
 
     // Note: the sparkle-updater is not an OCUpdater
-    auto *ocupdater = qobject_cast<OCUpdater *>(updater);
+    const auto *ocupdater = qobject_cast<OCUpdater *>(updater);
     if (ocupdater) {
         connect(ocupdater, &OCUpdater::downloadStateChanged, this, &GeneralSettings::slotUpdateInfo, Qt::UniqueConnection);
         connect(_ui->restartButton, &QAbstractButton::clicked, ocupdater, &OCUpdater::slotStartInstaller, Qt::UniqueConnection);
         //connect(_ui->restartButton, &QAbstractButton::clicked, qApp, &QApplication::quit, Qt::UniqueConnection);
 
-        QString status = ocupdater->statusString(OCUpdater::UpdateStatusStringFormat::Html);
+        auto status = ocupdater->statusString(OCUpdater::UpdateStatusStringFormat::Html);
         Theme::replaceLinkColorStringBackgroundAware(status);
 
         _ui->updateStateLabel->setOpenExternalLinks(false);
@@ -320,9 +330,7 @@ void GeneralSettings::slotUpdateInfo()
             Utility::openBrowser(QUrl(link));
         });
         _ui->updateStateLabel->setText(status);
-
         _ui->restartButton->setVisible(ocupdater->downloadState() == OCUpdater::DownloadComplete);
-
         _ui->updateButton->setEnabled(ocupdater->downloadState() != OCUpdater::CheckingServer &&
                                       ocupdater->downloadState() != OCUpdater::Downloading &&
                                       ocupdater->downloadState() != OCUpdater::DownloadComplete);
@@ -339,30 +347,41 @@ void GeneralSettings::slotUpdateInfo()
         _ui->updateButton->setEnabled(enableUpdateButton);
     }
 #endif
-
-    // Channel selection
-    _ui->updateChannel->setCurrentIndex(ConfigFile().updateChannel() == "beta" ? 1 : 0);
-    connect(_ui->updateChannel, &QComboBox::currentTextChanged,
-        this, &GeneralSettings::slotUpdateChannelChanged, Qt::UniqueConnection);
 }
 
 void GeneralSettings::slotUpdateChannelChanged()
 {
     const auto updateChannelToLocalized = [](const QString &channel) {
-        auto decodedTranslatedChannel = QString{};
-
         if (channel == QStringLiteral("stable")) {
-            decodedTranslatedChannel = tr("stable");
-        } else if (channel == QStringLiteral("beta")) {
-            decodedTranslatedChannel = tr("beta");
+            return tr("stable");
         }
 
-        return decodedTranslatedChannel;
+        if (channel == QStringLiteral("beta")) {
+            return tr("beta");
+        }
+
+        if (channel == QStringLiteral("daily")) {
+            return tr("daily");
+        }
+
+        if (channel == QStringLiteral("enterprise")) {
+            return tr("enterprise");
+        }
+
+        return QString{};
     };
 
     const auto updateChannelFromLocalized = [](const int index) {
-        if (index == 1) {
+        switch(index) {
+        case 1:
             return QStringLiteral("beta");
+            break;
+        case 2:
+            return QStringLiteral("daily");
+            break;
+        case 3:
+            return QStringLiteral("enterprise");
+            break;
         }
 
         return QStringLiteral("stable");
@@ -373,23 +392,20 @@ void GeneralSettings::slotUpdateChannelChanged()
         return;
     }
 
+    const auto enterprise = _ui->updateChannel->count() > 3 ? "- enterprise: contains stable versions for customers.\n" : "";
     auto msgBox = new QMessageBox(
         QMessageBox::Warning,
-        tr("Change update channel?"),
-        tr("The update channel determines which client updates will be offered "
-           "for installation. The \"stable\" channel contains only upgrades that "
-           "are considered reliable, while the versions in the \"beta\" channel "
-           "may contain newer features and bugfixes, but have not yet been tested "
-           "thoroughly."
-           "\n\n"
-           "Note that this selects only what pool upgrades are taken from, and that "
-           "there are no downgrades: So going back from the beta channel to "
-           "the stable channel usually cannot be done immediately and means waiting "
-           "for a stable version that is newer than the currently installed beta "
-           "version."),
+        tr("Changing update channel?"),
+        tr("The channel determines which upgrades will be offered to install:\n"
+           "- stable: contains versions considered reliable.\n"
+           "- beta: contains versions with new features in test.\n"
+           "- daily: contains versions created daily only for testing.\n"
+           "%1\n"
+           "Downgrading is not possible: changing from beta to stable means waiting for a newer "
+           "version than the one installed.").arg(enterprise),
         QMessageBox::NoButton,
         this);
-    auto acceptButton = msgBox->addButton(tr("Change update channel"), QMessageBox::AcceptRole);
+    const auto acceptButton = msgBox->addButton(tr("Change update channel"), QMessageBox::AcceptRole);
     msgBox->addButton(tr("Cancel"), QMessageBox::RejectRole);
     connect(msgBox, &QMessageBox::finished, msgBox, [this, channel, msgBox, acceptButton, updateChannelToLocalized] {
         msgBox->deleteLater();

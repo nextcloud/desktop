@@ -110,7 +110,7 @@ static constexpr char forceLoginV2C[] = "forceLoginV2";
 static constexpr char certPath[] = "http_certificatePath";
 static constexpr char certPasswd[] = "http_certificatePasswd";
 
-static const QSet validUpdateChannels { QStringLiteral("stable"), QStringLiteral("beta") };
+static constexpr char serverHasValidSubscriptionC[] = "serverHasValidSubscription";
 }
 
 namespace OCC {
@@ -688,9 +688,9 @@ int ConfigFile::updateSegment() const
 
 QString ConfigFile::updateChannel() const
 {
-    QString defaultUpdateChannel = QStringLiteral("stable");
-    QString suffix = QString::fromLatin1(MIRALL_STRINGIFY(MIRALL_VERSION_SUFFIX));
-    if (suffix.startsWith("daily")
+    auto defaultUpdateChannel = QStringLiteral("stable");
+    if (const auto suffix = QString::fromLatin1(MIRALL_STRINGIFY(MIRALL_VERSION_SUFFIX));
+        suffix.startsWith("daily")
         || suffix.startsWith("nightly")
         || suffix.startsWith("alpha")
         || suffix.startsWith("rc")
@@ -700,8 +700,8 @@ QString ConfigFile::updateChannel() const
 
     QSettings settings(configFile(), QSettings::IniFormat);
     const auto channel = settings.value(QLatin1String(updateChannelC), defaultUpdateChannel).toString();
-    if (!validUpdateChannels.contains(channel)) {
-        qCWarning(lcConfigFile()) << "Received invalid update channel from confog:"
+    if (!validUpdateChannels().contains(channel)) {
+        qCWarning(lcConfigFile()) << "Received invalid update channel from config:"
                                   << channel
                                   << "defaulting to:"
                                   << defaultUpdateChannel;
@@ -711,12 +711,17 @@ QString ConfigFile::updateChannel() const
     return channel;
 }
 
+QStringList ConfigFile::validUpdateChannels() const
+{
+    return { QStringLiteral("stable"), QStringLiteral("beta"), QStringLiteral("daily") };
+}
+
 void ConfigFile::setUpdateChannel(const QString &channel)
 {
-    if (!validUpdateChannels.contains(channel)) {
+    if (!validUpdateChannels().contains(channel)) {
         qCWarning(lcConfigFile()) << "Received invalid update channel:"
                                   << channel
-                                  << "can only accept 'stable' or 'beta'. Ignoring.";
+                                  << "can only accept 'stable', 'beta' or 'daily'. Ignoring.";
         return;
     }
 
@@ -1169,6 +1174,18 @@ void ConfigFile::setLaunchOnSystemStartup(const bool autostart)
 {
     QSettings settings(configFile(), QSettings::IniFormat);
     settings.setValue(QLatin1String(launchOnSystemStartupC), autostart);
+}
+
+bool ConfigFile::serverHasValidSubscription()
+{
+    QSettings settings(configFile(), QSettings::IniFormat);
+    return settings.value(QLatin1String(serverHasValidSubscriptionC), false).toBool();
+}
+
+void ConfigFile::setServerHasValidSubscription(const bool valid)
+{
+    QSettings settings(configFile(), QSettings::IniFormat);
+    settings.setValue(QLatin1String(serverHasValidSubscriptionC), valid);
 }
 
 Q_GLOBAL_STATIC(QString, g_configFileName)

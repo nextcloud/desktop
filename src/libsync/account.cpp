@@ -689,6 +689,7 @@ void Account::setCapabilities(const QVariantMap &caps)
     _capabilities = Capabilities(caps);
 
     updateServerColors();
+    updateServerSubcription();
 
     emit capabilitiesChanged();
 
@@ -1067,5 +1068,15 @@ void Account::setAskUserForMnemonic(const bool ask)
     _e2eAskUserForMnemonic = ask;
     emit askUserForMnemonicChanged();
 }
+
+void Account::updateServerSubcription()
+{
+    ConfigFile currentConfig;
+    if (const auto serverHasValidSubscription = _capabilities.serverHasValidSubscription();
+        serverHasValidSubscription != currentConfig.serverHasValidSubscription()) {
+        currentConfig.setServerHasValidSubscription(serverHasValidSubscription);
+    }
+}
+
 
 } // namespace OCC
