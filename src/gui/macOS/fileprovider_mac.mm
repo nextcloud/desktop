@@ -102,5 +102,10 @@ FileProviderXPC *FileProvider::xpc() const
     return _xpc.get();
 }
 
+FileProviderDomainManager *FileProvider::domainManager() const
+{
+    return _domainManager.get();
+}
+
 } // namespace Mac
 } // namespace OCC

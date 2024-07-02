@@ -154,6 +154,22 @@ public:
         }
     }
 
+    NSFileProviderDomain *domainForAccount(const AccountState * const accountState)
+    {
+        if (@available(macOS 11.0, *)) {
+            Q_ASSERT(accountState);
+            const auto account = accountState->account();
+            Q_ASSERT(account);
+
+            const auto domainId = domainIdentifierForAccount(account);
+            if (_registeredDomains.contains(domainId)) {
+                return _registeredDomains[domainId];
+            }
+        }
+
+        return nil;
+    }
+
     void addFileProviderDomain(const AccountState * const accountState)
     {
         if (@available(macOS 11.0, *)) {
@@ -598,6 +614,11 @@ AccountStatePtr FileProviderDomainManager::accountStateFromFileProviderDomainIde
 QString FileProviderDomainManager::fileProviderDomainIdentifierFromAccountState(const AccountStatePtr &accountState)
 {
     return domainIdentifierForAccount(accountState->account());
+}
+
+void* FileProviderDomainManager::domainForAccount(const AccountState * const accountState)
+{
+    return d->domainForAccount(accountState);
 }
 
 } // namespace Mac
