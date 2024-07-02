@@ -2145,7 +2145,7 @@ This means that the synchronization client might not upload local changes immedi
         <source>All files in the server folder &quot;%1&quot; were deleted.
 
 If you restore the files, they will be uploaded again to the server.</source>
-        <translation>Обрисани су сви фајлови фолдеру „%1” на серверу.
+        <translation>Обрисани су сви фајлови у фолдеру „%1” на серверу.
 
 Ако вратите фајлове, они ће се поново отпремити на сервер.</translation>
     </message>
@@ -2154,22 +2154,24 @@ If you restore the files, they will be uploaded again to the server.</source>
         <source>All files in the local folder &quot;%1&quot; were deleted.
 
 If you restore the files, they will be downloaded again from the server.</source>
-        <translation type="unfinished"/>
+        <translation>Обрисани су сви фајлови у локалном фолдеру „%1”.
+
+Ако вратите фајлове, они ће се поново преузети са сервера.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1633"/>
         <source>Remove all files?</source>
-        <translation type="unfinished"/>
+        <translation>Желите ли да уклоните све фајлове?</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1637"/>
         <source>Proceed to remove all files</source>
-        <translation type="unfinished"/>
+        <translation>Настави са уклањањем свих фајлова</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1638"/>
         <source>Restore files</source>
-        <translation type="unfinished"/>
+        <translation>Врати фајлове</translation>
     </message>
 </context>
 <context>
@@ -5327,12 +5329,12 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1052"/>
         <source>Open Nextcloud Assistant in browser</source>
-        <translation type="unfinished"/>
+        <translation>Отвори Nextcloud Асистент у прегледачу</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1052"/>
         <source>Open Nextcloud Talk in browser</source>
-        <translation type="unfinished"/>
+        <translation>Отвори Nextcloud Talk у прегледачу</translation>
     </message>
 </context>
 <context>

@@ -2145,29 +2145,33 @@ Det betyder att synkroniseringsklienten inte kan ladda upp lokala ändringar ome
         <source>All files in the server folder &quot;%1&quot; were deleted.
 
 If you restore the files, they will be uploaded again to the server.</source>
-        <translation type="unfinished"/>
+        <translation>Alla filer i servermappen &quot;%1&quot; raderades.
+
+Om du återställer filerna kommer de att laddas upp till servern igen.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1632"/>
         <source>All files in the local folder &quot;%1&quot; were deleted.
 
 If you restore the files, they will be downloaded again from the server.</source>
-        <translation type="unfinished"/>
+        <translation>Alla filer i den lokala mappen &quot;%1&quot; raderades.
+
+Om du återställer filerna kommer de att laddas ner från servern igen.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1633"/>
         <source>Remove all files?</source>
-        <translation type="unfinished"/>
+        <translation>Ta bort alla filer?</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1637"/>
         <source>Proceed to remove all files</source>
-        <translation type="unfinished"/>
+        <translation>Fortsätt för att ta bort alla filer</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1638"/>
         <source>Restore files</source>
-        <translation type="unfinished"/>
+        <translation>Återställ filer</translation>
     </message>
 </context>
 <context>
@@ -5325,12 +5329,12 @@ Servern svarade med fel: %2</translation>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1052"/>
         <source>Open Nextcloud Assistant in browser</source>
-        <translation type="unfinished"/>
+        <translation>Öppna Nextcloud Assistant i webbläsaren</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1052"/>
         <source>Open Nextcloud Talk in browser</source>
-        <translation type="unfinished"/>
+        <translation>Öppna Nextcloud Talk i webbläsaren</translation>
     </message>
 </context>
 <context>

@@ -5330,7 +5330,7 @@ Zerbitzariak errorearekin erantzun du: %2</translation>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1052"/>
         <source>Open Nextcloud Talk in browser</source>
-        <translation type="unfinished"/>
+        <translation>Ireki Nextcloud Talk nabigatzailean</translation>
     </message>
 </context>
 <context>
