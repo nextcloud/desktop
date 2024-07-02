@@ -70,10 +70,13 @@ public:
     [[nodiscard]] bool getFilesBelowPath(const QByteArray &path, const std::function<void(const SyncJournalFileRecord&)> &rowCallback);
     [[nodiscard]] bool listFilesInPath(const QByteArray &path, const std::function<void(const SyncJournalFileRecord&)> &rowCallback);
     [[nodiscard]] Result<void, QString> setFileRecord(const SyncJournalFileRecord &record);
+
     [[nodiscard]] bool getRootE2eFolderRecord(const QString &remoteFolderPath, SyncJournalFileRecord *rec);
     [[nodiscard]] bool listAllE2eeFoldersWithEncryptionStatusLessThan(const int status, const std::function<void(const SyncJournalFileRecord &)> &rowCallback);
     [[nodiscard]] bool findEncryptedAncestorForRecord(const QString &filename, SyncJournalFileRecord *rec);
-
+    // use this after moving a folder and all its contents under new parent (e.g. "folderA" move to "parentFolder", such that "folderA" -> "parentFolder/folderA"
+    // all nested items will have their paths updated accordingly wiht a single UPDATE query
+    [[nodiscard]] bool relocateFolderToNewPathRecursively(const QByteArray &oldParentPath, const QByteArray &newParentPath); 
     void keyValueStoreSet(const QString &key, QVariant value);
     [[nodiscard]] qint64 keyValueStoreGetInt(const QString &key, qint64 defaultValue);
     void keyValueStoreDelete(const QString &key);
