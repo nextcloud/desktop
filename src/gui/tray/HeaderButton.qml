@@ -18,7 +18,6 @@ import QtQuick 2.15
 import QtQuick.Window 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.15
-import QtGraphicalEffects 1.15
 
 // Custom qml modules are in /theme (and included by resources.qrc)
 import Style 1.0
@@ -33,7 +32,6 @@ Button {
 
     icon.width: Style.headerButtonIconSize
     icon.height: Style.headerButtonIconSize
-    icon.color: palette.brightText
 
     Layout.alignment: Qt.AlignRight
     Layout.preferredWidth:  Style.trayWindowHeaderHeight
@@ -42,5 +40,21 @@ Button {
     background: Rectangle {
         color: root.hovered || root.visualFocus ? Style.currentUserHeaderTextColor : "transparent"
         opacity: 0.2
+    }
+
+    contentItem: Item {
+        anchors.fill: parent
+        
+        Image {
+            id: internalImage
+            anchors.centerIn: parent
+            width: root.icon.width
+            height: root.icon.height
+            source: root.icon.source
+            sourceSize {
+                width: root.icon.width
+                height: root.icon.height
+            }
+        }
     }
 }
