@@ -433,7 +433,7 @@ if ((APPLICATION_ICON_SET MATCHES "PNG")
 endif()
 
 if(APPLE)
-  set(MACOS_SIDEBAR_ICON_SVG "${theme_dir}/colored/${APPLICATION_ICON_NAME}-sidebar.svg")
+  set(MACOS_SIDEBAR_ICON_SVG "${theme_dir}/colored/${APPLICATION_ICON_NAME}-sidebar-macos-finder.svg")
   generate_sized_png_from_svg(${MACOS_SIDEBAR_ICON_SVG} 16)
   generate_sized_png_from_svg(${MACOS_SIDEBAR_ICON_SVG} 32)
   generate_sized_png_from_svg(${MACOS_SIDEBAR_ICON_SVG} 64)
