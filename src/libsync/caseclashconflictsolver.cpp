@@ -47,7 +47,7 @@ CaseClashConflictSolver::CaseClashConflictSolver(const QString &targetFilePath,
 #if !defined(QT_NO_DEBUG)
     QFileInfo targetFileInfo(_targetFilePath);
     Q_ASSERT(targetFileInfo.isAbsolute());
-    Q_ASSERT(QFileInfo::exists(_conflictFilePath));
+    Q_ASSERT(FileSystem::fileExists(_conflictFilePath));
 #endif
 }
 

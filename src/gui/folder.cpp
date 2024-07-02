@@ -175,17 +175,17 @@ void Folder::checkLocalPath()
 
     _canonicalLocalPath = Utility::trailingSlashPath(_canonicalLocalPath);
 
-    if (fi.isDir() && fi.isReadable()) {
+    if (FileSystem::isDir(_definition.localPath) && FileSystem::isReadable(_definition.localPath)) {
         qCDebug(lcFolder) << "Checked local path ok";
     } else {
         // Check directory again
         if (!FileSystem::fileExists(_definition.localPath, fi)) {
             _syncResult.appendErrorString(tr("Local folder %1 does not exist.").arg(_definition.localPath));
             _syncResult.setStatus(SyncResult::SetupError);
-        } else if (!fi.isDir()) {
+        } else if (!FileSystem::isDir(_definition.localPath)) {
             _syncResult.appendErrorString(tr("%1 should be a folder but is not.").arg(_definition.localPath));
             _syncResult.setStatus(SyncResult::SetupError);
-        } else if (!fi.isReadable()) {
+        } else if (!FileSystem::isReadable(_definition.localPath)) {
             _syncResult.appendErrorString(tr("%1 is not readable.").arg(_definition.localPath));
             _syncResult.setStatus(SyncResult::SetupError);
         }
@@ -1471,8 +1471,9 @@ void Folder::warnOnNewExcludedItem(const SyncJournalFileRecord &record, const QS
     // Note: This assumes we're getting file watcher notifications
     // for folders only on creation and deletion - if we got a notification
     // on content change that would create spurious warnings.
-    QFileInfo fi(_canonicalLocalPath + path);
-    if (!fi.exists())
+    const auto fullPath = _canonicalLocalPath + path;
+    QFileInfo fi(fullPath);
+    if (!FileSystem::fileExists(fullPath))
         return;
 
     bool ok = false;
@@ -1482,7 +1483,7 @@ void Folder::warnOnNewExcludedItem(const SyncJournalFileRecord &record, const QS
     if (!blacklist.contains(path + "/"))
         return;
 
-    const auto message = fi.isDir()
+    const auto message = FileSystem::isDir(fullPath)
         ? tr("The folder %1 was created but was excluded from synchronization previously. "
              "Data inside it will not be synchronized.")
               .arg(fi.filePath())

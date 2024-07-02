@@ -1070,6 +1070,7 @@ Result<Vfs::ConvertToPlaceholderResult, QString> OwncloudPropagator::staticUpdat
     if (!dBresult) {
         return dBresult.error();
     }
+
     const auto result = vfs->convertToPlaceholder(fsPath, item, {}, updateType);
     if (!result) {
         return result.error();
@@ -1460,13 +1461,13 @@ void PropagateDirectory::slotSubJobsFinished(SyncFileItem::Status status)
                 !_item->_remotePerm.hasPermission(RemotePermissions::CanMove) &&
                 !_item->_remotePerm.hasPermission(RemotePermissions::CanAddSubDirectories)) {
                 try {
-                    if (QFileInfo::exists(propagator()->fullLocalPath(_item->_file))) {
+                    if (FileSystem::fileExists(propagator()->fullLocalPath(_item->_file))) {
                         FileSystem::setFolderPermissions(propagator()->fullLocalPath(_item->_file), FileSystem::FolderPermissions::ReadOnly);
                         qCDebug(lcDirectory) << "old permissions" << static_cast<int>(std::filesystem::status(propagator()->fullLocalPath(_item->_file).toStdWString()).permissions());
                         std::filesystem::permissions(propagator()->fullLocalPath(_item->_file).toStdWString(), std::filesystem::perms::owner_write | std::filesystem::perms::group_write | std::filesystem::perms::others_write, std::filesystem::perm_options::remove);
                         qCDebug(lcDirectory) << "new permissions" << static_cast<int>(std::filesystem::status(propagator()->fullLocalPath(_item->_file).toStdWString()).permissions());
                     }
-                    if (!_item->_renameTarget.isEmpty() && QFileInfo::exists(propagator()->fullLocalPath(_item->_renameTarget))) {
+                    if (!_item->_renameTarget.isEmpty() && FileSystem::fileExists(propagator()->fullLocalPath(_item->_renameTarget))) {
                         FileSystem::setFolderPermissions(propagator()->fullLocalPath(_item->_renameTarget), FileSystem::FolderPermissions::ReadOnly);
                         qCDebug(lcDirectory) << "old permissions" << static_cast<int>(std::filesystem::status(propagator()->fullLocalPath(_item->_renameTarget).toStdWString()).permissions());
                         std::filesystem::permissions(propagator()->fullLocalPath(_item->_renameTarget).toStdWString(), std::filesystem::perms::owner_write | std::filesystem::perms::group_write | std::filesystem::perms::others_write, std::filesystem::perm_options::remove);
@@ -1485,13 +1486,13 @@ void PropagateDirectory::slotSubJobsFinished(SyncFileItem::Status status)
                         !_item->_remotePerm.hasPermission(RemotePermissions::CanMove) ||
                         !_item->_remotePerm.hasPermission(RemotePermissions::CanAddSubDirectories))) {
                 try {
-                    if (QFileInfo::exists(propagator()->fullLocalPath(_item->_file))) {
+                    if (FileSystem::fileExists(propagator()->fullLocalPath(_item->_file))) {
                         FileSystem::setFolderPermissions(propagator()->fullLocalPath(_item->_file), FileSystem::FolderPermissions::ReadWrite);
                         qCDebug(lcDirectory) << "old permissions" << static_cast<int>(std::filesystem::status(propagator()->fullLocalPath(_item->_file).toStdWString()).permissions());
                         std::filesystem::permissions(propagator()->fullLocalPath(_item->_file).toStdWString(), std::filesystem::perms::owner_write, std::filesystem::perm_options::add);
                         qCDebug(lcDirectory) << "new permissions" << static_cast<int>(std::filesystem::status(propagator()->fullLocalPath(_item->_file).toStdWString()).permissions());
                     }
-                    if (!_item->_renameTarget.isEmpty() && QFileInfo::exists(propagator()->fullLocalPath(_item->_renameTarget))) {
+                    if (!_item->_renameTarget.isEmpty() && FileSystem::fileExists(propagator()->fullLocalPath(_item->_renameTarget))) {
                         FileSystem::setFolderPermissions(propagator()->fullLocalPath(_item->_renameTarget), FileSystem::FolderPermissions::ReadWrite);
                         qCDebug(lcDirectory) << "old permissions" << static_cast<int>(std::filesystem::status(propagator()->fullLocalPath(_item->_renameTarget).toStdWString()).permissions());
                         std::filesystem::permissions(propagator()->fullLocalPath(_item->_renameTarget).toStdWString(), std::filesystem::perms::owner_write, std::filesystem::perm_options::add);

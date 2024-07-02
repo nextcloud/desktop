@@ -150,8 +150,7 @@ bool VfsSuffix::isDehydratedPlaceholder(const QString &filePath)
 {
     if (!filePath.endsWith(fileSuffix()))
         return false;
-    QFileInfo fi(filePath);
-    return fi.exists() && fi.size() == 1;
+    return FileSystem::fileExists(filePath) && FileSystem::getSize(filePath) == 1;
 }
 
 bool VfsSuffix::statTypeVirtualFile(csync_file_stat_t *stat, void *)

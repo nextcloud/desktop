@@ -24,9 +24,7 @@
 
 #include <ctime>
 #include <functional>
-#if !defined(Q_OS_MACOS) || __MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_15
-#include <filesystem>
-#endif
+#include <functional>
 
 class QFile;
 
@@ -96,7 +94,6 @@ namespace FileSystem {
     bool OWNCLOUDSYNC_EXPORT fileChanged(const QString &fileName,
         qint64 previousSize,
         time_t previousMtime);
-
     /**
      * @brief Like !fileChanged() but with verbose logging if the file *did* change.
      */

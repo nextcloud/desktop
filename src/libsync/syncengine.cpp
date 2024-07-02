@@ -287,7 +287,7 @@ void SyncEngine::conflictRecordMaintenance()
     const auto conflictRecordPaths = _journal->conflictRecordPaths();
     for (const auto &path : conflictRecordPaths) {
         auto fsPath = _propagator->fullLocalPath(QString::fromUtf8(path));
-        if (!QFileInfo::exists(fsPath)) {
+        if (!FileSystem::fileExists(fsPath)) {
             _journal->deleteConflictRecord(path);
         }
     }
@@ -326,7 +326,7 @@ void SyncEngine::caseClashConflictRecordMaintenance()
     const auto conflictRecordPaths = _journal->caseClashConflictRecordPaths();
     for (const auto &path : conflictRecordPaths) {
         const auto fsPath = _propagator->fullLocalPath(QString::fromUtf8(path));
-        if (!QFileInfo::exists(fsPath)) {
+        if (!FileSystem::fileExists(fsPath)) {
             _journal->deleteCaseClashConflictByPathRecord(path);
         }
     }
@@ -640,7 +640,7 @@ void SyncEngine::startSync()
     _discoveryPhase->_account = _account;
     _discoveryPhase->_excludes = _excludedFiles.data();
     const QString excludeFilePath = _localPath + QStringLiteral(".sync-exclude.lst");
-    if (QFile::exists(excludeFilePath)) {
+    if (FileSystem::fileExists(excludeFilePath)) {
         _discoveryPhase->_excludes->addExcludeFilePath(excludeFilePath);
         _discoveryPhase->_excludes->reloadExcludeFiles();
     }
@@ -1237,7 +1237,7 @@ void SyncEngine::wipeVirtualFiles(const QString &localPath, SyncJournalDb &journ
         // If the local file is a dehydrated placeholder, wipe it too.
         // Otherwise leave it to allow the next sync to have a new-new conflict.
         QString localFile = localPath + rec._path;
-        if (QFile::exists(localFile) && vfs.isDehydratedPlaceholder(localFile)) {
+        if (FileSystem::fileExists(localFile) && vfs.isDehydratedPlaceholder(localFile)) {
             qCDebug(lcEngine) << "Removing local dehydrated placeholder" << rec.path();
             QFile::remove(localFile);
         }
