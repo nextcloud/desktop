@@ -90,6 +90,7 @@ void NavigationPaneHelper::updateCloudStorageRegistry()
                 // If it already exists, unmark it for removal, this is a valid sync root.
                 entriesToRemove.removeOne(folder->navigationPaneClsid());
 
+#ifdef Q_OS_WIN
                 QString clsidStr = folder->navigationPaneClsid().toString();
                 QString clsidPath = QString() % R"(Software\Classes\CLSID\)" % clsidStr;
                 QString clsidPathWow64 = QString() % R"(Software\Classes\Wow6432Node\CLSID\)" % clsidStr;
@@ -103,7 +104,7 @@ void NavigationPaneHelper::updateCloudStorageRegistry()
                 QString targetFolderPath = QDir::toNativeSeparators(folder->cleanPath());
 
                 qCInfo(lcNavPane) << "Explorer Cloud storage provider: saving path" << targetFolderPath << "to CLSID" << clsidStr;
-#ifdef Q_OS_WIN
+
                 // Steps taken from: https://msdn.microsoft.com/en-us/library/windows/desktop/dn889934%28v=vs.85%29.aspx
                 // Step 1: Add your CLSID and name your extension
                 Utility::registrySetKeyValue(HKEY_CURRENT_USER, clsidPath, QString(), REG_SZ, title);
@@ -155,6 +156,7 @@ void NavigationPaneHelper::updateCloudStorageRegistry()
         }
     }
 
+#ifdef Q_OS_WIN
     // Then remove anything that isn't in our folder list anymore.
     foreach (auto &clsid, entriesToRemove) {
         QString clsidStr = clsid.toString();
@@ -163,13 +165,13 @@ void NavigationPaneHelper::updateCloudStorageRegistry()
         QString namespacePath = QString() % R"(Software\Microsoft\Windows\CurrentVersion\Explorer\Desktop\NameSpace\)" % clsidStr;
 
         qCInfo(lcNavPane) << "Explorer Cloud storage provider: now unused, removing own CLSID" << clsidStr;
-#ifdef Q_OS_WIN
+
         Utility::registryDeleteKeyTree(HKEY_CURRENT_USER, clsidPath);
         Utility::registryDeleteKeyTree(HKEY_CURRENT_USER, clsidPathWow64);
         Utility::registryDeleteKeyTree(HKEY_CURRENT_USER, namespacePath);
         Utility::registryDeleteKeyValue(HKEY_CURRENT_USER, QStringLiteral("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\HideDesktopIcons\\NewStartPanel"), clsidStr);
-#endif
     }
+#endif
 }
 
 } // namespace OCC
