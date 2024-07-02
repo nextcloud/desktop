@@ -195,7 +195,9 @@ public:
         See: https://github.com/nextcloud/client_updater_server/pull/36 */
     [[nodiscard]] int updateSegment() const;
 
-    [[nodiscard]] QString updateChannel() const;
+    [[nodiscard]] QString currentUpdateChannel() const;
+    [[nodiscard]] QString defaultUpdateChannel() const;
+    [[nodiscard]] QStringList validUpdateChannels() const;
     void setUpdateChannel(const QString &channel);
 
     [[nodiscard]] QString overrideServerUrl() const;
