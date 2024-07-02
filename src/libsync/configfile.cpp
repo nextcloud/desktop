@@ -111,7 +111,7 @@ static constexpr char certPath[] = "http_certificatePath";
 static constexpr char certPasswd[] = "http_certificatePasswd";
 
 static const QStringList validUpdateChannelsList { QStringLiteral("stable"), QStringLiteral("beta"), QStringLiteral("daily") };
-static const char stableUpdateChannel[] = "stable";
+static constexpr char defaultUpdateChannelName[] = "stable";
 }
 
 namespace OCC {
@@ -694,12 +694,13 @@ QStringList ConfigFile::validUpdateChannels() const
 
 QString ConfigFile::defaultUpdateChannel() const
 {
-    if (const auto currentVersionSuffix = Theme::instance()->versionSuffix();validUpdateChannels().contains(currentVersionSuffix)) {
+    if (const auto currentVersionSuffix = Theme::instance()->versionSuffix();
+        validUpdateChannels().contains(currentVersionSuffix)) {
         qCWarning(lcConfigFile()) << "Enforcing update channel" << currentVersionSuffix << "because of the version suffix of the current client.";
         return currentVersionSuffix;
     }
 
-    return stableUpdateChannel;
+    return defaultUpdateChannelName;
 }
 
 QString ConfigFile::currentUpdateChannel() const
