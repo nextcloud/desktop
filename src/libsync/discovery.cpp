@@ -259,7 +259,7 @@ bool ProcessDirectoryJob::handleExcluded(const QString &path, const Entries &ent
 
     const auto fileName = path.mid(path.lastIndexOf('/') + 1);
 
-    if (excluded == CSYNC_NOT_EXCLUDED) {
+    if (excluded == CSYNC_NOT_EXCLUDED && Utility::isWindows()) {
         const auto endsWithSpace = fileName.endsWith(QLatin1Char(' '));
         const auto startsWithSpace = fileName.startsWith(QLatin1Char(' '));
         if (startsWithSpace && endsWithSpace) {
