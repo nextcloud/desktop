@@ -281,11 +281,7 @@ void GeneralSettings::loadMiscSettings()
     _ui->monoIconsCheckBox->setChecked(cfgFile.monoIcons());
 
 #if defined(BUILD_UPDATER)
-    auto validUpdateChannels = cfgFile.validUpdateChannels();
-    if (const auto serverHasValidSubscription = cfgFile.serverHasValidSubscription();
-        serverHasValidSubscription && !Theme::instance()->isBranded()) {
-        validUpdateChannels << QStringLiteral("enterprise");
-    }
+    const auto validUpdateChannels = cfgFile.validUpdateChannels();
     _ui->updateChannel->addItems(validUpdateChannels);
     const auto currentUpdateChannelIndex = validUpdateChannels.indexOf(cfgFile.currentUpdateChannel());
     _ui->updateChannel->setCurrentIndex(currentUpdateChannelIndex != -1? currentUpdateChannelIndex : 0);
@@ -386,12 +382,14 @@ void GeneralSettings::slotUpdateChannelChanged()
         }
     };
 
+    ConfigFile configFile;
     const auto channel = updateChannelFromLocalized(_ui->updateChannel->currentIndex());
-    if (channel == ConfigFile().currentUpdateChannel()) {
+    if (channel == configFile.currentUpdateChannel()) {
         return;
     }
 
-    const auto enterprise = _ui->updateChannel->count() > 3 ? "- enterprise: contains stable versions for customers.\n" : "";
+    const auto enterprise = configFile.validUpdateChannels().contains("enterprise") ? "- enterprise: contains stable versions for customers.\n"
+                                                                                    : "";
     auto msgBox = new QMessageBox(
         QMessageBox::Warning,
         tr("Changing update channel?"),

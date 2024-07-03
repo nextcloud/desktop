@@ -110,8 +110,9 @@ static constexpr char forceLoginV2C[] = "forceLoginV2";
 static constexpr char certPath[] = "http_certificatePath";
 static constexpr char certPasswd[] = "http_certificatePasswd";
 
-static const QStringList validUpdateChannelsList { QStringLiteral("stable"), QStringLiteral("beta"), QStringLiteral("daily") };
-static constexpr char defaultUpdateChannelName[] = "stable";
+static const QStringList defaultUpdateChannelsList { QStringLiteral("stable"), QStringLiteral("beta"), QStringLiteral("daily") };
+static constexpr QString defaultUpdateChannelName = "stable";
+static constexpr char defaultEnterpriseChannel[] = "enterprise";
 static constexpr char serverHasValidSubscriptionC[] = "serverHasValidSubscription";
 static constexpr char desktopEnterpriseChannelName[] = "desktopEnterpriseChannel";
 }
@@ -691,18 +692,32 @@ int ConfigFile::updateSegment() const
 
 QStringList ConfigFile::validUpdateChannels() const
 {
-    return validUpdateChannelsList;
+    auto updateChannelsList = defaultUpdateChannelsList;
+    if (serverHasValidSubscription() && !Theme::instance()->isBranded()) {
+        updateChannelsList << defaultEnterpriseChannel;
+    }
+
+    return updateChannelsList;
 }
 
 QString ConfigFile::defaultUpdateChannel() const
 {
+    auto defaultUpdateChannel = defaultUpdateChannelName;
+    if (serverHasValidSubscription() && !Theme::instance()->isBranded()) {
+        if (const auto serverChannel = desktopEnterpriseChannel();
+            validUpdateChannels().contains(serverChannel)) {
+            qCWarning(lcConfigFile()) << "Enforcing update channel" << serverChannel << "because that is the desktop enterprise channel returned by the server.";
+            defaultUpdateChannel = serverChannel;
+        }
+    }
+
     if (const auto currentVersionSuffix = Theme::instance()->versionSuffix();
         validUpdateChannels().contains(currentVersionSuffix)) {
         qCWarning(lcConfigFile()) << "Enforcing update channel" << currentVersionSuffix << "because of the version suffix of the current client.";
-        return currentVersionSuffix;
+        defaultUpdateChannel = currentVersionSuffix;
     }
 
-    return defaultUpdateChannelName;
+    return defaultUpdateChannel;
 }
 
 QString ConfigFile::currentUpdateChannel() const
