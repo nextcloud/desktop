@@ -174,6 +174,7 @@ public:
     [[nodiscard]] bool groupFoldersAvailable() const;
 
     [[nodiscard]] bool serverHasValidSubscription() const;
+    [[nodiscard]] QString desktopEnterpriseChannel() const;
 
     // Direct Editing
     void addDirectEditor(DirectEditor* directEditor);

@@ -13,6 +13,7 @@
  */
 
 #include "capabilities.h"
+#include "configfile.h"
 
 #include <QVariantMap>
 #include <QLoggingCategory>
@@ -391,6 +392,11 @@ bool Capabilities::groupFoldersAvailable() const
 bool Capabilities::serverHasValidSubscription() const
 {
     return _capabilities[QStringLiteral("support")].toMap().value(QStringLiteral("hasValidSubscription"), false).toBool();
+}
+
+QString Capabilities::desktopEnterpriseChannel() const
+{
+    return _capabilities[QStringLiteral("support")].toMap().value(QStringLiteral("desktopEnterpriseChannel"), ConfigFile().defaultUpdateChannel()).toString();
 }
 
 QStringList Capabilities::blacklistedFiles() const
