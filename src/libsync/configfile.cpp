@@ -694,7 +694,13 @@ int ConfigFile::updateSegment() const
 
 QStringList ConfigFile::validUpdateChannels() const
 {
-    if (serverHasValidSubscription() && !Theme::instance()->isBranded()) {
+    const auto isBranded = Theme::instance()->isBranded();
+
+    if (isBranded) {
+        return { defaultUpdateChannelName };
+    }
+
+    if (serverHasValidSubscription()) {
         return enterpriseUpdateChannelsList;
     }
 
@@ -703,7 +709,8 @@ QStringList ConfigFile::validUpdateChannels() const
 
 QString ConfigFile::defaultUpdateChannel() const
 {
-    if (serverHasValidSubscription() && !Theme::instance()->isBranded()) {
+    const auto isBranded = Theme::instance()->isBranded();
+    if (serverHasValidSubscription() && !isBranded) {
         if (const auto serverChannel = desktopEnterpriseChannel();
             validUpdateChannels().contains(serverChannel)) {
             qCWarning(lcConfigFile()) << "Enforcing update channel" << serverChannel << "because that is the desktop enterprise channel returned by the server.";
@@ -712,11 +719,12 @@ QString ConfigFile::defaultUpdateChannel() const
     }
 
     if (const auto currentVersionSuffix = Theme::instance()->versionSuffix();
-        validUpdateChannels().contains(currentVersionSuffix)) {
+        validUpdateChannels().contains(currentVersionSuffix) && !isBranded) {
         qCWarning(lcConfigFile()) << "Enforcing update channel" << currentVersionSuffix << "because of the version suffix of the current client.";
         return currentVersionSuffix;
     }
 
+    qCWarning(lcConfigFile()) << "Enforcing default update channel" << defaultUpdateChannelName;
     return defaultUpdateChannelName;
 }
 
