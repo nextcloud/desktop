@@ -370,9 +370,9 @@ void GeneralSettings::slotUpdateChannelChanged()
         case 2:
             return QStringLiteral("daily");
             break;
+        default:
+            return QStringLiteral("stable");
         }
-
-        return QStringLiteral("stable");
     };
 
     const auto channel = updateChannelFromLocalized(_ui->updateChannel->currentIndex());
