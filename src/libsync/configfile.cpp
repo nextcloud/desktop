@@ -705,14 +705,15 @@ QString ConfigFile::defaultUpdateChannel() const
 
 QString ConfigFile::currentUpdateChannel() const
 {
+    auto updateChannel = defaultUpdateChannel();
     QSettings settings(configFile(), QSettings::IniFormat);
-    if (const auto configUpdateChannel = settings.value(QLatin1String(updateChannelC), defaultUpdateChannel()).toString();
+    if (const auto configUpdateChannel = settings.value(QLatin1String(updateChannelC), updateChannel).toString();
         validUpdateChannels().contains(configUpdateChannel)) {
         qCWarning(lcConfigFile()) << "Config file has a valid update channel:" << configUpdateChannel;
-        return configUpdateChannel;
+        updateChannel = configUpdateChannel;
     }
 
-    return defaultUpdateChannel();
+    return updateChannel;
 }
 
 void ConfigFile::setUpdateChannel(const QString &channel)
