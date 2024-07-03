@@ -99,10 +99,7 @@ QUrlQuery Updater::getQueryParams()
     query.addQueryItem(QStringLiteral("buildArch"), QSysInfo::buildCpuArchitecture());
     query.addQueryItem(QStringLiteral("currentArch"), QSysInfo::currentCpuArchitecture());
     query.addQueryItem(QStringLiteral("versionsuffix"), Theme::instance()->versionSuffix());
-
-    ConfigFile config;
-    query.addQueryItem(QStringLiteral("channel"), config.currentUpdateChannel());
-    query.addQueryItem(QLatin1String("updatesegment"), QString::number(config.updateSegment()));
+    query.addQueryItem(QStringLiteral("channel"), ConfigFile().currentUpdateChannel());
 
     return query;
 }
