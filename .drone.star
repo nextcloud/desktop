@@ -51,6 +51,7 @@ dir = {
     "guiTestReport": "/drone/src/test/gui/guiReportUpload",
     "build": "/drone/src/build",
     "pythonModules": "/usr/local/lib/python3.10/site-packages",
+    "pythonModules64": "/usr/local/lib64/python3.10/site-packages",
 }
 
 notify_channels = {
@@ -77,14 +78,26 @@ build_config = {
     "command": "ninja",
 }
 
-pip_pipeline_volume = [{
-    "name": "python",
-    "temp": {},
-}]
-pip_step_volume = [{
-    "name": "python",
-    "path": dir["pythonModules"],
-}]
+pip_pipeline_volume = [
+    {
+        "name": "python",
+        "temp": {},
+    },
+    {
+        "name": "python64",
+        "temp": {},
+    },
+]
+pip_step_volume = [
+    {
+        "name": "python",
+        "path": dir["pythonModules"],
+    },
+    {
+        "name": "python64",
+        "path": dir["pythonModules64"],
+    },
+]
 
 config = {
     "gui-tests": {
@@ -186,7 +199,14 @@ def unit_test_pipeline(ctx):
 def gui_test_pipeline(ctx):
     pipelines = []
     for server, params in config["gui-tests"]["servers"].items():
-        squish_parameters = "--reportgen html,%s --envvar QT_LOGGING_RULES=sync.httplogger=true;gui.socketapi=false  --tags ~@skip --tags ~@skipOnLinux" % dir["guiTestReport"]
+        squish_parameters = [
+            "--testsuite %s" % dir["guiTest"],
+            "--reportgen html,%s" % dir["guiTestReport"],
+            "--envvar QT_LOGGING_RULES=sync.httplogger=true;gui.socketapi=false",
+            "--tags ~@skip",
+            "--tags ~@skipOnLinux",
+        ]
+
         if params.get("skip", False):
             continue
         if ctx.build.event == "pull_request" and params.get("skip_in_pr", False) and not "full-ci" in ctx.build.title.lower():
@@ -199,7 +219,8 @@ def gui_test_pipeline(ctx):
         pipeline_name = "GUI-tests-%s" % server
 
         if params["tags"]:
-            squish_parameters += " --tags %s" % params["tags"]
+            squish_parameters.append("--tags %s" % params["tags"])
+        squish_parameters = " ".join(squish_parameters)
 
         steps = skipIfUnchanged(ctx, "gui-tests") + \
                 build_client(OC_CI_SQUISH, False)
@@ -216,7 +237,7 @@ def gui_test_pipeline(ctx):
                         databaseService()
         else:
             steps += ocisService(params["version"]) + \
-                     waitForOcisService()
+                     waitForService("ocis", "ocis:9200")
 
         steps += installPnpm() + \
                  install_python_modules() + \
@@ -599,12 +620,14 @@ def ocisService(server_version = "latest"):
         ],
     }]
 
-def waitForOcisService():
+def waitForService(name, servers):
+    if type(servers) == "string":
+        servers = [servers]
     return [{
-        "name": "wait-for-ocis",
+        "name": "wait-for-%s" % name,
         "image": OC_CI_WAIT_FOR,
         "commands": [
-            "wait-for -it ocis:9200 -t 300",
+            "wait-for -it %s -t 300" % ",".join(servers),
         ],
     }]
 
