@@ -277,6 +277,11 @@ def step(context):
     SyncConnectionWizard.cancelFolderSyncConnectionWizard()
 
 
+@Then("the sync folder list should be empty")
+def step(context):
+    test.vp("empty_sync_connection")
+
+
 @When('user "|any|" logs out from the login required dialog')
 def step(context, username):
     EnterPassword.logout()

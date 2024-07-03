@@ -271,3 +271,19 @@ def step(context, folder_name, selected):
             SyncConnectionWizard.is_remote_folder_selected(folder_selector),
             "Folder should be selected",
         )
+
+
+@When('the user selects remove folder sync connection option')
+def step(context):
+    SyncConnection.remove_folder_sync_connection()
+
+
+@When('the user cancels the folder sync connection removal dialog')
+def step(context):
+    SyncConnection.cancel_folder_sync_connection_removal()
+
+
+@When('the user removes the folder sync connection')
+def step(context):
+    SyncConnection.remove_folder_sync_connection()
+    SyncConnection.confirm_folder_sync_connection_removal()
