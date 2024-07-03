@@ -265,13 +265,13 @@ void EncryptedFolderMetadataHandler::unlockFolder(const UnlockFolderWithResult r
     qCDebug(lcFetchAndUploadE2eeFolderMetadataJob) << "Calling Unlock";
 
     const auto unlockJob = new UnlockEncryptFolderApiJob(_account, _folderId, _folderToken, _journalDb, this);
-    connect(unlockJob, &UnlockEncryptFolderApiJob::success, [this](const QByteArray &folderId) {
+    connect(unlockJob, &UnlockEncryptFolderApiJob::success, unlockJob, [this](const QByteArray &folderId) {
         qDebug(lcFetchAndUploadE2eeFolderMetadataJob) << "Successfully Unlocked";
         _isFolderLocked = false;
         emit folderUnlocked(folderId, 200);
         _isUnlockRunning = false;
     });
-    connect(unlockJob, &UnlockEncryptFolderApiJob::error, [this](const QByteArray &folderId, int httpStatus) {
+    connect(unlockJob, &UnlockEncryptFolderApiJob::error, unlockJob, [this](const QByteArray &folderId, int httpStatus) {
         qDebug(lcFetchAndUploadE2eeFolderMetadataJob) << "Unlock Error";
         emit folderUnlocked(folderId, httpStatus);
         _isUnlockRunning = false;
