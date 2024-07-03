@@ -1,3 +1,3 @@
 usr/lib/*/nextcloud/libnextclouddolphinpluginhelper.so
-usr/lib/*/qt5/plugins/kf5/overlayicon/nextclouddolphinoverlayplugin.so
-usr/lib/*/qt5/plugins/kf5/kfileitemaction/nextclouddolphinactionplugin.so
+usr/lib/*/qt6/plugins/kf6/overlayicon/nextclouddolphinoverlayplugin.so
+usr/lib/*/qt6/plugins/kf6/kfileitemaction/nextclouddolphinactionplugin.so
