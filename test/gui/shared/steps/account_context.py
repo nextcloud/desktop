@@ -272,7 +272,7 @@ def step(context):
     SyncConnectionWizard.cancelFolderSyncConnectionWizard()
 
 
-@Then("the sync folder should not be added")
+@Then("the sync folder list should be empty")
 def step(context):
     test.vp("empty_sync_connection")
 

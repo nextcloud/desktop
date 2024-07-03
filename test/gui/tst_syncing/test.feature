@@ -435,7 +435,7 @@ Feature: Syncing files
         When the user selects manual sync folder option in advanced section
         And the user cancels the sync connection wizard
         Then the account with displayname "Alice Hansen" and host "%local_server_hostname%" should be displayed
-        And the sync folder should not be added
+        And the sync folder list should be empty
 
 
     Scenario: extract a zip file in the sync folder
@@ -486,3 +486,14 @@ Feature: Syncing files
         Then the folder "simple-folder" should not exist on the file system
         And the folder "test-folder/sub-folder2" should exist on the file system
         And the folder "test-folder/sub-folder1" should not exist on the file system
+
+
+    Scenario: remove folder sync connection
+        Given user "Alice" has created folder "simple-folder" in the server
+        And user "Alice" has set up a client with default settings
+        When the user selects remove folder sync connection option
+        And the user cancels the folder sync connection removal dialog
+        And the user removes the folder sync connection
+        Then the sync folder list should be empty
+        And the folder "simple-folder" should exist on the file system
+        And as "Alice" folder "simple-folder" should exist in the server
