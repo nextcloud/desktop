@@ -296,6 +296,21 @@ private slots:
 
         QCOMPARE(serverHasValidSubscription, true);
     }
+
+    void testSupport_desktopEnterpriseChannel_returnString()
+    {
+        QVariantMap supportMap;
+        const auto defaultChannel = "stable";
+        supportMap["desktopEnterpriseChannel"] = defaultChannel;
+
+        QVariantMap capabilitiesMap;
+        capabilitiesMap["support"] = supportMap;
+
+        const auto &capabilities = OCC::Capabilities(capabilitiesMap);
+        const auto enterpriseChannel = capabilities.desktopEnterpriseChannel();
+
+        QCOMPARE(enterpriseChannel, defaultChannel);
+    }
 };
 
 QTEST_GUILESS_MAIN(TestCapabilities)
