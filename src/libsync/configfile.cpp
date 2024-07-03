@@ -113,6 +113,7 @@ static constexpr char certPasswd[] = "http_certificatePasswd";
 static const QStringList validUpdateChannelsList { QStringLiteral("stable"), QStringLiteral("beta"), QStringLiteral("daily") };
 static constexpr char defaultUpdateChannelName[] = "stable";
 static constexpr char serverHasValidSubscriptionC[] = "serverHasValidSubscription";
+static constexpr char desktopEnterpriseChannelName[] = "desktopEnterpriseChannel";
 }
 
 namespace OCC {
@@ -1177,7 +1178,7 @@ void ConfigFile::setLaunchOnSystemStartup(const bool autostart)
     settings.setValue(QLatin1String(launchOnSystemStartupC), autostart);
 }
 
-bool ConfigFile::serverHasValidSubscription()
+bool ConfigFile::serverHasValidSubscription() const
 {
     QSettings settings(configFile(), QSettings::IniFormat);
     return settings.value(QLatin1String(serverHasValidSubscriptionC), false).toBool();
@@ -1188,6 +1189,19 @@ void ConfigFile::setServerHasValidSubscription(const bool valid)
     QSettings settings(configFile(), QSettings::IniFormat);
     settings.setValue(QLatin1String(serverHasValidSubscriptionC), valid);
 }
+
+QString ConfigFile::desktopEnterpriseChannel() const
+{
+    QSettings settings(configFile(), QSettings::IniFormat);
+    return settings.value(QLatin1String(desktopEnterpriseChannelName), defaultUpdateChannel()).toString();
+}
+
+void ConfigFile::setDesktopEnterpriseChannel(const QString &channel)
+{
+    QSettings settings(configFile(), QSettings::IniFormat);
+    settings.setValue(QLatin1String(desktopEnterpriseChannelName), channel);
+}
+
 
 Q_GLOBAL_STATIC(QString, g_configFileName)
 
