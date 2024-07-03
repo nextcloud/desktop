@@ -2147,29 +2147,33 @@ Esto significa que el cliente de sincronización podría no subir inmediatamente
         <source>All files in the server folder &quot;%1&quot; were deleted.
 
 If you restore the files, they will be uploaded again to the server.</source>
-        <translation type="unfinished"/>
+        <translation>Todos los archivos de la carpeta del servidor &quot;%1&quot; fueron borrados.
+
+Si restauras los archivos, serán subidos de nuevo al servidor.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1632"/>
         <source>All files in the local folder &quot;%1&quot; were deleted.
 
 If you restore the files, they will be downloaded again from the server.</source>
-        <translation type="unfinished"/>
+        <translation>Todos los archivos de la carpeta local &quot;%1&quot; fueron borrados.
+
+Si restauras los archivos, serán descargados de nuevo del servidor.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1633"/>
         <source>Remove all files?</source>
-        <translation type="unfinished"/>
+        <translation>¿Eliminar todos los archivos?</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1637"/>
         <source>Proceed to remove all files</source>
-        <translation type="unfinished"/>
+        <translation>Proceda a eliminar todos los archivos</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1638"/>
         <source>Restore files</source>
-        <translation type="unfinished"/>
+        <translation>Restaurar archivos</translation>
     </message>
 </context>
 <context>
@@ -5327,12 +5331,12 @@ El servidor respondió con el error: %2</translation>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1052"/>
         <source>Open Nextcloud Assistant in browser</source>
-        <translation type="unfinished"/>
+        <translation>Abrir Nextcloud Assistant en el navegador</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1052"/>
         <source>Open Nextcloud Talk in browser</source>
-        <translation type="unfinished"/>
+        <translation>Abrir Nextcloud Talk en el navegador</translation>
     </message>
 </context>
 <context>
