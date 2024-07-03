@@ -690,6 +690,7 @@ void Account::setCapabilities(const QVariantMap &caps)
 
     updateServerColors();
     updateServerSubcription();
+    updateDesktopEnterpriseChannel();
 
     emit capabilitiesChanged();
 
@@ -1075,6 +1076,15 @@ void Account::updateServerSubcription()
     if (const auto serverHasValidSubscription = _capabilities.serverHasValidSubscription();
         serverHasValidSubscription != currentConfig.serverHasValidSubscription()) {
         currentConfig.setServerHasValidSubscription(serverHasValidSubscription);
+    }
+}
+
+void Account::updateDesktopEnterpriseChannel()
+{
+    ConfigFile currentConfig;
+    if (const auto desktopEnterpriseChannel = _capabilities.desktopEnterpriseChannel();
+        desktopEnterpriseChannel != currentConfig.desktopEnterpriseChannel()) {
+        currentConfig.setDesktopEnterpriseChannel(desktopEnterpriseChannel);
     }
 }
 
