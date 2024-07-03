@@ -312,7 +312,7 @@ void GeneralSettings::slotUpdateInfo()
     }
 
     // Note: the sparkle-updater is not an OCUpdater
-    const auto *ocupdater = qobject_cast<OCUpdater *>(updater);
+    const auto ocupdater = qobject_cast<OCUpdater *>(updater);
     if (ocupdater) {
         connect(ocupdater, &OCUpdater::downloadStateChanged, this, &GeneralSettings::slotUpdateInfo, Qt::UniqueConnection);
         connect(_ui->restartButton, &QAbstractButton::clicked, ocupdater, &OCUpdater::slotStartInstaller, Qt::UniqueConnection);
