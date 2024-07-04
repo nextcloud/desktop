@@ -796,7 +796,7 @@ Das Feature &quot;selective sync&quot; wird wieder verfügbar. Diese Aktion bric
     <message numerus="yes">
         <location filename="../src/gui/activitywidget.cpp" line="296"/>
         <source>%n notifications(s) for %1.</source>
-        <translation><numerusform>%n Benachrichtigungen für %1.</numerusform><numerusform>%n Benachrichtigungen für %1.</numerusform></translation>
+        <translation><numerusform>%n Benachrichtigung für %1.</numerusform><numerusform>%n Benachrichtigungen für %1.</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/activitywidget.cpp" line="302"/>
