@@ -323,8 +323,6 @@ void AccountManager::saveAccountHelper(Account *acc, QSettings &settings, bool s
     settings.setValue(QLatin1String(serverVersionC), acc->_serverVersion);
     settings.setValue(QLatin1String(serverColorC), acc->_serverColor);
     settings.setValue(QLatin1String(serverTextColorC), acc->_serverTextColor);
-
-    // TODO: serverHasValidSubscription is per user or general?
     settings.setValue(QLatin1String(serverHasValidSubscriptionC), acc->capabilities().serverHasValidSubscription());
 
     if (!acc->_skipE2eeMetadataChecksumValidation) {
