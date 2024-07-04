@@ -26,16 +26,19 @@ SpaceImageProvider::SpaceImageProvider(const AccountPtr &account)
 
 QPixmap SpaceImageProvider::requestPixmap(const QString &id, QSize *size, const QSize &requestedSize)
 {
-    // TODO: the url hast random parts to enforce a reload
-    const auto ids = id.split(QLatin1Char('/'));
-    const auto *space = _account->spacesManager()->space(ids.last());
     QIcon icon;
-    if (space) {
-        icon = space->image();
-    } else {
+    if (id == QLatin1String("placeholder")) {
         icon = Resources::getCoreIcon(QStringLiteral("space"));
+    } else {
+        const auto ids = id.split(QLatin1Char('/'));
+        const auto *space = _account->spacesManager()->space(ids.last());
+        if (space) {
+            icon = space->image()->image();
+        }
     }
-    const QSize actualSize = requestedSize.isValid() ? requestedSize : icon.availableSizes().first();
+    // the sourceSize of the Image must be provided
+    Q_ASSERT(requestedSize.isValid());
+    const QSize actualSize = requestedSize.isValid() ? requestedSize : icon.availableSizes().constFirst();
     if (size) {
         *size = actualSize;
     }

@@ -156,6 +156,12 @@ Folder::Folder(const FolderDefinition &definition, const AccountStatePtr &accoun
         connect(_engine.data(), &SyncEngine::itemCompleted,
             _localDiscoveryTracker.data(), &LocalDiscoveryTracker::slotItemCompleted);
 
+        connect(_accountState->account()->spacesManager(), &GraphApi::SpacesManager::spaceChanged, [this](GraphApi::Space *changedSpace) {
+            if (_definition.spaceId() == changedSpace->id()) {
+                Q_EMIT spaceChanged();
+            }
+        });
+
         // Potentially upgrade suffix vfs to windows vfs
         OC_ENFORCE(_vfs);
         // Initialize the vfs plugin. Do this after the UI is running, so we can show a dialog when something goes wrong.
@@ -190,7 +196,7 @@ Result<void, QString> Folder::checkPathLength(const QString &path)
 GraphApi::Space *Folder::space() const
 {
     if (_accountState->supportsSpaces()) {
-        return _accountState->account()->spacesManager()->space(spaceId());
+        return _accountState->account()->spacesManager()->space(_definition.spaceId());
     }
     return nullptr;
 }
@@ -1332,11 +1338,6 @@ bool Folder::groupInSidebar() const
         return QFileInfo(parentDir) != QFileInfo(QDir::homePath()) && FileSystem::isChildPathOf(parentDir, _accountState->account()->defaultSyncRoot());
     }
     return false;
-}
-
-QString Folder::spaceId() const
-{
-    return _definition.spaceId();
 }
 
 bool FolderDefinition::isDeployed() const

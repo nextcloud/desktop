@@ -55,7 +55,6 @@ public:
         SyncProgressItemString,
         Priority,
         Quota,
-        FolderImageUrl,
         FolderStatusIcon,
         Folder
     };

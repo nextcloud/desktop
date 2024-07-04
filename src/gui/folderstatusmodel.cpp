@@ -202,8 +202,7 @@ void FolderStatusModel::setAccountState(const AccountStatePtr &accountState)
                 [this] { Q_EMIT dataChanged(index(0, 0), index(rowCount() - 1, 0)); });
             connect(accountState->account()->spacesManager(), &GraphApi::SpacesManager::spaceChanged, this, [this](auto *space) {
                 for (int i = 0; i < rowCount(); ++i) {
-                    auto *f = _folders[i]->_folder;
-                    if (f->accountState()->supportsSpaces() && f->spaceId() == space->drive().getId()) {
+                    if (_folders[i]->_folder->space() == space) {
                         Q_EMIT dataChanged(index(i, 0), index(i, 0));
                         break;
                     }
@@ -277,12 +276,6 @@ QVariant FolderStatusModel::data(const QModelIndex &index, int role) const
         return getErrors();
     case Roles::DisplayName:
         return f->displayName();
-    case Roles::FolderImageUrl:
-        if (f->accountState()->supportsSpaces()) {
-            // TODO: the url hast random parts to enforce a reload
-            return QStringLiteral("image://space/%1/%2").arg(QString::number(QRandomGenerator::global()->generate()), f->spaceId());
-        }
-        return QStringLiteral("folder-sync");
     case Roles::FolderStatusIcon:
         return statusIconName(f);
     case Roles::SyncProgressItemString:
@@ -299,8 +292,7 @@ QVariant FolderStatusModel::data(const QModelIndex &index, int role) const
         qint64 total{};
         if (_accountState->supportsSpaces()) {
             if (auto spacesManager = f->accountState()->account()->spacesManager()) {
-                const auto *space = spacesManager->space(f->spaceId());
-                if (space) {
+                if (auto *space = f->space()) {
                     const auto quota = space->drive().getQuota();
                     if (quota.isValid()) {
                         used = quota.getUsed();
@@ -349,7 +341,6 @@ QHash<int, QByteArray> FolderStatusModel::roleNames() const
     return {
         {static_cast<int>(Roles::DisplayName), "displayName"},
         {static_cast<int>(Roles::Subtitle), "subtitle"},
-        {static_cast<int>(Roles::FolderImageUrl), "imageUrl"},
         {static_cast<int>(Roles::FolderStatusIcon), "statusIcon"},
         {static_cast<int>(Roles::SyncProgressOverallPercent), "progress"},
         {static_cast<int>(Roles::SyncProgressOverallString), "overallText"},

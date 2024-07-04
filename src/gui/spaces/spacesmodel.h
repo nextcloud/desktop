@@ -33,7 +33,6 @@ public:
         Sync = Qt::UserRole + 1,
         Name,
         Subtitle,
-        Image,
         WebUrl,
         WebDavUrl,
         Priority,

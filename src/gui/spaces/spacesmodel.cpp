@@ -51,8 +51,6 @@ QVariant SpacesModel::data(const QModelIndex &index, int role) const
         return space->drive().getWebUrl();
     case Roles::WebDavUrl:
         return space->webdavUrl();
-    case Roles::Image:
-        return QStringLiteral("image://space/%1/%2").arg(QString::number(QRandomGenerator::global()->generate()), space->drive().getRoot().getId());
     case Roles::Priority:
         // everything will be sorted in descending order, multiply the priority by 100 and prefer A over Z by appling a negative factor
         return QVariant::fromValue(
@@ -96,7 +94,6 @@ QHash<int, QByteArray> SpacesModel::roleNames() const
     return {
         {static_cast<int>(Roles::Name), "name"},
         {static_cast<int>(Roles::Subtitle), "subtitle"},
-        {static_cast<int>(Roles::Image), "imageUrl"},
         {static_cast<int>(Roles::Space), "space"},
         {static_cast<int>(Roles::AccessibleDescriptionRole), "accessibleDescription"},
     };

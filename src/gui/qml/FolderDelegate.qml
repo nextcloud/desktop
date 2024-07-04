@@ -80,7 +80,6 @@ Pane {
                     required property string displayName
                     required property var errorMsg
                     required property Folder folder
-                    required property url imageUrl
                     required property string itemText
                     required property string overallText
                     required property double progress
@@ -136,8 +135,8 @@ Pane {
                             SpaceDelegate {
                                 Layout.fillHeight: true
                                 Layout.fillWidth: true
-                                description: subtitle
-                                imageSource: imageUrl
+                                description: folderDelegate.subtitle
+                                imageSource: folderDelegate.folder.space ? folderDelegate.folder.space.image.qmlImageUrl : QMLResources.resourcePath("core", "folder-sync", enabled)
                                 statusSource: QMLResources.resourcePath("core", statusIcon, enabled)
                                 title: displayName
 

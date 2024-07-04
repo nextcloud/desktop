@@ -35,6 +35,7 @@ const auto sharesIdC = QLatin1String("a0ca6a90-a365-4782-871e-d44447bbc668$a0ca6
 Space::Space(SpacesManager *spacesManager, const OpenAPI::OAIDrive &drive)
     : QObject(spacesManager)
     , _spaceManager(spacesManager)
+    , _image(new SpaceImage(this))
 {
     setDrive(drive);
 }
@@ -47,17 +48,52 @@ OpenAPI::OAIDrive Space::drive() const
 void Space::setDrive(const OpenAPI::OAIDrive &drive)
 {
     _drive = drive;
-    if (!imageUrl().isEmpty()) {
-        auto job = _spaceManager->account()->resourcesCache()->makeGetJob(imageUrl(), {}, this);
-        connect(job, &SimpleNetworkJob::finishedSignal, this, [job, this] {
+    _image->update();
+}
+
+SpaceImage::SpaceImage(Space *space)
+    : QObject(space)
+    , _space(space)
+{
+    update();
+}
+
+QIcon SpaceImage::image() const
+{
+    if (!isValid()) {
+        return Resources::getCoreIcon(QStringLiteral("space"));
+    }
+    return _image;
+}
+
+QUrl SpaceImage::qmlImageUrl() const
+{
+    if (isValid()) {
+        return QUrl(QStringLiteral("image://space/%1/%2").arg(etag(), _space->id()));
+    } else {
+        // invalid space id to display the placeholder
+        return QUrl(QStringLiteral("image://space/placeholder"));
+    }
+}
+
+void SpaceImage::update()
+{
+    const auto &special = _space->drive().getSpecial();
+    const auto img = std::find_if(special.cbegin(), special.cend(), [](const auto &it) { return it.getSpecialFolder().getName() == QLatin1String("image"); });
+    if (img != special.cend()) {
+        _url = QUrl(img->getWebDavUrl());
+        _etag = img->getETag();
+        auto job = _space->_spaceManager->account()->resourcesCache()->makeGetJob(_url, {}, _space);
+        QObject::connect(job, &SimpleNetworkJob::finishedSignal, _space, [job, this] {
             if (job->httpStatusCode() == 200) {
                 _image = job->asIcon();
-                Q_EMIT _spaceManager->spaceChanged(this);
+                Q_EMIT _space->imageChanged();
             }
         });
         job->start();
     }
 }
+
 QString Space::displayName() const
 {
     if (_drive.getDriveType() == personalC) {
@@ -85,22 +121,12 @@ bool Space::disabled() const
     return _drive.getRoot().getDeleted().getState() == QLatin1String("trashed");
 }
 
-QUrl Space::imageUrl() const
+SpaceImage *Space::image() const
 {
-    const auto &special = _drive.getSpecial();
-    const auto img = std::find_if(special.cbegin(), special.cend(), [](const auto &it) { return it.getSpecialFolder().getName() == QLatin1String("image"); });
-    return img == special.cend() ? QUrl() : QUrl(img->getWebDavUrl());
-}
-
-QIcon Space::image() const
-{
-    if (_image.isNull()) {
-        return Resources::getCoreIcon(QStringLiteral("space"));
-    }
     return _image;
 }
 
-QString Space::id()
+QString Space::id() const
 {
     return _drive.getRoot().getId();
 }

@@ -26,10 +26,41 @@
 namespace OCC {
 namespace GraphApi {
     class SpacesManager;
+    class Space;
+
+    class OWNCLOUDSYNC_EXPORT SpaceImage : public QObject
+    {
+        Q_OBJECT
+        Q_PROPERTY(QUrl url READ url CONSTANT)
+        Q_PROPERTY(QString etag READ etag CONSTANT)
+        Q_PROPERTY(QUrl qmlImageUrl READ qmlImageUrl CONSTANT)
+        QML_ELEMENT
+        QML_UNCREATABLE("C++ only")
+    public:
+        SpaceImage(Space *space);
+
+        [[nodiscard]] QUrl url() const { return _url; }
+        [[nodiscard]] QString etag() const { return _etag; }
+        [[nodiscard]] QIcon image() const;
+        [[nodiscard]] bool isValid() const { return !_etag.isEmpty(); }
+
+        [[nodiscard]] QUrl qmlImageUrl() const;
+
+    private:
+        void update();
+
+        QUrl _url;
+        QString _etag;
+        QIcon _image;
+        Space *_space = nullptr;
+
+        friend class Space;
+    };
 
     class OWNCLOUDSYNC_EXPORT Space : public QObject
     {
         Q_OBJECT
+        Q_PROPERTY(SpaceImage *image READ image NOTIFY imageChanged)
         QML_ELEMENT
         QML_UNCREATABLE("Spaces can only be created by the SpacesManager")
     public:
@@ -40,7 +71,7 @@ namespace GraphApi {
          */
         QString displayName() const;
 
-        QString id();
+        QString id() const;
 
 
         OpenAPI::OAIDrive drive() const;
@@ -55,14 +86,12 @@ namespace GraphApi {
          */
         bool disabled() const;
 
-        /**
-         * The image url
-         */
-        QUrl imageUrl() const;
-
-        QIcon image() const;
+        SpaceImage *image() const;
 
         QUrl webdavUrl() const;
+
+    Q_SIGNALS:
+        void imageChanged();
 
     private:
         Space(SpacesManager *spaceManager, const OpenAPI::OAIDrive &drive);
@@ -71,9 +100,10 @@ namespace GraphApi {
         SpacesManager *_spaceManager;
         OpenAPI::OAIDrive _drive;
 
-        QIcon _image;
+        SpaceImage *_image;
 
         friend class SpacesManager;
+        friend class SpaceImage;
     };
 
 } // OCC

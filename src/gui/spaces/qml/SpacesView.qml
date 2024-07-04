@@ -77,7 +77,6 @@ Pane {
                 required property string name
                 required property string subtitle
                 required property string accessibleDescription
-                required property url imageUrl
                 required property Space space
 
                 required property int index
@@ -124,7 +123,7 @@ Pane {
 
                             title: spaceDelegate.name
                             description: spaceDelegate.subtitle
-                            imageSource: spaceDelegate.imageUrl
+                            imageSource: spaceDelegate.space.image.qmlImageUrl
                             descriptionWrapMode: Label.WordWrap
                         }
                     }

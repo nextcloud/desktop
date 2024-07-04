@@ -20,6 +20,7 @@
 
 #include "accountstate.h"
 #include "common/syncjournaldb.h"
+#include "libsync/graphapi/space.h"
 #include "networkjobs.h"
 #include "progressdispatcher.h"
 #include "syncoptions.h"
@@ -44,9 +45,6 @@ class SyncEngine;
 class SyncRunFileLog;
 class FolderWatcher;
 class LocalDiscoveryTracker;
-namespace GraphApi {
-    class Space;
-}
 
 /**
  * @brief The FolderDefinition class
@@ -150,6 +148,7 @@ private:
 class OWNCLOUDGUI_EXPORT Folder : public QObject
 {
     Q_OBJECT
+    Q_PROPERTY(GraphApi::Space *space READ space NOTIFY spaceChanged)
     QML_ELEMENT
     QML_UNCREATABLE("Folders can only be created by the FolderManager")
 
@@ -203,11 +202,6 @@ public:
      * The full remote webdav url
      */
     QUrl webDavUrl() const;
-
-    /**
-     * The space Id (empty for oc10)
-     */
-    QString spaceId() const;
 
     /**
      * remote folder path, always with a trailing /
@@ -360,6 +354,7 @@ Q_SIGNALS:
     void syncFinished(const SyncResult &result);
     void syncPausedChanged(Folder *, bool paused);
     void canSyncChanged();
+    void spaceChanged();
 
 
     /**
