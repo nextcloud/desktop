@@ -281,7 +281,7 @@ void GeneralSettings::loadMiscSettings()
     _ui->monoIconsCheckBox->setChecked(cfgFile.monoIcons());
 
 #if defined(BUILD_UPDATER)
-    auto validUpdateChannels = cfgFile.validUpdateChannels();
+    const auto validUpdateChannels = cfgFile.validUpdateChannels();
     _ui->updateChannel->addItems(validUpdateChannels);
     const auto currentUpdateChannelIndex = validUpdateChannels.indexOf(cfgFile.currentUpdateChannel());
     _ui->updateChannel->setCurrentIndex(currentUpdateChannelIndex != -1? currentUpdateChannelIndex : 0);
@@ -359,6 +359,10 @@ void GeneralSettings::slotUpdateChannelChanged()
             return tr("daily");
         }
 
+        if (channel == QStringLiteral("enterprise")) {
+            return tr("enterprise");
+        }
+
         return QString{};
     };
 
@@ -370,24 +374,32 @@ void GeneralSettings::slotUpdateChannelChanged()
         case 2:
             return QStringLiteral("daily");
             break;
+        case 3:
+            return QStringLiteral("enterprise");
+            break;
         default:
             return QStringLiteral("stable");
         }
     };
 
+    ConfigFile configFile;
     const auto channel = updateChannelFromLocalized(_ui->updateChannel->currentIndex());
-    if (channel == ConfigFile().currentUpdateChannel()) {
+    if (channel == configFile.currentUpdateChannel()) {
         return;
     }
 
+    const auto enterprise = configFile.validUpdateChannels().contains("enterprise") ? tr("- enterprise: contains stable versions for customers.\n",
+                                                                                         "description of enterprise update channel for enterprise customers")
+                                                                                    : "";
     auto msgBox = new QMessageBox(
         QMessageBox::Warning,
         tr("Changing update channel?"),
         tr("The channel determines which upgrades will be offered to install:\n"
            "- stable: contains tested versions considered reliable\n"
            "- beta: contains versions with new features that may not be tested thoroughly\n"
-           "- daily: contains versions created daily only for testing and development\n\n"
-           "Downgrading versions is not possible immediately: changing from beta to stable means waiting for the new stable version."),
+           "- daily: contains versions created daily only for testing and development\n"
+           "%1\n"
+           "Downgrading versions is not possible immediately: changing from beta to stable means waiting for the new stable version.").arg(enterprise),
         QMessageBox::NoButton,
         this);
     const auto acceptButton = msgBox->addButton(tr("Change update channel"), QMessageBox::AcceptRole);

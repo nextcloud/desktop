@@ -335,6 +335,9 @@ public:
 
     [[nodiscard]] bool askUserForMnemonic() const;
 
+    void updateServerSubcription();
+    void updateDesktopEnterpriseChannel();
+
 public slots:
     /// Used when forgetting credentials
     void clearQNAMCache();

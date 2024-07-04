@@ -282,6 +282,35 @@ private slots:
 
         QCOMPARE(filesLockAvailable, true);
     }
+
+    void testSupport_hasValidSubscription_returnTrue()
+    {
+        QVariantMap supportMap;
+        supportMap["hasValidSubscription"] = "true";
+
+        QVariantMap capabilitiesMap;
+        capabilitiesMap["support"] = supportMap;
+
+        const auto &capabilities = OCC::Capabilities(capabilitiesMap);
+        const auto serverHasValidSubscription = capabilities.serverHasValidSubscription();
+
+        QCOMPARE(serverHasValidSubscription, true);
+    }
+
+    void testSupport_desktopEnterpriseChannel_returnString()
+    {
+        QVariantMap supportMap;
+        const auto defaultChannel = "stable";
+        supportMap["desktopEnterpriseChannel"] = defaultChannel;
+
+        QVariantMap capabilitiesMap;
+        capabilitiesMap["support"] = supportMap;
+
+        const auto &capabilities = OCC::Capabilities(capabilitiesMap);
+        const auto enterpriseChannel = capabilities.desktopEnterpriseChannel();
+
+        QCOMPARE(enterpriseChannel, defaultChannel);
+    }
 };
 
 QTEST_GUILESS_MAIN(TestCapabilities)

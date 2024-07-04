@@ -61,6 +61,8 @@ constexpr auto legacyCfgFileNameC = "owncloud.cfg";
 // The maximum versions that this client can read
 constexpr auto maxAccountsVersion = 2;
 constexpr auto maxAccountVersion = 1;
+
+constexpr auto serverHasValidSubscriptionC = "serverHasValidSubscription";
 }
 
 
@@ -321,6 +323,8 @@ void AccountManager::saveAccountHelper(Account *acc, QSettings &settings, bool s
     settings.setValue(QLatin1String(serverVersionC), acc->_serverVersion);
     settings.setValue(QLatin1String(serverColorC), acc->_serverColor);
     settings.setValue(QLatin1String(serverTextColorC), acc->_serverTextColor);
+    settings.setValue(QLatin1String(serverHasValidSubscriptionC), acc->capabilities().serverHasValidSubscription());
+
     if (!acc->_skipE2eeMetadataChecksumValidation) {
         settings.remove(QLatin1String(skipE2eeMetadataChecksumValidationC));
     } else {
