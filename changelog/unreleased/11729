@@ -1,0 +1,5 @@
+Enhancement: Support for prompt_values_supported in openid-configuration
+
+We implemnted support for idp's to specify the supported prompt values.
+
+https://github.com/owncloud/client/pull/11729

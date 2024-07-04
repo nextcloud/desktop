@@ -44,7 +44,20 @@ Q_LOGGING_CATEGORY(lcOauth, "sync.credentials.oauth", QtInfoMsg)
 
 namespace {
 
-static const QString wellKnownPathC = QStringLiteral("/.well-known/openid-configuration");
+const QString wellKnownPathC = QStringLiteral("/.well-known/openid-configuration");
+
+const auto defaultOauthPromtValue()
+{
+    static const auto promptValue = [] {
+        OAuth::PromptValuesSupportedFlags out = OAuth::PromptValuesSupported::none;
+        // convert the legacy openIdConnectPrompt() to QFlags
+        for (const auto &x : Theme::instance()->openIdConnectPrompt().split(QLatin1Char(' '))) {
+            out |= Utility::stringToEnum<OAuth::PromptValuesSupported>(x);
+        }
+        return out;
+    }();
+    return promptValue;
+}
 
 QString renderHttpTemplate(const QString &title, const QString &content)
 {
@@ -239,6 +252,7 @@ OAuth::OAuth(const QUrl &serverUrl, const QString &davUser, QNetworkAccessManage
     , _clientId(Theme::instance()->oauthClientId())
     , _clientSecret(Theme::instance()->oauthClientSecret())
     , _redirectUrl(Theme::instance()->oauthLocalhost())
+    , _supportedPromtValues(defaultOauthPromtValue())
 {
 }
 
@@ -450,7 +464,7 @@ QUrl OAuth::authorisationLink() const
         {QStringLiteral("redirect_uri"), QStringLiteral("%1:%2").arg(_redirectUrl, QString::number(_server.serverPort()))},
         {QStringLiteral("code_challenge"), QString::fromLatin1(code_challenge)}, {QStringLiteral("code_challenge_method"), QStringLiteral("S256")},
         {QStringLiteral("scope"), QString::fromUtf8(QUrl::toPercentEncoding(Theme::instance()->openIdConnectScopes()))},
-        {QStringLiteral("prompt"), QString::fromUtf8(QUrl::toPercentEncoding(Theme::instance()->openIdConnectPrompt()))},
+        {QStringLiteral("prompt"), QString::fromUtf8(QUrl::toPercentEncoding(toString(_supportedPromtValues)))},
         {QStringLiteral("state"), QString::fromUtf8(_state)}};
 
     if (!_davUser.isEmpty()) {
@@ -547,6 +561,16 @@ void OAuth::fetchWellKnown()
                     _endpointAuthMethod = TokenEndpointAuthMethods::client_secret_post;
                 } else {
                     OC_ASSERT_X(false, qPrintable(QStringLiteral("Unsupported token_endpoint_auth_methods_supported: %1").arg(QDebug::toString(authMethods))));
+                }
+                const auto promtValuesSupported = data.value(QStringLiteral("prompt_values_supported")).toArray();
+                if (!promtValuesSupported.isEmpty()) {
+                    _supportedPromtValues = PromptValuesSupported::none;
+                    for (const auto &x : promtValuesSupported) {
+                        const auto flag = Utility::stringToEnum<PromptValuesSupported>(x.toString());
+                        // only use flags present in Theme::instance()->openIdConnectPrompt()
+                        if (flag & defaultOauthPromtValue())
+                            _supportedPromtValues |= flag;
+                    }
                 }
 
                 qCDebug(lcOauth) << "parsing .well-known reply successful, auth endpoint" << _authEndpoint
@@ -724,5 +748,16 @@ void AccountBasedOAuth::refreshAuthentication(const QString &refreshToken)
         fetchWellKnown();
     });
 }
+
+QString OCC::toString(OAuth::PromptValuesSupportedFlags s)
+{
+    QStringList out;
+    for (auto k : {OAuth::PromptValuesSupported::consent, OAuth::PromptValuesSupported::select_account})
+        if (s & k) {
+            out += Utility::enumToString(k);
+        }
+    return out.join(QLatin1Char(' '));
+}
+
 
 #include "oauth.moc"

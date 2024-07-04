@@ -55,8 +55,12 @@ class OWNCLOUDSYNC_EXPORT OAuth : public QObject
 public:
     enum Result { NotSupported, LoggedIn, Error, ErrorInsecureUrl };
     Q_ENUM(Result)
-    enum class TokenEndpointAuthMethods { client_secret_basic, client_secret_post };
+    enum class TokenEndpointAuthMethods : char { client_secret_basic, client_secret_post };
     Q_ENUM(TokenEndpointAuthMethods)
+
+    enum class PromptValuesSupported : char { none = 0, consent = 1 << 0, select_account = 1 << 1 };
+    Q_ENUM(PromptValuesSupported)
+    Q_DECLARE_FLAGS(PromptValuesSupportedFlags, PromptValuesSupported)
 
     OAuth(const QUrl &serverUrl, const QString &davUser, QNetworkAccessManager *networkAccessManager, const QVariantMap &dynamicRegistrationData, QObject *parent);
     ~OAuth() override;
@@ -117,6 +121,7 @@ private:
     QByteArray _state;
 
     TokenEndpointAuthMethods _endpointAuthMethod = TokenEndpointAuthMethods::client_secret_basic;
+    PromptValuesSupportedFlags _supportedPromtValues = {PromptValuesSupported::consent, PromptValuesSupported::select_account};
 };
 
 /**
@@ -146,4 +151,6 @@ private:
     AccountPtr _account;
 };
 
+QString OWNCLOUDSYNC_EXPORT toString(OAuth::PromptValuesSupportedFlags s);
+Q_DECLARE_OPERATORS_FOR_FLAGS(OAuth::PromptValuesSupportedFlags)
 } // namespce OCC
