@@ -240,7 +240,10 @@ OCSYNC_EXPORT Q_DECLARE_LOGGING_CATEGORY(lcUtility)
     template <class E>
     E stringToEnum(const char *key)
     {
-        return static_cast<E>(QMetaEnum::fromType<E>().keyToValue(key));
+        bool ok;
+        auto out = static_cast<E>(QMetaEnum::fromType<E>().keyToValue(key, &ok));
+        Q_ASSERT(ok);
+        return out;
     }
 
     template <class E>
@@ -252,7 +255,7 @@ OCSYNC_EXPORT Q_DECLARE_LOGGING_CATEGORY(lcUtility)
     template <class E>
     QString enumToString(E value)
     {
-        return QString::fromUtf8(QMetaEnum::fromType<E>().valueToKeys(value));
+        return QString::fromUtf8(QMetaEnum::fromType<E>().valueToKeys(static_cast<int>(value)));
     }
 
     template <class E = void>
