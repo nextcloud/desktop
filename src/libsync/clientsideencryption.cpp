@@ -967,6 +967,7 @@ void ClientSideEncryption::initializeHardwareTokenEncryption(QWidget *settingsDi
                                                              const AccountPtr &account)
 {
     auto ctx = Pkcs11Context{Pkcs11Context::State::CreateContext};
+    _otherCertificates.clear();
 
     if (PKCS11_CTX_load(ctx, account->encryptionHardwareTokenDriverPath().toLatin1().constData())) {
         qCWarning(lcCse()) << "loading pkcs11 engine failed:" << ERR_reason_error_string(ERR_get_error());
