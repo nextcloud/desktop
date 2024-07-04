@@ -228,7 +228,7 @@ public:
     void setLaunchOnSystemStartup(const bool autostart);
 
     [[nodiscard]] bool serverHasValidSubscription() const;
-    void setServerHasValidSubscription(const bool valid);
+    void setServerHasValidSubscription(bool valid);
 
     [[nodiscard]] QString desktopEnterpriseChannel() const;
     void setDesktopEnterpriseChannel(const QString &channel);
