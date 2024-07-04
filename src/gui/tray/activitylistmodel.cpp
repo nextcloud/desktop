@@ -41,8 +41,6 @@ Q_LOGGING_CATEGORY(lcActivity, "nextcloud.gui.activity", QtInfoMsg)
 ActivityListModel::ActivityListModel(QObject *parent)
     : QAbstractListModel(parent)
 {
-    connect(this, &ActivityListModel::showSettingsDialog,
-            Systray::instance(), &Systray::openSettings);
 }
 
 ActivityListModel::ActivityListModel(AccountState *accountState,
@@ -50,8 +48,6 @@ ActivityListModel::ActivityListModel(AccountState *accountState,
     : QAbstractListModel(parent)
     , _accountState(accountState)
 {
-    connect(this, &ActivityListModel::showSettingsDialog,
-            Systray::instance(), &Systray::openSettings);
     if (_accountState) {
         connect(_accountState, &AccountState::stateChanged,
                 this, &ActivityListModel::accountStateChanged);

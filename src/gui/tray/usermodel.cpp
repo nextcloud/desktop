@@ -93,6 +93,8 @@ User::User(AccountStatePtr &account, const bool &isCurrent, QObject *parent)
     connect(_account->account().data(), &Account::capabilitiesChanged, this, &User::slotAccountCapabilitiesChangedRefreshGroupFolders);
 
     connect(_activityModel, &ActivityListModel::sendNotificationRequest, this, &User::slotSendNotificationRequest);
+    connect(_activityModel, &ActivityListModel::showSettingsDialog,
+            Systray::instance(), &Systray::openSettings);
 
     connect(this, &User::sendReplyMessage, this, &User::slotSendReplyMessage);
 
