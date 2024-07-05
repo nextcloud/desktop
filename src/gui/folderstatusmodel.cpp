@@ -319,9 +319,9 @@ QVariant FolderStatusModel::data(const QModelIndex &index, int role) const
         return progress._overallSyncString;
     case FolderStatusDelegate::FolderSyncText:
         if (folder->virtualFilesEnabled()) {
-            return tr("Synchronizing VirtualFiles with local folder");
+            return tr("Synchronizing virtual files in local folder");
         } else {
-            return tr("Synchronizing with local folder");
+            return tr("Synchronizing files in local folder");
         }
     }
     return {};
@@ -899,7 +899,7 @@ void FolderStatusModel::slotUpdateFolderState(Folder *folder)
     if (!folder) {
         return;
     }
-    
+
     for (auto i = 0; i < _folders.count(); ++i) {
         if (_folders.at(i)._folder == folder) {
             emit dataChanged(index(i), index(i));
@@ -1006,7 +1006,7 @@ void FolderStatusModel::slotSetProgress(const ProgressInfo &progress)
     }
 
     if (progress.status() == ProgressInfo::Reconcile) {
-        subFolderProgress->_overallSyncString = tr("Reconciling changes");
+        subFolderProgress->_overallSyncString = tr("Syncing local and remote changes");
         emit dataChanged(index(folderIndex), index(folderIndex), roles);
         return;
     }
@@ -1108,7 +1108,7 @@ void FolderStatusModel::slotSetProgress(const ProgressInfo &progress)
     const auto totalSize = qMax(completedSize, progress.totalSize());
 
     QString overallSyncString;
-    if (totalSize > 0) {
+    if (totalSize > 0 && completedSize > 0) {
         const auto completedSizeString = Utility::octetsToString(completedSize);
         const auto totalSizeString = Utility::octetsToString(totalSize);
 
@@ -1137,7 +1137,7 @@ void FolderStatusModel::slotSetProgress(const ProgressInfo &progress)
                                     .arg(currentFile)
                                     .arg(totalFileCount);
         }
-    } else if (totalFileCount > 0) {
+    } else if (totalFileCount > 0 && currentFile > 0) {
         // Don't attempt to estimate the time left if there is no kb to transfer.
         overallSyncString = tr("%1 file %2 of %3").arg(kindString).arg(currentFile).arg(totalFileCount);
     }
@@ -1188,10 +1188,11 @@ void FolderStatusModel::slotFolderSyncStateChange(Folder *folder)
         const auto folderMan = FolderMan::instance();
         auto pos = folderMan->scheduleQueue().indexOf(folder);
         for (auto other : folderMan->map()) {
-            if (other != folder && other->isSyncRunning())
+            if (other != folder && other->isSyncRunning()) {
                 pos += 1;
+            }
         }
-        const auto message = pos <= 0 ? tr("Waiting …") : tr("Waiting for %n other folder(s) …", "", pos);
+        const auto message = pos <= 0 ? tr("About to start syncing") : tr("Waiting for %n other folder(s) …", "", pos);
         pi = SubFolderInfo::Progress();
         pi._overallSyncString = message;
     } else if (state == SyncResult::SyncPrepare) {
