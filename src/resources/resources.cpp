@@ -126,7 +126,7 @@ QIcon OCC::Resources::loadIcon(const QString &flavor, const QString &name, IconT
     static QMap<QString, QIcon> _iconCache;
     // prevent recusion
     const bool useCoreIcon = (iconType == IconType::VanillaIcon) || isVanilla();
-    const QString path = useCoreIcon ? vanillaThemePath() : brandThemePath();
+    const QString path = QStringLiteral("%1/%2/%3").arg(useCoreIcon ? vanillaThemePath() : brandThemePath(), flavor, name);
     const QString key = name + QLatin1Char(',') + flavor;
     QIcon &cached = _iconCache[key]; // Take reference, this will also "set" the cache entry
     if (cached.isNull()) {
@@ -134,12 +134,12 @@ QIcon OCC::Resources::loadIcon(const QString &flavor, const QString &name, IconT
             // use from theme
             return cached = QIcon::fromTheme(name);
         }
-        const QString svg = QStringLiteral("%1/%2/%3.svg").arg(path, flavor, name);
+        const QString svg = QStringLiteral("%1.svg").arg(path);
         if (QFile::exists(svg)) {
             return cached = QIcon(svg);
         }
 
-        const QString png = QStringLiteral("%1/%2/%3.png").arg(path, flavor, name);
+        const QString png = QStringLiteral("%1.png").arg(name);
         if (QFile::exists(png)) {
             return cached = QIcon(png);
         }
@@ -147,7 +147,7 @@ QIcon OCC::Resources::loadIcon(const QString &flavor, const QString &name, IconT
         const QList<int> sizes{16, 22, 32, 48, 64, 128, 256, 512, 1024};
         QString previousIcon;
         for (int size : sizes) {
-            QString pixmapName = QStringLiteral("%1/%2/%3-%4.png").arg(path, flavor, name, QString::number(size));
+            QString pixmapName = QStringLiteral("%1-%2.png").arg(path, QString::number(size));
             if (QFile::exists(pixmapName)) {
                 previousIcon = pixmapName;
                 cached.addFile(pixmapName, {size, size});
@@ -163,7 +163,7 @@ QIcon OCC::Resources::loadIcon(const QString &flavor, const QString &name, IconT
         if (!useCoreIcon && iconType == IconType::BrandedIconWithFallbackToVanillaIcon) {
             return loadIcon(flavor, name, IconType::VanillaIcon);
         }
-        qCWarning(lcResources) << "Failed to locate the icon" << name;
+        qCWarning(lcResources) << "Failed to locate the icon" << path;
         Q_ASSERT(false);
     }
     return cached;
