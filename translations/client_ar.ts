@@ -452,14 +452,14 @@ Should an account import be attempted?</source>
         <translation>تم اكتشاف تهيئة من نسخة سابقة للعميل موجودة على الجهاز. هل ترغب في محاولة استيراد الحساب؟</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountmanager.cpp" line="197"/>
+        <location filename="../src/gui/accountmanager.cpp" line="199"/>
         <source>%1 accounts were detected from a legacy desktop client.
 Should the accounts be imported?</source>
         <translation>%1 حسابات تمّ حذفها من تطبيق عميل سطح المكتب القديم.
 هل يتوجب استيراد الحسابات؟</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountmanager.cpp" line="199"/>
+        <location filename="../src/gui/accountmanager.cpp" line="201"/>
         <source>1 account was detected from a legacy desktop client.
 Should the account be imported?</source>
         <translation>حساب واحد 1 تم حذفه من تطبيق عميل سطح المكتب القديم. هل يتوجب استيراد الحساب؟</translation>
@@ -472,12 +472,12 @@ Should the account be imported?</source>
         <translation>إستيراد قديم</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountmanager.cpp" line="202"/>
+        <location filename="../src/gui/accountmanager.cpp" line="204"/>
         <source>Import</source>
         <translation>استيراد</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountmanager.cpp" line="203"/>
+        <location filename="../src/gui/accountmanager.cpp" line="205"/>
         <source>Skip</source>
         <translation>تخطِّي</translation>
     </message>
@@ -2809,12 +2809,12 @@ If you restore the files, they will be downloaded again from the server.</source
     <message>
         <location filename="../src/gui/generalsettings.ui" line="410"/>
         <source>Use &amp;monochrome icons</source>
-        <translation>استعمل أيقونات أحادية اللون</translation>
+        <translation>إستعمال أيقونات أحادية اللون</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="417"/>
         <source>&amp;Launch on system startup</source>
-        <translation>إطلاقٌ عند بداية تشغيل النظام</translation>
+        <translation>الإطلاق عند بداية تشغيل النظام</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="424"/>
@@ -2834,7 +2834,7 @@ If you restore the files, they will be downloaded again from the server.</source
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="148"/>
         <source>Show call notification dialogs.</source>
-        <translation>أعرض حوارات إشعارات المكالمات.</translation>
+        <translation>عرض حوارات إشعارات المكالمات.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="162"/>
@@ -2863,25 +2863,37 @@ If you restore the files, they will be downloaded again from the server.</source
         <source>The update channel determines which client updates will be offered for installation. The &quot;stable&quot; channel contains only upgrades that are considered reliable, while the versions in the &quot;beta&quot; channel may contain newer features and bugfixes, but have not yet been tested thoroughly.
 
 Note that this selects only what pool upgrades are taken from, and that there are no downgrades: So going back from the beta channel to the stable channel usually cannot be done immediately and means waiting for a stable version that is newer than the currently installed beta version.</source>
-        <translation>تُحدّد قناة التحديث أي تحديثات للعميل سيتم اقتراح تثبيتها. تحتوي القناة &quot;المستقرة&quot; فقط على الترقيات الموثوقة. في حين أن الإصدارات الموجودة في القناة &quot;التجريبية&quot; قد تحتوي على تحسيناتٍ و تصليحاتٍ أحدث؛ ولكن لم يتم اختبارها بدقة بعد.  لا حظ أنه لا يمكن عادةً العودة من القناة التجريبية إلى القناة الثابتة على الفور إلا بانتظار إصدار ثابت أحدث من الإصدار التجريبي المثبت حاليًا.</translation>
+        <translation>تُحدّد قناة التحديث أي تحديثات للعميل سيتم اقتراح تثبيتها. تحتوي القناة &quot;المستقرة&quot; فقط على الترقيات الموثوقة. في حين أن الإصدارات الموجودة في القناة &quot;التجريبية&quot; قد تحتوي على تحسيناتٍ و تصليحاتٍ أحدث؛ ولكن لم يتم اختبارها بدقة بعد. لا حظ أنه لا يمكن عادةً العودة من القناة التجريبية إلى القناة الثابتة على الفور إلا بانتظار إصدار ثابت أحدث من الإصدار التجريبي المثبت حاليًا.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="359"/>
         <source>daily</source>
+        <translation>يومي</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.cpp" line="363"/>
+        <source>enterprise</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="385"/>
+        <location filename="../src/gui/generalsettings.cpp" line="391"/>
+        <source>- enterprise: contains stable versions for customers.
+</source>
+        <comment>description of enterprise update channel for enterprise customers</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.cpp" line="396"/>
         <source>Changing update channel?</source>
-        <translation type="unfinished"/>
+        <translation>تغيير قناة التحديث؟</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="386"/>
+        <location filename="../src/gui/generalsettings.cpp" line="397"/>
         <source>The channel determines which upgrades will be offered to install:
 - stable: contains tested versions considered reliable
 - beta: contains versions with new features that may not be tested thoroughly
 - daily: contains versions created daily only for testing and development
-
+%1
 Downgrading versions is not possible immediately: changing from beta to stable means waiting for the new stable version.</source>
         <translation type="unfinished"/>
     </message>
