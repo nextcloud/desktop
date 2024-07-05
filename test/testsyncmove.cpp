@@ -318,6 +318,45 @@ private slots:
         QCOMPARE(printDbData(fakeFolder.dbState()), printDbData(remoteInfo));
     }
 
+    void testLocalExternalStorageRenameDetection()
+    {
+        FakeFolder fakeFolder{{}};
+        fakeFolder.remoteModifier().mkdir("external-storage");
+        auto externalStorage = fakeFolder.remoteModifier().find("external-storage");
+        externalStorage->extraDavProperties = "<nc:is-mount-root>true</nc:is-mount-root>";
+        setAllPerm(externalStorage, RemotePermissions::fromServerString("WDNVCKRM"));
+        QVERIFY(fakeFolder.syncOnce());
+
+        OperationCounter operationCounter;
+        fakeFolder.setServerOverride(operationCounter.functor());
+
+        fakeFolder.localModifier().insert("external-storage/file", 100);
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        QCOMPARE(printDbData(fakeFolder.dbState()), printDbData(fakeFolder.remoteModifier()));
+        QCOMPARE(operationCounter.nPUT, 1);
+
+        const auto firstFileId = fakeFolder.remoteModifier().find("external-storage/file")->fileId;
+
+        fakeFolder.localModifier().rename("external-storage/file", "external-storage/file2");
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(operationCounter.nMOVE, 1);
+
+        fakeFolder.localModifier().rename("external-storage/file2", "external-storage/file3");
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(operationCounter.nMOVE, 2);
+
+        const auto renamedFileId = fakeFolder.remoteModifier().find("external-storage/file3")->fileId;
+
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        QCOMPARE(printDbData(fakeFolder.dbState()), printDbData(fakeFolder.remoteModifier()));
+
+        QCOMPARE(fakeFolder.remoteModifier().find("external-storage/file"), nullptr);
+        QCOMPARE(fakeFolder.remoteModifier().find("external-storage/file2"), nullptr);
+        QVERIFY(fakeFolder.remoteModifier().find("external-storage/file3"));
+        QCOMPARE(firstFileId, renamedFileId);
+    }
+
     void testDuplicateFileId_data()
     {
         QTest::addColumn<QString>("prefix");
