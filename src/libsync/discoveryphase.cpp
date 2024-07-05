@@ -733,6 +733,7 @@ void DiscoverySingleDirectoryJob::metadataReceived(const QJsonDocument &json, in
         }
         _isFileDropDetected = e2EeFolderMetadata->isFileDropPresent();
         _encryptedMetadataNeedUpdate = e2EeFolderMetadata->encryptedMetadataNeedUpdate();
+        _e2eCertificateFingerprint = e2EeFolderMetadata->certificateSha256Fingerprint();
         _encryptionStatusRequired = EncryptionStatusEnums::fromEndToEndEncryptionApiVersion(_account->capabilities().clientSideEncryptionVersion());
         _encryptionStatusCurrent = e2EeFolderMetadata->existingMetadataEncryptionStatus();
 

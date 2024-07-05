@@ -596,7 +596,10 @@ std::optional<QByteArray> decryptStringAsymmetric(const CertificateInformation &
         qCDebug(lcCseDecryption()) << "use certificate on software storage";
     }
     const auto key = selectedCertificate.getEvpPrivateKey();
-    Q_ASSERT(key);
+    if (!key) {
+        qCWarning(lcCseDecryption()) << "decrypt failed";
+        return {};
+    }
 
     const auto decryptBase64Result = internals::decryptStringAsymmetric(encryptionEngine.sslEngine(), key, paddingMode, QByteArray::fromBase64(base64Data));
     if (!decryptBase64Result) {
@@ -834,6 +837,24 @@ void ClientSideEncryption::setPrivateKey(const QByteArray &privateKey)
 const CertificateInformation &ClientSideEncryption::getCertificateInformation() const
 {
     return _encryptionCertificate;
+}
+
+CertificateInformation ClientSideEncryption::getCertificateInformationByFingerprint(const QByteArray &certificateFingerprint) const
+{
+    CertificateInformation result;
+
+    if (_encryptionCertificate.sha256Fingerprint() == certificateFingerprint) {
+        result = _encryptionCertificate;
+    } else {
+        for(const auto &oneCertificate : _otherCertificates) {
+            if (oneCertificate.sha256Fingerprint() == certificateFingerprint) {
+                result = oneCertificate;
+                break;
+            }
+        }
+    }
+
+    return result;
 }
 
 int ClientSideEncryption::paddingMode() const

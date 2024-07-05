@@ -154,7 +154,7 @@ private:
 
     [[nodiscard]] QByteArray encryptDataWithPublicKey(const QByteArray &data,
                                                       const CertificateInformation &shareUserCertificate) const;
-    [[nodiscard]] QByteArray decryptDataWithPrivateKey(const QByteArray &data) const;
+    [[nodiscard]] QByteArray decryptDataWithPrivateKey(const QByteArray &data, const QByteArray &certificateFingerprint) const;
 
     [[nodiscard]] QByteArray encryptJsonObject(const QByteArray& obj, const QByteArray pass) const;
     [[nodiscard]] QByteArray decryptJsonObject(const QByteArray& encryptedJsonBlob, const QByteArray& pass) const;

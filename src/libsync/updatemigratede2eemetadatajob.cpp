@@ -32,7 +32,7 @@ UpdateMigratedE2eeMetadataJob::UpdateMigratedE2eeMetadataJob(OwncloudPropagator 
                                                              const SyncFileItemPtr &syncFileItem,
                                                              const QString &fullRemotePath,
                                                              const QString &folderRemotePath)
-    : PropagatorJob(propagator)
+    : PropagateItemJob(propagator, syncFileItem)
     , _item(syncFileItem)
     , _fullRemotePath(fullRemotePath)
     , _folderRemotePath(Utility::noLeadingSlashPath(Utility::noTrailingSlashPath(folderRemotePath)))
@@ -57,6 +57,8 @@ void UpdateMigratedE2eeMetadataJob::start()
         if (code == 200) {
             _item->_e2eEncryptionStatus = updateMedatadaAndSubfoldersJob->encryptionStatus();
             _item->_e2eEncryptionStatusRemote = updateMedatadaAndSubfoldersJob->encryptionStatus();
+            _item->_e2eCertificateFingerprint = propagator()->account()->encryptionCertificateFingerprint();
+            propagator()->updateMetadata(*_item, Vfs::UpdateMetadataType::DatabaseMetadata);
             emit finished(SyncFileItem::Status::Success);
         } else {
             _item->_errorString = message;

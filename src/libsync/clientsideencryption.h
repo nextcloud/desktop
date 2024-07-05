@@ -261,6 +261,8 @@ public:
 
     [[nodiscard]] const CertificateInformation& getCertificateInformation() const;
 
+    [[nodiscard]] CertificateInformation getCertificateInformationByFingerprint(const QByteArray &certificateFingerprint) const;
+
     [[nodiscard]] int paddingMode() const;
 
     [[nodiscard]] CertificateInformation getTokenCertificateByFingerprint(const QByteArray &expectedFingerprint) const;

@@ -22,12 +22,12 @@ namespace OCC {
 
 class FolderMetadata;
 
-class OWNCLOUDSYNC_EXPORT UpdateMigratedE2eeMetadataJob : public PropagatorJob
+class OWNCLOUDSYNC_EXPORT UpdateMigratedE2eeMetadataJob : public PropagateItemJob
 {
     Q_OBJECT
 
 public:
-    explicit UpdateMigratedE2eeMetadataJob(OwncloudPropagator *propagator, const SyncFileItemPtr &syncFileItem, const QString &path, const QString &folderRemotePath);
+    explicit UpdateMigratedE2eeMetadataJob(OwncloudPropagator *propagator, const SyncFileItemPtr &syncFileItem, const QString &fullRemotePath, const QString &folderRemotePath);
 
     [[nodiscard]] bool scheduleSelfOrChild() override;
 

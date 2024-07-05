@@ -1027,6 +1027,7 @@ Result<void, QString> SyncJournalDb::setFileRecord(const SyncJournalFileRecord &
     query->bindValue(17, record._e2eMangledName);
     query->bindValue(18, static_cast<int>(record._e2eEncryptionStatus));
     query->bindValue(19, record._e2eCertificateFingerprint);
+    Q_ASSERT(static_cast<int>(record._e2eEncryptionStatus) == 0 || !record._e2eCertificateFingerprint.isEmpty());
     query->bindValue(20, record._lockstate._locked ? 1 : 0);
     query->bindValue(21, record._lockstate._lockOwnerType);
     query->bindValue(22, record._lockstate._lockOwnerDisplayName);
