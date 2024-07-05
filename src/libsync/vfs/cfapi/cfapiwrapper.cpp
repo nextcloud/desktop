@@ -246,8 +246,6 @@ void CALLBACK cfApiFetchDataCallback(const CF_CALLBACK_INFO *callbackInfo, const
         protrudingData.clear();
         if (data.size() < cfapiBlockSize) {
             protrudingData = data;
-            sendTransferInfo(data, dataOffset);
-            dataOffset += data.size();
             return;
         }
         const auto protudingSize = data.size() % cfapiBlockSize;
