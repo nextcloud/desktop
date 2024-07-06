@@ -2885,14 +2885,15 @@ Tabhair faoi deara nach roghnaíonn sé seo ach na huasghráduithe linne a bhain
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="363"/>
         <source>enterprise</source>
-        <translation type="unfinished"/>
+        <translation>fiontar</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="391"/>
         <source>- enterprise: contains stable versions for customers.
 </source>
         <comment>description of enterprise update channel for enterprise customers</comment>
-        <translation type="unfinished"/>
+        <translation>- fiontar: tá leaganacha cobhsaí ann do chustaiméirí.
+</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="396"/>
@@ -2907,7 +2908,12 @@ Tabhair faoi deara nach roghnaíonn sé seo ach na huasghráduithe linne a bhain
 - daily: contains versions created daily only for testing and development
 %1
 Downgrading versions is not possible immediately: changing from beta to stable means waiting for the new stable version.</source>
-        <translation type="unfinished"/>
+        <translation>Cinneann an cainéal cé na huasghráduithe a thairgfear le suiteáil:
+- cobhsaí: tá leaganacha tástálaithe a mheastar a bheith iontaofa
+- béite: tá leaganacha ann le gnéithe nua nach féidir a thástáil go críochnúil
+- laethúil: tá leaganacha a cruthaíodh go laethúil amháin le haghaidh tástála agus forbartha
+% 1
+Ní féidir leaganacha a íosghrádú láithreach: ciallaíonn athrú ó beta go cobhsaí fanacht leis an leagan cobhsaí nua.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="364"/>

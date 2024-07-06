@@ -2884,14 +2884,14 @@ Beachten Sie bitte, dass hierdurch nur ausgewählt wird, aus welchem Pool Upgrad
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="363"/>
         <source>enterprise</source>
-        <translation type="unfinished"/>
+        <translation>Unternehmensversion</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="391"/>
         <source>- enterprise: contains stable versions for customers.
 </source>
         <comment>description of enterprise update channel for enterprise customers</comment>
-        <translation type="unfinished"/>
+        <translation>- Unternehmensversion: Enthält stabile Versionen für Kunden.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="396"/>
@@ -2906,7 +2906,12 @@ Beachten Sie bitte, dass hierdurch nur ausgewählt wird, aus welchem Pool Upgrad
 - daily: contains versions created daily only for testing and development
 %1
 Downgrading versions is not possible immediately: changing from beta to stable means waiting for the new stable version.</source>
-        <translation type="unfinished"/>
+        <translation>Der Kanal bestimmt, welche Upgrades zur Installation angeboten werden:
+- Stabil: enthält getestete Versionen, die als zuverlässig gelten
+- Beta: enthält Versionen mit neuen Funktionen, die möglicherweise nicht gründlich getestet wurden
+- Täglich: enthält täglich erstellte Versionen, die nur zu Test- und Entwicklungszwecken erstellt werden
+%1
+Ein Downgrade von Versionen ist nicht sofort möglich: Der Wechsel von Beta auf stabil bedeutet, dass auf die neue stabile Version gewartet werden muss.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="364"/>

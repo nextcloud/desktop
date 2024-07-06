@@ -2880,19 +2880,20 @@ Teña en conta que isto só selecciona de que grupo se toman as anovacións e qu
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="359"/>
         <source>daily</source>
-        <translation>cada día</translation>
+        <translation>diario</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="363"/>
         <source>enterprise</source>
-        <translation type="unfinished"/>
+        <translation>empresarial</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="391"/>
         <source>- enterprise: contains stable versions for customers.
 </source>
         <comment>description of enterprise update channel for enterprise customers</comment>
-        <translation type="unfinished"/>
+        <translation>– empresarial: contén versións estábeis para os clientes.
+</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="396"/>
@@ -2907,7 +2908,12 @@ Teña en conta que isto só selecciona de que grupo se toman as anovacións e qu
 - daily: contains versions created daily only for testing and development
 %1
 Downgrading versions is not possible immediately: changing from beta to stable means waiting for the new stable version.</source>
-        <translation type="unfinished"/>
+        <translation>A canle determina que actualizacións se forneceran para instalar:
+– estábel: contén versións probadas consideradas fiábeis
+– beta: contén versións con novas funcionalidades que poden non ser probadas a fondo
+– diario: contén versións creadas diariamente só para probas e desenvolvemento
+%1
+Non é posíbel reverter versións inmediatamente: cambiar de beta a estábel significa agardar pola nova versión estábel.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="364"/>

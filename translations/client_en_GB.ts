@@ -2880,24 +2880,25 @@ Note that this selects only what pool upgrades are taken from, and that there ar
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="359"/>
         <source>daily</source>
-        <translation type="unfinished"/>
+        <translation>daily</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="363"/>
         <source>enterprise</source>
-        <translation type="unfinished"/>
+        <translation>enterprise</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="391"/>
         <source>- enterprise: contains stable versions for customers.
 </source>
         <comment>description of enterprise update channel for enterprise customers</comment>
-        <translation type="unfinished"/>
+        <translation>- enterprise: contains stable versions for customers.
+</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="396"/>
         <source>Changing update channel?</source>
-        <translation type="unfinished"/>
+        <translation>Changing update channel?</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="397"/>
@@ -2907,7 +2908,12 @@ Note that this selects only what pool upgrades are taken from, and that there ar
 - daily: contains versions created daily only for testing and development
 %1
 Downgrading versions is not possible immediately: changing from beta to stable means waiting for the new stable version.</source>
-        <translation type="unfinished"/>
+        <translation>The channel determines which upgrades will be offered to install:
+- stable: contains tested versions considered reliable
+- beta: contains versions with new features that may not be tested thoroughly
+- daily: contains versions created daily only for testing and development
+%1
+Downgrading versions is not possible immediately: changing from beta to stable means waiting for the new stable version.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="364"/>

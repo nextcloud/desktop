@@ -2881,12 +2881,12 @@ Note that this selects only what pool upgrades are taken from, and that there ar
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="359"/>
         <source>daily</source>
-        <translation type="unfinished"/>
+        <translation>每日</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="363"/>
         <source>enterprise</source>
-        <translation type="unfinished"/>
+        <translation>企業</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="391"/>
@@ -2898,7 +2898,7 @@ Note that this selects only what pool upgrades are taken from, and that there ar
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="396"/>
         <source>Changing update channel?</source>
-        <translation type="unfinished"/>
+        <translation>變更更新頻道？</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="397"/>

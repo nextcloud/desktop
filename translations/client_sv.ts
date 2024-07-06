@@ -2885,14 +2885,15 @@ Observera att detta endast väljer vilken pool uppgraderingar tas från, och att
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="363"/>
         <source>enterprise</source>
-        <translation type="unfinished"/>
+        <translation>enterprise</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="391"/>
         <source>- enterprise: contains stable versions for customers.
 </source>
         <comment>description of enterprise update channel for enterprise customers</comment>
-        <translation type="unfinished"/>
+        <translation>- enterprise: innehåller stabila versioner för kunder.
+</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="396"/>
@@ -2907,7 +2908,12 @@ Observera att detta endast väljer vilken pool uppgraderingar tas från, och att
 - daily: contains versions created daily only for testing and development
 %1
 Downgrading versions is not possible immediately: changing from beta to stable means waiting for the new stable version.</source>
-        <translation type="unfinished"/>
+        <translation>Kanalen avgör vilka uppgraderingar som kommer att erbjudas att installera:
+- stable: innehåller testade versioner som anses tillförlitliga
+- beta: innehåller versioner med nya funktioner som kanske inte testas noggrant
+- daily: innehåller versioner som skapas dagligen endast för testning och utveckling
+%1
+Nedgradering av versioner är inte möjlig omedelbart: att byta från beta till stabil innebär att man väntar på den nya stabila versionen.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="364"/>

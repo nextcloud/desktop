@@ -2873,14 +2873,15 @@ Note that this selects only what pool upgrades are taken from, and that there ar
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="363"/>
         <source>enterprise</source>
-        <translation type="unfinished"/>
+        <translation>مؤسَّسِي</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="391"/>
         <source>- enterprise: contains stable versions for customers.
 </source>
         <comment>description of enterprise update channel for enterprise customers</comment>
-        <translation type="unfinished"/>
+        <translation>- مُؤسَّسي: يحتوي على إصدارات مستقرة للعملاء.
+</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="396"/>
@@ -2895,7 +2896,12 @@ Note that this selects only what pool upgrades are taken from, and that there ar
 - daily: contains versions created daily only for testing and development
 %1
 Downgrading versions is not possible immediately: changing from beta to stable means waiting for the new stable version.</source>
-        <translation type="unfinished"/>
+        <translation>تحدد القناة الترقيات التي سيتم عرضها للتثبيت: 
+- مستقر: يحتوي على إصدارات مجربة تعتبر موثوقة 
+- تجريبي: يحتوي على إصدارات ذات ميزات جديدة ربما لم يتم اختبارها بدقة 
+- يومي: يحتوي على إصدارات يتم إنشاؤها يوميًا للاختبار والتطوير فقط 
+%1 
+لا يمكن خفض مستوى الإصدارات على الفور: فالتغيير من الإصدار التجريبي إلى الإصدار المستقر يعني انتظار الإصدار المستقر الجديد.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="364"/>
