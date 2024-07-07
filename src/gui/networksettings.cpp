@@ -134,20 +134,24 @@ void NetworkSettings::loadProxySettings()
     const auto proxyPassword = useGlobalProxy ? cfgFile.proxyPassword() : _account->proxyPassword();
 
     // load current proxy settings
-    switch (proxyType) {
-    case QNetworkProxy::NoProxy:
-        _ui->noProxyRadioButton->setChecked(true);
-        break;
-    case QNetworkProxy::DefaultProxy:
-        _ui->systemProxyRadioButton->setChecked(true);
-        break;
-    case QNetworkProxy::Socks5Proxy:
-    case QNetworkProxy::HttpProxy:
-        _ui->typeComboBox->setCurrentIndex(_ui->typeComboBox->findData(proxyType));
-        _ui->manualProxyRadioButton->setChecked(true);
-        break;
-    default:
-        break;
+    if (_account && _account->networkProxySetting() == Account::AccountNetworkProxySetting::GlobalProxy) {
+        _ui->globalProxySettingsRadioButton->setChecked(true);
+    } else {
+        switch (proxyType) {
+        case QNetworkProxy::NoProxy:
+            _ui->noProxyRadioButton->setChecked(true);
+            break;
+        case QNetworkProxy::DefaultProxy:
+            _ui->systemProxyRadioButton->setChecked(true);
+            break;
+        case QNetworkProxy::Socks5Proxy:
+        case QNetworkProxy::HttpProxy:
+            _ui->typeComboBox->setCurrentIndex(_ui->typeComboBox->findData(proxyType));
+            _ui->manualProxyRadioButton->setChecked(true);
+            break;
+        default:
+            break;
+        }
     }
 
     _ui->hostLineEdit->setText(proxyHostName);
