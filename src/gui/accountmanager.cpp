@@ -354,14 +354,19 @@ void AccountManager::saveAccountHelper(Account *acc, QSettings &settings, bool s
     settings.setValue(networkUploadLimitC, acc->uploadLimit());
     settings.setValue(networkDownloadLimitC, acc->downloadLimit());
 
-    const auto proxyPassword = acc->proxyPassword();
     const auto proxyPasswordKey = QString(acc->davUser() + networkProxyPasswordKeychainKeySuffixC);
-    if (proxyPassword.isEmpty()) {
+    if (const auto proxyPassword = acc->proxyPassword(); proxyPassword.isEmpty()) {
         const auto job = new KeychainChunk::DeleteJob(proxyPasswordKey, this);
         Q_ASSERT(job->exec());
+        if (job->error() != QKeychain::NoError) {
+            qCWarning(lcAccountManager) << "Failed to delete proxy password from keychain" << job->errorString();
+        }
     } else {
         const auto job = new KeychainChunk::WriteJob(acc, proxyPasswordKey, proxyPassword.toUtf8(), this);
         Q_ASSERT(job->exec());
+        if (job->error() != QKeychain::NoError) {
+            qCWarning(lcAccountManager) << "Failed to save proxy password to keychain" << job->errorString();
+        }
     }
 
     if (acc->_credentials) {
@@ -509,6 +514,8 @@ AccountPtr AccountManager::loadAccountHelper(QSettings &settings)
     if (job->error() == QKeychain::NoError) {
         const auto password = job->textData();
         acc->setProxyPassword(password);
+    } else {
+        qCWarning(lcAccountManager) << "Failed to read proxy password from keychain" << job->errorString();
     }
 
     // now the server cert, it is in the general group
