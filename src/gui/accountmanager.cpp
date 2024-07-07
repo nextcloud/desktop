@@ -358,10 +358,10 @@ void AccountManager::saveAccountHelper(Account *acc, QSettings &settings, bool s
     const auto proxyPassword = acc->proxyPassword();
     if (proxyPassword.isEmpty()) {
         const auto job = new KeychainChunk::DeleteJob(proxyPasswordKey);
-        job->exec();
+        Q_ASSERT(job->exec());
     } else {
         const auto job = new KeychainChunk::WriteJob(proxyPasswordKey, proxyPassword.toUtf8());
-        job->exec();
+        Q_ASSERT(job->exec());
     }
 
     if (acc->_credentials) {
@@ -503,7 +503,7 @@ AccountPtr AccountManager::loadAccountHelper(QSettings &settings)
             acc->setProxyPassword(password);
         }
     });
-    job->exec();
+    Q_ASSERT(job->exec());
 
     // now the server cert, it is in the general group
     settings.beginGroup(QLatin1String(generalC));
