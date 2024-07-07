@@ -66,6 +66,8 @@ constexpr auto shibbolethAuthTypeC = "shibboleth";
 constexpr auto httpAuthPrefix = "http_";
 constexpr auto webflowAuthPrefix = "webflow_";
 
+constexpr auto networkProxyPasswordKeychainKeySuffixC = "_proxy_password";
+
 constexpr auto legacyRelativeConfigLocationC = "/ownCloud/owncloud.cfg";
 constexpr auto legacyCfgFileNameC = "owncloud.cfg";
 
@@ -352,7 +354,7 @@ void AccountManager::saveAccountHelper(Account *acc, QSettings &settings, bool s
     settings.setValue(networkUploadLimitC, acc->uploadLimit());
     settings.setValue(networkDownloadLimitC, acc->downloadLimit());
 
-    const auto proxyPasswordKey = acc->userIdAtHostWithPort() + QStringLiteral("_proxy_password");
+    const auto proxyPasswordKey = acc->userIdAtHostWithPort() + QString::fromUtf8(networkProxyPasswordKeychainKeySuffixC);
     const auto proxyPassword = acc->proxyPassword();
     if (proxyPassword.isEmpty()) {
         const auto job = new KeychainChunk::DeleteJob(proxyPasswordKey);
@@ -493,7 +495,7 @@ AccountPtr AccountManager::loadAccountHelper(QSettings &settings)
     acc->setUploadLimit(settings.value(networkUploadLimitC).toInt());
     acc->setDownloadLimit(settings.value(networkDownloadLimitC).toInt());
 
-    const auto proxyPasswordKey = acc->userIdAtHostWithPort() + QStringLiteral("_proxy_password");
+    const auto proxyPasswordKey = acc->userIdAtHostWithPort() + QString::fromUtf8(networkProxyPasswordKeychainKeySuffixC);
     const auto job = new KeychainChunk::ReadJob(proxyPasswordKey);
     connect(job, &KeychainChunk::ReadJob::finished, this, [acc](const KeychainChunk::ReadJob *const finishedJob) {
         if (finishedJob->error() == QKeychain::NoError) {
