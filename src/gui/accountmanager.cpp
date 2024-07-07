@@ -496,14 +496,12 @@ AccountPtr AccountManager::loadAccountHelper(QSettings &settings)
     acc->setDownloadLimit(settings.value(networkDownloadLimitC).toInt());
 
     const auto proxyPasswordKey = acc->userIdAtHostWithPort() + QString::fromUtf8(networkProxyPasswordKeychainKeySuffixC);
-    const auto job = new KeychainChunk::ReadJob(proxyPasswordKey);
-    connect(job, &KeychainChunk::ReadJob::finished, this, [acc](const KeychainChunk::ReadJob *const finishedJob) {
-        if (finishedJob->error() == QKeychain::NoError) {
-            const auto password = finishedJob->textData();
-            acc->setProxyPassword(password);
-        }
-    });
+    const auto job = new KeychainChunk::ReadJob(proxyPasswordKey, this);
     Q_ASSERT(job->exec());
+    if (job->error() == QKeychain::NoError) {
+        const auto password = job->textData();
+        acc->setProxyPassword(password);
+    }
 
     // now the server cert, it is in the general group
     settings.beginGroup(QLatin1String(generalC));
