@@ -16,9 +16,9 @@
 
 #include "sslerrordialog.h"
 #include "proxyauthhandler.h"
-#include "common/asserts.h"
 #include "creds/credentialsfactory.h"
 #include "creds/abstractcredentials.h"
+#include "creds/keychainchunk.h"
 #include "libsync/clientsideencryption.h"
 #include "libsync/configfile.h"
 #include "libsync/cookiejar.h"
@@ -53,7 +53,6 @@ constexpr auto networkProxyHostNameC = "networkProxyHostName";
 constexpr auto networkProxyPortC = "networkProxyPort";
 constexpr auto networkProxyNeedsAuthC = "networkProxyNeedsAuth";
 constexpr auto networkProxyUserC = "networkProxyUser";
-constexpr auto networkProxyPasswordC = "networkProxyPassword";
 constexpr auto networkUploadLimitSettingC = "networkUploadLimitSetting";
 constexpr auto networkDownloadLimitSettingC = "networkDownloadLimitSetting";
 constexpr auto networkUploadLimitC = "networkUploadLimit";
@@ -348,11 +347,20 @@ void AccountManager::saveAccountHelper(Account *acc, QSettings &settings, bool s
     settings.setValue(networkProxyPortC, acc->proxyPort());
     settings.setValue(networkProxyNeedsAuthC, acc->proxyNeedsAuth());
     settings.setValue(networkProxyUserC, acc->proxyUser());
-    settings.setValue(networkProxyPasswordC, acc->proxyPassword());
     settings.setValue(networkUploadLimitSettingC, static_cast<std::underlying_type_t<Account::AccountNetworkTransferLimitSetting>>(acc->uploadLimitSetting()));
     settings.setValue(networkDownloadLimitSettingC, static_cast<std::underlying_type_t<Account::AccountNetworkTransferLimitSetting>>(acc->downloadLimitSetting()));
     settings.setValue(networkUploadLimitC, acc->uploadLimit());
     settings.setValue(networkDownloadLimitC, acc->downloadLimit());
+
+    const auto proxyPasswordKey = acc->userIdAtHostWithPort() + QStringLiteral("_proxy_password");
+    const auto proxyPassword = acc->proxyPassword();
+    if (proxyPassword.isEmpty()) {
+        const auto job = new KeychainChunk::DeleteJob(proxyPasswordKey);
+        job->exec();
+    } else {
+        const auto job = new KeychainChunk::WriteJob(proxyPasswordKey, proxyPassword.toUtf8());
+        job->exec();
+    }
 
     if (acc->_credentials) {
         if (saveCredentials) {
@@ -480,11 +488,20 @@ AccountPtr AccountManager::loadAccountHelper(QSettings &settings)
     acc->setProxyPort(settings.value(networkProxyPortC).toInt());
     acc->setProxyNeedsAuth(settings.value(networkProxyNeedsAuthC).toBool());
     acc->setProxyUser(settings.value(networkProxyUserC).toString());
-    acc->setProxyPassword(settings.value(networkProxyPasswordC).toString());
     acc->setUploadLimitSetting(settings.value(networkUploadLimitSettingC).value<Account::AccountNetworkTransferLimitSetting>());
     acc->setDownloadLimitSetting(settings.value(networkDownloadLimitSettingC).value<Account::AccountNetworkTransferLimitSetting>());
     acc->setUploadLimit(settings.value(networkUploadLimitC).toInt());
     acc->setDownloadLimit(settings.value(networkDownloadLimitC).toInt());
+
+    const auto proxyPasswordKey = acc->userIdAtHostWithPort() + QStringLiteral("_proxy_password");
+    const auto job = new KeychainChunk::ReadJob(proxyPasswordKey);
+    connect(job, &KeychainChunk::ReadJob::finished, this, [acc](const KeychainChunk::ReadJob *const finishedJob) {
+        if (finishedJob->error() == QKeychain::NoError) {
+            const auto password = finishedJob->textData();
+            acc->setProxyPassword(password);
+        }
+    });
+    job->exec();
 
     // now the server cert, it is in the general group
     settings.beginGroup(QLatin1String(generalC));
