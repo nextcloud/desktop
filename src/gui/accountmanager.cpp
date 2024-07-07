@@ -357,10 +357,10 @@ void AccountManager::saveAccountHelper(Account *acc, QSettings &settings, bool s
     const auto proxyPasswordKey = acc->userIdAtHostWithPort() + QString::fromUtf8(networkProxyPasswordKeychainKeySuffixC);
     const auto proxyPassword = acc->proxyPassword();
     if (proxyPassword.isEmpty()) {
-        const auto job = new KeychainChunk::DeleteJob(proxyPasswordKey);
+        const auto job = new KeychainChunk::DeleteJob(proxyPasswordKey, this);
         Q_ASSERT(job->exec());
     } else {
-        const auto job = new KeychainChunk::WriteJob(proxyPasswordKey, proxyPassword.toUtf8());
+        const auto job = new KeychainChunk::WriteJob(acc, proxyPasswordKey, proxyPassword.toUtf8(), this);
         Q_ASSERT(job->exec());
     }
 
