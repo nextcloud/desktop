@@ -360,7 +360,7 @@ void AccountManager::saveAccountHelper(Account *acc, QSettings &settings, bool s
     settings.setValue(networkUploadLimitC, acc->uploadLimit());
     settings.setValue(networkDownloadLimitC, acc->downloadLimit());
 
-    const auto proxyPasswordKey = QString(acc->davUser() + networkProxyPasswordKeychainKeySuffixC);
+    const auto proxyPasswordKey = QString(acc->userIdAtHostWithPort() + networkProxyPasswordKeychainKeySuffixC);
     if (const auto proxyPassword = acc->proxyPassword(); proxyPassword.isEmpty()) {
         const auto job = new QKeychain::DeletePasswordJob(Theme::instance()->appName(), this);
         job->setKey(proxyPasswordKey);
@@ -525,7 +525,7 @@ AccountPtr AccountManager::loadAccountHelper(QSettings &settings)
     acc->setUploadLimit(settings.value(networkUploadLimitC).toInt());
     acc->setDownloadLimit(settings.value(networkDownloadLimitC).toInt());
 
-    const auto proxyPasswordKey = QString(acc->davUser() + networkProxyPasswordKeychainKeySuffixC);
+    const auto proxyPasswordKey = QString(acc->userIdAtHostWithPort() + networkProxyPasswordKeychainKeySuffixC);
     const auto job = new QKeychain::ReadPasswordJob(Theme::instance()->appName(), this);
     job->setKey(proxyPasswordKey);
     connect(job, &QKeychain::Job::finished, this, [acc](const QKeychain::Job *const incomingJob) {
