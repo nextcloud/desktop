@@ -2893,7 +2893,7 @@ Note that this selects only what pool upgrades are taken from, and that there ar
         <source>- enterprise: contains stable versions for customers.
 </source>
         <comment>description of enterprise update channel for enterprise customers</comment>
-        <translation type="unfinished"/>
+        <translation>- 企業版：包含客戶穩定版本。</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="396"/>
@@ -2908,7 +2908,12 @@ Note that this selects only what pool upgrades are taken from, and that there ar
 - daily: contains versions created daily only for testing and development
 %1
 Downgrading versions is not possible immediately: changing from beta to stable means waiting for the new stable version.</source>
-        <translation type="unfinished"/>
+        <translation>更新頻道決定將提供哪些升級進行安裝：
+- 穩定版（stable）：包含經過測試且被認為可靠的版本
+- 測試版（beta）：包含可能尚未全面測試的新功能版本
+- 每日版（daily）：包含每日創建的僅供測試和開發的版本
+%1
+版本降級無法立即進行：從測試版更改為穩定版意味著需要等待新的穩定版本。</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="364"/>

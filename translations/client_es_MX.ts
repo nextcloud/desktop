@@ -2145,29 +2145,33 @@ Esto significa que el cliente de sincronización podría no cargar los cambios l
         <source>All files in the server folder &quot;%1&quot; were deleted.
 
 If you restore the files, they will be uploaded again to the server.</source>
-        <translation type="unfinished"/>
+        <translation>Todos los archivos en la carpeta del servidor &quot;%1&quot; fueron eliminados.
+
+Si restaura los archivos, serán cargados de nuevo al servidor.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1632"/>
         <source>All files in the local folder &quot;%1&quot; were deleted.
 
 If you restore the files, they will be downloaded again from the server.</source>
-        <translation type="unfinished"/>
+        <translation>Todos los archivos en la carpeta local &quot;%1&quot; fueron eliminados.
+
+Si restaura los archivos, serán descargados de nuevo del servidor.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1633"/>
         <source>Remove all files?</source>
-        <translation type="unfinished"/>
+        <translation>¿Eliminar todos los archivos?</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1637"/>
         <source>Proceed to remove all files</source>
-        <translation type="unfinished"/>
+        <translation>Proceder a eliminar todos los archivos</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1638"/>
         <source>Restore files</source>
-        <translation type="unfinished"/>
+        <translation>Restaurar archivos</translation>
     </message>
 </context>
 <context>
@@ -2876,24 +2880,25 @@ Tenga en cuenta que esto sólo selecciona de qué grupo se tomarán las actualiz
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="359"/>
         <source>daily</source>
-        <translation type="unfinished"/>
+        <translation>diariamente</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="363"/>
         <source>enterprise</source>
-        <translation type="unfinished"/>
+        <translation>empresarial</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="391"/>
         <source>- enterprise: contains stable versions for customers.
 </source>
         <comment>description of enterprise update channel for enterprise customers</comment>
-        <translation type="unfinished"/>
+        <translation>- empresarial: contiene versiones estables para clientes.
+</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="396"/>
         <source>Changing update channel?</source>
-        <translation type="unfinished"/>
+        <translation>¿Cambiar el canal de actualizaciones?</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="397"/>
@@ -2903,7 +2908,11 @@ Tenga en cuenta que esto sólo selecciona de qué grupo se tomarán las actualiz
 - daily: contains versions created daily only for testing and development
 %1
 Downgrading versions is not possible immediately: changing from beta to stable means waiting for the new stable version.</source>
-        <translation type="unfinished"/>
+        <translation>El canal determina cuáles actualizaciones se ofrecen para instalar:
+- estable: contiene versiones probadas consideradas confiables
+- beta: contiene versiones con nuevas características que pueden no estar probadas minuciosamente
+- diariamente: contiene versiones creadas diariamente sólo para pruebas y desarrollo %1
+Degradar versiones no es posible inmediatamente: cambiar de beta a estable significa esperar por una nueva versión estable.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="364"/>
@@ -5357,12 +5366,12 @@ El servidor respondió con el error: %2</translation>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1052"/>
         <source>Open Nextcloud Assistant in browser</source>
-        <translation type="unfinished"/>
+        <translation>Abrir el asistente de Nextcloud en el navegador</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1052"/>
         <source>Open Nextcloud Talk in browser</source>
-        <translation type="unfinished"/>
+        <translation>Abrir Nextcloud Talk en el navegador</translation>
     </message>
 </context>
 <context>
