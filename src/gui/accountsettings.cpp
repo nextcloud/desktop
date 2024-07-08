@@ -209,7 +209,12 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent)
         fileProviderTab->setLayout(fpSettingsLayout);
     }
 #else
-    _ui->tabWidget->setCurrentIndex(0);
+    const auto tabWidget = _ui->tabWidget;
+    const auto fileProviderTab = _ui->fileProviderTab;
+    if (const auto fileProviderWidgetTabIndex = tabWidget->indexOf(fileProviderTab); fileProviderWidgetTabIndex >= 0) {
+        tabWidget->removeTab(fileProviderWidgetTabIndex);
+    }
+    tabWidget->setCurrentIndex(0);
 #endif
 
     const auto connectionSettingsTab = _ui->connectionSettingsTab;
