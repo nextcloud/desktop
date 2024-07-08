@@ -31,6 +31,12 @@
 #include <QPushButton>
 #include <type_traits>
 
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+#include <qt6keychain/keychain.h>
+#else
+#include <qt5keychain/keychain.h>
+#endif
+
 namespace {
 constexpr auto urlC = "url";
 constexpr auto authTypeC = "authType";
@@ -356,17 +362,28 @@ void AccountManager::saveAccountHelper(Account *acc, QSettings &settings, bool s
 
     const auto proxyPasswordKey = QString(acc->davUser() + networkProxyPasswordKeychainKeySuffixC);
     if (const auto proxyPassword = acc->proxyPassword(); proxyPassword.isEmpty()) {
-        const auto job = new KeychainChunk::DeleteJob(proxyPasswordKey, this);
-        Q_ASSERT(job->exec());
-        if (job->error() != QKeychain::NoError) {
-            qCWarning(lcAccountManager) << "Failed to delete proxy password from keychain" << job->errorString();
-        }
+        const auto job = new QKeychain::DeletePasswordJob(Theme::instance()->appName(), this);
+        job->setKey(proxyPasswordKey);
+        connect(job, &QKeychain::Job::finished, this, [](const QKeychain::Job *const incomingJob) {
+            if (incomingJob->error() == QKeychain::NoError) {
+                qCInfo(lcAccountManager) << "Deleted proxy password from keychain";
+            } else {
+                qCWarning(lcAccountManager) << "Failed to delete proxy password to keychain" << incomingJob->errorString();
+            }
+        });
+        job->start();
     } else {
-        const auto job = new KeychainChunk::WriteJob(acc, proxyPasswordKey, proxyPassword.toUtf8(), this);
-        Q_ASSERT(job->exec());
-        if (job->error() != QKeychain::NoError) {
-            qCWarning(lcAccountManager) << "Failed to save proxy password to keychain" << job->errorString();
-        }
+        const auto job = new QKeychain::WritePasswordJob(Theme::instance()->appName(), this);
+        job->setKey(proxyPasswordKey);
+        job->setBinaryData(proxyPassword.toUtf8());
+        connect(job, &QKeychain::Job::finished, this, [](const QKeychain::Job *const incomingJob) {
+            if (incomingJob->error() == QKeychain::NoError) {
+                qCInfo(lcAccountManager) << "Saved proxy password to keychain";
+            } else {
+                qCWarning(lcAccountManager) << "Failed to save proxy password to keychain" << incomingJob->errorString();
+            }
+        });
+        job->start();
     }
 
     if (acc->_credentials) {
@@ -509,14 +526,20 @@ AccountPtr AccountManager::loadAccountHelper(QSettings &settings)
     acc->setDownloadLimit(settings.value(networkDownloadLimitC).toInt());
 
     const auto proxyPasswordKey = QString(acc->davUser() + networkProxyPasswordKeychainKeySuffixC);
-    const auto job = new KeychainChunk::ReadJob(proxyPasswordKey, this);
-    Q_ASSERT(job->exec());
-    if (job->error() == QKeychain::NoError) {
-        const auto password = job->textData();
-        acc->setProxyPassword(password);
-    } else {
-        qCWarning(lcAccountManager) << "Failed to read proxy password from keychain" << job->errorString();
-    }
+    const auto job = new QKeychain::ReadPasswordJob(Theme::instance()->appName(), this);
+    job->setKey(proxyPasswordKey);
+    connect(job, &QKeychain::Job::finished, this, [acc](const QKeychain::Job *const incomingJob) {
+        const auto incomingReadJob = qobject_cast<const QKeychain::ReadPasswordJob *>(incomingJob);
+        if (incomingReadJob->error() == QKeychain::NoError) {
+            qCInfo(lcAccountManager) << "Read proxy password to keychain for" << acc->userIdAtHostWithPort();
+            const auto passwordData = incomingReadJob->binaryData();
+            const auto password = QString::fromUtf8(passwordData);
+            acc->setProxyPassword(password);
+        } else {
+            qCWarning(lcAccountManager) << "Failed to read proxy password to keychain" << incomingJob->errorString();
+        }
+    });
+    job->start();
 
     // now the server cert, it is in the general group
     settings.beginGroup(QLatin1String(generalC));
