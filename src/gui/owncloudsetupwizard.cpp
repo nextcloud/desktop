@@ -333,7 +333,9 @@ void OwncloudSetupWizard::slotConnectToOCUrl(const QString &url)
 {
     qCInfo(lcWizard) << "Connect to url: " << url;
     AbstractCredentials *creds = _ocWizard->getCredentials();
-    _ocWizard->account()->setCredentials(creds);
+    if (creds) {
+        _ocWizard->account()->setCredentials(creds);
+    }
 
     const auto fetchUserNameJob = new JsonApiJob(_ocWizard->account()->sharedFromThis(), QStringLiteral("/ocs/v1.php/cloud/user"));
     connect(fetchUserNameJob, &JsonApiJob::jsonReceived, this, [this, url](const QJsonDocument &json, int statusCode) {
