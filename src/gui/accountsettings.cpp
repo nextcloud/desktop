@@ -174,12 +174,12 @@ protected:
 AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent)
     : QWidget(parent)
     , _ui(new Ui::AccountSettings)
+    , _model(new FolderStatusModel)
     , _accountState(accountState)
     , _userInfo(accountState, false, true)
 {
     _ui->setupUi(this);
 
-    _model = new FolderStatusModel;
     _model->setAccountState(_accountState);
     _model->setParent(this);
     const auto delegate = new FolderStatusDelegate;
