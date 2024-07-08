@@ -1534,6 +1534,17 @@ void FolderMan::setDirtyNetworkLimits()
     }
 }
 
+void FolderMan::setDirtyNetworkLimits(const AccountPtr &account) const
+{
+    const auto folderMapValues = _folderMap.values();
+    for (const auto folder : folderMapValues) {
+        // set only in busy folders. Otherwise they read the config anyway.
+        if (folder && folder->isBusy() && folder->accountState()->account() == account) {
+            folder->setDirtyNetworkLimits();
+        }
+    }
+}
+
 void FolderMan::leaveShare(const QString &localFile)
 {
     const auto localFileNoTrailingSlash = localFile.endsWith('/') ? localFile.chopped(1) : localFile;

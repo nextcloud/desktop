@@ -297,7 +297,7 @@ void NetworkSettings::saveBWLimitSettings()
         cfg.setUploadLimit(uploadLimit);
     }
 
-    FolderMan::instance()->setDirtyNetworkLimits();
+    FolderMan::instance()->setDirtyNetworkLimits(_account);
 }
 
 void NetworkSettings::checkEmptyProxyHost()
