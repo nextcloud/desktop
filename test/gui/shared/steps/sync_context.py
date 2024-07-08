@@ -239,6 +239,15 @@ def step(context, folder_name):
     SyncConnection.unselect_folder_in_selective_sync(folder_name)
 
 
+@Then("the sync folder list should be empty")
+def step(context):
+    test.compare(
+        0,
+        SyncConnection.get_folder_connection_count(),
+        "Sync connections should be empty",
+    )
+
+
 @When('the user navigates back in the sync connection wizard')
 def step(context):
     SyncConnectionWizard.back()
