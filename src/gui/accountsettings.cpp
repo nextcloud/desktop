@@ -219,7 +219,7 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent)
 
     const auto connectionSettingsTab = _ui->connectionSettingsTab;
     const auto connectionSettingsLayout = new QVBoxLayout(connectionSettingsTab);
-    const auto networkSettings = new NetworkSettings(_accountState->account().get(), connectionSettingsTab);
+    const auto networkSettings = new NetworkSettings(_accountState->account(), connectionSettingsTab);
     connectionSettingsLayout->addWidget(networkSettings);
     connectionSettingsTab->setLayout(connectionSettingsLayout);
 

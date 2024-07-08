@@ -29,7 +29,7 @@
 
 namespace OCC {
 
-NetworkSettings::NetworkSettings(Account *const account, QWidget *parent)
+NetworkSettings::NetworkSettings(const AccountPtr &account, QWidget *parent)
     : QWidget(parent)
     , _ui(new Ui::NetworkSettings)
     , _account(account)
@@ -40,7 +40,7 @@ NetworkSettings::NetworkSettings(Account *const account, QWidget *parent)
 
     _ui->proxyGroupBox->setVisible(!Theme::instance()->doNotUseProxy());
 
-    if (account == nullptr) {
+    if (!account) {
         _ui->globalProxySettingsRadioButton->setVisible(false);
         _ui->globalDownloadSettingsRadioButton->setVisible(false);
         _ui->globalUploadSettingsRadioButton->setVisible(false);
@@ -124,7 +124,7 @@ void NetworkSettings::loadProxySettings()
         return;
     }
 
-    const auto useGlobalProxy = _account == nullptr || _account->networkProxySetting() == Account::AccountNetworkProxySetting::GlobalProxy;
+    const auto useGlobalProxy = !_account || _account->networkProxySetting() == Account::AccountNetworkProxySetting::GlobalProxy;
     const auto cfgFile = ConfigFile();
     const auto proxyType = useGlobalProxy ? cfgFile.proxyType() : _account->proxyType();
     const auto proxyPort = useGlobalProxy ? cfgFile.proxyPort() : _account->proxyPort();
@@ -163,14 +163,14 @@ void NetworkSettings::loadProxySettings()
 
 void NetworkSettings::loadBWLimitSettings()
 {
-    const auto useGlobalLimit = _account == nullptr || _account->downloadLimitSetting() == Account::AccountNetworkTransferLimitSetting::GlobalLimit;
+    const auto useGlobalLimit = !_account || _account->downloadLimitSetting() == Account::AccountNetworkTransferLimitSetting::GlobalLimit;
     const auto cfgFile = ConfigFile();
     const auto useDownloadLimit = useGlobalLimit ? cfgFile.useDownloadLimit() : static_cast<std::underlying_type_t<Account::AccountNetworkTransferLimitSetting>>(_account->downloadLimitSetting());
     const auto downloadLimit = useGlobalLimit ? cfgFile.downloadLimit() : _account->downloadLimit();
     const auto useUploadLimit = useGlobalLimit ? cfgFile.useUploadLimit() : static_cast<std::underlying_type_t<Account::AccountNetworkTransferLimitSetting>>(_account->uploadLimitSetting());
     const auto uploadLimit = useGlobalLimit ? cfgFile.uploadLimit() : _account->uploadLimit();
 
-    if (_account != nullptr && _account->downloadLimitSetting() == Account::AccountNetworkTransferLimitSetting::GlobalLimit) {
+    if (_account && _account->downloadLimitSetting() == Account::AccountNetworkTransferLimitSetting::GlobalLimit) {
         _ui->globalDownloadSettingsRadioButton->setChecked(true);
     } else if (useDownloadLimit >= 1) {
         _ui->downloadLimitRadioButton->setChecked(true);
@@ -181,7 +181,7 @@ void NetworkSettings::loadBWLimitSettings()
     }
     _ui->downloadSpinBox->setValue(downloadLimit);
 
-    if (_account != nullptr && _account->uploadLimitSetting() == Account::AccountNetworkTransferLimitSetting::GlobalLimit) {
+    if (_account && _account->uploadLimitSetting() == Account::AccountNetworkTransferLimitSetting::GlobalLimit) {
         _ui->globalUploadSettingsRadioButton->setChecked(true);
     } else if (useUploadLimit >= 1) {
         _ui->uploadLimitRadioButton->setChecked(true);
@@ -235,7 +235,7 @@ void NetworkSettings::saveProxySettings()
 
         const auto accountState = AccountManager::instance()->accountFromUserId(_account->userIdAtHostWithPort());
         accountState->freshConnectionAttempt();
-        AccountManager::instance()->saveAccount(_account);
+        AccountManager::instance()->saveAccount(_account.data());
     } else {
         ConfigFile().setProxyType(proxyType, host, port, needsAuth, user, password);
         ClientProxy proxy;
@@ -288,7 +288,7 @@ void NetworkSettings::saveBWLimitSettings()
         _account->setDownloadLimit(downloadLimit);
         _account->setUploadLimitSetting(static_cast<Account::AccountNetworkTransferLimitSetting>(useUploadLimit));
         _account->setUploadLimit(uploadLimit);
-        AccountManager::instance()->saveAccount(_account);
+        AccountManager::instance()->saveAccount(_account.data());
     } else {
         ConfigFile cfg;
         cfg.setUseDownloadLimit(useDownloadLimit);

@@ -17,6 +17,7 @@
 
 #include <QWidget>
 
+#include "libsync/accountfwd.h"
 
 namespace OCC {
 class Account;
@@ -34,7 +35,7 @@ class NetworkSettings : public QWidget
     Q_OBJECT
 
 public:
-    explicit NetworkSettings(Account *const account = nullptr, QWidget *parent = nullptr);
+    explicit NetworkSettings(const AccountPtr &account = {}, QWidget *parent = nullptr);
     ~NetworkSettings() override;
     [[nodiscard]] QSize sizeHint() const override;
 
@@ -55,7 +56,7 @@ private:
     void loadBWLimitSettings();
 
     Ui::NetworkSettings *_ui;
-    Account *_account;
+    AccountPtr _account;
 };
 
 
