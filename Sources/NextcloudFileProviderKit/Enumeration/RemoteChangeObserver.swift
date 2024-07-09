@@ -364,4 +364,8 @@ public class RemoteChangeObserver: NSObject, NKCommonDelegate, URLSessionWebSock
             )
         }
     }
+
+    public func networkReachabilityObserver(_ typeReachability: NKCommon.TypeReachability) {
+        networkReachability = typeReachability
+    }
 }
