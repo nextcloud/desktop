@@ -152,13 +152,19 @@ std::optional<std::pair<bool, bool>> FileProviderXPC::fastEnumerationStateForExt
 
     __block BOOL receivedFastEnumerationEnabled; // What is the value of the setting being used by the extension?
     __block BOOL receivedFastEnumerationSet; // Has the setting been set by the user?
+    __block BOOL receivedResponse = NO;
     dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
     [service getFastEnumerationStateWithCompletionHandler:^(BOOL enabled, BOOL set) {
         receivedFastEnumerationEnabled = enabled;
         receivedFastEnumerationSet = set;
+        receivedResponse = YES;
         dispatch_semaphore_signal(semaphore);
     }];
     dispatch_semaphore_wait(semaphore, dispatch_time(DISPATCH_TIME_NOW, semaphoreWaitDelta));
+    if (!receivedResponse) {
+        qCWarning(lcFileProviderXPC) << "Did not receive response for fast enumeration state";
+        return std::nullopt;
+    }
     return std::optional<std::pair<bool, bool>>{{receivedFastEnumerationEnabled, receivedFastEnumerationSet}};
 }
 
