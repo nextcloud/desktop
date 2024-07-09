@@ -1718,14 +1718,6 @@ void AccountSettings::initializeE2eEncryptionSettingsMessage()
     connect(actionEnableE2e, &QAction::triggered, this, &AccountSettings::slotE2eEncryptionGenerateKeys);
 }
 
-void AccountSettings::disguiseTabWidget() const
-{
-    // Ensure all elements of the tab widget are hidden.
-    // Document mode lets the child view take up the whole view.
-    _ui->tabWidget->setDocumentMode(true);
-    _ui->tabWidget->tabBar()->hide();
-}
-
 } // namespace OCC
 
 #include "accountsettings.moc"
