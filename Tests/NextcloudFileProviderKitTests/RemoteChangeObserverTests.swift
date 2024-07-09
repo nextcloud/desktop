@@ -291,4 +291,46 @@ final class RemoteChangeObserverTests: XCTestCase {
         }
         XCTAssertTrue(authenticated)
     }
+
+    func testPinging() async throws {
+        let remoteInterface = MockRemoteInterface(account: Self.account)
+        remoteInterface.capabilities = mockCapabilities
+
+        var authenticated = false
+
+        NotificationCenter.default.addObserver(
+            forName: NotifyPushAuthenticatedNotificationName, object: nil, queue: nil
+        ) { _ in
+            authenticated = true
+        }
+
+        remoteChangeObserver = RemoteChangeObserver(
+            remoteInterface: remoteInterface,
+            changeNotificationInterface: MockChangeNotificationInterface(),
+            domain: nil
+        )
+
+        let pingIntervalNsecs = 200_000_000
+        remoteChangeObserver?.webSocketPingIntervalNanoseconds = UInt64(pingIntervalNsecs)
+
+        for _ in 0...Self.timeout {
+            try await Task.sleep(nanoseconds: 1_000_000)
+            if authenticated {
+                break
+            }
+        }
+        XCTAssertTrue(authenticated)
+
+        let intendedPings = 3
+        // Add a bit of buffer to the wait time
+        let intendedPingsWait = ((intendedPings + 1) * pingIntervalNsecs) - 1
+
+        var pings = 0
+        Self.notifyPushServer.pingHandler = {
+            pings += 1
+        }
+
+        try await Task.sleep(nanoseconds: UInt64(intendedPingsWait))
+        XCTAssertEqual(pings, intendedPings)
+    }
 }
