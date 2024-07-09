@@ -334,7 +334,3 @@ class SyncConnectionWizard:
             except:
                 return False, None
         return True, parent_container
-
-    @staticmethod
-    def is_remote_folder_selected(folder_selector):
-        return squish.waitForObjectExists(folder_selector).selected

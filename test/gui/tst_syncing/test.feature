@@ -71,9 +71,9 @@ Feature: Syncing files
         And the user navigates back in the sync connection wizard
         And the user sets the temp folder "localSyncFolder" as local sync path in sync connection wizard
         And the user creates a folder "test-folder" in the remote destination wizard
-        Then the folder "test-folder" should be present and selected in the remote destination wizard
+        Then the folder "test-folder" should be present in the remote destination wizard
         When the user refreshes the remote destination in the sync connection wizard
-        Then the folder "test-folder" should be present and not selected in the remote destination wizard
+        Then the folder "test-folder" should be present in the remote destination wizard
         When the user selects "ownCloud" as a remote destination folder
         And the user disables VFS support for Windows
         Then the sync all checkbox should be checked

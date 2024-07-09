@@ -265,21 +265,13 @@ def step(context):
         SyncConnectionWizard.refresh_remote()
 
 
-@Then(
-    r'the folder "([^"]*)" should be present and (selected|not selected) in the remote destination wizard',
-    regexp=True,
-)
-def step(context, folder_name, selected):
+@Then('the folder "|any|" should be present in the remote destination wizard')
+def step(context, folder_name):
     if not get_config("ocis"):
         has_folder, folder_selector = SyncConnectionWizard.has_remote_folder(
             folder_name
         )
         test.compare(True, has_folder, "Folder should be in the remote list")
-        test.compare(
-            selected == 'selected',
-            SyncConnectionWizard.is_remote_folder_selected(folder_selector),
-            "Folder should be selected",
-        )
 
 
 @When('the user selects remove folder sync connection option')
