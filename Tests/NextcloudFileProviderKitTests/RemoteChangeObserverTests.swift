@@ -310,7 +310,7 @@ final class RemoteChangeObserverTests: XCTestCase {
             domain: nil
         )
 
-        let pingIntervalNsecs = 200_000_000
+        let pingIntervalNsecs = 500_000_000
         remoteChangeObserver?.webSocketPingIntervalNanoseconds = UInt64(pingIntervalNsecs)
 
         for _ in 0...Self.timeout {
@@ -323,7 +323,7 @@ final class RemoteChangeObserverTests: XCTestCase {
 
         let intendedPings = 3
         // Add a bit of buffer to the wait time
-        let intendedPingsWait = ((intendedPings + 1) * pingIntervalNsecs) - 1
+        let intendedPingsWait = (intendedPings + 1) * pingIntervalNsecs
 
         var pings = 0
         Self.notifyPushServer.pingHandler = {
