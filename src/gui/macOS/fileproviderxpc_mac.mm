@@ -20,6 +20,10 @@
 #include "gui/macOS/fileproviderdomainmanager.h"
 #include "gui/macOS/fileproviderxpc_mac_utils.h"
 
+namespace {
+    constexpr int64_t semaphoreWaitDelta = 3000000000; // 3 seconds
+}
+
 namespace OCC::Mac {
 
 Q_LOGGING_CATEGORY(lcFileProviderXPC, "nextcloud.gui.macos.fileprovider.xpc", QtInfoMsg)
@@ -154,7 +158,7 @@ std::optional<std::pair<bool, bool>> FileProviderXPC::fastEnumerationStateForExt
         receivedFastEnumerationSet = set;
         dispatch_semaphore_signal(semaphore);
     }];
-    dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
+    dispatch_semaphore_wait(semaphore, dispatch_time(DISPATCH_TIME_NOW, semaphoreWaitDelta));
     return std::optional<std::pair<bool, bool>>{{receivedFastEnumerationEnabled, receivedFastEnumerationSet}};
 }
 
