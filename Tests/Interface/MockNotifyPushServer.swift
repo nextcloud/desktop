@@ -26,6 +26,7 @@ public class MockNotifyPushServer {
     private var connectedClients: [NIOAsyncChannel<WebSocketFrame, WebSocketFrame>] = []
     public var delay: Int?
     public var refuse = false
+    public var pingHandler: (() -> Void)?
 
     enum UpgradeResult {
         case websocket(NIOAsyncChannel<WebSocketFrame, WebSocketFrame>)
@@ -56,6 +57,7 @@ public class MockNotifyPushServer {
         self.delay = nil
         self.refuse = false
         self.connectedClients = []
+        self.pingHandler = nil
     }
 
     /// This method starts the server and handles incoming connections.
@@ -151,6 +153,8 @@ public class MockNotifyPushServer {
                         switch frame.opcode {
                         case .ping:
                             print("Received ping")
+                            self.pingHandler?()
+
                             var frameData = frame.data
                             let maskingKey = frame.maskKey
 
