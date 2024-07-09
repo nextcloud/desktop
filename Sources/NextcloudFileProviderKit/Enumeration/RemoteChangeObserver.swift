@@ -273,7 +273,6 @@ public class RemoteChangeObserver: NSObject, NKCommonDelegate, URLSessionWebSock
                 return
             }
 
-            // TODO: Stop on auth change
             Task.detached(priority: .background) {
                 do {
                     try await Task.sleep(nanoseconds: self.webSocketPingIntervalNanoseconds)
