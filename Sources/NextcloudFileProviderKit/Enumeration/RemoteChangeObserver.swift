@@ -30,6 +30,7 @@ public class RemoteChangeObserver: NSObject, NKCommonDelegate, URLSessionWebSock
     private var webSocketUrlSession: URLSession?
     private var webSocketTask: URLSessionWebSocketTask?
     private var webSocketOperationQueue = OperationQueue()
+    private var webSocketPingTask: Task<(), Never>?
     private(set) var webSocketPingFailCount = 0
     private(set) var webSocketAuthenticationFailCount = 0
 
@@ -117,6 +118,8 @@ public class RemoteChangeObserver: NSObject, NKCommonDelegate, URLSessionWebSock
         webSocketTask = nil
         webSocketOperationQueue.cancelAllOperations()
         webSocketOperationQueue.isSuspended = true
+        webSocketPingTask?.cancel()
+        webSocketPingTask = nil
         webSocketPingFailCount = 0
     }
 
@@ -250,6 +253,29 @@ public class RemoteChangeObserver: NSObject, NKCommonDelegate, URLSessionWebSock
         readWebSocket()
     }
 
+    private func startNewWebSocketPingTask() {
+        guard !Task.isCancelled else { return }
+
+        if let webSocketPingTask, !webSocketPingTask.isCancelled {
+            webSocketPingTask.cancel()
+        }
+
+        webSocketPingTask = Task.detached(priority: .background) {
+            do {
+                try await Task.sleep(nanoseconds: self.webSocketPingIntervalNanoseconds)
+            } catch let error {
+                self.logger.error(
+                    """
+                    Could not sleep websocket ping for \(self.accountId, privacy: .public):
+                    \(error.localizedDescription, privacy: .public)
+                    """
+                )
+            }
+            guard !Task.isCancelled else { return }
+            self.pingWebSocket()
+        }
+    }
+
     private func pingWebSocket() {  // Keep the socket connection alive
         guard networkReachability != .notReachable else {
             logger.error("Not pinging \(self.accountId, privacy: .public), network is unreachable")
@@ -268,24 +294,12 @@ public class RemoteChangeObserver: NSObject, NKCommonDelegate, URLSessionWebSock
                 if self.webSocketPingFailCount > self.webSocketPingFailLimit {
                     Task.detached(priority: .medium) { self.reconnectWebSocket() }
                 } else {
-                    Task.detached(priority: .background) { self.pingWebSocket() }
+                    self.startNewWebSocketPingTask()
                 }
                 return
             }
 
-            Task.detached(priority: .background) {
-                do {
-                    try await Task.sleep(nanoseconds: self.webSocketPingIntervalNanoseconds)
-                } catch let error {
-                    self.logger.error(
-                        """
-                        Could not sleep websocket ping for \(self.accountId, privacy: .public):
-                        \(error.localizedDescription, privacy: .public)
-                        """
-                    )
-                }
-                self.pingWebSocket()
-            }
+            self.startNewWebSocketPingTask()
         }
     }
 
@@ -331,7 +345,7 @@ public class RemoteChangeObserver: NSObject, NKCommonDelegate, URLSessionWebSock
             NotificationCenter.default.post(
                 name: NotifyPushAuthenticatedNotificationName, object: self
             )
-            pingWebSocket()
+            startNewWebSocketPingTask()
         } else if string == "err: Invalid credentials" {
             logger.debug(
                 """
