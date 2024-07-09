@@ -2885,14 +2885,15 @@ Note that this selects only what pool upgrades are taken from, and that there ar
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="363"/>
         <source>enterprise</source>
-        <translation type="unfinished"/>
+        <translation>предузетничка</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="391"/>
         <source>- enterprise: contains stable versions for customers.
 </source>
         <comment>description of enterprise update channel for enterprise customers</comment>
-        <translation type="unfinished"/>
+        <translation>- предузетничка: садржи стабилне верзије за муштерије.
+</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="396"/>
@@ -2907,7 +2908,12 @@ Note that this selects only what pool upgrades are taken from, and that there ar
 - daily: contains versions created daily only for testing and development
 %1
 Downgrading versions is not possible immediately: changing from beta to stable means waiting for the new stable version.</source>
-        <translation type="unfinished"/>
+        <translation>Канал одређује која ажурирања ће се понудити за инсталирање:
+- стабилни: садржи тестиране верзије које се сматрају за поуздане
+- бета: садржи верзије са новим функцијама које можда нису темељно тестиране
+- дневни: садржи верзије које се креирају свакодневно и служе само за тестирање и развој
+%1
+Враћање на старију верзију није могуће тренутно: промена са бета канала на стабилни значи да ће се чекати на нову стабилну верзију.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="364"/>

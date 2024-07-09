@@ -2166,7 +2166,7 @@ If you restore the files, they will be downloaded again from the server.</source
     <message>
         <location filename="../src/gui/folder.cpp" line="1638"/>
         <source>Restore files</source>
-        <translation type="unfinished"/>
+        <translation>Restaurer les fichiers</translation>
     </message>
 </context>
 <context>
@@ -2875,7 +2875,7 @@ Notez que cela ne permet seulement que de sélectionner où sont récupérées l
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="359"/>
         <source>daily</source>
-        <translation type="unfinished"/>
+        <translation>quotidien</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="363"/>
@@ -5355,12 +5355,12 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1052"/>
         <source>Open Nextcloud Assistant in browser</source>
-        <translation type="unfinished"/>
+        <translation>Ouvrir l&apos;assistant Nextcloud dans le navigateur</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1052"/>
         <source>Open Nextcloud Talk in browser</source>
-        <translation type="unfinished"/>
+        <translation>Ouvrir Nextcloud Discussion dans le navigateur</translation>
     </message>
 </context>
 <context>
