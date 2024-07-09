@@ -118,6 +118,8 @@ public class RemoteChangeObserver: NSObject, NKCommonDelegate, URLSessionWebSock
         webSocketTask = nil
         webSocketOperationQueue.cancelAllOperations()
         webSocketOperationQueue.isSuspended = true
+        webSocketPingTask?.cancel()
+        webSocketPingTask = nil
         webSocketPingFailCount = 0
     }
 
