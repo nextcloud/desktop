@@ -154,7 +154,7 @@ std::optional<std::pair<bool, bool>> FileProviderXPC::fastEnumerationStateForExt
         receivedFastEnumerationSet = set;
         dispatch_semaphore_signal(semaphore);
     }];
-    dispatch_wait(semaphore, DISPATCH_TIME_FOREVER);
+    dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
     return std::optional<std::pair<bool, bool>>{{receivedFastEnumerationEnabled, receivedFastEnumerationSet}};
 }
 
