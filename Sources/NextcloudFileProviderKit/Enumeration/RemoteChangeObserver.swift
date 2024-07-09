@@ -266,15 +266,15 @@ public class RemoteChangeObserver: NSObject, NKCommonDelegate, URLSessionWebSock
                 )
                 self.webSocketPingFailCount += 1
                 if self.webSocketPingFailCount > self.webSocketPingFailLimit {
-                    self.reconnectWebSocket()
+                    Task.detached(priority: .medium) { self.reconnectWebSocket() }
                 } else {
-                    self.pingWebSocket()
+                    Task.detached(priority: .background) { self.pingWebSocket() }
                 }
                 return
             }
 
             // TODO: Stop on auth change
-            Task {
+            Task.detached(priority: .background) {
                 do {
                     try await Task.sleep(nanoseconds: self.webSocketPingIntervalNanoseconds)
                 } catch let error {
