@@ -171,43 +171,51 @@ void AccountSettings::slotCustomContextMenuRequested(Folder *folder)
 
 
     // Root-folder specific actions:
-
     menu->addSeparator();
-
-    bool folderPaused = folder->syncPaused();
-    bool folderConnected = folder->accountState()->isConnected();
 
     // qpointer for the async context menu
     if (OC_ENSURE(folder->isReady())) {
+        const bool folderPaused = folder->syncPaused();
+
         if (!folderPaused) {
-            QAction *ac = menu->addAction(tr("Force sync now"));
+            QAction *forceSyncAction = menu->addAction(tr("Force sync now"));
             if (folder->isSyncRunning()) {
-                ac->setText(tr("Restart sync"));
+                forceSyncAction->setText(tr("Restart sync"));
             }
-            ac->setEnabled(folderConnected);
-            connect(ac, &QAction::triggered, this, [folder, this] { slotForceSyncCurrentFolder(folder); });
+            forceSyncAction->setEnabled(folder->accountState()->isConnected());
+            connect(forceSyncAction, &QAction::triggered, this, [folder, this] { slotForceSyncCurrentFolder(folder); });
         }
 
-        QAction *ac = menu->addAction(folderPaused ? tr("Resume sync") : tr("Pause sync"));
-        connect(ac, &QAction::triggered, this, [folder, this] { slotEnableCurrentFolder(folder, true); });
+        QAction *resumeAction = menu->addAction(folderPaused ? tr("Resume sync") : tr("Pause sync"));
+        connect(resumeAction, &QAction::triggered, this, [folder, this] { slotEnableCurrentFolder(folder, true); });
 
         if (!isDeployed) {
             if (!Theme::instance()->syncNewlyDiscoveredSpaces()) {
                 addRemoveFolderAction(menu);
             }
 
+            auto maybeShowEnableVfs = [folder, menu, this]() {
+                // Only show "Enable VFS" if a VFS mode is available
+                const auto mode = VfsPluginManager::instance().bestAvailableVfsMode();
+                if (FolderMan::instance()->checkVfsAvailability(folder->path(), mode)) {
+                    if (mode == Vfs::WindowsCfApi) {
+                        QAction *enableVfsAction = menu->addAction(tr("Enable virtual file support"));
+                        connect(enableVfsAction, &QAction::triggered, this, [folder, this] { slotEnableVfsCurrentFolder(folder); });
+                    }
+                }
+            };
+
             if (Theme::instance()->showVirtualFilesOption()) {
-                if (folder->virtualFilesEnabled()) {
-                    if (!Theme::instance()->forceVirtualFilesOption()) {
+                if (Theme::instance()->forceVirtualFilesOption()) {
+                    if (!folder->virtualFilesEnabled()) {
+                        // VFS is currently disabled, but is forced on by theming (e.g. due to a theme change)
+                        maybeShowEnableVfs();
+                    }
+                } else {
+                    if (folder->virtualFilesEnabled()) {
                         menu->addAction(tr("Disable virtual file support"), this, [folder, this] { slotDisableVfsCurrentFolder(folder); });
                     } else {
-                        const auto mode = VfsPluginManager::instance().bestAvailableVfsMode();
-                        if (FolderMan::instance()->checkVfsAvailability(folder->path(), mode)) {
-                            if (mode == Vfs::WindowsCfApi) {
-                                ac = menu->addAction(tr("Enable virtual file support"));
-                                connect(ac, &QAction::triggered, this, [folder, this] { slotEnableVfsCurrentFolder(folder); });
-                            }
-                        }
+                        maybeShowEnableVfs();
                     }
                 }
             }
@@ -215,8 +223,7 @@ void AccountSettings::slotCustomContextMenuRequested(Folder *folder)
                 menu->addAction(tr("Choose what to sync"), this, [folder, this] { showSelectiveSyncDialog(folder); });
             }
             menu->popup(QCursor::pos());
-            // accassebility
-            menu->setFocus();
+            menu->setFocus(); // for accassebility (keyboard navigation)
         } else {
             menu->deleteLater();
         }
