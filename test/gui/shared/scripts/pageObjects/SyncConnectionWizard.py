@@ -113,37 +113,6 @@ class SyncConnectionWizard:
         "visible": 1,
         "window": names.add_Folder_Sync_Connection_OCC_FolderWizard,
     }
-    CREATE_REMOTE_FOLDER_BUTTON = {
-        "container": names.add_Folder_Sync_Connection_groupBox_QGroupBox,
-        "name": "addFolderButton",
-        "type": "QPushButton",
-        "visible": 1,
-    }
-    CREATE_REMOTE_FOLDER_INPUT = {
-        "buddy": names.create_Remote_Folder_Enter_the_name_of_the_new_folder_to_be_created_below_QLabel,
-        "type": "QLineEdit",
-        "unnamed": 1,
-        "visible": 1,
-    }
-    CREATE_REMOTE_FOLDER_CONFIRM_BUTTON = {
-        "text": "OK",
-        "type": "QPushButton",
-        "unnamed": 1,
-        "visible": 1,
-        "window": names.create_Remote_Folder_QInputDialog,
-    }
-    REFRESH_BUTTON = {
-        "container": names.add_Folder_Sync_Connection_groupBox_QGroupBox,
-        "name": "refreshButton",
-        "type": "QPushButton",
-        "visible": 1,
-    }
-    REMOTE_FOLDER_SELECTION_INPUT = {
-        "name": "folderEntry",
-        "type": "QLineEdit",
-        "visible": 1,
-        "window": names.add_Folder_Sync_Connection_OCC_FolderWizard,
-    }
 
     @staticmethod
     def setSyncPathInSyncConnectionWizardOc10(sync_path=''):
