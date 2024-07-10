@@ -2879,24 +2879,25 @@ Merk at dette kun velger hvilke oppgraderinger av bassenget er hentet fra, og at
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="359"/>
         <source>daily</source>
-        <translation type="unfinished"/>
+        <translation>daglig</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="363"/>
         <source>enterprise</source>
-        <translation type="unfinished"/>
+        <translation>foretagende</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="391"/>
         <source>- enterprise: contains stable versions for customers.
 </source>
         <comment>description of enterprise update channel for enterprise customers</comment>
-        <translation type="unfinished"/>
+        <translation>- foretagende: inneholder stabile versjoner for kunder.
+</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="396"/>
         <source>Changing update channel?</source>
-        <translation type="unfinished"/>
+        <translation>Bytte oppdateringskanal?</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="397"/>
@@ -2906,7 +2907,12 @@ Merk at dette kun velger hvilke oppgraderinger av bassenget er hentet fra, og at
 - daily: contains versions created daily only for testing and development
 %1
 Downgrading versions is not possible immediately: changing from beta to stable means waiting for the new stable version.</source>
-        <translation type="unfinished"/>
+        <translation>Kanalen bestemmer hvilke oppgraderinger som skal tilbys å installere:
+- stabil: inneholder testede versjoner som anses som pålitelige
+- beta: inneholder versjoner med nye funksjoner som kanskje ikke testes grundig
+- daglig: inneholder versjoner som kun opprettes daglig for testing og utvikling
+%1
+Nedgradering av versjoner er ikke mulig umiddelbart: endring fra beta til stabil betyr å vente på den nye stabile versjonen.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="364"/>
