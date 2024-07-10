@@ -339,6 +339,7 @@ final class RemoteChangeObserverTests: XCTestCase {
         remoteInterface.capabilities = mockCapabilities
 
         var authenticated = false
+        var notified = false
 
         NotificationCenter.default.addObserver(
             forName: NotifyPushAuthenticatedNotificationName, object: nil, queue: nil
@@ -346,9 +347,11 @@ final class RemoteChangeObserverTests: XCTestCase {
             authenticated = true
         }
 
+        let notificationInterface = MockChangeNotificationInterface()
+        notificationInterface.changeHandler = { notified = true }
         remoteChangeObserver = RemoteChangeObserver(
             remoteInterface: remoteInterface,
-            changeNotificationInterface: MockChangeNotificationInterface(),
+            changeNotificationInterface: notificationInterface,
             domain: nil
         )
         remoteChangeObserver?.networkReachabilityObserver(.reachableEthernetOrWiFi)
@@ -360,6 +363,15 @@ final class RemoteChangeObserverTests: XCTestCase {
             }
         }
         XCTAssertTrue(authenticated)
+
+        Self.notifyPushServer.send(message: "notify_file")
+        for _ in 0...Self.timeout {
+            try await Task.sleep(nanoseconds: 1_000_000)
+            if notified {
+                break
+            }
+        }
+        XCTAssertTrue(notified) // Check notification handling is working properly
 
         remoteChangeObserver?.networkReachabilityObserver(.notReachable)
         Self.notifyPushServer.resetCredentialsState()
@@ -376,6 +388,16 @@ final class RemoteChangeObserverTests: XCTestCase {
         // trying to connect at all.
         XCTAssertFalse(authenticated)
 
+        notified = false
+        Self.notifyPushServer.send(message: "notify_file")
+        for _ in 0...Self.timeout {
+            try await Task.sleep(nanoseconds: 1_000_000)
+            if notified {
+                break
+            }
+        }
+        XCTAssertFalse(notified) // Check we disconnected and are not listening to the server
+
         remoteChangeObserver?.networkReachabilityObserver(.reachableEthernetOrWiFi)
         for _ in 0...Self.timeout {
             try await Task.sleep(nanoseconds: 1_000_000)
@@ -384,5 +406,14 @@ final class RemoteChangeObserverTests: XCTestCase {
             }
         }
         XCTAssertTrue(authenticated)
+
+        Self.notifyPushServer.send(message: "notify_file")
+        for _ in 0...Self.timeout {
+            try await Task.sleep(nanoseconds: 1_000_000)
+            if notified {
+                break
+            }
+        }
+        XCTAssertTrue(notified) // Check notification handling is working properly again
     }
 }
