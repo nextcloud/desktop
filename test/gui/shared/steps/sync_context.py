@@ -288,3 +288,8 @@ def step(context):
 def step(context):
     SyncConnection.remove_folder_sync_connection()
     SyncConnection.confirm_folder_sync_connection_removal()
+
+
+@Then('the file "|any|" should have status "|any|" in the activity tab')
+def step(context, file_name, status):
+    Activity.hasSyncStatus(file_name, status)

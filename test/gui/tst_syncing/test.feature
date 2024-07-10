@@ -15,7 +15,10 @@ Feature: Syncing files
             test content
             """
         And the user waits for file "lorem-for-upload.txt" to be synced
-        Then as "Alice" the file "lorem-for-upload.txt" should have the content "test content" in the server
+        And the user clicks on the activity tab
+        And the user selects "Local Activity" tab in the activity
+        Then the file "lorem-for-upload.txt" should have status "Uploaded" in the activity tab
+        And as "Alice" the file "lorem-for-upload.txt" should have the content "test content" in the server
 
 
     Scenario: Syncing all files and folders from the server
