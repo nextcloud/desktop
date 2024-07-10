@@ -6,10 +6,17 @@ jobs:
   build:
     name: macOS Build and Test
     runs-on: macos-14
+    strategy:
+        matrix:
+          craft_options: [
+            '--options nextcloud-client.buildFileProviderModule=False',
+            '--options nextcloud-client.buildFileProviderModule=True'
+          ]
     env:
       CRAFT_TARGET: macos-clang-arm64
       CRAFT_MASTER_LOCATION: ${{ github.workspace }}/CraftMaster
       CRAFT_MASTER_CONFIG: ${{ github.workspace }}/craftmaster.ini
+      CRAFT_BLUEPRINT_OPTIONS: ${{ matrix.craft_options }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -54,7 +61,7 @@ jobs:
 
       - name: Build client
         run: |
-          python "${{ env.CRAFT_MASTER_LOCATION }}/CraftMaster.py" --config "${{ env.CRAFT_MASTER_CONFIG }}" --target ${{ env.CRAFT_TARGET }} -c --src-dir ${{ github.workspace }} nextcloud-client
+          python "${{ env.CRAFT_MASTER_LOCATION }}/CraftMaster.py" --config "${{ env.CRAFT_MASTER_CONFIG }}" --target ${{ env.CRAFT_TARGET }} -c --src-dir ${{ github.workspace }} ${{ env.CRAFT_BLUEPRINT_OPTIONS }} nextcloud-client
 
       - name: Run tests
         run: |
