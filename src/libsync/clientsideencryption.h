@@ -63,8 +63,7 @@ class CertificateInformation {
 public:
     CertificateInformation();
 
-    explicit CertificateInformation(PKCS11_KEY *hardwarePublicKey,
-                                    PKCS11_KEY *hardwarePrivateKey,
+    explicit CertificateInformation(PKCS11_KEY *hardwarePrivateKey,
                                     QSslCertificate &&certificate);
 
     explicit CertificateInformation(const QByteArray& privateKey,
@@ -83,8 +82,6 @@ public:
     [[nodiscard]] bool isSelfSigned() const;
 
     [[nodiscard]] QSslKey getSslPublicKey() const;
-
-    [[nodiscard]] PKCS11_KEY* getPkcs11PublicKey() const;
 
     [[nodiscard]] PKey getEvpPublicKey() const;
 
@@ -106,8 +103,6 @@ public:
 
 private:
     void checkEncryptionCertificate();
-
-    PKCS11_KEY* _hardwarePublicKey = nullptr;
 
     PKCS11_KEY* _hardwarePrivateKey = nullptr;
 

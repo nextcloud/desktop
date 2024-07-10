@@ -133,6 +133,8 @@ public:
         return _pkcsS11Ctx;
     }
 
+    void clear();
+
 private:
     PKCS11_CTX* _pkcsS11Ctx = nullptr;
 };

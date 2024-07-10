@@ -159,4 +159,12 @@ Pkcs11Context &Pkcs11Context::operator=(Pkcs11Context &&otherContext)
     return *this;
 }
 
+void Pkcs11Context::clear()
+{
+    if (_pkcsS11Ctx) {
+        PKCS11_CTX_free(_pkcsS11Ctx);
+        _pkcsS11Ctx = nullptr;
+    }
+}
+
 }

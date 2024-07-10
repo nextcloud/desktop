@@ -223,14 +223,6 @@ void ClientSideEncryptionTokenSelector::discoverCertificates(const AccountPtr &a
             const auto certificateId = QByteArray{reinterpret_cast<char*>(currentCertificate->id), static_cast<int>(currentCertificate->id_len)};
             qCInfo(lcCseSelector()) << "new certificate ID:" << certificateId.toBase64();
 
-            const auto certificateSubjectName = X509_get_subject_name(currentCertificate->x509);
-            if (!certificateSubjectName) {
-                qCWarning(lcCseSelector()) << "X509_get_subject_name failed" << ERR_reason_error_string(ERR_get_error());
-
-                Q_EMIT failedToInitialize(account);
-                return;
-            }
-
             Bio out;
             const auto ret = PEM_write_bio_X509(out, currentCertificate->x509);
             if (ret <= 0){
