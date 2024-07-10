@@ -70,8 +70,8 @@ void SpacesManager::refresh()
                     _spacesMap.insert(dr.getId(), space);
                 } else {
                     space->setDrive(dr);
-                    Q_EMIT spaceChanged(space);
                 }
+                Q_EMIT spaceChanged(space);
             }
             for (const QString &id : oldKeys) {
                 auto *oldSpace = _spacesMap.take(id);
