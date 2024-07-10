@@ -45,9 +45,14 @@ public class RemoteChangeObserver: NSObject, NKCommonDelegate, URLSessionWebSock
     }
     public var pollingActive: Bool { pollingTimer != nil }
 
-    private var networkReachability: NKCommon.TypeReachability = .unknown {
+    private(set) var networkReachability: NKCommon.TypeReachability = .unknown {
         didSet {
-            if oldValue == .notReachable, networkReachability != .notReachable {
+            if networkReachability == .notReachable {
+                logger.info("Network unreachable, stopping websocket and stopping polling")
+                stopPollingTimer()
+                resetWebSocket()
+            } else if oldValue == .notReachable {
+                logger.info("Network reachable, trying to reconnect to websocket")
                 reconnectWebSocket()
                 changeNotificationInterface.notifyChange()
             }
@@ -363,5 +368,9 @@ public class RemoteChangeObserver: NSObject, NKCommonDelegate, URLSessionWebSock
                 """
             )
         }
+    }
+
+    public func networkReachabilityObserver(_ typeReachability: NKCommon.TypeReachability) {
+        networkReachability = typeReachability
     }
 }
