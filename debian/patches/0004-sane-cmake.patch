@@ -152,7 +152,7 @@ index 0682090c0..000000000
 -set(CPACK_PROJECT_CONFIG_FILE "${CMAKE_BINARY_DIR}/CPackOptions.cmake") # File included at cpack time, once per generator after setting CPACK_GENERATOR to the actual generator being used; allows per-generator setting of CPACK_* variables at cpack time.  ${PROJECT_BINARY_DIR}/CPackOptions.cmake
 -include(CPack)
 diff --git a/VERSION.cmake b/VERSION.cmake
-index 50bd2dfc2..d645cc742 100644
+index 27bbf8f80..57b58d513 100644
 --- a/VERSION.cmake
 +++ b/VERSION.cmake
 @@ -17,22 +17,40 @@ set(NEXTCLOUD_SERVER_VERSION_MOUNT_ROOT_PROPERTY_SUPPORTED_MAJOR 28)
@@ -160,7 +160,7 @@ index 50bd2dfc2..d645cc742 100644
  set(NEXTCLOUD_SERVER_VERSION_MOUNT_ROOT_PROPERTY_SUPPORTED_PATCH 3)
  
 -if ( NOT DEFINED MIRALL_VERSION_SUFFIX )
--    set( MIRALL_VERSION_SUFFIX "git") #e.g. beta1, beta2, rc1
+-    set( MIRALL_VERSION_SUFFIX "daily") #e.g. beta1, beta2, rc1
 -endif( NOT DEFINED MIRALL_VERSION_SUFFIX )
 +# Composite defines
 +# Used e.g. for libraries Keep at x.y.z.
@@ -184,7 +184,7 @@ index 50bd2dfc2..d645cc742 100644
 +# External version or version with suffix
 +if ( NOT DEFINED EXTERNAL_VERSION )
 +    if ( NOT DEFINED MIRALL_VERSION_SUFFIX )
-+        set ( MIRALL_VERSION_SUFFIX "git") #e.g. beta1, beta2, rc1
++        set ( MIRALL_VERSION_SUFFIX "daily") #e.g. beta1, beta2, rc1
 +    endif( NOT DEFINED MIRALL_VERSION_SUFFIX )
 +    include(GetGitRevisionDescription)
 +    get_git_head_revision(GIT_REFSPEC GIT_SHA1)
