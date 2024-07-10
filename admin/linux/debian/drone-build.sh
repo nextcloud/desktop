@@ -43,8 +43,19 @@ fi
 set -x
 
 cd "${DRONE_WORKSPACE}"
+git config --global user.email "drone@noemail.invalid"
+git config --global user.name "Drone User"
 git fetch --tags
-read basever revdate kind <<<$(admin/linux/debian/scripts/git2changelog.py /tmp/tmpchangelog stable)
+
+for distribution in ${UBUNTU_DISTRIBUTIONS} ${DEBIAN_DISTRIBUTIONS}; do
+    git fetch origin debian/dist/${distribution}/${DRONE_TARGET_BRANCH}
+    git checkout origin/debian/dist/${distribution}/${DRONE_TARGET_BRANCH}
+
+    git merge ${DRONE_COMMIT}
+
+    read basever revdate kind <<<$(admin/linux/debian/scripts/git2changelog.py /tmp/tmpchangelog stable)
+    break
+done
 
 cd "${DRONE_DIR}"
 
@@ -64,8 +75,6 @@ cp -a ${DRONE_WORKSPACE} nextcloud-desktop_${basever}-${revdate}
 tar cjf nextcloud-desktop_${basever}-${revdate}.orig.tar.bz2 --exclude .git --exclude binary nextcloud-desktop_${basever}-${revdate}
 
 cd "${DRONE_WORKSPACE}"
-git config --global user.email "drone@noemail.invalid"
-git config --global user.name "Drone User"
 
 for distribution in ${UBUNTU_DISTRIBUTIONS} ${DEBIAN_DISTRIBUTIONS}; do
     git checkout -- .
