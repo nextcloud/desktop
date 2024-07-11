@@ -28,6 +28,10 @@
 
 #include <ctime>
 
+#if !defined(Q_OS_MACOS) || __MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_15
+#include <filesystem>
+#endif
+
 class QFile;
 
 namespace OCC {
@@ -52,6 +56,8 @@ namespace FileSystem {
      * @brief Mark the file as hidden  (only has effects on windows)
      */
     void OCSYNC_EXPORT setFileHidden(const QString &filename, bool hidden);
+
+    bool OCSYNC_EXPORT isFileHidden(const QString &filename);
 
     /**
      * @brief Marks the file as read-only.
@@ -88,6 +94,34 @@ namespace FileSystem {
      * files, see above.
      */
     bool OCSYNC_EXPORT fileExists(const QString &filename, const QFileInfo & = QFileInfo());
+
+    /**
+     * @brief Checks whether it is a dir.
+     *
+     * Use this over QFileInfo::isDir() and QFile::isDir() to avoid bugs with lnk
+     * files, see above.
+     */
+    bool OCSYNC_EXPORT isDir(const QString &filename, const QFileInfo& = QFileInfo());
+
+    /**
+     * @brief Checks whether it is a file.
+     *
+     * Use this over QFileInfo::isDir() and QFile::isDir() to avoid bugs with lnk
+     * files, see above.
+     */
+    bool OCSYNC_EXPORT isFile(const QString &filename, const QFileInfo& fileInfo = QFileInfo());
+
+    /**
+     * @brief Checks whether the file is writable.
+     *
+     * Use this over QFileInfo::isDir() and QFile::isDir() to avoid bugs with lnk
+     * files, see above.
+     */
+    bool OCSYNC_EXPORT isWritable(const QString &filename, const QFileInfo &fileInfo = QFileInfo());
+
+    bool OCSYNC_EXPORT isReadable(const QString &filename, const QFileInfo &fileInfo = QFileInfo());
+
+    bool OCSYNC_EXPORT isSymLink(const QString &filename, const QFileInfo &fileInfo = QFileInfo());
 
     /**
      * @brief Rename the file \a originFileName to \a destinationFileName.
@@ -146,6 +180,9 @@ namespace FileSystem {
      *    the windows API functions work with the normal "unixoid" representation too.
      */
     QString OCSYNC_EXPORT pathtoUNC(const QString &str);
+
+    std::filesystem::perms OCSYNC_EXPORT filePermissionsWin(const QString &filename);
+    void OCSYNC_EXPORT setFilePermissionsWin(const QString &filename, const std::filesystem::perms &perms);
 #endif
 
     /**

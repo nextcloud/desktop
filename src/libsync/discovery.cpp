@@ -606,7 +606,6 @@ void ProcessDirectoryJob::postProcessServerNew(const SyncFileItemPtr &item,
     if (!localEntry.isValid() &&
         item->_type == ItemTypeFile &&
         opts._vfs->mode() != Vfs::Off &&
-        !FileSystem::isLnkFile(item->_file) &&
         _pinState != PinState::AlwaysLocal &&
         !FileSystem::isExcludeFile(item->_file)) {
 
@@ -1137,7 +1136,12 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
             } else if (dbEntry._type == ItemTypeVirtualFileDehydration || localEntry.type == ItemTypeVirtualFileDehydration) {
                 item->_direction = SyncFileItem::Down;
                 item->_instruction = CSYNC_INSTRUCTION_SYNC;
-                item->_type = ItemTypeVirtualFileDehydration;
+                const auto pinState = _discoveryData->_syncOptions._vfs->pinState(path._local);
+                if (FileSystem::isLnkFile(path._local) && !_discoveryData->_syncOptions._vfs->pinState(path._local).isValid()) {
+                    item->_type = ItemTypeVirtualFileDownload;
+                } else {
+                    item->_type = ItemTypeVirtualFileDehydration;
+                }
             } else if (!serverModified
                 && (dbEntry._inode != localEntry.inode
                     || (localEntry.isMetadataMissing && item->_type == ItemTypeFile && !FileSystem::isLnkFile(item->_file))
@@ -2165,7 +2169,7 @@ bool ProcessDirectoryJob::isVfsWithSuffix() const
 void ProcessDirectoryJob::computePinState(PinState parentState)
 {
     _pinState = parentState;
-    if (_queryLocal != ParentDontExist && QFileInfo::exists(_discoveryData->_localDir + _currentFolder._local)) {
+    if (_queryLocal != ParentDontExist && FileSystem::fileExists(_discoveryData->_localDir + _currentFolder._local)) {
         if (auto state = _discoveryData->_syncOptions._vfs->pinState(_currentFolder._local)) // ouch! pin local or original?
             _pinState = *state;
     }

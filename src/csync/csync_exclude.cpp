@@ -31,6 +31,7 @@
 #include "csync_exclude.h"
 
 #include "common/utility.h"
+#include "common/filesystembase.h"
 #include "../version.h"
 
 #include <QString>
@@ -402,7 +403,7 @@ bool ExcludedFiles::isExcluded(
         while (path.size() > basePath.size()) {
             QFileInfo fi(path);
             if (fi.fileName() != QStringLiteral(".sync-exclude.lst")
-                && (fi.isHidden() || fi.fileName().startsWith(QLatin1Char('.')))) {
+                && (FileSystem::isFileHidden(path) || fi.fileName().startsWith(QLatin1Char('.')))) {
                 return true;
             }
 
@@ -411,9 +412,8 @@ bool ExcludedFiles::isExcluded(
         }
     }
 
-    QFileInfo fi(filePath);
     ItemType type = ItemTypeFile;
-    if (fi.isDir()) {
+    if (OCC::FileSystem::isDir(filePath)) {
         type = ItemTypeDirectory;
     }
 
@@ -437,9 +437,7 @@ CSYNC_EXCLUDE_TYPE ExcludedFiles::traversalPatternMatch(const QString &path, Ite
     if (filetype == ItemTypeDirectory) {
         const auto basePath = QString(_localPath + path + QLatin1Char('/'));
         const QString absolutePath = basePath + QStringLiteral(".sync-exclude.lst");
-        QFileInfo excludeFileInfo(absolutePath);
-
-        if (excludeFileInfo.isReadable()) {
+        if (FileSystem::isReadable(absolutePath)) {
             addExcludeFilePath(absolutePath);
             reloadExcludeFiles();
         } else {

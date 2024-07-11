@@ -42,7 +42,7 @@ void SyncRunFileLog::start(const QString &folderPath)
     QString filename = logpath + QLatin1String("/") + filenameSingle + QLatin1String("_sync.log");
 
     int depthIndex = 2;
-    while(QFile::exists(filename)) {
+    while (FileSystem::fileExists(filename)) {
 
         QFile file(filename);
         file.open(QIODevice::ReadOnly| QIODevice::Text);
@@ -65,9 +65,8 @@ void SyncRunFileLog::start(const QString &folderPath)
     }
 
     // When the file is too big, just rename it to an old name.
-    QFileInfo info(filename);
-    bool exists = info.exists();
-    if (exists && info.size() > logfileMaxSize) {
+    bool exists = FileSystem::fileExists(filename);
+    if (exists && FileSystem::getSize(filename) > logfileMaxSize) {
         exists = false;
         QString newFilename = filename + QLatin1String(".1");
         QFile::remove(newFilename);

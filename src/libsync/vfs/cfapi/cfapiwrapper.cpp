@@ -784,12 +784,11 @@ OCC::CfApiWrapper::FileHandle OCC::CfApiWrapper::handleForPath(const QString &pa
         return {};
     }
 
-    QFileInfo pathFileInfo(path);
-    if (!pathFileInfo.exists()) {
+    if (!FileSystem::fileExists(path)) {
         return {};
     }
 
-    if (pathFileInfo.isDir()) {
+    if (FileSystem::isDir(path)) {
         HANDLE handle = nullptr;
         const qint64 openResult = CfOpenFileWithOplock(path.toStdWString().data(), CF_OPEN_FILE_FLAG_NONE, &handle);
         if (openResult == S_OK) {
@@ -797,7 +796,7 @@ OCC::CfApiWrapper::FileHandle OCC::CfApiWrapper::handleForPath(const QString &pa
         } else {
             qCWarning(lcCfApiWrapper) << "Could not open handle for " << path << " result: " << QString::fromWCharArray(_com_error(openResult).ErrorMessage());
         }
-    } else if (pathFileInfo.isFile()) {
+    } else if (FileSystem::isFile(path)) {
         const auto longpath = OCC::FileSystem::longWinPath(path);
         const auto handle = CreateFile(longpath.toStdWString().data(), 0, 0, nullptr,
                                        OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr);

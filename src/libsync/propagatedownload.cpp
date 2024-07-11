@@ -1007,7 +1007,7 @@ void PropagateDownloadFile::checksumValidateFailedAbortDownload(const QString &e
 void PropagateDownloadFile::deleteExistingFolder()
 {
     QString existingDir = propagator()->fullLocalPath(_item->_file);
-    if (!QFileInfo(existingDir).isDir()) {
+    if (!FileSystem::isDir(existingDir)) {
         return;
     }
 
@@ -1204,9 +1204,17 @@ void PropagateDownloadFile::downloadFinished()
     if (previousFileExists) {
         // Preserve the existing file permissions.
         const auto existingFile = QFileInfo{filename};
+#ifdef Q_OS_WIN
+        const auto existingPermissions = FileSystem::filePermissionsWin(filename);
+        const auto tmpFilePermissions = FileSystem::filePermissionsWin(_tmpFile.fileName());
+        if (existingPermissions != tmpFilePermissions) {
+            FileSystem::setFilePermissionsWin(_tmpFile.fileName(), existingPermissions);
+        }
+#else
         if (existingFile.permissions() != _tmpFile.permissions()) {
             _tmpFile.setPermissions(existingFile.permissions());
         }
+#endif
         preserveGroupOwnership(_tmpFile.fileName(), existingFile);
 
         // Make the file a hydrated placeholder if possible
@@ -1228,7 +1236,7 @@ void PropagateDownloadFile::downloadFinished()
     }
 
     const auto isConflict = (_item->_instruction == CSYNC_INSTRUCTION_CONFLICT
-                             && (QFileInfo(filename).isDir() || !FileSystem::fileEquals(filename, _tmpFile.fileName()))) ||
+                             && (FileSystem::isDir(filename) || !FileSystem::fileEquals(filename, _tmpFile.fileName()))) ||
         _item->_instruction == CSYNC_INSTRUCTION_CASE_CLASH_CONFLICT;
 
     if (isConflict) {

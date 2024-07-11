@@ -84,7 +84,7 @@ void FolderWatcher::appendSubPaths(QDir dir, QStringList& subPaths) {
         QString path = dir.path() + "/" + newSubPaths[i];
         QFileInfo fileInfo(path);
         subPaths.append(path);
-        if (fileInfo.isDir()) {
+        if (FileSystem::isDir(path)) {
             QDir dir(path);
             appendSubPaths(dir, subPaths);
         }
@@ -176,9 +176,8 @@ int FolderWatcher::lockChangeDebouncingTimout() const
 
 void FolderWatcher::changeDetected(const QString &path)
 {
-    QFileInfo fileInfo(path);
     QStringList paths(path);
-    if (fileInfo.isDir()) {
+    if (FileSystem::isDir(path)) {
         QDir dir(path);
         appendSubPaths(dir, paths);
     }
