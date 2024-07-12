@@ -2126,12 +2126,12 @@ This means that the synchronization client might not upload local changes immedi
         <translation>إحتفظ بالملفات</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1538"/>
+        <location filename="../src/gui/folder.cpp" line="1539"/>
         <source>Virtual file download failed with code &quot;%1&quot;, status &quot;%2&quot; and error message &quot;%3&quot;</source>
         <translation>تعذّر تنزيل الملف الظاهري الذي رمزه: &quot;%1&quot;, الحالة: &quot;%2&quot; و رسالة الخطأ: &quot;%3&quot;</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1631"/>
+        <location filename="../src/gui/folder.cpp" line="1632"/>
         <source>All files in the server folder &quot;%1&quot; were deleted.
 
 If you restore the files, they will be uploaded again to the server.</source>
@@ -2140,7 +2140,7 @@ If you restore the files, they will be uploaded again to the server.</source>
 إذا طلبت استعادة هذه الملفات، فستتم إعادة رفعها مُجدّداً إلى الخادوم.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1632"/>
+        <location filename="../src/gui/folder.cpp" line="1633"/>
         <source>All files in the local folder &quot;%1&quot; were deleted.
 
 If you restore the files, they will be downloaded again from the server.</source>
@@ -2149,17 +2149,17 @@ If you restore the files, they will be downloaded again from the server.</source
 إذا طلب استعادة هذه الملفات، فستتم إعادة تنزيلها مُجدّداً من الخادوم.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1633"/>
+        <location filename="../src/gui/folder.cpp" line="1634"/>
         <source>Remove all files?</source>
         <translation>حذف كل الملفات؟</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1637"/>
+        <location filename="../src/gui/folder.cpp" line="1638"/>
         <source>Proceed to remove all files</source>
         <translation>إستمِر في حذف كل الملفات</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1638"/>
+        <location filename="../src/gui/folder.cpp" line="1639"/>
         <source>Restore files</source>
         <translation>إستعادة الملفات</translation>
     </message>
@@ -3967,7 +3967,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>تعذّرت المزامنة لأن وقت آخر تعديل للملف غير صالح</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1048"/>
+        <location filename="../src/libsync/discovery.cpp" line="1047"/>
         <source>Could not upload file, because it is open in &quot;%1&quot;.</source>
         <translation>يتعذّر فتح الملف لأنه مفتوح سلفاً في &quot;%1&quot;.</translation>
     </message>
@@ -4040,8 +4040,8 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>خطأ في تحديث البيانات الوصفية metadata بسبب أن &quot;آخر وقت تعديل للملف&quot; غير صالح</translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1480"/>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1505"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1481"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1506"/>
         <source>The folder %1 cannot be made read-only: %2</source>
         <translation>المجلد %1؛ لا يمكن جعله للقراءة فقط: %2</translation>
     </message>
@@ -4163,7 +4163,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>تعذّر إنشاء المجلد %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="229"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="228"/>
         <source>The folder %1 cannot be made read-only: %2</source>
         <translation>المجلد %1؛ لا يمكن جعله للقراءة فقط: %2</translation>
     </message>
@@ -4194,7 +4194,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::PropagateLocalRename</name>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="312"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="311"/>
         <source>Folder %1 cannot be renamed because of a local file or folder name clash!</source>
         <translation>المجلد %1 لا يمكن إعادة تسميته بسبب تعارض الاسم الجديد مع اسم مجلد أو ملف محلي آخر!</translation>
     </message>
@@ -5343,12 +5343,12 @@ Server replied with error: %2</source>
         <translation>حُلّ التعارض</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1052"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1053"/>
         <source>Open Nextcloud Assistant in browser</source>
         <translation>إفتَح &quot;مُساعِد نكست كلاود&quot; Assistant في المُستعرِض</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1052"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1053"/>
         <source>Open Nextcloud Talk in browser</source>
         <translation>إفتَح &quot;مُحادثة نكست كلاود&quot; Talk في المُستعرِض</translation>
     </message>

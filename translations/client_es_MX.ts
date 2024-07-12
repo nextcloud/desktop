@@ -2136,12 +2136,12 @@ Esto significa que el cliente de sincronización podría no cargar los cambios l
         <translation>Mantener archivos</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1538"/>
+        <location filename="../src/gui/folder.cpp" line="1539"/>
         <source>Virtual file download failed with code &quot;%1&quot;, status &quot;%2&quot; and error message &quot;%3&quot;</source>
         <translation>La descarga del archivo virtual falló con el código &quot;%1&quot; , estado &quot;%2&quot; y mensaje de error &quot;%3&quot;</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1631"/>
+        <location filename="../src/gui/folder.cpp" line="1632"/>
         <source>All files in the server folder &quot;%1&quot; were deleted.
 
 If you restore the files, they will be uploaded again to the server.</source>
@@ -2150,7 +2150,7 @@ If you restore the files, they will be uploaded again to the server.</source>
 Si restaura los archivos, serán cargados de nuevo al servidor.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1632"/>
+        <location filename="../src/gui/folder.cpp" line="1633"/>
         <source>All files in the local folder &quot;%1&quot; were deleted.
 
 If you restore the files, they will be downloaded again from the server.</source>
@@ -2159,17 +2159,17 @@ If you restore the files, they will be downloaded again from the server.</source
 Si restaura los archivos, serán descargados de nuevo del servidor.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1633"/>
+        <location filename="../src/gui/folder.cpp" line="1634"/>
         <source>Remove all files?</source>
         <translation>¿Eliminar todos los archivos?</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1637"/>
+        <location filename="../src/gui/folder.cpp" line="1638"/>
         <source>Proceed to remove all files</source>
         <translation>Proceder a eliminar todos los archivos</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1638"/>
+        <location filename="../src/gui/folder.cpp" line="1639"/>
         <source>Restore files</source>
         <translation>Restaurar archivos</translation>
     </message>
@@ -3986,7 +3986,7 @@ Este es un modo nuevo y experimental. Si decide usarlo, por favor informe cualqu
         <translation>No se puede sincronizar debido a una hora de modificación inválida</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1048"/>
+        <location filename="../src/libsync/discovery.cpp" line="1047"/>
         <source>Could not upload file, because it is open in &quot;%1&quot;.</source>
         <translation>No se puede cargar el archivo, porque está abierto en &quot;%1&quot;.</translation>
     </message>
@@ -4059,8 +4059,8 @@ Este es un modo nuevo y experimental. Si decide usarlo, por favor informe cualqu
         <translation>Error al actualizar los metadatos debido a una hora de modificación inválida</translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1480"/>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1505"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1481"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1506"/>
         <source>The folder %1 cannot be made read-only: %2</source>
         <translation>La carpeta %1 no se puede hacer de sólo lectura: %2</translation>
     </message>
@@ -4182,7 +4182,7 @@ Este es un modo nuevo y experimental. Si decide usarlo, por favor informe cualqu
         <translation>No se pudo crear la carpeta %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="229"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="228"/>
         <source>The folder %1 cannot be made read-only: %2</source>
         <translation>La carpeta %1 no se puede hacer de sólo lectura: %2</translation>
     </message>
@@ -4213,7 +4213,7 @@ Este es un modo nuevo y experimental. Si decide usarlo, por favor informe cualqu
 <context>
     <name>OCC::PropagateLocalRename</name>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="312"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="311"/>
         <source>Folder %1 cannot be renamed because of a local file or folder name clash!</source>
         <translation>¡No se puede renombrar la carpeta %1 debido a un conflicto de nombre con un archivo o carpeta local!</translation>
     </message>
@@ -5364,12 +5364,12 @@ El servidor respondió con el error: %2</translation>
         <translation>Resolver conflicto</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1052"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1053"/>
         <source>Open Nextcloud Assistant in browser</source>
         <translation>Abrir el asistente de Nextcloud en el navegador</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1052"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1053"/>
         <source>Open Nextcloud Talk in browser</source>
         <translation>Abrir Nextcloud Talk en el navegador</translation>
     </message>

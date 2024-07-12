@@ -2135,12 +2135,12 @@ Dette betyr at synkroniseringsklienten kanskje ikke laster opp lokale endringer 
         <translation>Behold filer</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1538"/>
+        <location filename="../src/gui/folder.cpp" line="1539"/>
         <source>Virtual file download failed with code &quot;%1&quot;, status &quot;%2&quot; and error message &quot;%3&quot;</source>
         <translation>Virtuell nedlasting av filen feilet med kode &quot;%1&quot;, status &quot;%2&quot; og feilmelding &quot;%3&quot;</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1631"/>
+        <location filename="../src/gui/folder.cpp" line="1632"/>
         <source>All files in the server folder &quot;%1&quot; were deleted.
 
 If you restore the files, they will be uploaded again to the server.</source>
@@ -2149,7 +2149,7 @@ If you restore the files, they will be uploaded again to the server.</source>
 Hvis du gjenoppretter filene, blir de lastet opp igjen til serveren.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1632"/>
+        <location filename="../src/gui/folder.cpp" line="1633"/>
         <source>All files in the local folder &quot;%1&quot; were deleted.
 
 If you restore the files, they will be downloaded again from the server.</source>
@@ -2158,17 +2158,17 @@ If you restore the files, they will be downloaded again from the server.</source
 Hvis du gjenoppretter filene, blir de lastet ned igjen fra serveren.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1633"/>
+        <location filename="../src/gui/folder.cpp" line="1634"/>
         <source>Remove all files?</source>
         <translation>Fjerne alle filer?</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1637"/>
+        <location filename="../src/gui/folder.cpp" line="1638"/>
         <source>Proceed to remove all files</source>
         <translation>Fortsett med å fjerne alle filer</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1638"/>
+        <location filename="../src/gui/folder.cpp" line="1639"/>
         <source>Restore files</source>
         <translation>Gjenopprett filer</translation>
     </message>
@@ -3986,7 +3986,7 @@ Dette er en ny, eksperimentell modus. Hvis du bestemmer deg for å bruke den, ve
         <translation>Kan ikke synkronisere på grunn av ugyldig endringstid</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1048"/>
+        <location filename="../src/libsync/discovery.cpp" line="1047"/>
         <source>Could not upload file, because it is open in &quot;%1&quot;.</source>
         <translation>Kunne ikke laste opp filen, fordi den er åpen i &quot;%1&quot;.</translation>
     </message>
@@ -4059,8 +4059,8 @@ Dette er en ny, eksperimentell modus. Hvis du bestemmer deg for å bruke den, ve
         <translation>Feil under oppdatering av metadata på grunn av ugyldig endringstid</translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1480"/>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1505"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1481"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1506"/>
         <source>The folder %1 cannot be made read-only: %2</source>
         <translation>Mappen %1 kan ikke gjøres skrivebeskyttet: %2</translation>
     </message>
@@ -4182,7 +4182,7 @@ Dette er en ny, eksperimentell modus. Hvis du bestemmer deg for å bruke den, ve
         <translation>Kunne ikke opprette mappen %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="229"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="228"/>
         <source>The folder %1 cannot be made read-only: %2</source>
         <translation>Mappen %1 kan ikke gjøres skrivebeskyttet: %2</translation>
     </message>
@@ -4213,7 +4213,7 @@ Dette er en ny, eksperimentell modus. Hvis du bestemmer deg for å bruke den, ve
 <context>
     <name>OCC::PropagateLocalRename</name>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="312"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="311"/>
         <source>Folder %1 cannot be renamed because of a local file or folder name clash!</source>
         <translation>Mappe %1 kan ikke omdøpes på grunn av et lokalt fil- eller mappenavn-sammenstøt!</translation>
     </message>
@@ -5364,12 +5364,12 @@ Server svarte med feil: %2</translation>
         <translation>Løs konflikt</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1052"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1053"/>
         <source>Open Nextcloud Assistant in browser</source>
         <translation>Åpne Nextcloud Assistant i nettleser</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1052"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1053"/>
         <source>Open Nextcloud Talk in browser</source>
         <translation>Åpne Nextcloud Talk i nettleser</translation>
     </message>
