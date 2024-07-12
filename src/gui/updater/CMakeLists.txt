@@ -36,9 +36,9 @@ if(WITH_APPIMAGEUPDATER)
     message(STATUS "Including built-in libappimageupdate based updater")
 
     set(appimageupdater_sources
-        ${CMAKE_CURRENT_SOURCE_DIR}/appimageupdateavailabledialog.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/appimageupdateavailabledialog.h
-        ${CMAKE_CURRENT_SOURCE_DIR}/appimageupdateavailabledialog.ui
+        ${CMAKE_CURRENT_SOURCE_DIR}/appimageupdateavailablewidget.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/appimageupdateavailablewidget.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/appimageupdateavailablewidget.ui
         ${CMAKE_CURRENT_SOURCE_DIR}/appimageupdater.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/appimageupdater.h
     )

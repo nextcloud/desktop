@@ -25,7 +25,7 @@
 #include "theme.h"
 #include "updater_private.h"
 
-#include "appimageupdateavailabledialog.h"
+#include "appimageupdateavailablewidget.h"
 #include "application.h"
 
 using namespace OCC;
@@ -161,14 +161,17 @@ void AppImageUpdater::versionInfoArrived(const UpdateInfo &info)
         return;
     }
 
-    auto dialog = new AppImageUpdateAvailableDialog(currentVersion, newVersion, ocApp()->gui()->settingsDialog());
+    auto widget = new AppImageUpdateAvailableWidget(currentVersion, newVersion, ocApp()->gui()->settingsDialog());
 
-    connect(dialog, &AppImageUpdateAvailableDialog::skipUpdateButtonClicked, this, [newVersion]() {
+    connect(widget, &AppImageUpdateAvailableWidget::skipUpdateButtonClicked, this, [newVersion, widget]() {
         qCInfo(lcUpdater) << "Update" << newVersion << "skipped by user";
         setPreviouslySkippedVersion(newVersion);
+        widget->deleteLater();
     });
 
-    connect(dialog, &QDialog::accepted, this, [this, appImageUpdaterShim]() {
+    connect(widget, &AppImageUpdateAvailableWidget::rejected, this, &QObject::deleteLater);
+
+    connect(widget, &AppImageUpdateAvailableWidget::accepted, this, [this, widget, appImageUpdaterShim]() {
         // binding AppImageUpdaterShim shared pointer to finished callback makes sure the updater is cleaned up when it's done
         connect(appImageUpdaterShim, &AppImageUpdaterShim::finished, this, [this](bool succeeded) {
             if (succeeded) {
@@ -182,10 +185,11 @@ void AppImageUpdater::versionInfoArrived(const UpdateInfo &info)
 
         setDownloadState(Downloading);
         appImageUpdaterShim->startUpdateInBackground();
+        widget->deleteLater();
     });
 
     ownCloudGui::raise();
-    dialog->open();
+    ocApp()->gui()->settingsDialog()->addModalWidget(widget);
 }
 
 void AppImageUpdater::backgroundCheckForUpdate()

@@ -12,8 +12,8 @@
  * for more details.
  */
 
-#include "appimageupdateavailabledialog.h"
-#include "ui_appimageupdateavailabledialog.h"
+#include "appimageupdateavailablewidget.h"
+#include "ui_appimageupdateavailablewidget.h"
 
 #include "theme.h"
 
@@ -23,9 +23,9 @@
 
 namespace OCC {
 
-AppImageUpdateAvailableDialog::AppImageUpdateAvailableDialog(const QVersionNumber &currentVersion, const QVersionNumber &newVersion, QWidget *parent)
-    : QDialog(parent)
-    , _ui(new Ui::AppImageUpdateAvailableDialogUi)
+AppImageUpdateAvailableWidget::AppImageUpdateAvailableWidget(const QVersionNumber &currentVersion, const QVersionNumber &newVersion, QWidget *parent)
+    : QWidget(parent)
+    , _ui(new Ui::AppImageUpdateAvailableWidgetUi)
 {
     _ui->setupUi(this);
 
@@ -34,7 +34,9 @@ AppImageUpdateAvailableDialog::AppImageUpdateAvailableDialog(const QVersionNumbe
     // the strings in the .ui file are not marked for translation, they're just placeholders
     _ui->installedVersionLabel->setText(tr("Installed version: %1").arg(currentVersion.toString()));
     _ui->availableVersionLabel->setText(tr("Available update: %1").arg(newVersion.toString()));
-    _ui->infoLabel->setText(tr("An update is available for this AppImage of %1. Do you want to install this update?\n\nThe update will be performed in the background, and overwrite the current AppImage file. You need to restart the app to complete the update.").arg(theme->appNameGUI()));
+    _ui->infoLabel->setText(tr("An update is available for this AppImage of %1. Do you want to install this update?\n\nThe update will be performed in the "
+                               "background, and overwrite the current AppImage file. You need to restart the app to complete the update.")
+                                .arg(theme->appNameGUI()));
 
     _ui->appIconLabel->setPixmap(theme->aboutIcon().pixmap(QSize(128, 128)));
 
@@ -49,13 +51,12 @@ AppImageUpdateAvailableDialog::AppImageUpdateAvailableDialog(const QVersionNumbe
     // also, we want to prevent users from reducing the widget size too much, i.e., widgets would be hidden partially
     setMinimumSize(sizeHint());
 
-    connect(_ui->skipButton, &QPushButton::clicked, this, [this]() {
-        Q_EMIT skipUpdateButtonClicked();
-        reject();
-    });
+    connect(_ui->buttonBox->button(QDialogButtonBox::Ok), &QPushButton::clicked, this, &AppImageUpdateAvailableWidget::accepted);
+    connect(_ui->buttonBox->button(QDialogButtonBox::Cancel), &QPushButton::clicked, this, &AppImageUpdateAvailableWidget::rejected);
+    connect(_ui->skipButton, &QPushButton::clicked, this, &AppImageUpdateAvailableWidget::skipUpdateButtonClicked);
 }
 
-AppImageUpdateAvailableDialog::~AppImageUpdateAvailableDialog()
+AppImageUpdateAvailableWidget::~AppImageUpdateAvailableWidget()
 {
     delete _ui;
 }
