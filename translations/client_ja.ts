@@ -226,7 +226,7 @@
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderEvictionDialog.qml" line="49"/>
         <source>Materialised items</source>
-        <translation type="unfinished"/>
+        <translation>具現化された項目</translation>
     </message>
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderEvictionDialog.qml" line="61"/>
@@ -280,7 +280,7 @@
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="174"/>
         <source>Signal file provider domain</source>
-        <translation type="unfinished"/>
+        <translation>シグナルファイルプロバイダドメイン</translation>
     </message>
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="179"/>
@@ -2145,29 +2145,33 @@ This means that the synchronization client might not upload local changes immedi
         <source>All files in the server folder &quot;%1&quot; were deleted.
 
 If you restore the files, they will be uploaded again to the server.</source>
-        <translation type="unfinished"/>
+        <translation>サーバフォルダ&quot;%1&quot;のすべてのファイルが削除されました。
+
+ファイルを復元すると、サーバーに再度アップロードされます。</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1633"/>
         <source>All files in the local folder &quot;%1&quot; were deleted.
 
 If you restore the files, they will be downloaded again from the server.</source>
-        <translation type="unfinished"/>
+        <translation>ローカルフォルダ&quot;%1&quot;のすべてのファイルが削除されました。
+
+ファイルを復元すると、サーバーから再度ダウンロードされます。</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1634"/>
         <source>Remove all files?</source>
-        <translation type="unfinished"/>
+        <translation>全てのファイルを削除しますか?</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1638"/>
         <source>Proceed to remove all files</source>
-        <translation type="unfinished"/>
+        <translation>全てのファイルを削除します</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1639"/>
         <source>Restore files</source>
-        <translation type="unfinished"/>
+        <translation>ファイルを復元する</translation>
     </message>
 </context>
 <context>
@@ -2877,24 +2881,25 @@ Note that this selects only what pool upgrades are taken from, and that there ar
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="359"/>
         <source>daily</source>
-        <translation type="unfinished"/>
+        <translation>毎日</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="363"/>
         <source>enterprise</source>
-        <translation type="unfinished"/>
+        <translation>enterprise</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="391"/>
         <source>- enterprise: contains stable versions for customers.
 </source>
         <comment>description of enterprise update channel for enterprise customers</comment>
-        <translation type="unfinished"/>
+        <translation>- enterprise: お客様向けの安定バージョンが含まれています。
+</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="396"/>
         <source>Changing update channel?</source>
-        <translation type="unfinished"/>
+        <translation>アップデートチャネルを変更しますか?</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="397"/>
@@ -2904,7 +2909,12 @@ Note that this selects only what pool upgrades are taken from, and that there ar
 - daily: contains versions created daily only for testing and development
 %1
 Downgrading versions is not possible immediately: changing from beta to stable means waiting for the new stable version.</source>
-        <translation type="unfinished"/>
+        <translation>チャネルは、どのアップグレードがインストールされるかを決定します：
+- stable: テスト済みの信頼できるバージョン。
+- beta: 十分なテストが行われていない可能性のある新機能を含むバージョンが含まれます。
+- daily: テストと開発のためだけに毎日作成されるバージョンが含まれます。
+%1
+バージョンのダウングレードはすぐにはできません。ベータ版から安定版への変更は、新しい安定版を待つことを意味します。</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="364"/>
@@ -3871,29 +3881,29 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/libsync/discovery.cpp" line="358"/>
         <source>Folder</source>
         <comment>name of folder entity to use when warning about invalid name</comment>
-        <translation type="unfinished"/>
+        <translation>フォルダー</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="358"/>
         <source>File</source>
         <comment>name of folder entity to use when warning about invalid name</comment>
-        <translation type="unfinished"/>
+        <translation>ファイル</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="360"/>
         <source>%1 name containing the character &quot;%2&quot; is not supported on this file system.</source>
         <comment>folder or file impossible to sync due to an invalid name, placeholders will be file or folder and the invalid character</comment>
-        <translation type="unfinished"/>
+        <translation>文字 &quot;%2&quot; を含む名前 %1 は、このファイルシステムではサポートされていません。</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="362"/>
         <source>%1 name contains at least one invalid character</source>
-        <translation type="unfinished"/>
+        <translation>名前 %1 に無効な文字が 1 つ以上含まれています。</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="364"/>
         <source>%1 name is a reserved name on this file system.</source>
-        <translation type="unfinished"/>
+        <translation>名前 %1 はこのファイルシステム上で予約された名前です。</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="361"/>
@@ -4205,7 +4215,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="311"/>
         <source>Folder %1 cannot be renamed because of a local file or folder name clash!</source>
-        <translation type="unfinished"/>
+        <translation>ローカルファイルまたはフォルダー名が重複しているため、フォルダー%1の名前を変更できません!</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="254"/>
@@ -5332,7 +5342,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/libsync/updatee2eefolderusersmetadatajob.cpp" line="118"/>
         <source>Could not add or remove user %1 to access folder %2</source>
-        <translation type="unfinished"/>
+        <translation>アクセスフォルダー %2 にユーザー %1 を追加または削除できませんでした。</translation>
     </message>
     <message>
         <location filename="../src/libsync/updatee2eefolderusersmetadatajob.cpp" line="235"/>
@@ -5356,12 +5366,12 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1053"/>
         <source>Open Nextcloud Assistant in browser</source>
-        <translation type="unfinished"/>
+        <translation>ブラウザでNextcloud Assistantを開く</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1053"/>
         <source>Open Nextcloud Talk in browser</source>
-        <translation type="unfinished"/>
+        <translation>Nextcloud Talkをブラウザーで開く</translation>
     </message>
 </context>
 <context>
@@ -5862,12 +5872,12 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="117"/>
         <source>Failed to create debug archive</source>
-        <translation type="unfinished"/>
+        <translation>デバッグアーカイブの作成に失敗しました</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="118"/>
         <source>Could not create debug archive in selected location!</source>
-        <translation type="unfinished"/>
+        <translation>選択された場所にデバッグアーカイブを作成できませんでした!</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="763"/>
@@ -6637,7 +6647,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="60"/>
         <source>Updated local virtual files metadata</source>
-        <translation type="unfinished"/>
+        <translation>更新されたローカル仮想ファイルのメタデータ</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="61"/>
@@ -6683,7 +6693,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="93"/>
         <source>updating local virtual files metadata</source>
-        <translation type="unfinished"/>
+        <translation>ローカル仮想ファイルメタデータの更新</translation>
     </message>
 </context>
 <context>
