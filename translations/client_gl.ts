@@ -919,7 +919,7 @@ Esta acción interromperá calquera sincronización que estea a executarse actua
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1572"/>
         <source>Set up encryption</source>
-        <translation>Estabelecer o cifrado</translation>
+        <translation>Definir o cifrado</translation>
     </message>
 </context>
 <context>
@@ -3747,7 +3747,7 @@ Teña en conta que o uso de calquera opción da liña de ordes anulara este axus
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="619"/>
         <source>A sync connection from %1 to remote directory %2 was set up.</source>
-        <translation>Estabeleceuse a conexión de sincronización de %1 ao directorio remoto %2.</translation>
+        <translation>Definiuse a conexión de sincronización de %1 ao directorio remoto %2.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="624"/>
@@ -4234,7 +4234,7 @@ Este é un novo modo experimental. Se decide usalo, agradecémoslle que informe 
         <location filename="../src/libsync/propagatorjobs.cpp" line="283"/>
         <location filename="../src/libsync/propagatorjobs.cpp" line="344"/>
         <source>Error setting pin state</source>
-        <translation>Produciuse un erro ao estabelecer o estado do pin</translation>
+        <translation>Produciuse un erro ao definir o estado do pin</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="296"/>
@@ -4343,7 +4343,7 @@ Este é un novo modo experimental. Se decide usalo, agradecémoslle que informe 
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="296"/>
         <source>Error setting pin state</source>
-        <translation>Produciuse un erro ao estabelecer o estado do pin</translation>
+        <translation>Produciuse un erro ao definir o estado do pin</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="303"/>
@@ -5062,7 +5062,7 @@ O servidor respondeu co erro: %2</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="427"/>
         <source>Could not set file record to local DB: %1</source>
-        <translation>Non foi posíbel estabelecer o rexistro do ficheiro na base de datos local: %1</translation>
+        <translation>Non foi posíbel definir o rexistro do ficheiro na base de datos local: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="457"/>
@@ -5413,7 +5413,7 @@ O servidor respondeu co erro: %2</translation>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="163"/>
         <source>Status feature is not supported. You will not be able to set your status.</source>
-        <translation>A función de estado non é compatíbel. Non poderá estabelecer o seu estado.</translation>
+        <translation>A función de estado non é compatíbel. Non poderá definir o seu estado.</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="167"/>
@@ -5423,7 +5423,7 @@ O servidor respondeu co erro: %2</translation>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="171"/>
         <source>Could not set status. Make sure you are connected to the server.</source>
-        <translation>Non foi posíbel estabelecer o estado. Asegúrese de estar conectado ao servidor.</translation>
+        <translation>Non foi posíbel definir o estado. Asegúrese de estar conectado ao servidor.</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="175"/>
@@ -6023,7 +6023,7 @@ O servidor respondeu co erro: %2</translation>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="97"/>
         <source>An error occurred setting the share password.</source>
-        <translation>Produciuse un erro ao estabelecer o contrasinal de uso compartido.</translation>
+        <translation>Produciuse un erro ao definir o contrasinal de uso compartido.</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="216"/>
@@ -6074,7 +6074,7 @@ O servidor respondeu co erro: %2</translation>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="649"/>
         <source>Set expiration date</source>
-        <translation>Estabelecer a data de caducidade</translation>
+        <translation>Definir a data de caducidade</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="757"/>
@@ -6298,7 +6298,7 @@ O servidor respondeu co erro: %2</translation>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="165"/>
         <source>Set status</source>
-        <translation>Estabelecer o estado</translation>
+        <translation>Definir o estado</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="173"/>
@@ -6383,7 +6383,7 @@ O servidor respondeu co erro: %2</translation>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="336"/>
         <source>Set status message</source>
-        <translation>Estabelecer a mensaxe de estado</translation>
+        <translation>Definir a mensaxe de estado</translation>
     </message>
 </context>
 <context>
