@@ -1126,13 +1126,16 @@ void FolderMan::slotScheduleFolderByTime()
 
 bool FolderMan::isAnySyncRunning() const
 {
-    if (_currentSyncFolder)
+    if (_currentSyncFolder) {
         return true;
+    }
 
     for (auto f : _folderMap) {
-        if (f->isSyncRunning())
+        if (f->isSyncRunning()) {
             return true;
+        }
     }
+
     return false;
 }
 
