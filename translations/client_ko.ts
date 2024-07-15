@@ -39,7 +39,7 @@
     <message>
         <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.ui" line="230"/>
         <source>Restore default value</source>
-        <translation type="unfinished"/>
+        <translation>기본 값 복구</translation>
     </message>
 </context>
 <context>
@@ -110,7 +110,7 @@ File synchronization desktop utility.</source>
     <message>
         <location filename="../src/gui/main.cpp" line="126"/>
         <source>Start with the main window visible, or if it is already running, bring it to the front. By default, the client launches in the background.</source>
-        <translation type="unfinished"/>
+        <translation>메인 창이 보이는 상태에서 시작, 또는 이미 실행중이라면 메인창을 맨 앞으로 가져옴. 기본적으로 클라이언트는 백그라운드에서 시작합니다.</translation>
     </message>
     <message>
         <location filename="../src/gui/main.cpp" line="128"/>
@@ -145,7 +145,7 @@ File synchronization desktop utility.</source>
     <message>
         <location filename="../src/gui/main.cpp" line="136"/>
         <source>Forward all arguments to the cmd client. This argument must be the first.</source>
-        <translation type="unfinished"/>
+        <translation>모든 인자값을 커맨드 클라이언트로 전달. 이 인자값은 반드시 첫번째이어야 합니다.</translation>
     </message>
     <message>
         <location filename="../src/gui/main.cpp" line="139"/>
@@ -420,7 +420,7 @@ File synchronization desktop utility.</source>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="118"/>
         <source>Preparing the account</source>
-        <translation type="unfinished"/>
+        <translation>계정 준비중</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="218"/>
@@ -555,7 +555,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="709"/>
         <source>Updating credentials for %1...</source>
-        <translation type="unfinished"/>
+        <translation>%1을 위한 자격증명을 업데이트중...</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="713"/>
@@ -575,37 +575,37 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="381"/>
         <source>Disable virtual file support</source>
-        <translation type="unfinished"/>
+        <translation>가상 파일 지원을 비활성화</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="387"/>
         <source>Enable virtual file support</source>
-        <translation type="unfinished"/>
+        <translation>가상파일 지원 활성화</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="600"/>
         <source>Sync paused by user</source>
-        <translation type="unfinished"/>
+        <translation>사용자에 의해 동기화 일시정지됨</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="634"/>
         <source>Internet connection is metered</source>
-        <translation type="unfinished"/>
+        <translation>인터넷 연결이 데이터 상한선이 존재하는 제한된 연결입니다.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="635"/>
         <source>Synchronization is paused because the Internet connection is a metered connection&lt;p&gt;Do you really want to force a Synchronization now?</source>
-        <translation type="unfinished"/>
+        <translation>인터넷 연결이 데이터가 제한된 연결이기 때문에 동기화가 중단되었습니다. &lt;p&gt;강제로 동기화하기를 정말로 원하십니까?</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="656"/>
         <source>User triggered force sync</source>
-        <translation type="unfinished"/>
+        <translation>사용자가 강제로 동기화 실행함</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="689"/>
         <source>Sync to %1 is paused due to metered internet connection.</source>
-        <translation type="unfinished"/>
+        <translation>%1의 동기화가 제한된 인터넷 연결 때문에 일시중단되었습니다.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="700"/>
@@ -645,7 +645,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="757"/>
         <source>You need to be connected to add a Space.</source>
-        <translation type="unfinished"/>
+        <translation>공간을 추가하려면 연결되어 있어야 합니다.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="760"/>
@@ -793,7 +793,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="158"/>
         <source>&lt;br/&gt;%1 does not provide activities.</source>
-        <translation type="unfinished"/>
+        <translation>&lt;br/&gt; %1은 활동을 제공하지 않습니다.</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/activitywidget.cpp" line="296"/>
@@ -980,7 +980,7 @@ The update will be performed in the background, and overwrite the current AppIma
     <message>
         <location filename="../src/gui/folder.cpp" line="187"/>
         <source>The path &apos;%1&apos; is too long. Please enable long paths in the Windows settings or choose a different folder.</source>
-        <translation type="unfinished"/>
+        <translation>경로 &apos;%1&apos;은 너무 깁니다. Windows 설정에서 긴 경로를 설정을 적용하거나 다른 폴더를 선택해 주세요.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="224"/>
@@ -1046,7 +1046,7 @@ The update will be performed in the background, and overwrite the current AppIma
     <message>
         <location filename="../src/gui/folder.cpp" line="788"/>
         <source>Switching VFS mode on folder &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>&apos;%1&apos; 폴더에 가상파일시스템(VFS) 모드 변경</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="950"/>
@@ -1146,12 +1146,12 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderman.cpp" line="390"/>
         <source>Account disconnected or paused</source>
-        <translation type="unfinished"/>
+        <translation>계정이 연결 중단이거나 정지됨</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="605"/>
         <source>Folder is about to be removed</source>
-        <translation type="unfinished"/>
+        <translation>폴더가 곧 삭제됩니다.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="629"/>
@@ -1176,7 +1176,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderman.cpp" line="727"/>
         <source>Folder &apos;%1&apos; is already in use by application %2!</source>
-        <translation type="unfinished"/>
+        <translation>&apos;%1&apos; 폴더가 %2 어플리케이션에 의해 이미 사용중입니다!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="741"/>
@@ -1266,7 +1266,7 @@ Please consider removing this folder from the account and adding it again.</sour
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="278"/>
         <source>The suffix VFS plugin is deprecated and will be removed in the 7.0 release.</source>
-        <translation type="unfinished"/>
+        <translation>접미사 VFS 플러그인은 더이상 사용되지 않으며 7.0 릴리즈에서 삭제될 것입니다.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="279"/>
