@@ -2145,29 +2145,33 @@ Honek esan nahi du sinkronizazio bezeroak agian ez duela berehalakoan igoko toki
         <source>All files in the server folder &quot;%1&quot; were deleted.
 
 If you restore the files, they will be uploaded again to the server.</source>
-        <translation type="unfinished"/>
+        <translation>Zerbitzariko &quot;%1&quot; karpetako fitxategi guztiak ezabatu egin dira.
+
+Fitxategiak leheneratzen badituzu, berriro zerbitzarira kargatuko dira.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1633"/>
         <source>All files in the local folder &quot;%1&quot; were deleted.
 
 If you restore the files, they will be downloaded again from the server.</source>
-        <translation type="unfinished"/>
+        <translation>&quot;%1&quot; karpeta lokaleko fitxategi guztiak ezabatu egin dira.
+
+Fitxategiak leheneratzen badituzu, berriro deskargatuko dira zerbitzaritik.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1634"/>
         <source>Remove all files?</source>
-        <translation type="unfinished"/>
+        <translation>Fitxategi guztiak ezabatu?</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1638"/>
         <source>Proceed to remove all files</source>
-        <translation type="unfinished"/>
+        <translation>Fitxategi guztien ezabatzea burutu.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1639"/>
         <source>Restore files</source>
-        <translation type="unfinished"/>
+        <translation>Leheneratu fitxategiak</translation>
     </message>
 </context>
 <context>
@@ -2876,19 +2880,20 @@ Kontuan izan honek bertsio berriak nondik hartu bakarrik hautatzen duela, ezin d
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="359"/>
         <source>daily</source>
-        <translation type="unfinished"/>
+        <translation>egunero</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="363"/>
         <source>enterprise</source>
-        <translation type="unfinished"/>
+        <translation>enterprise</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="391"/>
         <source>- enterprise: contains stable versions for customers.
 </source>
         <comment>description of enterprise update channel for enterprise customers</comment>
-        <translation type="unfinished"/>
+        <translation>- enterprise: bezeroentzako bertsio egonkorrak dauzka.
+</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="396"/>
@@ -5357,7 +5362,7 @@ Zerbitzariak errorearekin erantzun du: %2</translation>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1053"/>
         <source>Open Nextcloud Assistant in browser</source>
-        <translation type="unfinished"/>
+        <translation>Ireki Nextcloud Laguntzailea nabigatzailean</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1053"/>
