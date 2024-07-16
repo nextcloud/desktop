@@ -76,6 +76,13 @@ import OSLog
         updatedSyncStateReporting(oldActions: oldActions)
     }
 
+    func insertErrorAction(_ actionId: UUID) {
+        let oldActions = syncActions
+        syncActions.remove(actionId)
+        errorActions.insert(actionId)
+        updatedSyncStateReporting(oldActions: oldActions)
+    }
+
     // MARK: - NSFileProviderReplicatedExtension protocol methods
 
     func item(
