@@ -366,7 +366,8 @@ import OSLog
             ncAccount: ncAccount,
             remoteInterface: ncKit,
             domain: domain,
-            fastEnumeration: config.fastEnumerationEnabled
+            fastEnumeration: config.fastEnumerationEnabled,
+            listener: self
         )
     }
 
