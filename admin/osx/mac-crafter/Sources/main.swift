@@ -36,6 +36,9 @@ struct MacCrafter: ParsableCommand {
     @Option(name: [.short, .long], help: "Path for build files to be written.")
     var buildPath = "\(FileManager.default.currentDirectoryPath)/build"
 
+    @Option(name: [.short, .long], help: "Path for the final product to be put.")
+    var productPath = "\(FileManager.default.currentDirectoryPath)/product"
+
     @Option(name: [.short, .long], help: "Architecture.")
     var arch = "arm64"
 
@@ -199,6 +202,10 @@ struct MacCrafter: ParsableCommand {
         print("Code-signing Nextcloud Desktop Client libraries and frameworks...")
         let clientAppDir = "\(clientBuildDir)/image-\(buildType)-master/\(appName).app"
         try codesignClientAppBundle(at: clientAppDir, withCodeSignIdentity: codeSignIdentity)
+
+        print("Placing Nextcloud Desktop Client in product directory...")
+        try fm.createDirectory(atPath: productPath, withIntermediateDirectories: true, attributes: nil)
+        try fm.copyItem(atPath: clientAppDir, toPath: productPath)
 
         print("Done!")
     }
