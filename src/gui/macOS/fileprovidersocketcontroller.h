@@ -16,7 +16,8 @@
 
 #include <QPointer>
 
-#include "accountstate.h"
+#include "gui/accountstate.h"
+#include "libsync/syncresult.h"
 
 class QLocalSocket;
 
@@ -32,7 +33,8 @@ public:
     explicit FileProviderSocketController(QLocalSocket * const socket, QObject * const parent = nullptr);
 
 signals:
-    void socketDestroyed(const QLocalSocket * const socket);
+    void socketDestroyed(const QLocalSocket * const socket);signals:
+    void syncStateChanged(const AccountPtr &account, SyncResult::Status state) const;
 
 public slots:
     void sendMessage(const QString &message) const;
@@ -49,6 +51,8 @@ private slots:
     void requestFileProviderDomainInfo() const;
     void sendAccountDetails() const;
     void sendNotAuthenticated() const;
+
+    void reportSyncState(const QString &receivedState) const;
 
 private:
     QPointer<QLocalSocket> _socket;

@@ -89,6 +89,9 @@ void FileProviderSocketController::parseReceivedLine(const QString &receivedLine
         _accountState = FileProviderDomainManager::accountStateFromFileProviderDomainIdentifier(argument);
         sendAccountDetails();
         return;
+    } else if (command == "FILE_PROVIDER_DOMAIN_SYNC_STATE_CHANGE") {
+        reportSyncState(argument);
+        return;
     }
 
     qCWarning(lcFileProviderSocketController) << "Unknown command or reply:" << receivedLine;
@@ -216,6 +219,24 @@ void FileProviderSocketController::sendAccountDetails() const
     sendMessage(message);
 }
 
+void FileProviderSocketController::reportSyncState(const QString &receivedState) const
+{
+    auto syncState = SyncResult::Status::Undefined;
+    if (receivedState == QStringLiteral("SYNC_STARTED")) {
+        syncState = SyncResult::Status::SyncRunning;
+    } else if (receivedState == QStringLiteral("SYNC_FINISHED")) {
+        syncState = SyncResult::Status::Success;
+    } else if (receivedState == QStringLiteral("SYNC_FAILED")) {
+        syncState = SyncResult::Status::Problem;
+    } else if (receivedState == QStringLiteral("SYNC_PAUSED")) {
+        syncState = SyncResult::Status::Paused;
+    } else {
+        qCWarning(lcFileProviderSocketController) << "Unknown sync state received:" << receivedState;
+    }
+
+    emit syncStateChanged(_accountState->account(), syncState);
 }
 
-}
+} // namespace Mac
+
+} // namespace OCC
