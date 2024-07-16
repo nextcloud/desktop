@@ -83,6 +83,13 @@ import OSLog
         updatedSyncStateReporting(oldActions: oldActions)
     }
 
+    func removeSyncAction(_ actionId: UUID) {
+        let oldActions = syncActions
+        syncActions.remove(actionId)
+        errorActions.remove(actionId)
+        updatedSyncStateReporting(oldActions: oldActions)
+    }
+
     // MARK: - NSFileProviderReplicatedExtension protocol methods
 
     func item(
