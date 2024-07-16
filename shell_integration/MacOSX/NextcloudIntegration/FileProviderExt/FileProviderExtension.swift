@@ -397,6 +397,8 @@ import OSLog
         materialisedEnumerator.enumerateItems(for: materialisedObserver, startingAt: startingPage)
     }
 
+    // MARK: - Helper functions
+
     func signalEnumerator(completionHandler: @escaping (_ error: Error?) -> Void) {
         guard let fpManager = NSFileProviderManager(for: domain) else {
             Logger.fileProviderExtension.error(
