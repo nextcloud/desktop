@@ -37,6 +37,9 @@ import OSLog
         return LocalSocketClient(socketPath: socketPath.path, lineProcessor: lineProcessor)
     }()
 
+    var syncActions = Set<UUID>()
+    var errorActions = Set<UUID>()
+
     // Whether or not we are going to recursively scan new folders when they are discovered.
     // Apple's recommendation is that we should always scan the file hierarchy fully.
     // This does lead to long load times when a file provider domain is initially configured.
