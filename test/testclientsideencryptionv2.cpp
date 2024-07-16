@@ -192,6 +192,41 @@ private slots:
         QVERIFY(metadataFromJson->isValid());
     }
 
+    void testFolderMetadataWithEmptySignatureDecryptFails()
+    {
+        QScopedPointer<FolderMetadata> metadata(new FolderMetadata(_account, "/", FolderMetadata::FolderType::Root));
+        QSignalSpy metadataSetupCompleteSpy(metadata.data(), &FolderMetadata::setupComplete);
+        metadataSetupCompleteSpy.wait();
+        QCOMPARE(metadataSetupCompleteSpy.count(), 1);
+        QVERIFY(metadata->isValid());
+
+        const auto encryptedMetadata = metadata->encryptedMetadata();
+        QVERIFY(!encryptedMetadata.isEmpty());
+
+        const auto signature = metadata->metadataSignature();
+        QVERIFY(!signature.isEmpty());
+
+        auto encryptedMetadataCopy = encryptedMetadata;
+        encryptedMetadataCopy.replace("\"", "\\\"");
+
+        const QJsonDocument ocsDoc = QJsonDocument::fromJson(QStringLiteral("{\"ocs\": {\"data\": {\"meta-data\": \"%1\"}}}")
+                                                           .arg(QString::fromUtf8(encryptedMetadataCopy)).toUtf8());
+
+        const QByteArray emptySignature = {};
+        QScopedPointer<FolderMetadata> metadataFromJson(new FolderMetadata(_account, "/",
+                                                                           ocsDoc.toJson(),
+                                                                           RootEncryptedFolderInfo::makeDefault(),
+                                                                           emptySignature));
+
+        QSignalSpy metadataSetupExistingCompleteSpy(metadataFromJson.data(), &FolderMetadata::setupComplete);
+        metadataSetupExistingCompleteSpy.wait();
+        QCOMPARE(metadataSetupExistingCompleteSpy.count(), 1);
+
+        QVERIFY(metadataFromJson->metadataSignature().isEmpty());
+        QVERIFY(metadataFromJson->metadataKeyForDecryption().isEmpty());
+        QVERIFY(!metadataFromJson->isValid());
+    }
+
     void testE2EeFolderMetadataSharing()
     {
         // instantiate empty metadata, add a file, and share with a second user "sharee"
