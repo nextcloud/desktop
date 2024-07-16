@@ -39,6 +39,7 @@ import OSLog
 
     var syncActions = Set<UUID>()
     var errorActions = Set<UUID>()
+    var actionsLock = NSLock()
 
     // Whether or not we are going to recursively scan new folders when they are discovered.
     // Apple's recommendation is that we should always scan the file hierarchy fully.
@@ -71,22 +72,28 @@ import OSLog
     }
 
     func insertSyncAction(_ actionId: UUID) {
+        actionsLock.lock()
         let oldActions = syncActions
         syncActions.insert(actionId)
+        actionsLock.unlock()
         updatedSyncStateReporting(oldActions: oldActions)
     }
 
     func insertErrorAction(_ actionId: UUID) {
+        actionsLock.lock()
         let oldActions = syncActions
         syncActions.remove(actionId)
         errorActions.insert(actionId)
+        actionsLock.unlock()
         updatedSyncStateReporting(oldActions: oldActions)
     }
 
     func removeSyncAction(_ actionId: UUID) {
+        actionsLock.lock()
         let oldActions = syncActions
         syncActions.remove(actionId)
         errorActions.remove(actionId)
+        actionsLock.unlock()
         updatedSyncStateReporting(oldActions: oldActions)
     }
 

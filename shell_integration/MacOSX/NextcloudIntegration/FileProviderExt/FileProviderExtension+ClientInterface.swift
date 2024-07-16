@@ -134,7 +134,12 @@ extension FileProviderExtension: NSFileProviderServicing, ChangeNotificationInte
     }
 
     func updatedSyncStateReporting(oldActions: Set<UUID>) {
-        guard oldActions.isEmpty != syncActions.isEmpty else { return }
+        actionsLock.lock()
+
+        guard oldActions.isEmpty != syncActions.isEmpty else {
+            actionsLock.unlock()
+            return
+        }
 
         let command = "FILE_PROVIDER_DOMAIN_SYNC_STATE_CHANGE"
         var argument: String?
@@ -144,6 +149,8 @@ extension FileProviderExtension: NSFileProviderServicing, ChangeNotificationInte
             argument = errorActions.isEmpty ? "SYNC_FINISHED" : "SYNC_FAILED"
             errorActions = []
         }
+        
+        actionsLock.unlock()
 
         guard let argument else { return }
         Logger.fileProviderExtension.debug("Reporting sync \(argument)")
