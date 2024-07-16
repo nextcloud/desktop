@@ -17,6 +17,9 @@
 #include <QObject>
 #include <QLocalServer>
 
+#include "libsync/accountfwd.h"
+#include "libsync/syncresult.h"
+
 namespace OCC {
 
 namespace Mac {
@@ -45,6 +48,9 @@ class FileProviderSocketServer : public QObject
 
 public:
     explicit FileProviderSocketServer(QObject *parent = nullptr);
+
+signals:
+    void syncStateChanged(const AccountPtr &account, SyncResult::Status state) const;
 
 private slots:
     void startListening();

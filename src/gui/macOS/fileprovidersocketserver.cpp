@@ -62,6 +62,8 @@ void FileProviderSocketServer::slotNewConnection()
     }
 
     const FileProviderSocketControllerPtr socketController(new FileProviderSocketController(socket, this));
+    connect(socketController.data(), &FileProviderSocketController::syncStateChanged,
+            this, &FileProviderSocketServer::syncStateChanged);
     connect(socketController.data(), &FileProviderSocketController::socketDestroyed,
             this, &FileProviderSocketServer::slotSocketDestroyed);
     _socketControllers.insert(socket, socketController);
