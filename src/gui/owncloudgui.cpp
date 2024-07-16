@@ -290,18 +290,18 @@ void ownCloudGui::slotComputeOverallSyncStatus()
         //_actionStatus->setText(text);
     };
 
-    foreach (auto a, AccountManager::instance()->accounts()) {
-        if (!a->isSignedOut()) {
+    for (const auto &account : AccountManager::instance()->accounts()) {
+        if (!account->isSignedOut()) {
             allSignedOut = false;
         }
-        if (!a->isConnected()) {
-            problemAccounts.append(a);
+        if (!account->isConnected()) {
+            problemAccounts.append(account);
         } else {
             allDisconnected = false;
         }
     }
-    foreach (Folder *f, FolderMan::instance()->map()) {
-        if (!f->syncPaused()) {
+    for (const auto folder : FolderMan::instance()->map()) {
+        if (!folder->syncPaused()) {
             allPaused = false;
         }
     }
