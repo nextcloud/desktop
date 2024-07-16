@@ -181,6 +181,11 @@ void FolderMetadata::setupExistingMetadata(const QByteArray &metadata)
         }
     }
 
+    if (_initialSignature.isEmpty()) {
+        qCDebug(lcCseMetadata()) << "Signature is empty";
+        return;
+    }
+
     if (!parseFileDropPart(metaDataDoc)) {
         qCDebug(lcCseMetadata()) << "Could not parse filedrop part";
         return;
