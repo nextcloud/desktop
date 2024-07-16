@@ -38,9 +38,11 @@ def step(context, user, space_name, role):
 @Given('user "|any|" has set up a client with space "|any|"')
 def step(context, user, space_name):
     password = getPasswordForUser(user)
-    displayName = getDisplaynameForUser(user)
-    setUpClient(user, displayName, space_name)
-    EnterPassword.loginAfterSetup(user, password)
+    setUpClient(user, space_name)
+    enter_password = EnterPassword()
+    if get_config('ocis'):
+        enter_password.accept_certificate()
+    enter_password.loginAfterSetup(user, password)
     # wait for files to sync
     waitForInitialSyncToComplete(getResourcePath('/', user, space_name))
 

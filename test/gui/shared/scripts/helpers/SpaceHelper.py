@@ -27,7 +27,7 @@ def get_share_endpint():
 
 
 def create_space(space_name):
-    body = json.dumps({"Name": space_name})
+    body = json.dumps({"name": space_name})
     response = request.post(get_space_endpint(), body)
     if response.status_code != 201:
         raise Exception(
