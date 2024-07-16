@@ -33,7 +33,7 @@ struct MacCrafter: ParsableCommand {
     @Option(name: [.short, .long], help: "Code signing identity for desktop client and libs.")
     var codeSignIdentity: String?
 
-    @Option(name: [.short, .customLong("buildPath")], help: "Path for build files to be written.")
+    @Option(name: [.short, .long], help: "Path for build files to be written.")
     var buildPath = "\(FileManager.default.currentDirectoryPath)/build"
 
     @Option(name: [.short, .long], help: "Architecture.")
