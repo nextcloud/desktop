@@ -54,11 +54,12 @@ private slots:
     void sendAccountDetails() const;
     void sendNotAuthenticated() const;
 
-    void reportSyncState(const QString &receivedState) const;
+    void reportSyncState(const QString &receivedState);
 
 private:
     QPointer<QLocalSocket> _socket;
     AccountStatePtr _accountState;
+    SyncResult::Status _latestStatus = SyncResult::Undefined;
 };
 
 } // namespace Mac

@@ -224,7 +224,7 @@ void FileProviderSocketController::sendAccountDetails() const
     sendMessage(message);
 }
 
-void FileProviderSocketController::reportSyncState(const QString &receivedState) const
+void FileProviderSocketController::reportSyncState(const QString &receivedState)
 {
     auto syncState = SyncResult::Status::Undefined;
     if (receivedState == QStringLiteral("SYNC_STARTED")) {
@@ -238,7 +238,7 @@ void FileProviderSocketController::reportSyncState(const QString &receivedState)
     } else {
         qCWarning(lcFileProviderSocketController) << "Unknown sync state received:" << receivedState;
     }
-
+    _latestStatus = syncState;
     emit syncStateChanged(_accountState->account(), syncState);
 }
 
