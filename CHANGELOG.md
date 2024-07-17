@@ -65,6 +65,7 @@ ownCloud admins and users.
 * Change - Set the 'No' button as default action in the Unknown Certificate dialog: [#11531](https://github.com/owncloud/client/issues/11531)
 * Change - Remove `Remove all files` dialog: [#11569](https://github.com/owncloud/client/issues/11569)
 * Change - Rewrite of the spaces browser: [#11595](https://github.com/owncloud/client/pull/11595)
+* Change - Remove support for branded shell extensions on Linux: [#11743](https://github.com/owncloud/client/issues/11743)
 * Enhancement - Add option to pause synchronization on metered connections: [#4808](https://github.com/owncloud/client/issues/4808)
 * Enhancement - Add option to move files to trash instead of deleting: [#9001](https://github.com/owncloud/client/issues/9001)
 * Enhancement - Prevent same default sync folder for multiple accounts with Spaces: [#11204](https://github.com/owncloud/client/issues/11204)
@@ -248,6 +249,13 @@ ownCloud admins and users.
 * Change - Rewrite of the spaces browser: [#11595](https://github.com/owncloud/client/pull/11595)
 
    https://github.com/owncloud/client/pull/11595
+
+* Change - Remove support for branded shell extensions on Linux: [#11743](https://github.com/owncloud/client/issues/11743)
+
+   From now on user will have to install dolphin-owncloud nautilus-owncloud instead
+   of a braned version.
+
+   https://github.com/owncloud/client/issues/11743
 
 * Enhancement - Add option to pause synchronization on metered connections: [#4808](https://github.com/owncloud/client/issues/4808)
 
