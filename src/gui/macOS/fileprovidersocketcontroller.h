@@ -33,6 +33,7 @@ public:
     explicit FileProviderSocketController(QLocalSocket * const socket, QObject * const parent = nullptr);
 
     [[nodiscard]] AccountStatePtr accountState() const;
+    [[nodiscard]] SyncResult::Status latestStatus() const;
 
 signals:
     void socketDestroyed(const QLocalSocket * const socket);signals:

@@ -242,6 +242,11 @@ void FileProviderSocketController::reportSyncState(const QString &receivedState)
     emit syncStateChanged(_accountState->account(), syncState);
 }
 
+SyncResult::Status FileProviderSocketController::latestStatus() const
+{
+    return _latestStatus;
+}
+
 } // namespace Mac
 
 } // namespace OCC
