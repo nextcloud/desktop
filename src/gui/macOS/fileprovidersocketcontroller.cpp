@@ -88,6 +88,7 @@ void FileProviderSocketController::parseReceivedLine(const QString &receivedLine
     if (command == QStringLiteral("FILE_PROVIDER_DOMAIN_IDENTIFIER_REQUEST_REPLY")) {
         _accountState = FileProviderDomainManager::accountStateFromFileProviderDomainIdentifier(argument);
         sendAccountDetails();
+        reportSyncState("SYNC_PREPARING");
         return;
     } else if (command == "FILE_PROVIDER_DOMAIN_SYNC_STATE_CHANGE") {
         reportSyncState(argument);
