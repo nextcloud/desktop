@@ -301,6 +301,7 @@ void ownCloudGui::slotComputeOverallSyncStatus()
     }
 
 #ifdef BUILD_FILE_PROVIDER_MODULE
+    QList<QString> problemFileProviderAccounts;
     QList<QString> syncingFileProviderAccounts;
 
     if (Mac::FileProvider::fileProviderAvailable()) {
@@ -311,7 +312,7 @@ void ownCloudGui::slotComputeOverallSyncStatus()
             }
             const auto socketState = Mac::FileProvider::instance()->socketServer()->socketStateForAccount(accountFpId);
             if (!socketState.connected || socketState.latestStatus == SyncResult::Problem || socketState.latestStatus == SyncResult::Error) {
-                problemAccounts.append(accountState);
+                problemFileProviderAccounts.append(accountFpId);
             } else if (socketState.latestStatus == SyncResult::SyncRunning) {
                 syncingFileProviderAccounts.append(accountFpId);
             }
@@ -362,6 +363,18 @@ void ownCloudGui::slotComputeOverallSyncStatus()
     SyncResult::Status overallStatus = SyncResult::Undefined;
     bool hasUnresolvedConflicts = false;
     FolderMan::trayOverallStatus(map.values(), &overallStatus, &hasUnresolvedConflicts);
+
+#ifdef BUILD_FILE_PROVIDER_MODULE
+    if (!problemFileProviderAccounts.isEmpty()) {
+        overallStatus = SyncResult::Problem;
+    } else if (!syncingFileProviderAccounts.isEmpty() &&
+               overallStatus != SyncResult::SyncRunning &&
+               overallStatus != SyncResult::Problem &&
+               overallStatus != SyncResult::Error &&
+               overallStatus != SyncResult::SetupError) {
+        overallStatus = SyncResult::SyncRunning;
+    }
+#endif
 
     // If the sync succeeded but there are unresolved conflicts,
     // show the problem icon!
