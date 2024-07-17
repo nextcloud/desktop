@@ -996,7 +996,7 @@ void ownCloudGui::slotHelp()
 void ownCloudGui::raise()
 {
     auto window = ocApp()->gui()->settingsDialog();
-    window->showNormal();
+    window->show();
     window->raise();
     window->activateWindow();
 
