@@ -64,6 +64,7 @@
 #include <QQmlContext>
 
 #ifdef BUILD_FILE_PROVIDER_MODULE
+#include "macOS/fileprovider.h"
 #include "macOS/fileprovidersettingscontroller.h"
 #endif
 
@@ -110,8 +111,11 @@ ownCloudGui::ownCloudGui(Application *parent)
         &ownCloudGui::slotUpdateProgress);
 
     FolderMan *folderMan = FolderMan::instance();
-    connect(folderMan, &FolderMan::folderSyncStateChange,
-        this, &ownCloudGui::slotSyncStateChange);
+    connect(folderMan, &FolderMan::folderSyncStateChange, this, &ownCloudGui::slotSyncStateChange);
+
+#ifdef BUILD_FILE_PROVIDER_MODULE
+    connect(Mac::FileProvider::instance()->socketServer(), &Mac::FileProviderSocketServer::syncStateChanged, this, &ownCloudGui::slotComputeOverallSyncStatus);
+#endif
 
     connect(Logger::instance(), &Logger::guiLog, this, &ownCloudGui::slotShowTrayMessage);
     connect(Logger::instance(), &Logger::guiMessage, this, &ownCloudGui::slotShowGuiMessage);
