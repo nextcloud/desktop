@@ -29,6 +29,11 @@ using FileProviderSocketControllerPtr = QPointer<FileProviderSocketController>;
 
 QString fileProviderSocketPath();
 
+struct FileProviderSocketState {
+    bool connected;
+    SyncResult::Status latestStatus;
+} typedef FileProviderSocketState;
+
 /*
  * Establishes communication between the app and the file provider extension.
  * This is done via a local socket server.
