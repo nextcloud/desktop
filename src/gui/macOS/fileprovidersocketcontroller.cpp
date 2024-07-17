@@ -227,13 +227,15 @@ void FileProviderSocketController::sendAccountDetails() const
 void FileProviderSocketController::reportSyncState(const QString &receivedState)
 {
     auto syncState = SyncResult::Status::Undefined;
-    if (receivedState == QStringLiteral("SYNC_STARTED")) {
+    if (receivedState == "SYNC_PREPARING") {
+        syncState = SyncResult::Status::SyncPrepare;
+    } else if (receivedState == "SYNC_STARTED") {
         syncState = SyncResult::Status::SyncRunning;
-    } else if (receivedState == QStringLiteral("SYNC_FINISHED")) {
+    } else if (receivedState == "SYNC_FINISHED") {
         syncState = SyncResult::Status::Success;
-    } else if (receivedState == QStringLiteral("SYNC_FAILED")) {
+    } else if (receivedState == "SYNC_FAILED") {
         syncState = SyncResult::Status::Problem;
-    } else if (receivedState == QStringLiteral("SYNC_PAUSED")) {
+    } else if (receivedState == "SYNC_PAUSED") {
         syncState = SyncResult::Status::Paused;
     } else {
         qCWarning(lcFileProviderSocketController) << "Unknown sync state received:" << receivedState;
