@@ -379,19 +379,29 @@ void ownCloudGui::slotComputeOverallSyncStatus()
     _tray->setIcon(statusIcon);
 
     // create the tray blob message, check if we have an defined state
+#ifdef BUILD_FILE_PROVIDER_MODULE
+    if (!map.isEmpty() || !syncingFileProviderAccounts.isEmpty()) {
+#else
     if (map.count() > 0) {
+#endif
 #ifdef Q_OS_WIN
         // Windows has a 128-char tray tooltip length limit.
         trayMessage = folderMan->trayTooltipStatusString(overallStatus, hasUnresolvedConflicts, false);
 #else
         QStringList allStatusStrings;
-        foreach (Folder *folder, map.values()) {
+        const auto folders = map.values();
+        for (const auto folder : folders) {
             QString folderMessage = FolderMan::trayTooltipStatusString(
                 folder->syncResult().status(),
                 folder->syncResult().hasUnresolvedConflicts(),
                 folder->syncPaused());
             allStatusStrings += tr("Folder %1: %2").arg(folder->shortGuiLocalPath(), folderMessage);
         }
+#ifdef BUILD_FILE_PROVIDER_MODULE
+        for (const auto &accountId : syncingFileProviderAccounts) {
+            allStatusStrings += tr("macOS VFS for %1: Syncing").arg(accountId);
+        }
+#endif
         trayMessage = allStatusStrings.join(QLatin1String("\n"));
 #endif
         _tray->setToolTip(trayMessage);
