@@ -25,11 +25,7 @@ void Utility::startShellIntegration()
 
 QString Utility::socketApiSocketPath()
 {
-    return QLatin1String("\\\\.\\pipe\\") + QLatin1String("ownCloud-") + qEnvironmentVariable("USERNAME");
-    // TODO: once the windows extension supports multiple
-    // client connections, switch back to the theme name
-    // See issue #2388
-    // + Theme::instance()->appName();
+    return QStringLiteral(R"(\\.\pipe\ownCloud-%1)").arg(qEnvironmentVariable("USERNAME"));
 }
 
 } // namespace OCC

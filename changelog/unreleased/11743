@@ -1,0 +1,6 @@
+Change: Remove support for branded shell extensions on Linux
+
+From now on user will have to install dolphin-owncloud nautilus-owncloud
+instead of a braned version.
+
+https://github.com/owncloud/client/issues/11743
