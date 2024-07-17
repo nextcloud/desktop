@@ -171,6 +171,11 @@ void FileProviderSocketController::slotAccountStateChanged(const AccountState::S
     }
 }
 
+AccountStatePtr FileProviderSocketController::accountState() const
+{
+    return _accountState;
+}
+
 void FileProviderSocketController::sendNotAuthenticated() const
 {
     Q_ASSERT(_accountState);

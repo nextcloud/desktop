@@ -32,6 +32,8 @@ class FileProviderSocketController : public QObject
 public:
     explicit FileProviderSocketController(QLocalSocket * const socket, QObject * const parent = nullptr);
 
+    [[nodiscard]] AccountStatePtr accountState() const;
+
 signals:
     void socketDestroyed(const QLocalSocket * const socket);signals:
     void syncStateChanged(const AccountPtr &account, SyncResult::Status state) const;
