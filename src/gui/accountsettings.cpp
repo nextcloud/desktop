@@ -679,7 +679,7 @@ void AccountSettings::slotCustomContextMenuRequested(const QPoint &pos)
 
     if (!folderPaused) {
         ac = menu->addAction(tr("Force sync now"));
-        if (folder && folder->isSyncRunning()) {
+        if (folder && (folder->isSyncRunning() || folder->isVfsHydrating())) {
             ac->setText(tr("Restart sync"));
         }
         ac->setEnabled(folderConnected);
@@ -957,7 +957,7 @@ void AccountSettings::slotEnableVfsCurrentFolder()
             _ui->selectiveSyncStatus->setVisible(false);
         };
 
-        if (folder->isSyncRunning()) {
+        if (folder->isSyncRunning() || folder->isVfsHydrating()) {
             *connection = connect(folder, &Folder::syncFinished, this, switchVfsOn);
             folder->setVfsOnOffSwitchPending(true);
             folder->slotTerminateSync();
@@ -1024,7 +1024,7 @@ void AccountSettings::slotDisableVfsCurrentFolder()
             _ui->_folderList->doItemsLayout();
         };
 
-        if (folder->isSyncRunning()) {
+        if (folder->isSyncRunning() || folder->isVfsHydrating()) {
             *connection = connect(folder, &Folder::syncFinished, this, switchVfsOff);
             folder->setVfsOnOffSwitchPending(true);
             folder->slotTerminateSync();
@@ -1490,7 +1490,7 @@ void AccountSettings::slotPossiblyUnblacklistE2EeFoldersAndRestartSync()
             blackList.removeAll(pathToRemoveFromBlackList);
         }
         if (blackList.size() != blackListSize) {
-            if (folder->isSyncRunning()) {
+            if (folder->isSyncRunning() || folder->isVfsHydrating()) {
                 folderTerminateSyncAndUpdateBlackList(blackList, folder, foldersToRemoveFromBlacklist);
                 return;
             }

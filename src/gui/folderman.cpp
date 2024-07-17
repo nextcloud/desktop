@@ -1131,7 +1131,7 @@ bool FolderMan::isAnySyncRunning() const
     }
 
     for (auto f : _folderMap) {
-        if (f->isSyncRunning()) {
+        if (f->isSyncRunning() || f->isVfsHydrating()) {
             return true;
         }
     }
