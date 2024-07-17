@@ -66,23 +66,23 @@ SetupWizardController::SetupWizardController(SettingsDialog *parent)
     changeStateTo(SetupWizardState::FirstState);
 
     // allow settings dialog to clean up the wizard controller and all the objects it created
-    connect(_context->window(), &SetupWizardWindow::rejected, this, [this]() {
+    connect(_context->window(), &SetupWizardWidget::rejected, this, [this]() {
         qCDebug(lcSetupWizardController) << "wizard window closed";
         Q_EMIT finished(nullptr, SyncMode::Invalid, {});
     });
 
-    connect(_context->window(), &SetupWizardWindow::navigationEntryClicked, this, [this](SetupWizardState clickedState) {
+    connect(_context->window(), &SetupWizardWidget::navigationEntryClicked, this, [this](SetupWizardState clickedState) {
         qCDebug(lcSetupWizardController) << "pagination entry clicked: current state" << _currentState << "clicked state" << clickedState;
         changeStateTo(clickedState);
     });
 
-    connect(_context->window(), &SetupWizardWindow::nextButtonClicked, this, [this]() {
+    connect(_context->window(), &SetupWizardWidget::nextButtonClicked, this, [this]() {
         qCDebug(lcSetupWizardController) << "next button clicked, current state" << _currentState;
         _currentState->evaluatePage();
     });
 
     // in case the back button is clicked, the current page's data is dismissed, and the previous page should be shown
-    connect(_context->window(), &SetupWizardWindow::backButtonClicked, this, [this]() {
+    connect(_context->window(), &SetupWizardWidget::backButtonClicked, this, [this]() {
         // with enum classes, we have to explicitly cast to a numeric value
         const auto currentStateIdx = static_cast<int>(_currentState->state());
         Q_ASSERT(currentStateIdx > 0);
@@ -100,7 +100,7 @@ SetupWizardController::SetupWizardController(SettingsDialog *parent)
     });
 }
 
-SetupWizardWindow *SetupWizardController::window()
+SetupWizardWidget *SetupWizardController::window()
 {
     return _context->window();
 }

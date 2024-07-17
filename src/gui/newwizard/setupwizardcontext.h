@@ -15,7 +15,7 @@
 #pragma once
 
 #include "accessmanager.h"
-#include "setupwizardwindow.h"
+#include "setupwizardwidget.h"
 
 #include <QtGlobal>
 
@@ -45,7 +45,7 @@ public:
      */
     AccessManager *resetAccessManager();
 
-    SetupWizardWindow *window() const;
+    SetupWizardWidget *window() const;
 
     SetupWizardAccountBuilder &accountBuilder();
     void resetAccountBuilder();
@@ -56,7 +56,7 @@ public:
     CoreJob *startFetchUserInfoJob(QObject *parent) const;
 
 private:
-    QPointer<SetupWizardWindow> _window;
+    QPointer<SetupWizardWidget> _window;
     AccessManager *_accessManager = nullptr;
     SetupWizardAccountBuilder _accountBuilder;
 };

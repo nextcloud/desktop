@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>SetupWizardWindow</class>
- <widget class="QDialog" name="SetupWizardWindow">
+ <class>SetupWizardWidget</class>
+ <widget class="QWidget" name="SetupWizardWidget">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -12,9 +12,6 @@
   </property>
   <property name="windowTitle">
    <string>Add New Account</string>
-  </property>
-  <property name="modal">
-   <bool>true</bool>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout" stretch="0,0">
    <property name="leftMargin">

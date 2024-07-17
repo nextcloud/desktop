@@ -1,5 +1,5 @@
-#include "setupwizardwindow.h"
-#include "ui_setupwizardwindow.h"
+#include "setupwizardwidget.h"
+#include "ui_setupwizardwidget.h"
 
 #include "gui/application.h"
 #include "gui/guiutility.h"
@@ -19,21 +19,22 @@ using namespace OCC;
 
 QString replaceCssColors(const QString &stylesheet)
 {
-    return Utility::renderTemplate(stylesheet, {
-                                                   { QStringLiteral("WIZARD_BACKGROUND_COLOR"), Theme::instance()->wizardHeaderBackgroundColor().name() }, //
-                                                   { QStringLiteral("WIZARD_FONT_COLOR"), Theme::instance()->wizardHeaderTitleColor().name() } //
-                                               });
+    return Utility::renderTemplate(stylesheet,
+        {
+            {QStringLiteral("WIZARD_BACKGROUND_COLOR"), Theme::instance()->wizardHeaderBackgroundColor().name()}, //
+            {QStringLiteral("WIZARD_FONT_COLOR"), Theme::instance()->wizardHeaderTitleColor().name()} //
+        });
 }
 
 }
 
 namespace OCC::Wizard {
 
-Q_LOGGING_CATEGORY(lcSetupWizardWindow, "gui.setupwizard.window")
+Q_LOGGING_CATEGORY(lcSetupWizardWidget, "gui.setupwizard.window")
 
-SetupWizardWindow::SetupWizardWindow(SettingsDialog *parent)
-    : QDialog(parent)
-    , _ui(new ::Ui::SetupWizardWindow)
+SetupWizardWidget::SetupWizardWidget(SettingsDialog *parent)
+    : QWidget(parent)
+    , _ui(new ::Ui::SetupWizardWidget)
 {
     setWindowFlag(Qt::WindowCloseButtonHint, false);
 
@@ -43,12 +44,19 @@ SetupWizardWindow::SetupWizardWindow(SettingsDialog *parent)
 
     slotHideErrorMessageWidget();
 
-    // cannot do this in Qt Designer
-    _ui->contentWidget->layout()->setAlignment(Qt::AlignCenter);
+    connect(_ui->cancelButton, &QPushButton::clicked, this, [this] {
+        auto messageBox = new QMessageBox(QMessageBox::Warning, tr("Cancel Setup"), tr("Do you really want to cancel the account setup?"),
+            QMessageBox::Yes | QMessageBox::No, ocApp()->gui()->settingsDialog());
+        messageBox->setAttribute(Qt::WA_DeleteOnClose);
+        connect(messageBox, &QMessageBox::accepted, this, [this] {
+            // call the base implementation
+            Q_EMIT rejected();
+        });
+        ownCloudGui::raise();
+        messageBox->open();
+    });
 
-    connect(_ui->cancelButton, &QPushButton::clicked, this, &SetupWizardWindow::reject);
-
-    connect(_ui->nextButton, &QPushButton::clicked, this, &SetupWizardWindow::slotMoveToNextPage);
+    connect(_ui->nextButton, &QPushButton::clicked, this, &SetupWizardWidget::slotMoveToNextPage);
 
     connect(_ui->backButton, &QPushButton::clicked, this, [this]() {
         slotStartTransition();
@@ -68,7 +76,7 @@ SetupWizardWindow::SetupWizardWindow(SettingsDialog *parent)
     if (OC_ENSURE(fusionStyle != nullptr)) {
         _ui->contentWidget->setStyle(fusionStyle);
     } else {
-        qCDebug(lcSetupWizardWindow) << "Could not set up default style, wizard contents will be shown using default style";
+        qCDebug(lcSetupWizardWidget) << "Could not set up default style, wizard contents will be shown using default style";
     }
 
     loadStylesheet();
@@ -77,21 +85,21 @@ SetupWizardWindow::SetupWizardWindow(SettingsDialog *parent)
     _ui->transitionProgressIndicator->setColor(Theme::instance()->wizardHeaderTitleColor());
 }
 
-void SetupWizardWindow::loadStylesheet()
+void SetupWizardWidget::loadStylesheet()
 {
     QString path = QStringLiteral(":/client/resources/wizard/style.qss");
 
     QFile file(path);
     Q_ASSERT(file.exists());
     if (!OC_ENSURE(file.open(QIODevice::ReadOnly))) {
-        qCCritical(lcSetupWizardWindow) << "failed to load stylesheet";
+        qCCritical(lcSetupWizardWidget) << "failed to load stylesheet";
     }
 
     QString stylesheet = replaceCssColors(QString::fromUtf8(file.readAll()));
     _ui->contentWidget->setStyleSheet(stylesheet);
 }
 
-void SetupWizardWindow::displayPage(AbstractSetupWizardPage *page, SetupWizardState state)
+void SetupWizardWidget::displayPage(AbstractSetupWizardPage *page, SetupWizardState state)
 {
     _transitioning = false;
     _ui->backButton->setEnabled(true);
@@ -120,7 +128,7 @@ void SetupWizardWindow::displayPage(AbstractSetupWizardPage *page, SetupWizardSt
     _ui->navigation->setActiveState(state);
     _ui->navigation->setEnabled(true);
 
-    connect(_ui->errorMessageDismissButton, &QPushButton::clicked, this, &SetupWizardWindow::slotHideErrorMessageWidget);
+    connect(_ui->errorMessageDismissButton, &QPushButton::clicked, this, &SetupWizardWidget::slotHideErrorMessageWidget);
 
     // by default, set focus on the next button
     _ui->nextButton->setFocus();
@@ -128,7 +136,7 @@ void SetupWizardWindow::displayPage(AbstractSetupWizardPage *page, SetupWizardSt
     // bring to front if necessary
     ownCloudGui::raise();
 
-    connect(_currentPage, &AbstractSetupWizardPage::contentChanged, this, &SetupWizardWindow::slotUpdateNextButton);
+    connect(_currentPage, &AbstractSetupWizardPage::contentChanged, this, &SetupWizardWidget::slotUpdateNextButton);
 
     QTimer::singleShot(0, [this]() {
         // this can optionally be overwritten by the page
@@ -136,7 +144,7 @@ void SetupWizardWindow::displayPage(AbstractSetupWizardPage *page, SetupWizardSt
     });
 }
 
-void SetupWizardWindow::slotStartTransition()
+void SetupWizardWidget::slotStartTransition()
 {
     _transitioning = true;
 
@@ -151,19 +159,7 @@ void SetupWizardWindow::slotStartTransition()
     slotHideErrorMessageWidget();
 }
 
-void SetupWizardWindow::reject()
-{
-    auto messageBox = new QMessageBox(QMessageBox::Warning, tr("Cancel Setup"), tr("Do you really want to cancel the account setup?"), QMessageBox::Yes | QMessageBox::No, ocApp()->gui()->settingsDialog());
-    messageBox->setAttribute(Qt::WA_DeleteOnClose);
-    connect(messageBox, &QMessageBox::accepted, this, [this] {
-        // call the base implementation
-        QDialog::reject();
-    });
-    ownCloudGui::raise();
-    messageBox->open();
-}
-
-void SetupWizardWindow::slotReplaceContent(QWidget *newWidget)
+void SetupWizardWidget::slotReplaceContent(QWidget *newWidget)
 {
     _ui->contentWidget->removeWidget(_currentContentWidget);
 
@@ -176,39 +172,39 @@ void SetupWizardWindow::slotReplaceContent(QWidget *newWidget)
     _currentContentWidget->setStyleSheet(_ui->contentWidget->styleSheet());
 }
 
-void SetupWizardWindow::slotHideErrorMessageWidget()
+void SetupWizardWidget::slotHideErrorMessageWidget()
 {
     _ui->errorMessageWidget->hide();
 }
 
-void SetupWizardWindow::showErrorMessage(const QString &errorMessage)
+void SetupWizardWidget::showErrorMessage(const QString &errorMessage)
 {
     _ui->errorMessageLabel->setText(QStringLiteral("<b>%1</b>").arg(errorMessage));
     _ui->errorMessageLabel->setWordWrap(true);
     _ui->errorMessageWidget->show();
 }
 
-void SetupWizardWindow::setNavigationEntries(const QList<SetupWizardState> &entries)
+void SetupWizardWidget::setNavigationEntries(const QList<SetupWizardState> &entries)
 {
     _ui->navigation->setEntries(entries);
 }
 
-void SetupWizardWindow::slotUpdateNextButton()
+void SetupWizardWidget::slotUpdateNextButton()
 {
     _ui->nextButton->setEnabled(_currentPage->validateInput());
 }
 
-void SetupWizardWindow::disableNextButton()
+void SetupWizardWidget::disableNextButton()
 {
     _ui->nextButton->setEnabled(false);
 }
 
-SetupWizardWindow::~SetupWizardWindow() noexcept
+SetupWizardWidget::~SetupWizardWidget() noexcept
 {
     delete _ui;
 }
 
-void SetupWizardWindow::slotMoveToNextPage()
+void SetupWizardWidget::slotMoveToNextPage()
 {
     if (OC_ENSURE(_currentPage->validateInput())) {
         slotStartTransition();

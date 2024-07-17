@@ -21,7 +21,7 @@
 #include "setupwizardaccountbuilder.h"
 #include "setupwizardcontext.h"
 #include "setupwizardcontroller_p.h"
-#include "setupwizardwindow.h"
+#include "setupwizardwidget.h"
 #include "states/abstractsetupwizardstate.h"
 
 #include <QDialog>
@@ -45,7 +45,7 @@ public:
      * Provides access to the controller's setup wizard window.
      * @return pointer to window
      */
-    SetupWizardWindow *window();
+    SetupWizardWidget *window();
 
 Q_SIGNALS:
     /**

@@ -19,16 +19,8 @@
 #include "pages/abstractsetupwizardpage.h"
 #include "setupwizardaccountbuilder.h"
 
-#include <QDialog>
-#include <QEvent>
-#include <QKeyEvent>
-#include <QList>
-#include <QPair>
-#include <QStackedLayout>
-#include <QStackedWidget>
-
 namespace Ui {
-class SetupWizardWindow;
+class SetupWizardWidget;
 }
 
 namespace OCC::Wizard {
@@ -36,13 +28,13 @@ namespace OCC::Wizard {
 /**
  * This class contains the UI-specific code. It hides the complexity from the controller, and provides a high-level API.
  */
-class SetupWizardWindow : public QDialog
+class SetupWizardWidget : public QWidget
 {
     Q_OBJECT
 
 public:
-    explicit SetupWizardWindow(SettingsDialog *parent);
-    ~SetupWizardWindow() noexcept override;
+    explicit SetupWizardWidget(SettingsDialog *parent);
+    ~SetupWizardWidget() noexcept override;
 
     /**
      * Set entries in the pagination at the bottom of the wizard UI.
@@ -65,13 +57,13 @@ Q_SIGNALS:
     void navigationEntryClicked(SetupWizardState clickedState);
     void nextButtonClicked();
     void backButtonClicked();
+    void rejected();
 
 public Q_SLOTS:
     /**
      * Show "transition to next page" animation. Use displayPage(...) to end it.
      */
     void slotStartTransition();
-    void reject() override;
 
 private Q_SLOTS:
     void slotReplaceContent(QWidget *newWidget);
@@ -82,7 +74,7 @@ private Q_SLOTS:
 private:
     void loadStylesheet();
 
-    ::Ui::SetupWizardWindow *_ui;
+    ::Ui::SetupWizardWidget *_ui;
 
     // the wizard window keeps at most one widget inside the content widget's layout
     // we keep a pointer in order to be able to delete it (and thus remove it from the window) when replacing the content

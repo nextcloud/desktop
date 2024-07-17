@@ -19,7 +19,7 @@ namespace OCC::Wizard {
 
 SetupWizardContext::SetupWizardContext(SettingsDialog *windowParent, QObject *parent)
     : QObject(parent)
-    , _window(new SetupWizardWindow(windowParent))
+    , _window(new SetupWizardWidget(windowParent))
 {
     resetAccessManager();
 }
@@ -43,7 +43,7 @@ AccessManager *SetupWizardContext::resetAccessManager()
     return _accessManager;
 }
 
-SetupWizardWindow *SetupWizardContext::window() const
+SetupWizardWidget *SetupWizardContext::window() const
 {
     return _window;
 }

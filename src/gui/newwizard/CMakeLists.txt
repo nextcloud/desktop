@@ -24,9 +24,9 @@ add_library(newwizard STATIC
     pages/accountconfiguredwizardpage.h
     pages/accountconfiguredwizardpage.cpp
 
-    setupwizardwindow.ui
-    setupwizardwindow.h
-    setupwizardwindow.cpp
+    setupwizardwidget.ui
+    setupwizardwidget.h
+    setupwizardwidget.cpp
 
     setupwizardcontroller.h
     setupwizardcontroller.cpp
