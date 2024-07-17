@@ -65,6 +65,7 @@
 
 #ifdef BUILD_FILE_PROVIDER_MODULE
 #include "macOS/fileprovider.h"
+#include "macOS/fileproviderdomainmanager.h"
 #include "macOS/fileprovidersettingscontroller.h"
 #endif
 
@@ -298,6 +299,25 @@ void ownCloudGui::slotComputeOverallSyncStatus()
             allPaused = false;
         }
     }
+
+#ifdef BUILD_FILE_PROVIDER_MODULE
+    QList<QString> syncingFileProviderAccounts;
+
+    if (Mac::FileProvider::fileProviderAvailable()) {
+        for (const auto &accountState : AccountManager::instance()->accounts()) {
+            const auto accountFpId = Mac::FileProviderDomainManager::fileProviderDomainIdentifierFromAccountState(accountState);
+            if (!Mac::FileProviderSettingsController::instance()->vfsEnabledForAccount(accountFpId)) {
+                continue;
+            }
+            const auto socketState = Mac::FileProvider::instance()->socketServer()->socketStateForAccount(accountFpId);
+            if (!socketState.connected || socketState.latestStatus == SyncResult::Problem || socketState.latestStatus == SyncResult::Error) {
+                problemAccounts.append(accountState);
+            } else if (socketState.latestStatus == SyncResult::SyncRunning) {
+                syncingFileProviderAccounts.append(accountFpId);
+            }
+        }
+    }
+#endif
 
     if (!problemAccounts.empty()) {
         _tray->setIcon(Theme::instance()->folderOfflineIcon(true));
