@@ -279,16 +279,7 @@ void ownCloudGui::slotComputeOverallSyncStatus()
 {
     bool allSignedOut = true;
     bool allPaused = true;
-    bool allDisconnected = true;
     QVector<AccountStatePtr> problemAccounts;
-    auto setStatusText = [&](const QString &text) {
-        // FIXME: So this doesn't do anything? Needs to be revisited
-        Q_UNUSED(text)
-        // Don't overwrite the status if we're currently syncing
-        if (FolderMan::instance()->isAnySyncRunning())
-            return;
-        //_actionStatus->setText(text);
-    };
 
     for (const auto &account : AccountManager::instance()->accounts()) {
         if (!account->isSignedOut()) {
@@ -296,8 +287,6 @@ void ownCloudGui::slotComputeOverallSyncStatus()
         }
         if (!account->isConnected()) {
             problemAccounts.append(account);
-        } else {
-            allDisconnected = false;
         }
     }
     for (const auto folder : FolderMan::instance()->map()) {
@@ -308,11 +297,6 @@ void ownCloudGui::slotComputeOverallSyncStatus()
 
     if (!problemAccounts.empty()) {
         _tray->setIcon(Theme::instance()->folderOfflineIcon(true));
-        if (allDisconnected) {
-            setStatusText(tr("Disconnected"));
-        } else {
-            setStatusText(tr("Disconnected from some accounts"));
-        }
 #ifdef Q_OS_WIN
         // Windows has a 128-char tray tooltip length limit.
         QStringList accountNames;
@@ -339,12 +323,10 @@ void ownCloudGui::slotComputeOverallSyncStatus()
     if (allSignedOut) {
         _tray->setIcon(Theme::instance()->folderOfflineIcon(true));
         _tray->setToolTip(tr("Please sign in"));
-        setStatusText(tr("Signed out"));
         return;
     } else if (allPaused) {
         _tray->setIcon(Theme::instance()->syncStateIcon(SyncResult::Paused, true));
         _tray->setToolTip(tr("Account synchronization is disabled"));
-        setStatusText(tr("Synchronization is paused"));
         return;
     }
 
@@ -389,21 +371,8 @@ void ownCloudGui::slotComputeOverallSyncStatus()
         trayMessage = allStatusStrings.join(QLatin1String("\n"));
 #endif
         _tray->setToolTip(trayMessage);
-
-        if (overallStatus == SyncResult::Success || overallStatus == SyncResult::Problem) {
-            if (hasUnresolvedConflicts) {
-                setStatusText(tr("Unresolved conflicts"));
-            } else {
-                setStatusText(tr("Up to date"));
-            }
-        } else if (overallStatus == SyncResult::Paused) {
-            setStatusText(tr("Synchronization is paused"));
-        } else {
-            setStatusText(tr("Error during synchronization"));
-        }
     } else {
         _tray->setToolTip(tr("There are no sync folders configured."));
-        setStatusText(tr("No sync folders configured"));
     }
 }
 
