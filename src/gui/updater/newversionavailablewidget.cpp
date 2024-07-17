@@ -12,18 +12,18 @@
  * for more details.
  */
 
-#include "newversionavailabledialog.h"
+#include "newversionavailablewidget.h"
 #include "theme.h"
-#include "ui_newversionavailabledialog.h"
+#include "ui_newversionavailablewidget.h"
 
 #include <QDialogButtonBox>
 #include <QPushButton>
 
 namespace OCC {
 
-NewVersionAvailableDialog::NewVersionAvailableDialog(QWidget *parent, const QString &statusMessage)
+NewVersionAvailableWidget::NewVersionAvailableWidget(QWidget *parent, const QString &statusMessage)
     : QWidget(parent)
-    , _ui(new ::Ui::Ui_NewVersionAvailableDialog)
+    , _ui(new ::Ui::Ui_NewVersionAvailableWidget)
 {
     _ui->setupUi(this);
 
@@ -34,29 +34,29 @@ NewVersionAvailableDialog::NewVersionAvailableDialog(QWidget *parent, const QStr
     QPushButton *getUpdateButton = _ui->buttonBox->addButton(tr("Get update"), QDialogButtonBox::AcceptRole);
     QPushButton *rejectButton = _ui->buttonBox->addButton(tr("Skip this time"), QDialogButtonBox::AcceptRole);
 
-    connect(skipButton, &QAbstractButton::clicked, this, &NewVersionAvailableDialog::skipVersion);
-    connect(rejectButton, &QAbstractButton::clicked, this, &NewVersionAvailableDialog::notNow);
-    connect(getUpdateButton, &QAbstractButton::clicked, this, &NewVersionAvailableDialog::getUpdate);
+    connect(skipButton, &QAbstractButton::clicked, this, &NewVersionAvailableWidget::skipVersion);
+    connect(rejectButton, &QAbstractButton::clicked, this, &NewVersionAvailableWidget::notNow);
+    connect(getUpdateButton, &QAbstractButton::clicked, this, &NewVersionAvailableWidget::getUpdate);
 }
 
-NewVersionAvailableDialog::~NewVersionAvailableDialog()
+NewVersionAvailableWidget::~NewVersionAvailableWidget()
 {
     delete _ui;
 }
 
-void NewVersionAvailableDialog::skipVersion()
+void NewVersionAvailableWidget::skipVersion()
 {
     Q_EMIT versionSkipped();
     Q_EMIT finished();
 }
 
-void NewVersionAvailableDialog::notNow()
+void NewVersionAvailableWidget::notNow()
 {
     Q_EMIT noUpdateNow();
     Q_EMIT finished();
 }
 
-void NewVersionAvailableDialog::getUpdate()
+void NewVersionAvailableWidget::getUpdate()
 {
     Q_EMIT updateNow();
     Q_EMIT finished();

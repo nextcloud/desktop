@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>Ui::NewVersionAvailableDialog</class>
- <widget class="QWidget" name="Ui::NewVersionAvailableDialog">
+ <class>Ui::NewVersionAvailableWidget</class>
+ <widget class="QWidget" name="Ui::NewVersionAvailableWidget">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -9,9 +9,6 @@
     <width>400</width>
     <height>300</height>
    </rect>
-  </property>
-  <property name="windowTitle">
-   <string>Form</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>

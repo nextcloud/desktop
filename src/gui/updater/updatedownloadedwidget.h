@@ -18,32 +18,29 @@
 #include <QWidget>
 
 namespace Ui {
-class Ui_NewVersionAvailableDialog;
+class UpdateDownloadedWidget;
 }
 
 namespace OCC {
 
-class NewVersionAvailableDialog : public QWidget
+class UpdateDownloadedWidget : public QWidget
 {
     Q_OBJECT
 
 public:
-    explicit NewVersionAvailableDialog(QWidget *parent, const QString &statusMessage);
-    ~NewVersionAvailableDialog();
+    explicit UpdateDownloadedWidget(QWidget *parent, const QString &statusMessage);
+    ~UpdateDownloadedWidget();
 
-private Q_SLOTS:
-    void skipVersion();
-    void notNow();
-    void getUpdate();
+public Q_SLOTS:
+    void accept();
+    void reject();
 
 Q_SIGNALS:
-    void versionSkipped();
-    void noUpdateNow();
-    void updateNow();
+    void accepted();
     void finished();
 
 private:
-    ::Ui::Ui_NewVersionAvailableDialog *_ui;
+    ::Ui::UpdateDownloadedWidget *_ui;
 };
 
 }

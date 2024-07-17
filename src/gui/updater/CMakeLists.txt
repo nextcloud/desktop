@@ -10,16 +10,16 @@ endif()
 target_sources(owncloudGui PRIVATE
     ocupdater.cpp
     ocupdater.h
-    newversionavailabledialog.cpp
-    newversionavailabledialog.h
-    newversionavailabledialog.ui
+    newversionavailablewidget.cpp
+    newversionavailablewidget.h
+    newversionavailablewidget.ui
     updateinfo.cpp
     updateinfo.h
     updater.cpp
     updater.h
-    updatedownloadeddialog.cpp
-    updatedownloadeddialog.h
-    updatedownloadeddialog.ui
+    updatedownloadedwidget.cpp
+    updatedownloadedwidget.h
+    updatedownloadedwidget.ui
 )
 
 if(SPARKLE_FOUND)

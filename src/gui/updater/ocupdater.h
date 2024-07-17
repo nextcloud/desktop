@@ -16,7 +16,7 @@
 #include "gui/owncloudguilib.h"
 
 #include "application.h"
-#include "updater/updatedownloadeddialog.h"
+#include "updater/updatedownloadedwidget.h"
 #include "updater/updateinfo.h"
 #include "updater/updater.h"
 
@@ -92,7 +92,7 @@ private:
     QTimer _updateCheckTimer; /** Timer for the regular update check. */
 
     // make sure we are going to show only one of them at once
-    QPointer<UpdateDownloadedDialog> _updateDownloadedDialog = nullptr;
+    QPointer<UpdateDownloadedWidget> _updateDownloadedWidget = nullptr;
 };
 
 /**
@@ -186,7 +186,7 @@ private Q_SLOTS:
 
 private:
     void wipeUpdateData();
-    void showNewVersionAvailableDialog(const UpdateInfo &info);
+    void showNewVersionAvailableWidget(const UpdateInfo &info);
     void showUpdateErrorDialog(const QString &targetVersion);
     void versionInfoArrived(const UpdateInfo &info) override;
     QScopedPointer<QTemporaryFile> _file;

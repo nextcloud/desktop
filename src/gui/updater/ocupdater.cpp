@@ -21,8 +21,8 @@
 #include "theme.h"
 
 #include "settingsdialog.h"
-#include "updatedownloadeddialog.h"
-#include "updater/newversionavailabledialog.h"
+#include "updatedownloadedwidget.h"
+#include "updater/newversionavailablewidget.h"
 #include "updater/ocupdater.h"
 #include "updater/updater_private.h"
 
@@ -51,12 +51,12 @@ UpdaterScheduler::UpdaterScheduler(Application *app, QObject *parent)
 
         connect(updater, &OCUpdater::updateDownloaded, this, [app, updater, this]() {
             // prevent dialog from being displayed twice (rather unlikely, but it won't hurt)
-            if (_updateDownloadedDialog == nullptr) {
-                _updateDownloadedDialog = new UpdateDownloadedDialog(app->gui()->settingsDialog(), updater->statusString());
-                ocApp()->gui()->settingsDialog()->addModalWidget(_updateDownloadedDialog);
+            if (_updateDownloadedWidget == nullptr) {
+                _updateDownloadedWidget = new UpdateDownloadedWidget(app->gui()->settingsDialog(), updater->statusString());
+                ocApp()->gui()->settingsDialog()->addModalWidget(_updateDownloadedWidget);
 
-                connect(_updateDownloadedDialog, &UpdateDownloadedDialog::accepted, this, []() { RestartManager::requestRestart(); });
-                connect(_updateDownloadedDialog, &UpdateDownloadedDialog::finished, this, [this]() { delete _updateDownloadedDialog.data(); });
+                connect(_updateDownloadedWidget, &UpdateDownloadedWidget::accepted, this, []() { RestartManager::requestRestart(); });
+                connect(_updateDownloadedWidget, &UpdateDownloadedWidget::finished, this, [this]() { delete _updateDownloadedWidget.data(); });
             }
         });
 
@@ -354,7 +354,7 @@ void WindowsUpdater::versionInfoArrived(const UpdateInfo &info)
     } else {
         const QString url = info.downloadUrl();
         if (url.isEmpty()) {
-            showNewVersionAvailableDialog(info);
+            showNewVersionAvailableWidget(info);
         } else {
             _targetFile = ConfigFile::configPath() + url.mid(url.lastIndexOf(QLatin1Char('/')) + 1);
             if (QFile::exists(_targetFile)) {
@@ -374,18 +374,18 @@ void WindowsUpdater::versionInfoArrived(const UpdateInfo &info)
     }
 }
 
-void WindowsUpdater::showNewVersionAvailableDialog(const UpdateInfo &info)
+void WindowsUpdater::showNewVersionAvailableWidget(const UpdateInfo &info)
 {
     // if the version tag is set, there is a newer version.
     QString txt = tr("<p>A new version of the %1 Client is available.</p>"
                      "<p><b>%2</b> is available for download. The installed version is %3.</p>")
                       .arg(Utility::escape(Theme::instance()->appNameGUI()),
                           Utility::escape(info.versionString()), Utility::escape(Version::versionWithBuildNumber().toString()));
-    auto *widget = new NewVersionAvailableDialog(ocApp()->gui()->settingsDialog(), txt);
+    auto *widget = new NewVersionAvailableWidget(ocApp()->gui()->settingsDialog(), txt);
 
-    connect(widget, &NewVersionAvailableDialog::versionSkipped, this, &WindowsUpdater::slotSetPreviouslySkippedVersion);
-    connect(widget, &NewVersionAvailableDialog::updateNow, this, &WindowsUpdater::slotOpenUpdateUrl);
-    connect(widget, &NewVersionAvailableDialog::finished, this, [widget]() { delete widget; });
+    connect(widget, &NewVersionAvailableWidget::versionSkipped, this, &WindowsUpdater::slotSetPreviouslySkippedVersion);
+    connect(widget, &NewVersionAvailableWidget::updateNow, this, &WindowsUpdater::slotOpenUpdateUrl);
+    connect(widget, &NewVersionAvailableWidget::finished, this, [widget]() { delete widget; });
 
     ocApp()->gui()->settingsDialog()->addModalWidget(widget);
 }

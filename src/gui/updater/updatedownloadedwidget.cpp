@@ -12,18 +12,18 @@
  * for more details.
  */
 
-#include "updatedownloadeddialog.h"
+#include "updatedownloadedwidget.h"
 #include "theme.h"
-#include "ui_updatedownloadeddialog.h"
+#include "ui_updatedownloadedwidget.h"
 
 #include <QDialogButtonBox>
 #include <QPushButton>
 
 namespace OCC {
 
-UpdateDownloadedDialog::UpdateDownloadedDialog(QWidget *parent, const QString &statusMessage)
+UpdateDownloadedWidget::UpdateDownloadedWidget(QWidget *parent, const QString &statusMessage)
     : QWidget(parent)
-    , _ui(new ::Ui::UpdateDownloadedDialog)
+    , _ui(new ::Ui::UpdateDownloadedWidget)
 {
     _ui->setupUi(this);
 
@@ -32,8 +32,8 @@ UpdateDownloadedDialog::UpdateDownloadedDialog(QWidget *parent, const QString &s
 
     _ui->descriptionLabel->setText(statusMessage);
 
-    connect(_ui->buttonBox, &QDialogButtonBox::rejected, this, &UpdateDownloadedDialog::reject);
-    connect(_ui->buttonBox, &QDialogButtonBox::accepted, this, &UpdateDownloadedDialog::accept);
+    connect(_ui->buttonBox, &QDialogButtonBox::rejected, this, &UpdateDownloadedWidget::reject);
+    connect(_ui->buttonBox, &QDialogButtonBox::accepted, this, &UpdateDownloadedWidget::accept);
 
     const auto noButton = _ui->buttonBox->button(QDialogButtonBox::No);
     const auto yesButton = _ui->buttonBox->button(QDialogButtonBox::Yes);
@@ -44,18 +44,18 @@ UpdateDownloadedDialog::UpdateDownloadedDialog(QWidget *parent, const QString &s
     yesButton->setDefault(true);
 }
 
-UpdateDownloadedDialog::~UpdateDownloadedDialog()
+UpdateDownloadedWidget::~UpdateDownloadedWidget()
 {
     delete _ui;
 }
 
-void UpdateDownloadedDialog::accept()
+void UpdateDownloadedWidget::accept()
 {
     Q_EMIT accepted();
     Q_EMIT finished();
 }
 
-void UpdateDownloadedDialog::reject()
+void UpdateDownloadedWidget::reject()
 {
     Q_EMIT finished();
 }
