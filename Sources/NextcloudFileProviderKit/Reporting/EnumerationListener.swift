@@ -9,8 +9,7 @@ import FileProvider
 import Foundation
 
 public protocol EnumerationListener: NSObject {
-    var domain: NSFileProviderDomain { get }
-    func started(actionId: UUID)
-    func finished(actionId: UUID)
-    func failed(actionId: UUID, error: Error)
+    func enumerationActionStarted(actionId: UUID)
+    func enumerationActionFinished(actionId: UUID)
+    func enumerationActionFailed(actionId: UUID, error: Error)
 }

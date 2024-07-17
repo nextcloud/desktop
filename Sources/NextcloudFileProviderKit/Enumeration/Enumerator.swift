@@ -97,7 +97,7 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
         for observer: NSFileProviderEnumerationObserver, startingAt page: NSFileProviderPage
     ) {
         let actionId = UUID()
-        listener?.started(actionId: actionId)
+        listener?.enumerationActionStarted(actionId: actionId)
 
         Self.logger.debug(
             "Received enumerate items request for enumerator with user: \(self.ncAccount.ncKitAccount, privacy: .public) with serverUrl: \(self.serverUrl, privacy: .public)"
@@ -121,7 +121,7 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
             )
             // TODO!
 
-            listener?.finished(actionId: actionId)
+            listener?.enumerationActionFinished(actionId: actionId)
             observer.finishEnumerating(upTo: nil)
             return
         }
@@ -137,7 +137,7 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
             Self.logger.error(
                 "Enumerator has empty serverUrl -- can't enumerate that! For identifier: \(self.enumeratedItemIdentifier.rawValue, privacy: .public)"
             )
-            listener?.failed(actionId: actionId, error: NSFileProviderError(.noSuchItem))
+            listener?.enumerationActionFailed(actionId: actionId, error: NSFileProviderError(.noSuchItem))
             observer.finishEnumeratingWithError(NSFileProviderError(.noSuchItem))
             return
         }
@@ -166,7 +166,7 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
                     // TODO: Refactor for conciseness
                     let error =
                         readError?.fileProviderError ?? NSFileProviderError(.cannotSynchronize)
-                    listener?.failed(actionId: actionId, error: error)
+                    listener?.enumerationActionFailed(actionId: actionId, error: error)
                     observer.finishEnumeratingWithError(error)
                     return
                 }
@@ -175,7 +175,7 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
                     Self.logger.error(
                         "Finishing enumeration for user: \(self.ncAccount.ncKitAccount, privacy: .public) with serverUrl: \(self.serverUrl, privacy: .public) with invalid metadatas."
                     )
-                    listener?.failed(
+                    listener?.enumerationActionFailed(
                         actionId: actionId, error: NSFileProviderError(.cannotSynchronize)
                     )
                     observer.finishEnumeratingWithError(NSFileProviderError(.cannotSynchronize))
@@ -193,7 +193,7 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
                     numPage: 1,
                     itemMetadatas: metadatas
                 )
-                listener?.finished(actionId: actionId)
+                listener?.enumerationActionFinished(actionId: actionId)
             }
 
             return
@@ -205,7 +205,7 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
         )
         // TODO: Handle paging properly
         // Self.completeObserver(observer, ncKit: ncKit, numPage: numPage, itemMetadatas: nil)
-        listener?.finished(actionId: actionId)
+        listener?.enumerationActionFinished(actionId: actionId)
         observer.finishEnumerating(upTo: nil)
     }
 
@@ -213,7 +213,7 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
         for observer: NSFileProviderChangeObserver, from anchor: NSFileProviderSyncAnchor
     ) {
         let actionId = UUID()
-        listener?.started(actionId: actionId)
+        listener?.enumerationActionStarted(actionId: actionId)
 
         Self.logger.debug(
             "Received enumerate changes request for enumerator for user: \(self.ncAccount.ncKitAccount, privacy: .public) with serverUrl: \(self.serverUrl, privacy: .public)"
@@ -252,7 +252,7 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
                         For user: \(self.ncAccount.ncKitAccount, privacy: .public)
                         """
                     )
-                    listener?.failed(actionId: actionId, error: NSFileProviderError(.cannotSynchronize))
+                    listener?.enumerationActionFailed(actionId: actionId, error: NSFileProviderError(.cannotSynchronize))
                     observer.finishEnumeratingWithError(NSFileProviderError(.cannotSynchronize))
                     return
                 }
@@ -268,7 +268,7 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
                     // TODO: Refactor for conciseness
                     let fpError =
                         error?.fileProviderError ?? NSFileProviderError(.cannotSynchronize)
-                    listener?.failed(actionId: actionId, error: fpError)
+                    listener?.enumerationActionFailed(actionId: actionId, error: fpError)
                     observer.finishEnumeratingWithError(fpError)
                     return
                 }
@@ -289,7 +289,7 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
                     updatedMetadatas: updatedMetadatas,
                     deletedMetadatas: deletedMetadatas
                 )
-                listener?.finished(actionId: actionId)
+                listener?.enumerationActionFinished(actionId: actionId)
             }
             return
         } else if enumeratedItemIdentifier == .trashContainer {
@@ -298,7 +298,7 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
             )
             // TODO!
 
-            listener?.finished(actionId: actionId)
+            listener?.enumerationActionFinished(actionId: actionId)
             observer.finishEnumeratingChanges(upTo: anchor, moreComing: false)
             return
         }
@@ -343,7 +343,7 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
                         Self.logger.error(
                             "Invalid enumeratedItemMetadata, could not delete metadata nor report deletion"
                         )
-                        listener?.failed(actionId: actionId, error: error)
+                        listener?.enumerationActionFailed(actionId: actionId, error: error)
                         observer.finishEnumeratingWithError(error)
                         return
                     }
@@ -372,18 +372,18 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
                         updatedMetadatas: nil,
                         deletedMetadatas: [itemMetadata]
                     )
-                    listener?.finished(actionId: actionId)
+                    listener?.enumerationActionFinished(actionId: actionId)
                     return
                 } else if readError!.isNoChangesError {  // All is well, just no changed etags
                     Self.logger.info(
                         "Error was to say no changed files -- not bad error. Finishing change enumeration."
                     )
-                    listener?.finished(actionId: actionId)
+                    listener?.enumerationActionFinished(actionId: actionId)
                     observer.finishEnumeratingChanges(upTo: anchor, moreComing: false)
                     return
                 }
 
-                listener?.failed(actionId: actionId, error: error)
+                listener?.enumerationActionFailed(actionId: actionId, error: error)
                 observer.finishEnumeratingWithError(error)
                 return
             }
@@ -401,7 +401,7 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
                 updatedMetadatas: updatedMetadatas,
                 deletedMetadatas: deletedMetadatas
             )
-            listener?.finished(actionId: actionId)
+            listener?.enumerationActionFinished(actionId: actionId)
         }
     }
 
