@@ -54,6 +54,8 @@ class FileProviderSocketServer : public QObject
 public:
     explicit FileProviderSocketServer(QObject *parent = nullptr);
 
+    [[nodiscard]] FileProviderSocketState socketStateForAccount(const QString &userIdAtHost) const;
+
 signals:
     void syncStateChanged(const AccountPtr &account, SyncResult::Status state) const;
 

@@ -17,6 +17,8 @@
 #include <QLocalSocket>
 #include <QLoggingCategory>
 
+#include "libsync/account.h"
+
 #include "fileprovidersocketcontroller.h"
 
 namespace OCC {
@@ -79,6 +81,22 @@ void FileProviderSocketServer::slotSocketDestroyed(const QLocalSocket * const so
         const auto rawSocketControllerPtr = socketController.data();
         delete rawSocketControllerPtr;
     }
+}
+
+FileProviderSocketState FileProviderSocketServer::socketStateForAccount(const QString &userIdAtHost) const
+{
+    auto connected = false;
+    auto latestStatus = SyncResult::Undefined;
+
+    for (const auto &controller : _socketControllers) {
+        if (controller->accountState()->account()->userIdAtHostWithPort() == userIdAtHost) {
+            connected = true;
+            latestStatus = controller->latestStatus();
+            break;
+        }
+    }
+
+    return { .connected = connected, .latestStatus = latestStatus };
 }
 
 } // namespace Mac
