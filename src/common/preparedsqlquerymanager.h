@@ -108,7 +108,7 @@ public:
         GetE2EeLockedFoldersQuery,
         DeleteE2EeLockedFolderQuery,
         ListAllTopLevelE2eeFoldersStatusLessThanQuery,
-
+        RelocateFolderToNewPathRecursivelyQuery,
         PreparedQueryCount
     };
     PreparedSqlQueryManager() = default;
