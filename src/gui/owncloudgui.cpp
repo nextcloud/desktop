@@ -332,11 +332,11 @@ void ownCloudGui::slotComputeOverallSyncStatus()
 #else
         QStringList messages;
         messages.append(tr("Disconnected from accounts:"));
-        foreach (AccountStatePtr a, problemAccounts) {
-            QString message = tr("Account %1: %2").arg(a->account()->displayName(), a->stateString(a->state()));
-            if (!a->connectionErrors().empty()) {
+        for (const auto &accountState : problemAccounts) {
+            QString message = tr("Account %1: %2").arg(accountState->account()->displayName(), accountState->stateString(accountState->state()));
+            if (!accountState->connectionErrors().empty()) {
                 message += QLatin1String("\n");
-                message += a->connectionErrors().join(QLatin1String("\n"));
+                message += accountState->connectionErrors().join(QLatin1String("\n"));
             }
             messages.append(message);
         }
