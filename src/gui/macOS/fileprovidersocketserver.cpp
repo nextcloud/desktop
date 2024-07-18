@@ -65,7 +65,7 @@ void FileProviderSocketServer::slotNewConnection()
 
     const FileProviderSocketControllerPtr socketController(new FileProviderSocketController(socket, this));
     connect(socketController.data(), &FileProviderSocketController::syncStateChanged,
-            this, &FileProviderSocketServer::syncStateChanged);
+            this, &FileProviderSocketServer::slotSyncStateChanged);
     connect(socketController.data(), &FileProviderSocketController::socketDestroyed,
             this, &FileProviderSocketServer::slotSocketDestroyed);
     _socketControllers.insert(socket, socketController);
@@ -83,20 +83,19 @@ void FileProviderSocketServer::slotSocketDestroyed(const QLocalSocket * const so
     }
 }
 
-FileProviderSocketState FileProviderSocketServer::socketStateForAccount(const QString &userIdAtHost) const
+void FileProviderSocketServer::slotSyncStateChanged(const AccountPtr &account, SyncResult::Status state)
 {
-    auto connected = false;
-    auto latestStatus = SyncResult::Undefined;
+    Q_ASSERT(account);
+    const auto userId = account->userIdAtHostWithPort();
+    qCDebug(lcFileProviderSocketServer) << "Received sync state change for account" << userId << "state" << state;
+    _latestReceivedSyncStatus.insert(userId, state);
+    Q_EMIT syncStateChanged(account, state);
+}
 
-    for (const auto &controller : _socketControllers) {
-        if (controller->accountState()->account()->userIdAtHostWithPort() == userIdAtHost) {
-            connected = true;
-            latestStatus = controller->latestStatus();
-            break;
-        }
-    }
-
-    return { .connected = connected, .latestStatus = latestStatus };
+SyncResult::Status FileProviderSocketServer::latestReceivedSyncStatusForAccount(const AccountPtr &account) const
+{
+    Q_ASSERT(account);
+    return _latestReceivedSyncStatus.value(account->userIdAtHostWithPort(), SyncResult::Undefined);
 }
 
 } // namespace Mac

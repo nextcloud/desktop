@@ -29,11 +29,6 @@ using FileProviderSocketControllerPtr = QPointer<FileProviderSocketController>;
 
 QString fileProviderSocketPath();
 
-struct FileProviderSocketState {
-    bool connected;
-    SyncResult::Status latestStatus;
-} typedef FileProviderSocketState;
-
 /*
  * Establishes communication between the app and the file provider extension.
  * This is done via a local socket server.
@@ -54,7 +49,7 @@ class FileProviderSocketServer : public QObject
 public:
     explicit FileProviderSocketServer(QObject *parent = nullptr);
 
-    [[nodiscard]] FileProviderSocketState socketStateForAccount(const QString &userIdAtHost) const;
+    [[nodiscard]] SyncResult::Status latestReceivedSyncStatusForAccount(const AccountPtr &account) const;
 
 signals:
     void syncStateChanged(const AccountPtr &account, SyncResult::Status state) const;
@@ -63,11 +58,13 @@ private slots:
     void startListening();
     void slotNewConnection();
     void slotSocketDestroyed(const QLocalSocket * const socket);
+    void slotSyncStateChanged(const AccountPtr &account, SyncResult::Status state);
 
 private:
     QString _socketPath;
     QLocalServer _socketServer;
     QHash<const QLocalSocket*, FileProviderSocketControllerPtr> _socketControllers;
+    QHash<QString, SyncResult::Status> _latestReceivedSyncStatus;
 };
 
 } // namespace Mac
