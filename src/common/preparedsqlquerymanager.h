@@ -111,7 +111,7 @@ public:
 
 private:
     SqlQuery _queries[PreparedQueryCount];
-    Q_DISABLE_COPY(PreparedSqlQueryManager);
+    Q_DISABLE_COPY(PreparedSqlQueryManager)
 };
 
 }
