@@ -3657,58 +3657,58 @@ Are you sure you want to proceed?</source>
     </message>
 </context>
 <context>
-    <name>OCC::Wizard::SetupWizardWindow</name>
+    <name>OCC::Wizard::SetupWizardWidget</name>
     <message>
-        <location filename="../src/gui/newwizard/setupwizardwindow.cpp" line="108"/>
-        <source>Finish</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/gui/newwizard/setupwizardwindow.cpp" line="41"/>
-        <location filename="../src/gui/newwizard/setupwizardwindow.cpp" line="42"/>
+        <location filename="../src/gui/newwizard/setupwizardwidget.cpp" line="42"/>
+        <location filename="../src/gui/newwizard/setupwizardwidget.cpp" line="43"/>
         <source>Back</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/newwizard/setupwizardwindow.cpp" line="41"/>
+        <location filename="../src/gui/newwizard/setupwizardwidget.cpp" line="42"/>
         <source>&lt; &amp;Back</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/newwizard/setupwizardwindow.cpp" line="107"/>
-        <location filename="../src/gui/newwizard/setupwizardwindow.cpp" line="108"/>
-        <source>Done</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/gui/newwizard/setupwizardwindow.cpp" line="107"/>
-        <source>&amp;Finish</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/gui/newwizard/setupwizardwindow.cpp" line="110"/>
-        <location filename="../src/gui/newwizard/setupwizardwindow.cpp" line="111"/>
-        <source>Continue</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/gui/newwizard/setupwizardwindow.cpp" line="110"/>
-        <source>&amp;Next &gt;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/gui/newwizard/setupwizardwindow.cpp" line="111"/>
-        <source>Next</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/gui/newwizard/setupwizardwindow.cpp" line="156"/>
+        <location filename="../src/gui/newwizard/setupwizardwidget.cpp" line="48"/>
         <source>Cancel Setup</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/newwizard/setupwizardwindow.cpp" line="156"/>
+        <location filename="../src/gui/newwizard/setupwizardwidget.cpp" line="48"/>
         <source>Do you really want to cancel the account setup?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/newwizard/setupwizardwidget.cpp" line="115"/>
+        <location filename="../src/gui/newwizard/setupwizardwidget.cpp" line="116"/>
+        <source>Done</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/newwizard/setupwizardwidget.cpp" line="115"/>
+        <source>&amp;Finish</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/newwizard/setupwizardwidget.cpp" line="116"/>
+        <source>Finish</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/newwizard/setupwizardwidget.cpp" line="118"/>
+        <location filename="../src/gui/newwizard/setupwizardwidget.cpp" line="119"/>
+        <source>Continue</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/newwizard/setupwizardwidget.cpp" line="118"/>
+        <source>&amp;Next &gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/newwizard/setupwizardwidget.cpp" line="119"/>
+        <source>Next</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -4025,24 +4025,24 @@ Are you sure you want to proceed?</source>
     </message>
 </context>
 <context>
-    <name>SetupWizardWindow</name>
+    <name>SetupWizardWidget</name>
     <message>
-        <location filename="../src/gui/newwizard/setupwizardwindow.ui" line="14"/>
+        <location filename="../src/gui/newwizard/setupwizardwidget.ui" line="14"/>
         <source>Add New Account</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/newwizard/setupwizardwindow.ui" line="104"/>
+        <location filename="../src/gui/newwizard/setupwizardwidget.ui" line="101"/>
         <source>&amp;Dismiss</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/newwizard/setupwizardwindow.ui" line="119"/>
+        <location filename="../src/gui/newwizard/setupwizardwidget.ui" line="116"/>
         <source>&amp;Cancel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/newwizard/setupwizardwindow.ui" line="155"/>
+        <location filename="../src/gui/newwizard/setupwizardwidget.ui" line="152"/>
         <source>&lt; Back</source>
         <translation type="unfinished"></translation>
     </message>
