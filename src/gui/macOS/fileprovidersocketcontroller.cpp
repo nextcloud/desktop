@@ -227,6 +227,11 @@ void FileProviderSocketController::sendAccountDetails() const
 
 void FileProviderSocketController::reportSyncState(const QString &receivedState)
 {
+    if (!accountState()) {
+        qCWarning(lcFileProviderSocketController) << "No account state available to report sync state";
+        return;
+    }
+
     auto syncState = SyncResult::Status::Undefined;
     if (receivedState == "SYNC_PREPARING") {
         syncState = SyncResult::Status::SyncPrepare;
