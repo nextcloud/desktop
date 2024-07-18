@@ -55,6 +55,7 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
         self.dbManager = dbManager
         self.domain = domain
         self.fastEnumeration = fastEnumeration
+        self.listener = listener
 
         if Self.isSystemIdentifier(enumeratedItemIdentifier) {
             Self.logger.debug(
