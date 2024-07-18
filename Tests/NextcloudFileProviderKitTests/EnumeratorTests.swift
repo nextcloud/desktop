@@ -740,4 +740,28 @@ final class EnumeratorTests: XCTestCase {
         XCTAssertNotEqual(storedItemA.filename, remoteItemA.name)
         XCTAssertFalse(storedItemA.filename.isEmpty)
     }
+
+    func testListenerInvocations() async throws {
+        let db = Self.dbManager.ncDatabase() // Strong ref for in memory test db
+        debugPrint(db)
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+        let listener = MockEnumerationListener()
+
+        let enumerator = Enumerator(
+            enumeratedItemIdentifier: .workingSet,
+            ncAccount: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager,
+            listener: listener
+        )
+        let observer = MockEnumerationObserver(enumerator: enumerator)
+        try await observer.enumerateItems()
+        XCTAssertEqual(observer.items.count, 1) // Should only get the folder in root
+
+        // Check enumeration actions
+        XCTAssertEqual(listener.startActions.count, 1)
+        XCTAssertEqual(listener.finishActions.count, 1)
+        XCTAssertTrue(listener.errorActions.isEmpty)
+        XCTAssertTrue(listener.startActions.first!.value < listener.finishActions.first!.value)
+    }
 }
