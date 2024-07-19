@@ -311,11 +311,28 @@ void ownCloudGui::slotComputeOverallSyncStatus()
                 continue;
             }
             const auto fileProvider = Mac::FileProvider::instance();
-            const auto latestStatus = fileProvider->socketServer()->latestReceivedSyncStatusForAccount(accountState->account());
-            if (latestStatus == SyncResult::Problem || latestStatus == SyncResult::Error || !fileProvider->xpc()->fileProviderExtReachable(accountFpId)) {
+
+            if (!fileProvider->xpc()->fileProviderExtReachable(accountFpId)) {
                 problemFileProviderAccounts.append(accountFpId);
-            } else if (latestStatus == SyncResult::SyncRunning) {
-                syncingFileProviderAccounts.append(accountFpId);
+            } else {
+                switch (const auto latestStatus = fileProvider->socketServer()->latestReceivedSyncStatusForAccount(accountState->account())) {
+                case SyncResult::Undefined:
+                case SyncResult::NotYetStarted:
+                    break;
+                case SyncResult::SyncPrepare:
+                case SyncResult::SyncRunning:
+                case SyncResult::SyncAbortRequested:
+                case SyncResult::Success:
+                    syncingFileProviderAccounts.append(accountFpId);
+                    break;
+                case SyncResult::Problem:
+                case SyncResult::Error:
+                case SyncResult::SetupError:
+                    problemFileProviderAccounts.append(accountFpId);
+                    break;
+                case SyncResult::Paused:
+                    break;
+                }
             }
         }
     }
