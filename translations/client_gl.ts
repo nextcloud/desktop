@@ -280,7 +280,7 @@
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="174"/>
         <source>Signal file provider domain</source>
-        <translation>Dominio do provedor de ficheiros de Signal</translation>
+        <translation>Dominio do provedor de ficheiros de sinal</translation>
     </message>
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="179"/>
