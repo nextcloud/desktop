@@ -141,6 +141,22 @@ void FileProviderXPC::createDebugArchiveForExtension(const QString &extensionAcc
     }
 }
 
+bool FileProviderXPC::fileProviderExtReachable(const QString &extensionAccountId) const
+{
+    const auto service = (NSObject<ClientCommunicationProtocol> *)_clientCommServices.value(extensionAccountId);
+    if (service == nil) {
+        return false;
+    }
+    __block auto response = false;
+    dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
+    [service getExtensionAccountIdWithCompletionHandler:^(NSString *const, NSError *const) {
+        response = true;
+        dispatch_semaphore_signal(semaphore);
+    }];
+    dispatch_semaphore_wait(semaphore, dispatch_time(DISPATCH_TIME_NOW, semaphoreWaitDelta));
+    return response;
+}
+
 std::optional<std::pair<bool, bool>> FileProviderXPC::fastEnumerationStateForExtension(const QString &extensionAccountId) const
 {
     qCInfo(lcFileProviderXPC) << "Checking if fast enumeration is enabled for extension" << extensionAccountId;
