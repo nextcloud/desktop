@@ -1989,19 +1989,19 @@ Note that using any logging command line options will override the settings.</so
     </message>
 </context>
 <context>
-    <name>OCC::NewVersionAvailableDialog</name>
+    <name>OCC::NewVersionAvailableWidget</name>
     <message>
-        <location filename="../src/gui/updater/newversionavailabledialog.cpp" line="33"/>
+        <location filename="../src/gui/updater/newversionavailablewidget.cpp" line="33"/>
         <source>Skip this version</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/newversionavailabledialog.cpp" line="34"/>
+        <location filename="../src/gui/updater/newversionavailablewidget.cpp" line="34"/>
         <source>Get update</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/newversionavailabledialog.cpp" line="35"/>
+        <location filename="../src/gui/updater/newversionavailablewidget.cpp" line="35"/>
         <source>Skip this time</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3370,14 +3370,14 @@ Note that using any logging command line options will override the settings.</so
     </message>
 </context>
 <context>
-    <name>OCC::UpdateDownloadedDialog</name>
+    <name>OCC::UpdateDownloadedWidget</name>
     <message>
-        <location filename="../src/gui/updater/updatedownloadeddialog.cpp" line="41"/>
+        <location filename="../src/gui/updater/updatedownloadedwidget.cpp" line="41"/>
         <source>Restart later</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/updatedownloadeddialog.cpp" line="43"/>
+        <location filename="../src/gui/updater/updatedownloadedwidget.cpp" line="43"/>
         <source>Restart now</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4154,17 +4154,9 @@ Are you sure you want to proceed?</source>
     </message>
 </context>
 <context>
-    <name>Ui::NewVersionAvailableDialog</name>
+    <name>UpdateDownloadedWidget</name>
     <message>
-        <location filename="../src/gui/updater/newversionavailabledialog.ui" line="14"/>
-        <source>Form</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>UpdateDownloadedDialog</name>
-    <message>
-        <location filename="../src/gui/updater/updatedownloadeddialog.ui" line="74"/>
+        <location filename="../src/gui/updater/updatedownloadedwidget.ui" line="74"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:11pt; font-weight:700;&quot;&gt;Restart required&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
