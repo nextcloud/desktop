@@ -33,8 +33,14 @@ struct MacCrafter: ParsableCommand {
     @Option(name: [.short, .long], help: "Code signing identity for desktop client and libs.")
     var codeSignIdentity: String?
 
-    @Option(name: [.short, .customLong("buildPath")], help: "Path for build files to be written.")
+    @Option(name: [.short, .long], help: "Path for build files to be written.")
     var buildPath = "\(FileManager.default.currentDirectoryPath)/build"
+
+    @Option(name: [.short, .long], help: "Path for the final product to be put.")
+    var productPath = "\(FileManager.default.currentDirectoryPath)/product"
+
+    @Option(name: [.short, .long], help: "Architecture.")
+    var arch = "arm64"
 
     @Option(name: [.long], help: "Brew installation script URL.")
     var brewInstallShUrl = "https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh"
@@ -106,7 +112,7 @@ struct MacCrafter: ParsableCommand {
         let craftMasterDir = "\(buildPath)/craftmaster"
         let craftMasterIni = "\(repoRootDir)/craftmaster.ini"
         let craftMasterPy = "\(craftMasterDir)/CraftMaster.py"
-        let craftTarget = "macos-clang-arm64"
+        let craftTarget = arch == "arm64" ? "macos-clang-arm64" : "macos-64-clang"
         let craftCommand =
             "python3 \(craftMasterPy) --config \(craftMasterIni) --target \(craftTarget) -c"
 
@@ -140,6 +146,7 @@ struct MacCrafter: ParsableCommand {
 
         var craftOptions = [
             "\(craftBlueprintName).srcDir=\(repoRootDir)",
+            "\(craftBlueprintName).osxArchs=\(arch)",
             "\(craftBlueprintName).buildTests=\(buildTests ? "True" : "False")",
             "\(craftBlueprintName).buildMacOSBundle=\(disableAppBundle ? "False" : "True")",
             "\(craftBlueprintName).buildFileProviderModule=\(buildFileProviderModule ? "True" : "False")"
@@ -193,10 +200,12 @@ struct MacCrafter: ParsableCommand {
         }
 
         print("Code-signing Nextcloud Desktop Client libraries and frameworks...")
-
-
         let clientAppDir = "\(clientBuildDir)/image-\(buildType)-master/\(appName).app"
         try codesignClientAppBundle(at: clientAppDir, withCodeSignIdentity: codeSignIdentity)
+
+        print("Placing Nextcloud Desktop Client in product directory...")
+        try fm.createDirectory(atPath: productPath, withIntermediateDirectories: true, attributes: nil)
+        try fm.copyItem(atPath: clientAppDir, toPath: productPath)
 
         print("Done!")
     }
