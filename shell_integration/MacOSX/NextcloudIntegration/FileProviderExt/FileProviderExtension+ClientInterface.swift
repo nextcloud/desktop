@@ -19,7 +19,7 @@ import NextcloudKit
 import NextcloudFileProviderKit
 import OSLog
 
-extension FileProviderExtension: NSFileProviderServicing {
+extension FileProviderExtension: NSFileProviderServicing, ChangeNotificationInterface {
     /*
      This FileProviderExtension extension contains everything needed to communicate with the client.
      We have two systems for communicating between the extensions and the client.
@@ -80,6 +80,17 @@ extension FileProviderExtension: NSFileProviderServicing {
             "Signalling enumerators for user \(self.ncAccount!.username) at server \(self.ncAccount!.serverUrl, privacy: .public)"
         )
 
+        notifyChange()
+    }
+
+    func notifyChange() {
+        guard let fpManager = NSFileProviderManager(for: domain) else {
+            Logger.fileProviderExtension.error(
+                "Could not get file provider manager for domain \(self.domain.displayName, privacy: .public), cannot notify changes"
+            )
+            return
+        }
+
         fpManager.signalEnumerator(for: .workingSet) { error in
             if error != nil {
                 Logger.fileProviderExtension.error(
@@ -103,7 +114,9 @@ extension FileProviderExtension: NSFileProviderServicing {
             nextcloudVersion: 25,
             delegate: nil) // TODO: add delegate methods for self
 
-        changeObserver = RemoteChangeObserver(ncKit: ncKit, domain: domain)
+        changeObserver = RemoteChangeObserver(
+            remoteInterface: ncKit, changeNotificationInterface: self, domain: domain
+        )
         ncKit.setup(delegate: changeObserver)
 
         Logger.fileProviderExtension.info(
