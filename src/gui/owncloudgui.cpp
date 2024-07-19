@@ -303,6 +303,7 @@ void ownCloudGui::slotComputeOverallSyncStatus()
 #ifdef BUILD_FILE_PROVIDER_MODULE
     QList<QString> problemFileProviderAccounts;
     QList<QString> syncingFileProviderAccounts;
+    QList<QString> successFileProviderAccounts;
 
     if (Mac::FileProvider::fileProviderAvailable()) {
         for (const auto &accountState : AccountManager::instance()->accounts()) {
@@ -322,8 +323,10 @@ void ownCloudGui::slotComputeOverallSyncStatus()
                 case SyncResult::SyncPrepare:
                 case SyncResult::SyncRunning:
                 case SyncResult::SyncAbortRequested:
-                case SyncResult::Success:
                     syncingFileProviderAccounts.append(accountFpId);
+                    break;
+                case SyncResult::Success:
+                    successFileProviderAccounts.append(accountFpId);
                     break;
                 case SyncResult::Problem:
                 case SyncResult::Error:
@@ -411,7 +414,7 @@ void ownCloudGui::slotComputeOverallSyncStatus()
 
     // create the tray blob message, check if we have an defined state
 #ifdef BUILD_FILE_PROVIDER_MODULE
-    if (!map.isEmpty() || !syncingFileProviderAccounts.isEmpty()) {
+    if (!map.isEmpty() || !syncingFileProviderAccounts.isEmpty() || !successFileProviderAccounts.isEmpty() || !problemFileProviderAccounts.isEmpty()) {
 #else
     if (map.count() > 0) {
 #endif
@@ -430,7 +433,13 @@ void ownCloudGui::slotComputeOverallSyncStatus()
         }
 #ifdef BUILD_FILE_PROVIDER_MODULE
         for (const auto &accountId : syncingFileProviderAccounts) {
-            allStatusStrings += tr("macOS VFS for %1: Syncing").arg(accountId);
+            allStatusStrings += tr("macOS VFS for %1: Sync is running.").arg(accountId);
+        }
+        for (const auto &accountId : successFileProviderAccounts) {
+            allStatusStrings += tr("macOS VFS for %1: Last sync was successful.").arg(accountId);
+        }
+        for (const auto &accountId : problemFileProviderAccounts) {
+            allStatusStrings += tr("macOS VFS for %1: A problem was encountered.").arg(accountId);
         }
 #endif
         trayMessage = allStatusStrings.join(QLatin1String("\n"));
