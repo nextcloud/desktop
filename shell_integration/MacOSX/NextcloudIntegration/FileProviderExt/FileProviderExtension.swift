@@ -18,7 +18,7 @@ import NextcloudKit
 import NextcloudFileProviderKit
 import OSLog
 
-@objc class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKCommonDelegate {
+@objc class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension {
     let domain: NSFileProviderDomain
     let ncKit = NextcloudKit()
     let appGroupIdentifier = Bundle.main.object(forInfoDictionaryKey: "SocketApiPrefix") as? String
@@ -35,25 +35,6 @@ import OSLog
             ".fileprovidersocket", conformingTo: .archive)
         let lineProcessor = FileProviderSocketLineProcessor(delegate: self)
         return LocalSocketClient(socketPath: socketPath.path, lineProcessor: lineProcessor)
-    }()
-
-    let urlSessionIdentifier = "com.nextcloud.session.upload.fileproviderext"
-    let urlSessionMaximumConnectionsPerHost = 5
-    lazy var urlSession: URLSession = {
-        let configuration = URLSessionConfiguration.background(withIdentifier: urlSessionIdentifier)
-        configuration.allowsCellularAccess = true
-        configuration.sessionSendsLaunchEvents = true
-        configuration.isDiscretionary = false
-        configuration.httpMaximumConnectionsPerHost = urlSessionMaximumConnectionsPerHost
-        configuration.requestCachePolicy = NSURLRequest.CachePolicy.reloadIgnoringLocalCacheData
-        configuration.sharedContainerIdentifier = appGroupIdentifier
-
-        let session = URLSession(
-            configuration: configuration,
-            delegate: ncKitBackground,
-            delegateQueue: OperationQueue.main
-        )
-        return session
     }()
 
     // Whether or not we are going to recursively scan new folders when they are discovered.
