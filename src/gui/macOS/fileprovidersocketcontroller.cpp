@@ -246,13 +246,7 @@ void FileProviderSocketController::reportSyncState(const QString &receivedState)
     } else {
         qCWarning(lcFileProviderSocketController) << "Unknown sync state received:" << receivedState;
     }
-    _latestStatus = syncState;
     emit syncStateChanged(_accountState->account(), syncState);
-}
-
-SyncResult::Status FileProviderSocketController::latestStatus() const
-{
-    return _latestStatus;
 }
 
 } // namespace Mac

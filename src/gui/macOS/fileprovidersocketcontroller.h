@@ -33,10 +33,9 @@ public:
     explicit FileProviderSocketController(QLocalSocket * const socket, QObject * const parent = nullptr);
 
     [[nodiscard]] AccountStatePtr accountState() const;
-    [[nodiscard]] SyncResult::Status latestStatus() const;
-
+    
 signals:
-    void socketDestroyed(const QLocalSocket * const socket);signals:
+    void socketDestroyed(const QLocalSocket * const socket);
     void syncStateChanged(const AccountPtr &account, SyncResult::Status state) const;
 
 public slots:
@@ -60,7 +59,6 @@ private slots:
 private:
     QPointer<QLocalSocket> _socket;
     AccountStatePtr _accountState;
-    SyncResult::Status _latestStatus = SyncResult::Undefined;
 };
 
 } // namespace Mac
