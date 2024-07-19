@@ -93,7 +93,7 @@ import OSLog
         request _: NSFileProviderRequest,
         completionHandler: @escaping (NSFileProviderItem?, Error?) -> Void
     ) -> Progress {
-        if let item = Item.storedItem(identifier: identifier, usingKit: ncKit) {
+        if let item = Item.storedItem(identifier: identifier, remoteInterface: ncKit) {
             completionHandler(item, nil)
         } else {
             completionHandler(nil, NSFileProviderError(.noSuchItem))
@@ -135,7 +135,7 @@ import OSLog
             return Progress()
         }
 
-        guard let item = Item.storedItem(identifier: itemIdentifier, usingKit: ncKit) else {
+        guard let item = Item.storedItem(identifier: itemIdentifier, remoteInterface: ncKit) else {
             Logger.fileProviderExtension.error(
                 """
                 Not fetching contents for item: \(itemIdentifier.rawValue, privacy: .public)
@@ -199,7 +199,7 @@ import OSLog
                 contents: url,
                 request: request,
                 domain: self.domain,
-                ncKit: ncKit,
+                remoteInterface: ncKit,
                 ncAccount: ncAccount,
                 progress: progress
             )
@@ -247,7 +247,7 @@ import OSLog
             return Progress()
         }
 
-        guard let existingItem = Item.storedItem(identifier: identifier, usingKit: ncKit) else {
+        guard let existingItem = Item.storedItem(identifier: identifier, remoteInterface: ncKit) else {
             Logger.fileProviderExtension.error(
                 "Not modifying item: \(ocId, privacy: .public) as item not found."
             )
@@ -295,8 +295,7 @@ import OSLog
             return Progress()
         }
 
-
-        guard let item = Item.storedItem(identifier: identifier, usingKit: ncKit) else {
+        guard let item = Item.storedItem(identifier: identifier, remoteInterface: ncKit) else {
             Logger.fileProviderExtension.error(
                 "Not deleting item \(identifier.rawValue, privacy: .public), item not found"
             )
@@ -329,7 +328,7 @@ import OSLog
         return Enumerator(
             enumeratedItemIdentifier: containerItemIdentifier,
             ncAccount: ncAccount,
-            ncKit: ncKit,
+            remoteInterface: ncKit,
             domain: domain,
             fastEnumeration: config.fastEnumerationEnabled
         )

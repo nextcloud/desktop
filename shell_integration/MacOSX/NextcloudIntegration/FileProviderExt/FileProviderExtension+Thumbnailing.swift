@@ -32,7 +32,7 @@ extension FileProviderExtension: NSFileProviderThumbnailing {
         return NextcloudFileProviderKit.fetchThumbnails(
             for: itemIdentifiers,
             requestedSize: size,
-            usingKit: self.ncKit,
+            usingRemoteInterface: self.ncKit,
             perThumbnailCompletionHandler: perThumbnailCompletionHandler,
             completionHandler: completionHandler
         )
