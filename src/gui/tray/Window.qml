@@ -312,22 +312,6 @@ ApplicationWindow {
                             radius: Style.currentAccountButtonRadius
                         }
 
-                        contentItem: ScrollView {
-                            id: accMenuScrollView
-                            ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
-
-                            data: WheelHandler {
-                                target: accMenuScrollView.contentItem
-                            }
-                            ListView {
-                                implicitHeight: contentHeight
-                                model: accountMenu.contentModel
-                                interactive: true
-                                clip: true
-                                currentIndex: accountMenu.currentIndex
-                            }
-                        }
-
                         onClosed: {
                             // HACK: reload account Instantiator immediately by restting it - could be done better I guess
                             // see also onVisibleChanged above
@@ -639,9 +623,9 @@ ApplicationWindow {
                 HeaderButton {
                     id: trayWindowTalkButton
 
-                    visible: UserModel.currentUser.serverHasTalk
-                    icon.source: "qrc:///client/theme/white/talk-app.svg"
-                    icon.color: Style.currentUserHeaderTextColor
+                    visible: UserModel.currentUser && UserModel.currentUser.serverHasTalk
+                    icon.source: "image://svgimage-custom-color/talk-app.svg" + "/" + Style.currentUserHeaderTextColor
+      
                     onClicked: UserModel.openCurrentAccountTalk()
 
                     Accessible.role: Accessible.Button
@@ -656,8 +640,7 @@ ApplicationWindow {
 
                 HeaderButton {
                     id: trayWindowAppsButton
-                    icon.source: "qrc:///client/theme/white/more-apps.svg"
-                    icon.color: Style.currentUserHeaderTextColor
+                    icon.source: "image://svgimage-custom-color/more-apps.svg" + "/" + Style.currentUserHeaderTextColor
 
                     onClicked: {
                         if(appsMenuListView.count <= 0) {
