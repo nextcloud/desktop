@@ -34,7 +34,6 @@ Column {
 
     CheckBox {
         id: fastEnumerationEnabledCheckBox
-        width: parent.width
         text: qsTr("Enable fast sync")
         checked: root.fastEnumerationEnabled
         onClicked: root.fastEnumerationEnabledToggled(checked)
