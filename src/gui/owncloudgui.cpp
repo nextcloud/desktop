@@ -310,8 +310,9 @@ void ownCloudGui::slotComputeOverallSyncStatus()
             if (!Mac::FileProviderSettingsController::instance()->vfsEnabledForAccount(accountFpId)) {
                 continue;
             }
-            const auto latestStatus = Mac::FileProvider::instance()->socketServer()->latestReceivedSyncStatusForAccount(accountState->account());
-            if (latestStatus == SyncResult::Problem || latestStatus == SyncResult::Error) {
+            const auto fileProvider = Mac::FileProvider::instance();
+            const auto latestStatus = fileProvider->socketServer()->latestReceivedSyncStatusForAccount(accountState->account());
+            if (latestStatus == SyncResult::Problem || latestStatus == SyncResult::Error || !fileProvider->xpc()->fileProviderExtReachable(accountFpId)) {
                 problemFileProviderAccounts.append(accountFpId);
             } else if (latestStatus == SyncResult::SyncRunning) {
                 syncingFileProviderAccounts.append(accountFpId);
