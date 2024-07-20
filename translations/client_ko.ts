@@ -237,12 +237,12 @@
 <context>
     <name>FileProviderFastEnumerationSettings</name>
     <message>
-        <location filename="../src/gui/macOS/ui/FileProviderFastEnumerationSettings.qml" line="38"/>
+        <location filename="../src/gui/macOS/ui/FileProviderFastEnumerationSettings.qml" line="37"/>
         <source>Enable fast sync</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/macOS/ui/FileProviderFastEnumerationSettings.qml" line="53"/>
+        <location filename="../src/gui/macOS/ui/FileProviderFastEnumerationSettings.qml" line="52"/>
         <source>Fast sync will only sync changes in files and folders within folders that have been explored. This can significantly increase responsiveness on initial configuration of virtual files. However, it will cause redundant downloads of files moved to an unexplored folder. </source>
         <translation type="unfinished"/>
     </message>
@@ -268,22 +268,22 @@
         <translation>일반 설정</translation>
     </message>
     <message>
-        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="82"/>
+        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="81"/>
         <source>Enable virtual files</source>
         <translation>가상 파일 활성화</translation>
     </message>
     <message>
-        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="167"/>
+        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="166"/>
         <source>Advanced</source>
         <translation>고급</translation>
     </message>
     <message>
-        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="174"/>
+        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="173"/>
         <source>Signal file provider domain</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="179"/>
+        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="178"/>
         <source>Create debug archive</source>
         <translation>디버그 아카이브 만들기</translation>
     </message>
@@ -2768,7 +2768,7 @@ If you restore the files, they will be downloaded again from the server.</source
         <translation>데스크톱 클라이언트 x.x.x</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="260"/>
+        <location filename="../src/gui/generalsettings.ui" line="248"/>
         <source>Update channel</source>
         <translation>업데이트 채널</translation>
     </message>
@@ -2778,22 +2778,22 @@ If you restore the files, they will be downloaded again from the server.</source
         <translation>업데이트 재시작</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="313"/>
+        <location filename="../src/gui/generalsettings.ui" line="301"/>
         <source>&amp;Automatically check for updates</source>
         <translation>업데이트를 &amp;자동으로 확인</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="329"/>
+        <location filename="../src/gui/generalsettings.ui" line="317"/>
         <source>Check Now</source>
         <translation>지금 확인하기</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="353"/>
+        <location filename="../src/gui/generalsettings.ui" line="344"/>
         <source>Usage Documentation</source>
         <translation>도움말</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="360"/>
+        <location filename="../src/gui/generalsettings.ui" line="351"/>
         <source>Legal Notice</source>
         <translation>법적 고지</translation>
     </message>
@@ -2813,22 +2813,22 @@ If you restore the files, they will be downloaded again from the server.</source
         <translation>탐색기의 탐색 창에 동기화 폴더 표시</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="410"/>
+        <location filename="../src/gui/generalsettings.ui" line="398"/>
         <source>Use &amp;monochrome icons</source>
         <translation>&amp;흑백 아이콘 사용</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="417"/>
+        <location filename="../src/gui/generalsettings.ui" line="405"/>
         <source>&amp;Launch on system startup</source>
         <translation>&amp;시스템 시동 후 앱 자동으로 시작</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="424"/>
+        <location filename="../src/gui/generalsettings.ui" line="412"/>
         <source>Show server &amp;notifications</source>
         <translation>서버 &amp;알림 표시</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="431"/>
+        <location filename="../src/gui/generalsettings.ui" line="419"/>
         <source>Show call notifications</source>
         <translation>통화 알림 표시</translation>
     </message>

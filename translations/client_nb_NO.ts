@@ -237,12 +237,12 @@
 <context>
     <name>FileProviderFastEnumerationSettings</name>
     <message>
-        <location filename="../src/gui/macOS/ui/FileProviderFastEnumerationSettings.qml" line="38"/>
+        <location filename="../src/gui/macOS/ui/FileProviderFastEnumerationSettings.qml" line="37"/>
         <source>Enable fast sync</source>
         <translation>Aktiver hurtigsynkronisering</translation>
     </message>
     <message>
-        <location filename="../src/gui/macOS/ui/FileProviderFastEnumerationSettings.qml" line="53"/>
+        <location filename="../src/gui/macOS/ui/FileProviderFastEnumerationSettings.qml" line="52"/>
         <source>Fast sync will only sync changes in files and folders within folders that have been explored. This can significantly increase responsiveness on initial configuration of virtual files. However, it will cause redundant downloads of files moved to an unexplored folder. </source>
         <translation>Rask synkronisering vil bare synkronisere endringer i filer og mapper i mapper som har blitt utforsket. Dette kan øke responsen betydelig ved første konfigurasjon av virtuelle filer. Det vil imidlertid føre til overflødige nedlastinger av filer som flyttes til en uutforsket mappe. </translation>
     </message>
@@ -268,22 +268,22 @@
         <translation>Generelle innstillinger</translation>
     </message>
     <message>
-        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="82"/>
+        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="81"/>
         <source>Enable virtual files</source>
         <translation>Aktiver virtuelle filer</translation>
     </message>
     <message>
-        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="167"/>
+        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="166"/>
         <source>Advanced</source>
         <translation>Avansert</translation>
     </message>
     <message>
-        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="174"/>
+        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="173"/>
         <source>Signal file provider domain</source>
         <translation>Domene for signalfilleverandør</translation>
     </message>
     <message>
-        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="179"/>
+        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="178"/>
         <source>Create debug archive</source>
         <translation>Opprett feilsøkingsarkiv</translation>
     </message>
@@ -2771,7 +2771,7 @@ Hvis du gjenoppretter filene, blir de lastet ned igjen fra serveren.</translatio
         <translation>Skrivebordsklient x.x.x</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="260"/>
+        <location filename="../src/gui/generalsettings.ui" line="248"/>
         <source>Update channel</source>
         <translation>Oppdateringskanal</translation>
     </message>
@@ -2781,22 +2781,22 @@ Hvis du gjenoppretter filene, blir de lastet ned igjen fra serveren.</translatio
         <translation>&amp;Omstart &amp;&amp; Oppdater</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="313"/>
+        <location filename="../src/gui/generalsettings.ui" line="301"/>
         <source>&amp;Automatically check for updates</source>
         <translation>&amp;se etter oppdateringer automatisk</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="329"/>
+        <location filename="../src/gui/generalsettings.ui" line="317"/>
         <source>Check Now</source>
         <translation>Sjekk nå</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="353"/>
+        <location filename="../src/gui/generalsettings.ui" line="344"/>
         <source>Usage Documentation</source>
         <translation>Bruksdokumentasjon</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="360"/>
+        <location filename="../src/gui/generalsettings.ui" line="351"/>
         <source>Legal Notice</source>
         <translation>Juridiske merknader</translation>
     </message>
@@ -2816,22 +2816,22 @@ Hvis du gjenoppretter filene, blir de lastet ned igjen fra serveren.</translatio
         <translation>Vis synkroniseringsmapper i &amp;Utforskers navigasjonspanel</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="410"/>
+        <location filename="../src/gui/generalsettings.ui" line="398"/>
         <source>Use &amp;monochrome icons</source>
         <translation>Bruk &amp;monokrome ikoner</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="417"/>
+        <location filename="../src/gui/generalsettings.ui" line="405"/>
         <source>&amp;Launch on system startup</source>
         <translation>&amp;Start ved oppstart av systemet</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="424"/>
+        <location filename="../src/gui/generalsettings.ui" line="412"/>
         <source>Show server &amp;notifications</source>
         <translation>Vis server &amp;varslinger</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="431"/>
+        <location filename="../src/gui/generalsettings.ui" line="419"/>
         <source>Show call notifications</source>
         <translation>Vis anropsvarsler</translation>
     </message>

@@ -237,12 +237,12 @@
 <context>
     <name>FileProviderFastEnumerationSettings</name>
     <message>
-        <location filename="../src/gui/macOS/ui/FileProviderFastEnumerationSettings.qml" line="38"/>
+        <location filename="../src/gui/macOS/ui/FileProviderFastEnumerationSettings.qml" line="37"/>
         <source>Enable fast sync</source>
         <translation>Gaitu sinkronizazio azkarra</translation>
     </message>
     <message>
-        <location filename="../src/gui/macOS/ui/FileProviderFastEnumerationSettings.qml" line="53"/>
+        <location filename="../src/gui/macOS/ui/FileProviderFastEnumerationSettings.qml" line="52"/>
         <source>Fast sync will only sync changes in files and folders within folders that have been explored. This can significantly increase responsiveness on initial configuration of virtual files. However, it will cause redundant downloads of files moved to an unexplored folder. </source>
         <translation>Sinkronizazio azkarrak arakatu diren karpetetako fitxategietan eta karpeten aldaketak soilik sinkronizatuko ditu. Horrek nabarmen handitu dezake fitxategi birtualen hasierako konfigurazioan erantzuna. Hala ere, esploratu gabeko karpeta batera eramandako fitxategien deskarga erredundanteak eragingo ditu.</translation>
     </message>
@@ -268,22 +268,22 @@
         <translation>Ezarpen orokorrak</translation>
     </message>
     <message>
-        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="82"/>
+        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="81"/>
         <source>Enable virtual files</source>
         <translation>Gaitu fitxategi birtualak</translation>
     </message>
     <message>
-        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="167"/>
+        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="166"/>
         <source>Advanced</source>
         <translation>Aurreratua</translation>
     </message>
     <message>
-        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="174"/>
+        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="173"/>
         <source>Signal file provider domain</source>
         <translation>Signal fitxategi hornitzailearen domeinua</translation>
     </message>
     <message>
-        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="179"/>
+        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="178"/>
         <source>Create debug archive</source>
         <translation>Sortu arazketa fitxategia</translation>
     </message>
@@ -2772,7 +2772,7 @@ Fitxategiak leheneratzen badituzu, berriro deskargatuko dira zerbitzaritik.</tra
         <translation>Mahaigaineko x.x.x bezeroa</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="260"/>
+        <location filename="../src/gui/generalsettings.ui" line="248"/>
         <source>Update channel</source>
         <translation>Eguneratze-kanala</translation>
     </message>
@@ -2782,22 +2782,22 @@ Fitxategiak leheneratzen badituzu, berriro deskargatuko dira zerbitzaritik.</tra
         <translation>Be&amp;rrabiarazi eta Eguneratu</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="313"/>
+        <location filename="../src/gui/generalsettings.ui" line="301"/>
         <source>&amp;Automatically check for updates</source>
         <translation>&amp;Automatikoki eguneraketak bilatu</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="329"/>
+        <location filename="../src/gui/generalsettings.ui" line="317"/>
         <source>Check Now</source>
         <translation>Begiratu orain</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="353"/>
+        <location filename="../src/gui/generalsettings.ui" line="344"/>
         <source>Usage Documentation</source>
         <translation>Erabilera dokumentazioa</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="360"/>
+        <location filename="../src/gui/generalsettings.ui" line="351"/>
         <source>Legal Notice</source>
         <translation>Lege oharra</translation>
     </message>
@@ -2817,22 +2817,22 @@ Fitxategiak leheneratzen badituzu, berriro deskargatuko dira zerbitzaritik.</tra
         <translation>Erakutsi sinkronizatutako karpetak arakatzailearen &amp;nabigazio panelean</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="410"/>
+        <location filename="../src/gui/generalsettings.ui" line="398"/>
         <source>Use &amp;monochrome icons</source>
         <translation>Erabili ikono &amp;monokromoak</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="417"/>
+        <location filename="../src/gui/generalsettings.ui" line="405"/>
         <source>&amp;Launch on system startup</source>
         <translation>&amp;Abiarazi sistema pizterakoan</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="424"/>
+        <location filename="../src/gui/generalsettings.ui" line="412"/>
         <source>Show server &amp;notifications</source>
         <translation>Erakutsi zerbitzariko &amp;jakinarazpenak</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="431"/>
+        <location filename="../src/gui/generalsettings.ui" line="419"/>
         <source>Show call notifications</source>
         <translation>Erakutsi jakinarazpen guztiak</translation>
     </message>

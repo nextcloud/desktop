@@ -237,12 +237,12 @@
 <context>
     <name>FileProviderFastEnumerationSettings</name>
     <message>
-        <location filename="../src/gui/macOS/ui/FileProviderFastEnumerationSettings.qml" line="38"/>
+        <location filename="../src/gui/macOS/ui/FileProviderFastEnumerationSettings.qml" line="37"/>
         <source>Enable fast sync</source>
         <translation>啟用快速同步</translation>
     </message>
     <message>
-        <location filename="../src/gui/macOS/ui/FileProviderFastEnumerationSettings.qml" line="53"/>
+        <location filename="../src/gui/macOS/ui/FileProviderFastEnumerationSettings.qml" line="52"/>
         <source>Fast sync will only sync changes in files and folders within folders that have been explored. This can significantly increase responsiveness on initial configuration of virtual files. However, it will cause redundant downloads of files moved to an unexplored folder. </source>
         <translation>快速同步僅同步已瀏覽的資料夾內的檔案與資料夾中的變更。這可以顯著提昇虛擬檔案初始設定的回應能力。但是，這會導致移動到未探索的資料夾的檔案被重複下載。</translation>
     </message>
@@ -268,22 +268,22 @@
         <translation>一般設定</translation>
     </message>
     <message>
-        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="82"/>
+        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="81"/>
         <source>Enable virtual files</source>
         <translation>啟用虛擬檔案</translation>
     </message>
     <message>
-        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="167"/>
+        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="166"/>
         <source>Advanced</source>
         <translation>進階</translation>
     </message>
     <message>
-        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="174"/>
+        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="173"/>
         <source>Signal file provider domain</source>
         <translation>信號檔案提供者網域</translation>
     </message>
     <message>
-        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="179"/>
+        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="178"/>
         <source>Create debug archive</source>
         <translation>建立除錯封存檔</translation>
     </message>
@@ -2773,7 +2773,7 @@ If you restore the files, they will be downloaded again from the server.</source
         <translation>桌面客戶端 x.x.x</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="260"/>
+        <location filename="../src/gui/generalsettings.ui" line="248"/>
         <source>Update channel</source>
         <translation>更新頻道</translation>
     </message>
@@ -2783,22 +2783,22 @@ If you restore the files, they will be downloaded again from the server.</source
         <translation>重新啟動並更新（&amp;R）</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="313"/>
+        <location filename="../src/gui/generalsettings.ui" line="301"/>
         <source>&amp;Automatically check for updates</source>
         <translation>自動檢查更新（&amp;A）</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="329"/>
+        <location filename="../src/gui/generalsettings.ui" line="317"/>
         <source>Check Now</source>
         <translation>現在檢查</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="353"/>
+        <location filename="../src/gui/generalsettings.ui" line="344"/>
         <source>Usage Documentation</source>
         <translation>運用說明書</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="360"/>
+        <location filename="../src/gui/generalsettings.ui" line="351"/>
         <source>Legal Notice</source>
         <translation>法律聲明</translation>
     </message>
@@ -2818,22 +2818,22 @@ If you restore the files, they will be downloaded again from the server.</source
         <translation>在檔案管理員中顯示資料夾</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="410"/>
+        <location filename="../src/gui/generalsettings.ui" line="398"/>
         <source>Use &amp;monochrome icons</source>
         <translation>使用單色圖示（&amp;m）</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="417"/>
+        <location filename="../src/gui/generalsettings.ui" line="405"/>
         <source>&amp;Launch on system startup</source>
         <translation>系統啟動時啟動（&amp;L）</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="424"/>
+        <location filename="../src/gui/generalsettings.ui" line="412"/>
         <source>Show server &amp;notifications</source>
         <translation>顯示系統訊息（&amp;n）</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="431"/>
+        <location filename="../src/gui/generalsettings.ui" line="419"/>
         <source>Show call notifications</source>
         <translation>顯示通話通告</translation>
     </message>

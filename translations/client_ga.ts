@@ -237,12 +237,12 @@
 <context>
     <name>FileProviderFastEnumerationSettings</name>
     <message>
-        <location filename="../src/gui/macOS/ui/FileProviderFastEnumerationSettings.qml" line="38"/>
+        <location filename="../src/gui/macOS/ui/FileProviderFastEnumerationSettings.qml" line="37"/>
         <source>Enable fast sync</source>
         <translation>Cumasaigh sioncronú tapa</translation>
     </message>
     <message>
-        <location filename="../src/gui/macOS/ui/FileProviderFastEnumerationSettings.qml" line="53"/>
+        <location filename="../src/gui/macOS/ui/FileProviderFastEnumerationSettings.qml" line="52"/>
         <source>Fast sync will only sync changes in files and folders within folders that have been explored. This can significantly increase responsiveness on initial configuration of virtual files. However, it will cause redundant downloads of files moved to an unexplored folder. </source>
         <translation>Ní dhéanfaidh sioncronú tapa ach athruithe ar chomhaid agus ar fhillteáin a shioncronú laistigh d&apos;fhillteáin a ndearnadh iniúchadh orthu. Is féidir leis seo freagrúlacht a mhéadú go suntasach ar chumraíocht tosaigh comhaid fhíorúla. Mar sin féin, beidh sé ina chúis le híoslódálacha iomarcacha de chomhaid a aistríodh chuig fillteán neamhscrúdaithe.</translation>
     </message>
@@ -268,22 +268,22 @@
         <translation>Socruithe Ginearálta</translation>
     </message>
     <message>
-        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="82"/>
+        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="81"/>
         <source>Enable virtual files</source>
         <translation>Cumasaigh comhaid fhíorúla</translation>
     </message>
     <message>
-        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="167"/>
+        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="166"/>
         <source>Advanced</source>
         <translation>Casta</translation>
     </message>
     <message>
-        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="174"/>
+        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="173"/>
         <source>Signal file provider domain</source>
         <translation>Fearann ​​​​sholáthraí comhaid comharthaíochta</translation>
     </message>
     <message>
-        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="179"/>
+        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="178"/>
         <source>Create debug archive</source>
         <translation>Cruthaigh cartlann dífhabhtaithe</translation>
     </message>
@@ -2772,7 +2772,7 @@ Má chuireann tú na comhaid ar ais, déanfar iad a íoslódáil arís ón bhfre
         <translation>Cliant deisce x.x.x</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="260"/>
+        <location filename="../src/gui/generalsettings.ui" line="248"/>
         <source>Update channel</source>
         <translation>Nuashonraigh cainéal</translation>
     </message>
@@ -2782,22 +2782,22 @@ Má chuireann tú na comhaid ar ais, déanfar iad a íoslódáil arís ón bhfre
         <translation>&amp;Atosaigh &amp;&amp; Nuashonraigh</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="313"/>
+        <location filename="../src/gui/generalsettings.ui" line="301"/>
         <source>&amp;Automatically check for updates</source>
         <translation>Seiceáil go huathoibríoch le haghaidh nuashonruithe</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="329"/>
+        <location filename="../src/gui/generalsettings.ui" line="317"/>
         <source>Check Now</source>
         <translation>Seiceáil Anois</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="353"/>
+        <location filename="../src/gui/generalsettings.ui" line="344"/>
         <source>Usage Documentation</source>
         <translation>Doiciméadú Úsáide</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="360"/>
+        <location filename="../src/gui/generalsettings.ui" line="351"/>
         <source>Legal Notice</source>
         <translation>Fógra Dlíthiúil</translation>
     </message>
@@ -2817,22 +2817,22 @@ Má chuireann tú na comhaid ar ais, déanfar iad a íoslódáil arís ón bhfre
         <translation>Taispeáin fillteáin shioncronaithe i bPána Nascleanúna &amp;Explorer</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="410"/>
+        <location filename="../src/gui/generalsettings.ui" line="398"/>
         <source>Use &amp;monochrome icons</source>
         <translation>Úsáid &amp;deilbhíní monacrómacha</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="417"/>
+        <location filename="../src/gui/generalsettings.ui" line="405"/>
         <source>&amp;Launch on system startup</source>
         <translation>&amp;Seol ar am tosaithe an chórais</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="424"/>
+        <location filename="../src/gui/generalsettings.ui" line="412"/>
         <source>Show server &amp;notifications</source>
         <translation>Taispeáin freastalaí &amp;fógraí</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="431"/>
+        <location filename="../src/gui/generalsettings.ui" line="419"/>
         <source>Show call notifications</source>
         <translation>Taispeáin fógraí glaonna</translation>
     </message>
