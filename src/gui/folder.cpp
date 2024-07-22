@@ -1526,7 +1526,7 @@ void Folder::slotWatcherUnreliable(const QString &message)
 void Folder::slotHydrationStarts()
 {
     // Abort any running full sync run and reschedule
-    if (_engine->isSyncRunning()) {
+    if (isSyncRunning()) {
         setSilenceErrorsUntilNextSync(true);
         slotTerminateSync();
         scheduleThisFolderSoon();
