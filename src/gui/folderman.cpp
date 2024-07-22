@@ -1347,7 +1347,7 @@ void FolderMan::removeFolder(Folder *folder)
 
     qCInfo(lcFolderMan) << "Removing " << folder->alias();
 
-    const bool currentlyRunning = folder->isSyncRunning();
+    const bool currentlyRunning = folder->isSyncRunning() || folder->isVfsHydrating();
     if (currentlyRunning) {
         // abort the sync now
         folder->slotTerminateSync();
