@@ -239,7 +239,7 @@
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderFastEnumerationSettings.qml" line="37"/>
         <source>Enable fast sync</source>
-        <translation type="unfinished"/>
+        <translation>Włącz szybką synchronizację</translation>
     </message>
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderFastEnumerationSettings.qml" line="52"/>
@@ -252,7 +252,7 @@
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderFileDelegate.qml" line="95"/>
         <source>Delete</source>
-        <translation type="unfinished"/>
+        <translation>Usuń</translation>
     </message>
 </context>
 <context>
@@ -265,7 +265,7 @@
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="73"/>
         <source>General settings</source>
-        <translation type="unfinished"/>
+        <translation>Ustawienia główne</translation>
     </message>
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="81"/>
@@ -275,7 +275,7 @@
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="166"/>
         <source>Advanced</source>
-        <translation type="unfinished"/>
+        <translation>Zaawansowane</translation>
     </message>
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="173"/>
@@ -293,7 +293,7 @@
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderStorageInfo.qml" line="41"/>
         <source>Local storage use</source>
-        <translation type="unfinished"/>
+        <translation>Użycie pamięci lokalnej</translation>
     </message>
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderStorageInfo.qml" line="49"/>
@@ -311,12 +311,12 @@
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderSyncStatus.qml" line="57"/>
         <source>Syncing</source>
-        <translation type="unfinished"/>
+        <translation>Synchronizacja</translation>
     </message>
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderSyncStatus.qml" line="57"/>
         <source>All synced!</source>
-        <translation type="unfinished"/>
+        <translation>Wszystko zsynchronizowane!</translation>
     </message>
 </context>
 <context>
@@ -874,7 +874,7 @@ Ta czynność spowoduje przerwanie aktualnie uruchomionej synchronizacji.</trans
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1300"/>
         <source>Unable to connect to %1.</source>
-        <translation type="unfinished"/>
+        <translation>Nie można połączyć się z %@</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1264"/>
@@ -1572,7 +1572,7 @@ Ta czynność spowoduje przerwanie aktualnie uruchomionej synchronizacji.</trans
     <message>
         <location filename="../src/gui/connectionvalidator.cpp" line="344"/>
         <source>Connection issue</source>
-        <translation type="unfinished"/>
+        <translation>Problem z połączeniem</translation>
     </message>
 </context>
 <context>
@@ -1797,7 +1797,7 @@ Może to być problem z bibliotekami OpenSSL.</translation>
     <message>
         <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="341"/>
         <source>Failed to upload metadata</source>
-        <translation type="unfinished"/>
+        <translation>Nie udało się wysłać metadanych</translation>
     </message>
 </context>
 <context>
@@ -2157,7 +2157,7 @@ If you restore the files, they will be downloaded again from the server.</source
     <message>
         <location filename="../src/gui/folder.cpp" line="1634"/>
         <source>Remove all files?</source>
-        <translation type="unfinished"/>
+        <translation>Usunąć wszystkie pliki?</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1638"/>
@@ -2167,7 +2167,7 @@ If you restore the files, they will be downloaded again from the server.</source
     <message>
         <location filename="../src/gui/folder.cpp" line="1639"/>
         <source>Restore files</source>
-        <translation type="unfinished"/>
+        <translation>Przywróć pliki</translation>
     </message>
 </context>
 <context>
@@ -2876,12 +2876,12 @@ Zwróć uwagę, że wybiera to tylko, z której puli aktualizacje są pobierane 
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="359"/>
         <source>daily</source>
-        <translation type="unfinished"/>
+        <translation>codziennie</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="363"/>
         <source>enterprise</source>
-        <translation type="unfinished"/>
+        <translation>komercyjna</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="391"/>
@@ -3872,13 +3872,13 @@ To nowy, eksperymentalny tryb. Jeśli zdecydujesz się z niego skorzystać, zgł
         <location filename="../src/libsync/discovery.cpp" line="358"/>
         <source>Folder</source>
         <comment>name of folder entity to use when warning about invalid name</comment>
-        <translation type="unfinished"/>
+        <translation>Folder</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="358"/>
         <source>File</source>
         <comment>name of folder entity to use when warning about invalid name</comment>
-        <translation type="unfinished"/>
+        <translation>Plik</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="360"/>
@@ -4575,7 +4575,7 @@ To nowy, eksperymentalny tryb. Jeśli zdecydujesz się z niego skorzystać, zgł
     <message>
         <location filename="../src/gui/sharemanager.cpp" line="684"/>
         <source>Error</source>
-        <translation type="unfinished"/>
+        <translation>Błąd</translation>
     </message>
 </context>
 <context>
@@ -5338,7 +5338,7 @@ Serwer odpowiedział błędem: %2</translation>
     <message>
         <location filename="../src/libsync/updatee2eefolderusersmetadatajob.cpp" line="235"/>
         <source>Failed to unlock a folder.</source>
-        <translation type="unfinished"/>
+        <translation>Nie udało się odblokować folderu.</translation>
     </message>
 </context>
 <context>
@@ -5357,12 +5357,12 @@ Serwer odpowiedział błędem: %2</translation>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1053"/>
         <source>Open Nextcloud Assistant in browser</source>
-        <translation type="unfinished"/>
+        <translation>Otwórz Nextcloud Assistant w przeglądarce</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1053"/>
         <source>Open Nextcloud Talk in browser</source>
-        <translation type="unfinished"/>
+        <translation>Otwórz Nextcloud Talk w przeglądarce</translation>
     </message>
 </context>
 <context>
@@ -6130,7 +6130,7 @@ Serwer odpowiedział błędem: %2</translation>
     <message>
         <location filename="../src/gui/filedetails/ShareeSearchField.qml" line="48"/>
         <source>Sharing is not available for this folder</source>
-        <translation type="unfinished"/>
+        <translation>Udostępnianie nie jest dostępne w tym folderze</translation>
     </message>
 </context>
 <context>
@@ -6386,7 +6386,7 @@ Serwer odpowiedział błędem: %2</translation>
     <message>
         <location filename="../src/common/utility.cpp" line="116"/>
         <source>%L1 TB</source>
-        <translation type="unfinished"/>
+        <translation>%L1 TB</translation>
     </message>
     <message>
         <location filename="../src/common/utility.cpp" line="136"/>
