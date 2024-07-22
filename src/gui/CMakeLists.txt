@@ -76,6 +76,8 @@ set(client_SRCS
     editlocallyjob.cpp
     editlocallymanager.h
     editlocallymanager.cpp
+    editlocallyverificationjob.h
+    editlocallyverificationjob.cpp
     filetagmodel.h
     filetagmodel.cpp
     folder.h
@@ -288,6 +290,9 @@ IF( APPLE )
             macOS/fileproviderdomainmanager_mac.mm
             macOS/fileproviderdomainsyncstatus.h
             macOS/fileproviderdomainsyncstatus_mac.mm
+            macOS/fileprovidereditlocallyjob.h
+            macOS/fileprovidereditlocallyjob.cpp
+            macOS/fileprovidereditlocallyjob_mac.mm
             macOS/fileprovideritemmetadata.h
             macOS/fileprovideritemmetadata.cpp
             macOS/fileprovideritemmetadata_mac.mm
