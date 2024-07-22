@@ -999,6 +999,10 @@ void FolderMan::runEtagJobIfPossible(Folder *folder)
         qCInfo(lcFolderMan) << "Can not run etag job: Sync is running";
         return;
     }
+    if (folder->isVfsHydrating()) {
+        qCInfo(lcFolderMan) << "Can not run etag job: VFS is hydrating";
+        return;
+    }
     if (_scheduledFolders.contains(folder)) {
         qCInfo(lcFolderMan) << "Can not run etag job: Folder is already scheduled";
         return;
