@@ -227,7 +227,7 @@ void NetworkSettings::saveProxySettings()
         _account->setProxyPassword(password);
 
         if (useGlobalProxy) {
-            _account->networkAccessManager()->setProxy(QNetworkProxy(QNetworkProxy::DefaultProxy));
+            _account->networkAccessManager()->setProxy(QNetworkProxy::applicationProxy());
         } else {
             const auto proxy = QNetworkProxy(proxyType, host, port, user, password);
             _account->networkAccessManager()->setProxy(proxy);
