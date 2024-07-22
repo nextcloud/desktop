@@ -36,6 +36,8 @@
         <string>NO</string>
         <key>LSMinimumSystemVersion</key>
         <string>${CMAKE_OSX_DEPLOYMENT_TARGET}</string>
+        <key>CFBundleAllowMixedLocalizations</key>
+        <true/>
 
 <key>UTExportedTypeDeclarations</key>
 <array>
