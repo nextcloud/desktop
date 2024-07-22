@@ -26,6 +26,7 @@
 #include <QByteArray>
 #include <QUrl>
 #include <QNetworkCookie>
+#include <QNetworkProxy>
 #include <QNetworkRequest>
 #include <QSslSocket>
 #include <QSslCertificate>
@@ -90,8 +91,35 @@ class OWNCLOUDSYNC_EXPORT Account : public QObject
     Q_PROPERTY(QUrl url MEMBER _url)
     Q_PROPERTY(bool e2eEncryptionKeysGenerationAllowed MEMBER _e2eEncryptionKeysGenerationAllowed)
     Q_PROPERTY(bool askUserForMnemonic READ askUserForMnemonic WRITE setAskUserForMnemonic NOTIFY askUserForMnemonicChanged)
+    Q_PROPERTY(AccountNetworkProxySetting networkProxySetting READ networkProxySetting WRITE setNetworkProxySetting NOTIFY networkProxySettingChanged)
+    Q_PROPERTY(QNetworkProxy::ProxyType proxyType READ proxyType WRITE setProxyType NOTIFY proxyTypeChanged)
+    Q_PROPERTY(QString proxyHostName READ proxyHostName WRITE setProxyHostName NOTIFY proxyHostNameChanged)
+    Q_PROPERTY(int proxyPort READ proxyPort WRITE setProxyPort NOTIFY proxyPortChanged)
+    Q_PROPERTY(bool proxyNeedsAuth READ proxyNeedsAuth WRITE setProxyNeedsAuth NOTIFY proxyNeedsAuthChanged)
+    Q_PROPERTY(QString proxyUser READ proxyUser WRITE setProxyUser NOTIFY proxyUserChanged)
+    Q_PROPERTY(QString proxyPassword READ proxyPassword WRITE setProxyPassword NOTIFY proxyPasswordChanged)
+    Q_PROPERTY(AccountNetworkTransferLimitSetting uploadLimitSetting READ uploadLimitSetting WRITE setUploadLimitSetting NOTIFY uploadLimitSettingChanged)
+    Q_PROPERTY(AccountNetworkTransferLimitSetting downloadLimitSetting READ downloadLimitSetting WRITE setDownloadLimitSetting NOTIFY downloadLimitSettingChanged)
+    Q_PROPERTY(unsigned int uploadLimit READ uploadLimit WRITE setUploadLimit NOTIFY uploadLimitChanged)
+    Q_PROPERTY(unsigned int downloadLimit READ downloadLimit WRITE setDownloadLimit NOTIFY downloadLimitChanged)
 
 public:
+    // We need to decide whether to use the client's global proxy settings or whether to use
+    // a specific setting for each account. Hence this enum
+    enum class AccountNetworkProxySetting {
+        GlobalProxy = 0,
+        AccountSpecificProxy,
+    };
+    Q_ENUM(AccountNetworkProxySetting)
+
+    enum class AccountNetworkTransferLimitSetting {
+        GlobalLimit = -2,
+        AutoLimit, // Value under 0 is interpreted as auto in general
+        NoLimit,
+        ManualLimit,
+    };
+    Q_ENUM(AccountNetworkTransferLimitSetting)
+
     static AccountPtr create();
     ~Account() override;
 
@@ -338,6 +366,49 @@ public:
     void updateServerSubcription();
     void updateDesktopEnterpriseChannel();
 
+    // Network-related settings
+    [[nodiscard]] AccountNetworkProxySetting networkProxySetting() const;
+    void setNetworkProxySetting(AccountNetworkProxySetting networkProxySetting);
+
+    [[nodiscard]] QNetworkProxy::ProxyType proxyType() const;
+    void setProxyType(QNetworkProxy::ProxyType proxyType);
+
+    [[nodiscard]] QString proxyHostName() const;
+    void setProxyHostName(const QString &host);
+
+    [[nodiscard]] int proxyPort() const;
+    void setProxyPort(int port);
+
+    [[nodiscard]] bool proxyNeedsAuth() const;
+    void setProxyNeedsAuth(bool needsAuth);
+
+    [[nodiscard]] QString proxyUser() const;
+    void setProxyUser(const QString &user);
+
+    [[nodiscard]] QString proxyPassword() const;
+    void setProxyPassword(const QString &password);
+
+    void setProxySettings(const AccountNetworkProxySetting networkProxySetting,
+                          const QNetworkProxy::ProxyType proxyType,
+                          const QString &proxyHostName,
+                          const int proxyPort,
+                          const bool proxyNeedsAuth,
+                          const QString &proxyUser,
+                          const QString &proxyPassword);
+
+    [[nodiscard]] AccountNetworkTransferLimitSetting uploadLimitSetting() const;
+    void setUploadLimitSetting(AccountNetworkTransferLimitSetting setting);
+
+    [[nodiscard]] AccountNetworkTransferLimitSetting downloadLimitSetting() const;
+    void setDownloadLimitSetting(AccountNetworkTransferLimitSetting setting);
+
+    /** in kbyte/s */
+    [[nodiscard]] unsigned int uploadLimit() const;
+    void setUploadLimit(unsigned int kbytes);
+
+    [[nodiscard]] unsigned int downloadLimit() const;
+    void setDownloadLimit(unsigned int kbytes);
+
 public slots:
     /// Used when forgetting credentials
     void clearQNAMCache();
@@ -381,6 +452,18 @@ signals:
 
     void lockFileSuccess();
     void lockFileError(const QString&);
+
+    void networkProxySettingChanged();
+    void proxyTypeChanged();
+    void proxyHostNameChanged();
+    void proxyPortChanged();
+    void proxyNeedsAuthChanged();
+    void proxyUserChanged();
+    void proxyPasswordChanged();
+    void uploadLimitSettingChanged();
+    void downloadLimitSettingChanged();
+    void uploadLimitChanged();
+    void downloadLimitChanged();
 
 protected Q_SLOTS:
     void slotCredentialsFetched();
@@ -456,6 +539,18 @@ private:
     std::shared_ptr<UserStatusConnector> _userStatusConnector;
 
     QHash<QString, QVector<SyncFileItem::LockStatus>> _lockStatusChangeInprogress;
+
+    AccountNetworkProxySetting _networkProxySetting = AccountNetworkProxySetting::GlobalProxy;
+    QNetworkProxy::ProxyType _proxyType = QNetworkProxy::NoProxy;
+    QString _proxyHostName;
+    int _proxyPort = 0;
+    bool _proxyNeedsAuth = false;
+    QString _proxyUser;
+    QString _proxyPassword;
+    AccountNetworkTransferLimitSetting _uploadLimitSetting = AccountNetworkTransferLimitSetting::GlobalLimit;
+    AccountNetworkTransferLimitSetting _downloadLimitSetting = AccountNetworkTransferLimitSetting::GlobalLimit;
+    unsigned int _uploadLimit = 0;
+    unsigned int _downloadLimit = 0;
 
     /* IMPORTANT - remove later - FIXME MS@2019-12-07 -->
      * TODO: For "Log out" & "Remove account": Remove client CA certs and KEY!

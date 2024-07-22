@@ -227,6 +227,7 @@ public:
 
     void setDirtyProxy();
     void setDirtyNetworkLimits();
+    void setDirtyNetworkLimits(const AccountPtr &account) const;
 
     /** removes current user from the share **/
     void leaveShare(const QString &localFile);
