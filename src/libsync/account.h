@@ -388,6 +388,14 @@ public:
     [[nodiscard]] QString proxyPassword() const;
     void setProxyPassword(const QString &password);
 
+    void setProxySettings(const AccountNetworkProxySetting networkProxySetting,
+                          const QNetworkProxy::ProxyType proxyType,
+                          const QString &proxyHostName,
+                          const int proxyPort,
+                          const bool proxyNeedsAuth,
+                          const QString &proxyUser,
+                          const QString &proxyPassword);
+
     [[nodiscard]] AccountNetworkTransferLimitSetting uploadLimitSetting() const;
     void setUploadLimitSetting(AccountNetworkTransferLimitSetting setting);
 

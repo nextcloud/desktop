@@ -1100,6 +1100,23 @@ void Account::setNetworkProxySetting(const AccountNetworkProxySetting setting)
     }
 
     _networkProxySetting = setting;
+    if (setting == AccountNetworkProxySetting::AccountSpecificProxy) {
+        auto proxy = _am->proxy();
+        proxy.setType(proxyType());
+        proxy.setHostName(proxyHostName());
+        proxy.setPort(proxyPort());
+        proxy.setUser(proxyUser());
+        proxy.setPassword(proxyPassword());
+        _am->setProxy(proxy);
+    } else {
+        const auto proxy = QNetworkProxy::applicationProxy();
+        _am->setProxy(proxy);
+        setProxyType(proxy.type());
+        setProxyHostName(proxy.hostName());
+        setProxyPort(proxy.port());
+        setProxyUser(proxy.user());
+        setProxyPassword(proxy.password());
+    }
     emit networkProxySettingChanged();
 }
 
@@ -1226,6 +1243,28 @@ void Account::setProxyPassword(const QString &password)
     }
 
     emit proxyPasswordChanged();
+}
+
+void Account::setProxySettings(const AccountNetworkProxySetting networkProxySetting,
+                               const QNetworkProxy::ProxyType proxyType,
+                               const QString &hostName,
+                               const int port,
+                               const bool needsAuth,
+                               const QString &user,
+                               const QString &password)
+{
+    if (networkProxySetting == AccountNetworkProxySetting::GlobalProxy) {
+        setNetworkProxySetting(networkProxySetting);
+        return;
+    }
+
+    setProxyType(proxyType);
+    setProxyHostName(hostName);
+    setProxyPort(port);
+    setProxyNeedsAuth(needsAuth);
+    setProxyUser(user);
+    setProxyPassword(password);
+    setNetworkProxySetting(networkProxySetting);
 }
 
 Account::AccountNetworkTransferLimitSetting Account::uploadLimitSetting() const

@@ -218,21 +218,8 @@ void NetworkSettings::saveProxySettings()
     }
 
     if (_account) { // We must be setting up network proxy for a specific account
-        _account->setNetworkProxySetting(useGlobalProxy ? Account::AccountNetworkProxySetting::GlobalProxy : Account::AccountNetworkProxySetting::AccountSpecificProxy);
-        _account->setProxyType(proxyType);
-        _account->setProxyHostName(host);
-        _account->setProxyPort(port);
-        _account->setProxyNeedsAuth(needsAuth);
-        _account->setProxyUser(user);
-        _account->setProxyPassword(password);
-
-        if (useGlobalProxy) {
-            _account->networkAccessManager()->setProxy(QNetworkProxy::applicationProxy());
-        } else {
-            const auto proxy = QNetworkProxy(proxyType, host, port, user, password);
-            _account->networkAccessManager()->setProxy(proxy);
-        }
-
+        const auto proxySetting = useGlobalProxy ? Account::AccountNetworkProxySetting::GlobalProxy : Account::AccountNetworkProxySetting::AccountSpecificProxy;
+        _account->setProxySettings(proxySetting, proxyType, host, port, needsAuth, user, password);
         const auto accountState = AccountManager::instance()->accountFromUserId(_account->userIdAtHostWithPort());
         accountState->freshConnectionAttempt();
         AccountManager::instance()->saveAccount(_account.data());
