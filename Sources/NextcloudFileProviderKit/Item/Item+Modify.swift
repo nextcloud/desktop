@@ -291,6 +291,8 @@ public extension Item {
 
         let parentItemIdentifier = itemTarget.parentItemIdentifier
         let isFolder = contentType.conforms(to: .directory)
+        let bundleOrPackage =
+            contentType.conforms(to: .bundle) || contentType.conforms(to: .package)
 
         if options.contains(.mayAlreadyExist) {
             // TODO: This needs to be properly handled with a check in the db
@@ -373,7 +375,7 @@ public extension Item {
 
             modifiedItem = renameModifiedItem
 
-            guard !isFolder else {
+            guard !isFolder || bundleOrPackage else {
                 Self.logger.debug(
                     """
                     Rename of folder \(ocId, privacy: .public) (\(self.filename, privacy: .public))
@@ -386,7 +388,7 @@ public extension Item {
             }
         }
 
-        guard !isFolder else {
+        guard !isFolder || bundleOrPackage else {
             Self.logger.debug(
                 """
                 System requested modification for folder with ocID \(ocId, privacy: .public)
@@ -407,17 +409,35 @@ public extension Item {
             )
 
             let newCreationDate = itemTarget.creationDate ?? creationDate
-            let newContentModificationDate = 
+            let newContentModificationDate =
                 itemTarget.contentModificationDate ?? contentModificationDate
-            let (contentModifiedItem, contentError) = await modifiedItem.modifyContents(
-                contents: newContents,
-                remotePath: newServerUrlFileName,
-                newCreationDate: newCreationDate,
-                newContentModificationDate: newContentModificationDate,
-                domain: domain,
-                progress: progress,
-                dbManager: dbManager
-            )
+            var contentModifiedItem: Item?
+            var contentError: Error?
+
+            if bundleOrPackage {
+                do {
+                    contentModifiedItem = try await modifiedItem.modifyBundleOrPackageContents(
+                        contents: newContents,
+                        remotePath: newServerUrlFileName,
+                        ncAccount: ncAccount,
+                        domain: domain,
+                        progress: progress,
+                        dbManager: dbManager
+                    )
+                } catch let error {
+                    contentError = error
+                }
+            } else {
+                (contentModifiedItem, contentError) = await modifiedItem.modifyContents(
+                    contents: newContents,
+                    remotePath: newServerUrlFileName,
+                    newCreationDate: newCreationDate,
+                    newContentModificationDate: newContentModificationDate,
+                    domain: domain,
+                    progress: progress,
+                    dbManager: dbManager
+                )
+            }
 
             guard contentError == nil, let contentModifiedItem else {
                 Self.logger.error(
