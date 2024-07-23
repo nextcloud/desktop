@@ -204,6 +204,11 @@ extension Item {
         dbManager: FilesDatabaseManager,
         rootRequest: Bool = false
     ) async throws -> Item? {
+        Self.logger.debug(
+            """
+            Handling bundle or package or internal directory at: \(contents.path, privacy: .public)
+            """
+        )
         let attributesToFetch: Set<URLResourceKey> = [
             .isDirectoryKey, .fileSizeKey, .creationDateKey, .contentModificationDateKey
         ]
@@ -281,18 +286,7 @@ extension Item {
                     )
                     throw remoteErrorToThrow(createError)
                 }
-
-                try await Self.handleBundleOrPackageOrInternalDir(
-                    rootItem: rootItem,
-                    contents: url,
-                    remotePath: remoteUrl,
-                    domain: domain,
-                    remoteInterface: remoteInterface,
-                    ncAccount: ncAccount,
-                    progress: progress,
-                    dbManager: dbManager,
-                    rootRequest: false
-                )
+                remoteDirectoriesPaths.append(childRemoteUrl)
 
             } else {
                 Self.logger.debug(
@@ -332,51 +326,70 @@ extension Item {
             }
         }
 
-        // After everything, check into what the final state is now
-        let (_, files, _, readError) = await remoteInterface.enumerate(
-            remotePath: remotePath,
-            depth: .target,
-            showHiddenFiles: true,
-            includeHiddenFiles: [],
-            requestBody: nil,
-            options: .init(),
-            taskHandler: { task in
-                if let domain {
-                    NSFileProviderManager(for: domain)?.register(
-                        task,
-                        forItemWithIdentifier: rootItem.itemIdentifier,
-                        completionHandler: { _ in }
-                    )
+        var directoryMetadatas = [ItemMetadata]()
+        for remoteDirectoryPath in remoteDirectoriesPaths {
+            // After everything, check into what the final state is of each folder now
+            let (_, files, _, readError) = await remoteInterface.enumerate(
+                remotePath: remoteDirectoryPath,
+                depth: .targetAndDirectChildren,
+                showHiddenFiles: true,
+                includeHiddenFiles: [],
+                requestBody: nil,
+                options: .init(),
+                taskHandler: { task in
+                    if let domain {
+                        NSFileProviderManager(for: domain)?.register(
+                            task,
+                            forItemWithIdentifier: rootItem.itemIdentifier,
+                            completionHandler: { _ in }
+                        )
+                    }
+                }
+            )
+
+            guard readError == .success else {
+                Self.logger.error(
+                    """
+                    Could not read new bpi folder at: \(remotePath, privacy: .public),
+                    received error: \(readError.errorCode, privacy: .public)
+                    \(readError.errorDescription, privacy: .public)
+                    """
+                )
+                throw remoteErrorToThrow(readError)
+            }
+
+            let (directoryMetadata, allMetadatas) = await withCheckedContinuation {
+                continuation in
+                let account = remoteInterface.account.ncKitAccount
+                return ItemMetadata.metadatasFromDirectoryReadNKFiles(
+                    files, account: account
+                ) { directoryMetadata, _, allMetadatas in
+                    continuation.resume(returning: (directoryMetadata, allMetadatas))
                 }
             }
-        )
 
-        guard readError == .success else {
-            Self.logger.error(
-                """
-                Could not read new bpi folder at: \(remotePath, privacy: .public),
-                received error: \(readError.errorCode, privacy: .public)
-                \(readError.errorDescription, privacy: .public)
-                """
-            )
-            throw remoteErrorToThrow(readError)
-        }
+            dbManager.addItemMetadata(directoryMetadata)
+            directoryMetadatas.append(ItemMetadata(value: directoryMetadata))
 
-        let directoryMetadata = await withCheckedContinuation { continuation in
-            let account = remoteInterface.account.ncKitAccount
-            return ItemMetadata.metadatasFromDirectoryReadNKFiles(
-                files, account: account
-            ) { directoryMetadata, _, _ in
-                continuation.resume(returning: directoryMetadata)
+            for metadata in allMetadatas {
+                // Skip dirs, we will scan child dirs anyway
+                guard !metadata.directory else { continue }
+                dbManager.addItemMetadata(metadata)
+                directoryMetadatas.append(ItemMetadata(value: metadata))
             }
         }
 
-        dbManager.addItemMetadata(directoryMetadata)
-
-        guard rootRequest else { return rootItem }
+        guard let bundleRootMetadata = directoryMetadatas.first else {
+            Self.logger.error(
+                """
+                Could not find directory metadata for bundle or package at: \(contentsPath, privacy: .public)
+                """
+            )
+            throw NSFileProviderError(.noSuchItem)
+        }
 
         return Item(
-            metadata: directoryMetadata,
+            metadata: bundleRootMetadata,
             parentItemIdentifier: rootItem.parentItemIdentifier,
             remoteInterface: remoteInterface
         )
