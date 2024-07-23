@@ -201,7 +201,8 @@ extension Item {
         remoteInterface: RemoteInterface,
         ncAccount: Account,
         progress: Progress,
-        dbManager: FilesDatabaseManager
+        dbManager: FilesDatabaseManager,
+        rootRequest: Bool = false
     ) async throws -> Item? {
         let attributesToFetch: Set<URLResourceKey> = [
             .isDirectoryKey, .fileSizeKey, .creationDateKey, .contentModificationDateKey
@@ -276,7 +277,8 @@ extension Item {
                     remoteInterface: remoteInterface,
                     ncAccount: ncAccount,
                     progress: progress,
-                    dbManager: dbManager
+                    dbManager: dbManager,
+                    rootRequest: false
                 )
 
             } else {
@@ -313,7 +315,54 @@ extension Item {
             }
         }
 
-        return rootItem
+        // After everything, check into what the final state is now
+        let (_, files, _, readError) = await remoteInterface.enumerate(
+            remotePath: remotePath,
+            depth: .target,
+            showHiddenFiles: true,
+            includeHiddenFiles: [],
+            requestBody: nil,
+            options: .init(),
+            taskHandler: { task in
+                if let domain {
+                    NSFileProviderManager(for: domain)?.register(
+                        task,
+                        forItemWithIdentifier: rootItem.itemIdentifier,
+                        completionHandler: { _ in }
+                    )
+                }
+            }
+        )
+
+        guard readError == .success else {
+            Self.logger.error(
+                """
+                Could not read new folder at: \(remotePath, privacy: .public),
+                received error: \(readError.errorCode, privacy: .public)
+                \(readError.errorDescription, privacy: .public)
+                """
+            )
+            throw remoteErrorToThrow(readError)
+        }
+
+        let directoryMetadata = await withCheckedContinuation { continuation in
+            let account = remoteInterface.account.ncKitAccount
+            return ItemMetadata.metadatasFromDirectoryReadNKFiles(
+                files, account: account
+            ) { directoryMetadata, _, _ in
+                continuation.resume(returning: directoryMetadata)
+            }
+        }
+
+        dbManager.addItemMetadata(directoryMetadata)
+
+        guard rootRequest else { return rootItem }
+
+        return Item(
+            metadata: directoryMetadata,
+            parentItemIdentifier: rootItem.parentItemIdentifier,
+            remoteInterface: remoteInterface
+        )
     }
 
     public static func create(
