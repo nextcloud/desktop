@@ -435,7 +435,7 @@ extension Item {
         )
         
         guard !itemTemplateIsFolder else  {
-            return await Self.createNewFolder(
+            let (item, error) = await Self.createNewFolder(
                 itemTemplate: itemTemplate,
                 remotePath: newServerUrlFileName,
                 parentItemIdentifier: parentItemIdentifier,
@@ -444,6 +444,50 @@ extension Item {
                 progress: progress,
                 dbManager: dbManager
             )
+
+            guard let item, error == nil else {
+                return (item, error)
+            }
+
+            if itemTemplate.contentType?.conforms(to: .bundle) == false,
+               itemTemplate.contentType?.conforms(to: .package) == false
+            {
+                return (item, error)
+            }
+
+            guard let url else {
+                Self.logger.error(
+                    """
+                    Could not create item with identifier: \(tempId, privacy: .public),
+                    as it is a bundle or package and no contents were provided
+                    """
+                )
+                return (nil, NSFileProviderError(.noSuchItem))
+            }
+
+            // Bundles and packages are given to us as if they were files -- i.e. we don't get
+            // notified about internal changes. So we need to manually handle their internal
+            // contents
+            Self.logger.debug(
+                """
+                Handling bundle or package contents for item: \(tempId, privacy: .public)
+                """
+            )
+            do {
+                return (try await Self.handleBundleOrPackageOrInternalDir(
+                    rootItem: item,
+                    contents: url,
+                    remotePath: newServerUrlFileName,
+                    domain: domain,
+                    remoteInterface: remoteInterface,
+                    ncAccount: ncAccount,
+                    progress: progress,
+                    dbManager: dbManager,
+                    rootRequest: true
+                ), nil)
+            } catch {
+                return (nil, error)
+            }
         }
         
         
