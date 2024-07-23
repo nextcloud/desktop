@@ -229,6 +229,16 @@ extension Item {
             throw NSFileProviderError(.noSuchItem)
         }
 
+        func remoteErrorToThrow(_ error: NKError) -> Error {
+            if error.matchesCollisionError {
+                return NSFileProviderError(.filenameCollision)
+            } else if let error = error.fileProviderError {
+                return error
+            } else {
+                return NSFileProviderError(.cannotSynchronize)
+            }
+        }
+
         for url in enumeratorArray {
             let urlPath = url.path
             let relativePath = urlPath.replacingOccurrences(of: contents.path, with: "")
@@ -236,7 +246,7 @@ extension Item {
             let urlAttributes = try url.resourceValues(forKeys: attributesToFetch)
             
             if urlAttributes.isDirectory ?? false {
-                let (account, _, _, createError) = await remoteInterface.createFolder(
+                let (_, _, _, createError) = await remoteInterface.createFolder(
                     remotePath: remotePath, options: .init(), taskHandler: { task in
                         if let domain {
                             NSFileProviderManager(for: domain)?.register(
@@ -255,13 +265,7 @@ extension Item {
                         \(createError.errorDescription, privacy: .public)
                         """
                     )
-                    if createError.matchesCollisionError {
-                        throw NSFileProviderError(.filenameCollision)
-                    } else if let error = createError.fileProviderError {
-                        throw error
-                    } else {
-                        throw NSFileProviderError(.cannotSynchronize)
-                    }
+                    throw remoteErrorToThrow(createError)
                 }
 
                 try await Self.handleBundleOrPackageOrInternalDir(
@@ -304,13 +308,7 @@ extension Item {
                         received ocId: \(ocId ?? "empty", privacy: .public)
                         """
                     )
-                    if error.matchesCollisionError {
-                        throw NSFileProviderError(.filenameCollision)
-                    } else if let error = error.fileProviderError {
-                        throw error
-                    } else {
-                        throw NSFileProviderError(.cannotSynchronize)
-                    }
+                    throw remoteErrorToThrow(error)
                 }
             }
         }
