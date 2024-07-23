@@ -249,10 +249,7 @@ extension Item {
         
         let fileNameLocalPath = url?.path ?? ""
         let newServerUrlFileName = parentItemRemotePath + "/" + itemTemplate.filename
-        let itemTemplateIsFolder =
-            itemTemplate.contentType == .folder ||
-            itemTemplate.contentType == .directory ||
-            itemTemplate.contentType == .bundle
+        let itemTemplateIsFolder = itemTemplate.contentType?.conforms(to: .directory) ?? false
 
         Self.logger.debug(
             """

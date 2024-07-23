@@ -21,7 +21,7 @@ public extension Item {
         dbManager: FilesDatabaseManager = .shared
     ) async -> (Item?, Error?) {
         let ocId = itemIdentifier.rawValue
-        let isFolder = contentType == .folder || contentType == .directory || contentType == .bundle
+        let isFolder = contentType.conforms(to: .directory)
         let oldRemotePath = metadata.serverUrl + "/" + metadata.fileName
         let (_, moveError) = await remoteInterface.move(
             remotePathSource: oldRemotePath,
@@ -236,7 +236,7 @@ public extension Item {
         }
 
         let parentItemIdentifier = itemTarget.parentItemIdentifier
-        let isFolder = contentType == .folder || contentType == .directory || contentType == .bundle
+        let isFolder = contentType.conforms(to: .directory)
 
         if options.contains(.mayAlreadyExist) {
             // TODO: This needs to be properly handled with a check in the db
