@@ -250,8 +250,10 @@ extension Item {
         let fileNameLocalPath = url?.path ?? ""
         let newServerUrlFileName = parentItemRemotePath + "/" + itemTemplate.filename
         let itemTemplateIsFolder =
-        itemTemplate.contentType == .folder || itemTemplate.contentType == .directory
-        
+            itemTemplate.contentType == .folder ||
+            itemTemplate.contentType == .directory ||
+            itemTemplate.contentType == .bundle
+
         Self.logger.debug(
             """
             About to upload item with identifier: \(tempId, privacy: .public)
