@@ -240,16 +240,28 @@ extension Item {
             }
         }
 
-        for url in enumeratorArray {
-            Self.logger.debug("Handling bundle or package item at: \(url.path, privacy: .public)")
-            let urlPath = url.path
-            let relativePath = urlPath.replacingOccurrences(of: contents.path, with: "")
-            let remoteUrl = remotePath + relativePath
-            let urlAttributes = try url.resourceValues(forKeys: attributesToFetch)
-            
-            if urlAttributes.isDirectory ?? false {
+        let contentsPath = contents.path
+        let privatePrefix = "/private"
+        let privateContentsPath = contentsPath.hasPrefix(privatePrefix)
+        var remoteDirectoriesPaths = [remotePath]
+
+        for childUrl in enumeratorArray {
+            var childUrlPath = childUrl.path
+            if childUrlPath.hasPrefix(privatePrefix), !privateContentsPath {
+                childUrlPath.removeFirst(privatePrefix.count)
+            }
+            let childRelativePath = childUrlPath.replacingOccurrences(of: contents.path, with: "")
+            let childRemoteUrl = remotePath + childRelativePath
+            let childUrlAttributes = try childUrl.resourceValues(forKeys: attributesToFetch)
+
+            if childUrlAttributes.isDirectory ?? false {
+                Self.logger.debug(
+                    """
+                    Handling child bundle or package directory at: \(childUrlPath, privacy: .public)
+                    """
+                )
                 let (_, _, _, createError) = await remoteInterface.createFolder(
-                    remotePath: remotePath, options: .init(), taskHandler: { task in
+                    remotePath: childRemoteUrl, options: .init(), taskHandler: { task in
                         if let domain {
                             NSFileProviderManager(for: domain)?.register(
                                 task,
@@ -283,11 +295,16 @@ extension Item {
                 )
 
             } else {
-                let (account, ocId, etag, date, size, _, _, error) = await remoteInterface.upload(
-                    remotePath: remotePath,
-                    localPath: urlPath,
-                    creationDate: urlAttributes.creationDate,
-                    modificationDate: urlAttributes.contentModificationDate,
+                Self.logger.debug(
+                    """
+                    Handling child bundle or package file at: \(childUrlPath, privacy: .public)
+                    """
+                )
+                let (_, _, _, _, _, _, _, error) = await remoteInterface.upload(
+                    remotePath: childRemoteUrl,
+                    localPath: childUrlPath,
+                    creationDate: childUrlAttributes.creationDate,
+                    modificationDate: childUrlAttributes.contentModificationDate,
                     options: .init(),
                     requestHandler: { progress.setHandlersFromAfRequest($0) },
                     taskHandler: { task in
@@ -302,13 +319,12 @@ extension Item {
                     progressHandler: { $0.copyCurrentStateToProgress(progress) }
                 )
 
-                guard error == .success, let ocId else {
+                guard error == .success else {
                     Self.logger.error(
                         """
-                        Could not upload bpi file at: \(urlPath, privacy: .public),
+                        Could not upload bpi file at: \(childUrlPath, privacy: .public),
                         received error: \(error.errorCode, privacy: .public)
                         \(error.errorDescription, privacy: .public)
-                        received ocId: \(ocId ?? "empty", privacy: .public)
                         """
                     )
                     throw remoteErrorToThrow(error)
