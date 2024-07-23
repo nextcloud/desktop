@@ -192,7 +192,88 @@ extension Item {
         
         return (fpItem, nil)
     }
-    
+
+    @discardableResult private static func handleBundleOrPackageOrInternalDir(
+        rootItem: Item,
+        contents: URL,
+        remotePath: String,
+        domain: NSFileProviderDomain? = nil,
+        remoteInterface: RemoteInterface,
+        ncAccount: Account,
+        progress: Progress,
+        dbManager: FilesDatabaseManager
+    ) async throws -> Item? {
+        let attributesToFetch: Set<URLResourceKey> = [
+            .isDirectoryKey, .fileSizeKey, .creationDateKey, .contentModificationDateKey
+        ]
+        let fm = FileManager.default
+        guard let enumerator = fm.enumerator(
+            at: contents, includingPropertiesForKeys: Array(attributesToFetch)
+        ) else {
+            Self.logger.error(
+                """
+                Could not create enumerator for contents of bundle or package
+                at: \(contents.path, privacy: .public)
+                """
+            )
+            throw NSFileProviderError(.noSuchItem)
+        }
+
+        guard let enumeratorArray = enumerator.allObjects as? [URL] else {
+            Self.logger.error(
+                """
+                Could not create enumerator array for contents of bundle or package
+                at: \(contents.path, privacy: .public)
+                """
+            )
+            throw NSFileProviderError(.noSuchItem)
+        }
+
+        for url in enumeratorArray {
+            let urlPath = url.path
+            let relativePath = urlPath.replacingOccurrences(of: contents.path, with: "")
+            let remoteUrl = remotePath + relativePath
+            let urlAttributes = try url.resourceValues(forKeys: attributesToFetch)
+            let (account, ocId, etag, date, size, _, _, error) = await remoteInterface.upload(
+                remotePath: remotePath,
+                localPath: urlPath,
+                creationDate: urlAttributes.creationDate,
+                modificationDate: urlAttributes.contentModificationDate,
+                options: .init(),
+                requestHandler: { progress.setHandlersFromAfRequest($0) },
+                taskHandler: { task in
+                    if let domain {
+                        NSFileProviderManager(for: domain)?.register(
+                            task,
+                            forItemWithIdentifier: rootItem.itemIdentifier,
+                            completionHandler: { _ in }
+                        )
+                    }
+                },
+                progressHandler: { $0.copyCurrentStateToProgress(progress) }
+            )
+
+            guard error == .success, let ocId else {
+                Self.logger.error(
+                    """
+                    Could not upload item file at: \(urlPath, privacy: .public),
+                    received error: \(error.errorCode, privacy: .public)
+                    \(error.errorDescription, privacy: .public)
+                    received ocId: \(ocId ?? "empty", privacy: .public)
+                    """
+                )
+                if error.matchesCollisionError {
+                    throw NSFileProviderError(.filenameCollision)
+                } else if let error = error.fileProviderError {
+                    throw error
+                } else {
+                    throw NSFileProviderError(.cannotSynchronize)
+                }
+            }
+        }
+        return rootItem
+    }
+
     public static func create(
         basedOn itemTemplate: NSFileProviderItem,
         fields: NSFileProviderItemFields = NSFileProviderItemFields(),
