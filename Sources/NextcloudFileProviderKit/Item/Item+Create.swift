@@ -234,43 +234,87 @@ extension Item {
             let relativePath = urlPath.replacingOccurrences(of: contents.path, with: "")
             let remoteUrl = remotePath + relativePath
             let urlAttributes = try url.resourceValues(forKeys: attributesToFetch)
-            let (account, ocId, etag, date, size, _, _, error) = await remoteInterface.upload(
-                remotePath: remotePath,
-                localPath: urlPath,
-                creationDate: urlAttributes.creationDate,
-                modificationDate: urlAttributes.contentModificationDate,
-                options: .init(),
-                requestHandler: { progress.setHandlersFromAfRequest($0) },
-                taskHandler: { task in
-                    if let domain {
-                        NSFileProviderManager(for: domain)?.register(
-                            task,
-                            forItemWithIdentifier: rootItem.itemIdentifier,
-                            completionHandler: { _ in }
-                        )
+            
+            if urlAttributes.isDirectory ?? false {
+                let (account, _, _, createError) = await remoteInterface.createFolder(
+                    remotePath: remotePath, options: .init(), taskHandler: { task in
+                        if let domain {
+                            NSFileProviderManager(for: domain)?.register(
+                                task,
+                                forItemWithIdentifier: rootItem.itemIdentifier,
+                                completionHandler: { _ in }
+                            )
+                        }
                     }
-                },
-                progressHandler: { $0.copyCurrentStateToProgress(progress) }
-            )
-
-            guard error == .success, let ocId else {
-                Self.logger.error(
-                    """
-                    Could not upload item file at: \(urlPath, privacy: .public),
-                    received error: \(error.errorCode, privacy: .public)
-                    \(error.errorDescription, privacy: .public)
-                    received ocId: \(ocId ?? "empty", privacy: .public)
-                    """
                 )
-                if error.matchesCollisionError {
-                    throw NSFileProviderError(.filenameCollision)
-                } else if let error = error.fileProviderError {
-                    throw error
-                } else {
-                    throw NSFileProviderError(.cannotSynchronize)
+                guard createError == .success else {
+                    Self.logger.error(
+                        """
+                        Could not create new folder at: \(remotePath, privacy: .public),
+                        received error: \(createError.errorCode, privacy: .public)
+                        \(createError.errorDescription, privacy: .public)
+                        """
+                    )
+                    if createError.matchesCollisionError {
+                        throw NSFileProviderError(.filenameCollision)
+                    } else if let error = createError.fileProviderError {
+                        throw error
+                    } else {
+                        throw NSFileProviderError(.cannotSynchronize)
+                    }
+                }
+
+                try await Self.handleBundleOrPackageOrInternalDir(
+                    rootItem: rootItem,
+                    contents: url,
+                    remotePath: remoteUrl,
+                    domain: domain,
+                    remoteInterface: remoteInterface,
+                    ncAccount: ncAccount,
+                    progress: progress,
+                    dbManager: dbManager
+                )
+
+            } else {
+                let (account, ocId, etag, date, size, _, _, error) = await remoteInterface.upload(
+                    remotePath: remotePath,
+                    localPath: urlPath,
+                    creationDate: urlAttributes.creationDate,
+                    modificationDate: urlAttributes.contentModificationDate,
+                    options: .init(),
+                    requestHandler: { progress.setHandlersFromAfRequest($0) },
+                    taskHandler: { task in
+                        if let domain {
+                            NSFileProviderManager(for: domain)?.register(
+                                task,
+                                forItemWithIdentifier: rootItem.itemIdentifier,
+                                completionHandler: { _ in }
+                            )
+                        }
+                    },
+                    progressHandler: { $0.copyCurrentStateToProgress(progress) }
+                )
+
+                guard error == .success, let ocId else {
+                    Self.logger.error(
+                        """
+                        Could not upload item file at: \(urlPath, privacy: .public),
+                        received error: \(error.errorCode, privacy: .public)
+                        \(error.errorDescription, privacy: .public)
+                        received ocId: \(ocId ?? "empty", privacy: .public)
+                        """
+                    )
+                    if error.matchesCollisionError {
+                        throw NSFileProviderError(.filenameCollision)
+                    } else if let error = error.fileProviderError {
+                        throw error
+                    } else {
+                        throw NSFileProviderError(.cannotSynchronize)
+                    }
                 }
             }
         }
+
         return rootItem
     }
 
