@@ -241,6 +241,7 @@ extension Item {
         }
 
         for url in enumeratorArray {
+            Self.logger.debug("Handling bundle or package item at: \(url.path, privacy: .public)")
             let urlPath = url.path
             let relativePath = urlPath.replacingOccurrences(of: contents.path, with: "")
             let remoteUrl = remotePath + relativePath
@@ -261,7 +262,7 @@ extension Item {
                 guard createError == .success else {
                     Self.logger.error(
                         """
-                        Could not create new folder at: \(remotePath, privacy: .public),
+                        Could not create new bpi folder at: \(remotePath, privacy: .public),
                         received error: \(createError.errorCode, privacy: .public)
                         \(createError.errorDescription, privacy: .public)
                         """
@@ -304,7 +305,7 @@ extension Item {
                 guard error == .success, let ocId else {
                     Self.logger.error(
                         """
-                        Could not upload item file at: \(urlPath, privacy: .public),
+                        Could not upload bpi file at: \(urlPath, privacy: .public),
                         received error: \(error.errorCode, privacy: .public)
                         \(error.errorDescription, privacy: .public)
                         received ocId: \(ocId ?? "empty", privacy: .public)
@@ -337,7 +338,7 @@ extension Item {
         guard readError == .success else {
             Self.logger.error(
                 """
-                Could not read new folder at: \(remotePath, privacy: .public),
+                Could not read new bpi folder at: \(remotePath, privacy: .public),
                 received error: \(readError.errorCode, privacy: .public)
                 \(readError.errorDescription, privacy: .public)
                 """
