@@ -200,13 +200,12 @@ extension Item {
         domain: NSFileProviderDomain? = nil,
         remoteInterface: RemoteInterface,
         ncAccount: Account,
-        progress: Progress,
-        dbManager: FilesDatabaseManager,
-        rootRequest: Bool = false
+        progress: Progress, // FIXME: This does not work as it should
+        dbManager: FilesDatabaseManager
     ) async throws -> Item? {
         Self.logger.debug(
             """
-            Handling bundle or package or internal directory at: \(contents.path, privacy: .public)
+            Handling new bundle/package/internal directory at: \(contents.path, privacy: .public)
             """
         )
         let attributesToFetch: Set<URLResourceKey> = [
@@ -512,8 +511,7 @@ extension Item {
                     remoteInterface: remoteInterface,
                     ncAccount: ncAccount,
                     progress: progress,
-                    dbManager: dbManager,
-                    rootRequest: true
+                    dbManager: dbManager
                 ), nil)
             } catch {
                 return (nil, error)
