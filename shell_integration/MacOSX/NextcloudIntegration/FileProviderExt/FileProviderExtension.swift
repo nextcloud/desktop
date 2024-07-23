@@ -37,6 +37,10 @@ import OSLog
         return LocalSocketClient(socketPath: socketPath.path, lineProcessor: lineProcessor)
     }()
 
+    var syncActions = Set<UUID>()
+    var errorActions = Set<UUID>()
+    var actionsLock = NSLock()
+
     // Whether or not we are going to recursively scan new folders when they are discovered.
     // Apple's recommendation is that we should always scan the file hierarchy fully.
     // This does lead to long load times when a file provider domain is initially configured.
@@ -67,6 +71,32 @@ import OSLog
         )
     }
 
+    func insertSyncAction(_ actionId: UUID) {
+        actionsLock.lock()
+        let oldActions = syncActions
+        syncActions.insert(actionId)
+        actionsLock.unlock()
+        updatedSyncStateReporting(oldActions: oldActions)
+    }
+
+    func insertErrorAction(_ actionId: UUID) {
+        actionsLock.lock()
+        let oldActions = syncActions
+        syncActions.remove(actionId)
+        errorActions.insert(actionId)
+        actionsLock.unlock()
+        updatedSyncStateReporting(oldActions: oldActions)
+    }
+
+    func removeSyncAction(_ actionId: UUID) {
+        actionsLock.lock()
+        let oldActions = syncActions
+        syncActions.remove(actionId)
+        errorActions.remove(actionId)
+        actionsLock.unlock()
+        updatedSyncStateReporting(oldActions: oldActions)
+    }
+
     // MARK: - NSFileProviderReplicatedExtension protocol methods
 
     func item(
@@ -88,6 +118,9 @@ import OSLog
         request: NSFileProviderRequest,
         completionHandler: @escaping (URL?, NSFileProviderItem?, Error?) -> Void
     ) -> Progress {
+        let actionId = UUID()
+        insertSyncAction(actionId)
+
         Logger.fileProviderExtension.debug(
             "Received request to fetch contents of item with identifier: \(itemIdentifier.rawValue, privacy: .public)"
         )
@@ -97,6 +130,7 @@ import OSLog
             Logger.fileProviderExtension.error(
                 "Can't return contents for a specific version as this is not supported."
             )
+            insertErrorAction(actionId)
             completionHandler(
                 nil, 
                 nil,
@@ -112,6 +146,7 @@ import OSLog
                 as account not set up yet.
                 """
             )
+            insertErrorAction(actionId)
             completionHandler(nil, nil, NSFileProviderError(.notAuthenticated))
             return Progress()
         }
@@ -124,6 +159,7 @@ import OSLog
                 """
             )
             completionHandler(nil, nil, NSFileProviderError(.noSuchItem))
+            insertErrorAction(actionId)
             return Progress()
         }
 
@@ -132,6 +168,7 @@ import OSLog
             let (localUrl, updatedItem, error) = await item.fetchContents(
                 domain: self.domain, progress: progress
             )
+            removeSyncAction(actionId)
             completionHandler(localUrl, updatedItem, error)
         }
         return progress
@@ -147,6 +184,8 @@ import OSLog
             NSFileProviderItem?, NSFileProviderItemFields, Bool, Error?
         ) -> Void
     ) -> Progress {
+        let actionId = UUID()
+        insertSyncAction(actionId)
 
         let tempId = itemTemplate.itemIdentifier.rawValue
         Logger.fileProviderExtension.debug(
@@ -163,6 +202,7 @@ import OSLog
                 as account not set up yet
                 """
             )
+            insertErrorAction(actionId)
             completionHandler(
                 itemTemplate, 
                 NSFileProviderItemFields(),
@@ -184,9 +224,14 @@ import OSLog
                 ncAccount: ncAccount,
                 progress: progress
             )
+
             if error != nil {
+                insertErrorAction(actionId)
                 signalEnumerator(completionHandler: { _ in })
+            } else {
+                removeSyncAction(actionId)
             }
+
             completionHandler(
                 item ?? itemTemplate,
                 NSFileProviderItemFields(),
@@ -210,6 +255,8 @@ import OSLog
     ) -> Progress {
         // An item was modified on disk, process the item's modification
         // TODO: Handle finder things like tags, other possible item changed fields
+        let actionId = UUID()
+        insertSyncAction(actionId)
 
         let identifier = item.itemIdentifier
         let ocId = identifier.rawValue
@@ -224,6 +271,7 @@ import OSLog
             Logger.fileProviderExtension.error(
                 "Not modifying item: \(ocId, privacy: .public) as account not set up yet."
             )
+            insertErrorAction(actionId)
             completionHandler(item, [], false, NSFileProviderError(.notAuthenticated))
             return Progress()
         }
@@ -232,6 +280,7 @@ import OSLog
             Logger.fileProviderExtension.error(
                 "Not modifying item: \(ocId, privacy: .public) as item not found."
             )
+            insertErrorAction(actionId)
             completionHandler(item, [], false, NSFileProviderError(.noSuchItem))
             return Progress()
         }
@@ -249,9 +298,14 @@ import OSLog
                 domain: domain,
                 progress: progress
             )
+
             if error != nil {
+                insertErrorAction(actionId)
                 signalEnumerator(completionHandler: { _ in })
+            } else {
+                removeSyncAction(actionId)
             }
+
             completionHandler(modifiedItem ?? item, [], false, error)
         }
         return progress
@@ -264,6 +318,9 @@ import OSLog
         request _: NSFileProviderRequest,
         completionHandler: @escaping (Error?) -> Void
     ) -> Progress {
+        let actionId = UUID()
+        insertSyncAction(actionId)
+
         Logger.fileProviderExtension.debug(
             "Received delete request for item: \(identifier.rawValue, privacy: .public)"
         )
@@ -272,6 +329,7 @@ import OSLog
             Logger.fileProviderExtension.error(
                 "Not deleting item \(identifier.rawValue, privacy: .public), account not set up yet"
             )
+            insertErrorAction(actionId)
             completionHandler(NSFileProviderError(.notAuthenticated))
             return Progress()
         }
@@ -280,6 +338,7 @@ import OSLog
             Logger.fileProviderExtension.error(
                 "Not deleting item \(identifier.rawValue, privacy: .public), item not found"
             )
+            insertErrorAction(actionId)
             completionHandler(NSFileProviderError(.noSuchItem))
             return Progress()
         }
@@ -288,7 +347,10 @@ import OSLog
         Task {
             let error = await item.delete()
             if error != nil {
+                insertErrorAction(actionId)
                 signalEnumerator(completionHandler: { _ in })
+            } else {
+                removeSyncAction(actionId)
             }
             progress.completedUnitCount = 1
             completionHandler(await item.delete())
@@ -311,7 +373,8 @@ import OSLog
             ncAccount: ncAccount,
             remoteInterface: ncKit,
             domain: domain,
-            fastEnumeration: config.fastEnumerationEnabled
+            fastEnumeration: config.fastEnumerationEnabled,
+            listener: self
         )
     }
 
@@ -341,6 +404,8 @@ import OSLog
 
         materialisedEnumerator.enumerateItems(for: materialisedObserver, startingAt: startingPage)
     }
+
+    // MARK: - Helper functions
 
     func signalEnumerator(completionHandler: @escaping (_ error: Error?) -> Void) {
         guard let fpManager = NSFileProviderManager(for: domain) else {

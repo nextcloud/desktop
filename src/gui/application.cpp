@@ -461,7 +461,7 @@ Application::Application(int &argc, char **argv)
     AccountSetupCommandLineManager::destroy();
 
 #if defined(BUILD_FILE_PROVIDER_MODULE)
-    _fileProvider.reset(new Mac::FileProvider);
+    Mac::FileProvider::instance();
 #endif
 }
 

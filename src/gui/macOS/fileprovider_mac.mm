@@ -107,5 +107,10 @@ FileProviderDomainManager *FileProvider::domainManager() const
     return _domainManager.get();
 }
 
+FileProviderSocketServer *FileProvider::socketServer() const
+{
+    return _socketServer.get();
+}
+
 } // namespace Mac
 } // namespace OCC

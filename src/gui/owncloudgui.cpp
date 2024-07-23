@@ -64,6 +64,8 @@
 #include <QQmlContext>
 
 #ifdef BUILD_FILE_PROVIDER_MODULE
+#include "macOS/fileprovider.h"
+#include "macOS/fileproviderdomainmanager.h"
 #include "macOS/fileprovidersettingscontroller.h"
 #endif
 
@@ -110,8 +112,11 @@ ownCloudGui::ownCloudGui(Application *parent)
         &ownCloudGui::slotUpdateProgress);
 
     FolderMan *folderMan = FolderMan::instance();
-    connect(folderMan, &FolderMan::folderSyncStateChange,
-        this, &ownCloudGui::slotSyncStateChange);
+    connect(folderMan, &FolderMan::folderSyncStateChange, this, &ownCloudGui::slotSyncStateChange);
+
+#ifdef BUILD_FILE_PROVIDER_MODULE
+    connect(Mac::FileProvider::instance()->socketServer(), &Mac::FileProviderSocketServer::syncStateChanged, this, &ownCloudGui::slotComputeOverallSyncStatus);
+#endif
 
     connect(Logger::instance(), &Logger::guiLog, this, &ownCloudGui::slotShowTrayMessage);
     connect(Logger::instance(), &Logger::guiMessage, this, &ownCloudGui::slotShowGuiMessage);
@@ -279,40 +284,65 @@ void ownCloudGui::slotComputeOverallSyncStatus()
 {
     bool allSignedOut = true;
     bool allPaused = true;
-    bool allDisconnected = true;
     QVector<AccountStatePtr> problemAccounts;
-    auto setStatusText = [&](const QString &text) {
-        // FIXME: So this doesn't do anything? Needs to be revisited
-        Q_UNUSED(text)
-        // Don't overwrite the status if we're currently syncing
-        if (FolderMan::instance()->isAnySyncRunning())
-            return;
-        //_actionStatus->setText(text);
-    };
 
-    foreach (auto a, AccountManager::instance()->accounts()) {
-        if (!a->isSignedOut()) {
+    for (const auto &account : AccountManager::instance()->accounts()) {
+        if (!account->isSignedOut()) {
             allSignedOut = false;
         }
-        if (!a->isConnected()) {
-            problemAccounts.append(a);
-        } else {
-            allDisconnected = false;
+        if (!account->isConnected()) {
+            problemAccounts.append(account);
         }
     }
-    foreach (Folder *f, FolderMan::instance()->map()) {
-        if (!f->syncPaused()) {
+    for (const auto folder : FolderMan::instance()->map()) {
+        if (!folder->syncPaused()) {
             allPaused = false;
         }
     }
 
+#ifdef BUILD_FILE_PROVIDER_MODULE
+    QList<QString> problemFileProviderAccounts;
+    QList<QString> syncingFileProviderAccounts;
+    QList<QString> successFileProviderAccounts;
+
+    if (Mac::FileProvider::fileProviderAvailable()) {
+        for (const auto &accountState : AccountManager::instance()->accounts()) {
+            const auto accountFpId = Mac::FileProviderDomainManager::fileProviderDomainIdentifierFromAccountState(accountState);
+            if (!Mac::FileProviderSettingsController::instance()->vfsEnabledForAccount(accountFpId)) {
+                continue;
+            }
+            const auto fileProvider = Mac::FileProvider::instance();
+
+            if (!fileProvider->xpc()->fileProviderExtReachable(accountFpId)) {
+                problemFileProviderAccounts.append(accountFpId);
+            } else {
+                switch (const auto latestStatus = fileProvider->socketServer()->latestReceivedSyncStatusForAccount(accountState->account())) {
+                case SyncResult::Undefined:
+                case SyncResult::NotYetStarted:
+                    break;
+                case SyncResult::SyncPrepare:
+                case SyncResult::SyncRunning:
+                case SyncResult::SyncAbortRequested:
+                    syncingFileProviderAccounts.append(accountFpId);
+                    break;
+                case SyncResult::Success:
+                    successFileProviderAccounts.append(accountFpId);
+                    break;
+                case SyncResult::Problem:
+                case SyncResult::Error:
+                case SyncResult::SetupError:
+                    problemFileProviderAccounts.append(accountFpId);
+                    break;
+                case SyncResult::Paused:
+                    break;
+                }
+            }
+        }
+    }
+#endif
+
     if (!problemAccounts.empty()) {
         _tray->setIcon(Theme::instance()->folderOfflineIcon(true));
-        if (allDisconnected) {
-            setStatusText(tr("Disconnected"));
-        } else {
-            setStatusText(tr("Disconnected from some accounts"));
-        }
 #ifdef Q_OS_WIN
         // Windows has a 128-char tray tooltip length limit.
         QStringList accountNames;
@@ -323,11 +353,11 @@ void ownCloudGui::slotComputeOverallSyncStatus()
 #else
         QStringList messages;
         messages.append(tr("Disconnected from accounts:"));
-        foreach (AccountStatePtr a, problemAccounts) {
-            QString message = tr("Account %1: %2").arg(a->account()->displayName(), a->stateString(a->state()));
-            if (!a->connectionErrors().empty()) {
+        for (const auto &accountState : problemAccounts) {
+            QString message = tr("Account %1: %2").arg(accountState->account()->displayName(), accountState->stateString(accountState->state()));
+            if (!accountState->connectionErrors().empty()) {
                 message += QLatin1String("\n");
-                message += a->connectionErrors().join(QLatin1String("\n"));
+                message += accountState->connectionErrors().join(QLatin1String("\n"));
             }
             messages.append(message);
         }
@@ -339,12 +369,10 @@ void ownCloudGui::slotComputeOverallSyncStatus()
     if (allSignedOut) {
         _tray->setIcon(Theme::instance()->folderOfflineIcon(true));
         _tray->setToolTip(tr("Please sign in"));
-        setStatusText(tr("Signed out"));
         return;
     } else if (allPaused) {
         _tray->setIcon(Theme::instance()->syncStateIcon(SyncResult::Paused, true));
         _tray->setToolTip(tr("Account synchronization is disabled"));
-        setStatusText(tr("Synchronization is paused"));
         return;
     }
 
@@ -356,6 +384,18 @@ void ownCloudGui::slotComputeOverallSyncStatus()
     SyncResult::Status overallStatus = SyncResult::Undefined;
     bool hasUnresolvedConflicts = false;
     FolderMan::trayOverallStatus(map.values(), &overallStatus, &hasUnresolvedConflicts);
+
+#ifdef BUILD_FILE_PROVIDER_MODULE
+    if (!problemFileProviderAccounts.isEmpty()) {
+        overallStatus = SyncResult::Problem;
+    } else if (!syncingFileProviderAccounts.isEmpty() &&
+               overallStatus != SyncResult::SyncRunning &&
+               overallStatus != SyncResult::Problem &&
+               overallStatus != SyncResult::Error &&
+               overallStatus != SyncResult::SetupError) {
+        overallStatus = SyncResult::SyncRunning;
+    }
+#endif
 
     // If the sync succeeded but there are unresolved conflicts,
     // show the problem icon!
@@ -373,37 +413,40 @@ void ownCloudGui::slotComputeOverallSyncStatus()
     _tray->setIcon(statusIcon);
 
     // create the tray blob message, check if we have an defined state
+#ifdef BUILD_FILE_PROVIDER_MODULE
+    if (!map.isEmpty() || !syncingFileProviderAccounts.isEmpty() || !successFileProviderAccounts.isEmpty() || !problemFileProviderAccounts.isEmpty()) {
+#else
     if (map.count() > 0) {
+#endif
 #ifdef Q_OS_WIN
         // Windows has a 128-char tray tooltip length limit.
         trayMessage = folderMan->trayTooltipStatusString(overallStatus, hasUnresolvedConflicts, false);
 #else
         QStringList allStatusStrings;
-        foreach (Folder *folder, map.values()) {
+        const auto folders = map.values();
+        for (const auto folder : folders) {
             QString folderMessage = FolderMan::trayTooltipStatusString(
                 folder->syncResult().status(),
                 folder->syncResult().hasUnresolvedConflicts(),
                 folder->syncPaused());
             allStatusStrings += tr("Folder %1: %2").arg(folder->shortGuiLocalPath(), folderMessage);
         }
+#ifdef BUILD_FILE_PROVIDER_MODULE
+        for (const auto &accountId : syncingFileProviderAccounts) {
+            allStatusStrings += tr("macOS VFS for %1: Sync is running.").arg(accountId);
+        }
+        for (const auto &accountId : successFileProviderAccounts) {
+            allStatusStrings += tr("macOS VFS for %1: Last sync was successful.").arg(accountId);
+        }
+        for (const auto &accountId : problemFileProviderAccounts) {
+            allStatusStrings += tr("macOS VFS for %1: A problem was encountered.").arg(accountId);
+        }
+#endif
         trayMessage = allStatusStrings.join(QLatin1String("\n"));
 #endif
         _tray->setToolTip(trayMessage);
-
-        if (overallStatus == SyncResult::Success || overallStatus == SyncResult::Problem) {
-            if (hasUnresolvedConflicts) {
-                setStatusText(tr("Unresolved conflicts"));
-            } else {
-                setStatusText(tr("Up to date"));
-            }
-        } else if (overallStatus == SyncResult::Paused) {
-            setStatusText(tr("Synchronization is paused"));
-        } else {
-            setStatusText(tr("Error during synchronization"));
-        }
     } else {
         _tray->setToolTip(tr("There are no sync folders configured."));
-        setStatusText(tr("No sync folders configured"));
     }
 }
 

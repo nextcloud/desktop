@@ -88,6 +88,10 @@ void FileProviderSocketController::parseReceivedLine(const QString &receivedLine
     if (command == QStringLiteral("FILE_PROVIDER_DOMAIN_IDENTIFIER_REQUEST_REPLY")) {
         _accountState = FileProviderDomainManager::accountStateFromFileProviderDomainIdentifier(argument);
         sendAccountDetails();
+        reportSyncState("SYNC_PREPARING");
+        return;
+    } else if (command == "FILE_PROVIDER_DOMAIN_SYNC_STATE_CHANGE") {
+        reportSyncState(argument);
         return;
     }
 
@@ -168,6 +172,11 @@ void FileProviderSocketController::slotAccountStateChanged(const AccountState::S
     }
 }
 
+AccountStatePtr FileProviderSocketController::accountState() const
+{
+    return _accountState;
+}
+
 void FileProviderSocketController::sendNotAuthenticated() const
 {
     Q_ASSERT(_accountState);
@@ -216,6 +225,30 @@ void FileProviderSocketController::sendAccountDetails() const
     sendMessage(message);
 }
 
+void FileProviderSocketController::reportSyncState(const QString &receivedState)
+{
+    if (!accountState()) {
+        qCWarning(lcFileProviderSocketController) << "No account state available to report sync state";
+        return;
+    }
+
+    auto syncState = SyncResult::Status::Undefined;
+    if (receivedState == "SYNC_PREPARING") {
+        syncState = SyncResult::Status::SyncPrepare;
+    } else if (receivedState == "SYNC_STARTED") {
+        syncState = SyncResult::Status::SyncRunning;
+    } else if (receivedState == "SYNC_FINISHED") {
+        syncState = SyncResult::Status::Success;
+    } else if (receivedState == "SYNC_FAILED") {
+        syncState = SyncResult::Status::Problem;
+    } else if (receivedState == "SYNC_PAUSED") {
+        syncState = SyncResult::Status::Paused;
+    } else {
+        qCWarning(lcFileProviderSocketController) << "Unknown sync state received:" << receivedState;
+    }
+    emit syncStateChanged(_accountState->account(), syncState);
 }
 
-}
+} // namespace Mac
+
+} // namespace OCC
