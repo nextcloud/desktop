@@ -211,6 +211,60 @@ public extension Item {
         return (modifiedItem, nil)
     }
 
+    private func modifyBundleOrPackageContents(
+        contents newContents: URL?,
+        remotePath: String,
+        ncAccount: Account,
+        domain: NSFileProviderDomain?,
+        progress: Progress,
+        dbManager: FilesDatabaseManager
+    ) async throws -> Item? {
+        guard let contents = newContents else {
+            Self.logger.error(
+                """
+                Could not modify bundle or package contents as was provided nil contents url
+                for item with ocID \(self.itemIdentifier.rawValue, privacy: .public)
+                (\(self.filename, privacy: .public))
+                """
+            )
+            throw NSFileProviderError(.cannotSynchronize)
+        }
+
+        // Brute force. Since the system handles this as a file, let's do this too.
+        // We can't do things granularly without knowing what has changed locally.
+        // Wipe all the contents of the remote bundle/package and upload new contents
+        if let error = await delete(domain: domain, dbManager: dbManager) {
+            Self.logger.error(
+                """
+                Could not do pre-modify delete bundle or package contents for item with ocID
+                \(self.itemIdentifier.rawValue, privacy: .public)
+                (\(self.filename, privacy: .public)),
+                received error: \(error.localizedDescription, privacy: .public)
+                """
+            )
+            throw error
+        }
+        let (item, error) = await Self.create(
+            basedOn: self,
+            contents: contents,
+            remoteInterface: remoteInterface,
+            ncAccount: ncAccount,
+            progress: progress
+        )
+        if let error {
+            Self.logger.error(
+                """
+                Could not create new bundle or package contents for item with ocID
+                \(self.itemIdentifier.rawValue, privacy: .public)
+                (\(self.filename, privacy: .public)),
+                received error: \(error.localizedDescription, privacy: .public)
+                """
+            )
+            throw error
+        }
+        return item
+    }
+
     func modify(
         itemTarget: NSFileProviderItem,
         baseVersion: NSFileProviderItemVersion = NSFileProviderItemVersion(),
