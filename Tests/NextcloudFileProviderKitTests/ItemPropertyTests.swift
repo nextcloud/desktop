@@ -63,4 +63,27 @@ final class ItemPropertyTests: XCTestCase {
         )
         XCTAssertEqual(item.contentType, UTType.pdf)
     }
+
+    func testMetadataFolderContentType() {
+        let metadata = ItemMetadata()
+        metadata.ocId = "test-id"
+        metadata.etag = "test-etag"
+        metadata.name = "test"
+        metadata.fileName = "test"
+        metadata.fileNameView = "test"
+        metadata.serverUrl = Self.account.davFilesUrl
+        metadata.urlBase = Self.account.serverUrl
+        metadata.userId = Self.account.username
+        metadata.user = Self.account.username
+        metadata.date = .init()
+        metadata.size = 12
+        metadata.directory = true
+
+        let item = Item(
+            metadata: metadata,
+            parentItemIdentifier: .rootContainer,
+            remoteInterface: MockRemoteInterface(account: Self.account)
+        )
+        XCTAssertEqual(item.contentType, UTType.folder)
+    }
 }
