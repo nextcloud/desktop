@@ -323,7 +323,13 @@ public class FilesDatabaseManager {
             try database.write {
                 database.add(metadata, update: .all)
                 Self.logger.debug(
-                    "Added item metadata. ocID: \(metadata.ocId, privacy: .public), etag: \(metadata.etag, privacy: .public), fileName: \(metadata.fileName, privacy: .public)"
+                    """
+                    Added item metadata.
+                    ocID: \(metadata.ocId, privacy: .public)
+                    etag: \(metadata.etag, privacy: .public)
+                    fileName: \(metadata.fileName, privacy: .public)
+                    parentDirectoryUrl: \(metadata.serverUrl, privacy: .public)
+                    """
                 )
             }
         } catch {
@@ -380,7 +386,12 @@ public class FilesDatabaseManager {
                 database.add(itemMetadata, update: .all)
 
                 Self.logger.debug(
-                    "Renamed item \(oldFileName, privacy: .public) to \(newFileName, privacy: .public), moved from serverUrl: \(oldServerUrl, privacy: .public) to serverUrl: \(newServerUrl, privacy: .public)"
+                    """
+                    Renamed item \(oldFileName, privacy: .public) 
+                    to \(newFileName, privacy: .public),
+                    moved from serverUrl: \(oldServerUrl, privacy: .public)
+                    to serverUrl: \(newServerUrl, privacy: .public)
+                    """
                 )
             }
         } catch {
