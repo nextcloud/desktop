@@ -13,7 +13,6 @@
  */
 #pragma once
 #include "gui/qmlutils.h"
-#include "gui/spaces/spaceslib.h"
 
 #include "libsync/account.h"
 #include "libsync/graphapi/space.h"
@@ -28,7 +27,7 @@ class SpacesBrowser;
 namespace OCC::Spaces {
 class SpacesModel;
 
-class SPACES_EXPORT SpacesBrowser : public QWidget
+class SpacesBrowser : public QWidget
 {
     Q_OBJECT
     Q_PROPERTY(QSortFilterProxyModel *model MEMBER _sortModel READ model CONSTANT)
@@ -50,7 +49,7 @@ Q_SIGNALS:
     void currentSpaceChanged(GraphApi::Space *space);
 
 private:
-    Ui::SpacesBrowser *ui;
+    ::Ui::SpacesBrowser *ui;
 
     OCC::AccountPtr _acc;
     SpacesModel *_model;

@@ -18,7 +18,6 @@ import QtQuick.Layouts
 
 import org.ownCloud.gui 1.0
 import org.ownCloud.libsync 1.0
-import org.ownCloud.gui.spaces 1.0
 
 Pane {
     id: spacesView
