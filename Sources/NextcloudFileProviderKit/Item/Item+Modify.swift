@@ -1,6 +1,6 @@
 //
 //  Item+Modify.swift
-//  
+//
 //
 //  Created by Claudio Cambra on 16/4/24.
 //
@@ -232,40 +232,295 @@ public extension Item {
             throw NSFileProviderError(.cannotSynchronize)
         }
 
-        // Brute force. Since the system handles this as a file, let's do this too.
-        // We can't do things granularly without knowing what has changed locally.
-        // Wipe all the contents of the remote bundle/package and upload new contents
-        if let error = await delete(domain: domain, dbManager: dbManager) {
-            Self.logger.error(
-                """
-                Could not do pre-modify delete bundle or package contents for item with ocID
-                \(self.itemIdentifier.rawValue, privacy: .public)
-                (\(self.filename, privacy: .public)),
-                received error: \(error.localizedDescription, privacy: .public)
-                """
-            )
-            throw error
-        }
-        let (item, error) = await Self.create(
-            basedOn: self,
-            contents: contents,
-            remoteInterface: remoteInterface,
-            ncAccount: ncAccount,
-            progress: progress,
-            dbManager: dbManager
+        Self.logger.debug(
+            """
+            Handling modified bundle/package/internal directory at:
+            \(contents.path, privacy: .public)
+            """
         )
-        if let error {
+
+        func remoteErrorToThrow(_ error: NKError) -> Error {
+            if error.matchesCollisionError {
+                return NSFileProviderError(.filenameCollision)
+            } else if let error = error.fileProviderError {
+                return error
+            } else {
+                return NSFileProviderError(.cannotSynchronize)
+            }
+        }
+
+        // 1. Scan the remote contents of the bundle (recursively)
+        // 2. Create set of the found items
+        // 3. Upload new contents and get their paths post-upload
+        // 4. Delete remote items with paths not present in the new set
+        var allMetadatas = [ItemMetadata]()
+        var directoriesToRead = [remotePath]
+        while !directoriesToRead.isEmpty {
+            let remoteDirectoryPath = directoriesToRead.removeFirst()
+            let (metadatas, _, _, _, readError) = await Enumerator.readServerUrl(
+                remoteDirectoryPath,
+                ncAccount: ncAccount,
+                remoteInterface: remoteInterface,
+                dbManager: dbManager
+            )
+            // Important note -- the enumerator will import found items' metadata into the database.
+            // This is important for when we want to start deleting stale items and want to avoid trying
+            // to delete stale items that have already been deleted because the parent folder and all of
+            // its contents have been nuked already
+
+            if let readError {
+                Self.logger.error(
+                    """
+                    Could not read server url for item with ocID
+                    \(self.itemIdentifier.rawValue, privacy: .public)
+                    (\(self.filename, privacy: .public)),
+                    received error: \(readError.errorDescription, privacy: .public)
+                    """
+                )
+                throw remoteErrorToThrow(readError)
+            }
+            guard let metadatas else {
+                Self.logger.error(
+                    """
+                    Could not read server url for item with ocID
+                    \(self.itemIdentifier.rawValue, privacy: .public)
+                    (\(self.filename, privacy: .public)),
+                    received nil metadatas
+                    """
+                )
+                throw NSFileProviderError(.serverUnreachable)
+            }
+
+            allMetadatas.append(contentsOf: metadatas)
+
+            var childDirPaths = [String]()
+            for metadata in metadatas {
+                guard metadata.directory,
+                      metadata.ocId != self.itemIdentifier.rawValue
+                else { continue }
+                childDirPaths.append(remoteDirectoryPath + "/" + metadata.fileName)
+            }
+            directoriesToRead.append(contentsOf: childDirPaths)
+        }
+
+        var staleItems = [String: ItemMetadata]() // remote urls to metadata
+        for metadata in allMetadatas {
+            let remoteUrlPath = metadata.serverUrl + "/" + metadata.fileName
+            staleItems[remoteUrlPath] = metadata
+        }
+
+        let attributesToFetch: Set<URLResourceKey> = [
+            .isDirectoryKey, .fileSizeKey, .creationDateKey, .contentModificationDateKey
+        ]
+        let fm = FileManager.default
+        guard let enumerator = fm.enumerator(
+            at: contents, includingPropertiesForKeys: Array(attributesToFetch)
+        ) else {
             Self.logger.error(
                 """
-                Could not create new bundle or package contents for item with ocID
-                \(self.itemIdentifier.rawValue, privacy: .public)
-                (\(self.filename, privacy: .public)),
-                received error: \(error.localizedDescription, privacy: .public)
+                Could not create enumerator for contents of bundle or package
+                at: \(contents.path, privacy: .public)
                 """
             )
-            throw error
+            throw NSFileProviderError(.noSuchItem)
         }
-        return item
+
+        guard let enumeratorArray = enumerator.allObjects as? [URL] else {
+            Self.logger.error(
+                """
+                Could not create enumerator array for contents of bundle or package
+                at: \(contents.path, privacy: .public)
+                """
+            )
+            throw NSFileProviderError(.noSuchItem)
+        }
+
+        let contentsPath = contents.path
+        let privatePrefix = "/private"
+        let privateContentsPath = contentsPath.hasPrefix(privatePrefix)
+        var remoteDirectoriesPaths = [remotePath]
+
+        for childUrl in enumeratorArray {
+            var childUrlPath = childUrl.path
+            if childUrlPath.hasPrefix(privatePrefix), !privateContentsPath {
+                childUrlPath.removeFirst(privatePrefix.count)
+            }
+            let childRelativePath = childUrlPath.replacingOccurrences(of: contents.path, with: "")
+            let childRemoteUrl = remotePath + childRelativePath
+            let childUrlAttributes = try childUrl.resourceValues(forKeys: attributesToFetch)
+            let childIsFolder = childUrlAttributes.isDirectory ?? false
+
+            // Do not re-create directories
+            if childIsFolder, !staleItems.keys.contains(childRemoteUrl) {
+                Self.logger.debug(
+                    """
+                    Handling child bundle or package directory at: \(childUrlPath, privacy: .public)
+                    """
+                )
+                let (_, _, _, createError) = await remoteInterface.createFolder(
+                    remotePath: childRemoteUrl, options: .init(), taskHandler: { task in
+                        if let domain {
+                            NSFileProviderManager(for: domain)?.register(
+                                task,
+                                forItemWithIdentifier: self.itemIdentifier,
+                                completionHandler: { _ in }
+                            )
+                        }
+                    }
+                )
+                guard createError == .success else {
+                    Self.logger.error(
+                        """
+                        Could not create new bpi folder at: \(remotePath, privacy: .public),
+                        received error: \(createError.errorCode, privacy: .public)
+                        \(createError.errorDescription, privacy: .public)
+                        """
+                    )
+                    throw remoteErrorToThrow(createError)
+                }
+                remoteDirectoriesPaths.append(childRemoteUrl)
+
+            } else if !childIsFolder {
+                Self.logger.debug(
+                    """
+                    Handling child bundle or package file at: \(childUrlPath, privacy: .public)
+                    """
+                )
+                let (_, _, _, _, _, _, _, error) = await remoteInterface.upload(
+                    remotePath: childRemoteUrl,
+                    localPath: childUrlPath,
+                    creationDate: childUrlAttributes.creationDate,
+                    modificationDate: childUrlAttributes.contentModificationDate,
+                    options: .init(),
+                    requestHandler: { progress.setHandlersFromAfRequest($0) },
+                    taskHandler: { task in
+                        if let domain {
+                            NSFileProviderManager(for: domain)?.register(
+                                task,
+                                forItemWithIdentifier: self.itemIdentifier,
+                                completionHandler: { _ in }
+                            )
+                        }
+                    },
+                    progressHandler: { $0.copyCurrentStateToProgress(progress) }
+                )
+
+                guard error == .success else {
+                    Self.logger.error(
+                        """
+                        Could not upload bpi file at: \(childUrlPath, privacy: .public),
+                        received error: \(error.errorCode, privacy: .public)
+                        \(error.errorDescription, privacy: .public)
+                        """
+                    )
+                    throw remoteErrorToThrow(error)
+                }
+            }
+            staleItems.removeValue(forKey: childRemoteUrl)
+        }
+
+        for staleItem in staleItems {
+            let staleItemMetadata = staleItem.value
+            guard dbManager.itemMetadataFromOcId(staleItemMetadata.ocId) != nil else { continue }
+
+            let (_, deleteError) = await remoteInterface.delete(
+                remotePath: staleItem.key, options: .init(), taskHandler: { task in
+                    if let domain {
+                        NSFileProviderManager(for: domain)?.register(
+                            task,
+                            forItemWithIdentifier: self.itemIdentifier,
+                            completionHandler: { _ in }
+                        )
+                    }
+                }
+            )
+
+            guard deleteError == .success else {
+                Self.logger.error(
+                    """
+                    Could not delete stale bpi item at: \(staleItem.key, privacy: .public),
+                    received error: \(deleteError.errorCode, privacy: .public)
+                    \(deleteError.errorDescription, privacy: .public)
+                    """
+                )
+                throw remoteErrorToThrow(deleteError)
+            }
+
+            if staleItemMetadata.directory {
+                _ = dbManager.deleteDirectoryAndSubdirectoriesMetadata(ocId: staleItemMetadata.ocId)
+            } else {
+                dbManager.deleteItemMetadata(ocId: staleItemMetadata.ocId)
+            }
+        }
+
+        var directoryMetadatas = [ItemMetadata]()
+        for remoteDirectoryPath in remoteDirectoriesPaths {
+            // After everything, check into what the final state is of each folder now
+            let (_, files, _, readError) = await remoteInterface.enumerate(
+                remotePath: remoteDirectoryPath,
+                depth: .targetAndDirectChildren,
+                showHiddenFiles: true,
+                includeHiddenFiles: [],
+                requestBody: nil,
+                options: .init(),
+                taskHandler: { task in
+                    if let domain {
+                        NSFileProviderManager(for: domain)?.register(
+                            task,
+                            forItemWithIdentifier: self.itemIdentifier,
+                            completionHandler: { _ in }
+                        )
+                    }
+                }
+            )
+
+            guard readError == .success else {
+                Self.logger.error(
+                    """
+                    Could not read new bpi folder at: \(remotePath, privacy: .public),
+                    received error: \(readError.errorCode, privacy: .public)
+                    \(readError.errorDescription, privacy: .public)
+                    """
+                )
+                throw remoteErrorToThrow(readError)
+            }
+
+            let (directoryMetadata, allMetadatas) = await withCheckedContinuation {
+                continuation in
+                let account = remoteInterface.account.ncKitAccount
+                return ItemMetadata.metadatasFromDirectoryReadNKFiles(
+                    files, account: account
+                ) { directoryMetadata, _, allMetadatas in
+                    continuation.resume(returning: (directoryMetadata, allMetadatas))
+                }
+            }
+
+            dbManager.addItemMetadata(directoryMetadata)
+            directoryMetadatas.append(ItemMetadata(value: directoryMetadata))
+
+            for metadata in allMetadatas {
+                // Skip dirs, we will scan child dirs anyway
+                guard !metadata.directory else { continue }
+                dbManager.addItemMetadata(metadata)
+                directoryMetadatas.append(ItemMetadata(value: metadata))
+            }
+        }
+
+        guard let bundleRootMetadata = directoryMetadatas.first else {
+            Self.logger.error(
+                """
+                Could not find directory metadata for bundle or package at:
+                \(contentsPath, privacy: .public)
+                """
+            )
+            throw NSFileProviderError(.noSuchItem)
+        }
+
+        return Item(
+            metadata: bundleRootMetadata,
+            parentItemIdentifier: parentItemIdentifier,
+            remoteInterface: remoteInterface
+        )
     }
 
     func modify(
