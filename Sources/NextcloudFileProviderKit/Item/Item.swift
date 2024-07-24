@@ -83,7 +83,7 @@ public class Item: NSObject, NSFileProviderItem {
            (metadata.contentType.isEmpty && metadata.directory)
         {
             return .folder
-        } else if let type = UTType(metadata.contentType), metadata.directory {
+        } else if !metadata.contentType.isEmpty, let type = UTType(metadata.contentType) {
             return type
         }
 
