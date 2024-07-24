@@ -150,6 +150,7 @@ public class MockRemoteInterface: RemoteInterface {
         var itemName: String
         do {
             itemName = try name(from: localPath)
+            debugPrint("Handling item upload:", itemName)
         } catch {
             return (accountString, nil, nil, nil, 0, nil, nil, .urlError)
         }
@@ -158,6 +159,7 @@ public class MockRemoteInterface: RemoteInterface {
         var itemData: Data
         do {
             itemData = try Data(contentsOf: itemLocalUrl)
+            debugPrint("Acquired data:", itemData)
         } catch {
             return (accountString, nil, nil, nil, 0, nil, nil, .urlError)
         }
@@ -165,6 +167,7 @@ public class MockRemoteInterface: RemoteInterface {
         guard let parent = parentItem(path: remotePath) else {
             return (accountString, nil, nil, nil, 0, nil, nil, .urlError)
         }
+        debugPrint("Parent is:", parent.remotePath)
 
         var item: MockRemoteItem
         if let existingItem = parent.children.first(where: { $0.remotePath == remotePath }) {
@@ -174,7 +177,7 @@ public class MockRemoteInterface: RemoteInterface {
             print("Updated item \(item.name)")
         } else {
             item = MockRemoteItem(
-                identifier: randomIdentifier(), 
+                identifier: randomIdentifier(),
                 name: itemName,
                 remotePath: remotePath,
                 creationDate: creationDate ?? .init(),
