@@ -219,9 +219,25 @@ public class MockRemoteInterface: RemoteInterface {
         sourceItem.parent?.children.removeAll(where: { $0.identifier == sourceItem.identifier })
         sourceItem.parent = destinationParent
         destinationParent.children.append(sourceItem)
+
+        let oldPath = sourceItem.remotePath
         sourceItem.remotePath = remotePathDestination
 
         print("Moved \(sourceItem.name) to \(remotePathDestination)")
+
+        var children = sourceItem.children
+
+        while !children.isEmpty {
+            var nextChildren = [MockRemoteItem]()
+            for child in children {
+                let childNewPath =
+                    child.remotePath.replacingOccurrences(of: oldPath, with: remotePathDestination)
+                print("Updating child path \(child.remotePath) to \(childNewPath)")
+                child.remotePath = childNewPath
+                nextChildren.append(contentsOf: child.children)
+            }
+            children = nextChildren
+        }
 
         return (accountString, .success)
     }
