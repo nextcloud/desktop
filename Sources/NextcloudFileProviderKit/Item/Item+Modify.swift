@@ -333,6 +333,7 @@ public extension Item {
             of type: \(self.contentType.identifier)
             (is folder: \(isFolder ? "yes" : "no", privacy: .public)
             and filename: \(itemTarget.filename, privacy: .public)
+            from old server url: \(self.metadata.serverUrl + "/" + self.filename, privacy: .public)
             to server url: \(newServerUrlFileName, privacy: .public)
             with contents located at: \(newContents?.path ?? "", privacy: .public)
             """
@@ -348,7 +349,7 @@ public extension Item {
                 includes filename or parentitemidentifier.
                 old filename: \(self.filename, privacy: .public)
                 new filename: \(itemTarget.filename, privacy: .public)
-                old parent identifier: \(parentItemIdentifier.rawValue, privacy: .public)
+                old parent identifier: \(self.parentItemIdentifier.rawValue, privacy: .public)
                 new parent identifier: \(itemTarget.parentItemIdentifier.rawValue, privacy: .public)
                 """
             )
