@@ -251,7 +251,8 @@ public extension Item {
             contents: contents,
             remoteInterface: remoteInterface,
             ncAccount: ncAccount,
-            progress: progress
+            progress: progress,
+            dbManager: dbManager
         )
         if let error {
             Self.logger.error(
