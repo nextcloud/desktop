@@ -190,6 +190,15 @@ final class ItemModifyTests: XCTestCase {
             username: Self.account.username,
             serverUrl: Self.account.serverUrl
         )
+        let remoteKeynoteRandomFile = MockRemoteItem( // We will want this to be gone later
+            identifier: keynoteBundleFilename + "/random.txt",
+            name: "random.txt",
+            remotePath: Self.account.davFilesUrl + "/" + keynoteBundleFilename + "/random.txt",
+            data: "This is a random file, I should be gone post modify".data(using: .utf8),
+            account: Self.account.ncKitAccount,
+            username: Self.account.username,
+            serverUrl: Self.account.serverUrl
+        )
         let remoteKeynoteDocIdentifier = MockRemoteItem(
             identifier: keynoteBundleFilename + "/Metadata/DocumentIdentifier",
             name: "DocumentIdentifier",
@@ -255,10 +264,12 @@ final class ItemModifyTests: XCTestCase {
         remoteKeynoteBundle.parent = rootItem
         remoteKeynoteBundle.children = [
             remoteKeynoteIndexZip,
+            remoteKeynoteRandomFile,
             remoteKeynoteDataFolder,
             remoteKeynoteMetadataFolder
         ]
         remoteKeynoteIndexZip.parent = remoteKeynoteBundle
+        remoteKeynoteRandomFile.parent = remoteKeynoteBundle
         remoteKeynoteDataFolder.parent = remoteKeynoteBundle
         remoteKeynoteMetadataFolder.parent = remoteKeynoteBundle
         remoteKeynoteMetadataFolder.children = [
@@ -415,6 +426,7 @@ final class ItemModifyTests: XCTestCase {
         let newRemoteKeynoteBundle = try XCTUnwrap(
             remoteFolder.children.first { $0.name == targetBundleMetadata.fileName }
         )
+        XCTAssertNil(newRemoteKeynoteBundle.children.first { $0.name == "random.txt" })
         let newRemoteKeynoteIndexZip = try XCTUnwrap(
             newRemoteKeynoteBundle.children.first { $0.name == "Index.zip" }
         )
