@@ -444,7 +444,7 @@ extension Item {
                 itemTemplate.contentType?.conforms(to: .bundle) == true ||
                 itemTemplate.contentType?.conforms(to: .package) == true
 
-            let (item, error) = await Self.createNewFolder(
+            var (item, error) = await Self.createNewFolder(
                 itemTemplate: itemTemplate,
                 remotePath: newServerUrlFileName,
                 parentItemIdentifier: parentItemIdentifier,
@@ -459,7 +459,7 @@ extension Item {
             }
 
             let fpErrorCode = (error as? NSFileProviderError)?.code
-            guard let item, (error == nil || fpErrorCode == .filenameCollision) else {
+            guard error == nil || fpErrorCode == .filenameCollision else {
                 Self.logger.error(
                     """
                     Could not create item with identifier: \(tempId, privacy: .public),
@@ -470,6 +470,54 @@ extension Item {
                     """
                 )
                 return (item, error)
+            }
+
+            if item == nil {
+                let (metadatas, _, _, _, readError) = await Enumerator.readServerUrl(
+                    newServerUrlFileName,
+                    ncAccount: ncAccount,
+                    remoteInterface: remoteInterface,
+                    dbManager: dbManager,
+                    domain: domain,
+                    depth: .target
+                )
+
+                if let readError, readError != .success {
+                    Self.logger.error(
+                        """
+                        Could not read existing bundle or package folder at:
+                        \(newServerUrlFileName, privacy: .public),
+                        received error: \(readError.errorCode, privacy: .public)
+                        \(readError.errorDescription, privacy: .public)
+                        """
+                    )
+                    return (nil, readError.fileProviderError)
+                }
+                guard let itemMetadata = metadatas?.first else {
+                    Self.logger.error(
+                        """
+                        Could not create item with identifier: \(tempId, privacy: .public),
+                        for remotely-existing bundle or package. This should not happen.
+                        """
+                    )
+                    return (nil, NSFileProviderError(.noSuchItem))
+                }
+
+                item = Item(
+                    metadata: itemMetadata,
+                    parentItemIdentifier: parentItemIdentifier,
+                    remoteInterface: remoteInterface
+                )
+            }
+
+            guard let item = item else {
+                Self.logger.error(
+                    """
+                    Could not create item with identifier: \(tempId, privacy: .public),
+                    for remotely-existing bundle or package as item is null. This should not happen.
+                    """
+                )
+                return (nil, NSFileProviderError(.noSuchItem))
             }
 
             guard let url else {
