@@ -453,60 +453,29 @@ public extension Item {
             }
         }
 
-        var directoryMetadatas = [ItemMetadata]()
         for remoteDirectoryPath in remoteDirectoriesPaths {
             // After everything, check into what the final state is of each folder now
-            let (_, files, _, readError) = await remoteInterface.enumerate(
-                remotePath: remoteDirectoryPath,
-                depth: .targetAndDirectChildren,
-                showHiddenFiles: true,
-                includeHiddenFiles: [],
-                requestBody: nil,
-                options: .init(),
-                taskHandler: { task in
-                    if let domain {
-                        NSFileProviderManager(for: domain)?.register(
-                            task,
-                            forItemWithIdentifier: self.itemIdentifier,
-                            completionHandler: { _ in }
-                        )
-                    }
-                }
+            let (_, _, _, _, readError) = await Enumerator.readServerUrl(
+                remoteDirectoryPath,
+                ncAccount: ncAccount,
+                remoteInterface: remoteInterface,
+                dbManager: dbManager
             )
 
-            guard readError == .success else {
+            if let readError, readError != .success {
                 Self.logger.error(
                     """
                     Could not read new bpi folder at: \(remotePath, privacy: .public),
-                    received error: \(readError.errorCode, privacy: .public)
-                    \(readError.errorDescription, privacy: .public)
+                    received error: \(readError.errorDescription, privacy: .public)
                     """
                 )
                 throw remoteErrorToThrow(readError)
             }
-
-            let (directoryMetadata, allMetadatas) = await withCheckedContinuation {
-                continuation in
-                let account = remoteInterface.account.ncKitAccount
-                return ItemMetadata.metadatasFromDirectoryReadNKFiles(
-                    files, account: account
-                ) { directoryMetadata, _, allMetadatas in
-                    continuation.resume(returning: (directoryMetadata, allMetadatas))
-                }
-            }
-
-            dbManager.addItemMetadata(directoryMetadata)
-            directoryMetadatas.append(ItemMetadata(value: directoryMetadata))
-
-            for metadata in allMetadatas {
-                // Skip dirs, we will scan child dirs anyway
-                guard !metadata.directory else { continue }
-                dbManager.addItemMetadata(metadata)
-                directoryMetadatas.append(ItemMetadata(value: metadata))
-            }
         }
 
-        guard let bundleRootMetadata = directoryMetadatas.first else {
+        guard let bundleRootMetadata = dbManager.itemMetadataFromOcId(
+            self.itemIdentifier.rawValue
+        ) else {
             Self.logger.error(
                 """
                 Could not find directory metadata for bundle or package at:
