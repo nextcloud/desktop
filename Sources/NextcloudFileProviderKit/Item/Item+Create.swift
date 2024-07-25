@@ -478,6 +478,13 @@ extension Item {
             }
 
             if item == nil {
+                Self.logger.debug(
+                    """
+                    Item: \(newServerUrlFileName, privacy: .public),
+                    is a bundle or package whose root folder already exists, ignoring errors.
+                    Fetching remote information and proceeding with creation of internal contents.
+                    """
+                )
                 let (metadatas, _, _, _, readError) = await Enumerator.readServerUrl(
                     newServerUrlFileName,
                     ncAccount: ncAccount,
