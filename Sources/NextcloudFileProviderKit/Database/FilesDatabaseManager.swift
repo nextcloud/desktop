@@ -93,8 +93,24 @@ public class FilesDatabaseManager {
         return nil
     }
 
-    func sortedItemMetadatas(_ metadatas: Results<ItemMetadata>) -> [ItemMetadata]
-    {
+    public func itemMetadata(
+        account: String, locatedAtRemoteUrl remoteUrl: String // Is the URL for the actual item
+    ) -> ItemMetadata? {
+        guard let actualRemoteUrl = URL(string: remoteUrl) else { return nil }
+        let fileName = actualRemoteUrl.lastPathComponent
+        var serverUrl = actualRemoteUrl.deletingLastPathComponent().absoluteString
+        if serverUrl.hasSuffix("/") {
+            serverUrl.removeLast()
+        }
+        if let metadata = ncDatabase().objects(ItemMetadata.self).filter(
+            "account == %@ AND serverUrl == %@ AND fileName == %@", account, serverUrl, fileName
+        ).first {
+            return ItemMetadata(value: metadata)
+        }
+        return nil
+    }
+
+    func sortedItemMetadatas(_ metadatas: Results<ItemMetadata>) -> [ItemMetadata] {
         let sortedMetadatas = metadatas.sorted(byKeyPath: "fileName", ascending: true)
         return Array(sortedMetadatas.map { ItemMetadata(value: $0) })
     }
