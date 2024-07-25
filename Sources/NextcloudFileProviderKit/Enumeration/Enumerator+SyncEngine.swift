@@ -401,27 +401,25 @@ extension Enumerator {
             return ([inactiveItemMetadataCopy], nil, nil, nil, nil)
         }
 
-        if stopAtMatchingEtags, let directoryMetadata = dbManager.directoryMetadata(
-            account: ncKitAccount, serverUrl: serverUrl
-        ) {
-            let directoryEtag = directoryMetadata.etag
+        if stopAtMatchingEtags,
+           let directory = dbManager.directoryMetadata(account: ncKitAccount, serverUrl: serverUrl),
+           directory.etag != "",
+           directory.etag == receivedFile.etag
+        {
+            Self.logger.debug(
+                """
+                Read server url called with flag to stop enumerating at matching etags.
+                Returning and providing soft error.
+                """
+            )
 
-            guard directoryEtag == "" || directoryEtag != receivedFile.etag else {
-                Self.logger.debug(
-                    """
-                    Read server url called with flag to stop enumerating at matching etags.
-                    Returning and providing soft error.
-                    """
-                )
-
-                let description = "Fetched directory etag same as local copy. Ignoring child items."
-                let nkError = NKError(
-                    errorCode: NKError.noChangesErrorCode, errorDescription: description
-                )
-                let metadatas = dbManager.itemMetadatas(account: ncKitAccount, serverUrl: serverUrl)
-
-                return (metadatas, nil, nil, nil, nkError)
-            }
+            let description = "Fetched directory etag same as local copy. Ignoring child items."
+            let nkError = NKError(
+                errorCode: NKError.noChangesErrorCode, errorDescription: description
+            )
+            // Return all database metadatas under the current serverUrl (including target)
+            let metadatas = dbManager.itemMetadatas(account: ncKitAccount, serverUrl: serverUrl)
+            return (metadatas, nil, nil, nil, nkError)
         }
 
         if depth == .target {
