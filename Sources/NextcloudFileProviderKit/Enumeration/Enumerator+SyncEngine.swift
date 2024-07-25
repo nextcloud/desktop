@@ -402,9 +402,9 @@ extension Enumerator {
         }
 
         if stopAtMatchingEtags,
-           let directory = dbManager.directoryMetadata(account: ncKitAccount, serverUrl: serverUrl),
-           directory.etag != "",
-           directory.etag == receivedFile.etag
+           let dir = dbManager.itemMetadata(account: ncKitAccount, locatedAtRemoteUrl: serverUrl),
+           dir.etag != "",
+           dir.etag == receivedFile.etag
         {
             Self.logger.debug(
                 """

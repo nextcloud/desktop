@@ -17,29 +17,6 @@ import Foundation
 import OSLog
 
 extension FilesDatabaseManager {
-    public func directoryMetadata(account: String, serverUrl: String) -> ItemMetadata? {
-        // Split by "/" (e.g. cloud.nc.com/files/a/b) but be mindful of "https://c.nc.com"
-        let problematicSeparator = "://"
-        let placeholderSeparator = "__TEMP_REPLACE__"
-        let serverUrlWithoutPrefix = serverUrl.replacingOccurrences(
-            of: problematicSeparator, with: placeholderSeparator)
-        var splitServerUrl = serverUrlWithoutPrefix.split(separator: "/")
-        let directoryItemFileName = String(splitServerUrl.removeLast())
-        let directoryItemServerUrl = splitServerUrl.joined(separator: "/").replacingOccurrences(
-            of: placeholderSeparator, with: problematicSeparator)
-
-        if let metadata = ncDatabase().objects(ItemMetadata.self).filter(
-            "account == %@ AND serverUrl == %@ AND fileName == %@ AND directory == true", 
-            account,
-            directoryItemServerUrl, 
-            directoryItemFileName
-        ).first {
-            return ItemMetadata(value: metadata)
-        }
-
-        return nil
-    }
-
     public func childItemsForDirectory(_ directoryMetadata: ItemMetadata) -> [ItemMetadata] {
         var directoryServerUrl: String
         if directoryMetadata.ocId == NSFileProviderItemIdentifier.rootContainer.rawValue {
@@ -61,7 +38,7 @@ extension FilesDatabaseManager {
     }
 
     public func parentDirectoryMetadataForItem(_ itemMetadata: ItemMetadata) -> ItemMetadata? {
-        directoryMetadata(account: itemMetadata.account, serverUrl: itemMetadata.serverUrl)
+        self.itemMetadata(account: itemMetadata.account, locatedAtRemoteUrl: itemMetadata.serverUrl)
     }
 
     public func directoryMetadata(ocId: String) -> ItemMetadata? {
