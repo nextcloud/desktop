@@ -372,14 +372,6 @@ extension Item {
 
         progress.completedUnitCount += 1
 
-        Self.logger.debug(
-            """
-            Updating content type of item: \(bundleRootMetadata.fileName, privacy: .public)
-            """
-        )
-        bundleRootMetadata.contentType = rootItem.contentType.identifier
-        dbManager.addItemMetadata(bundleRootMetadata)
-
         return Item(
             metadata: bundleRootMetadata,
             parentItemIdentifier: rootItem.parentItemIdentifier,
@@ -529,16 +521,6 @@ extension Item {
                     return (nil, NSFileProviderError(.noSuchItem))
                 }
 
-                if let contentType = itemTemplate.contentType {
-                    Self.logger.debug(
-                        """
-                        Updating content type of item: \(tempId, privacy: .public)
-                        to: \(contentType.identifier, privacy: .public)
-                        """
-                    )
-                    itemMetadata.contentType = contentType.identifier
-                    dbManager.addItemMetadata(itemMetadata)
-                }
                 item = Item(
                     metadata: itemMetadata,
                     parentItemIdentifier: parentItemIdentifier,
