@@ -192,7 +192,178 @@ extension Item {
         
         return (fpItem, nil)
     }
-    
+
+    @discardableResult private static func createBundleOrPackageInternals(
+        rootItem: Item,
+        contents: URL,
+        remotePath: String,
+        domain: NSFileProviderDomain? = nil,
+        remoteInterface: RemoteInterface,
+        ncAccount: Account,
+        progress: Progress, // FIXME: This does not work as it should
+        dbManager: FilesDatabaseManager
+    ) async throws -> Item? {
+        Self.logger.debug(
+            """
+            Handling new bundle/package/internal directory at: \(contents.path, privacy: .public)
+            """
+        )
+        let attributesToFetch: Set<URLResourceKey> = [
+            .isDirectoryKey, .fileSizeKey, .creationDateKey, .contentModificationDateKey
+        ]
+        let fm = FileManager.default
+        guard let enumerator = fm.enumerator(
+            at: contents, includingPropertiesForKeys: Array(attributesToFetch)
+        ) else {
+            Self.logger.error(
+                """
+                Could not create enumerator for contents of bundle or package
+                at: \(contents.path, privacy: .public)
+                """
+            )
+            throw NSFileProviderError(.noSuchItem)
+        }
+
+        guard let enumeratorArray = enumerator.allObjects as? [URL] else {
+            Self.logger.error(
+                """
+                Could not create enumerator array for contents of bundle or package
+                at: \(contents.path, privacy: .public)
+                """
+            )
+            throw NSFileProviderError(.noSuchItem)
+        }
+
+        func remoteErrorToThrow(_ error: NKError) -> Error {
+            if error.matchesCollisionError {
+                return NSFileProviderError(.filenameCollision)
+            } else if let error = error.fileProviderError {
+                return error
+            } else {
+                return NSFileProviderError(.cannotSynchronize)
+            }
+        }
+
+        let contentsPath = contents.path
+        let privatePrefix = "/private"
+        let privateContentsPath = contentsPath.hasPrefix(privatePrefix)
+        var remoteDirectoriesPaths = [remotePath]
+
+        for childUrl in enumeratorArray {
+            var childUrlPath = childUrl.path
+            if childUrlPath.hasPrefix(privatePrefix), !privateContentsPath {
+                childUrlPath.removeFirst(privatePrefix.count)
+            }
+            let childRelativePath = childUrlPath.replacingOccurrences(of: contents.path, with: "")
+            let childRemoteUrl = remotePath + childRelativePath
+            let childUrlAttributes = try childUrl.resourceValues(forKeys: attributesToFetch)
+
+            if childUrlAttributes.isDirectory ?? false {
+                Self.logger.debug(
+                    """
+                    Handling child bundle or package directory at: \(childUrlPath, privacy: .public)
+                    """
+                )
+                let (_, _, _, createError) = await remoteInterface.createFolder(
+                    remotePath: childRemoteUrl, options: .init(), taskHandler: { task in
+                        if let domain {
+                            NSFileProviderManager(for: domain)?.register(
+                                task,
+                                forItemWithIdentifier: rootItem.itemIdentifier,
+                                completionHandler: { _ in }
+                            )
+                        }
+                    }
+                )
+                guard createError == .success else {
+                    Self.logger.error(
+                        """
+                        Could not create new bpi folder at: \(remotePath, privacy: .public),
+                        received error: \(createError.errorCode, privacy: .public)
+                        \(createError.errorDescription, privacy: .public)
+                        """
+                    )
+                    throw remoteErrorToThrow(createError)
+                }
+                remoteDirectoriesPaths.append(childRemoteUrl)
+
+            } else {
+                Self.logger.debug(
+                    """
+                    Handling child bundle or package file at: \(childUrlPath, privacy: .public)
+                    """
+                )
+                let (_, _, _, _, _, _, _, error) = await remoteInterface.upload(
+                    remotePath: childRemoteUrl,
+                    localPath: childUrlPath,
+                    creationDate: childUrlAttributes.creationDate,
+                    modificationDate: childUrlAttributes.contentModificationDate,
+                    options: .init(),
+                    requestHandler: { progress.setHandlersFromAfRequest($0) },
+                    taskHandler: { task in
+                        if let domain {
+                            NSFileProviderManager(for: domain)?.register(
+                                task,
+                                forItemWithIdentifier: rootItem.itemIdentifier,
+                                completionHandler: { _ in }
+                            )
+                        }
+                    },
+                    progressHandler: { $0.copyCurrentStateToProgress(progress) }
+                )
+
+                guard error == .success else {
+                    Self.logger.error(
+                        """
+                        Could not upload bpi file at: \(childUrlPath, privacy: .public),
+                        received error: \(error.errorCode, privacy: .public)
+                        \(error.errorDescription, privacy: .public)
+                        """
+                    )
+                    throw remoteErrorToThrow(error)
+                }
+            }
+        }
+
+        for remoteDirectoryPath in remoteDirectoriesPaths {
+            // After everything, check into what the final state is of each folder now
+            Self.logger.debug("Reading bpi folder at: \(remoteDirectoryPath, privacy: .public)")
+            let (_, _, _, _, readError) = await Enumerator.readServerUrl(
+                remoteDirectoryPath,
+                ncAccount: ncAccount,
+                remoteInterface: remoteInterface,
+                dbManager: dbManager
+            )
+
+            if let readError, readError != .success {
+                Self.logger.error(
+                    """
+                    Could not read bpi folder at: \(remotePath, privacy: .public),
+                    received error: \(readError.errorDescription, privacy: .public)
+                    """
+                )
+                throw remoteErrorToThrow(readError)
+            }
+        }
+
+        guard let bundleRootMetadata = dbManager.itemMetadata(
+            account: ncAccount.ncKitAccount, locatedAtRemoteUrl: remotePath
+        ) else {
+            Self.logger.error(
+                """
+                Could not find directory metadata for bundle or package at: \(contentsPath, privacy: .public)
+                """
+            )
+            throw NSFileProviderError(.noSuchItem)
+        }
+
+        return Item(
+            metadata: bundleRootMetadata,
+            parentItemIdentifier: rootItem.parentItemIdentifier,
+            remoteInterface: remoteInterface
+        )
+    }
+
     public static func create(
         basedOn itemTemplate: NSFileProviderItem,
         fields: NSFileProviderItemFields = NSFileProviderItemFields(),
@@ -249,9 +420,8 @@ extension Item {
         
         let fileNameLocalPath = url?.path ?? ""
         let newServerUrlFileName = parentItemRemotePath + "/" + itemTemplate.filename
-        let itemTemplateIsFolder =
-        itemTemplate.contentType == .folder || itemTemplate.contentType == .directory
-        
+        let itemTemplateIsFolder = itemTemplate.contentType?.conforms(to: .directory) ?? false
+
         Self.logger.debug(
             """
             About to upload item with identifier: \(tempId, privacy: .public)
@@ -264,7 +434,7 @@ extension Item {
         )
         
         guard !itemTemplateIsFolder else  {
-            return await Self.createNewFolder(
+            let (item, error) = await Self.createNewFolder(
                 itemTemplate: itemTemplate,
                 remotePath: newServerUrlFileName,
                 parentItemIdentifier: parentItemIdentifier,
@@ -273,6 +443,49 @@ extension Item {
                 progress: progress,
                 dbManager: dbManager
             )
+
+            guard let item, error == nil else {
+                return (item, error)
+            }
+
+            if itemTemplate.contentType?.conforms(to: .bundle) == false,
+               itemTemplate.contentType?.conforms(to: .package) == false
+            {
+                return (item, error)
+            }
+
+            guard let url else {
+                Self.logger.error(
+                    """
+                    Could not create item with identifier: \(tempId, privacy: .public),
+                    as it is a bundle or package and no contents were provided
+                    """
+                )
+                return (nil, NSFileProviderError(.noSuchItem))
+            }
+
+            // Bundles and packages are given to us as if they were files -- i.e. we don't get
+            // notified about internal changes. So we need to manually handle their internal
+            // contents
+            Self.logger.debug(
+                """
+                Handling bundle or package contents for item: \(tempId, privacy: .public)
+                """
+            )
+            do {
+                return (try await Self.createBundleOrPackageInternals(
+                    rootItem: item,
+                    contents: url,
+                    remotePath: newServerUrlFileName,
+                    domain: domain,
+                    remoteInterface: remoteInterface,
+                    ncAccount: ncAccount,
+                    progress: progress,
+                    dbManager: dbManager
+                ), nil)
+            } catch {
+                return (nil, error)
+            }
         }
         
         

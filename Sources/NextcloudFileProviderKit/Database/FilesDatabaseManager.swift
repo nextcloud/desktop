@@ -93,8 +93,24 @@ public class FilesDatabaseManager {
         return nil
     }
 
-    func sortedItemMetadatas(_ metadatas: Results<ItemMetadata>) -> [ItemMetadata]
-    {
+    public func itemMetadata(
+        account: String, locatedAtRemoteUrl remoteUrl: String // Is the URL for the actual item
+    ) -> ItemMetadata? {
+        guard let actualRemoteUrl = URL(string: remoteUrl) else { return nil }
+        let fileName = actualRemoteUrl.lastPathComponent
+        var serverUrl = actualRemoteUrl.deletingLastPathComponent().absoluteString
+        if serverUrl.hasSuffix("/") {
+            serverUrl.removeLast()
+        }
+        if let metadata = ncDatabase().objects(ItemMetadata.self).filter(
+            "account == %@ AND serverUrl == %@ AND fileName == %@", account, serverUrl, fileName
+        ).first {
+            return ItemMetadata(value: metadata)
+        }
+        return nil
+    }
+
+    func sortedItemMetadatas(_ metadatas: Results<ItemMetadata>) -> [ItemMetadata] {
         let sortedMetadatas = metadatas.sorted(byKeyPath: "fileName", ascending: true)
         return Array(sortedMetadatas.map { ItemMetadata(value: $0) })
     }
@@ -105,9 +121,9 @@ public class FilesDatabaseManager {
         return sortedItemMetadatas(metadatas)
     }
 
-    public func itemMetadatas(account: String, serverUrl: String) -> [ItemMetadata] {
+    public func itemMetadatas(account: String, underServerUrl serverUrl: String) -> [ItemMetadata] {
         let metadatas = ncDatabase().objects(ItemMetadata.self).filter(
-            "account == %@ AND serverUrl == %@", account, serverUrl)
+            "account == %@ AND serverUrl BEGINSWITH %@", account, serverUrl)
         return sortedItemMetadatas(metadatas)
     }
 
@@ -323,7 +339,13 @@ public class FilesDatabaseManager {
             try database.write {
                 database.add(metadata, update: .all)
                 Self.logger.debug(
-                    "Added item metadata. ocID: \(metadata.ocId, privacy: .public), etag: \(metadata.etag, privacy: .public), fileName: \(metadata.fileName, privacy: .public)"
+                    """
+                    Added item metadata.
+                    ocID: \(metadata.ocId, privacy: .public)
+                    etag: \(metadata.etag, privacy: .public)
+                    fileName: \(metadata.fileName, privacy: .public)
+                    parentDirectoryUrl: \(metadata.serverUrl, privacy: .public)
+                    """
                 )
             }
         } catch {
@@ -380,7 +402,12 @@ public class FilesDatabaseManager {
                 database.add(itemMetadata, update: .all)
 
                 Self.logger.debug(
-                    "Renamed item \(oldFileName, privacy: .public) to \(newFileName, privacy: .public), moved from serverUrl: \(oldServerUrl, privacy: .public) to serverUrl: \(newServerUrl, privacy: .public)"
+                    """
+                    Renamed item \(oldFileName, privacy: .public) 
+                    to \(newFileName, privacy: .public),
+                    moved from serverUrl: \(oldServerUrl, privacy: .public)
+                    to serverUrl: \(newServerUrl, privacy: .public)
+                    """
                 )
             }
         } catch {
