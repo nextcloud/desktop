@@ -205,14 +205,21 @@ final class FilesDatabaseManagerTests: XCTestCase {
         existingMetadata2.serverUrl = "https://example.com"
         existingMetadata2.account = "TestAccount"
 
+        let existingMetadata3 = ItemMetadata()
+        existingMetadata3.ocId = "id-3"
+        existingMetadata3.fileName = "Existing3.pdf"
+        existingMetadata3.serverUrl = "https://example.com/folder" // Different child path
+        existingMetadata3.account = "TestAccount"
+
         let realm = Self.dbManager.ncDatabase()
         try realm.write {
             realm.add(existingMetadata1)
             realm.add(existingMetadata2)
+            realm.add(existingMetadata3)
         }
 
         // Simulate updated metadata that leads to a deletion
-        let updatedMetadatas = [existingMetadata1]  // Only include one of the two
+        let updatedMetadatas = [existingMetadata1, existingMetadata3]  // Only include 2 of the 3
 
         let _ = Self.dbManager.updateItemMetadatas(
             account: "TestAccount",
@@ -225,13 +232,11 @@ final class FilesDatabaseManagerTests: XCTestCase {
             account: "TestAccount", underServerUrl: "https://example.com"
         )
         XCTAssertEqual(
-            remainingMetadatas.count, 1, "Should have one remaining metadata after update"
+            remainingMetadatas.count, 2, "Should have two remaining metadata after update"
         )
-        XCTAssertEqual(
-            remainingMetadatas.first?.ocId,
-            "id-1",
-            "Remaining metadata should be the one that was included in the update"
-        )
+
+        let id1Metadata = try XCTUnwrap(remainingMetadatas.first { $0.ocId == "id-1" })
+        let id2Metadata = try XCTUnwrap(remainingMetadatas.first { $0.ocId == "id-3" })
     }
 
     func testProcessItemMetadatasToUpdate_NewAndUpdatedSeparation() throws {
@@ -495,7 +500,7 @@ final class FilesDatabaseManagerTests: XCTestCase {
         XCTAssertNotNil(deletedMetadatas, "Should return a list of deleted metadatas")
         XCTAssertEqual(
             deletedMetadatas?.count,
-            3, 
+            3,
             "Should delete the root directory, nested directory, and its child"
         )
     }
@@ -613,5 +618,5 @@ final class FilesDatabaseManagerTests: XCTestCase {
         )
     }
 
-    
+
 }
