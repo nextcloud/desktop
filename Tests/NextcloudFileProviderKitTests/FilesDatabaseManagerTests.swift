@@ -618,5 +618,22 @@ final class FilesDatabaseManagerTests: XCTestCase {
         )
     }
 
+    func testFindingItemBasedOnRemotePath() throws {
+        let account = "TestAccount"
+        let filename = "dir-3"
+        let parentUrl = "https://cloud.example.com/files/dir-1/dir-2"
+        let fullUrl = parentUrl + "/" + filename
 
+        let deepNestedDirectoryMetadata = ItemMetadata()
+        deepNestedDirectoryMetadata.ocId = filename
+        deepNestedDirectoryMetadata.account = account
+        deepNestedDirectoryMetadata.serverUrl = parentUrl
+        deepNestedDirectoryMetadata.fileName = filename
+        deepNestedDirectoryMetadata.directory = true
+
+        let realm = Self.dbManager.ncDatabase()
+        try realm.write { realm.add(deepNestedDirectoryMetadata) }
+
+        XCTAssertNotNil(Self.dbManager.itemMetadata(account: account, locatedAtRemoteUrl: fullUrl))
+    }
 }
