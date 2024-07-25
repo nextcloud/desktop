@@ -275,7 +275,7 @@ extension Item {
                         }
                     }
                 )
-                guard createError == .success else {
+                guard createError == .success || createError.matchesCollisionError else {
                     Self.logger.error(
                         """
                         Could not create new bpi folder at: \(remotePath, privacy: .public),
