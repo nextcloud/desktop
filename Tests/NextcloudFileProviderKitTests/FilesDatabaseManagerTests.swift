@@ -620,8 +620,8 @@ final class FilesDatabaseManagerTests: XCTestCase {
 
     func testFindingItemBasedOnRemotePath() throws {
         let account = "TestAccount"
-        let filename = "dir-3"
-        let parentUrl = "https://cloud.example.com/files/dir-1/dir-2"
+        let filename = "super duper new file"
+        let parentUrl = "https://cloud.example.com/files/my great and incredible dir/dir-2"
         let fullUrl = parentUrl + "/" + filename
 
         let deepNestedDirectoryMetadata = ItemMetadata()
