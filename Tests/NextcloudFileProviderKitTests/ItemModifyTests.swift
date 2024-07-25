@@ -425,7 +425,7 @@ final class ItemModifyTests: XCTestCase {
 
         let bundleMetadataFolderMetadata = ItemMetadata()
         bundleMetadataFolderMetadata.ocId = remoteKeynoteMetadataFolder.identifier
-        bundleMetadataFolderMetadata.etag = "oldetag"
+        bundleMetadataFolderMetadata.etag = remoteKeynoteMetadataFolder.versionIdentifier
         bundleMetadataFolderMetadata.name = remoteKeynoteMetadataFolder.name
         bundleMetadataFolderMetadata.fileName = remoteKeynoteMetadataFolder.name
         bundleMetadataFolderMetadata.fileNameView = remoteKeynoteMetadataFolder.name
@@ -442,7 +442,7 @@ final class ItemModifyTests: XCTestCase {
 
         let bundleDocIdentifierMetadata = ItemMetadata()
         bundleDocIdentifierMetadata.ocId = remoteKeynoteDocIdentifier.identifier
-        bundleDocIdentifierMetadata.etag = "oldetag"
+        bundleDocIdentifierMetadata.etag = remoteKeynoteDocIdentifier.versionIdentifier
         bundleDocIdentifierMetadata.name = remoteKeynoteDocIdentifier.name
         bundleDocIdentifierMetadata.fileName = remoteKeynoteDocIdentifier.name
         bundleDocIdentifierMetadata.fileNameView = remoteKeynoteDocIdentifier.name
@@ -460,7 +460,7 @@ final class ItemModifyTests: XCTestCase {
 
         let bundleVersionPlistMetadata = ItemMetadata()
         bundleVersionPlistMetadata.ocId = remoteKeynoteVersionPlist.identifier
-        bundleVersionPlistMetadata.etag = "oldetag"
+        bundleVersionPlistMetadata.etag = remoteKeynoteVersionPlist.versionIdentifier
         bundleVersionPlistMetadata.name = remoteKeynoteVersionPlist.name
         bundleVersionPlistMetadata.fileName = remoteKeynoteVersionPlist.name
         bundleVersionPlistMetadata.fileNameView = remoteKeynoteVersionPlist.name
@@ -478,7 +478,7 @@ final class ItemModifyTests: XCTestCase {
 
         let bundlePropertiesPlistMetadata = ItemMetadata()
         bundlePropertiesPlistMetadata.ocId = remoteKeynotePropertiesPlist.identifier
-        bundlePropertiesPlistMetadata.etag = "oldetag"
+        bundlePropertiesPlistMetadata.etag = remoteKeynotePropertiesPlist.versionIdentifier
         bundlePropertiesPlistMetadata.name = remoteKeynotePropertiesPlist.name
         bundlePropertiesPlistMetadata.fileName = remoteKeynotePropertiesPlist.name
         bundlePropertiesPlistMetadata.fileNameView = remoteKeynotePropertiesPlist.name
