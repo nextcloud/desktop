@@ -332,6 +332,9 @@ public extension Item {
             throw NSFileProviderError(.noSuchItem)
         }
 
+        // Add one more total unit count to signify final reconciliation of bundle modify process
+        progress.totalUnitCount = Int64(enumeratorArray.count) + 1
+
         let contentsPath = contents.path
         let privatePrefix = "/private"
         let privateContentsPath = contentsPath.hasPrefix(privatePrefix)
@@ -399,7 +402,7 @@ public extension Item {
                             )
                         }
                     },
-                    progressHandler: { $0.copyCurrentStateToProgress(progress) }
+                    progressHandler: { _ in }
                 )
 
                 guard error == .success else {
@@ -414,6 +417,7 @@ public extension Item {
                 }
             }
             staleItems.removeValue(forKey: childRemoteUrl)
+            progress.completedUnitCount += 1
         }
 
         for staleItem in staleItems {
@@ -481,6 +485,8 @@ public extension Item {
             )
             throw NSFileProviderError(.noSuchItem)
         }
+
+        progress.completedUnitCount += 1
 
         return Item(
             metadata: bundleRootMetadata,
