@@ -200,7 +200,7 @@ extension Item {
         domain: NSFileProviderDomain? = nil,
         remoteInterface: RemoteInterface,
         ncAccount: Account,
-        progress: Progress, // FIXME: This does not work as it should
+        progress: Progress,
         dbManager: FilesDatabaseManager
     ) async throws -> Item? {
         Self.logger.debug(
@@ -248,6 +248,9 @@ extension Item {
         let privatePrefix = "/private"
         let privateContentsPath = contentsPath.hasPrefix(privatePrefix)
         var remoteDirectoriesPaths = [remotePath]
+
+        // Add one more total unit count to signify final reconciliation of bundle creation process
+        progress.totalUnitCount = Int64(enumeratorArray.count) + 1
 
         for childUrl in enumeratorArray {
             var childUrlPath = childUrl.path
@@ -323,6 +326,7 @@ extension Item {
                     throw remoteErrorToThrow(error)
                 }
             }
+            progress.completedUnitCount += 1
         }
 
         for remoteDirectoryPath in remoteDirectoriesPaths {
@@ -356,6 +360,8 @@ extension Item {
             )
             throw NSFileProviderError(.noSuchItem)
         }
+
+        progress.completedUnitCount += 1
 
         return Item(
             metadata: bundleRootMetadata,
@@ -432,21 +438,21 @@ extension Item {
             with contents located at: \(fileNameLocalPath, privacy: .public)
             """
         )
-        
-        guard !itemTemplateIsFolder else  {
+
+        guard !itemTemplateIsFolder else {
+            let isBundleOrPackage =
+                itemTemplate.contentType?.conforms(to: .bundle) == true ||
+                itemTemplate.contentType?.conforms(to: .package) == true
+
             let (item, error) = await Self.createNewFolder(
                 itemTemplate: itemTemplate,
                 remotePath: newServerUrlFileName,
                 parentItemIdentifier: parentItemIdentifier,
                 domain: domain,
                 remoteInterface: remoteInterface,
-                progress: progress,
+                progress: isBundleOrPackage ? Progress() : progress,
                 dbManager: dbManager
             )
-
-            let isBundleOrPackage = 
-                itemTemplate.contentType?.conforms(to: .bundle) == false ||
-                itemTemplate.contentType?.conforms(to: .package) == false
 
             guard let item,
                   (error == nil || (error?.asAFError?.responseCode == 405 && isBundleOrPackage))
