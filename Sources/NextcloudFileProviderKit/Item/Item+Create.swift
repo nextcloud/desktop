@@ -278,6 +278,10 @@ extension Item {
                         }
                     }
                 )
+
+                // As with the creating of the bundle's root folder, we do not want to abort on fail
+                // as we might have faced an error creating some other internal content and we want
+                // to retry all of its contents
                 guard createError == .success || createError.matchesCollisionError else {
                     Self.logger.error(
                         """
@@ -471,6 +475,8 @@ extension Item {
                 return (item, error)
             }
 
+            // Ignore collision errors as we might have faced an error creating one of the bundle's
+            // internal files or folders and we want to retry all of its contents
             let fpErrorCode = (error as? NSFileProviderError)?.code
             guard error == nil || fpErrorCode == .filenameCollision else {
                 Self.logger.error(
