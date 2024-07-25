@@ -355,7 +355,12 @@ extension Item {
         ) else {
             Self.logger.error(
                 """
-                Could not find directory metadata for bundle or package at: \(contentsPath, privacy: .public)
+                Could not find directory metadata for bundle or package at:
+                \(remotePath, privacy: .public)
+                of account:
+                \(ncAccount.ncKitAccount, privacy: .public)
+                with contents located at:
+                \(contentsPath, privacy: .public)
                 """
             )
             throw NSFileProviderError(.noSuchItem)
