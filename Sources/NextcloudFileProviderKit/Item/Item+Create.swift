@@ -312,7 +312,7 @@ extension Item {
                             )
                         }
                     },
-                    progressHandler: { $0.copyCurrentStateToProgress(progress) }
+                    progressHandler: { _ in }
                 )
 
                 guard error == .success else {
