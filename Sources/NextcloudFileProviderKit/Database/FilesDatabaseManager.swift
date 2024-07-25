@@ -98,7 +98,11 @@ public class FilesDatabaseManager {
     ) -> ItemMetadata? {
         guard let actualRemoteUrl = URL(string: remoteUrl) else { return nil }
         let fileName = actualRemoteUrl.lastPathComponent
-        var serverUrl = actualRemoteUrl.deletingLastPathComponent().absoluteString
+        guard var serverUrl = actualRemoteUrl
+            .deletingLastPathComponent()
+            .absoluteString
+            .removingPercentEncoding
+        else { return nil }
         if serverUrl.hasSuffix("/") {
             serverUrl.removeLast()
         }
