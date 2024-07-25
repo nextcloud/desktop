@@ -444,7 +444,13 @@ extension Item {
                 dbManager: dbManager
             )
 
-            guard let item, error == nil else {
+            let isBundleOrPackage = 
+                itemTemplate.contentType?.conforms(to: .bundle) == false ||
+                itemTemplate.contentType?.conforms(to: .package) == false
+
+            guard let item,
+                  (error == nil || (error?.asAFError?.responseCode == 405 && isBundleOrPackage))
+            else {
                 return (item, error)
             }
 
