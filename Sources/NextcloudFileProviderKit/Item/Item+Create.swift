@@ -193,7 +193,7 @@ extension Item {
         return (fpItem, nil)
     }
 
-    @discardableResult private static func handleBundleOrPackageOrInternalDir(
+    @discardableResult private static func createBundleOrPackageInternals(
         rootItem: Item,
         contents: URL,
         remotePath: String,
@@ -503,7 +503,7 @@ extension Item {
                 """
             )
             do {
-                return (try await Self.handleBundleOrPackageOrInternalDir(
+                return (try await Self.createBundleOrPackageInternals(
                     rootItem: item,
                     contents: url,
                     remotePath: newServerUrlFileName,
