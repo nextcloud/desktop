@@ -418,7 +418,8 @@ extension Enumerator {
                 errorCode: NKError.noChangesErrorCode, errorDescription: description
             )
             // Return all database metadatas under the current serverUrl (including target)
-            let metadatas = dbManager.itemMetadatas(account: ncKitAccount, serverUrl: serverUrl)
+            let metadatas =
+                dbManager.itemMetadatas(account: ncKitAccount, underServerUrl: serverUrl)
             return (metadatas, nil, nil, nil, nkError)
         }
 

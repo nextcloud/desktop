@@ -121,9 +121,9 @@ public class FilesDatabaseManager {
         return sortedItemMetadatas(metadatas)
     }
 
-    public func itemMetadatas(account: String, serverUrl: String) -> [ItemMetadata] {
+    public func itemMetadatas(account: String, underServerUrl serverUrl: String) -> [ItemMetadata] {
         let metadatas = ncDatabase().objects(ItemMetadata.self).filter(
-            "account == %@ AND serverUrl == %@", account, serverUrl)
+            "account == %@ AND serverUrl BEGINSWITH %@", account, serverUrl)
         return sortedItemMetadatas(metadatas)
     }
 

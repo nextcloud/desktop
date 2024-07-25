@@ -222,7 +222,7 @@ final class FilesDatabaseManagerTests: XCTestCase {
         )
 
         let remainingMetadatas = Self.dbManager.itemMetadatas(
-            account: "TestAccount", serverUrl: "https://example.com"
+            account: "TestAccount", underServerUrl: "https://example.com"
         )
         XCTAssertEqual(
             remainingMetadatas.count, 1, "Should have one remaining metadata after update"
