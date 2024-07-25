@@ -55,14 +55,10 @@ public extension Item {
             )
         }
 
-        // Remember that a folder metadata's serverUrl is its direct server URL, while for
-        // an item metadata the server URL is the parent folder's URL
         if isFolder {
-            let namePathComponent = "/\(newFileName)"
-            let newServerUrl = String(newRemotePath.dropLast(namePathComponent.count))
             _ = dbManager.renameDirectoryAndPropagateToChildren(
                 ocId: ocId,
-                newServerUrl: newServerUrl,
+                newServerUrl: newParentItemRemotePath,
                 newFileName: newFileName
             )
         } else {
