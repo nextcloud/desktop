@@ -27,6 +27,13 @@ Q_NAMESPACE
 enum class IconType { BrandedIcon, BrandedIconWithFallbackToVanillaIcon, VanillaIcon };
 Q_ENUM_NS(IconType);
 
+
+/**
+ *
+ * @return Whether we are using the vanilla theme
+ */
+bool OWNCLOUDRESOURCES_EXPORT isVanillaTheme();
+
 /**
  * Whether use the dark icon theme
  * The function also ensures the theme supports the dark theme

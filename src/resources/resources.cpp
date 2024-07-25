@@ -54,11 +54,6 @@ QString whiteTheme()
     return QStringLiteral("white");
 }
 
-constexpr bool isVanilla()
-{
-    return std::string_view(APPLICATION_SHORTNAME) == "ownCloud";
-}
-
 bool hasTheme(IconType type, const QString &theme)
 {
     // <<is vanilla, theme name>, bool
@@ -86,6 +81,11 @@ bool Resources::hasMonoTheme()
     // mono icons are only supported in vanilla and if a customer provides them
     // no fallback to vanilla
     return hasTheme(Resources::IconType::BrandedIcon, whiteTheme());
+}
+
+bool Resources::isVanillaTheme()
+{
+    return std::string_view(APPLICATION_SHORTNAME) == "ownCloud";
 }
 
 bool OCC::Resources::isUsingDarkTheme()
@@ -125,12 +125,12 @@ QIcon OCC::Resources::loadIcon(const QString &flavor, const QString &name, IconT
 {
     static QMap<QString, QIcon> _iconCache;
     // prevent recusion
-    const bool useCoreIcon = (iconType == IconType::VanillaIcon) || isVanilla();
+    const bool useCoreIcon = (iconType == IconType::VanillaIcon) || isVanillaTheme();
     const QString path = QStringLiteral("%1/%2/%3").arg(useCoreIcon ? vanillaThemePath() : brandThemePath(), flavor, name);
     const QString key = name + QLatin1Char(',') + flavor;
     QIcon &cached = _iconCache[key]; // Take reference, this will also "set" the cache entry
     if (cached.isNull()) {
-        if (isVanilla() && QIcon::hasThemeIcon(name)) {
+        if (isVanillaTheme() && QIcon::hasThemeIcon(name)) {
             // use from theme
             return cached = QIcon::fromTheme(name);
         }
