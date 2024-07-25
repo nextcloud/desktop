@@ -345,6 +345,15 @@ public class FilesDatabaseManager {
                     etag: \(metadata.etag, privacy: .public)
                     fileName: \(metadata.fileName, privacy: .public)
                     parentDirectoryUrl: \(metadata.serverUrl, privacy: .public)
+                    account: \(metadata.account, privacy: .public)
+                    content type: \(metadata.contentType, privacy: .public)
+                    creation date: \(metadata.creationDate, privacy: .public)
+                    date: \(metadata.date, privacy: .public)
+                    lock: \(metadata.lock, privacy: .public)
+                    lockTimeOut: \(metadata.lockTimeOut?.description ?? "", privacy: .public)
+                    lockOwner: \(metadata.lockOwner, privacy: .public)
+                    permissions: \(metadata.permissions, privacy: .public)
+                    size: \(metadata.size, privacy: .public)
                     """
                 )
             }
