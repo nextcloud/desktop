@@ -454,15 +454,21 @@ extension Item {
                 dbManager: dbManager
             )
 
-            guard let item,
-                  (error == nil || (error?.asAFError?.responseCode == 405 && isBundleOrPackage))
-            else {
+            guard isBundleOrPackage else {
                 return (item, error)
             }
 
-            if itemTemplate.contentType?.conforms(to: .bundle) == false,
-               itemTemplate.contentType?.conforms(to: .package) == false
-            {
+            let fpErrorCode = (error as? NSFileProviderError)?.code
+            guard let item, (error == nil || fpErrorCode == .filenameCollision) else {
+                Self.logger.error(
+                    """
+                    Could not create item with identifier: \(tempId, privacy: .public),
+                    as it is a bundle or package but could not create the folder.
+                    item: \(item, privacy: .public)
+                    error: \(error?.localizedDescription ?? "nil", privacy: .public)
+                    file provider error code: \(fpErrorCode?.rawValue ?? -1, privacy: .public)
+                    """
+                )
                 return (item, error)
             }
 
