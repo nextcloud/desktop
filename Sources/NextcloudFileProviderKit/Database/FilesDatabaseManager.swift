@@ -341,7 +341,7 @@ public class FilesDatabaseManager {
 
         do {
             try database.write {
-                database.add(metadata, update: .all)
+                database.add(ItemMetadata(value: metadata), update: .all)
                 Self.logger.debug(
                     """
                     Added item metadata.
