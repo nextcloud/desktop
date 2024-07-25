@@ -302,6 +302,7 @@ public extension Item {
         var staleItems = [String: ItemMetadata]() // remote urls to metadata
         for metadata in allMetadatas {
             let remoteUrlPath = metadata.serverUrl + "/" + metadata.fileName
+            guard remoteUrlPath != remotePath else { continue }
             staleItems[remoteUrlPath] = metadata
         }
 
