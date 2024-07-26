@@ -18,7 +18,6 @@ import OSLog
 
 extension Enumerator {
     func fullRecursiveScan(
-        ncAccount: Account, 
         remoteInterface: RemoteInterface,
         dbManager: FilesDatabaseManager,
         scanChangesOnly: Bool
@@ -35,7 +34,6 @@ extension Enumerator {
 
         let results = await self.scanRecursively(
             rootContainerDirectoryMetadata,
-            ncAccount: ncAccount,
             remoteInterface: remoteInterface,
             dbManager: dbManager,
             scanChangesOnly: scanChangesOnly
@@ -67,7 +65,6 @@ extension Enumerator {
 
     private func scanRecursively(
         _ directoryMetadata: ItemMetadata,
-        ncAccount: Account,
         remoteInterface: RemoteInterface,
         dbManager: FilesDatabaseManager,
         scanChangesOnly: Bool
@@ -92,7 +89,7 @@ extension Enumerator {
 
         let itemServerUrl =
             directoryMetadata.ocId == NSFileProviderItemIdentifier.rootContainer.rawValue
-                ? ncAccount.davFilesUrl
+                ? remoteInterface.account.davFilesUrl
                 : directoryMetadata.serverUrl + "/" + directoryMetadata.fileName
 
         Self.logger.debug("About to read: \(itemServerUrl, privacy: .public)")
@@ -101,7 +98,6 @@ extension Enumerator {
             metadatas, newMetadatas, updatedMetadatas, deletedMetadatas, readError
         ) = await Self.readServerUrl(
             itemServerUrl,
-            ncAccount: ncAccount,
             remoteInterface: remoteInterface,
             dbManager: dbManager,
             domain: domain,
@@ -160,7 +156,7 @@ extension Enumerator {
         Self.logger.info(
             """
             Finished reading serverUrl: \(itemServerUrl, privacy: .public)
-            for user: \(ncAccount.ncKitAccount, privacy: .public)
+            for user: \(remoteInterface.account.ncKitAccount, privacy: .public)
             """
         )
 
@@ -170,7 +166,7 @@ extension Enumerator {
             Self.logger.warning(
                 """
                 Nil metadatas received in change read at \(itemServerUrl, privacy: .public)
-                for user: \(ncAccount.ncKitAccount, privacy: .public)
+                for user: \(remoteInterface.account.ncKitAccount, privacy: .public)
                 """
             )
         }
@@ -181,7 +177,7 @@ extension Enumerator {
             Self.logger.warning(
                 """
                 Nil new metadatas received in change read at \(itemServerUrl, privacy: .public)
-                for user: \(ncAccount.ncKitAccount, privacy: .public)
+                for user: \(remoteInterface.account.ncKitAccount, privacy: .public)
                 """
             )
         }
@@ -192,7 +188,7 @@ extension Enumerator {
             Self.logger.warning(
                 """
                 Nil updated metadatas received in change read at \(itemServerUrl, privacy: .public)
-                for user: \(ncAccount.ncKitAccount, privacy: .public)
+                for user: \(remoteInterface.account.ncKitAccount, privacy: .public)
                 """
             )
         }
@@ -203,7 +199,7 @@ extension Enumerator {
             Self.logger.warning(
                 """
                 Nil deleted metadatas received in change read at \(itemServerUrl, privacy: .public)
-                for user: \(ncAccount.ncKitAccount, privacy: .public)
+                for user: \(remoteInterface.account.ncKitAccount, privacy: .public)
                 """
             )
         }
@@ -246,7 +242,6 @@ extension Enumerator {
             )
             let childScanResult = await scanRecursively(
                 childDirectory,
-                ncAccount: ncAccount,
                 remoteInterface: remoteInterface,
                 dbManager: dbManager,
                 scanChangesOnly: scanChangesOnly
@@ -323,7 +318,6 @@ extension Enumerator {
 
     static func readServerUrl(
         _ serverUrl: String,
-        ncAccount: Account,
         remoteInterface: RemoteInterface,
         dbManager: FilesDatabaseManager,
         domain: NSFileProviderDomain? = nil,
@@ -337,12 +331,13 @@ extension Enumerator {
         deletedMetadatas: [ItemMetadata]?,
         readError: NKError?
     ) {
+        let ncAccount = remoteInterface.account
         let ncKitAccount = ncAccount.ncKitAccount
 
         Self.logger.debug(
             """
             Starting to read serverUrl: \(serverUrl, privacy: .public)
-            for user: \(ncAccount.ncKitAccount, privacy: .public)
+            for user: \(ncKitAccount, privacy: .public)
             at depth \(depth.rawValue, privacy: .public).
             username: \(ncAccount.username, privacy: .public),
             password is empty: \(ncAccount.password == "" ? "EMPTY" : "NOT EMPTY"),

@@ -254,10 +254,7 @@ public extension Item {
         while !directoriesToRead.isEmpty {
             let remoteDirectoryPath = directoriesToRead.removeFirst()
             let (metadatas, _, _, _, readError) = await Enumerator.readServerUrl(
-                remoteDirectoryPath,
-                ncAccount: ncAccount,
-                remoteInterface: remoteInterface,
-                dbManager: dbManager
+                remoteDirectoryPath, remoteInterface: remoteInterface, dbManager: dbManager
             )
             // Important note -- the enumerator will import found items' metadata into the database.
             // This is important for when we want to start deleting stale items and want to avoid trying
@@ -457,10 +454,7 @@ public extension Item {
         for remoteDirectoryPath in remoteDirectoriesPaths {
             // After everything, check into what the final state is of each folder now
             let (_, _, _, _, readError) = await Enumerator.readServerUrl(
-                remoteDirectoryPath,
-                ncAccount: ncAccount,
-                remoteInterface: remoteInterface,
-                dbManager: dbManager
+                remoteDirectoryPath, remoteInterface: remoteInterface, dbManager: dbManager
             )
 
             if let readError, readError != .success {

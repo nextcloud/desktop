@@ -153,8 +153,7 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
 
             Task {
                 let (metadatas, _, _, _, readError) = await Self.readServerUrl(
-                    serverUrl, 
-                    ncAccount: ncAccount, 
+                    serverUrl,
                     remoteInterface: remoteInterface,
                     dbManager: dbManager
                 )
@@ -316,7 +315,6 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
                 _, newMetadatas, updatedMetadatas, deletedMetadatas, readError
             ) = await Self.readServerUrl(
                 serverUrl,
-                ncAccount: ncAccount,
                 remoteInterface: remoteInterface,
                 dbManager: dbManager,
                 stopAtMatchingEtags: true

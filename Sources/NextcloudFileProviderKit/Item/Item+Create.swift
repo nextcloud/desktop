@@ -337,10 +337,7 @@ extension Item {
             // After everything, check into what the final state is of each folder now
             Self.logger.debug("Reading bpi folder at: \(remoteDirectoryPath, privacy: .public)")
             let (_, _, _, _, readError) = await Enumerator.readServerUrl(
-                remoteDirectoryPath,
-                ncAccount: ncAccount,
-                remoteInterface: remoteInterface,
-                dbManager: dbManager
+                remoteDirectoryPath, remoteInterface: remoteInterface, dbManager: dbManager
             )
 
             if let readError, readError != .success {
@@ -493,7 +490,6 @@ extension Item {
                 )
                 let (metadatas, _, _, _, readError) = await Enumerator.readServerUrl(
                     newServerUrlFileName,
-                    ncAccount: ncAccount,
                     remoteInterface: remoteInterface,
                     dbManager: dbManager,
                     domain: domain,
