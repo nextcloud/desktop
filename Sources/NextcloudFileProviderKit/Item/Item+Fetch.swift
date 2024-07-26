@@ -34,7 +34,7 @@ public extension Item {
                 dbManager: dbManager
             )
 
-            if let readError {
+            if let readError, readError != .success {
                 Self.logger.error(
                     """
                     Could not enumerate directory contents for
@@ -62,48 +62,57 @@ public extension Item {
 
             for metadata in metadatas {
                 let remotePath = metadata.serverUrl + "/" + metadata.fileName
-                if metadata.directory {
-                    remoteDirectoryPaths.append(remotePath)
-                }
                 let relativePath =
                     remotePath.replacingOccurrences(of: directoryRemotePath, with: "")
                 let childLocalPath = directoryLocalPath + relativePath
-                let (_, etag, date, _, _, _, error) = await remoteInterface.download(
-                    remotePath: remotePath,
-                    localPath: childLocalPath,
-                    options: .init(),
-                    requestHandler: { progress.setHandlersFromAfRequest($0) },
-                    taskHandler: { task in
-                        if let domain {
-                            NSFileProviderManager(for: domain)?.register(
-                                task,
-                                forItemWithIdentifier: self.itemIdentifier,
-                                completionHandler: { _ in }
-                            )
-                        }
-                    }, progressHandler: { _ in }
-                )
 
-                if error != .success {
-                    Self.logger.error(
+                if metadata.directory {
+                    remoteDirectoryPaths.append(remotePath)
+                    try FileManager.default.createDirectory(
+                        at: URL(fileURLWithPath: childLocalPath),
+                        withIntermediateDirectories: true,
+                        attributes: nil
+                    )
+                } else {
+                    let (_, _, _, _, _, _, error) = await remoteInterface.download(
+                        remotePath: remotePath,
+                        localPath: childLocalPath,
+                        options: .init(),
+                        requestHandler: { progress.setHandlersFromAfRequest($0) },
+                        taskHandler: { task in
+                            if let domain {
+                                NSFileProviderManager(for: domain)?.register(
+                                    task,
+                                    forItemWithIdentifier: 
+                                        NSFileProviderItemIdentifier(metadata.ocId),
+                                    completionHandler: { _ in }
+                                )
+                            }
+                        },
+                        progressHandler: { _ in }
+                    )
+
+                    guard error == .success else {
+                        Self.logger.error(
                         """
                         Could not acquire contents of item: \(metadata.fileName, privacy: .public)
                         at \(remotePath, privacy: .public)
                         error: \(error.errorCode, privacy: .public)
                         \(error.errorDescription, privacy: .public)
                         """
-                    )
-                    metadata.status = ItemMetadata.Status.downloadError.rawValue
-                    metadata.sessionError = error.errorDescription
-                    dbManager.addItemMetadata(metadata)
-                    throw error.fileProviderError ?? NSFileProviderError(.cannotSynchronize)
+                        )
+                        metadata.status = ItemMetadata.Status.downloadError.rawValue
+                        metadata.sessionError = error.errorDescription
+                        dbManager.addItemMetadata(metadata)
+                        throw error.fileProviderError ?? NSFileProviderError(.cannotSynchronize)
+                    }
                 }
 
                 metadata.status = ItemMetadata.Status.normal.rawValue
                 metadata.sessionError = ""
-                metadata.date = (date ?? NSDate()) as Date
-                metadata.etag = etag ?? ""
-                dbManager.addLocalFileMetadataFromItemMetadata(metadata)
+                if !metadata.directory {
+                    dbManager.addLocalFileMetadataFromItemMetadata(metadata)
+                }
                 dbManager.addItemMetadata(metadata)
 
                 progress.completedUnitCount += 1
@@ -135,7 +144,7 @@ public extension Item {
             }
         }
 
-        guard let updatedMetadata = updatedMetadata else {
+        guard let updatedMetadata else {
             Self.logger.error(
                 """
                 Could not acquire updated metadata of item \(ocId, privacy: .public),
@@ -146,47 +155,37 @@ public extension Item {
         }
 
         let isDirectory = contentType.conforms(to: .directory)
-        let (_, etag, date, _, _, _, error) = await remoteInterface.download(
-            remotePath: serverUrlFileName,
-            localPath: localPath.path,
-            options: .init(),
-            requestHandler: { progress.setHandlersFromAfRequest($0) },
-            taskHandler: { task in
-                if let domain {
-                    NSFileProviderManager(for: domain)?.register(
-                        task,
-                        forItemWithIdentifier: self.itemIdentifier,
-                        completionHandler: { _ in }
-                    )
-                }
-            }, progressHandler: { if !isDirectory { $0.copyCurrentStateToProgress(progress) } }
-        )
-
-        if error != .success {
-            Self.logger.error(
-                """
-                Could not acquire contents of item with identifier: \(ocId, privacy: .public)
-                and fileName: \(updatedMetadata.fileName, privacy: .public)
-                at \(serverUrlFileName, privacy: .public)
-                error: \(error.errorCode, privacy: .public)
-                \(error.errorDescription, privacy: .public)
-                """
-            )
-
-            updatedMetadata.status = ItemMetadata.Status.downloadError.rawValue
-            updatedMetadata.sessionError = error.errorDescription
-            dbManager.addItemMetadata(updatedMetadata)
-            return (nil, nil, error.fileProviderError)
-        }
-
         if isDirectory {
             Self.logger.debug(
                 """
                 Item with identifier: \(ocId, privacy: .public)
                 and filename: \(updatedMetadata.fileName, privacy: .public)
-                is a directory, fetching its contents
+                is a directory, creating dir locally and fetching its contents
                 """
             )
+
+            do {
+                try FileManager.default.createDirectory(
+                    at: localPath,
+                    withIntermediateDirectories: true,
+                    attributes: nil
+                )
+            } catch let error {
+                Self.logger.error(
+                    """
+                    Could not create directory for item with identifier: \(ocId, privacy: .public)
+                    and fileName: \(updatedMetadata.fileName, privacy: .public)
+                    at \(localPath, privacy: .public)
+                    error: \(error.localizedDescription, privacy: .public)
+                    """
+                )
+
+                updatedMetadata.status = ItemMetadata.Status.downloadError.rawValue
+                updatedMetadata.sessionError = error.localizedDescription
+                dbManager.addItemMetadata(updatedMetadata)
+                return (nil, nil, error)
+            }
+
             do {
                 try await fetchDirectoryContents(
                     directoryLocalPath: localPath.path,
@@ -209,6 +208,33 @@ public extension Item {
                 dbManager.addItemMetadata(updatedMetadata)
                 return (nil, nil, error)
             }
+
+        } else {
+            let (_, dlEtag, dlDate, _, _, _, error) = await remoteInterface.download(
+                remotePath: serverUrlFileName,
+                localPath: localPath.path,
+                options: .init(),
+                requestHandler: { _ in },
+                taskHandler: { _ in },
+                progressHandler: { _ in }
+            )
+
+            if error != .success {
+                Self.logger.error(
+                    """
+                    Could not acquire contents of item with identifier: \(ocId, privacy: .public)
+                    and fileName: \(updatedMetadata.fileName, privacy: .public)
+                    at \(serverUrlFileName, privacy: .public)
+                    error: \(error.errorCode, privacy: .public)
+                    \(error.errorDescription, privacy: .public)
+                    """
+                )
+
+                updatedMetadata.status = ItemMetadata.Status.downloadError.rawValue
+                updatedMetadata.sessionError = error.errorDescription
+                dbManager.addItemMetadata(updatedMetadata)
+                return (nil, nil, error.fileProviderError)
+            }
         }
 
         Self.logger.debug(
@@ -220,10 +246,10 @@ public extension Item {
 
         updatedMetadata.status = ItemMetadata.Status.normal.rawValue
         updatedMetadata.sessionError = ""
-        updatedMetadata.date = (date ?? NSDate()) as Date
-        updatedMetadata.etag = etag ?? ""
 
-        dbManager.addLocalFileMetadataFromItemMetadata(updatedMetadata)
+        if !isDirectory {
+            dbManager.addLocalFileMetadataFromItemMetadata(updatedMetadata)
+        }
         dbManager.addItemMetadata(updatedMetadata)
 
         guard let parentItemIdentifier = dbManager.parentItemIdentifierFromMetadata(
