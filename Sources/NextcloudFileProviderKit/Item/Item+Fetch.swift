@@ -77,7 +77,7 @@ public extension Item {
                         if let domain {
                             NSFileProviderManager(for: domain)?.register(
                                 task,
-                                forItemWithIdentifier: self.itemIdentifier,
+                                forItemWithIdentifier: NSFileProviderItemIdentifier(metadata.ocId),
                                 completionHandler: { _ in }
                             )
                         }
