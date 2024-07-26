@@ -11,7 +11,108 @@ import NextcloudKit
 import OSLog
 
 public extension Item {
-    
+    private func fetchDirectoryContents(
+        directoryLocalPath: String,
+        directoryRemotePath: String,
+        domain: NSFileProviderDomain?,
+        progress: Progress
+    ) async throws {
+        progress.totalUnitCount = 1 // Add 1 for final procedures
+
+        // Download *everything* within this directory. What we do:
+        // 1. Enumerate the contents of the directory
+        // 2. Download everything within this directory
+        // 3. Detect child directories
+        // 4. Repeat 1 -> 3 for each child directory
+        var remoteDirectoryPaths = [directoryRemotePath]
+        while !remoteDirectoryPaths.isEmpty {
+            let remoteDirectoryPath = remoteDirectoryPaths.removeFirst()
+            let (metadatas, _, _, _, readError) = await Enumerator.readServerUrl(
+                remoteDirectoryPath,
+                ncAccount: remoteInterface.account,
+                remoteInterface: remoteInterface,
+                dbManager: dbManager
+            )
+
+            if let readError {
+                Self.logger.error(
+                    """
+                    Could not enumerate directory contents for
+                    \(self.metadata.fileName, privacy: .public)
+                    at \(remoteDirectoryPath, privacy: .public)
+                    error: \(readError.errorCode, privacy: .public)
+                    \(readError.errorDescription, privacy: .public)
+                    """
+                )
+                throw readError.fileProviderError ?? NSFileProviderError(.cannotSynchronize)
+            }
+
+            guard let metadatas else {
+                Self.logger.error(
+                    """
+                    Could not fetch directory contents for
+                    \(self.metadata.fileName, privacy: .public)
+                    at \(remoteDirectoryPath, privacy: .public), received nil metadatas
+                    """
+                )
+                throw NSFileProviderError(.cannotSynchronize)
+            }
+
+            progress.totalUnitCount += Int64(metadatas.count)
+
+            for metadata in metadatas {
+                let remotePath = metadata.serverUrl + "/" + metadata.fileName
+                if metadata.directory {
+                    remoteDirectoryPaths.append(remotePath)
+                }
+                let relativePath =
+                    remotePath.replacingOccurrences(of: directoryRemotePath, with: "")
+                let childLocalPath = directoryLocalPath + relativePath
+                let (_, etag, date, _, _, _, error) = await remoteInterface.download(
+                    remotePath: remotePath,
+                    localPath: childLocalPath,
+                    options: .init(),
+                    requestHandler: { progress.setHandlersFromAfRequest($0) },
+                    taskHandler: { task in
+                        if let domain {
+                            NSFileProviderManager(for: domain)?.register(
+                                task,
+                                forItemWithIdentifier: self.itemIdentifier,
+                                completionHandler: { _ in }
+                            )
+                        }
+                    }, progressHandler: { _ in }
+                )
+
+                if error != .success {
+                    Self.logger.error(
+                        """
+                        Could not acquire contents of item: \(metadata.fileName, privacy: .public)
+                        at \(remotePath, privacy: .public)
+                        error: \(error.errorCode, privacy: .public)
+                        \(error.errorDescription, privacy: .public)
+                        """
+                    )
+                    metadata.status = ItemMetadata.Status.downloadError.rawValue
+                    metadata.sessionError = error.errorDescription
+                    dbManager.addItemMetadata(metadata)
+                    throw error.fileProviderError ?? NSFileProviderError(.cannotSynchronize)
+                }
+
+                metadata.status = ItemMetadata.Status.normal.rawValue
+                metadata.sessionError = ""
+                metadata.date = (date ?? NSDate()) as Date
+                metadata.etag = etag ?? ""
+                dbManager.addLocalFileMetadataFromItemMetadata(metadata)
+                dbManager.addItemMetadata(metadata)
+
+                progress.completedUnitCount += 1
+            }
+        }
+
+        progress.completedUnitCount += 1 // Finish off
+    }
+
     func fetchContents(
         domain: NSFileProviderDomain? = nil,
         progress: Progress = .init(),
@@ -22,7 +123,7 @@ public extension Item {
 
         Self.logger.debug(
             """
-            Fetching file with name \(self.metadata.fileName, privacy: .public)
+            Fetching item with name \(self.metadata.fileName, privacy: .public)
             at URL: \(serverUrlFileName, privacy: .public)
             """
         )
@@ -44,6 +145,7 @@ public extension Item {
             return (nil, nil, NSFileProviderError(.noSuchItem))
         }
 
+        let isDirectory = contentType.conforms(to: .directory)
         let (_, etag, date, _, _, _, error) = await remoteInterface.download(
             remotePath: serverUrlFileName,
             localPath: localPath.path,
@@ -57,7 +159,7 @@ public extension Item {
                         completionHandler: { _ in }
                     )
                 }
-            }, progressHandler: { $0.copyCurrentStateToProgress(progress) }
+            }, progressHandler: { if !isDirectory { $0.copyCurrentStateToProgress(progress) } }
         )
 
         if error != .success {
@@ -75,6 +177,38 @@ public extension Item {
             updatedMetadata.sessionError = error.errorDescription
             dbManager.addItemMetadata(updatedMetadata)
             return (nil, nil, error.fileProviderError)
+        }
+
+        if isDirectory {
+            Self.logger.debug(
+                """
+                Item with identifier: \(ocId, privacy: .public)
+                and filename: \(updatedMetadata.fileName, privacy: .public)
+                is a directory, fetching its contents
+                """
+            )
+            do {
+                try await fetchDirectoryContents(
+                    directoryLocalPath: localPath.path,
+                    directoryRemotePath: serverUrlFileName,
+                    domain: domain,
+                    progress: progress
+                )
+            } catch let error {
+                Self.logger.error(
+                    """
+                    Could not fetch directory contents for \(ocId, privacy: .public)
+                    and fileName: \(updatedMetadata.fileName, privacy: .public)
+                    at \(serverUrlFileName, privacy: .public)
+                    error: \(error.localizedDescription, privacy: .public)
+                    """
+                )
+
+                updatedMetadata.status = ItemMetadata.Status.downloadError.rawValue
+                updatedMetadata.sessionError = error.localizedDescription
+                dbManager.addItemMetadata(updatedMetadata)
+                return (nil, nil, error)
+            }
         }
 
         Self.logger.debug(

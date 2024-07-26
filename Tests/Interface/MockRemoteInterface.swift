@@ -267,7 +267,14 @@ public class MockRemoteInterface: RemoteInterface {
 
         let localUrl = URL(fileURLWithPath: localPath)
         do {
-            try item.data?.write(to: localUrl, options: .atomic)
+            if item.directory {
+                print("Creating directory at \(localUrl) for item \(item.name)")
+                let fm = FileManager.default
+                try fm.createDirectory(at: localUrl, withIntermediateDirectories: true)
+            } else {
+                print("Writing data to \(localUrl) for item \(item.name)")
+                try item.data?.write(to: localUrl, options: .atomic)
+            }
         } catch let error {
             print("Could not write item data: \(error)")
             return (accountString, nil, nil, 0, nil, nil, .urlError)
