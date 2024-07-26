@@ -1,6 +1,7 @@
 import os
 import re
 import ctypes
+import shutil
 from helpers.ConfigHelper import isWindows
 
 
@@ -104,3 +105,23 @@ def get_file_size_on_disk(resource_path):
 
 def get_file_size(resource_path):
     return os.stat(resource_path).st_size
+
+
+# temp paths created outside of the temporary directory during the test
+CREATED_PATHS = []
+
+
+def remember_path(path):
+    global CREATED_PATHS
+    CREATED_PATHS.append(path)
+
+
+def cleanup_created_paths():
+    global CREATED_PATHS
+    for path in CREATED_PATHS:
+        if os.path.exists(path):
+            if os.path.isdir(path):
+                shutil.rmtree(prefix_path_namespace(path))
+            else:
+                os.unlink(prefix_path_namespace(path))
+    CREATED_PATHS = []

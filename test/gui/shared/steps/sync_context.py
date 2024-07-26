@@ -293,3 +293,13 @@ def step(context):
 @Then('the file "|any|" should have status "|any|" in the activity tab')
 def step(context, file_name, status):
     Activity.hasSyncStatus(file_name, status)
+
+
+@When('the user selects the "|any|" space to sync')
+def step(context, space_name):
+    SyncConnectionWizard.select_space_to_sync(space_name)
+
+
+@When("the user opens the sync connection wizard")
+def step(context):
+    SyncConnectionWizard.open_sync_connection_wizard()

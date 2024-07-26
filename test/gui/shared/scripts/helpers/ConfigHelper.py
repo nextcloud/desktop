@@ -11,6 +11,8 @@ def read_env_file():
     env_path = os.path.abspath(os.path.join(script_path, '..', '..', '..', 'envs.txt'))
     with open(env_path, "rt", encoding="UTF-8") as f:
         for line in f:
+            if not line.strip():
+                continue
             if line.startswith('#'):
                 continue
             key, value = line.split('=', 1)
@@ -51,6 +53,13 @@ def getConfigHome():
     return os.path.join(get_config_from_env_file("XDG_CONFIG_HOME"), "ownCloud")
 
 
+def get_default_home_dir():
+    if isWindows():
+        return getWinUserHome()
+    elif isLinux():
+        return os.environ.get("HOME")
+
+
 # map environment variables to config keys
 CONFIG_ENV_MAP = {
     'localBackendUrl': 'BACKEND_HOST',
@@ -67,6 +76,11 @@ CONFIG_ENV_MAP = {
     'ocis': 'OCIS',
 }
 
+DEFAULT_PATH_CONFIG = {
+    'custom_lib': os.path.abspath('../shared/scripts/custom_lib'),
+    'home_dir': get_default_home_dir(),
+}
+
 # default config values
 CONFIG = {
     'localBackendUrl': 'https://localhost:9200/',
@@ -81,10 +95,10 @@ CONFIG = {
     'clientConfigDir': getConfigHome(),
     'guiTestReportDir': os.path.abspath('../reports'),
     'ocis': False,
-    'custom_lib': os.path.abspath('../shared/scripts/custom_lib'),
 }
+CONFIG.update(DEFAULT_PATH_CONFIG)
 
-READONLY_CONFIG = list(CONFIG_ENV_MAP.keys())
+READONLY_CONFIG = list(CONFIG_ENV_MAP.keys()) + list(DEFAULT_PATH_CONFIG.keys())
 
 
 def init_config():

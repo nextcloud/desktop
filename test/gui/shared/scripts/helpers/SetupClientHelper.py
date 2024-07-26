@@ -19,6 +19,7 @@ def substituteInLineCodes(value):
     value = value.replace(
         '%local_server_hostname%', urlparse(get_config('localBackendUrl')).netloc
     )
+    value = value.replace('%home%', get_config('home_dir'))
 
     return value
 

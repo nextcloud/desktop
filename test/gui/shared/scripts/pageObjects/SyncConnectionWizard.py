@@ -113,6 +113,20 @@ class SyncConnectionWizard:
         "visible": 1,
         "window": names.add_Folder_Sync_Connection_OCC_FolderWizard,
     }
+    ADD_FOLDER_SYNC_BUTTON = {
+        "checkable": False,
+        "container": names.stackedWidget_quickWidget_OCC_QmlUtils_OCQuickWidget,
+        "id": "addSyncButton",
+        "type": "Button",
+        "unnamed": 1,
+        "visible": True,
+    }
+    WARN_LABEL = {
+        "window": names.add_Folder_Sync_Connection_OCC_FolderWizard,
+        "name": "warnLabel",
+        "type": "QLabel",
+        "visible": 1,
+    }
 
     @staticmethod
     def setSyncPathInSyncConnectionWizardOc10(sync_path=''):
@@ -334,3 +348,30 @@ class SyncConnectionWizard:
             except:
                 return False, None
         return True, parent_container
+
+    @staticmethod
+    def is_remote_folder_selected(folder_selector):
+        return squish.waitForObjectExists(folder_selector).selected
+
+    @staticmethod
+    def select_space_to_sync(space_name):
+        SyncConnectionWizard.selectSpaceToSync(space_name)
+        SyncConnectionWizard.nextStep()
+
+    @staticmethod
+    def open_sync_connection_wizard():
+        squish.mouseClick(
+            squish.waitForObject(SyncConnectionWizard.ADD_FOLDER_SYNC_BUTTON)
+        )
+
+    @staticmethod
+    def get_local_sync_path():
+        return str(
+            squish.waitForObjectExists(
+                SyncConnectionWizard.CHOOSE_LOCAL_SYNC_FOLDER
+            ).displayText
+        )
+
+    @staticmethod
+    def get_warn_label():
+        return str(squish.waitForObjectExists(SyncConnectionWizard.WARN_LABEL).text)

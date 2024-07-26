@@ -17,7 +17,7 @@ from helpers.SyncHelper import waitForInitialSyncToComplete, listenSyncStatusFor
 from helpers.ConfigHelper import get_config, isWindows, isLinux
 
 
-@When('the user adds the following wrong user credentials:')
+@When('the user adds the following user credentials:')
 def step(context):
     account_details = getClientDetails(context)
     AccountConnectionWizard.addUserCreds(
@@ -320,3 +320,34 @@ def step(context, displayname):
     has_focus = Toolbar.account_has_focus(account)
     if not has_focus:
         raise LookupError(f"Account '{displayname}' should be opened, but it is not")
+
+
+@Then(
+    r'the default local sync path should contain "([^"]*)" in the (configuration|sync connection) wizard',
+    regexp=True,
+)
+def step(context, sync_path, wizard):
+    sync_path = substituteInLineCodes(sync_path)
+
+    actual_sync_path = ""
+    if wizard == 'configuration':
+        actual_sync_path = AccountConnectionWizard.get_local_sync_path()
+    else:
+        actual_sync_path = SyncConnectionWizard.get_local_sync_path()
+
+    test.compare(
+        actual_sync_path,
+        sync_path,
+        "Compare sync path contains the expected path",
+    )
+
+
+@Then('the warning "|any|" should appear in the sync connection wizard')
+def step(context, warn_message):
+    actual_message = SyncConnectionWizard.get_warn_label()
+    contains_warning = True if warn_message in actual_message else False
+    test.compare(
+        True,
+        contains_warning,
+        "Contains warning message",
+    )

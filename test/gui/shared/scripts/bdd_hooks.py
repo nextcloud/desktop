@@ -32,7 +32,7 @@ from helpers.ConfigHelper import (
     isLinux,
 )
 from helpers.api.utils import url_join
-from helpers.FilesHelper import prefix_path_namespace
+from helpers.FilesHelper import prefix_path_namespace, cleanup_created_paths
 from datetime import datetime
 from pageObjects.Toolbar import Toolbar
 from pageObjects.AccountSetting import AccountSetting
@@ -238,6 +238,8 @@ def teardown_client():
                 shutil.rmtree(prefix_path_namespace(entry.path))
         except Exception as e:
             test.log(f'Failed to delete{entry.name}. Reason: {e}.')
+    # cleanup paths created outside of the temporary directory during the test
+    cleanup_created_paths()
 
 
 def close_dialogs():

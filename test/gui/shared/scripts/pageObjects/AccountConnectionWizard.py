@@ -350,3 +350,11 @@ class AccountConnectionWizard:
             ).checked
             == True
         )
+
+    @staticmethod
+    def get_local_sync_path():
+        return str(
+            squish.waitForObjectExists(
+                AccountConnectionWizard.SELECT_LOCAL_FOLDER
+            ).displayText
+        )

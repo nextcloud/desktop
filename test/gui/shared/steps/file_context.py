@@ -6,8 +6,6 @@ import builtins
 import shutil
 import zipfile
 
-from pageObjects.AccountSetting import AccountSetting
-
 from helpers.SetupClientHelper import getResourcePath, getTempResourcePath
 from helpers.SyncHelper import waitForClientToBeReady
 from helpers.ConfigHelper import get_config
@@ -17,12 +15,9 @@ from helpers.FilesHelper import (
     can_read,
     can_write,
     read_file_content,
-    is_empty_sync_folder,
     get_size_in_bytes,
     prefix_path_namespace,
-)
-from helpers.SetupClientHelper import (
-    getTempResourcePath,
+    remember_path,
 )
 
 
@@ -370,3 +365,12 @@ def step(context, username, source):
     source_dir = getResourcePath(source, username)
     destination_dir = getTempResourcePath(source)
     shutil.copy2(source_dir, destination_dir)
+
+
+@Given('the user has created folder "|any|" in the default home path')
+def step(context, folder_name):
+    folder_path = join(get_config('home_dir'), folder_name)
+    os.makedirs(prefix_path_namespace(folder_path))
+    remember_path(folder_path)
+    # when account is added, folder with suffix will be created
+    remember_path(folder_path + " (2)")
