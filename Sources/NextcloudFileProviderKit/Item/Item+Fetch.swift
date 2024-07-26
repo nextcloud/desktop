@@ -115,7 +115,7 @@ public extension Item {
 
         Self.logger.debug(
             """
-            Fetching file with name \(self.metadata.fileName, privacy: .public)
+            Fetching item with name \(self.metadata.fileName, privacy: .public)
             at URL: \(serverUrlFileName, privacy: .public)
             """
         )
@@ -137,6 +137,7 @@ public extension Item {
             return (nil, nil, NSFileProviderError(.noSuchItem))
         }
 
+        let isDirectory = contentType.conforms(to: .directory)
         let (_, etag, date, _, _, _, error) = await remoteInterface.download(
             remotePath: serverUrlFileName,
             localPath: localPath.path,
@@ -168,6 +169,38 @@ public extension Item {
             updatedMetadata.sessionError = error.errorDescription
             dbManager.addItemMetadata(updatedMetadata)
             return (nil, nil, error.fileProviderError)
+        }
+
+        if isDirectory {
+            Self.logger.debug(
+                """
+                Item with identifier: \(ocId, privacy: .public)
+                and filename: \(updatedMetadata.fileName, privacy: .public)
+                is a directory, fetching its contents
+                """
+            )
+            do {
+                try await fetchDirectoryContents(
+                    directoryLocalPath: localPath.path,
+                    directoryRemotePath: serverUrlFileName,
+                    domain: domain,
+                    progress: progress
+                )
+            } catch let error {
+                Self.logger.error(
+                    """
+                    Could not fetch directory contents for \(ocId, privacy: .public)
+                    and fileName: \(updatedMetadata.fileName, privacy: .public)
+                    at \(serverUrlFileName, privacy: .public)
+                    error: \(error.localizedDescription, privacy: .public)
+                    """
+                )
+
+                updatedMetadata.status = ItemMetadata.Status.downloadError.rawValue
+                updatedMetadata.sessionError = error.localizedDescription
+                dbManager.addItemMetadata(updatedMetadata)
+                return (nil, nil, error)
+            }
         }
 
         Self.logger.debug(
