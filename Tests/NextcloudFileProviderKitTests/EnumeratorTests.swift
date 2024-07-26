@@ -93,7 +93,6 @@ final class EnumeratorTests: XCTestCase {
 
         let enumerator = Enumerator(
             enumeratedItemIdentifier: .rootContainer,
-            ncAccount: Self.account,
             remoteInterface: remoteInterface,
             dbManager: Self.dbManager
         )
@@ -148,7 +147,6 @@ final class EnumeratorTests: XCTestCase {
 
         let enumerator = Enumerator(
             enumeratedItemIdentifier: .workingSet,
-            ncAccount: Self.account,
             remoteInterface: remoteInterface,
             dbManager: Self.dbManager
         )
@@ -178,7 +176,6 @@ final class EnumeratorTests: XCTestCase {
 
         let enumerator = Enumerator(
             enumeratedItemIdentifier: .workingSet,
-            ncAccount: Self.account,
             remoteInterface: remoteInterface,
             dbManager: Self.dbManager
         )
@@ -222,7 +219,6 @@ final class EnumeratorTests: XCTestCase {
 
         let enumerator = Enumerator(
             enumeratedItemIdentifier: .workingSet,
-            ncAccount: Self.account,
             remoteInterface: remoteInterface,
             dbManager: Self.dbManager,
             fastEnumeration: false
@@ -269,7 +265,6 @@ final class EnumeratorTests: XCTestCase {
 
         let enumerator = Enumerator(
             enumeratedItemIdentifier: .init(remoteFolder.identifier),
-            ncAccount: Self.account,
             remoteInterface: remoteInterface,
             dbManager: Self.dbManager
         )
@@ -343,7 +338,6 @@ final class EnumeratorTests: XCTestCase {
 
         let enumerator = Enumerator(
             enumeratedItemIdentifier: .init(remoteItemA.identifier),
-            ncAccount: Self.account,
             remoteInterface: remoteInterface,
             dbManager: Self.dbManager
         )
@@ -418,7 +412,6 @@ final class EnumeratorTests: XCTestCase {
 
         let enumerator = Enumerator(
             enumeratedItemIdentifier: .init(remoteFolder.identifier),
-            ncAccount: Self.account,
             remoteInterface: remoteInterface,
             dbManager: Self.dbManager
         )
@@ -555,7 +548,6 @@ final class EnumeratorTests: XCTestCase {
 
         let enumerator = Enumerator(
             enumeratedItemIdentifier: .rootContainer,
-            ncAccount: Self.account,
             remoteInterface: remoteInterface,
             dbManager: Self.dbManager
         )
@@ -648,7 +640,6 @@ final class EnumeratorTests: XCTestCase {
 
         let enumerator = Enumerator(
             enumeratedItemIdentifier: .init(remoteFolder.identifier),
-            ncAccount: Self.account,
             remoteInterface: remoteInterface,
             dbManager: Self.dbManager
         )
@@ -722,7 +713,6 @@ final class EnumeratorTests: XCTestCase {
 
         let enumerator = Enumerator(
             enumeratedItemIdentifier: .rootContainer,
-            ncAccount: Self.account,
             remoteInterface: remoteInterface,
             dbManager: Self.dbManager
         )
@@ -759,7 +749,6 @@ final class EnumeratorTests: XCTestCase {
 
         let enumerator = Enumerator(
             enumeratedItemIdentifier: .workingSet,
-            ncAccount: Self.account,
             remoteInterface: remoteInterface,
             dbManager: Self.dbManager,
             listener: listener
