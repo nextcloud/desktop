@@ -199,7 +199,6 @@ extension Item {
         remotePath: String,
         domain: NSFileProviderDomain? = nil,
         remoteInterface: RemoteInterface,
-        ncAccount: Account,
         progress: Progress,
         dbManager: FilesDatabaseManager
     ) async throws -> Item? {
@@ -352,14 +351,14 @@ extension Item {
         }
 
         guard let bundleRootMetadata = dbManager.itemMetadata(
-            account: ncAccount.ncKitAccount, locatedAtRemoteUrl: remotePath
+            account: remoteInterface.account.ncKitAccount, locatedAtRemoteUrl: remotePath
         ) else {
             Self.logger.error(
                 """
                 Could not find directory metadata for bundle or package at:
                 \(remotePath, privacy: .public)
                 of account:
-                \(ncAccount.ncKitAccount, privacy: .public)
+                \(remoteInterface.account.ncKitAccount, privacy: .public)
                 with contents located at:
                 \(contentsPath, privacy: .public)
                 """
@@ -559,7 +558,6 @@ extension Item {
                     remotePath: newServerUrlFileName,
                     domain: domain,
                     remoteInterface: remoteInterface,
-                    ncAccount: ncAccount,
                     progress: progress,
                     dbManager: dbManager
                 ), nil)
