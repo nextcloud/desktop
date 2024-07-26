@@ -60,6 +60,7 @@ final class ItemFetchTests: XCTestCase {
         itemMetadata.fileNameView = remoteItem.name
         itemMetadata.serverUrl = Self.account.davFilesUrl
         itemMetadata.urlBase = Self.account.serverUrl
+        itemMetadata.account = Self.account.ncKitAccount
         itemMetadata.userId = Self.account.username
         itemMetadata.user = Self.account.username
 
