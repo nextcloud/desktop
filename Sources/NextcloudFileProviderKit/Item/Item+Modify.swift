@@ -495,7 +495,6 @@ public extension Item {
         contents newContents: URL?,
         options: NSFileProviderModifyItemOptions = [],
         request: NSFileProviderRequest = NSFileProviderRequest(),
-        ncAccount: Account,
         domain: NSFileProviderDomain? = nil,
         progress: Progress = .init(),
         dbManager: FilesDatabaseManager = .shared
@@ -530,7 +529,7 @@ public extension Item {
         // remote changes and then, upon user interaction, will try to modify the item.
         // That is, if the parent item has changed at all (it might not have)
         if parentItemIdentifier == .rootContainer {
-            parentItemServerUrl = ncAccount.davFilesUrl
+            parentItemServerUrl = remoteInterface.account.davFilesUrl
         } else {
             guard let parentItemMetadata = dbManager.directoryMetadata(
                 ocId: parentItemIdentifier.rawValue
