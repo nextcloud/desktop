@@ -34,7 +34,7 @@ public extension Item {
                 dbManager: dbManager
             )
 
-            if let readError {
+            if let readError, readError != .success {
                 Self.logger.error(
                     """
                     Could not enumerate directory contents for
