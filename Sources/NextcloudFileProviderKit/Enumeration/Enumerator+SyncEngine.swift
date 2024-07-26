@@ -397,8 +397,7 @@ extension Enumerator {
             )
             let itemMetadata = ItemMetadata.fromNKFile(receivedFile, account: ncKitAccount)
             dbManager.addItemMetadata(itemMetadata)  // TODO: Return some value when it is an update
-            let inactiveItemMetadataCopy = ItemMetadata(value: itemMetadata)
-            return ([inactiveItemMetadataCopy], nil, nil, nil, nil)
+            return ([itemMetadata], nil, nil, nil, nil)
         }
 
         if stopAtMatchingEtags,
