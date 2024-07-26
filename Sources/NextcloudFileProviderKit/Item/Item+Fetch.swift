@@ -17,6 +17,8 @@ public extension Item {
         domain: NSFileProviderDomain?,
         progress: Progress
     ) async throws {
+        progress.totalUnitCount = 1 // Add 1 for final procedures
+
         // Download *everything* within this directory. What we do:
         // 1. Enumerate the contents of the directory
         // 2. Download everything within this directory
@@ -55,6 +57,8 @@ public extension Item {
                 )
                 throw NSFileProviderError(.cannotSynchronize)
             }
+
+            progress.totalUnitCount += Int64(metadatas.count)
 
             for metadata in metadatas {
                 let remotePath = metadata.serverUrl + "/" + metadata.fileName
@@ -101,8 +105,12 @@ public extension Item {
                 metadata.etag = etag ?? ""
                 dbManager.addLocalFileMetadataFromItemMetadata(metadata)
                 dbManager.addItemMetadata(metadata)
+
+                progress.completedUnitCount += 1
             }
         }
+
+        progress.completedUnitCount += 1 // Finish off
     }
 
     func fetchContents(
@@ -151,7 +159,7 @@ public extension Item {
                         completionHandler: { _ in }
                     )
                 }
-            }, progressHandler: { $0.copyCurrentStateToProgress(progress) }
+            }, progressHandler: { if !isDirectory { $0.copyCurrentStateToProgress(progress) } }
         )
 
         if error != .success {
