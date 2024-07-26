@@ -91,4 +91,208 @@ final class ItemFetchTests: XCTestCase {
         XCTAssertEqual(fetchedItem.filename, item.filename)
         XCTAssertEqual(fetchedItem.creationDate, item.creationDate)
     }
+
+    func testFetchDirectoryContents() async throws {
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+        let remoteDirectory = MockRemoteItem(
+            identifier: "directory",
+            versionIdentifier: "0",
+            name: "directory",
+            remotePath: Self.account.davFilesUrl + "/directory",
+            directory: true,
+            account: Self.account.ncKitAccount,
+            username: Self.account.username,
+            serverUrl: Self.account.serverUrl
+        )
+        let remoteDirectoryChildFile = MockRemoteItem(
+            identifier: "childFile",
+            versionIdentifier: "0",
+            name: "file.txt",
+            remotePath: remoteDirectory.remotePath + "/file.txt",
+            data: "Hello, World!".data(using: .utf8),
+            account: Self.account.ncKitAccount,
+            username: Self.account.username,
+            serverUrl: Self.account.serverUrl
+        )
+        let remoteDirectoryChildDirA = MockRemoteItem(
+            identifier: "childDirectoryA",
+            versionIdentifier: "0",
+            name: "directoryA",
+            remotePath: remoteDirectory.remotePath + "/directoryA",
+            directory: true,
+            account: Self.account.ncKitAccount,
+            username: Self.account.username,
+            serverUrl: Self.account.serverUrl
+        )
+        let remoteDirectoryChildDirB = MockRemoteItem(
+            identifier: "childDirectoryB",
+            versionIdentifier: "0",
+            name: "directoryB",
+            remotePath: remoteDirectory.remotePath + "/directoryB",
+            directory: true,
+            account: Self.account.ncKitAccount,
+            username: Self.account.username,
+            serverUrl: Self.account.serverUrl
+        )
+        let remoteDirectoryChildDirBChildFile = MockRemoteItem(
+            identifier: "childDirectoryBChildFile",
+            versionIdentifier: "0",
+            name: "dirBfile.txt",
+            remotePath: remoteDirectoryChildDirB.remotePath + "/dirBfile.txt",
+            data: "Hello, World!".data(using: .utf8),
+            account: Self.account.ncKitAccount,
+            username: Self.account.username,
+            serverUrl: Self.account.serverUrl
+        )
+        rootItem.children = [remoteDirectory]
+        remoteDirectory.parent = rootItem
+        remoteDirectory.children = [
+            remoteDirectoryChildFile, remoteDirectoryChildDirA, remoteDirectoryChildDirB
+        ]
+        remoteDirectoryChildFile.parent = remoteDirectory
+        remoteDirectoryChildDirA.parent = remoteDirectory
+        remoteDirectoryChildDirB.parent = remoteDirectory
+        remoteDirectoryChildDirB.children = [remoteDirectoryChildDirBChildFile]
+        remoteDirectoryChildDirBChildFile.parent = remoteDirectoryChildDirB
+
+        let directoryMetadata = ItemMetadata()
+        directoryMetadata.ocId = remoteDirectory.identifier
+        directoryMetadata.etag = remoteDirectory.versionIdentifier
+        directoryMetadata.name = remoteDirectory.name
+        directoryMetadata.fileName = remoteDirectory.name
+        directoryMetadata.fileNameView = remoteDirectory.name
+        directoryMetadata.serverUrl = Self.account.davFilesUrl
+        directoryMetadata.urlBase = Self.account.serverUrl
+        directoryMetadata.account = Self.account.ncKitAccount
+        directoryMetadata.userId = Self.account.username
+        directoryMetadata.user = Self.account.username
+        directoryMetadata.directory = true
+
+        Self.dbManager.addItemMetadata(directoryMetadata)
+
+        let directoryChildFileMetadata = ItemMetadata()
+        directoryChildFileMetadata.ocId = remoteDirectoryChildFile.identifier
+        directoryChildFileMetadata.etag = remoteDirectoryChildFile.versionIdentifier
+        directoryChildFileMetadata.name = remoteDirectoryChildFile.name
+        directoryChildFileMetadata.fileName = remoteDirectoryChildFile.name
+        directoryChildFileMetadata.fileNameView = remoteDirectoryChildFile.name
+        directoryChildFileMetadata.serverUrl =
+            directoryMetadata.serverUrl + "/" + directoryMetadata.fileName
+        directoryChildFileMetadata.urlBase = Self.account.serverUrl
+        directoryChildFileMetadata.account = Self.account.ncKitAccount
+        directoryChildFileMetadata.userId = Self.account.username
+        directoryChildFileMetadata.user = Self.account.username
+        directoryChildFileMetadata.contentType = "text/plain"
+        directoryChildFileMetadata.size = Int64(remoteDirectoryChildFile.data?.count ?? 0)
+        directoryChildFileMetadata.classFile = NKCommon.TypeClassFile.document.rawValue
+
+        Self.dbManager.addItemMetadata(directoryChildFileMetadata)
+
+        let directoryChildDirAMetadata = ItemMetadata()
+        directoryChildDirAMetadata.ocId = remoteDirectoryChildDirA.identifier
+        directoryChildDirAMetadata.etag = remoteDirectoryChildDirA.versionIdentifier
+        directoryChildDirAMetadata.name = remoteDirectoryChildDirA.name
+        directoryChildDirAMetadata.fileName = remoteDirectoryChildDirA.name
+        directoryChildDirAMetadata.fileNameView = remoteDirectoryChildDirA.name
+        directoryChildDirAMetadata.serverUrl =
+            directoryMetadata.serverUrl + "/" + directoryMetadata.fileName
+        directoryChildDirAMetadata.urlBase = Self.account.serverUrl
+        directoryChildDirAMetadata.account = Self.account.ncKitAccount
+        directoryChildDirAMetadata.userId = Self.account.username
+        directoryChildDirAMetadata.user = Self.account.username
+        directoryChildDirAMetadata.directory = true
+
+        Self.dbManager.addItemMetadata(directoryChildDirAMetadata)
+
+        let directoryChildDirBMetadata = ItemMetadata()
+        directoryChildDirBMetadata.ocId = remoteDirectoryChildDirB.identifier
+        directoryChildDirBMetadata.etag = remoteDirectoryChildDirB.versionIdentifier
+        directoryChildDirBMetadata.name = remoteDirectoryChildDirB.name
+        directoryChildDirBMetadata.fileName = remoteDirectoryChildDirB.name
+        directoryChildDirBMetadata.fileNameView = remoteDirectoryChildDirB.name
+        directoryChildDirBMetadata.serverUrl =
+            directoryMetadata.serverUrl + "/" + directoryMetadata.fileName
+        directoryChildDirBMetadata.urlBase = Self.account.serverUrl
+        directoryChildDirBMetadata.account = Self.account.ncKitAccount
+        directoryChildDirBMetadata.userId = Self.account.username
+        directoryChildDirBMetadata.user = Self.account.username
+        directoryChildDirBMetadata.directory = true
+
+        Self.dbManager.addItemMetadata(directoryChildDirBMetadata)
+
+        let directoryChildDirBChildFileMetadata = ItemMetadata()
+        directoryChildDirBChildFileMetadata.ocId = remoteDirectoryChildDirBChildFile.identifier
+        directoryChildDirBChildFileMetadata.etag =
+            remoteDirectoryChildDirBChildFile.versionIdentifier
+        directoryChildDirBChildFileMetadata.name = remoteDirectoryChildDirBChildFile.name
+        directoryChildDirBChildFileMetadata.fileName = remoteDirectoryChildDirBChildFile.name
+        directoryChildDirBChildFileMetadata.fileNameView = remoteDirectoryChildDirBChildFile.name
+        directoryChildDirBChildFileMetadata.serverUrl =
+            directoryChildDirBMetadata.serverUrl + "/" + directoryChildDirBMetadata.fileName
+        directoryChildDirBChildFileMetadata.urlBase = Self.account.serverUrl
+        directoryChildDirBChildFileMetadata.account = Self.account.ncKitAccount
+        directoryChildDirBChildFileMetadata.userId = Self.account.username
+        directoryChildDirBChildFileMetadata.user = Self.account.username
+        directoryChildDirBChildFileMetadata.contentType = "text/plain"
+        directoryChildDirBChildFileMetadata.size =
+            Int64(remoteDirectoryChildDirBChildFile.data?.count ?? 0)
+        directoryChildDirBChildFileMetadata.classFile = NKCommon.TypeClassFile.document.rawValue
+
+        Self.dbManager.addItemMetadata(directoryChildDirBChildFileMetadata)
+
+        let item = Item(
+            metadata: directoryMetadata,
+            parentItemIdentifier: .rootContainer,
+            remoteInterface: remoteInterface
+        )
+        item.dbManager = Self.dbManager
+
+        let (localPathMaybe, fetchedItemMaybe, error) =
+            await item.fetchContents(dbManager: Self.dbManager)
+        XCTAssertNil(error)
+        let localPath = try XCTUnwrap(localPathMaybe)
+        let fetchedItem = try XCTUnwrap(fetchedItemMaybe)
+
+        XCTAssertNotNil(Self.dbManager.itemMetadataFromOcId(directoryMetadata.ocId))
+
+        fetchedItem.dbManager = Self.dbManager
+
+        XCTAssertEqual(fetchedItem.itemIdentifier, item.itemIdentifier)
+        XCTAssertEqual(fetchedItem.filename, item.filename)
+        XCTAssertEqual(fetchedItem.creationDate, item.creationDate)
+
+        let fm = FileManager.default
+        var itemIsDir = ObjCBool(false)
+        XCTAssertTrue(fm.fileExists(atPath: localPath.path, isDirectory: &itemIsDir))
+        XCTAssertTrue(itemIsDir.boolValue)
+
+        let itemChildFileUrl = localPath.appendingPathComponent("file.txt")
+        let itemChildFilePath = itemChildFileUrl.path
+        var itemChildFileIsDir = ObjCBool(false)
+        XCTAssertTrue(fm.fileExists(atPath: itemChildFilePath, isDirectory: &itemChildFileIsDir))
+        XCTAssertFalse(itemChildFileIsDir.boolValue)
+        XCTAssertEqual(try Data(contentsOf: itemChildFileUrl), remoteDirectoryChildFile.data)
+
+        let itemChildDirAPath = localPath.appendingPathComponent("directoryA").path
+        var itemChildDirAIsDir = ObjCBool(false)
+        XCTAssertTrue(fm.fileExists(atPath: itemChildDirAPath, isDirectory: &itemChildDirAIsDir))
+        XCTAssertTrue(itemChildDirAIsDir.boolValue)
+
+        let itemChildDirBUrl = localPath.appendingPathComponent("directoryB")
+        let itemChildDirBPath = itemChildDirBUrl.path
+        var itemChildDirBIsDir = ObjCBool(false)
+        XCTAssertTrue(fm.fileExists(atPath: itemChildDirBPath, isDirectory: &itemChildDirBIsDir))
+        XCTAssertTrue(itemChildDirBIsDir.boolValue)
+
+        let itemChildDirBChildFileUrl = itemChildDirBUrl.appendingPathComponent("dirBfile.txt")
+        let itemChildDirBChildFilePath = itemChildDirBChildFileUrl.path
+        var itemChildDirBChildFileIsDir = ObjCBool(false)
+        XCTAssertTrue(fm.fileExists(
+            atPath: itemChildDirBChildFilePath, isDirectory: &itemChildDirBChildFileIsDir
+        ))
+        XCTAssertFalse(itemChildDirBChildFileIsDir.boolValue)
+        XCTAssertEqual(
+            try Data(contentsOf: itemChildDirBChildFileUrl), remoteDirectoryChildDirBChildFile.data
+        )
+    }
 }
