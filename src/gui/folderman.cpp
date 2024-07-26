@@ -909,6 +909,12 @@ Result<void, QString> FolderMan::unsupportedConfiguration(const QString &path) c
     return *it;
 }
 
+bool FolderMan::isSpaceSynced(GraphApi::Space *space) const
+{
+    auto it = std::find_if(_folders.cbegin(), _folders.cend(), [space](auto f) { return f->space() == space; });
+    return it != _folders.cend();
+}
+
 void FolderMan::slotReloadSyncOptions()
 {
     for (auto *f : qAsConst(_folders)) {

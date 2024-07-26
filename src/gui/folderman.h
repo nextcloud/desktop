@@ -242,6 +242,8 @@ public:
     /** If the folder configuration is no longer supported this will return an error string */
     Result<void, QString> unsupportedConfiguration(const QString &path) const;
 
+    [[nodiscard]] bool isSpaceSynced(GraphApi::Space *space) const;
+
 Q_SIGNALS:
     /**
       * signal to indicate a folder has changed its sync state.
