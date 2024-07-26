@@ -73,15 +73,9 @@
     </message>
 </context>
 <context>
-    <name>AppImageUpdateAvailableDialogUi</name>
+    <name>AppImageUpdateAvailableWidgetUi</name>
     <message>
-        <location filename="../src/gui/updater/appimageupdateavailabledialog.ui" line="20"/>
-        <source>Update available</source>
-        <extracomment>AppImage update available dialog</extracomment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/gui/updater/appimageupdateavailabledialog.ui" line="127"/>
+        <location filename="../src/gui/updater/appimageupdateavailablewidget.ui" line="123"/>
         <source>Skip this version</source>
         <translation type="unfinished"></translation>
     </message>
@@ -932,19 +926,19 @@ This action will abort any currently running synchronization.</source>
     </message>
 </context>
 <context>
-    <name>OCC::AppImageUpdateAvailableDialog</name>
+    <name>OCC::AppImageUpdateAvailableWidget</name>
     <message>
-        <location filename="../src/gui/updater/appimageupdateavailabledialog.cpp" line="35"/>
+        <location filename="../src/gui/updater/appimageupdateavailablewidget.cpp" line="35"/>
         <source>Installed version: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/appimageupdateavailabledialog.cpp" line="36"/>
+        <location filename="../src/gui/updater/appimageupdateavailablewidget.cpp" line="36"/>
         <source>Available update: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/appimageupdateavailabledialog.cpp" line="37"/>
+        <location filename="../src/gui/updater/appimageupdateavailablewidget.cpp" line="37"/>
         <source>An update is available for this AppImage of %1. Do you want to install this update?
 
 The update will be performed in the background, and overwrite the current AppImage file. You need to restart the app to complete the update.</source>
