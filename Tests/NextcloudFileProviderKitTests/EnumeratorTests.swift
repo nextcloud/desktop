@@ -247,6 +247,8 @@ final class EnumeratorTests: XCTestCase {
     }
 
     func testFolderEnumeration() async throws {
+        let db = Self.dbManager.ncDatabase() // Strong ref for in memory test db
+        debugPrint(db)
         let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
 
         let oldEtag = "OLD"
@@ -305,6 +307,8 @@ final class EnumeratorTests: XCTestCase {
     }
 
     func testEnumerateFile() async throws {
+        let db = Self.dbManager.ncDatabase() // Strong ref for in memory test db
+        debugPrint(db)
         let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
 
         let folderMetadata = ItemMetadata()
@@ -359,6 +363,8 @@ final class EnumeratorTests: XCTestCase {
     }
 
     func testFolderAndContentsChangeEnumeration() async throws {
+        let db = Self.dbManager.ncDatabase() // Strong ref for in memory test db
+        debugPrint(db)
         let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
 
         remoteFolder.children.removeAll(where: { $0.identifier == remoteItemB.identifier })
@@ -491,6 +497,8 @@ final class EnumeratorTests: XCTestCase {
     }
 
     func testFileMoveChangeEnumeration() async throws {
+        let db = Self.dbManager.ncDatabase() // Strong ref for in memory test db
+        debugPrint(db)
         let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
 
         remoteFolder.children.removeAll(where: { $0.identifier == remoteItemA.identifier })
@@ -603,6 +611,8 @@ final class EnumeratorTests: XCTestCase {
     }
 
     func testFileLockStateEnumeration() async throws {
+        let db = Self.dbManager.ncDatabase() // Strong ref for in memory test db
+        debugPrint(db)
         let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
 
         remoteFolder.children.append(remoteItemC)
