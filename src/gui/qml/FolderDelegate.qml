@@ -225,26 +225,38 @@ Pane {
                 }
             }
         }
+        RowLayout {
+            Layout.fillWidth: true
 
-        Button {
-            id: addSyncButton
-            text: accountSettings.accountState.supportsSpaces ? qsTr("Add Space") : qsTr("Add Folder")
-            // this should have no effect, but without it the higlight is not displayed in Qt 6.7 on Windows
-            palette.highlight: folderSyncPanel.palette.highlight
+            Button {
+                id: addSyncButton
+                text: accountSettings.accountState.supportsSpaces ? qsTr("Add Space") : qsTr("Add Folder")
+                // this should have no effect, but without it the higlight is not displayed in Qt 6.7 on Windows
+                palette.highlight: folderSyncPanel.palette.highlight
 
-            onClicked: {
-                accountSettings.slotAddFolder();
+                onClicked: {
+                    accountSettings.slotAddFolder();
+                }
+                enabled: (accountSettings.accountState.state === AccountState.Connected) && (accountSettings.unsyncedSpaces || !accountSettings.accountState.supportsSpaces)
+
+                // with Spaces Theme.singleSyncFolder hast no effect
+                visible: accountSettings.accountState.supportsSpaces || listView.count === 0 || !Theme.singleSyncFolder
+
+                Keys.onBacktabPressed: {
+                    listView.currentItem.forceActiveFocus(Qt.TabFocusReason);
+                }
+
+                Keys.onTabPressed: {
+                    accountSettings.focusNext();
+                }
             }
-            enabled: accountSettings.accountState.state === AccountState.Connected
-
-            visible: listView.count === 0 || !Theme.singleSyncFolder
-
-            Keys.onBacktabPressed: {
-                listView.currentItem.forceActiveFocus(Qt.TabFocusReason);
+            Item {
+                // spacer
+                Layout.fillWidth: true
             }
-
-            Keys.onTabPressed: {
-                accountSettings.focusNext();
+            Label {
+                text: qsTr("You are synchronizing %1 of %2 spaces").arg(accountSettings.syncedSpaces).arg(accountSettings.unsyncedSpaces)
+                visible: accountSettings.accountState.supportsSpaces
             }
         }
     }

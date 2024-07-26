@@ -34,6 +34,7 @@
 #include "gui/selectivesyncwidget.h"
 #include "gui/spaces/spaceimageprovider.h"
 #include "guiutility.h"
+#include "libsync/graphapi/spacesmanager.h"
 #include "oauthloginwidget.h"
 #include "quotainfo.h"
 #include "scheduling/syncscheduler.h"
@@ -75,6 +76,25 @@ AccountSettings::AccountSettings(const AccountStatePtr &accountState, QWidget *p
     QmlUtils::initQuickWidget(ui->quickWidget, QUrl(QStringLiteral("qrc:/qt/qml/org/ownCloud/gui/qml/FolderDelegate.qml")), this);
 
     connect(FolderMan::instance(), &FolderMan::folderListChanged, _model, &FolderStatusModel::resetFolders);
+    if (accountsState()->supportsSpaces()) {
+        connect(accountsState()->account()->spacesManager(), &GraphApi::SpacesManager::updated, this, [this] {
+            auto spaces = accountsState()->account()->spacesManager()->spaces();
+            auto unsycnedSpaces = std::set<GraphApi::Space *>(spaces.cbegin(), spaces.cend());
+            for (const auto &f : std::as_const(FolderMan::instance()->folders())) {
+                unsycnedSpaces.erase(f->space());
+            }
+            if (_unsyncedSpaces != unsycnedSpaces.size()) {
+                _unsyncedSpaces = static_cast<uint>(unsycnedSpaces.size());
+                Q_EMIT unsyncedSpacesChanged();
+            }
+            uint syncedSpaces = spaces.size() - _unsyncedSpaces;
+            if (_syncedSpaces = !syncedSpaces) {
+                _syncedSpaces = syncedSpaces;
+                Q_EMIT syncedSpacesChanged();
+            }
+        });
+    }
+
     ui->connectLabel->clear();
 
     connect(_accountState.data(), &AccountState::stateChanged, this, &AccountSettings::slotAccountStateChanged);
@@ -545,6 +565,16 @@ void AccountSettings::addModalWidget(AccountModalWidget *widget)
         ocApp()->gui()->settingsDialog()->ceaseModality(_accountState->account().get());
     });
     ocApp()->gui()->settingsDialog()->requestModality(_accountState->account().get());
+}
+
+uint AccountSettings::unsyncedSpaces() const
+{
+    return _unsyncedSpaces;
+}
+
+uint AccountSettings::syncedSpaces() const
+{
+    return _syncedSpaces;
 }
 
 void AccountSettings::slotDeleteAccount()

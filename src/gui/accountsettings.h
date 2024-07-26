@@ -51,6 +51,8 @@ class OWNCLOUDGUI_EXPORT AccountSettings : public QWidget
     Q_OBJECT
     Q_PROPERTY(AccountState *accountState MEMBER _accountState CONSTANT)
     Q_PROPERTY(QSortFilterProxyModel *model MEMBER _sortModel CONSTANT)
+    Q_PROPERTY(uint unsyncedSpaces READ unsyncedSpaces NOTIFY unsyncedSpacesChanged)
+    Q_PROPERTY(uint syncedSpaces READ syncedSpaces NOTIFY syncedSpacesChanged)
     OC_DECLARE_WIDGET_FOCUS
     QML_ELEMENT
     QML_UNCREATABLE("C++ only")
@@ -67,10 +69,15 @@ public:
     void addModalLegacyDialog(QWidget *widget, ModalWidgetSizePolicy sizePolicy);
     void addModalWidget(AccountModalWidget *widget);
 
+    uint unsyncedSpaces() const;
+    uint syncedSpaces() const;
+
     auto model() { return _sortModel; }
 
 Q_SIGNALS:
     void showIssuesList();
+    void unsyncedSpacesChanged();
+    void syncedSpacesChanged();
 
 public Q_SLOTS:
     void slotAccountStateChanged();
@@ -103,6 +110,8 @@ private:
     AccountStatePtr _accountState;
     // are we already in the destructor
     bool _goingDown = false;
+    uint _syncedSpaces = 0;
+    uint _unsyncedSpaces = 0;
 };
 
 } // namespace OCC
