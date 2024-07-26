@@ -103,7 +103,9 @@ public extension Item {
                 metadata.sessionError = ""
                 metadata.date = (date ?? NSDate()) as Date
                 metadata.etag = etag ?? ""
-                dbManager.addLocalFileMetadataFromItemMetadata(metadata)
+                if !metadata.directory {
+                    dbManager.addLocalFileMetadataFromItemMetadata(metadata)
+                }
                 dbManager.addItemMetadata(metadata)
 
                 progress.completedUnitCount += 1
@@ -223,7 +225,9 @@ public extension Item {
         updatedMetadata.date = (date ?? NSDate()) as Date
         updatedMetadata.etag = etag ?? ""
 
-        dbManager.addLocalFileMetadataFromItemMetadata(updatedMetadata)
+        if !isDirectory {
+            dbManager.addLocalFileMetadataFromItemMetadata(updatedMetadata)
+        }
         dbManager.addItemMetadata(updatedMetadata)
 
         guard let parentItemIdentifier = dbManager.parentItemIdentifierFromMetadata(
