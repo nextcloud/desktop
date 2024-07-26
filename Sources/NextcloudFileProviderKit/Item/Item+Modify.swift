@@ -212,7 +212,6 @@ public extension Item {
     private func modifyBundleOrPackageContents(
         contents newContents: URL?,
         remotePath: String,
-        ncAccount: Account,
         domain: NSFileProviderDomain?,
         progress: Progress,
         dbManager: FilesDatabaseManager
@@ -644,7 +643,6 @@ public extension Item {
                     contentModifiedItem = try await modifiedItem.modifyBundleOrPackageContents(
                         contents: newContents,
                         remotePath: newServerUrlFileName,
-                        ncAccount: ncAccount,
                         domain: domain,
                         progress: progress,
                         dbManager: dbManager
