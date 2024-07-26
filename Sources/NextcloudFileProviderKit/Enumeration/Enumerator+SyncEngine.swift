@@ -397,14 +397,13 @@ extension Enumerator {
             )
             let itemMetadata = ItemMetadata.fromNKFile(receivedFile, account: ncKitAccount)
             dbManager.addItemMetadata(itemMetadata)  // TODO: Return some value when it is an update
-            let inactiveItemMetadataCopy = ItemMetadata(value: itemMetadata)
-            return ([inactiveItemMetadataCopy], nil, nil, nil, nil)
+            return ([itemMetadata], nil, nil, nil, nil)
         }
 
         if stopAtMatchingEtags,
-           let directory = dbManager.directoryMetadata(account: ncKitAccount, serverUrl: serverUrl),
-           directory.etag != "",
-           directory.etag == receivedFile.etag
+           let dir = dbManager.itemMetadata(account: ncKitAccount, locatedAtRemoteUrl: serverUrl),
+           dir.etag != "",
+           dir.etag == receivedFile.etag
         {
             Self.logger.debug(
                 """

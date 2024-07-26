@@ -200,7 +200,7 @@ extension Item {
         domain: NSFileProviderDomain? = nil,
         remoteInterface: RemoteInterface,
         ncAccount: Account,
-        progress: Progress, // FIXME: This does not work as it should
+        progress: Progress,
         dbManager: FilesDatabaseManager
     ) async throws -> Item? {
         Self.logger.debug(
@@ -249,6 +249,9 @@ extension Item {
         let privateContentsPath = contentsPath.hasPrefix(privatePrefix)
         var remoteDirectoriesPaths = [remotePath]
 
+        // Add one more total unit count to signify final reconciliation of bundle creation process
+        progress.totalUnitCount = Int64(enumeratorArray.count) + 1
+
         for childUrl in enumeratorArray {
             var childUrlPath = childUrl.path
             if childUrlPath.hasPrefix(privatePrefix), !privateContentsPath {
@@ -275,7 +278,11 @@ extension Item {
                         }
                     }
                 )
-                guard createError == .success else {
+
+                // As with the creating of the bundle's root folder, we do not want to abort on fail
+                // as we might have faced an error creating some other internal content and we want
+                // to retry all of its contents
+                guard createError == .success || createError.matchesCollisionError else {
                     Self.logger.error(
                         """
                         Could not create new bpi folder at: \(remotePath, privacy: .public),
@@ -309,7 +316,7 @@ extension Item {
                             )
                         }
                     },
-                    progressHandler: { $0.copyCurrentStateToProgress(progress) }
+                    progressHandler: { _ in }
                 )
 
                 guard error == .success else {
@@ -323,6 +330,7 @@ extension Item {
                     throw remoteErrorToThrow(error)
                 }
             }
+            progress.completedUnitCount += 1
         }
 
         for remoteDirectoryPath in remoteDirectoriesPaths {
@@ -351,11 +359,18 @@ extension Item {
         ) else {
             Self.logger.error(
                 """
-                Could not find directory metadata for bundle or package at: \(contentsPath, privacy: .public)
+                Could not find directory metadata for bundle or package at:
+                \(remotePath, privacy: .public)
+                of account:
+                \(ncAccount.ncKitAccount, privacy: .public)
+                with contents located at:
+                \(contentsPath, privacy: .public)
                 """
             )
             throw NSFileProviderError(.noSuchItem)
         }
+
+        progress.completedUnitCount += 1
 
         return Item(
             metadata: bundleRootMetadata,
@@ -432,26 +447,95 @@ extension Item {
             with contents located at: \(fileNameLocalPath, privacy: .public)
             """
         )
-        
-        guard !itemTemplateIsFolder else  {
-            let (item, error) = await Self.createNewFolder(
+
+        guard !itemTemplateIsFolder else {
+            let isBundleOrPackage =
+                itemTemplate.contentType?.conforms(to: .bundle) == true ||
+                itemTemplate.contentType?.conforms(to: .package) == true
+
+            var (item, error) = await Self.createNewFolder(
                 itemTemplate: itemTemplate,
                 remotePath: newServerUrlFileName,
                 parentItemIdentifier: parentItemIdentifier,
                 domain: domain,
                 remoteInterface: remoteInterface,
-                progress: progress,
+                progress: isBundleOrPackage ? Progress() : progress,
                 dbManager: dbManager
             )
 
-            guard let item, error == nil else {
+            guard isBundleOrPackage else {
                 return (item, error)
             }
 
-            if itemTemplate.contentType?.conforms(to: .bundle) == false,
-               itemTemplate.contentType?.conforms(to: .package) == false
-            {
+            // Ignore collision errors as we might have faced an error creating one of the bundle's
+            // internal files or folders and we want to retry all of its contents
+            let fpErrorCode = (error as? NSFileProviderError)?.code
+            guard error == nil || fpErrorCode == .filenameCollision else {
+                Self.logger.error(
+                    """
+                    Could not create item with identifier: \(tempId, privacy: .public),
+                    as it is a bundle or package but could not create the folder.
+                    item: \(item, privacy: .public)
+                    error: \(error?.localizedDescription ?? "nil", privacy: .public)
+                    file provider error code: \(fpErrorCode?.rawValue ?? -1, privacy: .public)
+                    """
+                )
                 return (item, error)
+            }
+
+            if item == nil {
+                Self.logger.debug(
+                    """
+                    Item: \(newServerUrlFileName, privacy: .public),
+                    is a bundle or package whose root folder already exists, ignoring errors.
+                    Fetching remote information and proceeding with creation of internal contents.
+                    """
+                )
+                let (metadatas, _, _, _, readError) = await Enumerator.readServerUrl(
+                    newServerUrlFileName,
+                    ncAccount: ncAccount,
+                    remoteInterface: remoteInterface,
+                    dbManager: dbManager,
+                    domain: domain,
+                    depth: .target
+                )
+
+                if let readError, readError != .success {
+                    Self.logger.error(
+                        """
+                        Could not read existing bundle or package folder at:
+                        \(newServerUrlFileName, privacy: .public),
+                        received error: \(readError.errorCode, privacy: .public)
+                        \(readError.errorDescription, privacy: .public)
+                        """
+                    )
+                    return (nil, readError.fileProviderError)
+                }
+                guard let itemMetadata = metadatas?.first else {
+                    Self.logger.error(
+                        """
+                        Could not create item with identifier: \(tempId, privacy: .public),
+                        for remotely-existing bundle or package. This should not happen.
+                        """
+                    )
+                    return (nil, NSFileProviderError(.noSuchItem))
+                }
+
+                item = Item(
+                    metadata: itemMetadata,
+                    parentItemIdentifier: parentItemIdentifier,
+                    remoteInterface: remoteInterface
+                )
+            }
+
+            guard let item = item else {
+                Self.logger.error(
+                    """
+                    Could not create item with identifier: \(tempId, privacy: .public),
+                    for remotely-existing bundle or package as item is null. This should not happen.
+                    """
+                )
+                return (nil, NSFileProviderError(.noSuchItem))
             }
 
             guard let url else {

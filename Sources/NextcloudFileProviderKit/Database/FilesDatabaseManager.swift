@@ -98,7 +98,11 @@ public class FilesDatabaseManager {
     ) -> ItemMetadata? {
         guard let actualRemoteUrl = URL(string: remoteUrl) else { return nil }
         let fileName = actualRemoteUrl.lastPathComponent
-        var serverUrl = actualRemoteUrl.deletingLastPathComponent().absoluteString
+        guard var serverUrl = actualRemoteUrl
+            .deletingLastPathComponent()
+            .absoluteString
+            .removingPercentEncoding
+        else { return nil }
         if serverUrl.hasSuffix("/") {
             serverUrl.removeLast()
         }
@@ -337,7 +341,7 @@ public class FilesDatabaseManager {
 
         do {
             try database.write {
-                database.add(metadata, update: .all)
+                database.add(ItemMetadata(value: metadata), update: .all)
                 Self.logger.debug(
                     """
                     Added item metadata.
@@ -345,6 +349,15 @@ public class FilesDatabaseManager {
                     etag: \(metadata.etag, privacy: .public)
                     fileName: \(metadata.fileName, privacy: .public)
                     parentDirectoryUrl: \(metadata.serverUrl, privacy: .public)
+                    account: \(metadata.account, privacy: .public)
+                    content type: \(metadata.contentType, privacy: .public)
+                    creation date: \(metadata.creationDate, privacy: .public)
+                    date: \(metadata.date, privacy: .public)
+                    lock: \(metadata.lock, privacy: .public)
+                    lockTimeOut: \(metadata.lockTimeOut?.description ?? "", privacy: .public)
+                    lockOwner: \(metadata.lockOwner, privacy: .public)
+                    permissions: \(metadata.permissions, privacy: .public)
+                    size: \(metadata.size, privacy: .public)
                     """
                 )
             }

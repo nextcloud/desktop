@@ -332,8 +332,8 @@ final class FilesDatabaseManagerTests: XCTestCase {
             realm.add(metadata)
         }
 
-        let retrievedMetadata = Self.dbManager.directoryMetadata(
-            account: account, serverUrl: serverUrl
+        let retrievedMetadata = Self.dbManager.itemMetadata(
+            account: account, locatedAtRemoteUrl: serverUrl
         )
         XCTAssertNotNil(retrievedMetadata, "Should retrieve directory metadata")
         XCTAssertEqual(
@@ -432,8 +432,8 @@ final class FilesDatabaseManagerTests: XCTestCase {
 
     func testErrorOnDirectoryMetadataNotFound() throws {
         let nonExistentServerUrl = "https://cloud.example.com/nonexistent"
-        let directoryMetadata = Self.dbManager.directoryMetadata(
-            account: "TestAccount", serverUrl: nonExistentServerUrl
+        let directoryMetadata = Self.dbManager.itemMetadata(
+            account: "TestAccount", locatedAtRemoteUrl: nonExistentServerUrl
         )
         XCTAssertNil(directoryMetadata, "Should return nil when directory metadata is not found")
     }
@@ -618,5 +618,22 @@ final class FilesDatabaseManagerTests: XCTestCase {
         )
     }
 
+    func testFindingItemBasedOnRemotePath() throws {
+        let account = "TestAccount"
+        let filename = "super duper new file"
+        let parentUrl = "https://cloud.example.com/files/my great and incredible dir/dir-2"
+        let fullUrl = parentUrl + "/" + filename
 
+        let deepNestedDirectoryMetadata = ItemMetadata()
+        deepNestedDirectoryMetadata.ocId = filename
+        deepNestedDirectoryMetadata.account = account
+        deepNestedDirectoryMetadata.serverUrl = parentUrl
+        deepNestedDirectoryMetadata.fileName = filename
+        deepNestedDirectoryMetadata.directory = true
+
+        let realm = Self.dbManager.ncDatabase()
+        try realm.write { realm.add(deepNestedDirectoryMetadata) }
+
+        XCTAssertNotNil(Self.dbManager.itemMetadata(account: account, locatedAtRemoteUrl: fullUrl))
+    }
 }
