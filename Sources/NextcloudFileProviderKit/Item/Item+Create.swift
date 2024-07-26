@@ -383,7 +383,6 @@ extension Item {
         request: NSFileProviderRequest = NSFileProviderRequest(),
         domain: NSFileProviderDomain? = nil,
         remoteInterface: RemoteInterface,
-        ncAccount: Account,
         progress: Progress,
         dbManager: FilesDatabaseManager = .shared
     ) async -> (Item?, Error?) {
@@ -412,7 +411,7 @@ extension Item {
         
         // TODO: Deduplicate
         if parentItemIdentifier == .rootContainer {
-            parentItemRemotePath = ncAccount.davFilesUrl
+            parentItemRemotePath = remoteInterface.account.davFilesUrl
         } else {
             guard let parentItemMetadata = dbManager.directoryMetadata(
                 ocId: parentItemIdentifier.rawValue
