@@ -17,99 +17,107 @@ public extension Item {
         domain: NSFileProviderDomain?,
         progress: Progress
     ) async throws {
-        progress.totalUnitCount = 1 // Add 1 for final procedures
+        progress.totalUnitCount += 1 // Add 1 for final procedures
 
         // Download *everything* within this directory. What we do:
         // 1. Enumerate the contents of the directory
         // 2. Download everything within this directory
         // 3. Detect child directories
         // 4. Repeat 1 -> 3 for each child directory
-        var remoteDirectoryPaths = [directoryRemotePath]
-        while !remoteDirectoryPaths.isEmpty {
-            let remoteDirectoryPath = remoteDirectoryPaths.removeFirst()
-            let (metadatas, _, _, _, readError) = await Enumerator.readServerUrl(
-                remoteDirectoryPath,
-                ncAccount: remoteInterface.account,
-                remoteInterface: remoteInterface,
-                dbManager: dbManager
+        let (metadatas, _, _, _, readError) = await Enumerator.readServerUrl(
+            directoryRemotePath,
+            ncAccount: remoteInterface.account,
+            remoteInterface: remoteInterface,
+            dbManager: dbManager
+        )
+
+        if let readError, readError != .success {
+            Self.logger.error(
+                """
+                Could not enumerate directory contents for
+                \(self.metadata.fileName, privacy: .public)
+                at \(directoryRemotePath, privacy: .public)
+                error: \(readError.errorCode, privacy: .public)
+                \(readError.errorDescription, privacy: .public)
+                """
+            )
+            throw readError.fileProviderError ?? NSFileProviderError(.cannotSynchronize)
+        }
+
+        guard let metadatas else {
+            Self.logger.error(
+                """
+                Could not fetch directory contents for
+                \(self.metadata.fileName, privacy: .public)
+                at \(directoryRemotePath, privacy: .public), received nil metadatas
+                """
+            )
+            throw NSFileProviderError(.cannotSynchronize)
+        }
+
+        progress.totalUnitCount += Int64(metadatas.count)
+
+        for metadata in metadatas {
+            let remotePath = metadata.serverUrl + "/" + metadata.fileName
+            guard !metadata.directory else {
+                let item = Item.storedItem(
+                    identifier: NSFileProviderItemIdentifier(metadata.ocId),
+                    remoteInterface: remoteInterface,
+                    dbManager: dbManager
+                )
+                try await item?.fetchDirectoryContents(
+                    directoryLocalPath: directoryLocalPath,
+                    directoryRemotePath: remotePath,
+                    domain: domain,
+                    progress: progress
+                )
+                return
+            }
+
+            let relativePath =
+                remotePath.replacingOccurrences(of: directoryRemotePath, with: "")
+            let childLocalPath = directoryLocalPath + relativePath
+            let (_, _, _, _, _, _, error) = await remoteInterface.download(
+                remotePath: remotePath,
+                localPath: childLocalPath,
+                options: .init(),
+                requestHandler: { progress.setHandlersFromAfRequest($0) },
+                taskHandler: { task in
+                    if let domain {
+                        NSFileProviderManager(for: domain)?.register(
+                            task,
+                            forItemWithIdentifier: NSFileProviderItemIdentifier(metadata.ocId),
+                            completionHandler: { _ in }
+                        )
+                    }
+                }, progressHandler: { _ in }
             )
 
-            if let readError, readError != .success {
+            guard error == .success || error.errorCode == 200 else {
                 Self.logger.error(
                     """
-                    Could not enumerate directory contents for
-                    \(self.metadata.fileName, privacy: .public)
-                    at \(remoteDirectoryPath, privacy: .public)
-                    error: \(readError.errorCode, privacy: .public)
-                    \(readError.errorDescription, privacy: .public)
+                    Could not acquire contents of item: \(metadata.fileName, privacy: .public)
+                    at \(remotePath, privacy: .public)
+                    error: \(error.errorCode, privacy: .public)
+                    \(error.errorDescription, privacy: .public)
                     """
                 )
-                throw readError.fileProviderError ?? NSFileProviderError(.cannotSynchronize)
-            }
 
-            guard let metadatas else {
-                Self.logger.error(
-                    """
-                    Could not fetch directory contents for
-                    \(self.metadata.fileName, privacy: .public)
-                    at \(remoteDirectoryPath, privacy: .public), received nil metadatas
-                    """
-                )
-                throw NSFileProviderError(.cannotSynchronize)
-            }
-
-            progress.totalUnitCount += Int64(metadatas.count)
-
-            for metadata in metadatas {
-                let remotePath = metadata.serverUrl + "/" + metadata.fileName
-                if metadata.directory {
-                    remoteDirectoryPaths.append(remotePath)
-                }
-                let relativePath =
-                    remotePath.replacingOccurrences(of: directoryRemotePath, with: "")
-                let childLocalPath = directoryLocalPath + relativePath
-                let (_, etag, date, _, _, _, error) = await remoteInterface.download(
-                    remotePath: remotePath,
-                    localPath: childLocalPath,
-                    options: .init(),
-                    requestHandler: { progress.setHandlersFromAfRequest($0) },
-                    taskHandler: { task in
-                        if let domain {
-                            NSFileProviderManager(for: domain)?.register(
-                                task,
-                                forItemWithIdentifier: NSFileProviderItemIdentifier(metadata.ocId),
-                                completionHandler: { _ in }
-                            )
-                        }
-                    }, progressHandler: { _ in }
-                )
-
-                guard error == .success || error.errorCode == 200 else {
-                    Self.logger.error(
-                        """
-                        Could not acquire contents of item: \(metadata.fileName, privacy: .public)
-                        at \(remotePath, privacy: .public)
-                        error: \(error.errorCode, privacy: .public)
-                        \(error.errorDescription, privacy: .public)
-                        """
-                    )
-                    metadata.status = ItemMetadata.Status.downloadError.rawValue
-                    metadata.sessionError = error.errorDescription
-                    dbManager.addItemMetadata(metadata)
-                    throw error.fileProviderError ?? NSFileProviderError(.cannotSynchronize)
-                }
-
-                metadata.status = ItemMetadata.Status.normal.rawValue
-                metadata.sessionError = ""
-                metadata.date = (date ?? NSDate()) as Date
-                metadata.etag = etag ?? ""
-                if !metadata.directory {
-                    dbManager.addLocalFileMetadataFromItemMetadata(metadata)
-                }
+                metadata.status = ItemMetadata.Status.downloadError.rawValue
+                metadata.sessionError = error.errorDescription
                 dbManager.addItemMetadata(metadata)
 
-                progress.completedUnitCount += 1
+                throw error.fileProviderError ?? NSFileProviderError(.cannotSynchronize)
             }
+
+            metadata.status = ItemMetadata.Status.normal.rawValue
+            metadata.sessionError = ""
+            if !metadata.directory {
+                dbManager.addLocalFileMetadataFromItemMetadata(metadata)
+            }
+            dbManager.addItemMetadata(metadata)
+
+            progress.completedUnitCount += 1
         }
 
         progress.completedUnitCount += 1 // Finish off
