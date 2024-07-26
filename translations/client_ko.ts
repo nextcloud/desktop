@@ -6041,7 +6041,7 @@ Server replied with error: %2</source>
         <location filename="../src/common/utility.cpp" line="502"/>
         <source>%nm</source>
         <comment>delay in minutes after an activity</comment>
-        <translation><numerusform>%n개월</numerusform></translation>
+        <translation><numerusform>%n분</numerusform></translation>
     </message>
     <message>
         <location filename="../src/common/utility.cpp" line="506"/>
@@ -6158,7 +6158,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="414"/>
         <source>File drop (upload only)</source>
-        <translation>업로드만 허용</translation>
+        <translation>파일 업로드 전용</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="453"/>
@@ -6982,7 +6982,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/shareuserline.ui" line="115"/>
         <source>Can edit</source>
-        <translation>수정할 수 있음</translation>
+        <translation>편집 허용</translation>
     </message>
     <message>
         <location filename="../src/gui/shareuserline.ui" line="149"/>
