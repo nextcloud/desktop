@@ -84,7 +84,7 @@ public extension Item {
                     }, progressHandler: { _ in }
                 )
 
-                if error != .success {
+                guard error == .success || error.errorCode == 200 else {
                     Self.logger.error(
                         """
                         Could not acquire contents of item: \(metadata.fileName, privacy: .public)
