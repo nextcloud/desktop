@@ -118,7 +118,7 @@ void FetchServerSettingsJob::runAsyncUpdates()
 
     // ideally we would parent them to the account, but as things are messed up by the shared pointer stuff we can't at the moment
     // so we just set them free
-    if (_account->capabilities().spacesSupport().enabled && _account->capabilities().avatarsAvailable()) {
+    if (!_account->capabilities().spacesSupport().enabled || _account->capabilities().avatarsAvailable()) {
         // the avatar job uses the legacy webdav url and ocis will require a new approach
         auto *avatarJob = new AvatarJob(_account, _account->davUser(), 128, nullptr);
         connect(avatarJob, &AvatarJob::avatarPixmap, this, [this](const QPixmap &img) { _account->setAvatar(img); });
