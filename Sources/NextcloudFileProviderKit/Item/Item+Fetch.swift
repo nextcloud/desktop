@@ -89,8 +89,18 @@ public extension Item {
                         \(error.errorDescription, privacy: .public)
                         """
                     )
+                    metadata.status = ItemMetadata.Status.downloadError.rawValue
+                    metadata.sessionError = error.errorDescription
+                    dbManager.addItemMetadata(metadata)
                     throw error.fileProviderError ?? NSFileProviderError(.cannotSynchronize)
                 }
+
+                metadata.status = ItemMetadata.Status.normal.rawValue
+                metadata.sessionError = ""
+                metadata.date = (date ?? NSDate()) as Date
+                metadata.etag = etag ?? ""
+                dbManager.addLocalFileMetadataFromItemMetadata(metadata)
+                dbManager.addItemMetadata(metadata)
             }
         }
     }
