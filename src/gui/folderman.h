@@ -101,7 +101,7 @@ public:
     Folder *addFolder(AccountState *accountState, const FolderDefinition &folderDefinition);
 
     /** Removes a folder */
-    void removeFolder(Folder *);
+    void removeFolder(Folder *folder);
 
     /** Returns the folder which the file or directory stored in path is in */
     Folder *folderForPath(const QString &path);
@@ -115,7 +115,7 @@ public:
       * incoming relative server path. The method checks with all existing sync
       * folders.
       */
-    QStringList findFileInLocalFolders(const QString &relPath, const AccountPtr acc);
+    QStringList findFileInLocalFolders(const QString &relativePath, const AccountPtr accountPtr);
 
     /** Returns the folder by alias or \c nullptr if no folder with the alias exists. */
     Folder *folder(const QString &);
@@ -214,7 +214,7 @@ public:
     void setSyncEnabled(bool);
 
     /** Queues a folder for syncing. */
-    void scheduleFolder(Folder *);
+    void scheduleFolder(Folder *folder);
 
     /** Queues a folder for syncing that starts immediately. */
     void scheduleFolderForImmediateSync(Folder *);
@@ -287,7 +287,7 @@ public slots:
     void removeE2eFiles(const OCC::AccountPtr &account) const;
 
 private slots:
-    void slotFolderSyncPaused(OCC::Folder *, bool paused);
+    void slotFolderSyncPaused(OCC::Folder *folder, bool paused);
     void slotFolderCanSyncChanged();
     void slotFolderSyncStarted();
     void slotFolderSyncFinished(const OCC::SyncResult &);

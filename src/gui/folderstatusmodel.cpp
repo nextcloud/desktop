@@ -1187,7 +1187,7 @@ void FolderStatusModel::slotFolderSyncStateChange(Folder *folder)
         const auto folderMan = FolderMan::instance();
         auto pos = folderMan->scheduleQueue().indexOf(folder);
         for (auto other : folderMan->map()) {
-            if (other != folder && other->isSyncRunning())
+            if (other != folder && (other->isSyncRunning() || other->isVfsHydrating()))
                 pos += 1;
         }
         const auto message = pos <= 0 ? tr("Waiting …") : tr("Waiting for %n other folder(s) …", "", pos);

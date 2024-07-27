@@ -285,7 +285,7 @@ private slots:
         const auto folderList = folderman->map();
 
         for (const auto &folder : folderList) {
-            QVERIFY(!folder->isSyncRunning());
+            QVERIFY(!(folder->isSyncRunning() || folder->isVfsHydrating()));
         }
 
 

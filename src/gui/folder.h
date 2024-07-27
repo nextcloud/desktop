@@ -197,6 +197,9 @@ public:
     /** True if the folder is currently synchronizing */
     bool isSyncRunning() const;
 
+    /** True if the vfs is currently hydrating */
+    bool isVfsHydrating() const;
+
     /**
      * return the last sync result with error message and status
      */

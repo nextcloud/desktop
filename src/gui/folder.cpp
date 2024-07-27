@@ -254,12 +254,17 @@ QString Folder::cleanPath() const
 
 bool Folder::isBusy() const
 {
-    return isSyncRunning();
+    return isSyncRunning() || isVfsHydrating();
 }
 
 bool Folder::isSyncRunning() const
 {
-    return _engine->isSyncRunning() || (_vfs && _vfs->isHydrating());
+    return _engine->isSyncRunning();
+}
+
+bool Folder::isVfsHydrating() const
+{
+    return (_vfs && _vfs->isHydrating());
 }
 
 QString Folder::remotePath() const
@@ -1521,7 +1526,7 @@ void Folder::slotWatcherUnreliable(const QString &message)
 void Folder::slotHydrationStarts()
 {
     // Abort any running full sync run and reschedule
-    if (_engine->isSyncRunning()) {
+    if (isSyncRunning()) {
         setSilenceErrorsUntilNextSync(true);
         slotTerminateSync();
         scheduleThisFolderSoon();

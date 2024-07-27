@@ -212,8 +212,8 @@ bool EditLocallyJob::eraseBlacklistRecordForItem()
         return false;
     }
 
-    Q_ASSERT(!_folderForFile->isSyncRunning());
-    if (_folderForFile->isSyncRunning()) {
+    Q_ASSERT(!(_folderForFile->isSyncRunning() || _folderForFile->isVfsHydrating()));
+    if (_folderForFile->isSyncRunning() || _folderForFile->isVfsHydrating()) {
         qCWarning(lcEditLocallyJob) << "_folderForFile is syncing";
         return false;
     }
@@ -324,7 +324,7 @@ void EditLocallyJob::startEditLocally()
         return;
     }
 
-    if (_folderForFile->isSyncRunning()) {
+    if (_folderForFile->isSyncRunning() || _folderForFile->isVfsHydrating()) {
         // in case sync is already running - terminate it and start a new one
         _syncTerminatedConnection = connect(_folderForFile, &Folder::syncFinished, this, [this]() {
             disconnect(_syncTerminatedConnection);
