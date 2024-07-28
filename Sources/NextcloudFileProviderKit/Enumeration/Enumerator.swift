@@ -39,7 +39,7 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
     private static func isSystemIdentifier(_ identifier: NSFileProviderItemIdentifier) -> Bool {
         identifier == .rootContainer || identifier == .trashContainer || identifier == .workingSet
     }
-    
+
     public init(
         enumeratedItemIdentifier: NSFileProviderItemIdentifier,
         remoteInterface: RemoteInterface,
@@ -58,12 +58,18 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
 
         if Self.isSystemIdentifier(enumeratedItemIdentifier) {
             Self.logger.debug(
-                "Providing enumerator for a system defined container: \(enumeratedItemIdentifier.rawValue, privacy: .public)"
+                """
+                Providing enumerator for a system defined container:
+                \(enumeratedItemIdentifier.rawValue, privacy: .public)
+                """
             )
             serverUrl = remoteInterface.account.davFilesUrl
         } else {
             Self.logger.debug(
-                "Providing enumerator for item with identifier: \(enumeratedItemIdentifier.rawValue, privacy: .public)"
+                """
+                Providing enumerator for item with identifier:
+                \(enumeratedItemIdentifier.rawValue, privacy: .public)
+                """
             )
 
             enumeratedItemMetadata = dbManager.itemMetadataFromFileProviderItemIdentifier(
@@ -73,7 +79,10 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
                     enumeratedItemMetadata.serverUrl + "/" + enumeratedItemMetadata.fileName
             } else {
                 Self.logger.error(
-                    "Could not find itemMetadata for file with identifier: \(enumeratedItemIdentifier.rawValue, privacy: .public)"
+                    """
+                    Could not find itemMetadata for file with identifier:
+                    \(enumeratedItemIdentifier.rawValue, privacy: .public)
+                    """
                 )
             }
         }
@@ -89,7 +98,10 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
 
     public func invalidate() {
         Self.logger.debug(
-            "Enumerator is being invalidated for item with identifier: \(self.enumeratedItemIdentifier.rawValue, privacy: .public)"
+            """
+            Enumerator is being invalidated for item with identifier:
+            \(self.enumeratedItemIdentifier.rawValue, privacy: .public)
+            """
         )
         isInvalidated = true
     }
@@ -145,9 +157,14 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
 
         guard serverUrl != "" else {
             Self.logger.error(
-                "Enumerator has empty serverUrl -- can't enumerate that! For identifier: \(self.enumeratedItemIdentifier.rawValue, privacy: .public)"
+                """
+                Enumerator has empty serverUrl -- can't enumerate that!
+                For identifier: \(self.enumeratedItemIdentifier.rawValue, privacy: .public)
+                """
             )
-            listener?.enumerationActionFailed(actionId: actionId, error: NSFileProviderError(.noSuchItem))
+            listener?.enumerationActionFailed(
+                actionId: actionId, error: NSFileProviderError(.noSuchItem)
+            )
             observer.finishEnumeratingWithError(NSFileProviderError(.noSuchItem))
             return
         }
@@ -211,7 +228,7 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
                 )
 
                 Self.completeEnumerationObserver(
-                    observer, 
+                    observer,
                     remoteInterface: remoteInterface,
                     dbManager: dbManager,
                     numPage: 1,
@@ -265,8 +282,8 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
                 "Enumerating changes in working set for: \(self.ncKitAccount, privacy: .public)"
             )
 
-            // Unlike when enumerating items we can't progressively enumerate items as we need to wait to resolve which items are truly deleted and which
-            // have just been moved elsewhere.
+            // Unlike when enumerating items we can't progressively enumerate items as we need to 
+            // wait to see which items are truly deleted and which have just been moved elsewhere.
             Task {
                 let (
                     _, newMetadatas, updatedMetadatas, deletedMetadatas, error
@@ -283,7 +300,9 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
                         For user: \(self.ncKitAccount, privacy: .public)
                         """
                     )
-                    listener?.enumerationActionFailed(actionId: actionId, error: NSFileProviderError(.cannotSynchronize))
+                    listener?.enumerationActionFailed(
+                        actionId: actionId, error: NSFileProviderError(.cannotSynchronize)
+                    )
                     observer.finishEnumeratingWithError(NSFileProviderError(.cannotSynchronize))
                     return
                 }
@@ -373,12 +392,19 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
 
                 if readError!.isNotFoundError {
                     Self.logger.info(
-                        "404 error means item no longer exists. Deleting metadata and reporting \(self.serverUrl, privacy: .public) as deletion without error"
+                        """
+                        404 error means item no longer exists.
+                        Deleting metadata and reporting \(self.serverUrl, privacy: .public)
+                        as deletion without error
+                        """
                     )
 
                     guard let itemMetadata = self.enumeratedItemMetadata else {
                         Self.logger.error(
-                            "Invalid enumeratedItemMetadata, could not delete metadata nor report deletion"
+                            """
+                            Invalid enumeratedItemMetadata.
+                            Could not delete metadata nor report deletion.
+                            """
                         )
                         listener?.enumerationActionFailed(actionId: actionId, error: error)
                         observer.finishEnumeratingWithError(error)
@@ -393,7 +419,10 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
                             currentDeletedMetadatas += deletedDirectoryMetadatas
                         } else {
                             Self.logger.error(
-                                "Something went wrong when recursively deleting directory not found."
+                                """
+                                Something went wrong when recursively deleting directory.
+                                It's metadata was not found. Cannot report it as deleted.
+                                """
                             )
                         }
                     } else {
@@ -401,7 +430,7 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
                     }
 
                     Self.completeChangesObserver(
-                        observer, 
+                        observer,
                         anchor: anchor,
                         remoteInterface: remoteInterface,
                         dbManager: dbManager,
@@ -413,7 +442,10 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
                     return
                 } else if readError!.isNoChangesError {  // All is well, just no changed etags
                     Self.logger.info(
-                        "Error was to say no changed files -- not bad error. Finishing change enumeration."
+                        """
+                        Error was to say no changed files -- not bad error.
+                        Finishing change enumeration.
+                        """
                     )
                     listener?.enumerationActionFinished(actionId: actionId)
                     observer.finishEnumeratingChanges(upTo: anchor, moreComing: false)
@@ -453,7 +485,7 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
 
     // TODO: Use async group
     private static func metadatasToFileProviderItems(
-        _ itemMetadatas: [ItemMetadata], 
+        _ itemMetadatas: [ItemMetadata],
         remoteInterface: RemoteInterface,
         dbManager: FilesDatabaseManager,
         completionHandler: @escaping (_ items: [NSFileProviderItem]) -> Void
@@ -461,15 +493,21 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
         var items: [NSFileProviderItem] = []
 
         let conversionQueue = DispatchQueue(
-            label: "metadataToItemConversionQueue", qos: .userInitiated, attributes: .concurrent)
-        let appendQueue = DispatchQueue(label: "enumeratorItemAppendQueue", qos: .userInitiated)  // Serial queue
+            label: "metadataToItemConversionQueue", qos: .userInitiated, attributes: .concurrent
+        )
+        // appendQueue is a serial queue
+        let appendQueue = DispatchQueue(label: "enumeratorItemAppendQueue", qos: .userInitiated)
         let dispatchGroup = DispatchGroup()
 
         for itemMetadata in itemMetadatas {
             conversionQueue.async(group: dispatchGroup) {
                 if itemMetadata.e2eEncrypted {
                     Self.logger.info(
-                        "Skipping encrypted metadata in enumeration: \(itemMetadata.ocId, privacy: .public) \(itemMetadata.fileName, privacy: .public)"
+                        """
+                        Skipping encrypted metadata in enumeration:
+                        \(itemMetadata.ocId, privacy: .public)
+                        \(itemMetadata.fileName, privacy: .public)
+                        """
                     )
                     return
                 }
@@ -478,12 +516,15 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
                     itemMetadata
                 ) {
                     let item = Item(
-                        metadata: itemMetadata, 
+                        metadata: itemMetadata,
                         parentItemIdentifier: parentItemIdentifier,
                         remoteInterface: remoteInterface
                     )
                     Self.logger.debug(
-                        "Will enumerate item with ocId: \(itemMetadata.ocId, privacy: .public) and name: \(itemMetadata.fileName, privacy: .public)"
+                        """
+                        Will enumerate item with ocId: \(itemMetadata.ocId, privacy: .public)
+                        and name: \(itemMetadata.fileName, privacy: .public)
+                        """
                     )
 
                     appendQueue.async(group: dispatchGroup) {
@@ -491,7 +532,11 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
                     }
                 } else {
                     Self.logger.error(
-                        "Could not get valid parentItemIdentifier for item with ocId: \(itemMetadata.ocId, privacy: .public) and name: \(itemMetadata.fileName, privacy: .public), skipping enumeration"
+                        """
+                        Could not get valid parentItemIdentifier for item with ocId:
+                        \(itemMetadata.ocId, privacy: .public)
+                        and name: \(itemMetadata.fileName, privacy: .public), skipping enumeration
+                        """
                     )
                 }
             }
@@ -507,7 +552,7 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
     }
 
     private static func completeEnumerationObserver(
-        _ observer: NSFileProviderEnumerationObserver, 
+        _ observer: NSFileProviderEnumerationObserver,
         remoteInterface: RemoteInterface,
         dbManager: FilesDatabaseManager,
         numPage: Int,
@@ -534,7 +579,7 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
     }
 
     private static func completeChangesObserver(
-        _ observer: NSFileProviderChangeObserver, 
+        _ observer: NSFileProviderChangeObserver,
         anchor: NSFileProviderSyncAnchor,
         remoteInterface: RemoteInterface,
         dbManager: FilesDatabaseManager,
@@ -544,7 +589,10 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
     ) {
         guard newMetadatas != nil || updatedMetadatas != nil || deletedMetadatas != nil else {
             Self.logger.error(
-                "Received invalid newMetadatas, updatedMetadatas or deletedMetadatas. Finished enumeration of changes with error."
+                """
+                Received invalid newMetadatas, updatedMetadatas or deletedMetadatas.
+                Finished enumeration of changes with error.
+                """
             )
             observer.finishEnumeratingWithError(NSFileProviderError(.noSuchItem))
             return
@@ -581,7 +629,10 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
             }
 
             Self.logger.info(
-                "Processed \(updatedItems.count) new or updated metadatas, \(allDeletedMetadatas.count) deleted metadatas."
+                """
+                Processed \(updatedItems.count) new or updated metadatas.
+                \(allDeletedMetadatas.count) deleted metadatas.
+                """
             )
             observer.finishEnumeratingChanges(upTo: anchor, moreComing: false)
         }
