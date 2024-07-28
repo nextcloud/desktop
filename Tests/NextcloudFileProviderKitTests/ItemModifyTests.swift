@@ -123,7 +123,6 @@ final class ItemModifyTests: XCTestCase {
             itemTarget: targetItem,
             changedFields: [.filename, .contents, .parentItemIdentifier, .contentModificationDate],
             contents: newContentsUrl,
-            ncAccount: Self.account,
             dbManager: Self.dbManager
         )
         XCTAssertNil(error)
@@ -587,7 +586,6 @@ final class ItemModifyTests: XCTestCase {
             itemTarget: targetItem,
             changedFields: [.filename, .contents, .parentItemIdentifier, .contentModificationDate],
             contents: tempUrl,
-            ncAccount: Self.account,
             dbManager: Self.dbManager
         )
         XCTAssertNil(error)

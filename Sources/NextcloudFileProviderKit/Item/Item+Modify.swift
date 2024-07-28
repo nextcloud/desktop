@@ -212,7 +212,6 @@ public extension Item {
     private func modifyBundleOrPackageContents(
         contents newContents: URL?,
         remotePath: String,
-        ncAccount: Account,
         domain: NSFileProviderDomain?,
         progress: Progress,
         dbManager: FilesDatabaseManager
@@ -254,10 +253,7 @@ public extension Item {
         while !directoriesToRead.isEmpty {
             let remoteDirectoryPath = directoriesToRead.removeFirst()
             let (metadatas, _, _, _, readError) = await Enumerator.readServerUrl(
-                remoteDirectoryPath,
-                ncAccount: ncAccount,
-                remoteInterface: remoteInterface,
-                dbManager: dbManager
+                remoteDirectoryPath, remoteInterface: remoteInterface, dbManager: dbManager
             )
             // Important note -- the enumerator will import found items' metadata into the database.
             // This is important for when we want to start deleting stale items and want to avoid trying
@@ -457,10 +453,7 @@ public extension Item {
         for remoteDirectoryPath in remoteDirectoriesPaths {
             // After everything, check into what the final state is of each folder now
             let (_, _, _, _, readError) = await Enumerator.readServerUrl(
-                remoteDirectoryPath,
-                ncAccount: ncAccount,
-                remoteInterface: remoteInterface,
-                dbManager: dbManager
+                remoteDirectoryPath, remoteInterface: remoteInterface, dbManager: dbManager
             )
 
             if let readError, readError != .success {
@@ -502,7 +495,6 @@ public extension Item {
         contents newContents: URL?,
         options: NSFileProviderModifyItemOptions = [],
         request: NSFileProviderRequest = NSFileProviderRequest(),
-        ncAccount: Account,
         domain: NSFileProviderDomain? = nil,
         progress: Progress = .init(),
         dbManager: FilesDatabaseManager = .shared
@@ -537,7 +529,7 @@ public extension Item {
         // remote changes and then, upon user interaction, will try to modify the item.
         // That is, if the parent item has changed at all (it might not have)
         if parentItemIdentifier == .rootContainer {
-            parentItemServerUrl = ncAccount.davFilesUrl
+            parentItemServerUrl = remoteInterface.account.davFilesUrl
         } else {
             guard let parentItemMetadata = dbManager.directoryMetadata(
                 ocId: parentItemIdentifier.rawValue
@@ -650,7 +642,6 @@ public extension Item {
                     contentModifiedItem = try await modifiedItem.modifyBundleOrPackageContents(
                         contents: newContents,
                         remotePath: newServerUrlFileName,
-                        ncAccount: ncAccount,
                         domain: domain,
                         progress: progress,
                         dbManager: dbManager

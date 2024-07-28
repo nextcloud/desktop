@@ -57,7 +57,6 @@ final class ItemCreateTests: XCTestCase {
             basedOn: folderItemTemplate,
             contents: nil,
             remoteInterface: remoteInterface,
-            ncAccount: Self.account,
             progress: Progress(),
             dbManager: Self.dbManager
         )
@@ -106,7 +105,6 @@ final class ItemCreateTests: XCTestCase {
             basedOn: fileItemTemplate,
             contents: tempUrl,
             remoteInterface: remoteInterface,
-            ncAccount: Self.account,
             progress: Progress(),
             dbManager: Self.dbManager
         )
@@ -154,7 +152,6 @@ final class ItemCreateTests: XCTestCase {
             basedOn: folderItemTemplate,
             contents: nil,
             remoteInterface: remoteInterface,
-            ncAccount: Self.account,
             progress: Progress(),
             dbManager: Self.dbManager
         )
@@ -184,7 +181,6 @@ final class ItemCreateTests: XCTestCase {
             basedOn: fileItemTemplate,
             contents: tempUrl,
             remoteInterface: remoteInterface,
-            ncAccount: Self.account,
             progress: Progress(),
             dbManager: Self.dbManager
         )
@@ -300,7 +296,6 @@ final class ItemCreateTests: XCTestCase {
             basedOn: bundleItemTemplate,
             contents: tempUrl,
             remoteInterface: remoteInterface,
-            ncAccount: Self.account,
             progress: Progress(),
             dbManager: Self.dbManager
         )

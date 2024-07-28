@@ -28,10 +28,7 @@ public extension Item {
         while !remoteDirectoryPaths.isEmpty {
             let remoteDirectoryPath = remoteDirectoryPaths.removeFirst()
             let (metadatas, _, _, _, readError) = await Enumerator.readServerUrl(
-                remoteDirectoryPath,
-                ncAccount: remoteInterface.account,
-                remoteInterface: remoteInterface,
-                dbManager: dbManager
+                remoteDirectoryPath, remoteInterface: remoteInterface, dbManager: dbManager
             )
 
             if let readError, readError != .success {
