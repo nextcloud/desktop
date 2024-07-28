@@ -2,7 +2,7 @@
 
 NextcloudFileProviderKit is a Swift package designed to simplify the development of Nextcloud synchronization applications on Apple devices using the FileProvider API. This package provides the core functionality for virtual files in the macOS Nextcloud client, making it easier for developers to integrate Nextcloud syncing capabilities into their applications.
 
-NextcloudFileProviderKit depends on NextcloudKit to communi
+NextcloudFileProviderKit depends on NextcloudKit to communicate with the server.
 
 ## Features
 
@@ -30,19 +30,13 @@ To use NextcloudFileProviderKit in your application, you can refer to the follow
 import NextcloudKit
 import NextcloudFileProviderKit
 
-let ncAccount = Account(
-    user: "username",
-    serverUrl: "https://cloud.yourcloud.com",
-    password: "password"
-)
-
 let ncKit = NextcloudKit()
 ncKit.setup(
-    account: ncAccount.ncKitAccount,
-    user: ncAccount.username,
-    userId: ncAccount.username,
-    password: ncAccount.password,
-    urlBase: ncAccount.serverUrl
+    account: "username https://cloud.mycloud.com",
+    user: "username",
+    userId: "username",
+    password: "password",
+    urlBase: "https://cloud.mycloud.com"
 )
 
 ```
@@ -107,16 +101,6 @@ func createItem(
     request: NSFileProviderRequest,
     completionHandler: @escaping (NSFileProviderItem?, NSFileProviderItemFields, Bool, Error?) -> Void
 ) -> Progress {
-    guard let ncAccount else {
-        completionHandler(
-            itemTemplate,
-            NSFileProviderItemFields(),
-            false,
-            NSFileProviderError(.notAuthenticated)
-        )
-        return Progress()
-    }
-
     let progress = Progress()
     Task {
         let (item, error) = await Item.create(
@@ -126,7 +110,6 @@ func createItem(
             request: request,
             domain: self.domain,
             remoteInterface: ncKit,
-            ncAccount: ncAccount,
             progress: progress
         )
         completionHandler(item ?? itemTemplate, NSFileProviderItemFields(), false, error)
@@ -161,7 +144,6 @@ func modifyItem(
             contents: newContents,
             options: options,
             request: request,
-            ncAccount: ncAccount,
             domain: domain,
             progress: progress
         )
@@ -200,11 +182,11 @@ func deleteItem(
 
 ```swift
 func enumerator(
-    for containerItemIdentifier: NSFileProviderItemIdentifier, request _: NSFileProviderRequest
+    for containerItemIdentifier: NSFileProviderItemIdentifier,
+    request _: NSFileProviderRequest
 ) throws -> NSFileProviderEnumerator {
     return Enumerator(
         enumeratedItemIdentifier: containerItemIdentifier,
-        ncAccount: ncAccount,
         remoteInterface: ncKit,
         domain: domain
     )
