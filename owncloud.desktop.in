@@ -10,6 +10,7 @@ Keywords=@APPLICATION_NAME@;syncing;file;sharing;
 X-GNOME-Autostart-Delay=3
 MimeType=application/vnd.@APPLICATION_EXECUTABLE@;
 Actions=Settings;Quit;
+StartupWMClass=@APPLICATION_NAME@
 
 # Translations
 Comment[oc]=@APPLICATION_NAME@ sincronizacion del client
