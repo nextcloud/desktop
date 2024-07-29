@@ -45,6 +45,7 @@ ownCloud admins and users.
 
 ## Summary
 
+* Bugfix - Fix location loading on Mac: [#6761](https://github.com/owncloud/enterprise/issues/6761)
 * Bugfix - Schedule syncs after an abort: [#11396](https://github.com/owncloud/client/pull/11396)
 * Bugfix - Fix description of manage public links action: [#11450](https://github.com/owncloud/client/issues/11450)
 * Bugfix - Fix early-use crash in the folder watcher on Linux: [#11460](https://github.com/owncloud/client/issues/11460)
@@ -78,6 +79,10 @@ ownCloud admins and users.
 * Enhancement - Support for prompt_values_supported in openid-configuration: [#11729](https://github.com/owncloud/client/pull/11729)
 
 ## Details
+
+* Bugfix - Fix location loading on Mac: [#6761](https://github.com/owncloud/enterprise/issues/6761)
+
+   https://github.com/owncloud/enterprise/issues/6761
 
 * Bugfix - Schedule syncs after an abort: [#11396](https://github.com/owncloud/client/pull/11396)
 
