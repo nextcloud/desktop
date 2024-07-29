@@ -276,7 +276,14 @@ QString setupTranslations(QApplication *app)
     const auto trPath = Translations::translationsDirectoryPath();
     qCDebug(lcMain) << "Translations directory path:" << trPath;
 
-    QStringList uiLanguages = QLocale::system().uiLanguages();
+#if QT_VERSION >= QT_VERSION_CHECK(6, 7, 0)
+    QStringList uiLanguages = QLocale::system().uiLanguages(QLocale::TagSeparator::Underscore);
+#else
+    QStringList uiLanguages;
+    for (auto lang : QLocale::system().uiLanguages()) {
+        uiLanguages << lang.replace(QLatin1Char('-'), QLatin1Char('_'));
+    }
+#endif
     qCDebug(lcMain) << "UI languages:" << uiLanguages;
 
     // the user can also set a locale in the settings, so we need to load the config file
@@ -312,18 +319,15 @@ QString setupTranslations(QApplication *app)
     };
 
     for (QString lang : qAsConst(uiLanguages)) {
-        lang.replace(QLatin1Char('-'), QLatin1Char('_')); // work around QTBUG-25973
         lang = substLang(lang);
         const QString trFile = Translations::translationsFilePrefix() + lang;
-        QTranslator *translator = new QTranslator(app);
-
-        if (translator->load(trFile, trPath) || lang.startsWith(QLatin1String("en"))) {
+        if (QTranslator *translator = new QTranslator(app); translator->load(trFile, trPath) || lang.startsWith(QLatin1String("en"))) {
             // Permissive approach: Qt and keychain translations
             // may be missing, but Qt translations must be there in order
             // for us to accept the language. Otherwise, we try with the next.
             // "en" is an exception as it is the default language and may not
             // have a translation file provided.
-            qCInfo(lcMain) << "Using" << lang << "translation";
+            qCInfo(lcMain) << "Using" << lang << "translation" << translator->language();
             displayLanguage = lang;
 
             const QString qtTrPath = QLibraryInfo::path(QLibraryInfo::TranslationsPath);
@@ -355,12 +359,15 @@ QString setupTranslations(QApplication *app)
 
             if (!translator->isEmpty() && !qApp->installTranslator(translator)) {
                 qCCritical(lcMain) << "Failed to install translator";
+                translator->deleteLater();
             }
             if (!qtTranslator->isEmpty() && !qApp->installTranslator(qtTranslator)) {
                 qCCritical(lcMain) << "Failed to install Qt translator";
+                qtTranslator->deleteLater();
             }
             if (!qtkeychainTranslator->isEmpty() && !qApp->installTranslator(qtkeychainTranslator)) {
                 qCCritical(lcMain) << "Failed to install qtkeychain translator";
+                qtkeychainTranslator->deleteLater();
             }
 
             // makes sure widgets with locale-dependent formatting, e.g., QDateEdit, display the correct formatting
@@ -373,11 +380,10 @@ QString setupTranslations(QApplication *app)
                 qCDebug(lcMain) << "language" << lang << "was enforced, changing default locale to" << newLocale;
                 QLocale::setDefault(newLocale);
             }
-
             break;
+        } else {
+            translator->deleteLater();
         }
-
-        delete translator;
     }
 
     return displayLanguage;
@@ -440,7 +446,7 @@ int main(int argc, char **argv)
         app.setApplicationVersion(Theme::instance()->versionSwitchOutput());
 
         // Load the translations before option parsing, so we can localize help text and error messages.
-        QString displayLanguage = setupTranslations(&app);
+        const QString displayLanguage = setupTranslations(&app);
 
         // parse the arguments before we handle singleApplication
         // errors and help/version need to be handled in this instance
