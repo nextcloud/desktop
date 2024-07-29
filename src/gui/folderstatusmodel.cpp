@@ -1023,7 +1023,7 @@ void FolderStatusModel::slotSetProgress(const ProgressInfo &progress)
     auto biggerItemSize = 0;
     auto estimatedUpBw = 0;
     auto estimatedDownBw = 0;
-    QString allFilenames;
+    QStringList filenamesList;
     for (const auto &syncFile : progress._currentItems) {
         if (curItemProgress == -1 || (ProgressInfo::isSizeDependent(syncFile._item)
                                          && biggerItemSize < syncFile._item._size)) {
@@ -1038,13 +1038,9 @@ void FolderStatusModel::slotSetProgress(const ProgressInfo &progress)
             estimatedUpBw += progress.fileProgress(syncFile._item).estimatedBandwidth;
         }
 
-        auto fileName = QFileInfo(syncFile._item._file).fileName();
-        if (allFilenames.length() > 0) {
-            //: Build a list of file names
-            allFilenames.append(QStringLiteral(", \"%1\"").arg(fileName));
-        } else {
-            //: Argument is a file name
-            allFilenames.append(QStringLiteral("\"%1\"").arg(fileName));
+        const auto fileName = QFileInfo(syncFile._item._file).fileName();
+        if (filenamesList.length() < 2) {
+            filenamesList.append(QStringLiteral("\"%1\"").arg(fileName));
         }
     }
     if (curItemProgress == -1) {
@@ -1053,13 +1049,13 @@ void FolderStatusModel::slotSetProgress(const ProgressInfo &progress)
 
     const auto itemFileName = curItem._file;
     const auto kindString = Progress::asActionString(curItem);
-
+    const auto allFilenames = filenamesList.join(", ");
     QString fileProgressString;
     if (ProgressInfo::isSizeDependent(curItem)) {
         if (estimatedUpBw || estimatedDownBw) {
             //: Example text: "Uploading foobar.png (1MB of 2MB) time left 2 minutes at a rate of 24Kb/s"
             //: Example text: "Syncing 'foo.txt', 'bar.txt'"
-            fileProgressString = tr("Syncing %1").arg(allFilenames);
+            fileProgressString = tr("%1 %2 …").arg(kindString, allFilenames);
             if (estimatedDownBw > 0) {
                 fileProgressString.append(tr(", "));
 // ifdefs: https://github.com/owncloud/client/issues/3095#issuecomment-128409294
