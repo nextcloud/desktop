@@ -1057,23 +1057,16 @@ void FolderStatusModel::slotSetProgress(const ProgressInfo &progress)
 
     QString fileProgressString;
     if (ProgressInfo::isSizeDependent(curItem)) {
-        //quint64 estimatedBw = progress.fileProgress(curItem).estimatedBandwidth;
         if (estimatedUpBw || estimatedDownBw) {
-            /*
-            //: Example text: "uploading foobar.png (1MB of 2MB) time left 2 minutes at a rate of 24Kb/s"
-            fileProgressString = tr("%1 %2 (%3 of %4) %5 left at a rate of %6/s")
-                .arg(kindString, itemFileName, s1, s2,
-                    Utility::durationToDescriptiveString(progress.fileProgress(curItem).estimatedEta),
-                    Utility::octetsToString(estimatedBw) );
-            */
+            //: Example text: "Uploading foobar.png (1MB of 2MB) time left 2 minutes at a rate of 24Kb/s"
             //: Example text: "Syncing 'foo.txt', 'bar.txt'"
             fileProgressString = tr("Syncing %1").arg(allFilenames);
             if (estimatedDownBw > 0) {
                 fileProgressString.append(tr(", "));
 // ifdefs: https://github.com/owncloud/client/issues/3095#issuecomment-128409294
 #ifdef Q_OS_WIN
-                //: Example text: "download 24Kb/s"   (%1 is replaced by 24Kb (translated))
-                fileProgressString.append(tr("download %1/s").arg(Utility::octetsToString(estimatedDownBw)));
+                //: Example text: "Download 24Kb/s"   (%1 is replaced by 24Kb (translated))
+                fileProgressString.append(tr("Download %1/s").arg(Utility::octetsToString(estimatedDownBw)));
 #else
                 fileProgressString.append(tr("\u2193 %1/s")
                                               .arg(Utility::octetsToString(estimatedDownBw)));
@@ -1082,21 +1075,21 @@ void FolderStatusModel::slotSetProgress(const ProgressInfo &progress)
             if (estimatedUpBw > 0) {
                 fileProgressString.append(tr(", "));
 #ifdef Q_OS_WIN
-                //: Example text: "upload 24Kb/s"   (%1 is replaced by 24Kb (translated))
-                fileProgressString.append(tr("upload %1/s").arg(Utility::octetsToString(estimatedUpBw)));
+                //: Example text: "Upload 24Kb/s"   (%1 is replaced by 24Kb (translated))
+                fileProgressString.append(tr("Upload %1/s").arg(Utility::octetsToString(estimatedUpBw)));
 #else
                 fileProgressString.append(tr("\u2191 %1/s")
                                               .arg(Utility::octetsToString(estimatedUpBw)));
 #endif
             }
         } else {
-            //: Example text: "uploading foobar.png (2MB of 2MB)"
+            //: Example text: "Uploading foobar.png (2MB of 2MB)"
             fileProgressString = tr("%1 %2 (%3 of %4)").arg(kindString, itemFileName,
                                                             Utility::octetsToString(curItemProgress),
                                                             Utility::octetsToString(curItem._size));
         }
     } else if (!kindString.isEmpty()) {
-        //: Example text: "uploading foobar.png"
+        //: Example text: "Uploading foobar.png"
         fileProgressString = tr("%1 %2").arg(kindString, itemFileName);
     }
     subFolderProgress->_progressString = fileProgressString;
@@ -1139,7 +1132,7 @@ void FolderStatusModel::slotSetProgress(const ProgressInfo &progress)
         }
     } else if (totalFileCount > 0 && currentFile > 0) {
         // Don't attempt to estimate the time left if there is no kb to transfer.
-        overallSyncString = tr("%1 file %2 of %3").arg(kindString).arg(currentFile).arg(totalFileCount);
+        overallSyncString = tr("File %1 of %2").arg(currentFile).arg(totalFileCount);
     }
     subFolderProgress->_overallSyncString = overallSyncString;
 
