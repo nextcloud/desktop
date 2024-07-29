@@ -113,7 +113,6 @@ AccountState::AccountState(AccountPtr account)
         },
         Qt::QueuedConnection);
 
-#if QT_VERSION >= QT_VERSION_CHECK(6, 3, 0)
     if (QNetworkInformation *qNetInfo = QNetworkInformation::instance()) {
         connect(qNetInfo, &QNetworkInformation::reachabilityChanged, this, [this](QNetworkInformation::Reachability reachability) {
             switch (reachability) {
@@ -148,7 +147,6 @@ AccountState::AccountState(AccountPtr account)
             }
         });
     }
-#endif
     // as a fallback and to recover after server issues we also poll
     auto timer = new QTimer(this);
     timer->setInterval(ConnectionValidator::DefaultCallingInterval);
