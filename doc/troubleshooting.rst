@@ -79,7 +79,7 @@ the config file. For example, change these settings:
 +----------------------------------+--------------------------+--------------------------------------------------------------------------------------------------------+
 | ``minChunkSize``                 | ``1000000`` (1 MB)       | Specifies the minimum chunk size of uploaded files in bytes.                                           |
 +----------------------------------+--------------------------+--------------------------------------------------------------------------------------------------------+
-| ``maxChunkSize``                 | ``50000000`` (1000 MB) | Specifies the maximum chunk size of uploaded files in bytes.                                           |
+| ``maxChunkSize``                 | ``50000000`` (1000 MB)   | Specifies the maximum chunk size of uploaded files in bytes.                                           |
 +----------------------------------+--------------------------+--------------------------------------------------------------------------------------------------------+
 | ``targetChunkUploadDuration``    | ``6000`` (1 minute)      | Target duration in milliseconds for chunk uploads.                                                     |
 |                                  |                          | The client adjusts the chunk size until each chunk upload takes approximately this long.               |
