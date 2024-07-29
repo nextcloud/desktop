@@ -27,6 +27,19 @@
 using namespace OCC;
 using namespace OCC::Spaces;
 
+namespace {
+class SpaceFilter : public QSortFilterProxyModel
+{
+    using QSortFilterProxyModel::QSortFilterProxyModel;
+
+    bool filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const override
+    {
+        auto index = sourceModel()->index(sourceRow, 0, sourceParent);
+        return index.data(static_cast<int>(SpacesModel::Roles::Enabled)).toBool() && !index.data(static_cast<int>(SpacesModel::Roles::IsSynced)).toBool();
+    }
+};
+}
+
 SpacesBrowser::SpacesBrowser(QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::SpacesBrowser)
@@ -35,8 +48,7 @@ SpacesBrowser::SpacesBrowser(QWidget *parent)
     _model = new SpacesModel(this);
 
 
-    _sortModel = new QSortFilterProxyModel(this);
-    _sortModel->setFilterRole(static_cast<int>(SpacesModel::Roles::Enabled));
+    _sortModel = new SpaceFilter(this);
     _sortModel->setSourceModel(_model);
     _sortModel->setSortRole(static_cast<int>(SpacesModel::Roles::Priority));
     _sortModel->sort(0, Qt::DescendingOrder);

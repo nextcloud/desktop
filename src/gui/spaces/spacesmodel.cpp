@@ -13,6 +13,7 @@
  */
 #include "spacesmodel.h"
 
+#include "gui/folderman.h"
 #include "libsync/graphapi/spacesmanager.h"
 
 #include <QIcon>
@@ -38,11 +39,10 @@ QVariant SpacesModel::data(const QModelIndex &index, int role) const
 {
     Q_ASSERT(checkIndex(index, QAbstractItemModel::CheckIndexOption::IndexIsValid));
 
-    const auto *space = _spacesList.at(index.row());
+    auto *space = _spacesList.at(index.row());
     switch (static_cast<Roles>(role)) {
-    case Roles::Sync:
-        // TODO: return true if we alreaddy sync the space
-        return false;
+    case Roles::IsSynced:
+        return FolderMan::instance()->isSpaceSynced(space);
     case Roles::Name:
         return space->displayName();
     case Roles::Subtitle:
