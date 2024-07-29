@@ -67,7 +67,7 @@ See https://github.com/owncloud/client/issues/5226 for more discussion of this
 issue.
 
 "Connection closed" message when syncing files
----------------------
+----------------------------------------------
 
 This message can be caused by using chunks that are too big or time-outs that
 are set too liberally. You can configure the chunking behavior of the client in
