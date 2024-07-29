@@ -67,6 +67,7 @@ ownCloud admins and users.
 * Change - Remove `Remove all files` dialog: [#11569](https://github.com/owncloud/client/issues/11569)
 * Change - Rewrite of the spaces browser: [#11595](https://github.com/owncloud/client/pull/11595)
 * Change - Remove support for branded shell extensions on Linux: [#11743](https://github.com/owncloud/client/issues/11743)
+* Change - Only allow to add unsyced spaces: [#11752](https://github.com/owncloud/client/issues/11752)
 * Enhancement - Add option to pause synchronization on metered connections: [#4808](https://github.com/owncloud/client/issues/4808)
 * Enhancement - Add option to move files to trash instead of deleting: [#9001](https://github.com/owncloud/client/issues/9001)
 * Enhancement - Prevent same default sync folder for multiple accounts with Spaces: [#11204](https://github.com/owncloud/client/issues/11204)
@@ -261,6 +262,13 @@ ownCloud admins and users.
    of a braned version.
 
    https://github.com/owncloud/client/issues/11743
+
+* Change - Only allow to add unsyced spaces: [#11752](https://github.com/owncloud/client/issues/11752)
+
+   We now prevent users from syncing the same space multiple times.
+
+   https://github.com/owncloud/client/issues/11752
+   https://github.com/owncloud/client/pull/11759
 
 * Enhancement - Add option to pause synchronization on metered connections: [#4808](https://github.com/owncloud/client/issues/4808)
 
