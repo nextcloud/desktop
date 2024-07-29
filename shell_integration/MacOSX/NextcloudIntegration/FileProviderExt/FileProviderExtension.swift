@@ -221,7 +221,6 @@ import OSLog
                 request: request,
                 domain: self.domain,
                 remoteInterface: ncKit,
-                ncAccount: ncAccount,
                 progress: progress
             )
 
@@ -294,7 +293,6 @@ import OSLog
                 contents: newContents,
                 options: options,
                 request: request,
-                ncAccount: ncAccount,
                 domain: domain,
                 progress: progress
             )
@@ -370,7 +368,6 @@ import OSLog
 
         return Enumerator(
             enumeratedItemIdentifier: containerItemIdentifier,
-            ncAccount: ncAccount,
             remoteInterface: ncKit,
             domain: domain,
             fastEnumeration: config.fastEnumerationEnabled,
