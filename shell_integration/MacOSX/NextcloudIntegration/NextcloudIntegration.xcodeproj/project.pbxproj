@@ -280,6 +280,22 @@
 			path = Extensions;
 			sourceTree = "<group>";
 		};
+		537BD6772C58D0C400446ED0 /* Sharing */ = {
+			isa = PBXGroup;
+			children = (
+				5374FD432B95EE1400C78D54 /* ShareController.swift */,
+				53651E452BBC0D9500ECAC29 /* ShareeSuggestionsDataSource.swift */,
+				53FE14662B8F78B6006C4193 /* ShareOptionsView.swift */,
+				53FE14582B8E3F6C006C4193 /* ShareTableItemView.swift */,
+				531522812B8E01C6002E31BE /* ShareTableItemView.xib */,
+				53FE144F2B8E0658006C4193 /* ShareTableViewDataSource.swift */,
+				537630922B85F4B00026BFAB /* ShareViewController.swift */,
+				537630902B85F4980026BFAB /* ShareViewController.xib */,
+				53FE14642B8F6700006C4193 /* ShareViewDataSourceUIDelegate.swift */,
+			);
+			path = Sharing;
+			sourceTree = "<group>";
+		};
 		538E396827F4765000FA63D5 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -321,16 +337,8 @@
 			isa = PBXGroup;
 			children = (
 				5376307B2B85E2E00026BFAB /* Extensions */,
+				537BD6772C58D0C400446ED0 /* Sharing */,
 				53B979802B84C81F002DA742 /* DocumentActionViewController.swift */,
-				5374FD432B95EE1400C78D54 /* ShareController.swift */,
-				53651E452BBC0D9500ECAC29 /* ShareeSuggestionsDataSource.swift */,
-				53FE14662B8F78B6006C4193 /* ShareOptionsView.swift */,
-				53FE14582B8E3F6C006C4193 /* ShareTableItemView.swift */,
-				531522812B8E01C6002E31BE /* ShareTableItemView.xib */,
-				53FE144F2B8E0658006C4193 /* ShareTableViewDataSource.swift */,
-				537630922B85F4B00026BFAB /* ShareViewController.swift */,
-				537630902B85F4980026BFAB /* ShareViewController.xib */,
-				53FE14642B8F6700006C4193 /* ShareViewDataSourceUIDelegate.swift */,
 				53FE14572B8E3A7C006C4193 /* FileProviderUIExt.entitlements */,
 				53B979852B84C81F002DA742 /* Info.plist */,
 			);
