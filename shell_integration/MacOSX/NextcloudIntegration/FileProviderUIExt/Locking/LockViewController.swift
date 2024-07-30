@@ -29,6 +29,16 @@ class LockViewController: NSViewController {
         self.itemIdentifiers = itemIdentifiers
         self.locking = locking
         super.init(nibName: nil, bundle: nil)
+
+        guard let firstItem = itemIdentifiers.first else {
+            Logger.shareViewController.error("called without items")
+            closeAction(self)
+            return
+        }
+
+        Task {
+            await processItemIdentifier(firstItem)
+        }
     }
 
     required init?(coder: NSCoder) {
@@ -42,6 +52,27 @@ class LockViewController: NSViewController {
     private func presentError(_ error: String) {
         Logger.lockViewController.error("Error: \(error, privacy: .public)")
         descriptionLabel.stringValue = "Error: \(error)"
+    }
+
+    private func processItemIdentifier(_ itemIdentifier: NSFileProviderItemIdentifier) async {
+        guard let manager = NSFileProviderManager(for: actionViewController.domain) else {
+            fatalError("NSFileProviderManager isn't expected to fail")
+        }
+
+        do {
+            let itemUrl = try await manager.getUserVisibleURL(for: itemIdentifier)
+            guard itemUrl.startAccessingSecurityScopedResource() else {
+                Logger.lockViewController.error("Could not access scoped resource for item url!")
+                return
+            }
+            await updateFileDetailsDisplay(itemUrl: itemUrl)
+            itemUrl.stopAccessingSecurityScopedResource()
+        } catch let error {
+            let errorString = "Error processing item: \(error)"
+            Logger.lockViewController.error("\(errorString, privacy: .public)")
+            fileNameLabel.stringValue = "Could not lock unknown item…"
+            descriptionLabel.stringValue = errorString
+        }
     }
 
     private func updateFileDetailsDisplay(itemUrl: URL) async {
