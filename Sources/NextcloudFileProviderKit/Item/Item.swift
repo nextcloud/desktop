@@ -161,6 +161,14 @@ public class Item: NSObject, NSFileProviderItem {
         return [.userReadable, .userWritable]
     }
 
+    public var userInfo: [AnyHashable : Any]? {
+        [
+            // Can be used to display lock/unlock context menu entries for FPUIActions
+            "isLockable": !self.contentType.conforms(to: .directory) && !metadata.lock,
+            "isUnlockable": !self.contentType.conforms(to: .directory) && metadata.lock,
+        ]
+    }
+
     @available(macOS 13.0, *)
     public var contentPolicy: NSFileProviderContentPolicy {
         #if os(macOS)
