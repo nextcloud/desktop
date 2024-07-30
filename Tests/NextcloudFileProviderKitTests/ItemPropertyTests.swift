@@ -182,4 +182,92 @@ final class ItemPropertyTests: XCTestCase {
         )
         XCTAssertTrue(item.contentType.conforms(to: .bundle))
     }
+
+    func testItemUserInfoLockingPropsFolder() {
+        let metadata = ItemMetadata()
+        metadata.ocId = "test-id"
+        metadata.etag = "test-etag"
+        metadata.account = Self.account.ncKitAccount
+        metadata.name = "test"
+        metadata.fileName = "test"
+        metadata.fileNameView = "test"
+        metadata.serverUrl = Self.account.davFilesUrl
+        metadata.urlBase = Self.account.serverUrl
+        metadata.userId = Self.account.username
+        metadata.user = Self.account.username
+        metadata.directory = true
+        metadata.contentType = "httpd/unix-directory"
+        metadata.lockTime = .init()
+        metadata.lockTimeOut = .init()
+
+        let item = Item(
+            metadata: metadata,
+            parentItemIdentifier: .rootContainer,
+            remoteInterface: MockRemoteInterface(account: Self.account)
+        )
+
+        XCTAssertNotNil(item.userInfo?["isLockable"])
+        XCTAssertNotNil(item.userInfo?["isUnlockable"])
+        XCTAssertFalse(item.userInfo?["isLockable"] as? Bool ?? true) // directories not lockable
+        XCTAssertFalse(item.userInfo?["isUnlockable"] as? Bool ?? true)
+    }
+
+    func testItemUserInfoLockingPropsFileLocked() {
+        let metadata = ItemMetadata()
+        metadata.ocId = "test-id"
+        metadata.etag = "test-etag"
+        metadata.account = Self.account.ncKitAccount
+        metadata.name = "test.txt"
+        metadata.fileName = "test.txt"
+        metadata.fileNameView = "test.txt"
+        metadata.serverUrl = Self.account.davFilesUrl
+        metadata.urlBase = Self.account.serverUrl
+        metadata.userId = Self.account.username
+        metadata.user = Self.account.username
+        metadata.date = .init()
+        metadata.size = 12
+        metadata.lock = true
+        metadata.lockOwner = Self.account.username
+        metadata.lockOwnerEditor = "testEditor"
+        metadata.lockTime = .init()
+        metadata.lockTimeOut = .init().addingTimeInterval(6_000_000)
+
+        let item = Item(
+            metadata: metadata,
+            parentItemIdentifier: .rootContainer,
+            remoteInterface: MockRemoteInterface(account: Self.account)
+        )
+
+        XCTAssertNotNil(item.userInfo?["isLockable"])
+        XCTAssertNotNil(item.userInfo?["isUnlockable"])
+        XCTAssertFalse(item.userInfo?["isLockable"] as? Bool ?? true)
+        XCTAssertTrue(item.userInfo?["isUnlockable"] as? Bool ?? false) // locked file, can unlock
+    }
+
+    func testItemUserInfoLockingPropsFileUnlocked() {
+        let metadata = ItemMetadata()
+        metadata.ocId = "test-id"
+        metadata.etag = "test-etag"
+        metadata.account = Self.account.ncKitAccount
+        metadata.name = "test.txt"
+        metadata.fileName = "test.txt"
+        metadata.fileNameView = "test.txt"
+        metadata.serverUrl = Self.account.davFilesUrl
+        metadata.urlBase = Self.account.serverUrl
+        metadata.userId = Self.account.username
+        metadata.user = Self.account.username
+        metadata.date = .init()
+        metadata.size = 12
+
+        let item = Item(
+            metadata: metadata,
+            parentItemIdentifier: .rootContainer,
+            remoteInterface: MockRemoteInterface(account: Self.account)
+        )
+
+        XCTAssertNotNil(item.userInfo?["isLockable"])
+        XCTAssertNotNil(item.userInfo?["isUnlockable"])
+        XCTAssertTrue(item.userInfo?["isLockable"] as? Bool ?? false) // unlocked file, can lock
+        XCTAssertFalse(item.userInfo?["isUnlockable"] as? Bool ?? true)
+    }
 }
