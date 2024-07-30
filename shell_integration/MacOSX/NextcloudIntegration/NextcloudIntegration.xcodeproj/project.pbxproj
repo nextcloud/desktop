@@ -28,6 +28,7 @@
 		537BD67A2C58D67800446ED0 /* LockViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 537BD6792C58D67800446ED0 /* LockViewController.swift */; };
 		537BD67C2C58D7B700446ED0 /* LockViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 537BD67B2C58D7B700446ED0 /* LockViewController.xib */; };
 		537BD6802C58F01B00446ED0 /* FileProviderCommunication.swift in Sources */ = {isa = PBXBuildFile; fileRef = 537BD67F2C58F01B00446ED0 /* FileProviderCommunication.swift */; };
+		537BD6822C58F72E00446ED0 /* MetadataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 537BD6812C58F72E00446ED0 /* MetadataProvider.swift */; };
 		538E396A27F4765000FA63D5 /* UniformTypeIdentifiers.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 538E396927F4765000FA63D5 /* UniformTypeIdentifiers.framework */; };
 		538E396D27F4765000FA63D5 /* FileProviderExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 538E396C27F4765000FA63D5 /* FileProviderExtension.swift */; };
 		538E397627F4765000FA63D5 /* FileProviderExt.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 538E396727F4765000FA63D5 /* FileProviderExt.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -169,6 +170,7 @@
 		537BD6792C58D67800446ED0 /* LockViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockViewController.swift; sourceTree = "<group>"; };
 		537BD67B2C58D7B700446ED0 /* LockViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LockViewController.xib; sourceTree = "<group>"; };
 		537BD67F2C58F01B00446ED0 /* FileProviderCommunication.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileProviderCommunication.swift; sourceTree = "<group>"; };
+		537BD6812C58F72E00446ED0 /* MetadataProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetadataProvider.swift; sourceTree = "<group>"; };
 		538E396727F4765000FA63D5 /* FileProviderExt.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = FileProviderExt.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		538E396927F4765000FA63D5 /* UniformTypeIdentifiers.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UniformTypeIdentifiers.framework; path = System/Library/Frameworks/UniformTypeIdentifiers.framework; sourceTree = SDKROOT; };
 		538E396C27F4765000FA63D5 /* FileProviderExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileProviderExtension.swift; sourceTree = "<group>"; };
@@ -356,6 +358,7 @@
 				537BD6772C58D0C400446ED0 /* Sharing */,
 				53B979802B84C81F002DA742 /* DocumentActionViewController.swift */,
 				537BD67F2C58F01B00446ED0 /* FileProviderCommunication.swift */,
+				537BD6812C58F72E00446ED0 /* MetadataProvider.swift */,
 				53FE14572B8E3A7C006C4193 /* FileProviderUIExt.entitlements */,
 				53B979852B84C81F002DA742 /* Info.plist */,
 			);
@@ -717,6 +720,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				537BD6822C58F72E00446ED0 /* MetadataProvider.swift in Sources */,
 				537630932B85F4B00026BFAB /* ShareViewController.swift in Sources */,
 				53FE14672B8F78B6006C4193 /* ShareOptionsView.swift in Sources */,
 				53651E462BBC0D9500ECAC29 /* ShareeSuggestionsDataSource.swift in Sources */,
