@@ -80,6 +80,9 @@
                         <constraint firstAttribute="width" secondItem="7qN-mr-hAh" secondAttribute="height" multiplier="1:1" id="K00-Bi-dEy"/>
                         <constraint firstAttribute="width" constant="32" id="zVJ-h1-QXJ"/>
                     </constraints>
+                    <connections>
+                        <action selector="closeAction:" target="-2" id="E6h-U9-2eB"/>
+                    </connections>
                 </button>
             </subviews>
             <edgeInsets key="edgeInsets" left="10" right="10" top="10" bottom="10"/>
