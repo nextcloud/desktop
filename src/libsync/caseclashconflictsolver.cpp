@@ -64,7 +64,9 @@ QString CaseClashConflictSolver::errorString() const
 void CaseClashConflictSolver::solveConflict(const QString &newFilename)
 {
     _newFilename = newFilename;
-
+    const auto cleanNewFileName = QDir::cleanPath(_newFilename);
+    qCInfo(lcCaseClashConflictSolver) << "cleanNewFileName: " << cleanNewFileName;
+    qCInfo(lcCaseClashConflictSolver) << "_newFileName: " << _newFilename;
     const auto propfindJob = new PropfindJob(_account, QDir::cleanPath(remoteNewFilename()));
     connect(propfindJob, &PropfindJob::result, this, &CaseClashConflictSolver::onRemoteDestinationFileAlreadyExists);
     connect(propfindJob, &PropfindJob::finishedWithError, this, &CaseClashConflictSolver::onRemoteDestinationFileDoesNotExist);
@@ -81,6 +83,10 @@ void CaseClashConflictSolver::onRemoteDestinationFileAlreadyExists()
 
 void CaseClashConflictSolver::onRemoteDestinationFileDoesNotExist()
 {
+    const auto cleanPath = QDir::cleanPath(remoteTargetFilePath());
+    const auto notCleanPath = remoteTargetFilePath();
+    qCInfo(lcCaseClashConflictSolver) << "cleanPath: " << cleanPath;
+    qCInfo(lcCaseClashConflictSolver) << "NOT cleanPath: " << notCleanPath;
     const auto propfindJob = new PropfindJob(_account, QDir::cleanPath(remoteTargetFilePath()));
     connect(propfindJob, &PropfindJob::result, this, &CaseClashConflictSolver::onRemoteSourceFileAlreadyExists);
     connect(propfindJob, &PropfindJob::finishedWithError, this, &CaseClashConflictSolver::onRemoteSourceFileDoesNotExist);
@@ -137,22 +143,30 @@ void CaseClashConflictSolver::onMoveJobFinished()
 QString CaseClashConflictSolver::remoteNewFilename() const
 {
     if (_remotePath == QStringLiteral("/")) {
-        qCDebug(lcCaseClashConflictSolver) << _newFilename << _remotePath << _newFilename;
+        qCDebug(lcCaseClashConflictSolver) << "_newFilename:" << _newFilename << "_remotePath:" <<  _remotePath;
         return _newFilename;
     } else {
         const auto result = QString{_remotePath + _newFilename};
-        qCDebug(lcCaseClashConflictSolver) << result << _remotePath << _newFilename;
+        qCDebug(lcCaseClashConflictSolver) << "result:" << result  << "_newFilename:" << _newFilename << "_remotePath:" <<  _remotePath;
         return result;
     }
 }
 
 QString CaseClashConflictSolver::remoteTargetFilePath() const
 {
+    qCInfo(lcFileSystem) << "_remotePath: " << _remotePath;
+    qCInfo(lcFileSystem) << "_targetFilePath: " << _targetFilePath;
+    qCInfo(lcFileSystem) << "_localPath: " << _localPath;
+    qCInfo(lcFileSystem) << "_targetFilePath.mid(_localPath.length()): " << _targetFilePath.mid(_localPath.length());
     if (_remotePath == QStringLiteral("/")) {
+        qCDebug(lcCaseClashConflictSolver) << "== _remotePath == QStringLiteral(/)";
         const auto result = QString{_targetFilePath.mid(_localPath.length())};
+        qCInfo(lcFileSystem) << "_remotePath == QStringLiteral(/) - result: " << result;
         return result;
     } else {
         const auto result = QString{_remotePath + _targetFilePath.mid(_localPath.length())};
+        qCInfo(lcFileSystem) << "_targetFilePath.mid(_localPath.length()): " << _targetFilePath.mid(_localPath.length());
+        qCInfo(lcFileSystem) << "_remotePath != QStringLiteral(/) - result: " << result;
         return result;
     }
 }
@@ -219,6 +233,10 @@ void CaseClashConflictSolver::processLeadingOrTrailingSpacesError(const QString 
 
 void CaseClashConflictSolver::checkIfAllowedToRename()
 {
+    qCInfo(lcFileSystem) << "==  CaseClashConflictSolver::checkIfAllowedToRename()";
+    qCInfo(lcFileSystem) << "CP + Remote target:" << QDir::cleanPath(remoteTargetFilePath());
+    qCInfo(lcFileSystem) << "Remote target:" << remoteTargetFilePath();
+    qCInfo(lcFileSystem) << "==  CaseClashConflictSolver::checkIfAllowedToRename()";
     const auto propfindJob = new PropfindJob(_account, QDir::cleanPath(remoteTargetFilePath()));
     propfindJob->setProperties({"http://owncloud.org/ns:permissions", "http://nextcloud.org/ns:is-mount-root"});
     connect(propfindJob, &PropfindJob::result, this, &CaseClashConflictSolver::onPropfindPermissionSuccess);

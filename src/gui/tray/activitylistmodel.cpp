@@ -768,6 +768,11 @@ void ActivityListModel::triggerCaseClashAction(Activity activity)
     const auto conflictedPath = dir.filePath(conflictedRelativePath);
     const auto conflictTaggedPath = dir.filePath(conflictRecord.path);
 
+    qCInfo(lcActivity) << "dir" << QDir(folder->path());
+    qCInfo(lcActivity) << "conflictedPath" << conflictedPath;
+    qCInfo(lcActivity) << "conflictedRelativePath" << conflictedRelativePath;
+    qCInfo(lcActivity) << "conflictRecord.path" << conflictRecord.path;
+    qCInfo(lcActivity) << "conflictTaggedPath" << dir.filePath(conflictRecord.path);
     _currentCaseClashFilenameDialog = new CaseClashFilenameDialog(_accountState->account(),
                                                                   folder,
                                                                   conflictedPath,
