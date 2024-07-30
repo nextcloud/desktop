@@ -7,6 +7,7 @@
 
 import AppKit
 import FileProvider
+import NextcloudFileProviderKit
 import NextcloudKit
 import OSLog
 import QuickLookThumbnailing
@@ -67,6 +68,7 @@ class LockViewController: NSViewController {
             }
             await updateFileDetailsDisplay(itemUrl: itemUrl)
             itemUrl.stopAccessingSecurityScopedResource()
+            await lockOrUnlockFile(localItemUrl: itemUrl)
         } catch let error {
             let errorString = "Error processing item: \(error)"
             Logger.lockViewController.error("\(errorString, privacy: .public)")
@@ -100,5 +102,89 @@ class LockViewController: NSViewController {
         fileNameIcon.image =
             fileThumbnail?.nsImage ?? 
             NSImage(systemSymbolName: "doc", accessibilityDescription: "doc")
+    }
+
+    private func lockOrUnlockFile(localItemUrl: URL) async {
+        descriptionLabel.stringValue = "Fetching file details…"
+
+        guard let itemIdentifier = await withCheckedContinuation({
+            (continuation: CheckedContinuation<NSFileProviderItemIdentifier?, Never>) -> Void in
+            NSFileProviderManager.getIdentifierForUserVisibleFile(
+                at: localItemUrl
+            ) { identifier, domainIdentifier, error in
+                defer { continuation.resume(returning: identifier) }
+                guard error == nil else {
+                    self.presentError("No item with identifier: \(error.debugDescription)")
+                    return
+                }
+            }
+        }) else {
+            presentError("Could not get identifier for item, no shares can be acquired.")
+            return
+        }
+
+        do {
+            let connection = try await serviceConnection(url: localItemUrl, interruptionHandler: {
+                Logger.lockViewController.error("Service connection interrupted")
+            })
+            guard let serverPath = await connection.itemServerPath(identifier: itemIdentifier),
+                  let credentials = await connection.credentials() as? Dictionary<String, String>,
+                  let account = Account(dictionary: credentials),
+                  !account.password.isEmpty
+            else {
+                presentError("Failed to get details from File Provider Extension.")
+                return
+            }
+            let serverPathString = serverPath as String
+            let itemServerRelativePath = serverPathString
+            let kit = NextcloudKit()
+            kit.setup(
+                user: account.username,
+                userId: account.username,
+                password: account.password,
+                urlBase: account.serverUrl
+            )
+            // guard let capabilities = await fetchCapabilities() else {
+            guard let itemMetadata = await fetchItemMetadata(
+                itemRelativePath: serverPathString, kit: kit
+            ) else {
+                presentError("Could not get item metadata.")
+                return
+            }
+
+            // Run lock state checks
+            if locking {
+                guard !itemMetadata.lock else {
+                    presentError("File is already locked.")
+                    return
+                }
+            } else {
+                guard itemMetadata.lock else {
+                    presentError("File is already unlocked.")
+                    return
+                }
+            }
+
+            descriptionLabel.stringValue =
+                "Communicating with server, \(locking ? "locking" : "unlocking") file…"
+            
+            await withCheckedContinuation { continuation in
+                kit.lockUnlockFile(
+                    serverUrlFileName: itemServerRelativePath,
+                    shouldLock: locking,
+                    completion: { account, error in
+                        if error == .success {
+                            self.descriptionLabel.stringValue =
+                                "File \(self.locking ? "locked" : "unlocked")!"
+                            continuation.resume()
+                        } else {
+                            self.presentError("Could not lock file: \(error).")
+                        }
+                    }
+                )
+            }
+        } catch let error {
+            presentError("Could not lock file: \(error).")
+        }
     }
 }
