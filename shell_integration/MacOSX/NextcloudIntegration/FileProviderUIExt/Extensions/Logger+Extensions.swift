@@ -11,6 +11,7 @@ extension Logger {
     private static var subsystem = Bundle.main.bundleIdentifier!
 
     static let actionViewController = Logger(subsystem: subsystem, category: "actionViewController")
+    static let lockViewController = Logger(subsystem: subsystem, category: "lockViewController")
     static let metadataProvider = Logger(subsystem: subsystem, category: "metadataProvider")
     static let shareCapabilities = Logger(subsystem: subsystem, category: "shareCapabilities")
     static let shareController = Logger(subsystem: subsystem, category: "shareController")
