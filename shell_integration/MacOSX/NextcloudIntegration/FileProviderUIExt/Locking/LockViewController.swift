@@ -38,4 +38,9 @@ class LockViewController: NSViewController {
     @IBAction func closeAction(_ sender: Any) {
         actionViewController.extensionContext.completeRequest()
     }
+
+    private func presentError(_ error: String) {
+        Logger.lockViewController.error("Error: \(error, privacy: .public)")
+        descriptionLabel.stringValue = "Error: \(error)"
+    }
 }
