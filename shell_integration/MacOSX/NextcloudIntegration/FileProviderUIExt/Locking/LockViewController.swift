@@ -12,5 +12,16 @@ import OSLog
 import QuickLookThumbnailing
 
 class LockViewController: NSViewController {
+    let itemIdentifiers: [NSFileProviderItemIdentifier]
+    let locking: Bool
 
+    init(_ itemIdentifiers: [NSFileProviderItemIdentifier], locking: Bool) {
+        self.itemIdentifiers = itemIdentifiers
+        self.locking = locking
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 }
