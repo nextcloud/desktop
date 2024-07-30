@@ -268,17 +268,17 @@ File synchronization desktop utility.</source>
 <context>
     <name>FolderDelegate</name>
     <message>
-        <location filename="../src/gui/qml/FolderDelegate.qml" line="30"/>
+        <location filename="../src/gui/qml/FolderDelegate.qml" line="29"/>
         <source>Folder Sync</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/qml/FolderDelegate.qml" line="232"/>
+        <location filename="../src/gui/qml/FolderDelegate.qml" line="231"/>
         <source>Add Space</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/qml/FolderDelegate.qml" line="232"/>
+        <location filename="../src/gui/qml/FolderDelegate.qml" line="231"/>
         <source>Add Folder</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4065,7 +4065,7 @@ Are you sure you want to proceed?</source>
 <context>
     <name>SpacesView</name>
     <message>
-        <location filename="../src/gui/spaces/qml/SpacesView.qml" line="31"/>
+        <location filename="../src/gui/spaces/qml/SpacesView.qml" line="30"/>
         <source>Spaces</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4227,12 +4227,12 @@ Are you sure you want to proceed?</source>
 <context>
     <name>account loading</name>
     <message>
-        <location filename="../src/gui/main.cpp" line="485"/>
+        <location filename="../src/gui/main.cpp" line="491"/>
         <source>Error accessing the configuration file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/main.cpp" line="486"/>
+        <location filename="../src/gui/main.cpp" line="492"/>
         <source>There was an error while accessing the configuration file at %1.</source>
         <translation type="unfinished"></translation>
     </message>
