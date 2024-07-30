@@ -66,7 +66,14 @@ class ShareTableViewDataSource: NSObject, NSTableViewDataSource, NSTableViewDele
     }
 
     func reload() async {
-        guard let itemURL = itemURL else { return }
+        guard let itemURL else {
+            presentError("No item URL, cannot reload data!")
+            return
+        }
+        guard let kit else {
+            presentError("NextcloudKit instance is unavailable, cannot reload data!")
+            return
+        }
         guard let itemIdentifier = await withCheckedContinuation({
             (continuation: CheckedContinuation<NSFileProviderItemIdentifier?, Never>) -> Void in
             NSFileProviderManager.getIdentifierForUserVisibleFile(
@@ -106,7 +113,7 @@ class ShareTableViewDataSource: NSObject, NSTableViewDataSource, NSTableViewDele
                 presentError("Server does not support shares.")
                 return
             }
-            itemMetadata = await fetchItemMetadata(itemRelativePath: serverPathString)
+            itemMetadata = await fetchItemMetadata(itemRelativePath: serverPathString, kit: kit)
             guard itemMetadata?.permissions.contains("R") == true else {
                 presentError("This file cannot be shared.")
                 return
@@ -159,44 +166,6 @@ class ShareTableViewDataSource: NSObject, NSTableViewDataSource, NSTableViewDele
                 }
                 Logger.sharesDataSource.info("Successfully retrieved server share capabilities")
                 continuation.resume(returning: Capabilities(data: capabilitiesJson))
-            }
-        }
-    }
-
-    private func fetchItemMetadata(itemRelativePath: String) async -> NKFile? {
-        guard let kit = kit else {
-            presentError("Could not fetch item metadata as NextcloudKit instance is unavailable")
-            return nil
-        }
-
-        func slashlessPath(_ string: String) -> String {
-            var strCopy = string
-            if strCopy.hasPrefix("/") {
-                strCopy.removeFirst()
-            }
-            if strCopy.hasSuffix("/") {
-                strCopy.removeLast()
-            }
-            return strCopy
-        }
-
-        let nkCommon = kit.nkCommonInstance
-        let urlBase = slashlessPath(nkCommon.urlBase)
-        let davSuffix = slashlessPath(nkCommon.dav)
-        let userId = nkCommon.userId
-        let itemRelPath = slashlessPath(itemRelativePath)
-
-        let itemFullServerPath = "\(urlBase)/\(davSuffix)/files/\(userId)/\(itemRelPath)"
-        return await withCheckedContinuation { continuation in
-            kit.readFileOrFolder(serverUrlFileName: itemFullServerPath, depth: "0") {
-                account, files, data, error in
-                guard error == .success else {
-                    self.presentError("Error getting item metadata: \(error.errorDescription)")
-                    continuation.resume(returning: nil)
-                    return
-                }
-                Logger.sharesDataSource.info("Successfully retrieved item metadata")
-                continuation.resume(returning: files.first)
             }
         }
     }
