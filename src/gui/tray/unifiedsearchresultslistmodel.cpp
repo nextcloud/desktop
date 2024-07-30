@@ -409,11 +409,11 @@ void UnifiedSearchResultsListModel::slotFetchProvidersFinished(const QJsonDocume
     
     if (statusCode != 200) {
         qCCritical(lcUnifiedSearch) << QString("%1: Failed to fetch search providers for '%2'. Error: %3")
-                                           .arg(statusCode)
-                                           .arg(_searchTerm)
-                                           .arg(job->errorString());
+                                           .arg(QString::number(statusCode),
+                                                _searchTerm,
+                                                job->errorString());
         _errorString +=
-            tr("Failed to fetch search providers for '%1'. Error: %2").arg(_searchTerm).arg(job->errorString())
+            tr("Failed to fetch search providers for '%1'. Error: %2").arg(_searchTerm, job->errorString())
             + QLatin1Char('\n');
         emit errorStringChanged();
         return;
@@ -472,11 +472,9 @@ void UnifiedSearchResultsListModel::slotSearchForProviderFinished(const QJsonDoc
 
     if (statusCode != 200) {
         qCCritical(lcUnifiedSearch) << QString("%1: Search has failed for '%2'. Error: %3")
-                                           .arg(statusCode)
-                                           .arg(_searchTerm)
-                                           .arg(job->errorString());
+                                           .arg(QString::number(statusCode), _searchTerm, job->errorString());
         _errorString +=
-            tr("Search has failed for '%1'. Error: %2").arg(_searchTerm).arg(job->errorString()) + QLatin1Char('\n');
+            tr("Search has failed for '%1'. Error: %2").arg(_searchTerm, job->errorString()) + QLatin1Char('\n');
         emit errorStringChanged();
         return;
     }

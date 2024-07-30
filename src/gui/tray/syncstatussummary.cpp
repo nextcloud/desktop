@@ -231,8 +231,7 @@ void SyncStatusSummary::onFolderProgressInfo(const ProgressInfo &progress)
         if (progress.trustEta()) {
             setSyncStatusDetailString(
                 tr("%1 of %2 · %3 left")
-                    .arg(completedSizeString, totalSizeString)
-                    .arg(Utility::durationToDescriptiveString1(progress.totalProgress().estimatedEta)));
+                    .arg(completedSizeString, totalSizeString, Utility::durationToDescriptiveString1(progress.totalProgress().estimatedEta)));
         } else {
             setSyncStatusDetailString(tr("%1 of %2").arg(completedSizeString, totalSizeString));
         }

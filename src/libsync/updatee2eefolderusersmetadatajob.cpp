@@ -115,7 +115,7 @@ void UpdateE2eeFolderUsersMetadataJob::slotFetchMetadataJobFinished(int statusCo
     }
 
     if (!_encryptedFolderMetadataHandler->folderMetadata() || !_encryptedFolderMetadataHandler->folderMetadata()->isValid()) {
-        emit finished(403, tr("Could not add or remove user %1 to access folder %2").arg(_folderUserId).arg(_fullRemotePath));
+        emit finished(403, tr("Could not add or remove user %1 to access folder %2").arg(_folderUserId, _fullRemotePath));
         return;
     }
     startUpdate();
@@ -163,7 +163,7 @@ void UpdateE2eeFolderUsersMetadataJob::slotUpdateMetadataFinished(int code, cons
             qCDebug(lcUpdateE2eeFolderUsersMetadataJob()) << "Unlocking the folder.";
             unlockFolder(EncryptedFolderMetadataHandler::UnlockFolderWithResult::Failure);
         } else {
-            emit finished(code, tr("Error updating metadata for a folder %1").arg(_fullRemotePath) + QStringLiteral(":%1").arg(message));
+            emit finished(code, tr("Error updating metadata for a folder %1: %2").arg(_fullRemotePath, message));
         }
         return;
     }

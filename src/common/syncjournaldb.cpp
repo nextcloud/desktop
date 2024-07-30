@@ -720,7 +720,7 @@ bool SyncJournalDb::updateMetadataTableStructure()
         const auto latin1ColumnName = columnName.toLatin1();
         if (columns.indexOf(latin1ColumnName) == -1) {
             SqlQuery query(_db);
-            const auto request = QStringLiteral("ALTER TABLE metadata ADD COLUMN %1 %2;").arg(columnName).arg(dataType);
+            const auto request = QStringLiteral("ALTER TABLE metadata ADD COLUMN %1 %2;").arg(columnName, dataType);
             query.prepare(request.toLatin1());
             if (!query.exec()) {
                 sqlFail(QStringLiteral("updateMetadataTableStructure: add %1 column").arg(columnName), query);

@@ -50,7 +50,7 @@ AccountSetupFromCommandLineJob::AccountSetupFromCommandLineJob(QString appPasswo
 
 void AccountSetupFromCommandLineJob::handleAccountSetupFromCommandLine()
 {
-    if (AccountManager::instance()->accountFromUserId(QStringLiteral("%1@%2").arg(_userId).arg(_serverUrl.host()))) {
+    if (AccountManager::instance()->accountFromUserId(QStringLiteral("%1@%2").arg(_userId, _serverUrl.host()))) {
         printAccountSetupFromCommandLineStatusAndExit(QStringLiteral("Account %1 already exists!").arg(QDir::toNativeSeparators(_userId)), true);
         return;
     }
@@ -160,7 +160,7 @@ void AccountSetupFromCommandLineJob::accountSetupFromCommandLinePropfindHandleFa
         errorMsg = tr("There was an invalid response to an authenticated WebDAV request");
     }
     printAccountSetupFromCommandLineStatusAndExit(
-        QStringLiteral("Account %1 setup from command line failed with error: %2.").arg(_account->displayName()).arg(errorMsg),
+        QStringLiteral("Account %1 setup from command line failed with error: %2.").arg(_account->displayName(), errorMsg),
         true);
 }
 
