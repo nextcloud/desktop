@@ -40,9 +40,9 @@ class DocumentActionViewController: FPUIActionExtensionViewController {
         case "com.nextcloud.desktopclient.FileProviderUIExt.ShareAction":
             prepare(childViewController: ShareViewController(itemIdentifiers))
         case "com.nextcloud.desktopclient.FileProviderUIExt.LockFileAction":
-            prepare(childViewController: LockViewController(itemIdentifiers))
+            prepare(childViewController: LockViewController(itemIdentifiers, locking: true))
         case "com.nextcloud.desktopclient.FileProviderUIExt.UnlockFileAction":
-            prepare(childViewController: LockViewController(itemIdentifiers))
+            prepare(childViewController: LockViewController(itemIdentifiers, locking: false))
         default:
             return
         }
