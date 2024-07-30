@@ -84,7 +84,9 @@ class ShareTableViewDataSource: NSObject, NSTableViewDataSource, NSTableViewDele
         }
 
         do {
-            let connection = try await serviceConnection(url: itemURL)
+            let connection = try await serviceConnection(url: itemURL, interruptionHandler: {
+                Logger.sharesDataSource.error("Service connection interrupted")
+            })
             guard let serverPath = await connection.itemServerPath(identifier: itemIdentifier),
                   let credentials = await connection.credentials() as? Dictionary<String, String>,
                   let convertedAccount = Account(dictionary: credentials),
@@ -116,25 +118,6 @@ class ShareTableViewDataSource: NSObject, NSTableViewDataSource, NSTableViewDele
             presentError("Could not reload data: \(error), will try again.")
             reattempt()
         }
-    }
-
-    private func serviceConnection(url: URL) async throws -> FPUIExtensionService {
-        let services = try await FileManager().fileProviderServicesForItem(at: url)
-        guard let service = services[fpUiExtensionServiceName] else {
-            Logger.sharesDataSource.error("Couldn't get service, required service not present")
-            throw NSFileProviderError(.providerNotFound)
-        }
-        let connection: NSXPCConnection
-        connection = try await service.fileProviderConnection()
-        connection.remoteObjectInterface = NSXPCInterface(with: FPUIExtensionService.self)
-        connection.interruptionHandler = {
-            Logger.sharesDataSource.error("Service connection interrupted")
-        }
-        connection.resume()
-        guard let proxy = connection.remoteObjectProxy as? FPUIExtensionService else {
-            throw NSFileProviderError(.serverUnreachable)
-        }
-        return proxy
     }
 
     private func fetch(
