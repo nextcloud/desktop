@@ -21,6 +21,10 @@ class LockViewController: NSViewController {
     @IBOutlet weak var closeButton: NSButton!
     @IBOutlet weak var loadingIndicator: NSProgressIndicator!
 
+    var actionViewController: DocumentActionViewController! {
+        return parent as? DocumentActionViewController
+    }
+
     init(_ itemIdentifiers: [NSFileProviderItemIdentifier], locking: Bool) {
         self.itemIdentifiers = itemIdentifiers
         self.locking = locking
@@ -29,5 +33,9 @@ class LockViewController: NSViewController {
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+    @IBAction func closeAction(_ sender: Any) {
+        actionViewController.extensionContext.completeRequest()
     }
 }
