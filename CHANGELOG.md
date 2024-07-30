@@ -78,6 +78,7 @@ ownCloud admins and users.
 * Enhancement - New Folder status: [#11491](https://github.com/owncloud/client/pull/11491)
 * Enhancement - Don't poll the Avatar endpoint with ocis: [#11615](https://github.com/owncloud/client/pull/11615)
 * Enhancement - Support for prompt_values_supported in openid-configuration: [#11729](https://github.com/owncloud/client/pull/11729)
+* Enhancement - Display how many spaces are unsynced: [#11760](https://github.com/owncloud/client/pull/11760)
 
 ## Details
 
@@ -344,6 +345,10 @@ ownCloud admins and users.
    We implemnted support for idp's to specify the supported prompt values.
 
    https://github.com/owncloud/client/pull/11729
+
+* Enhancement - Display how many spaces are unsynced: [#11760](https://github.com/owncloud/client/pull/11760)
+
+   https://github.com/owncloud/client/pull/11760
 
 # Changelog for ownCloud Desktop Client [5.3.1] (2024-06-11)
 
