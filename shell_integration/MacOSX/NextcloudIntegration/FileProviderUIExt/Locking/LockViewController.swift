@@ -43,4 +43,31 @@ class LockViewController: NSViewController {
         Logger.lockViewController.error("Error: \(error, privacy: .public)")
         descriptionLabel.stringValue = "Error: \(error)"
     }
+
+    private func updateFileDetailsDisplay(itemUrl: URL) async {
+        let lockAction = locking ? "Locking" : "Unlocking"
+        fileNameLabel.stringValue = "\(lockAction) file \(itemUrl.lastPathComponent)…"
+
+        let request = QLThumbnailGenerator.Request(
+            fileAt: itemUrl,
+            size: CGSize(width: 48, height: 48),
+            scale: 1.0,
+            representationTypes: .icon
+        )
+        let generator = QLThumbnailGenerator.shared
+        let fileThumbnail = await withCheckedContinuation { continuation in
+            generator.generateRepresentations(for: request) { thumbnail, type, error in
+                if thumbnail == nil || error != nil {
+                    Logger.lockViewController.error(
+                        "Could not get thumbnail: \(error, privacy: .public)"
+                    )
+                }
+                continuation.resume(returning: thumbnail)
+            }
+        }
+
+        fileNameIcon.image =
+            fileThumbnail?.nsImage ?? 
+            NSImage(systemSymbolName: "doc", accessibilityDescription: "doc")
+    }
 }
