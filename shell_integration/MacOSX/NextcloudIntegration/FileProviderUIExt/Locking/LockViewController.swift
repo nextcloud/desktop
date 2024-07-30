@@ -15,6 +15,12 @@ class LockViewController: NSViewController {
     let itemIdentifiers: [NSFileProviderItemIdentifier]
     let locking: Bool
 
+    @IBOutlet weak var fileNameIcon: NSImageView!
+    @IBOutlet weak var fileNameLabel: NSTextField!
+    @IBOutlet weak var descriptionLabel: NSTextField!
+    @IBOutlet weak var closeButton: NSButton!
+    @IBOutlet weak var loadingIndicator: NSProgressIndicator!
+
     init(_ itemIdentifiers: [NSFileProviderItemIdentifier], locking: Bool) {
         self.itemIdentifiers = itemIdentifiers
         self.locking = locking
