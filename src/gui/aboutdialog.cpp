@@ -27,6 +27,14 @@
 #endif
 #endif
 
+namespace {
+#ifdef WITH_AUTO_UPDATER
+bool isTestPilotCloudTheme()
+{
+    return OCC::Theme::instance()->appName() == QLatin1String("testpilotcloud");
+}
+#endif
+}
 
 namespace OCC {
 
@@ -63,8 +71,8 @@ void AboutDialog::openBrowserFromUrl(const QUrl &s)
 void AboutDialog::setupUpdaterWidget()
 {
 #ifdef WITH_AUTO_UPDATER
-    // Only our standard brandings currently support beta channel
-    if (Theme::instance()->appName() != QLatin1String("testpilotcloud")) {
+    // non standard update channels are only supported by the vanilla theme and the testpilotcloud theme
+    if (!Resources::isVanillaTheme() && !isTestPilotCloudTheme()) {
         if (Utility::isMac()) {
             // Because we don't have any statusString from the SparkleUpdater anyway we can hide the whole thing
             ui->updaterWidget->hide();
@@ -78,8 +86,11 @@ void AboutDialog::setupUpdaterWidget()
     }
     // we want to attach the known english identifiers which are also used within the configuration file as user data inside the data model
     // that way, when we intend to reset to the original selection when the dialog, we can look up the config file's stored value in the data model
-    ui->updateChannel->addItem(tr("stable"), QStringLiteral("stable"));
-    ui->updateChannel->addItem(tr("beta"), QStringLiteral("beta"));
+    ui->updateChannel->addItem(tr("ownCloud 10 LTS"), QStringLiteral("stable"));
+    ui->updateChannel->addItem(tr("ownCloud Infinite Scale stable"), QStringLiteral("ocis"));
+    if (!Resources::isVanillaTheme()) {
+        ui->updateChannel->addItem(tr("beta"), QStringLiteral("beta"));
+    }
 
     if (!ConfigFile().skipUpdateCheck() && Updater::instance()) {
         // Channel selection
@@ -151,17 +162,14 @@ void AboutDialog::slotUpdateChannelChanged([[maybe_unused]] int index)
     }
 
     auto msgBox = new QMessageBox(QMessageBox::Warning, tr("Change update channel?"),
-        tr("The update channel determines which client updates will be offered "
-           "for installation. The \"stable\" channel contains only upgrades that "
-           "are considered reliable, while the versions in the \"beta\" channel "
-           "may contain newer features and bugfixes, but have not yet been tested "
-           "thoroughly."
-           "\n\n"
-           "Note that this selects only what pool upgrades are taken from, and that "
-           "there are no downgrades: So going back from the beta channel to "
-           "the stable channel usually cannot be done immediately and means waiting "
-           "for a stable version that is newer than the currently installed beta "
-           "version."),
+        tr("<html>The update channel determines which client updates will be offered for installation.<ul>"
+           "<li>\"ownCloud 10 LTS\" contains only upgrades that are considered reliable</li>"
+           "<li>\"ownCloud Infinite Scale stable\" contains only upgrades that are considered reliable but <b>removes support for \"ownCloud 10\"</b></li>"
+           "%1"
+           "</ul>"
+           "<br>⚠️Downgrades are not supported. If you switch to a stable channel this change will only be applied with the next major release.</html>")
+            .arg(
+                isTestPilotCloudTheme() ? tr("<li>\"beta\" may contain newer features and bugfixes, but have not yet been tested thoroughly</li>") : QString()),
         QMessageBox::NoButton, this);
     auto acceptButton = msgBox->addButton(tr("Change update channel"), QMessageBox::AcceptRole);
     msgBox->addButton(tr("Cancel"), QMessageBox::RejectRole);

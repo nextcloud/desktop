@@ -1,0 +1,7 @@
+Change: New update channel for ownCloud infinite scale
+
+The release series 6 is a long term release.
+As version 7 will drop the support for ownCloud 10, users will either have to select the ownCloud infinite scale update channel in the about dialog or manually install a newer release.
+This change only affects the unbranded version.
+
+https://github.com/owncloud/client/issues/11742
