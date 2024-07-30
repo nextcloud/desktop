@@ -97,7 +97,7 @@ Feature: adding accounts
         Then the default local sync path should contain "%home%/ownCloud (2) (2)" in the sync connection wizard
 
     @skipOnOC10
-    Scenario: Check for incremented number in bracket while adding new account and folder (oCIS)
+    Scenario: Synced spaces should not be available in sync connection wizard (oCIS)
         Given the user has created folder "ownCloud" in the default home path
         And the user has started the client
         And the user has entered the following account information:
@@ -109,6 +109,4 @@ Feature: adding accounts
         Then the default local sync path should contain "%home%/ownCloud (2)" in the configuration wizard
         When the user selects download everything option in advanced section
         And the user opens the sync connection wizard
-        And the user selects the "Personal" space to sync
-        Then the default local sync path should contain "%home%/ownCloud (2)/Personal" in the sync connection wizard
-        And the warning "There is already a sync from the server to this local folder. Please pick another local folder!" should appear in the sync connection wizard
+        Then the sync folder list should be empty
