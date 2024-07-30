@@ -156,9 +156,9 @@ void SyncStatusSummary::setSyncStateForFolder(const Folder *folder)
     case SyncResult::NotYetStarted:
         setSyncing(true);
         if (totalFiles() <= 0) {
-            setSyncStatusString(tr("Preparing sync"));
+            setSyncStatusString(tr("Checking folder changes"));
         } else {
-            setSyncStatusString(tr("Syncing"));
+            setSyncStatusString(tr("Syncing changes"));
         }
         setSyncStatusDetailString("");
         setSyncIcon(Theme::instance()->syncStatusRunning());

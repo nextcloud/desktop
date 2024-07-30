@@ -320,15 +320,18 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
         QApplication::style()->drawControl(QStyle::CE_ProgressBar, &progressBarOpt, painter, option.widget);
 #endif
 
-        // Overall Progress Text
-        QRect overallProgressRect;
-        overallProgressRect.setTop(progressBarRect.bottom() + margin);
-        overallProgressRect.setHeight(fileNameTextHeight);
-        overallProgressRect.setLeft(progressBarRect.left());
-        overallProgressRect.setWidth(progressBarRect.width());
+        // itemString is e.g. Syncing fileName1, filename2
+        // syncText is Synchronizing files in local folders or Synchronizing virtual files in local folder
+        const auto generalSyncStatus = !itemString.isEmpty() ? itemString : syncText;
+        QRect generalSyncStatusRect;
+        generalSyncStatusRect.setTop(progressBarRect.bottom() + margin);
+        generalSyncStatusRect.setHeight(fileNameTextHeight);
+        generalSyncStatusRect.setLeft(progressBarRect.left());
+        generalSyncStatusRect.setWidth(progressBarRect.width());
         painter->setFont(progressFont);
 
-        painter->drawText(QStyle::visualRect(option.direction, option.rect, overallProgressRect), Qt::AlignLeft | Qt::AlignVCenter, overallString);
+        painter->drawText(QStyle::visualRect(option.direction, option.rect, generalSyncStatusRect), Qt::AlignLeft | Qt::AlignVCenter, generalSyncStatus);
+
         painter->restore();
     }
 
