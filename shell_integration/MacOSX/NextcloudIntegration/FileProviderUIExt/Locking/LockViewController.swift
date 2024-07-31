@@ -174,20 +174,19 @@ class LockViewController: NSViewController {
             descriptionLabel.stringValue =
                 "Communicating with server, \(locking ? "locking" : "unlocking") file…"
             
-            await withCheckedContinuation { continuation in
+            let error = await withCheckedContinuation { continuation in
                 kit.lockUnlockFile(
                     serverUrlFileName: itemServerRelativePath,
                     shouldLock: locking,
-                    completion: { account, error in
-                        if error == .success {
-                            self.descriptionLabel.stringValue =
-                                "File \(self.locking ? "locked" : "unlocked")!"
-                            continuation.resume()
-                        } else {
-                            self.presentError("Could not lock file: \(error).")
-                        }
+                    completion: { _, error in
+                        continuation.resume(returning: error)
                     }
                 )
+            }
+            if error == .success {
+                descriptionLabel.stringValue = "File \(self.locking ? "locked" : "unlocked")!"
+            } else {
+                presentError("Could not lock file: \(error.errorDescription).")
             }
         } catch let error {
             presentError("Could not lock file: \(error).")
