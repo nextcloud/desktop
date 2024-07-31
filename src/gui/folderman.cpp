@@ -55,7 +55,9 @@ FolderMan *FolderMan::_instance = nullptr;
 FolderMan::FolderMan(QObject *parent)
     : QObject(parent)
     , _lockWatcher(new LockWatcher)
+#ifdef Q_OS_WIN
     , _navigationPaneHelper(this)
+#endif
 {
     ASSERT(!_instance);
     _instance = this;
@@ -1209,7 +1211,9 @@ Folder *FolderMan::addFolder(AccountState *accountState, const FolderDefinition 
         emit folderListChanged(_folderMap);
     }
 
+#ifdef Q_OS_WIN
     _navigationPaneHelper.scheduleUpdateCloudStorageRegistry();
+#endif
     return folder;
 }
 
@@ -1229,10 +1233,12 @@ Folder *FolderMan::addFolderInternal(
 
     auto folder = new Folder(folderDefinition, accountState, std::move(vfs), this);
 
+#ifdef Q_OS_WIN
     if (_navigationPaneHelper.showInExplorerNavigationPane() && folderDefinition.navigationPaneClsid.isNull()) {
         folder->setNavigationPaneClsid(QUuid::createUuid());
         folder->saveToSettings();
     }
+#endif
 
     qCInfo(lcFolderMan) << "Adding folder to Folder Map " << folder << folder->alias();
     _folderMap[folder->alias()] = folder;
@@ -1363,7 +1369,9 @@ void FolderMan::removeFolder(Folder *f)
         delete f;
     }
 
+#ifdef Q_OS_WIN
     _navigationPaneHelper.scheduleUpdateCloudStorageRegistry();
+#endif
 
     emit folderListChanged(_folderMap);
 }
@@ -1500,7 +1508,9 @@ void FolderMan::slotWipeFolderForAccount(AccountState *accountState)
             delete f;
         }
 
+#ifdef Q_OS_WIN
         _navigationPaneHelper.scheduleUpdateCloudStorageRegistry();
+#endif
     }
 
     emit folderListChanged(_folderMap);
