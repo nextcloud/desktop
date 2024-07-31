@@ -14,6 +14,7 @@
                 <outlet property="fileNameIcon" destination="KlP-OW-SKo" id="Dey-vA-qIG"/>
                 <outlet property="fileNameLabel" destination="LDe-7m-hvL" id="AzB-UH-ndO"/>
                 <outlet property="loadingIndicator" destination="UWQ-uR-PJA" id="Swv-It-LT9"/>
+                <outlet property="view" destination="Ge9-bk-WPE" id="F9c-24-JAT"/>
             </connections>
         </customObject>
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>

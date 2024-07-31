@@ -22,6 +22,10 @@ class LockViewController: NSViewController {
     @IBOutlet weak var closeButton: NSButton!
     @IBOutlet weak var loadingIndicator: NSProgressIndicator!
 
+    public override var nibName: NSNib.Name? {
+        return NSNib.Name(self.className)
+    }
+
     var actionViewController: DocumentActionViewController! {
         return parent as? DocumentActionViewController
     }
@@ -30,20 +34,29 @@ class LockViewController: NSViewController {
         self.itemIdentifiers = itemIdentifiers
         self.locking = locking
         super.init(nibName: nil, bundle: nil)
+    }
 
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    override func viewDidLoad() {
         guard let firstItem = itemIdentifiers.first else {
             Logger.shareViewController.error("called without items")
             closeAction(self)
             return
         }
 
+        Logger.lockViewController.info(
+            """
+            Locking \(self.locking ? "enabled" : "disabled", privacy: .public) for items:
+            \(firstItem.rawValue, privacy: .public)
+            """
+        )
+
         Task {
             await processItemIdentifier(firstItem)
         }
-    }
-
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
     }
 
     @IBAction func closeAction(_ sender: Any) {
