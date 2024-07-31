@@ -444,6 +444,13 @@ void SocketApi::slotReadSocket()
                                        << "with argument:" << argument;
                 socketApiJob->failure(QStringLiteral("command not found"));
             }
+        } else if (command.startsWith("ENCRYPT")) {
+            if (indexOfMethod != -1) {
+                ASSERT(thread() == QThread::currentThread())
+                staticMetaObject.method(indexOfMethod)
+                    .invoke(this, Qt::QueuedConnection, Q_ARG(QString, argument.toString()),
+                            Q_ARG(SocketListener *, listener.data()));
+            }
         } else {
             if (indexOfMethod != -1) {
                 // to ensure that listener is still valid we need to call it with Qt::DirectConnection
