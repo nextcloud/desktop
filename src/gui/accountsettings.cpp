@@ -77,6 +77,7 @@ AccountSettings::AccountSettings(const AccountStatePtr &accountState, QWidget *p
 
     connect(FolderMan::instance(), &FolderMan::folderListChanged, _model, &FolderStatusModel::resetFolders);
     if (accountsState()->supportsSpaces()) {
+        // TODO: move to a proper slot for readability
         connect(accountsState()->account()->spacesManager(), &GraphApi::SpacesManager::updated, this, [this] {
             auto spaces = accountsState()->account()->spacesManager()->spaces();
             auto unsycnedSpaces = std::set<GraphApi::Space *>(spaces.cbegin(), spaces.cend());
@@ -88,7 +89,7 @@ AccountSettings::AccountSettings(const AccountStatePtr &accountState, QWidget *p
                 Q_EMIT unsyncedSpacesChanged();
             }
             uint syncedSpaces = spaces.size() - _unsyncedSpaces;
-            if (_syncedSpaces = !syncedSpaces) {
+            if (_syncedSpaces != syncedSpaces) {
                 _syncedSpaces = syncedSpaces;
                 Q_EMIT syncedSpacesChanged();
             }
