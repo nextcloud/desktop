@@ -185,6 +185,7 @@ class LockViewController: NSViewController {
             }
             if error == .success {
                 descriptionLabel.stringValue = "File \(self.locking ? "locked" : "unlocked")!"
+                stopIndicatingLoading()
             } else {
                 presentError("Could not lock file: \(error.errorDescription).")
             }
