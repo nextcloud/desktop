@@ -50,6 +50,11 @@ class LockViewController: NSViewController {
         actionViewController.extensionContext.completeRequest()
     }
 
+    private func stopIndicatingLoading() {
+        loadingIndicator.stopAnimation(self)
+        loadingIndicator.isHidden = true
+    }
+
     private func presentError(_ error: String) {
         Logger.lockViewController.error("Error: \(error, privacy: .public)")
         descriptionLabel.stringValue = "Error: \(error)"
