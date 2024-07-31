@@ -70,10 +70,6 @@ class ShareTableViewDataSource: NSObject, NSTableViewDataSource, NSTableViewDele
             presentError("No item URL, cannot reload data!")
             return
         }
-        guard let kit else {
-            presentError("NextcloudKit instance is unavailable, cannot reload data!")
-            return
-        }
         guard let itemIdentifier = await withCheckedContinuation({
             (continuation: CheckedContinuation<NSFileProviderItemIdentifier?, Never>) -> Void in
             NSFileProviderManager.getIdentifierForUserVisibleFile(
@@ -111,6 +107,10 @@ class ShareTableViewDataSource: NSObject, NSTableViewDataSource, NSTableViewDele
             guard capabilities != nil else { return }
             guard capabilities?.filesSharing?.apiEnabled == true else {
                 presentError("Server does not support shares.")
+                return
+            }
+            guard let kit else {
+                presentError("NextcloudKit instance is unavailable, cannot reload data!")
                 return
             }
             itemMetadata = await fetchItemMetadata(itemRelativePath: serverPathString, kit: kit)
