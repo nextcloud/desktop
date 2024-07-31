@@ -142,7 +142,6 @@ class LockViewController: NSViewController {
                 return
             }
             let serverPathString = serverPath as String
-            let itemServerRelativePath = serverPathString
             let kit = NextcloudKit()
             kit.setup(
                 user: account.username,
@@ -173,10 +172,18 @@ class LockViewController: NSViewController {
 
             descriptionLabel.stringValue =
                 "Communicating with server, \(locking ? "locking" : "unlocking") file…"
-            
+
+            let serverUrlFileName = itemMetadata.serverUrl + "/" + itemMetadata.fileName
+            Logger.lockViewController.info(
+                """
+                Locking file: \(serverUrlFileName, privacy: .public)
+                \(self.locking ? "locking" : "unlocking", privacy: .public)
+                """
+            )
+
             let error = await withCheckedContinuation { continuation in
                 kit.lockUnlockFile(
-                    serverUrlFileName: itemServerRelativePath,
+                    serverUrlFileName: serverUrlFileName,
                     shouldLock: locking,
                     completion: { _, error in
                         continuation.resume(returning: error)
