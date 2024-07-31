@@ -28,7 +28,7 @@ public:
 
 
 private:
-    AccountPtr _account;
+    Account *_account;
 };
 
 }

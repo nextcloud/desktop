@@ -20,7 +20,7 @@ using namespace Spaces;
 
 SpaceImageProvider::SpaceImageProvider(const AccountPtr &account)
     : QQuickImageProvider(QQuickImageProvider::Pixmap, QQuickImageProvider::ForceAsynchronousImageLoading)
-    , _account(account)
+    , _account(account.data())
 {
 }
 
