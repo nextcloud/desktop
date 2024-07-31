@@ -12,5 +12,5 @@ The following parameters are supported:
 
 Examples:
 
-- ``C:\Program Files\Nextcloud\nextcloud.exe" --overridelocaldir "D:/work/nextcloud-sync-folder" --overrideserverurl https://cloud.example.com
+- ``C:\Program Files\Nextcloud\nextcloud.exe" --overridelocaldir "D:/work/nextcloud-sync-folder" --overrideserverurl https://cloud.example.com``
 - For Linux and mac the same example as above will work but ``nextcloud.exe path`` and ``--overridelocaldir`` value should get changed to platform specific format (e.g. ``no .exe extension`` and ``/home/<user folder>`` format)
