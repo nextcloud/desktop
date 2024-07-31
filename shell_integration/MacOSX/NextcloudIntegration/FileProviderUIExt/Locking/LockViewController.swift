@@ -58,6 +58,7 @@ class LockViewController: NSViewController {
     private func presentError(_ error: String) {
         Logger.lockViewController.error("Error: \(error, privacy: .public)")
         descriptionLabel.stringValue = "Error: \(error)"
+        stopIndicatingLoading()
     }
 
     private func processItemIdentifier(_ itemIdentifier: NSFileProviderItemIdentifier) async {
