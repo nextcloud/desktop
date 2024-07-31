@@ -299,7 +299,15 @@ void DiscoverySingleDirectoryJob::start()
 
     QObject::connect(_proFindJob, &PropfindJob::directoryListingIterated,
         this, &DiscoverySingleDirectoryJob::directoryListingIteratedSlot);
-    QObject::connect(_proFindJob, &PropfindJob::finishedWithError, this, &DiscoverySingleDirectoryJob::lsJobFinishedWithErrorSlot);
+    QObject::connect(_proFindJob, &PropfindJob::finishedWithError, this, [this] {
+        QString msg = _proFindJob->errorString();
+        if (_proFindJob->reply()->error() == QNetworkReply::NoError
+            && !_proFindJob->reply()->header(QNetworkRequest::ContentTypeHeader).toString().contains(QLatin1String("application/xml; charset=utf-8"))) {
+            msg = tr("Server error: PROPFIND reply is not XML formatted!");
+        }
+        Q_EMIT finished(HttpError{_proFindJob->httpStatusCode(), msg});
+        deleteLater();
+    });
     QObject::connect(_proFindJob, &PropfindJob::finishedWithoutError, this, &DiscoverySingleDirectoryJob::lsJobFinishedWithoutErrorSlot);
     _proFindJob->start();
 }
@@ -417,23 +425,6 @@ void DiscoverySingleDirectoryJob::lsJobFinishedWithoutErrorSlot()
     }
     Q_EMIT etag(_firstEtag, _proFindJob->responseQTimeStamp());
     Q_EMIT finished(_results);
-    deleteLater();
-}
-
-void DiscoverySingleDirectoryJob::lsJobFinishedWithErrorSlot(QNetworkReply *r)
-{
-    QString contentType = r->header(QNetworkRequest::ContentTypeHeader).toString();
-    int httpCode = r->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
-    QString msg = r->errorString();
-    qCWarning(lcDiscovery) << "LSCOL job error" << r->errorString() << httpCode << r->error();
-    if (r->error() == QNetworkReply::NoError
-        && !contentType.contains(QLatin1String("application/xml; charset=utf-8"))) {
-        msg = tr("Server error: PROPFIND reply is not XML formatted!");
-
-    } else if (_proFindJob->timedOut()) {
-        msg = tr("Connection timed out");
-    }
-    Q_EMIT finished(HttpError{httpCode, msg});
     deleteLater();
 }
 }

@@ -55,7 +55,6 @@ private Q_SLOTS:
     void slotUpdateDirectories(QStringList);
     void slotItemExpanded(QTreeWidgetItem *);
     void slotItemChanged(QTreeWidgetItem *, int);
-    void slotLscolFinishedWithError(QNetworkReply *);
 
 private:
     void refreshFolders();

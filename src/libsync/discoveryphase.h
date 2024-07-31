@@ -130,7 +130,6 @@ Q_SIGNALS:
 private Q_SLOTS:
     void directoryListingIteratedSlot(const QString &, const QMap<QString, QString> &);
     void lsJobFinishedWithoutErrorSlot();
-    void lsJobFinishedWithErrorSlot(QNetworkReply *);
 
 private:
     QVector<RemoteInfo> _results;

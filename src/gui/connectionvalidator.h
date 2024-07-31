@@ -132,7 +132,7 @@ protected Q_SLOTS:
 
     void slotStatusFound(const QUrl &url, const QJsonObject &info);
 
-    void slotAuthFailed(QNetworkReply *reply);
+    void slotAuthFailed();
     void slotAuthSuccess();
 
 private:

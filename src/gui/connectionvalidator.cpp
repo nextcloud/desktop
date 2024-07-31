@@ -207,29 +207,26 @@ void ConnectionValidator::checkAuthentication()
     job->start();
 }
 
-void ConnectionValidator::slotAuthFailed(QNetworkReply *reply)
+void ConnectionValidator::slotAuthFailed()
 {
     auto job = qobject_cast<PropfindJob *>(sender());
     Status stat = Timeout;
 
-    if (reply->error() == QNetworkReply::SslHandshakeFailedError) {
+    if (job->reply()->error() == QNetworkReply::SslHandshakeFailedError) {
         _errors << job->errorStringParsingBody();
         stat = SslError;
 
-    } else if (reply->error() == QNetworkReply::AuthenticationRequiredError
-        || !_account->credentials()->stillValid(reply)) {
-        qCWarning(lcConnectionValidator) << "******** Password is wrong!" << reply->error() << job;
+    } else if (job->reply()->error() == QNetworkReply::AuthenticationRequiredError || !_account->credentials()->stillValid(job->reply())) {
+        qCWarning(lcConnectionValidator) << "******** Password is wrong!" << job->reply()->error() << job;
         _errors << tr("The provided credentials are not correct");
         stat = CredentialsWrong;
-    } else if (reply->error() == QNetworkReply::ContentAccessDenied) {
+    } else if (job->reply()->error() == QNetworkReply::ContentAccessDenied) {
         stat = ClientUnsupported;
         _errors << extractErrorMessage(job->reply()->readAll());
-    } else if (reply->error() != QNetworkReply::NoError) {
+    } else if (job->reply()->error() != QNetworkReply::NoError) {
         _errors << job->errorStringParsingBody();
 
-        const int httpStatus =
-            reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
-        if (httpStatus == 503) {
+        if (job->httpStatusCode() == 503) {
             _errors.clear();
             stat = ServiceUnavailable;
         }

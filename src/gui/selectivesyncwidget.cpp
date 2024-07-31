@@ -105,7 +105,14 @@ void SelectiveSyncWidget::refreshFolders()
     auto *job = new PropfindJob(_account, davUrl(), _folderPath, PropfindJob::Depth::One, this);
     job->setProperties({QByteArrayLiteral("resourcetype"), QByteArrayLiteral("http://owncloud.org/ns:size")});
     connect(job, &PropfindJob::directoryListingSubfolders, this, &SelectiveSyncWidget::slotUpdateDirectories);
-    connect(job, &PropfindJob::finishedWithError, this, &SelectiveSyncWidget::slotLscolFinishedWithError);
+    connect(job, &PropfindJob::finishedWithError, this, [job, this] {
+        if (job->reply()->error() == QNetworkReply::ContentNotFoundError) {
+            _loading->setText(tr("No subfolders currently on the server."));
+        } else {
+            _loading->setText(tr("An error occurred while loading the list of sub folders."));
+        }
+        _loading->resize(_loading->sizeHint()); // because it's not in a layout
+    });
     job->start();
     _folderTree->clear();
     _loading->show();
@@ -248,16 +255,6 @@ void SelectiveSyncWidget::slotUpdateDirectories(QStringList list)
     }
 
     root->setExpanded(true);
-}
-
-void SelectiveSyncWidget::slotLscolFinishedWithError(QNetworkReply *r)
-{
-    if (r->error() == QNetworkReply::ContentNotFoundError) {
-        _loading->setText(tr("No subfolders currently on the server."));
-    } else {
-        _loading->setText(tr("An error occurred while loading the list of sub folders."));
-    }
-    _loading->resize(_loading->sizeHint()); // because it's not in a layout
 }
 
 void SelectiveSyncWidget::slotItemExpanded(QTreeWidgetItem *item)

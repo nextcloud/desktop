@@ -51,10 +51,6 @@ RequestEtagJob::RequestEtagJob(AccountPtr account, const QUrl &rootUrl, const QS
 {
     setProperties({ QByteArrayLiteral("getetag") });
     connect(this, &PropfindJob::directoryListingIterated, this, [this](const QString &, const QMap<QString, QString> &value) {
-        if (reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt() != 207) {
-            Q_EMIT finishedWithError(reply());
-            return;
-        }
         _etag = Utility::normalizeEtag(value.value(QStringLiteral("getetag")));
         // the server returned a 207 but no etag, something is wrong
         if (!OC_ENSURE_NOT(_etag.isEmpty())) {
@@ -322,16 +318,16 @@ void PropfindJob::finished()
             const QString expectedPath = reply()->request().url().path(); // something like "/owncloud/remote.php/webdav/folder"
             if (!parser.parse(reply()->readAll(), &_sizes, expectedPath)) {
                 // XML parse error
-                Q_EMIT finishedWithError(reply());
+                Q_EMIT finishedWithError();
             }
         } else {
             // wrong content type
             qCWarning(lcPropfindJob) << "Unexpected ContentTypeHeader:" << contentType;
-            Q_EMIT finishedWithError(reply());
+            Q_EMIT finishedWithError();
         }
     } else {
         // wrong HTTP code or any other network error
-        Q_EMIT finishedWithError(reply());
+        Q_EMIT finishedWithError();
     }
 }
 

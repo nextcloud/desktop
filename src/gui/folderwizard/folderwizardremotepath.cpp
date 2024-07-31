@@ -121,19 +121,17 @@ void FolderWizardRemotePath::slotHandleMkdirNetworkError(QNetworkReply *reply)
     }
 }
 
-void FolderWizardRemotePath::slotHandleLsColNetworkError(QNetworkReply *reply)
+void FolderWizardRemotePath::slotHandleLsColNetworkError()
 {
+    auto *job = qobject_cast<PropfindJob *>(sender());
     // Ignore 404s, otherwise users will get annoyed by error popups
     // when not typing fast enough. It's still clear that a given path
     // was not found, because the 'Next' button is disabled and no entry
     // is selected in the tree view.
-    int httpCode = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
-    if (httpCode == 404) {
+    if (job->httpStatusCode() == 404) {
         showWarn(QString()); // hides the warning pane
         return;
     }
-    auto job = qobject_cast<PropfindJob *>(sender());
-    OC_ASSERT(job);
     showWarn(tr("Failed to list a folder. Error: %1")
                  .arg(job->errorStringParsingBody()));
 }

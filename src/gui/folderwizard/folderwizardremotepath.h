@@ -57,7 +57,7 @@ protected Q_SLOTS:
     void slotCreateRemoteFolder(const QString &);
     void slotCreateRemoteFolderFinished();
     void slotHandleMkdirNetworkError(QNetworkReply *);
-    void slotHandleLsColNetworkError(QNetworkReply *);
+    void slotHandleLsColNetworkError();
     void slotUpdateDirectories(const QStringList &);
     void slotRefreshFolders();
     void slotItemExpanded(QTreeWidgetItem *);
