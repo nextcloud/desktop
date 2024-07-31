@@ -375,3 +375,9 @@ class SyncConnectionWizard:
     @staticmethod
     def get_warn_label():
         return str(squish.waitForObjectExists(SyncConnectionWizard.WARN_LABEL).text)
+
+    @staticmethod
+    def is_add_sync_folder_button_enabled():
+        return squish.waitForObjectExists(
+            SyncConnectionWizard.ADD_FOLDER_SYNC_BUTTON
+        ).enabled

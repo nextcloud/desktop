@@ -303,3 +303,12 @@ def step(context, space_name):
 @When("the user opens the sync connection wizard")
 def step(context):
     SyncConnectionWizard.open_sync_connection_wizard()
+
+
+@Then('the button to open sync connection wizard should be disabled')
+def step(context):
+    test.compare(
+        False,
+        SyncConnectionWizard.is_add_sync_folder_button_enabled(),
+        'Button to open sync connection wizard should be disabled',
+    )

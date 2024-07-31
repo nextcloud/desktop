@@ -97,7 +97,7 @@ Feature: adding accounts
         Then the default local sync path should contain "%home%/ownCloud (2) (2)" in the sync connection wizard
 
     @skipOnOC10
-    Scenario: Synced spaces should not be available in sync connection wizard (oCIS)
+    Scenario: Button to open sync connection wizard should be disabled when all available spaces are synced (oCIS)
         Given the user has created folder "ownCloud" in the default home path
         And the user has started the client
         And the user has entered the following account information:
@@ -108,5 +108,4 @@ Feature: adding accounts
         And the user opens the advanced configuration
         Then the default local sync path should contain "%home%/ownCloud (2)" in the configuration wizard
         When the user selects download everything option in advanced section
-        And the user opens the sync connection wizard
-        Then the sync folder list should be empty
+        Then the button to open sync connection wizard should be disabled
