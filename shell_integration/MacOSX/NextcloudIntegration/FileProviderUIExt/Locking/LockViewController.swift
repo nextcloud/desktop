@@ -21,6 +21,7 @@ class LockViewController: NSViewController {
     @IBOutlet weak var descriptionLabel: NSTextField!
     @IBOutlet weak var closeButton: NSButton!
     @IBOutlet weak var loadingIndicator: NSProgressIndicator!
+    @IBOutlet weak var warnImage: NSImageView!
 
     public override var nibName: NSNib.Name? {
         return NSNib.Name(self.className)
@@ -66,6 +67,7 @@ class LockViewController: NSViewController {
     private func stopIndicatingLoading() {
         loadingIndicator.stopAnimation(self)
         loadingIndicator.isHidden = true
+        warnImage.isHidden = false
     }
 
     private func presentError(_ error: String) {
