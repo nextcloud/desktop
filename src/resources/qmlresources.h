@@ -27,8 +27,16 @@ namespace Resources {
         QML_ELEMENT
     public:
         using QObject::QObject;
+        struct Icon
+        {
+            QString theme;
+            QString iconName;
+            bool enabled;
+        };
         Q_INVOKABLE static QUrl resourcePath(const QString &theme, const QString &icon, bool enabled);
-    };
+        Q_INVOKABLE static QUrl resourcePath2(const QString &provider, const QString &icon, bool enabled, const QVariantMap &properies = {});
 
+        static Icon parseIcon(const QString &id);
+    };
 } // Resources
 } // OCC

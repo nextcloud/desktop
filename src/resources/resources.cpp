@@ -12,7 +12,8 @@
  * for more details.
  */
 
-#include "resources.h"
+#include "resources/resources.h"
+#include "resources/qmlresources.h"
 
 #include <QDebug>
 #include <QFileInfo>
@@ -184,18 +185,15 @@ CoreImageProvider::CoreImageProvider()
 }
 QPixmap CoreImageProvider::requestPixmap(const QString &id, QSize *size, const QSize &requestedSize)
 {
-    const auto data = QJsonDocument::fromJson(QByteArray::fromBase64(id.toUtf8())).object();
-    const auto theme = data.value(QLatin1String("theme")).toString();
-    const auto iconName = data.value(QLatin1String("icon")).toString();
-    const auto enabled = data.value(QLatin1String("enabled")).toBool();
-    Q_ASSERT(!iconName.isEmpty());
+    const auto qmlIcon = QMLResources::parseIcon(id);
+
     QIcon icon;
-    if (theme == QLatin1String("core")) {
-        icon = getCoreIcon(iconName);
-    } else if (theme == QLatin1String("universal")) {
-        icon = themeUniversalIcon(iconName);
+    if (qmlIcon.theme == QLatin1String("core")) {
+        icon = getCoreIcon(qmlIcon.iconName);
+    } else if (qmlIcon.theme == QLatin1String("universal")) {
+        icon = themeUniversalIcon(qmlIcon.iconName);
     } else {
-        icon = themeIcon(iconName);
+        icon = themeIcon(qmlIcon.iconName);
     }
 
     // the sourceSize of the Image must be provided
@@ -204,5 +202,5 @@ QPixmap CoreImageProvider::requestPixmap(const QString &id, QSize *size, const Q
     if (size) {
         *size = actualSize;
     }
-    return icon.pixmap(actualSize, enabled ? QIcon::Normal : QIcon::Disabled);
+    return icon.pixmap(actualSize, qmlIcon.enabled ? QIcon::Normal : QIcon::Disabled);
 }

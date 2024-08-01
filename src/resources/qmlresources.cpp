@@ -17,10 +17,22 @@
 #include "resources/resources.h"
 
 using namespace OCC;
+QUrl Resources::QMLResources::resourcePath2(const QString &provider, const QString &icon, bool enabled, const QVariantMap &properies)
+{
+    auto map =
+        QVariantMap{{QStringLiteral("enabled"), enabled}, {QStringLiteral("icon"), icon}, {QStringLiteral("systemtheme"), Resources::isUsingDarkTheme()}};
+    map.insert(properies);
+    const auto data = QJsonDocument::fromVariant(map).toJson();
+    return QUrl(QStringLiteral("image://%1/%2").arg(provider, QString::fromUtf8(data.toBase64())));
+}
+
 QUrl Resources::QMLResources::resourcePath(const QString &theme, const QString &icon, bool enabled)
 {
-    auto getBool = [](bool b) { return b ? QStringLiteral("true") : QStringLiteral("false"); };
-    const auto data = QStringLiteral("{\"theme\": \"%1\", \"enabled\": %2, \"icon\": \"%3\", \"systemtheme\": %4}")
-                          .arg(theme, getBool(enabled), icon, getBool(Resources::isUsingDarkTheme()));
-    return QUrl(QStringLiteral("image://ownCloud/") + QString::fromUtf8(data.toUtf8().toBase64()));
+    return resourcePath2(QStringLiteral("ownCloud"), icon, enabled, {{QStringLiteral("theme"), theme}});
+}
+
+Resources::QMLResources::Icon Resources::QMLResources::parseIcon(const QString &id)
+{
+    const auto data = QJsonDocument::fromJson(QByteArray::fromBase64(id.toUtf8())).object();
+    return Icon{data.value(QLatin1String("theme")).toString(), data.value(QLatin1String("icon")).toString(), data.value(QLatin1String("enabled")).toBool()};
 }
