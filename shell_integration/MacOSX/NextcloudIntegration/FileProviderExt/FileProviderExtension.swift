@@ -104,7 +104,15 @@ import OSLog
         request _: NSFileProviderRequest,
         completionHandler: @escaping (NSFileProviderItem?, Error?) -> Void
     ) -> Progress {
-        if let item = Item.storedItem(identifier: identifier, remoteInterface: ncKit) {
+        if ncAccount == nil {
+            Logger.fileProviderExtension.error(
+                """
+                Not fetching item for identifier: \(identifier.rawValue, privacy: .public)
+                as account not set up yet.
+                """
+            )
+            completionHandler(nil, NSFileProviderError(.notAuthenticated))
+        } else if let item = Item.storedItem(identifier: identifier, remoteInterface: ncKit) {
             completionHandler(item, nil)
         } else {
             completionHandler(nil, NSFileProviderError(.noSuchItem))
