@@ -207,6 +207,10 @@ class LockViewController: NSViewController {
             }
             if error == .success {
                 descriptionLabel.stringValue = "File \(self.locking ? "locked" : "unlocked")!"
+                warnImage.image = NSImage(
+                    systemSymbolName: "checkmark.circle.fill",
+                    accessibilityDescription: "checkmark.circle.fill"
+                )
                 stopIndicatingLoading()
             } else {
                 presentError("Could not lock file: \(error.errorDescription).")
