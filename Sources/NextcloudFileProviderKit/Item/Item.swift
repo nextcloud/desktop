@@ -162,11 +162,13 @@ public class Item: NSObject, NSFileProviderItem {
     }
 
     public var userInfo: [AnyHashable : Any]? {
-        [
+        var userInfoDict = [AnyHashable : Any]()
+        if metadata.lock {
             // Can be used to display lock/unlock context menu entries for FPUIActions
-            "isLockable": !self.contentType.conforms(to: .directory) && !metadata.lock,
-            "isUnlockable": !self.contentType.conforms(to: .directory) && metadata.lock,
-        ]
+            // Note that only files, not folders, should be lockable/unlockable
+            userInfoDict["locked"] = metadata.lock
+        }
+        return userInfoDict
     }
 
     @available(macOS 13.0, *)
