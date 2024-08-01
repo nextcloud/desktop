@@ -212,6 +212,18 @@ class LockViewController: NSViewController {
                     accessibilityDescription: "checkmark.circle.fill"
                 )
                 stopIndicatingLoading()
+                if let manager = NSFileProviderManager(for: actionViewController.domain) {
+                    do {
+                        try await manager.signalEnumerator(for: itemIdentifier)
+                    } catch let error {
+                        presentError(
+                            """
+                            Could not signal lock state change in virtual file.
+                            Changes may take a while to be reflected on your Mac.
+                            Error: \(error.localizedDescription)
+                            """)
+                    }
+                }
             } else {
                 presentError("Could not lock file: \(error.errorDescription).")
             }
