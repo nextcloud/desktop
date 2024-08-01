@@ -82,16 +82,6 @@ class AccountSettings;
 
 Q_LOGGING_CATEGORY(lcAccountSettings, "nextcloud.gui.account.settings", QtInfoMsg)
 
-static const char progressBarStyleC[] =
-    "QProgressBar {"
-    "border: 1px solid grey;"
-    "border-radius: 5px;"
-    "text-align: center;"
-    "}"
-    "QProgressBar::chunk {"
-    "background-color: %1; width: 1px;"
-    "}";
-
 void showEnableE2eeWithVirtualFilesWarningDialog(std::function<void(void)> onAccept)
 {
     const auto messageBox = new QMessageBox;
@@ -271,11 +261,6 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent)
 
     connect(FolderMan::instance(), &FolderMan::folderListChanged, _model, &FolderStatusModel::resetFolders);
     connect(this, &AccountSettings::folderChanged, _model, &FolderStatusModel::resetFolders);
-
-
-    // quotaProgressBar style now set in customizeStyle()
-    /*QColor color = palette().highlight().color();
-     _ui->quotaProgressBar->setStyleSheet(QString::fromLatin1(progressBarStyleC).arg(color.name()));*/
 
     // Connect E2E stuff
     initializeE2eEncryption();
@@ -1635,9 +1620,6 @@ void AccountSettings::customizeStyle()
     auto msg = _ui->connectLabel->text();
     Theme::replaceLinkColorStringBackgroundAware(msg);
     _ui->connectLabel->setText(msg);
-
-    const auto color = palette().highlight().color();
-    _ui->quotaProgressBar->setStyleSheet(QString::fromLatin1(progressBarStyleC).arg(color.name()));
 }
 
 void AccountSettings::initializeE2eEncryption()
