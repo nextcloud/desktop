@@ -77,23 +77,7 @@ AccountSettings::AccountSettings(const AccountStatePtr &accountState, QWidget *p
 
     connect(FolderMan::instance(), &FolderMan::folderListChanged, _model, &FolderStatusModel::resetFolders);
     if (accountsState()->supportsSpaces()) {
-        // TODO: move to a proper slot for readability
-        connect(accountsState()->account()->spacesManager(), &GraphApi::SpacesManager::updated, this, [this] {
-            auto spaces = accountsState()->account()->spacesManager()->spaces();
-            auto unsycnedSpaces = std::set<GraphApi::Space *>(spaces.cbegin(), spaces.cend());
-            for (const auto &f : std::as_const(FolderMan::instance()->folders())) {
-                unsycnedSpaces.erase(f->space());
-            }
-            if (_unsyncedSpaces != unsycnedSpaces.size()) {
-                _unsyncedSpaces = static_cast<uint>(unsycnedSpaces.size());
-                Q_EMIT unsyncedSpacesChanged();
-            }
-            uint syncedSpaces = spaces.size() - _unsyncedSpaces;
-            if (_syncedSpaces != syncedSpaces) {
-                _syncedSpaces = syncedSpaces;
-                Q_EMIT syncedSpacesChanged();
-            }
-        });
+        connect(accountsState()->account()->spacesManager(), &GraphApi::SpacesManager::updated, this, &AccountSettings::slotSpacesUpdated);
     }
 
     ui->connectLabel->clear();
@@ -508,6 +492,55 @@ void AccountSettings::slotAccountStateChanged()
     case AccountState::Disconnected:
         showConnectionLabel(tr("Disconnected from: %1.").arg(server));
         break;
+    }
+}
+
+void AccountSettings::slotSpacesUpdated()
+{
+    auto spaces = accountsState()->account()->spacesManager()->spaces();
+    auto unsycnedSpaces = std::set<GraphApi::Space *>(spaces.cbegin(), spaces.cend());
+    for (const auto &f : std::as_const(FolderMan::instance()->folders())) {
+        unsycnedSpaces.erase(f->space());
+    }
+
+    // Check if we should add new spaces automagically, or only signal that there are unsynced spaces.
+    if (Theme::instance()->syncNewlyDiscoveredSpaces()) {
+        QTimer::singleShot(0, [this, unsycnedSpaces]() {
+            auto accountStatePtr = accountsState();
+
+            for (GraphApi::Space *newSpace : unsycnedSpaces) {
+                // TODO: Problem: when a space is manually removed, this will re-add it!
+                qCInfo(lcAccountSettings) << "Adding sync connection for newly discovered space" << newSpace->displayName();
+
+                const QString localDir(accountsState()->account()->defaultSyncRoot());
+                const QString folderName =
+                    FolderMan::instance()->findGoodPathForNewSyncFolder(localDir, newSpace->displayName(), FolderMan::NewFolderType::SpacesFolder);
+
+                FolderWizard::Result fwr;
+                fwr.davUrl = QUrl(newSpace->drive().getRoot().getWebDavUrl());
+                fwr.spaceId = newSpace->drive().getRoot().getId();
+                fwr.localPath = folderName;
+                fwr.displayName = newSpace->displayName();
+                fwr.useVirtualFiles = Utility::isWindows() ? Theme::instance()->showVirtualFilesOption() : false;
+                fwr.priority = newSpace->priority();
+                FolderMan::instance()->addFolderFromFolderWizardResult(accountStatePtr, fwr);
+            }
+
+            _unsyncedSpaces = 0;
+            _syncedSpaces = accountsState()->account()->spacesManager()->spaces().size();
+            Q_EMIT unsyncedSpacesChanged();
+            Q_EMIT syncedSpacesChanged();
+        });
+    } else {
+        if (_unsyncedSpaces != unsycnedSpaces.size()) {
+            _unsyncedSpaces = static_cast<uint>(unsycnedSpaces.size());
+            Q_EMIT unsyncedSpacesChanged();
+        }
+        uint syncedSpaces = spaces.size() - _unsyncedSpaces;
+        if (_syncedSpaces != syncedSpaces) {
+            _syncedSpaces = syncedSpaces;
+            Q_EMIT syncedSpacesChanged();
+        }
     }
 }
 

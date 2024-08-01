@@ -81,6 +81,7 @@ Q_SIGNALS:
 
 public Q_SLOTS:
     void slotAccountStateChanged();
+    void slotSpacesUpdated();
 
 protected Q_SLOTS:
     void slotAddFolder();

@@ -420,6 +420,14 @@ public:
     virtual bool enableMoveToTrash() const;
 
     /**
+     * @brief Automatically add sync connections for newly discovered Spaces.
+     *
+     * Default: false
+     * See #11749
+     */
+    virtual bool syncNewlyDiscoveredSpaces() const;
+
+    /**
      * Whether to enable the special code for cernbox
      * This includes:
      * - spaces migration

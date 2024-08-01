@@ -1,0 +1,7 @@
+Enhancement: New branding option: automatically sync new spaces
+
+A branding option was added to add new sync connections for newly
+discovered spaces.
+
+https://github.com/owncloud/client/issues/11751
+https://github.com/owncloud/client/pull/11774
