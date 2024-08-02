@@ -141,8 +141,8 @@ public:
     [[nodiscard]] QByteArray initialMetadata() const;
 
 public slots:
-    void addEncryptedFile(const EncryptedFile &f);
-    void removeEncryptedFile(const EncryptedFile &f);
+    void addEncryptedFile(const OCC::FolderMetadata::EncryptedFile &f);
+    void removeEncryptedFile(const OCC::FolderMetadata::EncryptedFile &f);
     void removeAllEncryptedFiles();
 
 private:

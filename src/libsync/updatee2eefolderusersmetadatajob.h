@@ -55,7 +55,7 @@ public:
 
 public slots:
     void start(const bool keepLock = false);
-    void setUserData(const UpdateE2eeFolderUsersMetadataJob::UserData &userData);
+    void setUserData(const OCC::UpdateE2eeFolderUsersMetadataJob::UserData &userData);
 
     void setFolderToken(const QByteArray &folderToken);
     void setMetadataKeyForEncryption(const QByteArray &metadataKey);
