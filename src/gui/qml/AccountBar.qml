@@ -55,8 +55,17 @@ Pane {
                 Layout.maximumWidth: widthHint
                 Accessible.role: Accessible.PageTab
                 checked: settingsDialog.currentAccount === accountState.account
-                icon.source: QMLResources.resourcePath("core", "account", enabled)
+                icon.source: QMLResources.resourcePath2("avatar", accountState.account.uid, enabled)
+                icon.cache: false
                 text: accountState.account.displayName.replace("@", "\n")
+
+                Connections {
+                    target: accountState.account
+                    function onAvatarChanged() {
+                        icon.source = undefined;
+                        icon.source = QMLResources.resourcePath2("avatar", accountState.account.uid, enabled);
+                    }
+                }
 
                 Keys.onBacktabPressed: event => {
                     if (index === 0) {

@@ -126,14 +126,18 @@ void Account::setDavUser(const QString &newDavUser)
     Q_EMIT wantsAccountSaved(this);
 }
 
-QPixmap Account::avatar() const
+QIcon Account::avatar() const
 {
+    if (_avatarImg.isNull()) {
+        return Resources::getCoreIcon(QStringLiteral("account"));
+    }
     return _avatarImg;
 }
-void Account::setAvatar(const QPixmap &img)
+
+void Account::setAvatar(const QIcon &img)
 {
     _avatarImg = img;
-    Q_EMIT accountChangedAvatar();
+    Q_EMIT avatarChanged();
 }
 
 QString Account::displayName() const
@@ -156,8 +160,10 @@ QString Account::davDisplayName() const
 
 void Account::setDavDisplayName(const QString &newDisplayName)
 {
-    _displayName = newDisplayName;
-    Q_EMIT accountChangedDisplayName();
+    if (_displayName != newDisplayName) {
+        _displayName = newDisplayName;
+        Q_EMIT displayNameChanged();
+    }
 }
 
 QString Account::id() const

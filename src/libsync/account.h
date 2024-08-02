@@ -21,6 +21,7 @@
 #include "appprovider.h"
 #include "capabilities.h"
 #include "jobqueue.h"
+#include "resources/resources.h"
 
 #include <QByteArray>
 #include <QNetworkAccessManager>
@@ -37,8 +38,6 @@
 #include <QUrl>
 #include <QUuid>
 #include <QtQmlIntegration/QtQmlIntegration>
-
-#include <memory>
 
 class QSettings;
 class QNetworkReply;
@@ -70,9 +69,9 @@ class ResourcesCache;
 class OWNCLOUDSYNC_EXPORT Account : public QObject
 {
     Q_OBJECT
-    Q_PROPERTY(QString id MEMBER _id)
+    Q_PROPERTY(QUuid uid READ uuid CONSTANT)
     Q_PROPERTY(QString davUser MEMBER _davUser)
-    Q_PROPERTY(QString displayName READ displayName CONSTANT)
+    Q_PROPERTY(QString displayName READ displayName NOTIFY displayNameChanged)
     Q_PROPERTY(QUrl url MEMBER _url)
     QML_ELEMENT
     QML_UNCREATABLE("Only created in the C++ code")
@@ -119,8 +118,8 @@ public:
     QString davDisplayName() const;
     void setDavDisplayName(const QString &newDisplayName);
 
-    QPixmap avatar() const;
-    void setAvatar(const QPixmap &img);
+    QIcon avatar() const;
+    void setAvatar(const QIcon &img);
 
     /// The name of the account as shown in the toolbar
     QString displayName() const;
@@ -231,8 +230,8 @@ Q_SIGNALS:
 
     void serverVersionChanged();
 
-    void accountChangedAvatar();
-    void accountChangedDisplayName();
+    void avatarChanged();
+    void displayNameChanged();
 
     void unknownConnectionState();
 
@@ -254,7 +253,7 @@ private:
     QString _davUser;
     QString _displayName;
     QString _defaultSyncRoot;
-    QPixmap _avatarImg;
+    QIcon _avatarImg;
     QMap<QString, QVariant> _settingsMap;
     QUrl _url;
     QString _cacheDirectory;

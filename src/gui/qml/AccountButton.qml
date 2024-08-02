@@ -41,6 +41,7 @@ ToolButton {
             source: control.icon.source
             sourceSize.height: control.icon.height
             sourceSize.width: control.icon.width
+            cache: control.icon.cache
         }
         Label {
             Layout.fillHeight: true

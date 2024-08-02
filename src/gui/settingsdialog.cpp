@@ -23,6 +23,7 @@
 #include "generalsettings.h"
 #include "gui/qmlutils.h"
 #include "owncloudgui.h"
+#include "resources/qmlresources.h"
 #include "resources/resources.h"
 #include "theme.h"
 
@@ -57,6 +58,31 @@ auto minimumSizeHint(const QWidget *w)
     }
     return min;
 }
+
+
+class AvatarImageProvider : public QQuickImageProvider
+{
+    Q_OBJECT
+public:
+    AvatarImageProvider()
+        : QQuickImageProvider(QQuickImageProvider::Pixmap, QQuickImageProvider::ForceAsynchronousImageLoading)
+    {
+    }
+
+    QPixmap requestPixmap(const QString &id, QSize *size, const QSize &requestedSize)
+    {
+        const auto qmlIcon = OCC::Resources::QMLResources::parseIcon(id);
+        const auto accountState = OCC::AccountManager::instance()->account(QUuid::fromString(qmlIcon.iconName));
+        QIcon icon = accountState->account()->avatar();
+        // the sourceSize of the Image must be provided
+        Q_ASSERT(requestedSize.isValid());
+        const QSize actualSize = requestedSize.isValid() ? requestedSize : icon.availableSizes().constFirst();
+        if (size) {
+            *size = actualSize;
+        }
+        return icon.pixmap(actualSize, qmlIcon.enabled ? QIcon::Normal : QIcon::Disabled);
+    }
+};
 }
 
 
@@ -78,6 +104,7 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
 
     // TODO: fix sizing
     _ui->quickWidget->setFixedHeight(minimumHeight() * 0.15);
+    _ui->quickWidget->engine()->addImageProvider(QStringLiteral("avatar"), new AvatarImageProvider);
     QmlUtils::initQuickWidget(_ui->quickWidget, QUrl(QStringLiteral("qrc:/qt/qml/org/ownCloud/gui/qml/AccountBar.qml")), this);
     connect(
         _ui->quickWidget->engine(), &QQmlEngine::quit, QApplication::instance(),
@@ -249,3 +276,5 @@ void SettingsDialog::addAccount()
 }
 
 } // namespace OCC
+
+#include "settingsdialog.moc"
