@@ -1216,7 +1216,7 @@ void ConfigFile::setServerHasValidSubscription(const bool valid)
 QString ConfigFile::desktopEnterpriseChannel() const
 {
     QSettings settings(configFile(), QSettings::IniFormat);
-    return settings.value(QLatin1String(desktopEnterpriseChannelName), defaultUpdateChannel()).toString();
+    return settings.value(QLatin1String(desktopEnterpriseChannelName), defaultUpdateChannelName).toString();
 }
 
 void ConfigFile::setDesktopEnterpriseChannel(const QString &channel)
