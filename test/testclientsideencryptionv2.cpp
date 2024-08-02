@@ -136,7 +136,6 @@ private slots:
                 continue;
             }
 
-            const auto certificatePem = folderUserObject.value("certificate").toString().toUtf8();
             const auto encryptedMetadataKey = QByteArray::fromBase64(folderUserObject.value("encryptedMetadataKey").toString().toUtf8());
 
             if (!encryptedMetadataKey.isEmpty()) {
@@ -237,7 +236,6 @@ private slots:
                 continue;
             }
 
-            const auto certificatePem = folderUserObject.value("certificate").toString().toUtf8();
             const auto encryptedMetadataKey = QByteArray::fromBase64(folderUserObject.value("encryptedMetadataKey").toString().toUtf8());
 
             if (!encryptedMetadataKey.isEmpty()) {
@@ -335,7 +333,6 @@ private slots:
                 continue;
             }
 
-            const auto certificatePem = folderUserObject.value("certificate").toString().toUtf8();
             const auto encryptedMetadataKey = QByteArray::fromBase64(folderUserObject.value("encryptedMetadataKey").toString().toUtf8());
 
             if (!encryptedMetadataKey.isEmpty()) {

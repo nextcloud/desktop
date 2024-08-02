@@ -254,9 +254,6 @@ private slots:
 
                 const auto urlQuery = QUrlQuery(req.url());
                 const auto searchParam = urlQuery.queryItemValue(QStringLiteral("search"));
-                const auto itemTypeParam = urlQuery.queryItemValue(QStringLiteral("itemType"));
-                const auto pageParam = urlQuery.queryItemValue(QStringLiteral("page"));
-                const auto perPageParam = urlQuery.queryItemValue(QStringLiteral("perPage"));
                 const auto lookupParam = urlQuery.queryItemValue(QStringLiteral("lookup"));
                 const auto formatParam = urlQuery.queryItemValue(QStringLiteral("format"));
 

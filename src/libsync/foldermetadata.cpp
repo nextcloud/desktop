@@ -565,8 +565,6 @@ void FolderMetadata::initEmptyMetadataLegacy()
     qCDebug(lcCseMetadata) << "Settint up legacy empty metadata";
     _metadataKeyForEncryption = EncryptionHelper::generateRandom(metadataKeySize);
     _metadataKeyForDecryption = _metadataKeyForEncryption;
-    QString publicKey = _account->e2e()->_publicKey.toPem().toBase64();
-    QString displayName = _account->displayName();
 
     _isMetadataValid = true;
 

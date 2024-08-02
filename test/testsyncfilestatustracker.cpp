@@ -22,7 +22,6 @@ public:
 
     [[nodiscard]] SyncFileStatus statusOf(const QString &relativePath) const {
         QFileInfo file(_syncEngine.localPath(), relativePath);
-        auto locPath = _syncEngine.localPath();
         // Start from the end to get the latest status
         for (int i = size() - 1; i >= 0; --i) {
             if (QFileInfo(at(i)[0].toString()) == file)

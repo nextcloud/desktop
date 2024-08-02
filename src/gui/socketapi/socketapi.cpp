@@ -1056,7 +1056,6 @@ void SocketApi::command_MOVE_ITEM(const QString &localFile, SocketListener *)
     }
 
     // If the parent doesn't accept new files, go to the root of the sync folder
-    QFileInfo fileInfo(localFile);
     const auto parentRecord = parentDir.journalRecord();
     if ((FileSystem::isFile(localFile) && !parentRecord._remotePerm.hasPermission(RemotePermissions::CanAddFile))
         || (FileSystem::isDir(localFile) && !parentRecord._remotePerm.hasPermission(RemotePermissions::CanAddSubDirectories))) {

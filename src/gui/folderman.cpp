@@ -345,7 +345,6 @@ void FolderMan::setupFoldersHelper(QSettings &settings, AccountStatePtr account,
 int FolderMan::setupFoldersMigration()
 {
     ConfigFile cfg;
-    QDir storageDir(cfg.configPath());
     _folderConfigPath = cfg.configPath();
 
     const auto legacyConfigPath = ConfigFile::discoveredLegacyConfigPath();

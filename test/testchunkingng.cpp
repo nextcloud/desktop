@@ -95,7 +95,6 @@ private slots:
         QVERIFY(hasDestinationHeader);
 
         QCOMPARE(fakeFolder.uploadState().children.count(), 1);
-        const auto chunkingId = fakeFolder.uploadState().children.first().name;
         const auto chunkMap = fakeFolder.uploadState().children.first().children;
         const auto firstChunkName = chunkMap.first().name;
         const auto expectedChunkName = QString("%1").arg(1, 5, 10, QChar('0'));

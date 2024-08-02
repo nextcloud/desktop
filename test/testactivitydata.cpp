@@ -255,7 +255,6 @@ private slots:
         QFETCH(QString, mimeTypeExpected);
         QFETCH(QString, objectTypeExpected);
         QFETCH(QString, subjectExpected);
-        QFETCH(QString, pathExpected);
         QFETCH(QString, fileNameExpected);
         QFETCH(QString, activityTypeExpected);
         QFETCH(int, activityIdExpected);
@@ -264,7 +263,6 @@ private slots:
         QFETCH(QString, linkExpected);
         QFETCH(QString, datetimeExpected);
         QFETCH(QString, iconExpected);
-        QFETCH(QString, subjectRichStringExpected);
         QFETCH(QJsonArray, subjectRichDataExpected);
         QFETCH(QString, previewUrlExpected);
 

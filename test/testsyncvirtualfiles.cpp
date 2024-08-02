@@ -1681,7 +1681,6 @@ private slots:
 
         auto checkStatus = [&]() -> SyncFileStatus::SyncFileStatusTag {
             auto file = QFileInfo{fakeFolder.syncEngine().localPath(), barFileAaaSubFolder};
-            auto locPath = fakeFolder.syncEngine().localPath();
             auto itemFound = false;
             // Start from the end to get the latest status
             for (int i = statusSpy.size() - 1; i >= 0 && !itemFound; --i) {

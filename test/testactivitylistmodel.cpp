@@ -217,8 +217,6 @@ private slots:
         for (int i = 0; i < model->rowCount(); i++) {
             const auto index = model->index(i, 0);
 
-            auto text = index.data(OCC::ActivityListModel::ActionTextRole).toString();
-
             QVERIFY(index.data(OCC::ActivityListModel::ActionRole).canConvert<int>());
             const auto type = index.data(OCC::ActivityListModel::ActionRole).toInt();
             QVERIFY(type >= OCC::Activity::DummyFetchingActivityType);

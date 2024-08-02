@@ -211,7 +211,6 @@ GMenuModel* CloudProviderWrapper::getMenuModel() {
 
     GMenu* section = nullptr;
     GMenuItem* item = nullptr;
-    QString item_label;
 
     _mainMenu = g_menu_new();
 

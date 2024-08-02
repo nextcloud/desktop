@@ -52,7 +52,6 @@ private slots:
             QNetworkReply *reply = nullptr;
             
             const auto urlQuery = QUrlQuery(req.url());
-            const auto message = urlQuery.queryItemValue(QStringLiteral("message"));
             const auto replyTo = urlQuery.queryItemValue(QStringLiteral("replyTo"));
             const auto path = req.url().path();
 

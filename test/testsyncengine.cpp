@@ -1182,8 +1182,6 @@ private slots:
                                          QIODevice *outgoingData) -> QNetworkReply * {
             Q_UNUSED(outgoingData)
 
-            auto attributeCustomVerb = request.attribute(QNetworkRequest::CustomVerbAttribute).toString();
-
             if (op == QNetworkAccessManager::CustomOperation
                 && request.attribute(QNetworkRequest::CustomVerbAttribute).toString() == QStringLiteral("MOVE")) {
                 return new FakeErrorReply(op, request, &parent, 403);
