@@ -181,7 +181,7 @@ void FakeRemoteActivityStorage::initActivityData()
         activity.insert(QStringLiteral("activity_id"), _startingId);
         activity.insert(QStringLiteral("type"), QStringLiteral("file"));
         activity.insert(QStringLiteral("subject"), QStringLiteral("You created %1.txt").arg(i));
-        activity.insert(QStringLiteral("message"), QStringLiteral(""));
+        activity.insert(QStringLiteral("message"), QString{});
         activity.insert(QStringLiteral("object_name"), QStringLiteral("%1.txt").arg(i));
         activity.insert(QStringLiteral("datetime"), QDateTime::currentDateTime().toString(Qt::ISODate));
         activity.insert(QStringLiteral("icon"), QStringLiteral("http://example.de/apps/files/img/add-color.svg"));
@@ -199,8 +199,8 @@ void FakeRemoteActivityStorage::initActivityData()
         activity.insert(QStringLiteral("type"), QStringLiteral("calendar-event"));
         activity.insert(
             QStringLiteral("subject"), QStringLiteral("You created event %1 in calendar Events").arg(i));
-        activity.insert(QStringLiteral("message"), QStringLiteral(""));
-        activity.insert(QStringLiteral("object_name"), QStringLiteral(""));
+        activity.insert(QStringLiteral("message"), QString{});
+        activity.insert(QStringLiteral("object_name"), QString{});
         activity.insert(QStringLiteral("datetime"), QDateTime::currentDateTime().toString(Qt::ISODate));
         activity.insert(QStringLiteral("icon"), QStringLiteral("http://example.de/core/img/places/calendar.svg"));
 
@@ -216,8 +216,8 @@ void FakeRemoteActivityStorage::initActivityData()
         activity.insert(QStringLiteral("object_type"), "chat");
         activity.insert(QStringLiteral("type"), QStringLiteral("chat"));
         activity.insert(QStringLiteral("subject"), QStringLiteral("You have received %1's message").arg(i));
-        activity.insert(QStringLiteral("message"), QStringLiteral(""));
-        activity.insert(QStringLiteral("object_name"), QStringLiteral(""));
+        activity.insert(QStringLiteral("message"), QString{});
+        activity.insert(QStringLiteral("object_name"), QString{});
         activity.insert(QStringLiteral("datetime"), QDateTime::currentDateTime().toString(Qt::ISODate));
         activity.insert(QStringLiteral("icon"), QStringLiteral("http://example.de/core/img/places/talk.svg"));
 
@@ -225,7 +225,7 @@ void FakeRemoteActivityStorage::initActivityData()
 
         QJsonObject replyAction;
         replyAction.insert(QStringLiteral("label"), QStringLiteral("Reply"));
-        replyAction.insert(QStringLiteral("link"), QStringLiteral(""));
+        replyAction.insert(QStringLiteral("link"), QString{});
         replyAction.insert(QStringLiteral("type"), QStringLiteral("REPLY"));
         replyAction.insert(QStringLiteral("primary"), true);
         actionsArray.push_back(replyAction);
@@ -260,8 +260,8 @@ void FakeRemoteActivityStorage::initActivityData()
         activity.insert(QStringLiteral("object_type"), "room");
         activity.insert(QStringLiteral("type"), QStringLiteral("room"));
         activity.insert(QStringLiteral("subject"), QStringLiteral("You have been invited into room%1").arg(i));
-        activity.insert(QStringLiteral("message"), QStringLiteral(""));
-        activity.insert(QStringLiteral("object_name"), QStringLiteral(""));
+        activity.insert(QStringLiteral("message"), QString{});
+        activity.insert(QStringLiteral("object_name"), QString{});
         activity.insert(QStringLiteral("datetime"), QDateTime::currentDateTime().toString(Qt::ISODate));
         activity.insert(QStringLiteral("icon"), QStringLiteral("http://example.de/core/img/places/talk.svg"));
 
@@ -269,7 +269,7 @@ void FakeRemoteActivityStorage::initActivityData()
 
         QJsonObject replyAction;
         replyAction.insert(QStringLiteral("label"), QStringLiteral("Reply"));
-        replyAction.insert(QStringLiteral("link"), QStringLiteral(""));
+        replyAction.insert(QStringLiteral("link"), QString{});
         replyAction.insert(QStringLiteral("type"), QStringLiteral("REPLY"));
         replyAction.insert(QStringLiteral("primary"), true);
         actionsArray.push_back(replyAction);
@@ -295,8 +295,8 @@ void FakeRemoteActivityStorage::initActivityData()
         activity.insert(QStringLiteral("object_type"), "call");
         activity.insert(QStringLiteral("type"), QStringLiteral("call"));
         activity.insert(QStringLiteral("subject"), QStringLiteral("You have missed a %1's call").arg(i));
-        activity.insert(QStringLiteral("message"), QStringLiteral(""));
-        activity.insert(QStringLiteral("object_name"), QStringLiteral(""));
+        activity.insert(QStringLiteral("message"), QString{});
+        activity.insert(QStringLiteral("object_name"), QString{});
         activity.insert(QStringLiteral("datetime"), QDateTime::currentDateTime().toString(Qt::ISODate));
         activity.insert(QStringLiteral("icon"), QStringLiteral("http://example.de/core/img/places/talk.svg"));
 
@@ -311,7 +311,7 @@ void FakeRemoteActivityStorage::initActivityData()
 
         QJsonObject replyAction;
         replyAction.insert(QStringLiteral("label"), QStringLiteral("Reply"));
-        replyAction.insert(QStringLiteral("link"), QStringLiteral(""));
+        replyAction.insert(QStringLiteral("link"), QString{});
         replyAction.insert(QStringLiteral("type"), QStringLiteral("REPLY"));
         replyAction.insert(QStringLiteral("primary"), false);
         actionsArray.push_back(replyAction);
@@ -330,7 +330,7 @@ void FakeRemoteActivityStorage::initActivityData()
         activity.insert(QStringLiteral("object_type"), "2fa_id");
         activity.insert(QStringLiteral("subject"), QStringLiteral("Login attempt from 127.0.0.1"));
         activity.insert(QStringLiteral("message"), QStringLiteral("Please approve or deny the login attempt."));
-        activity.insert(QStringLiteral("object_name"), QStringLiteral(""));
+        activity.insert(QStringLiteral("object_name"), QString{});
         activity.insert(QStringLiteral("datetime"), QDateTime::currentDateTime().toString(Qt::ISODate));
         activity.insert(QStringLiteral("icon"), QStringLiteral("http://example.de/core/img/places/password.svg"));
 
@@ -367,7 +367,7 @@ void FakeRemoteActivityStorage::initActivityData()
         activity.insert(QStringLiteral("message"),
                         QStringLiteral("You enabled two-factor authentication but did not generate backup codes yet. They are needed to restore access to your "
                                        "account in case you lose your second factor."));
-        activity.insert(QStringLiteral("object_name"), QStringLiteral(""));
+        activity.insert(QStringLiteral("object_name"), QString{});
         activity.insert(QStringLiteral("datetime"), QDateTime::currentDateTime().toString(Qt::ISODate));
         activity.insert(QStringLiteral("icon"), QStringLiteral("http://example.de/core/img/places/password.svg"));
 
@@ -391,11 +391,11 @@ void FakeRemoteActivityStorage::initActivityData()
     for (quint32 i = 0; i < _numItemsToInsert; i++) {
         QJsonObject activity;
         activity.insert(QStringLiteral("activity_id"), _startingId);
-        activity.insert(QStringLiteral("object_type"), QStringLiteral(""));
+        activity.insert(QStringLiteral("object_type"), QString{});
         activity.insert(QStringLiteral("type"), QStringLiteral("security"));
         activity.insert(QStringLiteral("subject"), QStringLiteral("You successfully logged in using two-factor authentication (Nextcloud Notification)"));
-        activity.insert(QStringLiteral("message"), QStringLiteral(""));
-        activity.insert(QStringLiteral("object_name"), QStringLiteral(""));
+        activity.insert(QStringLiteral("message"), QString{});
+        activity.insert(QStringLiteral("object_name"), QString{});
         activity.insert(QStringLiteral("datetime"), QDateTime::currentDateTime().toString(Qt::ISODate));
         activity.insert(QStringLiteral("icon"), QStringLiteral("http://example.de/core/img/places/password.svg"));
 
@@ -410,8 +410,8 @@ void FakeRemoteActivityStorage::initActivityData()
         activity.insert(QStringLiteral("object_type"), "remote_share");
         activity.insert(QStringLiteral("subject"), QStringLiteral("You received document.docx as a remote share from admin@https://example.de"));
         activity.insert(QStringLiteral("subjectRich"), QStringLiteral("You received {share} as a remote share from {user}"));
-        activity.insert(QStringLiteral("message"), QStringLiteral(""));
-        activity.insert(QStringLiteral("object_name"), QStringLiteral(""));
+        activity.insert(QStringLiteral("message"), QString{});
+        activity.insert(QStringLiteral("object_name"), QString{});
         activity.insert(QStringLiteral("datetime"), QDateTime::currentDateTime().toString(Qt::ISODate));
         activity.insert(QStringLiteral("icon"), QStringLiteral("http://example.de/core/img/actions/share.svg"));
 

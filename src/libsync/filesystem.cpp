@@ -100,7 +100,7 @@ FileSystem::FileLockingInfo FileSystem::lockFileTargetFilePath(const QString &lo
         return result;
     }
 
-    const auto lockFilePathWithoutPrefix = QString(lockFilePath).replace(lockFileNamePattern, QStringLiteral(""));
+    const auto lockFilePathWithoutPrefix = QString(lockFilePath).replace(lockFileNamePattern, QString{});
     auto lockFilePathWithoutPrefixSplit = lockFilePathWithoutPrefix.split(QLatin1Char('.'));
 
     if (lockFilePathWithoutPrefixSplit.size() < 2) {

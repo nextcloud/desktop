@@ -364,7 +364,7 @@ private slots:
     void testSetSearchTermStartStopSearch()
     {
         // make sure the model is empty
-        model->setSearchTerm(QStringLiteral(""));
+        model->setSearchTerm(QString{});
         QVERIFY(model->rowCount() == 0);
 
         // #1 test setSearchTerm actually sets the search term and the signal is emitted
@@ -391,14 +391,14 @@ private slots:
         QVERIFY(model->isSearchInProgress());
 
         // #5 test that model has stopped the search after setting empty search term
-        model->setSearchTerm(QStringLiteral(""));
+        model->setSearchTerm(QString{});
         QVERIFY(!model->isSearchInProgress());
     }
 
     void testSetSearchTermResultsFound()
     {
         // make sure the model is empty
-        model->setSearchTerm(QStringLiteral(""));
+        model->setSearchTerm(QString{});
         QVERIFY(model->rowCount() == 0);
 
         // test that search term gets set, search gets started and enough results get returned
@@ -424,7 +424,7 @@ private slots:
     void testSetSearchTermResultsNotFound()
     {
         // make sure the model is empty
-        model->setSearchTerm(QStringLiteral(""));
+        model->setSearchTerm(QString{});
         QVERIFY(model->rowCount() == 0);
 
         // test that search term gets set, search gets started and enough results get returned
@@ -450,7 +450,7 @@ private slots:
     void testFetchMoreClicked()
     {
         // make sure the model is empty
-        model->setSearchTerm(QStringLiteral(""));
+        model->setSearchTerm(QString{});
         QVERIFY(model->rowCount() == 0);
 
         QSignalSpy searchInProgressChanged(
@@ -550,7 +550,7 @@ private slots:
     void testSearchResultlicked()
     {
         // make sure the model is empty
-        model->setSearchTerm(QStringLiteral(""));
+        model->setSearchTerm(QString{});
         QVERIFY(model->rowCount() == 0);
 
         // test that search term gets set, search gets started and enough results get returned
@@ -608,7 +608,7 @@ private slots:
     void testSetSearchTermResultsError()
     {
         // make sure the model is empty
-        model->setSearchTerm(QStringLiteral(""));
+        model->setSearchTerm(QString{});
         QVERIFY(model->rowCount() == 0);
 
         QSignalSpy errorStringChanged(model.data(), &OCC::UnifiedSearchResultsListModel::errorStringChanged);
