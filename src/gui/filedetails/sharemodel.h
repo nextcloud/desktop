@@ -144,7 +144,7 @@ signals:
     void internalLinkReady();
     void serverAllowsResharingChanged();
 
-    void serverError(const int code, const QString &message) const;
+    void serverError(const int code, const QString &message);
     void passwordSetError(const QString &shareId, const int code, const QString &message);
     void requestPasswordForLinkShare();
     void requestPasswordForEmailSharee(const OCC::ShareePtr &sharee);
@@ -162,8 +162,8 @@ public slots:
     void createNewUserGroupShareWithPassword(const OCC::ShareePtr &sharee, const QString &password) const;
     void createNewUserGroupShareWithPasswordFromQml(const QVariant &sharee, const QString &password) const;
 
-    void deleteShare(const OCC::SharePtr &share) const;
-    void deleteShareFromQml(const QVariant &share) const;
+    void deleteShare(const OCC::SharePtr &share);
+    void deleteShareFromQml(const QVariant &share);
 
     void toggleHideDownloadFromQml(const QVariant &share, const bool enable);
     void toggleShareAllowEditing(const OCC::SharePtr &share, const bool enable);
@@ -214,7 +214,7 @@ private slots:
     void slotShareNameSet(const QString &shareId);
     void slotShareLabelSet(const QString &shareId);
     void slotShareExpireDateSet(const QString &shareId);
-    void slotDeleteE2EeShare(const OCC::SharePtr &share) const;
+    void slotDeleteE2EeShare(const OCC::SharePtr &share);
 
 private:
     [[nodiscard]] QString displayStringForShare(const SharePtr &share) const;

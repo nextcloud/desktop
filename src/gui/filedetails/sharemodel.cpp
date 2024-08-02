@@ -843,7 +843,7 @@ void ShareModel::slotShareExpireDateSet(const QString &shareId)
     Q_EMIT dataChanged(shareModelIndex, shareModelIndex, { ExpireDateEnabledRole, ExpireDateRole });
 }
 
-void ShareModel::slotDeleteE2EeShare(const SharePtr &share) const
+void ShareModel::slotDeleteE2EeShare(const SharePtr &share)
 {
     const auto account = accountState()->account();
     QString folderAlias;
@@ -1194,7 +1194,7 @@ void ShareModel::createNewUserGroupShareWithPasswordFromQml(const QVariant &shar
     createNewUserGroupShareWithPassword(ptr, password);
 }
 
-void ShareModel::deleteShare(const SharePtr &share) const
+void ShareModel::deleteShare(const SharePtr &share)
 {
     if(share.isNull()) {
         return;
@@ -1207,7 +1207,7 @@ void ShareModel::deleteShare(const SharePtr &share) const
     }
 }
 
-void ShareModel::deleteShareFromQml(const QVariant &share) const
+void ShareModel::deleteShareFromQml(const QVariant &share)
 {
     const auto ptr = share.value<SharePtr>();
     deleteShare(ptr);
