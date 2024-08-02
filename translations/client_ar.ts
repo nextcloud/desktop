@@ -6891,7 +6891,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/libsync/theme.cpp" line="88"/>
         <source>Waiting to start syncing</source>
-        <translation type="unfinished"/>
+        <translation>في انتظار البدء في المزامنة ...</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="90"/>
@@ -6906,7 +6906,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/libsync/theme.cpp" line="94"/>
         <source>Sync was successful</source>
-        <translation type="unfinished"/>
+        <translation>تمّت المزامنة بنجاحٍ</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="96"/>
@@ -6916,7 +6916,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/libsync/theme.cpp" line="97"/>
         <source>Sync was successful but some files were ignored</source>
-        <translation type="unfinished"/>
+        <translation>تمّت المزامنة بنجاحٍ مع تجاهل مزامنة بعض الملفات</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="99"/>
@@ -6926,7 +6926,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/libsync/theme.cpp" line="100"/>
         <source>Error occurred during sync</source>
-        <translation type="unfinished"/>
+        <translation>حدث خطأ أثناء المزامنة</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="102"/>
@@ -6936,7 +6936,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/libsync/theme.cpp" line="103"/>
         <source>Error occurred during setup</source>
-        <translation type="unfinished"/>
+        <translation>حدث خطأ أثناء الإعداد</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="105"/>
@@ -6951,7 +6951,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/libsync/theme.cpp" line="109"/>
         <source>Stopping sync</source>
-        <translation type="unfinished"/>
+        <translation>إيقاف المزامنة</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="111"/>
