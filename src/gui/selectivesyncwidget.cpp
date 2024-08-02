@@ -107,9 +107,9 @@ void SelectiveSyncWidget::refreshFolders()
     connect(job, &PropfindJob::directoryListingSubfolders, this, &SelectiveSyncWidget::slotUpdateDirectories);
     connect(job, &PropfindJob::finishedWithError, this, [job, this] {
         if (job->reply()->error() == QNetworkReply::ContentNotFoundError) {
-            _loading->setText(tr("No subfolders currently on the server."));
+            _loading->setText(tr("Currently there are no subfolders on the server."));
         } else {
-            _loading->setText(tr("An error occurred while loading the list of sub folders."));
+            _loading->setText(tr("An error occurred while loading the list of subfolders."));
         }
         _loading->resize(_loading->sizeHint()); // because it's not in a layout
     });
@@ -215,7 +215,7 @@ void SelectiveSyncWidget::slotUpdateDirectories(QStringList list)
     }
 
     if (!root && list.size() <= 1) {
-        _loading->setText(tr("No subfolders currently on the server."));
+        _loading->setText(tr("Currently there are no subfolders on the server."));
         _loading->resize(_loading->sizeHint()); // because it's not in a layout
         return;
     } else {
