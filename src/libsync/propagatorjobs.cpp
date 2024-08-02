@@ -359,7 +359,7 @@ void PropagateLocalRename::start()
         const auto restoreTargetPermissions = [this] (const auto &parentFolderPath) {
             try {
                 FileSystem::setFolderPermissions(QString::fromStdWString(parentFolderPath.wstring()), FileSystem::FolderPermissions::ReadOnly);
-                emit propagator()->touchedFile(QString::fromStdWString(parentFolderPath.wstring()));
+                propagator()->touchedFile(QString::fromStdWString(parentFolderPath.wstring()));
             }
             catch (const std::filesystem::filesystem_error &e)
             {
