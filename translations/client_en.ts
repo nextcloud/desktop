@@ -966,7 +966,7 @@ The update will be performed in the background, and overwrite the current AppIma
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="247"/>
+        <location filename="../src/gui/connectionvalidator.cpp" line="244"/>
         <source>Please update to the latest server and restart the client.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -981,12 +981,12 @@ The update will be performed in the background, and overwrite the current AppIma
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="222"/>
+        <location filename="../src/gui/connectionvalidator.cpp" line="221"/>
         <source>The provided credentials are not correct</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="247"/>
+        <location filename="../src/gui/connectionvalidator.cpp" line="244"/>
         <source>The configured server for this client is too old.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1002,14 +1002,9 @@ The update will be performed in the background, and overwrite the current AppIma
 <context>
     <name>OCC::DiscoverySingleDirectoryJob</name>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="410"/>
-        <location filename="../src/libsync/discoveryphase.cpp" line="431"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="306"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="418"/>
         <source>Server error: PROPFIND reply is not XML formatted!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="434"/>
-        <source>Connection timed out</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1436,32 +1431,32 @@ You are going to lose access to your sync folder if you do not do so!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="137"/>
+        <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="135"/>
         <source>Failed to list a folder. Error: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="221"/>
+        <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="219"/>
         <source>Choose this to sync the entire account</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="335"/>
+        <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="333"/>
         <source>This folder is already being synced.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="338"/>
+        <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="336"/>
         <source>This folder can&apos;t be synced. Please choose another one.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="341"/>
+        <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="339"/>
         <source>You are already syncing &lt;i&gt;%1&lt;/i&gt;, which is a parent folder of &lt;i&gt;%2&lt;/i&gt;.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="343"/>
+        <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="341"/>
         <source>You are already syncing &lt;i&gt;%1&lt;/i&gt;, which is a subfolder of &lt;i&gt;%2&lt;/i&gt;.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2550,7 +2545,12 @@ Note that using any logging command line options will override the settings.</so
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="593"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="588"/>
+        <source>The server did not provide the file permissions</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/propagateupload.cpp" line="596"/>
         <source>Error updating metadata: %1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2745,14 +2745,14 @@ Note that using any logging command line options will override the settings.</so
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/selectivesyncwidget.cpp" line="211"/>
-        <location filename="../src/gui/selectivesyncwidget.cpp" line="256"/>
-        <source>No subfolders currently on the server.</source>
+        <location filename="../src/gui/selectivesyncwidget.cpp" line="110"/>
+        <location filename="../src/gui/selectivesyncwidget.cpp" line="218"/>
+        <source>Currently there are no subfolders on the server.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/selectivesyncwidget.cpp" line="258"/>
-        <source>An error occurred while loading the list of sub folders.</source>
+        <location filename="../src/gui/selectivesyncwidget.cpp" line="112"/>
+        <source>An error occurred while loading the list of subfolders.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
