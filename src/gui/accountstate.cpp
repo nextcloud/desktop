@@ -130,8 +130,9 @@ void AccountState::setState(State state)
             emit isConnectedChanged();
         }
         if (_state == Connected) {
+            _connectionErrors.clear();
             resetRetryCount();
-        }
+        } 
     }
 
     // might not have changed but the underlying _connectionErrors might have
@@ -487,6 +488,7 @@ void AccountState::slotCredentialsAsked(AbstractCredentials *credentials)
         // connection validation, even if it's currently running.
         _connectionValidator->deleteLater();
         _connectionValidator = nullptr;
+        _connectionErrors.clear();
     }
 
     checkConnectivity();
