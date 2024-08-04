@@ -146,11 +146,12 @@ private:
 
     const QStringList _previousErrors;
     QStringList _errors;
+    QMap<Status, QString> _statusErrorMap;
     AccountStatePtr _accountState;
     AccountPtr _account;
     bool _isCheckingServerAndAuth = false;
 
-    void showSystrayErrorMessage();
+    void showSystrayErrorMessage(Status status);
 };
 }
 

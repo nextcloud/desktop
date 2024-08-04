@@ -48,6 +48,7 @@ ConnectionValidator::ConnectionValidator(AccountStatePtr accountState, const QSt
 void ConnectionValidator::checkServerAndAuth()
 {
     if (!_account) {
+        _statusErrorMap.insert(NotConfigured, tr("No Nextcloud account configured"));
         _errors << tr("No Nextcloud account configured");
         reportResult(NotConfigured);
         return;
@@ -165,9 +166,10 @@ void ConnectionValidator::slotNoStatusFound(QNetworkReply *reply)
 
     if (!_account->credentials()->stillValid(reply)) {
         // Note: Why would this happen on a status.php request?
+        _statusErrorMap.insert(StatusNotFound, tr("Authentication error: Either username or password are wrong."));
         _errors.append(tr("Authentication error: Either username or password are wrong."));
     } else {
-        //_errors.append(tr("Unable to connect to %1").arg(_account->url().toString()));
+        _statusErrorMap.insert(StatusNotFound, job->errorString());
         _errors.append(job->errorString());
     }
     reportResult(StatusNotFound);
@@ -176,7 +178,7 @@ void ConnectionValidator::slotNoStatusFound(QNetworkReply *reply)
 void ConnectionValidator::slotJobTimeout(const QUrl &url)
 {
     Q_UNUSED(url);
-    //_errors.append(tr("Unable to connect to %1").arg(url.toString()));
+    _statusErrorMap.insert(Timeout, tr("Timeout"));
     _errors.append(tr("Timeout"));
     reportResult(Timeout);
 }
@@ -208,16 +210,19 @@ void ConnectionValidator::slotAuthFailed(QNetworkReply *reply)
     Status stat = Timeout;
 
     if (reply->error() == QNetworkReply::SslHandshakeFailedError) {
+        _statusErrorMap.insert(SslError, job->errorStringParsingBody());
         _errors << job->errorStringParsingBody();
         stat = SslError;
 
     } else if (reply->error() == QNetworkReply::AuthenticationRequiredError
         || !_account->credentials()->stillValid(reply)) {
         qCWarning(lcConnectionValidator) << "******** Password is wrong!" << reply->error() << job->errorString();
+        _statusErrorMap.insert(CredentialsWrong, tr("The provided credentials are not correct"));
         _errors << tr("The provided credentials are not correct");
         stat = CredentialsWrong;
 
     } else if (reply->error() != QNetworkReply::NoError) {
+        _statusErrorMap.insert(Undefined, job->errorStringParsingBody());
         _errors << job->errorStringParsingBody();
 
         const int httpStatus =
@@ -228,8 +233,6 @@ void ConnectionValidator::slotAuthFailed(QNetworkReply *reply)
         }
     }
 
-    _errors << tr("Test error");
-    stat = SslError;
     reportResult(stat);
 }
 
@@ -287,6 +290,7 @@ bool ConnectionValidator::setAndCheckServerVersion(const QString &version)
     // We cannot deal with servers < 7.0.0
     if (_account->serverVersionInt()
         && _account->serverVersionInt() < Account::makeServerVersion(7, 0, 0)) {
+        _statusErrorMap.insert(ServerVersionMismatch, tr("The configured server for this client is too old. Please update to the latest server and restart the client."));
         _errors.append(tr("The configured server for this client is too old"));
         _errors.append(tr("Please update to the latest server and restart the client."));
         reportResult(ServerVersionMismatch);
@@ -333,19 +337,39 @@ void ConnectionValidator::reportResult(Status status)
 {
     emit connectionResult(status, _errors);
 
-    // notify user of errors - TODO: only show the new ones
     if (!_errors.isEmpty() && _previousErrors != _errors) {
-        showSystrayErrorMessage();
-        _errors.clear();
+        showSystrayErrorMessage(status);
     }
 
     deleteLater();
 }
 
-void ConnectionValidator::showSystrayErrorMessage()
+void ConnectionValidator::showSystrayErrorMessage(Status status)
 {
-    Systray::instance()->showMessage(tr("Connection issue"),
-                                     _errors.join("<br>"),
+    // not all Status are considered errors
+    constexpr auto statusString = [&](Status currentStatus) {
+        switch (currentStatus) {
+        case Status::Undefined:
+            return tr("Undefined issue");
+        case Status::NotConfigured:
+            return tr("Account not configured");
+        case Status::ServerVersionMismatch:
+            return tr("Server version mismatch");
+        case Status::CredentialsWrong:
+            return tr("Credentials issue");
+        case Status::StatusNotFound:
+        case Status::Timeout:
+            return tr("Connection issue");
+        case Status::ServiceUnavailable:
+            return tr("Service unavailable");
+        case Status::MaintenanceMode:
+            return tr("Mantainance mode");
+        default:
+            return QString();
+        }
+    };
+    Systray::instance()->showMessage(statusString(status),
+                                     _statusErrorMap.value(status),
                                      QSystemTrayIcon::Warning);
 }
 
