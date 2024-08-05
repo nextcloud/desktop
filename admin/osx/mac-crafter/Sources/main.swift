@@ -205,7 +205,7 @@ struct MacCrafter: ParsableCommand {
 
         print("Placing Nextcloud Desktop Client in product directory...")
         try fm.createDirectory(atPath: productPath, withIntermediateDirectories: true, attributes: nil)
-        try fm.copyItem(atPath: clientAppDir, toPath: productPath)
+        try fm.copyItem(atPath: clientAppDir, toPath: "\(productPath)/\(appName).app")
 
         print("Done!")
     }
