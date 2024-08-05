@@ -203,8 +203,12 @@ struct MacCrafter: ParsableCommand {
         let clientAppDir = "\(clientBuildDir)/image-\(buildType)-master/\(appName).app"
         try codesignClientAppBundle(at: clientAppDir, withCodeSignIdentity: codeSignIdentity)
 
-        print("Placing Nextcloud Desktop Client in product directory...")
-        try fm.createDirectory(atPath: productPath, withIntermediateDirectories: true, attributes: nil)
+        print("Placing Nextcloud Desktop Client in \(productPath)...")
+        if !fm.fileExists(atPath: productPath) {
+            try fm.createDirectory(
+                atPath: productPath, withIntermediateDirectories: true, attributes: nil
+            )
+        }
         try fm.copyItem(atPath: clientAppDir, toPath: "\(productPath)/\(appName).app")
 
         print("Done!")
