@@ -294,6 +294,45 @@ private slots:
         QVERIFY(!fakeFolder.currentRemoteState().find("C/bar"));
     }
 
+    // Tests the behavior of forbidden filename detection
+    void testServerForbiddenFilenames()
+    {
+        FakeFolder fakeFolder { FileInfo::A12_B12_C12_S12() };
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+
+        fakeFolder.syncEngine().account()->setCapabilities({
+            { "files", QVariantMap {
+                { "forbidden_filenames", QVariantList { ".foo", "bar" } },
+                { "forbidden_filename_characters", QVariantList { "\n" } },
+                { "forbidden_filename_basenames", QVariantList { "base" } },
+                { "forbidden_filename_extensions", QVariantList { "ext" } }
+            } }
+        });
+
+        fakeFolder.localModifier().insert("C/.foo");
+        fakeFolder.localModifier().insert("C/bar");
+        fakeFolder.localModifier().insert("C/moo");
+        fakeFolder.localModifier().insert("C/.moo");
+        fakeFolder.localModifier().insert("C/potatopotato.txt");
+        fakeFolder.localModifier().insert("C/potato\npotato.txt");
+        fakeFolder.localModifier().insert("C/basefilename.txt");
+        fakeFolder.localModifier().insert("C/base.txt");
+        fakeFolder.localModifier().insert("C/filename.txt");
+        fakeFolder.localModifier().insert("C/filename.ext");
+
+        QVERIFY(fakeFolder.syncOnce());
+        QVERIFY(fakeFolder.currentRemoteState().find("C/moo"));
+        QVERIFY(fakeFolder.currentRemoteState().find("C/.moo"));
+        QVERIFY(!fakeFolder.currentRemoteState().find("C/.foo"));
+        QVERIFY(!fakeFolder.currentRemoteState().find("C/bar"));
+        QVERIFY(fakeFolder.currentRemoteState().find("C/potatopotato.txt"));
+        QVERIFY(!fakeFolder.currentRemoteState().find("C/potato\npotato.txt"));
+        QVERIFY(fakeFolder.currentRemoteState().find("C/basefilename.txt"));
+        QVERIFY(!fakeFolder.currentRemoteState().find("C/base.txt"));
+        QVERIFY(fakeFolder.currentRemoteState().find("C/filename.txt"));
+        QVERIFY(!fakeFolder.currentRemoteState().find("C/filename.ext"));
+    }
+
     void testCreateFileWithTrailingSpaces_localAndRemoteTrimmedDoNotExist_renameAndUploadFile()
     {
         FakeFolder fakeFolder{FileInfo{}};
