@@ -282,6 +282,7 @@ void GeneralSettings::loadMiscSettings()
 
 #if defined(BUILD_UPDATER)
     const auto validUpdateChannels = cfgFile.validUpdateChannels();
+    _ui->updateChannel->clear();
     _ui->updateChannel->addItems(validUpdateChannels);
     const auto currentUpdateChannelIndex = validUpdateChannels.indexOf(cfgFile.currentUpdateChannel());
     _ui->updateChannel->setCurrentIndex(currentUpdateChannelIndex != -1? currentUpdateChannelIndex : 0);
