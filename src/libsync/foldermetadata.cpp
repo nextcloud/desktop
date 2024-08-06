@@ -940,15 +940,7 @@ bool FolderMetadata::isRootEncryptedFolder() const
 
 bool FolderMetadata::encryptedMetadataNeedUpdate() const
 {
-    // TODO: For now we do not migrated to V2 if a folder has subfolders, remove the following code and only leave "return latestSupportedMetadataVersion() > _existingMetadataVersion;"
-    if (latestSupportedMetadataVersion() <= _existingMetadataVersion) {
-        return false;
-    }
-
-    const auto foundNestedFoldersOrIsNestedFolder = !_isRootEncryptedFolder
-        || std::find_if(std::cbegin(_files), std::cend(_files), [](const auto &file) { return file.isDirectory(); }) != std::cend(_files);
-
-    return !foundNestedFoldersOrIsNestedFolder;
+    return latestSupportedMetadataVersion() > _existingMetadataVersion;
 }
 
 bool FolderMetadata::moveFromFileDropToFiles()
