@@ -24,7 +24,7 @@ pnpm-install:
 
 .PHONY: pnpm-install-chromium
 pnpm-install-chromium:
-	pnpm dlx playwright install chromium
+	cd webUI && pnpm exec playwright install chromium
 
 .PHONY: pip-install
 pip-install:
