@@ -190,7 +190,6 @@ void WebFlowCredentials::slotAskFromUserCredentialsProvided(const QString &user,
     emit asked();
 
     _askDialog->close();
-    _askDialog->deleteLater();
     _askDialog = nullptr;
 }
 
