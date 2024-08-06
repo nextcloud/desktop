@@ -318,7 +318,7 @@ void GETFileJob::slotReadyRead()
             return;
         }
 
-        const qint64 writtenBytes = writeToDevice(QByteArray::fromRawData(buffer.constData(), readBytes));
+        const qint64 writtenBytes = writeToDevice(buffer.left(readBytes));
         if (writtenBytes != readBytes) {
             _errorString = _device->errorString();
             _errorStatus = SyncFileItem::NormalError;
