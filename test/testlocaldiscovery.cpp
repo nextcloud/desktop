@@ -303,7 +303,7 @@ private slots:
         fakeFolder.syncEngine().account()->setCapabilities({
             { "files", QVariantMap {
                 { "forbidden_filenames", QVariantList { ".foo", "bar" } },
-                { "forbidden_filename_characters", QVariantList { "\n" } },
+                { "forbidden_filename_characters", QVariantList { "_" } },
                 { "forbidden_filename_basenames", QVariantList { "base" } },
                 { "forbidden_filename_extensions", QVariantList { "ext" } }
             } }
@@ -314,7 +314,7 @@ private slots:
         fakeFolder.localModifier().insert("C/moo");
         fakeFolder.localModifier().insert("C/.moo");
         fakeFolder.localModifier().insert("C/potatopotato.txt");
-        fakeFolder.localModifier().insert("C/potato\npotato.txt");
+        fakeFolder.localModifier().insert("C/potato_potato.txt");
         fakeFolder.localModifier().insert("C/basefilename.txt");
         fakeFolder.localModifier().insert("C/base.txt");
         fakeFolder.localModifier().insert("C/filename.txt");
@@ -326,7 +326,7 @@ private slots:
         QVERIFY(!fakeFolder.currentRemoteState().find("C/.foo"));
         QVERIFY(!fakeFolder.currentRemoteState().find("C/bar"));
         QVERIFY(fakeFolder.currentRemoteState().find("C/potatopotato.txt"));
-        QVERIFY(!fakeFolder.currentRemoteState().find("C/potato\npotato.txt"));
+        QVERIFY(!fakeFolder.currentRemoteState().find("C/potato_potato.txt"));
         QVERIFY(fakeFolder.currentRemoteState().find("C/basefilename.txt"));
         QVERIFY(!fakeFolder.currentRemoteState().find("C/base.txt"));
         QVERIFY(fakeFolder.currentRemoteState().find("C/filename.txt"));
