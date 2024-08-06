@@ -1,6 +1,7 @@
 .DS_Store
 /.build
 /Packages
+Package.resolved
 xcuserdata/
 DerivedData/
 .swiftpm/configuration/registries.json
@@ -8,4 +9,5 @@ DerivedData/
 .netrc
 build/
 build\downloads
+product/
 wget-log*
