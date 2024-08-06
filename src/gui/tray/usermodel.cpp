@@ -1,5 +1,6 @@
 #include "notificationhandler.h"
 #include "usermodel.h"
+#include "common/filesystembase.h"
 
 #include "accountmanager.h"
 #include "owncloudgui.h"
@@ -119,12 +120,12 @@ bool User::canShowNotification(const long notificationId)
             !notificationAlreadyShown(notificationId);
 }
 
-void User::checkAndRemoveSeenActivities(const ActivityList &list, const int numChatNotificationsReceived)
+void User::checkAndRemoveSeenActivities(const ActivityList &list, const int numTalkNotificationsReceived)
 {
-    if (numChatNotificationsReceived < _lastChatNotificationsReceivedCount) {
+    if (numTalkNotificationsReceived < _lastTalkNotificationsReceivedCount) {
         _activityModel->checkAndRemoveSeenActivities(list);
     }
-    _lastChatNotificationsReceivedCount = numChatNotificationsReceived;
+    _lastTalkNotificationsReceivedCount = numTalkNotificationsReceived;
 }
 
 void User::showDesktopNotification(const QString &title, const QString &message, const long notificationId)
@@ -205,10 +206,11 @@ void User::showDesktopTalkNotification(const Activity &activity)
 
 void User::slotBuildNotificationDisplay(const ActivityList &list)
 {
-    const auto chatNotificationsReceivedCount = std::count_if(std::cbegin(list), std::cend(list), [](const auto &activity) {
-        return activity._objectType == QStringLiteral("chat");
+    const auto talkNotificationsReceivedCount = std::count_if(std::cbegin(list), std::cend(list), [](const auto &activity) {
+        return activity._objectType == QStringLiteral("chat") ||
+            activity._objectType == QStringLiteral("call");
     });
-    checkAndRemoveSeenActivities(list, chatNotificationsReceivedCount);
+    checkAndRemoveSeenActivities(list, talkNotificationsReceivedCount);
 
     ActivityList toNotifyList;
 
@@ -469,7 +471,7 @@ void User::slotRefreshNotifications()
 
 void User::slotRebuildNavigationAppList()
 {
-    emit serverHasTalkChanged();
+    emit featuredAppChanged();
     // Rebuild App list
     UserAppsModel::instance()->buildAppList();
 }
@@ -575,24 +577,24 @@ void User::slotProgressInfo(const QString &folder, const ProgressInfo &progress)
                 continue;
             }
 
-            if (activity._syncFileItemStatus == SyncFileItem::Conflict && !QFileInfo::exists(f->path() + activity._file)) {
+            if (activity._syncFileItemStatus == SyncFileItem::Conflict && !FileSystem::fileExists(f->path() + activity._file)) {
                 _activityModel->removeActivityFromActivityList(activity);
                 continue;
             }
 
-            if (activity._syncFileItemStatus == SyncFileItem::FileLocked && !QFileInfo::exists(f->path() + activity._file)) {
-                _activityModel->removeActivityFromActivityList(activity);
-                continue;
-            }
-
-
-            if (activity._syncFileItemStatus == SyncFileItem::FileIgnored && !QFileInfo::exists(f->path() + activity._file)) {
+            if (activity._syncFileItemStatus == SyncFileItem::FileLocked && !FileSystem::fileExists(f->path() + activity._file)) {
                 _activityModel->removeActivityFromActivityList(activity);
                 continue;
             }
 
 
-            if (!QFileInfo::exists(f->path() + activity._file)) {
+            if (activity._syncFileItemStatus == SyncFileItem::FileIgnored && !FileSystem::fileExists(f->path() + activity._file)) {
+                _activityModel->removeActivityFromActivityList(activity);
+                continue;
+            }
+
+
+            if (!FileSystem::fileExists(f->path() + activity._file)) {
                 _activityModel->removeActivityFromActivityList(activity);
                 continue;
             }
@@ -1035,6 +1037,22 @@ bool User::serverHasTalk() const
     return talkApp() != nullptr;
 }
 
+bool User::isFeaturedAppEnabled() const
+{
+    return isNcAssistantEnabled() || serverHasTalk();
+}
+
+QString User::featuredAppIcon() const
+{
+    return isNcAssistantEnabled() ? "image://svgimage-custom-color/nc-assistant-app.svg"
+                                  : "image://svgimage-custom-color/talk-app.svg";
+}
+
+QString User::featuredAppAccessibleName() const
+{
+    return isNcAssistantEnabled() ? tr("Open Nextcloud Assistant in browser") : tr("Open Nextcloud Talk in browser");
+}
+
 AccountApp *User::talkApp() const
 {
     return _account->findApp(QStringLiteral("spreed"));
@@ -1043,6 +1061,11 @@ AccountApp *User::talkApp() const
 bool User::hasActivities() const
 {
     return _account->account()->capabilities().hasActivities();
+}
+
+bool User::isNcAssistantEnabled() const
+{
+    return _account->account()->capabilities().ncAssistantEnabled();
 }
 
 QColor User::headerColor() const
@@ -1328,19 +1351,6 @@ void UserModel::openCurrentAccountLocalFolder()
     _users[_currentUserId]->openLocalFolder();
 }
 
-void UserModel::openCurrentAccountTalk()
-{
-    if (!currentUser())
-        return;
-
-    const auto talkApp = currentUser()->talkApp();
-    if (talkApp) {
-        Utility::openBrowser(talkApp->url());
-    } else {
-        qCWarning(lcActivity) << "The Talk app is not enabled on" << currentUser()->server();
-    }
-}
-
 void UserModel::openCurrentAccountServer()
 {
     if (_currentUserId < 0 || _currentUserId >= _users.size())
@@ -1362,6 +1372,30 @@ void UserModel::openCurrentAccountFolderFromTrayInfo(const QString &fullRemotePa
 
     _users[_currentUserId]->openFolderLocallyOrInBrowser(fullRemotePath);
 }
+
+void UserModel::openCurrentAccountFeaturedApp()
+{
+    if (!currentUser()) {
+        return;
+    }
+
+    if (!currentUser()->isFeaturedAppEnabled()) {
+        qCWarning(lcActivity) << "There is no feature app enabled on" << currentUser()->server();
+        return;
+    }
+
+    if (currentUser()->isNcAssistantEnabled()) {
+        auto serverUrl = currentUser()->server(false);
+        const auto assistanceUrl = serverUrl.append("/apps/assistant/");
+        QDesktopServices::openUrl(QUrl::fromUserInput(assistanceUrl));
+        return;
+    }
+
+    if (const auto talkApp = currentUser()->talkApp()) {
+        Utility::openBrowser(talkApp->url());
+    }
+}
+
 
 void UserModel::setCurrentUserId(const int id)
 {
@@ -1629,10 +1663,11 @@ void UserAppsModel::buildAppList()
 
     if (UserModel::instance()->appList().count() > 0) {
         const auto talkApp = UserModel::instance()->currentUser()->talkApp();
-        foreach (AccountApp *app, UserModel::instance()->appList()) {
+        for (const auto &app : UserModel::instance()->appList()) {
             // Filter out Talk because we have a dedicated button for it
-            if (talkApp && app->id() == talkApp->id())
+            if (talkApp && app->id() == talkApp->id() && !UserModel::instance()->currentUser()->isNcAssistantEnabled()) {
                 continue;
+            }
 
             beginInsertRows(QModelIndex(), rowCount(), rowCount());
             _apps << app;

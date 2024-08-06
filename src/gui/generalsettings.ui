@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>601</width>
+    <width>667</width>
     <height>663</height>
    </rect>
   </property>
@@ -233,21 +233,9 @@
       </item>
       <item>
        <widget class="QFrame" name="updatesContainer">
-        <layout class="QVBoxLayout" name="verticalLayout_5">
-         <property name="leftMargin">
-          <number>0</number>
-         </property>
-         <property name="topMargin">
-          <number>0</number>
-         </property>
-         <property name="rightMargin">
-          <number>0</number>
-         </property>
-         <property name="bottomMargin">
-          <number>0</number>
-         </property>
+        <layout class="QVBoxLayout" name="updatesLayout">
          <item>
-          <layout class="QHBoxLayout" name="horizontalLayout_2">
+          <layout class="QHBoxLayout" name="updatesLayout_1">
            <item>
             <widget class="QLabel" name="updateChannelLabel">
              <property name="sizePolicy">
@@ -269,16 +257,6 @@
                <verstretch>0</verstretch>
               </sizepolicy>
              </property>
-             <item>
-              <property name="text">
-               <string>stable</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>beta</string>
-              </property>
-             </item>
             </widget>
            </item>
            <item>
@@ -310,7 +288,7 @@
           </layout>
          </item>
          <item>
-          <layout class="QHBoxLayout" name="horizontalLayout_7">
+          <layout class="QHBoxLayout" name="updatesLayout_2">
            <item>
             <widget class="QCheckBox" name="autoCheckForUpdatesCheckBox">
              <property name="sizePolicy">
@@ -355,39 +333,39 @@
            </item>
           </layout>
          </item>
-         <item>
-          <layout class="QHBoxLayout" name="horizontalLayout_6">
-           <item>
-            <widget class="QPushButton" name="usageDocumentationButton">
-             <property name="text">
-              <string>Usage Documentation</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QPushButton" name="legalNoticeButton">
-             <property name="text">
-              <string>Legal Notice</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <spacer name="horizontalSpacer_2">
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>40</width>
-               <height>20</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
-          </layout>
-         </item>
         </layout>
        </widget>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="infoContainer">
+        <item>
+         <widget class="QPushButton" name="usageDocumentationButton">
+          <property name="text">
+           <string>Usage Documentation</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="legalNoticeButton">
+          <property name="text">
+           <string>Legal Notice</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="horizontalSpacer_2">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+       </layout>
       </item>
      </layout>
     </widget>

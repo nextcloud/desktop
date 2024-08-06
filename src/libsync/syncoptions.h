@@ -93,7 +93,6 @@ public:
      */
     void verifyChunkSizes();
 
-
     /** A regular expression to match file names
      * If no pattern is provided the default is an invalid regular expression.
      */
@@ -109,6 +108,10 @@ public:
      */
     void setPathPattern(const QString &pattern);
 
+    /** sync had been started via nextcloudcmd command line   */
+    [[nodiscard]] bool isCmd() const;
+    void setIsCmd(const bool isCmd);
+
 private:
     /**
      * Only sync files that match the expression
@@ -118,6 +121,8 @@ private:
 
     qint64 _minChunkSize = chunkV2MinChunkSize;
     qint64 _maxChunkSize = chunkV2MaxChunkSize;
+
+    bool _isCmd = false;
 };
 
 }

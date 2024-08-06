@@ -14,13 +14,18 @@
 
 #pragma once
 
+#include "owncloudlib.h"
+
 #include "account.h"
 #include "rootencryptedfolderinfo.h"
+#include "common/syncjournaldb.h"
+
 #include <QHash>
 #include <QMutex>
 #include <QObject>
 #include <QSslCertificate>
 #include <QString>
+#include <QPointer>
 
 namespace OCC {
 class FolderMetadata;

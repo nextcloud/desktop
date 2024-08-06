@@ -147,6 +147,7 @@ public:
     void setE2EE(const QString &relativepath, const bool enabled) override;
 
     FileInfo *find(PathComponents pathComponents, const bool invalidateEtags = false);
+    FileInfo findRecursive(PathComponents pathComponents, const bool invalidateEtags = false);
 
     FileInfo *createDir(const QString &relativePath);
 

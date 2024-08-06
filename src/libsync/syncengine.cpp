@@ -287,7 +287,7 @@ void SyncEngine::conflictRecordMaintenance()
     const auto conflictRecordPaths = _journal->conflictRecordPaths();
     for (const auto &path : conflictRecordPaths) {
         auto fsPath = _propagator->fullLocalPath(QString::fromUtf8(path));
-        if (!QFileInfo::exists(fsPath)) {
+        if (!FileSystem::fileExists(fsPath)) {
             _journal->deleteConflictRecord(path);
         }
     }
@@ -326,7 +326,7 @@ void SyncEngine::caseClashConflictRecordMaintenance()
     const auto conflictRecordPaths = _journal->caseClashConflictRecordPaths();
     for (const auto &path : conflictRecordPaths) {
         const auto fsPath = _propagator->fullLocalPath(QString::fromUtf8(path));
-        if (!QFileInfo::exists(fsPath)) {
+        if (!FileSystem::fileExists(fsPath)) {
             _journal->deleteCaseClashConflictByPathRecord(path);
         }
     }
@@ -390,7 +390,11 @@ void OCC::SyncEngine::slotItemDiscovered(const OCC::SyncFileItemPtr &item)
             }
 
             if (item->_type == CSyncEnums::ItemTypeVirtualFile) {
-                if (item->_locked == SyncFileItem::LockStatus::LockedItem && (item->_lockOwnerType != SyncFileItem::LockOwnerType::UserLock || item->_lockOwnerId != account()->davUser())) {
+                const auto lockOwnerTypeToSkipReadonly = _account->capabilities().filesLockTypeAvailable()
+                    ? SyncFileItem::LockOwnerType::TokenLock
+                    : SyncFileItem::LockOwnerType::UserLock;
+                if (item->_locked == SyncFileItem::LockStatus::LockedItem
+                    && (item->_lockOwnerType != lockOwnerTypeToSkipReadonly || item->_lockOwnerId != account()->davUser())) {
                     qCDebug(lcEngine()) << filePath << "file is locked: making it read only";
                     FileSystem::setFileReadOnly(filePath, true);
                 } else {
@@ -636,7 +640,7 @@ void SyncEngine::startSync()
     _discoveryPhase->_account = _account;
     _discoveryPhase->_excludes = _excludedFiles.data();
     const QString excludeFilePath = _localPath + QStringLiteral(".sync-exclude.lst");
-    if (QFile::exists(excludeFilePath)) {
+    if (FileSystem::fileExists(excludeFilePath)) {
         _discoveryPhase->_excludes->addExcludeFilePath(excludeFilePath);
         _discoveryPhase->_excludes->reloadExcludeFiles();
     }
@@ -894,10 +898,11 @@ void SyncEngine::slotDiscoveryFinished()
         qCInfo(lcEngine) << "#### Post-Reconcile end #################################################### " << _stopWatch.addLapTime(QStringLiteral("Post-Reconcile Finished")) << "ms";
     };
 
-    if (!_hasNoneFiles && _hasRemoveFile) {
+    const auto displayDialog = ConfigFile().promptDeleteFiles() && !_syncOptions.isCmd();
+    if (!_hasNoneFiles && _hasRemoveFile && displayDialog) {
         qCInfo(lcEngine) << "All the files are going to be changed, asking the user";
         int side = 0; // > 0 means more deleted on the server.  < 0 means more deleted on the client
-        foreach (const auto &it, _syncItems) {
+        for (const auto &it : _syncItems) {
             if (it->_instruction == CSYNC_INSTRUCTION_REMOVE) {
                 side += it->_direction == SyncFileItem::Down ? 1 : -1;
             }
@@ -932,6 +937,33 @@ void SyncEngine::slotCleanPollsJobAborted(const QString &error, const ErrorCateg
     finalize(false);
 }
 
+void SyncEngine::detectFileLock(const SyncFileItemPtr &item)
+{
+    const auto isNewlyUploadedFile = !item->isDirectory() &&
+        item->_instruction == CSYNC_INSTRUCTION_NEW &&
+        item->_direction == SyncFileItem::Up && item->_status == SyncFileItem::Success;
+
+    if (isNewlyUploadedFile && item->_locked != SyncFileItem::LockStatus::LockedItem && _account->capabilities().filesLockAvailable() &&
+        FileSystem::isMatchingOfficeFileExtension(item->_file)) {
+        {
+            SyncJournalFileRecord rec;
+            if (!_journal->getFileRecord(item->_file, &rec) || !rec.isValid()) {
+                qCWarning(lcEngine) << "Newly-created office file just uploaded but not in sync journal. Not going to lock it." << item->_file;
+                return;
+            }
+        }
+        const auto localFilePath = _propagator->fullLocalPath(item->_file);
+        const auto allMatchingLockFiles = FileSystem::findAllLockFilesInDir(QFileInfo(localFilePath).absolutePath());
+        for (const auto &lockFilePath : allMatchingLockFiles) {
+            const auto checkResult = FileSystem::lockFileTargetFilePath(lockFilePath, FileSystem::filePathLockFilePatternMatch(lockFilePath));
+            if (checkResult.type == FileSystem::FileLockingInfo::Type::Locked && checkResult.path == localFilePath) {
+                qCInfo(lcEngine) << "Newly-created office file lock detected. Let FolderWatcher take it from here..." << item->_file;
+                emit lockFileDetected(lockFilePath);
+            }
+        }
+    }
+}
+
 void SyncEngine::setNetworkLimits(int upload, int download)
 {
     _uploadLimit = upload;
@@ -954,6 +986,8 @@ void SyncEngine::slotItemCompleted(const SyncFileItemPtr &item, const ErrorCateg
 
     emit transmissionProgress(*_progressInfo);
     emit itemCompleted(item, category);
+
+    detectFileLock(item);
 }
 
 void SyncEngine::slotPropagationFinished(OCC::SyncFileItem::Status status)
@@ -1203,7 +1237,7 @@ void SyncEngine::wipeVirtualFiles(const QString &localPath, SyncJournalDb &journ
         // If the local file is a dehydrated placeholder, wipe it too.
         // Otherwise leave it to allow the next sync to have a new-new conflict.
         QString localFile = localPath + rec._path;
-        if (QFile::exists(localFile) && vfs.isDehydratedPlaceholder(localFile)) {
+        if (FileSystem::fileExists(localFile) && vfs.isDehydratedPlaceholder(localFile)) {
             qCDebug(lcEngine) << "Removing local dehydrated placeholder" << rec.path();
             QFile::remove(localFile);
         }

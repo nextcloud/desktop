@@ -40,6 +40,8 @@ public:
     [[nodiscard]] static bool fileProviderAvailable();
 
     [[nodiscard]] FileProviderXPC *xpc() const;
+    [[nodiscard]] FileProviderDomainManager *domainManager() const;
+    [[nodiscard]] FileProviderSocketServer *socketServer() const;
 
 private slots:
     void configureXPC();

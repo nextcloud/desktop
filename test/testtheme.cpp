@@ -17,6 +17,9 @@
 #include "theme.h"
 #include "themeutils.h"
 #include "iconutils.h"
+#include "logger.h"
+
+#include <QStandardPaths>
 
 class TestTheme : public QObject
 {
@@ -30,6 +33,14 @@ public:
     }
 
 private slots:
+    void initTestCase()
+    {
+        OCC::Logger::instance()->setLogFlush(true);
+        OCC::Logger::instance()->setLogDebug(true);
+
+        QStandardPaths::setTestModeEnabled(true);
+    }
+
     void testHidpiFileName_darkBackground_returnPathToWhiteIcon()
     {
         FakePaintDevice paintDevice;

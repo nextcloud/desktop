@@ -5,6 +5,9 @@
  *
  */
 
+#include <QtTest>
+#include <QTextCodec>
+
 #include "syncenginetestutils.h"
 
 #include "caseclashconflictsolver.h"
@@ -93,6 +96,8 @@ private slots:
     {
         Logger::instance()->setLogFlush(true);
         Logger::instance()->setLogDebug(true);
+
+        QStandardPaths::setTestModeEnabled(true);
     }
 
     void init()
@@ -1697,10 +1702,151 @@ private slots:
         conflicts = findCaseClashConflicts(fakeFolder.currentLocalState());
         QCOMPARE(conflicts.size(), 0);
 
-        // remove both files from the server(lower and UPPER case)
-        fakeFolder.remoteModifier().remove(testLowerCaseFile);
+        // remove the other file
         fakeFolder.remoteModifier().remove(testUpperCaseFile);
         QVERIFY(fakeFolder.syncOnce());
+    }
+
+    void testServer_caseClash_createDiverseConflictsInsideOneFolderAndSolveThem()
+    {
+        FakeFolder fakeFolder{FileInfo{}};
+
+        const QStringList conflictsFolderPathComponents = {"Documents", "DiverseConflicts"};
+
+        QString diverseConflictsFolderPath;
+        for (const auto &conflictsFolderPathComponent : conflictsFolderPathComponents) {
+            if (diverseConflictsFolderPath.isEmpty()) {
+                diverseConflictsFolderPath += conflictsFolderPathComponent;
+            } else {
+                diverseConflictsFolderPath += "/" + conflictsFolderPathComponent;
+            }
+            fakeFolder.remoteModifier().mkdir(diverseConflictsFolderPath);
+        }
+
+        constexpr auto testLowerCaseFile = "testfile";
+        constexpr auto testUpperCaseFile = "TESTFILE";
+
+        constexpr auto testLowerCaseFolder = "testfolder";
+        constexpr auto testUpperCaseFolder = "TESTFOLDER";
+
+        constexpr auto testInvalidCharFolder = "Really?";
+
+        fakeFolder.remoteModifier().insert(diverseConflictsFolderPath + "/" + testLowerCaseFile);
+        fakeFolder.remoteModifier().insert(diverseConflictsFolderPath + "/" + testUpperCaseFile);
+
+        fakeFolder.remoteModifier().mkdir(diverseConflictsFolderPath + "/" + testLowerCaseFolder);
+        fakeFolder.remoteModifier().mkdir(diverseConflictsFolderPath + "/" + testUpperCaseFolder);
+
+        fakeFolder.remoteModifier().mkdir(diverseConflictsFolderPath + "/" + testInvalidCharFolder);
+
+#if defined Q_OS_LINUX
+        constexpr auto shouldHaveCaseClashConflict = false;
+#else
+        constexpr auto shouldHaveCaseClashConflict = true;
+#endif
+        if (shouldHaveCaseClashConflict) {
+            ItemCompletedSpy completeSpy(fakeFolder);
+
+            fakeFolder.syncEngine().setLocalDiscoveryOptions(OCC::LocalDiscoveryStyle::DatabaseAndFilesystem);
+            QVERIFY(fakeFolder.syncOnce());
+
+            // verify the parent of a folder where caseclash and invalidchar conflicts were found, has corresponding flags set (conflict info must get
+            // propagated to the very top)
+            const auto diverseConflictsFolderParent = completeSpy.findItem(conflictsFolderPathComponents.first());
+            QVERIFY(diverseConflictsFolderParent);
+            QVERIFY(diverseConflictsFolderParent->_isAnyCaseClashChild);
+            QVERIFY(diverseConflictsFolderParent->_isAnyInvalidCharChild);
+            completeSpy.clear();
+
+            auto diverseConflictsFolderInfo = fakeFolder.currentLocalState().findRecursive(diverseConflictsFolderPath);
+            QVERIFY(!diverseConflictsFolderInfo.name.isEmpty());
+
+            auto conflictsFile = findCaseClashConflicts(diverseConflictsFolderInfo);
+            QCOMPARE(conflictsFile.size(), shouldHaveCaseClashConflict ? 1 : 0);
+            const auto hasFileCaseClashConflict = expectConflict(diverseConflictsFolderInfo, testLowerCaseFile);
+            QCOMPARE(hasFileCaseClashConflict, shouldHaveCaseClashConflict ? true : false);
+
+            fakeFolder.syncEngine().setLocalDiscoveryOptions(OCC::LocalDiscoveryStyle::DatabaseAndFilesystem);
+            QVERIFY(fakeFolder.syncOnce());
+
+            diverseConflictsFolderInfo = fakeFolder.currentLocalState().findRecursive(diverseConflictsFolderPath);
+            QVERIFY(!diverseConflictsFolderInfo.name.isEmpty());
+
+            conflictsFile = findCaseClashConflicts(diverseConflictsFolderInfo);
+            QCOMPARE(conflictsFile.size(), shouldHaveCaseClashConflict ? 1 : 0);
+
+            const auto conflictFileName = QString{conflictsFile.constFirst()};
+            qDebug() << conflictFileName;
+            CaseClashConflictSolver conflictSolver(fakeFolder.localPath() + diverseConflictsFolderPath + "/" + testLowerCaseFile,
+                                                   fakeFolder.localPath() + conflictFileName,
+                                                   QStringLiteral("/"),
+                                                   fakeFolder.localPath(),
+                                                   fakeFolder.account(),
+                                                   &fakeFolder.syncJournal());
+
+            QSignalSpy conflictSolverDone(&conflictSolver, &CaseClashConflictSolver::done);
+
+            conflictSolver.solveConflict("testfile2");
+
+            QVERIFY(conflictSolverDone.wait());
+
+            QVERIFY(fakeFolder.syncOnce());
+
+            diverseConflictsFolderInfo = fakeFolder.currentLocalState().findRecursive(diverseConflictsFolderPath);
+            QVERIFY(!diverseConflictsFolderInfo.name.isEmpty());
+
+            conflictsFile = findCaseClashConflicts(diverseConflictsFolderInfo);
+            QCOMPARE(conflictsFile.size(), 0);
+
+            fakeFolder.syncEngine().setLocalDiscoveryOptions(OCC::LocalDiscoveryStyle::DatabaseAndFilesystem);
+            QVERIFY(fakeFolder.syncOnce());
+
+            // After solving file conflict, verify that we did not lose conflict detection of caseclash and invalidchar for folders
+            for (auto it = completeSpy.begin(); it != completeSpy.end(); ++it) {
+                auto item = (*it).first().value<OCC::SyncFileItemPtr>();
+                item = nullptr;
+            }
+            auto invalidFilenameConflictFolderItem = completeSpy.findItem(diverseConflictsFolderPath + "/" + testInvalidCharFolder);
+            QVERIFY(invalidFilenameConflictFolderItem);
+            QVERIFY(invalidFilenameConflictFolderItem->_status == SyncFileItem::FileNameInvalid);
+
+            auto caseClashConflictFolderItemLower = completeSpy.findItem(diverseConflictsFolderPath + "/" + testLowerCaseFolder);
+            auto caseClashConflictFolderItemUpper = completeSpy.findItem(diverseConflictsFolderPath + "/" + testUpperCaseFolder);
+            completeSpy.clear();
+
+            // we always create UPPERCASE folder in current syncengine logic for now and then create a conflict for a lowercase folder, but this may change, so
+            // keep this check more future proof
+            const auto upperOrLowerCaseFolderCaseClashFound =
+                (caseClashConflictFolderItemLower && caseClashConflictFolderItemLower->_status == SyncFileItem::FileNameClash)
+                || (caseClashConflictFolderItemUpper && caseClashConflictFolderItemUpper->_status == SyncFileItem::FileNameClash);
+
+            QVERIFY(upperOrLowerCaseFolderCaseClashFound);
+
+            // solve case clash folders conflict
+            CaseClashConflictSolver conflictSolverCaseClashForFolder(fakeFolder.localPath() + diverseConflictsFolderPath + "/" + testLowerCaseFolder,
+                                                                     fakeFolder.localPath() + diverseConflictsFolderPath + "/" + testUpperCaseFolder,
+                                                                     QStringLiteral("/"),
+                                                                     fakeFolder.localPath(),
+                                                                     fakeFolder.account(),
+                                                                     &fakeFolder.syncJournal());
+
+            QSignalSpy conflictSolverCaseClashForFolderDone(&conflictSolverCaseClashForFolder, &CaseClashConflictSolver::done);
+            conflictSolverCaseClashForFolder.solveConflict("testfolder1");
+            QVERIFY(conflictSolverCaseClashForFolderDone.wait());
+            QVERIFY(fakeFolder.syncOnce());
+
+            // verify no case clash conflicts folder items are found
+            caseClashConflictFolderItemLower = completeSpy.findItem(diverseConflictsFolderPath + "/" + testLowerCaseFolder);
+            caseClashConflictFolderItemUpper = completeSpy.findItem(diverseConflictsFolderPath + "/" + testUpperCaseFolder);
+            QVERIFY((!caseClashConflictFolderItemLower || caseClashConflictFolderItemLower->_file.isEmpty())
+                    && (!caseClashConflictFolderItemUpper || caseClashConflictFolderItemUpper->_file.isEmpty()));
+
+            // veriy invalid filename conflict folder item is still present
+            invalidFilenameConflictFolderItem = completeSpy.findItem(diverseConflictsFolderPath + "/" + testInvalidCharFolder);
+            completeSpy.clear();
+            QVERIFY(invalidFilenameConflictFolderItem);
+            QVERIFY(invalidFilenameConflictFolderItem->_status == SyncFileItem::FileNameInvalid);
+        }
     }
 
     void testExistingFolderBecameBig()
@@ -1763,6 +1909,75 @@ private slots:
         fakeFolder.remoteModifier().insert("a/TESTDIR");
         QVERIFY(fakeFolder.syncOnce());
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+    }
+
+    void testRemoveAllFilesWithNextcloudCmd()
+    {
+        FakeFolder fakeFolder{FileInfo{}};
+        auto nextcloudCmdSyncOptions = fakeFolder.syncEngine().syncOptions();
+        nextcloudCmdSyncOptions.setIsCmd(true);
+        fakeFolder.syncEngine().setSyncOptions(nextcloudCmdSyncOptions);
+        ConfigFile().setPromptDeleteFiles(true);
+        QSignalSpy displayDialogSignal(&fakeFolder.syncEngine(), &SyncEngine::aboutToRemoveAllFiles);
+
+        fakeFolder.remoteModifier().mkdir("folder");
+        fakeFolder.remoteModifier().insert("folder/file1");
+        fakeFolder.remoteModifier().insert("folder/file2");
+        fakeFolder.remoteModifier().insert("folder/file3");
+        fakeFolder.remoteModifier().mkdir("folder2");
+        fakeFolder.remoteModifier().insert("file1");
+        fakeFolder.remoteModifier().insert("file2");
+        fakeFolder.remoteModifier().insert("file3");
+
+        QVERIFY(fakeFolder.syncOnce());
+
+        fakeFolder.remoteModifier().remove("folder");
+        fakeFolder.remoteModifier().remove("folder2");
+        fakeFolder.remoteModifier().remove("file1");
+        fakeFolder.remoteModifier().remove("file2");
+        fakeFolder.remoteModifier().remove("file3");
+
+        QVERIFY(fakeFolder.syncOnce());
+        // the signal to display the dialog should not be emitted
+        QCOMPARE(displayDialogSignal.count(), 0);
+        QCOMPARE(fakeFolder.remoteModifier().find("folder"), nullptr);
+        QCOMPARE(fakeFolder.remoteModifier().find("folder2"), nullptr);
+        QCOMPARE(fakeFolder.remoteModifier().find("file1"), nullptr);
+    }
+
+    void testRemoveAllFilesWithoutNextcloudCmd()
+    {
+        FakeFolder fakeFolder{FileInfo{}};
+        auto nextcloudCmdSyncOptions = fakeFolder.syncEngine().syncOptions();
+        nextcloudCmdSyncOptions.setIsCmd(false);
+        fakeFolder.syncEngine().setSyncOptions(nextcloudCmdSyncOptions);
+        ConfigFile().setPromptDeleteFiles(true);
+        QSignalSpy displayDialogSignal(&fakeFolder.syncEngine(), &SyncEngine::aboutToRemoveAllFiles);
+
+        fakeFolder.remoteModifier().mkdir("folder");
+        fakeFolder.remoteModifier().insert("folder/file1");
+        fakeFolder.remoteModifier().insert("folder/file2");
+        fakeFolder.remoteModifier().insert("folder/file3");
+        fakeFolder.remoteModifier().mkdir("folder2");
+        fakeFolder.remoteModifier().insert("file1");
+        fakeFolder.remoteModifier().insert("file2");
+        fakeFolder.remoteModifier().insert("file3");
+
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+
+        fakeFolder.remoteModifier().remove("folder");
+        fakeFolder.remoteModifier().remove("folder2");
+        fakeFolder.remoteModifier().remove("file1");
+        fakeFolder.remoteModifier().remove("file2");
+        fakeFolder.remoteModifier().remove("file3");
+
+        QVERIFY(fakeFolder.syncOnce());
+        // the signal to show the dialog should be emitted
+        QCOMPARE(displayDialogSignal.count(), 1);
+        QCOMPARE(fakeFolder.remoteModifier().find("folder"), nullptr);
+        QCOMPARE(fakeFolder.remoteModifier().find("folder2"), nullptr);
+        QCOMPARE(fakeFolder.remoteModifier().find("file1"), nullptr);
     }
 };
 

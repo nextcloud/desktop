@@ -5,9 +5,9 @@ on:
 jobs:
   build:
     name: Windows Build and Test
-    runs-on: windows-2019
+    runs-on: windows-2022
     env:
-      CRAFT_TARGET: windows-msvc2019_64-cl
+      CRAFT_TARGET: windows-msvc2022_64-cl
       COBERTURA_COVERAGE_FILE: ${{ github.workspace }}\cobertura_coverage\coverage.xml
       CRAFT_MASTER_LOCATION: ${{ github.workspace }}\CraftMaster
       CRAFT_MASTER_CONFIG: ${{ github.workspace }}\craftmaster.ini
@@ -18,7 +18,7 @@ jobs:
 
       - uses: actions/setup-python@v5
         with:
-          python-version: '3.8'
+          python-version: '3.12'
       - name: Install Craft Master with Nextcloud Client Deps
         shell: pwsh
         run: |
@@ -46,6 +46,19 @@ jobs:
         run: |
           choco install opencppcoverage
 
+      - name: Cache Install inkscape
+        id: cache-install-inkscape
+        uses: actions/cache@v4
+        with:
+          path: C:\Program Files\inkscape
+          key: ${{ runner.os }}-cache-install-inkscape
+
+      - name: Install inkscape
+        if: steps.cache-install-inkscape.outputs.cache-hit != 'true'
+        shell: pwsh
+        run: |
+          choco install inkscape
+
       - name: Setup PATH
         shell: pwsh
         run: |
@@ -62,24 +75,17 @@ jobs:
           
           craft --src-dir ${{ github.workspace }} nextcloud-client
           
-      - name: Run tests
+      - name: Run tests with coverage
         shell: pwsh
         run: |
-          function runTestsAndCreateCoverage() {
+          function runTests() {
               $buildFolder = "${{ github.workspace }}\${{ env.CRAFT_TARGET }}\build\nextcloud-client\work\build"
 
               cd $buildFolder
 
               $binFolder = "$buildFolder\bin"
 
-              & OpenCppCoverage.exe --optimized_build --quiet --sources ${{ github.workspace }} --modules $binFolder\*.dll* --export_type cobertura:${{ env.COBERTURA_COVERAGE_FILE }} --cover_children -- ctest --output-on-failure --timeout 300
+              & ctest --output-on-failure --timeout 300
           }
           
-          runTestsAndCreateCoverage
-
-      - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v4
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }}
-          directory: ${{ github.workspace }}\cobertura_coverage
-          fail_ci_if_error: true
+          runTests

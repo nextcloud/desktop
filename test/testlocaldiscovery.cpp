@@ -17,6 +17,14 @@ class TestLocalDiscovery : public QObject
     Q_OBJECT
 
 private slots:
+    void initTestCase()
+    {
+        OCC::Logger::instance()->setLogFlush(true);
+        OCC::Logger::instance()->setLogDebug(true);
+
+        QStandardPaths::setTestModeEnabled(true);
+    }
+
     void testSelectiveSyncQuotaExceededDataLoss()
     {
         FakeFolder fakeFolder{FileInfo{}};
@@ -338,7 +346,11 @@ private slots:
         QCOMPARE(completeSpy.findItem(fileWithSpaces4)->_status, SyncFileItem::Status::Success);
         QCOMPARE(completeSpy.findItem(fileWithSpaces5)->_status, SyncFileItem::Status::Success);
         QCOMPARE(completeSpy.findItem(fileWithSpaces6)->_status, SyncFileItem::Status::Success);
+#ifdef Q_OS_WINDOWS
+        QCOMPARE(completeSpy.findItem(QStringLiteral(" with spaces "))->_status, SyncFileItem::Status::NormalError);
+#else
         QCOMPARE(completeSpy.findItem(QStringLiteral(" with spaces "))->_status, SyncFileItem::Status::Success);
+#endif
     }
 
     void testCreateFileWithTrailingSpaces_remoteDontGetRenamedAutomatically()

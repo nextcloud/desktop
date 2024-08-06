@@ -15,6 +15,7 @@
 #include "common/checksumconsts.h"
 #include "common/utility.h"
 #include "filesystem.h"
+#include "logger.h"
 #include "propagatorjobs.h"
 
 using namespace OCC;
@@ -72,9 +73,14 @@ using namespace OCC::Utility;
         return sumShell;
     }
 
-    private slots:
+private slots:
+    void initTestCase()
+    {
+        OCC::Logger::instance()->setLogFlush(true);
+        OCC::Logger::instance()->setLogDebug(true);
 
-    void initTestCase() {
+        QStandardPaths::setTestModeEnabled(true);
+
         _testfile = _root.path()+"/csFile";
         Utility::writeRandomFile( _testfile);
     }

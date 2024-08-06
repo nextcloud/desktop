@@ -329,7 +329,7 @@ void GETFileJob::slotReadyRead()
     }
 
     if (reply()->isFinished() && (reply()->bytesAvailable() == 0 || !_saveBodyToFile)) {
-        qCDebug(lcGetJob) << "Actually finished!";
+        qCDebug(lcGetJob) << "Get file job finished bytesAvailable/_saveBodyToFile:" << reply()->bytesAvailable() << "/" << _saveBodyToFile ;
         if (_bandwidthManager) {
             _bandwidthManager->unregisterDownloadJob(this);
         }
@@ -887,8 +887,7 @@ void PropagateDownloadFile::slotGetFinished()
     // of the compressed data. See QTBUG-73364.
     const auto contentEncoding = job->reply()->rawHeader("content-encoding").toLower();
     if ((contentEncoding == "gzip" || contentEncoding == "deflate")
-        && (job->reply()->attribute(QNetworkRequest::Http2WasUsedAttribute).toBool()
-         || job->reply()->attribute(QNetworkRequest::SpdyWasUsedAttribute).toBool())) {
+        && job->reply()->attribute(QNetworkRequest::Http2WasUsedAttribute).toBool()) {
         bodySize = 0;
         hasSizeHeader = false;
     }
@@ -1008,7 +1007,7 @@ void PropagateDownloadFile::checksumValidateFailedAbortDownload(const QString &e
 void PropagateDownloadFile::deleteExistingFolder()
 {
     QString existingDir = propagator()->fullLocalPath(_item->_file);
-    if (!QFileInfo(existingDir).isDir()) {
+    if (!FileSystem::isDir(existingDir)) {
         return;
     }
 
@@ -1132,7 +1131,8 @@ void PropagateDownloadFile::contentChecksumComputed(const QByteArray &checksumTy
     SyncJournalFileRecord record;
     if (_item->_instruction != CSYNC_INSTRUCTION_CONFLICT && FileSystem::fileExists(localFilePath)
         && (propagator()->_journal->getFileRecord(_item->_file, &record) && record.isValid())
-        && (record._modtime == _item->_modtime && record._etag != _item->_etag)) {
+        && (record._modtime == _item->_modtime && record._etag != _item->_etag)
+        && _item->_type == ItemTypeFile) {
         const auto computeChecksum = new ComputeChecksum(this);
         computeChecksum->setChecksumType(checksumType);
         connect(computeChecksum, &ComputeChecksum::done, this, &PropagateDownloadFile::localFileContentChecksumComputed);
@@ -1204,9 +1204,17 @@ void PropagateDownloadFile::downloadFinished()
     if (previousFileExists) {
         // Preserve the existing file permissions.
         const auto existingFile = QFileInfo{filename};
+#ifdef Q_OS_WIN
+        const auto existingPermissions = FileSystem::filePermissionsWin(filename);
+        const auto tmpFilePermissions = FileSystem::filePermissionsWin(_tmpFile.fileName());
+        if (existingPermissions != tmpFilePermissions) {
+            FileSystem::setFilePermissionsWin(_tmpFile.fileName(), existingPermissions);
+        }
+#else
         if (existingFile.permissions() != _tmpFile.permissions()) {
             _tmpFile.setPermissions(existingFile.permissions());
         }
+#endif
         preserveGroupOwnership(_tmpFile.fileName(), existingFile);
 
         // Make the file a hydrated placeholder if possible
@@ -1218,17 +1226,17 @@ void PropagateDownloadFile::downloadFinished()
     }
 
     if (_item->_locked == SyncFileItem::LockStatus::LockedItem && (_item->_lockOwnerType != SyncFileItem::LockOwnerType::UserLock || _item->_lockOwnerId != propagator()->account()->davUser())) {
-        qCDebug(lcPropagateDownload()) << _tmpFile << "file is locked: making it read only";
+        qCDebug(lcPropagateDownload()) << _tmpFile.fileName() << "file is locked: making it read only";
         FileSystem::setFileReadOnly(_tmpFile.fileName(), true);
     } else {
-        qCDebug(lcPropagateDownload()) << _tmpFile << "file is not locked: making it"
+        qCDebug(lcPropagateDownload()) << _tmpFile.fileName() << "file is not locked: making it"
                                        << ((!_item->_remotePerm.isNull() && !_item->_remotePerm.hasPermission(RemotePermissions::CanWrite)) ? "read only"
                                                                                                                                             : "read write");
         FileSystem::setFileReadOnlyWeak(_tmpFile.fileName(), (!_item->_remotePerm.isNull() && !_item->_remotePerm.hasPermission(RemotePermissions::CanWrite)));
     }
 
     const auto isConflict = (_item->_instruction == CSYNC_INSTRUCTION_CONFLICT
-                             && (QFileInfo(filename).isDir() || !FileSystem::fileEquals(filename, _tmpFile.fileName()))) ||
+                             && (FileSystem::isDir(filename) || !FileSystem::fileEquals(filename, _tmpFile.fileName()))) ||
         _item->_instruction == CSYNC_INSTRUCTION_CASE_CLASH_CONFLICT;
 
     if (isConflict) {

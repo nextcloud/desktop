@@ -189,6 +189,7 @@
         <file>theme/white/folder.svg</file>
         <file>theme/white/more-apps.svg</file>
         <file>theme/white/talk-app.svg</file>
+        <file>theme/white/nc-assistant-app.svg</file>
         <file>theme/white/caret-down.svg</file>
         <file>theme/black/caret-down.svg</file>
         <file>theme/white/user.svg</file>
@@ -238,5 +239,7 @@
         <file>theme/delete.svg</file>
         <file>theme/send.svg</file>
         <file>theme/call-notification.wav</file>
+        <file>theme/more-apps.svg</file>
+        <file>theme/talk-app.svg</file>
     </qresource>
 </RCC>

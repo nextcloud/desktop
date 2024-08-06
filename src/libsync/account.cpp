@@ -52,7 +52,13 @@
 #include <QHttpMultiPart>
 
 #include <qsslconfiguration.h>
+
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+#include <qt6keychain/keychain.h>
+#else
 #include <qt5keychain/keychain.h>
+#endif
+
 #include "creds/abstractcredentials.h"
 
 using namespace QKeychain;
@@ -683,6 +689,8 @@ void Account::setCapabilities(const QVariantMap &caps)
     _capabilities = Capabilities(caps);
 
     updateServerColors();
+    updateServerSubcription();
+    updateDesktopEnterpriseChannel();
 
     emit capabilitiesChanged();
 
@@ -1060,6 +1068,263 @@ void Account::setAskUserForMnemonic(const bool ask)
 {
     _e2eAskUserForMnemonic = ask;
     emit askUserForMnemonicChanged();
+}
+
+void Account::updateServerSubcription()
+{
+    ConfigFile currentConfig;
+    if (const auto serverHasValidSubscription = _capabilities.serverHasValidSubscription();
+        serverHasValidSubscription != currentConfig.serverHasValidSubscription()) {
+        currentConfig.setServerHasValidSubscription(serverHasValidSubscription);
+    }
+}
+
+void Account::updateDesktopEnterpriseChannel()
+{
+    ConfigFile currentConfig;
+    if (const auto desktopEnterpriseChannel = _capabilities.desktopEnterpriseChannel();
+        desktopEnterpriseChannel != currentConfig.desktopEnterpriseChannel()) {
+        currentConfig.setDesktopEnterpriseChannel(desktopEnterpriseChannel);
+    }
+}
+
+Account::AccountNetworkProxySetting Account::networkProxySetting() const
+{
+    return _networkProxySetting;
+}
+
+void Account::setNetworkProxySetting(const AccountNetworkProxySetting setting)
+{
+    if (setting == _networkProxySetting) {
+        return;
+    }
+
+    _networkProxySetting = setting;
+    if (setting == AccountNetworkProxySetting::AccountSpecificProxy) {
+        auto proxy = _am->proxy();
+        proxy.setType(proxyType());
+        proxy.setHostName(proxyHostName());
+        proxy.setPort(proxyPort());
+        proxy.setUser(proxyUser());
+        proxy.setPassword(proxyPassword());
+        _am->setProxy(proxy);
+    } else {
+        const auto proxy = QNetworkProxy::applicationProxy();
+        _am->setProxy(proxy);
+        setProxyType(proxy.type());
+        setProxyHostName(proxy.hostName());
+        setProxyPort(proxy.port());
+        setProxyUser(proxy.user());
+        setProxyPassword(proxy.password());
+    }
+    emit networkProxySettingChanged();
+}
+
+QNetworkProxy::ProxyType Account::proxyType() const
+{
+    return _proxyType;
+}
+
+void Account::setProxyType(QNetworkProxy::ProxyType proxyType)
+{
+    if (_proxyType == proxyType) {
+        return;
+    }
+
+    _proxyType = proxyType;
+
+    if (networkProxySetting() == AccountNetworkProxySetting::AccountSpecificProxy) {
+        auto proxy = _am->proxy();
+        proxy.setType(proxyType);
+        _am->setProxy(proxy);
+    }
+
+    emit proxyTypeChanged();
+}
+
+QString Account::proxyHostName() const
+{
+    return _proxyHostName;
+}
+
+void Account::setProxyHostName(const QString &hostName)
+{
+    if (_proxyHostName == hostName) {
+        return;
+    }
+
+    _proxyHostName = hostName;
+
+    if (networkProxySetting() == AccountNetworkProxySetting::AccountSpecificProxy) {
+        auto proxy = _am->proxy();
+        proxy.setHostName(hostName);
+        _am->setProxy(proxy);
+    }
+
+    emit proxyHostNameChanged();
+}
+
+int Account::proxyPort() const
+{
+    return _proxyPort;
+}
+
+void Account::setProxyPort(const int port)
+{
+    if (_proxyPort == port) {
+        return;
+    }
+
+    _proxyPort = port;
+
+    if (networkProxySetting() == AccountNetworkProxySetting::AccountSpecificProxy) {
+        auto proxy = _am->proxy();
+        proxy.setPort(port);
+        _am->setProxy(proxy);
+    }
+
+    emit proxyPortChanged();
+}
+
+bool Account::proxyNeedsAuth() const
+{
+    return _proxyNeedsAuth;
+}
+
+void Account::setProxyNeedsAuth(const bool needsAuth)
+{
+    if (_proxyNeedsAuth == needsAuth) {
+        return;
+    }
+
+    _proxyNeedsAuth = needsAuth;
+    emit proxyNeedsAuthChanged();
+}
+
+QString Account::proxyUser() const
+{
+    return _proxyUser;
+}
+
+void Account::setProxyUser(const QString &user)
+{
+    if (_proxyUser == user) {
+        return;
+    }
+
+    _proxyUser = user;
+
+    if (networkProxySetting() == AccountNetworkProxySetting::AccountSpecificProxy) {
+        auto proxy = _am->proxy();
+        proxy.setUser(user);
+        _am->setProxy(proxy);
+    }
+
+    emit proxyUserChanged();
+}
+
+QString Account::proxyPassword() const
+{
+    return _proxyPassword;
+}
+
+void Account::setProxyPassword(const QString &password)
+{
+    if (_proxyPassword == password) {
+        return;
+    }
+
+    _proxyPassword = password;
+
+    if (networkProxySetting() == AccountNetworkProxySetting::AccountSpecificProxy) {
+        auto proxy = _am->proxy();
+        proxy.setPassword(password);
+        _am->setProxy(proxy);
+    }
+
+    emit proxyPasswordChanged();
+}
+
+void Account::setProxySettings(const AccountNetworkProxySetting networkProxySetting,
+                               const QNetworkProxy::ProxyType proxyType,
+                               const QString &hostName,
+                               const int port,
+                               const bool needsAuth,
+                               const QString &user,
+                               const QString &password)
+{
+    if (networkProxySetting == AccountNetworkProxySetting::GlobalProxy) {
+        setNetworkProxySetting(networkProxySetting);
+        return;
+    }
+
+    setProxyType(proxyType);
+    setProxyHostName(hostName);
+    setProxyPort(port);
+    setProxyNeedsAuth(needsAuth);
+    setProxyUser(user);
+    setProxyPassword(password);
+    setNetworkProxySetting(networkProxySetting);
+}
+
+Account::AccountNetworkTransferLimitSetting Account::uploadLimitSetting() const
+{
+    return _uploadLimitSetting;
+}
+
+void Account::setUploadLimitSetting(const AccountNetworkTransferLimitSetting setting)
+{
+    if (setting == _uploadLimitSetting) {
+        return;
+    }
+
+    _uploadLimitSetting = setting;
+    emit uploadLimitSettingChanged();
+}
+
+Account::AccountNetworkTransferLimitSetting Account::downloadLimitSetting() const
+{
+    return _downloadLimitSetting;
+}
+
+void Account::setDownloadLimitSetting(const AccountNetworkTransferLimitSetting setting)
+{
+    if (setting == _downloadLimitSetting) {
+        return;
+    }
+    
+    _downloadLimitSetting = setting;
+    emit downloadLimitSettingChanged();
+}
+
+unsigned int Account::uploadLimit() const
+{
+    return _uploadLimit;
+}
+
+void Account::setUploadLimit(const unsigned int limit)
+{
+    if (_uploadLimit == limit) {
+        return;
+    }
+
+    _uploadLimit = limit;
+    emit uploadLimitChanged();
+}
+
+unsigned int Account::downloadLimit() const
+{
+    return _downloadLimit;
+}
+
+void Account::setDownloadLimit(const unsigned int limit)
+{
+    if (_downloadLimit == limit) {
+        return;
+    }
+
+    _downloadLimit = limit;
+    emit downloadLimitChanged();
 }
 
 } // namespace OCC

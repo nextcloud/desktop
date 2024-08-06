@@ -32,6 +32,13 @@ class TestAllFilesDeleted : public QObject
     Q_OBJECT
 
 private slots:
+    void initTestCase()
+    {
+        OCC::Logger::instance()->setLogFlush(true);
+        OCC::Logger::instance()->setLogDebug(true);
+
+        QStandardPaths::setTestModeEnabled(true);
+    }
 
     void testAllFilesDeletedKeep_data()
     {
@@ -216,7 +223,7 @@ private slots:
 
         int fingerprintRequests = 0;
         fakeFolder.setServerOverride([&](QNetworkAccessManager::Operation, const QNetworkRequest &request, QIODevice *stream) -> QNetworkReply * {
-            auto verb = request.attribute(QNetworkRequest::CustomVerbAttribute);
+            auto verb = request.attribute(QNetworkRequest::CustomVerbAttribute).toString();
             if (verb == "PROPFIND") {
                 auto data = stream->readAll();
                 if (data.contains("data-fingerprint")) {

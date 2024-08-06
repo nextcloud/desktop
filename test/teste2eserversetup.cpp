@@ -17,8 +17,11 @@
 #include <QSignalSpy>
 
 #include "gui/accountstate.h"
+#include "logger.h"
 
 #include "endtoendtestutils.h"
+
+#include <QStandardPaths>
 
 class E2eServerSetupTest : public QObject
 {
@@ -33,6 +36,11 @@ private:
 private slots:
     void initTestCase()
     {
+        OCC::Logger::instance()->setLogFlush(true);
+        OCC::Logger::instance()->setLogDebug(true);
+
+        QStandardPaths::setTestModeEnabled(true);
+
         QSignalSpy accountReady(&_helper, &EndToEndTestHelper::accountReady);
         _helper.startAccountConfig();
         QVERIFY(accountReady.wait(3000));

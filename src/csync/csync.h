@@ -43,6 +43,8 @@
 #include <functional>
 #include <memory>
 #include <QByteArray>
+#include <QVariant>
+
 #include "common/remotepermissions.h"
 
 namespace OCC {
@@ -153,6 +155,7 @@ enum SyncInstructions {
     CSYNC_INSTRUCTION_UPDATE_METADATA     = 1 << 10, /* If the etag has been updated and need to be writen to the db,
                                                         but without any propagation (UPDATE|RECONCILE) */
     CSYNC_INSTRUCTION_CASE_CLASH_CONFLICT = 1 << 12, /* The file need to be downloaded because it is a case clash conflict (RECONCILE) */
+    CSYNC_INSTRUCTION_UPDATE_VFS_METADATA = 1 << 13, /* vfs item metadata are out of sync and we need to tell operating system about it */
 };
 
 Q_ENUM_NS(SyncInstructions)

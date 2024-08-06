@@ -21,7 +21,11 @@
 
 #include <QApplication>
 
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+#include <qt6keychain/keychain.h>
+#else
 #include <qt5keychain/keychain.h>
+#endif
 
 using namespace OCC;
 using namespace QKeychain;
@@ -57,7 +61,8 @@ void ProxyAuthHandler::handleProxyAuthenticationRequired(
         return;
     }
 
-    QString key = proxy.hostName() + QLatin1Char(':') + QString::number(proxy.port());
+    const auto account = qobject_cast<Account *>(sender());
+    const auto key = proxy.hostName() + QLatin1Char(':') + QString::number(proxy.port());
 
     // If the proxy server has changed, forget what we know.
     if (key != _proxy) {
@@ -69,7 +74,10 @@ void ProxyAuthHandler::handleProxyAuthenticationRequired(
 
         // If the user explicitly configured the proxy in the
         // network settings, don't ask about it.
-        if (_configFile->proxyType() == QNetworkProxy::HttpProxy
+        if ((account && (account->networkProxySetting() == Account::AccountNetworkProxySetting::GlobalProxy
+                         || account->proxyType() == QNetworkProxy::HttpProxy
+                         || account->proxyType() == QNetworkProxy::Socks5Proxy))
+            || _configFile->proxyType() == QNetworkProxy::HttpProxy
             || _configFile->proxyType() == QNetworkProxy::Socks5Proxy) {
             _blocked = true;
         }
@@ -81,7 +89,7 @@ void ProxyAuthHandler::handleProxyAuthenticationRequired(
 
     // Find the responsible QNAM if possible.
     QPointer<QNetworkAccessManager> sending_qnam = nullptr;
-    if (auto account = qobject_cast<Account *>(sender())) {
+    if (account) {
         // Since we go into an event loop, it's possible for the account's qnam
         // to be destroyed before we get back. We can use this to check for its
         // liveness.

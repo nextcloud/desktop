@@ -38,6 +38,11 @@ class TestSecureFileDrop : public QObject
 private slots:
     void initTestCase()
     {
+        OCC::Logger::instance()->setLogFlush(true);
+        OCC::Logger::instance()->setLogDebug(true);
+
+        QStandardPaths::setTestModeEnabled(true);
+
         QVariantMap capabilities;
         capabilities[QStringLiteral("end-to-end-encryption")] = QVariantMap{{QStringLiteral("enabled"), true}, {QStringLiteral("api-version"), "2.0"}};
 

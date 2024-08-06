@@ -126,7 +126,7 @@ private:
     [[nodiscard]] QString generateFreeAccountId() const;
 
     // Adds an account to the tracked list, emitting accountAdded()
-    void addAccountState(AccountState *accountState);
+    void addAccountState(AccountState *const accountState);
 
     AccountManager() = default;
     QList<AccountStatePtr> _accounts;

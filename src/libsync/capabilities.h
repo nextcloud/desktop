@@ -69,6 +69,7 @@ public:
     [[nodiscard]] bool filesLockTypeAvailable() const;
     [[nodiscard]] bool userStatus() const;
     [[nodiscard]] bool userStatusSupportsEmoji() const;
+    [[nodiscard]] bool ncAssistantEnabled() const;
     [[nodiscard]] QColor serverColor() const;
     [[nodiscard]] QColor serverTextColor() const;
 
@@ -171,6 +172,9 @@ public:
     [[nodiscard]] bool uploadConflictFiles() const;
 
     [[nodiscard]] bool groupFoldersAvailable() const;
+
+    [[nodiscard]] bool serverHasValidSubscription() const;
+    [[nodiscard]] QString desktopEnterpriseChannel() const;
 
     // Direct Editing
     void addDirectEditor(DirectEditor* directEditor);

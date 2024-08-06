@@ -16,9 +16,9 @@
 
 #include "sslerrordialog.h"
 #include "proxyauthhandler.h"
-#include "common/asserts.h"
 #include "creds/credentialsfactory.h"
 #include "creds/abstractcredentials.h"
+#include "creds/keychainchunk.h"
 #include "libsync/clientsideencryption.h"
 #include "libsync/configfile.h"
 #include "libsync/cookiejar.h"
@@ -29,6 +29,13 @@
 #include <QNetworkAccessManager>
 #include <QMessageBox>
 #include <QPushButton>
+#include <type_traits>
+
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+#include <qt6keychain/keychain.h>
+#else
+#include <qt5keychain/keychain.h>
+#endif
 
 namespace {
 constexpr auto urlC = "url";
@@ -46,6 +53,16 @@ constexpr auto serverVersionC = "serverVersion";
 constexpr auto serverColorC = "serverColor";
 constexpr auto serverTextColorC = "serverTextColor";
 constexpr auto skipE2eeMetadataChecksumValidationC = "skipE2eeMetadataChecksumValidation";
+constexpr auto networkProxySettingC = "networkProxySetting";
+constexpr auto networkProxyTypeC = "networkProxyType";
+constexpr auto networkProxyHostNameC = "networkProxyHostName";
+constexpr auto networkProxyPortC = "networkProxyPort";
+constexpr auto networkProxyNeedsAuthC = "networkProxyNeedsAuth";
+constexpr auto networkProxyUserC = "networkProxyUser";
+constexpr auto networkUploadLimitSettingC = "networkUploadLimitSetting";
+constexpr auto networkDownloadLimitSettingC = "networkDownloadLimitSetting";
+constexpr auto networkUploadLimitC = "networkUploadLimit";
+constexpr auto networkDownloadLimitC = "networkDownloadLimit";
 constexpr auto generalC = "General";
 
 constexpr auto dummyAuthTypeC = "dummy";
@@ -55,12 +72,16 @@ constexpr auto shibbolethAuthTypeC = "shibboleth";
 constexpr auto httpAuthPrefix = "http_";
 constexpr auto webflowAuthPrefix = "webflow_";
 
+constexpr auto networkProxyPasswordKeychainKeySuffixC = "_proxy_password";
+
 constexpr auto legacyRelativeConfigLocationC = "/ownCloud/owncloud.cfg";
 constexpr auto legacyCfgFileNameC = "owncloud.cfg";
 
 // The maximum versions that this client can read
 constexpr auto maxAccountsVersion = 2;
 constexpr auto maxAccountVersion = 1;
+
+constexpr auto serverHasValidSubscriptionC = "serverHasValidSubscription";
 }
 
 
@@ -105,14 +126,13 @@ AccountManager::AccountsRestoreResult AccountManager::restore(const bool alsoRes
         if (!skipSettingsKeys.contains(settings->group())) {
             if (const auto acc = loadAccountHelper(*settings)) {
                 acc->_id = accountId;
-                if (auto accState = AccountState::loadFromSettings(acc, *settings)) {
-                    auto jar = qobject_cast<CookieJar*>(acc->_am->cookieJar());
-                    ASSERT(jar);
-                    if (jar) {
-                        jar->restore(acc->cookieJarPath());
-                    }
-                    addAccountState(accState);
+                const auto accState = new AccountState(acc);
+                const auto jar = qobject_cast<CookieJar*>(acc->_am->cookieJar());
+                Q_ASSERT(jar);
+                if (jar) {
+                    jar->restore(acc->cookieJarPath());
                 }
+                addAccountState(accState);
             }
         } else {
             qCInfo(lcAccountManager) << "Account" << accountId << "is too new, ignoring";
@@ -322,10 +342,48 @@ void AccountManager::saveAccountHelper(Account *acc, QSettings &settings, bool s
     settings.setValue(QLatin1String(serverVersionC), acc->_serverVersion);
     settings.setValue(QLatin1String(serverColorC), acc->_serverColor);
     settings.setValue(QLatin1String(serverTextColorC), acc->_serverTextColor);
+    settings.setValue(QLatin1String(serverHasValidSubscriptionC), acc->capabilities().serverHasValidSubscription());
+
     if (!acc->_skipE2eeMetadataChecksumValidation) {
         settings.remove(QLatin1String(skipE2eeMetadataChecksumValidationC));
     } else {
         settings.setValue(QLatin1String(skipE2eeMetadataChecksumValidationC), acc->_skipE2eeMetadataChecksumValidation);
+    }
+    settings.setValue(networkProxySettingC, static_cast<std::underlying_type_t<Account::AccountNetworkProxySetting>>(acc->networkProxySetting()));
+    settings.setValue(networkProxyTypeC, acc->proxyType());
+    settings.setValue(networkProxyHostNameC, acc->proxyHostName());
+    settings.setValue(networkProxyPortC, acc->proxyPort());
+    settings.setValue(networkProxyNeedsAuthC, acc->proxyNeedsAuth());
+    settings.setValue(networkProxyUserC, acc->proxyUser());
+    settings.setValue(networkUploadLimitSettingC, static_cast<std::underlying_type_t<Account::AccountNetworkTransferLimitSetting>>(acc->uploadLimitSetting()));
+    settings.setValue(networkDownloadLimitSettingC, static_cast<std::underlying_type_t<Account::AccountNetworkTransferLimitSetting>>(acc->downloadLimitSetting()));
+    settings.setValue(networkUploadLimitC, acc->uploadLimit());
+    settings.setValue(networkDownloadLimitC, acc->downloadLimit());
+
+    const auto proxyPasswordKey = QString(acc->userIdAtHostWithPort() + networkProxyPasswordKeychainKeySuffixC);
+    if (const auto proxyPassword = acc->proxyPassword(); proxyPassword.isEmpty()) {
+        const auto job = new QKeychain::DeletePasswordJob(Theme::instance()->appName(), this);
+        job->setKey(proxyPasswordKey);
+        connect(job, &QKeychain::Job::finished, this, [](const QKeychain::Job *const incomingJob) {
+            if (incomingJob->error() == QKeychain::NoError) {
+                qCInfo(lcAccountManager) << "Deleted proxy password from keychain";
+            } else {
+                qCWarning(lcAccountManager) << "Failed to delete proxy password to keychain" << incomingJob->errorString();
+            }
+        });
+        job->start();
+    } else {
+        const auto job = new QKeychain::WritePasswordJob(Theme::instance()->appName(), this);
+        job->setKey(proxyPasswordKey);
+        job->setBinaryData(proxyPassword.toUtf8());
+        connect(job, &QKeychain::Job::finished, this, [](const QKeychain::Job *const incomingJob) {
+            if (incomingJob->error() == QKeychain::NoError) {
+                qCInfo(lcAccountManager) << "Saved proxy password to keychain";
+            } else {
+                qCWarning(lcAccountManager) << "Failed to save proxy password to keychain" << incomingJob->errorString();
+            }
+        });
+        job->start();
     }
 
     if (acc->_credentials) {
@@ -448,6 +506,41 @@ AccountPtr AccountManager::loadAccountHelper(QSettings &settings)
 
     acc->setCredentials(CredentialsFactory::create(authType));
 
+    acc->setNetworkProxySetting(settings.value(networkProxySettingC).value<Account::AccountNetworkProxySetting>());
+    acc->setProxyType(settings.value(networkProxyTypeC).value<QNetworkProxy::ProxyType>());
+    acc->setProxyHostName(settings.value(networkProxyHostNameC).toString());
+    acc->setProxyPort(settings.value(networkProxyPortC).toInt());
+    acc->setProxyNeedsAuth(settings.value(networkProxyNeedsAuthC).toBool());
+    acc->setProxyUser(settings.value(networkProxyUserC).toString());
+    acc->setUploadLimitSetting(
+        settings.value(
+            networkUploadLimitSettingC,
+            QVariant::fromValue(Account::AccountNetworkTransferLimitSetting::GlobalLimit)
+        ).value<Account::AccountNetworkTransferLimitSetting>());
+    acc->setDownloadLimitSetting(
+        settings.value(
+            networkDownloadLimitSettingC,
+            QVariant::fromValue(Account::AccountNetworkTransferLimitSetting::GlobalLimit)
+        ).value<Account::AccountNetworkTransferLimitSetting>());
+    acc->setUploadLimit(settings.value(networkUploadLimitC).toInt());
+    acc->setDownloadLimit(settings.value(networkDownloadLimitC).toInt());
+
+    const auto proxyPasswordKey = QString(acc->userIdAtHostWithPort() + networkProxyPasswordKeychainKeySuffixC);
+    const auto job = new QKeychain::ReadPasswordJob(Theme::instance()->appName(), this);
+    job->setKey(proxyPasswordKey);
+    connect(job, &QKeychain::Job::finished, this, [acc](const QKeychain::Job *const incomingJob) {
+        const auto incomingReadJob = qobject_cast<const QKeychain::ReadPasswordJob *>(incomingJob);
+        if (incomingReadJob->error() == QKeychain::NoError) {
+            qCInfo(lcAccountManager) << "Read proxy password to keychain for" << acc->userIdAtHostWithPort();
+            const auto passwordData = incomingReadJob->binaryData();
+            const auto password = QString::fromUtf8(passwordData);
+            acc->setProxyPassword(password);
+        } else {
+            qCWarning(lcAccountManager) << "Failed to read proxy password to keychain" << incomingJob->errorString();
+        }
+    });
+    job->start();
+
     // now the server cert, it is in the general group
     settings.beginGroup(QLatin1String(generalC));
     const auto certs = QSslCertificate::fromData(settings.value(caCertsKeyC).toByteArray());
@@ -569,11 +662,12 @@ QString AccountManager::generateFreeAccountId() const
     }
 }
 
-void AccountManager::addAccountState(AccountState *accountState)
+void AccountManager::addAccountState(AccountState *const accountState)
 {
-    QObject::connect(accountState->account().data(),
-        &Account::wantsAccountSaved,
-        this, &AccountManager::saveAccount);
+    Q_ASSERT(accountState);
+    Q_ASSERT(accountState->account());
+
+    QObject::connect(accountState->account().data(), &Account::wantsAccountSaved, this, &AccountManager::saveAccount);
 
     AccountStatePtr ptr(accountState);
     _accounts << ptr;

@@ -42,6 +42,11 @@ private:
 private slots:
     void initTestCase()
     {
+        OCC::Logger::instance()->setLogFlush(true);
+        OCC::Logger::instance()->setLogDebug(true);
+
+        QStandardPaths::setTestModeEnabled(true);
+
         QSignalSpy helperSetupSucceeded(&helper, &ShareTestHelper::setupSucceeded);
         helper.setup();
         QCOMPARE(helperSetupSucceeded.count(), 1);

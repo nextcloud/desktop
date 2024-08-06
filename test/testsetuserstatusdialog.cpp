@@ -14,10 +14,12 @@
 
 #include "userstatusconnector.h"
 #include "userstatusselectormodel.h"
+#include "logger.h"
 
 #include <QTest>
 #include <QSignalSpy>
 #include <QDateTime>
+#include <QStandardPaths>
 
 #include <memory>
 
@@ -185,9 +187,17 @@ class TestSetUserStatusDialog : public QObject
     Q_OBJECT
 
 private slots:
+    void initTestCase()
+    {
+        OCC::Logger::instance()->setLogFlush(true);
+        OCC::Logger::instance()->setLogDebug(true);
+
+        QStandardPaths::setTestModeEnabled(true);
+    }
+
     void testCtor_fetchStatusAndPredefinedStatuses()
     {
-        const QDateTime currentDateTime(QDateTime::currentDateTime());
+        const QDateTime currentDateTime(QDateTime::currentDateTimeUtc());
 
         const QString userStatusId("fake-id");
         const QString userStatusMessage("Some status");

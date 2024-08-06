@@ -355,12 +355,13 @@ bool ProcessDirectoryJob::handleExcluded(const QString &path, const Entries &ent
                         break;
                     }
                 }
+                const auto itemTypeName = (isDirectory ? tr("Folder", "name of folder entity to use when warning about invalid name") : tr("File", "name of folder entity to use when warning about invalid name"));
                 if (invalid) {
-                    item->_errorString = tr("File names containing the character \"%1\" are not supported on this file system.").arg(QLatin1Char(invalid));
+                    item->_errorString = tr("%1 name containing the character \"%2\" is not supported on this file system.", "folder or file impossible to sync due to an invalid name, placeholders will be file or folder and the invalid character").arg(itemTypeName, QChar(invalid));
                 } else if (isInvalidPattern) {
-                    item->_errorString = tr("File name contains at least one invalid character");
+                    item->_errorString = tr("%1 name contains at least one invalid character").arg(itemTypeName);
                 } else {
-                    item->_errorString = tr("The file name is a reserved name on this file system.");
+                    item->_errorString = tr("%1 name is a reserved name on this file system.").arg(itemTypeName);
                 }
             }
             item->_status = SyncFileItem::FileNameInvalid;
@@ -402,6 +403,11 @@ bool ProcessDirectoryJob::handleExcluded(const QString &path, const Entries &ent
             item->_errorString = tr("The filename is blacklisted on the server.");
             break;
         }
+    }
+
+    if (_dirItem) {
+        _dirItem->_isAnyInvalidCharChild = _dirItem->_isAnyInvalidCharChild || item->_status == SyncFileItem::FileNameInvalid;
+        _dirItem->_isAnyCaseClashChild = _dirItem->_isAnyCaseClashChild || item->_status == SyncFileItem::FileNameClash;
     }
 
     _childIgnored = true;
@@ -447,13 +453,15 @@ void ProcessDirectoryJob::checkAndUpdateSelectiveSyncListsForE2eeFolders(const Q
 
     const auto pathWithTrailingSpace = Utility::trailingSlashPath(path);
 
-    auto blackListSet = _discoveryData->_statedb->getSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, &ok).toSet();
+    const auto blackListList = _discoveryData->_statedb->getSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, &ok);
+    auto blackListSet = QSet<QString>{blackListList.begin(), blackListList.end()};
     blackListSet.insert(pathWithTrailingSpace);
     auto blackList = blackListSet.values();
     blackList.sort();
     _discoveryData->_statedb->setSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, blackList);
 
-    auto toRemoveFromBlacklistSet = _discoveryData->_statedb->getSelectiveSyncList(SyncJournalDb::SelectiveSyncE2eFoldersToRemoveFromBlacklist, &ok).toSet();
+    const auto toRemoveFromBlacklistList = _discoveryData->_statedb->getSelectiveSyncList(SyncJournalDb::SelectiveSyncE2eFoldersToRemoveFromBlacklist, &ok);
+    auto toRemoveFromBlacklistSet = QSet<QString>{toRemoveFromBlacklistList.begin(), toRemoveFromBlacklistList.end()};
     toRemoveFromBlacklistSet.insert(pathWithTrailingSpace);
     // record it into a separate list to automatically remove from blacklist once the e2EE gets set up
     auto toRemoveFromBlacklist = toRemoveFromBlacklistSet.values();
@@ -598,7 +606,6 @@ void ProcessDirectoryJob::postProcessServerNew(const SyncFileItemPtr &item,
     if (!localEntry.isValid() &&
         item->_type == ItemTypeFile &&
         opts._vfs->mode() != Vfs::Off &&
-        !FileSystem::isLnkFile(item->_file) &&
         _pinState != PinState::AlwaysLocal &&
         !FileSystem::isExcludeFile(item->_file)) {
 
@@ -1031,7 +1038,7 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
             item->_status = SyncFileItem::Status::NormalError;
         }
 
-        {
+        if (item->_type != CSyncEnums::ItemTypeVirtualFile) {
             const auto foundEditorsKeepingFileBusy = queryEditorsKeepingFileBusy(item, path);
             if (!foundEditorsKeepingFileBusy.isEmpty()) {
                 item->_instruction = CSYNC_INSTRUCTION_ERROR;
@@ -1077,14 +1084,6 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
                 qCWarning(lcDisco) << "Failed to delete a file record from the local DB" << path._original;
             }
             return;
-        } else if (dbEntry._type == ItemTypeVirtualFile && isVfsWithSuffix()) {
-            // If the virtual file is removed, recreate it.
-            // This is a precaution since the suffix files don't look like the real ones
-            // and we don't want users to accidentally delete server data because they
-            // might not expect that deleting the placeholder will have a remote effect.
-            item->_instruction = CSYNC_INSTRUCTION_NEW;
-            item->_direction = SyncFileItem::Down;
-            item->_type = ItemTypeVirtualFile;
         } else if (!serverModified) {
             // Removed locally: also remove on the server.
             if (!dbEntry._serverHasIgnoredFiles) {
@@ -1137,7 +1136,12 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
             } else if (dbEntry._type == ItemTypeVirtualFileDehydration || localEntry.type == ItemTypeVirtualFileDehydration) {
                 item->_direction = SyncFileItem::Down;
                 item->_instruction = CSYNC_INSTRUCTION_SYNC;
-                item->_type = ItemTypeVirtualFileDehydration;
+                const auto pinState = _discoveryData->_syncOptions._vfs->pinState(path._local);
+                if (FileSystem::isLnkFile(path._local) && !_discoveryData->_syncOptions._vfs->pinState(path._local).isValid()) {
+                    item->_type = ItemTypeVirtualFileDownload;
+                } else {
+                    item->_type = ItemTypeVirtualFileDehydration;
+                }
             } else if (!serverModified
                 && (dbEntry._inode != localEntry.inode
                     || (localEntry.isMetadataMissing && item->_type == ItemTypeFile && !FileSystem::isLnkFile(item->_file))
@@ -1409,7 +1413,6 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
         item->_errorString = tr("Moved to invalid target, restoring");
     }
 
-    //
     // If it's not a move it's just a local-NEW
     if (!isMove || (isE2eeMove && !isE2eeMoveOnlineOnlyItemWithCfApi)) {
         if (base.isE2eEncrypted()) {
@@ -1419,19 +1422,6 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
             item->_e2eEncryptionServerCapability = EncryptionStatusEnums::fromEndToEndEncryptionApiVersion(_discoveryData->_account->capabilities().clientSideEncryptionVersion());
         }
         postProcessLocalNew();
-        /*if (item->isDirectory() && item->_instruction == CSYNC_INSTRUCTION_NEW && item->_direction == SyncFileItem::Up
-            && _discoveryData->_account->capabilities().clientSideEncryptionVersion() >= 2.0) {
-            OCC::SyncJournalFileRecord rec;
-            _discoveryData->_statedb->findEncryptedAncestorForRecord(item->_file, &rec);
-            if (rec.isValid() && rec._e2eEncryptionStatus >= OCC::SyncJournalFileRecord::EncryptionStatus::EncryptedMigratedV2_0) {
-                qCDebug(lcDisco) << "Attempting to create a subfolder in top-level E2EE V2 folder. Ignoring.";
-                item->_instruction = CSYNC_INSTRUCTION_IGNORE;
-                item->_direction = SyncFileItem::None;
-                item->_status = SyncFileItem::NormalError;
-                item->_errorString = tr("Creating nested encrypted folders is not supported yet.");
-            }
-        }*/
-
         finalize();
         return;
     }
@@ -1439,7 +1429,7 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
     // Check local permission if we are allowed to put move the file here
     // Technically we should use the permissions from the server, but we'll assume it is the same
     const auto serverHasMountRootProperty = _discoveryData->_account->serverHasMountRootProperty();
-    const auto isExternalStorage = base._remotePerm.hasPermission(RemotePermissions::IsMounted);
+    const auto isExternalStorage = base._remotePerm.hasPermission(RemotePermissions::IsMounted) && base.isDirectory();
     const auto movePerms = checkMovePermissions(base._remotePerm, originalPath, item->isDirectory());
     if (!movePerms.sourceOk || !movePerms.destinationOk || (serverHasMountRootProperty && isExternalStorage) || isE2eeMoveOnlineOnlyItemWithCfApi) {
         qCInfo(lcDisco) << "Move without permission to rename base file, "
@@ -1656,6 +1646,13 @@ void ProcessDirectoryJob::processFileFinalize(
     const SyncFileItemPtr &item, PathTuple path, bool recurse,
     QueryMode recurseQueryLocal, QueryMode recurseQueryServer)
 {
+    if (item->isEncrypted() && !_discoveryData->_account->capabilities().clientSideEncryptionAvailable()) {
+        item->_instruction = CSyncEnums::CSYNC_INSTRUCTION_IGNORE;
+        item->_direction = SyncFileItem::None;
+        emit _discoveryData->itemDiscovered(item);
+        return;
+    }
+
     // Adjust target path for virtual-suffix files
     if (isVfsWithSuffix()) {
         if (item->_type == ItemTypeVirtualFile) {
@@ -1673,6 +1670,13 @@ void ProcessDirectoryJob::processFileFinalize(
                 addVirtualFileSuffix(item->_renameTarget);
             }
         }
+    }
+
+    if (_discoveryData->_syncOptions._vfs &&
+        item->_type == CSyncEnums::ItemTypeFile &&
+        item->_instruction == CSyncEnums::CSYNC_INSTRUCTION_NONE &&
+        !_discoveryData->_syncOptions._vfs->isPlaceHolderInSync(_discoveryData->_localDir + path._local)) {
+        item->_instruction = CSyncEnums::CSYNC_INSTRUCTION_UPDATE_VFS_METADATA;
     }
 
     if (path._original != path._target && (item->_instruction == CSYNC_INSTRUCTION_UPDATE_METADATA || item->_instruction == CSYNC_INSTRUCTION_NONE)) {
@@ -2165,7 +2169,7 @@ bool ProcessDirectoryJob::isVfsWithSuffix() const
 void ProcessDirectoryJob::computePinState(PinState parentState)
 {
     _pinState = parentState;
-    if (_queryLocal != ParentDontExist && QFileInfo::exists(_discoveryData->_localDir + _currentFolder._local)) {
+    if (_queryLocal != ParentDontExist && FileSystem::fileExists(_discoveryData->_localDir + _currentFolder._local)) {
         if (auto state = _discoveryData->_syncOptions._vfs->pinState(_currentFolder._local)) // ouch! pin local or original?
             _pinState = *state;
     }

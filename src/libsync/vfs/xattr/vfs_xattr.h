@@ -39,6 +39,8 @@ public:
     [[nodiscard]] bool isHydrating() const override;
 
     Result<void, QString> updateMetadata(const QString &filePath, time_t modtime, qint64 size, const QByteArray &fileId) override;
+    Result<Vfs::ConvertToPlaceholderResult, QString> updatePlaceholderMarkInSync(const QString &filePath, const QByteArray &fileId) override {Q_UNUSED(filePath) Q_UNUSED(fileId) return {QString{}};}
+    [[nodiscard]] bool isPlaceHolderInSync(const QString &filePath) const override { Q_UNUSED(filePath) return true; }
 
     Result<void, QString> createPlaceholder(const SyncFileItem &item) override;
     Result<void, QString> dehydratePlaceholder(const SyncFileItem &item) override;

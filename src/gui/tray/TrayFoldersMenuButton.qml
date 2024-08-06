@@ -14,7 +14,7 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.15
-import QtGraphicalEffects 1.0
+import Qt5Compat.GraphicalEffects
 import Style 1.0
 
 HeaderButton {
@@ -124,7 +124,7 @@ HeaderButton {
                 width: imageWidth
                 height: imageHeight
 
-                anchors.verticalCenter: parent
+                anchors.verticalCenter: parent.verticalCenter
             }
 
 
@@ -146,7 +146,7 @@ HeaderButton {
                     cache: true
 
                     source: "image://svgimage-custom-color/caret-down.svg/" + Style.currentUserHeaderTextColor
-                    sourceSize: {
+                    sourceSize {
                         width: openLocalFolderButtonCaretIconLoader.imageWidth
                         height: openLocalFolderButtonCaretIconLoader.imageHeight
                     }

@@ -5,15 +5,28 @@ on:
 jobs:
   build:
     name: macOS Build and Test
-    runs-on: macos-latest
+    runs-on: macos-14
+    strategy:
+        matrix:
+          craft_options: [
+            '--options nextcloud-client.buildFileProviderModule=False',
+            '--options nextcloud-client.buildFileProviderModule=True'
+          ]
     env:
-      CRAFT_TARGET: macos-64-clang
+      CRAFT_TARGET: macos-clang-arm64
       CRAFT_MASTER_LOCATION: ${{ github.workspace }}/CraftMaster
       CRAFT_MASTER_CONFIG: ${{ github.workspace }}/craftmaster.ini
+      CRAFT_BLUEPRINT_OPTIONS: ${{ matrix.craft_options }}
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 1
+
+      - name: List Xcode installations
+        run: sudo ls -1 /Applications | grep "Xcode"
+        
+      - name: Select Xcode 15.3
+        run: sudo xcode-select -s /Applications/Xcode_15.3.app/Contents/Developer
 
       - name: Restore cache
         uses: actions/cache@v4
@@ -24,7 +37,7 @@ jobs:
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v5
         with:
-          python-version: 3.9
+          python-version: 3.12
 
       - name: Install Homebrew dependencies
         run: |
@@ -48,7 +61,7 @@ jobs:
 
       - name: Build client
         run: |
-          python "${{ env.CRAFT_MASTER_LOCATION }}/CraftMaster.py" --config "${{ env.CRAFT_MASTER_CONFIG }}" --target ${{ env.CRAFT_TARGET }} -c --src-dir ${{ github.workspace }} nextcloud-client
+          python "${{ env.CRAFT_MASTER_LOCATION }}/CraftMaster.py" --config "${{ env.CRAFT_MASTER_CONFIG }}" --target ${{ env.CRAFT_TARGET }} -c --src-dir ${{ github.workspace }} ${{ env.CRAFT_BLUEPRINT_OPTIONS }} nextcloud-client
 
       - name: Run tests
         run: |

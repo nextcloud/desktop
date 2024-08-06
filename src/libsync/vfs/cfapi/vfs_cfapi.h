@@ -43,6 +43,10 @@ public:
 
     Result<void, QString> updateMetadata(const QString &filePath, time_t modtime, qint64 size, const QByteArray &fileId) override;
 
+    Result<Vfs::ConvertToPlaceholderResult, QString> updatePlaceholderMarkInSync(const QString &filePath, const QByteArray &fileId) override;
+
+    [[nodiscard]] bool isPlaceHolderInSync(const QString &filePath) const override;
+
     Result<void, QString> createPlaceholder(const SyncFileItem &item) override;
     Result<void, QString> dehydratePlaceholder(const SyncFileItem &item) override;
     Result<Vfs::ConvertToPlaceholderResult, QString> convertToPlaceholder(const QString &filename, const SyncFileItem &item, const QString &replacesFile, UpdateMetadataTypes updateType) override;

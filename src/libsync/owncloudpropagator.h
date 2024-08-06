@@ -246,6 +246,8 @@ public:
     QVector<PropagatorJob *> _runningJobs;
     SyncFileItem::Status _hasError = SyncFileItem::NoStatus; // NoStatus,  or NormalError / SoftError if there was an error
     quint64 _abortsCount = 0;
+    bool _isAnyCaseClashChild = false;
+    bool _isAnyInvalidCharChild = false;
 
     explicit PropagatorCompositeJob(OwncloudPropagator *propagator)
         : PropagatorJob(propagator)
@@ -406,6 +408,17 @@ class PropagateIgnoreJob : public PropagateItemJob
     Q_OBJECT
 public:
     PropagateIgnoreJob(OwncloudPropagator *propagator, const SyncFileItemPtr &item)
+        : PropagateItemJob(propagator, item)
+    {
+    }
+    void start() override;
+};
+
+class PropagateVfsUpdateMetadataJob : public PropagateItemJob
+{
+    Q_OBJECT
+public:
+    PropagateVfsUpdateMetadataJob(OwncloudPropagator *propagator, const SyncFileItemPtr &item)
         : PropagateItemJob(propagator, item)
     {
     }

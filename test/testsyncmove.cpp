@@ -18,19 +18,26 @@ struct OperationCounter {
     int nPUT = 0;
     int nMOVE = 0;
     int nDELETE = 0;
+    int nPROPFIND = 0;
+    int nMKCOL = 0;
 
     void reset() { *this = {}; }
 
     auto functor() {
         return [&](QNetworkAccessManager::Operation op, const QNetworkRequest &req, QIODevice *) {
-            if (op == QNetworkAccessManager::GetOperation)
+            if (op == QNetworkAccessManager::GetOperation) {
                 ++nGET;
-            if (op == QNetworkAccessManager::PutOperation)
+            } else if (op == QNetworkAccessManager::PutOperation) {
                 ++nPUT;
-            if (op == QNetworkAccessManager::DeleteOperation)
+            } else if (op == QNetworkAccessManager::DeleteOperation) {
                 ++nDELETE;
-            if (req.attribute(QNetworkRequest::CustomVerbAttribute) == "MOVE")
+            } else if (req.attribute(QNetworkRequest::CustomVerbAttribute).toString() == "MOVE") {
                 ++nMOVE;
+            } else if (req.attribute(QNetworkRequest::CustomVerbAttribute).toString() == "PROPFIND") {
+                ++nPROPFIND;
+            } else if (req.attribute(QNetworkRequest::CustomVerbAttribute).toString() == "MKCOL") {
+                ++nMKCOL;
+            }
             return nullptr;
         };
     }
@@ -79,6 +86,13 @@ bool expectAndWipeConflict(FileModifier &local, FileInfo state, const QString pa
     return false;
 }
 
+static void setAllPerm(FileInfo *fi, OCC::RemotePermissions perm)
+{
+    fi->permissions = perm;
+    for (auto &subFi : fi->children)
+        setAllPerm(&subFi, perm);
+}
+
 class TestSyncMove : public QObject
 {
     Q_OBJECT
@@ -88,6 +102,8 @@ private slots:
     {
         Logger::instance()->setLogFlush(true);
         Logger::instance()->setLogDebug(true);
+
+        QStandardPaths::setTestModeEnabled(true);
     }
 
     void testMoveCustomRemoteRoot()
@@ -302,6 +318,45 @@ private slots:
         QCOMPARE(nDELETE, 5);
         QCOMPARE(fakeFolder.currentLocalState(), remoteInfo);
         QCOMPARE(printDbData(fakeFolder.dbState()), printDbData(remoteInfo));
+    }
+
+    void testLocalExternalStorageRenameDetection()
+    {
+        FakeFolder fakeFolder{{}};
+        fakeFolder.remoteModifier().mkdir("external-storage");
+        auto externalStorage = fakeFolder.remoteModifier().find("external-storage");
+        externalStorage->extraDavProperties = "<nc:is-mount-root>true</nc:is-mount-root>";
+        setAllPerm(externalStorage, RemotePermissions::fromServerString("WDNVCKRM"));
+        QVERIFY(fakeFolder.syncOnce());
+
+        OperationCounter operationCounter;
+        fakeFolder.setServerOverride(operationCounter.functor());
+
+        fakeFolder.localModifier().insert("external-storage/file", 100);
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        QCOMPARE(printDbData(fakeFolder.dbState()), printDbData(fakeFolder.remoteModifier()));
+        QCOMPARE(operationCounter.nPUT, 1);
+
+        const auto firstFileId = fakeFolder.remoteModifier().find("external-storage/file")->fileId;
+
+        fakeFolder.localModifier().rename("external-storage/file", "external-storage/file2");
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(operationCounter.nMOVE, 1);
+
+        fakeFolder.localModifier().rename("external-storage/file2", "external-storage/file3");
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(operationCounter.nMOVE, 2);
+
+        const auto renamedFileId = fakeFolder.remoteModifier().find("external-storage/file3")->fileId;
+
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        QCOMPARE(printDbData(fakeFolder.dbState()), printDbData(fakeFolder.remoteModifier()));
+
+        QCOMPARE(fakeFolder.remoteModifier().find("external-storage/file"), nullptr);
+        QCOMPARE(fakeFolder.remoteModifier().find("external-storage/file2"), nullptr);
+        QVERIFY(fakeFolder.remoteModifier().find("external-storage/file3"));
+        QCOMPARE(firstFileId, renamedFileId);
     }
 
     void testDuplicateFileId_data()
@@ -1122,6 +1177,81 @@ private slots:
         QVERIFY(fakeFolder.syncOnce());
 
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+    }
+
+    void testBlockRenameTopFolderFromGroupFolder()
+    {
+        FakeFolder fakeFolder{{}};
+        fakeFolder.syncEngine().account()->setServerVersion("29.0.2.0");
+
+        fakeFolder.remoteModifier().mkdir("FolA");
+        auto groupFolderRoot = fakeFolder.remoteModifier().find("FolA");
+        groupFolderRoot->extraDavProperties = "<nc:is-mount-root>true</nc:is-mount-root>";
+        setAllPerm(groupFolderRoot, RemotePermissions::fromServerString("WDNVCKRM"));
+        fakeFolder.remoteModifier().mkdir("FolA/FolB");
+        fakeFolder.remoteModifier().mkdir("FolA/FolB/FolC");
+        fakeFolder.remoteModifier().mkdir("FolA/FolB/FolC/FolD");
+        fakeFolder.remoteModifier().mkdir("FolA/FolB/FolC/FolD/FolE");
+        fakeFolder.remoteModifier().insert("FolA/FileA.txt");
+        fakeFolder.remoteModifier().insert("FolA/FolB/FileB.txt");
+        fakeFolder.remoteModifier().insert("FolA/FolB/FolC/FileC.txt");
+        fakeFolder.remoteModifier().insert("FolA/FolB/FolC/FolD/FileD.txt");
+        fakeFolder.remoteModifier().insert("FolA/FolB/FolC/FolD/FolE/FileE.txt");
+        QVERIFY(fakeFolder.syncOnce());
+
+        OperationCounter counter;
+        fakeFolder.setServerOverride(counter.functor());
+
+        fakeFolder.localModifier().insert("FolA/FileA2.txt");
+        fakeFolder.localModifier().insert("FolA/FolB/FileB2.txt");
+        fakeFolder.localModifier().insert("FolA/FolB/FolC/FileC2.txt");
+        fakeFolder.localModifier().insert("FolA/FolB/FolC/FolD/FileD2.txt");
+        fakeFolder.localModifier().insert("FolA/FolB/FolC/FolD/FolE/FileE2.txt");
+        fakeFolder.localModifier().rename("FolA", "FolA_Renamed");
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(counter.nDELETE, 0);
+        QCOMPARE(counter.nGET, 0);
+        QCOMPARE(counter.nPUT, 10);
+        QCOMPARE(counter.nMOVE, 0);
+        QCOMPARE(counter.nMKCOL, 5);
+    }
+
+    void testAllowRenameChildFolderFromGroupFolder()
+    {
+        FakeFolder fakeFolder{{}};
+        fakeFolder.syncEngine().account()->setServerVersion("29.0.2.0");
+
+        fakeFolder.remoteModifier().mkdir("FolA");
+        auto groupFolderRoot = fakeFolder.remoteModifier().find("FolA");
+        groupFolderRoot->extraDavProperties = "<nc:is-mount-root>true</nc:is-mount-root>";
+        setAllPerm(groupFolderRoot, RemotePermissions::fromServerString("WDNVCKRM"));
+        fakeFolder.remoteModifier().mkdir("FolA/FolB");
+        fakeFolder.remoteModifier().mkdir("FolA/FolB/FolC");
+        fakeFolder.remoteModifier().mkdir("FolA/FolB/FolC/FolD");
+        fakeFolder.remoteModifier().mkdir("FolA/FolB/FolC/FolD/FolE");
+        fakeFolder.remoteModifier().insert("FolA/FileA.txt");
+        fakeFolder.remoteModifier().insert("FolA/FolB/FileB.txt");
+        fakeFolder.remoteModifier().insert("FolA/FolB/FolC/FileC.txt");
+        fakeFolder.remoteModifier().insert("FolA/FolB/FolC/FolD/FileD.txt");
+        fakeFolder.remoteModifier().insert("FolA/FolB/FolC/FolD/FolE/FileE.txt");
+        QVERIFY(fakeFolder.syncOnce());
+
+        OperationCounter counter;
+        fakeFolder.setServerOverride(counter.functor());
+
+        fakeFolder.localModifier().insert("FolA/FileA2.txt");
+        fakeFolder.localModifier().insert("FolA/FolB/FileB2.txt");
+        fakeFolder.localModifier().insert("FolA/FolB/FolC/FileC2.txt");
+        fakeFolder.localModifier().insert("FolA/FolB/FolC/FolD/FileD2.txt");
+        fakeFolder.localModifier().insert("FolA/FolB/FolC/FolD/FolE/FileE2.txt");
+        fakeFolder.localModifier().rename("FolA/FolB", "FolA/FolB_Renamed");
+        fakeFolder.localModifier().rename("FolA/FileA.txt", "FolA/FileA_Renamed.txt");
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(counter.nDELETE, 0);
+        QCOMPARE(counter.nGET, 0);
+        QCOMPARE(counter.nPUT, 5);
+        QCOMPARE(counter.nMOVE, 2);
+        QCOMPARE(counter.nMKCOL, 0);
     }
 };
 

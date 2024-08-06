@@ -32,6 +32,11 @@ class TestClientSideEncryptionV2 : public QObject
 private slots:
     void initTestCase()
     {
+        OCC::Logger::instance()->setLogFlush(true);
+        OCC::Logger::instance()->setLogDebug(true);
+
+        QStandardPaths::setTestModeEnabled(true);
+
         QVariantMap fakeCapabilities;
         fakeCapabilities[QStringLiteral("end-to-end-encryption")] = QVariantMap{
             {QStringLiteral("enabled"), true},

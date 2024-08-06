@@ -13,6 +13,7 @@
  */
 
 import QtQuick 2.6
+import QtQuick.Dialogs
 import QtQuick.Layouts 1.15
 import QtQuick.Controls 2.15
 import QtQuick.Window 2.15
@@ -53,36 +54,36 @@ ColumnLayout {
             }
 
             UserStatusSelectorButton {
-                checked: userStatusSelectorModel.onlineStatus === NC.UserStatus.Online
+                checked: userStatusSelectorModel.onlineStatus === NC.userStatus.Online
                 checkable: true
                 icon.source: userStatusSelectorModel.onlineIcon
                 icon.color: "transparent"
                 text: qsTr("Online")
-                onClicked: userStatusSelectorModel.onlineStatus = NC.UserStatus.Online
+                onClicked: userStatusSelectorModel.onlineStatus = NC.userStatus.Online
 
                 Layout.fillWidth: true
                 implicitWidth: 200 // Pretty much a hack to ensure all the buttons are equal in width
             }
             UserStatusSelectorButton {
-                checked: userStatusSelectorModel.onlineStatus === NC.UserStatus.Away
+                checked: userStatusSelectorModel.onlineStatus === NC.userStatus.Away
                 checkable: true
                 icon.source: userStatusSelectorModel.awayIcon
                 icon.color: "transparent"
                 text: qsTr("Away")
-                onClicked: userStatusSelectorModel.onlineStatus = NC.UserStatus.Away
+                onClicked: userStatusSelectorModel.onlineStatus = NC.userStatus.Away
 
                 Layout.fillWidth: true
                 implicitWidth: 200 // Pretty much a hack to ensure all the buttons are equal in width
 
             }
             UserStatusSelectorButton {
-                checked: userStatusSelectorModel.onlineStatus === NC.UserStatus.DoNotDisturb
+                checked: userStatusSelectorModel.onlineStatus === NC.userStatus.DoNotDisturb
                 checkable: true
                 icon.source: userStatusSelectorModel.dndIcon
                 icon.color: "transparent"
                 text: qsTr("Do not disturb")
                 secondaryText: qsTr("Mute all notifications")
-                onClicked: userStatusSelectorModel.onlineStatus = NC.UserStatus.DoNotDisturb
+                onClicked: userStatusSelectorModel.onlineStatus = NC.userStatus.DoNotDisturb
 
                 Layout.fillWidth: true
                 implicitWidth: 200 // Pretty much a hack to ensure all the buttons are equal in width
@@ -91,14 +92,14 @@ ColumnLayout {
                 Component.onCompleted: topButtonsLayout.updateMaxButtonHeight(implicitHeight)
             }
             UserStatusSelectorButton {
-                checked: userStatusSelectorModel.onlineStatus === NC.UserStatus.Invisible ||
-                         userStatusSelectorModel.onlineStatus === NC.UserStatus.Offline
+                checked: userStatusSelectorModel.onlineStatus === NC.userStatus.Invisible ||
+                         userStatusSelectorModel.onlineStatus === NC.userStatus.Offline
                 checkable: true
                 icon.source: userStatusSelectorModel.invisibleIcon
                 icon.color: "transparent"
                 text: qsTr("Invisible")
                 secondaryText: qsTr("Appear offline")
-                onClicked: userStatusSelectorModel.onlineStatus = NC.UserStatus.Invisible
+                onClicked: userStatusSelectorModel.onlineStatus = NC.userStatus.Invisible
 
                 Layout.fillWidth: true
                 implicitWidth: 200 // Pretty much a hack to ensure all the buttons are equal in width

@@ -21,6 +21,7 @@ using namespace OCC;
 
 SyncOptions::SyncOptions()
     : _vfs(new VfsOff)
+    , _isCmd(false)
 {
 }
 
@@ -90,4 +91,14 @@ void SyncOptions::setPathPattern(const QString &pattern)
 {
     _fileRegex.setPatternOptions(Utility::fsCasePreserving() ? QRegularExpression::CaseInsensitiveOption : QRegularExpression::NoPatternOption);
     _fileRegex.setPattern(pattern);
+}
+
+void SyncOptions::setIsCmd(const bool isCmd)
+{
+    _isCmd = isCmd;
+}
+
+bool SyncOptions::isCmd() const
+{
+    return _isCmd;
 }

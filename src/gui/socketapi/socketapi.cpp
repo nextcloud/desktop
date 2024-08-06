@@ -300,7 +300,7 @@ SocketApi::SocketApi(QObject *parent)
             qCDebug(lcSocketApi) << "creating" << info.dir().path() << result;
             if (result) {
                 QFile::setPermissions(socketPath,
-                    QFile::Permissions(QFile::ReadOwner + QFile::WriteOwner + QFile::ExeOwner));
+                    QFile::Permissions(QFile::ReadOwner | QFile::WriteOwner | QFile::ExeOwner));
             }
         }
     }
@@ -384,7 +384,7 @@ void SocketApi::slotReadSocket()
         const QString line = QString::fromUtf8(socket->readLine().trimmed()).normalized(QString::NormalizationForm_C);
         qCDebug(lcSocketApi) << "Received SocketAPI message <--" << line << "from" << socket;
         const int argPos = line.indexOf(QLatin1Char(':'));
-        const QByteArray command = line.midRef(0, argPos).toUtf8().toUpper();
+        const QByteArray command = line.mid(0, argPos).toUtf8().toUpper();
         const int indexOfMethod = [&] {
             QByteArray functionWithArguments = QByteArrayLiteral("command_");
             if (command.startsWith("ASYNC_")) {
@@ -394,7 +394,7 @@ void SocketApi::slotReadSocket()
             } else {
                 functionWithArguments += command + QByteArrayLiteral("(QString,SocketListener*)");
             }
-            Q_ASSERT(staticQtMetaObject.normalizedSignature(functionWithArguments) == functionWithArguments);
+            Q_ASSERT(staticMetaObject.normalizedSignature(functionWithArguments) == functionWithArguments);
             const auto out = staticMetaObject.indexOfMethod(functionWithArguments);
             if (out == -1) {
                 listener->sendError(QStringLiteral("Function %1 not found").arg(QString::fromUtf8(functionWithArguments)));
@@ -403,7 +403,7 @@ void SocketApi::slotReadSocket()
             return out;
         }();
 
-        const auto argument = argPos != -1 ? line.midRef(argPos + 1) : QStringRef();
+        const auto argument = argPos != -1 ? line.mid(argPos + 1) : QStringView();
         if (command.startsWith("ASYNC_")) {
             auto arguments = argument.split('|');
             if (arguments.size() != 2) {
@@ -1058,8 +1058,8 @@ void SocketApi::command_MOVE_ITEM(const QString &localFile, SocketListener *)
     // If the parent doesn't accept new files, go to the root of the sync folder
     QFileInfo fileInfo(localFile);
     const auto parentRecord = parentDir.journalRecord();
-    if ((fileInfo.isFile() && !parentRecord._remotePerm.hasPermission(RemotePermissions::CanAddFile))
-        || (fileInfo.isDir() && !parentRecord._remotePerm.hasPermission(RemotePermissions::CanAddSubDirectories))) {
+    if ((FileSystem::isFile(localFile) && !parentRecord._remotePerm.hasPermission(RemotePermissions::CanAddFile))
+        || (FileSystem::isDir(localFile) && !parentRecord._remotePerm.hasPermission(RemotePermissions::CanAddSubDirectories))) {
         defaultDirAndName = QFileInfo(defaultDirAndName).fileName();
     }
 
@@ -1234,7 +1234,7 @@ void SocketApi::sendEncryptFolderCommandMenuEntries(const QFileInfo &fileInfo,
             !fileData.folder->accountState() ||
             !fileData.folder->accountState()->account() ||
             !fileData.folder->accountState()->account()->capabilities().clientSideEncryptionAvailable() ||
-            !fileInfo.isDir() ||
+            !FileSystem::isDir(fileInfo.absoluteFilePath()) ||
             isE2eEncryptedPath) {
         return;
     }
@@ -1262,7 +1262,7 @@ void SocketApi::sendLockFileCommandMenuEntries(const QFileInfo &fileInfo,
                                                const FileData &fileData,
                                                const OCC::SocketListener* const listener) const
 {
-    if (!fileInfo.isDir() && syncFolder->accountState()->account()->capabilities().filesLockAvailable()) {
+    if (!FileSystem::isDir(fileInfo.absoluteFilePath()) && syncFolder->accountState()->account()->capabilities().filesLockAvailable()) {
         if (syncFolder->accountState()->account()->fileLockStatus(syncFolder->journalDb(), fileData.folderRelativePath) == SyncFileItem::LockStatus::UnlockedItem) {
             listener->sendMessage(QLatin1String("MENU_ITEM:LOCK_FILE::") + tr("Lock file"));
         } else {
@@ -1280,7 +1280,7 @@ void SocketApi::sendLockFileInfoMenuEntries(const QFileInfo &fileInfo,
                                             const SyncJournalFileRecord &record) const
 {
     static constexpr auto SECONDS_PER_MINUTE = 60;
-    if (!fileInfo.isDir() && syncFolder->accountState()->account()->capabilities().filesLockAvailable() &&
+    if (!FileSystem::isDir(fileInfo.absoluteFilePath()) && syncFolder->accountState()->account()->capabilities().filesLockAvailable() &&
             syncFolder->accountState()->account()->fileLockStatus(syncFolder->journalDb(), fileData.folderRelativePath) == SyncFileItem::LockStatus::LockedItem) {
         listener->sendMessage(QLatin1String("MENU_ITEM:LOCKED_FILE_OWNER:d:") + tr("Locked by %1").arg(record._lockstate._lockOwnerDisplayName));
         const auto lockExpirationTime = record._lockstate._lockTime + record._lockstate._lockTimeout;
@@ -1381,14 +1381,14 @@ void SocketApi::command_GET_MENU_ITEMS(const QString &argument, OCC::SocketListe
         const QFileInfo fileInfo(fileData.localPath);
         sendLockFileInfoMenuEntries(fileInfo, syncFolder, fileData, listener, record);
 
-        if (!fileInfo.isDir()) {
+        if (!FileSystem::isDir(fileData.localPath)) {
             listener->sendMessage(QLatin1String("MENU_ITEM:ACTIVITY") + flagString + tr("Activity"));
         }
 
         DirectEditor* editor = getDirectEditorForLocalFile(fileData.localPath);
         if (editor) {
             //listener->sendMessage(QLatin1String("MENU_ITEM:EDIT") + flagString + tr("Edit via ") + editor->name());
-            listener->sendMessage(QLatin1String("MENU_ITEM:EDIT") + flagString + tr("Edit"));
+            listener->sendMessage(QLatin1String("MENU_ITEM:EDIT") + flagString + tr("Open in browser"));
         } else {
             listener->sendMessage(QLatin1String("MENU_ITEM:OPEN_PRIVATE_LINK") + flagString + tr("Open in browser"));
         }

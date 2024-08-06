@@ -16,9 +16,10 @@ import FileProvider
 import Foundation
 import NCDesktopClientSocketKit
 import NextcloudKit
+import NextcloudFileProviderKit
 import OSLog
 
-extension FileProviderExtension: NSFileProviderServicing {
+extension FileProviderExtension: NSFileProviderServicing, ChangeNotificationInterface {
     /*
      This FileProviderExtension extension contains everything needed to communicate with the client.
      We have two systems for communicating between the extensions and the client.
@@ -39,7 +40,8 @@ extension FileProviderExtension: NSFileProviderServicing {
     ) -> Progress {
         Logger.desktopClientConnection.debug("Serving supported service sources")
         let clientCommService = ClientCommunicationService(fpExtension: self)
-        let services = [clientCommService]
+        let fpuiExtService = FPUIExtensionServiceSource(fpExtension: self)
+        let services: [NSFileProviderServiceSource] = [clientCommService, fpuiExtService]
         completionHandler(services, nil)
         let progress = Progress()
         progress.cancellationHandler = {
@@ -78,6 +80,17 @@ extension FileProviderExtension: NSFileProviderServicing {
             "Signalling enumerators for user \(self.ncAccount!.username) at server \(self.ncAccount!.serverUrl, privacy: .public)"
         )
 
+        notifyChange()
+    }
+
+    func notifyChange() {
+        guard let fpManager = NSFileProviderManager(for: domain) else {
+            Logger.fileProviderExtension.error(
+                "Could not get file provider manager for domain \(self.domain.displayName, privacy: .public), cannot notify changes"
+            )
+            return
+        }
+
         fpManager.signalEnumerator(for: .workingSet) { error in
             if error != nil {
                 Logger.fileProviderExtension.error(
@@ -88,17 +101,23 @@ extension FileProviderExtension: NSFileProviderServicing {
     }
 
     @objc func setupDomainAccount(user: String, serverUrl: String, password: String) {
-        let newNcAccount = NextcloudAccount(user: user, serverUrl: serverUrl, password: password)
+        let newNcAccount = Account(user: user, serverUrl: serverUrl, password: password)
         guard newNcAccount != ncAccount else { return }
         ncAccount = newNcAccount
         ncKit.setup(
-            user: ncAccount!.username,
-            userId: ncAccount!.username,
-            password: ncAccount!.password,
-            urlBase: ncAccount!.serverUrl,
+            account: newNcAccount.ncKitAccount,
+            user: newNcAccount.username,
+            userId: newNcAccount.username,
+            password: newNcAccount.password,
+            urlBase: newNcAccount.serverUrl,
             userAgent: "Nextcloud-macOS/FileProviderExt",
             nextcloudVersion: 25,
             delegate: nil) // TODO: add delegate methods for self
+
+        changeObserver = RemoteChangeObserver(
+            remoteInterface: ncKit, changeNotificationInterface: self, domain: domain
+        )
+        ncKit.setup(delegate: changeObserver)
 
         Logger.fileProviderExtension.info(
             "Nextcloud account set up in File Provider extension for user: \(user, privacy: .public) at server: \(serverUrl, privacy: .public)"
@@ -112,5 +131,30 @@ extension FileProviderExtension: NSFileProviderServicing {
             "Received instruction to remove account data for user \(self.ncAccount!.username, privacy: .public) at server \(self.ncAccount!.serverUrl, privacy: .public)"
         )
         ncAccount = nil
+    }
+
+    func updatedSyncStateReporting(oldActions: Set<UUID>) {
+        actionsLock.lock()
+
+        guard oldActions.isEmpty != syncActions.isEmpty else {
+            actionsLock.unlock()
+            return
+        }
+
+        let command = "FILE_PROVIDER_DOMAIN_SYNC_STATE_CHANGE"
+        var argument: String?
+        if oldActions.isEmpty, !syncActions.isEmpty {
+            argument = "SYNC_STARTED"
+        } else if !oldActions.isEmpty, syncActions.isEmpty {
+            argument = errorActions.isEmpty ? "SYNC_FINISHED" : "SYNC_FAILED"
+            errorActions = []
+        }
+        
+        actionsLock.unlock()
+
+        guard let argument else { return }
+        Logger.fileProviderExtension.debug("Reporting sync \(argument)")
+        let message = command + ":" + argument + "\n"
+        socketClient?.sendMessage(message)
     }
 }

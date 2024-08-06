@@ -159,8 +159,13 @@ void FileInfo::remove(const QString &relativePath)
     const PathComponents pathComponents { relativePath };
     FileInfo *parent = findInvalidatingEtags(pathComponents.parentDirComponents());
     Q_ASSERT(parent);
-    parent->children.erase(std::find_if(parent->children.begin(), parent->children.end(),
-        [&pathComponents](const FileInfo &fi) { return fi.name == pathComponents.fileName(); }));
+    auto childrenIt = std::find_if(parent->children.begin(), parent->children.end(),
+                                   [&pathComponents](const FileInfo &fi) {
+                                       return fi.name == pathComponents.fileName();
+                                   });
+    if (childrenIt != parent->children.end()) {
+        parent->children.erase(childrenIt);
+    }
 }
 
 void FileInfo::insert(const QString &relativePath, qint64 size, char contentChar)
@@ -256,6 +261,21 @@ FileInfo *FileInfo::find(PathComponents pathComponents, const bool invalidateEta
         return file;
     }
     return nullptr;
+}
+
+FileInfo FileInfo::findRecursive(PathComponents pathComponents, const bool invalidateEtags)
+{
+    auto result = find({pathComponents.takeFirst()}, invalidateEtags);
+    if (!result) {
+        return *result;
+    }
+    for (const auto &pathComponent : pathComponents) {
+        if (!result) {
+            break;
+        }
+        result = result->find({pathComponent});
+    }
+    return *result;
 }
 
 FileInfo *FileInfo::createDir(const QString &relativePath)
@@ -1061,7 +1081,7 @@ QNetworkReply *FakeQNAM::createRequest(QNetworkAccessManager::Operation op, cons
         const bool isUpload = newRequest.url().path().startsWith(sUploadUrl.path());
         FileInfo &info = isUpload ? _uploadFileInfo : _remoteRootFileInfo;
 
-        auto verb = newRequest.attribute(QNetworkRequest::CustomVerbAttribute);
+        auto verb = newRequest.attribute(QNetworkRequest::CustomVerbAttribute).toString();
         if (verb == QLatin1String("PROPFIND")) {
             // Ignore outgoingData always returning something good enough, works for now.
             reply = new FakePropfindReply { info, op, newRequest, this };
@@ -1344,7 +1364,7 @@ FakeFileLockReply::FakeFileLockReply(FileInfo &remoteRootFileInfo,
                                      QObject *parent)
     : FakePropfindReply(remoteRootFileInfo, op, request, parent)
 {
-    const auto verb = request.attribute(QNetworkRequest::CustomVerbAttribute);
+    const auto verb = request.attribute(QNetworkRequest::CustomVerbAttribute).toString();
 
     setRequest(request);
     setUrl(request.url());

@@ -52,8 +52,11 @@ QString FileSystem::longWinPath(const QString &inpath)
 
 void FileSystem::setFileHidden(const QString &filename, bool hidden)
 {
+    if (filename.isEmpty()) {
+        return;
+    }
 #ifdef _WIN32
-    QString fName = longWinPath(filename);
+    const QString fName = longWinPath(filename);
     DWORD dwAttrs = 0;
 
     dwAttrs = GetFileAttributesW((wchar_t *)fName.utf16());
@@ -69,6 +72,24 @@ void FileSystem::setFileHidden(const QString &filename, bool hidden)
     Q_UNUSED(filename);
     Q_UNUSED(hidden);
 #endif
+}
+
+bool FileSystem::isFileHidden(const QString &filename)
+{
+#ifdef _WIN32
+    if (isLnkFile(filename)) {
+        const QString fName = longWinPath(filename);
+        DWORD dwAttrs = 0;
+
+        dwAttrs = GetFileAttributesW((wchar_t *)fName.utf16());
+
+        if (dwAttrs == INVALID_FILE_ATTRIBUTES) {
+            return false;
+        }
+        return dwAttrs & FILE_ATTRIBUTE_HIDDEN;
+    }
+#endif
+    return QFileInfo(filename).isHidden();
 }
 
 static QFile::Permissions getDefaultWritePermissions()
@@ -89,11 +110,27 @@ static QFile::Permissions getDefaultWritePermissions()
 
 void FileSystem::setFileReadOnly(const QString &filename, bool readonly)
 {
+#ifdef  Q_OS_WIN
+    if (isLnkFile(filename)) {
+        if (!fileExists(filename)) {
+            return;
+        }
+        const auto permissions = filePermissionsWin(filename);
+
+        std::filesystem::perms allWritePermissions = std::filesystem::perms::_All_write;
+        static std::filesystem::perms defaultWritePermissions = std::filesystem::perms::others_write;
+
+        std::filesystem::permissions(filename.toStdString(), allWritePermissions, std::filesystem::perm_options::remove);
+
+        if (!readonly) {
+            std::filesystem::permissions(filename.toStdString(), defaultWritePermissions, std::filesystem::perm_options::add);
+        }
+    }
+#endif
     QFile file(filename);
     QFile::Permissions permissions = file.permissions();
 
-    QFile::Permissions allWritePermissions =
-        QFile::WriteUser | QFile::WriteGroup | QFile::WriteOther | QFile::WriteOwner;
+    QFile::Permissions allWritePermissions = QFile::WriteUser | QFile::WriteGroup | QFile::WriteOther | QFile::WriteOwner;
     static QFile::Permissions defaultWritePermissions = getDefaultWritePermissions();
 
     permissions &= ~allWritePermissions;
@@ -116,6 +153,18 @@ void FileSystem::setFolderMinimumPermissions(const QString &filename)
 
 bool FileSystem::setFileReadOnlyWeak(const QString &filename, bool readonly)
 {
+#ifdef Q_OS_WIN
+    if (isLnkFile(filename)) {
+        const auto permissions = filePermissionsWin(filename);
+
+        if (!readonly && static_cast<bool>((permissions & std::filesystem::perms::owner_write))) {
+            return false; // already writable enough
+        }
+
+        setFileReadOnly(filename, readonly);
+        return true;
+    }
+#endif
     QFile file(filename);
     QFile::Permissions permissions = file.permissions();
 
@@ -193,7 +242,7 @@ bool FileSystem::uncheckedRenameReplace(const QString &originFileName,
 
 #else //Q_OS_WIN
     // You can not overwrite a read-only file on windows.
-    if (!QFileInfo(destinationFileName).isWritable()) {
+    if (!isWritable(destinationFileName)) {
         setFileReadOnly(destinationFileName, false);
     }
 
@@ -289,11 +338,24 @@ bool FileSystem::openAndSeekFileSharedRead(QFile *file, QString *errorOrNull, qi
 }
 
 #ifdef Q_OS_WIN
+std::filesystem::perms FileSystem::filePermissionsWin(const QString &filename)
+{
+    return std::filesystem::status(filename.toStdString()).permissions();
+}
+
+void FileSystem::setFilePermissionsWin(const QString &filename, const std::filesystem::perms &perms)
+{
+    if (!fileExists(filename)) {
+        return;
+    }
+    std::filesystem::permissions(filename.toStdString(), perms);
+}
+
 static bool fileExistsWin(const QString &filename)
 {
     WIN32_FIND_DATA FindFileData;
     HANDLE hFind = nullptr;
-    QString fName = FileSystem::longWinPath(filename);
+    const QString fName = FileSystem::longWinPath(filename);
 
     hFind = FindFirstFileW((wchar_t *)fName.utf16(), &FindFileData);
     if (hFind == INVALID_HANDLE_VALUE) {
@@ -301,6 +363,25 @@ static bool fileExistsWin(const QString &filename)
     }
     FindClose(hFind);
     return true;
+}
+
+static bool isDirWin(const QString &filename)
+{
+    WIN32_FIND_DATA FindFileData;
+    HANDLE hFind = nullptr;
+    const QString fName = FileSystem::longWinPath(filename);
+
+    hFind = FindFirstFileW((wchar_t *)fName.utf16(), &FindFileData);
+    if (hFind == INVALID_HANDLE_VALUE) {
+        return false;
+    }
+    FindClose(hFind);
+    return FindFileData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY;
+}
+
+static bool isFileWin(const QString &filename)
+{
+    return !isDirWin(filename);
 }
 #endif
 
@@ -319,6 +400,100 @@ bool FileSystem::fileExists(const QString &filename, const QFileInfo &fileInfo)
     if (fileInfo.filePath() != filename) {
         QFileInfo myFI(filename);
         re = myFI.exists();
+    }
+    return re;
+}
+
+bool FileSystem::isDir(const QString &filename, const QFileInfo &fileInfo)
+{
+#ifdef Q_OS_WIN
+    if (isLnkFile(filename)) {
+        // Use a native check.
+        return isDirWin(filename);
+    }
+#endif
+    bool re = fileInfo.isDir();
+    // if the filename is different from the filename in fileInfo, the fileInfo is
+    // not valid. There needs to be one initialised here. Otherwise the incoming
+    // fileInfo is re-used.
+    if (fileInfo.filePath() != filename) {
+        QFileInfo myFI(filename);
+        re = myFI.isDir();
+    }
+    return re;
+}
+
+bool FileSystem::isFile(const QString &filename, const QFileInfo &fileInfo)
+{
+#ifdef Q_OS_WIN
+    if (isLnkFile(filename)) {
+        // Use a native check.
+        return isFileWin(filename);
+    }
+#endif
+    bool re = fileInfo.isDir();
+    // if the filename is different from the filename in fileInfo, the fileInfo is
+    // not valid. There needs to be one initialised here. Otherwise the incoming
+    // fileInfo is re-used.
+    if (fileInfo.filePath() != filename) {
+        QFileInfo myFI(filename);
+        re = myFI.isFile();
+    }
+    return re;
+}
+
+bool FileSystem::isWritable(const QString &filename, const QFileInfo &fileInfo)
+{
+#ifdef Q_OS_WIN
+    if (isLnkFile(filename)) {
+        const auto permissions = filePermissionsWin(filename);
+        return static_cast<bool>((permissions & std::filesystem::perms::owner_write));
+    }
+#endif
+    bool re = fileInfo.isWritable();
+    // if the filename is different from the filename in fileInfo, the fileInfo is
+    // not valid. There needs to be one initialised here. Otherwise the incoming
+    // fileInfo is re-used.
+    if (fileInfo.filePath() != filename) {
+        QFileInfo myFI(filename);
+        re = myFI.isWritable();
+    }
+    return re;
+}
+
+bool FileSystem::isReadable(const QString &filename, const QFileInfo &fileInfo)
+{
+#ifdef Q_OS_WIN
+    if (isLnkFile(filename)) {
+        const auto permissions = filePermissionsWin(filename);
+        return static_cast<bool>((permissions & std::filesystem::perms::owner_read));
+    }
+#endif
+    bool re = fileInfo.isReadable();
+    // if the filename is different from the filename in fileInfo, the fileInfo is
+    // not valid. There needs to be one initialised here. Otherwise the incoming
+    // fileInfo is re-used.
+    if (fileInfo.filePath() != filename) {
+        QFileInfo myFI(filename);
+        re = myFI.isReadable();
+    }
+    return re;
+}
+
+bool FileSystem::isSymLink(const QString &filename, const QFileInfo &fileInfo)
+{
+#ifdef Q_OS_WIN
+    if (isLnkFile(filename)) {
+        return isJunction(filename);
+    }
+#endif
+    bool re = fileInfo.isSymLink();
+    // if the filename is different from the filename in fileInfo, the fileInfo is
+    // not valid. There needs to be one initialised here. Otherwise the incoming
+    // fileInfo is re-used.
+    if (fileInfo.filePath() != filename) {
+        QFileInfo myFI(filename);
+        re = myFI.isSymLink();
     }
     return re;
 }
@@ -351,7 +526,7 @@ bool FileSystem::remove(const QString &fileName, QString *errorString)
 #ifdef Q_OS_WIN
     // You cannot delete a read-only file on windows, but we want to
     // allow that.
-    if (!QFileInfo(fileName).isWritable()) {
+    if (!isWritable(fileName)) {
         setFileReadOnly(fileName, false);
     }
 #endif

@@ -58,12 +58,19 @@ void PropagateRemoteDelete::start()
 
 void PropagateRemoteDelete::createDeleteJob(const QString &filename)
 {
-    qCInfo(lcPropagateRemoteDelete) << "Deleting file, local" << _item->_file << "remote" << filename;
+    Q_ASSERT(propagator());
+    auto remoteFilename = filename;
+    if (_item->_type == ItemType::ItemTypeVirtualFile) {
+        if (const auto vfs = propagator()->syncOptions()._vfs; vfs->mode() == Vfs::Mode::WithSuffix) {
+            // These are compile-time constants so no need to recreate each time
+            static constexpr auto suffixSize = std::string_view(APPLICATION_DOTVIRTUALFILE_SUFFIX).size();
+            remoteFilename.chop(suffixSize);
+        }
+    }
 
-    _job = new DeleteJob(propagator()->account(),
-        propagator()->fullRemotePath(filename),
-        this);
+    qCInfo(lcPropagateRemoteDelete) << "Deleting file, local" << _item->_file << "remote" << remoteFilename;
 
+    _job = new DeleteJob(propagator()->account(), propagator()->fullRemotePath(remoteFilename), this);
     connect(_job.data(), &DeleteJob::finishedSignal, this, &PropagateRemoteDelete::slotDeleteJobFinished);
     propagator()->_activeJobList.append(this);
     _job->start();

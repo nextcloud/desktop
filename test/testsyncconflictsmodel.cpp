@@ -51,6 +51,10 @@ private:
 private slots:
     void initTestCase()
     {
+        OCC::Logger::instance()->setLogFlush(true);
+        OCC::Logger::instance()->setLogDebug(true);
+
+        QStandardPaths::setTestModeEnabled(true);
     }
 
     void testSettingConflicts()
@@ -61,13 +65,13 @@ private slots:
         FolderMan fm;
 
         auto account = Account::create();
-        auto url = QUrl{"http://example.de"};
+        auto url = QUrl{"http://example.com"};
         auto cred = new HttpCredentialsTest("testuser", "secret");
         account->setCredentials(cred);
         account->setUrl(url);
         url.setUserName(cred->user());
 
-        auto newAccountState{AccountStatePtr{ new AccountState{account}}};
+        auto newAccountState{AccountStatePtr{ new FakeAccountState{account}}};
         auto folderman = FolderMan::instance();
         QCOMPARE(folderman, &fm);
 

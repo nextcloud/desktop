@@ -16,7 +16,7 @@ import QtQuick 2.15
 import QtQuick.Window 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.15
-import QtGraphicalEffects 1.15
+import Qt5Compat.GraphicalEffects
 import Qt.labs.platform 1.1 as NativeDialogs
 
 import "../"
@@ -312,22 +312,6 @@ ApplicationWindow {
                             radius: Style.currentAccountButtonRadius
                         }
 
-                        contentItem: ScrollView {
-                            id: accMenuScrollView
-                            ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
-
-                            data: WheelHandler {
-                                target: accMenuScrollView.contentItem
-                            }
-                            ListView {
-                                implicitHeight: contentHeight
-                                model: accountMenu.contentModel
-                                interactive: true
-                                clip: true
-                                currentIndex: accountMenu.currentIndex
-                            }
-                        }
-
                         onClosed: {
                             // HACK: reload account Instantiator immediately by restting it - could be done better I guess
                             // see also onVisibleChanged above
@@ -485,7 +469,7 @@ ApplicationWindow {
                             Layout.leftMargin: Style.trayHorizontalMargin
                             verticalAlignment: Qt.AlignCenter
                             cache: false
-                            source: UserModel.currentUser.avatar != "" ? UserModel.currentUser.avatar : "image://avatars/fallbackWhite"
+                            source: (UserModel.currentUser && UserModel.currentUser.avatar !== "") ? UserModel.currentUser.avatar : "image://avatars/fallbackWhite"
                             Layout.preferredHeight: Style.accountAvatarSize
                             Layout.preferredWidth: Style.accountAvatarSize
 
@@ -494,7 +478,7 @@ ApplicationWindow {
 
                             Rectangle {
                                 id: currentAccountStatusIndicatorBackground
-                                visible: UserModel.currentUser.isConnected
+                                visible: UserModel.currentUser && UserModel.currentUser.isConnected
                                          && UserModel.currentUser.serverHasUserStatus
                                 width: Style.accountAvatarStateIndicatorSize +  + Style.trayFolderStatusIndicatorSizeOffset
                                 height: width
@@ -506,7 +490,7 @@ ApplicationWindow {
 
                             Rectangle {
                                 id: currentAccountStatusIndicatorMouseHover
-                                visible: UserModel.currentUser.isConnected
+                                visible: UserModel.currentUser && UserModel.currentUser.isConnected
                                          && UserModel.currentUser.serverHasUserStatus
                                 width: Style.accountAvatarStateIndicatorSize +  + Style.trayFolderStatusIndicatorSizeOffset
                                 height: width
@@ -519,9 +503,9 @@ ApplicationWindow {
 
                             Image {
                                 id: currentAccountStatusIndicator
-                                visible: UserModel.currentUser.isConnected
+                                visible: UserModel.currentUser && UserModel.currentUser.isConnected
                                          && UserModel.currentUser.serverHasUserStatus
-                                source: UserModel.currentUser.statusIcon
+                                source: UserModel.currentUser ? UserModel.currentUser.statusIcon : ""
                                 cache: false
                                 x: currentAccountStatusIndicatorBackground.x + 1
                                 y: currentAccountStatusIndicatorBackground.y + 1
@@ -545,7 +529,7 @@ ApplicationWindow {
                                 id: currentAccountUser
                                 Layout.alignment: Qt.AlignLeft | Qt.AlignBottom
                                 width: Style.currentAccountLabelWidth
-                                text: UserModel.currentUser.name
+                                text: UserModel.currentUser ? UserModel.currentUser.name : ""
                                 elide: Text.ElideRight
                                 color: Style.currentUserHeaderTextColor
 
@@ -557,7 +541,7 @@ ApplicationWindow {
                                 id: currentAccountServer
                                 Layout.alignment: Qt.AlignLeft | Qt.AlignBottom
                                 width: Style.currentAccountLabelWidth
-                                text: UserModel.currentUser.server
+                                text: UserModel.currentUser ? UserModel.currentUser.server : ""
                                 elide: Text.ElideRight
                                 color: Style.currentUserHeaderTextColor
                                 visible: UserModel.numUsers() > 1
@@ -565,26 +549,26 @@ ApplicationWindow {
 
                             RowLayout {
                                 id: currentUserStatus
-                                visible: UserModel.currentUser.isConnected &&
+                                visible: UserModel.currentUser && UserModel.currentUser.isConnected &&
                                          UserModel.currentUser.serverHasUserStatus
                                 spacing: Style.accountLabelsSpacing
                                 width: parent.width
 
                                 EnforcedPlainTextLabel {
                                     id: emoji
-                                    visible: UserModel.currentUser.statusEmoji !== ""
+                                    visible: UserModel.currentUser && UserModel.currentUser.statusEmoji !== ""
                                     width: Style.userStatusEmojiSize
-                                    text: UserModel.currentUser.statusEmoji
+                                    text: UserModel.currentUser ? UserModel.currentUser.statusEmoji : ""
                                 }
                                 EnforcedPlainTextLabel {
                                     id: message
                                     Layout.alignment: Qt.AlignLeft | Qt.AlignBottom
                                     Layout.fillWidth: true
-                                    visible: UserModel.currentUser.statusMessage !== ""
+                                    visible: UserModel.currentUser && UserModel.currentUser.statusMessage !== ""
                                     width: Style.currentAccountLabelWidth
-                                    text: UserModel.currentUser.statusMessage !== ""
+                                    text: UserModel.currentUser && UserModel.currentUser.statusMessage !== ""
                                           ? UserModel.currentUser.statusMessage
-                                          : UserModel.currentUser.server
+                                          : UserModel.currentUser ? UserModel.currentUser.server : ""
                                     elide: Text.ElideRight
                                     color: Style.currentUserHeaderTextColor
                                     font.pixelSize: Style.subLinePixelSize
@@ -637,27 +621,23 @@ ApplicationWindow {
                 }
 
                 HeaderButton {
-                    id: trayWindowTalkButton
-
-                    visible: UserModel.currentUser.serverHasTalk
-                    icon.source: "qrc:///client/theme/white/talk-app.svg"
-                    icon.color: Style.currentUserHeaderTextColor
-                    onClicked: UserModel.openCurrentAccountTalk()
+                    id: trayWindowFeaturedAppButton
+                    visible: UserModel.currentUser.isFeaturedAppEnabled
+                    icon.source: UserModel.currentUser.featuredAppIcon + "/" + Style.currentUserHeaderTextColor
+                    onClicked: UserModel.openCurrentAccountFeaturedApp()
 
                     Accessible.role: Accessible.Button
-                    Accessible.name: qsTr("Open Nextcloud Talk in browser")
-                    Accessible.onPressAction: trayWindowTalkButton.clicked()
+                    Accessible.name: UserModel.currentUser.featuredAppAccessibleName
+                    Accessible.onPressAction: trayWindowFeaturedAppButton.clicked()
 
                     Layout.alignment: Qt.AlignRight
                     Layout.preferredWidth:  Style.trayWindowHeaderHeight
                     Layout.preferredHeight: Style.trayWindowHeaderHeight
-
                 }
 
                 HeaderButton {
                     id: trayWindowAppsButton
-                    icon.source: "qrc:///client/theme/white/more-apps.svg"
-                    icon.color: Style.currentUserHeaderTextColor
+                    icon.source: "image://svgimage-custom-color/more-apps.svg" + "/" + Style.currentUserHeaderTextColor
 
                     onClicked: {
                         if(appsMenuListView.count <= 0) {
@@ -753,6 +733,18 @@ ApplicationWindow {
             isSearchInProgress: UserModel.currentUser.unifiedSearchResultsListModel.isSearchInProgress
             onTextEdited: { UserModel.currentUser.unifiedSearchResultsListModel.searchTerm = trayWindowUnifiedSearchInputContainer.text }
             onClearText: { UserModel.currentUser.unifiedSearchResultsListModel.searchTerm = "" }
+
+            Rectangle {
+                id: bottomUnifiedSearchInputSeparator
+
+                anchors.left: parent.left
+                anchors.right: parent.right
+                anchors.bottom: parent.bottom
+
+                height: 1
+                color: Style.menuBorder
+                visible: trayWindowMainItem.isUnifiedSearchActive
+            }
         }
 
         ErrorBox {
@@ -860,6 +852,16 @@ ApplicationWindow {
             anchors.top: trayWindowUnifiedSearchInputContainer.bottom
             anchors.left: trayWindowMainItem.left
             anchors.right: trayWindowMainItem.right
+
+            Rectangle {
+                id: syncStatusSeparator
+
+                Layout.fillWidth: true
+                Layout.preferredHeight: 1
+
+                height: 1
+                color: Style.menuBorder
+            }
         }
 
         Loader {
@@ -939,7 +941,7 @@ ApplicationWindow {
             }
             Connections {
                 target: activityModel
-                onInteractiveActivityReceived: {
+                function onInteractiveActivityReceived() {
                     if (!activityList.atYBeginning) {
                         newActivitiesButtonLoader.active = true;
                     }

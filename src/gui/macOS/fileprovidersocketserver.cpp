@@ -17,6 +17,8 @@
 #include <QLocalSocket>
 #include <QLoggingCategory>
 
+#include "libsync/account.h"
+
 #include "fileprovidersocketcontroller.h"
 
 namespace OCC {
@@ -62,6 +64,8 @@ void FileProviderSocketServer::slotNewConnection()
     }
 
     const FileProviderSocketControllerPtr socketController(new FileProviderSocketController(socket, this));
+    connect(socketController.data(), &FileProviderSocketController::syncStateChanged,
+            this, &FileProviderSocketServer::slotSyncStateChanged);
     connect(socketController.data(), &FileProviderSocketController::socketDestroyed,
             this, &FileProviderSocketServer::slotSocketDestroyed);
     _socketControllers.insert(socket, socketController);
@@ -77,6 +81,21 @@ void FileProviderSocketServer::slotSocketDestroyed(const QLocalSocket * const so
         const auto rawSocketControllerPtr = socketController.data();
         delete rawSocketControllerPtr;
     }
+}
+
+void FileProviderSocketServer::slotSyncStateChanged(const AccountPtr &account, SyncResult::Status state)
+{
+    Q_ASSERT(account);
+    const auto userId = account->userIdAtHostWithPort();
+    qCDebug(lcFileProviderSocketServer) << "Received sync state change for account" << userId << "state" << state;
+    _latestReceivedSyncStatus.insert(userId, state);
+    Q_EMIT syncStateChanged(account, state);
+}
+
+SyncResult::Status FileProviderSocketServer::latestReceivedSyncStatusForAccount(const AccountPtr &account) const
+{
+    Q_ASSERT(account);
+    return _latestReceivedSyncStatus.value(account->userIdAtHostWithPort(), SyncResult::Undefined);
 }
 
 } // namespace Mac

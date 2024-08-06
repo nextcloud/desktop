@@ -195,7 +195,9 @@ public:
         See: https://github.com/nextcloud/client_updater_server/pull/36 */
     [[nodiscard]] int updateSegment() const;
 
-    [[nodiscard]] QString updateChannel() const;
+    [[nodiscard]] QString currentUpdateChannel() const;
+    [[nodiscard]] QString defaultUpdateChannel() const;
+    [[nodiscard]] QStringList validUpdateChannels() const;
     void setUpdateChannel(const QString &channel);
 
     [[nodiscard]] QString overrideServerUrl() const;
@@ -224,6 +226,12 @@ public:
         Updated by configVersionMigration() at client startup. */
     [[nodiscard]] bool launchOnSystemStartup() const;
     void setLaunchOnSystemStartup(const bool autostart);
+
+    [[nodiscard]] bool serverHasValidSubscription() const;
+    void setServerHasValidSubscription(bool valid);
+
+    [[nodiscard]] QString desktopEnterpriseChannel() const;
+    void setDesktopEnterpriseChannel(const QString &channel);
 
     /**  Returns a new settings pre-set in a specific group.  The Settings will be created
          with the given parent. If no parent is specified, the caller must destroy the settings */

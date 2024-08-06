@@ -8,6 +8,7 @@
 
 #include "updater/updater.h"
 #include "updater/ocupdater.h"
+#include "logger.h"
 
 using namespace OCC;
 
@@ -16,6 +17,14 @@ class TestUpdater : public QObject
     Q_OBJECT
 
 private slots:
+    void initTestCase()
+    {
+        OCC::Logger::instance()->setLogFlush(true);
+        OCC::Logger::instance()->setLogDebug(true);
+
+        QStandardPaths::setTestModeEnabled(true);
+    }
+
     void testVersionToInt()
     {
         qint64 lowVersion = Updater::Helper::versionToInt(1,2,80,3000);

@@ -72,7 +72,7 @@ generate_export_header(nextcloud_csync
 target_link_libraries(nextcloud_csync
   PUBLIC
   ${CSYNC_REQUIRED_LIBRARIES}
-  Qt5::Core Qt5::Concurrent
+  Qt::Core Qt::Concurrent
 )
 
 if(ZLIB_FOUND)

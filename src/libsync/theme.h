@@ -67,7 +67,7 @@ class OWNCLOUDSYNC_EXPORT Theme : public QObject
 
     Q_PROPERTY(QColor defaultColor READ defaultColor CONSTANT)
 
-    Q_PROPERTY(QPalette systemPalette READ systemPalette NOTIFY systemPaletteChanged)
+    Q_PROPERTY(QVariantMap systemPalette READ systemPalette NOTIFY systemPaletteChanged)
     Q_PROPERTY(bool darkMode READ darkMode NOTIFY darkModeChanged)
 public:
     enum CustomMediaType {
@@ -196,6 +196,7 @@ public:
 
     [[nodiscard]] QString statusHeaderText(SyncResult::Status) const;
     [[nodiscard]] QString version() const;
+    [[nodiscard]] QString versionSuffix() const;
 
     /**
      * Characteristics: bool if more than one sync folder is allowed
@@ -593,7 +594,7 @@ public:
 
     static constexpr const char *themePrefix = ":/client/theme/";
 
-    QPalette systemPalette();
+    QVariantMap systemPalette();
     bool darkMode();
 
 public slots:

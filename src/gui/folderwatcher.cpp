@@ -41,34 +41,7 @@
 
 namespace
 {
-const std::array<const char *, 2> lockFilePatterns = {{".~lock.", "~$"}};
-
 constexpr auto lockChangeDebouncingTimerIntervalMs = 500;
-
-QString filePathLockFilePatternMatch(const QString &path)
-{
-    qCDebug(OCC::lcFolderWatcher) << "Checking if it is a lock file:" << path;
-
-    const auto pathSplit = path.split(QLatin1Char('/'), Qt::SkipEmptyParts);
-    if (pathSplit.isEmpty()) {
-        return {};
-    }
-    QString lockFilePatternFound;
-    for (const auto &lockFilePattern : lockFilePatterns) {
-        if (pathSplit.last().startsWith(lockFilePattern)) {
-            lockFilePatternFound = lockFilePattern;
-            break;
-        }
-    }
-
-    if (lockFilePatternFound.isEmpty()) {
-        return {};
-    }
-
-    qCDebug(OCC::lcFolderWatcher) << "Found a lock file with prefix:" << lockFilePatternFound << "in path:" << path;
-    return lockFilePatternFound;
-}
-
 }
 
 namespace OCC {
@@ -111,7 +84,7 @@ void FolderWatcher::appendSubPaths(QDir dir, QStringList& subPaths) {
         QString path = dir.path() + "/" + newSubPaths[i];
         QFileInfo fileInfo(path);
         subPaths.append(path);
-        if (fileInfo.isDir()) {
+        if (FileSystem::isDir(path)) {
             QDir dir(path);
             appendSubPaths(dir, subPaths);
         }
@@ -185,11 +158,26 @@ int FolderWatcher::testLinuxWatchCount() const
 #endif
 }
 
+void FolderWatcher::slotLockFileDetectedExternally(const QString &lockFile)
+{
+    qCInfo(lcFolderWatcher) << "Lock file detected externally, probably a newly-uploaded office file: " << lockFile;
+    changeDetected(lockFile);
+}
+
+void FolderWatcher::setShouldWatchForFileUnlocking(bool shouldWatchForFileUnlocking)
+{
+    _shouldWatchForFileUnlocking = shouldWatchForFileUnlocking;
+}
+
+int FolderWatcher::lockChangeDebouncingTimout() const
+{
+    return _lockChangeDebouncingTimer.interval();
+}
+
 void FolderWatcher::changeDetected(const QString &path)
 {
-    QFileInfo fileInfo(path);
     QStringList paths(path);
-    if (fileInfo.isDir()) {
+    if (FileSystem::isDir(path)) {
         QDir dir(path);
         appendSubPaths(dir, paths);
     }
@@ -204,7 +192,7 @@ void FolderWatcher::changeDetected(const QStringList &paths)
     //   - why do we skip the file altogether instead of e.g. reducing the upload frequency?
 
     // Check if the same path was reported within the last second.
-    const auto pathsSet = paths.toSet();
+    const auto pathsSet = QSet<QString>{paths.begin(), paths.end()};
     if (pathsSet == _lastPaths && _timer.elapsed() < 1000) {
         // the same path was reported within the last second. Skip.
         return;
@@ -220,17 +208,17 @@ void FolderWatcher::changeDetected(const QStringList &paths)
             _testNotificationPath.clear();
         }
 
-        const auto lockFileNamePattern = filePathLockFilePatternMatch(path);
-        const auto checkResult = lockFileTargetFilePath(path,lockFileNamePattern);
+        const auto lockFileNamePattern = FileSystem::filePathLockFilePatternMatch(path);
+        const auto checkResult = FileSystem::lockFileTargetFilePath(path, lockFileNamePattern);
         if (_shouldWatchForFileUnlocking) {
             // Lock file has been deleted, file now unlocked
-            if (checkResult.type == FileLockingInfo::Type::Unlocked && !checkResult.path.isEmpty()) {
+            if (checkResult.type == FileSystem::FileLockingInfo::Type::Unlocked && !checkResult.path.isEmpty()) {
                 _lockedFiles.remove(checkResult.path);
                 _unlockedFiles.insert(checkResult.path);
             }
         }
 
-        if (checkResult.type == FileLockingInfo::Type::Locked && !checkResult.path.isEmpty()) {
+        if (checkResult.type == FileSystem::FileLockingInfo::Type::Locked && !checkResult.path.isEmpty()) {
             _unlockedFiles.remove(checkResult.path);
             _lockedFiles.insert(checkResult.path);
         }
@@ -270,64 +258,6 @@ void FolderWatcher::changeDetected(const QStringList &paths)
 void FolderWatcher::folderAccountCapabilitiesChanged()
 {
     _shouldWatchForFileUnlocking = _folder->accountState()->account()->capabilities().filesLockAvailable();
-}
-
-FolderWatcher::FileLockingInfo FolderWatcher::lockFileTargetFilePath(const QString &path, const QString &lockFileNamePattern) const
-{
-    FileLockingInfo result;
-
-    if (lockFileNamePattern.isEmpty()) {
-        return result;
-    }
-
-    const auto lockFilePathWithoutPrefix = QString(path).replace(lockFileNamePattern, QStringLiteral(""));
-    auto lockFilePathWithoutPrefixSplit = lockFilePathWithoutPrefix.split(QLatin1Char('.'));
-
-    if (lockFilePathWithoutPrefixSplit.size() < 2) {
-        return result;
-    }
-
-    auto extensionSanitized = lockFilePathWithoutPrefixSplit.takeLast().toStdString();
-    // remove possible non-alphabetical characters at the end of the extension
-    extensionSanitized.erase(
-        std::remove_if(extensionSanitized.begin(), extensionSanitized.end(), [](const auto &ch) {
-            return !std::isalnum(ch);
-        }),
-        extensionSanitized.end()
-    );
-
-    lockFilePathWithoutPrefixSplit.push_back(QString::fromStdString(extensionSanitized));
-    const auto lockFilePathWithoutPrefixNew = lockFilePathWithoutPrefixSplit.join(QLatin1Char('.'));
-
-    qCDebug(lcFolderWatcher) << "Assumed locked/unlocked file path" << lockFilePathWithoutPrefixNew << "Going to try to find matching file";
-    auto splitFilePath = lockFilePathWithoutPrefixNew.split(QLatin1Char('/'));
-    if (splitFilePath.size() > 1) {
-        const auto lockFileNameWithoutPrefix = splitFilePath.takeLast();
-        // some software will modify lock file name such that it does not correspond to original file (removing some symbols from the name, so we will search
-        // for a matching file
-        result.path = findMatchingUnlockedFileInDir(splitFilePath.join(QLatin1Char('/')), lockFileNameWithoutPrefix);
-    }
-
-    if (result.path.isEmpty() || !QFile::exists(result.path)) {
-        result.path.clear();
-        return result;
-    }
-    result.type = QFile::exists(path) ? FileLockingInfo::Type::Locked : FileLockingInfo::Type::Unlocked;
-    return result;
-}
-
-QString FolderWatcher::findMatchingUnlockedFileInDir(const QString &dirPath, const QString &lockFileName) const
-{
-    QString foundFilePath;
-    const QDir dir(dirPath);
-    const auto entryList = dir.entryInfoList(QDir::Files);
-    for (const auto &candidateUnlockedFileInfo : entryList) {
-        if (candidateUnlockedFileInfo.fileName().contains(lockFileName)) {
-            foundFilePath = candidateUnlockedFileInfo.absoluteFilePath();
-            break;
-        }
-    }
-    return foundFilePath;
 }
 
 } // namespace OCC

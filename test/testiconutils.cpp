@@ -16,6 +16,9 @@
 
 #include "theme.h"
 #include "iconutils.h"
+#include "logger.h"
+
+#include <QStandardPaths>
 
 class TestIconUtils : public QObject
 {
@@ -29,6 +32,14 @@ public:
     }
 
 private slots:
+    void initTestCase()
+    {
+        OCC::Logger::instance()->setLogFlush(true);
+        OCC::Logger::instance()->setLogDebug(true);
+
+        QStandardPaths::setTestModeEnabled(true);
+    }
+
     void testDrawSvgWithCustomFillColor()
     {
         const QString blackSvgDirPath{QString{OCC::Theme::themePrefix} + QStringLiteral("black")};

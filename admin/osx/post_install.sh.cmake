@@ -10,6 +10,4 @@ if [ -x "$(command -v pluginkit)" ]; then
     pluginkit -e use -i @APPLICATION_REV_DOMAIN@.FinderSyncExt
 fi
 
-open -a @APPLICATION_NAME@.app
-
 exit 0

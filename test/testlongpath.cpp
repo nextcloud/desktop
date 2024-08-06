@@ -20,16 +20,25 @@
 #include "common/filesystembase.h"
 #include "csync/csync.h"
 #include "csync/vio/csync_vio_local.h"
+#include "logger.h"
 
 #include <QTemporaryFile>
 #include <QTest>
-
+#include <QStandardPaths>
 
 class TestLongWindowsPath : public QObject
 {
     Q_OBJECT
 
 private Q_SLOTS:
+    void initTestCase()
+    {
+        OCC::Logger::instance()->setLogFlush(true);
+        OCC::Logger::instance()->setLogDebug(true);
+
+        QStandardPaths::setTestModeEnabled(true);
+    }
+
 #ifdef Q_OS_WIN
     void check_long_win_path()
     {

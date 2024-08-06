@@ -34,6 +34,8 @@ class FileProviderXPC : public QObject
 public:
     explicit FileProviderXPC(QObject *parent = nullptr);
 
+    [[nodiscard]] bool fileProviderExtReachable(const QString &extensionAccountId) const;
+
     // Returns enabled and set state of fast enumeration for the given extension
     [[nodiscard]] std::optional<std::pair<bool, bool>> fastEnumerationStateForExtension(const QString &extensionAccountId) const;
 

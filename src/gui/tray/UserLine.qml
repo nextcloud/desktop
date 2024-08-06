@@ -141,9 +141,6 @@ AbstractButton {
             Layout.fillHeight: true
             flat: true
 
-            icon.source: "qrc:///client/theme/more.svg"
-            icon.color: palette.buttonText
-
             Accessible.role: Accessible.ButtonMenu
             Accessible.name: qsTr("Account actions")
             Accessible.onPressAction: userMoreButtonMouseArea.clicked()
@@ -153,6 +150,12 @@ AbstractButton {
                 anchors.fill: parent
                 anchors.margins: 1
                 color: userMoreButton.hovered || userMoreButton.visualFocus ? palette.highlight : "transparent"
+            }
+
+            contentItem: Image {
+                anchors.fill: parent
+                source: "image://svgimage-custom-color/more.svg" + "/" + palette.buttonText
+                fillMode: Image.PreserveAspectFit
             }
 
             AutoSizingMenu {

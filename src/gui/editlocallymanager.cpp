@@ -14,8 +14,13 @@
 
 #include "editlocallymanager.h"
 
-#include <QUrl>
 #include <QLoggingCategory>
+#include <QMessageBox>
+#include <QUrl>
+#include <QUrlQuery>
+
+#include "accountmanager.h"
+#include "systray.h"
 
 namespace OCC {
 
@@ -36,10 +41,39 @@ EditLocallyManager *EditLocallyManager::instance()
     return _instance;
 }
 
-void EditLocallyManager::editLocally(const QUrl &url)
+void EditLocallyManager::showError(const QString &message, const QString &informativeText)
+{
+    showErrorNotification(message, informativeText);
+    // to make sure the error is not missed, show a message box in addition
+    showErrorMessageBox(message, informativeText);
+    qCWarning(lcEditLocallyManager) << message << informativeText;
+}
+
+void EditLocallyManager::showErrorNotification(const QString &message, 
+                                               const QString &informativeText)
+{
+    Systray::instance()->showMessage(message, informativeText, Systray::MessageIcon::Critical); 
+}
+
+void EditLocallyManager::showErrorMessageBox(const QString &message, 
+                                             const QString &informativeText)
+{
+    const auto messageBox = new QMessageBox;
+    messageBox->setAttribute(Qt::WA_DeleteOnClose);
+    messageBox->setText(message);
+    messageBox->setInformativeText(informativeText);
+    messageBox->setIcon(QMessageBox::Warning);
+    messageBox->addButton(QMessageBox::StandardButton::Ok);
+    messageBox->show();
+    messageBox->activateWindow();
+    messageBox->raise();
+}
+
+void EditLocallyManager::handleRequest(const QUrl &url)
 {
     const auto inputs = parseEditLocallyUrl(url);
-    createJob(inputs.userId, inputs.relPath, inputs.token);
+    const auto accountState = AccountManager::instance()->accountFromUserId(inputs.userId); 
+    verify(accountState, inputs.relPath, inputs.token);
 }
 
 EditLocallyManager::EditLocallyInputData EditLocallyManager::parseEditLocallyUrl(const QUrl &url)
@@ -67,19 +101,92 @@ EditLocallyManager::EditLocallyInputData EditLocallyManager::parseEditLocallyUrl
     return {userId, fileRemotePath, token};
 }
 
-void EditLocallyManager::createJob(const QString &userId,
-                                       const QString &relPath,
-                                       const QString &token)
+void EditLocallyManager::verify(const AccountStatePtr &accountState, 
+                                const QString &relPath, 
+                                const QString &token)
 {
-    if (_jobs.contains(token)) {
+    // Show the loading dialog but don't show the filename until we have
+    // verified the token
+    Systray::instance()->createEditFileLocallyLoadingDialog({});
+    
+    const auto finishedHandler = [this, token] {
+        Systray::instance()->destroyEditFileLocallyLoadingDialog();
+        _verificationJobs.remove(token); 
+    };
+    const auto errorEditLocally = [finishedHandler] {
+        finishedHandler();
+        showError(tr("Could not validate the request to open a file from server."), 
+                  tr("Please try again."));
+    };
+    const auto startEditLocally = [this, accountState, relPath, token, finishedHandler] {
+        finishedHandler();
+        qCDebug(lcEditLocallyManager) << "Starting to edit file locally" << relPath 
+                                      << "with token" << token;
+#ifdef BUILD_FILE_PROVIDER_MODULE
+        editLocallyFileProvider(accountState, relPath, token);
+#else
+        editLocally(accountState, relPath, token);    
+#endif
+    };
+    const auto verificationJob = EditLocallyVerificationJobPtr(
+        new EditLocallyVerificationJob(accountState, relPath, token)
+    );
+    _verificationJobs.insert(token, verificationJob);
+    connect(verificationJob.data(), &EditLocallyVerificationJob::error, this, errorEditLocally);
+    connect(verificationJob.data(), &EditLocallyVerificationJob::finished, this, startEditLocally);
+    
+    // We now ask the server to verify the token, before we again modify any
+    // state or look at local files
+    verificationJob->start();
+}
+
+#ifdef BUILD_FILE_PROVIDER_MODULE
+void EditLocallyManager::editLocallyFileProvider(const AccountStatePtr &accountState,
+                                                 const QString &relPath,
+                                                 const QString &token)
+{
+    if (_editLocallyFpJobs.contains(token)) {
         return;
     }
-    const EditLocallyJobPtr job(new EditLocallyJob(userId, relPath, token));
+
+    qCDebug(lcEditLocallyManager) << "Starting to edit file locally with file provider" << relPath 
+                                  << "with token" << token;
+
+    const auto removeJob = [&] { _editLocallyFpJobs.remove(token); };
+    const auto tryStandardJob = [this, accountState, relPath, token, removeJob] {
+        removeJob();
+        editLocally(accountState, relPath, token);
+    };
+    const Mac::FileProviderEditLocallyJobPtr job(
+        new Mac::FileProviderEditLocallyJob(accountState, relPath)
+    );
     // We need to make sure the job sticks around until it is finished
-    _jobs.insert(token, job);
+    _editLocallyFpJobs.insert(token, job);
 
-    const auto removeJob = [this, token] { _jobs.remove(token); };
+    connect(job.data(), &Mac::FileProviderEditLocallyJob::error, this, removeJob);
+    connect(job.data(), &Mac::FileProviderEditLocallyJob::notAvailable, this, tryStandardJob);
+    connect(job.data(), &Mac::FileProviderEditLocallyJob::finished, this, removeJob);
 
+    job->start();
+}
+#endif
+
+void EditLocallyManager::editLocally(const AccountStatePtr &accountState,
+                                     const QString &relPath,
+                                     const QString &token)
+{
+    if (_editLocallyJobs.contains(token)) {
+        return;
+    }
+
+    qCDebug(lcEditLocallyManager) << "Starting to edit file locally" << relPath 
+                                  << "with token" << token;
+
+    const auto removeJob = [this, token] { _editLocallyJobs.remove(token); };
+    const EditLocallyJobPtr job(new EditLocallyJob(accountState, relPath));
+    // We need to make sure the job sticks around until it is finished
+    _editLocallyJobs.insert(token, job);
+ 
     connect(job.data(), &EditLocallyJob::error, this, removeJob);
     connect(job.data(), &EditLocallyJob::finished, this, removeJob);
 

@@ -16,6 +16,7 @@
 #include "account.h"
 #include "accountstate.h"
 #include "configfile.h"
+#include "logger.h"
 
 #include "testhelper.h"
 
@@ -26,6 +27,14 @@ class TestRemoteWipe: public QObject
     Q_OBJECT
 
 private slots:
+    void initTestCase()
+    {
+        OCC::Logger::instance()->setLogFlush(true);
+        OCC::Logger::instance()->setLogDebug(true);
+
+        QStandardPaths::setTestModeEnabled(true);
+    }
+
     // TODO
     void testWipe(){
 //        QTemporaryDir dir;

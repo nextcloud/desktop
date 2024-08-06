@@ -50,6 +50,11 @@ private:
 private slots:
     void initTestCase()
     {
+        OCC::Logger::instance()->setLogFlush(true);
+        OCC::Logger::instance()->setLogDebug(true);
+
+        QStandardPaths::setTestModeEnabled(true);
+
         _fakeQnam.reset(new FakeQNAM({}));
         _fakeQnam->setOverride([this](QNetworkAccessManager::Operation op, const QNetworkRequest &req, QIODevice * const device) {
             Q_UNUSED(device);

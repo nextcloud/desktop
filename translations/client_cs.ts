@@ -237,12 +237,12 @@
 <context>
     <name>FileProviderFastEnumerationSettings</name>
     <message>
-        <location filename="../src/gui/macOS/ui/FileProviderFastEnumerationSettings.qml" line="38"/>
+        <location filename="../src/gui/macOS/ui/FileProviderFastEnumerationSettings.qml" line="37"/>
         <source>Enable fast sync</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/macOS/ui/FileProviderFastEnumerationSettings.qml" line="53"/>
+        <location filename="../src/gui/macOS/ui/FileProviderFastEnumerationSettings.qml" line="52"/>
         <source>Fast sync will only sync changes in files and folders within folders that have been explored. This can significantly increase responsiveness on initial configuration of virtual files. However, it will cause redundant downloads of files moved to an unexplored folder. </source>
         <translation type="unfinished"/>
     </message>
@@ -265,25 +265,25 @@
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="73"/>
         <source>General settings</source>
-        <translation type="unfinished"/>
+        <translation>Obecná nastavení</translation>
     </message>
     <message>
-        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="82"/>
+        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="81"/>
         <source>Enable virtual files</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="167"/>
+        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="166"/>
         <source>Advanced</source>
-        <translation type="unfinished"/>
+        <translation>Pokročilé</translation>
     </message>
     <message>
-        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="174"/>
+        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="173"/>
         <source>Signal file provider domain</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="179"/>
+        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="178"/>
         <source>Create debug archive</source>
         <translation type="unfinished"/>
     </message>
@@ -293,7 +293,7 @@
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderStorageInfo.qml" line="41"/>
         <source>Local storage use</source>
-        <translation type="unfinished"/>
+        <translation>Využití místního úložiště</translation>
     </message>
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderStorageInfo.qml" line="49"/>
@@ -316,7 +316,7 @@
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderSyncStatus.qml" line="57"/>
         <source>All synced!</source>
-        <translation type="unfinished"/>
+        <translation>Vše synchronizováno!</translation>
     </message>
 </context>
 <context>
@@ -453,13 +453,13 @@ Should an account import be attempted?</source>
 Má se být pokoušeno o jejich naimportování?</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountmanager.cpp" line="198"/>
+        <location filename="../src/gui/accountmanager.cpp" line="218"/>
         <source>%1 accounts were detected from a legacy desktop client.
 Should the accounts be imported?</source>
         <translation>Zjištěno %1 účtů ze starého klienta pro počítač. Chcete je naimportovat?</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountmanager.cpp" line="200"/>
+        <location filename="../src/gui/accountmanager.cpp" line="220"/>
         <source>1 account was detected from a legacy desktop client.
 Should the account be imported?</source>
         <translation>Zjištěn jeden účet ze starého klienta pro počítač.
@@ -473,12 +473,12 @@ Chcete ho naimportovat?</translation>
         <translation>Import z dřívějšího</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountmanager.cpp" line="203"/>
+        <location filename="../src/gui/accountmanager.cpp" line="223"/>
         <source>Import</source>
         <translation>Naimportovat</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountmanager.cpp" line="204"/>
+        <location filename="../src/gui/accountmanager.cpp" line="224"/>
         <source>Skip</source>
         <translation>Přeskočit</translation>
     </message>
@@ -538,13 +538,18 @@ Chcete ho naimportovat?</translation>
         <translation>Uplatnit ručně provedené změny</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.ui" line="267"/>
+        <location filename="../src/gui/accountsettings.ui" line="270"/>
         <source>Standard file sync</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.ui" line="308"/>
+        <location filename="../src/gui/accountsettings.ui" line="311"/>
         <source>Virtual file sync</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/accountsettings.ui" line="316"/>
+        <source>Connection settings</source>
         <translation type="unfinished"/>
     </message>
     <message>
@@ -568,12 +573,12 @@ Chcete ho naimportovat?</translation>
         <translation>Šifrovat složku</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="120"/>
+        <location filename="../src/gui/accountsettings.cpp" line="121"/>
         <source>End-to-end Encryption</source>
         <translation>Šifrování mezi koncovými body</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="122"/>
+        <location filename="../src/gui/accountsettings.cpp" line="123"/>
         <source>This will encrypt your folder and all files within it. These files will no longer be accessible without your encryption mnemonic key. 
 &lt;b&gt;This process is not reversible. Are you sure you want to proceed?&lt;/b&gt;</source>
         <translation>Toto zašifruje vaši složku a veškeré soubory v ní. Soubory už nebudou přístupné bez vašeho mnemotechnického klíče.
@@ -605,17 +610,17 @@ Chcete ho naimportovat?</translation>
         <translation>Varování</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="378"/>
+        <location filename="../src/gui/accountsettings.cpp" line="386"/>
         <source>Please wait for the folder to sync before trying to encrypt it.</source>
         <translation>Vyčkejte na dokončení synchronizace složky a až pak se ji pokoušejte šifrovat.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="380"/>
+        <location filename="../src/gui/accountsettings.cpp" line="388"/>
         <source>The folder has a minor sync problem. Encryption of this folder will be possible once it has synced successfully</source>
         <translation>Složka má drobný problém se synchronizací. Její šifrování bude možné až po úspěšné synchronizaci</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="382"/>
+        <location filename="../src/gui/accountsettings.cpp" line="390"/>
         <source>The folder has a sync error. Encryption of this folder will be possible once it has synced successfully</source>
         <translation>Vyskytla se chyba při synchronizaci složky. Její šifrování bude možné až po úspěšné synchronizaci</translation>
     </message>
@@ -871,7 +876,7 @@ Současně tato akce zruší jakoukoli právě probíhající synchronizaci.</tr
         <translation>Bez připojení k %1 na %2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1301"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1309"/>
         <source>Unable to connect to %1.</source>
         <translation type="unfinished"/>
     </message>
@@ -901,7 +906,7 @@ Současně tato akce zruší jakoukoli právě probíhající synchronizaci.</tr
         <translation>Tyto složky nebyly synchronizovány, protože jsou příliš velké, nebo se nacházejí na externích úložištích:</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1595"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1603"/>
         <source>There are folders that have grown in size beyond %1MB: %2</source>
         <translation>Jsou zde složky, jejichž velikost přesáhla %1MB: %2</translation>
     </message>
@@ -1098,34 +1103,34 @@ Současně tato akce zruší jakoukoli právě probíhající synchronizaci.</tr
         <translation>Pokračovat</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="461"/>
+        <location filename="../src/gui/application.cpp" line="504"/>
         <source>%1 accounts</source>
         <comment>number of accounts imported</comment>
         <translation>%1 účtů</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="462"/>
+        <location filename="../src/gui/application.cpp" line="505"/>
         <source>1 account</source>
         <translation>1 účet</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="464"/>
+        <location filename="../src/gui/application.cpp" line="507"/>
         <source>%1 folders</source>
         <comment>number of folders imported</comment>
         <translation>%1 složek</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="465"/>
+        <location filename="../src/gui/application.cpp" line="508"/>
         <source>1 folder</source>
         <translation>1 složka</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="467"/>
+        <location filename="../src/gui/application.cpp" line="510"/>
         <source>Legacy import</source>
         <translation>Import ze starého</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="468"/>
+        <location filename="../src/gui/application.cpp" line="511"/>
         <source>Imported %1 and %2 from a legacy desktop client.
 %3</source>
         <comment>number of accounts and folders imported. list of users.</comment>
@@ -1596,8 +1601,8 @@ Současně tato akce zruší jakoukoli právě probíhající synchronizaci.</tr
         <translation>Chyba serveru: odpověď PROPFIND není ve formátu XML!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="675"/>
-        <location filename="../src/libsync/discoveryphase.cpp" line="704"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="678"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="707"/>
         <source>Encrypted metadata setup error!</source>
         <translation type="unfinished"/>
     </message>
@@ -1633,31 +1638,6 @@ Současně tato akce zruší jakoukoli právě probíhající synchronizaci.</tr
 <context>
     <name>OCC::EditLocallyJob</name>
     <message>
-        <location filename="../src/gui/editlocallyjob.cpp" line="62"/>
-        <source>Invalid token received.</source>
-        <translation>Obdržen neplatný token.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/editlocallyjob.cpp" line="62"/>
-        <location filename="../src/gui/editlocallyjob.cpp" line="68"/>
-        <location filename="../src/gui/editlocallyjob.cpp" line="76"/>
-        <location filename="../src/gui/editlocallyjob.cpp" line="121"/>
-        <location filename="../src/gui/editlocallyjob.cpp" line="132"/>
-        <location filename="../src/gui/editlocallyjob.cpp" line="588"/>
-        <source>Please try again.</source>
-        <translation>Zkuste to znovu.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/editlocallyjob.cpp" line="68"/>
-        <source>Invalid file path was provided.</source>
-        <translation>Zadán neplatný popis umístění souboru.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/editlocallyjob.cpp" line="76"/>
-        <source>Could not find an account for local editing.</source>
-        <translation>Nedaří se nalézt účet pro lokální upravování.</translation>
-    </message>
-    <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="93"/>
         <location filename="../src/gui/editlocallyjob.cpp" line="204"/>
         <location filename="../src/gui/editlocallyjob.cpp" line="260"/>
@@ -1670,9 +1650,49 @@ Současně tato akce zruší jakoukoli právě probíhající synchronizaci.</tr
         <translation>Nepodařilo se spustit lokální upravování.</translation>
     </message>
     <message>
+        <location filename="../src/gui/editlocallyjob.cpp" line="466"/>
+        <source>An error occurred during setup.</source>
+        <translation>Došlo k chybě při nastavování.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/editlocallyjob.cpp" line="53"/>
+        <source>Could not find a file for local editing.Make sure its path is valid and it is synced locally.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/editlocallyjob.cpp" line="62"/>
+        <source>Invalid token received.</source>
+        <translation>Obdržen neplatný token.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/editlocallyjob.cpp" line="146"/>
+        <location filename="../src/gui/editlocallyjob.cpp" line="166"/>
+        <location filename="../src/gui/editlocallyjob.cpp" line="174"/>
+        <location filename="../src/gui/editlocallyjob.cpp" line="181"/>
+        <source>Could not find a file for local editing. Make sure it is not excluded via selective sync.</source>
+        <translation>Nepodařilo se nalézt soubor pro místní upravování. Ověřte, že není vyjmutý prostřednictvím selektivní synchronizace.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/editlocallyjob.cpp" line="68"/>
+        <source>Invalid file path was provided.</source>
+        <translation>Zadán neplatný popis umístění souboru.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/editlocallyjob.cpp" line="76"/>
+        <source>Could not find an account for local editing.</source>
+        <translation>Nedaří se nalézt účet pro lokální upravování.</translation>
+    </message>
+    <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="94"/>
         <source>An error occurred trying to verify the request to edit locally.</source>
         <translation>Při pokusu o ověření požadavku na lokální upravování došlo k chybě.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/editlocallyjob.cpp" line="205"/>
+        <location filename="../src/gui/editlocallyjob.cpp" line="524"/>
+        <location filename="../src/gui/editlocallyjob.cpp" line="533"/>
+        <source>An error occurred during data retrieval.</source>
+        <translation>Došlo k chybě při získávání dat.</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="121"/>
@@ -1687,30 +1707,10 @@ Současně tato akce zruší jakoukoli právě probíhající synchronizaci.</tr
         <translation>Nepodařilo se nalézt soubor pro místní upravování. Ověřte, že jeho popis umístění je platný a že je synchronizovaný lokálně.</translation>
     </message>
     <message>
-        <location filename="../src/gui/editlocallyjob.cpp" line="146"/>
-        <location filename="../src/gui/editlocallyjob.cpp" line="166"/>
-        <location filename="../src/gui/editlocallyjob.cpp" line="174"/>
-        <location filename="../src/gui/editlocallyjob.cpp" line="181"/>
-        <source>Could not find a file for local editing. Make sure it is not excluded via selective sync.</source>
-        <translation>Nepodařilo se nalézt soubor pro místní upravování. Ověřte, že není vyjmutý prostřednictvím selektivní synchronizace.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/editlocallyjob.cpp" line="205"/>
-        <location filename="../src/gui/editlocallyjob.cpp" line="524"/>
-        <location filename="../src/gui/editlocallyjob.cpp" line="533"/>
-        <source>An error occurred during data retrieval.</source>
-        <translation>Došlo k chybě při získávání dat.</translation>
-    </message>
-    <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="261"/>
         <location filename="../src/gui/editlocallyjob.cpp" line="558"/>
         <source>An error occurred trying to synchronise the file to edit locally.</source>
         <translation>Došlo k chybě při pokusu o synchronizaci souboru pro lokální upravování.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/editlocallyjob.cpp" line="466"/>
-        <source>An error occurred during setup.</source>
-        <translation>Došlo k chybě při nastavování.</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="512"/>
@@ -1733,6 +1733,16 @@ Současně tato akce zruší jakoukoli právě probíhající synchronizaci.</tr
         <translation>%1 se nedaří otevřít</translation>
     </message>
     <message>
+        <location filename="../src/gui/editlocallyjob.cpp" line="62"/>
+        <location filename="../src/gui/editlocallyjob.cpp" line="68"/>
+        <location filename="../src/gui/editlocallyjob.cpp" line="76"/>
+        <location filename="../src/gui/editlocallyjob.cpp" line="121"/>
+        <location filename="../src/gui/editlocallyjob.cpp" line="132"/>
+        <location filename="../src/gui/editlocallyjob.cpp" line="588"/>
+        <source>Please try again.</source>
+        <translation>Zkuste to znovu.</translation>
+    </message>
+    <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="669"/>
         <source>File %1 already locked.</source>
         <translation>Soubor %1 už je uzamčen.</translation>
@@ -1752,6 +1762,54 @@ Současně tato akce zruší jakoukoli právě probíhající synchronizaci.</tr
         <location filename="../src/gui/editlocallyjob.cpp" line="689"/>
         <source>File %1 could not be locked.</source>
         <translation>Soubor %1 se nepodařilo uzamknout.</translation>
+    </message>
+</context>
+<context>
+    <name>OCC::EditLocallyManager</name>
+    <message>
+        <location filename="../src/gui/editlocallymanager.cpp" line="118"/>
+        <source>Could not validate the request to open a file from server.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/editlocallymanager.cpp" line="119"/>
+        <source>Please try again.</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>OCC::EditLocallyVerificationJob</name>
+    <message>
+        <location filename="../src/gui/editlocallyverificationjob.cpp" line="92"/>
+        <source>Invalid token received.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/editlocallyverificationjob.cpp" line="92"/>
+        <location filename="../src/gui/editlocallyverificationjob.cpp" line="99"/>
+        <location filename="../src/gui/editlocallyverificationjob.cpp" line="105"/>
+        <source>Please try again.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/editlocallyverificationjob.cpp" line="99"/>
+        <source>Invalid file path was provided.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/editlocallyverificationjob.cpp" line="105"/>
+        <source>Could not find an account for local editing.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/editlocallyverificationjob.cpp" line="129"/>
+        <source>Could not start editing locally.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/editlocallyverificationjob.cpp" line="130"/>
+        <source>An error occurred trying to verify the request to edit locally.</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -2049,29 +2107,64 @@ Toto může být způsobeno problémem s OpenSSL knihovnami.</translation>
         <translation>Pokud to chcete stáhnout, jděte do nastavení a vyberte to.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1381"/>
+        <location filename="../src/gui/folder.cpp" line="1396"/>
         <source>A folder has surpassed the set folder size limit of %1MB: %2.
 %3</source>
         <translation>Složka překročila nastavený limit velikosti %1MB: %2.
 %3</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1392"/>
+        <location filename="../src/gui/folder.cpp" line="1407"/>
         <source>Keep syncing</source>
         <translation>Synchronizovat</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1400"/>
+        <location filename="../src/gui/folder.cpp" line="1411"/>
+        <source>All files in the sync folder &quot;%1&quot; folder were deleted on the server.
+These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
+If you decide to restore the files, they will be re-synced with the server if you have rights to do so.
+If you decide to delete the files, they will be unavailable to you, unless you are the owner.</source>
+        <translation>Všechny soubory v synchronizované složce „%1“ byly na serveru smazány.
+Tyto soubory budou smazány i ve vaší místní synchronizované složce a nebudou tedy dostupné, pokud nemáte právo obnovovat.
+Pokud se rozhodnete soubory ponechat, budou opět synchronizovány se serverem, pokud k tomu máte práva.
+Pokud se rozhodnete soubory smazat, budou vám nedostupné, pokud nejste jejich vlastníkem.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/folder.cpp" line="1415"/>
         <source>Stop syncing</source>
         <translation>Zastavit synchronizaci</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1411"/>
+        <location filename="../src/gui/folder.cpp" line="1416"/>
+        <source>All the files in your local sync folder &quot;%1&quot; were deleted. These deletes will be synchronized with your server, making such files unavailable unless restored.
+Are you sure you want to sync those actions with the server?
+If this was an accident and you decide to keep your files, they will be re-synced from the server.</source>
+        <translation>Všechny soubory v místní synchronizované složce „%1“ byly smazány. Tyto soubory budou smazány i v synchronizované složce na serveru a nebudou tedy dostupné, dokud nebudou obnovené.
+Opravdu chcete tyto změny provést i na serveru?
+Pokud to byla pouze chyba a chcete si tyto soubory ponechat, budou ze serveru znovu synchronizovány.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/folder.cpp" line="1420"/>
+        <source>Remove All Files?</source>
+        <translation>Odebrat veškeré soubory?</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/folder.cpp" line="1424"/>
+        <source>Remove all files</source>
+        <translation>Odebrat veškeré soubory</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/folder.cpp" line="1425"/>
+        <source>Keep files</source>
+        <translation>Ponechat soubory</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/folder.cpp" line="1426"/>
         <source>The folder %1 has surpassed the set folder size limit of %2MB.</source>
         <translation>Složka %1 překročila nastavený limit velikosti %2MB.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1412"/>
+        <location filename="../src/gui/folder.cpp" line="1427"/>
         <source>Would you like to stop syncing this folder?</source>
         <translation>Chcete ji přestat synchronizovat?</translation>
     </message>
@@ -2099,44 +2192,38 @@ To znamená, že se může stávat, že synchronizační klient nebude místní 
 %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1533"/>
+        <location filename="../src/gui/folder.cpp" line="1549"/>
         <source>Virtual file download failed with code &quot;%1&quot;, status &quot;%2&quot; and error message &quot;%3&quot;</source>
         <translation>Stažení virtuálního souboru se nezdařilo s kódem „%1“, stav „%2“ a chybové hlášení „%3“</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1411"/>
-        <source>All files in the sync folder &quot;%1&quot; folder were deleted on the server.
-These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
-If you decide to restore the files, they will be re-synced with the server if you have rights to do so.
-If you decide to delete the files, they will be unavailable to you, unless you are the owner.</source>
-        <translation>Všechny soubory v synchronizované složce „%1“ byly na serveru smazány.
-Tyto soubory budou smazány i ve vaší místní synchronizované složce a nebudou tedy dostupné, pokud nemáte právo obnovovat.
-Pokud se rozhodnete soubory ponechat, budou opět synchronizovány se serverem, pokud k tomu máte práva.
-Pokud se rozhodnete soubory smazat, budou vám nedostupné, pokud nejste jejich vlastníkem.</translation>
+        <location filename="../src/gui/folder.cpp" line="1642"/>
+        <source>All files in the server folder &quot;%1&quot; were deleted.
+
+If you restore the files, they will be uploaded again to the server.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1416"/>
-        <source>All the files in your local sync folder &quot;%1&quot; were deleted. These deletes will be synchronized with your server, making such files unavailable unless restored.
-Are you sure you want to sync those actions with the server?
-If this was an accident and you decide to keep your files, they will be re-synced from the server.</source>
-        <translation>Všechny soubory v místní synchronizované složce „%1“ byly smazány. Tyto soubory budou smazány i v synchronizované složce na serveru a nebudou tedy dostupné, dokud nebudou obnovené.
-Opravdu chcete tyto změny provést i na serveru?
-Pokud to byla pouze chyba a chcete si tyto soubory ponechat, budou ze serveru znovu synchronizovány.</translation>
+        <location filename="../src/gui/folder.cpp" line="1643"/>
+        <source>All files in the local folder &quot;%1&quot; were deleted.
+
+If you restore the files, they will be downloaded again from the server.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1420"/>
-        <source>Remove All Files?</source>
-        <translation>Odebrat veškeré soubory?</translation>
+        <location filename="../src/gui/folder.cpp" line="1644"/>
+        <source>Remove all files?</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1424"/>
-        <source>Remove all files</source>
-        <translation>Odebrat veškeré soubory</translation>
+        <location filename="../src/gui/folder.cpp" line="1648"/>
+        <source>Proceed to remove all files</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1425"/>
-        <source>Keep files</source>
-        <translation>Ponechat soubory</translation>
+        <location filename="../src/gui/folder.cpp" line="1649"/>
+        <source>Restore files</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -2347,6 +2434,16 @@ Pokud to byla pouze chyba a chcete si tyto soubory ponechat, budou ze serveru zn
         <translation>Synchronizuje se s místní složkou</translation>
     </message>
     <message>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="322"/>
+        <source>Synchronizing virtual files in local folder</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="324"/>
+        <source>Synchronizing files in local folder</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="993"/>
         <source>Checking for changes in remote &quot;%1&quot;</source>
         <translation>Zjišťují se změny ve vzdáleném „%1“</translation>
@@ -2362,10 +2459,15 @@ Pokud to byla pouze chyba a chcete si tyto soubory ponechat, budou ze serveru zn
         <translation>Slučování změn</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1066"/>
-        <source>Syncing %1</source>
-        <extracomment>Example text: &quot;Syncing 'foo.txt', 'bar.txt'&quot;</extracomment>
-        <translation>Synchronizuje se %1</translation>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1009"/>
+        <source>Syncing local and remote changes</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1059"/>
+        <source>%1 %2 …</source>
+        <extracomment>Example text: &quot;Uploading foobar.png (1MB of 2MB) time left 2 minutes at a rate of 24Kb/s&quot; Example text: &quot;Syncing 'foo.txt', 'bar.txt'&quot;</extracomment>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1068"/>
@@ -2374,10 +2476,21 @@ Pokud to byla pouze chyba a chcete si tyto soubory ponechat, budou ze serveru zn
         <translation>, </translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1072"/>
-        <source>download %1/s</source>
-        <extracomment>Example text: &quot;download 24Kb/s&quot; (%1 is replaced by 24Kb (translated))</extracomment>
-        <translation>stahování %1/s</translation>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1191"/>
+        <source>Waiting …</source>
+        <translation>Čeká se…</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1065"/>
+        <source>Download %1/s</source>
+        <extracomment>Example text: &quot;Download 24Kb/s&quot; (%1 is replaced by 24Kb (translated))</extracomment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1066"/>
+        <source>Syncing %1</source>
+        <extracomment>Example text: &quot;Syncing 'foo.txt', 'bar.txt'&quot;</extracomment>
+        <translation>Synchronizuje se %1</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1074"/>
@@ -2385,15 +2498,27 @@ Pokud to byla pouze chyba a chcete si tyto soubory ponechat, budou ze serveru zn
         <translation>↓ %1/s</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1082"/>
-        <source>upload %1/s</source>
-        <extracomment>Example text: &quot;upload 24Kb/s&quot; (%1 is replaced by 24Kb (translated))</extracomment>
-        <translation>odesílání %1/s</translation>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1072"/>
+        <source>download %1/s</source>
+        <extracomment>Example text: &quot;download 24Kb/s&quot; (%1 is replaced by 24Kb (translated))</extracomment>
+        <translation>stahování %1/s</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1075"/>
+        <source>Upload %1/s</source>
+        <extracomment>Example text: &quot;Upload 24Kb/s&quot; (%1 is replaced by 24Kb (translated))</extracomment>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1084"/>
         <source>↑ %1/s</source>
         <translation>↑ %1/s</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1082"/>
+        <source>upload %1/s</source>
+        <extracomment>Example text: &quot;upload 24Kb/s&quot; (%1 is replaced by 24Kb (translated))</extracomment>
+        <translation>odesílání %1/s</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1090"/>
@@ -2425,14 +2550,19 @@ Pokud to byla pouze chyba a chcete si tyto soubory ponechat, budou ze serveru zn
         <translation>%1 z %2, soubor %3 z %4</translation>
     </message>
     <message>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1131"/>
+        <source>File %1 of %2</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1136"/>
         <source>file %1 of %2</source>
         <translation>soubor %1 z %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1191"/>
-        <source>Waiting …</source>
-        <translation>Čeká se…</translation>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1184"/>
+        <source>About to start syncing</source>
+        <translation type="unfinished"/>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folderstatusmodel.cpp" line="1193"/>
@@ -2737,21 +2867,9 @@ Pokud to byla pouze chyba a chcete si tyto soubory ponechat, budou ze serveru zn
         <translation>Klient pro počítač x.x.x</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="260"/>
+        <location filename="../src/gui/generalsettings.ui" line="248"/>
         <source>Update channel</source>
         <translation>Kanál aktualizací</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.ui" line="151"/>
-        <location filename="../src/gui/generalsettings.cpp" line="327"/>
-        <source>stable</source>
-        <translation>stabilní</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.ui" line="156"/>
-        <location filename="../src/gui/generalsettings.cpp" line="329"/>
-        <source>beta</source>
-        <translation>vývojové</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="183"/>
@@ -2759,27 +2877,22 @@ Pokud to byla pouze chyba a chcete si tyto soubory ponechat, budou ze serveru zn
         <translation>&amp;Restartovat a aktualizovat</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="284"/>
-        <source>Show sync folders in &amp;Explorer&apos;s Navigation Pane</source>
-        <translation>Zobrazit synchronizované složky v podokně navigac&amp;e Průzkumníka</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.ui" line="323"/>
+        <location filename="../src/gui/generalsettings.ui" line="301"/>
         <source>&amp;Automatically check for updates</source>
         <translation>&amp;Automaticky zjišťovat dostupnost aktualizací</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="339"/>
+        <location filename="../src/gui/generalsettings.ui" line="317"/>
         <source>Check Now</source>
         <translation>Zkontrolovat nyní</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="363"/>
+        <location filename="../src/gui/generalsettings.ui" line="344"/>
         <source>Usage Documentation</source>
         <translation>Dokumentace k používání</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="370"/>
+        <location filename="../src/gui/generalsettings.ui" line="351"/>
         <source>Legal Notice</source>
         <translation>Právní upozornění</translation>
     </message>
@@ -2794,22 +2907,27 @@ Pokud to byla pouze chyba a chcete si tyto soubory ponechat, budou ze serveru zn
         <translation>Pro oznamovací oblast systémového panelu</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="420"/>
+        <location filename="../src/gui/generalsettings.ui" line="284"/>
+        <source>Show sync folders in &amp;Explorer&apos;s Navigation Pane</source>
+        <translation>Zobrazit synchronizované složky v podokně navigac&amp;e Průzkumníka</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.ui" line="398"/>
         <source>Use &amp;monochrome icons</source>
         <translation>Používat čer&amp;nobílé ikony</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="427"/>
+        <location filename="../src/gui/generalsettings.ui" line="405"/>
         <source>&amp;Launch on system startup</source>
         <translation>&amp;Spuštět při startu systému</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="434"/>
+        <location filename="../src/gui/generalsettings.ui" line="412"/>
         <source>Show server &amp;notifications</source>
         <translation>Zobrazovat &amp;upozornění ze serveru</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="441"/>
+        <location filename="../src/gui/generalsettings.ui" line="419"/>
         <source>Show call notifications</source>
         <translation>Zobrazovat upozornění na hovory</translation>
     </message>
@@ -2829,6 +2947,18 @@ Pokud to byla pouze chyba a chcete si tyto soubory ponechat, budou ze serveru zn
         <translation>Automatické spouštění nemůžete vypnout, protože je celosystémově zapnuté pro všechny uživatele.</translation>
     </message>
     <message>
+        <location filename="../src/gui/generalsettings.ui" line="151"/>
+        <location filename="../src/gui/generalsettings.cpp" line="327"/>
+        <source>stable</source>
+        <translation>stabilní</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.ui" line="156"/>
+        <location filename="../src/gui/generalsettings.cpp" line="329"/>
+        <source>beta</source>
+        <translation>vývojové</translation>
+    </message>
+    <message>
         <location filename="../src/gui/generalsettings.cpp" line="350"/>
         <source>Change update channel?</source>
         <translation>Změnit kanál aktualizací?</translation>
@@ -2841,6 +2971,38 @@ Note that this selects only what pool upgrades are taken from, and that there ar
         <translation>Kanál aktualizací určuje jaká verze klienta bude nabízena k instalaci. „Stabilní“ kanál obsahuje pouze verze, které jsou považované za spolehlivé, zatímco verze v kanálu „vývojové“ mohou obsahovat nové funkce a opravy chyb, ale ještě nebyly důkladně otestovány.
 
 Poznamenejme, že je možné přejít na novější verzi, ale není možné se vrátit ke starší. To znamená, že návrat z beta kanálu ke stabilnímu obvykle potrvá, protože se čeká, až bude nabídnuta stabilní verze klienta novější, než nainstalovaná vývojová verze.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.cpp" line="359"/>
+        <source>daily</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.cpp" line="363"/>
+        <source>enterprise</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.cpp" line="391"/>
+        <source>- enterprise: contains stable versions for customers.
+</source>
+        <comment>description of enterprise update channel for enterprise customers</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.cpp" line="396"/>
+        <source>Changing update channel?</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.cpp" line="397"/>
+        <source>The channel determines which upgrades will be offered to install:
+- stable: contains tested versions considered reliable
+- beta: contains versions with new features that may not be tested thoroughly
+- daily: contains versions created daily only for testing and development
+%1
+Downgrading versions is not possible immediately: changing from beta to stable means waiting for the new stable version.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="364"/>
@@ -3173,6 +3335,39 @@ Poznamenejme, že použití jakékoli volby příkazového řádku má před tí
     </message>
 </context>
 <context>
+    <name>OCC::Mac::FileProviderEditLocallyJob</name>
+    <message>
+        <location filename="../src/gui/macOS/fileprovidereditlocallyjob.cpp" line="42"/>
+        <source>Could not start editing locally.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/macOS/fileprovidereditlocallyjob.cpp" line="42"/>
+        <source>An error occurred during setup.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/macOS/fileprovidereditlocallyjob.cpp" line="48"/>
+        <source>Could not find a file for local editing.Make sure its path is valid and it is synced locally.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/macOS/fileprovidereditlocallyjob.cpp" line="81"/>
+        <source>Could not get file id.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/macOS/fileprovidereditlocallyjob.cpp" line="89"/>
+        <source>Could not get file identifier.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/macOS/fileprovidereditlocallyjob.cpp" line="89"/>
+        <source>The file identifier is empty.</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>OCC::NSISUpdater</name>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="408"/>
@@ -3233,11 +3428,6 @@ Poznamenejme, že použití jakékoli volby příkazového řádku má před tí
         <translation>Bez proxy</translation>
     </message>
     <message>
-        <location filename="../src/gui/networksettings.ui" line="48"/>
-        <source>No proxy</source>
-        <translation>Bez proxy</translation>
-    </message>
-    <message>
         <location filename="../src/gui/networksettings.ui" line="49"/>
         <source>Use system proxy</source>
         <translation>Použít systémovou proxy</translation>
@@ -3246,11 +3436,6 @@ Poznamenejme, že použití jakékoli volby příkazového řádku má před tí
         <location filename="../src/gui/networksettings.ui" line="59"/>
         <source>Specify proxy manually as</source>
         <translation>Zadat proxy server ručně jako</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/networksettings.ui" line="84"/>
-        <source>Manually specify proxy</source>
-        <translation>Zadat proxy ručně</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="80"/>
@@ -3268,6 +3453,23 @@ Poznamenejme, že použití jakékoli volby příkazového řádku má před tí
         <translation>Poznámka: nastavení proxy nemá žádný vliv na účty na právě používaném počítači</translation>
     </message>
     <message>
+        <location filename="../src/gui/networksettings.ui" line="246"/>
+        <source>Manually specify proxy</source>
+        <translation>Zadat proxy ručně</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/networksettings.ui" line="256"/>
+        <source>No proxy</source>
+        <translation>Bez proxy</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/networksettings.ui" line="282"/>
+        <location filename="../src/gui/networksettings.ui" line="397"/>
+        <location filename="../src/gui/networksettings.ui" line="507"/>
+        <source>Use global settings</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/networksettings.ui" line="197"/>
         <source>Download Bandwidth</source>
         <translation>Rychlost stahování</translation>
@@ -3277,6 +3479,18 @@ Poznamenejme, že použití jakékoli volby příkazového řádku má před tí
         <location filename="../src/gui/networksettings.ui" line="299"/>
         <source>No limit</source>
         <translation>Bez omezení</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/networksettings.ui" line="248"/>
+        <location filename="../src/gui/networksettings.ui" line="327"/>
+        <source>KBytes/s</source>
+        <translation>KBajtů/s</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/networksettings.ui" line="203"/>
+        <location filename="../src/gui/networksettings.ui" line="282"/>
+        <source>Limit to</source>
+        <translation>Omezit na</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="257"/>
@@ -3289,18 +3503,6 @@ Poznamenejme, že použití jakékoli volby příkazového řádku má před tí
         <location filename="../src/gui/networksettings.ui" line="292"/>
         <source>Limit automatically</source>
         <translation>Omezovat automaticky</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/networksettings.ui" line="203"/>
-        <location filename="../src/gui/networksettings.ui" line="282"/>
-        <source>Limit to</source>
-        <translation>Omezit na</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/networksettings.ui" line="248"/>
-        <location filename="../src/gui/networksettings.ui" line="327"/>
-        <source>KBytes/s</source>
-        <translation>KBajtů/s</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="276"/>
@@ -3344,6 +3546,11 @@ Poznamenejme, že použití jakékoli volby příkazového řádku má před tí
         <location filename="../src/gui/updater/ocupdater.cpp" line="108"/>
         <source>A new update for %1 is about to be installed. The updater may ask for additional privileges during the process. Your computer may reboot to complete the installation.</source>
         <translation>Bude instalována nová aktualizace pro %1. V průběhu aktualizace můžete být požádáni o dodatečná oprávnění. Váš počítač může být třeba pro dokončení aktualizace restartovat.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="152"/>
+        <source>Downloading %1 …</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="152"/>
@@ -3806,6 +4013,34 @@ Toto je nový, experimentální režim. Pokud se jej rozhodnete používat, pros
         <translation>Název souboru je na tomto souborovém systému rezervovaným názvem (nelze ho použít).</translation>
     </message>
     <message>
+        <location filename="../src/libsync/discovery.cpp" line="358"/>
+        <source>Folder</source>
+        <comment>name of folder entity to use when warning about invalid name</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/discovery.cpp" line="358"/>
+        <source>File</source>
+        <comment>name of folder entity to use when warning about invalid name</comment>
+        <translation>Soubor</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/discovery.cpp" line="360"/>
+        <source>%1 name containing the character &quot;%2&quot; is not supported on this file system.</source>
+        <comment>folder or file impossible to sync due to an invalid name, placeholders will be file or folder and the invalid character</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/discovery.cpp" line="362"/>
+        <source>%1 name contains at least one invalid character</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/discovery.cpp" line="364"/>
+        <source>%1 name is a reserved name on this file system.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/libsync/discovery.cpp" line="361"/>
         <source>Filename contains trailing spaces.</source>
         <translation>Název souboru končí na mezery.</translation>
@@ -3886,7 +4121,7 @@ Toto je nový, experimentální režim. Pokud se jej rozhodnete používat, pros
         <translation>Není možné provést synchronizaci z důvodu neplatného času změny</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1040"/>
+        <location filename="../src/libsync/discovery.cpp" line="1047"/>
         <source>Could not upload file, because it is open in &quot;%1&quot;.</source>
         <translation type="unfinished"/>
     </message>
@@ -3959,8 +4194,8 @@ Toto je nový, experimentální režim. Pokud se jej rozhodnete používat, pros
         <translation>Chyba při aktualizaci metadat z důvodu neplatného času změny</translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1470"/>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1495"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1481"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1506"/>
         <source>The folder %1 cannot be made read-only: %2</source>
         <translation type="unfinished"/>
     </message>
@@ -4082,7 +4317,7 @@ Toto je nový, experimentální režim. Pokud se jej rozhodnete používat, pros
         <translation>Nepodařilo se vytvořit složku %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="229"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="228"/>
         <source>The folder %1 cannot be made read-only: %2</source>
         <translation type="unfinished"/>
     </message>
@@ -4112,6 +4347,11 @@ Toto je nový, experimentální režim. Pokud se jej rozhodnete používat, pros
 </context>
 <context>
     <name>OCC::PropagateLocalRename</name>
+    <message>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="311"/>
+        <source>Folder %1 cannot be renamed because of a local file or folder name clash!</source>
+        <translation type="unfinished"/>
+    </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="254"/>
         <source>File %1 downloaded but it resulted in a local file name clash!</source>
@@ -4479,7 +4719,7 @@ Toto je nový, experimentální režim. Pokud se jej rozhodnete používat, pros
     <message>
         <location filename="../src/gui/sharemanager.cpp" line="684"/>
         <source>Error</source>
-        <translation type="unfinished"/>
+        <translation>Chyba</translation>
     </message>
 </context>
 <context>
@@ -4510,7 +4750,7 @@ Toto je nový, experimentální režim. Pokud se jej rozhodnete používat, pros
         <translation>Bezpečný příjem souboru</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/sharemodel.cpp" line="856"/>
+        <location filename="../src/gui/filedetails/sharemodel.cpp" line="862"/>
         <source>Could not find local folder for %1</source>
         <translation type="unfinished"/>
     </message>
@@ -5032,13 +5272,13 @@ Server odpověděl chybou: %2</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="159"/>
-        <source>Preparing sync</source>
-        <translation>Příprava synchronizace</translation>
+        <source>Checking folder changes</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/syncstatussummary.cpp" line="155"/>
-        <source>Syncing</source>
-        <translation>Synchronizuje se</translation>
+        <location filename="../src/gui/tray/syncstatussummary.cpp" line="161"/>
+        <source>Syncing changes</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="162"/>
@@ -5054,6 +5294,11 @@ Server odpověděl chybou: %2</translation>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="170"/>
         <source>See below for warnings</source>
         <translation>Varování viz níže</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/syncstatussummary.cpp" line="155"/>
+        <source>Syncing</source>
+        <translation>Synchronizuje se</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="218"/>
@@ -5134,16 +5379,16 @@ Server odpověděl chybou: %2</translation>
 <context>
     <name>OCC::Theme</name>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="553"/>
-        <source>&lt;p&gt;%1 Desktop Client&lt;/p&gt;&lt;p&gt;Version %1. For more information please click &lt;a href=&apos;%2&apos;&gt;here&lt;/a&gt;.&lt;/p&gt;</source>
-        <extracomment>Example text: &quot;&lt;p&gt;Nextcloud Desktop Client&lt;/p&gt;&quot; (%1 is the application name)</extracomment>
-        <translation>&lt;p&gt;Klient %1 pro počítač&lt;/p&gt;&lt;p&gt;verze %1. Další informace získáte kliknutím &lt;a href=&apos;%2&apos;&gt;sem&lt;/a&gt;.&lt;/p&gt;</translation>
-    </message>
-    <message>
         <location filename="../src/libsync/theme.cpp" line="554"/>
         <source>&lt;p&gt;%1 Desktop Client&lt;/p&gt;</source>
         <extracomment>Example text: &quot;&lt;p&gt;Nextcloud Desktop Client&lt;/p&gt;&quot; (%1 is the application name)</extracomment>
         <translation>&lt;p&gt;%1 klient pro počítač&lt;/p&gt;</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/theme.cpp" line="559"/>
+        <source>&lt;p&gt;%1 Desktop Client&lt;/p&gt;&lt;p&gt;Version %1. For more information please click &lt;a href=&apos;%2&apos;&gt;here&lt;/a&gt;.&lt;/p&gt;</source>
+        <extracomment>Example text: &quot;&lt;p&gt;Nextcloud Desktop Client&lt;/p&gt;&quot; (%1 is the application name)</extracomment>
+        <translation>&lt;p&gt;Klient %1 pro počítač&lt;/p&gt;&lt;p&gt;verze %1. Další informace získáte kliknutím &lt;a href=&apos;%2&apos;&gt;sem&lt;/a&gt;.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="561"/>
@@ -5151,7 +5396,7 @@ Server odpověděl chybou: %2</translation>
         <translation>&lt;p&gt;&lt;small&gt;Používá zásuvný modul pro virtuální soubory: %1&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="570"/>
+        <location filename="../src/libsync/theme.cpp" line="576"/>
         <source>&lt;p&gt;%1 desktop client %2&lt;/p&gt;</source>
         <extracomment>Example text: &quot;&lt;p&gt;Nextcloud Desktop Client&lt;/p&gt;&quot; (%1 is the application name)</extracomment>
         <translation>&lt;p&gt;%1 klient pro počítač&lt;/p&gt;</translation>
@@ -5236,7 +5481,7 @@ Server odpověděl chybou: %2</translation>
     </message>
     <message>
         <location filename="../src/libsync/updatee2eefolderusersmetadatajob.cpp" line="118"/>
-        <source>Could not add or remove a folder user %1, for folder %2</source>
+        <source>Could not add or remove user %1 to access folder %2</source>
         <translation type="unfinished"/>
     </message>
     <message>
@@ -5257,6 +5502,16 @@ Server odpověděl chybou: %2</translation>
         <location filename="../src/gui/tray/usermodel.cpp" line="838"/>
         <source>Resolve conflict</source>
         <translation>Vyřešit konflikt</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1053"/>
+        <source>Open Nextcloud Assistant in browser</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1053"/>
+        <source>Open Nextcloud Talk in browser</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -5591,14 +5846,29 @@ Server odpověděl chybou: %2</translation>
         <translation>Chyba při synchronizaci</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="401"/>
-        <source>There are no sync folders configured.</source>
-        <translation>Nejsou nastavené žádné složky pro synchronizaci.</translation>
-    </message>
-    <message>
         <location filename="../src/gui/owncloudgui.cpp" line="402"/>
         <source>No sync folders configured</source>
         <translation>Nejsou nastavené žádné složky pro synchronizaci</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/owncloudgui.cpp" line="436"/>
+        <source>macOS VFS for %1: Sync is running.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/owncloudgui.cpp" line="439"/>
+        <source>macOS VFS for %1: Last sync was successful.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/owncloudgui.cpp" line="442"/>
+        <source>macOS VFS for %1: A problem was encountered.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/owncloudgui.cpp" line="401"/>
+        <source>There are no sync folders configured.</source>
+        <translation>Nejsou nastavené žádné složky pro synchronizaci.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="467"/>
@@ -5753,6 +6023,16 @@ Server odpověděl chybou: %2</translation>
         <location filename="../src/gui/foldercreationdialog.cpp" line="41"/>
         <source>New folder</source>
         <translation>Nová složka</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.cpp" line="117"/>
+        <source>Failed to create debug archive</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.cpp" line="118"/>
+        <source>Could not create debug archive in selected location!</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="763"/>
@@ -6270,7 +6550,7 @@ Server odpověděl chybou: %2</translation>
     <message>
         <location filename="../src/common/utility.cpp" line="116"/>
         <source>%L1 TB</source>
-        <translation type="unfinished"/>
+        <translation>%L1 TB</translation>
     </message>
     <message>
         <location filename="../src/common/utility.cpp" line="136"/>
@@ -6406,7 +6686,7 @@ Server odpověděl chybou: %2</translation>
         <translation>Přepínání účtů a nabídka nastavení</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="631"/>
+        <location filename="../src/gui/tray/Window.qml" line="615"/>
         <source>Open local or group folders</source>
         <translation>Otevřít místní nebo skupinové složky</translation>
     </message>
@@ -6431,7 +6711,7 @@ Server odpověděl chybou: %2</translation>
         <translation>Seznam výsledků sjednoceného vyhledávání</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="894"/>
+        <location filename="../src/gui/tray/Window.qml" line="896"/>
         <source>New activities</source>
         <translation>Nové aktivity</translation>
     </message>
@@ -6452,7 +6732,7 @@ Server odpověděl chybou: %2</translation>
 <context>
     <name>nextcloudTheme::aboutInfo()</name>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="533"/>
+        <location filename="../src/libsync/theme.cpp" line="539"/>
         <source>&lt;p&gt;&lt;small&gt;Built from Git revision &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; on %3, %4 using Qt %5, %6&lt;/small&gt;&lt;/p&gt;</source>
         <translation>&lt;p&gt;&lt;small&gt;Sestaveno z Git revize &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; na %3, %4 s použitím Qt %5, %6&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
@@ -6520,6 +6800,11 @@ Server odpověděl chybou: %2</translation>
         <translation>Místní metadata aktualizována</translation>
     </message>
     <message>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="60"/>
+        <source>Updated local virtual files metadata</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="61"/>
         <location filename="../src/libsync/progressdispatcher.cpp" line="63"/>
         <source>Unknown</source>
@@ -6532,13 +6817,28 @@ Server odpověděl chybou: %2</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="77"/>
+        <source>Downloading</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="77"/>
         <source>uploading</source>
         <translation>odesílání</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="79"/>
+        <source>Uploading</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="79"/>
         <source>deleting</source>
         <translation>mazání</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="81"/>
+        <source>Deleting</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="82"/>
@@ -6547,8 +6847,18 @@ Server odpověděl chybou: %2</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="84"/>
+        <source>Moving</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="84"/>
         <source>ignoring</source>
         <translation>ignoruje se</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="86"/>
+        <source>Ignoring</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="87"/>
@@ -6560,6 +6870,16 @@ Server odpověděl chybou: %2</translation>
         <source>updating local metadata</source>
         <translation>aktualizují se místní metadata</translation>
     </message>
+    <message>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="91"/>
+        <source>Updating local metadata</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="93"/>
+        <source>Updating local virtual files metadata</source>
+        <translation type="unfinished"/>
+    </message>
 </context>
 <context>
     <name>theme</name>
@@ -6569,9 +6889,19 @@ Server odpověděl chybou: %2</translation>
         <translation>Nedefinovaný stav</translation>
     </message>
     <message>
+        <location filename="../src/libsync/theme.cpp" line="85"/>
+        <source>Sync status is unknown</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/libsync/theme.cpp" line="87"/>
         <source>Waiting to start sync</source>
         <translation>Čeká se na zahájení synchronizace</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/theme.cpp" line="88"/>
+        <source>Waiting to start syncing</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="90"/>
@@ -6584,9 +6914,19 @@ Server odpověděl chybou: %2</translation>
         <translation>Synchronizace úspěšná</translation>
     </message>
     <message>
+        <location filename="../src/libsync/theme.cpp" line="94"/>
+        <source>Sync was successful</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/libsync/theme.cpp" line="96"/>
         <source>Sync Success, some files were ignored.</source>
         <translation>Synchronizace úspěšná, některé soubory byly ignorovány.</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/theme.cpp" line="97"/>
+        <source>Sync was successful but some files were ignored</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="99"/>
@@ -6594,9 +6934,19 @@ Server odpověděl chybou: %2</translation>
         <translation>Chyba synchronizace</translation>
     </message>
     <message>
+        <location filename="../src/libsync/theme.cpp" line="100"/>
+        <source>Error occurred during sync</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/libsync/theme.cpp" line="102"/>
         <source>Setup Error</source>
         <translation>Chyba nastavení</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/theme.cpp" line="103"/>
+        <source>Error occurred during setup</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="105"/>
@@ -6607,6 +6957,11 @@ Server odpověděl chybou: %2</translation>
         <location filename="../src/libsync/theme.cpp" line="108"/>
         <source>Aborting …</source>
         <translation>Přerušuje se…</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/theme.cpp" line="109"/>
+        <source>Stopping sync</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="111"/>

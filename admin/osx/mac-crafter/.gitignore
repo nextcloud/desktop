@@ -1,0 +1,13 @@
+.DS_Store
+/.build
+/Packages
+Package.resolved
+xcuserdata/
+DerivedData/
+.swiftpm/configuration/registries.json
+.swiftpm/xcode/package.xcworkspace/contents.xcworkspacedata
+.netrc
+build/
+build\downloads
+product/
+wget-log*

@@ -111,14 +111,14 @@ void Logger::postGuiMessage(const QString &title, const QString &message)
 bool Logger::isLoggingToFile() const
 {
     QMutexLocker lock(&_mutex);
-    return _logstream;
+    return !_logstream.isNull();
 }
 
 void Logger::doLog(QtMsgType type, const QMessageLogContext &ctx, const QString &message)
 {
     static long long int linesCounter = 0;
     const auto &msg = qFormatLogMessage(type, ctx, message);
-#if defined(Q_OS_WIN) && defined(QT_DEBUG)
+#if defined Q_OS_WIN && (defined NEXTCLOUD_DEV || defined QT_DEBUG)
     // write logs to Output window of Visual Studio
     {
         QString prefix;
@@ -359,7 +359,6 @@ void Logger::setLogFileNoLock(const QString &name)
     }
 
     _logstream.reset(new QTextStream(&_logFile));
-    _logstream->setCodec(QTextCodec::codecForName("UTF-8"));
 }
 
 void Logger::enterNextLogFile()

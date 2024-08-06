@@ -20,6 +20,9 @@
 #include "accountfwd.h"
 #include "pushnotifications.h"
 #include "pushnotificationstestutils.h"
+#include "logger.h"
+
+#include <QStandardPaths>
 
 #define RETURN_FALSE_ON_FAIL(expr) \
     if (!(expr)) {                 \
@@ -65,6 +68,14 @@ class TestPushNotifications : public QObject
     Q_OBJECT
 
 private slots:
+    void initTestCase()
+    {
+        OCC::Logger::instance()->setLogFlush(true);
+        OCC::Logger::instance()->setLogDebug(true);
+
+        QStandardPaths::setTestModeEnabled(true);
+    }
+
     void testTryReconnect_capabilitesReportPushNotificationsAvailable_reconnectForEver()
     {
         FakeWebSocketServer fakeServer;

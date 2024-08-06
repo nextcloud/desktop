@@ -16,11 +16,11 @@
 #import <FileProvider/FileProvider.h>
 
 #include <QLoggingCategory>
+#include <QRegularExpression>
 
 #include "config.h"
 #include "fileproviderdomainmanager.h"
 #include "fileprovidersettingscontroller.h"
-#include "pushnotifications.h"
 
 #include "gui/accountmanager.h"
 #include "libsync/account.h"
@@ -32,7 +32,8 @@ namespace {
 QString domainIdentifierForAccount(const OCC::Account * const account)
 {
     Q_ASSERT(account);
-    return account->userIdAtHostWithPort();
+    static const QRegularExpression illegalChars("[:/]");
+    return account->userIdAtHostWithPort().replace(illegalChars, "-");
 }
 
 QString domainIdentifierForAccount(const OCC::AccountPtr account)
@@ -65,14 +66,6 @@ API_AVAILABLE(macos(11.0))
 QString accountIdFromDomain(NSFileProviderDomain * const domain)
 {
     return accountIdFromDomainId(domain.identifier);
-}
-
-bool accountFilesPushNotificationsReady(const OCC::AccountPtr &account)
-{
-    const auto pushNotifications = account->pushNotifications();
-    const auto pushNotificationsCapability = account->capabilities().availablePushNotifications() & OCC::PushNotificationType::Files;
-
-    return pushNotificationsCapability && pushNotifications && pushNotifications->isReady();
 }
 
 }
@@ -159,6 +152,22 @@ public:
 
             dispatch_group_wait(dispatchGroup, DISPATCH_TIME_FOREVER);
         }
+    }
+
+    NSFileProviderDomain *domainForAccount(const AccountState * const accountState)
+    {
+        if (@available(macOS 11.0, *)) {
+            Q_ASSERT(accountState);
+            const auto account = accountState->account();
+            Q_ASSERT(account);
+
+            const auto domainId = domainIdentifierForAccount(account);
+            if (_registeredDomains.contains(domainId)) {
+                return _registeredDomains[domainId];
+            }
+        }
+
+        return nil;
     }
 
     void addFileProviderDomain(const AccountState * const accountState)
@@ -420,11 +429,6 @@ FileProviderDomainManager::~FileProviderDomainManager() = default;
 void FileProviderDomainManager::start()
 {
     ConfigFile cfg;
-    std::chrono::milliseconds polltime = cfg.remotePollInterval();
-    _enumeratorSignallingTimer.setInterval(polltime.count());
-    connect(&_enumeratorSignallingTimer, &QTimer::timeout,
-            this, &FileProviderDomainManager::slotEnumeratorSignallingTimerTimeout);
-    _enumeratorSignallingTimer.start();
 
     setupFileProviderDomains();
 
@@ -465,13 +469,19 @@ void FileProviderDomainManager::updateFileProviderDomains()
     auto configuredDomains = d->configuredDomainIds();
 
     for (const auto &accountUserIdAtHost : vfsEnabledAccounts) {
+        // If the domain has already been set up for this account, then don't set it up again
         if (configuredDomains.contains(accountUserIdAtHost)) {
             configuredDomains.removeAll(accountUserIdAtHost);
             continue;
         }
 
-        const auto accountState = AccountManager::instance()->accountFromUserId(accountUserIdAtHost);
-        addFileProviderDomainForAccount(accountState.data());
+        if (const auto accountState = AccountManager::instance()->accountFromUserId(accountUserIdAtHost)) {
+            addFileProviderDomainForAccount(accountState.data());
+        } else {
+            qCWarning(lcMacFileProviderDomainManager) << "Could not find account for file provider domain:" << accountUserIdAtHost
+                                                      << "removing account from list of vfs-enabled accounts.";
+            FileProviderSettingsController::instance()->setVfsEnabledForAccount(accountUserIdAtHost, false);
+        }
     }
 
     for (const auto &remainingDomainUserId : configuredDomains) {
@@ -498,54 +508,6 @@ void FileProviderDomainManager::addFileProviderDomainForAccount(const AccountSta
     connect(accountState, &AccountState::stateChanged, this, [this, accountState] {
         slotAccountStateChanged(accountState);
     });
-
-    // Setup push notifications
-    const auto accountCapabilities = account->capabilities().isValid();
-    if (!accountCapabilities) {
-        connect(account.get(), &Account::capabilitiesChanged, this, [this, account] {
-            trySetupPushNotificationsForAccount(account.get());
-        });
-        return;
-    }
-
-    trySetupPushNotificationsForAccount(account.get());
-}
-
-void FileProviderDomainManager::trySetupPushNotificationsForAccount(const Account * const account)
-{
-    if (!d) {
-        return;
-    }
-
-    Q_ASSERT(account);
-
-    const auto pushNotifications = account->pushNotifications();
-    const auto pushNotificationsCapability = account->capabilities().availablePushNotifications() & PushNotificationType::Files;
-
-    if (pushNotificationsCapability && pushNotifications && pushNotifications->isReady()) {
-        qCDebug(lcMacFileProviderDomainManager) << "Push notifications already ready, connecting them to enumerator signalling."
-                                                << account->displayName();
-        setupPushNotificationsForAccount(account);
-    } else if (pushNotificationsCapability) {
-        qCDebug(lcMacFileProviderDomainManager) << "Push notifications not yet ready, will connect to signalling when ready."
-                                                << account->displayName();
-        connect(account, &Account::pushNotificationsReady, this, &FileProviderDomainManager::setupPushNotificationsForAccount);
-    }
-}
-
-void FileProviderDomainManager::setupPushNotificationsForAccount(const Account * const account)
-{
-    if (!d) {
-        return;
-    }
-
-    Q_ASSERT(account);
-
-    qCDebug(lcMacFileProviderDomainManager) << "Setting up push notifications for file provider domain for account:"
-                                            << account->displayName();
-
-    connect(account->pushNotifications(), &PushNotifications::filesChanged, this, &FileProviderDomainManager::signalEnumeratorChanged);
-    disconnect(account, &Account::pushNotificationsReady, this, &FileProviderDomainManager::setupPushNotificationsForAccount);
 }
 
 void FileProviderDomainManager::signalEnumeratorChanged(const Account * const account)
@@ -569,13 +531,6 @@ void FileProviderDomainManager::removeFileProviderDomainForAccount(const Account
     Q_ASSERT(account);
 
     d->removeFileProviderDomain(accountState);
-
-    if (accountFilesPushNotificationsReady(account)) {
-        const auto pushNotifications = account->pushNotifications();
-        disconnect(pushNotifications, &PushNotifications::filesChanged, this, &FileProviderDomainManager::signalEnumeratorChanged);
-    } else if (const auto hasFilesPushNotificationsCapability = account->capabilities().availablePushNotifications() & PushNotificationType::Files) {
-        disconnect(account.get(), &Account::pushNotificationsReady, this, &FileProviderDomainManager::setupPushNotificationsForAccount);
-    }
 }
 
 void FileProviderDomainManager::disconnectFileProviderDomainForAccount(const AccountState * const accountState, const QString &reason)
@@ -639,27 +594,6 @@ void FileProviderDomainManager::slotAccountStateChanged(const AccountState * con
     }
 }
 
-void FileProviderDomainManager::slotEnumeratorSignallingTimerTimeout()
-{
-    if (!d) {
-        return;
-    }
-
-    qCDebug(lcMacFileProviderDomainManager) << "Enumerator signalling timer timed out, notifying domains for accounts without push notifications";
-
-    const auto registeredDomainIds = d->configuredDomainIds();
-    for (const auto &domainId : registeredDomainIds) {
-        const auto accountUserId = accountIdFromDomainId(domainId);
-        const auto accountState = AccountManager::instance()->accountFromUserId(accountUserId);
-        const auto account = accountState->account();
-
-        if (!accountFilesPushNotificationsReady(account)) {
-            qCDebug(lcMacFileProviderDomainManager) << "Notifying domain for account:" << account->userIdAtHostWithPort();
-            d->signalEnumeratorChanged(account.get());
-        }
-    }
-}
-
 AccountStatePtr FileProviderDomainManager::accountStateFromFileProviderDomainIdentifier(const QString &domainIdentifier)
 {
     if (domainIdentifier.isEmpty()) {
@@ -680,6 +614,11 @@ AccountStatePtr FileProviderDomainManager::accountStateFromFileProviderDomainIde
 QString FileProviderDomainManager::fileProviderDomainIdentifierFromAccountState(const AccountStatePtr &accountState)
 {
     return domainIdentifierForAccount(accountState->account());
+}
+
+void* FileProviderDomainManager::domainForAccount(const AccountState * const accountState)
+{
+    return d->domainForAccount(accountState);
 }
 
 } // namespace Mac

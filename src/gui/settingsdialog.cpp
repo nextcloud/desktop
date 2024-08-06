@@ -40,6 +40,7 @@
 #include <QPainter>
 #include <QPainterPath>
 #include <QQuickView>
+#include <QActionGroup>
 
 namespace {
 const QString TOOLBAR_CSS()
@@ -148,7 +149,7 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
     addAction(showLogWindow);
 
     auto *showLogWindow2 = new QAction(this);
-    showLogWindow2->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_L));
+    showLogWindow2->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_L));
     connect(showLogWindow2, &QAction::triggered, gui, &ownCloudGui::slotToggleLogBrowser);
     addAction(showLogWindow2);
 

@@ -26,13 +26,13 @@
 #include "sharepermissions.h"
 #include "theme.h"
 #include "updatee2eefolderusersmetadatajob.h"
-#include "wordlist.h"
 
 namespace {
 
 static const auto placeholderLinkShareId = QStringLiteral("__placeholderLinkShareId__");
 static const auto internalLinkShareId = QStringLiteral("__internalLinkShareId__");
 static const auto secureFileDropPlaceholderLinkShareId = QStringLiteral("__secureFileDropPlaceholderLinkShareId__");
+
 }
 
 namespace OCC
@@ -262,6 +262,12 @@ void ShareModel::updateData()
         && !fileRecord._remotePerm.hasPermission(RemotePermissions::CanReshare)) {
         qCInfo(lcShareModel) << "File record says resharing not allowed";
         resharingAllowed = false;
+    }
+
+    if (fileRecord.isVirtualFile() && _synchronizationFolder->vfs().mode() == Vfs::WithSuffix) {
+        if (const auto suffix = _synchronizationFolder->vfs().fileSuffix(); !suffix.isEmpty() && _sharePath.endsWith(suffix)) {
+            _sharePath.chop(suffix.length());
+        }
     }
 
     _maxSharingPermissions = resharingAllowed ? SharePermissions(_accountState->account()->capabilities().shareDefaultPermissions()) : SharePermissions({});
@@ -1363,7 +1369,7 @@ QString ShareModel::generatePassword()
 
     for (const auto newChar : unsignedCharArray) {
         // Ensure byte is within asciiRange
-        const auto byte = (newChar % (asciiRange + 1)) + asciiMin;
+        const auto byte = QChar((newChar % (asciiRange + 1)) + asciiMin);
         passwd.append(byte);
     }
 

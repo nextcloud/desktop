@@ -152,7 +152,7 @@ void WatcherThread::watchChanges(size_t fileNotifyBufferSize,
             // and new files in a folder, probably because of the folder's mtime
             // changing. We don't need them.
             const bool skip = curEntry->Action == FILE_ACTION_MODIFIED
-                && QFileInfo(longfile).isDir();
+                && FileSystem::isDir(longfile);
 
             if (!skip) {
                 emit changed(longfile);

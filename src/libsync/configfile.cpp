@@ -110,7 +110,13 @@ static constexpr char forceLoginV2C[] = "forceLoginV2";
 static constexpr char certPath[] = "http_certificatePath";
 static constexpr char certPasswd[] = "http_certificatePasswd";
 
-static const QSet validUpdateChannels { QStringLiteral("stable"), QStringLiteral("beta") };
+static constexpr char serverHasValidSubscriptionC[] = "serverHasValidSubscription";
+static constexpr char desktopEnterpriseChannelName[] = "desktopEnterpriseChannel";
+
+static const QStringList defaultUpdateChannelsList { QStringLiteral("stable"), QStringLiteral("beta"), QStringLiteral("daily") };
+static const QString defaultUpdateChannelName = "stable";
+static const QStringList enterpriseUpdateChannelsList { QStringLiteral("stable"), QStringLiteral("enterprise") };
+static const QString defaultEnterpriseChannel = "enterprise";
 }
 
 namespace OCC {
@@ -686,37 +692,61 @@ int ConfigFile::updateSegment() const
     return segment;
 }
 
-QString ConfigFile::updateChannel() const
+QStringList ConfigFile::validUpdateChannels() const
 {
-    QString defaultUpdateChannel = QStringLiteral("stable");
-    QString suffix = QString::fromLatin1(MIRALL_STRINGIFY(MIRALL_VERSION_SUFFIX));
-    if (suffix.startsWith("daily")
-        || suffix.startsWith("nightly")
-        || suffix.startsWith("alpha")
-        || suffix.startsWith("rc")
-        || suffix.startsWith("beta")) {
-        defaultUpdateChannel = QStringLiteral("beta");
+    const auto isBranded = Theme::instance()->isBranded();
+
+    if (isBranded) {
+        return { defaultUpdateChannelName };
     }
 
+    if (serverHasValidSubscription()) {
+        return enterpriseUpdateChannelsList;
+    }
+
+    return defaultUpdateChannelsList;
+}
+
+QString ConfigFile::defaultUpdateChannel() const
+{
+    const auto isBranded = Theme::instance()->isBranded();
+    if (serverHasValidSubscription() && !isBranded) {
+        if (const auto serverChannel = desktopEnterpriseChannel();
+            validUpdateChannels().contains(serverChannel)) {
+            qCWarning(lcConfigFile()) << "Enforcing update channel" << serverChannel << "because that is the desktop enterprise channel returned by the server.";
+            return serverChannel;
+        }
+    }
+
+    if (const auto currentVersionSuffix = Theme::instance()->versionSuffix();
+        validUpdateChannels().contains(currentVersionSuffix) && !isBranded) {
+        qCWarning(lcConfigFile()) << "Enforcing update channel" << currentVersionSuffix << "because of the version suffix of the current client.";
+        return currentVersionSuffix;
+    }
+
+    qCWarning(lcConfigFile()) << "Enforcing default update channel" << defaultUpdateChannelName;
+    return defaultUpdateChannelName;
+}
+
+QString ConfigFile::currentUpdateChannel() const
+{
+    auto updateChannel = defaultUpdateChannel();
     QSettings settings(configFile(), QSettings::IniFormat);
-    const auto channel = settings.value(QLatin1String(updateChannelC), defaultUpdateChannel).toString();
-    if (!validUpdateChannels.contains(channel)) {
-        qCWarning(lcConfigFile()) << "Received invalid update channel from confog:"
-                                  << channel
-                                  << "defaulting to:"
-                                  << defaultUpdateChannel;
-        return defaultUpdateChannel;
+    if (const auto configUpdateChannel = settings.value(QLatin1String(updateChannelC), updateChannel).toString();
+        validUpdateChannels().contains(configUpdateChannel)) {
+        qCWarning(lcConfigFile()) << "Config file has a valid update channel:" << configUpdateChannel;
+        updateChannel = configUpdateChannel;
     }
 
-    return channel;
+    return updateChannel;
 }
 
 void ConfigFile::setUpdateChannel(const QString &channel)
 {
-    if (!validUpdateChannels.contains(channel)) {
+    if (!validUpdateChannels().contains(channel)) {
         qCWarning(lcConfigFile()) << "Received invalid update channel:"
                                   << channel
-                                  << "can only accept 'stable' or 'beta'. Ignoring.";
+                                  << "can only accept" << validUpdateChannels() << ". Ignoring.";
         return;
     }
 
@@ -1170,6 +1200,31 @@ void ConfigFile::setLaunchOnSystemStartup(const bool autostart)
     QSettings settings(configFile(), QSettings::IniFormat);
     settings.setValue(QLatin1String(launchOnSystemStartupC), autostart);
 }
+
+bool ConfigFile::serverHasValidSubscription() const
+{
+    QSettings settings(configFile(), QSettings::IniFormat);
+    return settings.value(QLatin1String(serverHasValidSubscriptionC), false).toBool();
+}
+
+void ConfigFile::setServerHasValidSubscription(const bool valid)
+{
+    QSettings settings(configFile(), QSettings::IniFormat);
+    settings.setValue(QLatin1String(serverHasValidSubscriptionC), valid);
+}
+
+QString ConfigFile::desktopEnterpriseChannel() const
+{
+    QSettings settings(configFile(), QSettings::IniFormat);
+    return settings.value(QLatin1String(desktopEnterpriseChannelName), defaultUpdateChannelName).toString();
+}
+
+void ConfigFile::setDesktopEnterpriseChannel(const QString &channel)
+{
+    QSettings settings(configFile(), QSettings::IniFormat);
+    settings.setValue(QLatin1String(desktopEnterpriseChannelName), channel);
+}
+
 
 Q_GLOBAL_STATIC(QString, g_configFileName)
 

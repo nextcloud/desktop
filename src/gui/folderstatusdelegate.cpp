@@ -72,10 +72,8 @@ QSize FolderStatusDelegate::sizeHint(const QStyleOptionViewItem &option,
         QStyleOptionButton opt;
         static_cast<QStyleOption &>(opt) = option;
         opt.text = addFolderText();
-        return QApplication::style()->sizeFromContents(
-                                        QStyle::CT_PushButton, &opt, fm.size(Qt::TextSingleLine, opt.text))
-                   .expandedTo(QApplication::globalStrut())
-            + QSize(0, margins);
+        return QApplication::style()->sizeFromContents( QStyle::CT_PushButton, &opt, fm.size(Qt::TextSingleLine, opt.text)) +
+                QSize(0, margins);
     }
 
     if (classif != FolderStatusModel::RootFolder) {
@@ -314,7 +312,7 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
         progressBarOpt.minimum = 0;
         progressBarOpt.maximum = 100;
         progressBarOpt.progress = overallPercent;
-        progressBarOpt.orientation = Qt::Horizontal;
+        progressBarOpt.state = QStyle::StateFlag::State_Horizontal;
         progressBarOpt.rect = QStyle::visualRect(option.direction, option.rect, progressBarRect);
 #ifdef Q_OS_MACOS
         backupStyle->drawControl(QStyle::CE_ProgressBar, &progressBarOpt, painter, option.widget);
@@ -322,16 +320,18 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
         QApplication::style()->drawControl(QStyle::CE_ProgressBar, &progressBarOpt, painter, option.widget);
 #endif
 
-
-        // Overall Progress Text
-        QRect overallProgressRect;
-        overallProgressRect.setTop(progressBarRect.bottom() + margin);
-        overallProgressRect.setHeight(fileNameTextHeight);
-        overallProgressRect.setLeft(progressBarRect.left());
-        overallProgressRect.setWidth(progressBarRect.width());
+        // itemString is e.g. Syncing fileName1, filename2
+        // syncText is Synchronizing files in local folders or Synchronizing virtual files in local folder
+        const auto generalSyncStatus = !itemString.isEmpty() ? itemString : syncText;
+        QRect generalSyncStatusRect;
+        generalSyncStatusRect.setTop(progressBarRect.bottom() + margin);
+        generalSyncStatusRect.setHeight(fileNameTextHeight);
+        generalSyncStatusRect.setLeft(progressBarRect.left());
+        generalSyncStatusRect.setWidth(progressBarRect.width());
         painter->setFont(progressFont);
 
-        painter->drawText(QStyle::visualRect(option.direction, option.rect, overallProgressRect), Qt::AlignLeft | Qt::AlignVCenter, overallString);
+        painter->drawText(QStyle::visualRect(option.direction, option.rect, generalSyncStatusRect), Qt::AlignLeft | Qt::AlignVCenter, generalSyncStatus);
+
         painter->restore();
     }
 
@@ -390,7 +390,7 @@ QRect FolderStatusDelegate::optionsButtonRect(QRect within, Qt::LayoutDirection 
     QStyleOptionToolButton opt;
     int e = QApplication::style()->pixelMetric(QStyle::PM_ButtonIconSize);
     opt.rect.setSize(QSize(e,e));
-    QSize size = QApplication::style()->sizeFromContents(QStyle::CT_ToolButton, &opt, opt.rect.size()).expandedTo(QApplication::globalStrut());
+    QSize size = QApplication::style()->sizeFromContents(QStyle::CT_ToolButton, &opt, opt.rect.size());
 
     int margin = QApplication::style()->pixelMetric(QStyle::PM_LayoutHorizontalSpacing);
     QRect r(QPoint(within.right() - size.width() - margin,
@@ -404,7 +404,7 @@ QRect FolderStatusDelegate::addButtonRect(QRect within, Qt::LayoutDirection dire
     QFontMetrics fm(qApp->font("QPushButton"));
     QStyleOptionButton opt;
     opt.text = addFolderText();
-    QSize size = QApplication::style()->sizeFromContents(QStyle::CT_PushButton, &opt, fm.size(Qt::TextSingleLine, opt.text)).expandedTo(QApplication::globalStrut());
+    QSize size = QApplication::style()->sizeFromContents(QStyle::CT_PushButton, &opt, fm.size(Qt::TextSingleLine, opt.text));
     QRect r(QPoint(within.left(), within.top() + within.height() / 2 - size.height() / 2), size);
     return QStyle::visualRect(direction, within, r);
 }

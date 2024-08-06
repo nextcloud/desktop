@@ -24,6 +24,9 @@ set(BIN_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
 
 include(${CMAKE_SOURCE_DIR}/NEXTCLOUD.cmake)
 
+set(QT_VERSION_MAJOR "6")
+set(REQUIRED_QT_VERSION "6.0.0")
+
 # CfAPI Shell Extensions
 set( CFAPI_SHELL_EXTENSIONS_LIB_NAME CfApiShellExtensions )
     
@@ -109,7 +112,8 @@ include(GetGitRevisionDescription)
 get_git_head_revision(GIT_REFSPEC GIT_SHA1)
 
 add_definitions(
-    -DQT_DISABLE_DEPRECATED_BEFORE=0x000000
+    -DQT_DISABLE_DEPRECATED_BEFORE=0x051200
+    -DQT_DEPRECATED_WARNINGS
     -DQT_USE_QSTRINGBUILDER
     -DQT_MESSAGELOGCONTEXT #enable function name and line number in debug output
 )
@@ -139,7 +143,7 @@ if(APPLE AND BUILD_OWNCLOUD_OSX_BUNDLE)
     add_definitions(-DBUILD_OWNCLOUD_OSX_BUNDLE)
 endif()
 
-
+find_package(Qt${QT_MAJOR_VERSION} COMPONENTS Core)
 option(QUICK_COMPILER "Use QtQuick compiler to improve performance" OFF)
 
 # this option removes Http authentication, keychain, shibboleth etc and is intended for
@@ -184,6 +188,9 @@ option(BUILD_GUI "BUILD_GUI" ON)
 
 # build the tests
 option(BUILD_TESTING "BUILD_TESTING" ON)
+
+# allows to run nextclouddev in parallel to nextcloud + logs
+option(NEXTCLOUD_DEV "NEXTCLOUD_DEV" OFF)
 
 option(ENABLE_CLANG_TIDY "ENABLE_CLANG_TIDY" OFF)
 if(ENABLE_CLANG_TIDY)

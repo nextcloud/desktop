@@ -36,6 +36,7 @@ public:
     static QString fileProviderDomainIdentifierFromAccountState(const AccountStatePtr &accountState);
     
     void start();
+    void* domainForAccount(const OCC::AccountState * const accountState);
 
 signals:
     void domainSetupComplete();
@@ -49,17 +50,10 @@ private slots:
     void disconnectFileProviderDomainForAccount(const OCC::AccountState * const accountState, const QString &reason);
     void reconnectFileProviderDomainForAccount(const OCC::AccountState * const accountState);
 
-    void trySetupPushNotificationsForAccount(const OCC::Account * const account);
-    void setupPushNotificationsForAccount(const OCC::Account * const account);
     void signalEnumeratorChanged(const OCC::Account * const account);
-
     void slotAccountStateChanged(const OCC::AccountState * const accountState);
-    void slotEnumeratorSignallingTimerTimeout();
 
 private:
-    // Starts regular enumerator signalling if no push notifications available
-    QTimer _enumeratorSignallingTimer;
-
     class MacImplementation;
     std::unique_ptr<MacImplementation> d;
 };

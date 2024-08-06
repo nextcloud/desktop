@@ -42,6 +42,7 @@
 #include "syncresult.h"
 #include "ignorelisttablewidget.h"
 #include "wizard/owncloudwizard.h"
+#include "networksettings.h"
 #include "ui_mnemonicdialog.h"
 
 #include <cmath>
@@ -173,12 +174,12 @@ protected:
 AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent)
     : QWidget(parent)
     , _ui(new Ui::AccountSettings)
+    , _model(new FolderStatusModel)
     , _accountState(accountState)
     , _userInfo(accountState, false, true)
 {
     _ui->setupUi(this);
 
-    _model = new FolderStatusModel;
     _model->setAccountState(_accountState);
     _model->setParent(this);
     const auto delegate = new FolderStatusDelegate;
@@ -204,16 +205,23 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent)
         const auto fpAccountUserIdAtHost = _accountState->account()->userIdAtHostWithPort();
         const auto fpSettingsController = Mac::FileProviderSettingsController::instance();
         const auto fpSettingsWidget = fpSettingsController->settingsViewWidget(fpAccountUserIdAtHost, fileProviderTab);
-        fpSettingsLayout->setMargin(0);
         fpSettingsLayout->addWidget(fpSettingsWidget);
         fileProviderTab->setLayout(fpSettingsLayout);
-    } else {
-        disguiseTabWidget();
     }
 #else
-    disguiseTabWidget();
-    _ui->tabWidget->setCurrentIndex(0);
+    const auto tabWidget = _ui->tabWidget;
+    const auto fileProviderTab = _ui->fileProviderTab;
+    if (const auto fileProviderWidgetTabIndex = tabWidget->indexOf(fileProviderTab); fileProviderWidgetTabIndex >= 0) {
+        tabWidget->removeTab(fileProviderWidgetTabIndex);
+    }
+    tabWidget->setCurrentIndex(0);
 #endif
+
+    const auto connectionSettingsTab = _ui->connectionSettingsTab;
+    const auto connectionSettingsLayout = new QVBoxLayout(connectionSettingsTab);
+    const auto networkSettings = new NetworkSettings(_accountState->account(), connectionSettingsTab);
+    connectionSettingsLayout->addWidget(networkSettings);
+    connectionSettingsTab->setLayout(connectionSettingsLayout);
 
     const auto mouseCursorChanger = new MouseCursorChanger(this);
     mouseCursorChanger->folderList = _ui->_folderList;
@@ -244,7 +252,7 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent)
     addAction(syncNowAction);
 
     auto *syncNowWithRemoteDiscovery = new QAction(this);
-    syncNowWithRemoteDiscovery->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_F6));
+    syncNowWithRemoteDiscovery->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_F6));
     connect(syncNowWithRemoteDiscovery, &QAction::triggered, this, &AccountSettings::slotScheduleCurrentFolderForceRemoteDiscovery);
     addAction(syncNowWithRemoteDiscovery);
 
@@ -1708,14 +1716,6 @@ void AccountSettings::initializeE2eEncryptionSettingsMessage()
 
     auto *const actionEnableE2e = addActionToEncryptionMessage(tr("Set up encryption"), e2EeUiActionEnableEncryptionId);
     connect(actionEnableE2e, &QAction::triggered, this, &AccountSettings::slotE2eEncryptionGenerateKeys);
-}
-
-void AccountSettings::disguiseTabWidget() const
-{
-    // Ensure all elements of the tab widget are hidden.
-    // Document mode lets the child view take up the whole view.
-    _ui->tabWidget->setDocumentMode(true);
-    _ui->tabWidget->tabBar()->hide();
 }
 
 } // namespace OCC

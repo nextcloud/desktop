@@ -20,6 +20,10 @@ public:
 private slots:
     void initTestCase()
     {
+        OCC::Logger::instance()->setLogFlush(true);
+        OCC::Logger::instance()->setLogDebug(true);
+
+        QStandardPaths::setTestModeEnabled(true);
     }
 
     void testLockFile_lockFile_lockSuccess()
@@ -749,6 +753,27 @@ private slots:
 
         const auto localFileLocked = QFileInfo{fakeFolder.localPath() + u"A/a1"};
         QVERIFY(!localFileLocked.isWritable());
+    }
+
+    void testLockFile_lockFile_detect_newly_uploaded()
+    {
+        const auto testFileName = QStringLiteral("document.docx");
+        const auto testLockFileName = QStringLiteral(".~lock.document.docx#");
+
+        const auto testDocumentsDirName = "documents";
+
+        FakeFolder fakeFolder{FileInfo{}};
+        fakeFolder.localModifier().mkdir(testDocumentsDirName);
+
+        fakeFolder.syncEngine().account()->setCapabilities({{"files", QVariantMap{{"locking", QByteArray{"1.0"}}}}});
+        QSignalSpy lockFileDetectedNewlyUploadedSpy(&fakeFolder.syncEngine(), &OCC::SyncEngine::lockFileDetected);
+
+        fakeFolder.localModifier().insert(testDocumentsDirName + QString("/") + testLockFileName);
+        fakeFolder.localModifier().insert(testDocumentsDirName + QString("/") + testFileName);
+
+        QVERIFY(fakeFolder.syncOnce());
+
+        QCOMPARE(lockFileDetectedNewlyUploadedSpy.count(), 1);
     }
 };
 

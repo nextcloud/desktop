@@ -163,8 +163,7 @@ void PropagateLocalMkdir::startLocalMkdir()
 
     // When turning something that used to be a file into a directory
     // we need to delete the file first.
-    QFileInfo fi(newDirStr);
-    if (fi.exists() && fi.isFile()) {
+    if (FileSystem::fileExists(newDirStr) && FileSystem::isFile(newDirStr)) {
         if (_deleteExistingFile) {
             QString removeError;
             if (!FileSystem::remove(newDirStr, &removeError)) {
@@ -282,7 +281,7 @@ void PropagateLocalRename::start()
     const auto existingFile = propagator()->fullLocalPath(previousNameInDb);
     const auto targetFile = propagator()->fullLocalPath(_item->_renameTarget);
 
-    const auto fileAlreadyMoved = !QFileInfo::exists(propagator()->fullLocalPath(_item->_originalFile)) && QFileInfo::exists(existingFile);
+    const auto fileAlreadyMoved = !FileSystem::fileExists(propagator()->fullLocalPath(_item->_originalFile)) && FileSystem::fileExists(existingFile);
     auto pinState = OCC::PinState::Unspecified;
     if (!fileAlreadyMoved) {
         auto pinStateResult = vfs->pinState(propagator()->adjustRenamedPath(_item->_file));
@@ -294,7 +293,7 @@ void PropagateLocalRename::start()
     // if the file is a file underneath a moved dir, the _item->file is equal
     // to _item->renameTarget and the file is not moved as a result.
     qCDebug(lcPropagateLocalRename) << _item->_file << _item->_renameTarget << _item->_originalFile << previousNameInDb << (fileAlreadyMoved ? "original file has already moved" : "original file is still there");
-    Q_ASSERT(QFileInfo::exists(propagator()->fullLocalPath(_item->_originalFile)) || QFileInfo::exists(existingFile));
+    Q_ASSERT(FileSystem::fileExists(propagator()->fullLocalPath(_item->_originalFile)) || FileSystem::fileExists(existingFile));
     if (_item->_file != _item->_renameTarget) {
         propagator()->reportProgress(*_item, 0);
         qCDebug(lcPropagateLocalRename) << "MOVE " << existingFile << " => " << targetFile;
@@ -302,7 +301,17 @@ void PropagateLocalRename::start()
         if (QString::compare(_item->_file, _item->_renameTarget, Qt::CaseInsensitive) != 0
             && propagator()->localFileNameClash(_item->_renameTarget)) {
 
-            qCInfo(lcPropagateLocalRename) << "renaming a case clashed file" << _item->_file << _item->_renameTarget;
+            qCInfo(lcPropagateLocalRename) << "renaming a case clashed item" << _item->_file << _item->_renameTarget;
+            if (_item->isDirectory()) {
+                // #HotFix
+                // fix a crash (we can not create a conflicted copy for folders)
+                // right now, the conflict resolution will not even work for this scenario with folders,
+                // but, let's fix it step by step, this will be a second stage
+                done(SyncFileItem::FileNameClash,
+                     tr("Folder %1 cannot be renamed because of a local file or folder name clash!").arg(_item->_file),
+                     ErrorCategory::GenericError);
+                return;
+            }
             const auto caseClashConflictResult = propagator()->createCaseClashConflict(_item, existingFile);
             if (caseClashConflictResult) {
                 done(SyncFileItem::SoftError, *caseClashConflictResult, ErrorCategory::GenericError);

@@ -66,6 +66,8 @@
 #include <QGuiApplication>
 #include <QUrlQuery>
 #include <QVersionNumber>
+#include <QRandomGenerator>
+#include <QHttp2Configuration>
 
 class QSocket;
 
@@ -127,7 +129,7 @@ namespace {
 #ifdef Q_OS_WIN
 class WindowsNativeEventFilter : public QAbstractNativeEventFilter {
 public:
-    bool nativeEventFilter(const QByteArray &eventType, void *message, long *result) override {
+    bool nativeEventFilter(const QByteArray &eventType, void *message, qintptr *result) override {
         const auto msg = static_cast<MSG *>(message);
         if(msg->message == WM_SYSCOLORCHANGE || msg->message == WM_SETTINGCHANGE) {
             if (const auto ptr = qobject_cast<QGuiApplication *>(QGuiApplication::instance())) {
@@ -228,8 +230,6 @@ Application::Application(int &argc, char **argv)
 {
     _startedAt.start();
 
-    qsrand(std::random_device()());
-
 #ifdef Q_OS_WIN
     // Ensure OpenSSL config file is only loaded from app directory
     QString opensslConf = QCoreApplication::applicationDirPath() + QString("/openssl.cnf");
@@ -254,12 +254,55 @@ Application::Application(int &argc, char **argv)
     setApplicationName(_theme->appName());
     setWindowIcon(_theme->applicationIcon());
 
-    if (ConfigFile().exists()) {
+    if (!ConfigFile().exists()) {
+        // Migrate from version <= 2.4
+        setApplicationName(_theme->appNameGUI());
+        // We need to use the deprecated QDesktopServices::storageLocation because of its Qt4
+        // behavior of adding "data" to the path
+        QString oldDir = QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation) + "/data/" + organizationName() + "/" + applicationName();
+        if (oldDir.endsWith('/')) oldDir.chop(1); // macOS 10.11.x does not like trailing slash for rename/move.
+        setApplicationName(_theme->appName());
+        if (QFileInfo(oldDir).isDir()) {
+            auto confDir = ConfigFile().configPath();
+
+            // macOS 10.11.x does not like trailing slash for rename/move.
+            if (confDir.endsWith('/')) {
+                confDir.chop(1);
+            }
+
+            qCInfo(lcApplication) << "Migrating old config from" << oldDir << "to" << confDir;
+
+            if (!QFile::rename(oldDir, confDir)) {
+                qCWarning(lcApplication) << "Failed to move the old config directory to its new location (" << oldDir << "to" << confDir << ")";
+
+                // Try to move the files one by one
+                if (QFileInfo(confDir).isDir() || QDir().mkdir(confDir)) {
+                    const QStringList filesList = QDir(oldDir).entryList(QDir::Files);
+                    qCInfo(lcApplication) << "Will move the individual files" << filesList;
+                    for (const auto &name : filesList) {
+                        if (!QFile::rename(oldDir + "/" + name,  confDir + "/" + name)) {
+                            qCWarning(lcApplication) << "Fallback move of " << name << "also failed";
+                        }
+                    }
+                }
+            } else {
+#ifndef Q_OS_WIN
+                // Create a symbolic link so a downgrade of the client would still find the config.
+                QFile::link(confDir, oldDir);
+#endif
+            }
+        }
+    } else {
         setupConfigFile();
     }
 
     if (_theme->doNotUseProxy()) {
         ConfigFile().setProxyType(QNetworkProxy::NoProxy);
+        for (const auto &accountState : AccountManager::instance()->accounts()) {
+            if (accountState && accountState->account()) {
+                accountState->account()->setNetworkProxySetting(Account::AccountNetworkProxySetting::GlobalProxy);
+            }
+        }
     }
 
     parseOptions(arguments());
@@ -390,7 +433,7 @@ Application::Application(int &argc, char **argv)
     QTimer::singleShot(0, this, &Application::slotCheckConnection);
 
     // Can't use onlineStateChanged because it is always true on modern systems because of many interfaces
-    connect(&_networkConfigurationManager, &QNetworkConfigurationManager::configurationChanged,
+    connect(QNetworkInformation::instance(), &QNetworkInformation::reachabilityChanged,
         this, &Application::slotSystemOnlineConfigurationChanged);
 
 #if defined(BUILD_UPDATER)
@@ -418,7 +461,7 @@ Application::Application(int &argc, char **argv)
     AccountSetupCommandLineManager::destroy();
 
 #if defined(BUILD_FILE_PROVIDER_MODULE)
-    _fileProvider.reset(new Mac::FileProvider);
+    Mac::FileProvider::instance();
 #endif
 }
 
@@ -492,7 +535,7 @@ void Application::setupConfigFile()
     QT_WARNING_POP
     setApplicationName(_theme->appName());
 
-    auto oldDir = QStandardPaths::writableLocation(QStandardPaths::DataLocation);
+    auto oldDir = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
 
     // macOS 10.11.x does not like trailing slash for rename/move.
     if (oldDir.endsWith('/')) {
@@ -608,9 +651,10 @@ void Application::slotCleanup()
 // FIXME: This is not ideal yet since a ConnectionValidator might already be running and is in
 // progress of timing out in some seconds.
 // Maybe we need 2 validators, one triggered by timer, one by network configuration changes?
-void Application::slotSystemOnlineConfigurationChanged(QNetworkConfiguration cnf)
+void Application::slotSystemOnlineConfigurationChanged()
 {
-    if (cnf.state() & QNetworkConfiguration::Active) {
+    if (QNetworkInformation::instance()->reachability() == QNetworkInformation::Reachability::Site ||
+            QNetworkInformation::instance()->reachability() == QNetworkInformation::Reachability::Online) {
         const auto list = AccountManager::instance()->accounts();
         for (const auto &accountState : list) {
             accountState->systemOnlineConfigurationChanged();
@@ -660,8 +704,13 @@ void Application::setupLogging()
         logger->setLogDir(_logDir.isEmpty() ? ConfigFile().logDir() : _logDir);
     }
     logger->setLogExpire(_logExpire > 0 ? _logExpire : ConfigFile().logExpire());
+#if defined NEXTCLOUD_DEV
+    logger->setLogFlush(true);
+    logger->setLogDebug(true);
+#else
     logger->setLogFlush(_logFlush || ConfigFile().logFlush());
     logger->setLogDebug(_logDebug || ConfigFile().logDebug());
+#endif
     if (!logger->isLoggingToFile() && ConfigFile().automaticLogDir()) {
         logger->setupTemporaryFolderLogDir();
     }
@@ -866,16 +915,16 @@ void Application::showHelp()
     QTextStream stream(&helpText);
     stream << _theme->appName()
            << QLatin1String(" version ")
-           << _theme->version() << endl;
+           << _theme->version() << Qt::endl;
 
-    stream << QLatin1String("File synchronisation desktop utility.") << endl
-           << endl
+    stream << QLatin1String("File synchronisation desktop utility.") << Qt::endl
+           << Qt::endl
            << QLatin1String(optionsC);
 
     if (_theme->appName() == QLatin1String("ownCloud"))
-        stream << endl
-               << "For more information, see http://www.owncloud.org" << endl
-               << endl;
+        stream << Qt::endl
+               << "For more information, see http://www.owncloud.org" << Qt::endl
+               << Qt::endl;
 
     displayHelpText(helpText);
 }
@@ -914,7 +963,7 @@ void Application::handleEditLocallyFromOptions()
         return;
     }
 
-    EditLocallyManager::instance()->editLocally(_editFileLocallyUrl);
+    EditLocallyManager::instance()->handleRequest(_editFileLocallyUrl);
     _editFileLocallyUrl.clear();
 }
 
@@ -980,13 +1029,17 @@ void Application::setupTranslations()
             if (!qtTranslator->load(qtTrFile, qtTrPath)) {
                 if (!qtTranslator->load(qtTrFile, trPath)) {
                     if (!qtTranslator->load(qtBaseTrFile, qtTrPath)) {
-                        qtTranslator->load(qtBaseTrFile, trPath);
+                        if (!qtTranslator->load(qtBaseTrFile, trPath)) {
+                            qCDebug(lcApplication()) << "impossible to load Qt translation catalog" << qtBaseTrFile;
+                        }
                     }
                 }
             }
             const QString qtkeychainTrFile = QLatin1String("qtkeychain_") + lang;
             if (!qtkeychainTranslator->load(qtkeychainTrFile, qtTrPath)) {
-                qtkeychainTranslator->load(qtkeychainTrFile, trPath);
+                if (!qtkeychainTranslator->load(qtkeychainTrFile, trPath)) {
+                    qCDebug(lcApplication()) << "impossible to load QtKeychain translation catalog" << qtkeychainTrFile;
+                }
             }
             if (!translator->isEmpty())
                 installTranslator(translator);
@@ -1072,7 +1125,7 @@ bool Application::event(QEvent *event)
             // On macOS, Qt does not handle receiving a custom URI as it does on other systems (as an application argument).
             // Instead, it sends out a QFileOpenEvent. We therefore need custom handling for our URI handling on macOS.
             qCInfo(lcApplication) << "macOS: Opening local file for editing: " << openEvent->url();
-            EditLocallyManager::instance()->editLocally(openEvent->url());
+            EditLocallyManager::instance()->handleRequest(openEvent->url());
         } else {
             const auto errorParsingLocalFileEditingUrl = QStringLiteral("The supplied url for local file editing '%1' is invalid!").arg(openEvent->url().toString());
             qCInfo(lcApplication) << errorParsingLocalFileEditingUrl;

@@ -13,7 +13,7 @@ FakeWebSocketServer::FakeWebSocketServer(quint16 port, QObject *parent)
     : QObject(parent)
     , _webSocketServer(new QWebSocketServer(QStringLiteral("Fake Server"), QWebSocketServer::NonSecureMode, this))
 {
-    if (!_webSocketServer->listen(QHostAddress::Any, port)) {
+    if (!_webSocketServer->listen(QHostAddress::LocalHost, port)) {
         Q_UNREACHABLE();
     }
     connect(_webSocketServer, &QWebSocketServer::newConnection, this, &FakeWebSocketServer::onNewConnection);

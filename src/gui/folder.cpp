@@ -47,6 +47,7 @@
 #include <QMessageBox>
 #include <QPushButton>
 #include <QApplication>
+#include <type_traits>
 
 namespace {
 #ifndef VERSION_C
@@ -175,17 +176,17 @@ void Folder::checkLocalPath()
 
     _canonicalLocalPath = Utility::trailingSlashPath(_canonicalLocalPath);
 
-    if (fi.isDir() && fi.isReadable()) {
+    if (FileSystem::isDir(_definition.localPath) && FileSystem::isReadable(_definition.localPath)) {
         qCDebug(lcFolder) << "Checked local path ok";
     } else {
         // Check directory again
         if (!FileSystem::fileExists(_definition.localPath, fi)) {
             _syncResult.appendErrorString(tr("Local folder %1 does not exist.").arg(_definition.localPath));
             _syncResult.setStatus(SyncResult::SetupError);
-        } else if (!fi.isDir()) {
+        } else if (!FileSystem::isDir(_definition.localPath)) {
             _syncResult.appendErrorString(tr("%1 should be a folder but is not.").arg(_definition.localPath));
             _syncResult.setStatus(SyncResult::SetupError);
-        } else if (!fi.isReadable()) {
+        } else if (!FileSystem::isReadable(_definition.localPath)) {
             _syncResult.appendErrorString(tr("%1 is not readable.").arg(_definition.localPath));
             _syncResult.setStatus(SyncResult::SetupError);
         }
@@ -557,17 +558,17 @@ int Folder::slotWipeErrorBlacklist()
     return _journal.wipeErrorBlacklist();
 }
 
-void Folder::slotWatchedPathChanged(const QString &path, ChangeReason reason)
+void Folder::slotWatchedPathChanged(const QStringView &path, const ChangeReason reason)
 {
     if (!path.startsWith(this->path())) {
         qCDebug(lcFolder) << "Changed path is not contained in folder, ignoring:" << path;
         return;
     }
 
-    auto relativePath = path.midRef(this->path().size());
+    auto relativePath = path.mid(this->path().size());
 
     if (_vfs) {
-        if (pathIsIgnored(path)) {
+        if (pathIsIgnored(path.toString())) {
             const auto pinState = _vfs->pinState(relativePath.toString());
             if (!pinState || *pinState != PinState::Excluded) {
                 if (!_vfs->setPinState(relativePath.toString(), PinState::Excluded)) {
@@ -601,7 +602,7 @@ void Folder::slotWatchedPathChanged(const QString &path, ChangeReason reason)
 // own process. Therefore nothing needs to be done here!
 #else
     // Use the path to figure out whether it was our own change
-    if (_engine->wasFileTouched(path)) {
+    if (_engine->wasFileTouched(path.toString())) {
         qCDebug(lcFolder) << "Changed path was touched by SyncEngine, ignoring:" << path;
         return;
     }
@@ -617,15 +618,20 @@ void Folder::slotWatchedPathChanged(const QString &path, ChangeReason reason)
         // an attribute change (pin state) that caused the notification
         bool spurious = false;
         if (record.isValid()
-            && !FileSystem::fileChanged(path, record._fileSize, record._modtime) && _vfs) {
+            && !FileSystem::fileChanged(path.toString(), record._fileSize, record._modtime) && _vfs) {
             spurious = true;
 
             if (auto pinState = _vfs->pinState(relativePath.toString())) {
-                if (*pinState == PinState::AlwaysLocal && record.isVirtualFile())
+                if (*pinState == PinState::AlwaysLocal && record.isVirtualFile()) {
                     spurious = false;
-                if (*pinState == PinState::OnlineOnly && record.isFile())
+                }
+                if (*pinState == PinState::OnlineOnly && record.isFile()) {
                     spurious = false;
+                }
             } else {
+                spurious = false;
+            }
+            if (spurious && !_vfs->isPlaceHolderInSync(path.toString())) {
                 spurious = false;
             }
         }
@@ -636,7 +642,7 @@ void Folder::slotWatchedPathChanged(const QString &path, ChangeReason reason)
     }
     warnOnNewExcludedItem(record, relativePath);
 
-    emit watchedFileChangedExternally(path);
+    emit watchedFileChangedExternally(path.toString());
 
     // Also schedule this folder for a sync, but only after some delay:
     // The sync will not upload files that were changed too recently.
@@ -1129,19 +1135,28 @@ SyncOptions Folder::initializeSyncOptions() const
 
 void Folder::setDirtyNetworkLimits()
 {
+    const auto account = _accountState->account();
+    const auto useGlobalDown = account->downloadLimitSetting() == Account::AccountNetworkTransferLimitSetting::GlobalLimit;
+    const auto useGlobalUp = account->uploadLimitSetting() == Account::AccountNetworkTransferLimitSetting::GlobalLimit;
+
     ConfigFile cfg;
+
     int downloadLimit = -75; // 75%
-    int useDownLimit = cfg.useDownloadLimit();
+    const auto useDownLimit = useGlobalDown 
+        ? cfg.useDownloadLimit() 
+        : static_cast<std::underlying_type_t<Account::AccountNetworkTransferLimitSetting>>(account->downloadLimitSetting());
     if (useDownLimit >= 1) {
-        downloadLimit = cfg.downloadLimit() * 1000;
+        downloadLimit = useGlobalDown ? cfg.downloadLimit() * 1000 : account->downloadLimit() * 1000;
     } else if (useDownLimit == 0) {
         downloadLimit = 0;
     }
 
     int uploadLimit = -75; // 75%
-    int useUpLimit = cfg.useUploadLimit();
+    const auto useUpLimit = useGlobalUp 
+        ? cfg.useUploadLimit() 
+        : static_cast<std::underlying_type_t<Account::AccountNetworkTransferLimitSetting>>(account->uploadLimitSetting());
     if (useUpLimit >= 1) {
-        uploadLimit = cfg.uploadLimit() * 1000;
+        uploadLimit = useGlobalUp ? cfg.uploadLimit() * 1000 : account->uploadLimit() * 1000;
     } else if (useUpLimit == 0) {
         uploadLimit = 0;
     }
@@ -1456,7 +1471,7 @@ void Folder::slotFolderConflicts(const QString &folder, const QStringList &confl
         r.setNumOldConflictItems(conflictPaths.size() - r.numNewConflictItems());
 }
 
-void Folder::warnOnNewExcludedItem(const SyncJournalFileRecord &record, const QStringRef &path)
+void Folder::warnOnNewExcludedItem(const SyncJournalFileRecord &record, const QStringView &path)
 {
     // Never warn for items in the database
     if (record.isValid())
@@ -1466,8 +1481,9 @@ void Folder::warnOnNewExcludedItem(const SyncJournalFileRecord &record, const QS
     // Note: This assumes we're getting file watcher notifications
     // for folders only on creation and deletion - if we got a notification
     // on content change that would create spurious warnings.
-    QFileInfo fi(_canonicalLocalPath + path);
-    if (!fi.exists())
+    const auto fullPath = _canonicalLocalPath + path;
+    QFileInfo fi(fullPath);
+    if (!FileSystem::fileExists(fullPath))
         return;
 
     bool ok = false;
@@ -1477,7 +1493,7 @@ void Folder::warnOnNewExcludedItem(const SyncJournalFileRecord &record, const QS
     if (!blacklist.contains(path + "/"))
         return;
 
-    const auto message = fi.isDir()
+    const auto message = FileSystem::isDir(fullPath)
         ? tr("The folder %1 was created but was excluded from synchronization previously. "
              "Data inside it will not be synchronized.")
               .arg(fi.filePath())
@@ -1598,6 +1614,7 @@ void Folder::registerFolderWatcher()
     connect(_folderWatcher.data(), &FolderWatcher::filesLockImposed, this, &Folder::slotFilesLockImposed, Qt::UniqueConnection);
     _folderWatcher->init(path());
     _folderWatcher->startNotificatonTest(path() + QLatin1String(".nextcloudsync.log"));
+    connect(_engine.data(), &SyncEngine::lockFileDetected, _folderWatcher.data(), &FolderWatcher::slotLockFileDetectedExternally);
 }
 
 void Folder::disconnectFolderWatcher()
@@ -1622,27 +1639,14 @@ bool Folder::virtualFilesEnabled() const
 
 void Folder::slotAboutToRemoveAllFiles(SyncFileItem::Direction dir, std::function<void(bool)> callback)
 {
-    ConfigFile cfgFile;
-    if (!cfgFile.promptDeleteFiles()) {
-        callback(false);
-        return;
-    }
-
-    const QString msg = dir == SyncFileItem::Down ? tr("All files in the sync folder \"%1\" folder were deleted on the server.\n"
-                                                 "These deletes will be synchronized to your local sync folder, making such files "
-                                                 "unavailable unless you have a right to restore. \n"
-                                                 "If you decide to restore the files, they will be re-synced with the server if you have rights to do so.\n"
-                                                 "If you decide to delete the files, they will be unavailable to you, unless you are the owner.")
-                                            : tr("All the files in your local sync folder \"%1\" were deleted. These deletes will be "
-                                                 "synchronized with your server, making such files unavailable unless restored.\n"
-                                                 "Are you sure you want to sync those actions with the server?\n"
-                                                 "If this was an accident and you decide to keep your files, they will be re-synced from the server.");
-    auto msgBox = new QMessageBox(QMessageBox::Warning, tr("Remove All Files?"),
-        msg.arg(shortGuiLocalPath()), QMessageBox::NoButton);
+    const QString msg = dir == SyncFileItem::Down ? tr("All files in the server folder \"%1\" were deleted.\n\nIf you restore the files, they will be uploaded again to the server.")
+                                                  : tr("All files in the local folder \"%1\" were deleted.\n\nIf you restore the files, they will be downloaded again from the server.");
+    auto msgBox = new QMessageBox(QMessageBox::Warning, tr("Remove all files?"),
+                                  msg.arg(shortGuiLocalPath()), QMessageBox::NoButton);
     msgBox->setAttribute(Qt::WA_DeleteOnClose);
     msgBox->setWindowFlags(msgBox->windowFlags() | Qt::WindowStaysOnTopHint);
-    msgBox->addButton(tr("Remove all files"), QMessageBox::DestructiveRole);
-    QPushButton *keepBtn = msgBox->addButton(tr("Keep files"), QMessageBox::AcceptRole);
+    msgBox->addButton(tr("Proceed to remove all files"), QMessageBox::DestructiveRole);
+    QPushButton *keepBtn = msgBox->addButton(tr("Restore files"), QMessageBox::AcceptRole);
     bool oldPaused = syncPaused();
     setSyncPaused(true);
     connect(msgBox, &QMessageBox::finished, this, [msgBox, keepBtn, callback, oldPaused, this] {
@@ -1707,8 +1711,8 @@ void Folder::removeLocalE2eFiles()
     const auto existingBlacklist = _journal.getSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, &ok);
     Q_ASSERT(ok);
 
-    const auto existingBlacklistSet = existingBlacklist.toSet();
-    auto expandedBlacklistSet = existingBlacklist.toSet();
+    const auto existingBlacklistSet = QSet<QString>{existingBlacklist.begin(), existingBlacklist.end()};
+    auto expandedBlacklistSet = QSet<QString>{existingBlacklist.begin(), existingBlacklist.end()};
 
     for (const auto &path : qAsConst(e2eFoldersToBlacklist)) {
         expandedBlacklistSet.insert(path);

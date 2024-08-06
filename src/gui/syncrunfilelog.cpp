@@ -42,7 +42,7 @@ void SyncRunFileLog::start(const QString &folderPath)
     QString filename = logpath + QLatin1String("/") + filenameSingle + QLatin1String("_sync.log");
 
     int depthIndex = 2;
-    while(QFile::exists(filename)) {
+    while (FileSystem::fileExists(filename)) {
 
         QFile file(filename);
         file.open(QIODevice::ReadOnly| QIODevice::Text);
@@ -65,9 +65,8 @@ void SyncRunFileLog::start(const QString &folderPath)
     }
 
     // When the file is too big, just rename it to an old name.
-    QFileInfo info(filename);
-    bool exists = info.exists();
-    if (exists && info.size() > logfileMaxSize) {
+    bool exists = FileSystem::fileExists(filename);
+    if (exists && FileSystem::getSize(filename) > logfileMaxSize) {
         exists = false;
         QString newFilename = filename + QLatin1String(".1");
         QFile::remove(newFilename);
@@ -80,12 +79,12 @@ void SyncRunFileLog::start(const QString &folderPath)
 
 
     if (!exists) {
-        _out << folderPath << endl;
+        _out << folderPath << Qt::endl;
         // We are creating a new file, add the note.
         _out << "# timestamp | duration | file | instruction | dir | modtime | etag | "
                 "size | fileId | status | errorString | http result code | "
                 "other size | other modtime | X-Request-ID"
-             << endl;
+             << Qt::endl;
 
         FileSystem::setFileHidden(filename, true);
     }
@@ -93,7 +92,7 @@ void SyncRunFileLog::start(const QString &folderPath)
 
     _totalDuration.start();
     _lapDuration.start();
-    _out << "#=#=#=# Syncrun started " << dateTimeStr(QDateTime::currentDateTimeUtc()) << endl;
+    _out << "#=#=#=# Syncrun started " << dateTimeStr(QDateTime::currentDateTimeUtc()) << Qt::endl;
 }
 void SyncRunFileLog::logItem(const SyncFileItem &item)
 {
@@ -132,21 +131,21 @@ void SyncRunFileLog::logItem(const SyncFileItem &item)
     _out << QString::number(item._previousModtime) << L;
     _out << item._requestId << L;
 
-    _out << endl;
+    _out << Qt::endl;
 }
 
 void SyncRunFileLog::logLap(const QString &name)
 {
     _out << "#=#=#=#=# " << name << " " << dateTimeStr(QDateTime::currentDateTimeUtc())
          << " (last step: " << _lapDuration.restart() << " msec"
-         << ", total: " << _totalDuration.elapsed() << " msec)" << endl;
+         << ", total: " << _totalDuration.elapsed() << " msec)" << Qt::endl;
 }
 
 void SyncRunFileLog::finish()
 {
     _out << "#=#=#=# Syncrun finished " << dateTimeStr(QDateTime::currentDateTimeUtc())
          << " (last step: " << _lapDuration.elapsed() << " msec"
-         << ", total: " << _totalDuration.elapsed() << " msec)" << endl;
+         << ", total: " << _totalDuration.elapsed() << " msec)" << Qt::endl;
     _file->close();
 }
 }

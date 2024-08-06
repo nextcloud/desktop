@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   height="16"
+   width="16"
+   version="1.1"
+   viewBox="0 0 16 16"
+   id="svg1"
+   sodipodi:docname="talk-app.svg"
+   inkscape:version="1.3.2 (091e20ef0f, 2023-11-25)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs1" />
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:zoom="46.8125"
+     inkscape:cx="7.9893191"
+     inkscape:cy="10.435247"
+     inkscape:window-width="1707"
+     inkscape:window-height="995"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg1" />
+  <path
+     d="m7.9992 0.999a6.9993 6.9994 0 0 0 -6.9992 6.9996 6.9993 6.9994 0 0 0 6.9992 6.9994 6.9993 6.9994 0 0 0 3.6308 -1.024c0.86024 0.34184 2.7871 1.356 3.2457 0.91794 0.47922-0.45765-0.56261-2.6116-0.81238-3.412a6.9993 6.9994 0 0 0 0.935 -3.4814 6.9993 6.9994 0 0 0 -6.9991 -6.9993zm0.0008 2.6611a4.34 4.3401 0 0 1 4.34 4.3401 4.34 4.3401 0 0 1 -4.34 4.3398 4.34 4.3401 0 0 1 -4.34 -4.3398 4.34 4.3401 0 0 1 4.34 -4.3401z"
+     stroke-width="0.14"
+     fill="#fff"
+     id="path1"
+     style="fill:#000000" />
+</svg>

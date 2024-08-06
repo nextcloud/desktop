@@ -115,7 +115,7 @@ void UpdateE2eeFolderUsersMetadataJob::slotFetchMetadataJobFinished(int statusCo
     }
 
     if (!_encryptedFolderMetadataHandler->folderMetadata() || !_encryptedFolderMetadataHandler->folderMetadata()->isValid()) {
-        emit finished(403, tr("Could not add or remove a folder user %1, for folder %2").arg(_folderUserId).arg(_fullRemotePath));
+        emit finished(403, tr("Could not add or remove user %1 to access folder %2").arg(_folderUserId).arg(_fullRemotePath));
         return;
     }
     startUpdate();
@@ -299,11 +299,11 @@ void UpdateE2eeFolderUsersMetadataJob::slotCertificateFetchedFromKeychain(const 
     emit certificateReady();
 }
 
-void UpdateE2eeFolderUsersMetadataJob::slotCertificatesFetchedFromServer(const QHash<QString, QSslCertificate> &results)
+void UpdateE2eeFolderUsersMetadataJob::slotCertificatesFetchedFromServer(const QHash<QString, NextcloudSslCertificate> &results)
 {
-    const auto certificate = results.isEmpty() ? QSslCertificate{} : results.value(_folderUserId);
+    const auto certificate = results.isEmpty() ? NextcloudSslCertificate{} : results.value(_folderUserId);
     _folderUserCertificate = certificate;
-    if (certificate.isNull()) {
+    if (certificate.get().isNull()) {
         emit certificateReady();
         return;
     }

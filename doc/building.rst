@@ -128,7 +128,7 @@ Then, in Terminal:
 
    .. code-block:: bash
 
-      % brew install git qt qtkeychain cmake openssl glib cmocka
+      % brew install git qt qtkeychain cmake openssl glib cmocka karchive
 
 5. Certain Homebrew packages are not automatically linked in places where
    the build scripts can find them, so you can create a shell-profile script
@@ -136,9 +136,8 @@ Then, in Terminal:
 
    .. code-block:: bash
 
-      % echo 'export OPENSSL_ROOT_DIR=$(brew --prefix openssl)' >> ~/.nextcloud_build_variables
-      % echo 'export QT_PATH=$(brew --prefix qt5)/bin' >> ~/.nextcloud_build_variables
-      % echo 'export Qt5LinguistTools_DIR=$(brew --prefix qt5)/lib/cmake/Qt5LinguistTools/' >> ~/.nextcloud_build_variables
+      % echo 'export QT_PATH=$(brew --prefix qt6)/bin' >> ~/.nextcloud_build_variables
+      % echo 'export CMAKE_PREFIX_PATH=$(brew --prefix qt6);$(brew --prefix karchive)' >> ~/.nextcloud_build_variables
    
    .. note:: The name ``~/.nextcloud_build_variables`` is just a suggestion for
       convenience. You can use a different file or create an entire shell
@@ -207,58 +206,88 @@ Then, in Terminal:
 Windows Development Build
 -------------------------
 
-If you want to test some changes and deploy them locally, you can build natively
-on Windows using MinGW. If you want to generate an installer for deployment, please
-follow `Windows Installer Build (Cross-Compile)`_ instead.
+System requirements
+-------------------
+- Windows 10 or Windows 11
+- `The desktop client code <https://github.com/nextcloud/desktop>`_  
+- Python 3
+- PowerShell
+- Microsoft Visual Studio 2022 and tools to compile C++
+- `KDE Craft <https://community.kde.org/Craft>`_
 
-1. Get the required dependencies:
+Setting up Microsoft Visual Studio
+----------------------------------
 
-   * Make sure that you have CMake_ and Git_.
-   * Download the Qt_ MinGW package. You will use the MinGW version bundled with it.
-   * Download an `OpenSSL Windows Build`_ (the non-"Light" version)
+1. Click on 'Modify' in the Visual Studio Installer:
 
-2. Get the QtKeychain_ sources as well as the latest versions of the Nextcloud client
-   from Git as follows
+  .. image:: ./images/building/visual-studio-installer.png
+    :alt: Visual Studio Installer
 
-   .. code-block:: bash
-   
-      git clone https://github.com/frankosterfeld/qtkeychain.git
-      git clone git://github.com/nextcloud/client.git
+2. Select 'Desktop development with C++'
 
-3. Open the Qt MinGW shortcut console from the Start Menu
+  .. image:: ./images/building/desktop-development-with-cpp.png
+    :alt: Desktop development with C++
 
-4. Make sure that OpenSSL's ``bin`` directory as well as your qtkeychain source
-   directories are in your PATH. This will allow CMake to find the library and
-   headers, as well as allow the Nextcloud client to find the DLLs at runtime::
+Handling the dependencies 
+-------------------------
+We handle the dependencies using `KDE Craft <https://community.kde.org/Craft>`_ because it is easy to set it up and it makes the maintenance much more reliable in all platforms.
 
-    set PATH=C:\<OpenSSL Install Dir>\bin;%PATH%
-    set PATH=C:\<qtkeychain Clone Dir>;%PATH%
+1. Set up KDE Craft as instructed in `Get Involved/development/Windows - KDE Community Wiki <https://community.kde.org/Get_Involved/development/Windows>`_ -  it requires Python 3 and PowerShell.
+2. After running:
 
-5. Build qtkeychain **directly in the source directory** so that the DLL is built
-   in the same directory as the headers to let CMake find them together through PATH::
+.. code-block:: winbatch
 
-    cd <qtkeychain Clone Dir>
-    cmake -G "MinGW Makefiles" .
-    mingw32-make
-    cd ..
+   C:\CraftRoot\craft\craftenv.ps1
 
-6. Create the build directory::
+3. Add the `desktop client blueprints <https://github.com/nextcloud/desktop-client-blueprints>`_ - the instructions to handle the client dependencies:
 
-     mkdir client-build
-     cd client-build
+.. code-block:: winbatch
 
-7. Build the client::
+  craft --add-blueprint-repository [git]https://github.com/nextcloud/desktop-client-blueprints.git
+  craft craft
 
-     cmake -G "MinGW Makefiles" ../client
-     mingw32-make
+4. Install all client dependencies:
 
-   .. note:: You can try using ninja to build in parallel using
-      ``cmake -G Ninja ../client`` and ``ninja`` instead.
-   .. note:: Refer to the :ref:`generic-build-instructions` section for additional options.
+.. code-block:: winbatch
 
-   The Nextcloud binary will appear in the ``bin`` directory.
+  craft --install-deps nextcloud-client
 
-.. _`Windows Installer Build (Cross-Compile)`:
+Compiling
+---------
+
+1. Make sure your environment variable %PATH% has no conflicting information to the environment you will use to compile the client. For instance, if you have installed OpenSSL previously and have added it to %PATH%, the OpenSSL installed might be a different version than what was installed via KDE Craft.
+2. Open the Command Prompt (cmd.exe)
+3. Run:
+
+.. code-block:: winbatch
+
+  "C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Auxiliary\Build\vcvarsall.bat" x64
+
+4. To use the tools installed with Visual Studio, you need the following in your %PATH%:
+
+  .. image:: ./images/building/path.png
+    :alt: Windows environment variables    
+
+5. Alternatively you can use the tools installed with KDE Craft by adding them to %PATH%:
+
+.. code-block:: winbatch
+
+  set "PATH=C:\CraftRoot\bin;C:\CraftRoot\dev-utils\bin;%PATH%"
+
+.. note::
+  C:\CraftRoot is the path used by default by KDE Craft. When you are setting it up you may choose a different folder.
+
+6. Create build folder, run cmake, compile and install:
+
+.. code-block:: winbatch
+
+  cd <desktop-repo-path>
+  mkdir build
+  cd build
+  cmake .. -G Ninja -DCMAKE_INSTALL_PREFIX=. -DCMAKE_PREFIX_PATH=C:\CraftRoot -DCMAKE_BUILD_TYPE=RelWithDebInfo
+  cmake --build . --target install
+  
+7. Now you can use `Qt Creator <https://doc.qt.io/qtcreator>`_ to import the build folder with its configurations to be able to work with the code.
 
 Windows Installer (i.e. Deployment) Build (Cross-Compile)
 ---------------------------------------------------------
@@ -355,7 +384,7 @@ To build the most up-to-date version of the client:
 
    .. note:: qtkeychain must be compiled with the same prefix e.g ``CMAKE_INSTALL_PREFIX=/Users/path/to/client/install/ .``
 
-   .. note:: Example:: ``cmake -DCMAKE_PREFIX_PATH=/usr/local/opt/qt5 -DCMAKE_INSTALL_PREFIX=/Users/path/to/client/install/``
+   .. note:: Example:: ``cmake -DCMAKE_PREFIX_PATH=/usr/local/opt/qt6 -DCMAKE_INSTALL_PREFIX=/Users/path/to/client/install/``
 
 4. Call ``make``.
 
@@ -371,8 +400,7 @@ The following are known cmake parameters:
    You need to compile QtKeychain with the same Qt version.
 * ``WITH_DOC=TRUE``: Creates doc and manpages through running ``make``; also adds install statements,
   providing the ability to install using ``make install``.
-* ``CMAKE_PREFIX_PATH=/path/to/Qt5.2.0/5.2.0/yourarch/lib/cmake/``: Builds using Qt5.
-* ``BUILD_WITH_QT4=ON``: Builds using Qt4 (even if Qt5 is found).
+* ``CMAKE_PREFIX_PATH=/path/to/Qt6/6.7.0/yourarch/lib/cmake/``: Builds using Qt6.
 * ``CMAKE_INSTALL_PREFIX=path``: Set an install prefix. This is mandatory on Mac OS
 
 Address Sanitizer

@@ -20,6 +20,10 @@
 #include "gui/macOS/fileproviderdomainmanager.h"
 #include "gui/macOS/fileproviderxpc_mac_utils.h"
 
+namespace {
+    constexpr int64_t semaphoreWaitDelta = 3000000000; // 3 seconds
+}
+
 namespace OCC::Mac {
 
 Q_LOGGING_CATEGORY(lcFileProviderXPC, "nextcloud.gui.macos.fileprovider.xpc", QtInfoMsg)
@@ -137,6 +141,22 @@ void FileProviderXPC::createDebugArchiveForExtension(const QString &extensionAcc
     }
 }
 
+bool FileProviderXPC::fileProviderExtReachable(const QString &extensionAccountId) const
+{
+    const auto service = (NSObject<ClientCommunicationProtocol> *)_clientCommServices.value(extensionAccountId);
+    if (service == nil) {
+        return false;
+    }
+    __block auto response = false;
+    dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
+    [service getExtensionAccountIdWithCompletionHandler:^(NSString *const, NSError *const) {
+        response = true;
+        dispatch_semaphore_signal(semaphore);
+    }];
+    dispatch_semaphore_wait(semaphore, dispatch_time(DISPATCH_TIME_NOW, semaphoreWaitDelta));
+    return response;
+}
+
 std::optional<std::pair<bool, bool>> FileProviderXPC::fastEnumerationStateForExtension(const QString &extensionAccountId) const
 {
     qCInfo(lcFileProviderXPC) << "Checking if fast enumeration is enabled for extension" << extensionAccountId;
@@ -148,13 +168,19 @@ std::optional<std::pair<bool, bool>> FileProviderXPC::fastEnumerationStateForExt
 
     __block BOOL receivedFastEnumerationEnabled; // What is the value of the setting being used by the extension?
     __block BOOL receivedFastEnumerationSet; // Has the setting been set by the user?
+    __block BOOL receivedResponse = NO;
     dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
     [service getFastEnumerationStateWithCompletionHandler:^(BOOL enabled, BOOL set) {
         receivedFastEnumerationEnabled = enabled;
         receivedFastEnumerationSet = set;
+        receivedResponse = YES;
         dispatch_semaphore_signal(semaphore);
     }];
-    dispatch_wait(semaphore, DISPATCH_TIME_FOREVER);
+    dispatch_semaphore_wait(semaphore, dispatch_time(DISPATCH_TIME_NOW, semaphoreWaitDelta));
+    if (!receivedResponse) {
+        qCWarning(lcFileProviderXPC) << "Did not receive response for fast enumeration state";
+        return std::nullopt;
+    }
     return std::optional<std::pair<bool, bool>>{{receivedFastEnumerationEnabled, receivedFastEnumerationSet}};
 }
 

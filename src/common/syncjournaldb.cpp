@@ -586,7 +586,7 @@ bool SyncJournalDb::checkConnect()
         createQuery.bindValue(1, MIRALL_VERSION_MAJOR);
         createQuery.bindValue(2, MIRALL_VERSION_MINOR);
         createQuery.bindValue(3, MIRALL_VERSION_PATCH);
-        createQuery.bindValue(4, MIRALL_VERSION_BUILD);
+        createQuery.bindValue(4, static_cast<qulonglong>(MIRALL_VERSION_BUILD));
         if (!createQuery.exec()) {
             return sqlFail(QStringLiteral("Update version"), createQuery);
         }
@@ -616,7 +616,7 @@ bool SyncJournalDb::checkConnect()
             createQuery.bindValue(1, MIRALL_VERSION_MAJOR);
             createQuery.bindValue(2, MIRALL_VERSION_MINOR);
             createQuery.bindValue(3, MIRALL_VERSION_PATCH);
-            createQuery.bindValue(4, MIRALL_VERSION_BUILD);
+            createQuery.bindValue(4, static_cast<qulonglong>(MIRALL_VERSION_BUILD));
             createQuery.bindValue(5, major);
             createQuery.bindValue(6, minor);
             createQuery.bindValue(7, patch);

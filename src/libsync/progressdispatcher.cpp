@@ -56,6 +56,8 @@ QString Progress::asResultString(const SyncFileItem &item)
         return QCoreApplication::translate("progress", "Error");
     case CSYNC_INSTRUCTION_UPDATE_METADATA:
         return QCoreApplication::translate("progress", "Updated local metadata");
+    case CSYNC_INSTRUCTION_UPDATE_VFS_METADATA:
+        return QCoreApplication::translate("progress", "Updated local virtual files metadata");
     case CSYNC_INSTRUCTION_NONE:
     case CSYNC_INSTRUCTION_EVAL:
         return QCoreApplication::translate("progress", "Unknown");
@@ -72,21 +74,23 @@ QString Progress::asActionString(const SyncFileItem &item)
     case CSYNC_INSTRUCTION_NEW:
     case CSYNC_INSTRUCTION_TYPE_CHANGE:
         if (item._direction != SyncFileItem::Up)
-            return QCoreApplication::translate("progress", "downloading");
+            return QCoreApplication::translate("progress", "Downloading");
         else
-            return QCoreApplication::translate("progress", "uploading");
+            return QCoreApplication::translate("progress", "Uploading");
     case CSYNC_INSTRUCTION_REMOVE:
-        return QCoreApplication::translate("progress", "deleting");
+        return QCoreApplication::translate("progress", "Deleting");
     case CSYNC_INSTRUCTION_EVAL_RENAME:
     case CSYNC_INSTRUCTION_RENAME:
-        return QCoreApplication::translate("progress", "moving");
+        return QCoreApplication::translate("progress", "Moving");
     case CSYNC_INSTRUCTION_IGNORE:
-        return QCoreApplication::translate("progress", "ignoring");
+        return QCoreApplication::translate("progress", "Ignoring");
     case CSYNC_INSTRUCTION_STAT_ERROR:
     case CSYNC_INSTRUCTION_ERROR:
-        return QCoreApplication::translate("progress", "error");
+        return QCoreApplication::translate("progress", "Error");
     case CSYNC_INSTRUCTION_UPDATE_METADATA:
-        return QCoreApplication::translate("progress", "updating local metadata");
+        return QCoreApplication::translate("progress", "Updating local metadata");
+    case CSYNC_INSTRUCTION_UPDATE_VFS_METADATA:
+        return QCoreApplication::translate("progress", "Updating local virtual files metadata");
     case CSYNC_INSTRUCTION_NONE:
     case CSYNC_INSTRUCTION_EVAL:
         break;

@@ -719,13 +719,14 @@ void PropagateUploadFileCommon::commonErrorHandling(AbstractNetworkJob *job)
 void PropagateUploadFileCommon::adjustLastJobTimeout(AbstractNetworkJob *job, qint64 fileSize)
 {
     constexpr double threeMinutes = 3.0 * 60 * 1000;
+    constexpr qint64 thirtyMinutes = 30 * 60 * 1000;
 
     job->setTimeout(qBound(
-        job->timeoutMsec(),
         // Calculate 3 minutes for each gigabyte of data
-        qRound64(threeMinutes * fileSize / 1e9),
+        qMin(thirtyMinutes - 1, qRound64(threeMinutes * fileSize / 1e9)),
+        job->timeoutMsec(),
         // Maximum of 30 minutes
-        static_cast<qint64>(30 * 60 * 1000)));
+        thirtyMinutes));
 }
 
 void PropagateUploadFileCommon::slotJobDestroyed(QObject *job)
