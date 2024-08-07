@@ -12,14 +12,14 @@
  * for more details.
  */
 
-import QtQml 2.15
-import QtQuick 2.15
-import QtQuick.Window 2.15 as QtWindow
-import QtQuick.Layouts 1.15
-import QtQuick.Controls 2.15
-import QtQml.Models 2.15
-import Style 1.0
-import com.nextcloud.desktopclient 1.0
+import QtQml
+import QtQuick
+import QtQuick.Window as QtWindow
+import QtQuick.Layouts
+import QtQuick.Controls
+import QtQml.Models
+import Style
+import com.nextcloud.desktopclient
 import "./tray"
 
 ApplicationWindow {
