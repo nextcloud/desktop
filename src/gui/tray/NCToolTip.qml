@@ -12,11 +12,11 @@
  * for more details.
  */
 
-import QtQml 2.15
-import QtQuick 2.15
-import QtQuick.Controls 2.15
+import QtQml
+import QtQuick
+import QtQuick.Controls
 
-import Style 1.0
+import Style
 
 ToolTip {
     id: toolTip

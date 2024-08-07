@@ -12,8 +12,8 @@
  * for more details.
  */
 
-import QtQuick 2.15
-import Style 1.0
+import QtQuick
+import Style
 
 Image {
     id: root
