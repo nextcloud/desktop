@@ -36,8 +36,8 @@
           <rect>
            <x>0</x>
            <y>0</y>
-           <width>637</width>
-           <height>72</height>
+           <width>641</width>
+           <height>83</height>
           </rect>
          </property>
          <property name="autoFillBackground">
@@ -89,6 +89,9 @@
         </property>
         <property name="accessibleName">
          <string>Server activity table</string>
+        </property>
+        <property name="tabKeyNavigation">
+         <bool>false</bool>
         </property>
         <property name="alternatingRowColors">
          <bool>true</bool>

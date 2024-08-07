@@ -43,6 +43,9 @@
      <property name="accessibleName">
       <string>Local activity table</string>
      </property>
+     <property name="tabKeyNavigation">
+      <bool>false</bool>
+     </property>
      <property name="alternatingRowColors">
       <bool>true</bool>
      </property>
