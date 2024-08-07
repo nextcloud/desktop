@@ -1,8 +1,8 @@
 pragma Singleton
 
-import QtQuick 2.15
+import QtQuick
 
-import com.nextcloud.desktopclient 1.0
+import com.nextcloud.desktopclient
 
 QtObject {
     readonly property int pixelSize: fontMetrics.font.pixelSize
