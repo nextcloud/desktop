@@ -30,6 +30,7 @@ private slots:
 private:
     QPointer<JsonApiJob> _notificationJob;
     AccountState *_accountState;
+    QString _preFetchEtagHeader;
 };
 }
 
