@@ -956,15 +956,15 @@ Folder *FolderMan::addFolderFromWizard(const AccountStatePtr &accountStatePtr, F
     return newFolder;
 }
 
-Folder *FolderMan::addFolderFromFolderWizardResult(const AccountStatePtr &accountStatePtr, const FolderWizard::Result &config)
+Folder *FolderMan::addFolderFromFolderWizardResult(const AccountStatePtr &accountStatePtr, const SyncConnectionDescription &description)
 {
-    FolderDefinition definition = FolderDefinition::createNewFolderDefinition(config.davUrl, config.spaceId, config.displayName);
-    definition.setLocalPath(config.localPath);
-    definition.setTargetPath(config.remotePath);
-    auto f = addFolderFromWizard(accountStatePtr, std::move(definition), config.useVirtualFiles);
+    FolderDefinition definition = FolderDefinition::createNewFolderDefinition(description.davUrl, description.spaceId, description.displayName);
+    definition.setLocalPath(description.localPath);
+    definition.setTargetPath(description.remotePath);
+    auto f = addFolderFromWizard(accountStatePtr, std::move(definition), description.useVirtualFiles);
     if (f) {
-        f->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, config.selectiveSyncBlackList);
-        f->setPriority(config.priority);
+        f->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, description.selectiveSyncBlackList);
+        f->setPriority(description.priority);
         f->saveToSettings();
     }
     return f;

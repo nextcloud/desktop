@@ -516,7 +516,7 @@ void AccountSettings::slotSpacesUpdated()
                 const QString folderName =
                     FolderMan::instance()->findGoodPathForNewSyncFolder(localDir, newSpace->displayName(), FolderMan::NewFolderType::SpacesFolder);
 
-                FolderWizard::Result fwr;
+                FolderMan::SyncConnectionDescription fwr;
                 fwr.davUrl = QUrl(newSpace->drive().getRoot().getWebDavUrl());
                 fwr.spaceId = newSpace->drive().getRoot().getId();
                 fwr.localPath = folderName;

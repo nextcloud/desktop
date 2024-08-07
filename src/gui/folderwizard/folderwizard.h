@@ -18,6 +18,7 @@
 #include <QWizard>
 
 #include "accountfwd.h"
+#include "gui/folderman.h"
 
 class QCheckBox;
 class QTreeWidgetItem;
@@ -44,47 +45,10 @@ public:
     };
     Q_ENUM(PageType)
 
-    struct Result
-    {
-        /***
--         * The webdav url for the sync connection.
-         */
-        QUrl davUrl;
-
-        /***
-         * The id of the space or empty in case of ownCloud 10.
-         */
-        QString spaceId;
-
-        /***
-         * The local folder used for the sync.
-         */
-        QString localPath;
-
-        /***
-         * The relative remote path
-         */
-        QString remotePath;
-
-        /***
-         * The Space name to display in the list of folders or an empty string.
-         */
-        QString displayName;
-
-        /***
-         * Wether to use virtual files.
-         */
-        bool useVirtualFiles;
-
-        uint32_t priority;
-
-        QSet<QString> selectiveSyncBlackList;
-    };
-
     explicit FolderWizard(const AccountStatePtr &account, QWidget *parent = nullptr);
     ~FolderWizard() override;
 
-    Result result();
+    FolderMan::SyncConnectionDescription result();
 
     Q_DECLARE_PRIVATE(FolderWizard)
 

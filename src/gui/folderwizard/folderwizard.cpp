@@ -178,7 +178,7 @@ FolderWizard::~FolderWizard()
 {
 }
 
-FolderWizard::Result FolderWizard::result()
+FolderMan::SyncConnectionDescription FolderWizard::result()
 {
     Q_D(FolderWizard);
 

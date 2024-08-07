@@ -18,7 +18,6 @@
 #include "gui/owncloudguilib.h"
 
 #include "folder.h"
-#include "folderwizard/folderwizard.h"
 #include "scheduling/syncscheduler.h"
 
 #include <QList>
@@ -94,6 +93,43 @@ public:
         SpacesFolder,
     };
 
+    struct SyncConnectionDescription
+    {
+        /***
+-         * The webdav url for the sync connection.
+         */
+        QUrl davUrl;
+
+        /***
+         * The id of the space or empty in case of ownCloud 10.
+         */
+        QString spaceId;
+
+        /***
+         * The local folder used for the sync.
+         */
+        QString localPath;
+
+        /***
+         * The relative remote path
+         */
+        QString remotePath;
+
+        /***
+         * The Space name to display in the list of folders or an empty string.
+         */
+        QString displayName;
+
+        /***
+         * Wether to use virtual files.
+         */
+        bool useVirtualFiles;
+
+        uint32_t priority;
+
+        QSet<QString> selectiveSyncBlackList;
+    };
+
     static QString suggestSyncFolder(NewFolderType folderType);
     [[nodiscard]] static bool prepareFolder(const QString &folder);
 
@@ -141,7 +177,7 @@ public:
      * In case Wizard::SyncMode::SelectiveSync is used, nullptr is returned.
      */
     Folder *addFolderFromWizard(const AccountStatePtr &accountStatePtr, FolderDefinition &&definition, bool useVfs);
-    Folder *addFolderFromFolderWizardResult(const AccountStatePtr &accountStatePtr, const FolderWizard::Result &config);
+    Folder *addFolderFromFolderWizardResult(const AccountStatePtr &accountStatePtr, const SyncConnectionDescription &config);
 
     /** Removes a folder */
     void removeFolder(Folder *);
