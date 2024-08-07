@@ -1656,9 +1656,10 @@ Questa azione interromperà qualsiasi sincronizzazione attualmente in esecuzione
         <translation>Si è verificato un errore durante il setup.</translation>
     </message>
     <message>
-        <location filename="../src/gui/editlocallyjob.cpp" line="53"/>
-        <source>Could not find a file for local editing.Make sure its path is valid and it is synced locally.</source>
-        <translation type="unfinished"/>
+        <location filename="../src/gui/editlocallyjob.cpp" line="138"/>
+        <location filename="../src/gui/editlocallyjob.cpp" line="151"/>
+        <source>Could not find a file for local editing. Make sure its path is valid and it is synced locally.</source>
+        <translation>Impossibile trovare un file per modificare in locale. Assicurati che il percorso sia valido e che sia sincronizzato in locale.</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="62"/>
@@ -1700,12 +1701,6 @@ Questa azione interromperà qualsiasi sincronizzazione attualmente in esecuzione
         <location filename="../src/gui/editlocallyjob.cpp" line="132"/>
         <source>Could not validate the request to open a file from server.</source>
         <translation>Impossibile validare la richiesta di apertura di un file dal server.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/editlocallyjob.cpp" line="138"/>
-        <location filename="../src/gui/editlocallyjob.cpp" line="151"/>
-        <source>Could not find a file for local editing. Make sure its path is valid and it is synced locally.</source>
-        <translation>Impossibile trovare un file per modificare in locale. Assicurati che il percorso sia valido e che sia sincronizzato in locale.</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="261"/>
@@ -2974,29 +2969,29 @@ Note that this selects only what pool upgrades are taken from, and that there ar
         <translation>Il canale di aggiornamento determina quali aggiornamenti del client saranno offerti per l&apos;installazione. Il canale &quot;stabile&quot; contiene solo aggiornamenti considerati affidabili, mentre le versioni nel canale &quot;beta&quot; possono contenere nuove funzionalità e correzioni di bug, ma non sono state ancora provate a fondo. Nota che questo seleziona solo da quale pool vengono prelevati gli aggiornamenti e che non ci sono downgrade: per cui tornare dal canale beta al canale stabile di solito non può essere fatto immediatamente e significa aspettare una versione stabile che sia più recente della versione beta attualmente installata.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="359"/>
+        <location filename="../src/gui/generalsettings.cpp" line="360"/>
         <source>daily</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="363"/>
+        <location filename="../src/gui/generalsettings.cpp" line="364"/>
         <source>enterprise</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="391"/>
+        <location filename="../src/gui/generalsettings.cpp" line="392"/>
         <source>- enterprise: contains stable versions for customers.
 </source>
         <comment>description of enterprise update channel for enterprise customers</comment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="396"/>
+        <location filename="../src/gui/generalsettings.cpp" line="397"/>
         <source>Changing update channel?</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="397"/>
+        <location filename="../src/gui/generalsettings.cpp" line="398"/>
         <source>The channel determines which upgrades will be offered to install:
 - stable: contains tested versions considered reliable
 - beta: contains versions with new features that may not be tested thoroughly
@@ -3352,7 +3347,7 @@ Nota che l&apos;utilizzo di qualsiasi opzione della riga di comando di registraz
     </message>
     <message>
         <location filename="../src/gui/macOS/fileprovidereditlocallyjob.cpp" line="81"/>
-        <source>Could not get file id.</source>
+        <source>Could not get file ID.</source>
         <translation type="unfinished"/>
     </message>
     <message>

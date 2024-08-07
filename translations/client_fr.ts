@@ -1654,9 +1654,10 @@ Vous prenez vos propres risques.</translation>
         <translation>Une erreur est survenue pendant la configuration.</translation>
     </message>
     <message>
-        <location filename="../src/gui/editlocallyjob.cpp" line="53"/>
-        <source>Could not find a file for local editing.Make sure its path is valid and it is synced locally.</source>
-        <translation type="unfinished"/>
+        <location filename="../src/gui/editlocallyjob.cpp" line="138"/>
+        <location filename="../src/gui/editlocallyjob.cpp" line="151"/>
+        <source>Could not find a file for local editing. Make sure its path is valid and it is synced locally.</source>
+        <translation>Impossible de trouver le fichier pour l&apos;édition locale. Assurez-vous que le chemin est valide et qu&apos;il est synchronisé localement.</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="62"/>
@@ -1698,12 +1699,6 @@ Vous prenez vos propres risques.</translation>
         <location filename="../src/gui/editlocallyjob.cpp" line="132"/>
         <source>Could not validate the request to open a file from server.</source>
         <translation>Impossible de valider la requête pour ouvrir un fichier du serveur.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/editlocallyjob.cpp" line="138"/>
-        <location filename="../src/gui/editlocallyjob.cpp" line="151"/>
-        <source>Could not find a file for local editing. Make sure its path is valid and it is synced locally.</source>
-        <translation>Impossible de trouver le fichier pour l&apos;édition locale. Assurez-vous que le chemin est valide et qu&apos;il est synchronisé localement.</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="261"/>
@@ -2974,29 +2969,29 @@ Note that this selects only what pool upgrades are taken from, and that there ar
 Notez que cela ne permet seulement que de sélectionner où sont récupérées les mises à jour et qu&apos;il n&apos;y a pas de possibilité de rétrograder : ainsi, le retour du canal &quot;bêta&quot; au canal &quot;stable&quot; ne peut généralement pas être fait immédiatement, et implique d&apos;attendre une version stable plus récente que la version bêta actuellement installée.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="359"/>
+        <location filename="../src/gui/generalsettings.cpp" line="360"/>
         <source>daily</source>
         <translation>quotidien</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="363"/>
+        <location filename="../src/gui/generalsettings.cpp" line="364"/>
         <source>enterprise</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="391"/>
+        <location filename="../src/gui/generalsettings.cpp" line="392"/>
         <source>- enterprise: contains stable versions for customers.
 </source>
         <comment>description of enterprise update channel for enterprise customers</comment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="396"/>
+        <location filename="../src/gui/generalsettings.cpp" line="397"/>
         <source>Changing update channel?</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="397"/>
+        <location filename="../src/gui/generalsettings.cpp" line="398"/>
         <source>The channel determines which upgrades will be offered to install:
 - stable: contains tested versions considered reliable
 - beta: contains versions with new features that may not be tested thoroughly
@@ -3353,7 +3348,7 @@ Notez que l&apos;utilisation de toute option de ligne de commande de journalisat
     </message>
     <message>
         <location filename="../src/gui/macOS/fileprovidereditlocallyjob.cpp" line="81"/>
-        <source>Could not get file id.</source>
+        <source>Could not get file ID.</source>
         <translation type="unfinished"/>
     </message>
     <message>

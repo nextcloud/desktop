@@ -1656,8 +1656,9 @@ This action will abort any currently running synchronization.</translation>
         <translation>An error occurred during setup.</translation>
     </message>
     <message>
-        <location filename="../src/gui/editlocallyjob.cpp" line="53"/>
-        <source>Could not find a file for local editing.Make sure its path is valid and it is synced locally.</source>
+        <location filename="../src/gui/editlocallyjob.cpp" line="138"/>
+        <location filename="../src/gui/editlocallyjob.cpp" line="151"/>
+        <source>Could not find a file for local editing. Make sure its path is valid and it is synced locally.</source>
         <translation>Could not find a file for local editing. Make sure its path is valid and it is synced locally.</translation>
     </message>
     <message>
@@ -1700,12 +1701,6 @@ This action will abort any currently running synchronization.</translation>
         <location filename="../src/gui/editlocallyjob.cpp" line="132"/>
         <source>Could not validate the request to open a file from server.</source>
         <translation>Could not validate the request to open a file from server.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/editlocallyjob.cpp" line="138"/>
-        <location filename="../src/gui/editlocallyjob.cpp" line="151"/>
-        <source>Could not find a file for local editing. Make sure its path is valid and it is synced locally.</source>
-        <translation>Could not find a file for local editing. Make sure its path is valid and it is synced locally.</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="261"/>
@@ -2979,17 +2974,17 @@ Note that this selects only what pool upgrades are taken from, and that there ar
 Note that this selects only what pool upgrades are taken from, and that there are no downgrades: So going back from the beta channel to the stable channel usually cannot be done immediately and means waiting for a stable version that is newer than the currently installed beta version.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="359"/>
+        <location filename="../src/gui/generalsettings.cpp" line="360"/>
         <source>daily</source>
         <translation>daily</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="363"/>
+        <location filename="../src/gui/generalsettings.cpp" line="364"/>
         <source>enterprise</source>
         <translation>enterprise</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="391"/>
+        <location filename="../src/gui/generalsettings.cpp" line="392"/>
         <source>- enterprise: contains stable versions for customers.
 </source>
         <comment>description of enterprise update channel for enterprise customers</comment>
@@ -2997,12 +2992,12 @@ Note that this selects only what pool upgrades are taken from, and that there ar
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="396"/>
+        <location filename="../src/gui/generalsettings.cpp" line="397"/>
         <source>Changing update channel?</source>
         <translation>Changing update channel?</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="397"/>
+        <location filename="../src/gui/generalsettings.cpp" line="398"/>
         <source>The channel determines which upgrades will be offered to install:
 - stable: contains tested versions considered reliable
 - beta: contains versions with new features that may not be tested thoroughly
@@ -3365,8 +3360,8 @@ Note that using any logging command line options will override this setting.</tr
     </message>
     <message>
         <location filename="../src/gui/macOS/fileprovidereditlocallyjob.cpp" line="81"/>
-        <source>Could not get file id.</source>
-        <translation>Could not get file id.</translation>
+        <source>Could not get file ID.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/macOS/fileprovidereditlocallyjob.cpp" line="89"/>

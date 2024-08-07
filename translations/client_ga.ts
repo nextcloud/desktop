@@ -1656,8 +1656,9 @@ Cuirfidh an gníomh seo deireadh le haon sioncrónú atá ar siúl faoi láthair
         <translation>Tharla earráid le linn an tsocraithe.</translation>
     </message>
     <message>
-        <location filename="../src/gui/editlocallyjob.cpp" line="53"/>
-        <source>Could not find a file for local editing.Make sure its path is valid and it is synced locally.</source>
+        <location filename="../src/gui/editlocallyjob.cpp" line="138"/>
+        <location filename="../src/gui/editlocallyjob.cpp" line="151"/>
+        <source>Could not find a file for local editing. Make sure its path is valid and it is synced locally.</source>
         <translation>Níorbh fhéidir comhad a aimsiú le haghaidh eagarthóireacht áitiúil. Cinntigh go bhfuil a chonair bailí agus go bhfuil sé sioncronaithe go háitiúil.</translation>
     </message>
     <message>
@@ -1700,12 +1701,6 @@ Cuirfidh an gníomh seo deireadh le haon sioncrónú atá ar siúl faoi láthair
         <location filename="../src/gui/editlocallyjob.cpp" line="132"/>
         <source>Could not validate the request to open a file from server.</source>
         <translation>Níorbh fhéidir an t-iarratas chun comhad a oscailt ón bhfreastalaí a bhailíochtú.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/editlocallyjob.cpp" line="138"/>
-        <location filename="../src/gui/editlocallyjob.cpp" line="151"/>
-        <source>Could not find a file for local editing. Make sure its path is valid and it is synced locally.</source>
-        <translation>Níorbh fhéidir comhad a aimsiú le haghaidh eagarthóireacht áitiúil. Cinntigh go bhfuil a chonair bailí agus go bhfuil sé sioncronaithe go háitiúil.</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="261"/>
@@ -2979,17 +2974,17 @@ Note that this selects only what pool upgrades are taken from, and that there ar
 Tabhair faoi deara nach roghnaíonn sé seo ach na huasghráduithe linne a bhaintear as, agus nach bhfuil aon íosghrádú ann: Mar sin ní féidir dul ar ais ón gcainéal béite go dtí an cainéal cobhsaí láithreach agus ciallaíonn sé seo fanacht ar leagan cobhsaí atá níos nuaí ná an béite atá suiteáilte faoi láthair leagan.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="359"/>
+        <location filename="../src/gui/generalsettings.cpp" line="360"/>
         <source>daily</source>
         <translation>laethúil</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="363"/>
+        <location filename="../src/gui/generalsettings.cpp" line="364"/>
         <source>enterprise</source>
         <translation>fiontar</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="391"/>
+        <location filename="../src/gui/generalsettings.cpp" line="392"/>
         <source>- enterprise: contains stable versions for customers.
 </source>
         <comment>description of enterprise update channel for enterprise customers</comment>
@@ -2997,12 +2992,12 @@ Tabhair faoi deara nach roghnaíonn sé seo ach na huasghráduithe linne a bhain
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="396"/>
+        <location filename="../src/gui/generalsettings.cpp" line="397"/>
         <source>Changing update channel?</source>
         <translation>Cainéal nuashonraithe á athrú?</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="397"/>
+        <location filename="../src/gui/generalsettings.cpp" line="398"/>
         <source>The channel determines which upgrades will be offered to install:
 - stable: contains tested versions considered reliable
 - beta: contains versions with new features that may not be tested thoroughly
@@ -3365,8 +3360,8 @@ Tabhair faoi deara go sárófar an socrú seo trí úsáid a bhaint as aon rogha
     </message>
     <message>
         <location filename="../src/gui/macOS/fileprovidereditlocallyjob.cpp" line="81"/>
-        <source>Could not get file id.</source>
-        <translation>Níorbh fhéidir aitheantas an chomhaid a fháil.</translation>
+        <source>Could not get file ID.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/macOS/fileprovidereditlocallyjob.cpp" line="89"/>
