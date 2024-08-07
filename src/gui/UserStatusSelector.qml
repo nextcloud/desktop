@@ -12,14 +12,14 @@
  * for more details.
  */
 
-import QtQuick 2.6
+import QtQuick
 import QtQuick.Dialogs
-import QtQuick.Layouts 1.15
-import QtQuick.Controls 2.15
-import QtQuick.Window 2.15
+import QtQuick.Layouts
+import QtQuick.Controls
+import QtQuick.Window
 
-import com.nextcloud.desktopclient 1.0 as NC
-import Style 1.0
+import com.nextcloud.desktopclient as NC
+import Style
 import "./tray"
 
 ColumnLayout {
