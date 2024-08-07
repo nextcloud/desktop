@@ -13,13 +13,13 @@
  * for more details.
  */
 
-import QtQuick 2.15
-import QtQuick.Window 2.15
-import Style 1.0
-import com.nextcloud.desktopclient 1.0
-import QtQuick.Layouts 1.2
-import QtMultimedia 5.15
-import QtQuick.Controls 2.15
+import QtQuick
+import QtQuick.Window
+import Style
+import com.nextcloud.desktopclient
+import QtQuick.Layouts
+import QtMultimedia
+import QtQuick.Controls
 import Qt5Compat.GraphicalEffects
 
 ApplicationWindow {

@@ -12,11 +12,11 @@
  * for more details.
  */
 
-import QtQml 2.15
-import QtQuick 2.15
-import QtQuick.Controls 2.15
-import QtQuick.Layouts 1.15
-import Style 1.0
+import QtQml
+import QtQuick
+import QtQuick.Controls
+import QtQuick.Layouts
+import Style
 
 ColumnLayout {
     id: unifiedSearchResultItemFetchMore

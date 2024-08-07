@@ -1,7 +1,7 @@
-import QtQuick 2.15
-import QtQuick.Controls 2.3
-import Style 1.0
-import com.nextcloud.desktopclient 1.0
+import QtQuick
+import QtQuick.Controls
+import Style
+import com.nextcloud.desktopclient
 
 AbstractButton {
     id: root

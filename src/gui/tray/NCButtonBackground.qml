@@ -12,9 +12,9 @@
  * for more details.
  */
 
-import QtQuick 2.15
+import QtQuick
 
-import Style 1.0
+import Style
 
 Rectangle {
     property bool hovered: false

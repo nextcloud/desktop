@@ -12,14 +12,14 @@
  * for more details.
  */
 
-import QtQuick 2.15
-import QtQuick.Window 2.15
-import QtQuick.Controls 2.15
-import QtQuick.Layouts 1.15
+import QtQuick
+import QtQuick.Window
+import QtQuick.Controls
+import QtQuick.Layouts
 
 // Custom qml modules are in /theme (and included by resources.qrc)
-import Style 1.0
-import com.nextcloud.desktopclient 1.0
+import Style
+import com.nextcloud.desktopclient
 
 AbstractButton {
     id: userLine
