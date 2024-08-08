@@ -404,6 +404,26 @@ QStringList Capabilities::blacklistedFiles() const
     return _capabilities["files"].toMap()["blacklisted_files"].toStringList();
 }
 
+QStringList Capabilities::forbiddenFilenames() const
+{
+    return _capabilities["files"].toMap()["forbidden_filenames"].toStringList();
+}
+
+QStringList Capabilities::forbiddenFilenameCharacters() const
+{
+    return _capabilities["files"].toMap()["forbidden_filename_characters"].toStringList();
+}
+
+QStringList Capabilities::forbiddenFilenameBasenames() const
+{
+    return _capabilities["files"].toMap()["forbidden_filename_basenames"].toStringList();
+}
+
+QStringList Capabilities::forbiddenFilenameExtensions() const
+{
+    return _capabilities["files"].toMap()["forbidden_filename_extensions"].toStringList();
+}
+
 /*-------------------------------------------------------------------------------------*/
 
 // Direct Editing

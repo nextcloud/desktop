@@ -292,8 +292,23 @@ bool ProcessDirectoryJob::handleExcluded(const QString &path, const Entries &ent
     }
 
     const auto &localName = entries.localEntry.name;
+    const auto splitName = localName.split('.');
+    const auto &baseName = splitName.first();
+    const auto extension = splitName.size() > 1 ? splitName.last() : QString();
+    const auto accountCaps = _discoveryData->_account->capabilities();
+    const auto forbiddenFilenames = accountCaps.forbiddenFilenames();
+    const auto forbiddenBasenames = accountCaps.forbiddenFilenameBasenames();
+    const auto forbiddenExtensions = accountCaps.forbiddenFilenameExtensions();
+    const auto forbiddenChars = accountCaps.forbiddenFilenameCharacters();
+
     if (excluded == CSYNC_NOT_EXCLUDED && !localName.isEmpty()
-            && _discoveryData->_serverBlacklistedFiles.contains(localName)) {
+        && (_discoveryData->_serverBlacklistedFiles.contains(localName)
+            || forbiddenFilenames.contains(localName)
+            || forbiddenBasenames.contains(baseName)
+            || forbiddenExtensions.contains(extension)
+            || std::any_of(forbiddenChars.cbegin(), forbiddenChars.cend(), [&localName](const QString &charPattern) {
+                   return localName.contains(charPattern);
+               }))) {
         excluded = CSYNC_FILE_EXCLUDE_SERVER_BLACKLISTED;
         isInvalidPattern = true;
     }

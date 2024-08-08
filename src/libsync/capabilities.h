@@ -166,6 +166,11 @@ public:
      */
     [[nodiscard]] QStringList blacklistedFiles() const;
 
+    [[nodiscard]] QStringList forbiddenFilenameCharacters() const;
+    [[nodiscard]] QStringList forbiddenFilenameBasenames() const;
+    [[nodiscard]] QStringList forbiddenFilenameExtensions() const;
+    [[nodiscard]] QStringList forbiddenFilenames() const;
+
     /**
      * Whether conflict files should remain local (default) or should be uploaded.
      */
