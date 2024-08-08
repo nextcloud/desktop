@@ -89,8 +89,7 @@ Pane {
 
                     anchors.fill: parent
 
-                    Accessible.description: spaceDelegate.accessibleDescription
-                    Accessible.name: Accessible.description
+                    Accessible.name: spaceDelegate.accessibleDescription
                     Accessible.role: Accessible.ListItem
                     Accessible.selectable: true
                     Accessible.selected: space === spacesBrowser.currentSpace

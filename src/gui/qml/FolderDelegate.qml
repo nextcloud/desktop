@@ -93,8 +93,7 @@ Pane {
                         id: delegatePane
                         anchors.fill: parent
 
-                        Accessible.description: folderDelegate.accessibleDescription
-                        Accessible.name: Accessible.description
+                        Accessible.name: folderDelegate.accessibleDescription
                         Accessible.role: Accessible.ListItem
 
                         clip: true
