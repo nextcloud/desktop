@@ -12,6 +12,12 @@ if ( APPLE )
     )
 endif()
 
+if (WIN32)
+  list(APPEND OS_SPECIFIC_LINK_LIBRARIES
+    Crypt32
+  )
+endif()
+
 set(libsync_SRCS
     account.h
     account.cpp

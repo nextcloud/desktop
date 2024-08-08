@@ -317,8 +317,33 @@ void AccountState::checkConnectivity()
 
         // If we don't reset the ssl config a second CheckServerJob can produce a
         // ssl config that does not have a sensible certificate chain.
+#if defined(Q_OS_WIN)
+        auto sslConfig = QSslConfiguration::defaultConfiguration();
+
+        for (const auto &storeName : std::vector<std::wstring>{L"CA"}) {
+            auto systemStore = CertOpenSystemStore(0, storeName.data());
+            if (systemStore) {
+                auto certificatePointer = PCCERT_CONTEXT{nullptr};
+                while (true) {
+                    certificatePointer = CertFindCertificateInStore(systemStore, X509_ASN_ENCODING, 0, CERT_FIND_ANY, nullptr, certificatePointer);
+                    if (!certificatePointer) {
+                        break;
+                    }
+                    const auto der = QByteArray{reinterpret_cast<const char *>(certificatePointer->pbCertEncoded),
+                                                static_cast<int>(certificatePointer->cbCertEncoded)};
+                    const auto cert = QSslCertificate{der, QSsl::Der};
+
+                    qCDebug(lcAccountState()) << "found certificate" << cert.subjectDisplayName() << cert.issuerDisplayName() << "from store" << storeName;
+
+                    sslConfig.addCaCertificate(cert);
+                }
+                CertCloseStore(systemStore, 0);
+            }
+        }
+
+        QSslConfiguration::setDefaultConfiguration(sslConfig);
+#endif
         account()->setSslConfiguration(QSslConfiguration::defaultConfiguration());
-        //#endif
         conValidator->checkServerAndAuth();
     }
 }
