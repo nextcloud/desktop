@@ -3344,7 +3344,7 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/macOS/fileprovidereditlocallyjob.cpp" line="81"/>
         <source>Could not get file ID.</source>
-        <translation type="unfinished"/>
+        <translation>يتعذّر الحصول على مُعرِّف الملف.</translation>
     </message>
     <message>
         <location filename="../src/gui/macOS/fileprovidereditlocallyjob.cpp" line="89"/>

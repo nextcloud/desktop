@@ -3361,7 +3361,7 @@ Observera att om du använder kommandoradsalternativ för loggning kommer den h�
     <message>
         <location filename="../src/gui/macOS/fileprovidereditlocallyjob.cpp" line="81"/>
         <source>Could not get file ID.</source>
-        <translation type="unfinished"/>
+        <translation>Kunde inte hämta fil-ID.</translation>
     </message>
     <message>
         <location filename="../src/gui/macOS/fileprovidereditlocallyjob.cpp" line="89"/>

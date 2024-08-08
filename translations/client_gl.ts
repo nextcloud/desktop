@@ -3361,7 +3361,7 @@ Teña en conta que o uso de calquera opción da liña de ordes anulara este axus
     <message>
         <location filename="../src/gui/macOS/fileprovidereditlocallyjob.cpp" line="81"/>
         <source>Could not get file ID.</source>
-        <translation type="unfinished"/>
+        <translation>Non foi posíbel obter o ID do ficheiro.</translation>
     </message>
     <message>
         <location filename="../src/gui/macOS/fileprovidereditlocallyjob.cpp" line="89"/>

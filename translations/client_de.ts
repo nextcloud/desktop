@@ -3359,7 +3359,7 @@ Beachten Sie, dass die Verwendung von Befehlszeilenoptionen für die Protokollie
     <message>
         <location filename="../src/gui/macOS/fileprovidereditlocallyjob.cpp" line="81"/>
         <source>Could not get file ID.</source>
-        <translation type="unfinished"/>
+        <translation>Datei-ID konnte nicht abgerufen werden.</translation>
     </message>
     <message>
         <location filename="../src/gui/macOS/fileprovidereditlocallyjob.cpp" line="89"/>
