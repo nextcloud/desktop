@@ -3361,7 +3361,7 @@ Tabhair faoi deara go sárófar an socrú seo trí úsáid a bhaint as aon rogha
     <message>
         <location filename="../src/gui/macOS/fileprovidereditlocallyjob.cpp" line="81"/>
         <source>Could not get file ID.</source>
-        <translation type="unfinished"/>
+        <translation>Níorbh fhéidir id comhad a fháil.</translation>
     </message>
     <message>
         <location filename="../src/gui/macOS/fileprovidereditlocallyjob.cpp" line="89"/>
