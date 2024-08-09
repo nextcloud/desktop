@@ -38,21 +38,21 @@
           <item row="1" column="0">
            <widget class="QCheckBox" name="monoIconsCheckBox">
             <property name="text">
-             <string>Use &amp;Monochrome Icons in the system tray</string>
+             <string>Use Monochrome Icons in the system tray</string>
             </property>
            </widget>
           </item>
           <item row="0" column="1">
            <widget class="QCheckBox" name="desktopNotificationsCheckBox">
             <property name="text">
-             <string>Show &amp;Desktop Notifications</string>
+             <string>Show Desktop Notifications</string>
             </property>
            </widget>
           </item>
           <item row="0" column="0">
            <widget class="QCheckBox" name="autostartCheckBox">
             <property name="text">
-             <string>Start on &amp;Login</string>
+             <string>Start on Login</string>
             </property>
            </widget>
           </item>
@@ -122,7 +122,7 @@
                </sizepolicy>
               </property>
               <property name="text">
-               <string>S&amp;how crash reporter</string>
+               <string>Show crash reporter</string>
               </property>
              </widget>
             </item>
@@ -138,7 +138,7 @@
               <item>
                <widget class="QPushButton" name="ignoredFilesButton">
                 <property name="text">
-                 <string>Edit &amp;Ignored Files</string>
+                 <string>Edit Ignored Files</string>
                 </property>
                </widget>
               </item>
