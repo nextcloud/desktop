@@ -519,6 +519,11 @@ AccountSettings::~AccountSettings()
 
 void AccountSettings::addModalLegacyDialog(QWidget *widget, ModalWidgetSizePolicy sizePolicy)
 {
+    if (!widget->testAttribute(Qt::WA_DeleteOnClose)) { // DEBUG CODE! See https://github.com/owncloud/client/issues/11673
+        // Early check to see if the attribute gets unset before the second/real check below
+        qCWarning(lcAccountSettings) << "Missing WA_DeleteOnClose! (1)" << widget->metaObject() << widget;
+    }
+
     // create a widget filling the stacked widget
     // this widget contains a wrapping group box with widget as content
     auto *outerWidget = new QWidget;
@@ -545,6 +550,9 @@ void AccountSettings::addModalLegacyDialog(QWidget *widget, ModalWidgetSizePolic
     ui->stackedWidget->setCurrentWidget(outerWidget);
 
     // the widget is supposed to behave like a dialog and we connect to its destuction
+    if (!widget->testAttribute(Qt::WA_DeleteOnClose)) { // DEBUG CODE! See https://github.com/owncloud/client/issues/11673
+        qCWarning(lcAccountSettings) << "Missing WA_DeleteOnClose! (2)" << widget->metaObject() << widget;
+    }
     Q_ASSERT(widget->testAttribute(Qt::WA_DeleteOnClose));
     connect(widget, &QWidget::destroyed, this, [this, outerWidget] {
         outerWidget->deleteLater();
