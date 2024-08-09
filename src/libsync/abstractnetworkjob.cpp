@@ -57,6 +57,7 @@ AbstractNetworkJob::AbstractNetworkJob(const AccountPtr &account, const QString 
     ASSERT(account != parent);
 
     _timer.setSingleShot(true);
+    _timer.setTimerType(Qt::VeryCoarseTimer);
     _timer.setInterval((httpTimeout ? httpTimeout : 300) * 1000); // default to 5 minutes.
     connect(&_timer, &QTimer::timeout, this, &AbstractNetworkJob::slotTimeout);
 
