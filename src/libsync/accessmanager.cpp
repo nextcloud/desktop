@@ -66,16 +66,7 @@ QNetworkReply *AccessManager::createRequest(QNetworkAccessManager::Operation op,
     QByteArray requestId = generateRequestId();
     qInfo(lcAccessManager) << op << verb << newRequest.url().toString() << "has X-Request-ID" << requestId;
     newRequest.setRawHeader("X-Request-ID", requestId);
-
-#if QT_VERSION >= QT_VERSION_CHECK(5, 9, 4)
-    // only enable HTTP2 with Qt 5.9.4 because old Qt have too many bugs (e.g. QTBUG-64359 is fixed in >= Qt 5.9.4)
-    if (newRequest.url().scheme() == "https") { // Not for "http": QTBUG-61397
-        // http2 seems to cause issues, as with our recommended server setup we don't support http2, disable it by default for now
-        static const bool http2EnabledEnv = qEnvironmentVariableIntValue("OWNCLOUD_HTTP2_ENABLED") == 1;
-
-        newRequest.setAttribute(QNetworkRequest::Http2AllowedAttribute, http2EnabledEnv);
-    }
-#endif
+    newRequest.setAttribute(QNetworkRequest::Http2AllowedAttribute, true);
 
     const auto reply = QNetworkAccessManager::createRequest(op, newRequest, outgoingData);
     HttpLogger::logRequest(reply, op, outgoingData);
