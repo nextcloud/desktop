@@ -456,7 +456,7 @@ bool FileSystem::setFolderPermissions(const QString &path,
         case OCC::FileSystem::FolderPermissions::ReadOnly:
             break;
         case OCC::FileSystem::FolderPermissions::ReadWrite:
-            std::filesystem::permissions(stdStrPath, writePerms, std::filesystem::perm_options::add);
+            std::filesystem::permissions(stdStrPath, std::filesystem::perms::owner_write, std::filesystem::perm_options::add);
             break;
         }
     } catch (const std::filesystem::filesystem_error &e) {
