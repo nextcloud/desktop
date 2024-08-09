@@ -20,11 +20,7 @@
 #include <QSslConfiguration>
 #include <QNetworkCookie>
 #include <QNetworkCookieJar>
-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-#include <QNetworkConfiguration>
-#else
 #include <QNetworkInformation>
-#endif
 #include <QUuid>
 
 #include "cookiejar.h"
@@ -39,17 +35,6 @@ Q_LOGGING_CATEGORY(lcAccessManager, "nextcloud.sync.accessmanager", QtInfoMsg)
 AccessManager::AccessManager(QObject *parent)
     : QNetworkAccessManager(parent)
 {
-#if defined(Q_OS_MAC)
-    // FIXME Workaround http://stackoverflow.com/a/15707366/2941 https://bugreports.qt-project.org/browse/QTBUG-30434
-    QNetworkProxy proxy = this->proxy();
-    proxy.setHostName(" ");
-    setProxy(proxy);
-#endif
-
-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0) && !defined(Q_OS_LINUX)
-    // Atempt to workaround for https://github.com/owncloud/client/issues/3969
-    setConfiguration(QNetworkConfiguration());
-#endif
     setCookieJar(new CookieJar);
 }
 

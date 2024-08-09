@@ -243,13 +243,9 @@ Application::Application(int &argc, char **argv)
     //    setOrganizationName(QLatin1String(APPLICATION_VENDOR));
     setOrganizationDomain(QLatin1String(APPLICATION_REV_DOMAIN));
 
-    // setDesktopFilename to provide wayland compatibility (in general: conformance with naming standards)
-    // but only on Qt >= 5.7, where setDesktopFilename was introduced
-#if (QT_VERSION >= 0x050700)
     QString desktopFileName = QString(QLatin1String(LINUX_APPLICATION_ID)
                                         + QLatin1String(".desktop"));
     setDesktopFileName(desktopFileName);
-#endif
 
     setApplicationName(_theme->appName());
     setWindowIcon(_theme->applicationIcon());
@@ -987,13 +983,7 @@ QString substLang(const QString &lang)
 void Application::setupTranslations()
 {
     QStringList uiLanguages;
-// uiLanguages crashes on Windows with 4.8.0 release builds
-#if (QT_VERSION >= 0x040801) || (QT_VERSION >= 0x040800 && !defined(Q_OS_WIN))
     uiLanguages = QLocale::system().uiLanguages();
-#else
-    // older versions need to fall back to the systems locale
-    uiLanguages << QLocale::system().name();
-#endif
 
     QString enforcedLocale = Theme::instance()->enforcedLocale();
     if (!enforcedLocale.isEmpty()) {

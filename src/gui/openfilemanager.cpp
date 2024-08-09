@@ -22,12 +22,6 @@
 #include <QDesktopServices>
 #include <QApplication>
 
-#define QTLEGACY (QT_VERSION < QT_VERSION_CHECK(5,9,0))
-
-#if !(QTLEGACY)
-#include <QOperatingSystemVersion>
-#endif
-
 namespace OCC {
 
 // according to the QStandardDir impl from Qt5
@@ -95,11 +89,7 @@ void showInFileManager(const QString &localPath)
 {
     if (Utility::isWindows()) {
 #ifdef Q_OS_WIN
-        #if QTLEGACY
-            if (QSysInfo::windowsVersion() < QSysInfo::WV_WINDOWS10)
-        #else
             if (QOperatingSystemVersion::current() < QOperatingSystemVersion::Windows7)
-        #endif
                 return;
 #endif
 

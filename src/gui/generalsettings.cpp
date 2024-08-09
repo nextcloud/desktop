@@ -46,12 +46,6 @@
 
 #include <KZip>
 
-#define QTLEGACY (QT_VERSION < QT_VERSION_CHECK(5,9,0))
-
-#if !(QTLEGACY)
-#include <QOperatingSystemVersion>
-#endif
-
 namespace {
 struct ZipEntry {
     QString localFilename;
@@ -208,11 +202,7 @@ GeneralSettings::GeneralSettings(QWidget *parent)
     // Hide on non-Windows, or WindowsVersion < 10.
     // The condition should match the default value of ConfigFile::showInExplorerNavigationPane.
 #ifdef Q_OS_WIN
-    #if QTLEGACY
-        if (QSysInfo::windowsVersion() < QSysInfo::WV_WINDOWS10)
-    #else
         if (QOperatingSystemVersion::current() < QOperatingSystemVersion::Windows10)
-    #endif
             _ui->showInExplorerNavigationPaneCheckBox->setVisible(false);
 #else
     // Hide on non-Windows
