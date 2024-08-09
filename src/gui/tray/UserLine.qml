@@ -167,7 +167,6 @@ AbstractButton {
                     height: visible ? implicitHeight : 0
                     text: qsTr("Set status")
                     font.pixelSize: Style.topLinePixelSize
-                    palette.windowText: Style.ncTextColor
                     hoverEnabled: true
                     onClicked: showUserStatusSelector(index)
                 }
@@ -175,7 +174,6 @@ AbstractButton {
                 MenuItem {
                     text: model.isConnected ? qsTr("Log out") : qsTr("Log in")
                     font.pixelSize: Style.topLinePixelSize
-                    palette.windowText: Style.ncTextColor
                     hoverEnabled: true
                     onClicked: {
                         model.isConnected ? UserModel.logout(index) : UserModel.login(index)
@@ -209,7 +207,6 @@ AbstractButton {
                     id: removeAccountButton
                     text: qsTr("Remove account")
                     font.pixelSize: Style.topLinePixelSize
-                    palette.windowText: Style.ncTextColor
                     hoverEnabled: true
                     onClicked: {
                         UserModel.removeAccount(index)

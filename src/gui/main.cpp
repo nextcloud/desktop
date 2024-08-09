@@ -70,19 +70,18 @@ int main(int argc, char **argv)
     QSurfaceFormat::setDefaultFormat(surfaceFormat);
 
     QQuickWindow::setTextRenderType(QQuickWindow::NativeTextRendering);
-    QQuickStyle::setStyle(QStringLiteral("Fusion"));
+
+    auto style = QStringLiteral("Fusion");
+
+#if defined Q_OS_MAC
+    style = QStringLiteral("macOS");
+#elif defined Q_OS_WIN
+    style = QStringLiteral("Windows");
+#endif
+
+    QQuickStyle::setStyle(style);
 
     OCC::Application app(argc, argv);
-
-#ifdef Q_OS_WIN
-    // The Windows style still has pixelated elements with Qt 5.6,
-    // it's recommended to use the Fusion style in this case, even
-    // though it looks slightly less native. Check here after the
-    // QApplication was constructed, but before any QWidget is
-    // constructed.
-    if (app.devicePixelRatio() > 1)
-        QApplication::setStyle(QStringLiteral("fusion"));
-#endif // Q_OS_WIN
 
 #ifndef Q_OS_WIN
     signal(SIGPIPE, SIG_IGN);

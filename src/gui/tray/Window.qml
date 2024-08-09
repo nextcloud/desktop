@@ -14,7 +14,7 @@
 
 import QtQuick 2.15
 import QtQuick.Window 2.15
-import QtQuick.Controls 2.15
+import QtQuick.Controls
 import QtQuick.Layouts 1.15
 import Qt5Compat.GraphicalEffects
 import Qt.labs.platform 1.1 as NativeDialogs
@@ -34,28 +34,7 @@ ApplicationWindow {
     // If the main dialog is displayed as a regular window we want it to be quadratic
     width:      Systray.useNormalWindow ? Style.trayWindowHeight : Style.trayWindowWidth
     height:     Style.trayWindowHeight
-    color:      "transparent"
     flags:      Systray.useNormalWindow ? Qt.Window : Qt.Dialog | Qt.FramelessWindowHint
-
-    // TODO: Rather than setting all these palette colours manually,
-    // create a custom style and do it for all components globally
-    palette {
-        text: Style.ncTextColor
-        windowText: Style.ncTextColor
-        buttonText: Style.ncTextColor
-        brightText: Style.ncTextBrightColor
-        highlight: Style.lightHover
-        highlightedText: Style.ncTextColor
-        light: Style.lightHover
-        midlight: Style.ncSecondaryTextColor
-        mid: Style.darkerHover
-        dark: Style.menuBorder
-        button: Style.buttonBackgroundColor
-        window: Style.backgroundColor
-        base: Style.backgroundColor
-        toolTipBase: Style.backgroundColor
-        toolTipText: Style.ncTextColor
-    }
 
     readonly property int maxMenuHeight: Style.trayWindowHeight - Style.trayWindowHeaderHeight - 2 * Style.trayWindowBorderWidth
 
@@ -878,18 +857,18 @@ ApplicationWindow {
 
             active: false
 
-            sourceComponent: CustomButton {
+            sourceComponent: Button {
                 id: newActivitiesButton
                 hoverEnabled: true
                 padding: Style.smallSpacing
 
-                textColor: Style.currentUserHeaderTextColor
-                textColorHovered: Style.currentUserHeaderTextColor
-                contentsFont.bold: true
-                bgNormalColor: Qt.lighter(bgHoverColor, 1.25)
-                bgHoverColor: Style.currentUserHeaderColor
-                bgNormalOpacity: Style.newActivitiesBgNormalOpacity
-                bgHoverOpacity: Style.newActivitiesBgHoverOpacity
+                // textColor: Style.currentUserHeaderTextColor
+                // textColorHovered: Style.currentUserHeaderTextColor
+                // contentsFont.bold: true
+                // bgNormalColor: Qt.lighter(bgHoverColor, 1.25)
+                // bgHoverColor: Style.currentUserHeaderColor
+                // bgNormalOpacity: Style.newActivitiesBgNormalOpacity
+                // bgHoverOpacity: Style.newActivitiesBgHoverOpacity
 
                 anchors.fill: parent
 

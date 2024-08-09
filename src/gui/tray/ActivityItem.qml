@@ -29,6 +29,10 @@ ItemDelegate {
         text: qsTr("In %1").arg(model.displayLocation)
     }
 
+    // TODO - Fix warning: QML ColumnLayout: The current style does not support customization of this control
+    // (property: "contentItem" item: QQuickColumnLayout(0x6000014cac10, parent=0x0, geometry=0,0 0x0)). P
+    // lease customize a non-native style (such as Basic, Fusion, Material, etc).
+    // For more information, see: https://doc.qt.io/qt-6/qtquickcontrols2-customize.html#customization-reference
     contentItem: ColumnLayout {
         spacing: Style.smallSpacing
 
