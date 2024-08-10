@@ -3555,7 +3555,7 @@ Beachten Sie, dass die Verwendung von Befehlszeilenoptionen für die Protokollie
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="152"/>
         <source>Downloading %1 …</source>
-        <translation>Lade %1 herunter…</translation>
+        <translation>Lade %1 herunter …</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="152"/>
@@ -6906,7 +6906,7 @@ Server antwortete mit Fehler: %2</translation>
     <message>
         <location filename="../src/libsync/theme.cpp" line="88"/>
         <source>Waiting to start syncing</source>
-        <translation>Wartet auf Beginn der Synchronisierung.</translation>
+        <translation>Warte auf Beginn der Synchronisierung.</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="90"/>

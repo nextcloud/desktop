@@ -551,7 +551,7 @@ Le compte doit-il être importé ?</translation>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="316"/>
         <source>Connection settings</source>
-        <translation type="unfinished"/>
+        <translation>Paramètres de connexion</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="93"/>
@@ -1603,7 +1603,7 @@ Vous prenez vos propres risques.</translation>
         <location filename="../src/libsync/discoveryphase.cpp" line="678"/>
         <location filename="../src/libsync/discoveryphase.cpp" line="707"/>
         <source>Encrypted metadata setup error!</source>
-        <translation type="unfinished"/>
+        <translation>Erreur lors de la configuration des métadonnées chiffrées !</translation>
     </message>
 </context>
 <context>
@@ -1763,12 +1763,12 @@ Vous prenez vos propres risques.</translation>
     <message>
         <location filename="../src/gui/editlocallymanager.cpp" line="118"/>
         <source>Could not validate the request to open a file from server.</source>
-        <translation type="unfinished"/>
+        <translation>Impossible de valider la requête pour ouvrir un fichier du serveur.</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallymanager.cpp" line="119"/>
         <source>Please try again.</source>
-        <translation type="unfinished"/>
+        <translation>Merci de réessayer.</translation>
     </message>
 </context>
 <context>
@@ -1776,14 +1776,14 @@ Vous prenez vos propres risques.</translation>
     <message>
         <location filename="../src/gui/editlocallyverificationjob.cpp" line="92"/>
         <source>Invalid token received.</source>
-        <translation type="unfinished"/>
+        <translation>Le jeton reçu est invalide.</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyverificationjob.cpp" line="92"/>
         <location filename="../src/gui/editlocallyverificationjob.cpp" line="99"/>
         <location filename="../src/gui/editlocallyverificationjob.cpp" line="105"/>
         <source>Please try again.</source>
-        <translation type="unfinished"/>
+        <translation>Merci de réessayer.</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyverificationjob.cpp" line="99"/>
