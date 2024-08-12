@@ -308,7 +308,7 @@ ApplicationWindow {
 
                         background: Rectangle {
                             border.color: palette.dark
-                            color: palette.base
+                            color: palette.window
                             radius: Style.currentAccountButtonRadius
                         }
 
@@ -345,7 +345,7 @@ ApplicationWindow {
                                 Rectangle {
                                     anchors.fill: parent
                                     anchors.margins: 1
-                                    color: parent.parent.hovered || parent.parent.visualFocus ? palette.highlight : "transparent"
+                                    color: parent.parent.hovered || parent.parent.visualFocus ? palette.highlight : palette.window
                                 }
                             }
 
@@ -397,7 +397,7 @@ ApplicationWindow {
                                 Rectangle {
                                     anchors.fill: parent
                                     anchors.margins: 1
-                                    color: parent.parent.hovered || parent.parent.visualFocus ? palette.highlight : "transparent"
+                                    color: parent.parent.hovered || parent.parent.visualFocus ? palette.highlight : palette.window
                                 }
                             }
 
@@ -419,7 +419,7 @@ ApplicationWindow {
                                 Rectangle {
                                     anchors.fill: parent
                                     anchors.margins: 1
-                                    color: parent.parent.hovered || parent.parent.visualFocus ? palette.highlight : "transparent"
+                                    color: parent.parent.hovered || parent.parent.visualFocus ? palette.highlight : palette.window
                                 }
                             }
 
@@ -441,7 +441,7 @@ ApplicationWindow {
                                 Rectangle {
                                     anchors.fill: parent
                                     anchors.margins: 1
-                                    color: parent.parent.hovered || parent.parent.visualFocus ? palette.highlight : "transparent"
+                                    color: parent.parent.hovered || parent.parent.visualFocus ? palette.highlight : palette.window
                                 }
                             }
 
@@ -452,7 +452,7 @@ ApplicationWindow {
                     }
 
                     background: Rectangle {
-                        color: parent.hovered || parent.visualFocus ? Style.currentUserHeaderTextColor : "transparent"
+                        color: currentAccountButton.hovered || currentAccountButton.visualFocus ? Style.currentUserHeaderTextColor : Style.currentUserHeaderColor
                         opacity: 0.2
                     }
 
@@ -496,7 +496,7 @@ ApplicationWindow {
                                 height: width
                                 anchors.bottom: currentAccountAvatar.bottom
                                 anchors.right: currentAccountAvatar.right
-                                color: currentAccountButton.hovered ? Style.currentUserHeaderTextColor : "transparent"
+                                color: currentAccountButton.hovered ? Style.currentUserHeaderTextColor : palette.window
                                 opacity: Style.trayFolderStatusIndicatorMouseHoverOpacityFactor
                                 radius: width * Style.trayFolderStatusIndicatorRadiusFactor
                             }
@@ -663,7 +663,7 @@ ApplicationWindow {
 
                         background: Rectangle {
                             border.color: palette.dark
-                            color: palette.base
+                            color: palette.window
                             radius: 2
                         }
 
@@ -699,7 +699,7 @@ ApplicationWindow {
                                         Rectangle {
                                             anchors.fill: parent
                                             anchors.margins: 1
-                                            color: parent.parent.hovered || parent.parent.visualFocus ? palette.highlight : "transparent"
+                                            color: parent.parent.hovered || parent.parent.visualFocus ? palette.highlight : palette.window
                                         }
                                     }
 

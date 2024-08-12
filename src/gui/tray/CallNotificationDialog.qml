@@ -24,7 +24,7 @@ import Qt5Compat.GraphicalEffects
 
 ApplicationWindow {
     id: root
-    color: "transparent"
+    color: palette.window
     flags: Qt.Dialog | Qt.FramelessWindowHint | Qt.WindowStaysOnTopHint
 
     readonly property int windowSpacing: 10
