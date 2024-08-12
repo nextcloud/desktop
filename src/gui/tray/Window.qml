@@ -452,7 +452,7 @@ ApplicationWindow {
                     }
 
                     background: Rectangle {
-                        color: parent.hovered || parent.visualFocus ? Style.currentUserHeaderTextColor : palette.window
+                        color: currentAccountButton.hovered || currentAccountButton.visualFocus ? Style.currentUserHeaderTextColor : Style.currentUserHeaderColor
                         opacity: 0.2
                     }
 
