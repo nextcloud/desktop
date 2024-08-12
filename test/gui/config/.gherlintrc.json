@@ -1,0 +1,14 @@
+{
+  "rules": {
+    "indentation": ["error", 4],
+    "no_repetitive_step_keyword": "error",
+    "require_step": "error",
+    "no_trailing_whitespace": "error",
+    "require_scenario": "error",
+    "no_then_as_first_step": "error",
+    "only_given_step_in_background": "error",
+    "newline_before_scenario": ["error", 2, true],
+    "lowercase_title": "off",
+    "no_but_in_given_when": "error"
+  }
+}

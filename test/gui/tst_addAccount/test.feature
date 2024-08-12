@@ -1,9 +1,7 @@
 Feature: adding accounts
-
     As a user
     I want to be able join multiple owncloud servers to the client
     So that I can sync data with various organisations
-
 
     Background:
         Given user "Alice" has been created on the server with default attributes and without skeleton files

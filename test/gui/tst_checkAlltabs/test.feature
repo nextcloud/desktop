@@ -1,5 +1,4 @@
 Feature: Visually check all tabs
-
     As a user
     I want to visually check all tabs in client
     So that I can performe all the actions related to client

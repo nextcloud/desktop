@@ -41,3 +41,11 @@ test-python-style-diff:
 .PHONY: test-python-style-check
 test-python-style-check:
 	black --check .
+
+.PHONY: test-gherkin-lint
+test-gherkin-lint:
+	gherlint . -c ./config/.gherlintrc.json
+
+.PHONY: test-gherkin-lint-fix
+test-gherkin-lint-fix:
+	gherlint --fix . -c ./config/.gherlintrc.json

@@ -131,6 +131,7 @@ config = {
 
 def main(ctx):
     pipelines = check_starlark() + \
+                check_gherkin_lint() + \
                 gui_tests_format() + \
                 changelog(ctx)
     unit_tests = unit_test_pipeline(ctx)
@@ -787,3 +788,26 @@ def pipelinesDependsOn(pipelines, dependant_pipelines):
         pipes.append(pipelineDependsOn(pipeline, dependant_pipelines))
 
     return pipes
+
+def check_gherkin_lint():
+    return [{
+        "kind": "pipeline",
+        "type": "docker",
+        "name": "check-gherkin-standard",
+        "steps": [
+            {
+                "name": "lint-feature-files",
+                "image": OC_CI_NODEJS,
+                "commands": [
+                    "cd test/gui",
+                    "npm install -g @gherlint/gherlint@1.1.0",
+                    "make test-gherkin-lint",
+                ],
+            },
+        ],
+        "trigger": {
+            "ref": [
+                "refs/pull/**",
+            ],
+        },
+    }]

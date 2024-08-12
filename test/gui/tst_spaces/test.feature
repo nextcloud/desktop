@@ -24,7 +24,7 @@ Feature: Project spaces
         And the administrator has added user "Alice" to space "Project101" with role "viewer"
         And user "Alice" has set up a client with space "Project101"
         Then user "Alice" should not be able to edit the file "testfile.txt" on the file system
-        Then as "Alice" the file "testfile.txt" in the space "Project101" should have content "some content" in the server
+        And as "Alice" the file "testfile.txt" in the space "Project101" should have content "some content" in the server
 
     @skipOnLinux
     Scenario: User with Viewer role cannot edit the file (Windows only)

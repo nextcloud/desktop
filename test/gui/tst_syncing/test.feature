@@ -1,5 +1,4 @@
 Feature: Syncing files
-
     As a user
     I want to be able to sync my local folders to to my owncloud server
     so that I dont have to upload and download files manually
@@ -121,7 +120,6 @@ Feature: Syncing files
         And the user waits for the files to sync
         Then as "Alice" folder "simple-folder" should not exist in the server
 
-
     @issue-9733
     Scenario: sort folders list by name and size
         Given user "Alice" has created folder "123Folder" in the server
@@ -195,7 +193,7 @@ Feature: Syncing files
         And user "Alice" has set up a client with default settings
         When user "Alice" creates a folder "folder with space at end " inside the sync folder
         And the user force syncs the files
-        When the user clicks on the activity tab
+        And the user clicks on the activity tab
         And the user selects "Not Synced" tab in the activity
         Then the file "trailing-space.txt " should be ignored
         And the file "folder with space at end " should be ignored
@@ -263,6 +261,7 @@ Feature: Syncing files
         And the user waits for folder "Folder1/really long folder name with some spaces and special char such as $%ñ&" to be synced
         Then the folder "Folder1/really long folder name with some spaces and special char such as $%ñ&" should exist on the file system
         And as "Alice" folder "Folder1/really long folder name with some spaces and special char such as $%ñ&" should exist in the server
+
 
     Scenario: Verify pre existing folders in local (Desktop client) are copied over to the server
         Given user "Alice" has created a folder "Folder1" inside the sync folder

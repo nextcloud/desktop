@@ -1,6 +1,5 @@
 @skipOnLinux
 Feature: Enable/disable virtual file support
-
     As a user
     I want to enable virtual file support
     So that I can synchronize virtual files with local folder
@@ -80,7 +79,7 @@ Feature: Enable/disable virtual file support
         And user "Alice" has set up a client with default settings
         When user "Alice" creates a file "newfile.txt" with size "100MB" inside the sync folder
         And the user waits for file "newfile.txt" to be synced
-        When the user disables virtual file support
+        And the user disables virtual file support
         And the user enables virtual file support
         And the user disables virtual file support
         And the user enables virtual file support

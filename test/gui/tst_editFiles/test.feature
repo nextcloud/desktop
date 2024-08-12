@@ -1,9 +1,7 @@
 Feature: edit files
-
     As a user
     I want to be able to edit the file content
     So that I can modify and change file data
-
 
     Background:
         Given user "Alice" has been created on the server with default attributes and without skeleton files

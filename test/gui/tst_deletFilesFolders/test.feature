@@ -1,11 +1,9 @@
 Feature: deleting files and folders
-
   	As a user
   	I want to delete files and folders
   	So that I can keep my filing system clean and tidy
 
-
-	Background:
+    Background:
         Given user "Alice" has been created on the server with default attributes and without skeleton files
 
     @issue-9439

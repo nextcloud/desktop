@@ -1,9 +1,7 @@
 Feature: move file and folder
-
     As a user
     I want to be able to move a folder and a file
     So that I can organize my files and folders
-
 
     Background:
         Given user "Alice" has been created on the server with default attributes and without skeleton files
