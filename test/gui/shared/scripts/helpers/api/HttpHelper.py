@@ -34,3 +34,9 @@ def mkcol(url, headers={}, user=None):
 
 def propfind(url, body=None, headers={}, user=None, password=None):
     return send_request(url, "PROPFIND", body, headers, user, password)
+
+
+def assertHttpStatus(response, expected_code):
+    assert (
+        response.status_code == expected_code
+    ), f"Request failed with status code '{response.status_code}'"

@@ -4,6 +4,7 @@ from helpers.ConfigHelper import get_config
 from helpers.api.utils import url_join
 import helpers.api.HttpHelper as request
 import helpers.api.Provisioning as provisioning
+from helpers.api.oc10 import checkSuccessOcsStatus
 
 
 share_types = MappingProxyType(
@@ -33,7 +34,7 @@ def get_public_endpoint():
 def get_public_link_shares(user):
     public_shares_list = []
     response = request.get(get_share_url(), user=user)
-    provisioning.checkSuccessOcsStatus(response)
+    checkSuccessOcsStatus(response)
     shares = json.loads(response.text)['ocs']['data']
 
     for share in shares:

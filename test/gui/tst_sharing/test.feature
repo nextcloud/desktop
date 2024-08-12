@@ -175,7 +175,7 @@ Feature: Sharing
 
 
     Scenario: share file and folder to a group
-        Given group "grp1" has been created on the server
+        Given group "grp1" has been created in the server
         And user "Brian" has been created on the server with default attributes and without skeleton files
         And user "Brian" has been added to group "grp1" on the server
         And user "Alice" has uploaded file with content "ownCloud test text file 0" to "/textfile0.txt" in the server
@@ -191,7 +191,7 @@ Feature: Sharing
 
     Scenario: User (non-author) can not share to a group to which the file/folder is already shared
         Given user "Brian" has been created on the server with default attributes and without skeleton files
-        And group "grp1" has been created on the server
+        And group "grp1" has been created in the server
         And user "Brian" on the server has been added to group "grp1"
         And user "Alice" has uploaded file with content "ownCloud test text file 0" to "/textfile0.txt" in the server
         And user "Alice" has created folder "Folder" in the server

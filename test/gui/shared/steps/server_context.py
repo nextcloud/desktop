@@ -1,8 +1,8 @@
 import urllib.request
 import json
 from helpers.ConfigHelper import get_config
-from helpers.api.Provisioning import setup_app
 from helpers.api.utils import url_join
+import helpers.api.Provisioning as provisioning
 import helpers.api.webdav_helper as webdav
 import helpers.api.sharing_helper as sharing_helper
 
@@ -54,7 +54,7 @@ def step(context, stepPart1):
 
 @Given('app "|any|" has been "|any|" in the server')
 def step(context, app_name, action):
-    setup_app(app_name, action)
+    provisioning.setup_app(app_name, action)
 
 
 @Then(
@@ -181,3 +181,8 @@ def step(context, user, file_content, file_name):
 @When('user "|any|" deletes the folder "|any|" in the server')
 def step(context, user, folder_name):
     webdav.delete_resource(user, folder_name)
+
+
+@Given('group "|any|" has been created in the server')
+def step(context, group_name):
+    provisioning.create_group(group_name)
