@@ -149,8 +149,6 @@ private:
     AccountStatePtr _accountState;
     AccountPtr _account;
     bool _isCheckingServerAndAuth = false;
-
-    void showSystrayErrorMessage();
 };
 }
 

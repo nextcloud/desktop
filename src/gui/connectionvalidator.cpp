@@ -329,19 +329,12 @@ void ConnectionValidator::reportResult(Status status)
 {
     emit connectionResult(status, _errors);
 
-    // notify user of errors
+    // TODO: notify user of errors
     if (!_errors.isEmpty() && _previousErrors != _errors) {
-       showSystrayErrorMessage();
+       qCWarning(lcConnectionValidator) << "Connection issues:" << _errors;
     }
 
     deleteLater();
-}
-
-void ConnectionValidator::showSystrayErrorMessage()
-{
-    Systray::instance()->showMessage(tr("Connection issue"),
-                                     _errors.join("<br>"),
-                                     QSystemTrayIcon::Warning);
 }
 
 } // namespace OCC
