@@ -9,7 +9,7 @@ ApplicationWindow {
     id: root
     flags: Qt.Dialog | Qt.FramelessWindowHint | Qt.WindowStaysOnTopHint
 
-    color: palette.base
+    color: palette.window
 
     width: 320
     height: contentLayout.implicitHeight

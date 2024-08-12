@@ -39,7 +39,7 @@ AbstractButton {
         anchors.margins: 1
         color: (userLine.hovered || userLine.visualFocus) &&
                !(userMoreButton.hovered || userMoreButton.visualFocus) ?
-                   palette.highlight : palette.base
+                   palette.highlight : palette.window
     }
 
     contentItem: RowLayout {
@@ -149,7 +149,7 @@ AbstractButton {
             background: Rectangle {
                 anchors.fill: parent
                 anchors.margins: 1
-                color: userMoreButton.hovered || userMoreButton.visualFocus ? palette.highlight : palette.base
+                color: userMoreButton.hovered || userMoreButton.visualFocus ? palette.highlight : palette.window
             }
 
             contentItem: Image {
@@ -188,7 +188,7 @@ AbstractButton {
                         Rectangle {
                             anchors.fill: parent
                             anchors.margins: 1
-                            color: parent.parent.hovered ? palette.highlight : palette.base
+                            color: parent.parent.hovered ? palette.highlight : palette.window
                         }
                     }
 
@@ -222,7 +222,7 @@ AbstractButton {
                         Rectangle {
                             anchors.fill: parent
                             anchors.margins: 1
-                            color: parent.parent.hovered ? palette.highlight : palette.base
+                            color: parent.parent.hovered ? palette.highlight : palette.window
                         }
                     }
 

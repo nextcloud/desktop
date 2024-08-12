@@ -100,7 +100,7 @@ HeaderButton {
                     width: Style.folderStateIndicatorSize + Style.trayFolderStatusIndicatorSizeOffset
                     height: width
                     anchors.centerIn: parent
-                    color: root.hovered ? Style.currentUserHeaderTextColor : palette.base
+                    color: root.hovered ? Style.currentUserHeaderTextColor : palette.window
                     opacity: Style.trayFolderStatusIndicatorMouseHoverOpacityFactor
                     radius: width * Style.trayFolderStatusIndicatorRadiusFactor
                     z: -1
