@@ -24,7 +24,7 @@ EnforcedPlainTextLabel {
         border.color: palette.dark
         border.width: Style.normalBorderWidth
         radius: Style.veryRoundedButtonRadius
-        color: "transparent"
+        color: palette.base
     }
 
     color: palette.midlight

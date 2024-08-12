@@ -36,7 +36,7 @@ MenuItem {
         Rectangle {
             anchors.fill: parent
             anchors.margins: Style.normalBorderWidth
-            color: parent.parent.hovered || parent.parent.visualFocus ? palette.highlight : "transparent"
+            color: parent.parent.hovered || parent.parent.visualFocus ? palette.highlight : palette.base
         }
     }
 

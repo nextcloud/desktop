@@ -35,7 +35,7 @@ AbstractButton {
     property string clearAtText: ""
 
     background: Rectangle {
-        color: root.hovered || root.checked ? palette.highlight : "transparent"
+        color: root.hovered || root.checked ? palette.highlight : palette.base
         radius: Style.slightlyRoundedButtonRadius
     }
 

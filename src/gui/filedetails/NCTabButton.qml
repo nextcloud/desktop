@@ -83,7 +83,7 @@ TabButton {
             implicitWidth: textWidth + Style.standardSpacing * 2
             implicitHeight: 2
 
-            color: tabButton.checked ? tabButton.accentColor : tabButton.hovered ? palette.highlight : "transparent"
+            color: tabButton.checked ? tabButton.accentColor : tabButton.hovered ? palette.highlight : palette.base
         }
     }
 }

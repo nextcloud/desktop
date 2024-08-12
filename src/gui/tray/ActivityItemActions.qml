@@ -13,7 +13,7 @@ Repeater {
     property variant linksContextMenu: []
     property bool displayActions: false
 
-    property color moreActionsButtonColor: "transparent"
+    property color moreActionsButtonColor: palette.base
 
     property int maxActionButtons: 0
 
