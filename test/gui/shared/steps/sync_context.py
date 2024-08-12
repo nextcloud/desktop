@@ -9,7 +9,11 @@ from helpers.SyncHelper import (
     waitForFileOrFolderToSync,
     waitForFileOrFolderToHaveSyncError,
 )
-from helpers.SetupClientHelper import getTempResourcePath, setCurrentUserSyncPath
+from helpers.SetupClientHelper import (
+    getTempResourcePath,
+    setCurrentUserSyncPath,
+    substituteInLineCodes,
+)
 
 
 @Given('the user has paused the file sync')
@@ -102,6 +106,11 @@ def step(context, filename):
 @Then('the file "|any|" should be ignored')
 def step(context, filename):
     test.compare(True, Activity.resourceIsIgnored(filename), "File is Ignored")
+
+
+@Then('the file "|any|" should be excluded')
+def step(context, filename):
+    test.compare(True, Activity.resource_is_excluded(filename), "File is Excluded")
 
 
 @When('the user selects "|any|" tab in the activity')
@@ -312,3 +321,40 @@ def step(context):
         SyncConnectionWizard.is_add_sync_folder_button_enabled(),
         'Button to open sync connection wizard should be disabled',
     )
+
+
+@When('the user checks the activities of account "|any|"')
+def step(context, account):
+    account = substituteInLineCodes(account)
+    Activity.select_synced_filter(account)
+
+
+@Then('the following activities should be displayed in synced table')
+def step(context):
+    for row in context.table[1:]:
+        resource = row[0]
+        action = row[1]
+        account = substituteInLineCodes(row[2])
+        test.compare(
+            Activity.check_synced_table(resource, action, account),
+            True,
+            'Resource should be displayed in the synced table',
+        )
+
+
+@Then('the following activities should be displayed in not synced table')
+def step(context):
+    for row in context.table[1:]:
+        resource = row[0]
+        status = row[1]
+        account = substituteInLineCodes(row[2])
+        test.compare(
+            Activity.check_not_synced_table(resource, status, account),
+            True,
+            'Resource should be displayed in the not synced table',
+        )
+
+
+@When('the user unchecks the "|any|" filter')
+def step(context, filter_option):
+    Activity.select_not_synced_filter(filter_option)

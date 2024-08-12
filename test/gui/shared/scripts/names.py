@@ -56,3 +56,6 @@ create_Remote_Folder_Enter_the_name_of_the_new_folder_to_be_created_below_QLabel
 groupBox_folderTreeWidget_QTreeWidget = {"container": add_Folder_Sync_Connection_groupBox_QGroupBox, "name": "folderTreeWidget", "type": "QTreeWidget", "visible": 1}
 confirm_Folder_Sync_Connection_Removal_QMessageBox = {"type": "QMessageBox", "unnamed": 1, "visible": 1, "windowTitle": "Confirm Folder Sync Connection Removal"}
 stackedWidget_quickWidget_OCC_QmlUtils_OCQuickWidget = {"container": stack_stackedWidget_QStackedWidget, "name": "quickWidget", "type": "OCC::QmlUtils::OCQuickWidget", "visible": 1}
+qt_tabwidget_stackedwidget_OCC_ProtocolWidget_OCC_ProtocolWidget = {"container": stack_qt_tabwidget_stackedwidget_QStackedWidget, "name": "OCC__ProtocolWidget", "type": "OCC::ProtocolWidget", "visible": 1}
+oCC_ProtocolWidget_tableView_QTableView = {"container": qt_tabwidget_stackedwidget_OCC_ProtocolWidget_OCC_ProtocolWidget, "name": "_tableView", "type": "QTableView", "visible": 1}
+oCC_IssuesWidget_tableView_QTableView = {"container": qt_tabwidget_stackedwidget_OCC_IssuesWidget_OCC_IssuesWidget, "name": "_tableView", "type": "QTableView", "visible": 1}
