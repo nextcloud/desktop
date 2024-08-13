@@ -177,7 +177,7 @@ Feature: Sharing
     Scenario: share file and folder to a group
         Given group "grp1" has been created in the server
         And user "Brian" has been created on the server with default attributes and without skeleton files
-        And user "Brian" has been added to group "grp1" on the server
+        And user "Brian" has been added to group "grp1" in the server
         And user "Alice" has uploaded file with content "ownCloud test text file 0" to "/textfile0.txt" in the server
         And user "Alice" has created folder "simple-folder" in the server
         And user "Alice" has set up a client with default settings

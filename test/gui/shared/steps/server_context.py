@@ -186,3 +186,8 @@ def step(context, user, folder_name):
 @Given('group "|any|" has been created in the server')
 def step(context, group_name):
     provisioning.create_group(group_name)
+
+
+@Given('user "|any|" has been added to group "|any|" in the server')
+def step(context, user, group_name):
+    provisioning.add_user_to_group(user, group_name)

@@ -51,3 +51,10 @@ def delete_created_groups():
         else:
             oc.delete_group(group_info["id"])
         del created_groups[group_name]
+
+
+def add_user_to_group(user, group_name):
+    if get_config('ocis'):
+        ocis.add_user_to_group(user, group_name)
+    else:
+        oc.add_user_to_group(user, group_name)

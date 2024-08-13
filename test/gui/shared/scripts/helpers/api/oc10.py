@@ -32,3 +32,10 @@ def delete_group(group_id):
     url = url_join(get_ocs_url(), 'groups', group_id)
     response = request.delete(url)
     request.assertHttpStatus(response, 200)
+
+
+def add_user_to_group(user, group_name):
+    url = url_join(get_ocs_url(), "users", user, "groups")
+    body = {"groupid": group_name}
+    response = request.post(url, body)
+    request.assertHttpStatus(response, 200)
