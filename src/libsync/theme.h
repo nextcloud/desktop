@@ -191,7 +191,6 @@ public:
 
     /** @return color for the setup wizard */
     virtual QColor wizardHeaderTitleColor() const;
-    [[deprecated]] virtual QColor wizardHeaderSubTitleColor() const;
 
     /** @return color for the setup wizard. */
     virtual QColor wizardHeaderBackgroundColor() const;
