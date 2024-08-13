@@ -9,22 +9,22 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/qml/AccountBar.qml" line="80"/>
+        <location filename="../src/gui/qml/AccountBar.qml" line="89"/>
         <source>Add Account</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/qml/AccountBar.qml" line="107"/>
+        <location filename="../src/gui/qml/AccountBar.qml" line="116"/>
         <source>Activity</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/qml/AccountBar.qml" line="121"/>
+        <location filename="../src/gui/qml/AccountBar.qml" line="130"/>
         <source>Settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/qml/AccountBar.qml" line="150"/>
+        <location filename="../src/gui/qml/AccountBar.qml" line="159"/>
         <source>Quit</source>
         <translation type="unfinished"></translation>
     </message>
@@ -273,17 +273,17 @@ File synchronization desktop utility.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/qml/FolderDelegate.qml" line="233"/>
+        <location filename="../src/gui/qml/FolderDelegate.qml" line="232"/>
         <source>Add Space</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/qml/FolderDelegate.qml" line="233"/>
+        <location filename="../src/gui/qml/FolderDelegate.qml" line="232"/>
         <source>Add Folder</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/qml/FolderDelegate.qml" line="258"/>
+        <location filename="../src/gui/qml/FolderDelegate.qml" line="257"/>
         <source>You are synchronizing %1 out of %2 spaces</source>
         <translation type="unfinished"></translation>
     </message>
@@ -554,7 +554,7 @@ Note that this selects only what pool upgrades are taken from, and that there ar
 <context>
     <name>OCC::Account</name>
     <message>
-        <location filename="../src/libsync/account.cpp" line="149"/>
+        <location filename="../src/libsync/account.cpp" line="153"/>
         <source>%1@%2</source>
         <translation type="unfinished"></translation>
     </message>
@@ -580,24 +580,24 @@ Note that this selects only what pool upgrades are taken from, and that there ar
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.ui" line="82"/>
+        <location filename="../src/gui/accountsettings.ui" line="85"/>
         <source>Manage Account</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.ui" line="118"/>
+        <location filename="../src/gui/accountsettings.ui" line="121"/>
         <source>Preparing the account</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.ui" line="149"/>
+        <location filename="../src/gui/accountsettings.ui" line="152"/>
         <source>Sync connections</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="304"/>
         <location filename="../src/gui/accountsettings.cpp" line="342"/>
-        <location filename="../src/gui/accountsettings.cpp" line="593"/>
+        <location filename="../src/gui/accountsettings.cpp" line="601"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
@@ -767,17 +767,17 @@ This action will abort any currently running synchronization.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="586"/>
+        <location filename="../src/gui/accountsettings.cpp" line="594"/>
         <source>Confirm Account Removal</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="587"/>
+        <location filename="../src/gui/accountsettings.cpp" line="595"/>
         <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="592"/>
+        <location filename="../src/gui/accountsettings.cpp" line="600"/>
         <source>Remove connection</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1510,8 +1510,18 @@ You are going to lose access to your sync folder if you do not do so!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../src/gui/generalsettings.ui" line="41"/>
+        <source>Use Monochrome Icons in the system tray</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.ui" line="48"/>
+        <source>Show Desktop Notifications</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../src/gui/generalsettings.ui" line="55"/>
-        <source>Start on &amp;Login</source>
+        <source>Start on Login</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1530,8 +1540,18 @@ You are going to lose access to your sync folder if you do not do so!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../src/gui/generalsettings.ui" line="125"/>
+        <source>Show crash reporter</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../src/gui/generalsettings.ui" line="132"/>
         <source>Move remotely deleted files to the local trash bin instead of deleting them</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.ui" line="141"/>
+        <source>Edit Ignored Files</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1552,26 +1572,6 @@ You are going to lose access to your sync folder if you do not do so!</source>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="104"/>
         <source>Advanced</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.ui" line="41"/>
-        <source>Use &amp;Monochrome Icons in the system tray</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.ui" line="48"/>
-        <source>Show &amp;Desktop Notifications</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.ui" line="141"/>
-        <source>Edit &amp;Ignored Files</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.ui" line="125"/>
-        <source>S&amp;how crash reporter</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1723,12 +1723,12 @@ Items where deletion is allowed will be deleted if they prevent a directory from
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/issueswidget.ui" line="69"/>
+        <location filename="../src/gui/issueswidget.ui" line="72"/>
         <source>There were too many issues. Not all will be visible here.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/issueswidget.ui" line="79"/>
+        <location filename="../src/gui/issueswidget.ui" line="82"/>
         <source>There were conflicts. Check the documentation on how to resolve them.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2767,22 +2767,22 @@ Note that using any logging command line options will override the settings.</so
 <context>
     <name>OCC::SettingsDialog</name>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="77"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="103"/>
         <source>Hide</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="85"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="112"/>
         <source>Quit %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="86"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="113"/>
         <source>Are you sure you want to quit %1?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="118"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="145"/>
         <source>%1 - %2</source>
         <translation type="unfinished"></translation>
     </message>
