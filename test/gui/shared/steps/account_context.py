@@ -118,7 +118,7 @@ def step(context):
     AccountConnectionWizard.addAccountInformation(account_details)
 
 
-@When('the user "|any|" logs out of the client-UI')
+@When('the user "|any|" logs out using the client-UI')
 def step(context, username):
     AccountSetting.logout()
 
@@ -134,7 +134,7 @@ def step(context, username):
     )
 
 
-@Given('user "|any|" has logged out of the client-UI')
+@Given('user "|any|" has logged out from the client-UI')
 def step(context, username):
     AccountSetting.logout()
     displayname = getDisplaynameForUser(username)
@@ -143,7 +143,7 @@ def step(context, username):
         raise Exception("Failed to logout user '%s'" % username)
 
 
-@When('user "|any|" logs in to the client-UI')
+@When('user "|any|" logs in using the client-UI')
 def step(context, username):
     AccountSetting.login()
     password = getPasswordForUser(username)
@@ -154,7 +154,7 @@ def step(context, username):
     waitForInitialSyncToComplete(getResourcePath('/', username))
 
 
-@When('user "|any|" logs in to the client-UI with oauth2')
+@When('user "|any|" logs in using the client-UI with oauth2')
 def step(context, username):
     AccountSetting.login()
     password = getPasswordForUser(username)
@@ -176,7 +176,7 @@ def step(context, username, password):
     enter_password.reLogin(username, password)
 
 
-@Then('user "|any|" should be connect to the client-UI')
+@Then('user "|any|" should be connected to the server')
 def step(context, username):
     displayname = getDisplaynameForUser(username)
     server = get_config('localBackendUrl')
