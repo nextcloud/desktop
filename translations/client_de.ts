@@ -453,14 +453,14 @@ Should an account import be attempted?</source>
 Soll ein Kontoimport versucht werden?</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountmanager.cpp" line="218"/>
+        <location filename="../src/gui/accountmanager.cpp" line="214"/>
         <source>%1 accounts were detected from a legacy desktop client.
 Should the accounts be imported?</source>
         <translation>%1 Konten wurden von einem älteren Desktop-Client erkannt.
 Sollen die Konten importiert werden?</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountmanager.cpp" line="220"/>
+        <location filename="../src/gui/accountmanager.cpp" line="216"/>
         <source>1 account was detected from a legacy desktop client.
 Should the account be imported?</source>
         <translation>1 Konto wurde von einem älteren Desktop-Client erkannt.
@@ -474,12 +474,12 @@ Soll das Konto importiert werden?</translation>
         <translation>Import früherer Konfiguration</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountmanager.cpp" line="223"/>
+        <location filename="../src/gui/accountmanager.cpp" line="219"/>
         <source>Import</source>
         <translation>Importieren</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountmanager.cpp" line="224"/>
+        <location filename="../src/gui/accountmanager.cpp" line="220"/>
         <source>Skip</source>
         <translation>Überspringen</translation>
     </message>
@@ -1103,34 +1103,34 @@ Diese Aktion bricht jede derzeit laufende Synchronisierung ab.</translation>
         <translation>Fortsetzen</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="504"/>
+        <location filename="../src/gui/application.cpp" line="500"/>
         <source>%1 accounts</source>
         <comment>number of accounts imported</comment>
         <translation>%1 Konten</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="505"/>
+        <location filename="../src/gui/application.cpp" line="501"/>
         <source>1 account</source>
         <translation>1 Konto</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="507"/>
+        <location filename="../src/gui/application.cpp" line="503"/>
         <source>%1 folders</source>
         <comment>number of folders imported</comment>
         <translation>%1 Ordner</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="508"/>
+        <location filename="../src/gui/application.cpp" line="504"/>
         <source>1 folder</source>
         <translation>1 Ordner</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="510"/>
+        <location filename="../src/gui/application.cpp" line="506"/>
         <source>Legacy import</source>
         <translation>Import früherer Konfiguration</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="511"/>
+        <location filename="../src/gui/application.cpp" line="507"/>
         <source>Imported %1 and %2 from a legacy desktop client.
 %3</source>
         <comment>number of accounts and folders imported. list of users.</comment>
@@ -1572,11 +1572,6 @@ Diese Aktion bricht jede derzeit laufende Synchronisierung ab.</translation>
         <location filename="../src/gui/connectionvalidator.cpp" line="287"/>
         <source>Please update to the latest server and restart the client.</source>
         <translation>Aktualisieren Sie auf die neueste Server-Version und starten Sie den Client neu.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="344"/>
-        <source>Connection issue</source>
-        <translation>Verbindungsproblem</translation>
     </message>
 </context>
 <context>
@@ -2960,6 +2955,11 @@ Wenn Sie die Dateien wiederherstellen, werden sie erneut vom Server heruntergela
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="350"/>
+        <source>daily</source>
+        <translation>Täglich</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.cpp" line="350"/>
         <source>Change update channel?</source>
         <translation>Update-Kanal ändern?</translation>
     </message>
@@ -2973,29 +2973,24 @@ Note that this selects only what pool upgrades are taken from, and that there ar
 Beachten Sie bitte, dass hierdurch nur ausgewählt wird, aus welchem Pool Upgrades heruntergeladen werden und dass Downgrades nicht möglich sind. Die Rückkehr vom Beta- zum stabilen Kanal kann daher zumeist nicht sofort erfolgen, sondern es muss auf eine neue stabile Version gewartet werden, die neuer als die aktuell installierte Beta ist.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="360"/>
-        <source>daily</source>
-        <translation>Täglich</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.cpp" line="364"/>
+        <location filename="../src/gui/generalsettings.cpp" line="354"/>
         <source>enterprise</source>
         <translation>Unternehmensversion</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="392"/>
+        <location filename="../src/gui/generalsettings.cpp" line="382"/>
         <source>- enterprise: contains stable versions for customers.
 </source>
         <comment>description of enterprise update channel for enterprise customers</comment>
         <translation>- Unternehmensversion: Enthält stabile Versionen für Kunden.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="397"/>
+        <location filename="../src/gui/generalsettings.cpp" line="387"/>
         <source>Changing update channel?</source>
         <translation>Update-Kanal ändern?</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="398"/>
+        <location filename="../src/gui/generalsettings.cpp" line="388"/>
         <source>The channel determines which upgrades will be offered to install:
 - stable: contains tested versions considered reliable
 - beta: contains versions with new features that may not be tested thoroughly
@@ -5390,7 +5385,7 @@ Server antwortete mit Fehler: %2</translation>
         <translation>&lt;p&gt;%1 Desktop-Client&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="559"/>
+        <location filename="../src/libsync/theme.cpp" line="557"/>
         <source>&lt;p&gt;%1 Desktop Client&lt;/p&gt;&lt;p&gt;Version %1. For more information please click &lt;a href=&apos;%2&apos;&gt;here&lt;/a&gt;.&lt;/p&gt;</source>
         <extracomment>Example text: &quot;&lt;p&gt;Nextcloud Desktop Client&lt;/p&gt;&quot; (%1 is the application name)</extracomment>
         <translation>&lt;p&gt;%1 Desktop-Client&lt;/p&gt;&lt;p&gt;Version %1. Für weitere Informationen bitte &lt;a href=&apos;%2&apos;&gt;hier&lt;/a&gt; klicken.&lt;/p&gt;</translation>
@@ -5401,7 +5396,7 @@ Server antwortete mit Fehler: %2</translation>
         <translation>&lt;p&gt;&lt;small&gt;Plugin für virtuelle Dateien: %1&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="576"/>
+        <location filename="../src/libsync/theme.cpp" line="574"/>
         <source>&lt;p&gt;%1 desktop client %2&lt;/p&gt;</source>
         <extracomment>Example text: &quot;&lt;p&gt;Nextcloud Desktop Client&lt;/p&gt;&quot; (%1 is the application name)</extracomment>
         <translation>&lt;p&gt;%1 Desktop-Client %2&lt;/p&gt;</translation>
@@ -5497,6 +5492,11 @@ Server antwortete mit Fehler: %2</translation>
 </context>
 <context>
     <name>OCC::User</name>
+    <message>
+        <location filename="../src/gui/tray/usermodel.cpp" line="158"/>
+        <source>%1 notifications</source>
+        <translation type="unfinished"/>
+    </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="646"/>
         <source>Retry all uploads</source>
@@ -6030,12 +6030,12 @@ Server antwortete mit Fehler: %2</translation>
         <translation>Neuer Ordner</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="117"/>
+        <location filename="../src/gui/generalsettings.cpp" line="111"/>
         <source>Failed to create debug archive</source>
         <translation>Fehler beim Erstellen des Debug-Archivs</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="118"/>
+        <location filename="../src/gui/generalsettings.cpp" line="112"/>
         <source>Could not create debug archive in selected location!</source>
         <translation>Es konnte kein Debug-Archiv am ausgewählten Ort erstellt werden!</translation>
     </message>
@@ -6737,7 +6737,7 @@ Server antwortete mit Fehler: %2</translation>
 <context>
     <name>nextcloudTheme::aboutInfo()</name>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="539"/>
+        <location filename="../src/libsync/theme.cpp" line="537"/>
         <source>&lt;p&gt;&lt;small&gt;Built from Git revision &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; on %3, %4 using Qt %5, %6&lt;/small&gt;&lt;/p&gt;</source>
         <translation>&lt;p&gt;&lt;small&gt;Erstellt aus der Git-Revision &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; auf %3, %4  unter Verwendung von Qt %5, %6&lt;/small&gt;&lt;/p&gt;</translation>
     </message>

@@ -453,17 +453,17 @@ Should an account import be attempted?</source>
 Deberíase tentar importar unha conta?</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountmanager.cpp" line="218"/>
+        <location filename="../src/gui/accountmanager.cpp" line="214"/>
         <source>%1 accounts were detected from a legacy desktop client.
 Should the accounts be imported?</source>
-        <translation>Detectáronse % 1 contas dun cliente de escritorio herdado.
+        <translation>Detectáronse % 1 contas dun cliente de escritorio estilo antigo.
 Deberían importarse as contas?</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountmanager.cpp" line="220"/>
+        <location filename="../src/gui/accountmanager.cpp" line="216"/>
         <source>1 account was detected from a legacy desktop client.
 Should the account be imported?</source>
-        <translation>Detectouse 1 conta dun cliente de escritorio herdado.
+        <translation>Detectouse 1 conta dun cliente de escritorio estilo antigo.
 Debería importarse a conta?</translation>
     </message>
     <message>
@@ -474,12 +474,12 @@ Debería importarse a conta?</translation>
         <translation>Importar estilo antigo</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountmanager.cpp" line="223"/>
+        <location filename="../src/gui/accountmanager.cpp" line="219"/>
         <source>Import</source>
         <translation>Importar</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountmanager.cpp" line="224"/>
+        <location filename="../src/gui/accountmanager.cpp" line="220"/>
         <source>Skip</source>
         <translation>Omitir</translation>
     </message>
@@ -1104,38 +1104,38 @@ Esta acción interromperá calquera sincronización que estea a executarse actua
         <translation>Continuar</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="504"/>
+        <location filename="../src/gui/application.cpp" line="500"/>
         <source>%1 accounts</source>
         <comment>number of accounts imported</comment>
         <translation>%1 contas</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="505"/>
+        <location filename="../src/gui/application.cpp" line="501"/>
         <source>1 account</source>
         <translation>1 conta</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="507"/>
+        <location filename="../src/gui/application.cpp" line="503"/>
         <source>%1 folders</source>
         <comment>number of folders imported</comment>
         <translation>%1 cartafoles</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="508"/>
+        <location filename="../src/gui/application.cpp" line="504"/>
         <source>1 folder</source>
         <translation>1 cartafol</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="510"/>
+        <location filename="../src/gui/application.cpp" line="506"/>
         <source>Legacy import</source>
         <translation>Importar estilo antigo</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="511"/>
+        <location filename="../src/gui/application.cpp" line="507"/>
         <source>Imported %1 and %2 from a legacy desktop client.
 %3</source>
         <comment>number of accounts and folders imported. list of users.</comment>
-        <translation>Importáronse % 1 e % 2 dun cliente de escritorio herdado.
+        <translation>Importáronse % 1 e % 2 dun cliente de escritorio estilo antigo.
 % 3</translation>
     </message>
     <message>
@@ -1573,11 +1573,6 @@ Esta acción interromperá calquera sincronización que estea a executarse actua
         <location filename="../src/gui/connectionvalidator.cpp" line="287"/>
         <source>Please update to the latest server and restart the client.</source>
         <translation>Actualice ao último servidor e reinicie o cliente.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="344"/>
-        <source>Connection issue</source>
-        <translation>Incidencia na conexión</translation>
     </message>
 </context>
 <context>
@@ -2961,6 +2956,11 @@ Se restaura os ficheiros, descargaranse de novo do servidor.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="350"/>
+        <source>daily</source>
+        <translation>diario</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.cpp" line="350"/>
         <source>Change update channel?</source>
         <translation>Cambiar canle de actualización?</translation>
     </message>
@@ -2974,17 +2974,12 @@ Note that this selects only what pool upgrades are taken from, and that there ar
 Teña en conta que isto só selecciona de que grupo se toman as anovacións e que non hai reversións: polo tanto, volver da canle beta á canle estábel normalmente non se pode facer inmediatamente e significa agardar por unha versión estábel que sexa máis recente que a versión beta instalada actualmente.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="360"/>
-        <source>daily</source>
-        <translation>diario</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.cpp" line="364"/>
+        <location filename="../src/gui/generalsettings.cpp" line="354"/>
         <source>enterprise</source>
         <translation>empresarial</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="392"/>
+        <location filename="../src/gui/generalsettings.cpp" line="382"/>
         <source>- enterprise: contains stable versions for customers.
 </source>
         <comment>description of enterprise update channel for enterprise customers</comment>
@@ -2992,12 +2987,12 @@ Teña en conta que isto só selecciona de que grupo se toman as anovacións e qu
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="397"/>
+        <location filename="../src/gui/generalsettings.cpp" line="387"/>
         <source>Changing update channel?</source>
         <translation>Quere cambiar a canle de actualización?</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="398"/>
+        <location filename="../src/gui/generalsettings.cpp" line="388"/>
         <source>The channel determines which upgrades will be offered to install:
 - stable: contains tested versions considered reliable
 - beta: contains versions with new features that may not be tested thoroughly
@@ -5392,7 +5387,7 @@ O servidor respondeu co erro: %2</translation>
         <translation>&lt;p&gt;Cliente de escritorio de %1&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="559"/>
+        <location filename="../src/libsync/theme.cpp" line="557"/>
         <source>&lt;p&gt;%1 Desktop Client&lt;/p&gt;&lt;p&gt;Version %1. For more information please click &lt;a href=&apos;%2&apos;&gt;here&lt;/a&gt;.&lt;/p&gt;</source>
         <extracomment>Example text: &quot;&lt;p&gt;Nextcloud Desktop Client&lt;/p&gt;&quot; (%1 is the application name)</extracomment>
         <translation>&lt;p&gt;Cliente de escritorio de %1&lt;/p&gt;&lt;p&gt;Versión %1. Para obter máis información prema &lt;a href=&apos;%2&apos;&gt;aquí&lt;/a&gt;.&lt;/p&gt;</translation>
@@ -5403,7 +5398,7 @@ O servidor respondeu co erro: %2</translation>
         <translation>&lt;p&gt;&lt;small&gt;Usando o complemento de ficheiros virtuais: %1&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="576"/>
+        <location filename="../src/libsync/theme.cpp" line="574"/>
         <source>&lt;p&gt;%1 desktop client %2&lt;/p&gt;</source>
         <extracomment>Example text: &quot;&lt;p&gt;Nextcloud Desktop Client&lt;/p&gt;&quot; (%1 is the application name)</extracomment>
         <translation>&lt;p&gt;Cliente de escritorio de %1, %2&lt;/p&gt;</translation>
@@ -5499,6 +5494,11 @@ O servidor respondeu co erro: %2</translation>
 </context>
 <context>
     <name>OCC::User</name>
+    <message>
+        <location filename="../src/gui/tray/usermodel.cpp" line="158"/>
+        <source>%1 notifications</source>
+        <translation type="unfinished"/>
+    </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="646"/>
         <source>Retry all uploads</source>
@@ -6032,12 +6032,12 @@ O servidor respondeu co erro: %2</translation>
         <translation>Novo cartafol</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="117"/>
+        <location filename="../src/gui/generalsettings.cpp" line="111"/>
         <source>Failed to create debug archive</source>
         <translation>Produciuse un fallo ao crear o arquivo de depuración</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="118"/>
+        <location filename="../src/gui/generalsettings.cpp" line="112"/>
         <source>Could not create debug archive in selected location!</source>
         <translation>Non foi posíbel crear o arquivo de depuración na localización seleccionada.</translation>
     </message>
@@ -6739,7 +6739,7 @@ O servidor respondeu co erro: %2</translation>
 <context>
     <name>nextcloudTheme::aboutInfo()</name>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="539"/>
+        <location filename="../src/libsync/theme.cpp" line="537"/>
         <source>&lt;p&gt;&lt;small&gt;Built from Git revision &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; on %3, %4 using Qt %5, %6&lt;/small&gt;&lt;/p&gt;</source>
         <translation>&lt;p&gt;&lt;small&gt;Construido dende a revisión Git &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; en %3, %4 usando Qt %5, %6&lt;/small&gt;&lt;/p&gt;</translation>
     </message>

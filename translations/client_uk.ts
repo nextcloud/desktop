@@ -453,14 +453,14 @@ Should an account import be attempted?</source>
 Чи спробувати імпортувати дані облікового запису?</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountmanager.cpp" line="218"/>
+        <location filename="../src/gui/accountmanager.cpp" line="214"/>
         <source>%1 accounts were detected from a legacy desktop client.
 Should the accounts be imported?</source>
         <translation>%1 облікових записів знайдено із застарілого настільного клієнта.
 Чи імпортувати ці облікові записи?</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountmanager.cpp" line="220"/>
+        <location filename="../src/gui/accountmanager.cpp" line="216"/>
         <source>1 account was detected from a legacy desktop client.
 Should the account be imported?</source>
         <translation>1 обліковий запис знайдено із застарілого настільного клієнта.
@@ -474,12 +474,12 @@ Should the account be imported?</source>
         <translation>Імпорт зі збереженням сумісности</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountmanager.cpp" line="223"/>
+        <location filename="../src/gui/accountmanager.cpp" line="219"/>
         <source>Import</source>
         <translation>Імпорт</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountmanager.cpp" line="224"/>
+        <location filename="../src/gui/accountmanager.cpp" line="220"/>
         <source>Skip</source>
         <translation>Пропустити</translation>
     </message>
@@ -1104,34 +1104,34 @@ This action will abort any currently running synchronization.</source>
         <translation>Продовжити</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="504"/>
+        <location filename="../src/gui/application.cpp" line="500"/>
         <source>%1 accounts</source>
         <comment>number of accounts imported</comment>
         <translation>%1 облікових записів</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="505"/>
+        <location filename="../src/gui/application.cpp" line="501"/>
         <source>1 account</source>
         <translation>1 обліковий запис</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="507"/>
+        <location filename="../src/gui/application.cpp" line="503"/>
         <source>%1 folders</source>
         <comment>number of folders imported</comment>
         <translation>%1 каталогів</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="508"/>
+        <location filename="../src/gui/application.cpp" line="504"/>
         <source>1 folder</source>
         <translation>1 каталог</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="510"/>
+        <location filename="../src/gui/application.cpp" line="506"/>
         <source>Legacy import</source>
         <translation>Імпорт застарілих записів</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="511"/>
+        <location filename="../src/gui/application.cpp" line="507"/>
         <source>Imported %1 and %2 from a legacy desktop client.
 %3</source>
         <comment>number of accounts and folders imported. list of users.</comment>
@@ -1573,11 +1573,6 @@ This action will abort any currently running synchronization.</source>
         <location filename="../src/gui/connectionvalidator.cpp" line="287"/>
         <source>Please update to the latest server and restart the client.</source>
         <translation>Будь ласка, оновіть сервер до останньої версії та перезавантажте клієнт.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="344"/>
-        <source>Connection issue</source>
-        <translation>Проблеми зі з&apos;єднанням</translation>
     </message>
 </context>
 <context>
@@ -2961,6 +2956,11 @@ If you restore the files, they will be downloaded again from the server.</source
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="350"/>
+        <source>daily</source>
+        <translation>щоденно</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.cpp" line="350"/>
         <source>Change update channel?</source>
         <translation>Чи змінити канал оновлень?</translation>
     </message>
@@ -2974,17 +2974,12 @@ Note that this selects only what pool upgrades are taken from, and that there ar
 Зауважте, що таким чином ви виберете набір оновлень, які буде застосовувано, і що неможливо буде повернутися до попередніх версій. Відтак повернення з &quot;бета&quot; до &quot;стабільного&quot; каналу зазвичай неможливо буде виконати одразу, натомість ви матимете зачекати на нову стабільну версію порівняно зі встановленою бета-версією.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="360"/>
-        <source>daily</source>
-        <translation>щоденно</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.cpp" line="364"/>
+        <location filename="../src/gui/generalsettings.cpp" line="354"/>
         <source>enterprise</source>
         <translation>для бізнесу</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="392"/>
+        <location filename="../src/gui/generalsettings.cpp" line="382"/>
         <source>- enterprise: contains stable versions for customers.
 </source>
         <comment>description of enterprise update channel for enterprise customers</comment>
@@ -2992,12 +2987,12 @@ Note that this selects only what pool upgrades are taken from, and that there ar
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="397"/>
+        <location filename="../src/gui/generalsettings.cpp" line="387"/>
         <source>Changing update channel?</source>
         <translation>Змінити канал оновлення?</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="398"/>
+        <location filename="../src/gui/generalsettings.cpp" line="388"/>
         <source>The channel determines which upgrades will be offered to install:
 - stable: contains tested versions considered reliable
 - beta: contains versions with new features that may not be tested thoroughly
@@ -5387,7 +5382,7 @@ Server replied with error: %2</source>
         <translation>&lt;p&gt;%1 клієнт для робочої істанції&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="559"/>
+        <location filename="../src/libsync/theme.cpp" line="557"/>
         <source>&lt;p&gt;%1 Desktop Client&lt;/p&gt;&lt;p&gt;Version %1. For more information please click &lt;a href=&apos;%2&apos;&gt;here&lt;/a&gt;.&lt;/p&gt;</source>
         <extracomment>Example text: &quot;&lt;p&gt;Nextcloud Desktop Client&lt;/p&gt;&quot; (%1 is the application name)</extracomment>
         <translation>&lt;p&gt;Настільний клієнт %1&lt;/p&gt;&lt;p&gt;Версія %1. Для докладної інформації, перейдіть &lt;a href=&apos;%2&apos;&gt;сюди&lt;/a&gt;.&lt;/p&gt;</translation>
@@ -5398,7 +5393,7 @@ Server replied with error: %2</source>
         <translation>&lt;p&gt;&lt;small&gt;Використання плаґіну віртуальних файлів: %1&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="576"/>
+        <location filename="../src/libsync/theme.cpp" line="574"/>
         <source>&lt;p&gt;%1 desktop client %2&lt;/p&gt;</source>
         <extracomment>Example text: &quot;&lt;p&gt;Nextcloud Desktop Client&lt;/p&gt;&quot; (%1 is the application name)</extracomment>
         <translation>&lt;p&gt;%1 настільний клієнт %2&lt;/p&gt;</translation>
@@ -5494,6 +5489,11 @@ Server replied with error: %2</source>
 </context>
 <context>
     <name>OCC::User</name>
+    <message>
+        <location filename="../src/gui/tray/usermodel.cpp" line="158"/>
+        <source>%1 notifications</source>
+        <translation type="unfinished"/>
+    </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="646"/>
         <source>Retry all uploads</source>
@@ -6027,12 +6027,12 @@ Server replied with error: %2</source>
         <translation>Новий каталог</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="117"/>
+        <location filename="../src/gui/generalsettings.cpp" line="111"/>
         <source>Failed to create debug archive</source>
         <translation>Не вдалося створити архів зневадження</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="118"/>
+        <location filename="../src/gui/generalsettings.cpp" line="112"/>
         <source>Could not create debug archive in selected location!</source>
         <translation>Неможливо створити архів зневадження у вибраному місці!</translation>
     </message>
@@ -6734,7 +6734,7 @@ Server replied with error: %2</source>
 <context>
     <name>nextcloudTheme::aboutInfo()</name>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="539"/>
+        <location filename="../src/libsync/theme.cpp" line="537"/>
         <source>&lt;p&gt;&lt;small&gt;Built from Git revision &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; on %3, %4 using Qt %5, %6&lt;/small&gt;&lt;/p&gt;</source>
         <translation>&lt;p&gt;&lt;small&gt;Зібрано з ревізії Git %2&lt;/a&gt; на %3, %4 з використанням Qt %5, %6&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
