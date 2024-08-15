@@ -438,8 +438,6 @@ int main(int argc, char **argv)
 
         // Create the (Q)Application instance:
         QApplication app(argc, argv);
-        // TODO: Can't set this without breaking current config paths
-        //    setOrganizationName(QLatin1String(APPLICATION_VENDOR));
         app.setOrganizationDomain(Theme::instance()->orgDomainName());
         app.setApplicationName(Theme::instance()->appName());
         app.setWindowIcon(Theme::instance()->applicationIcon());
