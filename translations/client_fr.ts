@@ -1646,7 +1646,7 @@ Vous prenez vos propres risques.</translation>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="466"/>
         <source>An error occurred during setup.</source>
-        <translation>Une erreur est survenue pendant la configuration.</translation>
+        <translation>Une erreur est survenue pendant l&apos;installation</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="138"/>
@@ -1783,22 +1783,22 @@ Vous prenez vos propres risques.</translation>
     <message>
         <location filename="../src/gui/editlocallyverificationjob.cpp" line="99"/>
         <source>Invalid file path was provided.</source>
-        <translation type="unfinished"/>
+        <translation>Un chemin d&apos;accès au fichier invalide a été fourni.</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyverificationjob.cpp" line="105"/>
         <source>Could not find an account for local editing.</source>
-        <translation type="unfinished"/>
+        <translation>Impossible de trouver un compte pour l&apos;édition locale.</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyverificationjob.cpp" line="129"/>
         <source>Could not start editing locally.</source>
-        <translation type="unfinished"/>
+        <translation>Impossible de démarrer l&apos;édition locale.</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyverificationjob.cpp" line="130"/>
         <source>An error occurred trying to verify the request to edit locally.</source>
-        <translation type="unfinished"/>
+        <translation>Une erreur est survenue, tentative de vérification de la requête pour éditer localement.</translation>
     </message>
 </context>
 <context>
@@ -2192,24 +2192,28 @@ Cela signifie que le client de synchronisation ne va pas téléverser immédiate
         <source>All files in the server folder &quot;%1&quot; were deleted.
 
 If you restore the files, they will be uploaded again to the server.</source>
-        <translation type="unfinished"/>
+        <translation>Tous les fichiers dans le dossier &quot;%1&quot; ont été supprimés.
+
+Si vous restaurez les fichiers, ils seront téléversés à nouveau sur le serveur.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1643"/>
         <source>All files in the local folder &quot;%1&quot; were deleted.
 
 If you restore the files, they will be downloaded again from the server.</source>
-        <translation type="unfinished"/>
+        <translation>Tous les fichiers dans le dossier local &quot;%1&quot; ont été supprimés.
+
+Si vous restaurez les fichiers, ils seront à nouveau téléchargés depuis le serveur.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1644"/>
         <source>Remove all files?</source>
-        <translation type="unfinished"/>
+        <translation>Supprimer tous les fichiers ?</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1648"/>
         <source>Proceed to remove all files</source>
-        <translation type="unfinished"/>
+        <translation>Valider pour supprimer tous les fichiers</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1649"/>
@@ -2427,12 +2431,12 @@ If you restore the files, they will be downloaded again from the server.</source
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="322"/>
         <source>Synchronizing virtual files in local folder</source>
-        <translation type="unfinished"/>
+        <translation>Synchronisation des fichiers virtuels dans le dossier local</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="324"/>
         <source>Synchronizing files in local folder</source>
-        <translation type="unfinished"/>
+        <translation>Synchronisation des fichiers dans le dossier local</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="993"/>
@@ -2452,13 +2456,13 @@ If you restore the files, they will be downloaded again from the server.</source
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1009"/>
         <source>Syncing local and remote changes</source>
-        <translation type="unfinished"/>
+        <translation>Synchronisation des changements locaux et distants</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1059"/>
         <source>%1 %2 …</source>
         <extracomment>Example text: &quot;Uploading foobar.png (1MB of 2MB) time left 2 minutes at a rate of 24Kb/s&quot; Example text: &quot;Syncing 'foo.txt', 'bar.txt'&quot;</extracomment>
-        <translation type="unfinished"/>
+        <translation>%1 %2 …</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1068"/>
@@ -2475,7 +2479,7 @@ If you restore the files, they will be downloaded again from the server.</source
         <location filename="../src/gui/folderstatusmodel.cpp" line="1065"/>
         <source>Download %1/s</source>
         <extracomment>Example text: &quot;Download 24Kb/s&quot; (%1 is replaced by 24Kb (translated))</extracomment>
-        <translation type="unfinished"/>
+        <translation>Télécharger %1/s</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1066"/>
@@ -2498,7 +2502,7 @@ If you restore the files, they will be downloaded again from the server.</source
         <location filename="../src/gui/folderstatusmodel.cpp" line="1075"/>
         <source>Upload %1/s</source>
         <extracomment>Example text: &quot;Upload 24Kb/s&quot; (%1 is replaced by 24Kb (translated))</extracomment>
-        <translation type="unfinished"/>
+        <translation>Téléverser %1/s</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1084"/>
@@ -2543,7 +2547,7 @@ If you restore the files, they will be downloaded again from the server.</source
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1131"/>
         <source>File %1 of %2</source>
-        <translation type="unfinished"/>
+        <translation>Fichier %1 sur %2</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1136"/>
@@ -2553,7 +2557,7 @@ If you restore the files, they will be downloaded again from the server.</source
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1184"/>
         <source>About to start syncing</source>
-        <translation type="unfinished"/>
+        <translation>Sur le point de démarrer la synchronisation</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folderstatusmodel.cpp" line="1193"/>
@@ -2971,19 +2975,20 @@ Notez que cela ne permet seulement que de sélectionner où sont récupérées l
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="354"/>
         <source>enterprise</source>
-        <translation type="unfinished"/>
+        <translation>enterprise</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="382"/>
         <source>- enterprise: contains stable versions for customers.
 </source>
         <comment>description of enterprise update channel for enterprise customers</comment>
-        <translation type="unfinished"/>
+        <translation>- enterprise: contient les version stables pour les clients.
+</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="387"/>
         <source>Changing update channel?</source>
-        <translation type="unfinished"/>
+        <translation>Changement du canal de mise à jour ?</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="388"/>
@@ -2993,7 +2998,12 @@ Notez que cela ne permet seulement que de sélectionner où sont récupérées l
 - daily: contains versions created daily only for testing and development
 %1
 Downgrading versions is not possible immediately: changing from beta to stable means waiting for the new stable version.</source>
-        <translation type="unfinished"/>
+        <translation>Le canal détermine quelles mises à jour seront proposées pour l&apos;installation :
+- stable: contient les versions testées considérées comme fiables
+- beta: contient les versions avec de nouvelles fonctionnalité qui n&apos;ont pas toujours été testées complètement
+- daily: contient les versions créées quotidiennement seulement pour les tests et le développement
+%1
+Passer à une version antérieure n&apos;est pas possible immédiatement : passer du canal beta au canal stable implique d&apos;attendre la nouvelle version stable.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="364"/>
@@ -3329,32 +3339,32 @@ Notez que l&apos;utilisation de toute option de ligne de commande de journalisat
     <message>
         <location filename="../src/gui/macOS/fileprovidereditlocallyjob.cpp" line="42"/>
         <source>Could not start editing locally.</source>
-        <translation type="unfinished"/>
+        <translation>Impossible de démarrer l&apos;édition locale.</translation>
     </message>
     <message>
         <location filename="../src/gui/macOS/fileprovidereditlocallyjob.cpp" line="42"/>
         <source>An error occurred during setup.</source>
-        <translation type="unfinished"/>
+        <translation>Une erreur est survenue pendant l&apos;installation</translation>
     </message>
     <message>
         <location filename="../src/gui/macOS/fileprovidereditlocallyjob.cpp" line="48"/>
         <source>Could not find a file for local editing.Make sure its path is valid and it is synced locally.</source>
-        <translation type="unfinished"/>
+        <translation>Impossible de trouver un fichier pour l&apos;édition locale. Vérifier que son chemin d&apos;accès est valide et qu&apos;il est synchronisé localement.</translation>
     </message>
     <message>
         <location filename="../src/gui/macOS/fileprovidereditlocallyjob.cpp" line="81"/>
         <source>Could not get file ID.</source>
-        <translation type="unfinished"/>
+        <translation>Impossible d&apos;obtenir l&apos;identifiant du fichier.</translation>
     </message>
     <message>
         <location filename="../src/gui/macOS/fileprovidereditlocallyjob.cpp" line="89"/>
         <source>Could not get file identifier.</source>
-        <translation type="unfinished"/>
+        <translation>Impossible d&apos;obtenir l&apos;identifiant du fichier.</translation>
     </message>
     <message>
         <location filename="../src/gui/macOS/fileprovidereditlocallyjob.cpp" line="89"/>
         <source>The file identifier is empty.</source>
-        <translation type="unfinished"/>
+        <translation>L&apos;identifiant du fichier est vide.</translation>
     </message>
 </context>
 <context>
@@ -3457,7 +3467,7 @@ Notez que l&apos;utilisation de toute option de ligne de commande de journalisat
         <location filename="../src/gui/networksettings.ui" line="397"/>
         <location filename="../src/gui/networksettings.ui" line="507"/>
         <source>Use global settings</source>
-        <translation type="unfinished"/>
+        <translation>Utiliser les paramètres globaux</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="197"/>
@@ -3540,7 +3550,7 @@ Notez que l&apos;utilisation de toute option de ligne de commande de journalisat
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="152"/>
         <source>Downloading %1 …</source>
-        <translation type="unfinished"/>
+        <translation>Téléchargement de %1 …</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="152"/>
@@ -5263,12 +5273,12 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="159"/>
         <source>Checking folder changes</source>
-        <translation type="unfinished"/>
+        <translation>Vérification des modifications du dossier</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="161"/>
         <source>Syncing changes</source>
-        <translation type="unfinished"/>
+        <translation>Synchronisation des modifications</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="162"/>
@@ -5441,7 +5451,7 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
     <message>
         <location filename="../src/libsync/updatee2eefoldermetadatajob.cpp" line="165"/>
         <source>Failed to finalize item.</source>
-        <translation type="unfinished"/>
+        <translation>Impossible de finaliser l&apos;item.</translation>
     </message>
 </context>
 <context>
@@ -5485,7 +5495,7 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="158"/>
         <source>%1 notifications</source>
-        <translation type="unfinished"/>
+        <translation>%1 notifications</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="646"/>
@@ -5848,17 +5858,17 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="436"/>
         <source>macOS VFS for %1: Sync is running.</source>
-        <translation type="unfinished"/>
+        <translation>macOS VFS pour %1: Synchronisation en cours.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="439"/>
         <source>macOS VFS for %1: Last sync was successful.</source>
-        <translation type="unfinished"/>
+        <translation>macOS VFS pour %1: La dernière synchronisation a réussi.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="442"/>
         <source>macOS VFS for %1: A problem was encountered.</source>
-        <translation type="unfinished"/>
+        <translation>macOS VFS pour %1: Une erreur est survenue.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="401"/>
@@ -6813,7 +6823,7 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="77"/>
         <source>Downloading</source>
-        <translation type="unfinished"/>
+        <translation>Téléchargement</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="77"/>
@@ -6823,7 +6833,7 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="79"/>
         <source>Uploading</source>
-        <translation type="unfinished"/>
+        <translation>Téléversement</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="79"/>
@@ -6833,7 +6843,7 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="81"/>
         <source>Deleting</source>
-        <translation type="unfinished"/>
+        <translation>Suppression</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="82"/>
@@ -6843,7 +6853,7 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="84"/>
         <source>Moving</source>
-        <translation type="unfinished"/>
+        <translation>Déplacement</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="84"/>
@@ -6853,7 +6863,7 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="86"/>
         <source>Ignoring</source>
-        <translation type="unfinished"/>
+        <translation>Ignoré</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="87"/>
@@ -6868,12 +6878,12 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="91"/>
         <source>Updating local metadata</source>
-        <translation type="unfinished"/>
+        <translation>Mise à jour des méta-données locales</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="93"/>
         <source>Updating local virtual files metadata</source>
-        <translation type="unfinished"/>
+        <translation>Mise à jour des méta-données des fichiers virtuels</translation>
     </message>
 </context>
 <context>
@@ -6886,7 +6896,7 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
     <message>
         <location filename="../src/libsync/theme.cpp" line="85"/>
         <source>Sync status is unknown</source>
-        <translation type="unfinished"/>
+        <translation>Le statut de synchronisations est inconnu</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="87"/>
@@ -6896,7 +6906,7 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
     <message>
         <location filename="../src/libsync/theme.cpp" line="88"/>
         <source>Waiting to start syncing</source>
-        <translation type="unfinished"/>
+        <translation>En attente du démarrage de la synchronisation</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="90"/>
@@ -6911,7 +6921,7 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
     <message>
         <location filename="../src/libsync/theme.cpp" line="94"/>
         <source>Sync was successful</source>
-        <translation type="unfinished"/>
+        <translation>La synchronisation a réussi</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="96"/>
@@ -6921,7 +6931,7 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
     <message>
         <location filename="../src/libsync/theme.cpp" line="97"/>
         <source>Sync was successful but some files were ignored</source>
-        <translation type="unfinished"/>
+        <translation>La syncronisation a réussi mais certains fichiers ont été ignorés</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="99"/>
@@ -6931,7 +6941,7 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
     <message>
         <location filename="../src/libsync/theme.cpp" line="100"/>
         <source>Error occurred during sync</source>
-        <translation type="unfinished"/>
+        <translation>Une erreur est survenue pendant la synchronisation</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="102"/>
@@ -6941,7 +6951,7 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
     <message>
         <location filename="../src/libsync/theme.cpp" line="103"/>
         <source>Error occurred during setup</source>
-        <translation type="unfinished"/>
+        <translation>Une erreur est survenue pendant l&apos;installation</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="105"/>
@@ -6956,7 +6966,7 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
     <message>
         <location filename="../src/libsync/theme.cpp" line="109"/>
         <source>Stopping sync</source>
-        <translation type="unfinished"/>
+        <translation>Arrêt de la synchronisation</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="111"/>

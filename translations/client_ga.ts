@@ -5497,7 +5497,7 @@ D&apos;fhreagair an freastalaí le hearráid: % 2</translation>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="158"/>
         <source>%1 notifications</source>
-        <translation type="unfinished"/>
+        <translation>% 1 fógra</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="646"/>
