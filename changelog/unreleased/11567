@@ -1,0 +1,6 @@
+Enhancement: Pause synchronization when a captive portal is detected
+
+An encrypted connection to a captive portal will use an unknown certificate, which in turn will caused a dialog to be shown by the client.
+This is now changed: when a captive portal is detected by the OS, the client now shows in the account status that it cannot connect to the server because of a captive portal.
+
+Supported OSses: Windows, Linux (with some network managers)
