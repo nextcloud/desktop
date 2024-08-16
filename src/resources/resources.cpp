@@ -195,12 +195,5 @@ QPixmap CoreImageProvider::requestPixmap(const QString &id, QSize *size, const Q
     } else {
         icon = themeIcon(qmlIcon.iconName);
     }
-
-    // the sourceSize of the Image must be provided
-    Q_ASSERT(requestedSize.isValid());
-    const QSize actualSize = requestedSize.isValid() ? requestedSize : icon.availableSizes().constFirst();
-    if (size) {
-        *size = actualSize;
-    }
-    return icon.pixmap(actualSize, qmlIcon.enabled ? QIcon::Normal : QIcon::Disabled);
+    return Resources::pixmap(requestedSize, icon, qmlIcon.enabled ? QIcon::Normal : QIcon::Disabled, size);
 }

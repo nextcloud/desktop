@@ -13,6 +13,7 @@
  */
 #include "spaceimageprovider.h"
 #include "libsync/graphapi/spacesmanager.h"
+#include "resources/qmlresources.h"
 #include "resources/resources.h"
 
 using namespace OCC;
@@ -36,11 +37,5 @@ QPixmap SpaceImageProvider::requestPixmap(const QString &id, QSize *size, const 
             icon = space->image()->image();
         }
     }
-    // the sourceSize of the Image must be provided
-    Q_ASSERT(requestedSize.isValid());
-    const QSize actualSize = requestedSize.isValid() ? requestedSize : icon.availableSizes().constFirst();
-    if (size) {
-        *size = actualSize;
-    }
-    return icon.pixmap(actualSize);
+    return Resources::pixmap(requestedSize, icon, QIcon::Normal, size);
 }

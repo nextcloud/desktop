@@ -16,6 +16,10 @@
 
 #include "resources/resources.h"
 
+namespace {
+constexpr QSize minIconSize{16, 16};
+}
+
 using namespace OCC;
 QUrl Resources::QMLResources::resourcePath2(const QString &provider, const QString &icon, bool enabled, const QVariantMap &properies)
 {
@@ -35,4 +39,14 @@ Resources::QMLResources::Icon Resources::QMLResources::parseIcon(const QString &
 {
     const auto data = QJsonDocument::fromJson(QByteArray::fromBase64(id.toUtf8())).object();
     return Icon{data.value(QLatin1String("theme")).toString(), data.value(QLatin1String("icon")).toString(), data.value(QLatin1String("enabled")).toBool()};
+}
+
+QPixmap Resources::pixmap(const QSize &requestedSize, const QIcon &icon, QIcon::Mode mode, QSize *outSize)
+{
+    Q_ASSERT(requestedSize.isValid());
+    QSize actualSize = requestedSize.isValid() ? requestedSize : icon.availableSizes().constFirst();
+    if (outSize) {
+        *outSize = actualSize;
+    }
+    return icon.pixmap(actualSize.expandedTo(minIconSize), mode);
 }

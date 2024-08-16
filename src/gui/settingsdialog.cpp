@@ -73,14 +73,7 @@ public:
     {
         const auto qmlIcon = OCC::Resources::QMLResources::parseIcon(id);
         const auto accountState = OCC::AccountManager::instance()->account(QUuid::fromString(qmlIcon.iconName));
-        QIcon icon = accountState->account()->avatar();
-        // the sourceSize of the Image must be provided
-        Q_ASSERT(requestedSize.isValid());
-        const QSize actualSize = requestedSize.isValid() ? requestedSize : icon.availableSizes().constFirst();
-        if (size) {
-            *size = actualSize;
-        }
-        return icon.pixmap(actualSize, qmlIcon.enabled ? QIcon::Normal : QIcon::Disabled);
+        return OCC::Resources::pixmap(requestedSize, accountState->account()->avatar(), qmlIcon.enabled ? QIcon::Normal : QIcon::Disabled, size);
     }
 };
 }
