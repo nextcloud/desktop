@@ -443,6 +443,17 @@ int main(int argc, char **argv)
         app.setWindowIcon(Theme::instance()->applicationIcon());
         app.setApplicationVersion(Theme::instance()->versionSwitchOutput());
 
+#ifdef Q_OS_LINUX
+        // HACK:
+        // With X11 arg0.name is used to map WM_CLASS to the desktop file.
+        // With Wayland it uses app.desktopFileName() or app.organizationDomain()
+        // As we preferably use AppImages the real deskop file name is unknown, we just ensure it mathces the StartupWMClass entry in our desktop file
+        if (qgetenv("XDG_SESSION_TYPE") == "wayland") {
+            // https://bugreports.qt.io/browse/QTBUG-77182 Qt 6.9 brings setAppId() but its private api
+            app.setDesktopFileName(QFileInfo(app.applicationFilePath()).baseName());
+        }
+#endif
+
         // Load the translations before option parsing, so we can localize help text and error messages.
         const QString displayLanguage = setupTranslations(&app);
 
