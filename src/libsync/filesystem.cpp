@@ -480,6 +480,25 @@ bool FileSystem::isFolderReadOnly(const std::filesystem::path &path) noexcept
         return false;
     }
 }
+
+FileSystem::FilePermissionsRestore::FilePermissionsRestore(const QString &path, FolderPermissions temporaryPermissions)
+    : _path(path)
+{
+    const auto stdStrPath = _path.toStdWString();
+    _initialPermissions = FileSystem::isFolderReadOnly(stdStrPath) ? OCC::FileSystem::FolderPermissions::ReadOnly : OCC::FileSystem::FolderPermissions::ReadWrite;
+    if (_initialPermissions != temporaryPermissions) {
+        _rollbackNeeded = true;
+        FileSystem::setFolderPermissions(_path, temporaryPermissions);
+    }
+}
+
+FileSystem::FilePermissionsRestore::~FilePermissionsRestore()
+{
+    if (_rollbackNeeded) {
+        FileSystem::setFolderPermissions(_path, _initialPermissions);
+    }
+}
+
 #endif
 
 } // namespace OCC
