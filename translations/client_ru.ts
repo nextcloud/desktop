@@ -35,7 +35,7 @@
     <message>
         <location filename="../src/gui/tray/ActivityList.qml" line="108"/>
         <source>No activities yet</source>
-        <translation>Пока не произошло ни одного события</translation>
+        <translation>Пока ничего не делалось</translation>
     </message>
 </context>
 <context>
@@ -105,7 +105,7 @@
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="164"/>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="226"/>
         <source>No recently changed files</source>
-        <translation>Нет недавно измененных файлов</translation>
+        <translation>Недавно измененных файлов нет</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="180"/>
@@ -560,7 +560,7 @@ Should the account be imported?</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="94"/>
         <source>You seem to have the Virtual Files feature enabled on this folder. At the moment, it is not possible to implicitly download virtual files that are end-to-end encrypted. To get the best experience with virtual files and end-to-end encryption, make sure the encrypted folder is marked with &quot;Make always available locally&quot;.</source>
-        <translation>Для этой папки используется механизм виртуальных файлов. В настоящее время не придерживается «прозрачное» получение с сервера виртуальных файлов, зашифрованных с использованием оконечного шифрования. Для работы с такими файлами используйте хранение файлов на устройстве.</translation>
+        <translation>Для этой папки используется механизм виртуальных файлов. В настоящее время не поддерживается «прозрачное» получение с сервера виртуальных файлов, зашифрованных с использованием сквозного шифрования. Для работы с такими файлами используйте хранение файлов на устройстве.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="102"/>
@@ -597,12 +597,12 @@ Should the account be imported?</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="250"/>
         <source>Display mnemonic</source>
-        <translation>Показать  мнемофразу</translation>
+        <translation>Показать шифрующую фразу</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="256"/>
         <source>End-to-end encryption has been enabled for this account</source>
-        <translation>Оконечное шифрование было включено для этой учётной записи</translation>
+        <translation>Сквозное шифрование было включено для этой учётной записи</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="288"/>
@@ -635,7 +635,7 @@ Would you like to set up end-to-end encryption?</source>
         <location filename="../src/gui/accountsettings.cpp" line="366"/>
         <source>You cannot encrypt a folder with contents, please remove the files.
 Wait for the new sync, then encrypt it.</source>
-        <translation>Невозможно зашифровать непустую папку. Удалите файлы, дождитесь окончания синхронизации и включите шифрование.</translation>
+        <translation>Невозможно зашифровать непустую папку. Удалите файлы, дождитесь окончания синхронизации и затем включите шифрование.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="390"/>
@@ -777,22 +777,22 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1016"/>
         <source>To protect your Cryptographic Identity, we encrypt it with a mnemonic of 12 dictionary words. Please note these down and keep them safe. They will be needed to add other devices to your account (like your mobile phone or laptop).</source>
-        <translation>Для защиты личного идентификатора оконечного шифрования используется мнемофраза, состоящая из двенадцати слов. Мнемофразу следует записать и сохранить запись в надёжном месте, она потребуется для подключения к учётной записи ваших дополнительных устройств.</translation>
+        <translation>Для защиты личного идентификатора сквозного шифрования он сам шифруется при помощи фразы, состоящей из 12 слов. Сохраните эти слова в надёжном месте, они нужны для подключения к учётной записи ваших дополнительных устройств (например, телефона или портативного ПК).</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1041"/>
         <source>Disable end-to-end encryption</source>
-        <translation>Отключение оконечного шифрования</translation>
+        <translation>Отключение сквозного шифрования</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1042"/>
         <source>Disable end-to-end encryption for %1?</source>
-        <translation>Отключить оконечное шифрование для «%1»?</translation>
+        <translation>Отключить сквозное шифрование для «%1»?</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1043"/>
         <source>Removing end-to-end encryption will remove locally-synced files that are encrypted.&lt;br&gt;Encrypted files will remain on the server.</source>
-        <translation>При отключении оконечного шифрования будут удалены локальные копии зашифрованных файлов.&lt;br&gt;С сервера зашифрованные файлы удалены не будут.</translation>
+        <translation>При отключении сквозного шифрования будут удалены локальные копии зашифрованных файлов.&lt;br&gt;С сервера зашифрованные файлы удалены не будут.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1105"/>
@@ -912,7 +912,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1577"/>
         <source>End-to-end encryption has been enabled on this account with another device.&lt;br&gt;It can be enabled on this device by entering your mnemonic.&lt;br&gt;This will enable synchronisation of existing encrypted folders.</source>
-        <translation>Сквозное шифрование было включено для этой учетной записи с другим устройством.&lt;br&gt;Его можно включить на этом устройстве, введя мнемонику.&lt;br&gt;Это позволит синхронизировать существующие зашифрованные папки.</translation>
+        <translation>Для этой учётной записи сквозное шифрование было включено на другом устройстве.&lt;br&gt;Его можно включить на этом устройстве, введя шифрующую фразу.&lt;br&gt;Это позволит синхронизировать существующие зашифрованные папки.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1568"/>
@@ -930,7 +930,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountsetupfromcommandlinejob.cpp" line="142"/>
         <source>The authenticated request to the server was redirected to &quot;%1&quot;. The URL is bad, the server is misconfigured.</source>
-        <translation>Запрос авторизации с сервера перенаправлен на «%1». Ссылка неверна, сервер неправильно настроен.</translation>
+        <translation>Запрос авторизации с сервера перенаправлен на «%1». Эта ссылка неверна, сервер неправильно настроен.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsetupfromcommandlinejob.cpp" line="152"/>
@@ -1016,7 +1016,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/tray/activitylistmodel.cpp" line="579"/>
         <source>Files from the ignore list as well as symbolic links are not synced.</source>
-        <translation>Из синхронизации исключены символьные ссылки и  файлы, попадающие под правила из списка игнорируемых файлов.</translation>
+        <translation>Из синхронизации исключены символические ссылки и  файлы, попадающие под правила из списка игнорируемых файлов.</translation>
     </message>
 </context>
 <context>
@@ -1024,12 +1024,12 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="17"/>
         <source>SSL client certificate authentication</source>
-        <translation>Аутентификация по SSL сертификату пользователя</translation>
+        <translation>Аутентификация по клиентскому сертификату SSL</translation>
     </message>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="23"/>
         <source>This server probably requires a SSL client certificate.</source>
-        <translation>Этот сервер, возможно, требует SSL сертификат пользователя</translation>
+        <translation>Этот сервер, возможно, требует клиентский сертификат SSL</translation>
     </message>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="35"/>
@@ -1133,7 +1133,7 @@ This action will abort any currently running synchronization.</source>
         <source>Imported %1 and %2 from a legacy desktop client.
 %3</source>
         <comment>number of accounts and folders imported. list of users.</comment>
-        <translation>Из устаревшей версии приложения импортировано %1 и %2.
+        <translation>Из устаревшей версии приложения импортированы %1 и %2.
 %3.</translation>
     </message>
     <message>
@@ -1180,12 +1180,12 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/libsync/basepropagateremotedeleteencrypted.cpp" line="94"/>
         <source>&quot;%1 Failed to unlock encrypted folder %2&quot;.</source>
-        <translation type="unfinished"/>
+        <translation>&quot;%1 Не удалось разблокировать зашифрованную папку %2&quot;.</translation>
     </message>
     <message>
         <location filename="../src/libsync/basepropagateremotedeleteencrypted.cpp" line="136"/>
         <source>Wrong HTTP code returned by server. Expected 204, but received &quot;%1 %2&quot;.</source>
-        <translation type="unfinished"/>
+        <translation>Получен неверный код HTTP-ответа сервера: ожидался код 204, но был получен «%1 %2».</translation>
     </message>
 </context>
 <context>
@@ -1213,7 +1213,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="320"/>
         <source>Local file changed during syncing. It will be resumed.</source>
-        <translation>Локальный файл изменился во время синхронизации. Он будет обновлён.</translation>
+        <translation>Локальный файл изменился в процессе синхронизации. Операция будет возобновлена.</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="334"/>
@@ -1234,12 +1234,12 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="480"/>
         <source>The file %1 is currently in use</source>
-        <translation>В настоящее время используется файл %1</translation>
+        <translation>Файл %1 в данный момент используется</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="649"/>
         <source>The local file was removed during sync.</source>
-        <translation>Локальный файл был удален во время синхронизации.</translation>
+        <translation>Локальный файл был удалён во время синхронизации.</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="697"/>
@@ -1503,7 +1503,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/conflictdialog.cpp" line="178"/>
         <source>Keep server version</source>
-        <translation>Оставить серверную версию</translation>
+        <translation>Оставить версию сервера</translation>
     </message>
 </context>
 <context>
