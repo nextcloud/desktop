@@ -81,20 +81,21 @@ AccountSettings::AccountSettings(const AccountStatePtr &accountState, QWidget *p
         connect(accountsState()->account()->spacesManager(), &GraphApi::SpacesManager::updated, this, &AccountSettings::slotSpacesUpdated);
     }
 
-    ui->connectLabel->clear();
+    ui->connectionStatusLabel->clear();
 
     connect(_accountState.data(), &AccountState::stateChanged, this, &AccountSettings::slotAccountStateChanged);
     slotAccountStateChanged();
 
-    connect(ui->accountToolButton, &QToolButton::clicked, this, [this] {
+    connect(ui->manageAccountButton, &QToolButton::clicked, this, [this] {
         QMenu *menu = new QMenu(this);
         menu->setAttribute(Qt::WA_DeleteOnClose);
         menu->setAccessibleName(tr("Account options menu"));
         menu->addAction(_accountState->isSignedOut() ? tr("Log in") : tr("Log out"), this, &AccountSettings::slotToggleSignInState);
         auto *reconnectAction = menu->addAction(tr("Reconnect"), this, [this] { _accountState->checkConnectivity(true); });
         reconnectAction->setEnabled(!_accountState->isConnected() && !_accountState->isSignedOut());
+        menu->addAction(CommonStrings::showInWebBrowser(), this, [this] { QDesktopServices::openUrl(_accountState->account()->url()); });
         menu->addAction(tr("Remove"), this, &AccountSettings::slotDeleteAccount);
-        menu->popup(mapToGlobal(ui->accountToolButton->pos()));
+        menu->popup(mapToGlobal(ui->manageAccountButton->pos()));
 
         // set the focus for accessability
         menu->setFocus();
@@ -110,7 +111,7 @@ AccountSettings::AccountSettings(const AccountStatePtr &accountState, QWidget *p
         }
     });
     connect(ui->stackedWidget, &QStackedWidget::currentChanged, this,
-        [this] { ui->accountToolButton->setEnabled(ui->stackedWidget->currentWidget() == ui->quickWidget); });
+        [this] { ui->manageAccountButton->setEnabled(ui->stackedWidget->currentWidget() == ui->quickWidget); });
     ui->stackedWidget->setCurrentWidget(ui->quickWidget);
 }
 
@@ -349,14 +350,14 @@ void AccountSettings::slotDisableVfsCurrentFolder(Folder *folder)
 void AccountSettings::showConnectionLabel(const QString &message, QStringList errors)
 {
     if (errors.isEmpty()) {
-        ui->connectLabel->setText(message);
-        ui->connectLabel->setToolTip(QString());
+        ui->connectionStatusLabel->setText(message);
+        ui->connectionStatusLabel->setToolTip(QString());
     } else {
         errors.prepend(message);
         const QString msg = errors.join(QLatin1String("\n"));
         qCDebug(lcAccountSettings) << msg;
-        ui->connectLabel->setText(msg);
-        ui->connectLabel->setToolTip(QString());
+        ui->connectionStatusLabel->setText(msg);
+        ui->connectionStatusLabel->setToolTip(QString());
     }
     ui->accountStatus->setVisible(!message.isEmpty());
     ui->warningLabel->setVisible(!errors.isEmpty());
@@ -451,16 +452,10 @@ void AccountSettings::slotAccountStateChanged()
     const AccountPtr account = _accountState->account();
     qCDebug(lcAccountSettings) << "Account state changed to" << state << "for account" << account;
 
-    // in 2023 there should never be credentials encoded in the url, but we never know...
-    const auto safeUrl = account->url().adjusted(QUrl::RemoveUserInfo);
-
     FolderMan *folderMan = FolderMan::instance();
     for (auto *folder : folderMan->folders()) {
         _model->slotUpdateFolderState(folder);
     }
-
-    const QString server = QStringLiteral("<a href=\"%1\">%1</a>")
-                               .arg(Utility::escape(safeUrl.toString()));
 
     switch (state) {
     case AccountState::Connected: {
@@ -468,41 +463,39 @@ void AccountSettings::slotAccountStateChanged()
         if (account->serverSupportLevel() != Account::ServerSupportLevel::Supported) {
             errors << tr("The server version %1 is unsupported! Proceed at your own risk.").arg(account->capabilities().status().versionString());
         }
-        showConnectionLabel(tr("Connected to %1.").arg(server), errors);
+        showConnectionLabel(tr("Connected"), errors);
         break;
     }
     case AccountState::ServiceUnavailable:
-        showConnectionLabel(tr("Server %1 is temporarily unavailable.").arg(server));
+        showConnectionLabel(tr("Server is temporarily unavailable"));
         break;
     case AccountState::MaintenanceMode:
-        showConnectionLabel(tr("Server %1 is currently in maintenance mode.").arg(server));
+        showConnectionLabel(tr("Server is currently in maintenance mode"));
         break;
     case AccountState::SignedOut:
-        showConnectionLabel(tr("Signed out from %1.").arg(server));
+        showConnectionLabel(tr("Signed out"));
         break;
     case AccountState::AskingCredentials: {
-        showConnectionLabel(tr("Updating credentials for %1...").arg(server));
+        showConnectionLabel(tr("Updating credentials..."));
         break;
     }
     case AccountState::Connecting:
         if (NetworkInformation::instance()->isBehindCaptivePortal()) {
-            showConnectionLabel(tr("Captive portal prevents connections to %1.").arg(server));
+            showConnectionLabel(tr("Captive portal prevents connections to the server."));
         } else if (NetworkInformation::instance()->isMetered() && ConfigFile().pauseSyncWhenMetered()) {
-            showConnectionLabel(tr("Sync to %1 is paused due to metered internet connection.").arg(server));
+            showConnectionLabel(tr("Sync is paused due to metered internet connection"));
         } else {
-            showConnectionLabel(tr("Connecting to: %1.").arg(server));
+            showConnectionLabel(tr("Connecting..."));
         }
         break;
     case AccountState::ConfigurationError:
-        showConnectionLabel(tr("Server configuration error: %1.")
-                                .arg(server),
-            _accountState->connectionErrors());
+        showConnectionLabel(tr("Server configuration error"), _accountState->connectionErrors());
         break;
     case AccountState::NetworkError:
         // don't display the error to the user, https://github.com/owncloud/client/issues/9790
         [[fallthrough]];
     case AccountState::Disconnected:
-        showConnectionLabel(tr("Disconnected from: %1.").arg(server));
+        showConnectionLabel(tr("Disconnected"));
         break;
     }
 }

@@ -1,0 +1,11 @@
+Bugfix: Make open account in browser accessible for keyboard navigation
+
+On the account settings page, the status label contained the URL of the
+server. This URL was not accessible with keyboard navigation or when a
+screen-reader was used. Now there is an "Open in Web Browser" action in
+the pop-up menu of the "Manage Account" button (which is next to the
+status label), and the URL has been removed from the status label.
+
+https://github.com/owncloud/client/issues/11772
+https://github.com/owncloud/client/issues/11800
+https://github.com/owncloud/client/pull/11810
