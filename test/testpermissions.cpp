@@ -746,6 +746,140 @@ private slots:
         QVERIFY(testFolderStatus.permissions() & std::filesystem::perms::owner_read);
         QVERIFY(!static_cast<bool>(testFolderStatus.permissions() & std::filesystem::perms::owner_write));
     }
+
+    void testDeleteChildItemsInReadOnlyFolder()
+    {
+        FakeFolder fakeFolder{FileInfo{}};
+
+        auto &remote = fakeFolder.remoteModifier();
+
+        remote.mkdir("readOnlyFolder");
+        remote.mkdir("readOnlyFolder/test");
+        remote.insert("readOnlyFolder/readOnlyFile.txt");
+
+        remote.find("readOnlyFolder")->permissions = RemotePermissions::fromServerString("M");
+        remote.find("readOnlyFolder/test")->permissions = RemotePermissions::fromServerString("m");
+        remote.find("readOnlyFolder/readOnlyFile.txt")->permissions = RemotePermissions::fromServerString("m");
+
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+
+        remote.remove("readOnlyFolder/test");
+        remote.remove("readOnlyFolder/readOnlyFile.txt");
+
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+
+        const auto ensureReadOnlyItem = [&fakeFolder] (const auto path) -> bool {
+            const auto itemStatus = std::filesystem::status(static_cast<QString>(fakeFolder.localPath() + path).toStdWString());
+            return static_cast<bool>(itemStatus.permissions() & std::filesystem::perms::owner_read);
+        };
+        QVERIFY(ensureReadOnlyItem("/readOnlyFolder"));
+    }
+
+    void testRenameChildItemsInReadOnlyFolder()
+    {
+        FakeFolder fakeFolder{FileInfo{}};
+
+        auto &remote = fakeFolder.remoteModifier();
+
+        remote.mkdir("readOnlyFolder");
+        remote.mkdir("readOnlyFolder/test");
+        remote.insert("readOnlyFolder/readOnlyFile.txt");
+
+        remote.find("readOnlyFolder")->permissions = RemotePermissions::fromServerString("M");
+        remote.find("readOnlyFolder/test")->permissions = RemotePermissions::fromServerString("m");
+        remote.find("readOnlyFolder/readOnlyFile.txt")->permissions = RemotePermissions::fromServerString("m");
+
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+
+        remote.rename("readOnlyFolder/test", "readOnlyFolder/testRename");
+        remote.rename("readOnlyFolder/readOnlyFile.txt", "readOnlyFolder/readOnlyFileRename.txt");
+
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+
+        const auto ensureReadOnlyItem = [&fakeFolder] (const auto path) -> bool {
+            const auto itemStatus = std::filesystem::status(static_cast<QString>(fakeFolder.localPath() + path).toStdWString());
+            return static_cast<bool>(itemStatus.permissions() & std::filesystem::perms::owner_read);
+        };
+        QVERIFY(ensureReadOnlyItem("/readOnlyFolder"));
+        QVERIFY(ensureReadOnlyItem("/readOnlyFolder/testRename"));
+        QVERIFY(ensureReadOnlyItem("/readOnlyFolder/readOnlyFileRename.txt"));
+    }
+
+    void testMoveChildItemsInReadOnlyFolder()
+    {
+        FakeFolder fakeFolder{FileInfo{}};
+
+        auto &remote = fakeFolder.remoteModifier();
+
+        remote.mkdir("readOnlyFolder");
+        remote.mkdir("readOnlyFolder/child");
+        remote.mkdir("readOnlyFolder/test");
+        remote.insert("readOnlyFolder/readOnlyFile.txt");
+
+        remote.find("readOnlyFolder")->permissions = RemotePermissions::fromServerString("M");
+        remote.find("readOnlyFolder/child")->permissions = RemotePermissions::fromServerString("m");
+        remote.find("readOnlyFolder/test")->permissions = RemotePermissions::fromServerString("m");
+        remote.find("readOnlyFolder/readOnlyFile.txt")->permissions = RemotePermissions::fromServerString("m");
+
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+
+        remote.rename("readOnlyFolder/test", "readOnlyFolder/child/test");
+        remote.rename("readOnlyFolder/readOnlyFile.txt", "readOnlyFolder/child/readOnlyFile.txt");
+
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+
+        const auto ensureReadOnlyItem = [&fakeFolder] (const auto path) -> bool {
+            const auto itemStatus = std::filesystem::status(static_cast<QString>(fakeFolder.localPath() + path).toStdWString());
+            return static_cast<bool>(itemStatus.permissions() & std::filesystem::perms::owner_read);
+        };
+        QVERIFY(ensureReadOnlyItem("/readOnlyFolder"));
+        QVERIFY(ensureReadOnlyItem("/readOnlyFolder/child"));
+        QVERIFY(ensureReadOnlyItem("/readOnlyFolder/child/test"));
+        QVERIFY(ensureReadOnlyItem("/readOnlyFolder/child/readOnlyFile.txt"));
+    }
+
+    void testModifyChildItemsInReadOnlyFolder()
+    {
+        FakeFolder fakeFolder{FileInfo{}};
+
+        auto &remote = fakeFolder.remoteModifier();
+
+        remote.mkdir("readOnlyFolder");
+        remote.mkdir("readOnlyFolder/test");
+        remote.insert("readOnlyFolder/readOnlyFile.txt");
+
+        remote.find("readOnlyFolder")->permissions = RemotePermissions::fromServerString("M");
+        remote.find("readOnlyFolder/test")->permissions = RemotePermissions::fromServerString("m");
+        remote.find("readOnlyFolder/readOnlyFile.txt")->permissions = RemotePermissions::fromServerString("m");
+
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+
+        remote.insert("readOnlyFolder/test/newFile.txt");
+        remote.find("readOnlyFolder/test/newFile.txt")->permissions = RemotePermissions::fromServerString("m");
+        remote.mkdir("readOnlyFolder/test/newFolder");
+        remote.find("readOnlyFolder/test/newFolder")->permissions = RemotePermissions::fromServerString("m");
+        remote.appendByte("readOnlyFolder/readOnlyFile.txt");
+
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+
+        const auto ensureReadOnlyItem = [&fakeFolder] (const auto path) -> bool {
+            const auto itemStatus = std::filesystem::status(static_cast<QString>(fakeFolder.localPath() + path).toStdWString());
+            return static_cast<bool>(itemStatus.permissions() & std::filesystem::perms::owner_read);
+        };
+        QVERIFY(ensureReadOnlyItem("/readOnlyFolder"));
+        QVERIFY(ensureReadOnlyItem("/readOnlyFolder/test"));
+        QVERIFY(ensureReadOnlyItem("/readOnlyFolder/readOnlyFile.txt"));
+        QVERIFY(ensureReadOnlyItem("/readOnlyFolder/test/newFile.txt"));
+        QVERIFY(ensureReadOnlyItem("/readOnlyFolder/newFolder"));
+    }
 #endif
 };
 
