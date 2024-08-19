@@ -1,7 +1,19 @@
-if (EXISTS "${PROJECT_SOURCE_DIR}/branding")
-    set(OEM_THEME_DIR "${PROJECT_SOURCE_DIR}/branding" CACHE STRING "The directory containing a custom theme")
+if(WITH_EXTERNAL_BRANDING)
+    include(FetchContent)
+
+    FetchContent_Declare(branding
+            GIT_REPOSITORY ${WITH_EXTERNAL_BRANDING}
+            GIT_TAG main
+    )
+    FetchContent_MakeAvailable(branding)
+
+    set(OEM_THEME_DIR ${branding_SOURCE_DIR} CACHE STRING "The directory containing a custom theme")
 else()
-    set(OEM_THEME_DIR "${PROJECT_SOURCE_DIR}/src/resources/" CACHE STRING "Define directory containing a custom theme")
+    if (EXISTS "${PROJECT_SOURCE_DIR}/branding")
+        set(OEM_THEME_DIR "${PROJECT_SOURCE_DIR}/branding" CACHE STRING "The directory containing a custom theme")
+    else()
+        set(OEM_THEME_DIR "${PROJECT_SOURCE_DIR}/src/resources/" CACHE STRING "Define directory containing a custom theme")
+    endif()
 endif()
 
 if (EXISTS "${OEM_THEME_DIR}/OEM.cmake")

@@ -84,8 +84,12 @@ function(generate_theme TARGET OWNCLOUD_SIDEBAR_ICONS_OUT)
         set(QRC_PATH ${CMAKE_CURRENT_BINARY_DIR}/theme.qrc)
         __write_qrc_file_header(${QRC_PATH} theme)
 
+        # ownbrander
         __addIcon(${QRC_PATH} "universal" "${APPLICATION_ICON_NAME}-icon" SRC_PATH "colored")
         __addIcon(${QRC_PATH} "universal" "wizard_logo" SRC_PATH "colored")
+        # full theme
+        __addIcon(${QRC_PATH} "universal" "${APPLICATION_ICON_NAME}-icon")
+        __addIcon(${QRC_PATH} "universal" "wizard_logo")
 
         __addUrlIcons(${QRC_PATH})
 

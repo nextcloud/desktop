@@ -101,6 +101,8 @@ option(FORCE_ASSERTS "FORCE_ASSERTS" OFF)
 option(WITH_APPIMAGEUPDATER OFF "Enable built-in libappimageupdate based updater on Linux")
 add_feature_info(AppImageUpdate WITH_APPIMAGEUPDATER "Built-in libappimageupdate based updater")
 
+option(WITH_EXTERNAL_BRANDING "An URL to an external branding repo" "")
+
 # specify additional vfs plugins
 set(VIRTUAL_FILE_SYSTEM_PLUGINS off suffix win CACHE STRING "Name of internal plugin in src/libsync/vfs or the locations of virtual file plugins")
 
