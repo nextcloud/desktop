@@ -173,7 +173,7 @@ void SslButton::updateAccountState(AccountState *accountState)
         QSslCipher cipher = account->_sessionCipher;
         setToolTip(tr("This connection is encrypted using %1 bit %2.\n").arg(cipher.usedBits()).arg(cipher.name()));
     } else {
-        setIcon(QIcon(QLatin1String(":/client/theme/lock-http.svg")));
+        setIcon(QIcon(QLatin1String(":/client/theme/lock-broken.svg")));
         setToolTip(tr("This connection is NOT secure as it is not encrypted.\n"));
     }
 }
