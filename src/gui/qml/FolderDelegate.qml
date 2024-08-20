@@ -239,7 +239,7 @@ Pane {
                 enabled: (accountSettings.accountState.state === AccountState.Connected) && (accountSettings.unsyncedSpaces || !accountSettings.accountState.supportsSpaces)
 
                 // with Spaces Theme.singleSyncFolder hast no effect
-                visible: accountSettings.accountState.supportsSpaces || listView.count === 0 || !Theme.singleSyncFolder
+                visible: accountSettings.accountState.supportsSpaces ? !Theme.syncNewlyDiscoveredSpaces : (listView.count === 0 || !Theme.singleSyncFolder)
 
                 Keys.onBacktabPressed: {
                     listView.currentItem.forceActiveFocus(Qt.TabFocusReason);
