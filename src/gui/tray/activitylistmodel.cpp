@@ -840,9 +840,12 @@ void ActivityListModel::slotTriggerAction(const int activityIndex, const int act
     if (action._verb == "WEB") {
         Utility::openBrowser(QUrl(action._link));
         return;
-    } else if (action._verb == "FIX_CONFLICT_LOCALLY" &&
-               activity._type == Activity::SyncFileItemType &&
-               (activity._syncFileItemStatus == SyncFileItem::Conflict || activity._syncFileItemStatus == SyncFileItem::FileNameClash)) {
+    } else if (((action._verb == "FIX_CONFLICT_LOCALLY" || action._verb == "RENAME_LOCAL_FILE") &&
+                activity._type == Activity::SyncFileItemType &&
+                (activity._syncFileItemStatus == SyncFileItem::Conflict ||
+                 activity._syncFileItemStatus == SyncFileItem::FileNameClash ||
+                 activity._syncFileItemStatus == SyncFileItem::FileNameInvalid ||
+                 activity._syncFileItemStatus == SyncFileItem::FileNameInvalidOnServer))) {
         slotTriggerDefaultAction(activityIndex);
         return;
     } else if (action._verb == ActivityLink::WhitelistFolderVerb && !activity._file.isEmpty()) { // _folder == folder alias/name, _file == folder/file path
