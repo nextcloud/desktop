@@ -416,6 +416,7 @@ bool ProcessDirectoryJob::handleExcluded(const QString &path, const Entries &ent
             break;
         case CSYNC_FILE_EXCLUDE_SERVER_BLACKLISTED:
             item->_errorString = tr("The filename is blacklisted on the server.");
+            item->_status = SyncFileItem::FileNameInvalidOnServer;
             break;
         }
     }
