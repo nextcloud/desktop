@@ -3355,7 +3355,7 @@ Merk at bruk av alle kommandolinjealternativer for logging vil overstyre denne i
     <message>
         <location filename="../src/gui/macOS/fileprovidereditlocallyjob.cpp" line="81"/>
         <source>Could not get file ID.</source>
-        <translation type="unfinished"/>
+        <translation>Kan ikke få fil-ID.</translation>
     </message>
     <message>
         <location filename="../src/gui/macOS/fileprovidereditlocallyjob.cpp" line="89"/>
@@ -5496,7 +5496,7 @@ Server svarte med feil: %2</translation>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="158"/>
         <source>%1 notifications</source>
-        <translation type="unfinished"/>
+        <translation>%1 varslinger</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="646"/>

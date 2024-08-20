@@ -5512,12 +5512,12 @@ Sunucunun verdiği hata yanıtı: %2</translation>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1053"/>
         <source>Open Nextcloud Assistant in browser</source>
-        <translation type="unfinished"/>
+        <translation>Tarayıcıda Nextcloud Assistant uygulamasını aç</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1053"/>
         <source>Open Nextcloud Talk in browser</source>
-        <translation type="unfinished"/>
+        <translation>Tarayıcıda Nextcloud Talk uygulamasını aç</translation>
     </message>
 </context>
 <context>
@@ -5859,17 +5859,17 @@ Sunucunun verdiği hata yanıtı: %2</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="436"/>
         <source>macOS VFS for %1: Sync is running.</source>
-        <translation type="unfinished"/>
+        <translation>%1 için macOS VFS: Eşitleniyor.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="439"/>
         <source>macOS VFS for %1: Last sync was successful.</source>
-        <translation type="unfinished"/>
+        <translation>%1 için macOS VFS: Son eşitleme sorunsuz tamamlandı.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="442"/>
         <source>macOS VFS for %1: A problem was encountered.</source>
-        <translation type="unfinished"/>
+        <translation>%1 için macOS VFS: Bir sorun çıktı.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="401"/>
@@ -6824,7 +6824,7 @@ Sunucunun verdiği hata yanıtı: %2</translation>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="77"/>
         <source>Downloading</source>
-        <translation type="unfinished"/>
+        <translation>İndiriliyor</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="77"/>
@@ -6834,7 +6834,7 @@ Sunucunun verdiği hata yanıtı: %2</translation>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="79"/>
         <source>Uploading</source>
-        <translation type="unfinished"/>
+        <translation>Yükleniyor</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="79"/>
@@ -6844,7 +6844,7 @@ Sunucunun verdiği hata yanıtı: %2</translation>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="81"/>
         <source>Deleting</source>
-        <translation type="unfinished"/>
+        <translation>Siliniyor</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="82"/>
@@ -6854,7 +6854,7 @@ Sunucunun verdiği hata yanıtı: %2</translation>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="84"/>
         <source>Moving</source>
-        <translation type="unfinished"/>
+        <translation>Taşınıyor</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="84"/>
@@ -6864,7 +6864,7 @@ Sunucunun verdiği hata yanıtı: %2</translation>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="86"/>
         <source>Ignoring</source>
-        <translation type="unfinished"/>
+        <translation>Yok sayılıyor</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="87"/>
@@ -6879,12 +6879,12 @@ Sunucunun verdiği hata yanıtı: %2</translation>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="91"/>
         <source>Updating local metadata</source>
-        <translation type="unfinished"/>
+        <translation>Yerel üst veriler güncelleniyor</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="93"/>
         <source>Updating local virtual files metadata</source>
-        <translation type="unfinished"/>
+        <translation>Yerel sanal dosyaların üst verileri güncelleniyor</translation>
     </message>
 </context>
 <context>
@@ -6897,7 +6897,7 @@ Sunucunun verdiği hata yanıtı: %2</translation>
     <message>
         <location filename="../src/libsync/theme.cpp" line="85"/>
         <source>Sync status is unknown</source>
-        <translation type="unfinished"/>
+        <translation>Eşitleme durumu bilinmiyor</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="87"/>
@@ -6907,7 +6907,7 @@ Sunucunun verdiği hata yanıtı: %2</translation>
     <message>
         <location filename="../src/libsync/theme.cpp" line="88"/>
         <source>Waiting to start syncing</source>
-        <translation type="unfinished"/>
+        <translation>Eşitlemenin başlatılması bekleniyor</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="90"/>
@@ -6922,7 +6922,7 @@ Sunucunun verdiği hata yanıtı: %2</translation>
     <message>
         <location filename="../src/libsync/theme.cpp" line="94"/>
         <source>Sync was successful</source>
-        <translation type="unfinished"/>
+        <translation>Eşitleme sorunsuz tamamlandı</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="96"/>
@@ -6932,7 +6932,7 @@ Sunucunun verdiği hata yanıtı: %2</translation>
     <message>
         <location filename="../src/libsync/theme.cpp" line="97"/>
         <source>Sync was successful but some files were ignored</source>
-        <translation type="unfinished"/>
+        <translation>Eşitleme tamamlandı ancak bazı dosyalar yok sayıldı</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="99"/>
@@ -6942,7 +6942,7 @@ Sunucunun verdiği hata yanıtı: %2</translation>
     <message>
         <location filename="../src/libsync/theme.cpp" line="100"/>
         <source>Error occurred during sync</source>
-        <translation type="unfinished"/>
+        <translation>Eşitleme sırasında sorun çıktı</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="102"/>
@@ -6952,7 +6952,7 @@ Sunucunun verdiği hata yanıtı: %2</translation>
     <message>
         <location filename="../src/libsync/theme.cpp" line="103"/>
         <source>Error occurred during setup</source>
-        <translation type="unfinished"/>
+        <translation>Kurulum sırasında sorun çıktı</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="105"/>
@@ -6967,7 +6967,7 @@ Sunucunun verdiği hata yanıtı: %2</translation>
     <message>
         <location filename="../src/libsync/theme.cpp" line="109"/>
         <source>Stopping sync</source>
-        <translation type="unfinished"/>
+        <translation>Eşitleme durduruluyor</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="111"/>
