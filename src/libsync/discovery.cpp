@@ -430,6 +430,18 @@ bool ProcessDirectoryJob::handleExcluded(const QString &path, const Entries &ent
             break;
         case CSYNC_FILE_EXCLUDE_SERVER_BLACKLISTED:
             item->_errorString = tr("The filename is blacklisted on the server.");
+            if (hasForbiddenFilename) {
+                item->_errorString += tr(" Reason: the entire filename is forbidden.");
+            }
+            if (hasForbiddenBasename) {
+                item->_errorString += tr(" Reason: the filename has a forbidden base name (filename start).");
+            }
+            if (hasForbiddenExtension) {
+                item->_errorString += tr(" Reason: the file has a forbidden extension (.%1).").arg(extension);
+            }
+            if (containsForbiddenCharacters) {
+                item->_errorString += tr(" Reason: the filename contains a forbidden character (%1).").arg(forbiddenCharMatch);
+            }
             item->_status = SyncFileItem::FileNameInvalidOnServer;
             break;
         }
