@@ -139,7 +139,11 @@ void AccountSettings::slotCustomContextMenuRequested(Folder *folder)
     connect(folder, &OCC::Folder::destroyed, menu, &QMenu::close);
     // Only allow removal if the item isn't in "ready" state.
     if (!folder->isReady() && !isDeployed) {
-        addRemoveFolderAction(menu);
+        if (Theme::instance()->syncNewlyDiscoveredSpaces()) {
+            menu->addAction(tr("Folder is not ready yet"))->setEnabled(false);
+        } else {
+            addRemoveFolderAction(menu);
+        }
         menu->popup(QCursor::pos());
         // accassebility
         menu->setFocus();
@@ -191,7 +195,9 @@ void AccountSettings::slotCustomContextMenuRequested(Folder *folder)
         connect(ac, &QAction::triggered, this, [folder, this] { slotEnableCurrentFolder(folder, true); });
 
         if (!isDeployed) {
-            addRemoveFolderAction(menu);
+            if (!Theme::instance()->syncNewlyDiscoveredSpaces()) {
+                addRemoveFolderAction(menu);
+            }
 
             if (Theme::instance()->showVirtualFilesOption()) {
                 if (folder->virtualFilesEnabled()) {
