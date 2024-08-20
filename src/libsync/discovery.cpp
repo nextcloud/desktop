@@ -301,14 +301,28 @@ bool ProcessDirectoryJob::handleExcluded(const QString &path, const Entries &ent
     const auto forbiddenExtensions = accountCaps.forbiddenFilenameExtensions();
     const auto forbiddenChars = accountCaps.forbiddenFilenameCharacters();
 
+    const auto hasForbiddenFilename = forbiddenFilenames.contains(localName);
+    const auto hasForbiddenBasename = forbiddenBasenames.contains(baseName);
+    const auto hasForbiddenExtension = forbiddenExtensions.contains(extension);
+
+    auto forbiddenCharMatch = QString{};
+    const auto containsForbiddenCharacters =
+        std::any_of(forbiddenChars.cbegin(),
+                    forbiddenChars.cend(),
+                    [&localName, &forbiddenCharMatch](const QString &charPattern) {
+                        if (localName.contains(charPattern)) {
+                            forbiddenCharMatch = charPattern;
+                            return true;
+                        }
+                        return false;
+                    });
+
     if (excluded == CSYNC_NOT_EXCLUDED && !localName.isEmpty()
         && (_discoveryData->_serverBlacklistedFiles.contains(localName)
-            || forbiddenFilenames.contains(localName)
-            || forbiddenBasenames.contains(baseName)
-            || forbiddenExtensions.contains(extension)
-            || std::any_of(forbiddenChars.cbegin(), forbiddenChars.cend(), [&localName](const QString &charPattern) {
-                   return localName.contains(charPattern);
-               }))) {
+            || hasForbiddenFilename
+            || hasForbiddenBasename
+            || hasForbiddenExtension
+            || containsForbiddenCharacters)) {
         excluded = CSYNC_FILE_EXCLUDE_SERVER_BLACKLISTED;
         isInvalidPattern = true;
     }
