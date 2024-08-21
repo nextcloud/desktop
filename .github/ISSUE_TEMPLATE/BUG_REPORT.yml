@@ -74,7 +74,7 @@ body:
         - "Windows"
         - "macOS"
         - "Linux"
-        - "Other" (e.g. FreeBSD)
+        - "Other (e.g. FreeBSD)"
     validations:
       required: true
   - type: input
