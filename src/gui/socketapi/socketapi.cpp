@@ -1242,7 +1242,8 @@ void SocketApi::sendEncryptFolderCommandMenuEntries(const QFileInfo &fileInfo,
             !fileData.folder->accountState()->account() ||
             !fileData.folder->accountState()->account()->capabilities().clientSideEncryptionAvailable() ||
             !fileInfo.isDir() ||
-            isE2eEncryptedPath) {
+            isE2eEncryptedPath ||
+            !fileData.isFolderEmpty(fileInfo)) {
         return;
     }
 
@@ -1326,6 +1327,15 @@ QString SocketApi::FileData::folderRelativePathNoVfsSuffix() const
         result.chop(virtualFileExt.size());
     }
     return result;
+}
+
+bool SocketApi::FileData::isFolderEmpty(const QFileInfo &fileInfo) const
+{
+    if (fileInfo.isDir()) {
+        const auto nativeFolder = QDir{localPath};
+        return nativeFolder.isEmpty();
+    }
+    return false;
 }
 
 SyncFileStatus SocketApi::FileData::syncFileStatus() const
