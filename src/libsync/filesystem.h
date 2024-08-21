@@ -41,6 +41,19 @@ class SyncJournal;
  * @brief This file contains file system helper
  */
 namespace FileSystem {
+    class OWNCLOUDSYNC_EXPORT FilePermissionsRestore {
+    public:
+        explicit FilePermissionsRestore(const QString &path,
+                                        FileSystem::FolderPermissions temporaryPermissions);
+
+        ~FilePermissionsRestore();
+
+    private:
+        QString _path;
+        FileSystem::FolderPermissions _initialPermissions;
+        bool _rollbackNeeded = false;
+    };
+
     struct OWNCLOUDSYNC_EXPORT FileLockingInfo {
         enum class Type { Unset = -1, Locked, Unlocked };
         QString path;
