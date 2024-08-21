@@ -1241,7 +1241,7 @@ void SocketApi::sendEncryptFolderCommandMenuEntries(const QFileInfo &fileInfo,
         ancestor = ancestor.parentFolder();
     }
 
-    if (!anyAncestorEncrypted) {
+    if (!anyAncestorEncrypted && !fileData.parentFolder().journalRecord().isValid()) {
         const auto isOnTheServer = fileData.journalRecord().isValid();
         const auto flagString = isOnTheServer ? QLatin1String("::") : QLatin1String(":d:");
         listener->sendMessage(QStringLiteral("MENU_ITEM:ENCRYPT") + flagString + tr("Encrypt"));
