@@ -1481,7 +1481,7 @@ void Folder::warnOnNewExcludedItem(const SyncJournalFileRecord &record, const QS
     // Note: This assumes we're getting file watcher notifications
     // for folders only on creation and deletion - if we got a notification
     // on content change that would create spurious warnings.
-    const auto fullPath = _canonicalLocalPath + path;
+    const auto fullPath = QString{_canonicalLocalPath + path};
     QFileInfo fi(fullPath);
     if (!FileSystem::fileExists(fullPath))
         return;
