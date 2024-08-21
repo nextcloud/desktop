@@ -848,7 +848,15 @@ void User::processCompletedSyncItem(const Folder *folder, const SyncFileItemPtr 
             _activityModel->addIgnoredFileToList(activity);
         } else {
             // add 'protocol error' to activity list
-            if (item->_status == SyncFileItem::Status::FileNameInvalid) {
+            if (item->_status == SyncFileItem::Status::FileNameInvalid || item->_status == SyncFileItem::Status::FileNameInvalidOnServer) {
+                ActivityLink buttonActivityLink;
+                buttonActivityLink._label = tr("Rename file");
+                buttonActivityLink._link = activity._link.toString();
+                buttonActivityLink._verb = "RENAME_LOCAL_FILE";
+                buttonActivityLink._primary = true;
+
+                activity._links = {buttonActivityLink};
+
                 showDesktopNotification(item->_file, activity._subject, activity._id);
             } else if (item->_status == SyncFileItem::Conflict || item->_status == SyncFileItem::FileNameClash) {
                 ActivityLink buttonActivityLink;

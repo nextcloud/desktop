@@ -292,8 +292,37 @@ bool ProcessDirectoryJob::handleExcluded(const QString &path, const Entries &ent
     }
 
     const auto &localName = entries.localEntry.name;
+    const auto splitName = localName.split('.');
+    const auto &baseName = splitName.first();
+    const auto extension = splitName.size() > 1 ? splitName.last() : QString();
+    const auto accountCaps = _discoveryData->_account->capabilities();
+    const auto forbiddenFilenames = accountCaps.forbiddenFilenames();
+    const auto forbiddenBasenames = accountCaps.forbiddenFilenameBasenames();
+    const auto forbiddenExtensions = accountCaps.forbiddenFilenameExtensions();
+    const auto forbiddenChars = accountCaps.forbiddenFilenameCharacters();
+
+    const auto hasForbiddenFilename = forbiddenFilenames.contains(localName);
+    const auto hasForbiddenBasename = forbiddenBasenames.contains(baseName);
+    const auto hasForbiddenExtension = forbiddenExtensions.contains(extension);
+
+    auto forbiddenCharMatch = QString{};
+    const auto containsForbiddenCharacters =
+        std::any_of(forbiddenChars.cbegin(),
+                    forbiddenChars.cend(),
+                    [&localName, &forbiddenCharMatch](const QString &charPattern) {
+                        if (localName.contains(charPattern)) {
+                            forbiddenCharMatch = charPattern;
+                            return true;
+                        }
+                        return false;
+                    });
+
     if (excluded == CSYNC_NOT_EXCLUDED && !localName.isEmpty()
-            && _discoveryData->_serverBlacklistedFiles.contains(localName)) {
+        && (_discoveryData->_serverBlacklistedFiles.contains(localName)
+            || hasForbiddenFilename
+            || hasForbiddenBasename
+            || hasForbiddenExtension
+            || containsForbiddenCharacters)) {
         excluded = CSYNC_FILE_EXCLUDE_SERVER_BLACKLISTED;
         isInvalidPattern = true;
     }
@@ -401,6 +430,19 @@ bool ProcessDirectoryJob::handleExcluded(const QString &path, const Entries &ent
             break;
         case CSYNC_FILE_EXCLUDE_SERVER_BLACKLISTED:
             item->_errorString = tr("The filename is blacklisted on the server.");
+            if (hasForbiddenFilename) {
+                item->_errorString += tr(" Reason: the entire filename is forbidden.");
+            }
+            if (hasForbiddenBasename) {
+                item->_errorString += tr(" Reason: the filename has a forbidden base name (filename start).");
+            }
+            if (hasForbiddenExtension) {
+                item->_errorString += tr(" Reason: the file has a forbidden extension (.%1).").arg(extension);
+            }
+            if (containsForbiddenCharacters) {
+                item->_errorString += tr(" Reason: the filename contains a forbidden character (%1).").arg(forbiddenCharMatch);
+            }
+            item->_status = SyncFileItem::FileNameInvalidOnServer;
             break;
         }
     }

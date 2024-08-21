@@ -39,8 +39,17 @@ public:
         Default = 0,
         NewLocalFile,
     };
+    enum class InvalidMode {
+        SystemInvalid,
+        ServerInvalid
+    };
 
-    explicit InvalidFilenameDialog(AccountPtr account, Folder *folder, QString filePath, FileLocation fileLocation = FileLocation::Default, QWidget *parent = nullptr);
+    explicit InvalidFilenameDialog(AccountPtr account,
+                                   Folder *folder,
+                                   QString filePath,
+                                   FileLocation fileLocation = FileLocation::Default,
+                                   InvalidMode invalidMode = InvalidMode::SystemInvalid,
+                                   QWidget *parent = nullptr);
 
     ~InvalidFilenameDialog() override;
 
