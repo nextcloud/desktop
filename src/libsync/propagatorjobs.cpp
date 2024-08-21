@@ -63,6 +63,9 @@ bool PropagateLocalRemove::removeRecursively(const QString &path)
     QStringList errors;
     QList<QPair<QString, bool>> deleted;
 #if !defined(Q_OS_MACOS) || __MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_15
+    const auto fileInfo = QFileInfo{absolute};
+    const auto parentFolderPath = fileInfo.dir().absolutePath();
+    const auto parentPermissionsHandler = FileSystem::FilePermissionsRestore{parentFolderPath, FileSystem::FolderPermissions::ReadWrite};
     FileSystem::setFolderPermissions(absolute, FileSystem::FolderPermissions::ReadWrite);
 #endif
     bool success = FileSystem::removeRecursively(
@@ -126,10 +129,18 @@ void PropagateLocalRemove::start()
                 return;
             }
         } else {
-            if (FileSystem::fileExists(filename)
-                && !FileSystem::remove(filename, &removeError)) {
-                done(SyncFileItem::NormalError, removeError, ErrorCategory::GenericError);
-                return;
+            if (FileSystem::fileExists(filename)) {
+#if !defined(Q_OS_MACOS) || __MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_15
+                const auto fileInfo = QFileInfo{filename};
+                const auto parentFolderPath = fileInfo.dir().absolutePath();
+
+                const auto parentPermissionsHandler = FileSystem::FilePermissionsRestore{parentFolderPath, FileSystem::FolderPermissions::ReadWrite};
+#endif
+
+                if (!FileSystem::remove(filename, &removeError)) {
+                    done(SyncFileItem::NormalError, removeError, ErrorCategory::GenericError);
+                    return;
+                }
             }
         }
     }
@@ -368,6 +379,8 @@ void PropagateLocalRename::start()
             }
         };
 #endif
+
+        const auto folderPermissionsHandler = FileSystem::FilePermissionsRestore{existingFile, FileSystem::FolderPermissions::ReadWrite};
 
         emit propagator()->touchedFile(existingFile);
         emit propagator()->touchedFile(targetFile);
