@@ -66,6 +66,7 @@ ownCloud admins and users.
 * Change - Set the 'No' button as default action in the Unknown Certificate dialog: [#11531](https://github.com/owncloud/client/issues/11531)
 * Change - Remove `Remove all files` dialog: [#11569](https://github.com/owncloud/client/issues/11569)
 * Change - Rewrite of the spaces browser: [#11595](https://github.com/owncloud/client/pull/11595)
+* Change - New update channel for ownCloud infinite scale: [#11742](https://github.com/owncloud/client/issues/11742)
 * Change - Remove support for branded shell extensions on Linux: [#11743](https://github.com/owncloud/client/issues/11743)
 * Change - Only allow to add unsyced spaces: [#11752](https://github.com/owncloud/client/issues/11752)
 * Enhancement - Add option to pause synchronization on metered connections: [#4808](https://github.com/owncloud/client/issues/4808)
@@ -257,6 +258,15 @@ ownCloud admins and users.
 * Change - Rewrite of the spaces browser: [#11595](https://github.com/owncloud/client/pull/11595)
 
    https://github.com/owncloud/client/pull/11595
+
+* Change - New update channel for ownCloud infinite scale: [#11742](https://github.com/owncloud/client/issues/11742)
+
+   The release series 6 is a long term release. As version 7 will drop the support
+   for ownCloud 10, users will either have to select the ownCloud infinite scale
+   update channel in the about dialog or manually install a newer release. This
+   change only affects the unbranded version.
+
+   https://github.com/owncloud/client/issues/11742
 
 * Change - Remove support for branded shell extensions on Linux: [#11743](https://github.com/owncloud/client/issues/11743)
 
