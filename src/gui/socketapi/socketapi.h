@@ -98,6 +98,8 @@ private:
         // Relative path of the file locally, without any vfs suffix
         [[nodiscard]] QString folderRelativePathNoVfsSuffix() const;
 
+        [[nodiscard]] bool isFolderEmpty() const;
+
         Folder *folder = nullptr;
         // Absolute path of the file locally. (May be a virtual file)
         QString localPath;
