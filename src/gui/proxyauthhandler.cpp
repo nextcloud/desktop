@@ -58,7 +58,7 @@ void ProxyAuthHandler::handleProxyAuthenticationRequired(
     }
 
     const auto account = qobject_cast<Account *>(sender());
-    const auto key = proxy.hostName() + QLatin1Char(':') + QString::number(proxy.port());
+    const auto key = QString{proxy.hostName() + QLatin1Char(':') + QString::number(proxy.port())};
 
     // If the proxy server has changed, forget what we know.
     if (key != _proxy) {
