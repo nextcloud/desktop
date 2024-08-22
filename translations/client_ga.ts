@@ -3210,6 +3210,31 @@ Scriosfar míreanna a gceadaítear iad a scriosadh má chuireann siad cosc ​�
         <translation>Ní cheadaítear na carachtair seo a leanas ar an gcóras: * &quot; | &amp; ? , ; : \ / ~ &lt; &gt; spásanna tosaigh/leantóir</translation>
     </message>
     <message>
+        <location filename="../src/gui/invalidfilenamedialog.cpp" line="103"/>
+        <source>The file &quot;%1&quot; could not be synced because the name contains characters which are not allowed on the server.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/invalidfilenamedialog.cpp" line="114"/>
+        <source>The following characters are not allowed: %1</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/invalidfilenamedialog.cpp" line="117"/>
+        <source>The following basenames are not allowed: %1</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/invalidfilenamedialog.cpp" line="120"/>
+        <source>The following filenames are not allowed: %1</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/invalidfilenamedialog.cpp" line="123"/>
+        <source>The following file extensions are not allowed: %1</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="100"/>
         <source>Checking rename permissions …</source>
         <translation>Ceadanna athainmnithe á seiceáil…</translation>
@@ -4015,30 +4040,30 @@ Is modh turgnamhach nua é seo. Má shocraíonn tú é a úsáid, cuir in iúl l
         <translation>Is ainm forchoimeádta é an t-ainm comhaid ar an gcóras comhad seo.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="358"/>
+        <location filename="../src/libsync/discovery.cpp" line="387"/>
         <source>Folder</source>
         <comment>name of folder entity to use when warning about invalid name</comment>
         <translation>Fillteán</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="358"/>
+        <location filename="../src/libsync/discovery.cpp" line="387"/>
         <source>File</source>
         <comment>name of folder entity to use when warning about invalid name</comment>
         <translation>Comhad</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="360"/>
+        <location filename="../src/libsync/discovery.cpp" line="389"/>
         <source>%1 name containing the character &quot;%2&quot; is not supported on this file system.</source>
         <comment>folder or file impossible to sync due to an invalid name, placeholders will be file or folder and the invalid character</comment>
         <translation>Ní thacaítear le % 1 ainm ina bhfuil an carachtar &quot;% 2&quot; ar an gcóras comhad seo.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="362"/>
+        <location filename="../src/libsync/discovery.cpp" line="391"/>
         <source>%1 name contains at least one invalid character</source>
         <translation>Tá carachtar neamhbhailí amháin ar a laghad in ainm % 1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="364"/>
+        <location filename="../src/libsync/discovery.cpp" line="393"/>
         <source>%1 name is a reserved name on this file system.</source>
         <translation>Is ainm forchoimeádta é % 1 ar an gcóras comhad seo.</translation>
     </message>
@@ -4093,6 +4118,26 @@ Is modh turgnamhach nua é seo. Má shocraíonn tú é a úsáid, cuir in iúl l
         <translation>Tá ainm an chomhaid ar an liosta dubh ar an bhfreastalaí.</translation>
     </message>
     <message>
+        <location filename="../src/libsync/discovery.cpp" line="434"/>
+        <source> Reason: the entire filename is forbidden.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/discovery.cpp" line="437"/>
+        <source> Reason: the filename has a forbidden base name (filename start).</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/discovery.cpp" line="440"/>
+        <source> Reason: the file has a forbidden extension (.%1).</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/discovery.cpp" line="443"/>
+        <source> Reason: the filename contains a forbidden character (%1).</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/libsync/discovery.cpp" line="516"/>
         <source>File has extension reserved for virtual files.</source>
         <translation>Tá síneadh curtha in áirithe ag an gcomhad do chomhaid fhíorúla.</translation>
@@ -4123,7 +4168,7 @@ Is modh turgnamhach nua é seo. Má shocraíonn tú é a úsáid, cuir in iúl l
         <translation>Ní féidir sioncronú a dhéanamh mar gheall ar am modhnuithe neamhbhailí</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1047"/>
+        <location filename="../src/libsync/discovery.cpp" line="1089"/>
         <source>Could not upload file, because it is open in &quot;%1&quot;.</source>
         <translation>Níorbh fhéidir an comhad a uaslódáil toisc go bhfuil sé oscailte i &quot;% 1&quot;.</translation>
     </message>
@@ -4319,7 +4364,7 @@ Is modh turgnamhach nua é seo. Má shocraíonn tú é a úsáid, cuir in iúl l
         <translation>Níorbh fhéidir fillteán % 1 a chruthú</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="228"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="239"/>
         <source>The folder %1 cannot be made read-only: %2</source>
         <translation>Ní féidir fillteán % 1 a dhéanamh inléite amháin: % 2</translation>
     </message>
@@ -4350,7 +4395,7 @@ Is modh turgnamhach nua é seo. Má shocraíonn tú é a úsáid, cuir in iúl l
 <context>
     <name>OCC::PropagateLocalRename</name>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="311"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="322"/>
         <source>Folder %1 cannot be renamed because of a local file or folder name clash!</source>
         <translation>Ní féidir fillteán % 1 a athainmniú mar gheall ar choimhlint ainm comhaid logánta nó fillteáin!</translation>
     </message>
@@ -5511,12 +5556,17 @@ D&apos;fhreagair an freastalaí le hearráid: % 2</translation>
         <translation>Réitigh coinbhleacht</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1053"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="853"/>
+        <source>Rename file</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1061"/>
         <source>Open Nextcloud Assistant in browser</source>
         <translation>Oscail Nextcloud Assistant sa bhrabhsálaí</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1053"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1061"/>
         <source>Open Nextcloud Talk in browser</source>
         <translation>Oscail Nextcloud Talk sa bhrabhsálaí</translation>
     </message>

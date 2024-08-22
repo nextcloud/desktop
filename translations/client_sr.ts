@@ -3210,6 +3210,31 @@ Items where deletion is allowed will be deleted if they prevent a directory from
         <translation>На систему нису довољени следећи карактери: * &quot; | &amp; ? , ; : \ / ~ &lt; &gt; размаци на почетку/крају имена</translation>
     </message>
     <message>
+        <location filename="../src/gui/invalidfilenamedialog.cpp" line="103"/>
+        <source>The file &quot;%1&quot; could not be synced because the name contains characters which are not allowed on the server.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/invalidfilenamedialog.cpp" line="114"/>
+        <source>The following characters are not allowed: %1</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/invalidfilenamedialog.cpp" line="117"/>
+        <source>The following basenames are not allowed: %1</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/invalidfilenamedialog.cpp" line="120"/>
+        <source>The following filenames are not allowed: %1</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/invalidfilenamedialog.cpp" line="123"/>
+        <source>The following file extensions are not allowed: %1</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="100"/>
         <source>Checking rename permissions …</source>
         <translation>Провера дозвола за промену имена...</translation>
@@ -4015,30 +4040,30 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Име фајла је резервисано име на овом фајл систему.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="358"/>
+        <location filename="../src/libsync/discovery.cpp" line="387"/>
         <source>Folder</source>
         <comment>name of folder entity to use when warning about invalid name</comment>
         <translation>Фолдер</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="358"/>
+        <location filename="../src/libsync/discovery.cpp" line="387"/>
         <source>File</source>
         <comment>name of folder entity to use when warning about invalid name</comment>
         <translation>Фајл</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="360"/>
+        <location filename="../src/libsync/discovery.cpp" line="389"/>
         <source>%1 name containing the character &quot;%2&quot; is not supported on this file system.</source>
         <comment>folder or file impossible to sync due to an invalid name, placeholders will be file or folder and the invalid character</comment>
         <translation>Име „%1” које садржи карактер „%2” се не подржава на овом фајл систему.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="362"/>
+        <location filename="../src/libsync/discovery.cpp" line="391"/>
         <source>%1 name contains at least one invalid character</source>
         <translation>Име %1 садржи бар један недозвољени карактер</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="364"/>
+        <location filename="../src/libsync/discovery.cpp" line="393"/>
         <source>%1 name is a reserved name on this file system.</source>
         <translation>Име %1 је резервисано име на овом фајл систему.</translation>
     </message>
@@ -4093,6 +4118,26 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Име фајла је на црној листи сервера.</translation>
     </message>
     <message>
+        <location filename="../src/libsync/discovery.cpp" line="434"/>
+        <source> Reason: the entire filename is forbidden.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/discovery.cpp" line="437"/>
+        <source> Reason: the filename has a forbidden base name (filename start).</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/discovery.cpp" line="440"/>
+        <source> Reason: the file has a forbidden extension (.%1).</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/discovery.cpp" line="443"/>
+        <source> Reason: the filename contains a forbidden character (%1).</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/libsync/discovery.cpp" line="516"/>
         <source>File has extension reserved for virtual files.</source>
         <translation>Фајл има екстензију која је резервисана за виртуелне фајлове.</translation>
@@ -4123,7 +4168,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Не може да се синхронизује због неисправног времена измене</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1047"/>
+        <location filename="../src/libsync/discovery.cpp" line="1089"/>
         <source>Could not upload file, because it is open in &quot;%1&quot;.</source>
         <translation>Фајл не може да се отпреми јер је отворен у „%1”.</translation>
     </message>
@@ -4319,7 +4364,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Не може да се креира фолдер %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="228"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="239"/>
         <source>The folder %1 cannot be made read-only: %2</source>
         <translation>Фолдер %1 не може да се буде само-за-читање: %2</translation>
     </message>
@@ -4350,7 +4395,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::PropagateLocalRename</name>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="311"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="322"/>
         <source>Folder %1 cannot be renamed because of a local file or folder name clash!</source>
         <translation>Фолдеру %1 не може да се промени име због судара са називом локалног фајла или фолдера!</translation>
     </message>
@@ -5511,12 +5556,17 @@ Server replied with error: %2</source>
         <translation>Разреши конфликт</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1053"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="853"/>
+        <source>Rename file</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1061"/>
         <source>Open Nextcloud Assistant in browser</source>
         <translation>Отвори Nextcloud Асистент у прегледачу</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1053"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1061"/>
         <source>Open Nextcloud Talk in browser</source>
         <translation>Отвори Nextcloud Talk у прегледачу</translation>
     </message>

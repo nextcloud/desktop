@@ -3205,6 +3205,31 @@ Ezabatu daitezkeen elementuak ezabatu egingo dira karpeta bat ezabatzea ekiditen
         <translation>Hurrengo karaktereak ez daude sisteman onartuta: * &quot; | &amp; ? , ; : \ / ~ &lt; &gt; hasierako/amaierako zuriuneak</translation>
     </message>
     <message>
+        <location filename="../src/gui/invalidfilenamedialog.cpp" line="103"/>
+        <source>The file &quot;%1&quot; could not be synced because the name contains characters which are not allowed on the server.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/invalidfilenamedialog.cpp" line="114"/>
+        <source>The following characters are not allowed: %1</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/invalidfilenamedialog.cpp" line="117"/>
+        <source>The following basenames are not allowed: %1</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/invalidfilenamedialog.cpp" line="120"/>
+        <source>The following filenames are not allowed: %1</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/invalidfilenamedialog.cpp" line="123"/>
+        <source>The following file extensions are not allowed: %1</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="100"/>
         <source>Checking rename permissions …</source>
         <translation>Berrizendatze baimenak egiaztatzen ...</translation>
@@ -4010,30 +4035,30 @@ Modu hau berria eta experimentala da. Erabiltzea erabakitzen baduzu, agertzen di
         <translation>Fitxategi-izena izen erreserbatua da fitxategi-sistema honetan.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="358"/>
+        <location filename="../src/libsync/discovery.cpp" line="387"/>
         <source>Folder</source>
         <comment>name of folder entity to use when warning about invalid name</comment>
         <translation>Karpeta</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="358"/>
+        <location filename="../src/libsync/discovery.cpp" line="387"/>
         <source>File</source>
         <comment>name of folder entity to use when warning about invalid name</comment>
         <translation>Fitxategia</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="360"/>
+        <location filename="../src/libsync/discovery.cpp" line="389"/>
         <source>%1 name containing the character &quot;%2&quot; is not supported on this file system.</source>
         <comment>folder or file impossible to sync due to an invalid name, placeholders will be file or folder and the invalid character</comment>
         <translation>&quot;%2&quot; karakterea duen %1 izena ez da onartzen fitxategi-sistema honetan.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="362"/>
+        <location filename="../src/libsync/discovery.cpp" line="391"/>
         <source>%1 name contains at least one invalid character</source>
         <translation>%1 izenak karaktere baliogabe bat du gutxienez</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="364"/>
+        <location filename="../src/libsync/discovery.cpp" line="393"/>
         <source>%1 name is a reserved name on this file system.</source>
         <translation>%1 izena erreserbatua da fitxategi-sistema honetan.</translation>
     </message>
@@ -4088,6 +4113,26 @@ Modu hau berria eta experimentala da. Erabiltzea erabakitzen baduzu, agertzen di
         <translation>Fitxategiaren izena zerrenda beltzean dago zerbitzarian.</translation>
     </message>
     <message>
+        <location filename="../src/libsync/discovery.cpp" line="434"/>
+        <source> Reason: the entire filename is forbidden.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/discovery.cpp" line="437"/>
+        <source> Reason: the filename has a forbidden base name (filename start).</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/discovery.cpp" line="440"/>
+        <source> Reason: the file has a forbidden extension (.%1).</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/discovery.cpp" line="443"/>
+        <source> Reason: the filename contains a forbidden character (%1).</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/libsync/discovery.cpp" line="516"/>
         <source>File has extension reserved for virtual files.</source>
         <translation>Fitxategiak fitxategi birtualentzako gordetako luzapena du.</translation>
@@ -4118,7 +4163,7 @@ Modu hau berria eta experimentala da. Erabiltzea erabakitzen baduzu, agertzen di
         <translation>Ezin da sinkronizatu aldaketa-ordu baliogabea delako</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1047"/>
+        <location filename="../src/libsync/discovery.cpp" line="1089"/>
         <source>Could not upload file, because it is open in &quot;%1&quot;.</source>
         <translation>Ezin izan da fitxategia kargatu, &quot;%1&quot;(e)n irekita dagoelako.</translation>
     </message>
@@ -4314,7 +4359,7 @@ Modu hau berria eta experimentala da. Erabiltzea erabakitzen baduzu, agertzen di
         <translation>Ezin da %1 karpeta sortu</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="228"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="239"/>
         <source>The folder %1 cannot be made read-only: %2</source>
         <translation>%1 karpeta ezin da irakurtzeko soilik bihurtu: %2</translation>
     </message>
@@ -4345,7 +4390,7 @@ Modu hau berria eta experimentala da. Erabiltzea erabakitzen baduzu, agertzen di
 <context>
     <name>OCC::PropagateLocalRename</name>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="311"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="322"/>
         <source>Folder %1 cannot be renamed because of a local file or folder name clash!</source>
         <translation>Ezin da % 1 karpeta berrizendatu fitxategi lokalaren edo karpetaren izen-talka dela eta!</translation>
     </message>
@@ -5506,12 +5551,17 @@ Zerbitzariak errorearekin erantzun du: %2</translation>
         <translation>Ebatzi gatazka</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1053"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="853"/>
+        <source>Rename file</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1061"/>
         <source>Open Nextcloud Assistant in browser</source>
         <translation>Ireki Nextcloud Laguntzailea nabigatzailean</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1053"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1061"/>
         <source>Open Nextcloud Talk in browser</source>
         <translation>Ireki Nextcloud Talk nabigatzailean</translation>
     </message>
