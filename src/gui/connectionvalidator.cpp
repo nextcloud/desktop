@@ -55,7 +55,7 @@ ConnectionValidator::ConnectionValidator(AccountPtr account, QObject *parent)
     auto timer = new QTimer(this);
     timer->setInterval(30s);
     connect(timer, &QTimer::timeout, this,
-        [this] { qCInfo(lcConnectionValidator) << "ConnectionValidator" << _account->displayName() << "still running after" << _duration.duration(); });
+        [this] { qCInfo(lcConnectionValidator) << "ConnectionValidator" << _account->displayNameWithHost() << "still running after" << _duration.duration(); });
     timer->start();
 }
 

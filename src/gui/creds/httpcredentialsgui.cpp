@@ -118,7 +118,7 @@ void HttpCredentialsGui::showDialog()
     // make sure it's cleaned up since it's not owned by the account settings (also prevents memory leaks)
     dialog->setAttribute(Qt::WA_DeleteOnClose);
 
-    dialog->setTopLabelText(tr("Please enter your password to log in to the account %1.").arg(_account->displayName()));
+    dialog->setTopLabelText(tr("Please enter your password to log in to the account %1.").arg(_account->displayNameWithHost()));
 
     auto *contentWidget = qobject_cast<BasicLoginWidget *>(dialog->contentWidget());
     contentWidget->forceUsername(user());
@@ -168,7 +168,7 @@ void HttpCredentialsGui::restartOAuth()
         _loginRequiredDialog->setAttribute(Qt::WA_DeleteOnClose);
 
         _loginRequiredDialog->setTopLabelText(
-            tr("The account %1 is currently logged out.\n\nPlease authenticate using your browser.").arg(_account->displayName()));
+            tr("The account %1 is currently logged out.\n\nPlease authenticate using your browser.").arg(_account->displayNameWithHost()));
 
         auto *contentWidget = qobject_cast<OAuthLoginWidget *>(_loginRequiredDialog->contentWidget());
         connect(contentWidget, &OAuthLoginWidget::openBrowserButtonClicked, this, &HttpCredentialsGui::openBrowser);

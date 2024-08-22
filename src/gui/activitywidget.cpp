@@ -83,7 +83,7 @@ ActivityWidget::ActivityWidget(QWidget *parent)
         this, &ActivityWidget::slotAccountActivityStatus);
 
     connect(AccountManager::instance(), &AccountManager::accountRemoved, this, [this](AccountStatePtr ast) {
-        if (_accountsWithoutActivities.remove(ast->account()->displayName())) {
+        if (_accountsWithoutActivities.remove(ast->account()->displayNameWithHost())) {
             showLabels();
         }
 
@@ -162,9 +162,9 @@ void ActivityWidget::slotAccountActivityStatus(AccountStatePtr ast, int statusCo
         return;
     }
     if (statusCode == 999) {
-        _accountsWithoutActivities.insert(ast->account()->displayName());
+        _accountsWithoutActivities.insert(ast->account()->displayNameWithHost());
     } else {
-        _accountsWithoutActivities.remove(ast->account()->displayName());
+        _accountsWithoutActivities.remove(ast->account()->displayNameWithHost());
     }
 
     checkActivityTabVisibility();

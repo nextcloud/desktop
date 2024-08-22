@@ -140,7 +140,7 @@ void Account::setAvatar(const QIcon &img)
     Q_EMIT avatarChanged();
 }
 
-QString Account::displayName() const
+QString Account::displayNameWithHost() const
 {
     QString user = davDisplayName();
     if (user.isEmpty())
@@ -390,6 +390,6 @@ QDebug operator<<(QDebug debug, const OCC::Account *acc)
 {
     QDebugStateSaver saver(debug);
     debug.setAutoInsertSpaces(false);
-    debug << "OCC::Account(" << acc->displayName() << ")";
+    debug << "OCC::Account(" << acc->displayNameWithHost() << ")";
     return debug.maybeSpace();
 }

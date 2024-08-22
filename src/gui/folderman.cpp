@@ -370,7 +370,7 @@ void FolderMan::slotIsConnectedChanged()
     if (!accountState) {
         return;
     }
-    QString accountName = accountState->account()->displayName();
+    QString accountName = accountState->account()->displayNameWithHost();
 
     if (accountState->isConnected()) {
         qCInfo(lcFolderMan) << "Account" << accountName << "connected, scheduling its folders";
@@ -461,13 +461,8 @@ void FolderMan::slotFolderSyncStarted()
     if (!f)
         return;
 
-    qCInfo(lcFolderMan) << ">========== Sync started for folder ["
-                        << f->shortGuiLocalPath()
-                        << "] of account ["
-                        << f->accountState()->account()->displayName()
-                        << "] with remote ["
-                        << f->remoteUrl().toDisplayString()
-                        << "]";
+    qCInfo(lcFolderMan) << ">========== Sync started for folder [" << f->shortGuiLocalPath() << "] of account ["
+                        << f->accountState()->account()->displayNameWithHost() << "] with remote [" << f->remoteUrl().toDisplayString() << "]";
 }
 
 /*
@@ -483,8 +478,8 @@ void FolderMan::slotFolderSyncFinished(const SyncResult &)
     if (!f)
         return;
 
-    qCInfo(lcFolderMan) << "<========== Sync finished for folder [" << f->shortGuiLocalPath() << "] of account [" << f->accountState()->account()->displayName()
-                        << "] with remote [" << f->remoteUrl().toDisplayString() << "]";
+    qCInfo(lcFolderMan) << "<========== Sync finished for folder [" << f->shortGuiLocalPath() << "] of account ["
+                        << f->accountState()->account()->displayNameWithHost() << "] with remote [" << f->remoteUrl().toDisplayString() << "]";
 }
 
 Folder *FolderMan::addFolder(const AccountStatePtr &accountState, const FolderDefinition &folderDefinition)

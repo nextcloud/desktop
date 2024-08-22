@@ -232,7 +232,7 @@ void ActivityListModel::startFetchJob(AccountStatePtr ast)
         });
 
     _currentlyFetching.insert(ast, job);
-    qCInfo(lcActivity) << "Start fetching activities for " << ast->account()->displayName();
+    qCInfo(lcActivity) << "Start fetching activities for " << ast->account()->displayNameWithHost();
     job->start();
 }
 

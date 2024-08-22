@@ -227,12 +227,11 @@ void ownCloudGui::slotAccountStateChanged()
 void ownCloudGui::slotTrayMessageIfServerUnsupported(Account *account)
 {
     if (account->serverSupportLevel() != Account::ServerSupportLevel::Supported) {
-        slotShowTrayMessage(
-            tr("Unsupported Server Version"),
+        slotShowTrayMessage(tr("Unsupported Server Version"),
             tr("The server on account %1 runs an unsupported version %2. "
                "Using this client with unsupported server versions is untested and "
                "potentially dangerous. Proceed at your own risk.")
-                .arg(account->displayName(), account->capabilities().status().versionString()));
+                .arg(account->displayNameWithHost(), account->capabilities().status().versionString()));
     }
 }
 
@@ -280,14 +279,14 @@ void ownCloudGui::slotComputeOverallSyncStatus()
         // Windows has a 128-char tray tooltip length limit.
         QStringList accountNames;
         for (const auto &a : qAsConst(problemAccounts)) {
-            accountNames.append(a->account()->displayName());
+            accountNames.append(a->account()->displayNameWithHost());
         }
         _tray->setToolTip(tr("Disconnected from %1").arg(accountNames.join(QLatin1String(", "))));
 #else
         QStringList messages;
         messages.append(tr("Disconnected from accounts:"));
         for (const auto &a : qAsConst(problemAccounts)) {
-            QString message = tr("Account %1").arg(a->account()->displayName());
+            QString message = tr("Account %1").arg(a->account()->displayNameWithHost());
             if (!a->connectionErrors().empty()) {
                 message += QLatin1String("\n") + a->connectionErrors().join(QLatin1String("\n"));
             }
@@ -622,7 +621,7 @@ void ownCloudGui::updateContextMenu()
 
         // submenus for accounts
         for (const auto &account : accountList) {
-            QMenu *accountMenu = new QMenu(account->account()->displayName(), _contextMenu.data());
+            QMenu *accountMenu = new QMenu(account->account()->displayNameWithHost(), _contextMenu.data());
             _accountMenus.append(accountMenu);
             _contextMenu->addMenu(accountMenu);
 
@@ -959,7 +958,7 @@ void ownCloudGui::setPauseOnAllFoldersHelper(const QList<AccountStatePtr> &accou
         if (accounts.contains(f->accountState())) {
             f->setSyncPaused(pause);
             if (pause) {
-                f->slotTerminateSync(tr("User paused sync for account '%1'").arg(f->accountState()->account()->displayName()));
+                f->slotTerminateSync(tr("User paused sync for account '%1'").arg(f->accountState()->account()->displayNameWithHost()));
             }
         }
     }

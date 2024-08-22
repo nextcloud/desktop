@@ -42,7 +42,7 @@ void ServerNotificationHandler::slotFetchNotifications(AccountStatePtr ptr)
     // not yet valid, its assumed that notifications are available.
     if (ptr->account()->hasCapabilities()) {
         if (!ptr->account()->capabilities().notificationsAvailable()) {
-            qCInfo(lcServerNotification) << "Account" << ptr->account()->displayName() << "does not have notifications enabled.";
+            qCInfo(lcServerNotification) << "Account" << ptr->account()->displayNameWithHost() << "does not have notifications enabled.";
             deleteLater();
             return;
         }

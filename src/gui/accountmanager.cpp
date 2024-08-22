@@ -271,7 +271,7 @@ QStringList AccountManager::accountNames() const
     QStringList accounts;
     accounts.reserve(AccountManager::instance()->accounts().size());
     for (const auto &a : AccountManager::instance()->accounts()) {
-        accounts << a->account()->displayName();
+        accounts << a->account()->displayNameWithHost();
     }
     std::sort(accounts.begin(), accounts.end());
     return accounts;
@@ -329,7 +329,7 @@ AccountPtr AccountManager::loadAccountHelper(QSettings &settings)
 AccountStatePtr AccountManager::account(const QString &name)
 {
     for (const auto &acc : qAsConst(_accounts)) {
-        if (acc->account()->displayName() == name) {
+        if (acc->account()->displayNameWithHost() == name) {
             return acc;
         }
     }

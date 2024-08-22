@@ -31,7 +31,7 @@ JobQueue::JobQueue(Account *account)
 void JobQueue::block()
 {
     _blocked++;
-    qCDebug(lcJobQUeue) << "block:" << _blocked << _account->displayName();
+    qCDebug(lcJobQUeue) << "block:" << _blocked << _account->displayNameWithHost();
 }
 
 void JobQueue::unblock()
@@ -40,7 +40,7 @@ void JobQueue::unblock()
         return;
     }
     _blocked--;
-    qCDebug(lcJobQUeue) << "unblock:" << _blocked << _account->displayName();
+    qCDebug(lcJobQUeue) << "unblock:" << _blocked << _account->displayNameWithHost();
     if (_blocked == 0) {
         auto tmp = std::move(_jobs);
         for (auto job : tmp) {

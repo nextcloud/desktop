@@ -23,7 +23,7 @@ Activity::Activity(Activity::Type type, const QString &id, AccountPtr acc, const
     const QUrl &link, const QDateTime &dateTime, const QVector<ActivityLink> &&links)
     : _type(type)
     , _id(id)
-    , _accName(acc->displayName())
+    , _accName(acc->displayNameWithHost())
     , _uuid(acc->uuid())
     , _subject(subject)
     , _message(message)

@@ -43,11 +43,9 @@ UpdateUrlDialog::UpdateUrlDialog(const QString &title, const QString &content, c
 
 UpdateUrlDialog *UpdateUrlDialog::fromAccount(AccountPtr account, const QUrl &newUrl, QWidget *parent)
 {
-    return new UpdateUrlDialog(
-        tr("Url update requested for %1").arg(account->displayName()),
-        tr("The url for %1 changed from %2 to %3, do you want to accept the changed url?").arg(account->displayName(), account->url().toString(), newUrl.toString()),
-        account->url(),
-        newUrl,
-        parent);
+    return new UpdateUrlDialog(tr("Url update requested for %1").arg(account->displayNameWithHost()),
+        tr("The url for %1 changed from %2 to %3, do you want to accept the changed url?")
+            .arg(account->displayNameWithHost(), account->url().toString(), newUrl.toString()),
+        account->url(), newUrl, parent);
 }
 }

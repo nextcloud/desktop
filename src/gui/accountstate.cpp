@@ -342,7 +342,7 @@ void AccountState::checkConnectivity(bool blockJobs)
     if (isSignedOut() || _waitingForNewCredentials) {
         return;
     }
-    qCInfo(lcAccountState) << "checkConnectivity blocking:" << blockJobs << account()->displayName();
+    qCInfo(lcAccountState) << "checkConnectivity blocking:" << blockJobs << account()->displayNameWithHost();
     if (_state != Connected) {
         setState(Connecting);
     }
@@ -358,7 +358,7 @@ void AccountState::checkConnectivity(bool blockJobs)
         _connectionValidator.clear();
     }
     if (_connectionValidator) {
-        qCWarning(lcAccountState) << "ConnectionValidator already running, ignoring" << account()->displayName()
+        qCWarning(lcAccountState) << "ConnectionValidator already running, ignoring" << account()->displayNameWithHost()
                                   << "Queue is blocked:" << _queueGuard.queue()->isBlocked();
         return;
     }
@@ -378,7 +378,8 @@ void AccountState::checkConnectivity(bool blockJobs)
         const auto elapsed = _timeOfLastETagCheck.secsTo(QDateTime::currentDateTimeUtc());
         if (!blockJobs && isConnected() && _timeOfLastETagCheck.isValid()
             && elapsed <= polltime.count()) {
-            qCDebug(lcAccountState) << account()->displayName() << "The last ETag check succeeded within the last " << polltime.count() << "s (" << elapsed << "s). No connection check needed!";
+            qCDebug(lcAccountState) << account()->displayNameWithHost() << "The last ETag check succeeded within the last " << polltime.count() << "s ("
+                                    << elapsed << "s). No connection check needed!";
             return;
         }
     }

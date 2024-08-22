@@ -69,7 +69,7 @@ QVariant ProtocolItemModel::data(const QModelIndex &index, int role) const
         case ProtocolItemRole::File:
             return Utility::fileNameForGuiUse(item.path());
         case ProtocolItemRole::Account:
-            return item.folder()->accountState()->account()->displayName();
+            return item.folder()->accountState()->account()->displayNameWithHost();
         case ProtocolItemRole::Status:
             return Utility::enumToDisplayName(item.status());
         case ProtocolItemRole::ColumnCount:
@@ -106,7 +106,7 @@ QVariant ProtocolItemModel::data(const QModelIndex &index, int role) const
         case ProtocolItemRole::File:
             return item.path();
         case ProtocolItemRole::Account:
-            return item.folder()->accountState()->account()->displayName();
+            return item.folder()->accountState()->account()->displayNameWithHost();
         case ProtocolItemRole::Status:
             return item.status();
         case ProtocolItemRole::ColumnCount:

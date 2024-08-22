@@ -635,13 +635,11 @@ void AccountSettings::slotDeleteAccount()
 {
     // Deleting the account potentially deletes 'this', so
     // the QMessageBox should be destroyed before that happens.
-    auto messageBox = new QMessageBox(QMessageBox::Question,
-        tr("Confirm Account Removal"),
+    auto messageBox = new QMessageBox(QMessageBox::Question, tr("Confirm Account Removal"),
         tr("<p>Do you really want to remove the connection to the account <i>%1</i>?</p>"
            "<p><b>Note:</b> This will <b>not</b> delete any files.</p>")
-            .arg(_accountState->account()->displayName()),
-        QMessageBox::NoButton,
-        this);
+            .arg(_accountState->account()->displayNameWithHost()),
+        QMessageBox::NoButton, this);
     auto yesButton = messageBox->addButton(tr("Remove connection"), QMessageBox::YesRole);
     messageBox->addButton(tr("Cancel"), QMessageBox::NoRole);
     messageBox->setAttribute(Qt::WA_DeleteOnClose);

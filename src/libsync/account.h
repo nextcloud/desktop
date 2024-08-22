@@ -71,7 +71,7 @@ class OWNCLOUDSYNC_EXPORT Account : public QObject
     Q_OBJECT
     Q_PROPERTY(QUuid uid READ uuid CONSTANT)
     Q_PROPERTY(QString davUser MEMBER _davUser)
-    Q_PROPERTY(QString displayName READ displayName NOTIFY displayNameChanged)
+    Q_PROPERTY(QString displayNameWithHost READ displayNameWithHost NOTIFY displayNameChanged)
     Q_PROPERTY(QUrl url MEMBER _url)
     QML_ELEMENT
     QML_UNCREATABLE("Only created in the C++ code")
@@ -122,7 +122,7 @@ public:
     void setAvatar(const QIcon &img);
 
     /// The name of the account as shown in the toolbar
-    QString displayName() const;
+    QString displayNameWithHost() const;
 
     /// The internal id of the account.
     Q_DECL_DEPRECATED_X("Use uuid") QString id() const;

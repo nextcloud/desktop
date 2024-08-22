@@ -57,7 +57,7 @@ Pane {
                 checked: settingsDialog.currentAccount === accountState.account
                 icon.source: QMLResources.resourcePath2("avatar", accountState.account.uid, enabled)
                 icon.cache: false
-                text: accountState.account.displayName.replace("@", "\n")
+                text: accountState.account.displayNameWithHost.replace("@", "\n")
 
                 Connections {
                     target: accountState.account
