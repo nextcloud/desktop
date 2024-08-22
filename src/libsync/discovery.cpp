@@ -57,6 +57,7 @@ ProcessDirectoryJob::ProcessDirectoryJob(DiscoveryPhase *data, PinState basePinS
 ProcessDirectoryJob::ProcessDirectoryJob(const PathTuple &path, const SyncFileItemPtr &dirItem, QueryMode queryLocal, QueryMode queryServer, qint64 lastSyncTimestamp, ProcessDirectoryJob *parent)
     : QObject(parent)
     , _dirItem(dirItem)
+    , _dirParentItem(parent->_dirItem)
     , _lastSyncTimestamp(lastSyncTimestamp)
     , _queryServer(queryServer)
     , _queryLocal(queryLocal)
@@ -67,9 +68,10 @@ ProcessDirectoryJob::ProcessDirectoryJob(const PathTuple &path, const SyncFileIt
     computePinState(parent->_pinState);
 }
 
-ProcessDirectoryJob::ProcessDirectoryJob(DiscoveryPhase *data, PinState basePinState, const PathTuple &path, const SyncFileItemPtr &dirItem, QueryMode queryLocal, qint64 lastSyncTimestamp, QObject *parent)
+ProcessDirectoryJob::ProcessDirectoryJob(DiscoveryPhase *data, PinState basePinState, const PathTuple &path, const SyncFileItemPtr &dirItem, const SyncFileItemPtr &parentDirItem, QueryMode queryLocal, qint64 lastSyncTimestamp, QObject *parent)
         : QObject(parent)
         , _dirItem(dirItem)
+        , _dirParentItem(parentDirItem)
         , _lastSyncTimestamp(lastSyncTimestamp)
         , _queryLocal(queryLocal)
         , _discoveryData(data)
@@ -2017,6 +2019,18 @@ int ProcessDirectoryJob::processSubJobs(int nbJobs)
             if (_childModified && _dirItem->_instruction == CSYNC_INSTRUCTION_REMOVE) {
                 // re-create directory that has modified contents
                 _dirItem->_instruction = CSYNC_INSTRUCTION_NEW;
+
+                const auto perms = !_rootPermissions.isNull() ? _rootPermissions
+                    : _dirParentItem ? _dirParentItem->_remotePerm : _rootPermissions;
+
+                if (perms.isNull()) {
+                    // No permissions set
+                } else if (_dirItem->isDirectory() && !perms.hasPermission(RemotePermissions::CanAddSubDirectories)) {
+                    qCWarning(lcDisco) << "checkForPermission: ERROR" << _dirItem->_file;
+                    _dirItem->_instruction = CSYNC_INSTRUCTION_ERROR;
+                    _dirItem->_errorString = tr("Not allowed because you don't have permission to add subfolders to that folder");
+                }
+
                 _dirItem->_direction = _dirItem->_direction == SyncFileItem::Up ? SyncFileItem::Down : SyncFileItem::Up;
             }
             if (_childModified && _dirItem->_instruction == CSYNC_INSTRUCTION_TYPE_CHANGE && !_dirItem->isDirectory()) {

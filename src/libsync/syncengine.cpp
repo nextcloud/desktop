@@ -721,6 +721,7 @@ void SyncEngine::startSync()
             pinState,
             path,
             singleItemDiscoveryOptions().discoveryDirItem,
+            {},
             localQueryMode,
             _journal->keyValueStoreGetInt("last_sync", 0),
             _discoveryPhase.data()
