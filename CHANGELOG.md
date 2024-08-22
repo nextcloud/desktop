@@ -77,6 +77,7 @@ ownCloud admins and users.
 * Enhancement - Improve handling of a server blocking an unsupported client: [#11424](https://github.com/owncloud/client/issues/11424)
 * Enhancement - Ask user to restart application when update is available on Windows: [#11442](https://github.com/owncloud/client/pull/11442)
 * Enhancement - New Folder status: [#11491](https://github.com/owncloud/client/pull/11491)
+* Enhancement - Pause sync when behind a captive portal: [#11533](https://github.com/owncloud/client/issues/11533)
 * Enhancement - Don't poll the Avatar endpoint with ocis: [#11615](https://github.com/owncloud/client/pull/11615)
 * Enhancement - Support for prompt_values_supported in openid-configuration: [#11729](https://github.com/owncloud/client/pull/11729)
 * Enhancement - New branding option: automatically sync new spaces: [#11751](https://github.com/owncloud/client/issues/11751)
@@ -343,6 +344,15 @@ ownCloud admins and users.
 
    https://github.com/owncloud/client/issues/11527
    https://github.com/owncloud/client/pull/11491
+
+* Enhancement - Pause sync when behind a captive portal: [#11533](https://github.com/owncloud/client/issues/11533)
+
+   When the operating system detects a captive portal, stop all outgoing network
+   requests. These requests will fail with an SSL certificate mismatch error. When
+   the captive portal is "gone", synchronisation will be restarted.
+
+   https://github.com/owncloud/client/issues/11533
+   https://github.com/owncloud/client/pull/11567
 
 * Enhancement - Don't poll the Avatar endpoint with ocis: [#11615](https://github.com/owncloud/client/pull/11615)
 
