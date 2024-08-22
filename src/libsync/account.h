@@ -24,6 +24,7 @@
 #include "resources/resources.h"
 
 #include <QByteArray>
+#include <QGradient>
 #include <QNetworkAccessManager>
 #include <QNetworkCookie>
 #include <QNetworkDiskCache>
@@ -71,8 +72,13 @@ class OWNCLOUDSYNC_EXPORT Account : public QObject
     Q_OBJECT
     Q_PROPERTY(QUuid uid READ uuid CONSTANT)
     Q_PROPERTY(QString davUser MEMBER _davUser)
+    Q_PROPERTY(QString davDisplayName READ davDisplayName NOTIFY displayNameChanged)
     Q_PROPERTY(QString displayNameWithHost READ displayNameWithHost NOTIFY displayNameChanged)
-    Q_PROPERTY(QUrl url MEMBER _url)
+    Q_PROPERTY(QString initials READ initials NOTIFY displayNameChanged)
+    Q_PROPERTY(QString hostname READ hostname NOTIFY urlChanged)
+    Q_PROPERTY(bool hasAvatar READ hasAvatar NOTIFY avatarChanged)
+    Q_PROPERTY(QGradient::Preset avatarGradient READ avatarGradient NOTIFY displayNameChanged)
+    Q_PROPERTY(QUrl url READ url NOTIFY urlChanged)
     QML_ELEMENT
     QML_UNCREATABLE("Only created in the C++ code")
 
@@ -120,16 +126,20 @@ public:
 
     QIcon avatar() const;
     void setAvatar(const QIcon &img);
+    bool hasAvatar() const;
 
     /// The name of the account as shown in the toolbar
     QString displayNameWithHost() const;
+    QString initials() const;
+    QGradient::Preset avatarGradient() const;
 
     /// The internal id of the account.
     Q_DECL_DEPRECATED_X("Use uuid") QString id() const;
 
     /** Server url of the account */
     void setUrl(const QUrl &url);
-    QUrl url() const { return _url; }
+    QUrl url() const;
+    QString hostname() const;
 
     /**
      * @brief The possibly themed dav path for the account. It has
@@ -239,6 +249,8 @@ Q_SIGNALS:
 
     // the signal exists on the Account object as the Approvider itself can change during runtime
     void appProviderErrorOccured(const QString &error);
+
+    void urlChanged();
 
 private:
     // directory all newly created accounts store their various caches in

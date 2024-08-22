@@ -52,18 +52,28 @@ Pane {
                 property AccountState accountState: modelData
 
                 Layout.fillWidth: true
+                Layout.fillHeight: true
                 Layout.maximumWidth: widthHint
                 Accessible.role: Accessible.PageTab
                 checked: settingsDialog.currentAccount === accountState.account
-                icon.source: QMLResources.resourcePath2("avatar", accountState.account.uid, enabled)
+                icon.source: accountState.account.hasAvatar ? QMLResources.resourcePath2("avatar", accountState.account.uid, enabled) : undefined
                 icon.cache: false
-                text: accountState.account.displayNameWithHost.replace("@", "\n")
+                altText: accountState.account.initials
+                text: accountState.account.hostname
+                gradient: accountState.account.avatarGradient
+
+                hoverEnabled: true
+                ToolTip.visible: hovered
+                ToolTip.text: accountState.account.davDisplayName + "\n" + accountState.account.url
+                ToolTip.delay: 500
 
                 Connections {
                     target: accountState.account
                     function onAvatarChanged() {
                         icon.source = undefined;
-                        icon.source = QMLResources.resourcePath2("avatar", accountState.account.uid, enabled);
+                        if (accountState.account.hasAvatar) {
+                            icon.source = QMLResources.resourcePath2("avatar", accountState.account.uid, enabled);
+                        }
                     }
                 }
 
@@ -83,7 +93,7 @@ Pane {
         AccountButton {
             id: addAccountButton
 
-            Layout.fillWidth: true
+            Layout.fillHeight: true
             Layout.maximumWidth: widthHint
             icon.source: QMLResources.resourcePath("core", "plus-solid", enabled)
             text: qsTr("Add Account")
@@ -108,7 +118,7 @@ Pane {
         AccountButton {
             id: logButton
 
-            Layout.fillWidth: true
+            Layout.fillHeight: true
             Layout.maximumWidth: widthHint
             Accessible.role: Accessible.PageTab
             checked: settingsDialog.currentPage === SettingsDialog.Activity
@@ -122,7 +132,7 @@ Pane {
         AccountButton {
             id: settingsButton
 
-            Layout.fillWidth: true
+            Layout.fillHeight: true
             Layout.maximumWidth: widthHint
             Accessible.role: Accessible.PageTab
             checked: settingsDialog.currentPage === SettingsDialog.Settings
@@ -140,7 +150,7 @@ Pane {
             delegate: AccountButton {
                 property UrlButtonData urlButton: modelData
 
-                Layout.fillWidth: true
+                Layout.fillHeight: true
                 Layout.maximumWidth: widthHint
                 icon.source: QMLResources.resourcePath("universal", urlButton.icon, enabled)
                 text: urlButton.name
@@ -153,7 +163,7 @@ Pane {
         AccountButton {
             id: quitButton
 
-            Layout.fillWidth: true
+            Layout.fillHeight: true
             Layout.maximumWidth: widthHint
             icon.source: QMLResources.resourcePath("core", "quit", enabled)
             text: qsTr("Quit")

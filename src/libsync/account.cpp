@@ -120,17 +120,15 @@ QString Account::davUser() const
 
 void Account::setDavUser(const QString &newDavUser)
 {
-    if (_davUser == newDavUser)
+    if (_davUser == newDavUser) {
         return;
+    }
     _davUser = newDavUser;
     Q_EMIT wantsAccountSaved(this);
 }
 
 QIcon Account::avatar() const
 {
-    if (_avatarImg.isNull()) {
-        return Resources::getCoreIcon(QStringLiteral("account"));
-    }
     return _avatarImg;
 }
 
@@ -140,11 +138,14 @@ void Account::setAvatar(const QIcon &img)
     Q_EMIT avatarChanged();
 }
 
+bool Account::hasAvatar() const
+{
+    return !_avatarImg.isNull();
+}
+
 QString Account::displayNameWithHost() const
 {
     QString user = davDisplayName();
-    if (user.isEmpty())
-        user = davUser();
     QString host = _url.host();
     const int port = url().port();
     if (port > 0 && port != 80 && port != 443) {
@@ -153,8 +154,25 @@ QString Account::displayNameWithHost() const
     return tr("%1@%2").arg(user, host);
 }
 
+QString Account::initials() const
+{
+    QString out;
+    for (const auto &p : davDisplayName().split(QLatin1Char(' '), Qt::SkipEmptyParts)) {
+        out.append(p.first(1));
+    }
+    return out;
+}
+
+QGradient::Preset Account::avatarGradient() const
+{
+    return static_cast<QGradient::Preset>(qHash(initials()) % QGradient::NumPresets + 1);
+}
+
 QString Account::davDisplayName() const
 {
+    if (_displayName.isEmpty()) {
+        return davUser();
+    }
     return _displayName;
 }
 
@@ -266,7 +284,20 @@ void Account::addApprovedCerts(const QSet<QSslCertificate> &certs)
 
 void Account::setUrl(const QUrl &url)
 {
-    _url = url;
+    if (_url != url) {
+        _url = url;
+        Q_EMIT urlChanged();
+    }
+}
+
+QUrl Account::url() const
+{
+    return _url;
+}
+
+QString Account::hostname() const
+{
+    return _url.host();
 }
 
 QVariant Account::credentialSetting(const QString &key) const

@@ -96,7 +96,7 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
     addAction(tr("Hide"), Qt::CTRL | Qt::Key_W, this, &SettingsDialog::hide);
 
     // TODO: fix sizing
-    _ui->quickWidget->setFixedHeight(minimumHeight() * 0.15);
+    _ui->quickWidget->setFixedHeight(minimumHeight() * 0.13);
     _ui->quickWidget->engine()->addImageProvider(QStringLiteral("avatar"), new AvatarImageProvider);
     QmlUtils::initQuickWidget(_ui->quickWidget, QUrl(QStringLiteral("qrc:/qt/qml/org/ownCloud/gui/qml/AccountBar.qml")), this);
     connect(

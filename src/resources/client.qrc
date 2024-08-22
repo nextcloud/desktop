@@ -5,7 +5,6 @@
         <file alias="resources/light/activity.svg">font-awesome/light/bolt-solid.svg</file>
         <file alias="resources/light/lock-https.svg">font-awesome/light/lock-solid.svg</file>
         <file alias="resources/light/lock-http.svg">font-awesome/light/lock-open-solid.svg</file>
-        <file alias="resources/light/account.svg">font-awesome/light/user-solid.svg</file>
         <file alias="resources/light/more.svg">font-awesome/light/ellipsis-h-solid.svg</file>
         <file alias="resources/light/delete.svg">font-awesome/light/trash-solid.svg</file>
         <file alias="resources/light/bell.svg">font-awesome/light/bell-solid.svg</file>
@@ -24,7 +23,6 @@
         <file alias="resources/dark/activity.svg">font-awesome/dark/bolt-solid.svg</file>
         <file alias="resources/dark/lock-https.svg">font-awesome/dark/lock-solid.svg</file>
         <file alias="resources/dark/lock-http.svg">font-awesome/dark/lock-open-solid.svg</file>
-        <file alias="resources/dark/account.svg">font-awesome/dark/user-solid.svg</file>
         <file alias="resources/dark/more.svg">font-awesome/dark/ellipsis-h-solid.svg</file>
         <file alias="resources/dark/delete.svg">font-awesome/dark/trash-solid.svg</file>
         <file alias="resources/dark/bell.svg">font-awesome/dark/bell-solid.svg</file>

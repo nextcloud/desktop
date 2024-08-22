@@ -21,6 +21,9 @@ ToolButton {
     readonly property real goldenRatio: 1.618
     readonly property real widthHint: height * goldenRatio
 
+    property string altText: ""
+    property int gradient: Gradient.AfricanField
+
     clip: true
     icon.height: 32
     icon.width: 32
@@ -30,19 +33,46 @@ ToolButton {
     // don't get highlight from our own palette else we create a binding loop
     palette.button: parent.palette.highlight
 
-    contentItem: ColumnLayout {
-        spacing: control.spacing
+    Component {
+        id: imageComponent
 
         Image {
-            Layout.alignment: Qt.AlignHCenter | Qt.AlignTop
-            Layout.preferredHeight: control.icon.height
-            Layout.preferredWidth: control.icon.width
             fillMode: Image.PreserveAspectFit
             source: control.icon.source
             sourceSize.height: control.icon.height
             sourceSize.width: control.icon.width
             cache: control.icon.cache
         }
+    }
+
+    Component {
+        id: placeholderComponent
+
+        Rectangle {
+            radius: 180
+            gradient: control.gradient
+            Label {
+                anchors.fill: parent
+                horizontalAlignment: Text.AlignHCenter
+                verticalAlignment: Text.AlignVCenter
+                text: control.altText
+                font.bold: true
+                elide: Text.ElideMiddle
+            }
+        }
+    }
+
+    contentItem: ColumnLayout {
+        spacing: control.spacing
+
+        Loader {
+            id: loader
+            Layout.alignment: Qt.AlignHCenter | Qt.AlignTop
+            Layout.preferredHeight: control.icon.height
+            Layout.preferredWidth: control.icon.width
+            sourceComponent: control.icon.source.toString() === "" ? placeholderComponent : imageComponent
+        }
+
         Label {
             Layout.fillHeight: true
             Layout.fillWidth: true
