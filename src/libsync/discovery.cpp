@@ -1779,6 +1779,9 @@ bool ProcessDirectoryJob::checkPermissions(const OCC::SyncFileItemPtr &item)
             qCWarning(lcDisco) << "checkForPermission: ERROR" << item->_file;
             item->_instruction = CSYNC_INSTRUCTION_ERROR;
             item->_errorString = tr("Not allowed because you don't have permission to add subfolders to that folder");
+            const auto localPath = QString{_discoveryData->_localDir + item->_file};
+            qCWarning(lcDisco) << "unexpected new folder in a read-only folder will be made read-write" << localPath;
+            FileSystem::setFolderPermissions(localPath, FileSystem::FolderPermissions::ReadWrite);
             return false;
         } else if (!item->isDirectory() && !perms.hasPermission(RemotePermissions::CanAddFile)) {
             qCWarning(lcDisco) << "checkForPermission: ERROR" << item->_file;
@@ -1980,6 +1983,9 @@ int ProcessDirectoryJob::processSubJobs(int nbJobs)
                     qCWarning(lcDisco) << "checkForPermission: ERROR" << _dirItem->_file;
                     _dirItem->_instruction = CSYNC_INSTRUCTION_ERROR;
                     _dirItem->_errorString = tr("Not allowed because you don't have permission to add subfolders to that folder");
+                    const auto localPath = QString{_discoveryData->_localDir + _dirItem->_file};
+                    qCWarning(lcDisco) << "unexpected new folder in a read-only folder will be made read-write" << localPath;
+                    FileSystem::setFolderPermissions(localPath, FileSystem::FolderPermissions::ReadWrite);
                 }
 
                 _dirItem->_direction = _dirItem->_direction == SyncFileItem::Up ? SyncFileItem::Down : SyncFileItem::Up;
