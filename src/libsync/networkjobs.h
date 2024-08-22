@@ -68,7 +68,6 @@ public:
 Q_SIGNALS:
     void directoryListingSubfolders(const QStringList &items);
     void directoryListingIterated(const QString &name, const QMap<QString, QString> &properties);
-    void finishedWithError(QNetworkReply *reply);
     void finishedWithoutError();
 };
 

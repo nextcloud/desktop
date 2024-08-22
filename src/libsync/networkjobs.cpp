@@ -300,7 +300,6 @@ void PropfindJob::finished()
             LsColXMLParser parser;
             connect(&parser, &LsColXMLParser::directoryListingSubfolders, this, &PropfindJob::directoryListingSubfolders);
             connect(&parser, &LsColXMLParser::directoryListingIterated, this, &PropfindJob::directoryListingIterated);
-            connect(&parser, &LsColXMLParser::finishedWithError, this, &PropfindJob::finishedWithError);
             connect(&parser, &LsColXMLParser::finishedWithoutError, this, &PropfindJob::finishedWithoutError);
             if (_depth == Depth::Zero) {
                 connect(&parser, &LsColXMLParser::directoryListingIterated,
