@@ -387,9 +387,9 @@ void SocketApi::slotReadSocket()
             return out;
         }();
 
-        const auto argument = argPos != -1 ? line.midRef(argPos + 1) : QStringRef();
+        const auto argument = QString{argPos != -1 ? line.mid(argPos + 1) : QString()};
         if (command.startsWith("ASYNC_")) {
-            auto arguments = argument.split('|');
+            const auto arguments = argument.split('|');
             if (arguments.size() != 2) {
                 listener->sendError(QStringLiteral("argument count is wrong"));
                 return;
@@ -400,7 +400,7 @@ void SocketApi::slotReadSocket()
             auto jobId = arguments[0];
 
             auto socketApiJob = QSharedPointer<SocketApiJob>(
-                new SocketApiJob(jobId.toString(), listener, json), &QObject::deleteLater);
+                new SocketApiJob(jobId, listener, json), &QObject::deleteLater);
             if (indexOfMethod != -1) {
                 staticMetaObject.method(indexOfMethod)
                     .invoke(this, Qt::QueuedConnection,
@@ -414,7 +414,7 @@ void SocketApi::slotReadSocket()
             QJsonParseError error{};
             const auto json = QJsonDocument::fromJson(argument.toUtf8(), &error).object();
             if (error.error != QJsonParseError::NoError) {
-                qCWarning(lcSocketApi()) << "Invalid json" << argument.toString() << error.errorString();
+                qCWarning(lcSocketApi()) << "Invalid json" << argument << error.errorString();
                 listener->sendError(error.errorString());
                 return;
             }
@@ -432,7 +432,7 @@ void SocketApi::slotReadSocket()
             if (indexOfMethod != -1) {
                 ASSERT(thread() == QThread::currentThread())
                 staticMetaObject.method(indexOfMethod)
-                    .invoke(this, Qt::QueuedConnection, Q_ARG(QString, argument.toString()),
+                    .invoke(this, Qt::QueuedConnection, Q_ARG(QString, argument),
                             Q_ARG(SocketListener *, listener.data()));
             }
         } else {
@@ -440,7 +440,7 @@ void SocketApi::slotReadSocket()
                 // to ensure that listener is still valid we need to call it with Qt::DirectConnection
                 ASSERT(thread() == QThread::currentThread())
                 staticMetaObject.method(indexOfMethod)
-                    .invoke(this, Qt::DirectConnection, Q_ARG(QString, argument.toString()),
+                    .invoke(this, Qt::DirectConnection, Q_ARG(QString, argument),
                         Q_ARG(SocketListener *, listener.data()));
             }
         }
@@ -1226,7 +1226,8 @@ void SocketApi::sendEncryptFolderCommandMenuEntries(const QFileInfo &fileInfo,
             !fileData.folder->accountState()->account() ||
             !fileData.folder->accountState()->account()->capabilities().clientSideEncryptionAvailable() ||
             !fileInfo.isDir() ||
-            isE2eEncryptedPath) {
+            isE2eEncryptedPath ||
+            !fileData.isFolderEmpty(fileInfo)) {
         return;
     }
 
@@ -1241,7 +1242,7 @@ void SocketApi::sendEncryptFolderCommandMenuEntries(const QFileInfo &fileInfo,
         ancestor = ancestor.parentFolder();
     }
 
-    if (!anyAncestorEncrypted) {
+    if (!anyAncestorEncrypted && !fileData.parentFolder().journalRecord().isValid()) {
         const auto isOnTheServer = fileData.journalRecord().isValid();
         const auto flagString = isOnTheServer ? QLatin1String("::") : QLatin1String(":d:");
         listener->sendMessage(QStringLiteral("MENU_ITEM:ENCRYPT") + flagString + tr("Encrypt"));
@@ -1310,6 +1311,15 @@ QString SocketApi::FileData::folderRelativePathNoVfsSuffix() const
         result.chop(virtualFileExt.size());
     }
     return result;
+}
+
+bool SocketApi::FileData::isFolderEmpty(const QFileInfo &fileInfo) const
+{
+    if (fileInfo.isDir()) {
+        const auto nativeFolder = QDir{localPath};
+        return nativeFolder.isEmpty();
+    }
+    return false;
 }
 
 SyncFileStatus SocketApi::FileData::syncFileStatus() const
