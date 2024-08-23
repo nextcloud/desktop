@@ -59,7 +59,7 @@ for distribution in ${UBUNTU_DISTRIBUTIONS} ${DEBIAN_DISTRIBUTIONS}; do
 
     git merge ${DRONE_COMMIT}
 
-    read basever revdate kind <<<$(admin/linux/debian/scripts/git2changelog.py /tmp/tmpchangelog stable)
+    read basever revdate kind <<<$(admin/linux/debian/scripts/git2changelog.py /tmp/tmpchangelog stable "" "" ${DRONE_COMMIT})
     break
 done
 
