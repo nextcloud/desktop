@@ -27,6 +27,6 @@
         <file alias="resources/core/states/pause.svg">font-awesome/states/pause.svg</file>
         <file alias="resources/core/states/sync.svg">font-awesome/states/sync.svg</file>
         <file alias="resources/core/states/warning.svg">font-awesome/states/warning.svg</file>
-        <file alias="resources/core/activity.svg">font-awesome/bolt-solid.svg</file>
+        <file alias="resources/core/activity.svg">font-awesome/right-left-solid.svg</file>
     </qresource>
 </RCC>
