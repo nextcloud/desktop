@@ -108,8 +108,8 @@ public:
         QueryMode queryLocal, QueryMode queryServer, qint64 lastSyncTimestamp,
         ProcessDirectoryJob *parent);
 
-    explicit ProcessDirectoryJob(DiscoveryPhase *data, PinState basePinState, const PathTuple &path, const SyncFileItemPtr &dirItem,
-        QueryMode queryLocal, qint64 lastSyncTimestamp, QObject *parent);
+    explicit ProcessDirectoryJob(DiscoveryPhase *data, PinState basePinState, const PathTuple &path, const SyncFileItemPtr &dirItem, const SyncFileItemPtr &parentDirItem,
+                                 QueryMode queryLocal, qint64 lastSyncTimestamp, QObject *parent);
 
     void start();
     /** Start up to nbJobs, return the number of job started; emit finished() when done */
@@ -126,6 +126,7 @@ public:
     }
 
     SyncFileItemPtr _dirItem;
+    SyncFileItemPtr _dirParentItem;
 
 private:
     struct Entries
