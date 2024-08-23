@@ -22,13 +22,6 @@
 #include <QFileInfo>
 #include <QObject>
 
-class QIcon;
-class QString;
-class QObject;
-class QPixmap;
-class QColor;
-class QPaintDevice;
-
 namespace OCC {
 
 class SyncResult;
@@ -62,6 +55,8 @@ class OWNCLOUDSYNC_EXPORT Theme : public QObject
     Q_PROPERTY(bool singleSyncFolder READ singleSyncFolder FINAL CONSTANT)
     Q_PROPERTY(QList<QmlUrlButton> urlButtons READ qmlUrlButtons FINAL CONSTANT)
     Q_PROPERTY(bool syncNewlyDiscoveredSpaces READ syncNewlyDiscoveredSpaces FINAL CONSTANT)
+    Q_PROPERTY(QColor avatarColor READ avatarColor NOTIFY themeChanged)
+    Q_PROPERTY(QColor avatarColorChecked READ avatarColorChecked NOTIFY themeChanged)
     QML_SINGLETON
     QML_ELEMENT
 public:
@@ -197,6 +192,10 @@ public:
 
     /** @return logo for the setup wizard. */
     virtual QIcon wizardHeaderLogo() const;
+
+    virtual QColor avatarColor() const;
+
+    virtual QColor avatarColorChecked() const;
 
     /**
      * The SHA sum of the released git commit
@@ -448,6 +447,8 @@ protected:
 
 Q_SIGNALS:
     void systrayUseMonoIconsChanged(bool);
+
+    void themeChanged();
 
 private:
     QList<QmlUrlButton> qmlUrlButtons() const;

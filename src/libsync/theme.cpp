@@ -30,6 +30,7 @@
 #include <QSslSocket>
 
 #include "owncloudtheme.h"
+#include "themewatcher.h"
 
 #ifdef THEME_INCLUDE
 #include THEME_INCLUDE
@@ -73,6 +74,8 @@ Theme *Theme::instance()
 {
     if (!_instance) {
         _instance = new THEME_CLASS;
+        auto *watcher = new Resources::ThemeWatcher(_instance);
+        connect(watcher, &Resources::ThemeWatcher::themeChanged, _instance, &Theme::themeChanged);
     }
     return _instance;
 }
@@ -376,6 +379,16 @@ QColor Theme::wizardHeaderBackgroundColor() const
 QIcon Theme::wizardHeaderLogo() const
 {
     return applicationIcon();
+}
+
+QColor Theme::avatarColor() const
+{
+    return {};
+}
+
+QColor Theme::avatarColorChecked() const
+{
+    return {};
 }
 
 QString Theme::webDavPath() const

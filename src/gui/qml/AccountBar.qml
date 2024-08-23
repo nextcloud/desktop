@@ -61,6 +61,8 @@ Pane {
                 altText: accountState.account.initials
                 text: accountState.account.hostname
                 gradient: accountState.account.avatarGradient
+                solidColor: Theme.avatarColor
+                solidColorChecked: Theme.avatarColorChecked
 
                 hoverEnabled: true
                 ToolTip.visible: hovered
