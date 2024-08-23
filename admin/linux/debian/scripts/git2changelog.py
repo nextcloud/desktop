@@ -48,7 +48,8 @@ def getCommitVersion(commit):
     except:
         return None
 
-def collectEntries(baseCommit, baseVersion, kind, finalBaseVersion, finalRevDate, config):
+def collectEntries(baseCommit, baseVersion, kind, finalBaseVersion,
+                   finalRevDate, config, finalCommit):
 
     newVersionCommit = None
     newVersionTag = None
@@ -99,6 +100,7 @@ def collectEntries(baseCommit, baseVersion, kind, finalBaseVersion, finalRevDate
                     lastCMAKEVersion = version
                     (baseVersion, _kind) = result
 
+        commitTags = []
         for tag in subprocess.check_output(["git", "tag",
                                             "--points-at",
                                             commit]).splitlines():
@@ -106,6 +108,7 @@ def collectEntries(baseCommit, baseVersion, kind, finalBaseVersion, finalRevDate
                 result = processVersionTag(tag)
                 if result:
                     lastVersionTag = tag
+                    commitTags.append(tag)
                     (baseVersion, kind1) = result
                     if kind1!=kind and kind!="release":
                         kind = kind1
@@ -113,6 +116,9 @@ def collectEntries(baseCommit, baseVersion, kind, finalBaseVersion, finalRevDate
 
         entries.append((commit, name, email, date, revdate, subject,
                         baseVersion, kind))
+
+        if commit==finalCommit or finalCommit in commitTags:
+            break
 
     if entries:
         (commit, name, email, date, revdate, subject, baseVersion, kind) = entries[-1]
@@ -169,11 +175,13 @@ if __name__ == "__main__":
                 baseVersion = config.get("base", "version")
 
     distribution = sys.argv[2]
-    finalRevDate = sys.argv[3] if len(sys.argv)>3 else None
-    finalBaseVersion = sys.argv[4] if len(sys.argv)>4 else None
+    finalRevDate = sys.argv[3] if len(sys.argv)>3 and sys.argv[3] else None
+    finalBaseVersion = sys.argv[4] if len(sys.argv)>4 and sys.argv[4] else None
+    finalCommit = sys.argv[5] if len(sys.argv)>5 and sys.argv[5] else None
 
     entries = collectEntries(baseCommit, baseVersion, "alpha",
-                             finalBaseVersion, finalRevDate, config)
+                             finalBaseVersion, finalRevDate, config,
+                             finalCommit)
 
     with open(sys.argv[1], "wt") as f:
         (baseVersion, revdate, kind) = genChangeLogEntries(f, entries, distribution)
