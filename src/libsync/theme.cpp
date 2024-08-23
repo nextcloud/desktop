@@ -136,7 +136,7 @@ QIcon Theme::aboutIcon() const
     return applicationIcon();
 }
 
-QIcon Theme::themeTrayIcon(const SyncResult &result, bool sysTrayMenuVisible, Resources::IconType iconType) const
+QIcon Theme::themeTrayIcon(const SyncResult &result, [[maybe_unused]] bool sysTrayMenuVisible, Resources::IconType iconType) const
 {
     auto systrayIconFlavor = [&]() {
         QString flavor;
