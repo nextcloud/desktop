@@ -4020,30 +4020,30 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>اسم الملف هذا هو اسم محجوز لنظام التشغيل هذا.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="387"/>
+        <location filename="../src/libsync/discovery.cpp" line="389"/>
         <source>Folder</source>
         <comment>name of folder entity to use when warning about invalid name</comment>
         <translation>مجلد </translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="387"/>
+        <location filename="../src/libsync/discovery.cpp" line="389"/>
         <source>File</source>
         <comment>name of folder entity to use when warning about invalid name</comment>
         <translation>ملف</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="389"/>
+        <location filename="../src/libsync/discovery.cpp" line="391"/>
         <source>%1 name containing the character &quot;%2&quot; is not supported on this file system.</source>
         <comment>folder or file impossible to sync due to an invalid name, placeholders will be file or folder and the invalid character</comment>
         <translation>الاسم %1 الذي يحتوي على الحرف &quot;%2&quot; غير مدعوم في نظام الملفات هذا.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="391"/>
+        <location filename="../src/libsync/discovery.cpp" line="393"/>
         <source>%1 name contains at least one invalid character</source>
         <translation>يحتوي الاسم %1 على حرف واحد غير صالح على الأقل</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="393"/>
+        <location filename="../src/libsync/discovery.cpp" line="395"/>
         <source>%1 name is a reserved name on this file system.</source>
         <translation>الاسم %1 هو اسم محجوز في نظام الملفات هذا.</translation>
     </message>
@@ -4098,22 +4098,22 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>اسم الملف موجود في القائمة السوداء للخادوم.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="434"/>
+        <location filename="../src/libsync/discovery.cpp" line="436"/>
         <source> Reason: the entire filename is forbidden.</source>
         <translation>السبب: اسم الملف محظور بأكمله.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="437"/>
+        <location filename="../src/libsync/discovery.cpp" line="439"/>
         <source> Reason: the filename has a forbidden base name (filename start).</source>
         <translation>السبب: اسم الملف الأساس (جزء البداية) محظور.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="440"/>
+        <location filename="../src/libsync/discovery.cpp" line="442"/>
         <source> Reason: the file has a forbidden extension (.%1).</source>
         <translation> السبب: امتداد الملف محظور (.%1).</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="443"/>
+        <location filename="../src/libsync/discovery.cpp" line="445"/>
         <source> Reason: the filename contains a forbidden character (%1).</source>
         <translation>السبب: اسم الملف يحتوي على حروف محظورة (%1).</translation>
     </message>
@@ -4148,7 +4148,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>تعذّرت المزامنة لأن وقت آخر تعديل للملف غير صالح</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1089"/>
+        <location filename="../src/libsync/discovery.cpp" line="1091"/>
         <source>Could not upload file, because it is open in &quot;%1&quot;.</source>
         <translation>يتعذّر فتح الملف لأنه مفتوح سلفاً في &quot;%1&quot;.</translation>
     </message>
