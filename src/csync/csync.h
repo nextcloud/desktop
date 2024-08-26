@@ -32,20 +32,24 @@
 #ifndef _CSYNC_H
 #define _CSYNC_H
 
-#include "std/c_private.h"
-#include "ocsynclib.h"
-
-#include <sys/stat.h>
+#include <QByteArray>
+#include <QVariant>
+#include <QLoggingCategory>
 
 #include <cstdint>
+#include <sys/stat.h>
 #include <sys/types.h>
-#include <config_csync.h>
 #include <functional>
 #include <memory>
-#include <QByteArray>
+
+#include "ocsynclib.h"
+#include "config_csync.h"
+#include "std/c_private.h"
 #include "common/remotepermissions.h"
 
 namespace OCC {
+Q_DECLARE_LOGGING_CATEGORY(lcPermanentLog)
+
 class SyncJournalFileRecord;
 
 namespace EncryptionStatusEnums {
