@@ -110,12 +110,12 @@ PropagateItemJob::~PropagateItemJob()
 
 bool PropagateItemJob::scheduleSelfOrChild()
 {
-    if (_state != NotYetStarted) {
+    if (state() != NotYetStarted) {
         return false;
     }
     qCInfo(lcPropagator) << "Starting propagation of" << _item << "by" << this;
 
-    _state = Running;
+    setState(Running);
     if (thread() != QApplication::instance()->thread()) {
         QMetaObject::invokeMethod(this, &PropagateItemJob::start); // We could be in a different thread (neon jobs)
     } else {
@@ -227,8 +227,8 @@ static void blacklistUpdate(SyncJournalDb *journal, SyncFileItem &item)
 void PropagateItemJob::done(SyncFileItem::Status statusArg, const QString &errorString)
 {
     // Duplicate calls to done() are a logic error
-    OC_ENFORCE(_state != Finished);
-    _state = Finished;
+    OC_ENFORCE(state() != Finished);
+    setState(Finished);
 
     _item->_status = statusArg;
 
@@ -857,9 +857,14 @@ Result<Vfs::ConvertToPlaceholderResult, QString> OwncloudPropagator::updateMetad
 
 PropagatorJob::PropagatorJob(OwncloudPropagator *propagator, const QString &path)
     : QObject(propagator)
-    , _state(NotYetStarted)
     , _path(path)
+    , _jobState(NotYetStarted)
 {
+}
+
+void PropagatorJob::setState(JobState state)
+{
+    _jobState = state;
 }
 
 OwncloudPropagator *PropagatorJob::propagator() const
@@ -899,18 +904,18 @@ void PropagatorCompositeJob::appendJob(PropagatorJob *job)
 
 bool PropagatorCompositeJob::scheduleSelfOrChild()
 {
-    if (_state == Finished) {
+    if (state() == Finished) {
         return false;
     }
 
     // Start the composite job
-    if (_state == NotYetStarted) {
-        _state = Running;
+    if (state() == NotYetStarted) {
+        setState(Running);
     }
 
     // Ask all the running composite jobs if they have something new to schedule.
     for (int i = 0; i < _runningJobs.size(); ++i) {
-        OC_ASSERT(_runningJobs.at(i)->_state == Running);
+        OC_ASSERT(_runningJobs.at(i)->state() == Running);
 
         if (possiblyRunNextJob(_runningJobs.at(i))) {
             return true;
@@ -993,10 +998,10 @@ void PropagatorCompositeJob::finalize()
 {
     // The propagator will do parallel scheduling and this could be posted
     // multiple times on the event loop, ignore the duplicate calls.
-    if (_state == Finished)
+    if (state() == Finished)
         return;
 
-    _state = Finished;
+    setState(Finished);
     Q_EMIT finished(_errorPaths.empty() ? SyncFileItem::Success : _errorPaths.last());
 }
 
@@ -1043,19 +1048,19 @@ PropagatorJob::JobParallelism PropagateDirectory::parallelism()
 
 bool PropagateDirectory::scheduleSelfOrChild()
 {
-    if (_state == Finished) {
+    if (state() == Finished) {
         return false;
     }
 
-    if (_state == NotYetStarted) {
-        _state = Running;
+    if (state() == NotYetStarted) {
+        setState(Running);
     }
 
-    if (_firstJob && _firstJob->_state == NotYetStarted) {
+    if (_firstJob && _firstJob->state() == NotYetStarted) {
         return _firstJob->scheduleSelfOrChild();
     }
 
-    if (_firstJob && _firstJob->_state == Running) {
+    if (_firstJob && _firstJob->state() == Running) {
         // Don't schedule any more job until this is done.
         return false;
     }
@@ -1077,7 +1082,7 @@ void PropagateDirectory::slotFirstJobFinished(SyncFileItem::Status status)
         break;
     // handle all other cases as errors
     default:
-        if (_state != Finished) {
+        if (state() != Finished) {
             // Synchronously abort
             abort(AbortType::Synchronous);
             done(status);
@@ -1139,8 +1144,8 @@ void PropagateDirectory::slotSubJobsFinished(const SyncFileItem::Status status)
 
     // don't call done, we only propagate the state of the child items
     // and we don't want error handling for this folder for an error that happend on a child
-    Q_ASSERT(_state != Finished);
-    _state = Finished;
+    Q_ASSERT(state() != Finished);
+    setState(Finished);
     Q_EMIT finished(status);
     if (_item->_relevantDirectoyInstruction) {
         Q_EMIT propagator()->itemCompleted(_item);
@@ -1201,7 +1206,7 @@ qint64 PropagateRootDirectory::committedDiskSpace() const
 
 bool PropagateRootDirectory::scheduleSelfOrChild()
 {
-    if (_state == Finished) {
+    if (state() == Finished) {
         return false;
     }
 
@@ -1210,7 +1215,7 @@ bool PropagateRootDirectory::scheduleSelfOrChild()
     }
 
     // Important: Finish _subJobs before scheduling any deletes.
-    if (_subJobs._state != Finished) {
+    if (_subJobs.state() != Finished) {
         return false;
     }
 
@@ -1230,7 +1235,7 @@ void PropagateRootDirectory::slotSubJobsFinished(SyncFileItem::Status status)
     // handle all other cases as errors
     default:
         _status = status;
-        if (_state != Finished) {
+        if (state() != Finished) {
             auto subJob = qobject_cast<PropagatorCompositeJob *>(sender());
             if (OC_ENSURE(subJob)) {
                 const QMap<QString, SyncFileItem::Status> errorPaths = subJob->errorPaths();
@@ -1255,7 +1260,7 @@ void PropagateRootDirectory::slotSubJobsFinished(SyncFileItem::Status status)
 
 void PropagateRootDirectory::slotDirDeletionJobsFinished(SyncFileItem::Status status)
 {
-    _state = Finished;
+    setState(Finished);
     Q_EMIT finished(_status != SyncFileItem::NoStatus ? _status : status);
 }
 

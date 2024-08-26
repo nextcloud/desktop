@@ -565,6 +565,7 @@ QMap<QByteArray, QByteArray> PropagateUploadFileCommon::headers()
 
 void PropagateUploadFileCommon::finalize()
 {
+    OC_ENFORCE(state() != Finished);
     // Update the quota, if known
     if (!_quotaUpdated) {
         auto quotaIt = propagator()->_folderQuota.find(QFileInfo(_item->_file).path());

@@ -447,7 +447,7 @@ void PropagateDownloadFile::start()
         deleteExistingFolder();
 
         // check for error with deletion
-        if (_state == Finished) {
+        if (state() == Finished) {
             return;
         }
     }
@@ -657,7 +657,7 @@ void PropagateDownloadFile::startFullDownload()
 
 qint64 PropagateDownloadFile::committedDiskSpace() const
 {
-    if (_state == Running) {
+    if (state() == Running) {
         return qBound(0LL, _item->_size - _resumeStart - _downloadProgress, _item->_size);
     }
     return 0;

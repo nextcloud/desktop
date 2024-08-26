@@ -78,7 +78,8 @@ public:
     };
     Q_ENUM(JobState)
 
-    JobState _state;
+    JobState state() const { return _jobState; }
+    void setState(JobState state);
 
     enum JobParallelism {
 
@@ -155,6 +156,7 @@ protected:
 
 private:
     QString _path;
+    JobState _jobState;
 };
 
 /*
@@ -241,7 +243,7 @@ private Q_SLOTS:
     void slotSubJobAbortFinished();
     bool possiblyRunNextJob(PropagatorJob *next)
     {
-        if (next->_state == NotYetStarted) {
+        if (next->state() == NotYetStarted) {
             connect(next, &PropagatorJob::finished, this, &PropagatorCompositeJob::slotSubJobFinished);
         }
         return next->scheduleSelfOrChild();
