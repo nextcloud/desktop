@@ -7,7 +7,7 @@
 
 DEFAULT_PHP_VERSION = "7.4"
 
-CYTOPIA_BLACK = "cytopia/black"
+PYFOUND_BLACK = "pyfound/black:24.8.0"
 MYSQL = "mysql:8.0"
 OC_CI_ALPINE = "owncloudci/alpine:latest"
 OC_CI_BAZEL_BUILDIFIER = "owncloudci/bazel-buildifier"
@@ -31,6 +31,9 @@ PLUGINS_GIT_ACTION = "plugins/git-action:1"
 PLUGINS_S3 = "plugins/s3"
 PLUGINS_SLACK = "plugins/slack"
 TOOLHIPPIE_CALENS = "toolhippie/calens:latest"
+
+# npm packages to install
+NPM_GHERLINT = "@gherlint/gherlint@1.1.0"
 
 # secrets used in the pipeline
 secrets = {
@@ -131,8 +134,7 @@ config = {
 
 def main(ctx):
     pipelines = check_starlark() + \
-                check_gherkin_lint() + \
-                gui_tests_format() + \
+                lint_gui_test() + \
                 changelog(ctx)
     unit_tests = unit_test_pipeline(ctx)
     gui_tests = gui_test_pipeline(ctx)
@@ -336,26 +338,37 @@ def gui_tests(squish_parameters = "", server_type = "oc10"):
         "volumes": pip_step_volume,
     }]
 
-def gui_tests_format():
+def lint_gui_test():
     return [{
         "kind": "pipeline",
         "type": "docker",
-        "name": "guitestformat",
-        "steps": [
-            {
-                "name": "black",
-                "image": CYTOPIA_BLACK,
-                "commands": [
-                    "cd %s" % dir["guiTest"],
-                    "black --check --diff .",
-                ],
-            },
-        ],
+        "name": "lint-gui-test",
+        "steps": python_lint() + gherkin_lint(),
         "trigger": {
             "event": [
                 "pull_request",
             ],
         },
+    }]
+
+def python_lint():
+    return [{
+        "name": "python-lint",
+        "image": PYFOUND_BLACK,
+        "commands": [
+            "cd %s" % dir["guiTest"],
+            "black --check --diff .",
+        ],
+    }]
+
+def gherkin_lint():
+    return [{
+        "name": "gherkin-lint",
+        "image": OC_CI_NODEJS,
+        "commands": [
+            "npm install -g %s" % NPM_GHERLINT,
+            "make -C %s gherkin-lint" % dir["guiTest"],
+        ],
     }]
 
 def changelog(ctx):
@@ -788,26 +801,3 @@ def pipelinesDependsOn(pipelines, dependant_pipelines):
         pipes.append(pipelineDependsOn(pipeline, dependant_pipelines))
 
     return pipes
-
-def check_gherkin_lint():
-    return [{
-        "kind": "pipeline",
-        "type": "docker",
-        "name": "check-gherkin-standard",
-        "steps": [
-            {
-                "name": "lint-feature-files",
-                "image": OC_CI_NODEJS,
-                "commands": [
-                    "cd test/gui",
-                    "npm install -g @gherlint/gherlint@1.1.0",
-                    "make test-gherkin-lint",
-                ],
-            },
-        ],
-        "trigger": {
-            "ref": [
-                "refs/pull/**",
-            ],
-        },
-    }]
