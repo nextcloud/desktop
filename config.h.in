@@ -63,4 +63,6 @@
 
 #cmakedefine01 NEXTCLOUD_DEV
 
+#cmakedefine WITH_WEBENGINE
+
 #endif

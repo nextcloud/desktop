@@ -16,6 +16,8 @@
 #ifndef NETWORKJOBS_H
 #define NETWORKJOBS_H
 
+#include "config.h"
+
 #include "abstractnetworkjob.h"
 
 #include "common/result.h"
