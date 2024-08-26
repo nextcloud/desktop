@@ -243,10 +243,41 @@ if(BUILD_CLIENT)
    endif()
 endif()
 
-if (APPLE)
-    option(BUILD_WITH_WEBENGINE "BUILD_WITH_WEBENGINE" OFF)
-else ()
-    option(BUILD_WITH_WEBENGINE "BUILD_WITH_WEBENGINE" ON)
+option(BUILD_WITH_WEBENGINE "BUILD_WITH_WEBENGINE" ON)
+if (BUILD_WITH_WEBENGINE)
+    find_package(Qt${QT_VERSION_MAJOR}WebEngineCore ${REQUIRED_QT_VERSION} CONFIG QUIET)
+    if(APPLE)
+        set_package_properties(Qt${QT_VERSION_MAJOR}WebEngineCore PROPERTIES
+            DESCRIPTION "Qt${QT_VERSION_MAJOR} WebEngineCore component."
+            TYPE RECOMMENDED
+        )
+    else()
+        set_package_properties(Qt${QT_VERSION_MAJOR}WebEngineCore PROPERTIES
+            DESCRIPTION "Qt${QT_VERSION_MAJOR} WebEngine component."
+            TYPE REQUIRED
+        )
+    endif()
+
+    find_package(Qt${QT_MAJOR_VERSION}WebEngineWidgets ${REQUIRED_QT_VERSION} CONFIG QUIET)
+    if(APPLE)
+        set_package_properties(Qt${QT_MAJOR_VERSION}WebEngineWidgets PROPERTIES
+            DESCRIPTION "Qt${QT_MAJOR_VERSION} WebEngineWidgets component."
+            TYPE RECOMMENDED
+        )
+    else()
+        set_package_properties(Qt${QT_MAJOR_VERSION}WebEngineWidgets PROPERTIES
+            DESCRIPTION "Qt${QT_MAJOR_VERSION} WebEngineWidgets component."
+            TYPE REQUIRED
+        )
+    endif()
+
+    if(Qt${QT_MAJOR_VERSION}WebEngineCore_FOUND AND Qt${QT_MAJOR_VERSION}WebEngineWidgets_FOUND)
+        message(STATUS "Enable use of Qt6 WebEngine module")
+        set(WITH_WEBENGINE 1)
+    else()
+        unset(WITH_WEBENGINE)
+        message(STATUS "Disable use of Qt6 WebEngine module")
+    endif()
 endif()
 
 if (NOT DEFINED APPLICATION_ICON_NAME)

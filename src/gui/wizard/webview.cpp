@@ -51,7 +51,7 @@ public:
     void setUrl(const QUrl &url);
 
 protected:
-    bool certificateError(const QWebEngineCertificateError &certificateError) override;
+    bool slotCertificateError(const QWebEngineCertificateError &certificateError);
 
     bool acceptNavigationRequest(const QUrl &url, QWebEnginePage::NavigationType type, bool isMainFrame) override;
 
@@ -202,8 +202,11 @@ void WebViewPageUrlSchemeHandler::requestStarted(QWebEngineUrlRequestJob *reques
 }
 
 
-WebEnginePage::WebEnginePage(QWebEngineProfile *profile, QObject* parent) : QWebEnginePage(profile, parent) {
-
+WebEnginePage::WebEnginePage(QWebEngineProfile *profile, QObject* parent)
+    : QWebEnginePage(profile, parent)
+{
+    connect(this, &QWebEnginePage::certificateError,
+            this, &WebEnginePage::slotCertificateError);
 }
 
 QWebEnginePage * WebEnginePage::createWindow(QWebEnginePage::WebWindowType type) {
@@ -218,7 +221,7 @@ void WebEnginePage::setUrl(const QUrl &url)
     _enforceHttps = url.scheme() == QStringLiteral("https");
 }
 
-bool WebEnginePage::certificateError(const QWebEngineCertificateError &certificateError)
+bool WebEnginePage::slotCertificateError(const QWebEngineCertificateError &certificateError)
 {
     /**
      * TODO properly improve this.

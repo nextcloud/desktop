@@ -251,7 +251,7 @@ set(client_SRCS
     wizard/linklabel.cpp
     )
 
-if (Qt${QT_MAJOR_VERSION}WebEngine_FOUND AND Qt${QT_MAJOR_VERSION}WebEngineWidgets_FOUND)
+if (WITH_WEBENGINE)
   list(APPEND client_SRCS
     wizard/webviewpage.h
     wizard/webviewpage.cpp
@@ -581,8 +581,8 @@ foreach(FILE IN LISTS client_UI_SRCS)
 	set_property(SOURCE ${FILE} PROPERTY SKIP_UNITY_BUILD_INCLUSION ON)
 endforeach()
 
-if(Qt6WebEngine_FOUND AND Qt6WebEngineWidgets_FOUND)
-  target_link_libraries(nextcloudCore PUBLIC Qt::WebEngineWidgets)
+if(WITH_WEBENGINE)
+    target_link_libraries(nextcloudCore PUBLIC Qt::WebEngineWidgets Qt::WebEngineCore)
 endif()
 
 set_target_properties(nextcloudCore
