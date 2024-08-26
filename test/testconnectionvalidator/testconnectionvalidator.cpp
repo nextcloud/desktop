@@ -17,6 +17,7 @@
 #include "gui/connectionvalidator.h"
 #include "libsync/abstractnetworkjob.h"
 #include "libsync/httplogger.h"
+#include "resources/template.h"
 
 #include "testutils/syncenginetestutils.h"
 #include "testutils/testutils.h"
@@ -42,7 +43,7 @@ class TestConnectionValidator : public QObject
 
     auto getPayloadTemplated(const QString &payloadName, const QMap<QString, QString> &values)
     {
-        return Utility::renderTemplate(QString::fromUtf8(getPayload(payloadName)), values).toUtf8();
+        return Resources::Template::renderTemplate(QString::fromUtf8(getPayload(payloadName)), values).toUtf8();
     }
 
 private Q_SLOTS:

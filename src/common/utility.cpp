@@ -453,41 +453,11 @@ QString Utility::sanitizeForFileName(const QString &name)
     QString result;
     result.reserve(name.size());
     for (const auto &c : name) {
-        if (!invalid.contains(c)
-            && c.category() != QChar::Other_Control
-            && c.category() != QChar::Other_Format) {
+        if (!invalid.contains(c) && c.category() != QChar::Other_Control && c.category() != QChar::Other_Format) {
             result.append(c);
         }
     }
     return result;
-}
-
-QString Utility::renderTemplate(QString templ, const QMap<QString, QString> &values)
-{
-    static const QRegularExpression pattern(QStringLiteral("@{([^{}]+)}"));
-    const auto replace = [&templ, &values](QRegularExpressionMatchIterator it) {
-        while (it.hasNext()) {
-            const auto match = it.next();
-            Q_ASSERT(match.lastCapturedIndex() == 1);
-            Q_ASSERT([&] {
-                if (!values.contains(match.captured(1))) {
-                    qCCritical(lcUtility) << "Unknown key:" << match.captured(1);
-                    return false;
-                }
-                return true;
-            }());
-            templ.replace(match.captured(0), values.value(match.captured(1)));
-        }
-    };
-
-    auto matches = pattern.globalMatch(templ);
-    do {
-        replace(matches);
-        // the placeholder can again contain a placeholder
-        matches = pattern.globalMatch(templ);
-    } while (matches.hasNext());
-
-    return templ;
 }
 
 QString Utility::appImageLocation()

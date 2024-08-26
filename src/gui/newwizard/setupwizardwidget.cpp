@@ -5,6 +5,7 @@
 #include "gui/guiutility.h"
 #include "gui/owncloudgui.h"
 #include "gui/settingsdialog.h"
+#include "resources/template.h"
 #include "theme.h"
 
 #include <QLabel>
@@ -17,9 +18,9 @@ namespace {
 
 using namespace OCC;
 
-QString replaceCssColors(const QString &stylesheet)
+QString replaceCssColors()
 {
-    return Utility::renderTemplate(stylesheet,
+    return Resources::Template::renderTemplateFromFile(QStringLiteral(":/client/resources/wizard/style.qss"),
         {
             {QStringLiteral("WIZARD_BACKGROUND_COLOR"), Theme::instance()->wizardHeaderBackgroundColor().name()}, //
             {QStringLiteral("WIZARD_FONT_COLOR"), Theme::instance()->wizardHeaderTitleColor().name()} //
@@ -87,16 +88,7 @@ SetupWizardWidget::SetupWizardWidget(SettingsDialog *parent)
 
 void SetupWizardWidget::loadStylesheet()
 {
-    QString path = QStringLiteral(":/client/resources/wizard/style.qss");
-
-    QFile file(path);
-    Q_ASSERT(file.exists());
-    if (!OC_ENSURE(file.open(QIODevice::ReadOnly))) {
-        qCCritical(lcSetupWizardWidget) << "failed to load stylesheet";
-    }
-
-    QString stylesheet = replaceCssColors(QString::fromUtf8(file.readAll()));
-    _ui->contentWidget->setStyleSheet(stylesheet);
+    _ui->contentWidget->setStyleSheet(replaceCssColors());
 }
 
 void SetupWizardWidget::displayPage(AbstractSetupWizardPage *page, SetupWizardState state)

@@ -20,9 +20,9 @@
 #include "creds/httpcredentials.h"
 #include "networkjobs/checkserverjobfactory.h"
 #include "networkjobs/fetchuserinfojobfactory.h"
+#include "resources/template.h"
 #include "theme.h"
 
-#include <QApplication>
 #include <QBuffer>
 #include <QDesktopServices>
 #include <QIcon>
@@ -32,8 +32,6 @@
 #include <QNetworkReply>
 #include <QPixmap>
 #include <QRandomGenerator>
-#include <QScopeGuard>
-#include <QTimer>
 
 using namespace std::chrono;
 using namespace std::chrono_literals;
@@ -61,12 +59,6 @@ const auto defaultOauthPromtValue()
 
 QString renderHttpTemplate(const QString &title, const QString &content)
 {
-    const QString tmpl = [] {
-        QFile f(QStringLiteral(":/client/resources/oauth/oauth.html.in"));
-        OC_ASSERT(f.open(QFile::ReadOnly));
-        return QString::fromUtf8(f.readAll());
-    }();
-
     const QString icon = [] {
         const auto img = Theme::instance()->aboutIcon().pixmap(256).toImage();
         QByteArray out;
@@ -74,13 +66,14 @@ QString renderHttpTemplate(const QString &title, const QString &content)
         img.save(&buffer, "PNG");
         return QString::fromUtf8(out.toBase64());
     }();
-    return Utility::renderTemplate(tmpl, {
-                                             { QStringLiteral("TITLE"), title }, //
-                                             { QStringLiteral("CONTENT"), content }, //
-                                             { QStringLiteral("ICON"), icon }, //
-                                             { QStringLiteral("BACKGROUND_COLOR"), Theme::instance()->wizardHeaderBackgroundColor().name() }, //
-                                             { QStringLiteral("FONT_COLOR"), Theme::instance()->wizardHeaderTitleColor().name() } //
-                                         });
+    return Resources::Template::renderTemplateFromFile(QStringLiteral(":/client/resources/oauth/oauth.html.in"),
+        {
+            {QStringLiteral("TITLE"), title}, //
+            {QStringLiteral("CONTENT"), content}, //
+            {QStringLiteral("ICON"), icon}, //
+            {QStringLiteral("BACKGROUND_COLOR"), Theme::instance()->wizardHeaderBackgroundColor().name()}, //
+            {QStringLiteral("FONT_COLOR"), Theme::instance()->wizardHeaderTitleColor().name()} //
+        });
 }
 
 auto defaultTimeout()

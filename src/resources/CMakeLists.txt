@@ -4,9 +4,8 @@ add_library(owncloudResources SHARED
     loadresources.cpp
     resources.cpp
     qmlresources.cpp
-    qmlresources.h
     themewatcher.cpp
-    themewatcher.h
+    template.cpp
 )
 
 generate_theme(owncloudResources OWNCLOUD_SIDEBAR_ICONS)
