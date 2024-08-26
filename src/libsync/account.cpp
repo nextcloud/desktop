@@ -165,7 +165,7 @@ QString Account::initials() const
 
 QGradient::Preset Account::avatarGradient() const
 {
-    return static_cast<QGradient::Preset>(qHash(initials()) % QGradient::NumPresets + 1);
+    return static_cast<QGradient::Preset>(qHash(displayNameWithHost()) % QGradient::NumPresets + 1);
 }
 
 QString Account::davDisplayName() const
