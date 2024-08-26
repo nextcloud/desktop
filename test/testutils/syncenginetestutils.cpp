@@ -425,6 +425,10 @@ FakePropfindReply::FakePropfindReply(FileInfo &remoteRootFileInfo, QNetworkAcces
 
 void FakePropfindReply::respond()
 {
+    if (isFinished()) {
+        return;
+    }
+
     setHeader(QNetworkRequest::ContentLengthHeader, payload.size());
     setHeader(QNetworkRequest::ContentTypeHeader, QByteArrayLiteral("application/xml; charset=utf-8"));
     setAttribute(QNetworkRequest::HttpStatusCodeAttribute, 207);
@@ -437,6 +441,10 @@ void FakePropfindReply::respond()
 
 void FakePropfindReply::respond404()
 {
+    if (isFinished()) {
+        return;
+    }
+
     setAttribute(QNetworkRequest::HttpStatusCodeAttribute, 404);
     setError(InternalServerError, QStringLiteral("Not Found"));
     Q_EMIT metaDataChanged();
@@ -1221,6 +1229,7 @@ void FakeReply::abort()
 {
     if (!isFinished()) {
         setError(OperationCanceledError, QStringLiteral("Operation Canceled"));
+        setFinished(true);
         Q_EMIT metaDataChanged();
         Q_EMIT finished();
     }

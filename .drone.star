@@ -310,7 +310,7 @@ def unit_tests(image = OC_CI_CLIENT):
             "cd %s" % dir["build"],
             "useradd -m -s /bin/bash tester",
             "chown -R tester:tester .",
-            "su-exec tester ctest --output-on-failure -LE nodrone -E DatabaseErrorTest",
+            "su-exec tester ctest --output-on-failure -LE nodrone",
         ],
     }]
 

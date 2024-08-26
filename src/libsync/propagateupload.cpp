@@ -566,6 +566,7 @@ QMap<QByteArray, QByteArray> PropagateUploadFileCommon::headers()
 void PropagateUploadFileCommon::finalize()
 {
     OC_ENFORCE(state() != Finished);
+
     // Update the quota, if known
     if (!_quotaUpdated) {
         auto quotaIt = propagator()->_folderQuota.find(QFileInfo(_item->_file).path());
@@ -583,6 +584,7 @@ void PropagateUploadFileCommon::finalize()
         permCheck->setProperties({ "http://owncloud.org/ns:permissions" });
         connect(permCheck, &PropfindJob::directoryListingIterated, this, [this](const QString &, const QMap<QString, QString> &map) {
             _item->_remotePerm = RemotePermissions::fromServerString(map.value(QStringLiteral("permissions")));
+            Q_ASSERT(!_item->_remotePerm.isNull());
             finalize();
         });
         connect(permCheck, &PropfindJob::finishedWithError, this,
