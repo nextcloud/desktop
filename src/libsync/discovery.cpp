@@ -483,22 +483,26 @@ void ProcessDirectoryJob::processFile(PathTuple path,
     const auto localFileIsLocked = dbEntry._lockstate._locked ? "locked" : "not locked";
     const auto serverFileLockType = serverEntry.isValid() ? QString::number(static_cast<int>(serverEntry.lockOwnerType)) : QStringLiteral("");
     const auto localFileLockType = dbEntry._lockstate._locked ? QString::number(static_cast<int>(dbEntry._lockstate._lockOwnerType)) : QStringLiteral("");
-    qCInfo(lcDisco).nospace() << "Processing " << path._original
-                              << " | (db/local/remote)"
-                              << " | valid: " << dbEntry.isValid() << "/" << hasLocal << "/" << hasServer
-                              << " | mtime: " << dbEntry._modtime << "/" << localEntry.modtime << "/" << serverEntry.modtime
-                              << " | size: " << dbEntry._fileSize << "/" << localEntry.size << "/" << serverEntry.size
-                              << " | etag: " << dbEntry._etag << "//" << serverEntry.etag
-                              << " | checksum: " << dbEntry._checksumHeader << "//" << serverEntry.checksumHeader
-                              << " | perm: " << dbEntry._remotePerm << "//" << serverEntry.remotePerm
-                              << " | fileid: " << dbEntry._fileId << "//" << serverEntry.fileId
-                              << " | inode: " << dbEntry._inode << "/" << localEntry.inode << "/"
-                              << " | type: " << dbEntry._type << "/" << localEntry.type << "/" << (serverEntry.isDirectory ? ItemTypeDirectory : ItemTypeFile)
-                              << " | e2ee: " << dbEntry.isE2eEncrypted() << "/" << serverEntry.isE2eEncrypted()
-                              << " | e2eeMangledName: " << dbEntry.e2eMangledName() << "/" << serverEntry.e2eMangledName
-                              << " | file lock: " << localFileIsLocked << "//" << serverFileIsLocked
-                              << " | file lock type: " << localFileLockType << "//" << serverFileLockType
-                              << " | metadata missing: /" << localEntry.isMetadataMissing << '/';
+
+    QString processingLog;
+    QDebug deleteLogger{&processingLog};
+    deleteLogger.nospace() << "Processing " << path._original
+                           << " | (db/local/remote)"
+                           << " | valid: " << dbEntry.isValid() << "/" << hasLocal << "/" << hasServer
+                           << " | mtime: " << dbEntry._modtime << "/" << localEntry.modtime << "/" << serverEntry.modtime
+                           << " | size: " << dbEntry._fileSize << "/" << localEntry.size << "/" << serverEntry.size
+                           << " | etag: " << dbEntry._etag << "//" << serverEntry.etag
+                           << " | checksum: " << dbEntry._checksumHeader << "//" << serverEntry.checksumHeader
+                           << " | perm: " << dbEntry._remotePerm << "//" << serverEntry.remotePerm
+                           << " | fileid: " << dbEntry._fileId << "//" << serverEntry.fileId
+                           << " | type: " << dbEntry._type << "/" << localEntry.type << "/" << (serverEntry.isDirectory ? ItemTypeDirectory : ItemTypeFile)
+                           << " | e2ee: " << dbEntry.isE2eEncrypted() << "/" << serverEntry.isE2eEncrypted()
+                           << " | e2eeMangledName: " << dbEntry.e2eMangledName() << "/" << serverEntry.e2eMangledName
+                           << " | file lock: " << localFileIsLocked << "//" << serverFileIsLocked
+                           << " | file lock type: " << localFileLockType << "//" << serverFileLockType
+                           << " | metadata missing: /" << localEntry.isMetadataMissing << '/';
+
+    qCInfo(lcDisco).nospace() << processingLog;
 
     if (localEntry.isValid()
         && !serverEntry.isValid()
@@ -517,6 +521,7 @@ void ProcessDirectoryJob::processFile(PathTuple path,
     item->_originalFile = path._original;
     item->_previousSize = dbEntry._fileSize;
     item->_previousModtime = dbEntry._modtime;
+    item->_discoveryResult = std::move(processingLog);
 
     if (dbEntry._modtime == localEntry.modtime && dbEntry._type == ItemTypeVirtualFile && localEntry.type == ItemTypeFile) {
         item->_type = ItemTypeFile;
