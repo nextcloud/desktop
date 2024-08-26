@@ -14,11 +14,14 @@
 
 #include "resources/resources.h"
 #include "resources/qmlresources.h"
+#include "resources/template.h"
+
+#include "common/asserts.h"
 
 #include <QDebug>
 #include <QFileInfo>
+#include <QImageReader>
 #include <QJsonDocument>
-#include <QJsonObject>
 #include <QLoggingCategory>
 #include <QPalette>
 
@@ -95,27 +98,26 @@ bool OCC::Resources::isUsingDarkTheme()
     return forceDark || QPalette().base().color().lightnessF() <= 0.5;
 }
 
-QUrl Resources::getCoreIconUrl(const QString &icon_name)
+QIcon OCC::Resources::getCoreIcon(const QString &iconName)
 {
-    if (icon_name.isEmpty()) {
+    if (iconName.isEmpty()) {
         return {};
     }
-    const QString theme = Resources::isUsingDarkTheme() ? QStringLiteral("dark") : QStringLiteral("light");
-    return QUrl(QStringLiteral("qrc:/client/resources/%1/%2").arg(theme, icon_name));
-}
+    const QString color = isUsingDarkTheme() ? QStringLiteral("#838FA1") : QStringLiteral("#435671");
+    const QString key = QStringLiteral("%1,%2").arg(iconName, color);
 
-QIcon OCC::Resources::getCoreIcon(const QString &icon_name)
-{
-    if (icon_name.isEmpty()) {
-        return {};
+    static QMap<QString, QIcon> _iconCache;
+    QIcon &cached = _iconCache[key]; // Take reference, this will also "set" the cache entry
+    if (cached.isNull()) {
+        const QString iconPath = QStringLiteral(":/client/resources/core/%1.svg").arg(iconName);
+        Q_ASSERT(QFileInfo::exists(iconPath));
+        QByteArray data = Template::renderTemplateFromFile(iconPath, {{QStringLiteral("color"), color}}).toUtf8();
+        QBuffer buffer(&data);
+        QImageReader iconReader(&buffer, "svg");
+        return cached = QPixmap::fromImageReader(&iconReader);
     }
-    // QIcon doesn't like qrc:// urls...
-    const QIcon icon(QLatin1Char(':') + getCoreIconUrl(icon_name).path());
-    // were we able to load the file?
-    Q_ASSERT(icon.actualSize({100, 100}).isValid());
-    return icon;
+    return cached;
 }
-
 
 /*
  * helper to load a icon from either the icon theme the desktop provides or from
