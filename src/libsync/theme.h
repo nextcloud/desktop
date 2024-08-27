@@ -37,7 +37,7 @@ class QmlUrlButton
     Q_PROPERTY(QString icon MEMBER icon CONSTANT)
     Q_PROPERTY(QString name MEMBER name CONSTANT)
     Q_PROPERTY(QUrl url MEMBER url CONSTANT)
-    QML_VALUE_TYPE(UrlButtonData)
+    QML_VALUE_TYPE(urlbuttondata)
 
 public:
     QmlUrlButton();

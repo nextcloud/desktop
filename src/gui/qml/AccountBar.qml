@@ -150,7 +150,7 @@ Pane {
             model: Theme.urlButtons
 
             delegate: AccountButton {
-                property UrlButtonData urlButton: modelData
+                property urlbuttondata urlButton: modelData
 
                 Layout.fillHeight: true
                 Layout.maximumWidth: widthHint
