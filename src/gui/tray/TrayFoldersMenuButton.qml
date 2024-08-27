@@ -51,7 +51,7 @@ HeaderButton {
     Accessible.name: tooltip.text
     Accessible.onPressAction: root.clicked()
 
-    NCToolTip {
+    ToolTip {
         id: tooltip
         visible: root.hovered && !foldersMenuLoader.isMenuVisible
         text: root.userHasGroupFolders ? qsTr("Open local or group folders") : qsTr("Open local folder")

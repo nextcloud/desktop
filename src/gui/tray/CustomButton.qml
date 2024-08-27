@@ -47,7 +47,7 @@ Button {
 
     hoverEnabled: true
 
-    NCToolTip {
+    ToolTip {
         text: root.toolTipText
         visible: root.toolTipText !== "" && root.hovered
     }

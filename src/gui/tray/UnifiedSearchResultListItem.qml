@@ -38,7 +38,7 @@ MouseArea {
 
     height: Style.unifiedSearchItemHeight
 
-    NCToolTip {
+    ToolTip {
         visible: unifiedSearchResultMouseArea.containsMouse
         text: isFetchMoreTrigger ? qsTr("Load more results") : model.resultTitle + "\n\n" + model.subline
     }

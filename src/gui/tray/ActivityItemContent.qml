@@ -166,7 +166,7 @@ RowLayout {
 
                 icon.source: "image://svgimage-custom-color/more.svg/" + palette.buttonText
 
-                NCToolTip {
+                ToolTip {
                     text: qsTr("Open file details")
                     visible: parent.hovered
                 }
@@ -199,7 +199,7 @@ RowLayout {
                 bgColor: palette.mid
                 bgNormalOpacity: 0
 
-                NCToolTip {
+                ToolTip {
                     text: qsTr("Dismiss")
                     visible: parent.hovered
                 }

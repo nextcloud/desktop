@@ -47,7 +47,7 @@ TextField {
             top: replyMessageTextField.top
         }
 
-        NCToolTip {
+        ToolTip {
             visible: sendReplyMessageButton.hovered
             text:  qsTr("Send reply to chat message")
         }

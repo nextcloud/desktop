@@ -208,7 +208,7 @@ Page {
                         id: hoverHandler
                     }
 
-                    NCToolTip {
+                    ToolTip {
                         visible: hoverHandler.hovered
                         text: tagRepeater.fileTagModel.overflowTagsString
                     }
