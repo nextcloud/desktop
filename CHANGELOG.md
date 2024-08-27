@@ -55,6 +55,7 @@ ownCloud admins and users.
 * Bugfix - Support logging redirect: [#11581](https://github.com/owncloud/client/pull/11581)
 * Bugfix - Don't store null certificates in the account: [#11621](https://github.com/owncloud/client/issues/11621)
 * Bugfix - Fix crash for folders that could not be initialized: [#11664](https://github.com/owncloud/client/pull/11664)
+* Bugfix - Don't log misleading error if dynamic registration failed: [#11839](https://github.com/owncloud/client/pull/11839)
 * Change - Revert local folder name back to pre 3.0 behavior: [#6390](https://github.com/owncloud/enterprise/issues/6390)
 * Change - Make messages translatable that occur early in start-up: [#11142](https://github.com/owncloud/client/issues/11142)
 * Change - Remove unused command line option --language: [#11245](https://github.com/owncloud/client/issues/11245)
@@ -150,6 +151,10 @@ ownCloud admins and users.
    a crash if the folder was not properly initialized.
 
    https://github.com/owncloud/client/pull/11664
+
+* Bugfix - Don't log misleading error if dynamic registration failed: [#11839](https://github.com/owncloud/client/pull/11839)
+
+   https://github.com/owncloud/client/pull/11839
 
 * Change - Revert local folder name back to pre 3.0 behavior: [#6390](https://github.com/owncloud/enterprise/issues/6390)
 
