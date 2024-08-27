@@ -59,3 +59,4 @@ stackedWidget_quickWidget_OCC_QmlUtils_OCQuickWidget = {"container": stack_stack
 qt_tabwidget_stackedwidget_OCC_ProtocolWidget_OCC_ProtocolWidget = {"container": stack_qt_tabwidget_stackedwidget_QStackedWidget, "name": "OCC__ProtocolWidget", "type": "OCC::ProtocolWidget", "visible": 1}
 oCC_ProtocolWidget_tableView_QTableView = {"container": qt_tabwidget_stackedwidget_OCC_ProtocolWidget_OCC_ProtocolWidget, "name": "_tableView", "type": "QTableView", "visible": 1}
 oCC_IssuesWidget_tableView_QTableView = {"container": qt_tabwidget_stackedwidget_OCC_IssuesWidget_OCC_IssuesWidget, "name": "_tableView", "type": "QTableView", "visible": 1}
+dialogStack_quickWidget_OCC_QmlUtils_OCQuickWidget = {"container": settings_dialogStack_QStackedWidget, "name": "quickWidget", "type": "OCC::QmlUtils::OCQuickWidget", "visible": 1}

@@ -26,14 +26,9 @@ def step(context):
 
 
 @Then('the account with displayname "|any|" and host "|any|" should be displayed')
-def step(context, displayname, host):
+def step(context, displayname, _):
     displayname = substituteInLineCodes(displayname)
-    host = substituteInLineCodes(host)
-
-    test.compare(
-        Toolbar.getDisplayedAccountText(displayname, host),
-        displayname + "\n" + host,
-    )
+    Toolbar.account_exists(displayname)
 
 
 @Then('the account with displayname "|any|" and host "|any|" should not be displayed')
@@ -185,12 +180,11 @@ def step(context, username):
 
 
 @When('the user removes the connection for user "|any|" and host |any|')
-def step(context, username, host):
+def step(context, username, _):
     displayname = getDisplaynameForUser(username)
     displayname = substituteInLineCodes(displayname)
-    host = substituteInLineCodes(host)
 
-    Toolbar.openAccount(displayname, host)
+    Toolbar.openAccount(displayname)
     AccountSetting.removeAccountConnection()
 
 
@@ -314,10 +308,7 @@ def step(context):
 @Then('"|any|" account should be opened')
 def step(context, displayname):
     displayname = substituteInLineCodes(displayname)
-    host = substituteInLineCodes("%local_server_hostname%")
-    account = displayname + "\n" + host
-
-    has_focus = Toolbar.account_has_focus(account)
+    has_focus = Toolbar.account_has_focus(displayname)
     if not has_focus:
         raise LookupError(f"Account '{displayname}' should be opened, but it is not")
 

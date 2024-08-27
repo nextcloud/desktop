@@ -211,11 +211,9 @@ def teardown_client():
         # so to work around that, remove the account connection
         close_dialogs()
         close_widgets()
-        server_host = urlparse(get_config('localBackendUrl')).netloc
-        accounts = Toolbar.get_accounts()
+        accounts, _ = Toolbar.get_accounts()
         for account in accounts:
-            displayname = account.split('\n')[0]
-            Toolbar.openAccount(displayname, server_host)
+            Toolbar.openAccount(account["displayname"])
             AccountSetting.removeAccountConnection()
         if accounts:
             waitForObject(AccountConnectionWizard.SERVER_ADDRESS_BOX)
