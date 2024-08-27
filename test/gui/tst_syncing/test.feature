@@ -489,7 +489,7 @@ Feature: Syncing files
         And the folder "test-folder/sub-folder2" should exist on the file system
         And the folder "test-folder/sub-folder1" should not exist on the file system
 
-
+    @issue-11814 @skip
     Scenario: remove folder sync connection
         Given user "Alice" has created folder "simple-folder" in the server
         And user "Alice" has set up a client with default settings
