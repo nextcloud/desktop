@@ -80,15 +80,12 @@ ToolButton {
             Layout.fillHeight: true
             Layout.fillWidth: true
             color: control.visualFocus ? control.palette.highlight : control.palette.buttonText
-            // elide middle would look better but doesn't work with wrapping
             elide: Text.ElideRight
             font: control.font
             horizontalAlignment: Text.AlignHCenter
-            maximumLineCount: 2
             opacity: enabled ? 1.0 : 0.3
             text: control.text
             verticalAlignment: Text.AlignTop
-            wrapMode: Text.WordWrap
         }
     }
 }
