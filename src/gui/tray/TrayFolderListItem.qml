@@ -25,7 +25,7 @@ MenuItem {
     property string backgroundIconSource: value
     property string toolTipText: root.text
 
-    NCToolTip {
+    ToolTip {
         visible: root.hovered && root.toolTipText !== ""
         text: root.toolTipText
     }
