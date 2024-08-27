@@ -619,7 +619,9 @@ private Q_SLOTS:
             {
                 const QByteArray payload(QByteArrayLiteral("{\"redirect_uris\":[\"http://127.0.0.1\"],\"token_endpoint_auth_method\":\"client_secret_basic\",\"grant_types\":[\"authorization_code\",\"refresh_token\"],\"response_types\":[\"code\",\"none\"],\"client_id\":\"3e4ea0f3-59ea-434a-92f2-b0d3b54443e9\",\"client_secret\":\"rmoEXFc1Z5tGTApxanBW7STlWODqRTYx\",\"client_name\":\"ownCloud 3.0.0.0\",\"scope\":\"web-origins address phone offline_access microprofile-jwt\",\"subject_type\":\"public\",\"request_uris\":[],\"tls_client_certificate_bound_access_tokens\":false,\"client_id_issued_at\":1663074650,\"client_secret_expires_at\":0,\"registration_client_uri\":\"https://someserver.de/auth/realms/ocis/clients-registrations/openid-connect/3e4ea0f3-59ea-434a-92f2-b0d3b54443e9\",\"registration_access_token\":\"eyJhbGciOiJIUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICIzYjQ2YWVkYi00Y2I3LTRiMGItODA5Ny1lNjRmOGQ5ZWY2YjQifQ.eyJleHAiOjAsImlhdCI6MTY2MzA3NDY1MCwianRpIjoiNTlkZWIzNTktNTBmZS00YTUyLWFmNTItZjFjNDg3ZTFlOWRmIiwiaXNzIjoiaHR0cHM6Ly9rZXljbG9hay5vd25jbG91ZC5jbG91ZHNwZWljaGVyLWJheWVybi5kZS9hdXRoL3JlYWxtcy9vY2lzIiwiYXVkIjoiaHR0cHM6Ly9rZXljbG9hay5vd25jbG91ZC5jbG91ZHNwZWljaGVyLWJheWVybi5kZS9hdXRoL3JlYWxtcy9vY2lzIiwidHlwIjoiUmVnaXN0cmF0aW9uQWNjZXNzVG9rZW4iLCJyZWdpc3RyYXRpb25fYXV0aCI6ImFub255bW91cyJ9.v1giSvpnKw1hTtBYZaqdp3JqnZ5mvCKYhQDKkT7x8Us\",\"backchannel_logout_session_required\":false,\"require_pushed_authorization_requests\":false}"));
 
-                return new FakePayloadReply(op, request, payload, fakeAm);
+                auto *out = new FakePayloadReply(op, request, payload, fakeAm);
+                out->setAttribute(QNetworkRequest::HttpStatusCodeAttribute, 201);
+                return out;
             }
 
         } test;
@@ -653,7 +655,7 @@ private Q_SLOTS:
                 return new FakePayloadReply(op, req, jsondata.toJson(), fakeAm);
             }
 
-            void openBrowserHook(const QUrl &url) override { Q_UNREACHABLE(); }
+            void openBrowserHook(const QUrl &) override { Q_UNREACHABLE(); }
 
             QNetworkReply *tokenReply(QNetworkAccessManager::Operation op, const QNetworkRequest &request, QIODevice *device) override
             {
@@ -692,7 +694,9 @@ private Q_SLOTS:
                                         "5fYXV0aCI6ImFub255bW91cyJ9.v1giSvpnKw1hTtBYZaqdp3JqnZ5mvCKYhQDKkT7x8Us\",\"backchannel_logout_session_required\":"
                                         "false,\"require_pushed_authorization_requests\":false}"));
 
-                return new FakePayloadReply(op, request, payload, fakeAm);
+                auto *out = new FakePayloadReply(op, request, payload, fakeAm);
+                out->setAttribute(QNetworkRequest::HttpStatusCodeAttribute, 201);
+                return out;
             }
 
             virtual void test()
@@ -732,7 +736,7 @@ private Q_SLOTS:
                 return new FakePayloadReply(op, req, jsondata.toJson(), fakeAm);
             }
 
-            void openBrowserHook(const QUrl &url) override { Q_UNREACHABLE(); }
+            void openBrowserHook(const QUrl &) override { Q_UNREACHABLE(); }
 
             QNetworkReply *tokenReply(QNetworkAccessManager::Operation op, const QNetworkRequest &request, QIODevice *device) override
             {

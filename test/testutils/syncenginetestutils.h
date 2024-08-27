@@ -306,6 +306,7 @@ public:
     virtual ~FakeReply() override;
 
     // useful to be public for testing
+    using QNetworkReply::setAttribute;
     using QNetworkReply::setRawHeader;
 
     virtual void abort() override;

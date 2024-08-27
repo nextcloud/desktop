@@ -783,12 +783,12 @@ FakePayloadReply::FakePayloadReply(QNetworkAccessManager::Operation op, const QN
     setOperation(op);
     open(QIODevice::ReadOnly);
     QTimer::singleShot(10ms, this, &FakePayloadReply::respond);
+    setAttribute(QNetworkRequest::HttpStatusCodeAttribute, 200);
 }
 
 void FakePayloadReply::respond()
 {
     if (error() == QNetworkReply::NoError) {
-        setAttribute(QNetworkRequest::HttpStatusCodeAttribute, 200);
         setHeader(QNetworkRequest::ContentLengthHeader, _body.size());
         Q_EMIT metaDataChanged();
         Q_EMIT readyRead();
