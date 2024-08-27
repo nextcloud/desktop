@@ -4,7 +4,7 @@ name: drone desktop client
 
 steps:
 - name: cmake
-  image: ghcr.io/nextcloud/continuous-integration-client-qt6:client-6.6.3-2
+  image: ivaradi/continuous-integration-client-qt6:client-6.6.3-3
   volumes:
     - name: build
       path: /drone/build
@@ -13,7 +13,7 @@ steps:
     - cmake /drone/src -G Ninja -DCMAKE_PREFIX_PATH=/opt/qt6.6.3 -DCMAKE_C_COMPILER=gcc-11 -DCMAKE_CXX_COMPILER=g++-11 -DCMAKE_BUILD_TYPE=Debug -DQT_MAJOR_VERSION=6 -DQUICK_COMPILER=ON -DBUILD_UPDATER=ON -DBUILD_TESTING=1 -DCMAKE_CXX_FLAGS=-Werror -DOPENSSL_ROOT_DIR=/usr/local/lib64 -DADD_E2E_TESTS=ON
 
 - name: compile
-  image: ghcr.io/nextcloud/continuous-integration-client-qt6:client-6.6.3-2
+  image: ivaradi/continuous-integration-client-qt6:client-6.6.3-3
   volumes:
     - name: build
       path: /drone/build
@@ -22,7 +22,7 @@ steps:
     - ninja
 
 - name: test
-  image: ghcr.io/nextcloud/continuous-integration-client-qt6:client-6.6.3-2
+  image: ivaradi/continuous-integration-client-qt6:client-6.6.3-3
   volumes:
     - name: build
       path: /drone/build
@@ -79,7 +79,7 @@ name: qt-5.15-clang
 
 steps:
 - name: cmake
-  image: ghcr.io/nextcloud/continuous-integration-client-qt6:client-6.6.3-2
+  image: ivaradi/continuous-integration-client-qt6:client-6.6.3-3
   volumes:
     - name: build
       path: /drone/build
@@ -87,7 +87,7 @@ steps:
     - cd /drone/build
     - cmake /drone/src -G Ninja -DCMAKE_PREFIX_PATH=/opt/qt6.6.3 -DCMAKE_C_COMPILER=clang-14 -DCMAKE_CXX_COMPILER=clang++-14 -DCMAKE_BUILD_TYPE=Debug -DQT_MAJOR_VERSION=6 -DQUICK_COMPILER=ON -DBUILD_UPDATER=ON -DBUILD_TESTING=1 -DCMAKE_CXX_FLAGS=-Werror -DOPENSSL_ROOT_DIR=/usr/local/lib64 -DADD_E2E_TESTS=ON
 - name: compile
-  image: ghcr.io/nextcloud/continuous-integration-client-qt6:client-6.6.3-2
+  image: ivaradi/continuous-integration-client-qt6:client-6.6.3-3
   volumes:
     - name: build
       path: /drone/build
@@ -95,7 +95,7 @@ steps:
     - cd /drone/build
     - ninja
 - name: test
-  image: ghcr.io/nextcloud/continuous-integration-client-qt6:client-6.6.3-2
+  image: ivaradi/continuous-integration-client-qt6:client-6.6.3-3
   volumes:
     - name: build
       path: /drone/build
