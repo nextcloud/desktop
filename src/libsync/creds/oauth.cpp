@@ -174,14 +174,19 @@ private:
         req.setHeader(QNetworkRequest::ContentTypeHeader, QByteArrayLiteral("application/json"));
         auto reply = _networkAccessManager->post(req, QJsonDocument(json).toJson());
         connect(reply, &QNetworkReply::finished, this, [reply, this] {
-            const auto data = reply->readAll();
-            QJsonParseError error {};
-            const auto json = QJsonDocument::fromJson(data, &error);
-            if (error.error == QJsonParseError::NoError) {
-                registerClientFinished(json.object().toVariantMap());
+            // https://datatracker.ietf.org/doc/html/rfc7591#section-3.2
+            if (reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt() == 201) {
+                const auto data = reply->readAll();
+                QJsonParseError error{};
+                const auto json = QJsonDocument::fromJson(data, &error);
+                if (error.error == QJsonParseError::NoError) {
+                    registerClientFinished(json.object().toVariantMap());
+                } else {
+                    qCWarning(lcOauth) << "Failed to register the client" << error.errorString() << data;
+                    Q_EMIT errorOccured(error.errorString());
+                }
             } else {
-                qCWarning(lcOauth) << "Failed to register the client" << error.errorString() << data;
-                Q_EMIT errorOccured(error.errorString());
+                Q_EMIT errorOccured(reply->errorString());
             }
         });
     }

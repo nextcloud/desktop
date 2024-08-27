@@ -1,0 +1,3 @@
+Bugfix: Don't log misleading error if dynamic registration failed
+
+https://github.com/owncloud/client/pull/11839
