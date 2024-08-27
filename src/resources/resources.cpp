@@ -141,7 +141,7 @@ QIcon OCC::Resources::loadIcon(const QString &flavor, const QString &name, IconT
             return cached = QIcon(svg);
         }
 
-        const QString png = QStringLiteral("%1.png").arg(name);
+        const QString png = QStringLiteral("%1.png").arg(path);
         if (QFile::exists(png)) {
             return cached = QIcon(png);
         }
