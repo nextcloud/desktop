@@ -59,7 +59,7 @@ Pane {
                 icon.source: accountState.account.hasAvatar ? QMLResources.resourcePath2("avatar", accountState.account.uid, enabled) : undefined
                 icon.cache: false
                 altText: accountState.account.initials
-                text: accountState.account.hostname
+                text: accountState.account.hostName
                 gradient: accountState.account.avatarGradient
                 solidColor: Theme.avatarColor
                 solidColorChecked: Theme.avatarColorChecked

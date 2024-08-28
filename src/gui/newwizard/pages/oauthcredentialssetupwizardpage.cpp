@@ -13,43 +13,26 @@
  */
 
 #include "oauthcredentialssetupwizardpage.h"
-#include "ui_credentialssetupwizardpage.h"
 
-#include "gui/guiutility.h"
-#include "theme.h"
+#include "gui/creds/qmlcredentials.h"
+#include "gui/qmlutils.h"
 
-#include <QClipboard>
+#include <QHBoxLayout>
 
 namespace OCC::Wizard {
 
-OAuthCredentialsSetupWizardPage::OAuthCredentialsSetupWizardPage(const QUrl &serverUrl)
-    : _ui(new ::Ui::CredentialsSetupWizardPage)
+OAuthCredentialsSetupWizardPage::OAuthCredentialsSetupWizardPage(OAuth *oauth, const QUrl &serverUrl, QWidget *parent)
+    : AbstractSetupWizardPage(parent)
 {
-    _ui->setupUi(this);
+    auto *layout = new QHBoxLayout(this);
+    auto *widget = new QmlUtils::OCQuickWidget;
+    layout->addWidget(widget);
+    setFocusProxy(widget);
 
-    // bring the correct widget to the front
-    _ui->contentWidget->setCurrentWidget(_ui->oauthLoginWidget);
-
-    _ui->urlLabel->setText(tr("Connecting to <a href='%1' style='color: %2;'>%1</a>").arg(serverUrl.toString(), Theme::instance()->wizardHeaderTitleColor().name()));
-
-    // we want to give the user a chance to preserve their privacy when using a private proxy for instance
-    // therefore, we need to make sure the user can manually
-    // using clicked allows a user to "abort the click" (unlike pressed and released)
-    connect(_ui->oauthLoginWidget, &OAuthLoginWidget::openBrowserButtonClicked, this, [this](const QUrl &url) {
-        Q_EMIT openBrowserButtonPushed(url);
-
-        // change button title after first click
-        // TODO: move to OAuthLoginWidget
-        _ui->oauthLoginWidget->setOpenBrowserButtonText(tr("Reopen Browser"));
-    });
-    connect(this, &AbstractSetupWizardPage::pageDisplayed, _ui->oauthLoginWidget, qOverload<>(&OAuthLoginWidget::setFocus));
-
-    _ui->topLabel->setText(tr("Please use your browser to log in to %1.").arg(Theme::instance()->appNameGUI()));
-}
-
-OAuthCredentialsSetupWizardPage::~OAuthCredentialsSetupWizardPage()
-{
-    delete _ui;
+    auto *oauthCredentials = new QmlOAuthCredentials(oauth, serverUrl, {});
+    oauthCredentials->setIsRefresh(false);
+    widget->setOCContext(
+        QUrl(QStringLiteral("qrc:/qt/qml/org/ownCloud/gui/qml/credentials/OAuthCredentials.qml")), this, oauthCredentials, QJSEngine::JavaScriptOwnership);
 }
 
 bool OAuthCredentialsSetupWizardPage::validateInput()
@@ -57,11 +40,6 @@ bool OAuthCredentialsSetupWizardPage::validateInput()
     // in this special case, the input may never be validated, i.e., the next button also never needs to be enabled
     // an external system set up by the controller will move to the next page in the background
     return false;
-}
-
-void OAuthCredentialsSetupWizardPage::setAuthUrl(const QUrl &url)
-{
-    _ui->oauthLoginWidget->setUrl(url);
 }
 
 } // namespace OCC::Wizard

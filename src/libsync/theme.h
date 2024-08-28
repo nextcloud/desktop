@@ -21,6 +21,8 @@
 
 #include <QFileInfo>
 #include <QObject>
+#include <QPalette>
+#include <qquickwindow.h>
 
 namespace OCC {
 
@@ -48,6 +50,23 @@ public:
     QUrl url;
 };
 
+class QmlButtonColor
+{
+    Q_GADGET
+    Q_PROPERTY(QColor color MEMBER color CONSTANT)
+    Q_PROPERTY(QColor textColor MEMBER textColor CONSTANT)
+    Q_PROPERTY(QColor textColorDisabled MEMBER textColorDisabled CONSTANT)
+    Q_PROPERTY(bool valid READ valid CONSTANT)
+    QML_VALUE_TYPE(buttonColor)
+
+public:
+    QColor color = {};
+    QColor textColor = {};
+    QColor textColorDisabled = {};
+
+    bool valid() const;
+};
+
 class OWNCLOUDSYNC_EXPORT Theme : public QObject
 {
     Q_OBJECT
@@ -57,6 +76,10 @@ class OWNCLOUDSYNC_EXPORT Theme : public QObject
     Q_PROPERTY(bool syncNewlyDiscoveredSpaces READ syncNewlyDiscoveredSpaces FINAL CONSTANT)
     Q_PROPERTY(QColor avatarColor READ avatarColor NOTIFY themeChanged)
     Q_PROPERTY(QColor avatarColorChecked READ avatarColorChecked NOTIFY themeChanged)
+    Q_PROPERTY(QColor brandedBackgoundColor READ wizardHeaderBackgroundColor CONSTANT)
+    Q_PROPERTY(QColor brandedForegroundColor READ wizardHeaderTitleColor CONSTANT)
+    Q_PROPERTY(QmlButtonColor primaryButtonColor READ primaryButtonColor CONSTANT)
+    Q_PROPERTY(QmlButtonColor secondaryButtonColor READ secondaryButtonColor CONSTANT)
     QML_SINGLETON
     QML_ELEMENT
 public:
@@ -189,6 +212,8 @@ public:
 
     /** @return color for the setup wizard. */
     virtual QColor wizardHeaderBackgroundColor() const;
+    virtual QmlButtonColor primaryButtonColor() const;
+    virtual QmlButtonColor secondaryButtonColor() const;
 
     /** @return logo for the setup wizard. */
     virtual QIcon wizardHeaderLogo() const;

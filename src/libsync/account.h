@@ -75,7 +75,7 @@ class OWNCLOUDSYNC_EXPORT Account : public QObject
     Q_PROPERTY(QString davDisplayName READ davDisplayName NOTIFY displayNameChanged)
     Q_PROPERTY(QString displayNameWithHost READ displayNameWithHost NOTIFY displayNameChanged)
     Q_PROPERTY(QString initials READ initials NOTIFY displayNameChanged)
-    Q_PROPERTY(QString hostname READ hostname NOTIFY urlChanged)
+    Q_PROPERTY(QString hostName READ hostName NOTIFY urlChanged)
     Q_PROPERTY(bool hasAvatar READ hasAvatar NOTIFY avatarChanged)
     Q_PROPERTY(QGradient::Preset avatarGradient READ avatarGradient NOTIFY displayNameChanged)
     Q_PROPERTY(QUrl url READ url NOTIFY urlChanged)
@@ -139,7 +139,7 @@ public:
     /** Server url of the account */
     void setUrl(const QUrl &url);
     QUrl url() const;
-    QString hostname() const;
+    QString hostName() const;
 
     /**
      * @brief The possibly themed dav path for the account. It has

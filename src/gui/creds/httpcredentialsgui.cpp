@@ -18,16 +18,13 @@
 #include "accountmodalwidget.h"
 #include "application.h"
 #include "common/asserts.h"
+#include "creds/qmlcredentials.h"
 #include "gui/accountsettings.h"
-#include "gui/loginrequireddialog/basicloginwidget.h"
-#include "gui/loginrequireddialog/loginrequireddialog.h"
-#include "gui/loginrequireddialog/oauthloginwidget.h"
 #include "networkjobs.h"
 #include "settingsdialog.h"
 
 #include <QClipboard>
 #include <QDesktopServices>
-#include <QGuiApplication>
 #include <QTimer>
 
 
@@ -35,17 +32,15 @@ namespace OCC {
 
 Q_LOGGING_CATEGORY(lcHttpCredentialsGui, "sync.credentials.http.gui", QtInfoMsg)
 
-void HttpCredentialsGui::openBrowser()
+HttpCredentialsGui::HttpCredentialsGui(const QString &loginUser, const QString &password)
+    : HttpCredentials(DetermineAuthTypeJob::AuthType::Basic, loginUser, password)
 {
-    OC_ASSERT(isUsingOAuth());
-    if (isUsingOAuth()) {
-        if (_asyncAuth) {
-            _asyncAuth->openBrowser();
-        } else {
-            qCWarning(lcHttpCredentialsGui) << "There is no authentication job running, did the previous attempt fail?";
-            askFromUser();
-        }
-    }
+}
+
+HttpCredentialsGui::HttpCredentialsGui(const QString &davUser, const QString &password, const QString &refreshToken)
+    : HttpCredentials(DetermineAuthTypeJob::AuthType::OAuth, davUser, password)
+{
+    _refreshToken = refreshToken;
 }
 
 void HttpCredentialsGui::askFromUser()
@@ -56,14 +51,14 @@ void HttpCredentialsGui::askFromUser()
     // the cache has been cleared, otherwise we'd interfere with the job.
     QTimer::singleShot(0, this, [this] {
         if (isUsingOAuth()) {
-            restartOAuth();
+            startOAuth();
         } else {
             // First, we will check what kind of auth we need.
             auto job = new DetermineAuthTypeJob(_account->sharedFromThis(), this);
             QObject::connect(job, &DetermineAuthTypeJob::authType, this, [this](DetermineAuthTypeJob::AuthType type) {
                 _authType = type;
                 if (type == DetermineAuthTypeJob::AuthType::OAuth) {
-                    restartOAuth();
+                    startOAuth();
                 } else if (type == DetermineAuthTypeJob::AuthType::Basic) {
                     showDialog();
                 } else {
@@ -81,9 +76,9 @@ void HttpCredentialsGui::asyncAuthResult(OAuth::Result r, const QString &token, 
     _asyncAuth.reset();
     switch (r) {
     case OAuth::NotSupported:
-        if (_loginRequiredDialog) {
-            _loginRequiredDialog->deleteLater();
-            _loginRequiredDialog.clear();
+        if (_modalWidget) {
+            _modalWidget->deleteLater();
+            _modalWidget.clear();
         }
         // show basic auth dialog for historic reasons
         showDialog();
@@ -109,93 +104,70 @@ void HttpCredentialsGui::asyncAuthResult(OAuth::Result r, const QString &token, 
 
 void HttpCredentialsGui::showDialog()
 {
-    if (_loginRequiredDialog != nullptr) {
+    if (_modalWidget) {
         return;
     }
 
-    auto *dialog = new LoginRequiredDialog(LoginRequiredDialog::Mode::Basic, ocApp()->gui()->settingsDialog());
-
-    // make sure it's cleaned up since it's not owned by the account settings (also prevents memory leaks)
-    dialog->setAttribute(Qt::WA_DeleteOnClose);
-
-    dialog->setTopLabelText(tr("Please enter your password to log in to the account %1.").arg(_account->displayNameWithHost()));
-
-    auto *contentWidget = qobject_cast<BasicLoginWidget *>(dialog->contentWidget());
-    contentWidget->forceUsername(user());
-
-    auto *modalWidget = new AccountModalWidget(tr("Login required"), dialog, ocApp()->gui()->settingsDialog());
-    modalWidget->addButton(tr("Log out"), QDialogButtonBox::RejectRole);
-    modalWidget->addButton(tr("Log in"), QDialogButtonBox::AcceptRole); // in this case, we want to use the login button
-    connect(this, &HttpCredentialsGui::oAuthLoginAccepted, modalWidget, &AccountModalWidget::accept);
-    connect(modalWidget, &AccountModalWidget::finished, ocApp()->gui()->settingsDialog(), [this, contentWidget](AccountModalWidget::Result result) {
-        if (result == AccountModalWidget::Result::Accepted) {
-            _password = contentWidget->password();
-            _refreshToken.clear();
-            _ready = true;
-            persist();
-        } else {
-            Q_EMIT requestLogout();
-        }
+    auto basicCredentials = new QmlBasicCredentials(_account->url(), _account->davDisplayName(), this);
+    basicCredentials->setReadOnlyName(user());
+    _modalWidget = new AccountModalWidget(tr("Login required"), QUrl(QStringLiteral("qrc:/qt/qml/org/ownCloud/gui/qml/credentials/BasicAuthCredentials.qml")),
+        basicCredentials, ocApp()->gui()->settingsDialog());
+    connect(basicCredentials, &QmlBasicCredentials::logOutRequested, _modalWidget, [basicCredentials, this] {
+        Q_EMIT requestLogout();
         Q_EMIT fetched();
+        _modalWidget->reject();
+        basicCredentials->deleteLater();
+    });
+    connect(basicCredentials, &QmlBasicCredentials::loginRequested, _modalWidget, [basicCredentials, this] {
+        _password = basicCredentials->password();
+        basicCredentials->deleteLater();
+        _refreshToken.clear();
+        _ready = true;
+        persist();
+
+        Q_EMIT fetched();
+        _modalWidget->accept();
     });
 
-    ocApp()->gui()->settingsDialog()->accountSettings(_account)->addModalWidget(modalWidget);
-    _loginRequiredDialog = dialog;
+
+    ocApp()->gui()->settingsDialog()->accountSettings(_account)->addModalWidget(_modalWidget);
 }
 
-QUrl HttpCredentialsGui::authorisationLink() const
-{
-    OC_ASSERT(isUsingOAuth());
-    if (isUsingOAuth()) {
-        if (_asyncAuth) {
-            return _asyncAuth->authorisationLink();
-        } else {
-            qCWarning(lcHttpCredentialsGui) << "There is no authentication job running, did the previous attempt fail?";
-            return {};
-        }
-    }
-    return {};
-}
-
-void HttpCredentialsGui::restartOAuth()
+void HttpCredentialsGui::startOAuth()
 {
     qCDebug(lcHttpCredentialsGui) << "showing modal dialog asking user to log in again via OAuth2";
-
-    if (!_loginRequiredDialog) {
-        _loginRequiredDialog = new LoginRequiredDialog(LoginRequiredDialog::Mode::OAuth, ocApp()->gui()->settingsDialog());
-
-        // make sure it's cleaned up since it's not owned by the account settings (also prevents memory leaks)
-        _loginRequiredDialog->setAttribute(Qt::WA_DeleteOnClose);
-
-        _loginRequiredDialog->setTopLabelText(
-            tr("The account %1 is currently logged out.\n\nPlease authenticate using your browser.").arg(_account->displayNameWithHost()));
-
-        auto *contentWidget = qobject_cast<OAuthLoginWidget *>(_loginRequiredDialog->contentWidget());
-        connect(contentWidget, &OAuthLoginWidget::openBrowserButtonClicked, this, &HttpCredentialsGui::openBrowser);
-
-        connect(contentWidget, &OAuthLoginWidget::retryButtonClicked, _loginRequiredDialog, [contentWidget, this]() {
-            restartOAuth();
-            contentWidget->hideRetryFrame();
-        });
-
-        connect(this, &HttpCredentialsGui::oAuthErrorOccurred, _loginRequiredDialog, [contentWidget, this]() {
-            Q_ASSERT(!ready());
-            ownCloudGui::raise();
-            contentWidget->showRetryFrame();
-        });
-
-        auto *modalWidget = new AccountModalWidget(tr("Login required"), _loginRequiredDialog, ocApp()->gui()->settingsDialog());
-        modalWidget->addButton(tr("Log out"), QDialogButtonBox::RejectRole);
-        connect(this, &HttpCredentialsGui::oAuthLoginAccepted, modalWidget, &AccountModalWidget::accept);
-        connect(modalWidget, &AccountModalWidget::rejected, this, &HttpCredentials::requestLogout);
-
-        ocApp()->gui()->settingsDialog()->accountSettings(_account)->addModalWidget(modalWidget);
+    if (_asyncAuth) {
+        return;
     }
-
+    if (!OC_ENSURE_NOT(_modalWidget)) {
+        _modalWidget->deleteLater();
+    }
     _asyncAuth.reset(new AccountBasedOAuth(_account->sharedFromThis(), this));
     connect(_asyncAuth.data(), &OAuth::result, this, &HttpCredentialsGui::asyncAuthResult);
-    connect(_asyncAuth.data(), &OAuth::authorisationLinkChanged, this,
-        [this] { qobject_cast<OAuthLoginWidget *>(_loginRequiredDialog->contentWidget())->setUrl(authorisationLink()); });
+
+    auto *oauthCredentials = new QmlOAuthCredentials(_asyncAuth.data(), _account->url(), _account->davDisplayName());
+    _modalWidget = new AccountModalWidget(tr("Login required"), QUrl(QStringLiteral("qrc:/qt/qml/org/ownCloud/gui/qml/credentials/OAuthCredentials.qml")),
+        oauthCredentials, ocApp()->gui()->settingsDialog());
+
+    connect(oauthCredentials, &QmlOAuthCredentials::logOutRequested, _modalWidget, [this] {
+        _modalWidget->reject();
+        _modalWidget.clear();
+        _asyncAuth.reset();
+        requestLogout();
+    });
+    connect(oauthCredentials, &QmlOAuthCredentials::requestRestart, this, [this] {
+        _modalWidget->reject();
+        _modalWidget.clear();
+        _asyncAuth.reset();
+        startOAuth();
+    });
+    connect(this, &HttpCredentialsGui::oAuthLoginAccepted, _modalWidget, &AccountModalWidget::accept);
+    connect(this, &HttpCredentialsGui::oAuthErrorOccurred, oauthCredentials, [this]() {
+        Q_ASSERT(!ready());
+        ownCloudGui::raise();
+    });
+
+    ocApp()->gui()->settingsDialog()->accountSettings(_account)->addModalWidget(_modalWidget);
     _asyncAuth->startAuthentication();
 }
 

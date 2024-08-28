@@ -14,8 +14,4 @@
 
 #include "abstractsetupwizardpage.h"
 
-namespace OCC::Wizard {
-
-AbstractSetupWizardPage::~AbstractSetupWizardPage() = default;
-
-}
+// empty c++ file for moc

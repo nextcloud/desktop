@@ -15,30 +15,25 @@
 #pragma once
 
 #include "abstractsetupwizardpage.h"
+#include "gui/qmlutils.h"
 
-namespace Ui {
-class CredentialsSetupWizardPage;
+namespace OCC {
+class OAuth;
+namespace Wizard {
+
+    class OAuthCredentialsSetupWizardPage : public AbstractSetupWizardPage
+    {
+        Q_OBJECT
+        OC_DECLARE_WIDGET_FOCUS
+
+    public:
+        explicit OAuthCredentialsSetupWizardPage(OAuth *oauth, const QUrl &serverUrl, QWidget *parent = nullptr);
+
+        bool validateInput() override;
+
+    Q_SIGNALS:
+        void openBrowserButtonPushed(const QUrl &url);
+    };
+
 }
-
-namespace OCC::Wizard {
-
-class OAuthCredentialsSetupWizardPage : public AbstractSetupWizardPage
-{
-    Q_OBJECT
-
-public:
-    explicit OAuthCredentialsSetupWizardPage(const QUrl &serverUrl);
-    ~OAuthCredentialsSetupWizardPage() noexcept override;
-
-    bool validateInput() override;
-
-    void setAuthUrl(const QUrl &url);
-
-Q_SIGNALS:
-    void openBrowserButtonPushed(const QUrl &url);
-
-private:
-    ::Ui::CredentialsSetupWizardPage *_ui;
-};
-
-} // namespace OCC::Wizard
+}

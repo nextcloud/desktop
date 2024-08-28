@@ -13,53 +13,52 @@
  */
 
 #include "basiccredentialssetupwizardpage.h"
-#include "ui_credentialssetupwizardpage.h"
 
-#include "theme.h"
+#include "gui/creds/qmlcredentials.h"
+#include "gui/qmlutils.h"
+
+#include <QHBoxLayout>
+
 
 namespace OCC::Wizard {
 
-BasicCredentialsSetupWizardPage::BasicCredentialsSetupWizardPage(const QUrl &serverUrl)
-    : _ui(new ::Ui::CredentialsSetupWizardPage)
+BasicCredentialsSetupWizardPage::BasicCredentialsSetupWizardPage(const QUrl &serverUrl, QWidget *parent)
+    : AbstractSetupWizardPage(parent)
 {
-    _ui->setupUi(this);
+    auto *layout = new QHBoxLayout(this);
+    auto *widget = new QmlUtils::OCQuickWidget;
+    layout->addWidget(widget);
+    setFocusProxy(widget);
 
-    _ui->topLabel->setText(tr("Please enter your credentials to log in to your account."));
-
-    // bring the correct widget to the front
-    _ui->contentWidget->setCurrentWidget(_ui->basicLoginWidget);
-
-    const QString linkColor = Theme::instance()->wizardHeaderTitleColor().name();
-
-    _ui->urlLabel->setText(tr("Connecting to <a href='%1' style='color: %2;'>%1</a>").arg(serverUrl.toString(), linkColor));
-
-    connect(this, &AbstractSetupWizardPage::pageDisplayed, this, [this]() {
-        _ui->basicLoginWidget->setFocus();
+    auto *basicCredentials = new QmlBasicCredentials(serverUrl, _userName, widget);
+    basicCredentials->setIsRefresh(false);
+    if (!_userName.isEmpty()) {
+        basicCredentials->setReadOnlyName(_userName);
+    }
+    widget->setOCContext(
+        QUrl(QStringLiteral("qrc:/qt/qml/org/ownCloud/gui/qml/credentials/BasicAuthCredentials.qml")), this, basicCredentials, QJSEngine::JavaScriptOwnership);
+    connect(basicCredentials, &QmlBasicCredentials::readyChanged, this, [basicCredentials, this] {
+        _userName = basicCredentials->userName();
+        _password = basicCredentials->password();
+        Q_EMIT contentChanged();
     });
-
-    connect(_ui->basicLoginWidget, &AbstractLoginWidget::contentChanged, this, &AbstractSetupWizardPage::contentChanged);
 }
 
 BasicCredentialsSetupWizardPage *BasicCredentialsSetupWizardPage::createForWebFinger(const QUrl &serverUrl, const QString &username)
 {
     auto page = new BasicCredentialsSetupWizardPage(serverUrl);
-    page->_ui->basicLoginWidget->forceUsername(username);
+    page->_userName = username;
     return page;
 }
 
 QString BasicCredentialsSetupWizardPage::username() const
 {
-    return _ui->basicLoginWidget->username();
+    return _userName;
 }
 
 QString BasicCredentialsSetupWizardPage::password() const
 {
-    return _ui->basicLoginWidget->password();
-}
-
-BasicCredentialsSetupWizardPage::~BasicCredentialsSetupWizardPage()
-{
-    delete _ui;
+    return _password;
 }
 
 bool BasicCredentialsSetupWizardPage::validateInput()

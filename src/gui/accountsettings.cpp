@@ -36,7 +36,6 @@
 #include "gui/spaces/spaceimageprovider.h"
 #include "guiutility.h"
 #include "libsync/graphapi/spacesmanager.h"
-#include "oauthloginwidget.h"
 #include "quotainfo.h"
 #include "scheduling/syncscheduler.h"
 #include "settingsdialog.h"

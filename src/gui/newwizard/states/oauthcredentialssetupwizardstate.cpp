@@ -28,10 +28,12 @@ OAuthCredentialsSetupWizardState::OAuthCredentialsSetupWizardState(SetupWizardCo
         return _context->accountBuilder().serverUrl();
     }();
 
-    auto oAuthCredentialsPage = new OAuthCredentialsSetupWizardPage(authServerUrl);
-    _page = oAuthCredentialsPage;
-
     auto oAuth = new OAuth(authServerUrl, _context->accountBuilder().legacyWebFingerUsername(), _context->accessManager(), {}, this);
+    connect(oAuth, &OAuth::dynamicRegistrationDataReceived, this,
+        [this](const QVariantMap &dynamicRegistrationData) { _context->accountBuilder().setDynamicRegistrationData(dynamicRegistrationData); });
+
+    _page = new OAuthCredentialsSetupWizardPage(oAuth, authServerUrl);
+
 
     connect(oAuth, &OAuth::result, this, [this](OAuth::Result result, const QString &token, const QString &refreshToken) {
         _context->window()->slotStartTransition();
@@ -86,16 +88,6 @@ OAuthCredentialsSetupWizardState::OAuthCredentialsSetupWizardState(SetupWizardCo
             finish();
         }
     });
-
-    connect(oAuthCredentialsPage, &OAuthCredentialsSetupWizardPage::openBrowserButtonPushed, this, [oAuth]() {
-        oAuth->openBrowser();
-    });
-
-    connect(oAuth, &OAuth::dynamicRegistrationDataReceived, this, [this](const QVariantMap &dynamicRegistrationData) {
-        _context->accountBuilder().setDynamicRegistrationData(dynamicRegistrationData);
-    });
-    connect(oAuth, &OAuth::authorisationLinkChanged, oAuthCredentialsPage,
-        [oAuthCredentialsPage, oAuth] { oAuthCredentialsPage->setAuthUrl(oAuth->authorisationLink()); });
 
     // the implementation moves to the next state automatically once ready, no user interaction needed
     _context->window()->disableNextButton();

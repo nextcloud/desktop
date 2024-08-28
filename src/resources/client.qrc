@@ -12,7 +12,7 @@
         <file alias="resources/core/check.svg">font-awesome/check-solid.svg</file>
         <file alias="resources/core/step-forward.svg">font-awesome/step-forward-solid.svg</file>
         <file alias="resources/core/copy.svg">font-awesome/copy-solid.svg</file>
-        <file alias="resources/core/arrow-up-right-from-square.svg">font-awesome/arrow-up-right-from-square-solid.svg</file>
+        <file alias="resources/core/open.svg">font-awesome/arrow-up-right-from-square-solid.svg</file>
         <file alias="resources/core/undo.svg">font-awesome/undo-solid.svg</file>
         <file alias="resources/wizard/style.qss">wizard/style.qss</file>
         <file alias="resources/oauth/oauth.html.in">oauth/oauth.html.in</file>

@@ -15,20 +15,17 @@
 #pragma once
 
 #include "abstractsetupwizardpage.h"
-
-namespace Ui {
-class CredentialsSetupWizardPage;
-}
+#include "gui/qmlutils.h"
 
 namespace OCC::Wizard {
 
 class BasicCredentialsSetupWizardPage : public AbstractSetupWizardPage
 {
     Q_OBJECT
+    OC_DECLARE_WIDGET_FOCUS
 
 public:
-    BasicCredentialsSetupWizardPage(const QUrl &serverUrl);
-    ~BasicCredentialsSetupWizardPage() noexcept override;
+    BasicCredentialsSetupWizardPage(const QUrl &serverUrl, QWidget *parent = nullptr);
 
     static BasicCredentialsSetupWizardPage *createForWebFinger(const QUrl &serverUrl, const QString &username);
 
@@ -38,7 +35,8 @@ public:
     bool validateInput() override;
 
 private:
-    ::Ui::CredentialsSetupWizardPage *_ui;
+    QString _userName;
+    QString _password;
 };
 
 }

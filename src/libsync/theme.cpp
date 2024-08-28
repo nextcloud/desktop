@@ -70,6 +70,11 @@ QmlUrlButton::QmlUrlButton(const std::tuple<QString, QString, QUrl> &tuple)
 {
 }
 
+bool QmlButtonColor::valid() const
+{
+    return color.isValid() && textColor.isValid() && textColorDisabled.isValid();
+}
+
 Theme *Theme::instance()
 {
     if (!_instance) {
@@ -374,6 +379,16 @@ QColor Theme::wizardHeaderTitleColor() const
 QColor Theme::wizardHeaderBackgroundColor() const
 {
     return QColor();
+}
+
+QmlButtonColor Theme::primaryButtonColor() const
+{
+    return {};
+}
+
+QmlButtonColor Theme::secondaryButtonColor() const
+{
+    return {};
 }
 
 QIcon Theme::wizardHeaderLogo() const

@@ -21,7 +21,7 @@
 
 namespace OCC {
 
-class LoginRequiredDialog;
+class AccountModalWidget;
 
 /**
  * @brief The HttpCredentialsGui class
@@ -31,25 +31,11 @@ class HttpCredentialsGui : public HttpCredentials
 {
     Q_OBJECT
 public:
-    HttpCredentialsGui()
-        : HttpCredentials()
-    {
-    }
+    HttpCredentialsGui() = default;
 
-    HttpCredentialsGui(const QString &loginUser, const QString &password)
-        : HttpCredentials(DetermineAuthTypeJob::AuthType::Basic, loginUser, password)
-    {
-    }
+    HttpCredentialsGui(const QString &loginUser, const QString &password);
 
-    HttpCredentialsGui(const QString &davUser, const QString &password, const QString &refreshToken)
-        : HttpCredentials(DetermineAuthTypeJob::AuthType::OAuth, davUser, password)
-    {
-        _refreshToken = refreshToken;
-    }
-
-    void openBrowser();
-
-    QUrl authorisationLink() const;
+    HttpCredentialsGui(const QString &davUser, const QString &password, const QString &refreshToken);
 
     /**
      * This will query the server and either uses OAuth via _asyncAuth->start()
@@ -57,10 +43,6 @@ public:
      */
     void askFromUser() override;
 
-    /**
-     * Reset OAuth object and restart authorization process.
-     */
-    void restartOAuth();
 
 private Q_SLOTS:
     void asyncAuthResult(OAuth::Result, const QString &accessToken, const QString &refreshToken);
@@ -71,8 +53,10 @@ Q_SIGNALS:
     void oAuthErrorOccurred();
 
 private:
+    void startOAuth();
+
     QScopedPointer<AccountBasedOAuth, QScopedPointerObjectDeleteLater<AccountBasedOAuth>> _asyncAuth;
-    QPointer<LoginRequiredDialog> _loginRequiredDialog;
+    QPointer<AccountModalWidget> _modalWidget;
 };
 
 } // namespace OCC

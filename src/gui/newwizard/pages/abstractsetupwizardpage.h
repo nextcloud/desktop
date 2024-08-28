@@ -23,7 +23,7 @@ class AbstractSetupWizardPage : public QWidget
     Q_OBJECT
 
 public:
-    ~AbstractSetupWizardPage() override;
+    using QWidget::QWidget;
 
     /**
      * Check whether the user input appears valid, so that the user can be allowed to proceed through the wizard.

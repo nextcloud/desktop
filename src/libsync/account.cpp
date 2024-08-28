@@ -295,7 +295,7 @@ QUrl Account::url() const
     return _url;
 }
 
-QString Account::hostname() const
+QString Account::hostName() const
 {
     return _url.host();
 }

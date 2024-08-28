@@ -12,7 +12,6 @@ add_library(newwizard STATIC
     pages/legacywebfingersetupwizardpage.h
     pages/legacywebfingersetupwizardpage.cpp
 
-    pages/credentialssetupwizardpage.ui
 
     pages/basiccredentialssetupwizardpage.h
     pages/basiccredentialssetupwizardpage.cpp
