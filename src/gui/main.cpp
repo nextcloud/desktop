@@ -80,6 +80,7 @@ int main(int argc, char **argv)
 #endif
 
     QQuickStyle::setStyle(style);
+    QQuickStyle::setFallbackStyle(QStringLiteral("Fusion"));
 
     OCC::Application app(argc, argv);
 
