@@ -67,7 +67,6 @@ class OWNCLOUDSYNC_EXPORT Theme : public QObject
 
     Q_PROPERTY(QColor defaultColor READ defaultColor CONSTANT)
 
-    Q_PROPERTY(QVariantMap systemPalette READ systemPalette NOTIFY systemPaletteChanged)
     Q_PROPERTY(bool darkMode READ darkMode NOTIFY darkModeChanged)
 public:
     enum CustomMediaType {
@@ -594,7 +593,6 @@ public:
 
     static constexpr const char *themePrefix = ":/client/theme/";
 
-    QVariantMap systemPalette();
     bool darkMode();
 
 public slots:
@@ -619,7 +617,6 @@ protected:
 
 signals:
     void systrayUseMonoIconsChanged(bool);
-    void systemPaletteChanged(const QPalette &palette);
     void darkModeChanged();
     void overrideServerUrlChanged();
     void forceOverrideServerUrlChanged();
