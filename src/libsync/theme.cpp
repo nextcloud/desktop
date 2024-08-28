@@ -25,6 +25,8 @@
 #include <QStyle>
 #include <QApplication>
 #endif
+#include <QGuiApplication>
+#include <QStyleHints>
 #include <QSslSocket>
 #include <QSvgRenderer>
 #include <QPainter>
@@ -927,7 +929,7 @@ void Theme::connectToPaletteSignal()
     if (!_paletteSignalsConnected) {
         if (const auto ptr = qobject_cast<QGuiApplication *>(QGuiApplication::instance())) {
             connect(ptr, &QGuiApplication::paletteChanged, this, &Theme::systemPaletteChanged);
-            connect(ptr, &QGuiApplication::paletteChanged, this, &Theme::darkModeChanged);
+            connect(ptr->styleHints(), &QStyleHints::colorSchemeChanged, this, &Theme::darkModeChanged);
             _paletteSignalsConnected = true;
         }
     }
@@ -972,18 +974,17 @@ QVariantMap Theme::systemPalette()
 bool Theme::darkMode()
 {
     connectToPaletteSignal();
-// Windows: Check registry for dark mode
-#if defined(Q_OS_WIN)
-    const auto darkModeSubkey = QStringLiteral("Software\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize");
-    if (Utility::registryKeyExists(HKEY_CURRENT_USER, darkModeSubkey) &&
-        !Utility::registryGetKeyValue(HKEY_CURRENT_USER, darkModeSubkey, QStringLiteral("AppsUseLightTheme")).toBool()) {
+    switch (qGuiApp->styleHints()->colorScheme())
+    {
+    case Qt::ColorScheme::Dark:
         return true;
+    case Qt::ColorScheme::Light:
+        return false;
+    case Qt::ColorScheme::Unknown:
+        return Theme::isDarkColor(QGuiApplication::palette().window().color());
     }
 
     return false;
-#else
-    return Theme::isDarkColor(QGuiApplication::palette().window().color());
-#endif
 }
 
 void Theme::setOverrideServerUrl(const QString &overrideServerUrl)
