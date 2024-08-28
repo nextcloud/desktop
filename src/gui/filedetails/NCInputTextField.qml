@@ -33,6 +33,7 @@ TextField {
 
     selectByMouse: true
 
+    // TODO: the current style does not support customization of this control
     background: Rectangle {
         id: textFieldBorder
         radius: Style.slightlyRoundedButtonRadius
