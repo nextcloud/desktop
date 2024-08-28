@@ -431,11 +431,6 @@ ApplicationWindow {
                         }
                     }
 
-                    background: Rectangle {
-                        color: currentAccountButton.hovered || currentAccountButton.visualFocus ? Style.currentUserHeaderTextColor : Style.currentUserHeaderColor
-                        opacity: 0.2
-                    }
-
                     RowLayout {
                         id: accountControlRowLayout
 

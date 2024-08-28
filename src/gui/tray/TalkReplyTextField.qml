@@ -17,13 +17,14 @@ TextField {
 
     onAccepted: sendReplyMessage()
 
-    background: Rectangle {
-        id: replyMessageTextFieldBorder
-        radius: width / 2
-        border.width: Style.normalBorderWidth
-        border.color: replyMessageTextField.activeFocus ? UserModel.currentUser.accentColor : palette.dark
-        color: palette.window
-    }
+    // TODO
+    // background: Rectangle {
+    //     id: replyMessageTextFieldBorder
+    //     radius: width / 2
+    //     border.width: Style.normalBorderWidth
+    //     border.color: replyMessageTextField.activeFocus ? UserModel.currentUser.accentColor : palette.dark
+    //     color: palette.window
+    // }
 
     Button {
         id: sendReplyMessageButton
