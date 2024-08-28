@@ -1,16 +1,20 @@
 #include "webflowcredentialsdialog.h"
 
-#include <QVBoxLayout>
-#include <QLabel>
+#include "config.h"
 
 #include "theme.h"
 #include "application.h"
 #include "owncloudgui.h"
 #include "wizard/owncloudwizardcommon.h"
+
 #ifdef WITH_WEBENGINE
 #include "wizard/webview.h"
 #endif // WITH_WEBENGINE
+
 #include "wizard/flow2authwidget.h"
+
+#include <QVBoxLayout>
+#include <QLabel>
 
 namespace OCC {
 

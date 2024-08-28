@@ -1,11 +1,13 @@
 #ifndef WEBFLOWCREDENTIALSDIALOG_H
 #define WEBFLOWCREDENTIALSDIALOG_H
 
-#include <QDialog>
-#include <QUrl>
+#include "config.h"
 
 #include "accountfwd.h"
 #include "creds/flow2auth.h"
+
+#include <QDialog>
+#include <QUrl>
 
 class QLabel;
 class QVBoxLayout;
