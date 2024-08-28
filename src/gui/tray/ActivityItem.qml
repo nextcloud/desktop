@@ -29,6 +29,7 @@ ItemDelegate {
         text: qsTr("In %1").arg(model.displayLocation)
     }
 
+    // TODO: the current style does not support customization of this control
     contentItem: ColumnLayout {
         spacing: Style.smallSpacing
 

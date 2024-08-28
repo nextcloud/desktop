@@ -147,7 +147,7 @@ AbstractButton {
 
             onClicked: userMoreButtonMenu.visible ? userMoreButtonMenu.close() : userMoreButtonMenu.popup()
 
-            contentItem: Image {
+            Image {
                 anchors.fill: parent
                 source: "image://svgimage-custom-color/more.svg" + "/" + palette.buttonText
                 fillMode: Image.PreserveAspectFit
