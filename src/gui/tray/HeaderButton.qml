@@ -36,20 +36,4 @@ Button {
     Layout.alignment: Qt.AlignRight
     Layout.preferredWidth:  Style.trayWindowHeaderHeight
     Layout.preferredHeight: Style.trayWindowHeaderHeight
-
-    contentItem: Item {
-        anchors.fill: parent
-        
-        Image {
-            id: internalImage
-            anchors.centerIn: parent
-            width: root.icon.width
-            height: root.icon.height
-            source: root.icon.source
-            sourceSize {
-                width: root.icon.width
-                height: root.icon.height
-            }
-        }
-    }
 }
