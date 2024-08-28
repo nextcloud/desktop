@@ -47,7 +47,6 @@ Repeater {
         textColor: Style.adjustedCurrentUserHeaderColor
         textColorHovered: Style.currentUserHeaderTextColor
         contentsFont.bold: true
-        bgColor: Style.currentUserHeaderColor
 
         visible: verb !== "REPLY" || (verb === "REPLY" && root.talkReplyButtonVisible)
     }

@@ -174,8 +174,6 @@ RowLayout {
                 display: Button.IconOnly
                 leftPadding: 0
                 rightPadding: 0
-                bgColor: palette.mid
-                bgNormalOpacity:  0
 
                 visible: model.showFileDetails
 
@@ -196,8 +194,6 @@ RowLayout {
                 display: Button.IconOnly
                 leftPadding: 0
                 rightPadding: 0
-                bgColor: palette.mid
-                bgNormalOpacity: 0
 
                 ToolTip {
                     text: qsTr("Dismiss")

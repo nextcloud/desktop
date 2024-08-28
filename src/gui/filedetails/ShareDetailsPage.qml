@@ -229,8 +229,6 @@ Page {
                 Layout.rightMargin: root.padding
 
                 icon.source: "image://svgimage-custom-color/clear.svg" + "/" + palette.buttonText
-                bgColor: palette.highlight
-                bgNormalOpacity: 0
                 toolTipText: qsTr("Dismiss")
 
                 onClicked: root.closeShareDetails()
@@ -731,10 +729,6 @@ Page {
                 textColor: Style.errorBoxBackgroundColor
                 textColorHovered: "white"
                 contentsFont.bold: true
-                bgNormalColor: palette.button
-                bgHoverColor: Style.errorBoxBackgroundColor
-                bgNormalOpacity: 1.0
-                bgHoverOpacity: 1.0
 
                 onClicked: root.deleteShare()
             }
@@ -748,10 +742,6 @@ Page {
                 textColor: root.accentColor
                 textColorHovered: palette.brightText
                 contentsFont.bold: true
-                bgNormalColor: palette.button
-                bgHoverColor: root.accentColor
-                bgNormalOpacity: 1.0
-                bgHoverOpacity: 1.0
 
                 visible: root.isLinkShare && root.canCreateLinkShares
                 enabled: visible
@@ -791,22 +781,19 @@ Page {
             text: shareLinkCopied ? qsTr("Share link copied!") : qsTr("Copy share link")
             textColor: palette.brightText
             contentsFont.bold: true
-            bgColor: shareLinkCopied ? Style.positiveColor : root.accentColor
-            bgNormalOpacity: 1.0
-            bgHoverOpacity: shareLinkCopied ? 1.0 : Style.hoverOpacity
-
             visible: root.isLinkShare
             enabled: visible
 
             onClicked: copyShareLink()
 
-            Behavior on bgColor {
-                ColorAnimation { duration: Style.shortAnimationDuration }
-            }
+            // TODO
+            // Behavior on bgColor {
+            //     ColorAnimation { duration: Style.shortAnimationDuration }
+            // }
 
-            Behavior on bgHoverOpacity {
-                NumberAnimation { duration: Style.shortAnimationDuration }
-            }
+            // Behavior on bgHoverOpacity {
+            //     NumberAnimation { duration: Style.shortAnimationDuration }
+            // }
 
             Behavior on Layout.preferredWidth {
                 SmoothedAnimation { duration: Style.shortAnimationDuration }

@@ -139,8 +139,6 @@ Page {
                 Layout.rightMargin: headerGridLayout.textRightMargin
 
                 icon.source: "image://svgimage-custom-color/clear.svg" + "/" + palette.buttonText
-                bgColor: palette.highlight
-                bgNormalOpacity: 0
                 toolTipText: qsTr("Dismiss")
 
                 visible: root.showCloseButton
