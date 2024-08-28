@@ -84,9 +84,6 @@ int main(int argc, char **argv)
 
     OCC::Application app(argc, argv);
 
-
-    QQuickStyle::setStyle(style);
-
 #ifndef Q_OS_WIN
     signal(SIGPIPE, SIG_IGN);
 #endif
