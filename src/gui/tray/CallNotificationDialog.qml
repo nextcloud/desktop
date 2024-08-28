@@ -219,9 +219,6 @@ ApplicationWindow {
 
                         visible: isAnswerCallButton
                         text: modelData.label
-                        contentsFont.bold: true
-
-                        textColor: palette.brightText
 
                         icon.source: root.talkIcon + palette.brightText
                         imageSourceHover: root.talkIcon + palette.brightText
@@ -244,9 +241,6 @@ ApplicationWindow {
                 CustomButton {
                     id: declineCall
                     text: qsTr("Decline")
-                    contentsFont.bold: true
-
-                    textColor: palette.brightText
 
                     icon.source: root.deleteIcon + "white"
                     imageSourceHover: root.deleteIcon + "white"

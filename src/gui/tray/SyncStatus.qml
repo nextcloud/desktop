@@ -98,9 +98,6 @@ RowLayout {
         text: qsTr("Sync now")
 
         padding: Style.smallSpacing
-        textColor: Style.adjustedCurrentUserHeaderColor
-        textColorHovered: Style.currentUserHeaderTextColor
-        contentsFont.bold: true
 
         visible: !activityModel.hasSyncConflicts &&
                  !syncStatus.syncing &&
@@ -122,9 +119,6 @@ RowLayout {
         Layout.rightMargin: Style.trayHorizontalMargin
 
         text: qsTr("Resolve conflicts")
-        textColor: Style.adjustedCurrentUserHeaderColor
-        textColorHovered: Style.currentUserHeaderTextColor
-        contentsFont.bold: true
 
         visible: activityModel.hasSyncConflicts &&
                  !syncStatus.syncing &&

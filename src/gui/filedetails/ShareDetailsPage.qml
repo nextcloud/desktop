@@ -726,9 +726,6 @@ Page {
                 icon.source: "image://svgimage-custom-color/close.svg/" + Style.errorBoxBackgroundColor
                 imageSourceHover: "image://svgimage-custom-color/close.svg/" + palette.brightText
                 text: qsTr("Unshare")
-                textColor: Style.errorBoxBackgroundColor
-                textColorHovered: "white"
-                contentsFont.bold: true
 
                 onClicked: root.deleteShare()
             }
@@ -739,9 +736,6 @@ Page {
                 icon.source: "image://svgimage-custom-color/add.svg/" + root.accentColor
                 imageSourceHover: "image://svgimage-custom-color/add.svg/" + palette.brightText
                 text: qsTr("Add another link")
-                textColor: root.accentColor
-                textColorHovered: palette.brightText
-                contentsFont.bold: true
 
                 visible: root.isLinkShare && root.canCreateLinkShares
                 enabled: visible
@@ -779,8 +773,6 @@ Page {
 
             icon.source: "image://svgimage-custom-color/copy.svg/" + palette.brightText
             text: shareLinkCopied ? qsTr("Share link copied!") : qsTr("Copy share link")
-            textColor: palette.brightText
-            contentsFont.bold: true
             visible: root.isLinkShare
             enabled: visible
 

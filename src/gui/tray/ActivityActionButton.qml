@@ -48,9 +48,6 @@ AbstractButton {
             anchors.fill: parent
             hovered: root.hovered
             text: root.text
-            textColor: root.textColor
-            textColorHovered: root.textColorHovered
-
             bold: root.primaryButton
         }
     }
@@ -63,8 +60,6 @@ AbstractButton {
             imageSourceHover: root.imageSourceHover
             imageSource: root.icon.source
             text: root.text
-            textColor: root.textColor
-            textColorHovered: root.textColorHovered
             font.bold: root.primaryButton
         }
     }

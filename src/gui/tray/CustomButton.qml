@@ -25,11 +25,6 @@ Button {
 
     property string toolTipText: ""
 
-    property color textColor: palette.buttonText
-    property color textColorHovered: textColor
-
-    property alias contentsFont: contents.font
-
     leftPadding: root.text === "" ? Style.smallSpacing : Style.standardSpacing
     rightPadding: root.text === "" ? Style.smallSpacing : Style.standardSpacing
     implicitWidth: contentItem.implicitWidth + leftPadding + rightPadding
@@ -50,7 +45,5 @@ Button {
         imageSourceWidth: root.icon.width
         imageSourceHeight: root.icon.height
         text: root.text
-        textColor: root.textColor
-        textColorHovered: root.textColorHovered
     }
 }

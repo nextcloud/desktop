@@ -194,8 +194,6 @@ GridLayout {
             toolTipText: qsTr("Copy share link location")
 
             text: shareLinkCopied ? qsTr("Copied!") : ""
-            textColor: palette.brightText
-            contentsFont.bold: true
 
             icon.source: shareLinkCopied ? "image://svgimage-custom-color/copy.svg/" + palette.brightText :
                                            "image://svgimage-custom-color/copy.svg/" + palette.buttonText

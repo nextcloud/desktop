@@ -93,8 +93,6 @@ Item {
             Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
 
             text: qsTr("Delete")
-            textColorHovered: Style.ncHeaderTextColor
-            contentsFont.bold: true
             onClicked: root.evictItem(root.identifier, root.domainIdentifier)
         }
     }
