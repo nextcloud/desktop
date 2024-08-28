@@ -296,6 +296,9 @@
          <property name="autoFillBackground">
           <bool>false</bool>
          </property>
+         <property name="frameShape">
+          <enum>QFrame::Shape::NoFrame</enum>
+         </property>
          <property name="editTriggers">
           <set>QAbstractItemView::NoEditTriggers</set>
          </property>
