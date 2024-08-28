@@ -220,8 +220,6 @@ ApplicationWindow {
                         visible: isAnswerCallButton
                         text: modelData.label
                         contentsFont.bold: true
-                        bgColor: Style.ncBlue
-                        bgNormalOpacity: 0.8
 
                         textColor: palette.brightText
 
@@ -247,8 +245,6 @@ ApplicationWindow {
                     id: declineCall
                     text: qsTr("Decline")
                     contentsFont.bold: true
-                    bgColor: Style.errorBoxBackgroundColor
-                    bgNormalOpacity: 0.8
 
                     textColor: palette.brightText
 

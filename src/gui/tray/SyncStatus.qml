@@ -101,7 +101,6 @@ RowLayout {
         textColor: Style.adjustedCurrentUserHeaderColor
         textColorHovered: Style.currentUserHeaderTextColor
         contentsFont.bold: true
-        bgColor: Style.currentUserHeaderColor
 
         visible: !activityModel.hasSyncConflicts &&
                  !syncStatus.syncing &&
@@ -126,7 +125,6 @@ RowLayout {
         textColor: Style.adjustedCurrentUserHeaderColor
         textColorHovered: Style.currentUserHeaderTextColor
         contentsFont.bold: true
-        bgColor: Style.currentUserHeaderColor
 
         visible: activityModel.hasSyncConflicts &&
                  !syncStatus.syncing &&
