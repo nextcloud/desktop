@@ -23,6 +23,7 @@ RadioButton {
     property int indicatorItemHeight: Style.radioButtonIndicatorSize
     property int radius: Style.radioButtonCustomRadius
 
+    // TODO: the current style does not support customization of this control
     indicator: Rectangle {
         implicitWidth: root.indicatorItemWidth
         implicitHeight: root.indicatorItemHeight
