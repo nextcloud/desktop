@@ -67,11 +67,24 @@ ZipEntry fileInfoToLogZipEntry(const QFileInfo &info)
     return entry;
 }
 
-ZipEntry syncFolderToZipEntry(OCC::Folder *f)
+QVector<ZipEntry> syncFolderToDatabaseZipEntry(OCC::Folder *f)
 {
+    QVector<ZipEntry> result;
+
     const auto journalPath = f->journalDb()->databaseFilePath();
     const auto journalInfo = QFileInfo(journalPath);
-    return fileInfoToZipEntry(journalInfo);
+    const auto walJournalInfo = QFileInfo(journalPath + "-wal");
+    const auto shmJournalInfo = QFileInfo(journalPath + "-shm");
+
+    result += fileInfoToZipEntry(journalInfo);
+    if (walJournalInfo.exists()) {
+        result += fileInfoToZipEntry(walJournalInfo);
+    }
+    if (shmJournalInfo.exists()) {
+        result += fileInfoToZipEntry(shmJournalInfo);
+    }
+
+    return result;
 }
 
 QVector<ZipEntry> createDebugArchiveFileList()
@@ -94,9 +107,11 @@ QVector<ZipEntry> createDebugArchiveFileList()
     }
 
     const auto folders = OCC::FolderMan::instance()->map().values();
-    std::transform(std::cbegin(folders), std::cend(folders),
-                   std::back_inserter(list),
-                   syncFolderToZipEntry);
+    std::for_each(std::cbegin(folders), std::cend(folders),
+                  [&list] (auto &folderIt) {
+                      const auto &newEntries = syncFolderToDatabaseZipEntry(folderIt);
+                      std::copy(std::cbegin(newEntries), std::cend(newEntries), std::back_inserter(list));
+                  });
 
     return list;
 }
