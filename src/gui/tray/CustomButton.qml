@@ -36,6 +36,7 @@ Button {
         visible: root.toolTipText !== "" && root.hovered
     }
 
+    // TODO: the current style does not support customization of this control
     contentItem: NCButtonContents {
         id: contents
         display: root.display

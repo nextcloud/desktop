@@ -57,7 +57,8 @@ HeaderButton {
         text: root.userHasGroupFolders ? qsTr("Open local or group folders") : qsTr("Open local folder")
     }
 
-    contentItem: Item {
+
+    Item {
         id: rootContent
 
         anchors.fill: parent
