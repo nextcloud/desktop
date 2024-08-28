@@ -54,9 +54,6 @@ ApplicationWindow {
 
             CustomButton {
                 padding: Style.smallSpacing
-                textColor: Style.ncTextColor
-                textColorHovered: Style.ncHeaderTextColor
-                contentsFont.bold: true
                 text: qsTr("Reload")
                 onClicked: reloadMaterialisedItems(accountUserIdAtHost)
             }

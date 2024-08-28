@@ -863,10 +863,6 @@ ApplicationWindow {
                 hoverEnabled: true
                 padding: Style.smallSpacing
 
-                textColor: Style.currentUserHeaderTextColor
-                textColorHovered: Style.currentUserHeaderTextColor
-                contentsFont.bold: true
-
                 anchors.fill: parent
 
                 text: qsTr("New activities")

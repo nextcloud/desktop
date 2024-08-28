@@ -29,8 +29,6 @@ RowLayout {
     property string text: ""
     property var display
 
-    property color textColor: palette.buttonText
-    property color textColorHovered: textColor
     property alias font: buttonLabel.font
 
     Image {
@@ -61,8 +59,6 @@ RowLayout {
         text: root.text
 
         visible: root.text !== ""
-
-        color: root.hovered ? root.textColorHovered : root.textColor
 
         horizontalAlignment: icon.visible ? Text.AlignLeft : Text.AlignHCenter
         verticalAlignment: Text.AlignVCenter
