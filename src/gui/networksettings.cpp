@@ -38,7 +38,7 @@ NetworkSettings::NetworkSettings(const AccountPtr &account, QWidget *parent)
 
     _ui->manualSettings->setVisible(_ui->manualProxyRadioButton->isChecked());
 
-    _ui->proxyGroupBox->setVisible(!Theme::instance()->doNotUseProxy());
+    _ui->proxyFrame->setVisible(!Theme::instance()->doNotUseProxy());
 
     if (!account) {
         _ui->globalProxySettingsRadioButton->setVisible(false);
@@ -120,7 +120,7 @@ void NetworkSettings::loadProxySettings()
 {
     if (Theme::instance()->forceSystemNetworkProxy()) {
         _ui->systemProxyRadioButton->setChecked(true);
-        _ui->proxyGroupBox->setEnabled(false);
+        _ui->proxyFrame->setEnabled(false);
         return;
     }
 
