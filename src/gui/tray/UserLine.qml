@@ -146,11 +146,6 @@ AbstractButton {
             Accessible.onPressAction: userMoreButtonMouseArea.clicked()
 
             onClicked: userMoreButtonMenu.visible ? userMoreButtonMenu.close() : userMoreButtonMenu.popup()
-            background: Rectangle {
-                anchors.fill: parent
-                anchors.margins: 1
-                color: userMoreButton.hovered || userMoreButton.visualFocus ? palette.highlight : palette.window
-            }
 
             contentItem: Image {
                 anchors.fill: parent

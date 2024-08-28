@@ -37,11 +37,6 @@ Button {
     Layout.preferredWidth:  Style.trayWindowHeaderHeight
     Layout.preferredHeight: Style.trayWindowHeaderHeight
 
-    background: Rectangle {
-        color: root.hovered || root.visualFocus ? Style.currentUserHeaderTextColor : Style.currentUserHeaderColor
-        opacity: 0.2
-    }
-
     contentItem: Item {
         anchors.fill: parent
         
