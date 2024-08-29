@@ -45,14 +45,6 @@ TextField {
 
     selectByMouse: true
 
-    // TODO
-    // background: Rectangle {
-    //     radius: Style.slightlyRoundedButtonRadius
-    //     border.color: parent.activeFocus ? UserModel.currentUser.accentColor : palette.dark
-    //     border.width: Style.normalBorderWidth
-    //     color: palette.window
-    // }
-
     Image {
         id: trayWindowUnifiedSearchTextFieldSearchIcon
         width: Style.trayListItemIconSize - anchors.leftMargin

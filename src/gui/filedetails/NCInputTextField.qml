@@ -33,15 +33,6 @@ TextField {
 
     selectByMouse: true
 
-    // TODO: the current style does not support customization of this control
-    background: Rectangle {
-        id: textFieldBorder
-        radius: Style.slightlyRoundedButtonRadius
-        border.width: Style.normalBorderWidth
-        border.color: root.activeFocus ? root.validInput ? root.accentColor : Style.errorBoxBackgroundColor : root.secondaryColor
-        color: palette.base
-    }
-
     Button {
         id: submitButton
 
