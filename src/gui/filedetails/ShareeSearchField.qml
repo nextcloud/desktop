@@ -90,13 +90,6 @@ TextField {
     leftPadding: searchIcon.width + searchIcon.anchors.leftMargin + horizontalPaddingOffset
     rightPadding: clearTextButton.width + clearTextButton.anchors.rightMargin + horizontalPaddingOffset
 
-    background: Rectangle {
-        radius: 5
-        border.color: parent.activeFocus ? UserModel.currentUser.accentColor : palette.dark
-        border.width: 1
-        color: palette.base
-    }
-
     Image {
         id: searchIcon
         anchors {
