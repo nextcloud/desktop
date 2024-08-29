@@ -53,12 +53,6 @@ TextEdit {
         width: height
         height: parent.height
 
-        // TODO: the current style does not support customization of this control
-        Rectangle {
-            radius: width / 2
-            color: textFieldBorder.color
-        }
-
         flat: true
         icon.source: "image://svgimage-custom-color/confirm.svg" + "/" + root.secondaryColor
         icon.color: hovered && enabled ? UserModel.currentUser.accentColor : root.secondaryColor
