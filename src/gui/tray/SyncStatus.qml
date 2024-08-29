@@ -90,7 +90,6 @@ RowLayout {
 
         FontMetrics {
             id: syncNowFm
-            font: syncNowButton.contentsFont
         }
 
         Layout.rightMargin: Style.trayHorizontalMargin
