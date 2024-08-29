@@ -1,3 +1,4 @@
+import test
 import names
 import squish
 from helpers.WebUIHelper import authorize_via_webui
@@ -8,7 +9,6 @@ from helpers.SetupClientHelper import (
     setCurrentUserSyncPath,
 )
 from helpers.SyncHelper import listenSyncStatusForItem
-import test
 
 
 class AccountConnectionWizard:
@@ -138,7 +138,7 @@ class AccountConnectionWizard:
         )
         AccountConnectionWizard.nextStep()
 
-        if not get_config('ocis'):
+        if not get_config("ocis"):
             try:
                 squish.clickButton(
                     squish.waitForObject(
@@ -147,7 +147,6 @@ class AccountConnectionWizard:
                 )
             except:
                 test.log("No insecure connection warning for server " + server_url)
-                pass
 
     @staticmethod
     def acceptCertificate():
@@ -157,7 +156,7 @@ class AccountConnectionWizard:
 
     @staticmethod
     def addUserCreds(username, password, oauth=False):
-        if get_config('ocis'):
+        if get_config("ocis"):
             AccountConnectionWizard.oidcLogin(username, password)
         elif oauth:
             AccountConnectionWizard.oauthLogin(username, password)
@@ -182,11 +181,11 @@ class AccountConnectionWizard:
 
     @staticmethod
     def oidcLogin(username, password):
-        AccountConnectionWizard.browserLogin(username, password, 'oidc')
+        AccountConnectionWizard.browserLogin(username, password, "oidc")
 
     @staticmethod
     def oauthLogin(username, password):
-        AccountConnectionWizard.browserLogin(username, password, 'oauth')
+        AccountConnectionWizard.browserLogin(username, password, "oauth")
 
     @staticmethod
     def browserLogin(username, password, login_type=None):
@@ -242,25 +241,25 @@ class AccountConnectionWizard:
 
     @staticmethod
     def addAccountInformation(account_details):
-        if account_details['server']:
-            AccountConnectionWizard.addServer(account_details['server'])
-            if get_config('ocis'):
+        if account_details["server"]:
+            AccountConnectionWizard.addServer(account_details["server"])
+            if get_config("ocis"):
                 AccountConnectionWizard.acceptCertificate()
-        if account_details['user']:
+        if account_details["user"]:
             AccountConnectionWizard.addUserCreds(
-                account_details['user'],
-                account_details['password'],
-                account_details['oauth'],
+                account_details["user"],
+                account_details["password"],
+                account_details["oauth"],
             )
-        sync_path = ''
-        if account_details['sync_folder']:
+        sync_path = ""
+        if account_details["sync_folder"]:
             AccountConnectionWizard.selectAdvancedConfig()
             sync_path = AccountConnectionWizard.set_temp_folder_as_sync_folder(
-                account_details['sync_folder']
+                account_details["sync_folder"]
             )
-        elif account_details['user']:
+        elif account_details["user"]:
             sync_path = AccountConnectionWizard.selectSyncFolder(
-                account_details['user']
+                account_details["user"]
             )
         if sync_path:
             # listen for sync status
@@ -304,7 +303,7 @@ class AccountConnectionWizard:
     def isCredentialWindowVisible():
         visible = False
         try:
-            if get_config('ocis'):
+            if get_config("ocis"):
                 squish.waitForObject(AccountConnectionWizard.OAUTH_CREDENTIAL_PAGE)
             else:
                 squish.waitForObject(AccountConnectionWizard.BASIC_CREDENTIAL_PAGE)
@@ -335,21 +334,15 @@ class AccountConnectionWizard:
 
     @staticmethod
     def isSyncEverythingOptionChecked():
-        return (
-            squish.waitForObjectExists(
-                AccountConnectionWizard.SYNC_EVERYTHING_RADIO_BUTTON
-            ).checked
-            == True
-        )
+        return squish.waitForObjectExists(
+            AccountConnectionWizard.SYNC_EVERYTHING_RADIO_BUTTON
+        ).checked
 
     @staticmethod
     def isVFSOptionChecked():
-        return (
-            squish.waitForObjectExists(
-                AccountConnectionWizard.VIRTUAL_FILE_RADIO_BUTTON
-            ).checked
-            == True
-        )
+        return squish.waitForObjectExists(
+            AccountConnectionWizard.VIRTUAL_FILE_RADIO_BUTTON
+        ).checked
 
     @staticmethod
     def get_local_sync_path():

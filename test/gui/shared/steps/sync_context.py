@@ -1,3 +1,5 @@
+import squish
+
 from pageObjects.SyncConnectionWizard import SyncConnectionWizard
 from pageObjects.SyncConnection import SyncConnection
 from pageObjects.Toolbar import Toolbar
@@ -13,6 +15,7 @@ from helpers.SetupClientHelper import (
     getTempResourcePath,
     setCurrentUserSyncPath,
     substituteInLineCodes,
+    getResourcePath,
 )
 
 
@@ -37,31 +40,31 @@ def step(context):
 
 
 @When(r'the user waits for (file|folder) "([^"]*)" to be synced', regexp=True)
-def step(context, type, resource):
+def step(context, resource_type, resource):
     resource = getResourcePath(resource)
-    waitForFileOrFolderToSync(resource, type)
+    waitForFileOrFolderToSync(resource, resource_type)
 
 
 @When(r'the user waits for (file|folder) "([^"]*)" to have sync error', regexp=True)
-def step(context, type, resource):
+def step(context, resource_type, resource):
     resource = getResourcePath(resource)
-    waitForFileOrFolderToHaveSyncError(resource, type)
+    waitForFileOrFolderToHaveSyncError(resource, resource_type)
 
 
 @When(
     r'user "([^"]*)" waits for (file|folder) "([^"]*)" to have sync error', regexp=True
 )
-def step(context, username, type, resource):
+def step(context, username, resource_type, resource):
     resource = getResourcePath(resource, username)
-    waitForFileOrFolderToHaveSyncError(resource, type)
+    waitForFileOrFolderToHaveSyncError(resource, resource_type)
 
 
-@When("the user enables virtual file support")
+@When('the user enables virtual file support')
 def step(context):
     SyncConnection.enableVFS()
     # TODO: remove snooze with proper wait
     # let the client re-sync
-    snooze(get_config("minSyncTimeout"))
+    squish.snooze(get_config('minSyncTimeout'))
 
 
 @Then('the "|any|" button should be available')
@@ -80,12 +83,12 @@ def step(context, item):
     )
 
 
-@When("the user disables virtual file support")
+@When('the user disables virtual file support')
 def step(context):
     SyncConnection.disableVFS()
     # TODO: remove snooze with proper wait
     # let the client re-sync
-    snooze(get_config("minSyncTimeout"))
+    squish.snooze(get_config('minSyncTimeout'))
 
 
 @When('the user clicks on the activity tab')
@@ -100,17 +103,17 @@ def step(context, filename):
 
 @Then('the file "|any|" should be blacklisted')
 def step(context, filename):
-    test.compare(True, Activity.resourceIsBlacklisted(filename), "File is Blacklisted")
+    test.compare(True, Activity.resourceIsBlacklisted(filename), 'File is Blacklisted')
 
 
 @Then('the file "|any|" should be ignored')
 def step(context, filename):
-    test.compare(True, Activity.resourceIsIgnored(filename), "File is Ignored")
+    test.compare(True, Activity.resourceIsIgnored(filename), 'File is Ignored')
 
 
 @Then('the file "|any|" should be excluded')
 def step(context, filename):
-    test.compare(True, Activity.resource_is_excluded(filename), "File is Excluded")
+    test.compare(True, Activity.resource_is_excluded(filename), 'File is Excluded')
 
 
 @When('the user selects "|any|" tab in the activity')
@@ -118,7 +121,7 @@ def step(context, tabName):
     Activity.clickTab(tabName)
 
 
-@Then("the toolbar should have the following tabs:")
+@Then('the toolbar should have the following tabs:')
 def step(context):
     for tabName in context.table:
         Toolbar.hasItem(tabName[0])
@@ -135,21 +138,20 @@ def step(context):
 
 @When('the user sorts the folder list by "|any|"')
 def step(context, headerText):
-    headerText = headerText.capitalize()
-    if headerText in ["Size", "Name"]:
+    if (headerText := headerText.capitalize()) in ['Size', 'Name']:
         SyncConnectionWizard.sortBy(headerText)
     else:
-        raise Exception("Sorting by '" + headerText + "' is not supported.")
+        raise ValueError("Sorting by '" + headerText + "' is not supported.")
 
 
 @Then('the sync all checkbox should be checked')
 def step(context):
     test.compare(
-        SyncConnectionWizard.isRootFolderChecked(), True, "Sync all checkbox is checked"
+        SyncConnectionWizard.isRootFolderChecked(), True, 'Sync all checkbox is checked'
     )
 
 
-@Then("the folders should be in the following order:")
+@Then('the folders should be in the following order:')
 def step(context):
     rowIndex = 0
     for row in context.table[1:]:
@@ -162,7 +164,7 @@ def step(context):
 
 @When('the user selects "|any|" space in sync connection wizard')
 def step(context, space_name):
-    if get_config("ocis"):
+    if get_config('ocis'):
         SyncConnectionWizard.selectSpaceToSync(space_name)
         SyncConnectionWizard.nextStep()
         set_config('syncConnectionName', space_name)
@@ -179,7 +181,7 @@ def step(context):
 def step(context, folderName):
     sync_path = getTempResourcePath(folderName)
     SyncConnectionWizard.setSyncPathInSyncConnectionWizard(sync_path)
-    if get_config("ocis"):
+    if get_config('ocis'):
         # empty connection name when using temporary locations
         set_config('syncConnectionName', '')
         setCurrentUserSyncPath(sync_path)
@@ -188,7 +190,7 @@ def step(context, folderName):
 @When('the user selects "|any|" as a remote destination folder')
 def step(context, folderName):
     # There's no remote destination section with oCIS server
-    if not get_config("ocis"):
+    if not get_config('ocis'):
         SyncConnectionWizard.selectRemoteDestinationFolder(folderName)
 
 
@@ -230,15 +232,15 @@ def step(context):
     SyncConnectionWizard.addSyncConnection()
 
 
-@When("user unselects all the remote folders")
+@When('user unselects all the remote folders')
 def step(context):
     SyncConnectionWizard.deselectAllRemoteFolders()
 
 
-@When("the user |word| VFS support for Windows")
+@When('the user |word| VFS support for Windows')
 def step(context, action):
     if isWindows():
-        action = action.rstrip("s")
+        action = action.rstrip('s')
         SyncConnectionWizard.enableOrDisableVfsSupport(action)
 
 
@@ -248,12 +250,12 @@ def step(context, folder_name):
     SyncConnection.unselect_folder_in_selective_sync(folder_name)
 
 
-@Then("the sync folder list should be empty")
+@Then('the sync folder list should be empty')
 def step(context):
     test.compare(
         0,
         SyncConnection.get_folder_connection_count(),
-        "Sync connections should be empty",
+        'Sync connections should be empty',
     )
 
 
@@ -264,23 +266,23 @@ def step(context):
 
 @When('the user creates a folder "|any|" in the remote destination wizard')
 def step(context, folder_name):
-    if not get_config("ocis"):
+    if not get_config('ocis'):
         SyncConnectionWizard.create_folder_in_remote_destination(folder_name)
 
 
 @When('the user refreshes the remote destination in the sync connection wizard')
 def step(context):
-    if not get_config("ocis"):
+    if not get_config('ocis'):
         SyncConnectionWizard.refresh_remote()
 
 
 @Then('the folder "|any|" should be present in the remote destination wizard')
 def step(context, folder_name):
-    if not get_config("ocis"):
+    if not get_config('ocis'):
         has_folder, folder_selector = SyncConnectionWizard.has_remote_folder(
             folder_name
         )
-        test.compare(True, has_folder, "Folder should be in the remote list")
+        test.compare(True, has_folder, 'Folder should be in the remote list')
 
 
 @When('the user selects remove folder sync connection option')
@@ -309,7 +311,7 @@ def step(context, space_name):
     SyncConnectionWizard.select_space_to_sync(space_name)
 
 
-@When("the user opens the sync connection wizard")
+@When('the user opens the sync connection wizard')
 def step(context):
     SyncConnectionWizard.open_sync_connection_wizard()
 

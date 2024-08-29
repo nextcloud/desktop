@@ -16,9 +16,10 @@
 # See the section 'Performing Actions During Test Execution Via Hooks' in the Squish
 # manual for a complete reference of the available API.
 import shutil
-import urllib.request
 import os
-from urllib.parse import urlparse
+from urllib import request, error
+from datetime import datetime
+
 from helpers.StacktraceHelper import getCoredumps, generateStacktrace
 from helpers.SyncHelper import closeSocketConnection, clearWaitedAfterSync
 from helpers.SpaceHelper import delete_project_spaces
@@ -34,8 +35,8 @@ from helpers.ConfigHelper import (
 )
 from helpers.api.utils import url_join
 from helpers.FilesHelper import prefix_path_namespace, cleanup_created_paths
-from datetime import datetime
 from pageObjects.Toolbar import Toolbar
+
 from pageObjects.AccountSetting import AccountSetting
 from pageObjects.AccountConnectionWizard import AccountConnectionWizard
 
@@ -46,8 +47,8 @@ from pageObjects.AccountConnectionWizard import AccountConnectionWizard
 testSettings.throwOnFailure = True
 
 # this will reset in every test suite
-previousFailResultCount = 0
-previousErrorResultCount = 0
+PREVIOUS_FAIL_RESULT_COUNT = 0
+PREVIOUS_ERROR_RESULT_COUNT = 0
 
 
 # runs before a feature
@@ -69,72 +70,74 @@ def hook(context):
 @OnScenarioStart
 def hook(context):
     # set owncloud config file path
-    config_dir = get_config('clientConfigDir')
+    config_dir = get_config("clientConfigDir")
     if os.path.exists(config_dir):
-        if len(os.listdir(config_dir)) != 0 and isWindows():
-            raise Exception(
+        if len(os.listdir(config_dir)) and isWindows():
+            raise FileExistsError(
                 "Looks like you have previous client config in '"
                 + config_dir
-                + "'\n[DANGER] Delete it and try again.\n[DANGER] Removing config file will make client to lost the previously added accounts."
+                + "'\n[DANGER] Delete it and try again."
+                + "\n[DANGER] Removing config file will make client to lost the previously added accounts."
             )
         # clean previous configs
         shutil.rmtree(config_dir)
     os.makedirs(config_dir, 0o0755)
-    set_config('clientConfigFile', os.path.join(config_dir, 'owncloud.cfg'))
+    set_config("clientConfigFile", os.path.join(config_dir, "owncloud.cfg"))
 
     # create reports dir if not exists
-    test_report_dir = get_config('guiTestReportDir')
+    test_report_dir = get_config("guiTestReportDir")
     if not os.path.exists(test_report_dir):
         os.makedirs(test_report_dir)
 
     # log tests scenario title on serverlog file
-    if os.getenv('CI'):
-        f = open(test_report_dir + "/serverlog.log", "a")
-        f.write(
-            str((datetime.now()).strftime("%H:%M:%S:%f"))
-            + "\tBDD Scenario: "
-            + context._data["title"]
-            + "\n"
-        )
-        f.close()
+    if os.getenv("CI"):
+        with open(test_report_dir + "/serverlog.log", "a", encoding="utf-8") as f:
+            f.write(
+                str((datetime.now()).strftime("%H:%M:%S:%f"))
+                + "\tBDD Scenario: "
+                + context.title
+                + "\n"
+            )
+            f.close()
 
     # this path will be changed according to the user added to the client
     # e.g.: /tmp/client-bdd/Alice
-    set_config('currentUserSyncPath', '')
+    set_config("currentUserSyncPath", "")
 
-    root_sync_dir = get_config('clientRootSyncPath')
+    root_sync_dir = get_config("clientRootSyncPath")
     if not os.path.exists(root_sync_dir):
         os.makedirs(root_sync_dir)
 
-    tmp_dir = get_config('tempFolderPath')
+    tmp_dir = get_config("tempFolderPath")
     if not os.path.exists(tmp_dir):
         os.makedirs(tmp_dir)
 
-    req = urllib.request.Request(
-        url_join(get_config('middlewareUrl'), 'init'),
+    req = request.Request(
+        url_join(get_config("middlewareUrl"), "init"),
         headers={"Content-Type": "application/json"},
-        method='POST',
+        method="POST",
     )
     try:
-        urllib.request.urlopen(req)
-    except urllib.error.HTTPError as e:
-        raise Exception(
+        with request.urlopen(req) as _:
+            pass
+    except error.HTTPError as e:
+        raise ConnectionRefusedError(
             "Step execution through test middleware failed. Error: " + e.read().decode()
-        )
+        ) from e
 
     # sync connection folder display name
-    set_config('syncConnectionName', "Personal" if get_config("ocis") else "ownCloud")
+    set_config("syncConnectionName", "Personal" if get_config("ocis") else "ownCloud")
 
 
 # determines if the test scenario failed or not
-# Currently, this workaround is needed because we cannot find out a way to determine the pass/fail status of currently running test scenario.
-# And, resultCount("errors")  and resultCount("fails") return the total number of error/failed test scenarios of a test suite.
-def scenarioFailed():
-    global previousFailResultCount
-    global previousErrorResultCount
+# Currently, this workaround is needed because we cannot find out
+#   a way to determine the pass/fail status of currently running test scenario.
+# And, resultCount("errors")  and resultCount("fails")
+#   return the total number of error/failed test scenarios of a test suite.
+def scenario_failed():
     return (
-        test.resultCount("fails") - previousFailResultCount > 0
-        or test.resultCount("errors") - previousErrorResultCount > 0
+        test.resultCount("fails") - PREVIOUS_FAIL_RESULT_COUNT > 0
+        or test.resultCount("errors") - PREVIOUS_ERROR_RESULT_COUNT > 0
     )
 
 
@@ -143,7 +146,7 @@ def scenarioFailed():
 # cleanup spaces
 @OnScenarioEnd
 def hook(context):
-    if get_config('ocis'):
+    if get_config("ocis"):
         delete_project_spaces()
     delete_created_groups()
 
@@ -155,51 +158,47 @@ def hook(context):
     clearWaitedAfterSync()
     closeSocketConnection()
 
-    global previousFailResultCount, previousErrorResultCount
-
     # capture a screenshot if there is error or test failure in the current scenario execution
-    if scenarioFailed() and os.getenv('CI') and isLinux():
+    if scenario_failed() and os.getenv("CI") and isLinux():
         # scenario name can have "/" which is invalid filename
-        filename = (
-            context._data["title"].replace(" ", "_").replace("/", "_").strip(".")
-            + ".png"
-        )
-        directory = os.path.join(get_config('guiTestReportDir'), "screenshots")
+        filename = context.title.replace(" ", "_").replace("/", "_").strip(".") + ".png"
+        directory = os.path.join(get_config("guiTestReportDir"), "screenshots")
         if not os.path.exists(directory):
             os.makedirs(directory)
 
-        saveDesktopScreenshot(os.path.join(directory, filename))
+        squish.saveDesktopScreenshot(os.path.join(directory, filename))
 
     # teardown accounts and configs
     teardown_client()
 
     # search coredumps after every test scenario
     # CI pipeline might fail although all tests are passing
-    coredumps = getCoredumps()
-    if coredumps:
+    if coredumps := getCoredumps():
         try:
-            generateStacktrace(context._data["title"], coredumps)
+            generateStacktrace(context.title, coredumps)
             test.log("Stacktrace generated!")
-        except Exception as err:
+        except OSError as err:
             test.log("Exception occured:" + str(err))
-    elif scenarioFailed():
+    elif scenario_failed():
         test.log("No coredump found!")
 
     # cleanup test server
-    req = urllib.request.Request(
-        url_join(get_config('middlewareUrl'), 'cleanup'),
+    req = request.Request(
+        url_join(get_config("middlewareUrl"), "cleanup"),
         headers={"Content-Type": "application/json"},
-        method='POST',
+        method="POST",
     )
     try:
-        urllib.request.urlopen(req)
-    except urllib.error.HTTPError as e:
-        raise Exception(
+        with request.urlopen(req) as _:
+            pass
+    except error.HTTPError as e:
+        raise ConnectionRefusedError(
             "Step execution through test middleware failed. Error: " + e.read().decode()
-        )
+        ) from e
 
-    previousFailResultCount = test.resultCount("fails")
-    previousErrorResultCount = test.resultCount("errors")
+    global PREVIOUS_FAIL_RESULT_COUNT, PREVIOUS_ERROR_RESULT_COUNT
+    PREVIOUS_FAIL_RESULT_COUNT = test.resultCount("fails")
+    PREVIOUS_ERROR_RESULT_COUNT = test.resultCount("errors")
 
 
 def teardown_client():
@@ -216,28 +215,28 @@ def teardown_client():
             Toolbar.openAccount(account["displayname"])
             AccountSetting.removeAccountConnection()
         if accounts:
-            waitForObject(AccountConnectionWizard.SERVER_ADDRESS_BOX)
+            squish.waitForObject(AccountConnectionWizard.SERVER_ADDRESS_BOX)
 
     # Detach (i.e. potentially terminate) all AUTs at the end of a scenario
-    for ctx in applicationContextList():
+    for ctx in squish.applicationContextList():
         # get pid before detaching
         pid = ctx.pid
         ctx.detach()
         wait_until_app_killed(pid)
 
     # clean up config files
-    shutil.rmtree(get_config('clientConfigDir'))
+    shutil.rmtree(get_config("clientConfigDir"))
 
     # delete test files/folders
-    for entry in os.scandir(get_config('clientRootSyncPath')):
+    for entry in os.scandir(get_config("clientRootSyncPath")):
         test.log("Deleting: " + entry.name)
         try:
             if entry.is_file() or entry.is_symlink():
                 os.unlink(prefix_path_namespace(entry.path))
             elif entry.is_dir():
                 shutil.rmtree(prefix_path_namespace(entry.path))
-        except Exception as e:
-            test.log(f'Failed to delete{entry.name}. Reason: {e}.')
+        except OSError as e:
+            test.log(f"Failed to delete{entry.name}. Reason: {e}.")
     # cleanup paths created outside of the temporary directory during the test
     cleanup_created_paths()
 
@@ -249,11 +248,12 @@ def close_dialogs():
         if str(active_window) == "<null>":
             break
         test.log(f"Closing '{active_window.objectName}' window")
-        closed = active_window.close()
-        if not closed:
+        if not active_window.close():
             confirm_dialog = QApplication.activeModalWidget()
             if confirm_dialog.visible:
-                clickButton(waitForObject(AccountSetting.CONFIRMATION_YES_BUTTON))
+                squish.clickButton(
+                    squish.waitForObject(AccountSetting.CONFIRMATION_YES_BUTTON)
+                )
 
 
 def close_widgets():
@@ -262,14 +262,16 @@ def close_widgets():
         for obj in ch:
             if (
                 hasattr(obj, "objectName")
-                and obj.objectName != ''
+                and obj.objectName
                 and obj.objectName != "page"
             ):
                 obj.close()
                 # if the dialog has a confirmation dialog, confirm it
                 confirm_dialog = QApplication.activeModalWidget()
                 if str(confirm_dialog) != "<null>" and confirm_dialog.visible:
-                    clickButton(waitForObject(AccountSetting.CONFIRMATION_YES_BUTTON))
+                    squish.clickButton(
+                        squish.waitForObject(AccountSetting.CONFIRMATION_YES_BUTTON)
+                    )
     except LookupError:
         # nothing to close if DIALOG_STACK is not found
         # required for client versions <= 5

@@ -1,6 +1,6 @@
 from pageObjects.EnterPassword import EnterPassword
 
-from helpers.UserHelper import getDisplaynameForUser, getPasswordForUser
+from helpers.UserHelper import getPasswordForUser
 from helpers.SetupClientHelper import setUpClient, getResourcePath
 from helpers.SyncHelper import waitForInitialSyncToComplete
 from helpers.SpaceHelper import (
@@ -11,6 +11,7 @@ from helpers.SpaceHelper import (
     get_file_content,
     resource_exists,
 )
+from helpers.ConfigHelper import get_config
 
 
 @Given('the administrator has created a space "|any|"')
@@ -52,7 +53,7 @@ def step(context, user, space_name):
 )
 def step(context, user, file_name, space_name, content):
     downloaded_content = get_file_content(space_name, file_name, user)
-    test.compare(downloaded_content, content, "Comparing file content")
+    test.compare(downloaded_content, content, 'Comparing file content')
 
 
 @Then(
@@ -61,4 +62,4 @@ def step(context, user, file_name, space_name, content):
 )
 def step(context, user, space_name, resource_name):
     exists = resource_exists(space_name, resource_name, user)
-    test.compare(exists, True, "Resource exists")
+    test.compare(exists, True, 'Resource exists')

@@ -1,4 +1,5 @@
 import os
+import squish
 
 from pageObjects.PublicLinkDialog import PublicLinkDialog
 from pageObjects.SharingDialog import SharingDialog
@@ -15,29 +16,28 @@ from helpers.ConfigHelper import get_config
 
 def shareResourceCommand(resource):
     socketConnect = getSocketConnection()
-    socketConnect.sendCommand("SHARE:" + resource + "\n")
+    socketConnect.sendCommand(f'SHARE:{resource}\n')
     if not socketConnect.read_socket_data_with_timeout(0.1):
         return False
     for line in socketConnect.get_available_responses():
         if line.startswith('SHARE:OK') and line.endswith(resource):
             return True
-        elif line.endswith(resource):
-            return False
+    return False
 
 
 def openSharingDialog(resource):
     resource = getResourcePath(resource)
-    resourceExist = waitFor(
+    resourceExist = squish.waitFor(
         lambda: os.path.exists(resource), get_config('maxSyncTimeout') * 1000
     )
     if not resourceExist:
-        raise Exception("{} doesn't exists".format(resource))
-    shareDialog = waitFor(
+        raise FileNotFoundError(f"{resource} doesn't exists")
+    shareDialog = squish.waitFor(
         lambda: shareResourceCommand(resource),
         get_config('maxSyncTimeout') * 1000,
     )
     if not shareDialog:
-        raise Exception("Sharing dialog didn't open for {}".format(resource))
+        raise LookupError(f"Sharing dialog didn't open for {resource}")
 
 
 def createPublicLinkShare(
@@ -58,7 +58,7 @@ def createPublicShareWithRole(resource, role):
 def collaboratorShouldBeListed(receiver, resource, permissions, receiverCount=0):
     # wait for client to the view
     waitForFileOrFolderToHaveSyncStatus(
-        getResourcePath(), "FOLDER", SYNC_STATUS["UPDATE"]
+        getResourcePath(), 'FOLDER', SYNC_STATUS['UPDATE']
     )
     openSharingDialog(resource)
 
@@ -70,7 +70,6 @@ def collaboratorShouldBeListed(receiver, resource, permissions, receiverCount=0)
 def checkCollaboratorAndPremissions(receiver, permissions, receiverCount=0):
     permissionsList = permissions.split(',')
 
-    # findAllObjects: This function finds and returns a list of object references identified by the symbolic or real (multi-property) name objectName.
     sharedWithObj = SharingDialog.getCollaborators()
 
     #     we use sharedWithObj list from above while verifying if users are listed or not.
@@ -102,7 +101,8 @@ def step(context, receiver, resource, permissions):
 def step(context, resource):
     openSharingDialog(resource)
 
-    # In the following loop we are trying to share resource with given permission to one user at a time given from the data table in the feature file
+    # In the following loop we are trying to share resource with given permission
+    # to one user at a timegiven from the data table in the feature file
     for count, row in enumerate(context.table[1:]):
         receiver = row[0]
         permissions = row[1]
@@ -136,10 +136,11 @@ def step(context, receiver, resource, permissions):
 
 
 @Then(
+    # pylint: disable=line-too-long
     'group "|any|" should be listed in the collaborators list for file "|any|" with permissions "|any|" on the client-UI'
 )
 def step(context, receiver, resource, permissions):
-    receiver += " (group)"
+    receiver += ' (group)'
     collaboratorShouldBeListed(receiver, resource, permissions)
 
 
@@ -149,21 +150,21 @@ def step(context, resource):
     PublicLinkDialog.openPublicLinkTab()
 
 
-@When("the user toggles the password protection using the client-UI")
+@When('the user toggles the password protection using the client-UI')
 def step(context):
     PublicLinkDialog.togglePassword()
 
 
 @Then('the password progress indicator should not be visible in the client-UI')
 def step(context):
-    waitFor(lambda: (test.vp("publicLinkPasswordProgressIndicatorInvisible")))
+    squish.waitFor(lambda: (test.vp('publicLinkPasswordProgressIndicatorInvisible')))
 
 
 @Then(
     'the password progress indicator should not be visible in the client-UI - expected to fail'
 )
 def step(context):
-    waitFor(lambda: (test.xvp("publicLinkPasswordProgressIndicatorInvisible")))
+    squish.waitFor(lambda: (test.xvp('publicLinkPasswordProgressIndicatorInvisible')))
 
 
 @When('the user opens the sharing dialog of "|any|" using the client-UI')
@@ -205,12 +206,12 @@ def step(context, resource, password):
 def step(context, resource, expiryDate):
     # wait for client to the view
     waitForFileOrFolderToHaveSyncStatus(
-        getResourcePath(), "FOLDER", SYNC_STATUS["UPDATE"]
+        getResourcePath(), 'FOLDER', SYNC_STATUS['UPDATE']
     )
     openSharingDialog(resource)
     PublicLinkDialog.openPublicLinkTab()
 
-    if expiryDate.strip("%") == "default":
+    if expiryDate.strip('%') == 'default':
         expiryDate = PublicLinkDialog.getDefaultExpiryDate()
     actualExpiryDate = PublicLinkDialog.getExpirationDate()
     test.compare(expiryDate, actualExpiryDate)
@@ -219,7 +220,7 @@ def step(context, resource, expiryDate):
 
 
 @When('the user edits the public link named "|any|" of file "|any|" changing following')
-def step(context, publicLinkName, resource):
+def step(context, _, __):
     expireDate = ''
     for row in context.table:
         if row[0] == 'expireDate':
@@ -229,6 +230,7 @@ def step(context, publicLinkName, resource):
 
 
 @When(
+    # pylint: disable=line-too-long
     'the user creates a new public link with permissions "|any|" for folder "|any|" without password using the client-UI'
 )
 def step(context, permissions, resource):
@@ -236,6 +238,7 @@ def step(context, permissions, resource):
 
 
 @When(
+    # pylint: disable=line-too-long
     'the user creates a new public link with permissions "|any|" for folder "|any|" with password "|any|" using the client-UI'
 )
 def step(context, permissions, resource, password):
@@ -248,16 +251,16 @@ def step(context):
     for row in context.table:
         linkSettings[row[0]] = row[1]
 
-    if "path" not in linkSettings:
-        raise Exception("'path' is required but not given.")
+    if 'path' not in linkSettings:
+        raise ValueError("'path' is required but not given.")
 
-    if "expireDate" in linkSettings and linkSettings['expireDate'] == "%default%":
-        linkSettings['expireDate'] = linkSettings['expireDate'].strip("%")
+    if 'expireDate' in linkSettings and linkSettings['expireDate'] == '%default%':
+        linkSettings['expireDate'] = linkSettings['expireDate'].strip('%')
 
     createPublicLinkShare(
         resource=linkSettings['path'],
-        password=linkSettings['password'] if "password" in linkSettings else None,
-        expireDate=linkSettings['expireDate'] if "expireDate" in linkSettings else None,
+        password=linkSettings['password'] if 'password' in linkSettings else None,
+        expireDate=linkSettings['expireDate'] if 'expireDate' in linkSettings else None,
     )
 
 
@@ -271,21 +274,21 @@ def step(context, resource):
             role = row[1]
             break
 
-    if role == '':
-        raise Exception("No role has been found")
-    else:
-        createPublicShareWithRole(resource, role)
+    if not role:
+        raise ValueError('No role has been found')
+
+    createPublicShareWithRole(resource, role)
 
 
 @When(
     'the user removes permissions "|any|" for user "|any|" of resource "|any|" using the client-UI'
 )
-def step(context, permissions, receiver, resource):
+def step(context, permissions, _, resource):
     openSharingDialog(resource)
     SharingDialog.removePermissions(permissions)
 
 
-@Step("the user closes the sharing dialog")
+@Step('the user closes the sharing dialog')
 def step(context):
     SharingDialog.closeSharingDialog()
 
@@ -293,7 +296,7 @@ def step(context):
 @Then(
     '"|any|" permissions should not be displayed for user "|any|" for resource "|any|" on the client-UI'
 )
-def step(context, permissions, user, resource):
+def step(context, permissions, _, __):
     permissionsList = permissions.split(',')
 
     editChecked, shareChecked = SharingDialog.getAvailablePermission()
@@ -306,8 +309,8 @@ def step(context, permissions, user, resource):
 
 
 @Then('the error "|any|" should be displayed in the sharing dialog')
-def step(context, errorMessage):
-    test.compare(SharingDialog.getErrorText(), errorMessage)
+def step(context, error_message):
+    test.compare(SharingDialog.getErrorText(), error_message)
 
 
 @When(
@@ -337,7 +340,7 @@ def step(context, resource):
 @When(
     'the user changes the password of public link "|any|" to "|any|" using the client-UI'
 )
-def step(context, publicLinkName, password):
+def step(context, _, password):
     PublicLinkDialog.changePassword(password)
 
 
@@ -347,7 +350,7 @@ def step(context, publicLinkName, password):
 def step(context, resource):
     # wait for client to the view
     waitForFileOrFolderToHaveSyncStatus(
-        getResourcePath(), "FOLDER", SYNC_STATUS["UPDATE"]
+        getResourcePath(), 'FOLDER', SYNC_STATUS['UPDATE']
     )
     openSharingDialog(resource)
     #     Here we are trying to verify if the user added in when step are listed in the client-UI or not

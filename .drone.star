@@ -7,7 +7,6 @@
 
 DEFAULT_PHP_VERSION = "7.4"
 
-PYFOUND_BLACK = "pyfound/black:24.8.0"
 MYSQL = "mysql:8.0"
 OC_CI_ALPINE = "owncloudci/alpine:latest"
 OC_CI_BAZEL_BUILDIFIER = "owncloudci/bazel-buildifier"
@@ -354,10 +353,10 @@ def lint_gui_test():
 def python_lint():
     return [{
         "name": "python-lint",
-        "image": PYFOUND_BLACK,
+        "image": OC_CI_ALPINE,
         "commands": [
-            "cd %s" % dir["guiTest"],
-            "black --check --diff .",
+            "apk add --no-cache py3-pylint black",
+            "make -C %s python-lint" % dir["guiTest"],
         ],
     }]
 

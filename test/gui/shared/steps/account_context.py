@@ -35,8 +35,8 @@ def step(context, displayname, _):
 def step(context, displayname, host):
     displayname = substituteInLineCodes(displayname)
     host = substituteInLineCodes(host)
-    account_title = displayname + "\n" + host
-    timeout = get_config("lowestSyncTimeout") * 1000
+    account_title = displayname + '\n' + host
+    timeout = get_config('lowestSyncTimeout') * 1000
 
     test.compare(
         False,
@@ -72,7 +72,7 @@ def step(context):
             enter_password = EnterPassword(len(users) - idx)
             enter_password.accept_certificate()
 
-    for idx, sync_path in enumerate(sync_paths.values()):
+    for idx, _ in enumerate(sync_paths.values()):
         # login from last dialog
         account_idx = len(sync_paths) - idx
         enter_password = EnterPassword(account_idx)
@@ -104,7 +104,7 @@ def step(context):
     account_details = getClientDetails(context)
     AccountConnectionWizard.addAccount(account_details)
     # wait for files to sync
-    waitForInitialSyncToComplete(getResourcePath('/', account_details["user"]))
+    waitForInitialSyncToComplete(getResourcePath('/', account_details['user']))
 
 
 @Given('the user has entered the following account information:')
@@ -114,7 +114,7 @@ def step(context):
 
 
 @When('the user "|any|" logs out using the client-UI')
-def step(context, username):
+def step(context, _):
     AccountSetting.logout()
 
 
@@ -125,7 +125,7 @@ def step(context, username):
     test.compare(
         AccountSetting.isUserSignedOut(displayname, server),
         True,
-        "User '%s' is signed out" % username,
+        f'User "{username}" is signed out',
     )
 
 
@@ -135,7 +135,7 @@ def step(context, username):
     displayname = getDisplaynameForUser(username)
     server = get_config('localBackendUrl')
     if not AccountSetting.isUserSignedOut(displayname, server):
-        raise Exception("Failed to logout user '%s'" % username)
+        raise LookupError(f'Failed to logout user {username}')
 
 
 @When('user "|any|" logs in using the client-UI')
@@ -161,7 +161,7 @@ def step(context, username):
 
 
 @When('user "|any|" opens login dialog')
-def step(context, username):
+def step(context, _):
     AccountSetting.login()
 
 
@@ -193,7 +193,7 @@ def step(context):
     test.compare(
         AccountConnectionWizard.isNewConnectionWindowVisible(),
         True,
-        "Connection window is visible",
+        'Connection window is visible',
     )
 
 
@@ -203,8 +203,8 @@ def step(context):
 
 
 @Then('the error "|any|" should be displayed in the account connection wizard')
-def step(context, errorMsg):
-    test.verify(errorMsg in AccountConnectionWizard.getErrorMessage())
+def step(context, error_message):
+    test.verify(error_message in AccountConnectionWizard.getErrorMessage())
 
 
 @When('the user adds the server "|any|"')
@@ -219,12 +219,12 @@ def step(context):
     AccountConnectionWizard.nextStep()
 
 
-@Then("credentials wizard should be visible")
+@Then('credentials wizard should be visible')
 def step(context):
     test.compare(
         AccountConnectionWizard.isCredentialWindowVisible(),
         True,
-        "Credentials wizard is visible",
+        'Credentials wizard is visible',
     )
 
 
@@ -240,33 +240,33 @@ def step(context):
     AccountConnectionWizard.nextStep()
 
 
-@When("the user opens the advanced configuration")
+@When('the user opens the advanced configuration')
 def step(context):
     AccountConnectionWizard.selectAdvancedConfig()
 
 
-@Then("the user should be able to choose the local download directory")
+@Then('the user should be able to choose the local download directory')
 def step(context):
     test.compare(True, AccountConnectionWizard.canChangeLocalSyncDir())
 
 
-@Then("the download everything option should be selected by default for Linux")
+@Then('the download everything option should be selected by default for Linux')
 def step(context):
     if isLinux():
         test.compare(
             True,
             AccountConnectionWizard.isSyncEverythingOptionChecked(),
-            "Sync everything option is checked",
+            'Sync everything option is checked',
         )
 
 
-@Then("the VFS option should be selected by default for Windows")
+@Then('the VFS option should be selected by default for Windows')
 def step(context):
     if isWindows():
         test.compare(
             True,
             AccountConnectionWizard.isVFSOptionChecked(),
-            "VFS option is checked",
+            'VFS option is checked',
         )
 
 
@@ -277,7 +277,7 @@ def step(context, key):
 
 @Then('the log dialog should be opened')
 def step(context):
-    test.compare(True, AccountSetting.isLogDialogVisible(), "Log dialog is opened")
+    test.compare(True, AccountSetting.isLogDialogVisible(), 'Log dialog is opened')
 
 
 @When('the user adds the following oauth2 account:')
@@ -286,7 +286,7 @@ def step(context):
     account_details.update({'oauth': True})
     AccountConnectionWizard.addAccount(account_details)
     # wait for files to sync
-    waitForInitialSyncToComplete(getResourcePath('/', account_details["user"]))
+    waitForInitialSyncToComplete(getResourcePath('/', account_details['user']))
 
 
 @Step('the user cancels the sync connection wizard')
@@ -295,12 +295,12 @@ def step(context):
 
 
 @When('user "|any|" logs out from the login required dialog')
-def step(context, username):
+def step(context, _):
     enter_password = EnterPassword()
     enter_password.logout()
 
 
-@When("the user quits the client")
+@When('the user quits the client')
 def step(context):
     Toolbar.quit_owncloud()
 
@@ -308,8 +308,7 @@ def step(context):
 @Then('"|any|" account should be opened')
 def step(context, displayname):
     displayname = substituteInLineCodes(displayname)
-    has_focus = Toolbar.account_has_focus(displayname)
-    if not has_focus:
+    if not Toolbar.account_has_focus(displayname):
         raise LookupError(f"Account '{displayname}' should be opened, but it is not")
 
 
@@ -320,7 +319,7 @@ def step(context, displayname):
 def step(context, sync_path, wizard):
     sync_path = substituteInLineCodes(sync_path)
 
-    actual_sync_path = ""
+    actual_sync_path = ''
     if wizard == 'configuration':
         actual_sync_path = AccountConnectionWizard.get_local_sync_path()
     else:
@@ -329,16 +328,15 @@ def step(context, sync_path, wizard):
     test.compare(
         actual_sync_path,
         sync_path,
-        "Compare sync path contains the expected path",
+        'Compare sync path contains the expected path',
     )
 
 
 @Then('the warning "|any|" should appear in the sync connection wizard')
 def step(context, warn_message):
     actual_message = SyncConnectionWizard.get_warn_label()
-    contains_warning = True if warn_message in actual_message else False
     test.compare(
         True,
-        contains_warning,
-        "Contains warning message",
+        warn_message in actual_message,
+        'Contains warning message',
     )

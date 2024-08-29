@@ -1,60 +1,58 @@
 import urllib.request
 import json
+
 from helpers.ConfigHelper import get_config
 from helpers.api.utils import url_join
-import helpers.api.Provisioning as provisioning
-import helpers.api.webdav_helper as webdav
-import helpers.api.sharing_helper as sharing_helper
+from helpers.api import Provisioning, webdav_helper as webdav, sharing_helper
+
+from pageObjects.Toolbar import Toolbar
 
 
-def executeStepThroughMiddleware(context, step):
-    body = {"step": step}
-    if hasattr(context, "table"):
-        body["table"] = context.table
+def executeStepThroughMiddleware(context, step_name):
+    body = {'step': step_name}
+    if hasattr(context, 'table'):
+        body['table'] = context.table
 
     params = json.dumps(body).encode('utf8')
 
     req = urllib.request.Request(
         url_join(get_config('middlewareUrl'), 'execute'),
         data=params,
-        headers={"Content-Type": "application/json"},
+        headers={'Content-Type': 'application/json'},
         method='POST',
     )
     try:
-        urllib.request.urlopen(req)
+        with urllib.request.urlopen(req) as _:
+            pass
     except urllib.error.HTTPError as e:
-        raise Exception(
-            "Step execution through test middleware failed. Error: " + e.read().decode()
-        )
+        raise RuntimeError(
+            'Step execution through test middleware failed. Error: ' + e.read().decode()
+        ) from e
 
 
-@Given(r"^(.*) on the server (.*)$", regexp=True)
+@Given(r'^(.*) on the server (.*)$', regexp=True)
 def step(context, stepPart1, stepPart2):
-    executeStepThroughMiddleware(context, "Given " + stepPart1 + " " + stepPart2)
-    global usersDataFromMiddleware
-    usersDataFromMiddleware = None
+    executeStepThroughMiddleware(context, f'Given {stepPart1} {stepPart2}')
 
 
-@Given(r"^(.*) on the server$", regexp=True)
+@Given(r'^(.*) on the server$', regexp=True)
 def step(context, stepPart1):
-    executeStepThroughMiddleware(context, "Given " + stepPart1)
-    global usersDataFromMiddleware
-    usersDataFromMiddleware = None
+    executeStepThroughMiddleware(context, f'Given {stepPart1}')
 
 
-@Then(r"^(.*) on the server (.*)$", regexp=True)
+@Then(r'^(.*) on the server (.*)$', regexp=True)
 def step(context, stepPart1, stepPart2):
-    executeStepThroughMiddleware(context, "Then " + stepPart1 + " " + stepPart2)
+    executeStepThroughMiddleware(context, f'Then {stepPart1} {stepPart2}')
 
 
-@Then(r"^(.*) on the server$", regexp=True)
+@Then(r'^(.*) on the server$', regexp=True)
 def step(context, stepPart1):
-    executeStepThroughMiddleware(context, "Then " + stepPart1)
+    executeStepThroughMiddleware(context, f'Then {stepPart1}')
 
 
 @Given('app "|any|" has been "|any|" in the server')
 def step(context, app_name, action):
-    provisioning.setup_app(app_name, action)
+    Provisioning.setup_app(app_name, action)
 
 
 @Then(
@@ -115,6 +113,7 @@ def step(context, user_name, resource_name):
 
 
 @Then(
+    # pylint: disable=line-too-long
     r'the public should be able to download the (?:file|folder) "([^"].*)" without password from the last created public link by "([^"].*)" in the server',
     regexp=True,
 )
@@ -122,10 +121,11 @@ def step(context, resource_name, link_creator):
     downloaded = sharing_helper.download_last_public_link_resource(
         link_creator, resource_name
     )
-    test.compare(downloaded, True, "Could not download public share")
+    test.compare(downloaded, True, 'Could not download public share')
 
 
 @Then(
+    # pylint: disable=line-too-long
     r'the public should not be able to download the (?:file|folder) "([^"].*)" from the last created public link by "([^"].*)" in the server',
     regexp=True,
 )
@@ -133,10 +133,11 @@ def step(context, resource_name, link_creator):
     downloaded = sharing_helper.download_last_public_link_resource(
         link_creator, resource_name
     )
-    test.compare(downloaded, False, "Could download public share")
+    test.compare(downloaded, False, 'Could download public share')
 
 
 @Then(
+    # pylint: disable=line-too-long
     r'the public should be able to download the (?:file|folder) "([^"].*)" with password "([^"].*)" from the last created public link by "([^"].*)" in the server',
     regexp=True,
 )
@@ -144,7 +145,7 @@ def step(context, resource_name, public_link_password, link_creator):
     downloaded = sharing_helper.download_last_public_link_resource(
         link_creator, resource_name, public_link_password
     )
-    test.compare(downloaded, True, "Could not download public share")
+    test.compare(downloaded, True, 'Could not download public share')
 
 
 @Then(
@@ -154,7 +155,7 @@ def step(context, resource_name, public_link_password, link_creator):
 def step(context, user_name, folder_name, items_number):
     total_items = webdav.get_folder_items_count(user_name, folder_name)
     test.compare(
-        total_items, items_number, f"Folder should contain {items_number} items"
+        total_items, items_number, f'Folder should contain {items_number} items'
     )
 
 
@@ -168,7 +169,7 @@ def step(context, user, file_content, file_name):
     webdav.create_file(user, file_name, file_content)
 
 
-@When("the user clicks on the settings tab")
+@When('the user clicks on the settings tab')
 def step(context):
     Toolbar.open_settings_tab()
 
@@ -185,9 +186,9 @@ def step(context, user, folder_name):
 
 @Given('group "|any|" has been created in the server')
 def step(context, group_name):
-    provisioning.create_group(group_name)
+    Provisioning.create_group(group_name)
 
 
 @Given('user "|any|" has been added to group "|any|" in the server')
 def step(context, user, group_name):
-    provisioning.add_user_to_group(user, group_name)
+    Provisioning.add_user_to_group(user, group_name)

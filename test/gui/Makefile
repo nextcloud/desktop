@@ -1,3 +1,5 @@
+PYTHON_LINT_PATHS:=./shared/steps/* ./shared/scripts/bdd_hooks.py
+
 .PHONY: install
 install: pnpm-install pnpm-install-chromium pip-install
 
@@ -16,10 +18,12 @@ pip-install:
 .PHONY: python-lint
 python-lint:
 	black --check --diff .
+	pylint --rcfile ./.pylintrc $(PYTHON_LINT_PATHS)
 
 .PHONY: python-lint-fix
 python-lint-fix:
 	black .
+	pylint --rcfile ./.pylintrc $(PYTHON_LINT_PATHS)
 
 .PHONY: gherkin-lint
 gherkin-lint:

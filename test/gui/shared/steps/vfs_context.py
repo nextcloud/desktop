@@ -1,4 +1,5 @@
 from helpers.FilesHelper import get_file_size_on_disk, get_file_size
+from helpers.SetupClientHelper import getResourcePath
 
 
 @Then('the placeholder of file "|any|" should exist on the file system')
