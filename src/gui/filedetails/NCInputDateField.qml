@@ -12,9 +12,9 @@
  * for more details.
  */
 
-import QtQuick 2.15
-import QtQuick.Controls 2.15
-import com.nextcloud.desktopclient 1.0
+import QtQuick
+import QtQuick.Controls
+import com.nextcloud.desktopclient
 
 NCInputTextField {
     id: root
@@ -47,3 +47,4 @@ NCInputTextField {
         root.userAcceptedDate();
     }
 }
+
