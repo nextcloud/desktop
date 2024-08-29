@@ -44,6 +44,8 @@ NetworkSettings::NetworkSettings(QWidget *parent)
 {
     _ui->setupUi(this);
 
+    setFocusProxy(_ui->pauseSyncWhenMeteredCheckbox);
+
     _ui->hostLineEdit->setPlaceholderText(tr("Hostname of proxy server"));
     _ui->hostLineEdit->setAccessibleName(tr("Hostname of proxy server"));
     _ui->userLineEdit->setPlaceholderText(tr("Username for proxy server"));

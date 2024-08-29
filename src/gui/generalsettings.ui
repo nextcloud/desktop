@@ -176,7 +176,11 @@
          </property>
          <layout class="QVBoxLayout" name="verticalLayout_4">
           <item>
-           <widget class="NetworkSettings" name="widget" native="true"/>
+           <widget class="NetworkSettings" name="widget" native="true">
+            <property name="focusPolicy">
+             <enum>Qt::StrongFocus</enum>
+            </property>
+           </widget>
           </item>
          </layout>
         </widget>
@@ -269,6 +273,7 @@
   <tabstop>moveToTrashCheckBox</tabstop>
   <tabstop>ignoredFilesButton</tabstop>
   <tabstop>logSettingsButton</tabstop>
+  <tabstop>widget</tabstop>
   <tabstop>scrollArea</tabstop>
   <tabstop>about_pushButton</tabstop>
  </tabstops>
