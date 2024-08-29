@@ -4,7 +4,7 @@ Feature: deleting files and folders
   	So that I can keep my filing system clean and tidy
 
     Background:
-        Given user "Alice" has been created on the server with default attributes and without skeleton files
+        Given user "Alice" has been created in the server with default attributes
 
     @issue-9439
     Scenario Outline: Delete a file

@@ -4,7 +4,7 @@ Feature:  Logout users
   So that I can protect my work and identity and be assured of privacy
 
     Background:
-        Given user "Alice" has been created on the server with default attributes and without skeleton files
+        Given user "Alice" has been created in the server with default attributes
 
 
     Scenario: logging out

@@ -4,7 +4,7 @@ Feature: Syncing files
     so that I dont have to upload and download files manually
 
     Background:
-        Given user "Alice" has been created on the server with default attributes and without skeleton files
+        Given user "Alice" has been created in the server with default attributes
 
     @smokeTest @issue-9281
     Scenario: Syncing a file to the server

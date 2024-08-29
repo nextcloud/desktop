@@ -4,7 +4,7 @@ Feature: move file and folder
     So that I can organize my files and folders
 
     Background:
-        Given user "Alice" has been created on the server with default attributes and without skeleton files
+        Given user "Alice" has been created in the server with default attributes
         And user "Alice" has created folder "folder1" in the server
         And user "Alice" has created folder "folder1/folder2" in the server
         And user "Alice" has created folder "folder1/folder2/folder3" in the server

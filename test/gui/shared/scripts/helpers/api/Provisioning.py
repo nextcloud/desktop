@@ -3,6 +3,7 @@ import helpers.api.oc10 as oc
 import helpers.api.ocis as ocis
 from helpers.api.utils import url_join
 from helpers.ConfigHelper import get_config
+import helpers.UserHelper as UserHelper
 
 created_groups = {}
 
@@ -58,3 +59,35 @@ def add_user_to_group(user, group_name):
         ocis.add_user_to_group(user, group_name)
     else:
         oc.add_user_to_group(user, group_name)
+
+
+def create_user(username):
+    user = {}
+    if username in UserHelper.test_users:
+        user = UserHelper.test_users[username]
+    else:
+        user = {
+            "username": username,
+            "displayname": username,
+            "email": f'{username}@mail.com',
+            "password": UserHelper.test_users["regularuser"]["password"],
+        }
+
+    if get_config('ocis'):
+        user_info = ocis.create_user(
+            user['username'], user['password'], user['displayname'], user['email']
+        )
+    else:
+        user_info = oc.create_user(
+            user['username'], user['password'], user['displayname'], user['email']
+        )
+    UserHelper.createdUsers[username] = user_info
+
+
+def delete_created_users():
+    for username, user_info in list(UserHelper.createdUsers.items()):
+        if get_config('ocis'):
+            ocis.delete_user(user_info["id"])
+        else:
+            oc.delete_user(user_info["username"])
+        del UserHelper.createdUsers[username]

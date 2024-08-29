@@ -4,7 +4,7 @@ Feature: edit files
     So that I can modify and change file data
 
     Background:
-        Given user "Alice" has been created on the server with default attributes and without skeleton files
+        Given user "Alice" has been created in the server with default attributes
 
 
     Scenario: Modify orignal content of a file with special character

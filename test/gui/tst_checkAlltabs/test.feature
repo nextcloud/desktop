@@ -5,7 +5,7 @@ Feature: Visually check all tabs
 
 
     Scenario: Tabs in toolbar looks correct
-        Given user "Alice" has been created on the server with default attributes and without skeleton files
+        Given user "Alice" has been created in the server with default attributes
         And user "Alice" has set up a client with default settings
         Then the toolbar should have the following tabs:
             | Add Account |
@@ -15,7 +15,7 @@ Feature: Visually check all tabs
 
 
     Scenario: Verify various setting options in Settings tab
-        Given user "Alice" has been created on the server with default attributes and without skeleton files
+        Given user "Alice" has been created in the server with default attributes
         And user "Alice" has set up a client with default settings
         When the user clicks on the settings tab
         Then the settings tab should have the following options in the general section:

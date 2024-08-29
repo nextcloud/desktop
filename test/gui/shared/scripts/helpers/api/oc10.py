@@ -39,3 +39,34 @@ def add_user_to_group(user, group_name):
     body = {"groupid": group_name}
     response = request.post(url, body)
     request.assertHttpStatus(response, 200)
+
+
+def create_user(username, password, displayname, email):
+    url = url_join(get_ocs_url(), "users")
+    body = {
+        "userid": username,
+        "password": password,
+        "displayname": displayname,
+        "email": email,
+    }
+    response = request.post(url, body)
+    request.assertHttpStatus(response, 200)
+    # oc10 does not set display name while creating user,
+    # so we need update the user info
+    user_url = url_join(get_ocs_url(), "users", username)
+    display_name_body = {"key": "displayname", "value": displayname}
+    display_name_response = request.put(user_url, display_name_body)
+    request.assertHttpStatus(display_name_response, 200)
+    return {
+        "id": username,
+        "username": username,
+        "password": password,
+        "displayname": displayname,
+        "email": email,
+    }
+
+
+def delete_user(userid):
+    url = url_join(get_ocs_url(), 'users', userid)
+    response = request.delete(url)
+    request.assertHttpStatus(response, 200)

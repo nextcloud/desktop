@@ -5,9 +5,9 @@ Feature: filter activity for user
 
 
     Scenario: filter synced activities
-        Given user "Alice" has been created on the server with default attributes and without skeleton files
-        And user "Brian" has been created on the server with default attributes and without skeleton files
-        And user "Alice" has created folder "simple-folder" on the server
+        Given user "Alice" has been created in the server with default attributes
+        And user "Brian" has been created in the server with default attributes
+        And user "Alice" has created folder "simple-folder" in the server
         And the user has set up the following accounts with default settings:
             | Alice |
             | Brian |
@@ -20,7 +20,7 @@ Feature: filter activity for user
 
 
     Scenario: filter not synced activities
-        Given user "Alice" has been created on the server with default attributes and without skeleton files
+        Given user "Alice" has been created in the server with default attributes
         And user "Alice" has created a folder "Folder1" inside the sync folder
         And user "Alice" has set up a client with default settings
         When user "Alice" creates the following files inside the sync folder:

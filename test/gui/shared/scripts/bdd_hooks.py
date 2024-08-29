@@ -23,7 +23,7 @@ from datetime import datetime
 from helpers.StacktraceHelper import getCoredumps, generateStacktrace
 from helpers.SyncHelper import closeSocketConnection, clearWaitedAfterSync
 from helpers.SpaceHelper import delete_project_spaces
-from helpers.api.Provisioning import delete_created_groups
+from helpers.api.Provisioning import delete_created_groups, delete_created_users
 from helpers.SetupClientHelper import wait_until_app_killed
 from helpers.ConfigHelper import (
     init_config,
@@ -149,6 +149,7 @@ def hook(context):
     if get_config("ocis"):
         delete_project_spaces()
     delete_created_groups()
+    delete_created_users()
 
 
 # runs after every scenario

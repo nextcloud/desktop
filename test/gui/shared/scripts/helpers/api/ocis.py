@@ -51,3 +51,31 @@ def add_user_to_group(user, group_name):
     body = json.dumps({"@odata.id": data})
     response = request.post(url, body)
     request.assertHttpStatus(response, 204)
+
+
+def create_user(username, password, displayname, email):
+    url = url_join(get_graph_url(), "users")
+    body = json.dumps(
+        {
+            "onPremisesSamAccountName": username,
+            "passwordProfile": {"password": password},
+            "displayname": displayname,
+            "mail": email,
+        }
+    )
+    response = request.post(url, body)
+    request.assertHttpStatus(response, 201)
+    resp_object = response.json()
+    return {
+        "id": resp_object['id'],
+        "username": username,
+        "password": password,
+        "displayname": resp_object['displayName'],
+        "email": resp_object['mail'],
+    }
+
+
+def delete_user(id):
+    url = url_join(get_graph_url(), 'users', id)
+    response = request.delete(url)
+    request.assertHttpStatus(response, 204)

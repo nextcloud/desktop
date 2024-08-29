@@ -192,3 +192,8 @@ def step(context, group_name):
 @Given('user "|any|" has been added to group "|any|" in the server')
 def step(context, user, group_name):
     Provisioning.add_user_to_group(user, group_name)
+
+
+@Given('user "|any|" has been created in the server with default attributes')
+def step(context, user):
+    Provisioning.create_user(user)

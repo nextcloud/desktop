@@ -4,7 +4,7 @@ Feature: adding accounts
     So that I can sync data with various organisations
 
     Background:
-        Given user "Alice" has been created on the server with default attributes and without skeleton files
+        Given user "Alice" has been created in the server with default attributes
 
 
     Scenario: Check default options in advanced configuration
@@ -29,7 +29,7 @@ Feature: adding accounts
 
 
     Scenario: Adding multiple accounts
-        Given user "Brian" has been created on the server with default attributes and without skeleton files
+        Given user "Brian" has been created in the server with default attributes
         And user "Alice" has set up a client with default settings
         When the user opens the add-account dialog
         And the user adds the following account:

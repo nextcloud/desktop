@@ -1,9 +1,41 @@
-import requests
 from base64 import b64encode
-from helpers.ConfigHelper import get_config
-from helpers.api.utils import url_join
 
 createdUsers = {}
+
+test_users = {
+    "admin": {
+        "username": "admin",
+        "password": "admin",
+        "displayname": "adminUsername",
+    },
+    "Alice": {
+        "username": "Alice",
+        "password": "1234",
+        "displayname": "Alice Hansen",
+        "email": "alice@example.org",
+    },
+    "Brian": {
+        "username": "Brian",
+        "password": "AaBb2Cc3Dd4",
+        "displayname": "Brian Murphy",
+        "email": "brian@example.org",
+    },
+    "Carol": {
+        "username": "Carol",
+        "password": "1234",
+        "displayname": "Carol King",
+        "email": "carol@example.org",
+    },
+    "David": {
+        "username": "David",
+        "password": "1234",
+        "displayname": "David Lopez",
+        "email": "david@example.org",
+    },
+    "regularuser": {
+        "password": "1234",
+    },
+}
 
 
 def basic_auth_header(user=None, password=None):
@@ -17,31 +49,11 @@ def basic_auth_header(user=None, password=None):
     return {"Authorization": "Basic " + token}
 
 
-# gets all users information created in a test scenario
-def getCreatedUsersFromMiddleware():
-    createdUsers = {}
-    try:
-        res = requests.get(
-            url_join(get_config('middlewareUrl'), 'state'),
-            headers={"Content-Type": "application/json"},
-        )
-        createdUsers = res.json()['created_users']
-    except ValueError:
-        raise Exception("Could not get created users information from middleware")
-
-    return createdUsers
-
-
 def getUserInfo(username, attribute):
-    # add and update users to the global createdUsers dict if not already there
-    # so that we don't have to request for user information in every scenario
-    # but instead get user information from the global dict
-    global createdUsers
-    if username in createdUsers:
-        return createdUsers[username][attribute]
+    if username in test_users:
+        return test_users[username][attribute]
     else:
-        createdUsers = {**createdUsers, **getCreatedUsersFromMiddleware()}
-        return createdUsers[username][attribute]
+        return test_users["regularuser"][attribute]
 
 
 def getDisplaynameForUser(username):

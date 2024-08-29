@@ -6,7 +6,7 @@ Feature: Enable/disable virtual file support
 
 
     Scenario: Disable/Enable VFS
-        Given user "Alice" has been created on the server with default attributes and without skeleton files
+        Given user "Alice" has been created in the server with default attributes
         And user "Alice" has uploaded file with content "ownCloud" to "testFile.txt" in the server
         And user "Alice" has created folder "folder1" in the server
         And user "Alice" has uploaded file with content "some contents" to "folder1/lorem.txt" in the server
@@ -34,7 +34,7 @@ Feature: Enable/disable virtual file support
 
 
     Scenario: Copy and paste virtual file
-        Given user "Alice" has been created on the server with default attributes and without skeleton files
+        Given user "Alice" has been created in the server with default attributes
         And user "Alice" has uploaded file with content "sample file" to "sampleFile.txt" in the server
         And user "Alice" has uploaded file with content "lorem file" to "lorem.txt" in the server
         And user "Alice" has uploaded file with content "test file" to "testFile.txt" in the server
@@ -60,7 +60,7 @@ Feature: Enable/disable virtual file support
 
 
     Scenario: Move virtual file
-        Given user "Alice" has been created on the server with default attributes and without skeleton files
+        Given user "Alice" has been created in the server with default attributes
         And user "Alice" has uploaded file with content "lorem file" to "lorem.txt" in the server
         And user "Alice" has uploaded file with content "some contents" to "sampleFile.txt" in the server
         And user "Alice" has created folder "Folder" in the server
@@ -75,7 +75,7 @@ Feature: Enable/disable virtual file support
 
 
     Scenario: Disable/Enable VFS quickly
-        Given user "Alice" has been created on the server with default attributes and without skeleton files
+        Given user "Alice" has been created in the server with default attributes
         And user "Alice" has set up a client with default settings
         When user "Alice" creates a file "newfile.txt" with size "100MB" inside the sync folder
         And the user waits for file "newfile.txt" to be synced
