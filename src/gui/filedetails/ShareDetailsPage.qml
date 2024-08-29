@@ -346,43 +346,37 @@ Page {
                         id: permissionModeRadioButtonsGroup
                     }
 
-                    NCRadioButton {
+                    RadioButton {
                         readonly property int permissionMode: ShareModel.ModeViewOnly
                         Layout.fillWidth: true
                         ButtonGroup.group: permissionModeRadioButtonsGroup
                         enabled: !root.isSharePermissionChangeInProgress
                         checked: root.currentPermissionMode === permissionMode
                         text: qsTr("View only")
-                        indicatorItemWidth: scrollContentsColumn.indicatorItemWidth
-                        indicatorItemHeight: scrollContentsColumn.indicatorItemWidth
                         spacing: scrollContentsColumn.indicatorSpacing
                         padding: scrollContentsColumn.itemPadding
                         onClicked: root.permissionModeChanged(permissionMode)
                     }
 
-                    NCRadioButton {
+                    RadioButton {
                         readonly property int permissionMode: ShareModel.ModeUploadAndEditing
                         Layout.fillWidth: true
                         ButtonGroup.group: permissionModeRadioButtonsGroup
                         enabled: !root.isSharePermissionChangeInProgress
                         checked: root.currentPermissionMode === permissionMode
                         text: qsTr("Allow upload and editing")
-                        indicatorItemWidth: scrollContentsColumn.indicatorItemWidth
-                        indicatorItemHeight: scrollContentsColumn.indicatorItemWidth
                         spacing: scrollContentsColumn.indicatorSpacing
                         padding: scrollContentsColumn.itemPadding
                         onClicked: root.permissionModeChanged(permissionMode)
                     }
 
-                    NCRadioButton {
+                    RadioButton {
                         readonly property int permissionMode: ShareModel.ModeFileDropOnly
                         Layout.fillWidth: true
                         ButtonGroup.group: permissionModeRadioButtonsGroup
                         enabled: !root.isSharePermissionChangeInProgress
                         checked: root.currentPermissionMode === permissionMode
                         text: qsTr("File drop (upload only)")
-                        indicatorItemWidth: scrollContentsColumn.indicatorItemWidth
-                        indicatorItemHeight: scrollContentsColumn.indicatorItemWidth
                         spacing: scrollContentsColumn.indicatorSpacing
                         padding: scrollContentsColumn.itemPadding
                         onClicked: root.permissionModeChanged(permissionMode)
