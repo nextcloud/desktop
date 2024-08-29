@@ -78,6 +78,11 @@ public:
     [[nodiscard]] SyncOptions syncOptions() const { return _syncOptions; }
     [[nodiscard]] bool ignoreHiddenFiles() const { return _ignore_hidden_files; }
 
+    [[nodiscard]] ProgressInfo *progressInfo() const
+    {
+        return _progressInfo.get();
+    }
+
     [[nodiscard]] ExcludedFiles &excludedFiles() const { return *_excludedFiles; }
     [[nodiscard]] SyncFileStatusTracker &syncFileStatusTracker() const { return *_syncFileStatusTracker; }
 
