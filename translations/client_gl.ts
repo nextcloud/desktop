@@ -544,12 +544,12 @@ Debería importarse a conta?</translation>
         <translation>Sincronización de ficheiros estándar</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.ui" line="311"/>
+        <location filename="../src/gui/accountsettings.ui" line="314"/>
         <source>Virtual file sync</source>
         <translation>Sincronización de ficheiros virtuais</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.ui" line="316"/>
+        <location filename="../src/gui/accountsettings.ui" line="319"/>
         <source>Connection settings</source>
         <translation>Axustes da conexión</translation>
     </message>
@@ -2956,11 +2956,6 @@ Se restaura os ficheiros, descargaranse de novo do servidor.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="350"/>
-        <source>daily</source>
-        <translation>diario</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.cpp" line="350"/>
         <source>Change update channel?</source>
         <translation>Cambiar canle de actualización?</translation>
     </message>
@@ -2974,12 +2969,17 @@ Note that this selects only what pool upgrades are taken from, and that there ar
 Teña en conta que isto só selecciona de que grupo se toman as anovacións e que non hai reversións: polo tanto, volver da canle beta á canle estábel normalmente non se pode facer inmediatamente e significa agardar por unha versión estábel que sexa máis recente que a versión beta instalada actualmente.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="354"/>
+        <location filename="../src/gui/generalsettings.cpp" line="365"/>
+        <source>daily</source>
+        <translation>diario</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.cpp" line="369"/>
         <source>enterprise</source>
         <translation>empresarial</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="382"/>
+        <location filename="../src/gui/generalsettings.cpp" line="397"/>
         <source>- enterprise: contains stable versions for customers.
 </source>
         <comment>description of enterprise update channel for enterprise customers</comment>
@@ -2987,12 +2987,12 @@ Teña en conta que isto só selecciona de que grupo se toman as anovacións e qu
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="387"/>
+        <location filename="../src/gui/generalsettings.cpp" line="402"/>
         <source>Changing update channel?</source>
         <translation>Quere cambiar a canle de actualización?</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="388"/>
+        <location filename="../src/gui/generalsettings.cpp" line="403"/>
         <source>The channel determines which upgrades will be offered to install:
 - stable: contains tested versions considered reliable
 - beta: contains versions with new features that may not be tested thoroughly
@@ -6082,12 +6082,12 @@ O servidor respondeu co erro: %2</translation>
         <translation>Novo cartafol</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="111"/>
+        <location filename="../src/gui/generalsettings.cpp" line="126"/>
         <source>Failed to create debug archive</source>
         <translation>Produciuse un fallo ao crear o arquivo de depuración</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="112"/>
+        <location filename="../src/gui/generalsettings.cpp" line="127"/>
         <source>Could not create debug archive in selected location!</source>
         <translation>Non foi posíbel crear o arquivo de depuración na localización seleccionada.</translation>
     </message>

@@ -544,12 +544,12 @@ Ska detta konto importeras?</translation>
         <translation>Filsynkronisering standard</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.ui" line="311"/>
+        <location filename="../src/gui/accountsettings.ui" line="314"/>
         <source>Virtual file sync</source>
         <translation>Filsynkronisering virtuella filer</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.ui" line="316"/>
+        <location filename="../src/gui/accountsettings.ui" line="319"/>
         <source>Connection settings</source>
         <translation>Anslutningsinställningar</translation>
     </message>
@@ -2956,11 +2956,6 @@ Om du återställer filerna kommer de att laddas ner från servern igen.</transl
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="350"/>
-        <source>daily</source>
-        <translation>dagligen</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.cpp" line="350"/>
         <source>Change update channel?</source>
         <translation>Ändra uppdateringskanal?</translation>
     </message>
@@ -2974,12 +2969,17 @@ Note that this selects only what pool upgrades are taken from, and that there ar
 Observera att detta endast väljer vilken pool uppgraderingar tas från, och att det inte finns några nedgraderingar: Så att gå tillbaka från betakanalen till den stabila kanalen kan vanligtvis inte göras omedelbart och innebär att vänta på en stabil version som är nyare än den för närvarande installerade betaversionen.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="354"/>
+        <location filename="../src/gui/generalsettings.cpp" line="365"/>
+        <source>daily</source>
+        <translation>dagligen</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.cpp" line="369"/>
         <source>enterprise</source>
         <translation>enterprise</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="382"/>
+        <location filename="../src/gui/generalsettings.cpp" line="397"/>
         <source>- enterprise: contains stable versions for customers.
 </source>
         <comment>description of enterprise update channel for enterprise customers</comment>
@@ -2987,12 +2987,12 @@ Observera att detta endast väljer vilken pool uppgraderingar tas från, och att
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="387"/>
+        <location filename="../src/gui/generalsettings.cpp" line="402"/>
         <source>Changing update channel?</source>
         <translation>Ändra uppdateringskanal?</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="388"/>
+        <location filename="../src/gui/generalsettings.cpp" line="403"/>
         <source>The channel determines which upgrades will be offered to install:
 - stable: contains tested versions considered reliable
 - beta: contains versions with new features that may not be tested thoroughly
@@ -6082,12 +6082,12 @@ Servern svarade med fel: %2</translation>
         <translation>Ny mapp</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="111"/>
+        <location filename="../src/gui/generalsettings.cpp" line="126"/>
         <source>Failed to create debug archive</source>
         <translation>Kunde inte skapa felsökningsarkiv</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="112"/>
+        <location filename="../src/gui/generalsettings.cpp" line="127"/>
         <source>Could not create debug archive in selected location!</source>
         <translation>Kunde inte skapa felsökningsarkiv på den valda platsen!</translation>
     </message>

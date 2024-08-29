@@ -544,12 +544,12 @@ Should the account be imported?</source>
         <translation>Sincronización de archivos estándar</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.ui" line="311"/>
+        <location filename="../src/gui/accountsettings.ui" line="314"/>
         <source>Virtual file sync</source>
         <translation>Sincronización de archivos virtuales</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.ui" line="316"/>
+        <location filename="../src/gui/accountsettings.ui" line="319"/>
         <source>Connection settings</source>
         <translation>Configuración de la conexión</translation>
     </message>
@@ -2956,11 +2956,6 @@ Si restaura los archivos, serán descargados de nuevo del servidor.</translation
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="350"/>
-        <source>daily</source>
-        <translation>diariamente</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.cpp" line="350"/>
         <source>Change update channel?</source>
         <translation>¿Cambiar el canal de actualizaciones?</translation>
     </message>
@@ -2974,12 +2969,17 @@ Note that this selects only what pool upgrades are taken from, and that there ar
 Tenga en cuenta que esto sólo selecciona de qué grupo se tomarán las actualizaciones y que no hay forma de regresar a una versión anterior: Por lo tanto, volver del canal beta al canal estable generalmente no se puede hacer de inmediato, y significa esperar por una versión estable que sea más reciente que la versión beta instalada actualmente.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="354"/>
+        <location filename="../src/gui/generalsettings.cpp" line="365"/>
+        <source>daily</source>
+        <translation>diariamente</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.cpp" line="369"/>
         <source>enterprise</source>
         <translation>empresarial</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="382"/>
+        <location filename="../src/gui/generalsettings.cpp" line="397"/>
         <source>- enterprise: contains stable versions for customers.
 </source>
         <comment>description of enterprise update channel for enterprise customers</comment>
@@ -2987,12 +2987,12 @@ Tenga en cuenta que esto sólo selecciona de qué grupo se tomarán las actualiz
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="387"/>
+        <location filename="../src/gui/generalsettings.cpp" line="402"/>
         <source>Changing update channel?</source>
         <translation>¿Cambiar el canal de actualizaciones?</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="388"/>
+        <location filename="../src/gui/generalsettings.cpp" line="403"/>
         <source>The channel determines which upgrades will be offered to install:
 - stable: contains tested versions considered reliable
 - beta: contains versions with new features that may not be tested thoroughly
@@ -6081,12 +6081,12 @@ El servidor respondió con el error: %2</translation>
         <translation>Nueva carpeta</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="111"/>
+        <location filename="../src/gui/generalsettings.cpp" line="126"/>
         <source>Failed to create debug archive</source>
         <translation>No se pudo crear el archivo de depuración</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="112"/>
+        <location filename="../src/gui/generalsettings.cpp" line="127"/>
         <source>Could not create debug archive in selected location!</source>
         <translation>¡No se pudo crear el archivo de depuración en la ubicación seleccionada!</translation>
     </message>
