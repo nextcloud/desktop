@@ -36,8 +36,7 @@ Button {
         visible: root.toolTipText !== "" && root.hovered
     }
 
-    // TODO: the current style does not support customization of this control
-    contentItem: NCButtonContents {
+    NCButtonContents {
         id: contents
         display: root.display
         hovered: root.hovered
@@ -45,6 +44,5 @@ Button {
         imageSource: root.icon.source
         imageSourceWidth: root.icon.width
         imageSourceHeight: root.icon.height
-        text: root.text
     }
 }
