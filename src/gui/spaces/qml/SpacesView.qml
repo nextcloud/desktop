@@ -53,6 +53,7 @@ Pane {
             anchors.fill: parent
             spacing: 20
             focus: true
+            boundsBehavior: Flickable.StopAtBounds
 
             model: spacesBrowser.model
 

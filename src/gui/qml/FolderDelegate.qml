@@ -60,6 +60,7 @@ Pane {
                 id: listView
                 anchors.fill: parent
                 focus: true
+                boundsBehavior: Flickable.StopAtBounds
 
                 model: accountSettings.model
                 spacing: 20
