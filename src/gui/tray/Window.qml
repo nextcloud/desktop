@@ -59,6 +59,9 @@ ApplicationWindow {
 
     readonly property int maxMenuHeight: Style.trayWindowHeight - Style.trayWindowHeaderHeight - 2 * Style.trayWindowBorderWidth
 
+    LayoutMirroring.enabled: Qt.application.layoutDirection === Qt.RightToLeft
+    LayoutMirroring.childrenInherit: true
+
     Component.onCompleted: Systray.forceWindowInit(trayWindow)
 
     // Close tray window when focus is lost (e.g. click somewhere else on the screen)
