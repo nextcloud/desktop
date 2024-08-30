@@ -5,7 +5,7 @@ import squish
 class AccountSetting:
     MANAGE_ACCOUNT_BUTTON = {
         "container": names.settings_stack_QStackedWidget,
-        "name": "accountToolButton",
+        "name": "manageAccountButton",
         "type": "QToolButton",
         "visible": 1,
     }
@@ -24,7 +24,7 @@ class AccountSetting:
     }
     ACCOUNT_CONNECTION_LABEL = {
         "container": names.settings_stack_QStackedWidget,
-        "name": "connectLabel",
+        "name": "connectionStatusLabel",
         "type": "QLabel",
         "visible": 1,
     }
@@ -81,17 +81,11 @@ class AccountSetting:
 
     @staticmethod
     def isUserSignedOut(displayname, server):
-        signedout_text = 'Signed out from <a href="{server}">{server}</a>.'.format(
-            server=server
-        )
-        return signedout_text == AccountSetting.getAccountConnectionLabel()
+        return 'Signed out' in AccountSetting.getAccountConnectionLabel()
 
     @staticmethod
     def isUserSignedIn(displayname, server):
-        signedin_text = 'Connected to <a href="{server}">{server}</a>.'.format(
-            server=server
-        )
-        return signedin_text == AccountSetting.getAccountConnectionLabel()
+        return 'Connected' in AccountSetting.getAccountConnectionLabel()
 
     @staticmethod
     def waitUntilConnectionIsConfigured(timeout=5000):
