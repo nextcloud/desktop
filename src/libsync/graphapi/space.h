@@ -31,9 +31,7 @@ namespace GraphApi {
     class OWNCLOUDSYNC_EXPORT SpaceImage : public QObject
     {
         Q_OBJECT
-        Q_PROPERTY(QUrl url READ url CONSTANT)
-        Q_PROPERTY(QString etag READ etag CONSTANT)
-        Q_PROPERTY(QUrl qmlImageUrl READ qmlImageUrl CONSTANT)
+        Q_PROPERTY(QUrl qmlImageUrl READ qmlImageUrl NOTIFY imageChanged)
         QML_ELEMENT
         QML_UNCREATABLE("C++ only")
     public:
@@ -42,9 +40,11 @@ namespace GraphApi {
         [[nodiscard]] QUrl url() const { return _url; }
         [[nodiscard]] QString etag() const { return _etag; }
         [[nodiscard]] QIcon image() const;
-        [[nodiscard]] bool isValid() const { return !_etag.isEmpty(); }
 
         [[nodiscard]] QUrl qmlImageUrl() const;
+
+    Q_SIGNALS:
+        void imageChanged();
 
     private:
         void update();

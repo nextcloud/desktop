@@ -38,6 +38,7 @@ Space::Space(SpacesManager *spacesManager, const OpenAPI::OAIDrive &drive)
     , _image(new SpaceImage(this))
 {
     setDrive(drive);
+    connect(_image, &SpaceImage::imageChanged, this, &Space::imageChanged);
 }
 
 OpenAPI::OAIDrive Space::drive() const
@@ -60,7 +61,7 @@ SpaceImage::SpaceImage(Space *space)
 
 QIcon SpaceImage::image() const
 {
-    if (!isValid()) {
+    if (_image.isNull()) {
         return Resources::getCoreIcon(QStringLiteral("space"));
     }
     return _image;
@@ -68,7 +69,7 @@ QIcon SpaceImage::image() const
 
 QUrl SpaceImage::qmlImageUrl() const
 {
-    if (isValid()) {
+    if (!_image.isNull()) {
         return QUrl(QStringLiteral("image://space/%1/%2").arg(etag(), _space->id()));
     } else {
         // invalid space id to display the placeholder
@@ -82,12 +83,12 @@ void SpaceImage::update()
     const auto img = std::find_if(special.cbegin(), special.cend(), [](const auto &it) { return it.getSpecialFolder().getName() == QLatin1String("image"); });
     if (img != special.cend()) {
         _url = QUrl(img->getWebDavUrl());
-        _etag = img->getETag();
+        _etag = Utility::normalizeEtag(img->getETag());
         auto job = _space->_spaceManager->account()->resourcesCache()->makeGetJob(_url, {}, _space);
         QObject::connect(job, &SimpleNetworkJob::finishedSignal, _space, [job, this] {
             if (job->httpStatusCode() == 200) {
                 _image = job->asIcon();
-                Q_EMIT _space->imageChanged();
+                Q_EMIT imageChanged();
             }
         });
         job->start();

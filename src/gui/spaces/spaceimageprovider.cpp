@@ -37,5 +37,6 @@ QPixmap SpaceImageProvider::requestPixmap(const QString &id, QSize *size, const 
             icon = space->image()->image();
         }
     }
+    Q_ASSERT(!icon.isNull());
     return Resources::pixmap(requestedSize, icon, QIcon::Normal, size);
 }
