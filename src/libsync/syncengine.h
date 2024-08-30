@@ -235,6 +235,8 @@ private slots:
     void slotUnscheduleFilesDelayedSync();
     void slotCleanupScheduledSyncTimers();
 
+    void remnantReadOnlyFolderDiscovered(const OCC::SyncFileItemPtr &item);
+
 private:
     // Some files need a sync run to be executed at a specified time after
     // their status is scheduled to change (e.g. lock status will expire in
@@ -399,6 +401,8 @@ private:
     QVector<QSharedPointer<ScheduledSyncTimer>> _scheduledSyncTimers;
 
     SingleItemDiscoveryOptions _singleItemDiscoveryOptions;
+
+    QList<SyncFileItemPtr> _remnantReadOnlyFolders;
 };
 }
 
