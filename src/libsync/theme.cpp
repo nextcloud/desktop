@@ -130,6 +130,11 @@ QString Theme::appName() const
     return APPLICATION_SHORTNAME;
 }
 
+QString Theme::appSyncFolderName() const
+{
+    return APPLICATION_SYNC_FOLDER_NAME;
+}
+
 QUrl Theme::stateOnlineImageSource() const
 {
     return imagePathToUrl(themeImagePath("state-ok"));
@@ -475,7 +480,7 @@ QString Theme::forceConfigAuthType() const
 
 QString Theme::defaultClientFolder() const
 {
-    return appName();
+    return appSyncFolderName();
 }
 
 QString Theme::systrayIconFlavor(bool mono) const
