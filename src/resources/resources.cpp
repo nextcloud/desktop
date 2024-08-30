@@ -15,6 +15,7 @@
 #include "resources/resources.h"
 #include "resources/qmlresources.h"
 #include "resources/template.h"
+#include "resources/themewatcher.h"
 
 #include "common/asserts.h"
 
@@ -31,6 +32,16 @@ using namespace Resources;
 Q_LOGGING_CATEGORY(lcResources, "sync.resoruces", QtInfoMsg)
 
 namespace {
+struct IconCache
+{
+    IconCache()
+    {
+        auto *watcher = new ThemeWatcher(qApp);
+        QObject::connect(watcher, &ThemeWatcher::themeChanged, [this]() { _cache.clear(); });
+    }
+    QMap<QString, QIcon> _cache;
+};
+Q_GLOBAL_STATIC(IconCache, iconCache)
 
 QString vanillaThemePath()
 {
@@ -103,14 +114,11 @@ QIcon OCC::Resources::getCoreIcon(const QString &iconName)
     if (iconName.isEmpty()) {
         return {};
     }
-    const QString color = isUsingDarkTheme() ? QStringLiteral("#838FA1") : QStringLiteral("#435671");
-    const QString key = QStringLiteral("%1,%2").arg(iconName, color);
-
-    static QMap<QString, QIcon> _iconCache;
-    QIcon &cached = _iconCache[key]; // Take reference, this will also "set" the cache entry
+    QIcon &cached = iconCache->_cache[iconName]; // Take reference, this will also "set" the cache entry
     if (cached.isNull()) {
         const QString iconPath = QStringLiteral(":/client/resources/core/%1.svg").arg(iconName);
         Q_ASSERT(QFileInfo::exists(iconPath));
+        const QString color = isUsingDarkTheme() ? QStringLiteral("#838FA1") : QStringLiteral("#435671");
         QByteArray data = Template::renderTemplateFromFile(iconPath, {{QStringLiteral("color"), color}}).toUtf8();
         QBuffer buffer(&data);
         QImageReader iconReader(&buffer, "svg");
@@ -125,12 +133,10 @@ QIcon OCC::Resources::getCoreIcon(const QString &iconName)
  */
 QIcon OCC::Resources::loadIcon(const QString &flavor, const QString &name, IconType iconType)
 {
-    static QMap<QString, QIcon> _iconCache;
     // prevent recusion
     const bool useCoreIcon = (iconType == IconType::VanillaIcon) || isVanillaTheme();
     const QString path = QStringLiteral("%1/%2/%3").arg(useCoreIcon ? vanillaThemePath() : brandThemePath(), flavor, name);
-    const QString key = name + QLatin1Char(',') + flavor;
-    QIcon &cached = _iconCache[key]; // Take reference, this will also "set" the cache entry
+    QIcon &cached = iconCache->_cache[path]; // Take reference, this will also "set" the cache entry
     if (cached.isNull()) {
         if (isVanillaTheme() && QIcon::hasThemeIcon(name)) {
             // use from theme
