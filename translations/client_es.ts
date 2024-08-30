@@ -39,7 +39,7 @@
     <message>
         <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.ui" line="230"/>
         <source>Restore default value</source>
-        <translation type="unfinished"/>
+        <translation>Ursprünglichen Wert wieder herstellen</translation>
     </message>
 </context>
 <context>
@@ -110,7 +110,7 @@ Cliente de escritorio para la sincronización de archivos.</translation>
     <message>
         <location filename="../src/gui/main.cpp" line="126"/>
         <source>Start with the main window visible, or if it is already running, bring it to the front. By default, the client launches in the background.</source>
-        <translation type="unfinished"/>
+        <translation>Starten Sie mit dem sichtbaren Hauptfenster, oder wenn es bereits läuft, bringen Sie es in den Vordergrund. Standardmäßig wird die App im Hintergrund gestartet.</translation>
     </message>
     <message>
         <location filename="../src/gui/main.cpp" line="128"/>
@@ -145,7 +145,7 @@ Cliente de escritorio para la sincronización de archivos.</translation>
     <message>
         <location filename="../src/gui/main.cpp" line="136"/>
         <source>Forward all arguments to the cmd client. This argument must be the first.</source>
-        <translation type="unfinished"/>
+        <translation>Leitet alle Argumente an den cmd-Client weiter. Dieses Argument muss das erste sein.</translation>
     </message>
     <message>
         <location filename="../src/gui/main.cpp" line="139"/>
@@ -420,7 +420,7 @@ Cliente de escritorio para la sincronización de archivos.</translation>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="118"/>
         <source>Preparing the account</source>
-        <translation type="unfinished"/>
+        <translation>Benutzeraccount vorbereiten</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="218"/>
@@ -550,22 +550,22 @@ Esta acción abortará cualquier sincronización actualmente en ejecución.</tra
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="585"/>
         <source>The sync operation is running.&lt;br/&gt;Do you want to stop it?</source>
-        <translation type="unfinished"/>
+        <translation>Die sync Operation läuft gerade.&lt;br/&gt;Wollen Sie sie stoppen?</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="709"/>
         <source>Updating credentials for %1...</source>
-        <translation type="unfinished"/>
+        <translation>Berechtigungen werden für %1 erweitert...</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="713"/>
         <source>Connecting to: %1.</source>
-        <translation type="unfinished"/>
+        <translation>Verbinde zu: %1.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="724"/>
         <source>Disconnected from: %1.</source>
-        <translation type="unfinished"/>
+        <translation>Trenne von: %1.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="696"/>
@@ -575,37 +575,37 @@ Esta acción abortará cualquier sincronización actualmente en ejecución.</tra
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="381"/>
         <source>Disable virtual file support</source>
-        <translation type="unfinished"/>
+        <translation>Deaktivieren Sie die Virtual File Unterstützung</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="387"/>
         <source>Enable virtual file support</source>
-        <translation type="unfinished"/>
+        <translation>Aktivieren Sie die Virtual File Unterstützung</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="600"/>
         <source>Sync paused by user</source>
-        <translation type="unfinished"/>
+        <translation>Synchronisation durch den Benutzer pausiert</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="634"/>
         <source>Internet connection is metered</source>
-        <translation type="unfinished"/>
+        <translation>Die Internetverbindung wird für den Durchsatz überwacht</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="635"/>
         <source>Synchronization is paused because the Internet connection is a metered connection&lt;p&gt;Do you really want to force a Synchronization now?</source>
-        <translation type="unfinished"/>
+        <translation>Die Synchronisation wurde pausiert, da die Internetverbindung für den Durchsatz überwacht wird&lt;p&gt;Wollen Sie die Synchronisation trotzdem durchführen?</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="656"/>
         <source>User triggered force sync</source>
-        <translation type="unfinished"/>
+        <translation>Benutzergesteuerte Zwangssynchronisation</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="689"/>
         <source>Sync to %1 is paused due to metered internet connection.</source>
-        <translation type="unfinished"/>
+        <translation>Synchronisation zu %1 ist pausiert, da die Internetverbindung für den Durchsatz überwacht wird.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="700"/>
@@ -645,7 +645,7 @@ Esta acción abortará cualquier sincronización actualmente en ejecución.</tra
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="757"/>
         <source>You need to be connected to add a Space.</source>
-        <translation type="unfinished"/>
+        <translation>Sie müssen verbunden sein um einen Space hinzuzufügen.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="760"/>
@@ -793,7 +793,7 @@ Esta acción abortará cualquier sincronización actualmente en ejecución.</tra
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="158"/>
         <source>&lt;br/&gt;%1 does not provide activities.</source>
-        <translation type="unfinished"/>
+        <translation>&lt;br/&gt;%1 stellt keine Aktivitäten bereit.</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/activitywidget.cpp" line="296"/>
@@ -980,7 +980,7 @@ La actualización se realizará en segundo plano, y sobreescribirá el actual fi
     <message>
         <location filename="../src/gui/folder.cpp" line="187"/>
         <source>The path &apos;%1&apos; is too long. Please enable long paths in the Windows settings or choose a different folder.</source>
-        <translation type="unfinished"/>
+        <translation>Der Pfad &apos;%1&apos; ist zu lange. Bitte aktivieren Sie lange Pfade in den Windows-Einstellungen oder wählen Sie einen anderen Ordner.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="224"/>
@@ -1046,7 +1046,7 @@ La actualización se realizará en segundo plano, y sobreescribirá el actual fi
     <message>
         <location filename="../src/gui/folder.cpp" line="788"/>
         <source>Switching VFS mode on folder &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Ändere zu VFS Modus im Ordner &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="950"/>
@@ -1146,12 +1146,12 @@ Si ha sido un accidente, y decide mantener los archivos, serán re-sincronizados
     <message>
         <location filename="../src/gui/folderman.cpp" line="390"/>
         <source>Account disconnected or paused</source>
-        <translation type="unfinished"/>
+        <translation>Benutzerkonto unterbrochen oder pausiert</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="605"/>
         <source>Folder is about to be removed</source>
-        <translation type="unfinished"/>
+        <translation>Der Ordner wird demnächst entfernt</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="629"/>
@@ -1176,7 +1176,7 @@ Si ha sido un accidente, y decide mantener los archivos, serán re-sincronizados
     <message>
         <location filename="../src/gui/folderman.cpp" line="727"/>
         <source>Folder &apos;%1&apos; is already in use by application %2!</source>
-        <translation type="unfinished"/>
+        <translation>Ordner &apos;%1&apos; wird durch die Anwendung %2 schon benutzt!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="741"/>
@@ -1266,17 +1266,17 @@ Por favor, considere eliminar esta carpeta desde la cuenta y añadirla de nuevo.
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="278"/>
         <source>The suffix VFS plugin is deprecated and will be removed in the 7.0 release.</source>
-        <translation type="unfinished"/>
+        <translation>Das Plugin für VFS Endungen ist veraltet und wird in der Release 7.0 entfernt.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="279"/>
         <source>Please use the context menu and select &quot;Disable virtual file support&quot; to  ensure future access to your synced files.</source>
-        <translation type="unfinished"/>
+        <translation>Bitte verwenden Sie das Kontextmenü und wählen Sie „Unterstützung für virtuelle Dateien deaktivieren“, um den zukünftigen Zugriff auf Ihre synchronisierten Dateien sicherzustellen.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="280"/>
         <source>You are going to lose access to your sync folder if you do not do so!</source>
-        <translation type="unfinished"/>
+        <translation>Wenn Sie dies nicht tun, verlieren Sie den Zugriff auf Ihren Synchronisationsordner!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="355"/>
@@ -1295,7 +1295,7 @@ Por favor, considere eliminar esta carpeta desde la cuenta y añadirla de nuevo.
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="941"/>
         <source>Selective sync list changed</source>
-        <translation type="unfinished"/>
+        <translation>Selektive Sync-Liste geändert</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="987"/>
@@ -1348,12 +1348,12 @@ Por favor, considere eliminar esta carpeta desde la cuenta y añadirla de nuevo.
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1151"/>
         <source>Queued</source>
-        <translation type="unfinished"/>
+        <translation>Warteschlange</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1222"/>
         <source>User triggered sync-all for selective synced folder</source>
-        <translation type="unfinished"/>
+        <translation>Benutzergesteuertes Sync-All für selektive synchronisierte Ordner</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1065"/>
@@ -1518,7 +1518,7 @@ Por favor, considere eliminar esta carpeta desde la cuenta y añadirla de nuevo.
     <message>
         <location filename="../src/gui/folderwizard/folderwizardselectivesync.cpp" line="47"/>
         <source>Use virtual files instead of downloading content immediately</source>
-        <translation type="unfinished"/>
+        <translation>Verwenden Sie virtuelle Dateien, anstatt die Inhalte sofort herunterzuladen</translation>
     </message>
 </context>
 <context>
@@ -1579,7 +1579,7 @@ Por favor, considere eliminar esta carpeta desde la cuenta y añadirla de nuevo.
     <message>
         <location filename="../src/gui/generalsettings.ui" line="126"/>
         <source>Move remotely deleted files to the local trash bin instead of deleting them</source>
-        <translation type="unfinished"/>
+        <translation>Entfernt gelöschte Dateien in den lokalen Papierkorb verschieben, anstatt sie zu löschen</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="142"/>
@@ -1735,7 +1735,7 @@ Nota: esto solo selecciona el canal deseado y no permite una vueltas atrás. Vol
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="123"/>
         <source>Please enter your password to log in to the account %1.</source>
-        <translation type="unfinished"/>
+        <translation>Bitte geben Sie Ihr Passwort ein, um sich in das Benutzerkonto einzuloggen %1.</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="172"/>
@@ -1872,13 +1872,14 @@ Los objetos donde se permite el borrado serán borrados si impiden que un direct
     <message>
         <location filename="../src/gui/logbrowser.ui" line="53"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;b&gt;The logs contain sensitive information which you should not make publicly available&lt;/b&gt;&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;b&gt;Die Protokolle enthalten sensible Informationen die Sie nicht öffentlich zugänglich machen sollten&lt;/b&gt;&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.ui" line="71"/>
         <source>The client can write debug logs to a temporary folder. These logs are very helpful for diagnosing problems.
 Since log files can get large, the client will start a new one for each sync run and compress older ones.</source>
-        <translation type="unfinished"/>
+        <translation>Der Benutzer kann Debug-Protokolle in einen temporären Ordner schreiben. Diese Protokolle sind für die Diagnose von Problemen sehr hilfreich.
+Da die Protokolldateien sehr groß werden können, legt der Benutzer für jeden Synchronisierungslauf eine neue Datei an und komprimiert ältere Dateien.</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.ui" line="116"/>
@@ -1964,7 +1965,7 @@ Tenga en cuenta que el uso de cualquier opción de línea de comando de registro
     <message>
         <location filename="../src/gui/networksettings.ui" line="20"/>
         <source>Pause synchronization when the Internet connection is metered</source>
-        <translation type="unfinished"/>
+        <translation>Pausiere die Synchronisation wenn die Internet Verbindung für den Durchsatz überwacht wird.</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="30"/>
@@ -2183,7 +2184,7 @@ Tenga en cuenta que el uso de cualquier opción de línea de comando de registro
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="155"/>
         <source>%1 installed successfully. Restart the application to finish installing the update.</source>
-        <translation type="unfinished"/>
+        <translation>%1 erfolgreich installiert. Starten Sie die Anwendung neu um die Installation des Updates abzuschließen.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="157"/>
@@ -2319,7 +2320,7 @@ Tenga en cuenta que el uso de cualquier opción de línea de comando de registro
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1183"/>
         <source>SelectiveSync: Ignored because its path is deselected</source>
-        <translation type="unfinished"/>
+        <translation>SelectiveSync: Ignoriert, da der Pfad deaktiviert wurde</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1257"/>
@@ -2339,7 +2340,7 @@ Tenga en cuenta que el uso de cualquier opción de línea de comando de registro
     <message>
         <location filename="../src/libsync/discovery.cpp" line="628"/>
         <source>Error while doing a rename, unhandled status code: %1</source>
-        <translation type="unfinished"/>
+        <translation>Fehler beim Umbenennen, unbehandelter Statuscode: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1221"/>
@@ -2499,7 +2500,7 @@ Tenga en cuenta que el uso de cualquier opción de línea de comando de registro
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="125"/>
         <source>Could not move &apos;%1&apos; to the trash bin</source>
-        <translation type="unfinished"/>
+        <translation>Konnte &apos;%1&apos; nicht in den Papierkorb berschieben</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="89"/>
@@ -3302,7 +3303,7 @@ Tenga en cuenta que el uso de cualquier opción de línea de comando de registro
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1007"/>
         <source>Show file versions in web browser</source>
-        <translation type="unfinished"/>
+        <translation>Dateiversionen im Webbrowser anzeigen</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1029"/>
@@ -3413,7 +3414,7 @@ Tenga en cuenta que el uso de cualquier opción de línea de comando de registro
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="871"/>
         <source>Aborted due to %1</source>
-        <translation type="unfinished"/>
+        <translation>Abgebrochen wegen %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="889"/>
@@ -3434,7 +3435,7 @@ Tenga en cuenta que el uso de cualquier opción de línea de comando de registro
         <location filename="../src/libsync/syncengine.cpp" line="86"/>
         <source>application exit</source>
         <comment>abort reason</comment>
-        <translation type="unfinished"/>
+        <translation>Die Anwendung wurde beendet</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="399"/>
@@ -3478,7 +3479,7 @@ Tenga en cuenta que el uso de cualquier opción de línea de comando de registro
     <message>
         <location filename="../src/libsync/theme.cpp" line="400"/>
         <source>&lt;p&gt;Version %1. For more information visit &lt;a href=&quot;%2&quot;&gt;https://%3&lt;/a&gt;&lt;/p&gt;&lt;p&gt;For known issues and help, please visit: &lt;a href=&quot;https://central.owncloud.com/c/desktop-client&quot;&gt;https://central.owncloud.com&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;By Klaas Freitag, Daniel Molkentin, Olivier Goffart, Markus Götz,  Jan-Christoph Borchardt, Thomas Müller,&lt;br&gt;Dominik Schmidt, Michael Stingl, Hannah von Reth, Fabian Müller and others.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;Copyright ownCloud GmbH&lt;/p&gt;&lt;p&gt;Distributed by %4 and licensed under the GNU General Public License (GPL) Version 2.0.&lt;br/&gt;%5 and the %5 logo are registered trademarks of %4 in the United States, other countries, or both.&lt;/p&gt;&lt;p&gt;&lt;small&gt;%6&lt;/small&gt;&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Version %1. Für mehr Informationen: &lt;a href=&quot;%2&quot;&gt;https://%3&lt;/a&gt;&lt;/p&gt;&lt;p&gt;Für bekannte Probleme und Hilfe: &lt;a href=&quot;https://central.owncloud.com/c/desktop-client&quot;&gt;https://central.owncloud.com&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;By Klaas Freitag, Daniel Molkentin, Olivier Goffart, Markus Götz,  Jan-Christoph Borchardt, Thomas Müller,&lt;br&gt;Dominik Schmidt, Michael Stingl, Hannah von Reth, Fabian Müller and others.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;Copyright ownCloud GmbH&lt;/p&gt;&lt;p&gt;Vertrieben durch %4 und lizensiert unter der GNU General Public License (GPL) Version 2.0.&lt;br/&gt;%5 und das %5 Logo sind registrierte Handelsmarken von %4 in den United States, andern Ländern, oder beiden.&lt;/p&gt;&lt;p&gt;&lt;small&gt;%6&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -3514,12 +3515,12 @@ Tenga en cuenta que el uso de cualquier opción de línea de comando de registro
     <message>
         <location filename="../src/gui/updater/updatedownloadeddialog.cpp" line="41"/>
         <source>Restart later</source>
-        <translation type="unfinished"/>
+        <translation>Späterer Neustart</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/updatedownloadeddialog.cpp" line="43"/>
         <source>Restart now</source>
-        <translation type="unfinished"/>
+        <translation>Neustart sofort durchführen</translation>
     </message>
 </context>
 <context>
@@ -3704,7 +3705,7 @@ Tenga en cuenta que el uso de cualquier opción de línea de comando de registro
         <location filename="../src/gui/newwizard/pages/legacywebfingersetupwizardpage.cpp" line="51"/>
         <source>Please enter your %1:</source>
         <comment>Please enter your [username, e-mail address, ...]:</comment>
-        <translation type="unfinished"/>
+        <translation>Bitte tragen Sie Ihre %1 ein:</translation>
     </message>
 </context>
 <context>
@@ -3804,7 +3805,7 @@ Está seguro que quiere continuar?</translation>
     <message>
         <location filename="../src/gui/newwizard/setupwizardcontroller.cpp" line="201"/>
         <source>Failed to retrieve user information from server</source>
-        <translation type="unfinished"/>
+        <translation>Benutzerinformationen konnten nicht vom Server abgerufen werden</translation>
     </message>
 </context>
 <context>
@@ -3885,7 +3886,7 @@ Está seguro que quiere continuar?</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="287"/>
         <source>Account %1</source>
-        <translation type="unfinished"/>
+        <translation>Benutzerkonto %1</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="385"/>
@@ -3896,7 +3897,7 @@ Está seguro que quiere continuar?</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="611"/>
         <source>Create a new account</source>
-        <translation type="unfinished"/>
+        <translation>Neues Benutzerkonto erstellen</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="731"/>
@@ -3917,7 +3918,7 @@ Está seguro que quiere continuar?</translation>
         <location filename="../src/gui/owncloudgui.cpp" line="383"/>
         <location filename="../src/gui/owncloudgui.cpp" line="615"/>
         <source>Resume synchronization</source>
-        <translation type="unfinished"/>
+        <translation>Mit der Synchronisation fortfahren</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="664"/>
@@ -4027,7 +4028,7 @@ Está seguro que quiere continuar?</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="954"/>
         <source>User paused sync for account &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Der Benutzer hat die Synchronisation für das Benutzerkonto &apos;%1&apos; pausiert</translation>
     </message>
 </context>
 <context>
@@ -4055,7 +4056,7 @@ Está seguro que quiere continuar?</translation>
     <message>
         <location filename="../src/common/utility.cpp" line="352"/>
         <source>less than a minute ago</source>
-        <translation type="unfinished"/>
+        <translation>weniger als eine Minute</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="356"/>
@@ -4228,7 +4229,7 @@ Está seguro que quiere continuar?</translation>
     <message>
         <location filename="../src/libsync/syncfileitem.cpp" line="122"/>
         <source>Filename Reserved</source>
-        <translation type="unfinished"/>
+        <translation>Reservierter Dateiname</translation>
     </message>
 </context>
 <context>
@@ -4249,12 +4250,12 @@ Está seguro que quiere continuar?</translation>
     <message>
         <location filename="../src/gui/updater/updatedownloadeddialog.ui" line="20"/>
         <source>Update downloaded</source>
-        <translation type="unfinished"/>
+        <translation>Update heruntergeladen</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/updatedownloadeddialog.ui" line="53"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:11pt; font-weight:700;&quot;&gt;Restart required&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:11pt; font-weight:700;&quot;&gt;Neustart erforderlich&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
 </context>
 <context>
@@ -4408,7 +4409,7 @@ Está seguro que quiere continuar?</translation>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="43"/>
         <source>Server version downloaded, local copy was backed up as conflict file</source>
-        <translation type="unfinished"/>
+        <translation>Serverversion heruntergeladen, die lokale Kopie wurde als Konfliktdatei gesichert</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="51"/>
@@ -4500,7 +4501,7 @@ Está seguro que quiere continuar?</translation>
     <message>
         <location filename="../src/gui/main.cpp" line="184"/>
         <source>Some settings were configured in newer versions of this client and use features that are not available in this version</source>
-        <translation type="unfinished"/>
+        <translation>Einige Einstellungen wurden in neueren Versionen dieses Clients konfiguriert und verwenden Funktionen, die in dieser Version nicht verfügbar sind</translation>
     </message>
 </context>
 </TS>
