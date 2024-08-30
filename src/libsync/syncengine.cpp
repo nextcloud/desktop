@@ -630,6 +630,8 @@ void SyncEngine::startSync()
     _progressInfo->_status = ProgressInfo::Discovery;
     emit transmissionProgress(*_progressInfo);
 
+    _remnantReadOnlyFolders.clear();
+
     _discoveryPhase.reset(new DiscoveryPhase);
     _discoveryPhase->_leadingAndTrailingSpacesFilesAllowed = _leadingAndTrailingSpacesFilesAllowed;
     _discoveryPhase->_account = _account;
@@ -683,6 +685,7 @@ void SyncEngine::startSync()
     connect(_discoveryPhase.data(), &DiscoveryPhase::finished, this, &SyncEngine::slotDiscoveryFinished);
     connect(_discoveryPhase.data(), &DiscoveryPhase::silentlyExcluded,
         _syncFileStatusTracker.data(), &SyncFileStatusTracker::slotAddSilentlyExcluded);
+    connect(_discoveryPhase.data(), &DiscoveryPhase::remnantReadOnlyFolderDiscovered, this, &SyncEngine::remnantReadOnlyFolderDiscovered);
 
     ProcessDirectoryJob *discoveryJob = nullptr;
 
@@ -1484,6 +1487,11 @@ void SyncEngine::slotCleanupScheduledSyncTimers()
             ++it;
         }
     }
+}
+
+void SyncEngine::remnantReadOnlyFolderDiscovered(const SyncFileItemPtr &item)
+{
+    _remnantReadOnlyFolders.push_back(item);
 }
 
 void SyncEngine::slotUnscheduleFilesDelayedSync()

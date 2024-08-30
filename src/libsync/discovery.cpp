@@ -1832,12 +1832,14 @@ bool ProcessDirectoryJob::checkPermissions(const OCC::SyncFileItemPtr &item)
 #if !defined(Q_OS_MACOS) || __MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_15
             qCWarning(lcDisco) << "unexpected new folder in a read-only folder will be made read-write" << localPath;
             FileSystem::setFolderPermissions(localPath, FileSystem::FolderPermissions::ReadWrite);
+            emit _discoveryData->remnantReadOnlyFolderDiscovered(item);
 #endif
             return false;
         } else if (!item->isDirectory() && !perms.hasPermission(RemotePermissions::CanAddFile)) {
             qCWarning(lcDisco) << "checkForPermission: ERROR" << item->_file;
             item->_instruction = CSYNC_INSTRUCTION_ERROR;
             item->_errorString = tr("Not allowed because you don't have permission to add files in that folder");
+            emit _discoveryData->remnantReadOnlyFolderDiscovered(item);
             return false;
         }
         break;
@@ -2038,6 +2040,7 @@ int ProcessDirectoryJob::processSubJobs(int nbJobs)
 #if !defined(Q_OS_MACOS) || __MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_15
                     qCWarning(lcDisco) << "unexpected new folder in a read-only folder will be made read-write" << localPath;
                     FileSystem::setFolderPermissions(localPath, FileSystem::FolderPermissions::ReadWrite);
+                    emit _discoveryData->remnantReadOnlyFolderDiscovered(_dirItem);
 #endif
                 }
 
