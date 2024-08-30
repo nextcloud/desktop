@@ -118,7 +118,7 @@ QIcon OCC::Resources::getCoreIcon(const QString &iconName)
     if (cached.isNull()) {
         const QString iconPath = QStringLiteral(":/client/resources/core/%1.svg").arg(iconName);
         Q_ASSERT(QFileInfo::exists(iconPath));
-        const QString color = isUsingDarkTheme() ? QStringLiteral("#838FA1") : QStringLiteral("#435671");
+        const QString color = isUsingDarkTheme() ? QStringLiteral("#ADACAB") : QStringLiteral("#435671");
         QByteArray data = Template::renderTemplateFromFile(iconPath, {{QStringLiteral("color"), color}}).toUtf8();
         QBuffer buffer(&data);
         QImageReader iconReader(&buffer, "svg");
