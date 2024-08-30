@@ -18,6 +18,7 @@
 
 #include "callstatechecker.h"
 #include "account.h"
+#include "pushnotifications.h"
 
 namespace OCC {
 
@@ -27,11 +28,6 @@ constexpr int successStatusCode = 200;
 
 CallStateChecker::CallStateChecker(QObject *parent)
     : QObject(parent)
-{
-    setup();
-}
-
-void CallStateChecker::setup()
 {
     _notificationTimer.setSingleShot(true);
     _notificationTimer.setInterval(60 * 1000);
@@ -72,7 +68,18 @@ bool CallStateChecker::checking() const
 
 void CallStateChecker::setChecking(const bool checking)
 {
-    if(checking) {
+    const auto accountStateSet = _accountState && _accountState->account();
+    const auto pushNotificationsAvailable = accountStateSet && _accountState->account()->pushNotificationNotificationsReady();
+    const auto accountNcVersion = accountStateSet ? _accountState->account()->serverVersionInt() : 0;
+    constexpr auto ncVersionWithWorkingCallPushNotifications = OCC::Account::makeServerVersion(24, 0, 3); // TODO: Verify this will be fixed in this version
+
+    if(checking && pushNotificationsAvailable && accountNcVersion >= ncVersionWithWorkingCallPushNotifications) {
+        _notificationTimer.stop();
+        _statusCheckTimer.stop();
+
+        connect(_accountState->account()->pushNotifications(), &OCC::PushNotifications::notificationsChanged,
+                this, &CallStateChecker::slotReceivedPushNotification, Qt::UniqueConnection);
+    } else if (checking) {
         qCInfo(lcCallStateChecker) << "Starting to check state of call with token:" << _token;
         _notificationTimer.start();
         _statusCheckTimer.start();
@@ -92,6 +99,13 @@ void CallStateChecker::reset()
     qCInfo(lcCallStateChecker, "Resetting call check");
     setChecking(false);
     setChecking(true);
+}
+
+void CallStateChecker::slotReceivedPushNotification(Account *account)
+{
+    if (account->id() == _accountState->account()->id()) {
+        startCallStateCheck();
+    }
 }
 
 void CallStateChecker::slotNotificationTimerElapsed()

@@ -51,6 +51,7 @@ public slots:
 private slots:
     void slotStatusCheckTimerElapsed();
     void slotNotificationTimerElapsed();
+    void slotReceivedPushNotification(Account *account);
     void slotCallStateReceived(const QJsonDocument &json, const int statusCode);
     void reset();
 
