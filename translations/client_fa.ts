@@ -489,7 +489,7 @@ Should the account be imported?</source>
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="263"/>
         <source>Could not import accounts from legacy client configuration.</source>
-        <translation>Could not import accounts from legacy client configuration.</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -3312,9 +3312,7 @@ Items where deletion is allowed will be deleted if they prevent a directory from
         <source>The client can write debug logs to a temporary folder. These logs are very helpful for diagnosing problems.
 Since log files can get large, the client will start a new one for each sync run and compress older ones. It will also delete log files after a couple of hours to avoid consuming too much disk space.
 If enabled, logs will be written to %1</source>
-        <translation>The client can write debug logs to a temporary folder. These logs are very helpful for diagnosing problems.
-Since log files can get large, the client will start a new one for each sync run and compress older ones. It will also delete log files after a couple of hours to avoid consuming too much disk space.
-If enabled, logs will be written to %1</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="64"/>
@@ -3463,7 +3461,7 @@ Note that using any logging command line options will override this setting.</tr
     <message>
         <location filename="../src/gui/networksettings.ui" line="176"/>
         <source>Note: proxy settings have no effects for accounts on localhost</source>
-        <translation>Note: proxy settings have no effects for accounts on localhost</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="246"/>
@@ -5385,7 +5383,7 @@ Server replied with error: %2</translation>
     <message>
         <location filename="../src/gui/systray.cpp" line="188"/>
         <source>Help</source>
-        <translation>Help</translation>
+        <translation>راهنما</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="189"/>

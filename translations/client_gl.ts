@@ -2663,7 +2663,7 @@ Se restaura os ficheiros, descargaranse de novo do servidor.</translation>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="509"/>
         <source>You are already syncing &lt;i&gt;%1&lt;/i&gt;, which is a parent folder of &lt;i&gt;%2&lt;/i&gt;.</source>
-        <translation>Xa está a sincronizar &lt;i&gt;%1&lt;/i&gt;, é o cartafol pai de &lt;i&gt;%2&lt;/i&gt;.</translation>
+        <translation>Xa está a sincronizar &lt;i&gt;%1&lt;/i&gt;, é o cartafol superior de &lt;i&gt;%2&lt;/i&gt;.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="511"/>
