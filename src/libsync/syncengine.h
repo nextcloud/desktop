@@ -356,6 +356,13 @@ private:
      */
     void restoreOldFiles(SyncFileItemVector &syncItems);
 
+    void cancelSyncOrContinue(bool cancel);
+
+    void finishSync();
+
+    template <typename T>
+    void promptUserBeforePropagation(T &&lambda);
+
     // true if there is at least one file which was not changed on the server
     bool _hasNoneFiles = false;
 
