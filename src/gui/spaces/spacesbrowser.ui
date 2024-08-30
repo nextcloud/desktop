@@ -27,7 +27,11 @@
     <number>0</number>
    </property>
    <item>
-    <widget class="OCC::QmlUtils::OCQuickWidget" name="quickWidget" native="true"/>
+    <widget class="OCC::QmlUtils::OCQuickWidget" name="quickWidget" native="true">
+     <property name="focusPolicy">
+      <enum>Qt::FocusPolicy::StrongFocus</enum>
+     </property>
+    </widget>
    </item>
   </layout>
  </widget>

@@ -18,7 +18,6 @@
 
 #include "gui/accountmanager.h"
 #include "gui/spaces/spaceimageprovider.h"
-#include "resources/resources.h"
 
 #include <QMenu>
 #include <QQmlContext>
@@ -45,15 +44,16 @@ SpacesBrowser::SpacesBrowser(QWidget *parent)
     , ui(new Ui::SpacesBrowser)
 {
     ui->setupUi(this);
+
     _model = new SpacesModel(this);
-
-
     _sortModel = new SpaceFilter(this);
     _sortModel->setSourceModel(_model);
     _sortModel->setSortRole(static_cast<int>(SpacesModel::Roles::Priority));
     _sortModel->sort(0, Qt::DescendingOrder);
 
     QmlUtils::initQuickWidget(ui->quickWidget, QUrl(QStringLiteral("qrc:/qt/qml/org/ownCloud/gui/spaces/qml/SpacesView.qml")), this);
+
+    setFocusProxy(ui->quickWidget);
 }
 
 SpacesBrowser::~SpacesBrowser()
