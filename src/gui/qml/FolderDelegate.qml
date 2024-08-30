@@ -134,7 +134,7 @@ Pane {
                                 Layout.fillHeight: true
                                 Layout.fillWidth: true
                                 description: folderDelegate.subtitle
-                                imageSource: folderDelegate.folder.space ? folderDelegate.folder.space.image.qmlImageUrl : QMLResources.resourcePath("core", "folder-sync", enabled)
+                                imageSource: folderDelegate.folder.space ? folderDelegate.folder.space.image.qmlImageUrl : QMLResources.resourcePath("core", "folder-sync-small", enabled)
                                 statusSource: QMLResources.resourcePath("core", statusIcon, enabled)
                                 title: displayName
 
