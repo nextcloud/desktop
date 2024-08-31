@@ -1758,7 +1758,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/editlocallymanager.cpp" line="118"/>
         <source>Could not validate the request to open a file from server.</source>
-        <translation type="unfinished"/>
+        <translation>Не удалось подтвердить запрос на открытие файла с сервера.</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallymanager.cpp" line="119"/>
@@ -1788,7 +1788,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/editlocallyverificationjob.cpp" line="105"/>
         <source>Could not find an account for local editing.</source>
-        <translation type="unfinished"/>
+        <translation>Не удалось найти учетную запись для локального редактирования.</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyverificationjob.cpp" line="129"/>
@@ -1798,7 +1798,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/editlocallyverificationjob.cpp" line="130"/>
         <source>An error occurred trying to verify the request to edit locally.</source>
-        <translation type="unfinished"/>
+        <translation>Произошла ошибка при попытке проверить запрос на локальное редактирование.</translation>
     </message>
 </context>
 <context>
@@ -2880,7 +2880,7 @@ If you restore the files, they will be downloaded again from the server.</source
     <message>
         <location filename="../src/gui/generalsettings.ui" line="344"/>
         <source>Usage Documentation</source>
-        <translation type="unfinished"/>
+        <translation>Документация по использованию</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="351"/>
