@@ -22,7 +22,6 @@ RowLayout {
     id: root
 
     property bool hovered: false
-    property string imageSourceHover: ""
     property string imageSource: ""
     property int imageSourceWidth: undefined
     property int imageSourceHeight: undefined
@@ -38,7 +37,7 @@ RowLayout {
         Layout.maximumHeight: root.height
         Layout.alignment: Qt.AlignCenter
 
-        source: root.hovered ? root.imageSourceHover : root.imageSource
+        source: root.imageSource
 
         sourceSize {
             width: root.imageSourceWidth
