@@ -20,13 +20,10 @@ import Style
 
 EnforcedPlainTextLabel {
     property bool hovered: false
-    property color textColor: palette.windowText
-    property color textColorHovered: palette.midlight
     property bool bold: false
 
     font.underline: true
     font.bold: bold
-    color: hovered ? textColorHovered : textColor
 
     horizontalAlignment: Text.AlignLeft
     verticalAlignment: Text.AlignVCenter
