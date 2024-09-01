@@ -33,16 +33,6 @@ TextEdit {
     selectByMouse: true
     height: Math.max(Style.talkReplyTextFieldPreferredHeight, contentHeight)
 
-    Rectangle {
-        id: textFieldBorder
-        anchors.fill: parent
-        radius: Style.slightlyRoundedButtonRadius
-        border.width: Style.normalBorderWidth
-        border.color: root.activeFocus ? root.accentColor : root.secondaryColor
-        color: palette.base
-        z: -1
-    }
-
     Button {
         id: submitButton
 
