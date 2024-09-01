@@ -41,7 +41,6 @@ TextField {
     rightPadding: trayWindowUnifiedSearchTextFieldClearTextButton.width + trayWindowUnifiedSearchTextFieldClearTextButton.anchors.rightMargin + textFieldHorizontalPaddingOffset
 
     placeholderText: qsTr("Search files, messages, events …")
-    placeholderTextColor: placeholderColor
 
     selectByMouse: true
 
