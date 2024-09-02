@@ -566,11 +566,6 @@ void Systray::showTalkMessage(const QString &title, const QString &message, cons
 #endif
 }
 
-void Systray::setToolTip(const QString &tip)
-{
-    QSystemTrayIcon::setToolTip(tr("%1: %2").arg(Theme::instance()->appNameGUI(), tip));
-}
-
 bool Systray::syncIsPaused() const
 {
     return _syncIsPaused;
