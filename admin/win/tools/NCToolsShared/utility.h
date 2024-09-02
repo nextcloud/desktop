@@ -53,6 +53,7 @@ namespace Utility {
     std::wstring getConfigPath(const std::wstring &appName);
     void waitForNsisUninstaller(const std::wstring& appShortName);
     void removeNavigationPaneEntries(const std::wstring &appName);
+    void removeUsersFromCredentialManager(const std::wstring &appName);
 }
 
 } // namespace NCTools

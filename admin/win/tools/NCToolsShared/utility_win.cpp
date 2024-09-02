@@ -22,6 +22,7 @@
 #include <algorithm>
 #include <Shlobj.h>
 #include <psapi.h>
+#include <wincred.h>
 
 #define ASSERT assert
 #define Q_ASSERT assert
@@ -472,6 +473,12 @@ bool Utility::copy_dir_recursive(std::wstring from_dir, std::wstring to_dir, cop
     FindClose(hFind);
 
     return success;
+}
+
+void Utility::removeUsersFromCredentialManager(const std::wstring &appName)
+{
+    std::string appNameString(appName.begin(), appName.end());
+    CredDeleteA(appNameString.c_str(), CRED_TYPE_DOMAIN_EXTENDED, 0);
 }
 
 } // namespace NCTools
