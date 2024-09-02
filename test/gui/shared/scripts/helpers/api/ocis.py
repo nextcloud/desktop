@@ -64,7 +64,11 @@ def create_user(username, password, displayname, email):
         }
     )
     response = request.post(url, body)
-    request.assertHttpStatus(response, 201)
+    if response.status_code != 201:
+        raise Exception(
+            "Creating user '%s' failed with %s:\n" % (username, response.status_code)
+            + response.text
+        )
     resp_object = response.json()
     return {
         "id": resp_object['id'],
@@ -75,7 +79,11 @@ def create_user(username, password, displayname, email):
     }
 
 
-def delete_user(id):
+def delete_user(id, username):
     url = url_join(get_graph_url(), 'users', id)
     response = request.delete(url)
-    request.assertHttpStatus(response, 204)
+    if response.status_code != 204:
+        raise Exception(
+            "Deleting user '%s' failed with %s:\n" % (username, response.status_code)
+            + response.text
+        )

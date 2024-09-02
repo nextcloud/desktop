@@ -87,7 +87,7 @@ def create_user(username):
 def delete_created_users():
     for username, user_info in list(UserHelper.createdUsers.items()):
         if get_config('ocis'):
-            ocis.delete_user(user_info["id"])
+            ocis.delete_user(user_info["id"], username)
         else:
-            oc.delete_user(user_info["username"])
+            oc.delete_user(user_info["id"])
         del UserHelper.createdUsers[username]
