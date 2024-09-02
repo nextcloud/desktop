@@ -347,7 +347,7 @@ void AccountSettings::slotDisableVfsCurrentFolder(Folder *folder)
     msgBox->open();
 }
 
-void AccountSettings::showConnectionLabel(const QString &message, QStringList errors)
+void AccountSettings::showConnectionLabel(const QString &message, StatusIcon statusIcon, QStringList errors)
 {
     if (errors.isEmpty()) {
         ui->connectionStatusLabel->setText(message);
@@ -360,7 +360,29 @@ void AccountSettings::showConnectionLabel(const QString &message, QStringList er
         ui->connectionStatusLabel->setToolTip(QString());
     }
     ui->accountStatus->setVisible(!message.isEmpty());
-    ui->warningLabel->setVisible(!errors.isEmpty());
+
+    QIcon icon;
+    switch (statusIcon) {
+    case StatusIcon::None:
+        break;
+    case StatusIcon::Connected:
+        icon = Resources::getCoreIcon(QStringLiteral("states/ok"));
+        break;
+    case StatusIcon::Disconnected:
+        icon = Resources::getCoreIcon(QStringLiteral("states/offline"));
+        break;
+    case StatusIcon::Info:
+        icon = Resources::getCoreIcon(QStringLiteral("states/information"));
+        break;
+    case StatusIcon::Warning:
+        icon = Resources::getCoreIcon(QStringLiteral("states/warning"));
+        break;
+    }
+
+    if (!icon.isNull()) {
+        ui->warningLabel->setPixmap(icon.pixmap(ui->warningLabel->size()));
+    }
+    ui->warningLabel->setVisible(statusIcon != StatusIcon::None);
 }
 
 void AccountSettings::slotEnableCurrentFolder(Folder *folder, bool terminate)
@@ -460,42 +482,44 @@ void AccountSettings::slotAccountStateChanged()
     switch (state) {
     case AccountState::Connected: {
         QStringList errors;
+        StatusIcon icon = StatusIcon::Connected;
         if (account->serverSupportLevel() != Account::ServerSupportLevel::Supported) {
             errors << tr("The server version %1 is unsupported! Proceed at your own risk.").arg(account->capabilities().status().versionString());
+            icon = StatusIcon::Warning;
         }
-        showConnectionLabel(tr("Connected"), errors);
+        showConnectionLabel(tr("Connected"), icon, errors);
         break;
     }
     case AccountState::ServiceUnavailable:
-        showConnectionLabel(tr("Server is temporarily unavailable"));
+        showConnectionLabel(tr("Server is temporarily unavailable"), StatusIcon::Disconnected);
         break;
     case AccountState::MaintenanceMode:
-        showConnectionLabel(tr("Server is currently in maintenance mode"));
+        showConnectionLabel(tr("Server is currently in maintenance mode"), StatusIcon::Disconnected);
         break;
     case AccountState::SignedOut:
-        showConnectionLabel(tr("Signed out"));
+        showConnectionLabel(tr("Signed out"), StatusIcon::Disconnected);
         break;
     case AccountState::AskingCredentials: {
-        showConnectionLabel(tr("Updating credentials..."));
+        showConnectionLabel(tr("Updating credentials..."), StatusIcon::Info);
         break;
     }
     case AccountState::Connecting:
         if (NetworkInformation::instance()->isBehindCaptivePortal()) {
-            showConnectionLabel(tr("Captive portal prevents connections to the server."));
+            showConnectionLabel(tr("Captive portal prevents connections to the server."), StatusIcon::Disconnected);
         } else if (NetworkInformation::instance()->isMetered() && ConfigFile().pauseSyncWhenMetered()) {
-            showConnectionLabel(tr("Sync is paused due to metered internet connection"));
+            showConnectionLabel(tr("Sync is paused due to metered internet connection"), StatusIcon::Disconnected);
         } else {
-            showConnectionLabel(tr("Connecting..."));
+            showConnectionLabel(tr("Connecting..."), StatusIcon::Info);
         }
         break;
     case AccountState::ConfigurationError:
-        showConnectionLabel(tr("Server configuration error"), _accountState->connectionErrors());
+        showConnectionLabel(tr("Server configuration error"), StatusIcon::Warning, _accountState->connectionErrors());
         break;
     case AccountState::NetworkError:
         // don't display the error to the user, https://github.com/owncloud/client/issues/9790
         [[fallthrough]];
     case AccountState::Disconnected:
-        showConnectionLabel(tr("Disconnected"));
+        showConnectionLabel(tr("Disconnected"), StatusIcon::Disconnected);
         break;
     }
 }
