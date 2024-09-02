@@ -1670,28 +1670,21 @@ void Folder::slotNeedToRemoveRemnantsReadOnlyFolders(const QList<SyncFileItemPtr
                                                      const QString &localPath,
                                                      std::function<void (bool)> callback)
 {
-    const auto msg = tr("Do you want to clean up remnant read-only folders left over from previous failed synchronization attempts.");
-    auto msgBox = new QMessageBox(QMessageBox::Question, tr("Remove remnant invalid folders?"),
-                                  msg, QMessageBox::NoButton);
-    msgBox->setAttribute(Qt::WA_DeleteOnClose);
-    msgBox->setWindowFlags(msgBox->windowFlags() | Qt::WindowStaysOnTopHint);
-    msgBox->addButton(tr("Proceed to remove remnant folders"), QMessageBox::AcceptRole);
-    const auto keepBtn = msgBox->addButton(tr("Do nothing"), QMessageBox::RejectRole);
+    auto listOfFolders = QStringList{};
+    for (const auto &oneFolder : folders) {
+        listOfFolders.push_back(oneFolder->_file);
+    }
+
+    qCInfo(lcFolder()) << "will delete invalid read-only folders:" << listOfFolders.join(", ");
+
     setSyncPaused(true);
-    connect(msgBox, &QMessageBox::finished, this, [msgBox, keepBtn, callback, folders, localPath, this] {
-        const bool cancel = msgBox->clickedButton() == keepBtn;
-        if (!cancel) {
-            for(const auto &oneFolder : folders) {
-                FileSystem::removeRecursively(localPath + oneFolder->_file);
-            }
-        }
-        callback(cancel);
-        if (cancel) {
-            setSyncPaused(true);
-        }
-    });
-    connect(this, &Folder::destroyed, msgBox, &QMessageBox::deleteLater);
-    msgBox->open();
+    for(const auto &oneFolder : folders) {
+        FileSystem::removeRecursively(localPath + oneFolder->_file);
+    }
+    callback(true);
+    setSyncPaused(false);
+    _lastEtag.clear();
+    slotScheduleThisFolder();
 }
 
 void Folder::removeLocalE2eFiles()
