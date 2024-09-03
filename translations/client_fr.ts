@@ -24,7 +24,7 @@
     <message>
         <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.ui" line="157"/>
         <source>After completing this wizard, you can set up folder synchronization manually.</source>
-        <translation type="unfinished"/>
+        <translation>Après avoir complété cet assistant, vous pouvez configurer manuellement la synchronisation des dossiers.</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.ui" line="160"/>
@@ -39,7 +39,7 @@
     <message>
         <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.ui" line="230"/>
         <source>Restore default value</source>
-        <translation type="unfinished"/>
+        <translation>Restaurer la valeur par défaut</translation>
     </message>
 </context>
 <context>
@@ -61,7 +61,7 @@
     <message>
         <location filename="../src/libsync/appprovider.cpp" line="89"/>
         <source>Failed to open %1 in web. Error: %2.</source>
-        <translation type="unfinished"/>
+        <translation>Échec de l&apos;ouverture de %1 dans le  web. Erreur: %2.</translation>
     </message>
 </context>
 <context>
@@ -84,7 +84,7 @@
     <message>
         <location filename="../src/common/checksums.cpp" line="124"/>
         <source>The checksum header is malformed: %1</source>
-        <translation type="unfinished"/>
+        <translation>L&apos;en-tête de la checksum n&apos;est pas conforme: %1</translation>
     </message>
     <message>
         <location filename="../src/common/checksums.cpp" line="128"/>
@@ -109,7 +109,7 @@ File synchronization desktop utility.</source>
     <message>
         <location filename="../src/gui/main.cpp" line="126"/>
         <source>Start with the main window visible, or if it is already running, bring it to the front. By default, the client launches in the background.</source>
-        <translation type="unfinished"/>
+        <translation>Démarrez avec la fenêtre principale visible ou, si elle est déjà en cours d&apos;exécution, placez-la au premier plan. Par défaut, le client démarre en arrière-plan.</translation>
     </message>
     <message>
         <location filename="../src/gui/main.cpp" line="128"/>
@@ -119,17 +119,17 @@ File synchronization desktop utility.</source>
     <message>
         <location filename="../src/gui/main.cpp" line="130"/>
         <source>Write log to file (use - to write to stdout).</source>
-        <translation type="unfinished"/>
+        <translation>Écrire le journal dans un fichier (utilisez - pour écrire sur stdout).</translation>
     </message>
     <message>
         <location filename="../src/gui/main.cpp" line="132"/>
         <source>Write each sync log output in a new file in folder.</source>
-        <translation type="unfinished"/>
+        <translation>Inscrivez chaque sortie du journal de synchronisation dans un nouveau fichier du dossier.</translation>
     </message>
     <message>
         <location filename="../src/gui/main.cpp" line="133"/>
         <source>Flush the log file after every write.</source>
-        <translation type="unfinished"/>
+        <translation>Videz le fichier journal après chaque écriture.</translation>
     </message>
     <message>
         <location filename="../src/gui/main.cpp" line="134"/>
@@ -144,7 +144,7 @@ File synchronization desktop utility.</source>
     <message>
         <location filename="../src/gui/main.cpp" line="136"/>
         <source>Forward all arguments to the cmd client. This argument must be the first.</source>
-        <translation type="unfinished"/>
+        <translation>Transmettre tous les arguments au client cmd. Cet argument doit être le premier.</translation>
     </message>
     <message>
         <location filename="../src/gui/main.cpp" line="139"/>
@@ -162,7 +162,7 @@ File synchronization desktop utility.</source>
     <message>
         <location filename="../src/gui/commonstrings.cpp" line="27"/>
         <source>file manager</source>
-        <translation type="unfinished"/>
+        <translation>gestionnaire de fichiers</translation>
     </message>
     <message>
         <location filename="../src/gui/commonstrings.cpp" line="33"/>
@@ -198,12 +198,12 @@ File synchronization desktop utility.</source>
     <message>
         <location filename="../src/libsync/determineauthtypejobfactory.cpp" line="51"/>
         <source>Server did not ask for authorization</source>
-        <translation type="unfinished"/>
+        <translation>Le serveur n&apos;a pas demandé d&apos;autorisation</translation>
     </message>
     <message>
         <location filename="../src/libsync/determineauthtypejobfactory.cpp" line="54"/>
         <source>Failed to determine auth type: %1</source>
-        <translation type="unfinished"/>
+        <translation>Échec de la détermination du type d&apos;authentification : %1</translation>
     </message>
 </context>
 <context>
@@ -211,7 +211,7 @@ File synchronization desktop utility.</source>
     <message>
         <location filename="../src/gui/newwizard/jobs/discoverwebfingerservicejobfactory.cpp" line="39"/>
         <source>Invalid reply received from server</source>
-        <translation type="unfinished"/>
+        <translation>Réponse non valide reçue du serveur</translation>
     </message>
 </context>
 <context>
