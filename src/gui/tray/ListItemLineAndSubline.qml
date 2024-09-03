@@ -38,7 +38,6 @@ ColumnLayout {
         text: root.lineText
         elide: Text.ElideRight
         font.pixelSize: root.titleFontSize
-        color: root.titleColor
     }
     EnforcedPlainTextLabel {
         id: subline
@@ -47,6 +46,5 @@ ColumnLayout {
         visible: text !== ""
         elide: Text.ElideRight
         font.pixelSize: root.sublineFontSize
-        color: root.sublineColor
     }
 }

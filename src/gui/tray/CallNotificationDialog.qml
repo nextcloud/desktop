@@ -195,7 +195,6 @@ ApplicationWindow {
             EnforcedPlainTextLabel {
                 id: message
                 text: root.subject
-                color: root.usingUserAvatar ? palette.brightText : palette.windowText
                 font.pixelSize: Style.topLinePixelSize
                 wrapMode: Text.WordWrap
                 horizontalAlignment: Text.AlignHCenter

@@ -27,7 +27,6 @@ EnforcedPlainTextLabel {
         color: palette.base
     }
 
-    color: palette.midlight
     elide: Text.ElideRight
     padding: Style.smallSpacing
 }

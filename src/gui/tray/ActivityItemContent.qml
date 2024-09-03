@@ -244,7 +244,6 @@ RowLayout {
                 wrapMode: Text.Wrap
                 maximumLineCount: 2
                 font.pixelSize: Style.topLinePixelSize
-                color: palette.midlight
                 visible: text !== ""
             }
 

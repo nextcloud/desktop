@@ -463,7 +463,6 @@ ApplicationWindow {
                                 width: Style.currentAccountLabelWidth
                                 text: UserModel.currentUser ? UserModel.currentUser.name : ""
                                 elide: Text.ElideRight
-                                color: Style.currentUserHeaderTextColor
 
                                 font.pixelSize: Style.topLinePixelSize
                                 font.bold: true
@@ -475,7 +474,6 @@ ApplicationWindow {
                                 width: Style.currentAccountLabelWidth
                                 text: UserModel.currentUser ? UserModel.currentUser.server : ""
                                 elide: Text.ElideRight
-                                color: Style.currentUserHeaderTextColor
                                 visible: UserModel.numUsers() > 1
                             }
 
@@ -502,7 +500,6 @@ ApplicationWindow {
                                           ? UserModel.currentUser.statusMessage
                                           : UserModel.currentUser ? UserModel.currentUser.server : ""
                                     elide: Text.ElideRight
-                                    color: Style.currentUserHeaderTextColor
                                     font.pixelSize: Style.subLinePixelSize
                                 }
                             }

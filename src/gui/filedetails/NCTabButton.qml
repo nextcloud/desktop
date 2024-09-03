@@ -64,7 +64,6 @@ TabButton {
             Layout.fillWidth: true
             horizontalAlignment: Text.AlignHCenter
             verticalAlignment: Text.AlignVCenter
-            color: tabButtonLayout.elementColors
             text: tabButton.text
             font.bold: tabButton.checked
         }

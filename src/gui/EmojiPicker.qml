@@ -134,7 +134,6 @@ ColumnLayout {
             width: parent.width * 0.8
             anchors.centerIn: parent
             text: qsTr("No recent emojis")
-            color: palette.midlight
             wrapMode: Text.Wrap
             font.bold: true
             visible: emojiView.count === 0

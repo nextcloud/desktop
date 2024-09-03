@@ -140,7 +140,6 @@ GridLayout {
         Layout.column: 1
 
         text: root.detailText
-        color: palette.midlight
         elide: Text.ElideRight
         visible: text !== ""
     }

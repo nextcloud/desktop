@@ -25,6 +25,5 @@ ToolTip {
     contentItem: EnforcedPlainTextLabel {
         text: toolTip.text
         wrapMode: Text.Wrap
-        color: palette.toolTipText
     }
 }
