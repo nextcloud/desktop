@@ -132,7 +132,6 @@ ScrollView {
             EnforcedPlainTextLabel {
                width: parent.width
                text: qsTr("No activities yet")
-               color: palette.midlight
                font.bold: true
                wrapMode: Text.Wrap
                horizontalAlignment: Text.AlignHCenter

@@ -45,7 +45,6 @@ ColumnLayout {
         text: qsTr("Load more results")
         wrapMode: Text.Wrap
         font.pixelSize: unifiedSearchResultItemFetchMore.fontSize
-        color: unifiedSearchResultItemFetchMore.textColor
         visible: !unifiedSearchResultItemFetchMore.isFetchMoreInProgress
     }
 

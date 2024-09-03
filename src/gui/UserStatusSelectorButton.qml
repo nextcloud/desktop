@@ -71,7 +71,6 @@ AbstractButton {
 
             text: root.text
             wrapMode: Text.Wrap
-            color: root.colored ? palette.brightText : palette.buttonText
             font.bold: root.primary
         }
 
@@ -85,7 +84,6 @@ AbstractButton {
 
             text: root.secondaryText
             wrapMode: Text.Wrap
-            color: palette.midlight
             visible: root.secondaryText !== ""
         }
     }

@@ -28,7 +28,6 @@ EnforcedPlainTextLabel {
 
     text: section
     font.pixelSize: Style.unifiedSearchResultTitleFontSize
-    color: UserModel.currentUser.accentColor
 
     Accessible.role: Accessible.Separator
     Accessible.name: qsTr("Search results section %1").arg(section)

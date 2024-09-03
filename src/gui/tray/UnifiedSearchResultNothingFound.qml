@@ -38,7 +38,6 @@ ColumnLayout {
     EnforcedPlainTextLabel {
         id: unifiedSearchResultsNoResultsLabel
         text: qsTr("No results for")
-        color: palette.dark
         font.pixelSize: Style.subLinePixelSize * 1.25
         wrapMode: Text.Wrap
         Layout.fillWidth: true

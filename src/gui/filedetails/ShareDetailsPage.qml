@@ -241,7 +241,6 @@ Page {
                 Layout.rightMargin: root.padding
 
                 text: root.fileDetails.name
-                color: palette.midlight
                 wrapMode: Text.Wrap
             }
         }
