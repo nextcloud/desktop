@@ -62,7 +62,6 @@ AbstractButton {
                 height: width
                 anchors.bottom: accountAvatar.bottom
                 anchors.right: accountAvatar.right
-                color: userLine.hovered || userLine.visualFocus ? "#f6f6f6" : "white"
                 radius: width*0.5
             }
 
@@ -149,7 +148,7 @@ AbstractButton {
 
             Image {
                 anchors.fill: parent
-                source: "image://svgimage-custom-color/more.svg" + "/" + palette.buttonText
+                source: "image://svgimage-custom-color/more.svg/"
                 fillMode: Image.PreserveAspectFit
             }
 
@@ -175,16 +174,6 @@ AbstractButton {
                         accountMenu.close()
                     }
 
-                    background: Item {
-                        height: parent.height
-                        width: parent.menu.width
-                        Rectangle {
-                            anchors.fill: parent
-                            anchors.margins: 1
-                            color: parent.parent.hovered ? palette.highlight : palette.window
-                        }
-                    }
-
                     Accessible.role: Accessible.Button
                     Accessible.name: model.isConnected ? qsTr("Log out") : qsTr("Log in")
 
@@ -206,16 +195,6 @@ AbstractButton {
                     onClicked: {
                         UserModel.removeAccount(index)
                         accountMenu.close()
-                    }
-
-                    background: Item {
-                        height: parent.height
-                        width: parent.menu.width
-                        Rectangle {
-                            anchors.fill: parent
-                            anchors.margins: 1
-                            color: parent.parent.hovered ? palette.highlight : palette.window
-                        }
                     }
 
                     Accessible.role: Accessible.Button
