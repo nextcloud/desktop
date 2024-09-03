@@ -507,7 +507,6 @@ ApplicationWindow {
 
                         ColorOverlay {
                             cached: true
-                            color: Style.currentUserHeaderTextColor
                             width: source.width
                             height: source.height
                             source: Image {
@@ -535,7 +534,6 @@ ApplicationWindow {
                     visible: currentUser.hasLocalFolder
                     currentUser: UserModel.currentUser
 
-
                     onClicked: openLocalFolderButton.userHasGroupFolders ? openLocalFolderButton.toggleMenuOpen() : UserModel.openCurrentAccountLocalFolder()
 
                     onFolderEntryTriggered: isGroupFolder ? UserModel.openCurrentAccountFolderFromTrayInfo(fullFolderPath) : UserModel.openCurrentAccountLocalFolder()
@@ -552,7 +550,7 @@ ApplicationWindow {
                 HeaderButton {
                     id: trayWindowFeaturedAppButton
                     visible: UserModel.currentUser.isFeaturedAppEnabled
-                    icon.source: UserModel.currentUser.featuredAppIcon + "/" + Style.currentUserHeaderTextColor
+                    icon.source: UserModel.currentUser.featuredAppIcon + "/"
                     onClicked: UserModel.openCurrentAccountFeaturedApp()
 
                     Accessible.role: Accessible.Button
@@ -566,7 +564,7 @@ ApplicationWindow {
 
                 HeaderButton {
                     id: trayWindowAppsButton
-                    icon.source: "image://svgimage-custom-color/more-apps.svg" + "/" + Style.currentUserHeaderTextColor
+                    icon.source: "image://svgimage-custom-color/more-apps.svg/"
 
                     onClicked: {
                         if(appsMenuListView.count <= 0) {
@@ -614,24 +612,11 @@ ApplicationWindow {
                                     id: appEntry
                                     anchors.left: parent.left
                                     anchors.right: parent.right
-
                                     text: model.appName
                                     font.pixelSize: Style.topLinePixelSize
                                     icon.source: model.appIconUrl
-                                    icon.color: palette.buttonText
                                     onTriggered: UserAppsModel.openAppUrl(appUrl)
                                     hoverEnabled: true
-
-                                    // background: Item {
-                                    //     height: parent.height
-                                    //     width: parent.width
-                                    //     Rectangle {
-                                    //         anchors.fill: parent
-                                    //         anchors.margins: 1
-                                    //         color: parent.parent.hovered || parent.parent.visualFocus ? palette.highlight : palette.window
-                                    //     }
-                                    // }
-
                                     Accessible.role: Accessible.MenuItem
                                     Accessible.name: qsTr("Open %1 in browser").arg(model.appName)
                                     Accessible.onPressAction: appEntry.triggered()
