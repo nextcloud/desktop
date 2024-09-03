@@ -319,16 +319,6 @@ ApplicationWindow {
                             hoverEnabled: true
                             visible: Systray.enableAddAccount
 
-                            background: Item {
-                                height: parent.height
-                                width: parent.menu.width
-                                Rectangle {
-                                    anchors.fill: parent
-                                    anchors.margins: 1
-                                    color: parent.parent.hovered || parent.parent.visualFocus ? palette.highlight : palette.window
-                                }
-                            }
-
                             RowLayout {
                                 anchors.fill: parent
                                 spacing: 0
@@ -370,17 +360,6 @@ ApplicationWindow {
                             font.pixelSize: Style.topLinePixelSize
                             hoverEnabled: true
                             onClicked: Systray.syncIsPaused = !Systray.syncIsPaused
-
-                            background: Item {
-                                height: parent.height
-                                width: parent.menu.width
-                                Rectangle {
-                                    anchors.fill: parent
-                                    anchors.margins: 1
-                                    color: parent.parent.hovered || parent.parent.visualFocus ? palette.highlight : palette.window
-                                }
-                            }
-
                             Accessible.role: Accessible.MenuItem
                             Accessible.name: Systray.syncIsPaused ? qsTr("Resume sync for all") : qsTr("Pause sync for all")
                             Accessible.onPressAction: syncPauseButton.clicked()
@@ -392,17 +371,6 @@ ApplicationWindow {
                             font.pixelSize: Style.topLinePixelSize
                             hoverEnabled: true
                             onClicked: Systray.openSettings()
-
-                            background: Item {
-                                height: parent.height
-                                width: parent.menu.width
-                                Rectangle {
-                                    anchors.fill: parent
-                                    anchors.margins: 1
-                                    color: parent.parent.hovered || parent.parent.visualFocus ? palette.highlight : palette.window
-                                }
-                            }
-
                             Accessible.role: Accessible.MenuItem
                             Accessible.name: text
                             Accessible.onPressAction: settingsButton.clicked()
@@ -414,17 +382,6 @@ ApplicationWindow {
                             font.pixelSize: Style.topLinePixelSize
                             hoverEnabled: true
                             onClicked: Systray.shutdown()
-
-                            background: Item {
-                                height: parent.height
-                                width: parent.menu.width
-                                Rectangle {
-                                    anchors.fill: parent
-                                    anchors.margins: 1
-                                    color: parent.parent.hovered || parent.parent.visualFocus ? palette.highlight : palette.window
-                                }
-                            }
-
                             Accessible.role: Accessible.MenuItem
                             Accessible.name: text
                             Accessible.onPressAction: exitButton.clicked()
@@ -668,15 +625,15 @@ ApplicationWindow {
                                     onTriggered: UserAppsModel.openAppUrl(appUrl)
                                     hoverEnabled: true
 
-                                    background: Item {
-                                        height: parent.height
-                                        width: parent.width
-                                        Rectangle {
-                                            anchors.fill: parent
-                                            anchors.margins: 1
-                                            color: parent.parent.hovered || parent.parent.visualFocus ? palette.highlight : palette.window
-                                        }
-                                    }
+                                    // background: Item {
+                                    //     height: parent.height
+                                    //     width: parent.width
+                                    //     Rectangle {
+                                    //         anchors.fill: parent
+                                    //         anchors.margins: 1
+                                    //         color: parent.parent.hovered || parent.parent.visualFocus ? palette.highlight : palette.window
+                                    //     }
+                                    // }
 
                                     Accessible.role: Accessible.MenuItem
                                     Accessible.name: qsTr("Open %1 in browser").arg(model.appName)
