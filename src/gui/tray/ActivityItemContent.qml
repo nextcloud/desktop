@@ -153,7 +153,6 @@ RowLayout {
 
                 text: root.activityData.dateTime
                 font.pixelSize: Style.subLinePixelSize
-                color: palette.midlight
                 visible: text !== ""
             }
 
