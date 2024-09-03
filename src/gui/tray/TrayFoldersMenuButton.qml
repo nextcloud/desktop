@@ -91,7 +91,6 @@ HeaderButton {
                     width: Style.folderStateIndicatorSize + Style.trayFolderStatusIndicatorSizeOffset
                     height: width
                     anchors.centerIn: parent
-                    color: Style.currentUserHeaderColor
                     radius: width * Style.trayFolderStatusIndicatorRadiusFactor
                     z: -2
                 }
@@ -101,7 +100,6 @@ HeaderButton {
                     width: Style.folderStateIndicatorSize + Style.trayFolderStatusIndicatorSizeOffset
                     height: width
                     anchors.centerIn: parent
-                    color: root.hovered ? Style.currentUserHeaderTextColor : palette.window
                     opacity: Style.trayFolderStatusIndicatorMouseHoverOpacityFactor
                     radius: width * Style.trayFolderStatusIndicatorRadiusFactor
                     z: -1
@@ -116,7 +114,7 @@ HeaderButton {
 
                 cache: true
 
-                source: "image://svgimage-custom-color/folder.svg/" + Style.currentUserHeaderTextColor
+                source: "image://svgimage-custom-color/folder.svg/"
                 sourceSize {
                     width: imageWidth
                     height: imageHeight
@@ -146,7 +144,7 @@ HeaderButton {
 
                     cache: true
 
-                    source: "image://svgimage-custom-color/caret-down.svg/" + Style.currentUserHeaderTextColor
+                    source: "image://svgimage-custom-color/caret-down.svg/"
                     sourceSize {
                         width: openLocalFolderButtonCaretIconLoader.imageWidth
                         height: openLocalFolderButtonCaretIconLoader.imageHeight
@@ -210,9 +208,9 @@ HeaderButton {
                         subline: model.modelData.parentPath
                         width: foldersMenuListView.width
                         height: Style.standardPrimaryButtonHeight
-                        backgroundIconSource: "image://svgimage-custom-color/folder.svg/" + palette.buttonText
+                        backgroundIconSource: "image://svgimage-custom-color/folder.svg/"
                         iconSource: isGroupFolder
-                                    ? "image://svgimage-custom-color/account-group.svg/" + palette.brightText
+                                    ? "image://svgimage-custom-color/account-group.svg/"
                                     : ""
 
                         onTriggered: {
