@@ -184,6 +184,10 @@ signals:
      */
     void aboutToRemoveAllFiles(OCC::SyncFileItem::Direction direction, std::function<void(bool)> f);
 
+    void aboutToRemoveRemnantsReadOnlyFolders(const QList<SyncFileItemPtr> &folders,
+                                              const QString &localPath,
+                                              std::function<void(bool)> f);
+
     // A new folder was discovered and was not synced because of the confirmation feature
     void newBigFolder(const QString &folder, bool isExternal);
 
@@ -359,6 +363,8 @@ private:
     void cancelSyncOrContinue(bool cancel);
 
     void finishSync();
+
+    void handleRemnantReadOnlyFolders();
 
     template <typename T>
     void promptUserBeforePropagation(T &&lambda);

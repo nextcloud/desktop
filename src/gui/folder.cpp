@@ -100,6 +100,8 @@ Folder::Folder(const FolderDefinition &definition,
 
     connect(_engine.data(), &SyncEngine::aboutToRemoveAllFiles,
         this, &Folder::slotAboutToRemoveAllFiles);
+    connect(_engine.data(), &SyncEngine::aboutToRemoveRemnantsReadOnlyFolders,
+            this, &Folder::slotNeedToRemoveRemnantsReadOnlyFolders);
     connect(_engine.data(), &SyncEngine::transmissionProgress, this, &Folder::slotTransmissionProgress);
     connect(_engine.data(), &SyncEngine::itemCompleted,
         this, &Folder::slotItemCompleted);
@@ -1648,6 +1650,34 @@ void Folder::slotAboutToRemoveAllFiles(SyncFileItem::Direction dir, std::functio
             slotScheduleThisFolder();
         }
         setSyncPaused(oldPaused);
+    });
+    connect(this, &Folder::destroyed, msgBox, &QMessageBox::deleteLater);
+    msgBox->open();
+}
+
+void Folder::slotNeedToRemoveRemnantsReadOnlyFolders(const QList<SyncFileItemPtr> &folders,
+                                                     const QString &localPath,
+                                                     std::function<void (bool)> callback)
+{
+    const auto msg = tr("Do you want to clean up remnant read-only folders left over from previous failed synchronization attempts.");
+    auto msgBox = new QMessageBox(QMessageBox::Question, tr("Remove remnant invalid folders?"),
+                                  msg, QMessageBox::NoButton);
+    msgBox->setAttribute(Qt::WA_DeleteOnClose);
+    msgBox->setWindowFlags(msgBox->windowFlags() | Qt::WindowStaysOnTopHint);
+    msgBox->addButton(tr("Proceed to remove remnant folders"), QMessageBox::AcceptRole);
+    const auto keepBtn = msgBox->addButton(tr("Do nothing"), QMessageBox::RejectRole);
+    setSyncPaused(true);
+    connect(msgBox, &QMessageBox::finished, this, [msgBox, keepBtn, callback, folders, localPath, this] {
+        const bool cancel = msgBox->clickedButton() == keepBtn;
+        if (!cancel) {
+            for(const auto &oneFolder : folders) {
+                FileSystem::removeRecursively(localPath + oneFolder->_file);
+            }
+        }
+        callback(cancel);
+        if (cancel) {
+            setSyncPaused(true);
+        }
     });
     connect(this, &Folder::destroyed, msgBox, &QMessageBox::deleteLater);
     msgBox->open();
