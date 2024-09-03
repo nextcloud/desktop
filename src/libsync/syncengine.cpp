@@ -817,6 +817,10 @@ void SyncEngine::slotDiscoveryFinished()
         return;
     }
 
+    if (!_remnantReadOnlyFolders.isEmpty()) {
+        handleRemnantReadOnlyFolders();
+        return;
+    }
 
     finishSync();
 }
@@ -1099,6 +1103,13 @@ void SyncEngine::finishSync()
     _propagator->start(std::move(_syncItems));
 
     qCInfo(lcEngine) << "#### Post-Reconcile end #################################################### " << _stopWatch.addLapTime(QStringLiteral("Post-Reconcile Finished")) << "ms";
+}
+
+void SyncEngine::handleRemnantReadOnlyFolders()
+{
+    promptUserBeforePropagation([this](auto &&callback) {
+                                    emit aboutToRemoveRemnantsReadOnlyFolders(_remnantReadOnlyFolders, _localPath, callback);
+                                });
 }
 
 template <typename T>
