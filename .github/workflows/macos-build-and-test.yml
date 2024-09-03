@@ -42,7 +42,7 @@ jobs:
 
       - name: Install Homebrew dependencies
         run: |
-          brew install inkscape
+          brew install homebrew/cask/inkscape
 
       - name: Download Craft
         run: |
