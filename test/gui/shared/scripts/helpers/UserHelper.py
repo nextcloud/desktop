@@ -1,7 +1,5 @@
 from base64 import b64encode
 
-createdUsers = {}
-
 test_users = {
     "admin": {
         "username": "admin",

@@ -4,6 +4,7 @@ import json
 from helpers.ConfigHelper import get_config
 from helpers.api.utils import url_join
 from helpers.api import Provisioning, webdav_helper as webdav, sharing_helper
+import helpers.api.oc10 as oc
 
 from pageObjects.Toolbar import Toolbar
 
@@ -52,7 +53,7 @@ def step(context, stepPart1):
 
 @Given('app "|any|" has been "|any|" in the server')
 def step(context, app_name, action):
-    Provisioning.setup_app(app_name, action)
+    oc.setup_app(app_name, action)
 
 
 @Then(
