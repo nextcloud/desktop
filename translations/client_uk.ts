@@ -877,7 +877,7 @@ This action will abort any currently running synchronization.</source>
         <translation>Відсутнє з&apos;єднання між %2 та %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1309"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1310"/>
         <source>Unable to connect to %1.</source>
         <translation>Не вдалося з&apos;єднатися із %1.</translation>
     </message>
@@ -907,7 +907,7 @@ This action will abort any currently running synchronization.</source>
         <translation>Окремі каталоги не було синхронізовано, оскільки їхній розмір завеликий або розміщені у зовнішніх сховищах:</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1603"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1604"/>
         <source>There are folders that have grown in size beyond %1MB: %2</source>
         <translation>Виявлено %2 каталогів, розмір яких збільшився поза встановленим обмеженням %1MB</translation>
     </message>

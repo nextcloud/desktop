@@ -877,7 +877,7 @@ Vienīgā priekšrocība, izslēdzot virtuālo datņu atbalstu, ir tas, ka atkal
         <translation>Nav savienojuma ar %1 pie %2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1309"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1310"/>
         <source>Unable to connect to %1.</source>
         <translation type="unfinished"/>
     </message>
@@ -907,7 +907,7 @@ Vienīgā priekšrocība, izslēdzot virtuālo datņu atbalstu, ir tas, ka atkal
         <translation>Šīs mapes netika sinhronizētas, jo tās ir pārāk lielas, vai atrodas ārējās krātuvēs:</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1603"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1604"/>
         <source>There are folders that have grown in size beyond %1MB: %2</source>
         <translation>Ir mapes, kas ir palielinājušās izmērā pāri %1MB: %2</translation>
     </message>

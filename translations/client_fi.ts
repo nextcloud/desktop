@@ -871,7 +871,7 @@ Tämä toiminto peruu kaikki tämänhetkiset synkronoinnit.</translation>
         <translation>Ei yhteyttä kohteeseen %1 osoitteessa %2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1309"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1310"/>
         <source>Unable to connect to %1.</source>
         <translation type="unfinished"/>
     </message>
@@ -901,7 +901,7 @@ Tämä toiminto peruu kaikki tämänhetkiset synkronoinnit.</translation>
         <translation>Seuraavia kansioita ei synkronoitu, koska ne ovat liian suuria tai ulkoisia tallennustiloja:</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1603"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1604"/>
         <source>There are folders that have grown in size beyond %1MB: %2</source>
         <translation type="unfinished"/>
     </message>

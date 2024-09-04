@@ -876,7 +876,7 @@ This action will abort any currently running synchronization.</source>
         <translation>%1와 %2에 연결이 없습니다.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1309"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1310"/>
         <source>Unable to connect to %1.</source>
         <translation>%1에 연결할 수 없습니다.</translation>
     </message>
@@ -906,7 +906,7 @@ This action will abort any currently running synchronization.</source>
         <translation>사이즈가 너무 크거나 외부 저장소이므로 동기화되지 않은 폴더가 있습니다:</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1603"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1604"/>
         <source>There are folders that have grown in size beyond %1MB: %2</source>
         <translation>크기가 %1MB보다 더 커진 폴더가 있습니다: %2</translation>
     </message>

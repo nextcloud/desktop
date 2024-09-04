@@ -875,7 +875,7 @@ This action will abort any currently running synchronization.</source>
         <translation>Нет соединения с %1 в %2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1309"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1310"/>
         <source>Unable to connect to %1.</source>
         <translation>Не удалось подключиться к %1.</translation>
     </message>
@@ -905,7 +905,7 @@ This action will abort any currently running synchronization.</source>
         <translation>Есть папки, которые не были синхронизированы, так как их размер превышает установленное ограничение или они являются внешними хранилищами:</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1603"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1604"/>
         <source>There are folders that have grown in size beyond %1MB: %2</source>
         <translation>Обнаружено %2 папки, размер которых превысил %1 МБ</translation>
     </message>
@@ -2553,7 +2553,7 @@ If you restore the files, they will be downloaded again from the server.</source
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1184"/>
         <source>About to start syncing</source>
-        <translation type="unfinished"/>
+        <translation>Вот-вот начнется синхронизация</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folderstatusmodel.cpp" line="1193"/>
@@ -2966,24 +2966,25 @@ Note that this selects only what pool upgrades are taken from, and that there ar
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="365"/>
         <source>daily</source>
-        <translation type="unfinished"/>
+        <translation>Ежедневно</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="369"/>
         <source>enterprise</source>
-        <translation type="unfinished"/>
+        <translation>предприятие</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="397"/>
         <source>- enterprise: contains stable versions for customers.
 </source>
         <comment>description of enterprise update channel for enterprise customers</comment>
-        <translation type="unfinished"/>
+        <translation>- корпоративный: содержит стабильные версии для клиентов.
+</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="402"/>
         <source>Changing update channel?</source>
-        <translation type="unfinished"/>
+        <translation>Сменить канал обновлений?</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="403"/>

@@ -877,7 +877,7 @@ This action will abort any currently running synchronization.</source>
         <translation>%2 の %1 への接続がありません。</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1309"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1310"/>
         <source>Unable to connect to %1.</source>
         <translation>%1 に接続できません。</translation>
     </message>
@@ -907,7 +907,7 @@ This action will abort any currently running synchronization.</source>
         <translation>大きすぎたか、外部ストレージにあるため同期されなかったフォルダーがあります:</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1603"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1604"/>
         <source>There are folders that have grown in size beyond %1MB: %2</source>
         <translation>サイズが %1 MB を超えて大きくなったフォルダがあります: %2</translation>
     </message>

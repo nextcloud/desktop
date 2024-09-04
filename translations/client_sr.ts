@@ -877,7 +877,7 @@ This action will abort any currently running synchronization.</source>
         <translation>Нема конекције на %1 са %2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1309"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1310"/>
         <source>Unable to connect to %1.</source>
         <translation>Није успело повезивање са %1.</translation>
     </message>
@@ -907,7 +907,7 @@ This action will abort any currently running synchronization.</source>
         <translation>Ово су фасцикле које нису синхронизоване зато што су превелике или су на спољним складиштима:</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1603"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1604"/>
         <source>There are folders that have grown in size beyond %1MB: %2</source>
         <translation>Има фолдера чија је величина нарасла преко %1MB: %2</translation>
     </message>

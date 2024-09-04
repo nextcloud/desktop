@@ -872,7 +872,7 @@ Denne handling vil annullere alle i øjeblikket kørende synkroniseringer.</tran
         <translation>Ingen forbindelse til %1 hos %2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1309"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1310"/>
         <source>Unable to connect to %1.</source>
         <translation type="unfinished"/>
     </message>
@@ -902,7 +902,7 @@ Denne handling vil annullere alle i øjeblikket kørende synkroniseringer.</tran
         <translation>Der er mapper som ikke blev synkroniseret fordi de er for store eller eksterne lagre:</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1603"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1604"/>
         <source>There are folders that have grown in size beyond %1MB: %2</source>
         <translation type="unfinished"/>
     </message>

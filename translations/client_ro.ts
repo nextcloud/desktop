@@ -872,7 +872,7 @@ Această acțiune va opri toate sincronizările în derulare din acest moment.</
         <translation>Nu există nici-o conexiune către %1 la %2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1309"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1310"/>
         <source>Unable to connect to %1.</source>
         <translation type="unfinished"/>
     </message>
@@ -902,7 +902,7 @@ Această acțiune va opri toate sincronizările în derulare din acest moment.</
         <translation>Există dosare ce nu au fost sinscronizate deoarece acestea sunt prea mari sau se află pe stocarea externă:</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1603"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1604"/>
         <source>There are folders that have grown in size beyond %1MB: %2</source>
         <translation type="unfinished"/>
     </message>

@@ -877,7 +877,7 @@ Denne handlingen vil avbryte enhver synkronisering som kjører.</translation>
         <translation>Ingen tilkobling til %1 på %2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1309"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1310"/>
         <source>Unable to connect to %1.</source>
         <translation>Ikke i stand til å koble til %1.</translation>
     </message>
@@ -907,7 +907,7 @@ Denne handlingen vil avbryte enhver synkronisering som kjører.</translation>
         <translation>Noen mapper ble ikke synkronisert fordi de er for store eller de er eksterne lagringsplasser:</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1603"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1604"/>
         <source>There are folders that have grown in size beyond %1MB: %2</source>
         <translation>Det er mapper som har vokst i størrelse utover %1MB: %2</translation>
     </message>

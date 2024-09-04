@@ -872,7 +872,7 @@ This action will abort any currently running synchronization.</source>
         <translation>لا يوجد اتصال مع %1 فى %2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1309"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1310"/>
         <source>Unable to connect to %1.</source>
         <translation>تعذّر الاتصال بـ %1.</translation>
     </message>
@@ -902,7 +902,7 @@ This action will abort any currently running synchronization.</source>
         <translation>هنالك مجلدات لم تتم مزامنتها لأن حجمها كبيرٌ جدًا أو لأنها وحدات تخزين خارجية:</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1603"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1604"/>
         <source>There are folders that have grown in size beyond %1MB: %2</source>
         <translation>هنالك مجلدات تجاوز حجمها  %1ميغا بايت: %2</translation>
     </message>

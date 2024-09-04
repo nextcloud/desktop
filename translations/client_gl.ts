@@ -877,7 +877,7 @@ Esta acción interromperá calquera sincronización que estea a executarse actua
         <translation>Non hai conexión con %1 en %2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1309"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1310"/>
         <source>Unable to connect to %1.</source>
         <translation>Non é posíbel conectar con %1.</translation>
     </message>
@@ -907,7 +907,7 @@ Esta acción interromperá calquera sincronización que estea a executarse actua
         <translation>Hai cartafoles que non se sincronizaron porque son demasiado grandes ou almacenamentos externos:</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1603"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1604"/>
         <source>There are folders that have grown in size beyond %1MB: %2</source>
         <translation>Hai cartafoles que creceron máis aló de %1MB: %2</translation>
     </message>
@@ -2966,7 +2966,7 @@ Se restaura os ficheiros, descargaranse de novo do servidor.</translation>
 Note that this selects only what pool upgrades are taken from, and that there are no downgrades: So going back from the beta channel to the stable channel usually cannot be done immediately and means waiting for a stable version that is newer than the currently installed beta version.</source>
         <translation>A canle de actualización determina que actualizacións de clientes se ofrecerán para a instalación. A canle «estábel» só contén anovacións que se consideran fiábeis, mentres que as versións da canle «beta» poden conter funcións e correccións de fallo máis recentes, pero aínda non foron probadas a fondo.
 
-Teña en conta que isto só selecciona de que grupo se toman as anovacións e que non hai reversións: polo tanto, volver da canle beta á canle estábel normalmente non se pode facer inmediatamente e significa agardar por unha versión estábel que sexa máis recente que a versión beta instalada actualmente.</translation>
+Teña en conta que isto só selecciona de que grupo se toman as anovacións e que non hai reversións: por tanto, volver da canle beta á canle estábel normalmente non se pode facer inmediatamente e significa agardar por unha versión estábel que sexa máis recente que a versión beta instalada actualmente.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="365"/>

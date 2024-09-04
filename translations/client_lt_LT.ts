@@ -868,7 +868,7 @@ This action will abort any currently running synchronization.</source>
         <translation>%2 neturi ryšio su %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1309"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1310"/>
         <source>Unable to connect to %1.</source>
         <translation type="unfinished"/>
     </message>
@@ -898,7 +898,7 @@ This action will abort any currently running synchronization.</source>
         <translation>Yra aplankų, kurie nebuvo sinchronizuoti dėl to, kad buvo per dideli arba yra išorinės saugyklos: </translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1603"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1604"/>
         <source>There are folders that have grown in size beyond %1MB: %2</source>
         <translation type="unfinished"/>
     </message>

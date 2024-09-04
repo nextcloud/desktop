@@ -877,7 +877,7 @@ This action will abort any currently running synchronization.</source>
         <translation>在 %2 沒有連線到 %1。</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1309"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1310"/>
         <source>Unable to connect to %1.</source>
         <translation>無法連線至 %1。</translation>
     </message>
@@ -907,7 +907,7 @@ This action will abort any currently running synchronization.</source>
         <translation>有部分資料夾因為容量太大或是外部儲存空間沒有辦法同步：</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1603"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1604"/>
         <source>There are folders that have grown in size beyond %1MB: %2</source>
         <translation>有些資料夾的大小已超過 %1MB：%2</translation>
     </message>

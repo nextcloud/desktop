@@ -877,7 +877,7 @@ Cuirfidh an gníomh seo deireadh le haon sioncrónú atá ar siúl faoi láthair
         <translation>Gan ceangal le % 1 ag % 2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1309"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1310"/>
         <source>Unable to connect to %1.</source>
         <translation>Ní féidir ceangal le % 1.</translation>
     </message>
@@ -907,7 +907,7 @@ Cuirfidh an gníomh seo deireadh le haon sioncrónú atá ar siúl faoi láthair
         <translation>Tá fillteáin ann nár sioncronaíodh toisc go bhfuil siad rómhór nó mar stórais sheachtracha:</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1603"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1604"/>
         <source>There are folders that have grown in size beyond %1MB: %2</source>
         <translation>Tá fillteáin ann a d&apos;fhás i méid thar % 1MB: % 2</translation>
     </message>

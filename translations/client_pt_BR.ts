@@ -874,7 +874,7 @@ Esta ação irá cancelar qualquer sincronização atualmente em execução.</tr
         <translation>Sem conexão para %1 em %2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1309"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1310"/>
         <source>Unable to connect to %1.</source>
         <translation>Não foi possível conectar-se a %1.</translation>
     </message>
@@ -904,7 +904,7 @@ Esta ação irá cancelar qualquer sincronização atualmente em execução.</tr
         <translation>Existem pastas que não foram sincronizadas porque são muito grandes ou são armazenamentos externos: </translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1603"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1604"/>
         <source>There are folders that have grown in size beyond %1MB: %2</source>
         <translation>Existem pastas cujo tamanho aumentou além de %1MB: %2</translation>
     </message>
@@ -3202,27 +3202,27 @@ Os itens em que a exclusão é permitida serão excluídos se impedirem a remoç
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="103"/>
         <source>The file &quot;%1&quot; could not be synced because the name contains characters which are not allowed on the server.</source>
-        <translation type="unfinished"/>
+        <translation>O arquivo &quot;%1&quot; não pôde ser sincronizado porque o nome contém caracteres que não são permitidos no servidor.</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="114"/>
         <source>The following characters are not allowed: %1</source>
-        <translation type="unfinished"/>
+        <translation>Os seguintes caracteres não são permitidos: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="117"/>
         <source>The following basenames are not allowed: %1</source>
-        <translation type="unfinished"/>
+        <translation>Os seguintes nomes de base não são permitidos: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="120"/>
         <source>The following filenames are not allowed: %1</source>
-        <translation type="unfinished"/>
+        <translation>Os seguintes nomes de arquivo não são permitidos: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="123"/>
         <source>The following file extensions are not allowed: %1</source>
-        <translation type="unfinished"/>
+        <translation>As seguintes extensões de arquivo não são permitidas: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="100"/>
@@ -4110,22 +4110,22 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
     <message>
         <location filename="../src/libsync/discovery.cpp" line="436"/>
         <source> Reason: the entire filename is forbidden.</source>
-        <translation type="unfinished"/>
+        <translation>Motivo: o nome do arquivo inteiro é proibido.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="439"/>
         <source> Reason: the filename has a forbidden base name (filename start).</source>
-        <translation type="unfinished"/>
+        <translation>Motivo: o nome do arquivo tem um nome base proibido (nome do arquivo inicial).</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="442"/>
         <source> Reason: the file has a forbidden extension (.%1).</source>
-        <translation type="unfinished"/>
+        <translation>Motivo: o arquivo tem uma extensão proibida (.%1).</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="445"/>
         <source> Reason: the filename contains a forbidden character (%1).</source>
-        <translation type="unfinished"/>
+        <translation>Motivo: o nome do arquivo contém um caractere proibido (%1).</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="516"/>
@@ -5548,7 +5548,7 @@ Servidor respondeu com erro: %2</translation>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="853"/>
         <source>Rename file</source>
-        <translation type="unfinished"/>
+        <translation>Renomear arquivo</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1061"/>
