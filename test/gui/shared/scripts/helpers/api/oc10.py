@@ -25,6 +25,7 @@ def create_group(group_name):
     body = {"groupid": group_name}
     response = request.post(url, body)
     request.assertHttpStatus(response, 200, f"Failed to create group '{group_name}'")
+    checkSuccessOcsStatus(response)
     return {"id": group_name}
 
 
@@ -32,6 +33,7 @@ def delete_group(group_id):
     url = url_join(get_ocs_url(), 'groups', group_id)
     response = request.delete(url)
     request.assertHttpStatus(response, 200, f"Failed to delete group '{group_id}'")
+    checkSuccessOcsStatus(response)
 
 
 def add_user_to_group(user, group_name):
@@ -41,6 +43,7 @@ def add_user_to_group(user, group_name):
     request.assertHttpStatus(
         response, 200, f"Failed to add user '{user}' to group '{group_name}'"
     )
+    checkSuccessOcsStatus(response)
 
 
 def create_user(username, password, displayname, email):
@@ -53,15 +56,17 @@ def create_user(username, password, displayname, email):
     }
     response = request.post(url, body)
     request.assertHttpStatus(response, 200, f"Failed to create user '{username}'")
+    checkSuccessOcsStatus(response)
 
     # oc10 does not set display name while creating user,
     # so we need update the user info
-    user_url = url_join(get_ocs_url(), "users", username)
+    user_url = url_join(url, username)
     display_name_body = {"key": "displayname", "value": displayname}
     display_name_response = request.put(user_url, display_name_body)
     request.assertHttpStatus(
         display_name_response, 200, f"Failed to update user '{username}' display name"
     )
+    checkSuccessOcsStatus(display_name_response)
 
     return {
         "id": username,
@@ -72,7 +77,8 @@ def create_user(username, password, displayname, email):
     }
 
 
-def delete_user(userid):
-    url = url_join(get_ocs_url(), 'users', userid)
+def delete_user(user_id):
+    url = url_join(get_ocs_url(), 'users', user_id)
     response = request.delete(url)
-    request.assertHttpStatus(response, 200, f"Failed to delete user '{userid}'")
+    request.assertHttpStatus(response, 200, f"Failed to delete user '{user_id}'")
+    checkSuccessOcsStatus(response)

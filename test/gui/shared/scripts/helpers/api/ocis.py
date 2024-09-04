@@ -77,7 +77,7 @@ def create_user(username, password, displayname, email):
     }
 
 
-def delete_user(id):
-    url = url_join(get_graph_url(), 'users', id)
+def delete_user(user_id):
+    url = url_join(get_graph_url(), 'users', user_id)
     response = request.delete(url)
     request.assertHttpStatus(response, 204, "Failed to delete user")

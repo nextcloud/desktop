@@ -143,17 +143,6 @@ def scenario_failed():
 
 # runs after every scenario
 # Order: 1
-# cleanup spaces
-@OnScenarioEnd
-def hook(context):
-    if get_config("ocis"):
-        delete_project_spaces()
-    delete_created_groups()
-    delete_created_users()
-
-
-# runs after every scenario
-# Order: 2
 @OnScenarioEnd
 def hook(context):
     clearWaitedAfterSync()
@@ -202,6 +191,17 @@ def hook(context):
     PREVIOUS_ERROR_RESULT_COUNT = test.resultCount("errors")
 
 
+# runs after every scenario
+# Order: 2
+# server cleanup
+@OnScenarioEnd
+def hook(context):
+    if get_config("ocis"):
+        delete_project_spaces()
+    delete_created_groups()
+    delete_created_users()
+
+
 def teardown_client():
     # Cleanup user accounts from UI for Windows platform
     # It is not needed for Linux so skipping it in order to save CI time
@@ -230,14 +230,15 @@ def teardown_client():
 
     # delete test files/folders
     for entry in os.scandir(get_config("clientRootSyncPath")):
-        test.log("Deleting: " + entry.name)
         try:
             if entry.is_file() or entry.is_symlink():
+                test.log("Deleting file: " + entry.name)
                 os.unlink(prefix_path_namespace(entry.path))
             elif entry.is_dir():
+                test.log("Deleting folder: " + entry.name)
                 shutil.rmtree(prefix_path_namespace(entry.path))
         except OSError as e:
-            test.log(f"Failed to delete{entry.name}. Reason: {e}.")
+            test.log(f"Failed to delete '{entry.name}'.\nReason: {e}.")
     # cleanup paths created outside of the temporary directory during the test
     cleanup_created_paths()
 

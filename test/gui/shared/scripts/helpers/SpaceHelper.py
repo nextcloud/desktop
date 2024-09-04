@@ -139,7 +139,7 @@ def get_file_content(space_name, file_name, user=None):
     space_id = get_space_id(space_name, user)
     url = url_join(get_dav_endpint(), space_id, file_name)
     response = request.get(url=url, user=user)
-    request.assertHttpStatus(response, 201, f'Failed to get file "{file_name}"')
+    request.assertHttpStatus(response, 200, f'Failed to get file "{file_name}"')
     return response.text
 
 
