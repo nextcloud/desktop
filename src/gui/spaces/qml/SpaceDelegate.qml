@@ -24,7 +24,7 @@ Item {
     property alias imageSource: image.source
     property alias statusSource: statusIcon.source
 
-    default property alias content: colLayout.children
+    default property alias content: colLayout.data
 
     ColumnLayout {
         anchors.fill: parent

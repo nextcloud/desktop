@@ -37,7 +37,7 @@ Pane {
         ScrollBar.vertical.policy: ScrollBar.AlwaysOn
 
         Connections {
-            target: spacesBrowser
+            target: ocParentWidget
 
             function onFocusFirst() {
                 listView.forceActiveFocus(Qt.TabFocusReason);
@@ -101,11 +101,11 @@ Pane {
                     focus: true
 
                     Keys.onBacktabPressed: {
-                        spacesBrowser.focusPrevious();
+                        ocParentWidget.focusPrevious();
                     }
 
                     Keys.onTabPressed: {
-                        spacesBrowser.focusNext();
+                        ocParentWidget.focusNext();
                     }
 
                     background: Rectangle {

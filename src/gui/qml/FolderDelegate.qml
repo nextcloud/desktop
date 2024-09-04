@@ -29,7 +29,7 @@ Pane {
     Accessible.name: qsTr("Folder Sync")
 
     Connections {
-        target: accountSettings
+        target: ocParentWidget
 
         function onFocusFirst() {
             listView.forceActiveFocus(Qt.TabFocusReason);
@@ -108,7 +108,7 @@ Pane {
                         }
 
                         Keys.onBacktabPressed: {
-                            accountSettings.focusPrevious();
+                            ocParentWidget.focusPrevious();
                         }
                         Keys.onTabPressed: {
                             moreButton.forceActiveFocus(Qt.TabFocusReason);
@@ -201,7 +201,7 @@ Pane {
                                     if (addSyncButton.enabled) {
                                         addSyncButton.forceActiveFocus(Qt.TabFocusReason);
                                     } else {
-                                        accountSettings.focusNext();
+                                        ocParentWidget.focusNext();
                                     }
                                 }
 
@@ -247,7 +247,7 @@ Pane {
                 }
 
                 Keys.onTabPressed: {
-                    accountSettings.focusNext();
+                    ocParentWidget.focusNext();
                 }
             }
             Item {

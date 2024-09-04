@@ -51,5 +51,5 @@ protected:
     bool event(QEvent *event) override;
 };
 
-void initQuickWidget(OCQuickWidget *widget, const QUrl &src, QObject *ocContext);
+void initQuickWidget(OCQuickWidget *widget, const QUrl &src, QObject *ocContext, QWidget *parent = nullptr);
 }

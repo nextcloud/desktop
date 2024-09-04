@@ -14,6 +14,7 @@
 
 #include "gui/qmlutils.h"
 
+#include "common/asserts.h"
 #include "resources/resources.h"
 
 #include <QMessageBox>
@@ -21,9 +22,14 @@
 #include <QQuickItem>
 #include <QQuickWidget>
 
-void OCC::QmlUtils::initQuickWidget(OCQuickWidget *widget, const QUrl &src, QObject *ocContext)
+void OCC::QmlUtils::initQuickWidget(OCQuickWidget *widget, const QUrl &src, QObject *ocContext, QWidget *parent)
 {
+    if (!parent) {
+        parent = qobject_cast<QWidget *>(ocContext);
+        Q_ASSERT_X(parent, Q_FUNC_INFO, "If invoked without an explicit parent widget, ocContext is required to be a QWidget");
+    }
     widget->rootContext()->setContextProperty(QStringLiteral("ocContext"), ocContext);
+    widget->rootContext()->setContextProperty(QStringLiteral("ocParentWidget"), parent);
     widget->engine()->addImageProvider(QStringLiteral("ownCloud"), new OCC::Resources::CoreImageProvider());
     widget->setResizeMode(QQuickWidget::SizeRootObjectToView);
     widget->setSource(src);
@@ -34,9 +40,9 @@ void OCC::QmlUtils::initQuickWidget(OCQuickWidget *widget, const QUrl &src, QObj
         qFatal("A qml error occured %s", qPrintable(QDebug::toString(widget->errors())));
     }
 
-    // string based connects as they are provided by OC_DECLARE_WIDGET_FOCUS and not inherited
-    QObject::connect(widget, SIGNAL(focusFirst()), ocContext, SIGNAL(focusFirst()));
-    QObject::connect(widget, SIGNAL(focusLast()), ocContext, SIGNAL(focusLast()));
+    // string based connects as they are provided by OC_DECLARE_WIDGET_FOCUS and not inherited, assert to ensure the connection works
+    OC_ASSERT(QObject::connect(widget, SIGNAL(focusFirst()), parent, SIGNAL(focusFirst())));
+    OC_ASSERT(QObject::connect(widget, SIGNAL(focusLast()), parent, SIGNAL(focusLast())));
 }
 
 void OCC::QmlUtils::OCQuickWidget::focusInEvent(QFocusEvent *event)

@@ -14,6 +14,8 @@
 
 #pragma once
 
+#include "gui/qmlutils.h"
+
 #include <QDialogButtonBox>
 
 namespace OCC {
@@ -27,6 +29,7 @@ class AccountModalWidget : public QWidget
     Q_OBJECT
 public:
     AccountModalWidget(const QString &title, QWidget *widget, QWidget *parent);
+    AccountModalWidget(const QString &title, const QUrl &qmlSource, QObject *qmlContext, QWidget *parent);
 
     enum class Result { Rejected, Accepted };
     Q_ENUM(Result)
