@@ -92,14 +92,14 @@ def add_user_to_group(user, group_name):
 
 
 def enable_app(app_name):
-    url = format_json(url_join(get_ocs_url(), "apps", app_name))
+    url = get_provisioning_url("apps", app_name)
     response = request.post(url)
     request.assertHttpStatus(response, 200, f"Failed to enable app '{app_name}'")
     checkSuccessOcsStatus(response)
 
 
 def disable_app(app_name):
-    url = format_json(url_join(get_ocs_url(), "apps", app_name))
+    url = get_provisioning_url("apps", app_name)
     response = request.delete(url)
     request.assertHttpStatus(response, 200, f"Failed to disable app '{app_name}'")
     checkSuccessOcsStatus(response)

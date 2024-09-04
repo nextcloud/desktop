@@ -149,14 +149,16 @@ def hook(context):
     closeSocketConnection()
 
     # capture a screenshot if there is error or test failure in the current scenario execution
-    if scenario_failed() and os.getenv("CI") and isLinux():
+    if scenario_failed() and isLinux():
         # scenario name can have "/" which is invalid filename
         filename = context.title.replace(" ", "_").replace("/", "_").strip(".") + ".png"
         directory = os.path.join(get_config("guiTestReportDir"), "screenshots")
         if not os.path.exists(directory):
             os.makedirs(directory)
-
-        squish.saveDesktopScreenshot(os.path.join(directory, filename))
+        try:
+            squish.saveDesktopScreenshot(os.path.join(directory, filename))
+        except:
+            test.log("Failed to save screenshot")
 
     # teardown accounts and configs
     teardown_client()
