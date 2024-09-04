@@ -149,7 +149,7 @@ def hook(context):
     closeSocketConnection()
 
     # capture a screenshot if there is error or test failure in the current scenario execution
-    if scenario_failed() and isLinux():
+    if scenario_failed() and os.getenv("CI") and isLinux():
         # scenario name can have "/" which is invalid filename
         filename = context.title.replace(" ", "_").replace("/", "_").strip(".") + ".png"
         directory = os.path.join(get_config("guiTestReportDir"), "screenshots")

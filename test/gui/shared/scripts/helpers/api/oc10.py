@@ -46,7 +46,7 @@ def create_user(username, password, displayname, email):
     display_name_body = {"key": "displayname", "value": displayname}
     display_name_response = request.put(user_url, display_name_body)
     request.assertHttpStatus(
-        display_name_response, 200, f"Failed to update user '{username}' display name"
+        display_name_response, 200, f"Failed to update displayname of user '{username}'"
     )
     checkSuccessOcsStatus(display_name_response)
 
