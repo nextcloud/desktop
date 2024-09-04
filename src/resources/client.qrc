@@ -2,8 +2,6 @@
     <qresource prefix="/client">
         <file alias="resources/core/folder-sync.svg">font-awesome/folder-solid.svg</file>
         <file alias="resources/core/settings.svg">font-awesome/cog-solid.svg</file>
-        <file alias="resources/core/lock-https.svg">font-awesome/lock-solid.svg</file>
-        <file alias="resources/core/lock-http.svg">font-awesome/lock-open-solid.svg</file>
         <file alias="resources/core/more.svg">font-awesome/ellipsis-h-solid.svg</file>
         <file alias="resources/core/delete.svg">font-awesome/trash-solid.svg</file>
         <file alias="resources/core/bell.svg">font-awesome/bell-solid.svg</file>
@@ -13,7 +11,6 @@
         <file alias="resources/core/ban.svg">font-awesome/ban-solid.svg</file>
         <file alias="resources/core/check.svg">font-awesome/check-solid.svg</file>
         <file alias="resources/core/step-forward.svg">font-awesome/step-forward-solid.svg</file>
-        <file alias="resources/core/clipboard.svg">font-awesome/clipboard-solid.svg</file>
         <file alias="resources/core/copy.svg">font-awesome/copy-solid.svg</file>
         <file alias="resources/core/arrow-up-right-from-square.svg">font-awesome/arrow-up-right-from-square-solid.svg</file>
         <file alias="resources/core/undo.svg">font-awesome/undo-solid.svg</file>
