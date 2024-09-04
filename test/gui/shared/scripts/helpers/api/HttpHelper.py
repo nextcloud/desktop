@@ -36,7 +36,11 @@ def propfind(url, body=None, headers={}, user=None, password=None):
     return send_request(url, "PROPFIND", body, headers, user, password)
 
 
-def assertHttpStatus(response, expected_code):
+def assertHttpStatus(response, expected_code, message=""):
+    response_body = ""
+    if response.text:
+        response_body = response.text
+
     assert (
         response.status_code == expected_code
-    ), f"Request failed with status code '{response.status_code}'"
+    ), f"{message}\nRequest failed with status code '{response.status_code}'\n{response_body}"

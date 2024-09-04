@@ -13,7 +13,7 @@ def create_group(group_name):
     url = url_join(get_graph_url(), 'groups')
     body = json.dumps({"displayName": group_name})
     response = request.post(url, body)
-    request.assertHttpStatus(response, 201)
+    request.assertHttpStatus(response, 201, f"Failed to create group '{group_name}'")
     resp_object = response.json()
     return {
         "id": resp_object['id'],
@@ -24,13 +24,13 @@ def create_group(group_name):
 def delete_group(group_id):
     url = url_join(get_graph_url(), 'groups', group_id)
     response = request.delete(url)
-    request.assertHttpStatus(response, 200)
+    request.assertHttpStatus(response, 200, f"Failed to delete group '{group_id}'")
 
 
 def get_group_id(group_name):
     url = url_join(get_graph_url(), 'groups', group_name)
     response = request.get(url)
-    request.assertHttpStatus(response, 200)
+    request.assertHttpStatus(response, 200, f"Failed to get group '{group_name}'")
     resp_object = response.json()
     return resp_object['id']
 
@@ -38,7 +38,7 @@ def get_group_id(group_name):
 def get_user_id(user):
     url = url_join(get_graph_url(), 'users', user)
     response = request.get(url)
-    request.assertHttpStatus(response, 200)
+    request.assertHttpStatus(response, 200, f"Failed to get user '{user}'")
     resp_object = response.json()
     return resp_object['id']
 
@@ -50,7 +50,9 @@ def add_user_to_group(user, group_name):
     data = url_join(get_graph_url(), 'users', get_user_id(user))
     body = json.dumps({"@odata.id": data})
     response = request.post(url, body)
-    request.assertHttpStatus(response, 204)
+    request.assertHttpStatus(
+        response, 204, f"Failed to add user '{user}' to group '{group_name}'"
+    )
 
 
 def create_user(username, password, displayname, email):
@@ -64,11 +66,7 @@ def create_user(username, password, displayname, email):
         }
     )
     response = request.post(url, body)
-    if response.status_code != 201:
-        raise Exception(
-            "Creating user '%s' failed with %s:\n" % (username, response.status_code)
-            + response.text
-        )
+    request.assertHttpStatus(response, 201, f"Failed to create user '{username}'")
     resp_object = response.json()
     return {
         "id": resp_object['id'],
@@ -79,11 +77,7 @@ def create_user(username, password, displayname, email):
     }
 
 
-def delete_user(id, username):
+def delete_user(id):
     url = url_join(get_graph_url(), 'users', id)
     response = request.delete(url)
-    if response.status_code != 204:
-        raise Exception(
-            "Deleting user '%s' failed with %s:\n" % (username, response.status_code)
-            + response.text
-        )
+    request.assertHttpStatus(response, 204, "Failed to delete user")

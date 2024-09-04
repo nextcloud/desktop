@@ -29,11 +29,7 @@ def get_share_endpint():
 def create_space(space_name):
     body = json.dumps({"name": space_name})
     response = request.post(get_space_endpint(), body)
-    if response.status_code != 201:
-        raise Exception(
-            "Creating space '%s' failed with %s\n" % (space_name, response.status_code)
-            + response.text
-        )
+    request.assertHttpStatus(response, 201, f'Failed to create space {space_name}')
     # save created space
     resp_object = response.json()
     created_spaces[space_name] = resp_object['id']
@@ -44,10 +40,7 @@ def fetch_spaces(user=None, query=''):
         query = '?' + query
     url = get_space_endpint() + query
     response = request.get(url=url, user=user)
-    if response.status_code != 200:
-        raise Exception(
-            "Getting spaces failed with %s\n" % response.status_code + response.text
-        )
+    request.assertHttpStatus(response, 200, 'Failed to get spaces')
     return response.json()['value']
 
 
@@ -87,33 +80,24 @@ def delete_project_spaces():
 def disable_project_space(space_id):
     url = url_join(get_space_endpint(), space_id)
     response = request.delete(url)
-    if response.status_code != 204:
-        raise Exception(
-            "Disabling space '%s' failed with %s\n" % (space_id, response.status_code)
-            + response.text
-        )
+    request.assertHttpStatus(response, 204, f'Failed to disable space {space_id}')
 
 
 def delete_project_space(space_id):
     url = url_join(get_space_endpint(), space_id)
     response = request.delete(url, {"Purge": "T"})
-    if response.status_code != 204:
-        raise Exception(
-            "Deleting space '%s' failed with %s\n" % (space_id, response.status_code)
-            + response.text
-        )
+    request.assertHttpStatus(response, 204, f'Failed to delete space {space_id}')
 
 
 def create_space_folder(space_name, folder_name):
     space_id = get_space_id(space_name)
     url = url_join(get_dav_endpint(), space_id, folder_name)
     response = request.mkcol(url)
-    if response.status_code != 201:
-        raise Exception(
-            "Creating folder '%s' in space '%s' failed with %s\n"
-            % (folder_name, space_name, response.status_code)
-            + response.text
-        )
+    request.assertHttpStatus(
+        response,
+        201,
+        f'Failed to create folder "{folder_name}" in space "{space_name}"',
+    )
 
 
 def create_space_file(space_name, file_name, content):
@@ -146,24 +130,16 @@ def add_user_to_space(user, space_name, role):
     )
     headers = {'Content-Type': 'application/x-www-form-urlencoded'}
     response = request.post(url, body, headers)
-    if response.status_code != 200:
-        raise Exception(
-            "Adding user '%s' to space '%s' failed with %s\n"
-            % (user, space_name, response.status_code)
-            + response.text
-        )
+    request.assertHttpStatus(
+        response, 200, f'Failed to add user "{user}" to space "{space_name}"'
+    )
 
 
 def get_file_content(space_name, file_name, user=None):
     space_id = get_space_id(space_name, user)
     url = url_join(get_dav_endpint(), space_id, file_name)
     response = request.get(url=url, user=user)
-    if response.status_code != 200:
-        raise Exception(
-            "Getting file '%s' from space '%s' failed with %s\n"
-            % (file_name, space_name, response.status_code)
-            + response.text
-        )
+    request.assertHttpStatus(response, 201, f'Failed to get file "{file_name}"')
     return response.text
 
 

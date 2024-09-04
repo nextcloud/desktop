@@ -24,21 +24,23 @@ def create_group(group_name):
     url = url_join(get_ocs_url(), 'groups')
     body = {"groupid": group_name}
     response = request.post(url, body)
-    request.assertHttpStatus(response, 200)
+    request.assertHttpStatus(response, 200, f"Failed to create group '{group_name}'")
     return {"id": group_name}
 
 
 def delete_group(group_id):
     url = url_join(get_ocs_url(), 'groups', group_id)
     response = request.delete(url)
-    request.assertHttpStatus(response, 200)
+    request.assertHttpStatus(response, 200, f"Failed to delete group '{group_id}'")
 
 
 def add_user_to_group(user, group_name):
     url = url_join(get_ocs_url(), "users", user, "groups")
     body = {"groupid": group_name}
     response = request.post(url, body)
-    request.assertHttpStatus(response, 200)
+    request.assertHttpStatus(
+        response, 200, f"Failed to add user '{user}' to group '{group_name}'"
+    )
 
 
 def create_user(username, password, displayname, email):
@@ -50,22 +52,17 @@ def create_user(username, password, displayname, email):
         "email": email,
     }
     response = request.post(url, body)
-    if response.status_code != 200:
-        raise Exception(
-            "Creating user '%s' failed with %s:\n" % (username, response.status_code)
-            + response.text
-        )
+    request.assertHttpStatus(response, 200, f"Failed to create user '{username}'")
+
     # oc10 does not set display name while creating user,
     # so we need update the user info
     user_url = url_join(get_ocs_url(), "users", username)
     display_name_body = {"key": "displayname", "value": displayname}
     display_name_response = request.put(user_url, display_name_body)
-    if display_name_response.status_code != 200:
-        raise Exception(
-            "Updating the user '%s' with displayname '%s' failed with %s:\n"
-            % (username, displayname, display_name_response.status_code)
-            + response.text
-        )
+    request.assertHttpStatus(
+        display_name_response, 200, f"Failed to update user '{username}' display name"
+    )
+
     return {
         "id": username,
         "username": username,
@@ -78,8 +75,4 @@ def create_user(username, password, displayname, email):
 def delete_user(userid):
     url = url_join(get_ocs_url(), 'users', userid)
     response = request.delete(url)
-    if response.status_code != 200:
-        raise Exception(
-            "Deleting user '%s' failed with %s:\n" % (userid, response.status_code)
-            + response.text
-        )
+    request.assertHttpStatus(response, 200, f"Failed to delete user '{userid}'")

@@ -15,14 +15,14 @@ def format_json(url):
 def enable_app(app_name):
     url = format_json(url_join(oc.get_ocs_url(), "apps", app_name))
     response = request.post(url)
-    request.assertHttpStatus(response, 200)
+    request.assertHttpStatus(response, 200, f"Failed to enable app '{app_name}'")
     oc.checkSuccessOcsStatus(response)
 
 
 def disable_app(app_name):
     url = format_json(url_join(oc.get_ocs_url(), "apps", app_name))
     response = request.delete(url)
-    request.assertHttpStatus(response, 200)
+    request.assertHttpStatus(response, 200, f"Failed to disable app '{app_name}'")
     oc.checkSuccessOcsStatus(response)
 
 
@@ -87,7 +87,7 @@ def create_user(username):
 def delete_created_users():
     for username, user_info in list(UserHelper.createdUsers.items()):
         if get_config('ocis'):
-            ocis.delete_user(user_info["id"], username)
+            ocis.delete_user(user_info["id"])
         else:
             oc.delete_user(user_info["id"])
         del UserHelper.createdUsers[username]
