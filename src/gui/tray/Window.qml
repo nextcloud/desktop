@@ -326,7 +326,7 @@ ApplicationWindow {
                                 Image {
                                     Layout.leftMargin: 12
                                     verticalAlignment: Qt.AlignCenter
-                                    source: Theme.darkMode ? "qrc:///client/theme/white/add.svg" : "qrc:///client/theme/black/add.svg"
+                                    source: "image://svgimage-custom-color/add.svg"
                                     sourceSize.width: Style.headerButtonIconSize
                                     sourceSize.height: Style.headerButtonIconSize
                                 }
@@ -513,7 +513,7 @@ ApplicationWindow {
                                 Layout.alignment: Qt.AlignRight
                                 verticalAlignment: Qt.AlignCenter
                                 Layout.margins: Style.accountDropDownCaretMargin
-                                source: "qrc:///client/theme/white/caret-down.svg"
+                                source:  "image://svgimage-custom-color/caret-down.svg/"
                                 sourceSize.width: Style.accountDropDownCaretSize
                                 sourceSize.height: Style.accountDropDownCaretSize
                                 Accessible.role: Accessible.PopupMenu

@@ -29,7 +29,7 @@ ColumnLayout {
 
     Image {
         id: unifiedSearchResultsNoResultsLabelIcon
-        source: "qrc:///client/theme/magnifying-glass.svg"
+        source: "image://svgimage-custom-color/magnifying-glass.svg"
         sourceSize.width: Style.trayWindowHeaderHeight / 2
         sourceSize.height: Style.trayWindowHeaderHeight / 2
         Layout.alignment: Qt.AlignHCenter
