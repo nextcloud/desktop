@@ -70,7 +70,7 @@ Item {
 
             background: null
             icon.color: palette.buttonText
-            icon.source: "qrc:///client/theme/close.svg"
+            icon.source: "image://svgimage-custom-color/close.svg"
 
             visible: errorBox.showCloseButton
             enabled: visible
