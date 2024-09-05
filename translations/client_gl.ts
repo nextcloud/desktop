@@ -6554,7 +6554,7 @@ O servidor respondeu co erro: %2</translation>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="84"/>
         <source>Mute all notifications</source>
-        <translation>Silenciar todas as notificacións</translation>
+        <translation>Enmudecer todas as notificacións</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="99"/>

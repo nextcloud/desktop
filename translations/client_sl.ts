@@ -2854,7 +2854,7 @@ If you restore the files, they will be downloaded again from the server.</source
     <message>
         <location filename="../src/gui/generalsettings.ui" line="248"/>
         <source>Update channel</source>
-        <translation type="unfinished"/>
+        <translation>Kanal za posodobitve</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="183"/>
@@ -2977,7 +2977,7 @@ Zavedati se je treba, da izbor določa le različice programske opreme za nadgra
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="402"/>
         <source>Changing update channel?</source>
-        <translation type="unfinished"/>
+        <translation>Ali želite zamenjati kanal za posodobitve?</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="403"/>
