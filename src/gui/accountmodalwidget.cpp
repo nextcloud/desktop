@@ -37,7 +37,7 @@ AccountModalWidget::AccountModalWidget(const QString &title, const QUrl &qmlSour
           title,
           [&] {
               auto *out = new QmlUtils::OCQuickWidget;
-              QmlUtils::initQuickWidget(out, qmlSource, qmlContext, parent);
+              out->setOCContext(qmlSource, parent, qmlContext, QJSEngine::JavaScriptOwnership);
               return out;
           }(),
           parent)

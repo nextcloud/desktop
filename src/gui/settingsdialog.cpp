@@ -98,7 +98,7 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
     // TODO: fix sizing
     _ui->quickWidget->setFixedHeight(minimumHeight() * 0.13);
     _ui->quickWidget->engine()->addImageProvider(QStringLiteral("avatar"), new AvatarImageProvider);
-    QmlUtils::initQuickWidget(_ui->quickWidget, QUrl(QStringLiteral("qrc:/qt/qml/org/ownCloud/gui/qml/AccountBar.qml")), this);
+    _ui->quickWidget->setOCContext(QUrl(QStringLiteral("qrc:/qt/qml/org/ownCloud/gui/qml/AccountBar.qml")), this);
     connect(
         _ui->quickWidget->engine(), &QQmlEngine::quit, QApplication::instance(),
         [this] {

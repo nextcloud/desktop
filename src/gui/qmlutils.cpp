@@ -22,27 +22,29 @@
 #include <QQuickItem>
 #include <QQuickWidget>
 
-void OCC::QmlUtils::initQuickWidget(OCQuickWidget *widget, const QUrl &src, QObject *ocContext, QWidget *parent)
+void OCC::QmlUtils::OCQuickWidget::setOCContext(const QUrl &src, QWidget *parentWidget, QObject *ocContext, QJSEngine::ObjectOwnership ownership)
 {
-    if (!parent) {
-        parent = qobject_cast<QWidget *>(ocContext);
-        Q_ASSERT_X(parent, Q_FUNC_INFO, "If invoked without an explicit parent widget, ocContext is required to be a QWidget");
-    }
-    widget->rootContext()->setContextProperty(QStringLiteral("ocContext"), ocContext);
-    widget->rootContext()->setContextProperty(QStringLiteral("ocParentWidget"), parent);
-    widget->engine()->addImageProvider(QStringLiteral("ownCloud"), new OCC::Resources::CoreImageProvider());
-    widget->setResizeMode(QQuickWidget::SizeRootObjectToView);
-    widget->setSource(src);
-    if (!widget->errors().isEmpty()) {
-        auto box = new QMessageBox(QMessageBox::Critical, QStringLiteral("QML Error"), QDebug::toString(widget->errors()));
+    rootContext()->setContextProperty(QStringLiteral("ocParentWidget"), parentWidget);
+    rootContext()->setContextProperty(QStringLiteral("ocContext"), ocContext);
+    engine()->setObjectOwnership(ocContext, ownership);
+    engine()->addImageProvider(QStringLiteral("ownCloud"), new OCC::Resources::CoreImageProvider());
+    setResizeMode(QQuickWidget::SizeRootObjectToView);
+    setSource(src);
+    if (!errors().isEmpty()) {
+        auto box = new QMessageBox(QMessageBox::Critical, QStringLiteral("QML Error"), QDebug::toString(errors()));
         box->setAttribute(Qt::WA_DeleteOnClose);
         box->exec();
-        qFatal("A qml error occured %s", qPrintable(QDebug::toString(widget->errors())));
+        qFatal("A qml error occured %s", qPrintable(QDebug::toString(errors())));
     }
 
     // string based connects as they are provided by OC_DECLARE_WIDGET_FOCUS and not inherited, assert to ensure the connection works
-    OC_ASSERT(QObject::connect(widget, SIGNAL(focusFirst()), parent, SIGNAL(focusFirst())));
-    OC_ASSERT(QObject::connect(widget, SIGNAL(focusLast()), parent, SIGNAL(focusLast())));
+    OC_ASSERT(QObject::connect(this, SIGNAL(focusFirst()), parentWidget, SIGNAL(focusFirst())));
+    OC_ASSERT(QObject::connect(this, SIGNAL(focusLast()), parentWidget, SIGNAL(focusLast())));
+}
+
+void OCC::QmlUtils::OCQuickWidget::setOCContext(const QUrl &src, QWidget *ocContext)
+{
+    setOCContext(src, ocContext, ocContext, QJSEngine::ObjectOwnership::CppOwnership);
 }
 
 void OCC::QmlUtils::OCQuickWidget::focusInEvent(QFocusEvent *event)

@@ -13,6 +13,7 @@
  */
 
 #pragma once
+#include <QJSEngine>
 #include <QtQuickWidgets/QQuickWidget>
 
 class QUrl;
@@ -40,6 +41,8 @@ class OCQuickWidget : public QQuickWidget
     Q_OBJECT
 public:
     using QQuickWidget::QQuickWidget;
+    void setOCContext(const QUrl &src, QWidget *parentWidget, QObject *ocContext, QJSEngine::ObjectOwnership ownership);
+    void setOCContext(const QUrl &src, QWidget *ocContext);
 
 Q_SIGNALS:
     void focusFirst();
@@ -50,6 +53,4 @@ protected:
 
     bool event(QEvent *event) override;
 };
-
-void initQuickWidget(OCQuickWidget *widget, const QUrl &src, QObject *ocContext, QWidget *parent = nullptr);
 }
