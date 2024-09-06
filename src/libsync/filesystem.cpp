@@ -484,11 +484,15 @@ bool FileSystem::isFolderReadOnly(const std::filesystem::path &path) noexcept
 FileSystem::FilePermissionsRestore::FilePermissionsRestore(const QString &path, FolderPermissions temporaryPermissions)
     : _path(path)
 {
-    const auto stdStrPath = _path.toStdWString();
-    _initialPermissions = FileSystem::isFolderReadOnly(stdStrPath) ? OCC::FileSystem::FolderPermissions::ReadOnly : OCC::FileSystem::FolderPermissions::ReadWrite;
-    if (_initialPermissions != temporaryPermissions) {
-        _rollbackNeeded = true;
-        FileSystem::setFolderPermissions(_path, temporaryPermissions);
+    try {
+        const auto stdStrPath = _path.toStdWString();
+        _initialPermissions = FileSystem::isFolderReadOnly(stdStrPath) ? OCC::FileSystem::FolderPermissions::ReadOnly : OCC::FileSystem::FolderPermissions::ReadWrite;
+        if (_initialPermissions != temporaryPermissions) {
+            _rollbackNeeded = true;
+            FileSystem::setFolderPermissions(_path, temporaryPermissions);
+        }
+    } catch (const std::filesystem::filesystem_error &e) {
+        qCWarning(lcFileSystem()) << "exception when modifying folder permissions" << e.what() << e.path1().c_str() << e.path2().c_str();
     }
 }
 
