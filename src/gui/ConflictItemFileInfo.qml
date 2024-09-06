@@ -12,11 +12,11 @@
  * for more details.
  */
 
-import QtQml 2.15
-import QtQuick 2.15
-import QtQuick.Layouts 1.15
-import QtQuick.Controls 2.15
-import Style 1.0
+import QtQml
+import QtQuick
+import QtQuick.Layouts
+import QtQuick.Controls
+import Style
 import "./tray"
 
 Item {
@@ -30,24 +30,6 @@ Item {
 
     CheckBox {
         id: selectItem
-
-        palette {
-            text: Style.ncTextColor
-            windowText: Style.ncTextColor
-            buttonText: Style.ncTextColor
-            brightText: Style.ncTextBrightColor
-            highlight: Style.lightHover
-            highlightedText: Style.ncTextColor
-            light: Style.lightHover
-            midlight: Style.ncSecondaryTextColor
-            mid: Style.darkerHover
-            dark: Style.menuBorder
-            button: Style.buttonBackgroundColor
-            window: palette.dark // NOTE: Fusion theme uses darker window colour for the border of the checkbox
-            base: Style.backgroundColor
-            toolTipBase: Style.backgroundColor
-            toolTipText: Style.ncTextColor
-        }
 
         anchors.left: parent.left
         anchors.verticalCenter: parent.verticalCenter

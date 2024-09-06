@@ -12,13 +12,13 @@
  * for more details.
  */
 
-import QtQml 2.15
-import QtQuick 2.15
-import QtQuick.Controls 2.15
+import QtQml
+import QtQuick
+import QtQuick.Controls
 import Qt5Compat.GraphicalEffects
-import Style 1.0
+import Style
 
-import com.nextcloud.desktopclient 1.0
+import com.nextcloud.desktopclient
 
 TextField {
     id: trayWindowUnifiedSearchTextField
@@ -41,16 +41,8 @@ TextField {
     rightPadding: trayWindowUnifiedSearchTextFieldClearTextButton.width + trayWindowUnifiedSearchTextFieldClearTextButton.anchors.rightMargin + textFieldHorizontalPaddingOffset
 
     placeholderText: qsTr("Search files, messages, events …")
-    placeholderTextColor: placeholderColor
 
     selectByMouse: true
-
-    background: Rectangle {
-        radius: Style.slightlyRoundedButtonRadius
-        border.color: parent.activeFocus ? UserModel.currentUser.accentColor : palette.dark
-        border.width: Style.normalBorderWidth
-        color: palette.window
-    }
 
     Image {
         id: trayWindowUnifiedSearchTextFieldSearchIcon

@@ -226,9 +226,9 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
     };
 
     const auto generateIconPath = [&]() {
-        auto colorIconPath = role == DarkIconRole ? QStringLiteral("qrc:///client/theme/white/") : QStringLiteral("qrc:///client/theme/black/");
+        auto colorIconPath = QStringLiteral("image://svgimage-custom-color/");//role == DarkIconRole ? QStringLiteral("qrc:///client/theme/white/") : QStringLiteral("qrc:///client/theme/black/");
         if (a._type == Activity::NotificationType && !a._talkNotificationData.userAvatar.isEmpty()) {
-            return QStringLiteral("qrc:///client/theme/colored/talk-bordered.svg");
+            return QStringLiteral("image://svgimage-custom-color/talk-app.svg");
         } else if (a._type == Activity::SyncResultType) {
             colorIconPath.append("state-error.svg");
             return colorIconPath;
@@ -254,14 +254,14 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
             } else {
                 // File sync successful
                 if (a._fileAction == "file_created") {
-                    return a._previews.empty() ? QStringLiteral("qrc:///client/theme/colored/add.svg")
-                                               : QStringLiteral("qrc:///client/theme/colored/add-bordered.svg");
+                    return a._previews.empty() ? QStringLiteral("image://svgimage-custom-color/add.svg")
+                                               : QStringLiteral("image://svgimage-custom-color/add-bordered.svg");
                 } else if (a._fileAction == "file_deleted") {
-                    return a._previews.empty() ? QStringLiteral("qrc:///client/theme/colored/delete.svg")
-                                               : QStringLiteral("qrc:///client/theme/colored/delete-bordered.svg");
+                    return a._previews.empty() ? QStringLiteral("image://svgimage-custom-color/delete.svg")
+                                               : QStringLiteral("image://svgimage-custom-color/delete-bordered.svg");
                 } else {
                     return a._previews.empty() ? colorIconPath % QStringLiteral("change.svg")
-                                               : QStringLiteral("qrc:///client/theme/colored/change-bordered.svg");
+                                               : QStringLiteral("image://svgimage-custom-color/change-bordered.svg");
                 }
             }
         } else {
@@ -511,7 +511,7 @@ void ActivityListModel::insertOrRemoveDummyFetchingActivity()
         _dummyFetchingActivities._objectType = dummyFetchingActivityObjectType;
         _dummyFetchingActivities._subject = tr("Fetching activities …");
         _dummyFetchingActivities._dateTime = QDateTime::currentDateTime();
-        _dummyFetchingActivities._icon = QLatin1String("qrc:///client/theme/colored/change-bordered.svg");
+        _dummyFetchingActivities._icon = QLatin1String("image://svgimage-custom-color/change-bordered.svg");
 
         addEntriesToActivityList({_dummyFetchingActivities});
     } else if (!_finalList.isEmpty() && _finalList.first()._objectType == dummyFetchingActivityObjectType) {

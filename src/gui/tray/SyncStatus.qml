@@ -1,10 +1,10 @@
-import QtQuick 2.15
-import QtQuick.Controls 2.15
-import QtQuick.Layouts 1.15
+import QtQuick
+import QtQuick.Controls
+import QtQuick.Layouts
 
-import Style 1.0
+import Style
 
-import com.nextcloud.desktopclient 1.0 as NC
+import com.nextcloud.desktopclient as NC
 
 RowLayout {
     id: root
@@ -79,7 +79,6 @@ RowLayout {
 
             text: syncStatus.syncStatusDetailString
             visible: syncStatus.syncStatusDetailString !== ""
-            color: palette.midlight
             font.pixelSize: Style.subLinePixelSize
             wrapMode: Text.Wrap
         }
@@ -90,7 +89,6 @@ RowLayout {
 
         FontMetrics {
             id: syncNowFm
-            font: syncNowButton.contentsFont
         }
 
         Layout.rightMargin: Style.trayHorizontalMargin
@@ -98,10 +96,6 @@ RowLayout {
         text: qsTr("Sync now")
 
         padding: Style.smallSpacing
-        textColor: Style.adjustedCurrentUserHeaderColor
-        textColorHovered: Style.currentUserHeaderTextColor
-        contentsFont.bold: true
-        bgColor: Style.currentUserHeaderColor
 
         visible: !activityModel.hasSyncConflicts &&
                  !syncStatus.syncing &&
@@ -123,10 +117,6 @@ RowLayout {
         Layout.rightMargin: Style.trayHorizontalMargin
 
         text: qsTr("Resolve conflicts")
-        textColor: Style.adjustedCurrentUserHeaderColor
-        textColorHovered: Style.currentUserHeaderTextColor
-        contentsFont.bold: true
-        bgColor: Style.currentUserHeaderColor
 
         visible: activityModel.hasSyncConflicts &&
                  !syncStatus.syncing &&

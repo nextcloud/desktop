@@ -12,14 +12,14 @@
  * for more details.
  */
 
-import QtQuick 2.15
-import QtQuick.Window 2.15
-import QtQuick.Layouts 1.15
-import QtQuick.Controls 2.15
+import QtQuick
+import QtQuick.Window
+import QtQuick.Layouts
+import QtQuick.Controls
 import Qt5Compat.GraphicalEffects
 
-import com.nextcloud.desktopclient 1.0
-import Style 1.0
+import com.nextcloud.desktopclient
+import Style
 import "../tray"
 import "../"
 
@@ -229,8 +229,6 @@ Page {
                 Layout.rightMargin: root.padding
 
                 icon.source: "image://svgimage-custom-color/clear.svg" + "/" + palette.buttonText
-                bgColor: palette.highlight
-                bgNormalOpacity: 0
                 toolTipText: qsTr("Dismiss")
 
                 onClicked: root.closeShareDetails()
@@ -243,7 +241,6 @@ Page {
                 Layout.rightMargin: root.padding
 
                 text: root.fileDetails.name
-                color: palette.midlight
                 wrapMode: Text.Wrap
             }
         }
@@ -314,30 +311,6 @@ Page {
                 active: !root.isFolderItem && !root.isEncryptedItem
                 visible: active
                 sourceComponent: CheckBox {
-                    // TODO: Rather than setting all these palette colours manually,
-                    // create a custom style and do it for all components globally.
-                    //
-                    // Additionally, we need to override the entire palette when we
-                    // set one palette property, as otherwise we default back to the
-                    // theme palette -- not the parent palette
-                    palette {
-                        text: Style.ncTextColor
-                        windowText: Style.ncTextColor
-                        buttonText: Style.ncTextColor
-                        brightText: Style.ncTextBrightColor
-                        highlight: Style.lightHover
-                        highlightedText: Style.ncTextColor
-                        light: Style.lightHover
-                        midlight: Style.ncSecondaryTextColor
-                        mid: Style.darkerHover
-                        dark: Style.menuBorder
-                        button: Style.buttonBackgroundColor
-                        window: Style.menuBorder
-                        base: Style.backgroundColor
-                        toolTipBase: Style.backgroundColor
-                        toolTipText: Style.ncTextColor
-                    }
-
                     spacing: scrollContentsColumn.indicatorSpacing
                     padding: scrollContentsColumn.itemPadding
                     indicator.width: scrollContentsColumn.indicatorItemWidth
@@ -372,43 +345,37 @@ Page {
                         id: permissionModeRadioButtonsGroup
                     }
 
-                    NCRadioButton {
+                    RadioButton {
                         readonly property int permissionMode: ShareModel.ModeViewOnly
                         Layout.fillWidth: true
                         ButtonGroup.group: permissionModeRadioButtonsGroup
                         enabled: !root.isSharePermissionChangeInProgress
                         checked: root.currentPermissionMode === permissionMode
                         text: qsTr("View only")
-                        indicatorItemWidth: scrollContentsColumn.indicatorItemWidth
-                        indicatorItemHeight: scrollContentsColumn.indicatorItemWidth
                         spacing: scrollContentsColumn.indicatorSpacing
                         padding: scrollContentsColumn.itemPadding
                         onClicked: root.permissionModeChanged(permissionMode)
                     }
 
-                    NCRadioButton {
+                    RadioButton {
                         readonly property int permissionMode: ShareModel.ModeUploadAndEditing
                         Layout.fillWidth: true
                         ButtonGroup.group: permissionModeRadioButtonsGroup
                         enabled: !root.isSharePermissionChangeInProgress
                         checked: root.currentPermissionMode === permissionMode
                         text: qsTr("Allow upload and editing")
-                        indicatorItemWidth: scrollContentsColumn.indicatorItemWidth
-                        indicatorItemHeight: scrollContentsColumn.indicatorItemWidth
                         spacing: scrollContentsColumn.indicatorSpacing
                         padding: scrollContentsColumn.itemPadding
                         onClicked: root.permissionModeChanged(permissionMode)
                     }
 
-                    NCRadioButton {
+                    RadioButton {
                         readonly property int permissionMode: ShareModel.ModeFileDropOnly
                         Layout.fillWidth: true
                         ButtonGroup.group: permissionModeRadioButtonsGroup
                         enabled: !root.isSharePermissionChangeInProgress
                         checked: root.currentPermissionMode === permissionMode
                         text: qsTr("File drop (upload only)")
-                        indicatorItemWidth: scrollContentsColumn.indicatorItemWidth
-                        indicatorItemHeight: scrollContentsColumn.indicatorItemWidth
                         spacing: scrollContentsColumn.indicatorSpacing
                         padding: scrollContentsColumn.itemPadding
                         onClicked: root.permissionModeChanged(permissionMode)
@@ -418,30 +385,6 @@ Page {
                         id: allowResharingCheckBox
 
                         Layout.fillWidth: true
-
-                        // TODO: Rather than setting all these palette colours manually,
-                        // create a custom style and do it for all components globally.
-                        //
-                        // Additionally, we need to override the entire palette when we
-                        // set one palette property, as otherwise we default back to the
-                        // theme palette -- not the parent palette
-                        palette {
-                            text: Style.ncTextColor
-                            windowText: Style.ncTextColor
-                            buttonText: Style.ncTextColor
-                            brightText: Style.ncTextBrightColor
-                            highlight: Style.lightHover
-                            highlightedText: Style.ncTextColor
-                            light: Style.lightHover
-                            midlight: Style.ncSecondaryTextColor
-                            mid: Style.darkerHover
-                            dark: Style.menuBorder
-                            button: Style.buttonBackgroundColor
-                            window: palette.dark // NOTE: Fusion theme uses darker window colour for the border of the checkbox
-                            base: Style.backgroundColor
-                            toolTipBase: Style.backgroundColor
-                            toolTipText: Style.ncTextColor
-                        }
 
                         spacing: scrollContentsColumn.indicatorSpacing
                         padding: scrollContentsColumn.itemPadding
@@ -482,30 +425,6 @@ Page {
                         anchors.left: parent.left
                         anchors.right: parent.right
 
-                        // TODO: Rather than setting all these palette colours manually,
-                        // create a custom style and do it for all components globally.
-                        //
-                        // Additionally, we need to override the entire palette when we
-                        // set one palette property, as otherwise we default back to the
-                        // theme palette -- not the parent palette
-                        palette {
-                            text: Style.ncTextColor
-                            windowText: Style.ncTextColor
-                            buttonText: Style.ncTextColor
-                            brightText: Style.ncTextBrightColor
-                            highlight: Style.lightHover
-                            highlightedText: Style.ncTextColor
-                            light: Style.lightHover
-                            midlight: Style.ncSecondaryTextColor
-                            mid: Style.darkerHover
-                            dark: Style.menuBorder
-                            button: Style.buttonBackgroundColor
-                            window: palette.dark // NOTE: Fusion theme uses darker window colour for the border of the checkbox
-                            base: Style.backgroundColor
-                            toolTipBase: Style.backgroundColor
-                            toolTipText: Style.ncTextColor
-                        }
-
                         spacing: scrollContentsColumn.indicatorSpacing
                         padding: scrollContentsColumn.itemPadding
                         indicator.width: scrollContentsColumn.indicatorItemWidth
@@ -530,30 +449,6 @@ Page {
                 id: passwordProtectEnabledMenuItem
 
                 Layout.fillWidth: true
-
-                // TODO: Rather than setting all these palette colours manually,
-                // create a custom style and do it for all components globally.
-                //
-                // Additionally, we need to override the entire palette when we
-                // set one palette property, as otherwise we default back to the
-                // theme palette -- not the parent palette
-                palette {
-                    text: Style.ncTextColor
-                    windowText: Style.ncTextColor
-                    buttonText: Style.ncTextColor
-                    brightText: Style.ncTextBrightColor
-                    highlight: Style.lightHover
-                    highlightedText: Style.ncTextColor
-                    light: Style.lightHover
-                    midlight: Style.ncSecondaryTextColor
-                    mid: Style.darkerHover
-                    dark: Style.menuBorder
-                    button: Style.buttonBackgroundColor
-                    window: Style.menuBorder
-                    base: Style.backgroundColor
-                    toolTipBase: Style.backgroundColor
-                    toolTipText: Style.ncTextColor
-                }
 
                 spacing: scrollContentsColumn.indicatorSpacing
                 padding: scrollContentsColumn.itemPadding
@@ -664,30 +559,6 @@ Page {
 
                 Layout.fillWidth: true
 
-                // TODO: Rather than setting all these palette colours manually,
-                // create a custom style and do it for all components globally.
-                //
-                // Additionally, we need to override the entire palette when we
-                // set one palette property, as otherwise we default back to the
-                // theme palette -- not the parent palette
-                palette {
-                    text: Style.ncTextColor
-                    windowText: Style.ncTextColor
-                    buttonText: Style.ncTextColor
-                    brightText: Style.ncTextBrightColor
-                    highlight: Style.lightHover
-                    highlightedText: Style.ncTextColor
-                    light: Style.lightHover
-                    midlight: Style.ncSecondaryTextColor
-                    mid: Style.darkerHover
-                    dark: Style.menuBorder
-                    button: Style.buttonBackgroundColor
-                    window: Style.menuBorder
-                    base: Style.backgroundColor
-                    toolTipBase: Style.backgroundColor
-                    toolTipText: Style.ncTextColor
-                }
-
                 spacing: scrollContentsColumn.indicatorSpacing
                 padding: scrollContentsColumn.itemPadding
                 indicator.width: scrollContentsColumn.indicatorItemWidth
@@ -772,30 +643,6 @@ Page {
 
                 Layout.fillWidth: true
 
-                // TODO: Rather than setting all these palette colours manually,
-                // create a custom style and do it for all components globally.
-                //
-                // Additionally, we need to override the entire palette when we
-                // set one palette property, as otherwise we default back to the
-                // theme palette -- not the parent palette
-                palette {
-                    text: Style.ncTextColor
-                    windowText: Style.ncTextColor
-                    buttonText: Style.ncTextColor
-                    brightText: Style.ncTextBrightColor
-                    highlight: Style.lightHover
-                    highlightedText: Style.ncTextColor
-                    light: Style.lightHover
-                    midlight: Style.ncSecondaryTextColor
-                    mid: Style.darkerHover
-                    dark: Style.menuBorder
-                    button: Style.buttonBackgroundColor
-                    window: Style.menuBorder
-                    base: Style.backgroundColor
-                    toolTipBase: Style.backgroundColor
-                    toolTipText: Style.ncTextColor
-                }
-
                 spacing: scrollContentsColumn.indicatorSpacing
                 padding: scrollContentsColumn.itemPadding
                 indicator.width: scrollContentsColumn.indicatorItemWidth
@@ -872,13 +719,6 @@ Page {
                 icon.source: "image://svgimage-custom-color/close.svg/" + Style.errorBoxBackgroundColor
                 imageSourceHover: "image://svgimage-custom-color/close.svg/" + palette.brightText
                 text: qsTr("Unshare")
-                textColor: Style.errorBoxBackgroundColor
-                textColorHovered: "white"
-                contentsFont.bold: true
-                bgNormalColor: palette.button
-                bgHoverColor: Style.errorBoxBackgroundColor
-                bgNormalOpacity: 1.0
-                bgHoverOpacity: 1.0
 
                 onClicked: root.deleteShare()
             }
@@ -889,13 +729,6 @@ Page {
                 icon.source: "image://svgimage-custom-color/add.svg/" + root.accentColor
                 imageSourceHover: "image://svgimage-custom-color/add.svg/" + palette.brightText
                 text: qsTr("Add another link")
-                textColor: root.accentColor
-                textColorHovered: palette.brightText
-                contentsFont.bold: true
-                bgNormalColor: palette.button
-                bgHoverColor: root.accentColor
-                bgNormalOpacity: 1.0
-                bgHoverOpacity: 1.0
 
                 visible: root.isLinkShare && root.canCreateLinkShares
                 enabled: visible
@@ -933,24 +766,19 @@ Page {
 
             icon.source: "image://svgimage-custom-color/copy.svg/" + palette.brightText
             text: shareLinkCopied ? qsTr("Share link copied!") : qsTr("Copy share link")
-            textColor: palette.brightText
-            contentsFont.bold: true
-            bgColor: shareLinkCopied ? Style.positiveColor : root.accentColor
-            bgNormalOpacity: 1.0
-            bgHoverOpacity: shareLinkCopied ? 1.0 : Style.hoverOpacity
-
             visible: root.isLinkShare
             enabled: visible
 
             onClicked: copyShareLink()
 
-            Behavior on bgColor {
-                ColorAnimation { duration: Style.shortAnimationDuration }
-            }
+            // TODO
+            // Behavior on bgColor {
+            //     ColorAnimation { duration: Style.shortAnimationDuration }
+            // }
 
-            Behavior on bgHoverOpacity {
-                NumberAnimation { duration: Style.shortAnimationDuration }
-            }
+            // Behavior on bgHoverOpacity {
+            //     NumberAnimation { duration: Style.shortAnimationDuration }
+            // }
 
             Behavior on Layout.preferredWidth {
                 SmoothedAnimation { duration: Style.shortAnimationDuration }

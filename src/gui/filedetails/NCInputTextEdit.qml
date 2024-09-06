@@ -12,12 +12,12 @@
  * for more details.
  */
 
-import QtQuick 2.15
-import QtQuick.Controls 2.15
-import QtQuick.Layouts 1.15
+import QtQuick
+import QtQuick.Controls
+import QtQuick.Layouts
 
-import com.nextcloud.desktopclient 1.0
-import Style 1.0
+import com.nextcloud.desktopclient
+import Style
 
 TextEdit {
     id: root
@@ -33,16 +33,6 @@ TextEdit {
     selectByMouse: true
     height: Math.max(Style.talkReplyTextFieldPreferredHeight, contentHeight)
 
-    Rectangle {
-        id: textFieldBorder
-        anchors.fill: parent
-        radius: Style.slightlyRoundedButtonRadius
-        border.width: Style.normalBorderWidth
-        border.color: root.activeFocus ? root.accentColor : root.secondaryColor
-        color: palette.base
-        z: -1
-    }
-
     Button {
         id: submitButton
 
@@ -52,11 +42,6 @@ TextEdit {
 
         width: height
         height: parent.height
-
-        background: Rectangle {
-            radius: width / 2
-            color: textFieldBorder.color
-        }
 
         flat: true
         icon.source: "image://svgimage-custom-color/confirm.svg" + "/" + root.secondaryColor

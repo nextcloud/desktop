@@ -12,12 +12,12 @@
  * for more details.
  */
 
-import QtQuick 2.15
-import QtQuick.Layouts 1.15
-import QtQuick.Controls 2.15
+import QtQuick
+import QtQuick.Layouts
+import QtQuick.Controls
 
-import com.nextcloud.desktopclient 1.0
-import Style 1.0
+import com.nextcloud.desktopclient
+import Style
 import "../tray"
 
 Page {
@@ -139,8 +139,6 @@ Page {
                 Layout.rightMargin: headerGridLayout.textRightMargin
 
                 icon.source: "image://svgimage-custom-color/clear.svg" + "/" + palette.buttonText
-                bgColor: palette.highlight
-                bgNormalOpacity: 0
                 toolTipText: qsTr("Dismiss")
 
                 visible: root.showCloseButton
@@ -155,7 +153,6 @@ Page {
                 Layout.rightMargin: headerGridLayout.textRightMargin
 
                 text: `${root.fileDetails.sizeString} · ${root.fileDetails.lastChangedString}`
-                color: palette.midlight
                 wrapMode: Text.Wrap
             }
 
@@ -166,7 +163,6 @@ Page {
                 Layout.rightMargin: headerGridLayout.textRightMargin
 
                 text: root.fileDetails.lockExpireString
-                color: palette.midlight
                 wrapMode: Text.Wrap
                 visible: headerGridLayout.showFileLockedString
             }
@@ -208,7 +204,7 @@ Page {
                         id: hoverHandler
                     }
 
-                    NCToolTip {
+                    ToolTip {
                         visible: hoverHandler.hovered
                         text: tagRepeater.fileTagModel.overflowTagsString
                     }

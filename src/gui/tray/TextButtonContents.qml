@@ -12,21 +12,18 @@
  * for more details.
  */
 
-import QtQuick 2.15
-import QtQuick.Controls 2.15
-import QtQuick.Layouts 1.15
+import QtQuick
+import QtQuick.Controls
+import QtQuick.Layouts
 
-import Style 1.0
+import Style
 
 EnforcedPlainTextLabel {
     property bool hovered: false
-    property color textColor: palette.windowText
-    property color textColorHovered: palette.midlight
     property bool bold: false
 
     font.underline: true
     font.bold: bold
-    color: hovered ? textColorHovered : textColor
 
     horizontalAlignment: Text.AlignLeft
     verticalAlignment: Text.AlignVCenter

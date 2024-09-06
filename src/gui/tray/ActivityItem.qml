@@ -1,9 +1,9 @@
-import QtQml 2.15
-import QtQuick 2.15
-import QtQuick.Controls 2.15
-import QtQuick.Layouts 1.15
-import Style 1.0
-import com.nextcloud.desktopclient 1.0
+import QtQml
+import QtQuick
+import QtQuick.Controls
+import QtQuick.Layouts
+import Style
+import com.nextcloud.desktopclient
 
 ItemDelegate {
     id: root
@@ -24,11 +24,12 @@ ItemDelegate {
     Accessible.name: (model.path !== "" && model.displayPath !== "") ? qsTr("Open %1 locally").arg(model.displayPath) : model.message
     Accessible.onPressAction: root.clicked()
 
-    NCToolTip {
+    ToolTip {
         visible: root.hovered && !activityContent.childHovered && model.displayLocation !== ""
         text: qsTr("In %1").arg(model.displayLocation)
     }
 
+    // TODO: the current style does not support customization of this control
     contentItem: ColumnLayout {
         spacing: Style.smallSpacing
 

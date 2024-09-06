@@ -12,12 +12,12 @@
  * for more details.
  */
 
-import QtQml 2.15
-import QtQuick 2.15
-import QtQuick.Controls 2.15
-import QtQuick.Layouts 1.15
-import Style 1.0
-import com.nextcloud.desktopclient 1.0
+import QtQml
+import QtQuick
+import QtQuick.Controls
+import QtQuick.Layouts
+import Style
+import com.nextcloud.desktopclient
 
 EnforcedPlainTextLabel {
     required property string section
@@ -28,7 +28,6 @@ EnforcedPlainTextLabel {
 
     text: section
     font.pixelSize: Style.unifiedSearchResultTitleFontSize
-    color: UserModel.currentUser.accentColor
 
     Accessible.role: Accessible.Separator
     Accessible.name: qsTr("Search results section %1").arg(section)

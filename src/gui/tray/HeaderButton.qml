@@ -12,16 +12,16 @@
  * for more details.
  */
 
-import QtQml 2.15
-import QtQml.Models 2.15
-import QtQuick 2.15
-import QtQuick.Window 2.15
-import QtQuick.Controls 2.15
-import QtQuick.Layouts 1.15
+import QtQml
+import QtQml.Models
+import QtQuick
+import QtQuick.Window
+import QtQuick.Controls
+import QtQuick.Layouts
 
 // Custom qml modules are in /theme (and included by resources.qrc)
-import Style 1.0
-import com.nextcloud.desktopclient 1.0
+import Style
+import com.nextcloud.desktopclient
 
 Button {
     id: root
@@ -36,25 +36,4 @@ Button {
     Layout.alignment: Qt.AlignRight
     Layout.preferredWidth:  Style.trayWindowHeaderHeight
     Layout.preferredHeight: Style.trayWindowHeaderHeight
-
-    background: Rectangle {
-        color: root.hovered || root.visualFocus ? Style.currentUserHeaderTextColor : Style.currentUserHeaderColor
-        opacity: 0.2
-    }
-
-    contentItem: Item {
-        anchors.fill: parent
-        
-        Image {
-            id: internalImage
-            anchors.centerIn: parent
-            width: root.icon.width
-            height: root.icon.height
-            source: root.icon.source
-            sourceSize {
-                width: root.icon.width
-                height: root.icon.height
-            }
-        }
-    }
 }

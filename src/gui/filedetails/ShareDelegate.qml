@@ -12,14 +12,14 @@
  * for more details.
  */
 
-import QtQuick 2.15
-import QtQuick.Window 2.15
-import QtQuick.Layouts 1.15
-import QtQuick.Controls 2.15
+import QtQuick
+import QtQuick.Window
+import QtQuick.Layouts
+import QtQuick.Controls
 import Qt5Compat.GraphicalEffects
 
-import com.nextcloud.desktopclient 1.0
-import Style 1.0
+import com.nextcloud.desktopclient
+import Style
 import "../tray"
 import "../"
 
@@ -140,7 +140,6 @@ GridLayout {
         Layout.column: 1
 
         text: root.detailText
-        color: palette.midlight
         elide: Text.ElideRight
         visible: text !== ""
     }
@@ -161,9 +160,6 @@ GridLayout {
             Layout.preferredHeight: width
 
             toolTipText: qsTr("Create a new share link")
-
-            bgColor: palette.highlight
-            bgNormalOpacity: 0
 
             icon.source: "image://svgimage-custom-color/add.svg/" + palette.buttonText
             icon.width: Style.smallIconSize
@@ -197,10 +193,6 @@ GridLayout {
             toolTipText: qsTr("Copy share link location")
 
             text: shareLinkCopied ? qsTr("Copied!") : ""
-            textColor: palette.brightText
-            contentsFont.bold: true
-            bgColor: shareLinkCopied ? Style.positiveColor : palette.highlight
-            bgNormalOpacity: shareLinkCopied ? 1 : 0
 
             icon.source: shareLinkCopied ? "image://svgimage-custom-color/copy.svg/" + palette.brightText :
                                            "image://svgimage-custom-color/copy.svg/" + palette.buttonText
@@ -212,13 +204,14 @@ GridLayout {
 
             onClicked: copyShareLink()
 
-            Behavior on bgColor {
-                ColorAnimation { duration: Style.shortAnimationDuration }
-            }
+            // TODO
+            // Behavior on bgColor {
+            //     ColorAnimation { duration: Style.shortAnimationDuration }
+            // }
 
-            Behavior on bgNormalOpacity {
-                NumberAnimation { duration: Style.shortAnimationDuration }
-            }
+            // Behavior on bgNormalOpacity {
+            //     NumberAnimation { duration: Style.shortAnimationDuration }
+            // }
 
             Behavior on Layout.preferredWidth {
                 SmoothedAnimation { duration: Style.shortAnimationDuration }
@@ -244,9 +237,6 @@ GridLayout {
             Layout.preferredHeight: width
 
             toolTipText: qsTr("Share options")
-
-            bgColor: palette.highlight
-            bgNormalOpacity: 0
 
             icon.source: "image://svgimage-custom-color/more.svg/" + palette.buttonText
             icon.width: Style.smallIconSize

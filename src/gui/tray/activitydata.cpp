@@ -165,11 +165,11 @@ OCC::Activity Activity::fromActivityJson(const QJsonObject &json, const AccountP
 
     if(!previewsData.isEmpty()) {
         if(activity._icon.contains(QStringLiteral("add-color.svg"))) {
-            activity._icon = "qrc:///client/theme/colored/add-bordered.svg";
-        } else if(activity._icon.contains(QStringLiteral("delete-color.svg"))) {
-            activity._icon = "qrc:///client/theme/colored/delete-bordered.svg";
+            activity._icon = "image://svgimage-custom-color/add.svg";
+        } else if(activity._icon.contains(QStringLiteral("delete.svg"))) {
+            activity._icon = "image://svgimage-custom-color/delete.svg";
         } else if(activity._icon.contains(QStringLiteral("change.svg"))) {
-            activity._icon = "qrc:///client/theme/colored/change-bordered.svg";
+            activity._icon = "image://svgimage-custom-color/change.svg";
         }
     }
 

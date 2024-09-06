@@ -12,20 +12,20 @@
  * for more details.
  */
 
-import QtQuick 2.15
-import QtQuick.Window 2.15
-import QtQuick.Controls 2.15
-import QtQuick.Layouts 1.15
+import QtQuick
+import QtQuick.Window
+import QtQuick.Controls
+import QtQuick.Layouts
 import Qt5Compat.GraphicalEffects
-import Qt.labs.platform 1.1 as NativeDialogs
+import Qt.labs.platform as NativeDialogs
 
 import "../"
 import "../filedetails/"
 
 // Custom qml modules are in /theme (and included by resources.qrc)
-import Style 1.0
+import Style
 
-import com.nextcloud.desktopclient 1.0
+import com.nextcloud.desktopclient
 
 ApplicationWindow {
     id:         trayWindow
@@ -34,28 +34,8 @@ ApplicationWindow {
     // If the main dialog is displayed as a regular window we want it to be quadratic
     width:      Systray.useNormalWindow ? Style.trayWindowHeight : Style.trayWindowWidth
     height:     Style.trayWindowHeight
-    color:      "transparent"
     flags:      Systray.useNormalWindow ? Qt.Window : Qt.Dialog | Qt.FramelessWindowHint
-
-    // TODO: Rather than setting all these palette colours manually,
-    // create a custom style and do it for all components globally
-    palette {
-        text: Style.ncTextColor
-        windowText: Style.ncTextColor
-        buttonText: Style.ncTextColor
-        brightText: Style.ncTextBrightColor
-        highlight: Style.lightHover
-        highlightedText: Style.ncTextColor
-        light: Style.lightHover
-        midlight: Style.ncSecondaryTextColor
-        mid: Style.darkerHover
-        dark: Style.menuBorder
-        button: Style.buttonBackgroundColor
-        window: Style.backgroundColor
-        base: Style.backgroundColor
-        toolTipBase: Style.backgroundColor
-        toolTipText: Style.ncTextColor
-    }
+    color: 'transparent'
 
     readonly property int maxMenuHeight: Style.trayWindowHeight - Style.trayWindowHeaderHeight - 2 * Style.trayWindowBorderWidth
 
@@ -339,16 +319,6 @@ ApplicationWindow {
                             hoverEnabled: true
                             visible: Systray.enableAddAccount
 
-                            background: Item {
-                                height: parent.height
-                                width: parent.menu.width
-                                Rectangle {
-                                    anchors.fill: parent
-                                    anchors.margins: 1
-                                    color: parent.parent.hovered || parent.parent.visualFocus ? palette.highlight : palette.window
-                                }
-                            }
-
                             RowLayout {
                                 anchors.fill: parent
                                 spacing: 0
@@ -356,7 +326,7 @@ ApplicationWindow {
                                 Image {
                                     Layout.leftMargin: 12
                                     verticalAlignment: Qt.AlignCenter
-                                    source: Theme.darkMode ? "qrc:///client/theme/white/add.svg" : "qrc:///client/theme/black/add.svg"
+                                    source: "image://svgimage-custom-color/add.svg"
                                     sourceSize.width: Style.headerButtonIconSize
                                     sourceSize.height: Style.headerButtonIconSize
                                 }
@@ -390,17 +360,6 @@ ApplicationWindow {
                             font.pixelSize: Style.topLinePixelSize
                             hoverEnabled: true
                             onClicked: Systray.syncIsPaused = !Systray.syncIsPaused
-
-                            background: Item {
-                                height: parent.height
-                                width: parent.menu.width
-                                Rectangle {
-                                    anchors.fill: parent
-                                    anchors.margins: 1
-                                    color: parent.parent.hovered || parent.parent.visualFocus ? palette.highlight : palette.window
-                                }
-                            }
-
                             Accessible.role: Accessible.MenuItem
                             Accessible.name: Systray.syncIsPaused ? qsTr("Resume sync for all") : qsTr("Pause sync for all")
                             Accessible.onPressAction: syncPauseButton.clicked()
@@ -412,17 +371,6 @@ ApplicationWindow {
                             font.pixelSize: Style.topLinePixelSize
                             hoverEnabled: true
                             onClicked: Systray.openSettings()
-
-                            background: Item {
-                                height: parent.height
-                                width: parent.menu.width
-                                Rectangle {
-                                    anchors.fill: parent
-                                    anchors.margins: 1
-                                    color: parent.parent.hovered || parent.parent.visualFocus ? palette.highlight : palette.window
-                                }
-                            }
-
                             Accessible.role: Accessible.MenuItem
                             Accessible.name: text
                             Accessible.onPressAction: settingsButton.clicked()
@@ -434,26 +382,10 @@ ApplicationWindow {
                             font.pixelSize: Style.topLinePixelSize
                             hoverEnabled: true
                             onClicked: Systray.shutdown()
-
-                            background: Item {
-                                height: parent.height
-                                width: parent.menu.width
-                                Rectangle {
-                                    anchors.fill: parent
-                                    anchors.margins: 1
-                                    color: parent.parent.hovered || parent.parent.visualFocus ? palette.highlight : palette.window
-                                }
-                            }
-
                             Accessible.role: Accessible.MenuItem
                             Accessible.name: text
                             Accessible.onPressAction: exitButton.clicked()
                         }
-                    }
-
-                    background: Rectangle {
-                        color: currentAccountButton.hovered || currentAccountButton.visualFocus ? Style.currentUserHeaderTextColor : Style.currentUserHeaderColor
-                        opacity: 0.2
                     }
 
                     RowLayout {
@@ -531,7 +463,6 @@ ApplicationWindow {
                                 width: Style.currentAccountLabelWidth
                                 text: UserModel.currentUser ? UserModel.currentUser.name : ""
                                 elide: Text.ElideRight
-                                color: Style.currentUserHeaderTextColor
 
                                 font.pixelSize: Style.topLinePixelSize
                                 font.bold: true
@@ -543,7 +474,6 @@ ApplicationWindow {
                                 width: Style.currentAccountLabelWidth
                                 text: UserModel.currentUser ? UserModel.currentUser.server : ""
                                 elide: Text.ElideRight
-                                color: Style.currentUserHeaderTextColor
                                 visible: UserModel.numUsers() > 1
                             }
 
@@ -570,7 +500,6 @@ ApplicationWindow {
                                           ? UserModel.currentUser.statusMessage
                                           : UserModel.currentUser ? UserModel.currentUser.server : ""
                                     elide: Text.ElideRight
-                                    color: Style.currentUserHeaderTextColor
                                     font.pixelSize: Style.subLinePixelSize
                                 }
                             }
@@ -578,14 +507,13 @@ ApplicationWindow {
 
                         ColorOverlay {
                             cached: true
-                            color: Style.currentUserHeaderTextColor
                             width: source.width
                             height: source.height
                             source: Image {
                                 Layout.alignment: Qt.AlignRight
                                 verticalAlignment: Qt.AlignCenter
                                 Layout.margins: Style.accountDropDownCaretMargin
-                                source: "qrc:///client/theme/white/caret-down.svg"
+                                source:  "image://svgimage-custom-color/caret-down.svg/"
                                 sourceSize.width: Style.accountDropDownCaretSize
                                 sourceSize.height: Style.accountDropDownCaretSize
                                 Accessible.role: Accessible.PopupMenu
@@ -606,7 +534,6 @@ ApplicationWindow {
                     visible: currentUser.hasLocalFolder
                     currentUser: UserModel.currentUser
 
-
                     onClicked: openLocalFolderButton.userHasGroupFolders ? openLocalFolderButton.toggleMenuOpen() : UserModel.openCurrentAccountLocalFolder()
 
                     onFolderEntryTriggered: isGroupFolder ? UserModel.openCurrentAccountFolderFromTrayInfo(fullFolderPath) : UserModel.openCurrentAccountLocalFolder()
@@ -623,7 +550,7 @@ ApplicationWindow {
                 HeaderButton {
                     id: trayWindowFeaturedAppButton
                     visible: UserModel.currentUser.isFeaturedAppEnabled
-                    icon.source: UserModel.currentUser.featuredAppIcon + "/" + Style.currentUserHeaderTextColor
+                    icon.source: UserModel.currentUser.featuredAppIcon + "/"
                     onClicked: UserModel.openCurrentAccountFeaturedApp()
 
                     Accessible.role: Accessible.Button
@@ -637,7 +564,7 @@ ApplicationWindow {
 
                 HeaderButton {
                     id: trayWindowAppsButton
-                    icon.source: "image://svgimage-custom-color/more-apps.svg" + "/" + Style.currentUserHeaderTextColor
+                    icon.source: "image://svgimage-custom-color/more-apps.svg/"
 
                     onClicked: {
                         if(appsMenuListView.count <= 0) {
@@ -685,24 +612,11 @@ ApplicationWindow {
                                     id: appEntry
                                     anchors.left: parent.left
                                     anchors.right: parent.right
-
                                     text: model.appName
                                     font.pixelSize: Style.topLinePixelSize
                                     icon.source: model.appIconUrl
-                                    icon.color: palette.buttonText
                                     onTriggered: UserAppsModel.openAppUrl(appUrl)
                                     hoverEnabled: true
-
-                                    background: Item {
-                                        height: parent.height
-                                        width: parent.width
-                                        Rectangle {
-                                            anchors.fill: parent
-                                            anchors.margins: 1
-                                            color: parent.parent.hovered || parent.parent.visualFocus ? palette.highlight : palette.window
-                                        }
-                                    }
-
                                     Accessible.role: Accessible.MenuItem
                                     Accessible.name: qsTr("Open %1 in browser").arg(model.appName)
                                     Accessible.onPressAction: appEntry.triggered()
@@ -882,14 +796,6 @@ ApplicationWindow {
                 id: newActivitiesButton
                 hoverEnabled: true
                 padding: Style.smallSpacing
-
-                textColor: Style.currentUserHeaderTextColor
-                textColorHovered: Style.currentUserHeaderTextColor
-                contentsFont.bold: true
-                bgNormalColor: Qt.lighter(bgHoverColor, 1.25)
-                bgHoverColor: Style.currentUserHeaderColor
-                bgNormalOpacity: Style.newActivitiesBgNormalOpacity
-                bgHoverOpacity: Style.newActivitiesBgHoverOpacity
 
                 anchors.fill: parent
 

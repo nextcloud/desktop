@@ -13,13 +13,13 @@
  * for more details.
  */
 
-import QtQuick 2.15
-import QtQuick.Window 2.15
-import Style 1.0
-import com.nextcloud.desktopclient 1.0
-import QtQuick.Layouts 1.2
-import QtMultimedia 5.15
-import QtQuick.Controls 2.15
+import QtQuick
+import QtQuick.Window
+import Style
+import com.nextcloud.desktopclient
+import QtQuick.Layouts
+import QtMultimedia
+import QtQuick.Controls
 import Qt5Compat.GraphicalEffects
 
 ApplicationWindow {
@@ -54,26 +54,6 @@ ApplicationWindow {
 
     width: root.windowWidth
     height: rootBackground.height
-
-    // TODO: Rather than setting all these palette colours manually,
-    // create a custom style and do it for all components globally
-    palette {
-        text: Style.ncTextColor
-        windowText: Style.ncTextColor
-        buttonText: Style.ncTextColor
-        brightText: Style.ncTextBrightColor
-        highlight: Style.lightHover
-        highlightedText: Style.ncTextColor
-        light: Style.lightHover
-        midlight: Style.ncSecondaryTextColor
-        mid: Style.darkerHover
-        dark: Style.menuBorder
-        button: Style.buttonBackgroundColor
-        window: Style.backgroundColor
-        base: Style.backgroundColor
-        toolTipBase: Style.backgroundColor
-        toolTipText: Style.ncTextColor
-    }
 
     Component.onCompleted: {
         Systray.forceWindowInit(root);
@@ -215,7 +195,6 @@ ApplicationWindow {
             EnforcedPlainTextLabel {
                 id: message
                 text: root.subject
-                color: root.usingUserAvatar ? palette.brightText : palette.windowText
                 font.pixelSize: Style.topLinePixelSize
                 wrapMode: Text.WordWrap
                 horizontalAlignment: Text.AlignHCenter
@@ -239,11 +218,6 @@ ApplicationWindow {
 
                         visible: isAnswerCallButton
                         text: modelData.label
-                        contentsFont.bold: true
-                        bgColor: Style.ncBlue
-                        bgNormalOpacity: 0.8
-
-                        textColor: palette.brightText
 
                         icon.source: root.talkIcon + palette.brightText
                         imageSourceHover: root.talkIcon + palette.brightText
@@ -266,11 +240,6 @@ ApplicationWindow {
                 CustomButton {
                     id: declineCall
                     text: qsTr("Decline")
-                    contentsFont.bold: true
-                    bgColor: Style.errorBoxBackgroundColor
-                    bgNormalOpacity: 0.8
-
-                    textColor: palette.brightText
 
                     icon.source: root.deleteIcon + "white"
                     imageSourceHover: root.deleteIcon + "white"
