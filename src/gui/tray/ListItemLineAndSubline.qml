@@ -11,12 +11,12 @@
  * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
  * for more details.
  */
-import QtQml 2.15
-import QtQuick 2.15
-import QtQuick.Controls 2.15
-import QtQuick.Layouts 1.15
+import QtQml
+import QtQuick
+import QtQuick.Controls
+import QtQuick.Layouts
 
-import Style 1.0
+import Style
 
 ColumnLayout {
     id: root
@@ -38,7 +38,6 @@ ColumnLayout {
         text: root.lineText
         elide: Text.ElideRight
         font.pixelSize: root.titleFontSize
-        color: root.titleColor
     }
     EnforcedPlainTextLabel {
         id: subline
@@ -47,6 +46,5 @@ ColumnLayout {
         visible: text !== ""
         elide: Text.ElideRight
         font.pixelSize: root.sublineFontSize
-        color: root.sublineColor
     }
 }

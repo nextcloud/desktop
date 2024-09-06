@@ -12,10 +12,10 @@
  * for more details.
  */
 
-import QtQuick 2.15
-import QtQuick.Controls 2.15
-import QtQuick.Layouts 1.15
-import Style 1.0
+import QtQuick
+import QtQuick.Controls
+import QtQuick.Layouts
+import Style
 
 Button {
     id: root
@@ -25,43 +25,23 @@ Button {
 
     property string toolTipText: ""
 
-    property color textColor: palette.buttonText
-    property color textColorHovered: textColor
-
-    property alias contentsFont: contents.font
-
-    property alias bgColor: bgRectangle.color
-    property alias bgNormalColor: bgRectangle.normalColor
-    property alias bgHoverColor: bgRectangle.hoverColor
-    property alias bgNormalOpacity: bgRectangle.normalOpacity
-    property alias bgHoverOpacity: bgRectangle.hoverOpacity
-
-    background: NCButtonBackground {
-        id: bgRectangle
-        hovered: root.hovered
-    }
-
     leftPadding: root.text === "" ? Style.smallSpacing : Style.standardSpacing
     rightPadding: root.text === "" ? Style.smallSpacing : Style.standardSpacing
     implicitWidth: contentItem.implicitWidth + leftPadding + rightPadding
 
     hoverEnabled: true
 
-    NCToolTip {
+    ToolTip {
         text: root.toolTipText
         visible: root.toolTipText !== "" && root.hovered
     }
 
-    contentItem: NCButtonContents {
+    NCButtonContents {
         id: contents
         display: root.display
         hovered: root.hovered
-        imageSourceHover: root.imageSourceHover
         imageSource: root.icon.source
         imageSourceWidth: root.icon.width
         imageSourceHeight: root.icon.height
-        text: root.text
-        textColor: root.textColor
-        textColorHovered: root.textColorHovered
     }
 }

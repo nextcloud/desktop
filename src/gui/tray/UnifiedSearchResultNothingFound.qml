@@ -12,11 +12,11 @@
  * for more details.
  */
 
-import QtQml 2.15
-import QtQuick 2.15
-import QtQuick.Controls 2.15
-import QtQuick.Layouts 1.15
-import Style 1.0
+import QtQml
+import QtQuick
+import QtQuick.Controls
+import QtQuick.Layouts
+import Style
 
 ColumnLayout {
     id: unifiedSearchResultNothingFoundContainer
@@ -29,7 +29,7 @@ ColumnLayout {
 
     Image {
         id: unifiedSearchResultsNoResultsLabelIcon
-        source: "qrc:///client/theme/magnifying-glass.svg"
+        source: "image://svgimage-custom-color/magnifying-glass.svg"
         sourceSize.width: Style.trayWindowHeaderHeight / 2
         sourceSize.height: Style.trayWindowHeaderHeight / 2
         Layout.alignment: Qt.AlignHCenter
@@ -38,7 +38,6 @@ ColumnLayout {
     EnforcedPlainTextLabel {
         id: unifiedSearchResultsNoResultsLabel
         text: qsTr("No results for")
-        color: palette.dark
         font.pixelSize: Style.subLinePixelSize * 1.25
         wrapMode: Text.Wrap
         Layout.fillWidth: true

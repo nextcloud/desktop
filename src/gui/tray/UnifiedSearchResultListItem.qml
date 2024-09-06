@@ -12,11 +12,11 @@
  * for more details.
  */
 
-import QtQml 2.15
-import QtQuick 2.15
-import QtQuick.Controls 2.15
-import Style 1.0
-import com.nextcloud.desktopclient 1.0
+import QtQml
+import QtQuick
+import QtQuick.Controls
+import Style
+import com.nextcloud.desktopclient
 
 MouseArea {
     id: unifiedSearchResultMouseArea
@@ -38,7 +38,7 @@ MouseArea {
 
     height: Style.unifiedSearchItemHeight
 
-    NCToolTip {
+    ToolTip {
         visible: unifiedSearchResultMouseArea.containsMouse
         text: isFetchMoreTrigger ? qsTr("Load more results") : model.resultTitle + "\n\n" + model.subline
     }

@@ -70,7 +70,17 @@ int main(int argc, char **argv)
     QSurfaceFormat::setDefaultFormat(surfaceFormat);
 
     QQuickWindow::setTextRenderType(QQuickWindow::NativeTextRendering);
-    QQuickStyle::setStyle(QStringLiteral("Fusion"));
+
+    auto style = QStringLiteral("Fusion");
+
+#if defined Q_OS_MAC
+    style = QStringLiteral("macOS");
+#elif defined Q_OS_WIN
+    style = QStringLiteral("Windows");
+#endif
+
+    QQuickStyle::setStyle(style);
+    QQuickStyle::setFallbackStyle(QStringLiteral("Fusion"));
 
     OCC::Application app(argc, argv);
 

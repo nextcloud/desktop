@@ -12,14 +12,14 @@
  * for more details.
  */
 
-import QtQuick 2.15
-import QtQuick.Window 2.15
-import QtQuick.Controls 2.15
-import QtQuick.Layouts 1.15
+import QtQuick
+import QtQuick.Window
+import QtQuick.Controls
+import QtQuick.Layouts
 
 // Custom qml modules are in /theme (and included by resources.qrc)
-import Style 1.0
-import com.nextcloud.desktopclient 1.0
+import Style
+import com.nextcloud.desktopclient
 
 AbstractButton {
     id: userLine
@@ -62,7 +62,6 @@ AbstractButton {
                 height: width
                 anchors.bottom: accountAvatar.bottom
                 anchors.right: accountAvatar.right
-                color: userLine.hovered || userLine.visualFocus ? "#f6f6f6" : "white"
                 radius: width*0.5
             }
 
@@ -146,15 +145,10 @@ AbstractButton {
             Accessible.onPressAction: userMoreButtonMouseArea.clicked()
 
             onClicked: userMoreButtonMenu.visible ? userMoreButtonMenu.close() : userMoreButtonMenu.popup()
-            background: Rectangle {
-                anchors.fill: parent
-                anchors.margins: 1
-                color: userMoreButton.hovered || userMoreButton.visualFocus ? palette.highlight : palette.window
-            }
 
-            contentItem: Image {
+            Image {
                 anchors.fill: parent
-                source: "image://svgimage-custom-color/more.svg" + "/" + palette.buttonText
+                source: "image://svgimage-custom-color/more.svg/"
                 fillMode: Image.PreserveAspectFit
             }
 
@@ -167,7 +161,6 @@ AbstractButton {
                     height: visible ? implicitHeight : 0
                     text: qsTr("Set status")
                     font.pixelSize: Style.topLinePixelSize
-                    palette.windowText: Style.ncTextColor
                     hoverEnabled: true
                     onClicked: showUserStatusSelector(index)
                 }
@@ -175,21 +168,10 @@ AbstractButton {
                 MenuItem {
                     text: model.isConnected ? qsTr("Log out") : qsTr("Log in")
                     font.pixelSize: Style.topLinePixelSize
-                    palette.windowText: Style.ncTextColor
                     hoverEnabled: true
                     onClicked: {
                         model.isConnected ? UserModel.logout(index) : UserModel.login(index)
                         accountMenu.close()
-                    }
-
-                    background: Item {
-                        height: parent.height
-                        width: parent.menu.width
-                        Rectangle {
-                            anchors.fill: parent
-                            anchors.margins: 1
-                            color: parent.parent.hovered ? palette.highlight : palette.window
-                        }
                     }
 
                     Accessible.role: Accessible.Button
@@ -209,21 +191,10 @@ AbstractButton {
                     id: removeAccountButton
                     text: qsTr("Remove account")
                     font.pixelSize: Style.topLinePixelSize
-                    palette.windowText: Style.ncTextColor
                     hoverEnabled: true
                     onClicked: {
                         UserModel.removeAccount(index)
                         accountMenu.close()
-                    }
-
-                    background: Item {
-                        height: parent.height
-                        width: parent.menu.width
-                        Rectangle {
-                            anchors.fill: parent
-                            anchors.margins: 1
-                            color: parent.parent.hovered ? palette.highlight : palette.window
-                        }
                     }
 
                     Accessible.role: Accessible.Button

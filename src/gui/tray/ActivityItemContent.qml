@@ -1,10 +1,10 @@
-import QtQml 2.15
-import QtQuick 2.15
-import QtQuick.Controls 2.15
-import QtQuick.Layouts 1.15
-import Style 1.0
+import QtQml
+import QtQuick
+import QtQuick.Controls
+import QtQuick.Layouts
+import Style
 import Qt5Compat.GraphicalEffects
-import com.nextcloud.desktopclient 1.0
+import com.nextcloud.desktopclient
 
 RowLayout {
     id: root
@@ -153,7 +153,6 @@ RowLayout {
 
                 text: root.activityData.dateTime
                 font.pixelSize: Style.subLinePixelSize
-                color: palette.midlight
                 visible: text !== ""
             }
 
@@ -166,7 +165,7 @@ RowLayout {
 
                 icon.source: "image://svgimage-custom-color/more.svg/" + palette.buttonText
 
-                NCToolTip {
+                ToolTip {
                     text: qsTr("Open file details")
                     visible: parent.hovered
                 }
@@ -174,8 +173,6 @@ RowLayout {
                 display: Button.IconOnly
                 leftPadding: 0
                 rightPadding: 0
-                bgColor: palette.mid
-                bgNormalOpacity:  0
 
                 visible: model.showFileDetails
 
@@ -196,10 +193,8 @@ RowLayout {
                 display: Button.IconOnly
                 leftPadding: 0
                 rightPadding: 0
-                bgColor: palette.mid
-                bgNormalOpacity: 0
 
-                NCToolTip {
+                ToolTip {
                     text: qsTr("Dismiss")
                     visible: parent.hovered
                 }
@@ -249,7 +244,6 @@ RowLayout {
                 wrapMode: Text.Wrap
                 maximumLineCount: 2
                 font.pixelSize: Style.topLinePixelSize
-                color: palette.midlight
                 visible: text !== ""
             }
 

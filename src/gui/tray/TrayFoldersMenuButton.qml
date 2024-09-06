@@ -11,11 +11,11 @@
  * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
  * for more details.
  */
-import QtQuick 2.15
-import QtQuick.Controls 2.15
-import QtQuick.Layouts 1.15
+import QtQuick
+import QtQuick.Controls
+import QtQuick.Layouts
 import Qt5Compat.GraphicalEffects
-import Style 1.0
+import Style
 
 HeaderButton {
     id: root
@@ -51,13 +51,14 @@ HeaderButton {
     Accessible.name: tooltip.text
     Accessible.onPressAction: root.clicked()
 
-    NCToolTip {
+    ToolTip {
         id: tooltip
         visible: root.hovered && !foldersMenuLoader.isMenuVisible
         text: root.userHasGroupFolders ? qsTr("Open local or group folders") : qsTr("Open local folder")
     }
 
-    contentItem: Item {
+
+    Item {
         id: rootContent
 
         anchors.fill: parent
@@ -90,7 +91,6 @@ HeaderButton {
                     width: Style.folderStateIndicatorSize + Style.trayFolderStatusIndicatorSizeOffset
                     height: width
                     anchors.centerIn: parent
-                    color: Style.currentUserHeaderColor
                     radius: width * Style.trayFolderStatusIndicatorRadiusFactor
                     z: -2
                 }
@@ -100,7 +100,6 @@ HeaderButton {
                     width: Style.folderStateIndicatorSize + Style.trayFolderStatusIndicatorSizeOffset
                     height: width
                     anchors.centerIn: parent
-                    color: root.hovered ? Style.currentUserHeaderTextColor : palette.window
                     opacity: Style.trayFolderStatusIndicatorMouseHoverOpacityFactor
                     radius: width * Style.trayFolderStatusIndicatorRadiusFactor
                     z: -1
@@ -115,7 +114,7 @@ HeaderButton {
 
                 cache: true
 
-                source: "image://svgimage-custom-color/folder.svg/" + Style.currentUserHeaderTextColor
+                source: "image://svgimage-custom-color/folder.svg/"
                 sourceSize {
                     width: imageWidth
                     height: imageHeight
@@ -145,7 +144,7 @@ HeaderButton {
 
                     cache: true
 
-                    source: "image://svgimage-custom-color/caret-down.svg/" + Style.currentUserHeaderTextColor
+                    source: "image://svgimage-custom-color/caret-down.svg/"
                     sourceSize {
                         width: openLocalFolderButtonCaretIconLoader.imageWidth
                         height: openLocalFolderButtonCaretIconLoader.imageHeight
@@ -209,9 +208,9 @@ HeaderButton {
                         subline: model.modelData.parentPath
                         width: foldersMenuListView.width
                         height: Style.standardPrimaryButtonHeight
-                        backgroundIconSource: "image://svgimage-custom-color/folder.svg/" + palette.buttonText
+                        backgroundIconSource: "image://svgimage-custom-color/folder.svg/"
                         iconSource: isGroupFolder
-                                    ? "image://svgimage-custom-color/account-group.svg/" + palette.brightText
+                                    ? "image://svgimage-custom-color/account-group.svg/"
                                     : ""
 
                         onTriggered: {

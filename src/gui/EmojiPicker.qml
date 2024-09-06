@@ -12,11 +12,11 @@
  * for more details.
  */
 
-import QtQuick 2.15
-import QtQuick.Controls 2.15
-import QtQuick.Layouts 1.15
+import QtQuick
+import QtQuick.Controls
+import QtQuick.Layouts
 
-import Style 1.0
+import Style
 import com.nextcloud.desktopclient 1.0 as NC
 import "./tray"
 
@@ -134,7 +134,6 @@ ColumnLayout {
             width: parent.width * 0.8
             anchors.centerIn: parent
             text: qsTr("No recent emojis")
-            color: palette.midlight
             wrapMode: Text.Wrap
             font.bold: true
             visible: emojiView.count === 0
