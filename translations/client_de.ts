@@ -3225,12 +3225,12 @@ Objekte, bei denen Löschen erlaubt ist, werden gelöscht, wenn diese das Lösch
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="120"/>
         <source>The following filenames are not allowed: %1</source>
-        <translation>Die folgenden Dateinamen sind unzulässig: %1</translation>
+        <translation>Die folgenden Dateinamen sind nicht erlaubt: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="123"/>
         <source>The following file extensions are not allowed: %1</source>
-        <translation>Die folgenden Dateierweiterungen sind unzulässig: %1</translation>
+        <translation>Die folgenden Dateierweiterungen sind nicht erlaubt: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="100"/>

@@ -6562,7 +6562,7 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="100"/>
         <source>Appear offline</source>
-        <translation>Apparaitre hors-ligne</translation>
+        <translation>Apparaitre hors ligne</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="124"/>

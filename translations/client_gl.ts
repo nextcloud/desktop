@@ -6328,7 +6328,7 @@ O servidor respondeu co erro: %2</translation>
     <message>
         <location filename="../src/gui/filedetails/ShareView.qml" line="279"/>
         <source>Sharing is disabled</source>
-        <translation>O uso compartido está desactivado</translation>
+        <translation>A compartición está desactivada</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareView.qml" line="287"/>
@@ -6338,7 +6338,7 @@ O servidor respondeu co erro: %2</translation>
     <message>
         <location filename="../src/gui/filedetails/ShareView.qml" line="296"/>
         <source>Sharing is disabled.</source>
-        <translation>O uso compartido está desactivado.</translation>
+        <translation>A compartición está desactivada</translation>
     </message>
 </context>
 <context>
