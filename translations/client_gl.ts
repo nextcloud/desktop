@@ -229,7 +229,7 @@
         <translation>Elementos materializados</translation>
     </message>
     <message>
-        <location filename="../src/gui/macOS/ui/FileProviderEvictionDialog.qml" line="61"/>
+        <location filename="../src/gui/macOS/ui/FileProviderEvictionDialog.qml" line="57"/>
         <source>Reload</source>
         <translation>Volver cargar</translation>
     </message>
@@ -263,27 +263,27 @@
         <translation>Axustes de ficheiros virtuais</translation>
     </message>
     <message>
-        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="73"/>
+        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="53"/>
         <source>General settings</source>
         <translation>Axustes xerais</translation>
     </message>
     <message>
-        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="81"/>
+        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="61"/>
         <source>Enable virtual files</source>
         <translation>Activar ficheiros virtuais</translation>
     </message>
     <message>
-        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="166"/>
+        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="146"/>
         <source>Advanced</source>
         <translation>Avanzado</translation>
     </message>
     <message>
-        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="173"/>
+        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="153"/>
         <source>Signal file provider domain</source>
         <translation>Dominio do provedor de ficheiros de sinal</translation>
     </message>
     <message>
-        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="178"/>
+        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="158"/>
         <source>Create debug archive</source>
         <translation>Crear arquivo de depuración</translation>
     </message>
@@ -5432,7 +5432,7 @@ O servidor respondeu co erro: %2</translation>
         <translation>&lt;p&gt;Cliente de escritorio de %1&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="557"/>
+        <location filename="../src/libsync/theme.cpp" line="559"/>
         <source>&lt;p&gt;%1 Desktop Client&lt;/p&gt;&lt;p&gt;Version %1. For more information please click &lt;a href=&apos;%2&apos;&gt;here&lt;/a&gt;.&lt;/p&gt;</source>
         <extracomment>Example text: &quot;&lt;p&gt;Nextcloud Desktop Client&lt;/p&gt;&quot; (%1 is the application name)</extracomment>
         <translation>&lt;p&gt;Cliente de escritorio de %1&lt;/p&gt;&lt;p&gt;Versión %1. Para obter máis información prema &lt;a href=&apos;%2&apos;&gt;aquí&lt;/a&gt;.&lt;/p&gt;</translation>
@@ -5443,7 +5443,7 @@ O servidor respondeu co erro: %2</translation>
         <translation>&lt;p&gt;&lt;small&gt;Usando o complemento de ficheiros virtuais: %1&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="574"/>
+        <location filename="../src/libsync/theme.cpp" line="576"/>
         <source>&lt;p&gt;%1 desktop client %2&lt;/p&gt;</source>
         <extracomment>Example text: &quot;&lt;p&gt;Nextcloud Desktop Client&lt;/p&gt;&quot; (%1 is the application name)</extracomment>
         <translation>&lt;p&gt;Cliente de escritorio de %1, %2&lt;/p&gt;</translation>
@@ -6268,7 +6268,7 @@ O servidor respondeu co erro: %2</translation>
         <translation>Soltar ficheiro (só envíos) </translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="453"/>
+        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="396"/>
         <source>Allow resharing</source>
         <translation>Permitir volver compartir</translation>
     </message>
@@ -6743,14 +6743,9 @@ O servidor respondeu co erro: %2</translation>
         <translation>Cambiador de contas e menú de axustes</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="615"/>
+        <location filename="../src/gui/tray/Window.qml" line="542"/>
         <source>Open local or group folders</source>
         <translation>Abrir cartafoles locais ou de grupo</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/Window.qml" line="641"/>
-        <source>Open Nextcloud Talk in browser</source>
-        <translation>Abrir Nextcloud Talk no navegador</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="661"/>
@@ -6763,12 +6758,17 @@ O servidor respondeu co erro: %2</translation>
         <translation>Abrir %1 nun navegador</translation>
     </message>
     <message>
+        <location filename="../src/gui/tray/Window.qml" line="641"/>
+        <source>Open Nextcloud Talk in browser</source>
+        <translation>Abrir Nextcloud Talk no navegador</translation>
+    </message>
+    <message>
         <location filename="../src/gui/tray/Window.qml" line="821"/>
         <source>Unified search results list</source>
         <translation>Lista de resultados da busca unificada</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="896"/>
+        <location filename="../src/gui/tray/Window.qml" line="802"/>
         <source>New activities</source>
         <translation>Novas actividades</translation>
     </message>
@@ -6789,7 +6789,7 @@ O servidor respondeu co erro: %2</translation>
 <context>
     <name>nextcloudTheme::aboutInfo()</name>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="537"/>
+        <location filename="../src/libsync/theme.cpp" line="539"/>
         <source>&lt;p&gt;&lt;small&gt;Built from Git revision &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; on %3, %4 using Qt %5, %6&lt;/small&gt;&lt;/p&gt;</source>
         <translation>&lt;p&gt;&lt;small&gt;Construido dende a revisión Git &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; en %3, %4 usando Qt %5, %6&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
@@ -6946,7 +6946,7 @@ O servidor respondeu co erro: %2</translation>
         <translation>Estado sen definir</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="85"/>
+        <location filename="../src/libsync/theme.cpp" line="87"/>
         <source>Sync status is unknown</source>
         <translation>Descoñécese o estado da sincronización</translation>
     </message>
@@ -6956,7 +6956,7 @@ O servidor respondeu co erro: %2</translation>
         <translation>Agardando o comezo da sincronización</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="88"/>
+        <location filename="../src/libsync/theme.cpp" line="90"/>
         <source>Waiting to start syncing</source>
         <translation>Agardando para iniciar a sincronización</translation>
     </message>
@@ -6971,7 +6971,7 @@ O servidor respondeu co erro: %2</translation>
         <translation>Sincronización realizada</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="94"/>
+        <location filename="../src/libsync/theme.cpp" line="96"/>
         <source>Sync was successful</source>
         <translation>A sincronización realizouse correctamente</translation>
     </message>
@@ -6981,7 +6981,7 @@ O servidor respondeu co erro: %2</translation>
         <translation>A sincronización foi satisfactoria, algúns ficheiros foron ignorados.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="97"/>
+        <location filename="../src/libsync/theme.cpp" line="99"/>
         <source>Sync was successful but some files were ignored</source>
         <translation>A sincronización realizouse correctamente mais ignoráronse algúns ficheiros</translation>
     </message>
@@ -6991,7 +6991,7 @@ O servidor respondeu co erro: %2</translation>
         <translation>Produciuse un erro de sincronización</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="100"/>
+        <location filename="../src/libsync/theme.cpp" line="102"/>
         <source>Error occurred during sync</source>
         <translation>Produciuse un erro durante a sincronización</translation>
     </message>
@@ -7001,7 +7001,7 @@ O servidor respondeu co erro: %2</translation>
         <translation>Produciuse un erro de configuración</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="103"/>
+        <location filename="../src/libsync/theme.cpp" line="105"/>
         <source>Error occurred during setup</source>
         <translation>Produciuse un erro durante a configuración</translation>
     </message>
@@ -7016,7 +7016,7 @@ O servidor respondeu co erro: %2</translation>
         <translation>Interrompendo…</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="109"/>
+        <location filename="../src/libsync/theme.cpp" line="111"/>
         <source>Stopping sync</source>
         <translation>Deter a sincronización</translation>
     </message>

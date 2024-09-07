@@ -229,7 +229,7 @@
         <translation>具現化された項目</translation>
     </message>
     <message>
-        <location filename="../src/gui/macOS/ui/FileProviderEvictionDialog.qml" line="61"/>
+        <location filename="../src/gui/macOS/ui/FileProviderEvictionDialog.qml" line="57"/>
         <source>Reload</source>
         <translation>更新</translation>
     </message>
@@ -263,27 +263,27 @@
         <translation>仮想ファイルの設定</translation>
     </message>
     <message>
-        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="73"/>
+        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="53"/>
         <source>General settings</source>
         <translation>一般設定</translation>
     </message>
     <message>
-        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="81"/>
+        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="61"/>
         <source>Enable virtual files</source>
         <translation>仮想ファイルを有効化</translation>
     </message>
     <message>
-        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="166"/>
+        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="146"/>
         <source>Advanced</source>
         <translation>詳細設定</translation>
     </message>
     <message>
-        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="173"/>
+        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="153"/>
         <source>Signal file provider domain</source>
         <translation>シグナルファイルプロバイダドメイン</translation>
     </message>
     <message>
-        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="178"/>
+        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="158"/>
         <source>Create debug archive</source>
         <translation>デバッグアーカイブを作成</translation>
     </message>
@@ -5431,7 +5431,7 @@ Server replied with error: %2</source>
         <translation>&lt;p&gt;%1 デスクトップクライアント&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="557"/>
+        <location filename="../src/libsync/theme.cpp" line="559"/>
         <source>&lt;p&gt;%1 Desktop Client&lt;/p&gt;&lt;p&gt;Version %1. For more information please click &lt;a href=&apos;%2&apos;&gt;here&lt;/a&gt;.&lt;/p&gt;</source>
         <extracomment>Example text: &quot;&lt;p&gt;Nextcloud Desktop Client&lt;/p&gt;&quot; (%1 is the application name)</extracomment>
         <translation>&lt;p&gt;%1 デスクトップクライアント&lt;/p&gt;&lt;p&gt;バージョン %1. 詳細については &lt;a href=&apos;%2&apos;&gt;ここ&lt;/a&gt;をクリックしてください。&lt;/p&gt;</translation>
@@ -5442,7 +5442,7 @@ Server replied with error: %2</source>
         <translation>&lt;p&gt;&lt;small&gt;仮想ファイルシステムプラグインを利用：%1&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="574"/>
+        <location filename="../src/libsync/theme.cpp" line="576"/>
         <source>&lt;p&gt;%1 desktop client %2&lt;/p&gt;</source>
         <extracomment>Example text: &quot;&lt;p&gt;Nextcloud Desktop Client&lt;/p&gt;&quot; (%1 is the application name)</extracomment>
         <translation>&lt;p&gt;%1 デスクトップクライアント %2&lt;/p&gt;</translation>
@@ -6267,7 +6267,7 @@ Server replied with error: %2</source>
         <translation>ファイルドロップ(アップロードのみ)</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="453"/>
+        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="396"/>
         <source>Allow resharing</source>
         <translation>再共有を許可する</translation>
     </message>
@@ -6742,14 +6742,9 @@ Server replied with error: %2</source>
         <translation>アカウントスイッチャーと設定メニュー</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="615"/>
+        <location filename="../src/gui/tray/Window.qml" line="542"/>
         <source>Open local or group folders</source>
         <translation>ローカルまたはグループフォルダを開く</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/Window.qml" line="641"/>
-        <source>Open Nextcloud Talk in browser</source>
-        <translation>Nextcloud Talk をブラウザーで開く</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="661"/>
@@ -6762,12 +6757,17 @@ Server replied with error: %2</source>
         <translation>%1をブラウザーで開く</translation>
     </message>
     <message>
+        <location filename="../src/gui/tray/Window.qml" line="641"/>
+        <source>Open Nextcloud Talk in browser</source>
+        <translation>Nextcloud Talk をブラウザーで開く</translation>
+    </message>
+    <message>
         <location filename="../src/gui/tray/Window.qml" line="821"/>
         <source>Unified search results list</source>
         <translation>統合検索結果</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="896"/>
+        <location filename="../src/gui/tray/Window.qml" line="802"/>
         <source>New activities</source>
         <translation>新しいアクティビティ</translation>
     </message>
@@ -6788,7 +6788,7 @@ Server replied with error: %2</source>
 <context>
     <name>nextcloudTheme::aboutInfo()</name>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="537"/>
+        <location filename="../src/libsync/theme.cpp" line="539"/>
         <source>&lt;p&gt;&lt;small&gt;Built from Git revision &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; on %3, %4 using Qt %5, %6&lt;/small&gt;&lt;/p&gt;</source>
         <translation>&lt;p&gt;&lt;small&gt;Git リビジョン &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; から %3, %4 で Qt %5, %6 を使用してビルドされました&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
@@ -6945,7 +6945,7 @@ Server replied with error: %2</source>
         <translation>未定義の状態</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="85"/>
+        <location filename="../src/libsync/theme.cpp" line="87"/>
         <source>Sync status is unknown</source>
         <translation>同期ステータスが不明です</translation>
     </message>
@@ -6955,7 +6955,7 @@ Server replied with error: %2</source>
         <translation>同期開始を待っています</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="88"/>
+        <location filename="../src/libsync/theme.cpp" line="90"/>
         <source>Waiting to start syncing</source>
         <translation>同期開始を待機中</translation>
     </message>
@@ -6970,7 +6970,7 @@ Server replied with error: %2</source>
         <translation>同期成功</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="94"/>
+        <location filename="../src/libsync/theme.cpp" line="96"/>
         <source>Sync was successful</source>
         <translation>同期は成功しました</translation>
     </message>
@@ -6980,7 +6980,7 @@ Server replied with error: %2</source>
         <translation>同期が完了しました。一部のファイルが除外されました。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="97"/>
+        <location filename="../src/libsync/theme.cpp" line="99"/>
         <source>Sync was successful but some files were ignored</source>
         <translation>同期に成功しましたが、一部のファイルが除外されました</translation>
     </message>
@@ -6990,7 +6990,7 @@ Server replied with error: %2</source>
         <translation>同期エラー</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="100"/>
+        <location filename="../src/libsync/theme.cpp" line="102"/>
         <source>Error occurred during sync</source>
         <translation>同期中にエラーが発生しました</translation>
     </message>
@@ -7000,7 +7000,7 @@ Server replied with error: %2</source>
         <translation>設定エラー</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="103"/>
+        <location filename="../src/libsync/theme.cpp" line="105"/>
         <source>Error occurred during setup</source>
         <translation>セットアップ中にエラーが発生しました</translation>
     </message>
@@ -7015,7 +7015,7 @@ Server replied with error: %2</source>
         <translation>中止しています…</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="109"/>
+        <location filename="../src/libsync/theme.cpp" line="111"/>
         <source>Stopping sync</source>
         <translation>同期を停止しています</translation>
     </message>

@@ -229,7 +229,7 @@
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/macOS/ui/FileProviderEvictionDialog.qml" line="61"/>
+        <location filename="../src/gui/macOS/ui/FileProviderEvictionDialog.qml" line="57"/>
         <source>Reload</source>
         <translation type="unfinished"/>
     </message>
@@ -263,27 +263,27 @@
         <translation>가상 파일 설정</translation>
     </message>
     <message>
-        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="73"/>
+        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="53"/>
         <source>General settings</source>
         <translation>일반 설정</translation>
     </message>
     <message>
-        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="81"/>
+        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="61"/>
         <source>Enable virtual files</source>
         <translation>가상 파일 활성화</translation>
     </message>
     <message>
-        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="166"/>
+        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="146"/>
         <source>Advanced</source>
         <translation>고급</translation>
     </message>
     <message>
-        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="173"/>
+        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="153"/>
         <source>Signal file provider domain</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="178"/>
+        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="158"/>
         <source>Create debug archive</source>
         <translation>디버그 아카이브 만들기</translation>
     </message>
@@ -5423,7 +5423,7 @@ Server replied with error: %2</source>
         <translation>&lt;p&gt;%1 데스크톱 클라이언트&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="557"/>
+        <location filename="../src/libsync/theme.cpp" line="559"/>
         <source>&lt;p&gt;%1 Desktop Client&lt;/p&gt;&lt;p&gt;Version %1. For more information please click &lt;a href=&apos;%2&apos;&gt;here&lt;/a&gt;.&lt;/p&gt;</source>
         <extracomment>Example text: &quot;&lt;p&gt;Nextcloud Desktop Client&lt;/p&gt;&quot; (%1 is the application name)</extracomment>
         <translation type="unfinished"/>
@@ -5434,7 +5434,7 @@ Server replied with error: %2</source>
         <translation>&lt;small&gt;&lt;p&gt;가상 파일 플러그인 사용: %1&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="574"/>
+        <location filename="../src/libsync/theme.cpp" line="576"/>
         <source>&lt;p&gt;%1 desktop client %2&lt;/p&gt;</source>
         <extracomment>Example text: &quot;&lt;p&gt;Nextcloud Desktop Client&lt;/p&gt;&quot; (%1 is the application name)</extracomment>
         <translation>&lt;p&gt;%1 데스크톱 클라이언트 %2&lt;/p&gt;</translation>
@@ -6259,7 +6259,7 @@ Server replied with error: %2</source>
         <translation>파일 업로드 전용</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="453"/>
+        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="396"/>
         <source>Allow resharing</source>
         <translation>재공유 허용</translation>
     </message>
@@ -6734,14 +6734,9 @@ Server replied with error: %2</source>
         <translation>계정 전환 및 설정 메뉴</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="615"/>
+        <location filename="../src/gui/tray/Window.qml" line="542"/>
         <source>Open local or group folders</source>
         <translation>로컬 및 그룹 폴더 열기</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/Window.qml" line="641"/>
-        <source>Open Nextcloud Talk in browser</source>
-        <translation>브라우저에서 Nextcloud 토크 열기</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="661"/>
@@ -6754,12 +6749,17 @@ Server replied with error: %2</source>
         <translation>브라우저에서 %1 열기</translation>
     </message>
     <message>
+        <location filename="../src/gui/tray/Window.qml" line="641"/>
+        <source>Open Nextcloud Talk in browser</source>
+        <translation>브라우저에서 Nextcloud 토크 열기</translation>
+    </message>
+    <message>
         <location filename="../src/gui/tray/Window.qml" line="821"/>
         <source>Unified search results list</source>
         <translation>통합 검색 결과 목록</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="896"/>
+        <location filename="../src/gui/tray/Window.qml" line="802"/>
         <source>New activities</source>
         <translation>새 활동</translation>
     </message>
@@ -6780,7 +6780,7 @@ Server replied with error: %2</source>
 <context>
     <name>nextcloudTheme::aboutInfo()</name>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="537"/>
+        <location filename="../src/libsync/theme.cpp" line="539"/>
         <source>&lt;p&gt;&lt;small&gt;Built from Git revision &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; on %3, %4 using Qt %5, %6&lt;/small&gt;&lt;/p&gt;</source>
         <translation type="unfinished"/>
     </message>
@@ -6937,7 +6937,7 @@ Server replied with error: %2</source>
         <translation>상태가 정의되지 않음</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="85"/>
+        <location filename="../src/libsync/theme.cpp" line="87"/>
         <source>Sync status is unknown</source>
         <translation type="unfinished"/>
     </message>
@@ -6947,7 +6947,7 @@ Server replied with error: %2</source>
         <translation>동기화 시작을 기다리는 중</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="88"/>
+        <location filename="../src/libsync/theme.cpp" line="90"/>
         <source>Waiting to start syncing</source>
         <translation type="unfinished"/>
     </message>
@@ -6962,7 +6962,7 @@ Server replied with error: %2</source>
         <translation>동기화 성공</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="94"/>
+        <location filename="../src/libsync/theme.cpp" line="96"/>
         <source>Sync was successful</source>
         <translation type="unfinished"/>
     </message>
@@ -6972,7 +6972,7 @@ Server replied with error: %2</source>
         <translation>동기화 성공,  일부 파일은 무시되었습니다.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="97"/>
+        <location filename="../src/libsync/theme.cpp" line="99"/>
         <source>Sync was successful but some files were ignored</source>
         <translation type="unfinished"/>
     </message>
@@ -6982,7 +6982,7 @@ Server replied with error: %2</source>
         <translation>동기화 오류</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="100"/>
+        <location filename="../src/libsync/theme.cpp" line="102"/>
         <source>Error occurred during sync</source>
         <translation type="unfinished"/>
     </message>
@@ -6992,7 +6992,7 @@ Server replied with error: %2</source>
         <translation>설치 오류</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="103"/>
+        <location filename="../src/libsync/theme.cpp" line="105"/>
         <source>Error occurred during setup</source>
         <translation type="unfinished"/>
     </message>
@@ -7007,7 +7007,7 @@ Server replied with error: %2</source>
         <translation>중단 중...</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="109"/>
+        <location filename="../src/libsync/theme.cpp" line="111"/>
         <source>Stopping sync</source>
         <translation type="unfinished"/>
     </message>

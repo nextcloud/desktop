@@ -229,7 +229,7 @@
         <translation>物化項目</translation>
     </message>
     <message>
-        <location filename="../src/gui/macOS/ui/FileProviderEvictionDialog.qml" line="61"/>
+        <location filename="../src/gui/macOS/ui/FileProviderEvictionDialog.qml" line="57"/>
         <source>Reload</source>
         <translation>重新載入</translation>
     </message>
@@ -263,27 +263,27 @@
         <translation>虛擬檔案設定</translation>
     </message>
     <message>
-        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="73"/>
+        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="53"/>
         <source>General settings</source>
         <translation>一般設定</translation>
     </message>
     <message>
-        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="81"/>
+        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="61"/>
         <source>Enable virtual files</source>
         <translation>啟用虛擬檔案</translation>
     </message>
     <message>
-        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="166"/>
+        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="146"/>
         <source>Advanced</source>
         <translation>進階</translation>
     </message>
     <message>
-        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="173"/>
+        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="153"/>
         <source>Signal file provider domain</source>
         <translation>訊好檔案提供者網域</translation>
     </message>
     <message>
-        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="178"/>
+        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="158"/>
         <source>Create debug archive</source>
         <translation>建立除錯封存檔</translation>
     </message>
@@ -5432,7 +5432,7 @@ Server replied with error: %2</source>
         <translation>&lt;p&gt;%1 桌面版客戶端&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="557"/>
+        <location filename="../src/libsync/theme.cpp" line="559"/>
         <source>&lt;p&gt;%1 Desktop Client&lt;/p&gt;&lt;p&gt;Version %1. For more information please click &lt;a href=&apos;%2&apos;&gt;here&lt;/a&gt;.&lt;/p&gt;</source>
         <extracomment>Example text: &quot;&lt;p&gt;Nextcloud Desktop Client&lt;/p&gt;&quot; (%1 is the application name)</extracomment>
         <translation>&lt;p&gt;%1 桌面用戶端&lt;/p&gt;&lt;p&gt;版本 %1。要取得更多資訊，請點擊&lt;a href=&apos;%2&apos;&gt;此處&lt;/a&gt;。&lt;/p&gt;</translation>
@@ -5443,7 +5443,7 @@ Server replied with error: %2</source>
         <translation>&lt;p&gt;&lt;small&gt;正在使用虛擬檔案外掛程式：%1&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="574"/>
+        <location filename="../src/libsync/theme.cpp" line="576"/>
         <source>&lt;p&gt;%1 desktop client %2&lt;/p&gt;</source>
         <extracomment>Example text: &quot;&lt;p&gt;Nextcloud Desktop Client&lt;/p&gt;&quot; (%1 is the application name)</extracomment>
         <translation>&lt;p&gt;%1 桌面用戶端 %2&lt;/p&gt;</translation>
@@ -6268,7 +6268,7 @@ Server replied with error: %2</source>
         <translation>檔案投放（僅上傳）</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="453"/>
+        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="396"/>
         <source>Allow resharing</source>
         <translation>允許轉分享</translation>
     </message>
@@ -6743,14 +6743,9 @@ Server replied with error: %2</source>
         <translation>帳號切換器與設定選單</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="615"/>
+        <location filename="../src/gui/tray/Window.qml" line="542"/>
         <source>Open local or group folders</source>
         <translation>開啟本機或群組資料夾</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/Window.qml" line="641"/>
-        <source>Open Nextcloud Talk in browser</source>
-        <translation>在瀏覽器中開啟 Nextcloud Talk</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="661"/>
@@ -6763,12 +6758,17 @@ Server replied with error: %2</source>
         <translation>在瀏覽器中開啟 %1</translation>
     </message>
     <message>
+        <location filename="../src/gui/tray/Window.qml" line="641"/>
+        <source>Open Nextcloud Talk in browser</source>
+        <translation>在瀏覽器中開啟 Nextcloud Talk</translation>
+    </message>
+    <message>
         <location filename="../src/gui/tray/Window.qml" line="821"/>
         <source>Unified search results list</source>
         <translation>統一搜尋結果清單</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="896"/>
+        <location filename="../src/gui/tray/Window.qml" line="802"/>
         <source>New activities</source>
         <translation>新活動</translation>
     </message>
@@ -6789,7 +6789,7 @@ Server replied with error: %2</source>
 <context>
     <name>nextcloudTheme::aboutInfo()</name>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="537"/>
+        <location filename="../src/libsync/theme.cpp" line="539"/>
         <source>&lt;p&gt;&lt;small&gt;Built from Git revision &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; on %3, %4 using Qt %5, %6&lt;/small&gt;&lt;/p&gt;</source>
         <translation>&lt;p&gt;&lt;small&gt;從 Git 修訂版本 &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; 在 %3 上建置，%4 使用 Qt %5，%6&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
@@ -6946,7 +6946,7 @@ Server replied with error: %2</source>
         <translation>未定義的狀態</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="85"/>
+        <location filename="../src/libsync/theme.cpp" line="87"/>
         <source>Sync status is unknown</source>
         <translation>同步狀態位置</translation>
     </message>
@@ -6956,7 +6956,7 @@ Server replied with error: %2</source>
         <translation>等待開始同步</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="88"/>
+        <location filename="../src/libsync/theme.cpp" line="90"/>
         <source>Waiting to start syncing</source>
         <translation>正在等待開始同步</translation>
     </message>
@@ -6971,7 +6971,7 @@ Server replied with error: %2</source>
         <translation>同步完成</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="94"/>
+        <location filename="../src/libsync/theme.cpp" line="96"/>
         <source>Sync was successful</source>
         <translation>同步成功</translation>
     </message>
@@ -6981,7 +6981,7 @@ Server replied with error: %2</source>
         <translation>同步成功，部份檔案被忽略</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="97"/>
+        <location filename="../src/libsync/theme.cpp" line="99"/>
         <source>Sync was successful but some files were ignored</source>
         <translation>同步成功，但忽略了部份檔案</translation>
     </message>
@@ -6991,7 +6991,7 @@ Server replied with error: %2</source>
         <translation>同步錯誤</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="100"/>
+        <location filename="../src/libsync/theme.cpp" line="102"/>
         <source>Error occurred during sync</source>
         <translation>同步時發生錯誤</translation>
     </message>
@@ -7001,7 +7001,7 @@ Server replied with error: %2</source>
         <translation>安裝錯誤</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="103"/>
+        <location filename="../src/libsync/theme.cpp" line="105"/>
         <source>Error occurred during setup</source>
         <translation>設定時發生錯誤</translation>
     </message>
@@ -7016,7 +7016,7 @@ Server replied with error: %2</source>
         <translation>正在中止……</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="109"/>
+        <location filename="../src/libsync/theme.cpp" line="111"/>
         <source>Stopping sync</source>
         <translation>正在停止同步</translation>
     </message>
