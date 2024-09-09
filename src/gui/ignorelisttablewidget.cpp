@@ -127,6 +127,9 @@ void IgnoreListTableWidget::readIgnoreFile(const QString &file, bool readOnly)
         while (!ignores.atEnd()) {
             QString line = QString::fromUtf8(ignores.readLine());
             line.chop(1);
+            if (line == QStringLiteral("\\#*#")) {
+                continue;
+            }
             if (!line.isEmpty() && !line.startsWith("#")) {
                 bool deletable = false;
                 if (line.startsWith(']')) {
