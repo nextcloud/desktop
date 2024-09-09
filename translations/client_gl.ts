@@ -4779,7 +4779,7 @@ Este é un novo modo experimental. Se decide usalo, agradecémoslle que informe 
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="692"/>
         <source>Share link</source>
-        <translation>Compartir ligazón</translation>
+        <translation>Ligazón para compartir</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="700"/>
