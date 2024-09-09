@@ -122,7 +122,6 @@ public slots:
     void showMessage(const QString &title, const QString &message, QSystemTrayIcon::MessageIcon icon = Information);
     void showUpdateMessage(const QString &title, const QString &message, const QUrl &webUrl);
     void showTalkMessage(const QString &title, const QString &message, const QString &replyTo, const QString &token, const OCC::AccountStatePtr &accountState);
-    void setToolTip(const QString &tip);
 
     void createCallDialog(const OCC::Activity &callNotification, const OCC::AccountStatePtr accountState);
     void createEditFileLocallyLoadingDialog(const QString &fileName);

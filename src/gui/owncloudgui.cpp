@@ -32,6 +32,7 @@
 #include "theme.h"
 #include "wheelhandler.h"
 #include "syncconflictsmodel.h"
+#include "syncengine.h"
 #include "filedetails/datefieldbackend.h"
 #include "filedetails/filedetails.h"
 #include "filedetails/shareemodel.h"
@@ -383,7 +384,8 @@ void ownCloudGui::slotComputeOverallSyncStatus()
 
     SyncResult::Status overallStatus = SyncResult::Undefined;
     bool hasUnresolvedConflicts = false;
-    FolderMan::trayOverallStatus(map.values(), &overallStatus, &hasUnresolvedConflicts);
+    ProgressInfo *overallProgressInfo = nullptr;
+    FolderMan::trayOverallStatus(map.values(), &overallStatus, &hasUnresolvedConflicts, &overallProgressInfo);
 
 #ifdef BUILD_FILE_PROVIDER_MODULE
     if (!problemFileProviderAccounts.isEmpty()) {
@@ -420,16 +422,16 @@ void ownCloudGui::slotComputeOverallSyncStatus()
 #endif
 #ifdef Q_OS_WIN
         // Windows has a 128-char tray tooltip length limit.
-        trayMessage = folderMan->trayTooltipStatusString(overallStatus, hasUnresolvedConflicts, false);
+        trayMessage = folderMan->trayTooltipStatusString(overallStatus, hasUnresolvedConflicts, false, overallProgressInfo);
 #else
         QStringList allStatusStrings;
         const auto folders = map.values();
         for (const auto folder : folders) {
-            QString folderMessage = FolderMan::trayTooltipStatusString(
-                folder->syncResult().status(),
-                folder->syncResult().hasUnresolvedConflicts(),
-                folder->syncPaused());
-            allStatusStrings += tr("Folder %1: %2").arg(folder->shortGuiLocalPath(), folderMessage);
+            QString folderMessage = FolderMan::trayTooltipStatusString(folder->syncResult().status(),
+                                                                       folder->syncResult().hasUnresolvedConflicts(),
+                                                                       folder->syncPaused(),
+                                                                       folder->syncEngine().progressInfo());
+            allStatusStrings += tr("%1: %2").arg(folder->shortGuiLocalPath(), folderMessage);
         }
 #ifdef BUILD_FILE_PROVIDER_MODULE
         for (const auto &accountId : syncingFileProviderAccounts) {
@@ -502,7 +504,6 @@ void ownCloudGui::slotUpdateProgress(const QString &folder, const ProgressInfo &
 {
     Q_UNUSED(folder);
 
-    // FIXME: Lots of messages computed for nothing in this method, needs revisiting
     if (progress.status() == ProgressInfo::Discovery) {
 #if 0
         if (!progress._currentDiscoveredRemoteFolder.isEmpty()) {
@@ -520,33 +521,7 @@ void ownCloudGui::slotUpdateProgress(const QString &folder, const ProgressInfo &
         return;
     }
 
-    if (progress.totalSize() == 0) {
-        qint64 currentFile = progress.currentFile();
-        qint64 totalFileCount = qMax(progress.totalFiles(), currentFile);
-        QString msg;
-        if (progress.trustEta()) {
-            msg = tr("Syncing %1 of %2 (%3 left)")
-                      .arg(currentFile)
-                      .arg(totalFileCount)
-                      .arg(Utility::durationToDescriptiveString2(progress.totalProgress().estimatedEta));
-        } else {
-            msg = tr("Syncing %1 of %2")
-                      .arg(currentFile)
-                      .arg(totalFileCount);
-        }
-        //_actionStatus->setText(msg);
-    } else {
-        QString totalSizeStr = Utility::octetsToString(progress.totalSize());
-        QString msg;
-        if (progress.trustEta()) {
-            msg = tr("Syncing %1 (%2 left)")
-                      .arg(totalSizeStr, Utility::durationToDescriptiveString2(progress.totalProgress().estimatedEta));
-        } else {
-            msg = tr("Syncing %1")
-                      .arg(totalSizeStr);
-        }
-        //_actionStatus->setText(msg);
-    }
+    slotComputeOverallSyncStatus();
 
     if (!progress._lastCompletedItem.isEmpty()) {
 
