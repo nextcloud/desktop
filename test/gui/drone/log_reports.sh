@@ -38,6 +38,20 @@ check_log "stacktrace.log" "Stacktrace"
 if [[ -d "${REPORT_DIR}/screenshots" ]]; then
     echo -e "Screenshots:"
     for i in "${REPORT_DIR}"/screenshots/*.png; do
-        echo -e "\t - ${LOG_URL_PATH}/screenshots/$(basename "$i")"
+        filename=$(basename "$i")
+        if [ "$filename" != "*.png" ]; then
+            echo -e "\t - ${LOG_URL_PATH}/screenshots/$filename"
+        fi
+    done
+fi
+
+# check screenrecords
+if [[ -d "${REPORT_DIR}/screenrecords" ]]; then
+    echo -e "Videos:"
+    for i in "${REPORT_DIR}"/screenrecords/*.mp4; do
+        filename=$(basename "$i")
+        if [ "$filename" != "*.mp4" ]; then
+            echo -e "\t - ${LOG_URL_PATH}/screenrecords/$filename"
+        fi
     done
 fi

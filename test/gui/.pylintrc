@@ -40,6 +40,7 @@ variable-naming-style=snake_case
 [VARIABLES]
 additional-builtins=
     squish,
+    squishinfo,
     test,
     testSettings,
     OnFeatureStart,

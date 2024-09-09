@@ -74,6 +74,7 @@ CONFIG_ENV_MAP = {
     'clientConfigDir': 'CLIENT_CONFIG_DIR',
     'guiTestReportDir': 'GUI_TEST_REPORT_DIR',
     'ocis': 'OCIS',
+    'screenRecordOnFailure': 'SCREEN_RECORD_ON_FAILURE',
 }
 
 DEFAULT_PATH_CONFIG = {
@@ -95,6 +96,7 @@ CONFIG = {
     'clientConfigDir': getConfigHome(),
     'guiTestReportDir': os.path.abspath('../reports'),
     'ocis': False,
+    'screenRecordOnFailure': False,
 }
 CONFIG.update(DEFAULT_PATH_CONFIG)
 
@@ -115,7 +117,7 @@ def init_config():
                 if key in CONFIG_ENV_MAP:
                     value = cfg.get('DEFAULT', CONFIG_ENV_MAP[key])
                     if value:
-                        if key == 'ocis':
+                        if key == 'ocis' or key == 'screenRecordOnFailure':
                             CONFIG[key] = value == 'true'
                         else:
                             CONFIG[key] = value
@@ -125,7 +127,7 @@ def init_config():
     # read and override configs from environment variables
     for key, value in CONFIG_ENV_MAP.items():
         if os.environ.get(value):
-            if key == 'ocis':
+            if key == 'ocis' or key == 'screenRecordOnFailure':
                 CONFIG[key] = os.environ.get(value) == 'true'
             else:
                 CONFIG[key] = os.environ.get(value)

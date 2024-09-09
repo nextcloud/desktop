@@ -100,6 +100,8 @@ def startClient():
         + " --logdebug"
         + " --logflush"
     )
+    if get_config("screenRecordOnFailure"):
+        test.startVideoCapture()
 
 
 def getPollingInterval():

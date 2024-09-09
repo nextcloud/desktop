@@ -331,6 +331,7 @@ def gui_tests(squish_parameters = "", server_type = "oc10"):
             "STACKTRACE_FILE": "%s/stacktrace.log" % dir["guiTestReport"],
             "PLAYWRIGHT_BROWSERS_PATH": "%s/.playwright" % dir["base"],
             "OWNCLOUD_CORE_DUMP": 1,
+            "SCREEN_RECORD_ON_FAILURE": False,
             # allow to use any available pnpm version
             "COREPACK_ENABLE_STRICT": 0,
         },

@@ -17,6 +17,7 @@
 # manual for a complete reference of the available API.
 import shutil
 import os
+import glob
 from urllib import request, error
 from datetime import datetime
 
@@ -141,6 +142,41 @@ def scenario_failed():
     )
 
 
+def get_screenshot_name(title):
+    return title.replace(" ", "_").replace("/", "_").strip(".") + ".png"
+
+
+def get_screenrecord_name(title):
+    return title.replace(" ", "_").replace("/", "_").strip(".") + ".mp4"
+
+
+def save_screenrecord(filename):
+    try:
+        # do not throw if stopVideoCapture() fails
+        test.stopVideoCapture()
+    except:
+        test.log("Failed to stop screen recording")
+
+    if not (video_dir := squishinfo.resultDir):
+        video_dir = squishinfo.testCase
+    else:
+        test_case = "/".join(squishinfo.testCase.split("/")[-2:])
+        video_dir = os.path.join(video_dir, test_case)
+    video_dir = os.path.join(video_dir, "attachments")
+
+    if scenario_failed():
+        video_files = glob.glob(f"{video_dir}/**/*.mp4", recursive=True)
+        screenrecords_dir = os.path.join(
+            get_config("guiTestReportDir"), "screenrecords"
+        )
+        if not os.path.exists(screenrecords_dir):
+            os.makedirs(screenrecords_dir)
+        if video_files:
+            shutil.move(video_files[0], os.path.join(screenrecords_dir, filename))
+
+    shutil.rmtree(prefix_path_namespace(video_dir))
+
+
 # runs after every scenario
 # Order: 1
 @OnScenarioEnd
@@ -151,7 +187,7 @@ def hook(context):
     # capture a screenshot if there is error or test failure in the current scenario execution
     if scenario_failed() and os.getenv("CI") and isLinux():
         # scenario name can have "/" which is invalid filename
-        filename = context.title.replace(" ", "_").replace("/", "_").strip(".") + ".png"
+        filename = get_screenshot_name(context.title)
         directory = os.path.join(get_config("guiTestReportDir"), "screenshots")
         if not os.path.exists(directory):
             os.makedirs(directory)
@@ -159,6 +195,11 @@ def hook(context):
             squish.saveDesktopScreenshot(os.path.join(directory, filename))
         except:
             test.log("Failed to save screenshot")
+
+    # check video report
+    if get_config("screenRecordOnFailure"):
+        filename = get_screenrecord_name(context.title)
+        save_screenrecord(filename)
 
     # teardown accounts and configs
     teardown_client()
