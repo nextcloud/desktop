@@ -239,7 +239,7 @@
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderFastEnumerationSettings.qml" line="37"/>
         <source>Enable fast sync</source>
-        <translation>Schnelle Synchronisierung altivieren</translation>
+        <translation>Schnelle Synchronisierung aktivieren</translation>
     </message>
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderFastEnumerationSettings.qml" line="52"/>
