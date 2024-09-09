@@ -1610,18 +1610,21 @@ void FolderMan::slotLeaveShare(const QString &localFile, const QByteArray &folde
 }
 
 void FolderMan::trayOverallStatus(const QList<Folder *> &folders,
-    SyncResult::Status *status, bool *unresolvedConflicts)
+                                  SyncResult::Status *status,
+                                  bool *unresolvedConflicts,
+                                  ProgressInfo **const overallProgressInfo)
 {
     *status = SyncResult::Undefined;
     *unresolvedConflicts = false;
 
     const auto cnt = folders.count();
 
-    // if one folder: show the state of the one folder.
+    // if one folder: show the state of the one folder along with the sync status.
     // if more folders:
     // if one of them has an error -> show error
     // if one is paused, but others ok, show ok
     // do not show "problem" in the tray
+    // and do not show sync status
     //
     if (cnt == 1) {
         const auto folder = folders.at(0);
@@ -1644,6 +1647,7 @@ void FolderMan::trayOverallStatus(const QList<Folder *> &folders,
                 }
             }
             *unresolvedConflicts = syncResult.hasUnresolvedConflicts();
+            *overallProgressInfo = folder->syncEngine().progressInfo();
         }
     } else {
         auto errorsSeen = false;
@@ -1710,8 +1714,7 @@ void FolderMan::trayOverallStatus(const QList<Folder *> &folders,
     }
 }
 
-QString FolderMan::trayTooltipStatusString(
-    SyncResult::Status syncStatus, bool hasUnresolvedConflicts, bool paused)
+QString FolderMan::trayTooltipStatusString(SyncResult::Status syncStatus, bool hasUnresolvedConflicts, bool paused, ProgressInfo *const progress)
 {
     QString folderMessage;
     switch (syncStatus) {
@@ -1725,6 +1728,35 @@ QString FolderMan::trayTooltipStatusString(
         folderMessage = tr("Preparing for sync.");
         break;
     case SyncResult::SyncRunning:
+        if (progress && progress->status() == ProgressInfo::Propagation) {
+            const auto estimatedEta = progress->totalProgress().estimatedEta;
+            if (progress->totalSize() == 0) {
+                qint64 currentFile = progress->currentFile();
+                qint64 totalFileCount = qMax(progress->totalFiles(), currentFile);
+                if (progress->trustEta()) {
+                    if (estimatedEta == 0) {
+                        folderMessage = tr("Syncing %1 of %2 (A few seconds left)").arg(currentFile).arg(totalFileCount);
+                    } else {
+                        folderMessage =
+                            tr("Syncing %1 of %2 (%3 left)").arg(currentFile).arg(totalFileCount).arg(Utility::durationToDescriptiveString1(estimatedEta));
+                    }
+                } else {
+                    folderMessage = tr("Syncing %1 of %2").arg(currentFile).arg(totalFileCount);
+                }
+            } else {
+                QString totalSizeStr = Utility::octetsToString(progress->totalSize());
+                if (progress->trustEta()) {
+                    if (estimatedEta == 0) {
+                        folderMessage = tr("Syncing %1 (A few seconds left)").arg(totalSizeStr, Utility::durationToDescriptiveString1(estimatedEta));
+                    } else {
+                        folderMessage = tr("Syncing %1 (%2 left)").arg(totalSizeStr, Utility::durationToDescriptiveString1(estimatedEta));
+                    }
+                } else {
+                    folderMessage = tr("Syncing %1").arg(totalSizeStr);
+                }
+            }
+            break;
+        }
         folderMessage = tr("Sync is running.");
         break;
     case SyncResult::Success:
