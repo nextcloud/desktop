@@ -2288,6 +2288,36 @@ Má chuireann tú na comhaid ar ais, déanfar iad a íoslódáil arís ón bhfre
         <translation>Ag ullmhú le haghaidh sioncronaithe.</translation>
     </message>
     <message>
+        <location filename="../src/gui/folderman.cpp" line="1738"/>
+        <source>Syncing %1 of %2 (A few seconds left)</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/folderman.cpp" line="1741"/>
+        <source>Syncing %1 of %2 (%3 left)</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/folderman.cpp" line="1744"/>
+        <source>Syncing %1 of %2</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/folderman.cpp" line="1750"/>
+        <source>Syncing %1 (A few seconds left)</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/folderman.cpp" line="1752"/>
+        <source>Syncing %1 (%2 left)</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/folderman.cpp" line="1755"/>
+        <source>Syncing %1</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/folderman.cpp" line="1611"/>
         <source>Sync is running.</source>
         <translation>Tá Sync ar siúl.</translation>
@@ -5908,17 +5938,22 @@ D&apos;fhreagair an freastalaí le hearráid: % 2</translation>
         <translation>Níl aon fhillteán sioncronaithe cumraithe</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="436"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="434"/>
+        <source>%1: %2</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/owncloudgui.cpp" line="438"/>
         <source>macOS VFS for %1: Sync is running.</source>
         <translation>macOS VFS le haghaidh % 1: Tá Sync ag rith.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="439"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="441"/>
         <source>macOS VFS for %1: Last sync was successful.</source>
         <translation>macOS VFS le haghaidh % 1: D&apos;éirigh leis an sioncronú deireanach.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="442"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="444"/>
         <source>macOS VFS for %1: A problem was encountered.</source>
         <translation>macOS VFS le haghaidh % 1: Thángthas ar fhadhb.</translation>
     </message>

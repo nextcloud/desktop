@@ -2287,6 +2287,36 @@ Dosyaları geri yüklerseniz, sunucudan yeniden yüklenirler.</translation>
         <translation>Eşitleme için hazırlanılıyor.</translation>
     </message>
     <message>
+        <location filename="../src/gui/folderman.cpp" line="1738"/>
+        <source>Syncing %1 of %2 (A few seconds left)</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/folderman.cpp" line="1741"/>
+        <source>Syncing %1 of %2 (%3 left)</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/folderman.cpp" line="1744"/>
+        <source>Syncing %1 of %2</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/folderman.cpp" line="1750"/>
+        <source>Syncing %1 (A few seconds left)</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/folderman.cpp" line="1752"/>
+        <source>Syncing %1 (%2 left)</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/folderman.cpp" line="1755"/>
+        <source>Syncing %1</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/folderman.cpp" line="1611"/>
         <source>Sync is running.</source>
         <translation>Eşitleme çalışıyor.</translation>
@@ -5907,17 +5937,22 @@ Sunucunun verdiği hata yanıtı: %2</translation>
         <translation>Herhangi bir eşitleme klasörü yapılandırılmamış</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="436"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="434"/>
+        <source>%1: %2</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/owncloudgui.cpp" line="438"/>
         <source>macOS VFS for %1: Sync is running.</source>
         <translation>%1 için macOS VFS: Eşitleniyor.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="439"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="441"/>
         <source>macOS VFS for %1: Last sync was successful.</source>
         <translation>%1 için macOS VFS: Son eşitleme sorunsuz tamamlandı.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="442"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="444"/>
         <source>macOS VFS for %1: A problem was encountered.</source>
         <translation>%1 için macOS VFS: Bir sorun çıktı.</translation>
     </message>

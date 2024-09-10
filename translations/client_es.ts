@@ -2290,6 +2290,36 @@ Si restauras los archivos, serán descargados de nuevo del servidor.</translatio
         <translation>Preparándose para sincronizar.</translation>
     </message>
     <message>
+        <location filename="../src/gui/folderman.cpp" line="1738"/>
+        <source>Syncing %1 of %2 (A few seconds left)</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/folderman.cpp" line="1741"/>
+        <source>Syncing %1 of %2 (%3 left)</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/folderman.cpp" line="1744"/>
+        <source>Syncing %1 of %2</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/folderman.cpp" line="1750"/>
+        <source>Syncing %1 (A few seconds left)</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/folderman.cpp" line="1752"/>
+        <source>Syncing %1 (%2 left)</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/folderman.cpp" line="1755"/>
+        <source>Syncing %1</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/folderman.cpp" line="1611"/>
         <source>Sync is running.</source>
         <translation>Sincronización en funcionamiento.</translation>
@@ -5904,17 +5934,22 @@ El servidor respondió con el error: %2</translation>
         <translation>No hay carpetas sincronizado configuradas</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="436"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="434"/>
+        <source>%1: %2</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/owncloudgui.cpp" line="438"/>
         <source>macOS VFS for %1: Sync is running.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="439"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="441"/>
         <source>macOS VFS for %1: Last sync was successful.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="442"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="444"/>
         <source>macOS VFS for %1: A problem was encountered.</source>
         <translation type="unfinished"/>
     </message>
