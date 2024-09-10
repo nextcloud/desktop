@@ -32,14 +32,14 @@ Pane {
         target: accountSettings
 
         function onFocusFirst() {
-            listView.currentIndex = 0;
+            listView.forceActiveFocus(Qt.TabFocusReason);
         }
 
         function onFocusLast() {
             if (addSyncButton.enabled) {
                 addSyncButton.forceActiveFocus(Qt.TabFocusReason);
             } else {
-                listView.currentIndex = listView.count - 1;
+                addSyncButton.nextItemInFocusChain(false).forceActiveFocus(Qt.TabFocusReason);
             }
         }
     }

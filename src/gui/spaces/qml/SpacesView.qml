@@ -40,11 +40,11 @@ Pane {
             target: spacesBrowser
 
             function onFocusFirst() {
-                listView.currentIndex = 0;
+                listView.forceActiveFocus(Qt.TabFocusReason);
             }
 
             function onFocusLast() {
-                listView.currentIndex = listView.count - 1;
+                listView.forceActiveFocus(Qt.TabFocusReason);
             }
         }
 
