@@ -209,6 +209,9 @@ def gui_test_pipeline(ctx):
             "--tags ~@skipOnLinux",
         ]
 
+        if not "full-ci" in ctx.build.title.lower() and ctx.build.event == "pull_request":
+            squish_parameters.append("--abortOnFail")
+
         if params.get("skip", False):
             continue
         if ctx.build.event == "pull_request" and params.get("skip_in_pr", False) and not "full-ci" in ctx.build.title.lower():
