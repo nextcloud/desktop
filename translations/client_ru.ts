@@ -3024,7 +3024,12 @@ Note that this selects only what pool upgrades are taken from, and that there ar
 - daily: contains versions created daily only for testing and development
 %1
 Downgrading versions is not possible immediately: changing from beta to stable means waiting for the new stable version.</source>
-        <translation type="unfinished"/>
+        <translation>Канал определяет, какие обновления будут предложены для установки:
+- stable: содержит проверенные версии, считающиеся надежными
+- beta: содержит версии с новыми функциями, которые могут быть не полностью протестированы
+- daily: содержит версии, создаваемые ежедневно только для тестирования и разработки
+%1
+Понижение версии невозможно немедленно: переход с beta на stable означает ожидание новой стабильной версии.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="364"/>
@@ -3231,7 +3236,7 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="103"/>
         <source>The file &quot;%1&quot; could not be synced because the name contains characters which are not allowed on the server.</source>
-        <translation type="unfinished"/>
+        <translation>Файл &quot;%1&quot; не может быть синхронизирован, так как его имя содержит символы, недопустимые на сервере.</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="114"/>
