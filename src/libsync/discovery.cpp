@@ -1698,9 +1698,11 @@ void ProcessDirectoryJob::processFileFinalize(
         ASSERT(_dirItem && _dirItem->_instruction == CSYNC_INSTRUCTION_RENAME);
         // This is because otherwise subitems are not updated!  (ideally renaming a directory could
         // update the database for all items!  See PropagateDirectory::slotSubJobsFinished)
-        const auto adjustedOriginalPath = _discoveryData->adjustRenamedPath(path._original, SyncFileItem::Down);
-        Q_UNUSED(adjustedOriginalPath)
-        _discoveryData->_renamedItemsLocal.insert(path._original, path._target);
+        if (_dirItem->_direction == SyncFileItem::Direction::Down) {
+            _discoveryData->_renamedItemsRemote.insert(path._original, path._target);
+        } else {
+            _discoveryData->_renamedItemsLocal.insert(path._original, path._target);
+        }
         item->_instruction = CSYNC_INSTRUCTION_RENAME;
         item->_renameTarget = path._target;
         item->_direction = _dirItem->_direction;
