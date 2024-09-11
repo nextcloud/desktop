@@ -93,7 +93,7 @@ QtObject {
     property int folderStateIndicatorSize: 16
     property int accountLabelWidth: 128
 
-    property int accountDropDownCaretSize: 20
+    property int accountDropDownCaretSize: 10
     property int accountDropDownCaretMargin: 8
 
     property int trayFoldersMenuButtonStateIndicatorBottomOffset: 5
