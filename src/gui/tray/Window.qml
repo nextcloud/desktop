@@ -505,20 +505,15 @@ ApplicationWindow {
                             }
                         }
 
-                        ColorOverlay {
-                            cached: true
-                            width: source.width
-                            height: source.height
-                            source: Image {
-                                Layout.alignment: Qt.AlignRight
-                                verticalAlignment: Qt.AlignCenter
-                                Layout.margins: Style.accountDropDownCaretMargin
-                                source:  "image://svgimage-custom-color/caret-down.svg/"
-                                sourceSize.width: Style.accountDropDownCaretSize
-                                sourceSize.height: Style.accountDropDownCaretSize
-                                Accessible.role: Accessible.PopupMenu
-                                Accessible.name: qsTr("Account switcher and settings menu")
-                            }
+                        Image {
+                            Layout.alignment: Qt.AlignRight
+                            verticalAlignment: Qt.AlignCenter
+                            Layout.margins: Style.accountDropDownCaretMargin
+                            source:  "image://svgimage-custom-color/caret-down.svg/" + palette.windowText
+                            sourceSize.width: Style.accountDropDownCaretSize
+                            sourceSize.height: Style.accountDropDownCaretSize
+                            Accessible.role: Accessible.PopupMenu
+                            Accessible.name: qsTr("Account switcher and settings menu")
                         }
                     }
                 }
@@ -564,7 +559,7 @@ ApplicationWindow {
 
                 HeaderButton {
                     id: trayWindowAppsButton
-                    icon.source: "image://svgimage-custom-color/more-apps.svg/"
+                    icon.source: "image://svgimage-custom-color/more-apps.svg/" + palette.windowText
 
                     onClicked: {
                         if(appsMenuListView.count <= 0) {
@@ -615,6 +610,7 @@ ApplicationWindow {
                                     text: model.appName
                                     font.pixelSize: Style.topLinePixelSize
                                     icon.source: model.appIconUrl
+                                    icon.color: palette.windowText
                                     onTriggered: UserAppsModel.openAppUrl(appUrl)
                                     hoverEnabled: true
                                     Accessible.role: Accessible.MenuItem
