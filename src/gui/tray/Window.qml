@@ -324,11 +324,12 @@ ApplicationWindow {
                                 spacing: 0
 
                                 Image {
-                                    Layout.leftMargin: 12
-                                    verticalAlignment: Qt.AlignCenter
-                                    source: "image://svgimage-custom-color/add.svg"
-                                    sourceSize.width: Style.headerButtonIconSize
-                                    sourceSize.height: Style.headerButtonIconSize
+                                    Layout.leftMargin: Style.accountIconsMenuMargin
+                                    verticalAlignment: Qt.AlignVCenter
+                                    horizontalAlignment: Qt.AlignCenter
+                                    source: "image://svgimage-custom-color/add.svg/" + palette.windowText
+                                    sourceSize.width: Style.addButtonIconSize
+                                    sourceSize.height: Style.addButtonIconSize
                                 }
                                 EnforcedPlainTextLabel {
                                     Layout.leftMargin: 14

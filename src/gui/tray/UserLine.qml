@@ -48,7 +48,7 @@ AbstractButton {
 
         Image {
             id: accountAvatar
-            Layout.leftMargin: 7
+            Layout.leftMargin: Style.accountIconsMenuMargin
             verticalAlignment: Qt.AlignCenter
             cache: false
             source: model.avatar !== "" ? model.avatar : Theme.darkMode ? "image://avatars/fallbackWhite" : "image://avatars/fallbackBlack"
@@ -148,7 +148,7 @@ AbstractButton {
 
             Image {
                 anchors.fill: parent
-                source: "image://svgimage-custom-color/more.svg/"
+                source: "image://svgimage-custom-color/more.svg/" + palette.windowText
                 fillMode: Image.PreserveAspectFit
             }
 
