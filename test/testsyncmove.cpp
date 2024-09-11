@@ -1251,6 +1251,98 @@ private slots:
         QCOMPARE(counter.nMOVE, 2);
         QCOMPARE(counter.nMKCOL, 0);
     }
+
+    void testMultipleRenameFromServer()
+    {
+        FakeFolder fakeFolder{{}};
+
+        fakeFolder.remoteModifier().mkdir("root");
+        fakeFolder.remoteModifier().mkdir("root/stable");
+        fakeFolder.remoteModifier().mkdir("root/stable/folder to move");
+        fakeFolder.remoteModifier().insert("root/stable/folder to move/index.txt");
+        fakeFolder.remoteModifier().mkdir("root/stable/move");
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+
+        fakeFolder.remoteModifier().rename("root", "root test");
+        fakeFolder.remoteModifier().rename("root test/stable/folder to move", "root test/stable/folder");
+        fakeFolder.remoteModifier().rename("root test/stable/folder", "root test/stable/move/folder");
+        OperationCounter counter;
+        fakeFolder.setServerOverride(counter.functor());
+
+        connect(&fakeFolder.syncEngine(), &SyncEngine::aboutToPropagate, [&](SyncFileItemVector &items) {
+            SyncFileItemPtr root, stable, folder, file, move;
+            for (auto &item : items) {
+                qDebug() << item->_file;
+                if (item->_file == "root") {
+                    root = item;
+                } else if (item->_file == "root test/stable") {
+                    stable = item;
+                } else if (item->_file == "root test/stable/move") {
+                    move = item;
+                } else if (item->_file == "root/stable/folder to move") {
+                    folder = item;
+                } else if (item->_file == "root test/stable/move/folder/index.txt") {
+                    file = item;
+                }
+            }
+
+            QVERIFY(root);
+            QCOMPARE(root->_instruction, CSYNC_INSTRUCTION_RENAME);
+            QCOMPARE(root->_direction, SyncFileItem::Down);
+
+            QVERIFY(stable);
+            QCOMPARE(stable->_instruction, CSYNC_INSTRUCTION_RENAME);
+            QCOMPARE(stable->_direction, SyncFileItem::Down);
+
+            QVERIFY(move);
+            QCOMPARE(move->_instruction, CSYNC_INSTRUCTION_RENAME);
+            QCOMPARE(move->_direction, SyncFileItem::Down);
+
+            QVERIFY(folder);
+            QCOMPARE(folder->_instruction, CSYNC_INSTRUCTION_RENAME);
+            QCOMPARE(folder->_direction, SyncFileItem::Down);
+
+            QVERIFY(file);
+            QCOMPARE(file->_instruction, CSYNC_INSTRUCTION_RENAME);
+            QCOMPARE(file->_direction, SyncFileItem::Down);
+        });
+
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(counter.nDELETE, 0);
+        QCOMPARE(counter.nGET, 0);
+        QCOMPARE(counter.nPUT, 0);
+        QCOMPARE(counter.nMOVE, 0);
+        QCOMPARE(counter.nMKCOL, 0);
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+    }
+
+    void testMultipleRenameFromLocal()
+    {
+        FakeFolder fakeFolder{{}};
+
+        fakeFolder.remoteModifier().mkdir("root");
+        fakeFolder.remoteModifier().mkdir("root/stable");
+        fakeFolder.remoteModifier().mkdir("root/stable/folder to move");
+        fakeFolder.remoteModifier().insert("root/stable/folder to move/index.txt");
+        fakeFolder.remoteModifier().mkdir("root/stable/move");
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+
+        fakeFolder.localModifier().rename("root", "root test");
+        fakeFolder.localModifier().rename("root test/stable/folder to move", "root test/stable/folder");
+        fakeFolder.localModifier().rename("root test/stable/folder", "root test/stable/move/folder");
+        OperationCounter counter;
+        fakeFolder.setServerOverride(counter.functor());
+
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(counter.nDELETE, 0);
+        QCOMPARE(counter.nGET, 0);
+        QCOMPARE(counter.nPUT, 0);
+        QCOMPARE(counter.nMOVE, 2);
+        QCOMPARE(counter.nMKCOL, 0);
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+    }
 };
 
 QTEST_GUILESS_MAIN(TestSyncMove)
