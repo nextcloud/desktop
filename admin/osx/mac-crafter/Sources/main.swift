@@ -15,10 +15,8 @@
 import ArgumentParser
 import Foundation
 
-struct MacCrafter: ParsableCommand {
-    static let configuration = CommandConfiguration(
-        abstract: "A tool to easily build a fully-functional Nextcloud Desktop Client for macOS."
-    )
+struct Build: ParsableCommand {
+    static let configuration = CommandConfiguration(abstract: "Client building script")
 
     enum MacCrafterError: Error {
         case failedEnumeration(String)
@@ -213,6 +211,30 @@ struct MacCrafter: ParsableCommand {
 
         print("Done!")
     }
+}
+
+struct Codesign: ParsableCommand {
+    static let configuration = CommandConfiguration(abstract: "Codesigning script for the client.")
+
+    @Argument(help: "Path to the Nextcloud Desktop Client app bundle.")
+    var appBundlePath = "\(FileManager.default.currentDirectoryPath)/product/Nextcloud.app"
+
+    @Option(name: [.short, .long], help: "Code signing identity for desktop client and libs.")
+    var codeSignIdentity: String
+
+    mutating func run() throws {
+        try codesignClientAppBundle(at: appBundlePath, withCodeSignIdentity: codeSignIdentity)
+    }
+}
+
+struct MacCrafter: ParsableCommand {
+    static let configuration = CommandConfiguration(
+        abstract: "A tool to easily build a fully-functional Nextcloud Desktop Client for macOS.",
+        subcommands: [Build.self, Codesign.self],
+        defaultSubcommand: Build.self
+    )
+
+
 }
 
 MacCrafter.main()
