@@ -194,14 +194,11 @@ struct MacCrafter: ParsableCommand {
             throw MacCrafterError.craftError("Error crafting Nextcloud Desktop Client.")
         }
 
-        guard let codeSignIdentity else {
-            print("Crafted Nextcloud Desktop Client. Not codesigned.")
-            return
-        }
-
-        print("Code-signing Nextcloud Desktop Client libraries and frameworks...")
         let clientAppDir = "\(clientBuildDir)/image-\(buildType)-master/\(appName).app"
-        try codesignClientAppBundle(at: clientAppDir, withCodeSignIdentity: codeSignIdentity)
+        if let codeSignIdentity {
+            print("Code-signing Nextcloud Desktop Client libraries and frameworks...")
+            try codesignClientAppBundle(at: clientAppDir, withCodeSignIdentity: codeSignIdentity)
+        }
 
         print("Placing Nextcloud Desktop Client in \(productPath)...")
         if !fm.fileExists(atPath: productPath) {
