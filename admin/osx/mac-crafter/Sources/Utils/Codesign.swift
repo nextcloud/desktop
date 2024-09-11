@@ -33,7 +33,7 @@ func isAppExtension(_ path: String) -> Bool {
 func codesign(
     identity: String,
     path: String,
-    options: String = "--timestamp --force --preserve-metadata=entitlements --verbose=4 --options runtime"
+    options: String = "--timestamp --force --preserve-metadata=entitlements --verbose=4 --options runtime --deep"
 ) throws {
     print("Code-signing \(path)...")
     let command = "codesign -s \"\(identity)\" \(options) \(path)"
@@ -82,7 +82,7 @@ func codesignClientAppBundle(
     let sparkleFrameworkPath = "\(clientContentsDir)/Frameworks/Sparkle.framework"
     try codesign(identity: codeSignIdentity,
                  path: "\(sparkleFrameworkPath)/Resources/Autoupdate.app/Contents/MacOS/*",
-                 options: "--timestamp --force --verbose=4 --options runtime")
+                 options: "--timestamp --force --verbose=4 --options runtime --deep")
 
     print("Re-codesigning Sparkle library...")
     try codesign(identity: codeSignIdentity, path: "\(sparkleFrameworkPath)/Sparkle")
@@ -106,7 +106,7 @@ func codesignClientAppBundle(
                                        encoding: .utf8)
         try codesign(identity: codeSignIdentity,
                      path: appExtensionPath,
-                     options: "--timestamp --force --verbose=4 --options runtime --entitlements \(tmpEntitlementXmlPath)")
+                     options: "--timestamp --force --verbose=4 --options runtime --deep --entitlements \(tmpEntitlementXmlPath)")
     }
 
     // Now we do the final codesign bit
