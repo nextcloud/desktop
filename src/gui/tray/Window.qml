@@ -508,7 +508,8 @@ ApplicationWindow {
                         Image {
                             Layout.alignment: Qt.AlignRight
                             verticalAlignment: Qt.AlignCenter
-                            Layout.margins: Style.accountDropDownCaretMargin
+                            horizontalAlignment: Qt.AlignRight
+                            Layout.leftMargin: Style.accountDropDownCaretMargin
                             source:  "image://svgimage-custom-color/caret-down.svg/" + palette.windowText
                             sourceSize.width: Style.accountDropDownCaretSize
                             sourceSize.height: Style.accountDropDownCaretSize
