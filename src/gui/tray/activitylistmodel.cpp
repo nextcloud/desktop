@@ -226,9 +226,9 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
     };
 
     const auto generateIconPath = [&]() {
-        auto colorIconPath = QStringLiteral("image://svgimage-custom-color/");//role == DarkIconRole ? QStringLiteral("qrc:///client/theme/white/") : QStringLiteral("qrc:///client/theme/black/");
+        auto colorIconPath = role == DarkIconRole ? QStringLiteral("image://svgimage-custom-color/white/") : QStringLiteral("image://svgimage-custom-color/black/");
         if (a._type == Activity::NotificationType && !a._talkNotificationData.userAvatar.isEmpty()) {
-            return QStringLiteral("image://svgimage-custom-color/talk-app.svg");
+            return QStringLiteral("image://svgimage-custom-color/talk-bordered.svg");
         } else if (a._type == Activity::SyncResultType) {
             colorIconPath.append("state-error.svg");
             return colorIconPath;

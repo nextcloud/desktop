@@ -114,7 +114,7 @@ HeaderButton {
 
                 cache: true
 
-                source: "image://svgimage-custom-color/folder.svg/"
+                source: "image://svgimage-custom-color/folder.svg/" + palette.windowText
                 sourceSize {
                     width: imageWidth
                     height: imageHeight
@@ -144,7 +144,7 @@ HeaderButton {
 
                     cache: true
 
-                    source: "image://svgimage-custom-color/caret-down.svg/"
+                    source: "image://svgimage-custom-color/caret-down.svg/" + palette.windowText
                     sourceSize {
                         width: openLocalFolderButtonCaretIconLoader.imageWidth
                         height: openLocalFolderButtonCaretIconLoader.imageHeight
@@ -208,9 +208,9 @@ HeaderButton {
                         subline: model.modelData.parentPath
                         width: foldersMenuListView.width
                         height: Style.standardPrimaryButtonHeight
-                        backgroundIconSource: "image://svgimage-custom-color/folder.svg/"
+                        backgroundIconSource: "image://svgimage-custom-color/folder.svg/" + palette.windowText
                         iconSource: isGroupFolder
-                                    ? "image://svgimage-custom-color/account-group.svg/"
+                                    ? "image://svgimage-custom-color/account-group.svg/" + palette.windowText
                                     : ""
 
                         onTriggered: {
