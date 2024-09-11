@@ -74,6 +74,16 @@ func codesignClientAppBundle(
     try recursivelyCodesign(path: "\(clientContentsDir)/PlugIns", identity: codeSignIdentity)
     try recursivelyCodesign(path: "\(clientContentsDir)/Resources", identity: codeSignIdentity)
 
-    print("Code-signing Nextcloud Desktop Client app bundle...")
-    try codesign(identity: codeSignIdentity, path: clientAppDir)
+    // Time to fix notarisation issues.
+    // Multiple components of the app will now have the get-task-allow entitlements.
+    // We need to strip these out manually.
+
+    print("Code-signing Sparkle autoupdater app (without entitlements)...")
+    let sparkleFrameworkPath = "\(clientContentsDir)/Frameworks/Sparkle.framework"
+    try codesign(identity: codeSignIdentity,
+                 path: "\(sparkleFrameworkPath)/Resources/Autoupdate.app/Contents/MacOS/*",
+                 options: "--timestamp --force --verbose=4 --options runtime")
+
+    print("Re-codesigning Sparkle library...")
+    try codesign(identity: codeSignIdentity, path: "\(sparkleFrameworkPath)/Sparkle")
 }
