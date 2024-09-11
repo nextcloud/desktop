@@ -86,4 +86,26 @@ func codesignClientAppBundle(
 
     print("Re-codesigning Sparkle library...")
     try codesign(identity: codeSignIdentity, path: "\(sparkleFrameworkPath)/Sparkle")
+
+    print("Code-signing app extensions (removing get-task-allow entitlements)...")
+    let fm = FileManager.default
+    let appExtensionPaths =
+        try fm.contentsOfDirectory(atPath: "\(clientContentsDir)/PlugIns").filter(isAppExtension)
+    for appExtension in appExtensionPaths {
+        let appExtensionPath = "\(clientContentsDir)/PlugIns/\(appExtension)"
+        let tmpEntitlementXmlPath =
+            fm.temporaryDirectory.appendingPathComponent(UUID().uuidString).path.appending(".xml")
+        try saveCodesignEntitlements(target: appExtensionPath, path: tmpEntitlementXmlPath)
+        // Strip the get-task-allow entitlement from the XML entitlements file
+        let xmlEntitlements = try String(contentsOfFile: tmpEntitlementXmlPath)
+        let entitlementKeyValuePair = "<key>com.apple.security.get-task-allow</key><true/>"
+        let strippedEntitlements =
+            xmlEntitlements.replacingOccurrences(of: entitlementKeyValuePair, with: "")
+        try strippedEntitlements.write(toFile: tmpEntitlementXmlPath,
+                                       atomically: true,
+                                       encoding: .utf8)
+        try codesign(identity: codeSignIdentity,
+                     path: appExtensionPath,
+                     options: "--timestamp --force --verbose=4 --options runtime --entitlements \(tmpEntitlementXmlPath)")
+    }
 }
