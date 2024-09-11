@@ -69,17 +69,27 @@ func codesignClientAppBundle(
     print("Code-signing Nextcloud Desktop Client libraries, frameworks and plugins...")
 
     let clientContentsDir = "\(clientAppDir)/Contents"
+    let frameworksPath = "\(clientContentsDir)/Frameworks"
+    let pluginsPath = "\(clientContentsDir)/PlugIns"
 
-    try recursivelyCodesign(path: "\(clientContentsDir)/Frameworks", identity: codeSignIdentity)
-    try recursivelyCodesign(path: "\(clientContentsDir)/PlugIns", identity: codeSignIdentity)
+    try recursivelyCodesign(path: frameworksPath, identity: codeSignIdentity)
+    try recursivelyCodesign(path: pluginsPath, identity: codeSignIdentity)
     try recursivelyCodesign(path: "\(clientContentsDir)/Resources", identity: codeSignIdentity)
+
+    print("Code-signing QtWebEngineProcess...")
+    let qtWebEngineProcessPath =
+        "\(frameworksPath)/QtWebEngineCore.framework/Versions/A/Helpers/QtWebEngineProcess.app"
+    try codesign(identity: codeSignIdentity, path: qtWebEngineProcessPath)
+
+    print("Code-signing QtWebEngine...")
+    try codesign(identity: codeSignIdentity, path: "\(frameworksPath)/QtWebEngineCore.framework")
 
     // Time to fix notarisation issues.
     // Multiple components of the app will now have the get-task-allow entitlements.
     // We need to strip these out manually.
 
     print("Code-signing Sparkle autoupdater app (without entitlements)...")
-    let sparkleFrameworkPath = "\(clientContentsDir)/Frameworks/Sparkle.framework"
+    let sparkleFrameworkPath = "\(frameworksPath)/Sparkle.framework"
     try codesign(identity: codeSignIdentity,
                  path: "\(sparkleFrameworkPath)/Resources/Autoupdate.app/Contents/MacOS/*",
                  options: "--timestamp --force --verbose=4 --options runtime --deep")
@@ -90,9 +100,9 @@ func codesignClientAppBundle(
     print("Code-signing app extensions (removing get-task-allow entitlements)...")
     let fm = FileManager.default
     let appExtensionPaths =
-        try fm.contentsOfDirectory(atPath: "\(clientContentsDir)/PlugIns").filter(isAppExtension)
+        try fm.contentsOfDirectory(atPath: pluginsPath).filter(isAppExtension)
     for appExtension in appExtensionPaths {
-        let appExtensionPath = "\(clientContentsDir)/PlugIns/\(appExtension)"
+        let appExtensionPath = "\(pluginsPath)/\(appExtension)"
         let tmpEntitlementXmlPath =
             fm.temporaryDirectory.appendingPathComponent(UUID().uuidString).path.appending(".xml")
         try saveCodesignEntitlements(target: appExtensionPath, path: tmpEntitlementXmlPath)
