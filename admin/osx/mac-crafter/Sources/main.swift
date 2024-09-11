@@ -209,6 +209,9 @@ struct MacCrafter: ParsableCommand {
                 atPath: productPath, withIntermediateDirectories: true, attributes: nil
             )
         }
+        if fm.fileExists(atPath: "\(productPath)/\(appName).app") {
+            try fm.removeItem(atPath: "\(productPath)/\(appName).app")
+        }
         try fm.copyItem(atPath: clientAppDir, toPath: "\(productPath)/\(appName).app")
 
         print("Done!")
