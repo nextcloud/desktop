@@ -108,4 +108,8 @@ func codesignClientAppBundle(
                      path: appExtensionPath,
                      options: "--timestamp --force --verbose=4 --options runtime --entitlements \(tmpEntitlementXmlPath)")
     }
+
+    // Now we do the final codesign bit
+    print("Code-signing Nextcloud Desktop Client binaries...")
+    try codesign(identity: codeSignIdentity, path: "\(clientContentsDir)/MacOS/*")
 }
