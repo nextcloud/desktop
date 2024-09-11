@@ -378,9 +378,9 @@ void PropagateLocalRename::start()
                 qCWarning(lcPropagateLocalRename) << "exception when checking parent folder access rights" << e.what() << e.path1().c_str() << e.path2().c_str();
             }
         };
-#endif
 
         const auto folderPermissionsHandler = FileSystem::FilePermissionsRestore{existingFile, FileSystem::FolderPermissions::ReadWrite};
+#endif
 
         emit propagator()->touchedFile(existingFile);
         emit propagator()->touchedFile(targetFile);
