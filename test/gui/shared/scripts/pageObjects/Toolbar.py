@@ -1,4 +1,7 @@
-import squish, object, names
+import names
+import squish
+import object  # pylint: disable=redefined-builtin
+
 from helpers.SetupClientHelper import wait_until_app_killed
 from helpers.ConfigHelper import get_config
 
@@ -115,19 +118,19 @@ class Toolbar:
         for obj in children_obj:
             if hasattr(obj, "accountState"):
                 account_info = {
-                    'displayname': str(obj.accountState.account.davDisplayName),
-                    'username': str(obj.accountState.account.davUser),
-                    'hostname': str(obj.accountState.account.hostname),
-                    'initials': str(obj.accountState.account.initials),
-                    'current': obj.checked,
+                    "displayname": str(obj.accountState.account.davDisplayName),
+                    "username": str(obj.accountState.account.davUser),
+                    "hostname": str(obj.accountState.account.hostname),
+                    "initials": str(obj.accountState.account.initials),
+                    "current": obj.checked,
                 }
                 account_locator = Toolbar.ACCOUNT_BUTTON.copy()
                 if account_idx > 1:
                     account_locator.update({"occurrence": account_idx})
-                account_locator.update({"text": account_info['hostname']})
+                account_locator.update({"text": account_info["hostname"]})
 
-                accounts[account_info['displayname']] = account_info
-                selectors[account_info['displayname']] = account_locator
+                accounts[account_info["displayname"]] = account_info
+                selectors[account_info["displayname"]] = account_locator
                 account_idx += 1
         return accounts, selectors
 
@@ -139,7 +142,7 @@ class Toolbar:
     @staticmethod
     def account_has_focus(display_name):
         account, selector = Toolbar.get_account(display_name)
-        return account['current'] and squish.waitForObjectExists(selector).checked
+        return account["current"] and squish.waitForObjectExists(selector).checked
 
     @staticmethod
     def account_exists(display_name):
@@ -147,7 +150,7 @@ class Toolbar:
         if (
             account is None
             or selector is None
-            and account['displayname'] != display_name
+            and account["displayname"] != display_name
         ):
             raise LookupError(f'Account "{display_name}" does not exist')
         squish.waitForObjectExists(selector)

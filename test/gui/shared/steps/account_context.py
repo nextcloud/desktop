@@ -120,10 +120,8 @@ def step(context, _):
 
 @Then('user "|any|" should be signed out')
 def step(context, username):
-    displayname = getDisplaynameForUser(username)
-    server = get_config('localBackendUrl')
     test.compare(
-        AccountSetting.isUserSignedOut(displayname, server),
+        AccountSetting.isUserSignedOut(),
         True,
         f'User "{username}" is signed out',
     )
@@ -132,9 +130,7 @@ def step(context, username):
 @Given('user "|any|" has logged out from the client-UI')
 def step(context, username):
     AccountSetting.logout()
-    displayname = getDisplaynameForUser(username)
-    server = get_config('localBackendUrl')
-    if not AccountSetting.isUserSignedOut(displayname, server):
+    if not AccountSetting.isUserSignedOut():
         raise LookupError(f'Failed to logout user {username}')
 
 
@@ -172,10 +168,8 @@ def step(context, username, password):
 
 
 @Then('user "|any|" should be connected to the server')
-def step(context, username):
-    displayname = getDisplaynameForUser(username)
-    server = get_config('localBackendUrl')
-    AccountSetting.waitUntilAccountIsConnected(displayname, server)
+def step(context, _):
+    AccountSetting.waitUntilAccountIsConnected()
     AccountSetting.wait_until_sync_folder_is_configured()
 
 

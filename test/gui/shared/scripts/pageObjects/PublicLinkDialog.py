@@ -1,8 +1,8 @@
+from datetime import datetime
+import test
 import names
 import squish
-import object
-import test
-from datetime import datetime
+import object  # pylint: disable=redefined-builtin
 
 
 class PublicLinkDialog:
@@ -10,12 +10,6 @@ class PublicLinkDialog:
         "container": names.sharingDialog_qt_tabwidget_tabbar_QTabBar,
         "text": "Public Links",
         "type": "TabItem",
-    }
-    ITEM_TO_SHARE = {
-        "name": "label_name",
-        "type": "QLabel",
-        "visible": 1,
-        "window": names.sharingDialog_OCC_ShareDialog,
     }
     PASSWORD_CHECKBOX = {
         "container": names.qt_tabwidget_stackedwidget_OCC_ShareLinkWidget_OCC_ShareLinkWidget,
@@ -98,13 +92,14 @@ class PublicLinkDialog:
         "%d/%m/%y",
     ]
     # to store current default public link expiry date
-    defaultExpiryDate = ''
+    defaultExpiryDate = ""
 
     @staticmethod
     def parseDate(date):
-        for format in PublicLinkDialog.DATE_FORMATS:
+        for date_format in PublicLinkDialog.DATE_FORMATS:
             try:
-                date = str(datetime.strptime(date, format)).split(' ')[0]
+                date = str(datetime.strptime(date, date_format))
+                date = date.split(" ", maxsplit=1)[0]
                 break
             except:
                 pass
@@ -123,8 +118,8 @@ class PublicLinkDialog:
         squish.mouseClick(squish.waitForObject(PublicLinkDialog.PUBLIC_LINKS_TAB))
 
     @staticmethod
-    def createPublicLink(password='', permissions='', expireDate='', linkName=''):
-        radioObjectName = ''
+    def createPublicLink(password="", permissions="", expireDate=""):
+        radioObjectName = ""
         if permissions:
             radioObjectName = PublicLinkDialog.getRadioObjectForPermssion(permissions)
 
@@ -136,9 +131,6 @@ class PublicLinkDialog:
 
         if expireDate:
             PublicLinkDialog.setExpirationDate(expireDate)
-
-        if linkName:
-            PublicLinkDialog.setLinkName(linkName)
 
         squish.clickButton(squish.waitForObject(PublicLinkDialog.CREATE_SHARE_BUTTON))
         squish.waitFor(
@@ -154,8 +146,7 @@ class PublicLinkDialog:
 
     @staticmethod
     def setPassword(password):
-        enabled = squish.waitForObjectExists(PublicLinkDialog.PASSWORD_CHECKBOX).checked
-        if not enabled:
+        if not squish.waitForObjectExists(PublicLinkDialog.PASSWORD_CHECKBOX).checked:
             PublicLinkDialog.togglePassword()
 
         squish.mouseClick(squish.waitForObject(PublicLinkDialog.PASSWORD_INPUT_FIELD))
@@ -177,7 +168,7 @@ class PublicLinkDialog:
             PublicLinkDialog.toggleExpirationDate()
 
         if not expireDate == "default":
-            expDate = datetime.strptime(expireDate, '%Y-%m-%d')
+            expDate = datetime.strptime(expireDate, "%Y-%m-%d")
             expYear = expDate.year - 2000
             squish.mouseClick(
                 squish.waitForObject(PublicLinkDialog.EXPIRATION_DATE_FIELD)
@@ -222,7 +213,7 @@ class PublicLinkDialog:
                 )
                 if not actualDate == expectedDate:
                     test.fail(
-                        f"workaround failed, actual date: {actualDate} is still not same as expected date: {expectedDate}"
+                        f"workaround failed:\nactual date: {actualDate}\nexpected date: {expectedDate}"
                     )
         else:
             defaultDate = str(
@@ -251,15 +242,15 @@ class PublicLinkDialog:
 
     @staticmethod
     def getRadioObjectForPermssion(permissions):
-        radioObjectName = ''
-        if permissions == 'Download / View' or permissions == 'Viewer':
+        radioObjectName = None
+        if permissions in ("Download / View", "Viewer"):
             radioObjectName = PublicLinkDialog.READ_ONLY_RADIO_BUTTON
-        elif permissions == 'Download / View / Edit' or permissions == 'Editor':
+        elif permissions in ("Download / View / Edit", "Editor"):
             radioObjectName = PublicLinkDialog.READ_WRITE_RADIO_BUTTON
-        elif permissions == 'Upload only (File Drop)' or permissions == 'Contributor':
+        elif permissions in ("Upload only (File Drop)", "Contributor"):
             radioObjectName = PublicLinkDialog.UPLOAD_ONLY_RADIO_BUTTON
         else:
-            raise Exception("No such radio object found for given permission")
+            raise LookupError("No such radio object found for given permission")
 
         return radioObjectName
 

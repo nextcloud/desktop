@@ -1,15 +1,9 @@
 import names
 import squish
-import object
+import object  # pylint: disable=redefined-builtin
 
 
 class SharingDialog:
-    ITEM_TO_SHARE = {
-        "name": "label_name",
-        "type": "QLabel",
-        "visible": 1,
-        "window": names.sharingDialog_OCC_ShareDialog,
-    }
     SHARE_WITH_COLLABORATOR_INPUT_FIELD = {
         "container": names.qt_tabwidget_stackedwidget_SharingDialogUG_OCC_ShareUserGroupWidget,
         "name": "shareeLineEdit",
@@ -84,14 +78,14 @@ class SharingDialog:
 
         editChecked, shareChecked = SharingDialog.getAvailablePermission()
 
-        if ('edit' in permissionsList and editChecked == False) or (
-            'edit' not in permissionsList and editChecked == True
+        if ("edit" in permissionsList and editChecked is False) or (
+            "edit" not in permissionsList and editChecked is True
         ):
             squish.clickButton(
                 squish.waitForObject(SharingDialog.EDIT_PERMISSIONS_CHECKBOX)
             )
-        if ('share' in permissionsList and shareChecked == False) or (
-            'share' not in permissionsList and shareChecked == True
+        if ("share" in permissionsList and shareChecked is False) or (
+            "share" not in permissionsList and shareChecked is True
         ):
             squish.clickButton(
                 squish.waitForObject(SharingDialog.SHARE_PERMISSIONS_CHECKBOX)
@@ -140,18 +134,18 @@ class SharingDialog:
             isSharePermissionAvailable,
         ) = SharingDialog.getAvailablePermission()
 
-        if 'share' in removePermissionsList and isSharePermissionAvailable:
+        if "share" in removePermissionsList and isSharePermissionAvailable:
             squish.clickButton(
                 squish.waitForObject(SharingDialog.SHARE_PERMISSIONS_CHECKBOX)
             )
 
-        if 'edit' in removePermissionsList and isEditPermissionAvailable:
+        if "edit" in removePermissionsList and isEditPermissionAvailable:
             squish.clickButton(
                 squish.waitForObject(SharingDialog.EDIT_PERMISSIONS_CHECKBOX)
             )
 
     @staticmethod
-    def unshareWith(collaborator):
+    def unshareWith():
         squish.clickButton(squish.waitForObject(SharingDialog.DELETE_SHARE_BUTTON))
 
     @staticmethod

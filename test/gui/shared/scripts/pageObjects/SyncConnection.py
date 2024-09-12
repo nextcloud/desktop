@@ -1,6 +1,6 @@
 import names
 import squish
-import object
+import object  # pylint: disable=redefined-builtin
 
 
 class SyncConnection:
@@ -117,8 +117,8 @@ class SyncConnection:
                     if hasattr(item, "text") and item.text:
                         # remove item size suffix
                         # example: folder1 (13 B) => folder1
-                        item_name = item.text.rsplit(" ", 2)[0]
-                        if item_name == folder_name:
+                        item_name = item.text.rsplit(" ", 1)
+                        if item_name[0] == folder_name:
                             # NOTE: checkbox does not have separate object
                             # click on (11,11) which is a checkbox to unselect the folder
                             squish.mouseClick(

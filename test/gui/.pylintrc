@@ -16,7 +16,7 @@ disable=
     invalid-name,
 fail-under=10
 ignore-paths=^tst_.*/test.py$|shared/scripts/names.py
-ignored-modules=squish,object
+ignored-modules=squish,object,objectmaphelper,test
 load-plugins=
     pylint.extensions.check_elif,
     pylint.extensions.bad_builtin,

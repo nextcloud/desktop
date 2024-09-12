@@ -1,6 +1,7 @@
 import names
 import squish
 from objectmaphelper import RegularExpression
+
 from helpers.FilesHelper import buildConflictedRegex
 from helpers.ConfigHelper import get_config
 
@@ -134,7 +135,7 @@ class Activity:
                 break
 
         if not tabFound:
-            raise Exception(
+            raise LookupError(
                 "Tab not found: "
                 + tabName
                 + " in "
@@ -155,7 +156,7 @@ class Activity:
     def resourceIsBlacklisted(filename):
         result = squish.waitFor(
             lambda: Activity.hasSyncStatus(filename, "Blacklisted"),
-            get_config('maxSyncTimeout') * 1000,
+            get_config("maxSyncTimeout") * 1000,
         )
         return result
 
@@ -163,7 +164,7 @@ class Activity:
     def resourceIsIgnored(filename):
         result = squish.waitFor(
             lambda: Activity.hasSyncStatus(filename, "File Ignored"),
-            get_config('maxSyncTimeout') * 1000,
+            get_config("maxSyncTimeout") * 1000,
         )
         return result
 
@@ -171,7 +172,7 @@ class Activity:
     def resource_is_excluded(filename):
         result = squish.waitFor(
             lambda: Activity.hasSyncStatus(filename, "Excluded"),
-            get_config('maxSyncTimeout') * 1000,
+            get_config("maxSyncTimeout") * 1000,
         )
         return result
 
@@ -180,7 +181,7 @@ class Activity:
         try:
             fileRow = squish.waitForObject(
                 Activity.getNotSyncedFileSelector(filename),
-                get_config('lowestSyncTimeout') * 1000,
+                get_config("lowestSyncTimeout") * 1000,
             )["row"]
             if Activity.getNotSyncedStatus(fileRow) == status:
                 return True
@@ -189,11 +190,11 @@ class Activity:
             return False
 
     @staticmethod
-    def select_synced_filter(filter):
+    def select_synced_filter(sync_filter):
         squish.clickButton(squish.waitForObject(Activity.LOCAL_ACTIVITY_FILTER_BUTTON))
         squish.activateItem(
             squish.waitForObjectItem(
-                Activity.SYNCED_ACTIVITY_FILTER_OPTION_SELECTOR, filter
+                Activity.SYNCED_ACTIVITY_FILTER_OPTION_SELECTOR, sync_filter
             )
         )
 
@@ -222,7 +223,7 @@ class Activity:
         try:
             fileRow = squish.waitForObject(
                 Activity.get_synced_file_selector(resource),
-                get_config('lowestSyncTimeout') * 1000,
+                get_config("lowestSyncTimeout") * 1000,
             )["row"]
             squish.waitForObjectExists(
                 {
@@ -273,7 +274,7 @@ class Activity:
         try:
             fileRow = squish.waitForObject(
                 Activity.getNotSyncedFileSelector(resource),
-                get_config('lowestSyncTimeout') * 1000,
+                get_config("lowestSyncTimeout") * 1000,
             )["row"]
             squish.waitForObjectExists(
                 {

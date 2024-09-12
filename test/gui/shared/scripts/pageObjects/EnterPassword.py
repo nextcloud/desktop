@@ -1,8 +1,9 @@
 import names
 import squish
+
+
 from helpers.WebUIHelper import authorize_via_webui
 from helpers.ConfigHelper import get_config
-from helpers.UserHelper import getPasswordForUser
 
 
 class EnterPassword:
@@ -60,7 +61,7 @@ class EnterPassword:
     }
 
     def __init__(self, occurrence=1):
-        if occurrence > 1 and get_config('ocis'):
+        if occurrence > 1 and get_config("ocis"):
             self.TLS_CERT_WINDOW.update({"occurrence": occurrence})
 
     def get_username(self):
@@ -73,7 +74,7 @@ class EnterPassword:
         return label[1].capitalize()
 
     def enterPassword(self, password):
-        squish.waitForObject(self.PASSWORD_BOX, get_config('maxSyncTimeout') * 1000)
+        squish.waitForObject(self.PASSWORD_BOX, get_config("maxSyncTimeout") * 1000)
         squish.type(squish.waitForObject(self.PASSWORD_BOX), password)
         squish.clickButton(squish.waitForObject(self.LOGIN_BUTTON))
 
@@ -90,7 +91,7 @@ class EnterPassword:
         authorize_via_webui(username, password, "oauth")
 
     def reLogin(self, username, password, oauth=False):
-        if get_config('ocis'):
+        if get_config("ocis"):
             self.oidcReLogin(username, password)
         elif oauth:
             self.oauthReLogin(username, password)
@@ -98,7 +99,7 @@ class EnterPassword:
             self.enterPassword(password)
 
     def loginAfterSetup(self, username, password):
-        if get_config('ocis'):
+        if get_config("ocis"):
             self.oidcReLogin(username, password)
         else:
             self.enterPassword(password)

@@ -1,6 +1,9 @@
 import test
 import names
 import squish
+
+from pageObjects.EnterPassword import EnterPassword
+
 from helpers.WebUIHelper import authorize_via_webui
 from helpers.ConfigHelper import get_config
 from helpers.SetupClientHelper import (
@@ -80,12 +83,6 @@ class AccountConnectionWizard:
         "type": "OCC::Wizard::OAuthCredentialsSetupWizardPage",
         "visible": 1,
     }
-    ACCEPT_CERTIFICATE_YES = {
-        "text": "Yes",
-        "type": "QPushButton",
-        "visible": 1,
-        "window": names.oCC_TlsErrorDialog_OCC_TlsErrorDialog,
-    }
     COPY_URL_TO_CLIPBOARD_BUTTON = {
         "container": names.contentWidget_contentWidget_QStackedWidget,
         "name": "copyUrlToClipboardButton",
@@ -150,9 +147,7 @@ class AccountConnectionWizard:
 
     @staticmethod
     def acceptCertificate():
-        squish.clickButton(
-            squish.waitForObject(AccountConnectionWizard.ACCEPT_CERTIFICATE_YES)
-        )
+        squish.clickButton(squish.waitForObject(EnterPassword.ACCEPT_CERTIFICATE_YES))
 
     @staticmethod
     def addUserCreds(username, password, oauth=False):

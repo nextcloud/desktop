@@ -58,7 +58,7 @@ class Settings:
         selector.update({"name": name})
         if name == "languageDropdown":
             selector.update({"type": "QComboBox"})
-        elif name == "ignoredFilesButton" or name == "logSettingsButton":
+        elif name in ("ignoredFilesButton", "logSettingsButton"):
             selector.update({"type": "QPushButton"})
         return selector
 

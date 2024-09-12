@@ -40,12 +40,10 @@ def openSharingDialog(resource):
         raise LookupError(f"Sharing dialog didn't open for {resource}")
 
 
-def createPublicLinkShare(
-    resource, password='', permissions='', expireDate='', name=''
-):
+def createPublicLinkShare(resource, password='', permissions='', expireDate=''):
     openSharingDialog(resource)
     PublicLinkDialog.openPublicLinkTab()
-    PublicLinkDialog.createPublicLink(password, permissions, expireDate, name)
+    PublicLinkDialog.createPublicLink(password, permissions, expireDate)
 
 
 def createPublicShareWithRole(resource, role):
@@ -325,9 +323,9 @@ def step(context, resource, group):
 @When(
     'the user unshares the resource "|any|" for collaborator "|any|" using the client-UI'
 )
-def step(context, resource, receiver):
+def step(context, resource, _):
     openSharingDialog(resource)
-    SharingDialog.unshareWith(receiver)
+    SharingDialog.unshareWith()
 
 
 @When('the user deletes the public link for file "|any|"')

@@ -80,31 +80,31 @@ class AccountSetting:
         return "Connecting to" in AccountSetting.getAccountConnectionLabel()
 
     @staticmethod
-    def isUserSignedOut(displayname, server):
-        return 'Signed out' in AccountSetting.getAccountConnectionLabel()
+    def isUserSignedOut():
+        return "Signed out" in AccountSetting.getAccountConnectionLabel()
 
     @staticmethod
-    def isUserSignedIn(displayname, server):
-        return 'Connected' in AccountSetting.getAccountConnectionLabel()
+    def isUserSignedIn():
+        return "Connected" in AccountSetting.getAccountConnectionLabel()
 
     @staticmethod
     def waitUntilConnectionIsConfigured(timeout=5000):
         result = squish.waitFor(
-            lambda: AccountSetting.isConnecting(),
+            AccountSetting.isConnecting,
             timeout,
         )
 
         if not result:
-            raise Exception(
+            raise TimeoutError(
                 "Timeout waiting for connection to be configured for "
                 + str(timeout)
                 + " milliseconds"
             )
 
     @staticmethod
-    def waitUntilAccountIsConnected(displayname, server, timeout=5000):
+    def waitUntilAccountIsConnected(timeout=5000):
         result = squish.waitFor(
-            lambda: AccountSetting.isUserSignedIn(displayname, server),
+            AccountSetting.isUserSignedIn,
             timeout,
         )
 
@@ -135,7 +135,8 @@ class AccountSetting:
 
     @staticmethod
     def pressKey(key):
-        key = "<%s>" % key.replace('"', "")
+        key = key.replace('"', "")
+        key = f"<{key}>"
         squish.nativeType(key)
 
     @staticmethod

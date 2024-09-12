@@ -1,7 +1,7 @@
+from os import path
 import names
 import squish
-import object
-from os import path
+
 from helpers.SetupClientHelper import (
     getCurrentUserSyncPath,
     setCurrentUserSyncPath,
@@ -36,7 +36,7 @@ class SyncConnectionWizard:
     }
     SELECTIVE_SYNC_ROOT_FOLDER = {
         "column": 0,
-        "container": names.add_Folder_Sync_Connection_Deselect_remote_folders_you_do_not_wish_to_synchronize_QTreeWidget,
+        "container": names.folder_Sync_Connection_Deselect_remote_folders_QTreeWidget,
         "text": "ownCloud",
         "type": "QModelIndex",
     }
@@ -65,7 +65,7 @@ class SyncConnectionWizard:
         "window": names.add_Folder_Sync_Connection_OCC_FolderWizard,
     }
     SELECTIVE_SYNC_TREE_HEADER = {
-        "container": names.add_Folder_Sync_Connection_Deselect_remote_folders_you_do_not_wish_to_synchronize_QTreeWidget,
+        "container": names.folder_Sync_Connection_Deselect_remote_folders_QTreeWidget,
         "orientation": 1,
         "type": "QHeaderView",
         "unnamed": 1,
@@ -129,7 +129,7 @@ class SyncConnectionWizard:
     }
 
     @staticmethod
-    def setSyncPathInSyncConnectionWizardOc10(sync_path=''):
+    def setSyncPathInSyncConnectionWizardOc10(sync_path=""):
         squish.waitForObject(SyncConnectionWizard.ADD_FOLDER_SYNC_CONNECTION_WIZARD)
         squish.waitForObject(SyncConnectionWizard.CHOOSE_LOCAL_SYNC_FOLDER).setText("")
         if sync_path:
@@ -143,8 +143,8 @@ class SyncConnectionWizard:
         SyncConnectionWizard.nextStep()
 
     @staticmethod
-    def setSyncPathInSyncConnectionWizard(sync_path=''):
-        if get_config('ocis'):
+    def setSyncPathInSyncConnectionWizard(sync_path=""):
+        if get_config("ocis"):
             SyncConnectionWizard.setSyncPathInSyncConnectionWizardOcis(sync_path)
         else:
             SyncConnectionWizard.setSyncPathInSyncConnectionWizardOc10(sync_path)
@@ -177,13 +177,12 @@ class SyncConnectionWizard:
         )
 
     @staticmethod
-    def enableOrDisableVfsSupport(action='disable'):
-        if not action in ['enable', 'disable']:
-            raise Exception("Invalid action: " + action)
+    def enableOrDisableVfsSupport(action="disable"):
+        if action not in ["enable", "disable"]:
+            raise ValueError("Invalid action: " + action)
 
         checked = squish.waitForObjectExists(SyncConnectionWizard.VFS_CHECKBOX).checked
-        is_enable = action == 'enable'
-        if is_enable == checked:
+        if (action == "enable") == checked:
             return
         squish.clickButton(squish.waitForObject(SyncConnectionWizard.VFS_CHECKBOX))
 
@@ -196,15 +195,15 @@ class SyncConnectionWizard:
             parent_selector = None
             for sub_folder in folder_levels:
                 if not parent_selector:
-                    SyncConnectionWizard.SYNC_DIALOG_FOLDER_TREE['text'] = sub_folder
+                    SyncConnectionWizard.SYNC_DIALOG_FOLDER_TREE["text"] = sub_folder
                     parent_selector = SyncConnectionWizard.SYNC_DIALOG_FOLDER_TREE
                     selector = parent_selector
                 else:
                     selector = {
-                        "column": '0',
+                        "column": "0",
                         "container": parent_selector,
                         "text": sub_folder,
-                        "type": 'QModelIndex',
+                        "type": "QModelIndex",
                     }
                 if (
                     len(folder_levels) == 1
