@@ -78,6 +78,17 @@ void ServerNotificationHandler::slotNotificationsReceived(const QJsonDocument &j
         return;
     }
 
+    // In theory the server should five us a 304 Not Modified if there are no new notifications.
+    // But in practice, the server doesn't always do that. So we need to compare the ETag headers.
+    const auto postFetchEtagHeader = _accountState->notificationsEtagResponseHeader();
+    if (!_preFetchEtagHeader.isEmpty() || _preFetchEtagHeader == postFetchEtagHeader) {
+        qCInfo(lcServerNotification) << "Notifications ETag header is the same as before, no new notifications.";
+        deleteLater();
+        emit jobFinished();
+        return;
+    }
+    _preFetchEtagHeader = postFetchEtagHeader;
+
     auto notifies = json.object().value("ocs").toObject().value("data").toArray();
 
     auto *ai = qvariant_cast<AccountState *>(sender()->property(propertyAccountStateC));
