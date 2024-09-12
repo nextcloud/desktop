@@ -184,6 +184,10 @@ signals:
      */
     void aboutToRemoveAllFiles(OCC::SyncFileItem::Direction direction, std::function<void(bool)> f);
 
+    void aboutToRemoveRemnantsReadOnlyFolders(const QList<SyncFileItemPtr> &folders,
+                                              const QString &localPath,
+                                              std::function<void(bool)> f);
+
     // A new folder was discovered and was not synced because of the confirmation feature
     void newBigFolder(const QString &folder, bool isExternal);
 
@@ -234,6 +238,8 @@ private slots:
     void slotScheduleFilesDelayedSync();
     void slotUnscheduleFilesDelayedSync();
     void slotCleanupScheduledSyncTimers();
+
+    void remnantReadOnlyFolderDiscovered(const OCC::SyncFileItemPtr &item);
 
 private:
     // Some files need a sync run to be executed at a specified time after
@@ -354,6 +360,15 @@ private:
      */
     void restoreOldFiles(SyncFileItemVector &syncItems);
 
+    void cancelSyncOrContinue(bool cancel);
+
+    void finishSync();
+
+    void handleRemnantReadOnlyFolders();
+
+    template <typename T>
+    void promptUserBeforePropagation(T &&lambda);
+
     // true if there is at least one file which was not changed on the server
     bool _hasNoneFiles = false;
 
@@ -399,6 +414,8 @@ private:
     QVector<QSharedPointer<ScheduledSyncTimer>> _scheduledSyncTimers;
 
     SingleItemDiscoveryOptions _singleItemDiscoveryOptions;
+
+    QList<SyncFileItemPtr> _remnantReadOnlyFolders;
 };
 }
 
