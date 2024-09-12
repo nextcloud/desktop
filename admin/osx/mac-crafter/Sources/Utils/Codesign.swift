@@ -33,7 +33,7 @@ func isAppExtension(_ path: String) -> Bool {
 func codesign(
     identity: String,
     path: String,
-    options: String = "--timestamp --force --preserve-metadata=entitlements --verbose=4 --options runtime"
+    options: String = "--timestamp --force --preserve-metadata=entitlements --verbose=4 --options runtime --deep"
 ) throws {
     print("Code-signing \(path)...")
     let command = "codesign -s \"\(identity)\" \(options) \(path)"
@@ -56,17 +56,70 @@ func recursivelyCodesign(path: String, identity: String) throws {
     }
 }
 
+func saveCodesignEntitlements(target: String, path: String) throws {
+    let command = "codesign -d --entitlements \(path) --xml \(target)"
+    guard shell(command) == 0 else {
+        throw CodeSigningError.failedToCodeSign("Failed to save entitlements for \(target).")
+    }
+}
+
 func codesignClientAppBundle(
     at clientAppDir: String, withCodeSignIdentity codeSignIdentity: String
 ) throws {
     print("Code-signing Nextcloud Desktop Client libraries, frameworks and plugins...")
 
     let clientContentsDir = "\(clientAppDir)/Contents"
+    let frameworksPath = "\(clientContentsDir)/Frameworks"
+    let pluginsPath = "\(clientContentsDir)/PlugIns"
 
-    try recursivelyCodesign(path: "\(clientContentsDir)/Frameworks", identity: codeSignIdentity)
-    try recursivelyCodesign(path: "\(clientContentsDir)/PlugIns", identity: codeSignIdentity)
+    try recursivelyCodesign(path: frameworksPath, identity: codeSignIdentity)
+    try recursivelyCodesign(path: pluginsPath, identity: codeSignIdentity)
     try recursivelyCodesign(path: "\(clientContentsDir)/Resources", identity: codeSignIdentity)
 
-    print("Code-signing Nextcloud Desktop Client app bundle...")
-    try codesign(identity: codeSignIdentity, path: clientAppDir)
+    print("Code-signing QtWebEngineProcess...")
+    let qtWebEngineProcessPath =
+        "\(frameworksPath)/QtWebEngineCore.framework/Versions/A/Helpers/QtWebEngineProcess.app"
+    try codesign(identity: codeSignIdentity, path: qtWebEngineProcessPath)
+
+    print("Code-signing QtWebEngine...")
+    try codesign(identity: codeSignIdentity, path: "\(frameworksPath)/QtWebEngineCore.framework")
+
+    // Time to fix notarisation issues.
+    // Multiple components of the app will now have the get-task-allow entitlements.
+    // We need to strip these out manually.
+
+    print("Code-signing Sparkle autoupdater app (without entitlements)...")
+    let sparkleFrameworkPath = "\(frameworksPath)/Sparkle.framework"
+    try codesign(identity: codeSignIdentity,
+                 path: "\(sparkleFrameworkPath)/Resources/Autoupdate.app/Contents/MacOS/*",
+                 options: "--timestamp --force --verbose=4 --options runtime --deep")
+
+    print("Re-codesigning Sparkle library...")
+    try codesign(identity: codeSignIdentity, path: "\(sparkleFrameworkPath)/Sparkle")
+
+    print("Code-signing app extensions (removing get-task-allow entitlements)...")
+    let fm = FileManager.default
+    let appExtensionPaths =
+        try fm.contentsOfDirectory(atPath: pluginsPath).filter(isAppExtension)
+    for appExtension in appExtensionPaths {
+        let appExtensionPath = "\(pluginsPath)/\(appExtension)"
+        let tmpEntitlementXmlPath =
+            fm.temporaryDirectory.appendingPathComponent(UUID().uuidString).path.appending(".xml")
+        try saveCodesignEntitlements(target: appExtensionPath, path: tmpEntitlementXmlPath)
+        // Strip the get-task-allow entitlement from the XML entitlements file
+        let xmlEntitlements = try String(contentsOfFile: tmpEntitlementXmlPath)
+        let entitlementKeyValuePair = "<key>com.apple.security.get-task-allow</key><true/>"
+        let strippedEntitlements =
+            xmlEntitlements.replacingOccurrences(of: entitlementKeyValuePair, with: "")
+        try strippedEntitlements.write(toFile: tmpEntitlementXmlPath,
+                                       atomically: true,
+                                       encoding: .utf8)
+        try codesign(identity: codeSignIdentity,
+                     path: appExtensionPath,
+                     options: "--timestamp --force --verbose=4 --options runtime --deep --entitlements \(tmpEntitlementXmlPath)")
+    }
+
+    // Now we do the final codesign bit
+    print("Code-signing Nextcloud Desktop Client binaries...")
+    try codesign(identity: codeSignIdentity, path: "\(clientContentsDir)/MacOS/*")
 }
