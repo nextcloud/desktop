@@ -40,6 +40,7 @@ AbstractButton {
         color: (userLine.hovered || userLine.visualFocus) &&
                !(userMoreButton.hovered || userMoreButton.visualFocus) ?
                    palette.highlight : palette.window
+        radius: Style.trayWindowRadius
     }
 
     contentItem: RowLayout {
@@ -156,6 +157,12 @@ AbstractButton {
                 id: userMoreButtonMenu
                 closePolicy: Menu.CloseOnPressOutsideParent | Menu.CloseOnEscape
 
+                background: Rectangle {
+                    border.color: palette.dark
+                    radius: Style.trayWindowRadius
+                    color: palette.window
+                }
+
                 MenuItem {
                     visible: model.isConnected && model.serverHasUserStatus
                     height: visible ? implicitHeight : 0
@@ -163,6 +170,11 @@ AbstractButton {
                     font.pixelSize: Style.topLinePixelSize
                     hoverEnabled: true
                     onClicked: showUserStatusSelector(index)
+
+                    background: Rectangle {
+                        radius: Style.trayWindowRadius
+                        color: parent.hovered ? palette.highlight : palette.window
+                    }
                 }
 
                 MenuItem {
@@ -185,6 +197,11 @@ AbstractButton {
                         }
                         accountMenu.close()
                     }
+
+                    background: Rectangle {
+                        radius: Style.trayWindowRadius
+                        color: parent.hovered ? palette.highlight : palette.window
+                    }
                 }
 
                 MenuItem {
@@ -200,6 +217,11 @@ AbstractButton {
                     Accessible.role: Accessible.Button
                     Accessible.name: text
                     Accessible.onPressAction: removeAccountButton.clicked()
+
+                    background: Rectangle {
+                        radius: Style.trayWindowRadius
+                        color: parent.hovered ? palette.highlight : palette.window
+                    }
                 }
             }
         }

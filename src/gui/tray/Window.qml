@@ -289,7 +289,7 @@ ApplicationWindow {
                         background: Rectangle {
                             border.color: palette.dark
                             color: palette.window
-                            radius: Style.currentAccountButtonRadius
+                            radius: Style.trayWindowRadius
                         }
 
                         onClosed: {
@@ -347,6 +347,12 @@ ApplicationWindow {
                             Accessible.role: Accessible.MenuItem
                             Accessible.name: qsTr("Add new account")
                             Accessible.onPressAction: addAccountButton.clicked()
+
+                            background: Rectangle {
+                                radius: Style.trayWindowRadius
+                                color: palette.highlight
+                                visible: addAccountButton.hovered
+                            }
                         }
 
                         Rectangle {
@@ -364,6 +370,12 @@ ApplicationWindow {
                             Accessible.role: Accessible.MenuItem
                             Accessible.name: Systray.syncIsPaused ? qsTr("Resume sync for all") : qsTr("Pause sync for all")
                             Accessible.onPressAction: syncPauseButton.clicked()
+
+                            background: Rectangle {
+                                radius: Style.trayWindowRadius
+                                color: palette.highlight
+                                visible: syncPauseButton.hovered
+                            }
                         }
 
                         MenuItem {
@@ -375,6 +387,12 @@ ApplicationWindow {
                             Accessible.role: Accessible.MenuItem
                             Accessible.name: text
                             Accessible.onPressAction: settingsButton.clicked()
+
+                            background: Rectangle {
+                                radius: Style.trayWindowRadius
+                                color: palette.highlight
+                                visible: settingsButton.hovered
+                            }
                         }
 
                         MenuItem {
@@ -386,6 +404,12 @@ ApplicationWindow {
                             Accessible.role: Accessible.MenuItem
                             Accessible.name: text
                             Accessible.onPressAction: exitButton.clicked()
+
+                            background: Rectangle {
+                                radius: Style.trayWindowRadius
+                                color: palette.highlight
+                                visible: exitButton.hovered
+                            }
                         }
                     }
 
@@ -587,7 +611,7 @@ ApplicationWindow {
 
                         background: Rectangle {
                             border.color: palette.dark
-                            radius: Style.currentAccountButtonRadius
+                            radius: Style.trayWindowRadius
                             color: palette.window
                         }
 
@@ -622,7 +646,8 @@ ApplicationWindow {
                                     background: Rectangle {
                                         anchors.fill: parent
                                         anchors.margins: 1
-                                        color: (appEntry.hovered || appEntry.visualFocus) ? palette.highlight : palette.window
+                                        color: appEntry.hovered ? palette.highlight : palette.window
+                                        radius: Style.trayWindowRadius
                                     }
                                 }
                             }
