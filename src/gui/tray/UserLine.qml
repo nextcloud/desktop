@@ -151,6 +151,7 @@ AbstractButton {
                 anchors.fill: parent
                 source: "image://svgimage-custom-color/more.svg/" + palette.windowText
                 fillMode: Image.PreserveAspectFit
+                anchors.rightMargin: Style.accountLabelsAnchorsMargin
             }
 
             AutoSizingMenu {
