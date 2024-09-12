@@ -15,10 +15,8 @@
 import ArgumentParser
 import Foundation
 
-struct MacCrafter: ParsableCommand {
-    static let configuration = CommandConfiguration(
-        abstract: "A tool to easily build a fully-functional Nextcloud Desktop Client for macOS."
-    )
+struct Build: ParsableCommand {
+    static let configuration = CommandConfiguration(abstract: "Client building script")
 
     enum MacCrafterError: Error {
         case failedEnumeration(String)
@@ -194,14 +192,11 @@ struct MacCrafter: ParsableCommand {
             throw MacCrafterError.craftError("Error crafting Nextcloud Desktop Client.")
         }
 
-        guard let codeSignIdentity else {
-            print("Crafted Nextcloud Desktop Client. Not codesigned.")
-            return
-        }
-
-        print("Code-signing Nextcloud Desktop Client libraries and frameworks...")
         let clientAppDir = "\(clientBuildDir)/image-\(buildType)-master/\(appName).app"
-        try codesignClientAppBundle(at: clientAppDir, withCodeSignIdentity: codeSignIdentity)
+        if let codeSignIdentity {
+            print("Code-signing Nextcloud Desktop Client libraries and frameworks...")
+            try codesignClientAppBundle(at: clientAppDir, withCodeSignIdentity: codeSignIdentity)
+        }
 
         print("Placing Nextcloud Desktop Client in \(productPath)...")
         if !fm.fileExists(atPath: productPath) {
@@ -209,10 +204,37 @@ struct MacCrafter: ParsableCommand {
                 atPath: productPath, withIntermediateDirectories: true, attributes: nil
             )
         }
+        if fm.fileExists(atPath: "\(productPath)/\(appName).app") {
+            try fm.removeItem(atPath: "\(productPath)/\(appName).app")
+        }
         try fm.copyItem(atPath: clientAppDir, toPath: "\(productPath)/\(appName).app")
 
         print("Done!")
     }
+}
+
+struct Codesign: ParsableCommand {
+    static let configuration = CommandConfiguration(abstract: "Codesigning script for the client.")
+
+    @Argument(help: "Path to the Nextcloud Desktop Client app bundle.")
+    var appBundlePath = "\(FileManager.default.currentDirectoryPath)/product/Nextcloud.app"
+
+    @Option(name: [.short, .long], help: "Code signing identity for desktop client and libs.")
+    var codeSignIdentity: String
+
+    mutating func run() throws {
+        try codesignClientAppBundle(at: appBundlePath, withCodeSignIdentity: codeSignIdentity)
+    }
+}
+
+struct MacCrafter: ParsableCommand {
+    static let configuration = CommandConfiguration(
+        abstract: "A tool to easily build a fully-functional Nextcloud Desktop Client for macOS.",
+        subcommands: [Build.self, Codesign.self],
+        defaultSubcommand: Build.self
+    )
+
+
 }
 
 MacCrafter.main()
