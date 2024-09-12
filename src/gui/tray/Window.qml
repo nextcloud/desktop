@@ -659,7 +659,7 @@ ApplicationWindow {
 
         UnifiedSearchInputContainer {
             id: trayWindowUnifiedSearchInputContainer
-            height: Style.trayWindowHeaderHeight * 0.65
+            height: Math.max(Style.talkReplyTextFieldPreferredHeight, contentHeight)
 
             anchors {
                 top: trayWindowHeaderBackground.bottom
