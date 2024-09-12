@@ -3518,7 +3518,7 @@ Note that using any logging command line options will override this setting.</so
         <location filename="../src/gui/networksettings.ui" line="397"/>
         <location filename="../src/gui/networksettings.ui" line="507"/>
         <source>Use global settings</source>
-        <translation type="unfinished"/>
+        <translation>Использовать глобальные настройки</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="197"/>
