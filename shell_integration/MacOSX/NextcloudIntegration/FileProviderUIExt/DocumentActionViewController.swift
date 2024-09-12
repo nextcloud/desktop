@@ -36,17 +36,21 @@ class DocumentActionViewController: FPUIActionExtensionViewController {
     ) {
         Logger.actionViewController.info("Preparing action: \(actionIdentifier, privacy: .public)")
 
-        if actionIdentifier == "com.nextcloud.desktopclient.FileProviderUIExt.ShareAction" {
+        switch (actionIdentifier) {
+        case "com.nextcloud.desktopclient.FileProviderUIExt.ShareAction":
             prepare(childViewController: ShareViewController(itemIdentifiers))
+        case "com.nextcloud.desktopclient.FileProviderUIExt.LockFileAction":
+            prepare(childViewController: LockViewController(itemIdentifiers, locking: true))
+        case "com.nextcloud.desktopclient.FileProviderUIExt.UnlockFileAction":
+            prepare(childViewController: LockViewController(itemIdentifiers, locking: false))
+        default:
+            return
         }
-
     }
     
     override func prepare(forError error: Error) {
         Logger.actionViewController.info(
-            """
-            Preparing for error: \(error.localizedDescription, privacy: .public)
-            """
+            "Preparing for error: \(error.localizedDescription, privacy: .public)"
         )
     }
 
