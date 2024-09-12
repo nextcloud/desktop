@@ -37,8 +37,8 @@ StackView {
 
     initialItem: FileDetailsPage {
         id: fileDetailsPage
-        width: parent.width
-        height: parent.height
+        width: root.width
+        height: root.height
         backgroundsVisible: root.backgroundsVisible
         rootStackView: root
         onCloseButtonClicked: root.closeButtonClicked()
