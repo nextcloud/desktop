@@ -25,6 +25,10 @@
 		537630952B860D560026BFAB /* FPUIExtensionServiceSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 537630942B860D560026BFAB /* FPUIExtensionServiceSource.swift */; };
 		537630972B860D920026BFAB /* FPUIExtensionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 537630962B860D920026BFAB /* FPUIExtensionService.swift */; };
 		537630982B8612F00026BFAB /* FPUIExtensionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 537630962B860D920026BFAB /* FPUIExtensionService.swift */; };
+		537BD67A2C58D67800446ED0 /* LockViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 537BD6792C58D67800446ED0 /* LockViewController.swift */; };
+		537BD67C2C58D7B700446ED0 /* LockViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 537BD67B2C58D7B700446ED0 /* LockViewController.xib */; };
+		537BD6802C58F01B00446ED0 /* FileProviderCommunication.swift in Sources */ = {isa = PBXBuildFile; fileRef = 537BD67F2C58F01B00446ED0 /* FileProviderCommunication.swift */; };
+		537BD6822C58F72E00446ED0 /* MetadataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 537BD6812C58F72E00446ED0 /* MetadataProvider.swift */; };
 		538E396A27F4765000FA63D5 /* UniformTypeIdentifiers.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 538E396927F4765000FA63D5 /* UniformTypeIdentifiers.framework */; };
 		538E396D27F4765000FA63D5 /* FileProviderExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 538E396C27F4765000FA63D5 /* FileProviderExtension.swift */; };
 		538E397627F4765000FA63D5 /* FileProviderExt.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 538E396727F4765000FA63D5 /* FileProviderExt.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -163,6 +167,10 @@
 		537630922B85F4B00026BFAB /* ShareViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareViewController.swift; sourceTree = "<group>"; };
 		537630942B860D560026BFAB /* FPUIExtensionServiceSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FPUIExtensionServiceSource.swift; sourceTree = "<group>"; };
 		537630962B860D920026BFAB /* FPUIExtensionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FPUIExtensionService.swift; sourceTree = "<group>"; };
+		537BD6792C58D67800446ED0 /* LockViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockViewController.swift; sourceTree = "<group>"; };
+		537BD67B2C58D7B700446ED0 /* LockViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LockViewController.xib; sourceTree = "<group>"; };
+		537BD67F2C58F01B00446ED0 /* FileProviderCommunication.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileProviderCommunication.swift; sourceTree = "<group>"; };
+		537BD6812C58F72E00446ED0 /* MetadataProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetadataProvider.swift; sourceTree = "<group>"; };
 		538E396727F4765000FA63D5 /* FileProviderExt.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = FileProviderExt.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		538E396927F4765000FA63D5 /* UniformTypeIdentifiers.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UniformTypeIdentifiers.framework; path = System/Library/Frameworks/UniformTypeIdentifiers.framework; sourceTree = SDKROOT; };
 		538E396C27F4765000FA63D5 /* FileProviderExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileProviderExtension.swift; sourceTree = "<group>"; };
@@ -280,6 +288,31 @@
 			path = Extensions;
 			sourceTree = "<group>";
 		};
+		537BD6772C58D0C400446ED0 /* Sharing */ = {
+			isa = PBXGroup;
+			children = (
+				5374FD432B95EE1400C78D54 /* ShareController.swift */,
+				53651E452BBC0D9500ECAC29 /* ShareeSuggestionsDataSource.swift */,
+				53FE14662B8F78B6006C4193 /* ShareOptionsView.swift */,
+				53FE14582B8E3F6C006C4193 /* ShareTableItemView.swift */,
+				531522812B8E01C6002E31BE /* ShareTableItemView.xib */,
+				53FE144F2B8E0658006C4193 /* ShareTableViewDataSource.swift */,
+				537630922B85F4B00026BFAB /* ShareViewController.swift */,
+				537630902B85F4980026BFAB /* ShareViewController.xib */,
+				53FE14642B8F6700006C4193 /* ShareViewDataSourceUIDelegate.swift */,
+			);
+			path = Sharing;
+			sourceTree = "<group>";
+		};
+		537BD6782C58D0FC00446ED0 /* Locking */ = {
+			isa = PBXGroup;
+			children = (
+				537BD6792C58D67800446ED0 /* LockViewController.swift */,
+				537BD67B2C58D7B700446ED0 /* LockViewController.xib */,
+			);
+			path = Locking;
+			sourceTree = "<group>";
+		};
 		538E396827F4765000FA63D5 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -321,16 +354,11 @@
 			isa = PBXGroup;
 			children = (
 				5376307B2B85E2E00026BFAB /* Extensions */,
+				537BD6782C58D0FC00446ED0 /* Locking */,
+				537BD6772C58D0C400446ED0 /* Sharing */,
 				53B979802B84C81F002DA742 /* DocumentActionViewController.swift */,
-				5374FD432B95EE1400C78D54 /* ShareController.swift */,
-				53651E452BBC0D9500ECAC29 /* ShareeSuggestionsDataSource.swift */,
-				53FE14662B8F78B6006C4193 /* ShareOptionsView.swift */,
-				53FE14582B8E3F6C006C4193 /* ShareTableItemView.swift */,
-				531522812B8E01C6002E31BE /* ShareTableItemView.xib */,
-				53FE144F2B8E0658006C4193 /* ShareTableViewDataSource.swift */,
-				537630922B85F4B00026BFAB /* ShareViewController.swift */,
-				537630902B85F4980026BFAB /* ShareViewController.xib */,
-				53FE14642B8F6700006C4193 /* ShareViewDataSourceUIDelegate.swift */,
+				537BD67F2C58F01B00446ED0 /* FileProviderCommunication.swift */,
+				537BD6812C58F72E00446ED0 /* MetadataProvider.swift */,
 				53FE14572B8E3A7C006C4193 /* FileProviderUIExt.entitlements */,
 				53B979852B84C81F002DA742 /* Info.plist */,
 			);
@@ -617,6 +645,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				537BD67C2C58D7B700446ED0 /* LockViewController.xib in Resources */,
 				531522822B8E01C6002E31BE /* ShareTableItemView.xib in Resources */,
 				537630912B85F4980026BFAB /* ShareViewController.xib in Resources */,
 			);
@@ -691,9 +720,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				537BD6822C58F72E00446ED0 /* MetadataProvider.swift in Sources */,
 				537630932B85F4B00026BFAB /* ShareViewController.swift in Sources */,
 				53FE14672B8F78B6006C4193 /* ShareOptionsView.swift in Sources */,
 				53651E462BBC0D9500ECAC29 /* ShareeSuggestionsDataSource.swift in Sources */,
+				537BD67A2C58D67800446ED0 /* LockViewController.swift in Sources */,
 				53FE14652B8F6700006C4193 /* ShareViewDataSourceUIDelegate.swift in Sources */,
 				53B979812B84C81F002DA742 /* DocumentActionViewController.swift in Sources */,
 				5374FD442B95EE1400C78D54 /* ShareController.swift in Sources */,
@@ -701,6 +732,7 @@
 				53FE14592B8E3F6C006C4193 /* ShareTableItemView.swift in Sources */,
 				5376307D2B85E2ED0026BFAB /* Logger+Extensions.swift in Sources */,
 				53FE14502B8E0658006C4193 /* ShareTableViewDataSource.swift in Sources */,
+				537BD6802C58F01B00446ED0 /* FileProviderCommunication.swift in Sources */,
 				537630982B8612F00026BFAB /* FPUIExtensionService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
