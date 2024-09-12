@@ -587,8 +587,8 @@ ApplicationWindow {
 
                         background: Rectangle {
                             border.color: palette.dark
+                            radius: Style.currentAccountButtonRadius
                             color: palette.window
-                            radius: 2
                         }
 
                         contentItem: ScrollView {
@@ -618,6 +618,12 @@ ApplicationWindow {
                                     Accessible.role: Accessible.MenuItem
                                     Accessible.name: qsTr("Open %1 in browser").arg(model.appName)
                                     Accessible.onPressAction: appEntry.triggered()
+
+                                    background: Rectangle {
+                                        anchors.fill: parent
+                                        anchors.margins: 1
+                                        color: (appEntry.hovered || appEntry.visualFocus) ? palette.highlight : palette.window
+                                    }
                                 }
                             }
                         }
