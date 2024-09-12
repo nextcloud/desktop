@@ -62,7 +62,7 @@ AbstractButton {
                 height: width
                 anchors.bottom: accountAvatar.bottom
                 anchors.right: accountAvatar.right
-                radius: width*0.5
+                radius:  width * Style.trayFolderStatusIndicatorRadiusFactor
             }
 
             Image {
