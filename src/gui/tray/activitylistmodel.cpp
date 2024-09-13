@@ -236,7 +236,7 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
                 || a._syncFileItemStatus == SyncFileItem::FatalError
                 || a._syncFileItemStatus == SyncFileItem::DetailError
                 || a._syncFileItemStatus == SyncFileItem::BlacklistedError) {
-                return colorIconPath.arg("state-error.svg");;
+                return colorIconPath.arg("state-error.svg");
             } else if (a._syncFileItemStatus == SyncFileItem::SoftError
                 || a._syncFileItemStatus == SyncFileItem::Conflict
                 || a._syncFileItemStatus == SyncFileItem::Restoration
@@ -244,7 +244,7 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
                 || a._syncFileItemStatus == SyncFileItem::FileNameInvalid
                 || a._syncFileItemStatus == SyncFileItem::FileNameInvalidOnServer
                 || a._syncFileItemStatus == SyncFileItem::FileNameClash) {
-                return colorIconPath.arg("state-warning.svg");;
+                return colorIconPath.arg("state-warning.svg");
             } else if (a._syncFileItemStatus == SyncFileItem::FileIgnored) {
                 return colorIconPath.arg("state-info.svg");
             } else {
