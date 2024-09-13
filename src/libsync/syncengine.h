@@ -364,6 +364,8 @@ private:
 
     void finishSync();
 
+    bool handleMassDeletion();
+
     void handleRemnantReadOnlyFolders();
 
     template <typename T>
