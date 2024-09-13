@@ -11,12 +11,20 @@ index 02035d863..ba2438305 100644
  else()
      set(REQUIRED_QT_VERSION "5.15.0")
 diff --git a/src/CMakeLists.txt b/src/CMakeLists.txt
-index 75c6f4582..d170fbf78 100644
+index fe9d4d9af..f61132e7a 100644
 --- a/src/CMakeLists.txt
 +++ b/src/CMakeLists.txt
-@@ -68,7 +68,7 @@ if(Qt${QT_MAJOR_VERSION}WebEngine_FOUND AND Qt${QT_MAJOR_VERSION}WebEngineWidget
-   add_compile_definitions(WITH_WEBENGINE=1)
- endif()
+@@ -1,6 +1,6 @@
+ include(ECMEnableSanitizers)
+ 
+-set(REQUIRED_QT_VERSION "6.5.0")
++set(REQUIRED_QT_VERSION "6.2.4")
+ 
+ find_package(Qt${QT_MAJOR_VERSION}Core ${REQUIRED_QT_VERSION} CONFIG QUIET)
+ set_package_properties(Qt${QT_MAJOR_VERSION}Core PROPERTIES
+@@ -38,7 +38,7 @@ find_package(Qt${QT_VERSION_MAJOR}Core5Compat ${REQUIRED_QT_VERSION} CONFIG QUIE
+      TYPE REQUIRED
+  )
  
 -get_target_property (QT_QMAKE_EXECUTABLE Qt::qmake IMPORTED_LOCATION)
 +get_target_property (QT_QMAKE_EXECUTABLE Qt6::qmake IMPORTED_LOCATION)
@@ -24,7 +32,7 @@ index 75c6f4582..d170fbf78 100644
  
  if(NOT TOKEN_AUTH_ONLY)
 diff --git a/src/gui/CMakeLists.txt b/src/gui/CMakeLists.txt
-index 290e16e94..3069057a1 100644
+index 845066977..793a12d33 100644
 --- a/src/gui/CMakeLists.txt
 +++ b/src/gui/CMakeLists.txt
 @@ -3,7 +3,7 @@ find_package(Qt${QT_MAJOR_VERSION} REQUIRED COMPONENTS Widgets Svg Qml Quick Qui
