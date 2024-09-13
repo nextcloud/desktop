@@ -40,7 +40,7 @@ AbstractButton {
         color: (userLine.hovered || userLine.visualFocus) &&
                !(userMoreButton.hovered || userMoreButton.visualFocus) ?
                    palette.highlight : palette.window
-        radius: Style.halfWindowRadius
+        radius: Style.halfTrayWindowRadius
     }
 
     contentItem: RowLayout {
