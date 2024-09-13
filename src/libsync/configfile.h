@@ -93,6 +93,9 @@ public:
     [[nodiscard]] bool promptDeleteFiles() const;
     void setPromptDeleteFiles(bool promptDeleteFiles);
 
+    [[nodiscard]] int deleteFilesThreshold() const;
+    void setDeleteFilesThreshold(int thresholdValue);
+
     [[nodiscard]] bool crashReporter() const;
     void setCrashReporter(bool enabled);
 

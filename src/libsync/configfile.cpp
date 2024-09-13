@@ -59,6 +59,7 @@ static constexpr char fullLocalDiscoveryIntervalC[] = "fullLocalDiscoveryInterva
 static constexpr char notificationRefreshIntervalC[] = "notificationRefreshInterval";
 static constexpr char monoIconsC[] = "monoIcons";
 static constexpr char promptDeleteC[] = "promptDeleteAllFiles";
+static constexpr char deleteFilesThresholdC[] = "deleteFilesThreshold";
 static constexpr char crashReporterC[] = "crashReporter";
 static constexpr char optionalServerNotificationsC[] = "optionalServerNotifications";
 static constexpr char showCallNotificationsC[] = "showCallNotifications";
@@ -113,6 +114,8 @@ static constexpr char certPasswd[] = "http_certificatePasswd";
 static const QSet validUpdateChannels { QStringLiteral("stable"), QStringLiteral("beta") };
 
 static constexpr auto macFileProviderModuleEnabledC = "macFileProviderModuleEnabled";
+
+static constexpr int deleteFilesThresholdDefaultValue = 100;
 }
 
 namespace OCC {
@@ -1019,13 +1022,25 @@ bool ConfigFile::showMainDialogAsNormalWindow() const {
 bool ConfigFile::promptDeleteFiles() const
 {
     QSettings settings(configFile(), QSettings::IniFormat);
-    return settings.value(QLatin1String(promptDeleteC), false).toBool();
+    return settings.value(QLatin1String(promptDeleteC), true).toBool();
 }
 
 void ConfigFile::setPromptDeleteFiles(bool promptDeleteFiles)
 {
     QSettings settings(configFile(), QSettings::IniFormat);
     settings.setValue(QLatin1String(promptDeleteC), promptDeleteFiles);
+}
+
+int ConfigFile::deleteFilesThreshold() const
+{
+    QSettings settings(configFile(), QSettings::IniFormat);
+    return settings.value(QLatin1String(deleteFilesThresholdC), deleteFilesThresholdDefaultValue).toInt();
+}
+
+void ConfigFile::setDeleteFilesThreshold(int thresholdValue)
+{
+    QSettings settings(configFile(), QSettings::IniFormat);
+    settings.setValue(QLatin1String(deleteFilesThresholdC), thresholdValue);
 }
 
 bool ConfigFile::monoIcons() const
