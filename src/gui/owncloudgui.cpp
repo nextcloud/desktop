@@ -431,6 +431,7 @@ void ownCloudGui::slotComputeOverallSyncStatus()
                                                                        folder->syncResult().hasUnresolvedConflicts(),
                                                                        folder->syncPaused(),
                                                                        folder->syncEngine().progressInfo());
+            //: Example text: "Nextcloud: Syncing 25MB (3 minutes left)"   (%1 is the folder name to be synced, %2 a status message for that folder)
             allStatusStrings += tr("%1: %2").arg(folder->shortGuiLocalPath(), folderMessage);
         }
 #ifdef BUILD_FILE_PROVIDER_MODULE
