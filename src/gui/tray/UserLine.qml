@@ -40,7 +40,7 @@ AbstractButton {
         color: (userLine.hovered || userLine.visualFocus) &&
                !(userMoreButton.hovered || userMoreButton.visualFocus) ?
                    palette.highlight : palette.window
-        radius: Style.trayWindowRadius
+        radius: Style.halfWindowRadius
     }
 
     contentItem: RowLayout {
@@ -160,7 +160,7 @@ AbstractButton {
 
                 background: Rectangle {
                     border.color: palette.dark
-                    radius: Style.trayWindowRadius
+                    radius: Style.halfTrayWindowRadius
                     color: palette.window
                 }
 
@@ -173,7 +173,7 @@ AbstractButton {
                     onClicked: showUserStatusSelector(index)
 
                     background: Rectangle {
-                        radius: Style.trayWindowRadius
+                        radius: Style.halfTrayWindowRadius
                         color: parent.hovered ? palette.highlight : palette.window
                     }
                 }
@@ -200,7 +200,7 @@ AbstractButton {
                     }
 
                     background: Rectangle {
-                        radius: Style.trayWindowRadius
+                        radius: Style.halfTrayWindowRadius
                         color: parent.hovered ? palette.highlight : palette.window
                     }
                 }
@@ -220,7 +220,7 @@ AbstractButton {
                     Accessible.onPressAction: removeAccountButton.clicked()
 
                     background: Rectangle {
-                        radius: Style.trayWindowRadius
+                        radius: Style.halfTrayWindowRadius
                         color: parent.hovered ? palette.highlight : palette.window
                     }
                 }

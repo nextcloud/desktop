@@ -50,7 +50,10 @@ QtObject {
     // Dimensions and sizes
     property int trayWindowWidth: variableSize(400)
     property int trayWindowHeight: variableSize(510)
+    // text input and main windows radius
     property int trayWindowRadius: 10
+    // dropdown menus radius
+    property int halfTrayWindowRadius: 5
     property int trayWindowBorderWidth: variableSize(1)
     property int trayWindowHeaderHeight: variableSize(60)
     property int trayHorizontalMargin: 10
