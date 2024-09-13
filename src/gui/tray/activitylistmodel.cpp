@@ -263,7 +263,7 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
         } else {
             // We have an activity
             if (a._icon.isEmpty()) {
-                return colorIconPath.arg("activity.svg");;
+                return colorIconPath.arg("activity.svg");
             }
 
             const QString basePath = QStringLiteral("image://tray-image-provider/") % a._icon % QStringLiteral("/");
