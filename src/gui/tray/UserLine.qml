@@ -40,6 +40,7 @@ AbstractButton {
         color: (userLine.hovered || userLine.visualFocus) &&
                !(userMoreButton.hovered || userMoreButton.visualFocus) ?
                    palette.highlight : palette.window
+        radius: Style.halfTrayWindowRadius
     }
 
     contentItem: RowLayout {
@@ -48,7 +49,7 @@ AbstractButton {
 
         Image {
             id: accountAvatar
-            Layout.leftMargin: 7
+            Layout.leftMargin: Style.accountIconsMenuMargin
             verticalAlignment: Qt.AlignCenter
             cache: false
             source: model.avatar !== "" ? model.avatar : Theme.darkMode ? "image://avatars/fallbackWhite" : "image://avatars/fallbackBlack"
@@ -62,7 +63,7 @@ AbstractButton {
                 height: width
                 anchors.bottom: accountAvatar.bottom
                 anchors.right: accountAvatar.right
-                radius: width*0.5
+                radius:  width * Style.trayFolderStatusIndicatorRadiusFactor
             }
 
             Image {
@@ -148,13 +149,20 @@ AbstractButton {
 
             Image {
                 anchors.fill: parent
-                source: "image://svgimage-custom-color/more.svg/"
+                source: "image://svgimage-custom-color/more.svg/" + palette.windowText
                 fillMode: Image.PreserveAspectFit
+                anchors.rightMargin: Style.accountLabelsAnchorsMargin
             }
 
             AutoSizingMenu {
                 id: userMoreButtonMenu
                 closePolicy: Menu.CloseOnPressOutsideParent | Menu.CloseOnEscape
+
+                background: Rectangle {
+                    border.color: palette.dark
+                    radius: Style.halfTrayWindowRadius
+                    color: palette.window
+                }
 
                 MenuItem {
                     visible: model.isConnected && model.serverHasUserStatus
@@ -163,6 +171,11 @@ AbstractButton {
                     font.pixelSize: Style.topLinePixelSize
                     hoverEnabled: true
                     onClicked: showUserStatusSelector(index)
+
+                    background: Rectangle {
+                        radius: Style.halfTrayWindowRadius
+                        color: parent.hovered ? palette.highlight : palette.window
+                    }
                 }
 
                 MenuItem {
@@ -185,6 +198,11 @@ AbstractButton {
                         }
                         accountMenu.close()
                     }
+
+                    background: Rectangle {
+                        radius: Style.halfTrayWindowRadius
+                        color: parent.hovered ? palette.highlight : palette.window
+                    }
                 }
 
                 MenuItem {
@@ -200,6 +218,11 @@ AbstractButton {
                     Accessible.role: Accessible.Button
                     Accessible.name: text
                     Accessible.onPressAction: removeAccountButton.clicked()
+
+                    background: Rectangle {
+                        radius: Style.halfTrayWindowRadius
+                        color: parent.hovered ? palette.highlight : palette.window
+                    }
                 }
             }
         }

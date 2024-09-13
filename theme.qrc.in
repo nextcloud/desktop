@@ -236,10 +236,10 @@
         <file>theme/colored/user-status-dnd.svg</file>
         <file>theme/black/email.svg</file>
         <file>theme/black/edit.svg</file>
+        <file>theme/black/more-apps.svg</file>
         <file>theme/delete.svg</file>
         <file>theme/send.svg</file>
         <file>theme/call-notification.wav</file>
-        <file>theme/more-apps.svg</file>
         <file>theme/talk-app.svg</file>
     </qresource>
 </RCC>

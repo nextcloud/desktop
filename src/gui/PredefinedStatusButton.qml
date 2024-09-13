@@ -36,7 +36,8 @@ AbstractButton {
 
     background: Rectangle {
         color: root.hovered || root.checked ? palette.highlight : palette.base
-        radius: Style.slightlyRoundedButtonRadius
+        // TODO: fix radius borders - they were showing for each item
+        // radius: Style.slightlyRoundedButtonRadius
     }
 
     contentItem: Row {

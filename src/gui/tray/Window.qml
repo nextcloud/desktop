@@ -243,7 +243,7 @@ ApplicationWindow {
             anchors.right:  trayWindowMainItem.right
             anchors.top:    trayWindowMainItem.top
             height:         Style.trayWindowHeaderHeight
-            color:          Style.currentUserHeaderColor
+            color:          palette.window
 
             RowLayout {
                 id: trayWindowHeaderLayout
@@ -289,7 +289,7 @@ ApplicationWindow {
                         background: Rectangle {
                             border.color: palette.dark
                             color: palette.window
-                            radius: Style.currentAccountButtonRadius
+                            radius: Style.halfTrayWindowRadius
                         }
 
                         onClosed: {
@@ -324,11 +324,12 @@ ApplicationWindow {
                                 spacing: 0
 
                                 Image {
-                                    Layout.leftMargin: 12
-                                    verticalAlignment: Qt.AlignCenter
-                                    source: "image://svgimage-custom-color/add.svg"
-                                    sourceSize.width: Style.headerButtonIconSize
-                                    sourceSize.height: Style.headerButtonIconSize
+                                    Layout.leftMargin: Style.accountIconsMenuMargin
+                                    verticalAlignment: Qt.AlignVCenter
+                                    horizontalAlignment: Qt.AlignCenter
+                                    source: "image://svgimage-custom-color/add.svg/" + palette.windowText
+                                    sourceSize.width: Style.addButtonIconSize
+                                    sourceSize.height: Style.addButtonIconSize
                                 }
                                 EnforcedPlainTextLabel {
                                     Layout.leftMargin: 14
@@ -346,6 +347,12 @@ ApplicationWindow {
                             Accessible.role: Accessible.MenuItem
                             Accessible.name: qsTr("Add new account")
                             Accessible.onPressAction: addAccountButton.clicked()
+
+                            background: Rectangle {
+                                radius: Style.halfTrayWindowRadius
+                                color: palette.highlight
+                                visible: addAccountButton.hovered
+                            }
                         }
 
                         Rectangle {
@@ -363,6 +370,12 @@ ApplicationWindow {
                             Accessible.role: Accessible.MenuItem
                             Accessible.name: Systray.syncIsPaused ? qsTr("Resume sync for all") : qsTr("Pause sync for all")
                             Accessible.onPressAction: syncPauseButton.clicked()
+
+                            background: Rectangle {
+                                radius: Style.halfTrayWindowRadius
+                                color: palette.highlight
+                                visible: syncPauseButton.hovered
+                            }
                         }
 
                         MenuItem {
@@ -374,6 +387,12 @@ ApplicationWindow {
                             Accessible.role: Accessible.MenuItem
                             Accessible.name: text
                             Accessible.onPressAction: settingsButton.clicked()
+
+                            background: Rectangle {
+                                radius: Style.halfTrayWindowRadius
+                                color: palette.highlight
+                                visible: settingsButton.hovered
+                            }
                         }
 
                         MenuItem {
@@ -385,6 +404,12 @@ ApplicationWindow {
                             Accessible.role: Accessible.MenuItem
                             Accessible.name: text
                             Accessible.onPressAction: exitButton.clicked()
+
+                            background: Rectangle {
+                                radius: Style.halfTrayWindowRadius
+                                color: palette.highlight
+                                visible: exitButton.hovered
+                            }
                         }
                     }
 
@@ -416,22 +441,22 @@ ApplicationWindow {
                                 height: width
                                 anchors.bottom: currentAccountAvatar.bottom
                                 anchors.right: currentAccountAvatar.right
-                                color: Style.currentUserHeaderColor
                                 radius: width * Style.trayFolderStatusIndicatorRadiusFactor
                             }
 
-                            Rectangle {
-                                id: currentAccountStatusIndicatorMouseHover
-                                visible: UserModel.currentUser && UserModel.currentUser.isConnected
-                                         && UserModel.currentUser.serverHasUserStatus
-                                width: Style.accountAvatarStateIndicatorSize +  + Style.trayFolderStatusIndicatorSizeOffset
-                                height: width
-                                anchors.bottom: currentAccountAvatar.bottom
-                                anchors.right: currentAccountAvatar.right
-                                color: currentAccountButton.hovered ? Style.currentUserHeaderTextColor : palette.window
-                                opacity: Style.trayFolderStatusIndicatorMouseHoverOpacityFactor
-                                radius: width * Style.trayFolderStatusIndicatorRadiusFactor
-                            }
+                            // TODO: check if we want add any hover effect
+                            // Rectangle {
+                            //     id: currentAccountStatusIndicatorMouseHover
+                            //     visible: UserModel.currentUser && UserModel.currentUser.isConnected
+                            //              && UserModel.currentUser.serverHasUserStatus
+                            //     width: Style.accountAvatarStateIndicatorSize +  + Style.trayFolderStatusIndicatorSizeOffset
+                            //     height: width
+                            //     anchors.bottom: currentAccountAvatar.bottom
+                            //     anchors.right: currentAccountAvatar.right
+                            //     color: currentAccountButton.hovered ? palette.highlight : palette.window
+                            //     opacity: Style.trayFolderStatusIndicatorMouseHoverOpacityFactor
+                            //     radius: width * Style.trayFolderStatusIndicatorRadiusFactor
+                            // }
 
                             Image {
                                 id: currentAccountStatusIndicator
@@ -505,20 +530,16 @@ ApplicationWindow {
                             }
                         }
 
-                        ColorOverlay {
-                            cached: true
-                            width: source.width
-                            height: source.height
-                            source: Image {
-                                Layout.alignment: Qt.AlignRight
-                                verticalAlignment: Qt.AlignCenter
-                                Layout.margins: Style.accountDropDownCaretMargin
-                                source:  "image://svgimage-custom-color/caret-down.svg/"
-                                sourceSize.width: Style.accountDropDownCaretSize
-                                sourceSize.height: Style.accountDropDownCaretSize
-                                Accessible.role: Accessible.PopupMenu
-                                Accessible.name: qsTr("Account switcher and settings menu")
-                            }
+                        Image {
+                            Layout.alignment: Qt.AlignRight
+                            verticalAlignment: Qt.AlignCenter
+                            horizontalAlignment: Qt.AlignRight
+                            Layout.leftMargin: Style.accountDropDownCaretMargin
+                            source:  "image://svgimage-custom-color/caret-down.svg/" + palette.windowText
+                            sourceSize.width: Style.accountDropDownCaretSize
+                            sourceSize.height: Style.accountDropDownCaretSize
+                            Accessible.role: Accessible.PopupMenu
+                            Accessible.name: qsTr("Account switcher and settings menu")
                         }
                     }
                 }
@@ -564,7 +585,7 @@ ApplicationWindow {
 
                 HeaderButton {
                     id: trayWindowAppsButton
-                    icon.source: "image://svgimage-custom-color/more-apps.svg/"
+                    icon.source: "image://svgimage-custom-color/more-apps.svg/" + palette.windowText
 
                     onClicked: {
                         if(appsMenuListView.count <= 0) {
@@ -590,8 +611,8 @@ ApplicationWindow {
 
                         background: Rectangle {
                             border.color: palette.dark
+                            radius: Style.halfTrayWindowRadius
                             color: palette.window
-                            radius: 2
                         }
 
                         contentItem: ScrollView {
@@ -615,11 +636,19 @@ ApplicationWindow {
                                     text: model.appName
                                     font.pixelSize: Style.topLinePixelSize
                                     icon.source: model.appIconUrl
+                                    icon.color: palette.windowText
                                     onTriggered: UserAppsModel.openAppUrl(appUrl)
                                     hoverEnabled: true
                                     Accessible.role: Accessible.MenuItem
                                     Accessible.name: qsTr("Open %1 in browser").arg(model.appName)
                                     Accessible.onPressAction: appEntry.triggered()
+
+                                    background: Rectangle {
+                                        anchors.fill: parent
+                                        anchors.margins: 1
+                                        color: appEntry.hovered ? palette.highlight : palette.window
+                                        radius: Style.halfTrayWindowRadius
+                                    }
                                 }
                             }
                         }
@@ -630,7 +659,7 @@ ApplicationWindow {
 
         UnifiedSearchInputContainer {
             id: trayWindowUnifiedSearchInputContainer
-            height: Style.trayWindowHeaderHeight * 0.65
+            height: Math.max(Style.talkReplyTextFieldPreferredHeight, contentHeight)
 
             anchors {
                 top: trayWindowHeaderBackground.bottom
@@ -648,17 +677,18 @@ ApplicationWindow {
             onTextEdited: { UserModel.currentUser.unifiedSearchResultsListModel.searchTerm = trayWindowUnifiedSearchInputContainer.text }
             onClearText: { UserModel.currentUser.unifiedSearchResultsListModel.searchTerm = "" }
 
-            Rectangle {
-                id: bottomUnifiedSearchInputSeparator
+            // TODO: consult designers, this line looks weird atm
+            // Rectangle {
+            //     id: bottomUnifiedSearchInputSeparator
 
-                anchors.left: parent.left
-                anchors.right: parent.right
-                anchors.bottom: parent.bottom
+            //     anchors.left: parent.left
+            //     anchors.right: parent.right
+            //     anchors.bottom: parent.bottom
 
-                height: 1
-                color: Style.menuBorder
-                visible: trayWindowMainItem.isUnifiedSearchActive
-            }
+            //     height: 1
+            //     color: Style.menuBorder
+            //     visible: trayWindowMainItem.isUnifiedSearchActive
+            // }
         }
 
         ErrorBox {
