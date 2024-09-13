@@ -2098,14 +2098,14 @@ Dies kann ein Problem mit Ihren OpenSSL-Bibliotheken sein.</translation>
         <translation>Bitte wechseln Sie zu den Einstellungen, falls Sie den Ordner herunterladen möchten.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1396"/>
+        <location filename="../src/gui/folder.cpp" line="1398"/>
         <source>A folder has surpassed the set folder size limit of %1MB: %2.
 %3</source>
         <translation>Ein Ordner hat die festgelegte Ordnergrößenbeschränkung von %1 MB überschritten: %2.
 %3</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1407"/>
+        <location filename="../src/gui/folder.cpp" line="1409"/>
         <source>Keep syncing</source>
         <translation>Weiterhin synchronisieren</translation>
     </message>
@@ -2121,11 +2121,6 @@ Wenn Sie sich entscheiden, die Dateien wiederherzustellen, werden sie erneut mit
 Wenn Sie sich entscheiden, die Dateien zu löschen, sind sie für Sie nicht mehr verfügbar, es sei denn, Sie sind der Eigentümer.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1415"/>
-        <source>Stop syncing</source>
-        <translation>Synchronisation stoppen</translation>
-    </message>
-    <message>
         <location filename="../src/gui/folder.cpp" line="1416"/>
         <source>All the files in your local sync folder &quot;%1&quot; were deleted. These deletes will be synchronized with your server, making such files unavailable unless restored.
 Are you sure you want to sync those actions with the server?
@@ -2133,6 +2128,11 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <translation>Alle Dateien im lokalen Synchronisierungs-Ordner &quot;%1&quot; wurden gelöscht. Diese Löschung wird mit Ihrem Server synchronisiert, wodurch die Dateien nicht mehr verfügbar sind, es sei denn, diese werden wiederhergestellt.
 Sind Sie sich sicher, dass Sie diese Aktion mit Ihrem Server synchronisieren möchten?
 Falls dies ein Missgeschick war und Sie sich zum Behalten der Dateien entscheiden, werden diese wieder vom Server synchronisiert.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/folder.cpp" line="1417"/>
+        <source>Stop syncing</source>
+        <translation>Synchronisation stoppen</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1420"/>
@@ -2150,12 +2150,12 @@ Falls dies ein Missgeschick war und Sie sich zum Behalten der Dateien entscheide
         <translation>Dateien behalten</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1426"/>
+        <location filename="../src/gui/folder.cpp" line="1428"/>
         <source>The folder %1 has surpassed the set folder size limit of %2MB.</source>
         <translation>Der Ordner %1 hat die festgelegte Größenbeschränkung von %2 MB überschritten.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1427"/>
+        <location filename="../src/gui/folder.cpp" line="1429"/>
         <source>Would you like to stop syncing this folder?</source>
         <translation>Möchten Sie die Synchronisierung dieses Ordners stoppen?</translation>
     </message>
@@ -2183,12 +2183,12 @@ Dies bedeutet, dass der Synchronisierungs-Client lokale Änderungen möglicherwe
 %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1549"/>
+        <location filename="../src/gui/folder.cpp" line="1551"/>
         <source>Virtual file download failed with code &quot;%1&quot;, status &quot;%2&quot; and error message &quot;%3&quot;</source>
         <translation>Der Download der virtuellen Datei ist mit dem Code &quot;%1&quot;, dem Status &quot;%2&quot; und der Fehlermeldung &quot;%3&quot; fehlgeschlagen.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1642"/>
+        <location filename="../src/gui/folder.cpp" line="1644"/>
         <source>All files in the server folder &quot;%1&quot; were deleted.
 
 If you restore the files, they will be uploaded again to the server.</source>
@@ -2197,7 +2197,7 @@ If you restore the files, they will be uploaded again to the server.</source>
 Wenn Sie die Dateien wiederherstellen, werden sie erneut auf den Server hochgeladen.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1643"/>
+        <location filename="../src/gui/folder.cpp" line="1645"/>
         <source>All files in the local folder &quot;%1&quot; were deleted.
 
 If you restore the files, they will be downloaded again from the server.</source>
@@ -2206,17 +2206,17 @@ If you restore the files, they will be downloaded again from the server.</source
 Wenn Sie die Dateien wiederherstellen, werden sie erneut vom Server heruntergeladen.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1644"/>
+        <location filename="../src/gui/folder.cpp" line="1646"/>
         <source>Remove all files?</source>
         <translation>Alle Dateien entfernen?</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1648"/>
+        <location filename="../src/gui/folder.cpp" line="1650"/>
         <source>Proceed to remove all files</source>
         <translation>Mit dem entfernen aller Dateien fortfahren</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1649"/>
+        <location filename="../src/gui/folder.cpp" line="1651"/>
         <source>Restore files</source>
         <translation>Dateien wiederherstellen</translation>
     </message>
@@ -4068,30 +4068,30 @@ Dies ist ein neuer, experimenteller Modus. Wenn Sie sich entscheiden, ihn zu ver
         <translation>Der Dateiname ist ein reservierter Name in diesem Dateisystem.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="389"/>
+        <location filename="../src/libsync/discovery.cpp" line="390"/>
         <source>Folder</source>
         <comment>name of folder entity to use when warning about invalid name</comment>
         <translation>Ordner</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="389"/>
+        <location filename="../src/libsync/discovery.cpp" line="390"/>
         <source>File</source>
         <comment>name of folder entity to use when warning about invalid name</comment>
         <translation>Datei</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="391"/>
+        <location filename="../src/libsync/discovery.cpp" line="392"/>
         <source>%1 name containing the character &quot;%2&quot; is not supported on this file system.</source>
         <comment>folder or file impossible to sync due to an invalid name, placeholders will be file or folder and the invalid character</comment>
         <translation>%1 Namen, die das Zeichen &quot;%2&quot; enthalten, werden von diesem Dateisystem nicht unterstützt.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="393"/>
+        <location filename="../src/libsync/discovery.cpp" line="394"/>
         <source>%1 name contains at least one invalid character</source>
         <translation>%1 Der Name enthält mindestens ein ungültiges Zeichen</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="395"/>
+        <location filename="../src/libsync/discovery.cpp" line="396"/>
         <source>%1 name is a reserved name on this file system.</source>
         <translation>%1 Der Name ist in diesem Dateisystem ein reservierter Name.</translation>
     </message>
@@ -4146,22 +4146,22 @@ Dies ist ein neuer, experimenteller Modus. Wenn Sie sich entscheiden, ihn zu ver
         <translation>Der Dateiname steht auf dem Server auf einer schwarzen Liste.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="436"/>
+        <location filename="../src/libsync/discovery.cpp" line="437"/>
         <source> Reason: the entire filename is forbidden.</source>
         <translation>Grund: Der gesamte Dateiname ist verboten.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="439"/>
+        <location filename="../src/libsync/discovery.cpp" line="440"/>
         <source> Reason: the filename has a forbidden base name (filename start).</source>
         <translation>Grund: Der Dateiname hat einen verbotenen Basisnamen (Beginn des Dateinamens).</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="442"/>
+        <location filename="../src/libsync/discovery.cpp" line="443"/>
         <source> Reason: the file has a forbidden extension (.%1).</source>
         <translation>Grund: Die Datei hat eine verbotene Erweiterung (.%1).</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="445"/>
+        <location filename="../src/libsync/discovery.cpp" line="446"/>
         <source> Reason: the filename contains a forbidden character (%1).</source>
         <translation>Grund: Der Dateiname enthält ein verbotenes Zeichen (%1).</translation>
     </message>
@@ -4196,7 +4196,7 @@ Dies ist ein neuer, experimenteller Modus. Wenn Sie sich entscheiden, ihn zu ver
         <translation>Synchronisierung wegen ungültiger Änderungszeit nicht möglich</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1091"/>
+        <location filename="../src/libsync/discovery.cpp" line="1093"/>
         <source>Could not upload file, because it is open in &quot;%1&quot;.</source>
         <translation>Datei konnte nicht hochgeladen werden, da sie in &quot;%1&quot; geöffnet ist.</translation>
     </message>

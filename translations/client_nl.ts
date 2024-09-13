@@ -2095,14 +2095,14 @@ Dit kan een probleem zijn met je OpenSSL-bibliotheken.</translation>
         <translation>Ga naar de instellingen om het te selecteren als u deze wilt downloaden.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1396"/>
+        <location filename="../src/gui/folder.cpp" line="1398"/>
         <source>A folder has surpassed the set folder size limit of %1MB: %2.
 %3</source>
         <translation>Een map is groter geworden dan de ingestelde limiet van %1MB: %2.
 %3</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1407"/>
+        <location filename="../src/gui/folder.cpp" line="1409"/>
         <source>Keep syncing</source>
         <translation>Doorgaan met synchronisatie</translation>
     </message>
@@ -2118,17 +2118,17 @@ Als je de bestanden wilt behouden, worden ze opnieuw gesynchroniseerd met de ser
 Als je de bestanden wilt verwijderen, worden ze niet beschikbaar, tenzij je de eigenaar bent.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1415"/>
-        <source>Stop syncing</source>
-        <translation>Stop synchronisatie</translation>
-    </message>
-    <message>
         <location filename="../src/gui/folder.cpp" line="1416"/>
         <source>All the files in your local sync folder &quot;%1&quot; were deleted. These deletes will be synchronized with your server, making such files unavailable unless restored.
 Are you sure you want to sync those actions with the server?
 If this was an accident and you decide to keep your files, they will be re-synced from the server.</source>
         <translation>Alle bestanden in je lokale syncmap &quot;%1&quot; werden verwijderd. Deze verwijderingen worden gesynchroniseerd naar je server, waardoor de bestanden niet beschikbaar zijn, tenzij ze worden teruggezet. Weet je zeker dat je deze acties wilt synchroniseren met de server? 
 Als dit een ongelukje was en je de bestanden wilt behouden, worden ze opnieuw gesynchroniseerd met de server.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/folder.cpp" line="1417"/>
+        <source>Stop syncing</source>
+        <translation>Stop synchronisatie</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1420"/>
@@ -2146,12 +2146,12 @@ Als dit een ongelukje was en je de bestanden wilt behouden, worden ze opnieuw ge
         <translation>Bestanden bewaren</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1426"/>
+        <location filename="../src/gui/folder.cpp" line="1428"/>
         <source>The folder %1 has surpassed the set folder size limit of %2MB.</source>
         <translation>De map %1 is groter geworden dan de ingestelde limiet van %2MB</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1427"/>
+        <location filename="../src/gui/folder.cpp" line="1429"/>
         <source>Would you like to stop syncing this folder?</source>
         <translation>Wil je stoppen met het synchroniseren van deze map?</translation>
     </message>
@@ -2179,12 +2179,12 @@ Dit betekent dat de synchronisatieclient misschien niet meteen lokale wijziginge
 %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1549"/>
+        <location filename="../src/gui/folder.cpp" line="1551"/>
         <source>Virtual file download failed with code &quot;%1&quot;, status &quot;%2&quot; and error message &quot;%3&quot;</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1642"/>
+        <location filename="../src/gui/folder.cpp" line="1644"/>
         <source>All files in the server folder &quot;%1&quot; were deleted.
 
 If you restore the files, they will be uploaded again to the server.</source>
@@ -2193,7 +2193,7 @@ If you restore the files, they will be uploaded again to the server.</source>
 Als je de  bestanden herstelt, zullen ze weer naar de server geüpload worden.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1643"/>
+        <location filename="../src/gui/folder.cpp" line="1645"/>
         <source>All files in the local folder &quot;%1&quot; were deleted.
 
 If you restore the files, they will be downloaded again from the server.</source>
@@ -2202,17 +2202,17 @@ If you restore the files, they will be downloaded again from the server.</source
 Als je de bestanden herstelt, zullen ze weer van de server gedownload worden.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1644"/>
+        <location filename="../src/gui/folder.cpp" line="1646"/>
         <source>Remove all files?</source>
         <translation>Alle bestanden verwijderen?</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1648"/>
+        <location filename="../src/gui/folder.cpp" line="1650"/>
         <source>Proceed to remove all files</source>
         <translation>Doorgaan om alle bestanden te verwijderen</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1649"/>
+        <location filename="../src/gui/folder.cpp" line="1651"/>
         <source>Restore files</source>
         <translation>Herstel bestanden</translation>
     </message>
@@ -4066,30 +4066,30 @@ Dit is een nieuwe, experimentele modus. Als je besluit het te gebruiken, vragen 
         <translation>De bestandsnaam is een gereserveerde naam op dit bestandssysteem.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="389"/>
+        <location filename="../src/libsync/discovery.cpp" line="390"/>
         <source>Folder</source>
         <comment>name of folder entity to use when warning about invalid name</comment>
         <translation>Map</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="389"/>
+        <location filename="../src/libsync/discovery.cpp" line="390"/>
         <source>File</source>
         <comment>name of folder entity to use when warning about invalid name</comment>
         <translation>Bestand</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="391"/>
+        <location filename="../src/libsync/discovery.cpp" line="392"/>
         <source>%1 name containing the character &quot;%2&quot; is not supported on this file system.</source>
         <comment>folder or file impossible to sync due to an invalid name, placeholders will be file or folder and the invalid character</comment>
         <translation>%1 naam met teken &quot;%2&quot; wordt niet ondersteund door het bestandssysteem.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="393"/>
+        <location filename="../src/libsync/discovery.cpp" line="394"/>
         <source>%1 name contains at least one invalid character</source>
         <translation>%1 naam bevat op z&apos;n minst één ongeldig teken</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="395"/>
+        <location filename="../src/libsync/discovery.cpp" line="396"/>
         <source>%1 name is a reserved name on this file system.</source>
         <translation>%1 naam is een gereserveerde naam op dit bestandssysteem.</translation>
     </message>
@@ -4144,22 +4144,22 @@ Dit is een nieuwe, experimentele modus. Als je besluit het te gebruiken, vragen 
         <translation>De bestandsnaam staat op de negeerlijst van de server.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="436"/>
+        <location filename="../src/libsync/discovery.cpp" line="437"/>
         <source> Reason: the entire filename is forbidden.</source>
         <translation>Reden: de gehele bestandsnaam is niet toegestaan.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="439"/>
+        <location filename="../src/libsync/discovery.cpp" line="440"/>
         <source> Reason: the filename has a forbidden base name (filename start).</source>
         <translation>Reden: de basisnaam (startgedeelte) is niet toegestaan.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="442"/>
+        <location filename="../src/libsync/discovery.cpp" line="443"/>
         <source> Reason: the file has a forbidden extension (.%1).</source>
         <translation>Reden: het bestand heeft een extensie die niet is toegestaan. (%1).</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="445"/>
+        <location filename="../src/libsync/discovery.cpp" line="446"/>
         <source> Reason: the filename contains a forbidden character (%1).</source>
         <translation>Reden: het bestand bevat een teken dat niet is toegestaan. (%1).</translation>
     </message>
@@ -4194,7 +4194,7 @@ Dit is een nieuwe, experimentele modus. Als je besluit het te gebruiken, vragen 
         <translation>Kan niet synchroniseren door ongeldig wijzigingstijdstip</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1091"/>
+        <location filename="../src/libsync/discovery.cpp" line="1093"/>
         <source>Could not upload file, because it is open in &quot;%1&quot;.</source>
         <translation>Kan bestand niet uploaden, omdat het geopend is in &quot;%1&quot;.</translation>
     </message>

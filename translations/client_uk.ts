@@ -2099,14 +2099,14 @@ This can be an issue with your OpenSSL libraries.</source>
         <translation>Будь ласка, перейдіть у налаштуваннях, щоб вибрати її для подальшого звантаження.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1396"/>
+        <location filename="../src/gui/folder.cpp" line="1398"/>
         <source>A folder has surpassed the set folder size limit of %1MB: %2.
 %3</source>
         <translation>Каталог %2 перевищив встановлене обмеження на розмір %1MB
 %3</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1407"/>
+        <location filename="../src/gui/folder.cpp" line="1409"/>
         <source>Keep syncing</source>
         <translation>Синхронізовувати</translation>
     </message>
@@ -2122,11 +2122,6 @@ If you decide to delete the files, they will be unavailable to you, unless you a
 Якщо ви вирішите вилучити ці файли, вони будуть недоступні вам, якщо ви не є їхнім власником.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1415"/>
-        <source>Stop syncing</source>
-        <translation>Зупинити синхронізацію</translation>
-    </message>
-    <message>
         <location filename="../src/gui/folder.cpp" line="1416"/>
         <source>All the files in your local sync folder &quot;%1&quot; were deleted. These deletes will be synchronized with your server, making such files unavailable unless restored.
 Are you sure you want to sync those actions with the server?
@@ -2134,6 +2129,11 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <translation>Усі файли з каталогу синхронізації %1, що на вашому пристрої, було вилучено. Вилучені файли буде синхронізовано з хмарою, що зробить такі файли не доступними, допоки їх не буде відновлено.
 Чи дійсно виконати такі дії з синхронізації з хмарою?
 Якщо ви це зробили помилково та бажаєте зберегти ваші файли, їх буде повторно синхронізовано з хмари.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/folder.cpp" line="1417"/>
+        <source>Stop syncing</source>
+        <translation>Зупинити синхронізацію</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1420"/>
@@ -2151,12 +2151,12 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <translation>Зберегти файли</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1426"/>
+        <location filename="../src/gui/folder.cpp" line="1428"/>
         <source>The folder %1 has surpassed the set folder size limit of %2MB.</source>
         <translation>Каталог %1 перевищив встановлене обмеження на розмір %2MB.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1427"/>
+        <location filename="../src/gui/folder.cpp" line="1429"/>
         <source>Would you like to stop syncing this folder?</source>
         <translation>Призупинити синхронізацію цього каталогу?</translation>
     </message>
@@ -2184,12 +2184,12 @@ This means that the synchronization client might not upload local changes immedi
 %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1549"/>
+        <location filename="../src/gui/folder.cpp" line="1551"/>
         <source>Virtual file download failed with code &quot;%1&quot;, status &quot;%2&quot; and error message &quot;%3&quot;</source>
         <translation>Помилка звантаженння віртульного файлу: код &quot;%1&quot;, статус &quot;%2&quot;, повідомлення про помилку &quot;%3&quot;</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1642"/>
+        <location filename="../src/gui/folder.cpp" line="1644"/>
         <source>All files in the server folder &quot;%1&quot; were deleted.
 
 If you restore the files, they will be uploaded again to the server.</source>
@@ -2198,7 +2198,7 @@ If you restore the files, they will be uploaded again to the server.</source>
 Якщо ви відновити ці файли, їх буде повторно завантажено на сервер.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1643"/>
+        <location filename="../src/gui/folder.cpp" line="1645"/>
         <source>All files in the local folder &quot;%1&quot; were deleted.
 
 If you restore the files, they will be downloaded again from the server.</source>
@@ -2207,17 +2207,17 @@ If you restore the files, they will be downloaded again from the server.</source
 Якщо ви відновити ці файли, їх буде повторно звантажено з сервера.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1644"/>
+        <location filename="../src/gui/folder.cpp" line="1646"/>
         <source>Remove all files?</source>
         <translation>Дійсно  вилучити всі файли?</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1648"/>
+        <location filename="../src/gui/folder.cpp" line="1650"/>
         <source>Proceed to remove all files</source>
         <translation>Підтвердити вилучення всіх файлів</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1649"/>
+        <location filename="../src/gui/folder.cpp" line="1651"/>
         <source>Restore files</source>
         <translation>Відновити файли</translation>
     </message>
@@ -2290,32 +2290,32 @@ If you restore the files, they will be downloaded again from the server.</source
     <message>
         <location filename="../src/gui/folderman.cpp" line="1738"/>
         <source>Syncing %1 of %2 (A few seconds left)</source>
-        <translation type="unfinished"/>
+        <translation>Синхронізація %1 із %2 (залишилося декілька секунд)</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1741"/>
         <source>Syncing %1 of %2 (%3 left)</source>
-        <translation type="unfinished"/>
+        <translation>Синхронізація %1 із %2 (залишилося ще %3)</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1744"/>
         <source>Syncing %1 of %2</source>
-        <translation type="unfinished"/>
+        <translation>Синхронізація %1 із %2</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1750"/>
         <source>Syncing %1 (A few seconds left)</source>
-        <translation type="unfinished"/>
+        <translation>Синхронізація %1 (залишилося декілька секунд)</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1752"/>
         <source>Syncing %1 (%2 left)</source>
-        <translation type="unfinished"/>
+        <translation>Синхронізація %1 (залишилося ще %2)</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1755"/>
         <source>Syncing %1</source>
-        <translation type="unfinished"/>
+        <translation>Синхронізація %1</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1611"/>
@@ -4070,30 +4070,30 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Таке ім&apos;я файлу є зарезервованим ім&apos;ям у файловій системі.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="389"/>
+        <location filename="../src/libsync/discovery.cpp" line="390"/>
         <source>Folder</source>
         <comment>name of folder entity to use when warning about invalid name</comment>
         <translation>Каталог</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="389"/>
+        <location filename="../src/libsync/discovery.cpp" line="390"/>
         <source>File</source>
         <comment>name of folder entity to use when warning about invalid name</comment>
         <translation>Файл</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="391"/>
+        <location filename="../src/libsync/discovery.cpp" line="392"/>
         <source>%1 name containing the character &quot;%2&quot; is not supported on this file system.</source>
         <comment>folder or file impossible to sync due to an invalid name, placeholders will be file or folder and the invalid character</comment>
         <translation>Ім&apos;я %1, що містить символ &quot;%2&quot; не підтримується файловою системою.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="393"/>
+        <location filename="../src/libsync/discovery.cpp" line="394"/>
         <source>%1 name contains at least one invalid character</source>
         <translation>Ім&apos;я %1 містить принаймні один недійсний символ</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="395"/>
+        <location filename="../src/libsync/discovery.cpp" line="396"/>
         <source>%1 name is a reserved name on this file system.</source>
         <translation>Ім&apos;я %1 є зарезервованою назвою у файловій системі.</translation>
     </message>
@@ -4148,22 +4148,22 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Таке ім&apos;я файлу внесено до чорного списку на сервері.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="436"/>
+        <location filename="../src/libsync/discovery.cpp" line="437"/>
         <source> Reason: the entire filename is forbidden.</source>
         <translation>Причина: все ім&apos;я файлу не дозволено.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="439"/>
+        <location filename="../src/libsync/discovery.cpp" line="440"/>
         <source> Reason: the filename has a forbidden base name (filename start).</source>
         <translation>Причина: ім&apos;я файлу містить недозволену назву на початку.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="442"/>
+        <location filename="../src/libsync/discovery.cpp" line="443"/>
         <source> Reason: the file has a forbidden extension (.%1).</source>
         <translation>Причина: файл містить недозволене розширення.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="445"/>
+        <location filename="../src/libsync/discovery.cpp" line="446"/>
         <source> Reason: the filename contains a forbidden character (%1).</source>
         <translation>Причина: ім&apos;я файлу містить недозволений символ (%1).</translation>
     </message>
@@ -4198,7 +4198,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Неможливо виконати синхронізацію через неправильний час модифікації</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1091"/>
+        <location filename="../src/libsync/discovery.cpp" line="1093"/>
         <source>Could not upload file, because it is open in &quot;%1&quot;.</source>
         <translation>Не вдалося завантажити файл, оскільки його відкрито у &quot;%1&quot;.</translation>
     </message>

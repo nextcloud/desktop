@@ -2098,14 +2098,14 @@ Dette kan være et problem med OpenSSL-bibliotekene dine.</translation>
         <translation>Gå til Innstillinger og velg den hvis du ønsker å laste den ned.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1396"/>
+        <location filename="../src/gui/folder.cpp" line="1398"/>
         <source>A folder has surpassed the set folder size limit of %1MB: %2.
 %3</source>
         <translation>En mappe har overskredet den angitte mappestørrelsesgrensen på %1MB: %2.
 %3</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1407"/>
+        <location filename="../src/gui/folder.cpp" line="1409"/>
         <source>Keep syncing</source>
         <translation>Fortsett å synkronisere</translation>
     </message>
@@ -2121,11 +2121,6 @@ Hvis du bestemmer deg for å gjenopprette filene, vil de synkroniseres på nytt 
 Hvis du bestemmer deg for å slette filene, vil de være utilgjengelige for deg, med mindre du er eieren.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1415"/>
-        <source>Stop syncing</source>
-        <translation>Stopp synkroniseringen</translation>
-    </message>
-    <message>
         <location filename="../src/gui/folder.cpp" line="1416"/>
         <source>All the files in your local sync folder &quot;%1&quot; were deleted. These deletes will be synchronized with your server, making such files unavailable unless restored.
 Are you sure you want to sync those actions with the server?
@@ -2133,6 +2128,11 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <translation>Alle filene i din lokale synkroniseringsmappe «%1» ble slettet. Disse slettingene vil bli synkronisert med serveren din, noe som gjør slike filer utilgjengelige med mindre de gjenopprettes.
 Er du sikker på at du vil synkronisere disse handlingene med serveren?
 Hvis dette var et uhell og du bestemmer deg for å beholde filene dine, vil de synkroniseres på nytt fra serveren.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/folder.cpp" line="1417"/>
+        <source>Stop syncing</source>
+        <translation>Stopp synkroniseringen</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1420"/>
@@ -2150,12 +2150,12 @@ Hvis dette var et uhell og du bestemmer deg for å beholde filene dine, vil de s
         <translation>Behold filer</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1426"/>
+        <location filename="../src/gui/folder.cpp" line="1428"/>
         <source>The folder %1 has surpassed the set folder size limit of %2MB.</source>
         <translation>Mappen %1 har overskredet den angitte mappestørrelsesgrensen på %2MB.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1427"/>
+        <location filename="../src/gui/folder.cpp" line="1429"/>
         <source>Would you like to stop syncing this folder?</source>
         <translation>Vil du slutte å synkronisere denne mappen?</translation>
     </message>
@@ -2183,12 +2183,12 @@ Dette betyr at synkroniseringsklienten kanskje ikke laster opp lokale endringer 
 %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1549"/>
+        <location filename="../src/gui/folder.cpp" line="1551"/>
         <source>Virtual file download failed with code &quot;%1&quot;, status &quot;%2&quot; and error message &quot;%3&quot;</source>
         <translation>Virtuell nedlasting av filen feilet med kode &quot;%1&quot;, status &quot;%2&quot; og feilmelding &quot;%3&quot;</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1642"/>
+        <location filename="../src/gui/folder.cpp" line="1644"/>
         <source>All files in the server folder &quot;%1&quot; were deleted.
 
 If you restore the files, they will be uploaded again to the server.</source>
@@ -2197,7 +2197,7 @@ If you restore the files, they will be uploaded again to the server.</source>
 Hvis du gjenoppretter filene, blir de lastet opp igjen til serveren.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1643"/>
+        <location filename="../src/gui/folder.cpp" line="1645"/>
         <source>All files in the local folder &quot;%1&quot; were deleted.
 
 If you restore the files, they will be downloaded again from the server.</source>
@@ -2206,17 +2206,17 @@ If you restore the files, they will be downloaded again from the server.</source
 Hvis du gjenoppretter filene, blir de lastet ned igjen fra serveren.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1644"/>
+        <location filename="../src/gui/folder.cpp" line="1646"/>
         <source>Remove all files?</source>
         <translation>Fjerne alle filer?</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1648"/>
+        <location filename="../src/gui/folder.cpp" line="1650"/>
         <source>Proceed to remove all files</source>
         <translation>Fortsett med å fjerne alle filer</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1649"/>
+        <location filename="../src/gui/folder.cpp" line="1651"/>
         <source>Restore files</source>
         <translation>Gjenopprett filer</translation>
     </message>
@@ -4069,30 +4069,30 @@ Dette er en ny, eksperimentell modus. Hvis du bestemmer deg for å bruke den, ve
         <translation>Filnavnet er et reservert navn på dette filsystemet.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="389"/>
+        <location filename="../src/libsync/discovery.cpp" line="390"/>
         <source>Folder</source>
         <comment>name of folder entity to use when warning about invalid name</comment>
         <translation>Mappe</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="389"/>
+        <location filename="../src/libsync/discovery.cpp" line="390"/>
         <source>File</source>
         <comment>name of folder entity to use when warning about invalid name</comment>
         <translation>Fil</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="391"/>
+        <location filename="../src/libsync/discovery.cpp" line="392"/>
         <source>%1 name containing the character &quot;%2&quot; is not supported on this file system.</source>
         <comment>folder or file impossible to sync due to an invalid name, placeholders will be file or folder and the invalid character</comment>
         <translation>%1 navn som inneholder tegnet &quot;%2&quot; støttes ikke på dette filsystemet.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="393"/>
+        <location filename="../src/libsync/discovery.cpp" line="394"/>
         <source>%1 name contains at least one invalid character</source>
         <translation>%1 navn inneholder minst ett ugyldig tegn</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="395"/>
+        <location filename="../src/libsync/discovery.cpp" line="396"/>
         <source>%1 name is a reserved name on this file system.</source>
         <translation>%1 navn er reservert på dette filsystemet.</translation>
     </message>
@@ -4147,22 +4147,22 @@ Dette er en ny, eksperimentell modus. Hvis du bestemmer deg for å bruke den, ve
         <translation>Filnavnet er svartelistet på serveren.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="436"/>
+        <location filename="../src/libsync/discovery.cpp" line="437"/>
         <source> Reason: the entire filename is forbidden.</source>
         <translation>Årsak: hele filnavnet er forbudt.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="439"/>
+        <location filename="../src/libsync/discovery.cpp" line="440"/>
         <source> Reason: the filename has a forbidden base name (filename start).</source>
         <translation>Årsak: filnavnet har et forbudt basisnavn (filnavn start).</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="442"/>
+        <location filename="../src/libsync/discovery.cpp" line="443"/>
         <source> Reason: the file has a forbidden extension (.%1).</source>
         <translation>Årsak: filen har en forbudt filutvidelse (.%1).</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="445"/>
+        <location filename="../src/libsync/discovery.cpp" line="446"/>
         <source> Reason: the filename contains a forbidden character (%1).</source>
         <translation>Årsak: filnavnet inneholder et forbudt tegn (%1).</translation>
     </message>
@@ -4197,7 +4197,7 @@ Dette er en ny, eksperimentell modus. Hvis du bestemmer deg for å bruke den, ve
         <translation>Kan ikke synkronisere på grunn av ugyldig endringstid</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1091"/>
+        <location filename="../src/libsync/discovery.cpp" line="1093"/>
         <source>Could not upload file, because it is open in &quot;%1&quot;.</source>
         <translation>Kunne ikke laste opp filen, fordi den er åpen i &quot;%1&quot;.</translation>
     </message>

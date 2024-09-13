@@ -2099,14 +2099,14 @@ This can be an issue with your OpenSSL libraries.</source>
         <translation>このフォルダーをダウンロードするには設定画面で選択してください。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1396"/>
+        <location filename="../src/gui/folder.cpp" line="1398"/>
         <source>A folder has surpassed the set folder size limit of %1MB: %2.
 %3</source>
         <translation>フォルダに設定されたフォルダサイズ制限値 %1MB を超えました: %2.
 %3</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1407"/>
+        <location filename="../src/gui/folder.cpp" line="1409"/>
         <source>Keep syncing</source>
         <translation>同期を維持する</translation>
     </message>
@@ -2122,11 +2122,6 @@ If you decide to delete the files, they will be unavailable to you, unless you a
 ファイルを削除することにした場合、所有者でない限り、ファイルは利用できなくなります。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1415"/>
-        <source>Stop syncing</source>
-        <translation>同期を停止する</translation>
-    </message>
-    <message>
         <location filename="../src/gui/folder.cpp" line="1416"/>
         <source>All the files in your local sync folder &quot;%1&quot; were deleted. These deletes will be synchronized with your server, making such files unavailable unless restored.
 Are you sure you want to sync those actions with the server?
@@ -2134,6 +2129,11 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <translation>ローカル同期フォルダー &quot;%1&quot; 内のすべてのファイルが削除されました。この削除はサーバーに同期され、復元されない限りそのファイルは使用できなくなります。
 このアクションをサーバーと同期してもよろしいですか？
 これが操作ミスであり、ファイルを維持することにした場合、ファイルはサーバーから再同期されます。</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/folder.cpp" line="1417"/>
+        <source>Stop syncing</source>
+        <translation>同期を停止する</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1420"/>
@@ -2151,12 +2151,12 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <translation>ファイルを保持</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1426"/>
+        <location filename="../src/gui/folder.cpp" line="1428"/>
         <source>The folder %1 has surpassed the set folder size limit of %2MB.</source>
         <translation>フォルダ %1 が設定されたフォルダサイズの制限値 %2MB を超えました。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1427"/>
+        <location filename="../src/gui/folder.cpp" line="1429"/>
         <source>Would you like to stop syncing this folder?</source>
         <translation>このフォルダの同期を停止しますか？</translation>
     </message>
@@ -2184,12 +2184,12 @@ This means that the synchronization client might not upload local changes immedi
 %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1549"/>
+        <location filename="../src/gui/folder.cpp" line="1551"/>
         <source>Virtual file download failed with code &quot;%1&quot;, status &quot;%2&quot; and error message &quot;%3&quot;</source>
         <translation>仮想のファイルのダウンロードは、コード &quot;%1&quot;、ステータス &quot;%2&quot;、エラーメッセージ &quot;%3&quot; で失敗しました。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1642"/>
+        <location filename="../src/gui/folder.cpp" line="1644"/>
         <source>All files in the server folder &quot;%1&quot; were deleted.
 
 If you restore the files, they will be uploaded again to the server.</source>
@@ -2198,7 +2198,7 @@ If you restore the files, they will be uploaded again to the server.</source>
 ファイルを復元すると、サーバーに再度アップロードされます。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1643"/>
+        <location filename="../src/gui/folder.cpp" line="1645"/>
         <source>All files in the local folder &quot;%1&quot; were deleted.
 
 If you restore the files, they will be downloaded again from the server.</source>
@@ -2207,17 +2207,17 @@ If you restore the files, they will be downloaded again from the server.</source
 ファイルを復元すると、サーバーから再度ダウンロードされます。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1644"/>
+        <location filename="../src/gui/folder.cpp" line="1646"/>
         <source>Remove all files?</source>
         <translation>全てのファイルを削除しますか?</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1648"/>
+        <location filename="../src/gui/folder.cpp" line="1650"/>
         <source>Proceed to remove all files</source>
         <translation>全てのファイルを削除します</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1649"/>
+        <location filename="../src/gui/folder.cpp" line="1651"/>
         <source>Restore files</source>
         <translation>ファイルを復元する</translation>
     </message>
@@ -4069,30 +4069,30 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>ファイル名はファイルシステムに予約されています。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="389"/>
+        <location filename="../src/libsync/discovery.cpp" line="390"/>
         <source>Folder</source>
         <comment>name of folder entity to use when warning about invalid name</comment>
         <translation>フォルダー</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="389"/>
+        <location filename="../src/libsync/discovery.cpp" line="390"/>
         <source>File</source>
         <comment>name of folder entity to use when warning about invalid name</comment>
         <translation>ファイル</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="391"/>
+        <location filename="../src/libsync/discovery.cpp" line="392"/>
         <source>%1 name containing the character &quot;%2&quot; is not supported on this file system.</source>
         <comment>folder or file impossible to sync due to an invalid name, placeholders will be file or folder and the invalid character</comment>
         <translation>文字 &quot;%2&quot; を含む名前 %1 は、このファイルシステムではサポートされていません。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="393"/>
+        <location filename="../src/libsync/discovery.cpp" line="394"/>
         <source>%1 name contains at least one invalid character</source>
         <translation>名前 %1 に無効な文字が 1 つ以上含まれています。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="395"/>
+        <location filename="../src/libsync/discovery.cpp" line="396"/>
         <source>%1 name is a reserved name on this file system.</source>
         <translation>名前 %1 はこのファイルシステム上で予約された名前です。</translation>
     </message>
@@ -4147,22 +4147,22 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>このファイル名はサーバーにブロックされました。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="436"/>
+        <location filename="../src/libsync/discovery.cpp" line="437"/>
         <source> Reason: the entire filename is forbidden.</source>
         <translation> 理由：ファイル名全体が禁止されています。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="439"/>
+        <location filename="../src/libsync/discovery.cpp" line="440"/>
         <source> Reason: the filename has a forbidden base name (filename start).</source>
         <translation> 理由：ファイル名に禁止されているベース名（ファイル名の先頭）があります。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="442"/>
+        <location filename="../src/libsync/discovery.cpp" line="443"/>
         <source> Reason: the file has a forbidden extension (.%1).</source>
         <translation> 理由: ファイルには禁止されている拡張子 (.%1) があります。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="445"/>
+        <location filename="../src/libsync/discovery.cpp" line="446"/>
         <source> Reason: the filename contains a forbidden character (%1).</source>
         <translation> 理由: ファイル名に禁止文字 (%1) が含まれています。</translation>
     </message>
@@ -4197,7 +4197,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>修正日時が無効なため同期できません</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1091"/>
+        <location filename="../src/libsync/discovery.cpp" line="1093"/>
         <source>Could not upload file, because it is open in &quot;%1&quot;.</source>
         <translation>&quot;%1&quot; で開いているので、ファイルをアップロードできませんでした。</translation>
     </message>

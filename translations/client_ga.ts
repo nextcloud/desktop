@@ -2099,14 +2099,14 @@ Féadfaidh sé seo a bheith ina fhadhb le do leabharlanna OpenSSL.</translation>
         <translation>Téigh isteach sna socruithe chun é a roghnú más mian leat é a íoslódáil le do thoil.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1396"/>
+        <location filename="../src/gui/folder.cpp" line="1398"/>
         <source>A folder has surpassed the set folder size limit of %1MB: %2.
 %3</source>
         <translation>Sháraigh fillteán an teorainn mhéid fillteáin de % 1MB: % 2.
 % 3</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1407"/>
+        <location filename="../src/gui/folder.cpp" line="1409"/>
         <source>Keep syncing</source>
         <translation>Coinnigh sioncronú</translation>
     </message>
@@ -2122,11 +2122,6 @@ Má shocraíonn tú na comhaid a chur ar ais, déanfar iad a athshioncronú leis
 Má shocraíonn tú na comhaid a scriosadh, ní bheidh siad ar fáil duit, ach amháin más tusa an t-úinéir.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1415"/>
-        <source>Stop syncing</source>
-        <translation>Stop sioncronú</translation>
-    </message>
-    <message>
         <location filename="../src/gui/folder.cpp" line="1416"/>
         <source>All the files in your local sync folder &quot;%1&quot; were deleted. These deletes will be synchronized with your server, making such files unavailable unless restored.
 Are you sure you want to sync those actions with the server?
@@ -2134,6 +2129,11 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <translation>Scriosadh na comhaid go léir i d&apos;fhillteán sioncronaithe logánta &quot;% 1&quot;. Déanfar na scriosanna seo a shioncronú le do fhreastalaí, rud a fhágann nach mbeidh comhaid dá leithéid ar fáil mura n-aischuirfear iad.
 An bhfuil tú cinnte gur mhaith leat na gníomhartha sin a shioncronú leis an bhfreastalaí?
 Más timpiste a bhí ann agus má shocraíonn tú do chuid comhad a choinneáil, déanfar iad a athshioncronú ón bhfreastalaí.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/folder.cpp" line="1417"/>
+        <source>Stop syncing</source>
+        <translation>Stop sioncronú</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1420"/>
@@ -2151,12 +2151,12 @@ Más timpiste a bhí ann agus má shocraíonn tú do chuid comhad a choinneáil,
         <translation>Coinnigh comhaid</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1426"/>
+        <location filename="../src/gui/folder.cpp" line="1428"/>
         <source>The folder %1 has surpassed the set folder size limit of %2MB.</source>
         <translation>Sháraigh fillteán % 1 an teorainn méide fillteáin de % 2MB.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1427"/>
+        <location filename="../src/gui/folder.cpp" line="1429"/>
         <source>Would you like to stop syncing this folder?</source>
         <translation>Ar mhaith leat stop a chur le sioncronú an fhillteáin seo?</translation>
     </message>
@@ -2184,12 +2184,12 @@ Ciallaíonn sé seo go bhféadfadh sé nach ndéanfaidh an cliant sioncrónaithe
 % 1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1549"/>
+        <location filename="../src/gui/folder.cpp" line="1551"/>
         <source>Virtual file download failed with code &quot;%1&quot;, status &quot;%2&quot; and error message &quot;%3&quot;</source>
         <translation>Theip ar íosluchtú an chomhaid fhíorúil le cód &quot;% 1&quot;, stádas &quot;% 2&quot; agus teachtaireacht earráide &quot;% 3&quot;</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1642"/>
+        <location filename="../src/gui/folder.cpp" line="1644"/>
         <source>All files in the server folder &quot;%1&quot; were deleted.
 
 If you restore the files, they will be uploaded again to the server.</source>
@@ -2198,7 +2198,7 @@ If you restore the files, they will be uploaded again to the server.</source>
 Má chuireann tú na comhaid ar ais, déanfar iad a uaslódáil arís chuig an bhfreastalaí.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1643"/>
+        <location filename="../src/gui/folder.cpp" line="1645"/>
         <source>All files in the local folder &quot;%1&quot; were deleted.
 
 If you restore the files, they will be downloaded again from the server.</source>
@@ -2207,17 +2207,17 @@ If you restore the files, they will be downloaded again from the server.</source
 Má chuireann tú na comhaid ar ais, déanfar iad a íoslódáil arís ón bhfreastalaí.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1644"/>
+        <location filename="../src/gui/folder.cpp" line="1646"/>
         <source>Remove all files?</source>
         <translation>Bain gach comhad?</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1648"/>
+        <location filename="../src/gui/folder.cpp" line="1650"/>
         <source>Proceed to remove all files</source>
         <translation>Lean ar aghaidh chun gach comhad a bhaint</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1649"/>
+        <location filename="../src/gui/folder.cpp" line="1651"/>
         <source>Restore files</source>
         <translation>Athchóirigh comhaid</translation>
     </message>
@@ -4070,30 +4070,30 @@ Is modh turgnamhach nua é seo. Má shocraíonn tú é a úsáid, cuir in iúl l
         <translation>Is ainm forchoimeádta é an t-ainm comhaid ar an gcóras comhad seo.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="389"/>
+        <location filename="../src/libsync/discovery.cpp" line="390"/>
         <source>Folder</source>
         <comment>name of folder entity to use when warning about invalid name</comment>
         <translation>Fillteán</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="389"/>
+        <location filename="../src/libsync/discovery.cpp" line="390"/>
         <source>File</source>
         <comment>name of folder entity to use when warning about invalid name</comment>
         <translation>Comhad</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="391"/>
+        <location filename="../src/libsync/discovery.cpp" line="392"/>
         <source>%1 name containing the character &quot;%2&quot; is not supported on this file system.</source>
         <comment>folder or file impossible to sync due to an invalid name, placeholders will be file or folder and the invalid character</comment>
         <translation>Ní thacaítear le % 1 ainm ina bhfuil an carachtar &quot;% 2&quot; ar an gcóras comhad seo.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="393"/>
+        <location filename="../src/libsync/discovery.cpp" line="394"/>
         <source>%1 name contains at least one invalid character</source>
         <translation>Tá carachtar neamhbhailí amháin ar a laghad in ainm % 1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="395"/>
+        <location filename="../src/libsync/discovery.cpp" line="396"/>
         <source>%1 name is a reserved name on this file system.</source>
         <translation>Is ainm forchoimeádta é % 1 ar an gcóras comhad seo.</translation>
     </message>
@@ -4148,22 +4148,22 @@ Is modh turgnamhach nua é seo. Má shocraíonn tú é a úsáid, cuir in iúl l
         <translation>Tá ainm an chomhaid ar an liosta dubh ar an bhfreastalaí.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="436"/>
+        <location filename="../src/libsync/discovery.cpp" line="437"/>
         <source> Reason: the entire filename is forbidden.</source>
         <translation>Cúis: tá an comhadainm iomlán toirmiscthe.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="439"/>
+        <location filename="../src/libsync/discovery.cpp" line="440"/>
         <source> Reason: the filename has a forbidden base name (filename start).</source>
         <translation>Cúis: tá bonnainm toirmiscthe ag an gcomhad (tús ainm an chomhaid).</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="442"/>
+        <location filename="../src/libsync/discovery.cpp" line="443"/>
         <source> Reason: the file has a forbidden extension (.%1).</source>
         <translation>Cúis: tá iarmhír toirmiscthe (.%1) ar an gcomhad.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="445"/>
+        <location filename="../src/libsync/discovery.cpp" line="446"/>
         <source> Reason: the filename contains a forbidden character (%1).</source>
         <translation>Cúis: tá carachtar toirmiscthe (%1) san ainm comhaid.</translation>
     </message>
@@ -4198,7 +4198,7 @@ Is modh turgnamhach nua é seo. Má shocraíonn tú é a úsáid, cuir in iúl l
         <translation>Ní féidir sioncronú a dhéanamh mar gheall ar am modhnuithe neamhbhailí</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1091"/>
+        <location filename="../src/libsync/discovery.cpp" line="1093"/>
         <source>Could not upload file, because it is open in &quot;%1&quot;.</source>
         <translation>Níorbh fhéidir an comhad a uaslódáil toisc go bhfuil sé oscailte i &quot;% 1&quot;.</translation>
     </message>
