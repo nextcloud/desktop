@@ -289,7 +289,7 @@ ApplicationWindow {
                         background: Rectangle {
                             border.color: palette.dark
                             color: palette.window
-                            radius: Style.trayWindowRadius
+                            radius: Style.halfTrayWindowRadius
                         }
 
                         onClosed: {
@@ -349,7 +349,7 @@ ApplicationWindow {
                             Accessible.onPressAction: addAccountButton.clicked()
 
                             background: Rectangle {
-                                radius: Style.trayWindowRadius
+                                radius: Style.halfTrayWindowRadius
                                 color: palette.highlight
                                 visible: addAccountButton.hovered
                             }
@@ -372,7 +372,7 @@ ApplicationWindow {
                             Accessible.onPressAction: syncPauseButton.clicked()
 
                             background: Rectangle {
-                                radius: Style.trayWindowRadius
+                                radius: Style.halfTrayWindowRadius
                                 color: palette.highlight
                                 visible: syncPauseButton.hovered
                             }
@@ -389,7 +389,7 @@ ApplicationWindow {
                             Accessible.onPressAction: settingsButton.clicked()
 
                             background: Rectangle {
-                                radius: Style.trayWindowRadius
+                                radius: Style.halfTrayWindowRadius
                                 color: palette.highlight
                                 visible: settingsButton.hovered
                             }
@@ -406,7 +406,7 @@ ApplicationWindow {
                             Accessible.onPressAction: exitButton.clicked()
 
                             background: Rectangle {
-                                radius: Style.trayWindowRadius
+                                radius: Style.halfTrayWindowRadius
                                 color: palette.highlight
                                 visible: exitButton.hovered
                             }
@@ -611,7 +611,7 @@ ApplicationWindow {
 
                         background: Rectangle {
                             border.color: palette.dark
-                            radius: Style.trayWindowRadius
+                            radius: Style.halfTrayWindowRadius
                             color: palette.window
                         }
 
@@ -647,7 +647,7 @@ ApplicationWindow {
                                         anchors.fill: parent
                                         anchors.margins: 1
                                         color: appEntry.hovered ? palette.highlight : palette.window
-                                        radius: Style.trayWindowRadius
+                                        radius: Style.halfTrayWindowRadius
                                     }
                                 }
                             }
