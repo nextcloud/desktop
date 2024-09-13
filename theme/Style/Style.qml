@@ -50,7 +50,10 @@ QtObject {
     // Dimensions and sizes
     property int trayWindowWidth: variableSize(400)
     property int trayWindowHeight: variableSize(510)
+    // text input and main windows radius
     property int trayWindowRadius: 10
+    // dropdown menus radius
+    property int halfTrayWindowRadius: 5
     property int trayWindowBorderWidth: variableSize(1)
     property int trayWindowHeaderHeight: variableSize(60)
     property int trayHorizontalMargin: 10
@@ -93,7 +96,7 @@ QtObject {
     property int folderStateIndicatorSize: 16
     property int accountLabelWidth: 128
 
-    property int accountDropDownCaretSize: 20
+    property int accountDropDownCaretSize: 10
     property int accountDropDownCaretMargin: 8
 
     property int trayFoldersMenuButtonStateIndicatorBottomOffset: 5
@@ -103,8 +106,11 @@ QtObject {
     property int addAccountButtonHeight: 50
 
     property int headerButtonIconSize: 32
+    property int addButtonIconSize: 26
     property int dismissButtonSize: 26
     property int minimumActivityItemHeight: 24
+
+    property int accountIconsMenuMargin: 7
 
     property int activityLabelBaseWidth: 240
 

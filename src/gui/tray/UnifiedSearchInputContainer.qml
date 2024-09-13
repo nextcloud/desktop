@@ -41,8 +41,15 @@ TextField {
     rightPadding: trayWindowUnifiedSearchTextFieldClearTextButton.width + trayWindowUnifiedSearchTextFieldClearTextButton.anchors.rightMargin + textFieldHorizontalPaddingOffset
 
     placeholderText: qsTr("Search files, messages, events …")
+    verticalAlignment: Qt.AlignVCenter
 
     selectByMouse: true
+
+    background: Rectangle {
+        border.color: palette.dark
+        radius: Style.trayWindowRadius
+        color: palette.window
+    }
 
     Image {
         id: trayWindowUnifiedSearchTextFieldSearchIcon

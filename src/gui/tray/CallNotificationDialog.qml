@@ -75,11 +75,10 @@ ApplicationWindow {
         onStopNotifying: root.closeNotification()
     }
 
-    Audio {
+    SoundEffect  {
         id: ringSound
         source: root.ringtonePath
         loops: 9 // about 45 seconds of audio playing
-        audioRole: Audio.RingtoneRole
     }
 
     Rectangle {
