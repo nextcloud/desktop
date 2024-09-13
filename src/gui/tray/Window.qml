@@ -677,17 +677,18 @@ ApplicationWindow {
             onTextEdited: { UserModel.currentUser.unifiedSearchResultsListModel.searchTerm = trayWindowUnifiedSearchInputContainer.text }
             onClearText: { UserModel.currentUser.unifiedSearchResultsListModel.searchTerm = "" }
 
-            Rectangle {
-                id: bottomUnifiedSearchInputSeparator
+            // TODO: consult designers, this line looks weird atm
+            // Rectangle {
+            //     id: bottomUnifiedSearchInputSeparator
 
-                anchors.left: parent.left
-                anchors.right: parent.right
-                anchors.bottom: parent.bottom
+            //     anchors.left: parent.left
+            //     anchors.right: parent.right
+            //     anchors.bottom: parent.bottom
 
-                height: 1
-                color: Style.menuBorder
-                visible: trayWindowMainItem.isUnifiedSearchActive
-            }
+            //     height: 1
+            //     color: Style.menuBorder
+            //     visible: trayWindowMainItem.isUnifiedSearchActive
+            // }
         }
 
         ErrorBox {
