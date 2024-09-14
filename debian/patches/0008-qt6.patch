@@ -10,3 +10,15 @@ index 02035d863..ba2438305 100644
      find_package(Qt6 COMPONENTS COMPONENTS DBus)
  else()
      set(REQUIRED_QT_VERSION "5.15.0")
+diff --git a/src/CMakeLists.txt b/src/CMakeLists.txt
+index fe9d4d9af..7389f20c7 100644
+--- a/src/CMakeLists.txt
++++ b/src/CMakeLists.txt
+@@ -1,6 +1,6 @@
+ include(ECMEnableSanitizers)
+ 
+-set(REQUIRED_QT_VERSION "6.5.0")
++set(REQUIRED_QT_VERSION "6.4.2")
+ 
+ find_package(Qt${QT_MAJOR_VERSION}Core ${REQUIRED_QT_VERSION} CONFIG QUIET)
+ set_package_properties(Qt${QT_MAJOR_VERSION}Core PROPERTIES
