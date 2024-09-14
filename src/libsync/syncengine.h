@@ -189,7 +189,7 @@ signals:
      */
     void aboutToRemoveAllFiles(OCC::SyncFileItem::Direction direction, std::function<void(bool)> f);
 
-    void aboutToRemoveRemnantsReadOnlyFolders(const QList<SyncFileItemPtr> &folders,
+    void aboutToRemoveRemnantsReadOnlyFolders(const QList<OCC::SyncFileItemPtr> &folders,
                                               const QString &localPath,
                                               std::function<void(bool)> f);
 

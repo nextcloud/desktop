@@ -116,7 +116,7 @@ public:
     bool exec();
 
 signals:
-    void finished(KeychainChunk::WriteJob *incomingJob);
+    void finished(OCC::KeychainChunk::WriteJob *incomingJob);
 
 private slots:
     void slotWriteJobDone(QKeychain::Job *incomingJob);
@@ -149,7 +149,7 @@ public:
     bool exec();
 
 signals:
-    void finished(KeychainChunk::ReadJob *incomingJob);
+    void finished(OCC::KeychainChunk::ReadJob *incomingJob);
 
 private slots:
     void slotReadJobDone(QKeychain::Job *incomingJob);
@@ -187,7 +187,7 @@ public:
     bool exec();
 
 signals:
-    void finished(KeychainChunk::DeleteJob *incomingJob);
+    void finished(OCC::KeychainChunk::DeleteJob *incomingJob);
 
 private slots:
     void slotDeleteJobDone(QKeychain::Job *incomingJob);

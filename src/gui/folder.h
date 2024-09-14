@@ -335,7 +335,7 @@ public slots:
     // connected to the corresponding signals in the SyncEngine
     void slotAboutToRemoveAllFiles(OCC::SyncFileItem::Direction, std::function<void(bool)> callback);
 
-    void slotNeedToRemoveRemnantsReadOnlyFolders(const QList<SyncFileItemPtr> &folders,
+    void slotNeedToRemoveRemnantsReadOnlyFolders(const QList<OCC::SyncFileItemPtr> &folders,
                                                  const QString &localPath,
                                                  std::function<void(bool)> callback);
 
