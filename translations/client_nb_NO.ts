@@ -5937,22 +5937,23 @@ Server svarte med feil: %2</translation>
         <translation>Ingen synkroniseringsmapper er konfigurert</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="434"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="435"/>
         <source>%1: %2</source>
+        <extracomment>Example text: &quot;Nextcloud: Syncing 25MB (3 minutes left)&quot; (%1 is the folder name to be synced, %2 a status message for that folder)</extracomment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="438"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="439"/>
         <source>macOS VFS for %1: Sync is running.</source>
         <translation>macOS VFS for %1: Synkronisering kjører.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="441"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="442"/>
         <source>macOS VFS for %1: Last sync was successful.</source>
         <translation>macOS VFS for %1: Siste synkronisering var vellykket.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="444"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="445"/>
         <source>macOS VFS for %1: A problem was encountered.</source>
         <translation>macOS VFS for %1: Et problem oppstod.</translation>
     </message>
@@ -6777,7 +6778,7 @@ Server svarte med feil: %2</translation>
         <translation>Kontobytter og innstillingsmeny</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="542"/>
+        <location filename="../src/gui/tray/Window.qml" line="563"/>
         <source>Open local or group folders</source>
         <translation>Åpne lokale mapper eller gruppemapper</translation>
     </message>
@@ -6787,14 +6788,14 @@ Server svarte med feil: %2</translation>
         <translation>Flere apper</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="715"/>
-        <source>Open %1 in browser</source>
-        <translation>Åpne %1 i nettleser</translation>
-    </message>
-    <message>
         <location filename="../src/gui/tray/Window.qml" line="641"/>
         <source>Open Nextcloud Talk in browser</source>
         <translation>Åpne Nextcloud Talk i nettleseren</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/Window.qml" line="715"/>
+        <source>Open %1 in browser</source>
+        <translation>Åpne %1 i nettleser</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="821"/>
@@ -6802,7 +6803,7 @@ Server svarte med feil: %2</translation>
         <translation>Samlet søkeresultatliste</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="802"/>
+        <location filename="../src/gui/tray/Window.qml" line="832"/>
         <source>New activities</source>
         <translation>Nye aktiviteter</translation>
     </message>

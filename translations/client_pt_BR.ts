@@ -5928,22 +5928,23 @@ Servidor respondeu com erro: %2</translation>
         <translation>Nenhuma pasta de sincronização configurada</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="434"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="435"/>
         <source>%1: %2</source>
+        <extracomment>Example text: &quot;Nextcloud: Syncing 25MB (3 minutes left)&quot; (%1 is the folder name to be synced, %2 a status message for that folder)</extracomment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="438"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="439"/>
         <source>macOS VFS for %1: Sync is running.</source>
         <translation>macOS VFS para %1: a sincronização está em execução.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="441"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="442"/>
         <source>macOS VFS for %1: Last sync was successful.</source>
         <translation>macOS VFS para %1: a última sincronização foi bem-sucedida.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="444"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="445"/>
         <source>macOS VFS for %1: A problem was encountered.</source>
         <translation>macOS VFS para %1: foi encontrado um problema.</translation>
     </message>
@@ -6768,7 +6769,7 @@ Servidor respondeu com erro: %2</translation>
         <translation>Alternador de conta e menu de configurações</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="542"/>
+        <location filename="../src/gui/tray/Window.qml" line="563"/>
         <source>Open local or group folders</source>
         <translation>Abra pastas locais ou de grupo</translation>
     </message>
@@ -6778,14 +6779,14 @@ Servidor respondeu com erro: %2</translation>
         <translation>Mais aplicativos</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="715"/>
-        <source>Open %1 in browser</source>
-        <translation>Abrir %1 no navegador</translation>
-    </message>
-    <message>
         <location filename="../src/gui/tray/Window.qml" line="641"/>
         <source>Open Nextcloud Talk in browser</source>
         <translation>Abrir o Nextcloud Talk no navegador</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/Window.qml" line="715"/>
+        <source>Open %1 in browser</source>
+        <translation>Abrir %1 no navegador</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="821"/>
@@ -6793,7 +6794,7 @@ Servidor respondeu com erro: %2</translation>
         <translation>Lista unificada de resultados de pesquisa </translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="802"/>
+        <location filename="../src/gui/tray/Window.qml" line="832"/>
         <source>New activities</source>
         <translation>Novas atividades</translation>
     </message>

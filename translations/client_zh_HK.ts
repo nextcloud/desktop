@@ -5938,22 +5938,23 @@ Server replied with error: %2</source>
         <translation>尚未設定同步資料夾</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="434"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="435"/>
         <source>%1: %2</source>
+        <extracomment>Example text: &quot;Nextcloud: Syncing 25MB (3 minutes left)&quot; (%1 is the folder name to be synced, %2 a status message for that folder)</extracomment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="438"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="439"/>
         <source>macOS VFS for %1: Sync is running.</source>
         <translation>macOS VFS for %1：同步正在進行中。</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="441"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="442"/>
         <source>macOS VFS for %1: Last sync was successful.</source>
         <translation>macOS VFS for %1：上次同步成功。</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="444"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="445"/>
         <source>macOS VFS for %1: A problem was encountered.</source>
         <translation>macOS VFS for %1：遇到了一個問題。</translation>
     </message>
@@ -6778,7 +6779,7 @@ Server replied with error: %2</source>
         <translation>帳戶切換器和設置選項單</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="542"/>
+        <location filename="../src/gui/tray/Window.qml" line="563"/>
         <source>Open local or group folders</source>
         <translation>打開近端或群組資料夾</translation>
     </message>
@@ -6788,14 +6789,14 @@ Server replied with error: %2</source>
         <translation>更多應用程式</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="715"/>
-        <source>Open %1 in browser</source>
-        <translation>瀏覽器中開啟 %1</translation>
-    </message>
-    <message>
         <location filename="../src/gui/tray/Window.qml" line="641"/>
         <source>Open Nextcloud Talk in browser</source>
         <translation>瀏覽器中開啟 Nextclould Talk</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/Window.qml" line="715"/>
+        <source>Open %1 in browser</source>
+        <translation>瀏覽器中開啟 %1</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="821"/>
@@ -6803,7 +6804,7 @@ Server replied with error: %2</source>
         <translation>統一搜索結果列表</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="802"/>
+        <location filename="../src/gui/tray/Window.qml" line="832"/>
         <source>New activities</source>
         <translation>新活動</translation>
     </message>

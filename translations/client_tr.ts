@@ -5937,22 +5937,23 @@ Sunucunun verdiği hata yanıtı: %2</translation>
         <translation>Herhangi bir eşitleme klasörü yapılandırılmamış</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="434"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="435"/>
         <source>%1: %2</source>
+        <extracomment>Example text: &quot;Nextcloud: Syncing 25MB (3 minutes left)&quot; (%1 is the folder name to be synced, %2 a status message for that folder)</extracomment>
         <translation>%1: %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="438"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="439"/>
         <source>macOS VFS for %1: Sync is running.</source>
         <translation>%1 için macOS VFS: Eşitleniyor.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="441"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="442"/>
         <source>macOS VFS for %1: Last sync was successful.</source>
         <translation>%1 için macOS VFS: Son eşitleme sorunsuz tamamlandı.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="444"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="445"/>
         <source>macOS VFS for %1: A problem was encountered.</source>
         <translation>%1 için macOS VFS: Bir sorun çıktı.</translation>
     </message>
@@ -6777,7 +6778,7 @@ Sunucunun verdiği hata yanıtı: %2</translation>
         <translation>Hesap değiştirici ve ayarlar menüsü</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="542"/>
+        <location filename="../src/gui/tray/Window.qml" line="563"/>
         <source>Open local or group folders</source>
         <translation>Yerel ya da grup klasörlerini aç</translation>
     </message>
@@ -6787,14 +6788,14 @@ Sunucunun verdiği hata yanıtı: %2</translation>
         <translation>Diğer uygulamalar</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="715"/>
-        <source>Open %1 in browser</source>
-        <translation>%1 ögesini tarayıcıda aç</translation>
-    </message>
-    <message>
         <location filename="../src/gui/tray/Window.qml" line="641"/>
         <source>Open Nextcloud Talk in browser</source>
         <translation>Tarayıcıda Nextcloud Konuş uygulamasını aç</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/Window.qml" line="715"/>
+        <source>Open %1 in browser</source>
+        <translation>%1 ögesini tarayıcıda aç</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="821"/>
@@ -6802,7 +6803,7 @@ Sunucunun verdiği hata yanıtı: %2</translation>
         <translation>Birleşik arama sonuçları listesi</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="802"/>
+        <location filename="../src/gui/tray/Window.qml" line="832"/>
         <source>New activities</source>
         <translation>Yeni işlemler</translation>
     </message>

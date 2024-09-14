@@ -5928,22 +5928,23 @@ Server odpovedal chybou: %2</translation>
         <translation>Nie sú nastavené žiadne synchronizačné priečinky</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="434"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="435"/>
         <source>%1: %2</source>
+        <extracomment>Example text: &quot;Nextcloud: Syncing 25MB (3 minutes left)&quot; (%1 is the folder name to be synced, %2 a status message for that folder)</extracomment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="438"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="439"/>
         <source>macOS VFS for %1: Sync is running.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="441"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="442"/>
         <source>macOS VFS for %1: Last sync was successful.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="444"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="445"/>
         <source>macOS VFS for %1: A problem was encountered.</source>
         <translation type="unfinished"/>
     </message>
@@ -6768,7 +6769,7 @@ Server odpovedal chybou: %2</translation>
         <translation>Prepínač účtov a menu nastavení</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="542"/>
+        <location filename="../src/gui/tray/Window.qml" line="563"/>
         <source>Open local or group folders</source>
         <translation>Otvoriť miestne alebo skupinové priečinky</translation>
     </message>
@@ -6778,14 +6779,14 @@ Server odpovedal chybou: %2</translation>
         <translation>Viac aplikácií</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="715"/>
-        <source>Open %1 in browser</source>
-        <translation>Otvoriť %1 v prehliadači</translation>
-    </message>
-    <message>
         <location filename="../src/gui/tray/Window.qml" line="641"/>
         <source>Open Nextcloud Talk in browser</source>
         <translation>Otvoriť Nextcloud Rozhovor v prehliadači</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/Window.qml" line="715"/>
+        <source>Open %1 in browser</source>
+        <translation>Otvoriť %1 v prehliadači</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="821"/>
@@ -6793,7 +6794,7 @@ Server odpovedal chybou: %2</translation>
         <translation>Jednotný zoznam výsledkov vyhľadávania</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="802"/>
+        <location filename="../src/gui/tray/Window.qml" line="832"/>
         <source>New activities</source>
         <translation>Nové aktivity</translation>
     </message>
