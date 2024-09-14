@@ -343,7 +343,7 @@ bool FolderStatusModel::setData(const QModelIndex &index, const QVariant &value,
                 const auto parentInfo = infoForIndex(parent);
                 if (parentInfo && parentInfo->_checked != Qt::Checked) {
                     auto hasUnchecked = false;
-                    for (const auto &sub : qAsConst(parentInfo->_subs)) {
+                    for (const auto &sub : std::as_const(parentInfo->_subs)) {
                         if (sub._checked != Qt::Checked) {
                             hasUnchecked = true;
                             break;
@@ -724,7 +724,7 @@ void FolderStatusModel::slotUpdateDirectories(const QStringList &list)
     }
 
     std::set<QString> selectiveSyncUndecidedSet; // not QSet because it's not sorted
-    for (const auto &str : qAsConst(selectiveSyncUndecidedList)) {
+    for (const auto &str : std::as_const(selectiveSyncUndecidedList)) {
         if (str.startsWith(parentInfo->_path) || parentInfo->_path == QLatin1String("/")) {
             selectiveSyncUndecidedSet.insert(str);
         }
@@ -742,7 +742,7 @@ void FolderStatusModel::slotUpdateDirectories(const QStringList &list)
 
     QVector<SubFolderInfo> newSubs;
     newSubs.reserve(sortedSubfolders.size());
-    for (const auto &path : qAsConst(sortedSubfolders)) {
+    for (const auto &path : std::as_const(sortedSubfolders)) {
         auto relativePath = path.mid(pathToRemove.size());
         if (parentInfo->_folder->isFileExcludedRelative(relativePath)) {
             continue;
@@ -792,7 +792,7 @@ void FolderStatusModel::slotUpdateDirectories(const QStringList &list)
         } else if (parentInfo->_checked == Qt::Checked) {
             newInfo._checked = Qt::Checked;
         } else {
-            for (const auto &str : qAsConst(selectiveSyncBlackList)) {
+            for (const auto &str : std::as_const(selectiveSyncBlackList)) {
                 if (str == relativePath || str == QLatin1String("/")) {
                     newInfo._checked = Qt::Unchecked;
                     break;
@@ -826,7 +826,7 @@ void FolderStatusModel::slotUpdateDirectories(const QStringList &list)
         endInsertRows();
     }
 
-    for (const auto undecidedIndex : qAsConst(undecidedIndexes)) {
+    for (const auto undecidedIndex : std::as_const(undecidedIndexes)) {
         emit suggestExpand(index(undecidedIndex, 0, parentIdx));
     }
     /* Try to remove from the undecided lists the items that are not on the server. */
@@ -909,7 +909,7 @@ void FolderStatusModel::slotUpdateFolderState(Folder *folder)
 
 void FolderStatusModel::slotApplySelectiveSync()
 {
-    for (const auto &folderInfo : qAsConst(_folders)) {
+    for (const auto &folderInfo : std::as_const(_folders)) {
         if (!folderInfo._fetched) {
             folderInfo._folder->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncUndecidedList, QStringList());
             continue;
@@ -951,7 +951,7 @@ void FolderStatusModel::slotApplySelectiveSync()
             }
             //The part that changed should not be read from the DB on next sync because there might be new folders
             // (the ones that are no longer in the blacklist)
-            for (const auto &it : qAsConst(changes)) {
+            for (const auto &it : std::as_const(changes)) {
                 folder->journalDb()->schedulePathForRemoteDiscovery(it);
                 folder->schedulePathForLocalDiscovery(it);
             }
@@ -1239,7 +1239,7 @@ void FolderStatusModel::slotSyncAllPendingBigFolders()
             qCWarning(lcFolderStatus) << "Could not read selective sync list from db.";
             return;
         }
-        for (const auto &undecidedFolder : qAsConst(undecidedList)) {
+        for (const auto &undecidedFolder : std::as_const(undecidedList)) {
             blackList.removeAll(undecidedFolder);
         }
         folder->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, blackList);
@@ -1262,7 +1262,7 @@ void FolderStatusModel::slotSyncAllPendingBigFolders()
         }
         // The part that changed should not be read from the DB on next sync because there might be new folders
         // (the ones that are no longer in the blacklist)
-        for (const auto &it : qAsConst(undecidedList)) {
+        for (const auto &it : std::as_const(undecidedList)) {
             folder->journalDb()->schedulePathForRemoteDiscovery(it);
             folder->schedulePathForLocalDiscovery(it);
         }

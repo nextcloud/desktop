@@ -209,7 +209,7 @@ bool Application::configVersionMigration()
         settings->endGroup();
 
         // Wipe confusing keys from the future, ignore the others
-        for (const auto &badKey : qAsConst(deleteKeys)) {
+        for (const auto &badKey : std::as_const(deleteKeys)) {
             settings->remove(badKey);
         }
     }
@@ -995,7 +995,7 @@ void Application::setupTranslations()
     auto *qtTranslator = new QTranslator(this);
     auto *qtkeychainTranslator = new QTranslator(this);
 
-    for (QString lang : qAsConst(uiLanguages)) {
+    for (QString lang : std::as_const(uiLanguages)) {
         lang.replace(QLatin1Char('-'), QLatin1Char('_')); // work around QTBUG-25973
         lang = substLang(lang);
         const auto trPath = applicationTrPath();

@@ -1905,7 +1905,7 @@ bool ProcessDirectoryJob::checkPermissions(const OCC::SyncFileItemPtr &item)
 
 bool ProcessDirectoryJob::isAnyParentBeingRestored(const QString &file) const
 {
-    for (const auto &directoryNameToRestore : qAsConst(_discoveryData->_directoryNamesToRestoreOnPropagation)) {
+    for (const auto &directoryNameToRestore : std::as_const(_discoveryData->_directoryNamesToRestoreOnPropagation)) {
         if (file.startsWith(QString(directoryNameToRestore + QLatin1Char('/')))) {
             qCWarning(lcDisco) << "File" << file << " is within the tree that's being restored" << directoryNameToRestore;
             return true;

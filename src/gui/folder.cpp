@@ -1737,7 +1737,7 @@ void Folder::removeLocalE2eFiles()
     const auto existingBlacklistSet = QSet<QString>{existingBlacklist.begin(), existingBlacklist.end()};
     auto expandedBlacklistSet = QSet<QString>{existingBlacklist.begin(), existingBlacklist.end()};
 
-    for (const auto &path : qAsConst(e2eFoldersToBlacklist)) {
+    for (const auto &path : std::as_const(e2eFoldersToBlacklist)) {
         expandedBlacklistSet.insert(path);
     }
 

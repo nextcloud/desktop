@@ -220,7 +220,7 @@ int FolderMan::setupFolders()
 
     emit folderListChanged(_folderMap);
 
-    for (const auto folder : qAsConst(_folderMap)) {
+    for (const auto folder : std::as_const(_folderMap)) {
         folder->processSwitchedToVirtualFiles();
     }
 
@@ -576,7 +576,7 @@ void FolderMan::setupLegacyFolder(const QString &fileNamePath, AccountState *acc
             legacyBlacklist << settings.value(QLatin1String("blackList")).toStringList();
             if (!legacyBlacklist.isEmpty()) {
                 qCInfo(lcFolderMan) << "Legacy selective sync list found:" << legacyBlacklist;
-                for (const auto &legacyFolder : legacyBlacklist) {
+                for (const auto &legacyFolder : std::as_const(legacyBlacklist)) {
                     folder->migrateBlackListPath(legacyFolder);
                 }
                 settings.remove(QLatin1String("blackList"));
@@ -763,7 +763,7 @@ void FolderMan::slotRunOneEtagJob()
 {
     if (_currentEtagJob.isNull()) {
         Folder *folder = nullptr;
-        for (Folder *f : qAsConst(_folderMap)) {
+        for (Folder *f : std::as_const(_folderMap)) {
             if (f->etagJob()) {
                 // Caveat: always grabs the first folder with a job, but we think this is Ok for now and avoids us having a separate queue.
                 _currentEtagJob = f->etagJob();
@@ -893,7 +893,7 @@ void FolderMan::startScheduledSyncSoon()
 void FolderMan::slotStartScheduledFolderSync()
 {
     if (isAnySyncRunning()) {
-        for (auto f : qAsConst(_folderMap)) {
+        for (auto f : std::as_const(_folderMap)) {
             if (f->isSyncRunning())
                 qCInfo(lcFolderMan) << "Currently folder " << f->remoteUrl().toString() << " is running, wait for finish!";
         }
@@ -1023,12 +1023,12 @@ void FolderMan::runEtagJobIfPossible(Folder *folder)
 void FolderMan::slotAccountRemoved(AccountState *accountState)
 {
     QVector<Folder *> foldersToRemove;
-    for (const auto &folder : qAsConst(_folderMap)) {
+    for (const auto &folder : std::as_const(_folderMap)) {
         if (folder->accountState() == accountState) {
             foldersToRemove.push_back(folder);
         }
     }
-    for (const auto &folder : qAsConst(foldersToRemove)) {
+    for (const auto &folder : std::as_const(foldersToRemove)) {
         removeFolder(folder);
     }
 }
@@ -1045,7 +1045,7 @@ void FolderMan::slotRemoveFoldersForAccount(AccountState *accountState)
         }
     }
 
-    for (const auto &f : qAsConst(foldersToRemove)) {
+    for (const auto &f : std::as_const(foldersToRemove)) {
         removeFolder(f);
     }
     emit folderListChanged(_folderMap);
@@ -1065,7 +1065,7 @@ void FolderMan::slotServerVersionChanged(Account *account)
         qCWarning(lcFolderMan) << "The server version is unsupported:" << account->serverVersion()
                                << "pausing all folders on the account";
 
-        for (auto &f : qAsConst(_folderMap)) {
+        for (auto &f : std::as_const(_folderMap)) {
             if (f->accountState()->account().data() == account) {
                 f->setSyncPaused(true);
             }
@@ -1083,7 +1083,7 @@ void FolderMan::slotWatchedFileUnlocked(const QString &path)
 
 void FolderMan::slotScheduleFolderByTime()
 {
-    for (const auto &f : qAsConst(_folderMap)) {
+    for (const auto &f : std::as_const(_folderMap)) {
         // Never schedule if syncing is disabled or when we're currently
         // querying the server for etags
         if (!f->canSync() || f->etagJob()) {
@@ -1454,7 +1454,7 @@ void FolderMan::slotWipeFolderForAccount(AccountState *accountState)
     }
 
     bool success = false;
-    for (const auto &f : qAsConst(foldersToRemove)) {
+    for (const auto &f : std::as_const(foldersToRemove)) {
         if (!f) {
             qCCritical(lcFolderMan) << "Can not remove null folder";
             return;
@@ -1657,7 +1657,7 @@ void FolderMan::trayOverallStatus(const QList<Folder *> &folders,
         auto runSeen = false;
         auto various = false;
 
-        for (const Folder *folder : qAsConst(folders)) {
+        for (const Folder *folder : std::as_const(folders)) {
             // We've already seen an error, worst case met.
             // No need to check the remaining folders.
             if (errorsSeen) {
@@ -1956,7 +1956,7 @@ void FolderMan::setIgnoreHiddenFiles(bool ignore)
 {
     // Note that the setting will revert to 'true' if all folders
     // are deleted...
-    for (Folder *folder : qAsConst(_folderMap)) {
+    for (Folder *folder : std::as_const(_folderMap)) {
         folder->setIgnoreHiddenFiles(ignore);
         folder->saveToSettings();
     }
@@ -2004,7 +2004,7 @@ void FolderMan::slotProcessFilesPushNotification(Account *account)
 {
     qCInfo(lcFolderMan) << "Got files push notification for account" << account;
 
-    for (auto folder : qAsConst(_folderMap)) {
+    for (auto folder : std::as_const(_folderMap)) {
         // Just run on the folders that belong to this account
         if (folder->accountState()->account() != account) {
             continue;
