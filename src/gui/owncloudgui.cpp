@@ -287,7 +287,8 @@ void ownCloudGui::slotComputeOverallSyncStatus()
     bool allPaused = true;
     QVector<AccountStatePtr> problemAccounts;
 
-    for (const auto &account : AccountManager::instance()->accounts()) {
+    const auto allAccounts = AccountManager::instance()->accounts();
+    for (const auto &account : allAccounts) {
         if (!account->isSignedOut()) {
             allSignedOut = false;
         }

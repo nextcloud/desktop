@@ -52,7 +52,7 @@ public:
 
         helper->sendCommand(QByteArray("RETRIEVE_FILE_STATUS:" + localFile + "\n").constData());
 
-        StatusMap::iterator it = m_status.find(localFile);
+        const auto it = std::as_const(m_status).find(localFile);
         if (it != m_status.constEnd()) {
             return  overlaysForString(*it);
         }

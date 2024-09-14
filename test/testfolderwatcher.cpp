@@ -284,7 +284,7 @@ private slots:
         // verify that office files for locking got detected by the watcher
         QScopedPointer<QSignalSpy> locksImposedSpy(new QSignalSpy(_watcher.data(), &FolderWatcher::filesLockImposed));
 
-        for (const auto &officeFile : listOfOfficeFiles) {
+        for (const auto &officeFile : std::as_const(listOfOfficeFiles)) {
             touch(officeFile);
             QVERIFY(waitForPathChanged(officeFile));
         }
@@ -325,7 +325,7 @@ private slots:
         for (const auto &officeLockFile : listOfOfficeLockFiles) {
             rm(officeLockFile);
         }
-        for (const auto &officeFile : listOfOfficeFiles) {
+        for (const auto &officeFile : std::as_const(listOfOfficeFiles)) {
             rm(officeFile);
         }
     }
@@ -336,7 +336,7 @@ private slots:
 
         const QStringList listOfOfficeLockFiles = {QString(_rootPath + "/.~lock.document.docx#"), QString(_rootPath + "/.~lock.document.odt#")};
 
-        for (const auto &officeFile : listOfOfficeFiles) {
+        for (const auto &officeFile : std::as_const(listOfOfficeFiles)) {
             touch(officeFile);
         }
         for (const auto &officeLockFile : listOfOfficeLockFiles) {
@@ -379,7 +379,7 @@ private slots:
         }
 
         // cleanup
-        for (const auto &officeFile : listOfOfficeFiles) {
+        for (const auto &officeFile : std::as_const(listOfOfficeFiles)) {
             rm(officeFile);
         }
         for (const auto &officeLockFile : listOfOfficeLockFiles) {

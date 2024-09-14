@@ -1194,7 +1194,8 @@ void User::slotGroupFoldersFetched(QNetworkReply *reply)
     const auto obj = json.object().toVariantMap();
     const auto groupFolders = obj["ocs"].toMap()["data"].toMap();
 
-    for (const auto &groupFolder : groupFolders.values()) {
+    const auto groupFoldersValues = groupFolders.values();
+    for (const auto &groupFolder : groupFoldersValues) {
         const auto groupFolderInfo = groupFolder.toMap();
         const auto mountPoint = groupFolderInfo.value(QStringLiteral("mount_point"), {}).toString();
         parseNewGroupFolderPath(mountPoint);
@@ -1671,7 +1672,8 @@ void UserAppsModel::buildAppList()
 
     if (UserModel::instance()->appList().count() > 0) {
         const auto talkApp = UserModel::instance()->currentUser()->talkApp();
-        for (const auto &app : UserModel::instance()->appList()) {
+        const auto appsList = UserModel::instance()->appList();
+        for (const auto &app : appsList) {
             // Filter out Talk because we have a dedicated button for it
             if (talkApp && app->id() == talkApp->id() && !UserModel::instance()->currentUser()->isNcAssistantEnabled()) {
                 continue;

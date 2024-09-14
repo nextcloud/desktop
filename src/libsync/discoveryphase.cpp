@@ -684,7 +684,7 @@ void DiscoverySingleDirectoryJob::metadataReceived(const QJsonDocument &json, in
     // hence, we need to find its path and pass to any subfolder's metadata, so it will fetch the top level metadata when needed
     // see https://github.com/nextcloud/end_to_end_encryption_rfc/blob/v2.1/RFC.md
     auto topLevelFolderPath = QStringLiteral("/");
-    for (const QString &topLevelPath : _topLevelE2eeFolderPaths) {
+    for (const QString &topLevelPath : std::as_const(_topLevelE2eeFolderPaths)) {
         if (_subPath == topLevelPath) {
             topLevelFolderPath = QStringLiteral("/");
             break;

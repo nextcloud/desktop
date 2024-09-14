@@ -735,7 +735,8 @@ void ExcludedFiles::prepare(const BasePathString & basePath)
         pattern.append(appendMe);
     };
 
-    for (auto exclude : _allExcludes.value(basePath)) {
+    const auto allExcludeValues = _allExcludes.value(basePath);
+    for (auto exclude : allExcludeValues) {
         if (exclude[0] == QLatin1Char('\n'))
             continue; // empty line
         if (exclude[0] == QLatin1Char('\r'))

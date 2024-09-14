@@ -380,7 +380,8 @@ FakePropfindReply::FakePropfindReply(FileInfo &remoteRootFileInfo, QNetworkAcces
             xml.writeEndElement(); // resourcetype
 
             auto totalSize = 0;
-            for (const auto &child : fileInfo.children.values()) {
+            const auto childrenValues = fileInfo.children.values();
+            for (const auto &child : childrenValues) {
                 totalSize += child.size;
             }
             xml.writeTextElement(ocUri, QStringLiteral("size"), QString::number(totalSize));
@@ -537,13 +538,13 @@ QVector<FileInfo *> FakePutMultiFileReply::performMultiPart(FileInfo &remoteRoot
     const QString boundaryValue = QStringLiteral("--") + contentType.mid(boundaryPosition, contentType.length() - boundaryPosition - 1) + QStringLiteral("\r\n");
     auto stringPutPayloadRef = QString{stringPutPayload}.left(stringPutPayload.size() - 2 - boundaryValue.size());
     auto allParts = stringPutPayloadRef.split(boundaryValue, Qt::SkipEmptyParts);
-    for (const auto &onePart : allParts) {
+    for (const auto &onePart : std::as_const(allParts)) {
         auto headerEndPosition = onePart.indexOf(QStringLiteral("\r\n\r\n"));
         auto onePartHeaderPart = onePart.left(headerEndPosition);
         auto onePartBody = onePart.mid(headerEndPosition + 4, onePart.size() - headerEndPosition - 6);
         auto onePartHeaders = onePartHeaderPart.split(QStringLiteral("\r\n"));
         QMap<QString, QString> allHeaders;
-        for(auto oneHeader : onePartHeaders) {
+        for(auto oneHeader : std::as_const(onePartHeaders)) {
             auto headerParts = oneHeader.split(QStringLiteral(": "));
             allHeaders[headerParts.at(0)] = headerParts.at(1);
         }
@@ -1262,7 +1263,8 @@ void FakeFolder::toDisk(QDir &dir, const FileInfo &templateFi)
 
 void FakeFolder::fromDisk(QDir &dir, FileInfo &templateFi)
 {
-    for(const auto &diskChild : dir.entryInfoList(QDir::AllEntries | QDir::NoDotAndDotDot)) {
+    const auto folderEntries = dir.entryInfoList(QDir::AllEntries | QDir::NoDotAndDotDot);
+    for(const auto &diskChild : folderEntries) {
         if (diskChild.isDir()) {
             QDir subDir = dir;
             subDir.cd(diskChild.fileName());

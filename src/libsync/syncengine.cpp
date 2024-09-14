@@ -805,7 +805,7 @@ void SyncEngine::slotDiscoveryFinished()
     if (!_hasNoneFiles && _hasRemoveFile && displayDialog) {
         qCInfo(lcEngine) << "All the files are going to be changed, asking the user";
         int side = 0; // > 0 means more deleted on the server.  < 0 means more deleted on the client
-        for (const auto &it : _syncItems) {
+        for (const auto &it : std::as_const(_syncItems)) {
             if (it->_instruction == CSYNC_INSTRUCTION_REMOVE) {
                 side += it->_direction == SyncFileItem::Down ? 1 : -1;
             }

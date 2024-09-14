@@ -1666,7 +1666,8 @@ void AccountSettings::initializeE2eEncryption()
 
 void AccountSettings::resetE2eEncryption()
 {
-    for (const auto action : _ui->encryptionMessage->actions()) {
+    const auto allActions = _ui->encryptionMessage->actions();
+    for (const auto action : allActions) {
         _ui->encryptionMessage->removeAction(action);
     }
     _ui->encryptionMessage->setText({});

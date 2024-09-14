@@ -1197,7 +1197,8 @@ void ClientSideEncryption::getUsersPublicKeyFromServer(const AccountPtr &account
         if (retCode == 200) {
             QHash<QString, NextcloudSslCertificate> results;
             const auto publicKeys = doc.object()[QStringLiteral("ocs")].toObject()[QStringLiteral("data")].toObject()[QStringLiteral("public-keys")].toObject();
-            for (const auto &userId : publicKeys.keys()) {
+            const auto publicKeysKeys = publicKeys.keys();
+            for (const auto &userId : publicKeysKeys) {
                 if (userIds.contains(userId)) {
                     results.insert(userId, QSslCertificate(publicKeys.value(userId).toString().toLocal8Bit(), QSsl::Pem));
                 }
