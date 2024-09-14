@@ -212,12 +212,12 @@ void KMessageWidgetPrivate::applyStyleSheet()
                               "}"
                               ".QLabel { color: %4; }"
                              )
-        .arg(bgFinalColor.name())
-        .arg(border.name())
-        // DefaultFrameWidth returns the size of the external margin + border width. We know our border is 1px, so we subtract this from the frame normal QStyle FrameWidth to get our margin
-        .arg(q->style()->pixelMetric(QStyle::PM_DefaultFrameWidth, nullptr, q) - 1)
-        .arg(textColor.name())
-    );
+            .arg(bgFinalColor.name(),
+                 border.name(),
+                 // DefaultFrameWidth returns the size of the external margin + border width. We know our border is 1px, so we subtract this from the frame normal QStyle FrameWidth to get our margin
+                 QString::number(q->style()->pixelMetric(QStyle::PM_DefaultFrameWidth, nullptr, q) - 1),
+                 textColor.name())
+        );
 }
 
 void KMessageWidgetPrivate::updateLayout()

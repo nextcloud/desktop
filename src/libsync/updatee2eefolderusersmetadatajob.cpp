@@ -115,7 +115,7 @@ void UpdateE2eeFolderUsersMetadataJob::slotFetchMetadataJobFinished(int statusCo
     }
 
     if (!_encryptedFolderMetadataHandler->folderMetadata() || !_encryptedFolderMetadataHandler->folderMetadata()->isValid()) {
-        emit finished(403, tr("Could not add or remove user %1 to access folder %2").arg(_folderUserId).arg(_fullRemotePath));
+        emit finished(403, tr("Could not add or remove user %1 to access folder %2").arg(_folderUserId, _fullRemotePath));
         return;
     }
     startUpdate();
