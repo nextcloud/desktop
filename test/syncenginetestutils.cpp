@@ -1381,8 +1381,6 @@ FakeFileLockReply::FakeFileLockReply(FileInfo &remoteRootFileInfo,
         return;
     }
 
-    const QString prefix = request.url().path().left(request.url().path().size() - fileName.size());
-
     // Don't care about the request and just return a full propfind
     const QString davUri { QStringLiteral("DAV:") };
     const QString ocUri { QStringLiteral("http://owncloud.org/ns") };
