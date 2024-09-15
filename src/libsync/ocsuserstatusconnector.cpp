@@ -116,7 +116,7 @@ quint64 clearAtEndOfToTimestamp(const OCC::ClearAt &clearAt)
         return QDate::currentDate().addDays(days + 1).startOfDay().toSecsSinceEpoch();
     }
     qCWarning(lcOcsUserStatusConnector) << "Can not handle clear at endof day type" << clearAt._endof;
-    return QDateTime::currentDateTime().toSecsSinceEpoch();
+    return QDateTime::currentSecsSinceEpoch();
 }
 
 quint64 clearAtPeriodToTimestamp(const OCC::ClearAt &clearAt)

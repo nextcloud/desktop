@@ -324,7 +324,7 @@ void User::slotCheckExpiredActivities()
 {
     const auto errorsList = _activityModel->errorsList();
     for (const Activity &activity : errorsList) {
-        if (activity._expireAtMsecs > 0 && QDateTime::currentDateTime().toMSecsSinceEpoch() >= activity._expireAtMsecs) {
+        if (activity._expireAtMsecs > 0 && QDateTime::currentMSecsSinceEpoch() >= activity._expireAtMsecs) {
             _activityModel->removeActivityFromActivityList(activity);
         }
     }

@@ -1947,7 +1947,7 @@ private slots:
         const auto localFileNotLocked = QFileInfo{fakeFolder.localPath() + u"A/a1" + DVSUFFIX};
         QVERIFY(localFileNotLocked.isWritable());
 
-        fakeFolder.remoteModifier().modifyLockState(QStringLiteral("A/a1"), FileModifier::LockState::FileLocked, 1, QStringLiteral("Nextcloud Office"), {}, QStringLiteral("richdocuments"), QDateTime::currentDateTime().toSecsSinceEpoch(), 1226);
+        fakeFolder.remoteModifier().modifyLockState(QStringLiteral("A/a1"), FileModifier::LockState::FileLocked, 1, QStringLiteral("Nextcloud Office"), {}, QStringLiteral("richdocuments"), QDateTime::currentSecsSinceEpoch(), 1226);
         fakeFolder.remoteModifier().setModTimeKeepEtag(QStringLiteral("A/a1"), QDateTime::currentDateTime());
         fakeFolder.remoteModifier().appendByte(QStringLiteral("A/a1"));
 

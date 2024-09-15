@@ -69,7 +69,7 @@ void ClientStatusReportingNetwork::sendReportToServer()
     }
 
     const auto lastSentReportTime = _database->getLastSentReportTimestamp();
-    if (QDateTime::currentDateTimeUtc().toMSecsSinceEpoch() - lastSentReportTime < repordSendIntervalMs) {
+    if (QDateTime::currentMSecsSinceEpoch() - lastSentReportTime < repordSendIntervalMs) {
         return;
     }
 
@@ -108,7 +108,7 @@ void ClientStatusReportingNetwork::reportToServerSentSuccessfully()
     if (!_database->deleteClientStatusReportingRecords()) {
         qCDebug(lcClientStatusReportingNetwork) << "Could not delete records after sending the report";
     }
-    _database->setLastSentReportTimestamp(QDateTime::currentDateTimeUtc().toMSecsSinceEpoch());
+    _database->setLastSentReportTimestamp(QDateTime::currentMSecsSinceEpoch());
 }
 
 QVariantMap ClientStatusReportingNetwork::prepareReport() const

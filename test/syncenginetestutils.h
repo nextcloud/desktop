@@ -54,7 +54,7 @@ inline QString getFilePathFromUrl(const QUrl &url)
 
 
 inline QByteArray generateEtag() {
-    return QByteArray::number(QDateTime::currentDateTimeUtc().toMSecsSinceEpoch(), 16) + QByteArray::number(OCC::Utility::rand(), 16);
+    return QByteArray::number(QDateTime::currentMSecsSinceEpoch(), 16) + QByteArray::number(OCC::Utility::rand(), 16);
 }
 inline QByteArray generateFileId() {
     return QByteArray::number(OCC::Utility::rand(), 16);
