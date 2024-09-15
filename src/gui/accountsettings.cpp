@@ -1091,7 +1091,7 @@ void AccountSettings::displayMnemonic(const QString &mnemonic)
     ui.lineEdit->selectAll();
     ui.lineEdit->setAlignment(Qt::AlignCenter);
 
-    const QFont font(QStringLiteral(""), 0);
+    const QFont font(QString(), 0);
     QFontMetrics fm(font);
     ui.lineEdit->setFixedWidth(fm.horizontalAdvance(mnemonic));
     widget.resize(widget.sizeHint());
