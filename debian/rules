@@ -47,3 +47,7 @@ override_dh_python3:
 	dh_python3 -i -p nautilus-owncloud usr/share/nautilus-python/extensions
 	dh_python3 -i -p nemo-owncloud usr/share/nemo-python/extensions
 	dh_python3 -i -p caja-owncloud usr/share/caja-python/extensions
+
+override_dh_install:
+	dh_install
+	dh_apparmor --profile-name nextcloud
