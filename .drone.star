@@ -16,7 +16,7 @@ OC_CI_DRONE_SKIP_PIPELINE = "owncloudci/drone-skip-pipeline"
 OC_CI_NODEJS = "owncloudci/nodejs:18"
 OC_CI_PHP = "owncloudci/php:%s"
 OC_CI_WAIT_FOR = "owncloudci/wait-for:latest"
-OC_OCIS = "owncloud/ocis:%s"
+OC_OCIS = "owncloud/ocis-rolling:%s"
 OC_TEST_MIDDLEWARE = "owncloud/owncloud-test-middleware:1.8.7"
 OC_UBUNTU = "owncloud/ubuntu:20.04"
 
@@ -122,7 +122,7 @@ config = {
                 "skip": False,
             },
             "ocis": {
-                "version": "5.0",
+                "version": "latest",
                 # comma separated list of tags to be used for filtering. E.g. "@tag1,@tag2"
                 "tags": "~@skipOnOCIS",
                 "skip": False,

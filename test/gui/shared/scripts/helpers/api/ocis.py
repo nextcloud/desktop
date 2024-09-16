@@ -61,7 +61,7 @@ def create_user(username, password, displayname, email):
         {
             "onPremisesSamAccountName": username,
             "passwordProfile": {"password": password},
-            "displayname": displayname,
+            "displayName": displayname,
             "mail": email,
         }
     )
