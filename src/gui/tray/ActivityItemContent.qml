@@ -159,11 +159,13 @@ RowLayout {
             CustomButton {
                 id: fileDetailsButton
 
-                Layout.preferredWidth: Style.dismissButtonSize
-                Layout.preferredHeight: Style.dismissButtonSize
-                Layout.alignment: Qt.AlignTop | Qt.AlignRight
+                Layout.preferredWidth: Style.activityListButtonWidth
+                Layout.preferredHeight: Style.activityListButtonHeight
+                Layout.alignment: Qt.AlignVCenter | Qt.AlignHCenter
 
                 icon.source: "image://svgimage-custom-color/more.svg/" + palette.buttonText
+                icon.width: Style.activityListButtonIconSize
+                icon.height: Style.activityListButtonIconSize
 
                 ToolTip {
                     text: qsTr("Open file details")
@@ -171,8 +173,6 @@ RowLayout {
                 }
 
                 display: Button.IconOnly
-                leftPadding: 0
-                rightPadding: 0
 
                 visible: model.showFileDetails
 
@@ -182,17 +182,15 @@ RowLayout {
             CustomButton {
                 id: dismissActionButton
 
-                Layout.preferredWidth: Style.dismissButtonSize
-                Layout.preferredHeight: Style.dismissButtonSize
-                Layout.alignment: Qt.AlignVCenter | Qt.AlignRight
-
-                visible: root.showDismissButton && !fileDetailsButton.visible
+                Layout.preferredWidth: Style.activityListButtonWidth
+                Layout.preferredHeight: Style.activityListButtonHeight
+                Layout.alignment: Qt.AlignVCenter | Qt.AlignHCenter
 
                 icon.source: "image://svgimage-custom-color/clear.svg/" + palette.buttonText
+                icon.width: Style.activityListButtonIconSize
+                icon.height: Style.activityListButtonIconSize
 
                 display: Button.IconOnly
-                leftPadding: 0
-                rightPadding: 0
 
                 ToolTip {
                     text: qsTr("Dismiss")

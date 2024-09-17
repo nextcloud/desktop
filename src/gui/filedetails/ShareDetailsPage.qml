@@ -224,11 +224,14 @@ Page {
                 id: closeButton
 
                 Layout.rowSpan: headerGridLayout.rows
-                Layout.preferredWidth: Style.iconButtonWidth
-                Layout.preferredHeight: width
+                Layout.preferredWidth: Style.activityListButtonWidth
+                Layout.preferredHeight: Style.activityListButtonHeight
+                Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
                 Layout.rightMargin: root.padding
 
                 icon.source: "image://svgimage-custom-color/clear.svg" + "/" + palette.buttonText
+                icon.width: Style.activityListButtonIconSize
+                icon.height: Style.activityListButtonIconSize
                 toolTipText: qsTr("Dismiss")
 
                 onClicked: root.closeShareDetails()
@@ -764,7 +767,13 @@ Page {
 
             height: Style.standardPrimaryButtonHeight
 
+            Layout.preferredWidth: Style.activityListButtonWidth
+            Layout.preferredHeight: Style.activityListButtonHeight
+            Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
+
             icon.source: "image://svgimage-custom-color/copy.svg/" + palette.brightText
+            icon.width: Style.smallIconSize
+            icon.height: Style.smallIconSize
             text: shareLinkCopied ? qsTr("Share link copied!") : qsTr("Copy share link")
             visible: root.isLinkShare
             enabled: visible
