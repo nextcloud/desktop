@@ -24,7 +24,7 @@ load-plugins=
     pylint.extensions.overlapping_exceptions,
     pylint.extensions.typing,
     pylint.extensions.redefined_variable_type,
-py-version=3.8
+py-version=3.10
 unsafe-load-any-extension=no
 
 [BASIC]

@@ -28,8 +28,8 @@ Feature: Sharing
         And user "Alice" has created folder "simple-folder" in the server
         And user "Alice" has uploaded file with content "ownCloud test text file" to "textfile.txt" in the server
         And user "Alice" has uploaded file with content "shared file" to "sharedfile.txt" in the server
-        And user "Alice" has shared folder "shared" on the server with user "Brian" with "all" permissions
-        And user "Alice" has shared file "sharedfile.txt" on the server with user "Brian" with "all" permissions
+        And user "Alice" has shared folder "shared" in the server with user "Brian" with "all" permissions
+        And user "Alice" has shared file "sharedfile.txt" in the server with user "Brian" with "all" permissions
         And user "Alice" has set up a client with default settings
         When the user adds "Brian Murphy" as collaborator of resource "textfile.txt" with permissions "edit,share" using the client-UI
         And the user adds "Brian Murphy" as collaborator of resource "simple-folder" with permissions "edit,share" using the client-UI
@@ -72,8 +72,8 @@ Feature: Sharing
         Given user "Brian" has been created in the server with default attributes
         And user "Alice" has created folder "SharedFolder" in the server
         And user "Alice" has uploaded file with content "ownCloud test text file" to "/textfile.txt" in the server
-        And user "Alice" has shared folder "SharedFolder" on the server with user "Brian" with "all" permissions
-        And user "Alice" has shared file "textfile.txt" on the server with user "Brian" with "all" permissions
+        And user "Alice" has shared folder "SharedFolder" in the server with user "Brian" with "all" permissions
+        And user "Alice" has shared file "textfile.txt" in the server with user "Brian" with "all" permissions
         And user "Alice" has set up a client with default settings
         When the user opens the sharing dialog of "textfile.txt" using the client-UI
         And the user searches for collaborator "Brian Murphy" using the client-UI
@@ -132,11 +132,11 @@ Feature: Sharing
         And user "TestUser2" has been created in the server with default attributes
         And user "TestUser3" has been created in the server with default attributes
         And user "Alice" has uploaded file with content "ownCloud test text file" to "textfile.txt" in the server
-        And user "Alice" has shared file "textfile.txt" on the server with user "Carol" with "all" permissions
-        And user "Alice" has shared file "textfile.txt" on the server with user "Brian" with "all" permissions
-        And user "Alice" has shared file "textfile.txt" on the server with user "TestUser1" with "all" permissions
-        And user "Alice" has shared file "textfile.txt" on the server with user "TestUser3" with "all" permissions
-        And user "Alice" has shared file "textfile.txt" on the server with user "TestUser2" with "all" permissions
+        And user "Alice" has shared file "textfile.txt" in the server with user "Carol" with "all" permissions
+        And user "Alice" has shared file "textfile.txt" in the server with user "Brian" with "all" permissions
+        And user "Alice" has shared file "textfile.txt" in the server with user "TestUser1" with "all" permissions
+        And user "Alice" has shared file "textfile.txt" in the server with user "TestUser3" with "all" permissions
+        And user "Alice" has shared file "textfile.txt" in the server with user "TestUser2" with "all" permissions
         And user "Alice" has set up a client with default settings
         When the user opens the sharing dialog of "textfile.txt" using the client-UI
         Then the collaborators should be listed in the following order:
@@ -163,8 +163,8 @@ Feature: Sharing
         Given user "Brian" has been created in the server with default attributes
         And user "Alice" has uploaded file with content "ownCloud test text file 0" to "/textfile0.txt" in the server
         And user "Alice" has created folder "Folder" in the server
-        And user "Alice" has shared file "/textfile0.txt" on the server with user "Brian" with "read, share" permission
-        And user "Alice" has shared folder "Folder" on the server with user "Brian" with "read, share" permission
+        And user "Alice" has shared file "/textfile0.txt" in the server with user "Brian" with "read, share" permission
+        And user "Alice" has shared folder "Folder" in the server with user "Brian" with "read, share" permission
         And user "Brian" has set up a client with default settings
         When the user opens the sharing dialog of "textfile0.txt" using the client-UI
         Then the error text "The item is not shared with any users or groups" should be displayed in the sharing dialog
@@ -195,8 +195,8 @@ Feature: Sharing
         And user "Brian" on the server has been added to group "grp1"
         And user "Alice" has uploaded file with content "ownCloud test text file 0" to "/textfile0.txt" in the server
         And user "Alice" has created folder "Folder" in the server
-        And user "Alice" has shared file "/textfile0.txt" on the server with user "Brian" with "read, share, update" permission
-        And user "Alice" has shared folder "Folder" on the server with user "Brian" with "read, share, update" permission
+        And user "Alice" has shared file "/textfile0.txt" in the server with user "Brian" with "read, share, update" permission
+        And user "Alice" has shared folder "Folder" in the server with user "Brian" with "read, share, update" permission
         And user "Alice" has shared file "/textfile0.txt" on the server with group "grp1" with "read, share, update" permission
         And user "Alice" has shared folder "Folder" on the server with group "grp1" with "read, share, update" permission
         And user "Brian" has set up a client with default settings
@@ -213,8 +213,8 @@ Feature: Sharing
         And user "Alice" has uploaded file with content "file inside a folder" to "simple-folder/textfile.txt" in the server
         And user "Alice" has uploaded file with content "file in the root" to "textfile.txt" in the server
         And user "Brian" has been created in the server with default attributes
-        And user "Alice" has shared folder "simple-folder" on the server with user "Brian" with "all" permissions
-        And user "Alice" has shared file "textfile.txt" on the server with user "Brian" with "all" permissions
+        And user "Alice" has shared folder "simple-folder" in the server with user "Brian" with "all" permissions
+        And user "Alice" has shared file "textfile.txt" in the server with user "Brian" with "all" permissions
         And user "Brian" has set up a client with default settings
         When the user overwrites the file "textfile.txt" with content "overwrite file in the root"
         And the user waits for file "textfile.txt" to be synced
@@ -231,8 +231,8 @@ Feature: Sharing
         And user "Alice" has uploaded file with content "file inside a folder" to "Parent/textfile.txt" in the server
         And user "Alice" has uploaded file with content "file in the root" to "textfile.txt" in the server
         And user "Brian" has been created in the server with default attributes
-        And user "Alice" has shared folder "Parent" on the server with user "Brian" with "read" permissions
-        And user "Alice" has shared file "textfile.txt" on the server with user "Brian" with "read" permissions
+        And user "Alice" has shared folder "Parent" in the server with user "Brian" with "read" permissions
+        And user "Alice" has shared file "textfile.txt" in the server with user "Brian" with "read" permissions
         And user "Brian" has set up a client with default settings
         When the user tries to overwrite the file "Parent/textfile.txt" with content "overwrite file inside a folder"
         And the user tries to overwrite the file "textfile.txt" with content "overwrite file in the root"
@@ -248,8 +248,8 @@ Feature: Sharing
         And user "Alice" has created folder "FOLDER" in the server
         And user "Alice" has uploaded file with content "some content" to "FOLDER/simple.txt" in the server
         And user "Brian" has been created in the server with default attributes
-        And user "Alice" has shared file "textfile.txt" on the server with user "Brian" with "all" permissions
-        And user "Alice" has shared folder "FOLDER" on the server with user "Brian" with "all" permissions
+        And user "Alice" has shared file "textfile.txt" in the server with user "Brian" with "all" permissions
+        And user "Alice" has shared folder "FOLDER" in the server with user "Brian" with "all" permissions
         And user "Brian" has set up a client with default settings
         When the user opens the add-account dialog
         And the user adds the following account:
@@ -272,7 +272,7 @@ Feature: Sharing
     Scenario: sharee creates a file and a folder inside a shared folder
         Given user "Alice" has created folder "Parent" in the server
         And user "Brian" has been created in the server with default attributes
-        And user "Alice" has shared folder "Parent" on the server with user "Brian" with "all" permissions
+        And user "Alice" has shared folder "Parent" in the server with user "Brian" with "all" permissions
         And user "Brian" has set up a client with default settings
         When user "Brian" creates a file "Parent/localFile.txt" with the following content inside the sync folder
             """
@@ -290,7 +290,7 @@ Feature: Sharing
     Scenario: sharee tries to create a file and a folder inside a shared folder without write permission
         Given user "Alice" has created folder "Parent" in the server
         And user "Brian" has been created in the server with default attributes
-        And user "Alice" has shared folder "Parent" on the server with user "Brian" with "read" permissions
+        And user "Alice" has shared folder "Parent" in the server with user "Brian" with "read" permissions
         And user "Brian" has set up a client with default settings
         When user "Brian" creates a file "Parent/localFile.txt" with the following content inside the sync folder
             """
@@ -309,8 +309,8 @@ Feature: Sharing
         Given user "Alice" has uploaded file with content "ownCloud test text file 0" to "textfile.txt" in the server
         And user "Alice" has created folder "FOLDER" in the server
         And user "Brian" has been created in the server with default attributes
-        And user "Alice" has shared file "textfile.txt" on the server with user "Brian" with "all" permissions
-        And user "Alice" has shared file "FOLDER" on the server with user "Brian" with "all" permissions
+        And user "Alice" has shared file "textfile.txt" in the server with user "Brian" with "all" permissions
+        And user "Alice" has shared file "FOLDER" in the server with user "Brian" with "all" permissions
         And user "Brian" has set up a client with default settings
         When the user renames a file "textfile.txt" to "lorem.txt"
         And the user renames a folder "FOLDER" to "PARENT"
@@ -331,8 +331,8 @@ Feature: Sharing
         Given user "Alice" has uploaded file with content "ownCloud test text file 0" to "textfile.txt" in the server
         And user "Alice" has created folder "Folder" in the server
         And user "Brian" has been created in the server with default attributes
-        And user "Alice" has shared file "textfile.txt" on the server with user "Brian" with "all" permissions
-        And user "Alice" has shared file "Folder" on the server with user "Brian" with "all" permissions
+        And user "Alice" has shared file "textfile.txt" in the server with user "Brian" with "all" permissions
+        And user "Alice" has shared file "Folder" in the server with user "Brian" with "all" permissions
         And user "Brian" has set up a client with default settings
         When the user deletes the file "textfile.txt"
         And the user deletes the folder "Folder"
@@ -347,8 +347,8 @@ Feature: Sharing
         Given user "Alice" has uploaded file with content "ownCloud test text file 0" to "textfile.txt" in the server
         And user "Alice" has created folder "Folder" in the server
         And user "Brian" has been created in the server with default attributes
-        And user "Alice" has shared file "textfile.txt" on the server with user "Brian" with "read" permissions
-        And user "Alice" has shared file "Folder" on the server with user "Brian" with "read" permissions
+        And user "Alice" has shared file "textfile.txt" in the server with user "Brian" with "read" permissions
+        And user "Alice" has shared file "Folder" in the server with user "Brian" with "read" permissions
         And user "Brian" has set up a client with default settings
         When the user deletes the file "textfile.txt"
         And the user deletes the folder "Folder"
@@ -365,8 +365,8 @@ Feature: Sharing
         And user "Carol" has been created in the server with default attributes
         And user "Alice" has created folder "FOLDER" in the server
         And user "Alice" has uploaded file with content "ownCloud test text file" to "textfile.txt" in the server
-        And user "Alice" has shared file "FOLDER" on the server with user "Brian" with "all" permissions
-        And user "Alice" has shared file "textfile.txt" on the server with user "Brian" with "all" permissions
+        And user "Alice" has shared file "FOLDER" in the server with user "Brian" with "all" permissions
+        And user "Alice" has shared file "textfile.txt" in the server with user "Brian" with "all" permissions
         And user "Brian" has set up a client with default settings
         When the user adds "Carol King" as collaborator of resource "FOLDER" with permissions "edit,share" using the client-UI
         And the user adds "Carol King" as collaborator of resource "textfile.txt" with permissions "edit,share" using the client-UI
@@ -381,8 +381,8 @@ Feature: Sharing
         And user "Carol" has been created in the server with default attributes
         And user "Alice" has created folder "FOLDER" in the server
         And user "Alice" has uploaded file with content "ownCloud test text file" to "textfile.txt" in the server
-        And user "Alice" has shared file "FOLDER" on the server with user "Brian" with "read" permissions
-        And user "Alice" has shared file "textfile.txt" on the server with user "Brian" with "read" permissions
+        And user "Alice" has shared file "FOLDER" in the server with user "Brian" with "read" permissions
+        And user "Alice" has shared file "textfile.txt" in the server with user "Brian" with "read" permissions
         And user "Brian" has set up a client with default settings
         When the user opens the sharing dialog of "FOLDER" using the client-UI
         Then the error text "The file can not be shared because it was shared without sharing permission." should be displayed in the sharing dialog
@@ -396,8 +396,8 @@ Feature: Sharing
         Given user "Brian" has been created in the server with default attributes
         And user "Alice" has uploaded file with content "ownCloud test text file 0" to "textfile0.txt" in the server
         And user "Alice" has created folder "simple-folder" in the server
-        And user "Alice" has shared file "textfile0.txt" on the server with user "Brian" with "all" permissions
-        And user "Alice" has shared folder "simple-folder" on the server with user "Brian" with "all" permissions
+        And user "Alice" has shared file "textfile0.txt" in the server with user "Brian" with "all" permissions
+        And user "Alice" has shared folder "simple-folder" in the server with user "Brian" with "all" permissions
         And user "Alice" has set up a client with default settings
         When the user unshares the resource "textfile0.txt" for collaborator "Brian Murphy" using the client-UI
         Then the text "The item is not shared with any users or groups" should be displayed in the sharing dialog
@@ -615,8 +615,8 @@ Feature: Sharing
         And user "Alice" has created folder "simple-folder" in the server
         And user "Alice" has created file "lorem.txt" on the server
         And user "Brian" has been created in the server with default attributes
-        And user "Alice" has shared folder "simple-folder" on the server with user "Brian" with "all" permissions
-        And user "Alice" has shared file "lorem.txt" on the server with user "Brian" with "all" permissions
+        And user "Alice" has shared folder "simple-folder" in the server with user "Brian" with "all" permissions
+        And user "Alice" has shared file "lorem.txt" in the server with user "Brian" with "all" permissions
         And user "Alice" has set up a client with default settings
         When the user removes permissions "<permissions>" for user "Brian Murphy" of resource "simple-folder" using the client-UI
         Then "<permissions>" permissions should not be displayed for user "Brian Murphy" for resource "simple-folder" on the client-UI

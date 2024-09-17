@@ -198,3 +198,12 @@ def step(context, user, group_name):
 @Given('user "|any|" has been created in the server with default attributes')
 def step(context, user):
     Provisioning.create_user(user)
+
+
+@Given(
+    # pylint: disable=line-too-long
+    r'user "([^"].*)" has shared (?:file|folder) "([^"].*)" in the server with user "([^"].*)" with "([^"].*)" permission(?:s)?',
+    regexp=True,
+)
+def step(context, user, resource, receiver, permissions):
+    sharing_helper.share_resource(user, resource, receiver, permissions)
