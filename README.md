@@ -2,7 +2,6 @@
 
 [![Build Status](https://drone.owncloud.com/api/badges/owncloud/client/status.svg)](https://drone.owncloud.com/owncloud/client) [![Build Status](https://github.com/owncloud/client/workflows/ownCloud%20CI/badge.svg)](https://github.com/owncloud/client/actions)
 
-
 ## Introduction
 
 The ownCloud Desktop Client is a tool to synchronize files from ownCloud Server
@@ -12,7 +11,7 @@ with your computer.
 
 ### Binary packages
 
-* Refer to the download page https://owncloud.com/desktop-app/
+- Refer to the download page https://owncloud.com/desktop-app/
 
 ### Source code
 
@@ -21,11 +20,6 @@ fork and improve the source code and to adapt it to your need, many copies
 can be found on the Internet, in particular on GitHub. However, the
 authoritative repository maintained by the developers is located at
 https://github.com/owncloud/client.
-
-## Building the source code
-
-[Building the Client](https://doc.owncloud.com/desktop/next/appendices/building.html)
-in the ownCloud Desktop Client manual.
 
 ## Reporting issues and contributing
 
@@ -48,22 +42,22 @@ you can join us at
 
 The current maintainers of this repository are:
 
-* Hannah von Reth <hannah.vonreth@owncloud.com>
-* Fabian Müller <fmueller@owncloud.com>
-* Dominik Schmidt <dev@dominik-schmidt.de>
+- Hannah von Reth <hannah.vonreth@owncloud.com>
+- Fabian Müller <fmueller@owncloud.com>
+- Dominik Schmidt <dev@dominik-schmidt.de>
 
 ownCloud Desktop Client is developed by the ownCloud community and [receives
 patches from a variety of authors](https://github.com/owncloud/client/graphs/contributors).
 
 Past maintainers:
 
-* Markus Goetz <guruz@owncloud.com>
-* Olivier Goffart <ogoffart@owncloud.com>
-* Christian Kamm <mail@ckamm.de>
-* Thomas Müller <thomas.mueller@owncloud.com>
-* Klaas Freitag <freitag@owncloud.com>
-* Daniel Molkentin <daniel@molkentin.de>
-* Andreas Schneider <asn@cryptomilk.org>
+- Markus Goetz <guruz@owncloud.com>
+- Olivier Goffart <ogoffart@owncloud.com>
+- Christian Kamm <mail@ckamm.de>
+- Thomas Müller <thomas.mueller@owncloud.com>
+- Klaas Freitag <freitag@owncloud.com>
+- Daniel Molkentin <daniel@molkentin.de>
+- Andreas Schneider <asn@cryptomilk.org>
 
 ## License
 
@@ -76,5 +70,3 @@ Past maintainers:
     WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
     or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
     for more details.
-
-
