@@ -3850,7 +3850,7 @@ Càstia chi s&apos;impreu de cale si siat optzione de sa riga de cumandu de regi
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="479"/>
         <source>Local sync folder %1 already exists, setting it up for sync.&lt;br/&gt;&lt;br/&gt;</source>
-        <translation>Sa cartella de sincronizatzione locale %1 b&apos;est giai, impostada pro sa sincronizatzione.&lt;br/&gt;&lt;br/&gt;</translation>
+        <translation>Sa cartella de sincronizatzione locale %1 b&apos;est giai, cunfigurada pro sa sincronizatzione.&lt;br/&gt;&lt;br/&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="482"/>
@@ -5029,12 +5029,12 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="91"/>
         <source>Common Name (CN):</source>
-        <translation>Nòmine a cumone (CN):</translation>
+        <translation>Nùmene a cumone (CN):</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="92"/>
         <source>Subject Alternative Names:</source>
-        <translation>Nòmines alternativos de su sugetu:</translation>
+        <translation>Nùmenes alternativos de su sugetu:</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="93"/>
@@ -5275,7 +5275,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="598"/>
         <source>Using virtual files with suffix, but suffix is not set</source>
-        <translation>Impreu de is archìvios virtuales, ma su sufissu non est impostadu</translation>
+        <translation>Impreu de is archìvios virtuales, ma su sufissu non est cunfiguradu</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="610"/>
@@ -6526,7 +6526,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="165"/>
         <source>Set status</source>
-        <translation>Imposta istadu</translation>
+        <translation>Cunfigura s&apos;istadu</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="173"/>
@@ -6611,7 +6611,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="336"/>
         <source>Set status message</source>
-        <translation>Imposta messàgiu de istadu</translation>
+        <translation>Cunfigura su messàgiu de istadu</translation>
     </message>
 </context>
 <context>
