@@ -1,6 +1,12 @@
 import os
 import time
-import win32pipe, win32file, winerror, pywintypes, win32event
+
+# pylint: disable=import-error
+import win32pipe
+import win32file
+import winerror
+import pywintypes
+import win32event
 
 TIMEOUT = 100
 DEFAULT_BUFLEN = 4096
@@ -19,8 +25,8 @@ CLIENT_MESSAGES = [
 
 
 def get_pipe_path():
-    pipename = r"\\.\\pipe\\"
-    pipename = os.path.join(pipename, "ownCloud-" + os.getenv("USERNAME"))
+    pipename = r'\\.\\pipe\\'
+    pipename = os.path.join(pipename, 'ownCloud-' + os.getenv('USERNAME'))
     return pipename
 
 
@@ -49,14 +55,14 @@ class WinPipeConnect:
 
             if self._pipe == win32file.INVALID_HANDLE_VALUE:
                 win32pipe.CloseHandle(self._pipe)
-                raise Exception("Invalid _pipe value")
+                raise OSError('Invalid _pipe value')
 
             self.connected = True
 
             self.sendCommand('VERSION:\n')
             self.sendCommand('GET_STRINGS:\n')
-        except Exception as e:
-            print("Could not connect to named pipe " + pipename + "\n" + str(e))
+        except Exception as e:  # pylint: disable=broad-except
+            print(f'Could not connect to named pipe {pipename}\n' + str(e))
             win32file.CloseHandle(self._pipe)
 
     def sendCommand(self, cmd):
@@ -67,15 +73,15 @@ class WinPipeConnect:
             if w_res == winerror.ERROR_IO_PENDING:
                 res = win32event.WaitForSingleObject(self._overlapped.hEvent, TIMEOUT)
                 if res != win32event.WAIT_OBJECT_0:
-                    print("Sending timed out!")
+                    print('Sending timed out!')
                     return False
                 if not win32file.GetOverlappedResult(
                     self._pipe, self._overlapped, False
                 ):
-                    print("GetOverlappedResult failed")
+                    print('GetOverlappedResult failed')
                     return False
         else:
-            print("Cannot send, not connected!")
+            print('Cannot send, not connected!')
             return False
         return True
 
@@ -84,7 +90,7 @@ class WinPipeConnect:
     def read_socket_data_with_timeout(self, timeout):
         messages = b''
         start_time = time.time()
-        while True:
+        while True:  # pylint: disable=too-many-nested-blocks
             if (time.time() - start_time) >= timeout:
                 self._remainder += messages
                 break
@@ -112,7 +118,7 @@ class WinPipeConnect:
                     self._overlapped.hEvent, int(timeout * 1000)
                 )
                 if res != win32event.WAIT_OBJECT_0:
-                    print("Reading timed out!")
+                    print('Reading timed out!')
                     return False
                 if not win32file.GetOverlappedResult(
                     self._pipe, self._overlapped, False
@@ -122,8 +128,7 @@ class WinPipeConnect:
 
     # Parses response lines out of collected data, returns list of strings
     def get_available_responses(self):
-        end = self._remainder.rfind(b'\n')
-        if end == -1:
+        if (end := self._remainder.rfind(b'\n')) == -1:
             return []
         data = self._remainder[:end]
         self._remainder = self._remainder[end + 1 :]

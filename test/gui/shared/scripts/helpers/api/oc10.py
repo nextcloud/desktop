@@ -1,6 +1,6 @@
 import json
 
-import helpers.api.HttpHelper as request
+import helpers.api.http_helper as request
 from helpers.api.utils import url_join
 from helpers.ConfigHelper import get_config
 
@@ -10,20 +10,20 @@ def format_json(url):
 
 
 def get_ocs_url():
-    return url_join(get_config('localBackendUrl'), 'ocs', "v2.php")
+    return url_join(get_config("localBackendUrl"), "ocs", "v2.php")
 
 
 def get_provisioning_url(*paths):
-    return format_json(url_join(get_ocs_url(), 'cloud', *paths))
+    return format_json(url_join(get_ocs_url(), "cloud", *paths))
 
 
 def checkSuccessOcsStatus(response):
     if response.text:
-        ocs_code = json.loads(response.text)['ocs']['meta']['statuscode']
-        if ocs_code not in [100, 200]:
-            raise Exception("Request failed." + response.text)
+        ocs_data = json.loads(response.text)
+        if ocs_data["ocs"]["meta"]["statuscode"] not in [100, 200]:
+            raise AssertionError("Request failed." + response.text)
     else:
-        raise Exception(
+        raise ValueError(
             "No OCS response body. HTTP status was " + str(response.status_code)
         )
 
@@ -60,7 +60,7 @@ def create_user(username, password, displayname, email):
 
 
 def delete_user(user_id):
-    url = get_provisioning_url('users', user_id)
+    url = get_provisioning_url("users", user_id)
     response = request.delete(url)
     request.assertHttpStatus(response, 200, f"Failed to delete user '{user_id}'")
     checkSuccessOcsStatus(response)
@@ -106,9 +106,9 @@ def disable_app(app_name):
 
 
 def setup_app(app_name, action):
-    if action.startswith('enable'):
+    if action.startswith("enable"):
         enable_app(app_name)
-    elif action.startswith('disable'):
+    elif action.startswith("disable"):
         disable_app(app_name)
     else:
-        raise Exception("Unknown action: " + action)
+        raise ValueError("Unknown action: " + action)

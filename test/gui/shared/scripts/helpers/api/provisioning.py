@@ -1,14 +1,13 @@
-import helpers.api.oc10 as oc
-import helpers.api.ocis as ocis
+from helpers.api import oc10 as oc
+from helpers.api import ocis
 from helpers.ConfigHelper import get_config
-import helpers.UserHelper as UserHelper
+from helpers import UserHelper
 
 created_groups = {}
 created_users = {}
 
 
 def create_group(group_name):
-    global created_groups
     if get_config('ocis'):
         group_info = ocis.create_group(group_name)
     else:
@@ -17,12 +16,11 @@ def create_group(group_name):
 
 
 def delete_created_groups():
-    global created_groups
     for group_name, group_info in list(created_groups.items()):
         if get_config('ocis'):
-            ocis.delete_group(group_info["id"])
+            ocis.delete_group(group_info['id'])
         else:
-            oc.delete_group(group_info["id"])
+            oc.delete_group(group_info['id'])
         del created_groups[group_name]
 
 
@@ -34,25 +32,29 @@ def add_user_to_group(user, group_name):
 
 
 def create_user(username):
-    global created_users
-    user = {}
     if username in UserHelper.test_users:
         user = UserHelper.test_users[username]
     else:
-        user = {
-            "username": username,
-            "displayname": username,
-            "email": f'{username}@mail.com',
-            "password": UserHelper.test_users["regularuser"]["password"],
-        }
+        user = UserHelper.User(
+            username=username,
+            displayname=username,
+            email=f'{username}@mail.com',
+            password=UserHelper.get_default_password(),
+        )
 
     if get_config('ocis'):
         user_info = ocis.create_user(
-            user['username'], user['password'], user['displayname'], user['email']
+            user.username,
+            user.password,
+            user.displayname,
+            user.email,
         )
     else:
         user_info = oc.create_user(
-            user['username'], user['password'], user['displayname'], user['email']
+            user.username,
+            user.password,
+            user.displayname,
+            user.email,
         )
     created_users[username] = user_info
 
@@ -60,7 +62,7 @@ def create_user(username):
 def delete_created_users():
     for username, user_info in list(created_users.items()):
         if get_config('ocis'):
-            ocis.delete_user(user_info["id"])
+            ocis.delete_user(user_info['id'])
         else:
-            oc.delete_user(user_info["id"])
+            oc.delete_user(user_info['id'])
         del created_users[username]

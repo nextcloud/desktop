@@ -1,9 +1,11 @@
-import squish, test
-import psutil
 import uuid
 from urllib.parse import urlparse
 from os import makedirs
 from os.path import exists, join
+import test
+import psutil
+import squish
+
 from helpers.SpaceHelper import get_space_id
 from helpers.ConfigHelper import get_config, set_config, isWindows
 from helpers.SyncHelper import listenSyncStatusForItem
@@ -94,13 +96,12 @@ def getCurrentUserSyncPath():
 
 def startClient():
     squish.startApplication(
-        "owncloud -s"
-        + " --logfile "
-        + get_config('clientLogFile')
-        + " --logdebug"
-        + " --logflush"
+        'owncloud -s'
+        + f' --logfile {get_config("clientLogFile")}'
+        + ' --logdebug'
+        + ' --logflush'
     )
-    if get_config("screenRecordOnFailure"):
+    if get_config('screenRecordOnFailure'):
         test.startVideoCapture()
 
 
@@ -114,7 +115,7 @@ remotePollInterval={pollingInterval}
     return pollingInterval
 
 
-def generate_account_config(users, space="Personal"):
+def generate_account_config(users, space='Personal'):
     sync_paths = {}
     user_setting = ''
     for idx, username in enumerate(users):
@@ -138,20 +139,20 @@ def generate_account_config(users, space="Personal"):
 {user_index}/version=13
 '''
         if not idx:
-            user_setting = "[Accounts]" + user_setting
+            user_setting = '[Accounts]' + user_setting
 
         sync_path = createUserSyncPath(username)
-        dav_endpoint = url_join("remote.php/dav/files", username)
+        dav_endpoint = url_join('remote.php/dav/files', username)
 
         server_url = get_config('localBackendUrl')
-        is_ocis = get_config('ocis')
-        if is_ocis:
+
+        if is_ocis := get_config('ocis'):
             set_config('syncConnectionName', space)
             sync_path = createSpacePath(space)
             space_name = space
-            if space == "Personal":
+            if space == 'Personal':
                 space_name = getDisplaynameForUser(username)
-            dav_endpoint = url_join("dav/spaces", get_space_id(space_name, username))
+            dav_endpoint = url_join('dav/spaces', get_space_id(space_name, username))
 
         args = {
             'url': url_join(server_url, dav_endpoint, ''),
@@ -170,17 +171,16 @@ def generate_account_config(users, space="Personal"):
         user_setting = user_setting.format(**args)
         sync_paths.update({username: sync_path})
     # append extra configs
-    user_setting += "version=13"
+    user_setting += 'version=13'
     user_setting = user_setting + getPollingInterval()
 
-    config_file = open(get_config('clientConfigFile'), "a+", encoding="utf-8")
-    config_file.write(user_setting)
-    config_file.close()
+    with open(get_config('clientConfigFile'), 'a+', encoding='utf-8') as config_file:
+        config_file.write(user_setting)
 
     return sync_paths
 
 
-def setUpClient(username, space="Personal"):
+def setUpClient(username, space='Personal'):
     sync_paths = generate_account_config([username], space)
     startClient()
     for _, sync_path in sync_paths.items():
@@ -202,9 +202,7 @@ def wait_until_app_killed(pid=0):
         timeout,
     )
     if not killed:
-        test.log(
-            "Application was not terminated within {} milliseconds".format(timeout)
-        )
+        test.log(f'Application was not terminated within {timeout} milliseconds')
 
 
 def generate_UUIDV4():

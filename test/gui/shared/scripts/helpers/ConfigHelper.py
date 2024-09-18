@@ -9,7 +9,7 @@ def read_env_file():
     envs = {}
     script_path = os.path.dirname(os.path.realpath(__file__))
     env_path = os.path.abspath(os.path.join(script_path, '..', '..', '..', 'envs.txt'))
-    with open(env_path, "rt", encoding="UTF-8") as f:
+    with open(env_path, 'rt', encoding='UTF-8') as f:
         for line in f:
             if not line.strip():
                 continue
@@ -24,19 +24,19 @@ def get_config_from_env_file(env):
     envs = read_env_file()
     if env in envs:
         return envs[env]
-    raise Exception('Environment "%s" not found in envs.txt' % env)
+    raise KeyError(f'Environment "{env}" not found in envs.txt')
 
 
 def isWindows():
-    return platform.system() == "Windows"
+    return platform.system() == 'Windows'
 
 
 def isLinux():
-    return platform.system() == "Linux"
+    return platform.system() == 'Linux'
 
 
 def getWinUserHome():
-    return os.environ.get("UserProfile")
+    return os.environ.get('UserProfile')
 
 
 def getClientRootPath():
@@ -49,15 +49,14 @@ def getConfigHome():
     if isWindows():
         # There is no way to set custom config path in windows
         # TODO: set to different path if option is available
-        return os.path.join(getWinUserHome(), "AppData", "Roaming", "ownCloud")
-    return os.path.join(get_config_from_env_file("XDG_CONFIG_HOME"), "ownCloud")
+        return os.path.join(getWinUserHome(), 'AppData', 'Roaming', 'ownCloud')
+    return os.path.join(get_config_from_env_file('XDG_CONFIG_HOME'), 'ownCloud')
 
 
 def get_default_home_dir():
     if isWindows():
         return getWinUserHome()
-    elif isLinux():
-        return os.environ.get("HOME")
+    return os.environ.get('HOME')
 
 
 # map environment variables to config keys
@@ -103,51 +102,49 @@ CONFIG.update(DEFAULT_PATH_CONFIG)
 READONLY_CONFIG = list(CONFIG_ENV_MAP.keys()) + list(DEFAULT_PATH_CONFIG.keys())
 
 
-def init_config():
-    global CONFIG, CONFIG_ENV_MAP
-    # try reading configs from config.ini
+def read_cfg_file(cfg_path):
     cfg = ConfigParser()
+    if cfg.read(cfg_path):
+        for key, _ in CONFIG.items():
+            if key in CONFIG_ENV_MAP:
+                if value := cfg.get('DEFAULT', CONFIG_ENV_MAP[key]):
+                    if key in ('ocis', 'screenRecordOnFailure'):
+                        CONFIG[key] = value == 'true'
+                    else:
+                        CONFIG[key] = value
+
+
+def init_config():
+    # try reading configs from config.ini
     try:
         script_path = os.path.dirname(os.path.realpath(__file__))
-        config_path = os.path.abspath(
+        cfg_path = os.path.abspath(
             os.path.join(script_path, '..', '..', '..', 'config.ini')
         )
-        if cfg.read(config_path):
-            for key, _ in CONFIG.items():
-                if key in CONFIG_ENV_MAP:
-                    value = cfg.get('DEFAULT', CONFIG_ENV_MAP[key])
-                    if value:
-                        if key == 'ocis' or key == 'screenRecordOnFailure':
-                            CONFIG[key] = value == 'true'
-                        else:
-                            CONFIG[key] = value
-    except Exception:
+        read_cfg_file(cfg_path)
+    except:
         pass
 
     # read and override configs from environment variables
     for key, value in CONFIG_ENV_MAP.items():
         if os.environ.get(value):
-            if key == 'ocis' or key == 'screenRecordOnFailure':
+            if key in ('ocis', 'screenRecordOnFailure'):
                 CONFIG[key] = os.environ.get(value) == 'true'
             else:
                 CONFIG[key] = os.environ.get(value)
 
     # Set the default values if empty
     for key, value in CONFIG.items():
-        if key == 'maxSyncTimeout' or key == 'minSyncTimeout':
+        if key in ('maxSyncTimeout', 'minSyncTimeout'):
             CONFIG[key] = builtins.int(value)
-        elif (
-            key == 'localBackendUrl'
-            or key == 'middlewareUrl'
-            or key == 'secureLocalBackendUrl'
-        ):
+        elif key in ('localBackendUrl', 'middlewareUrl', 'secureLocalBackendUrl'):
             # make sure there is always one trailing slash
             CONFIG[key] = value.rstrip('/') + '/'
-        elif (
-            key == 'clientRootSyncPath'
-            or key == 'tempFolderPath'
-            or key == 'clientConfigDir'
-            or key == 'guiTestReportDir'
+        elif key in (
+            'clientRootSyncPath',
+            'tempFolderPath',
+            'clientConfigDir',
+            'guiTestReportDir',
         ):
             # make sure there is always one trailing slash
             if isWindows():
@@ -158,22 +155,19 @@ def init_config():
 
 
 def get_config(key=None):
-    global CONFIG
     if key:
         return CONFIG[key]
     return CONFIG
 
 
 def set_config(key, value):
-    global CONFIG, READONLY_CONFIG
     if key in READONLY_CONFIG:
-        raise Exception('Cannot set read-only config: %s' % key)
+        raise KeyError(f'Cannot set read-only config: {key}')
     CONFIG[key] = value
-    return CONFIG
 
 
 def clear_scenario_config():
-    global CONFIG, READONLY_CONFIG
+    global CONFIG
     initial_config = {}
     for key in READONLY_CONFIG:
         initial_config[key] = CONFIG[key]

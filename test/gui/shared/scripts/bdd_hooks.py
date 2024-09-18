@@ -24,7 +24,7 @@ from datetime import datetime
 from helpers.StacktraceHelper import getCoredumps, generateStacktrace
 from helpers.SyncHelper import closeSocketConnection, clearWaitedAfterSync
 from helpers.SpaceHelper import delete_project_spaces
-from helpers.api.Provisioning import delete_created_groups, delete_created_users
+from helpers.api.provisioning import delete_created_groups, delete_created_users
 from helpers.SetupClientHelper import wait_until_app_killed
 from helpers.ConfigHelper import (
     init_config,
@@ -99,7 +99,6 @@ def hook(context):
                 + context.title
                 + "\n"
             )
-            f.close()
 
     # this path will be changed according to the user added to the client
     # e.g.: /tmp/client-bdd/Alice

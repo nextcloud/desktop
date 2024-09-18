@@ -1,4 +1,4 @@
-PYTHON_LINT_PATHS:=./shared/scripts/pageObjects/* ./shared/steps/* ./shared/scripts/bdd_hooks.py
+PYTHON_LINT_PATHS:="./**/*.py"
 
 .PHONY: install
 install: pnpm-install pnpm-install-chromium pip-install

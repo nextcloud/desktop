@@ -5,4 +5,4 @@ def url_join(*args):
     paths = []
     for path in list(args):
         paths.append(path.strip("/"))
-    return join(*paths)
+    return join("", *paths)

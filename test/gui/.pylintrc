@@ -15,8 +15,18 @@ disable=
     ; TODO: enable later
     invalid-name,
 fail-under=10
-ignore-paths=^tst_.*/test.py$|shared/scripts/names.py
-ignored-modules=squish,object,objectmaphelper,test
+ignore-paths=^tst_.*/test.py$,
+    shared/scripts/names.py,
+    shared/scripts/custom_lib
+ignored-modules=
+    squish,
+    object,
+    objectmaphelper,
+    test,
+    requests,
+    psutil,
+    urllib3,
+    custom_lib.syncstate,
 load-plugins=
     pylint.extensions.check_elif,
     pylint.extensions.bad_builtin,
@@ -36,6 +46,9 @@ function-naming-style=snake_case
 method-naming-style=snake_case
 module-naming-style=any
 variable-naming-style=snake_case
+
+[DESIGN]
+max-args=8
 
 [VARIABLES]
 additional-builtins=

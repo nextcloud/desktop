@@ -2,23 +2,26 @@ import os
 import re
 import ctypes
 import shutil
+
 from helpers.ConfigHelper import isWindows
 
 
 def buildConflictedRegex(filename):
-    if '.' in filename:
+    if "." in filename:
         # TODO: improve this for complex filenames
-        namepart = filename.split('.')[0]
-        extpart = filename.split('.')[1]
-        return '%s \(conflicted copy \d{4}-\d{2}-\d{2} \d{6}\)\.%s' % (
+        namepart = filename.split(".")[0]
+        extpart = filename.split(".")[1]
+        # pylint: disable=anomalous-backslash-in-string
+        return "%s \(conflicted copy \d{4}-\d{2}-\d{2} \d{6}\)\.%s" % (
             namepart,
             extpart,
         )
-    return '%s \(conflicted copy \d{4}-\d{2}-\d{2} \d{6}\)' % (filename)
+    # pylint: disable=anomalous-backslash-in-string
+    return "%s \(conflicted copy \d{4}-\d{2}-\d{2} \d{6}\)" % filename
 
 
 def sanitizePath(path):
-    return path.replace('//', '/')
+    return path.replace("//", "/")
 
 
 def prefix_path_namespace(path):
@@ -27,36 +30,33 @@ def prefix_path_namespace(path):
         # disable string parsing
         #  - long path
         #  - trailing whitespaces
-        return '\\\\?\\' + path
+        return f"\\\\?\\{path}"
     return path
 
 
 def can_read(resource):
-    can_read = False
+    read = False
     try:
-        f = open(resource)
-        f.close()
-        can_read = True
+        with open(resource, encoding="utf-8") as f:
+            read = True
     except:
         pass
-    return can_read and os.access(resource, os.R_OK)
+    return read and os.access(resource, os.R_OK)
 
 
 def can_write(resource):
-    can_write = False
+    write = False
     try:
-        f = open(resource, 'w')
-        f.close()
-        can_write = True
+        with open(resource, "w", encoding="utf-8") as f:
+            write = True
     except:
         pass
-    return can_write and os.access(resource, os.W_OK)
+    return write and os.access(resource, os.W_OK)
 
 
 def read_file_content(file):
-    f = open(file, "r")
-    content = f.read()
-    f.close()
+    with open(file, "r", encoding="utf-8") as f:
+        content = f.read()
     return content
 
 
@@ -75,9 +75,9 @@ def get_size_in_bytes(size):
     multiplier = 1024
     if match:
         size_num = int(match.group(1))
-        size_unit = match.group(2).lower()
+        size_unit = match.group(2)
 
-        if not size_unit:
+        if not (size_unit := size_unit.lower()):
             return size_num
         if size_unit in units:
             if size_unit == "b":
@@ -89,7 +89,7 @@ def get_size_in_bytes(size):
             if size_unit == "gb":
                 return size_num * (multiplier**3)
 
-    raise Exception("Invalid size: " + size)
+    raise ValueError("Invalid size: " + size)
 
 
 def get_file_size_on_disk(resource_path):
@@ -98,9 +98,7 @@ def get_file_size_on_disk(resource_path):
         return ctypes.windll.kernel32.GetCompressedFileSizeW(
             ctypes.c_wchar_p(resource_path), ctypes.pointer(file_size_high)
         )
-    raise Exception(
-        "'get_file_size_on_disk' function is only supported for Windows OS."
-    )
+    raise OSError("'get_file_size_on_disk' function is only supported for Windows OS.")
 
 
 def get_file_size(resource_path):
@@ -112,7 +110,6 @@ CREATED_PATHS = []
 
 
 def remember_path(path):
-    global CREATED_PATHS
     CREATED_PATHS.append(path)
 
 

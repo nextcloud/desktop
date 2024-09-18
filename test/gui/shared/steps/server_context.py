@@ -3,7 +3,7 @@ import json
 
 from helpers.ConfigHelper import get_config
 from helpers.api.utils import url_join
-from helpers.api import Provisioning, webdav_helper as webdav, sharing_helper
+from helpers.api import provisioning, sharing_helper, webdav_helper as webdav
 import helpers.api.oc10 as oc
 
 from pageObjects.Toolbar import Toolbar
@@ -187,17 +187,17 @@ def step(context, user, folder_name):
 
 @Given('group "|any|" has been created in the server')
 def step(context, group_name):
-    Provisioning.create_group(group_name)
+    provisioning.create_group(group_name)
 
 
 @Given('user "|any|" has been added to group "|any|" in the server')
 def step(context, user, group_name):
-    Provisioning.add_user_to_group(user, group_name)
+    provisioning.add_user_to_group(user, group_name)
 
 
 @Given('user "|any|" has been created in the server with default attributes')
 def step(context, user):
-    Provisioning.create_user(user)
+    provisioning.create_user(user)
 
 
 @Given(

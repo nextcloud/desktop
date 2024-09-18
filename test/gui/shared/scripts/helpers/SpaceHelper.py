@@ -3,7 +3,7 @@ from urllib import parse
 
 from helpers.ConfigHelper import get_config
 from helpers.api.utils import url_join
-import helpers.api.HttpHelper as request
+import helpers.api.http_helper as request
 
 created_spaces = {}
 user_spaces = {}
@@ -27,7 +27,7 @@ def get_share_endpint():
 
 
 def create_space(space_name):
-    body = json.dumps({"name": space_name})
+    body = json.dumps({'name': space_name})
     response = request.post(get_space_endpint(), body)
     request.assertHttpStatus(response, 201, f'Failed to create space {space_name}')
     # save created space
@@ -50,29 +50,28 @@ def get_project_spaces(user=None):
 
 
 def get_space_id(space_name, user=None):
-    global created_spaces, user_spaces
     spaces = {**created_spaces, **user_spaces}
     if not space_name in spaces.keys():
         return fetch_space_id(space_name, user)
-    for space, id in spaces.items():
-        if space == space_name:
-            return id
+    return spaces.get(space_name)
 
 
 def fetch_space_id(space_name, user=None):
-    global user_spaces
     spaces = fetch_spaces(user=user)
+    space_id = None
     for space in spaces:
         if space['name'] == space_name:
             user_spaces[space_name] = space['id']
-            return space['id']
+            space_id = space['id']
+            break
+    return space_id
 
 
 def delete_project_spaces():
     global created_spaces, user_spaces
-    for _, id in created_spaces.items():
-        disable_project_space(id)
-        delete_project_space(id)
+    for _, space_id in created_spaces.items():
+        disable_project_space(space_id)
+        delete_project_space(space_id)
     created_spaces = {}
     user_spaces = {}
 
@@ -85,7 +84,7 @@ def disable_project_space(space_id):
 
 def delete_project_space(space_id):
     url = url_join(get_space_endpint(), space_id)
-    response = request.delete(url, {"Purge": "T"})
+    response = request.delete(url, {'Purge': 'T'})
     request.assertHttpStatus(response, 204, f'Failed to delete space {space_id}')
 
 
@@ -104,28 +103,26 @@ def create_space_file(space_name, file_name, content):
     space_id = get_space_id(space_name)
     url = url_join(get_dav_endpint(), space_id, file_name)
     response = request.put(url, content)
-    if response.status_code != 201 and response.status_code != 204:
-        raise Exception(
-            "Creating file '%s' in space '%s' failed with %s\n"
-            % (file_name, space_name, response.status_code)
+    if response.status_code not in (201, 204):
+        raise AssertionError(
+            f"Creating file '{file_name}' in space '{space_name}' failed with {response.status_code}\n"
             + response.text
         )
 
 
 def add_user_to_space(user, space_name, role):
-    global space_role
     role = role.lower()
     if not role in space_role:
-        raise Exception("Cannot set the role '%s' to a space" % role)
+        raise ValueError(f"Cannot set the role '{role}' to a space")
 
     space_id = get_space_id(space_name)
     url = get_share_endpint()
     body = parse.urlencode(
         {
-            "space_ref": space_id,
-            "shareType": 7,
-            "shareWith": user,
-            "role": role,
+            'space_ref': space_id,
+            'shareType': 7,
+            'shareWith': user,
+            'role': role,
         }
     )
     headers = {'Content-Type': 'application/x-www-form-urlencoded'}

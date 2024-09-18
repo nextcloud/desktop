@@ -65,7 +65,6 @@ def createFileWithSize(filename, filesize, isTempFolder=False):
 def writeFile(resource, content):
     with open(prefix_path_namespace(resource), 'w', encoding='utf-8') as f:
         f.write(content)
-        f.close()
 
 
 def waitAndWriteFile(path, content):
@@ -148,7 +147,6 @@ def step(context, filePath):
     filePath = getResourcePath(filePath)
     with open(filePath, 'r', encoding='utf-8') as f:
         contents = f.read()
-        f.close()
     test.compare(
         expected,
         contents,

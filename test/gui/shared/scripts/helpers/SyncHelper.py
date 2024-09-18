@@ -1,15 +1,16 @@
+import os
 import re
 import sys
 import test
-import os
 import urllib
-from squish import waitFor, snooze
+import squish
 
-from helpers.FilesHelper import sanitizePath
 from helpers.ConfigHelper import get_config, isLinux, isWindows
+from helpers.FilesHelper import sanitizePath
 
-
-if isLinux():
+if isWindows():
+    from helpers.WinPipeHelper import WinPipeConnect as SocketConnect
+else:
     # NOTE: 'syncstate.py' was removed from client
     # and is now available at https://github.com/owncloud/client-desktop-shell-integration-nautilus
     # check if 'syncstate.py' is available, if not, download it
@@ -18,7 +19,7 @@ if isLinux():
     os.makedirs(custom_lib, exist_ok=True)
 
     if not os.path.exists(syncstate_lib_file):
-        url = "https://raw.github.com/owncloud/client-desktop-shell-integration-nautilus/master/src/syncstate.py"
+        url = 'https://raw.github.com/owncloud/client-desktop-shell-integration-nautilus/master/src/syncstate.py'
         urllib.request.urlretrieve(url, os.path.join(custom_lib, 'syncstate.py'))
 
     # the script needs to use the system wide python
@@ -27,9 +28,7 @@ if isLinux():
     # if the IDE fails to reference the script,
     # add the folder in Edit->Preferences->PyDev->Interpreters->Libraries
     sys.path.append(custom_lib)
-    from syncstate import SocketConnect
-elif isWindows():
-    from helpers.WinPipeHelper import WinPipeConnect as SocketConnect
+    from custom_lib.syncstate import SocketConnect
 
 # socket messages
 socket_messages = []
@@ -96,12 +95,12 @@ def getSocketConnection():
 
 
 def readSocketMessages():
-    socket_messages = []
-    socketConnect = getSocketConnection()
-    socketConnect.read_socket_data_with_timeout(0.1)
-    for line in socketConnect.get_available_responses():
-        socket_messages.append(line)
-    return socket_messages
+    messages = []
+    socket_connect = getSocketConnection()
+    socket_connect.read_socket_data_with_timeout(0.1)
+    for line in socket_connect.get_available_responses():
+        messages.append(line)
+    return messages
 
 
 def readAndUpdateSocketMessages():
@@ -110,7 +109,6 @@ def readAndUpdateSocketMessages():
 
 
 def updateSocketMessages(messages):
-    global socket_messages
     socket_messages.extend(filterSyncMessages(messages))
     return socket_messages
 
@@ -127,14 +125,13 @@ def clearSocketMessages(resource=''):
 
 
 def closeSocketConnection():
-    global socketConnect, socket_messages
     socket_messages.clear()
     if socketConnect:
         socketConnect.connected = False
         if isWindows():
             socketConnect.close_conn()
         elif isLinux():
-            socketConnect._sock.close()
+            socketConnect._sock.close()  # pylint: disable=protected-access
 
 
 def getInitialSyncPatterns():
@@ -146,8 +143,8 @@ def getSyncedPattern(resource=''):
     sync_path = get_config('currentUserSyncPath')
     if get_config('ocis'):
         sync_path = os.path.join(sync_path, get_config('syncConnectionName'))
-    resource = resource.replace(sync_path, "").strip('\\').strip('/')
-    if resource:
+
+    if resource := resource.replace(sync_path, '').strip('\\').strip('/'):
         return SYNC_PATTERNS['single_synced']
     return SYNC_PATTERNS['root_synced']
 
@@ -166,8 +163,7 @@ def generateSyncPatternFromMessages(messages):
         # E.g; from "STATUS:OK:/tmp/client-bdd/Alice/"
         # excludes ":/tmp/client-bdd/Alice/"
         # adds only "STATUS:OK" to the pattern list
-        match = re.search(":(/|[A-Z]{1}:\\\\).*", message)
-        if match:
+        if match := re.search(':(/|[A-Z]{1}:\\\\).*', message):
             (end, _) = match.span()
             # shared resources will have status like "STATUS:OK+SWM"
             status = message[:end].replace('+SWM', '')
@@ -193,13 +189,12 @@ def filterMessagesForItem(messages, item):
     return filteredMsg
 
 
-def listenSyncStatusForItem(item, type='FOLDER'):
-    type = type.upper()
-    if type != 'FILE' and type != 'FOLDER':
-        raise Exception("type must be 'FILE' or 'FOLDER'")
-    socketConnect = getSocketConnection()
+def listenSyncStatusForItem(item, resource_type='FOLDER'):
+    if (resource_type := resource_type.upper()) not in ('FILE', 'FOLDER'):
+        raise ValueError('resource_type must be "FILE" or "FOLDER"')
+    socket_connect = getSocketConnection()
     item = item.rstrip('\\')
-    socketConnect.sendCommand("RETRIEVE_" + type + "_STATUS:" + item + "\n")
+    socket_connect.sendCommand(f'RETRIEVE_{resource_type}_STATUS:{item}\n')
 
 
 def getCurrentSyncStatus(resource, resourceType):
@@ -217,7 +212,7 @@ def waitForFileOrFolderToSync(resource, resourceType='FOLDER', patterns=None):
     if patterns is None:
         patterns = getSyncedPattern(resource)
 
-    synced = waitFor(
+    synced = squish.waitFor(
         lambda: hasSyncPattern(patterns, resource),
         timeout,
     )
@@ -228,21 +223,17 @@ def waitForFileOrFolderToSync(resource, resourceType='FOLDER', patterns=None):
         status = getCurrentSyncStatus(resource, resourceType)
         if status.startswith(SYNC_STATUS['OK']):
             test.log(
-                "[WARN] Failed to match sync pattern for resource: "
+                '[WARN] Failed to match sync pattern for resource: '
                 + resource
-                + "\nBut its last status is "
-                + "'"
-                + SYNC_STATUS['OK']
-                + "'"
-                + ". So passing the step."
+                + f'\nBut its last status is "{SYNC_STATUS["OK"]}"'
+                + '. So passing the step.'
             )
             return
-        else:
-            raise Exception(
-                "Timeout while waiting for sync to complete for "
-                + str(timeout)
-                + " milliseconds"
-            )
+        raise TimeoutError(
+            'Timeout while waiting for sync to complete for '
+            + str(timeout)
+            + ' milliseconds'
+        )
 
 
 def waitForInitialSyncToComplete(path):
@@ -270,7 +261,7 @@ def hasSyncPattern(patterns, resource=None):
             if pattern_len == len(actual_pattern) and pattern == actual_pattern:
                 return True
     # 100 milliseconds polling interval
-    snooze(0.1)
+    squish.snooze(0.1)
     return False
 
 
@@ -298,26 +289,20 @@ def waitForFileOrFolderToHaveSyncStatus(
     if not timeout:
         timeout = get_config('maxSyncTimeout') * 1000
 
-    result = waitFor(
+    result = squish.waitFor(
         lambda: hasSyncStatus(resource, status),
         timeout,
     )
 
     if not result:
         if status == SYNC_STATUS['ERROR']:
-            expected = "have sync error"
+            expected = 'have sync error'
         elif status == SYNC_STATUS['IGNORE']:
-            expected = "be sync ignored"
+            expected = 'be sync ignored'
         else:
-            expected = "be synced"
-        raise Exception(
-            "Expected "
-            + resourceType
-            + " '"
-            + resource
-            + "' to "
-            + expected
-            + ", but not."
+            expected = 'be synced'
+        raise ValueError(
+            f'Expected {resourceType} "{resource}" to {expected}, but not.'
         )
 
 
@@ -331,7 +316,7 @@ def waitForFileOrFolderToHaveSyncError(resource, resourceType):
 def waitForClientToBeReady():
     global waitedAfterSync
     if not waitedAfterSync:
-        snooze(get_config('minSyncTimeout'))
+        squish.snooze(get_config('minSyncTimeout'))
         waitedAfterSync = True
 
 

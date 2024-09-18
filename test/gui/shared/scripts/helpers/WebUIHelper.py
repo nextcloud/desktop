@@ -12,10 +12,10 @@ def getClipboardText():
         return squish.getClipboardText()
 
 
-def authorize_via_webui(username, password, login_type="oidc"):
+def authorize_via_webui(username, password, login_type='oidc'):
     script_path = os.path.dirname(os.path.realpath(__file__))
 
-    webui_path = os.path.join(script_path, "..", "..", "..", 'webUI')
+    webui_path = os.path.join(script_path, '..', '..', '..', 'webUI')
     os.chdir(webui_path)
 
     envs = {
@@ -24,14 +24,14 @@ def authorize_via_webui(username, password, login_type="oidc"):
         'OC_AUTH_URL': getClipboardText(),
     }
     proc = subprocess.run(
-        "pnpm run %s-login" % login_type,
+        f'pnpm run {login_type}-login',
         capture_output=True,
         shell=True,
         env={**os.environ, **envs},
+        check=False,
     )
-    if proc.returncode != 0:
+    if proc.returncode:
         if proc.stderr.decode('utf-8'):
-            raise Exception(proc.stderr.decode('utf-8'))
-        else:
-            raise Exception(proc.stdout.decode('utf-8'))
+            raise OSError(proc.stderr.decode('utf-8'))
+        raise OSError(proc.stdout.decode('utf-8'))
     os.chdir(script_path)
