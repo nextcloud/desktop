@@ -15,16 +15,10 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <property name="leftMargin">
-    <number>50</number>
-   </property>
-   <property name="topMargin">
-    <number>50</number>
+    <number>25</number>
    </property>
    <property name="rightMargin">
-    <number>50</number>
-   </property>
-   <property name="bottomMargin">
-    <number>50</number>
+    <number>25</number>
    </property>
    <item>
     <widget class="QGroupBox" name="groupBox">
@@ -37,7 +31,7 @@
    <item>
     <widget class="QDialogButtonBox" name="buttonBox">
      <property name="standardButtons">
-      <set>QDialogButtonBox::NoButton</set>
+      <set>QDialogButtonBox::StandardButton::NoButton</set>
      </property>
     </widget>
    </item>
