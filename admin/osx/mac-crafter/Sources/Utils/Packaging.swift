@@ -23,13 +23,12 @@ enum PackagingError: Error {
     case packageSparkleSignError(String)
 }
 
-func buildPackage(buildWorkPath: String, productPath: String) throws -> String {
-    let projectName = "Nextcloud" // TODO: Get specific name
-    let packageFile = "\(projectName).pkg"
+func buildPackage(appName: String, buildWorkPath: String, productPath: String) throws -> String {
+    let packageFile = "\(appName).pkg"
     let sparkleFile = "\(packageFile).tbz"
     let pkgprojPath = "\(buildWorkPath)/admin/osx/macosx.pkgproj"
 
-    guard shell("packagesutil --file \(pkgprojPath) set project name \(projectName)") == 0 else {
+    guard shell("packagesutil --file \(pkgprojPath) set project name \(appName)") == 0 else {
         throw PackagingError.projectNameSettingError("Could not set project name in pkgproj!")
     }
     guard shell("packagesbuild -v --build-folder \(productPath) -F \(productPath) \(pkgprojPath)") == 0 else {
