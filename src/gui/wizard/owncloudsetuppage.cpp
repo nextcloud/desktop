@@ -240,8 +240,12 @@ int OwncloudSetupPage::nextId() const
 
 QString OwncloudSetupPage::url() const
 {
-    QString url = _ui.leUrl->fullText().simplified();
-    return url;
+    const auto theme = Theme::instance();
+    if (theme->multipleOverrideServers() && theme->forceOverrideServerUrl()) {
+        return _ui.comboBox->currentData().toString();
+    } else {
+        return _ui.leUrl->fullText().simplified();
+    }
 }
 
 bool OwncloudSetupPage::validatePage()
