@@ -552,7 +552,7 @@ Should the account be imported?</source>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="319"/>
         <source>Connection settings</source>
-        <translation type="unfinished"/>
+        <translation>Configuración de conexión</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="93"/>
@@ -1761,12 +1761,12 @@ Además, esta acción interrumpirá cualquier sincronización en curso.</transla
     <message>
         <location filename="../src/gui/editlocallymanager.cpp" line="118"/>
         <source>Could not validate the request to open a file from server.</source>
-        <translation type="unfinished"/>
+        <translation>No se pudo validar la solicitud para abrir un archivo desde el servidor.</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallymanager.cpp" line="119"/>
         <source>Please try again.</source>
-        <translation type="unfinished"/>
+        <translation>Por favor, inténtelo de nuevo.</translation>
     </message>
 </context>
 <context>
