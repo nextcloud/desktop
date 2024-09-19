@@ -206,7 +206,7 @@ void OwncloudSetupPage::initializePage()
         if (nextButton) {
             nextButton->setFocus();
         }
-    } else if (isServerUrlOverridden) {
+    } else if (isServerUrlOverridden && !Theme::instance()->multipleOverrideServers()) {
         // If the overwritten url is not empty and we force this overwritten url
         // we just check the server type and switch to next page
         // immediately.
