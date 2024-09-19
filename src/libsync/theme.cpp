@@ -30,6 +30,8 @@
 #include <QSslSocket>
 #include <QSvgRenderer>
 #include <QPainter>
+#include <QJsonDocument>
+#include <QJsonArray>
 
 #include "nextcloudtheme.h"
 
@@ -383,6 +385,7 @@ Theme::Theme()
 #endif
 #ifdef APPLICATION_SERVER_URL
     _overrideServerUrl = QString::fromLatin1(APPLICATION_SERVER_URL);
+    updateMultipleOverrideServers();
 #endif
 }
 
@@ -430,6 +433,18 @@ QString Theme::overrideServerUrl() const
 bool Theme::forceOverrideServerUrl() const
 {
     return _forceOverrideServerUrl;
+}
+
+void Theme::updateMultipleOverrideServers()
+{
+    const auto json = overrideServerUrl().toUtf8();
+    const auto doc = QJsonDocument::fromJson(json);
+    _multipleOverrideServers = doc.isArray() && !doc.array().empty();
+}
+
+bool Theme::multipleOverrideServers() const
+{
+    return _multipleOverrideServers;
 }
 
 bool Theme::isVfsEnabled() const
@@ -954,6 +969,7 @@ void Theme::setOverrideServerUrl(const QString &overrideServerUrl)
 {
     if (_overrideServerUrl != overrideServerUrl) {
         _overrideServerUrl = overrideServerUrl;
+        updateMultipleOverrideServers();
         emit overrideServerUrlChanged();
     }
 }
