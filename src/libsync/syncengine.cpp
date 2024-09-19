@@ -441,6 +441,7 @@ void OCC::SyncEngine::slotItemDiscovered(const OCC::SyncFileItemPtr &item)
             lockInfo._lockOwnerType = static_cast<qint64>(item->_lockOwnerType);
             lockInfo._lockOwnerDisplayName = item->_lockOwnerDisplayName;
             lockInfo._lockEditorApp = item->_lockOwnerDisplayName;
+            lockInfo._lockToken = item->_lockToken;
 
             if (!_journal->updateLocalMetadata(item->_file, item->_modtime, item->_size, item->_inode, lockInfo)) {
                 qCWarning(lcEngine) << "Could not update local metadata for file" << item->_file;
