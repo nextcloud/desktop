@@ -456,7 +456,8 @@ AccountPtr AccountManager::loadAccountHelper(QSettings &settings)
 
     const auto overrideUrl = Theme::instance()->overrideServerUrl();
     const auto forceAuth = Theme::instance()->forceConfigAuthType();
-    if (!forceAuth.isEmpty() && !overrideUrl.isEmpty()) {
+    const auto multipleOverrideServers = Theme::instance()->multipleOverrideServers();
+    if (!forceAuth.isEmpty() && !overrideUrl.isEmpty() && !multipleOverrideServers) {
         // If forceAuth is set, this might also mean the overrideURL has changed.
         // See enterprise issues #1126
         acc->setUrl(overrideUrl);
