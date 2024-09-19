@@ -25,6 +25,8 @@
 #include <QPropertyAnimation>
 #include <QGraphicsPixmapItem>
 #include <QBuffer>
+#include <QJsonArray>
+#include <QJsonDocument>
 
 #include "QProgressIndicator.h"
 
@@ -47,14 +49,26 @@ OwncloudSetupPage::OwncloudSetupPage(QWidget *parent)
 
     setupServerAddressDescriptionLabel();
 
-    Theme *theme = Theme::instance();
+    const auto theme = Theme::instance();
     if (theme->overrideServerUrl().isEmpty()) {
+        _ui.comboBox->hide();
         _ui.leUrl->setPostfix(theme->wizardUrlPostfix());
         _ui.leUrl->setPlaceholderText(theme->wizardUrlHint());
-    } else if (Theme::instance()->forceOverrideServerUrl()) {
+    } else if (theme->multipleOverrideServers() && theme->forceOverrideServerUrl()) {
+        _ui.leUrl->hide();
+        const auto overrideJsonUtf8 = theme->overrideServerUrl().toUtf8();
+        const auto serversJsonArray = QJsonDocument::fromJson(overrideJsonUtf8).array();
+
+        for (const auto &serverJson : serversJsonArray) {
+            const auto serverObject = serverJson.toObject();
+            const auto serverName = serverObject.value("name").toString();
+            const auto serverUrl = serverObject.value("url").toString();
+            _ui.comboBox->addItem(serverName, serverUrl);
+        }
+    } else if (theme->forceOverrideServerUrl()) {
+        _ui.comboBox->hide();
         _ui.leUrl->setEnabled(false);
     }
-
 
     registerField(QLatin1String("OCUrl*"), _ui.leUrl);
 
