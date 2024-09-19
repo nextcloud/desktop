@@ -19,6 +19,8 @@ enum PackagingError: Error {
     case packageBuildError(String)
     case packageSigningError(String)
     case packageNotarisationError(String)
+    case packageSparkleBuildError(String)
+    case packageSparkleSignError(String)
 }
 
 func buildPackage(buildWorkPath: String, productPath: String) throws -> String {
@@ -57,3 +59,17 @@ func notarisePackage(
     }
 }
 
+func buildSparklePackage(packagePath: String, buildPath: String) throws -> String {
+    let sparkleTbzPath = "\(packagePath).tbz"
+    guard shell("tar cf \(sparkleTbzPath) \(packagePath)") == 0 else {
+        throw PackagingError.packageSparkleBuildError("Could not create Sparkle package tbz!")
+    }
+    return sparkleTbzPath
+}
+
+func signSparklePackage(sparkleTbzPath: String, buildPath: String, signKey: String) throws
+{
+    guard shell("\(buildPath)/bin/sign_update -s \(signKey) \(sparkleTbzPath)") == 0 else {
+        throw PackagingError.packageSparkleSignError("Could not sign Sparkle package tbz!")
+    }
+}
