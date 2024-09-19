@@ -189,7 +189,7 @@ struct Build: ParsableCommand {
             )
         }
 
-        print("Crafting Nextcloud Desktop Client...")
+        print("Crafting \(appName) Desktop Client...")
 
         let allOptionsString = craftOptions.map({ "--options \"\($0)\"" }).joined(separator: " ")
 
@@ -231,7 +231,11 @@ struct Build: ParsableCommand {
         if package {
             print("Creating pkg file for client…")
             let packagePath =
-                try buildPackage(buildWorkPath: buildWorkPath, productPath: productPath)
+            try buildPackage(
+                appName: appName,
+                buildWorkPath: buildWorkPath,
+                productPath: productPath
+            )
 
             if let packageSigningId {
                 print("Signing pkg with \(packageSigningId)…")
