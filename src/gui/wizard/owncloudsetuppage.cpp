@@ -69,6 +69,8 @@ OwncloudSetupPage::OwncloudSetupPage(QWidget *parent)
     } else if (theme->forceOverrideServerUrl()) {
         _ui.comboBox->hide();
         _ui.leUrl->setEnabled(false);
+    } else {
+        _ui.comboBox->hide();
     }
 
     registerField(QLatin1String("OCUrl*"), _ui.leUrl);
