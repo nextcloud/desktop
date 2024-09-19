@@ -18,6 +18,7 @@ enum PackagingError: Error {
     case projectNameSettingError(String)
     case packageBuildError(String)
     case packageSigningError(String)
+    case packageNotarisationError(String)
 }
 
 func buildPackage(buildWorkPath: String, productPath: String) throws -> String {
@@ -43,5 +44,16 @@ func signPackage(packagePath: String, packageSigningId: String) throws {
     let fm = FileManager.default
     try fm.removeItem(atPath: packagePath)
     try fm.moveItem(atPath: packagePathNew, toPath: packagePath)
+}
+
+func notarisePackage(
+    packagePath: String, appleId: String, applePassword: String, appleTeamId: String
+) throws {
+    guard shell("xcrun notarytool submit \(packagePath) --apple-id \(appleId) --password \(applePassword) --team-id \(appleTeamId) --wait") == 0 else {
+        throw PackagingError.packageNotarisationError("Failure when notarising package!")
+    }
+    guard shell("xcrun stapler staple \(packagePath)") == 0 else {
+        throw PackagingError.packageNotarisationError("Could not staple notarisation on package!")
+    }
 }
 
