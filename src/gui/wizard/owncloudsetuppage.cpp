@@ -288,7 +288,8 @@ void OwncloudSetupPage::setErrorString(const QString &err, bool retryHTTPonly)
         _ui.errorLabel->setVisible(false);
     } else {
         if (retryHTTPonly) {
-            QUrl url(_ui.leUrl->fullText());
+            const auto urlString = url();
+            QUrl url(urlString);
             if (url.scheme() == "https") {
                 // Ask the user how to proceed when connecting to a https:// URL fails.
                 // It is possible that the server is secured with client-side TLS certificates,
