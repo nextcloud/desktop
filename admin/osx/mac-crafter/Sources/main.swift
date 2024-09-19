@@ -65,6 +65,9 @@ struct Build: ParsableCommand {
     @Option(name: [.long], help: "Git clone command; include options such as depth.")
     var gitCloneCommand = "git clone --depth=1"
 
+    @Option(name: [.long], help: "Apple package signing ID.")
+    var packageSigningId: String?
+
     @Flag(help: "Reconfigure KDE Craft.")
     var reconfigureCraft = false
 
@@ -216,6 +219,10 @@ struct Build: ParsableCommand {
         if package {
             let packagePath =
                 try buildPackage(buildWorkPath: buildWorkPath, productPath: productPath)
+
+            if let packageSigningId {
+                try signPackage(packagePath: packagePath, packageSigningId: packageSigningId)
+            }
         }
 
         print("Done!")

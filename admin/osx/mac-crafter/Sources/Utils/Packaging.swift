@@ -17,6 +17,7 @@ import Foundation
 enum PackagingError: Error {
     case projectNameSettingError(String)
     case packageBuildError(String)
+    case packageSigningError(String)
 }
 
 func buildPackage(buildWorkPath: String, productPath: String) throws -> String {
@@ -32,5 +33,15 @@ func buildPackage(buildWorkPath: String, productPath: String) throws -> String {
         throw PackagingError.packageBuildError("Error building pkg file!")
     }
     return "\(productPath)/\(packageFile)"
+}
+
+func signPackage(packagePath: String, packageSigningId: String) throws {
+    let packagePathNew = "\(packagePath).new"
+    guard shell("productsign --timestamp --sign '\(packageSigningId)' \(packagePath) \(packagePathNew)") == 0 else {
+        throw PackagingError.packageSigningError("Could not sign pkg file!")
+    }
+    let fm = FileManager.default
+    try fm.removeItem(atPath: packagePath)
+    try fm.moveItem(atPath: packagePathNew, toPath: packagePath)
 }
 
