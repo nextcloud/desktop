@@ -229,13 +229,16 @@ struct Build: ParsableCommand {
         try fm.copyItem(atPath: clientAppDir, toPath: "\(productPath)/\(appName).app")
 
         if package {
+            print("Creating pkg file for client…")
             let packagePath =
                 try buildPackage(buildWorkPath: buildWorkPath, productPath: productPath)
 
             if let packageSigningId {
+                print("Signing pkg with \(packageSigningId)…")
                 try signPackage(packagePath: packagePath, packageSigningId: packageSigningId)
 
                 if let appleId, let applePassword, let appleTeamId {
+                    print("Notarising pkg with Apple ID \(appleId)…")
                     try notarisePackage(
                         packagePath: packagePath,
                         appleId: appleId,
@@ -245,10 +248,12 @@ struct Build: ParsableCommand {
                 }
             }
 
+            print("Creating Sparkle TBZ file…")
             let sparklePackagePath =
                 try buildSparklePackage(packagePath: packagePath, buildPath: buildPath)
 
             if let sparklePackageSignKey {
+                print("Signing Sparkle TBZ file…")
                 try signSparklePackage(
                     sparkleTbzPath: sparklePackagePath,
                     buildPath: buildPath,
