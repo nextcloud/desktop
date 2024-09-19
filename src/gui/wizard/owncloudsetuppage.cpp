@@ -63,7 +63,8 @@ OwncloudSetupPage::OwncloudSetupPage(QWidget *parent)
             const auto serverObject = serverJson.toObject();
             const auto serverName = serverObject.value("name").toString();
             const auto serverUrl = serverObject.value("url").toString();
-            _ui.comboBox->addItem(serverName, serverUrl);
+            const auto serverDisplayString = QString("%1 (%2)").arg(serverName, serverUrl);
+            _ui.comboBox->addItem(serverDisplayString, serverUrl);
         }
     } else if (theme->forceOverrideServerUrl()) {
         _ui.comboBox->hide();
