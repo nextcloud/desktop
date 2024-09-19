@@ -65,6 +65,15 @@ struct Build: ParsableCommand {
     @Option(name: [.long], help: "Git clone command; include options such as depth.")
     var gitCloneCommand = "git clone --depth=1"
 
+    @Option(name: [.long], help: "Apple ID, used for notarisation.")
+    var appleId: String?
+
+    @Option(name: [.long], help: "Apple ID password, used for notarisation.")
+    var applePassword: String?
+
+    @Option(name: [.long], help: "Apple Team ID, used for notarisation.")
+    var appleTeamId: String?
+
     @Option(name: [.long], help: "Apple package signing ID.")
     var packageSigningId: String?
 
@@ -222,6 +231,15 @@ struct Build: ParsableCommand {
 
             if let packageSigningId {
                 try signPackage(packagePath: packagePath, packageSigningId: packageSigningId)
+
+                if let appleId, let applePassword, let appleTeamId {
+                    try notarisePackage(
+                        packagePath: packagePath,
+                        appleId: appleId,
+                        applePassword: applePassword,
+                        appleTeamId: appleTeamId
+                    )
+                }
             }
         }
 
