@@ -77,6 +77,9 @@ struct Build: ParsableCommand {
     @Option(name: [.long], help: "Apple package signing ID.")
     var packageSigningId: String?
 
+    @Option(name: [.long], help: "Sparkle package signing key.")
+    var sparklePackageSignKey: String?
+
     @Flag(help: "Reconfigure KDE Craft.")
     var reconfigureCraft = false
 
@@ -240,6 +243,17 @@ struct Build: ParsableCommand {
                         appleTeamId: appleTeamId
                     )
                 }
+            }
+
+            let sparklePackagePath =
+                try buildSparklePackage(packagePath: packagePath, buildPath: buildPath)
+
+            if let sparklePackageSignKey {
+                try signSparklePackage(
+                    sparkleTbzPath: sparklePackagePath,
+                    buildPath: buildPath,
+                    signKey: sparklePackageSignKey
+                )
             }
         }
 
