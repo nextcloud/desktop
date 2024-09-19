@@ -25,7 +25,6 @@ enum PackagingError: Error {
 
 func buildPackage(appName: String, buildWorkPath: String, productPath: String) throws -> String {
     let packageFile = "\(appName).pkg"
-    let sparkleFile = "\(packageFile).tbz"
     let pkgprojPath = "\(buildWorkPath)/admin/osx/macosx.pkgproj"
 
     guard shell("packagesutil --file \(pkgprojPath) set project name \(appName)") == 0 else {
