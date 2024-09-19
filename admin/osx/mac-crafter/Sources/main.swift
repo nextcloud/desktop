@@ -86,6 +86,9 @@ struct Build: ParsableCommand {
     @Flag(help: "Run a full rebuild.")
     var fullRebuild = false
 
+    @Flag(help: "Create an installer package.")
+    var package = false
+
     mutating func run() throws {
         print("Configuring build tooling.")
 
@@ -175,6 +178,7 @@ struct Build: ParsableCommand {
 
         let allOptionsString = craftOptions.map({ "--options \"\($0)\"" }).joined(separator: " ")
 
+        let buildWorkPath = "\(buildPath)/\(craftTarget)/build"
         let clientBuildDir = "\(buildPath)/\(craftTarget)/build/\(craftBlueprintName)"
         if fullRebuild {
             do {
@@ -208,6 +212,11 @@ struct Build: ParsableCommand {
             try fm.removeItem(atPath: "\(productPath)/\(appName).app")
         }
         try fm.copyItem(atPath: clientAppDir, toPath: "\(productPath)/\(appName).app")
+
+        if package {
+            let packagePath =
+                try buildPackage(buildWorkPath: buildWorkPath, productPath: productPath)
+        }
 
         print("Done!")
     }
