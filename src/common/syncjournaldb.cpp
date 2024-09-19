@@ -49,7 +49,7 @@ Q_LOGGING_CATEGORY(lcDb, "nextcloud.sync.database", QtInfoMsg)
 #define GET_FILE_RECORD_QUERY \
         "SELECT path, inode, modtime, type, md5, fileid, remotePerm, filesize," \
         "  ignoredChildrenRemote, contentchecksumtype.name || ':' || contentChecksum, e2eMangledName, isE2eEncrypted, " \
-        "  lock, lockOwnerDisplayName, lockOwnerId, lockType, lockOwnerEditor, lockTime, lockTimeout, isShared, lastShareStateFetchedTimestmap, sharedByMe" \
+        "  lock, lockOwnerDisplayName, lockOwnerId, lockType, lockOwnerEditor, lockTime, lockTimeout, lockToken, isShared, lastShareStateFetchedTimestmap, sharedByMe" \
         " FROM metadata" \
         "  LEFT JOIN checksumtype as contentchecksumtype ON metadata.contentChecksumTypeId == contentchecksumtype.id"
 
@@ -74,9 +74,10 @@ static void fillFileRecordFromGetQuery(SyncJournalFileRecord &rec, SqlQuery &que
     rec._lockstate._lockEditorApp = query.stringValue(16);
     rec._lockstate._lockTime = query.int64Value(17);
     rec._lockstate._lockTimeout = query.int64Value(18);
-    rec._isShared = query.intValue(19) > 0;
-    rec._lastShareStateFetchedTimestamp = query.int64Value(20);
-    rec._sharedByMe = query.intValue(21) > 0;
+    rec._lockstate._lockToken = query.stringValue(19);
+    rec._isShared = query.intValue(20) > 0;
+    rec._lastShareStateFetchedTimestamp = query.int64Value(21);
+    rec._sharedByMe = query.intValue(22) > 0;
 }
 
 static QByteArray defaultJournalMode(const QString &dbPath)
@@ -826,6 +827,7 @@ bool SyncJournalDb::updateMetadataTableStructure()
     addColumn(QStringLiteral("lockOwnerEditor"), QStringLiteral("TEXT"));
     addColumn(QStringLiteral("lockTime"), QStringLiteral("INTEGER"));
     addColumn(QStringLiteral("lockTimeout"), QStringLiteral("INTEGER"));
+    addColumn(QStringLiteral("lockToken"), QStringLiteral("TEXT"));
 
     SqlQuery query(_db);
     query.prepare("CREATE INDEX IF NOT EXISTS caseconflicts_basePath ON caseconflicts(basePath);");
@@ -987,8 +989,8 @@ Result<void, QString> SyncJournalDb::setFileRecord(const SyncJournalFileRecord &
     const auto query = _queryManager.get(PreparedSqlQueryManager::SetFileRecordQuery, QByteArrayLiteral("INSERT OR REPLACE INTO metadata "
                                                                                                         "(phash, pathlen, path, inode, uid, gid, mode, modtime, type, md5, fileid, remotePerm, filesize, ignoredChildrenRemote, "
                                                                                                         "contentChecksum, contentChecksumTypeId, e2eMangledName, isE2eEncrypted, lock, lockType, lockOwnerDisplayName, lockOwnerId, "
-                                                                                                        "lockOwnerEditor, lockTime, lockTimeout, isShared, lastShareStateFetchedTimestmap, sharedByMe) "
-                                                                                                        "VALUES (?1 , ?2, ?3 , ?4 , ?5 , ?6 , ?7,  ?8 , ?9 , ?10, ?11, ?12, ?13, ?14, ?15, ?16, ?17, ?18, ?19, ?20, ?21, ?22, ?23, ?24, ?25, ?26, ?27, ?28);"),
+                                                                                                        "lockOwnerEditor, lockTime, lockTimeout, lockToken, isShared, lastShareStateFetchedTimestmap, sharedByMe) "
+                                                                                                        "VALUES (?1 , ?2, ?3 , ?4 , ?5 , ?6 , ?7,  ?8 , ?9 , ?10, ?11, ?12, ?13, ?14, ?15, ?16, ?17, ?18, ?19, ?20, ?21, ?22, ?23, ?24, ?25, ?26, ?27, ?28, ?29);"),
         _db);
     if (!query) {
         qCDebug(lcDb) << "database error:" << query->error();
@@ -1020,9 +1022,10 @@ Result<void, QString> SyncJournalDb::setFileRecord(const SyncJournalFileRecord &
     query->bindValue(23, record._lockstate._lockEditorApp);
     query->bindValue(24, record._lockstate._lockTime);
     query->bindValue(25, record._lockstate._lockTimeout);
-    query->bindValue(26, record._isShared);
-    query->bindValue(27, record._lastShareStateFetchedTimestamp);
-    query->bindValue(28, record._sharedByMe);
+    query->bindValue(26, record._lockstate._lockToken);
+    query->bindValue(27, record._isShared);
+    query->bindValue(28, record._lastShareStateFetchedTimestamp);
+    query->bindValue(29, record._sharedByMe);
 
     if (!query->exec()) {
         qCDebug(lcDb) << "database error:" << query->error();
@@ -1616,7 +1619,7 @@ bool SyncJournalDb::updateLocalMetadata(const QString &filename,
     const auto query = _queryManager.get(PreparedSqlQueryManager::SetFileRecordLocalMetadataQuery, QByteArrayLiteral("UPDATE metadata"
                                                                                                                      " SET inode=?2, modtime=?3, filesize=?4, lock=?5, lockType=?6,"
                                                                                                                      " lockOwnerDisplayName=?7, lockOwnerId=?8, lockOwnerEditor = ?9,"
-                                                                                                                     " lockTime=?10, lockTimeout=?11"
+                                                                                                                     " lockTime=?10, lockTimeout=?11, lockToken=?12"
                                                                                                                      " WHERE phash == ?1;"),
         _db);
     if (!query) {
@@ -1635,6 +1638,7 @@ bool SyncJournalDb::updateLocalMetadata(const QString &filename,
     query->bindValue(9, lockInfo._lockEditorApp);
     query->bindValue(10, lockInfo._lockTime);
     query->bindValue(11, lockInfo._lockTimeout);
+    query->bindValue(12, lockInfo._lockToken);
     if (!query->exec()) {
         qCDebug(lcDb) << "database error:" << query->error();
         return false;
