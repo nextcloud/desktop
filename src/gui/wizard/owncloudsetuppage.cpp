@@ -179,7 +179,7 @@ void OwncloudSetupPage::slotUrlEditFinished()
 
 bool OwncloudSetupPage::isComplete() const
 {
-    return !_ui.leUrl->text().isEmpty() && !_checking;
+    return (!_ui.leUrl->text().isEmpty() || !_ui.comboBox->currentData().toString().isEmpty()) && !_checking;
 }
 
 void OwncloudSetupPage::initializePage()
