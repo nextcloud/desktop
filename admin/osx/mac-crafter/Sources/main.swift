@@ -128,7 +128,7 @@ struct Build: ParsableCommand {
         let craftMasterDir = "\(buildPath)/craftmaster"
         let craftMasterIni = "\(repoRootDir)/craftmaster.ini"
         let craftMasterPy = "\(craftMasterDir)/CraftMaster.py"
-        let craftTarget = arch == "arm64" ? "macos-clang-arm64" : "macos-64-clang"
+        let craftTarget = archToCraftTarget(arch)
         let craftCommand =
             "python3 \(craftMasterPy) --config \(craftMasterIni) --target \(craftTarget) -c"
 
