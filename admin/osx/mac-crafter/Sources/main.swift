@@ -228,41 +228,18 @@ struct Build: ParsableCommand {
         try fm.copyItem(atPath: clientAppDir, toPath: "\(productPath)/\(appName).app")
 
         if package {
-            print("Creating pkg file for client…")
-            let buildWorkPath = "\(clientBuildDir)/work/build"
-            let packagePath = try buildPackage(
+            try packageAppBundle(
+                productPath: productPath,
+                buildPath: buildPath,
+                craftTarget: craftTarget,
+                craftBlueprintName: craftBlueprintName,
                 appName: appName,
-                buildWorkPath: buildWorkPath,
-                productPath: productPath
+                packageSigningId: packageSigningId,
+                appleId: appleId,
+                applePassword: applePassword,
+                appleTeamId: appleTeamId,
+                sparklePackageSignKey: sparklePackageSignKey
             )
-
-            if let packageSigningId {
-                print("Signing pkg with \(packageSigningId)…")
-                try signPackage(packagePath: packagePath, packageSigningId: packageSigningId)
-
-                if let appleId, let applePassword, let appleTeamId {
-                    print("Notarising pkg with Apple ID \(appleId)…")
-                    try notarisePackage(
-                        packagePath: packagePath,
-                        appleId: appleId,
-                        applePassword: applePassword,
-                        appleTeamId: appleTeamId
-                    )
-                }
-            }
-
-            print("Creating Sparkle TBZ file…")
-            let sparklePackagePath =
-                try buildSparklePackage(packagePath: packagePath, buildPath: buildPath)
-
-            if let sparklePackageSignKey {
-                print("Signing Sparkle TBZ file…")
-                try signSparklePackage(
-                    sparkleTbzPath: sparklePackagePath,
-                    buildPath: buildPath,
-                    signKey: sparklePackageSignKey
-                )
-            }
         }
 
         print("Done!")

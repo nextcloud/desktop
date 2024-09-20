@@ -71,3 +71,52 @@ func signSparklePackage(sparkleTbzPath: String, buildPath: String, signKey: Stri
         throw PackagingError.packageSparkleSignError("Could not sign Sparkle package tbz!")
     }
 }
+
+func packageAppBundle(
+    productPath: String,
+    buildPath: String,
+    craftTarget: String,
+    craftBlueprintName: String,
+    appName: String,
+    packageSigningId: String?,
+    appleId: String?,
+    applePassword: String?,
+    appleTeamId: String?,
+    sparklePackageSignKey: String?
+) throws {
+    print("Creating pkg file for client…")
+    let buildWorkPath = "\(buildPath)/\(craftTarget)/build/\(craftBlueprintName)/work/build"
+    let packagePath = try buildPackage(
+        appName: appName,
+        buildWorkPath: buildWorkPath,
+        productPath: productPath
+    )
+
+    if let packageSigningId {
+        print("Signing pkg with \(packageSigningId)…")
+        try signPackage(packagePath: packagePath, packageSigningId: packageSigningId)
+
+        if let appleId, let applePassword, let appleTeamId {
+            print("Notarising pkg with Apple ID \(appleId)…")
+            try notarisePackage(
+                packagePath: packagePath,
+                appleId: appleId,
+                applePassword: applePassword,
+                appleTeamId: appleTeamId
+            )
+        }
+    }
+
+    print("Creating Sparkle TBZ file…")
+    let sparklePackagePath =
+        try buildSparklePackage(packagePath: packagePath, buildPath: buildPath)
+
+    if let sparklePackageSignKey {
+        print("Signing Sparkle TBZ file…")
+        try signSparklePackage(
+            sparkleTbzPath: sparklePackagePath,
+            buildPath: buildPath,
+            signKey: sparklePackageSignKey
+        )
+    }
+}
