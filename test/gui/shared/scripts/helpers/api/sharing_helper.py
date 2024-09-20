@@ -109,3 +109,27 @@ def share_resource(user, resource, receiver, permissions):
     request.assertHttpStatus(
         response, 200, f"Failed to share resource '{resource}' to user '{user}'"
     )
+    checkSuccessOcsStatus(response)
+
+
+def create_link_share(
+    user, resource, permissions, name=None, password=None, expire_date=None
+):
+    url = get_share_url()
+    permissions = get_permission_value(permissions)
+    body = {
+        'path': resource,
+        'permissions': permissions,
+        'shareType': share_types['public_link'],
+    }
+    if name is not None:
+        body['name'] = name
+    if password is not None:
+        body['password'] = password
+    if expire_date is not None:
+        body['expireDate'] = expire_date
+    response = request.post(url, body, user=user)
+    request.assertHttpStatus(
+        response, 200, f"Failed to create public link for resource '{resource}'"
+    )
+    checkSuccessOcsStatus(response)

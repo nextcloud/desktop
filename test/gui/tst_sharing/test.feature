@@ -431,8 +431,8 @@ Feature: Sharing
         Given user "Alice" has uploaded file with content "ownCloud test text file" to "textfile.txt" in the server
         And user "Brian" has been created in the server with default attributes
         And user "Carol" has been created in the server with default attributes
-        And user "Alice" has shared file "textfile.txt" on the server with user "Brian"
-        And user "Brian" has shared file "textfile.txt" on the server with user "Carol"
+        And user "Alice" has shared file "textfile.txt" in the server with user "Brian" with "all" permissions
+        And user "Brian" has shared file "textfile.txt" in the server with user "Carol" with "all" permissions
         And user "Brian" has set up a client with default settings
         When the user unshares the resource "textfile.txt" for collaborator "Carol King" using the client-UI
         Then the text "The item is not shared with any users or groups" should be displayed in the sharing dialog
@@ -474,9 +474,10 @@ Feature: Sharing
 
     Scenario: sharing of a file by public link and deleting the link
         Given user "Alice" has uploaded file with content "ownCloud test text file 0" to "/textfile0.txt" in the server
-        And user "Alice" has created a public link on the server with following settings
-            | path     | textfile0.txt |
-            | name     | Public-link   |
+        And user "Alice" has created the following public link share in the server
+            | resource    | textfile0.txt |
+            | permissions | read          |
+            | name        | Public-link   |
         And user "Alice" has set up a client with default settings
         When the user deletes the public link for file "textfile0.txt"
         And the user closes the sharing dialog
@@ -485,10 +486,11 @@ Feature: Sharing
 
     Scenario: sharing of a file by public link with password and changing the password
         Given user "Alice" has uploaded file with content "ownCloud test text file 0" to "/textfile0.txt" in the server
-        And user "Alice" has created a public link on the server with following settings
-            | path     | textfile0.txt |
-            | name     | Public-link   |
-            | password | 1234          |
+        And user "Alice" has created the following public link share in the server
+            | resource    | textfile0.txt |
+            | permissions | read          |
+            | name        | Public-link   |
+            | password    | 1234          |
         And user "Alice" has set up a client with default settings
         When the user opens the public links dialog of "textfile0.txt" using the client-UI
         And the user changes the password of public link "Public-link" to "password1234" using the client-UI
@@ -544,10 +546,11 @@ Feature: Sharing
     @skip @issue-9321 @skipOnWindows
     Scenario: user changes the expiration date of an already existing public link for file using client-UI
         Given user "Alice" has uploaded file with content "ownCloud test text file 0" to "/textfile0.txt" in the server
-        And user "Alice" has created a public link on the server with following settings
-            | path       | textfile0.txt |
-            | name       | Public link   |
-            | expireDate | 2031-10-14    |
+        And user "Alice" has created the following public link share in the server
+            | resource    | textfile0.txt |
+            | permissions | read          |
+            | name        | Public link   |
+            | expireDate  | 2031-10-14    |
         And user "Alice" has set up a client with default settings
         When the user opens the public links dialog of "textfile0.txt" using the client-UI
         And the user edits the public link named "Public link" of file "textfile0.txt" changing following
@@ -559,11 +562,12 @@ Feature: Sharing
     @skip @issue-9321 @skipOnWindows
     Scenario: user changes the expiration date of an already existing public link for folder using client-UI
         Given user "Alice" has created folder "simple-folder" in the server
-        And user "Alice" has created a public link on the server with following settings
-            | path        | simple-folder                |
+        And user "Alice" has created the following public link share in the server
+            | resource    | simple-folder                |
+            | permissions | read, update, create, delete |
             | name        | Public link                  |
             | expireDate  | 2031-10-14                   |
-            | permissions | read, update, create, delete |
+
         And user "Alice" has set up a client with default settings
         When the user opens the public links dialog of "simple-folder" using the client-UI
         And the user edits the public link named "Public link" of file "simple-folder" changing following
@@ -611,8 +615,7 @@ Feature: Sharing
 
 
     Scenario Outline: change collaborator permissions of a file & folder
-        Given the administrator on the server has set the default folder for received shares to "Shares"
-        And user "Alice" has created folder "simple-folder" in the server
+        Given user "Alice" has created folder "simple-folder" in the server
         And user "Alice" has created file "lorem.txt" on the server
         And user "Brian" has been created in the server with default attributes
         And user "Alice" has shared folder "simple-folder" in the server with user "Brian" with "all" permissions
@@ -629,7 +632,7 @@ Feature: Sharing
             | uid_owner   | Alice                        |
             | share_with  | Brian                        |
             | share_type  | user                         |
-            | file_target | /Shares/simple-folder        |
+            | file_target | /simple-folder        |
             | item_type   | folder                       |
             | permissions | <expected-folder-permission> |
         And user "Alice" on the server should have a share with these details:
@@ -637,7 +640,7 @@ Feature: Sharing
             | uid_owner   | Alice                      |
             | share_with  | Brian                      |
             | share_type  | user                       |
-            | file_target | /Shares/lorem.txt          |
+            | file_target | /lorem.txt          |
             | item_type   | file                       |
             | permissions | <expected-file-permission> |
         Examples:

@@ -207,3 +207,26 @@ def step(context, user):
 )
 def step(context, user, resource, receiver, permissions):
     sharing_helper.share_resource(user, resource, receiver, permissions)
+
+
+@Given('user "|any|" has created the following public link share in the server')
+def step(context, user):
+    data = {
+        'resource': None,
+        'permissions': None,
+        'name': None,
+        'password': None,
+        'expireDate': None,
+    }
+    for row in context.table:
+        key, value = row
+        if key in data:
+            data[key] = value
+    sharing_helper.create_link_share(
+        user,
+        data['resource'],
+        data['permissions'],
+        data['name'],
+        data['password'],
+        data['expireDate'],
+    )
