@@ -193,7 +193,6 @@ struct Build: ParsableCommand {
 
         let allOptionsString = craftOptions.map({ "--options \"\($0)\"" }).joined(separator: " ")
 
-        let buildWorkPath = "\(buildPath)/\(craftTarget)/build"
         let clientBuildDir = "\(buildPath)/\(craftTarget)/build/\(craftBlueprintName)"
         if fullRebuild {
             do {
@@ -230,8 +229,8 @@ struct Build: ParsableCommand {
 
         if package {
             print("Creating pkg file for client…")
-            let packagePath =
-            try buildPackage(
+            let buildWorkPath = "\(clientBuildDir)/work/build"
+            let packagePath = try buildPackage(
                 appName: appName,
                 buildWorkPath: buildWorkPath,
                 productPath: productPath
