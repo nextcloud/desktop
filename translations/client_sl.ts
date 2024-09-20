@@ -51,12 +51,12 @@
     <message>
         <location filename="../src/gui/tray/CallNotificationDialog.qml" line="194"/>
         <source>Talk notification caller avatar</source>
-        <translation type="unfinished"/>
+        <translation>Podoba klicatelja v obvestilu Talk</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/CallNotificationDialog.qml" line="260"/>
         <source>Answer Talk call notification</source>
-        <translation type="unfinished"/>
+        <translation>Obvestilo Talk za odziv na klic</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/CallNotificationDialog.qml" line="268"/>
@@ -66,7 +66,7 @@
     <message>
         <location filename="../src/gui/tray/CallNotificationDialog.qml" line="284"/>
         <source>Decline Talk call notification</source>
-        <translation type="unfinished"/>
+        <translation>Zavrni obvestila Talk za klic</translation>
     </message>
 </context>
 <context>
@@ -231,7 +231,7 @@
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderEvictionDialog.qml" line="57"/>
         <source>Reload</source>
-        <translation type="unfinished"/>
+        <translation>Ponovno naloži</translation>
     </message>
 </context>
 <context>
@@ -239,7 +239,7 @@
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderFastEnumerationSettings.qml" line="37"/>
         <source>Enable fast sync</source>
-        <translation type="unfinished"/>
+        <translation>Omogoči hitro usklajevanje</translation>
     </message>
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderFastEnumerationSettings.qml" line="52"/>
@@ -252,7 +252,7 @@
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderFileDelegate.qml" line="95"/>
         <source>Delete</source>
-        <translation type="unfinished"/>
+        <translation>Izbriši</translation>
     </message>
 </context>
 <context>
@@ -260,22 +260,22 @@
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="32"/>
         <source>Virtual files settings</source>
-        <translation type="unfinished"/>
+        <translation>Nastavitve navideznih datotek</translation>
     </message>
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="53"/>
         <source>General settings</source>
-        <translation type="unfinished"/>
+        <translation>Splošne nastavitve</translation>
     </message>
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="61"/>
         <source>Enable virtual files</source>
-        <translation type="unfinished"/>
+        <translation>Omogoči navidezne datoteke</translation>
     </message>
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="146"/>
         <source>Advanced</source>
-        <translation type="unfinished"/>
+        <translation>Napredno</translation>
     </message>
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="153"/>
@@ -285,7 +285,7 @@
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="158"/>
         <source>Create debug archive</source>
-        <translation type="unfinished"/>
+        <translation>Ustvari arhiv razhroščevanja</translation>
     </message>
 </context>
 <context>
@@ -293,7 +293,7 @@
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderStorageInfo.qml" line="41"/>
         <source>Local storage use</source>
-        <translation type="unfinished"/>
+        <translation>Uporaba krajevne shrambe</translation>
     </message>
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderStorageInfo.qml" line="49"/>
@@ -303,7 +303,7 @@
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderStorageInfo.qml" line="58"/>
         <source>Evict local copies...</source>
-        <translation type="unfinished"/>
+        <translation>Počisti krajevne kopije ...</translation>
     </message>
 </context>
 <context>
@@ -311,12 +311,12 @@
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderSyncStatus.qml" line="57"/>
         <source>Syncing</source>
-        <translation type="unfinished"/>
+        <translation>Poteka usklajevanje</translation>
     </message>
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderSyncStatus.qml" line="57"/>
         <source>All synced!</source>
-        <translation type="unfinished"/>
+        <translation>Vse datoteke so usklajene!</translation>
     </message>
 </context>
 <context>
@@ -538,17 +538,17 @@ Should the account be imported?</source>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="270"/>
         <source>Standard file sync</source>
-        <translation type="unfinished"/>
+        <translation>Usklajevanje običajnih datotek</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="314"/>
         <source>Virtual file sync</source>
-        <translation type="unfinished"/>
+        <translation>Usklajevanje navideznih datotek</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="319"/>
         <source>Connection settings</source>
-        <translation type="unfinished"/>
+        <translation>Nastavitve povezave</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="93"/>
@@ -874,7 +874,7 @@ S tem dejanjem prav tako prekinete vsa trenutna usklajevanja v izvajanju.</trans
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1310"/>
         <source>Unable to connect to %1.</source>
-        <translation type="unfinished"/>
+        <translation>Vzpostavitev povezave z %1 je spodletela.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1264"/>
