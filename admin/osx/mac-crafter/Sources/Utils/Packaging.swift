@@ -23,7 +23,7 @@ enum PackagingError: Error {
     case packageSparkleSignError(String)
 }
 
-func buildPackage(appName: String, buildWorkPath: String, productPath: String) throws -> String {
+fileprivate func buildPackage(appName: String, buildWorkPath: String, productPath: String) throws -> String {
     let packageFile = "\(appName).pkg"
     let pkgprojPath = "\(buildWorkPath)/admin/osx/macosx.pkgproj"
 
@@ -36,7 +36,7 @@ func buildPackage(appName: String, buildWorkPath: String, productPath: String) t
     return "\(productPath)/\(packageFile)"
 }
 
-func signPackage(packagePath: String, packageSigningId: String) throws {
+fileprivate func signPackage(packagePath: String, packageSigningId: String) throws {
     let packagePathNew = "\(packagePath).new"
     guard shell("productsign --timestamp --sign '\(packageSigningId)' \(packagePath) \(packagePathNew)") == 0 else {
         throw PackagingError.packageSigningError("Could not sign pkg file!")
@@ -46,7 +46,7 @@ func signPackage(packagePath: String, packageSigningId: String) throws {
     try fm.moveItem(atPath: packagePathNew, toPath: packagePath)
 }
 
-func notarisePackage(
+fileprivate func notarisePackage(
     packagePath: String, appleId: String, applePassword: String, appleTeamId: String
 ) throws {
     guard shell("xcrun notarytool submit \(packagePath) --apple-id \(appleId) --password \(applePassword) --team-id \(appleTeamId) --wait") == 0 else {
@@ -57,7 +57,7 @@ func notarisePackage(
     }
 }
 
-func buildSparklePackage(packagePath: String, buildPath: String) throws -> String {
+fileprivate func buildSparklePackage(packagePath: String, buildPath: String) throws -> String {
     let sparkleTbzPath = "\(packagePath).tbz"
     guard shell("tar cf \(sparkleTbzPath) \(packagePath)") == 0 else {
         throw PackagingError.packageSparkleBuildError("Could not create Sparkle package tbz!")
@@ -65,8 +65,7 @@ func buildSparklePackage(packagePath: String, buildPath: String) throws -> Strin
     return sparkleTbzPath
 }
 
-func signSparklePackage(sparkleTbzPath: String, buildPath: String, signKey: String) throws
-{
+fileprivate func signSparklePackage(sparkleTbzPath: String, buildPath: String, signKey: String) throws {
     guard shell("\(buildPath)/bin/sign_update -s \(signKey) \(sparkleTbzPath)") == 0 else {
         throw PackagingError.packageSparkleSignError("Could not sign Sparkle package tbz!")
     }
