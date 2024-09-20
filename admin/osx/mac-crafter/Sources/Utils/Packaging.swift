@@ -23,6 +23,7 @@ enum PackagingError: Error {
     case packageSparkleSignError(String)
 }
 
+/// NOTE: Requires Packages utility. http://s.sudre.free.fr/Software/Packages/about.html
 fileprivate func buildPackage(appName: String, buildWorkPath: String, productPath: String) throws -> String {
     let packageFile = "\(appName).pkg"
     let pkgprojPath = "\(buildWorkPath)/admin/osx/macosx.pkgproj"
