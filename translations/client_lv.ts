@@ -1412,7 +1412,7 @@ Vienīgā priekšrocība, izslēdzot virtuālo datņu atbalstu, ir tas, ka atkal
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1369"/>
         <source>Please enter your end-to-end encryption passphrase:&lt;br&gt;&lt;br&gt;Username: %2&lt;br&gt;Account: %3&lt;br&gt;</source>
-        <translation>Lūdzu, ievadiet savu end-to-end šifrēšanas paroli:&lt;br&gt;&lt;br&gt;Lietotājvārds: %2&lt;br&gt;Konts: %3&lt;br&gt;</translation>
+        <translation>Lūgums ievadīt savu pilnīgas šifrēšanas paroles vārdkopu:&lt;br&gt;&lt;br&gt;Lietotājvārds: %2&lt;br&gt;Konts: %3&lt;br&gt;</translation>
     </message>
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1377"/>
@@ -1552,7 +1552,7 @@ Vienīgā priekšrocība, izslēdzot virtuālo datņu atbalstu, ir tas, ka atkal
     <message>
         <location filename="../src/gui/connectionvalidator.cpp" line="166"/>
         <source>Authentication error: Either username or password are wrong.</source>
-        <translation>Autentifikācijas kļūda: Vai nu lietotājvārds, vai parole ir nepareiza.</translation>
+        <translation>Pieteikšanās kļūda: vai nu lietotājvārds, vai parole ir nepareiza.</translation>
     </message>
     <message>
         <location filename="../src/gui/connectionvalidator.cpp" line="178"/>
@@ -3074,7 +3074,7 @@ Downgrading versions is not possible immediately: changing from beta to stable m
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="97"/>
         <source>Please enter %1 password:&lt;br&gt;&lt;br&gt;Username: %2&lt;br&gt;Account: %3&lt;br&gt;</source>
-        <translation>Lūdzu, ievadiet %1 paroli:&lt;br&gt;&lt;br&gt;Lietotājvārds: %2&lt;br&gt;Konts: %3&lt;br&gt;</translation>
+        <translation>Lūgums ievadīt %1 paroli:&lt;br&gt;&lt;br&gt;Lietotājvārds: %2&lt;br&gt;Konts: %3&lt;br&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="111"/>
@@ -5606,7 +5606,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="163"/>
         <source>Status feature is not supported. You will not be able to set your status.</source>
-        <translation type="unfinished"/>
+        <translation>Stāvokļa iespēja nav nodrošināta. Nebūs iespējams iestatīt savu stāvokli.</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="167"/>
@@ -5616,7 +5616,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="171"/>
         <source>Could not set status. Make sure you are connected to the server.</source>
-        <translation type="unfinished"/>
+        <translation>Nevarēja iestatīt stāvokli. Jāpārliecinās, ka ir savienojums ar serveri.</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="175"/>
