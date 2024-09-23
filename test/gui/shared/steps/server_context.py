@@ -202,11 +202,11 @@ def step(context, user):
 
 @Given(
     # pylint: disable=line-too-long
-    r'user "([^"].*)" has shared (?:file|folder) "([^"].*)" in the server with user "([^"].*)" with "([^"].*)" permission(?:s)?',
+    r'user "([^"].*)" has shared (?:file|folder) "([^"].*)" in the server with (user|group) "([^"].*)" with "([^"].*)" permission(?:s)?',
     regexp=True,
 )
-def step(context, user, resource, receiver, permissions):
-    sharing_helper.share_resource(user, resource, receiver, permissions)
+def step(context, user, resource, receiver_type, receiver, permissions):
+    sharing_helper.share_resource(user, resource, receiver, permissions, receiver_type)
 
 
 @Given('user "|any|" has created the following public link share in the server')

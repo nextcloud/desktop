@@ -96,18 +96,20 @@ def download_last_public_link_resource(user, resource, public_link_password=None
     raise AssertionError(f'Server returned status code: {response.status_code}')
 
 
-def share_resource(user, resource, receiver, permissions):
+def share_resource(user, resource, receiver, permissions, receiver_type):
     permissions = get_permission_value(permissions)
     url = get_share_url()
     body = {
         'path': resource,
-        'shareType': share_types['user'],
+        'shareType': share_types[receiver_type],
         'shareWith': receiver,
         'permissions': permissions,
     }
     response = request.post(url, body, user=user)
     request.assertHttpStatus(
-        response, 200, f"Failed to share resource '{resource}' to user '{user}'"
+        response,
+        200,
+        f"Failed to share resource '{resource}' to {receiver_type} '{receiver}'",
     )
     checkSuccessOcsStatus(response)
 

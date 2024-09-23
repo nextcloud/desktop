@@ -197,8 +197,8 @@ Feature: Sharing
         And user "Alice" has created folder "Folder" in the server
         And user "Alice" has shared file "/textfile0.txt" in the server with user "Brian" with "read, share, update" permission
         And user "Alice" has shared folder "Folder" in the server with user "Brian" with "read, share, update" permission
-        And user "Alice" has shared file "/textfile0.txt" on the server with group "grp1" with "read, share, update" permission
-        And user "Alice" has shared folder "Folder" on the server with group "grp1" with "read, share, update" permission
+        And user "Alice" has shared file "/textfile0.txt" in the server with group "grp1" with "read, share, update" permission
+        And user "Alice" has shared folder "Folder" in the server with group "grp1" with "read, share, update" permission
         And user "Brian" has set up a client with default settings
         When the user tires to share resource "textfile0.txt" with the group "grp1" using the client-UI
         Then the error "Path already shared with this group" should be displayed in the sharing dialog
