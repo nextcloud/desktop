@@ -80,7 +80,6 @@ ownCloud admins and users.
 * Enhancement - Ask user to restart application when update is available on Windows: [#11442](https://github.com/owncloud/client/pull/11442)
 * Enhancement - New Folder status: [#11491](https://github.com/owncloud/client/pull/11491)
 * Enhancement - Pause sync when behind a captive portal: [#11533](https://github.com/owncloud/client/issues/11533)
-* Enhancement - Don't poll the Avatar endpoint with ocis: [#11615](https://github.com/owncloud/client/pull/11615)
 * Enhancement - Support for prompt_values_supported in openid-configuration: [#11729](https://github.com/owncloud/client/pull/11729)
 * Enhancement - New branding option: automatically sync new spaces: [#11751](https://github.com/owncloud/client/issues/11751)
 * Enhancement - Display how many spaces are unsynced: [#11760](https://github.com/owncloud/client/pull/11760)
@@ -371,13 +370,6 @@ ownCloud admins and users.
 
    https://github.com/owncloud/client/issues/11533
    https://github.com/owncloud/client/pull/11567
-
-* Enhancement - Don't poll the Avatar endpoint with ocis: [#11615](https://github.com/owncloud/client/pull/11615)
-
-   Ocis has no Avatar implemented yet and when it will be added we will require a
-   different approach.
-
-   https://github.com/owncloud/client/pull/11615
 
 * Enhancement - Support for prompt_values_supported in openid-configuration: [#11729](https://github.com/owncloud/client/pull/11729)
 
