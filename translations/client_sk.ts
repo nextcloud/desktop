@@ -551,7 +551,7 @@ Má sa účet importovať?</translation>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="319"/>
         <source>Connection settings</source>
-        <translation type="unfinished"/>
+        <translation>Nastavenia pripojenie</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="93"/>
