@@ -1,5 +1,0 @@
-Enhancement: Don't poll the Avatar endpoint with ocis
-
-Ocis has no Avatar implemented yet and when it will be added we will require a different approach.
-
-https://github.com/owncloud/client/pull/11615
