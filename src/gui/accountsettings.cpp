@@ -487,6 +487,10 @@ void AccountSettings::slotAccountStateChanged()
             icon = StatusIcon::Warning;
         }
         showConnectionLabel(tr("Connected"), icon, errors);
+        if (accountsState()->supportsSpaces()) {
+            connect(accountsState()->account()->spacesManager(), &GraphApi::SpacesManager::updated, this, &AccountSettings::slotSpacesUpdated);
+            slotSpacesUpdated();
+        }
         break;
     }
     case AccountState::ServiceUnavailable:
