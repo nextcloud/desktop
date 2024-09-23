@@ -328,6 +328,9 @@ void PropagateUploadFileNG::finishUpload()
 
     const auto fileSize = _fileToUpload._size;
     headers[QByteArrayLiteral("OC-Total-Length")] = QByteArray::number(fileSize);
+    if (_item->_locked == SyncFileItem::LockStatus::LockedItem) {
+        headers[QByteArrayLiteral("If")] = (QLatin1String("<") + propagator()->account()->davUrl().toString() + _fileToUpload._file + "> (<opaquelocktoken:" + _item->_lockToken.toUtf8() + ">)").toUtf8();
+    }
 
     const auto job = new MoveJob(propagator()->account(), Utility::concatUrlPath(chunkUploadFolderUrl(), "/.file"), destination, headers, this);
     _jobs.append(job);
