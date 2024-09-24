@@ -209,6 +209,10 @@ struct Build: ParsableCommand {
         }
         try fm.copyItem(atPath: clientAppDir, toPath: "\(productPath)/\(appName).app")
 
+        print("Placing Nextcloud Desktop Client in product directory...")
+        try fm.createDirectory(atPath: productPath, withIntermediateDirectories: true, attributes: nil)
+        try fm.copyItem(atPath: clientAppDir, toPath: productPath)
+
         print("Done!")
     }
 }
