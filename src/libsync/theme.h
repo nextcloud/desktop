@@ -232,10 +232,17 @@ public:
 
     /**
      * Setting a value here will pre-define the server url.
+     * Can be a url OR a JSON array of servers description objects: {"name": "x", "url": "y"}
      *
      * The respective UI controls will be disabled only if forceOverrideServerUrl() is true
      */
     [[nodiscard]] QString overrideServerUrl() const;
+
+    /**
+     * Indicates whether the override server URL is in fact a JSON array of server description
+     * objects.
+     */
+    [[nodiscard]] bool multipleOverrideServers() const;
 
     /**
      * Enforce a pre-defined server url.
@@ -627,6 +634,7 @@ private:
     Theme(Theme const &);
     Theme &operator=(Theme const &);
 
+    void updateMultipleOverrideServers();
     void connectToPaletteSignal();
 #if defined(Q_OS_WIN)
     QPalette reserveDarkPalette; // Windows 11 button and window dark colours
@@ -638,6 +646,7 @@ private:
 
     QString _overrideServerUrl;
     bool _forceOverrideServerUrl = false;
+    bool _multipleOverrideServers = false;
     bool _isVfsEnabled = false;
     bool _startLoginFlowAutomatically = false;
 
