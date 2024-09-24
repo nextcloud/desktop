@@ -98,11 +98,7 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
     case Qt::DecorationRole:
         switch (column) {
         case ActivityRole::Text:
-            if (!accountState->account()->avatar().isNull()) {
-                return QIcon(accountState->account()->avatar());
-            } else {
-                return Resources::getCoreIcon(QStringLiteral("account"));
-            }
+            return accountState->account()->avatar();
         default:
             return {};
         }
