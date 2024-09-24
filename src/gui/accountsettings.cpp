@@ -76,9 +76,6 @@ AccountSettings::AccountSettings(const AccountStatePtr &accountState, QWidget *p
     ui->quickWidget->setOCContext(QUrl(QStringLiteral("qrc:/qt/qml/org/ownCloud/gui/qml/FolderDelegate.qml")), this);
 
     connect(FolderMan::instance(), &FolderMan::folderListChanged, _model, &FolderStatusModel::resetFolders);
-    if (accountsState()->supportsSpaces()) {
-        connect(accountsState()->account()->spacesManager(), &GraphApi::SpacesManager::updated, this, &AccountSettings::slotSpacesUpdated);
-    }
 
     ui->connectionStatusLabel->clear();
 
@@ -488,7 +485,8 @@ void AccountSettings::slotAccountStateChanged()
         }
         showConnectionLabel(tr("Connected"), icon, errors);
         if (accountsState()->supportsSpaces()) {
-            connect(accountsState()->account()->spacesManager(), &GraphApi::SpacesManager::updated, this, &AccountSettings::slotSpacesUpdated);
+            connect(accountsState()->account()->spacesManager(), &GraphApi::SpacesManager::updated, this, &AccountSettings::slotSpacesUpdated,
+                Qt::UniqueConnection);
             slotSpacesUpdated();
         }
         break;
