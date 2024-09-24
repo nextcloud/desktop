@@ -221,17 +221,17 @@
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderEvictionDialog.qml" line="33"/>
         <source>Evict materialised files</source>
-        <translation type="unfinished"/>
+        <translation>Удалить локальные копии файлов</translation>
     </message>
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderEvictionDialog.qml" line="49"/>
         <source>Materialised items</source>
-        <translation type="unfinished"/>
+        <translation>Локальные копии</translation>
     </message>
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderEvictionDialog.qml" line="57"/>
         <source>Reload</source>
-        <translation type="unfinished"/>
+        <translation>Перезагрузить</translation>
     </message>
 </context>
 <context>
@@ -244,7 +244,7 @@
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderFastEnumerationSettings.qml" line="52"/>
         <source>Fast sync will only sync changes in files and folders within folders that have been explored. This can significantly increase responsiveness on initial configuration of virtual files. However, it will cause redundant downloads of files moved to an unexplored folder. </source>
-        <translation type="unfinished"/>
+        <translation>При включении быстрая синхронизации будут синхронизированы только файлы и папки, которые были открыты в проводнике, что значительно сокращает время от первоначальной настройки до начала работы. Обратите внимание, что быстрая синхронизация увеличивает время синхронизации файлов, перемещенных в папку, которая не была открыта в проводнике.</translation>
     </message>
 </context>
 <context>
@@ -3518,7 +3518,7 @@ Note that using any logging command line options will override this setting.</so
         <location filename="../src/gui/networksettings.ui" line="397"/>
         <location filename="../src/gui/networksettings.ui" line="507"/>
         <source>Use global settings</source>
-        <translation>Использовать глобальные настройки</translation>
+        <translation>Использовать глобальные параметры</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="197"/>
@@ -5349,7 +5349,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="161"/>
         <source>Syncing changes</source>
-        <translation type="unfinished"/>
+        <translation>Синхронизация изменений</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="162"/>
@@ -5582,7 +5582,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="853"/>
         <source>Rename file</source>
-        <translation type="unfinished"/>
+        <translation>Переименовать файл</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1061"/>
