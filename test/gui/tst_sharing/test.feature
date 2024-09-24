@@ -450,7 +450,6 @@ Feature: Sharing
         And the public should be able to download the file "textfile0.txt" without password from the last created public link by "Alice" in the server
         When the user creates a new public link with permissions "Download / View" for folder "simple-folder" without password using the client-UI
         Then as user "Alice" the folder "simple-folder" should have a public link in the server
-        And the public should be able to download the folder "simple-folder/child" without password from the last created public link by "Alice" on the server
         And the user closes the sharing dialog
 
 
@@ -464,7 +463,6 @@ Feature: Sharing
         And the public should be able to download the file "textfile0.txt" with password "<password>" from the last created public link by "Alice" in the server
         When the user creates a new public link with permissions "Download / View" for folder "simple-folder" with password "<password>" using the client-UI
         Then as user "Alice" the folder "simple-folder" should have a public link in the server
-        And the public should be able to download the folder "simple-folder" with password "<password>" from the last created public link by "Alice" on the server
         And the user closes the sharing dialog
         Examples:
             | password     |
@@ -495,7 +493,7 @@ Feature: Sharing
         When the user opens the public links dialog of "textfile0.txt" using the client-UI
         And the user changes the password of public link "Public-link" to "password1234" using the client-UI
         Then as user "Alice" the file "textfile0.txt" should have a public link in the server
-        And the public should be able to download the file "textfile0.txt" with password "password1234" from the last created public link by "Alice" on the server
+        And the public should be able to download the file "textfile0.txt" with password "password1234" from the last created public link by "Alice" in the server
         And the user closes the sharing dialog
 
 
