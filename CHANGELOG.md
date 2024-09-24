@@ -71,6 +71,7 @@ ownCloud admins and users.
 * Change - New update channel for ownCloud infinite scale: [#11742](https://github.com/owncloud/client/issues/11742)
 * Change - Remove support for branded shell extensions on Linux: [#11743](https://github.com/owncloud/client/issues/11743)
 * Change - Only allow to add unsyced spaces: [#11752](https://github.com/owncloud/client/issues/11752)
+* Change - Rewrite of the login widget in QML: [#11856](https://github.com/owncloud/client/pull/11856)
 * Enhancement - Add option to pause synchronization on metered connections: [#4808](https://github.com/owncloud/client/issues/4808)
 * Enhancement - Add option to move files to trash instead of deleting: [#9001](https://github.com/owncloud/client/issues/9001)
 * Enhancement - Prevent same default sync folder for multiple accounts with Spaces: [#11204](https://github.com/owncloud/client/issues/11204)
@@ -299,6 +300,10 @@ ownCloud admins and users.
 
    https://github.com/owncloud/client/issues/11752
    https://github.com/owncloud/client/pull/11759
+
+* Change - Rewrite of the login widget in QML: [#11856](https://github.com/owncloud/client/pull/11856)
+
+   https://github.com/owncloud/client/pull/11856
 
 * Enhancement - Add option to pause synchronization on metered connections: [#4808](https://github.com/owncloud/client/issues/4808)
 
