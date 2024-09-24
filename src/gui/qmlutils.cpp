@@ -24,6 +24,15 @@
 
 void OCC::QmlUtils::OCQuickWidget::setOCContext(const QUrl &src, QWidget *parentWidget, QObject *ocContext, QJSEngine::ObjectOwnership ownership)
 {
+    if (ownership == QJSEngine::CppOwnership) {
+        // Destroying the `ocContext` will result in property changed signals, causing the re-evaluation
+        // of the bindings in the QML file, which in turn results in warnings about accessing a property
+        // of a `null` object.
+        // To prevent this, reset the source to an empty URL.
+        connect(
+            ocContext, &QObject::destroyed, this, [this] { setSource(QUrl()); }, Qt::DirectConnection);
+    }
+
     rootContext()->setContextProperty(QStringLiteral("ocParentWidget"), parentWidget);
     rootContext()->setContextProperty(QStringLiteral("ocContext"), ocContext);
     engine()->setObjectOwnership(ocContext, ownership);
