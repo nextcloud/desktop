@@ -45,6 +45,9 @@ jobs:
           token: ${{ secrets.TX_TOKEN }}
           args: push -s --skip
 
+      - name: fix-transifex-action
+        run: rm -rf /tmp/tx
+
       - name: l10n-pull
         uses: transifex/cli-action@v2
         with:
