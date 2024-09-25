@@ -384,8 +384,7 @@ Theme::Theme()
     _forceOverrideServerUrl = true;
 #endif
 #ifdef APPLICATION_SERVER_URL
-    _overrideServerUrl = QString::fromLatin1(APPLICATION_SERVER_URL);
-    updateMultipleOverrideServers();
+    setOverrideServerUrl(QString::fromLatin1(APPLICATION_SERVER_URL));
 #endif
 }
 
@@ -438,7 +437,12 @@ bool Theme::forceOverrideServerUrl() const
 void Theme::updateMultipleOverrideServers()
 {
     const auto json = overrideServerUrl().toUtf8();
-    const auto doc = QJsonDocument::fromJson(json);
+    QJsonParseError jsonParseError;
+    const auto doc = QJsonDocument::fromJson(json, &jsonParseError);
+    if (jsonParseError.error != QJsonParseError::NoError) {
+        qDebug() << "Parsing array of server urls from APPLICATION_SERVER_URL failed:" << jsonParseError.error << jsonParseError.errorString();
+    }
+
     _multipleOverrideServers = doc.isArray() && !doc.array().empty();
 }
 
@@ -967,8 +971,17 @@ bool Theme::darkMode()
 
 void Theme::setOverrideServerUrl(const QString &overrideServerUrl)
 {
-    if (_overrideServerUrl != overrideServerUrl) {
-        _overrideServerUrl = overrideServerUrl;
+    auto validOverrideServerUrl = overrideServerUrl;
+    if (validOverrideServerUrl.startsWith("\"")) {
+        validOverrideServerUrl.remove(0, 1);
+    }
+
+    if (validOverrideServerUrl.endsWith("\"")) {
+        validOverrideServerUrl.chop(1);
+    }
+
+    if (_overrideServerUrl != validOverrideServerUrl) {
+        _overrideServerUrl = validOverrideServerUrl;
         updateMultipleOverrideServers();
         emit overrideServerUrlChanged();
     }
