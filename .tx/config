@@ -2,9 +2,9 @@
 host = https://www.transifex.com
 
 [o:owncloud-org:p:owncloud:r:client]
-source_file = client_en.ts
+source_file = translations/client_en.ts
 source_lang = en
-file_filter = client_<lang>.ts
+file_filter = translations/client_<lang>.ts
 type = TS
 minimum_perc = 75
 
