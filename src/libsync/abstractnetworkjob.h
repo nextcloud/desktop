@@ -45,6 +45,8 @@ public:
     explicit AbstractNetworkJob(const AccountPtr &account, const QString &path, QObject *parent = nullptr);
     ~AbstractNetworkJob() override;
 
+    static bool enableTimeout;
+
     virtual void start();
 
     [[nodiscard]] AccountPtr account() const { return _account; }
