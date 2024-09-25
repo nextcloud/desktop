@@ -119,7 +119,7 @@ void Systray::create()
             _trayEngine->rootContext()->setContextProperty("activityModel", &_fakeActivityModel);
         }
 
-        QQmlComponent trayWindowComponent(trayEngine(), QStringLiteral("qrc:/qml/src/gui/tray/Window.qml"));
+        QQmlComponent trayWindowComponent(trayEngine(), QStringLiteral("qrc:/qml/src/gui/tray/MainWindow.qml"));
 
         if(trayWindowComponent.isError()) {
             qCWarning(lcSystray) << trayWindowComponent.errorString();

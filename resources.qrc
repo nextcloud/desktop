@@ -21,7 +21,7 @@
         <file>src/gui/filedetails/ShareDetailsPage.qml</file>
         <file>src/gui/filedetails/ShareeSearchField.qml</file>
         <file>src/gui/filedetails/ShareView.qml</file>
-        <file>src/gui/tray/Window.qml</file>
+        <file>src/gui/tray/MainWindow.qml</file>
         <file>src/gui/tray/UserLine.qml</file>
         <file>src/gui/tray/HeaderButton.qml</file>
         <file>src/gui/tray/SyncStatus.qml</file>
