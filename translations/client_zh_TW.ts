@@ -5462,7 +5462,7 @@ Server replied with error: %2</source>
         <translation>&lt;p&gt;%1 桌面版客戶端&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="559"/>
+        <location filename="../src/libsync/theme.cpp" line="574"/>
         <source>&lt;p&gt;%1 Desktop Client&lt;/p&gt;&lt;p&gt;Version %1. For more information please click &lt;a href=&apos;%2&apos;&gt;here&lt;/a&gt;.&lt;/p&gt;</source>
         <extracomment>Example text: &quot;&lt;p&gt;Nextcloud Desktop Client&lt;/p&gt;&quot; (%1 is the application name)</extracomment>
         <translation>&lt;p&gt;%1 桌面用戶端&lt;/p&gt;&lt;p&gt;版本 %1。要取得更多資訊，請點擊&lt;a href=&apos;%2&apos;&gt;此處&lt;/a&gt;。&lt;/p&gt;</translation>
@@ -5473,7 +5473,7 @@ Server replied with error: %2</source>
         <translation>&lt;p&gt;&lt;small&gt;正在使用虛擬檔案外掛程式：%1&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="576"/>
+        <location filename="../src/libsync/theme.cpp" line="591"/>
         <source>&lt;p&gt;%1 desktop client %2&lt;/p&gt;</source>
         <extracomment>Example text: &quot;&lt;p&gt;Nextcloud Desktop Client&lt;/p&gt;&quot; (%1 is the application name)</extracomment>
         <translation>&lt;p&gt;%1 桌面用戶端 %2&lt;/p&gt;</translation>
@@ -6825,7 +6825,7 @@ Server replied with error: %2</source>
 <context>
     <name>nextcloudTheme::aboutInfo()</name>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="539"/>
+        <location filename="../src/libsync/theme.cpp" line="554"/>
         <source>&lt;p&gt;&lt;small&gt;Built from Git revision &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; on %3, %4 using Qt %5, %6&lt;/small&gt;&lt;/p&gt;</source>
         <translation>&lt;p&gt;&lt;small&gt;從 Git 修訂版本 &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; 在 %3 上建置，%4 使用 Qt %5，%6&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
@@ -6983,16 +6983,16 @@ Server replied with error: %2</source>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="87"/>
-        <source>Sync status is unknown</source>
-        <translation>同步狀態位置</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/theme.cpp" line="87"/>
         <source>Waiting to start sync</source>
         <translation>等待開始同步</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="90"/>
+        <location filename="../src/libsync/theme.cpp" line="89"/>
+        <source>Sync status is unknown</source>
+        <translation>同步狀態位置</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/theme.cpp" line="92"/>
         <source>Waiting to start syncing</source>
         <translation>正在等待開始同步</translation>
     </message>
@@ -7008,18 +7008,13 @@ Server replied with error: %2</source>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="96"/>
-        <source>Sync was successful</source>
-        <translation>同步成功</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/theme.cpp" line="96"/>
         <source>Sync Success, some files were ignored.</source>
         <translation>同步成功，部份檔案被忽略</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="99"/>
-        <source>Sync was successful but some files were ignored</source>
-        <translation>同步成功，但忽略了部份檔案</translation>
+        <location filename="../src/libsync/theme.cpp" line="98"/>
+        <source>Sync was successful</source>
+        <translation>同步成功</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="99"/>
@@ -7027,9 +7022,9 @@ Server replied with error: %2</source>
         <translation>同步錯誤</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="102"/>
-        <source>Error occurred during sync</source>
-        <translation>同步時發生錯誤</translation>
+        <location filename="../src/libsync/theme.cpp" line="101"/>
+        <source>Sync was successful but some files were ignored</source>
+        <translation>同步成功，但忽略了部份檔案</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="102"/>
@@ -7037,7 +7032,12 @@ Server replied with error: %2</source>
         <translation>安裝錯誤</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="105"/>
+        <location filename="../src/libsync/theme.cpp" line="104"/>
+        <source>Error occurred during sync</source>
+        <translation>同步時發生錯誤</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/theme.cpp" line="107"/>
         <source>Error occurred during setup</source>
         <translation>設定時發生錯誤</translation>
     </message>
@@ -7052,7 +7052,7 @@ Server replied with error: %2</source>
         <translation>正在中止……</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="111"/>
+        <location filename="../src/libsync/theme.cpp" line="113"/>
         <source>Stopping sync</source>
         <translation>正在停止同步</translation>
     </message>

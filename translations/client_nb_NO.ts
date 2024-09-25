@@ -5461,7 +5461,7 @@ Server svarte med feil: %2</translation>
         <translation>&lt;p&gt;%1 skrivebordsklient&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="559"/>
+        <location filename="../src/libsync/theme.cpp" line="574"/>
         <source>&lt;p&gt;%1 Desktop Client&lt;/p&gt;&lt;p&gt;Version %1. For more information please click &lt;a href=&apos;%2&apos;&gt;here&lt;/a&gt;.&lt;/p&gt;</source>
         <extracomment>Example text: &quot;&lt;p&gt;Nextcloud Desktop Client&lt;/p&gt;&quot; (%1 is the application name)</extracomment>
         <translation>&lt;p&gt;%1Skrivebordsklient&lt;/p&gt;&lt;p&gt;Versjon %1. For mer informasjon, vennligst klikk &lt;a href=&apos;%2&apos;&gt;her&lt;/a&gt;.&lt;/p&gt;</translation>
@@ -5472,7 +5472,7 @@ Server svarte med feil: %2</translation>
         <translation>&lt;p&gt;&lt;small&gt;Bruker plugin for virtuelle filer: %1&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="576"/>
+        <location filename="../src/libsync/theme.cpp" line="591"/>
         <source>&lt;p&gt;%1 desktop client %2&lt;/p&gt;</source>
         <extracomment>Example text: &quot;&lt;p&gt;Nextcloud Desktop Client&lt;/p&gt;&quot; (%1 is the application name)</extracomment>
         <translation>&lt;p&gt;%1 skrivebordsklient %2&lt;/p&gt;</translation>
@@ -6824,7 +6824,7 @@ Server svarte med feil: %2</translation>
 <context>
     <name>nextcloudTheme::aboutInfo()</name>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="539"/>
+        <location filename="../src/libsync/theme.cpp" line="554"/>
         <source>&lt;p&gt;&lt;small&gt;Built from Git revision &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; on %3, %4 using Qt %5, %6&lt;/small&gt;&lt;/p&gt;</source>
         <translation>&lt;p&gt;&lt;small&gt;Bygget fra Git-revisjon &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; den %3, %4 med Qt %5, %6&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
@@ -6982,16 +6982,16 @@ Server svarte med feil: %2</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="87"/>
-        <source>Sync status is unknown</source>
-        <translation>Status for synkronisering er ukjent</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/theme.cpp" line="87"/>
         <source>Waiting to start sync</source>
         <translation>Venter på å starte synkronisering</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="90"/>
+        <location filename="../src/libsync/theme.cpp" line="89"/>
+        <source>Sync status is unknown</source>
+        <translation>Status for synkronisering er ukjent</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/theme.cpp" line="92"/>
         <source>Waiting to start syncing</source>
         <translation>Venter på å starte synkronisering</translation>
     </message>
@@ -7007,18 +7007,13 @@ Server svarte med feil: %2</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="96"/>
-        <source>Sync was successful</source>
-        <translation>Synkroniseringen var vellykket</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/theme.cpp" line="96"/>
         <source>Sync Success, some files were ignored.</source>
         <translation>Vellykket synkronisering. Noen filer ble ignorert.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="99"/>
-        <source>Sync was successful but some files were ignored</source>
-        <translation>Synkroniseringen var vellykket, men noen filer ble ignorert</translation>
+        <location filename="../src/libsync/theme.cpp" line="98"/>
+        <source>Sync was successful</source>
+        <translation>Synkroniseringen var vellykket</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="99"/>
@@ -7026,9 +7021,9 @@ Server svarte med feil: %2</translation>
         <translation>Synkroniseringsfeil</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="102"/>
-        <source>Error occurred during sync</source>
-        <translation>Feil oppstod under synkronisering</translation>
+        <location filename="../src/libsync/theme.cpp" line="101"/>
+        <source>Sync was successful but some files were ignored</source>
+        <translation>Synkroniseringen var vellykket, men noen filer ble ignorert</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="102"/>
@@ -7036,7 +7031,12 @@ Server svarte med feil: %2</translation>
         <translation>Feil i oppsett</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="105"/>
+        <location filename="../src/libsync/theme.cpp" line="104"/>
+        <source>Error occurred during sync</source>
+        <translation>Feil oppstod under synkronisering</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/theme.cpp" line="107"/>
         <source>Error occurred during setup</source>
         <translation>Feil oppstod under oppsett</translation>
     </message>
@@ -7051,7 +7051,7 @@ Server svarte med feil: %2</translation>
         <translation>Avbryter …</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="111"/>
+        <location filename="../src/libsync/theme.cpp" line="113"/>
         <source>Stopping sync</source>
         <translation>Stopper synkroniseringen</translation>
     </message>

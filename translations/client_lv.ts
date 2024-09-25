@@ -582,8 +582,8 @@ Vai konts jāimportē?</translation>
         <location filename="../src/gui/accountsettings.cpp" line="123"/>
         <source>This will encrypt your folder and all files within it. These files will no longer be accessible without your encryption mnemonic key. 
 &lt;b&gt;This process is not reversible. Are you sure you want to proceed?&lt;/b&gt;</source>
-        <translation>Tas šifrēs jūsu mapi un visas tajā esošās datnes. Šīs datnes vairs nebūs pieejamās bez jūsu šifrēšanas mnemoniskās atslēgas. 
-&lt;b&gt;Šis process nav atgriezenisks. Vai esat pārliecināts, ka vēlaties turpināt?&lt;/b&gt;</translation>
+        <translation>Tiks šifrēta Tava mape un visas tajā esošās datnes. Šīs datnes vairs nebūs pieejamas bez šifrēšanas mnemoniskās atslēgas. 
+&lt;b&gt;Šī darbība ir neatgriezeniska. Vai tiešām turpināt?&lt;/b&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="232"/>
@@ -1018,7 +1018,7 @@ Vienīgā priekšrocība, izslēdzot virtuālo datņu atbalstu, ir tas, ka atkal
     <message>
         <location filename="../src/gui/tray/activitylistmodel.cpp" line="579"/>
         <source>Files from the ignore list as well as symbolic links are not synced.</source>
-        <translation>Datnes no ignorēšanas saraksta, kā arī simboliskās saites netiek sinhronizētas.</translation>
+        <translation>Datnes no izņēmumu saraksta, kā arī simboliskās saites netiek sinhronizētas.</translation>
     </message>
 </context>
 <context>
@@ -1259,7 +1259,7 @@ Vienīgā priekšrocība, izslēdzot virtuālo datņu atbalstu, ir tas, ka atkal
     <message>
         <location filename="../src/libsync/caseclashconflictsolver.cpp" line="121"/>
         <source>Could not rename file. Please make sure you are connected to the server.</source>
-        <translation>Nevarēja pārdēvēt datni. Lūdzu, pārliecinieties, ka esat savienots ar serveri.</translation>
+        <translation>Nevarēja pārdēvēt datni. Lūgums pārliecināties, ka ir savienojums ar serveri.</translation>
     </message>
     <message>
         <location filename="../src/libsync/caseclashconflictsolver.cpp" line="172"/>
@@ -5429,7 +5429,7 @@ Server replied with error: %2</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="559"/>
+        <location filename="../src/libsync/theme.cpp" line="574"/>
         <source>&lt;p&gt;%1 Desktop Client&lt;/p&gt;&lt;p&gt;Version %1. For more information please click &lt;a href=&apos;%2&apos;&gt;here&lt;/a&gt;.&lt;/p&gt;</source>
         <extracomment>Example text: &quot;&lt;p&gt;Nextcloud Desktop Client&lt;/p&gt;&quot; (%1 is the application name)</extracomment>
         <translation type="unfinished"/>
@@ -5440,7 +5440,7 @@ Server replied with error: %2</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="576"/>
+        <location filename="../src/libsync/theme.cpp" line="591"/>
         <source>&lt;p&gt;%1 desktop client %2&lt;/p&gt;</source>
         <extracomment>Example text: &quot;&lt;p&gt;Nextcloud Desktop Client&lt;/p&gt;&quot; (%1 is the application name)</extracomment>
         <translation type="unfinished"/>
@@ -5596,7 +5596,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="155"/>
         <source>Could not fetch predefined statuses. Make sure you are connected to the server.</source>
-        <translation>Nevarēja iegūt iepriekš definētus statusus. Pārliecinieties, vai esat izveidojis savienojumu ar serveri.</translation>
+        <translation>Nevarēja iegūt iepriekš norādītos stāvokļus. Jāpārliecinās, ka ir savienojums ar serveri.</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="159"/>
@@ -6792,7 +6792,7 @@ Server replied with error: %2</source>
 <context>
     <name>nextcloudTheme::aboutInfo()</name>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="539"/>
+        <location filename="../src/libsync/theme.cpp" line="554"/>
         <source>&lt;p&gt;&lt;small&gt;Built from Git revision &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; on %3, %4 using Qt %5, %6&lt;/small&gt;&lt;/p&gt;</source>
         <translation>&lt;p&gt;&lt;small&gt;Izveidots no Git revīzijas &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; %3, %4, izmantojot Qt %5, %6&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
@@ -6950,16 +6950,16 @@ Server replied with error: %2</source>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="87"/>
-        <source>Sync status is unknown</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/libsync/theme.cpp" line="87"/>
         <source>Waiting to start sync</source>
         <translation>Gaida, lai sāktu sinhronizāciju</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="90"/>
+        <location filename="../src/libsync/theme.cpp" line="89"/>
+        <source>Sync status is unknown</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/theme.cpp" line="92"/>
         <source>Waiting to start syncing</source>
         <translation type="unfinished"/>
     </message>
@@ -6975,17 +6975,12 @@ Server replied with error: %2</source>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="96"/>
-        <source>Sync was successful</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/libsync/theme.cpp" line="96"/>
         <source>Sync Success, some files were ignored.</source>
         <translation>Sinhronizācija sekmīga, dažas datnes tika ignorētas.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="99"/>
-        <source>Sync was successful but some files were ignored</source>
+        <location filename="../src/libsync/theme.cpp" line="98"/>
+        <source>Sync was successful</source>
         <translation type="unfinished"/>
     </message>
     <message>
@@ -6994,8 +6989,8 @@ Server replied with error: %2</source>
         <translation>Sinhronizācijas kļūda</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="102"/>
-        <source>Error occurred during sync</source>
+        <location filename="../src/libsync/theme.cpp" line="101"/>
+        <source>Sync was successful but some files were ignored</source>
         <translation type="unfinished"/>
     </message>
     <message>
@@ -7004,7 +6999,12 @@ Server replied with error: %2</source>
         <translation>Iestatīšanas kļūda.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="105"/>
+        <location filename="../src/libsync/theme.cpp" line="104"/>
+        <source>Error occurred during sync</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/theme.cpp" line="107"/>
         <source>Error occurred during setup</source>
         <translation type="unfinished"/>
     </message>
@@ -7019,7 +7019,7 @@ Server replied with error: %2</source>
         <translation>Pārtraukšana ...</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="111"/>
+        <location filename="../src/libsync/theme.cpp" line="113"/>
         <source>Stopping sync</source>
         <translation type="unfinished"/>
     </message>
@@ -7120,7 +7120,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="130"/>
         <source>The reply from the server did not contain all expected fields</source>
-        <translation>Atbilde no servera nesaturēja visus gaidītos laukus</translation>
+        <translation>Servera atbilde nesaturēja visus sagaidāmos laukus</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="134"/>
