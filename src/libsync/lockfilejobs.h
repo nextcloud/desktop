@@ -59,6 +59,7 @@ private:
     QByteArray _etag;
     qint64 _lockTime = 0;
     qint64 _lockTimeout = 0;
+    QString _lockToken;
     QString _remoteSyncPathWithTrailingSlash;
     QString _localSyncPath;
 };
