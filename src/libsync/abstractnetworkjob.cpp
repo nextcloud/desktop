@@ -46,6 +46,7 @@ Q_LOGGING_CATEGORY(lcNetworkJob, "nextcloud.sync.networkjob", QtInfoMsg)
 
 // If not set, it is overwritten by the Application constructor with the value from the config
 int AbstractNetworkJob::httpTimeout = qEnvironmentVariableIntValue("OWNCLOUD_TIMEOUT");
+bool AbstractNetworkJob::enableTimeout = false;
 
 AbstractNetworkJob::AbstractNetworkJob(const AccountPtr &account, const QString &path, QObject *parent)
     : QObject(parent)
@@ -57,7 +58,6 @@ AbstractNetworkJob::AbstractNetworkJob(const AccountPtr &account, const QString 
     ASSERT(account != parent);
 
     _timer.setSingleShot(true);
-    _timer.setTimerType(Qt::VeryCoarseTimer);
     _timer.setInterval((httpTimeout ? httpTimeout : 300) * 1000); // default to 5 minutes.
     connect(&_timer, &QTimer::timeout, this, &AbstractNetworkJob::slotTimeout);
 
@@ -367,6 +367,11 @@ void AbstractNetworkJob::start()
 
 void AbstractNetworkJob::slotTimeout()
 {
+    // TODO: workaround, find cause of https://github.com/nextcloud/desktop/issues/7184
+    if (!AbstractNetworkJob::enableTimeout) {
+        return;
+    }
+
     _timedout = true;
     qCWarning(lcNetworkJob) << "Network job timeout" << (reply() ? reply()->request().url() : path());
     onTimedOut();
