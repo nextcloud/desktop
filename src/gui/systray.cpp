@@ -70,6 +70,7 @@ void Systray::setTrayEngine(QQmlApplicationEngine *trayEngine)
 
     _trayEngine->setNetworkAccessManagerFactory(&_accessManagerFactory);
 
+    _trayEngine->addImportPath(QCoreApplication::applicationDirPath() + "/qml");
     _trayEngine->addImportPath("qrc:/qml/theme");
     _trayEngine->addImageProvider("avatars", new ImageProvider);
     _trayEngine->addImageProvider(QLatin1String("svgimage-custom-color"), new OCC::Ui::SvgImageProvider);
