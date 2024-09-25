@@ -125,6 +125,7 @@ SyncJournalFileRecord SyncFileItem::toSyncJournalFileRecordWithInode(const QStri
     rec._lockstate._lockEditorApp = _lockEditorApp;
     rec._lockstate._lockTime = _lockTime;
     rec._lockstate._lockTimeout = _lockTimeout;
+    rec._lockstate._lockToken = _lockToken;
 
     // Update the inode if possible
     rec._inode = _inode;
@@ -163,6 +164,7 @@ SyncFileItemPtr SyncFileItem::fromSyncJournalFileRecord(const SyncJournalFileRec
     item->_lockEditorApp = rec._lockstate._lockEditorApp;
     item->_lockTime = rec._lockstate._lockTime;
     item->_lockTimeout = rec._lockstate._lockTimeout;
+    item->_lockToken = rec._lockstate._lockToken;
     item->_sharedByMe = rec._sharedByMe;
     item->_isShared = rec._isShared;
     item->_lastShareStateFetchedTimestamp = rec._lastShareStateFetchedTimestamp;
@@ -220,6 +222,8 @@ SyncFileItemPtr SyncFileItem::fromProperties(const QString &filePath, const QMap
         item->_lockTimeout = ok ? intConvertedValue : 0;
     }
 
+    item->_lockToken = properties.value(QStringLiteral("lock-token"));
+
     const auto date = QDateTime::fromString(properties.value(QStringLiteral("getlastmodified")), Qt::RFC2822Date);
     Q_ASSERT(date.isValid());
     if (date.toSecsSinceEpoch() > 0) {
@@ -250,6 +254,7 @@ void SyncFileItem::updateLockStateFromDbRecord(const SyncJournalFileRecord &dbRe
     _lockEditorApp = dbRecord._lockstate._lockEditorApp;
     _lockTime = dbRecord._lockstate._lockTime;
     _lockTimeout = dbRecord._lockstate._lockTimeout;
+    _lockToken = dbRecord._lockstate._lockToken;
 }
 
 }

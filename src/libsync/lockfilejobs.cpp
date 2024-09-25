@@ -115,6 +115,7 @@ void LockFileJob::setFileRecordLocked(SyncJournalFileRecord &record) const
     record._lockstate._lockEditorApp = _editorName;
     record._lockstate._lockTime = _lockTime;
     record._lockstate._lockTimeout = _lockTimeout;
+    record._lockstate._lockToken = _lockToken;
     if (!_etag.isEmpty()) {
         record._etag = _etag;
     }
@@ -129,6 +130,7 @@ void LockFileJob::resetState()
     _userId.clear();
     _lockTime = 0;
     _lockTimeout = 0;
+    _lockToken.clear();
 }
 
 SyncJournalFileRecord LockFileJob::handleReply()
@@ -241,6 +243,8 @@ void LockFileJob::decodeStartElement(const QString &name,
         _editorName = reader.readElementText();
     } else if (name == QStringLiteral("getetag")) {
         _etag = reader.readElementText().toUtf8();
+    } else if (name == QStringLiteral("lock-token")) {
+        _lockToken = reader.readElementText();
     }
 }
 

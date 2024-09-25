@@ -326,6 +326,7 @@ public:
     QString _lockEditorApp;
     qint64 _lockTime = 0;
     qint64 _lockTimeout = 0;
+    QString _lockToken;
 
     bool _isShared = false;
     time_t _lastShareStateFetchedTimestamp = 0;

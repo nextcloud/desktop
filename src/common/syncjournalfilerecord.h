@@ -39,6 +39,7 @@ struct SyncJournalFileLockInfo {
     QString _lockEditorApp;
     qint64 _lockTime = 0;
     qint64 _lockTimeout = 0;
+    QString _lockToken;
 };
 
 /**
