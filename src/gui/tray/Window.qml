@@ -12,9 +12,10 @@
  * for more details.
  */
 
+import QtQml
 import QtQuick
-import QtQuick.Window
 import QtQuick.Controls
+import QtQuick.Window
 import QtQuick.Layouts
 import Qt5Compat.GraphicalEffects
 import Qt.labs.platform as NativeDialogs
