@@ -200,6 +200,9 @@
            </layout>
           </item>
           <item>
+           <widget class="QComboBox" name="comboBox"/>
+          </item>
+          <item>
            <layout class="QHBoxLayout" name="horizontalLayout_5">
             <property name="topMargin">
              <number>0</number>
