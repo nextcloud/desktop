@@ -668,6 +668,7 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(const SyncFileItemPtr &it
     item->_lockEditorApp = serverEntry.lockEditorApp;
     item->_lockTime = serverEntry.lockTime;
     item->_lockTimeout = serverEntry.lockTimeout;
+    item->_lockToken = serverEntry.lockToken;
 
     qCDebug(lcDisco()) << "item lock for:" << item->_file
                        << item->_locked
@@ -676,7 +677,8 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(const SyncFileItemPtr &it
                        << item->_lockOwnerType
                        << item->_lockEditorApp
                        << item->_lockTime
-                       << item->_lockTimeout;
+                       << item->_lockTimeout
+                       << item->_lockToken;
 
     // Check for missing server data
     {

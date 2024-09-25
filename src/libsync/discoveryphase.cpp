@@ -415,7 +415,8 @@ void DiscoverySingleDirectoryJob::start()
               << "http://nextcloud.org/ns:lock-owner-type"
               << "http://nextcloud.org/ns:lock-owner-editor"
               << "http://nextcloud.org/ns:lock-time"
-              << "http://nextcloud.org/ns:lock-timeout";
+              << "http://nextcloud.org/ns:lock-timeout"
+              << "http://nextcloud.org/ns:lock-token";
     }
     props << "http://nextcloud.org/ns:is-mount-root";
 
@@ -545,7 +546,9 @@ static void propertyMapToRemoteInfo(const QMap<QString, QString> &map, RemotePer
                 result.lockTimeout = 0;
             }
         }
-
+        if (property == "lock-token") {
+            result.lockToken = value;
+        }
     }
 
     if (result.isDirectory && map.contains("size")) {
