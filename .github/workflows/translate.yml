@@ -24,6 +24,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
+          ssh-key: ${{ secrets.DEPLOYMENT_SSH_KEY }}
           submodules: recursive
           ref: "master"
 
@@ -38,36 +39,20 @@ jobs:
       - name: l10n-read
         run: /usr/lib/qt6/bin/lupdate src -no-obsolete -ts translations/client_en.ts
 
-      - name: l10n-push
-        if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
-        # we need to use a different docker image for those two, this appears to be a bit tricky with github actions out of the box
-        run:  bash .github/workflows/run-in-docker.sh owncloudci/transifex:latest "cd translations && tx push -s --skip"
+      - name: l10n-push-source
+        uses: transifex/cli-action@v2
+        with:
+          token: ${{ secrets.TX_TOKEN }}
+          args: push -s --skip
 
       - name: l10n-pull
-        run: bash .github/workflows/run-in-docker.sh owncloudci/transifex:latest "cd translations && tx pull --force --skip --all"
+        uses: transifex/cli-action@v2
+        with:
+          token: ${{ secrets.TX_TOKEN }}
+          args: pull --force --skip --all
 
-      - name: l10n-clean
-        run: git checkout translations/.tx/config
-
-      - name: update-repo-before-commit
-        run: |
-          git status
-          git add translations/client_*.ts
-          git status
-          git stash
-          git pull --ff-only origin
-
-      - name: commit and push
-        if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
-        run: |
-          if(git stash list) {
-              git stash pop
-              install -d -m 0700 ~/.ssh
-              Set-Content -Value "${{ secrets.DEPLOYMENT_SSH_KEY }}" -Path ~/.ssh/id_ed25519
-              chmod 0600 ~/.ssh/id_ed25519
-              git config user.name "ownClouders"
-              git config user.email "devops@owncloud.com"
-              git add translations/
-              git commit -m "[tx] updated client translations from transifex [skip ci]"
-              git push git@github.com:owncloud/client.git
-            }
+      - uses: GuillaumeFalourd/git-commit-push@v1.3
+        with:
+          email: devops@owncloud.com
+          name: ownClouders
+          commit_message: "[tx] updated translations from transifex"
