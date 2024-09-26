@@ -183,6 +183,7 @@ void FolderMetadata::setupExistingMetadata(const QByteArray &metadata)
 
     if (_initialSignature.isEmpty()) {
         qCDebug(lcCseMetadata()) << "Signature is empty";
+        _account->reportClientStatus(OCC::ClientStatusReportingStatus::E2EeError_GeneralError);
         return;
     }
 
