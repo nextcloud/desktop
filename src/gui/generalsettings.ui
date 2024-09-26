@@ -389,13 +389,10 @@
       <string>General Settings</string>
      </property>
      <layout class="QGridLayout" name="gridLayout_2">
-      <item row="1" column="0">
-       <widget class="QCheckBox" name="monoIconsCheckBox">
-        <property name="toolTip">
-         <string>For System Tray</string>
-        </property>
+      <item row="2" column="1">
+       <widget class="QCheckBox" name="callNotificationsCheckBox">
         <property name="text">
-         <string>Use &amp;monochrome icons</string>
+         <string>Show call notifications</string>
         </property>
        </widget>
       </item>
@@ -414,9 +411,19 @@
        </widget>
       </item>
       <item row="1" column="1">
-       <widget class="QCheckBox" name="callNotificationsCheckBox">
+       <widget class="QCheckBox" name="chatNotificationsCheckBox">
         <property name="text">
-         <string>Show call notifications</string>
+         <string>Show chat notifications</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QCheckBox" name="monoIconsCheckBox">
+        <property name="toolTip">
+         <string>For System Tray</string>
+        </property>
+        <property name="text">
+         <string>Use &amp;monochrome icons</string>
         </property>
        </widget>
       </item>
@@ -428,7 +435,6 @@
  <tabstops>
   <tabstop>autostartCheckBox</tabstop>
   <tabstop>serverNotificationsCheckBox</tabstop>
-  <tabstop>monoIconsCheckBox</tabstop>
   <tabstop>ignoredFilesButton</tabstop>
   <tabstop>newFolderLimitCheckBox</tabstop>
   <tabstop>newFolderLimitSpinBox</tabstop>
