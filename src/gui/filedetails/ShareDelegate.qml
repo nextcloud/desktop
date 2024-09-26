@@ -186,9 +186,9 @@ GridLayout {
 
             property bool shareLinkCopied: false
 
-            Layout.alignment: Qt.AlignCenter
-            Layout.preferredWidth: shareLinkCopied ? implicitWidth : Style.iconButtonWidth
-            Layout.preferredHeight: Style.iconButtonWidth
+            Layout.alignment: Qt.AlignVCenter | Qt.AlignHCenter
+            Layout.preferredWidth: shareLinkCopied ? implicitWidth : Style.activityListButtonWidth
+            Layout.preferredHeight: Style.activityListButtonHeight
 
             toolTipText: qsTr("Copy share link location")
 
@@ -232,15 +232,15 @@ GridLayout {
         CustomButton {
             id: moreButton
 
-            Layout.alignment: Qt.AlignCenter
-            Layout.preferredWidth: Style.iconButtonWidth
-            Layout.preferredHeight: width
-
             toolTipText: qsTr("Share options")
 
+            Layout.preferredWidth: Style.activityListButtonWidth
+            Layout.preferredHeight: Style.activityListButtonHeight
+            Layout.alignment: Qt.AlignVCenter | Qt.AlignHCenter
+
             icon.source: "image://svgimage-custom-color/more.svg/" + palette.buttonText
-            icon.width: Style.smallIconSize
-            icon.height: Style.smallIconSize
+            icon.width: Style.activityListButtonIconSize
+            icon.height: Style.activityListButtonIconSize
 
             visible: !root.isPlaceholderLinkShare && !root.isSecureFileDropPlaceholderLinkShare && !root.isInternalLinkShare
             enabled: visible
