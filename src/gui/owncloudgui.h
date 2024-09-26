@@ -110,8 +110,6 @@ public Q_SLOTS:
      */
     void slotShowShareDialog(const QString &sharePath, const QString &localPath, ShareDialogStartPage startPage);
 
-    void slotRemoveDestroyedShareDialogs();
-
 private:
     void setPauseOnAllFoldersHelper(const QList<AccountStatePtr> &accounts, bool pause);
     void setupActions();
@@ -135,7 +133,7 @@ private:
     bool _workaroundFakeDoubleClick = false;
     bool _workaroundManualVisibility = false;
     QTimer _delayedTrayUpdateTimer;
-    QMap<QString, QPointer<ShareDialog>> _shareDialogs;
+    QPointer<ShareDialog> _shareDialog;
 
     QAction *_actionStatus;
 

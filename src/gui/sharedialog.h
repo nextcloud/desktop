@@ -35,6 +35,11 @@ namespace Ui {
 class ShareLinkWidget;
 class ShareUserGroupWidget;
 
+/**
+ * @brief The ShareDialog for oC10.
+ *
+ * (OCIS sharing is done by showing the web page.)
+ */
 class ShareDialog : public QDialog
 {
     Q_OBJECT
@@ -48,6 +53,8 @@ public:
         ShareDialogStartPage startPage,
         QWidget *parent);
     ~ShareDialog() override;
+
+    QString localPath() const { return _localPath; }
 
 private Q_SLOTS:
     void slotPropfindReceived(const QString &, const QMap<QString, QString> &result);

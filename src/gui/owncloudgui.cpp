@@ -1038,6 +1038,7 @@ void ownCloudGui::slotShowShareDialog(const QString &sharePath, const QString &l
             Utility::openBrowser(queryUrl, nullptr);
         });
     } else {
+        // oC10 code path
         const auto accountState = folder->accountState();
 
         SyncJournalFileRecord fileRecord;
@@ -1063,34 +1064,22 @@ void ownCloudGui::slotShowShareDialog(const QString &sharePath, const QString &l
             maxSharingPermissions = SharePermission(0);
         }
 
-
-        ShareDialog *w = nullptr;
-        if (_shareDialogs.contains(localPath) && _shareDialogs[localPath]) {
-            qCInfo(lcApplication) << "Raising share dialog" << sharePath << localPath;
-            w = _shareDialogs[localPath];
+        if (_shareDialog && _shareDialog->localPath() == localPath) {
+            qCInfo(lcApplication) << "A share dialog for this path already exists" << sharePath << localPath;
+            // There might be another modal dialog on top, but that is usually more important (e.g. a login dialog).
+            raise();
         } else {
-            qCInfo(lcApplication) << "Opening share dialog" << sharePath << localPath << maxSharingPermissions;
-            w = new ShareDialog(accountState, folder->webDavUrl(), sharePath, localPath, maxSharingPermissions, startPage, settingsDialog());
-            w->setAttribute(Qt::WA_DeleteOnClose, true);
-
-            _shareDialogs[localPath] = w;
-            connect(w, &QObject::destroyed, this, &ownCloudGui::slotRemoveDestroyedShareDialogs);
-        }
-        ocApp()
-            ->gui()
-            ->settingsDialog()
-            ->accountSettings(accountState->account().get())
-            ->addModalLegacyDialog(w, AccountSettings::ModalWidgetSizePolicy::Expanding);
-    }
-}
-
-void ownCloudGui::slotRemoveDestroyedShareDialogs()
-{
-    QMutableMapIterator<QString, QPointer<ShareDialog>> it(_shareDialogs);
-    while (it.hasNext()) {
-        it.next();
-        if (!it.value() || it.value() == sender()) {
-            it.remove();
+            qCInfo(lcApplication) << "Opening new share dialog" << sharePath << localPath << maxSharingPermissions;
+            if (_shareDialog) {
+                _shareDialog->close();
+            }
+            _shareDialog = new ShareDialog(accountState, folder->webDavUrl(), sharePath, localPath, maxSharingPermissions, startPage, settingsDialog());
+            _shareDialog->setAttribute(Qt::WA_DeleteOnClose, true);
+            ocApp()
+                ->gui()
+                ->settingsDialog()
+                ->accountSettings(accountState->account().get())
+                ->addModalLegacyDialog(_shareDialog, AccountSettings::ModalWidgetSizePolicy::Expanding);
         }
     }
 }
