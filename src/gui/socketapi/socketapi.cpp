@@ -1110,8 +1110,9 @@ void SocketApi::setFileLock(const QString &localFile, const SyncFileItem::LockSt
     }
 
     const auto record = fileData.journalRecord();
-    if (static_cast<SyncFileItem::LockOwnerType>(record._lockstate._lockOwnerType) != SyncFileItem::LockOwnerType::UserLock) {
-        qCDebug(lcSocketApi) << "Only user lock state or non-locked files can be affected manually!";
+
+    if (lockState == SyncFileItem::LockStatus::UnlockedItem &&
+        !shareFolder->accountState()->account()->fileCanBeUnlocked(shareFolder->journalDb(), fileData.folderRelativePath)) {
         return;
     }
 
@@ -1120,7 +1121,7 @@ void SocketApi::setFileLock(const QString &localFile, const SyncFileItem::LockSt
                                                              shareFolder->path(),
                                                              shareFolder->journalDb(),
                                                              lockState,
-                                                             SyncFileItem::LockOwnerType::UserLock);
+                                                             (lockState == SyncFileItem::LockStatus::UnlockedItem) ? static_cast<SyncFileItem::LockOwnerType>(record._lockstate._lockOwnerType) : SyncFileItem::LockOwnerType::UserLock);
 
     shareFolder->journalDb()->schedulePathForRemoteDiscovery(fileData.serverRelativePath);
     shareFolder->scheduleThisFolderSoon();
