@@ -74,6 +74,8 @@ Pane {
                 ToolTip.text: accountState.account.davDisplayName + "\n" + accountState.account.url
                 ToolTip.delay: 500
 
+                Accessible.name: accountState.account.displayNameWithHost
+
                 Connections {
                     target: accountState.account
                     function onAvatarChanged() {
