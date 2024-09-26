@@ -350,6 +350,7 @@ private slots:
         QCOMPARE(completeSpy.findItem(fileWithSpaces5)->_status, SyncFileItem::Status::Success);
         QCOMPARE(completeSpy.findItem(fileWithSpaces6)->_status, SyncFileItem::Status::Success);
         QCOMPARE(completeSpy.findItem(QStringLiteral(" with spaces "))->_status, SyncFileItem::Status::Success);
+#endif
     }
 
     void testCreateFileWithTrailingSpaces_remoteDontGetRenamedAutomatically()
