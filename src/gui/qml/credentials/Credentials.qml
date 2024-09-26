@@ -27,6 +27,7 @@ Pane {
 
     //TODO
     //required property QmlCredentials credentials
+    readonly property OCQuickWidget widget: ocQuickWidget
 
     default property alias content: contentLayout.data
     property alias logOutButton: logutButtonComponent
@@ -44,7 +45,7 @@ Pane {
             onClicked: credentials.logOutRequested()
 
             Keys.onTabPressed: {
-                ocParentWidget.focusNext();
+                widget.parentFocusWidget.focusNext();
             }
 
             Component.onCompleted: {
@@ -106,7 +107,7 @@ Pane {
     }
 
     Connections {
-        target: ocParentWidget
+        target: widget
 
         function onFocusLast() {
             if (logOutButton.visible) {

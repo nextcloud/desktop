@@ -41,11 +41,12 @@ class OCQuickWidget : public QQuickWidget
     Q_OBJECT
     // override of the enabled property of QWidget, but with a notifier
     Q_PROPERTY(bool enabled READ isEnabled WRITE setEnabled NOTIFY enabledChanged FINAL)
+    Q_PROPERTY(QWidget* parentFocusWidget MEMBER _parentFocusWidget FINAL)
     QML_ELEMENT
     QML_UNCREATABLE("C++")
 public:
     using QQuickWidget::QQuickWidget;
-    void setOCContext(const QUrl &src, QWidget *parentWidget, QObject *ocContext, QJSEngine::ObjectOwnership ownership);
+    void setOCContext(const QUrl &src, QWidget *parentFocusWidget, QObject *ocContext, QJSEngine::ObjectOwnership ownership);
     void setOCContext(const QUrl &src, QWidget *ocContext);
 
 Q_SIGNALS:
@@ -58,5 +59,8 @@ protected:
     void focusInEvent(QFocusEvent *event) override;
 
     bool event(QEvent *event) override;
+
+private:
+    QWidget *_parentFocusWidget;
 };
 }

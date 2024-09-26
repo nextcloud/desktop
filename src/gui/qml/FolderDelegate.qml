@@ -24,12 +24,13 @@ Pane {
     // TODO: not cool
     readonly property real normalSize: 170
     readonly property AccountSettings accountSettings: ocContext
+    readonly property OCQuickWidget widget: ocQuickWidget
 
     Accessible.role: Accessible.List
     Accessible.name: qsTr("Folder Sync")
 
     Connections {
-        target: ocParentWidget
+        target: widget
 
         function onFocusFirst() {
             listView.forceActiveFocus(Qt.TabFocusReason);
@@ -108,7 +109,7 @@ Pane {
                         }
 
                         Keys.onBacktabPressed: {
-                            ocParentWidget.focusPrevious();
+                            widget.parentFocusWidget.focusPrevious();
                         }
                         Keys.onTabPressed: {
                             moreButton.forceActiveFocus(Qt.TabFocusReason);
@@ -201,7 +202,7 @@ Pane {
                                     if (addSyncButton.enabled) {
                                         addSyncButton.forceActiveFocus(Qt.TabFocusReason);
                                     } else {
-                                        ocParentWidget.focusNext();
+                                        widget.parentFocusWidget.focusNext();
                                     }
                                 }
 
@@ -247,7 +248,7 @@ Pane {
                 }
 
                 Keys.onTabPressed: {
-                    ocParentWidget.focusNext();
+                    widget.parentFocusWidget.focusNext();
                 }
             }
             Item {

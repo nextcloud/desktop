@@ -25,6 +25,7 @@ Pane {
     readonly property real normalSize: 170
 
     readonly property SpacesBrowser spacesBrowser: ocContext
+    readonly property OCQuickWidget widget: ocQuickWidget
 
     Accessible.role: Accessible.List
     Accessible.name: qsTr("Spaces")
@@ -37,7 +38,7 @@ Pane {
         ScrollBar.vertical.policy: ScrollBar.AlwaysOn
 
         Connections {
-            target: ocParentWidget
+            target: widget
 
             function onFocusFirst() {
                 listView.forceActiveFocus(Qt.TabFocusReason);
@@ -101,11 +102,11 @@ Pane {
                     focus: true
 
                     Keys.onBacktabPressed: {
-                        ocParentWidget.focusPrevious();
+                        widget.parentFocusWidget.focusPrevious();
                     }
 
                     Keys.onTabPressed: {
-                        ocParentWidget.focusNext();
+                        widget.parentFocusWidget.focusNext();
                     }
 
                     background: Rectangle {

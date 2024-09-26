@@ -23,7 +23,7 @@
 #include <QQuickWidget>
 #include <QTimer>
 
-void OCC::QmlUtils::OCQuickWidget::setOCContext(const QUrl &src, QWidget *parentWidget, QObject *ocContext, QJSEngine::ObjectOwnership ownership)
+void OCC::QmlUtils::OCQuickWidget::setOCContext(const QUrl &src, QWidget *parentFocusWidget, QObject *ocContext, QJSEngine::ObjectOwnership ownership)
 {
     if (ownership == QJSEngine::CppOwnership) {
         // Destroying the `ocContext` will result in property changed signals, causing the re-evaluation
@@ -33,13 +33,17 @@ void OCC::QmlUtils::OCQuickWidget::setOCContext(const QUrl &src, QWidget *parent
         connect(
             ocContext, &QObject::destroyed, this, [this] { setSource(QUrl()); }, Qt::DirectConnection);
     }
-
-    rootContext()->setContextProperty(QStringLiteral("ocParentWidget"), parentWidget);
     rootContext()->setContextProperty(QStringLiteral("ocQuickWidget"), this);
     rootContext()->setContextProperty(QStringLiteral("ocContext"), ocContext);
     engine()->setObjectOwnership(ocContext, ownership);
     engine()->addImageProvider(QStringLiteral("ownCloud"), new OCC::Resources::CoreImageProvider());
     setResizeMode(QQuickWidget::SizeRootObjectToView);
+
+    // Ensure the parent widget used OC_DECLARE_WIDGET_FOCUS
+    Q_ASSERT(parentFocusWidget->metaObject()->indexOfMethod("focusNext()") != -1);
+    Q_ASSERT(parentFocusWidget->metaObject()->indexOfMethod("focusPrevious()") != -1);
+    _parentFocusWidget = parentFocusWidget;
+
     setSource(src);
     if (!errors().isEmpty()) {
         auto box = new QMessageBox(QMessageBox::Critical, QStringLiteral("QML Error"), QDebug::toString(errors()));
@@ -47,10 +51,6 @@ void OCC::QmlUtils::OCQuickWidget::setOCContext(const QUrl &src, QWidget *parent
         box->exec();
         qFatal("A qml error occured %s", qPrintable(QDebug::toString(errors())));
     }
-
-    // string based connects as they are provided by OC_DECLARE_WIDGET_FOCUS and not inherited, assert to ensure the connection works
-    OC_ASSERT(QObject::connect(this, SIGNAL(focusFirst()), parentWidget, SIGNAL(focusFirst())));
-    OC_ASSERT(QObject::connect(this, SIGNAL(focusLast()), parentWidget, SIGNAL(focusLast())));
 }
 
 void OCC::QmlUtils::OCQuickWidget::setOCContext(const QUrl &src, QWidget *ocContext)
@@ -72,11 +72,11 @@ void OCC::QmlUtils::OCQuickWidget::focusInEvent(QFocusEvent *event)
     }
     QQuickWidget::focusInEvent(event);
 }
+
 bool OCC::QmlUtils::OCQuickWidget::event(QEvent *event)
 {
     if (event->type() == QEvent::EnabledChange) {
         QTimer::singleShot(0, this, &OCQuickWidget::enabledChanged);
     }
-
     return QQuickWidget::event(event);
 }

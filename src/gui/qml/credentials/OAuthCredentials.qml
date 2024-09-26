@@ -24,6 +24,7 @@ import org.ownCloud.libsync 1.0
 
 Credentials {
     readonly property QmlOAuthCredentials credentials: ocContext
+    readonly property OCQuickWidget widget: ocQuickWidget
 
     Label {
         Layout.alignment: Qt.AlignHCenter
@@ -52,7 +53,7 @@ Credentials {
                     credentials.openAuthenticationUrlInBrowser();
                 }
                 Keys.onBacktabPressed: {
-                    ocParentWidget.focusPrevious();
+                    widget.parentFocusWidget.focusPrevious();
                 }
             }
 
@@ -74,7 +75,7 @@ Credentials {
                 Keys.onTabPressed: event => {
                     // there is no lougout button
                     if (!credentials.isRefresh) {
-                        ocParentWidget.focusNext();
+                        widget.parentFocusWidget.focusNext();
                         event.accepted = true;
                     }
                 }
@@ -97,13 +98,13 @@ Credentials {
             onClicked: credentials.requestRestart()
 
             Keys.onBacktabPressed: {
-                ocParentWidget.focusPrevious();
+                widget.parentFocusWidget.focusPrevious();
             }
         }
     }
 
     Connections {
-        target: ocParentWidget
+        target: widget
 
         function onFocusFirst() {
             stackLayout.nextItemInFocusChain(true).forceActiveFocus(Qt.TabFocusReason);

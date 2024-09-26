@@ -27,7 +27,7 @@ Pane {
     Accessible.name: qsTr("Navigation bar")
 
     Connections {
-        target: ocParentWidget
+        target: widget
 
         function onFocusFirst() {
             if (accountButtons.count === 0) {
@@ -87,7 +87,7 @@ Pane {
                 Keys.onBacktabPressed: event => {
                     if (index === 0) {
                         // We're the first button, handle the back-tab
-                        ocParentWidget.focusPrevious();
+                        widget.parentFocusWidget.focusPrevious();
                     } else {
                         event.accepted = false;
                     }
@@ -109,7 +109,7 @@ Pane {
             Keys.onBacktabPressed: event => {
                 // If there are no account buttons, we're the first button, so handle the back-tab
                 if (accountButtons.count === 0) {
-                    ocParentWidget.focusPrevious();
+                    widget.parentFocusWidget.focusPrevious();
                 } else {
                     event.accepted = false;
                 }
@@ -176,7 +176,7 @@ Pane {
             text: qsTr("Quit")
 
             Keys.onTabPressed: {
-                ocParentWidget.focusNext();
+                widget.parentFocusWidget.focusNext();
             }
             onClicked: {
                 Qt.quit();
