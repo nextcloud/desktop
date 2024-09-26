@@ -244,7 +244,7 @@ int ConfigFile::timeout() const
 qint64 ConfigFile::chunkSize() const
 {
     QSettings settings(configFile(), QSettings::IniFormat);
-    return settings.value(QLatin1String(chunkSizeC), 10LL * 1000LL * 1000LL).toLongLong(); // default to 10 MB
+    return settings.value(QLatin1String(chunkSizeC), 100LL * 1024LL * 1024LL).toLongLong(); // 100MiB
 }
 
 qint64 ConfigFile::maxChunkSize() const

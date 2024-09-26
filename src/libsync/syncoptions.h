@@ -55,7 +55,7 @@ public:
      * starting value and is then gradually adjusted within the
      * minChunkSize / maxChunkSize bounds.
      */
-    qint64 _initialChunkSize = 10 * 1000 * 1000; // 10MB
+    qint64 _initialChunkSize = 100LL * 1024LL * 1024LL; // 100MiB
 
     /** The target duration of chunk uploads for dynamic chunk sizing.
      *
