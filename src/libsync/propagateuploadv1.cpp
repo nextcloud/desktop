@@ -102,7 +102,8 @@ void PropagateUploadFileV1::startNextChunk()
 
     QString path = _fileToUpload._file;
 
-    if (_item->_locked == SyncFileItem::LockStatus::LockedItem) {
+    if (_item->_lockOwnerType == SyncFileItem::LockOwnerType::TokenLock &&
+        _item->_locked == SyncFileItem::LockStatus::LockedItem) {
         headers[QByteArrayLiteral("If")] = (QLatin1String("<") + propagator()->account()->davUrl().toString() + _fileToUpload._file + "> (<opaquelocktoken:" + _item->_lockToken.toUtf8() + ">)").toUtf8();
     }
 
