@@ -105,6 +105,9 @@ QtObject {
 
     property int addAccountButtonHeight: 50
 
+    property int activityListButtonWidth: 42
+    property int activityListButtonHeight: 32
+    property int activityListButtonIconSize: 18
     property int headerButtonIconSize: 32
     property int addButtonIconSize: 26
     property int dismissButtonSize: 26
