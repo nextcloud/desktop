@@ -22,6 +22,8 @@ import org.ownCloud.resources 1.0
 Pane {
     id: bar
     readonly property SettingsDialog settingsDialog: ocContext
+    readonly property OCQuickWidget widget: ocQuickWidget
+
     Accessible.name: qsTr("Navigation bar")
 
     Connections {
@@ -42,6 +44,9 @@ Pane {
 
     RowLayout {
         anchors.fill: parent
+
+        // don't modify the enabled state directly as it messes with the palette in Qt 6.7.2
+        opacity: widget.enabled ? 1.0 : 0.5
 
         Repeater {
             id: accountButtons

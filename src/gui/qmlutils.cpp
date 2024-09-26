@@ -21,6 +21,7 @@
 #include <QQmlContext>
 #include <QQuickItem>
 #include <QQuickWidget>
+#include <QTimer>
 
 void OCC::QmlUtils::OCQuickWidget::setOCContext(const QUrl &src, QWidget *parentWidget, QObject *ocContext, QJSEngine::ObjectOwnership ownership)
 {
@@ -34,6 +35,7 @@ void OCC::QmlUtils::OCQuickWidget::setOCContext(const QUrl &src, QWidget *parent
     }
 
     rootContext()->setContextProperty(QStringLiteral("ocParentWidget"), parentWidget);
+    rootContext()->setContextProperty(QStringLiteral("ocQuickWidget"), this);
     rootContext()->setContextProperty(QStringLiteral("ocContext"), ocContext);
     engine()->setObjectOwnership(ocContext, ownership);
     engine()->addImageProvider(QStringLiteral("ownCloud"), new OCC::Resources::CoreImageProvider());
@@ -73,7 +75,7 @@ void OCC::QmlUtils::OCQuickWidget::focusInEvent(QFocusEvent *event)
 bool OCC::QmlUtils::OCQuickWidget::event(QEvent *event)
 {
     if (event->type() == QEvent::EnabledChange) {
-        rootObject()->setEnabled(isEnabled());
+        QTimer::singleShot(0, this, &OCQuickWidget::enabledChanged);
     }
 
     return QQuickWidget::event(event);

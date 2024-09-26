@@ -67,6 +67,7 @@ ToolButton {
 
     contentItem: ColumnLayout {
         spacing: control.spacing
+        opacity: enabled ? 1.0 : 0.5
 
         Loader {
             id: loader
@@ -83,7 +84,6 @@ ToolButton {
             elide: Text.ElideRight
             font: control.font
             horizontalAlignment: Text.AlignHCenter
-            opacity: enabled ? 1.0 : 0.3
             text: control.text
             verticalAlignment: Text.AlignTop
         }
