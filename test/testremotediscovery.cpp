@@ -50,6 +50,8 @@ class TestRemoteDiscovery : public QObject
 private slots:
     void initTestCase()
     {
+        AbstractNetworkJob::enableTimeout = true;
+
         OCC::Logger::instance()->setLogFlush(true);
         OCC::Logger::instance()->setLogDebug(true);
 
