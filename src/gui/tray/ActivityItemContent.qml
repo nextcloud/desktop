@@ -186,6 +186,8 @@ RowLayout {
                 Layout.preferredHeight: Style.activityListButtonHeight
                 Layout.alignment: Qt.AlignVCenter | Qt.AlignHCenter
 
+                visible: root.showDismissButton && !fileDetailsButton.visible
+
                 icon.source: "image://svgimage-custom-color/clear.svg/" + palette.buttonText
                 icon.width: Style.activityListButtonIconSize
                 icon.height: Style.activityListButtonIconSize
