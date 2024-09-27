@@ -262,7 +262,8 @@ bool ProcessDirectoryJob::handleExcluded(const QString &path, const Entries &ent
 
     const auto fileName = path.mid(path.lastIndexOf('/') + 1);
 
-    if (excluded == CSYNC_NOT_EXCLUDED) {
+    const auto osDoesNotSupportsSpaces = Utility::isWindows();
+    if (excluded == CSYNC_NOT_EXCLUDED && osDoesNotSupportsSpaces) {
         const auto endsWithSpace = fileName.endsWith(QLatin1Char(' '));
         const auto startsWithSpace = fileName.startsWith(QLatin1Char(' '));
         if (startsWithSpace && endsWithSpace) {
@@ -276,9 +277,12 @@ bool ProcessDirectoryJob::handleExcluded(const QString &path, const Entries &ent
 
     // we don't need to trigger a warning if trailing/leading space file is already on the server or has already been synced down
     // only if the OS supports trailing/leading spaces
-    const auto wasSyncedAlreadyAndOsSupportsSpaces = !Utility::isWindows() && (entries.serverEntry.isValid() || entries.dbEntry.isValid());
-    if ((excluded == CSYNC_FILE_EXCLUDE_LEADING_SPACE || excluded == CSYNC_FILE_EXCLUDE_TRAILING_SPACE || excluded == CSYNC_FILE_EXCLUDE_LEADING_AND_TRAILING_SPACE)
-            && (wasSyncedAlreadyAndOsSupportsSpaces || _discoveryData->_leadingAndTrailingSpacesFilesAllowed.contains(_discoveryData->_localDir + path))) {
+    const auto wasSyncedAlready = entries.serverEntry.isValid() || entries.dbEntry.isValid();
+    const auto hasLeadingOrTrailingSpaces = excluded == CSYNC_FILE_EXCLUDE_LEADING_SPACE
+                                            || excluded == CSYNC_FILE_EXCLUDE_TRAILING_SPACE
+                                            || excluded == CSYNC_FILE_EXCLUDE_LEADING_AND_TRAILING_SPACE;
+    const auto leadingAndTrailingSpacesFilesAllowed = _discoveryData->_leadingAndTrailingSpacesFilesAllowed.contains(_discoveryData->_localDir + path);
+    if (hasLeadingOrTrailingSpaces && ((!osDoesNotSupportsSpaces && wasSyncedAlready) || leadingAndTrailingSpacesFilesAllowed)) {
         excluded = CSYNC_NOT_EXCLUDED;
     }
 
