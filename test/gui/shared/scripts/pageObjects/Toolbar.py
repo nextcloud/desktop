@@ -113,14 +113,14 @@ class Toolbar:
     def get_accounts():
         accounts = {}
         selectors = {}
-        children_obj = object.children(squish.waitForObject(Toolbar.TOOLBAR_ROW))
+        children_obj = object.children(squish.waitForObjectExists(Toolbar.TOOLBAR_ROW))
         account_idx = 1
         for obj in children_obj:
             if hasattr(obj, "accountState"):
                 account_info = {
                     "displayname": str(obj.accountState.account.davDisplayName),
                     "username": str(obj.accountState.account.davUser),
-                    "hostname": str(obj.accountState.account.hostname),
+                    "hostname": str(obj.accountState.account.hostName),
                     "initials": str(obj.accountState.account.initials),
                     "current": obj.checked,
                 }
@@ -138,6 +138,14 @@ class Toolbar:
     def get_account(display_name):
         accounts, selectors = Toolbar.get_accounts()
         return accounts.get(display_name), selectors.get(display_name)
+
+    @staticmethod
+    def get_active_account():
+        accounts, selectors = Toolbar.get_accounts()
+        for account, info in accounts.items():
+            if info["current"]:
+                return info, selectors[account]
+        return None, None
 
     @staticmethod
     def account_has_focus(display_name):

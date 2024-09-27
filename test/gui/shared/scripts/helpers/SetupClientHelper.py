@@ -233,11 +233,11 @@ def unlock_keyring():
         output = stdout.decode('utf-8')
     if stderr:
         output = stderr.decode('utf-8')
-    test.log(output)
+
     if not output.strip().endswith('false'):
         test.log('Unlocking keyring...')
         password = os.getenv('VNC_PW')
-        command = f'echo -n "{password}" | gnome-keyring-daemon -r --unlock'
+        command = f'echo -n "{password}" | gnome-keyring-daemon -r -d --unlock'
         stdout, stderr, returncode = run_sys_command(command, True)
         if stdout:
             output = stdout.decode('utf-8')
@@ -245,7 +245,6 @@ def unlock_keyring():
             output = stderr.decode('utf-8')
         if returncode:
             test.log(f'Failed to unlock keyring:\n{output}')
-        test.log(output)
 
 
 def run_sys_command(command=None, shell=False):

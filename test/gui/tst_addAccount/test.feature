@@ -80,7 +80,7 @@ Feature: adding accounts
         Then the folder "simple-folder" should exist on the file system
 
     @skipOnOCIS
-    Scenario: Check for incremented number in bracket while adding new account and folder (OC10)
+    Scenario: Check for suffix when sync path exists (OC10)
         Given the user has created folder "ownCloud" in the default home path
         And the user has started the client
         And the user has entered the following account information:
@@ -95,7 +95,7 @@ Feature: adding accounts
         Then the default local sync path should contain "%home%/ownCloud (2) (2)" in the sync connection wizard
 
     @skipOnOC10
-    Scenario: Button to open sync connection wizard should be disabled when all available spaces are synced (oCIS)
+    Scenario: Check for suffix when sync path exists (oCIS)
         Given the user has created folder "ownCloud" in the default home path
         And the user has started the client
         And the user has entered the following account information:

@@ -22,10 +22,10 @@ class AccountConnectionWizard:
         "visible": 1,
     }
     NEXT_BUTTON = {
+        "container": names.settings_dialogStack_QStackedWidget,
         "name": "nextButton",
         "type": "QPushButton",
         "visible": 1,
-        "window": names.setupWizardWindow_OCC_Wizard_SetupWizardWindow,
     }
     CONFIRM_INSECURE_CONNECTION_BUTTON = {
         "text": "Confirm",
@@ -35,16 +35,16 @@ class AccountConnectionWizard:
         "window": names.insecure_connection_QMessageBox,
     }
     USERNAME_BOX = {
-        "container": names.setupWizardWindow_contentWidget_QStackedWidget,
-        "name": "usernameLineEdit",
-        "type": "QLineEdit",
-        "visible": 1,
+        "container": names.contentWidget_OCC_QmlUtils_OCQuickWidget,
+        "id": "userNameField",
+        "type": "TextField",
+        "visible": True,
     }
     PASSWORD_BOX = {
-        "container": names.setupWizardWindow_contentWidget_QStackedWidget,
-        "name": "passwordLineEdit",
-        "type": "QLineEdit",
-        "visible": 1,
+        "container": names.contentWidget_OCC_QmlUtils_OCQuickWidget,
+        "id": "passwordField",
+        "type": "TextField",
+        "visible": True,
     }
     SELECT_LOCAL_FOLDER = {
         "container": names.advancedConfigGroupBox_localDirectoryGroupBox_QGroupBox,
@@ -72,22 +72,20 @@ class AccountConnectionWizard:
         "window": names.setupWizardWindow_OCC_Wizard_SetupWizardWindow,
     }
     BASIC_CREDENTIAL_PAGE = {
-        "container": names.setupWizardWindow_contentWidget_QStackedWidget,
-        "name": "CredentialsSetupWizardPage",
+        "container": names.contentWidget_contentWidget_QStackedWidget,
         "type": "OCC::Wizard::BasicCredentialsSetupWizardPage",
         "visible": 1,
     }
     OAUTH_CREDENTIAL_PAGE = {
-        "container": names.setupWizardWindow_contentWidget_QStackedWidget,
-        "name": "CredentialsSetupWizardPage",
+        "container": names.contentWidget_contentWidget_QStackedWidget,
         "type": "OCC::Wizard::OAuthCredentialsSetupWizardPage",
         "visible": 1,
     }
     COPY_URL_TO_CLIPBOARD_BUTTON = {
-        "container": names.contentWidget_contentWidget_QStackedWidget,
-        "name": "copyUrlToClipboardButton",
-        "type": "QPushButton",
-        "visible": 1,
+        "container": names.contentWidget_OCC_QmlUtils_OCQuickWidget,
+        "id": "copyToClipboardButton",
+        "type": "Button",
+        "visible": True,
     }
     CONF_SYNC_MANUALLY_RADIO_BUTTON = {
         "container": names.advancedConfigGroupBox_syncModeGroupBox_QGroupBox,
@@ -160,18 +158,10 @@ class AccountConnectionWizard:
 
     @staticmethod
     def basicLogin(username, password):
-        squish.type(
-            squish.waitForObject(AccountConnectionWizard.USERNAME_BOX),
-            username,
-        )
-        squish.type(
-            squish.waitForObject(AccountConnectionWizard.USERNAME_BOX),
-            "<Tab>",
-        )
-        squish.type(
-            squish.waitForObject(AccountConnectionWizard.PASSWORD_BOX),
-            password,
-        )
+        squish.mouseClick(squish.waitForObject(AccountConnectionWizard.USERNAME_BOX))
+        squish.nativeType(username)
+        squish.mouseClick(squish.waitForObject(AccountConnectionWizard.PASSWORD_BOX))
+        squish.nativeType(password)
         AccountConnectionWizard.nextStep()
 
     @staticmethod
@@ -186,14 +176,16 @@ class AccountConnectionWizard:
     def browserLogin(username, password, login_type=None):
         # wait 500ms for copy button to fully load
         squish.snooze(1 / 2)
-        squish.clickButton(
+        squish.mouseClick(
             squish.waitForObject(AccountConnectionWizard.COPY_URL_TO_CLIPBOARD_BUTTON)
         )
         authorize_via_webui(username, password, login_type)
 
     @staticmethod
     def nextStep():
-        squish.clickButton(squish.waitForObject(AccountConnectionWizard.NEXT_BUTTON))
+        squish.clickButton(
+            squish.waitForObjectExists(AccountConnectionWizard.NEXT_BUTTON)
+        )
 
     @staticmethod
     def selectSyncFolder(user):

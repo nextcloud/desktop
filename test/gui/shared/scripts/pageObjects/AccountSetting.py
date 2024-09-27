@@ -4,7 +4,7 @@ import squish
 
 class AccountSetting:
     MANAGE_ACCOUNT_BUTTON = {
-        "container": names.settings_stack_QStackedWidget,
+        "container": names.settings_dialogStack_QStackedWidget,
         "name": "manageAccountButton",
         "type": "QToolButton",
         "visible": 1,
@@ -15,15 +15,15 @@ class AccountSetting:
         "visible": 1,
         "window": names.settings_OCC_SettingsDialog,
     }
-    REMOVE_CONNECTION_BUTTON = {
-        "container": names.settings_stack_QStackedWidget,
+    CONFIRM_REMOVE_CONNECTION_BUTTON = {
+        "container": names.settings_dialogStack_QStackedWidget,
         "text": "Remove connection",
         "type": "QPushButton",
         "unnamed": 1,
         "visible": 1,
     }
     ACCOUNT_CONNECTION_LABEL = {
-        "container": names.settings_stack_QStackedWidget,
+        "container": names.settings_dialogStack_QStackedWidget,
         "name": "connectionStatusLabel",
         "type": "QLabel",
         "visible": 1,
@@ -58,7 +58,7 @@ class AccountSetting:
     def removeAccountConnection():
         AccountSetting.accountAction("Remove")
         squish.clickButton(
-            squish.waitForObject(AccountSetting.REMOVE_CONNECTION_BUTTON)
+            squish.waitForObject(AccountSetting.CONFIRM_REMOVE_CONNECTION_BUTTON)
         )
 
     @staticmethod

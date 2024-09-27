@@ -8,12 +8,12 @@ from helpers.ConfigHelper import get_config
 
 class Activity:
     TAB_CONTAINER = {
-        "container": names.settings_stack_QStackedWidget,
+        "container": names.settings_dialogStack_QStackedWidget,
         "type": "QTabWidget",
         "visible": 1,
     }
     SUBTAB_CONTAINER = {
-        "container": names.settings_stack_QStackedWidget,
+        "container": names.settings_dialogStack_QStackedWidget,
         "name": "qt_tabwidget_tabbar",
         "type": "QTabBar",
         "visible": 1,

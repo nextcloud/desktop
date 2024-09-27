@@ -1,4 +1,5 @@
 # encoding: UTF-8
+# fmt: off
 
 from objectmaphelper import *
 
@@ -6,6 +7,7 @@ settings_OCC_SettingsDialog = {"name": "Settings", "type": "OCC::SettingsDialog"
 owncloudWizard_OCC_OwncloudWizard = {"name": "owncloudWizard", "type": "OCC::OwncloudWizard", "visible": 1}
 qFileDialog_QFileDialog = {"name": "QFileDialog", "type": "QFileDialog", "visible": 1}
 settings_stack_QStackedWidget = {"name": "stack", "type": "QStackedWidget", "visible": 1, "window": settings_OCC_SettingsDialog}
+settings_dialogStack_QStackedWidget = {"name": "dialogStack", "type": "QStackedWidget", "visible": 1, "window": settings_OCC_SettingsDialog}
 qFileDialog_fileNameLabel_QLabel = {"name": "fileNameLabel", "type": "QLabel", "visible": 1, "window": qFileDialog_QFileDialog}
 sharingDialog_OCC_ShareDialog = {"name": "SharingDialog", "type": "OCC::ShareDialog", "visible": 1}
 sharingDialog_qt_tabwidget_stackedwidget_QStackedWidget = {"name": "qt_tabwidget_stackedwidget", "type": "QStackedWidget", "visible": 1, "window": sharingDialog_OCC_ShareDialog}
@@ -48,7 +50,6 @@ stack_stackedWidget_QStackedWidget = {"container": settings_stack_QStackedWidget
 stackedWidget_quickWidget_QQuickWidget = {"container": stack_stackedWidget_QStackedWidget, "name": "quickWidget", "type": "QQuickWidget", "visible": 1}
 quickWidget_scrollView_ScrollView = {"container": stackedWidget_quickWidget_QQuickWidget, "id": "scrollView", "type": "ScrollView", "unnamed": 1, "visible": True}
 scrollView_ListView = {"container": quickWidget_scrollView_ScrollView, "type": "ListView", "unnamed": 1, "visible": True}
-settings_dialogStack_QStackedWidget = {"name": "dialogStack", "type": "QStackedWidget", "visible": 1, "window": settings_OCC_SettingsDialog}
 dialogStack_quickWidget_QQuickWidget = {"container": settings_dialogStack_QStackedWidget, "name": "quickWidget", "type": "QQuickWidget", "visible": 1}
 create_Remote_Folder_QInputDialog = {"type": "QInputDialog", "unnamed": 1, "visible": 1, "windowTitle": "Create Remote Folder"}
 create_Remote_Folder_Enter_the_name_of_the_new_folder_to_be_created_below_QLabel = {"text": "Enter the name of the new folder to be created below '/':", "type": "QLabel", "unnamed": 1, "visible": 1, "window": create_Remote_Folder_QInputDialog}
@@ -59,3 +60,7 @@ qt_tabwidget_stackedwidget_OCC_ProtocolWidget_OCC_ProtocolWidget = {"container":
 oCC_ProtocolWidget_tableView_QTableView = {"container": qt_tabwidget_stackedwidget_OCC_ProtocolWidget_OCC_ProtocolWidget, "name": "_tableView", "type": "QTableView", "visible": 1}
 oCC_IssuesWidget_tableView_QTableView = {"container": qt_tabwidget_stackedwidget_OCC_IssuesWidget_OCC_IssuesWidget, "name": "_tableView", "type": "QTableView", "visible": 1}
 dialogStack_quickWidget_OCC_QmlUtils_OCQuickWidget = {"container": settings_dialogStack_QStackedWidget, "name": "quickWidget", "type": "OCC::QmlUtils::OCQuickWidget", "visible": 1}
+contentWidget_OCC_QmlUtils_OCQuickWidget = {"container": contentWidget_contentWidget_QStackedWidget, "type": "OCC::QmlUtils::OCQuickWidget", "unnamed": 1, "visible": 1}
+stackedWidget_Add_Folder_Sync_Connection_QGroupBox = {"container": stack_stackedWidget_QStackedWidget, "title": "Add Folder Sync Connection", "type": "QGroupBox", "unnamed": 1, "visible": 1}
+stackedWidget_groupBox_QGroupBox = {"container": settings_stack_QStackedWidget, "name": "groupBox", "type": "QGroupBox", "visible": 1}
+groupBox_OCC_QmlUtils_OCQuickWidget = {"container": stackedWidget_groupBox_QGroupBox, "type": "OCC::QmlUtils::OCQuickWidget", "unnamed": 1, "visible": 1}
