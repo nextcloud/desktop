@@ -141,11 +141,11 @@ namespace Utility {
     OCSYNC_EXPORT bool hasDarkSystray();
 
     // convenience OS detection methods
-    inline bool isWindows();
-    inline bool isMac();
-    inline bool isUnix();
-    inline bool isLinux(); // use with care
-    inline bool isBSD(); // use with care, does not match OS X
+    constexpr bool isWindows();
+    constexpr bool isMac();
+    constexpr bool isUnix();
+    constexpr bool isLinux(); // use with care
+    constexpr bool isBSD(); // use with care, does not match OS X
 
     OCSYNC_EXPORT QString platformName();
     // crash helper for --debug
@@ -311,7 +311,7 @@ namespace Utility {
 }
 /** @} */ // \addtogroup
 
-inline bool Utility::isWindows()
+inline constexpr bool Utility::isWindows()
 {
 #ifdef Q_OS_WIN
     return true;
@@ -320,7 +320,7 @@ inline bool Utility::isWindows()
 #endif
 }
 
-inline bool Utility::isMac()
+inline constexpr bool Utility::isMac()
 {
 #ifdef Q_OS_MAC
     return true;
@@ -329,7 +329,7 @@ inline bool Utility::isMac()
 #endif
 }
 
-inline bool Utility::isUnix()
+inline constexpr bool Utility::isUnix()
 {
 #ifdef Q_OS_UNIX
     return true;
@@ -338,7 +338,7 @@ inline bool Utility::isUnix()
 #endif
 }
 
-inline bool Utility::isLinux()
+inline constexpr bool Utility::isLinux()
 {
 #if defined(Q_OS_LINUX)
     return true;
@@ -347,7 +347,7 @@ inline bool Utility::isLinux()
 #endif
 }
 
-inline bool Utility::isBSD()
+inline constexpr bool Utility::isBSD()
 {
 #if defined(Q_OS_FREEBSD) || defined(Q_OS_NETBSD) || defined(Q_OS_OPENBSD)
     return true;
