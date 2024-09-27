@@ -4,12 +4,12 @@
     <message>
         <location filename="../src/gui/qml/AccountBar.qml" line="25"/>
         <source>Navigation bar</source>
-        <translation type="unfinished"/>
+        <translation>Shtyllë lëvizjesh</translation>
     </message>
     <message>
         <location filename="../src/gui/qml/AccountBar.qml" line="101"/>
         <source>Add Account</source>
-        <translation type="unfinished"/>
+        <translation>Shtoni Llogari</translation>
     </message>
     <message>
         <location filename="../src/gui/qml/AccountBar.qml" line="128"/>
@@ -91,17 +91,17 @@
     <message>
         <location filename="../src/gui/qml/credentials/BasicAuthCredentials.qml" line="29"/>
         <source>Please enter your password to log in.</source>
-        <translation type="unfinished"/>
+        <translation>Ju lutemi, që të bëni hyrjen, jepni fjalëkalimin.</translation>
     </message>
     <message>
         <location filename="../src/gui/qml/credentials/BasicAuthCredentials.qml" line="29"/>
         <source>Please enter %1 and password to log in.</source>
-        <translation type="unfinished"/>
+        <translation>Ju lutemi, që të bëni hyrjen, jepni %1 dhe fjalëkalim.</translation>
     </message>
     <message>
         <location filename="../src/gui/qml/credentials/BasicAuthCredentials.qml" line="37"/>
         <source>Enter %1</source>
-        <translation type="unfinished"/>
+        <translation>Jepni %1</translation>
     </message>
     <message>
         <location filename="../src/gui/qml/credentials/BasicAuthCredentials.qml" line="51"/>
@@ -223,7 +223,7 @@ Mjet njëkohësimi kartelash për desktop.</translation>
     <message numerus="yes">
         <location filename="../src/gui/commonstrings.cpp" line="48"/>
         <source>%n Filter(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n Filtër</numerusform><numerusform>%n Filtra</numerusform></translation>
     </message>
 </context>
 <context>
@@ -231,19 +231,21 @@ Mjet njëkohësimi kartelash për desktop.</translation>
     <message>
         <location filename="../src/gui/qml/credentials/Credentials.qml" line="43"/>
         <source>Stay logged out</source>
-        <translation type="unfinished"/>
+        <translation>Qëndro jashtë llogarie</translation>
     </message>
     <message>
         <location filename="../src/gui/qml/credentials/Credentials.qml" line="89"/>
         <source>Connecting %1 to:
 %2</source>
-        <translation type="unfinished"/>
+        <translation>Po bëhet lidhja e %1 me:
+%2</translation>
     </message>
     <message>
         <location filename="../src/gui/qml/credentials/Credentials.qml" line="89"/>
         <source>Connecting to:
 %1</source>
-        <translation type="unfinished"/>
+        <translation>Po bëhet lidhja me:
+%1</translation>
     </message>
 </context>
 <context>
@@ -311,7 +313,7 @@ Mjet njëkohësimi kartelash për desktop.</translation>
     <message>
         <location filename="../src/gui/qml/FolderDelegate.qml" line="258"/>
         <source>You are synchronizing %1 out of %2 spaces</source>
-        <translation type="unfinished"/>
+        <translation>Po bëni njëkohësimin e %1 nga %2 hapësira</translation>
     </message>
 </context>
 <context>
@@ -319,12 +321,12 @@ Mjet njëkohësimi kartelash për desktop.</translation>
     <message>
         <location filename="../src/gui/qml/FolderError.qml" line="58"/>
         <source>Show less</source>
-        <translation type="unfinished"/>
+        <translation>Shfaq më pak</translation>
     </message>
     <message>
         <location filename="../src/gui/qml/FolderError.qml" line="77"/>
         <source>Show more</source>
-        <translation type="unfinished"/>
+        <translation>Shfaq më tepër</translation>
     </message>
 </context>
 <context>
@@ -343,12 +345,12 @@ Mjet njëkohësimi kartelash për desktop.</translation>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="127"/>
         <source>, ⬇️ %1/s</source>
-        <translation type="unfinished"/>
+        <translation>, ⬇️ %1/s</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="130"/>
         <source>, ⬆️ %1/s</source>
-        <translation type="unfinished"/>
+        <translation>, ⬆️ %1/s</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="134"/>
@@ -468,7 +470,7 @@ Mjet njëkohësimi kartelash për desktop.</translation>
     <message>
         <location filename="../src/gui/notificationwidget.ui" line="49"/>
         <source>Notification icon</source>
-        <translation type="unfinished"/>
+        <translation>Ikonë njoftimesh</translation>
     </message>
     <message>
         <location filename="../src/gui/notificationwidget.ui" line="73"/>
@@ -483,7 +485,7 @@ Mjet njëkohësimi kartelash për desktop.</translation>
     <message>
         <location filename="../src/gui/notificationwidget.ui" line="113"/>
         <source>Action button group</source>
-        <translation type="unfinished"/>
+        <translation>Grup butonash veprimesh</translation>
     </message>
 </context>
 <context>
@@ -491,32 +493,32 @@ Mjet njëkohësimi kartelash për desktop.</translation>
     <message>
         <location filename="../src/gui/qml/credentials/OAuthCredentials.qml" line="31"/>
         <source>Log in with your web browser</source>
-        <translation type="unfinished"/>
+        <translation>Hyni në llogari me shfletuesin tuaj</translation>
     </message>
     <message>
         <location filename="../src/gui/qml/credentials/OAuthCredentials.qml" line="31"/>
         <source>Login failed, please try it again</source>
-        <translation type="unfinished"/>
+        <translation>Hyrja dështoi, ju lutemi, riprovoni</translation>
     </message>
     <message>
         <location filename="../src/gui/qml/credentials/OAuthCredentials.qml" line="49"/>
         <source>Reopen web browser</source>
-        <translation type="unfinished"/>
+        <translation>Rihap shfletuesin</translation>
     </message>
     <message>
         <location filename="../src/gui/qml/credentials/OAuthCredentials.qml" line="49"/>
         <source>Open web brower</source>
-        <translation type="unfinished"/>
+        <translation>Hap shfletuesin</translation>
     </message>
     <message>
         <location filename="../src/gui/qml/credentials/OAuthCredentials.qml" line="64"/>
         <source>Copy url</source>
-        <translation type="unfinished"/>
+        <translation>Kopjoji URL-në</translation>
     </message>
     <message>
         <location filename="../src/gui/qml/credentials/OAuthCredentials.qml" line="96"/>
         <source>Restart authenticaion</source>
-        <translation type="unfinished"/>
+        <translation>Rinis mirëfilltësimin</translation>
     </message>
 </context>
 <context>
@@ -544,12 +546,12 @@ Mjet njëkohësimi kartelash për desktop.</translation>
     <message>
         <location filename="../src/gui/aboutdialog.cpp" line="89"/>
         <source>ownCloud 10 LTS</source>
-        <translation type="unfinished"/>
+        <translation>ownCloud 10 LTS</translation>
     </message>
     <message>
         <location filename="../src/gui/aboutdialog.cpp" line="90"/>
         <source>ownCloud Infinite Scale stable</source>
-        <translation type="unfinished"/>
+        <translation>ownCloud Infinite Scale, version i qëndrueshëm</translation>
     </message>
     <message>
         <location filename="../src/gui/aboutdialog.cpp" line="92"/>
@@ -564,12 +566,12 @@ Mjet njëkohësimi kartelash për desktop.</translation>
     <message>
         <location filename="../src/gui/aboutdialog.cpp" line="165"/>
         <source>&lt;html&gt;The update channel determines which client updates will be offered for installation.&lt;ul&gt;&lt;li&gt;&quot;ownCloud 10 LTS&quot; contains only upgrades that are considered reliable&lt;/li&gt;&lt;li&gt;&quot;ownCloud Infinite Scale stable&quot; contains only upgrades that are considered reliable but &lt;b&gt;removes support for &quot;ownCloud 10&quot;&lt;/b&gt;&lt;/li&gt;%1&lt;/ul&gt;&lt;br&gt;⚠️Downgrades are not supported. If you switch to a stable channel this change will only be applied with the next major release.&lt;/html&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;html&gt;Kanali i përditësimeve përcakton cilat përditësime klienti do të ofrohen për instalim.&lt;ul&gt;&lt;li&gt;“ownCloud 10 LTS” përmban vetëm përmirësime që konsiderohen të qëndrueshme&lt;/li&gt;&lt;li&gt;“ownCloud Infinite Scale, version i qëndrueshëm” përmban vetëm përmirësime që konsiderohen të qëndrueshme, por &lt;b&gt;heq mbulim për “ownCloud 10”&lt;/b&gt;&lt;/li&gt;%1&lt;/ul&gt;&lt;br&gt;⚠️Prapapkthimet në versione më të vjetër nuk mbulohen. Nëse kaloni në një kanal të qëndrueshëm, ky ndryshim do të aplikohet vetëm me hedhjen tjetër të rëndësishme në qarkullim.&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/aboutdialog.cpp" line="172"/>
         <source>&lt;li&gt;&quot;beta&quot; may contain newer features and bugfixes, but have not yet been tested thoroughly&lt;/li&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;li&gt;“beta” mund të përmbajë veçori më të reja dhe ndreqje të metash, por s’është testuar në mënyrë shteruese&lt;/li&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/aboutdialog.cpp" line="174"/>
@@ -631,7 +633,7 @@ Mjet njëkohësimi kartelash për desktop.</translation>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="73"/>
         <source>Manage Account</source>
-        <translation type="unfinished"/>
+        <translation>Administroni Llogari</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="109"/>
@@ -641,7 +643,7 @@ Mjet njëkohësimi kartelash për desktop.</translation>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="137"/>
         <source>Sync connections</source>
-        <translation type="unfinished"/>
+        <translation>Njëkohëso lidhje</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="292"/>
@@ -679,7 +681,7 @@ Mjet njëkohësimi kartelash për desktop.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="88"/>
         <source>Account options menu</source>
-        <translation type="unfinished"/>
+        <translation>Menu mundësish veprimesh</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="90"/>
@@ -689,12 +691,12 @@ Mjet njëkohësimi kartelash për desktop.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="134"/>
         <source>Sync options menu</source>
-        <translation type="unfinished"/>
+        <translation>Menu mundësish njëkohësimi</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="140"/>
         <source>Folder is not ready yet</source>
-        <translation type="unfinished"/>
+        <translation>Dosja s’është ende gati</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="285"/>
@@ -782,12 +784,12 @@ Ky veprim do të shkaktojë ndërprerjen e çfarëdo njëkohësimi në kryerje e
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="495"/>
         <source>Server is temporarily unavailable</source>
-        <translation type="unfinished"/>
+        <translation>Shërbyesi është përkohësisht jashtë funksionimi</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="498"/>
         <source>Server is currently in maintenance mode</source>
-        <translation type="unfinished"/>
+        <translation>Shërbyesi është aktualisht nën mënyrën mirëmbajtje</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="501"/>
@@ -797,7 +799,7 @@ Ky veprim do të shkaktojë ndërprerjen e çfarëdo njëkohësimi në kryerje e
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="504"/>
         <source>Updating credentials...</source>
-        <translation type="unfinished"/>
+        <translation>Po përditësohen kredenciale…</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="509"/>
@@ -807,7 +809,7 @@ Ky veprim do të shkaktojë ndërprerjen e çfarëdo njëkohësimi në kryerje e
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="511"/>
         <source>Sync is paused due to metered internet connection</source>
-        <translation type="unfinished"/>
+        <translation>Njëkohësimi është ndalur, për shkak lidhjeje internet me racion</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="513"/>
@@ -817,7 +819,7 @@ Ky veprim do të shkaktojë ndërprerjen e çfarëdo njëkohësimi në kryerje e
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="517"/>
         <source>Server configuration error</source>
-        <translation type="unfinished"/>
+        <translation>Gabim formësimi shërbyesi</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="523"/>
@@ -904,7 +906,7 @@ Ky veprim do të shkaktojë ndërprerjen e çfarëdo njëkohësimi në kryerje e
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="467"/>
         <source>Local Activity</source>
-        <translation type="unfinished"/>
+        <translation>Veprimtari Vendore</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="516"/>
@@ -923,7 +925,7 @@ Ky veprim do të shkaktojë ndërprerjen e çfarëdo njëkohësimi në kryerje e
     <message>
         <location filename="../src/gui/activitywidget.ui" line="14"/>
         <source>Server activities</source>
-        <translation type="unfinished"/>
+        <translation>Veprimtari shërbyesi</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.ui" line="73"/>
@@ -933,7 +935,7 @@ Ky veprim do të shkaktojë ndërprerjen e çfarëdo njëkohësimi në kryerje e
     <message>
         <location filename="../src/gui/activitywidget.ui" line="91"/>
         <source>Server activity table</source>
-        <translation type="unfinished"/>
+        <translation>Tabelë veprimtarish shërbyesi</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="101"/>
@@ -944,12 +946,12 @@ Ky veprim do të shkaktojë ndërprerjen e çfarëdo njëkohësimi në kryerje e
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="148"/>
         <source>&amp;Server Activities</source>
-        <translation type="unfinished"/>
+        <translation>Veprimtari &amp;Shërbyesi</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="149"/>
         <source>&amp;Notifications</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Njoftime</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="154"/>
@@ -959,12 +961,12 @@ Ky veprim do të shkaktojë ndërprerjen e çfarëdo njëkohësimi në kryerje e
     <message numerus="yes">
         <location filename="../src/gui/activitywidget.cpp" line="288"/>
         <source>%n notification(s) for %1.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n njoftim për %1.</numerusform><numerusform>%n njoftime për %1.</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/activitywidget.cpp" line="294"/>
         <source>%n notification(s) for %1 and %2.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n njoftim për %1 dhe %2.</numerusform><numerusform>%n njoftime për %1 dhe %2.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="296"/>
@@ -979,7 +981,7 @@ Ky veprim do të shkaktojë ndërprerjen e çfarëdo njëkohësimi në kryerje e
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="423"/>
         <source>Activity item menu</source>
-        <translation type="unfinished"/>
+        <translation>Menu objektesh veprimtarish</translation>
     </message>
 </context>
 <context>
@@ -1136,7 +1138,7 @@ Përditësimi do të kryhet në prapaskenë dhe do të mbishkruajë kartelën e 
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="502"/>
         <source>%1 and %n other file(s) have been removed.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Janë hequr %1 dhe %n kartelë tjetër.</numerusform><numerusform>Janë hequr %1 dhe %n kartela të tjera.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="187"/>
@@ -1156,7 +1158,7 @@ Përditësimi do të kryhet në prapaskenë dhe do të mbishkruajë kartelën e 
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="509"/>
         <source>%1 and %n other file(s) have been added.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Janë shtuar %1 dhe %n kartelë tjetër.</numerusform><numerusform>Janë shtuar %1 dhe %n kartela të tjera.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="511"/>
@@ -1167,22 +1169,22 @@ Përditësimi do të kryhet në prapaskenë dhe do të mbishkruajë kartelën e 
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="516"/>
         <source>%1 and %n other file(s) have been updated.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>U përditësuan %1 dhe %n kartelë tjetër.</numerusform><numerusform>U përditësuan %1 dhe %n kartela të tjera.</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="523"/>
         <source>%1 has been renamed to %2 and %n other file(s) have been renamed.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 u riemërtua si %2 dhe u riemërtuan %n kartela të tjera.</numerusform><numerusform>%1 u riemërtua si %2 dhe u riemërtuan %n kartela të tjera.</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="530"/>
         <source>%1 has been moved to %2 and %n other file(s) have been moved.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 u kalua te %2 dhe u zhvendos %n kartelë tjetër.</numerusform><numerusform>%1 u kalua te %2 dhe u zhvendosën %n kartela të tjera.</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="537"/>
         <source>%1 and %n other file(s) have sync conflicts.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 dhe %n kartelë tjetër kanë përplasje njëkohësimi.</numerusform><numerusform>%1 dhe %n kartela të tjera kanë përplasje njëkohësimi.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="539"/>
@@ -1192,7 +1194,7 @@ Përditësimi do të kryhet në prapaskenë dhe do të mbishkruajë kartelën e 
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="544"/>
         <source>%1 and %n other file(s) could not be synced due to errors. See the log for details.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 dhe %n kartelë tjetër s’u njëkohësuan dot, për shkak gabimesh. Për hollësi shihni regjistrin.</numerusform><numerusform>%1 dhe %n kartela të tjera s’u njëkohësuan dot, për shkak gabimesh. Për hollësi shihni regjistrin.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="546"/>
@@ -1288,7 +1290,7 @@ Kjo do të thotë që klienti i njëkohësimeve mund të mos ngarkojë menjëher
     <message>
         <location filename="../src/gui/folderman.cpp" line="742"/>
         <source>Folder &apos;%1&apos; is already in use by another account.</source>
-        <translation type="unfinished"/>
+        <translation>Dosja “%1” është tashmë në përdorim nga një tjetër llogari.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="757"/>
@@ -1303,17 +1305,17 @@ Kjo do të thotë që klienti i njëkohësimeve mund të mos ngarkojë menjëher
     <message>
         <location filename="../src/gui/folderman.cpp" line="821"/>
         <source>The local folder %1 already contains a folder used in a folder sync connection. Please pick another local folder!</source>
-        <translation type="unfinished"/>
+        <translation>Dosja vendore %1 përmban tashmë një dosje të përdorur në një lidhje njëkohësimi dosjeje. Ju lutemi, zgjidhni një tjetër dosje vendore!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="827"/>
         <source>The local folder %1 is already contained in a folder used in a folder sync connection. Please pick another local folder!</source>
-        <translation type="unfinished"/>
+        <translation>Dosja vendore %1 përmbahet tashmë në një dosje të përdorur në një lidhje njëkohësimi dosjeje. Ju lutemi, zgjidhni një tjetër dosje vendore!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="835"/>
         <source>%1 Please pick another local folder!</source>
-        <translation type="unfinished"/>
+        <translation>%1 Ju lutemi, zgjidhni një tjetër dosje vendore!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="775"/>
@@ -1350,19 +1352,21 @@ Ju lutemi, shihni mundësinë e heqjes së kësaj dosjeje nga llogaria dhe të s
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="252"/>
         <source>There are unresolved conflicts.</source>
-        <translation type="unfinished"/>
+        <translation>Ka përplasje të pazgjidhura.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="256"/>
         <source>The suffix VFS plugin is deprecated and will be removed in the 7.0 release.
 Please use the context menu and select &quot;Disable virtual file support&quot; to  ensure future access to your synced files.
 You are going to lose access to your sync folder if you do not do so!</source>
-        <translation type="unfinished"/>
+        <translation>Shtojca për prapashtesë VFS është nxjerrë nga përdorimi dhe do të hiqet nga hedhja në qarkullim 7.0.
+Ju lutemi, përdorni menunë e kontekstit dhe përzgjidhni “Çaktivizo mbulim për kartela virtuale”, që të garantoni hyrje të ardhshme në kartelat tuaja të njëkohësuara.
+Nëse nuk bëni kështu, do të humbni hyrje te dosja juaj e njëkohësuar!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="311"/>
         <source>%1 of %2 used</source>
-        <translation type="unfinished"/>
+        <translation>Përdorur %1 nga %2</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="391"/>
@@ -1551,7 +1555,7 @@ You are going to lose access to your sync folder if you do not do so!</source>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="41"/>
         <source>Use Monochrome Icons in the system tray</source>
-        <translation type="unfinished"/>
+        <translation>Përdor Ikona Njëngjyrëshe te paneli i sistemit</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="48"/>
@@ -1561,7 +1565,7 @@ You are going to lose access to your sync folder if you do not do so!</source>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="55"/>
         <source>Start on Login</source>
-        <translation type="unfinished"/>
+        <translation>Nisu gjatë Hyrjes Në Llogari</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="73"/>
@@ -1571,7 +1575,7 @@ You are going to lose access to your sync folder if you do not do so!</source>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="89"/>
         <source>Language selector</source>
-        <translation type="unfinished"/>
+        <translation>Përzgjedhës gjuhe</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="112"/>
@@ -1738,7 +1742,7 @@ Objektet mbi të cilët lejohet fshirja do të fshihen, nëse pengojnë heqjen e
     <message>
         <location filename="../src/gui/issueswidget.ui" line="40"/>
         <source>Issues table</source>
-        <translation type="unfinished"/>
+        <translation>Tabelë problemesh</translation>
     </message>
     <message>
         <location filename="../src/gui/issueswidget.ui" line="72"/>
@@ -1768,7 +1772,7 @@ Objektet mbi të cilët lejohet fshirja do të fshihen, nëse pengojnë heqjen e
     <message>
         <location filename="../src/gui/issueswidget.cpp" line="273"/>
         <source>Filter menu</source>
-        <translation type="unfinished"/>
+        <translation>Menu filtrimesh</translation>
     </message>
     <message>
         <location filename="../src/gui/issueswidget.cpp" line="275"/>
@@ -1891,7 +1895,7 @@ Kini parasysh se përdorimi i çfarëdo mundësie regjistrimi që nga rresht urd
     <message>
         <location filename="../src/gui/networksettings.ui" line="130"/>
         <source>Proxy Hostname</source>
-        <translation type="unfinished"/>
+        <translation>Strehëemër Ndërmjetësi</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="140"/>
@@ -1901,7 +1905,7 @@ Kini parasysh se përdorimi i çfarëdo mundësie regjistrimi që nga rresht urd
     <message>
         <location filename="../src/gui/networksettings.ui" line="153"/>
         <source>Proxy Port Number</source>
-        <translation type="unfinished"/>
+        <translation>Numër Porte Ndërmjetësi</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="174"/>
@@ -1921,7 +1925,7 @@ Kini parasysh se përdorimi i çfarëdo mundësie regjistrimi që nga rresht urd
     <message>
         <location filename="../src/gui/networksettings.ui" line="360"/>
         <source>Upload bandwidth in kilobytes per second</source>
-        <translation type="unfinished"/>
+        <translation>Gjerësi bande ngarkimesh, si kilobajte në sekondë</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="291"/>
@@ -1938,12 +1942,12 @@ Kini parasysh se përdorimi i çfarëdo mundësie regjistrimi që nga rresht urd
     <message>
         <location filename="../src/gui/networksettings.ui" line="59"/>
         <source>Specify proxy manually</source>
-        <translation type="unfinished"/>
+        <translation>Jepenni ndërmjetësin dorazi</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="80"/>
         <source>Proxy type</source>
-        <translation type="unfinished"/>
+        <translation>Llok ndërmjetësi</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="256"/>
@@ -1955,12 +1959,12 @@ Kini parasysh se përdorimi i çfarëdo mundësie regjistrimi që nga rresht urd
         <location filename="../src/gui/networksettings.ui" line="268"/>
         <location filename="../src/gui/networksettings.ui" line="350"/>
         <source>Manual limit</source>
-        <translation type="unfinished"/>
+        <translation>Kufi dorazi</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="278"/>
         <source>Download bandwidth in kilobytes per second</source>
-        <translation type="unfinished"/>
+        <translation>Gjerësi bande shkarkimesh, si kilobajte në sekondë</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="322"/>
@@ -2568,7 +2572,7 @@ Kini parasysh se përdorimi i çfarëdo mundësie regjistrimi që nga rresht urd
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="591"/>
         <source>The server did not provide the file permissions</source>
-        <translation type="unfinished"/>
+        <translation>Shërbyesi s’furnizoi lejet mbi kartelën.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="599"/>
@@ -2709,7 +2713,7 @@ Kini parasysh se përdorimi i çfarëdo mundësie regjistrimi që nga rresht urd
     <message>
         <location filename="../src/gui/protocolwidget.ui" line="44"/>
         <source>Local activity table</source>
-        <translation type="unfinished"/>
+        <translation>Tabelë veprimtarish vendore</translation>
     </message>
     <message>
         <location filename="../src/gui/protocolwidget.cpp" line="63"/>
@@ -2720,22 +2724,22 @@ Kini parasysh se përdorimi i çfarëdo mundësie regjistrimi që nga rresht urd
     <message>
         <location filename="../src/gui/protocolwidget.cpp" line="97"/>
         <source>Filter menu</source>
-        <translation type="unfinished"/>
+        <translation>Menu filtrimesh</translation>
     </message>
     <message>
         <location filename="../src/gui/protocolwidget.cpp" line="112"/>
         <source>Actions menu</source>
-        <translation type="unfinished"/>
+        <translation>Menu veprimesh</translation>
     </message>
     <message>
         <location filename="../src/gui/protocolwidget.cpp" line="154"/>
         <source>Sort ascending by %1</source>
-        <translation type="unfinished"/>
+        <translation>Renditi në rend rritës sipas %1</translation>
     </message>
     <message>
         <location filename="../src/gui/protocolwidget.cpp" line="158"/>
         <source>Sort descending by %1</source>
-        <translation type="unfinished"/>
+        <translation>Renditi në rend zbritës sipas %1</translation>
     </message>
     <message>
         <location filename="../src/gui/protocolwidget.cpp" line="180"/>
@@ -2769,12 +2773,12 @@ Kini parasysh se përdorimi i çfarëdo mundësie regjistrimi që nga rresht urd
         <location filename="../src/gui/selectivesyncwidget.cpp" line="110"/>
         <location filename="../src/gui/selectivesyncwidget.cpp" line="218"/>
         <source>Currently there are no subfolders on the server.</source>
-        <translation type="unfinished"/>
+        <translation>Aktualisht te shërbyesi s’ka nëndosje</translation>
     </message>
     <message>
         <location filename="../src/gui/selectivesyncwidget.cpp" line="112"/>
         <source>An error occurred while loading the list of subfolders.</source>
-        <translation type="unfinished"/>
+        <translation>Ndodhi një gabim teksa ngarkohej lista e nëndosjeve.</translation>
     </message>
 </context>
 <context>
@@ -3225,7 +3229,7 @@ Kini parasysh se përdorimi i çfarëdo mundësie regjistrimi që nga rresht urd
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="912"/>
         <source>Manage public links</source>
-        <translation type="unfinished"/>
+        <translation>Administroni lidhje publike</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="997"/>
@@ -3602,7 +3606,7 @@ Kini parasysh se përdorimi i çfarëdo mundësie regjistrimi që nga rresht urd
         <location filename="../src/gui/newwizard/pages/serverurlsetupwizardpage.cpp" line="36"/>
         <source>%1 logo</source>
         <extracomment>This is the accessibility text for the logo in the setup wizard page. The parameter is the name for the (branded) application.</extracomment>
-        <translation type="unfinished"/>
+        <translation>Stemë e %1</translation>
     </message>
 </context>
 <context>
@@ -3659,7 +3663,7 @@ Jeni i sigurt se doni të ecet më tej?</translation>
     <message>
         <location filename="../src/gui/newwizard/setupwizardwidget.cpp" line="43"/>
         <source>&lt; &amp;Back</source>
-        <translation type="unfinished"/>
+        <translation>&lt; &amp;Mbrapsht</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/setupwizardwidget.cpp" line="49"/>
@@ -3680,7 +3684,7 @@ Jeni i sigurt se doni të ecet më tej?</translation>
     <message>
         <location filename="../src/gui/newwizard/setupwizardwidget.cpp" line="107"/>
         <source>&amp;Finish</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Përfundoje</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/setupwizardwidget.cpp" line="108"/>
@@ -3958,7 +3962,7 @@ Jeni i sigurt se doni të ecet më tej?</translation>
     <message>
         <location filename="../src/gui/newwizard/jobs/resolveurljobfactory.cpp" line="108"/>
         <source>SSL Error: %1</source>
-        <translation type="unfinished"/>
+        <translation>Gabim SSL: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/jobs/resolveurljobfactory.cpp" line="124"/>
@@ -4017,12 +4021,12 @@ Jeni i sigurt se doni të ecet më tej?</translation>
     <message>
         <location filename="../src/gui/newwizard/setupwizardwidget.ui" line="101"/>
         <source>&amp;Dismiss</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Hidhe tej</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/setupwizardwidget.ui" line="116"/>
         <source>&amp;Cancel</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Anuloje</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/setupwizardwidget.ui" line="152"/>
@@ -4043,12 +4047,12 @@ Jeni i sigurt se doni të ecet më tej?</translation>
     <message>
         <location filename="../src/gui/folderwizard/spacespage.ui" line="17"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select a Space to sync it to your computer.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Që të njëkohësohet sipas kompjuterit tuaj, përzgjidhni një Hapësirë.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard/spacespage.ui" line="33"/>
         <source>Spaces list</source>
-        <translation type="unfinished"/>
+        <translation>Listë Hapësirash</translation>
     </message>
 </context>
 <context>
@@ -4056,7 +4060,7 @@ Jeni i sigurt se doni të ecet më tej?</translation>
     <message>
         <location filename="../src/gui/spaces/qml/SpacesView.qml" line="30"/>
         <source>Spaces</source>
-        <translation type="unfinished"/>
+        <translation>Hapësira</translation>
     </message>
 </context>
 <context>
@@ -4149,12 +4153,12 @@ Jeni i sigurt se doni të ecet më tej?</translation>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="208"/>
         <source>%n year(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n vit</numerusform><numerusform>%n vjet</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="209"/>
         <source>%n month(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n muaj</numerusform><numerusform>%n muaj</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="210"/>
@@ -4174,7 +4178,7 @@ Jeni i sigurt se doni të ecet më tej?</translation>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="213"/>
         <source>%n second(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n sekondë</numerusform><numerusform>%n sekonda</numerusform></translation>
     </message>
     <message>
         <location filename="../src/common/utility.cpp" line="237"/>
