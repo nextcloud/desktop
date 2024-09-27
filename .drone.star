@@ -27,9 +27,9 @@ OC_CI_CLIENT_FEDORA = "owncloudci/client:fedora-39-amd64"
 OC_CI_SQUISH = "owncloudci/squish:fedora-39-7.2.1-qt66x-linux64"
 
 PLUGINS_GIT_ACTION = "plugins/git-action:1"
-PLUGINS_S3 = "plugins/s3"
+PLUGINS_S3 = "plugins/s3:1.4.0"
 PLUGINS_SLACK = "plugins/slack"
-TOOLHIPPIE_CALENS = "toolhippie/calens:latest"
+TOOLHIPPIE_CALENS = "toolhippie/calens:0.4.0"
 
 # npm packages to install
 NPM_GHERLINT = "@gherlint/gherlint@1.1.0"

@@ -1,4 +1,6 @@
 import uuid
+import os
+import subprocess
 from urllib.parse import urlparse
 from os import makedirs
 from os.path import exists, join
@@ -207,3 +209,51 @@ def wait_until_app_killed(pid=0):
 
 def generate_UUIDV4():
     return str(uuid.uuid4())
+
+
+# sometimes the keyring is locked during the test execution
+# and we need to unlock it
+def unlock_keyring():
+    if isWindows():
+        return
+
+    stdout, stderr, _ = run_sys_command(
+        [
+            'busctl',
+            '--user',
+            'get-property',
+            'org.freedesktop.secrets',
+            '/org/freedesktop/secrets/collection/login',
+            'org.freedesktop.Secret.Collection',
+            'Locked',
+        ]
+    )
+    output = ''
+    if stdout:
+        output = stdout.decode('utf-8')
+    if stderr:
+        output = stderr.decode('utf-8')
+    test.log(output)
+    if not output.strip().endswith('false'):
+        test.log('Unlocking keyring...')
+        password = os.getenv('VNC_PW')
+        command = f'echo -n "{password}" | gnome-keyring-daemon -r --unlock'
+        stdout, stderr, returncode = run_sys_command(command, True)
+        if stdout:
+            output = stdout.decode('utf-8')
+        if stderr:
+            output = stderr.decode('utf-8')
+        if returncode:
+            test.log(f'Failed to unlock keyring:\n{output}')
+        test.log(output)
+
+
+def run_sys_command(command=None, shell=False):
+    cmd = subprocess.run(
+        command,
+        shell=shell,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        check=False,
+    )
+    return cmd.stdout, cmd.stderr, cmd.returncode
