@@ -39,21 +39,64 @@ bool SslDialogErrorHandler::handleErrors(QList<QSslError> errors, const QSslConf
         return false;
     }
 
-    SslErrorDialog dlg(account);
     // whether the failing certs have previously been accepted
-    if (dlg.checkFailingCertsKnown(errors)) {
-        *certs = dlg.unknownCerts();
+    if (this.checkFailingCertsKnown(errors)) {
+        *certs = this.unknownCerts();
         return true;
     }
-    // whether the user accepted the certs
-    if (dlg.exec() == QDialog::Accepted) {
-        if (dlg.trustConnection()) {
-            *certs = dlg.unknownCerts();
-            return true;
+#if 1
+    QByteArray feature_test = qgetenv("NEXTCLOUD_TEST_SSL_SILENT");
+    if (feature_test.isEmpty() || feature_test.toInt() == 0) {
+        SslErrorDialog dlg(account);
+        dlg.showFailingCertsKnown(
+            errors,
+            _unknownCerts,
+            _errorStrings,
+            _additionalErrorStrings
+        );
+        // whether the user accepted the certs
+        if (dlg.exec() == QDialog::Accepted) {
+            if (dlg.trustConnection()) {
+                *certs = this.unknownCerts();
+                return true;
+            }
         }
     }
+#endif
     return false;
 }
+
+bool SslDialogErrorHandler::checkFailingCertsKnown(const QList<QSslError> &errors)
+{
+    // check if unknown certs caused errors.
+    _unknownCerts.clear();
+    _errorStrings.clear();
+    _additionalErrorStrings.clear();
+
+    QList<QSslCertificate> trustedCerts = _account->approvedCerts();
+
+    for (int i = 0; i < errors.count(); ++i) {
+        QSslError error = errors.at(i);
+        if (trustedCerts.contains(error.certificate()) || _unknownCerts.contains(error.certificate())) {
+            continue;
+        }
+        _errorStrings += error.errorString();
+        if (!error.certificate().isNull()) {
+            _unknownCerts.append(error.certificate());
+        } else {
+            _additionalErrorStrings.append(error.errorString());
+        }
+    }
+
+    // if there are no errors left, all Certs were known.
+    if (_errorStrings.isEmpty()) {
+        _allTrusted = true;
+        return true;
+    }
+
+    return false;
+}
+
 
 SslErrorDialog::SslErrorDialog(AccountPtr account, QWidget *parent)
     : QDialog(parent)
@@ -100,36 +143,15 @@ QString SslErrorDialog::styleSheet() const
 }
 #define QL(x) QLatin1String(x)
 
-bool SslErrorDialog::checkFailingCertsKnown(const QList<QSslError> &errors)
+bool SslErrorDialog::showFailingCertsKnown(
+    const QList<QSslError> &errors,
+    QList<QSslCertificate> unknownCerts,
+    QStringList errorStrings,
+    QStringList additionalErrorStrings,
+    )
 {
-    // check if unknown certs caused errors.
-    _unknownCerts.clear();
 
-    QStringList errorStrings;
-
-    QStringList additionalErrorStrings;
-
-    QList<QSslCertificate> trustedCerts = _account->approvedCerts();
-
-    for (int i = 0; i < errors.count(); ++i) {
-        QSslError error = errors.at(i);
-        if (trustedCerts.contains(error.certificate()) || _unknownCerts.contains(error.certificate())) {
-            continue;
-        }
-        errorStrings += error.errorString();
-        if (!error.certificate().isNull()) {
-            _unknownCerts.append(error.certificate());
-        } else {
-            additionalErrorStrings.append(error.errorString());
-        }
-    }
-
-    // if there are no errors left, all Certs were known.
-    if (errorStrings.isEmpty()) {
-        _allTrusted = true;
-        return true;
-    }
-
+    _unknownCerts = unknownCerts;
     QString msg = QL("<html><head>");
     msg += QL("<link rel='stylesheet' type='text/css' href='format.css'>");
     msg += QL("</head><body>");
@@ -138,7 +160,7 @@ bool SslErrorDialog::checkFailingCertsKnown(const QList<QSslError> &errors)
     msg += QL("<h3>") + tr("Cannot connect securely to <i>%1</i>:").arg(host) + QL("</h3>");
     // loop over the unknown certs and line up their errors.
     msg += QL("<div id=\"ca_errors\">");
-    foreach (const QSslCertificate &cert, _unknownCerts) {
+    foreach (const QSslCertificate &cert, unknownCerts) {
         msg += QL("<div id=\"ca_error\">");
         // add the errors for this cert
         foreach (QSslError err, errors) {
@@ -148,7 +170,7 @@ bool SslErrorDialog::checkFailingCertsKnown(const QList<QSslError> &errors)
         }
         msg += QL("</div>");
         msg += certDiv(cert);
-        if (_unknownCerts.count() > 1) {
+        if (unknownCerts.count() > 1) {
             msg += QL("<hr/>");
         }
     }

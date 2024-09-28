@@ -38,6 +38,11 @@ class SslDialogErrorHandler : public AbstractSslErrorHandler
 {
 public:
     bool handleErrors(QList<QSslError> errors, const QSslConfiguration &conf, QList<QSslCertificate> *certs, AccountPtr) override;
+    [[nodiscard]] QList<QSslCertificate> unknownCerts() const { return _unknownCerts; }
+private:
+    QList<QSslCertificate> _unknownCerts;
+    QStringList _errorStrings;
+    QStringList _additionalErrorStrings;
 };
 
 /**
