@@ -412,89 +412,89 @@
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="238"/>
         <source>Nextcloud desktop main dialog</source>
-        <translation type="unfinished"/>
+        <translation>Caixa de diálogo principal do desktop Nextcloud</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="264"/>
         <source>Current account</source>
-        <translation type="unfinished"/>
+        <translation>Conta atual</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="270"/>
         <location filename="../src/gui/tray/MainWindow.qml" line="372"/>
         <source>Resume sync for all</source>
-        <translation type="unfinished"/>
+        <translation>Retomar sincronização para todos</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="270"/>
         <location filename="../src/gui/tray/MainWindow.qml" line="372"/>
         <source>Pause sync for all</source>
-        <translation type="unfinished"/>
+        <translation>Pausar sincronização para todos</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="337"/>
         <source>Add account</source>
-        <translation type="unfinished"/>
+        <translation>Incluir conta</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="349"/>
         <source>Add new account</source>
-        <translation type="unfinished"/>
+        <translation>Incluir nova conta</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="384"/>
         <source>Settings</source>
-        <translation type="unfinished"/>
+        <translation>Configurações</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="401"/>
         <source>Exit</source>
-        <translation type="unfinished"/>
+        <translation>Saír</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="435"/>
         <source>Current account avatar</source>
-        <translation type="unfinished"/>
+        <translation>Avatar da conta atual</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="474"/>
         <source>Current account status is online</source>
-        <translation type="unfinished"/>
+        <translation>Status da conta atual é online</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="474"/>
         <source>Current account status is do not disturb</source>
-        <translation type="unfinished"/>
+        <translation>Status da conta atual é não perturbe</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="543"/>
         <source>Account switcher and settings menu</source>
-        <translation type="unfinished"/>
+        <translation>Alternador de conta e menu de configurações</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="564"/>
         <source>Open local or group folders</source>
-        <translation type="unfinished"/>
+        <translation>Abrir pastas locais ou de grupo</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="602"/>
         <source>More apps</source>
-        <translation type="unfinished"/>
+        <translation>Mais aplicativos</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="644"/>
         <source>Open %1 in browser</source>
-        <translation type="unfinished"/>
+        <translation>Abrir %1 no navegador</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="770"/>
         <source>Unified search results list</source>
-        <translation type="unfinished"/>
+        <translation>Lista unificada de resultados de pesquisa</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="833"/>
         <source>New activities</source>
-        <translation type="unfinished"/>
+        <translation>Novas atividades</translation>
     </message>
 </context>
 <context>
@@ -4150,30 +4150,30 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
         <translation>O nome do arquivo é um nome reservado neste sistema de arquivos. </translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="390"/>
+        <location filename="../src/libsync/discovery.cpp" line="394"/>
         <source>Folder</source>
         <comment>name of folder entity to use when warning about invalid name</comment>
         <translation>Pasta</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="390"/>
+        <location filename="../src/libsync/discovery.cpp" line="394"/>
         <source>File</source>
         <comment>name of folder entity to use when warning about invalid name</comment>
         <translation>Arquivo</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="392"/>
+        <location filename="../src/libsync/discovery.cpp" line="396"/>
         <source>%1 name containing the character &quot;%2&quot; is not supported on this file system.</source>
         <comment>folder or file impossible to sync due to an invalid name, placeholders will be file or folder and the invalid character</comment>
         <translation>O nome %1 contendo o caractere &quot;%2&quot; não é suportado neste sistema de arquivos.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="394"/>
+        <location filename="../src/libsync/discovery.cpp" line="398"/>
         <source>%1 name contains at least one invalid character</source>
         <translation>O nome %1 contém pelo menos um carácter inválido</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="396"/>
+        <location filename="../src/libsync/discovery.cpp" line="400"/>
         <source>%1 name is a reserved name on this file system.</source>
         <translation>%1 nome é um nome reservado neste sistema de arquivos.</translation>
     </message>
@@ -4228,22 +4228,22 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
         <translation>O nome do arquivo está na lista negra do servidor. </translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="437"/>
+        <location filename="../src/libsync/discovery.cpp" line="441"/>
         <source> Reason: the entire filename is forbidden.</source>
         <translation>Motivo: o nome do arquivo inteiro é proibido.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="440"/>
+        <location filename="../src/libsync/discovery.cpp" line="444"/>
         <source> Reason: the filename has a forbidden base name (filename start).</source>
         <translation>Motivo: o nome do arquivo tem um nome base proibido (nome do arquivo inicial).</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="443"/>
+        <location filename="../src/libsync/discovery.cpp" line="447"/>
         <source> Reason: the file has a forbidden extension (.%1).</source>
         <translation>Motivo: o arquivo tem uma extensão proibida (.%1).</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="446"/>
+        <location filename="../src/libsync/discovery.cpp" line="450"/>
         <source> Reason: the filename contains a forbidden character (%1).</source>
         <translation>Motivo: o nome do arquivo contém um caractere proibido (%1).</translation>
     </message>
@@ -4278,7 +4278,7 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
         <translation>Não é possível sincronizar devido ao horário de modificação inválido</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1095"/>
+        <location filename="../src/libsync/discovery.cpp" line="1099"/>
         <source>Could not upload file, because it is open in &quot;%1&quot;.</source>
         <translation>Não foi possível fazer upload do arquivo porque ele está aberto em &quot;%1&quot;.</translation>
     </message>

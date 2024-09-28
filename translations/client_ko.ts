@@ -4151,30 +4151,30 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>해당 파일 이름은 이 파일 시스템에서 예약된 이름입니다.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="390"/>
+        <location filename="../src/libsync/discovery.cpp" line="394"/>
         <source>Folder</source>
         <comment>name of folder entity to use when warning about invalid name</comment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="390"/>
+        <location filename="../src/libsync/discovery.cpp" line="394"/>
         <source>File</source>
         <comment>name of folder entity to use when warning about invalid name</comment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="392"/>
+        <location filename="../src/libsync/discovery.cpp" line="396"/>
         <source>%1 name containing the character &quot;%2&quot; is not supported on this file system.</source>
         <comment>folder or file impossible to sync due to an invalid name, placeholders will be file or folder and the invalid character</comment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="394"/>
+        <location filename="../src/libsync/discovery.cpp" line="398"/>
         <source>%1 name contains at least one invalid character</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="396"/>
+        <location filename="../src/libsync/discovery.cpp" line="400"/>
         <source>%1 name is a reserved name on this file system.</source>
         <translation type="unfinished"/>
     </message>
@@ -4229,22 +4229,22 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>파일 이름이 서버 블랙리스트에 있습니다.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="437"/>
+        <location filename="../src/libsync/discovery.cpp" line="441"/>
         <source> Reason: the entire filename is forbidden.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="440"/>
+        <location filename="../src/libsync/discovery.cpp" line="444"/>
         <source> Reason: the filename has a forbidden base name (filename start).</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="443"/>
+        <location filename="../src/libsync/discovery.cpp" line="447"/>
         <source> Reason: the file has a forbidden extension (.%1).</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="446"/>
+        <location filename="../src/libsync/discovery.cpp" line="450"/>
         <source> Reason: the filename contains a forbidden character (%1).</source>
         <translation type="unfinished"/>
     </message>
@@ -4279,7 +4279,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>유효하지 않은 수정 시간으로 인해 동기화할 수 없습니다.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1095"/>
+        <location filename="../src/libsync/discovery.cpp" line="1099"/>
         <source>Could not upload file, because it is open in &quot;%1&quot;.</source>
         <translation>파일이 &quot;%1&quot;에서 열려있기 때문에 업로드할 수 없습니다.</translation>
     </message>

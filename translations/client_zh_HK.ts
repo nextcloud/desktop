@@ -4160,30 +4160,30 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>此檔案名已被此檔案系統保留所用。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="390"/>
+        <location filename="../src/libsync/discovery.cpp" line="394"/>
         <source>Folder</source>
         <comment>name of folder entity to use when warning about invalid name</comment>
         <translation>資料夾</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="390"/>
+        <location filename="../src/libsync/discovery.cpp" line="394"/>
         <source>File</source>
         <comment>name of folder entity to use when warning about invalid name</comment>
         <translation>檔案</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="392"/>
+        <location filename="../src/libsync/discovery.cpp" line="396"/>
         <source>%1 name containing the character &quot;%2&quot; is not supported on this file system.</source>
         <comment>folder or file impossible to sync due to an invalid name, placeholders will be file or folder and the invalid character</comment>
         <translation>此檔案系統不支援包含字符 &quot;%2&quot; 的 %1 名稱。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="394"/>
+        <location filename="../src/libsync/discovery.cpp" line="398"/>
         <source>%1 name contains at least one invalid character</source>
         <translation>%1 名稱含有不無效的字元</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="396"/>
+        <location filename="../src/libsync/discovery.cpp" line="400"/>
         <source>%1 name is a reserved name on this file system.</source>
         <translation>在檔案件系統中，%1 名稱是保留的名稱，無法使用。</translation>
     </message>
@@ -4238,22 +4238,22 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>伺服器已將此檔名列為黑名單。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="437"/>
+        <location filename="../src/libsync/discovery.cpp" line="441"/>
         <source> Reason: the entire filename is forbidden.</source>
         <translation>理由：整個檔案名稱被禁止。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="440"/>
+        <location filename="../src/libsync/discovery.cpp" line="444"/>
         <source> Reason: the filename has a forbidden base name (filename start).</source>
         <translation>理由：檔案名稱有禁止的基本名稱（檔案名稱開頭）。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="443"/>
+        <location filename="../src/libsync/discovery.cpp" line="447"/>
         <source> Reason: the file has a forbidden extension (.%1).</source>
         <translation>理由：檔案名稱有禁止的副檔名 (.%1)。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="446"/>
+        <location filename="../src/libsync/discovery.cpp" line="450"/>
         <source> Reason: the filename contains a forbidden character (%1).</source>
         <translation>理由：檔案名稱包含禁止的字元 (%1)。</translation>
     </message>
@@ -4288,7 +4288,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>由於修改時間無效，無法同步</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1095"/>
+        <location filename="../src/libsync/discovery.cpp" line="1099"/>
         <source>Could not upload file, because it is open in &quot;%1&quot;.</source>
         <translation>無法上傳檔案，因為其於「%1」開啟。</translation>
     </message>

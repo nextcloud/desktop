@@ -412,89 +412,89 @@
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="238"/>
         <source>Nextcloud desktop main dialog</source>
-        <translation type="unfinished"/>
+        <translation>Nextcloud desktop главни дијалог</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="264"/>
         <source>Current account</source>
-        <translation type="unfinished"/>
+        <translation>Тренутни налог</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="270"/>
         <location filename="../src/gui/tray/MainWindow.qml" line="372"/>
         <source>Resume sync for all</source>
-        <translation type="unfinished"/>
+        <translation>Настави синхронизацију за све</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="270"/>
         <location filename="../src/gui/tray/MainWindow.qml" line="372"/>
         <source>Pause sync for all</source>
-        <translation type="unfinished"/>
+        <translation>Паузирај синхронизацију за све</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="337"/>
         <source>Add account</source>
-        <translation type="unfinished"/>
+        <translation>Додај налог</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="349"/>
         <source>Add new account</source>
-        <translation type="unfinished"/>
+        <translation>Додај нови налог</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="384"/>
         <source>Settings</source>
-        <translation type="unfinished"/>
+        <translation>Подешавања</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="401"/>
         <source>Exit</source>
-        <translation type="unfinished"/>
+        <translation>Изађи</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="435"/>
         <source>Current account avatar</source>
-        <translation type="unfinished"/>
+        <translation>Тренутни аватар налога</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="474"/>
         <source>Current account status is online</source>
-        <translation type="unfinished"/>
+        <translation>Тренутни статус налога је на мрежи</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="474"/>
         <source>Current account status is do not disturb</source>
-        <translation type="unfinished"/>
+        <translation>Тренутни статус налога је не узнемиравај</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="543"/>
         <source>Account switcher and settings menu</source>
-        <translation type="unfinished"/>
+        <translation>Пребацивач налога и мени подешавања</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="564"/>
         <source>Open local or group folders</source>
-        <translation type="unfinished"/>
+        <translation>Отвори локалне или фолдере групе</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="602"/>
         <source>More apps</source>
-        <translation type="unfinished"/>
+        <translation>Још апликација</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="644"/>
         <source>Open %1 in browser</source>
-        <translation type="unfinished"/>
+        <translation>Отвори %1 у прегледачу</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="770"/>
         <source>Unified search results list</source>
-        <translation type="unfinished"/>
+        <translation>Листа резултата обједињене претраге</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="833"/>
         <source>New activities</source>
-        <translation type="unfinished"/>
+        <translation>Нове активности</translation>
     </message>
 </context>
 <context>
@@ -4160,30 +4160,30 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Име фајла је резервисано име на овом фајл систему.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="390"/>
+        <location filename="../src/libsync/discovery.cpp" line="394"/>
         <source>Folder</source>
         <comment>name of folder entity to use when warning about invalid name</comment>
         <translation>Фолдер</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="390"/>
+        <location filename="../src/libsync/discovery.cpp" line="394"/>
         <source>File</source>
         <comment>name of folder entity to use when warning about invalid name</comment>
         <translation>Фајл</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="392"/>
+        <location filename="../src/libsync/discovery.cpp" line="396"/>
         <source>%1 name containing the character &quot;%2&quot; is not supported on this file system.</source>
         <comment>folder or file impossible to sync due to an invalid name, placeholders will be file or folder and the invalid character</comment>
         <translation>Име „%1” које садржи карактер „%2” се не подржава на овом фајл систему.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="394"/>
+        <location filename="../src/libsync/discovery.cpp" line="398"/>
         <source>%1 name contains at least one invalid character</source>
         <translation>Име %1 садржи бар један недозвољени карактер</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="396"/>
+        <location filename="../src/libsync/discovery.cpp" line="400"/>
         <source>%1 name is a reserved name on this file system.</source>
         <translation>Име %1 је резервисано име на овом фајл систему.</translation>
     </message>
@@ -4238,22 +4238,22 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Име фајла је на црној листи сервера.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="437"/>
+        <location filename="../src/libsync/discovery.cpp" line="441"/>
         <source> Reason: the entire filename is forbidden.</source>
         <translation>Разлог: забрањено је комплетно име фајла.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="440"/>
+        <location filename="../src/libsync/discovery.cpp" line="444"/>
         <source> Reason: the filename has a forbidden base name (filename start).</source>
         <translation> Разлог: име фајла поседује забрањено базно име (почетак имена фајла).</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="443"/>
+        <location filename="../src/libsync/discovery.cpp" line="447"/>
         <source> Reason: the file has a forbidden extension (.%1).</source>
         <translation> Разлог: име фајла поседује забрањену екстензију (.%1).</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="446"/>
+        <location filename="../src/libsync/discovery.cpp" line="450"/>
         <source> Reason: the filename contains a forbidden character (%1).</source>
         <translation> Разлог: име фајла поседује забрањени карактер (%1).</translation>
     </message>
@@ -4288,7 +4288,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Не може да се синхронизује због неисправног времена измене</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1095"/>
+        <location filename="../src/libsync/discovery.cpp" line="1099"/>
         <source>Could not upload file, because it is open in &quot;%1&quot;.</source>
         <translation>Фајл не може да се отпреми јер је отворен у „%1”.</translation>
     </message>
@@ -7272,17 +7272,17 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="492"/>
         <source>Current account avatar</source>
-        <translation>Текући аватар налога</translation>
+        <translation>Тренутни аватар налога</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="531"/>
         <source>Current account status is online</source>
-        <translation>Текући стаус налога је на мрежи</translation>
+        <translation>Тренутни статус налога је на мрежи</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="531"/>
         <source>Current account status is do not disturb</source>
-        <translation>Текући статус налога је не узнемиравај</translation>
+        <translation>Тренутни статус налога је не узнемиравај</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="607"/>
@@ -7307,7 +7307,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="821"/>
         <source>Unified search results list</source>
-        <translation>Обједињена листа резултата претраге</translation>
+        <translation>Листа резултата обједињене претраге</translation>
     </message>
 </context>
 <context>

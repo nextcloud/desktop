@@ -412,89 +412,89 @@
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="238"/>
         <source>Nextcloud desktop main dialog</source>
-        <translation type="unfinished"/>
+        <translation>شاشة الحوار الرئيسية في تطبيق نكست كلاود لسطح المكتب</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="264"/>
         <source>Current account</source>
-        <translation type="unfinished"/>
+        <translation>الحساب الحالي</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="270"/>
         <location filename="../src/gui/tray/MainWindow.qml" line="372"/>
         <source>Resume sync for all</source>
-        <translation type="unfinished"/>
+        <translation>استئناف المزامنة للكل</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="270"/>
         <location filename="../src/gui/tray/MainWindow.qml" line="372"/>
         <source>Pause sync for all</source>
-        <translation type="unfinished"/>
+        <translation>تجميد المزامنة للكل</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="337"/>
         <source>Add account</source>
-        <translation type="unfinished"/>
+        <translation>إضافة حساب</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="349"/>
         <source>Add new account</source>
-        <translation type="unfinished"/>
+        <translation>إضافة حساب جديد</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="384"/>
         <source>Settings</source>
-        <translation type="unfinished"/>
+        <translation>الإعدادات</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="401"/>
         <source>Exit</source>
-        <translation type="unfinished"/>
+        <translation>خروج</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="435"/>
         <source>Current account avatar</source>
-        <translation type="unfinished"/>
+        <translation>آفاتار الحساب الحالي</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="474"/>
         <source>Current account status is online</source>
-        <translation type="unfinished"/>
+        <translation>الحالة الحالية للحساب: مُتّصِل</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="474"/>
         <source>Current account status is do not disturb</source>
-        <translation type="unfinished"/>
+        <translation>الحالة الحالية للحساب: يُرجى عدم الإزعاج</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="543"/>
         <source>Account switcher and settings menu</source>
-        <translation type="unfinished"/>
+        <translation>قائمة مُبدِّل الحسابات و الإعدادات</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="564"/>
         <source>Open local or group folders</source>
-        <translation type="unfinished"/>
+        <translation>فتح المجلدات المحلية و الجماعية</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="602"/>
         <source>More apps</source>
-        <translation type="unfinished"/>
+        <translation>تطبيقات أخرى</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="644"/>
         <source>Open %1 in browser</source>
-        <translation type="unfinished"/>
+        <translation>فتح %1 في المُتصفِّح</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="770"/>
         <source>Unified search results list</source>
-        <translation type="unfinished"/>
+        <translation>قائمة نتائج البحث الموحد</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="833"/>
         <source>New activities</source>
-        <translation type="unfinished"/>
+        <translation>لا شيء في سجل الحركات</translation>
     </message>
 </context>
 <context>
@@ -4140,30 +4140,30 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>اسم الملف هذا هو اسم محجوز لنظام التشغيل هذا.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="390"/>
+        <location filename="../src/libsync/discovery.cpp" line="394"/>
         <source>Folder</source>
         <comment>name of folder entity to use when warning about invalid name</comment>
         <translation>مجلد </translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="390"/>
+        <location filename="../src/libsync/discovery.cpp" line="394"/>
         <source>File</source>
         <comment>name of folder entity to use when warning about invalid name</comment>
         <translation>ملف</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="392"/>
+        <location filename="../src/libsync/discovery.cpp" line="396"/>
         <source>%1 name containing the character &quot;%2&quot; is not supported on this file system.</source>
         <comment>folder or file impossible to sync due to an invalid name, placeholders will be file or folder and the invalid character</comment>
         <translation>الاسم %1 الذي يحتوي على الحرف &quot;%2&quot; غير مدعوم في نظام الملفات هذا.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="394"/>
+        <location filename="../src/libsync/discovery.cpp" line="398"/>
         <source>%1 name contains at least one invalid character</source>
         <translation>يحتوي الاسم %1 على حرف واحد غير صالح على الأقل</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="396"/>
+        <location filename="../src/libsync/discovery.cpp" line="400"/>
         <source>%1 name is a reserved name on this file system.</source>
         <translation>الاسم %1 هو اسم محجوز في نظام الملفات هذا.</translation>
     </message>
@@ -4218,22 +4218,22 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>اسم الملف موجود في القائمة السوداء للخادوم.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="437"/>
+        <location filename="../src/libsync/discovery.cpp" line="441"/>
         <source> Reason: the entire filename is forbidden.</source>
         <translation>السبب: اسم الملف محظور بأكمله.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="440"/>
+        <location filename="../src/libsync/discovery.cpp" line="444"/>
         <source> Reason: the filename has a forbidden base name (filename start).</source>
         <translation>السبب: اسم الملف الأساس (جزء البداية) محظور.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="443"/>
+        <location filename="../src/libsync/discovery.cpp" line="447"/>
         <source> Reason: the file has a forbidden extension (.%1).</source>
         <translation> السبب: امتداد الملف محظور (.%1).</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="446"/>
+        <location filename="../src/libsync/discovery.cpp" line="450"/>
         <source> Reason: the filename contains a forbidden character (%1).</source>
         <translation>السبب: اسم الملف يحتوي على حروف محظورة (%1).</translation>
     </message>
@@ -4268,7 +4268,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>تعذّرت المزامنة لأن وقت آخر تعديل للملف غير صالح</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1095"/>
+        <location filename="../src/libsync/discovery.cpp" line="1099"/>
         <source>Could not upload file, because it is open in &quot;%1&quot;.</source>
         <translation>يتعذّر فتح الملف لأنه مفتوح سلفاً في &quot;%1&quot;.</translation>
     </message>

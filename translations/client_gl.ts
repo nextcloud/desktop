@@ -4160,30 +4160,30 @@ Este é un novo modo experimental. Se decide usalo, agradecémoslle que informe 
         <translation>O nome do ficheiro é un nome reservado neste sistema de ficheiros.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="390"/>
+        <location filename="../src/libsync/discovery.cpp" line="394"/>
         <source>Folder</source>
         <comment>name of folder entity to use when warning about invalid name</comment>
         <translation>Cartafol</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="390"/>
+        <location filename="../src/libsync/discovery.cpp" line="394"/>
         <source>File</source>
         <comment>name of folder entity to use when warning about invalid name</comment>
         <translation>Ficheiro</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="392"/>
+        <location filename="../src/libsync/discovery.cpp" line="396"/>
         <source>%1 name containing the character &quot;%2&quot; is not supported on this file system.</source>
         <comment>folder or file impossible to sync due to an invalid name, placeholders will be file or folder and the invalid character</comment>
         <translation>O nome %1 que contén o carácter «%2» non está admitido neste sistema de ficheiros.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="394"/>
+        <location filename="../src/libsync/discovery.cpp" line="398"/>
         <source>%1 name contains at least one invalid character</source>
         <translation>O nome %1 contén algún carácter incorrecto</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="396"/>
+        <location filename="../src/libsync/discovery.cpp" line="400"/>
         <source>%1 name is a reserved name on this file system.</source>
         <translation>O nome %1 é un nome reservado neste sistema de ficheiros.</translation>
     </message>
@@ -4238,22 +4238,22 @@ Este é un novo modo experimental. Se decide usalo, agradecémoslle que informe 
         <translation>O nome do ficheiro está na lista de bloqueo no servidor.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="437"/>
+        <location filename="../src/libsync/discovery.cpp" line="441"/>
         <source> Reason: the entire filename is forbidden.</source>
         <translation>Motivo: está prohibido todo o nome do ficheiro.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="440"/>
+        <location filename="../src/libsync/discovery.cpp" line="444"/>
         <source> Reason: the filename has a forbidden base name (filename start).</source>
         <translation>Motivo: o nome do ficheiro ten un nome base prohibido (inicio do nome de ficheiro).</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="443"/>
+        <location filename="../src/libsync/discovery.cpp" line="447"/>
         <source> Reason: the file has a forbidden extension (.%1).</source>
         <translation>Motivo: o ficheiro ten unha extensión prohibida (.%1).</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="446"/>
+        <location filename="../src/libsync/discovery.cpp" line="450"/>
         <source> Reason: the filename contains a forbidden character (%1).</source>
         <translation>Motivo: o nome do ficheiro contén un carácter prohibido (%1).</translation>
     </message>
@@ -4288,7 +4288,7 @@ Este é un novo modo experimental. Se decide usalo, agradecémoslle que informe 
         <translation>Non é posíbel sincronizar por mor dunha hora de modificación incorrecta</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1095"/>
+        <location filename="../src/libsync/discovery.cpp" line="1099"/>
         <source>Could not upload file, because it is open in &quot;%1&quot;.</source>
         <translation>Non foi posíbel enviar o ficheiro porque está aberto en «%1».</translation>
     </message>
