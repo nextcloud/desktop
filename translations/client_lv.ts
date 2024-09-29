@@ -525,12 +525,12 @@
     <message>
         <location filename="../src/libsync/account.cpp" line="941"/>
         <source>Lock operation on %1 failed with error %2</source>
-        <translation>Bloķēšanas operācija uz %1 neizdevās ar kļūdu %2</translation>
+        <translation>Aizslēgšana neizdevās %1 ar kļūdu %2</translation>
     </message>
     <message>
         <location filename="../src/libsync/account.cpp" line="943"/>
         <source>Unlock operation on %1 failed with error %2</source>
-        <translation>Atbloķēšanas operācija uz %1 neizdevās ar kļūdu %2</translation>
+        <translation>Atslēgšana neizdevās %1 ar kļūdu %2</translation>
     </message>
 </context>
 <context>
@@ -894,7 +894,7 @@ Vienīgā priekšrocība, izslēdzot virtuālo datņu atbalstu, ir tas, ka atkal
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1106"/>
         <source>The syncing operation is running.&lt;br/&gt;Do you want to terminate it?</source>
-        <translation>Pašlaik notiek sinhronizācijas operācija.&lt;br/&gt;Vai to izbeigt?</translation>
+        <translation>Pašlaik notiek sinhronizēšana.&lt;br/&gt;Vai to izbeigt?</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1178"/>
