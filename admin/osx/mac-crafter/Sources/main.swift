@@ -80,6 +80,9 @@ struct Build: ParsableCommand {
     @Option(name: [.long], help: "Sparkle package signing key.")
     var sparklePackageSignKey: String?
 
+    @Option(name: [.long], help: "Override server url.")
+    var overrideServerUrl: String?
+
     @Flag(help: "Reconfigure KDE Craft.")
     var reconfigureCraft = false
 
@@ -100,6 +103,9 @@ struct Build: ParsableCommand {
 
     @Flag(help: "Run a full rebuild.")
     var fullRebuild = false
+
+    @Flag(help: "Force override server URL.")
+    var forceOverrideServerUrl = false
 
     @Flag(help: "Create an installer package.")
     var package = false
@@ -167,6 +173,11 @@ struct Build: ParsableCommand {
             "\(craftBlueprintName).buildMacOSBundle=\(disableAppBundle ? "False" : "True")",
             "\(craftBlueprintName).buildFileProviderModule=\(buildFileProviderModule ? "True" : "False")"
         ]
+
+        if let overrideServerUrl {
+            craftOptions.append("\(craftBlueprintName).overrideServerUrl=\(overrideServerUrl)")
+            craftOptions.append("\(craftBlueprintName).forceOverrideServerUrl=\(forceOverrideServerUrl ? "True" : "False")")
+        }
 
         if !disableAutoUpdater {
             print("Configuring Sparkle auto-updater.")
