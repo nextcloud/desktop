@@ -104,12 +104,14 @@ extension FileProviderExtension: NSFileProviderServicing, ChangeNotificationInte
         }
     }
 
-    @objc func setupDomainAccount(user: String, serverUrl: String, password: String) {
+    @objc func setupDomainAccount(
+        user: String, userId: String, serverUrl: String, password: String
+    ) {
         let semaphore = DispatchSemaphore(value: 0)
         var authAttemptState = AuthenticationAttemptResultState.connectionError // default
         Task {
             let authTestNcKit = NextcloudKit()
-            authTestNcKit.setup(user: user, userId: user, password: password, urlBase: serverUrl)
+            authTestNcKit.setup(user: user, userId: userId, password: password, urlBase: serverUrl)
 
             // Retry a few times if we have a connection issue
             for authTimeout in AuthenticationTimeouts {
@@ -146,13 +148,13 @@ extension FileProviderExtension: NSFileProviderServicing, ChangeNotificationInte
             )
         }
 
-        let newNcAccount = Account(user: user, serverUrl: serverUrl, password: password)
+        let newNcAccount = Account(user: user, id: userId, serverUrl: serverUrl, password: password)
         guard newNcAccount != ncAccount else { return }
         ncAccount = newNcAccount
         ncKit.setup(
             account: newNcAccount.ncKitAccount,
             user: newNcAccount.username,
-            userId: newNcAccount.username,
+            userId: newNcAccount.id,
             password: newNcAccount.password,
             urlBase: newNcAccount.serverUrl,
             userAgent: "Nextcloud-macOS/FileProviderExt",
