@@ -213,13 +213,15 @@ void FileProviderSocketController::sendAccountDetails() const
 
     const auto credentials = account->credentials();
     Q_ASSERT(credentials);
-    const auto accountUser = account->davUser();
-    const auto accountUrl = account->url().toString();
-    const auto accountPassword = credentials->password();
+    const auto accountUser = credentials->user(); // User-provided username/email
+    const auto accountUserId = account->davUser(); // Backing user id on server
+    const auto accountUrl = account->url().toString(); // Server base URL
+    const auto accountPassword = credentials->password(); // Account password
 
     // We cannot use colons as separators here due to "https://" in the url
     const auto message = QString(QStringLiteral("ACCOUNT_DETAILS:") +
                                  accountUser + "~" +
+                                 accountUserId + "~" +
                                  accountUrl + "~" +
                                  accountPassword);
     sendMessage(message);
