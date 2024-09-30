@@ -13,7 +13,7 @@ import XCTest
 
 final class FilesDatabaseManagerTests: XCTestCase {
     static let account = Account(
-        user: "testUser", serverUrl: "https://mock.nc.com", password: "abcd"
+        user: "testUser", id: "testUserId", serverUrl: "https://mock.nc.com", password: "abcd"
     )
 
     static let dbManager = FilesDatabaseManager(realmConfig: .defaultConfiguration)

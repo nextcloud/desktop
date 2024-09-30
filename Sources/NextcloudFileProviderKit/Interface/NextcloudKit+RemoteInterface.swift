@@ -15,6 +15,7 @@ extension NextcloudKit: RemoteInterface {
     public var account: Account {
         Account(
             user: nkCommonInstance.user,
+            id: nkCommonInstance.userId,
             serverUrl: nkCommonInstance.urlBase,
             password: nkCommonInstance.password
         )

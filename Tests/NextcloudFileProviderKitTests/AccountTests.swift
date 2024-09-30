@@ -12,9 +12,10 @@ import XCTest
 final class AccountTests: XCTest {
     func testInitializationDirect() {
         let user = "user"
+        let userId = "userId"
         let password = "password"
         let serverUrl = "https://example.com"
-        let account = Account(user: user, serverUrl: serverUrl, password: password)
+        let account = Account(user: user, id: userId, serverUrl: serverUrl, password: password)
 
         XCTAssertEqual(account.username, user)
         XCTAssertEqual(account.password, password)
@@ -53,7 +54,9 @@ final class AccountTests: XCTest {
     }
 
     func testDictionaryRepresentation() {
-        let account = Account(user: "user", serverUrl: "https://example.com", password: "password")
+        let account = Account(
+            user: "user", id: "userId", serverUrl: "https://example.com", password: "password"
+        )
         let dictionary = account.dictionary()
 
         XCTAssertEqual(dictionary[AccountDictUsernameKey], "user")
@@ -64,12 +67,18 @@ final class AccountTests: XCTest {
     }
 
     func testEquatability() {
-        let account1 = Account(user: "user", serverUrl: "https://example.com", password: "password")
-        let account2 = Account(user: "user", serverUrl: "https://example.com", password: "password")
+        let account1 = Account(
+            user: "user", id: "userId", serverUrl: "https://example.com", password: "password"
+        )
+        let account2 = Account(
+            user: "user", id: "userId", serverUrl: "https://example.com", password: "password"
+        )
 
         XCTAssertEqual(account1, account2)
 
-        let account3 = Account(user: "user", serverUrl: "https://example.net", password: "password")
+        let account3 = Account(
+            user: "user", id: "userId", serverUrl: "https://example.net", password: "password"
+        )
         XCTAssertNotEqual(account1, account3)
     }
 }

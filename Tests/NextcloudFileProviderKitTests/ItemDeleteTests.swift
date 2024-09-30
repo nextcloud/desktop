@@ -14,7 +14,7 @@ import XCTest
 
 final class ItemDeleteTests: XCTestCase {
     static let account = Account(
-        user: "testUser", serverUrl: "https://mock.nc.com", password: "abcd"
+        user: "testUser", id: "testUserId", serverUrl: "https://mock.nc.com", password: "abcd"
     )
     lazy var rootItem = MockRemoteItem(
         identifier: NSFileProviderItemIdentifier.rootContainer.rawValue,

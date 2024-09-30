@@ -11,7 +11,7 @@ import XCTest
 
 final class MockRemoteInterfaceTests: XCTestCase {
     static let account = Account(
-        user: "testUser", serverUrl: "https://mock.nc.com", password: "abcd"
+        user: "testUser", id: "testUserId", serverUrl: "https://mock.nc.com", password: "abcd"
     )
     lazy var rootItem = MockRemoteItem(
         identifier: "root",
@@ -438,7 +438,8 @@ final class MockRemoteInterfaceTests: XCTestCase {
         let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
         let state = await remoteInterface.tryAuthenticationAttempt()
         XCTAssertEqual(state, .success)
-        let newMri = MockRemoteInterface(account: Account(user: "", serverUrl: "", password: ""))
+        let newMri =
+            MockRemoteInterface(account: Account(user: "", id: "", serverUrl: "", password: ""))
         let failState = await newMri.tryAuthenticationAttempt()
         XCTAssertEqual(failState, .authenticationError)
     }

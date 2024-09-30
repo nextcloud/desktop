@@ -15,7 +15,7 @@ import XCTest
 
 final class ItemPropertyTests: XCTestCase {
     static let account = Account(
-        user: "testUser", serverUrl: "https://mock.nc.com", password: "abcd"
+        user: "testUser", id: "testUserId", serverUrl: "https://mock.nc.com", password: "abcd"
     )
 
     func testMetadataContentType() {
