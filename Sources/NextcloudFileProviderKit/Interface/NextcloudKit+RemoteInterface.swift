@@ -202,4 +202,17 @@ extension NextcloudKit: RemoteInterface {
             }
         }
     }
+
+    public func fetchUserProfile(
+        options: NKRequestOptions = .init(),
+        taskHandler: @escaping (_ task: URLSessionTask) -> Void = { _ in }
+    ) async -> (account: String, userProfile: NKUserProfile?, data: Data?, error: NKError) {
+        return await withCheckedContinuation { continuation in
+            getUserProfile(
+                options: options, taskHandler: taskHandler
+            ) { account, userProfile, data, error in
+                continuation.resume(returning: (account, userProfile, data, error))
+            }
+        }
+    }
 }

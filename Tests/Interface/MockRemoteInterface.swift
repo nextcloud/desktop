@@ -354,4 +354,16 @@ public class MockRemoteInterface: RemoteInterface {
     ) async -> (account: String, data: Data?, error: NKError) {
         return (accountString, capabilities.data(using: .utf8), .success)
     }
+
+    public func fetchUserProfile(
+        options: NKRequestOptions = .init(),
+        taskHandler: @escaping (URLSessionTask) -> Void = { _ in }
+    ) async -> (account: String, userProfile: NKUserProfile?, data: Data?, error: NKError) {
+        let profile = NKUserProfile()
+        profile.address = account.serverUrl
+        profile.backend = "mock"
+        profile.displayName = account.ncKitAccount
+        profile.userId = account.username
+        return (account.ncKitAccount, profile, nil, .success)
+    }
 }
