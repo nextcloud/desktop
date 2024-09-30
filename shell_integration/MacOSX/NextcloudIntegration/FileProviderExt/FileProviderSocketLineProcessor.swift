@@ -53,7 +53,7 @@ class FileProviderSocketLineProcessor: NSObject, LineProcessor {
             let serverUrl = String(splitAccountDetails[2])
             let password = String(splitAccountDetails[3])
 
-            delegate.setupDomainAccount(user: user, serverUrl: serverUrl, password: password)
+            delegate.setupDomainAccount(user: user, userId: userId, serverUrl: serverUrl, password: password)
         }
     }
 }
