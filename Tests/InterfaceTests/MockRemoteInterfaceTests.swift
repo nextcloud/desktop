@@ -433,4 +433,13 @@ final class MockRemoteInterfaceTests: XCTestCase {
         XCTAssertEqual(account, Self.account.ncKitAccount)
         XCTAssertNotNil(profile)
     }
+
+    func testTryAuthenticationAttempt() async {
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+        let state = await remoteInterface.tryAuthenticationAttempt()
+        XCTAssertEqual(state, .success)
+        let newMri = MockRemoteInterface(account: Account(user: "", serverUrl: "", password: ""))
+        let failState = await newMri.tryAuthenticationAttempt()
+        XCTAssertEqual(failState, .authenticationError)
+    }
 }
