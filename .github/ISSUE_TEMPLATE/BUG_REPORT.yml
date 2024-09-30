@@ -1,7 +1,7 @@
-name: "Bug report: Nextcloud Desktop Client"
-description: "Submit a report and help us improve the Nextcloud Desktop Client"
+name: "🐞 Bug report"
+description: "Help us to improve by reporting a bug"
 title: "[Bug]: "
-labels: ["0. Needs triage"]
+labels: ["bug", "0. Needs triage"]
 body:
   - type: markdown
     attributes:
