@@ -19,6 +19,10 @@ import NextcloudKit
 import NextcloudFileProviderKit
 import OSLog
 
+let AuthenticationTimeouts: [UInt64] = [ // Have progressively longer timeouts to not hammer server
+    3_000_000_000, 6_000_000_000, 30_000_000_000, 60_000_000_000, 120_000_000_000, 300_000_000_000
+]
+
 extension FileProviderExtension: NSFileProviderServicing, ChangeNotificationInterface {
     /*
      This FileProviderExtension extension contains everything needed to communicate with the client.
@@ -120,7 +124,17 @@ extension FileProviderExtension: NSFileProviderServicing, ChangeNotificationInte
         ncKit.setup(delegate: changeObserver)
 
         Task {
-            switch (await ncKit.tryAuthenticationAttempt()) {
+            var authAttemptState = AuthenticationAttemptResultState.connectionError // default
+            for authTimeout in AuthenticationTimeouts { // Retry if we have a connection issue
+                authAttemptState = await ncKit.tryAuthenticationAttempt()
+                guard authAttemptState == .connectionError else { break }
+                Logger.fileProviderExtension.info(
+                    "\(user, privacy: .public) authentication try timed out. Trying again soon."
+                )
+                try? await Task.sleep(nanoseconds: authTimeout)
+            }
+
+            switch (authAttemptState) {
             case .authenticationError:
                 Logger.fileProviderExtension.info(
                     "\(user, privacy: .public) authentication failed due to bad creds, stopping"
