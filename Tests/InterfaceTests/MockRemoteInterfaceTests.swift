@@ -425,4 +425,12 @@ final class MockRemoteInterfaceTests: XCTestCase {
         XCTAssertEqual(result.error, .success)
         XCTAssertEqual(itemA.children, [])
     }
+
+    func testFetchUserProfile() async {
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+        let (account, profile, _, error) = await remoteInterface.fetchUserProfile()
+        XCTAssertEqual(error, .success)
+        XCTAssertEqual(account, Self.account.ncKitAccount)
+        XCTAssertNotNil(profile)
+    }
 }
