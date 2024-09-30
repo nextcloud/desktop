@@ -15,6 +15,7 @@ extension NextcloudKit: RemoteInterface {
     public var account: Account {
         Account(
             user: nkCommonInstance.user,
+            id: nkCommonInstance.userId,
             serverUrl: nkCommonInstance.urlBase,
             password: nkCommonInstance.password
         )
@@ -200,6 +201,36 @@ extension NextcloudKit: RemoteInterface {
             getCapabilities(options: options, taskHandler: taskHandler) { account, data, error in
                 continuation.resume(returning: (account, data, error))
             }
+        }
+    }
+
+    public func fetchUserProfile(
+        options: NKRequestOptions = .init(),
+        taskHandler: @escaping (_ task: URLSessionTask) -> Void = { _ in }
+    ) async -> (account: String, userProfile: NKUserProfile?, data: Data?, error: NKError) {
+        return await withCheckedContinuation { continuation in
+            getUserProfile(
+                options: options, taskHandler: taskHandler
+            ) { account, userProfile, data, error in
+                continuation.resume(returning: (account, userProfile, data, error))
+            }
+        }
+    }
+
+    public func tryAuthenticationAttempt(
+        options: NKRequestOptions = .init(),
+        taskHandler: @escaping (_ task: URLSessionTask) -> Void = { _ in }
+    ) async -> AuthenticationAttemptResultState {
+        // Test by trying to fetch user profile
+        let (_, _, _, error) =
+            await fetchUserProfile(options: options, taskHandler: taskHandler)
+
+        if error == .success {
+            return .success
+        } else if error.isCouldntConnectError {
+            return .connectionError
+        } else {
+            return .authenticationError
         }
     }
 }

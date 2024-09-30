@@ -16,6 +16,10 @@ public enum EnumerateDepth: String {
     case targetAndAllChildren = "infinity"
 }
 
+public enum AuthenticationAttemptResultState: Int {
+    case authenticationError, connectionError, success
+}
+
 public protocol RemoteInterface {
 
     var account: Account { get }
@@ -98,4 +102,12 @@ public protocol RemoteInterface {
     func fetchCapabilities(
         options: NKRequestOptions, taskHandler: @escaping (_ task: URLSessionTask) -> Void
     ) async -> (account: String, data: Data?, error: NKError)
+
+    func fetchUserProfile(
+        options: NKRequestOptions, taskHandler: @escaping (_ task: URLSessionTask) -> Void
+    ) async -> (account: String, userProfile: NKUserProfile?, data: Data?, error: NKError)
+
+    func tryAuthenticationAttempt(
+        options: NKRequestOptions, taskHandler: @escaping (_ task: URLSessionTask) -> Void
+    ) async -> AuthenticationAttemptResultState
 }
