@@ -79,7 +79,9 @@ func codesignClientAppBundle(
     print("Code-signing QtWebEngineProcess...")
     let qtWebEngineProcessPath =
         "\(frameworksPath)/QtWebEngineCore.framework/Versions/A/Helpers/QtWebEngineProcess.app"
-    try codesign(identity: codeSignIdentity, path: qtWebEngineProcessPath)
+    try codesign(identity: codeSignIdentity,
+                 path: qtWebEngineProcessPath,
+                 options: "--timestamp --force --verbose=4 --options runtime --deep --entitlements \(qtWebEngineProcessPath)/Contents/Resources/QtWebEngineProcess.entitlements")
 
     print("Code-signing QtWebEngine...")
     try codesign(identity: codeSignIdentity, path: "\(frameworksPath)/QtWebEngineCore.framework")
