@@ -163,6 +163,26 @@ extension FileProviderExtension: NSFileProviderServicing, ChangeNotificationInte
             remoteInterface: ncKit, changeNotificationInterface: self, domain: domain
         )
         ncKit.setup(delegate: changeObserver)
+        
+        Task {
+            let (_, profile, _, error) = await ncKit.fetchUserProfile()
+            guard error == .success, let profile else {
+                // Note that since the authentication check checks for the user profile, this should
+                // not really occur
+                Logger.fileProviderExtension.error(
+                    """
+                    Unable to get user profile for user \(user, privacy: .public) 
+                    at server \(serverUrl, privacy: .public)
+                    error: \(error.errorDescription, privacy: .public)
+                    """
+                )
+                return
+            }
+            ncKit.setup(user: user, userId: profile.userId, password: password, urlBase: serverUrl)
+            semaphore.signal()
+        }
+        semaphore.wait()
+
         signalEnumeratorAfterAccountSetup()
     }
 
