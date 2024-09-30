@@ -215,10 +215,6 @@ public class Item: NSObject, NSFileProviderItem {
         dbManager: FilesDatabaseManager = .shared
     ) -> Item? {
         // resolve the given identifier to a record in the model
-        Self.logger.debug(
-            "Received request for item with identifier: \(identifier.rawValue, privacy: .public)"
-        )
-
         guard identifier != .rootContainer else {
             return Item.rootContainer(remoteInterface: remoteInterface)
         }
