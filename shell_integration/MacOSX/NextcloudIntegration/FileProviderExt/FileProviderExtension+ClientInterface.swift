@@ -119,11 +119,28 @@ extension FileProviderExtension: NSFileProviderServicing, ChangeNotificationInte
         )
         ncKit.setup(delegate: changeObserver)
 
-        Logger.fileProviderExtension.info(
-            "Nextcloud account set up in File Provider extension for user: \(user, privacy: .public) at server: \(serverUrl, privacy: .public)"
-        )
-
-        signalEnumeratorAfterAccountSetup()
+        Task {
+            switch (await ncKit.tryAuthenticationAttempt()) {
+            case .authenticationError:
+                Logger.fileProviderExtension.info(
+                    "\(user, privacy: .public) authentication failed due to bad creds, stopping"
+                )
+                ncAccount = nil
+                ncKit.setup(user: "", userId: "", password: "", urlBase: "") // In case ongoing ops
+            case .connectionError:
+                Logger.fileProviderExtension.info(
+                    "\(user, privacy: .public) authentication try failed due to internet connectivity issues."
+                )
+            case .success:
+                Logger.fileProviderExtension.info(
+                    """
+                    Authenticated! Nextcloud account set up in File Provider extension.
+                    User: \(user, privacy: .public) at server: \(serverUrl, privacy: .public)
+                    """
+                )
+                Task { @MainActor in signalEnumeratorAfterAccountSetup() }
+            }
+        }
     }
 
     @objc func removeAccountConfig() {
