@@ -366,4 +366,11 @@ public class MockRemoteInterface: RemoteInterface {
         profile.userId = account.username
         return (account.ncKitAccount, profile, nil, .success)
     }
+
+    public func tryAuthenticationAttempt(
+        options: NKRequestOptions = .init(),
+        taskHandler: @escaping (URLSessionTask) -> Void = { _ in }
+    ) async -> AuthenticationAttemptResultState {
+        return account.password.isEmpty ? .authenticationError : .success
+    }
 }

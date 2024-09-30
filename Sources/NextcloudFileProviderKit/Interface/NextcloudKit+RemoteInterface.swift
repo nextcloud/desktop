@@ -215,4 +215,21 @@ extension NextcloudKit: RemoteInterface {
             }
         }
     }
+
+    public func tryAuthenticationAttempt(
+        options: NKRequestOptions = .init(),
+        taskHandler: @escaping (_ task: URLSessionTask) -> Void = { _ in }
+    ) async -> AuthenticationAttemptResultState {
+        // Test by trying to fetch user profile
+        let (_, _, _, error) =
+            await fetchUserProfile(options: options, taskHandler: taskHandler)
+
+        if error == .success {
+            return .success
+        } else if error.isCouldntConnectError {
+            return .connectionError
+        } else {
+            return .authenticationError
+        }
+    }
 }
