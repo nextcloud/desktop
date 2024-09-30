@@ -105,6 +105,47 @@ extension FileProviderExtension: NSFileProviderServicing, ChangeNotificationInte
     }
 
     @objc func setupDomainAccount(user: String, serverUrl: String, password: String) {
+        let semaphore = DispatchSemaphore(value: 0)
+        var authAttemptState = AuthenticationAttemptResultState.connectionError // default
+        Task {
+            let authTestNcKit = NextcloudKit()
+            authTestNcKit.setup(user: user, userId: user, password: password, urlBase: serverUrl)
+
+            // Retry a few times if we have a connection issue
+            for authTimeout in AuthenticationTimeouts {
+                authAttemptState = await authTestNcKit.tryAuthenticationAttempt()
+                guard authAttemptState == .connectionError else { break }
+
+                Logger.fileProviderExtension.info(
+                    "\(user, privacy: .public) authentication try timed out. Trying again soon."
+                )
+                try? await Task.sleep(nanoseconds: authTimeout)
+            }
+            semaphore.signal()
+        }
+        semaphore.wait()
+
+        switch (authAttemptState) {
+        case .authenticationError:
+            Logger.fileProviderExtension.info(
+                "\(user, privacy: .public) authentication failed due to bad creds, stopping"
+            )
+            return
+        case .connectionError:
+            // Despite multiple connection attempts we are still getting connection issues, so quit.
+            Logger.fileProviderExtension.info(
+                "\(user, privacy: .public) authentication try failed, no connection."
+            )
+            return
+        case .success:
+            Logger.fileProviderExtension.info(
+                """
+                Authenticated! Nextcloud account set up in File Provider extension.
+                User: \(user, privacy: .public) at server: \(serverUrl, privacy: .public)
+                """
+            )
+        }
+
         let newNcAccount = Account(user: user, serverUrl: serverUrl, password: password)
         guard newNcAccount != ncAccount else { return }
         ncAccount = newNcAccount
@@ -122,39 +163,7 @@ extension FileProviderExtension: NSFileProviderServicing, ChangeNotificationInte
             remoteInterface: ncKit, changeNotificationInterface: self, domain: domain
         )
         ncKit.setup(delegate: changeObserver)
-
-        Task {
-            var authAttemptState = AuthenticationAttemptResultState.connectionError // default
-            for authTimeout in AuthenticationTimeouts { // Retry if we have a connection issue
-                authAttemptState = await ncKit.tryAuthenticationAttempt()
-                guard authAttemptState == .connectionError else { break }
-                Logger.fileProviderExtension.info(
-                    "\(user, privacy: .public) authentication try timed out. Trying again soon."
-                )
-                try? await Task.sleep(nanoseconds: authTimeout)
-            }
-
-            switch (authAttemptState) {
-            case .authenticationError:
-                Logger.fileProviderExtension.info(
-                    "\(user, privacy: .public) authentication failed due to bad creds, stopping"
-                )
-                ncAccount = nil
-                ncKit.setup(user: "", userId: "", password: "", urlBase: "") // In case ongoing ops
-            case .connectionError:
-                Logger.fileProviderExtension.info(
-                    "\(user, privacy: .public) authentication try failed due to internet connectivity issues."
-                )
-            case .success:
-                Logger.fileProviderExtension.info(
-                    """
-                    Authenticated! Nextcloud account set up in File Provider extension.
-                    User: \(user, privacy: .public) at server: \(serverUrl, privacy: .public)
-                    """
-                )
-                Task { @MainActor in signalEnumeratorAfterAccountSetup() }
-            }
-        }
+        signalEnumeratorAfterAccountSetup()
     }
 
     @objc func removeAccountConfig() {
