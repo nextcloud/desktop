@@ -1641,13 +1641,13 @@ bool Folder::virtualFilesEnabled() const
 
 void Folder::slotAboutToRemoveAllFiles(SyncFileItem::Direction dir, std::function<void(bool)> callback)
 {
-    const QString msg = dir == SyncFileItem::Down ? tr("All files in the server folder \"%1\" were deleted.\n\nIf you restore the files, they will be uploaded again to the server.")
-                                                  : tr("All files in the local folder \"%1\" were deleted.\n\nIf you restore the files, they will be downloaded again from the server.");
+    const QString msg = dir == SyncFileItem::Down ? tr("Many files in the server folder \"%1\" were deleted.\n\nIf you restore the files, they will be uploaded again to the server.")
+                                                  : tr("Many files in the local folder \"%1\" were deleted.\n\nIf you restore the files, they will be downloaded again from the server.");
     auto msgBox = new QMessageBox(QMessageBox::Warning, tr("Remove all files?"),
                                   msg.arg(shortGuiLocalPath()), QMessageBox::NoButton);
     msgBox->setAttribute(Qt::WA_DeleteOnClose);
     msgBox->setWindowFlags(msgBox->windowFlags() | Qt::WindowStaysOnTopHint);
-    msgBox->addButton(tr("Proceed to remove all files"), QMessageBox::DestructiveRole);
+    msgBox->addButton(tr("Proceed to remove files"), QMessageBox::DestructiveRole);
     QPushButton *keepBtn = msgBox->addButton(tr("Restore files"), QMessageBox::AcceptRole);
     bool oldPaused = syncPaused();
     setSyncPaused(true);
