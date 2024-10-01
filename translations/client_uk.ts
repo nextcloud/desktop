@@ -412,89 +412,89 @@
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="238"/>
         <source>Nextcloud desktop main dialog</source>
-        <translation type="unfinished"/>
+        <translation>Діалогове вікно Nextcloud</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="264"/>
         <source>Current account</source>
-        <translation type="unfinished"/>
+        <translation>Цей обліковий запис</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="270"/>
         <location filename="../src/gui/tray/MainWindow.qml" line="372"/>
         <source>Resume sync for all</source>
-        <translation type="unfinished"/>
+        <translation>Відновити синхронізацію для всіх</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="270"/>
         <location filename="../src/gui/tray/MainWindow.qml" line="372"/>
         <source>Pause sync for all</source>
-        <translation type="unfinished"/>
+        <translation>Призупинити синхронізацію для всіх</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="337"/>
         <source>Add account</source>
-        <translation type="unfinished"/>
+        <translation>Додати обліковий запис</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="349"/>
         <source>Add new account</source>
-        <translation type="unfinished"/>
+        <translation>Додати новий обліковий запис</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="384"/>
         <source>Settings</source>
-        <translation type="unfinished"/>
+        <translation>Налаштування</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="401"/>
         <source>Exit</source>
-        <translation type="unfinished"/>
+        <translation>Вихід</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="435"/>
         <source>Current account avatar</source>
-        <translation type="unfinished"/>
+        <translation>Пікторграма для цього користувача</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="474"/>
         <source>Current account status is online</source>
-        <translation type="unfinished"/>
+        <translation>Цей користувач в мережі</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="474"/>
         <source>Current account status is do not disturb</source>
-        <translation type="unfinished"/>
+        <translation>Цей користувач просить не турбувати</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="543"/>
         <source>Account switcher and settings menu</source>
-        <translation type="unfinished"/>
+        <translation>Перемикач облікових записів та меню налаштувань</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="564"/>
         <source>Open local or group folders</source>
-        <translation type="unfinished"/>
+        <translation>Відкрити каталог на пристрої або груповий каталог</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="602"/>
         <source>More apps</source>
-        <translation type="unfinished"/>
+        <translation>Ще застосунки</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="644"/>
         <source>Open %1 in browser</source>
-        <translation type="unfinished"/>
+        <translation>Відкрити %1 в бравзері</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="770"/>
         <source>Unified search results list</source>
-        <translation type="unfinished"/>
+        <translation>Результати пошуку</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="833"/>
         <source>New activities</source>
-        <translation type="unfinished"/>
+        <translation>Нові події</translation>
     </message>
 </context>
 <context>
