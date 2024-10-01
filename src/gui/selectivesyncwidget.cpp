@@ -138,7 +138,31 @@ static QTreeWidgetItem *findFirstChild(QTreeWidgetItem *parent, const QString &t
     return nullptr;
 }
 
-void SelectiveSyncWidget::recursiveInsert(QTreeWidgetItem *parent, QStringList pathTrail, QString path, qint64 size)
+/**
+ * @brief Recursively insert an item in the tree
+ * @param parent The parent item into which a child is inserted
+ * @param pathTrail The tail of the path that still needs to be inserted
+ * @param path The full path
+ * @param size The size of the folder
+ * @param showChildIndicator False if it is known that a folder does not have any child items
+ *        (and should not show the expansion triangle), true otherwise.
+ *
+ * The algorithm: for inserting "folder/subfolder",start with the root item, and pass in the path
+ * both as list of (sub)folders, and the whole path as string. Then search for the already existing
+ * "folder" item, and if not found, add it. Then recurse with this item as the parent, and "subfolder"
+ * as the `pathTrail`. Repeat this again, and the last recursive call is with the item for "subfolder",
+ * and an empty `pathTrail`. This item is used to set the full path as the tooltip, and set the
+ * `showChildIndicator`.
+ *
+ * By default, the `showChildIndicator` is set to true. When the folder is expanded, and a PROPFIND
+ * is done, *and* there are no child folders, a recursive insert is done for the path (which already
+ * is in the tree), and the `showChildIndicator` set to false.
+ *
+ * @note Note about the `showChildIndicator`: if set to false, this will only be applied to the very
+ *       last item of the path/pathTrail: all parent items need to be expandable in order to reach
+ *       that last folder. So all parents of that folder will have expansion triangles shown.
+ */
+void SelectiveSyncWidget::recursiveInsert(QTreeWidgetItem *parent, QStringList pathTrail, QString path, qint64 size, bool showChildIndicator)
 {
     if (pathTrail.size() == 0) {
         if (path.endsWith(QLatin1Char('/'))) {
@@ -146,6 +170,7 @@ void SelectiveSyncWidget::recursiveInsert(QTreeWidgetItem *parent, QStringList p
         }
         parent->setToolTip(0, path);
         parent->setData(0, Qt::UserRole, path);
+        parent->setChildIndicatorPolicy(showChildIndicator ? QTreeWidgetItem::ShowIndicator : QTreeWidgetItem::DontShowIndicator);
     } else {
         SelectiveSyncTreeViewItem *item = static_cast<SelectiveSyncTreeViewItem *>(findFirstChild(parent, pathTrail.first()));
         if (!item) {
@@ -169,12 +194,15 @@ void SelectiveSyncWidget::recursiveInsert(QTreeWidgetItem *parent, QStringList p
                 item->setText(1, Utility::octetsToString(size));
                 item->setData(1, Qt::UserRole, size);
             }
-            //            item->setData(0, Qt::UserRole, pathTrail.first());
+
+            // Mark all sub-folders as potentially having child folders. When expanded, a PROPFIND
+            // will be done, and sub-folders will be added. If no sub-folders are found by the PROPFIND,
+            // the triangle will be hidden.
             item->setChildIndicatorPolicy(QTreeWidgetItem::ShowIndicator);
         }
 
         pathTrail.removeFirst();
-        recursiveInsert(item, pathTrail, path, size);
+        recursiveInsert(item, pathTrail, path, size, showChildIndicator);
     }
 }
 
@@ -235,6 +263,12 @@ void SelectiveSyncWidget::slotUpdateDirectories(QStringList list)
         }
     }
 
+    // The base directory of the propfind is always returned, so if there is just 1 entry, there
+    // are no child folders. EXCEPT for the root directory, because that entry is filtered out of
+    // the `relativeList` above. The case of no sub-folders in the root is handled above, so if
+    // the original list contains the `rootPath`, we show the indicator.
+    const bool showChildIndicator = relativeList.size() > 1 || list.contains(rootPath);
+
     Utility::sortFilenames(relativeList);
     for (const QString &path : qAsConst(relativeList)) {
         const auto size = job ? job->sizes().value(Utility::ensureTrailingSlash(Utility::concatUrlPathItems({rootPath, path}))) : 0;
@@ -242,7 +276,7 @@ void SelectiveSyncWidget::slotUpdateDirectories(QStringList list)
         if (paths.isEmpty()) {
             continue;
         }
-        recursiveInsert(root, paths, Utility::ensureTrailingSlash(path), size);
+        recursiveInsert(root, paths, Utility::ensureTrailingSlash(path), size, showChildIndicator);
     }
 
     // Root is partially checked if any children are not checked

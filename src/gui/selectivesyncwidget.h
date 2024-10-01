@@ -58,7 +58,7 @@ private Q_SLOTS:
 
 private:
     void refreshFolders();
-    void recursiveInsert(QTreeWidgetItem *parent, QStringList pathTrail, QString path, qint64 size);
+    void recursiveInsert(QTreeWidgetItem *parent, QStringList pathTrail, QString path, qint64 size, bool showChildIndicator);
     QUrl davUrl() const;
 
 private:
