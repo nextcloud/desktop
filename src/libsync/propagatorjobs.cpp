@@ -92,6 +92,7 @@ bool PropagateLocalRemove::removeRecursively(const QString &path)
 void PropagateLocalRemove::start()
 {
     qCInfo(lcPropagateLocalRemove) << "Start propagate local remove job";
+    qCInfo(lcPermanentLog) << "delete" << _item->_file << _item->_discoveryResult;
 
     _moveToTrash = propagator()->syncOptions()._moveFilesToTrash;
 
