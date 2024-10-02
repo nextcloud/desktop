@@ -700,7 +700,7 @@ void Application::setupLogging()
         logger->setLogDir(_logDir.isEmpty() ? ConfigFile().logDir() : _logDir);
     }
     logger->setLogExpire(_logExpire > 0 ? _logExpire : ConfigFile().logExpire());
-#if defined NEXTCLOUD_DEV
+#if defined NEXTCLOUD_DEV && NEXTCLOUD_DEV
     logger->setLogFlush(true);
     logger->setLogDebug(true);
 #else
