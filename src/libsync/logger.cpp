@@ -308,13 +308,15 @@ void Logger::enterNextLogFileNoLock(const QString &baseFileName, LogType type)
         const auto cLocale = QLocale::c(); // Some system locales generate strings that are incompatible with filesystem
         QString newLogName = cLocale.toString(now, QStringLiteral("yyyyMMdd_HHmm")) + QStringLiteral("_%1").arg(baseFileName);
 
-        // Expire old log files and deal with conflicts
         const auto files = dir.entryList({QStringLiteral("*owncloud.log.*"), QStringLiteral("*%1.*").arg(baseFileName)}, QDir::Files, QDir::Name);
-        for (const auto &s : files) {
-            if (_logExpire > 0) {
-                QFileInfo fileInfo(dir.absoluteFilePath(s));
-                if (fileInfo.lastModified().addSecs(60 * 60 * _logExpire) < now) {
-                    dir.remove(s);
+        if (type == OCC::Logger::LogType::Log) {
+            // Expire old log files and deal with conflicts
+            for (const auto &s : files) {
+                if (_logExpire > 0) {
+                    QFileInfo fileInfo(dir.absoluteFilePath(s));
+                    if (fileInfo.lastModified().addSecs(60 * 60 * _logExpire) < now) {
+                        dir.remove(s);
+                    }
                 }
             }
         }
