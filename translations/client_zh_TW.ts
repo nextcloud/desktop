@@ -2280,21 +2280,17 @@ This means that the synchronization client might not upload local changes immedi
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1644"/>
-        <source>All files in the server folder &quot;%1&quot; were deleted.
+        <source>Many files in the server folder &quot;%1&quot; were deleted.
 
 If you restore the files, they will be uploaded again to the server.</source>
-        <translation>伺服器資料夾「%1」中的所有檔案都已刪除。
-
-若您還原這些檔案，它們將會重新上傳到伺服器。</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1645"/>
-        <source>All files in the local folder &quot;%1&quot; were deleted.
+        <source>Many files in the local folder &quot;%1&quot; were deleted.
 
 If you restore the files, they will be downloaded again from the server.</source>
-        <translation>本機資料夾「%1」中的所有檔案都已刪除。
-
-若您還原這些檔案，它們將會從伺服器重新下載。</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1646"/>
@@ -2303,8 +2299,8 @@ If you restore the files, they will be downloaded again from the server.</source
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1650"/>
-        <source>Proceed to remove all files</source>
-        <translation>繼續移除所有檔案</translation>
+        <source>Proceed to remove files</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1651"/>
@@ -4288,7 +4284,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>由於修改時間無效，因此無法同步</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1099"/>
+        <location filename="../src/libsync/discovery.cpp" line="1097"/>
         <source>Could not upload file, because it is open in &quot;%1&quot;.</source>
         <translation>無法上傳檔案，因為其於「%1」開啟。</translation>
     </message>
@@ -4484,7 +4480,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>無法建立資料夾 %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="239"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="240"/>
         <source>The folder %1 cannot be made read-only: %2</source>
         <translation>無法將資料夾 %1 設為唯讀：%2</translation>
     </message>
@@ -4515,7 +4511,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::PropagateLocalRename</name>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="322"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="323"/>
         <source>Folder %1 cannot be renamed because of a local file or folder name clash!</source>
         <translation>由於本機檔案或資料夾名稱衝突，無法重新命名資料夾 %1！</translation>
     </message>

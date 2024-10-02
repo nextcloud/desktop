@@ -2280,21 +2280,17 @@ Esto significa que el cliente de sincronización podría no cargar los cambios l
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1644"/>
-        <source>All files in the server folder &quot;%1&quot; were deleted.
+        <source>Many files in the server folder &quot;%1&quot; were deleted.
 
 If you restore the files, they will be uploaded again to the server.</source>
-        <translation>Todos los archivos en la carpeta del servidor &quot;%1&quot; fueron eliminados.
-
-Si restaura los archivos, serán cargados de nuevo al servidor.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1645"/>
-        <source>All files in the local folder &quot;%1&quot; were deleted.
+        <source>Many files in the local folder &quot;%1&quot; were deleted.
 
 If you restore the files, they will be downloaded again from the server.</source>
-        <translation>Todos los archivos en la carpeta local &quot;%1&quot; fueron eliminados.
-
-Si restaura los archivos, serán descargados de nuevo del servidor.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1646"/>
@@ -2303,8 +2299,8 @@ Si restaura los archivos, serán descargados de nuevo del servidor.</translation
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1650"/>
-        <source>Proceed to remove all files</source>
-        <translation>Proceder a eliminar todos los archivos</translation>
+        <source>Proceed to remove files</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1651"/>
@@ -4287,7 +4283,7 @@ Este es un modo nuevo y experimental. Si decide usarlo, por favor informe cualqu
         <translation>No se puede sincronizar debido a una hora de modificación inválida</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1099"/>
+        <location filename="../src/libsync/discovery.cpp" line="1097"/>
         <source>Could not upload file, because it is open in &quot;%1&quot;.</source>
         <translation>No se puede cargar el archivo, porque está abierto en &quot;%1&quot;.</translation>
     </message>
@@ -4483,7 +4479,7 @@ Este es un modo nuevo y experimental. Si decide usarlo, por favor informe cualqu
         <translation>No se pudo crear la carpeta %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="239"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="240"/>
         <source>The folder %1 cannot be made read-only: %2</source>
         <translation>La carpeta %1 no se puede hacer de sólo lectura: %2</translation>
     </message>
@@ -4514,7 +4510,7 @@ Este es un modo nuevo y experimental. Si decide usarlo, por favor informe cualqu
 <context>
     <name>OCC::PropagateLocalRename</name>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="322"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="323"/>
         <source>Folder %1 cannot be renamed because of a local file or folder name clash!</source>
         <translation>¡No se puede renombrar la carpeta %1 debido a un conflicto de nombre con un archivo o carpeta local!</translation>
     </message>

@@ -2279,14 +2279,14 @@ This means that the synchronization client might not upload local changes immedi
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1644"/>
-        <source>All files in the server folder &quot;%1&quot; were deleted.
+        <source>Many files in the server folder &quot;%1&quot; were deleted.
 
 If you restore the files, they will be uploaded again to the server.</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1645"/>
-        <source>All files in the local folder &quot;%1&quot; were deleted.
+        <source>Many files in the local folder &quot;%1&quot; were deleted.
 
 If you restore the files, they will be downloaded again from the server.</source>
         <translation type="unfinished"/>
@@ -2298,7 +2298,7 @@ If you restore the files, they will be downloaded again from the server.</source
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1650"/>
-        <source>Proceed to remove all files</source>
+        <source>Proceed to remove files</source>
         <translation type="unfinished"/>
     </message>
     <message>
@@ -4279,7 +4279,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>유효하지 않은 수정 시간으로 인해 동기화할 수 없습니다.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1099"/>
+        <location filename="../src/libsync/discovery.cpp" line="1097"/>
         <source>Could not upload file, because it is open in &quot;%1&quot;.</source>
         <translation>파일이 &quot;%1&quot;에서 열려있기 때문에 업로드할 수 없습니다.</translation>
     </message>
@@ -4475,7 +4475,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>폴더 %1을 만들 수 없음</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="239"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="240"/>
         <source>The folder %1 cannot be made read-only: %2</source>
         <translation type="unfinished"/>
     </message>
@@ -4506,7 +4506,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::PropagateLocalRename</name>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="322"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="323"/>
         <source>Folder %1 cannot be renamed because of a local file or folder name clash!</source>
         <translation type="unfinished"/>
     </message>

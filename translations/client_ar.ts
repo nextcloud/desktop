@@ -2270,21 +2270,17 @@ This means that the synchronization client might not upload local changes immedi
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1644"/>
-        <source>All files in the server folder &quot;%1&quot; were deleted.
+        <source>Many files in the server folder &quot;%1&quot; were deleted.
 
 If you restore the files, they will be uploaded again to the server.</source>
-        <translation>تمّ حذف جميع الملفات في مجلد الخادوم  &quot;%1&quot;. 
-
-إذا طلبت استعادة هذه الملفات، فستتم إعادة رفعها مُجدّداً إلى الخادوم.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1645"/>
-        <source>All files in the local folder &quot;%1&quot; were deleted.
+        <source>Many files in the local folder &quot;%1&quot; were deleted.
 
 If you restore the files, they will be downloaded again from the server.</source>
-        <translation>تمّ حذف جميع الملفات في المجلد المحلي &quot;%1&quot;. 
-
-إذا طلب استعادة هذه الملفات، فستتم إعادة تنزيلها مُجدّداً من الخادوم.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1646"/>
@@ -2293,8 +2289,8 @@ If you restore the files, they will be downloaded again from the server.</source
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1650"/>
-        <source>Proceed to remove all files</source>
-        <translation>إستمِر في حذف كل الملفات</translation>
+        <source>Proceed to remove files</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1651"/>
@@ -4268,7 +4264,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>تعذّرت المزامنة لأن وقت آخر تعديل للملف غير صالح</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1099"/>
+        <location filename="../src/libsync/discovery.cpp" line="1097"/>
         <source>Could not upload file, because it is open in &quot;%1&quot;.</source>
         <translation>يتعذّر فتح الملف لأنه مفتوح سلفاً في &quot;%1&quot;.</translation>
     </message>
@@ -4464,7 +4460,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>تعذّر إنشاء المجلد %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="239"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="240"/>
         <source>The folder %1 cannot be made read-only: %2</source>
         <translation>المجلد %1؛ لا يمكن جعله للقراءة فقط: %2</translation>
     </message>
@@ -4495,7 +4491,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::PropagateLocalRename</name>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="322"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="323"/>
         <source>Folder %1 cannot be renamed because of a local file or folder name clash!</source>
         <translation>المجلد %1 لا يمكن إعادة تسميته بسبب تعارض الاسم الجديد مع اسم مجلد أو ملف محلي آخر!</translation>
     </message>
