@@ -2283,14 +2283,18 @@ Ciallaíonn sé seo go bhféadfadh sé nach ndéanfaidh an cliant sioncrónaithe
         <source>Many files in the server folder &quot;%1&quot; were deleted.
 
 If you restore the files, they will be uploaded again to the server.</source>
-        <translation type="unfinished"/>
+        <translation>Scriosadh go leor comhad san fhillteán freastalaí &quot;% 1&quot;.
+
+Má chuireann tú na comhaid ar ais, déanfar iad a uaslódáil arís chuig an bhfreastalaí.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1645"/>
         <source>Many files in the local folder &quot;%1&quot; were deleted.
 
 If you restore the files, they will be downloaded again from the server.</source>
-        <translation type="unfinished"/>
+        <translation>Scriosadh go leor comhad san fhillteán logánta &quot;% 1&quot;.
+
+Má chuireann tú na comhaid ar ais, déanfar iad a íoslódáil arís ón bhfreastalaí.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1646"/>
@@ -2300,7 +2304,7 @@ If you restore the files, they will be downloaded again from the server.</source
     <message>
         <location filename="../src/gui/folder.cpp" line="1650"/>
         <source>Proceed to remove files</source>
-        <translation type="unfinished"/>
+        <translation>Lean ar aghaidh chun comhaid a bhaint</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1651"/>

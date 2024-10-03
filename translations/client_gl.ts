@@ -2283,14 +2283,18 @@ Isto significa que o cliente de sincronización podería non enviar os cambios i
         <source>Many files in the server folder &quot;%1&quot; were deleted.
 
 If you restore the files, they will be uploaded again to the server.</source>
-        <translation type="unfinished"/>
+        <translation>Elimináronse moitos ficheiros do cartafol do servidor «%1».
+
+Se restaura os ficheiros, enviaranse de novo ao servidor.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1645"/>
         <source>Many files in the local folder &quot;%1&quot; were deleted.
 
 If you restore the files, they will be downloaded again from the server.</source>
-        <translation type="unfinished"/>
+        <translation>Elimináronse moitos ficheiros do cartafol local «%1».
+
+Se restaura os ficheiros, descargaranse de novo do servidor.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1646"/>
@@ -2300,7 +2304,7 @@ If you restore the files, they will be downloaded again from the server.</source
     <message>
         <location filename="../src/gui/folder.cpp" line="1650"/>
         <source>Proceed to remove files</source>
-        <translation type="unfinished"/>
+        <translation>Proceder a retirar os ficheiros</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1651"/>

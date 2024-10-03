@@ -2283,14 +2283,18 @@ Det betyder att synkroniseringsklienten inte kan ladda upp lokala ändringar ome
         <source>Many files in the server folder &quot;%1&quot; were deleted.
 
 If you restore the files, they will be uploaded again to the server.</source>
-        <translation type="unfinished"/>
+        <translation>Måmga iler i servermappen &quot;%1&quot; raderades.
+
+Om du återställer filerna kommer de att laddas upp till servern igen.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1645"/>
         <source>Many files in the local folder &quot;%1&quot; were deleted.
 
 If you restore the files, they will be downloaded again from the server.</source>
-        <translation type="unfinished"/>
+        <translation>Många filer i den lokala mappen &quot;%1&quot; raderades.
+
+Om du återställer filerna kommer de att laddas ner från servern igen.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1646"/>
@@ -2300,7 +2304,7 @@ If you restore the files, they will be downloaded again from the server.</source
     <message>
         <location filename="../src/gui/folder.cpp" line="1650"/>
         <source>Proceed to remove files</source>
-        <translation type="unfinished"/>
+        <translation>Fortsätt för att ta bort filer</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1651"/>

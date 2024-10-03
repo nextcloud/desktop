@@ -2283,14 +2283,18 @@ This means that the synchronization client might not upload local changes immedi
         <source>Many files in the server folder &quot;%1&quot; were deleted.
 
 If you restore the files, they will be uploaded again to the server.</source>
-        <translation type="unfinished"/>
+        <translation>Обрисани су многи фајлови у фолдеру „%1” на серверу.
+
+Ако вратите фајлове, они ће се поново отпремити на сервер.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1645"/>
         <source>Many files in the local folder &quot;%1&quot; were deleted.
 
 If you restore the files, they will be downloaded again from the server.</source>
-        <translation type="unfinished"/>
+        <translation>Обрисани су многи фајлови у локалном фолдеру „%1”.
+
+Ако вратите фајлове, они ће се поново преузети са сервера.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1646"/>
@@ -2300,7 +2304,7 @@ If you restore the files, they will be downloaded again from the server.</source
     <message>
         <location filename="../src/gui/folder.cpp" line="1650"/>
         <source>Proceed to remove files</source>
-        <translation type="unfinished"/>
+        <translation>Настави са уклањањем фајлова</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1651"/>

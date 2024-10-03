@@ -2273,14 +2273,14 @@ This means that the synchronization client might not upload local changes immedi
         <source>Many files in the server folder &quot;%1&quot; were deleted.
 
 If you restore the files, they will be uploaded again to the server.</source>
-        <translation type="unfinished"/>
+        <translation>تم حذف العديد من الملفات الموجودة في مجلد الخادوم &quot;%1&quot;.إذا قمت باستعادة الملفات، فسيتم تحميلها مرة أخرى إلى الخادوم.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1645"/>
         <source>Many files in the local folder &quot;%1&quot; were deleted.
 
 If you restore the files, they will be downloaded again from the server.</source>
-        <translation type="unfinished"/>
+        <translation>تمّ حذف العديد من الملفات الموجودة في المجلد المحلي &quot;%1&quot;.إذا قمت باستعادة الملفات، فسيتم تنزيلها مرة أخرى من الخادوم.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1646"/>
@@ -2290,7 +2290,7 @@ If you restore the files, they will be downloaded again from the server.</source
     <message>
         <location filename="../src/gui/folder.cpp" line="1650"/>
         <source>Proceed to remove files</source>
-        <translation type="unfinished"/>
+        <translation>إستمر لحذف الملفات</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1651"/>

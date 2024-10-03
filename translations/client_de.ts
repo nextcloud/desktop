@@ -2282,14 +2282,18 @@ Dies bedeutet, dass der Synchronisierungs-Client lokale Änderungen möglicherwe
         <source>Many files in the server folder &quot;%1&quot; were deleted.
 
 If you restore the files, they will be uploaded again to the server.</source>
-        <translation type="unfinished"/>
+        <translation>Viele Dateien im Serverordner &quot;%1“ wurden gelöscht.
+
+Wenn Sie die Dateien wiederherstellen, werden sie erneut auf den Server hochgeladen.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1645"/>
         <source>Many files in the local folder &quot;%1&quot; were deleted.
 
 If you restore the files, they will be downloaded again from the server.</source>
-        <translation type="unfinished"/>
+        <translation>Viele Dateien im lokalen Ordner &quot;%1“ wurden gelöscht.
+
+Wenn Sie die Dateien wiederherstellen, werden sie erneut vom Server heruntergeladen.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1646"/>
@@ -2299,7 +2303,7 @@ If you restore the files, they will be downloaded again from the server.</source
     <message>
         <location filename="../src/gui/folder.cpp" line="1650"/>
         <source>Proceed to remove files</source>
-        <translation type="unfinished"/>
+        <translation>Mit dem entfernen der Dateien fortfahren</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1651"/>

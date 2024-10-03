@@ -2282,14 +2282,18 @@ Cela signifie que le client de synchronisation ne va pas téléverser immédiate
         <source>Many files in the server folder &quot;%1&quot; were deleted.
 
 If you restore the files, they will be uploaded again to the server.</source>
-        <translation type="unfinished"/>
+        <translation>De nombreux fichiers du dossier serveur &quot;%1&quot; ont été supprimés.
+
+Si vous restaurez les fichiers, ils seront à nouveau téléversés sur le serveur.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1645"/>
         <source>Many files in the local folder &quot;%1&quot; were deleted.
 
 If you restore the files, they will be downloaded again from the server.</source>
-        <translation type="unfinished"/>
+        <translation>De nombreux fichiers du dossier local &quot;%1&quot; ont été supprimés.
+
+Si vous restaurez les fichiers, ils seront à nouveau téléchargés depuis le serveur.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1646"/>
