@@ -92,7 +92,6 @@ RemotePermissions RemotePermissions::internalFromServerString(const QString &val
            So replace the 'M' by a 'm' for every sub entries in an external storage */
         perm.unsetPermission(RemotePermissions::IsMounted);
         perm.setPermission(RemotePermissions::IsMountedSub);
-        qCInfo(lcRemotePermissions()) << otherProperties.value(QStringLiteral("permissions")) << "replacing M permissions by m for subfolders inside a group folder";
     }
 
     return perm;
