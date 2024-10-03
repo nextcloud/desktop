@@ -468,7 +468,6 @@ static void propertyMapToRemoteInfo(const QMap<QString, QString> &map, RemotePer
         } else if (property == QLatin1String("getlastmodified")) {
             value.replace("GMT", "+0000");
             const auto date = QDateTime::fromString(value, Qt::RFC2822Date);
-            qCInfo(lcDiscovery()) << value << date << date.isValid() << QDateTime::currentDateTime().toString(Qt::RFC2822Date);
             Q_ASSERT(date.isValid());
             result.modtime = 0;
             if (date.toSecsSinceEpoch() > 0) {
@@ -567,7 +566,6 @@ void DiscoverySingleDirectoryJob::directoryListingIteratedSlot(const QString &fi
             auto perm = RemotePermissions::fromServerString(map.value("permissions"),
                                                             _account->serverHasMountRootProperty() ? RemotePermissions::MountedPermissionAlgorithm::UseMountRootProperty : RemotePermissions::MountedPermissionAlgorithm::WildGuessMountedSubProperty,
                                                             map);
-            qCInfo(lcDiscovery()) << file << map.value("permissions") << map;
             emit firstDirectoryPermissions(perm);
             _isExternalStorage = perm.hasPermission(RemotePermissions::IsMounted);
         }
@@ -602,7 +600,6 @@ void DiscoverySingleDirectoryJob::directoryListingIteratedSlot(const QString &fi
         if (result.isDirectory)
             result.size = 0;
 
-        qCInfo(lcDiscovery()) << file << map.value("permissions") << result.remotePerm.toString() << map;
         _results.push_back(std::move(result));
     }
 
