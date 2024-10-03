@@ -674,16 +674,6 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(const SyncFileItemPtr &it
     item->_lockTimeout = serverEntry.lockTimeout;
     item->_lockToken = serverEntry.lockToken;
 
-    qCDebug(lcDisco()) << "item lock for:" << item->_file
-                       << item->_locked
-                       << item->_lockOwnerDisplayName
-                       << item->_lockOwnerId
-                       << item->_lockOwnerType
-                       << item->_lockEditorApp
-                       << item->_lockTime
-                       << item->_lockTimeout
-                       << item->_lockToken;
-
     // Check for missing server data
     {
         QStringList missingData;
@@ -711,18 +701,12 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(const SyncFileItemPtr &it
         // Add on a second as a precaution, sometimes we catch the server before it has had a chance to update
         const auto lockExpirationTimeout = qMax(5LL, timeRemaining + 1);
 
-        qCDebug(lcDisco) << "File:" << path._original << "is locked."
-                        << "Lock expires in:" << lockExpirationTimeout << "seconds."
-                        << "A sync run will be scheduled for around that time.";
-
         _discoveryData->_anotherSyncNeeded = true;
         _discoveryData->_filesNeedingScheduledSync.insert(path._original, lockExpirationTimeout);
 
     } else if (serverEntry.locked == SyncFileItem::LockStatus::UnlockedItem && dbEntry._lockstate._locked) {
         // We have received data that this file has been unlocked remotely, so let's notify the sync engine
         // that we no longer need a scheduled sync run for this file
-        qCInfo(lcDisco) << "File:" << path._original << "is unlocked and a scheduled sync is no longer needed."
-                        << "Will remove scheduled sync if there is one.";
 
         _discoveryData->_filesUnscheduleSync.append(path._original);
     }
