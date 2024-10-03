@@ -12,8 +12,6 @@ disable=
     too-many-public-methods,
     bare-except,
     fixme,
-    ; TODO: enable later
-    invalid-name,
 fail-under=10
 ignore-paths=^tst_.*/test.py$,
     shared/scripts/names.py,
@@ -39,10 +37,13 @@ unsafe-load-any-extension=no
 
 [BASIC]
 attr-naming-style=snake_case
+; TODO: enable it later
+; class-attribute-naming-style=snake_case
 class-const-naming-style=UPPER_CASE
 class-naming-style=PascalCase
 const-naming-style=UPPER_CASE
 function-naming-style=snake_case
+inlinevar-naming-style=snake_case
 method-naming-style=snake_case
 module-naming-style=any
 variable-naming-style=snake_case

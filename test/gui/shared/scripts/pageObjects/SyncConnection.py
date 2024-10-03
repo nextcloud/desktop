@@ -55,54 +55,54 @@ class SyncConnection:
     }
 
     @staticmethod
-    def openMenu():
+    def open_menu():
         menu_button = squish.waitForObject(
             SyncConnection.FOLDER_SYNC_CONNECTION_MENU_BUTTON
         )
         squish.mouseClick(menu_button)
 
     @staticmethod
-    def performAction(action):
-        SyncConnection.openMenu()
+    def perform_action(action):
+        SyncConnection.open_menu()
         squish.activateItem(squish.waitForObjectItem(SyncConnection.MENU, action))
 
     @staticmethod
-    def forceSync():
-        SyncConnection.performAction("Force sync now")
+    def force_sync():
+        SyncConnection.perform_action("Force sync now")
 
     @staticmethod
-    def pauseSync():
-        SyncConnection.performAction("Pause sync")
+    def pause_sync():
+        SyncConnection.perform_action("Pause sync")
 
     @staticmethod
-    def resumeSync():
-        SyncConnection.performAction("Resume sync")
+    def resume_sync():
+        SyncConnection.perform_action("Resume sync")
 
     @staticmethod
-    def enableVFS():
-        SyncConnection.performAction("Enable virtual file support")
+    def enable_vfs():
+        SyncConnection.perform_action("Enable virtual file support")
 
     @staticmethod
-    def disableVFS():
-        SyncConnection.performAction("Disable virtual file support")
+    def disable_vfs():
+        SyncConnection.perform_action("Disable virtual file support")
         squish.clickButton(
             squish.waitForObject(SyncConnection.DISABLE_VFS_CONFIRMATION_BUTTON)
         )
 
     @staticmethod
-    def hasMenuItem(item):
+    def has_menu_item(item):
         return squish.waitForObjectItem(SyncConnection.MENU, item)
 
     @staticmethod
-    def menu_item_exists(menuItem):
+    def menu_item_exists(menu_item):
         obj = SyncConnection.MENU.copy()
-        obj.update({"type": "QAction", "text": menuItem})
+        obj.update({"type": "QAction", "text": menu_item})
         return object.exists(obj)
 
     @staticmethod
     def choose_what_to_sync():
-        SyncConnection.openMenu()
-        SyncConnection.performAction("Choose what to sync")
+        SyncConnection.open_menu()
+        SyncConnection.perform_action("Choose what to sync")
 
     @staticmethod
     def unselect_folder_in_selective_sync(folder_name):
@@ -139,7 +139,7 @@ class SyncConnection:
 
     @staticmethod
     def remove_folder_sync_connection():
-        SyncConnection.performAction("Remove folder sync connection")
+        SyncConnection.perform_action("Remove folder sync connection")
 
     @staticmethod
     def cancel_folder_sync_connection_removal():

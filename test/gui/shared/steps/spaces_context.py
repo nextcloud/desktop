@@ -1,8 +1,8 @@
 from pageObjects.EnterPassword import EnterPassword
 
-from helpers.UserHelper import getPasswordForUser
-from helpers.SetupClientHelper import setUpClient, getResourcePath
-from helpers.SyncHelper import waitForInitialSyncToComplete
+from helpers.UserHelper import get_password_for_user
+from helpers.SetupClientHelper import setup_client, get_resource_path
+from helpers.SyncHelper import wait_for_initial_sync_to_complete
 from helpers.SpaceHelper import (
     create_space,
     create_space_folder,
@@ -38,14 +38,14 @@ def step(context, user, space_name, role):
 
 @Given('user "|any|" has set up a client with space "|any|"')
 def step(context, user, space_name):
-    password = getPasswordForUser(user)
-    setUpClient(user, space_name)
+    password = get_password_for_user(user)
+    setup_client(user, space_name)
     enter_password = EnterPassword()
     if get_config('ocis'):
         enter_password.accept_certificate()
-    enter_password.loginAfterSetup(user, password)
+    enter_password.login_after_setup(user, password)
     # wait for files to sync
-    waitForInitialSyncToComplete(getResourcePath('/', user, space_name))
+    wait_for_initial_sync_to_complete(get_resource_path('/', user, space_name))
 
 
 @Then(

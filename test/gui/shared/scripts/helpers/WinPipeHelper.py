@@ -37,9 +37,9 @@ class WinPipeConnect:
         self._remainder = ''.encode('utf-8')
         self._overlapped = pywintypes.OVERLAPPED()
         self._overlapped.hEvent = win32event.CreateEvent(None, 1, 0, None)
-        self.connectToPipeServer()
+        self.connect_to_pipe_server()
 
-    def connectToPipeServer(self):
+    def connect_to_pipe_server(self):
         try:
             pipename = get_pipe_path()
 
@@ -65,7 +65,7 @@ class WinPipeConnect:
             print(f'Could not connect to named pipe {pipename}\n' + str(e))
             win32file.CloseHandle(self._pipe)
 
-    def sendCommand(self, cmd):
+    def sendCommand(self, cmd):  # pylint: disable=invalid-name
         if self.connected:
             w_res, _ = win32file.WriteFile(
                 self._pipe, cmd.encode('utf-8'), self._overlapped

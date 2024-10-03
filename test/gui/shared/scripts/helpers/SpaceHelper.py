@@ -29,7 +29,7 @@ def get_share_endpint():
 def create_space(space_name):
     body = json.dumps({'name': space_name})
     response = request.post(get_space_endpint(), body)
-    request.assertHttpStatus(response, 201, f'Failed to create space {space_name}')
+    request.assert_http_status(response, 201, f'Failed to create space {space_name}')
     # save created space
     resp_object = response.json()
     created_spaces[space_name] = resp_object['id']
@@ -40,7 +40,7 @@ def fetch_spaces(user=None, query=''):
         query = '?' + query
     url = get_space_endpint() + query
     response = request.get(url=url, user=user)
-    request.assertHttpStatus(response, 200, 'Failed to get spaces')
+    request.assert_http_status(response, 200, 'Failed to get spaces')
     return response.json()['value']
 
 
@@ -79,20 +79,20 @@ def delete_project_spaces():
 def disable_project_space(space_id):
     url = url_join(get_space_endpint(), space_id)
     response = request.delete(url)
-    request.assertHttpStatus(response, 204, f'Failed to disable space {space_id}')
+    request.assert_http_status(response, 204, f'Failed to disable space {space_id}')
 
 
 def delete_project_space(space_id):
     url = url_join(get_space_endpint(), space_id)
     response = request.delete(url, {'Purge': 'T'})
-    request.assertHttpStatus(response, 204, f'Failed to delete space {space_id}')
+    request.assert_http_status(response, 204, f'Failed to delete space {space_id}')
 
 
 def create_space_folder(space_name, folder_name):
     space_id = get_space_id(space_name)
     url = url_join(get_dav_endpint(), space_id, folder_name)
     response = request.mkcol(url)
-    request.assertHttpStatus(
+    request.assert_http_status(
         response,
         201,
         f'Failed to create folder "{folder_name}" in space "{space_name}"',
@@ -127,7 +127,7 @@ def add_user_to_space(user, space_name, role):
     )
     headers = {'Content-Type': 'application/x-www-form-urlencoded'}
     response = request.post(url, body, headers)
-    request.assertHttpStatus(
+    request.assert_http_status(
         response, 200, f'Failed to add user "{user}" to space "{space_name}"'
     )
 
@@ -136,7 +136,7 @@ def get_file_content(space_name, file_name, user=None):
     space_id = get_space_id(space_name, user)
     url = url_join(get_dav_endpint(), space_id, file_name)
     response = request.get(url=url, user=user)
-    request.assertHttpStatus(response, 200, f'Failed to get file "{file_name}"')
+    request.assert_http_status(response, 200, f'Failed to get file "{file_name}"')
     return response.text
 
 

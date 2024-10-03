@@ -59,7 +59,7 @@ class Toolbar:
     TOOLBAR_ITEMS = ["Add Account", "Activity", "Settings", "Quit"]
 
     @staticmethod
-    def getItemSelector(item_name):
+    def get_item_selector(item_name):
         return {
             "container": names.dialogStack_quickWidget_QQuickWidget,
             "text": item_name,
@@ -68,31 +68,31 @@ class Toolbar:
         }
 
     @staticmethod
-    def hasItem(item_name, timeout=get_config("minSyncTimeout") * 1000):
+    def has_item(item_name, timeout=get_config("minSyncTimeout") * 1000):
         try:
-            squish.waitForObject(Toolbar.getItemSelector(item_name), timeout)
+            squish.waitForObject(Toolbar.get_item_selector(item_name), timeout)
             return True
         except:
             return False
 
     @staticmethod
-    def openActivity():
+    def open_activity():
         squish.mouseClick(squish.waitForObject(Toolbar.ACTIVITY_BUTTON))
 
     @staticmethod
-    def openNewAccountSetup():
+    def open_new_account_setup():
         squish.mouseClick(squish.waitForObject(Toolbar.ADD_ACCOUNT_BUTTON))
 
     @staticmethod
-    def openAccount(displayname):
+    def open_account(displayname):
         _, selector = Toolbar.get_account(displayname)
         squish.mouseClick(squish.waitForObject(selector))
 
     @staticmethod
-    def getDisplayedAccountText(displayname, host):
+    def get_displayed_account_text(displayname, host):
         return str(
             squish.waitForObjectExists(
-                Toolbar.getItemSelector(displayname + "\n" + host)
+                Toolbar.get_item_selector(displayname + "\n" + host)
             ).text
         )
 

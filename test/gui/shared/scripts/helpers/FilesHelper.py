@@ -3,10 +3,10 @@ import re
 import ctypes
 import shutil
 
-from helpers.ConfigHelper import isWindows
+from helpers.ConfigHelper import is_windows
 
 
-def buildConflictedRegex(filename):
+def build_conflicted_regex(filename):
     if "." in filename:
         # TODO: improve this for complex filenames
         namepart = filename.split(".")[0]
@@ -20,12 +20,12 @@ def buildConflictedRegex(filename):
     return "%s \(conflicted copy \d{4}-\d{2}-\d{2} \d{6}\)" % filename
 
 
-def sanitizePath(path):
+def sanitize_path(path):
     return path.replace("//", "/")
 
 
 def prefix_path_namespace(path):
-    if isWindows():
+    if is_windows():
         # https://learn.microsoft.com/en-us/windows/win32/fileio/naming-a-file?redirectedfrom=MSDN#win32-file-namespaces
         # disable string parsing
         #  - long path
@@ -94,7 +94,7 @@ def get_size_in_bytes(size):
 
 def get_file_size_on_disk(resource_path):
     file_size_high = ctypes.c_ulonglong(0)
-    if isWindows():
+    if is_windows():
         return ctypes.windll.kernel32.GetCompressedFileSizeW(
             ctypes.c_wchar_p(resource_path), ctypes.pointer(file_size_high)
         )

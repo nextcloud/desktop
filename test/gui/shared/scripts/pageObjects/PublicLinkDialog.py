@@ -92,10 +92,10 @@ class PublicLinkDialog:
         "%d/%m/%y",
     ]
     # to store current default public link expiry date
-    defaultExpiryDate = ""
+    default_expiry_date = ""
 
     @staticmethod
-    def parseDate(date):
+    def parse_date(date):
         for date_format in PublicLinkDialog.DATE_FORMATS:
             try:
                 date = str(datetime.strptime(date, date_format))
@@ -106,31 +106,33 @@ class PublicLinkDialog:
         return date
 
     @staticmethod
-    def setDefaultExpiryDate(defaultDate):
-        PublicLinkDialog.defaultExpiryDate = PublicLinkDialog.parseDate(defaultDate)
+    def set_default_expiry_date(default_date):
+        PublicLinkDialog.default_expiry_date = PublicLinkDialog.parse_date(default_date)
 
     @staticmethod
-    def getDefaultExpiryDate():
-        return PublicLinkDialog.defaultExpiryDate
+    def get_default_expiry_date():
+        return PublicLinkDialog.default_expiry_date
 
     @staticmethod
-    def openPublicLinkTab():
+    def open_public_link_tab():
         squish.mouseClick(squish.waitForObject(PublicLinkDialog.PUBLIC_LINKS_TAB))
 
     @staticmethod
-    def createPublicLink(password="", permissions="", expireDate=""):
-        radioObjectName = ""
+    def create_public_link(password="", permissions="", expire_date=""):
+        permission_locator = ""
         if permissions:
-            radioObjectName = PublicLinkDialog.getRadioObjectForPermssion(permissions)
+            permission_locator = PublicLinkDialog.get_radio_object_for_permssion(
+                permissions
+            )
 
-        if radioObjectName:
-            squish.clickButton(squish.waitForObject(radioObjectName))
+        if permission_locator:
+            squish.clickButton(squish.waitForObject(permission_locator))
 
         if password:
-            PublicLinkDialog.setPassword(password)
+            PublicLinkDialog.set_password(password)
 
-        if expireDate:
-            PublicLinkDialog.setExpirationDate(expireDate)
+        if expire_date:
+            PublicLinkDialog.set_expiration_date(expire_date)
 
         squish.clickButton(squish.waitForObject(PublicLinkDialog.CREATE_SHARE_BUTTON))
         squish.waitFor(
@@ -141,13 +143,13 @@ class PublicLinkDialog:
         )
 
     @staticmethod
-    def togglePassword():
+    def toggle_password():
         squish.clickButton(squish.waitForObject(PublicLinkDialog.PASSWORD_CHECKBOX))
 
     @staticmethod
-    def setPassword(password):
+    def set_password(password):
         if not squish.waitForObjectExists(PublicLinkDialog.PASSWORD_CHECKBOX).checked:
-            PublicLinkDialog.togglePassword()
+            PublicLinkDialog.toggle_password()
 
         squish.mouseClick(squish.waitForObject(PublicLinkDialog.PASSWORD_INPUT_FIELD))
         squish.type(
@@ -156,31 +158,31 @@ class PublicLinkDialog:
         )
 
     @staticmethod
-    def toggleExpirationDate():
+    def toggle_expiration_date():
         squish.clickButton(squish.waitForObject(PublicLinkDialog.EXPIRYDATE_CHECKBOX))
 
     @staticmethod
-    def setExpirationDate(expireDate):
+    def set_expiration_date(expire_date):
         enabled = squish.waitForObjectExists(
             PublicLinkDialog.EXPIRYDATE_CHECKBOX
         ).checked
         if not enabled:
-            PublicLinkDialog.toggleExpirationDate()
+            PublicLinkDialog.toggle_expiration_date()
 
-        if not expireDate == "default":
-            expDate = datetime.strptime(expireDate, "%Y-%m-%d")
-            expYear = expDate.year - 2000
+        if not expire_date == "default":
+            exp_date = datetime.strptime(expire_date, "%Y-%m-%d")
+            exp_year = exp_date.year - 2000
             squish.mouseClick(
                 squish.waitForObject(PublicLinkDialog.EXPIRATION_DATE_FIELD)
             )
             # Move the cursor to year (last) field and enter the year
             squish.nativeType("<Ctrl+Right>")
             squish.nativeType("<Ctrl+Right>")
-            squish.nativeType(expYear)
+            squish.nativeType(exp_year)
 
             # Move the cursor to day (middle) field and enter the day
             squish.nativeType("<Ctrl+Left>")
-            squish.nativeType(expDate.day)
+            squish.nativeType(exp_date.day)
 
             # Move the cursor to month (first) field and enter the month
             # Backspace works most of the time, so we clear the data using backspace
@@ -189,44 +191,45 @@ class PublicLinkDialog:
             squish.nativeType("<Right>")
             squish.nativeType("<Backspace>")
             squish.nativeType("<Backspace>")
-            squish.nativeType(expDate.month)
+            squish.nativeType(exp_date.month)
             squish.nativeType("<Return>")
 
-            actualDate = str(
+            actual_date = str(
                 squish.waitForObjectExists(
                     PublicLinkDialog.EXPIRATION_DATE_FIELD
                 ).displayText
             )
-            expectedDate = f"{expDate.month}/{expDate.day}/{expYear}"
-            if not actualDate == expectedDate:
+            expected_date = f"{exp_date.month}/{exp_date.day}/{exp_year}"
+            if not actual_date == expected_date:
                 test.log(
-                    f"Expected date: {expectedDate} is not same as that of Actual date: {actualDate}, trying workaround"
+                    f"Expected date: {expected_date} is not same as that of actual date: {actual_date}"
+                    + ", trying workaround"
                 )
                 # retry with workaround
-                PublicLinkDialog.setExpirationDateWithWorkaround(
-                    expYear, expDate.month, expDate.day
+                PublicLinkDialog.set_expiration_date_with_workaround(
+                    exp_year, exp_date.month, exp_date.day
                 )
-                actualDate = str(
+                actual_date = str(
                     squish.waitForObjectExists(
                         PublicLinkDialog.EXPIRATION_DATE_FIELD
                     ).displayText
                 )
-                if not actualDate == expectedDate:
+                if not actual_date == expected_date:
                     test.fail(
-                        f"workaround failed:\nactual date: {actualDate}\nexpected date: {expectedDate}"
+                        f"workaround failed:\nactual date: {actual_date}\nexpected date: {expected_date}"
                     )
         else:
-            defaultDate = str(
+            default_date = str(
                 squish.waitForObjectExists(
                     PublicLinkDialog.EXPIRATION_DATE_FIELD
                 ).displayText
             )
-            PublicLinkDialog.setDefaultExpiryDate(defaultDate)
+            PublicLinkDialog.set_default_expiry_date(default_date)
 
-    # This workaround is needed because the above function 'setExpirationDate' can not set the month field sometime.
+    # This workaround is needed because the above function 'set_expiration_date' can not set the month field sometime.
     # See for more details: https://github.com/owncloud/client/issues/9218
     @staticmethod
-    def setExpirationDateWithWorkaround(year, month, day):
+    def set_expiration_date_with_workaround(year, month, day):
         squish.mouseClick(squish.waitForObject(PublicLinkDialog.EXPIRATION_DATE_FIELD))
 
         # date can only be set to future date. But sometimes it can not modify the month field in first attempt.
@@ -241,24 +244,24 @@ class PublicLinkDialog:
         squish.nativeType("<Return>")
 
     @staticmethod
-    def getRadioObjectForPermssion(permissions):
-        radioObjectName = None
+    def get_radio_object_for_permssion(permissions):
+        permission_locator = None
         if permissions in ("Download / View", "Viewer"):
-            radioObjectName = PublicLinkDialog.READ_ONLY_RADIO_BUTTON
+            permission_locator = PublicLinkDialog.READ_ONLY_RADIO_BUTTON
         elif permissions in ("Download / View / Edit", "Editor"):
-            radioObjectName = PublicLinkDialog.READ_WRITE_RADIO_BUTTON
+            permission_locator = PublicLinkDialog.READ_WRITE_RADIO_BUTTON
         elif permissions in ("Upload only (File Drop)", "Contributor"):
-            radioObjectName = PublicLinkDialog.UPLOAD_ONLY_RADIO_BUTTON
+            permission_locator = PublicLinkDialog.UPLOAD_ONLY_RADIO_BUTTON
         else:
             raise LookupError("No such radio object found for given permission")
 
-        return radioObjectName
+        return permission_locator
 
     @staticmethod
-    def createPublicLinkWithRole(role):
-        radioObjectName = PublicLinkDialog.getRadioObjectForPermssion(role)
+    def create_public_link_with_role(role):
+        permission_locator = PublicLinkDialog.get_radio_object_for_permssion(role)
 
-        squish.clickButton(squish.waitForObject(radioObjectName))
+        squish.clickButton(squish.waitForObject(permission_locator))
         squish.clickButton(squish.waitForObject(PublicLinkDialog.CREATE_SHARE_BUTTON))
         squish.waitFor(
             lambda: (
@@ -268,14 +271,14 @@ class PublicLinkDialog:
         )
 
     @staticmethod
-    def changePassword(password):
-        PublicLinkDialog.setPassword(password)
+    def change_password(password):
+        PublicLinkDialog.set_password(password)
         squish.clickButton(
             squish.waitForObject(PublicLinkDialog.UPDATE_PASSWORD_BUTTON)
         )
 
     @staticmethod
-    def deletePublicLink():
+    def delete_public_link():
         squish.clickButton(squish.waitForObject(PublicLinkDialog.DELETE_LINK_BUTTON))
         squish.clickButton(
             squish.waitForObject(PublicLinkDialog.CONFIRM_LINK_DELETE_BUTTON)
@@ -285,10 +288,10 @@ class PublicLinkDialog:
         )
 
     @staticmethod
-    def getExpirationDate():
-        defaultDate = str(
+    def get_expiration_date():
+        default_date = str(
             squish.waitForObjectExists(
                 PublicLinkDialog.EXPIRATION_DATE_FIELD
             ).displayText
         )
-        return PublicLinkDialog.parseDate(defaultDate)
+        return PublicLinkDialog.parse_date(default_date)

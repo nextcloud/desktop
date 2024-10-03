@@ -3,8 +3,8 @@ import names
 import squish
 
 from helpers.SetupClientHelper import (
-    getCurrentUserSyncPath,
-    setCurrentUserSyncPath,
+    get_current_user_sync_path,
+    set_current_user_sync_path,
 )
 from helpers.ConfigHelper import get_config
 
@@ -129,28 +129,44 @@ class SyncConnectionWizard:
     }
 
     @staticmethod
-    def setSyncPathInSyncConnectionWizardOc10(sync_path=""):
+    def set_sync_path_oc10(sync_path=""):
         squish.waitForObject(SyncConnectionWizard.ADD_FOLDER_SYNC_CONNECTION_WIZARD)
         squish.waitForObject(SyncConnectionWizard.CHOOSE_LOCAL_SYNC_FOLDER).setText("")
         if sync_path:
             squish.type(SyncConnectionWizard.CHOOSE_LOCAL_SYNC_FOLDER, sync_path)
-            setCurrentUserSyncPath(sync_path)
+            set_current_user_sync_path(sync_path)
         else:
             squish.type(
                 SyncConnectionWizard.CHOOSE_LOCAL_SYNC_FOLDER,
-                getCurrentUserSyncPath(),
+                get_current_user_sync_path(),
             )
-        SyncConnectionWizard.nextStep()
+        SyncConnectionWizard.next_step()
 
     @staticmethod
-    def setSyncPathInSyncConnectionWizard(sync_path=""):
+    def set_sync_path_ocis(sync_path):
+        if not sync_path:
+            sync_path = path.join(
+                get_current_user_sync_path(), get_config("syncConnectionName")
+            )
+        squish.type(
+            squish.waitForObject(SyncConnectionWizard.CHOOSE_LOCAL_SYNC_FOLDER),
+            "<Ctrl+A>",
+        )
+        squish.type(
+            SyncConnectionWizard.CHOOSE_LOCAL_SYNC_FOLDER,
+            sync_path,
+        )
+        SyncConnectionWizard.next_step()
+
+    @staticmethod
+    def set_sync_path(sync_path=""):
         if get_config("ocis"):
-            SyncConnectionWizard.setSyncPathInSyncConnectionWizardOcis(sync_path)
+            SyncConnectionWizard.set_sync_path_ocis(sync_path)
         else:
-            SyncConnectionWizard.setSyncPathInSyncConnectionWizardOc10(sync_path)
+            SyncConnectionWizard.set_sync_path_oc10(sync_path)
 
     @staticmethod
-    def nextStep():
+    def next_step():
         squish.clickButton(squish.waitForObject(SyncConnectionWizard.NEXT_BUTTON))
 
     @staticmethod
@@ -158,14 +174,14 @@ class SyncConnectionWizard:
         squish.clickButton(squish.waitForObject(SyncConnectionWizard.BACK_BUTTON))
 
     @staticmethod
-    def selectRemoteDestinationFolder(folder):
+    def select_remote_destination_folder(folder):
         squish.mouseClick(
             squish.waitForObjectItem(SyncConnectionWizard.REMOTE_FOLDER_TREE, folder)
         )
-        SyncConnectionWizard.nextStep()
+        SyncConnectionWizard.next_step()
 
     @staticmethod
-    def deselectAllRemoteFolders():
+    def deselect_all_remote_folders():
         # NOTE: checkbox does not have separate object
         # click on (11,11) which is a checkbox
         squish.mouseClick(
@@ -177,7 +193,7 @@ class SyncConnectionWizard:
         )
 
     @staticmethod
-    def enableOrDisableVfsSupport(action="disable"):
+    def enable_disable_vfs_support(action="disable"):
         if action not in ["enable", "disable"]:
             raise ValueError("Invalid action: " + action)
 
@@ -187,9 +203,9 @@ class SyncConnectionWizard:
         squish.clickButton(squish.waitForObject(SyncConnectionWizard.VFS_CHECKBOX))
 
     @staticmethod
-    def selectFoldersToSync(folders):
+    def select_folders_to_sync(folders):
         # first deselect all
-        SyncConnectionWizard.deselectAllRemoteFolders()
+        SyncConnectionWizard.deselect_all_remote_folders()
         for folder in folders:
             folder_levels = folder.strip("/").split("/")
             parent_selector = None
@@ -222,12 +238,12 @@ class SyncConnectionWizard:
                     squish.doubleClick(squish.waitForObject(selector))
 
     @staticmethod
-    def sortBy(headerText):
+    def sort_by(header_text):
         squish.mouseClick(
             squish.waitForObject(
                 {
                     "container": SyncConnectionWizard.SELECTIVE_SYNC_TREE_HEADER,
-                    "text": headerText,
+                    "text": header_text,
                     "type": "HeaderViewItem",
                     "visible": True,
                 }
@@ -235,29 +251,29 @@ class SyncConnectionWizard:
         )
 
     @staticmethod
-    def addSyncConnection():
+    def add_sync_connection():
         squish.clickButton(
             squish.waitForObject(SyncConnectionWizard.ADD_SYNC_CONNECTION_BUTTON)
         )
 
     @staticmethod
-    def getItemNameFromRow(row_index):
-        FOLDER_ROW = {
+    def get_item_name_from_row(row_index):
+        folder_row = {
             "row": row_index,
             "container": SyncConnectionWizard.SELECTIVE_SYNC_ROOT_FOLDER,
             "type": "QModelIndex",
         }
-        return str(squish.waitForObjectExists(FOLDER_ROW).displayText)
+        return str(squish.waitForObjectExists(folder_row).displayText)
 
     @staticmethod
-    def isRootFolderChecked():
+    def is_root_folder_checked():
         state = squish.waitForObject(SyncConnectionWizard.SELECTIVE_SYNC_ROOT_FOLDER)[
             "checkState"
         ]
         return state == "checked"
 
     @staticmethod
-    def cancelFolderSyncConnectionWizard():
+    def cancel_folder_sync_connection_wizard():
         squish.clickButton(
             squish.waitForObject(
                 SyncConnectionWizard.CANCEL_FOLDER_SYNC_CONNECTION_WIZARD
@@ -265,35 +281,19 @@ class SyncConnectionWizard:
         )
 
     @staticmethod
-    def selectSpaceToSync(spaceName):
+    def select_space(space_name):
         selector = SyncConnectionWizard.SPACE_NAME_SELECTOR.copy()
-        selector["text"] = spaceName
+        selector["text"] = space_name
         squish.mouseClick(squish.waitForObject(selector))
 
     @staticmethod
-    def setSyncPathInSyncConnectionWizardOcis(sync_path):
-        if not sync_path:
-            sync_path = path.join(
-                getCurrentUserSyncPath(), get_config("syncConnectionName")
-            )
-        squish.type(
-            squish.waitForObject(SyncConnectionWizard.CHOOSE_LOCAL_SYNC_FOLDER),
-            "<Ctrl+A>",
+    def sync_space(space_name):
+        SyncConnectionWizard.select_space(space_name)
+        SyncConnectionWizard.next_step()
+        SyncConnectionWizard.set_sync_path(
+            path.join(get_current_user_sync_path(), space_name)
         )
-        squish.type(
-            SyncConnectionWizard.CHOOSE_LOCAL_SYNC_FOLDER,
-            sync_path,
-        )
-        SyncConnectionWizard.nextStep()
-
-    @staticmethod
-    def syncSpace(spaceName):
-        SyncConnectionWizard.selectSpaceToSync(spaceName)
-        SyncConnectionWizard.nextStep()
-        SyncConnectionWizard.setSyncPathInSyncConnectionWizard(
-            path.join(getCurrentUserSyncPath(), spaceName)
-        )
-        SyncConnectionWizard.addSyncConnection()
+        SyncConnectionWizard.add_sync_connection()
 
     @staticmethod
     def create_folder_in_remote_destination(folder_name):
@@ -351,11 +351,6 @@ class SyncConnectionWizard:
     @staticmethod
     def is_remote_folder_selected(folder_selector):
         return squish.waitForObjectExists(folder_selector).selected
-
-    @staticmethod
-    def select_space_to_sync(space_name):
-        SyncConnectionWizard.selectSpaceToSync(space_name)
-        SyncConnectionWizard.nextStep()
 
     @staticmethod
     def open_sync_connection_wizard():

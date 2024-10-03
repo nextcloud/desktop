@@ -357,9 +357,9 @@ def lint_gui_test():
 def python_lint():
     return [{
         "name": "python-lint",
-        "image": OC_CI_ALPINE,
+        "image": OC_CI_SQUISH,
         "commands": [
-            "apk add --no-cache py3-pylint black",
+            "make -C %s pip-install" % dir["guiTest"],
             "make -C %s python-lint" % dir["guiTest"],
         ],
     }]

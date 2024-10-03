@@ -18,12 +18,12 @@ pip-install:
 .PHONY: python-lint
 python-lint:
 	black --check --diff .
-	pylint --rcfile ./.pylintrc $(PYTHON_LINT_PATHS)
+	python3.10 -m pylint --rcfile ./.pylintrc $(PYTHON_LINT_PATHS)
 
 .PHONY: python-lint-fix
 python-lint-fix:
 	black .
-	pylint --rcfile ./.pylintrc $(PYTHON_LINT_PATHS)
+	python3.10 -m pylint --rcfile ./.pylintrc $(PYTHON_LINT_PATHS)
 
 .PHONY: gherkin-lint
 gherkin-lint:

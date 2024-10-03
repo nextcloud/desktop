@@ -51,18 +51,18 @@ class SharingDialog:
     }
 
     @staticmethod
-    def getAvailablePermission():
-        editChecked = squish.waitForObjectExists(
+    def get_available_permission():
+        edit_checked = squish.waitForObjectExists(
             SharingDialog.EDIT_PERMISSIONS_CHECKBOX
         ).checked
-        shareChecked = squish.waitForObjectExists(
+        share_checked = squish.waitForObjectExists(
             SharingDialog.SHARE_PERMISSIONS_CHECKBOX
         ).checked
 
-        return editChecked, shareChecked
+        return edit_checked, share_checked
 
     @staticmethod
-    def searchCollaborator(collaborator):
+    def search_collaborator(collaborator):
         squish.mouseClick(
             squish.waitForObject(SharingDialog.SHARE_WITH_COLLABORATOR_INPUT_FIELD)
         )
@@ -72,20 +72,20 @@ class SharingDialog:
         )
 
     @staticmethod
-    def addCollaborator(receiver, permissions, isGroup=False, collaboratorCount=1):
-        SharingDialog.selectCollaborator(receiver, isGroup)
-        permissionsList = permissions.split(",")
+    def add_collaborator(receiver, permissions, is_group=False, collaborator_count=1):
+        SharingDialog.select_collaborator(receiver, is_group)
+        permissions_list = permissions.split(",")
 
-        editChecked, shareChecked = SharingDialog.getAvailablePermission()
+        edit_checked, share_checked = SharingDialog.get_available_permission()
 
-        if ("edit" in permissionsList and editChecked is False) or (
-            "edit" not in permissionsList and editChecked is True
+        if ("edit" in permissions_list and edit_checked is False) or (
+            "edit" not in permissions_list and edit_checked is True
         ):
             squish.clickButton(
                 squish.waitForObject(SharingDialog.EDIT_PERMISSIONS_CHECKBOX)
             )
-        if ("share" in permissionsList and shareChecked is False) or (
-            "share" not in permissionsList and shareChecked is True
+        if ("share" in permissions_list and share_checked is False) or (
+            "share" not in permissions_list and share_checked is True
         ):
             squish.clickButton(
                 squish.waitForObject(SharingDialog.SHARE_PERMISSIONS_CHECKBOX)
@@ -94,73 +94,73 @@ class SharingDialog:
         # wait for share to complete
         # create the copy of the selector to avoid mutating the original
         collaborator_row_selector = SharingDialog.SHARING_DIALOG_CONTRIBUTOR_ROW.copy()
-        collaborator_row_selector["occurrence"] = collaboratorCount
+        collaborator_row_selector["occurrence"] = collaborator_count
         squish.waitForObjectExists(collaborator_row_selector)
 
     @staticmethod
-    def getSharingDialogMessage():
+    def get_sharing_dialog_message():
         return str(squish.waitForObjectExists(SharingDialog.SHARING_DIALOG).text)
 
     @staticmethod
-    def getErrorText():
+    def get_error_text():
         return str(squish.waitForObjectExists(SharingDialog.SHARING_DIALOG_ERROR).text)
 
     @staticmethod
-    def selectCollaborator(receiver, isGroup=False):
-        postFixInSuggestion = ""
-        if isGroup:
-            postFixInSuggestion = " (group)"
+    def select_collaborator(receiver, is_group=False):
+        suffix = ""
+        if is_group:
+            suffix = " (group)"
 
-        SharingDialog.searchCollaborator(receiver)
+        SharingDialog.search_collaborator(receiver)
 
         # collaborator name with special characters contains escape characters '\\'
         # in the squish object
         # Example:
         # Actual collaborator name: Speci@l_Name-.+
         # Collaborator name in object: Speci@l\\_Name-\\.+
-        escapedReceiverName = receiver.replace("_", "\\_").replace(".", "\\.")
+        escaped_receiver_name = receiver.replace("_", "\\_").replace(".", "\\.")
         squish.mouseClick(
             squish.waitForObjectItem(
                 SharingDialog.SUGGESTED_COLLABORATOR,
-                escapedReceiverName + postFixInSuggestion,
+                escaped_receiver_name + suffix,
             )
         )
 
     @staticmethod
-    def removePermissions(permissions):
-        removePermissionsList = permissions.split(",")
+    def remove_permissions(permissions):
+        remove_permissions_list = permissions.split(",")
         (
-            isEditPermissionAvailable,
-            isSharePermissionAvailable,
-        ) = SharingDialog.getAvailablePermission()
+            is_edit_permission_available,
+            is_share_permission_available,
+        ) = SharingDialog.get_available_permission()
 
-        if "share" in removePermissionsList and isSharePermissionAvailable:
+        if "share" in remove_permissions_list and is_share_permission_available:
             squish.clickButton(
                 squish.waitForObject(SharingDialog.SHARE_PERMISSIONS_CHECKBOX)
             )
 
-        if "edit" in removePermissionsList and isEditPermissionAvailable:
+        if "edit" in remove_permissions_list and is_edit_permission_available:
             squish.clickButton(
                 squish.waitForObject(SharingDialog.EDIT_PERMISSIONS_CHECKBOX)
             )
 
     @staticmethod
-    def unshareWith():
+    def unshare_with():
         squish.clickButton(squish.waitForObject(SharingDialog.DELETE_SHARE_BUTTON))
 
     @staticmethod
-    def closeSharingDialog():
+    def close_sharing_dialog():
         squish.clickButton(
             squish.waitForObject(SharingDialog.SHARING_DIALOG_CLOSE_BUTTON)
         )
 
     @staticmethod
-    def getCollaborators():
+    def get_collaborators():
         squish.waitForObject(SharingDialog.SHARING_DIALOG_CONTRIBUTOR_ROW)
         return squish.findAllObjects(SharingDialog.SHARING_DIALOG_CONTRIBUTOR_ROW)
 
     @staticmethod
-    def hasEditPermission():
+    def has_edit_permission():
         if not object.exists(SharingDialog.EDIT_PERMISSIONS_CHECKBOX):
             return False
         return squish.waitForObjectExists(
@@ -168,7 +168,7 @@ class SharingDialog:
         ).checked
 
     @staticmethod
-    def hasSharePermission():
+    def has_share_permission():
         if not object.exists(SharingDialog.SHARE_PERMISSIONS_CHECKBOX):
             return False
         return squish.waitForObjectExists(
@@ -176,13 +176,13 @@ class SharingDialog:
         ).checked
 
     @staticmethod
-    def getCollaboratorName(occurrence=1):
+    def get_collaborator_name(occurrence=1):
         selector = SharingDialog.SHARING_DIALOG_CONTRIBUTOR_ROW.copy()
         selector["occurrence"] = occurrence
         return str(squish.waitForObjectExists(selector).text)
 
     @staticmethod
-    def isUserInSuggestionList(user):
+    def is_user_in_suggestion_list(user):
         exists = False
         try:
             squish.waitForObjectItem(SharingDialog.SUGGESTED_COLLABORATOR, user)

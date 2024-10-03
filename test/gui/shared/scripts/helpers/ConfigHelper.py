@@ -27,35 +27,35 @@ def get_config_from_env_file(env):
     raise KeyError(f'Environment "{env}" not found in envs.txt')
 
 
-def isWindows():
+def is_windows():
     return platform.system() == 'Windows'
 
 
-def isLinux():
+def is_linux():
     return platform.system() == 'Linux'
 
 
-def getWinUserHome():
+def get_win_user_home():
     return os.environ.get('UserProfile')
 
 
-def getClientRootPath():
-    if isWindows():
-        return os.path.join(getWinUserHome(), 'owncloudtest')
+def get_client_root_path():
+    if is_windows():
+        return os.path.join(get_win_user_home(), 'owncloudtest')
     return os.path.join(gettempdir(), 'owncloudtest')
 
 
-def getConfigHome():
-    if isWindows():
+def get_config_home():
+    if is_windows():
         # There is no way to set custom config path in windows
         # TODO: set to different path if option is available
-        return os.path.join(getWinUserHome(), 'AppData', 'Roaming', 'ownCloud')
+        return os.path.join(get_win_user_home(), 'AppData', 'Roaming', 'ownCloud')
     return os.path.join(get_config_from_env_file('XDG_CONFIG_HOME'), 'ownCloud')
 
 
 def get_default_home_dir():
-    if isWindows():
-        return getWinUserHome()
+    if is_windows():
+        return get_win_user_home()
     return os.environ.get('HOME')
 
 
@@ -90,9 +90,9 @@ CONFIG = {
     'lowestSyncTimeout': 1,
     'middlewareUrl': 'http://localhost:3000/',
     'clientLogFile': '-',
-    'clientRootSyncPath': getClientRootPath(),
-    'tempFolderPath': os.path.join(getClientRootPath(), 'temp'),
-    'clientConfigDir': getConfigHome(),
+    'clientRootSyncPath': get_client_root_path(),
+    'tempFolderPath': os.path.join(get_client_root_path(), 'temp'),
+    'clientConfigDir': get_config_home(),
     'guiTestReportDir': os.path.abspath('../reports'),
     'ocis': False,
     'screenRecordOnFailure': False,
@@ -147,7 +147,7 @@ def init_config():
             'guiTestReportDir',
         ):
             # make sure there is always one trailing slash
-            if isWindows():
+            if is_windows():
                 value = value.replace('/', '\\')
                 CONFIG[key] = value.rstrip('\\') + '\\'
             else:

@@ -6,62 +6,62 @@ from pageObjects.Toolbar import Toolbar
 from pageObjects.Activity import Activity
 from pageObjects.Settings import Settings
 
-from helpers.ConfigHelper import get_config, isWindows, set_config
+from helpers.ConfigHelper import get_config, is_windows, set_config
 from helpers.SyncHelper import (
-    waitForFileOrFolderToSync,
-    waitForFileOrFolderToHaveSyncError,
+    wait_for_resource_to_sync,
+    wait_for_resource_to_have_sync_error,
 )
 from helpers.SetupClientHelper import (
-    getTempResourcePath,
-    setCurrentUserSyncPath,
-    substituteInLineCodes,
-    getResourcePath,
+    get_temp_resource_path,
+    set_current_user_sync_path,
+    substitute_inline_codes,
+    get_resource_path,
 )
 
 
 @Given('the user has paused the file sync')
 def step(context):
-    SyncConnection.pauseSync()
+    SyncConnection.pause_sync()
 
 
 @When('the user resumes the file sync on the client')
 def step(context):
-    SyncConnection.resumeSync()
+    SyncConnection.resume_sync()
 
 
 @When('the user force syncs the files')
 def step(context):
-    SyncConnection.forceSync()
+    SyncConnection.force_sync()
 
 
 @When('the user waits for the files to sync')
 def step(context):
-    waitForFileOrFolderToSync(getResourcePath('/'))
+    wait_for_resource_to_sync(get_resource_path('/'))
 
 
 @When(r'the user waits for (file|folder) "([^"]*)" to be synced', regexp=True)
 def step(context, resource_type, resource):
-    resource = getResourcePath(resource)
-    waitForFileOrFolderToSync(resource, resource_type)
+    resource = get_resource_path(resource)
+    wait_for_resource_to_sync(resource, resource_type)
 
 
 @When(r'the user waits for (file|folder) "([^"]*)" to have sync error', regexp=True)
 def step(context, resource_type, resource):
-    resource = getResourcePath(resource)
-    waitForFileOrFolderToHaveSyncError(resource, resource_type)
+    resource = get_resource_path(resource)
+    wait_for_resource_to_have_sync_error(resource, resource_type)
 
 
 @When(
     r'user "([^"]*)" waits for (file|folder) "([^"]*)" to have sync error', regexp=True
 )
 def step(context, username, resource_type, resource):
-    resource = getResourcePath(resource, username)
-    waitForFileOrFolderToHaveSyncError(resource, resource_type)
+    resource = get_resource_path(resource, username)
+    wait_for_resource_to_have_sync_error(resource, resource_type)
 
 
 @When('the user enables virtual file support')
 def step(context):
-    SyncConnection.enableVFS()
+    SyncConnection.enable_vfs()
     # TODO: remove snooze with proper wait
     # let the client re-sync
     squish.snooze(get_config('minSyncTimeout'))
@@ -69,13 +69,13 @@ def step(context):
 
 @Then('the "|any|" button should be available')
 def step(context, item):
-    SyncConnection.openMenu()
-    SyncConnection.hasMenuItem(item)
+    SyncConnection.open_menu()
+    SyncConnection.has_menu_item(item)
 
 
 @Then('the "|any|" button should not be available')
 def step(context, item):
-    SyncConnection.openMenu()
+    SyncConnection.open_menu()
     test.compare(
         SyncConnection.menu_item_exists(item),
         False,
@@ -85,7 +85,7 @@ def step(context, item):
 
 @When('the user disables virtual file support')
 def step(context):
-    SyncConnection.disableVFS()
+    SyncConnection.disable_vfs()
     # TODO: remove snooze with proper wait
     # let the client re-sync
     squish.snooze(get_config('minSyncTimeout'))
@@ -93,38 +93,40 @@ def step(context):
 
 @When('the user clicks on the activity tab')
 def step(context):
-    Toolbar.openActivity()
+    Toolbar.open_activity()
 
 
 @Then('the table of conflict warnings should include file "|any|"')
 def step(context, filename):
-    Activity.checkFileExist(filename)
+    Activity.check_file_exist(filename)
 
 
 @Then('the file "|any|" should be blacklisted')
 def step(context, filename):
-    test.compare(True, Activity.resourceIsBlacklisted(filename), 'File is Blacklisted')
+    test.compare(
+        True, Activity.is_resource_blacklisted(filename), 'File is Blacklisted'
+    )
 
 
 @Then('the file "|any|" should be ignored')
 def step(context, filename):
-    test.compare(True, Activity.resourceIsIgnored(filename), 'File is Ignored')
+    test.compare(True, Activity.is_resource_ignored(filename), 'File is Ignored')
 
 
 @Then('the file "|any|" should be excluded')
 def step(context, filename):
-    test.compare(True, Activity.resource_is_excluded(filename), 'File is Excluded')
+    test.compare(True, Activity.is_resource_excluded(filename), 'File is Excluded')
 
 
 @When('the user selects "|any|" tab in the activity')
-def step(context, tabName):
-    Activity.clickTab(tabName)
+def step(context, tab_name):
+    Activity.click_tab(tab_name)
 
 
 @Then('the toolbar should have the following tabs:')
 def step(context):
-    for tabName in context.table:
-        Toolbar.hasItem(tabName[0])
+    for tab_name in context.table:
+        Toolbar.has_item(tab_name[0])
 
 
 @When('the user selects the following folders to sync:')
@@ -132,71 +134,73 @@ def step(context):
     folders = []
     for row in context.table[1:]:
         folders.append(row[0])
-    SyncConnectionWizard.selectFoldersToSync(folders)
-    SyncConnectionWizard.addSyncConnection()
+    SyncConnectionWizard.select_folders_to_sync(folders)
+    SyncConnectionWizard.add_sync_connection()
 
 
 @When('the user sorts the folder list by "|any|"')
-def step(context, headerText):
-    if (headerText := headerText.capitalize()) in ['Size', 'Name']:
-        SyncConnectionWizard.sortBy(headerText)
+def step(context, header_text):
+    if (header_text := header_text.capitalize()) in ['Size', 'Name']:
+        SyncConnectionWizard.sort_by(header_text)
     else:
-        raise ValueError("Sorting by '" + headerText + "' is not supported.")
+        raise ValueError("Sorting by '" + header_text + "' is not supported.")
 
 
 @Then('the sync all checkbox should be checked')
 def step(context):
     test.compare(
-        SyncConnectionWizard.isRootFolderChecked(), True, 'Sync all checkbox is checked'
+        SyncConnectionWizard.is_root_folder_checked(),
+        True,
+        'Sync all checkbox is checked',
     )
 
 
 @Then('the folders should be in the following order:')
 def step(context):
-    rowIndex = 0
+    row_index = 0
     for row in context.table[1:]:
-        expectedFolder = row[0]
-        actualFolder = SyncConnectionWizard.getItemNameFromRow(rowIndex)
-        test.compare(actualFolder, expectedFolder)
+        expected_folder = row[0]
+        actual_folder = SyncConnectionWizard.get_item_name_from_row(row_index)
+        test.compare(actual_folder, expected_folder)
 
-        rowIndex += 1
+        row_index += 1
 
 
 @When('the user selects "|any|" space in sync connection wizard')
 def step(context, space_name):
     if get_config('ocis'):
-        SyncConnectionWizard.selectSpaceToSync(space_name)
-        SyncConnectionWizard.nextStep()
+        SyncConnectionWizard.select_space(space_name)
+        SyncConnectionWizard.next_step()
         set_config('syncConnectionName', space_name)
 
 
 @When('the user sets the sync path in sync connection wizard')
 def step(context):
-    SyncConnectionWizard.setSyncPathInSyncConnectionWizard()
+    SyncConnectionWizard.set_sync_path()
 
 
 @When(
     'the user sets the temp folder "|any|" as local sync path in sync connection wizard'
 )
-def step(context, folderName):
-    sync_path = getTempResourcePath(folderName)
-    SyncConnectionWizard.setSyncPathInSyncConnectionWizard(sync_path)
+def step(context, folder_name):
+    sync_path = get_temp_resource_path(folder_name)
+    SyncConnectionWizard.set_sync_path(sync_path)
     if get_config('ocis'):
         # empty connection name when using temporary locations
         set_config('syncConnectionName', '')
-        setCurrentUserSyncPath(sync_path)
+        set_current_user_sync_path(sync_path)
 
 
 @When('the user selects "|any|" as a remote destination folder')
-def step(context, folderName):
+def step(context, folder_name):
     # There's no remote destination section with oCIS server
     if not get_config('ocis'):
-        SyncConnectionWizard.selectRemoteDestinationFolder(folderName)
+        SyncConnectionWizard.select_remote_destination_folder(folder_name)
 
 
 @When('the user syncs the "|any|" space')
-def step(context, spaceName):
-    SyncConnectionWizard.syncSpace(spaceName)
+def step(context, space_name):
+    SyncConnectionWizard.sync_space(space_name)
 
 
 @Then('the settings tab should have the following options in the general section:')
@@ -229,19 +233,19 @@ def step(context):
 
 @When('the user adds the folder sync connection')
 def step(context):
-    SyncConnectionWizard.addSyncConnection()
+    SyncConnectionWizard.add_sync_connection()
 
 
 @When('user unselects all the remote folders')
 def step(context):
-    SyncConnectionWizard.deselectAllRemoteFolders()
+    SyncConnectionWizard.deselect_all_remote_folders()
 
 
 @When('the user |word| VFS support for Windows')
 def step(context, action):
-    if isWindows():
+    if is_windows():
         action = action.rstrip('s')
-        SyncConnectionWizard.enableOrDisableVfsSupport(action)
+        SyncConnectionWizard.enable_disable_vfs_support(action)
 
 
 @When('user unselects a folder "|any|" in selective sync')
@@ -303,12 +307,7 @@ def step(context):
 
 @Then('the file "|any|" should have status "|any|" in the activity tab')
 def step(context, file_name, status):
-    Activity.hasSyncStatus(file_name, status)
-
-
-@When('the user selects the "|any|" space to sync')
-def step(context, space_name):
-    SyncConnectionWizard.select_space_to_sync(space_name)
+    Activity.has_sync_status(file_name, status)
 
 
 @When('the user opens the sync connection wizard')
@@ -327,7 +326,7 @@ def step(context):
 
 @When('the user checks the activities of account "|any|"')
 def step(context, account):
-    account = substituteInLineCodes(account)
+    account = substitute_inline_codes(account)
     Activity.select_synced_filter(account)
 
 
@@ -336,7 +335,7 @@ def step(context):
     for row in context.table[1:]:
         resource = row[0]
         action = row[1]
-        account = substituteInLineCodes(row[2])
+        account = substitute_inline_codes(row[2])
         test.compare(
             Activity.check_synced_table(resource, action, account),
             True,
@@ -349,7 +348,7 @@ def step(context):
     for row in context.table[1:]:
         resource = row[0]
         status = row[1]
-        account = substituteInLineCodes(row[2])
+        account = substitute_inline_codes(row[2])
         test.compare(
             Activity.check_not_synced_table(resource, status, account),
             True,

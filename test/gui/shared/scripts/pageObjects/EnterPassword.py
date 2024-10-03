@@ -69,7 +69,7 @@ class EnterPassword:
         username = label.split(" ", maxsplit=2)[1]
         return username.capitalize()
 
-    def enterPassword(self, password):
+    def enter_password(self, password):
         squish.waitForObjectExists(
             self.PASSWORD_BOX, get_config("maxSyncTimeout") * 1000
         )
@@ -77,31 +77,31 @@ class EnterPassword:
         squish.nativeType(password)
         squish.mouseClick(squish.waitForObjectExists(self.LOGIN_BUTTON))
 
-    def oidcReLogin(self, username, password):
+    def oidc_relogin(self, username, password):
         # wait 500ms for copy button to fully load
         squish.snooze(1 / 2)
         squish.mouseClick(squish.waitForObject(self.COPY_URL_TO_CLIPBOARD_BUTTON))
         authorize_via_webui(username, password)
 
-    def oauthReLogin(self, username, password):
+    def oauth_relogin(self, username, password):
         # wait 500ms for copy button to fully load
         squish.snooze(1 / 2)
         squish.mouseClick(squish.waitForObject(self.COPY_URL_TO_CLIPBOARD_BUTTON))
         authorize_via_webui(username, password, "oauth")
 
-    def reLogin(self, username, password, oauth=False):
+    def relogin(self, username, password, oauth=False):
         if get_config("ocis"):
-            self.oidcReLogin(username, password)
+            self.oidc_relogin(username, password)
         elif oauth:
-            self.oauthReLogin(username, password)
+            self.oauth_relogin(username, password)
         else:
-            self.enterPassword(password)
+            self.enter_password(password)
 
-    def loginAfterSetup(self, username, password):
+    def login_after_setup(self, username, password):
         if get_config("ocis"):
-            self.oidcReLogin(username, password)
+            self.oidc_relogin(username, password)
         else:
-            self.enterPassword(password)
+            self.enter_password(password)
 
     def logout(self):
         squish.mouseClick(squish.waitForObject(self.LOGOUT_BUTTON))

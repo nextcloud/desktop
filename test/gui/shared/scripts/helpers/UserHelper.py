@@ -52,13 +52,13 @@ def basic_auth_header(user=None, password=None):
         user = "admin"
         password = "admin"
     elif not user == "public" and not password:
-        password = getPasswordForUser(user)
+        password = get_password_for_user(user)
 
     token = b64encode((f"{user}:{password}").encode()).decode()
     return {"Authorization": "Basic " + token}
 
 
-def getUserInfo(username, attribute):
+def get_user_info(username, attribute):
     if username in test_users:
         return getattr(test_users[username], attribute)
     if attribute == "password":
@@ -66,9 +66,9 @@ def getUserInfo(username, attribute):
     raise ValueError(f"Invalid user attribute: {attribute}")
 
 
-def getDisplaynameForUser(username):
-    return getUserInfo(username, "displayname")
+def get_displayname_for_user(username):
+    return get_user_info(username, "displayname")
 
 
-def getPasswordForUser(username):
-    return getUserInfo(username, "password")
+def get_password_for_user(username):
+    return get_user_info(username, "password")

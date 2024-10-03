@@ -7,11 +7,11 @@ from pageObjects.EnterPassword import EnterPassword
 from helpers.WebUIHelper import authorize_via_webui
 from helpers.ConfigHelper import get_config
 from helpers.SetupClientHelper import (
-    createUserSyncPath,
-    getTempResourcePath,
-    setCurrentUserSyncPath,
+    create_user_sync_path,
+    get_temp_resource_path,
+    set_current_user_sync_path,
 )
-from helpers.SyncHelper import listenSyncStatusForItem
+from helpers.SyncHelper import listen_sync_status_for_item
 
 
 class AccountConnectionWizard:
@@ -119,11 +119,7 @@ class AccountConnectionWizard:
     }
 
     @staticmethod
-    def sanitizeFolderPath(folderPath):
-        return folderPath.rstrip("/")
-
-    @staticmethod
-    def addServer(server_url):
+    def add_server(server_url):
         squish.mouseClick(
             squish.waitForObject(AccountConnectionWizard.SERVER_ADDRESS_BOX)
         )
@@ -131,7 +127,7 @@ class AccountConnectionWizard:
             squish.waitForObject(AccountConnectionWizard.SERVER_ADDRESS_BOX),
             server_url,
         )
-        AccountConnectionWizard.nextStep()
+        AccountConnectionWizard.next_step()
 
         if not get_config("ocis"):
             try:
@@ -144,36 +140,36 @@ class AccountConnectionWizard:
                 test.log("No insecure connection warning for server " + server_url)
 
     @staticmethod
-    def acceptCertificate():
+    def accept_certificate():
         squish.clickButton(squish.waitForObject(EnterPassword.ACCEPT_CERTIFICATE_YES))
 
     @staticmethod
-    def addUserCreds(username, password, oauth=False):
+    def add_user_credentials(username, password, oauth=False):
         if get_config("ocis"):
-            AccountConnectionWizard.oidcLogin(username, password)
+            AccountConnectionWizard.oidc_login(username, password)
         elif oauth:
-            AccountConnectionWizard.oauthLogin(username, password)
+            AccountConnectionWizard.oauth_login(username, password)
         else:
-            AccountConnectionWizard.basicLogin(username, password)
+            AccountConnectionWizard.basic_login(username, password)
 
     @staticmethod
-    def basicLogin(username, password):
+    def basic_login(username, password):
         squish.mouseClick(squish.waitForObject(AccountConnectionWizard.USERNAME_BOX))
         squish.nativeType(username)
         squish.mouseClick(squish.waitForObject(AccountConnectionWizard.PASSWORD_BOX))
         squish.nativeType(password)
-        AccountConnectionWizard.nextStep()
+        AccountConnectionWizard.next_step()
 
     @staticmethod
-    def oidcLogin(username, password):
-        AccountConnectionWizard.browserLogin(username, password, "oidc")
+    def oidc_login(username, password):
+        AccountConnectionWizard.browser_login(username, password, "oidc")
 
     @staticmethod
-    def oauthLogin(username, password):
-        AccountConnectionWizard.browserLogin(username, password, "oauth")
+    def oauth_login(username, password):
+        AccountConnectionWizard.browser_login(username, password, "oauth")
 
     @staticmethod
-    def browserLogin(username, password, login_type=None):
+    def browser_login(username, password, login_type=None):
         # wait 500ms for copy button to fully load
         squish.snooze(1 / 2)
         squish.mouseClick(
@@ -182,17 +178,17 @@ class AccountConnectionWizard:
         authorize_via_webui(username, password, login_type)
 
     @staticmethod
-    def nextStep():
+    def next_step():
         squish.clickButton(
             squish.waitForObjectExists(AccountConnectionWizard.NEXT_BUTTON)
         )
 
     @staticmethod
-    def selectSyncFolder(user):
+    def select_sync_folder(user):
         # create sync folder for user
-        sync_path = createUserSyncPath(user)
+        sync_path = create_user_sync_path(user)
 
-        AccountConnectionWizard.selectAdvancedConfig()
+        AccountConnectionWizard.select_advanced_config()
         squish.mouseClick(
             squish.waitForObject(AccountConnectionWizard.DIRECTORY_NAME_BOX)
         )
@@ -205,7 +201,7 @@ class AccountConnectionWizard:
 
     @staticmethod
     def set_temp_folder_as_sync_folder(folder_name):
-        sync_path = getTempResourcePath(folder_name)
+        sync_path = get_temp_resource_path(folder_name)
 
         # clear the current path
         squish.mouseClick(
@@ -218,42 +214,42 @@ class AccountConnectionWizard:
             squish.waitForObject(AccountConnectionWizard.SELECT_LOCAL_FOLDER),
             sync_path,
         )
-        setCurrentUserSyncPath(sync_path)
+        set_current_user_sync_path(sync_path)
         return sync_path
 
     @staticmethod
-    def addAccount(account_details):
-        AccountConnectionWizard.addAccountInformation(account_details)
-        AccountConnectionWizard.nextStep()
+    def add_account(account_details):
+        AccountConnectionWizard.add_account_information(account_details)
+        AccountConnectionWizard.next_step()
 
     @staticmethod
-    def addAccountInformation(account_details):
+    def add_account_information(account_details):
         if account_details["server"]:
-            AccountConnectionWizard.addServer(account_details["server"])
+            AccountConnectionWizard.add_server(account_details["server"])
             if get_config("ocis"):
-                AccountConnectionWizard.acceptCertificate()
+                AccountConnectionWizard.accept_certificate()
         if account_details["user"]:
-            AccountConnectionWizard.addUserCreds(
+            AccountConnectionWizard.add_user_credentials(
                 account_details["user"],
                 account_details["password"],
                 account_details["oauth"],
             )
         sync_path = ""
         if account_details["sync_folder"]:
-            AccountConnectionWizard.selectAdvancedConfig()
+            AccountConnectionWizard.select_advanced_config()
             sync_path = AccountConnectionWizard.set_temp_folder_as_sync_folder(
                 account_details["sync_folder"]
             )
         elif account_details["user"]:
-            sync_path = AccountConnectionWizard.selectSyncFolder(
+            sync_path = AccountConnectionWizard.select_sync_folder(
                 account_details["user"]
             )
         if sync_path:
             # listen for sync status
-            listenSyncStatusForItem(sync_path)
+            listen_sync_status_for_item(sync_path)
 
     @staticmethod
-    def selectManualSyncFolderOption():
+    def select_manual_sync_folder_option():
         squish.clickButton(
             squish.waitForObject(
                 AccountConnectionWizard.CONF_SYNC_MANUALLY_RADIO_BUTTON
@@ -261,23 +257,23 @@ class AccountConnectionWizard:
         )
 
     @staticmethod
-    def selectVFSOption():
+    def select_vfs_option():
         squish.clickButton(
             squish.waitForObject(AccountConnectionWizard.VIRTUAL_FILE_RADIO_BUTTON)
         )
 
     @staticmethod
-    def selectDownloadEverythingOption():
+    def select_download_everything_option():
         squish.clickButton(
             squish.waitForObject(AccountConnectionWizard.SYNC_EVERYTHING_RADIO_BUTTON)
         )
 
     @staticmethod
-    def getErrorMessage():
+    def get_error_message():
         return str(squish.waitForObjectExists(AccountConnectionWizard.ERROR_LABEL).text)
 
     @staticmethod
-    def isNewConnectionWindowVisible():
+    def is_new_connection_window_visible():
         visible = False
         try:
             squish.waitForObject(AccountConnectionWizard.SERVER_ADDRESS_BOX)
@@ -287,7 +283,7 @@ class AccountConnectionWizard:
         return visible
 
     @staticmethod
-    def isCredentialWindowVisible():
+    def is_credential_window_visible():
         visible = False
         try:
             if get_config("ocis"):
@@ -300,13 +296,13 @@ class AccountConnectionWizard:
         return visible
 
     @staticmethod
-    def selectAdvancedConfig():
+    def select_advanced_config():
         squish.waitForObject(
             AccountConnectionWizard.ADVANCED_CONFIGURATION_CHECKBOX
         ).setChecked(True)
 
     @staticmethod
-    def canChangeLocalSyncDir():
+    def can_change_local_sync_dir():
         can_change = False
         try:
             squish.waitForObjectExists(AccountConnectionWizard.SELECT_LOCAL_FOLDER)
@@ -320,13 +316,13 @@ class AccountConnectionWizard:
         return can_change
 
     @staticmethod
-    def isSyncEverythingOptionChecked():
+    def is_sync_everything_option_checked():
         return squish.waitForObjectExists(
             AccountConnectionWizard.SYNC_EVERYTHING_RADIO_BUTTON
         ).checked
 
     @staticmethod
-    def isVFSOptionChecked():
+    def is_vfs_option_checked():
         return squish.waitForObjectExists(
             AccountConnectionWizard.VIRTUAL_FILE_RADIO_BUTTON
         ).checked

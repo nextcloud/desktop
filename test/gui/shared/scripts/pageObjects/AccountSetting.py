@@ -48,49 +48,49 @@ class AccountSetting:
     CONFIRMATION_YES_BUTTON = {"text": "Yes", "type": "QPushButton", "visible": 1}
 
     @staticmethod
-    def accountAction(action):
+    def account_action(action):
         squish.clickButton(squish.waitForObject(AccountSetting.MANAGE_ACCOUNT_BUTTON))
         squish.activateItem(
             squish.waitForObjectItem(AccountSetting.ACCOUNT_MENU, action)
         )
 
     @staticmethod
-    def removeAccountConnection():
-        AccountSetting.accountAction("Remove")
+    def remove_account_connection():
+        AccountSetting.account_action("Remove")
         squish.clickButton(
             squish.waitForObject(AccountSetting.CONFIRM_REMOVE_CONNECTION_BUTTON)
         )
 
     @staticmethod
     def logout():
-        AccountSetting.accountAction("Log out")
+        AccountSetting.account_action("Log out")
 
     @staticmethod
     def login():
-        AccountSetting.accountAction("Log in")
+        AccountSetting.account_action("Log in")
 
     @staticmethod
-    def getAccountConnectionLabel():
+    def get_account_connection_label():
         return str(
             squish.waitForObjectExists(AccountSetting.ACCOUNT_CONNECTION_LABEL).text
         )
 
     @staticmethod
-    def isConnecting():
-        return "Connecting to" in AccountSetting.getAccountConnectionLabel()
+    def is_connecting():
+        return "Connecting to" in AccountSetting.get_account_connection_label()
 
     @staticmethod
-    def isUserSignedOut():
-        return "Signed out" in AccountSetting.getAccountConnectionLabel()
+    def is_user_signed_out():
+        return "Signed out" in AccountSetting.get_account_connection_label()
 
     @staticmethod
-    def isUserSignedIn():
-        return "Connected" in AccountSetting.getAccountConnectionLabel()
+    def is_user_signed_in():
+        return "Connected" in AccountSetting.get_account_connection_label()
 
     @staticmethod
-    def waitUntilConnectionIsConfigured(timeout=5000):
+    def wait_until_connection_is_configured(timeout=5000):
         result = squish.waitFor(
-            AccountSetting.isConnecting,
+            AccountSetting.is_connecting,
             timeout,
         )
 
@@ -102,9 +102,9 @@ class AccountSetting:
             )
 
     @staticmethod
-    def waitUntilAccountIsConnected(timeout=5000):
+    def wait_until_account_is_connected(timeout=5000):
         result = squish.waitFor(
-            AccountSetting.isUserSignedIn,
+            AccountSetting.is_user_signed_in,
             timeout,
         )
 
@@ -134,13 +134,13 @@ class AccountSetting:
         return result
 
     @staticmethod
-    def pressKey(key):
+    def press_key(key):
         key = key.replace('"', "")
         key = f"<{key}>"
         squish.nativeType(key)
 
     @staticmethod
-    def isLogDialogVisible():
+    def is_log_dialog_visible():
         visible = False
         try:
             visible = squish.waitForObjectExists(

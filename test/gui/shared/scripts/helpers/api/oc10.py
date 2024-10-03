@@ -17,7 +17,7 @@ def get_provisioning_url(*paths):
     return format_json(url_join(get_ocs_url(), "cloud", *paths))
 
 
-def checkSuccessOcsStatus(response):
+def check_success_ocs_status(response):
     if response.text:
         ocs_data = json.loads(response.text)
         if ocs_data["ocs"]["meta"]["statuscode"] not in [100, 200]:
@@ -37,18 +37,18 @@ def create_user(username, password, displayname, email):
         "email": email,
     }
     response = request.post(url, body)
-    request.assertHttpStatus(response, 200, f"Failed to create user '{username}'")
-    checkSuccessOcsStatus(response)
+    request.assert_http_status(response, 200, f"Failed to create user '{username}'")
+    check_success_ocs_status(response)
 
     # oc10 does not set display name while creating user,
     # so we need update the user info
     user_url = get_provisioning_url("users", username)
     display_name_body = {"key": "displayname", "value": displayname}
     display_name_response = request.put(user_url, display_name_body)
-    request.assertHttpStatus(
+    request.assert_http_status(
         display_name_response, 200, f"Failed to update displayname of user '{username}'"
     )
-    checkSuccessOcsStatus(display_name_response)
+    check_success_ocs_status(display_name_response)
 
     return {
         "id": username,
@@ -62,47 +62,47 @@ def create_user(username, password, displayname, email):
 def delete_user(user_id):
     url = get_provisioning_url("users", user_id)
     response = request.delete(url)
-    request.assertHttpStatus(response, 200, f"Failed to delete user '{user_id}'")
-    checkSuccessOcsStatus(response)
+    request.assert_http_status(response, 200, f"Failed to delete user '{user_id}'")
+    check_success_ocs_status(response)
 
 
 def create_group(group_name):
     body = {"groupid": group_name}
     response = request.post(get_provisioning_url("groups"), body)
-    request.assertHttpStatus(response, 200, f"Failed to create group '{group_name}'")
-    checkSuccessOcsStatus(response)
+    request.assert_http_status(response, 200, f"Failed to create group '{group_name}'")
+    check_success_ocs_status(response)
     return {"id": group_name}
 
 
 def delete_group(group_id):
     url = get_provisioning_url("groups", group_id)
     response = request.delete(url)
-    request.assertHttpStatus(response, 200, f"Failed to delete group '{group_id}'")
-    checkSuccessOcsStatus(response)
+    request.assert_http_status(response, 200, f"Failed to delete group '{group_id}'")
+    check_success_ocs_status(response)
 
 
 def add_user_to_group(user, group_name):
     url = get_provisioning_url("users", user, "groups")
     body = {"groupid": group_name}
     response = request.post(url, body)
-    request.assertHttpStatus(
+    request.assert_http_status(
         response, 200, f"Failed to add user '{user}' to group '{group_name}'"
     )
-    checkSuccessOcsStatus(response)
+    check_success_ocs_status(response)
 
 
 def enable_app(app_name):
     url = get_provisioning_url("apps", app_name)
     response = request.post(url)
-    request.assertHttpStatus(response, 200, f"Failed to enable app '{app_name}'")
-    checkSuccessOcsStatus(response)
+    request.assert_http_status(response, 200, f"Failed to enable app '{app_name}'")
+    check_success_ocs_status(response)
 
 
 def disable_app(app_name):
     url = get_provisioning_url("apps", app_name)
     response = request.delete(url)
-    request.assertHttpStatus(response, 200, f"Failed to disable app '{app_name}'")
-    checkSuccessOcsStatus(response)
+    request.assert_http_status(response, 200, f"Failed to disable app '{app_name}'")
+    check_success_ocs_status(response)
 
 
 def setup_app(app_name, action):

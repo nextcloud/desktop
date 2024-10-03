@@ -9,13 +9,13 @@ import psutil
 import squish
 
 from helpers.SpaceHelper import get_space_id
-from helpers.ConfigHelper import get_config, set_config, isWindows
-from helpers.SyncHelper import listenSyncStatusForItem
+from helpers.ConfigHelper import get_config, set_config, is_windows
+from helpers.SyncHelper import listen_sync_status_for_item
 from helpers.api.utils import url_join
-from helpers.UserHelper import getDisplaynameForUser
+from helpers.UserHelper import get_displayname_for_user
 
 
-def substituteInLineCodes(value):
+def substitute_inline_codes(value):
     value = value.replace('%local_server%', get_config('localBackendUrl'))
     value = value.replace('%secure_local_server%', get_config('secureLocalBackendUrl'))
     value = value.replace('%client_root_sync_path%', get_config('clientRootSyncPath'))
@@ -28,8 +28,8 @@ def substituteInLineCodes(value):
     return value
 
 
-def getClientDetails(context):
-    clientDetails = {
+def get_client_details(context):
+    client_details = {
         'server': '',
         'user': '',
         'password': '',
@@ -37,41 +37,41 @@ def getClientDetails(context):
         'oauth': False,
     }
     for row in context.table[0:]:
-        row[1] = substituteInLineCodes(row[1])
+        row[1] = substitute_inline_codes(row[1])
         if row[0] == 'server':
-            clientDetails.update({'server': row[1]})
+            client_details.update({'server': row[1]})
         elif row[0] == 'user':
-            clientDetails.update({'user': row[1]})
+            client_details.update({'user': row[1]})
         elif row[0] == 'password':
-            clientDetails.update({'password': row[1]})
+            client_details.update({'password': row[1]})
         elif row[0] == 'sync_folder':
-            clientDetails.update({'sync_folder': row[1]})
-    return clientDetails
+            client_details.update({'sync_folder': row[1]})
+    return client_details
 
 
-def createUserSyncPath(username):
+def create_user_sync_path(username):
     # '' at the end adds '/' to the path
-    userSyncPath = join(get_config('clientRootSyncPath'), username, '')
+    user_sync_path = join(get_config('clientRootSyncPath'), username, '')
 
-    if not exists(userSyncPath):
-        makedirs(userSyncPath)
+    if not exists(user_sync_path):
+        makedirs(user_sync_path)
 
-    setCurrentUserSyncPath(userSyncPath)
-    return userSyncPath.replace('\\', '/')
-
-
-def createSpacePath(space='Personal'):
-    spacePath = join(get_config('currentUserSyncPath'), space, '')
-    if not exists(spacePath):
-        makedirs(spacePath)
-    return spacePath.replace('\\', '/')
+    set_current_user_sync_path(user_sync_path)
+    return user_sync_path.replace('\\', '/')
 
 
-def setCurrentUserSyncPath(syncPath):
-    set_config('currentUserSyncPath', syncPath)
+def create_space_path(space='Personal'):
+    space_path = join(get_config('currentUserSyncPath'), space, '')
+    if not exists(space_path):
+        makedirs(space_path)
+    return space_path.replace('\\', '/')
 
 
-def getResourcePath(resource='', user='', space=''):
+def set_current_user_sync_path(sync_path):
+    set_config('currentUserSyncPath', sync_path)
+
+
+def get_resource_path(resource='', user='', space=''):
     sync_path = get_config('currentUserSyncPath')
     if user:
         sync_path = user
@@ -80,7 +80,7 @@ def getResourcePath(resource='', user='', space=''):
         sync_path = join(sync_path, space)
     sync_path = join(get_config('clientRootSyncPath'), sync_path)
     resource = resource.replace(sync_path, '').strip('/').strip('\\')
-    if isWindows():
+    if is_windows():
         resource = resource.replace('/', '\\')
     return join(
         sync_path,
@@ -88,15 +88,15 @@ def getResourcePath(resource='', user='', space=''):
     )
 
 
-def getTempResourcePath(resourceName):
-    return join(get_config('tempFolderPath'), resourceName)
+def get_temp_resource_path(resource_name):
+    return join(get_config('tempFolderPath'), resource_name)
 
 
-def getCurrentUserSyncPath():
+def get_current_user_sync_path():
     return get_config('currentUserSyncPath')
 
 
-def startClient():
+def start_client():
     squish.startApplication(
         'owncloud -s'
         + f' --logfile {get_config("clientLogFile")}'
@@ -107,14 +107,14 @@ def startClient():
         test.startVideoCapture()
 
 
-def getPollingInterval():
-    pollingInterval = '''
+def get_polling_interval():
+    polling_interval = '''
 [ownCloud]
-remotePollInterval={pollingInterval}
+remotePollInterval={polling_interval}
 '''
-    args = {'pollingInterval': 5000}
-    pollingInterval = pollingInterval.format(**args)
-    return pollingInterval
+    args = {'polling_interval': 5000}
+    polling_interval = polling_interval.format(**args)
+    return polling_interval
 
 
 def generate_account_config(users, space='Personal'):
@@ -143,38 +143,38 @@ def generate_account_config(users, space='Personal'):
         if not idx:
             user_setting = '[Accounts]' + user_setting
 
-        sync_path = createUserSyncPath(username)
+        sync_path = create_user_sync_path(username)
         dav_endpoint = url_join('remote.php/dav/files', username)
 
         server_url = get_config('localBackendUrl')
 
         if is_ocis := get_config('ocis'):
             set_config('syncConnectionName', space)
-            sync_path = createSpacePath(space)
+            sync_path = create_space_path(space)
             space_name = space
             if space == 'Personal':
-                space_name = getDisplaynameForUser(username)
+                space_name = get_displayname_for_user(username)
             dav_endpoint = url_join('dav/spaces', get_space_id(space_name, username))
 
         args = {
             'url': url_join(server_url, dav_endpoint, ''),
             'displayString': get_config('syncConnectionName'),
-            'displayUserName': getDisplaynameForUser(username),
+            'displayUserName': get_displayname_for_user(username),
             'davUserName': username if is_ocis else username.lower(),
-            'displayUserFirstName': getDisplaynameForUser(username).split()[0],
+            'displayUserFirstName': get_displayname_for_user(username).split()[0],
             'client_sync_path': sync_path,
             'local_server': server_url,
             'oauth': 'true' if is_ocis else 'false',
-            'vfs': 'wincfapi' if isWindows() else 'off',
+            'vfs': 'wincfapi' if is_windows() else 'off',
             'supportsSpaces': 'true' if is_ocis else 'false',
             'user_index': idx,
-            'uuid_v4': generate_UUIDV4(),
+            'uuid_v4': generate_uuidv4(),
         }
         user_setting = user_setting.format(**args)
         sync_paths.update({username: sync_path})
     # append extra configs
     user_setting += 'version=13'
-    user_setting = user_setting + getPollingInterval()
+    user_setting = user_setting + get_polling_interval()
 
     with open(get_config('clientConfigFile'), 'a+', encoding='utf-8') as config_file:
         config_file.write(user_setting)
@@ -182,11 +182,11 @@ def generate_account_config(users, space='Personal'):
     return sync_paths
 
 
-def setUpClient(username, space='Personal'):
+def setup_client(username, space='Personal'):
     sync_paths = generate_account_config([username], space)
-    startClient()
+    start_client()
     for _, sync_path in sync_paths.items():
-        listenSyncStatusForItem(sync_path)
+        listen_sync_status_for_item(sync_path)
 
 
 def is_app_killed(pid):
@@ -207,14 +207,14 @@ def wait_until_app_killed(pid=0):
         test.log(f'Application was not terminated within {timeout} milliseconds')
 
 
-def generate_UUIDV4():
+def generate_uuidv4():
     return str(uuid.uuid4())
 
 
 # sometimes the keyring is locked during the test execution
 # and we need to unlock it
 def unlock_keyring():
-    if isWindows():
+    if is_windows():
         return
 
     stdout, stderr, _ = run_sys_command(

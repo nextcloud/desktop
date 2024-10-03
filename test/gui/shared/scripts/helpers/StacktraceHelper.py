@@ -3,28 +3,28 @@ import subprocess
 import glob
 import re
 from datetime import datetime
-from helpers.ConfigHelper import isWindows
+from helpers.ConfigHelper import is_windows
 
 
-def getCoredumps():
+def get_core_dumps():
     # TODO: find a way to use coredump in windows
-    if isWindows():
+    if is_windows():
         return False
     # read coredump location
     with open('/proc/sys/kernel/core_pattern', 'r', encoding='utf-8') as f:
-        coredumpPath = f.read().strip('\n')
+        coredump_path = f.read().strip('\n')
 
     # yields something like: /tmp/core-*-*-*-*
-    coredumpFilePattern = re.sub(r'%[a-zA-Z]{1}', '*', coredumpPath)
-    return glob.glob(coredumpFilePattern)
+    coredump_file_pattern = re.sub(r'%[a-zA-Z]{1}', '*', coredump_path)
+    return glob.glob(coredump_file_pattern)
 
 
-def generateStacktrace(scenario_title, coredumps):
+def generate_stacktrace(scenario_title, coredumps):
     message = ['###########################################']
     message.append(f'Scenario: {scenario_title}')
 
-    for coredumpFile in coredumps:
-        message.append(parseStacktrace(coredumpFile))
+    for coredump_file in coredumps:
+        message.append(parse_stacktrace(coredump_file))
 
     message.append('###########################################')
     message.append('')
@@ -36,16 +36,16 @@ def generateStacktrace(scenario_title, coredumps):
         f.write(stacktrace)
 
 
-def parseStacktrace(coredumpFile):
+def parse_stacktrace(coredump_file):
     message = []
-    if coredumpFile:
-        coredumpFilename = os.path.basename(coredumpFile)
+    if coredump_file:
+        coredump_filename = os.path.basename(coredump_file)
         # example coredump file: core-1648445754-1001-11-!drone!src!build-GUI-tests!bin!owncloud
-        patterns = coredumpFilename.split('-')
-        appBinary = '-'.join(patterns[4:]).replace('!', '/')
+        patterns = coredump_filename.split('-')
+        app_binary = '-'.join(patterns[4:]).replace('!', '/')
 
         message.append('-------------------------------------------')
-        message.append(f'Executable: {appBinary}')
+        message.append(f'Executable: {app_binary}')
         message.append(f'Timestamp: {str(datetime.fromtimestamp(float(patterns[1])))}')
         message.append(f'Process ID: {patterns[2]}')
         message.append(f'Signal Number: {patterns[3]}')
@@ -55,8 +55,8 @@ def parseStacktrace(coredumpFile):
             subprocess.run(
                 [
                     'gdb',
-                    appBinary,
-                    coredumpFile,
+                    app_binary,
+                    coredump_file,
                     '-batch',
                     '-ex',
                     'bt full',
@@ -68,6 +68,6 @@ def parseStacktrace(coredumpFile):
         message.append('<<<<< STACKTRACE END >>>>>')
 
         # remove coredump file
-        os.unlink(coredumpFile)
+        os.unlink(coredump_file)
 
     return '\n'.join(message)

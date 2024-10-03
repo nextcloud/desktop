@@ -2,7 +2,7 @@ import names
 import squish
 from objectmaphelper import RegularExpression
 
-from helpers.FilesHelper import buildConflictedRegex
+from helpers.FilesHelper import build_conflicted_regex
 from helpers.ConfigHelper import get_config
 
 
@@ -70,7 +70,7 @@ class Activity:
     }
 
     @staticmethod
-    def getTabObject(tab_index):
+    def get_tab_object(tab_index):
         return {
             "container": Activity.SUBTAB_CONTAINER,
             "index": tab_index,
@@ -78,11 +78,11 @@ class Activity:
         }
 
     @staticmethod
-    def getTabText(tab_index):
-        return squish.waitForObjectExists(Activity.getTabObject(tab_index)).text
+    def get_tab_text(tab_index):
+        return squish.waitForObjectExists(Activity.get_tab_object(tab_index)).text
 
     @staticmethod
-    def getNotSyncedFileSelector(resource):
+    def get_not_synced_file_selector(resource):
         return {
             "column": 1,
             "container": Activity.NOT_SYNCED_TABLE,
@@ -91,7 +91,7 @@ class Activity:
         }
 
     @staticmethod
-    def getNotSyncedStatus(row):
+    def get_not_synced_status(row):
         return squish.waitForObjectExists(
             {
                 "column": 6,
@@ -102,8 +102,8 @@ class Activity:
         ).text
 
     @staticmethod
-    def clickTab(tabName):
-        tabFound = False
+    def click_tab(tab_name):
+        tab_found = False
 
         # NOTE: Some activity tabs are loaded dynamically
         # and the tab index changes after all the tabs are loaded properly
@@ -114,76 +114,76 @@ class Activity:
         # Selecting tab by name fails for "Not Synced" when there are no unsynced files
         # Because files count will be appended like "Not Synced (2)"
         # So to overcome this the following approach has been implemented
-        tabCount = squish.waitForObjectExists(Activity.SUBTAB_CONTAINER).count
+        tab_count = squish.waitForObjectExists(Activity.SUBTAB_CONTAINER).count
         tabs = []
-        for index in range(tabCount):
-            tabText = Activity.getTabText(index)
-            tabs.append(tabText)
+        for index in range(tab_count):
+            tab_text = Activity.get_tab_text(index)
+            tabs.append(tab_text)
 
-            if tabName in tabText:
-                tabFound = True
-                # clickTab becomes flaky with "Not Synced" tab
+            if tab_name in tab_text:
+                tab_found = True
+                # click_tab becomes flaky with "Not Synced" tab
                 # because the tab text changes. e.g. "Not Synced (2)"
-                # squish.clickTab(Activity.TAB_CONTAINER, tabText)
+                # squish.click_tab(Activity.TAB_CONTAINER, tab_text)
 
                 # NOTE: If only the objectOrName is specified,
                 # the object is clicked in the middle by the Qt::LeftButton button
                 # and with no keyboard modifiers pressed.
                 squish.mouseClick(
-                    squish.waitForObjectExists(Activity.getTabObject(index))
+                    squish.waitForObjectExists(Activity.get_tab_object(index))
                 )
                 break
 
-        if not tabFound:
+        if not tab_found:
             raise LookupError(
                 "Tab not found: "
-                + tabName
+                + tab_name
                 + " in "
                 + str(tabs)
                 + ". Tabs count: "
-                + str(tabCount)
+                + str(tab_count)
             )
 
     @staticmethod
-    def checkFileExist(filename):
+    def check_file_exist(filename):
         squish.waitForObjectExists(
-            Activity.getNotSyncedFileSelector(
-                RegularExpression(buildConflictedRegex(filename))
+            Activity.get_not_synced_file_selector(
+                RegularExpression(build_conflicted_regex(filename))
             )
         )
 
     @staticmethod
-    def resourceIsBlacklisted(filename):
+    def is_resource_blacklisted(filename):
         result = squish.waitFor(
-            lambda: Activity.hasSyncStatus(filename, "Blacklisted"),
+            lambda: Activity.has_sync_status(filename, "Blacklisted"),
             get_config("maxSyncTimeout") * 1000,
         )
         return result
 
     @staticmethod
-    def resourceIsIgnored(filename):
+    def is_resource_ignored(filename):
         result = squish.waitFor(
-            lambda: Activity.hasSyncStatus(filename, "File Ignored"),
+            lambda: Activity.has_sync_status(filename, "File Ignored"),
             get_config("maxSyncTimeout") * 1000,
         )
         return result
 
     @staticmethod
-    def resource_is_excluded(filename):
+    def is_resource_excluded(filename):
         result = squish.waitFor(
-            lambda: Activity.hasSyncStatus(filename, "Excluded"),
+            lambda: Activity.has_sync_status(filename, "Excluded"),
             get_config("maxSyncTimeout") * 1000,
         )
         return result
 
     @staticmethod
-    def hasSyncStatus(filename, status):
+    def has_sync_status(filename, status):
         try:
-            fileRow = squish.waitForObject(
-                Activity.getNotSyncedFileSelector(filename),
+            file_row = squish.waitForObject(
+                Activity.get_not_synced_file_selector(filename),
                 get_config("lowestSyncTimeout") * 1000,
             )["row"]
-            if Activity.getNotSyncedStatus(fileRow) == status:
+            if Activity.get_not_synced_status(file_row) == status:
                 return True
             return False
         except:
@@ -221,14 +221,14 @@ class Activity:
     @staticmethod
     def check_synced_table(resource, action, account):
         try:
-            fileRow = squish.waitForObject(
+            file_row = squish.waitForObject(
                 Activity.get_synced_file_selector(resource),
                 get_config("lowestSyncTimeout") * 1000,
             )["row"]
             squish.waitForObjectExists(
                 {
                     "column": Activity.get_synced_table_column_number_by_name("Action"),
-                    "row": fileRow,
+                    "row": file_row,
                     "container": Activity.SYNCED_ACTIVITY_TABLE,
                     "text": action,
                     "type": "QModelIndex",
@@ -239,7 +239,7 @@ class Activity:
                     "column": Activity.get_synced_table_column_number_by_name(
                         "Account"
                     ),
-                    "row": fileRow,
+                    "row": file_row,
                     "container": Activity.SYNCED_ACTIVITY_TABLE,
                     "text": account,
                     "type": "QModelIndex",
@@ -272,8 +272,8 @@ class Activity:
     @staticmethod
     def check_not_synced_table(resource, status, account):
         try:
-            fileRow = squish.waitForObject(
-                Activity.getNotSyncedFileSelector(resource),
+            file_row = squish.waitForObject(
+                Activity.get_not_synced_file_selector(resource),
                 get_config("lowestSyncTimeout") * 1000,
             )["row"]
             squish.waitForObjectExists(
@@ -281,7 +281,7 @@ class Activity:
                     "column": Activity.get_not_synced_table_column_number_by_name(
                         "Status"
                     ),
-                    "row": fileRow,
+                    "row": file_row,
                     "container": Activity.NOT_SYNCED_TABLE,
                     "text": status,
                     "type": "QModelIndex",
@@ -292,7 +292,7 @@ class Activity:
                     "column": Activity.get_not_synced_table_column_number_by_name(
                         "Account"
                     ),
-                    "row": fileRow,
+                    "row": file_row,
                     "container": Activity.NOT_SYNCED_TABLE,
                     "text": account,
                     "type": "QModelIndex",

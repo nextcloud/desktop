@@ -21,8 +21,8 @@ import glob
 from urllib import request, error
 from datetime import datetime
 
-from helpers.StacktraceHelper import getCoredumps, generateStacktrace
-from helpers.SyncHelper import closeSocketConnection, clearWaitedAfterSync
+from helpers.StacktraceHelper import get_core_dumps, generate_stacktrace
+from helpers.SyncHelper import close_socket_connection, clear_waited_after_sync
 from helpers.SpaceHelper import delete_project_spaces
 from helpers.api.provisioning import delete_created_groups, delete_created_users
 from helpers.SetupClientHelper import wait_until_app_killed, unlock_keyring
@@ -31,8 +31,8 @@ from helpers.ConfigHelper import (
     get_config,
     set_config,
     clear_scenario_config,
-    isWindows,
-    isLinux,
+    is_windows,
+    is_linux,
 )
 from helpers.api.utils import url_join
 from helpers.FilesHelper import prefix_path_namespace, cleanup_created_paths
@@ -74,7 +74,7 @@ def hook(context):
     # set owncloud config file path
     config_dir = get_config("clientConfigDir")
     if os.path.exists(config_dir):
-        if len(os.listdir(config_dir)) and isWindows():
+        if len(os.listdir(config_dir)) and is_windows():
             raise FileExistsError(
                 "Looks like you have previous client config in '"
                 + config_dir
@@ -186,11 +186,11 @@ def save_screenrecord(filename):
 # Order: 1
 @OnScenarioEnd
 def hook(context):
-    clearWaitedAfterSync()
-    closeSocketConnection()
+    clear_waited_after_sync()
+    close_socket_connection()
 
     # capture a screenshot if there is error or test failure in the current scenario execution
-    if scenario_failed() and os.getenv("CI") and isLinux():
+    if scenario_failed() and os.getenv("CI") and is_linux():
         # scenario name can have "/" which is invalid filename
         filename = get_screenshot_name(context.title)
         directory = os.path.join(get_config("guiTestReportDir"), "screenshots")
@@ -211,9 +211,9 @@ def hook(context):
 
     # search coredumps after every test scenario
     # CI pipeline might fail although all tests are passing
-    if coredumps := getCoredumps():
+    if coredumps := get_core_dumps():
         try:
-            generateStacktrace(context.title, coredumps)
+            generate_stacktrace(context.title, coredumps)
             test.log("Stacktrace generated!")
         except OSError as err:
             test.log("Exception occured:" + str(err))
@@ -253,7 +253,7 @@ def hook(context):
 def teardown_client():
     # Cleanup user accounts from UI for Windows platform
     # It is not needed for Linux so skipping it in order to save CI time
-    if isWindows():
+    if is_windows():
         # remove account from UI
         # In Windows, removing only config and sync folders won't help
         # so to work around that, remove the account connection
@@ -261,8 +261,8 @@ def teardown_client():
         close_widgets()
         accounts, _ = Toolbar.get_accounts()
         for account in accounts:
-            Toolbar.openAccount(account["displayname"])
-            AccountSetting.removeAccountConnection()
+            Toolbar.open_account(account["displayname"])
+            AccountSetting.remove_account_connection()
         if accounts:
             squish.waitForObject(AccountConnectionWizard.SERVER_ADDRESS_BOX)
 

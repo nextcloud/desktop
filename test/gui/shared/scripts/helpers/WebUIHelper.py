@@ -3,7 +3,7 @@ import subprocess
 import squish
 
 
-def getClipboardText():
+def get_clipboard_text():
     try:
         return squish.getClipboardText()
     except:
@@ -21,7 +21,7 @@ def authorize_via_webui(username, password, login_type='oidc'):
     envs = {
         'OC_USERNAME': username.strip('"'),
         'OC_PASSWORD': password.strip('"'),
-        'OC_AUTH_URL': getClipboardText(),
+        'OC_AUTH_URL': get_clipboard_text(),
     }
     proc = subprocess.run(
         f'pnpm run {login_type}-login',

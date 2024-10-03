@@ -1,10 +1,10 @@
 from helpers.FilesHelper import get_file_size_on_disk, get_file_size
-from helpers.SetupClientHelper import getResourcePath
+from helpers.SetupClientHelper import get_resource_path
 
 
 @Then('the placeholder of file "|any|" should exist on the file system')
 def step(context, file_name):
-    resource_path = getResourcePath(file_name)
+    resource_path = get_resource_path(file_name)
     size_on_disk = get_file_size_on_disk(resource_path)
     test.compare(
         size_on_disk, 0, f"Size of the placeholder on the disk is: '{size_on_disk}'"
@@ -13,7 +13,7 @@ def step(context, file_name):
 
 @Then('the file "|any|" should be downloaded')
 def step(context, file_name):
-    resource_path = getResourcePath(file_name)
+    resource_path = get_resource_path(file_name)
     size_on_disk = get_file_size_on_disk(resource_path)
     file_size = get_file_size(resource_path)
     test.compare(
