@@ -395,6 +395,18 @@ bool SyncJournalDb::checkConnect()
                                                                         end - text, 0));
                                 }, nullptr, nullptr);
 
+    sqlite3_create_function(_db.sqliteDb(), "path_hash", 1, SQLITE_UTF8 | SQLITE_DETERMINISTIC, nullptr,
+                                [] (sqlite3_context *ctx,int, sqlite3_value **argv) {
+                                    const auto text = reinterpret_cast<const char*>(sqlite3_value_text(argv[0]));
+                                    sqlite3_result_int64(ctx, c_jhash64(reinterpret_cast<const uint8_t*>(text), strlen(text), 0));
+                                }, nullptr, nullptr);
+
+    sqlite3_create_function(_db.sqliteDb(), "path_length", 1, SQLITE_UTF8 | SQLITE_DETERMINISTIC, nullptr,
+                                [] (sqlite3_context *ctx,int, sqlite3_value **argv) {
+                                    const auto text = reinterpret_cast<const char*>(sqlite3_value_text(argv[0]));
+                                    sqlite3_result_int64(ctx, strlen(text));
+                                }, nullptr, nullptr);
+
     /* Because insert is so slow, we do everything in a transaction, and only need one call to commit */
     startTransaction();
 
@@ -1083,9 +1095,10 @@ bool SyncJournalDb::listAllE2eeFoldersWithEncryptionStatusLessThan(const int sta
 
     if (!checkConnect())
         return false;
-    const auto query = _queryManager.get(PreparedSqlQueryManager::ListAllTopLevelE2eeFoldersStatusLessThanQuery,
-                                         QByteArrayLiteral(GET_FILE_RECORD_QUERY " WHERE type == 2 AND isE2eEncrypted >= ?1 AND isE2eEncrypted < ?2 ORDER BY path||'/' ASC"),
-                                         _db);
+    const auto query =
+        _queryManager.get(PreparedSqlQueryManager::ListAllTopLevelE2eeFoldersStatusLessThanQuery,
+                          QByteArrayLiteral(GET_FILE_RECORD_QUERY " WHERE type == 2 AND isE2eEncrypted >= ?1 AND isE2eEncrypted < ?2 ORDER BY path||'/' ASC"),
+                          _db);
     if (!query) {
         qCDebug(lcDb) << "database error:" << query->error();
         return false;
@@ -1145,6 +1158,29 @@ bool SyncJournalDb::findEncryptedAncestorForRecord(const QString &filename, Sync
         pathComponents.removeLast();
     }
     return true;
+}
+
+bool SyncJournalDb::relocateFolderToNewPathRecursively(const QByteArray &oldParentPath, const QByteArray &newParentPath)
+{
+    qCInfo(lcDb) << "Relocating folder recursively from path" << oldParentPath << "to path" << newParentPath;
+
+    if (!checkConnect()) {
+        qCWarning(lcDb) << "Failed to connect database.";
+        return false;
+    }
+
+    const auto query = _queryManager.get(
+        PreparedSqlQueryManager::RelocateFolderToNewPathRecursivelyQuery,
+        QByteArrayLiteral("UPDATE metadata"
+                          " SET path = REPLACE(path, ?1, ?2), phash = path_hash(REPLACE(path, ?1, ?2)), pathlen = path_length(REPLACE(path, ?1, ?2))"
+                          "  WHERE " IS_PREFIX_PATH_OF("?1", "path")),
+        _db);
+    if (!query) {
+        return false;
+    }
+    query->bindValue(1, oldParentPath);
+    query->bindValue(2, newParentPath);
+    return query->exec();
 }
 
 void SyncJournalDb::keyValueStoreSet(const QString &key, QVariant value)
