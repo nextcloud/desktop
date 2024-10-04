@@ -91,17 +91,17 @@
     <message>
         <location filename="../src/gui/qml/credentials/BasicAuthCredentials.qml" line="29"/>
         <source>Please enter your password to log in.</source>
-        <translation type="unfinished"/>
+        <translation>Bitte das Passwort eingeben um sich anzumelden.</translation>
     </message>
     <message>
         <location filename="../src/gui/qml/credentials/BasicAuthCredentials.qml" line="29"/>
         <source>Please enter %1 and password to log in.</source>
-        <translation type="unfinished"/>
+        <translation>Bitte %1 und das Passwort eingeben um sich anzumelden.</translation>
     </message>
     <message>
         <location filename="../src/gui/qml/credentials/BasicAuthCredentials.qml" line="37"/>
         <source>Enter %1</source>
-        <translation type="unfinished"/>
+        <translation>%1 eingeben</translation>
     </message>
     <message>
         <location filename="../src/gui/qml/credentials/BasicAuthCredentials.qml" line="51"/>
@@ -237,13 +237,15 @@ Datei Synchronisations-Applikation.</translation>
         <location filename="../src/gui/qml/credentials/Credentials.qml" line="89"/>
         <source>Connecting %1 to:
 %2</source>
-        <translation type="unfinished"/>
+        <translation>Verbinde %1 mit:
+%2</translation>
     </message>
     <message>
         <location filename="../src/gui/qml/credentials/Credentials.qml" line="89"/>
         <source>Connecting to:
 %1</source>
-        <translation type="unfinished"/>
+        <translation>Verbinde mit:
+%1</translation>
     </message>
 </context>
 <context>
@@ -311,7 +313,7 @@ Datei Synchronisations-Applikation.</translation>
     <message>
         <location filename="../src/gui/qml/FolderDelegate.qml" line="258"/>
         <source>You are synchronizing %1 out of %2 spaces</source>
-        <translation type="unfinished"/>
+        <translation>%1 von %2 Freigaben werden synchronisiert</translation>
     </message>
 </context>
 <context>
@@ -319,12 +321,12 @@ Datei Synchronisations-Applikation.</translation>
     <message>
         <location filename="../src/gui/qml/FolderError.qml" line="58"/>
         <source>Show less</source>
-        <translation type="unfinished"/>
+        <translation>Weniger anzeigen</translation>
     </message>
     <message>
         <location filename="../src/gui/qml/FolderError.qml" line="77"/>
         <source>Show more</source>
-        <translation type="unfinished"/>
+        <translation>Mehr anzeigen</translation>
     </message>
 </context>
 <context>
@@ -343,12 +345,12 @@ Datei Synchronisations-Applikation.</translation>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="127"/>
         <source>, ⬇️ %1/s</source>
-        <translation type="unfinished"/>
+        <translation>, ⬇️ %1/s</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="130"/>
         <source>, ⬆️ %1/s</source>
-        <translation type="unfinished"/>
+        <translation>, ⬆️ %1/s</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="134"/>
@@ -468,7 +470,7 @@ Datei Synchronisations-Applikation.</translation>
     <message>
         <location filename="../src/gui/notificationwidget.ui" line="49"/>
         <source>Notification icon</source>
-        <translation type="unfinished"/>
+        <translation>Benachrichtigungssymbol</translation>
     </message>
     <message>
         <location filename="../src/gui/notificationwidget.ui" line="73"/>
@@ -491,32 +493,32 @@ Datei Synchronisations-Applikation.</translation>
     <message>
         <location filename="../src/gui/qml/credentials/OAuthCredentials.qml" line="31"/>
         <source>Log in with your web browser</source>
-        <translation type="unfinished"/>
+        <translation>Melde dich über deinen Browser an</translation>
     </message>
     <message>
         <location filename="../src/gui/qml/credentials/OAuthCredentials.qml" line="31"/>
         <source>Login failed, please try it again</source>
-        <translation type="unfinished"/>
+        <translation>Anmeldung fehlgeschlagen, bitte nochmal probieren</translation>
     </message>
     <message>
         <location filename="../src/gui/qml/credentials/OAuthCredentials.qml" line="49"/>
         <source>Reopen web browser</source>
-        <translation type="unfinished"/>
+        <translation>Web Browser erneut öffnen</translation>
     </message>
     <message>
         <location filename="../src/gui/qml/credentials/OAuthCredentials.qml" line="49"/>
         <source>Open web brower</source>
-        <translation type="unfinished"/>
+        <translation>Web Browser öffnen</translation>
     </message>
     <message>
         <location filename="../src/gui/qml/credentials/OAuthCredentials.qml" line="64"/>
         <source>Copy url</source>
-        <translation type="unfinished"/>
+        <translation>URL kopieren</translation>
     </message>
     <message>
         <location filename="../src/gui/qml/credentials/OAuthCredentials.qml" line="96"/>
         <source>Restart authenticaion</source>
-        <translation type="unfinished"/>
+        <translation>Synchronisation neu starten</translation>
     </message>
 </context>
 <context>
@@ -544,12 +546,12 @@ Datei Synchronisations-Applikation.</translation>
     <message>
         <location filename="../src/gui/aboutdialog.cpp" line="89"/>
         <source>ownCloud 10 LTS</source>
-        <translation type="unfinished"/>
+        <translation>ownCloud 10 LTS</translation>
     </message>
     <message>
         <location filename="../src/gui/aboutdialog.cpp" line="90"/>
         <source>ownCloud Infinite Scale stable</source>
-        <translation type="unfinished"/>
+        <translation>ownCloud Infinite Scale stable</translation>
     </message>
     <message>
         <location filename="../src/gui/aboutdialog.cpp" line="92"/>
@@ -564,12 +566,12 @@ Datei Synchronisations-Applikation.</translation>
     <message>
         <location filename="../src/gui/aboutdialog.cpp" line="165"/>
         <source>&lt;html&gt;The update channel determines which client updates will be offered for installation.&lt;ul&gt;&lt;li&gt;&quot;ownCloud 10 LTS&quot; contains only upgrades that are considered reliable&lt;/li&gt;&lt;li&gt;&quot;ownCloud Infinite Scale stable&quot; contains only upgrades that are considered reliable but &lt;b&gt;removes support for &quot;ownCloud 10&quot;&lt;/b&gt;&lt;/li&gt;%1&lt;/ul&gt;&lt;br&gt;⚠️Downgrades are not supported. If you switch to a stable channel this change will only be applied with the next major release.&lt;/html&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;html&gt;Der Aktualisierungskanal besteímmt welcher Client Updates zur Installation angeboten werden.&lt;ul&gt;&lt;li&gt;&quot;ownCloud 10 LTS&quot; beinhaltet nur Aktualisierungen, die als zuverlässig gelten&lt;/li&gt;&lt;li&gt;&quot;ownCloud Infinite Scale stable&quot; beinhaltet nur Aktualisierungen, die als zuverlässig gelten&lt;b&gt;entfernt aber die Unterstützung von &quot;ownCloud 10&quot;&lt;/b&gt;&lt;/li&gt;%1&lt;/ul&gt;&lt;br&gt;⚠️Downgrades werden nicht unterstützt. Wird zum stabilen Kanal gewechselt, erfolgt dies erst mit dem nächsten Major Release.&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/aboutdialog.cpp" line="172"/>
         <source>&lt;li&gt;&quot;beta&quot; may contain newer features and bugfixes, but have not yet been tested thoroughly&lt;/li&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;li&gt;&quot;beta&quot; kann neue Funktionen und Fehlerbehebungen beinhalten, die jedoch noch nicht ausgiebig getestet wurden&lt;/li&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/aboutdialog.cpp" line="174"/>
@@ -631,7 +633,7 @@ Datei Synchronisations-Applikation.</translation>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="73"/>
         <source>Manage Account</source>
-        <translation type="unfinished"/>
+        <translation>Konto verwalten</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="109"/>
@@ -641,7 +643,7 @@ Datei Synchronisations-Applikation.</translation>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="137"/>
         <source>Sync connections</source>
-        <translation type="unfinished"/>
+        <translation>Verzeichnissychronisation</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="292"/>
@@ -679,7 +681,7 @@ Datei Synchronisations-Applikation.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="88"/>
         <source>Account options menu</source>
-        <translation type="unfinished"/>
+        <translation>Kontooptionen-Menü</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="90"/>
@@ -689,12 +691,12 @@ Datei Synchronisations-Applikation.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="134"/>
         <source>Sync options menu</source>
-        <translation type="unfinished"/>
+        <translation>Synchronisationsoptionen-Menü</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="140"/>
         <source>Folder is not ready yet</source>
-        <translation type="unfinished"/>
+        <translation>Ordner ist noch nicht bereit</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="285"/>
@@ -785,7 +787,7 @@ Das Feature &quot;selective sync&quot; wird wieder verfügbar. Diese Aktion bric
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="498"/>
         <source>Server is currently in maintenance mode</source>
-        <translation type="unfinished"/>
+        <translation>Server befindet sich gerade im Wartungsmodus</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="501"/>
@@ -795,17 +797,17 @@ Das Feature &quot;selective sync&quot; wird wieder verfügbar. Diese Aktion bric
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="504"/>
         <source>Updating credentials...</source>
-        <translation type="unfinished"/>
+        <translation>Zugangsdaten werden aktualisiert...</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="509"/>
         <source>Captive portal prevents connections to the server.</source>
-        <translation type="unfinished"/>
+        <translation>Captive Portal verhindert die Verbindung zum Server.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="511"/>
         <source>Sync is paused due to metered internet connection</source>
-        <translation type="unfinished"/>
+        <translation>Die Synchronisierung ist aufgrund einer getakteten Internetverbindung pausiert</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="513"/>
@@ -815,7 +817,7 @@ Das Feature &quot;selective sync&quot; wird wieder verfügbar. Diese Aktion bric
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="517"/>
         <source>Server configuration error</source>
-        <translation type="unfinished"/>
+        <translation>Server Verbindungsfehler</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="523"/>
@@ -902,7 +904,7 @@ Das Feature &quot;selective sync&quot; wird wieder verfügbar. Diese Aktion bric
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="467"/>
         <source>Local Activity</source>
-        <translation type="unfinished"/>
+        <translation>Lokaler Aktivität</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="516"/>
@@ -921,7 +923,7 @@ Das Feature &quot;selective sync&quot; wird wieder verfügbar. Diese Aktion bric
     <message>
         <location filename="../src/gui/activitywidget.ui" line="14"/>
         <source>Server activities</source>
-        <translation type="unfinished"/>
+        <translation>Server Aktivitäten</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.ui" line="73"/>
@@ -931,7 +933,7 @@ Das Feature &quot;selective sync&quot; wird wieder verfügbar. Diese Aktion bric
     <message>
         <location filename="../src/gui/activitywidget.ui" line="91"/>
         <source>Server activity table</source>
-        <translation type="unfinished"/>
+        <translation>Server Aktivitätstabelle</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="101"/>
@@ -942,12 +944,12 @@ Das Feature &quot;selective sync&quot; wird wieder verfügbar. Diese Aktion bric
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="148"/>
         <source>&amp;Server Activities</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Server Aktivitäten</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="149"/>
         <source>&amp;Notifications</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Benachrichtigungen</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="154"/>
@@ -1348,7 +1350,7 @@ Erwägung Sie diesen Ordner aus dem Konto zu entfernen und erneut hinzuzufügen.
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="252"/>
         <source>There are unresolved conflicts.</source>
-        <translation type="unfinished"/>
+        <translation>Es existieren ungelöste Konflikte.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="256"/>
@@ -1549,7 +1551,7 @@ You are going to lose access to your sync folder if you do not do so!</source>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="41"/>
         <source>Use Monochrome Icons in the system tray</source>
-        <translation type="unfinished"/>
+        <translation>Verwende einfarbige Symbole in der Taskleiste</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="48"/>
@@ -1559,7 +1561,7 @@ You are going to lose access to your sync folder if you do not do so!</source>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="55"/>
         <source>Start on Login</source>
-        <translation type="unfinished"/>
+        <translation>Mit Anmeldung starten</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="73"/>
@@ -1569,7 +1571,7 @@ You are going to lose access to your sync folder if you do not do so!</source>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="89"/>
         <source>Language selector</source>
-        <translation type="unfinished"/>
+        <translation>Sprachauswahl</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="112"/>
@@ -1579,7 +1581,7 @@ You are going to lose access to your sync folder if you do not do so!</source>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="125"/>
         <source>Show crash reporter</source>
-        <translation type="unfinished"/>
+        <translation>Crash-Reporter anzeigen</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="132"/>
@@ -2727,12 +2729,12 @@ Beachten Sie, dass Kommandozeilenoptionen zum Logging diese Einstellungen übers
     <message>
         <location filename="../src/gui/protocolwidget.cpp" line="154"/>
         <source>Sort ascending by %1</source>
-        <translation type="unfinished"/>
+        <translation>Aufsteigend nach %1 sortieren</translation>
     </message>
     <message>
         <location filename="../src/gui/protocolwidget.cpp" line="158"/>
         <source>Sort descending by %1</source>
-        <translation type="unfinished"/>
+        <translation>Absteigend nach %1 sortieren</translation>
     </message>
     <message>
         <location filename="../src/gui/protocolwidget.cpp" line="180"/>
@@ -2766,12 +2768,12 @@ Beachten Sie, dass Kommandozeilenoptionen zum Logging diese Einstellungen übers
         <location filename="../src/gui/selectivesyncwidget.cpp" line="110"/>
         <location filename="../src/gui/selectivesyncwidget.cpp" line="218"/>
         <source>Currently there are no subfolders on the server.</source>
-        <translation type="unfinished"/>
+        <translation>Momentan befinden sich keine Unterordner auf dem Server.</translation>
     </message>
     <message>
         <location filename="../src/gui/selectivesyncwidget.cpp" line="112"/>
         <source>An error occurred while loading the list of subfolders.</source>
-        <translation type="unfinished"/>
+        <translation>Ein Fehler ist aufgetreten, während die Liste der Unterordner geladen wurde.</translation>
     </message>
 </context>
 <context>
@@ -3222,7 +3224,7 @@ Beachten Sie, dass Kommandozeilenoptionen zum Logging diese Einstellungen übers
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="912"/>
         <source>Manage public links</source>
-        <translation type="unfinished"/>
+        <translation>Öffentliche Links verwalten</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="997"/>
@@ -3599,7 +3601,7 @@ Beachten Sie, dass Kommandozeilenoptionen zum Logging diese Einstellungen übers
         <location filename="../src/gui/newwizard/pages/serverurlsetupwizardpage.cpp" line="36"/>
         <source>%1 logo</source>
         <extracomment>This is the accessibility text for the logo in the setup wizard page. The parameter is the name for the (branded) application.</extracomment>
-        <translation type="unfinished"/>
+        <translation>%1 Logo</translation>
     </message>
 </context>
 <context>
@@ -3656,7 +3658,7 @@ Möchtest du fortfahren?</translation>
     <message>
         <location filename="../src/gui/newwizard/setupwizardwidget.cpp" line="43"/>
         <source>&lt; &amp;Back</source>
-        <translation type="unfinished"/>
+        <translation>&lt; &amp;Zurück</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/setupwizardwidget.cpp" line="49"/>
@@ -3677,7 +3679,7 @@ Möchtest du fortfahren?</translation>
     <message>
         <location filename="../src/gui/newwizard/setupwizardwidget.cpp" line="107"/>
         <source>&amp;Finish</source>
-        <translation type="unfinished"/>
+        <translation>Fertigstellen</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/setupwizardwidget.cpp" line="108"/>
@@ -3955,7 +3957,7 @@ Möchtest du fortfahren?</translation>
     <message>
         <location filename="../src/gui/newwizard/jobs/resolveurljobfactory.cpp" line="108"/>
         <source>SSL Error: %1</source>
-        <translation type="unfinished"/>
+        <translation>SSL Fehler: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/jobs/resolveurljobfactory.cpp" line="124"/>
@@ -4014,12 +4016,12 @@ Möchtest du fortfahren?</translation>
     <message>
         <location filename="../src/gui/newwizard/setupwizardwidget.ui" line="101"/>
         <source>&amp;Dismiss</source>
-        <translation type="unfinished"/>
+        <translation>%Verwerfen</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/setupwizardwidget.ui" line="116"/>
         <source>&amp;Cancel</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Abbrechen</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/setupwizardwidget.ui" line="152"/>
