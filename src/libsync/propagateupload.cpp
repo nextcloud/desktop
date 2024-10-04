@@ -803,6 +803,10 @@ void PropagateUploadFileCommon::finalize()
     if (quotaIt != propagator()->_folderQuota.end())
         quotaIt.value() -= _fileToUpload._size;
 
+    if (_item->isEncrypted() && _uploadingEncrypted) {
+        _item->_e2eCertificateFingerprint = propagator()->account()->encryptionCertificateFingerprint();
+    }
+
     // Update the database entry
     const auto result = propagator()->updateMetadata(*_item, Vfs::DatabaseMetadata);
     if (!result) {

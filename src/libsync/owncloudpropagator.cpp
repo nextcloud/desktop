@@ -394,10 +394,21 @@ PropagateItemJob *OwncloudPropagator::createJob(const SyncFileItemPtr &item)
         }
     case CSYNC_INSTRUCTION_UPDATE_VFS_METADATA:
         return new PropagateVfsUpdateMetadataJob(this, item);
+    case CSYNC_INSTRUCTION_UPDATE_ENCRYPTION_METADATA:
+    {
+        const auto rootE2eeFolderPath = item->_file.split('/').first();
+        const auto rootE2eeFolderPathFullRemotePath = fullRemotePath(rootE2eeFolderPath);
+        return new UpdateMigratedE2eeMetadataJob(this, item, rootE2eeFolderPathFullRemotePath, remotePath());
+    }
     case CSYNC_INSTRUCTION_IGNORE:
     case CSYNC_INSTRUCTION_ERROR:
         return new PropagateIgnoreJob(this, item);
-    default:
+    case CSYNC_INSTRUCTION_NONE:
+    case CSYNC_INSTRUCTION_EVAL:
+    case CSYNC_INSTRUCTION_EVAL_RENAME:
+    case CSYNC_INSTRUCTION_STAT_ERROR:
+    case CSYNC_INSTRUCTION_UPDATE_METADATA:
+    case CSYNC_INSTRUCTION_CASE_CLASH_CONFLICT:
         return nullptr;
     }
     return nullptr;
@@ -1508,6 +1519,9 @@ void PropagateDirectory::slotSubJobsFinished(SyncFileItem::Status status)
             }
 #endif
             if (!_item->_isAnyCaseClashChild && !_item->_isAnyInvalidCharChild) {
+                if (_item->isEncrypted()) {
+                    _item->_e2eCertificateFingerprint = propagator()->account()->encryptionCertificateFingerprint();
+                }
                 const auto result = propagator()->updateMetadata(*_item);
                 if (!result) {
                     status = _item->_status = SyncFileItem::FatalError;

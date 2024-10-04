@@ -62,7 +62,7 @@ void UpdateE2eeFolderUsersMetadataJob::start(const bool keepLock)
     if (keepLock) {
         connect(_encryptedFolderMetadataHandler.data(), &EncryptedFolderMetadataHandler::folderUnlocked, this, &UpdateE2eeFolderUsersMetadataJob::deleteLater);
     } else {
-        connect(this, &UpdateE2eeFolderUsersMetadataJob::slotFolderUnlocked, this, &UpdateE2eeFolderUsersMetadataJob::deleteLater);
+        connect(this, &UpdateE2eeFolderUsersMetadataJob::folderUnlocked, this, &UpdateE2eeFolderUsersMetadataJob::deleteLater);
     }
     _keepLock = keepLock;
     if (_operation != Operation::Add && _operation != Operation::Remove && _operation != Operation::ReEncrypt) {
@@ -115,7 +115,7 @@ void UpdateE2eeFolderUsersMetadataJob::slotFetchMetadataJobFinished(int statusCo
     }
 
     if (!_encryptedFolderMetadataHandler->folderMetadata() || !_encryptedFolderMetadataHandler->folderMetadata()->isValid()) {
-        emit finished(403, tr("Could not add or remove user %1 to access folder %2").arg(_folderUserId).arg(_fullRemotePath));
+        emit finished(403, tr("Could not add or remove user %1 to access folder %2").arg(_folderUserId, _fullRemotePath));
         return;
     }
     startUpdate();
@@ -179,7 +179,7 @@ void UpdateE2eeFolderUsersMetadataJob::slotUpdateMetadataFinished(int code, cons
                 unlockFolder(EncryptedFolderMetadataHandler::UnlockFolderWithResult::Success);
             }
         } else {
-            _subJobs.values().last()->start();
+            (*_subJobs.begin())->start();
         }
     } else {
         emit finished(200);
@@ -276,7 +276,7 @@ void UpdateE2eeFolderUsersMetadataJob::slotSubJobFinished(int code, const QStrin
     if (_subJobs.isEmpty()) {
         subJobsFinished(true);
     } else {
-        _subJobs.values().last()->start();
+        (*_subJobs.begin())->start();
     }
 }
 

@@ -7,6 +7,7 @@
         <file>src/gui/PredefinedStatusButton.qml</file>
         <file>src/gui/BasicComboBox.qml</file>
         <file>src/gui/ErrorBox.qml</file>
+        <file>src/gui/EncryptionTokenSelectionWindow.qml</file>
         <file>src/gui/filedetails/FileActivityView.qml</file>
         <file>src/gui/filedetails/FileDetailsPage.qml</file>
         <file>src/gui/filedetails/FileDetailsView.qml</file>
@@ -48,6 +49,7 @@
         <file>src/gui/tray/TalkReplyTextField.qml</file>
         <file>src/gui/tray/CallNotificationDialog.qml</file>
         <file>src/gui/tray/EditFileLocallyLoadingDialog.qml</file>
+        <file>src/gui/tray/EncryptionTokenDiscoveryDialog.qml</file>
         <file>src/gui/tray/NCBusyIndicator.qml</file>
         <file>src/gui/tray/NCIconWithBackgroundImage.qml</file>
         <file>src/gui/tray/NCToolTip.qml</file>

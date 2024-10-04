@@ -18,7 +18,6 @@ PropagateDownloadEncrypted::PropagateDownloadEncrypted(OwncloudPropagator *propa
     const auto rootPath = Utility::noLeadingSlashPath(_propagator->remotePath());
     const auto remoteFilename = _item->_encryptedFileName.isEmpty() ? _item->_file : _item->_encryptedFileName;
     const auto remotePath = QString(rootPath + remoteFilename);
-    const auto remoteParentPath = remotePath.left(remotePath.lastIndexOf('/'));
     _remoteParentPath = remotePath.left(remotePath.lastIndexOf('/'));
 
     const auto filenameInDb = _item->_file;
