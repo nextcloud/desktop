@@ -644,7 +644,7 @@ Should the account be imported?</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="93"/>
         <source>End-to-end Encryption with Virtual Files</source>
-        <translation>تشفير من الحدّ إلى الحدّ E2EE مع الملفات الافتراضية</translation>
+        <translation>التشفير الطرفي  E2EE مع الملفات الافتراضية</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="94"/>
@@ -664,7 +664,7 @@ Should the account be imported?</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="121"/>
         <source>End-to-end Encryption</source>
-        <translation>تشفير من الحدّ للحدّ</translation>
+        <translation>التشفير الطرفي</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="123"/>
@@ -691,7 +691,7 @@ Should the account be imported?</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="256"/>
         <source>End-to-end encryption has been enabled for this account</source>
-        <translation>التشفير من الحدّ للحدّ تمّ تمكينه لهذا الحساب</translation>
+        <translation>التشفير الطرفي تمّ تمكينه لهذا الحساب</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="288"/>
@@ -717,8 +717,8 @@ Should the account be imported?</source>
         <location filename="../src/gui/accountsettings.cpp" line="341"/>
         <source>End-to-end encryption is not configured on this device. Once it is configured, you will be able to encrypt this folder.
 Would you like to set up end-to-end encryption?</source>
-        <translation>التشفير من الحدّ للحدّ غيرُ مُهيّإٍ على هذا الجهاز. بمجرد أن تتمّ تهيئته، سوف يمكنك تشفير هذا المٌجلّد. 
-هل ترغب في إعداد التشفير من الحدّ للحدّ؟</translation>
+        <translation>لم يتم إعداد التشفير الطرفي على هذا الجهاز. بمجرد أن تتمّ تهيئته، سوف يمكنك تشفير هذا المٌجلّد. 
+هل ترغب في إعداد التشفير الطرفي؟</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="366"/>
@@ -757,7 +757,7 @@ Wait for the new sync, then encrypt it.</source>
         <location filename="../src/gui/accountsettings.cpp" line="538"/>
         <location filename="../src/gui/accountsettings.cpp" line="608"/>
         <source>Create new folder</source>
-        <translation>إنشاء مُجلّدٍ جديدٍ</translation>
+        <translation>إنشاء مجلد جديد</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="544"/>
@@ -859,7 +859,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1014"/>
         <source>End-to-end encryption mnemonic</source>
-        <translation>تشفير استذكاري من الحدّ للحدّ</translation>
+        <translation>كلمة مرور تمكين التشفير الطرفي</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1016"/>
@@ -869,17 +869,17 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1041"/>
         <source>Disable end-to-end encryption</source>
-        <translation>إيقاف التشفير من الحدّ للحدّ</translation>
+        <translation>إيقاف التشفير الطرفي</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1042"/>
         <source>Disable end-to-end encryption for %1?</source>
-        <translation>إيقاف التشفير من الحدّ للحدّ بالنسبة إلى %1؟</translation>
+        <translation>إيقاف التشفير الطرفي بالنسبة إلى %1؟</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1043"/>
         <source>Removing end-to-end encryption will remove locally-synced files that are encrypted.&lt;br&gt;Encrypted files will remain on the server.</source>
-        <translation>حذف التشفير من الحدّ للحدّ سيؤدي إلى حذف الملفات المحلية المُشفّرة&lt;br&gt;لكن ستبقى الملفات المُشفّرة محفوظةً على الخادوم.</translation>
+        <translation>حذف التشفير الطرفي سيؤدي إلى حذف الملفات المحلية المُشفّرة&lt;br&gt;لكن ستبقى الملفات المُشفّرة محفوظةً على الخادوم.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1105"/>
@@ -999,12 +999,12 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1577"/>
         <source>End-to-end encryption has been enabled on this account with another device.&lt;br&gt;It can be enabled on this device by entering your mnemonic.&lt;br&gt;This will enable synchronisation of existing encrypted folders.</source>
-        <translation>التشفير من الحدّ للحدّ مُفعّلٌ على هذا الحساب مع جهازٍ آخر.&lt;br&gt; يٌمكنك تفعيله مع هذا  الجهاز أيضاً بإدخال رمزك الاستذكاري mnemonic&lt;br&gt;هذا سوف يُفعّل مٌزامنة المُجلّدات المُشفّرة الموجودة. </translation>
+        <translation>التشفير الطرفي مفعل على هذا الحساب مع جهازٍ آخر.&lt;br&gt; يمكنك تفعيله على الجهاز أيضاً بإدخال كلمة مرور تمكين التشفير الطرفي &lt;br&gt;هذا سوف يفعل مزامنة المجلدات المشفرة الموجودة. </translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1568"/>
         <source>This account supports end-to-end encryption</source>
-        <translation>هذا الحساب يدعم التشفير من الحدّ للحدّ</translation>
+        <translation>هذا الحساب يدعم التشفير الطرفي</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1572"/>
@@ -6349,7 +6349,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="291"/>
         <source>Share label</source>
-        <translation>مشاركة اللاصقة label</translation>
+        <translation>علامة المشاركة</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="346"/>
