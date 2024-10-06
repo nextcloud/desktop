@@ -5517,7 +5517,7 @@ Server antwoordde met fout: %2</translation>
     <message>
         <location filename="../src/gui/systray.cpp" line="189"/>
         <source>Exit %1</source>
-        <translation>Verlaat %1</translation>
+        <translation>%1 afsluiten</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="195"/>
