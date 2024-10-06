@@ -4,12 +4,12 @@
     <message>
         <location filename="../src/gui/qml/AccountBar.qml" line="25"/>
         <source>Navigation bar</source>
-        <translation type="unfinished"/>
+        <translation>Barra de navegação</translation>
     </message>
     <message>
         <location filename="../src/gui/qml/AccountBar.qml" line="101"/>
         <source>Add Account</source>
-        <translation type="unfinished"/>
+        <translation>Adicionar conta</translation>
     </message>
     <message>
         <location filename="../src/gui/qml/AccountBar.qml" line="128"/>
@@ -91,17 +91,17 @@
     <message>
         <location filename="../src/gui/qml/credentials/BasicAuthCredentials.qml" line="29"/>
         <source>Please enter your password to log in.</source>
-        <translation type="unfinished"/>
+        <translation>Por favor, digite sua senha para fazer login.</translation>
     </message>
     <message>
         <location filename="../src/gui/qml/credentials/BasicAuthCredentials.qml" line="29"/>
         <source>Please enter %1 and password to log in.</source>
-        <translation type="unfinished"/>
+        <translation>Insira %1 e senha para efetuar login.</translation>
     </message>
     <message>
         <location filename="../src/gui/qml/credentials/BasicAuthCredentials.qml" line="37"/>
         <source>Enter %1</source>
-        <translation type="unfinished"/>
+        <translation>Digite %1</translation>
     </message>
     <message>
         <location filename="../src/gui/qml/credentials/BasicAuthCredentials.qml" line="51"/>
@@ -223,7 +223,7 @@ Utilitário de sincronização de arquivos na área de trabalho. </translation>
     <message numerus="yes">
         <location filename="../src/gui/commonstrings.cpp" line="48"/>
         <source>%n Filter(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n Filtros</numerusform><numerusform>%n Filtros</numerusform><numerusform>%n Filtros</numerusform></translation>
     </message>
 </context>
 <context>
@@ -231,19 +231,21 @@ Utilitário de sincronização de arquivos na área de trabalho. </translation>
     <message>
         <location filename="../src/gui/qml/credentials/Credentials.qml" line="43"/>
         <source>Stay logged out</source>
-        <translation type="unfinished"/>
+        <translation>Permanecer desconectado</translation>
     </message>
     <message>
         <location filename="../src/gui/qml/credentials/Credentials.qml" line="89"/>
         <source>Connecting %1 to:
 %2</source>
-        <translation type="unfinished"/>
+        <translation>Conectando %1 a:
+%2</translation>
     </message>
     <message>
         <location filename="../src/gui/qml/credentials/Credentials.qml" line="89"/>
         <source>Connecting to:
 %1</source>
-        <translation type="unfinished"/>
+        <translation>Conectando a: 
+%1</translation>
     </message>
 </context>
 <context>
@@ -311,7 +313,7 @@ Utilitário de sincronização de arquivos na área de trabalho. </translation>
     <message>
         <location filename="../src/gui/qml/FolderDelegate.qml" line="258"/>
         <source>You are synchronizing %1 out of %2 spaces</source>
-        <translation type="unfinished"/>
+        <translation>Você está sincronizando %1 de %2 espaços</translation>
     </message>
 </context>
 <context>
@@ -319,12 +321,12 @@ Utilitário de sincronização de arquivos na área de trabalho. </translation>
     <message>
         <location filename="../src/gui/qml/FolderError.qml" line="58"/>
         <source>Show less</source>
-        <translation type="unfinished"/>
+        <translation>Mostre menos</translation>
     </message>
     <message>
         <location filename="../src/gui/qml/FolderError.qml" line="77"/>
         <source>Show more</source>
-        <translation type="unfinished"/>
+        <translation>Mostre mais</translation>
     </message>
 </context>
 <context>
