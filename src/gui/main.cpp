@@ -76,7 +76,7 @@ int main(int argc, char **argv)
 #if defined Q_OS_MAC
     style = QStringLiteral("macOS");
 #elif defined Q_OS_WIN
-    style = QStringLiteral("Windows");
+    style = QStringLiteral("Fusion");
 #endif
 
     QQuickStyle::setStyle(style);
