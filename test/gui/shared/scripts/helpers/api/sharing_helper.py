@@ -98,18 +98,17 @@ def download_last_public_link_resource(user, resource, public_link_password=None
 
 def share_resource(user, resource, receiver, permissions, receiver_type):
     permissions = get_permission_value(permissions)
-    url = get_share_url()
     body = {
         'path': resource,
         'shareType': share_types[receiver_type],
         'shareWith': receiver,
         'permissions': permissions,
     }
-    response = request.post(url, body, user=user)
+    response = request.post(get_share_url(), body, user=user)
     request.assert_http_status(
         response,
         200,
-        f"Failed to share resource '{resource}' to {receiver_type} '{receiver}'",
+        f'Failed to share resource "{resource}" to {receiver_type} "{receiver}"',
     )
     check_success_ocs_status(response)
 
@@ -117,7 +116,6 @@ def share_resource(user, resource, receiver, permissions, receiver_type):
 def create_link_share(
     user, resource, permissions, name=None, password=None, expire_date=None
 ):
-    url = get_share_url()
     permissions = get_permission_value(permissions)
     body = {
         'path': resource,
@@ -130,8 +128,27 @@ def create_link_share(
         body['password'] = password
     if expire_date is not None:
         body['expireDate'] = expire_date
-    response = request.post(url, body, user=user)
+    response = request.post(get_share_url(), body, user=user)
     request.assert_http_status(
-        response, 200, f"Failed to create public link for resource '{resource}'"
+        response, 200, f'Failed to create public link for resource "{resource}"'
     )
     check_success_ocs_status(response)
+
+
+def get_shares(user):
+    response = request.get(get_share_url(), user=user)
+    request.assert_http_status(response, 200, 'Failed to get public link share details')
+    check_success_ocs_status(response)
+    return json.loads(response.text)['ocs']['data']
+
+
+def get_share(user, path, share_type, share_with=None):
+    shares = get_shares(user)
+    for share in shares:
+        if share['path'] == path and share['share_type'] == share_types[share_type]:
+            if share['share_type'] == share_types['public_link']:
+                return share
+            if share_with and share_with == share['share_with']:
+                return share
+            raise ValueError(f'No share_with found for  a {share_type} share')
+    raise ValueError(f'No valid share found for resource "{path}"')

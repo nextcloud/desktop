@@ -230,3 +230,26 @@ def step(context, user):
         data['password'],
         data['expireDate'],
     )
+
+
+@Then('user "|any|" should have a share with these details in the server:')
+def step(context, user):
+    path = None
+    share_type = None
+    share_with = None
+    for key, value in context.table[1:]:
+        if key == 'path':
+            path = value
+        elif key == 'share_type':
+            share_type = value
+        elif key == 'share_with':
+            share_with = value
+
+    share = sharing_helper.get_share(user, path, share_type, share_with)
+
+    for key, value in context.table[1:]:
+        if key == 'permissions':
+            value = sharing_helper.get_permission_value(value)
+        if key == 'share_type':
+            value = sharing_helper.share_types[value]
+        assert share.get(key) == value, 'Key value did not match'

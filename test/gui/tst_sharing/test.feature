@@ -6,7 +6,6 @@ Feature: Sharing
 
     Background:
         Given user "Alice" has been created in the server with default attributes
-        And the setting "shareapi_auto_accept_share" on the server of app "core" has been set to "yes"
 
     @smokeTest
     Scenario: simple sharing with user
@@ -581,13 +580,13 @@ Feature: Sharing
         When the user creates a new public link for folder "simple-folder" using the client-UI with these details:
             | role | <role> |
         And the user closes the sharing dialog
-        Then user "Alice" on the server should have a share with these details:
+        Then user "Alice" should have a share with these details in the server:
             | field       | value          |
             | share_type  | public_link    |
             | uid_owner   | Alice          |
             | permissions | <permissions>  |
             | path        | /simple-folder |
-            | name        | Public link    |
+            | item_type   | folder         |
         Examples:
             | role        | permissions                  |
             | Viewer      | read                         |
@@ -597,24 +596,24 @@ Feature: Sharing
 
     Scenario: sharing a folder by public link with "Uploader" role and check if file can be downloaded
         Given user "Alice" has created folder "simple-folder" in the server
-        And user "Alice" has created file "simple-folder/lorem.txt" on the server
+        And user "Alice" has uploaded file with content "ownCloud test text file 0" to "simple-folder/lorem.txt" in the server
         And user "Alice" has set up a client with default settings
         When the user creates a new public link for folder "simple-folder" using the client-UI with these details:
             | role | Contributor |
         And the user closes the sharing dialog
-        Then user "Alice" on the server should have a share with these details:
+        Then user "Alice" should have a share with these details in the server:
             | field       | value          |
             | share_type  | public_link    |
             | uid_owner   | Alice          |
             | permissions | create         |
             | path        | /simple-folder |
-            | name        | Public link    |
+            | item_type   | folder         |
         And the public should not be able to download the file "lorem.txt" from the last created public link by "Alice" in the server
 
 
     Scenario Outline: change collaborator permissions of a file & folder
         Given user "Alice" has created folder "simple-folder" in the server
-        And user "Alice" has created file "lorem.txt" on the server
+        And user "Alice" has uploaded file with content "ownCloud test text file 0" to "lorem.txt" in the server
         And user "Brian" has been created in the server with default attributes
         And user "Alice" has shared folder "simple-folder" in the server with user "Brian" with "all" permissions
         And user "Alice" has shared file "lorem.txt" in the server with user "Brian" with "all" permissions
@@ -625,22 +624,22 @@ Feature: Sharing
         And the user removes permissions "<permissions>" for user "Brian Murphy" of resource "lorem.txt" using the client-UI
         Then "<permissions>" permissions should not be displayed for user "Brian Murphy" for resource "lorem.txt" on the client-UI
         And the user closes the sharing dialog
-        And user "Alice" on the server should have a share with these details:
+        And user "Alice" should have a share with these details in the server:
             | field       | value                        |
-            | uid_owner   | Alice                        |
-            | share_with  | Brian                        |
             | share_type  | user                         |
-            | file_target | /simple-folder        |
-            | item_type   | folder                       |
+            | uid_owner   | Alice                        |
             | permissions | <expected-folder-permission> |
-        And user "Alice" on the server should have a share with these details:
+            | path        | /simple-folder               |
+            | item_type   | folder                       |
+            | share_with  | Brian                        |
+        And user "Alice" should have a share with these details in the server:
             | field       | value                      |
-            | uid_owner   | Alice                      |
-            | share_with  | Brian                      |
             | share_type  | user                       |
-            | file_target | /lorem.txt          |
-            | item_type   | file                       |
+            | uid_owner   | Alice                      |
             | permissions | <expected-file-permission> |
+            | path        | /lorem.txt                 |
+            | item_type   | file                       |
+            | share_with  | Brian                      |
         Examples:
             | permissions | expected-folder-permission   | expected-file-permission |
             | edit        | read, share                  | read, share              |
