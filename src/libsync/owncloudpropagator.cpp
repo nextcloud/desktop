@@ -1579,8 +1579,6 @@ void PropagateRootDirectory::appendDirDeletionJob(PropagatorJob *job)
 
 bool PropagateRootDirectory::scheduleSelfOrChild()
 {
-    qCInfo(lcRootDirectory()) << "scheduleSelfOrChild" << _state << "pending uploads" << propagator()->delayedTasks().size() << "subjobs state" << _subJobs._state;
-
     if (_state == Finished) {
         return false;
     }
@@ -1603,8 +1601,6 @@ bool PropagateRootDirectory::scheduleSelfOrChild()
 
 void PropagateRootDirectory::slotSubJobsFinished(SyncFileItem::Status status)
 {
-    qCInfo(lcRootDirectory()) << status << "slotSubJobsFinished" << _state << "pending uploads" << propagator()->delayedTasks().size() << "subjobs state" << _subJobs._state;
-
     if (!propagator()->delayedTasks().empty()) {
         scheduleDelayedJobs();
         return;
@@ -1619,7 +1615,6 @@ void PropagateRootDirectory::slotSubJobsFinished(SyncFileItem::Status status)
             // Synchronously abort
             abort(AbortType::Synchronous);
             _state = Finished;
-            qCInfo(lcPropagator) << "PropagateRootDirectory::slotSubJobsFinished" << "emit finished" << status;
             emit finished(status);
         }
         return;
@@ -1653,18 +1648,15 @@ void PropagateRootDirectory::slotSubJobsFinished(SyncFileItem::Status status)
 void PropagateRootDirectory::slotDirDeletionJobsFinished(SyncFileItem::Status status)
 {
     if (_errorStatus != SyncFileItem::NoStatus && status == SyncFileItem::Success) {
-        qCInfo(lcPropagator) << "PropagateRootDirectory::slotDirDeletionJobsFinished" << "reporting previous error" << _errorStatus;
         status = _errorStatus;
     }
 
     _state = Finished;
-    qCInfo(lcPropagator) << "PropagateRootDirectory::slotDirDeletionJobsFinished" << "emit finished" << status;
     emit finished(status);
 }
 
 bool PropagateRootDirectory::scheduleDelayedJobs()
 {
-    qCInfo(lcPropagator) << "PropagateRootDirectory::scheduleDelayedJobs";
     propagator()->setScheduleDelayedTasks(true);
     auto bulkPropagatorJob = std::make_unique<BulkPropagatorJob>(propagator(), propagator()->delayedTasks());
     propagator()->clearDelayedTasks();
