@@ -148,7 +148,7 @@ void Logger::doLog(QtMsgType type, const QMessageLogContext &ctx, const QString 
             if (_doFileFlush)
                 _logstream->flush();
         }
-        if (_permanentDeleteLogStream && strcmp(ctx.category, lcPermanentLog().categoryName()) == 0) {
+        if (_permanentDeleteLogStream && ctx.category && strcmp(ctx.category, lcPermanentLog().categoryName()) == 0) {
             (*_permanentDeleteLogStream) << msg << "\n";
             _permanentDeleteLogStream->flush();
             if (_permanentDeleteLogFile.size() > 10LL * 1024LL) {
