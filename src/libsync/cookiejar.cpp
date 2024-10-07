@@ -87,7 +87,6 @@ bool CookieJar::setCookiesFromUrl(const QList<QNetworkCookie> &cookieList, const
 QList<QNetworkCookie> CookieJar::cookiesForUrl(const QUrl &url) const
 {
     QList<QNetworkCookie> cookies = QNetworkCookieJar::cookiesForUrl(url);
-    qCDebug(lcCookieJar) << url << "requests:" << cookies;
     return cookies;
 }
 

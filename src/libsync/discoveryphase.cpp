@@ -565,7 +565,6 @@ void DiscoverySingleDirectoryJob::directoryListingIteratedSlot(const QString &fi
             auto perm = RemotePermissions::fromServerString(map.value("permissions"),
                                                             _account->serverHasMountRootProperty() ? RemotePermissions::MountedPermissionAlgorithm::UseMountRootProperty : RemotePermissions::MountedPermissionAlgorithm::WildGuessMountedSubProperty,
                                                             map);
-            qCInfo(lcDiscovery()) << file << map.value("permissions") << map;
             emit firstDirectoryPermissions(perm);
             _isExternalStorage = perm.hasPermission(RemotePermissions::IsMounted);
         }
@@ -600,7 +599,6 @@ void DiscoverySingleDirectoryJob::directoryListingIteratedSlot(const QString &fi
         if (result.isDirectory)
             result.size = 0;
 
-        qCInfo(lcDiscovery()) << file << map.value("permissions") << result.remotePerm.toString() << map;
         _results.push_back(std::move(result));
     }
 
