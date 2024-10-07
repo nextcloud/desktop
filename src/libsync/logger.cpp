@@ -118,27 +118,10 @@ void Logger::doLog(QtMsgType type, const QMessageLogContext &ctx, const QString 
 {
     static long long int linesCounter = 0;
     const auto &msg = qFormatLogMessage(type, ctx, message);
-#if defined Q_OS_WIN && (defined NEXTCLOUD_DEV || defined QT_DEBUG)
+#if defined Q_OS_WIN && ((defined NEXTCLOUD_DEV && NEXTCLOUD_DEV) || defined QT_DEBUG)
     // write logs to Output window of Visual Studio
     {
-        QString prefix;
-        switch (type) {
-        case QtDebugMsg:
-            break;
-        case QtInfoMsg:
-            break;
-        case QtWarningMsg:
-            prefix = QStringLiteral("[WARNING] ");
-            break;
-        case QtCriticalMsg:
-            prefix = QStringLiteral("[CRITICAL ERROR] ");
-            break;
-        case QtFatalMsg:
-            prefix = QStringLiteral("[FATAL ERROR] ");
-            break;
-        }
-        auto msgW = QString(prefix + message).toStdWString();
-        msgW.append(L"\n");
+        const auto msgW = QStringLiteral("%1\n").arg(msg).toStdWString();
         OutputDebugString(msgW.c_str());
     }
 #endif
