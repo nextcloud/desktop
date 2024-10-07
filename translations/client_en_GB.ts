@@ -4,12 +4,12 @@
     <message>
         <location filename="../src/gui/qml/AccountBar.qml" line="25"/>
         <source>Navigation bar</source>
-        <translation type="unfinished"/>
+        <translation>Navigation bar</translation>
     </message>
     <message>
         <location filename="../src/gui/qml/AccountBar.qml" line="101"/>
         <source>Add Account</source>
-        <translation type="unfinished"/>
+        <translation>Add Account</translation>
     </message>
     <message>
         <location filename="../src/gui/qml/AccountBar.qml" line="128"/>
@@ -91,17 +91,17 @@
     <message>
         <location filename="../src/gui/qml/credentials/BasicAuthCredentials.qml" line="29"/>
         <source>Please enter your password to log in.</source>
-        <translation type="unfinished"/>
+        <translation>Please enter your password to log in.</translation>
     </message>
     <message>
         <location filename="../src/gui/qml/credentials/BasicAuthCredentials.qml" line="29"/>
         <source>Please enter %1 and password to log in.</source>
-        <translation type="unfinished"/>
+        <translation>Please enter %1 and password to log in.</translation>
     </message>
     <message>
         <location filename="../src/gui/qml/credentials/BasicAuthCredentials.qml" line="37"/>
         <source>Enter %1</source>
-        <translation type="unfinished"/>
+        <translation>Enter %1</translation>
     </message>
     <message>
         <location filename="../src/gui/qml/credentials/BasicAuthCredentials.qml" line="51"/>
@@ -223,7 +223,7 @@ File synchronisation desktop utility.</translation>
     <message numerus="yes">
         <location filename="../src/gui/commonstrings.cpp" line="48"/>
         <source>%n Filter(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n Filter</numerusform><numerusform>%n Filters</numerusform></translation>
     </message>
 </context>
 <context>
@@ -231,19 +231,21 @@ File synchronisation desktop utility.</translation>
     <message>
         <location filename="../src/gui/qml/credentials/Credentials.qml" line="43"/>
         <source>Stay logged out</source>
-        <translation type="unfinished"/>
+        <translation>Stay logged out</translation>
     </message>
     <message>
         <location filename="../src/gui/qml/credentials/Credentials.qml" line="89"/>
         <source>Connecting %1 to:
 %2</source>
-        <translation type="unfinished"/>
+        <translation>Connecting %1 to:
+%2</translation>
     </message>
     <message>
         <location filename="../src/gui/qml/credentials/Credentials.qml" line="89"/>
         <source>Connecting to:
 %1</source>
-        <translation type="unfinished"/>
+        <translation>Connecting to:
+%1</translation>
     </message>
 </context>
 <context>
@@ -311,7 +313,7 @@ File synchronisation desktop utility.</translation>
     <message>
         <location filename="../src/gui/qml/FolderDelegate.qml" line="258"/>
         <source>You are synchronizing %1 out of %2 spaces</source>
-        <translation type="unfinished"/>
+        <translation>You are synchronising %1 out of %2 spaces</translation>
     </message>
 </context>
 <context>
@@ -319,12 +321,12 @@ File synchronisation desktop utility.</translation>
     <message>
         <location filename="../src/gui/qml/FolderError.qml" line="58"/>
         <source>Show less</source>
-        <translation type="unfinished"/>
+        <translation>Show less</translation>
     </message>
     <message>
         <location filename="../src/gui/qml/FolderError.qml" line="77"/>
         <source>Show more</source>
-        <translation type="unfinished"/>
+        <translation>Show more</translation>
     </message>
 </context>
 <context>
@@ -343,12 +345,12 @@ File synchronisation desktop utility.</translation>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="127"/>
         <source>, ⬇️ %1/s</source>
-        <translation type="unfinished"/>
+        <translation>, ⬇️ %1/s</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="130"/>
         <source>, ⬆️ %1/s</source>
-        <translation type="unfinished"/>
+        <translation>, ⬆️ %1/s</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="134"/>
@@ -468,7 +470,7 @@ File synchronisation desktop utility.</translation>
     <message>
         <location filename="../src/gui/notificationwidget.ui" line="49"/>
         <source>Notification icon</source>
-        <translation type="unfinished"/>
+        <translation>Notification icon</translation>
     </message>
     <message>
         <location filename="../src/gui/notificationwidget.ui" line="73"/>
@@ -483,7 +485,7 @@ File synchronisation desktop utility.</translation>
     <message>
         <location filename="../src/gui/notificationwidget.ui" line="113"/>
         <source>Action button group</source>
-        <translation type="unfinished"/>
+        <translation>Action button group</translation>
     </message>
 </context>
 <context>
@@ -491,32 +493,32 @@ File synchronisation desktop utility.</translation>
     <message>
         <location filename="../src/gui/qml/credentials/OAuthCredentials.qml" line="31"/>
         <source>Log in with your web browser</source>
-        <translation type="unfinished"/>
+        <translation>Log in with your web browser</translation>
     </message>
     <message>
         <location filename="../src/gui/qml/credentials/OAuthCredentials.qml" line="31"/>
         <source>Login failed, please try it again</source>
-        <translation type="unfinished"/>
+        <translation>Login failed, please try it again</translation>
     </message>
     <message>
         <location filename="../src/gui/qml/credentials/OAuthCredentials.qml" line="49"/>
         <source>Reopen web browser</source>
-        <translation type="unfinished"/>
+        <translation>Reopen web browser</translation>
     </message>
     <message>
         <location filename="../src/gui/qml/credentials/OAuthCredentials.qml" line="49"/>
         <source>Open web brower</source>
-        <translation type="unfinished"/>
+        <translation>Open web brower</translation>
     </message>
     <message>
         <location filename="../src/gui/qml/credentials/OAuthCredentials.qml" line="64"/>
         <source>Copy url</source>
-        <translation type="unfinished"/>
+        <translation>Copy URL</translation>
     </message>
     <message>
         <location filename="../src/gui/qml/credentials/OAuthCredentials.qml" line="96"/>
         <source>Restart authenticaion</source>
-        <translation type="unfinished"/>
+        <translation>Restart authenticaion</translation>
     </message>
 </context>
 <context>
@@ -544,12 +546,12 @@ File synchronisation desktop utility.</translation>
     <message>
         <location filename="../src/gui/aboutdialog.cpp" line="89"/>
         <source>ownCloud 10 LTS</source>
-        <translation type="unfinished"/>
+        <translation>ownCloud 10 LTS</translation>
     </message>
     <message>
         <location filename="../src/gui/aboutdialog.cpp" line="90"/>
         <source>ownCloud Infinite Scale stable</source>
-        <translation type="unfinished"/>
+        <translation>ownCloud Infinite Scale stable</translation>
     </message>
     <message>
         <location filename="../src/gui/aboutdialog.cpp" line="92"/>
@@ -564,12 +566,12 @@ File synchronisation desktop utility.</translation>
     <message>
         <location filename="../src/gui/aboutdialog.cpp" line="165"/>
         <source>&lt;html&gt;The update channel determines which client updates will be offered for installation.&lt;ul&gt;&lt;li&gt;&quot;ownCloud 10 LTS&quot; contains only upgrades that are considered reliable&lt;/li&gt;&lt;li&gt;&quot;ownCloud Infinite Scale stable&quot; contains only upgrades that are considered reliable but &lt;b&gt;removes support for &quot;ownCloud 10&quot;&lt;/b&gt;&lt;/li&gt;%1&lt;/ul&gt;&lt;br&gt;⚠️Downgrades are not supported. If you switch to a stable channel this change will only be applied with the next major release.&lt;/html&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;html&gt;The update channel determines which client updates will be offered for installation.&lt;ul&gt;&lt;li&gt;&quot;ownCloud 10 LTS&quot; contains only upgrades that are considered reliable&lt;/li&gt;&lt;li&gt;&quot;ownCloud Infinite Scale stable&quot; contains only upgrades that are considered reliable but &lt;b&gt;removes support for &quot;ownCloud 10&quot;&lt;/b&gt;&lt;/li&gt;%1&lt;/ul&gt;&lt;br&gt;⚠️Downgrades are not supported. If you switch to a stable channel this change will only be applied with the next major release.&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/aboutdialog.cpp" line="172"/>
         <source>&lt;li&gt;&quot;beta&quot; may contain newer features and bugfixes, but have not yet been tested thoroughly&lt;/li&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;li&gt;&quot;beta&quot; may contain newer features and bugfixes, but have not yet been tested thoroughly&lt;/li&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/aboutdialog.cpp" line="174"/>
@@ -618,7 +620,7 @@ File synchronisation desktop utility.</translation>
     <message>
         <location filename="../src/gui/accountmodalwidget.ui" line="26"/>
         <source>GroupBox</source>
-        <translation type="unfinished"/>
+        <translation>GroupBox</translation>
     </message>
 </context>
 <context>
@@ -631,7 +633,7 @@ File synchronisation desktop utility.</translation>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="73"/>
         <source>Manage Account</source>
-        <translation type="unfinished"/>
+        <translation>Manage Account</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="109"/>
@@ -641,7 +643,7 @@ File synchronisation desktop utility.</translation>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="137"/>
         <source>Sync connections</source>
-        <translation type="unfinished"/>
+        <translation>Sync connections</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="292"/>
@@ -679,7 +681,7 @@ File synchronisation desktop utility.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="88"/>
         <source>Account options menu</source>
-        <translation type="unfinished"/>
+        <translation>Account options menu</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="90"/>
@@ -689,12 +691,12 @@ File synchronisation desktop utility.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="134"/>
         <source>Sync options menu</source>
-        <translation type="unfinished"/>
+        <translation>Sync options menu</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="140"/>
         <source>Folder is not ready yet</source>
-        <translation type="unfinished"/>
+        <translation>Folder is not ready yet</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="285"/>
@@ -782,12 +784,12 @@ This action will abort any currently running synchronisation.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="495"/>
         <source>Server is temporarily unavailable</source>
-        <translation type="unfinished"/>
+        <translation>Server is temporarily unavailable</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="498"/>
         <source>Server is currently in maintenance mode</source>
-        <translation type="unfinished"/>
+        <translation>Server is currently in maintenance mode</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="501"/>
@@ -797,17 +799,17 @@ This action will abort any currently running synchronisation.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="504"/>
         <source>Updating credentials...</source>
-        <translation type="unfinished"/>
+        <translation>Updating credentials...</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="509"/>
         <source>Captive portal prevents connections to the server.</source>
-        <translation type="unfinished"/>
+        <translation>Captive portal prevents connections to the server.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="511"/>
         <source>Sync is paused due to metered internet connection</source>
-        <translation type="unfinished"/>
+        <translation>Sync is paused due to a metered Internet connection</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="513"/>
@@ -817,7 +819,7 @@ This action will abort any currently running synchronisation.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="517"/>
         <source>Server configuration error</source>
-        <translation type="unfinished"/>
+        <translation>Server configuration error</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="523"/>
@@ -904,7 +906,7 @@ This action will abort any currently running synchronisation.</translation>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="467"/>
         <source>Local Activity</source>
-        <translation type="unfinished"/>
+        <translation>Local Activity</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="516"/>
@@ -923,7 +925,7 @@ This action will abort any currently running synchronisation.</translation>
     <message>
         <location filename="../src/gui/activitywidget.ui" line="14"/>
         <source>Server activities</source>
-        <translation type="unfinished"/>
+        <translation>Server activities</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.ui" line="73"/>
@@ -933,7 +935,7 @@ This action will abort any currently running synchronisation.</translation>
     <message>
         <location filename="../src/gui/activitywidget.ui" line="91"/>
         <source>Server activity table</source>
-        <translation type="unfinished"/>
+        <translation>Server activity table</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="101"/>
@@ -944,12 +946,12 @@ This action will abort any currently running synchronisation.</translation>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="148"/>
         <source>&amp;Server Activities</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Server Activities</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="149"/>
         <source>&amp;Notifications</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Notifications</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="154"/>
@@ -959,12 +961,12 @@ This action will abort any currently running synchronisation.</translation>
     <message numerus="yes">
         <location filename="../src/gui/activitywidget.cpp" line="288"/>
         <source>%n notification(s) for %1.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n notification for %1.</numerusform><numerusform>%n notifications for %1.</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/activitywidget.cpp" line="294"/>
         <source>%n notification(s) for %1 and %2.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n notification for %1 and %2.</numerusform><numerusform>%n notifications for %1 and %2.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="296"/>
@@ -979,7 +981,7 @@ This action will abort any currently running synchronisation.</translation>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="423"/>
         <source>Activity item menu</source>
-        <translation type="unfinished"/>
+        <translation>Activity item menu</translation>
     </message>
 </context>
 <context>
@@ -1136,7 +1138,7 @@ The update will be performed in the background, and overwrite the current AppIma
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="502"/>
         <source>%1 and %n other file(s) have been removed.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 and %n other file have been removed.</numerusform><numerusform>%1 and %n other files have been removed.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="187"/>
@@ -1156,7 +1158,7 @@ The update will be performed in the background, and overwrite the current AppIma
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="509"/>
         <source>%1 and %n other file(s) have been added.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 and %n other file have been added.</numerusform><numerusform>%1 and %n other files have been added.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="511"/>
@@ -1167,22 +1169,22 @@ The update will be performed in the background, and overwrite the current AppIma
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="516"/>
         <source>%1 and %n other file(s) have been updated.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 and %n other file have been updated.</numerusform><numerusform>%1 and %n other files have been updated.</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="523"/>
         <source>%1 has been renamed to %2 and %n other file(s) have been renamed.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 has been renamed to %2 and %n other file have been renamed.</numerusform><numerusform>%1 has been renamed to %2 and %n other files have been renamed.</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="530"/>
         <source>%1 has been moved to %2 and %n other file(s) have been moved.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 has been moved to %2 and %n other file have been moved.</numerusform><numerusform>%1 has been moved to %2 and %n other files have been moved.</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="537"/>
         <source>%1 and %n other file(s) have sync conflicts.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 and %n other file have sync conflicts.</numerusform><numerusform>%1 and %n other files have sync conflicts.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="539"/>
@@ -1192,7 +1194,7 @@ The update will be performed in the background, and overwrite the current AppIma
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="544"/>
         <source>%1 and %n other file(s) could not be synced due to errors. See the log for details.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 and %n other file could not be synced due to errors. See the log for details.</numerusform><numerusform>%1 and %n other files could not be synced due to errors. See the log for details.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="546"/>
@@ -1288,7 +1290,7 @@ This means that the synchronisation client might not upload local changes immedi
     <message>
         <location filename="../src/gui/folderman.cpp" line="742"/>
         <source>Folder &apos;%1&apos; is already in use by another account.</source>
-        <translation type="unfinished"/>
+        <translation>Folder &apos;%1&apos; is already in use by another account.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="757"/>
@@ -1303,17 +1305,17 @@ This means that the synchronisation client might not upload local changes immedi
     <message>
         <location filename="../src/gui/folderman.cpp" line="821"/>
         <source>The local folder %1 already contains a folder used in a folder sync connection. Please pick another local folder!</source>
-        <translation type="unfinished"/>
+        <translation>The local folder %1 already contains a folder used in a folder sync connection. Please pick another local folder!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="827"/>
         <source>The local folder %1 is already contained in a folder used in a folder sync connection. Please pick another local folder!</source>
-        <translation type="unfinished"/>
+        <translation>The local folder %1 is already contained in a folder used in a folder sync connection. Please pick another local folder!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="835"/>
         <source>%1 Please pick another local folder!</source>
-        <translation type="unfinished"/>
+        <translation>%1 Please pick another local folder!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="775"/>
@@ -1350,19 +1352,21 @@ Please consider removing this folder from the account and adding it again.</tran
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="252"/>
         <source>There are unresolved conflicts.</source>
-        <translation type="unfinished"/>
+        <translation>There are unresolved conflicts.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="256"/>
         <source>The suffix VFS plugin is deprecated and will be removed in the 7.0 release.
 Please use the context menu and select &quot;Disable virtual file support&quot; to  ensure future access to your synced files.
 You are going to lose access to your sync folder if you do not do so!</source>
-        <translation type="unfinished"/>
+        <translation>The suffix VFS plugin is deprecated and will be removed in the 7.0 release.
+Please use the context menu and select &quot;Disable virtual file support&quot; to  ensure future access to your synced files.
+You are going to lose access to your sync folder if you do not do so!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="311"/>
         <source>%1 of %2 used</source>
-        <translation type="unfinished"/>
+        <translation>%1 of %2 used</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="391"/>
@@ -1551,7 +1555,7 @@ You are going to lose access to your sync folder if you do not do so!</source>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="41"/>
         <source>Use Monochrome Icons in the system tray</source>
-        <translation type="unfinished"/>
+        <translation>Use Monochrome Icons in the system tray</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="48"/>
@@ -1561,7 +1565,7 @@ You are going to lose access to your sync folder if you do not do so!</source>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="55"/>
         <source>Start on Login</source>
-        <translation type="unfinished"/>
+        <translation>Start on Login</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="73"/>
@@ -1571,7 +1575,7 @@ You are going to lose access to your sync folder if you do not do so!</source>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="89"/>
         <source>Language selector</source>
-        <translation type="unfinished"/>
+        <translation>Language selector</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="112"/>
@@ -1738,7 +1742,7 @@ Items, where deletion is allowed, will be deleted if they prevent a directory fr
     <message>
         <location filename="../src/gui/issueswidget.ui" line="40"/>
         <source>Issues table</source>
-        <translation type="unfinished"/>
+        <translation>Issues table</translation>
     </message>
     <message>
         <location filename="../src/gui/issueswidget.ui" line="72"/>
@@ -1768,7 +1772,7 @@ Items, where deletion is allowed, will be deleted if they prevent a directory fr
     <message>
         <location filename="../src/gui/issueswidget.cpp" line="273"/>
         <source>Filter menu</source>
-        <translation type="unfinished"/>
+        <translation>Filter menu</translation>
     </message>
     <message>
         <location filename="../src/gui/issueswidget.cpp" line="275"/>
@@ -1891,7 +1895,7 @@ Note that using any logging command line options will override the settings.</tr
     <message>
         <location filename="../src/gui/networksettings.ui" line="130"/>
         <source>Proxy Hostname</source>
-        <translation type="unfinished"/>
+        <translation>Proxy Hostname</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="140"/>
@@ -1901,7 +1905,7 @@ Note that using any logging command line options will override the settings.</tr
     <message>
         <location filename="../src/gui/networksettings.ui" line="153"/>
         <source>Proxy Port Number</source>
-        <translation type="unfinished"/>
+        <translation>Proxy Port Number</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="174"/>
@@ -1921,7 +1925,7 @@ Note that using any logging command line options will override the settings.</tr
     <message>
         <location filename="../src/gui/networksettings.ui" line="360"/>
         <source>Upload bandwidth in kilobytes per second</source>
-        <translation type="unfinished"/>
+        <translation>Upload bandwidth in kilobytes per second</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="291"/>
@@ -1938,12 +1942,12 @@ Note that using any logging command line options will override the settings.</tr
     <message>
         <location filename="../src/gui/networksettings.ui" line="59"/>
         <source>Specify proxy manually</source>
-        <translation type="unfinished"/>
+        <translation>Specify proxy manually</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="80"/>
         <source>Proxy type</source>
-        <translation type="unfinished"/>
+        <translation>Proxy type</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="256"/>
@@ -1955,12 +1959,12 @@ Note that using any logging command line options will override the settings.</tr
         <location filename="../src/gui/networksettings.ui" line="268"/>
         <location filename="../src/gui/networksettings.ui" line="350"/>
         <source>Manual limit</source>
-        <translation type="unfinished"/>
+        <translation>Manual limit</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="278"/>
         <source>Download bandwidth in kilobytes per second</source>
-        <translation type="unfinished"/>
+        <translation>Download bandwidth in kilobytes per second</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="322"/>
@@ -2568,7 +2572,7 @@ Note that using any logging command line options will override the settings.</tr
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="591"/>
         <source>The server did not provide the file permissions</source>
-        <translation type="unfinished"/>
+        <translation>The server did not provide the file permissions</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="599"/>
@@ -2709,7 +2713,7 @@ Note that using any logging command line options will override the settings.</tr
     <message>
         <location filename="../src/gui/protocolwidget.ui" line="44"/>
         <source>Local activity table</source>
-        <translation type="unfinished"/>
+        <translation>Local activity table</translation>
     </message>
     <message>
         <location filename="../src/gui/protocolwidget.cpp" line="63"/>
@@ -2720,22 +2724,22 @@ Note that using any logging command line options will override the settings.</tr
     <message>
         <location filename="../src/gui/protocolwidget.cpp" line="97"/>
         <source>Filter menu</source>
-        <translation type="unfinished"/>
+        <translation>Filter menu</translation>
     </message>
     <message>
         <location filename="../src/gui/protocolwidget.cpp" line="112"/>
         <source>Actions menu</source>
-        <translation type="unfinished"/>
+        <translation>Actions menu</translation>
     </message>
     <message>
         <location filename="../src/gui/protocolwidget.cpp" line="154"/>
         <source>Sort ascending by %1</source>
-        <translation type="unfinished"/>
+        <translation>Sort ascending by %1</translation>
     </message>
     <message>
         <location filename="../src/gui/protocolwidget.cpp" line="158"/>
         <source>Sort descending by %1</source>
-        <translation type="unfinished"/>
+        <translation>Sort descending by %1</translation>
     </message>
     <message>
         <location filename="../src/gui/protocolwidget.cpp" line="180"/>
@@ -2769,12 +2773,12 @@ Note that using any logging command line options will override the settings.</tr
         <location filename="../src/gui/selectivesyncwidget.cpp" line="110"/>
         <location filename="../src/gui/selectivesyncwidget.cpp" line="218"/>
         <source>Currently there are no subfolders on the server.</source>
-        <translation type="unfinished"/>
+        <translation>Currently there are no subfolders on the server.</translation>
     </message>
     <message>
         <location filename="../src/gui/selectivesyncwidget.cpp" line="112"/>
         <source>An error occurred while loading the list of subfolders.</source>
-        <translation type="unfinished"/>
+        <translation>An error occurred while loading the list of subfolders.</translation>
     </message>
 </context>
 <context>
@@ -3225,7 +3229,7 @@ Note that using any logging command line options will override the settings.</tr
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="912"/>
         <source>Manage public links</source>
-        <translation type="unfinished"/>
+        <translation>Manage public links</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="997"/>
@@ -3602,7 +3606,7 @@ Note that using any logging command line options will override the settings.</tr
         <location filename="../src/gui/newwizard/pages/serverurlsetupwizardpage.cpp" line="36"/>
         <source>%1 logo</source>
         <extracomment>This is the accessibility text for the logo in the setup wizard page. The parameter is the name for the (branded) application.</extracomment>
-        <translation type="unfinished"/>
+        <translation>%1 logo</translation>
     </message>
 </context>
 <context>
@@ -3659,7 +3663,7 @@ Are you sure you want to proceed?</translation>
     <message>
         <location filename="../src/gui/newwizard/setupwizardwidget.cpp" line="43"/>
         <source>&lt; &amp;Back</source>
-        <translation type="unfinished"/>
+        <translation>&lt; &amp;Back</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/setupwizardwidget.cpp" line="49"/>
@@ -3680,7 +3684,7 @@ Are you sure you want to proceed?</translation>
     <message>
         <location filename="../src/gui/newwizard/setupwizardwidget.cpp" line="107"/>
         <source>&amp;Finish</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Finish</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/setupwizardwidget.cpp" line="108"/>
@@ -3958,7 +3962,7 @@ Are you sure you want to proceed?</translation>
     <message>
         <location filename="../src/gui/newwizard/jobs/resolveurljobfactory.cpp" line="108"/>
         <source>SSL Error: %1</source>
-        <translation type="unfinished"/>
+        <translation>SSL Error: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/jobs/resolveurljobfactory.cpp" line="124"/>
@@ -4017,12 +4021,12 @@ Are you sure you want to proceed?</translation>
     <message>
         <location filename="../src/gui/newwizard/setupwizardwidget.ui" line="101"/>
         <source>&amp;Dismiss</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Dismiss</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/setupwizardwidget.ui" line="116"/>
         <source>&amp;Cancel</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Cancel</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/setupwizardwidget.ui" line="152"/>
@@ -4043,12 +4047,12 @@ Are you sure you want to proceed?</translation>
     <message>
         <location filename="../src/gui/folderwizard/spacespage.ui" line="17"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select a Space to sync it to your computer.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select a Space to sync it to your computer.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard/spacespage.ui" line="33"/>
         <source>Spaces list</source>
-        <translation type="unfinished"/>
+        <translation>Spaces list</translation>
     </message>
 </context>
 <context>
@@ -4056,7 +4060,7 @@ Are you sure you want to proceed?</translation>
     <message>
         <location filename="../src/gui/spaces/qml/SpacesView.qml" line="30"/>
         <source>Spaces</source>
-        <translation type="unfinished"/>
+        <translation>Spaces</translation>
     </message>
 </context>
 <context>
@@ -4149,12 +4153,12 @@ Are you sure you want to proceed?</translation>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="208"/>
         <source>%n year(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n year</numerusform><numerusform>%n years</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="209"/>
         <source>%n month(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n month</numerusform><numerusform>%n months</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="210"/>
@@ -4174,7 +4178,7 @@ Are you sure you want to proceed?</translation>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="213"/>
         <source>%n second(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n second</numerusform><numerusform>%n seconds</numerusform></translation>
     </message>
     <message>
         <location filename="../src/common/utility.cpp" line="237"/>
