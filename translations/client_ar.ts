@@ -298,7 +298,7 @@
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderStorageInfo.qml" line="49"/>
         <source>%1 GB of %2 GB remote files synced</source>
-        <translation>%1 غيغا بايت من أصل %2 غيغا بايت ملفات قصيّة تمّت مزامنتها</translation>
+        <translation>%1 غيغا بايت من أصل %2 غيغا بايت ملفات بعيدة تمّت مزامنتها</translation>
     </message>
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderStorageInfo.qml" line="58"/>
@@ -389,7 +389,7 @@
     <message>
         <location filename="../src/gui/folderwizardtargetpage.ui" line="131"/>
         <source>Select a remote destination folder</source>
-        <translation>إختر مُجلّداً مقصداً قصيّاً remote destination</translation>
+        <translation>إختر مجلد الوجهة البعيدة remote destination</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizardtargetpage.ui" line="143"/>
@@ -4791,7 +4791,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="78"/>
         <source>Deselect remote folders you do not wish to synchronize.</source>
-        <translation>قم بإلغاء تحديد المجلدات القصيّة remote التي لا ترغب في مزامنتها.</translation>
+        <translation>قم بإلغاء تحديد المجلدات البعيدة remote التي لا ترغب في مزامنتها.</translation>
     </message>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="94"/>
