@@ -17,7 +17,6 @@
 # manual for a complete reference of the available API.
 import shutil
 import os
-import glob
 from urllib import request, error
 from datetime import datetime
 
@@ -36,8 +35,9 @@ from helpers.ConfigHelper import (
 )
 from helpers.api.utils import url_join
 from helpers.FilesHelper import prefix_path_namespace, cleanup_created_paths
-from pageObjects.Toolbar import Toolbar
+from helpers.ReportHelper import save_video_recording, take_screenshot
 
+from pageObjects.Toolbar import Toolbar
 from pageObjects.AccountSetting import AccountSetting
 from pageObjects.AccountConnectionWizard import AccountConnectionWizard
 
@@ -50,6 +50,7 @@ testSettings.throwOnFailure = True
 # this will reset in every test suite
 PREVIOUS_FAIL_RESULT_COUNT = 0
 PREVIOUS_ERROR_RESULT_COUNT = 0
+PREVIOUS_SCENARIO = ""
 
 
 # runs before a feature
@@ -65,6 +66,11 @@ def hook(context):
 def hook(context):
     unlock_keyring()
     clear_scenario_config()
+    global PREVIOUS_SCENARIO
+    if PREVIOUS_SCENARIO == context.title:
+        test.log("[INFO] Retrying this failed scenario...")
+        set_config("retrying", True)
+    PREVIOUS_SCENARIO = context.title
 
 
 # runs before every scenario
@@ -142,44 +148,9 @@ def scenario_failed():
     )
 
 
-def get_screenshot_name(title):
-    return title.replace(" ", "_").replace("/", "_").strip(".") + ".png"
-
-
-def get_screenrecord_name(title):
-    return title.replace(" ", "_").replace("/", "_").strip(".") + ".mp4"
-
-
-def save_screenrecord(filename):
-    try:
-        # do not throw if stopVideoCapture() fails
-        test.stopVideoCapture()
-    except:
-        test.log("Failed to stop screen recording")
-
-    if not (video_dir := squishinfo.resultDir):
-        video_dir = squishinfo.testCase
-    else:
-        test_case = "/".join(squishinfo.testCase.split("/")[-2:])
-        video_dir = os.path.join(video_dir, test_case)
-    video_dir = os.path.join(video_dir, "attachments")
-
-    if scenario_failed():
-        video_files = glob.glob(f"{video_dir}/**/*.mp4", recursive=True)
-        screenrecords_dir = os.path.join(
-            get_config("guiTestReportDir"), "screenrecords"
-        )
-        if not os.path.exists(screenrecords_dir):
-            os.makedirs(screenrecords_dir)
-        # reverse the list to get the latest video first
-        video_files.reverse()
-        for idx, video in enumerate(video_files):
-            if idx:
-                file_parts = filename.rsplit(".", 1)
-                filename = f"{file_parts[0]}_{idx+1}.{file_parts[1]}"
-            shutil.move(video, os.path.join(screenrecords_dir, filename))
-
-    shutil.rmtree(prefix_path_namespace(video_dir))
+def scenario_title_to_filename(title):
+    # scenario name can have "/" which is invalid filename
+    return title.replace(" ", "_").replace("/", "_").strip(".")
 
 
 # runs after every scenario
@@ -189,22 +160,14 @@ def hook(context):
     clear_waited_after_sync()
     close_socket_connection()
 
-    # capture a screenshot if there is error or test failure in the current scenario execution
-    if scenario_failed() and os.getenv("CI") and is_linux():
-        # scenario name can have "/" which is invalid filename
-        filename = get_screenshot_name(context.title)
-        directory = os.path.join(get_config("guiTestReportDir"), "screenshots")
-        if not os.path.exists(directory):
-            os.makedirs(directory)
-        try:
-            squish.saveDesktopScreenshot(os.path.join(directory, filename))
-        except:
-            test.log("Failed to save screenshot")
+    # generate screenshot and video reports
+    if is_linux():
+        filename = scenario_title_to_filename(context.title)
+        if scenario_failed():
+            take_screenshot(f"{filename}.png")
 
-    # check video report
-    if get_config("screenRecordOnFailure"):
-        filename = get_screenrecord_name(context.title)
-        save_screenrecord(filename)
+        if get_config("video_recording_started"):
+            save_video_recording(f"{filename}.mp4", scenario_failed())
 
     # teardown accounts and configs
     teardown_client()

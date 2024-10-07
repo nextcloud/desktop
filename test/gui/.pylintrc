@@ -18,6 +18,7 @@ ignore-paths=^tst_.*/test.py$,
     shared/scripts/custom_lib
 ignored-modules=
     squish,
+    squishinfo,
     object,
     objectmaphelper,
     test,
