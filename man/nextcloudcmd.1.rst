@@ -43,6 +43,7 @@ OPTIONS
 
 ``—non-interactive``
        Do not prompt for questions.
+       Tries to read $NC_USER and $NC_PASSWORD from the environment.
 
 ``—silent``, ``—s``
        Inhibits verbose log output.
