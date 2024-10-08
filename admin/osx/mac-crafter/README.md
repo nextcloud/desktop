@@ -17,22 +17,20 @@ It will create the application bundle with the option to sign it, which is requi
 https://github.com/nextcloud/desktop.git
 ```
 
-2. Create the build folder
+2. Build the desktop client:
 ```
-mkdir <build folder>
-```
-
-3. Build the desktop client:
-```
-swift run --build-path <build folder> --package-path <cloned desktop repo>/admin/osx/mac-crafter mac-crafter <cloned desktop repo>
+cd admin/osx/mac-crafter
+swift run mac-crafter
 ```
 
 3.1 Sign the application bundle by adding the following parameter:
-`-c "Apple Development: <certificate common name>"`
+`-c <Development or developer codesigning certificate name>`
 The whole command will look like this:
 ```
-swift run --build-path <build folder> --package-path <cloned desktop repo>/admin/osx/mac-crafter mac-crafter <cloned desktop repo> -c "Apple Development: <certificate common name>"
+swift run mac-crafter -c "Apple Development: <certificate common name>"
 ```
+
+The resulting app bundle will be placed under the `product` folder in the mac-crafter folder.
 
 > [!TIP] 
 > Check [Apple's oficial documentation about code signing](https://developer.apple.com/documentation/xcode/using-the-latest-code-signature-format).
