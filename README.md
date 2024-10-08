@@ -48,7 +48,7 @@ If you find any bugs or have any suggestion for improvement, please
 > We highly recommend [Nextcloud development environment on Docker Compose](https://juliushaertl.github.io/nextcloud-docker-dev/) for testing/bug fixing/development.<br>
 > ▶️ https://juliushaertl.github.io/nextcloud-docker-dev/
 
-1.3 Step by step instructions on how to build the client
+1.3 Step by step instructions on how to build the client to contribute
 1. Clone the Github repository:
 ```
 git clone https://github.com/nextcloud/desktop.git
@@ -76,11 +76,15 @@ cmake --build .
 make
 ```
 
-#### 2. 🐛 [Pick a good first issue](https://github.com/nextcloud/desktop/labels/good%20first%20issue)
-#### 3. 👩‍🔧 Create a branch and make your changes. Remember to sign off your commits using `git commit -sm "Your commit message"`
-#### 4. ⬆ Create a [pull request](https://opensource.guide/how-to-contribute/#opening-a-pull-request) and `@mention` the people from the issue to review
-#### 5. 👍 Fix things that come up during a review
-#### 6. 🎉 Wait for it to get merged!
+> [!TIP]
+> For building the client for mac OS we have a tool called mac-crafter.
+> You will find instructions on how to use it at [admin/osx/mac-crafter](https://github.com/nextcloud/desktop/blob/9ab514cfa845ed7bf530a1b9312d75c9a5935a46/admin/osx/mac-crafter/README.md).
+
+5. 🐛 [Pick a good first issue](https://github.com/nextcloud/desktop/labels/good%20first%20issue)
+6. 👩‍🔧 Create a branch and make your changes. Remember to sign off your commits using `git commit -sm "Your commit message"`
+7. ⬆ Create a [pull request](https://opensource.guide/how-to-contribute/#opening-a-pull-request) and `@mention` the people from the issue to review
+8. 👍 Fix things that come up during a review
+9. 🎉 Wait for it to get merged!
 
 ## Get in touch 💬
 * [📋 Forum](https://help.nextcloud.com)
