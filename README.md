@@ -78,7 +78,7 @@ make
 
 > [!TIP]
 > For building the client for mac OS we have a tool called mac-crafter.
-> You will find instructions on how to use it at [admin/osx/mac-crafter](https://github.com/nextcloud/desktop/blob/9ab514cfa845ed7bf530a1b9312d75c9a5935a46/admin/osx/mac-crafter/README.md).
+> You will find instructions on how to use it at [admin/osx/mac-crafter](https://github.com/nextcloud/desktop/tree/32305e4c15ff95d00fae07e82e750fe9051b2250/admin/osx/mac-crafter).
 
 5. 🐛 [Pick a good first issue](https://github.com/nextcloud/desktop/labels/good%20first%20issue)
 6. 👩‍🔧 Create a branch and make your changes. Remember to sign off your commits using `git commit -sm "Your commit message"`

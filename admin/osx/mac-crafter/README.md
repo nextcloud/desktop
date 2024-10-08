@@ -23,35 +23,36 @@ cd admin/osx/mac-crafter
 swift run mac-crafter
 ```
 
-3.1 Sign the application bundle by adding the following parameter:
+3. Sign the application bundle by adding the following parameter:
 `-c <Development or developer codesigning certificate name>`
 The whole command will look like this:
 ```
 swift run mac-crafter -c "Apple Development: <certificate common name>"
 ```
 
-The resulting app bundle will be placed under the `product` folder in the mac-crafter folder.
+> [!NOTE] 
+> The resulting app bundle will be placed under the `product` folder in the mac-crafter folder.
 
 > [!TIP] 
 > Check [Apple's oficial documentation about code signing](https://developer.apple.com/documentation/xcode/using-the-latest-code-signature-format).
 
-3.2 Build the file provider module with this option:
+### Extra options
+
+- Build the file provider module with this option:
 ```
 --build-file-provider-module
 ```
 
-3.3 Disable the auto-updater:
+- Disable the auto-updater:
 ```
 --disable-autoupdater
 ```
 
-3.4 Manually set the architecture you are building for:
+- Manually set the architecture you are building for:
 
 ```
---arch arm64
+--arch <arm64|x86_64>
 ```
-
-The options are `x86_64` and `arm64`.
 
 ### How to build the app bundle for arm and intel
 
