@@ -55,23 +55,8 @@ The options are `x86_64` and `arm64`.
 
 ### How to build the app bundle for arm and intel
 
-To achieve this we are using [KDE Craft](https://community.kde.org/Craft).
-
-1. After running the steps above, you will be able to use the `CraftMaster.py` script for that:
+To achieve this we are using a Python script called `make_universal.py` which bundles together the arm64 and Intel builds into one universal app bundle. This script can be found under `admin/osx`. You can invoke it like so:
 
 ```
-python build/craftmaster/CraftMaster.py --config <cloned desktop repo>/craftmaster.ini --target macos-clang-arm64 -c --add-blueprint-repository https://github.com/nextcloud/desktop-client-blueprints/
-```
-
-The `--target` options are define in the [`craftmaster.ini` file](https://github.com/nextcloud/desktop/blob/c771c4166c806d686d9b4f8b11e33d8d95631398/craftmaster.ini).
-
-2. Install the client dependencies
-```
-python build/craftmaster/CraftMaster.py --config <cloned desktop repo>/craftmaster.ini --target macos-clang-arm64 -c --install-deps nextcloud-client
-```
-
-3. Build the client
-
-```
-python build/craftmaster/CraftMaster.py --config <cloned desktop repo>/craftmaster.ini --target macos-clang-arm64 -c --src-dir <cloned desktop repo> nextcloud-client
+python admin/osx/make_universal.py <x86 build path> <arm64 build path> <final target path>
 ```
