@@ -3,6 +3,9 @@ import platform
 import builtins
 from tempfile import gettempdir
 from configparser import ConfigParser
+from pathlib import Path
+
+CURRENT_DIR = Path(__file__).resolve().parent
 
 
 def read_env_file():
@@ -100,6 +103,7 @@ CONFIG = {
     'record_video_on_failure': False,
     'retrying': False,
     'video_recording_started': False,
+    'files_for_upload': os.path.join(CURRENT_DIR.parent.parent, 'files-for-upload'),
 }
 CONFIG.update(DEFAULT_PATH_CONFIG)
 

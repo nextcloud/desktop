@@ -23,7 +23,7 @@ Feature: Syncing files
     Scenario: Syncing all files and folders from the server
         Given user "Alice" has created folder "simple-folder" in the server
         And user "Alice" has created folder "large-folder" in the server
-        And user "Alice" has uploaded file on the server with content "test content" to "uploaded-lorem.txt"
+        And user "Alice" has uploaded file with content "test content" to "uploaded-lorem.txt" in the server
         And user "Alice" has set up a client with default settings
         Then the file "uploaded-lorem.txt" should exist on the file system
         And the file "uploaded-lorem.txt" should exist on the file system with the following content
@@ -35,14 +35,14 @@ Feature: Syncing files
 
     @issue-9733
     Scenario: Syncing a file from the server and creating a conflict
-        Given user "Alice" has uploaded file on the server with content "server content" to "/conflict.txt"
+        Given user "Alice" has uploaded file with content "server content" to "/conflict.txt" in the server
         And user "Alice" has set up a client with default settings
         And the user has paused the file sync
         And the user has changed the content of local file "conflict.txt" to:
             """
             client content
             """
-        And user "Alice" has uploaded file on the server with content "changed server content" to "/conflict.txt"
+        And user "Alice" has uploaded file with content "changed server content" to "/conflict.txt" in the server
         When the user resumes the file sync on the client
         And the user clicks on the activity tab
         And the user selects "Not Synced" tab in the activity
@@ -123,9 +123,9 @@ Feature: Syncing files
     @issue-9733
     Scenario: sort folders list by name and size
         Given user "Alice" has created folder "123Folder" in the server
-        And user "Alice" has uploaded file on the server with content "small" to "123Folder/lorem.txt"
+        And user "Alice" has uploaded file with content "small" to "123Folder/lorem.txt" in the server
         And user "Alice" has created folder "aFolder" in the server
-        And user "Alice" has uploaded file on the server with content "more contents" to "aFolder/lorem.txt"
+        And user "Alice" has uploaded file with content "more contents" to "aFolder/lorem.txt" in the server
         And user "Alice" has created folder "bFolder" in the server
         And the user has started the client
         And the user has entered the following account information:
@@ -189,7 +189,7 @@ Feature: Syncing files
 
     @skipOnLinux
     Scenario: Try to sync files having space at the end (Windows only)
-        Given user "Alice" has uploaded file on the server with content "lorem epsum" to "trailing-space.txt "
+        Given user "Alice" has uploaded file with content "lorem epsum" to "trailing-space.txt " in the server
         And user "Alice" has set up a client with default settings
         When user "Alice" creates a folder "folder with space at end " inside the sync folder
         And the user force syncs the files
@@ -306,8 +306,8 @@ Feature: Syncing files
     Scenario: Invalid system names are synced (Linux only)
         Given user "Alice" has created folder "CON" in the server
         And user "Alice" has created folder "test%" in the server
-        And user "Alice" has uploaded file on the server with content "server content" to "/PRN"
-        And user "Alice" has uploaded file on the server with content "server content" to "/foo%"
+        And user "Alice" has uploaded file with content "server content" to "/PRN" in the server
+        And user "Alice" has uploaded file with content "server content" to "/foo%" in the server
         And user "Alice" has set up a client with default settings
         Then the folder "CON" should exist on the file system
         And the folder "test%" should exist on the file system
@@ -322,8 +322,8 @@ Feature: Syncing files
     Scenario: Sync invalid system names (Windows only)
         Given user "Alice" has created folder "CON" in the server
         And user "Alice" has created folder "test%" in the server
-        And user "Alice" has uploaded file on the server with content "server content" to "/PRN"
-        And user "Alice" has uploaded file on the server with content "server content" to "/foo%"
+        And user "Alice" has uploaded file with content "server content" to "/PRN" in the server
+        And user "Alice" has uploaded file with content "server content" to "/foo%" in the server
         And user "Alice" has set up a client with default settings
         Then the folder "test%" should exist on the file system
         And the file "foo%" should exist on the file system
@@ -333,12 +333,12 @@ Feature: Syncing files
 
     Scenario: various types of files can be synced from server to client
         Given user "Alice" has created folder "simple-folder" in the server
-        And user "Alice" has uploaded file "testavatar.png" to "simple-folder/testavatar.png" on the server
-        And user "Alice" has uploaded file "testavatar.jpg" to "simple-folder/testavatar.jpg" on the server
+        And user "Alice" has uploaded file "testavatar.png" to "simple-folder/testavatar.png" in the server
+        And user "Alice" has uploaded file "testavatar.jpg" to "simple-folder/testavatar.jpg" in the server
         And user "Alice" has uploaded file "testavatar.jpeg" to "simple-folder/testavatar.jpeg" on the server
-        And user "Alice" has uploaded file "testimage.mp3" to "simple-folder/testimage.mp3" on the server
-        And user "Alice" has uploaded file "test_video.mp4" to "simple-folder/test_video.mp4" on the server
-        And user "Alice" has uploaded file "simple.pdf" to "simple-folder/simple.pdf" on the server
+        And user "Alice" has uploaded file "testimage.mp3" to "simple-folder/testimage.mp3" in the server
+        And user "Alice" has uploaded file "test_video.mp4" to "simple-folder/test_video.mp4" in the server
+        And user "Alice" has uploaded file "simple.pdf" to "simple-folder/simple.pdf" in the server
         And user "Alice" has set up a client with default settings
         Then the folder "simple-folder" should exist on the file system
         And the file "simple-folder/testavatar.png" should exist on the file system

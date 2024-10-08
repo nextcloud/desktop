@@ -3,7 +3,7 @@ import re
 import ctypes
 import shutil
 
-from helpers.ConfigHelper import is_windows
+from helpers.ConfigHelper import is_windows, get_config
 
 
 def build_conflicted_regex(filename):
@@ -122,3 +122,8 @@ def cleanup_created_paths():
             else:
                 os.unlink(prefix_path_namespace(path))
     CREATED_PATHS = []
+
+
+def get_file_for_upload(file_name):
+    base_upload_dir = get_config("files_for_upload")
+    return os.path.join(base_upload_dir, file_name)

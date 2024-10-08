@@ -4,6 +4,7 @@ import xml.etree.ElementTree as ET
 import helpers.api.http_helper as request
 from helpers.api.utils import url_join
 from helpers.ConfigHelper import get_config
+from helpers.FilesHelper import get_file_for_upload
 
 
 def get_webdav_url():
@@ -59,9 +60,17 @@ def create_folder(user, folder_name):
 def create_file(user, file_name, contents):
     url = get_resource_path(user, file_name)
     response = request.put(url, body=contents, user=user)
-    assert (
-        response.status_code == 201
-    ), f"Could not create file '{file_name}' for user {user}"
+    assert response.status_code in [
+        201,
+        204,
+    ], f"Could not create file '{file_name}' for user {user}"
+
+
+def upload_file(user, file_name, destination):
+    file_path = get_file_for_upload(file_name)
+    with open(file_path, 'rb') as file:
+        contents = file.read()
+    create_file(user, destination, contents)
 
 
 def delete_resource(user, resource):

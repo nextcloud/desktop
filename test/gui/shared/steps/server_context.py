@@ -253,3 +253,8 @@ def step(context, user):
         if key == 'share_type':
             value = sharing_helper.share_types[value]
         assert share.get(key) == value, 'Key value did not match'
+
+
+@Given('user "|any|" has uploaded file "|any|" to "|any|" in the server')
+def step(context, user, file_name, destination):
+    webdav.upload_file(user, file_name, destination)
