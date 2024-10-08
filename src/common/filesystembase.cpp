@@ -115,15 +115,21 @@ void FileSystem::setFileReadOnly(const QString &filename, bool readonly)
         if (!fileExists(filename)) {
             return;
         }
-        const auto permissions = filePermissionsWin(filename);
+        try {
+            const auto permissions = filePermissionsWin(filename);
 
-        std::filesystem::perms allWritePermissions = std::filesystem::perms::_All_write;
-        static std::filesystem::perms defaultWritePermissions = std::filesystem::perms::others_write;
+            std::filesystem::perms allWritePermissions = std::filesystem::perms::_All_write;
+            static std::filesystem::perms defaultWritePermissions = std::filesystem::perms::others_write;
 
-        std::filesystem::permissions(filename.toStdString(), allWritePermissions, std::filesystem::perm_options::remove);
+            std::filesystem::permissions(filename.toStdString(), allWritePermissions, std::filesystem::perm_options::remove);
 
-        if (!readonly) {
-            std::filesystem::permissions(filename.toStdString(), defaultWritePermissions, std::filesystem::perm_options::add);
+            if (!readonly) {
+                std::filesystem::permissions(filename.toStdString(), defaultWritePermissions, std::filesystem::perm_options::add);
+            }
+        }
+        catch (std::filesystem::filesystem_error e)
+        {
+            qCWarning(lcFileSystem()) << filename << (readonly ? "readonly" : "read write") << e.what();
         }
     }
 #endif
@@ -155,14 +161,21 @@ bool FileSystem::setFileReadOnlyWeak(const QString &filename, bool readonly)
 {
 #ifdef Q_OS_WIN
     if (isLnkFile(filename)) {
-        const auto permissions = filePermissionsWin(filename);
+        try {
+            const auto permissions = filePermissionsWin(filename);
 
-        if (!readonly && static_cast<bool>((permissions & std::filesystem::perms::owner_write))) {
-            return false; // already writable enough
+            if (!readonly && static_cast<bool>((permissions & std::filesystem::perms::owner_write))) {
+                return false; // already writable enough
+            }
+
+            setFileReadOnly(filename, readonly);
+            return true;
         }
-
-        setFileReadOnly(filename, readonly);
-        return true;
+        catch (std::filesystem::filesystem_error e)
+        {
+            qCWarning(lcFileSystem()) << filename << (readonly ? "readonly" : "read write") << e.what();
+        }
+        return false;
     }
 #endif
     QFile file(filename);
@@ -446,8 +459,15 @@ bool FileSystem::isWritable(const QString &filename, const QFileInfo &fileInfo)
 {
 #ifdef Q_OS_WIN
     if (isLnkFile(filename)) {
-        const auto permissions = filePermissionsWin(filename);
-        return static_cast<bool>((permissions & std::filesystem::perms::owner_write));
+        try {
+            const auto permissions = filePermissionsWin(filename);
+            return static_cast<bool>((permissions & std::filesystem::perms::owner_write));
+        }
+        catch (std::filesystem::filesystem_error e)
+        {
+            qCWarning(lcFileSystem()) << filename << e.what();
+        }
+        return false;
     }
 #endif
     bool re = fileInfo.isWritable();
@@ -465,8 +485,15 @@ bool FileSystem::isReadable(const QString &filename, const QFileInfo &fileInfo)
 {
 #ifdef Q_OS_WIN
     if (isLnkFile(filename)) {
-        const auto permissions = filePermissionsWin(filename);
-        return static_cast<bool>((permissions & std::filesystem::perms::owner_read));
+        try {
+            const auto permissions = filePermissionsWin(filename);
+            return static_cast<bool>((permissions & std::filesystem::perms::owner_read));
+        }
+        catch (std::filesystem::filesystem_error e)
+        {
+            qCWarning(lcFileSystem()) << filename << e.what();
+        }
+        return false;
     }
 #endif
     bool re = fileInfo.isReadable();
