@@ -1683,8 +1683,8 @@ Ez a művelet megszakítja a jelenleg futó szinkronizálást.</translation>
         <translation>Kiszolgálóhiba: A PROPFIND válasz nem XML formátumú!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="681"/>
-        <location filename="../src/libsync/discoveryphase.cpp" line="710"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="678"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="707"/>
         <source>Encrypted metadata setup error!</source>
         <translation type="unfinished"/>
     </message>
@@ -4274,7 +4274,7 @@ Ez egy új, kísérleti mód. Ha úgy dönt, hogy használja, akkor jelezze nek�
         <translation>Az érvénytelen módosítási idő miatt nem lehet szinkronizálni</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1097"/>
+        <location filename="../src/libsync/discovery.cpp" line="1081"/>
         <source>Could not upload file, because it is open in &quot;%1&quot;.</source>
         <translation type="unfinished"/>
     </message>

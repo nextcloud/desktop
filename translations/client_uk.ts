@@ -1687,8 +1687,8 @@ This action will abort any currently running synchronization.</source>
         <translation>Помилка серверу: PROPFIND reply is not XML formatted!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="681"/>
-        <location filename="../src/libsync/discoveryphase.cpp" line="710"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="678"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="707"/>
         <source>Encrypted metadata setup error!</source>
         <translation>Помилка з налаштуванням шифрування метаданих!</translation>
     </message>
@@ -4284,7 +4284,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Неможливо виконати синхронізацію через неправильний час модифікації</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1097"/>
+        <location filename="../src/libsync/discovery.cpp" line="1081"/>
         <source>Could not upload file, because it is open in &quot;%1&quot;.</source>
         <translation>Не вдалося завантажити файл, оскільки його відкрито у &quot;%1&quot;.</translation>
     </message>
