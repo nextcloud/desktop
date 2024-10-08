@@ -1205,10 +1205,16 @@ void PropagateDownloadFile::downloadFinished()
         // Preserve the existing file permissions.
         const auto existingFile = QFileInfo{filename};
 #ifdef Q_OS_WIN
-        const auto existingPermissions = FileSystem::filePermissionsWin(filename);
-        const auto tmpFilePermissions = FileSystem::filePermissionsWin(_tmpFile.fileName());
-        if (existingPermissions != tmpFilePermissions) {
-            FileSystem::setFilePermissionsWin(_tmpFile.fileName(), existingPermissions);
+        try {
+            const auto existingPermissions = FileSystem::filePermissionsWin(filename);
+            const auto tmpFilePermissions = FileSystem::filePermissionsWin(_tmpFile.fileName());
+            if (existingPermissions != tmpFilePermissions) {
+                FileSystem::setFilePermissionsWin(_tmpFile.fileName(), existingPermissions);
+            }
+        }
+        catch (std::filesystem::filesystem_error e)
+        {
+            qCWarning(lcPropagateDownload()) << _item->_instruction << _item->_file << e.what();
         }
 #else
         if (existingFile.permissions() != _tmpFile.permissions()) {
