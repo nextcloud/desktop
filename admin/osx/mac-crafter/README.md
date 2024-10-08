@@ -45,7 +45,7 @@ The resulting app bundle will be placed under the `product` folder in the mac-cr
 --disable-autoupdater
 ```
 
-3.4 Set the architecture you are building for:
+3.4 Manually set the architecture you are building for:
 
 ```
 --arch arm64
