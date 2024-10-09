@@ -9,22 +9,22 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/qml/AccountBar.qml" line="106"/>
+        <location filename="../src/gui/qml/AccountBar.qml" line="108"/>
         <source>Add Account</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/qml/AccountBar.qml" line="133"/>
+        <location filename="../src/gui/qml/AccountBar.qml" line="135"/>
         <source>Activity</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/qml/AccountBar.qml" line="147"/>
+        <location filename="../src/gui/qml/AccountBar.qml" line="149"/>
         <source>Settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/qml/AccountBar.qml" line="176"/>
+        <location filename="../src/gui/qml/AccountBar.qml" line="178"/>
         <source>Quit</source>
         <translation type="unfinished"></translation>
     </message>
