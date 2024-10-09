@@ -821,9 +821,11 @@ void AccountSettings::slotFolderWizardAccepted()
      */
     definition.ignoreHiddenFiles = folderMan->ignoreHiddenFiles();
 
+#ifdef Q_OS_WIN
     if (folderMan->navigationPaneHelper().showInExplorerNavigationPane()) {
         definition.navigationPaneClsid = QUuid::createUuid();
     }
+#endif
 
     const auto selectiveSyncBlackList = folderWizard->property("selectiveSyncBlackList").toStringList();
 
@@ -920,8 +922,10 @@ void AccountSettings::slotEnableVfsCurrentFolder()
             return;
         }
 
+#ifdef Q_OS_WIN
         // we might need to add or remove the panel entry as cfapi brings this feature out of the box
         FolderMan::instance()->navigationPaneHelper().scheduleUpdateCloudStorageRegistry();
+#endif
 
         // It is unsafe to switch on vfs while a sync is running - wait if necessary.
         const auto connection = std::make_shared<QMetaObject::Connection>();
@@ -997,8 +1001,10 @@ void AccountSettings::slotDisableVfsCurrentFolder()
             return;
         }
 
+#ifdef Q_OS_WIN
         // we might need to add or remove the panel entry as cfapi brings this feature out of the box
         FolderMan::instance()->navigationPaneHelper().scheduleUpdateCloudStorageRegistry();
+#endif
 
         // It is unsafe to switch off vfs while a sync is running - wait if necessary.
         const auto connection = std::make_shared<QMetaObject::Connection>();
