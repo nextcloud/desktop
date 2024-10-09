@@ -347,7 +347,7 @@ int main(int argc, char **argv)
     if (options.target_url.contains("/webdav", Qt::CaseInsensitive) || options.target_url.contains("/dav", Qt::CaseInsensitive)) {
         qWarning("Dav or webdav in server URL.");
         std::cerr << "Error! Please specify only the base URL of your host with username and password. Example:" << std::endl
-                  << "http(s)://username:password@cloud.example.com" << std::endl;
+                  << "https://username:password@cloud.example.com" << std::endl;
         return EXIT_FAILURE;
     }
 
