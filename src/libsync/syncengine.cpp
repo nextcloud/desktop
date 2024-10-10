@@ -648,7 +648,6 @@ void SyncEngine::startSync()
     _discoveryPhase->_syncOptions = _syncOptions;
     _discoveryPhase->_shouldDiscoverLocaly = [this](const QString &path) {
         const auto result = shouldDiscoverLocally(path);
-        qCDebug(lcEngine) << "shouldDiscoverLocaly" << path << (result ? "true" : "false");
         return result;
     };
     _discoveryPhase->setSelectiveSyncBlackList(selectiveSyncBlackList);
@@ -1213,6 +1212,13 @@ void SyncEngine::setLocalDiscoveryOptions(LocalDiscoveryStyle style, std::set<QS
     _localDiscoveryStyle = style;
     _localDiscoveryPaths = std::move(paths);
 
+    const auto allPaths = std::accumulate(_localDiscoveryPaths.begin(), _localDiscoveryPaths.end(), QString{}, [] (auto first, auto second) -> QString {
+                              first += ", " + second;
+                              return first;
+    });
+
+    qCInfo(lcEngine()) << "paths to discover locally" << allPaths;
+
     // Normalize to make sure that no path is a contained in another.
     // Note: for simplicity, this code consider anything less than '/' as a path separator, so for
     // example, this will remove "foo.bar" if "foo" is in the list. This will mean we might have
@@ -1242,8 +1248,12 @@ const SyncEngine::SingleItemDiscoveryOptions &SyncEngine::singleItemDiscoveryOpt
 
 bool SyncEngine::shouldDiscoverLocally(const QString &path) const
 {
-    if (_localDiscoveryStyle == LocalDiscoveryStyle::FilesystemOnly)
-        return true;
+    auto result = false;
+
+    if (_localDiscoveryStyle == LocalDiscoveryStyle::FilesystemOnly) {
+        result = true;
+        return result;
+    }
 
     // The intention is that if "A/X" is in _localDiscoveryPaths:
     // - parent folders like "/", "A" will be discovered (to make sure the discovery reaches the
@@ -1257,25 +1267,40 @@ bool SyncEngine::shouldDiscoverLocally(const QString &path) const
     if (it == _localDiscoveryPaths.end() || !it->startsWith(path)) {
         // Maybe a subfolder of something in the list?
         if (it != _localDiscoveryPaths.begin() && path.startsWith(*(--it))) {
-            return it->endsWith('/') || (path.size() > it->size() && path.at(it->size()) <= '/');
+            result = it->endsWith('/') || (path.size() > it->size() && path.at(it->size()) <= '/');
+            if (!result) {
+                qCInfo(lcEngine()) << path << "no local discovery needed";
+            }
+            return result;
         }
-        return false;
+        result = false;
+        qCInfo(lcEngine()) << path << "no local discovery needed";
+        return result;
     }
 
     // maybe an exact match or an empty path?
-    if (it->size() == path.size() || path.isEmpty())
+    if (it->size() == path.size() || path.isEmpty()) {
         return true;
+    }
 
     // Maybe a parent folder of something in the list?
     // check for a prefix + / match
     forever {
-        if (it->size() > path.size() && it->at(path.size()) == '/')
-            return true;
+        if (it->size() > path.size() && it->at(path.size()) == '/') {
+            result = true;
+            return result;
+        }
+
         ++it;
-        if (it == _localDiscoveryPaths.end() || !it->startsWith(path))
-            return false;
+        if (it == _localDiscoveryPaths.end() || !it->startsWith(path)) {
+            result = false;
+            qCInfo(lcEngine()) << path << "no local discovery needed";
+            return result;
+        }
     }
-    return false;
+
+    qCInfo(lcEngine()) << path << "no local discovery needed";
+    return result;
 }
 
 void SyncEngine::wipeVirtualFiles(const QString &localPath, SyncJournalDb &journal, Vfs &vfs)
