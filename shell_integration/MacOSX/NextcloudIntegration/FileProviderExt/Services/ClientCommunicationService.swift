@@ -48,11 +48,13 @@ class ClientCommunicationService: NSObject, NSFileProviderServiceSource, NSXPCLi
         completionHandler(accountUserId, nil)
     }
 
-    func configureAccount(withUser user: String, 
+    func configureAccount(withUser user: String,
+                          userId: String,
                           serverUrl: String,
                           password: String) {
         Logger.desktopClientConnection.info("Received configure account information over client communication service")
         self.fpExtension.setupDomainAccount(user: user,
+                                            userId: userId,
                                             serverUrl: serverUrl,
                                             password: password)
     }

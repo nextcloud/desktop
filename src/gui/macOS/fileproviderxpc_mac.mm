@@ -64,11 +64,13 @@ void FileProviderXPC::authenticateExtension(const QString &extensionAccountId) c
     const auto account = accountState->account();
     const auto credentials = account->credentials();
     NSString *const user = credentials->user().toNSString();
+    NSString *const userId = account->davUser().toNSString();
     NSString *const serverUrl = account->url().toString().toNSString();
     NSString *const password = credentials->password().toNSString();
 
     const auto clientCommService = (NSObject<ClientCommunicationProtocol> *)_clientCommServices.value(extensionAccountId);
     [clientCommService configureAccountWithUser:user
+                                         userId:userId
                                       serverUrl:serverUrl
                                        password:password];
 }
