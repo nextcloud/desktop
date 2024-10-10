@@ -63,7 +63,7 @@ void RemotePathChecker::workerThreadLoop(ofstream &logger)
                 if (!asked.count(filePath)) {
                     asked.insert(filePath);
                     if (!socket.SendMsg(wstring(L"RETRIEVE_FILE_STATUS:" + filePath + L'\n').data(), logger)) {
-                        MessageBox(nullptr, L"stopping thread - socket.SendMsg RETRIEVE_FILE_STATUS returned false", L"Debugging", MB_OK);
+                        //MessageBox(nullptr, L"stopping thread - socket.SendMsg RETRIEVE_FILE_STATUS returned false", L"Debugging", MB_OK);
                         _stop = true;
                         logger << "stopping thread - socket.SendMsg RETRIEVE_FILE_STATUS returned false" << std::endl;
                         break;
@@ -78,13 +78,13 @@ void RemotePathChecker::workerThreadLoop(ofstream &logger)
             if (!socket.ReadLine(&response, logger)) {
                 socket.Close();
                 logger << "closing socket, no more data to read" << std::endl;
-                MessageBox(nullptr, L"closing socket, no more data to read", L"Debugging", MB_OK);
+                //MessageBox(nullptr, L"closing socket, no more data to read", L"Debugging", MB_OK);
                 break;
             }
 
             if (response.empty()) {
                 logger << "closing socket, response is empty" << std::endl;
-                MessageBox(nullptr, L"closing socket,response is empty", L"Debugging", MB_OK);
+                //MessageBox(nullptr, L"closing socket,response is empty", L"Debugging", MB_OK);
                 break;
             }
 
