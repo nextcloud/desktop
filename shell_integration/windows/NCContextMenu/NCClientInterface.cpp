@@ -59,7 +59,7 @@ NCClientInterface::ContextMenuInfo NCClientInterface::FetchInfo(const std::wstri
     while ((!receivedReplyFromDesktopClient && sleptCount < noReplyTimeout) || (receivedReplyFromDesktopClient && sleptCount < replyTimeout)) {
         logger << "trying to read a line" << std::endl;
 
-        if (socket.ReadLine(&response)) {
+        if (socket.ReadLine(&response, logger)) {
             logger << "received: " << StringUtil::toUtf8(response.c_str()) << std::endl;
             if (StringUtil::begins_with(response, wstring(L"REGISTER_PATH:"))) {
                 logger << "received: REGISTER_PATH" << std::endl;
