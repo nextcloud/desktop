@@ -1119,7 +1119,7 @@ bool SyncEngine::handleMassDeletion()
     const auto filesDeletedThresholdExceeded = deletionCounter > ConfigFile().deleteFilesThreshold();
 
     if ((allFilesDeleted || filesDeletedThresholdExceeded) && displayDialog) {
-        qCInfo(lcEngine) << "All the files are going to be changed, asking the user";
+        qCWarning(lcEngine) << "Many files are going to be deleted, asking the user";
         int side = 0; // > 0 means more deleted on the server.  < 0 means more deleted on the client
         for (const auto &it : qAsConst(_syncItems)) {
             if (it->_instruction == CSYNC_INSTRUCTION_REMOVE) {
