@@ -12,22 +12,22 @@ QtObject {
     }
 
     // Colors
-    readonly property color ncBlue:      Theme.wizardHeaderBackgroundColor
+    readonly property color ncBlue: Theme.wizardHeaderBackgroundColor
     readonly property color ncHeaderTextColor: Theme.wizardHeaderTitleColor
     readonly property color ncTextColor: nativePalette.text
     readonly property color ncTextBrightColor: "white"
-    readonly property color ncSecondaryTextColor: "#808080"
-    readonly property color lightHover: Theme.darkMode ? Qt.lighter(backgroundColor, 2) : Qt.darker(backgroundColor, 1.05)
-    readonly property color darkerHover: Theme.darkMode ? Qt.lighter(backgroundColor, 2.35) : Qt.darker(backgroundColor, 1.25)
-    readonly property color menuBorder: Theme.darkMode ? Qt.lighter(backgroundColor, 2.5) : Qt.darker(backgroundColor, 1.5)
+    readonly property color ncSecondaryTextColor: "#A9A9A9"
+    readonly property color lightHover: Theme.darkMode ? Qt.lighter(backgroundColor, 1.15) : Qt.darker(backgroundColor, 1.05)
+    readonly property color darkerHover: Theme.darkMode ? Qt.lighter(backgroundColor, 1.25) : Qt.darker(backgroundColor, 1.15)
+    readonly property color menuBorder: Theme.darkMode ? Qt.lighter(backgroundColor, 2.0) : Qt.darker(backgroundColor, 1.5)
     readonly property color backgroundColor: nativePalette.window
     readonly property color buttonBackgroundColor: nativePalette.button
     readonly property color positiveColor: Qt.rgba(0.38, 0.74, 0.38, 1)
 
     readonly property color currentUserHeaderColor: UserModel.currentUser ? UserModel.currentUser.headerColor : ncBlue
     readonly property color currentUserHeaderTextColor: UserModel.currentUser ? UserModel.currentUser.headerTextColor : ncHeaderTextColor
-    readonly property color adjustedCurrentUserHeaderColor: Theme.darkMode ? Qt.lighter(currentUserHeaderColor, 2)
-                                                                           : Qt.darker(currentUserHeaderColor, 1.5)
+    readonly property color adjustedCurrentUserHeaderColor: Theme.darkMode ? Qt.lighter(currentUserHeaderColor, 1.15) : Qt.darker(currentUserHeaderColor, 1.25)
+
 
     // ErrorBox colors
     readonly property color errorBoxBackgroundColor: Qt.rgba(0.89, 0.18, 0.18, 1)
