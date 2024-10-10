@@ -1747,7 +1747,7 @@ QString FolderMan::trayTooltipStatusString(SyncResult::Status syncStatus, bool h
                 QString totalSizeStr = Utility::octetsToString(progress->totalSize());
                 if (progress->trustEta()) {
                     if (estimatedEta == 0) {
-                        folderMessage = tr("Syncing %1 (A few seconds left)").arg(totalSizeStr, Utility::durationToDescriptiveString1(estimatedEta));
+                        folderMessage = tr("Syncing %1 (A few seconds left)").arg(totalSizeStr);
                     } else {
                         folderMessage = tr("Syncing %1 (%2 left)").arg(totalSizeStr, Utility::durationToDescriptiveString1(estimatedEta));
                     }
