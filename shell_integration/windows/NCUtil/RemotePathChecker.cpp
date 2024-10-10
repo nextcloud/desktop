@@ -73,7 +73,16 @@ void RemotePathChecker::workerThreadLoop(ofstream &logger)
         }
 
         std::wstring response;
-        while (!_stop && socket.ReadLine(&response)) {
+        while (!_stop) {
+            if (!socket.ReadLine(&response)) {
+                socket.Close();
+                break;
+            }
+
+            if (response.empty()) {
+                break;
+            }
+
             if (StringUtil::begins_with(response, wstring(L"REGISTER_PATH:"))) {
                 wstring responsePath = response.substr(14); // length of REGISTER_PATH:
 
