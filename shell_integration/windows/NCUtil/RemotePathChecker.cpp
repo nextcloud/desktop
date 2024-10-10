@@ -62,7 +62,11 @@ void RemotePathChecker::workerThreadLoop(ofstream &logger)
                 lock.unlock();
                 if (!asked.count(filePath)) {
                     asked.insert(filePath);
-                    socket.SendMsg(wstring(L"RETRIEVE_FILE_STATUS:" + filePath + L'\n').data(), logger);
+                    if (!socket.SendMsg(wstring(L"RETRIEVE_FILE_STATUS:" + filePath + L'\n').data(), logger)) {
+                        _stop = true;
+                        logger << "stopping thread" << std::endl;
+                        break;
+                    }
                 }
                 lock.lock();
             }
