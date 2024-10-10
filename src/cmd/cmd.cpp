@@ -15,7 +15,6 @@
  */
 
 #include <iostream>
-#include <random>
 #include <qcoreapplication.h>
 #include <QStringList>
 #include <QUrl>
@@ -345,14 +344,17 @@ int main(int argc, char **argv)
         return EXIT_FAILURE;
     }
 
-    if (options.target_url.contains("/webdav", Qt::CaseInsensitive) || options.target_url.contains("/dav", Qt::CaseInsensitive)) {
+    const auto sanitisedTargetUrl = options.target_url.endsWith('/') || options.target_url.endsWith('\\') 
+        ? options.target_url.chopped(1) 
+        : options.target_url;
+    QUrl hostUrl = QUrl::fromUserInput(sanitisedTargetUrl);
+
+    if (const auto hostUrlPath = hostUrl.path(); hostUrlPath.contains("/webdav", Qt::CaseInsensitive) || hostUrlPath.contains("/dav", Qt::CaseInsensitive)) {
         qWarning("Dav or webdav in server URL.");
         std::cerr << "Error! Please specify only the base URL of your host with username and password. Example:" << std::endl
-                  << "http(s)://username:password@cloud.example.com" << std::endl;
+                  << "https://username:password@cloud.example.com" << std::endl;
         return EXIT_FAILURE;
     }
-
-    QUrl hostUrl = QUrl::fromUserInput((options.target_url.endsWith(QLatin1Char('/')) || options.target_url.endsWith(QLatin1Char('\\'))) ? options.target_url.chopped(1) : options.target_url);
 
     // Order of retrieval attempt (later attempts override earlier ones):
     // 1. From URL
