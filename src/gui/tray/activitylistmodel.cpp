@@ -656,14 +656,8 @@ void ActivityListModel::removeActivityFromActivityList(int row)
 
 void ActivityListModel::removeActivityFromActivityList(const Activity &activity)
 {
-    qCInfo(lcActivity) << "Activity/Notification/Error successfully dismissed: " << activity._subject;
-    qCInfo(lcActivity) << "Trying to remove Activity/Notification/Error from view... ";
-
     const auto index = _finalList.indexOf(activity);
     if (index != -1) {
-        qCInfo(lcActivity) << "Activity/Notification/Error successfully removed from the list.";
-        qCInfo(lcActivity) << "Updating Activity/Notification/Error view.";
-
         beginRemoveRows({}, index, index);
         _finalList.removeAt(index);
         endRemoveRows();
