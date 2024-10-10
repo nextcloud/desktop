@@ -1468,7 +1468,6 @@ void PropagateDirectory::slotSubJobsFinished(SyncFileItem::Status status)
         }
     }
     _state = Finished;
-    qCInfo(lcPropagator) << "PropagateDirectory::slotSubJobsFinished" << "emit finished" << status;
     emit finished(status);
 }
 
