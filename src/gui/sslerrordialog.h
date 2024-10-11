@@ -38,6 +38,13 @@ class SslDialogErrorHandler : public AbstractSslErrorHandler
 {
 public:
     bool handleErrors(QList<QSslError> errors, const QSslConfiguration &conf, QList<QSslCertificate> *certs, AccountPtr) override;
+    bool checkFailingCertsKnown(const QList<QSslError> &errors, AccountPtr account);
+    [[nodiscard]] QList<QSslCertificate> unknownCerts() const { return _unknownCerts; }
+
+private:
+    QList<QSslCertificate> _unknownCerts;
+    QStringList _errorStrings;
+    QStringList _additionalErrorStrings;
 };
 
 /**
@@ -50,8 +57,12 @@ class SslErrorDialog : public QDialog
 public:
     explicit SslErrorDialog(AccountPtr account, QWidget *parent = nullptr);
     ~SslErrorDialog() override;
-    bool checkFailingCertsKnown(const QList<QSslError> &errors);
-    bool trustConnection();
+    bool showFailingCertsKnown(
+        const QList<QSslError> &errors,
+        QList<QSslCertificate> unknownCerts,
+        QStringList errorStrings,
+        QStringList additionalErrorStrings
+    );    bool trustConnection();
     [[nodiscard]] QList<QSslCertificate> unknownCerts() const { return _unknownCerts; }
 
 private:
