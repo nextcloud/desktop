@@ -729,7 +729,7 @@ Wait for the new sync, then encrypt it.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="390"/>
         <source>Encryption failed</source>
-        <translation>إخفاق في التشفير</translation>
+        <translation>فشل في التشفير</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="390"/>
@@ -813,7 +813,7 @@ Wait for the new sync, then encrypt it.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="745"/>
         <source>Folder creation failed</source>
-        <translation>إخفاق في إنشاء المُجلّد</translation>
+        <translation>فشل في إنشاء المُجلّد</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="746"/>
@@ -1244,7 +1244,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/authenticationdialog.cpp" line="30"/>
         <source>Authentication Required</source>
-        <translation>المصادقة لازمة</translation>
+        <translation>المصادقة مطلوبة</translation>
     </message>
     <message>
         <location filename="../src/gui/authenticationdialog.cpp" line="32"/>
@@ -2820,12 +2820,12 @@ If you restore the files, they will be downloaded again from the server.</source
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="195"/>
         <source>No E-Tag received from server, check Proxy/Gateway</source>
-        <translation>لم يتم استلام أي وسم E-Tag من الخادوم. راجع الوكيل أو البوابة Proxy/Gateway.</translation>
+        <translation>لم يتم استلام أي وسم E-Tag من الخادم. راجع الوكيل أو البوابة Proxy/Gateway.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="202"/>
         <source>We received a different E-Tag for resuming. Retrying next time.</source>
-        <translation>لقد تلقينا سمة E-Tag مختلفة لغرض الاستئناف. أعد المحاولة في المرة القادمة.</translation>
+        <translation>لقد تلقينا وسم E-Tag مختلفة لغرض الاستئناف. أعد المحاولة في المرة القادمة.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="213"/>
@@ -3349,7 +3349,7 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="140"/>
         <source>Failed to fetch permissions with error %1</source>
-        <translation>إخفاق في جلب الأذونات نتج عنه الخطأ %1</translation>
+        <translation>فشل في جلب الأذونات نتج عنه الخطأ %1</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="157"/>
@@ -4087,7 +4087,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/passwordinputdialog.ui" line="23"/>
         <source>Password for share required</source>
-        <translation>كلمة المرور لازمة للمشاركة</translation>
+        <translation>كلمة المرور مطلوبة للمشاركة</translation>
     </message>
     <message>
         <location filename="../src/gui/passwordinputdialog.ui" line="35"/>
@@ -4719,7 +4719,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="514"/>
         <source>Missing ETag from server</source>
-        <translation>وسم الكيان &quot;ETag&quot; مفقود من الخادم</translation>
+        <translation>وسم &quot;ETag&quot; مفقود من الخادم</translation>
     </message>
 </context>
 <context>
@@ -5559,12 +5559,12 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/unifiedsearchresultslistmodel.cpp" line="405"/>
         <source>Failed to fetch providers.</source>
-        <translation>إخفاق في جلب المورّدين</translation>
+        <translation>فشل في تحميل المزودين</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/unifiedsearchresultslistmodel.cpp" line="416"/>
         <source>Failed to fetch search providers for &apos;%1&apos;. Error: %2</source>
-        <translation>إخفاق في جلب المورّدين لـ &apos;%1&apos;. خطأ: %2</translation>
+        <translation>فشل في تحميل المزودين لـ &apos;%1&apos;. خطأ: %2</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/unifiedsearchresultslistmodel.cpp" line="450"/>
@@ -6418,7 +6418,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/filedetails/ShareView.qml" line="91"/>
         <source>Password required for new share</source>
-        <translation>كلمة المرور لازمة للمشاركة الجديدة</translation>
+        <translation>كلمة المرور مطلوبة للمشاركة الجديدة</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareView.qml" line="118"/>
@@ -7094,7 +7094,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/libsync/abstractpropagateremotedeleteencrypted.cpp" line="183"/>
         <source>&quot;%1 Failed to unlock encrypted folder %2&quot;.</source>
-        <translation>&quot;%1 إخفاق في فك قفل المُجلّد المُشفّر %2&quot;.</translation>
+        <translation>&quot;%1 فشل في فك قفل المجلّد المشفّر %2&quot;.</translation>
     </message>
 </context>
 <context>
@@ -7107,7 +7107,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="118"/>
         <source>There was an error accessing the &quot;token&quot; endpoint: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</source>
-        <translation>حدث خطأ عند محاولة الوصول إلى token endpoint النقطة الحدّيّة للأَمَارَة : &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</translation>
+        <translation>حدث خطأ عند محاولة الوصول إلى token endpoint النقطة النهائية للتوكن: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="122"/>

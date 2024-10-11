@@ -221,12 +221,12 @@
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderEvictionDialog.qml" line="33"/>
         <source>Evict materialised files</source>
-        <translation type="unfinished"/>
+        <translation>Vyzdvihnout materializované soubory</translation>
     </message>
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderEvictionDialog.qml" line="49"/>
         <source>Materialised items</source>
-        <translation type="unfinished"/>
+        <translation>Materializované položky</translation>
     </message>
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderEvictionDialog.qml" line="57"/>
@@ -239,12 +239,12 @@
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderFastEnumerationSettings.qml" line="37"/>
         <source>Enable fast sync</source>
-        <translation type="unfinished"/>
+        <translation>Zapnout rychlou synchronizaci</translation>
     </message>
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderFastEnumerationSettings.qml" line="52"/>
         <source>Fast sync will only sync changes in files and folders within folders that have been explored. This can significantly increase responsiveness on initial configuration of virtual files. However, it will cause redundant downloads of files moved to an unexplored folder. </source>
-        <translation type="unfinished"/>
+        <translation>Rychlá synchronizace synchronizuje pouze změny v souborech a složkách v rámci složek, které byly prozkoumány. To může významně zlepšit odezvu při počátečním nastavení virtuálních souborů. Nicméně to způsobí nadbytečná stahování souborů přesunutých do neprozkoumané složky.</translation>
     </message>
 </context>
 <context>
@@ -280,12 +280,12 @@
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="153"/>
         <source>Signal file provider domain</source>
-        <translation type="unfinished"/>
+        <translation>Signalizovat doménu poskytovatele souborů</translation>
     </message>
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="158"/>
         <source>Create debug archive</source>
-        <translation type="unfinished"/>
+        <translation>Vytvořit archiv s informacemi pro ladění</translation>
     </message>
 </context>
 <context>
@@ -303,7 +303,7 @@
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderStorageInfo.qml" line="58"/>
         <source>Evict local copies...</source>
-        <translation type="unfinished"/>
+        <translation>Vyzdvihnout lokální kopie…</translation>
     </message>
 </context>
 <context>
@@ -311,7 +311,7 @@
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderSyncStatus.qml" line="57"/>
         <source>Syncing</source>
-        <translation type="unfinished"/>
+        <translation>Synchronizuje se</translation>
     </message>
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderSyncStatus.qml" line="57"/>
@@ -2281,14 +2281,18 @@ To znamená, že se může stávat, že synchronizační klient nebude místní 
         <source>Many files in the server folder &quot;%1&quot; were deleted.
 
 If you restore the files, they will be uploaded again to the server.</source>
-        <translation type="unfinished"/>
+        <translation>Mnohé soubory ve složce „%1“ na serveru byly smazány.
+
+Pokud je obnovíte, budou znovu nahrány na server.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1645"/>
         <source>Many files in the local folder &quot;%1&quot; were deleted.
 
 If you restore the files, they will be downloaded again from the server.</source>
-        <translation type="unfinished"/>
+        <translation>Mnohé soubory v místní složce „%1“ byly smazány.
+
+Pokud je obnovíte, budou znovu staženy ze serveru.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1646"/>
@@ -2298,7 +2302,7 @@ If you restore the files, they will be downloaded again from the server.</source
     <message>
         <location filename="../src/gui/folder.cpp" line="1650"/>
         <source>Proceed to remove files</source>
-        <translation type="unfinished"/>
+        <translation>Pokračovat v odebrání souborů</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1651"/>
@@ -3336,7 +3340,7 @@ Položky u kterých je umožněno mazání budou smazány, pokud brání tomu, a
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="117"/>
         <source>The following basenames are not allowed: %1</source>
-        <translation type="unfinished"/>
+        <translation>Následující základní názvy nejsou povolené: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="120"/>
@@ -5048,7 +5052,7 @@ Server odpověděl chybou: %2</translation>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1189"/>
         <source>Copy secure filedrop link</source>
-        <translation>Kopírovat zabezpečený odkaz filedrop</translation>
+        <translation>Zkopírovat zabezpečený odkaz filedrop</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1197"/>
