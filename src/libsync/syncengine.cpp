@@ -807,19 +807,7 @@ void SyncEngine::slotDiscoveryFinished()
     _progressInfo->_status = ProgressInfo::Reconcile;
     emit transmissionProgress(*_progressInfo);
 
-    const auto displayDialog = ConfigFile().promptDeleteFiles() && !_syncOptions.isCmd();
-    if (!_hasNoneFiles && _hasRemoveFile && displayDialog) {
-        qCInfo(lcEngine) << "All the files are going to be changed, asking the user";
-        int side = 0; // > 0 means more deleted on the server.  < 0 means more deleted on the client
-        for (const auto &it : _syncItems) {
-            if (it->_instruction == CSYNC_INSTRUCTION_REMOVE) {
-                side += it->_direction == SyncFileItem::Down ? 1 : -1;
-            }
-        }
-
-        promptUserBeforePropagation([this, side](auto &&callback){
-                                        emit aboutToRemoveAllFiles(side >= 0 ? SyncFileItem::Down : SyncFileItem::Up, callback);
-                                    });
+    if (handleMassDeletion()) {
         return;
     }
 
@@ -1109,6 +1097,47 @@ void SyncEngine::finishSync()
     _propagator->start(std::move(_syncItems));
 
     qCInfo(lcEngine) << "#### Post-Reconcile end #################################################### " << _stopWatch.addLapTime(QStringLiteral("Post-Reconcile Finished")) << "ms";
+}
+
+bool SyncEngine::handleMassDeletion()
+{
+    const auto displayDialog = ConfigFile().promptDeleteFiles() && !_syncOptions.isCmd();
+    const auto allFilesDeleted = !_hasNoneFiles && _hasRemoveFile;
+
+    auto deletionCounter = 0;
+    for (const auto &oneItem : qAsConst(_syncItems)) {
+        if (oneItem->_instruction == CSYNC_INSTRUCTION_REMOVE) {
+            if (oneItem->isDirectory()) {
+                const auto result = _journal->listFilesInPath(oneItem->_file.toUtf8(), [&deletionCounter] (const auto &oneRecord) {
+                    if (oneRecord.isFile()) {
+                        ++deletionCounter;
+                    }
+                });
+                if (!result) {
+                    qCDebug(lcEngine()) << "unable to find the number of files within a deleted folder:" << oneItem->_file;
+                }
+            } else {
+                ++deletionCounter;
+            }
+        }
+    }
+    const auto filesDeletedThresholdExceeded = deletionCounter > ConfigFile().deleteFilesThreshold();
+
+    if ((allFilesDeleted || filesDeletedThresholdExceeded) && displayDialog) {
+        qCInfo(lcEngine) << "All the files are going to be changed, asking the user";
+        int side = 0; // > 0 means more deleted on the server.  < 0 means more deleted on the client
+        for (const auto &it : qAsConst(_syncItems)) {
+            if (it->_instruction == CSYNC_INSTRUCTION_REMOVE) {
+                side += it->_direction == SyncFileItem::Down ? 1 : -1;
+            }
+        }
+
+        promptUserBeforePropagation([this, side](auto &&callback){
+            emit aboutToRemoveAllFiles(side >= 0 ? SyncFileItem::Down : SyncFileItem::Up, callback);
+        });
+        return true;
+    }
+    return false;
 }
 
 void SyncEngine::handleRemnantReadOnlyFolders()
