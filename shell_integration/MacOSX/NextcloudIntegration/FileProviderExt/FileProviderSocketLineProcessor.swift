@@ -46,13 +46,14 @@ class FileProviderSocketLineProcessor: NSObject, LineProcessor {
             delegate.removeAccountConfig()
         } else if command == "ACCOUNT_DETAILS" {
             guard let accountDetailsSubsequence = splitLine.last else { return }
-            let splitAccountDetails = accountDetailsSubsequence.split(separator: "~", maxSplits: 2)
+            let splitAccountDetails = accountDetailsSubsequence.split(separator: "~", maxSplits: 3)
 
             let user = String(splitAccountDetails[0])
-            let serverUrl = String(splitAccountDetails[1])
-            let password = String(splitAccountDetails[2])
+            let userId = String(splitAccountDetails[1])
+            let serverUrl = String(splitAccountDetails[2])
+            let password = String(splitAccountDetails[3])
 
-            delegate.setupDomainAccount(user: user, serverUrl: serverUrl, password: password)
+            delegate.setupDomainAccount(user: user, userId: userId, serverUrl: serverUrl, password: password)
         }
     }
 }

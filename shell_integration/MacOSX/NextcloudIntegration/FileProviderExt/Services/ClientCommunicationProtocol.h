@@ -21,6 +21,7 @@
 
 - (void)getExtensionAccountIdWithCompletionHandler:(void(^)(NSString *extensionAccountId, NSError *error))completionHandler;
 - (void)configureAccountWithUser:(NSString *)user
+                          userId:(NSString *)userId
                        serverUrl:(NSString *)serverUrl
                         password:(NSString *)password;
 - (void)removeAccountConfig;
