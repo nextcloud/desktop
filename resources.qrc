@@ -68,4 +68,7 @@
         <file>src/gui/macOS/ui/FileProviderStorageInfo.qml</file>
         <file>src/gui/macOS/ui/FileProviderFastEnumerationSettings.qml</file>
     </qresource>
+    <qresource prefix="/qss">
+        <file>theme/Style/style.qss</file>
+    </qresource>
 </RCC>
