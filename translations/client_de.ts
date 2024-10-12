@@ -4238,7 +4238,7 @@ Dies ist ein neuer, experimenteller Modus. Wenn Sie sich entscheiden, ihn zu ver
     <message>
         <location filename="../src/libsync/discovery.cpp" line="441"/>
         <source> Reason: the entire filename is forbidden.</source>
-        <translation>Grund: Der gesamte Dateiname ist verboten.</translation>
+        <translation> Grund: Der gesamte Dateiname ist verboten.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="444"/>

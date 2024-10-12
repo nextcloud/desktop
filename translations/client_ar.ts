@@ -4895,7 +4895,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="862"/>
         <source>Could not find local folder for %1</source>
-        <translation>تعذّر إيجاد المجلد المَحلّي لـ  %1</translation>
+        <translation>تعذّر إيجاد المجلد المحلي لـ  %1</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="993"/>
@@ -6428,7 +6428,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/filedetails/ShareView.qml" line="279"/>
         <source>Sharing is disabled</source>
-        <translation>المشاركة موقوفة</translation>
+        <translation>المشاركة معطلة</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareView.qml" line="287"/>
@@ -6438,7 +6438,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/filedetails/ShareView.qml" line="296"/>
         <source>Sharing is disabled.</source>
-        <translation>المشاركة موقوفة.</translation>
+        <translation>المشاركة معطلة.</translation>
     </message>
 </context>
 <context>
