@@ -2269,7 +2269,7 @@ This means that the synchronization client might not upload local changes immedi
 %1</source>
         <translation>Non foi posíbel rastrexar de xeito fiábel os cambios nos cartafoles sincronizados.
 
-Isto significa que o cliente de sincronización podería non enviar os cambios inmediatamente, e no canto diso, só examinará buscando cambios locais e enviaraos ocasionalmente (por omisión cada dúas horas)
+Isto significa que o cliente de sincronización podería non enviar os cambios inmediatamente, e en troques diso, só examinará buscando cambios locais e enviaraos ocasionalmente (por omisión cada dúas horas)
 
 %1</translation>
     </message>
@@ -2797,7 +2797,7 @@ Se restaura os ficheiros, descargaranse de novo do servidor.</translation>
         <location filename="../src/gui/folderwizard.cpp" line="572"/>
         <location filename="../src/gui/folderwizard.cpp" line="609"/>
         <source>Use virtual files instead of downloading content immediately %1</source>
-        <translation>Use ficheiros virtuais no canto de descargar contido inmediatamente %1</translation>
+        <translation>Use ficheiros virtuais en troques de descargar contido inmediatamente %1</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="572"/>
@@ -3766,7 +3766,7 @@ Teña en conta que o uso de calquera opción da liña de ordes anulara este axus
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="104"/>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="262"/>
         <source>Use &amp;virtual files instead of downloading content immediately %1</source>
-        <translation>Use ficheiros &amp;virtuais no canto de descargar contido inmediatamente %1</translation>
+        <translation>Use ficheiros &amp;virtuais en troques de descargar contido inmediatamente %1</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="104"/>

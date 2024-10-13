@@ -2303,7 +2303,7 @@ If you restore the files, they will be downloaded again from the server.</source
     <message>
         <location filename="../src/gui/foldercreationdialog.ui" line="14"/>
         <source>Create new folder</source>
-        <translation>أنشِيء مُجلّداً جديداً</translation>
+        <translation>إنشاء مجلد جديد</translation>
     </message>
     <message>
         <location filename="../src/gui/foldercreationdialog.ui" line="42"/>
@@ -2729,7 +2729,7 @@ If you restore the files, they will be downloaded again from the server.</source
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="223"/>
         <source>Create Remote Folder</source>
-        <translation>أنشِيء مُجلّداً قَصِيّاَ remote.</translation>
+        <translation>إنشاء  مجلد بعيد</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="224"/>
@@ -6326,7 +6326,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/filedetails/ShareDelegate.qml" line="244"/>
         <source>Share options</source>
-        <translation>إعدادات المُشارَكة</translation>
+        <translation>إعدادات المشاركة</translation>
     </message>
 </context>
 <context>
