@@ -654,7 +654,7 @@ Should the account be imported?</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="102"/>
         <source>Do not encrypt folder</source>
-        <translation>لا تٌشفّر المٌجلّد</translation>
+        <translation>لا تشفر المجلّد</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="105"/>
@@ -2682,7 +2682,7 @@ If you restore the files, they will be downloaded again from the server.</source
     <message>
         <location filename="../src/gui/folderwatcher.cpp" line="129"/>
         <source>The watcher did not receive a test notification.</source>
-        <translation>لم يتلقّ المراقب watcher إشعار الاختبار.</translation>
+        <translation>لم يتلقّ المراقب إشعار الاختبار.</translation>
     </message>
 </context>
 <context>
@@ -4955,7 +4955,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="555"/>
         <source>Folder encrypted successfully</source>
-        <translation>تمّ تشفير المجلد بنجاحٍ</translation>
+        <translation>تمّ تشفير المجلد بنجاح</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="556"/>
@@ -6498,7 +6498,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="55"/>
         <source>Open local folder</source>
-        <translation>إفتح مجلداً محليّاً</translation>
+        <translation>فتح المجلد المحلي</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="70"/>
@@ -6983,7 +6983,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/libsync/theme.cpp" line="98"/>
         <source>Sync was successful</source>
-        <translation>تمّت المزامنة بنجاحٍ</translation>
+        <translation>تمّت المزامنة بنجاح</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="99"/>
@@ -6993,7 +6993,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/libsync/theme.cpp" line="101"/>
         <source>Sync was successful but some files were ignored</source>
-        <translation>تمّت المزامنة بنجاحٍ مع تجاهل مزامنة بعض الملفات</translation>
+        <translation>تمّت المزامنة بنجاح مع تجاهل مزامنة بعض الملفات</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="102"/>
@@ -7056,12 +7056,12 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="86"/>
         <source>Always available locally</source>
-        <translation>دائماً متاحٌ محليّاً</translation>
+        <translation>دائماً متاح محليّاً</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="88"/>
         <source>Currently available locally</source>
-        <translation>متاحٌ الآن محليّاً</translation>
+        <translation>متاح الآن محليّاً</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="90"/>

@@ -412,89 +412,89 @@
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="238"/>
         <source>Nextcloud desktop main dialog</source>
-        <translation type="unfinished"/>
+        <translation>Diálogo principal de Nextcloud para escritorio</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="264"/>
         <source>Current account</source>
-        <translation type="unfinished"/>
+        <translation>Cuenta actual</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="270"/>
         <location filename="../src/gui/tray/MainWindow.qml" line="372"/>
         <source>Resume sync for all</source>
-        <translation type="unfinished"/>
+        <translation>Reanudar sincronización de todas</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="270"/>
         <location filename="../src/gui/tray/MainWindow.qml" line="372"/>
         <source>Pause sync for all</source>
-        <translation type="unfinished"/>
+        <translation>Pausar sincronización de todas</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="337"/>
         <source>Add account</source>
-        <translation type="unfinished"/>
+        <translation>Añadir cuenta</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="349"/>
         <source>Add new account</source>
-        <translation type="unfinished"/>
+        <translation>Añadir nueva cuenta</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="384"/>
         <source>Settings</source>
-        <translation type="unfinished"/>
+        <translation>Configuración</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="401"/>
         <source>Exit</source>
-        <translation type="unfinished"/>
+        <translation>Salir</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="435"/>
         <source>Current account avatar</source>
-        <translation type="unfinished"/>
+        <translation>Avatar de la cuenta actual</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="474"/>
         <source>Current account status is online</source>
-        <translation type="unfinished"/>
+        <translation>El estado actual de la cuenta es En línea</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="474"/>
         <source>Current account status is do not disturb</source>
-        <translation type="unfinished"/>
+        <translation>El estado actual de la cuenta es No molestar</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="543"/>
         <source>Account switcher and settings menu</source>
-        <translation type="unfinished"/>
+        <translation>Cambiador de cuentas y menú de configuración</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="564"/>
         <source>Open local or group folders</source>
-        <translation type="unfinished"/>
+        <translation>Abrir carpetas locales o de grupo</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="602"/>
         <source>More apps</source>
-        <translation type="unfinished"/>
+        <translation>Más apps</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="644"/>
         <source>Open %1 in browser</source>
-        <translation type="unfinished"/>
+        <translation>Abrir %1 en el navegador</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="770"/>
         <source>Unified search results list</source>
-        <translation type="unfinished"/>
+        <translation>Lista de resultados de la búsqueda unificada</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="833"/>
         <source>New activities</source>
-        <translation type="unfinished"/>
+        <translation>Nuevas actividades</translation>
     </message>
 </context>
 <context>
@@ -1864,34 +1864,34 @@ Además, esta acción interrumpirá cualquier sincronización en curso.</transla
     <message>
         <location filename="../src/gui/editlocallyverificationjob.cpp" line="92"/>
         <source>Invalid token received.</source>
-        <translation type="unfinished"/>
+        <translation>Recibido token inválido.</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyverificationjob.cpp" line="92"/>
         <location filename="../src/gui/editlocallyverificationjob.cpp" line="99"/>
         <location filename="../src/gui/editlocallyverificationjob.cpp" line="105"/>
         <source>Please try again.</source>
-        <translation type="unfinished"/>
+        <translation>Por favor, vuelve a intentarlo.</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyverificationjob.cpp" line="99"/>
         <source>Invalid file path was provided.</source>
-        <translation type="unfinished"/>
+        <translation>Se ha dado una ruta de archivos no válida.</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyverificationjob.cpp" line="105"/>
         <source>Could not find an account for local editing.</source>
-        <translation type="unfinished"/>
+        <translation>No se ha podido encontrar una cuenta para edición local.</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyverificationjob.cpp" line="129"/>
         <source>Could not start editing locally.</source>
-        <translation type="unfinished"/>
+        <translation>No se ha podido empezar a editar en local.</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyverificationjob.cpp" line="130"/>
         <source>An error occurred trying to verify the request to edit locally.</source>
-        <translation type="unfinished"/>
+        <translation>Ha ocurrido un error intentando verificar la petición para editar en local.</translation>
     </message>
 </context>
 <context>
@@ -2285,14 +2285,18 @@ Esto significa que el cliente de sincronización podría no subir inmediatamente
         <source>Many files in the server folder &quot;%1&quot; were deleted.
 
 If you restore the files, they will be uploaded again to the server.</source>
-        <translation type="unfinished"/>
+        <translation>Se han borrado muchos archivos en la carpeta «%1» del servidor.
+
+Si restauras los archivos, volverán a subirse al servidor.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1645"/>
         <source>Many files in the local folder &quot;%1&quot; were deleted.
 
 If you restore the files, they will be downloaded again from the server.</source>
-        <translation type="unfinished"/>
+        <translation>Se han borrado muchos archivos en la carpeta local «%1».
+
+Si restauras los archivos, se descargarán de nuevo del servidor.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1646"/>
@@ -2302,7 +2306,7 @@ If you restore the files, they will be downloaded again from the server.</source
     <message>
         <location filename="../src/gui/folder.cpp" line="1650"/>
         <source>Proceed to remove files</source>
-        <translation type="unfinished"/>
+        <translation>Proceder con el borrado de archivos</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1651"/>
@@ -2378,32 +2382,32 @@ If you restore the files, they will be downloaded again from the server.</source
     <message>
         <location filename="../src/gui/folderman.cpp" line="1738"/>
         <source>Syncing %1 of %2 (A few seconds left)</source>
-        <translation type="unfinished"/>
+        <translation>Sincronizando %1 de %2 (quedan unos segundos)</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1741"/>
         <source>Syncing %1 of %2 (%3 left)</source>
-        <translation type="unfinished"/>
+        <translation>Sicronizando %1 de %2 (quedan %3)</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1744"/>
         <source>Syncing %1 of %2</source>
-        <translation type="unfinished"/>
+        <translation>Sincronizando %1 de %2</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1750"/>
         <source>Syncing %1 (A few seconds left)</source>
-        <translation type="unfinished"/>
+        <translation>Sincronizando %1 (Quedan unos segundos)</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1752"/>
         <source>Syncing %1 (%2 left)</source>
-        <translation type="unfinished"/>
+        <translation>Sincronizando %1 (Quedan %2)</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1755"/>
         <source>Syncing %1</source>
-        <translation type="unfinished"/>
+        <translation>Sincronizando %1</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1611"/>
@@ -2550,12 +2554,12 @@ If you restore the files, they will be downloaded again from the server.</source
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="322"/>
         <source>Synchronizing virtual files in local folder</source>
-        <translation type="unfinished"/>
+        <translation>Sincronizando archivos virtuales en carpeta local</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="324"/>
         <source>Synchronizing files in local folder</source>
-        <translation type="unfinished"/>
+        <translation>Sincronizando archivos en carpeta local</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="993"/>
@@ -2575,7 +2579,7 @@ If you restore the files, they will be downloaded again from the server.</source
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1009"/>
         <source>Syncing local and remote changes</source>
-        <translation type="unfinished"/>
+        <translation>Sincronizando cambios locales y remotos</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1059"/>
@@ -2676,7 +2680,7 @@ If you restore the files, they will be downloaded again from the server.</source
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1184"/>
         <source>About to start syncing</source>
-        <translation type="unfinished"/>
+        <translation>A punto de empezar a sincronizar</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folderstatusmodel.cpp" line="1193"/>
@@ -3106,7 +3110,7 @@ Tenga en cuenta que esto sólo selecciona de qué grupo se tomarán las actualiz
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="402"/>
         <source>Changing update channel?</source>
-        <translation type="unfinished"/>
+        <translation>¿Cambiar canal de actualización?</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="403"/>
