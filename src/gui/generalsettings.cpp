@@ -394,18 +394,23 @@ void GeneralSettings::slotUpdateChannelChanged()
         return;
     }
 
-    const auto enterprise = configFile.validUpdateChannels().contains("enterprise") ? tr("- enterprise: contains stable versions for customers.\n",
-                                                                                         "description of enterprise update channel for enterprise customers")
-                                                                                    : "";
+    const auto nonEnterpriseOptions = tr("- beta: contains versions with new features that may not be tested thoroughly\n"
+                                    "- daily: contains versions created daily only for testing and development\n"
+                                    "\n"
+                                    "Downgrading versions is not possible immediately: changing from beta to stable means waiting for the new stable version.",
+                                    "list of available update channels to non enterprise users and downgrading warning");
+    const auto enterpriseOptions = tr("- enterprise: contains stable versions for customers.\n"
+                                    "\n"
+                                    "Downgrading versions is not possible immediately: changing from stable to enterprise means waiting for the new enterprise version.",
+                                    "list of available update channels to enterprise users and downgrading warning");
+
     auto msgBox = new QMessageBox(
         QMessageBox::Warning,
         tr("Changing update channel?"),
         tr("The channel determines which upgrades will be offered to install:\n"
-           "- stable: contains tested versions considered reliable\n"
-           "- beta: contains versions with new features that may not be tested thoroughly\n"
-           "- daily: contains versions created daily only for testing and development\n"
-           "%1\n"
-           "Downgrading versions is not possible immediately: changing from beta to stable means waiting for the new stable version.").arg(enterprise),
+           "- stable: contains tested versions considered reliable\n",
+           "starts list of available update channels, stable is always available")
+            .append(configFile.validUpdateChannels().contains("enterprise") ? enterpriseOptions : nonEnterpriseOptions),
         QMessageBox::NoButton,
         this);
     const auto acceptButton = msgBox->addButton(tr("Change update channel"), QMessageBox::AcceptRole);
