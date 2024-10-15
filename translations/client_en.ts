@@ -2781,7 +2781,7 @@ Note that using any logging command line options will override the settings.</so
     </message>
     <message>
         <location filename="../src/gui/selectivesyncwidget.cpp" line="110"/>
-        <location filename="../src/gui/selectivesyncwidget.cpp" line="218"/>
+        <location filename="../src/gui/selectivesyncwidget.cpp" line="246"/>
         <source>Currently there are no subfolders on the server.</source>
         <translation type="unfinished"></translation>
     </message>

@@ -4,12 +4,12 @@
     <message>
         <location filename="../src/gui/qml/AccountBar.qml" line="25"/>
         <source>Navigation bar</source>
-        <translation type="unfinished"/>
+        <translation>Navigatiebalk</translation>
     </message>
     <message>
         <location filename="../src/gui/qml/AccountBar.qml" line="101"/>
         <source>Add Account</source>
-        <translation type="unfinished"/>
+        <translation>Voeg account toe</translation>
     </message>
     <message>
         <location filename="../src/gui/qml/AccountBar.qml" line="128"/>
@@ -91,17 +91,17 @@
     <message>
         <location filename="../src/gui/qml/credentials/BasicAuthCredentials.qml" line="29"/>
         <source>Please enter your password to log in.</source>
-        <translation type="unfinished"/>
+        <translation>Geef het wachtwoord op voor het account.</translation>
     </message>
     <message>
         <location filename="../src/gui/qml/credentials/BasicAuthCredentials.qml" line="29"/>
         <source>Please enter %1 and password to log in.</source>
-        <translation type="unfinished"/>
+        <translation>Voer %1 en wachtwoord in om in te loggen.</translation>
     </message>
     <message>
         <location filename="../src/gui/qml/credentials/BasicAuthCredentials.qml" line="37"/>
         <source>Enter %1</source>
-        <translation type="unfinished"/>
+        <translation>Voer %1 in</translation>
     </message>
     <message>
         <location filename="../src/gui/qml/credentials/BasicAuthCredentials.qml" line="51"/>
@@ -231,19 +231,20 @@ Bestandssynchronisatie desktop software tool.</translation>
     <message>
         <location filename="../src/gui/qml/credentials/Credentials.qml" line="43"/>
         <source>Stay logged out</source>
-        <translation type="unfinished"/>
+        <translation>Uitgelogd blijven</translation>
     </message>
     <message>
         <location filename="../src/gui/qml/credentials/Credentials.qml" line="89"/>
         <source>Connecting %1 to:
 %2</source>
-        <translation type="unfinished"/>
+        <translation>%1 verbinden met:
+%2</translation>
     </message>
     <message>
         <location filename="../src/gui/qml/credentials/Credentials.qml" line="89"/>
         <source>Connecting to:
 %1</source>
-        <translation type="unfinished"/>
+        <translation>Verbinden met: %1</translation>
     </message>
 </context>
 <context>
@@ -319,12 +320,12 @@ Bestandssynchronisatie desktop software tool.</translation>
     <message>
         <location filename="../src/gui/qml/FolderError.qml" line="58"/>
         <source>Show less</source>
-        <translation type="unfinished"/>
+        <translation>Toon minder</translation>
     </message>
     <message>
         <location filename="../src/gui/qml/FolderError.qml" line="77"/>
         <source>Show more</source>
-        <translation type="unfinished"/>
+        <translation>Toon meer</translation>
     </message>
 </context>
 <context>
