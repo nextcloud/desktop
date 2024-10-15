@@ -17,7 +17,6 @@
 # manual for a complete reference of the available API.
 import shutil
 import os
-from urllib import request, error
 from datetime import datetime
 
 from helpers.StacktraceHelper import get_core_dumps, generate_stacktrace
@@ -33,7 +32,6 @@ from helpers.ConfigHelper import (
     is_windows,
     is_linux,
 )
-from helpers.api.utils import url_join
 from helpers.FilesHelper import prefix_path_namespace, cleanup_created_paths
 from helpers.ReportHelper import save_video_recording, take_screenshot
 
@@ -119,19 +117,6 @@ def hook(context):
     if not os.path.exists(tmp_dir):
         os.makedirs(tmp_dir)
 
-    req = request.Request(
-        url_join(get_config("middlewareUrl"), "init"),
-        headers={"Content-Type": "application/json"},
-        method="POST",
-    )
-    try:
-        with request.urlopen(req) as _:
-            pass
-    except error.HTTPError as e:
-        raise ConnectionRefusedError(
-            "Step execution through test middleware failed. Error: " + e.read().decode()
-        ) from e
-
     # sync connection folder display name
     set_config("syncConnectionName", "Personal" if get_config("ocis") else "ownCloud")
 
@@ -182,20 +167,6 @@ def hook(context):
             test.log("Exception occured:" + str(err))
     elif scenario_failed():
         test.log("No coredump found!")
-
-    # cleanup test server
-    req = request.Request(
-        url_join(get_config("middlewareUrl"), "cleanup"),
-        headers={"Content-Type": "application/json"},
-        method="POST",
-    )
-    try:
-        with request.urlopen(req) as _:
-            pass
-    except error.HTTPError as e:
-        raise ConnectionRefusedError(
-            "Step execution through test middleware failed. Error: " + e.read().decode()
-        ) from e
 
     global PREVIOUS_FAIL_RESULT_COUNT, PREVIOUS_ERROR_RESULT_COUNT
     PREVIOUS_FAIL_RESULT_COUNT = test.resultCount("fails")

@@ -335,7 +335,7 @@ Feature: Syncing files
         Given user "Alice" has created folder "simple-folder" in the server
         And user "Alice" has uploaded file "testavatar.png" to "simple-folder/testavatar.png" in the server
         And user "Alice" has uploaded file "testavatar.jpg" to "simple-folder/testavatar.jpg" in the server
-        And user "Alice" has uploaded file "testavatar.jpeg" to "simple-folder/testavatar.jpeg" on the server
+        And user "Alice" has uploaded file "testavatar.jpeg" to "simple-folder/testavatar.jpeg" in the server
         And user "Alice" has uploaded file "testimage.mp3" to "simple-folder/testimage.mp3" in the server
         And user "Alice" has uploaded file "test_video.mp4" to "simple-folder/test_video.mp4" in the server
         And user "Alice" has uploaded file "simple.pdf" to "simple-folder/simple.pdf" in the server

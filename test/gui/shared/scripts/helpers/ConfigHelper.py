@@ -69,7 +69,6 @@ CONFIG_ENV_MAP = {
     'maxSyncTimeout': 'MAX_SYNC_TIMEOUT',
     'minSyncTimeout': 'MIN_SYNC_TIMEOUT',
     'lowestSyncTimeout': 'LOWEST_SYNC_TIMEOUT',
-    'middlewareUrl': 'MIDDLEWARE_URL',
     'clientLogFile': 'CLIENT_LOG_FILE',
     'clientRootSyncPath': 'CLIENT_ROOT_SYNC_PATH',
     'tempFolderPath': 'TEMP_FOLDER_PATH',
@@ -93,7 +92,6 @@ CONFIG = {
     'maxSyncTimeout': 60,
     'minSyncTimeout': 5,
     'lowestSyncTimeout': 1,
-    'middlewareUrl': 'http://localhost:3000/',
     'clientLogFile': '-',
     'clientRootSyncPath': get_client_root_path(),
     'tempFolderPath': os.path.join(get_client_root_path(), 'temp'),
@@ -147,7 +145,7 @@ def init_config():
     for key, value in CONFIG.items():
         if key in ('maxSyncTimeout', 'minSyncTimeout'):
             CONFIG[key] = builtins.int(value)
-        elif key in ('localBackendUrl', 'middlewareUrl', 'secureLocalBackendUrl'):
+        elif key in ('localBackendUrl', 'secureLocalBackendUrl'):
             # make sure there is always one trailing slash
             CONFIG[key] = value.rstrip('/') + '/'
         elif key in (

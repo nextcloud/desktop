@@ -17,7 +17,6 @@ OC_CI_NODEJS = "owncloudci/nodejs:18"
 OC_CI_PHP = "owncloudci/php:%s"
 OC_CI_WAIT_FOR = "owncloudci/wait-for:latest"
 OC_OCIS = "owncloud/ocis-rolling:%s"
-OC_TEST_MIDDLEWARE = "owncloud/owncloud-test-middleware:1.8.7"
 OC_UBUNTU = "owncloud/ubuntu:20.04"
 
 # Eventually, we have to use image built on ubuntu
@@ -234,7 +233,7 @@ def gui_test_pipeline(ctx):
         steps = skipIfUnchanged(ctx, "gui-tests") + \
                 build_client(OC_CI_SQUISH, False)
 
-        services = testMiddlewareService(server)
+        services = []
 
         if server == "oc10":
             steps += installCore(params["version"]) + \
@@ -329,7 +328,6 @@ def gui_tests(squish_parameters = "", server_type = "oc10"):
             "LICENSEKEY": from_secret("SQUISH_LICENSEKEY"),
             "GUI_TEST_REPORT_DIR": dir["guiTestReport"],
             "CLIENT_REPO": dir["base"],
-            "MIDDLEWARE_URL": "http://testmiddleware:3000/",
             "BACKEND_HOST": "http://owncloud/" if server_type == "oc10" else "https://ocis:9200",
             "SECURE_BACKEND_HOST": "https://owncloud/" if server_type == "oc10" else "https://ocis:9200",
             "OCIS": "true" if server_type == "ocis" else "false",
@@ -573,30 +571,6 @@ def owncloudService():
             "cat /etc/apache2/templates/base >> /etc/apache2/templates/ssl",
             "/usr/local/bin/apachectl -e debug -D FOREGROUND",
         ],
-    }]
-
-def testMiddlewareService(server_type = "oc10"):
-    environment = {
-        "NODE_TLS_REJECT_UNAUTHORIZED": "0",
-        "MIDDLEWARE_HOST": "testmiddleware",
-        "REMOTE_UPLOAD_DIR": "/uploads",
-    }
-
-    if server_type == "ocis":
-        environment["BACKEND_HOST"] = "https://ocis:9200"
-        environment["TEST_WITH_GRAPH_API"] = "true"
-        environment["RUN_ON_OCIS"] = "true"
-    else:
-        environment["BACKEND_HOST"] = "http://owncloud"
-
-    return [{
-        "name": "testmiddleware",
-        "image": OC_TEST_MIDDLEWARE,
-        "environment": environment,
-        "volumes": [{
-            "name": "uploads",
-            "path": "/uploads",
-        }],
     }]
 
 def owncloudLog():

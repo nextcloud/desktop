@@ -1,54 +1,7 @@
-import urllib.request
-import json
-
-from helpers.ConfigHelper import get_config
-from helpers.api.utils import url_join
 from helpers.api import provisioning, sharing_helper, webdav_helper as webdav
 import helpers.api.oc10 as oc
 
 from pageObjects.Toolbar import Toolbar
-
-
-def execute_step_through_middleware(context, step_name):
-    body = {'step': step_name}
-    if hasattr(context, 'table'):
-        body['table'] = context.table
-
-    params = json.dumps(body).encode('utf8')
-
-    req = urllib.request.Request(
-        url_join(get_config('middlewareUrl'), 'execute'),
-        data=params,
-        headers={'Content-Type': 'application/json'},
-        method='POST',
-    )
-    try:
-        with urllib.request.urlopen(req) as _:
-            pass
-    except urllib.error.HTTPError as e:
-        raise RuntimeError(
-            'Step execution through test middleware failed. Error: ' + e.read().decode()
-        ) from e
-
-
-@Given(r'^(.*) on the server (.*)$', regexp=True)
-def step(context, step_part_1, step_part_2):
-    execute_step_through_middleware(context, f'Given {step_part_1} {step_part_2}')
-
-
-@Given(r'^(.*) on the server$', regexp=True)
-def step(context, step_part_1):
-    execute_step_through_middleware(context, f'Given {step_part_1}')
-
-
-@Then(r'^(.*) on the server (.*)$', regexp=True)
-def step(context, step_part_1, step_part_2):
-    execute_step_through_middleware(context, f'Then {step_part_1} {step_part_2}')
-
-
-@Then(r'^(.*) on the server$', regexp=True)
-def step(context, step_part_1):
-    execute_step_through_middleware(context, f'Then {step_part_1}')
 
 
 @Given('app "|any|" has been "|any|" in the server')
