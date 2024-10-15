@@ -44,8 +44,12 @@ Pane {
             text: qsTr("Stay logged out")
             onClicked: credentials.logOutRequested()
 
-            Keys.onTabPressed: {
-                widget.parentFocusWidget.focusNext();
+            Keys.onTabPressed: event => {
+                if (credentials.isRefresh) {
+                    event.accepted = false;
+                } else {
+                    widget.parentFocusWidget.focusNext();
+                }
             }
 
             Component.onCompleted: {

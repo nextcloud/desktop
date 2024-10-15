@@ -65,6 +65,8 @@ Credentials {
             if (!credentials.isRefresh) {
                 widget.parentFocusWidget.focusNext();
                 event.accepted = true;
+            } else {
+                event.accepted = false;
             }
         }
     }
