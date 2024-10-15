@@ -145,25 +145,27 @@ extension FileProviderExtension: NSFileProviderServicing, ChangeNotificationInte
                 )
             }
 
-            let newNcAccount =
-                Account(user: user, id: userId, serverUrl: serverUrl, password: password)
-            guard newNcAccount != ncAccount else { return }
-            ncAccount = newNcAccount
-            ncKit.setup(
-                account: newNcAccount.ncKitAccount,
-                user: newNcAccount.username,
-                userId: newNcAccount.id,
-                password: newNcAccount.password,
-                urlBase: newNcAccount.serverUrl,
-                userAgent: "Nextcloud-macOS/FileProviderExt",
-                nextcloudVersion: 25,
-                delegate: nil) // TODO: add delegate methods for self
-
-            changeObserver = RemoteChangeObserver(
-                remoteInterface: ncKit, changeNotificationInterface: self, domain: domain
-            )
-            ncKit.setup(delegate: changeObserver)
-            signalEnumeratorAfterAccountSetup()
+            Task { @MainActor in
+                let newNcAccount =
+                    Account(user: user, id: userId, serverUrl: serverUrl, password: password)
+                guard newNcAccount != ncAccount else { return }
+                ncAccount = newNcAccount
+                ncKit.setup(
+                    account: newNcAccount.ncKitAccount,
+                    user: newNcAccount.username,
+                    userId: newNcAccount.id,
+                    password: newNcAccount.password,
+                    urlBase: newNcAccount.serverUrl,
+                    userAgent: "Nextcloud-macOS/FileProviderExt",
+                    nextcloudVersion: 25,
+                    delegate: nil) // TODO: add delegate methods for self
+                
+                changeObserver = RemoteChangeObserver(
+                    remoteInterface: ncKit, changeNotificationInterface: self, domain: domain
+                )
+                ncKit.setup(delegate: changeObserver)
+                signalEnumeratorAfterAccountSetup()
+            }
         }
     }
 
