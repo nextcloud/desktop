@@ -59,7 +59,7 @@ Credentials {
 
             Button {
                 id: copyToClipboardButton
-                Layout.preferredWidth: openBrowserButton.width
+                Layout.preferredWidth: openBrowserButton.implicitWidth
                 visible: credentials.isValid
 
                 text: qsTr("Copy url")
@@ -82,7 +82,7 @@ Credentials {
             }
 
             Loader {
-                Layout.preferredWidth: openBrowserButton.width
+                Layout.preferredWidth: openBrowserButton.implicitWidth
                 Layout.alignment: Qt.AlignHCenter
                 sourceComponent: logOutButton
             }
