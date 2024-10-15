@@ -86,7 +86,19 @@ void FileProviderSocketController::parseReceivedLine(const QString &receivedLine
     const auto argument = receivedLine.mid(argPos + 1);
 
     if (command == QStringLiteral("FILE_PROVIDER_DOMAIN_IDENTIFIER_REQUEST_REPLY")) {
-        _accountState = FileProviderDomainManager::accountStateFromFileProviderDomainIdentifier(argument);
+        auto domainIdentifier = argument;
+        // Check if we have a port number who's colon has been replaced by a hyphen
+        // This is a workaround for the fact that we can't use colons as characters in domain names
+        // Let's check if, after the final hyphen, we have a number -- then it is a port number
+        const auto portColonPos = argument.lastIndexOf('-');
+        const auto possiblePort = argument.mid(portColonPos + 1);
+        auto validInt = false;
+        const auto port = possiblePort.toInt(&validInt);
+        if (validInt && port > 0) {
+            domainIdentifier.replace(portColonPos, 1, ':');
+        }
+
+        _accountState = FileProviderDomainManager::accountStateFromFileProviderDomainIdentifier(domainIdentifier);
         sendAccountDetails();
         reportSyncState("SYNC_PREPARING");
         return;
