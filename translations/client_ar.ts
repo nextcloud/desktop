@@ -4251,7 +4251,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/discovery.cpp" line="608"/>
         <source>file id</source>
-        <translation>مُعرّف الملف id</translation>
+        <translation>معرف الملف id</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="612"/>

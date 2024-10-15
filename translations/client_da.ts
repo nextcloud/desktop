@@ -2287,7 +2287,7 @@ If you restore the files, they will be downloaded again from the server.</source
     <message>
         <location filename="../src/gui/folder.cpp" line="1650"/>
         <source>Proceed to remove files</source>
-        <translation type="unfinished"/>
+        <translation>Fortsæt med at fjerne filer</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1651"/>
