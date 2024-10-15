@@ -149,6 +149,7 @@ private:
     [[nodiscard]] QByteArray encryptedMetadataLegacy();
 
     [[nodiscard]] bool verifyMetadataKey(const QByteArray &metadataKey) const;
+    [[nodiscard]] bool isMetadataSignatureValid();
 
     [[nodiscard]] QByteArray encryptDataWithPublicKey(const QByteArray &data, const QSslKey &key) const;
     [[nodiscard]] QByteArray decryptDataWithPrivateKey(const QByteArray &data) const;
@@ -191,15 +192,22 @@ private slots:
     void updateUsersEncryptedMetadataKey();
     void createNewMetadataKeyForEncryption();
 
+    void slotCertificateFetchedFromKeychain(const QSslCertificate &certificate);
+    void slotTrustedCertificatesFetched();
+    void decryptMetadata();
     void emitSetupComplete();
 
 signals:
+    void trustedCertificatesFetched();
+    void signatureVerified();
     void setupComplete();
+
 
 private:
     AccountPtr _account;
     QString _remoteFolderRoot;
     QByteArray _initialMetadata;
+    QJsonDocument _metaDataDoc;
 
     bool _isRootEncryptedFolder = false;
     // always contains the last generated metadata key (non-encrypted and non-base64)
@@ -221,6 +229,10 @@ private:
     // users that have access to current folder's "ciphertext", except "filedrop" part
     QHash<QString, UserWithFolderAccess> _folderUsers;
 
+    // certificates which have been explicitly trusted by the user,
+    QSet<QByteArray> _trustedCertificates;
+    qsizetype _certificatesFetched = 0;
+
     // must increment on each metadata upload
     quint64 _counter = 0;
 
@@ -240,6 +252,9 @@ private:
 
     // sets to "true" on successful parse
     bool _isMetadataValid = false;
+
+    // Waiting for certificates to be fetched from keychain for signature verification
+    bool _awaitingSignatureVerification = false;
 
     QScopedPointer<EncryptedFolderMetadataHandler> _encryptedFolderMetadataHandler;
 };

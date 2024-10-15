@@ -21,6 +21,7 @@
 #include <QJsonArray>
 #include <QJsonDocument>
 #include <QSslCertificate>
+#include <QMessageBox>
 
 namespace OCC
 {
@@ -111,10 +112,12 @@ void FolderMetadata::initMetadata()
     qCInfo(lcCseMetadata()) << "Setting up existing metadata";
     setupExistingMetadata(_initialMetadata);
 
-    if (metadataKeyForDecryption().isEmpty() || metadataKeyForEncryption().isEmpty()) {
-        qCWarning(lcCseMetadata()) << "Failed to setup FolderMetadata. Could not parse/create metadataKey!";
+    if (!_awaitingSignatureVerification) {
+        if (metadataKeyForDecryption().isEmpty() || metadataKeyForEncryption().isEmpty()) {
+            qCWarning(lcCseMetadata()) << "Failed to setup FolderMetadata. Could not parse/create metadataKey!";
+        }
+        emitSetupComplete();
     }
-    emitSetupComplete();
 }
 
 void FolderMetadata::setupExistingMetadata(const QByteArray &metadata)
@@ -135,6 +138,7 @@ void FolderMetadata::setupExistingMetadata(const QByteArray &metadata)
     qCDebug(lcCseMetadata()) << "Setting up latest metadata version" << _existingMetadataVersion;
     const auto metaDataStr = metadataStringFromOCsDocument(doc);
     const auto metaDataDoc = QJsonDocument::fromJson(metaDataStr.toLocal8Bit());
+    _metaDataDoc = metaDataDoc;
 
     const auto folderUsers = metaDataDoc[usersKey].toArray();
 
@@ -153,9 +157,13 @@ void FolderMetadata::setupExistingMetadata(const QByteArray &metadata)
         qCDebug(lcCseMetadata()) << "users: " << debugHelper.toJson(QJsonDocument::Compact);
     }
 
+    connect(_account->e2e(), &ClientSideEncryption::certificateFetchedFromKeychain, this, &FolderMetadata::slotCertificateFetchedFromKeychain);
+    connect(this, &FolderMetadata::trustedCertificatesFetched, this, &FolderMetadata::slotTrustedCertificatesFetched);
     for (auto it = folderUsers.constBegin(); it != folderUsers.constEnd(); ++it) {
         const auto folderUserObject = it->toObject();
         const auto userId = folderUserObject.value(usersUserIdKey).toString();
+        _account->e2e()->fetchCertificateFromKeyChain(_account, userId);
+
         UserWithFolderAccess folderUser;
         folderUser.userId = userId;
         /* TODO: does it make sense to store each certificatePem that has been successfuly verified? Is this secure?
@@ -164,30 +172,32 @@ void FolderMetadata::setupExistingMetadata(const QByteArray &metadata)
         folderUser.encryptedMetadataKey = QByteArray::fromBase64(folderUserObject.value(usersEncryptedMetadataKey).toString().toUtf8());
         _folderUsers[userId] = folderUser;
     }
+    _awaitingSignatureVerification = true;
+}
 
-    if (_isRootEncryptedFolder && !_initialSignature.isEmpty()) {
-        const auto metadataForSignature = prepareMetadataForSignature(metaDataDoc);
-
-        QVector<QByteArray> certificatePems;
-        certificatePems.reserve(_folderUsers.size());
-        for (const auto &folderUser : std::as_const(_folderUsers)) {
-            certificatePems.push_back(folderUser.certificatePem);
-        }
-
-        if (!_account->e2e()->verifySignatureCryptographicMessageSyntax(QByteArray::fromBase64(_initialSignature), metadataForSignature.toBase64(), certificatePems)) {
-            qCDebug(lcCseMetadata()) << "Could not parse encrypred folder metadata. Failed to verify signature!";
-            _account->reportClientStatus(OCC::ClientStatusReportingStatus::E2EeError_GeneralError);
-            return;
-        }
-    }
-
+bool FolderMetadata::isMetadataSignatureValid()
+{
     if (_initialSignature.isEmpty()) {
         qCDebug(lcCseMetadata()) << "Signature is empty";
         _account->reportClientStatus(OCC::ClientStatusReportingStatus::E2EeError_GeneralError);
-        return;
+        return false;
     }
 
-    if (!parseFileDropPart(metaDataDoc)) {
+    if (_isRootEncryptedFolder && !_initialSignature.isEmpty()) {
+        const auto metadataForSignature = prepareMetadataForSignature(_metaDataDoc);
+
+        if (!_account->e2e()->verifySignatureCryptographicMessageSyntax(QByteArray::fromBase64(_initialSignature), metadataForSignature.toBase64(), _trustedCertificates.values())) {
+            qCDebug(lcCseMetadata()) << "Could not parse encrypted folder metadata. Failed to verify signature!";
+            _account->reportClientStatus(OCC::ClientStatusReportingStatus::E2EeError_GeneralError);
+            return false;
+        }
+    }
+    return true;
+}
+
+void FolderMetadata::decryptMetadata()
+{
+    if (!parseFileDropPart(_metaDataDoc)) {
         qCDebug(lcCseMetadata()) << "Could not parse filedrop part";
         return;
     }
@@ -204,7 +214,7 @@ void FolderMetadata::setupExistingMetadata(const QByteArray &metadata)
         return;
     }
     
-    const auto metadataObj = metaDataDoc.object()[metadataJsonKey].toObject();
+    const auto metadataObj = _metaDataDoc.object()[metadataJsonKey].toObject();
     _metadataNonce = QByteArray::fromBase64(metadataObj[nonceKey].toString().toLocal8Bit());
     const auto cipherTextEncrypted = metadataObj[cipherTextKey].toString().toLocal8Bit();
 
@@ -268,6 +278,50 @@ void FolderMetadata::setupExistingMetadata(const QByteArray &metadata)
     }
     _isMetadataValid = true;
 }
+
+void FolderMetadata::slotCertificateFetchedFromKeychain(const QSslCertificate &certificate) {
+    if (!certificate.isNull()) {
+        _trustedCertificates.insert(certificate.toPem());
+    }
+    _certificatesFetched++;
+
+    if (_certificatesFetched == _folderUsers.size()) {
+        emit trustedCertificatesFetched();
+    }
+}
+
+
+void FolderMetadata::slotTrustedCertificatesFetched()
+{
+    disconnect(_account->e2e(), &ClientSideEncryption::certificateFetchedFromKeychain, this, &FolderMetadata::slotCertificateFetchedFromKeychain);
+
+    for (const auto &folderUser : std::as_const(_folderUsers)) {
+        if (!_trustedCertificates.contains(folderUser.certificatePem)) {
+            auto newCertificate = QSslCertificate(folderUser.certificatePem, QSsl::Pem);
+
+            auto msgBox = QMessageBox();
+            msgBox.setText(tr("<p>A new or unrecognised certificate was found in the folder's metadata. Do you want to trust this certificate?</p>"
+                              "<p><pre>%1</pre><p>").arg(newCertificate.toText()));
+            msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
+            auto choice = msgBox.exec();
+            if (choice == QMessageBox::Yes) {
+                _account->e2e()->writeCertificate(_account, folderUser.userId, newCertificate);
+                _trustedCertificates.insert(folderUser.certificatePem);
+            }
+        }
+    }
+
+    if (isMetadataSignatureValid()){
+        decryptMetadata();
+    }
+
+    if (metadataKeyForDecryption().isEmpty() || metadataKeyForEncryption().isEmpty()) {
+        qCWarning(lcCseMetadata()) << "Failed to setup FolderMetadata. Could not parse/create metadataKey!";
+    }
+    emitSetupComplete();
+}
+
+
 
 void FolderMetadata::setupExistingMetadataLegacy(const QByteArray &metadata)
 {
