@@ -77,7 +77,7 @@ Credentials {
     Button {
         id: loginButton
         Layout.alignment: Qt.AlignHCenter
-        Layout.preferredWidth: passwordField.width
+        Layout.preferredWidth: userNameField.implicitWidth
         // don't show this button in the wizard
         visible: credentials.isRefresh
         text: qsTr("Log in")
@@ -87,7 +87,7 @@ Credentials {
 
     Loader {
         Layout.alignment: Qt.AlignHCenter
-        Layout.preferredWidth: passwordField.width
+        Layout.preferredWidth: passwordField.implicitWidth
         sourceComponent: logOutButton
     }
 
