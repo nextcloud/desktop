@@ -173,6 +173,7 @@ void FileInfo::setContents(const QString &relativePath, char contentChar)
     FileInfo *file = findInvalidatingEtags(relativePath);
     Q_ASSERT(file);
     file->contentChar = contentChar;
+    file->lastModified = QDateTime::currentDateTimeUtc();
 }
 
 void FileInfo::appendByte(const QString &relativePath)
