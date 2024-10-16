@@ -23,6 +23,7 @@
 namespace OCC {
 class IgnoreListEditor;
 class SyncLogDialog;
+class AccountState;
 
 namespace Ui {
     class GeneralSettings;
@@ -43,6 +44,9 @@ public:
 
 public slots:
     void slotStyleChanged();
+#if defined(BUILD_UPDATER)
+    void loadUpdateChannelsList();
+#endif
 
 private slots:
     void saveMiscSettings();
@@ -67,6 +71,7 @@ private:
     Ui::GeneralSettings *_ui;
     QPointer<IgnoreListEditor> _ignoreEditor;
     bool _currentlyLoading = false;
+    QStringList _currentUpdateChannelList;
 };
 
 

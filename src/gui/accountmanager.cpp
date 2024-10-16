@@ -665,6 +665,7 @@ void AccountManager::addAccountState(AccountState *const accountState)
     Q_ASSERT(accountState->account());
 
     QObject::connect(accountState->account().data(), &Account::wantsAccountSaved, this, &AccountManager::saveAccount);
+    QObject::connect(accountState->account().data(), &Account::capabilitiesChanged, this, &AccountManager::capabilitiesChanged);
 
     AccountStatePtr ptr(accountState);
     _accounts << ptr;
