@@ -1319,80 +1319,18 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
     }
 
     auto postProcessLocalNew = [item, localEntry, path, this]() {
-        // TODO: We may want to execute the same logic for non-VFS mode, as, moving/renaming the same folder by 2 or more clients at the same time is not possible in Web UI.
-        // Keeping it like this (for VFS files and folders only) just to fix a user issue.
-
-        if (!(_discoveryData && _discoveryData->_syncOptions._vfs && _discoveryData->_syncOptions._vfs->mode() != Vfs::Off)) {
-            // for VFS files and folders only
-            return;
-        }
-
-        if (!localEntry.isVirtualFile && !localEntry.isDirectory) {
-            return;
-        }
-
-        if (localEntry.isDirectory && _discoveryData->_syncOptions._vfs->mode() != Vfs::WindowsCfApi) {
-            // for VFS folders on Windows only
-            return;
-        }
-
-        Q_ASSERT(item->_instruction == CSYNC_INSTRUCTION_NEW);
-        if (item->_instruction != CSYNC_INSTRUCTION_NEW) {
-            qCWarning(lcDisco) << "Trying to wipe a virtual item" << path._local << " with item->_instruction" << item->_instruction;
-            return;
-        }
-
-        // must be a dehydrated placeholder
-        const bool isFilePlaceHolder = !localEntry.isDirectory && _discoveryData->_syncOptions._vfs->isDehydratedPlaceholder(_discoveryData->_localDir + path._local);
-
-        // either correct availability, or a result with error if the folder is new or otherwise has no availability set yet
-        const auto folderPlaceHolderAvailability = localEntry.isDirectory ? _discoveryData->_syncOptions._vfs->availability(path._local, Vfs::AvailabilityRecursivity::RecursiveAvailability) : Vfs::AvailabilityResult(Vfs::AvailabilityError::NoSuchItem);
-
-        const auto folderPinState = localEntry.isDirectory ? _discoveryData->_syncOptions._vfs->pinState(path._local) : Optional<PinState>(PinState::Unspecified);
-
-        if (!isFilePlaceHolder && !folderPlaceHolderAvailability.isValid() && !folderPinState.isValid()) {
-            // not a file placeholder and not a synced folder placeholder (new local folder)
-            return;
-        }
-
-        const auto isFolderPinStateOnlineOnly = (folderPinState.isValid() && *folderPinState == PinState::OnlineOnly);
-
-        const auto isfolderPlaceHolderAvailabilityOnlineOnly = (folderPlaceHolderAvailability.isValid() && *folderPlaceHolderAvailability == VfsItemAvailability::OnlineOnly);
-
-        // a folder is considered online-only if: no files are hydrated, or, if it's an empty folder
-        const auto isOnlineOnlyFolder = isfolderPlaceHolderAvailabilityOnlineOnly || (!folderPlaceHolderAvailability && isFolderPinStateOnlineOnly);
-
-        if (!isFilePlaceHolder && !isOnlineOnlyFolder) {
-            if (localEntry.isDirectory && folderPlaceHolderAvailability.isValid() && !isOnlineOnlyFolder) {
-                // a VFS folder but is not online-only (has some files hydrated)
-                qCInfo(lcDisco) << "Virtual directory without db entry for" << path._local << "but it contains hydrated file(s), so let's keep it and reupload.";
-                return;
+        if (localEntry.isVirtualFile) {
+            const bool isPlaceHolder = _discoveryData->_syncOptions._vfs->isDehydratedPlaceholder(_discoveryData->_localDir + path._local);
+            if (isPlaceHolder) {
+                qCWarning(lcDisco) << "Wiping virtual file without db entry for" << path._local;
+                item->_instruction = CSYNC_INSTRUCTION_REMOVE;
+                item->_direction = SyncFileItem::Down;
+            } else {
+                qCWarning(lcDisco) << "Virtual file without db entry for" << path._local
+                                   << "but looks odd, keeping";
+                item->_instruction = CSYNC_INSTRUCTION_IGNORE;
             }
-            qCWarning(lcDisco) << "Virtual file without db entry for" << path._local
-                               << "but looks odd, keeping";
-            item->_instruction = CSYNC_INSTRUCTION_IGNORE;
-
-            return;
         }
-
-        if (isOnlineOnlyFolder) {
-            // if we're wiping a folder, we will only get this function called once and will wipe a folder along with it's files and also display one error in GUI
-            qCInfo(lcDisco) << "Wiping virtual folder without db entry for" << path._local;
-            if (isfolderPlaceHolderAvailabilityOnlineOnly && folderPlaceHolderAvailability.isValid()) {
-                qCInfo(lcDisco) << "*folderPlaceHolderAvailability:" << *folderPlaceHolderAvailability;
-            }
-            if (isFolderPinStateOnlineOnly && folderPinState.isValid()) {
-                qCInfo(lcDisco) << "*folderPinState:" << *folderPinState;
-            }
-            emit _discoveryData->addErrorToGui(SyncFileItem::SoftError, tr("Conflict when uploading a folder. It's going to get cleared!"), path._local, ErrorCategory::GenericError);
-        } else {
-            qCInfo(lcDisco) << "Wiping virtual file without db entry for" << path._local;
-            emit _discoveryData->addErrorToGui(SyncFileItem::SoftError, tr("Conflict when uploading a file. It's going to get removed!"), path._local, ErrorCategory::GenericError);
-        }
-        item->_instruction = CSYNC_INSTRUCTION_REMOVE;
-        item->_direction = SyncFileItem::Down;
-        // this flag needs to be unset, otherwise a folder would get marked as new in the processSubJobs
-        _childModified = false;
     };
 
     // Check if it is a move
