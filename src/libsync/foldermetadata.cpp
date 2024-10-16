@@ -297,18 +297,19 @@ void FolderMetadata::slotTrustedCertificatesFetched()
     disconnect(_account->e2e(), &ClientSideEncryption::certificateFetchedFromKeychain, this, &FolderMetadata::slotCertificateFetchedFromKeychain);
 
     for (const auto &folderUser : std::as_const(_folderUsers)) {
-        if (!_trustedCertificates.contains(folderUser.certificatePem)) {
-            auto newCertificate = QSslCertificate(folderUser.certificatePem, QSsl::Pem);
+        if (_trustedCertificates.contains(folderUser.certificatePem)) {
+            continue;
+        }
 
-            auto msgBox = QMessageBox();
-            msgBox.setText(tr("<p>A new or unrecognised certificate was found in the folder's metadata. Do you want to trust this certificate?</p>"
-                              "<p><pre>%1</pre><p>", "user warning, the number place marker is replaced by the certificate content").arg(newCertificate.toText()));
-            msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
-            auto choice = msgBox.exec();
-            if (choice == QMessageBox::Yes) {
-                _account->e2e()->writeCertificate(_account, folderUser.userId, newCertificate);
-                _trustedCertificates.insert(folderUser.certificatePem);
-            }
+        const auto newCertificate = QSslCertificate(folderUser.certificatePem, QSsl::Pem);
+        const auto message = tr("<p>A new or unrecognised certificate was found in the folder's metadata. Do you want to trust this certificate?</p>"
+                                "<p><pre>%1</pre><p>", "user warning, the number place marker is replaced by the certificate content")
+                                .arg(newCertificate.toText());
+        const auto messageBox = new QMessageBox(QMessageBox::Question, tr("Confirm certificate", "user warning about certificate"), message, QMessageBox::Yes | QMessageBox::No);
+        const auto messageBoxResult = messageBox->exec();
+        if (messageBoxResult == QMessageBox::Yes) {
+            _account->e2e()->writeCertificate(_account, folderUser.userId, newCertificate);
+            _trustedCertificates.insert(folderUser.certificatePem);
         }
     }
 
@@ -319,6 +320,7 @@ void FolderMetadata::slotTrustedCertificatesFetched()
     if (metadataKeyForDecryption().isEmpty() || metadataKeyForEncryption().isEmpty()) {
         qCWarning(lcCseMetadata()) << "Failed to setup FolderMetadata. Could not parse/create metadataKey!";
     }
+
     emitSetupComplete();
 }
 
