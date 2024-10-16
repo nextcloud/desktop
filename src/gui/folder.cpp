@@ -1630,14 +1630,16 @@ bool Folder::virtualFilesEnabled() const
 
 void Folder::slotAboutToRemoveAllFiles(SyncFileItem::Direction dir, std::function<void(bool)> callback)
 {
-    const QString msg = dir == SyncFileItem::Down ? tr("Many files in the server folder \"%1\" were deleted.\n\nIf you restore the files, they will be uploaded again to the server.")
-                                                  : tr("Many files in the local folder \"%1\" were deleted.\n\nIf you restore the files, they will be downloaded again from the server.");
+    const auto isDownDirection = (dir == SyncFileItem::Down);
+    const QString msg = isDownDirection ? tr("A large number of files in the server have been deleted.\nPlease confirm if you'd like to proceed with these deletions.\nAlternatively, you can restore all deleted files by uploading from '%1' folder to the server.")
+                                        : tr("A large number of files in your local '%1' folder have been deleted.\nPlease confirm if you'd like to proceed with these deletions.\nAlternatively, you can restore all deleted files by downloading them from the server.");
     auto msgBox = new QMessageBox(QMessageBox::Warning, tr("Remove all files?"),
                                   msg.arg(shortGuiLocalPath()), QMessageBox::NoButton);
     msgBox->setAttribute(Qt::WA_DeleteOnClose);
     msgBox->setWindowFlags(msgBox->windowFlags() | Qt::WindowStaysOnTopHint);
-    msgBox->addButton(tr("Proceed to remove files"), QMessageBox::DestructiveRole);
-    QPushButton *keepBtn = msgBox->addButton(tr("Restore files"), QMessageBox::AcceptRole);
+    msgBox->addButton(tr("Proceed with Deletion"), QMessageBox::DestructiveRole);
+    QPushButton *keepBtn = msgBox->addButton(isDownDirection ? tr("Restore Files to Server") : tr("Restore Files from Server"),
+                                             QMessageBox::AcceptRole);
     bool oldPaused = syncPaused();
     setSyncPaused(true);
     connect(msgBox, &QMessageBox::finished, this, [msgBox, keepBtn, callback, oldPaused, this] {
