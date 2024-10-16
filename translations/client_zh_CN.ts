@@ -3094,29 +3094,33 @@ Note that this selects only what pool upgrades are taken from, and that there ar
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="397"/>
-        <source>- enterprise: contains stable versions for customers.
-</source>
-        <comment>description of enterprise update channel for enterprise customers</comment>
-        <translation>- 企业版：包含供客户使用的稳定版本。</translation>
+        <source>- beta: contains versions with new features that may not be tested thoroughly
+- daily: contains versions created daily only for testing and development
+
+Downgrading versions is not possible immediately: changing from beta to stable means waiting for the new stable version.</source>
+        <comment>list of available update channels to non enterprise users and downgrading warning</comment>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="402"/>
+        <source>- enterprise: contains stable versions for customers.
+
+Downgrading versions is not possible immediately: changing from stable to enterprise means waiting for the new enterprise version.</source>
+        <comment>list of available update channels to enterprise users and downgrading warning</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.cpp" line="409"/>
         <source>Changing update channel?</source>
         <translation>更改更新频道？</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="403"/>
+        <location filename="../src/gui/generalsettings.cpp" line="410"/>
         <source>The channel determines which upgrades will be offered to install:
 - stable: contains tested versions considered reliable
-- beta: contains versions with new features that may not be tested thoroughly
-- daily: contains versions created daily only for testing and development
-%1
-Downgrading versions is not possible immediately: changing from beta to stable means waiting for the new stable version.</source>
-        <translation>渠道决定了提供安装的升级版本：
-- 稳定：包含经过测试的可靠版本
-- 测试：包含具有新功能的版本，可能尚未经过全面测试
-- 日更：包含每日创建的版本，仅用于测试和开发。
-不能立即降级版本：从测试版切换到稳定版意味着要等待新的稳定版。</translation>
+</source>
+        <comment>starts list of available update channels, stable is always available</comment>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="364"/>
@@ -4222,24 +4226,24 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>该文件名在服务器上被列入黑名单</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="441"/>
-        <source> Reason: the entire filename is forbidden.</source>
-        <translation>原因：整个文件名被禁止。</translation>
+        <location filename="../src/libsync/discovery.cpp" line="442"/>
+        <source>Reason: the entire filename is forbidden.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="444"/>
-        <source> Reason: the filename has a forbidden base name (filename start).</source>
-        <translation>原因：文件名包含禁止的基本名称（文件名开头）。</translation>
+        <location filename="../src/libsync/discovery.cpp" line="445"/>
+        <source>Reason: the filename has a forbidden base name (filename start).</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="447"/>
-        <source> Reason: the file has a forbidden extension (.%1).</source>
-        <translation>原因：文件包含禁止的扩展名（.%1）。</translation>
+        <location filename="../src/libsync/discovery.cpp" line="448"/>
+        <source>Reason: the file has a forbidden extension (.%1).</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="450"/>
-        <source> Reason: the filename contains a forbidden character (%1).</source>
-        <translation>原因：文件名包含禁止的字符（%1）。</translation>
+        <location filename="../src/libsync/discovery.cpp" line="451"/>
+        <source>Reason: the filename contains a forbidden character (%1).</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="516"/>
@@ -4272,7 +4276,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>由于修改时间无效，因此无法同步</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1081"/>
+        <location filename="../src/libsync/discovery.cpp" line="1083"/>
         <source>Could not upload file, because it is open in &quot;%1&quot;.</source>
         <translation>无法上传文件，因为此文件已在 “%1” 中被打开。</translation>
     </message>

@@ -3098,31 +3098,33 @@ Poznamenejme, že je možné přejít na novější verzi, ale není možné se 
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="397"/>
-        <source>- enterprise: contains stable versions for customers.
-</source>
-        <comment>description of enterprise update channel for enterprise customers</comment>
-        <translation>- podnikové: obsahuje stabilní verze pro zákazníky.
-</translation>
+        <source>- beta: contains versions with new features that may not be tested thoroughly
+- daily: contains versions created daily only for testing and development
+
+Downgrading versions is not possible immediately: changing from beta to stable means waiting for the new stable version.</source>
+        <comment>list of available update channels to non enterprise users and downgrading warning</comment>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="402"/>
+        <source>- enterprise: contains stable versions for customers.
+
+Downgrading versions is not possible immediately: changing from stable to enterprise means waiting for the new enterprise version.</source>
+        <comment>list of available update channels to enterprise users and downgrading warning</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.cpp" line="409"/>
         <source>Changing update channel?</source>
         <translation>Změnit kanál aktualizací?</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="403"/>
+        <location filename="../src/gui/generalsettings.cpp" line="410"/>
         <source>The channel determines which upgrades will be offered to install:
 - stable: contains tested versions considered reliable
-- beta: contains versions with new features that may not be tested thoroughly
-- daily: contains versions created daily only for testing and development
-%1
-Downgrading versions is not possible immediately: changing from beta to stable means waiting for the new stable version.</source>
-        <translation>Kanál určuje které aktualizace budou nabízeny k instalaci:
-- stabilní: obsahuje vyzkoušené verze, považované za spolehlivé
-- beta: obsahuje verze s novými funkcemi, u kterých se může stát, že ještě nebudou důkladně vyzkoušené
-- denní: obsahuje verze vytvářené každý den, určené pouze pro zkoušení a vývoj
-%s1
-Okamžitý přechod na konzervativnější verze není možný: změna z beta na stable znamená vyčkat na novou stabilní verzi.</translation>
+</source>
+        <comment>starts list of available update channels, stable is always available</comment>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="364"/>
@@ -4236,24 +4238,24 @@ Toto je nový, experimentální režim. Pokud se jej rozhodnete používat, pros
         <translation>Takový název souboru je na serveru zařazen na seznam nepřípustných.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="441"/>
-        <source> Reason: the entire filename is forbidden.</source>
-        <translation>Důvod: celý název souboru není povolený.</translation>
+        <location filename="../src/libsync/discovery.cpp" line="442"/>
+        <source>Reason: the entire filename is forbidden.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="444"/>
-        <source> Reason: the filename has a forbidden base name (filename start).</source>
-        <translation>Důvod: název souboru má nepovolený základ (začátek názvu souboru).</translation>
+        <location filename="../src/libsync/discovery.cpp" line="445"/>
+        <source>Reason: the filename has a forbidden base name (filename start).</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="447"/>
-        <source> Reason: the file has a forbidden extension (.%1).</source>
-        <translation>Důvod: soubor má nepovolenou přípon (.%1).</translation>
+        <location filename="../src/libsync/discovery.cpp" line="448"/>
+        <source>Reason: the file has a forbidden extension (.%1).</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="450"/>
-        <source> Reason: the filename contains a forbidden character (%1).</source>
-        <translation>Důvod: název souboru obsahuje nepovolený znak (%1).</translation>
+        <location filename="../src/libsync/discovery.cpp" line="451"/>
+        <source>Reason: the filename contains a forbidden character (%1).</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="516"/>
@@ -4286,7 +4288,7 @@ Toto je nový, experimentální režim. Pokud se jej rozhodnete používat, pros
         <translation>Není možné provést synchronizaci z důvodu neplatného času změny</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1081"/>
+        <location filename="../src/libsync/discovery.cpp" line="1083"/>
         <source>Could not upload file, because it is open in &quot;%1&quot;.</source>
         <translation>Nepodařilo se nahrát soubor, protože je otevřený v „%1“.</translation>
     </message>

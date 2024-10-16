@@ -51,12 +51,12 @@
     <message>
         <location filename="../src/gui/tray/CallNotificationDialog.qml" line="194"/>
         <source>Talk notification caller avatar</source>
-        <translation type="unfinished"/>
+        <translation>Opkalds-avatar for Talk-meddelelse</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/CallNotificationDialog.qml" line="260"/>
         <source>Answer Talk call notification</source>
-        <translation type="unfinished"/>
+        <translation>Svar Talk opkaldsmeddelelse</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/CallNotificationDialog.qml" line="268"/>
@@ -179,7 +179,7 @@
     <message>
         <location filename="../src/gui/EmojiPicker.qml" line="136"/>
         <source>No recent emojis</source>
-        <translation type="unfinished"/>
+        <translation>Ingen nylige emojis</translation>
     </message>
 </context>
 <context>
@@ -280,7 +280,7 @@
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="153"/>
         <source>Signal file provider domain</source>
-        <translation type="unfinished"/>
+        <translation>Signal fil udbyder domæne</translation>
     </message>
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="158"/>
@@ -303,7 +303,7 @@
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderStorageInfo.qml" line="58"/>
         <source>Evict local copies...</source>
-        <translation type="unfinished"/>
+        <translation>Fjern lokale kopier...</translation>
     </message>
 </context>
 <context>
@@ -412,89 +412,89 @@
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="238"/>
         <source>Nextcloud desktop main dialog</source>
-        <translation type="unfinished"/>
+        <translation>Nextcloud-skrivebordets hoveddialog</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="264"/>
         <source>Current account</source>
-        <translation type="unfinished"/>
+        <translation>Nuværende konto</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="270"/>
         <location filename="../src/gui/tray/MainWindow.qml" line="372"/>
         <source>Resume sync for all</source>
-        <translation type="unfinished"/>
+        <translation>Genoptag synkronisering for alle</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="270"/>
         <location filename="../src/gui/tray/MainWindow.qml" line="372"/>
         <source>Pause sync for all</source>
-        <translation type="unfinished"/>
+        <translation>Pause synkronisering for alle</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="337"/>
         <source>Add account</source>
-        <translation type="unfinished"/>
+        <translation>Tilføj konto</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="349"/>
         <source>Add new account</source>
-        <translation type="unfinished"/>
+        <translation>Tilføj ny konto</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="384"/>
         <source>Settings</source>
-        <translation type="unfinished"/>
+        <translation>Indstillinger</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="401"/>
         <source>Exit</source>
-        <translation type="unfinished"/>
+        <translation>Exit</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="435"/>
         <source>Current account avatar</source>
-        <translation type="unfinished"/>
+        <translation>Aktuel kontoavatar</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="474"/>
         <source>Current account status is online</source>
-        <translation type="unfinished"/>
+        <translation>Den aktuelle kontostatus er online</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="474"/>
         <source>Current account status is do not disturb</source>
-        <translation type="unfinished"/>
+        <translation>Den aktuelle kontostatus er &quot;Forstyr ikke&quot;</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="543"/>
         <source>Account switcher and settings menu</source>
-        <translation type="unfinished"/>
+        <translation>Kontoskifter og indstillingsmenu</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="564"/>
         <source>Open local or group folders</source>
-        <translation type="unfinished"/>
+        <translation>Åbn lokale eller gruppemapper</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="602"/>
         <source>More apps</source>
-        <translation type="unfinished"/>
+        <translation>Flere apps</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="644"/>
         <source>Open %1 in browser</source>
-        <translation type="unfinished"/>
+        <translation>Åben %1 i browser</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="770"/>
         <source>Unified search results list</source>
-        <translation type="unfinished"/>
+        <translation>Samlet søgeresultatliste</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="833"/>
         <source>New activities</source>
-        <translation type="unfinished"/>
+        <translation>Nye aktiviteter</translation>
     </message>
 </context>
 <context>
@@ -539,26 +539,29 @@
         <location filename="../src/gui/accountmanager.cpp" line="184"/>
         <source>An existing configuration from a legacy desktop client was detected.
 Should an account import be attempted?</source>
-        <translation type="unfinished"/>
+        <translation>En eksisterende konfiguration fra en ældre desktop-klient blev fundet.
+Skal en kontoimport forsøges?</translation>
     </message>
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="214"/>
         <source>%1 accounts were detected from a legacy desktop client.
 Should the accounts be imported?</source>
-        <translation type="unfinished"/>
+        <translation>%1 konti blev fundet fra en ældre desktop-klient.
+Skal regnskabet importeres?</translation>
     </message>
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="216"/>
         <source>1 account was detected from a legacy desktop client.
 Should the account be imported?</source>
-        <translation type="unfinished"/>
+        <translation>1 konto blev fundet fra en ældre desktop-klient.
+Skal kontoen importeres?</translation>
     </message>
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="186"/>
         <location filename="../src/gui/accountmanager.cpp" line="254"/>
         <location filename="../src/gui/accountmanager.cpp" line="262"/>
         <source>Legacy import</source>
-        <translation type="unfinished"/>
+        <translation>Legacy import</translation>
     </message>
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="219"/>
@@ -573,12 +576,12 @@ Should the account be imported?</source>
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="255"/>
         <source>Successfully imported account from legacy client: %1</source>
-        <translation type="unfinished"/>
+        <translation>Kontoen blev importeret fra ældre klient: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="263"/>
         <source>Could not import accounts from legacy client configuration.</source>
-        <translation type="unfinished"/>
+        <translation>Kunne ikke importere konti fra ældre klientkonfiguration.</translation>
     </message>
 </context>
 <context>
@@ -638,22 +641,22 @@ Should the account be imported?</source>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="319"/>
         <source>Connection settings</source>
-        <translation type="unfinished"/>
+        <translation>Forbindelsesindstillinger</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="93"/>
         <source>End-to-end Encryption with Virtual Files</source>
-        <translation type="unfinished"/>
+        <translation>End-to-end-kryptering med Virtuelle Filer</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="94"/>
         <source>You seem to have the Virtual Files feature enabled on this folder. At the moment, it is not possible to implicitly download virtual files that are end-to-end encrypted. To get the best experience with virtual files and end-to-end encryption, make sure the encrypted folder is marked with &quot;Make always available locally&quot;.</source>
-        <translation type="unfinished"/>
+        <translation>Du ser ud til at have funktionen Virtual Files aktiveret i denne mappe. I øjeblikket er det ikke muligt implicit at downloade virtuelle filer, der er end-til-end-krypteret. For at få den bedste oplevelse med Virtuelle Filer og end-til-end-kryptering skal du sørge for, at den krypterede mappe er markeret med &quot;Gør altid tilgængelig lokalt&quot;.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="102"/>
         <source>Do not encrypt folder</source>
-        <translation type="unfinished"/>
+        <translation>Krypter ikke mappe</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="105"/>
@@ -663,7 +666,7 @@ Should the account be imported?</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="121"/>
         <source>End-to-end Encryption</source>
-        <translation type="unfinished"/>
+        <translation>End-to-end Kryptering</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="123"/>
@@ -679,7 +682,7 @@ Should the account be imported?</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="245"/>
         <source>Disable encryption</source>
-        <translation type="unfinished"/>
+        <translation>Deaktiver kryptering</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="250"/>
@@ -689,7 +692,7 @@ Should the account be imported?</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="256"/>
         <source>End-to-end encryption has been enabled for this account</source>
-        <translation type="unfinished"/>
+        <translation>End-to-end-kryptering er blevet aktiveret for denne konto</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="288"/>
@@ -699,23 +702,24 @@ Should the account be imported?</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="386"/>
         <source>Please wait for the folder to sync before trying to encrypt it.</source>
-        <translation type="unfinished"/>
+        <translation>Vent venligst på at mappen synkroniseres, før du prøver at kryptere den.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="388"/>
         <source>The folder has a minor sync problem. Encryption of this folder will be possible once it has synced successfully</source>
-        <translation type="unfinished"/>
+        <translation>Mappen har et mindre synkroniseringsproblem. Kryptering af denne mappe vil være mulig, når den er synkroniseret</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="390"/>
         <source>The folder has a sync error. Encryption of this folder will be possible once it has synced successfully</source>
-        <translation type="unfinished"/>
+        <translation>Mappen har en synkroniseringsfejl. Kryptering af denne mappe vil være mulig, når den er synkroniseret</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="341"/>
         <source>End-to-end encryption is not configured on this device. Once it is configured, you will be able to encrypt this folder.
 Would you like to set up end-to-end encryption?</source>
-        <translation type="unfinished"/>
+        <translation>End-to-end-kryptering er ikke konfigureret på denne enhed. Når den er konfigureret, vil du være i stand til at kryptere denne mappe.
+Vil du konfigurere ende-til-ende-kryptering?</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="366"/>
@@ -859,27 +863,27 @@ Denne handling vil annullere alle i øjeblikket kørende synkroniseringer.</tran
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1014"/>
         <source>End-to-end encryption mnemonic</source>
-        <translation type="unfinished"/>
+        <translation>End-to-end kryptering mnemonic</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1016"/>
         <source>To protect your Cryptographic Identity, we encrypt it with a mnemonic of 12 dictionary words. Please note these down and keep them safe. They will be needed to add other devices to your account (like your mobile phone or laptop).</source>
-        <translation type="unfinished"/>
+        <translation>For at beskytte din Kryptografiske Identitet krypterer vi den med en mnemonic på 12 ordbogsord. Noter venligst disse ned og opbevar dem sikkert. De vil være nødvendige for at tilføje andre enheder til din konto (såsom din mobiltelefon eller bærbare computer).</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1041"/>
         <source>Disable end-to-end encryption</source>
-        <translation type="unfinished"/>
+        <translation>Deaktiver end-til-end-kryptering</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1042"/>
         <source>Disable end-to-end encryption for %1?</source>
-        <translation type="unfinished"/>
+        <translation>Deaktiver end-til-end-kryptering for %1?</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1043"/>
         <source>Removing end-to-end encryption will remove locally-synced files that are encrypted.&lt;br&gt;Encrypted files will remain on the server.</source>
-        <translation type="unfinished"/>
+        <translation>Fjernelse af end-til-end-kryptering vil fjerne lokalt synkroniserede filer, der er krypteret.&lt;br&gt;Krypterede filer forbliver på serveren.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1105"/>
@@ -939,7 +943,7 @@ Denne handling vil annullere alle i øjeblikket kørende synkroniseringer.</tran
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1237"/>
         <source>Server %1 is currently being redirected, or your connection is behind a captive portal.</source>
-        <translation type="unfinished"/>
+        <translation>Server %1 bliver i øjeblikket omdirigeret, eller din forbindelse er bag en captive-portal.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1240"/>
@@ -964,7 +968,7 @@ Denne handling vil annullere alle i øjeblikket kørende synkroniseringer.</tran
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1310"/>
         <source>Unable to connect to %1.</source>
-        <translation type="unfinished"/>
+        <translation>Kan ikke oprette forbindelse til %1.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1264"/>
@@ -2270,19 +2274,23 @@ Dette betyder at synkroniseringsklienten muligvis ikke sender lokale ændringer 
         <source>Many files in the server folder &quot;%1&quot; were deleted.
 
 If you restore the files, they will be uploaded again to the server.</source>
-        <translation type="unfinished"/>
+        <translation>Mange filer i server mappen &quot;%1&quot; blev slettet.
+
+Hvis du gendanner filerne, uploades de igen til serveren.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1645"/>
         <source>Many files in the local folder &quot;%1&quot; were deleted.
 
 If you restore the files, they will be downloaded again from the server.</source>
-        <translation type="unfinished"/>
+        <translation>Mange filer i den lokale mappe &quot;%1&quot; blev slettet.
+
+Hvis du gendanner filerne, vil de blive downloadet igen fra serveren.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1646"/>
         <source>Remove all files?</source>
-        <translation type="unfinished"/>
+        <translation>Slet alle filer?</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1650"/>
@@ -2292,7 +2300,7 @@ If you restore the files, they will be downloaded again from the server.</source
     <message>
         <location filename="../src/gui/folder.cpp" line="1651"/>
         <source>Restore files</source>
-        <translation type="unfinished"/>
+        <translation>Gendan filer</translation>
     </message>
 </context>
 <context>
@@ -2320,7 +2328,7 @@ If you restore the files, they will be downloaded again from the server.</source
     <message>
         <location filename="../src/gui/foldercreationdialog.cpp" line="80"/>
         <source>Could not create a folder! Check your write permissions.</source>
-        <translation type="unfinished"/>
+        <translation>Kunne ikke oprette en mappe! Tjek dine skrivetilladelser.</translation>
     </message>
 </context>
 <context>
@@ -2333,7 +2341,7 @@ If you restore the files, they will be downloaded again from the server.</source
     <message>
         <location filename="../src/gui/folderman.cpp" line="415"/>
         <source>An old sync journal &quot;%1&quot; was found, but could not be removed. Please make sure that no application is currently using it.</source>
-        <translation type="unfinished"/>
+        <translation>En gammel synkroniseringsjournal &quot;%1&quot; blev fundet, men kunne ikke fjernes. Sørg for, at ingen applikation bruger den i øjeblikket.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1337"/>
@@ -2348,47 +2356,47 @@ If you restore the files, they will be downloaded again from the server.</source
     <message>
         <location filename="../src/gui/folderman.cpp" line="1602"/>
         <source>Undefined state.</source>
-        <translation type="unfinished"/>
+        <translation>Udefineret tilstand.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1605"/>
         <source>Waiting to start syncing.</source>
-        <translation>Venter på at begynde synkronisering</translation>
+        <translation>Venter på at sync starter.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1608"/>
         <source>Preparing for sync.</source>
-        <translation>Forbereder synkronisering.</translation>
+        <translation>Forbereder synkronisering</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1738"/>
         <source>Syncing %1 of %2 (A few seconds left)</source>
-        <translation type="unfinished"/>
+        <translation>Synkroniserer %1 af %2 (et par sekunder tilbage)</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1741"/>
         <source>Syncing %1 of %2 (%3 left)</source>
-        <translation type="unfinished"/>
+        <translation>Synkroniserer %1 af %2 (%3 tilbage)</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1744"/>
         <source>Syncing %1 of %2</source>
-        <translation type="unfinished"/>
+        <translation>Synkroniserer %1 af %2</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1750"/>
         <source>Syncing %1 (A few seconds left)</source>
-        <translation type="unfinished"/>
+        <translation>Synkroniserer %1 (et par sekunder tilbage)</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1752"/>
         <source>Syncing %1 (%2 left)</source>
-        <translation type="unfinished"/>
+        <translation>Synkroniserer %1 (%2 tilbage)</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1755"/>
         <source>Syncing %1</source>
-        <translation type="unfinished"/>
+        <translation>Synkroniserer %1</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1611"/>
@@ -2398,12 +2406,12 @@ If you restore the files, they will be downloaded again from the server.</source
     <message>
         <location filename="../src/gui/folderman.cpp" line="1616"/>
         <source>Sync finished with unresolved conflicts.</source>
-        <translation type="unfinished"/>
+        <translation>Synkronisering afsluttet med uløste konflikter.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1618"/>
         <source>Last sync was successful.</source>
-        <translation type="unfinished"/>
+        <translation>Sidste synkronisering lykkedes.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1624"/>
@@ -2413,7 +2421,7 @@ If you restore the files, they will be downloaded again from the server.</source
     <message>
         <location filename="../src/gui/folderman.cpp" line="1627"/>
         <source>Sync request was cancelled.</source>
-        <translation type="unfinished"/>
+        <translation>Synkroniseringsanmodning blev annulleret.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1630"/>
@@ -2433,7 +2441,7 @@ If you restore the files, they will be downloaded again from the server.</source
     <message>
         <location filename="../src/gui/folderman.cpp" line="1656"/>
         <source>The selected path does not exist!</source>
-        <translation type="unfinished"/>
+        <translation>Den valgte sti findes ikke!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1660"/>
@@ -3081,24 +3089,32 @@ Note that this selects only what pool upgrades are taken from, and that there ar
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="397"/>
-        <source>- enterprise: contains stable versions for customers.
-</source>
-        <comment>description of enterprise update channel for enterprise customers</comment>
+        <source>- beta: contains versions with new features that may not be tested thoroughly
+- daily: contains versions created daily only for testing and development
+
+Downgrading versions is not possible immediately: changing from beta to stable means waiting for the new stable version.</source>
+        <comment>list of available update channels to non enterprise users and downgrading warning</comment>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="402"/>
+        <source>- enterprise: contains stable versions for customers.
+
+Downgrading versions is not possible immediately: changing from stable to enterprise means waiting for the new enterprise version.</source>
+        <comment>list of available update channels to enterprise users and downgrading warning</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.cpp" line="409"/>
         <source>Changing update channel?</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="403"/>
+        <location filename="../src/gui/generalsettings.cpp" line="410"/>
         <source>The channel determines which upgrades will be offered to install:
 - stable: contains tested versions considered reliable
-- beta: contains versions with new features that may not be tested thoroughly
-- daily: contains versions created daily only for testing and development
-%1
-Downgrading versions is not possible immediately: changing from beta to stable means waiting for the new stable version.</source>
+</source>
+        <comment>starts list of available update channels, stable is always available</comment>
         <translation type="unfinished"/>
     </message>
     <message>
@@ -3586,7 +3602,7 @@ Note that using any logging command line options will override this setting.</so
         <location filename="../src/gui/networksettings.ui" line="397"/>
         <location filename="../src/gui/networksettings.ui" line="507"/>
         <source>Use global settings</source>
-        <translation type="unfinished"/>
+        <translation>Brug globale indstillinger</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="197"/>
@@ -4204,23 +4220,23 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="441"/>
-        <source> Reason: the entire filename is forbidden.</source>
+        <location filename="../src/libsync/discovery.cpp" line="442"/>
+        <source>Reason: the entire filename is forbidden.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="444"/>
-        <source> Reason: the filename has a forbidden base name (filename start).</source>
+        <location filename="../src/libsync/discovery.cpp" line="445"/>
+        <source>Reason: the filename has a forbidden base name (filename start).</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="447"/>
-        <source> Reason: the file has a forbidden extension (.%1).</source>
+        <location filename="../src/libsync/discovery.cpp" line="448"/>
+        <source>Reason: the file has a forbidden extension (.%1).</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="450"/>
-        <source> Reason: the filename contains a forbidden character (%1).</source>
+        <location filename="../src/libsync/discovery.cpp" line="451"/>
+        <source>Reason: the filename contains a forbidden character (%1).</source>
         <translation type="unfinished"/>
     </message>
     <message>
@@ -4254,7 +4270,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1081"/>
+        <location filename="../src/libsync/discovery.cpp" line="1083"/>
         <source>Could not upload file, because it is open in &quot;%1&quot;.</source>
         <translation type="unfinished"/>
     </message>
@@ -4899,7 +4915,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/gui/filedetails/shareemodel.cpp" line="33"/>
         <location filename="../src/gui/filedetails/shareemodel.cpp" line="290"/>
         <source>Search globally</source>
-        <translation type="unfinished"/>
+        <translation>Søg globalt</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/shareemodel.cpp" line="286"/>
@@ -4909,7 +4925,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/filedetails/shareemodel.cpp" line="286"/>
         <source>Global search results</source>
-        <translation type="unfinished"/>
+        <translation>Globale søgeresultater</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/shareemodel.cpp" line="302"/>

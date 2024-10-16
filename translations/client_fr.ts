@@ -3099,31 +3099,33 @@ Notez que cela ne permet seulement que de sélectionner où sont récupérées l
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="397"/>
-        <source>- enterprise: contains stable versions for customers.
-</source>
-        <comment>description of enterprise update channel for enterprise customers</comment>
-        <translation>- enterprise: contient les version stables pour les clients.
-</translation>
+        <source>- beta: contains versions with new features that may not be tested thoroughly
+- daily: contains versions created daily only for testing and development
+
+Downgrading versions is not possible immediately: changing from beta to stable means waiting for the new stable version.</source>
+        <comment>list of available update channels to non enterprise users and downgrading warning</comment>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="402"/>
+        <source>- enterprise: contains stable versions for customers.
+
+Downgrading versions is not possible immediately: changing from stable to enterprise means waiting for the new enterprise version.</source>
+        <comment>list of available update channels to enterprise users and downgrading warning</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.cpp" line="409"/>
         <source>Changing update channel?</source>
         <translation>Changement du canal de mise à jour ?</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="403"/>
+        <location filename="../src/gui/generalsettings.cpp" line="410"/>
         <source>The channel determines which upgrades will be offered to install:
 - stable: contains tested versions considered reliable
-- beta: contains versions with new features that may not be tested thoroughly
-- daily: contains versions created daily only for testing and development
-%1
-Downgrading versions is not possible immediately: changing from beta to stable means waiting for the new stable version.</source>
-        <translation>Le canal détermine quelles mises à jour seront proposées pour l&apos;installation :
-- stable: contient les versions testées considérées comme fiables
-- beta: contient les versions avec de nouvelles fonctionnalité qui n&apos;ont pas toujours été testées complètement
-- daily: contient les versions créées quotidiennement seulement pour les tests et le développement
-%1
-Passer à une version antérieure n&apos;est pas possible immédiatement : passer du canal beta au canal stable implique d&apos;attendre la nouvelle version stable.</translation>
+</source>
+        <comment>starts list of available update channels, stable is always available</comment>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="364"/>
@@ -4236,24 +4238,24 @@ Il s&apos;agit d&apos;un nouveau mode expérimental. Si vous décidez de l&apos;
         <translation>Le nom du fichier est sur la liste noire du serveur.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="441"/>
-        <source> Reason: the entire filename is forbidden.</source>
-        <translation> Motif : le nom de fichier entier est interdit.</translation>
+        <location filename="../src/libsync/discovery.cpp" line="442"/>
+        <source>Reason: the entire filename is forbidden.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="444"/>
-        <source> Reason: the filename has a forbidden base name (filename start).</source>
-        <translation>Motif : le nom de fichier a un nom de base interdit (début du nom de fichier).</translation>
+        <location filename="../src/libsync/discovery.cpp" line="445"/>
+        <source>Reason: the filename has a forbidden base name (filename start).</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="447"/>
-        <source> Reason: the file has a forbidden extension (.%1).</source>
-        <translation>Motif : le fichier a une extension interdite (.%1).</translation>
+        <location filename="../src/libsync/discovery.cpp" line="448"/>
+        <source>Reason: the file has a forbidden extension (.%1).</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="450"/>
-        <source> Reason: the filename contains a forbidden character (%1).</source>
-        <translation>Motif : le nom du fichier contient un caractère interdit (%1).</translation>
+        <location filename="../src/libsync/discovery.cpp" line="451"/>
+        <source>Reason: the filename contains a forbidden character (%1).</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="516"/>
@@ -4286,7 +4288,7 @@ Il s&apos;agit d&apos;un nouveau mode expérimental. Si vous décidez de l&apos;
         <translation>Impossible de synchroniser à cause d&apos;une date de modification invalide</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1081"/>
+        <location filename="../src/libsync/discovery.cpp" line="1083"/>
         <source>Could not upload file, because it is open in &quot;%1&quot;.</source>
         <translation>Impossible de téléverser le fichier, car il est ouvert dans « %1 ».</translation>
     </message>

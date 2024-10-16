@@ -3100,31 +3100,33 @@ Teña en conta que isto só selecciona de que grupo se toman as anovacións e qu
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="397"/>
-        <source>- enterprise: contains stable versions for customers.
-</source>
-        <comment>description of enterprise update channel for enterprise customers</comment>
-        <translation>– empresarial: contén versións estábeis para os clientes.
-</translation>
+        <source>- beta: contains versions with new features that may not be tested thoroughly
+- daily: contains versions created daily only for testing and development
+
+Downgrading versions is not possible immediately: changing from beta to stable means waiting for the new stable version.</source>
+        <comment>list of available update channels to non enterprise users and downgrading warning</comment>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="402"/>
+        <source>- enterprise: contains stable versions for customers.
+
+Downgrading versions is not possible immediately: changing from stable to enterprise means waiting for the new enterprise version.</source>
+        <comment>list of available update channels to enterprise users and downgrading warning</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.cpp" line="409"/>
         <source>Changing update channel?</source>
         <translation>Quere cambiar a canle de actualización?</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="403"/>
+        <location filename="../src/gui/generalsettings.cpp" line="410"/>
         <source>The channel determines which upgrades will be offered to install:
 - stable: contains tested versions considered reliable
-- beta: contains versions with new features that may not be tested thoroughly
-- daily: contains versions created daily only for testing and development
-%1
-Downgrading versions is not possible immediately: changing from beta to stable means waiting for the new stable version.</source>
-        <translation>A canle determina que actualizacións se forneceran para instalar:
-– estábel: contén versións probadas consideradas fiábeis
-– beta: contén versións con novas funcionalidades que poden non ser probadas a fondo
-– diario: contén versións creadas diariamente só para probas e desenvolvemento
-%1
-Non é posíbel reverter versións inmediatamente: cambiar de beta a estábel significa agardar pola nova versión estábel.</translation>
+</source>
+        <comment>starts list of available update channels, stable is always available</comment>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="364"/>
@@ -4098,7 +4100,7 @@ Este é un novo modo experimental. Se decide usalo, agradecémoslle que informe 
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="445"/>
         <source>Enable experimental placeholder mode</source>
-        <translation>Activar o modo de marcador de posición experimental</translation>
+        <translation>Activar o modo de marcador de substitución experimental</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="446"/>
@@ -4238,24 +4240,24 @@ Este é un novo modo experimental. Se decide usalo, agradecémoslle que informe 
         <translation>O nome do ficheiro está na lista de bloqueo no servidor.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="441"/>
-        <source> Reason: the entire filename is forbidden.</source>
-        <translation>Motivo: está prohibido todo o nome do ficheiro.</translation>
+        <location filename="../src/libsync/discovery.cpp" line="442"/>
+        <source>Reason: the entire filename is forbidden.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="444"/>
-        <source> Reason: the filename has a forbidden base name (filename start).</source>
-        <translation>Motivo: o nome do ficheiro ten un nome base prohibido (inicio do nome de ficheiro).</translation>
+        <location filename="../src/libsync/discovery.cpp" line="445"/>
+        <source>Reason: the filename has a forbidden base name (filename start).</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="447"/>
-        <source> Reason: the file has a forbidden extension (.%1).</source>
-        <translation>Motivo: o ficheiro ten unha extensión prohibida (.%1).</translation>
+        <location filename="../src/libsync/discovery.cpp" line="448"/>
+        <source>Reason: the file has a forbidden extension (.%1).</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="450"/>
-        <source> Reason: the filename contains a forbidden character (%1).</source>
-        <translation>Motivo: o nome do ficheiro contén un carácter prohibido (%1).</translation>
+        <location filename="../src/libsync/discovery.cpp" line="451"/>
+        <source>Reason: the filename contains a forbidden character (%1).</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="516"/>
@@ -4288,7 +4290,7 @@ Este é un novo modo experimental. Se decide usalo, agradecémoslle que informe 
         <translation>Non é posíbel sincronizar por mor dunha hora de modificación incorrecta</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1081"/>
+        <location filename="../src/libsync/discovery.cpp" line="1083"/>
         <source>Could not upload file, because it is open in &quot;%1&quot;.</source>
         <translation>Non foi posíbel enviar o ficheiro porque está aberto en «%1».</translation>
     </message>

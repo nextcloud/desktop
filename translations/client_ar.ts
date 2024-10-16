@@ -2794,7 +2794,7 @@ If you restore the files, they will be downloaded again from the server.</source
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="605"/>
         <source>Virtual files are not supported for Windows partition roots as local folder. Please choose a valid subfolder under drive letter.</source>
-        <translation>الملفات الظاهرية virtual files غير مدعومة عند التعامل مع جذور تقسيمات الأقراص في وندوز Windows partition roots كمجلدات محلية. الرجاء اختيار مجلد فرعي صالح ضمن حرف محرك الأقراص.</translation>
+        <translation>الملفات الظاهرية virtual files غير مدعومة عند التعامل مع جذور تقسيمات الأقراص في ويندوز Windows partition roots كمجلدات محلية. الرجاء اختيار مجلد فرعي صالح ضمن حرف محرك الأقراص.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="628"/>
@@ -2971,7 +2971,7 @@ If you restore the files, they will be downloaded again from the server.</source
     <message>
         <location filename="../src/gui/generalsettings.ui" line="248"/>
         <source>Update channel</source>
-        <translation>تحديث القناة</translation>
+        <translation>قناة التحديث</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="183"/>
@@ -3084,31 +3084,33 @@ Note that this selects only what pool upgrades are taken from, and that there ar
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="397"/>
-        <source>- enterprise: contains stable versions for customers.
-</source>
-        <comment>description of enterprise update channel for enterprise customers</comment>
-        <translation>- مُؤسَّسي: يحتوي على إصدارات مستقرة للعملاء.
-</translation>
+        <source>- beta: contains versions with new features that may not be tested thoroughly
+- daily: contains versions created daily only for testing and development
+
+Downgrading versions is not possible immediately: changing from beta to stable means waiting for the new stable version.</source>
+        <comment>list of available update channels to non enterprise users and downgrading warning</comment>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="402"/>
+        <source>- enterprise: contains stable versions for customers.
+
+Downgrading versions is not possible immediately: changing from stable to enterprise means waiting for the new enterprise version.</source>
+        <comment>list of available update channels to enterprise users and downgrading warning</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.cpp" line="409"/>
         <source>Changing update channel?</source>
         <translation>تغيير قناة التحديث؟</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="403"/>
+        <location filename="../src/gui/generalsettings.cpp" line="410"/>
         <source>The channel determines which upgrades will be offered to install:
 - stable: contains tested versions considered reliable
-- beta: contains versions with new features that may not be tested thoroughly
-- daily: contains versions created daily only for testing and development
-%1
-Downgrading versions is not possible immediately: changing from beta to stable means waiting for the new stable version.</source>
-        <translation>تحدد القناة الترقيات التي سيتم عرضها للتثبيت: 
-- مستقر: يحتوي على إصدارات مجربة تعتبر موثوقة 
-- تجريبي: يحتوي على إصدارات ذات ميزات جديدة ربما لم يتم اختبارها بدقة 
-- يومي: يحتوي على إصدارات يتم إنشاؤها يوميًا للاختبار والتطوير فقط 
-%1 
-لا يمكن خفض مستوى الإصدارات على الفور: فالتغيير من الإصدار التجريبي إلى الإصدار المستقر يعني انتظار الإصدار المستقر الجديد.</translation>
+</source>
+        <comment>starts list of available update channels, stable is always available</comment>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="364"/>
@@ -3756,7 +3758,7 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="258"/>
         <source>Virtual files are not supported for Windows partition roots as local folder. Please choose a valid subfolder under drive letter.</source>
-        <translation>الملفات الظاهرية virtual files غير مدعومة في حالة استخدام جذور تقسيمات وندوز Windows partition roots كمجلدات محلّية. الرجاء اختيار مجلد فرعي صالح ضمن حرف محرك الأقراص.</translation>
+        <translation>الملفات الظاهرية virtual files غير مدعومة في حالة استخدام جذور تقسيمات ويندوز Windows partition roots كمجلدات محلّية. الرجاء اختيار مجلد فرعي صالح ضمن حرف محرك الأقراص.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="295"/>
@@ -4214,24 +4216,24 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>اسم الملف موجود في القائمة السوداء للخادوم.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="441"/>
-        <source> Reason: the entire filename is forbidden.</source>
-        <translation>السبب: اسم الملف محظور بأكمله.</translation>
+        <location filename="../src/libsync/discovery.cpp" line="442"/>
+        <source>Reason: the entire filename is forbidden.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="444"/>
-        <source> Reason: the filename has a forbidden base name (filename start).</source>
-        <translation>السبب: اسم الملف الأساس (جزء البداية) محظور.</translation>
+        <location filename="../src/libsync/discovery.cpp" line="445"/>
+        <source>Reason: the filename has a forbidden base name (filename start).</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="447"/>
-        <source> Reason: the file has a forbidden extension (.%1).</source>
-        <translation> السبب: امتداد الملف محظور (.%1).</translation>
+        <location filename="../src/libsync/discovery.cpp" line="448"/>
+        <source>Reason: the file has a forbidden extension (.%1).</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="450"/>
-        <source> Reason: the filename contains a forbidden character (%1).</source>
-        <translation>السبب: اسم الملف يحتوي على حروف محظورة (%1).</translation>
+        <location filename="../src/libsync/discovery.cpp" line="451"/>
+        <source>Reason: the filename contains a forbidden character (%1).</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="516"/>
@@ -4264,7 +4266,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>تعذّرت المزامنة لأن وقت آخر تعديل للملف غير صالح</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1081"/>
+        <location filename="../src/libsync/discovery.cpp" line="1083"/>
         <source>Could not upload file, because it is open in &quot;%1&quot;.</source>
         <translation>يتعذّر فتح الملف لأنه مفتوح سلفاً في &quot;%1&quot;.</translation>
     </message>
