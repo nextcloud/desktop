@@ -302,7 +302,7 @@ void FolderMetadata::slotTrustedCertificatesFetched()
 
             auto msgBox = QMessageBox();
             msgBox.setText(tr("<p>A new or unrecognised certificate was found in the folder's metadata. Do you want to trust this certificate?</p>"
-                              "<p><pre>%1</pre><p>").arg(newCertificate.toText()));
+                              "<p><pre>%1</pre><p>", "user warning, the number place marker is replaced by the certificate content").arg(newCertificate.toText()));
             msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
             auto choice = msgBox.exec();
             if (choice == QMessageBox::Yes) {
