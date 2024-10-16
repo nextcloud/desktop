@@ -695,6 +695,14 @@ void DiscoverySingleDirectoryJob::metadataReceived(const QJsonDocument &json, in
         }
     }
 
+    if (job->signature().isEmpty()) {
+        qCDebug(lcDiscovery) << "Initial signature is empty.";
+        _account->reportClientStatus(OCC::ClientStatusReportingStatus::E2EeError_GeneralError);
+        emit finished(HttpError{0, tr("Encrypted metadata setup error: initial signature from server is empty.")});
+        deleteLater();
+        return;
+    }
+
     const auto e2EeFolderMetadata = new FolderMetadata(_account,
                                                  _remoteRootFolderPath,
                                                  statusCode == 404 ? QByteArray{} : json.toJson(QJsonDocument::Compact),
