@@ -880,9 +880,8 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(const SyncFileItemPtr &it
             done = true;
             return;
         }
-        if (!serverEntry.isDirectory && base._etag != serverEntry.etag) {
-            /* File with different etag, don't do a rename, but download the file again */
-            qCInfo(lcDisco, "file etag different, not a rename");
+        if (!serverEntry.isDirectory && (base._modtime != serverEntry.modtime || base._fileSize != serverEntry.size)) {
+            qCInfo(lcDisco, "file metadata different, forcing a download of the new file");
             done = true;
             return;
         }
