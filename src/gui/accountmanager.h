@@ -114,6 +114,7 @@ signals:
     void accountSyncConnectionRemoved(OCC::AccountState *account);
     void removeAccountFolders(OCC::AccountState *account);
     void forceLegacyImportChanged();
+    void capabilitiesChanged();
 
 private:
     // saving and loading Account to settings

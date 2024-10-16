@@ -244,6 +244,10 @@ GeneralSettings::GeneralSettings(QWidget *parent)
     // accountAdded means the wizard was finished and the wizard might change some options.
     connect(AccountManager::instance(), &AccountManager::accountAdded, this, &GeneralSettings::loadMiscSettings);
 
+#if defined(BUILD_UPDATER)
+    loadUpdateChannelsList();
+#endif
+
     customizeStyle();
 }
 
@@ -284,18 +288,21 @@ void GeneralSettings::loadMiscSettings()
     _ui->stopExistingFolderNowBigSyncCheckBox->setChecked(_ui->existingFolderLimitCheckBox->isChecked() && cfgFile.stopSyncingExistingFoldersOverLimit());
     _ui->newExternalStorage->setChecked(cfgFile.confirmExternalStorage());
     _ui->monoIconsCheckBox->setChecked(cfgFile.monoIcons());
-
-#if defined(BUILD_UPDATER)
-    const auto validUpdateChannels = cfgFile.validUpdateChannels();
-    _ui->updateChannel->clear();
-    _ui->updateChannel->addItems(validUpdateChannels);
-    const auto currentUpdateChannelIndex = validUpdateChannels.indexOf(cfgFile.currentUpdateChannel());
-    _ui->updateChannel->setCurrentIndex(currentUpdateChannelIndex != -1? currentUpdateChannelIndex : 0);
-    connect(_ui->updateChannel, &QComboBox::currentTextChanged, this, &GeneralSettings::slotUpdateChannelChanged);
-#endif
 }
 
 #if defined(BUILD_UPDATER)
+void GeneralSettings::loadUpdateChannelsList() {
+    ConfigFile cfgFile;
+    if (_currentUpdateChannelList != cfgFile.validUpdateChannels()) {
+        _currentUpdateChannelList = cfgFile.validUpdateChannels();
+        _ui->updateChannel->clear();
+        _ui->updateChannel->addItems(_currentUpdateChannelList);
+        const auto currentUpdateChannelIndex = _currentUpdateChannelList.indexOf(cfgFile.currentUpdateChannel());
+        _ui->updateChannel->setCurrentIndex(currentUpdateChannelIndex != -1? currentUpdateChannelIndex : 0);
+        connect(_ui->updateChannel, &QComboBox::currentTextChanged, this, &GeneralSettings::slotUpdateChannelChanged);
+    }
+}
+
 void GeneralSettings::slotUpdateInfo()
 {
     ConfigFile config;
