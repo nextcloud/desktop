@@ -62,7 +62,7 @@ Credentials {
                 Layout.preferredWidth: openBrowserButton.implicitWidth
                 visible: credentials.isValid
 
-                text: qsTr("Copy url")
+                text: qsTr("Copy URL")
                 icon.source: QMLResources.resourcePath("core", "copy", true)
                 onClicked: credentials.copyAuthenticationUrlToClipboard()
                 enabled: credentials.ready
