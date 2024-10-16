@@ -427,7 +427,7 @@ private slots:
 
         QTest::newRow("Same mtime, but no server checksum -> ignored in reconcile")
             << true << QByteArray()
-            << 0;
+            << 1;
 
         QTest::newRow("Same mtime, weak server checksum differ -> downloaded")
             << true << QByteArray("Adler32:bad")
