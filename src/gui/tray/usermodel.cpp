@@ -913,7 +913,7 @@ void User::setCurrentUser(const bool &isCurrent)
 
 Folder *User::getFolder() const
 {
-    for (Folder *const folder : FolderMan::instance()->map()) {
+    for (const auto &folder : FolderMan::instance()->map()) {
         if (folder->accountState() == _account.data()) {
             return folder;
         }
