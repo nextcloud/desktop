@@ -42,17 +42,19 @@ public:
             return;
         }
 
-        NSProgress *const downloadProgress = [_manager globalProgressForKind:NSProgressFileOperationKindDownloading];
-        NSProgress *const uploadProgress = [_manager globalProgressForKind:NSProgressFileOperationKindUploading];
-        _downloadProgressObserver = [[ProgressObserver alloc] initWithProgress:downloadProgress];
-        _uploadProgressObserver = [[ProgressObserver alloc] initWithProgress:uploadProgress];
+        if (@available(macOS 11.3, *)) {
+            NSProgress *const downloadProgress = [_manager globalProgressForKind:NSProgressFileOperationKindDownloading];
+            NSProgress *const uploadProgress = [_manager globalProgressForKind:NSProgressFileOperationKindUploading];
+            _downloadProgressObserver = [[ProgressObserver alloc] initWithProgress:downloadProgress];
+            _uploadProgressObserver = [[ProgressObserver alloc] initWithProgress:uploadProgress];
 
-        _downloadProgressObserver.progressKVOChangeHandler = ^(NSProgress *const progress){
-            updateDownload(progress);
-        };
-        _uploadProgressObserver.progressKVOChangeHandler = ^(NSProgress *const progress){
-            updateUpload(progress);
-        };
+            _downloadProgressObserver.progressKVOChangeHandler = ^(NSProgress *const progress){
+                updateDownload(progress);
+            };
+            _uploadProgressObserver.progressKVOChangeHandler = ^(NSProgress *const progress){
+                updateUpload(progress);
+            };
+        }
     }
 
     ~MacImplementation() = default;
