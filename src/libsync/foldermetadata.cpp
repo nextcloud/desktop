@@ -81,6 +81,7 @@ FolderMetadata::FolderMetadata(AccountPtr account,
     , _account(account)
     , _remoteFolderRoot(Utility::noLeadingSlashPath(Utility::noTrailingSlashPath(remoteFolderRoot)))
     , _initialMetadata(metadata)
+    , _metaDataDoc(QJsonDocument{})
     , _isRootEncryptedFolder(rootEncryptedFolderInfo.path == QStringLiteral("/"))
     , _metadataKeyForEncryption(rootEncryptedFolderInfo.keyForEncryption)
     , _metadataKeyForDecryption(rootEncryptedFolderInfo.keyForDecryption)
