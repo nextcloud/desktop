@@ -339,15 +339,22 @@ void User::parseNewGroupFolderPath(const QString &mountPoint)
     if (mountPoint.isEmpty()) {
         return;
     }
-    auto mountPointSplit = mountPoint.split(QLatin1Char('/'), Qt::SkipEmptyParts);
+
+    auto sanitisedMountPoint = mountPoint;
+    sanitisedMountPoint.replace("//", "/");
+    auto mountPointSplit = sanitisedMountPoint.split('/', Qt::SkipEmptyParts);
 
     if (mountPointSplit.isEmpty()) {
         return;
     }
 
     const auto groupFolderName = mountPointSplit.takeLast();
-    const auto parentPath = mountPointSplit.join(QLatin1Char('/'));
-    _trayFolderInfos.push_back(QVariant::fromValue(TrayFolderInfo{groupFolderName, parentPath, mountPoint, TrayFolderInfo::GroupFolder}));
+    const auto parentPath = mountPointSplit.join('/');
+    const auto folderInfo = TrayFolderInfo(
+        groupFolderName, parentPath, sanitisedMountPoint, TrayFolderInfo::GroupFolder
+    );
+    const auto folderInfoVariant = QVariant::fromValue(folderInfo);
+    _trayFolderInfos.push_back(folderInfoVariant);
 }
 
 void User::prePendGroupFoldersWithLocalFolder()
@@ -906,7 +913,7 @@ void User::setCurrentUser(const bool &isCurrent)
 
 Folder *User::getFolder() const
 {
-    foreach (Folder *folder, FolderMan::instance()->map()) {
+    for (const auto &folder : FolderMan::instance()->map()) {
         if (folder->accountState() == _account.data()) {
             return folder;
         }
@@ -925,11 +932,9 @@ UnifiedSearchResultsListModel *User::getUnifiedSearchResultsListModel() const
     return _unifiedSearchResultsModel;
 }
 
-void User::openLocalFolder()
+void User::openLocalFolder() const
 {
-    const auto folder = getFolder();
-
-    if (folder) {
+    if (const auto folder = getFolder()) {
         QDesktopServices::openUrl(QUrl::fromLocalFile(folder->path()));
     }
 }
