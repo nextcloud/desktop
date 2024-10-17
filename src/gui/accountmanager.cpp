@@ -606,8 +606,28 @@ void AccountManager::deleteAccount(OCC::AccountState *account)
 
     account->account()->deleteAppToken();
 
+    // clean up config from subscriptions if the account removed was the only with valid subscription
+    if (account->account()->serverHasValidSubscription()) {
+        updateServerHasValidSubscriptionConfig();
+    }
+
     emit accountSyncConnectionRemoved(account);
     emit accountRemoved(account);
+}
+
+void AccountManager::updateServerHasValidSubscriptionConfig()
+{
+    auto serverHasValidSubscription = false;
+    for (const auto &account : _accounts) {
+        if (!account->account()->serverHasValidSubscription()) {
+            continue;
+        }
+
+        serverHasValidSubscription = true;
+        break;
+    }
+
+    ConfigFile().setServerHasValidSubscription(serverHasValidSubscription);
 }
 
 AccountPtr AccountManager::createAccount()
@@ -670,6 +690,12 @@ void AccountManager::addAccountState(AccountState *const accountState)
     AccountStatePtr ptr(accountState);
     _accounts << ptr;
     ptr->trySignIn();
+
+    // update config subscriptions if the account added is the only with valid subscription
+    if (accountState->account()->serverHasValidSubscription() && !ConfigFile().serverHasValidSubscription()) {
+        updateServerHasValidSubscriptionConfig();
+    }
+
     emit accountAdded(accountState);
 }
 
