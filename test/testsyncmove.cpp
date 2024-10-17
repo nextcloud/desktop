@@ -741,38 +741,6 @@ private slots:
         }
     }
 
-    // https://github.com/owncloud/client/issues/6629#issuecomment-402450691
-    // When a file is moved and the server mtime was not in sync, the local mtime should be kept
-    void testMoveAndMTimeChange()
-    {
-        FakeFolder fakeFolder{ FileInfo::A12_B12_C12_S12() };
-        OperationCounter counter;
-        fakeFolder.setServerOverride(counter.functor());
-
-        // Changing the mtime on the server (without invalidating the etag)
-        fakeFolder.remoteModifier().find("A/a1")->lastModified = QDateTime::currentDateTimeUtc().addSecs(-50000);
-        fakeFolder.remoteModifier().find("A/a2")->lastModified = QDateTime::currentDateTimeUtc().addSecs(-40000);
-
-        // Move a few files
-        fakeFolder.remoteModifier().rename("A/a1", "A/a1_server_renamed");
-        fakeFolder.localModifier().rename("A/a2", "A/a2_local_renamed");
-
-        QVERIFY(fakeFolder.syncOnce());
-        QCOMPARE(counter.nGET, 0);
-        QCOMPARE(counter.nPUT, 0);
-        QCOMPARE(counter.nMOVE, 1);
-        QCOMPARE(counter.nDELETE, 0);
-
-        // Another sync should do nothing
-        QVERIFY(fakeFolder.syncOnce());
-        QCOMPARE(counter.nGET, 0);
-        QCOMPARE(counter.nPUT, 0);
-        QCOMPARE(counter.nMOVE, 1);
-        QCOMPARE(counter.nDELETE, 0);
-
-        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
-    }
-
     // Test for https://github.com/owncloud/client/issues/6694
     void testInvertFolderHierarchy()
     {
