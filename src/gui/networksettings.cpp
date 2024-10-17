@@ -222,7 +222,7 @@ void NetworkSettings::saveProxySettings()
         _account->setProxySettings(proxySetting, proxyType, host, port, needsAuth, user, password);
         const auto accountState = AccountManager::instance()->accountFromUserId(_account->userIdAtHostWithPort());
         accountState->freshConnectionAttempt();
-        AccountManager::instance()->saveAccount(_account.data());
+        AccountManager::instance()->saveAccount(_account);
     } else {
         ConfigFile().setProxyType(proxyType, host, port, needsAuth, user, password);
         ClientProxy proxy;
@@ -275,7 +275,7 @@ void NetworkSettings::saveBWLimitSettings()
         _account->setDownloadLimit(downloadLimit);
         _account->setUploadLimitSetting(static_cast<Account::AccountNetworkTransferLimitSetting>(useUploadLimit));
         _account->setUploadLimit(uploadLimit);
-        AccountManager::instance()->saveAccount(_account.data());
+        AccountManager::instance()->saveAccount(_account);
     } else {
         ConfigFile cfg;
         cfg.setUseDownloadLimit(useDownloadLimit);
