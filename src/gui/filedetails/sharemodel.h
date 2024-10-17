@@ -253,7 +253,8 @@ private:
     QHash<QString, QPersistentModelIndex> _shareIdIndexHash;
     QHash<QString, QString> _shareIdRecentlySetPasswords;
     QVector<ShareePtr> _sharees;
-    QSet<unsigned int> _duplicateDisplayNameShareIndices;
+    // Buckets of sharees with the same display name
+    QHash<unsigned int, QSharedPointer<QSet<unsigned int>>> _duplicateDisplayNameShareIndices;
 };
 
 } // namespace OCC

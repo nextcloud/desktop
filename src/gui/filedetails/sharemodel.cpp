@@ -501,23 +501,24 @@ void ShareModel::slotSharesFetched(const QList<SharePtr> &shares)
             continue;
         }
 
-        auto hasDuplicates = false;
+        const auto duplicateIndices = QSharedPointer<QSet<unsigned int>>::create();
+        const auto handleDuplicateIndex = [this, duplicateIndices](const unsigned int idx) {
+            duplicateIndices->insert(idx);
+            _duplicateDisplayNameShareIndices[idx] = duplicateIndices;
+            const auto targetIdx = index(idx);
+            dataChanged(targetIdx, targetIdx, {Qt::DisplayRole});
+        };
+
         for (auto j = i + 1; j < shareCount; ++j) {
             const auto otherSharee = _shares.at(j)->getShareWith();
             if (otherSharee == nullptr || sharee->format() != otherSharee->format()) {
                 continue;
             }
-
-            hasDuplicates = true; // Reassign is faster
-            _duplicateDisplayNameShareIndices.insert(j);
-            const auto targetIndex = index(j);
-            dataChanged(targetIndex, targetIndex, {Qt::DisplayRole});
+            handleDuplicateIndex(j);
         }
 
-        if (hasDuplicates) {
-            _duplicateDisplayNameShareIndices.insert(i);
-            const auto targetIndex = index(i);
-            dataChanged(targetIndex, targetIndex, {Qt::DisplayRole});
+        if (!duplicateIndices->isEmpty()) {
+            handleDuplicateIndex(i);
         }
     }
 
