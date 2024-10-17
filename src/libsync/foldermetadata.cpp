@@ -291,7 +291,6 @@ void FolderMetadata::slotCertificateFetchedFromKeychain(const QSslCertificate &c
     }
 }
 
-
 void FolderMetadata::slotTrustedCertificatesFetched()
 {
     disconnect(_account->e2e(), &ClientSideEncryption::certificateFetchedFromKeychain, this, &FolderMetadata::slotCertificateFetchedFromKeychain);
@@ -323,8 +322,6 @@ void FolderMetadata::slotTrustedCertificatesFetched()
 
     emitSetupComplete();
 }
-
-
 
 void FolderMetadata::setupExistingMetadataLegacy(const QByteArray &metadata)
 {
