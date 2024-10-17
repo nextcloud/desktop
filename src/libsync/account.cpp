@@ -1075,13 +1075,28 @@ void Account::setAskUserForMnemonic(const bool ask)
     emit askUserForMnemonicChanged();
 }
 
+bool Account::serverHasValidSubscription() const
+{
+    return _serverHasValidSubscription;
+}
+
+void Account::setServerHasValidSubscription(bool valid)
+{
+    if (_serverHasValidSubscription != valid) {
+        _serverHasValidSubscription = valid;
+    }
+}
+
 void Account::updateServerSubcription()
 {
     ConfigFile currentConfig;
-    if (const auto serverHasValidSubscription = _capabilities.serverHasValidSubscription();
-        serverHasValidSubscription != currentConfig.serverHasValidSubscription() && !serverHasValidSubscription) {
-        currentConfig.setServerHasValidSubscription(serverHasValidSubscription);
+    const auto capabilityValidSubscription = _capabilities.serverHasValidSubscription();
+    const auto configValidSubscription = currentConfig.serverHasValidSubscription();
+    if (capabilityValidSubscription != configValidSubscription && !configValidSubscription) {
+        currentConfig.setServerHasValidSubscription(capabilityValidSubscription);
     }
+
+    setServerHasValidSubscription(capabilityValidSubscription);
 }
 
 void Account::updateDesktopEnterpriseChannel()
