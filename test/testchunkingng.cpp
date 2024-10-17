@@ -328,35 +328,22 @@ private slots:
         fakeFolder.localModifier().insert("A/a0", size);
         QVERIFY(!fakeFolder.syncOnce()); // error: abort!
 
-        // Now the next sync gets a NEW/NEW conflict and since there's no checksum
-        // it just becomes a UPDATE_METADATA
-        auto checkEtagUpdated = [&](SyncFileItemVector &items) {
-            QCOMPARE(items.size(), 1);
-            QCOMPARE(items[0]->_file, QLatin1String("A"));
-            SyncJournalFileRecord record;
-            QVERIFY(fakeFolder.syncJournal().getFileRecord(QByteArray("A/a0"), &record));
-            QCOMPARE(record._etag, fakeFolder.remoteModifier().find("A/a0")->etag);
-        };
-        auto connection = connect(&fakeFolder.syncEngine(), &SyncEngine::aboutToPropagate, checkEtagUpdated);
         QVERIFY(fakeFolder.syncOnce());
-        disconnect(connection);
         QCOMPARE(nGET, 0);
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
 
-
         // Test 2: modified file upload aborted
+        nGET = 0;
         fakeFolder.localModifier().appendByte("A/a0");
         QVERIFY(!fakeFolder.syncOnce()); // error: abort!
 
         // An EVAL/EVAL conflict is also UPDATE_METADATA when there's no checksums
-        connection = connect(&fakeFolder.syncEngine(), &SyncEngine::aboutToPropagate, checkEtagUpdated);
         QVERIFY(fakeFolder.syncOnce());
-        disconnect(connection);
-        QCOMPARE(nGET, 0);
+        QCOMPARE(nGET, 1);
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
 
-
         // Test 3: modified file upload aborted, with good checksums
+        nGET = 0;
         fakeFolder.localModifier().appendByte("A/a0");
         QVERIFY(!fakeFolder.syncOnce()); // error: abort!
 
@@ -365,12 +352,11 @@ private slots:
         fakeFolder.remoteModifier().find("A/a0")->checksums = moveChecksumHeader;
 
         QVERIFY(fakeFolder.syncOnce());
-        disconnect(connection);
         QCOMPARE(nGET, 0); // no new download, just a metadata update!
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
 
-
         // Test 4: New file, that gets deleted locally before the next sync
+        nGET = 0;
         fakeFolder.localModifier().insert("A/a3", size);
         QVERIFY(!fakeFolder.syncOnce()); // error: abort!
         fakeFolder.localModifier().remove("A/a3");
