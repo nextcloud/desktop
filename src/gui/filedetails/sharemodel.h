@@ -217,7 +217,7 @@ private slots:
     void slotDeleteE2EeShare(const SharePtr &share) const;
 
 private:
-    [[nodiscard]] QString displayStringForShare(const SharePtr &share) const;
+    [[nodiscard]] QString displayStringForShare(const SharePtr &share, bool verbose = false) const;
     [[nodiscard]] QString iconUrlForShare(const SharePtr &share) const;
     [[nodiscard]] QString avatarUrlForShare(const SharePtr &share) const;
     [[nodiscard]] long long enforcedMaxExpireDateForShare(const SharePtr &share) const;
@@ -253,6 +253,8 @@ private:
     QHash<QString, QPersistentModelIndex> _shareIdIndexHash;
     QHash<QString, QString> _shareIdRecentlySetPasswords;
     QVector<ShareePtr> _sharees;
+    // Buckets of sharees with the same display name
+    QHash<unsigned int, QSharedPointer<QSet<unsigned int>>> _duplicateDisplayNameShareIndices;
 };
 
 } // namespace OCC
