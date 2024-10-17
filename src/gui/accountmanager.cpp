@@ -338,7 +338,7 @@ void AccountManager::saveAccountHelper(Account *acc, QSettings &settings, bool s
     settings.setValue(QLatin1String(serverVersionC), acc->_serverVersion);
     settings.setValue(QLatin1String(serverColorC), acc->_serverColor);
     settings.setValue(QLatin1String(serverTextColorC), acc->_serverTextColor);
-    settings.setValue(QLatin1String(serverHasValidSubscriptionC), acc->capabilities().serverHasValidSubscription());
+    settings.setValue(QLatin1String(serverHasValidSubscriptionC), acc->serverHasValidSubscription());
 
     if (!acc->_skipE2eeMetadataChecksumValidation) {
         settings.remove(QLatin1String(skipE2eeMetadataChecksumValidationC));
