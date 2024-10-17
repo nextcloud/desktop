@@ -140,7 +140,8 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
     _actionGroupWidgets.insert(generalAction, generalSettings);
     _actionGroupWidgets.insert(networkAction, networkSettings);
 
-    foreach(auto account, AccountManager::instance()->accounts()) {
+    const auto accountsList = AccountManager::instance()->accounts();
+    for (const auto &account : accountsList) {
         accountAdded(account.data());
     }
 

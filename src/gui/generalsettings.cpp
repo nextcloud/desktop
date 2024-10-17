@@ -299,7 +299,7 @@ void GeneralSettings::loadUpdateChannelsList() {
         _ui->updateChannel->clear();
         _ui->updateChannel->addItems(_currentUpdateChannelList);
         const auto currentUpdateChannelIndex = _currentUpdateChannelList.indexOf(cfgFile.currentUpdateChannel());
-        _ui->updateChannel->setCurrentIndex(currentUpdateChannelIndex != -1? currentUpdateChannelIndex : 0);
+        _ui->updateChannel->setCurrentIndex(currentUpdateChannelIndex != -1 ? currentUpdateChannelIndex : 0);
         connect(_ui->updateChannel, &QComboBox::currentTextChanged, this, &GeneralSettings::slotUpdateChannelChanged);
     }
 }
