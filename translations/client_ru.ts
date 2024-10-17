@@ -1686,9 +1686,14 @@ This action will abort any currently running synchronization.</source>
     </message>
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="678"/>
-        <location filename="../src/libsync/discoveryphase.cpp" line="707"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="715"/>
         <source>Encrypted metadata setup error!</source>
         <translation>Ошибка настройки зашифрованных метаданных!</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/discoveryphase.cpp" line="702"/>
+        <source>Encrypted metadata setup error: initial signature from server is empty.</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -2276,32 +2281,37 @@ This means that the synchronization client might not upload local changes immedi
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1644"/>
-        <source>Many files in the server folder &quot;%1&quot; were deleted.
-
-If you restore the files, they will be uploaded again to the server.</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
         <location filename="../src/gui/folder.cpp" line="1645"/>
-        <source>Many files in the local folder &quot;%1&quot; were deleted.
-
-If you restore the files, they will be downloaded again from the server.</source>
+        <source>A large number of files in the server have been deleted.
+Please confirm if you'd like to proceed with these deletions.
+Alternatively, you can restore all deleted files by uploading from &apos;%1&apos; folder to the server.</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1646"/>
+        <source>A large number of files in your local '%1' folder have been deleted.
+Please confirm if you'd like to proceed with these deletions.
+Alternatively, you can restore all deleted files by downloading them from the server.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/folder.cpp" line="1647"/>
         <source>Remove all files?</source>
         <translation>Удалить все файлы?</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1650"/>
-        <source>Proceed to remove files</source>
+        <location filename="../src/gui/folder.cpp" line="1651"/>
+        <source>Proceed with Deletion</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1651"/>
-        <source>Restore files</source>
+        <location filename="../src/gui/folder.cpp" line="1652"/>
+        <source>Restore Files to Server</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/folder.cpp" line="1652"/>
+        <source>Restore Files from Server</source>
         <translation type="unfinished"/>
     </message>
 </context>

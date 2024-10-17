@@ -1688,9 +1688,14 @@ This action will abort any currently running synchronization.</source>
     </message>
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="678"/>
-        <location filename="../src/libsync/discoveryphase.cpp" line="707"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="715"/>
         <source>Encrypted metadata setup error!</source>
         <translation>暗号化されたメタデータのセットアップエラー！</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/discoveryphase.cpp" line="702"/>
+        <source>Encrypted metadata setup error: initial signature from server is empty.</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -2279,37 +2284,38 @@ This means that the synchronization client might not upload local changes immedi
         <translation>仮想のファイルのダウンロードは、コード &quot;%1&quot;、ステータス &quot;%2&quot;、エラーメッセージ &quot;%3&quot; で失敗しました。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1644"/>
-        <source>Many files in the server folder &quot;%1&quot; were deleted.
-
-If you restore the files, they will be uploaded again to the server.</source>
-        <translation>サーバフォルダ&quot;%1&quot;の多数のファイルが削除されました。
-
-ファイルを復元すると、サーバーに再度アップロードされます。</translation>
-    </message>
-    <message>
         <location filename="../src/gui/folder.cpp" line="1645"/>
-        <source>Many files in the local folder &quot;%1&quot; were deleted.
-
-If you restore the files, they will be downloaded again from the server.</source>
-        <translation>ローカルフォルダ&quot;%1&quot;の多くのファイルが削除されました。
-
-ファイルを復元すると、サーバーから再度ダウンロードされます。</translation>
+        <source>A large number of files in the server have been deleted.
+Please confirm if you'd like to proceed with these deletions.
+Alternatively, you can restore all deleted files by uploading from &apos;%1&apos; folder to the server.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1646"/>
+        <source>A large number of files in your local '%1' folder have been deleted.
+Please confirm if you'd like to proceed with these deletions.
+Alternatively, you can restore all deleted files by downloading them from the server.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/folder.cpp" line="1647"/>
         <source>Remove all files?</source>
         <translation>全てのファイルを削除しますか?</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1650"/>
-        <source>Proceed to remove files</source>
-        <translation>ファイルを削除します</translation>
+        <location filename="../src/gui/folder.cpp" line="1651"/>
+        <source>Proceed with Deletion</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1651"/>
-        <source>Restore files</source>
-        <translation>ファイルを復元する</translation>
+        <location filename="../src/gui/folder.cpp" line="1652"/>
+        <source>Restore Files to Server</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/folder.cpp" line="1652"/>
+        <source>Restore Files from Server</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
