@@ -511,11 +511,15 @@ void ShareModel::slotSharesFetched(const QList<SharePtr> &shares)
             if (sharee->format() == otherSharee->format()) {
                 hasDuplicates = true; // Reassign is faster
                 _duplicateDisplayNameShareIndices.insert(j);
+                const auto targetIndex = index(j);
+                dataChanged(targetIndex, targetIndex, {Qt::DisplayRole});
             }
         }
 
         if (hasDuplicates) {
             _duplicateDisplayNameShareIndices.insert(i);
+            const auto targetIndex = index(i);
+            dataChanged(targetIndex, targetIndex, {Qt::DisplayRole});
         }
     }
 
