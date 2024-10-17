@@ -116,7 +116,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/qml/credentials/BasicAuthCredentials.qml" line="83"/>
+        <location filename="../src/gui/qml/credentials/BasicAuthCredentials.qml" line="85"/>
         <source>Log in</source>
         <translation type="unfinished"></translation>
     </message>
@@ -238,13 +238,13 @@ File synchronization desktop utility.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/qml/credentials/Credentials.qml" line="90"/>
+        <location filename="../src/gui/qml/credentials/Credentials.qml" line="94"/>
         <source>Connecting %1 to:
 %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/qml/credentials/Credentials.qml" line="90"/>
+        <location filename="../src/gui/qml/credentials/Credentials.qml" line="94"/>
         <source>Connecting to:
 %1</source>
         <translation type="unfinished"></translation>
@@ -514,7 +514,7 @@ File synchronization desktop utility.</source>
     </message>
     <message>
         <location filename="../src/gui/qml/credentials/OAuthCredentials.qml" line="65"/>
-        <source>Copy url</source>
+        <source>Copy URL</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

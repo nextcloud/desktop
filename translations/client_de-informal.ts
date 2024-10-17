@@ -96,7 +96,7 @@
     <message>
         <location filename="../src/gui/qml/credentials/BasicAuthCredentials.qml" line="29"/>
         <source>Please enter %1 and password to log in.</source>
-        <translation>Bitte %1 und das Passwort eingeben um sich anzumelden.</translation>
+        <translation>Bitte %1 und das Passwort eingeben, um sich anzumelden.</translation>
     </message>
     <message>
         <location filename="../src/gui/qml/credentials/BasicAuthCredentials.qml" line="37"/>
@@ -485,7 +485,7 @@ Datei Synchronisations-Applikation.</translation>
     <message>
         <location filename="../src/gui/notificationwidget.ui" line="113"/>
         <source>Action button group</source>
-        <translation>Aktionsbuttongruppe</translation>
+        <translation>Aktionsschaltflächengruppe</translation>
     </message>
 </context>
 <context>
@@ -493,22 +493,22 @@ Datei Synchronisations-Applikation.</translation>
     <message>
         <location filename="../src/gui/qml/credentials/OAuthCredentials.qml" line="31"/>
         <source>Log in with your web browser</source>
-        <translation>Melde dich über deinen Browser an</translation>
+        <translation>Melde dich mit deinen Browser an</translation>
     </message>
     <message>
         <location filename="../src/gui/qml/credentials/OAuthCredentials.qml" line="31"/>
         <source>Login failed, please try it again</source>
-        <translation>Anmeldung fehlgeschlagen, bitte nochmal probieren</translation>
+        <translation>Die Anmeldung ist fehlgeschlagen. Bitte versuche es erneut.</translation>
     </message>
     <message>
         <location filename="../src/gui/qml/credentials/OAuthCredentials.qml" line="49"/>
         <source>Reopen web browser</source>
-        <translation>Web Browser erneut öffnen</translation>
+        <translation>Webbrowser erneut öffnen</translation>
     </message>
     <message>
         <location filename="../src/gui/qml/credentials/OAuthCredentials.qml" line="49"/>
         <source>Open web brower</source>
-        <translation>Web Browser öffnen</translation>
+        <translation>Webbrowser öffnen</translation>
     </message>
     <message>
         <location filename="../src/gui/qml/credentials/OAuthCredentials.qml" line="64"/>
@@ -518,7 +518,7 @@ Datei Synchronisations-Applikation.</translation>
     <message>
         <location filename="../src/gui/qml/credentials/OAuthCredentials.qml" line="96"/>
         <source>Restart authenticaion</source>
-        <translation>Synchronisation neu starten</translation>
+        <translation>Authentifizierung neu starten</translation>
     </message>
 </context>
 <context>
@@ -566,7 +566,7 @@ Datei Synchronisations-Applikation.</translation>
     <message>
         <location filename="../src/gui/aboutdialog.cpp" line="165"/>
         <source>&lt;html&gt;The update channel determines which client updates will be offered for installation.&lt;ul&gt;&lt;li&gt;&quot;ownCloud 10 LTS&quot; contains only upgrades that are considered reliable&lt;/li&gt;&lt;li&gt;&quot;ownCloud Infinite Scale stable&quot; contains only upgrades that are considered reliable but &lt;b&gt;removes support for &quot;ownCloud 10&quot;&lt;/b&gt;&lt;/li&gt;%1&lt;/ul&gt;&lt;br&gt;⚠️Downgrades are not supported. If you switch to a stable channel this change will only be applied with the next major release.&lt;/html&gt;</source>
-        <translation>&lt;html&gt;Der Aktualisierungskanal besteímmt welcher Client Updates zur Installation angeboten werden.&lt;ul&gt;&lt;li&gt;&quot;ownCloud 10 LTS&quot; beinhaltet nur Aktualisierungen, die als zuverlässig gelten&lt;/li&gt;&lt;li&gt;&quot;ownCloud Infinite Scale stable&quot; beinhaltet nur Aktualisierungen, die als zuverlässig gelten&lt;b&gt;entfernt aber die Unterstützung von &quot;ownCloud 10&quot;&lt;/b&gt;&lt;/li&gt;%1&lt;/ul&gt;&lt;br&gt;⚠️Downgrades werden nicht unterstützt. Wird zum stabilen Kanal gewechselt, erfolgt dies erst mit dem nächsten Major Release.&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;Der Update-Kanal bestimmt, welche Client-Updates zur Installation angeboten werden.&lt;ul&gt;&lt;li&gt;&quot;ownCloud 10 LTS&quot; enthält nur Upgrades, die als zuverlässig gelten&lt;/li&gt;&lt;li&gt;&quot;ownCloud Infinite Scale stable&quot; enthält nur Upgrades, die als zuverlässig gelten, aber &lt;b&gt;entfernt die Unterstützung für &quot;ownCloud 10&quot;&lt;/b&gt;&lt;/li&gt;%1&lt;/ul&gt;&lt;br&gt;⚠️Downgrades werden nicht unterstützt. Wenn Du zu einem stabilen Kanal wechselst, wird diese Änderung erst mit der nächsten Hauptversion übernommen.&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/aboutdialog.cpp" line="172"/>
@@ -681,7 +681,7 @@ Datei Synchronisations-Applikation.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="88"/>
         <source>Account options menu</source>
-        <translation>Kontooptionen-Menü</translation>
+        <translation>Menü „Kontooptionen“</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="90"/>
@@ -691,7 +691,7 @@ Datei Synchronisations-Applikation.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="134"/>
         <source>Sync options menu</source>
-        <translation>Synchronisationsoptionen-Menü</translation>
+        <translation>Menü „Synchronisierungsoptionen“</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="140"/>
@@ -787,7 +787,7 @@ Das Feature &quot;selective sync&quot; wird wieder verfügbar. Diese Aktion bric
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="498"/>
         <source>Server is currently in maintenance mode</source>
-        <translation>Server befindet sich gerade im Wartungsmodus</translation>
+        <translation>Server befindet sich im Wartungsmodus</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="501"/>
@@ -817,7 +817,7 @@ Das Feature &quot;selective sync&quot; wird wieder verfügbar. Diese Aktion bric
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="517"/>
         <source>Server configuration error</source>
-        <translation>Server Verbindungsfehler</translation>
+        <translation>Serverkonfigurationsfehler</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="523"/>
@@ -899,12 +899,12 @@ Das Feature &quot;selective sync&quot; wird wieder verfügbar. Diese Aktion bric
         <location filename="../src/gui/activitywidget.cpp" line="460"/>
         <location filename="../src/gui/activitywidget.cpp" line="508"/>
         <source>Server Activity</source>
-        <translation>Server aktivität</translation>
+        <translation>Serveraktivität</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="467"/>
         <source>Local Activity</source>
-        <translation>Lokaler Aktivität</translation>
+        <translation>Lokale Aktivität</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="516"/>
@@ -923,7 +923,7 @@ Das Feature &quot;selective sync&quot; wird wieder verfügbar. Diese Aktion bric
     <message>
         <location filename="../src/gui/activitywidget.ui" line="14"/>
         <source>Server activities</source>
-        <translation>Server Aktivitäten</translation>
+        <translation>Serveraktivitäten</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.ui" line="73"/>
@@ -933,7 +933,7 @@ Das Feature &quot;selective sync&quot; wird wieder verfügbar. Diese Aktion bric
     <message>
         <location filename="../src/gui/activitywidget.ui" line="91"/>
         <source>Server activity table</source>
-        <translation>Server Aktivitätstabelle</translation>
+        <translation>Serveraktivitätstabelle</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="101"/>
@@ -944,7 +944,7 @@ Das Feature &quot;selective sync&quot; wird wieder verfügbar. Diese Aktion bric
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="148"/>
         <source>&amp;Server Activities</source>
-        <translation>&amp;Server Aktivitäten</translation>
+        <translation>&amp;Serveraktivitäten</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="149"/>
@@ -1553,7 +1553,7 @@ Andernfalls verlieren sie Zugriff auf ihre synchronisierten Ordner!</translation
     <message>
         <location filename="../src/gui/generalsettings.ui" line="41"/>
         <source>Use Monochrome Icons in the system tray</source>
-        <translation>Verwende einfarbige Symbole in der Taskleiste</translation>
+        <translation>Verwenden Sie monochrome Symbole in der Taskleiste</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="48"/>
@@ -1563,7 +1563,7 @@ Andernfalls verlieren sie Zugriff auf ihre synchronisierten Ordner!</translation
     <message>
         <location filename="../src/gui/generalsettings.ui" line="55"/>
         <source>Start on Login</source>
-        <translation>Mit Anmeldung starten</translation>
+        <translation>Beim Anmeldung starten</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="73"/>
