@@ -167,6 +167,9 @@ public:
     [[nodiscard]] bool optionalServerNotifications() const;
     void setOptionalServerNotifications(bool show);
 
+    [[nodiscard]] bool showChatNotifications() const;
+    void setShowChatNotifications(bool show);
+
     [[nodiscard]] bool showCallNotifications() const;
     void setShowCallNotifications(bool show);
 
