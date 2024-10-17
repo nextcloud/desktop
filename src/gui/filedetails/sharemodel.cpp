@@ -504,16 +504,14 @@ void ShareModel::slotSharesFetched(const QList<SharePtr> &shares)
         auto hasDuplicates = false;
         for (auto j = i + 1; j < shareCount; ++j) {
             const auto otherSharee = _shares.at(j)->getShareWith();
-            if (otherSharee == nullptr) {
+            if (otherSharee == nullptr || sharee->format() != otherSharee->format()) {
                 continue;
             }
 
-            if (sharee->format() == otherSharee->format()) {
-                hasDuplicates = true; // Reassign is faster
-                _duplicateDisplayNameShareIndices.insert(j);
-                const auto targetIndex = index(j);
-                dataChanged(targetIndex, targetIndex, {Qt::DisplayRole});
-            }
+            hasDuplicates = true; // Reassign is faster
+            _duplicateDisplayNameShareIndices.insert(j);
+            const auto targetIndex = index(j);
+            dataChanged(targetIndex, targetIndex, {Qt::DisplayRole});
         }
 
         if (hasDuplicates) {
