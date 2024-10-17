@@ -293,7 +293,7 @@ void GeneralSettings::loadMiscSettings()
 #if defined(BUILD_UPDATER)
 void GeneralSettings::loadUpdateChannelsList() {
     ConfigFile cfgFile;
-    if (_currentUpdateChannelList != cfgFile.validUpdateChannels()) {
+    if (_currentUpdateChannelList != cfgFile.validUpdateChannels() && !cfgFile.serverHasValidSubscription()) {
         _currentUpdateChannelList = cfgFile.validUpdateChannels();
         _ui->updateChannel->clear();
         _ui->updateChannel->addItems(_currentUpdateChannelList);
