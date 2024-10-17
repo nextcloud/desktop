@@ -217,7 +217,7 @@ private slots:
     void slotDeleteE2EeShare(const SharePtr &share) const;
 
 private:
-    [[nodiscard]] QString displayStringForShare(const SharePtr &share) const;
+    [[nodiscard]] QString displayStringForShare(const SharePtr &share, bool verbose = false) const;
     [[nodiscard]] QString iconUrlForShare(const SharePtr &share) const;
     [[nodiscard]] QString avatarUrlForShare(const SharePtr &share) const;
     [[nodiscard]] long long enforcedMaxExpireDateForShare(const SharePtr &share) const;
