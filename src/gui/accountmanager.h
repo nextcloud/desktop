@@ -129,6 +129,9 @@ private:
     // Adds an account to the tracked list, emitting accountAdded()
     void addAccountState(AccountState *const accountState);
 
+    // update config serverHasValidSubscription when accounts list changes
+    void updateServerHasValidSubscriptionConfig();
+
     AccountManager() = default;
     QList<AccountStatePtr> _accounts;
     /// Account ids from settings that weren't read
