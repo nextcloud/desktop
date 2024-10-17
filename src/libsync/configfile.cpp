@@ -707,32 +707,25 @@ QString ConfigFile::defaultUpdateChannel() const
     if (serverHasValidSubscription() && !isBranded) {
         if (const auto serverChannel = desktopEnterpriseChannel();
             validUpdateChannels().contains(serverChannel)) {
-            qCWarning(lcConfigFile()) << "Enforcing update channel" << serverChannel << "because that is the desktop enterprise channel returned by the server.";
+            qCWarning(lcConfigFile()) << "Default update channel is" << serverChannel << "because that is the desktop enterprise channel returned by the server.";
             return serverChannel;
         }
     }
 
     if (const auto currentVersionSuffix = Theme::instance()->versionSuffix();
         validUpdateChannels().contains(currentVersionSuffix) && !isBranded) {
-        qCWarning(lcConfigFile()) << "Enforcing update channel" << currentVersionSuffix << "because of the version suffix of the current client.";
+        qCWarning(lcConfigFile()) << "Default update channel is" << currentVersionSuffix << "because of the version suffix of the current client.";
         return currentVersionSuffix;
     }
 
-    qCWarning(lcConfigFile()) << "Enforcing default update channel" << defaultUpdateChannelName;
+    qCWarning(lcConfigFile()) << "Default update channel is" << defaultUpdateChannelName;
     return defaultUpdateChannelName;
 }
 
 QString ConfigFile::currentUpdateChannel() const
 {
-    auto updateChannel = defaultUpdateChannel();
     QSettings settings(configFile(), QSettings::IniFormat);
-    if (const auto configUpdateChannel = settings.value(QLatin1String(updateChannelC), updateChannel).toString();
-        validUpdateChannels().contains(configUpdateChannel)) {
-        qCWarning(lcConfigFile()) << "Config file has a valid update channel:" << configUpdateChannel;
-        updateChannel = configUpdateChannel;
-    }
-
-    return updateChannel;
+    return settings.value(QLatin1String(updateChannelC), defaultUpdateChannel()).toString();
 }
 
 void ConfigFile::setUpdateChannel(const QString &channel)
