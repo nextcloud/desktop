@@ -253,6 +253,7 @@ private:
     QHash<QString, QPersistentModelIndex> _shareIdIndexHash;
     QHash<QString, QString> _shareIdRecentlySetPasswords;
     QVector<ShareePtr> _sharees;
+    QSet<unsigned int> _duplicateDisplayNameShareIndices;
 };
 
 } // namespace OCC

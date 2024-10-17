@@ -486,6 +486,38 @@ void ShareModel::slotSharesFetched(const QList<SharePtr> &shares)
         slotAddShare(share);
     }
 
+    // Perform forward pass on shares and check for duplicate display names; store these indeces so
+    // we can check for these and display the specific user identifier in the display string later
+    _duplicateDisplayNameShareIndices.clear();
+    const auto shareCount = _shares.count();
+    for (auto i = 0; i < shareCount; ++i) {
+        if (_duplicateDisplayNameShareIndices.contains(i)) {
+            continue;
+        }
+
+        const auto sharee = _shares.at(i)->getShareWith();
+        if (sharee == nullptr) {
+            continue;
+        }
+
+        auto hasDuplicates = false;
+        for (auto j = i + 1; j < shareCount; ++j) {
+            const auto otherSharee = _shares.at(j)->getShareWith();
+            if (otherSharee == nullptr) {
+                continue;
+            }
+
+            if (sharee->format() == otherSharee->format()) {
+                hasDuplicates = true; // Reassign is faster
+                _duplicateDisplayNameShareIndices.insert(j);
+            }
+        }
+
+        if (hasDuplicates) {
+            _duplicateDisplayNameShareIndices.insert(i);
+        }
+    }
+
     handleLinkShare();
 }
 
