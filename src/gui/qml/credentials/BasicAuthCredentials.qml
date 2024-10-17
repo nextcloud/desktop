@@ -30,67 +30,74 @@ Credentials {
         text: credentials.isReadOnlyName ? qsTr("Please enter your password to log in.") : qsTr("Please enter %1 and password to log in.").arg(credentials.userNameLabel)
     }
 
-    Label {
-        text: credentials.userNameLabel
-    }
-    TextField {
-        id: userNameField
-        placeholderText: qsTr("Enter %1").arg(credentials.userNameLabel)
-        horizontalAlignment: TextField.AlignHCenter
-        text: credentials.userName
-        enabled: !credentials.isReadOnlyName
-        onTextChanged: {
-            credentials.userName = text;
-        }
+    ColumnLayout {
+        // Treat the user name and password fields, the labels, and the buttons as one single group,
+        // so they are always placed and layed out together.
+        Layout.alignment: Qt.AlignHCenter
+        Layout.fillWidth: false
 
-        Keys.onBacktabPressed: {
-            widget.parentFocusWidget.focusPrevious();
+        Label {
+            text: credentials.userNameLabel
         }
-    }
+        TextField {
+            id: userNameField
+            Layout.fillWidth: true
+            placeholderText: qsTr("Enter %1").arg(credentials.userNameLabel)
+            horizontalAlignment: TextField.AlignHCenter
+            text: credentials.userName
+            enabled: !credentials.isReadOnlyName
+            onTextChanged: {
+                credentials.userName = text;
+            }
 
-    Label {
-        text: qsTr("Password")
-    }
-    TextField {
-        id: passwordField
-        horizontalAlignment: TextField.AlignHCenter
-        placeholderText: qsTr("Enter Password")
-        text: credentials.password
-        echoMode: TextField.PasswordEchoOnEdit
-        onTextChanged: {
-            credentials.password = text;
-        }
-        Keys.onTabPressed: event => {
-            // there is no lougout button
-            if (!credentials.isRefresh) {
-                widget.parentFocusWidget.focusNext();
-                event.accepted = true;
-            } else {
-                event.accepted = false;
+            Keys.onBacktabPressed: {
+                widget.parentFocusWidget.focusPrevious();
             }
         }
-    }
 
-    Item {
-        Layout.maximumHeight: 40
-        Layout.fillHeight: true
-    }
+        Label {
+            text: qsTr("Password")
+        }
+        TextField {
+            id: passwordField
+            Layout.fillWidth: true
+            horizontalAlignment: TextField.AlignHCenter
+            placeholderText: qsTr("Enter Password")
+            text: credentials.password
+            echoMode: TextField.PasswordEchoOnEdit
+            onTextChanged: {
+                credentials.password = text;
+            }
+            Keys.onTabPressed: event => {
+                // there is no lougout button
+                if (!credentials.isRefresh) {
+                    widget.parentFocusWidget.focusNext();
+                    event.accepted = true;
+                } else {
+                    event.accepted = false;
+                }
+            }
+        }
 
-    Button {
-        id: loginButton
-        Layout.alignment: Qt.AlignHCenter
-        Layout.preferredWidth: userNameField.implicitWidth
-        // don't show this button in the wizard
-        visible: credentials.isRefresh
-        text: qsTr("Log in")
-        enabled: credentials.ready
-        onClicked: credentials.loginRequested()
-    }
+        Item {
+            Layout.maximumHeight: 40
+            Layout.fillHeight: true
+        }
 
-    Loader {
-        Layout.alignment: Qt.AlignHCenter
-        Layout.preferredWidth: passwordField.implicitWidth
-        sourceComponent: logOutButton
+        Button {
+            id: loginButton
+            Layout.fillWidth: true
+            // don't show this button in the wizard
+            visible: credentials.isRefresh
+            text: qsTr("Log in")
+            enabled: credentials.ready
+            onClicked: credentials.loginRequested()
+        }
+
+        Loader {
+            Layout.fillWidth: true
+            sourceComponent: logOutButton
+        }
     }
 
     Connections {
