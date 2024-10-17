@@ -642,7 +642,7 @@ void ShareModel::slotRemoveSharee(const ShareePtr &sharee)
     Q_EMIT shareesChanged();
 }
 
-QString ShareModel::displayStringForShare(const SharePtr &share) const
+QString ShareModel::displayStringForShare(const SharePtr &share, const bool verbose) const
 {
     if (const auto linkShare = share.objectCast<LinkShare>()) {
 
@@ -662,7 +662,8 @@ QString ShareModel::displayStringForShare(const SharePtr &share) const
     } else if (share->getShareType() == Share::TypeSecureFileDropPlaceholderLink) {
         return tr("Secure file drop");
     } else if (share->getShareWith()) {
-        return share->getShareWith()->format();
+        const auto sharee = share->getShareWith();
+        return verbose ? QString{"%1 (%2)"}.arg(sharee->format(), sharee->shareWith()) : sharee->format();
     }
 
     qCWarning(lcShareModel) << "Unable to provide good display string for share";
