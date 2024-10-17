@@ -1079,7 +1079,7 @@ void Account::updateServerSubcription()
 {
     ConfigFile currentConfig;
     if (const auto serverHasValidSubscription = _capabilities.serverHasValidSubscription();
-        serverHasValidSubscription != currentConfig.serverHasValidSubscription()) {
+        serverHasValidSubscription != currentConfig.serverHasValidSubscription() && !serverHasValidSubscription) {
         currentConfig.setServerHasValidSubscription(serverHasValidSubscription);
     }
 }
