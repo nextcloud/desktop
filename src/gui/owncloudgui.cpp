@@ -64,6 +64,10 @@
 #include <QQuickItem>
 #include <QQmlContext>
 
+#ifdef Q_OS_MAC
+#include "foregroundbackground_interface.h"
+#endif
+
 #ifdef BUILD_FILE_PROVIDER_MODULE
 #include "macOS/fileprovider.h"
 #include "macOS/fileproviderdomainmanager.h"
@@ -598,6 +602,10 @@ void ownCloudGui::slotShowSettings()
     if (_settingsDialog.isNull()) {
         _settingsDialog = new SettingsDialog(this);
         _settingsDialog->setAttribute(Qt::WA_DeleteOnClose, true);
+#ifdef Q_OS_MAC
+        auto *fgbg = new ForegroundBackground();
+        _settingsDialog->installEventFilter(fgbg);
+#endif
         _settingsDialog->show();
     }
     raiseDialog(_settingsDialog.data());
