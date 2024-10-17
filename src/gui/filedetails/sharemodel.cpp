@@ -90,7 +90,8 @@ QVariant ShareModel::data(const QModelIndex &index, const int role) const
 {
     Q_ASSERT(checkIndex(index, QAbstractItemModel::CheckIndexOption::IndexIsValid | QAbstractItemModel::CheckIndexOption::ParentIsInvalid));
 
-    const auto share = _shares.at(index.row());
+    const auto shareIdx = index.row();
+    const auto share = _shares.at(shareIdx);
 
     if (!share) {
         return {};
@@ -138,7 +139,7 @@ QVariant ShareModel::data(const QModelIndex &index, const int role) const
 
     switch (role) {
     case Qt::DisplayRole:
-        return displayStringForShare(share);
+        return displayStringForShare(share, _duplicateDisplayNameShareIndices.contains(shareIdx));
     case ShareRole:
         return QVariant::fromValue(share);
     case ShareTypeRole:
