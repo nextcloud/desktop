@@ -647,9 +647,25 @@ void ShareModel::slotRemoveShareWithId(const QString &shareId)
     const auto sharee = share->getShareWith();
     slotRemoveSharee(sharee);
 
-    beginRemoveRows({}, shareIndex.row(), shareIndex.row());
-    _shares.removeAt(shareIndex.row());
+    const auto shareRow = shareIndex.row();
+    beginRemoveRows({}, shareRow, shareRow);
+    _shares.removeAt(shareRow);
     endRemoveRows();
+
+    // Handle display name duplicates now. First remove the index from the bucket it was in; then,
+    // check if this removal means the remaining index in the bucket is no longer a duplicate.
+    // If this is the case then handle the update for this item too.
+    const auto duplicateShares = _duplicateDisplayNameShareIndices.value(shareRow);
+    if (duplicateShares) {
+        duplicateShares->remove(shareRow);
+        if (duplicateShares->count() == 1) {
+            const auto noLongerDuplicateIndex = *(duplicateShares->begin());
+            _duplicateDisplayNameShareIndices.remove(noLongerDuplicateIndex);
+            const auto noLongerDuplicateModelIndex = index(noLongerDuplicateIndex);
+            Q_EMIT dataChanged(noLongerDuplicateModelIndex, noLongerDuplicateModelIndex, {Qt::DisplayRole});
+        }
+        _duplicateDisplayNameShareIndices.remove(shareRow);
+    }
 
     handleLinkShare();
 
