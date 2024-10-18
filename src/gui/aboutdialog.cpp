@@ -86,8 +86,8 @@ void AboutDialog::setupUpdaterWidget()
     }
     // we want to attach the known english identifiers which are also used within the configuration file as user data inside the data model
     // that way, when we intend to reset to the original selection when the dialog, we can look up the config file's stored value in the data model
-    ui->updateChannel->addItem(tr("ownCloud 10 LTS"), QStringLiteral("stable"));
-    ui->updateChannel->addItem(tr("ownCloud Infinite Scale stable"), QStringLiteral("ocis"));
+    ui->updateChannel->addItem(QStringLiteral("ownCloud 10 LTS"), QStringLiteral("stable"));
+    ui->updateChannel->addItem(QStringLiteral("ownCloud Infinite Scale stable"), QStringLiteral("ocis"));
     if (!Resources::isVanillaTheme()) {
         ui->updateChannel->addItem(tr("beta"), QStringLiteral("beta"));
     }
