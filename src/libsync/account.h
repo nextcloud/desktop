@@ -409,6 +409,9 @@ public:
     [[nodiscard]] unsigned int downloadLimit() const;
     void setDownloadLimit(unsigned int kbytes);
 
+    [[nodiscard]] bool serverHasValidSubscription() const;
+    void setServerHasValidSubscription(bool valid);
+
 public slots:
     /// Used when forgetting credentials
     void clearQNAMCache();
@@ -551,6 +554,8 @@ private:
     AccountNetworkTransferLimitSetting _downloadLimitSetting = AccountNetworkTransferLimitSetting::GlobalLimit;
     unsigned int _uploadLimit = 0;
     unsigned int _downloadLimit = 0;
+
+    bool _serverHasValidSubscription = false;
 
     /* IMPORTANT - remove later - FIXME MS@2019-12-07 -->
      * TODO: For "Log out" & "Remove account": Remove client CA certs and KEY!
