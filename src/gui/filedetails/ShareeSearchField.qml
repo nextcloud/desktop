@@ -42,7 +42,7 @@ TextField {
     readonly property double iconsScaleFactor: 0.6
 
     function triggerSuggestionsVisibility() {
-        shareeListView.count > 0 ? suggestionsPopup.open() : suggestionsPopup.close();
+        !contextMenu.opened && shareeListView.count > 0 ? suggestionsPopup.open() : suggestionsPopup.close();
     }
 
     placeholderText: enabled ? qsTr("Search for users or groups…") : qsTr("Sharing is not available for this folder")
