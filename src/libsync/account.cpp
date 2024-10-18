@@ -388,9 +388,20 @@ void Account::lendCookieJarTo(QNetworkAccessManager *guest)
     jar->setParent(oldParent); // takes it back
 }
 
+void Account::tryMigrateCookieJar()
+{
+    QString oldCookieJarPath = QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation) + "/cookies" + id() + ".db";
+    if (QFile::exists(oldCookieJarPath))
+    {
+        qDebug() << "Migrating cookie jar from "<< oldCookieJarPath << "to " << cookieJarPath();
+        if (!QFile::rename(oldCookieJarPath, cookieJarPath()))
+            qWarning() << "Failed to migrate cookie jar";
+    }
+}
+
 QString Account::cookieJarPath()
 {
-    return QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation) + "/cookies" + id() + ".db";
+    return QStandardPaths::writableLocation(QStandardPaths::StateLocation) + "/cookies" + id() + ".db";
 }
 
 void Account::resetNetworkAccessManager()
