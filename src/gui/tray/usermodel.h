@@ -76,7 +76,7 @@ public:
     [[nodiscard]] Folder *getFolder() const;
     ActivityListModel *getActivityModel();
     [[nodiscard]] UnifiedSearchResultsListModel *getUnifiedSearchResultsListModel() const;
-    void openLocalFolder();
+    void openLocalFolder() const;
     void openFolderLocallyOrInBrowser(const QString &fullRemotePath);
     [[nodiscard]] QString name() const;
     [[nodiscard]] QString server(bool shortened = true) const;
