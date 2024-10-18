@@ -30,7 +30,7 @@
     <message>
         <location filename="../src/gui/tray/ActivityList.qml" line="31"/>
         <source>Activity list</source>
-        <translation>قائمة الحركات</translation>
+        <translation>قائمة الأنشطة</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/ActivityList.qml" line="108"/>
@@ -200,7 +200,7 @@
     <message>
         <location filename="../src/gui/filedetails/FileDetailsPage.qml" line="229"/>
         <source>Activity</source>
-        <translation>الحركات</translation>
+        <translation>الأنشطة</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/FileDetailsPage.qml" line="238"/>
@@ -474,7 +474,7 @@
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="564"/>
         <source>Open local or group folders</source>
-        <translation>فتح المجلدات المحلية و الجماعية</translation>
+        <translation>فتح المجلدات المحلية أو مجلدات المجموعة</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="602"/>
@@ -494,7 +494,7 @@
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="833"/>
         <source>New activities</source>
-        <translation>لا شيء في سجل الحركات</translation>
+        <translation>أنشطة جديدة</translation>
     </message>
 </context>
 <context>
@@ -1088,12 +1088,12 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/tray/activitylistmodel.cpp" line="490"/>
         <source>For more activities please open the Activity app.</source>
-        <translation>للمزيد عن الحركات، إفتح تطبيق الحركات Activity app.</translation>
+        <translation>للمزيد عن الأنشطة، إفتح تطبيق الأنشطة.</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/activitylistmodel.cpp" line="510"/>
         <source>Fetching activities …</source>
-        <translation>جلب الحركات activities ...</translation>
+        <translation>جلب الأنشطة...</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/activitylistmodel.cpp" line="566"/>
@@ -1590,7 +1590,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/conflictdialog.cpp" line="178"/>
         <source>Keep server version</source>
-        <translation>إحتفظ بنسخة الخادوم</translation>
+        <translation>إحتفظ بنسخة الخادم</translation>
     </message>
 </context>
 <context>
@@ -1652,7 +1652,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/connectionvalidator.cpp" line="286"/>
         <source>The configured server for this client is too old</source>
-        <translation>تهيئة الخادوم في هذا العميل قديمة جداً</translation>
+        <translation>تهيئة الخادم في تطبيق العميل هذا قديمة جداً</translation>
     </message>
     <message>
         <location filename="../src/gui/connectionvalidator.cpp" line="287"/>
@@ -1690,7 +1690,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="702"/>
         <source>Encrypted metadata setup error: initial signature from server is empty.</source>
-        <translation type="unfinished"/>
+        <translation>خطأ في إعداد البيانات الوصفية المشفرة: التوقيع الأوّلي من الخادوم فارغ.</translation>
     </message>
 </context>
 <context>
@@ -2146,7 +2146,7 @@ This can be an issue with your OpenSSL libraries.</source>
     <message>
         <location filename="../src/gui/folder.cpp" line="472"/>
         <source>%1 could not be synced due to an error. See the log for details.</source>
-        <translation>%1 تعذّرت مزامنته. راجع سجل الحركات log لمزيد التفاصيل.</translation>
+        <translation>%1 تعذّرت مزامنته. راجع سجل الأحداث لمزيد التفاصيل.</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="477"/>
@@ -2161,7 +2161,7 @@ This can be an issue with your OpenSSL libraries.</source>
     <message>
         <location filename="../src/gui/folder.cpp" line="487"/>
         <source>Sync Activity</source>
-        <translation>حركات المزامنة Sync Activity</translation>
+        <translation>أنشطة المزامنة</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="942"/>
@@ -2278,14 +2278,14 @@ This means that the synchronization client might not upload local changes immedi
         <source>A large number of files in the server have been deleted.
 Please confirm if you'd like to proceed with these deletions.
 Alternatively, you can restore all deleted files by uploading from &apos;%1&apos; folder to the server.</source>
-        <translation type="unfinished"/>
+        <translation>لقد تم حذف عدد كبير من الملفات الموجودة على الخادوم. يرجى التأكيد إذا كنت ترغب في متابعة عمليات الحذف هذه. بدلاً من ذلك، يمكنك استعادة جميع الملفات المحذوفة عن طريق التحميل من المجلد &apos;%1&apos; إلى الخادوم.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1646"/>
         <source>A large number of files in your local '%1' folder have been deleted.
 Please confirm if you'd like to proceed with these deletions.
 Alternatively, you can restore all deleted files by downloading them from the server.</source>
-        <translation type="unfinished"/>
+        <translation>لقد تم حذف عدد كبير من الملفات في المجلد المحلي &apos;%1&apos;. يرجى التأكيد إذا كنت ترغب في متابعة عمليات الحذف هذه.بدلاً من ذلك، يمكنك استعادة جميع الملفات المحذوفة عن طريق تنزيلها من الخادوم.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1647"/>
@@ -2295,17 +2295,17 @@ Alternatively, you can restore all deleted files by downloading them from the se
     <message>
         <location filename="../src/gui/folder.cpp" line="1651"/>
         <source>Proceed with Deletion</source>
-        <translation type="unfinished"/>
+        <translation>إستمر في الحذف ...</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1652"/>
         <source>Restore Files to Server</source>
-        <translation type="unfinished"/>
+        <translation>قم باستعادة الملفات إلى الخادم</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1652"/>
         <source>Restore Files from Server</source>
-        <translation type="unfinished"/>
+        <translation>قم باستعادة الملفات من الخادم</translation>
     </message>
 </context>
 <context>
@@ -3215,7 +3215,7 @@ Downgrading versions is not possible immediately: changing from stable to enterp
     <message>
         <location filename="../src/gui/ignorelisteditor.ui" line="20"/>
         <source>Global Ignore Settings</source>
-        <translation>إعدادات التجاهل العامة Global Ignore</translation>
+        <translation>إعدادات التجاهل الشاملة</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.ui" line="26"/>
@@ -3458,7 +3458,7 @@ If enabled, logs will be written to %1</source>
         <location filename="../src/gui/logbrowser.cpp" line="70"/>
         <source>This setting persists across client restarts.
 Note that using any logging command line options will override this setting.</source>
-        <translation>سيستمر هذا الإعداد مهما أُعيد تشغيل العميل. لاحظ أن استخدام أي خيارات لتسجيل الحركات من سطر الأوامر logging command line options سيؤدي إلى تجاوز هذا الإعداد.</translation>
+        <translation>يستمر هذا الإعداد عبر عمليات إعادة تشغيل العميل. يرجى ملاحظة أن استخدام أي خيارات سطر أوامر لتسجيل الأحداث سيتجاوز هذا الإعداد.</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="77"/>
@@ -3662,12 +3662,12 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/networksettings.cpp" line="41"/>
         <source>Username for proxy server</source>
-        <translation>اسم المستخدم للخادوم الوكيل</translation>
+        <translation>اسم المستخدم للخادم الوكيل</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.cpp" line="42"/>
         <source>Password for proxy server</source>
-        <translation>كلمة مرور للخادوم الوكيل</translation>
+        <translation>كلمة مرور للخادم الوكيل</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.cpp" line="44"/>
@@ -3735,7 +3735,7 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="170"/>
         <source>Checking update server …</source>
-        <translation>جارٍ التحقق من خادوم التحديثات ...</translation>
+        <translation>جارٍ التحقق من خادم التحديثات ...</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="172"/>
@@ -3901,7 +3901,7 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="239"/>
         <source>Server address does not seem to be valid</source>
-        <translation>عنوان الخادوم يبدو غير صحيح</translation>
+        <translation>عنوان الخادم يبدو غير صحيح</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="350"/>
@@ -4283,7 +4283,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>تعذّرت المزامنة لأن وقت آخر تعديل للملف غير صالح</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1083"/>
+        <location filename="../src/libsync/discovery.cpp" line="1082"/>
         <source>Could not upload file, because it is open in &quot;%1&quot;.</source>
         <translation>يتعذّر فتح الملف لأنه مفتوح سلفاً في &quot;%1&quot;.</translation>
     </message>
@@ -5006,7 +5006,7 @@ Server replied with error: %2</source>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1134"/>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1363"/>
         <source>Activity</source>
-        <translation>الحركات</translation>
+        <translation>الأنشطة</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1136"/>
@@ -6021,23 +6021,23 @@ Server replied with error: %2</source>
         <translation>لم يتم تكوين مجلدات مزامنة</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="435"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="439"/>
         <source>%1: %2</source>
         <extracomment>Example text: &quot;Nextcloud: Syncing 25MB (3 minutes left)&quot; (%1 is the folder name to be synced, %2 a status message for that folder)</extracomment>
         <translation>%1: %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="439"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="443"/>
         <source>macOS VFS for %1: Sync is running.</source>
         <translation>macOS VFS لـ %1: المزامنة جارية...</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="442"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="446"/>
         <source>macOS VFS for %1: Last sync was successful.</source>
         <translation>macOS VFS لـ %1: آخر مزامنة تمّت بنجاحٍِ.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="445"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="449"/>
         <source>macOS VFS for %1: A problem was encountered.</source>
         <translation>macOS VFSلـ %1: وَاجَهَ مشكلةً.</translation>
     </message>
@@ -6512,7 +6512,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="55"/>
         <source>Open local or group folders</source>
-        <translation>إفتح مجلدات محلية أو جماعية</translation>
+        <translation>إفتح المجلدات المحلية أو مجلدات المجموعة</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="55"/>
@@ -6532,7 +6532,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="109"/>
         <source>Group folder button</source>
-        <translation>زر المجلد الجماعي</translation>
+        <translation>زر مجلد المجموعة</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="184"/>
@@ -6542,7 +6542,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="184"/>
         <source>Open group folder &quot;%1&quot;</source>
-        <translation>فتح المجلد الجماعي &quot;%1&quot;</translation>
+        <translation>فتح مجلد المجموعة &quot;%1&quot;</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="198"/>
