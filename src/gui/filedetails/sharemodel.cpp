@@ -90,7 +90,8 @@ QVariant ShareModel::data(const QModelIndex &index, const int role) const
 {
     Q_ASSERT(checkIndex(index, QAbstractItemModel::CheckIndexOption::IndexIsValid | QAbstractItemModel::CheckIndexOption::ParentIsInvalid));
 
-    const auto share = _shares.at(index.row());
+    const auto shareIdx = index.row();
+    const auto share = _shares.at(shareIdx);
 
     if (!share) {
         return {};
@@ -138,7 +139,7 @@ QVariant ShareModel::data(const QModelIndex &index, const int role) const
 
     switch (role) {
     case Qt::DisplayRole:
-        return displayStringForShare(share);
+        return displayStringForShare(share, _duplicateDisplayNameShareIndices.contains(shareIdx));
     case ShareRole:
         return QVariant::fromValue(share);
     case ShareTypeRole:
@@ -486,6 +487,41 @@ void ShareModel::slotSharesFetched(const QList<SharePtr> &shares)
         slotAddShare(share);
     }
 
+    // Perform forward pass on shares and check for duplicate display names; store these indeces so
+    // we can check for these and display the specific user identifier in the display string later
+    _duplicateDisplayNameShareIndices.clear();
+    const auto shareCount = _shares.count();
+    for (auto i = 0; i < shareCount; ++i) {
+        if (_duplicateDisplayNameShareIndices.contains(i)) {
+            continue;
+        }
+
+        const auto sharee = _shares.at(i)->getShareWith();
+        if (sharee == nullptr) {
+            continue;
+        }
+
+        const auto duplicateIndices = QSharedPointer<QSet<unsigned int>>::create();
+        const auto handleDuplicateIndex = [this, duplicateIndices](const unsigned int idx) {
+            duplicateIndices->insert(idx);
+            _duplicateDisplayNameShareIndices[idx] = duplicateIndices;
+            const auto targetIdx = index(idx);
+            dataChanged(targetIdx, targetIdx, {Qt::DisplayRole});
+        };
+
+        for (auto j = i + 1; j < shareCount; ++j) {
+            const auto otherSharee = _shares.at(j)->getShareWith();
+            if (otherSharee == nullptr || sharee->format() != otherSharee->format()) {
+                continue;
+            }
+            handleDuplicateIndex(j);
+        }
+
+        if (!duplicateIndices->isEmpty()) {
+            handleDuplicateIndex(i);
+        }
+    }
+
     handleLinkShare();
 }
 
@@ -611,9 +647,25 @@ void ShareModel::slotRemoveShareWithId(const QString &shareId)
     const auto sharee = share->getShareWith();
     slotRemoveSharee(sharee);
 
-    beginRemoveRows({}, shareIndex.row(), shareIndex.row());
-    _shares.removeAt(shareIndex.row());
+    const auto shareRow = shareIndex.row();
+    beginRemoveRows({}, shareRow, shareRow);
+    _shares.removeAt(shareRow);
     endRemoveRows();
+
+    // Handle display name duplicates now. First remove the index from the bucket it was in; then,
+    // check if this removal means the remaining index in the bucket is no longer a duplicate.
+    // If this is the case then handle the update for this item too.
+    const auto duplicateShares = _duplicateDisplayNameShareIndices.value(shareRow);
+    if (duplicateShares) {
+        duplicateShares->remove(shareRow);
+        if (duplicateShares->count() == 1) {
+            const auto noLongerDuplicateIndex = *(duplicateShares->begin());
+            _duplicateDisplayNameShareIndices.remove(noLongerDuplicateIndex);
+            const auto noLongerDuplicateModelIndex = index(noLongerDuplicateIndex);
+            Q_EMIT dataChanged(noLongerDuplicateModelIndex, noLongerDuplicateModelIndex, {Qt::DisplayRole});
+        }
+        _duplicateDisplayNameShareIndices.remove(shareRow);
+    }
 
     handleLinkShare();
 
@@ -642,7 +694,7 @@ void ShareModel::slotRemoveSharee(const ShareePtr &sharee)
     Q_EMIT shareesChanged();
 }
 
-QString ShareModel::displayStringForShare(const SharePtr &share) const
+QString ShareModel::displayStringForShare(const SharePtr &share, const bool verbose) const
 {
     if (const auto linkShare = share.objectCast<LinkShare>()) {
 
@@ -662,7 +714,8 @@ QString ShareModel::displayStringForShare(const SharePtr &share) const
     } else if (share->getShareType() == Share::TypeSecureFileDropPlaceholderLink) {
         return tr("Secure file drop");
     } else if (share->getShareWith()) {
-        return share->getShareWith()->format();
+        const auto sharee = share->getShareWith();
+        return verbose ? QString{"%1 (%2)"}.arg(sharee->format(), sharee->shareWith()) : sharee->format();
     }
 
     qCWarning(lcShareModel) << "Unable to provide good display string for share";
