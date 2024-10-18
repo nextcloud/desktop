@@ -86,6 +86,10 @@ TextField {
             }
         }
     }
+    onPressed: function(mouse) {
+        if (mouse.button !== Qt.RightButton) return;
+        contextMenu.popup(mouse.x, mouse.y);
+    }
 
     leftPadding: searchIcon.width + searchIcon.anchors.leftMargin + horizontalPaddingOffset
     rightPadding: clearTextButton.width + clearTextButton.anchors.rightMargin + horizontalPaddingOffset
@@ -156,6 +160,23 @@ TextField {
             onClicked: root.clear()
         }
     }
+
+    Menu {
+        id: contextMenu
+        MenuItem {
+            text: qsTr("Cut")
+            onTriggered: root.cut()
+        }
+        MenuItem {
+            text: qsTr("Copy")
+            onTriggered: root.copy()
+        }
+        MenuItem {
+            text: qsTr("Paste")
+            onTriggered: root.paste()
+        }
+    }
+
 
     Popup {
         id: suggestionsPopup
