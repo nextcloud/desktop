@@ -290,22 +290,17 @@ void PropagateRemoteMove::finalize()
         }
     }
 
-    if (!FileSystem::fileExists(targetFile)) {
-        propagator()->_journal->commit("Remote Rename");
-        done(SyncFileItem::Success, {}, ErrorCategory::NoError);
-        return;
-    }
-
     const auto result = propagator()->updateMetadata(newItem);
-    if (!result) {
+    if (!result && QFileInfo::exists(targetFile)) {
         done(SyncFileItem::FatalError, tr("Error updating metadata: %1").arg(result.error()), ErrorCategory::GenericError);
         return;
     } else if (*result == Vfs::ConvertToPlaceholderResult::Locked) {
         done(SyncFileItem::SoftError, tr("The file %1 is currently in use").arg(newItem._file), ErrorCategory::GenericError);
         return;
     }
-    if (pinState && *pinState != PinState::Inherited
-        && !vfs->setPinState(newItem._renameTarget, *pinState)) {
+    if (pinState && *pinState != PinState::Inherited &&
+        !vfs->setPinState(newItem._renameTarget, *pinState) &&
+        QFileInfo::exists(targetFile)) {
         done(SyncFileItem::NormalError, tr("Error setting pin state"), ErrorCategory::GenericError);
         return;
     }
