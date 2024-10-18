@@ -2,7 +2,7 @@ import os
 import re
 import sys
 import test
-import urllib
+import urllib.request
 import squish
 
 from helpers.ConfigHelper import get_config, is_linux, is_windows
