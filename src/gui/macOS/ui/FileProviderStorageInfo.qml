@@ -37,7 +37,6 @@ GridLayout {
         Layout.row: 0
         Layout.column: 0
         Layout.alignment: Layout.AlignLeft | Layout.AlignVCenter
-        Layout.fillWidth: true
         text: qsTr("Local storage use")
         font.bold: true
     }
@@ -46,7 +45,9 @@ GridLayout {
         Layout.row: 0
         Layout.column: 1
         Layout.alignment: Layout.AlignRight | Layout.AlignVCenter
+        Layout.fillWidth: true
         text: qsTr("%1 GB of %2 GB remote files synced").arg(root.localUsedStorage.toFixed(2)).arg(root.remoteUsedStorage.toFixed(2));
+        elide: Text.ElideRight
         color: Style.ncSecondaryTextColor
         horizontalAlignment: Text.AlignRight
     }
