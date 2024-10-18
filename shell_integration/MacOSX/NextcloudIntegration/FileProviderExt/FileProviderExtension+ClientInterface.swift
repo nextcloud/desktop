@@ -107,11 +107,10 @@ extension FileProviderExtension: NSFileProviderServicing, ChangeNotificationInte
     @objc func setupDomainAccount(
         user: String, userId: String, serverUrl: String, password: String
     ) {
-        let semaphore = DispatchSemaphore(value: 0)
-        var authAttemptState = AuthenticationAttemptResultState.connectionError // default
         Task {
             let authTestNcKit = NextcloudKit()
             authTestNcKit.setup(user: user, userId: userId, password: password, urlBase: serverUrl)
+            var authAttemptState = AuthenticationAttemptResultState.connectionError // default
 
             // Retry a few times if we have a connection issue
             for authTimeout in AuthenticationTimeouts {
@@ -123,49 +122,51 @@ extension FileProviderExtension: NSFileProviderServicing, ChangeNotificationInte
                 )
                 try? await Task.sleep(nanoseconds: authTimeout)
             }
-            semaphore.signal()
-        }
-        semaphore.wait()
 
-        switch (authAttemptState) {
-        case .authenticationError:
-            Logger.fileProviderExtension.info(
-                "\(user, privacy: .public) authentication failed due to bad creds, stopping"
-            )
-            return
-        case .connectionError:
-            // Despite multiple connection attempts we are still getting connection issues, so quit.
-            Logger.fileProviderExtension.info(
-                "\(user, privacy: .public) authentication try failed, no connection."
-            )
-            return
-        case .success:
-            Logger.fileProviderExtension.info(
+            switch (authAttemptState) {
+            case .authenticationError:
+                Logger.fileProviderExtension.info(
+                    "\(user, privacy: .public) authentication failed due to bad creds, stopping"
+                )
+                return
+            case .connectionError:
+                // Despite multiple connection attempts we are still getting connection issues.
+                // Connection error should be provided
+                Logger.fileProviderExtension.info(
+                    "\(user, privacy: .public) authentication try failed, no connection."
+                )
+                return
+            case .success:
+                Logger.fileProviderExtension.info(
                 """
                 Authenticated! Nextcloud account set up in File Provider extension.
                 User: \(user, privacy: .public) at server: \(serverUrl, privacy: .public)
                 """
-            )
+                )
+            }
+
+            Task { @MainActor in
+                let newNcAccount =
+                    Account(user: user, id: userId, serverUrl: serverUrl, password: password)
+                guard newNcAccount != ncAccount else { return }
+                ncAccount = newNcAccount
+                ncKit.setup(
+                    account: newNcAccount.ncKitAccount,
+                    user: newNcAccount.username,
+                    userId: newNcAccount.id,
+                    password: newNcAccount.password,
+                    urlBase: newNcAccount.serverUrl,
+                    userAgent: "Nextcloud-macOS/FileProviderExt",
+                    nextcloudVersion: 25,
+                    delegate: nil) // TODO: add delegate methods for self
+                
+                changeObserver = RemoteChangeObserver(
+                    remoteInterface: ncKit, changeNotificationInterface: self, domain: domain
+                )
+                ncKit.setup(delegate: changeObserver)
+                signalEnumeratorAfterAccountSetup()
+            }
         }
-
-        let newNcAccount = Account(user: user, id: userId, serverUrl: serverUrl, password: password)
-        guard newNcAccount != ncAccount else { return }
-        ncAccount = newNcAccount
-        ncKit.setup(
-            account: newNcAccount.ncKitAccount,
-            user: newNcAccount.username,
-            userId: newNcAccount.id,
-            password: newNcAccount.password,
-            urlBase: newNcAccount.serverUrl,
-            userAgent: "Nextcloud-macOS/FileProviderExt",
-            nextcloudVersion: 25,
-            delegate: nil) // TODO: add delegate methods for self
-
-        changeObserver = RemoteChangeObserver(
-            remoteInterface: ncKit, changeNotificationInterface: self, domain: domain
-        )
-        ncKit.setup(delegate: changeObserver)
-        signalEnumeratorAfterAccountSetup()
     }
 
     @objc func removeAccountConfig() {
