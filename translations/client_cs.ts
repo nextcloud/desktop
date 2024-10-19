@@ -291,7 +291,7 @@
 <context>
     <name>FileProviderStorageInfo</name>
     <message>
-        <location filename="../src/gui/macOS/ui/FileProviderStorageInfo.qml" line="41"/>
+        <location filename="../src/gui/macOS/ui/FileProviderStorageInfo.qml" line="40"/>
         <source>Local storage use</source>
         <translation>Využití místního úložiště</translation>
     </message>
@@ -301,7 +301,7 @@
         <translation>%1 GB z %2 GB souborů na protějšku synchronizováno</translation>
     </message>
     <message>
-        <location filename="../src/gui/macOS/ui/FileProviderStorageInfo.qml" line="58"/>
+        <location filename="../src/gui/macOS/ui/FileProviderStorageInfo.qml" line="59"/>
         <source>Evict local copies...</source>
         <translation>Vyzdvihnout lokální kopie…</translation>
     </message>
@@ -4923,7 +4923,7 @@ Toto je nový, experimentální režim. Pokud se jej rozhodnete používat, pros
         <translation>Bezpečný příjem souboru</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/sharemodel.cpp" line="862"/>
+        <location filename="../src/gui/filedetails/sharemodel.cpp" line="915"/>
         <source>Could not find local folder for %1</source>
         <translation>Nepodařilo se najít místní složku pro %1</translation>
     </message>
@@ -5682,17 +5682,17 @@ Server odpověděl chybou: %2</translation>
         <translation>Vyřešit konflikt</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="853"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="860"/>
         <source>Rename file</source>
         <translation>Přejmenovat soubor</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1061"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1066"/>
         <source>Open Nextcloud Assistant in browser</source>
         <translation>Otevřít Nextcloud Asistent v prohlížeči</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1061"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1066"/>
         <source>Open Nextcloud Talk in browser</source>
         <translation>Otevřít Nextcloud Talk v prohlížeči</translation>
     </message>

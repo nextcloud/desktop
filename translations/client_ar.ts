@@ -291,7 +291,7 @@
 <context>
     <name>FileProviderStorageInfo</name>
     <message>
-        <location filename="../src/gui/macOS/ui/FileProviderStorageInfo.qml" line="41"/>
+        <location filename="../src/gui/macOS/ui/FileProviderStorageInfo.qml" line="40"/>
         <source>Local storage use</source>
         <translation>استعمال التخزين المحلي</translation>
     </message>
@@ -301,7 +301,7 @@
         <translation>%1 غيغا بايت من أصل %2 غيغا بايت ملفات بعيدة تمّت مزامنتها</translation>
     </message>
     <message>
-        <location filename="../src/gui/macOS/ui/FileProviderStorageInfo.qml" line="58"/>
+        <location filename="../src/gui/macOS/ui/FileProviderStorageInfo.qml" line="59"/>
         <source>Evict local copies...</source>
         <translation>إخلاء النسخ المحلية ...</translation>
     </message>
@@ -4912,7 +4912,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>إفلات آمن للملف</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/sharemodel.cpp" line="862"/>
+        <location filename="../src/gui/filedetails/sharemodel.cpp" line="915"/>
         <source>Could not find local folder for %1</source>
         <translation>تعذّر إيجاد المجلد المحلي لـ  %1</translation>
     </message>
@@ -5669,17 +5669,17 @@ Server replied with error: %2</source>
         <translation>حُلّ التعارض</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="853"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="860"/>
         <source>Rename file</source>
         <translation>تغيير اسم الملف</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1061"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1066"/>
         <source>Open Nextcloud Assistant in browser</source>
         <translation>إفتَح &quot;مُساعِد نكست كلاود&quot; Assistant في المُستعرِض</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1061"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1066"/>
         <source>Open Nextcloud Talk in browser</source>
         <translation>إفتَح &quot;مُحادثة نكست كلاود&quot; Talk في المُستعرِض</translation>
     </message>

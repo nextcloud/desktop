@@ -291,7 +291,7 @@
 <context>
     <name>FileProviderStorageInfo</name>
     <message>
-        <location filename="../src/gui/macOS/ui/FileProviderStorageInfo.qml" line="41"/>
+        <location filename="../src/gui/macOS/ui/FileProviderStorageInfo.qml" line="40"/>
         <source>Local storage use</source>
         <translation>Uso do almacenamento local</translation>
     </message>
@@ -301,7 +301,7 @@
         <translation>%1 GB de % 2GB de ficheiros remotos sincronizados</translation>
     </message>
     <message>
-        <location filename="../src/gui/macOS/ui/FileProviderStorageInfo.qml" line="58"/>
+        <location filename="../src/gui/macOS/ui/FileProviderStorageInfo.qml" line="59"/>
         <source>Evict local copies...</source>
         <translation>Desaloxar as copias locais…</translation>
     </message>
@@ -1695,7 +1695,7 @@ Esta acción interromperá calquera sincronización que estea a executarse actua
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="702"/>
         <source>Encrypted metadata setup error: initial signature from server is empty.</source>
-        <translation type="unfinished"/>
+        <translation>Produciuse un erro de configuración dos metadatos cifrados: a sinatura inicial do servidor está baleira.</translation>
     </message>
 </context>
 <context>
@@ -2288,14 +2288,18 @@ Isto significa que o cliente de sincronización podería non enviar os cambios i
         <source>A large number of files in the server have been deleted.
 Please confirm if you'd like to proceed with these deletions.
 Alternatively, you can restore all deleted files by uploading from &apos;%1&apos; folder to the server.</source>
-        <translation type="unfinished"/>
+        <translation>Elimináronse un gran número de ficheiros do servidor.
+Confirme que quere proceder a estas eliminacións.
+Como alternativa, pode restaurar todos os ficheiros eliminados enviándoos dende o cartafol «%1» ao servidor.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1646"/>
         <source>A large number of files in your local '%1' folder have been deleted.
 Please confirm if you'd like to proceed with these deletions.
 Alternatively, you can restore all deleted files by downloading them from the server.</source>
-        <translation type="unfinished"/>
+        <translation>Elimináronse un gran número de ficheiros do seu cartafol local «%1».
+Confirme que quere proceder a estas eliminacións.
+Como alternativa, pode restaurar todos os ficheiros eliminados descargándoos do servidor.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1647"/>
@@ -2305,17 +2309,17 @@ Alternatively, you can restore all deleted files by downloading them from the se
     <message>
         <location filename="../src/gui/folder.cpp" line="1651"/>
         <source>Proceed with Deletion</source>
-        <translation type="unfinished"/>
+        <translation>Proceder á eliminación</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1652"/>
         <source>Restore Files to Server</source>
-        <translation type="unfinished"/>
+        <translation>Restaurar os ficheiros no servidor</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1652"/>
         <source>Restore Files from Server</source>
-        <translation type="unfinished"/>
+        <translation>Restaurar os ficheiros do servidor</translation>
     </message>
 </context>
 <context>
@@ -4931,7 +4935,7 @@ Este é un novo modo experimental. Se decide usalo, agradecémoslle que informe 
         <translation>Entrega segura de ficheiros</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/sharemodel.cpp" line="862"/>
+        <location filename="../src/gui/filedetails/sharemodel.cpp" line="915"/>
         <source>Could not find local folder for %1</source>
         <translation>Non foi posíbel atopar o cartafol local para %1</translation>
     </message>
@@ -5690,17 +5694,17 @@ O servidor respondeu co erro: %2</translation>
         <translation>Resolver conflitos</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="853"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="860"/>
         <source>Rename file</source>
         <translation>Cambiar o nome do ficheiro</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1061"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1066"/>
         <source>Open Nextcloud Assistant in browser</source>
         <translation>Abrir o Asistente de Nextcloud no navegador</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1061"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1066"/>
         <source>Open Nextcloud Talk in browser</source>
         <translation>Abrir Nextcloud Talk no navegador</translation>
     </message>

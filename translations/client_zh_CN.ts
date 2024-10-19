@@ -291,7 +291,7 @@
 <context>
     <name>FileProviderStorageInfo</name>
     <message>
-        <location filename="../src/gui/macOS/ui/FileProviderStorageInfo.qml" line="41"/>
+        <location filename="../src/gui/macOS/ui/FileProviderStorageInfo.qml" line="40"/>
         <source>Local storage use</source>
         <translation>本地存储使用</translation>
     </message>
@@ -301,7 +301,7 @@
         <translation>%2 GB / %1 GB 云端文件已同步</translation>
     </message>
     <message>
-        <location filename="../src/gui/macOS/ui/FileProviderStorageInfo.qml" line="58"/>
+        <location filename="../src/gui/macOS/ui/FileProviderStorageInfo.qml" line="59"/>
         <source>Evict local copies...</source>
         <translation>移除本地副本...</translation>
     </message>
@@ -545,13 +545,15 @@ Should an account import be attempted?</source>
         <location filename="../src/gui/accountmanager.cpp" line="214"/>
         <source>%1 accounts were detected from a legacy desktop client.
 Should the accounts be imported?</source>
-        <translation>检测到来自老版本桌面客户端的 %1 个账户。是否需要导入这些账户？</translation>
+        <translation>检测到来自老版本桌面客户端的 %1 个账号。
+是否需要导入这些账号？</translation>
     </message>
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="216"/>
         <source>1 account was detected from a legacy desktop client.
 Should the account be imported?</source>
-        <translation>检测到来自老版本桌面客户端的 1 个账户。是否需要导入这个账户？</translation>
+        <translation>检测到来自老版本桌面客户端的 1 个账号。
+是否需要导入这个账号？</translation>
     </message>
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="186"/>
@@ -863,7 +865,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1016"/>
         <source>To protect your Cryptographic Identity, we encrypt it with a mnemonic of 12 dictionary words. Please note these down and keep them safe. They will be needed to add other devices to your account (like your mobile phone or laptop).</source>
-        <translation>为了保护您的加密身份，我们用 12 个字典中的助记词对其进行加密。请记下这些并妥善保管。在向您的账户添加其他设备（如您的手机或笔记本电脑）时将需要它们。</translation>
+        <translation>为了保护你的加密身份，我们用 12 个字典中的助记符对其进行加密。请记下这些并妥善保管。在向你的账号添加其他设备（如您的手机或笔记本电脑）时将需要它们。</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1041"/>
@@ -998,7 +1000,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1577"/>
         <source>End-to-end encryption has been enabled on this account with another device.&lt;br&gt;It can be enabled on this device by entering your mnemonic.&lt;br&gt;This will enable synchronisation of existing encrypted folders.</source>
-        <translation>在这个账户上已经在另一个设备上启用了端到端加密。&lt;br&gt;可以通过输入你的助记符在这个设备上启用它。&lt;br&gt;这将使现有的加密文件夹得到同步。</translation>
+        <translation>在这个账号上已经在另一个设备上启用了端到端加密。&lt;br&gt;可以通过输入你的助记符在这个设备上启用它。&lt;br&gt;这将使现有的加密文件夹得到同步。</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1568"/>
@@ -1191,12 +1193,12 @@ This action will abort any currently running synchronization.</source>
         <location filename="../src/gui/application.cpp" line="500"/>
         <source>%1 accounts</source>
         <comment>number of accounts imported</comment>
-        <translation>%1 个账户</translation>
+        <translation>%1 个账号</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="501"/>
         <source>1 account</source>
-        <translation>1 个账户</translation>
+        <translation>1 个账号</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="503"/>
@@ -4061,7 +4063,7 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="93"/>
         <source>Add %1 account</source>
-        <translation>添加 %1 个账户</translation>
+        <translation>新增 %1 账号</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="97"/>
@@ -4911,7 +4913,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>安全文件拖放</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/sharemodel.cpp" line="862"/>
+        <location filename="../src/gui/filedetails/sharemodel.cpp" line="915"/>
         <source>Could not find local folder for %1</source>
         <translation>无法在本地找到名为 %1 的文件夹</translation>
     </message>
@@ -5670,17 +5672,17 @@ Server replied with error: %2</source>
         <translation>解决冲突</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="853"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="860"/>
         <source>Rename file</source>
         <translation>重命名文件</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1061"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1066"/>
         <source>Open Nextcloud Assistant in browser</source>
         <translation>在浏览器中打开 Nextcloud Assistant</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1061"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1066"/>
         <source>Open Nextcloud Talk in browser</source>
         <translation>在浏览器中打开 Nextcloud Talk</translation>
     </message>
