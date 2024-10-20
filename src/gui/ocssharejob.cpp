@@ -34,6 +34,7 @@ void OcsShareJob::getShares(const QString &path, const QMap<QString, QString> &p
 
     addParam(QString::fromLatin1("path"), path);
     addParam(QString::fromLatin1("reshares"), QString("true"));
+    addParam("shared_with_me", "true");
 
     for (auto it = std::cbegin(params); it != std::cend(params); ++it) {
         addParam(it.key(), it.value());
