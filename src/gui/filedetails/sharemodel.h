@@ -38,6 +38,7 @@ class ShareModel : public QAbstractListModel
     Q_PROPERTY(bool hasInitialShareFetchCompleted READ hasInitialShareFetchCompleted NOTIFY hasInitialShareFetchCompletedChanged)
     Q_PROPERTY(bool serverAllowsResharing READ serverAllowsResharing NOTIFY serverAllowsResharingChanged)
     Q_PROPERTY(QVariantList sharees READ sharees NOTIFY shareesChanged)
+    Q_PROPERTY(bool displayFileOwner READ displayFileOwner NOTIFY displayFileOwnerChanged)
 
 public:
     enum Roles {
@@ -126,6 +127,7 @@ public:
 
     [[nodiscard]] QVariantList sharees() const;
 
+    [[nodiscard]] bool displayFileOwner() const;
     [[nodiscard]] Q_INVOKABLE static QString generatePassword();
 
 signals:
@@ -143,6 +145,7 @@ signals:
     void shareesChanged();
     void internalLinkReady();
     void serverAllowsResharingChanged();
+    void displayFileOwnerChanged();
 
     void serverError(const int code, const QString &message) const;
     void passwordSetError(const QString &shareId, const int code, const QString &message);
@@ -246,6 +249,7 @@ private:
     SyncJournalFileLockInfo _filelockState;
     QString _privateLinkUrl;
     QByteArray _fileRemoteId;
+    bool _displayFileOwner = false;
 
     QSharedPointer<ShareManager> _manager;
 
