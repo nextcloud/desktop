@@ -1404,6 +1404,16 @@ QString ShareModel::fileOwnerDisplayName() const
     return _fileOwnerDisplayName;
 }
 
+QString ShareModel::sharedWithMeRemainingTimeString() const
+{
+    return _sharedWithMeRemainingTimeString;
+}
+
+bool ShareModel::sharedWithMeExpires() const
+{
+    return _sharedWithMeExpires;
+}
+
 QVariantList ShareModel::sharees() const
 {
     QVariantList returnSharees;

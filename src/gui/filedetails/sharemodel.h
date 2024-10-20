@@ -40,6 +40,8 @@ class ShareModel : public QAbstractListModel
     Q_PROPERTY(QVariantList sharees READ sharees NOTIFY shareesChanged)
     Q_PROPERTY(bool displayFileOwner READ displayFileOwner NOTIFY displayFileOwnerChanged)
     Q_PROPERTY(QString fileOwnerDisplayName READ fileOwnerDisplayName NOTIFY fileOwnerDisplayNameChanged)
+    Q_PROPERTY(bool sharedWithMeExpires READ sharedWithMeExpires NOTIFY sharedWithMeExpiresChanged)
+    Q_PROPERTY(QString sharedWithMeRemainingTimeString READ sharedWithMeRemainingTimeString NOTIFY sharedWithMeRemainingTimeStringChanged)
 
 public:
     enum Roles {
@@ -130,6 +132,9 @@ public:
 
     [[nodiscard]] bool displayFileOwner() const;
     [[nodiscard]] QString fileOwnerDisplayName() const;
+    [[nodiscard]] bool sharedWithMeExpires() const;
+    [[nodiscard]] QString sharedWithMeRemainingTimeString() const;
+
     [[nodiscard]] Q_INVOKABLE static QString generatePassword();
 
 signals:
@@ -149,6 +154,8 @@ signals:
     void serverAllowsResharingChanged();
     void displayFileOwnerChanged();
     void fileOwnerDisplayNameChanged();
+    void sharedWithMeExpiresChanged();
+    void sharedWithMeRemainingTimeStringChanged();
 
     void serverError(const int code, const QString &message) const;
     void passwordSetError(const QString &shareId, const int code, const QString &message);
@@ -254,6 +261,8 @@ private:
     QByteArray _fileRemoteId;
     bool _displayFileOwner = false;
     QString _fileOwnerDisplayName;
+    bool _sharedWithMeExpires = false;
+    QString _sharedWithMeRemainingTimeString;
 
     QSharedPointer<ShareManager> _manager;
 
