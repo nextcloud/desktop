@@ -220,11 +220,19 @@ void ShareModel::resetData()
     _fetchOngoing = false;
     _hasInitialShareFetchCompleted = false;
     _sharees.clear();
+    _displayFileOwner = false;
+    _fileOwnerDisplayName.clear();
+    _sharedWithMeExpires = false;
+    _sharedWithMeRemainingTimeString.clear();
 
     Q_EMIT sharePermissionsChanged();
     Q_EMIT fetchOngoingChanged();
     Q_EMIT hasInitialShareFetchCompletedChanged();
     Q_EMIT shareesChanged();
+    Q_EMIT displayFileOwnerChanged();
+    Q_EMIT fileOwnerDisplayNameChanged();
+    Q_EMIT sharedWithMeExpiresChanged();
+    Q_EMIT sharedWithMeRemainingTimeStringChanged();
 
     endResetModel();
 }
@@ -319,7 +327,9 @@ void ShareModel::updateData()
     auto job = new PropfindJob(_accountState->account(), _sharePath);
     job->setProperties(QList<QByteArray>() << "http://open-collaboration-services.org/ns:share-permissions"
                                            << "http://owncloud.org/ns:fileid" // numeric file id for fallback private link generation
-                                           << "http://owncloud.org/ns:privatelink");
+                                           << "http://owncloud.org/ns:privatelink"
+                                           << "http://owncloud.org/ns:owner-id"
+                                           << "http://owncloud.org/ns:owner-display-name");
     job->setTimeout(10 * 1000);
     connect(job, &PropfindJob::result, this, &ShareModel::slotPropfindReceived);
     connect(job, &PropfindJob::finishedWithError, this, [&](const QNetworkReply *reply) {
@@ -455,6 +465,11 @@ void ShareModel::slotPropfindReceived(const QVariantMap &result)
 
     const auto privateLinkUrl = result["privatelink"].toString();
     _fileRemoteId = result["fileid"].toByteArray();
+    
+    _displayFileOwner = result["owner-id"].toString() != _accountState->account()->davUser();
+    Q_EMIT displayFileOwnerChanged();
+    _fileOwnerDisplayName = result["owner-display-name"].toString();
+    Q_EMIT fileOwnerDisplayNameChanged();
 
     if (!privateLinkUrl.isEmpty()) {
         qCInfo(lcShareModel) << "Received private link url for" << _sharePath << privateLinkUrl;
