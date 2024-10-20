@@ -38,8 +38,8 @@ class ShareModel : public QAbstractListModel
     Q_PROPERTY(bool hasInitialShareFetchCompleted READ hasInitialShareFetchCompleted NOTIFY hasInitialShareFetchCompletedChanged)
     Q_PROPERTY(bool serverAllowsResharing READ serverAllowsResharing NOTIFY serverAllowsResharingChanged)
     Q_PROPERTY(QVariantList sharees READ sharees NOTIFY shareesChanged)
-    Q_PROPERTY(bool displayFileOwner READ displayFileOwner NOTIFY displayFileOwnerChanged)
-    Q_PROPERTY(QString fileOwnerDisplayName READ fileOwnerDisplayName NOTIFY fileOwnerDisplayNameChanged)
+    Q_PROPERTY(bool displayShareOwner READ displayShareOwner NOTIFY displayShareOwnerChanged)
+    Q_PROPERTY(QString shareOwnerDisplayName READ shareOwnerDisplayName NOTIFY shareOwnerDisplayNameChanged)
     Q_PROPERTY(bool sharedWithMeExpires READ sharedWithMeExpires NOTIFY sharedWithMeExpiresChanged)
     Q_PROPERTY(QString sharedWithMeRemainingTimeString READ sharedWithMeRemainingTimeString NOTIFY sharedWithMeRemainingTimeStringChanged)
 
@@ -130,8 +130,8 @@ public:
 
     [[nodiscard]] QVariantList sharees() const;
 
-    [[nodiscard]] bool displayFileOwner() const;
-    [[nodiscard]] QString fileOwnerDisplayName() const;
+    [[nodiscard]] bool displayShareOwner() const;
+    [[nodiscard]] QString shareOwnerDisplayName() const;
     [[nodiscard]] bool sharedWithMeExpires() const;
     [[nodiscard]] QString sharedWithMeRemainingTimeString() const;
 
@@ -152,8 +152,8 @@ signals:
     void shareesChanged();
     void internalLinkReady();
     void serverAllowsResharingChanged();
-    void displayFileOwnerChanged();
-    void fileOwnerDisplayNameChanged();
+    void displayShareOwnerChanged();
+    void shareOwnerDisplayNameChanged();
     void sharedWithMeExpiresChanged();
     void sharedWithMeRemainingTimeStringChanged();
 
@@ -259,8 +259,8 @@ private:
     SyncJournalFileLockInfo _filelockState;
     QString _privateLinkUrl;
     QByteArray _fileRemoteId;
-    bool _displayFileOwner = false;
-    QString _fileOwnerDisplayName;
+    bool _displayShareOwner = false;
+    QString _shareOwnerDisplayName;
     bool _sharedWithMeExpires = false;
     QString _sharedWithMeRemainingTimeString;
 

@@ -145,15 +145,15 @@ ColumnLayout {
         Layout.rightMargin: root.horizontalPadding
 
         EnforcedPlainTextLabel {
-            visible: shareModel.displayFileOwner
-            text: qsTr("Shared with you by %1").arg(shareModel.fileOwnerDisplayName)
+            visible: shareModel.displayShareOwner
+            text: qsTr("Shared with you by %1").arg(shareModel.shareOwnerDisplayName)
         }
         EnforcedPlainTextLabel {
             visible: shareModel.sharedWithMeExpires
             text: qsTr("Expires in %1").arg(shareModel.sharedWithMeRemainingTimeString)
         }
 
-        visible: shareModel.displayFileOwner
+        visible: shareModel.displayShareOwner
     }
 
     ShareeSearchField {
