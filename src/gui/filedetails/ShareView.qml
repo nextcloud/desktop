@@ -148,6 +148,10 @@ ColumnLayout {
             visible: shareModel.displayFileOwner
             text: qsTr("Shared with you by %1").arg(shareModel.fileOwnerDisplayName)
         }
+        EnforcedPlainTextLabel {
+            visible: shareModel.sharedWithMeExpires
+            text: qsTr("Expires in %1").arg(shareModel.sharedWithMeRemainingTimeString)
+        }
 
         visible: shareModel.displayFileOwner
     }
