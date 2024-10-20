@@ -1642,6 +1642,25 @@ public:
             return;
         }
 
+        if (id.startsWith("user-id=")) {
+            // Format is "image://avatars/user-id=avatar-requested-user/local-user-id:0"
+            const auto userIdsString = id.split('=');
+            const auto userIds = userIdsString.last().split("/local-account:");
+            const auto avatarUserId = userIds.first();
+            const auto accountString = userIds.last();
+            const auto accountState = AccountManager::instance()->account(accountString);
+            Q_ASSERT(accountState);
+            if (!accountState) {
+                qCWarning(lcActivity) << "Account not found:" << accountString;
+                return;
+            }
+            const auto avatarJob = new AvatarJob(accountState->account(), avatarUserId, requestedSize.width());
+            connect(avatarJob, &AvatarJob::avatarPixmap, this, [&](const QImage &avatarImg) {
+                handleDone(AvatarJob::makeCircularAvatar(avatarImg));
+            });
+            avatarJob->start();
+            return;
+        }
 
         handleDone(UserModel::instance()->avatarById(id.toInt()));
     }
