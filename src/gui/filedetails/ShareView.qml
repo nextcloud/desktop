@@ -139,6 +139,19 @@ ColumnLayout {
         }
     }
 
+    Column {
+        Layout.fillWidth: true
+        Layout.leftMargin: root.horizontalPadding
+        Layout.rightMargin: root.horizontalPadding
+
+        EnforcedPlainTextLabel {
+            visible: shareModel.displayFileOwner
+            text: qsTr("Shared with you by %1").arg(shareModel.fileOwnerDisplayName)
+        }
+
+        visible: shareModel.displayFileOwner
+    }
+
     ShareeSearchField {
         id: shareeSearchField
         Layout.fillWidth: true
