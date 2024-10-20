@@ -492,10 +492,25 @@ void ShareModel::slotSharesFetched(const QList<SharePtr> &shares)
     qCInfo(lcSharing) << "Fetched" << shares.count() << "shares";
 
     for (const auto &share : shares) {
-        if (share.isNull() ||
-            share->account().isNull() ||
-            share->getUidOwner() != share->account()->davUser()) {
-
+        if (share.isNull()) {
+            continue;
+        } else if (const auto selfUserId = _accountState->account()->davUser(); share->getUidOwner() != selfUserId) {
+            if (share->getShareType() == Share::TypeUser &&
+                share->getShareWith() &&
+                share->getShareWith()->shareWith() == selfUserId)
+            {
+                const auto userShare = share.objectCast<UserGroupShare>();
+                const auto expireDate = userShare->getExpireDate();
+                const auto daysToExpire = QDate::currentDate().daysTo(expireDate);
+                _sharedWithMeExpires = expireDate.isValid();
+                Q_EMIT sharedWithMeExpiresChanged();
+                _sharedWithMeRemainingTimeString = daysToExpire > 1
+                    ? tr("%1 days").arg(daysToExpire)
+                    :  daysToExpire > 0
+                        ? tr("1 day")
+                        : tr("Today");
+                Q_EMIT sharedWithMeRemainingTimeStringChanged();
+            }
             continue;
         }
 
