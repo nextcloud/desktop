@@ -147,6 +147,7 @@ ColumnLayout {
         EnforcedPlainTextLabel {
             visible: shareModel.displayShareOwner
             text: qsTr("Shared with you by %1").arg(shareModel.shareOwnerDisplayName)
+            font.bold: true
         }
         EnforcedPlainTextLabel {
             visible: shareModel.sharedWithMeExpires
