@@ -139,19 +139,29 @@ ColumnLayout {
         }
     }
 
-    Column {
+    RowLayout {
         Layout.fillWidth: true
         Layout.leftMargin: root.horizontalPadding
         Layout.rightMargin: root.horizontalPadding
 
-        EnforcedPlainTextLabel {
-            visible: shareModel.displayShareOwner
-            text: qsTr("Shared with you by %1").arg(shareModel.shareOwnerDisplayName)
-            font.bold: true
+        Image {
+            Layout.preferredWidth: 32
+            Layout.preferredHeight: 32
+            source: shareModel.shareOwnerAvatar
         }
-        EnforcedPlainTextLabel {
-            visible: shareModel.sharedWithMeExpires
-            text: qsTr("Expires in %1").arg(shareModel.sharedWithMeRemainingTimeString)
+
+        ColumnLayout {
+            EnforcedPlainTextLabel {
+                Layout.fillWidth: true
+                visible: shareModel.displayShareOwner
+                text: qsTr("Shared with you by %1").arg(shareModel.shareOwnerDisplayName)
+                font.bold: true
+            }
+            EnforcedPlainTextLabel {
+                Layout.fillWidth: true
+                visible: shareModel.sharedWithMeExpires
+                text: qsTr("Expires in %1").arg(shareModel.sharedWithMeRemainingTimeString)
+            }
         }
 
         visible: shareModel.displayShareOwner

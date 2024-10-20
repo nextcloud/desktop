@@ -283,6 +283,9 @@ class ImageProvider : public QQuickAsyncImageProvider
 public:
     ImageProvider() = default;
     QQuickImageResponse *requestImageResponse(const QString &id, const QSize &requestedSize) override;
+
+private:
+    QThreadPool _pool;
 };
 
 class UserAppsModel : public QAbstractListModel
