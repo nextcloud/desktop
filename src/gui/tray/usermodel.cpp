@@ -1618,35 +1618,53 @@ int UserModel::findUserIdForAccount(AccountState *account) const
 }
 /*-------------------------------------------------------------------------------------*/
 
-ImageProvider::ImageProvider()
-    : QQuickImageProvider(QQuickImageProvider::Image)
+class ImageResponse : public QQuickImageResponse
 {
-}
+public:
+    ImageResponse(const QString &id, const QSize &requestedSize, QThreadPool *pool)
+    {
+        Q_UNUSED(pool)
 
-QImage ImageProvider::requestImage(const QString &id, QSize *size, const QSize &requestedSize)
-{
-    Q_UNUSED(size)
-    Q_UNUSED(requestedSize)
+        const auto makeIcon = [](const QString &path) {
+            QImage image(128, 128, QImage::Format_ARGB32);
+            image.fill(Qt::GlobalColor::transparent);
+            QPainter painter(&image);
+            QSvgRenderer renderer(path);
+            renderer.render(&painter);
+            return image;
+        };
 
-    const auto makeIcon = [](const QString &path) {
-        QImage image(128, 128, QImage::Format_ARGB32);
-        image.fill(Qt::GlobalColor::transparent);
-        QPainter painter(&image);
-        QSvgRenderer renderer(path);
-        renderer.render(&painter);
-        return image;
-    };
+        if (id == QLatin1String("fallbackWhite")) {
+            handleDone(makeIcon(QStringLiteral(":/client/theme/white/user.svg")));
+            return;
+        } else if (id == QLatin1String("fallbackBlack")) {
+            handleDone(makeIcon(QStringLiteral(":/client/theme/black/user.svg")));
+            return;
+        }
 
-    if (id == QLatin1String("fallbackWhite")) {
-        return makeIcon(QStringLiteral(":/client/theme/white/user.svg"));
+
+        handleDone(UserModel::instance()->avatarById(id.toInt()));
     }
 
-    if (id == QLatin1String("fallbackBlack")) {
-        return makeIcon(QStringLiteral(":/client/theme/black/user.svg"));
+    void handleDone(const QImage &image)
+    {
+        _image = image;
+        emit finished();
     }
 
-    const int uid = id.toInt();
-    return UserModel::instance()->avatarById(uid);
+    QQuickTextureFactory *textureFactory() const override
+    {
+        return QQuickTextureFactory::textureFactoryForImage(_image);
+    }
+
+private:
+    QImage _image;
+};
+
+QQuickImageResponse *ImageProvider::requestImageResponse(const QString &id, const QSize &requestedSize)
+{
+    const auto response = new class ImageResponse(id, requestedSize, &pool);
+    return response;
 }
 
 /*-------------------------------------------------------------------------------------*/
@@ -1725,3 +1743,6 @@ QHash<int, QByteArray> UserAppsModel::roleNames() const
     return roles;
 }
 }
+
+#include "usermodel.moc"
+
