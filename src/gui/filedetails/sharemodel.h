@@ -40,6 +40,7 @@ class ShareModel : public QAbstractListModel
     Q_PROPERTY(QVariantList sharees READ sharees NOTIFY shareesChanged)
     Q_PROPERTY(bool displayShareOwner READ displayShareOwner NOTIFY displayShareOwnerChanged)
     Q_PROPERTY(QString shareOwnerDisplayName READ shareOwnerDisplayName NOTIFY shareOwnerDisplayNameChanged)
+    Q_PROPERTY(QString shareOwnerAvatar READ shareOwnerAvatar NOTIFY shareOwnerAvatarChanged)
     Q_PROPERTY(bool sharedWithMeExpires READ sharedWithMeExpires NOTIFY sharedWithMeExpiresChanged)
     Q_PROPERTY(QString sharedWithMeRemainingTimeString READ sharedWithMeRemainingTimeString NOTIFY sharedWithMeRemainingTimeStringChanged)
 
@@ -132,6 +133,7 @@ public:
 
     [[nodiscard]] bool displayShareOwner() const;
     [[nodiscard]] QString shareOwnerDisplayName() const;
+    [[nodiscard]] QString shareOwnerAvatar() const;
     [[nodiscard]] bool sharedWithMeExpires() const;
     [[nodiscard]] QString sharedWithMeRemainingTimeString() const;
 
@@ -154,6 +156,7 @@ signals:
     void serverAllowsResharingChanged();
     void displayShareOwnerChanged();
     void shareOwnerDisplayNameChanged();
+    void shareOwnerAvatarChanged();
     void sharedWithMeExpiresChanged();
     void sharedWithMeRemainingTimeStringChanged();
 
@@ -261,6 +264,7 @@ private:
     QByteArray _fileRemoteId;
     bool _displayShareOwner = false;
     QString _shareOwnerDisplayName;
+    QString _shareOwnerAvatar;
     bool _sharedWithMeExpires = false;
     QString _sharedWithMeRemainingTimeString;
 
