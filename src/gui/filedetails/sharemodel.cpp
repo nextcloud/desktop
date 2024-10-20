@@ -1384,6 +1384,11 @@ bool ShareModel::displayFileOwner() const
     return _displayFileOwner;
 }
 
+QString ShareModel::fileOwnerDisplayName() const
+{
+    return _fileOwnerDisplayName;
+}
+
 QVariantList ShareModel::sharees() const
 {
     QVariantList returnSharees;
