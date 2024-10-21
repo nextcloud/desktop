@@ -95,7 +95,8 @@ public:
         StatusRedirect, // 204 URL received one of redirect HTTP codes (301-307), possibly a captive portal
         ServiceUnavailable, // 503 on authed request
         MaintenanceMode, // maintenance enabled in status.php
-        Timeout // actually also used for other errors on the authed request
+        Timeout, // actually also used for other errors on the authed request
+        NeedToSignTermsOfService,
     };
     Q_ENUM(Status);
 
@@ -129,6 +130,7 @@ protected slots:
 
     void slotCapabilitiesRecieved(const QJsonDocument &);
     void slotUserFetched(OCC::UserInfo *userInfo);
+    void slotServerTermsOfServiceRecieved(const QJsonDocument &reply);
 
 private:
 #ifndef TOKEN_AUTH_ONLY
@@ -136,6 +138,7 @@ private:
 #endif
     void reportResult(Status status);
     void checkServerCapabilities();
+    void checkServerTermsOfService();
     void fetchUser();
 
     /** Sets the account's server version
