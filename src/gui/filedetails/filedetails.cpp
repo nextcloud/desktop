@@ -61,15 +61,15 @@ void FileDetails::setLocalPath(const QString &localPath)
     _fileWatcher.addPath(localPath);
     connect(&_fileWatcher, &QFileSystemWatcher::fileChanged, this, &FileDetails::refreshFileDetails);
 
-    const auto folder = FolderMan::instance()->folderForPath(_localPath);
-    if (!folder) {
+    _folder = FolderMan::instance()->folderForPath(_localPath);
+    if (!_folder) {
         qCWarning(lcFileDetails) << "No folder found for path:" << _localPath << "will not load file details.";
         return;
     }
 
-    const auto file = _localPath.mid(folder->cleanPath().length() + 1);
+    const auto file = _localPath.mid(_folder->cleanPath().length() + 1);
 
-    if (!folder->journalDb()->getFileRecord(file, &_fileRecord)) {
+    if (!_folder->journalDb()->getFileRecord(file, &_fileRecord)) {
         qCWarning(lcFileDetails) << "Invalid file record for path:"
                                  << _localPath
                                  << "will not load file details.";
@@ -77,9 +77,9 @@ void FileDetails::setLocalPath(const QString &localPath)
 
     _filelockState = _fileRecord._lockstate;
     updateLockExpireString();
-    updateFileTagModel(folder);
 
-    _sharingAvailable = folder->accountState()->account()->capabilities().shareAPI();
+    const auto account = _folder->accountState()->account();
+    _sharingAvailable = account->capabilities().shareAPI();
 
     Q_EMIT fileChanged();
 }
