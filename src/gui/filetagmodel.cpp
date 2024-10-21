@@ -20,13 +20,21 @@ Q_LOGGING_CATEGORY(lcFileTagModel, "nextcloud.gui.filetagmodel", QtInfoMsg)
 
 namespace OCC {
 
-FileTagModel::FileTagModel(const QString &serverRelativePath,
+FileTagModel::FileTagModel(const SyncJournalFileRecord &fileRecord,
+                           const Folder * const syncFolder,
                            const AccountPtr &account,
                            QObject * const parent)
     : QAbstractListModel(parent)
-    , _serverRelativePath(serverRelativePath)
     , _account(account)
 {
+    _serverRelativePath = syncFolder->remotePathTrailingSlash() + fileRecord.path();
+
+    if (const auto vfsMode = syncFolder->vfs().mode(); fileRecord.isVirtualFile() && vfsMode == Vfs::WithSuffix) {
+        if (const auto suffix = syncFolder->vfs().fileSuffix(); !suffix.isEmpty() && _serverRelativePath.endsWith(suffix)) {
+            _serverRelativePath.chop(suffix.length());
+        }
+    }
+
     fetchFileTags();
 }
 
