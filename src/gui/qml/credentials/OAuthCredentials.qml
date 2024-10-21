@@ -42,6 +42,7 @@ Credentials {
             Layout.alignment: Qt.AlignHCenter
             Button {
                 id: openBrowserButton
+                Layout.maximumHeight: 42 // See https://github.com/owncloud/client/issues/11928 why we limit the height
                 property bool browserWasOpened: false
                 horizontalPadding: 64
                 enabled: credentials.ready
@@ -60,6 +61,7 @@ Credentials {
             Button {
                 id: copyToClipboardButton
                 Layout.preferredWidth: openBrowserButton.implicitWidth
+                Layout.maximumHeight: 42 // See https://github.com/owncloud/client/issues/11928 why we limit the height
                 visible: credentials.isValid
 
                 text: qsTr("Copy URL")
@@ -83,6 +85,7 @@ Credentials {
 
             Loader {
                 Layout.preferredWidth: openBrowserButton.implicitWidth
+                Layout.maximumHeight: 42 // See https://github.com/owncloud/client/issues/11928 why we limit the height
                 Layout.alignment: Qt.AlignHCenter
                 sourceComponent: logOutButton
             }
