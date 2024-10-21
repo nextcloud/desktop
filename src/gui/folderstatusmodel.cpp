@@ -253,7 +253,7 @@ QVariant FolderStatusModel::data(const QModelIndex &index, int role) const
         }
         if (f->isReady() && f->virtualFilesEnabled() && f->vfs().mode() == Vfs::Mode::WithSuffix) {
             errors.append({
-                tr("The suffix VFS plugin is deprecated and will be removed in the 7.0 release.\n"
+                tr("The Suffix-VFS plugin is deprecated and will be removed in the 7.0 release.\n"
                    "Please use the context menu and select \"Disable virtual file support\" to ensure future access to your synced files.\n"
                    "You are going to lose access to your sync folder if you do not do so!"),
             });
