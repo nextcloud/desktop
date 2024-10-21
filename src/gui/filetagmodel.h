@@ -16,6 +16,8 @@
 
 #include <QAbstractListModel>
 
+#include "common/syncjournalfilerecord.h"
+#include "gui/folder.h"
 #include "libsync/account.h"
 
 namespace OCC {
@@ -31,7 +33,10 @@ class FileTagModel : public QAbstractListModel
     Q_PROPERTY(QString overflowTagsString READ overflowTagsString NOTIFY overflowTagsStringChanged)
 
 public:
-    explicit FileTagModel(const QString &serverRelativePath, const AccountPtr &account, QObject * const parent = nullptr);
+    explicit FileTagModel(const SyncJournalFileRecord &fileRecord,
+                          const Folder *const syncFolder,
+                          const AccountPtr &account,
+                          QObject *const parent = nullptr);
 
     [[nodiscard]] int rowCount(const QModelIndex &parent = QModelIndex()) const override;
     [[nodiscard]] QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
