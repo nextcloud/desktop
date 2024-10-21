@@ -170,11 +170,7 @@ FileTagModel *FileDetails::fileTagModel() const
 
 void FileDetails::updateFileTagModel(const AccountPtr &account)
 {
-    Q_ASSERT(account);
-
-    const auto serverRelPath = QString(folder->remotePathTrailingSlash() + name());
-
-    _fileTagModel = std::make_unique<FileTagModel>(serverRelPath, account);
+    _fileTagModel = std::make_unique<FileTagModel>(_fileRecord, _folder, account);
     Q_EMIT fileTagModelChanged();
 }
 
