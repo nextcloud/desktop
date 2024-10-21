@@ -73,6 +73,7 @@ private:
 
     QFileInfo _fileInfo;
     QFileSystemWatcher _fileWatcher;
+    Folder *_folder = nullptr;
     SyncJournalFileRecord _fileRecord;
     SyncJournalFileLockInfo _filelockState;
     QByteArray _numericFileId;
