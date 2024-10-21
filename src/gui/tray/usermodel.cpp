@@ -1650,8 +1650,9 @@ public:
             const auto accountString = userIds.last();
             const auto accountState = AccountManager::instance()->account(accountString);
             Q_ASSERT(accountState);
-            if (!accountState) {
-                qCWarning(lcActivity) << "Account not found:" << accountString;
+            Q_ASSERT(accountState->account());
+            if (!accountState || !accountState->account()) {
+                qCWarning(lcActivity) << "Invalid account:" << accountString;
                 return;
             }
             const auto avatarSize = requestedSize.width() > 0 ? requestedSize.width() : 64;
