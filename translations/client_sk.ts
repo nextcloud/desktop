@@ -3165,24 +3165,24 @@ Downgrading versions is not possible immediately: changing from stable to enterp
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="798"/>
         <source>Password for share required</source>
-        <translation>Pre sprístupnenie je potrebné heslo</translation>
+        <translation>Pre zdieľanie je potrebné heslo</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="799"/>
         <source>Please enter a password for your link share:</source>
-        <translation>Zadajte heslo pre sprístupnenie pomocou odkazu:</translation>
+        <translation>Zadajte heslo pre zdieľanie pomocou odkazu:</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="825"/>
         <source>Sharing error</source>
-        <translation>Chyba sprístupnenia</translation>
+        <translation>Chyba zdieľania</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="826"/>
         <source>Could not retrieve or create the public link share. Error:
 
 %1</source>
-        <translation>Nie je možné získať alebo vytvoriť verejný odkaz pre sprístupnenie. Chyba:
+        <translation>Nie je možné získať alebo vytvoriť verejný odkaz pre zdieľanie. Chyba:
 
 %1</translation>
     </message>
@@ -4471,7 +4471,7 @@ Toto je nový experimentálny režim. Ak sa ho rozhodnete použiť, nahláste v�
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="308"/>
         <source>A file or folder was removed from a read only share, but restoring failed: %1</source>
-        <translation>Súbor alebo priečinok bol odobratý zo sprístupnenia len na čítanie, ale jeho obnovenie zlyhalo: %1</translation>
+        <translation>Súbor alebo adresár bol odobratý zo zdieľania len na čítanie, ale jeho obnovenie zlyhalo: %1</translation>
     </message>
 </context>
 <context>
@@ -4999,7 +4999,7 @@ Server odpovedal chybou: %2</translation>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="766"/>
         <source>Context menu share</source>
-        <translation>Sprístupnenie kontextovej ponuky</translation>
+        <translation>Kontextové menu zdieľania</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1060"/>
@@ -5009,7 +5009,7 @@ Server odpovedal chybou: %2</translation>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1120"/>
         <source>I shared something with you</source>
-        <translation>Niečo som vám sprístupnil</translation>
+        <translation>Niečo som vám zdieľal</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1133"/>
@@ -5041,7 +5041,7 @@ Server odpovedal chybou: %2</translation>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1168"/>
         <source>Resharing this file is not allowed</source>
-        <translation>Opätovné sprístupňovanie tohto súboru je zakázané</translation>
+        <translation>Opätovné zdieľanie tohto súboru je zakázané</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1168"/>

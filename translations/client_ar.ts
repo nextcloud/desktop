@@ -334,7 +334,7 @@
     <message>
         <location filename="../src/common/filesystembase.cpp" line="384"/>
         <source>Could not make directories in trash</source>
-        <translation>لا يمكن إنشاء مُجلّدات في سلة المُهملات</translation>
+        <translation>لا يمكن إنشاء مجلدات في سلة المهملات</translation>
     </message>
     <message>
         <location filename="../src/common/filesystembase.cpp" line="398"/>
@@ -2513,12 +2513,12 @@ Alternatively, you can restore all deleted files by downloading them from the se
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="210"/>
         <source>Error while loading the list of folders from the server.</source>
-        <translation>خطأ أثناء تحميل قائمة المُجلّدات من الخادوم.</translation>
+        <translation>خطأ أثناء تحميل قائمة المجلدات من الخادم.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="213"/>
         <source>Fetching folder list from server …</source>
-        <translation>جلب قائمة المُجلّدات من الخادوم ...</translation>
+        <translation>جلب قائمة المجلدات من الخادم ...</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="239"/>
@@ -7280,7 +7280,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="607"/>
         <source>Account switcher and settings menu</source>
-        <translation>مُبدّل الحساب Account switcher و قائمة الإعدادات</translation>
+        <translation>مبدل الحساب وقائمة الإعدادات</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="641"/>

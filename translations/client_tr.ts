@@ -1695,7 +1695,7 @@ Bu işlem şu anda yürütülmekte olan eşitleme işlemlerini durdurur.</transl
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="702"/>
         <source>Encrypted metadata setup error: initial signature from server is empty.</source>
-        <translation type="unfinished"/>
+        <translation>Şifrelenmiş üst veri kurulum hatası: Sunucudan gelen ilk imza boş.</translation>
     </message>
 </context>
 <context>
@@ -2287,14 +2287,18 @@ Bunun sonucunda eşitleme istemcisi yerel değişiklikleri anında yükleyemez. 
         <source>A large number of files in the server have been deleted.
 Please confirm if you'd like to proceed with these deletions.
 Alternatively, you can restore all deleted files by uploading from &apos;%1&apos; folder to the server.</source>
-        <translation type="unfinished"/>
+        <translation>Sunucudan çok sayıda dosya silindi.
+Bu silme işlemlerinin tamamlanmasını isteyip istemediğinizi onaylayın.
+Bir yanlışlık varsa, silinen tüm dosyaları &apos;%1&apos; klasöründen sunucuya geri yükleyebilirsiniz.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1646"/>
         <source>A large number of files in your local '%1' folder have been deleted.
 Please confirm if you'd like to proceed with these deletions.
 Alternatively, you can restore all deleted files by downloading them from the server.</source>
-        <translation type="unfinished"/>
+        <translation>Yerel &apos;%1&apos; klasörünüzdeki çok sayıda dosya silindi.
+Bu silme işlemlerinin tamamlanmasını isteyip istemediğinizi onaylayın.
+Bir yanlışlık varsa, silinen tüm dosyaları sunucudan indirerek geri yükleyebilirsiniz.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1647"/>
@@ -2304,17 +2308,17 @@ Alternatively, you can restore all deleted files by downloading them from the se
     <message>
         <location filename="../src/gui/folder.cpp" line="1651"/>
         <source>Proceed with Deletion</source>
-        <translation type="unfinished"/>
+        <translation>Silme işlemini tamamla</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1652"/>
         <source>Restore Files to Server</source>
-        <translation type="unfinished"/>
+        <translation>Dosyaları sunucuya geri yükle</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1652"/>
         <source>Restore Files from Server</source>
-        <translation type="unfinished"/>
+        <translation>Dosyaları sunucudan geri yükle</translation>
     </message>
 </context>
 <context>
@@ -3071,13 +3075,13 @@ Alternatively, you can restore all deleted files by downloading them from the se
         <location filename="../src/gui/generalsettings.ui" line="151"/>
         <location filename="../src/gui/generalsettings.cpp" line="327"/>
         <source>stable</source>
-        <translation>kararlı</translation>
+        <translation>Kararlı</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="156"/>
         <location filename="../src/gui/generalsettings.cpp" line="329"/>
         <source>beta</source>
-        <translation>beta</translation>
+        <translation>Beta</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="350"/>
@@ -3096,12 +3100,12 @@ Bu seçenek yalnızca güncellemelerin hangi havuzdan alınacağını belirler. 
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="365"/>
         <source>daily</source>
-        <translation>günlük</translation>
+        <translation>Günlük</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="369"/>
         <source>enterprise</source>
-        <translation>kurumsal</translation>
+        <translation>Kurumsal</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="397"/>
@@ -3110,7 +3114,10 @@ Bu seçenek yalnızca güncellemelerin hangi havuzdan alınacağını belirler. 
 
 Downgrading versions is not possible immediately: changing from beta to stable means waiting for the new stable version.</source>
         <comment>list of available update channels to non enterprise users and downgrading warning</comment>
-        <translation type="unfinished"/>
+        <translation>- Beta: Kapsamlı denenmemiş ancak yeni özellikler bulunan sürümler
+- Günlük: Yalnızca deneme ve geliştirme için günlük olarak oluşturulan sürümler
+
+Sürümler hemen düşürülemez: Beta sürümünden Kararlı sürüme geçmek için yeni bir kararlı sürümün yayınlanması beklenmelidir.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="402"/>
@@ -3118,7 +3125,9 @@ Downgrading versions is not possible immediately: changing from beta to stable m
 
 Downgrading versions is not possible immediately: changing from stable to enterprise means waiting for the new enterprise version.</source>
         <comment>list of available update channels to enterprise users and downgrading warning</comment>
-        <translation type="unfinished"/>
+        <translation>- Enterprise: Ücret ödeyen müşteriler için kararlı sürümler
+
+Sürümler hemen düşürülemez: Kararlı sürümünden Enterprise sürüme geçmek için yeni bir kararlı sürümün yayınlanması beklenmelidir.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="409"/>
@@ -3131,7 +3140,9 @@ Downgrading versions is not possible immediately: changing from stable to enterp
 - stable: contains tested versions considered reliable
 </source>
         <comment>starts list of available update channels, stable is always available</comment>
-        <translation type="unfinished"/>
+        <translation>Güncelleme kanalı, kurulum için sunulacak istemci güncellemelerini belirler:
+- Kararlı: Güvenilir sayılan denenmiş sürümler
+</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="364"/>
@@ -4247,22 +4258,22 @@ Bu yeni ve deneysel bir özelliktir. Kullanmaya karar verirseniz, lütfen karş�
     <message>
         <location filename="../src/libsync/discovery.cpp" line="442"/>
         <source>Reason: the entire filename is forbidden.</source>
-        <translation type="unfinished"/>
+        <translation>Nedeni: Dosya adına tümüyle izin verilmiyor.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="445"/>
         <source>Reason: the filename has a forbidden base name (filename start).</source>
-        <translation type="unfinished"/>
+        <translation>Nedeni: Dosya adının temel adına (dosya adının başlangıcı) izin verilmiyor.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="448"/>
         <source>Reason: the file has a forbidden extension (.%1).</source>
-        <translation type="unfinished"/>
+        <translation>Nedeni: Dosyanın uzantısına izin verilmiyor (.%1).</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="451"/>
         <source>Reason: the filename contains a forbidden character (%1).</source>
-        <translation type="unfinished"/>
+        <translation>Nedeni: Dosya adında izin verilmeyen bir karakter var (%1).</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="516"/>
