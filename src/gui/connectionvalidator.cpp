@@ -267,7 +267,20 @@ void ConnectionValidator::slotCapabilitiesRecieved(const QJsonDocument &json)
     QString directEditingETag = caps["files"].toObject()["directEditing"].toObject()["etag"].toString();
     _account->fetchDirectEditors(directEditingURL, directEditingETag);
 
-    fetchUser();
+    checkServerTermsOfService();
+}
+
+void ConnectionValidator::checkServerTermsOfService()
+{
+    // The main flow now needs the capabilities
+    auto *job = new JsonApiJob(_account, QLatin1String("ocs/v2.php/apps/terms_of_service/terms"), this);
+    job->setTimeout(timeoutToUseMsec);
+    QObject::connect(job, &JsonApiJob::jsonReceived, this, &ConnectionValidator::slotServerTermsOfServiceRecieved);
+    QObject::connect(job, &JsonApiJob::networkError, this, [] (QNetworkReply *reply)
+                     {
+                         qCInfo(lcConnectionValidator()) << "network error" << reply->error();
+                     });
+    job->start();
 }
 
 void ConnectionValidator::fetchUser()
@@ -319,6 +332,22 @@ void ConnectionValidator::slotUserFetched(UserInfo *userInfo)
 #else
     reportResult(Connected);
 #endif
+}
+
+void ConnectionValidator::slotServerTermsOfServiceRecieved(const QJsonDocument &reply)
+{
+    qCDebug(lcConnectionValidator) << "Terms of service status" << reply;
+
+    if (reply.object().contains("ocs")) {
+        const auto hasSigned = reply.object().value("ocs").toObject().value("data").toObject().value("hasSigned").toBool(false);
+
+        if (!hasSigned) {
+            reportResult(NeedToSignTermsOfService);
+            return;
+        }
+    }
+
+    fetchUser();
 }
 
 #ifndef TOKEN_AUTH_ONLY

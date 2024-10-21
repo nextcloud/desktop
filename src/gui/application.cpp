@@ -588,6 +588,8 @@ void Application::slotAccountStateAdded(AccountState *accountState)
         _gui.data(), &ownCloudGui::slotAccountStateChanged);
     connect(accountState->account().data(), &Account::serverVersionChanged,
         _gui.data(), &ownCloudGui::slotTrayMessageIfServerUnsupported);
+    connect(accountState, &AccountState::termsOfServiceChanged,
+            _gui.data(), &ownCloudGui::slotNeedToAcceptTermsOfService);
     connect(accountState, &AccountState::stateChanged,
         _folderManager.data(), &FolderMan::slotAccountStateChanged);
     connect(accountState->account().data(), &Account::serverVersionChanged,
