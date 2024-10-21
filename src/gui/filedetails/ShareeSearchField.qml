@@ -50,12 +50,6 @@ TextField {
     verticalAlignment: Qt.AlignVCenter
     implicitHeight: Math.max(Style.talkReplyTextFieldPreferredHeight, contentHeight)
 
-    background: Rectangle {
-        border.color: palette.dark
-        radius: Style.trayWindowRadius
-        color: palette.window
-    }
-
     onActiveFocusChanged: triggerSuggestionsVisibility()
     onTextChanged: triggerSuggestionsVisibility()
     Keys.onPressed: {
