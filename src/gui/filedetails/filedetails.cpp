@@ -80,6 +80,7 @@ void FileDetails::setLocalPath(const QString &localPath)
 
     const auto account = _folder->accountState()->account();
     _sharingAvailable = account->capabilities().shareAPI();
+    updateFileTagModel(account);
 
     Q_EMIT fileChanged();
 }
@@ -167,10 +168,8 @@ FileTagModel *FileDetails::fileTagModel() const
     return _fileTagModel.get();
 }
 
-void FileDetails::updateFileTagModel(const Folder * const folder)
+void FileDetails::updateFileTagModel(const AccountPtr &account)
 {
-    Q_ASSERT(folder);
-    const auto account = folder->accountState()->account();
     Q_ASSERT(account);
 
     const auto serverRelPath = QString(folder->remotePathTrailingSlash() + name());
