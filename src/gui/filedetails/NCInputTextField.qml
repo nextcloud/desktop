@@ -54,10 +54,5 @@ TextField {
     }
 
     verticalAlignment: Qt.AlignVCenter
-    background: Rectangle {
-        border.color: palette.dark
-        radius: Style.trayWindowRadius
-        color: palette.window
-    }
 }
 
