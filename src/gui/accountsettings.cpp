@@ -1290,6 +1290,9 @@ void AccountSettings::slotAccountStateChanged()
             // we can't end up here as the whole block is ifdeffed
             Q_UNREACHABLE();
             break;
+        case AccountState::NeedToSignTermsOfService:
+            showConnectionLabel(tr("You need to accept the terms of service"));
+            break;
         }
     } else {
         // ownCloud is not yet configured.

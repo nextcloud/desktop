@@ -92,6 +92,12 @@ Folder::Folder(const FolderDefinition &definition,
     if (!reloadExcludes())
         qCWarning(lcFolder, "Could not read system exclude file");
 
+    connect(_accountState.data(), &AccountState::termsOfServiceChanged,
+            this, [this] ()
+            {
+                setSyncPaused(_accountState->state() == AccountState::NeedToSignTermsOfService);
+            });
+
     connect(_accountState.data(), &AccountState::isConnectedChanged, this, &Folder::canSyncChanged);
     connect(_engine.data(), &SyncEngine::rootEtag, this, &Folder::etagRetrievedFromSyncEngine);
 
