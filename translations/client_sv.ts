@@ -2872,7 +2872,7 @@ Alternativt kan du återställa alla raderade filer genom att ladda ner dem frå
     <message>
         <location filename="../src/gui/generalsettings.ui" line="221"/>
         <source>Advanced</source>
-        <translation>Avancerad</translation>
+        <translation>Avancerat</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="20"/>

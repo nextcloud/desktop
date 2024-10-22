@@ -1695,7 +1695,7 @@ Cuirfidh an gníomh seo deireadh le haon sioncrónú atá ar siúl faoi láthair
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="702"/>
         <source>Encrypted metadata setup error: initial signature from server is empty.</source>
-        <translation type="unfinished"/>
+        <translation>Earráid socraithe meiteashonraí criptithe: tá síniú tosaigh an fhreastalaí folamh.</translation>
     </message>
 </context>
 <context>
@@ -2288,14 +2288,18 @@ Ciallaíonn sé seo go bhféadfadh sé nach ndéanfaidh an cliant sioncrónaithe
         <source>A large number of files in the server have been deleted.
 Please confirm if you'd like to proceed with these deletions.
 Alternatively, you can restore all deleted files by uploading from &apos;%1&apos; folder to the server.</source>
-        <translation type="unfinished"/>
+        <translation>Scriosadh líon mór comhad sa fhreastalaí.
+Deimhnigh le do thoil ar mhaith leat leanúint ar aghaidh leis na scriosanna seo.
+Nó, is féidir leat gach comhad scriosta a chur ar ais trí uaslódáil ó fhillteán &apos;%1&apos; go dtí an freastalaí.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1646"/>
         <source>A large number of files in your local '%1' folder have been deleted.
 Please confirm if you'd like to proceed with these deletions.
 Alternatively, you can restore all deleted files by downloading them from the server.</source>
-        <translation type="unfinished"/>
+        <translation>Scriosadh líon mór comhad i d&apos;fhillteán logánta &apos;%1&apos;.
+Deimhnigh le do thoil ar mhaith leat leanúint ar aghaidh leis na scriosanna seo.
+De rogha air sin, is féidir leat gach comhad a scriosadh a chur ar ais trína n-íoslódáil ón bhfreastalaí.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1647"/>
@@ -2305,17 +2309,17 @@ Alternatively, you can restore all deleted files by downloading them from the se
     <message>
         <location filename="../src/gui/folder.cpp" line="1651"/>
         <source>Proceed with Deletion</source>
-        <translation type="unfinished"/>
+        <translation>Lean ar aghaidh leis an Scriosadh</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1652"/>
         <source>Restore Files to Server</source>
-        <translation type="unfinished"/>
+        <translation>Athchóirigh Comhaid go Freastalaí</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1652"/>
         <source>Restore Files from Server</source>
-        <translation type="unfinished"/>
+        <translation>Athchóirigh Comhaid ón bhfreastalaí</translation>
     </message>
 </context>
 <context>
@@ -3111,7 +3115,10 @@ Tabhair faoi deara nach roghnaíonn sé seo ach na huasghráduithe linne a bhain
 
 Downgrading versions is not possible immediately: changing from beta to stable means waiting for the new stable version.</source>
         <comment>list of available update channels to non enterprise users and downgrading warning</comment>
-        <translation type="unfinished"/>
+        <translation>- béite: tá leaganacha ann le gnéithe nua nach féidir a thástáil go críochnúil
+- laethúil: tá leaganacha a cruthaíodh go laethúil amháin le haghaidh tástála agus forbartha
+
+Ní féidir leaganacha a íosghrádú láithreach: ciallaíonn athrú ó beta go cobhsaí fanacht leis an leagan cobhsaí nua.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="402"/>
@@ -3119,7 +3126,9 @@ Downgrading versions is not possible immediately: changing from beta to stable m
 
 Downgrading versions is not possible immediately: changing from stable to enterprise means waiting for the new enterprise version.</source>
         <comment>list of available update channels to enterprise users and downgrading warning</comment>
-        <translation type="unfinished"/>
+        <translation>- fiontar: tá leaganacha cobhsaí ann do chustaiméirí.
+
+Ní féidir leaganacha a íosghrádú láithreach: ciallaíonn athrú ó chobhsaí go fiontar fanacht leis an leagan fiontair nua.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="409"/>
@@ -3132,7 +3141,9 @@ Downgrading versions is not possible immediately: changing from stable to enterp
 - stable: contains tested versions considered reliable
 </source>
         <comment>starts list of available update channels, stable is always available</comment>
-        <translation type="unfinished"/>
+        <translation>Cinneann an cainéal cé na huasghráduithe a thairgfear le suiteáil:
+- cobhsaí: tá leaganacha tástálaithe a mheastar a bheith iontaofa
+</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="364"/>
@@ -4248,22 +4259,22 @@ Is modh turgnamhach nua é seo. Má shocraíonn tú é a úsáid, cuir in iúl l
     <message>
         <location filename="../src/libsync/discovery.cpp" line="442"/>
         <source>Reason: the entire filename is forbidden.</source>
-        <translation type="unfinished"/>
+        <translation>Cúis: tá an comhadainm iomlán toirmiscthe.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="445"/>
         <source>Reason: the filename has a forbidden base name (filename start).</source>
-        <translation type="unfinished"/>
+        <translation>Cúis: tá bonnainm toirmiscthe ag an gcomhad (tús ainm an chomhaid).</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="448"/>
         <source>Reason: the file has a forbidden extension (.%1).</source>
-        <translation type="unfinished"/>
+        <translation>Cúis: tá iarmhír toirmiscthe (.%1 ar an gcomhad.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="451"/>
         <source>Reason: the filename contains a forbidden character (%1).</source>
-        <translation type="unfinished"/>
+        <translation>Cúis: tá carachtar toirmiscthe (%1) san ainm comhaid.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="516"/>

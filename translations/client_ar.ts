@@ -163,7 +163,7 @@
     <message>
         <location filename="../src/gui/ConflictDelegate.qml" line="77"/>
         <source>Server version</source>
-        <translation>نسخة الخادوم</translation>
+        <translation>نسخة الخادم</translation>
     </message>
 </context>
 <context>
@@ -512,7 +512,7 @@
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="469"/>
         <source>Server replied &quot;%1 %2&quot; to &quot;%3 %4&quot;</source>
-        <translation>الخادوم أجاب &quot;%1 %2&quot; إلى &quot;%3 %4&quot;</translation>
+        <translation>الخادم أجاب &quot;%1 %2&quot; إلى &quot;%3 %4&quot;</translation>
     </message>
 </context>
 <context>
@@ -879,7 +879,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1043"/>
         <source>Removing end-to-end encryption will remove locally-synced files that are encrypted.&lt;br&gt;Encrypted files will remain on the server.</source>
-        <translation>حذف التشفير الطرفي سيؤدي إلى حذف الملفات المحلية المُشفّرة&lt;br&gt;لكن ستبقى الملفات المُشفّرة محفوظةً على الخادوم.</translation>
+        <translation>حذف التشفير الطرفي سيؤدي إلى حذف الملفات المحلية المشفرة&lt;br&gt;لكن ستبقى الملفات المُشفّرة محفوظةً على الخادم.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1105"/>
@@ -919,7 +919,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1225"/>
         <source>The server version %1 is unsupported! Proceed at your own risk.</source>
-        <translation>إصدار الخادوم %1 غير مدعوم! إستمر على مسؤوليتك.</translation>
+        <translation>إصدار الخادم %1 غير مدعوم! إستمر على مسؤوليتك.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1227"/>
@@ -929,17 +929,17 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1231"/>
         <source>Server %1 is temporarily unavailable.</source>
-        <translation>الخادوم %1 غير مُتاحٍ مؤقّتاً.</translation>
+        <translation>الخادم %1 غير مُتاحٍ مؤقّتاً.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1234"/>
         <source>Server %1 is currently in maintenance mode.</source>
-        <translation>الخادوم %1 في حالة صيانة حاليّاً.</translation>
+        <translation>الخادم %1 في حالة صيانة حاليّاً.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1237"/>
         <source>Server %1 is currently being redirected, or your connection is behind a captive portal.</source>
-        <translation>تتم حاليًا إعادة توجيه الخادوم %1، أو أن اتصالك يعمل من وراء مدخلٍ مُقيّدٍ captive portal.</translation>
+        <translation>تتم حاليًا إعادة توجيه الخادم %1، أو أن اتصالك يعمل من وراء مدخلٍ مُقيّدٍ captive portal.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1240"/>
@@ -969,7 +969,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1264"/>
         <source>Server configuration error: %1 at %2.</source>
-        <translation>خطـأ تهيئة الخادوم: %1 في %2.</translation>
+        <translation>خطـأ تهيئة الخادم: %1 في %2.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1275"/>
@@ -1116,7 +1116,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="23"/>
         <source>This server probably requires a SSL client certificate.</source>
-        <translation>ربما يتطلب هذا الخادوم شهادة عميل SSL.</translation>
+        <translation>ربما يتطلب هذا الخادم شهادة عميل SSL.</translation>
     </message>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="35"/>
@@ -1272,7 +1272,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/libsync/basepropagateremotedeleteencrypted.cpp" line="136"/>
         <source>Wrong HTTP code returned by server. Expected 204, but received &quot;%1 %2&quot;.</source>
-        <translation>قام الخادوم إرجاع رمز HTTP خاطئ. الرمز المتوقع كان: 204، لكن ما تمّ تلقيه كان: &quot;%1 %2&quot;.</translation>
+        <translation>قام الخادم إرجاع رمز HTTP خاطئ. الرمز المتوقع كان: 204، لكن ما تمّ تلقيه كان: &quot;%1 %2&quot;.</translation>
     </message>
 </context>
 <context>
@@ -1285,7 +1285,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="175"/>
         <source>File %1 has invalid modified time. Do not upload to the server.</source>
-        <translation>الملف٪ 1، زمن آخر تعديل modified time فيه غير صالح. لا تقم برفعه إلى الخادوم.</translation>
+        <translation>الملف %1، زمن آخر تعديل modified time فيه غير صالح. لا تقم برفعه إلى الخادم.</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="296"/>
@@ -1295,7 +1295,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="308"/>
         <source>File %1 has invalid modification time. Do not upload to the server.</source>
-        <translation>الملف٪ 1، زمن آخر تعديل modified time فيه غير صالح. لا تقم برفعه إلى الخادوم.</translation>
+        <translation>الملف %1، زمن آخر تعديل modified time فيه غير صالح. لا تقم برفعه إلى الخادوم.</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="320"/>
@@ -1339,12 +1339,12 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/libsync/caseclashconflictsolver.cpp" line="78"/>
         <source>Cannot rename file because a file with the same name already exists on the server. Please pick another name.</source>
-        <translation>لا يمكن تغيير تسمية الملف لأن هنالك ملف آخر بنفس الاسم موجود على الخادوم. الرجاء اختيار اسم آخر.</translation>
+        <translation>لا يمكن تغيير تسمية الملف لأن هنالك ملف آخر بنفس الاسم موجود على الخادم. الرجاء اختيار اسم آخر.</translation>
     </message>
     <message>
         <location filename="../src/libsync/caseclashconflictsolver.cpp" line="121"/>
         <source>Could not rename file. Please make sure you are connected to the server.</source>
-        <translation>تعذر تغيير تسمية الملف. يرجى التأكد من اتصالك بالخادوم.</translation>
+        <translation>تعذر تغيير تسمية الملف. يرجى التأكد من اتصالك بالخادم.</translation>
     </message>
     <message>
         <location filename="../src/libsync/caseclashconflictsolver.cpp" line="172"/>
@@ -1554,12 +1554,12 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="154"/>
         <source>Server version</source>
-        <translation>إصدار الخادوم</translation>
+        <translation>إصدار الخادم</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="218"/>
         <source>&lt;a href=&quot;%1&quot;&gt;Open server version&lt;/a&gt;</source>
-        <translation>&lt;a href=&quot;%1&quot;&gt;إفتح نسخة الخادوم&lt;/a&gt;</translation>
+        <translation>&lt;a href=&quot;%1&quot;&gt;فتح نسخة الخادم&lt;/a&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.cpp" line="54"/>
@@ -1575,7 +1575,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/conflictdialog.cpp" line="158"/>
         <source>Open server version</source>
-        <translation>إفتح نسخة الخادوم</translation>
+        <translation>فتح نسخة الخادم</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.cpp" line="176"/>
@@ -1657,7 +1657,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/connectionvalidator.cpp" line="287"/>
         <source>Please update to the latest server and restart the client.</source>
-        <translation>يرجى التحديث إلى الإصدار الأخير من الخادوم ثم إعادة تشغيل العميل.</translation>
+        <translation>يرجى التحديث إلى الإصدار الأخير من الخادم ثم إعادة تشغيل العميل.</translation>
     </message>
 </context>
 <context>
@@ -1679,7 +1679,7 @@ This action will abort any currently running synchronization.</source>
         <location filename="../src/libsync/discoveryphase.cpp" line="580"/>
         <location filename="../src/libsync/discoveryphase.cpp" line="610"/>
         <source>Server error: PROPFIND reply is not XML formatted!</source>
-        <translation>خطأ خادوم: رد PROPFIND ليس على نسق XML!</translation>
+        <translation>خطأ في الخادم: رد PROPFIND ليس على نسق XML!</translation>
     </message>
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="678"/>
@@ -1690,7 +1690,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="702"/>
         <source>Encrypted metadata setup error: initial signature from server is empty.</source>
-        <translation>خطأ في إعداد البيانات الوصفية المشفرة: التوقيع الأوّلي من الخادوم فارغ.</translation>
+        <translation>خطأ في إعداد البيانات الوصفية المشفرة: التوقيع الأوّلي من الخادم فارغ.</translation>
     </message>
 </context>
 <context>
@@ -1785,7 +1785,7 @@ This action will abort any currently running synchronization.</source>
         <location filename="../src/gui/editlocallyjob.cpp" line="121"/>
         <location filename="../src/gui/editlocallyjob.cpp" line="132"/>
         <source>Could not validate the request to open a file from server.</source>
-        <translation>تعذر التحقق من صحة طلب فتح ملف من الخادوم.</translation>
+        <translation>تعذر التحقق من صحة طلب فتح ملف من الخادم.</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="261"/>
@@ -1796,7 +1796,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="512"/>
         <source>Server error: PROPFIND reply is not XML formatted!</source>
-        <translation>خطأ خادوم: رد PROPFIND ليس على نسق XML!</translation>
+        <translation>خطأ خادم: رد PROPFIND ليس على نسق XML!</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="514"/>
@@ -1850,7 +1850,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/editlocallymanager.cpp" line="118"/>
         <source>Could not validate the request to open a file from server.</source>
-        <translation>تعذّر التحقَّق من صحة الطلب لفتح ملف من الخادوم.</translation>
+        <translation>تعذّر التحقَّق من صحة الطلب لفتح ملف من الخادم.</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallymanager.cpp" line="119"/>
@@ -1993,7 +1993,7 @@ This can be an issue with your OpenSSL libraries.</source>
         <location filename="../src/gui/creds/flow2auth.cpp" line="113"/>
         <location filename="../src/gui/creds/flow2auth.cpp" line="231"/>
         <source>Error returned from the server: &lt;em&gt;%1&lt;/em&gt;</source>
-        <translation>خطأ راجع من الخادوم: &lt;em&gt;%1&lt;/em&gt;</translation>
+        <translation>خطأ راجع من الخادم: &lt;em&gt;%1&lt;/em&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/flow2auth.cpp" line="116"/>
@@ -2005,13 +2005,13 @@ This can be an issue with your OpenSSL libraries.</source>
         <location filename="../src/gui/creds/flow2auth.cpp" line="119"/>
         <location filename="../src/gui/creds/flow2auth.cpp" line="237"/>
         <source>Could not parse the JSON returned from the server: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</source>
-        <translation>تعذّر تحليل JSON الراجعة من الخادوم: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</translation>
+        <translation>تعذّر تحليل JSON الراجعة من الخادم: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/flow2auth.cpp" line="122"/>
         <location filename="../src/gui/creds/flow2auth.cpp" line="240"/>
         <source>The reply from the server did not contain all expected fields</source>
-        <translation>الردُّ الوارد من الخادوم لا يحوي كل الحقول المنتظرة</translation>
+        <translation>الردُّ الوارد من الخادم لا يحوي كل الحقول المنتظرة</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/flow2auth.cpp" line="219"/>
@@ -2895,7 +2895,7 @@ Alternatively, you can restore all deleted files by downloading them from the se
     <message>
         <location filename="../src/gui/generalsettings.ui" line="89"/>
         <source>Show Server &amp;Notifications</source>
-        <translation>أعرض &amp;إشعارات_الخادوم</translation>
+        <translation>أعرض إشعارات الخادم</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="96"/>
@@ -3036,7 +3036,7 @@ Alternatively, you can restore all deleted files by downloading them from the se
     <message>
         <location filename="../src/gui/generalsettings.ui" line="412"/>
         <source>Show server &amp;notifications</source>
-        <translation>إظهار إشعارات الخادوم</translation>
+        <translation>إظهار إشعارات الخادم</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="419"/>
@@ -3046,7 +3046,7 @@ Alternatively, you can restore all deleted files by downloading them from the se
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="144"/>
         <source>Server notifications that require attention.</source>
-        <translation>إشعارات الخادوم ذات الأهمية</translation>
+        <translation>إشعارات الخادم ذات الأهمية</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="148"/>
@@ -3398,7 +3398,7 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="235"/>
         <source>Could not rename file. Please make sure you are connected to the server.</source>
-        <translation>تعذّرت إعادة تسمية الملف. تأكد أنك متصل بالخادوم.</translation>
+        <translation>تعذّرت إعادة تسمية الملف. تأكد أنك متصل بالخادم.</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="246"/>
@@ -3657,7 +3657,7 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/networksettings.cpp" line="40"/>
         <source>Hostname of proxy server</source>
-        <translation>اسم مضيف الخادوم الوكيل</translation>
+        <translation>اسم مضيف الخادم الوكيل</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.cpp" line="41"/>
@@ -4275,7 +4275,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/discovery.cpp" line="612"/>
         <source>Server reported no %1</source>
-        <translation>أبلغ الخادوم عن عدم وجود %1</translation>
+        <translation>أبلغ الخادم عن عدم وجود %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="982"/>
@@ -5230,7 +5230,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="191"/>
         <source>Server version: %1</source>
-        <translation>نسخة الخادوم: %1</translation>
+        <translation>نسخة الخادم: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="205"/>
@@ -5712,7 +5712,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="155"/>
         <source>Could not fetch predefined statuses. Make sure you are connected to the server.</source>
-        <translation>تعذر جلب الحالات statuses المحددة مسبقًا. تأكد من أنك متصل بالخادوم.</translation>
+        <translation>تعذر جلب الحالات statuses المحددة مسبقًا. تأكد من أنك متصل بالخادم.</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="159"/>
@@ -5934,7 +5934,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/wizard/welcomepage.cpp" line="111"/>
         <source>Host your own server</source>
-        <translation>قم باستضافة خادومك الخاص</translation>
+        <translation>قم باستضافة الخادم الخاص بك</translation>
     </message>
 </context>
 <context>
@@ -6117,7 +6117,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="304"/>
         <source>Synchronize everything from server</source>
-        <translation>قم بمزامنة كل شيء مع الخادوم</translation>
+        <translation>قم بمزامنة كل شيء مع الخادم</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="360"/>
@@ -6185,7 +6185,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="183"/>
         <source>Server address</source>
-        <translation>عنوان الخادوم</translation>
+        <translation>عنوان الخادم</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="259"/>
@@ -6312,7 +6312,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/ResolveConflictsDialog.qml" line="115"/>
         <source>All server versions</source>
-        <translation>جميع إصدارات الخادوم</translation>
+        <translation>جميع إصدارات الخادم</translation>
     </message>
     <message>
         <location filename="../src/gui/ResolveConflictsDialog.qml" line="170"/>
