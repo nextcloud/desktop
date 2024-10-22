@@ -464,6 +464,7 @@ signals:
     void downloadLimitSettingChanged();
     void uploadLimitChanged();
     void downloadLimitChanged();
+    void termsOfServiceNeedToBeChecked();
 
 protected Q_SLOTS:
     void slotCredentialsFetched();
