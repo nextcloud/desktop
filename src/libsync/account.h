@@ -377,6 +377,8 @@ signals:
     void lockFileSuccess();
     void lockFileError(const QString&);
 
+    void termsOfServiceNeedToBeChecked();
+
 protected Q_SLOTS:
     void slotCredentialsFetched();
     void slotCredentialsAsked();
