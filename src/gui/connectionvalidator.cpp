@@ -42,7 +42,10 @@ ConnectionValidator::ConnectionValidator(AccountStatePtr accountState, const QSt
     , _previousErrors(previousErrors)
     , _accountState(accountState)
     , _account(accountState->account())
+    , _termsOfServiceChecker(_account)
 {
+    connect(&_termsOfServiceChecker, &TermsOfServiceChecker::done,
+            this, &ConnectionValidator::termsOfServiceCheckDone);
 }
 
 void ConnectionValidator::checkServerAndAuth()
@@ -270,19 +273,6 @@ void ConnectionValidator::slotCapabilitiesRecieved(const QJsonDocument &json)
     checkServerTermsOfService();
 }
 
-void ConnectionValidator::checkServerTermsOfService()
-{
-    // The main flow now needs the capabilities
-    auto *job = new JsonApiJob(_account, QLatin1String("ocs/v2.php/apps/terms_of_service/terms"), this);
-    job->setTimeout(timeoutToUseMsec);
-    QObject::connect(job, &JsonApiJob::jsonReceived, this, &ConnectionValidator::slotServerTermsOfServiceRecieved);
-    QObject::connect(job, &JsonApiJob::networkError, this, [] (QNetworkReply *reply)
-                     {
-                         qCInfo(lcConnectionValidator()) << "network error" << reply->error();
-                     });
-    job->start();
-}
-
 void ConnectionValidator::fetchUser()
 {
     auto *userInfo = new UserInfo(_accountState.data(), true, true, this);
@@ -317,6 +307,11 @@ bool ConnectionValidator::setAndCheckServerVersion(const QString &version)
     return true;
 }
 
+void ConnectionValidator::checkServerTermsOfService()
+{
+    _termsOfServiceChecker.start();
+}
+
 void ConnectionValidator::slotUserFetched(UserInfo *userInfo)
 {
     if(userInfo) {
@@ -332,17 +327,11 @@ void ConnectionValidator::slotUserFetched(UserInfo *userInfo)
 #endif
 }
 
-void ConnectionValidator::slotServerTermsOfServiceRecieved(const QJsonDocument &reply)
+void ConnectionValidator::termsOfServiceCheckDone()
 {
-    qCDebug(lcConnectionValidator) << "Terms of service status" << reply;
-
-    if (reply.object().contains("ocs")) {
-        const auto hasSigned = reply.object().value("ocs").toObject().value("data").toObject().value("hasSigned").toBool(false);
-
-        if (!hasSigned) {
-            reportResult(NeedToSignTermsOfService);
-            return;
-        }
+    if (_termsOfServiceChecker.needToSign()) {
+        reportResult(NeedToSignTermsOfService);
+        return;
     }
 
     fetchUser();
@@ -364,6 +353,62 @@ void ConnectionValidator::reportResult(Status status)
     }
 
     deleteLater();
+}
+
+TermsOfServiceChecker::TermsOfServiceChecker(AccountPtr account, QObject *parent)
+    : QObject(parent)
+    , _account(account)
+{
+}
+
+TermsOfServiceChecker::TermsOfServiceChecker(QObject *parent)
+    : QObject(parent)
+{
+}
+
+bool TermsOfServiceChecker::needToSign() const
+{
+    return _needToSign;
+}
+
+void TermsOfServiceChecker::start()
+{
+    checkServerTermsOfService();
+}
+
+void TermsOfServiceChecker::slotServerTermsOfServiceRecieved(const QJsonDocument &reply)
+{
+    qCDebug(lcConnectionValidator) << "Terms of service status" << reply;
+
+    if (reply.object().contains("ocs")) {
+        const auto needToSign = !reply.object().value("ocs").toObject().value("data").toObject().value("hasSigned").toBool(false);
+        if (needToSign != _needToSign) {
+            _needToSign = needToSign;
+            emit needToSignChanged();
+        }
+    } else if (_needToSign) {
+        _needToSign = false;
+        emit needToSignChanged();
+    }
+
+    emit done();
+}
+
+void TermsOfServiceChecker::checkServerTermsOfService()
+{
+    if (!_account) {
+        emit done();
+    }
+
+    // The main flow now needs the capabilities
+    auto *job = new JsonApiJob(_account, QLatin1String("ocs/v2.php/apps/terms_of_service/terms"), this);
+    job->setTimeout(timeoutToUseMsec);
+    QObject::connect(job, &JsonApiJob::jsonReceived, this, &TermsOfServiceChecker::slotServerTermsOfServiceRecieved);
+    QObject::connect(job, &JsonApiJob::networkError, this, [] (QNetworkReply *reply)
+                     {
+                         qCInfo(lcConnectionValidator()) << "network error" << reply->error();
+                     });
+    job->start();
 }
 
 } // namespace OCC

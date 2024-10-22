@@ -48,6 +48,7 @@ AccountState::AccountState(const AccountPtr &account)
     , _state(AccountState::Disconnected)
     , _connectionStatus(ConnectionValidator::Undefined)
     , _waitingForNewCredentials(false)
+    , _termsOfServiceChecker(_account)
     , _maintenanceToConnectedDelay(60000 + (QRandomGenerator::global()->generate() % (4 * 60000))) // 1-5min delay
     , _remoteWipe(new RemoteWipe(_account))
     , _isDesktopNotificationsAllowed(true)
@@ -64,10 +65,18 @@ AccountState::AccountState(const AccountPtr &account)
             this, &AccountState::slotPushNotificationsReady);
     connect(account.data(), &Account::serverUserStatusChanged, this,
         &AccountState::slotServerUserStatusChanged);
+    connect(&_termsOfServiceChecker, &TermsOfServiceChecker::done,
+            this, [this] ()
+            {
+                if (_termsOfServiceChecker.needToSign()) {
+                    slotConnectionValidatorResult(ConnectionValidator::NeedToSignTermsOfService, {});
+                }
+            });
     connect(account.data(), &Account::termsOfServiceNeedToBeChecked,
-            this, [this] () {
-        checkConnectivity();
-    });
+            this, [this] ()
+            {
+                _termsOfServiceChecker.start();
+            });
 
     connect(this, &AccountState::isConnectedChanged, [=]{
         // Get the Apps available on the server if we're now connected.
@@ -353,7 +362,7 @@ void AccountState::slotConnectionValidatorResult(ConnectionValidator::Status sta
     _lastConnectionValidatorStatus = status;
 
     if ((_lastConnectionValidatorStatus == ConnectionValidator::NeedToSignTermsOfService && status == ConnectionValidator::Connected) ||
-        status == ConnectionValidator::NeedToSignTermsOfService) {
+        (status == ConnectionValidator::NeedToSignTermsOfService && _lastConnectionValidatorStatus != status)) {
 
         emit termsOfServiceChanged(_account);
     }
