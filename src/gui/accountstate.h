@@ -82,7 +82,10 @@ public:
         ConfigurationError,
 
         /// We are currently asking the user for credentials
-        AskingCredentials
+        AskingCredentials,
+
+        /// Need to sign terms of service by going to web UI
+        NeedToSignTermsOfService,
     };
 
     /// The actual current connectivity status.
@@ -192,6 +195,7 @@ signals:
     void hasFetchedNavigationApps();
     void statusChanged();
     void desktopNotificationsAllowedChanged();
+    void termsOfServiceChanged(OCC::AccountPtr account);
 
 protected Q_SLOTS:
     void slotConnectionValidatorResult(OCC::ConnectionValidator::Status status, const QStringList &errors);

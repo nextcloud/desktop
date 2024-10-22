@@ -64,6 +64,10 @@ AccountState::AccountState(const AccountPtr &account)
             this, &AccountState::slotPushNotificationsReady);
     connect(account.data(), &Account::serverUserStatusChanged, this,
         &AccountState::slotServerUserStatusChanged);
+    connect(account.data(), &Account::termsOfServiceNeedToBeChecked,
+            this, [this] () {
+        checkConnectivity();
+    });
 
     connect(this, &AccountState::isConnectedChanged, [=]{
         // Get the Apps available on the server if we're now connected.
@@ -159,6 +163,8 @@ QString AccountState::stateString(State state)
         return tr("Configuration error");
     case AskingCredentials:
         return tr("Asking Credentials");
+    case NeedToSignTermsOfService:
+        return tr("Need the user to accept the terms of service");
     }
     return tr("Unknown account state");
 }
@@ -346,6 +352,12 @@ void AccountState::slotConnectionValidatorResult(ConnectionValidator::Status sta
 
     _lastConnectionValidatorStatus = status;
 
+    if ((_lastConnectionValidatorStatus == ConnectionValidator::NeedToSignTermsOfService && status == ConnectionValidator::Connected) ||
+        status == ConnectionValidator::NeedToSignTermsOfService) {
+
+        emit termsOfServiceChanged(_account);
+    }
+
     // Come online gradually from 503, captive portal(redirection) or maintenance mode
     if (status == ConnectionValidator::Connected
         && (_connectionStatus == ConnectionValidator::ServiceUnavailable
@@ -423,6 +435,9 @@ void AccountState::slotConnectionValidatorResult(ConnectionValidator::Status sta
     case ConnectionValidator::Timeout:
         setState(NetworkError);
         updateRetryCount();
+        break;
+    case ConnectionValidator::NeedToSignTermsOfService:
+        setState(NeedToSignTermsOfService);
         break;
     }
 }
