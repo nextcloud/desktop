@@ -653,6 +653,10 @@ void DiscoverySingleDirectoryJob::lsJobFinishedWithErrorSlot(QNetworkReply *r)
         msg = tr("Server error: PROPFIND reply is not XML formatted!");
     }
 
+    if (r->error() == QNetworkReply::ContentAccessDenied) {
+        emit _account->termsOfServiceNeedToBeChecked();
+    }
+
     emit finished(HttpError{ httpCode, msg });
     deleteLater();
 }

@@ -60,6 +60,10 @@ AccountState::AccountState(AccountPtr account)
             this, &AccountState::slotPushNotificationsReady);
     connect(account.data(), &Account::serverUserStatusChanged, this,
         &AccountState::slotServerUserStatusChanged);
+    connect(account.data(), &Account::termsOfServiceNeedToBeChecked,
+            this, [this] () {
+        checkConnectivity();
+    });
 
     connect(this, &AccountState::isConnectedChanged, [=]{
         // Get the Apps available on the server if we're now connected.
