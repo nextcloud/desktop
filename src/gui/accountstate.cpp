@@ -359,13 +359,13 @@ void AccountState::slotConnectionValidatorResult(ConnectionValidator::Status sta
         return;
     }
 
-    _lastConnectionValidatorStatus = status;
-
     if ((_lastConnectionValidatorStatus == ConnectionValidator::NeedToSignTermsOfService && status == ConnectionValidator::Connected) ||
         (status == ConnectionValidator::NeedToSignTermsOfService && _lastConnectionValidatorStatus != status)) {
 
         emit termsOfServiceChanged(_account);
     }
+
+    _lastConnectionValidatorStatus = status;
 
     // Come online gradually from 503, captive portal(redirection) or maintenance mode
     if (status == ConnectionValidator::Connected
