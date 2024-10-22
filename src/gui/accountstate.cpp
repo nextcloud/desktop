@@ -362,7 +362,7 @@ void AccountState::slotConnectionValidatorResult(ConnectionValidator::Status sta
     _lastConnectionValidatorStatus = status;
 
     if ((_lastConnectionValidatorStatus == ConnectionValidator::NeedToSignTermsOfService && status == ConnectionValidator::Connected) ||
-        status == ConnectionValidator::NeedToSignTermsOfService) {
+        (status == ConnectionValidator::NeedToSignTermsOfService && _lastConnectionValidatorStatus != status)) {
 
         emit termsOfServiceChanged(_account);
     }
