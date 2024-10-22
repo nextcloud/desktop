@@ -75,6 +75,37 @@ namespace OCC {
 
 class UserInfo;
 
+class TermsOfServiceChecker : public QObject
+{
+    Q_OBJECT
+
+    Q_PROPERTY(bool needToSign READ needToSign NOTIFY needToSignChanged FINAL)
+public:
+    explicit TermsOfServiceChecker(AccountPtr account,
+                                   QObject *parent = nullptr);
+
+    explicit TermsOfServiceChecker(QObject *parent = nullptr);
+
+    [[nodiscard]] bool needToSign() const;
+
+public slots:
+    void start();
+
+signals:
+    void needToSignChanged();
+
+    void done();
+
+private slots:
+    void slotServerTermsOfServiceRecieved(const QJsonDocument &reply);
+
+private:
+    void checkServerTermsOfService();
+
+    AccountPtr _account;
+    bool _needToSign = false;
+};
+
 class ConnectionValidator : public QObject
 {
     Q_OBJECT
@@ -144,10 +175,13 @@ private:
      */
     bool setAndCheckServerVersion(const QString &version);
 
+    void checkServerTermsOfService();
+
     const QStringList _previousErrors;
     QStringList _errors;
     AccountStatePtr _accountState;
     AccountPtr _account;
+    TermsOfServiceChecker _termsOfServiceChecker;
     bool _isCheckingServerAndAuth = false;
 
     void showSystrayErrorMessage();
