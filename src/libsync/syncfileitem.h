@@ -339,6 +339,8 @@ public:
 
     bool _isAnyInvalidCharChild = false;
     bool _isAnyCaseClashChild = false;
+
+    QString _discoveryResult;
 };
 
 inline bool operator<(const SyncFileItemPtr &item1, const SyncFileItemPtr &item2)

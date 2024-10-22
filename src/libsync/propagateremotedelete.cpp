@@ -29,6 +29,7 @@ Q_LOGGING_CATEGORY(lcPropagateRemoteDelete, "nextcloud.sync.propagator.remotedel
 void PropagateRemoteDelete::start()
 {
     qCInfo(lcPropagateRemoteDelete) << "Start propagate remote delete job for" << _item->_file;
+    qCInfo(lcPermanentLog) << "delete" << _item->_file << _item->_discoveryResult;
 
     if (propagator()->_abortRequested)
         return;
