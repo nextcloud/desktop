@@ -42,7 +42,10 @@ ConnectionValidator::ConnectionValidator(AccountStatePtr accountState, const QSt
     , _previousErrors(previousErrors)
     , _accountState(accountState)
     , _account(accountState->account())
+    , _termsOfServiceChecker(_account)
 {
+    connect(&_termsOfServiceChecker, &TermsOfServiceChecker::done,
+            this, &ConnectionValidator::termsOfServiceCheckDone);
 }
 
 void ConnectionValidator::checkServerAndAuth()
@@ -304,6 +307,11 @@ bool ConnectionValidator::setAndCheckServerVersion(const QString &version)
     }
 #endif
     return true;
+}
+
+void ConnectionValidator::checkServerTermsOfService()
+{
+    _termsOfServiceChecker.start();
 }
 
 void ConnectionValidator::slotUserFetched(UserInfo *userInfo)
