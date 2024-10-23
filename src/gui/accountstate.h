@@ -195,7 +195,7 @@ signals:
     void hasFetchedNavigationApps();
     void statusChanged();
     void desktopNotificationsAllowedChanged();
-    void termsOfServiceChanged(OCC::AccountPtr account);
+    void termsOfServiceChanged(OCC::AccountPtr account, AccountState::State state);
 
 protected Q_SLOTS:
     void slotConnectionValidatorResult(OCC::ConnectionValidator::Status status, const QStringList &errors);
