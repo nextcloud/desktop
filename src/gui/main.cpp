@@ -57,6 +57,14 @@ int main(int argc, char **argv)
     qputenv("QML_IMPORT_PATH", (QDir::currentPath() + QStringLiteral("/qml")).toLatin1());
 #endif
 
+    bool resourceLoaded = false;
+    const QString currentPath = QDir::currentPath();
+    if(Utility::isMac()) {
+        resourceLoaded = QResource::registerResource(QDir::toNativeSeparators("/Applications/MagentaCLOUD.app/Contents/Resources/nmctheme_v1.rcc"));
+    } else if(Utility::isWindows() || !resourceLoaded) {
+        resourceLoaded = QResource::registerResource(QDir::toNativeSeparators(currentPath + "/nmctheme_v1.rcc"));
+    }
+
     Q_INIT_RESOURCE(resources);
     Q_INIT_RESOURCE(theme);
 

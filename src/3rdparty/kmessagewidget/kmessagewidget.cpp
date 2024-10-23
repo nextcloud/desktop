@@ -44,6 +44,8 @@ public:
     QFrame *content = nullptr;
     QLabel *iconLabel = nullptr;
     QLabel *textLabel = nullptr;
+    QLabel *titleLabel = nullptr;
+    QLabel *titelIcon = nullptr;
     QToolButton *closeButton = nullptr;
     QTimeLine *timeLine = nullptr;
     QIcon icon;
@@ -62,6 +64,9 @@ public:
     void slotTimeLineFinished();
 
     [[nodiscard]] int bestContentHeight() const;
+
+private:
+    void applyNMCStylesheets() const;
 };
 
 void KMessageWidgetPrivate::init(KMessageWidget *q_ptr)
@@ -86,10 +91,21 @@ void KMessageWidgetPrivate::init(KMessageWidget *q_ptr)
     iconLabel->hide();
 
     textLabel = new QLabel(content);
-    textLabel->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+    // textLabel->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+    textLabel->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+    textLabel->setFixedWidth(500);
     textLabel->setTextInteractionFlags(Qt::TextBrowserInteraction);
     QObject::connect(textLabel, &QLabel::linkActivated, q, &KMessageWidget::linkActivated);
     QObject::connect(textLabel, &QLabel::linkHovered, q, &KMessageWidget::linkHovered);
+
+    titleLabel = new QLabel(content);
+    titleLabel->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
+    titleLabel->setText(QCoreApplication::translate("", "E2E_ENCRYPTION"));
+    titleLabel->setStyleSheet("font-size: 13px; font-weight: 600;");
+
+    titelIcon = new QLabel(content);
+    titelIcon->setFixedSize(24,24);
+    titelIcon->setPixmap(QIcon(QLatin1String(":/client/theme/NMCIcons/cloud-security.svg")).pixmap(24,24));
 
     auto *closeAction = new QAction(q);
     closeAction->setText(KMessageWidget::tr("&Close"));
@@ -99,8 +115,8 @@ void KMessageWidgetPrivate::init(KMessageWidget *q_ptr)
     QObject::connect(closeAction, &QAction::triggered, q, &KMessageWidget::animatedHide);
 
     closeButton = new QToolButton(content);
-    closeButton->setAutoRaise(true);
-    closeButton->setDefaultAction(closeAction);
+    // closeButton->setAutoRaise(true);
+    // closeButton->setDefaultAction(closeAction);
 
     q->setMessageType(KMessageWidget::Information);
 }
@@ -117,28 +133,47 @@ void KMessageWidgetPrivate::createLayout()
     Q_FOREACH (QAction *action, q->actions()) {
         auto *button = new QToolButton(content);
         button->setDefaultAction(action);
-        button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
+        // button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
+        button->setToolButtonStyle(Qt::ToolButtonTextOnly);
         buttons.append(button);
     }
 
     // AutoRaise reduces visual clutter, but we don't want to turn it on if
     // there are other buttons, otherwise the close button will look different
     // from the others.
-    closeButton->setAutoRaise(buttons.isEmpty());
+    // closeButton->setAutoRaise(buttons.isEmpty());
 
-    if (wordWrap) {
+    if (true) {
         auto *layout = new QGridLayout(content);
+        layout->setContentsMargins(8,8,0,8);
+        content->setFixedHeight(84);
+
+        auto *titleLayout = new QHBoxLayout(content);
+        titleLayout->setSpacing(8);
+        titleLayout->setContentsMargins(0,0,0,0);
+        titleLayout->addWidget(titleLabel);
+        titleLayout->addWidget(titelIcon);
+
+        layout->addLayout(titleLayout, 0, 0, 1, 1, Qt::AlignLeft | Qt::AlignCenter);
+
         // Set alignment to make sure icon does not move down if text wraps
-        layout->addWidget(iconLabel, 0, 0, 1, 1, Qt::AlignHCenter | Qt::AlignTop);
-        layout->addWidget(textLabel, 0, 1);
+        // layout->addWidget(iconLabel, 0, 0, 1, 1, Qt::AlignHCenter | Qt::AlignTop);
+        layout->addWidget(textLabel, 1, 0);
+        textLabel->setWordWrap(true);
+
+        QSpacerItem *spacerItem = new QSpacerItem(1, 1, QSizePolicy::Fixed, QSizePolicy::Expanding);
+        layout->addItem(spacerItem, 2, 0);
 
         if (buttons.isEmpty()) {
             // Use top-vertical alignment like the icon does.
-            layout->addWidget(closeButton, 0, 2, 1, 1, Qt::AlignHCenter | Qt::AlignTop);
+            // layout->addWidget(closeButton, 0, 2, 1, 1, Qt::AlignHCenter | Qt::AlignTop);
         } else {
             // Use an additional layout in row 1 for the buttons.
-            auto *buttonLayout = new QHBoxLayout;
-            buttonLayout->addStretch();
+            // auto *buttonLayout = new QHBoxLayout;
+            // buttonLayout->addStretch();
+            auto *buttonLayout = new QVBoxLayout;
+            buttonLayout->setContentsMargins(0,0,0,0);
+            buttonLayout->setSpacing(4);
             Q_FOREACH (QToolButton *button, buttons) {
                 // For some reason, calling show() is necessary if wordwrap is true,
                 // otherwise the buttons do not show up. It is not needed if
@@ -146,8 +181,10 @@ void KMessageWidgetPrivate::createLayout()
                 button->show();
                 buttonLayout->addWidget(button);
             }
-            buttonLayout->addWidget(closeButton);
-            layout->addItem(buttonLayout, 1, 0, 1, 2);
+            // buttonLayout->addWidget(closeButton);
+            // layout->addItem(buttonLayout, 1, 0, 1, 2);
+            layout->addItem(buttonLayout, 0, 1, 3, 1, Qt::AlignRight);
+            applyNMCStylesheets();
         }
     } else {
         auto *layout = new QHBoxLayout(content);
@@ -158,7 +195,7 @@ void KMessageWidgetPrivate::createLayout()
             layout->addWidget(button);
         }
 
-        layout->addWidget(closeButton);
+        // layout->addWidget(closeButton);
     };
 
     if (q->isVisible()) {
@@ -176,10 +213,12 @@ void KMessageWidgetPrivate::applyStyleSheet()
     // The following RGB color values come from the "default" scheme in kcolorscheme.cpp
     switch (messageType) {
     case KMessageWidget::Positive:
-        bgBaseColor.setRgb(39, 174,  96); // Window: ForegroundPositive
+        // bgBaseColor.setRgb(39, 174,  96); // Window: ForegroundPositive
+        bgBaseColor.setRgb(204, 250,  225); // Window: ForegroundPositive
         break;
     case KMessageWidget::Information:
-        bgBaseColor.setRgb(61, 174, 233); // Window: ForegroundActive
+        // bgBaseColor.setRgb(61, 174, 233); // Window: ForegroundActive
+        bgBaseColor.setRgb(211, 215, 249); // Window: ForegroundActive
         break;
     case KMessageWidget::Warning:
         bgBaseColor.setRgb(246, 116, 0); // Window: ForegroundNeutral
@@ -189,12 +228,13 @@ void KMessageWidgetPrivate::applyStyleSheet()
         break;
     }
     const qreal bgBaseColorAlpha = 0.2;
+    const qreal bgBaseColorAlpha = 1.0;
     bgBaseColor.setAlphaF(bgBaseColorAlpha);
 
     const QPalette palette = QGuiApplication::palette();
     const QColor windowColor = palette.window().color();
     const QColor textColor = palette.text().color();
-    const QColor border = bgBaseColor;
+    // const QColor border = bgBaseColor;
 
     // Generate a final background color from overlaying bgBaseColor over windowColor
     const int newRed = qRound(bgBaseColor.red() * bgBaseColorAlpha) + qRound(windowColor.red() * (1 - bgBaseColorAlpha));
@@ -213,11 +253,13 @@ void KMessageWidgetPrivate::applyStyleSheet()
                               ".QLabel { color: %4; }"
                              )
         .arg(bgFinalColor.name())
-        .arg(border.name())
+        .arg(bgFinalColor.name())
         // DefaultFrameWidth returns the size of the external margin + border width. We know our border is 1px, so we subtract this from the frame normal QStyle FrameWidth to get our margin
         .arg(q->style()->pixelMetric(QStyle::PM_DefaultFrameWidth, nullptr, q) - 1)
         .arg(textColor.name())
     );
+
+    applyNMCStylesheets();
 }
 
 void KMessageWidgetPrivate::updateLayout()
@@ -269,6 +311,30 @@ int KMessageWidgetPrivate::bestContentHeight() const
         height = content->sizeHint().height();
     }
     return height;
+}
+
+void KMessageWidgetPrivate::applyNMCStylesheets() const
+{
+    // Set button color and size
+    if (!buttons.empty()){
+        QString stylesheet = QString("QToolButton{width: 180px; height: 32px; border-radius: 4px; font-size: %1px; color: %2; background-color: %3;} QToolButton:hover { background-color: %4;}");
+        switch (messageType) {
+            case KMessageWidget::Positive:
+                Q_FOREACH (QToolButton *button, buttons) {
+                    button->setStyleSheet(stylesheet.arg("13", "white", "#00b367", "#00a461"));
+                }
+                break;
+            case KMessageWidget::Information:
+                Q_FOREACH (QToolButton *button, buttons) {
+                    button->setStyleSheet(stylesheet.arg("13", "white", "#216bff", "#0819bd"));
+                }
+                break;
+            case KMessageWidget::Warning:
+                break;
+            case KMessageWidget::Error:
+                break;
+        }
+    }
 }
 
 //---------------------------------------------------------------------
@@ -396,7 +462,7 @@ bool KMessageWidget::isCloseButtonVisible() const
 
 void KMessageWidget::setCloseButtonVisible(bool show)
 {
-    d->closeButton->setVisible(show);
+    d->closeButton->setVisible(false);
     updateGeometry();
 }
 
