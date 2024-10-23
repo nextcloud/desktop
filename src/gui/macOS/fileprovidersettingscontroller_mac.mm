@@ -211,16 +211,17 @@ public slots:
             const auto qDomainIdentifier = QString::fromNSString(domain.identifier);
             QVector<FileProviderItemMetadata> qMaterialisedItems;
             qMaterialisedItems.reserve(items.count);
+            unsigned long long storageUsage = 0;
             for (const id<NSFileProviderItem> item in items) {
                 const auto itemMetadata = FileProviderItemMetadata::fromNSFileProviderItem(item, qDomainIdentifier);
-                const auto storageUsage = _storageUsage.value(qDomainIdentifier) + itemMetadata.documentSize();
+                storageUsage += itemMetadata.documentSize();
                 qCDebug(lcFileProviderSettingsController) << "Adding item" << itemMetadata.identifier()
                                                           << "with size" << itemMetadata.documentSize()
                                                           << "to storage usage for account" << qDomainIdentifier
                                                           << "with total size" << storageUsage;
                 qMaterialisedItems.append(itemMetadata);
-                _storageUsage.insert(qDomainIdentifier, storageUsage);
             }
+            _storageUsage.insert(qDomainIdentifier, storageUsage);
             _materialisedFiles.insert(qDomainIdentifier, qMaterialisedItems);
 
             emit q->localStorageUsageForAccountChanged(qDomainIdentifier);
