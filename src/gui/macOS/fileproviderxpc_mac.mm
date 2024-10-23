@@ -146,7 +146,8 @@ void FileProviderXPC::createDebugArchiveForExtension(const QString &extensionAcc
 
 bool FileProviderXPC::fileProviderExtReachable(const QString &extensionAccountId)
 {
-    if (_lastUnreachableTime.isValid() && _lastUnreachableTime.secsTo(QDateTime::currentDateTime()) < ::reachableRetryTimeout) {
+    const auto lastUnreachableTime = _unreachableAccountExtensions.value(extensionAccountId);
+    if (lastUnreachableTime.isValid() && lastUnreachableTime.secsTo(QDateTime::currentDateTime()) < ::reachableRetryTimeout) {
         qCInfo(lcFileProviderXPC) << "File provider extension was unreachable less than a minute ago. "
                                   << "Not checking again";
         return false;
@@ -165,9 +166,11 @@ bool FileProviderXPC::fileProviderExtReachable(const QString &extensionAccountId
     }];
     dispatch_semaphore_wait(semaphore, dispatch_time(DISPATCH_TIME_NOW, semaphoreWaitDelta));
     
-    if (!response) {
+    if (response) {
+        _unreachableAccountExtensions.remove(extensionAccountId);
+    } else {
         qCWarning(lcFileProviderXPC) << "Could not reach file provider extension.";
-        _lastUnreachableTime = QDateTime::currentDateTime();
+        _unreachableAccountExtensions.insert(extensionAccountId, QDateTime::currentDateTime());
     }
     return response;
 }
