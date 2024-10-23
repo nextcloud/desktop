@@ -62,6 +62,7 @@ void FileDetails::setLocalPath(const QString &localPath)
     connect(&_fileWatcher, &QFileSystemWatcher::fileChanged, this, &FileDetails::refreshFileDetails);
 
     _folder = FolderMan::instance()->folderForPath(_localPath);
+    Q_ASSERT(_folder);
     if (!_folder) {
         qCWarning(lcFileDetails) << "No folder found for path:" << _localPath << "will not load file details.";
         return;
@@ -78,9 +79,23 @@ void FileDetails::setLocalPath(const QString &localPath)
     _filelockState = _fileRecord._lockstate;
     updateLockExpireString();
 
-    const auto account = _folder->accountState()->account();
+    const auto accountState = _folder->accountState();
+    Q_ASSERT(accountState);
+    if (!accountState) {
+        qCWarning(lcFileDetails) << "No account state found for path:" << _localPath << "will not correctly load file details.";
+        return;
+    }
+
+    const auto account = accountState->account();
+    Q_ASSERT(account);
+    if (!account) {
+        qCWarning(lcFileDetails) << "No account found for path:" << _localPath << "will not correctly load file details.";
+        return;
+    }
+
     _sharingAvailable = account->capabilities().shareAPI();
-    updateFileTagModel(account);
+
+    updateFileTagModel();
 
     Q_EMIT fileChanged();
 }
@@ -168,9 +183,19 @@ FileTagModel *FileDetails::fileTagModel() const
     return _fileTagModel.get();
 }
 
-void FileDetails::updateFileTagModel(const AccountPtr &account)
+void FileDetails::updateFileTagModel()
 {
-    _fileTagModel = std::make_unique<FileTagModel>(_fileRecord, _folder, account);
+    const auto localPath = _fileRecord.path();
+    const auto relPath = localPath.mid(_folder->cleanPath().length() + 1);
+    QString serverPath = _folder->remotePathTrailingSlash() + _fileRecord.path();
+ 
+    if (const auto vfsMode = _folder->vfs().mode(); _fileRecord.isVirtualFile() && vfsMode == Vfs::WithSuffix) {
+        if (const auto suffix = _folder->vfs().fileSuffix(); !suffix.isEmpty() && serverPath.endsWith(suffix)) {
+            serverPath.chop(suffix.length());
+        }
+    }
+
+    _fileTagModel = std::make_unique<FileTagModel>(relPath, _folder->accountState()->account());
     Q_EMIT fileTagModelChanged();
 }
 

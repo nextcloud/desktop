@@ -33,8 +33,7 @@ class FileTagModel : public QAbstractListModel
     Q_PROPERTY(QString overflowTagsString READ overflowTagsString NOTIFY overflowTagsStringChanged)
 
 public:
-    explicit FileTagModel(const SyncJournalFileRecord &fileRecord,
-                          const Folder *const syncFolder,
+    explicit FileTagModel(const QString &serverRelativePath,
                           const AccountPtr &account,
                           QObject *const parent = nullptr);
 
