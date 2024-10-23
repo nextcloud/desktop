@@ -21,7 +21,7 @@
 #include "gui/macOS/fileproviderxpc_mac_utils.h"
 
 namespace {
-    constexpr int64_t semaphoreWaitDelta = 3000000000; // 3 seconds
+    constexpr int64_t semaphoreWaitDelta = 1000000000; // 1 seconds
     constexpr auto reachableRetryTimeout = 60; // 60 seconds
 }
 
