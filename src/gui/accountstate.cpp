@@ -359,12 +359,7 @@ void AccountState::slotConnectionValidatorResult(ConnectionValidator::Status sta
         return;
     }
 
-    if ((_lastConnectionValidatorStatus == ConnectionValidator::NeedToSignTermsOfService && status == ConnectionValidator::Connected) ||
-        (status == ConnectionValidator::NeedToSignTermsOfService && _lastConnectionValidatorStatus != status)) {
-
-        emit termsOfServiceChanged(_account);
-    }
-
+    const auto oldConnectionValidatorStatus = _lastConnectionValidatorStatus;
     _lastConnectionValidatorStatus = status;
 
     // Come online gradually from 503, captive portal(redirection) or maintenance mode
@@ -448,6 +443,12 @@ void AccountState::slotConnectionValidatorResult(ConnectionValidator::Status sta
     case ConnectionValidator::NeedToSignTermsOfService:
         setState(NeedToSignTermsOfService);
         break;
+    }
+
+    if ((oldConnectionValidatorStatus == ConnectionValidator::NeedToSignTermsOfService && status == ConnectionValidator::Connected) ||
+        (status == ConnectionValidator::NeedToSignTermsOfService && oldConnectionValidatorStatus != status)) {
+
+        emit termsOfServiceChanged(_account, status == ConnectionValidator::NeedToSignTermsOfService ? AccountState::NeedToSignTermsOfService : AccountState::Connected);
     }
 }
 
