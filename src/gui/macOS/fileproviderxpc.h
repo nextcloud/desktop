@@ -14,6 +14,7 @@
 
 #include <QObject>
 #include <QHash>
+#include <QDateTime>
 
 #include "accountstate.h"
 
@@ -34,7 +35,7 @@ class FileProviderXPC : public QObject
 public:
     explicit FileProviderXPC(QObject *parent = nullptr);
 
-    [[nodiscard]] bool fileProviderExtReachable(const QString &extensionAccountId) const;
+    [[nodiscard]] bool fileProviderExtReachable(const QString &extensionAccountId);
 
     // Returns enabled and set state of fast enumeration for the given extension
     [[nodiscard]] std::optional<std::pair<bool, bool>> fastEnumerationStateForExtension(const QString &extensionAccountId) const;
@@ -53,6 +54,7 @@ private slots:
 
 private:
     QHash<QString, void*> _clientCommServices;
+    QDateTime _lastUnreachableTime;
 };
 
 } // namespace OCC::Mac
