@@ -22,7 +22,7 @@
 
 namespace {
     constexpr int64_t semaphoreWaitDelta = 1000000000; // 1 seconds
-    constexpr auto reachableRetryTimeout = 60; // 60 seconds
+    constexpr auto reachableRetryTimeout = 300; // seconds
 }
 
 namespace OCC::Mac {
