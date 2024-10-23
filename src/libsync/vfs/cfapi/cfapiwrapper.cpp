@@ -618,6 +618,26 @@ bool deleteSyncRootRegistryKey(const QString &syncRootPath, const QString &provi
         const auto currentUserSyncRootIdPattern = QString("%1!%2!%3").arg(providerName).arg(windowsSid).arg(accountDisplayName);
 
         bool result = true;
+        struct RegistryKeyInfo {
+            QString subKey;
+            QString valueName;
+            int type;
+            QVariant value;
+        };
+        const auto syncRootId = QString("%1!%2!%3!%4").arg(providerName).arg(windowsSid).arg(accountDisplayName).arg(syncRootPath);
+        qCInfo(lcCfApiWrapper) << "syncRootPath:" << syncRootPath;
+        qCInfo(lcCfApiWrapper) << "syncRootId:" << syncRootId;
+        const QString subKey = syncRootManagerRegKey + QStringLiteral("\\") + syncRootId;
+        const QString valueName = QStringLiteral("IconResource");
+        const int type = REG_EXPAND_SZ;
+        const QVariant value = QString(QDir::toNativeSeparators(qApp->applicationFilePath()) + QStringLiteral(",0"));
+        qCInfo(lcCfApiWrapper) << "Going to delete Registry key" << subKey;
+        qCInfo(lcCfApiWrapper) << "with value name" << valueName;
+        qCInfo(lcCfApiWrapper) << "and value" << value;
+
+        if(OCC::Utility::registryDeleteKeyTree(HKEY_LOCAL_MACHINE, subKey)) {
+            qCInfo(lcCfApiWrapper) << "Successfully deleted icon from" << syncRootPath;
+        }
 
         // walk through each registered syncRootId
         OCC::Utility::registryWalkSubKeys(HKEY_LOCAL_MACHINE, syncRootManagerRegKey, [&](HKEY, const QString &syncRootId) {
@@ -631,6 +651,7 @@ bool deleteSyncRootRegistryKey(const QString &syncRootPath, const QString &provi
                 }
             }
         });
+
         return result;
     }
     return true;

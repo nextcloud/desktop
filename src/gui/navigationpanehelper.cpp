@@ -71,6 +71,7 @@ void NavigationPaneHelper::updateCloudStorageRegistry()
         Utility::registryWalkSubKeys(HKEY_CURRENT_USER, nameSpaceKey,
             [&entriesToRemove](HKEY key, const QString &subKey) {
                 QVariant appName = Utility::registryGetKeyValue(key, subKey, QStringLiteral("ApplicationName"));
+                qCDebug(lcNavPane) << "Searching for user with subKey:" << subKey;
                 if (appName.toString() == QLatin1String(APPLICATION_NAME)) {
                     QUuid clsid{ subKey };
                     Q_ASSERT(!clsid.isNull());
@@ -165,6 +166,10 @@ void NavigationPaneHelper::updateCloudStorageRegistry()
 
         qCInfo(lcNavPane) << "Explorer Cloud storage provider: now unused, removing own CLSID" << clsidStr;
 #ifdef Q_OS_WIN
+        Utility::registryDeleteKeyTree(HKEY_CURRENT_USER, clsidPath + QStringLiteral("\\DefaultIcon"));
+        qCInfo(lcNavPane) << "Removed" << clsidPath + QStringLiteral("\\DefaultIcon") << "for user" << clsidStr;
+        Utility::registryDeleteKeyTree(HKEY_CURRENT_USER, clsidPathWow64 + QStringLiteral("\\DefaultIcon"));
+        qCInfo(lcNavPane) << "Removed" << clsidPathWow64 + QStringLiteral("\\DefaultIcon") << "for user" << clsidStr;
         Utility::registryDeleteKeyTree(HKEY_CURRENT_USER, clsidPath);
         Utility::registryDeleteKeyTree(HKEY_CURRENT_USER, clsidPathWow64);
         Utility::registryDeleteKeyTree(HKEY_CURRENT_USER, namespacePath);
