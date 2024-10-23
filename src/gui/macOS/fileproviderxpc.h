@@ -54,7 +54,7 @@ private slots:
 
 private:
     QHash<QString, void*> _clientCommServices;
-    QDateTime _lastUnreachableTime;
+    QHash<QString, QDateTime> _unreachableAccountExtensions;
 };
 
 } // namespace OCC::Mac
