@@ -378,25 +378,29 @@ void TermsOfServiceChecker::start()
 
 void TermsOfServiceChecker::slotServerTermsOfServiceRecieved(const QJsonDocument &reply)
 {
-    qCDebug(lcConnectionValidator) << "Terms of service status" << reply;
+    qCInfo(lcConnectionValidator) << "Terms of service status" << reply;
 
     if (reply.object().contains("ocs")) {
         const auto needToSign = !reply.object().value("ocs").toObject().value("data").toObject().value("hasSigned").toBool(false);
         if (needToSign != _needToSign) {
+            qCInfo(lcConnectionValidator) << "_needToSign" << (_needToSign ? "need to sign" : "no need to sign");
             _needToSign = needToSign;
             emit needToSignChanged();
         }
     } else if (_needToSign) {
         _needToSign = false;
+        qCInfo(lcConnectionValidator) << "_needToSign" << (_needToSign ? "need to sign" : "no need to sign");
         emit needToSignChanged();
     }
 
+    qCInfo(lcConnectionValidator) << "done";
     emit done();
 }
 
 void TermsOfServiceChecker::checkServerTermsOfService()
 {
     if (!_account) {
+        qCInfo(lcConnectionValidator) << "done";
         emit done();
     }
 

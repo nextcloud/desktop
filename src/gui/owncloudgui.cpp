@@ -285,14 +285,17 @@ void ownCloudGui::slotTrayMessageIfServerUnsupported(Account *account)
     }
 }
 
-void ownCloudGui::slotNeedToAcceptTermsOfService(OCC::AccountPtr account)
+void ownCloudGui::slotNeedToAcceptTermsOfService(OCC::AccountPtr account,
+                                                 AccountState::State state)
 {
-    slotShowTrayMessage(
-        tr("Terms of service"),
-        tr("Your account %1 requires you to accept the terms of service of your server. "
-           "You will be redirected to %2 to acknowledge that you have read it and agrees with it.")
-            .arg(account->displayName(), account->url().toString()));
-    QDesktopServices::openUrl(account->url());
+    if (state == AccountState::NeedToSignTermsOfService) {
+        slotShowTrayMessage(
+            tr("Terms of service"),
+            tr("Your account %1 requires you to accept the terms of service of your server. "
+               "You will be redirected to %2 to acknowledge that you have read it and agrees with it.")
+                .arg(account->displayName(), account->url().toString()));
+        QDesktopServices::openUrl(account->url());
+    }
 }
 
 void ownCloudGui::slotComputeOverallSyncStatus()

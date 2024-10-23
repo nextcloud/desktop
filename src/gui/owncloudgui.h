@@ -94,7 +94,8 @@ public slots:
     void slotOpenPath(const QString &path);
     void slotAccountStateChanged();
     void slotTrayMessageIfServerUnsupported(OCC::Account *account);
-    void slotNeedToAcceptTermsOfService(OCC::AccountPtr account);
+    void slotNeedToAcceptTermsOfService(OCC::AccountPtr account,
+                                        OCC::AccountState::State state);
 
     /**
      * Open a share dialog for a file or folder.
