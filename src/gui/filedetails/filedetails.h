@@ -66,7 +66,7 @@ signals:
 private slots:
     void refreshFileDetails();
     void updateLockExpireString();
-    void updateFileTagModel(const OCC::AccountPtr &account);
+    void updateFileTagModel();
 
 private:
     QString _localPath;
