@@ -704,6 +704,11 @@ QByteArray FolderMetadata::encryptedMetadataLegacy()
     const auto version = _account->capabilities().clientSideEncryptionVersion();
     // multiple toBase64() just to keep with the old (wrong way)
     const auto encryptedMetadataKey = encryptDataWithPublicKey(metadataKeyForEncryption().toBase64().toBase64(), _account->e2e()->_publicKey).toBase64();
+    if (encryptedMetadataKey.isEmpty()) {
+        qCDebug(lcCseMetadata) << "Metadata generation failed! Encryption failed!";
+        _account->reportClientStatus(OCC::ClientStatusReportingStatus::E2EeError_GeneralError);
+        return {};
+    }
     const QJsonObject metadata{
         {versionKey, version},
         {metadataKeyKey, QJsonValue::fromVariant(encryptedMetadataKey)},
@@ -1049,10 +1054,16 @@ bool FolderMetadata::addUser(const QString &userId, const QSslCertificate &certi
     }
 
     createNewMetadataKeyForEncryption();
+    const auto encryptedKey = encryptDataWithPublicKey(metadataKeyForEncryption(), certificatePublicKey);
+    if (encryptedKey.isEmpty()) {
+        qCWarning(lcCseMetadata()) << "Could not add a folder user. Encryption failure.";
+        return false;
+    }
+
     UserWithFolderAccess newFolderUser;
     newFolderUser.userId = userId;
     newFolderUser.certificatePem = certificate.toPem();
-    newFolderUser.encryptedMetadataKey = encryptDataWithPublicKey(metadataKeyForEncryption(), certificatePublicKey);
+    newFolderUser.encryptedMetadataKey = encryptedKey;
     _folderUsers[userId] = newFolderUser;
     updateUsersEncryptedMetadataKey();
 
