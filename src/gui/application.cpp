@@ -165,6 +165,9 @@ bool Application::configVersionMigration()
     configFile.setLaunchOnSystemStartup(configFile.launchOnSystemStartup());
     Utility::setLaunchOnStartup(theme->appName(), theme->appNameGUI(), configFile.launchOnSystemStartup());
 
+    // default is now off to displaying dialog warning user of too many files deletion
+    configFile.setPromptDeleteFiles(false);
+
     // back up all old config files
     QStringList backupFilesList;
     QDir configDir(configFile.configPath());
