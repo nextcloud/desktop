@@ -223,11 +223,11 @@ public:
     void setIgnoreHiddenFiles(bool ignore);
 
     // Used by the Socket API
-    SyncJournalDb *journalDb() { return &_journal; }
-    SyncEngine &syncEngine() { return *_engine; }
-    Vfs &vfs() { return *_vfs; }
+    SyncJournalDb *journalDb() const { return &_journal; }
+    SyncEngine &syncEngine() const { return *_engine; }
+    Vfs &vfs() const { return *_vfs; }
 
-    RequestEtagJob *etagJob() { return _requestEtagJob; }
+    RequestEtagJob *etagJob() const { return _requestEtagJob; }
     std::chrono::milliseconds msecSinceLastSync() const { return std::chrono::milliseconds(_timeSinceLastSyncDone.elapsed()); }
     std::chrono::milliseconds msecLastSyncDuration() const { return _lastSyncDuration; }
     int consecutiveFollowUpSyncs() const { return _consecutiveFollowUpSyncs; }
