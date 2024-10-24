@@ -979,7 +979,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1324"/>
         <source>You need to accept the terms of service</source>
-        <translation type="unfinished"/>
+        <translation>您必須接受服務條款</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1275"/>
@@ -1090,7 +1090,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="176"/>
         <source>Need the user to accept the terms of service</source>
-        <translation type="unfinished"/>
+        <translation>需要使用者接受服務條款</translation>
     </message>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="166"/>
@@ -5986,14 +5986,14 @@ Server replied with error: %2</source>
         <translation>%1 帳號所在的伺服器執行了不支援的版本 %2。將此客戶端與不支援的伺服器版本一同使用是未經測試且有潛在的危險性。若要繼續，請自負風險。</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="291"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="293"/>
         <source>Terms of service</source>
-        <translation type="unfinished"/>
+        <translation>服務條款</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="292"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="294"/>
         <source>Your account %1 requires you to accept the terms of service of your server. You will be redirected to %2 to acknowledge that you have read it and agrees with it.</source>
-        <translation type="unfinished"/>
+        <translation>您的帳號 %1 要求您接受伺服器的服務條款。將會重新導向至 %2 以確認您已閱讀並同意。</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="308"/>
@@ -6067,23 +6067,23 @@ Server replied with error: %2</source>
         <translation>未設定同步資料夾</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="449"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="452"/>
         <source>%1: %2</source>
         <extracomment>Example text: &quot;Nextcloud: Syncing 25MB (3 minutes left)&quot; (%1 is the folder name to be synced, %2 a status message for that folder)</extracomment>
         <translation>%1：%2</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="453"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="456"/>
         <source>macOS VFS for %1: Sync is running.</source>
         <translation>％1 的 macOS VFS：正在同步。</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="456"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="459"/>
         <source>macOS VFS for %1: Last sync was successful.</source>
         <translation>％1 的 macOS VFS：上次同步成功。</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="459"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="462"/>
         <source>macOS VFS for %1: A problem was encountered.</source>
         <translation>％1 的 macOS VFS：遇到問題。</translation>
     </message>

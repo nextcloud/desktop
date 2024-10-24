@@ -977,7 +977,7 @@ Vous prenez vos propres risques.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1324"/>
         <source>You need to accept the terms of service</source>
-        <translation type="unfinished"/>
+        <translation>Vous devez accepter les conditions générales d&apos;utilisation</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1275"/>
@@ -1088,7 +1088,7 @@ Vous prenez vos propres risques.</translation>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="176"/>
         <source>Need the user to accept the terms of service</source>
-        <translation type="unfinished"/>
+        <translation>Besoin que l&apos;utilisateur accepte les conditions générales d&apos;utilisation</translation>
     </message>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="166"/>
@@ -5984,14 +5984,14 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
         <translation>Le serveur sur le compte %1 fonctionne avec une version non-supportée %2. Utiliser ce client avec des versions non-supportées du serveur n&apos;est pas testé et est potentiellement dangereux. Procédez à vos risques et périls.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="291"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="293"/>
         <source>Terms of service</source>
-        <translation type="unfinished"/>
+        <translation>Conditions d&apos;utilisation</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="292"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="294"/>
         <source>Your account %1 requires you to accept the terms of service of your server. You will be redirected to %2 to acknowledge that you have read it and agrees with it.</source>
-        <translation type="unfinished"/>
+        <translation>Votre compte %1 vous demande d&apos;accepter les conditions générales d&apos;utilisation de votre serveur. Vous serez redirigé vers %2 pour confirmer que vous l&apos;avez lu et que vous l&apos;acceptez.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="308"/>
@@ -6065,23 +6065,23 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
         <translation>Aucun dossier de synchronisation configuré</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="449"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="452"/>
         <source>%1: %2</source>
         <extracomment>Example text: &quot;Nextcloud: Syncing 25MB (3 minutes left)&quot; (%1 is the folder name to be synced, %2 a status message for that folder)</extracomment>
         <translation>%1: %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="453"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="456"/>
         <source>macOS VFS for %1: Sync is running.</source>
         <translation>macOS VFS pour %1: Synchronisation en cours.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="456"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="459"/>
         <source>macOS VFS for %1: Last sync was successful.</source>
         <translation>macOS VFS pour %1: La dernière synchronisation a réussi.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="459"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="462"/>
         <source>macOS VFS for %1: A problem was encountered.</source>
         <translation>macOS VFS pour %1: Une erreur est survenue.</translation>
     </message>

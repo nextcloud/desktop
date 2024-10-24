@@ -979,7 +979,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1324"/>
         <source>You need to accept the terms of service</source>
-        <translation type="unfinished"/>
+        <translation>Морате прихватити услове коришћења коришћења</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1275"/>
@@ -1090,7 +1090,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="176"/>
         <source>Need the user to accept the terms of service</source>
-        <translation type="unfinished"/>
+        <translation>Потребно је да корисник прихвати услове коришћења</translation>
     </message>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="166"/>
@@ -5986,14 +5986,14 @@ Server replied with error: %2</source>
         <translation>Сервер на налогу %1 извршава неподржану верзију %2. Коришћење овог клијента са неподржаном верзијом сервера није тестирано и потенцијално може бити опасно. Настављате на сопствену одговорност.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="291"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="293"/>
         <source>Terms of service</source>
-        <translation type="unfinished"/>
+        <translation>Услови коришћења</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="292"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="294"/>
         <source>Your account %1 requires you to accept the terms of service of your server. You will be redirected to %2 to acknowledge that you have read it and agrees with it.</source>
-        <translation type="unfinished"/>
+        <translation>Ваш налог %1 захтева да прихватите услове коришћења сервера. Бићете преусмерени на %2 да потврдите да сте их прочитали и да се слажете са њима.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="308"/>
@@ -6067,23 +6067,23 @@ Server replied with error: %2</source>
         <translation>Нису подешене фасцикле за синхронизацију</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="449"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="452"/>
         <source>%1: %2</source>
         <extracomment>Example text: &quot;Nextcloud: Syncing 25MB (3 minutes left)&quot; (%1 is the folder name to be synced, %2 a status message for that folder)</extracomment>
         <translation>%1: %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="453"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="456"/>
         <source>macOS VFS for %1: Sync is running.</source>
         <translation>macOS VFS за %1: Синхронизација у току.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="456"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="459"/>
         <source>macOS VFS for %1: Last sync was successful.</source>
         <translation>macOS VFS за %1: Последња синхронизација је била успешна.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="459"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="462"/>
         <source>macOS VFS for %1: A problem was encountered.</source>
         <translation>macOS VFS за %1: Дошло је до проблема.</translation>
     </message>

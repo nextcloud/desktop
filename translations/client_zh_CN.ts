@@ -5963,12 +5963,12 @@ Server replied with error: %2</source>
         <translation>帐户 %1 上的服务器运行不支持的版本 %2。将此客户端与不支持的服务器版本一起使用是未经测试的，并且有潜在的危险。继续进行，风险自担。</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="291"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="293"/>
         <source>Terms of service</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="292"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="294"/>
         <source>Your account %1 requires you to accept the terms of service of your server. You will be redirected to %2 to acknowledge that you have read it and agrees with it.</source>
         <translation type="unfinished"/>
     </message>
@@ -6044,23 +6044,23 @@ Server replied with error: %2</source>
         <translation>没有配置同步目录</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="449"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="452"/>
         <source>%1: %2</source>
         <extracomment>Example text: &quot;Nextcloud: Syncing 25MB (3 minutes left)&quot; (%1 is the folder name to be synced, %2 a status message for that folder)</extracomment>
         <translation>%1：%2</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="453"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="456"/>
         <source>macOS VFS for %1: Sync is running.</source>
         <translation>％1 的 macOS VFS：正在同步。</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="456"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="459"/>
         <source>macOS VFS for %1: Last sync was successful.</source>
         <translation>％1 的 macOS VFS：上次同步成功。</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="459"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="462"/>
         <source>macOS VFS for %1: A problem was encountered.</source>
         <translation>％1 的 macOS VFS：遇到问题。</translation>
     </message>

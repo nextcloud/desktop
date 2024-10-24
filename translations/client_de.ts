@@ -978,7 +978,7 @@ Diese Aktion bricht jede derzeit laufende Synchronisierung ab.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1324"/>
         <source>You need to accept the terms of service</source>
-        <translation type="unfinished"/>
+        <translation>Sie müssen die Nutzungsbedingungen akzeptieren</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1275"/>
@@ -1089,7 +1089,7 @@ Diese Aktion bricht jede derzeit laufende Synchronisierung ab.</translation>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="176"/>
         <source>Need the user to accept the terms of service</source>
-        <translation type="unfinished"/>
+        <translation>Der Benutzer muss die Nutzungsbedingungen akzeptieren</translation>
     </message>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="166"/>
@@ -5984,14 +5984,14 @@ Server antwortete mit Fehler: %2</translation>
         <translation>Der Server auf Konto %1 verwendet die nicht unterstützte Version %2. Die Verwendung dieses Clients mit nicht unterstützten Serverversionen ist ungetestet und potenziell gefährlich. Die Verwendung erfolgt auf eigene Gefahr.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="291"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="293"/>
         <source>Terms of service</source>
-        <translation type="unfinished"/>
+        <translation>Nutzungsbedingungen</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="292"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="294"/>
         <source>Your account %1 requires you to accept the terms of service of your server. You will be redirected to %2 to acknowledge that you have read it and agrees with it.</source>
-        <translation type="unfinished"/>
+        <translation>Für Ihr Konto %1 müssen Sie die Nutzungsbedingungen Ihres Servers akzeptieren. Sie werden weitergeleitet an %2, um zu bestätigen, dass Sie die Nutzungsbedingungen gelesen haben und damit einverstanden sind.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="308"/>
@@ -6065,23 +6065,23 @@ Server antwortete mit Fehler: %2</translation>
         <translation>Keine Ordner zur Synchronisierung konfiguriert</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="449"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="452"/>
         <source>%1: %2</source>
         <extracomment>Example text: &quot;Nextcloud: Syncing 25MB (3 minutes left)&quot; (%1 is the folder name to be synced, %2 a status message for that folder)</extracomment>
         <translation>%1: %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="453"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="456"/>
         <source>macOS VFS for %1: Sync is running.</source>
         <translation>macOS VFS für %1: Synchronisierung läuft.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="456"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="459"/>
         <source>macOS VFS for %1: Last sync was successful.</source>
         <translation>macOS VFS für %1: Letzte Synchronisierung war erfolgreich.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="459"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="462"/>
         <source>macOS VFS for %1: A problem was encountered.</source>
         <translation>macOS VFS für %1: Es ist ein Problem aufgetreten.</translation>
     </message>

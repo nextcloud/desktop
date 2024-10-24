@@ -974,7 +974,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1324"/>
         <source>You need to accept the terms of service</source>
-        <translation type="unfinished"/>
+        <translation>يجب عليك قبول شروط الخدمة</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1275"/>
@@ -1085,7 +1085,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="176"/>
         <source>Need the user to accept the terms of service</source>
-        <translation type="unfinished"/>
+        <translation>يحب أن يقوم المستخدِم بقبول شروط الخدمة</translation>
     </message>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="166"/>
@@ -1997,7 +1997,7 @@ This can be an issue with your OpenSSL libraries.</source>
     <message>
         <location filename="../src/gui/creds/flow2auth.cpp" line="102"/>
         <source>The polling URL does not start with HTTPS despite the login URL started with HTTPS. Login will not be possible because this might be a security issue. Please contact your administrator.</source>
-        <translation>عنوان URL الخاص بالتصويت polling لا يبدأ بـ HTTPS على الرغم من أن عنوان URL الخاص بتسجيل الدخول يبدأ بـ HTTPS. لن يكون تسجيل الدخول ممكنًا لأن هذا قد يتسبب مشكلة أمنية. الرجاء الاتصال بمشرف النظام عندك.</translation>
+        <translation>عنوان URL الخاص بالتصويت polling لا يبدأ بـ HTTPS على الرغم من أن عنوان URL الخاص بتسجيل الدخول يبدأ بـ HTTPS. لن يكون تسجيل الدخول ممكنًا لأن هذا قد يتسبب مشكلة أمنية. الرجاء الاتصال بمسؤول النظام عندك.</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/flow2auth.cpp" line="113"/>
@@ -2026,7 +2026,7 @@ This can be an issue with your OpenSSL libraries.</source>
     <message>
         <location filename="../src/gui/creds/flow2auth.cpp" line="219"/>
         <source>The returned server URL does not start with HTTPS despite the login URL started with HTTPS. Login will not be possible because this might be a security issue. Please contact your administrator.</source>
-        <translation>عنوان URL الخاص بالتصويت polling لا يبدأ بـ HTTPS على الرغم من أن عنوان URL الخاص بتسجيل الدخول يبدأ بـ HTTPS. لن يكون تسجيل الدخول ممكنًا لأن هذا قد يتسبب مشكلة أمنية. الرجاء الاتصال بمشرف النظام عندك.</translation>
+        <translation>عنوان URL الخاص بالتصويت polling لا يبدأ بـ HTTPS على الرغم من أن عنوان URL الخاص بتسجيل الدخول يبدأ بـ HTTPS. لن يكون تسجيل الدخول ممكنًا لأن هذا قد يتسبب مشكلة أمنية. الرجاء الاتصال بمسؤول النظام عندك.</translation>
     </message>
 </context>
 <context>
@@ -5960,14 +5960,14 @@ Server replied with error: %2</source>
         <translation>الخادوم على الحساب %1 يقوم بتشغيل إصدار غير معتمد %2. إستعمال هذا العميل مع إصدارات خادوم غير مدعومة لم يتم اختبارها يحتمل أن يُشكّل خطراً أمنيّاً. المضي قدما على مسؤوليتك الخاصة.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="291"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="293"/>
         <source>Terms of service</source>
-        <translation type="unfinished"/>
+        <translation>شروط الخدمة</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="292"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="294"/>
         <source>Your account %1 requires you to accept the terms of service of your server. You will be redirected to %2 to acknowledge that you have read it and agrees with it.</source>
-        <translation type="unfinished"/>
+        <translation>يحتاج حسابك %1 أن يقبل شروط الخدمة على خادومك. سوف يتم توجيهك إلى %2  للإقرار بأنك قد قرأتها و وافقت عليها.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="308"/>
@@ -6041,23 +6041,23 @@ Server replied with error: %2</source>
         <translation>لم يتم تكوين مجلدات مزامنة</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="449"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="452"/>
         <source>%1: %2</source>
         <extracomment>Example text: &quot;Nextcloud: Syncing 25MB (3 minutes left)&quot; (%1 is the folder name to be synced, %2 a status message for that folder)</extracomment>
         <translation>%1: %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="453"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="456"/>
         <source>macOS VFS for %1: Sync is running.</source>
         <translation>macOS VFS لـ %1: المزامنة جارية...</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="456"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="459"/>
         <source>macOS VFS for %1: Last sync was successful.</source>
         <translation>macOS VFS لـ %1: آخر مزامنة تمّت بنجاحٍِ.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="459"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="462"/>
         <source>macOS VFS for %1: A problem was encountered.</source>
         <translation>macOS VFSلـ %1: وَاجَهَ مشكلةً.</translation>
     </message>
@@ -6317,7 +6317,7 @@ Server replied with error: %2</source>
         <location filename="../src/gui/ResolveConflictsDialog.qml" line="74"/>
         <source>%1 files in conflict</source>
         <comment>indicate the number of conflicts to resolve</comment>
-        <translation><numerusform>%1 ملفات متضاربة</numerusform><numerusform>%1 ملفات متضاربة</numerusform><numerusform>%1 ملفات متضاربة</numerusform><numerusform>%1 ملفات متضاربة</numerusform><numerusform>%1 ملفات متضاربة</numerusform><numerusform>%1  ملفات متضاربة</numerusform></translation>
+        <translation><numerusform>%1 ملفات متضاربة</numerusform><numerusform>%1 ملفات متضاربة</numerusform><numerusform>%1 ملفات متضاربة</numerusform><numerusform>%1 ملفات متضاربة</numerusform><numerusform>%1 ملف متضاربة</numerusform><numerusform>%1 ملفات متضاربة</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/ResolveConflictsDialog.qml" line="81"/>

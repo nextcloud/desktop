@@ -5986,12 +5986,12 @@ D&apos;fhreagair an freastalaí le hearráid: % 2</translation>
         <translation>Ritheann an freastalaí ar chuntas % 1 leagan % 2 nach dtacaítear leis. Tá úsáid an chliaint seo le leaganacha freastalaí nach dtacaítear leo gan tástáil agus d&apos;fhéadfadh sé a bheith contúirteach. Lean ar aghaidh ar do phriacal féin.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="291"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="293"/>
         <source>Terms of service</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="292"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="294"/>
         <source>Your account %1 requires you to accept the terms of service of your server. You will be redirected to %2 to acknowledge that you have read it and agrees with it.</source>
         <translation type="unfinished"/>
     </message>
@@ -6067,23 +6067,23 @@ D&apos;fhreagair an freastalaí le hearráid: % 2</translation>
         <translation>Níl aon fhillteán sioncronaithe cumraithe</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="449"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="452"/>
         <source>%1: %2</source>
         <extracomment>Example text: &quot;Nextcloud: Syncing 25MB (3 minutes left)&quot; (%1 is the folder name to be synced, %2 a status message for that folder)</extracomment>
         <translation>%1: %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="453"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="456"/>
         <source>macOS VFS for %1: Sync is running.</source>
         <translation>macOS VFS le haghaidh % 1: Tá Sync ag rith.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="456"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="459"/>
         <source>macOS VFS for %1: Last sync was successful.</source>
         <translation>macOS VFS le haghaidh % 1: D&apos;éirigh leis an sioncronú deireanach.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="459"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="462"/>
         <source>macOS VFS for %1: A problem was encountered.</source>
         <translation>macOS VFS le haghaidh % 1: Thángthas ar fhadhb.</translation>
     </message>
