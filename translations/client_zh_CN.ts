@@ -2301,7 +2301,9 @@ Alternatively, you can restore all deleted files by uploading from &apos;%1&apos
         <source>A large number of files in your local '%1' folder have been deleted.
 Please confirm if you'd like to proceed with these deletions.
 Alternatively, you can restore all deleted files by downloading them from the server.</source>
-        <translation type="unfinished"/>
+        <translation>大量位于本地 “%1” 文件夹内的文件已被删除。
+请确认你想要继续删除这些文件。
+或者，你可以通过从服务器重新下载以恢复删除的文件。</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1653"/>
@@ -2311,17 +2313,17 @@ Alternatively, you can restore all deleted files by downloading them from the se
     <message>
         <location filename="../src/gui/folder.cpp" line="1657"/>
         <source>Proceed with Deletion</source>
-        <translation type="unfinished"/>
+        <translation>继续删除</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1658"/>
         <source>Restore Files to Server</source>
-        <translation type="unfinished"/>
+        <translation>恢复文件至服务器</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1658"/>
         <source>Restore Files from Server</source>
-        <translation type="unfinished"/>
+        <translation>从服务器恢复文件</translation>
     </message>
 </context>
 <context>
