@@ -505,9 +505,10 @@ bool FolderWizardRemotePath::isComplete() const
         if (QDir::cleanPath(dir) == QDir::cleanPath(curDir)) {
             warnStrings.append(tr("This folder is already being synced."));
         } else if (dir.startsWith(curDir)) {
-            warnStrings.append(tr("You are already syncing <i>%1</i>, which is a parent folder of <i>%2</i>.").arg(Utility::escape(curDir), Utility::escape(dir)));
+            // warnStrings.append(tr("You are already syncing <i>%1</i>, which is a parent folder of <i>%2</i>.").arg(Utility::escape(curDir), Utility::escape(dir)));
         } else if (curDir.startsWith(dir)) {
-            warnStrings.append(tr("You are already syncing <i>%1</i>, which is a subfolder of <i>%2</i>.").arg(Utility::escape(curDir), Utility::escape(dir)));
+            // warnStrings.append(tr("You are already syncing <i>%1</i>, which is a subfolder of <i>%2</i>.").arg(Utility::escape(curDir), Utility::escape(dir)));
+            warnStrings.append(QCoreApplication::translate("", "FOLDER_WIZARD_FOLDER_WARNING")); //NMC customization
         }
     }
 
@@ -564,7 +565,8 @@ void FolderWizardRemotePath::changeStyle()
 FolderWizardSelectiveSync::FolderWizardSelectiveSync(const AccountPtr &account)
 {
     auto *layout = new QVBoxLayout(this);
-    _selectiveSync = new SelectiveSyncWidget(account, this);
+    // _selectiveSync = new SelectiveSyncWidget(account, this);
+    _selectiveSync = new NMCSelectiveSyncWidget(account, this);
     layout->addWidget(_selectiveSync);
 
     if (Theme::instance()->showVirtualFilesOption() && bestAvailableVfsMode() != Vfs::Off) {
@@ -679,7 +681,11 @@ FolderWizard::FolderWizard(AccountPtr account, QWidget *parent)
         setPage(Page_Target, _folderWizardTargetPage);
         _folderWizardTargetPage->installEventFilter(this);
     }
-    setPage(Page_SelectiveSync, _folderWizardSelectiveSyncPage);
+    // setPage(Page_SelectiveSync, _folderWizardSelectiveSyncPage);
+    if(Utility::isMac())
+    {
+        setPage(Page_SelectiveSync, _folderWizardSelectiveSyncPage);
+    }
 
     setWindowTitle(tr("Add Folder Sync Connection"));
     setOptions(QWizard::CancelButtonOnLeft);
