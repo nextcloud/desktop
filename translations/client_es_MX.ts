@@ -3128,7 +3128,8 @@ Downgrading versions is not possible immediately: changing from beta to stable m
         <source>- enterprise: contains stable versions for customers.
 </source>
         <comment>description of enterprise update channel for enterprise customers</comment>
-        <translation type="unfinished"/>
+        <translation>- empresarial: contiene versiones estables para clientes.
+</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="402"/>
@@ -3151,7 +3152,11 @@ Downgrading versions is not possible immediately: changing from stable to enterp
 - daily: contains versions created daily only for testing and development
 %1
 Downgrading versions is not possible immediately: changing from beta to stable means waiting for the new stable version.</source>
-        <translation type="unfinished"/>
+        <translation>El canal determina cuáles actualizaciones se ofrecen para instalar:
+- estable: contiene versiones probadas consideradas confiables
+- beta: contiene versiones con nuevas características que pueden no estar probadas minuciosamente
+- diariamente: contiene versiones creadas diariamente sólo para pruebas y desarrollo %1
+Degradar versiones no es posible inmediatamente: cambiar de beta a estable significa esperar por una nueva versión estable.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="410"/>
