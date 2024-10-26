@@ -3135,7 +3135,8 @@ Downgrading versions is not possible immediately: changing from beta to stable m
         <source>- enterprise: contains stable versions for customers.
 </source>
         <comment>description of enterprise update channel for enterprise customers</comment>
-        <translation type="unfinished"/>
+        <translation>- 企業版：包含供顧客使用的穩定版本。
+</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="402"/>
@@ -3160,7 +3161,12 @@ Downgrading versions is not possible immediately: changing from stable to enterp
 - daily: contains versions created daily only for testing and development
 %1
 Downgrading versions is not possible immediately: changing from beta to stable means waiting for the new stable version.</source>
-        <translation type="unfinished"/>
+        <translation>頻道是用來決定哪些升級可供安裝：
+- 穩定：包含被認為可靠的經測試版本
+- 測試：包含可能未經徹底測試的的新功能版本
+- 每日：包含每日建立的版本，僅用於測試與開發
+%1
+無法立即降級版本：從測試版變更為穩定版必須等待新的穩定版本才能更新。</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="410"/>
@@ -4286,7 +4292,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/discovery.cpp" line="441"/>
         <source> Reason: the entire filename is forbidden.</source>
-        <translation type="unfinished"/>
+        <translation>理由：整個檔案名稱被禁止。</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="442"/>
@@ -4296,7 +4302,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/discovery.cpp" line="444"/>
         <source> Reason: the filename has a forbidden base name (filename start).</source>
-        <translation type="unfinished"/>
+        <translation>理由：檔案名稱有禁止的基本名稱（檔案名稱開頭）。</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="445"/>
@@ -4306,7 +4312,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/discovery.cpp" line="447"/>
         <source> Reason: the file has a forbidden extension (.%1).</source>
-        <translation type="unfinished"/>
+        <translation>理由：檔案名稱有禁止的副檔名 (.%1)。</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="448"/>
@@ -4316,7 +4322,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/discovery.cpp" line="450"/>
         <source> Reason: the filename contains a forbidden character (%1).</source>
-        <translation type="unfinished"/>
+        <translation>理由：檔案名稱包含禁止的字元 (%1)。</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="451"/>

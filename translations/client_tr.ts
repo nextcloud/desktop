@@ -3134,7 +3134,8 @@ Sürümler hemen düşürülemez: Beta sürümünden Kararlı sürüme geçmek i
         <source>- enterprise: contains stable versions for customers.
 </source>
         <comment>description of enterprise update channel for enterprise customers</comment>
-        <translation type="unfinished"/>
+        <translation>- Kurumsal: Müşteriler için kararlı sürümleri içerir.
+</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="402"/>
@@ -3159,7 +3160,12 @@ Sürümler hemen düşürülemez: Kararlı sürümünden Enterprise sürüme ge�
 - daily: contains versions created daily only for testing and development
 %1
 Downgrading versions is not possible immediately: changing from beta to stable means waiting for the new stable version.</source>
-        <translation type="unfinished"/>
+        <translation>Kanal, hangi güncellemelerin kurulacağını belirler:
+- Kararlı: Güvenilir kabul edilen denenmiş sürümler
+- Beta: Kapsamlı denenmemiş ancak yeni özellikler bulunan sürümler
+- Günlük: Yalnızca deneme ve geliştirme için günlük olarak oluşturulan sürümler
+%1
+Sürümler hemen düşürülemez: Beta sürümünden Kararlı sürüme geçmek için yeni bir kararlı sürümün yayınlanması beklenmelidir.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="410"/>
@@ -4285,7 +4291,7 @@ Bu yeni ve deneysel bir özelliktir. Kullanmaya karar verirseniz, lütfen karş�
     <message>
         <location filename="../src/libsync/discovery.cpp" line="441"/>
         <source> Reason: the entire filename is forbidden.</source>
-        <translation type="unfinished"/>
+        <translation> Nedeni: Dosya adına tümüyle izin verilmiyor.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="442"/>
@@ -4295,7 +4301,7 @@ Bu yeni ve deneysel bir özelliktir. Kullanmaya karar verirseniz, lütfen karş�
     <message>
         <location filename="../src/libsync/discovery.cpp" line="444"/>
         <source> Reason: the filename has a forbidden base name (filename start).</source>
-        <translation type="unfinished"/>
+        <translation>Nedeni: Dosya adının temel adına (dosya adının başlangıcı) izin verilmiyor.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="445"/>
@@ -4305,7 +4311,7 @@ Bu yeni ve deneysel bir özelliktir. Kullanmaya karar verirseniz, lütfen karş�
     <message>
         <location filename="../src/libsync/discovery.cpp" line="447"/>
         <source> Reason: the file has a forbidden extension (.%1).</source>
-        <translation type="unfinished"/>
+        <translation>Nedeni: Dosyanın uzantısına izin verilmiyor (.%1).</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="448"/>
@@ -4315,7 +4321,7 @@ Bu yeni ve deneysel bir özelliktir. Kullanmaya karar verirseniz, lütfen karş�
     <message>
         <location filename="../src/libsync/discovery.cpp" line="450"/>
         <source> Reason: the filename contains a forbidden character (%1).</source>
-        <translation type="unfinished"/>
+        <translation>Nedeni: Dosya adında izin verilmeyen bir karakter var (%1).</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="451"/>

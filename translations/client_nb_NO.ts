@@ -3127,7 +3127,8 @@ Downgrading versions is not possible immediately: changing from beta to stable m
         <source>- enterprise: contains stable versions for customers.
 </source>
         <comment>description of enterprise update channel for enterprise customers</comment>
-        <translation type="unfinished"/>
+        <translation>- foretagende: inneholder stabile versjoner for kunder.
+</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="402"/>
@@ -3150,7 +3151,12 @@ Downgrading versions is not possible immediately: changing from stable to enterp
 - daily: contains versions created daily only for testing and development
 %1
 Downgrading versions is not possible immediately: changing from beta to stable means waiting for the new stable version.</source>
-        <translation type="unfinished"/>
+        <translation>Kanalen bestemmer hvilke oppgraderinger som skal tilbys å installere:
+- stabil: inneholder testede versjoner som anses som pålitelige
+- beta: inneholder versjoner med nye funksjoner som kanskje ikke testes grundig
+- daglig: inneholder versjoner som kun opprettes daglig for testing og utvikling
+%1
+Nedgradering av versjoner er ikke mulig umiddelbart: endring fra beta til stabil betyr å vente på den nye stabile versjonen.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="410"/>
@@ -4274,7 +4280,7 @@ Dette er en ny, eksperimentell modus. Hvis du bestemmer deg for å bruke den, ve
     <message>
         <location filename="../src/libsync/discovery.cpp" line="441"/>
         <source> Reason: the entire filename is forbidden.</source>
-        <translation type="unfinished"/>
+        <translation>Årsak: hele filnavnet er forbudt.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="442"/>
@@ -4284,7 +4290,7 @@ Dette er en ny, eksperimentell modus. Hvis du bestemmer deg for å bruke den, ve
     <message>
         <location filename="../src/libsync/discovery.cpp" line="444"/>
         <source> Reason: the filename has a forbidden base name (filename start).</source>
-        <translation type="unfinished"/>
+        <translation>Årsak: filnavnet har et forbudt basisnavn (filnavn start).</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="445"/>
@@ -4294,7 +4300,7 @@ Dette er en ny, eksperimentell modus. Hvis du bestemmer deg for å bruke den, ve
     <message>
         <location filename="../src/libsync/discovery.cpp" line="447"/>
         <source> Reason: the file has a forbidden extension (.%1).</source>
-        <translation type="unfinished"/>
+        <translation>Årsak: filen har en forbudt filutvidelse (.%1).</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="448"/>
@@ -4304,7 +4310,7 @@ Dette er en ny, eksperimentell modus. Hvis du bestemmer deg for å bruke den, ve
     <message>
         <location filename="../src/libsync/discovery.cpp" line="450"/>
         <source> Reason: the filename contains a forbidden character (%1).</source>
-        <translation type="unfinished"/>
+        <translation>Årsak: filnavnet inneholder et forbudt tegn (%1).</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="451"/>
