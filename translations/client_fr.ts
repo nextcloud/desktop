@@ -3134,7 +3134,8 @@ La rétrogradation des versions n&apos;est pas possible immédiatement: passer d
         <source>- enterprise: contains stable versions for customers.
 </source>
         <comment>description of enterprise update channel for enterprise customers</comment>
-        <translation type="unfinished"/>
+        <translation>- enterprise: contient les version stables pour les clients.
+</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="402"/>
@@ -3159,7 +3160,12 @@ La rétrogradation des versions n&apos;est pas possible immédiatement: passer d
 - daily: contains versions created daily only for testing and development
 %1
 Downgrading versions is not possible immediately: changing from beta to stable means waiting for the new stable version.</source>
-        <translation type="unfinished"/>
+        <translation>Le canal détermine quelles mises à jour seront proposées pour l&apos;installation :
+- stable: contient les versions testées considérées comme fiables
+- beta: contient les versions avec de nouvelles fonctionnalité qui n&apos;ont pas toujours été testées complètement
+- daily: contient les versions créées quotidiennement seulement pour les tests et le développement
+%1
+Passer à une version antérieure n&apos;est pas possible immédiatement : passer du canal beta au canal stable implique d&apos;attendre la nouvelle version stable.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="410"/>
@@ -4284,7 +4290,7 @@ Il s&apos;agit d&apos;un nouveau mode expérimental. Si vous décidez de l&apos;
     <message>
         <location filename="../src/libsync/discovery.cpp" line="441"/>
         <source> Reason: the entire filename is forbidden.</source>
-        <translation type="unfinished"/>
+        <translation> Motif : le nom de fichier entier est interdit.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="442"/>
@@ -4294,7 +4300,7 @@ Il s&apos;agit d&apos;un nouveau mode expérimental. Si vous décidez de l&apos;
     <message>
         <location filename="../src/libsync/discovery.cpp" line="444"/>
         <source> Reason: the filename has a forbidden base name (filename start).</source>
-        <translation type="unfinished"/>
+        <translation>Motif : le nom de fichier a un nom de base interdit (début du nom de fichier).</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="445"/>
@@ -4304,7 +4310,7 @@ Il s&apos;agit d&apos;un nouveau mode expérimental. Si vous décidez de l&apos;
     <message>
         <location filename="../src/libsync/discovery.cpp" line="447"/>
         <source> Reason: the file has a forbidden extension (.%1).</source>
-        <translation type="unfinished"/>
+        <translation>Motif : le fichier a une extension interdite (.%1).</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="448"/>
@@ -4314,7 +4320,7 @@ Il s&apos;agit d&apos;un nouveau mode expérimental. Si vous décidez de l&apos;
     <message>
         <location filename="../src/libsync/discovery.cpp" line="450"/>
         <source> Reason: the filename contains a forbidden character (%1).</source>
-        <translation type="unfinished"/>
+        <translation>Motif : le nom du fichier contient un caractère interdit (%1).</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="451"/>

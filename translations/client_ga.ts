@@ -3135,7 +3135,8 @@ Ní féidir leaganacha a íosghrádú láithreach: ciallaíonn athrú ó beta go
         <source>- enterprise: contains stable versions for customers.
 </source>
         <comment>description of enterprise update channel for enterprise customers</comment>
-        <translation type="unfinished"/>
+        <translation>- fiontar: tá leaganacha cobhsaí ann do chustaiméirí.
+</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="402"/>
@@ -3160,7 +3161,12 @@ Ní féidir leaganacha a íosghrádú láithreach: ciallaíonn athrú ó chobhsa
 - daily: contains versions created daily only for testing and development
 %1
 Downgrading versions is not possible immediately: changing from beta to stable means waiting for the new stable version.</source>
-        <translation type="unfinished"/>
+        <translation>Cinneann an cainéal cé na huasghráduithe a thairgfear le suiteáil:
+- cobhsaí: tá leaganacha tástálaithe a mheastar a bheith iontaofa
+- béite: tá leaganacha ann le gnéithe nua nach féidir a thástáil go críochnúil
+- laethúil: tá leaganacha a cruthaíodh go laethúil amháin le haghaidh tástála agus forbartha
+% 1
+Ní féidir leaganacha a íosghrádú láithreach: ciallaíonn athrú ó beta go cobhsaí fanacht leis an leagan cobhsaí nua.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="410"/>
@@ -4286,7 +4292,7 @@ Is modh turgnamhach nua é seo. Má shocraíonn tú é a úsáid, cuir in iúl l
     <message>
         <location filename="../src/libsync/discovery.cpp" line="441"/>
         <source> Reason: the entire filename is forbidden.</source>
-        <translation type="unfinished"/>
+        <translation>Cúis: tá an comhadainm iomlán toirmiscthe.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="442"/>
@@ -4296,7 +4302,7 @@ Is modh turgnamhach nua é seo. Má shocraíonn tú é a úsáid, cuir in iúl l
     <message>
         <location filename="../src/libsync/discovery.cpp" line="444"/>
         <source> Reason: the filename has a forbidden base name (filename start).</source>
-        <translation type="unfinished"/>
+        <translation>Cúis: tá bonnainm toirmiscthe ag an gcomhad (tús ainm an chomhaid).</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="445"/>
@@ -4306,7 +4312,7 @@ Is modh turgnamhach nua é seo. Má shocraíonn tú é a úsáid, cuir in iúl l
     <message>
         <location filename="../src/libsync/discovery.cpp" line="447"/>
         <source> Reason: the file has a forbidden extension (.%1).</source>
-        <translation type="unfinished"/>
+        <translation>Cúis: tá iarmhír toirmiscthe (.%1) ar an gcomhad.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="448"/>
@@ -4316,7 +4322,7 @@ Is modh turgnamhach nua é seo. Má shocraíonn tú é a úsáid, cuir in iúl l
     <message>
         <location filename="../src/libsync/discovery.cpp" line="450"/>
         <source> Reason: the filename contains a forbidden character (%1).</source>
-        <translation type="unfinished"/>
+        <translation>Cúis: tá carachtar toirmiscthe (%1) san ainm comhaid.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="451"/>

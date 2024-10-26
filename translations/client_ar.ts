@@ -3119,7 +3119,8 @@ Downgrading versions is not possible immediately: changing from beta to stable m
         <source>- enterprise: contains stable versions for customers.
 </source>
         <comment>description of enterprise update channel for enterprise customers</comment>
-        <translation type="unfinished"/>
+        <translation>- مُؤسَّسي: يحتوي على إصدارات مستقرة للعملاء.
+</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="402"/>
@@ -3144,7 +3145,12 @@ Downgrading versions is not possible immediately: changing from stable to enterp
 - daily: contains versions created daily only for testing and development
 %1
 Downgrading versions is not possible immediately: changing from beta to stable means waiting for the new stable version.</source>
-        <translation type="unfinished"/>
+        <translation>تحدد القناة الترقيات التي سيتم عرضها للتثبيت: 
+- مستقر: يحتوي على إصدارات مجربة تعتبر موثوقة 
+- تجريبي: يحتوي على إصدارات ذات ميزات جديدة ربما لم يتم اختبارها بدقة 
+- يومي: يحتوي على إصدارات يتم إنشاؤها يوميًا للاختبار والتطوير فقط 
+%1 
+لا يمكن خفض مستوى الإصدارات على الفور: فالتغيير من الإصدار التجريبي إلى الإصدار المستقر يعني انتظار الإصدار المستقر الجديد.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="410"/>
@@ -3229,7 +3235,7 @@ Downgrading versions is not possible immediately: changing from beta to stable m
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="156"/>
         <source>&lt;a href=&quot;%1&quot;&gt;Click here&lt;/a&gt; to request an app password from the web interface.</source>
-        <translation>&lt;a href=&quot;%1&quot;&gt;إضغط هنا&lt;/a&gt; لطلب كلمة مرور لتطبيق من واجهة الوب.</translation>
+        <translation>&lt;a href=&quot;%1&quot;&gt;إضغط هنا&lt;/a&gt; لطلب كلمة مرور لتطبيق من واجهة الويب.</translation>
     </message>
 </context>
 <context>
@@ -3918,7 +3924,7 @@ Note that using any logging command line options will override this setting.</so
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="86"/>
         <source>The link to your %1 web interface when you open it in the browser.</source>
         <comment>%1 will be replaced with the application name</comment>
-        <translation>الرابط لواجهة الوب الخاصة بك %1 عندما تفتحه في المُستعرِض.</translation>
+        <translation>الرابط لواجهة الويب الخاصة بك %1 عندما تفتحه في المُستعرِض.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="201"/>
@@ -4262,7 +4268,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/discovery.cpp" line="441"/>
         <source> Reason: the entire filename is forbidden.</source>
-        <translation type="unfinished"/>
+        <translation>السبب: اسم الملف محظور بأكمله.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="442"/>
@@ -4272,7 +4278,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/discovery.cpp" line="444"/>
         <source> Reason: the filename has a forbidden base name (filename start).</source>
-        <translation type="unfinished"/>
+        <translation>السبب: اسم الملف الأساس (جزء البداية) محظور.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="445"/>
@@ -4282,7 +4288,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/discovery.cpp" line="447"/>
         <source> Reason: the file has a forbidden extension (.%1).</source>
-        <translation type="unfinished"/>
+        <translation> السبب: امتداد الملف محظور (.%1).</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="448"/>
@@ -4292,7 +4298,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/discovery.cpp" line="450"/>
         <source> Reason: the filename contains a forbidden character (%1).</source>
-        <translation type="unfinished"/>
+        <translation>السبب: اسم الملف يحتوي على حروف محظورة (%1).</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="451"/>
@@ -5976,7 +5982,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/wizard/welcomepage.cpp" line="71"/>
         <source>Screensharing, online meetings &amp; web conferences</source>
-        <translation>مشاركة الشاشة، و الاجتماع على الخط، و المؤتمرات على الوب</translation>
+        <translation>مشاركة الشاشة، و الاجتماع على الخط، و المؤتمرات على الويب</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/welcomepage.cpp" line="111"/>
@@ -6247,7 +6253,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="259"/>
         <source>This is the link to your %1 web interface when you open it in the browser.</source>
-        <translation>هذا هو الرابط إلى واجهة الوب %1 الخاصة بك عندما تفتحها في المُتصفّح</translation>
+        <translation>هذا هو الرابط إلى واجهة الويب %1 الخاصة بك عندما تفتحها في المُتصفّح</translation>
     </message>
 </context>
 <context>
