@@ -576,7 +576,7 @@ Debería importarse a conta?</translation>
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="255"/>
         <source>Successfully imported account from legacy client: %1</source>
-        <translation>Importouse correctamente a conta de  cliente estilo antigo: % 1</translation>
+        <translation>Importouse correctamente a conta de  cliente estilo antigo: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="263"/>
@@ -2243,7 +2243,7 @@ Se isto foi un accidente e decide manter os seus ficheiros, volveranse sincroniz
     <message>
         <location filename="../src/gui/folder.cpp" line="1420"/>
         <source>Remove All Files?</source>
-        <translation>Retirar todos os ficheiros?</translation>
+        <translation>Quere retirar todos os ficheiros?</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1424"/>
@@ -2314,7 +2314,7 @@ Como alternativa, pode restaurar todos os ficheiros eliminados descargándoos do
     <message>
         <location filename="../src/gui/folder.cpp" line="1647"/>
         <source>Remove all files?</source>
-        <translation>Retirar todos os ficheiros?</translation>
+        <translation>Quere retirar todos os ficheiros?</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1651"/>

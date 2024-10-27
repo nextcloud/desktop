@@ -51,7 +51,7 @@
     <message>
         <location filename="../src/gui/tray/CallNotificationDialog.qml" line="194"/>
         <source>Talk notification caller avatar</source>
-        <translation>التجسيد الرمزي avatar للمتصل على تطبيق المحادثة Talk</translation>
+        <translation>صورة الملف الشخصي الرمزية للمتصل على تطبيق المحادثة Talk</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/CallNotificationDialog.qml" line="260"/>
@@ -454,7 +454,7 @@
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="435"/>
         <source>Current account avatar</source>
-        <translation>آفاتار الحساب الحالي</translation>
+        <translation>صورة الملف الشخصي الرمزية للحساب الحالي</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="474"/>
@@ -3728,12 +3728,12 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="152"/>
         <source>Downloading %1 …</source>
-        <translation>التنزيل جارٍ %1 …</translation>
+        <translation>يتم تنزيل %1 …</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="152"/>
         <source>Downloading %1. Please wait …</source>
-        <translation>تنزيل %1. يرجى الانتظار ...</translation>
+        <translation>يتم تنزيل %1. يرجى الانتظار ...</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="154"/>
@@ -4435,7 +4435,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="481"/>
         <source>File %1 cannot be downloaded because encryption information is missing.</source>
-        <translation>تعذّر تحميل الملف %1 لأن معلومات التشفير مفقودة.</translation>
+        <translation>تعذّر تنزيل الملف %1 لأن معلومات التشفير مفقودة.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="499"/>
@@ -4452,7 +4452,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="533"/>
         <source>File %1 can not be downloaded because of a local file name clash!</source>
-        <translation>لا يمكن تحميل الملف 1% بسبب تعارض اسم الملف المحلي!</translation>
+        <translation>لا يمكن تنزيل الملف %1 بسبب تعارض اسم الملف المحلي!</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="692"/>
@@ -5900,7 +5900,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/vfsdownloaderrordialog.cpp" line="27"/>
         <source>%1 could not be downloaded.</source>
-        <translation>%1 تعذّر تحميله.</translation>
+        <translation>%1 تعذّر تنزيله.</translation>
     </message>
 </context>
 <context>
@@ -6957,12 +6957,12 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="75"/>
         <source>downloading</source>
-        <translation>جارى التحميل</translation>
+        <translation>يتم التنزيل</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="77"/>
         <source>Downloading</source>
-        <translation>تنزيل</translation>
+        <translation>يتم تنزيل</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="77"/>
@@ -7328,7 +7328,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="492"/>
         <source>Current account avatar</source>
-        <translation>التجسيد الرمزي avatar للحساب الحالي</translation>
+        <translation>صورة الملف الشخصي الرمزية للحساب الحالي</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="531"/>
