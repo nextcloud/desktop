@@ -100,7 +100,7 @@ private slots:
         const auto chunkingId = fakeFolder.uploadState().children.first().name;
         const auto chunkMap = fakeFolder.uploadState().children.first().children;
         const auto firstChunkName = chunkMap.first().name;
-        const auto expectedChunkName = QString("%1").arg(1, 5, 10, QChar('0'));
+        const auto expectedChunkName = QStringLiteral("%1").arg(1, 5, 10, QChar('0'));
         QCOMPARE(firstChunkName, expectedChunkName);
     }
 
@@ -232,7 +232,7 @@ private slots:
 
         // Add a chunk that makes the file completely uploaded
         const auto testChunkNameNum = chunkMap.count() + 1; // Chunk nums start at 1 with Chunk V2, so size() == last num, add 1
-        const auto testChunkName = QString("%1").arg(testChunkNameNum, 5, 10, QChar('0'));
+        const auto testChunkName = QStringLiteral("%1").arg(testChunkNameNum, 5, 10, QChar('0'));
         const auto testChunkSize = size - uploadedSize;
         fakeFolder.uploadState().children.first().insert(testChunkName, testChunkSize);
 
@@ -285,7 +285,7 @@ private slots:
 
         // Add a chunk that makes the file more than completely uploaded
         const auto testChunkNameNum = chunkMap.count() + 1; // Chunk nums start at 1 with Chunk V2, so size() == last num, add 1
-        const auto testChunkName = QString("%1").arg(testChunkNameNum, 5, 10, QChar('0'));
+        const auto testChunkName = QStringLiteral("%1").arg(testChunkNameNum, 5, 10, QChar('0'));
         const auto testChunkSize = size - uploadedSize + 100;
         fakeFolder.uploadState().children.first().insert(testChunkName, testChunkSize);
 
