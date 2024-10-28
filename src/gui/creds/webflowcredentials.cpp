@@ -355,7 +355,7 @@ void WebFlowCredentials::forgetSensitiveData() {
 
     _account->deleteAppPassword();
 
-    const QString kck = keychainKey(_account->url().toString(), _user, _account->id());
+    const auto kck = keychainKey(_account->url().toString(), _user, _account->id());
     if (kck.isEmpty()) {
         qCDebug(lcWebFlowCredentials()) << "InvalidateToken: User is empty, bailing out!";
         return;
