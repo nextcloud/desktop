@@ -361,7 +361,6 @@ void Account::clearCookieJar()
     auto jar = qobject_cast<CookieJar *>(_am->cookieJar());
     ASSERT(jar);
     jar->setAllCookies(QList<QNetworkCookie>());
-    emit wantsAccountSaved(this);
 }
 
 /*! This shares our official cookie jar (containing all the tasty
