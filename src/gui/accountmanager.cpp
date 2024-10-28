@@ -393,12 +393,16 @@ void AccountManager::saveAccountHelper(Account *acc, QSettings &settings, bool s
 
         const auto settingsMapKeys = acc->_settingsMap.keys();
         for (const auto &key : settingsMapKeys) {
+            if (!acc->_settingsMap.value(key).isValid()) {
+                continue;
+            }
+
             settings.setValue(key, acc->_settingsMap.value(key));
         }
         settings.setValue(QLatin1String(authTypeC), acc->_credentials->authType());
 
         // HACK: Save http_user also as user
-        if (acc->_settingsMap.contains(httpUserC)) {
+        if (acc->_settingsMap.contains(httpUserC) && acc->_settingsMap.value(httpUserC).isValid()) {
             settings.setValue(userC, acc->_settingsMap.value(httpUserC));
         }
     }
