@@ -400,7 +400,8 @@ void DiscoverySingleDirectoryJob::start()
           << "http://owncloud.org/ns:dDC"
           << "http://owncloud.org/ns:permissions"
           << "http://owncloud.org/ns:checksums"
-          << "http://nextcloud.org/ns:is-encrypted";
+          << "http://nextcloud.org/ns:is-encrypted"
+          << "http://nextcloud.org/ns:metadata-files-live-photo";
 
     if (_isRootPath)
         props << "http://owncloud.org/ns:data-fingerprint";
@@ -549,6 +550,10 @@ static void propertyMapToRemoteInfo(const QMap<QString, QString> &map, RemotePer
         }
         if (property == "lock-token") {
             result.lockToken = value;
+        }
+        if (property == "metadata-files-live-photo") {
+            result.livePhotoFile = value;
+            result.isLivePhoto = true;
         }
     }
 
