@@ -156,13 +156,23 @@ void Account::setAvatar(const QImage &img)
 
 QString Account::displayName() const
 {
-    auto displayName = QString("%1@%2").arg(credentials() ? credentials()->user() : "", _url.host());
+    return _displayName;
+}
+
+void Account::setDisplayName(const QString &username)
+{
+    auto displayName = QString("%1@%2").arg(username, _url.host());
     const auto port = url().port();
     if (port > 0 && port != 80 && port != 443) {
         displayName.append(QLatin1Char(':'));
         displayName.append(QString::number(port));
     }
-    return displayName;
+
+    if (displayName == _displayName) {
+        return;
+    }
+
+    _displayName = displayName;
 }
 
 QString Account::userIdAtHostWithPort() const
@@ -178,12 +188,12 @@ QString Account::userIdAtHostWithPort() const
 
 QString Account::davDisplayName() const
 {
-    return _displayName;
+    return _davDisplayName;
 }
 
 void Account::setDavDisplayName(const QString &newDisplayName)
 {
-    _displayName = newDisplayName;
+    _davDisplayName = newDisplayName;
     emit accountChangedDisplayName();
     emit prettyNameChanged();
 }
