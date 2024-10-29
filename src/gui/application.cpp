@@ -365,7 +365,7 @@ Application::Application(int &argc, char **argv)
     }
 
     _theme->setSystrayUseMonoIcons(ConfigFile().monoIcons());
-    connect(_theme, &Theme::systrayUseMonoIconsChanged, this, &Application::slotUseMonoIconsChanged);
+    connect(_theme, &Theme::systrayUseMonoIconsChanged, _gui, &ownCloudGui::slotComputeOverallSyncStatus);
     connect(this, &Application::systemPaletteChanged,
             _theme, &Theme::systemPaletteHasChanged);
 
@@ -589,7 +589,7 @@ void Application::slotAccountStateRemoved(AccountState *accountState)
 {
     if (_gui) {
         disconnect(accountState, &AccountState::stateChanged,
-            _gui.data(), &ownCloudGui::slotAccountStateChanged);
+            _gui.data(), &ownCloudGui::slotComputeOverallSyncStatus);
         disconnect(accountState->account().data(), &Account::serverVersionChanged,
             _gui.data(), &ownCloudGui::slotTrayMessageIfServerUnsupported);
     }
@@ -611,7 +611,7 @@ void Application::slotAccountStateRemoved(AccountState *accountState)
 void Application::slotAccountStateAdded(AccountState *accountState)
 {
     connect(accountState, &AccountState::stateChanged,
-        _gui.data(), &ownCloudGui::slotAccountStateChanged);
+        _gui.data(), &ownCloudGui::slotComputeOverallSyncStatus);
     connect(accountState->account().data(), &Account::serverVersionChanged,
         _gui.data(), &ownCloudGui::slotTrayMessageIfServerUnsupported);
     connect(accountState, &AccountState::termsOfServiceChanged,
@@ -714,11 +714,6 @@ void Application::setupLogging()
                           << "version:" << _theme->version()
                           << "os:" << Utility::platformName();
     qCInfo(lcApplication) << "Arguments:" << qApp->arguments();
-}
-
-void Application::slotUseMonoIconsChanged(bool)
-{
-    _gui->slotComputeOverallSyncStatus();
 }
 
 void Application::slotParseMessage(const QString &msg, QObject *)
