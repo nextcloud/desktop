@@ -340,6 +340,9 @@ public:
     bool _isAnyInvalidCharChild = false;
     bool _isAnyCaseClashChild = false;
 
+    bool _isLivePhoto = false;
+    QString _livePhotoFile;
+
     QString _discoveryResult;
 };
 
