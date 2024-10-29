@@ -49,7 +49,7 @@ Q_LOGGING_CATEGORY(lcDb, "nextcloud.sync.database", QtInfoMsg)
 #define GET_FILE_RECORD_QUERY \
         "SELECT path, inode, modtime, type, md5, fileid, remotePerm, filesize," \
         "  ignoredChildrenRemote, contentchecksumtype.name || ':' || contentChecksum, e2eMangledName, isE2eEncrypted, " \
-        "  lock, lockOwnerDisplayName, lockOwnerId, lockType, lockOwnerEditor, lockTime, lockTimeout, lockToken, isShared, lastShareStateFetchedTimestmap, sharedByMe" \
+        "  lock, lockOwnerDisplayName, lockOwnerId, lockType, lockOwnerEditor, lockTime, lockTimeout, lockToken, isShared, lastShareStateFetchedTimestmap, sharedByMe, isLivePhoto, livePhotoFile" \
         " FROM metadata" \
         "  LEFT JOIN checksumtype as contentchecksumtype ON metadata.contentChecksumTypeId == contentchecksumtype.id"
 
@@ -78,6 +78,8 @@ static void fillFileRecordFromGetQuery(SyncJournalFileRecord &rec, SqlQuery &que
     rec._isShared = query.intValue(20) > 0;
     rec._lastShareStateFetchedTimestamp = query.int64Value(21);
     rec._sharedByMe = query.intValue(22) > 0;
+    rec._isLivePhoto = query.intValue(23) > 0;
+    rec._livePhotoFile = query.stringValue(24);
 }
 
 static QByteArray defaultJournalMode(const QString &dbPath)
@@ -837,6 +839,9 @@ bool SyncJournalDb::updateMetadataTableStructure()
     }
     commitInternal(QStringLiteral("update database structure: add basePath index"));
 
+    addColumn(QStringLiteral("isLivePhoto"), QStringLiteral("INTEGER"));
+    addColumn(QStringLiteral("livePhotoFile"), QStringLiteral("TEXT"));
+
     return re;
 }
 
@@ -963,7 +968,9 @@ Result<void, QString> SyncJournalDb::setFileRecord(const SyncJournalFileRecord &
                  << "lock editor:" << record._lockstate._lockEditorApp
                  << "sharedByMe:" << record._sharedByMe
                  << "isShared:" << record._isShared
-                 << "lastShareStateFetchedTimestamp:" << record._lastShareStateFetchedTimestamp;
+                 << "lastShareStateFetchedTimestamp:" << record._lastShareStateFetchedTimestamp
+                 << "isLivePhoto" << record._isLivePhoto
+                 << "livePhotoFile" << record._livePhotoFile;
 
     const qint64 phash = getPHash(record._path);
     if (!checkConnect()) {
@@ -989,8 +996,8 @@ Result<void, QString> SyncJournalDb::setFileRecord(const SyncJournalFileRecord &
     const auto query = _queryManager.get(PreparedSqlQueryManager::SetFileRecordQuery, QByteArrayLiteral("INSERT OR REPLACE INTO metadata "
                                                                                                         "(phash, pathlen, path, inode, uid, gid, mode, modtime, type, md5, fileid, remotePerm, filesize, ignoredChildrenRemote, "
                                                                                                         "contentChecksum, contentChecksumTypeId, e2eMangledName, isE2eEncrypted, lock, lockType, lockOwnerDisplayName, lockOwnerId, "
-                                                                                                        "lockOwnerEditor, lockTime, lockTimeout, lockToken, isShared, lastShareStateFetchedTimestmap, sharedByMe) "
-                                                                                                        "VALUES (?1 , ?2, ?3 , ?4 , ?5 , ?6 , ?7,  ?8 , ?9 , ?10, ?11, ?12, ?13, ?14, ?15, ?16, ?17, ?18, ?19, ?20, ?21, ?22, ?23, ?24, ?25, ?26, ?27, ?28, ?29);"),
+                                                                                                        "lockOwnerEditor, lockTime, lockTimeout, lockToken, isShared, lastShareStateFetchedTimestmap, sharedByMe, isLivePhoto, livePhotoFile) "
+                                                                                                        "VALUES (?1 , ?2, ?3 , ?4 , ?5 , ?6 , ?7,  ?8 , ?9 , ?10, ?11, ?12, ?13, ?14, ?15, ?16, ?17, ?18, ?19, ?20, ?21, ?22, ?23, ?24, ?25, ?26, ?27, ?28, ?29, ?30, ?31);"),
         _db);
     if (!query) {
         qCDebug(lcDb) << "database error:" << query->error();
@@ -1026,6 +1033,8 @@ Result<void, QString> SyncJournalDb::setFileRecord(const SyncJournalFileRecord &
     query->bindValue(27, record._isShared);
     query->bindValue(28, record._lastShareStateFetchedTimestamp);
     query->bindValue(29, record._sharedByMe);
+    query->bindValue(30, record._isLivePhoto);
+    query->bindValue(31, record._livePhotoFile);
 
     if (!query->exec()) {
         qCDebug(lcDb) << "database error:" << query->error();
