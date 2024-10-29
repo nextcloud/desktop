@@ -258,19 +258,9 @@ void ownCloudGui::slotSyncStateChange(Folder *folder)
     }
 }
 
-void ownCloudGui::slotFoldersChanged()
-{
-    slotComputeOverallSyncStatus();
-}
-
 void ownCloudGui::slotOpenPath(const QString &path)
 {
     showInFileManager(path);
-}
-
-void ownCloudGui::slotAccountStateChanged()
-{
-    slotComputeOverallSyncStatus();
 }
 
 void ownCloudGui::slotTrayMessageIfServerUnsupported(Account *account)
