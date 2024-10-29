@@ -718,6 +718,9 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(const SyncFileItemPtr &it
     item->_lockTimeout = serverEntry.lockTimeout;
     item->_lockToken = serverEntry.lockToken;
 
+    item->_isLivePhoto = serverEntry.isLivePhoto;
+    item->_livePhotoFile = serverEntry.livePhotoFile;
+
     // Check for missing server data
     {
         QStringList missingData;
