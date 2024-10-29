@@ -146,6 +146,7 @@ public:
 
     /// The name of the account as shown in the toolbar
     [[nodiscard]] QString displayName() const;
+    void setDisplayName(const QString &username);
 
     /// User id in a form 'user@example.de, optionally port is added (if it is not 80 or 443)
     [[nodiscard]] QString userIdAtHostWithPort() const;
@@ -493,6 +494,7 @@ private:
     QWeakPointer<Account> _sharedThis;
     QString _id;
     QString _davUser;
+    QString _davDisplayName;
     QString _displayName;
     QTimer _pushNotificationsReconnectTimer;
 #ifndef TOKEN_AUTH_ONLY

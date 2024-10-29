@@ -334,7 +334,7 @@ void AccountManager::saveAccountHelper(Account *acc, QSettings &settings, bool s
     settings.setValue(QLatin1String(versionC), maxAccountVersion);
     settings.setValue(QLatin1String(urlC), acc->_url.toString());
     settings.setValue(QLatin1String(davUserC), acc->_davUser);
-    settings.setValue(QLatin1String(displayNameC), acc->_displayName);
+    settings.setValue(QLatin1String(displayNameC), acc->davDisplayName());
     settings.setValue(QLatin1String(serverVersionC), acc->_serverVersion);
     settings.setValue(QLatin1String(serverColorC), acc->_serverColor);
     settings.setValue(QLatin1String(serverTextColorC), acc->_serverTextColor);
@@ -498,7 +498,7 @@ AccountPtr AccountManager::loadAccountHelper(QSettings &settings)
     acc->_davUser = settings.value(QLatin1String(davUserC)).toString();
 
     acc->_settingsMap.insert(QLatin1String(userC), settings.value(userC));
-    acc->_displayName = settings.value(QLatin1String(displayNameC), "").toString();
+    acc->setDavDisplayName(settings.value(QLatin1String(displayNameC), "").toString());
     const QString authTypePrefix = authType + "_";
     const auto settingsChildKeys = settings.childKeys();
     for (const auto &key : settingsChildKeys) {
@@ -509,6 +509,7 @@ AccountPtr AccountManager::loadAccountHelper(QSettings &settings)
     }
 
     acc->setCredentials(CredentialsFactory::create(authType));
+    acc->setDisplayName(acc->credentials()->user());
 
     acc->setNetworkProxySetting(settings.value(networkProxySettingC).value<Account::AccountNetworkProxySetting>());
     acc->setProxyType(settings.value(networkProxyTypeC).value<QNetworkProxy::ProxyType>());
