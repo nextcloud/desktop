@@ -194,7 +194,7 @@
 
 #pragma mark - SyncClientProxyDelegate implementation
 
-- (void)setResultForPath:(NSString*)path result:(NSString*)result
+- (void)setResult:(NSString *)result forPath:(NSString*)path
 {
 	NSString *normalizedPath = [path decomposedStringWithCanonicalMapping];
 	[[FIFinderSyncController defaultController] setBadgeIdentifier:result forURL:[NSURL fileURLWithPath:normalizedPath]];
