@@ -118,6 +118,8 @@ ownCloudGui::ownCloudGui(Application *parent)
 
     FolderMan *folderMan = FolderMan::instance();
     connect(folderMan, &FolderMan::folderSyncStateChange, this, &ownCloudGui::slotSyncStateChange);
+    connect(folderMan, &FolderMan::folderSyncStateChange, this, &ownCloudGui::slotComputeOverallSyncStatus);
+
 
 #ifdef BUILD_FILE_PROVIDER_MODULE
     connect(Mac::FileProvider::instance()->socketServer(), &Mac::FileProviderSocketServer::syncStateChanged, this, &ownCloudGui::slotComputeOverallSyncStatus);
@@ -240,8 +242,6 @@ void ownCloudGui::slotTrayClicked(QSystemTrayIcon::ActivationReason reason)
 
 void ownCloudGui::slotSyncStateChange(Folder *folder)
 {
-    slotComputeOverallSyncStatus();
-
     if (!folder) {
         return; // Valid, just a general GUI redraw was needed.
     }
@@ -371,7 +371,7 @@ void ownCloudGui::slotComputeOverallSyncStatus()
 #else
         QStringList messages;
         messages.append(tr("Disconnected from accounts:"));
-        for (const auto &accountState : problemAccounts) {
+        for (const auto &accountState : qAsConst(problemAccounts)) {
             QString message = tr("Account %1: %2").arg(accountState->account()->displayName(), accountState->stateString(accountState->state()));
             if (!accountState->connectionErrors().empty()) {
                 message += QLatin1String("\n");
