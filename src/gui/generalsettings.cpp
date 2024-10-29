@@ -13,6 +13,7 @@
  */
 
 #include "generalsettings.h"
+#include "macOS/fileprovider.h"
 #include "ui_generalsettings.h"
 
 #include "theme.h"
@@ -29,6 +30,10 @@
 // FIXME We should unify those, but Sparkle does everything behind the scene transparently
 #include "updater/sparkleupdater.h"
 #endif
+#endif
+
+#ifdef BUILD_FILE_PROVIDER_MODULE
+#include "macOS/fileprovidersettingscontroller.h"
 #endif
 
 #include "ignorelisteditor.h"
@@ -112,6 +117,23 @@ QVector<ZipEntry> createDebugArchiveFileList()
                       const auto &newEntries = syncFolderToDatabaseZipEntry(folderIt);
                       std::copy(std::cbegin(newEntries), std::cend(newEntries), std::back_inserter(list));
                   });
+
+#ifdef BUILD_FILE_PROVIDER_MODULE
+
+    const auto fileProvider = OCC::Mac::FileProvider::instance();
+    if (fileProvider && fileProvider->fileProviderAvailable()) {
+        const auto tempDir = QTemporaryDir();
+        const auto xpc = fileProvider->xpc();
+        const auto vfsAccounts = OCC::Mac::FileProviderSettingsController::instance()->vfsEnabledAccounts();
+        for (const auto &accountUserIdAtHost : vfsAccounts) {
+            const auto vfsLogFilename = QStringLiteral("macOS_vfs_%1.log").arg(accountUserIdAtHost);
+            const auto vfsLogPath = tempDir.filePath(vfsLogFilename);
+            xpc->createDebugArchiveForExtension(accountUserIdAtHost, vfsLogPath);
+            list.append(fileInfoToZipEntry(QFileInfo(vfsLogPath)));
+        }
+    }
+
+#endif
 
     return list;
 }
