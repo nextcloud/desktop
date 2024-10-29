@@ -87,6 +87,9 @@ struct RemoteInfo
     qint64 lockTime = 0;
     qint64 lockTimeout = 0;
     QString lockToken;
+
+    bool isLivePhoto = false;
+    QString livePhotoFile;
 };
 
 struct LocalInfo
