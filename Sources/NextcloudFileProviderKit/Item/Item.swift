@@ -40,6 +40,7 @@ public class Item: NSObject, NSFileProviderItem {
                 .allowsContentEnumerating,
                 .allowsReading,
                 .allowsDeleting,
+                .allowsReparenting,
                 .allowsRenaming
             ]
 
