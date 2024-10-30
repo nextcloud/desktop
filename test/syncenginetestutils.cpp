@@ -223,6 +223,13 @@ void FileInfo::setModTimeKeepEtag(const QString &relativePath, const QDateTime &
     file->lastModified = modTime;
 }
 
+void FileInfo::setIsLivePhoto(const QString &relativePath, const bool isLivePhoto)
+{
+    const auto file = find(relativePath);
+    Q_ASSERT(file);
+    file->isLivePhoto = isLivePhoto;
+}
+
 void FileInfo::modifyLockState(const QString &relativePath, LockState lockState, int lockType, const QString &lockOwner, const QString &lockOwnerId, const QString &lockEditorId, quint64 lockTime, quint64 lockTimeout)
 {
     FileInfo *file = findInvalidatingEtags(relativePath);
