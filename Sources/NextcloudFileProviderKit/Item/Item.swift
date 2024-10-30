@@ -44,6 +44,10 @@ public class Item: NSObject, NSFileProviderItem {
                 .allowsRenaming
             ]
 
+            if #available(macOS 11.3, *) {
+                directoryCapabilities.insert(.allowsExcludingFromSync)
+            }
+
             // .allowsEvicting deprecated on macOS 13.0+, use contentPolicy instead
             if #unavailable(macOS 13.0) {
                 directoryCapabilities.insert(.allowsEvicting)
