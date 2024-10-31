@@ -1020,7 +1020,7 @@ bool ConfigFile::showMainDialogAsNormalWindow() const {
 bool ConfigFile::promptDeleteFiles() const
 {
     QSettings settings(configFile(), QSettings::IniFormat);
-    return settings.value(QLatin1String(promptDeleteC), true).toBool();
+    return settings.value(QLatin1String(promptDeleteC), false).toBool();
 }
 
 void ConfigFile::setPromptDeleteFiles(bool promptDeleteFiles)
