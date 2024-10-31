@@ -355,8 +355,8 @@ void OwncloudAdvancedSetupPage::stopSpinner()
 
 QUrl OwncloudAdvancedSetupPage::serverUrl() const
 {
-    const QString urlString = dynamic_cast<OwncloudWizard *>(wizard())->ocUrl();
-    const QString user = dynamic_cast<OwncloudWizard *>(wizard())->getCredentials()->user();
+    const auto urlString = dynamic_cast<OwncloudWizard *>(wizard())->ocUrl();
+    const auto user = dynamic_cast<OwncloudWizard *>(wizard())->getCredentials()->user();
 
     QUrl url(urlString);
     url.setUserName(user);
