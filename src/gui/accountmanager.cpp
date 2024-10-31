@@ -338,7 +338,7 @@ void AccountManager::saveAccountHelper(Account *acc, QSettings &settings, bool s
     settings.setValue(QLatin1String(serverVersionC), acc->_serverVersion);
     settings.setValue(QLatin1String(serverColorC), acc->_serverColor);
     settings.setValue(QLatin1String(serverTextColorC), acc->_serverTextColor);
-    settings.setValue(QLatin1String(serverHasValidSubscriptionC), acc->capabilities().serverHasValidSubscription());
+    settings.setValue(QLatin1String(serverHasValidSubscriptionC), acc->serverHasValidSubscription());
 
     if (!acc->_skipE2eeMetadataChecksumValidation) {
         settings.remove(QLatin1String(skipE2eeMetadataChecksumValidationC));
@@ -606,8 +606,28 @@ void AccountManager::deleteAccount(OCC::AccountState *account)
 
     account->account()->deleteAppToken();
 
+    // clean up config from subscriptions if the account removed was the only with valid subscription
+    if (account->account()->serverHasValidSubscription()) {
+        updateServerHasValidSubscriptionConfig();
+    }
+
     emit accountSyncConnectionRemoved(account);
     emit accountRemoved(account);
+}
+
+void AccountManager::updateServerHasValidSubscriptionConfig()
+{
+    auto serverHasValidSubscription = false;
+    for (const auto &account : _accounts) {
+        if (!account->account()->serverHasValidSubscription()) {
+            continue;
+        }
+
+        serverHasValidSubscription = true;
+        break;
+    }
+
+    ConfigFile().setServerHasValidSubscription(serverHasValidSubscription);
 }
 
 AccountPtr AccountManager::createAccount()
@@ -665,10 +685,17 @@ void AccountManager::addAccountState(AccountState *const accountState)
     Q_ASSERT(accountState->account());
 
     QObject::connect(accountState->account().data(), &Account::wantsAccountSaved, this, &AccountManager::saveAccount);
+    QObject::connect(accountState->account().data(), &Account::capabilitiesChanged, this, &AccountManager::capabilitiesChanged);
 
     AccountStatePtr ptr(accountState);
     _accounts << ptr;
     ptr->trySignIn();
+
+    // update config subscriptions if the account added is the only with valid subscription
+    if (accountState->account()->serverHasValidSubscription() && !ConfigFile().serverHasValidSubscription()) {
+        updateServerHasValidSubscriptionConfig();
+    }
+
     emit accountAdded(accountState);
 }
 
