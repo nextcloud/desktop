@@ -91,8 +91,8 @@ public:
     static void backwardMigrationSettingsKeys(QStringList *deleteKeys, QStringList *ignoreKeys);
 
 public slots:
-    /// Saves account data, not including the credentials
-    void saveAccount(OCC::Account *a);
+    /// Saves account data when adding user, when updating e.g. dav user, not including the credentials
+    void saveAccount(OCC::Account *newAccountData);
 
     /// Saves account state data, not including the account
     void saveAccountState(OCC::AccountState *a);

@@ -519,7 +519,7 @@ private:
     QColor _serverTextColor = QColorConstants::White;
     bool _skipE2eeMetadataChecksumValidation = false;
     QScopedPointer<AbstractSslErrorHandler> _sslErrorHandler;
-    QSharedPointer<QNetworkAccessManager> _am;
+    QSharedPointer<QNetworkAccessManager> _networkAccessManager;
     QScopedPointer<AbstractCredentials> _credentials;
     bool _http2Supported = false;
 
