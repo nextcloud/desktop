@@ -123,7 +123,7 @@ AccountManager::AccountsRestoreResult AccountManager::restore(const bool alsoRes
             if (const auto acc = loadAccountHelper(*settings)) {
                 acc->_id = accountId;
                 const auto accState = new AccountState(acc);
-                const auto jar = qobject_cast<CookieJar*>(acc->_am->cookieJar());
+                const auto jar = qobject_cast<CookieJar*>(acc->_networkAccessManager->cookieJar());
                 Q_ASSERT(jar);
                 if (jar) {
                     jar->restore(acc->cookieJarPath());
@@ -305,12 +305,12 @@ void AccountManager::save(bool saveCredentials)
     qCInfo(lcAccountManager) << "Saved all account settings, status:" << settings->status();
 }
 
-void AccountManager::saveAccount(Account *a)
+void AccountManager::saveAccount(Account *newAccountData)
 {
-    qCDebug(lcAccountManager) << "Saving account" << a->url().toString();
+    qCDebug(lcAccountManager) << "Saving account" << newAccountData->url().toString();
     const auto settings = ConfigFile::settingsWithGroup(QLatin1String(accountsC));
-    settings->beginGroup(a->id());
-    saveAccountHelper(a, *settings, false); // don't save credentials they might not have been loaded yet
+    settings->beginGroup(newAccountData->id());
+    saveAccountHelper(newAccountData, *settings, false); // don't save credentials they might not have been loaded yet
     settings->endGroup();
 
     settings->sync();
@@ -424,8 +424,8 @@ void AccountManager::saveAccountHelper(Account *acc, QSettings &settings, bool s
     settings.endGroup();
 
     // Save cookies.
-    if (acc->_am) {
-        auto *jar = qobject_cast<CookieJar *>(acc->_am->cookieJar());
+    if (acc->_networkAccessManager) {
+        auto *jar = qobject_cast<CookieJar *>(acc->_networkAccessManager->cookieJar());
         if (jar) {
             qCInfo(lcAccountManager) << "Saving cookies." << acc->cookieJarPath();
             if (!jar->save(acc->cookieJarPath()))
