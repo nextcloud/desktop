@@ -1083,9 +1083,7 @@ bool Account::serverHasValidSubscription() const
 
 void Account::setServerHasValidSubscription(bool valid)
 {
-    if (_serverHasValidSubscription != valid) {
-        _serverHasValidSubscription = valid;
-    }
+    _serverHasValidSubscription = valid;
 }
 
 void Account::updateServerSubcription()
