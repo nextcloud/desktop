@@ -358,10 +358,9 @@ QUrl Account::deprecatedPrivateLinkUrl(const QByteArray &numericFileId) const
  */
 void Account::clearCookieJar()
 {
-    auto jar = qobject_cast<CookieJar *>(_am->cookieJar());
+    const auto jar = qobject_cast<CookieJar *>(_am->cookieJar());
     ASSERT(jar);
     jar->setAllCookies(QList<QNetworkCookie>());
-    emit wantsAccountSaved(this);
 }
 
 /*! This shares our official cookie jar (containing all the tasty
@@ -530,11 +529,12 @@ void Account::setUserVisibleHost(const QString &host)
 QVariant Account::credentialSetting(const QString &key) const
 {
     if (_credentials) {
-        QString prefix = _credentials->authType();
-        QVariant value = _settingsMap.value(prefix + "_" + key);
+        const auto prefix = _credentials->authType();
+        auto value = _settingsMap.value(prefix + "_" + key);
         if (value.isNull()) {
             value = _settingsMap.value(key);
         }
+
         return value;
     }
     return QVariant();
@@ -829,9 +829,10 @@ void Account::writeAppPasswordOnce(QString appPassword){
 }
 
 void Account::retrieveAppPassword(){
+    const QString key = credentials()->user() + app_password;
     const QString kck = AbstractCredentials::keychainKey(
                 url().toString(),
-                credentials()->user() + app_password,
+                key,
                 id()
     );
 
