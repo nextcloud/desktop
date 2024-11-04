@@ -56,6 +56,7 @@ public struct Account: Equatable {
     public func dictionary() -> Dictionary<String, String> {
         return [
             AccountDictUsernameKey: username,
+            AccountDictIdKey: id,
             AccountDictPasswordKey: password,
             AccountDictNcKitAccountKey: ncKitAccount,
             AccountDictServerUrlKey: serverUrl,
