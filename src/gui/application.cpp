@@ -972,10 +972,8 @@ QString substLang(const QString &lang)
 
 void Application::setupTranslations()
 {
-    QStringList uiLanguages;
-    uiLanguages = QLocale::system().uiLanguages();
-
-    QString enforcedLocale = Theme::instance()->enforcedLocale();
+    auto uiLanguages = QLocale::system().uiLanguages(QLocale::TagSeparator::Underscore);
+    const auto enforcedLocale = Theme::instance()->enforcedLocale();
     if (!enforcedLocale.isEmpty()) {
         uiLanguages.prepend(enforcedLocale);
     }
@@ -984,8 +982,7 @@ void Application::setupTranslations()
     auto *qtTranslator = new QTranslator(this);
     auto *qtkeychainTranslator = new QTranslator(this);
 
-    for (QString lang : qAsConst(uiLanguages)) {
-        lang.replace(QLatin1Char('-'), QLatin1Char('_')); // work around QTBUG-25973
+    for (auto &lang : qAsConst(uiLanguages)) {
         lang = substLang(lang);
         const auto trPath = applicationTrPath();
         const auto trFolder = QDir{trPath};
