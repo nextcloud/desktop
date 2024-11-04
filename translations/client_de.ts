@@ -4299,7 +4299,7 @@ Dies ist ein neuer, experimenteller Modus. Wenn Sie sich entscheiden, ihn zu ver
     <message>
         <location filename="../src/libsync/discovery.cpp" line="444"/>
         <source> Reason: the filename has a forbidden base name (filename start).</source>
-        <translation>Grund: Der Dateiname hat einen verbotenen Basisnamen (Beginn des Dateinamens).</translation>
+        <translation> Grund: Der Dateiname hat einen verbotenen Basisnamen (Beginn des Dateinamens).</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="445"/>
@@ -4309,7 +4309,7 @@ Dies ist ein neuer, experimenteller Modus. Wenn Sie sich entscheiden, ihn zu ver
     <message>
         <location filename="../src/libsync/discovery.cpp" line="447"/>
         <source> Reason: the file has a forbidden extension (.%1).</source>
-        <translation>Grund: Die Datei hat eine verbotene Erweiterung (.%1).</translation>
+        <translation> Grund: Die Datei hat eine verbotene Erweiterung (.%1).</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="448"/>
@@ -4319,7 +4319,7 @@ Dies ist ein neuer, experimenteller Modus. Wenn Sie sich entscheiden, ihn zu ver
     <message>
         <location filename="../src/libsync/discovery.cpp" line="450"/>
         <source> Reason: the filename contains a forbidden character (%1).</source>
-        <translation>Grund: Der Dateiname enthält ein verbotenes Zeichen (%1).</translation>
+        <translation> Grund: Der Dateiname enthält ein verbotenes Zeichen (%1).</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="451"/>
