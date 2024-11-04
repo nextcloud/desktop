@@ -66,7 +66,7 @@ OwncloudSetupWizard::~OwncloudSetupWizard()
     _ocWizard->deleteLater();
 }
 
-static QPointer<OwncloudSetupWizard> wiz = nullptr;
+static QPointer<OwncloudSetupWizard> owncloudSetupWizard = nullptr;
 
 void OwncloudSetupWizard::runWizard(QObject *obj, const char *amember, QWidget *parent)
 {
@@ -78,25 +78,26 @@ void OwncloudSetupWizard::runWizard(QObject *obj, const char *amember, QWidget *
 
         Theme::instance()->setStartLoginFlowAutomatically(true);
     }
-    if (!wiz.isNull()) {
+    if (!owncloudSetupWizard.isNull()) {
         bringWizardToFrontIfVisible();
         return;
     }
 
-    wiz = new OwncloudSetupWizard(parent);
-    connect(wiz, SIGNAL(ownCloudWizardDone(int)), obj, amember);
-    connect(wiz->_ocWizard, &OwncloudWizard::wizardClosed, obj, [] { wiz.clear(); });
+    owncloudSetupWizard = new OwncloudSetupWizard(parent);
+    connect(owncloudSetupWizard, SIGNAL(ownCloudWizardDone(int)), obj, amember);
+    connect(owncloudSetupWizard->_ocWizard, &OwncloudWizard::wizardClosed, obj, [] { owncloudSetupWizard.clear(); });
+
     FolderMan::instance()->setSyncEnabled(false);
-    wiz->startWizard();
+    owncloudSetupWizard->startWizard();
 }
 
 bool OwncloudSetupWizard::bringWizardToFrontIfVisible()
 {
-    if (wiz.isNull()) {
+    if (owncloudSetupWizard.isNull()) {
         return false;
     }
 
-    ownCloudGui::raiseDialog(wiz->_ocWizard);
+    ownCloudGui::raiseDialog(owncloudSetupWizard->_ocWizard);
     return true;
 }
 
