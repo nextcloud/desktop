@@ -365,7 +365,7 @@ public class MockRemoteInterface: RemoteInterface {
         profile.address = account.serverUrl
         profile.backend = "mock"
         profile.displayName = account.ncKitAccount
-        profile.userId = account.username
+        profile.userId = account.id
         return (account.ncKitAccount, profile, nil, .success)
     }
 
