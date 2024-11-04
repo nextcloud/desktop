@@ -63,7 +63,7 @@ final class ItemFetchTests: XCTestCase {
         itemMetadata.serverUrl = Self.account.davFilesUrl
         itemMetadata.urlBase = Self.account.serverUrl
         itemMetadata.account = Self.account.ncKitAccount
-        itemMetadata.userId = Self.account.username
+        itemMetadata.userId = Self.account.id
         itemMetadata.user = Self.account.username
 
         Self.dbManager.addItemMetadata(itemMetadata)
@@ -171,7 +171,7 @@ final class ItemFetchTests: XCTestCase {
         directoryMetadata.serverUrl = Self.account.davFilesUrl
         directoryMetadata.urlBase = Self.account.serverUrl
         directoryMetadata.account = Self.account.ncKitAccount
-        directoryMetadata.userId = Self.account.username
+        directoryMetadata.userId = Self.account.id
         directoryMetadata.user = Self.account.username
         directoryMetadata.directory = true
 
@@ -205,7 +205,7 @@ final class ItemFetchTests: XCTestCase {
             directoryMetadata.serverUrl + "/" + directoryMetadata.fileName
         directoryChildDirAMetadata.urlBase = Self.account.serverUrl
         directoryChildDirAMetadata.account = Self.account.ncKitAccount
-        directoryChildDirAMetadata.userId = Self.account.username
+        directoryChildDirAMetadata.userId = Self.account.id
         directoryChildDirAMetadata.user = Self.account.username
         directoryChildDirAMetadata.directory = true
 
@@ -238,7 +238,7 @@ final class ItemFetchTests: XCTestCase {
             directoryChildDirBMetadata.serverUrl + "/" + directoryChildDirBMetadata.fileName
         directoryChildDirBChildFileMetadata.urlBase = Self.account.serverUrl
         directoryChildDirBChildFileMetadata.account = Self.account.ncKitAccount
-        directoryChildDirBChildFileMetadata.userId = Self.account.username
+        directoryChildDirBChildFileMetadata.userId = Self.account.id
         directoryChildDirBChildFileMetadata.user = Self.account.username
         directoryChildDirBChildFileMetadata.contentType = "text/plain"
         directoryChildDirBChildFileMetadata.size =
