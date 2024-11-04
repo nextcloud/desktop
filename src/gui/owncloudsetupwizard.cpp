@@ -701,7 +701,7 @@ void OwncloudSetupWizard::slotAssistantFinished(int result)
     }
 
     // notify others.
-    _ocWizard->done(QWizard::Accepted);
+    _ocWizard->done(result);
     emit ownCloudWizardDone(result);
 }
 
@@ -711,7 +711,10 @@ void OwncloudSetupWizard::slotSkipFolderConfiguration()
 
     disconnect(_ocWizard, &OwncloudWizard::basicSetupFinished,
         this, &OwncloudSetupWizard::slotAssistantFinished);
-    _ocWizard->close();
+
+    _ocWizard->done(QDialog::Rejected);
+
+    // Accept to check connectivity, only skip folder setup
     emit ownCloudWizardDone(QDialog::Accepted);
 }
 
