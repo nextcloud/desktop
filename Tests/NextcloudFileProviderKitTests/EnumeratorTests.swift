@@ -36,6 +36,7 @@ final class EnumeratorTests: XCTestCase {
             directory: true,
             account: Self.account.ncKitAccount,
             username: Self.account.username,
+            userId: Self.account.id,
             serverUrl: Self.account.serverUrl
         )
 
@@ -47,6 +48,7 @@ final class EnumeratorTests: XCTestCase {
             directory: true,
             account: Self.account.ncKitAccount,
             username: Self.account.username,
+            userId: Self.account.id,
             serverUrl: Self.account.serverUrl
         )
 
@@ -57,6 +59,7 @@ final class EnumeratorTests: XCTestCase {
             remotePath: Self.account.davFilesUrl + "/folder/itemA",
             account: Self.account.ncKitAccount,
             username: Self.account.username,
+            userId: Self.account.id,
             serverUrl: Self.account.serverUrl
         )
 
@@ -66,6 +69,7 @@ final class EnumeratorTests: XCTestCase {
             remotePath: Self.account.davFilesUrl + "/folder/itemB",
             account: Self.account.ncKitAccount,
             username: Self.account.username,
+            userId: Self.account.id,
             serverUrl: Self.account.serverUrl
         )
 
@@ -75,6 +79,7 @@ final class EnumeratorTests: XCTestCase {
             remotePath: Self.account.davFilesUrl + "/folder/itemC",
             account: Self.account.ncKitAccount,
             username: Self.account.username,
+            userId: Self.account.id,
             serverUrl: Self.account.serverUrl
         )
 

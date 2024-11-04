@@ -25,6 +25,7 @@ final class ItemModifyTests: XCTestCase {
         directory: true,
         account: Self.account.ncKitAccount,
         username: Self.account.username,
+        userId: Self.account.id,
         serverUrl: Self.account.serverUrl
     )
     static let dbManager = FilesDatabaseManager(realmConfig: .defaultConfiguration)
@@ -48,6 +49,7 @@ final class ItemModifyTests: XCTestCase {
             data: "Hello, World!".data(using: .utf8),
             account: Self.account.ncKitAccount,
             username: Self.account.username,
+            userId: Self.account.id,
             serverUrl: Self.account.serverUrl
         )
         let remoteFolder = MockRemoteItem(
@@ -57,6 +59,7 @@ final class ItemModifyTests: XCTestCase {
             directory: true,
             account: Self.account.ncKitAccount,
             username: Self.account.username,
+            userId: Self.account.id,
             serverUrl: Self.account.serverUrl
         )
         rootItem.children = [remoteItem, remoteFolder]
@@ -165,6 +168,7 @@ final class ItemModifyTests: XCTestCase {
             directory: true,
             account: Self.account.ncKitAccount,
             username: Self.account.username,
+            userId: Self.account.id,
             serverUrl: Self.account.serverUrl
         )
         let remoteKeynoteBundle = MockRemoteItem(
@@ -175,6 +179,7 @@ final class ItemModifyTests: XCTestCase {
             directory: true,
             account: Self.account.ncKitAccount,
             username: Self.account.username,
+            userId: Self.account.id,
             serverUrl: Self.account.serverUrl
         )
         let remoteKeynoteDataFolder = MockRemoteItem(
@@ -185,6 +190,7 @@ final class ItemModifyTests: XCTestCase {
             directory: true,
             account: Self.account.ncKitAccount,
             username: Self.account.username,
+            userId: Self.account.id,
             serverUrl: Self.account.serverUrl
         )
         let remoteKeynoteDataRandomFile = MockRemoteItem(
@@ -195,6 +201,7 @@ final class ItemModifyTests: XCTestCase {
             data: "000".data(using: .utf8),
             account: Self.account.ncKitAccount,
             username: Self.account.username,
+            userId: Self.account.id,
             serverUrl: Self.account.serverUrl
         )
         let remoteKeynoteMetadataFolder = MockRemoteItem(
@@ -205,6 +212,7 @@ final class ItemModifyTests: XCTestCase {
             directory: true,
             account: Self.account.ncKitAccount,
             username: Self.account.username,
+            userId: Self.account.id,
             serverUrl: Self.account.serverUrl
         )
         let remoteKeynoteIndexZip = MockRemoteItem(
@@ -215,6 +223,7 @@ final class ItemModifyTests: XCTestCase {
             data: "This is a fake zip, pre modification".data(using: .utf8),
             account: Self.account.ncKitAccount,
             username: Self.account.username,
+            userId: Self.account.id,
             serverUrl: Self.account.serverUrl
         )
         let remoteKeynoteRandomFile = MockRemoteItem( // We will want this to be gone later
@@ -225,6 +234,7 @@ final class ItemModifyTests: XCTestCase {
             data: "This is a random file, I should be gone post modify".data(using: .utf8),
             account: Self.account.ncKitAccount,
             username: Self.account.username,
+            userId: Self.account.id,
             serverUrl: Self.account.serverUrl
         )
         let remoteKeynoteDocIdentifier = MockRemoteItem(
@@ -235,6 +245,7 @@ final class ItemModifyTests: XCTestCase {
             data: "8B0C6C1F-4DA4-4DE8-8510-0C91FDCE7D01".data(using: .utf8),
             account: Self.account.ncKitAccount,
             username: Self.account.username,
+            userId: Self.account.id,
             serverUrl: Self.account.serverUrl
         )
         let remoteKeynoteVersionPlist = MockRemoteItem(
@@ -254,6 +265,7 @@ final class ItemModifyTests: XCTestCase {
 """.data(using: .utf8),
             account: Self.account.ncKitAccount,
             username: Self.account.username,
+            userId: Self.account.id,
             serverUrl: Self.account.serverUrl
         )
         let remoteKeynotePropertiesPlist = MockRemoteItem(
@@ -287,6 +299,7 @@ final class ItemModifyTests: XCTestCase {
 """.data(using: .utf8),
             account: Self.account.ncKitAccount,
             username: Self.account.username,
+            userId: Self.account.id,
             serverUrl: Self.account.serverUrl
         )
 

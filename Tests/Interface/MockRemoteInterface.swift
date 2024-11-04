@@ -117,6 +117,7 @@ public class MockRemoteInterface: RemoteInterface {
             directory: true,
             account: account.ncKitAccount,
             username: account.username,
+            userId: account.id,
             serverUrl: account.serverUrl
         )
         guard let parent = parentItem(path: remotePath) else {
@@ -185,6 +186,7 @@ public class MockRemoteInterface: RemoteInterface {
                 data: itemData,
                 account: account.ncKitAccount,
                 username: account.username,
+                userId: account.id,
                 serverUrl: account.serverUrl
             )
 

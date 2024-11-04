@@ -24,6 +24,7 @@ final class ItemFetchTests: XCTestCase {
         directory: true,
         account: Self.account.ncKitAccount,
         username: Self.account.username,
+        userId: Self.account.id,
         serverUrl: Self.account.serverUrl
     )
     static let dbManager = FilesDatabaseManager(realmConfig: .defaultConfiguration)
@@ -47,6 +48,7 @@ final class ItemFetchTests: XCTestCase {
             data: "Hello, World!".data(using: .utf8),
             account: Self.account.ncKitAccount,
             username: Self.account.username,
+            userId: Self.account.id,
             serverUrl: Self.account.serverUrl
         )
         rootItem.children = [remoteItem]
@@ -102,6 +104,7 @@ final class ItemFetchTests: XCTestCase {
             directory: true,
             account: Self.account.ncKitAccount,
             username: Self.account.username,
+            userId: Self.account.id,
             serverUrl: Self.account.serverUrl
         )
         let remoteDirectoryChildFile = MockRemoteItem(
@@ -112,6 +115,7 @@ final class ItemFetchTests: XCTestCase {
             data: "Hello, World!".data(using: .utf8),
             account: Self.account.ncKitAccount,
             username: Self.account.username,
+            userId: Self.account.id,
             serverUrl: Self.account.serverUrl
         )
         let remoteDirectoryChildDirA = MockRemoteItem(
@@ -122,6 +126,7 @@ final class ItemFetchTests: XCTestCase {
             directory: true,
             account: Self.account.ncKitAccount,
             username: Self.account.username,
+            userId: Self.account.id,
             serverUrl: Self.account.serverUrl
         )
         let remoteDirectoryChildDirB = MockRemoteItem(
@@ -132,6 +137,7 @@ final class ItemFetchTests: XCTestCase {
             directory: true,
             account: Self.account.ncKitAccount,
             username: Self.account.username,
+            userId: Self.account.id,
             serverUrl: Self.account.serverUrl
         )
         let remoteDirectoryChildDirBChildFile = MockRemoteItem(
@@ -142,6 +148,7 @@ final class ItemFetchTests: XCTestCase {
             data: "Hello, World!".data(using: .utf8),
             account: Self.account.ncKitAccount,
             username: Self.account.username,
+            userId: Self.account.id,
             serverUrl: Self.account.serverUrl
         )
         rootItem.children = [remoteDirectory]
