@@ -35,25 +35,24 @@ public class Item: NSObject, NSFileProviderItem {
 
     public var capabilities: NSFileProviderItemCapabilities {
         guard !metadata.directory else {
-            if #available(macOS 13.0, *) {
-                // .allowsEvicting deprecated on macOS 13.0+, use contentPolicy instead
-                return [
-                    .allowsAddingSubItems,
-                    .allowsContentEnumerating,
-                    .allowsReading,
-                    .allowsDeleting,
-                    .allowsRenaming
-                ]
-            } else {
-                return [
-                    .allowsAddingSubItems,
-                    .allowsContentEnumerating,
-                    .allowsReading,
-                    .allowsDeleting,
-                    .allowsRenaming,
-                    .allowsEvicting
-                ]
+            var directoryCapabilities: NSFileProviderItemCapabilities = [
+                .allowsAddingSubItems,
+                .allowsContentEnumerating,
+                .allowsReading,
+                .allowsDeleting,
+                .allowsReparenting,
+                .allowsRenaming
+            ]
+
+            if #available(macOS 11.3, *) {
+                directoryCapabilities.insert(.allowsExcludingFromSync)
             }
+
+            // .allowsEvicting deprecated on macOS 13.0+, use contentPolicy instead
+            if #unavailable(macOS 13.0) {
+                directoryCapabilities.insert(.allowsEvicting)
+            }
+            return directoryCapabilities
         }
         guard !metadata.lock else {
             return [.allowsReading]
