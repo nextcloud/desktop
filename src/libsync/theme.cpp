@@ -986,13 +986,13 @@ void Theme::connectToPaletteSignal()
 QVariantMap Theme::systemPalette()
 {
     connectToPaletteSignal();
-#if defined(Q_OS_WIN)
     auto systemPalette = QGuiApplication::palette();
-    if(darkMode()) {
+#if defined(Q_OS_WIN)
+    if (darkMode() && !IsWindows11OrGreater()) {
         systemPalette = reserveDarkPalette;
     }
 #else
-    const auto systemPalette = QGuiApplication::palette();
+
 #endif
 
     return QVariantMap {
