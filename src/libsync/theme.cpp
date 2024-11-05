@@ -33,6 +33,10 @@
 #include <QJsonDocument>
 #include <QJsonArray>
 
+#ifdef Q_OS_WIN
+#include <windows.h>
+#endif
+
 #include "nextcloudtheme.h"
 
 #ifdef THEME_INCLUDE
@@ -61,6 +65,24 @@ bool shouldPreferSvg()
 {
     return QByteArray(APPLICATION_ICON_SET).toUpper() == QByteArrayLiteral("SVG");
 }
+
+#ifdef Q_OS_WIN
+bool IsWindows11OrGreater() {
+    OSVERSIONINFOEX osvi = {};
+    osvi.dwOSVersionInfoSize = sizeof(OSVERSIONINFOEX);
+    osvi.dwMajorVersion = 10;
+    osvi.dwMinorVersion = 0;
+    osvi.dwBuildNumber = 22000;
+
+    DWORDLONG const conditionMask = VerSetConditionMask(
+        VerSetConditionMask(
+            VerSetConditionMask(0, VER_MAJORVERSION, VER_GREATER_EQUAL),
+            VER_MINORVERSION, VER_GREATER_EQUAL),
+        VER_BUILDNUMBER, VER_GREATER_EQUAL);
+
+    return VerifyVersionInfo(&osvi, VER_MAJORVERSION | VER_MINORVERSION | VER_BUILDNUMBER, conditionMask) != 0;
+}
+#endif
 
 }
 
