@@ -781,10 +781,12 @@ bool OCC::CfApiWrapper::isSparseFile(const QString &path)
 OCC::CfApiWrapper::FileHandle OCC::CfApiWrapper::handleForPath(const QString &path)
 {
     if (path.isEmpty()) {
+        qCWarning(lcCfApiWrapper) << "empty path";
         return {};
     }
 
     if (!FileSystem::fileExists(path)) {
+        qCWarning(lcCfApiWrapper) << "file does not exist";
         return {};
     }
 
@@ -807,6 +809,7 @@ OCC::CfApiWrapper::FileHandle OCC::CfApiWrapper::handleForPath(const QString &pa
         }
     }
 
+    qCWarning(lcCfApiWrapper) << "no handle was created";
     return {};
 }
 
