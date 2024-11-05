@@ -21,7 +21,8 @@
 #include "gui/macOS/fileproviderxpc_mac_utils.h"
 
 namespace {
-    constexpr int64_t semaphoreWaitDelta = 3000000000; // 3 seconds
+    constexpr int64_t semaphoreWaitDelta = 1000000000; // 1 seconds
+    constexpr auto reachableRetryTimeout = 300; // seconds
 }
 
 namespace OCC::Mac {
@@ -143,12 +144,20 @@ void FileProviderXPC::createDebugArchiveForExtension(const QString &extensionAcc
     }
 }
 
-bool FileProviderXPC::fileProviderExtReachable(const QString &extensionAccountId) const
+bool FileProviderXPC::fileProviderExtReachable(const QString &extensionAccountId)
 {
+    const auto lastUnreachableTime = _unreachableAccountExtensions.value(extensionAccountId);
+    if (lastUnreachableTime.isValid() && lastUnreachableTime.secsTo(QDateTime::currentDateTime()) < ::reachableRetryTimeout) {
+        qCInfo(lcFileProviderXPC) << "File provider extension was unreachable less than a minute ago. "
+                                  << "Not checking again";
+        return false;
+    }
+
     const auto service = (NSObject<ClientCommunicationProtocol> *)_clientCommServices.value(extensionAccountId);
     if (service == nil) {
         return false;
     }
+
     __block auto response = false;
     dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
     [service getExtensionAccountIdWithCompletionHandler:^(NSString *const, NSError *const) {
@@ -156,6 +165,13 @@ bool FileProviderXPC::fileProviderExtReachable(const QString &extensionAccountId
         dispatch_semaphore_signal(semaphore);
     }];
     dispatch_semaphore_wait(semaphore, dispatch_time(DISPATCH_TIME_NOW, semaphoreWaitDelta));
+    
+    if (response) {
+        _unreachableAccountExtensions.remove(extensionAccountId);
+    } else {
+        qCWarning(lcFileProviderXPC) << "Could not reach file provider extension.";
+        _unreachableAccountExtensions.insert(extensionAccountId, QDateTime::currentDateTime());
+    }
     return response;
 }
 
