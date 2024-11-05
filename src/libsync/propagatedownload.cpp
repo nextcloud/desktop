@@ -498,6 +498,13 @@ void PropagateDownloadFile::startAfterIsEncryptedIsChecked()
         }
 
         qCDebug(lcPropagateDownload) << "dehydrating file" << _item->_file;
+        if (FileSystem::isLnkFile(fsPath)) {
+            const auto convertResult = vfs->convertToPlaceholder(fsPath, *_item);
+            if (!convertResult) {
+                qCCritical(lcPropagateDownload()) << "error when converting a shortcut file to placeholder" << convertResult.error();
+            }
+        }
+
         auto r = vfs->dehydratePlaceholder(*_item);
         if (!r) {
             done(SyncFileItem::NormalError, r.error(), ErrorCategory::GenericError);
