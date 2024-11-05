@@ -131,6 +131,7 @@ void FileSystem::setFileReadOnly(const QString &filename, bool readonly)
         {
             qCWarning(lcFileSystem()) << filename << (readonly ? "readonly" : "read write") << e.what();
         }
+        return;
     }
 #endif
     QFile file(filename);
