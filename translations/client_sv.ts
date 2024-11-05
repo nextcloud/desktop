@@ -4290,19 +4290,9 @@ Detta är ett nytt experimentellt läge. Om du bestämmer dig för att använda 
         <translation>Filnamnet är svartlistat på servern.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="441"/>
-        <source> Reason: the entire filename is forbidden.</source>
-        <translation> Orsak: hela filnamnet är förbjudet.</translation>
-    </message>
-    <message>
         <location filename="../src/libsync/discovery.cpp" line="442"/>
         <source>Reason: the entire filename is forbidden.</source>
         <translation> Orsak: hela filnamnet är förbjudet.</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/discovery.cpp" line="444"/>
-        <source> Reason: the filename has a forbidden base name (filename start).</source>
-        <translation> Orsak: filnamnet har ett förbjudet basnamn (filnamnsstart).</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="445"/>
@@ -4310,19 +4300,9 @@ Detta är ett nytt experimentellt läge. Om du bestämmer dig för att använda 
         <translation> Orsak: filnamnet har ett förbjudet basnamn (filnamnsstart).</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="447"/>
-        <source> Reason: the file has a forbidden extension (.%1).</source>
-        <translation>Orsak: filen har ett förbjudet tillägg (.%1).</translation>
-    </message>
-    <message>
         <location filename="../src/libsync/discovery.cpp" line="448"/>
         <source>Reason: the file has a forbidden extension (.%1).</source>
         <translation>Orsak: filen har ett förbjudet tillägg (.%1).</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/discovery.cpp" line="450"/>
-        <source> Reason: the filename contains a forbidden character (%1).</source>
-        <translation> Orsak: filnamnet innehåller ett förbjudet tecken (%1).</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="451"/>
@@ -4360,7 +4340,7 @@ Detta är ett nytt experimentellt läge. Om du bestämmer dig för att använda 
         <translation>Det går inte att synkronisera på grund av ogiltig ändringstid</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1080"/>
+        <location filename="../src/libsync/discovery.cpp" line="1082"/>
         <source>Could not upload file, because it is open in &quot;%1&quot;.</source>
         <translation>Kunde inte ladda upp filen eftersom den är öppen i &quot;%1&quot;.</translation>
     </message>

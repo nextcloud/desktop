@@ -2224,7 +2224,7 @@ If you decide to delete the files, they will be unavailable to you, unless you a
         <translation>&quot;%1&quot; eşitleme klasöründeki tüm dosyalar silinecek.
 Silinen bu dosyalar yerel eşitleme klasörünüzden de silineceğinden, geri yükleme yetkiniz yoksa bu dosyaları kullanamayacaksınız. 
 Geri yükleme yetkiniz varsa ve geri yüklemeyi seçerseniz, dosyalar sunucu ile yeniden eşitlenir.
-Silmeyi seçerseniz, sahibi değilseniz bu dosyaları artık kullanamazsınız.</translation>
+Silmeyi seçerseniz ve bu sahibi değilseniz bu dosyaları artık kullanamazsınız.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1416"/>
@@ -2613,7 +2613,7 @@ Bir yanlışlık varsa, silinen tüm dosyaları sunucudan indirerek geri yükley
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1191"/>
         <source>Waiting …</source>
-        <translation>Bekleniyor …</translation>
+        <translation>Bekleniyor…</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1065"/>
@@ -2908,7 +2908,7 @@ Bir yanlışlık varsa, silinen tüm dosyaları sunucudan indirerek geri yükley
     <message>
         <location filename="../src/gui/generalsettings.ui" line="75"/>
         <source>Use &amp;Monochrome Icons</source>
-        <translation>İki &amp;renkli simgeler kullanılsın</translation>
+        <translation>Tek &amp;renkli simgeler kullanılsın</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="82"/>
@@ -2938,7 +2938,7 @@ Bir yanlışlık varsa, silinen tüm dosyaları sunucudan indirerek geri yükley
     <message>
         <location filename="../src/gui/generalsettings.ui" line="114"/>
         <source>&amp;Automatically check for Updates</source>
-        <translation>&amp;Güncellemeleri otomatik olarak denetle</translation>
+        <translation>&amp;Güncellemeler otomatik olarak denetlensin</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="123"/>
@@ -3105,7 +3105,7 @@ Bir yanlışlık varsa, silinen tüm dosyaları sunucudan indirerek geri yükley
 Note that this selects only what pool upgrades are taken from, and that there are no downgrades: So going back from the beta channel to the stable channel usually cannot be done immediately and means waiting for a stable version that is newer than the currently installed beta version.</source>
         <translation>Güncelleme kanalı, kurulum için sunulacak istemci güncellemelerini belirler. &quot;Kararlı&quot; kanalında yalnızca güvenilir sayılan güncellemeler bulunurken, &quot;beta&quot; kanalında daha yeni özellikler ve hata düzeltmeleri içeren, ancak henüz kapsamlı bir şekilde denenmemiş güncellemeler bulunabilir.
 
-Bu seçenek yalnızca güncellemelerin hangi havuzdan alınacağını belirler. Güncelleme sonrası önceki sürüme geri dönülemeyeceğini unutmayın. Bu nedenle, genellikle beta kanalından kararlı kanala geri dönmek için kurulu olan beta sürümünden daha yeni bir kararlı sürümün yayınlanmasını beklemeniz gerekeceğinden bu işlem hemen gerçekleşmez.</translation>
+Bu seçenek yalnızca güncellemelerin hangi havuzdan alınacağını belirler. Güncelleme sonrası önceki sürüme geri dönülemeyeceğini unutmayın. Genellikle beta kanalından kararlı kanala geri dönmek için kurulu olan beta sürümünden daha yeni bir kararlı sürümün yayınlanmasını beklemeniz gerekeceğinden bu işlemin hemen gerçekleşmeyeceğini unutmayın.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="373"/>
@@ -3753,7 +3753,7 @@ Komut satırından verilen günlük komutlarının bu ayarın yerine geçeceğin
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="152"/>
         <source>Downloading %1. Please wait …</source>
-        <translation>%1 indiriliyor. Lütfen bekleyin …</translation>
+        <translation>%1 indiriliyor. Lütfen bekleyin…</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="154"/>
@@ -4198,7 +4198,7 @@ Bu yeni ve deneysel bir özelliktir. Kullanmaya karar verirseniz, lütfen karş�
     <message>
         <location filename="../src/libsync/discovery.cpp" line="351"/>
         <source>File names containing the character &quot;%1&quot; are not supported on this file system.</source>
-        <translation>&quot;%1&quot; karakterini içeren dosya adları bu sistemde desteklenmiyor.</translation>
+        <translation>&quot;%1&quot; karakterinin bulunduğu dosya adları bu sistemde desteklenmiyor.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="353"/>
@@ -4289,19 +4289,9 @@ Bu yeni ve deneysel bir özelliktir. Kullanmaya karar verirseniz, lütfen karş�
         <translation>Dosya adı sunucu üzerinde kara listeye alınmış.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="441"/>
-        <source> Reason: the entire filename is forbidden.</source>
-        <translation> Nedeni: Dosya adına tümüyle izin verilmiyor.</translation>
-    </message>
-    <message>
         <location filename="../src/libsync/discovery.cpp" line="442"/>
         <source>Reason: the entire filename is forbidden.</source>
         <translation>Nedeni: Dosya adına tümüyle izin verilmiyor.</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/discovery.cpp" line="444"/>
-        <source> Reason: the filename has a forbidden base name (filename start).</source>
-        <translation>Nedeni: Dosya adının temel adına (dosya adının başlangıcı) izin verilmiyor.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="445"/>
@@ -4309,19 +4299,9 @@ Bu yeni ve deneysel bir özelliktir. Kullanmaya karar verirseniz, lütfen karş�
         <translation>Nedeni: Dosya adının temel adına (dosya adının başlangıcı) izin verilmiyor.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="447"/>
-        <source> Reason: the file has a forbidden extension (.%1).</source>
-        <translation>Nedeni: Dosyanın uzantısına izin verilmiyor (.%1).</translation>
-    </message>
-    <message>
         <location filename="../src/libsync/discovery.cpp" line="448"/>
         <source>Reason: the file has a forbidden extension (.%1).</source>
         <translation>Nedeni: Dosyanın uzantısına izin verilmiyor (.%1).</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/discovery.cpp" line="450"/>
-        <source> Reason: the filename contains a forbidden character (%1).</source>
-        <translation>Nedeni: Dosya adında izin verilmeyen bir karakter var (%1).</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="451"/>
@@ -4359,7 +4339,7 @@ Bu yeni ve deneysel bir özelliktir. Kullanmaya karar verirseniz, lütfen karş�
         <translation>Değiştirilme zamanı geçersiz olduğundan eşitlenemedi</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1080"/>
+        <location filename="../src/libsync/discovery.cpp" line="1082"/>
         <source>Could not upload file, because it is open in &quot;%1&quot;.</source>
         <translation>Dosya &quot;%1&quot; içinde açık olduğundan yüklenemedi.</translation>
     </message>
@@ -6982,7 +6962,7 @@ Sunucunun verdiği hata yanıtı: %2</translation>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="75"/>
         <source>downloading</source>
-        <translation>indirilen:</translation>
+        <translation>indiriliyor</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="77"/>
@@ -6992,7 +6972,7 @@ Sunucunun verdiği hata yanıtı: %2</translation>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="77"/>
         <source>uploading</source>
-        <translation>yüklenen:</translation>
+        <translation>yükleniyor</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="79"/>
@@ -7002,7 +6982,7 @@ Sunucunun verdiği hata yanıtı: %2</translation>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="79"/>
         <source>deleting</source>
-        <translation>silinen:</translation>
+        <translation>siliniyor</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="81"/>
@@ -7012,7 +6992,7 @@ Sunucunun verdiği hata yanıtı: %2</translation>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="82"/>
         <source>moving</source>
-        <translation>taşınan:</translation>
+        <translation>taşınıyor</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="84"/>
@@ -7022,7 +7002,7 @@ Sunucunun verdiği hata yanıtı: %2</translation>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="84"/>
         <source>ignoring</source>
-        <translation>yok sayılan:</translation>
+        <translation>yok sayılıyor</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="86"/>
@@ -7037,7 +7017,7 @@ Sunucunun verdiği hata yanıtı: %2</translation>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="89"/>
         <source>updating local metadata</source>
-        <translation>yerel üst veri güncelleniyor</translation>
+        <translation>yerel üst veriler güncelleniyor</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="91"/>
@@ -7125,7 +7105,7 @@ Sunucunun verdiği hata yanıtı: %2</translation>
     <message>
         <location filename="../src/libsync/theme.cpp" line="108"/>
         <source>Aborting …</source>
-        <translation>İptal ediliyor …</translation>
+        <translation>İptal ediliyor…</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="113"/>
@@ -7247,7 +7227,7 @@ Sunucunun verdiği hata yanıtı: %2</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.cpp" line="45"/>
         <source>Connect to %1</source>
-        <translation>%1 ile bağlan</translation>
+        <translation>%1 ile bağlantı kur</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.cpp" line="46"/>
@@ -7338,7 +7318,7 @@ Sunucunun verdiği hata yanıtı: %2</translation>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="392"/>
         <source>Add new account</source>
-        <translation>Hesap ekle</translation>
+        <translation>Yeni hesap ekle</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="426"/>
@@ -7373,7 +7353,7 @@ Sunucunun verdiği hata yanıtı: %2</translation>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="641"/>
         <source>Open Nextcloud Talk in browser</source>
-        <translation>Tarayıcıda Nextcloud Konuş uygulamasını aç</translation>
+        <translation>Nextcloud Konuş uygulamasını tarayıcıda aç</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="661"/>

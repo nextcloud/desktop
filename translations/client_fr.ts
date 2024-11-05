@@ -4288,19 +4288,9 @@ Il s&apos;agit d&apos;un nouveau mode expérimental. Si vous décidez de l&apos;
         <translation>Le nom du fichier est sur la liste noire du serveur.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="441"/>
-        <source> Reason: the entire filename is forbidden.</source>
-        <translation> Motif : le nom de fichier entier est interdit.</translation>
-    </message>
-    <message>
         <location filename="../src/libsync/discovery.cpp" line="442"/>
         <source>Reason: the entire filename is forbidden.</source>
         <translation>Motif : le nom de fichier entier est interdit.</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/discovery.cpp" line="444"/>
-        <source> Reason: the filename has a forbidden base name (filename start).</source>
-        <translation>Motif : le nom de fichier a un nom de base interdit (début du nom de fichier).</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="445"/>
@@ -4308,19 +4298,9 @@ Il s&apos;agit d&apos;un nouveau mode expérimental. Si vous décidez de l&apos;
         <translation>Motif : le nom de fichier a un nom de base interdit (début du nom de fichier).</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="447"/>
-        <source> Reason: the file has a forbidden extension (.%1).</source>
-        <translation>Motif : le fichier a une extension interdite (.%1).</translation>
-    </message>
-    <message>
         <location filename="../src/libsync/discovery.cpp" line="448"/>
         <source>Reason: the file has a forbidden extension (.%1).</source>
         <translation>Motif : le fichier a une extension interdite (.%1).</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/discovery.cpp" line="450"/>
-        <source> Reason: the filename contains a forbidden character (%1).</source>
-        <translation>Motif : le nom du fichier contient un caractère interdit (%1).</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="451"/>
@@ -4358,7 +4338,7 @@ Il s&apos;agit d&apos;un nouveau mode expérimental. Si vous décidez de l&apos;
         <translation>Impossible de synchroniser à cause d&apos;une date de modification invalide</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1080"/>
+        <location filename="../src/libsync/discovery.cpp" line="1082"/>
         <source>Could not upload file, because it is open in &quot;%1&quot;.</source>
         <translation>Impossible de téléverser le fichier, car il est ouvert dans « %1 ».</translation>
     </message>

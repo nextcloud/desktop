@@ -4278,19 +4278,9 @@ Dette er en ny, eksperimentell modus. Hvis du bestemmer deg for å bruke den, ve
         <translation>Filnavnet er svartelistet på serveren.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="441"/>
-        <source> Reason: the entire filename is forbidden.</source>
-        <translation>Årsak: hele filnavnet er forbudt.</translation>
-    </message>
-    <message>
         <location filename="../src/libsync/discovery.cpp" line="442"/>
         <source>Reason: the entire filename is forbidden.</source>
         <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/libsync/discovery.cpp" line="444"/>
-        <source> Reason: the filename has a forbidden base name (filename start).</source>
-        <translation>Årsak: filnavnet har et forbudt basisnavn (filnavn start).</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="445"/>
@@ -4298,19 +4288,9 @@ Dette er en ny, eksperimentell modus. Hvis du bestemmer deg for å bruke den, ve
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="447"/>
-        <source> Reason: the file has a forbidden extension (.%1).</source>
-        <translation>Årsak: filen har en forbudt filutvidelse (.%1).</translation>
-    </message>
-    <message>
         <location filename="../src/libsync/discovery.cpp" line="448"/>
         <source>Reason: the file has a forbidden extension (.%1).</source>
         <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/libsync/discovery.cpp" line="450"/>
-        <source> Reason: the filename contains a forbidden character (%1).</source>
-        <translation>Årsak: filnavnet inneholder et forbudt tegn (%1).</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="451"/>
@@ -4348,7 +4328,7 @@ Dette er en ny, eksperimentell modus. Hvis du bestemmer deg for å bruke den, ve
         <translation>Kan ikke synkronisere på grunn av ugyldig endringstid</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1080"/>
+        <location filename="../src/libsync/discovery.cpp" line="1082"/>
         <source>Could not upload file, because it is open in &quot;%1&quot;.</source>
         <translation>Kunne ikke laste opp filen, fordi den er åpen i &quot;%1&quot;.</translation>
     </message>

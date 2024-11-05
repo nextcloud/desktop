@@ -4275,18 +4275,8 @@ Esta es un modo nuevo y experimental. Si decides usarlo, por favor, informa de c
         <translation>El nombre del archivo está prohibido en el servidor.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="441"/>
-        <source> Reason: the entire filename is forbidden.</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
         <location filename="../src/libsync/discovery.cpp" line="442"/>
         <source>Reason: the entire filename is forbidden.</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/libsync/discovery.cpp" line="444"/>
-        <source> Reason: the filename has a forbidden base name (filename start).</source>
         <translation type="unfinished"/>
     </message>
     <message>
@@ -4295,18 +4285,8 @@ Esta es un modo nuevo y experimental. Si decides usarlo, por favor, informa de c
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="447"/>
-        <source> Reason: the file has a forbidden extension (.%1).</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
         <location filename="../src/libsync/discovery.cpp" line="448"/>
         <source>Reason: the file has a forbidden extension (.%1).</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/libsync/discovery.cpp" line="450"/>
-        <source> Reason: the filename contains a forbidden character (%1).</source>
         <translation type="unfinished"/>
     </message>
     <message>
@@ -4345,7 +4325,7 @@ Esta es un modo nuevo y experimental. Si decides usarlo, por favor, informa de c
         <translation>No se puede sincronizar debido a una hora de modificación no válida</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1080"/>
+        <location filename="../src/libsync/discovery.cpp" line="1082"/>
         <source>Could not upload file, because it is open in &quot;%1&quot;.</source>
         <translation>No es posible subir el archivo, porque está abierto en &quot;%1&quot;.</translation>
     </message>
