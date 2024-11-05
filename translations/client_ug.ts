@@ -4290,19 +4290,9 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>ھۆججەت ئىسمى مۇلازىمېتىردا قارا تىزىملىككە كىرگۈزۈلگەن.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="441"/>
-        <source> Reason: the entire filename is forbidden.</source>
-        <translation> سەۋەبى: پۈتكۈل ھۆججەت ئىسمى چەكلەنگەن.</translation>
-    </message>
-    <message>
         <location filename="../src/libsync/discovery.cpp" line="442"/>
         <source>Reason: the entire filename is forbidden.</source>
         <translation>سەۋەبى: پۈتكۈل ھۆججەت ئىسمى چەكلەنگەن.</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/discovery.cpp" line="444"/>
-        <source> Reason: the filename has a forbidden base name (filename start).</source>
-        <translation> سەۋەبى: ھۆججەت نامىنىڭ چەكلەنگەن ئاساسى ئىسمى بار (ھۆججەت ئىسمى باشلاش).</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="445"/>
@@ -4310,19 +4300,9 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>سەۋەبى: ھۆججەت نامىنىڭ چەكلەنگەن ئاساسى ئىسمى بار (ھۆججەت ئىسمى باشلاش).</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="447"/>
-        <source> Reason: the file has a forbidden extension (.%1).</source>
-        <translation> سەۋەبى: ھۆججەتنىڭ چەكلەنگەن كېڭەيتىلمىسى بار (.% 1).</translation>
-    </message>
-    <message>
         <location filename="../src/libsync/discovery.cpp" line="448"/>
         <source>Reason: the file has a forbidden extension (.%1).</source>
         <translation>سەۋەبى: ھۆججەتنىڭ چەكلەنگەن كېڭەيتىلمىسى بار (.% 1).</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/discovery.cpp" line="450"/>
-        <source> Reason: the filename contains a forbidden character (%1).</source>
-        <translation> سەۋەبى: ھۆججەت نامىدا چەكلەنگەن ھەرپ (% 1) بار.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="451"/>
@@ -4360,7 +4340,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>ئۆزگەرتىش ۋاقتى ئىناۋەتسىز بولغاچقا ماسقەدەملىيەلمەيدۇ</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1080"/>
+        <location filename="../src/libsync/discovery.cpp" line="1082"/>
         <source>Could not upload file, because it is open in &quot;%1&quot;.</source>
         <translation>ھۆججەت يۈكلىيەلمىدى ، چۈنكى ئۇ «% 1» دە ئوچۇق.</translation>
     </message>
