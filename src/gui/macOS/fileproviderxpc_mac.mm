@@ -110,9 +110,13 @@ void FileProviderXPC::slotAccountStateChanged(const AccountState::State state) c
         break;
     }
 }
-void FileProviderXPC::createDebugArchiveForExtension(const QString &extensionAccountId, const QString &filename) const
+void FileProviderXPC::createDebugArchiveForExtension(const QString &extensionAccountId, const QString &filename)
 {
     qCInfo(lcFileProviderXPC) << "Creating debug archive for extension" << extensionAccountId << "at" << filename;
+    if (!fileProviderExtReachable(extensionAccountId)) {
+        qCWarning(lcFileProviderXPC) << "Extension is not reachable. Cannot create debug archive";
+        return;
+    }
     // You need to fetch the contents from the extension and then create the archive from the client side.
     // The extension is not allowed to ask for permission to write into the file system as it is not a user facing process.
     const auto clientCommService = (NSObject<ClientCommunicationProtocol> *)_clientCommServices.value(extensionAccountId);
