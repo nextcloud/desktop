@@ -157,16 +157,16 @@ void CALLBACK cfApiFetchDataCallback(const CF_CALLBACK_INFO *callbackInfo, const
                               callbackInfo->FileSize.QuadPart);
     };
 
-    if (QCoreApplication::applicationPid() == callbackInfo->ProcessInfo->ProcessId) {
-        qCCritical(lcCfApiWrapper) << "implicit hydration triggered by the client itself. Will lead to a deadlock. Cancel";
-        sendTransferError();
-        return;
-    }
-
     auto vfs = reinterpret_cast<OCC::VfsCfApi *>(callbackInfo->CallbackContext);
     Q_ASSERT(vfs->metaObject()->className() == QByteArrayLiteral("OCC::VfsCfApi"));
     const auto path = QString(QString::fromWCharArray(callbackInfo->VolumeDosName) + QString::fromWCharArray(callbackInfo->NormalizedPath));
     const auto requestId = QString::number(callbackInfo->TransferKey.QuadPart, 16);
+
+    if (QCoreApplication::applicationPid() == callbackInfo->ProcessInfo->ProcessId) {
+        qCCritical(lcCfApiWrapper) << "implicit hydration triggered by the client itself. Will lead to a deadlock. Cancel" << path << requestId;
+        sendTransferError();
+        return;
+    }
 
     qCDebug(lcCfApiWrapper) << "Request hydration for" << path << requestId;
 
