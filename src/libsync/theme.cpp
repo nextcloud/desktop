@@ -1022,17 +1022,29 @@ QVariantMap Theme::systemPalette()
 bool Theme::darkMode()
 {
     connectToPaletteSignal();
-    switch (qGuiApp->styleHints()->colorScheme())
-    {
-    case Qt::ColorScheme::Dark:
-        return true;
-    case Qt::ColorScheme::Light:
-        return false;
-    case Qt::ColorScheme::Unknown:
-        return Theme::isDarkColor(QGuiApplication::palette().window().color());
-    }
+    const auto isDarkFromStyle = [] {
+        switch (qGuiApp->styleHints()->colorScheme())
+        {
+        case Qt::ColorScheme::Dark:
+            return true;
+        case Qt::ColorScheme::Light:
+            return false;
+        case Qt::ColorScheme::Unknown:
+            return Theme::isDarkColor(QGuiApplication::palette().window().color());
+        }
 
-    return false;
+        return false;
+    };
+
+#ifdef Q_OS_WIN
+    static const auto darkModeSubkey = QStringLiteral("Software\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize");
+    if (!IsWindows11OrGreater() &&
+        Utility::registryKeyExists(HKEY_CURRENT_USER, darkModeSubkey) &&
+        !Utility::registryGetKeyValue(HKEY_CURRENT_USER, darkModeSubkey, QStringLiteral("AppsUseLightTheme")).toBool()) {
+        return true;
+    }
+#endif
+    return isDarkFromStyle();
 }
 
 void Theme::setOverrideServerUrl(const QString &overrideServerUrl)
