@@ -8,20 +8,17 @@ QtObject {
     readonly property int pixelSize: fontMetrics.font.pixelSize
     readonly property bool darkMode: Theme.darkMode
 
-    property SystemPalette nativePalette: SystemPalette {
-    }
-
     // Colors
     readonly property color ncBlue:      Theme.wizardHeaderBackgroundColor
     readonly property color ncHeaderTextColor: Theme.wizardHeaderTitleColor
-    readonly property color ncTextColor: nativePalette.text
+    readonly property color ncTextColor: Theme.systemPalette.windowText
     readonly property color ncTextBrightColor: "white"
     readonly property color ncSecondaryTextColor: "#808080"
     readonly property color lightHover: Theme.darkMode ? Qt.lighter(backgroundColor, 2) : Qt.darker(backgroundColor, 1.05)
     readonly property color darkerHover: Theme.darkMode ? Qt.lighter(backgroundColor, 2.35) : Qt.darker(backgroundColor, 1.25)
     readonly property color menuBorder: Theme.darkMode ? Qt.lighter(backgroundColor, 2.5) : Qt.darker(backgroundColor, 1.5)
-    readonly property color backgroundColor: nativePalette.window
-    readonly property color buttonBackgroundColor: nativePalette.button
+    readonly property color backgroundColor: Theme.systemPalette.window
+    readonly property color buttonBackgroundColor: Theme.systemPalette.button
     readonly property color positiveColor: Qt.rgba(0.38, 0.74, 0.38, 1)
 
     readonly property color currentUserHeaderColor: UserModel.currentUser ? UserModel.currentUser.headerColor : ncBlue

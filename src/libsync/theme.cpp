@@ -947,10 +947,47 @@ void Theme::connectToPaletteSignal()
 {
     if (!_paletteSignalsConnected) {
         if (const auto ptr = qobject_cast<QGuiApplication *>(QGuiApplication::instance())) {
+            connect(ptr, &QGuiApplication::paletteChanged, this, &Theme::systemPaletteChanged);
             connect(ptr->styleHints(), &QStyleHints::colorSchemeChanged, this, &Theme::darkModeChanged);
             _paletteSignalsConnected = true;
         }
     }
+}
+
+QVariantMap Theme::systemPalette()
+{
+    connectToPaletteSignal();
+#if defined(Q_OS_WIN)
+    auto systemPalette = QGuiApplication::palette();
+    if(darkMode()) {
+        systemPalette = reserveDarkPalette;
+    }
+#else
+    const auto systemPalette = QGuiApplication::palette();
+#endif
+
+    return QVariantMap {
+        { QStringLiteral("base"), systemPalette.base().color() },
+        { QStringLiteral("alternateBase"), systemPalette.alternateBase().color() },
+        { QStringLiteral("text"), systemPalette.text().color() },
+        { QStringLiteral("toolTipBase"), systemPalette.toolTipBase().color() },
+        { QStringLiteral("toolTipText"), systemPalette.toolTipText().color() },
+        { QStringLiteral("brightText"), systemPalette.brightText().color() },
+        { QStringLiteral("buttonText"), systemPalette.buttonText().color() },
+        { QStringLiteral("button"), systemPalette.button().color() },
+        { QStringLiteral("highlightedText"), systemPalette.highlightedText().color() },
+        { QStringLiteral("placeholderText"), systemPalette.placeholderText().color() },
+        { QStringLiteral("windowText"), systemPalette.windowText().color() },
+        { QStringLiteral("window"), systemPalette.window().color() },
+        { QStringLiteral("dark"), systemPalette.dark().color() },
+        { QStringLiteral("highlight"), systemPalette.highlight().color() },
+        { QStringLiteral("light"), systemPalette.light().color() },
+        { QStringLiteral("link"), systemPalette.link().color() },
+        { QStringLiteral("midlight"), systemPalette.midlight().color() },
+        { QStringLiteral("mid"), systemPalette.mid().color() },
+        { QStringLiteral("linkVisited"), systemPalette.linkVisited().color() },
+        { QStringLiteral("shadow"), systemPalette.shadow().color() },
+    };
 }
 
 bool Theme::darkMode()
