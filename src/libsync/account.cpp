@@ -171,10 +171,6 @@ void Account::setDisplayName(const QString &username)
         displayName.append(QString::number(port));
     }
 
-    if (displayName == _displayName) {
-        return;
-    }
-
     _displayName = displayName;
 }
 
