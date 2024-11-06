@@ -363,6 +363,8 @@ void AccountManager::saveAccountHelper(Account *acc, QSettings &settings, bool s
         connect(job, &QKeychain::Job::finished, this, [](const QKeychain::Job *const incomingJob) {
             if (incomingJob->error() == QKeychain::NoError) {
                 qCInfo(lcAccountManager) << "Deleted proxy password from keychain";
+            } else if (incomingJob->error() == QKeychain::EntryNotFound) {
+                qCDebug(lcAccountManager) << "Proxy password not found in keychain, can't delete";
             } else {
                 qCWarning(lcAccountManager) << "Failed to delete proxy password to keychain" << incomingJob->errorString();
             }
