@@ -150,7 +150,13 @@ bool createDebugArchive(const QString &filename)
         const auto xpc = fileProvider->xpc();
         const auto vfsAccounts = OCC::Mac::FileProviderSettingsController::instance()->vfsEnabledAccounts();
         for (const auto &accountUserIdAtHost : vfsAccounts) {
-            const auto vfsLogFilename = QStringLiteral("macOS_vfs_%1.log").arg(accountUserIdAtHost);
+            const auto accountState = OCC::AccountManager::instance()->accountFromUserId(accountUserIdAtHost);
+            if (!accountState) {
+                qWarning() << "Could not find account for" << accountUserIdAtHost;
+                continue;
+            }
+            const auto account = accountState->account();
+            const auto vfsLogFilename = QStringLiteral("macOS_vfs_%1.log").arg(account->davUser());
             const auto vfsLogPath = tempDir.filePath(vfsLogFilename);
             xpc->createDebugArchiveForExtension(accountUserIdAtHost, vfsLogPath);
             zip.addLocalFile(vfsLogPath, vfsLogFilename);
