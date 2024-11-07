@@ -26,6 +26,7 @@ public class MockRemoteItem: Equatable {
     public var size: Int64 { Int64(data?.count ?? 0) }
     public var account: String
     public var username: String
+    public var userId: String
     public var serverUrl: String
     public var nkfile: NKFile {
         let file = NKFile()
@@ -38,7 +39,7 @@ public class MockRemoteItem: Equatable {
         file.serverUrl = parent?.remotePath ?? remotePath
         file.account = account
         file.user = username
-        file.userId = username
+        file.userId = userId
         file.urlBase = serverUrl
         file.lock = locked
         file.lockOwner = lockOwner
@@ -62,6 +63,7 @@ public class MockRemoteItem: Equatable {
         lhs.modificationDate == rhs.modificationDate &&
         lhs.account == rhs.account &&
         lhs.username == rhs.username &&
+        lhs.userId == rhs.userId &&
         lhs.serverUrl == rhs.serverUrl
     }
 
@@ -79,6 +81,7 @@ public class MockRemoteItem: Equatable {
         lockTimeOut: Date? = nil,
         account: String,
         username: String,
+        userId: String,
         serverUrl: String
     ) {
         self.identifier = identifier
@@ -94,6 +97,7 @@ public class MockRemoteItem: Equatable {
         self.lockTimeOut = lockTimeOut
         self.account = account
         self.username = username
+        self.userId = userId
         self.serverUrl = serverUrl
     }
 }

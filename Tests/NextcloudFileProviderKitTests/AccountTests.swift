@@ -18,6 +18,7 @@ final class AccountTests: XCTest {
         let account = Account(user: user, id: userId, serverUrl: serverUrl, password: password)
 
         XCTAssertEqual(account.username, user)
+        XCTAssertEqual(account.id, userId)
         XCTAssertEqual(account.password, password)
         XCTAssertEqual(account.ncKitAccount, "\(user) \(serverUrl)")
         XCTAssertEqual(account.serverUrl, serverUrl)
@@ -27,6 +28,7 @@ final class AccountTests: XCTest {
     func testInitializationFromDictionary() {
         let dictionary: [String: String] = [
             AccountDictUsernameKey: "user",
+            AccountDictIdKey: "userId",
             AccountDictPasswordKey: "password",
             AccountDictNcKitAccountKey: "user https://example.com",
             AccountDictServerUrlKey: "https://example.com",
@@ -37,6 +39,7 @@ final class AccountTests: XCTest {
 
         XCTAssertNotNil(account)
         XCTAssertEqual(account?.username, "user")
+        XCTAssertEqual(account?.id, "userId")
         XCTAssertEqual(account?.password, "password")
         XCTAssertEqual(account?.ncKitAccount, "user https://example.com")
         XCTAssertEqual(account?.serverUrl, "https://example.com")
@@ -61,6 +64,7 @@ final class AccountTests: XCTest {
 
         XCTAssertEqual(dictionary[AccountDictUsernameKey], "user")
         XCTAssertEqual(dictionary[AccountDictPasswordKey], "password")
+        XCTAssertEqual(dictionary[AccountDictIdKey], "userId")
         XCTAssertEqual(dictionary[AccountDictNcKitAccountKey], "user https://example.com")
         XCTAssertEqual(dictionary[AccountDictServerUrlKey], "https://example.com")
         XCTAssertEqual(dictionary[AccountDictDavFilesUrlKey], "https://example.com/remote.php/dav/files/user")

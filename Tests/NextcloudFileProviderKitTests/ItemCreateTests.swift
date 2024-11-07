@@ -25,6 +25,7 @@ final class ItemCreateTests: XCTestCase {
         directory: true,
         account: Self.account.ncKitAccount,
         username: Self.account.username,
+        userId: Self.account.id,
         serverUrl: Self.account.serverUrl
     )
     static let dbManager = FilesDatabaseManager(realmConfig: .defaultConfiguration)

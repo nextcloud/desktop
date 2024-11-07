@@ -31,7 +31,7 @@ public struct Account: Equatable {
         self.password = password
         ncKitAccount = user + " " + serverUrl
         self.serverUrl = serverUrl
-        davFilesUrl = serverUrl + Self.webDavFilesUrlSuffix + user
+        davFilesUrl = serverUrl + Self.webDavFilesUrlSuffix + id
     }
 
     public init?(dictionary: Dictionary<String, String>) {
@@ -56,6 +56,7 @@ public struct Account: Equatable {
     public func dictionary() -> Dictionary<String, String> {
         return [
             AccountDictUsernameKey: username,
+            AccountDictIdKey: id,
             AccountDictPasswordKey: password,
             AccountDictNcKitAccountKey: ncKitAccount,
             AccountDictServerUrlKey: serverUrl,

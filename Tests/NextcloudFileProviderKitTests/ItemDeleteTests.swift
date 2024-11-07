@@ -23,6 +23,7 @@ final class ItemDeleteTests: XCTestCase {
         directory: true,
         account: Self.account.ncKitAccount,
         username: Self.account.username,
+        userId: Self.account.id,
         serverUrl: Self.account.serverUrl
     )
     static let dbManager = FilesDatabaseManager(realmConfig: .defaultConfiguration)
@@ -45,6 +46,7 @@ final class ItemDeleteTests: XCTestCase {
             remotePath: Self.account.davFilesUrl + "/file",
             account: Self.account.ncKitAccount,
             username: Self.account.username,
+            userId: Self.account.id,
             serverUrl: Self.account.serverUrl
         )
         remoteItem.parent = rootItem
@@ -80,6 +82,7 @@ final class ItemDeleteTests: XCTestCase {
             directory: true,
             account: Self.account.ncKitAccount,
             username: Self.account.username,
+            userId: Self.account.id,
             serverUrl: Self.account.serverUrl
         )
         let remoteItem = MockRemoteItem(
@@ -88,6 +91,7 @@ final class ItemDeleteTests: XCTestCase {
             remotePath: Self.account.davFilesUrl + "/folder/file",
             account: Self.account.ncKitAccount,
             username: Self.account.username,
+            userId: Self.account.id,
             serverUrl: Self.account.serverUrl
         )
         rootItem.children = [remoteFolder]

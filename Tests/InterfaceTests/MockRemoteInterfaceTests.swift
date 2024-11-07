@@ -21,6 +21,7 @@ final class MockRemoteInterfaceTests: XCTestCase {
         directory: true,
         account: Self.account.ncKitAccount,
         username: Self.account.username,
+        userId: Self.account.id,
         serverUrl: Self.account.serverUrl
     )
 
@@ -38,6 +39,7 @@ final class MockRemoteInterfaceTests: XCTestCase {
             directory: true,
             account: Self.account.ncKitAccount,
             username: Self.account.username,
+            userId: Self.account.id,
             serverUrl: Self.account.serverUrl
         )
         let itemB = MockRemoteItem(
@@ -48,6 +50,7 @@ final class MockRemoteInterfaceTests: XCTestCase {
             directory: true,
             account: Self.account.ncKitAccount,
             username: Self.account.username,
+            userId: Self.account.id,
             serverUrl: Self.account.serverUrl
         )
         let itemA_B = MockRemoteItem(
@@ -58,6 +61,7 @@ final class MockRemoteInterfaceTests: XCTestCase {
             directory: true,
             account: Self.account.ncKitAccount,
             username: Self.account.username,
+            userId: Self.account.id,
             serverUrl: Self.account.serverUrl
         )
         let targetItem = MockRemoteItem(
@@ -67,6 +71,7 @@ final class MockRemoteInterfaceTests: XCTestCase {
             remotePath: Self.account.davFilesUrl + "/a/b/target",
             account: Self.account.ncKitAccount,
             username: Self.account.username,
+            userId: Self.account.id,
             serverUrl: Self.account.serverUrl
         )
 
@@ -166,6 +171,7 @@ final class MockRemoteInterfaceTests: XCTestCase {
             directory: true,
             account: Self.account.ncKitAccount,
             username: Self.account.username,
+            userId: Self.account.id,
             serverUrl: Self.account.serverUrl
         )
         let itemB = MockRemoteItem(
@@ -175,6 +181,7 @@ final class MockRemoteInterfaceTests: XCTestCase {
             directory: true,
             account: Self.account.ncKitAccount,
             username: Self.account.username,
+            userId: Self.account.id,
             serverUrl: Self.account.serverUrl
         )
         let itemC = MockRemoteItem(
@@ -184,6 +191,7 @@ final class MockRemoteInterfaceTests: XCTestCase {
             directory: true,
             account: Self.account.ncKitAccount,
             username: Self.account.username,
+            userId: Self.account.id,
             serverUrl: Self.account.serverUrl
         )
         let targetItem = MockRemoteItem(
@@ -192,6 +200,7 @@ final class MockRemoteInterfaceTests: XCTestCase {
             remotePath: Self.account.davFilesUrl + "/a/c/target",
             account: Self.account.ncKitAccount,
             username: Self.account.username,
+            userId: Self.account.id,
             serverUrl: Self.account.serverUrl
         )
 
@@ -246,6 +255,7 @@ final class MockRemoteInterfaceTests: XCTestCase {
             directory: true,
             account: Self.account.ncKitAccount,
             username: Self.account.username,
+            userId: Self.account.id,
             serverUrl: Self.account.serverUrl
         )
         let itemB = MockRemoteItem(
@@ -255,6 +265,7 @@ final class MockRemoteInterfaceTests: XCTestCase {
             directory: true,
             account: Self.account.ncKitAccount,
             username: Self.account.username,
+            userId: Self.account.id,
             serverUrl: Self.account.serverUrl
         )
         let itemC = MockRemoteItem(
@@ -264,6 +275,7 @@ final class MockRemoteInterfaceTests: XCTestCase {
             directory: true,
             account: Self.account.ncKitAccount,
             username: Self.account.username,
+            userId: Self.account.id,
             serverUrl: Self.account.serverUrl
         )
         let itemA_A = MockRemoteItem(
@@ -273,6 +285,7 @@ final class MockRemoteInterfaceTests: XCTestCase {
             directory: true,
             account: Self.account.ncKitAccount,
             username: Self.account.username,
+            userId: Self.account.id,
             serverUrl: Self.account.serverUrl
         )
         let itemA_B = MockRemoteItem(
@@ -282,6 +295,7 @@ final class MockRemoteInterfaceTests: XCTestCase {
             directory: true,
             account: Self.account.ncKitAccount,
             username: Self.account.username,
+            userId: Self.account.id,
             serverUrl: Self.account.serverUrl
         )
         let itemC_A = MockRemoteItem(
@@ -291,6 +305,7 @@ final class MockRemoteInterfaceTests: XCTestCase {
             directory: true,
             account: Self.account.ncKitAccount,
             username: Self.account.username,
+            userId: Self.account.id,
             serverUrl: Self.account.serverUrl
         )
         let itemC_A_A = MockRemoteItem(
@@ -300,6 +315,7 @@ final class MockRemoteInterfaceTests: XCTestCase {
             directory: true,
             account: Self.account.ncKitAccount,
             username: Self.account.username,
+            userId: Self.account.id,
             serverUrl: Self.account.serverUrl
         )
 
@@ -383,6 +399,7 @@ final class MockRemoteInterfaceTests: XCTestCase {
             directory: true,
             account: Self.account.ncKitAccount,
             username: Self.account.username,
+            userId: Self.account.id,
             serverUrl: Self.account.serverUrl
         )
         let itemB = MockRemoteItem(
@@ -392,6 +409,7 @@ final class MockRemoteInterfaceTests: XCTestCase {
             directory: true,
             account: Self.account.ncKitAccount,
             username: Self.account.username,
+            userId: Self.account.id,
             serverUrl: Self.account.serverUrl
         )
         let itemA_C = MockRemoteItem(
@@ -401,6 +419,7 @@ final class MockRemoteInterfaceTests: XCTestCase {
             directory: true,
             account: Self.account.ncKitAccount,
             username: Self.account.username,
+            userId: Self.account.id,
             serverUrl: Self.account.serverUrl
         )
         let itemA_C_D = MockRemoteItem(
@@ -409,6 +428,7 @@ final class MockRemoteInterfaceTests: XCTestCase {
             remotePath: Self.account.davFilesUrl + "/a/c/d",
             account: Self.account.ncKitAccount,
             username: Self.account.username,
+            userId: Self.account.id,
             serverUrl: Self.account.serverUrl
         )
 

@@ -36,6 +36,7 @@ final class EnumeratorTests: XCTestCase {
             directory: true,
             account: Self.account.ncKitAccount,
             username: Self.account.username,
+            userId: Self.account.id,
             serverUrl: Self.account.serverUrl
         )
 
@@ -47,6 +48,7 @@ final class EnumeratorTests: XCTestCase {
             directory: true,
             account: Self.account.ncKitAccount,
             username: Self.account.username,
+            userId: Self.account.id,
             serverUrl: Self.account.serverUrl
         )
 
@@ -57,6 +59,7 @@ final class EnumeratorTests: XCTestCase {
             remotePath: Self.account.davFilesUrl + "/folder/itemA",
             account: Self.account.ncKitAccount,
             username: Self.account.username,
+            userId: Self.account.id,
             serverUrl: Self.account.serverUrl
         )
 
@@ -66,6 +69,7 @@ final class EnumeratorTests: XCTestCase {
             remotePath: Self.account.davFilesUrl + "/folder/itemB",
             account: Self.account.ncKitAccount,
             username: Self.account.username,
+            userId: Self.account.id,
             serverUrl: Self.account.serverUrl
         )
 
@@ -75,6 +79,7 @@ final class EnumeratorTests: XCTestCase {
             remotePath: Self.account.davFilesUrl + "/folder/itemC",
             account: Self.account.ncKitAccount,
             username: Self.account.username,
+            userId: Self.account.id,
             serverUrl: Self.account.serverUrl
         )
 
@@ -118,7 +123,7 @@ final class EnumeratorTests: XCTestCase {
         XCTAssertEqual(dbFolder.serverUrl + "/" + dbFolder.fileName, remoteFolder.remotePath)
         XCTAssertEqual(dbFolder.account, Self.account.ncKitAccount)
         XCTAssertEqual(dbFolder.user, Self.account.username)
-        XCTAssertEqual(dbFolder.userId, Self.account.username)
+        XCTAssertEqual(dbFolder.userId, Self.account.id)
         XCTAssertEqual(dbFolder.urlBase, Self.account.serverUrl)
 
         let storedFolderItem = try XCTUnwrap(
@@ -257,7 +262,7 @@ final class EnumeratorTests: XCTestCase {
         folderMetadata.serverUrl = Self.account.davFilesUrl
         folderMetadata.account = Self.account.ncKitAccount
         folderMetadata.user = Self.account.username
-        folderMetadata.userId = Self.account.username
+        folderMetadata.userId = Self.account.id
         folderMetadata.urlBase = Self.account.serverUrl
 
         Self.dbManager.addItemMetadata(folderMetadata)
@@ -328,7 +333,7 @@ final class EnumeratorTests: XCTestCase {
         itemAMetadata.serverUrl = remoteFolder.remotePath
         itemAMetadata.account = Self.account.ncKitAccount
         itemAMetadata.user = Self.account.username
-        itemAMetadata.userId = Self.account.username
+        itemAMetadata.userId = Self.account.id
         itemAMetadata.urlBase = Self.account.serverUrl
 
         Self.dbManager.addItemMetadata(folderMetadata)
@@ -375,7 +380,7 @@ final class EnumeratorTests: XCTestCase {
         folderMetadata.serverUrl = Self.account.davFilesUrl
         folderMetadata.account = Self.account.ncKitAccount
         folderMetadata.user = Self.account.username
-        folderMetadata.userId = Self.account.username
+        folderMetadata.userId = Self.account.id
         folderMetadata.urlBase = Self.account.serverUrl
 
         let oldItemAEtag = "OLD"
@@ -388,7 +393,7 @@ final class EnumeratorTests: XCTestCase {
         itemAMetadata.serverUrl = remoteFolder.remotePath
         itemAMetadata.account = Self.account.ncKitAccount
         itemAMetadata.user = Self.account.username
-        itemAMetadata.userId = Self.account.username
+        itemAMetadata.userId = Self.account.id
         itemAMetadata.urlBase = Self.account.serverUrl
 
         let itemBMetadata = ItemMetadata()
@@ -400,7 +405,7 @@ final class EnumeratorTests: XCTestCase {
         itemBMetadata.serverUrl = remoteFolder.remotePath
         itemBMetadata.account = Self.account.ncKitAccount
         itemBMetadata.user = Self.account.username
-        itemBMetadata.userId = Self.account.username
+        itemBMetadata.userId = Self.account.id
         itemBMetadata.urlBase = Self.account.serverUrl
 
         Self.dbManager.addItemMetadata(folderMetadata)
@@ -452,7 +457,7 @@ final class EnumeratorTests: XCTestCase {
         XCTAssertEqual(dbItemCMetadata.serverUrl, remoteFolder.remotePath)
         XCTAssertEqual(dbItemCMetadata.account, Self.account.ncKitAccount)
         XCTAssertEqual(dbItemCMetadata.user, Self.account.username)
-        XCTAssertEqual(dbItemCMetadata.userId, Self.account.username)
+        XCTAssertEqual(dbItemCMetadata.userId, Self.account.id)
         XCTAssertEqual(dbItemCMetadata.urlBase, Self.account.serverUrl)
 
         let storedFolderItem = try XCTUnwrap(
@@ -509,7 +514,7 @@ final class EnumeratorTests: XCTestCase {
         folderMetadata.serverUrl = Self.account.davFilesUrl
         folderMetadata.account = Self.account.ncKitAccount
         folderMetadata.user = Self.account.username
-        folderMetadata.userId = Self.account.username
+        folderMetadata.userId = Self.account.id
         folderMetadata.urlBase = Self.account.serverUrl
 
         let oldEtag = "OLD"
@@ -524,7 +529,7 @@ final class EnumeratorTests: XCTestCase {
         itemAMetadata.serverUrl = oldServerUrl
         itemAMetadata.account = Self.account.ncKitAccount
         itemAMetadata.user = Self.account.username
-        itemAMetadata.userId = Self.account.username
+        itemAMetadata.userId = Self.account.id
         itemAMetadata.urlBase = Self.account.serverUrl
 
         let itemBMetadata = ItemMetadata()
@@ -536,7 +541,7 @@ final class EnumeratorTests: XCTestCase {
         itemBMetadata.serverUrl = remoteFolder.remotePath
         itemBMetadata.account = Self.account.ncKitAccount
         itemBMetadata.user = Self.account.username
-        itemBMetadata.userId = Self.account.username
+        itemBMetadata.userId = Self.account.id
         itemBMetadata.urlBase = Self.account.serverUrl
 
         Self.dbManager.addItemMetadata(folderMetadata)
@@ -632,7 +637,7 @@ final class EnumeratorTests: XCTestCase {
         folderMetadata.serverUrl = Self.account.davFilesUrl
         folderMetadata.account = Self.account.ncKitAccount
         folderMetadata.user = Self.account.username
-        folderMetadata.userId = Self.account.username
+        folderMetadata.userId = Self.account.id
         folderMetadata.urlBase = Self.account.serverUrl
 
         Self.dbManager.addItemMetadata(folderMetadata)
