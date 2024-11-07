@@ -7187,7 +7187,7 @@ Server odpověděl chybou: %2</translation>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="122"/>
         <source>Empty JSON from OAuth2 redirect</source>
-        <translation>Vyprázdnit JSON z OAuth2 přesměrování</translation>
+        <translation>Prázdný JSON z OAuth2 přesměrování</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="127"/>
@@ -7316,7 +7316,7 @@ Server odpověděl chybou: %2</translation>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="448"/>
         <source>Exit</source>
-        <translation>Konec</translation>
+        <translation>Ukončit</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="492"/>
