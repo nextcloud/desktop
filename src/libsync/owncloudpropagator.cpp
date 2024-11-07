@@ -1457,8 +1457,6 @@ void PropagateDirectory::slotSubJobsFinished(SyncFileItem::Status status)
 #if !defined(Q_OS_MACOS) || __MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_15
             if (!_item->_remotePerm.isNull() &&
                 !_item->_remotePerm.hasPermission(RemotePermissions::CanAddFile) &&
-                !_item->_remotePerm.hasPermission(RemotePermissions::CanRename) &&
-                !_item->_remotePerm.hasPermission(RemotePermissions::CanMove) &&
                 !_item->_remotePerm.hasPermission(RemotePermissions::CanAddSubDirectories)) {
                 try {
                     if (FileSystem::fileExists(propagator()->fullLocalPath(_item->_file))) {
@@ -1482,8 +1480,6 @@ void PropagateDirectory::slotSubJobsFinished(SyncFileItem::Status status)
                 }
             } else if (!_item->_remotePerm.isNull() &&
                        (_item->_remotePerm.hasPermission(RemotePermissions::CanAddFile) ||
-                        !_item->_remotePerm.hasPermission(RemotePermissions::CanRename) ||
-                        !_item->_remotePerm.hasPermission(RemotePermissions::CanMove) ||
                         !_item->_remotePerm.hasPermission(RemotePermissions::CanAddSubDirectories))) {
                 try {
                     if (FileSystem::fileExists(propagator()->fullLocalPath(_item->_file))) {
