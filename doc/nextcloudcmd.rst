@@ -82,6 +82,8 @@ installed along with ``nextcloudcmd`` and thus be available in a system location
 be placed next to the binary as ``sync-exclude.lst`` or be explicitly specified
 with the ``--exclude`` switch.
 
+The required file format is one exclude item per line and can use wildcards.
+
 Example
 ~~~~~~~~~~~~
 
