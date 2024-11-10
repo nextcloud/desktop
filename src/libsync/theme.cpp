@@ -67,20 +67,8 @@ bool shouldPreferSvg()
 }
 
 #ifdef Q_OS_WIN
-bool IsWindows11OrGreater() {
-    OSVERSIONINFOEX osvi = {};
-    osvi.dwOSVersionInfoSize = sizeof(OSVERSIONINFOEX);
-    osvi.dwMajorVersion = 10;
-    osvi.dwMinorVersion = 0;
-    osvi.dwBuildNumber = 22000;
-
-    DWORDLONG const conditionMask = VerSetConditionMask(
-        VerSetConditionMask(
-            VerSetConditionMask(0, VER_MAJORVERSION, VER_GREATER_EQUAL),
-            VER_MINORVERSION, VER_GREATER_EQUAL),
-        VER_BUILDNUMBER, VER_GREATER_EQUAL);
-
-    return VerifyVersionInfo(&osvi, VER_MAJORVERSION | VER_MINORVERSION | VER_BUILDNUMBER, conditionMask) != 0;
+bool isWindows11OrGreater() {
+    return QOperatingSystemVersion::current().majorVersion() >= QOperatingSystemVersion::Windows11.majorVersion();
 }
 #endif
 
@@ -967,7 +955,7 @@ void Theme::connectToPaletteSignal()
         if (const auto ptr = qobject_cast<QGuiApplication *>(QGuiApplication::instance())) {
 #ifdef Q_OS_WIN
             // Windows 10 does not have proper dark mode support via Qt 6 so hack detection
-            if (!IsWindows11OrGreater()) {
+            if (!isWindows11OrGreater()) {
                 connect(ptr, &QGuiApplication::paletteChanged, this, &Theme::darkModeChanged);
             } else
 #endif
@@ -984,7 +972,7 @@ QVariantMap Theme::systemPalette()
     connectToPaletteSignal();
     auto systemPalette = QGuiApplication::palette();
 #if defined(Q_OS_WIN)
-    if (darkMode() && !IsWindows11OrGreater()) {
+    if (darkMode() && !isWindows11OrGreater()) {
         systemPalette = reserveDarkPalette;
     }
 #else
@@ -1034,7 +1022,7 @@ bool Theme::darkMode()
 
 #ifdef Q_OS_WIN
     static const auto darkModeSubkey = QStringLiteral("Software\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize");
-    if (!IsWindows11OrGreater() &&
+    if (!isWindows11OrGreater() &&
         Utility::registryKeyExists(HKEY_CURRENT_USER, darkModeSubkey) &&
         !Utility::registryGetKeyValue(HKEY_CURRENT_USER, darkModeSubkey, QStringLiteral("AppsUseLightTheme")).toBool()) {
         return true;
