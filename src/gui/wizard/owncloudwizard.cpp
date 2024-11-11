@@ -408,6 +408,15 @@ void OwncloudWizard::changeEvent(QEvent *e)
     QWizard::changeEvent(e);
 }
 
+void OwncloudWizard::hideEvent(QHideEvent *event)
+{
+    QWizard::hideEvent(event);
+#ifdef Q_OS_MACOS
+    // Closing the window on macOS hides it rather than closes it, so emit a wizardClosed here
+    emit wizardClosed();
+#endif
+}
+
 void OwncloudWizard::closeEvent(QCloseEvent *event)
 {
     emit wizardClosed();
