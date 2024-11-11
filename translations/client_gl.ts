@@ -345,7 +345,7 @@
     <message>
         <location filename="../src/common/filesystembase.cpp" line="438"/>
         <source>Moving to the trash is not implemented on this platform</source>
-        <translation>Mover ao lixo non está dispoñíbel nesta plataforma</translation>
+        <translation>Mover ao lixo non está implementado nesta plataforma</translation>
     </message>
 </context>
 <context>
@@ -1995,7 +1995,7 @@ Isto pode ser un problema coas súas bibliotecas OpenSSL.</translation>
         <location filename="../src/gui/filedetails/filedetails.cpp" line="156"/>
         <source>Locked by %1 - Expires in %2 minute(s)</source>
         <comment>remaining time before lock expires</comment>
-        <translation><numerusform>Bloqueado por %1 - Caduca en %2 minuto(s)</numerusform><numerusform>Bloqueado por %1 - Caduca en %2 minuto(s)</numerusform></translation>
+        <translation><numerusform>Bloqueado por %1 – Caduca en %2 minuto(s)</numerusform><numerusform>Bloqueado por %1 – Caduca en %2 minuto(s)</numerusform></translation>
     </message>
 </context>
 <context>

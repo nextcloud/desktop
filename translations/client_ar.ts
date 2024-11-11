@@ -17,7 +17,7 @@
     <message>
         <location filename="../src/gui/tray/ActivityItemContent.qml" line="170"/>
         <source>Open file details</source>
-        <translation>إفتح تفاصيل الملف</translation>
+        <translation>فتح تفاصيل الملف</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/ActivityItemContent.qml" line="203"/>
@@ -35,7 +35,7 @@
     <message>
         <location filename="../src/gui/tray/ActivityList.qml" line="108"/>
         <source>No activities yet</source>
-        <translation>لا توجد أي حركة بعدُ</translation>
+        <translation>لا توجد أي أنشطة حتى الآن</translation>
     </message>
 </context>
 <context>
@@ -120,7 +120,7 @@
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="219"/>
         <source>Open website</source>
-        <translation>إفتح الموقع</translation>
+        <translation>فتح موقع الويب</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="231"/>
@@ -205,7 +205,7 @@
     <message>
         <location filename="../src/gui/filedetails/FileDetailsPage.qml" line="238"/>
         <source>Sharing</source>
-        <translation>مشاركة</translation>
+        <translation>المشاركة</translation>
     </message>
 </context>
 <context>
@@ -740,7 +740,7 @@ Wait for the new sync, then encrypt it.</source>
         <location filename="../src/gui/accountsettings.cpp" line="510"/>
         <location filename="../src/gui/accountsettings.cpp" line="602"/>
         <source>Open folder</source>
-        <translation>إفتح المجلد</translation>
+        <translation>فتح المجلد</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="527"/>
@@ -1098,7 +1098,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/tray/activitylistmodel.cpp" line="490"/>
         <source>For more activities please open the Activity app.</source>
-        <translation>للمزيد عن الأنشطة، إفتح تطبيق الأنشطة.</translation>
+        <translation>للمزيد عن الأنشطة، يرجى فتح تطبيق الأنشطة.</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/activitylistmodel.cpp" line="510"/>
@@ -1425,7 +1425,7 @@ This action will abort any currently running synchronization.</source>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="121"/>
         <location filename="../src/gui/caseclashfilenamedialog.cpp" line="105"/>
         <source>Open existing file</source>
-        <translation>إفتح الملف الموجود</translation>
+        <translation>فتح الملف الموجود</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="165"/>
@@ -1559,7 +1559,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="110"/>
         <source>&lt;a href=&quot;%1&quot;&gt;Open local version&lt;/a&gt;</source>
-        <translation>&lt;a href=&quot;%1&quot;&gt;إفتح النسخة المحلية&lt;/a&gt;</translation>
+        <translation>&lt;a href=&quot;%1&quot;&gt;فتح النسخة المحلية&lt;/a&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="154"/>
@@ -1580,7 +1580,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/conflictdialog.cpp" line="150"/>
         <source>Open local version</source>
-        <translation>إفتح النسخة المحلية</translation>
+        <translation>فتح النسخة المحلية</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.cpp" line="158"/>
@@ -3391,7 +3391,7 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="100"/>
         <source>Checking rename permissions …</source>
-        <translation>جارٍ التحقق من أذونات تغيير التسمية ...</translation>
+        <translation>جارٍ التحقق من أذونات إعادة التسمية ...</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="135"/>
@@ -3743,7 +3743,7 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="157"/>
         <source>Could not download update. Please open &lt;a href=&apos;%1&apos;&gt;%1&lt;/a&gt; to download the update manually.</source>
-        <translation>تعذّر تنزيل التحديث. من فضلك، إفتح &lt;a href=&apos;%1&apos;&gt;%1&lt;/a&gt; لتنزيل التحديث يدويّاً.</translation>
+        <translation>تعذّر تنزيل التحديث. يرجى فتح &lt;a href=&apos;%1&apos;&gt;%1&lt;/a&gt; لتنزيل التحديث بشكل يدوي.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="159"/>
@@ -3758,12 +3758,12 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="165"/>
         <source>New %1 is available. Please open &lt;a href=&apos;%2&apos;&gt;%2&lt;/a&gt; to download the update.</source>
-        <translation>%1 جديد متوفر. إفتح &lt;a href=&apos;%2&apos;&gt;%2&lt;/a&gt; لتنزيل التحديثات، من فضلك.</translation>
+        <translation>%1 جديد متوفر. يرجى فتح &lt;a href=&apos;%2&apos;&gt;%2&lt;/a&gt; لتنزيل التحديثات.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="167"/>
         <source>New %1 is available. Please open %2 to download the update.</source>
-        <translation>%1 جديد متوفر. إفتح %2 لتنزيل التحديثات، من فضلك.</translation>
+        <translation>%1 جديد متوفر. فتح %2 لتنزيل التحديثات، من فضلك.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="170"/>
@@ -5121,7 +5121,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1371"/>
         <source>Open in browser</source>
-        <translation>إفتح في المُتصفّح</translation>
+        <translation>فتح في المتصفّح</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1398"/>
@@ -6411,7 +6411,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="291"/>
         <source>Share label</source>
-        <translation>علامة المشاركة</translation>
+        <translation>علامة رابط المشاركة</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="346"/>
@@ -6432,7 +6432,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="399"/>
         <source>Allow resharing</source>
-        <translation>إسمَح بإعادة المشاركة</translation>
+        <translation>السماح بإعادة المشاركة</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="466"/>
@@ -6555,7 +6555,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="55"/>
         <source>Open local or group folders</source>
-        <translation>إفتح المجلدات المحلية أو مجلدات المجموعة</translation>
+        <translation>فتح المجلدات المحلية أو مجلدات المجموعة</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="55"/>
@@ -7338,7 +7338,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="715"/>
         <source>Open %1 in browser</source>
-        <translation>إفتح %1 في المتصفح</translation>
+        <translation>فتح %1 في المتصفح</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="821"/>
