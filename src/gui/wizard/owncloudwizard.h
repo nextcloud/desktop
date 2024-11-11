@@ -110,9 +110,11 @@ signals:
     void needCertificate();
     void styleChanged();
     void onActivate();
+    void wizardClosed();
 
 protected:
     void changeEvent(QEvent *) override;
+    void closeEvent(QCloseEvent *) override;
 
 private:
     void customizeStyle();

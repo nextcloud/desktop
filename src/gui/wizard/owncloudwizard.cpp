@@ -408,6 +408,12 @@ void OwncloudWizard::changeEvent(QEvent *e)
     QWizard::changeEvent(e);
 }
 
+void OwncloudWizard::closeEvent(QCloseEvent *event)
+{
+    emit wizardClosed();
+    QWizard::closeEvent(event);
+}
+
 void OwncloudWizard::customizeStyle()
 {
     // HINT: Customize wizard's own style here, if necessary in the future (Dark-/Light-Mode switching)
