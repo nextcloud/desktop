@@ -114,6 +114,7 @@ signals:
 
 protected:
     void changeEvent(QEvent *) override;
+    void hideEvent(QHideEvent *) override;
     void closeEvent(QCloseEvent *) override;
 
 private:
