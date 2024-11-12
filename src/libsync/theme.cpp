@@ -32,6 +32,7 @@
 #include <QPainter>
 #include <QJsonDocument>
 #include <QJsonArray>
+#include <QLoggingCategory>
 
 #ifdef Q_OS_WIN
 #include <windows.h>
@@ -75,6 +76,8 @@ bool isWindows11OrGreater() {
 }
 
 namespace OCC {
+
+Q_LOGGING_CATEGORY(lcTheme, "nextcloud.gui.theme", QtInfoMsg)
 
 Theme *Theme::_instance = nullptr;
 
