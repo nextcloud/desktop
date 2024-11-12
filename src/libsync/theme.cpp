@@ -371,10 +371,10 @@ Theme::Theme()
 
     reserveDarkPalette.setColor(QPalette::WindowText, Qt::white);
     reserveDarkPalette.setColor(QPalette::Button, QColor(127, 127, 127));
-    reserveDarkPalette.setColor(QPalette::Light, QColor(53, 53, 53));
+    reserveDarkPalette.setColor(QPalette::Light, QColor(20, 20, 20));
     reserveDarkPalette.setColor(QPalette::Midlight, QColor(78, 78, 78));
-    reserveDarkPalette.setColor(QPalette::Dark, QColor(35, 35, 35));
-    reserveDarkPalette.setColor(QPalette::Mid, QColor(44, 44, 44));
+    reserveDarkPalette.setColor(QPalette::Dark, QColor(191, 191, 191));
+    reserveDarkPalette.setColor(QPalette::Mid, QColor(95, 95, 95));
     reserveDarkPalette.setColor(QPalette::Text, Qt::white);
     reserveDarkPalette.setColor(QPalette::BrightText, Qt::red);
     reserveDarkPalette.setColor(QPalette::ButtonText, Qt::white);
