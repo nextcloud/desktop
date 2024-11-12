@@ -969,16 +969,8 @@ QColor Theme::defaultColor()
 void Theme::connectToPaletteSignal()
 {
     if (!_paletteSignalsConnected) {
-        if (const auto ptr = qobject_cast<QGuiApplication *>(QGuiApplication::instance())) {
-#ifdef Q_OS_WIN
-            // Windows 10 does not have proper dark mode support via Qt 6 so hack detection
-            if (!isWindows11OrGreater()) {
-                connect(ptr, &QGuiApplication::paletteChanged, this, &Theme::darkModeChanged);
-            } else
-#endif
-            {
-                connect(ptr->styleHints(), &QStyleHints::colorSchemeChanged, this, &Theme::darkModeChanged);
-            }
+        if (const auto ptr = qobject_cast<QGuiApplication*>(qApp)) {
+            connect(ptr->styleHints(), &QStyleHints::colorSchemeChanged, this, &Theme::darkModeChanged);
             _paletteSignalsConnected = true;
         }
     }
@@ -1086,6 +1078,16 @@ void Theme::setStartLoginFlowAutomatically(bool startLoginFlowAuto)
         _startLoginFlowAutomatically = startLoginFlowAuto;
         emit startLoginFlowAutomaticallyChanged();
     }
+}
+
+void Theme::systemPaletteHasChanged()
+{
+    qCInfo(lcTheme()) << "system palette changed";
+#ifdef Q_OS_WIN
+    if (darkMode() && !isWindows11OrGreater()) {
+        qApp->setPalette(reserveDarkPalette);
+    }
+#endif
 }
 
 } // end namespace client
