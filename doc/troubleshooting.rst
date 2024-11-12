@@ -92,6 +92,20 @@ might be required in some situations, for example behind CloudFlare which
 has been seen limiting upload chunks to 100mb. In other situations,
 limiting ``targetChunkUploadDuration`` can help to avoid time-outs.
 
+Connection issues with the macOS client on "insecure" connections
+-----------------------------------------------------------------
+When using macOS devices to connect to a Nextcloud server that uses a what maybe
+be classified as an insecure connection (i.e. connecting to a server with a
+self-signed certificate, or a certificate with what Apple may consider an
+insufficiently secure cipher), the macOS client may not connect to the server.
+This is because macOS requires a valid certificate to establish a connection.
+
+To resolve this issue, you must ensure the server is signed with a certificate
+that is accepted by Apple's App Transport Security requirements. More
+information on the requirements can be found in Apple's documentation pages.
+
+https://developer.apple.com/documentation/security/preventing-insecure-network-connections
+
 Isolating other issues
 ----------------------
 
