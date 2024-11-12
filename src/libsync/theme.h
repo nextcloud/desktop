@@ -609,6 +609,7 @@ public slots:
     void setForceOverrideServerUrl(bool forceOverride);
     void setVfsEnabled(bool enabled);
     void setStartLoginFlowAutomatically(bool startLoginFlowAuto);
+    void systemPaletteHasChanged();
 
 protected:
 #ifndef TOKEN_AUTH_ONLY
