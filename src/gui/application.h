@@ -96,6 +96,7 @@ signals:
     void folderRemoved();
     void folderStateChanged(OCC::Folder *);
     void isShowingSettingsDialog();
+    void systemPaletteChanged();
 
 protected slots:
     void slotParseMessage(const QString &, QObject *);
