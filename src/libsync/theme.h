@@ -601,8 +601,8 @@ public:
 
     static constexpr const char *themePrefix = ":/client/theme/";
 
-    QVariantMap systemPalette();
-    bool darkMode();
+    [[nodiscard]] QVariantMap systemPalette() const;
+    [[nodiscard]] bool darkMode() const;
 
 public slots:
     void setOverrideServerUrl(const QString &overrideServerUrl);
