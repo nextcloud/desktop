@@ -69,7 +69,7 @@ bool shouldPreferSvg()
 
 #ifdef Q_OS_WIN
 bool isWindows11OrGreater() {
-    return QOperatingSystemVersion::current().majorVersion() >= QOperatingSystemVersion::Windows11.majorVersion();
+    return QOperatingSystemVersion::current().version() >= QOperatingSystemVersion::Windows11.version();
 }
 #endif
 
@@ -367,30 +367,40 @@ Theme::Theme()
 #if defined(Q_OS_WIN)
     // Windows does not provide a dark theme for Win32 apps so let's come up with a palette
     // Credit to https://github.com/Jorgen-VikingGod/Qt-Frameless-Window-DarkStyle
+    reserveDarkPalette = qApp->palette();
 
-    reserveDarkPalette.setColor(QPalette::Window, QColor(53, 53, 53));
     reserveDarkPalette.setColor(QPalette::WindowText, Qt::white);
-    reserveDarkPalette.setColor(QPalette::Disabled, QPalette::WindowText,
-                                QColor(127, 127, 127));
+    reserveDarkPalette.setColor(QPalette::Button, QColor(127, 127, 127));
+    reserveDarkPalette.setColor(QPalette::Light, QColor(53, 53, 53));
+    reserveDarkPalette.setColor(QPalette::Midlight, QColor(78, 78, 78));
+    reserveDarkPalette.setColor(QPalette::Dark, QColor(35, 35, 35));
+    reserveDarkPalette.setColor(QPalette::Mid, QColor(44, 44, 44));
+    reserveDarkPalette.setColor(QPalette::Text, Qt::white);
+    reserveDarkPalette.setColor(QPalette::BrightText, Qt::red);
+    reserveDarkPalette.setColor(QPalette::ButtonText, Qt::white);
     reserveDarkPalette.setColor(QPalette::Base, QColor(42, 42, 42));
+    reserveDarkPalette.setColor(QPalette::Window, QColor(53, 53, 53));
+    reserveDarkPalette.setColor(QPalette::Shadow, QColor(20, 20, 20));
+    reserveDarkPalette.setColor(QPalette::Highlight, QColor(42, 130, 218));
+    reserveDarkPalette.setColor(QPalette::HighlightedText, Qt::white);
+    reserveDarkPalette.setColor(QPalette::Link, QColor(42, 130, 218));
+    reserveDarkPalette.setColor(QPalette::LinkVisited, QColor(42, 130, 218));
     reserveDarkPalette.setColor(QPalette::AlternateBase, QColor(66, 66, 66));
+    reserveDarkPalette.setColor(QPalette::NoRole, QColor(127, 127, 127));
     reserveDarkPalette.setColor(QPalette::ToolTipBase, Qt::white);
     reserveDarkPalette.setColor(QPalette::ToolTipText, QColor(53, 53, 53));
-    reserveDarkPalette.setColor(QPalette::Text, Qt::white);
+    reserveDarkPalette.setColor(QPalette::PlaceholderText, QColor(44, 44, 44));
+    reserveDarkPalette.setColor(QPalette::Accent, QColor(127, 127, 200));
+
     reserveDarkPalette.setColor(QPalette::Disabled, QPalette::Text, QColor(127, 127, 127));
-    reserveDarkPalette.setColor(QPalette::Dark, QColor(35, 35, 35));
-    reserveDarkPalette.setColor(QPalette::Shadow, QColor(20, 20, 20));
-    reserveDarkPalette.setColor(QPalette::Button, QColor(53, 53, 53));
-    reserveDarkPalette.setColor(QPalette::ButtonText, Qt::white);
     reserveDarkPalette.setColor(QPalette::Disabled, QPalette::ButtonText,
                                 QColor(127, 127, 127));
-    reserveDarkPalette.setColor(QPalette::BrightText, Qt::red);
-    reserveDarkPalette.setColor(QPalette::Link, QColor(42, 130, 218));
-    reserveDarkPalette.setColor(QPalette::Highlight, QColor(42, 130, 218));
     reserveDarkPalette.setColor(QPalette::Disabled, QPalette::Highlight, QColor(80, 80, 80));
-    reserveDarkPalette.setColor(QPalette::HighlightedText, Qt::white);
     reserveDarkPalette.setColor(QPalette::Disabled, QPalette::HighlightedText,
                                 QColor(127, 127, 127));
+    reserveDarkPalette.setColor(QPalette::Disabled, QPalette::WindowText,
+                                QColor(127, 127, 127));
+    connectToPaletteSignal();
 #endif
 
 #ifdef APPLICATION_SERVER_URL_ENFORCE
@@ -974,13 +984,13 @@ void Theme::connectToPaletteSignal()
     }
 }
 
-QVariantMap Theme::systemPalette()
+QVariantMap Theme::systemPalette() const
 {
-    connectToPaletteSignal();
     auto systemPalette = QGuiApplication::palette();
 #if defined(Q_OS_WIN)
     if (darkMode() && !isWindows11OrGreater()) {
         systemPalette = reserveDarkPalette;
+        qApp->setPalette(reserveDarkPalette);
     }
 #else
 
@@ -1010,9 +1020,8 @@ QVariantMap Theme::systemPalette()
     };
 }
 
-bool Theme::darkMode()
+bool Theme::darkMode() const
 {
-    connectToPaletteSignal();
     const auto isDarkFromStyle = [] {
         switch (qGuiApp->styleHints()->colorScheme())
         {
