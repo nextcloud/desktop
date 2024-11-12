@@ -35,8 +35,11 @@
 #include <QMessageBox>
 #include <QDebug>
 #include <QQuickStyle>
+#include <QStyle>
+#include <QStyleFactory>
 #include <QQuickWindow>
 #include <QSurfaceFormat>
+#include <QOperatingSystemVersion>
 
 using namespace OCC;
 
@@ -81,6 +84,12 @@ int main(int argc, char **argv)
 
     QQuickStyle::setStyle(style);
     QQuickStyle::setFallbackStyle(QStringLiteral("Fusion"));
+
+#if defined Q_OS_WIN
+    if (QOperatingSystemVersion::current().version() <= QOperatingSystemVersion::Windows11.version()) {
+        QApplication::setStyle(QStyleFactory::create("Fusion"));
+    }
+#endif
 
     OCC::Application app(argc, argv);
 
