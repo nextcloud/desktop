@@ -126,21 +126,6 @@ namespace {
 
 // ----------------------------------------------------------------------------------
 
-#ifdef Q_OS_WIN
-class WindowsNativeEventFilter : public QAbstractNativeEventFilter {
-public:
-    bool nativeEventFilter(const QByteArray &eventType, void *message, qintptr *result) override {
-        const auto msg = static_cast<MSG *>(message);
-        if(msg->message == WM_SYSCOLORCHANGE || msg->message == WM_SETTINGCHANGE) {
-            if (const auto ptr = qobject_cast<QGuiApplication *>(QGuiApplication::instance())) {
-                emit ptr->paletteChanged(ptr->palette());
-            }
-        }
-        return false;
-    }
-};
-#endif
-
 bool Application::configVersionMigration()
 {
     QStringList deleteKeys, ignoreKeys;
@@ -237,9 +222,6 @@ Application::Application(int &argc, char **argv)
     // Ensure OpenSSL config file is only loaded from app directory
     QString opensslConf = QCoreApplication::applicationDirPath() + QString("/openssl.cnf");
     qputenv("OPENSSL_CONF", opensslConf.toLocal8Bit());
-
-    // Set up event listener for Windows theme changing
-    installNativeEventFilter(new WindowsNativeEventFilter());
 #endif
 
     // TODO: Can't set this without breaking current config paths
@@ -384,6 +366,8 @@ Application::Application(int &argc, char **argv)
 
     _theme->setSystrayUseMonoIcons(ConfigFile().monoIcons());
     connect(_theme, &Theme::systrayUseMonoIconsChanged, this, &Application::slotUseMonoIconsChanged);
+    connect(this, &Application::systemPaletteChanged,
+            _theme, &Theme::systemPaletteHasChanged);
 
 #if defined(Q_OS_WIN)
     _shellExtensionsServer.reset(new ShellExtensionsServer);
@@ -1127,6 +1111,9 @@ bool Application::event(QEvent *event)
             qCInfo(lcApplication) << errorParsingLocalFileEditingUrl;
             showHint(errorParsingLocalFileEditingUrl.toStdString());
         }
+    } else if (event->type() == QEvent::ApplicationPaletteChange) {
+        qCInfo(lcApplication) << "application palette changed";
+        emit systemPaletteChanged();
     }
     return SharedTools::QtSingleApplication::event(event);
 }
