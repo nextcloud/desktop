@@ -33,9 +33,16 @@ Supported features
 - Remote file locking compatibility
 - “Edit locally” support
 - File sharing with other users
-- Automatic synchronisation of remote changes **NOTE: we recommend the
-  use of ``notify_push`` on the server!**
+- Automatic synchronisation of remote changes
 - More!
+
+.. note::
+   To improve remote change detection, we recommend enabling the
+   ``notify_push`` app on your Nextcloud server. This app will notify
+   the desktop client of changes on the server as soon as they happen,
+   reducing the time it takes for the client to detect changes. This
+   will also eliminate the need for the desktop client to continuously
+   poll the server for changes.
 
 Installation and initial setup
 ==============================
