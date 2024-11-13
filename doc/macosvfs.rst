@@ -118,3 +118,19 @@ of the features supported by Nextcloud. These include:
 .. image:: images/macosvfs-file-sharing.png
    :alt: File sharing UI for macOS virtual files
 
+Configuration
+=============
+
+Virtual files-related settings can be adjusted on a per-account basis
+via the Nextcloud desktop client’s settings window.
+
+.. image:: images/macosvfs-settings.png
+   :alt: macOS virtual files settings
+
+The virtual files section offers a number of options relevant to
+virtual files interaction:
+
+- Enable/disable virtual files for the target account
+- Enable/disable fast sync
+- Manage local storage usage and evict local copies
+- Force the virtual files domain to check for updates
