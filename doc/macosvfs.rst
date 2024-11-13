@@ -72,3 +72,42 @@ to request information on remote files from the server. This first
 synchronisation may take some time depending on the quantity of files
 hosted on the server.
 
+Finder integration
+==================
+
+The virtual files client has distinct Finder integrations that allow it
+to more deeply and more natively integrate with the macOS file browser
+than the classic sync client.
+
+Sync status indicators
+----------------------
+
+Similarly to classic sync client, the virtual files client displays
+icons next to virtual files that indicate what their status is.
+
+.. image:: images/macosvfs-sync-status-icons.png
+   :alt: Sync status icons for macOS virtual files
+
+- *Cloud with arrow*: item or its children is virtual and is available
+  for local keeping
+- *Cloud outline*: item is partially available locally
+- *No icon*: item is available offline
+
+Context menu actions
+--------------------
+
+Control-clicking, two-finger clicking, or right-clicking on a Finder
+item will provide the context menu, in which you may find several
+entries provided by the virtual files client that allow you to use some
+of the features supported by Nextcloud. These include:
+
+- File locking (if supported by server)
+
+.. image:: images/macosvfs-file-locking.png
+   :alt: File locking UI for macOS virtual files
+
+- File sharing (if supported by server)
+
+.. image:: images/macosvfs-file-sharing.png
+   :alt: File sharing UI for macOS virtual files
+
