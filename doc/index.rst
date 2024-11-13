@@ -10,6 +10,7 @@ Nextcloud Desktop Client Manual
    installing
    visualtour
    navigating
+   macosvfs
    conflicts
    advancedusage
    autoupdate
