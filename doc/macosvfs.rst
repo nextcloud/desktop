@@ -37,3 +37,38 @@ Supported features
   use of ``notify_push`` on the server!**
 - More!
 
+Installation and initial setup
+==============================
+
+The virtual files client is distributed as an installer package that
+resembles the macOS classic sync client. The desktop client can be
+installed by following the steps presented by the installer.
+
+The virtual files desktop client is interchangeable with the classic
+sync desktop client. This means your existing accounts and settings will
+carry over to this client and vice-versa, should you ever decide to go
+back to the classic sync client. This includes any pre-existing standard
+sync folders, as the virtual files client also supports classic sync.
+
+.. note::
+    Due to technical limitations in macOS we are unable to provide
+    integration in Finder for both classic sync folders and virtual file
+    sync folders. Classic sync folders in the virtual files client will
+    therefore not have Finder integrations such as sync state icons or
+    context menu actions.
+
+
+Any existing or newly-configured accounts will have virtual files
+automatically enabled. On macOS, each account’s virtual files live under
+their own domain, separate from any pre-existing classic sync folders.
+These domains can be found listed under the “Locations” group in the
+Finder sidebar.
+
+.. image:: images/macosvfs-finder-sidebar.png
+   :alt: Finder sidebar showing virtual files domains
+
+Upon first accessing one of these domains, the desktop client will being
+to request information on remote files from the server. This first
+synchronisation may take some time depending on the quantity of files
+hosted on the server.
+
