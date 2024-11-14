@@ -319,48 +319,26 @@ ApplicationWindow {
                             onObjectRemoved: accountMenu.removeItem(object)
                         }
 
+                        Rectangle {
+                            anchors.left: parent.left
+                            anchors.right: parent.right
+                            implicitHeight: 1
+                            color: palette.dark
+                        }
+
                         MenuItem {
                             id: addAccountButton
                             height: Systray.enableAddAccount ? Style.addAccountButtonHeight : 0
                             hoverEnabled: true
                             visible: Systray.enableAddAccount
 
-                            RowLayout {
-                                anchors.fill: parent
-                                spacing: 0
-
-                                Image {
-                                    Layout.leftMargin: Style.accountIconsMenuMargin
-                                    verticalAlignment: Qt.AlignVCenter
-                                    horizontalAlignment: Qt.AlignCenter
-                                    source: "image://svgimage-custom-color/add.svg/" + palette.windowText
-                                    sourceSize.width: Style.addButtonIconSize
-                                    sourceSize.height: Style.addButtonIconSize
-                                }
-                                EnforcedPlainTextLabel {
-                                    Layout.leftMargin: 14
-                                    text: qsTr("Add account")
-                                    font.pixelSize: Style.topLinePixelSize
-                                }
-                                // Filler on the right
-                                Item {
-                                    Layout.fillWidth: true
-                                    Layout.fillHeight: true
-                                }
-                            }
+                            icon.source: "image://svgimage-custom-color/add.svg/" + palette.windowText
+                            text: qsTr("Add account") 
                             onClicked: UserModel.addAccount()
 
                             Accessible.role: Accessible.MenuItem
                             Accessible.name: qsTr("Add new account")
                             Accessible.onPressAction: addAccountButton.clicked()
-
-                        }
-
-                        Rectangle {
-                            anchors.left: parent.left
-                            anchors.right: parent.right
-                            implicitHeight: 1
-                            color: palette.dark
                         }
 
                         MenuItem {
@@ -371,7 +349,6 @@ ApplicationWindow {
                             Accessible.role: Accessible.MenuItem
                             Accessible.name: Systray.syncIsPaused ? qsTr("Resume sync for all") : qsTr("Pause sync for all")
                             Accessible.onPressAction: syncPauseButton.clicked()
-
                         }
 
                         MenuItem {
@@ -383,7 +360,6 @@ ApplicationWindow {
                             Accessible.role: Accessible.MenuItem
                             Accessible.name: text
                             Accessible.onPressAction: settingsButton.clicked()
-
                         }
 
                         MenuItem {
