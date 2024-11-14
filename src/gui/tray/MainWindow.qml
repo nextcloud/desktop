@@ -293,12 +293,6 @@ ApplicationWindow {
                         height: Math.min(implicitHeight, maxMenuHeight)
                         closePolicy: Menu.CloseOnPressOutsideParent | Menu.CloseOnEscape
 
-                        background: Rectangle {
-                            border.color: palette.dark
-                            color: palette.window
-                            radius: Style.halfTrayWindowRadius
-                        }
-
                         onClosed: {
                             // HACK: reload account Instantiator immediately by restting it - could be done better I guess
                             // see also onVisibleChanged above
@@ -355,11 +349,6 @@ ApplicationWindow {
                             Accessible.name: qsTr("Add new account")
                             Accessible.onPressAction: addAccountButton.clicked()
 
-                            background: Rectangle {
-                                radius: Style.halfTrayWindowRadius
-                                color: palette.highlight
-                                visible: addAccountButton.hovered
-                            }
                         }
 
                         Rectangle {
@@ -378,11 +367,6 @@ ApplicationWindow {
                             Accessible.name: Systray.syncIsPaused ? qsTr("Resume sync for all") : qsTr("Pause sync for all")
                             Accessible.onPressAction: syncPauseButton.clicked()
 
-                            background: Rectangle {
-                                radius: Style.halfTrayWindowRadius
-                                color: palette.highlight
-                                visible: syncPauseButton.hovered
-                            }
                         }
 
                         MenuItem {
@@ -395,11 +379,6 @@ ApplicationWindow {
                             Accessible.name: text
                             Accessible.onPressAction: settingsButton.clicked()
 
-                            background: Rectangle {
-                                radius: Style.halfTrayWindowRadius
-                                color: palette.highlight
-                                visible: settingsButton.hovered
-                            }
                         }
 
                         MenuItem {
@@ -410,13 +389,7 @@ ApplicationWindow {
                             onClicked: Systray.shutdown()
                             Accessible.role: Accessible.MenuItem
                             Accessible.name: text
-                            Accessible.onPressAction: exitButton.clicked()
-
-                            background: Rectangle {
-                                radius: Style.halfTrayWindowRadius
-                                color: palette.highlight
-                                visible: exitButton.hovered
-                            }
+                            Accessible.onPressAction: exitButton.clicked() 
                         }
                     }
 

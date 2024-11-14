@@ -34,15 +34,6 @@ AbstractButton {
 
     height: Style.trayWindowHeaderHeight
 
-    background: Rectangle {
-        anchors.fill: parent
-        anchors.margins: 1
-        color: (userLine.hovered || userLine.visualFocus) &&
-               !(userMoreButton.hovered || userMoreButton.visualFocus) ?
-                   palette.highlight : palette.window
-        radius: Style.halfTrayWindowRadius
-    }
-
     contentItem: RowLayout {
         id: userLineLayout
         spacing: Style.userStatusSpacing
@@ -158,12 +149,6 @@ AbstractButton {
                 id: userMoreButtonMenu
                 closePolicy: Menu.CloseOnPressOutsideParent | Menu.CloseOnEscape
 
-                background: Rectangle {
-                    border.color: palette.dark
-                    radius: Style.halfTrayWindowRadius
-                    color: palette.window
-                }
-
                 MenuItem {
                     visible: model.isConnected && model.serverHasUserStatus
                     height: visible ? implicitHeight : 0
@@ -171,12 +156,7 @@ AbstractButton {
                     font.pixelSize: Style.topLinePixelSize
                     hoverEnabled: true
                     onClicked: showUserStatusSelector(index)
-
-                    background: Rectangle {
-                        radius: Style.halfTrayWindowRadius
-                        color: parent.hovered ? palette.highlight : palette.window
-                    }
-                }
+               }
 
                 MenuItem {
                     text: model.isConnected ? qsTr("Log out") : qsTr("Log in")
@@ -198,12 +178,7 @@ AbstractButton {
                         }
                         accountMenu.close()
                     }
-
-                    background: Rectangle {
-                        radius: Style.halfTrayWindowRadius
-                        color: parent.hovered ? palette.highlight : palette.window
-                    }
-                }
+               }
 
                 MenuItem {
                     id: removeAccountButton
@@ -218,12 +193,7 @@ AbstractButton {
                     Accessible.role: Accessible.Button
                     Accessible.name: text
                     Accessible.onPressAction: removeAccountButton.clicked()
-
-                    background: Rectangle {
-                        radius: Style.halfTrayWindowRadius
-                        color: parent.hovered ? palette.highlight : palette.window
-                    }
-                }
+               }
             }
         }
     }
