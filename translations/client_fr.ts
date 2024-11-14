@@ -5981,7 +5981,7 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
     <message>
         <location filename="../src/gui/wizard/welcomepage.cpp" line="70"/>
         <source>Easy-to-use web mail, calendaring &amp; contacts</source>
-        <translation>Courrier électronique, calendrier et contacts en ligne faciles à utiliser</translation>
+        <translation>E-mail, agenda et contacts en ligne faciles à utiliser</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/welcomepage.cpp" line="71"/>
