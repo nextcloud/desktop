@@ -82,7 +82,14 @@ installed along with ``nextcloudcmd`` and thus be available in a system location
 be placed next to the binary as ``sync-exclude.lst`` or be explicitly specified
 with the ``--exclude`` switch.
 
-The required file format is one exclude item per line and can use wildcards.
+The required file content is one exclude item per line where wildcards are allowed, e.g.: 
+::
+
+    ~*.tmp
+    ._*
+    ]Thumbs.db
+    ]photothumb.db
+    System Volume Information
 
 Example
 ~~~~~~~~~~~~
