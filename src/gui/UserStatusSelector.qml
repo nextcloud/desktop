@@ -186,7 +186,7 @@ ColumnLayout {
                 anchors.centerIn: Overlay.overlay
 
                 background: Rectangle {
-                    color: palette.window
+                    color: palette.base
                     border.width: Style.normalBorderWidth
                     border.color: palette.dark
                     radius: Style.slightlyRoundedButtonRadius
