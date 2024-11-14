@@ -303,12 +303,17 @@ ApplicationWindow {
                         Instantiator {
                             id: userLineInstantiator
                             model: UserModel
-                            delegate: UserLine {
-                                onShowUserStatusSelector: {
-                                    userStatusDrawer.openUserStatusDrawer(model.index);
-                                    accountMenu.close();
+                            delegate: MenuItem {
+                                implicitHeight: instantiatedUserLine.height
+                                UserLine {
+                                    id: instantiatedUserLine
+                                    width: parent.width
+                                    onShowUserStatusSelector: {
+                                        userStatusDrawer.openUserStatusDrawer(model.index);
+                                        accountMenu.close();
+                                    }
+                                    onClicked: UserModel.currentUserId = model.index;
                                 }
-                                onClicked: UserModel.currentUserId = model.index;
                             }
                             onObjectAdded: accountMenu.insertItem(index, object)
                             onObjectRemoved: accountMenu.removeItem(object)
