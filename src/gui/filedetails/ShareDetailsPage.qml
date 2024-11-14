@@ -750,7 +750,9 @@ Page {
         contentWidth: (contentItem as ListView).contentWidth
         visible: copyShareLinkButton.visible
 
-        CustomButton {
+        background: Rectangle { color: palette.base }
+
+        Button {
             id: copyShareLinkButton
 
             function copyShareLink() {
@@ -779,15 +781,6 @@ Page {
             enabled: visible
 
             onClicked: copyShareLink()
-
-            // TODO
-            // Behavior on bgColor {
-            //     ColorAnimation { duration: Style.shortAnimationDuration }
-            // }
-
-            // Behavior on bgHoverOpacity {
-            //     NumberAnimation { duration: Style.shortAnimationDuration }
-            // }
 
             Behavior on Layout.preferredWidth {
                 SmoothedAnimation { duration: Style.shortAnimationDuration }
