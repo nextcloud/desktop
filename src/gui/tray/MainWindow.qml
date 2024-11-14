@@ -578,11 +578,32 @@ ApplicationWindow {
             }
         }   // Rectangle trayWindowHeaderBackground
 
-        SwipeView {
+        TabBar {
+            id: trayWindowTabBar
             anchors.top: trayWindowHeaderBackground.bottom
             anchors.left: trayWindowMainItem.left
             anchors.right: trayWindowMainItem.right
+
+            TabButton {
+                id: trayWindowActivitiesTabButton
+                text: qsTr("Activities")
+                icon.source: "image://svgimage-custom-color/activity.svg/" + palette.windowText
+            }
+
+            TabButton {
+                id: trayWindowUnifiedSearchTabButton
+                text: qsTr("Search")
+                icon.source: "image://svgimage-custom-color/search.svg/" + palette.windowText
+            }
+        }
+
+        SwipeView {
+            anchors.top: trayWindowTabBar.bottom
+            anchors.left: trayWindowMainItem.left
+            anchors.right: trayWindowMainItem.right
             anchors.bottom: trayWindowMainItem.bottom
+
+            currentIndex: trayWindowTabBar.currentIndex
 
             ColumnLayout { // Activities
                 spacing: 0
