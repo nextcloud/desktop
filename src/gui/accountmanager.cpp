@@ -509,7 +509,6 @@ AccountPtr AccountManager::loadAccountHelper(QSettings &settings)
     }
 
     acc->setCredentials(CredentialsFactory::create(authType));
-    acc->setDisplayName(acc->credentials()->user());
 
     acc->setNetworkProxySetting(settings.value(networkProxySettingC).value<Account::AccountNetworkProxySetting>());
     acc->setProxyType(settings.value(networkProxyTypeC).value<QNetworkProxy::ProxyType>());

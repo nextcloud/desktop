@@ -159,19 +159,19 @@ void Account::setAvatar(const QImage &img)
 
 QString Account::displayName() const
 {
-    return _displayName;
-}
+    auto credentialsUser = _davUser;
+    if (_credentials && !_credentials->user().isEmpty()) {
+        credentialsUser = _credentials->user();
+    }
 
-void Account::setDisplayName(const QString &username)
-{
-    auto displayName = QString("%1@%2").arg(username, _url.host());
+    auto displayName = QString("%1@%2").arg(credentialsUser, _url.host());
     const auto port = url().port();
     if (port > 0 && port != 80 && port != 443) {
         displayName.append(QLatin1Char(':'));
         displayName.append(QString::number(port));
     }
 
-    _displayName = displayName;
+    return displayName;
 }
 
 QString Account::userIdAtHostWithPort() const
