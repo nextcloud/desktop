@@ -319,26 +319,26 @@ ApplicationWindow {
                             onObjectRemoved: accountMenu.removeItem(object)
                         }
 
-                        Rectangle {
-                            anchors.left: parent.left
-                            anchors.right: parent.right
-                            implicitHeight: 1
-                            color: palette.dark
-                        }
-
                         MenuItem {
                             id: addAccountButton
-                            height: Systray.enableAddAccount ? Style.addAccountButtonHeight : 0
                             hoverEnabled: true
                             visible: Systray.enableAddAccount
 
                             icon.source: "image://svgimage-custom-color/add.svg/" + palette.windowText
+                            icon.width: Style.accountAvatarSize
                             text: qsTr("Add account") 
                             onClicked: UserModel.addAccount()
 
                             Accessible.role: Accessible.MenuItem
                             Accessible.name: qsTr("Add new account")
                             Accessible.onPressAction: addAccountButton.clicked()
+                        }
+
+                        Rectangle {
+                            anchors.left: parent.left
+                            anchors.right: parent.right
+                            implicitHeight: 1
+                            color: palette.dark
                         }
 
                         MenuItem {
