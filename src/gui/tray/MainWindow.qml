@@ -568,7 +568,7 @@ ApplicationWindow {
                     icon.source: "image://svgimage-custom-color/more-apps.svg/" + palette.windowText
 
                     onClicked: {
-                        if(appsMenuListView.count <= 0) {
+                        if(appsMenu.count <= 0) {
                             UserModel.openCurrentAccountServer()
                         } else if (appsMenu.visible) {
                             appsMenu.close()
@@ -589,47 +589,21 @@ ApplicationWindow {
                         height: implicitHeight + y > Style.trayWindowHeight ? Style.trayWindowHeight - y : implicitHeight
                         closePolicy: Menu.CloseOnPressOutsideParent | Menu.CloseOnEscape
 
-                        background: Rectangle {
-                            border.color: palette.dark
-                            radius: Style.halfTrayWindowRadius
-                            color: palette.window
-                        }
-
-                        contentItem: ScrollView {
-                            id: appsMenuScrollView
-                            ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
-
-                            data: WheelHandler {
-                                target: appsMenuScrollView.contentItem
-                            }
-                            ListView {
-                                id: appsMenuListView
-                                implicitHeight: contentHeight
-                                model: UserAppsModel
-                                interactive: true
-                                clip: true
-                                currentIndex: appsMenu.currentIndex
-                                delegate: MenuItem {
-                                    id: appEntry
-                                    anchors.left: parent.left
-                                    anchors.right: parent.right
-                                    text: model.appName
-                                    font.pixelSize: Style.topLinePixelSize
-                                    icon.source: model.appIconUrl
-                                    icon.color: palette.windowText
-                                    onTriggered: UserAppsModel.openAppUrl(appUrl)
-                                    hoverEnabled: true
-                                    Accessible.role: Accessible.MenuItem
-                                    Accessible.name: qsTr("Open %1 in browser").arg(model.appName)
-                                    Accessible.onPressAction: appEntry.triggered()
-
-                                    background: Rectangle {
-                                        anchors.fill: parent
-                                        anchors.margins: 1
-                                        color: appEntry.hovered ? palette.highlight : palette.window
-                                        radius: Style.halfTrayWindowRadius
-                                    }
-                                }
+                        Repeater { 
+                            model: UserAppsModel
+                            delegate: MenuItem {
+                                id: appEntry
+                                anchors.left: parent.left
+                                anchors.right: parent.right
+                                text: model.appName
+                                font.pixelSize: Style.topLinePixelSize
+                                icon.source: model.appIconUrl
+                                icon.color: palette.windowText
+                                onTriggered: UserAppsModel.openAppUrl(appUrl)
+                                hoverEnabled: true
+                                Accessible.role: Accessible.MenuItem
+                                Accessible.name: qsTr("Open %1 in browser").arg(model.appName)
+                                Accessible.onPressAction: appEntry.triggered()
                             }
                         }
                     }
