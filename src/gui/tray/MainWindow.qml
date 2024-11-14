@@ -714,16 +714,19 @@ ApplicationWindow {
 
             visible: !trayWindowMainItem.isUnifiedSearchActive
 
-            anchors.bottom: trayWindowUnifiedSearchInputContainer.bottom
+            anchors.top: trayWindowUnifiedSearchInputContainer.bottom
             anchors.left: trayWindowMainItem.left
             anchors.right: trayWindowMainItem.right
+        }
 
-            Rectangle {
-                id: syncStatusSeparator
-                width: parent.width
-                height: 1
-                color: Style.menuBorder
-            }
+        Rectangle {
+            id: syncStatusSeparator
+            anchors.left: syncStatus.left
+            anchors.right: syncStatus.right
+            anchors.bottom: syncStatus.bottom
+            height: 1
+            color: palette.dark
+            visible: !trayWindowMainItem.isUnifiedSearchActive
         }
 
         Loader {
