@@ -250,7 +250,7 @@ ColumnLayout {
                     z: Infinity
 
                     sourceComponent: Rectangle {
-                        color: palette.window
+                        color: palette.base
                         opacity: 0.5
 
                         NCBusyIndicator {
