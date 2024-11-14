@@ -138,12 +138,7 @@ AbstractButton {
 
             onClicked: userMoreButtonMenu.visible ? userMoreButtonMenu.close() : userMoreButtonMenu.popup()
 
-            Image {
-                anchors.fill: parent
-                source: "image://svgimage-custom-color/more.svg/" + palette.windowText
-                fillMode: Image.PreserveAspectFit
-                anchors.rightMargin: Style.accountLabelsAnchorsMargin
-            }
+            icon.source: "image://svgimage-custom-color/more.svg/" + palette.windowText
 
             AutoSizingMenu {
                 id: userMoreButtonMenu
