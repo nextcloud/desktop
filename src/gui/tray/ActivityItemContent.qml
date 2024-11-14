@@ -195,6 +195,7 @@ RowLayout {
                         visible: parent.hovered
                     }
 
+                    visible: root.showDismissButton
                     onClicked: root.dismissButtonClicked()
                 }
             }
