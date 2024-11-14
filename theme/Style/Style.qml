@@ -105,7 +105,7 @@ QtObject {
     property int activityListButtonWidth: 42
     property int activityListButtonHeight: 32
     property int activityListButtonIconSize: 18
-    property int headerButtonIconSize: 32
+    property int headerButtonIconSize: 48
     property int addButtonIconSize: 26
     property int dismissButtonSize: 26
     property int minimumActivityItemHeight: 24
@@ -129,6 +129,7 @@ QtObject {
     property int userStatusEmojiSize: 8
     property int userStatusSpacing: trayHorizontalMargin
     property int userStatusAnchorsMargin: 2
+    property int userLineSpacing: smallSpacing
     property int accountServerAnchorsMargin: 10
     property int accountLabelsSpacing: 4
     property int accountLabelsAnchorsMargin: 7
