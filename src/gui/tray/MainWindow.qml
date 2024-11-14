@@ -578,225 +578,237 @@ ApplicationWindow {
             }
         }   // Rectangle trayWindowHeaderBackground
 
-        UnifiedSearchInputContainer {
-            id: trayWindowUnifiedSearchInputContainer
-
+        SwipeView {
             anchors.top: trayWindowHeaderBackground.bottom
             anchors.left: trayWindowMainItem.left
             anchors.right: trayWindowMainItem.right
-            anchors.topMargin: Style.trayHorizontalMargin
-            anchors.leftMargin: Style.trayHorizontalMargin
-            anchors.rightMargin: Style.trayHorizontalMargin
-
-            text: UserModel.currentUser.unifiedSearchResultsListModel.searchTerm
-            readOnly: !UserModel.currentUser.isConnected || UserModel.currentUser.unifiedSearchResultsListModel.currentFetchMoreInProgressProviderId
-            isSearchInProgress: UserModel.currentUser.unifiedSearchResultsListModel.isSearchInProgress
-            onTextEdited: { UserModel.currentUser.unifiedSearchResultsListModel.searchTerm = trayWindowUnifiedSearchInputContainer.text }
-            onClearText: { UserModel.currentUser.unifiedSearchResultsListModel.searchTerm = "" }
-
-            // TODO: consult designers, this line looks weird atm
-            // Rectangle {
-            //     id: bottomUnifiedSearchInputSeparator
-
-            //     anchors.left: parent.left
-            //     anchors.right: parent.right
-            //     anchors.bottom: parent.bottom
-
-            //     height: 1
-            //     color: Style.menuBorder
-            //     visible: trayWindowMainItem.isUnifiedSearchActive
-            // }
-        }
-
-        ErrorBox {
-            id: unifiedSearchResultsErrorLabel
-            visible:  UserModel.currentUser.unifiedSearchResultsListModel.errorString && !unifiedSearchResultsListView.visible && ! UserModel.currentUser.unifiedSearchResultsListModel.isSearchInProgress && ! UserModel.currentUser.unifiedSearchResultsListModel.currentFetchMoreInProgressProviderId
-            text:  UserModel.currentUser.unifiedSearchResultsListModel.errorString
-            anchors.top: trayWindowUnifiedSearchInputContainer.bottom
-            anchors.left: trayWindowMainItem.left
-            anchors.right: trayWindowMainItem.right
-            anchors.margins: Style.trayHorizontalMargin
-        }
-
-        UnifiedSearchResultNothingFound {
-            id: unifiedSearchResultNothingFound
-
-            anchors.top: trayWindowUnifiedSearchInputContainer.bottom
-            anchors.left: trayWindowMainItem.left
-            anchors.right: trayWindowMainItem.right
-            anchors.topMargin: Style.trayHorizontalMargin
-
-            text: UserModel.currentUser.unifiedSearchResultsListModel.searchTerm
-
-            property bool isSearchRunning: UserModel.currentUser.unifiedSearchResultsListModel.isSearchInProgress
-            property bool waitingForSearchTermEditEnd: UserModel.currentUser.unifiedSearchResultsListModel.waitingForSearchTermEditEnd
-            property bool isSearchResultsEmpty: unifiedSearchResultsListView.count === 0
-            property bool nothingFound: text && isSearchResultsEmpty && !UserModel.currentUser.unifiedSearchResultsListModel.errorString
-
-            visible: !isSearchRunning && !waitingForSearchTermEditEnd && nothingFound
-        }
-
-        Loader {
-            id: unifiedSearchResultsListViewSkeletonLoader
-
-            anchors.top: trayWindowUnifiedSearchInputContainer.bottom
-            anchors.left: trayWindowMainItem.left
-            anchors.right: trayWindowMainItem.right
-            anchors.bottom: trayWindowMainItem.bottom
-            anchors.margins: controlRoot.padding
-
-            active: !unifiedSearchResultNothingFound.visible &&
-                    !unifiedSearchResultsListView.visible &&
-                    !UserModel.currentUser.unifiedSearchResultsListModel.errorString &&
-                    UserModel.currentUser.unifiedSearchResultsListModel.searchTerm
-
-            sourceComponent: UnifiedSearchResultItemSkeletonContainer {
-                anchors.fill: parent
-                spacing: unifiedSearchResultsListView.spacing
-                animationRectangleWidth: trayWindow.width
-            }
-        }
-
-        ScrollView {
-            id: controlRoot
-            contentWidth: availableWidth
-
-            ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
-
-            data: WheelHandler {
-                target: controlRoot.contentItem
-            }
-            visible: unifiedSearchResultsListView.count > 0
-
-            anchors.top: trayWindowUnifiedSearchInputContainer.bottom
-            anchors.left: trayWindowMainItem.left
-            anchors.right: trayWindowMainItem.right
             anchors.bottom: trayWindowMainItem.bottom
 
-            ListView {
-                id: unifiedSearchResultsListView
-                spacing: 4
-                clip: true
+            ColumnLayout { // Activities
+                spacing: 0
 
-                keyNavigationEnabled: true
-
-                reuseItems: true
-
-                Accessible.role: Accessible.List
-                Accessible.name: qsTr("Unified search results list")
-
-                model: UserModel.currentUser.unifiedSearchResultsListModel
-
-                delegate: UnifiedSearchResultListItem {
-                    width: unifiedSearchResultsListView.width
-                    isSearchInProgress:  unifiedSearchResultsListView.model.isSearchInProgress
-                    currentFetchMoreInProgressProviderId: unifiedSearchResultsListView.model.currentFetchMoreInProgressProviderId
-                    fetchMoreTriggerClicked: unifiedSearchResultsListView.model.fetchMoreTriggerClicked
-                    resultClicked: unifiedSearchResultsListView.model.resultClicked
-                    ListView.onPooled: isPooled = true
-                    ListView.onReused: isPooled = false
+                SyncStatus {
+                    id: syncStatus
+                    Layout.fillWidth: true
                 }
 
-                section.property: "providerName"
-                section.criteria: ViewSection.FullString
-                section.delegate: UnifiedSearchResultSectionItem {
-                    width: unifiedSearchResultsListView.width
-                }
-            }
-        }
-
-        SyncStatus {
-            id: syncStatus
-
-            visible: !trayWindowMainItem.isUnifiedSearchActive
-
-            anchors.top: trayWindowUnifiedSearchInputContainer.bottom
-            anchors.left: trayWindowMainItem.left
-            anchors.right: trayWindowMainItem.right
-        }
-
-        Rectangle {
-            id: syncStatusSeparator
-            anchors.left: syncStatus.left
-            anchors.right: syncStatus.right
-            anchors.bottom: syncStatus.bottom
-            height: 1
-            color: palette.dark
-            visible: !trayWindowMainItem.isUnifiedSearchActive
-        }
-
-        Loader {
-            id: newActivitiesButtonLoader
-
-            anchors.top: activityList.top
-            anchors.topMargin: 5
-            anchors.horizontalCenter: activityList.horizontalCenter
-
-            width: Style.newActivitiesButtonWidth
-            height: Style.newActivitiesButtonHeight
-
-            z: 1
-
-            active: false
-
-            sourceComponent: Button {
-                id: newActivitiesButton
-                hoverEnabled: true
-                padding: Style.smallSpacing
-
-                anchors.fill: parent
-
-                text: qsTr("New activities")
-
-                icon.source: "image://svgimage-custom-color/expand-less-black.svg" + "/" + Style.currentUserHeaderTextColor
-                icon.width: Style.activityLabelBaseWidth
-                icon.height: Style.activityLabelBaseWidth
-
-                onClicked: {
-                    activityList.scrollToTop();
-                    newActivitiesButtonLoader.active = false
+                Rectangle {
+                    id: syncStatusSeparator
+                    Layout.fillWidth: true
+                    height: 1
+                    color: palette.dark
+                    visible: !trayWindowMainItem.isUnifiedSearchActive
                 }
 
-                Timer {
-                    id: newActivitiesButtonDisappearTimer
-                    interval: Style.newActivityButtonDisappearTimeout
-                    running: newActivitiesButtonLoader.active && !newActivitiesButton.hovered
-                    repeat: false
-                    onTriggered: fadeoutActivitiesButtonDisappear.running = true
-                }
+                
+                ActivityList {
+                    id: activityList
+                    Layout.fillWidth: true
+                    Layout.fillHeight: true
+                    activeFocusOnTab: true
+                    model: activityModel
+                    onOpenFile: Qt.openUrlExternally(filePath);
+                    onActivityItemClicked: {
+                        model.slotTriggerDefaultAction(index)
+                    }
+                    Connections {
+                        target: activityModel
+                        function onInteractiveActivityReceived() {
+                            if (!activityList.atYBeginning) {
+                                newActivitiesButtonLoader.active = true;
+                            }
+                        }
+                    }
+                
+                    Loader {
+                        id: newActivitiesButtonLoader
 
-                OpacityAnimator {
-                    id: fadeoutActivitiesButtonDisappear
-                    target: newActivitiesButton
-                    from: 1
-                    to: 0
-                    duration: Style.newActivityButtonDisappearFadeTimeout
-                    loops: 1
-                    running: false
-                    onFinished: newActivitiesButtonLoader.active = false
+                        anchors.top: activityList.top
+                        anchors.topMargin: 5
+                        anchors.horizontalCenter: activityList.horizontalCenter
+
+                        width: Style.newActivitiesButtonWidth
+                        height: Style.newActivitiesButtonHeight
+
+                        z: 1
+
+                        active: false
+
+                        sourceComponent: Button {
+                            id: newActivitiesButton
+                            hoverEnabled: true
+                            padding: Style.smallSpacing
+
+                            anchors.fill: parent
+
+                            text: qsTr("New activities")
+
+                            icon.source: "image://svgimage-custom-color/expand-less-black.svg" + "/" + Style.currentUserHeaderTextColor
+                            icon.width: Style.activityLabelBaseWidth
+                            icon.height: Style.activityLabelBaseWidth
+
+                            onClicked: {
+                                activityList.scrollToTop();
+                                newActivitiesButtonLoader.active = false
+                            }
+
+                            Timer {
+                                id: newActivitiesButtonDisappearTimer
+                                interval: Style.newActivityButtonDisappearTimeout
+                                running: newActivitiesButtonLoader.active && !newActivitiesButton.hovered
+                                repeat: false
+                                onTriggered: fadeoutActivitiesButtonDisappear.running = true
+                            }
+
+                            OpacityAnimator {
+                                id: fadeoutActivitiesButtonDisappear
+                                target: newActivitiesButton
+                                from: 1
+                                to: 0
+                                duration: Style.newActivityButtonDisappearFadeTimeout
+                                loops: 1
+                                running: false
+                                onFinished: newActivitiesButtonLoader.active = false
+                            }
+                        }
+                    }
                 }
             }
-        }
 
-        ActivityList {
-            id: activityList
-            visible: !trayWindowMainItem.isUnifiedSearchActive
-            anchors.top: syncStatus.bottom
-            anchors.left: trayWindowMainItem.left
-            anchors.right: trayWindowMainItem.right
-            anchors.bottom: trayWindowMainItem.bottom
+            ColumnLayout { // Unified search
+                UnifiedSearchInputContainer {
+                    id: trayWindowUnifiedSearchInputContainer
 
-            activeFocusOnTab: true
-            model: activityModel
-            onOpenFile: Qt.openUrlExternally(filePath);
-            onActivityItemClicked: {
-                model.slotTriggerDefaultAction(index)
-            }
-            Connections {
-                target: activityModel
-                function onInteractiveActivityReceived() {
-                    if (!activityList.atYBeginning) {
-                        newActivitiesButtonLoader.active = true;
+                    Layout.fillWidth: true
+                    Layout.topMargin: Style.trayHorizontalMargin
+                    Layout.leftMargin: Style.trayHorizontalMargin
+                    Layout.rightMargin: Style.trayHorizontalMargin
+
+                    text: UserModel.currentUser.unifiedSearchResultsListModel.searchTerm
+                    readOnly: !UserModel.currentUser.isConnected || UserModel.currentUser.unifiedSearchResultsListModel.currentFetchMoreInProgressProviderId
+                    isSearchInProgress: UserModel.currentUser.unifiedSearchResultsListModel.isSearchInProgress
+                    onTextEdited: { UserModel.currentUser.unifiedSearchResultsListModel.searchTerm = trayWindowUnifiedSearchInputContainer.text }
+                    onClearText: { UserModel.currentUser.unifiedSearchResultsListModel.searchTerm = "" }
+
+                    // TODO: consult designers, this line looks weird atm
+                    // Rectangle {
+                    //     id: bottomUnifiedSearchInputSeparator
+
+                    //     anchors.left: parent.left
+                    //     anchors.right: parent.right
+                    //     anchors.bottom: parent.bottom
+
+                    //     height: 1
+                    //     color: Style.menuBorder
+                    //     visible: trayWindowMainItem.isUnifiedSearchActive
+                    // }
+                }
+
+                ErrorBox {
+                    id: unifiedSearchResultsErrorLabel
+
+                    Layout.fillWidth: true
+                    Layout.leftMargin: Style.trayHorizontalMargin
+                    Layout.rightMargin: Style.trayHorizontalMargin
+
+                    visible:  UserModel.currentUser.unifiedSearchResultsListModel.errorString && 
+                        !unifiedSearchResultsListView.visible &&
+                        !UserModel.currentUser.unifiedSearchResultsListModel.isSearchInProgress && 
+                        !UserModel.currentUser.unifiedSearchResultsListModel.currentFetchMoreInProgressProviderId
+                    text:  UserModel.currentUser.unifiedSearchResultsListModel.errorString 
+                } 
+
+                UnifiedSearchResultNothingFound {
+                    id: unifiedSearchResultNothingFound
+
+                    Layout.fillWidth: true
+                    Layout.leftMargin: Style.trayHorizontalMargin
+                    Layout.rightMargin: Style.trayHorizontalMargin
+
+                    text: UserModel.currentUser.unifiedSearchResultsListModel.searchTerm
+
+                    property bool isSearchRunning: UserModel.currentUser.unifiedSearchResultsListModel.isSearchInProgress
+                    property bool waitingForSearchTermEditEnd: UserModel.currentUser.unifiedSearchResultsListModel.waitingForSearchTermEditEnd
+                    property bool isSearchResultsEmpty: unifiedSearchResultsListView.count === 0
+                    property bool nothingFound: text && isSearchResultsEmpty && !UserModel.currentUser.unifiedSearchResultsListModel.errorString
+
+                    visible: !isSearchRunning && !waitingForSearchTermEditEnd && nothingFound
+                }
+
+                Item {
+                    id: unifiedSearchSpacer
+                    Layout.fillWidth: true
+                    Layout.fillHeight: true
+                    visible: !unifiedSearchResultsListViewSkeletonLoader.visible &&
+                              !unifiedSearchResultNothingFound.visible &&
+                              !unifiedSearchResultsListView.visible
+                }
+
+                Loader {
+                    id: unifiedSearchResultsListViewSkeletonLoader
+
+                    Layout.fillWidth: true
+                    Layout.fillHeight: true
+                    Layout.leftMargin: controlRoot.padding
+                    Layout.rightMargin: controlRoot.padding
+
+                    active: !unifiedSearchResultNothingFound.visible &&
+                            !unifiedSearchResultsListView.visible &&
+                            !UserModel.currentUser.unifiedSearchResultsListModel.errorString &&
+                            UserModel.currentUser.unifiedSearchResultsListModel.searchTerm
+                    visible: active
+
+                    sourceComponent: UnifiedSearchResultItemSkeletonContainer {
+                        anchors.fill: parent
+                        spacing: unifiedSearchResultsListView.spacing
+                        animationRectangleWidth: trayWindow.width
+                    }
+                }
+
+                ScrollView {
+                    id: controlRoot
+
+                    Layout.fillWidth: true
+                    Layout.fillHeight: true
+
+                    contentWidth: availableWidth
+
+                    ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
+
+                    data: WheelHandler {
+                        target: controlRoot.contentItem
+                    }
+                    visible: unifiedSearchResultsListView.count > 0
+
+                    ListView {
+                        id: unifiedSearchResultsListView
+                        spacing: 4
+                        clip: true
+
+                        keyNavigationEnabled: true
+
+                        reuseItems: true
+
+                        Accessible.role: Accessible.List
+                        Accessible.name: qsTr("Unified search results list")
+
+                        model: UserModel.currentUser.unifiedSearchResultsListModel
+
+                        delegate: UnifiedSearchResultListItem {
+                            width: unifiedSearchResultsListView.width
+                            isSearchInProgress:  unifiedSearchResultsListView.model.isSearchInProgress
+                            currentFetchMoreInProgressProviderId: unifiedSearchResultsListView.model.currentFetchMoreInProgressProviderId
+                            fetchMoreTriggerClicked: unifiedSearchResultsListView.model.fetchMoreTriggerClicked
+                            resultClicked: unifiedSearchResultsListView.model.resultClicked
+                            ListView.onPooled: isPooled = true
+                            ListView.onReused: isPooled = false
+                        }
+
+                        section.property: "providerName"
+                        section.criteria: ViewSection.FullString
+                        section.delegate: UnifiedSearchResultSectionItem {
+                            width: unifiedSearchResultsListView.width
+                        }
                     }
                 }
             }
