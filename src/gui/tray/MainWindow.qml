@@ -244,7 +244,13 @@ ApplicationWindow {
             anchors.right:  trayWindowMainItem.right
             anchors.top:    trayWindowMainItem.top
             height:         Style.trayWindowHeaderHeight
-            color:          palette.window
+            color:          Style.currentUserHeaderColor
+
+            palette {
+                text: Style.currentUserHeaderTextColor
+                windowText: Style.currentUserHeaderTextColor
+                buttonText: Style.currentUserHeaderTextColor
+            }
 
             RowLayout {
                 id: trayWindowHeaderLayout
