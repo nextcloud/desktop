@@ -32,7 +32,7 @@ Page {
     title: qsTr("Virtual files settings")
 
     background: Rectangle {
-        color: palette.window
+        color: palette.base
         border.width: root.showBorder ? Style.normalBorderWidth : 0
         border.color: root.palette.dark
     }

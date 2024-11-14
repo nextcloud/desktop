@@ -175,7 +175,7 @@ Page {
     padding: Style.standardSpacing * 2
 
     background: Rectangle {
-        color: palette.window
+        color: palette.base
         visible: root.backgroundsVisible
     }
 
