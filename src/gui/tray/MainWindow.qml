@@ -424,20 +424,6 @@ ApplicationWindow {
                                 radius: width * Style.trayFolderStatusIndicatorRadiusFactor
                             }
 
-                            // TODO: check if we want add any hover effect
-                            // Rectangle {
-                            //     id: currentAccountStatusIndicatorMouseHover
-                            //     visible: UserModel.currentUser && UserModel.currentUser.isConnected
-                            //              && UserModel.currentUser.serverHasUserStatus
-                            //     width: Style.accountAvatarStateIndicatorSize +  + Style.trayFolderStatusIndicatorSizeOffset
-                            //     height: width
-                            //     anchors.bottom: currentAccountAvatar.bottom
-                            //     anchors.right: currentAccountAvatar.right
-                            //     color: currentAccountButton.hovered ? palette.highlight : palette.window
-                            //     opacity: Style.trayFolderStatusIndicatorMouseHoverOpacityFactor
-                            //     radius: width * Style.trayFolderStatusIndicatorRadiusFactor
-                            // }
-
                             Image {
                                 id: currentAccountStatusIndicator
                                 visible: UserModel.currentUser && UserModel.currentUser.isConnected
