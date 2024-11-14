@@ -29,7 +29,7 @@ TabButton {
     padding: Style.smallSpacing
     background: Rectangle {
         radius: Style.slightlyRoundedButtonRadius
-        color: tabButton.pressed ? palette.highlight : palette.window
+        color: tabButton.pressed ? palette.highlight : "transparent"
     }
 
     contentItem: ColumnLayout {

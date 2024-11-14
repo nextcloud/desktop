@@ -69,7 +69,7 @@ Page {
     bottomPadding: intendedPadding
 
     background: Rectangle {
-        color: palette.window
+        color: palette.base
         visible: root.backgroundsVisible
     }
 
