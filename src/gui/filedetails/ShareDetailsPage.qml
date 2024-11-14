@@ -750,7 +750,7 @@ Page {
         contentWidth: (contentItem as ListView).contentWidth
         visible: copyShareLinkButton.visible
 
-        background: Rectangle { color: palette.base }
+        background: Rectangle { color: "transparent" }
 
         Button {
             id: copyShareLinkButton
