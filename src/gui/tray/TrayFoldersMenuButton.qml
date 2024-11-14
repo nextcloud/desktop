@@ -178,12 +178,6 @@ HeaderButton {
             height: implicitHeight + y > Style.trayWindowHeight ? Style.trayWindowHeight - y : implicitHeight
             closePolicy: Menu.CloseOnPressOutsideParent | Menu.CloseOnEscape
 
-            background: Rectangle {
-                border.color: palette.dark
-                color: palette.window
-                radius: Style.trayWindowRadius
-            }
-
             contentItem: ScrollView {
                 id: foldersMenuScrollView
 
