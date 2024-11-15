@@ -211,7 +211,7 @@ ColumnLayout {
                 Layout.preferredHeight: contentHeight + (Style.smallSpacing * 2)
 
                 placeholderText: qsTr("What is your status?")
-                placeholderTextColor: palette.midlight
+                placeholderTextColor: palette.dark
                 text: userStatusSelectorModel.userStatusMessage
                 verticalAlignment: TextInput.AlignVCenter
                 selectByMouse: true
