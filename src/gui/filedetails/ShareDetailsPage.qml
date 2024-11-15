@@ -716,18 +716,16 @@ Page {
 
             Button {
                 height: Style.standardPrimaryButtonHeight
-                icon.source: hovered
-                    ? "image://svgimage-custom-color/close.svg/" + palette.brightText
-                    : "image://svgimage-custom-color/close.svg/" + Style.errorBoxBackgroundColor
+                icon.source: "image://svgimage-custom-color/close.svg/" + palette.buttonText
+                icon.height: Style.extraSmallIconSize
                 text: qsTr("Unshare")
                 onClicked: root.deleteShare()
             }
 
             Button {
                 height: Style.standardPrimaryButtonHeight
-                icon.source: hovered
-                    ? "image://svgimage-custom-color/add.svg/" + palette.brightText
-                    : "image://svgimage-custom-color/add.svg/" + root.accentColor
+                icon.source: "image://svgimage-custom-color/add.svg/" + palette.buttonText
+                icon.height: Style.extraSmallIconSize
                 text: qsTr("Add another link")
                 visible: root.isLinkShare && root.canCreateLinkShares
                 enabled: visible
