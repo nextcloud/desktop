@@ -252,11 +252,12 @@ ColumnLayout {
 
                     sourceComponent: Rectangle {
                         color: palette.base
+                        radius: Style.progressBarRadius
                         opacity: 0.5
 
                         NCBusyIndicator {
                             anchors.centerIn: parent
-                            color: palette.midlight
+                            color: palette.dark
                         }
                     }
                 }
