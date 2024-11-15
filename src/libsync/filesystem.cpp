@@ -371,7 +371,7 @@ bool FileSystem::setFolderPermissions(const QString &path,
         qCWarning(lcFileSystem) << "error when calling GetSecurityDescriptorDacl" << path << GetLastError();
         return false;
     }
-    if (!daclPresent) {
+    if (!daclPresent || !resultDacl) {
         qCWarning(lcFileSystem) << "error when calling DACL needed to set a folder read-only or read-write is missing" << path;
         return false;
     }
