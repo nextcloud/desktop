@@ -25,7 +25,6 @@
         <file>src/gui/tray/UserLine.qml</file>
         <file>src/gui/tray/HeaderButton.qml</file>
         <file>src/gui/tray/SyncStatus.qml</file>
-        <file>src/gui/tray/ActivityActionButton.qml</file>
         <file>src/gui/tray/ActivityItem.qml</file>
         <file>src/gui/tray/AutoSizingMenu.qml</file>
         <file>src/gui/tray/ActivityList.qml</file>
@@ -38,10 +37,6 @@
         <file>src/gui/tray/UnifiedSearchResultListItem.qml</file>
         <file>src/gui/tray/UnifiedSearchResultNothingFound.qml</file>
         <file>src/gui/tray/UnifiedSearchResultSectionItem.qml</file>
-        <file>src/gui/tray/CustomButton.qml</file>
-        <file>src/gui/tray/NCButtonContents.qml</file>
-        <file>src/gui/tray/NCButtonBackground.qml</file>
-        <file>src/gui/tray/TextButtonContents.qml</file>
         <file>src/gui/tray/ActivityItemContextMenu.qml</file>
         <file>src/gui/tray/ActivityItemActions.qml</file>
         <file>src/gui/tray/ActivityItemContent.qml</file>
