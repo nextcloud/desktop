@@ -260,6 +260,7 @@ Page {
             readonly property int itemPadding: Style.smallSpacing
 
             width: parent.width
+            spacing: Style.smallSpacing
 
             RowLayout {
                 Layout.fillWidth: true
@@ -313,7 +314,8 @@ Page {
                 visible: active
                 sourceComponent: CheckBox {
                     spacing: scrollContentsColumn.indicatorSpacing
-                    padding: scrollContentsColumn.itemPadding
+                    leftPadding: scrollContentsColumn.itemPadding
+                    rightPadding: scrollContentsColumn.itemPadding
                     indicator.width: scrollContentsColumn.indicatorItemWidth
                     indicator.height: scrollContentsColumn.indicatorItemWidth
 
@@ -339,7 +341,7 @@ Page {
                 visible: active
                 sourceComponent: ColumnLayout {
                     id: permissionRadioButtonsLayout
-                    spacing: 0
+                    spacing: Layout.smallSpacing
                     width: parent.width
 
                     ButtonGroup {
@@ -354,7 +356,8 @@ Page {
                         checked: root.currentPermissionMode === permissionMode
                         text: qsTr("View only")
                         spacing: scrollContentsColumn.indicatorSpacing
-                        padding: scrollContentsColumn.itemPadding
+                        leftPadding: scrollContentsColumn.itemPadding
+                        rightPadding: scrollContentsColumn.itemPadding
                         onClicked: root.permissionModeChanged(permissionMode)
                     }
 
@@ -366,7 +369,8 @@ Page {
                         checked: root.currentPermissionMode === permissionMode
                         text: qsTr("Allow upload and editing")
                         spacing: scrollContentsColumn.indicatorSpacing
-                        padding: scrollContentsColumn.itemPadding
+                        leftPadding: scrollContentsColumn.itemPadding
+                        rightPadding: scrollContentsColumn.itemPadding
                         onClicked: root.permissionModeChanged(permissionMode)
                     }
 
@@ -378,7 +382,8 @@ Page {
                         checked: root.currentPermissionMode === permissionMode
                         text: qsTr("File drop (upload only)")
                         spacing: scrollContentsColumn.indicatorSpacing
-                        padding: scrollContentsColumn.itemPadding
+                        leftPadding: scrollContentsColumn.itemPadding
+                        rightPadding: scrollContentsColumn.itemPadding
                         onClicked: root.permissionModeChanged(permissionMode)
                     }
 
@@ -388,7 +393,8 @@ Page {
                         Layout.fillWidth: true
 
                         spacing: scrollContentsColumn.indicatorSpacing
-                        padding: scrollContentsColumn.itemPadding
+                        leftPadding: scrollContentsColumn.itemPadding
+                        rightPadding: scrollContentsColumn.itemPadding
                         indicator.width: scrollContentsColumn.indicatorItemWidth
                         indicator.height: scrollContentsColumn.indicatorItemWidth
 
@@ -427,7 +433,8 @@ Page {
                         anchors.right: parent.right
 
                         spacing: scrollContentsColumn.indicatorSpacing
-                        padding: scrollContentsColumn.itemPadding
+                        leftPadding: scrollContentsColumn.itemPadding
+                        rightPadding: scrollContentsColumn.itemPadding
                         indicator.width: scrollContentsColumn.indicatorItemWidth
                         indicator.height: scrollContentsColumn.indicatorItemWidth
 
@@ -452,7 +459,8 @@ Page {
                 Layout.fillWidth: true
 
                 spacing: scrollContentsColumn.indicatorSpacing
-                padding: scrollContentsColumn.itemPadding
+                leftPadding: scrollContentsColumn.itemPadding
+                rightPadding: scrollContentsColumn.itemPadding
                 indicator.width: scrollContentsColumn.indicatorItemWidth
                 indicator.height: scrollContentsColumn.indicatorItemWidth
 
@@ -561,7 +569,8 @@ Page {
                 Layout.fillWidth: true
 
                 spacing: scrollContentsColumn.indicatorSpacing
-                padding: scrollContentsColumn.itemPadding
+                leftPadding: scrollContentsColumn.itemPadding
+                rightPadding: scrollContentsColumn.itemPadding
                 indicator.width: scrollContentsColumn.indicatorItemWidth
                 indicator.height: scrollContentsColumn.indicatorItemWidth
 
@@ -645,7 +654,8 @@ Page {
                 Layout.fillWidth: true
 
                 spacing: scrollContentsColumn.indicatorSpacing
-                padding: scrollContentsColumn.itemPadding
+                leftPadding: scrollContentsColumn.itemPadding
+                rightPadding: scrollContentsColumn.itemPadding
                 indicator.width: scrollContentsColumn.indicatorItemWidth
                 indicator.height: scrollContentsColumn.indicatorItemWidth
 
