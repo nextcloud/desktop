@@ -85,6 +85,7 @@ void OwncloudSetupWizard::runWizard(QObject *obj, const char *amember, QWidget *
 
     wiz = new OwncloudSetupWizard(parent);
     connect(wiz, SIGNAL(ownCloudWizardDone(int)), obj, amember);
+    connect(wiz->_ocWizard, &OwncloudWizard::wizardClosed, obj, [] { wiz.clear(); });
     FolderMan::instance()->setSyncEnabled(false);
     wiz->startWizard();
 }
