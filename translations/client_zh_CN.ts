@@ -1462,7 +1462,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.cpp" line="99"/>
         <source>The file &quot;%1&quot; could not be synced because of a case clash conflict with an existing file on this system.</source>
-        <translation>无法同步文件「%1」，因为其会与系统上存在的文件产生大小写冲突。</translation>
+        <translation>无法同步文件“%1”，因为其会与系统上存在的文件产生大小写冲突。</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.cpp" line="100"/>
@@ -3359,7 +3359,7 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="92"/>
         <source>The file &quot;%1&quot; could not be synced because the name contains characters which are not allowed on this system.</source>
-        <translation>无法同步文件「%1」，因为名称包含了此系统中不允许的字符。</translation>
+        <translation>无法同步文件“%1”，因为名称包含了此系统中不允许的字符。</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="93"/>
@@ -5003,7 +5003,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <source>Could not encrypt the following folder: &quot;%1&quot;.
 
 Server replied with error: %2</source>
-        <translation>无法加密以下文件夹：「%1」。
+        <translation>无法加密以下文件夹：“%1”。
 
 服务器响应了错误：%2</translation>
     </message>
@@ -5015,7 +5015,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="556"/>
         <source>The following folder was encrypted successfully: &quot;%1&quot;</source>
-        <translation>以下文件夹加密成功：「%1」</translation>
+        <translation>以下文件夹加密成功：“%1”</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="766"/>
