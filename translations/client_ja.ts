@@ -979,7 +979,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1324"/>
         <source>You need to accept the terms of service</source>
-        <translation type="unfinished"/>
+        <translation>利用規約に同意する必要があります</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1275"/>
@@ -1090,7 +1090,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="176"/>
         <source>Need the user to accept the terms of service</source>
-        <translation type="unfinished"/>
+        <translation>利用規約への同意が必要</translation>
     </message>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="166"/>
@@ -1705,7 +1705,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="706"/>
         <source>Encrypted metadata setup error: initial signature from server is empty.</source>
-        <translation type="unfinished"/>
+        <translation>暗号化メタデータのセットアップエラー：サーバーからの初期署名が空です。</translation>
     </message>
 </context>
 <context>
@@ -2298,14 +2298,18 @@ This means that the synchronization client might not upload local changes immedi
         <source>A large number of files in the server have been deleted.
 Please confirm if you'd like to proceed with these deletions.
 Alternatively, you can restore all deleted files by uploading from &apos;%1&apos; folder to the server.</source>
-        <translation type="unfinished"/>
+        <translation>サーバー内の大量のファイルが削除されました。
+削除を続行するか確認してください。
+または、&apos;%1&apos; フォルダからサーバにアップロードすることで、削除されたファイルをすべて復元できます。</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1646"/>
         <source>A large number of files in your local '%1' folder have been deleted.
 Please confirm if you'd like to proceed with these deletions.
 Alternatively, you can restore all deleted files by downloading them from the server.</source>
-        <translation type="unfinished"/>
+        <translation>ローカル &apos;%1&apos; フォルダ内の多数のファイルが削除されました。
+削除を続行するか確認してください。
+または、削除されたファイルをサーバーからダウンロードして復元することもできます。</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1647"/>
@@ -2315,17 +2319,17 @@ Alternatively, you can restore all deleted files by downloading them from the se
     <message>
         <location filename="../src/gui/folder.cpp" line="1651"/>
         <source>Proceed with Deletion</source>
-        <translation type="unfinished"/>
+        <translation>削除を進める</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1652"/>
         <source>Restore Files to Server</source>
-        <translation type="unfinished"/>
+        <translation>ファイルをサーバーに復元する</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1652"/>
         <source>Restore Files from Server</source>
-        <translation type="unfinished"/>
+        <translation>サーバーからファイルを復元する</translation>
     </message>
 </context>
 <context>
@@ -3122,7 +3126,10 @@ Note that this selects only what pool upgrades are taken from, and that there ar
 
 Downgrading versions is not possible immediately: changing from beta to stable means waiting for the new stable version.</source>
         <comment>list of available update channels to non enterprise users and downgrading warning</comment>
-        <translation type="unfinished"/>
+        <translation>- beta: 十分なテストが行われていない可能性のある新機能を含むバージョンが含まれます。
+- daily: テストと開発のためだけに毎日作成されるバージョンが含まれます。
+
+バージョンのダウングレードはすぐにはできません。ベータ版から安定版への変更は、新しい安定版を待つことを意味します。</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="405"/>
@@ -3138,7 +3145,9 @@ Downgrading versions is not possible immediately: changing from beta to stable m
 
 Downgrading versions is not possible immediately: changing from stable to enterprise means waiting for the new enterprise version.</source>
         <comment>list of available update channels to enterprise users and downgrading warning</comment>
-        <translation type="unfinished"/>
+        <translation> - enterprise: 顧客向けの安定版を含まれます。
+
+安定版からエンタープライズ版への変更は、新しいエンタープライズ版を待つことを意味します。</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="410"/>
@@ -3166,7 +3175,9 @@ Downgrading versions is not possible immediately: changing from beta to stable m
 - stable: contains tested versions considered reliable
 </source>
         <comment>starts list of available update channels, stable is always available</comment>
-        <translation type="unfinished"/>
+        <translation>チャネルは、インストールに提供されるアップグレードを決定します。
+-stable:信頼できると見なされるテスト済みバージョンが含まれます。
+</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="364"/>
@@ -4280,22 +4291,22 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/discovery.cpp" line="442"/>
         <source>Reason: the entire filename is forbidden.</source>
-        <translation type="unfinished"/>
+        <translation>理由：ファイル名全体が禁止されています。</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="445"/>
         <source>Reason: the filename has a forbidden base name (filename start).</source>
-        <translation type="unfinished"/>
+        <translation> 理由：ファイル名に禁止されているベース名（ファイル名の先頭）があります。</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="448"/>
         <source>Reason: the file has a forbidden extension (.%1).</source>
-        <translation type="unfinished"/>
+        <translation> 理由: ファイルには禁止されている拡張子 (.%1) があります。</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="451"/>
         <source>Reason: the filename contains a forbidden character (%1).</source>
-        <translation type="unfinished"/>
+        <translation> 理由: ファイル名に禁止文字 (%1) が含まれています。</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="516"/>
@@ -5999,12 +6010,12 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="293"/>
         <source>Terms of service</source>
-        <translation type="unfinished"/>
+        <translation>サービス利用規約</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="294"/>
         <source>Your account %1 requires you to accept the terms of service of your server. You will be redirected to %2 to acknowledge that you have read it and agrees with it.</source>
-        <translation type="unfinished"/>
+        <translation>アカウント %1 では、サーバの利用規約に同意する必要があります。%2にリダイレクトされ、利用規約を読み、同意したことを確認します。</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="308"/>
