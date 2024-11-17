@@ -968,7 +968,7 @@ QString substLang(const QString &lang)
 void Application::setupTranslations()
 {
     const auto enforcedLocale = Theme::instance()->enforcedLocale();
-    const auto lang = substLang(!enforcedLocale.isEmpty() ? enforcedLocale : QLocale::system().name());
+    const auto lang = substLang(!enforcedLocale.isEmpty() ? enforcedLocale : QLocale::system().uiLanguages(QLocale::TagSeparator::Underscore).first());
 
     auto *translator = new QTranslator(this);
     auto *qtTranslator = new QTranslator(this);
