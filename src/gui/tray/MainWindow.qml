@@ -697,6 +697,8 @@ ApplicationWindow {
             }
 
             ColumnLayout { // Unified search
+                spacing: 0
+
                 UnifiedSearchInputContainer {
                     id: trayWindowUnifiedSearchInputContainer
 
@@ -704,25 +706,21 @@ ApplicationWindow {
                     Layout.topMargin: Style.trayHorizontalMargin
                     Layout.leftMargin: Style.trayHorizontalMargin
                     Layout.rightMargin: Style.trayHorizontalMargin
+                    Layout.bottomMargin: Style.trayHorizontalMargin
 
                     text: UserModel.currentUser.unifiedSearchResultsListModel.searchTerm
                     readOnly: !UserModel.currentUser.isConnected || UserModel.currentUser.unifiedSearchResultsListModel.currentFetchMoreInProgressProviderId
                     isSearchInProgress: UserModel.currentUser.unifiedSearchResultsListModel.isSearchInProgress
                     onTextEdited: { UserModel.currentUser.unifiedSearchResultsListModel.searchTerm = trayWindowUnifiedSearchInputContainer.text }
                     onClearText: { UserModel.currentUser.unifiedSearchResultsListModel.searchTerm = "" }
+                }
 
-                    // TODO: consult designers, this line looks weird atm
-                    // Rectangle {
-                    //     id: bottomUnifiedSearchInputSeparator
-
-                    //     anchors.left: parent.left
-                    //     anchors.right: parent.right
-                    //     anchors.bottom: parent.bottom
-
-                    //     height: 1
-                    //     color: Style.menuBorder
-                    //     visible: trayWindowMainItem.isUnifiedSearchActive
-                    // }
+                Rectangle {
+                    id: bottomUnifiedSearchInputSeparator
+                    Layout.fillWidth: true
+                    height: 1
+                    color: Style.menuBorder
+                    visible: trayWindowMainItem.isUnifiedSearchActive
                 }
 
                 ErrorBox {
