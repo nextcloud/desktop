@@ -978,7 +978,7 @@ Současně tato akce zruší jakoukoli právě probíhající synchronizaci.</tr
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1324"/>
         <source>You need to accept the terms of service</source>
-        <translation type="unfinished"/>
+        <translation>Je třeba přijmout všeobecné podmínky</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1275"/>
@@ -1089,7 +1089,7 @@ Současně tato akce zruší jakoukoli právě probíhající synchronizaci.</tr
     <message>
         <location filename="../src/gui/accountstate.cpp" line="176"/>
         <source>Need the user to accept the terms of service</source>
-        <translation type="unfinished"/>
+        <translation>Vyžadovat po uživateli přijetí všeobecných podmínek</translation>
     </message>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="166"/>
@@ -1704,7 +1704,7 @@ Současně tato akce zruší jakoukoli právě probíhající synchronizaci.</tr
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="706"/>
         <source>Encrypted metadata setup error: initial signature from server is empty.</source>
-        <translation type="unfinished"/>
+        <translation>Chyba nastavení šifrovaných metadat: počáteční signatura ze serveru je prázdná.</translation>
     </message>
 </context>
 <context>
@@ -2296,14 +2296,18 @@ To znamená, že se může stávat, že synchronizační klient nebude místní 
         <source>A large number of files in the server have been deleted.
 Please confirm if you'd like to proceed with these deletions.
 Alternatively, you can restore all deleted files by uploading from &apos;%1&apos; folder to the server.</source>
-        <translation type="unfinished"/>
+        <translation>Na serveru bylo smazáno velké množství souborů.
+Potvrďte, že chcete v těchto mazáních pokračovat.
+Případně je možné veškeré smazané soubory obnovit jejich nahráním ze složky „%1“ na server.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1646"/>
         <source>A large number of files in your local '%1' folder have been deleted.
 Please confirm if you'd like to proceed with these deletions.
 Alternatively, you can restore all deleted files by downloading them from the server.</source>
-        <translation type="unfinished"/>
+        <translation>V lokální složce „%1“ bylo smazáno velké mnoštví .
+Potvrďte, že chcete v těchto mazáních pokračovat.
+Případně je možné veškeré smazané soubory obnovit jejich stažením si ze serveru.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1647"/>
@@ -2313,17 +2317,17 @@ Alternatively, you can restore all deleted files by downloading them from the se
     <message>
         <location filename="../src/gui/folder.cpp" line="1651"/>
         <source>Proceed with Deletion</source>
-        <translation type="unfinished"/>
+        <translation>Pokračovat v mazání</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1652"/>
         <source>Restore Files to Server</source>
-        <translation type="unfinished"/>
+        <translation>Obnovit soubory na server</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1652"/>
         <source>Restore Files from Server</source>
-        <translation type="unfinished"/>
+        <translation>Obnovit soubory ze serveru</translation>
     </message>
 </context>
 <context>
@@ -2822,7 +2826,7 @@ Alternatively, you can restore all deleted files by downloading them from the se
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="605"/>
         <source>Virtual files are not supported for Windows partition roots as local folder. Please choose a valid subfolder under drive letter.</source>
-        <translation>Ve Windows kořenovém adresáři oddílu disku nejsou virtuální soubory podporovány. Vyberte platný adresář v disku.</translation>
+        <translation>V kořeni oddílu s Windows, coby lokální složce, nejsou virtuální soubory podporovány. Vyberte platnou podsložku na písmeni disku.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="628"/>
@@ -3119,7 +3123,10 @@ Poznamenejme, že je možné přejít na novější verzi, ale není možné se 
 
 Downgrading versions is not possible immediately: changing from beta to stable means waiting for the new stable version.</source>
         <comment>list of available update channels to non enterprise users and downgrading warning</comment>
-        <translation type="unfinished"/>
+        <translation>- beta: obsahuje verze s novými funkcemi, u kterých se může stát, že ještě nebudou důkladně vyzkoušené
+- denní: obsahuje verze vytvářené každý den, určené pouze pro zkoušení a vývoj
+
+Přechod na konzervativnější verze není možný: změna z beta na stable znamená vyčkat na novou stabilní verzi.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="405"/>
@@ -3135,7 +3142,9 @@ Downgrading versions is not possible immediately: changing from beta to stable m
 
 Downgrading versions is not possible immediately: changing from stable to enterprise means waiting for the new enterprise version.</source>
         <comment>list of available update channels to enterprise users and downgrading warning</comment>
-        <translation type="unfinished"/>
+        <translation>- enterprise: obsahuje stabilní verze pro zákazníky.
+
+Přechod na konzervativnější verze není možný: změna ze stable na enterprise znamená vyčkat na novou enterprise verzi.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="410"/>
@@ -3163,7 +3172,9 @@ Okamžitý přechod na konzervativnější verze není možný: změna z beta na
 - stable: contains tested versions considered reliable
 </source>
         <comment>starts list of available update channels, stable is always available</comment>
-        <translation type="unfinished"/>
+        <translation>Kanál určuje, které aktualizace budou nabízeny pro instalaci:
+- stable: obsahuje otestované verze, považované za spolehlivé
+</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="364"/>
@@ -3816,7 +3827,7 @@ Poznamenejme, že použití jakékoli volby příkazového řádku má před tí
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="258"/>
         <source>Virtual files are not supported for Windows partition roots as local folder. Please choose a valid subfolder under drive letter.</source>
-        <translation>Ve Windows kořenovém adresáři oddílu disku nejsou virtuální soubory podporovány. Vyberte platný adresář v disku.</translation>
+        <translation>V kořeni oddílu s Windows, coby lokální složce, nejsou virtuální soubory podporovány. Vyberte platnou podsložku na písmeni disku.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="295"/>
@@ -4279,22 +4290,22 @@ Toto je nový, experimentální režim. Pokud se jej rozhodnete používat, pros
     <message>
         <location filename="../src/libsync/discovery.cpp" line="442"/>
         <source>Reason: the entire filename is forbidden.</source>
-        <translation type="unfinished"/>
+        <translation>Důvod: celý název souboru není povolený.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="445"/>
         <source>Reason: the filename has a forbidden base name (filename start).</source>
-        <translation type="unfinished"/>
+        <translation>Důvod: název souboru má nepovolený základ (začátek názvu souboru).</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="448"/>
         <source>Reason: the file has a forbidden extension (.%1).</source>
-        <translation type="unfinished"/>
+        <translation>Důvod: soubor má nepovolenou přípon (.%1).</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="451"/>
         <source>Reason: the filename contains a forbidden character (%1).</source>
-        <translation type="unfinished"/>
+        <translation>Důvod: název souboru obsahuje nepovolený znak (%1).</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="516"/>
@@ -5998,12 +6009,12 @@ Server odpověděl chybou: %2</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="293"/>
         <source>Terms of service</source>
-        <translation type="unfinished"/>
+        <translation>Všeobecné podmínky</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="294"/>
         <source>Your account %1 requires you to accept the terms of service of your server. You will be redirected to %2 to acknowledge that you have read it and agrees with it.</source>
-        <translation type="unfinished"/>
+        <translation>Váš %1 účet vyžaduje abyste přijali všeobecné podmínky služeb serveru, který využíváte. Budete přesměrování na %2, kde můžete potvrdit, že jste si je přečetli a souhlasíte s nimi.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="308"/>

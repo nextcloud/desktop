@@ -954,7 +954,7 @@ Esta acción interromperá calquera sincronización que estea a executarse actua
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1250"/>
         <source>Obtaining authorization from the browser. &lt;a href=&apos;%1&apos;&gt;Click here&lt;/a&gt; to re-open the browser.</source>
-        <translation>Obtendo autorización dende o navegador. &lt;a href=&apos;%1&apos;&gt;Prema aquí&lt;/a&gt; para volver abrir o navegador.</translation>
+        <translation>Obtendo autorización desde o navegador. &lt;a href=&apos;%1&apos;&gt;Prema aquí&lt;/a&gt; para volver abrir o navegador.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1254"/>
@@ -1800,7 +1800,7 @@ Esta acción interromperá calquera sincronización que estea a executarse actua
         <location filename="../src/gui/editlocallyjob.cpp" line="121"/>
         <location filename="../src/gui/editlocallyjob.cpp" line="132"/>
         <source>Could not validate the request to open a file from server.</source>
-        <translation>Non foi posíbel validar a solicitude para abrir un ficheiro dende o servidor.</translation>
+        <translation>Non foi posíbel validar a solicitude para abrir un ficheiro desde o servidor.</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="261"/>
@@ -1865,7 +1865,7 @@ Esta acción interromperá calquera sincronización que estea a executarse actua
     <message>
         <location filename="../src/gui/editlocallymanager.cpp" line="118"/>
         <source>Could not validate the request to open a file from server.</source>
-        <translation>Non foi posíbel validar a solicitude para abrir un ficheiro dende o servidor.</translation>
+        <translation>Non foi posíbel validar a solicitude para abrir un ficheiro desde o servidor.</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallymanager.cpp" line="119"/>
@@ -2009,7 +2009,7 @@ Isto pode ser un problema coas súas bibliotecas OpenSSL.</translation>
         <location filename="../src/gui/creds/flow2auth.cpp" line="113"/>
         <location filename="../src/gui/creds/flow2auth.cpp" line="231"/>
         <source>Error returned from the server: &lt;em&gt;%1&lt;/em&gt;</source>
-        <translation>Erro devolto dende o servidor: &lt;em&gt;%1&lt;/em&gt;</translation>
+        <translation>Erro devolto desde o servidor: &lt;em&gt;%1&lt;/em&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/flow2auth.cpp" line="116"/>
@@ -2021,7 +2021,7 @@ Isto pode ser un problema coas súas bibliotecas OpenSSL.</translation>
         <location filename="../src/gui/creds/flow2auth.cpp" line="119"/>
         <location filename="../src/gui/creds/flow2auth.cpp" line="237"/>
         <source>Could not parse the JSON returned from the server: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</source>
-        <translation>Non foi posíbel analizar o JSON devolto dende o servidor: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</translation>
+        <translation>Non foi posíbel analizar o JSON devolto desde o servidor: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/flow2auth.cpp" line="122"/>
@@ -2233,7 +2233,7 @@ Are you sure you want to sync those actions with the server?
 If this was an accident and you decide to keep your files, they will be re-synced from the server.</source>
         <translation>Elimináronse todos os ficheiros do cartafol de sincronización local «%1». Estes ficheiros eliminados sincronizaranse co seu servidor, polo que tales ficheiros non estarán dispoñíbeis a non ser que sexan restaurados.
 Confirma que quere sincronizar esas accións co servidor?
-Se isto foi un accidente e decide manter os seus ficheiros, volveranse sincronizar dende o servidor.</translation>
+Se isto foi un accidente e decide manter os seus ficheiros, volveranse sincronizar desde o servidor.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1417"/>
@@ -2300,7 +2300,7 @@ Please confirm if you'd like to proceed with these deletions.
 Alternatively, you can restore all deleted files by uploading from &apos;%1&apos; folder to the server.</source>
         <translation>Elimináronse un gran número de ficheiros do servidor.
 Confirme que quere proceder a estas eliminacións.
-Como alternativa, pode restaurar todos os ficheiros eliminados enviándoos dende o cartafol «%1» ao servidor.</translation>
+Como alternativa, pode restaurar todos os ficheiros eliminados enviándoos desde o cartafol «%1» ao servidor.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1646"/>
@@ -2537,7 +2537,7 @@ Como alternativa, pode restaurar todos os ficheiros eliminados descargándoos do
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="210"/>
         <source>Error while loading the list of folders from the server.</source>
-        <translation>Produciuse un erro ao cargar a lista de cartafoles dende o servidor.</translation>
+        <translation>Produciuse un erro ao cargar a lista de cartafoles desde o servidor.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="213"/>
@@ -3250,7 +3250,7 @@ Non é posíbel reverter versións inmediatamente: cambiar de beta a estábel si
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="156"/>
         <source>&lt;a href=&quot;%1&quot;&gt;Click here&lt;/a&gt; to request an app password from the web interface.</source>
-        <translation>&lt;a href=&quot;%1&quot;&gt;Prema aquí&lt;/a&gt; para solicitar un contrasinal de aplicación dende a interface web.</translation>
+        <translation>&lt;a href=&quot;%1&quot;&gt;Prema aquí&lt;/a&gt; para solicitar un contrasinal de aplicación desde a interface web.</translation>
     </message>
 </context>
 <context>
@@ -5445,7 +5445,7 @@ O servidor respondeu co erro: %2</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="653"/>
         <source>Unable to read from the sync journal.</source>
-        <translation>Non é posíbel ler dende o diario de sincronización.</translation>
+        <translation>Non é posíbel ler desde o diario de sincronización.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="782"/>
@@ -6185,7 +6185,7 @@ O servidor respondeu co erro: %2</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="304"/>
         <source>Synchronize everything from server</source>
-        <translation>Sincronizar todo dende o servidor</translation>
+        <translation>Sincronizar todo desde o servidor</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="360"/>
@@ -6883,7 +6883,7 @@ O servidor respondeu co erro: %2</translation>
     <message>
         <location filename="../src/libsync/theme.cpp" line="554"/>
         <source>&lt;p&gt;&lt;small&gt;Built from Git revision &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; on %3, %4 using Qt %5, %6&lt;/small&gt;&lt;/p&gt;</source>
-        <translation>&lt;p&gt;&lt;small&gt;Construido dende a revisión Git &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; en %3, %4 usando Qt %5, %6&lt;/small&gt;&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;&lt;small&gt;Construido desde a revisión Git &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; en %3, %4 usando Qt %5, %6&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -7189,7 +7189,7 @@ O servidor respondeu co erro: %2</translation>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="115"/>
         <source>Error returned from the server: &lt;em&gt;%1&lt;/em&gt;</source>
-        <translation>Erro devolto dende o servidor: &lt;em&gt;%1&lt;/em&gt;</translation>
+        <translation>Erro devolto desde o servidor: &lt;em&gt;%1&lt;/em&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="118"/>
@@ -7204,7 +7204,7 @@ O servidor respondeu co erro: %2</translation>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="127"/>
         <source>Could not parse the JSON returned from the server: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</source>
-        <translation>Non foi posíbel analizar o JSON devolto dende o servidor: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</translation>
+        <translation>Non foi posíbel analizar o JSON devolto desde o servidor: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="130"/>
@@ -7376,7 +7376,7 @@ O servidor respondeu co erro: %2</translation>
     <message>
         <location filename="../src/libsync/theme.cpp" line="533"/>
         <source>&lt;p&gt;&lt;small&gt;Built from Git revision &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; on %3, %4 using Qt %5, %6&lt;/small&gt;&lt;/p&gt;</source>
-        <translation>&lt;p&gt;&lt;small&gt;Construido dende a revisión Git &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; en %3, %4 usando Qt %5, %6&lt;/small&gt;&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;&lt;small&gt;Construido desde a revisión Git &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; en %3, %4 usando Qt %5, %6&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
 </context>
 </TS>

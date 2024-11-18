@@ -5713,7 +5713,7 @@ Serwer odpowiedział błędem: %2</translation>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="860"/>
         <source>Rename file</source>
-        <translation type="unfinished"/>
+        <translation>Zmień nazwę pliku</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1066"/>
@@ -7019,7 +7019,7 @@ Serwer odpowiedział błędem: %2</translation>
     <message>
         <location filename="../src/libsync/theme.cpp" line="84"/>
         <source>Status undefined</source>
-        <translation>Status niezdefiniowany</translation>
+        <translation>Status niezdefiniowane</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="87"/>
