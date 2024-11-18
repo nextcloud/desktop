@@ -142,6 +142,7 @@ ColumnLayout {
     ShareeSearchField {
         id: shareeSearchField
         Layout.fillWidth: true
+        Layout.topMargin: Style.smallSpacing
         Layout.leftMargin: root.horizontalPadding
         Layout.rightMargin: root.horizontalPadding
 
