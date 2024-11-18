@@ -41,14 +41,16 @@ NavigationPaneHelper::NavigationPaneHelper(FolderMan *folderMan)
 
 void NavigationPaneHelper::setShowInExplorerNavigationPane(bool show)
 {
-    if (_showInExplorerNavigationPane == show)
+    if (_showInExplorerNavigationPane == show) {
         return;
+    }
 
     _showInExplorerNavigationPane = show;
     // Re-generate a new CLSID when enabling, possibly throwing away the old one.
     // updateCloudStorageRegistry will take care of removing any unknown CLSID our application owns from the registry.
-    foreach (Folder *folder, _folderMan->map())
+    for (const auto &folder : qAsConst(_folderMan->map())) {
         folder->setNavigationPaneClsid(show ? QUuid::createUuid() : QUuid());
+    }
 
     scheduleUpdateCloudStorageRegistry();
 }
@@ -56,8 +58,9 @@ void NavigationPaneHelper::setShowInExplorerNavigationPane(bool show)
 void NavigationPaneHelper::scheduleUpdateCloudStorageRegistry()
 {
     // Schedule the update to happen a bit later to avoid doing the update multiple times in a row.
-    if (!_updateCloudStorageRegistryTimer.isActive())
+    if (!_updateCloudStorageRegistryTimer.isActive()) {
         _updateCloudStorageRegistryTimer.start(500);
+    }
 }
 
 void NavigationPaneHelper::updateCloudStorageRegistry()
@@ -66,11 +69,12 @@ void NavigationPaneHelper::updateCloudStorageRegistry()
     // that matches ours when we saved.
     QVector<QUuid> entriesToRemove;
 #ifdef Q_OS_WIN
-    QString nameSpaceKey = QStringLiteral(R"(Software\Microsoft\Windows\CurrentVersion\Explorer\Desktop\NameSpace)");
+    const auto nameSpaceKey = QStringLiteral(R"(Software\Microsoft\Windows\CurrentVersion\Explorer\Desktop\NameSpace)");
     if (Utility::registryKeyExists(HKEY_CURRENT_USER, nameSpaceKey)) {
         Utility::registryWalkSubKeys(HKEY_CURRENT_USER, nameSpaceKey,
             [&entriesToRemove](HKEY key, const QString &subKey) {
-                QVariant appName = Utility::registryGetKeyValue(key, subKey, QStringLiteral("ApplicationName"));
+                const auto appName = Utility::registryGetKeyValue(key, subKey, QStringLiteral("ApplicationName"));
+                qCDebug(lcNavPane) << "Searching for user with subKey:" << subKey;
                 if (appName.toString() == QLatin1String(APPLICATION_NAME)) {
                     QUuid clsid{ subKey };
                     Q_ASSERT(!clsid.isNull());
@@ -85,23 +89,23 @@ void NavigationPaneHelper::updateCloudStorageRegistry()
         // Then re-save every folder that has a valid navigationPaneClsid to the registry.
         // We currently don't distinguish between new and existing CLSIDs, if it's there we just
         // save over it. We at least need to update the tile in case we are suddently using multiple accounts.
-        foreach (Folder *folder, _folderMan->map()) {
+        for (const auto &folder : qAsConst(_folderMan->map())) {
             if (!folder->navigationPaneClsid().isNull()) {
                 // If it already exists, unmark it for removal, this is a valid sync root.
                 entriesToRemove.removeOne(folder->navigationPaneClsid());
 
-                QString clsidStr = folder->navigationPaneClsid().toString();
-                QString clsidPath = QString() % R"(Software\Classes\CLSID\)" % clsidStr;
-                QString clsidPathWow64 = QString() % R"(Software\Classes\Wow6432Node\CLSID\)" % clsidStr;
-                QString namespacePath = QString() % R"(Software\Microsoft\Windows\CurrentVersion\Explorer\Desktop\NameSpace\)" % clsidStr;
+                const auto clsidStr = folder->navigationPaneClsid().toString();
+                const QString clsidPath = QString() % R"(Software\Classes\CLSID\)" % clsidStr;
+                const QString clsidPathWow64 = QString() % R"(Software\Classes\Wow6432Node\CLSID\)" % clsidStr;
+                const QString namespacePath = QString() % R"(Software\Microsoft\Windows\CurrentVersion\Explorer\Desktop\NameSpace\)" % clsidStr;
 
-                QString title = folder->shortGuiRemotePathOrAppName();
+                auto title = folder->shortGuiRemotePathOrAppName();
                 // Write the account name in the sidebar only when using more than one account.
                 if (AccountManager::instance()->accounts().size() > 1) {
                     title = title % " - " % folder->accountState()->account()->prettyName();
                 }
-                QString iconPath = QDir::toNativeSeparators(qApp->applicationFilePath());
-                QString targetFolderPath = QDir::toNativeSeparators(folder->cleanPath());
+                const auto iconPath = QDir::toNativeSeparators(qApp->applicationFilePath());
+                const auto targetFolderPath = QDir::toNativeSeparators(folder->cleanPath());
 
                 qCInfo(lcNavPane) << "Explorer Cloud storage provider: saving path" << targetFolderPath << "to CLSID" << clsidStr;
 #ifdef Q_OS_WIN
@@ -157,11 +161,11 @@ void NavigationPaneHelper::updateCloudStorageRegistry()
     }
 
     // Then remove anything that isn't in our folder list anymore.
-    foreach (auto &clsid, entriesToRemove) {
-        QString clsidStr = clsid.toString();
-        QString clsidPath = QString() % R"(Software\Classes\CLSID\)" % clsidStr;
-        QString clsidPathWow64 = QString() % R"(Software\Classes\Wow6432Node\CLSID\)" % clsidStr;
-        QString namespacePath = QString() % R"(Software\Microsoft\Windows\CurrentVersion\Explorer\Desktop\NameSpace\)" % clsidStr;
+    for (const auto &clsid : qAsConst(entriesToRemove)) {
+        const auto clsidStr = clsid.toString();
+        const QString clsidPath = QString() % R"(Software\Classes\CLSID\)" % clsidStr;
+        const QString clsidPathWow64 = QString() % R"(Software\Classes\Wow6432Node\CLSID\)" % clsidStr;
+        const QString namespacePath = QString() % R"(Software\Microsoft\Windows\CurrentVersion\Explorer\Desktop\NameSpace\)" % clsidStr;
 
         qCInfo(lcNavPane) << "Explorer Cloud storage provider: now unused, removing own CLSID" << clsidStr;
 #ifdef Q_OS_WIN
