@@ -78,8 +78,7 @@ export LD_LIBRARY_PATH=/app/usr/lib:${QT_BASE_DIR}/lib:/usr/local/lib/x86_64-lin
 
 # Use linuxdeploy-plugin-qt to deploy qt dependencies
 export APPIMAGE_NAME=linuxdeploy-plugin-qt-x86_64.AppImage
-# TODO: this share link is supposed to be a workaround, we need an url pointing to github.com/linuxdeploy/linuxdeploy-plugin-qt/releases/tag/continuous, see github.com/linuxdeploy/linuxdeploy-plugin-qt/pull/186
-wget -O ${APPIMAGE_NAME} --ca-directory=/etc/ssl/certs -c "https://cloud.nextcloud.com/s/2TDi3Md257Lb8Wf/download/linuxdeploy-plugin-qt-x86_64.AppImage"
+wget -O ${APPIMAGE_NAME} --ca-directory=/etc/ssl/certs -c "https://github.com/linuxdeploy/linuxdeploy-plugin-qt/releases/download/continuous/linuxdeploy-plugin-qt-x86_64.AppImage"
 chmod a+x ${APPIMAGE_NAME}
 ./${APPIMAGE_NAME} --appimage-extract
 rm ./${APPIMAGE_NAME}
