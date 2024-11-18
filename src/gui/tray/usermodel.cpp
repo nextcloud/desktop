@@ -184,12 +184,7 @@ void User::showDesktopTalkNotification(const Activity &activity)
 {
     const auto notificationId = activity._id;
 
-    const ConfigFile cfg;
-    const auto userStatus = _account->account()->userStatusConnector()->userStatus().state();
-    if (!canShowNotification(notificationId) ||
-        userStatus == OCC::UserStatus::OnlineStatus::DoNotDisturb ||
-        !cfg.showChatNotifications()) {
-
+    if (!canShowNotification(notificationId) || !ConfigFile().showChatNotifications()) {
         return;
     }
 
