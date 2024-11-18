@@ -128,7 +128,6 @@ QImage createSvgImageWithCustomColor(const QString &fileName,
     }
 
     const auto result = drawSvgWithCustomFillColor(sourceSvg, customColor, originalSize, sizeToUse);
-    Q_ASSERT(!result.isNull());
 
     if (result.isNull()) {
         qCWarning(lcIconUtils) << "Failed to load pixmap for" << fileName;
