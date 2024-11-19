@@ -708,6 +708,7 @@ ApplicationWindow {
         SyncStatus {
             id: syncStatus
 
+            accentColor: Style.accentColor
             visible: !trayWindowMainItem.isUnifiedSearchActive
 
             anchors.top: trayWindowUnifiedSearchInputContainer.bottom

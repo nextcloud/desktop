@@ -185,7 +185,6 @@ QtObject {
     property int progressBarRadius: 4
     property int progressBarContentBorderWidth: 1
     property int progressBarBackgroundBorderWidth: 1
-    property color progressBarContentColor: ncBlue
 
     property int newActivitiesButtonWidth: 150
     property int newActivitiesButtonHeight: 40

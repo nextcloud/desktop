@@ -10,6 +10,7 @@ RowLayout {
     id: root
 
     property alias model: syncStatus
+    property color accentColor: Style.ncBlue
 
     spacing: Style.trayHorizontalMargin
 
@@ -69,6 +70,7 @@ RowLayout {
             sourceComponent: NCProgressBar {
                 id: syncProgressBar
                 value: syncStatus.syncProgress
+                fillColor: root.accentColor
             }
         }
 
