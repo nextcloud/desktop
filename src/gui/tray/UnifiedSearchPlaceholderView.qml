@@ -19,7 +19,7 @@ import QtQuick.Layouts
 import Style
 
 ColumnLayout {
-    id: unifiedSearchResultNothingFoundContainer
+    id: root
 
     spacing: Style.standardSpacing
 
@@ -29,7 +29,6 @@ ColumnLayout {
     }
 
     Image {
-        id: unifiedSearchResultsNoResultsLabelIcon
         source: "image://svgimage-custom-color/magnifying-glass.svg"
         sourceSize.width: Style.trayWindowHeaderHeight / 2
         sourceSize.height: Style.trayWindowHeaderHeight / 2
@@ -37,7 +36,6 @@ ColumnLayout {
     }
 
     EnforcedPlainTextLabel {
-        id: unifiedSearchResultsNoResultsLabel
         text: qsTr("Start typing to search")
         font.pixelSize: Style.subLinePixelSize * 1.25
         wrapMode: Text.Wrap
