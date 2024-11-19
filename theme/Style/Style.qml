@@ -13,7 +13,6 @@ QtObject {
     readonly property color ncHeaderTextColor: Theme.wizardHeaderTitleColor
     readonly property color ncTextColor: Theme.systemPalette.windowText
     readonly property color ncTextBrightColor: "white"
-    readonly property color ncSecondaryTextColor: "#808080"
     readonly property color backgroundColor: Theme.systemPalette.base
     readonly property color positiveColor: Qt.rgba(0.38, 0.74, 0.38, 1)
 
