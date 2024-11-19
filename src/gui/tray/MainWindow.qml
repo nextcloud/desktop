@@ -229,6 +229,7 @@ ApplicationWindow {
                                              || unifiedSearchResultNothingFound.visible
                                              || unifiedSearchResultsErrorLabel.visible
                                              || unifiedSearchResultsListView.visible
+                                             || trayWindowUnifiedSearchInputContainer.activeFocus
 
         anchors.fill: parent
         anchors.margins: Style.trayWindowBorderWidth
