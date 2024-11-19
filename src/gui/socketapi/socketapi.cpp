@@ -696,11 +696,6 @@ void SocketApi::command_ENCRYPT(const QString &localFile, SocketListener *listen
     processEncryptRequest(localFile);
 }
 
-void SocketApi::command_MANAGE_PUBLIC_LINKS(const QString &localFile, SocketListener *listener)
-{
-    processShareRequest(localFile, listener);
-}
-
 void SocketApi::command_VERSION(const QString &, SocketListener *listener)
 {
     listener->sendMessage(QLatin1String("VERSION:" MIRALL_VERSION_STRING ":" MIRALL_SOCKET_API_VERSION));
@@ -894,24 +889,6 @@ void SocketApi::command_COPY_SECUREFILEDROP_LINK(const QString &localFile, Socke
     const auto getOrCreatePublicLinkShareJob = new GetOrCreatePublicLinkShare(account, fileData.serverRelativePath, true, this);
     connect(getOrCreatePublicLinkShareJob, &GetOrCreatePublicLinkShare::done, this, [](const QString &url) { copyUrlToClipboard(url); });
     connect(getOrCreatePublicLinkShareJob, &GetOrCreatePublicLinkShare::error, this, [=]() { emit shareCommandReceived(fileData.localPath); });
-    getOrCreatePublicLinkShareJob->run();
-}
-
-void SocketApi::command_COPY_PUBLIC_LINK(const QString &localFile, SocketListener *)
-{
-    const auto fileData = FileData::get(localFile);
-    if (!fileData.folder) {
-        return;
-    }
-
-    const auto account = fileData.folder->accountState()->account();
-    const auto getOrCreatePublicLinkShareJob = new GetOrCreatePublicLinkShare(account, fileData.serverRelativePath, false, this);
-    connect(getOrCreatePublicLinkShareJob, &GetOrCreatePublicLinkShare::done, this, [](const QString &url) {
-        copyUrlToClipboard(url);
-    });
-    connect(getOrCreatePublicLinkShareJob, &GetOrCreatePublicLinkShare::error, this, [=]() {
-        emit shareCommandReceived(fileData.localPath);
-    });
     getOrCreatePublicLinkShareJob->run();
 }
 
@@ -1198,29 +1175,6 @@ void SocketApi::sendSharingContextMenuOptions(const FileData &fileData, SocketLi
         listener->sendMessage(QLatin1String("MENU_ITEM:DISABLED:d:") + (!record.isDirectory() ? tr("Resharing this file is not allowed") : tr("Resharing this folder is not allowed")));
     } else {
         listener->sendMessage(QLatin1String("MENU_ITEM:SHARE") + flagString + tr("Share options"));
-
-        // Do we have public links?
-        bool publicLinksEnabled = theme->linkSharing() && capabilities.sharePublicLink();
-
-        // Is is possible to create a public link without user choices?
-        bool canCreateDefaultPublicLink = publicLinksEnabled
-            && !capabilities.sharePublicLinkEnforceExpireDate()
-            && !capabilities.sharePublicLinkAskOptionalPassword()
-            && !capabilities.sharePublicLinkEnforcePassword();
-
-        if (canCreateDefaultPublicLink) {
-            if (isSecureFileDropSupported) {
-                listener->sendMessage(QLatin1String("MENU_ITEM:COPY_SECUREFILEDROP_LINK") + QLatin1String("::") + tr("Copy secure file drop link"));
-            } else {
-                listener->sendMessage(QLatin1String("MENU_ITEM:COPY_PUBLIC_LINK") + flagString + tr("Copy public link"));
-            }
-        } else if (publicLinksEnabled) {
-            if (isSecureFileDropSupported) {
-                listener->sendMessage(QLatin1String("MENU_ITEM:MANAGE_PUBLIC_LINKS") + QLatin1String("::") + tr("Copy secure filedrop link"));
-            } else {
-                listener->sendMessage(QLatin1String("MENU_ITEM:MANAGE_PUBLIC_LINKS") + flagString + tr("Copy public link"));
-            }
-        }
     }
 
     if (itemEncryptionFlag == SharingContextItemEncryptedFlag::NotEncryptedItem) {

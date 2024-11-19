@@ -129,9 +129,7 @@ private:
     Q_INVOKABLE void command_ENCRYPT(const QString &localFile, OCC::SocketListener *listener);
     Q_INVOKABLE void command_SHARE(const QString &localFile, OCC::SocketListener *listener);
     Q_INVOKABLE void command_LEAVESHARE(const QString &localFile, OCC::SocketListener *listener);
-    Q_INVOKABLE void command_MANAGE_PUBLIC_LINKS(const QString &localFile, OCC::SocketListener *listener);
     Q_INVOKABLE void command_COPY_SECUREFILEDROP_LINK(const QString &localFile, OCC::SocketListener *listener);
-    Q_INVOKABLE void command_COPY_PUBLIC_LINK(const QString &localFile, OCC::SocketListener *listener);
     Q_INVOKABLE void command_COPY_PRIVATE_LINK(const QString &localFile, OCC::SocketListener *listener);
     Q_INVOKABLE void command_EMAIL_PRIVATE_LINK(const QString &localFile, OCC::SocketListener *listener);
     Q_INVOKABLE void command_OPEN_PRIVATE_LINK(const QString &localFile, OCC::SocketListener *listener);
