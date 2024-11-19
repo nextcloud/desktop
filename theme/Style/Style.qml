@@ -16,7 +16,6 @@ QtObject {
     readonly property color ncSecondaryTextColor: "#808080"
     readonly property color lightHover: Theme.darkMode ? Qt.lighter(backgroundColor, 2) : Qt.darker(backgroundColor, 1.05)
     readonly property color darkerHover: Theme.darkMode ? Qt.lighter(backgroundColor, 2.35) : Qt.darker(backgroundColor, 1.25)
-    readonly property color menuBorder: Theme.darkMode ? Qt.lighter(backgroundColor, 2.5) : Qt.darker(backgroundColor, 1.5)
     readonly property color backgroundColor: Theme.systemPalette.base
     readonly property color buttonBackgroundColor: Theme.systemPalette.button
     readonly property color positiveColor: Qt.rgba(0.38, 0.74, 0.38, 1)
@@ -194,9 +193,7 @@ QtObject {
     property int progressBarContentBorderWidth: 1
     property int progressBarBackgroundBorderWidth: 1
     property color progressBarContentColor: ncBlue
-    property color progressBarContentBorderColor: menuBorder
     property color progressBarBackgroundColor: backgroundColor
-    property color progressBarBackgroundBorderColor: menuBorder
 
     property int newActivitiesButtonWidth: 150
     property int newActivitiesButtonHeight: 40

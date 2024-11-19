@@ -24,7 +24,7 @@ ProgressBar {
         implicitHeight: Style.progressBarBackgroundHeight
         radius: Style.progressBarRadius
         color: Style.progressBarBackgroundColor
-        border.color: Style.progressBarBackgroundBorderColor
+        border.color: palette.dark
         border.width: Style.progressBarBackgroundBorderWidth
     }
 
@@ -36,8 +36,8 @@ ProgressBar {
             width: control.visualPosition * parent.width
             height: parent.height
             radius: Style.progressBarRadius
-            color: Style.progressBarContentColor
-            border.color: Style.progressBarContentBorderColor
+            color: palette.dark
+            border.color: palette.dark
             border.width: Style.progressBarContentBorderWidth
         }
     }
