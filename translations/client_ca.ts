@@ -963,7 +963,7 @@ Aquesta acció anul·larà qualsevol sincronització en execució.</translation>
         <translation>No hi ha connexió a %1 a %2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1310"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1309"/>
         <source>Unable to connect to %1.</source>
         <translation type="unfinished"/>
     </message>
@@ -973,7 +973,7 @@ Aquesta acció anul·larà qualsevol sincronització en execució.</translation>
         <translation>Error de configuració del servidor: %1 a %2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1324"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1323"/>
         <source>You need to accept the terms of service</source>
         <translation type="unfinished"/>
     </message>
@@ -998,7 +998,7 @@ Aquesta acció anul·larà qualsevol sincronització en execució.</translation>
         <translation>Hi ha carpetes que no s&apos;han sincronitzat perquè són massa grans o són fonts d&apos;emmagatzematge extern: </translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1607"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1606"/>
         <source>There are folders that have grown in size beyond %1MB: %2</source>
         <translation type="unfinished"/>
     </message>
@@ -2378,32 +2378,32 @@ Alternatively, you can restore all deleted files by downloading them from the se
         <translation>S&apos;està preparant la sincronització.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1738"/>
+        <location filename="../src/gui/folderman.cpp" line="1741"/>
         <source>Syncing %1 of %2 (A few seconds left)</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1741"/>
+        <location filename="../src/gui/folderman.cpp" line="1744"/>
         <source>Syncing %1 of %2 (%3 left)</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1744"/>
+        <location filename="../src/gui/folderman.cpp" line="1747"/>
         <source>Syncing %1 of %2</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1750"/>
+        <location filename="../src/gui/folderman.cpp" line="1753"/>
         <source>Syncing %1 (A few seconds left)</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1752"/>
+        <location filename="../src/gui/folderman.cpp" line="1755"/>
         <source>Syncing %1 (%2 left)</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1755"/>
+        <location filename="../src/gui/folderman.cpp" line="1758"/>
         <source>Syncing %1</source>
         <translation type="unfinished"/>
     </message>

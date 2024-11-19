@@ -966,7 +966,7 @@ This action will abort any currently running synchronization.</source>
         <translation>%1와 %2에 연결이 없습니다.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1310"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1309"/>
         <source>Unable to connect to %1.</source>
         <translation>%1에 연결할 수 없습니다.</translation>
     </message>
@@ -976,7 +976,7 @@ This action will abort any currently running synchronization.</source>
         <translation>서버 설정 오류: %2에 있는 %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1324"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1323"/>
         <source>You need to accept the terms of service</source>
         <translation type="unfinished"/>
     </message>
@@ -1001,7 +1001,7 @@ This action will abort any currently running synchronization.</source>
         <translation>사이즈가 너무 크거나 외부 저장소이므로 동기화되지 않은 폴더가 있습니다:</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1607"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1606"/>
         <source>There are folders that have grown in size beyond %1MB: %2</source>
         <translation>크기가 %1MB보다 더 커진 폴더가 있습니다: %2</translation>
     </message>
@@ -2393,32 +2393,32 @@ Alternatively, you can restore all deleted files by downloading them from the se
         <translation>동기화 준비 중</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1738"/>
+        <location filename="../src/gui/folderman.cpp" line="1741"/>
         <source>Syncing %1 of %2 (A few seconds left)</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1741"/>
+        <location filename="../src/gui/folderman.cpp" line="1744"/>
         <source>Syncing %1 of %2 (%3 left)</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1744"/>
+        <location filename="../src/gui/folderman.cpp" line="1747"/>
         <source>Syncing %1 of %2</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1750"/>
+        <location filename="../src/gui/folderman.cpp" line="1753"/>
         <source>Syncing %1 (A few seconds left)</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1752"/>
+        <location filename="../src/gui/folderman.cpp" line="1755"/>
         <source>Syncing %1 (%2 left)</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1755"/>
+        <location filename="../src/gui/folderman.cpp" line="1758"/>
         <source>Syncing %1</source>
         <translation type="unfinished"/>
     </message>

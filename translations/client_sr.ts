@@ -967,7 +967,7 @@ This action will abort any currently running synchronization.</source>
         <translation>Нема конекције на %1 са %2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1310"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1309"/>
         <source>Unable to connect to %1.</source>
         <translation>Није успело повезивање са %1.</translation>
     </message>
@@ -977,7 +977,7 @@ This action will abort any currently running synchronization.</source>
         <translation>Грешка у конфигурацији сервера: %1 у %2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1324"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1323"/>
         <source>You need to accept the terms of service</source>
         <translation>Морате прихватити услове коришћења коришћења</translation>
     </message>
@@ -1002,7 +1002,7 @@ This action will abort any currently running synchronization.</source>
         <translation>Ово су фасцикле које нису синхронизоване зато што су превелике или су на спољним складиштима:</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1607"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1606"/>
         <source>There are folders that have grown in size beyond %1MB: %2</source>
         <translation>Има фолдера чија је величина нарасла преко %1MB: %2</translation>
     </message>
@@ -2398,32 +2398,32 @@ Alternatively, you can restore all deleted files by downloading them from the se
         <translation>Припремам синхронизацију.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1738"/>
+        <location filename="../src/gui/folderman.cpp" line="1741"/>
         <source>Syncing %1 of %2 (A few seconds left)</source>
         <translation>Синхронизујем %1 од %2 (преостало је неколико секунди)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1741"/>
+        <location filename="../src/gui/folderman.cpp" line="1744"/>
         <source>Syncing %1 of %2 (%3 left)</source>
         <translation>Синхронизује се %1 од %2 (преостало %3)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1744"/>
+        <location filename="../src/gui/folderman.cpp" line="1747"/>
         <source>Syncing %1 of %2</source>
         <translation>Синхронизује се %1 од %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1750"/>
+        <location filename="../src/gui/folderman.cpp" line="1753"/>
         <source>Syncing %1 (A few seconds left)</source>
         <translation>Синхронизује се %1 (преостало је неколико секунди)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1752"/>
+        <location filename="../src/gui/folderman.cpp" line="1755"/>
         <source>Syncing %1 (%2 left)</source>
         <translation>Синхронизује се %1 (преостало %2)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1755"/>
+        <location filename="../src/gui/folderman.cpp" line="1758"/>
         <source>Syncing %1</source>
         <translation>Синхронизује се %1</translation>
     </message>

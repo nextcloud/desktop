@@ -964,7 +964,7 @@ Ez a művelet megszakítja a jelenleg futó szinkronizálást.</translation>
         <translation>Nincs kapcsolat ehhez: %1, itt: %2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1310"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1309"/>
         <source>Unable to connect to %1.</source>
         <translation type="unfinished"/>
     </message>
@@ -974,7 +974,7 @@ Ez a művelet megszakítja a jelenleg futó szinkronizálást.</translation>
         <translation>Kiszolgáló konfigurációs hiba: %1, itt: %2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1324"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1323"/>
         <source>You need to accept the terms of service</source>
         <translation>El kell fogadnia a felhasználási feltételeket</translation>
     </message>
@@ -999,7 +999,7 @@ Ez a művelet megszakítja a jelenleg futó szinkronizálást.</translation>
         <translation>Az alábbi mappák nem lettek szinkronizálva, mert túl nagyok, vagy külső tárolók:</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1607"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1606"/>
         <source>There are folders that have grown in size beyond %1MB: %2</source>
         <translation type="unfinished"/>
     </message>
@@ -2389,32 +2389,32 @@ Alternatively, you can restore all deleted files by downloading them from the se
         <translation>Előkészítés a szinkronizáláshoz.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1738"/>
+        <location filename="../src/gui/folderman.cpp" line="1741"/>
         <source>Syncing %1 of %2 (A few seconds left)</source>
         <translation>%1 / %2 szinkronizálása (néhány másodperc maradt)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1741"/>
+        <location filename="../src/gui/folderman.cpp" line="1744"/>
         <source>Syncing %1 of %2 (%3 left)</source>
         <translation>%1 / %2 szinkronizálása (%3 maradt)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1744"/>
+        <location filename="../src/gui/folderman.cpp" line="1747"/>
         <source>Syncing %1 of %2</source>
         <translation>%1 / %2 szinkronizálása</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1750"/>
+        <location filename="../src/gui/folderman.cpp" line="1753"/>
         <source>Syncing %1 (A few seconds left)</source>
         <translation>%1 szinkronizálása (néhány másodperc maradt)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1752"/>
+        <location filename="../src/gui/folderman.cpp" line="1755"/>
         <source>Syncing %1 (%2 left)</source>
         <translation>%1 szinkronizálása (%2 maradt)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1755"/>
+        <location filename="../src/gui/folderman.cpp" line="1758"/>
         <source>Syncing %1</source>
         <translation>%1 szinkronizálása</translation>
     </message>

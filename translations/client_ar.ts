@@ -962,7 +962,7 @@ This action will abort any currently running synchronization.</source>
         <translation>لا يوجد اتصال مع %1 فى %2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1310"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1309"/>
         <source>Unable to connect to %1.</source>
         <translation>تعذّر الاتصال بـ %1.</translation>
     </message>
@@ -972,7 +972,7 @@ This action will abort any currently running synchronization.</source>
         <translation>خطـأ تهيئة الخادم: %1 في %2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1324"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1323"/>
         <source>You need to accept the terms of service</source>
         <translation>يجب عليك قبول شروط الخدمة</translation>
     </message>
@@ -997,7 +997,7 @@ This action will abort any currently running synchronization.</source>
         <translation>هنالك مجلدات لم تتم مزامنتها لأن حجمها كبيرٌ جدًا أو لأنها وحدات تخزين خارجية:</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1607"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1606"/>
         <source>There are folders that have grown in size beyond %1MB: %2</source>
         <translation>هنالك مجلدات تجاوز حجمها  %1ميغا بايت: %2</translation>
     </message>
@@ -2384,32 +2384,32 @@ Alternatively, you can restore all deleted files by downloading them from the se
         <translation>التحضير للمزامنة.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1738"/>
+        <location filename="../src/gui/folderman.cpp" line="1741"/>
         <source>Syncing %1 of %2 (A few seconds left)</source>
         <translation>مزامنة %1 من %2 (المتبقي بضع ثوانٍ)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1741"/>
+        <location filename="../src/gui/folderman.cpp" line="1744"/>
         <source>Syncing %1 of %2 (%3 left)</source>
         <translation>مزامنة %1 من %2 (مازال %3)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1744"/>
+        <location filename="../src/gui/folderman.cpp" line="1747"/>
         <source>Syncing %1 of %2</source>
         <translation>مزامنة %1 من %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1750"/>
+        <location filename="../src/gui/folderman.cpp" line="1753"/>
         <source>Syncing %1 (A few seconds left)</source>
         <translation>مزامنة %1 (المتبقي بضع ثوانٍ)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1752"/>
+        <location filename="../src/gui/folderman.cpp" line="1755"/>
         <source>Syncing %1 (%2 left)</source>
         <translation>مزامنة %1 (مازال %2)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1755"/>
+        <location filename="../src/gui/folderman.cpp" line="1758"/>
         <source>Syncing %1</source>
         <translation>مزامنة %1</translation>
     </message>
