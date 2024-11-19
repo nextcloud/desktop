@@ -44,7 +44,7 @@ QtObject {
     // dropdown menus radius
     property int halfTrayWindowRadius: 5
     property int trayWindowBorderWidth: variableSize(1)
-    property int trayWindowHeaderHeight: variableSize(60)
+    property int trayWindowHeaderHeight: variableSize(50)
     property int trayHorizontalMargin: 10
     property int trayModalWidth: 380
     property int trayModalHeight: 490
