@@ -22,6 +22,7 @@
 #include <algorithm>
 #include <Shlobj.h>
 #include <psapi.h>
+#include <wincred.h>
 
 #define ASSERT assert
 #define Q_ASSERT assert
@@ -472,6 +473,20 @@ bool Utility::copy_dir_recursive(std::wstring from_dir, std::wstring to_dir, cop
     FindClose(hFind);
 
     return success;
+}
+
+void Utility::removeUsersFromKeychain(const std::wstring &appName)
+{
+    if (!CredDeleteW(appName.c_str(), CRED_TYPE_GENERIC, 0)) {
+        switch(GetLastError()) {
+        case ERROR_NOT_FOUND:
+            // Password entry not found"
+            break;
+        default:
+            // Could not decrypt data
+            break;
+        }
+    }
 }
 
 } // namespace NCTools

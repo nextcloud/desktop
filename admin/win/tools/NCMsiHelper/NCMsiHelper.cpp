@@ -49,6 +49,7 @@ HRESULT NCMSIHELPER_API DoExecNsisUninstaller(int argc, LPWSTR *argv)
 
     // Can't wait for the process because Uninstall.exe (opposed to Setup.exe) immediately returns, so we'll sleep a bit.
     Utility::waitForNsisUninstaller(appShortName);
+    Utility::removeUsersFromKeychain(appShortName);
 
     LogResult(S_OK, "Removing the NSIS uninstaller.");
 
