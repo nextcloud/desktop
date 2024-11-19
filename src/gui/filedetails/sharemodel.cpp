@@ -369,8 +369,12 @@ void ShareModel::initShareManager()
         connect(_manager.data(), &ShareManager::linkShareCreated, this, &ShareModel::slotAddShare);
         connect(_manager.data(), &ShareManager::linkShareRequiresPassword, this, &ShareModel::requestPasswordForLinkShare);
         connect(_manager.data(), &ShareManager::serverError, this, [this](const int code, const QString &message) {
-            _hasInitialShareFetchCompleted = true;
-            Q_EMIT hasInitialShareFetchCompletedChanged();
+            if (!_hasInitialShareFetchCompleted) {
+                _hasInitialShareFetchCompleted = true;
+                Q_EMIT hasInitialShareFetchCompletedChanged();
+            }
+
+            qCWarning(lcShareModel) << "Error from server from ShareManager class and initShareManager" << code << message;
             emit serverError(code, message);
         });
 
@@ -633,7 +637,10 @@ void ShareModel::slotAddShare(const SharePtr &share)
     const QPersistentModelIndex sharePersistentIndex(shareModelIndex);
     _shareIdIndexHash.insert(shareId, sharePersistentIndex);
 
-    connect(share.data(), &Share::serverError, this, &ShareModel::slotServerError);
+    connect(share.data(), &Share::serverError, this, [this] (int code, const QString &message) {
+        qCWarning(lcShareModel) << "Error from server from Share class" << code << message;
+        Q_EMIT serverError(code, message);
+    });
     connect(share.data(), &Share::passwordSetError, this, [this, shareId](const int code, const QString &message) {
         _shareIdRecentlySetPasswords.remove(shareId);
         slotSharePasswordSet(shareId);
@@ -654,10 +661,6 @@ void ShareModel::slotAddShare(const SharePtr &share)
     } else if (const auto userGroupShare = share.objectCast<UserGroupShare>()) {
         connect(userGroupShare.data(), &UserGroupShare::noteSet, this, [this, shareId]{ slotShareNoteSet(shareId); });
         connect(userGroupShare.data(), &UserGroupShare::expireDateSet, this, [this, shareId]{ slotShareExpireDateSet(shareId); });
-    }
-
-    if (_manager) {
-        connect(_manager.data(), &ShareManager::serverError, this, &ShareModel::slotServerError);
     }
 
     handleLinkShare();
@@ -706,12 +709,6 @@ void ShareModel::slotRemoveShareWithId(const QString &shareId)
     handleLinkShare();
 
     Q_EMIT sharesChanged();
-}
-
-void ShareModel::slotServerError(const int code, const QString &message)
-{
-    qCWarning(lcShareModel) << "Error from server" << code << message;
-    Q_EMIT serverError(code, message);
 }
 
 void ShareModel::slotAddSharee(const ShareePtr &sharee)
