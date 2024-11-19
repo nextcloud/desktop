@@ -270,6 +270,7 @@ ApplicationWindow {
             onTextEdited: { UserModel.currentUser.unifiedSearchResultsListModel.searchTerm = trayWindowUnifiedSearchInputContainer.text }
             onClearText: { UserModel.currentUser.unifiedSearchResultsListModel.searchTerm = "" }
             onActiveFocusChanged: activateSearchFocus = activeFocus && focusReason !== Qt.TabFocusReason && focusReason !== Qt.BacktabFocusReason
+            Keys.onEscapePressed: activateSearchFocus = false
         }
 
         Rectangle {
