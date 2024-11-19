@@ -9,8 +9,10 @@ QtObject {
     readonly property bool darkMode: Theme.darkMode
 
     // Colors
-    readonly property color ncBlue:      Theme.wizardHeaderBackgroundColor
+    readonly property color ncBlue: Theme.wizardHeaderBackgroundColor
     readonly property color ncHeaderTextColor: Theme.wizardHeaderTitleColor
+    readonly property color accentColor: UserModel.currentUser ? UserModel.currentUser.accentColor : ncBlue
+
     readonly property color currentUserHeaderColor: UserModel.currentUser ? UserModel.currentUser.headerColor : ncBlue
     readonly property color currentUserHeaderTextColor: UserModel.currentUser ? UserModel.currentUser.headerTextColor : ncHeaderTextColor
     readonly property color adjustedCurrentUserHeaderColor: Theme.darkMode ? Qt.lighter(currentUserHeaderColor, 2)
