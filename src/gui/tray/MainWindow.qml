@@ -238,6 +238,11 @@ ApplicationWindow {
         Accessible.role: Accessible.Grouping
         Accessible.name: qsTr("Nextcloud desktop main dialog")
 
+        MouseArea {
+            anchors.fill: parent
+            onClicked: forceActiveFocus()
+        }
+
         TrayWindowHeader {
             id: trayWindowHeader
 
