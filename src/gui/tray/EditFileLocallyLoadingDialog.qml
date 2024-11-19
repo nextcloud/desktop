@@ -30,7 +30,7 @@ ApplicationWindow {
 
     Rectangle {
         id: windowBackground
-        color: Style.backgroundColor
+        color: palette.base
         radius: Style.trayWindowRadius
         border.color: palette.dark
         anchors.fill: parent
