@@ -296,6 +296,18 @@ ApplicationWindow {
             anchors.margins: Style.trayHorizontalMargin
         }
 
+        UnifiedSearchPlaceholderView {
+            id: unifiedSearchPlaceholderView
+
+            anchors.top: bottomUnifiedSearchInputSeparator.bottom
+            anchors.left: trayWindowMainItem.left
+            anchors.right: trayWindowMainItem.right
+            anchors.bottom: trayWindowMainItem.bottom
+            anchors.topMargin: Style.trayHorizontalMargin
+
+            visible: trayWindowUnifiedSearchInputContainer.activateSearchFocus && !UserModel.currentUser.unifiedSearchResultsListModel.searchTerm
+        }
+
         UnifiedSearchResultNothingFound {
             id: unifiedSearchResultNothingFound
 
