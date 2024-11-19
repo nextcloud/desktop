@@ -14,8 +14,6 @@ QtObject {
     readonly property color ncTextColor: Theme.systemPalette.windowText
     readonly property color ncTextBrightColor: "white"
     readonly property color ncSecondaryTextColor: "#808080"
-    readonly property color lightHover: Theme.darkMode ? Qt.lighter(backgroundColor, 2) : Qt.darker(backgroundColor, 1.05)
-    readonly property color darkerHover: Theme.darkMode ? Qt.lighter(backgroundColor, 2.35) : Qt.darker(backgroundColor, 1.25)
     readonly property color backgroundColor: Theme.systemPalette.base
     readonly property color buttonBackgroundColor: Theme.systemPalette.button
     readonly property color positiveColor: Qt.rgba(0.38, 0.74, 0.38, 1)
