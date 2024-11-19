@@ -42,7 +42,7 @@
         
         dispatch_async(dispatch_get_main_queue(), ^{
             NSLog(@"Setting result %@ for path %@", result, path);
-            [self.delegate setResultForPath:path result:result];
+            [self.delegate setResult:result forPath:path];
         });
     } else if([command isEqualToString:@"UPDATE_VIEW"]) {
         NSString *path = [split objectAtIndex:1];
