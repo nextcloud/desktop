@@ -400,6 +400,7 @@ ApplicationWindow {
                                          && UserModel.currentUser.serverHasUserStatus
                                 width: Style.accountAvatarStateIndicatorSize +  + Style.trayFolderStatusIndicatorSizeOffset
                                 height: width
+                                color: trayWindowHeaderBackground.color
                                 anchors.bottom: currentAccountAvatar.bottom
                                 anchors.right: currentAccountAvatar.right
                                 radius: width * Style.trayFolderStatusIndicatorRadiusFactor
@@ -501,6 +502,7 @@ ApplicationWindow {
 
                     visible: currentUser.hasLocalFolder
                     currentUser: UserModel.currentUser
+                    parentBackgroundColor: trayWindowHeaderBackground.color
 
                     onClicked: openLocalFolderButton.userHasGroupFolders ? openLocalFolderButton.toggleMenuOpen() : UserModel.openCurrentAccountLocalFolder()
 
