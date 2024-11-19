@@ -23,7 +23,7 @@ ProgressBar {
         implicitWidth: Style.progressBarWidth
         implicitHeight: Style.progressBarBackgroundHeight
         radius: Style.progressBarRadius
-        color: Style.progressBarBackgroundColor
+        color: palette.base
         border.color: palette.dark
         border.width: Style.progressBarBackgroundBorderWidth
     }

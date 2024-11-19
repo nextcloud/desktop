@@ -31,7 +31,7 @@ ApplicationWindow {
     property string accountUserIdAtHost: ""
 
     title: qsTr("Evict materialised files")
-    color: Style.backgroundColor
+    color: palette.base
     flags: Qt.Dialog | Qt.WindowStaysOnTopHint
     width: 640
     height: 480

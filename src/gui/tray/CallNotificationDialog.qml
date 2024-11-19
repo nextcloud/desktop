@@ -86,7 +86,7 @@ ApplicationWindow {
         width: parent.width
         height: contentLayout.height + (root.windowSpacing * 2)
         radius: Systray.useNormalWindow ? 0.0 : Style.trayWindowRadius
-        color: Style.backgroundColor
+        color: palette.base
         border.width: Style.trayWindowBorderWidth
         border.color: palette.dark
         clip: true
