@@ -27,7 +27,6 @@ TextEdit {
     readonly property alias submitButton: submitButton
 
     clip: true
-    color: Style.ncTextColor
     textMargin: Style.smallSpacing
     wrapMode: TextEdit.Wrap
     selectByMouse: true
