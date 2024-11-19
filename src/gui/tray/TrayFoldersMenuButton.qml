@@ -26,6 +26,7 @@ HeaderButton {
 
     required property var currentUser
     property bool userHasGroupFolders: currentUser.groupFolders.length > 0
+    property color parentBackgroundColor: "transparent"
 
     function openMenu() {
         foldersMenuLoader.openMenu()
@@ -90,6 +91,7 @@ HeaderButton {
                     id: folderStateIndicatorBackground
                     width: Style.folderStateIndicatorSize + Style.trayFolderStatusIndicatorSizeOffset
                     height: width
+                    color: root.parentBackgroundColor
                     anchors.centerIn: parent
                     radius: width * Style.trayFolderStatusIndicatorRadiusFactor
                     z: -2
