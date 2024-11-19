@@ -37,7 +37,7 @@ ColumnLayout {
 
     EnforcedPlainTextLabel {
         text: qsTr("Start typing to search")
-        font.pixelSize: Style.subLinePixelSize * 1.25
+        font.pixelSize: Style.unifiedSearchPlaceholderViewSublineFontPixelSize
         wrapMode: Text.Wrap
         Layout.fillWidth: true
         horizontalAlignment: Text.AlignHCenter
