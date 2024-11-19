@@ -222,7 +222,7 @@ QColor Account::accentColor() const
 
     auto darknessAdjustment = static_cast<int>((1 - Theme::getColorDarkness(accentColor)) * effectMultiplier);
     darknessAdjustment *= darknessAdjustment; // Square the value to pronounce the darkness more in lighter colours
-    const auto baseAdjustment = 125;
+    constexpr auto baseAdjustment = 125;
     const auto adjusted = Theme::isDarkColor(accentColor) ? accentColor : accentColor.darker(baseAdjustment + darknessAdjustment);
     return adjusted;
 }
