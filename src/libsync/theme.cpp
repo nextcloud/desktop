@@ -384,7 +384,7 @@ Theme::Theme()
     _forceOverrideServerUrl = true;
 #endif
 #ifdef APPLICATION_SERVER_URL
-    setOverrideServerUrl(QString::fromLatin1(APPLICATION_SERVER_URL));
+    setOverrideServerUrl(QString::fromUtf8(APPLICATION_SERVER_URL));
 #endif
 }
 
