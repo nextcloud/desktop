@@ -229,7 +229,7 @@ ApplicationWindow {
                                              || unifiedSearchResultNothingFound.visible
                                              || unifiedSearchResultsErrorLabel.visible
                                              || unifiedSearchResultsListView.visible
-                                             || trayWindowUnifiedSearchInputContainer.activeFocus
+                                             || trayWindowUnifiedSearchInputContainer.activateSearchFocus
 
         anchors.fill: parent
         anchors.margins: Style.trayWindowBorderWidth
@@ -255,6 +255,8 @@ ApplicationWindow {
         UnifiedSearchInputContainer {
             id: trayWindowUnifiedSearchInputContainer
 
+            property bool activateSearchFocus: activeFocus
+
             anchors.top: trayWindowHeader.bottom
             anchors.left: trayWindowMainItem.left
             anchors.right: trayWindowMainItem.right
@@ -267,6 +269,7 @@ ApplicationWindow {
             isSearchInProgress: UserModel.currentUser.unifiedSearchResultsListModel.isSearchInProgress
             onTextEdited: { UserModel.currentUser.unifiedSearchResultsListModel.searchTerm = trayWindowUnifiedSearchInputContainer.text }
             onClearText: { UserModel.currentUser.unifiedSearchResultsListModel.searchTerm = "" }
+            onActiveFocusChanged: activateSearchFocus = activeFocus && focusReason !== Qt.TabFocusReason && focusReason !== Qt.BacktabFocusReason
         }
 
         Rectangle {
