@@ -593,26 +593,26 @@ ApplicationWindow {
             isSearchInProgress: UserModel.currentUser.unifiedSearchResultsListModel.isSearchInProgress
             onTextEdited: { UserModel.currentUser.unifiedSearchResultsListModel.searchTerm = trayWindowUnifiedSearchInputContainer.text }
             onClearText: { UserModel.currentUser.unifiedSearchResultsListModel.searchTerm = "" }
+        }
 
-            // TODO: consult designers, this line looks weird atm
-            // Rectangle {
-            //     id: bottomUnifiedSearchInputSeparator
+        Rectangle {
+            id: bottomUnifiedSearchInputSeparator
 
-            //     anchors.left: parent.left
-            //     anchors.right: parent.right
-            //     anchors.bottom: parent.bottom
+            anchors.top: trayWindowUnifiedSearchInputContainer.bottom
+            anchors.left: parent.left
+            anchors.right: parent.right
+            anchors.topMargin: Style.trayHorizontalMargin
 
-            //     height: 1
-            //     color: Style.menuBorder
-            //     visible: trayWindowMainItem.isUnifiedSearchActive
-            // }
+            height: 1
+            color: palette.dark
+            visible: trayWindowMainItem.isUnifiedSearchActive
         }
 
         ErrorBox {
             id: unifiedSearchResultsErrorLabel
             visible:  UserModel.currentUser.unifiedSearchResultsListModel.errorString && !unifiedSearchResultsListView.visible && ! UserModel.currentUser.unifiedSearchResultsListModel.isSearchInProgress && ! UserModel.currentUser.unifiedSearchResultsListModel.currentFetchMoreInProgressProviderId
             text:  UserModel.currentUser.unifiedSearchResultsListModel.errorString
-            anchors.top: trayWindowUnifiedSearchInputContainer.bottom
+            anchors.top: bottomUnifiedSearchInputSeparator.bottom
             anchors.left: trayWindowMainItem.left
             anchors.right: trayWindowMainItem.right
             anchors.margins: Style.trayHorizontalMargin
@@ -621,7 +621,7 @@ ApplicationWindow {
         UnifiedSearchResultNothingFound {
             id: unifiedSearchResultNothingFound
 
-            anchors.top: trayWindowUnifiedSearchInputContainer.bottom
+            anchors.top: bottomUnifiedSearchInputSeparator.bottom
             anchors.left: trayWindowMainItem.left
             anchors.right: trayWindowMainItem.right
             anchors.topMargin: Style.trayHorizontalMargin
@@ -639,7 +639,7 @@ ApplicationWindow {
         Loader {
             id: unifiedSearchResultsListViewSkeletonLoader
 
-            anchors.top: trayWindowUnifiedSearchInputContainer.bottom
+            anchors.top: bottomUnifiedSearchInputSeparator.bottom
             anchors.left: trayWindowMainItem.left
             anchors.right: trayWindowMainItem.right
             anchors.bottom: trayWindowMainItem.bottom
@@ -668,7 +668,7 @@ ApplicationWindow {
             }
             visible: unifiedSearchResultsListView.count > 0
 
-            anchors.top: trayWindowUnifiedSearchInputContainer.bottom
+            anchors.top: bottomUnifiedSearchInputSeparator.bottom
             anchors.left: trayWindowMainItem.left
             anchors.right: trayWindowMainItem.right
             anchors.bottom: trayWindowMainItem.bottom
