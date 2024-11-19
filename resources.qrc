@@ -38,6 +38,7 @@
         <file>src/gui/tray/UnifiedSearchResultItemSkeletonGradientRectangle.qml</file>
         <file>src/gui/tray/UnifiedSearchResultListItem.qml</file>
         <file>src/gui/tray/UnifiedSearchResultNothingFound.qml</file>
+        <file>src/gui/tray/UnifiedSearchPlaceholderView.qml</file>
         <file>src/gui/tray/UnifiedSearchResultSectionItem.qml</file>
         <file>src/gui/tray/ActivityItemContextMenu.qml</file>
         <file>src/gui/tray/ActivityItemActions.qml</file>
