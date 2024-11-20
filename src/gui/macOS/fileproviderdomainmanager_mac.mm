@@ -581,6 +581,7 @@ void FileProviderDomainManager::slotAccountStateChanged(const AccountState * con
         break;
     case AccountState::SignedOut:
     case AccountState::AskingCredentials:
+    case AccountState::NeedToSignTermsOfService:
     {
         // Disconnect File Provider domain while unauthenticated
         const auto trReason = tr("This account is not authenticated. Please check your account state in the %1 application.").arg(APPLICATION_NAME);
