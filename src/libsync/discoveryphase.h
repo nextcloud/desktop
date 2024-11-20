@@ -106,6 +106,7 @@ struct LocalInfo
     bool isVirtualFile = false;
     bool isSymLink = false;
     bool isMetadataMissing = false;
+    bool isPermissionsInvalid = false;
     [[nodiscard]] bool isValid() const { return !name.isNull(); }
 };
 

@@ -1461,15 +1461,9 @@ void PropagateDirectory::slotSubJobsFinished(SyncFileItem::Status status)
                 try {
                     if (FileSystem::fileExists(propagator()->fullLocalPath(_item->_file))) {
                         FileSystem::setFolderPermissions(propagator()->fullLocalPath(_item->_file), FileSystem::FolderPermissions::ReadOnly);
-                        qCDebug(lcDirectory) << "old permissions" << static_cast<int>(std::filesystem::status(propagator()->fullLocalPath(_item->_file).toStdWString()).permissions());
-                        std::filesystem::permissions(propagator()->fullLocalPath(_item->_file).toStdWString(), std::filesystem::perms::owner_write | std::filesystem::perms::group_write | std::filesystem::perms::others_write, std::filesystem::perm_options::remove);
-                        qCDebug(lcDirectory) << "new permissions" << static_cast<int>(std::filesystem::status(propagator()->fullLocalPath(_item->_file).toStdWString()).permissions());
                     }
                     if (!_item->_renameTarget.isEmpty() && FileSystem::fileExists(propagator()->fullLocalPath(_item->_renameTarget))) {
                         FileSystem::setFolderPermissions(propagator()->fullLocalPath(_item->_renameTarget), FileSystem::FolderPermissions::ReadOnly);
-                        qCDebug(lcDirectory) << "old permissions" << static_cast<int>(std::filesystem::status(propagator()->fullLocalPath(_item->_renameTarget).toStdWString()).permissions());
-                        std::filesystem::permissions(propagator()->fullLocalPath(_item->_renameTarget).toStdWString(), std::filesystem::perms::owner_write | std::filesystem::perms::group_write | std::filesystem::perms::others_write, std::filesystem::perm_options::remove);
-                        qCDebug(lcDirectory) << "new permissions" << static_cast<int>(std::filesystem::status(propagator()->fullLocalPath(_item->_renameTarget).toStdWString()).permissions());
                     }
                 }
                 catch (const std::filesystem::filesystem_error &e)
@@ -1481,15 +1475,13 @@ void PropagateDirectory::slotSubJobsFinished(SyncFileItem::Status status)
             } else {
                 try {
                     if (FileSystem::fileExists(propagator()->fullLocalPath(_item->_file))) {
+                        qCDebug(lcDirectory) << propagator()->fullLocalPath(_item->_file) << "old permissions" << static_cast<int>(std::filesystem::status(propagator()->fullLocalPath(_item->_file).toStdWString()).permissions());
                         FileSystem::setFolderPermissions(propagator()->fullLocalPath(_item->_file), FileSystem::FolderPermissions::ReadWrite);
-                        qCDebug(lcDirectory) << "old permissions" << static_cast<int>(std::filesystem::status(propagator()->fullLocalPath(_item->_file).toStdWString()).permissions());
-                        std::filesystem::permissions(propagator()->fullLocalPath(_item->_file).toStdWString(), std::filesystem::perms::owner_write, std::filesystem::perm_options::add);
-                        qCDebug(lcDirectory) << "new permissions" << static_cast<int>(std::filesystem::status(propagator()->fullLocalPath(_item->_file).toStdWString()).permissions());
+                        qCDebug(lcDirectory) << propagator()->fullLocalPath(_item->_file) << "new permissions" << static_cast<int>(std::filesystem::status(propagator()->fullLocalPath(_item->_file).toStdWString()).permissions());
                     }
                     if (!_item->_renameTarget.isEmpty() && FileSystem::fileExists(propagator()->fullLocalPath(_item->_renameTarget))) {
-                        FileSystem::setFolderPermissions(propagator()->fullLocalPath(_item->_renameTarget), FileSystem::FolderPermissions::ReadWrite);
                         qCDebug(lcDirectory) << "old permissions" << static_cast<int>(std::filesystem::status(propagator()->fullLocalPath(_item->_renameTarget).toStdWString()).permissions());
-                        std::filesystem::permissions(propagator()->fullLocalPath(_item->_renameTarget).toStdWString(), std::filesystem::perms::owner_write, std::filesystem::perm_options::add);
+                        FileSystem::setFolderPermissions(propagator()->fullLocalPath(_item->_renameTarget), FileSystem::FolderPermissions::ReadWrite);
                         qCDebug(lcDirectory) << "new permissions" << static_cast<int>(std::filesystem::status(propagator()->fullLocalPath(_item->_renameTarget).toStdWString()).permissions());
                     }
                 }

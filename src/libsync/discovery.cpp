@@ -1070,6 +1070,10 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
         if (_queryLocal != NormalQuery && _queryServer != NormalQuery)
             recurse = false;
 
+        if (localEntry.isPermissionsInvalid) {
+            recurse = true;
+        }
+
         if ((item->_direction == SyncFileItem::Down || item->_instruction == CSYNC_INSTRUCTION_CONFLICT || item->_instruction == CSYNC_INSTRUCTION_NEW || item->_instruction == CSYNC_INSTRUCTION_SYNC) &&
                 (item->_modtime <= 0 || item->_modtime >= 0xFFFFFFFF)) {
             item->_instruction = CSYNC_INSTRUCTION_ERROR;
@@ -1096,6 +1100,13 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
                 item->_e2eEncryptionServerCapability = EncryptionStatusEnums::fromEndToEndEncryptionApiVersion(_discoveryData->_account->capabilities().clientSideEncryptionVersion());
             }
         }
+
+        if (localEntry.isPermissionsInvalid && item->_instruction == CSyncEnums::CSYNC_INSTRUCTION_NONE) {
+            item->_instruction = CSYNC_INSTRUCTION_UPDATE_METADATA;
+            item->_direction = SyncFileItem::Down;
+        }
+
+        item->isPermissionsInvalid = localEntry.isPermissionsInvalid;
 
         auto recurseQueryLocal = _queryLocal == ParentNotChanged ? ParentNotChanged : localEntry.isDirectory || item->_instruction == CSYNC_INSTRUCTION_RENAME ? NormalQuery : ParentDontExist;
         processFileFinalize(item, path, recurse, recurseQueryLocal, recurseQueryServer);
