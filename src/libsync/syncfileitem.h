@@ -343,6 +343,8 @@ public:
     bool _isLivePhoto = false;
     QString _livePhotoFile;
 
+    bool isPermissionsInvalid = false;
+
     QString _discoveryResult;
 };
 
