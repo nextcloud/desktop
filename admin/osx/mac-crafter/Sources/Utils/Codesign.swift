@@ -57,7 +57,7 @@ func recursivelyCodesign(path: String, identity: String) throws {
 }
 
 func saveCodesignEntitlements(target: String, path: String) throws {
-    let command = "codesign -d --entitlements \(path) --xml \(target)"
+    let command = "codesign -d --entitlements \"\(path)\" --xml \"\(target)\""
     guard shell(command) == 0 else {
         throw CodeSigningError.failedToCodeSign("Failed to save entitlements for \(target).")
     }
