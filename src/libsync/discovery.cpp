@@ -547,6 +547,7 @@ void ProcessDirectoryJob::processFile(PathTuple path,
                            << " | e2eeMangledName: " << dbEntry.e2eMangledName() << "/" << serverEntry.e2eMangledName
                            << " | file lock: " << localFileIsLocked << "//" << serverFileIsLocked
                            << " | file lock type: " << localFileLockType << "//" << serverFileLockType
+                           << " | live photo: " << dbEntry._isLivePhoto << "//" << serverEntry.isLivePhoto
                            << " | metadata missing: /" << localEntry.isMetadataMissing << '/';
 
     qCInfo(lcDisco).nospace() << processingLog;
@@ -717,6 +718,9 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(const SyncFileItemPtr &it
     item->_lockTime = serverEntry.lockTime;
     item->_lockTimeout = serverEntry.lockTimeout;
     item->_lockToken = serverEntry.lockToken;
+
+    item->_isLivePhoto = serverEntry.isLivePhoto;
+    item->_livePhotoFile = serverEntry.livePhotoFile;
 
     // Check for missing server data
     {
@@ -1119,6 +1123,12 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
                 qCWarning(lcDisco) << "Failed to delete a file record from the local DB" << path._original;
             }
             return;
+        } else if (dbEntry._isLivePhoto && QMimeDatabase().mimeTypeForFile(item->_file).inherits(QStringLiteral("video/quicktime"))) {
+            // This is a live photo's video file; the server won't allow deletion of this file
+            // so we need to *not* propagate the .mov deletion to the server and redownload the file
+            qCInfo(lcDisco) << "Live photo video file deletion detected, redownloading" << item->_file;
+            item->_direction = SyncFileItem::Down;
+            item->_instruction = CSYNC_INSTRUCTION_SYNC;
         } else if (!serverModified) {
             // Removed locally: also remove on the server.
             if (!dbEntry._serverHasIgnoredFiles) {

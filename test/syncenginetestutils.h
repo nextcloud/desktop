@@ -142,6 +142,8 @@ public:
 
     void setModTimeKeepEtag(const QString &relativePath, const QDateTime &modTime);
 
+    void setIsLivePhoto(const QString &relativePath, bool isLivePhoto);
+
     void modifyLockState(const QString &relativePath, LockState lockState, int lockType, const QString &lockOwner, const QString &lockOwnerId, const QString &lockEditorId, quint64 lockTime, quint64 lockTimeout) override;
 
     void setE2EE(const QString &relativepath, const bool enabled) override;
@@ -188,6 +190,7 @@ public:
     quint64 lockTime = 0;
     quint64 lockTimeout = 0;
     bool isEncrypted = false;
+    bool isLivePhoto = false;
 
     // Sorted by name to be able to compare trees
     QMap<QString, FileInfo> children;
