@@ -49,7 +49,6 @@ HRESULT NCMSIHELPER_API DoExecNsisUninstaller(int argc, LPWSTR *argv)
 
     // Can't wait for the process because Uninstall.exe (opposed to Setup.exe) immediately returns, so we'll sleep a bit.
     Utility::waitForNsisUninstaller(appShortName);
-    Utility::removeUsersFromKeychain(appShortName);
 
     LogResult(S_OK, "Removing the NSIS uninstaller.");
 
@@ -70,6 +69,8 @@ HRESULT NCMSIHELPER_API DoRemoveNavigationPaneEntries(int argc, LPWSTR *argv)
     }
 
     const auto appName = std::wstring(argv[0]);
+
+    Utility::removeUsersFromKeychain(appName);
 
     if (appName.empty()) {
         return HRESULT_FROM_WIN32(ERROR_INVALID_PARAMETER);

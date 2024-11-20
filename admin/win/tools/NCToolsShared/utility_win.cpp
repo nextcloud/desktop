@@ -477,10 +477,12 @@ bool Utility::copy_dir_recursive(std::wstring from_dir, std::wstring to_dir, cop
 
 void Utility::removeUsersFromKeychain(const std::wstring &appName)
 {
+    // https://learn.microsoft.com/en-us/windows/win32/api/wincred/nf-wincred-creddeletew
+    // https://github.com/frankosterfeld/qtkeychain/blob/181103549bcda0e4c38988255af64930cfa64ed7/qtkeychain/keychain_win.cpp
     if (!CredDeleteW(appName.c_str(), CRED_TYPE_GENERIC, 0)) {
         switch(GetLastError()) {
         case ERROR_NOT_FOUND:
-            // Password entry not found"
+            // Password entry not found
             break;
         default:
             // Could not decrypt data
