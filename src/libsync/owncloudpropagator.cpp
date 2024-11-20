@@ -1457,8 +1457,6 @@ void PropagateDirectory::slotSubJobsFinished(SyncFileItem::Status status)
 #if !defined(Q_OS_MACOS) || __MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_15
             if (!_item->_remotePerm.isNull() &&
                 !_item->_remotePerm.hasPermission(RemotePermissions::CanAddFile) &&
-                !_item->_remotePerm.hasPermission(RemotePermissions::CanRename) &&
-                !_item->_remotePerm.hasPermission(RemotePermissions::CanMove) &&
                 !_item->_remotePerm.hasPermission(RemotePermissions::CanAddSubDirectories)) {
                 try {
                     if (FileSystem::fileExists(propagator()->fullLocalPath(_item->_file))) {
@@ -1480,11 +1478,7 @@ void PropagateDirectory::slotSubJobsFinished(SyncFileItem::Status status)
                     _item->_status = SyncFileItem::NormalError;
                     _item->_errorString = tr("The folder %1 cannot be made read-only: %2").arg(_item->_file, e.what());
                 }
-            } else if (!_item->_remotePerm.isNull() &&
-                       (_item->_remotePerm.hasPermission(RemotePermissions::CanAddFile) ||
-                        !_item->_remotePerm.hasPermission(RemotePermissions::CanRename) ||
-                        !_item->_remotePerm.hasPermission(RemotePermissions::CanMove) ||
-                        !_item->_remotePerm.hasPermission(RemotePermissions::CanAddSubDirectories))) {
+            } else {
                 try {
                     if (FileSystem::fileExists(propagator()->fullLocalPath(_item->_file))) {
                         FileSystem::setFolderPermissions(propagator()->fullLocalPath(_item->_file), FileSystem::FolderPermissions::ReadWrite);
