@@ -146,6 +146,7 @@ void FileProviderXPC::createDebugArchiveForExtension(const QString &extensionAcc
 }
 
 bool FileProviderXPC::fileProviderExtReachable(const QString &extensionAccountId, const bool retry, const bool reconfigureOnFail)
+{
     const auto lastUnreachableTime = _unreachableAccountExtensions.value(extensionAccountId);
     if (!retry 
         && !reconfigureOnFail 
