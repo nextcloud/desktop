@@ -14,6 +14,8 @@
 
 import Foundation
 
+fileprivate let defaultCodesignOptions = "--timestamp --force --preserve-metadata=entitlements --verbose=4 --options runtime --deep"
+
 enum CodeSigningError: Error {
     case failedToCodeSign(String)
 }
@@ -30,11 +32,7 @@ func isAppExtension(_ path: String) -> Bool {
     path.hasSuffix(".appex")
 }
 
-func codesign(
-    identity: String,
-    path: String,
-    options: String = "--timestamp --force --preserve-metadata=entitlements --verbose=4 --options runtime --deep"
-) throws {
+func codesign(identity: String, path: String, options: String = defaultCodesignOptions) throws {
     print("Code-signing \(path)...")
     let command = "codesign -s \"\(identity)\" \(options) \"\(path)\""
     guard shell(command) == 0 else {
@@ -42,7 +40,11 @@ func codesign(
     }
 }
 
-func recursivelyCodesign(path: String, identity: String) throws {
+func recursivelyCodesign(
+    path: String,
+    identity: String,
+    options: String = defaultCodesignOptions
+) throws {
     let fm = FileManager.default
     guard let pathEnumerator = fm.enumerator(atPath: path) else {
         throw AppBundleSigningError.couldNotEnumerate(
@@ -57,7 +59,7 @@ func recursivelyCodesign(path: String, identity: String) throws {
 }
 
 func saveCodesignEntitlements(target: String, path: String) throws {
-    let command = "codesign -d --entitlements \(path) --xml \(target)"
+    let command = "codesign -d --entitlements \"\(path)\" --xml \"\(target)\""
     guard shell(command) == 0 else {
         throw CodeSigningError.failedToCodeSign("Failed to save entitlements for \(target).")
     }
@@ -92,9 +94,9 @@ func codesignClientAppBundle(
 
     print("Code-signing Sparkle autoupdater app (without entitlements)...")
     let sparkleFrameworkPath = "\(frameworksPath)/Sparkle.framework"
-    try codesign(identity: codeSignIdentity,
-                 path: "\(sparkleFrameworkPath)/Resources/Autoupdate.app/Contents/MacOS/*",
-                 options: "--timestamp --force --verbose=4 --options runtime --deep")
+    try recursivelyCodesign(path: "\(sparkleFrameworkPath)/Resources/Autoupdate.app",
+                            identity: codeSignIdentity,
+                            options: "--timestamp --force --verbose=4 --options runtime --deep")
 
     print("Re-codesigning Sparkle library...")
     try codesign(identity: codeSignIdentity, path: "\(sparkleFrameworkPath)/Sparkle")
