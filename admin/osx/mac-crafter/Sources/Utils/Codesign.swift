@@ -125,5 +125,5 @@ func codesignClientAppBundle(
 
     // Now we do the final codesign bit
     print("Code-signing Nextcloud Desktop Client binaries...")
-    try codesign(identity: codeSignIdentity, path: "\(clientContentsDir)/MacOS/*")
+    try recursivelyCodesign(path: "\(clientContentsDir)/MacOS/", identity: codeSignIdentity)
 }
