@@ -467,7 +467,7 @@ void ShareModel::slotPropfindReceived(const QVariantMap &result)
 
     const auto privateLinkUrl = result["privatelink"].toString();
     _fileRemoteId = result["fileid"].toByteArray();
-     
+
     if (!privateLinkUrl.isEmpty()) {
         qCInfo(lcShareModel) << "Received private link url for" << _sharePath << privateLinkUrl;
         _privateLinkUrl = privateLinkUrl;
