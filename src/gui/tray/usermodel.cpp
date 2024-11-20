@@ -1655,12 +1655,20 @@ public:
                 qCWarning(lcActivity) << "Invalid account:" << accountString;
                 return;
             }
-            const auto avatarSize = requestedSize.width() > 0 ? requestedSize.width() : 64;
-            const auto avatarJob = new AvatarJob(accountState->account(), avatarUserId, avatarSize);
-            connect(avatarJob, &AvatarJob::avatarPixmap, this, [&](const QImage &avatarImg) {
-                handleDone(AvatarJob::makeCircularAvatar(avatarImg));
+
+            const auto account = accountState->account();
+            const auto qnam = account->networkAccessManager();
+
+            QMetaObject::invokeMethod(qnam, [this, requestedSize, avatarUserId, account]() {
+                const auto avatarSize = requestedSize.width() > 0 ? requestedSize.width() : 64;
+                const auto avatarJob = new AvatarJob(account, avatarUserId, avatarSize);
+                connect(avatarJob, &AvatarJob::avatarPixmap, this, [&](const QImage &avatarImg) {
+                    QMetaObject::invokeMethod(this, [this, avatarImg] {
+                        handleDone(AvatarJob::makeCircularAvatar(avatarImg));
+                    });
+                });
+                avatarJob->start();
             });
-            avatarJob->start();
             return;
         }
 
