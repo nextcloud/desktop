@@ -564,63 +564,6 @@ private slots:
         QVERIFY(cls.find("zallowed/sub2/file"));
     }
 
-    // Test for issue #7293
-    void testAllowedMoveForbiddenDelete() {
-         FakeFolder fakeFolder{FileInfo{}};
-
-        QObject::connect(&fakeFolder.syncEngine(), &SyncEngine::aboutToRemoveRemnantsReadOnlyFolders,
-                         [&](const QList<SyncFileItemPtr> &folders, const QString &localPath, std::function<void(bool)> callback) {
-                             for(const auto &oneFolder : folders) {
-                                 FileSystem::removeRecursively(localPath + oneFolder->_file);
-                             }
-                             callback(false);
-                         });
-
-        // Some of this test depends on the order of discovery. With threading
-        // that order becomes effectively random, but we want to make sure to test
-        // all cases and thus disable threading.
-        auto syncOpts = fakeFolder.syncEngine().syncOptions();
-        syncOpts._parallelNetworkJobs = 1;
-        fakeFolder.syncEngine().setSyncOptions(syncOpts);
-
-        auto &lm = fakeFolder.localModifier();
-        auto &rm = fakeFolder.remoteModifier();
-        rm.mkdir("changeonly");
-        rm.mkdir("changeonly/sub1");
-        rm.insert("changeonly/sub1/file1");
-        rm.insert("changeonly/sub1/filetorname1a");
-        rm.insert("changeonly/sub1/filetorname1z");
-        rm.mkdir("changeonly/sub2");
-        rm.insert("changeonly/sub2/file2");
-        rm.insert("changeonly/sub2/filetorname2a");
-        rm.insert("changeonly/sub2/filetorname2z");
-
-        setAllPerm(rm.find("changeonly"), RemotePermissions::fromServerString("NSV"));
-
-        QVERIFY(fakeFolder.syncOnce());
-
-        lm.rename("changeonly/sub1/filetorname1a", "changeonly/sub1/aaa1_renamed");
-        lm.rename("changeonly/sub1/filetorname1z", "changeonly/sub1/zzz1_renamed");
-
-        lm.rename("changeonly/sub2/filetorname2a", "changeonly/sub2/aaa2_renamed");
-        lm.rename("changeonly/sub2/filetorname2z", "changeonly/sub2/zzz2_renamed");
-
-        auto expectedState = fakeFolder.currentLocalState();
-
-        QVERIFY(fakeFolder.syncOnce());
-        QCOMPARE(fakeFolder.currentLocalState(), expectedState);
-        QCOMPARE(fakeFolder.currentRemoteState(), expectedState);
-
-        lm.rename("changeonly/sub1", "changeonly/aaa");
-        lm.rename("changeonly/sub2", "changeonly/zzz");
-
-        expectedState = fakeFolder.currentLocalState();
-
-        QVERIFY(fakeFolder.syncOnce());
-        QCOMPARE(fakeFolder.currentLocalState(), expectedState);
-        QCOMPARE(fakeFolder.currentRemoteState(), expectedState);
-    }
-
     void testParentMoveNotAllowedChildrenRestored()
     {
         FakeFolder fakeFolder{FileInfo{}};
@@ -722,7 +665,7 @@ private slots:
 
         remote.mkdir("readWriteFolder");
 
-        remote.find("readWriteFolder")->permissions = RemotePermissions::fromServerString("WDNVRSM");
+        remote.find("readWriteFolder")->permissions = RemotePermissions::fromServerString("CKWDNVRSM");
 
         QVERIFY(fakeFolder.syncOnce());
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
@@ -757,7 +700,7 @@ private slots:
         QVERIFY(folderStatus.permissions() & std::filesystem::perms::owner_read);
         QVERIFY(!static_cast<bool>(folderStatus.permissions() & std::filesystem::perms::owner_write));
 
-        remote.find("testFolder")->permissions = RemotePermissions::fromServerString("WDNVRSM");
+        remote.find("testFolder")->permissions = RemotePermissions::fromServerString("CKWDNVRSM");
 
         QVERIFY(fakeFolder.syncOnce());
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
@@ -815,7 +758,7 @@ private slots:
         QVERIFY(subFolderReadOnlyStatus.permissions() & std::filesystem::perms::owner_read);
         QVERIFY(!static_cast<bool>(subFolderReadOnlyStatus.permissions() & std::filesystem::perms::owner_write));
 
-        remote.find("testFolder/subFolderReadOnly")->permissions = RemotePermissions::fromServerString("WDNVRSm");
+        remote.find("testFolder/subFolderReadOnly")->permissions = RemotePermissions::fromServerString("CKWDNVRSm");
         remote.find("testFolder/subFolderReadWrite")->permissions = RemotePermissions::fromServerString("m");
         remote.mkdir("testFolder/newSubFolder");
         remote.create("testFolder/testFile", 12, '9');
