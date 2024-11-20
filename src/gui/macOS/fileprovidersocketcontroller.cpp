@@ -174,6 +174,7 @@ void FileProviderSocketController::slotAccountStateChanged(const AccountState::S
     case AccountState::SignedOut:
     case AccountState::AskingCredentials:
     case AccountState::RedirectDetected:
+    case AccountState::NeedToSignTermsOfService:
         // Notify File Provider that it should show the not authenticated message
         sendNotAuthenticated();
         break;
