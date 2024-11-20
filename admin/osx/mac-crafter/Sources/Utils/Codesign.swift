@@ -83,7 +83,7 @@ func codesignClientAppBundle(
         "\(frameworksPath)/QtWebEngineCore.framework/Versions/A/Helpers/QtWebEngineProcess.app"
     try codesign(identity: codeSignIdentity,
                  path: qtWebEngineProcessPath,
-                 options: "--timestamp --force --verbose=4 --options runtime --deep --entitlements \(qtWebEngineProcessPath)/Contents/Resources/QtWebEngineProcess.entitlements")
+                 options: "--timestamp --force --verbose=4 --options runtime --deep --entitlements \"\(qtWebEngineProcessPath)/Contents/Resources/QtWebEngineProcess.entitlements\"")
 
     print("Code-signing QtWebEngine...")
     try codesign(identity: codeSignIdentity, path: "\(frameworksPath)/QtWebEngineCore.framework")
@@ -120,7 +120,7 @@ func codesignClientAppBundle(
                                        encoding: .utf8)
         try codesign(identity: codeSignIdentity,
                      path: appExtensionPath,
-                     options: "--timestamp --force --verbose=4 --options runtime --deep --entitlements \(tmpEntitlementXmlPath)")
+                     options: "--timestamp --force --verbose=4 --options runtime --deep --entitlements \"\(tmpEntitlementXmlPath)\"")
     }
 
     // Now we do the final codesign bit
