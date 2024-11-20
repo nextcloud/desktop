@@ -13,7 +13,6 @@
  */
 
 #include "generalsettings.h"
-#include "macOS/fileprovider.h"
 #include "ui_generalsettings.h"
 
 #include "theme.h"
@@ -33,6 +32,7 @@
 #endif
 
 #ifdef BUILD_FILE_PROVIDER_MODULE
+#include "macOS/fileprovider.h"
 #include "macOS/fileprovidersettingscontroller.h"
 #endif
 
