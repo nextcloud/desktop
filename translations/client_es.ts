@@ -1205,34 +1205,34 @@ Además, esta acción interrumpirá cualquier sincronización en curso.</transla
         <translation>Continuar</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="503"/>
+        <location filename="../src/gui/application.cpp" line="487"/>
         <source>%1 accounts</source>
         <comment>number of accounts imported</comment>
         <translation>%1 cuentas</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="504"/>
+        <location filename="../src/gui/application.cpp" line="488"/>
         <source>1 account</source>
         <translation>1 cuenta</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="506"/>
+        <location filename="../src/gui/application.cpp" line="490"/>
         <source>%1 folders</source>
         <comment>number of folders imported</comment>
         <translation>%1 carpetas</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="507"/>
+        <location filename="../src/gui/application.cpp" line="491"/>
         <source>1 folder</source>
         <translation>1 carpeta</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="509"/>
+        <location filename="../src/gui/application.cpp" line="493"/>
         <source>Legacy import</source>
         <translation>Importación legada</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="510"/>
+        <location filename="../src/gui/application.cpp" line="494"/>
         <source>Imported %1 and %2 from a legacy desktop client.
 %3</source>
         <comment>number of accounts and folders imported. list of users.</comment>
@@ -3654,19 +3654,19 @@ Nótese que usar cualquier opción de toma de registros a través de línea de c
         <translation>Nota: los ajustes de proxy no tienen efecto para cuentas en el sistema local.</translation>
     </message>
     <message>
-        <location filename="../src/gui/networksettings.ui" line="246"/>
+        <location filename="../src/gui/networksettings.ui" line="249"/>
         <source>Manually specify proxy</source>
         <translation>Proxy especificado manualmente</translation>
     </message>
     <message>
-        <location filename="../src/gui/networksettings.ui" line="256"/>
+        <location filename="../src/gui/networksettings.ui" line="259"/>
         <source>No proxy</source>
         <translation>Sin proxy</translation>
     </message>
     <message>
-        <location filename="../src/gui/networksettings.ui" line="282"/>
-        <location filename="../src/gui/networksettings.ui" line="397"/>
-        <location filename="../src/gui/networksettings.ui" line="507"/>
+        <location filename="../src/gui/networksettings.ui" line="285"/>
+        <location filename="../src/gui/networksettings.ui" line="400"/>
+        <location filename="../src/gui/networksettings.ui" line="510"/>
         <source>Use global settings</source>
         <translation>Usar la configuración global</translation>
     </message>
@@ -5606,7 +5606,7 @@ El servidor respondió con el error: %2</translation>
         <translation>&lt;p&gt;%1 - Cliente de escritorio&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="574"/>
+        <location filename="../src/libsync/theme.cpp" line="597"/>
         <source>&lt;p&gt;%1 Desktop Client&lt;/p&gt;&lt;p&gt;Version %1. For more information please click &lt;a href=&apos;%2&apos;&gt;here&lt;/a&gt;.&lt;/p&gt;</source>
         <extracomment>Example text: &quot;&lt;p&gt;Nextcloud Desktop Client&lt;/p&gt;&quot; (%1 is the application name)</extracomment>
         <translation>&lt;p&gt;%1 Cliente de Escritorio&lt;/p&gt;&lt;p&gt;Versión %1. Para más información, por favor pulsa &lt;a href=&apos;%2&apos;&gt;aquí&lt;/a&gt;.&lt;/p&gt;</translation>
@@ -5617,7 +5617,7 @@ El servidor respondió con el error: %2</translation>
         <translation>&lt;p&gt;&lt;small&gt;Usando el plugin de archivos virtuales: %1&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="591"/>
+        <location filename="../src/libsync/theme.cpp" line="614"/>
         <source>&lt;p&gt;%1 desktop client %2&lt;/p&gt;</source>
         <extracomment>Example text: &quot;&lt;p&gt;Nextcloud Desktop Client&lt;/p&gt;&quot; (%1 is the application name)</extracomment>
         <translation>&lt;p&gt;%1 cliente de escritorio %2&lt;/p&gt;</translation>
@@ -6884,7 +6884,7 @@ El servidor respondió con el error: %2</translation>
 <context>
     <name>nextcloudTheme::aboutInfo()</name>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="554"/>
+        <location filename="../src/libsync/theme.cpp" line="577"/>
         <source>&lt;p&gt;&lt;small&gt;Built from Git revision &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; on %3, %4 using Qt %5, %6&lt;/small&gt;&lt;/p&gt;</source>
         <translation>&lt;p&gt;&lt;small&gt;Creado desde la revisión Git &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; en %3, %4 con Qt %5, %6&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
@@ -7046,12 +7046,12 @@ El servidor respondió con el error: %2</translation>
         <translation>Esperando para comenzar la sincronización</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="89"/>
+        <location filename="../src/libsync/theme.cpp" line="102"/>
         <source>Sync status is unknown</source>
         <translation>Estado de sincronización desconocido</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="92"/>
+        <location filename="../src/libsync/theme.cpp" line="105"/>
         <source>Waiting to start syncing</source>
         <translation>Esperando para empezar la sincronización</translation>
     </message>
@@ -7071,19 +7071,9 @@ El servidor respondió con el error: %2</translation>
         <translation>Sincronizado con éxito, algunos archivos han sido ignorados.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="98"/>
-        <source>Sync was successful</source>
-        <translation>La sincronización ha tenido éxito</translation>
-    </message>
-    <message>
         <location filename="../src/libsync/theme.cpp" line="99"/>
         <source>Sync Error</source>
         <translation>Error de sincronización.</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/theme.cpp" line="101"/>
-        <source>Sync was successful but some files were ignored</source>
-        <translation>La sincronización ha tenido éxito pero se han ignorado algunos archivos</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="102"/>
@@ -7091,12 +7081,27 @@ El servidor respondió con el error: %2</translation>
         <translation>Error en la instalación</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="104"/>
+        <location filename="../src/libsync/theme.cpp" line="108"/>
+        <source>Aborting …</source>
+        <translation>Cancelando ...</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/theme.cpp" line="111"/>
+        <source>Sync was successful</source>
+        <translation>La sincronización ha tenido éxito</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/theme.cpp" line="114"/>
+        <source>Sync was successful but some files were ignored</source>
+        <translation>La sincronización ha tenido éxito pero se han ignorado algunos archivos</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/theme.cpp" line="117"/>
         <source>Error occurred during sync</source>
         <translation>Ha ocurrido un error durante la sincronización</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="107"/>
+        <location filename="../src/libsync/theme.cpp" line="120"/>
         <source>Error occurred during setup</source>
         <translation>Ha ocurrido un error durante la configuración</translation>
     </message>
@@ -7106,12 +7111,7 @@ El servidor respondió con el error: %2</translation>
         <translation>Preparando para sincronizar</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="108"/>
-        <source>Aborting …</source>
-        <translation>Cancelando ...</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/theme.cpp" line="113"/>
+        <location filename="../src/libsync/theme.cpp" line="126"/>
         <source>Stopping sync</source>
         <translation>Deteniendo la sincronización</translation>
     </message>

@@ -1204,34 +1204,34 @@ Bu işlem şu anda yürütülmekte olan eşitleme işlemlerini durdurur.</transl
         <translation>Sürdür</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="503"/>
+        <location filename="../src/gui/application.cpp" line="487"/>
         <source>%1 accounts</source>
         <comment>number of accounts imported</comment>
         <translation>%1 hesap</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="504"/>
+        <location filename="../src/gui/application.cpp" line="488"/>
         <source>1 account</source>
         <translation>1 hesap</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="506"/>
+        <location filename="../src/gui/application.cpp" line="490"/>
         <source>%1 folders</source>
         <comment>number of folders imported</comment>
         <translation>%1 klasör</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="507"/>
+        <location filename="../src/gui/application.cpp" line="491"/>
         <source>1 folder</source>
         <translation>1 klasör</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="509"/>
+        <location filename="../src/gui/application.cpp" line="493"/>
         <source>Legacy import</source>
         <translation>Eskileri içe aktarma</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="510"/>
+        <location filename="../src/gui/application.cpp" line="494"/>
         <source>Imported %1 and %2 from a legacy desktop client.
 %3</source>
         <comment>number of accounts and folders imported. list of users.</comment>
@@ -3651,19 +3651,19 @@ Komut satırından verilen günlük komutlarının bu ayarın yerine geçeceğin
         <translation>Not: Vekil sunucu ayarları localhost üzerindeki hesaplar için uygulanmaz</translation>
     </message>
     <message>
-        <location filename="../src/gui/networksettings.ui" line="246"/>
+        <location filename="../src/gui/networksettings.ui" line="249"/>
         <source>Manually specify proxy</source>
         <translation>Vekil sunucuyu el ile ayarlayın</translation>
     </message>
     <message>
-        <location filename="../src/gui/networksettings.ui" line="256"/>
+        <location filename="../src/gui/networksettings.ui" line="259"/>
         <source>No proxy</source>
         <translation>Vekil sunucu yok</translation>
     </message>
     <message>
-        <location filename="../src/gui/networksettings.ui" line="282"/>
-        <location filename="../src/gui/networksettings.ui" line="397"/>
-        <location filename="../src/gui/networksettings.ui" line="507"/>
+        <location filename="../src/gui/networksettings.ui" line="285"/>
+        <location filename="../src/gui/networksettings.ui" line="400"/>
+        <location filename="../src/gui/networksettings.ui" line="510"/>
         <source>Use global settings</source>
         <translation>Genel ayarlar kullanılsın</translation>
     </message>
@@ -5603,7 +5603,7 @@ Sunucunun verdiği hata yanıtı: %2</translation>
         <translation>&lt;p&gt;%1 Masaüstü istemcisi&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="574"/>
+        <location filename="../src/libsync/theme.cpp" line="597"/>
         <source>&lt;p&gt;%1 Desktop Client&lt;/p&gt;&lt;p&gt;Version %1. For more information please click &lt;a href=&apos;%2&apos;&gt;here&lt;/a&gt;.&lt;/p&gt;</source>
         <extracomment>Example text: &quot;&lt;p&gt;Nextcloud Desktop Client&lt;/p&gt;&quot; (%1 is the application name)</extracomment>
         <translation>&lt;p&gt;%1 masaüstü istemcisi&lt;/p&gt; &lt;p&gt;%1. Sürüm. Ayrıntılı bilgi almak için &lt;a href=&apos;%2&apos;&gt;buraya tıklayabilirsiniz&lt;/a&gt;.&lt;/p&gt;</translation>
@@ -5614,7 +5614,7 @@ Sunucunun verdiği hata yanıtı: %2</translation>
         <translation>&lt;p&gt;&lt;small&gt;Sanal dosyalar eklentisi kullanılarak: %1&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="591"/>
+        <location filename="../src/libsync/theme.cpp" line="614"/>
         <source>&lt;p&gt;%1 desktop client %2&lt;/p&gt;</source>
         <extracomment>Example text: &quot;&lt;p&gt;Nextcloud Desktop Client&lt;/p&gt;&quot; (%1 is the application name)</extracomment>
         <translation>&lt;p&gt;%1 masaüstü istemcisi %2&lt;/p&gt;</translation>
@@ -6881,7 +6881,7 @@ Sunucunun verdiği hata yanıtı: %2</translation>
 <context>
     <name>nextcloudTheme::aboutInfo()</name>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="554"/>
+        <location filename="../src/libsync/theme.cpp" line="577"/>
         <source>&lt;p&gt;&lt;small&gt;Built from Git revision &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; on %3, %4 using Qt %5, %6&lt;/small&gt;&lt;/p&gt;</source>
         <translation>&lt;p&gt;&lt;small&gt;Git &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; sürümü ile %3 zamanında, %4 Qt %5 kullanılarak, %6 hazırlandı&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
@@ -7043,12 +7043,12 @@ Sunucunun verdiği hata yanıtı: %2</translation>
         <translation>Eşitlemenin başlatılması bekleniyor</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="89"/>
+        <location filename="../src/libsync/theme.cpp" line="102"/>
         <source>Sync status is unknown</source>
         <translation>Eşitleme durumu bilinmiyor</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="92"/>
+        <location filename="../src/libsync/theme.cpp" line="105"/>
         <source>Waiting to start syncing</source>
         <translation>Eşitlemenin başlatılması bekleniyor</translation>
     </message>
@@ -7068,19 +7068,9 @@ Sunucunun verdiği hata yanıtı: %2</translation>
         <translation>Eşitleme tamamlandı, bazı dosyalar yok sayıldı.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="98"/>
-        <source>Sync was successful</source>
-        <translation>Eşitleme sorunsuz tamamlandı</translation>
-    </message>
-    <message>
         <location filename="../src/libsync/theme.cpp" line="99"/>
         <source>Sync Error</source>
         <translation>Eşitleme sorunu</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/theme.cpp" line="101"/>
-        <source>Sync was successful but some files were ignored</source>
-        <translation>Eşitleme tamamlandı ancak bazı dosyalar yok sayıldı</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="102"/>
@@ -7088,12 +7078,27 @@ Sunucunun verdiği hata yanıtı: %2</translation>
         <translation>Kurulum sorunu</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="104"/>
+        <location filename="../src/libsync/theme.cpp" line="108"/>
+        <source>Aborting …</source>
+        <translation>İptal ediliyor…</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/theme.cpp" line="111"/>
+        <source>Sync was successful</source>
+        <translation>Eşitleme sorunsuz tamamlandı</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/theme.cpp" line="114"/>
+        <source>Sync was successful but some files were ignored</source>
+        <translation>Eşitleme tamamlandı ancak bazı dosyalar yok sayıldı</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/theme.cpp" line="117"/>
         <source>Error occurred during sync</source>
         <translation>Eşitleme sırasında sorun çıktı</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="107"/>
+        <location filename="../src/libsync/theme.cpp" line="120"/>
         <source>Error occurred during setup</source>
         <translation>Kurulum sırasında sorun çıktı</translation>
     </message>
@@ -7103,12 +7108,7 @@ Sunucunun verdiği hata yanıtı: %2</translation>
         <translation>Eşitlemeye hazırlanılıyor</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="108"/>
-        <source>Aborting …</source>
-        <translation>İptal ediliyor…</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/theme.cpp" line="113"/>
+        <location filename="../src/libsync/theme.cpp" line="126"/>
         <source>Stopping sync</source>
         <translation>Eşitleme durduruluyor</translation>
     </message>
