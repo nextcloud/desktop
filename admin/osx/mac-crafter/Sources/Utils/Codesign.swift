@@ -94,9 +94,9 @@ func codesignClientAppBundle(
 
     print("Code-signing Sparkle autoupdater app (without entitlements)...")
     let sparkleFrameworkPath = "\(frameworksPath)/Sparkle.framework"
-    try codesign(identity: codeSignIdentity,
-                 path: "\(sparkleFrameworkPath)/Resources/Autoupdate.app/Contents/MacOS/*",
-                 options: "--timestamp --force --verbose=4 --options runtime --deep")
+    try recursivelyCodesign(path: "\(sparkleFrameworkPath)/Resources/Autoupdate.app",
+                            identity: codeSignIdentity,
+                            options: "--timestamp --force --verbose=4 --options runtime --deep")
 
     print("Re-codesigning Sparkle library...")
     try codesign(identity: codeSignIdentity, path: "\(sparkleFrameworkPath)/Sparkle")
