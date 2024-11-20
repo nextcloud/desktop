@@ -581,6 +581,7 @@ void FileProviderDomainManager::slotAccountStateChanged(const AccountState * con
         break;
     case AccountState::SignedOut:
     case AccountState::AskingCredentials:
+    case AccountState::RedirectDetected:
     case AccountState::NeedToSignTermsOfService:
     {
         // Disconnect File Provider domain while unauthenticated
