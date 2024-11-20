@@ -223,6 +223,13 @@ void FileInfo::setModTimeKeepEtag(const QString &relativePath, const QDateTime &
     file->lastModified = modTime;
 }
 
+void FileInfo::setIsLivePhoto(const QString &relativePath, const bool isLivePhoto)
+{
+    const auto file = find(relativePath);
+    Q_ASSERT(file);
+    file->isLivePhoto = isLivePhoto;
+}
+
 void FileInfo::modifyLockState(const QString &relativePath, LockState lockState, int lockType, const QString &lockOwner, const QString &lockOwnerId, const QString &lockEditorId, quint64 lockTime, quint64 lockTimeout)
 {
     FileInfo *file = findInvalidatingEtags(relativePath);
@@ -411,6 +418,7 @@ FakePropfindReply::FakePropfindReply(FileInfo &remoteRootFileInfo, QNetworkAcces
         xml.writeTextElement(ncUri, QStringLiteral("lock-time"), QString::number(fileInfo.lockTime));
         xml.writeTextElement(ncUri, QStringLiteral("lock-timeout"), QString::number(fileInfo.lockTimeout));
         xml.writeTextElement(ncUri, QStringLiteral("is-encrypted"), fileInfo.isEncrypted ? QString::number(1) : QString::number(0));
+        xml.writeTextElement(ncUri, QStringLiteral("metadata-files-live-photo"), fileInfo.isLivePhoto ? QString::number(1) : QString::number(0));
         buffer.write(fileInfo.extraDavProperties);
         xml.writeEndElement(); // prop
         xml.writeTextElement(davUri, QStringLiteral("status"), QStringLiteral("HTTP/1.1 200 OK"));

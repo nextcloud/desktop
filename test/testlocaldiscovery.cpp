@@ -333,6 +333,41 @@ private slots:
         QVERIFY(!fakeFolder.currentRemoteState().find("C/filename.ext"));
     }
 
+    void testRedownloadDeletedLivePhotoMov()
+    {
+        FakeFolder fakeFolder{FileInfo{}};
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        const auto livePhotoImg = QStringLiteral("IMG_0001.heic");
+        const auto livePhotoMov = QStringLiteral("IMG_0001.mov");
+        fakeFolder.localModifier().insert(livePhotoImg);
+        fakeFolder.localModifier().insert(livePhotoMov);
+
+        ItemCompletedSpy completeSpy(fakeFolder);
+        QVERIFY(fakeFolder.syncOnce());
+
+        QCOMPARE(completeSpy.findItem(livePhotoImg)->_status, SyncFileItem::Status::Success);
+        QCOMPARE(completeSpy.findItem(livePhotoMov)->_status, SyncFileItem::Status::Success);
+
+        fakeFolder.remoteModifier().setIsLivePhoto(livePhotoImg, true);
+        fakeFolder.remoteModifier().setIsLivePhoto(livePhotoMov, true);
+        QVERIFY(fakeFolder.syncOnce());
+
+        SyncJournalFileRecord imgRecord;
+        QVERIFY(fakeFolder.syncJournal().getFileRecord(livePhotoImg, &imgRecord));
+        QVERIFY(imgRecord._isLivePhoto);
+
+        SyncJournalFileRecord movRecord;
+        QVERIFY(fakeFolder.syncJournal().getFileRecord(livePhotoMov, &movRecord));
+        QVERIFY(movRecord._isLivePhoto);
+
+        completeSpy.clear();
+        fakeFolder.localModifier().remove(livePhotoMov);
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(completeSpy.findItem(livePhotoMov)->_status, SyncFileItem::Status::Success);
+        QCOMPARE(completeSpy.findItem(livePhotoMov)->_instruction, CSYNC_INSTRUCTION_SYNC);
+        QCOMPARE(completeSpy.findItem(livePhotoMov)->_direction, SyncFileItem::Direction::Down);
+    }
+
     void testCreateFileWithTrailingSpaces_localAndRemoteTrimmedDoNotExist_renameAndUploadFile()
     {
         FakeFolder fakeFolder{FileInfo{}};

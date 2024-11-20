@@ -126,6 +126,8 @@ SyncJournalFileRecord SyncFileItem::toSyncJournalFileRecordWithInode(const QStri
     rec._lockstate._lockTime = _lockTime;
     rec._lockstate._lockTimeout = _lockTimeout;
     rec._lockstate._lockToken = _lockToken;
+    rec._isLivePhoto = _isLivePhoto;
+    rec._livePhotoFile = _livePhotoFile;
 
     // Update the inode if possible
     rec._inode = _inode;
@@ -167,6 +169,8 @@ SyncFileItemPtr SyncFileItem::fromSyncJournalFileRecord(const SyncJournalFileRec
     item->_sharedByMe = rec._sharedByMe;
     item->_isShared = rec._isShared;
     item->_lastShareStateFetchedTimestamp = rec._lastShareStateFetchedTimestamp;
+    item->_isLivePhoto = rec._isLivePhoto;
+    item->_livePhotoFile = rec._livePhotoFile;
     return item;
 }
 
@@ -235,6 +239,11 @@ SyncFileItemPtr SyncFileItem::fromProperties(const QString &filePath, const QMap
 
     if (properties.contains(QStringLiteral("checksums"))) {
         item->_checksumHeader = findBestChecksum(properties.value("checksums").toUtf8());
+    }
+
+    if (properties.contains(QStringLiteral("metadata-files-live-photo"))) {
+        item->_isLivePhoto = true;
+        item->_livePhotoFile = properties.value(QStringLiteral("metadata-files-live-photo"));
     }
 
     // direction and instruction are decided later
