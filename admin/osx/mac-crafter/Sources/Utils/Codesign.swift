@@ -36,7 +36,7 @@ func codesign(
     options: String = "--timestamp --force --preserve-metadata=entitlements --verbose=4 --options runtime --deep"
 ) throws {
     print("Code-signing \(path)...")
-    let command = "codesign -s \"\(identity)\" \(options) \(path)"
+    let command = "codesign -s \"\(identity)\" \(options) \"\(path)\""
     guard shell(command) == 0 else {
         throw CodeSigningError.failedToCodeSign("Failed to code-sign \(path).")
     }
