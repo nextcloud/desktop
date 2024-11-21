@@ -66,13 +66,14 @@ signals:
 private slots:
     void refreshFileDetails();
     void updateLockExpireString();
-    void updateFileTagModel(const OCC::Folder * const folder);
+    void updateFileTagModel();
 
 private:
     QString _localPath;
 
     QFileInfo _fileInfo;
     QFileSystemWatcher _fileWatcher;
+    Folder *_folder = nullptr;
     SyncJournalFileRecord _fileRecord;
     SyncJournalFileLockInfo _filelockState;
     QByteArray _numericFileId;
