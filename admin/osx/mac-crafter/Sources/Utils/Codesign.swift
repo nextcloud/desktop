@@ -32,11 +32,21 @@ func isAppExtension(_ path: String) -> Bool {
     path.hasSuffix(".appex")
 }
 
-func isExecutable(_ path: String) -> Bool {
-    let fm = FileManager.default
-    var isDir: ObjCBool = false
-    let exists = fm.fileExists(atPath: path, isDirectory: &isDir)
-    return fm.isExecutableFile(atPath: path) && !isDir.boolValue && exists
+func isExecutable(_ path: String) throws -> Bool {
+    let outPipe = Pipe()
+    let errPipe = Pipe()
+    let task = Process()
+    task.standardOutput = outPipe
+    task.standardError = errPipe
+
+    let command = "file \"\(path)\""
+    guard run("/bin/zsh", ["-c", command], task: task) == 0 else {
+        throw CodeSigningError.failedToCodeSign("Failed to determine if \(path) is an executable.")
+    }
+
+    let outputData = outPipe.fileHandleForReading.readDataToEndOfFile()
+    let output = String(data: outputData, encoding: .utf8) ?? ""
+    return output.contains("Mach-O 64-bit executable")
 }
 
 func codesign(identity: String, path: String, options: String = defaultCodesignOptions) throws {
@@ -60,11 +70,11 @@ func recursivelyCodesign(
     }
 
     for case let enumeratedItem as String in pathEnumerator {
-        guard isLibrary(enumeratedItem) ||
-              isAppExtension(enumeratedItem) ||
-              isExecutable(enumeratedItem)
-        else { continue }
-        try codesign(identity: identity, path: "\(path)/\(enumeratedItem)")
+        let isExecutableFile = try isExecutable(fm.currentDirectoryPath + "/" + path + "/" + enumeratedItem)
+        guard isLibrary(enumeratedItem) || isAppExtension(enumeratedItem) || isExecutableFile else {
+            continue
+        }
+        try codesign(identity: identity, path: "\(path)/\(enumeratedItem)", options: options)
     }
 }
 
@@ -136,7 +146,4 @@ func codesignClientAppBundle(
     // Now we do the final codesign bit
     print("Code-signing Nextcloud Desktop Client binaries...")
     try recursivelyCodesign(path: "\(clientContentsDir)/MacOS/", identity: codeSignIdentity)
-
-    print("Code-signing Nextcloud Desktop Client app bundle...")
-    try codesign(identity: codeSignIdentity, path: clientAppDir)
 }
