@@ -70,11 +70,12 @@ func recursivelyCodesign(
     }
 
     for case let enumeratedItem as String in pathEnumerator {
-        let isExecutableFile = try isExecutable(path + "/" + enumeratedItem)
+        let enumeratedItemPath = "\(path)/\(enumeratedItem)"
+        let isExecutableFile = try isExecutable(enumeratedItemPath)
         guard isLibrary(enumeratedItem) || isAppExtension(enumeratedItem) || isExecutableFile else {
             continue
         }
-        try codesign(identity: identity, path: "\(path)/\(enumeratedItem)", options: options)
+        try codesign(identity: identity, path: enumeratedItemPath, options: options)
     }
 }
 
