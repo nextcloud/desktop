@@ -32,6 +32,10 @@ func isAppExtension(_ path: String) -> Bool {
     path.hasSuffix(".appex")
 }
 
+func isExecutable(_ path: String) -> Bool {
+    FileManager.default.isExecutableFile(atPath: path)
+}
+
 func codesign(identity: String, path: String, options: String = defaultCodesignOptions) throws {
     print("Code-signing \(path)...")
     let command = "codesign -s \"\(identity)\" \(options) \"\(path)\""
@@ -53,7 +57,10 @@ func recursivelyCodesign(
     }
 
     for case let enumeratedItem as String in pathEnumerator {
-        guard isLibrary(enumeratedItem) || isAppExtension(enumeratedItem) else { continue }
+        guard isLibrary(enumeratedItem) ||
+              isAppExtension(enumeratedItem) ||
+              isExecutable(enumeratedItem)
+        else { continue }
         try codesign(identity: identity, path: "\(path)/\(enumeratedItem)")
     }
 }
