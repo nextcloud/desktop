@@ -70,7 +70,7 @@ func recursivelyCodesign(
     }
 
     for case let enumeratedItem as String in pathEnumerator {
-        let isExecutableFile = try isExecutable(fm.currentDirectoryPath + "/" + path + "/" + enumeratedItem)
+        let isExecutableFile = try isExecutable(path + "/" + enumeratedItem)
         guard isLibrary(enumeratedItem) || isAppExtension(enumeratedItem) || isExecutableFile else {
             continue
         }
