@@ -26,8 +26,6 @@ AbstractButton {
 
     signal showUserStatusSelector(int id)
 
-    property variant dialog;
-    property variant comp;
 
     Accessible.role: Accessible.MenuItem
     Accessible.name: qsTr("Switch to account") + " " + model.name
