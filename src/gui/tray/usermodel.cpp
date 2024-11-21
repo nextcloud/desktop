@@ -184,7 +184,7 @@ void User::showDesktopTalkNotification(const Activity &activity)
 {
     const auto notificationId = activity._id;
 
-    if (!canShowNotification(notificationId)) {
+    if (!canShowNotification(notificationId) || !ConfigFile().showChatNotifications()) {
         return;
     }
 
