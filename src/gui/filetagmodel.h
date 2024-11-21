@@ -16,8 +16,6 @@
 
 #include <QAbstractListModel>
 
-#include "common/syncjournalfilerecord.h"
-#include "gui/folder.h"
 #include "libsync/account.h"
 
 namespace OCC {
