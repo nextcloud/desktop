@@ -1,0 +1,8 @@
+{
+    "cmake.generator": "Ninja",
+    "cmake.configureSettings": {
+        "CMAKE_PREFIX_PATH": "C:/Craft64",
+        "BUILD_TESTING":"OFF",
+      },
+      "cmake.buildDirectory": "${workspaceFolder}/build/${buildKitTargetOs}-${buildKitVendor}-${buildKitTargetArch}/${buildType}",
+}

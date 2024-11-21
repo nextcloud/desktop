@@ -1,0 +1,37 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+        {
+            "label": "clean RelWithDebInfo",
+            "type": "shell",
+            "command": "powershell",
+            "args": [
+                "-NoProfile",
+                "-Command",
+                "Remove-Item -Recurse -Force .\\build\\win32-MSVC-x64\\RelWithDebInfo"
+            ],
+            "problemMatcher": [],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "detail": "A task to clean the build directory using PowerShell"
+        },
+		{
+            "label": "clean Release",
+            "type": "shell",
+            "command": "powershell",
+            "args": [
+                "-NoProfile",
+                "-Command",
+                "Remove-Item -Recurse -Force .\\build\\win32-MSVC-x64\\Release"
+            ],
+            "problemMatcher": [],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "detail": "A task to clean the build directory using PowerShell"
+        },
+	]
+}

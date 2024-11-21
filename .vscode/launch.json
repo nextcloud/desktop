@@ -1,0 +1,54 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+
+        {
+            "name": "(RelWithDebInfo) Launch HiDriveNext",
+            "type": "cppvsdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/build/win32-MSVC-x64/RelWithDebInfo/bin/HiDriveNext.exe",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [
+                {
+                    "name": "PATH",
+                    "value": "C:/Craft64/bin;%PATH%"
+                },
+            ],
+        },
+        {
+            "name": "(RelWithDebInfo) Launch NextCloud",
+            "type": "cppvsdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/build/win32-MSVC-x64/RelWithDebInfo/bin/nextcloud.exe",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [
+                {
+                    "name": "PATH",
+                    "value": "C:/Craft64/bin;%PATH%"
+                },
+            ],
+        },
+        {
+            "name": "(Release) Launch NextCloud",
+            "type": "cppvsdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/build/win32-MSVC-x64/Release/bin/nextcloud.exe",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [
+                {
+                    "name": "PATH",
+                    "value": "C:/Craft64/bin;%PATH%"
+                },
+            ],
+        },
+    ]
+}
