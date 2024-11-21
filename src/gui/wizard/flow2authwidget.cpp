@@ -58,7 +58,7 @@ Flow2AuthWidget::Flow2AuthWidget(QWidget *parent)
 
 void Flow2AuthWidget::setLogo()
 {
-    const auto logoIconFileName = Theme::hidpiFileName(":/client/theme/ses/ses-external.svg");
+    const auto logoIconFileName = Theme::hidpiFileName(":/client/theme/black/external.svg");
     _ui.logoLabel->setPixmap(logoIconFileName);
 }
 

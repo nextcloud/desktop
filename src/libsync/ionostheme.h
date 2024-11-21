@@ -12,35 +12,35 @@ public:
 
     //Icons
     static QString avatarIcon() {
-        return QString(Theme::themePrefix) + QStringLiteral("ses/ses-setupAvatar.svg");
+        return QString(Theme::themePrefix) + QStringLiteral("colored/wizard-groupware.svg");
     }
 
     static QString folderIcon() {
-        return QString(Theme::themePrefix) + QStringLiteral("ses/ses-folder32.svg");
+        return QString(Theme::themePrefix) + QStringLiteral("black/folder.svg");
     }
 
     static QString syncArrows() {
-        return QString(Theme::themePrefix) + QStringLiteral("ses/ses-syncArrows.svg");
+        return QString(Theme::themePrefix) + QStringLiteral("sync-arrow.svg");
     }
 
     static QString questionCircleIcon() {
-        return QString(Theme::themePrefix) + QStringLiteral("ses/ses-questionCircle.svg");
+        return QString(Theme::themePrefix) + QStringLiteral("black/state-info.svg");
     }
 
     static QString liveBackupPlusIcon() {
-        return QString(Theme::themePrefix) + QStringLiteral("ses/ses-addLiveBackupPlus.svg");
+        return QString(Theme::themePrefix) + QStringLiteral("black/add.svg");
     }
 
     static QString plusIcon() {
-        return QStringLiteral("qrc:///client/theme/ses/ses-darkPlus24.svg");
+        return QStringLiteral("qrc:///client/theme/black/add.svg");
     }
 
     static QString deleteIcon() {
-        return QStringLiteral("qrc:///client/theme/ses/ses-activityDelete.svg");
+        return QStringLiteral("qrc:///client/theme/black/clear.svg");
     }
 
     static QString refreshIcon() {
-        return QStringLiteral("qrc:///client/theme/ses/ses-refresh.svg");
+        return QStringLiteral("qrc:///client/theme/black/change.svg");
     }
 
     static int treeViewIconSize() {

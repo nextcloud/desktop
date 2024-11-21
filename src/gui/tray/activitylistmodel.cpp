@@ -227,18 +227,18 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
     };
 
     const auto generateIconPath = [&]() {
-        auto colorIconPath = QStringLiteral("qrc:///client/theme/ses/");
+        auto colorIconPath = QStringLiteral("qrc:///client/theme/colored/");
         if (a._type == Activity::NotificationType && !a._talkNotificationData.userAvatar.isEmpty()) {
             return QStringLiteral("image://svgimage-custom-color/talk-bordered.svg");
         } else if (a._type == Activity::SyncResultType) {
-            colorIconPath.append("ses-snackBarErrorIcon.svg");
+            colorIconPath.append("state-error.svg");
             return colorIconPath;
         } else if (a._type == Activity::SyncFileItemType) {
             if (a._syncFileItemStatus == SyncFileItem::NormalError
                 || a._syncFileItemStatus == SyncFileItem::FatalError
                 || a._syncFileItemStatus == SyncFileItem::DetailError
                 || a._syncFileItemStatus == SyncFileItem::BlacklistedError) {
-                colorIconPath.append("ses-snackBarErrorIcon.svg");
+                colorIconPath.append("state-error.svg");
                 return colorIconPath;
             } else if (a._syncFileItemStatus == SyncFileItem::SoftError
                 || a._syncFileItemStatus == SyncFileItem::Conflict
@@ -247,10 +247,10 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
                 || a._syncFileItemStatus == SyncFileItem::FileNameInvalid
                 || a._syncFileItemStatus == SyncFileItem::FileNameInvalidOnServer
                 || a._syncFileItemStatus == SyncFileItem::FileNameClash) {
-                colorIconPath.append("ses-warning.svg");
+                colorIconPath.append("state-info.svg");
                 return colorIconPath;
             } else if (a._syncFileItemStatus == SyncFileItem::FileIgnored) {
-                colorIconPath.append("ses-info.svg");
+                colorIconPath.append("state-info.svg");
                 return colorIconPath;
             } else {
                 // File sync successful
