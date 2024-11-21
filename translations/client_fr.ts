@@ -1695,13 +1695,13 @@ Vous prenez vos propres risques.</translation>
         <translation>Erreur du serveur : La réponse PROPFIND n&apos;est pas au format XML !</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="682"/>
-        <location filename="../src/libsync/discoveryphase.cpp" line="719"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="687"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="724"/>
         <source>Encrypted metadata setup error!</source>
         <translation>Erreur lors de la configuration des métadonnées chiffrées !</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="706"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="711"/>
         <source>Encrypted metadata setup error: initial signature from server is empty.</source>
         <translation>Erreur de configuration des métadonnées chiffrées: la signature initiale du serveur est vide.</translation>
     </message>
@@ -4338,7 +4338,7 @@ Il s&apos;agit d&apos;un nouveau mode expérimental. Si vous décidez de l&apos;
         <translation>Impossible de synchroniser à cause d&apos;une date de modification invalide</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1082"/>
+        <location filename="../src/libsync/discovery.cpp" line="1086"/>
         <source>Could not upload file, because it is open in &quot;%1&quot;.</source>
         <translation>Impossible de téléverser le fichier, car il est ouvert dans « %1 ».</translation>
     </message>

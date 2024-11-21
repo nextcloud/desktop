@@ -1697,13 +1697,13 @@ Ta czynność spowoduje przerwanie aktualnie uruchomionej synchronizacji.</trans
         <translation>Błąd serwera: odpowiedź PROPFIND nie ma formatu XML!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="682"/>
-        <location filename="../src/libsync/discoveryphase.cpp" line="719"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="687"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="724"/>
         <source>Encrypted metadata setup error!</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="706"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="711"/>
         <source>Encrypted metadata setup error: initial signature from server is empty.</source>
         <translation type="unfinished"/>
     </message>
@@ -4198,7 +4198,7 @@ To nowy, eksperymentalny tryb. Jeśli zdecydujesz się z niego skorzystać, zgł
         <location filename="../src/libsync/discovery.cpp" line="394"/>
         <source>Folder</source>
         <comment>name of folder entity to use when warning about invalid name</comment>
-        <translation>Folder</translation>
+        <translation>Katalog</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="394"/>
@@ -4323,7 +4323,7 @@ To nowy, eksperymentalny tryb. Jeśli zdecydujesz się z niego skorzystać, zgł
         <translation>Nie można zsynchronizować z powodu nieprawidłowego czasu modyfikacji</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1082"/>
+        <location filename="../src/libsync/discovery.cpp" line="1086"/>
         <source>Could not upload file, because it is open in &quot;%1&quot;.</source>
         <translation>Nie można przesłać pliku, ponieważ jest on otwarty w „%1”.</translation>
     </message>
@@ -5689,7 +5689,7 @@ Serwer odpowiedział błędem: %2</translation>
     <message>
         <location filename="../src/libsync/updatee2eefolderusersmetadatajob.cpp" line="235"/>
         <source>Failed to unlock a folder.</source>
-        <translation>Nie udało się odblokować folderu.</translation>
+        <translation>Nie udało się odblokować katalogu.</translation>
     </message>
 </context>
 <context>
@@ -6522,7 +6522,7 @@ Serwer odpowiedział błędem: %2</translation>
     <message>
         <location filename="../src/gui/filedetails/ShareeSearchField.qml" line="48"/>
         <source>Sharing is not available for this folder</source>
-        <translation>Udostępnianie nie jest dostępne w tym folderze</translation>
+        <translation>Udostępnianie nie jest dostępne w tym katalogu</translation>
     </message>
 </context>
 <context>

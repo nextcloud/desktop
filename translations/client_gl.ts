@@ -1697,13 +1697,13 @@ Esta acción interromperá calquera sincronización que estea a executarse actua
         <translation>Erro do servidor: a resposta PROPFIND non está formatada en XML.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="682"/>
-        <location filename="../src/libsync/discoveryphase.cpp" line="719"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="687"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="724"/>
         <source>Encrypted metadata setup error!</source>
         <translation>Produciuse un erro na configuración dos metadatos cifrados!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="706"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="711"/>
         <source>Encrypted metadata setup error: initial signature from server is empty.</source>
         <translation>Produciuse un erro de configuración dos metadatos cifrados: a sinatura inicial do servidor está baleira.</translation>
     </message>
@@ -4339,7 +4339,7 @@ Este é un novo modo experimental. Se decide usalo, agradecémoslle que informe 
         <translation>Non é posíbel sincronizar por mor dunha hora de modificación incorrecta</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1082"/>
+        <location filename="../src/libsync/discovery.cpp" line="1086"/>
         <source>Could not upload file, because it is open in &quot;%1&quot;.</source>
         <translation>Non foi posíbel enviar o ficheiro porque está aberto en «%1».</translation>
     </message>

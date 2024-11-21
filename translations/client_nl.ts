@@ -1693,13 +1693,13 @@ Dit zal alle synchronisaties, die op dit moment bezig zijn, afbreken.</translati
         <translation>Serverfout: PROPFIND-antwoord heeft geen XML-opmaak!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="682"/>
-        <location filename="../src/libsync/discoveryphase.cpp" line="719"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="687"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="724"/>
         <source>Encrypted metadata setup error!</source>
         <translation>Fout bij instellen versleutelde metadata!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="706"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="711"/>
         <source>Encrypted metadata setup error: initial signature from server is empty.</source>
         <translation type="unfinished"/>
     </message>
@@ -4325,7 +4325,7 @@ Dit is een nieuwe, experimentele modus. Als je besluit het te gebruiken, vragen 
         <translation>Kan niet synchroniseren door ongeldig wijzigingstijdstip</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1082"/>
+        <location filename="../src/libsync/discovery.cpp" line="1086"/>
         <source>Could not upload file, because it is open in &quot;%1&quot;.</source>
         <translation>Kan bestand niet uploaden, omdat het geopend is in &quot;%1&quot;.</translation>
     </message>

@@ -1696,13 +1696,13 @@ This action will abort any currently running synchronization.</source>
         <translation>서버 오류: PROPFIND 응답이 XML 형식이 아닙니다!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="682"/>
-        <location filename="../src/libsync/discoveryphase.cpp" line="719"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="687"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="724"/>
         <source>Encrypted metadata setup error!</source>
         <translation>암호화된 메타데이터 구성 오류!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="706"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="711"/>
         <source>Encrypted metadata setup error: initial signature from server is empty.</source>
         <translation type="unfinished"/>
     </message>
@@ -4324,7 +4324,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>유효하지 않은 수정 시간으로 인해 동기화할 수 없습니다.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1082"/>
+        <location filename="../src/libsync/discovery.cpp" line="1086"/>
         <source>Could not upload file, because it is open in &quot;%1&quot;.</source>
         <translation>파일이 &quot;%1&quot;에서 열려있기 때문에 업로드할 수 없습니다.</translation>
     </message>

@@ -1697,13 +1697,13 @@ Bu işlem şu anda yürütülmekte olan eşitleme işlemlerini durdurur.</transl
         <translation>Sunucu hatası: PROPFIND yanıtı XML biçiminde değil!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="682"/>
-        <location filename="../src/libsync/discoveryphase.cpp" line="719"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="687"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="724"/>
         <source>Encrypted metadata setup error!</source>
         <translation>Şifrelenmiş üst veri kurulumu sorunu!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="706"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="711"/>
         <source>Encrypted metadata setup error: initial signature from server is empty.</source>
         <translation>Şifrelenmiş üst veri kurulum hatası: Sunucudan gelen ilk imza boş.</translation>
     </message>
@@ -4339,7 +4339,7 @@ Bu yeni ve deneysel bir özelliktir. Kullanmaya karar verirseniz, lütfen karş�
         <translation>Değiştirilme zamanı geçersiz olduğundan eşitlenemedi</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1082"/>
+        <location filename="../src/libsync/discovery.cpp" line="1086"/>
         <source>Could not upload file, because it is open in &quot;%1&quot;.</source>
         <translation>Dosya &quot;%1&quot; içinde açık olduğundan yüklenemedi.</translation>
     </message>

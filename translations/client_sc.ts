@@ -1691,13 +1691,13 @@ Custa atzione at a firmare cale si siat sincronizatzione immoe in esecutzione.</
         <translation>Errore de su serbidore: sa risposta PROPFIND no est in formadu XML!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="682"/>
-        <location filename="../src/libsync/discoveryphase.cpp" line="719"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="687"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="724"/>
         <source>Encrypted metadata setup error!</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="706"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="711"/>
         <source>Encrypted metadata setup error: initial signature from server is empty.</source>
         <translation type="unfinished"/>
     </message>
@@ -3326,7 +3326,7 @@ Is elementos in ue est permitidu ant a èssere cantzellados si impedint de catza
     <message>
         <location filename="../src/gui/invalidfilenamedialog.ui" line="23"/>
         <source>The file could not be synced because it contains characters which are not allowed on this system.</source>
-        <translation>No at fatu a sincronizare cust&apos;archìviu, ca cuntenet caràteres no permìtidos in custu sistema.</translation>
+        <translation>No at fatu a sincronizare custu archìviu, ca cuntenet caràteres no permìtidos in custu sistema.</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.ui" line="39"/>
@@ -3391,7 +3391,7 @@ Is elementos in ue est permitidu ant a èssere cantzellados si impedint de catza
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="135"/>
         <source>You don&apos;t have the permission to rename this file. Please ask the author of the file to rename it.</source>
-        <translation>No tenes su permissu de torrare a numenare cust&apos;archìviu. Pedi a chie at creadu s&apos;archìviu de ddu torrare a numenare.</translation>
+        <translation>No tenes su permissu de torrare a numenare custu archìviu. Pedi a chie at creadu s&apos;archìviu de ddu torrare a numenare.</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="140"/>
@@ -4316,7 +4316,7 @@ Custa est una modalidade noa, isperimentale. Si detzides de dda impreare, sinnal
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1082"/>
+        <location filename="../src/libsync/discovery.cpp" line="1086"/>
         <source>Could not upload file, because it is open in &quot;%1&quot;.</source>
         <translation type="unfinished"/>
     </message>
@@ -5967,7 +5967,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/wizard/welcomepage.cpp" line="111"/>
         <source>Host your own server</source>
-        <translation>Retzi in su serbidore tuo</translation>
+        <translation>Imprea unu serbidore tuo</translation>
     </message>
 </context>
 <context>
@@ -7123,7 +7123,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="88"/>
         <source>Currently available locally</source>
-        <translation>Como a disponimentu in logu</translation>
+        <translation>Immoe a disponimentu in logu</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="90"/>

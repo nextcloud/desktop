@@ -1697,13 +1697,13 @@ This action will abort any currently running synchronization.</source>
         <translation>Error del servidor: ¡La respuesta PROPFIND no tiene formato XML!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="682"/>
-        <location filename="../src/libsync/discoveryphase.cpp" line="719"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="687"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="724"/>
         <source>Encrypted metadata setup error!</source>
         <translation>¡Hubo un error al configurar los metadatos cifrados!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="706"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="711"/>
         <source>Encrypted metadata setup error: initial signature from server is empty.</source>
         <translation type="unfinished"/>
     </message>
@@ -4328,7 +4328,7 @@ Este es un modo nuevo y experimental. Si decide usarlo, por favor informe cualqu
         <translation>No se puede sincronizar debido a una hora de modificación inválida</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1082"/>
+        <location filename="../src/libsync/discovery.cpp" line="1086"/>
         <source>Could not upload file, because it is open in &quot;%1&quot;.</source>
         <translation>No se puede cargar el archivo, porque está abierto en &quot;%1&quot;.</translation>
     </message>

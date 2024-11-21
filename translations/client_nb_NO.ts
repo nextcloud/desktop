@@ -1697,13 +1697,13 @@ Denne handlingen vil avbryte enhver synkronisering som kjører.</translation>
         <translation>Serverfeil: PROPFIND-svaret er ikke XML-formatert!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="682"/>
-        <location filename="../src/libsync/discoveryphase.cpp" line="719"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="687"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="724"/>
         <source>Encrypted metadata setup error!</source>
         <translation>Feil ved oppsett av kryptert metadata!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="706"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="711"/>
         <source>Encrypted metadata setup error: initial signature from server is empty.</source>
         <translation type="unfinished"/>
     </message>
@@ -4328,7 +4328,7 @@ Dette er en ny, eksperimentell modus. Hvis du bestemmer deg for å bruke den, ve
         <translation>Kan ikke synkronisere på grunn av ugyldig endringstid</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1082"/>
+        <location filename="../src/libsync/discovery.cpp" line="1086"/>
         <source>Could not upload file, because it is open in &quot;%1&quot;.</source>
         <translation>Kunne ikke laste opp filen, fordi den er åpen i &quot;%1&quot;.</translation>
     </message>
