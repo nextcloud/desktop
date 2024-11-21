@@ -26,7 +26,7 @@ install(FILES
         ${CMAKE_CURRENT_BINARY_DIR}/collect-transform.xsl
         ${CMAKE_CURRENT_BINARY_DIR}/make-msi.bat
         Platform.wxi
-        Nextcloud.wxs
+        Ionos.wxs
         ${CMAKE_CURRENT_BINARY_DIR}/RegistryCleanup.vbs
         RegistryCleanupCustomAction.wxs
         gui/banner.bmp
