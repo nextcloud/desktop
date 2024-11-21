@@ -91,12 +91,19 @@ export QML_SOURCES_PATHS=${DESKTOP_CLIENT_ROOT}/src/gui
 ./linuxdeploy-squashfs-root/AppRun --desktop-file=${DESKTOP_FILE} --icon-file=usr/share/icons/hicolor/512x512/apps/Nextcloud.png --executable=usr/bin/${EXECUTABLE_NAME} --appdir=AppDir --output appimage
 
 # Workaround issue #103 and #7231
+export APPIMAGE_NAME=appimagetool-x86_64.AppImage
+wget "https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage"
+chmod a+x ${APPIMAGE_NAME}
+./${APPIMAGE_NAME} --appimage-extract
+rm ./${APPIMAGE_NAME}
+cp -r ./squashfs-root ./appimagetool-squashfs-root
+
 rm -rf ./squashfs-root
 APPIMAGE=$(ls *.AppImage)
 "./${APPIMAGE}" --appimage-extract
 rm "./${APPIMAGE}"
 rm ./squashfs-root/usr/lib/libglib-2.0.so.0
-PATH=./linuxdeployqt-squashfs-root/usr/bin:$PATH appimagetool -n ./squashfs-root "$APPIMAGE"
+PATH=./appimagetool-squashfs-root/usr/bin:$PATH appimagetool -n ./squashfs-root "$APPIMAGE"
 
 #move AppImage
 if [ ! -z "$DRONE_COMMIT" ]
