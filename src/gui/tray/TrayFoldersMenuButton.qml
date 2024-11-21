@@ -94,16 +94,6 @@ HeaderButton {
                     color: root.parentBackgroundColor
                     anchors.centerIn: parent
                     radius: width * Style.trayFolderStatusIndicatorRadiusFactor
-                    z: -2
-                }
-
-                Rectangle {
-                    id: folderStateIndicatorBackgroundMouseHover
-                    width: Style.folderStateIndicatorSize + Style.trayFolderStatusIndicatorSizeOffset
-                    height: width
-                    anchors.centerIn: parent
-                    opacity: Style.trayFolderStatusIndicatorMouseHoverOpacityFactor
-                    radius: width * Style.trayFolderStatusIndicatorRadiusFactor
                     z: -1
                 }
             }
