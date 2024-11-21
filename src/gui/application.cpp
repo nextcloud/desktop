@@ -59,6 +59,7 @@
 #include <libcrashreporter-handler/Handler.h>
 #endif
 
+#include <QLocale>
 #include <QTranslator>
 #include <QMenu>
 #include <QMessageBox>
