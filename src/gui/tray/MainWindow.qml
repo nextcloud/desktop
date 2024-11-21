@@ -54,9 +54,9 @@ ApplicationWindow {
 
     onVisibleChanged: {
         // HACK: reload account Instantiator immediately by restting it - could be done better I guess
-        // see also id:currentAccountHeaderButton.accountMenu below
-        currentAccountHeaderButton.userLineInstantiator.active = false;
-        currentAccountHeaderButton.userLineInstantiator.active = true;
+        // see also id:trayWindowHeader.currentAccountHeaderButton.accountMenu below
+        trayWindowHeader.currentAccountHeaderButton.userLineInstantiator.active = false;
+        trayWindowHeader.currentAccountHeaderButton.userLineInstantiator.active = true;
         syncStatus.model.load();
     }
 
@@ -70,7 +70,7 @@ ApplicationWindow {
     Connections {
         target: UserModel
         function onCurrentUserChanged() {
-            currentAccountHeaderButton.accountMenu.close();
+            trayWindowHeader.currentAccountHeaderButton.accountMenu.close();
             syncStatus.model.load();
         }
     }
@@ -95,8 +95,8 @@ ApplicationWindow {
             userStatusDrawer.close()
             fileDetailsDrawer.close();
 
-            if(Systray.isOpen) {
-                currentAccountHeaderButton.accountMenu.close();
+            if (Systray.isOpen) {
+                trayWindowHeader.currentAccountHeaderButton.accountMenu.close();
                 appsMenu.close();
                 openLocalFolderButton.closeMenu()
             }
@@ -237,125 +237,19 @@ ApplicationWindow {
         Accessible.role: Accessible.Grouping
         Accessible.name: qsTr("Nextcloud desktop main dialog")
 
-        Rectangle {
-            id: trayWindowHeaderBackground
+        TrayWindowHeader {
+            id: trayWindowHeader
 
-            anchors.left:   trayWindowMainItem.left
-            anchors.right:  trayWindowMainItem.right
-            anchors.top:    trayWindowMainItem.top
-            height:         Style.trayWindowHeaderHeight
-            color:          Style.currentUserHeaderColor
-
-            palette {
-                text: Style.currentUserHeaderTextColor
-                windowText: Style.currentUserHeaderTextColor
-                buttonText: Style.currentUserHeaderTextColor
-            }
-
-            RowLayout {
-                id: trayWindowHeaderLayout
-
-                spacing:        0
-                anchors.fill:   parent
-
-                CurrentAccountHeaderButton {
-                    id: currentAccountHeaderButton
-                    Layout.preferredWidth:  Style.currentAccountButtonWidth
-                    Layout.preferredHeight: Style.trayWindowHeaderHeight
-                }
-
-                // Add space between items
-                Item {
-                    Layout.fillWidth: true
-                }
-
-                TrayFoldersMenuButton {
-                    id: openLocalFolderButton
-
-                    visible: currentUser.hasLocalFolder
-                    currentUser: UserModel.currentUser
-                    parentBackgroundColor: trayWindowHeaderBackground.color
-
-                    onClicked: openLocalFolderButton.userHasGroupFolders ? openLocalFolderButton.toggleMenuOpen() : UserModel.openCurrentAccountLocalFolder()
-
-                    onFolderEntryTriggered: isGroupFolder ? UserModel.openCurrentAccountFolderFromTrayInfo(fullFolderPath) : UserModel.openCurrentAccountLocalFolder()
-
-                    Accessible.role: Accessible.Graphic
-                    Accessible.name: qsTr("Open local or group folders")
-                    Accessible.onPressAction: openLocalFolderButton.userHasGroupFolders ? openLocalFolderButton.toggleMenuOpen() : UserModel.openCurrentAccountLocalFolder()
-
-                    Layout.alignment: Qt.AlignRight
-                    Layout.preferredWidth:  Style.trayWindowHeaderHeight
-                    Layout.preferredHeight: Style.trayWindowHeaderHeight
-                }
-
-                HeaderButton {
-                    id: trayWindowFeaturedAppButton
-                    visible: UserModel.currentUser.isFeaturedAppEnabled
-                    icon.source: UserModel.currentUser.featuredAppIcon + "/"
-                    onClicked: UserModel.openCurrentAccountFeaturedApp()
-
-                    Accessible.role: Accessible.Button
-                    Accessible.name: UserModel.currentUser.featuredAppAccessibleName
-                    Accessible.onPressAction: trayWindowFeaturedAppButton.clicked()
-
-                    Layout.alignment: Qt.AlignRight
-                    Layout.preferredWidth:  Style.trayWindowHeaderHeight
-                    Layout.preferredHeight: Style.trayWindowHeaderHeight
-                }
-
-                HeaderButton {
-                    id: trayWindowAppsButton
-                    icon.source: "image://svgimage-custom-color/more-apps.svg/" + palette.windowText
-
-                    onClicked: {
-                        if(appsMenu.count <= 0) {
-                            UserModel.openCurrentAccountServer()
-                        } else if (appsMenu.visible) {
-                            appsMenu.close()
-                        } else {
-                            appsMenu.open()
-                        }
-                    }
-
-                    Accessible.role: Accessible.ButtonMenu
-                    Accessible.name: qsTr("More apps")
-                    Accessible.onPressAction: trayWindowAppsButton.clicked()
-
-                    Menu {
-                        id: appsMenu
-                        x: Style.trayWindowMenuOffsetX
-                        y: (trayWindowAppsButton.y + trayWindowAppsButton.height + Style.trayWindowMenuOffsetY)
-                        width: Style.trayWindowWidth * Style.trayWindowMenuWidthFactor
-                        height: implicitHeight + y > Style.trayWindowHeight ? Style.trayWindowHeight - y : implicitHeight
-                        closePolicy: Menu.CloseOnPressOutsideParent | Menu.CloseOnEscape
-
-                        Repeater { 
-                            model: UserAppsModel
-                            delegate: MenuItem {
-                                id: appEntry
-                                anchors.left: parent.left
-                                anchors.right: parent.right
-                                text: model.appName
-                                font.pixelSize: Style.topLinePixelSize
-                                icon.source: model.appIconUrl
-                                icon.color: palette.windowText
-                                onTriggered: UserAppsModel.openAppUrl(appUrl)
-                                hoverEnabled: true
-                                Accessible.role: Accessible.MenuItem
-                                Accessible.name: qsTr("Open %1 in browser").arg(model.appName)
-                                Accessible.onPressAction: appEntry.triggered()
-                            }
-                        }
-                    }
-                }
-            }
-        }   // Rectangle trayWindowHeaderBackground
+            anchors.top: parent.top
+            anchors.left: parent.left
+            anchors.right: parent.right
+            height: Style.trayWindowHeaderHeight
+        }
 
         UnifiedSearchInputContainer {
             id: trayWindowUnifiedSearchInputContainer
 
-            anchors.top: trayWindowHeaderBackground.bottom
+            anchors.top: trayWindowHeader.bottom
             anchors.left: trayWindowMainItem.left
             anchors.right: trayWindowMainItem.right
             anchors.topMargin: Style.trayHorizontalMargin

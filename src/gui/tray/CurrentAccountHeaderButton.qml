@@ -27,6 +27,7 @@ Button {
 
     readonly property alias userLineInstantiator: userLineInstantiator
     readonly property alias accountMenu: accountMenu
+    property color parentBackgroundColor: "transparent"
 
     display: AbstractButton.IconOnly
     flat: true
@@ -165,7 +166,7 @@ Button {
                          && UserModel.currentUser.serverHasUserStatus
                 width: Style.accountAvatarStateIndicatorSize +  + Style.trayFolderStatusIndicatorSizeOffset
                 height: width
-                color: trayWindowHeaderBackground.color
+                color: root.parentBackgroundColor
                 anchors.bottom: currentAccountAvatar.bottom
                 anchors.right: currentAccountAvatar.right
                 radius: width * Style.trayFolderStatusIndicatorRadiusFactor
