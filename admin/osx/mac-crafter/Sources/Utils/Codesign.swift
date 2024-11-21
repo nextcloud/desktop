@@ -60,7 +60,8 @@ func codesign(identity: String, path: String, options: String = defaultCodesignO
 func recursivelyCodesign(
     path: String,
     identity: String,
-    options: String = defaultCodesignOptions
+    options: String = defaultCodesignOptions,
+    skip: [String] = []
 ) throws {
     let fm = FileManager.default
     guard let pathEnumerator = fm.enumerator(atPath: path) else {
@@ -71,6 +72,10 @@ func recursivelyCodesign(
 
     for case let enumeratedItem as String in pathEnumerator {
         let enumeratedItemPath = "\(path)/\(enumeratedItem)"
+        guard !skip.contains(enumeratedItemPath) else {
+            print("Skipping \(enumeratedItemPath)...")
+            continue
+        }
         let isExecutableFile = try isExecutable(enumeratedItemPath)
         guard isLibrary(enumeratedItem) || isAppExtension(enumeratedItem) || isExecutableFile else {
             continue
