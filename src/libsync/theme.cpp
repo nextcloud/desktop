@@ -367,8 +367,6 @@ Theme::Theme()
 #if defined(Q_OS_WIN)
     // Windows does not provide a dark theme for Win32 apps so let's come up with a palette
     // Credit to https://github.com/Jorgen-VikingGod/Qt-Frameless-Window-DarkStyle
-    reserveDarkPalette = qApp->palette();
-
     reserveDarkPalette.setColor(QPalette::WindowText, Qt::white);
     reserveDarkPalette.setColor(QPalette::Button, QColor(127, 127, 127));
     reserveDarkPalette.setColor(QPalette::Light, QColor(20, 20, 20));
