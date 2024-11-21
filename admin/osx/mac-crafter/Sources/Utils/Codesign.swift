@@ -14,7 +14,7 @@
 
 import Foundation
 
-fileprivate let defaultCodesignOptions = "--timestamp --force --preserve-metadata=entitlements --verbose=4 --options runtime --deep"
+fileprivate let defaultCodesignOptions = "--timestamp --force --preserve-metadata=entitlements --verbose=4 --options runtime"
 
 enum CodeSigningError: Error {
     case failedToCodeSign(String)
