@@ -70,11 +70,12 @@ func recursivelyCodesign(
     }
 
     for case let enumeratedItem as String in pathEnumerator {
-        let isExecutableFile = try isExecutable(fm.currentDirectoryPath + "/" + path + "/" + enumeratedItem)
+        let enumeratedItemPath = "\(path)/\(enumeratedItem)"
+        let isExecutableFile = try isExecutable(enumeratedItemPath)
         guard isLibrary(enumeratedItem) || isAppExtension(enumeratedItem) || isExecutableFile else {
             continue
         }
-        try codesign(identity: identity, path: "\(path)/\(enumeratedItem)", options: options)
+        try codesign(identity: identity, path: enumeratedItemPath, options: options)
     }
 }
 
@@ -144,6 +145,15 @@ func codesignClientAppBundle(
     }
 
     // Now we do the final codesign bit
+    let binariesDir = "\(clientContentsDir)/MacOS"
     print("Code-signing Nextcloud Desktop Client binaries...")
-    try recursivelyCodesign(path: "\(clientContentsDir)/MacOS/", identity: codeSignIdentity)
+    try recursivelyCodesign(path: binariesDir, identity: codeSignIdentity)
+
+    guard let appName = clientAppDir.components(separatedBy: "/").last, clientAppDir.hasSuffix(".app") else {
+        throw AppBundleSigningError.couldNotEnumerate("Failed to determine main executable name.")
+    }
+
+    // Sign the main executable last
+    let mainExecutableName = String(appName.dropLast(".app".count))
+    try codesign(identity: codeSignIdentity, path: "\(binariesDir)/\(mainExecutableName)")
 }
