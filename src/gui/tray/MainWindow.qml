@@ -478,16 +478,19 @@ ApplicationWindow {
                             }
                         }
 
-                        Image {
-                            Layout.alignment: Qt.AlignRight
-                            verticalAlignment: Qt.AlignCenter
-                            horizontalAlignment: Qt.AlignRight
-                            Layout.leftMargin: Style.accountDropDownCaretMargin
-                            source:  "image://svgimage-custom-color/caret-down.svg/" + palette.windowText
-                            sourceSize.width: Style.accountDropDownCaretSize
-                            sourceSize.height: Style.accountDropDownCaretSize
-                            Accessible.role: Accessible.PopupMenu
-                            Accessible.name: qsTr("Account switcher and settings menu")
+                        Loader {
+                            active: currentAccountButton.indicator === null
+                            sourceComponent: Image {
+                                Layout.alignment: Qt.AlignRight
+                                verticalAlignment: Qt.AlignCenter
+                                horizontalAlignment: Qt.AlignRight
+                                Layout.leftMargin: Style.accountDropDownCaretMargin
+                                source:  "image://svgimage-custom-color/caret-down.svg/" + palette.windowText
+                                sourceSize.width: Style.accountDropDownCaretSize
+                                sourceSize.height: Style.accountDropDownCaretSize
+                                Accessible.role: Accessible.PopupMenu
+                                Accessible.name: qsTr("Account switcher and settings menu")
+                            }
                         }
                     }
                 }
