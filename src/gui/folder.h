@@ -128,23 +128,23 @@ public:
     /**
      * The account the folder is configured on.
      */
-    AccountState *accountState() const { return _accountState.data(); }
+    [[nodiscard]] AccountState *accountState() const { return _accountState.data(); }
 
     /**
      * alias or nickname
      */
-    QString alias() const;
-    QString shortGuiRemotePathOrAppName() const; // since 2.0 we don't want to show aliases anymore, show the path instead
+    [[nodiscard]] QString alias() const;
+    [[nodiscard]] QString shortGuiRemotePathOrAppName() const; // since 2.0 we don't want to show aliases anymore, show the path instead
 
     /**
      * short local path to display on the GUI  (native separators)
      */
-    QString shortGuiLocalPath() const;
+    [[nodiscard]] QString shortGuiLocalPath() const;
 
     /**
      * canonical local folder path, always ends with /
      */
-    QString path() const;
+    [[nodiscard]] QString path() const;
 
     /**
      * cleaned canonical folder path, like path() but never ends with a /
@@ -152,39 +152,39 @@ public:
      * Wrapper for QDir::cleanPath(path()) except for "Z:/",
      * where it returns "Z:" instead of "Z:/".
      */
-    QString cleanPath() const;
+    [[nodiscard]] QString cleanPath() const;
 
     /**
      * remote folder path, usually without trailing /, exception "/"
      */
-    QString remotePath() const;
+    [[nodiscard]] QString remotePath() const;
 
     /**
      * remote folder path, always with a trailing /
      */
-    QString remotePathTrailingSlash() const;
+    [[nodiscard]] QString remotePathTrailingSlash() const;
 
     [[nodiscard]] QString fulllRemotePathToPathInSyncJournalDb(const QString &fullRemotePath) const;
 
     void setNavigationPaneClsid(const QUuid &clsid) { _definition.navigationPaneClsid = clsid; }
-    QUuid navigationPaneClsid() const { return _definition.navigationPaneClsid; }
+    [[nodiscard]] QUuid navigationPaneClsid() const { return _definition.navigationPaneClsid; }
 
     /**
      * remote folder path with server url
      */
-    QUrl remoteUrl() const;
+    [[nodiscard]] QUrl remoteUrl() const;
 
     /**
      * switch sync on or off
      */
     void setSyncPaused(bool);
 
-    bool syncPaused() const;
+    [[nodiscard]] bool syncPaused() const;
 
     /**
      * Returns true when the folder may sync.
      */
-    bool canSync() const;
+    [[nodiscard]] bool canSync() const;
 
     void prepareToSync();
 
@@ -192,15 +192,15 @@ public:
      * True if the folder is busy and can't initiate
      * a synchronization
      */
-    virtual bool isBusy() const;
+    [[nodiscard]] virtual bool isBusy() const;
 
     /** True if the folder is currently synchronizing */
-    bool isSyncRunning() const;
+    [[nodiscard]] bool isSyncRunning() const;
 
     /**
      * return the last sync result with error message and status
      */
-    SyncResult syncResult() const;
+    [[nodiscard]] SyncResult syncResult() const;
 
     /**
       * This is called when the sync folder definition is removed. Do cleanups here.
@@ -219,19 +219,19 @@ public:
       * Ignore syncing of hidden files or not. This is defined in the
       * folder definition
       */
-    bool ignoreHiddenFiles();
+    [[nodiscard]] bool ignoreHiddenFiles();
     void setIgnoreHiddenFiles(bool ignore);
 
     // Used by the Socket API
-    SyncJournalDb *journalDb() const { return &_journal; }
-    SyncEngine &syncEngine() const { return *_engine; }
-    Vfs &vfs() const { return *_vfs; }
+    [[nodiscard]] SyncJournalDb *journalDb() const { return &_journal; }
+    [[nodiscard]] SyncEngine &syncEngine() const { return *_engine; }
+    [[nodiscard]] Vfs &vfs() const { return *_vfs; }
 
-    RequestEtagJob *etagJob() const { return _requestEtagJob; }
-    std::chrono::milliseconds msecSinceLastSync() const { return std::chrono::milliseconds(_timeSinceLastSyncDone.elapsed()); }
-    std::chrono::milliseconds msecLastSyncDuration() const { return _lastSyncDuration; }
-    int consecutiveFollowUpSyncs() const { return _consecutiveFollowUpSyncs; }
-    int consecutiveFailingSyncs() const { return _consecutiveFailingSyncs; }
+    [[nodiscard]] RequestEtagJob *etagJob() const { return _requestEtagJob; }
+    [[nodiscard]] std::chrono::milliseconds msecSinceLastSync() const { return std::chrono::milliseconds(_timeSinceLastSyncDone.elapsed()); }
+    [[nodiscard]] std::chrono::milliseconds msecLastSyncDuration() const { return _lastSyncDuration; }
+    [[nodiscard]] int consecutiveFollowUpSyncs() const { return _consecutiveFollowUpSyncs; }
+    [[nodiscard]] int consecutiveFailingSyncs() const { return _consecutiveFailingSyncs; }
 
     /// Saves the folder data in the account's settings.
     void saveToSettings() const;
@@ -244,12 +244,12 @@ public:
     /**
       * Returns whether a file inside this folder should be excluded.
       */
-    bool isFileExcludedAbsolute(const QString &fullPath) const;
+    [[nodiscard]] bool isFileExcludedAbsolute(const QString &fullPath) const;
 
     /**
       * Returns whether a file inside this folder should be excluded.
       */
-    bool isFileExcludedRelative(const QString &relativePath) const;
+    [[nodiscard]] bool isFileExcludedRelative(const QString &relativePath) const;
 
     /** Calls schedules this folder on the FolderMan after a short delay.
       *
@@ -288,13 +288,13 @@ public:
      * and never have an automatic virtual file. But when it's on, the shell context menu will allow
      * users to make existing files virtual.
      */
-    bool virtualFilesEnabled() const;
+    [[nodiscard]] bool virtualFilesEnabled() const;
     void setVirtualFilesEnabled(bool enabled);
 
     void setRootPinState(PinState state);
 
     /** Whether user desires a switch that couldn't be executed yet, see member */
-    bool isVfsOnOffSwitchPending() const { return _vfsOnOffPending; }
+    [[nodiscard]] bool isVfsOnOffSwitchPending() const { return _vfsOnOffPending; }
     void setVfsOnOffSwitchPending(bool pending) { _vfsOnOffPending = pending; }
 
     void switchToVirtualFiles();
@@ -302,9 +302,9 @@ public:
     void processSwitchedToVirtualFiles();
 
     /** Whether this folder should show selective sync ui */
-    bool supportsSelectiveSync() const;
+    [[nodiscard]] bool supportsSelectiveSync() const;
 
-    QString fileFromLocalPath(const QString &localPath) const;
+    [[nodiscard]] QString fileFromLocalPath(const QString &localPath) const;
 
     void whitelistPath(const QString &path);
     void blacklistPath(const QString &path);
@@ -347,9 +347,9 @@ public slots:
     void startSync(const QStringList &pathList = QStringList());
 
     int slotDiscardDownloadProgress();
-    int downloadInfoCount();
+    [[nodiscard]] int downloadInfoCount();
     int slotWipeErrorBlacklist();
-    int errorBlackListEntryCount();
+    [[nodiscard]] int errorBlackListEntryCount();
 
     /**
        * Triggered by the folder watcher when a file/dir in this folder
