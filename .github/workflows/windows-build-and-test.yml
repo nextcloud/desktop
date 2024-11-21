@@ -1,5 +1,10 @@
 name: Windows Build and Test
 on:
+  workflow_dispatch:
+  # push:
+  #   branches:
+  #     - master
+  #     - develop
   pull_request:
     types: [opened, synchronize, reopened]
 jobs:
