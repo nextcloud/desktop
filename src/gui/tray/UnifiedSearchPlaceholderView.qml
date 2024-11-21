@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021 by Oleksandr Zolotov <alex@nextcloud.com>
+ * Copyright (C) 2024 by Claudio Cambra <claudio.cambra@nextcloud.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,16 +19,16 @@ import QtQuick.Layouts
 import Style
 
 ColumnLayout {
-    id: unifiedSearchResultNothingFoundContainer
-
-    required property string text
+    id: root
 
     spacing: Style.standardSpacing
-    anchors.leftMargin: Style.unifiedSearchResultNothingFoundHorizontalMargin
-    anchors.rightMargin: Style.unifiedSearchResultNothingFoundHorizontalMargin
+
+    Item {
+        Layout.fillWidth: true
+        Layout.fillHeight: true
+    }
 
     Image {
-        id: unifiedSearchResultsNoResultsLabelIcon
         source: "image://svgimage-custom-color/magnifying-glass.svg"
         sourceSize.width: Style.trayWindowHeaderHeight / 2
         sourceSize.height: Style.trayWindowHeaderHeight / 2
@@ -36,24 +36,15 @@ ColumnLayout {
     }
 
     EnforcedPlainTextLabel {
-        id: unifiedSearchResultsNoResultsLabel
-        text: qsTr("No results for")
+        text: qsTr("Start typing to search")
         font.pixelSize: Style.unifiedSearchPlaceholderViewSublineFontPixelSize
         wrapMode: Text.Wrap
         Layout.fillWidth: true
-        Layout.preferredHeight: Style.trayWindowHeaderHeight / 2
         horizontalAlignment: Text.AlignHCenter
     }
 
-    EnforcedPlainTextLabel {
-        id: unifiedSearchResultsNoResultsLabelDetails
-        text: unifiedSearchResultNothingFoundContainer.text
-        font.pixelSize: Style.unifiedSearchPlaceholderViewTitleFontPixelSize
-        wrapMode: Text.Wrap
-        maximumLineCount: 2
-        elide: Text.ElideRight
+    Item {
         Layout.fillWidth: true
-        Layout.preferredHeight: Style.trayWindowHeaderHeight / 2
-        horizontalAlignment: Text.AlignHCenter
+        Layout.fillHeight: true
     }
 }

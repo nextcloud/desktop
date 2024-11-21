@@ -229,6 +229,7 @@ ApplicationWindow {
                                              || unifiedSearchResultNothingFound.visible
                                              || unifiedSearchResultsErrorLabel.visible
                                              || unifiedSearchResultsListView.visible
+                                             || trayWindowUnifiedSearchInputContainer.activateSearchFocus
 
         anchors.fill: parent
         anchors.margins: Style.trayWindowBorderWidth
@@ -236,6 +237,11 @@ ApplicationWindow {
 
         Accessible.role: Accessible.Grouping
         Accessible.name: qsTr("Nextcloud desktop main dialog")
+
+        MouseArea {
+            anchors.fill: parent
+            onClicked: forceActiveFocus()
+        }
 
         TrayWindowHeader {
             id: trayWindowHeader
@@ -249,6 +255,8 @@ ApplicationWindow {
         UnifiedSearchInputContainer {
             id: trayWindowUnifiedSearchInputContainer
 
+            property bool activateSearchFocus: activeFocus
+
             anchors.top: trayWindowHeader.bottom
             anchors.left: trayWindowMainItem.left
             anchors.right: trayWindowMainItem.right
@@ -261,6 +269,8 @@ ApplicationWindow {
             isSearchInProgress: UserModel.currentUser.unifiedSearchResultsListModel.isSearchInProgress
             onTextEdited: { UserModel.currentUser.unifiedSearchResultsListModel.searchTerm = trayWindowUnifiedSearchInputContainer.text }
             onClearText: { UserModel.currentUser.unifiedSearchResultsListModel.searchTerm = "" }
+            onActiveFocusChanged: activateSearchFocus = activeFocus && focusReason !== Qt.TabFocusReason && focusReason !== Qt.BacktabFocusReason
+            Keys.onEscapePressed: activateSearchFocus = false
         }
 
         Rectangle {
@@ -284,6 +294,18 @@ ApplicationWindow {
             anchors.left: trayWindowMainItem.left
             anchors.right: trayWindowMainItem.right
             anchors.margins: Style.trayHorizontalMargin
+        }
+
+        UnifiedSearchPlaceholderView {
+            id: unifiedSearchPlaceholderView
+
+            anchors.top: bottomUnifiedSearchInputSeparator.bottom
+            anchors.left: trayWindowMainItem.left
+            anchors.right: trayWindowMainItem.right
+            anchors.bottom: trayWindowMainItem.bottom
+            anchors.topMargin: Style.trayHorizontalMargin
+
+            visible: trayWindowUnifiedSearchInputContainer.activateSearchFocus && !UserModel.currentUser.unifiedSearchResultsListModel.searchTerm
         }
 
         UnifiedSearchResultNothingFound {
