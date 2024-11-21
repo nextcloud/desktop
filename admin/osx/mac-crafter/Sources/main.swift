@@ -267,7 +267,10 @@ struct Codesign: ParsableCommand {
     var codeSignIdentity: String
 
     mutating func run() throws {
-        try codesignClientAppBundle(at: appBundlePath, withCodeSignIdentity: codeSignIdentity)
+        let absolutePath = appBundlePath.hasPrefix("/")
+            ? appBundlePath
+            : "\(FileManager.default.currentDirectoryPath)/\(appBundlePath)"
+        try codesignClientAppBundle(at: absolutePath, withCodeSignIdentity: codeSignIdentity)
     }
 }
 
