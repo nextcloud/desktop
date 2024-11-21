@@ -54,9 +54,9 @@ ApplicationWindow {
 
     onVisibleChanged: {
         // HACK: reload account Instantiator immediately by restting it - could be done better I guess
-        // see also id:accountMenu below
-        userLineInstantiator.active = false;
-        userLineInstantiator.active = true;
+        // see also id:trayWindowHeader.currentAccountHeaderButton.accountMenu below
+        trayWindowHeader.currentAccountHeaderButton.userLineInstantiator.active = false;
+        trayWindowHeader.currentAccountHeaderButton.userLineInstantiator.active = true;
         syncStatus.model.load();
     }
 
@@ -64,13 +64,13 @@ ApplicationWindow {
         radius: Systray.useNormalWindow ? 0.0 : Style.trayWindowRadius
         border.width: Style.trayWindowBorderWidth
         border.color: palette.dark
-        color: palette.window
+        color: palette.base
     }
 
     Connections {
         target: UserModel
         function onCurrentUserChanged() {
-            accountMenu.close();
+            trayWindowHeader.currentAccountHeaderButton.accountMenu.close();
             syncStatus.model.load();
         }
     }
@@ -95,8 +95,8 @@ ApplicationWindow {
             userStatusDrawer.close()
             fileDetailsDrawer.close();
 
-            if(Systray.isOpen) {
-                accountMenu.close();
+            if (Systray.isOpen) {
+                trayWindowHeader.currentAccountHeaderButton.accountMenu.close();
                 appsMenu.close();
                 openLocalFolderButton.closeMenu()
             }
@@ -140,7 +140,7 @@ ApplicationWindow {
             radius: Systray.useNormalWindow ? 0.0 : Style.trayWindowRadius
             border.width: Style.trayWindowBorderWidth
             border.color: palette.dark
-            color: palette.window
+            color: palette.base
         }
 
         property int userIndex: 0
@@ -177,7 +177,7 @@ ApplicationWindow {
             radius: Systray.useNormalWindow ? 0.0 : Style.trayWindowRadius
             border.width: Style.trayWindowBorderWidth
             border.color: palette.dark
-            color: palette.window
+            color: palette.base
         }
 
         property var folderAccountState: ({})
@@ -212,7 +212,7 @@ ApplicationWindow {
                 height: parent.height
 
                 backgroundsVisible: false
-                accentColor: Style.currentUserHeaderColor
+                accentColor: Style.accentColor
                 accountState: fileDetailsDrawer.folderAccountState
                 localPath: fileDetailsDrawer.fileLocalPath
                 showCloseButton: true
@@ -237,466 +237,50 @@ ApplicationWindow {
         Accessible.role: Accessible.Grouping
         Accessible.name: qsTr("Nextcloud desktop main dialog")
 
-        Rectangle {
-            id: trayWindowHeaderBackground
+        TrayWindowHeader {
+            id: trayWindowHeader
 
-            anchors.left:   trayWindowMainItem.left
-            anchors.right:  trayWindowMainItem.right
-            anchors.top:    trayWindowMainItem.top
-            height:         Style.trayWindowHeaderHeight
-            color:          palette.window
-
-            RowLayout {
-                id: trayWindowHeaderLayout
-
-                spacing:        0
-                anchors.fill:   parent
-
-                Button {
-                    id: currentAccountButton
-
-                    Layout.preferredWidth:  Style.currentAccountButtonWidth
-                    Layout.preferredHeight: Style.trayWindowHeaderHeight
-                    display:                AbstractButton.IconOnly
-                    flat:                   true
-
-                    Accessible.role: Accessible.ButtonMenu
-                    Accessible.name: qsTr("Current account")
-                    Accessible.onPressAction: currentAccountButton.clicked()
-
-                    // We call open() instead of popup() because we want to position it
-                    // exactly below the dropdown button, not the mouse
-                    onClicked: {
-                        syncPauseButton.text = Systray.syncIsPaused ? qsTr("Resume sync for all") : qsTr("Pause sync for all")
-                        if (accountMenu.visible) {
-                            accountMenu.close()
-                        } else {
-                            accountMenu.open()
-                        }
-                    }
-
-                    Menu {
-                        id: accountMenu
-
-                        // x coordinate grows towards the right
-                        // y coordinate grows towards the bottom
-                        x: (currentAccountButton.x + 2)
-                        y: (currentAccountButton.y + Style.trayWindowHeaderHeight + 2)
-
-                        width: (Style.currentAccountButtonWidth - 2)
-                        height: Math.min(implicitHeight, maxMenuHeight)
-                        closePolicy: Menu.CloseOnPressOutsideParent | Menu.CloseOnEscape
-
-                        background: Rectangle {
-                            border.color: palette.dark
-                            color: palette.window
-                            radius: Style.halfTrayWindowRadius
-                        }
-
-                        onClosed: {
-                            // HACK: reload account Instantiator immediately by restting it - could be done better I guess
-                            // see also onVisibleChanged above
-                            userLineInstantiator.active = false;
-                            userLineInstantiator.active = true;
-                        }
-
-                        Instantiator {
-                            id: userLineInstantiator
-                            model: UserModel
-                            delegate: UserLine {
-                                onShowUserStatusSelector: {
-                                    userStatusDrawer.openUserStatusDrawer(model.index);
-                                    accountMenu.close();
-                                }
-                                onClicked: UserModel.currentUserId = model.index;
-                            }
-                            onObjectAdded: accountMenu.insertItem(index, object)
-                            onObjectRemoved: accountMenu.removeItem(object)
-                        }
-
-                        MenuItem {
-                            id: addAccountButton
-                            height: Systray.enableAddAccount ? Style.addAccountButtonHeight : 0
-                            hoverEnabled: true
-                            visible: Systray.enableAddAccount
-
-                            RowLayout {
-                                anchors.fill: parent
-                                spacing: 0
-
-                                Image {
-                                    Layout.leftMargin: Style.accountIconsMenuMargin
-                                    verticalAlignment: Qt.AlignVCenter
-                                    horizontalAlignment: Qt.AlignCenter
-                                    source: "image://svgimage-custom-color/add.svg/" + palette.windowText
-                                    sourceSize.width: Style.addButtonIconSize
-                                    sourceSize.height: Style.addButtonIconSize
-                                }
-                                EnforcedPlainTextLabel {
-                                    Layout.leftMargin: 14
-                                    text: qsTr("Add account")
-                                    font.pixelSize: Style.topLinePixelSize
-                                }
-                                // Filler on the right
-                                Item {
-                                    Layout.fillWidth: true
-                                    Layout.fillHeight: true
-                                }
-                            }
-                            onClicked: UserModel.addAccount()
-
-                            Accessible.role: Accessible.MenuItem
-                            Accessible.name: qsTr("Add new account")
-                            Accessible.onPressAction: addAccountButton.clicked()
-
-                            background: Rectangle {
-                                radius: Style.halfTrayWindowRadius
-                                color: palette.highlight
-                                visible: addAccountButton.hovered
-                            }
-                        }
-
-                        Rectangle {
-                            anchors.left: parent.left
-                            anchors.right: parent.right
-                            implicitHeight: 1
-                            color: palette.dark
-                        }
-
-                        MenuItem {
-                            id: syncPauseButton
-                            font.pixelSize: Style.topLinePixelSize
-                            hoverEnabled: true
-                            onClicked: Systray.syncIsPaused = !Systray.syncIsPaused
-                            Accessible.role: Accessible.MenuItem
-                            Accessible.name: Systray.syncIsPaused ? qsTr("Resume sync for all") : qsTr("Pause sync for all")
-                            Accessible.onPressAction: syncPauseButton.clicked()
-
-                            background: Rectangle {
-                                radius: Style.halfTrayWindowRadius
-                                color: palette.highlight
-                                visible: syncPauseButton.hovered
-                            }
-                        }
-
-                        MenuItem {
-                            id: settingsButton
-                            text: qsTr("Settings")
-                            font.pixelSize: Style.topLinePixelSize
-                            hoverEnabled: true
-                            onClicked: Systray.openSettings()
-                            Accessible.role: Accessible.MenuItem
-                            Accessible.name: text
-                            Accessible.onPressAction: settingsButton.clicked()
-
-                            background: Rectangle {
-                                radius: Style.halfTrayWindowRadius
-                                color: palette.highlight
-                                visible: settingsButton.hovered
-                            }
-                        }
-
-                        MenuItem {
-                            id: exitButton
-                            text: qsTr("Exit");
-                            font.pixelSize: Style.topLinePixelSize
-                            hoverEnabled: true
-                            onClicked: Systray.shutdown()
-                            Accessible.role: Accessible.MenuItem
-                            Accessible.name: text
-                            Accessible.onPressAction: exitButton.clicked()
-
-                            background: Rectangle {
-                                radius: Style.halfTrayWindowRadius
-                                color: palette.highlight
-                                visible: exitButton.hovered
-                            }
-                        }
-                    }
-
-                    RowLayout {
-                        id: accountControlRowLayout
-
-                        height: Style.trayWindowHeaderHeight
-                        width:  Style.currentAccountButtonWidth
-                        spacing: 0
-
-                        Image {
-                            id: currentAccountAvatar
-
-                            Layout.leftMargin: Style.trayHorizontalMargin
-                            verticalAlignment: Qt.AlignCenter
-                            cache: false
-                            source: (UserModel.currentUser && UserModel.currentUser.avatar !== "") ? UserModel.currentUser.avatar : "image://avatars/fallbackWhite"
-                            Layout.preferredHeight: Style.accountAvatarSize
-                            Layout.preferredWidth: Style.accountAvatarSize
-
-                            Accessible.role: Accessible.Graphic
-                            Accessible.name: qsTr("Current account avatar")
-
-                            Rectangle {
-                                id: currentAccountStatusIndicatorBackground
-                                visible: UserModel.currentUser && UserModel.currentUser.isConnected
-                                         && UserModel.currentUser.serverHasUserStatus
-                                width: Style.accountAvatarStateIndicatorSize +  + Style.trayFolderStatusIndicatorSizeOffset
-                                height: width
-                                anchors.bottom: currentAccountAvatar.bottom
-                                anchors.right: currentAccountAvatar.right
-                                radius: width * Style.trayFolderStatusIndicatorRadiusFactor
-                            }
-
-                            // TODO: check if we want add any hover effect
-                            // Rectangle {
-                            //     id: currentAccountStatusIndicatorMouseHover
-                            //     visible: UserModel.currentUser && UserModel.currentUser.isConnected
-                            //              && UserModel.currentUser.serverHasUserStatus
-                            //     width: Style.accountAvatarStateIndicatorSize +  + Style.trayFolderStatusIndicatorSizeOffset
-                            //     height: width
-                            //     anchors.bottom: currentAccountAvatar.bottom
-                            //     anchors.right: currentAccountAvatar.right
-                            //     color: currentAccountButton.hovered ? palette.highlight : palette.window
-                            //     opacity: Style.trayFolderStatusIndicatorMouseHoverOpacityFactor
-                            //     radius: width * Style.trayFolderStatusIndicatorRadiusFactor
-                            // }
-
-                            Image {
-                                id: currentAccountStatusIndicator
-                                visible: UserModel.currentUser && UserModel.currentUser.isConnected
-                                         && UserModel.currentUser.serverHasUserStatus
-                                source: UserModel.currentUser ? UserModel.currentUser.statusIcon : ""
-                                cache: false
-                                x: currentAccountStatusIndicatorBackground.x + 1
-                                y: currentAccountStatusIndicatorBackground.y + 1
-                                sourceSize.width: Style.accountAvatarStateIndicatorSize
-                                sourceSize.height: Style.accountAvatarStateIndicatorSize
-
-                                Accessible.role: Accessible.Indicator
-                                Accessible.name: UserModel.desktopNotificationsAllowed ? qsTr("Current account status is online") : qsTr("Current account status is do not disturb")
-                            }
-                        }
-
-                        Column {
-                            id: accountLabels
-                            spacing: 0
-                            Layout.alignment: Qt.AlignLeft | Qt.AlignVCenter
-                            Layout.leftMargin: Style.userStatusSpacing
-                            Layout.fillWidth: true
-                            Layout.maximumWidth: parent.width
-
-                            EnforcedPlainTextLabel {
-                                id: currentAccountUser
-                                Layout.alignment: Qt.AlignLeft | Qt.AlignBottom
-                                width: Style.currentAccountLabelWidth
-                                text: UserModel.currentUser ? UserModel.currentUser.name : ""
-                                elide: Text.ElideRight
-
-                                font.pixelSize: Style.topLinePixelSize
-                                font.bold: true
-                            }
-
-                            EnforcedPlainTextLabel {
-                                id: currentAccountServer
-                                Layout.alignment: Qt.AlignLeft | Qt.AlignBottom
-                                width: Style.currentAccountLabelWidth
-                                text: UserModel.currentUser ? UserModel.currentUser.server : ""
-                                elide: Text.ElideRight
-                                visible: UserModel.numUsers() > 1
-                            }
-
-                            RowLayout {
-                                id: currentUserStatus
-                                visible: UserModel.currentUser && UserModel.currentUser.isConnected &&
-                                         UserModel.currentUser.serverHasUserStatus
-                                spacing: Style.accountLabelsSpacing
-                                width: parent.width
-
-                                EnforcedPlainTextLabel {
-                                    id: emoji
-                                    visible: UserModel.currentUser && UserModel.currentUser.statusEmoji !== ""
-                                    width: Style.userStatusEmojiSize
-                                    text: UserModel.currentUser ? UserModel.currentUser.statusEmoji : ""
-                                }
-                                EnforcedPlainTextLabel {
-                                    id: message
-                                    Layout.alignment: Qt.AlignLeft | Qt.AlignBottom
-                                    Layout.fillWidth: true
-                                    visible: UserModel.currentUser && UserModel.currentUser.statusMessage !== ""
-                                    width: Style.currentAccountLabelWidth
-                                    text: UserModel.currentUser && UserModel.currentUser.statusMessage !== ""
-                                          ? UserModel.currentUser.statusMessage
-                                          : UserModel.currentUser ? UserModel.currentUser.server : ""
-                                    elide: Text.ElideRight
-                                    font.pixelSize: Style.subLinePixelSize
-                                }
-                            }
-                        }
-
-                        Image {
-                            Layout.alignment: Qt.AlignRight
-                            verticalAlignment: Qt.AlignCenter
-                            horizontalAlignment: Qt.AlignRight
-                            Layout.leftMargin: Style.accountDropDownCaretMargin
-                            source:  "image://svgimage-custom-color/caret-down.svg/" + palette.windowText
-                            sourceSize.width: Style.accountDropDownCaretSize
-                            sourceSize.height: Style.accountDropDownCaretSize
-                            Accessible.role: Accessible.PopupMenu
-                            Accessible.name: qsTr("Account switcher and settings menu")
-                        }
-                    }
-                }
-
-                // Add space between items
-                Item {
-                    Layout.fillWidth: true
-                }
-
-                TrayFoldersMenuButton {
-                    id: openLocalFolderButton
-
-                    visible: currentUser.hasLocalFolder
-                    currentUser: UserModel.currentUser
-
-                    onClicked: openLocalFolderButton.userHasGroupFolders ? openLocalFolderButton.toggleMenuOpen() : UserModel.openCurrentAccountLocalFolder()
-
-                    onFolderEntryTriggered: isGroupFolder ? UserModel.openCurrentAccountFolderFromTrayInfo(fullFolderPath) : UserModel.openCurrentAccountLocalFolder()
-
-                    Accessible.role: Accessible.Graphic
-                    Accessible.name: qsTr("Open local or group folders")
-                    Accessible.onPressAction: openLocalFolderButton.userHasGroupFolders ? openLocalFolderButton.toggleMenuOpen() : UserModel.openCurrentAccountLocalFolder()
-
-                    Layout.alignment: Qt.AlignRight
-                    Layout.preferredWidth:  Style.trayWindowHeaderHeight
-                    Layout.preferredHeight: Style.trayWindowHeaderHeight
-                }
-
-                HeaderButton {
-                    id: trayWindowFeaturedAppButton
-                    visible: UserModel.currentUser.isFeaturedAppEnabled
-                    icon.source: UserModel.currentUser.featuredAppIcon + "/"
-                    onClicked: UserModel.openCurrentAccountFeaturedApp()
-
-                    Accessible.role: Accessible.Button
-                    Accessible.name: UserModel.currentUser.featuredAppAccessibleName
-                    Accessible.onPressAction: trayWindowFeaturedAppButton.clicked()
-
-                    Layout.alignment: Qt.AlignRight
-                    Layout.preferredWidth:  Style.trayWindowHeaderHeight
-                    Layout.preferredHeight: Style.trayWindowHeaderHeight
-                }
-
-                HeaderButton {
-                    id: trayWindowAppsButton
-                    icon.source: "image://svgimage-custom-color/more-apps.svg/" + palette.windowText
-
-                    onClicked: {
-                        if(appsMenuListView.count <= 0) {
-                            UserModel.openCurrentAccountServer()
-                        } else if (appsMenu.visible) {
-                            appsMenu.close()
-                        } else {
-                            appsMenu.open()
-                        }
-                    }
-
-                    Accessible.role: Accessible.ButtonMenu
-                    Accessible.name: qsTr("More apps")
-                    Accessible.onPressAction: trayWindowAppsButton.clicked()
-
-                    Menu {
-                        id: appsMenu
-                        x: Style.trayWindowMenuOffsetX
-                        y: (trayWindowAppsButton.y + trayWindowAppsButton.height + Style.trayWindowMenuOffsetY)
-                        width: Style.trayWindowWidth * Style.trayWindowMenuWidthFactor
-                        height: implicitHeight + y > Style.trayWindowHeight ? Style.trayWindowHeight - y : implicitHeight
-                        closePolicy: Menu.CloseOnPressOutsideParent | Menu.CloseOnEscape
-
-                        background: Rectangle {
-                            border.color: palette.dark
-                            radius: Style.halfTrayWindowRadius
-                            color: palette.window
-                        }
-
-                        contentItem: ScrollView {
-                            id: appsMenuScrollView
-                            ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
-
-                            data: WheelHandler {
-                                target: appsMenuScrollView.contentItem
-                            }
-                            ListView {
-                                id: appsMenuListView
-                                implicitHeight: contentHeight
-                                model: UserAppsModel
-                                interactive: true
-                                clip: true
-                                currentIndex: appsMenu.currentIndex
-                                delegate: MenuItem {
-                                    id: appEntry
-                                    anchors.left: parent.left
-                                    anchors.right: parent.right
-                                    text: model.appName
-                                    font.pixelSize: Style.topLinePixelSize
-                                    icon.source: model.appIconUrl
-                                    icon.color: palette.windowText
-                                    onTriggered: UserAppsModel.openAppUrl(appUrl)
-                                    hoverEnabled: true
-                                    Accessible.role: Accessible.MenuItem
-                                    Accessible.name: qsTr("Open %1 in browser").arg(model.appName)
-                                    Accessible.onPressAction: appEntry.triggered()
-
-                                    background: Rectangle {
-                                        anchors.fill: parent
-                                        anchors.margins: 1
-                                        color: appEntry.hovered ? palette.highlight : palette.window
-                                        radius: Style.halfTrayWindowRadius
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }   // Rectangle trayWindowHeaderBackground
+            anchors.top: parent.top
+            anchors.left: parent.left
+            anchors.right: parent.right
+            height: Style.trayWindowHeaderHeight
+        }
 
         UnifiedSearchInputContainer {
             id: trayWindowUnifiedSearchInputContainer
-            height: Math.max(Style.talkReplyTextFieldPreferredHeight, contentHeight)
 
-            anchors {
-                top: trayWindowHeaderBackground.bottom
-                left: trayWindowMainItem.left
-                right: trayWindowMainItem.right
-
-                topMargin: Style.trayHorizontalMargin + controlRoot.padding
-                leftMargin: Style.trayHorizontalMargin + controlRoot.padding
-                rightMargin: Style.trayHorizontalMargin + controlRoot.padding
-            }
+            anchors.top: trayWindowHeader.bottom
+            anchors.left: trayWindowMainItem.left
+            anchors.right: trayWindowMainItem.right
+            anchors.topMargin: Style.trayHorizontalMargin
+            anchors.leftMargin: Style.trayHorizontalMargin
+            anchors.rightMargin: Style.trayHorizontalMargin
 
             text: UserModel.currentUser.unifiedSearchResultsListModel.searchTerm
             readOnly: !UserModel.currentUser.isConnected || UserModel.currentUser.unifiedSearchResultsListModel.currentFetchMoreInProgressProviderId
             isSearchInProgress: UserModel.currentUser.unifiedSearchResultsListModel.isSearchInProgress
             onTextEdited: { UserModel.currentUser.unifiedSearchResultsListModel.searchTerm = trayWindowUnifiedSearchInputContainer.text }
             onClearText: { UserModel.currentUser.unifiedSearchResultsListModel.searchTerm = "" }
+        }
 
-            // TODO: consult designers, this line looks weird atm
-            // Rectangle {
-            //     id: bottomUnifiedSearchInputSeparator
+        Rectangle {
+            id: bottomUnifiedSearchInputSeparator
 
-            //     anchors.left: parent.left
-            //     anchors.right: parent.right
-            //     anchors.bottom: parent.bottom
+            anchors.top: trayWindowUnifiedSearchInputContainer.bottom
+            anchors.left: parent.left
+            anchors.right: parent.right
+            anchors.topMargin: Style.trayHorizontalMargin
 
-            //     height: 1
-            //     color: Style.menuBorder
-            //     visible: trayWindowMainItem.isUnifiedSearchActive
-            // }
+            height: 1
+            color: palette.dark
+            visible: trayWindowMainItem.isUnifiedSearchActive
         }
 
         ErrorBox {
             id: unifiedSearchResultsErrorLabel
             visible:  UserModel.currentUser.unifiedSearchResultsListModel.errorString && !unifiedSearchResultsListView.visible && ! UserModel.currentUser.unifiedSearchResultsListModel.isSearchInProgress && ! UserModel.currentUser.unifiedSearchResultsListModel.currentFetchMoreInProgressProviderId
             text:  UserModel.currentUser.unifiedSearchResultsListModel.errorString
-            anchors.top: trayWindowUnifiedSearchInputContainer.bottom
+            anchors.top: bottomUnifiedSearchInputSeparator.bottom
             anchors.left: trayWindowMainItem.left
             anchors.right: trayWindowMainItem.right
             anchors.margins: Style.trayHorizontalMargin
@@ -705,7 +289,7 @@ ApplicationWindow {
         UnifiedSearchResultNothingFound {
             id: unifiedSearchResultNothingFound
 
-            anchors.top: trayWindowUnifiedSearchInputContainer.bottom
+            anchors.top: bottomUnifiedSearchInputSeparator.bottom
             anchors.left: trayWindowMainItem.left
             anchors.right: trayWindowMainItem.right
             anchors.topMargin: Style.trayHorizontalMargin
@@ -723,7 +307,7 @@ ApplicationWindow {
         Loader {
             id: unifiedSearchResultsListViewSkeletonLoader
 
-            anchors.top: trayWindowUnifiedSearchInputContainer.bottom
+            anchors.top: bottomUnifiedSearchInputSeparator.bottom
             anchors.left: trayWindowMainItem.left
             anchors.right: trayWindowMainItem.right
             anchors.bottom: trayWindowMainItem.bottom
@@ -752,7 +336,7 @@ ApplicationWindow {
             }
             visible: unifiedSearchResultsListView.count > 0
 
-            anchors.top: trayWindowUnifiedSearchInputContainer.bottom
+            anchors.top: bottomUnifiedSearchInputSeparator.bottom
             anchors.left: trayWindowMainItem.left
             anchors.right: trayWindowMainItem.right
             anchors.bottom: trayWindowMainItem.bottom
@@ -792,21 +376,22 @@ ApplicationWindow {
         SyncStatus {
             id: syncStatus
 
+            accentColor: Style.accentColor
             visible: !trayWindowMainItem.isUnifiedSearchActive
 
             anchors.top: trayWindowUnifiedSearchInputContainer.bottom
             anchors.left: trayWindowMainItem.left
             anchors.right: trayWindowMainItem.right
+        }
 
-            Rectangle {
-                id: syncStatusSeparator
-
-                Layout.fillWidth: true
-                Layout.preferredHeight: 1
-
-                height: 1
-                color: Style.menuBorder
-            }
+        Rectangle {
+            id: syncStatusSeparator
+            anchors.left: syncStatus.left
+            anchors.right: syncStatus.right
+            anchors.bottom: syncStatus.bottom
+            height: 1
+            color: palette.dark
+            visible: !trayWindowMainItem.isUnifiedSearchActive
         }
 
         Loader {
@@ -823,7 +408,7 @@ ApplicationWindow {
 
             active: false
 
-            sourceComponent: CustomButton {
+            sourceComponent: Button {
                 id: newActivitiesButton
                 hoverEnabled: true
                 padding: Style.smallSpacing
@@ -851,9 +436,9 @@ ApplicationWindow {
 
                 OpacityAnimator {
                     id: fadeoutActivitiesButtonDisappear
-                    target: newActivitiesButton;
-                    from: 1;
-                    to: 0;
+                    target: newActivitiesButton
+                    from: 1
+                    to: 0
                     duration: Style.newActivityButtonDisappearFadeTimeout
                     loops: 1
                     running: false

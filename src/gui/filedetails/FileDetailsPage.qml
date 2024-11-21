@@ -69,7 +69,7 @@ Page {
     bottomPadding: intendedPadding
 
     background: Rectangle {
-        color: palette.window
+        color: palette.base
         visible: root.backgroundsVisible
     }
 
@@ -130,7 +130,7 @@ Page {
                 wrapMode: Text.Wrap
             }
 
-            CustomButton {
+            Button {
                 id: closeButton
 
                 Layout.rowSpan: headerGridLayout.rows
@@ -142,10 +142,7 @@ Page {
                 icon.source: "image://svgimage-custom-color/clear.svg" + "/" + palette.buttonText
                 icon.width: Style.activityListButtonIconSize
                 icon.height: Style.activityListButtonIconSize
-                toolTipText: qsTr("Dismiss")
-
                 visible: root.showCloseButton
-
                 onClicked: root.closeButtonClicked()
             }
 

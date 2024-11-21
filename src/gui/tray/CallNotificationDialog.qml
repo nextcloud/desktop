@@ -24,7 +24,7 @@ import Qt5Compat.GraphicalEffects
 
 ApplicationWindow {
     id: root
-    color: palette.window
+    color: palette.base
     flags: Qt.Dialog | Qt.FramelessWindowHint | Qt.WindowStaysOnTopHint
 
     readonly property int windowSpacing: 10
@@ -86,7 +86,7 @@ ApplicationWindow {
         width: parent.width
         height: contentLayout.height + (root.windowSpacing * 2)
         radius: Systray.useNormalWindow ? 0.0 : Style.trayWindowRadius
-        color: Style.backgroundColor
+        color: palette.base
         border.width: Style.trayWindowBorderWidth
         border.color: palette.dark
         clip: true
@@ -210,7 +210,7 @@ ApplicationWindow {
                     id: linksRepeater
                     model: root.links
 
-                    CustomButton {
+                    Button {
                         id: answerCall
                         readonly property string verb: modelData.verb
                         readonly property bool isAnswerCallButton: verb === "WEB"
@@ -219,7 +219,6 @@ ApplicationWindow {
                         text: modelData.label
 
                         icon.source: root.talkIcon + palette.brightText
-                        imageSourceHover: root.talkIcon + palette.brightText
 
                         Layout.fillWidth: true
                         Layout.preferredHeight: Style.callNotificationPrimaryButtonMinHeight
@@ -233,15 +232,13 @@ ApplicationWindow {
                         Accessible.name: qsTr("Answer Talk call notification")
                         Accessible.onPressAction: answerCall.clicked()
                     }
-
                 }
 
-                CustomButton {
+                Button {
                     id: declineCall
                     text: qsTr("Decline")
 
                     icon.source: root.deleteIcon + "white"
-                    imageSourceHover: root.deleteIcon + "white"
 
                     Layout.fillWidth: true
                     Layout.preferredHeight: Style.callNotificationPrimaryButtonMinHeight

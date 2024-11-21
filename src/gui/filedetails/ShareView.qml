@@ -251,12 +251,13 @@ ColumnLayout {
                     z: Infinity
 
                     sourceComponent: Rectangle {
-                        color: palette.window
+                        color: palette.base
+                        radius: Style.progressBarRadius
                         opacity: 0.5
 
                         NCBusyIndicator {
                             anchors.centerIn: parent
-                            color: palette.midlight
+                            color: palette.dark
                         }
                     }
                 }

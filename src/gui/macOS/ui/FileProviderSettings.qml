@@ -32,7 +32,7 @@ Page {
     title: qsTr("Virtual files settings")
 
     background: Rectangle {
-        color: palette.window
+        color: palette.base
         border.width: root.showBorder ? Style.normalBorderWidth : 0
         border.color: root.palette.dark
     }
@@ -74,7 +74,7 @@ Page {
                 Rectangle {
                     Layout.fillWidth: true
                     height: Style.normalBorderWidth
-                    color: Style.ncSecondaryTextColor
+                    color: palette.midlight
                 }
 
                 FileProviderSyncStatus {
@@ -149,12 +149,12 @@ Page {
                     elide: Text.ElideRight
                 }
 
-                CustomButton {
+                Button {
                     text: qsTr("Signal file provider domain")
                     onClicked: root.controller.signalFileProviderDomain(root.accountUserIdAtHost)
                 }
 
-                CustomButton {
+                Button {
                     text: qsTr("Create debug archive")
                     onClicked: root.controller.createDebugArchive(root.accountUserIdAtHost)
                 }

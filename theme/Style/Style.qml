@@ -9,17 +9,9 @@ QtObject {
     readonly property bool darkMode: Theme.darkMode
 
     // Colors
-    readonly property color ncBlue:      Theme.wizardHeaderBackgroundColor
+    readonly property color ncBlue: Theme.wizardHeaderBackgroundColor
     readonly property color ncHeaderTextColor: Theme.wizardHeaderTitleColor
-    readonly property color ncTextColor: Theme.systemPalette.windowText
-    readonly property color ncTextBrightColor: "white"
-    readonly property color ncSecondaryTextColor: "#808080"
-    readonly property color lightHover: Theme.darkMode ? Qt.lighter(backgroundColor, 2) : Qt.darker(backgroundColor, 1.05)
-    readonly property color darkerHover: Theme.darkMode ? Qt.lighter(backgroundColor, 2.35) : Qt.darker(backgroundColor, 1.25)
-    readonly property color menuBorder: Theme.darkMode ? Qt.lighter(backgroundColor, 2.5) : Qt.darker(backgroundColor, 1.5)
-    readonly property color backgroundColor: Theme.systemPalette.window
-    readonly property color buttonBackgroundColor: Theme.systemPalette.button
-    readonly property color positiveColor: Qt.rgba(0.38, 0.74, 0.38, 1)
+    readonly property color accentColor: UserModel.currentUser ? UserModel.currentUser.accentColor : ncBlue
 
     readonly property color currentUserHeaderColor: UserModel.currentUser ? UserModel.currentUser.headerColor : ncBlue
     readonly property color currentUserHeaderTextColor: UserModel.currentUser ? UserModel.currentUser.headerTextColor : ncHeaderTextColor
@@ -52,7 +44,7 @@ QtObject {
     // dropdown menus radius
     property int halfTrayWindowRadius: 5
     property int trayWindowBorderWidth: variableSize(1)
-    property int trayWindowHeaderHeight: variableSize(60)
+    property int trayWindowHeaderHeight: variableSize(50)
     property int trayHorizontalMargin: 10
     property int trayModalWidth: 380
     property int trayModalHeight: 490
@@ -71,6 +63,7 @@ QtObject {
     property int iconButtonWidth: 36
     property int standardPrimaryButtonHeight: 40
     readonly property int smallIconSize: 16
+    readonly property int extraSmallIconSize: 8
 
     property int minActivityHeight: variableSize(32)
 
@@ -100,14 +93,10 @@ QtObject {
     property double trayFoldersMenuButtonDropDownCaretIconSizeFraction: 0.3
     property double trayFoldersMenuButtonMainIconSizeFraction: 1.0 - trayFoldersMenuButtonDropDownCaretIconSizeFraction
 
-    property int addAccountButtonHeight: 50
-
     property int activityListButtonWidth: 42
     property int activityListButtonHeight: 32
     property int activityListButtonIconSize: 18
-    property int headerButtonIconSize: 32
-    property int addButtonIconSize: 26
-    property int dismissButtonSize: 26
+    property int headerButtonIconSize: 48
     property int minimumActivityItemHeight: 24
 
     property int accountIconsMenuMargin: 7
@@ -129,6 +118,7 @@ QtObject {
     property int userStatusEmojiSize: 8
     property int userStatusSpacing: trayHorizontalMargin
     property int userStatusAnchorsMargin: 2
+    property int userLineSpacing: smallSpacing
     property int accountServerAnchorsMargin: 10
     property int accountLabelsSpacing: 4
     property int accountLabelsAnchorsMargin: 7
@@ -150,6 +140,7 @@ QtObject {
     readonly property int unifiedSearchResultSectionItemLeftPadding: 16
     readonly property int unifiedSearchResultSectionItemVerticalPadding: 8
     readonly property int unifiedSearchResultNothingFoundHorizontalMargin: 10
+    readonly property int unifiedSearchInputContainerHeight: 40
 
     readonly property int radioButtonCustomMarginLeftInner: 4
     readonly property int radioButtonCustomMarginLeftOuter: 5
@@ -190,10 +181,6 @@ QtObject {
     property int progressBarRadius: 4
     property int progressBarContentBorderWidth: 1
     property int progressBarBackgroundBorderWidth: 1
-    property color progressBarContentColor: ncBlue
-    property color progressBarContentBorderColor: menuBorder
-    property color progressBarBackgroundColor: backgroundColor
-    property color progressBarBackgroundBorderColor: menuBorder
 
     property int newActivitiesButtonWidth: 150
     property int newActivitiesButtonHeight: 40
