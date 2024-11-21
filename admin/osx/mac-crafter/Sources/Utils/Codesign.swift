@@ -33,7 +33,10 @@ func isAppExtension(_ path: String) -> Bool {
 }
 
 func isExecutable(_ path: String) -> Bool {
-    FileManager.default.isExecutableFile(atPath: path)
+    let fm = FileManager.default
+    var isDir: ObjCBool = false
+    let exists = fm.fileExists(atPath: path, isDirectory: &isDir)
+    return fm.isExecutableFile(atPath: path) && !isDir.boolValue && exists
 }
 
 func codesign(identity: String, path: String, options: String = defaultCodesignOptions) throws {
