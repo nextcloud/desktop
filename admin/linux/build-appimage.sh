@@ -92,7 +92,7 @@ export QML_SOURCES_PATHS=${DESKTOP_CLIENT_ROOT}/src/gui
 
 # Workaround issue #103 and #7231
 export APPIMAGE_NAME=appimagetool-x86_64.AppImage
-wget "https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage"
+wget -O ${APPIMAGE_NAME} --ca-directory=/etc/ssl/certs -c "https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage"
 chmod a+x ${APPIMAGE_NAME}
 ./${APPIMAGE_NAME} --appimage-extract
 rm ./${APPIMAGE_NAME}
