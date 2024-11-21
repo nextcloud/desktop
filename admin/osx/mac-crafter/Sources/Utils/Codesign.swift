@@ -14,7 +14,7 @@
 
 import Foundation
 
-fileprivate let defaultCodesignOptions = "--timestamp --force --preserve-metadata=entitlements --verbose=4 --options runtime --deep"
+fileprivate let defaultCodesignOptions = "--timestamp --force --preserve-metadata=entitlements --verbose=4 --options runtime"
 
 enum CodeSigningError: Error {
     case failedToCodeSign(String)
@@ -30,6 +30,10 @@ func isLibrary(_ path: String) -> Bool {
 
 func isAppExtension(_ path: String) -> Bool {
     path.hasSuffix(".appex")
+}
+
+func isExecutable(_ path: String) -> Bool {
+    FileManager.default.isExecutableFile(atPath: path)
 }
 
 func codesign(identity: String, path: String, options: String = defaultCodesignOptions) throws {
@@ -53,7 +57,10 @@ func recursivelyCodesign(
     }
 
     for case let enumeratedItem as String in pathEnumerator {
-        guard isLibrary(enumeratedItem) || isAppExtension(enumeratedItem) else { continue }
+        guard isLibrary(enumeratedItem) ||
+              isAppExtension(enumeratedItem) ||
+              isExecutable(enumeratedItem)
+        else { continue }
         try codesign(identity: identity, path: "\(path)/\(enumeratedItem)")
     }
 }
@@ -126,4 +133,7 @@ func codesignClientAppBundle(
     // Now we do the final codesign bit
     print("Code-signing Nextcloud Desktop Client binaries...")
     try recursivelyCodesign(path: "\(clientContentsDir)/MacOS/", identity: codeSignIdentity)
+
+    print("Code-signing Nextcloud Desktop Client app bundle...")
+    try codesign(identity: codeSignIdentity, path: clientAppDir)
 }
