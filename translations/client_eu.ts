@@ -1697,13 +1697,13 @@ Ekintza honek unean uneko sinkronizazioa bertan behera utziko du.</translation>
         <translation>Zerbitzariko errorea: PROPFINDaren erantzunak ez du XML formaturik!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="682"/>
-        <location filename="../src/libsync/discoveryphase.cpp" line="719"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="687"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="724"/>
         <source>Encrypted metadata setup error!</source>
         <translation>Zifratutako metadatuen konfigurazio errorea!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="706"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="711"/>
         <source>Encrypted metadata setup error: initial signature from server is empty.</source>
         <translation>Enkriptatutako metadatuen konfigurazio-errorea: zerbitzariaren hasierako sinadura hutsik dago.</translation>
     </message>
@@ -4339,7 +4339,7 @@ Modu hau berria eta experimentala da. Erabiltzea erabakitzen baduzu, agertzen di
         <translation>Ezin da sinkronizatu aldaketa-ordu baliogabea delako</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1082"/>
+        <location filename="../src/libsync/discovery.cpp" line="1086"/>
         <source>Could not upload file, because it is open in &quot;%1&quot;.</source>
         <translation>Ezin izan da fitxategia kargatu, &quot;%1&quot;(e)n irekita dagoelako.</translation>
     </message>

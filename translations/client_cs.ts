@@ -1696,13 +1696,13 @@ Současně tato akce zruší jakoukoli právě probíhající synchronizaci.</tr
         <translation>Chyba serveru: odpověď PROPFIND není ve formátu XML!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="682"/>
-        <location filename="../src/libsync/discoveryphase.cpp" line="719"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="687"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="724"/>
         <source>Encrypted metadata setup error!</source>
         <translation>Chyba nastavení šifrovaných metadat!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="706"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="711"/>
         <source>Encrypted metadata setup error: initial signature from server is empty.</source>
         <translation>Chyba nastavení šifrovaných metadat: počáteční signatura ze serveru je prázdná.</translation>
     </message>
@@ -4338,7 +4338,7 @@ Toto je nový, experimentální režim. Pokud se jej rozhodnete používat, pros
         <translation>Není možné provést synchronizaci z důvodu neplatného času změny</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1082"/>
+        <location filename="../src/libsync/discovery.cpp" line="1086"/>
         <source>Could not upload file, because it is open in &quot;%1&quot;.</source>
         <translation>Nepodařilo se nahrát soubor, protože je otevřený v „%1“.</translation>
     </message>

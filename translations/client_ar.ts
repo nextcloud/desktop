@@ -1692,13 +1692,13 @@ This action will abort any currently running synchronization.</source>
         <translation>خطأ في الخادم: رد PROPFIND ليس على نسق XML!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="682"/>
-        <location filename="../src/libsync/discoveryphase.cpp" line="719"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="687"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="724"/>
         <source>Encrypted metadata setup error!</source>
         <translation>خطأ في إعدادات البيانات الوصفية المشفرة!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="706"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="711"/>
         <source>Encrypted metadata setup error: initial signature from server is empty.</source>
         <translation>خطأ في إعداد البيانات الوصفية المشفرة: التوقيع الأوّلي من الخادم فارغ.</translation>
     </message>
@@ -4316,7 +4316,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>تعذّرت المزامنة لأن وقت آخر تعديل للملف غير صالح</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1082"/>
+        <location filename="../src/libsync/discovery.cpp" line="1086"/>
         <source>Could not upload file, because it is open in &quot;%1&quot;.</source>
         <translation>يتعذّر فتح الملف لأنه مفتوح سلفاً في &quot;%1&quot;.</translation>
     </message>
