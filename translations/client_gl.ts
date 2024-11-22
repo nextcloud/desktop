@@ -342,11 +342,6 @@
         <source>Signal file provider domain</source>
         <translation>Dominio do provedor de ficheiros de sinal</translation>
     </message>
-    <message>
-        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="158"/>
-        <source>Create debug archive</source>
-        <translation>Crear arquivo de depuración</translation>
-    </message>
 </context>
 <context>
     <name>FileProviderStorageInfo</name>
@@ -470,91 +465,19 @@
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="238"/>
+        <location filename="../src/gui/tray/MainWindow.qml" line="239"/>
         <source>Nextcloud desktop main dialog</source>
         <translation>Diálogo principal do escritorio Nextcloud</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="264"/>
-        <source>Current account</source>
-        <translation>Conta actual</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="270"/>
-        <location filename="../src/gui/tray/MainWindow.qml" line="372"/>
-        <source>Resume sync for all</source>
-        <translation>Continuar coa sincronización para todos</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="270"/>
-        <location filename="../src/gui/tray/MainWindow.qml" line="372"/>
-        <source>Pause sync for all</source>
-        <translation>Por en pausa a sincronización para todos</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="337"/>
-        <source>Add account</source>
-        <translation>Engadir unha conta</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="349"/>
-        <source>Add new account</source>
-        <translation>Engadir unha conta nova</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="770"/>
+        <location filename="../src/gui/tray/MainWindow.qml" line="376"/>
         <source>Unified search results list</source>
         <translation>Lista de resultados da busca unificada</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="384"/>
-        <source>Settings</source>
-        <translation>Axustes</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="401"/>
-        <source>Exit</source>
-        <translation>Saír</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="435"/>
-        <source>Current account avatar</source>
-        <translation>Avatar actual da conta</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="833"/>
+        <location filename="../src/gui/tray/MainWindow.qml" line="440"/>
         <source>New activities</source>
         <translation>Novas actividades</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="474"/>
-        <source>Current account status is online</source>
-        <translation>O estado da conta actual é conectado</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="474"/>
-        <source>Current account status is do not disturb</source>
-        <translation>O estado actual da conta é non molestar</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="543"/>
-        <source>Account switcher and settings menu</source>
-        <translation>Conmutador de contas e menú de axustes</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="564"/>
-        <source>Open local or group folders</source>
-        <translation>Abrir cartafoles locais ou de grupo</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="602"/>
-        <source>More apps</source>
-        <translation>Máis aplicacións</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="644"/>
-        <source>Open %1 in browser</source>
-        <translation>Abrir %1 nun navegador</translation>
     </message>
 </context>
 <context>
@@ -1264,34 +1187,34 @@ Esta acción interromperá calquera sincronización que estea a executarse actua
         <translation>Continuar</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="487"/>
+        <location filename="../src/gui/application.cpp" line="488"/>
         <source>%1 accounts</source>
         <comment>number of accounts imported</comment>
         <translation>%1 contas</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="488"/>
+        <location filename="../src/gui/application.cpp" line="489"/>
         <source>1 account</source>
         <translation>1 conta</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="490"/>
+        <location filename="../src/gui/application.cpp" line="491"/>
         <source>%1 folders</source>
         <comment>number of folders imported</comment>
         <translation>%1 cartafoles</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="491"/>
+        <location filename="../src/gui/application.cpp" line="492"/>
         <source>1 folder</source>
         <translation>1 cartafol</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="493"/>
+        <location filename="../src/gui/application.cpp" line="494"/>
         <source>Legacy import</source>
         <translation>Importar estilo antigo</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="494"/>
+        <location filename="../src/gui/application.cpp" line="495"/>
         <source>Imported %1 and %2 from a legacy desktop client.
 %3</source>
         <comment>number of accounts and folders imported. list of users.</comment>
@@ -1757,13 +1680,13 @@ Esta acción interromperá calquera sincronización que estea a executarse actua
         <translation>Erro do servidor: a resposta PROPFIND non está formatada en XML.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="687"/>
-        <location filename="../src/libsync/discoveryphase.cpp" line="724"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="688"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="725"/>
         <source>Encrypted metadata setup error!</source>
         <translation>Produciuse un erro na configuración dos metadatos cifrados!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="711"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="712"/>
         <source>Encrypted metadata setup error: initial signature from server is empty.</source>
         <translation>Produciuse un erro de configuración dos metadatos cifrados: a sinatura inicial do servidor está baleira.</translation>
     </message>
@@ -2264,16 +2187,11 @@ Isto pode ser un problema coas súas bibliotecas OpenSSL.</translation>
         <translation>Vaia a axustes para seleccionalo se quere descargar isto.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1398"/>
+        <location filename="../src/gui/folder.cpp" line="1404"/>
         <source>A folder has surpassed the set folder size limit of %1MB: %2.
 %3</source>
         <translation>Un cartafol superou o límite de tamaño de cartafol establecido de %1MB: %2.
 %3</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/folder.cpp" line="1409"/>
-        <source>Keep syncing</source>
-        <translation>Manter sincronizado</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1411"/>
@@ -2287,6 +2205,11 @@ Se decide restaurar os ficheiros, volveranse sincronizar co servidor se ten perm
 Se decide eliminar os ficheiros, non poderá dispor deles a non ser que sexa o propietario.</translation>
     </message>
     <message>
+        <location filename="../src/gui/folder.cpp" line="1415"/>
+        <source>Keep syncing</source>
+        <translation>Manter sincronizado</translation>
+    </message>
+    <message>
         <location filename="../src/gui/folder.cpp" line="1416"/>
         <source>All the files in your local sync folder &quot;%1&quot; were deleted. These deletes will be synchronized with your server, making such files unavailable unless restored.
 Are you sure you want to sync those actions with the server?
@@ -2296,14 +2219,14 @@ Confirma que quere sincronizar esas accións co servidor?
 Se isto foi un accidente e decide manter os seus ficheiros, volveranse sincronizar desde o servidor.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1417"/>
-        <source>Stop syncing</source>
-        <translation>Deixar de sincronizar</translation>
-    </message>
-    <message>
         <location filename="../src/gui/folder.cpp" line="1420"/>
         <source>Remove All Files?</source>
         <translation>Quere retirar todos os ficheiros?</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/folder.cpp" line="1423"/>
+        <source>Stop syncing</source>
+        <translation>Deixar de sincronizar</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1424"/>
@@ -2316,12 +2239,12 @@ Se isto foi un accidente e decide manter os seus ficheiros, volveranse sincroniz
         <translation>Conservar os ficheiros</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1428"/>
+        <location filename="../src/gui/folder.cpp" line="1434"/>
         <source>The folder %1 has surpassed the set folder size limit of %2MB.</source>
         <translation>O cartafol %1 superou o límite de tamaño de cartafol estabelecido de %2MB.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1429"/>
+        <location filename="../src/gui/folder.cpp" line="1435"/>
         <source>Would you like to stop syncing this folder?</source>
         <translation>Quere deixar de sincronizar este cartafol?</translation>
     </message>
@@ -2349,12 +2272,12 @@ Isto significa que o cliente de sincronización podería non enviar os cambios i
 %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1551"/>
+        <location filename="../src/gui/folder.cpp" line="1557"/>
         <source>Virtual file download failed with code &quot;%1&quot;, status &quot;%2&quot; and error message &quot;%3&quot;</source>
         <translation>Produciuse un fallo na descarga do ficheiro virtual co código «%1», o estado «%2» e a mensaxe de erro «%3»</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1645"/>
+        <location filename="../src/gui/folder.cpp" line="1651"/>
         <source>A large number of files in the server have been deleted.
 Please confirm if you'd like to proceed with these deletions.
 Alternatively, you can restore all deleted files by uploading from &apos;%1&apos; folder to the server.</source>
@@ -2363,7 +2286,7 @@ Confirme que quere proceder a estas eliminacións.
 Como alternativa, pode restaurar todos os ficheiros eliminados enviándoos desde o cartafol «%1» ao servidor.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1646"/>
+        <location filename="../src/gui/folder.cpp" line="1652"/>
         <source>A large number of files in your local '%1' folder have been deleted.
 Please confirm if you'd like to proceed with these deletions.
 Alternatively, you can restore all deleted files by downloading them from the server.</source>
@@ -2372,22 +2295,22 @@ Confirme que quere proceder a estas eliminacións.
 Como alternativa, pode restaurar todos os ficheiros eliminados descargándoos do servidor.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1647"/>
+        <location filename="../src/gui/folder.cpp" line="1653"/>
         <source>Remove all files?</source>
         <translation>Quere retirar todos os ficheiros?</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1651"/>
+        <location filename="../src/gui/folder.cpp" line="1657"/>
         <source>Proceed with Deletion</source>
         <translation>Proceder á eliminación</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1652"/>
+        <location filename="../src/gui/folder.cpp" line="1658"/>
         <source>Restore Files to Server</source>
         <translation>Restaurar os ficheiros no servidor</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1652"/>
+        <location filename="../src/gui/folder.cpp" line="1658"/>
         <source>Restore Files from Server</source>
         <translation>Restaurar os ficheiros do servidor</translation>
     </message>
@@ -2940,20 +2863,15 @@ Como alternativa, pode restaurar todos os ficheiros eliminados descargándoos do
 <context>
     <name>OCC::GeneralSettings</name>
     <message>
+        <location filename="../src/gui/generalsettings.ui" line="66"/>
+        <source>General Settings</source>
+        <translation>Axustes xerais</translation>
+    </message>
+    <message>
         <location filename="../src/gui/generalsettings.ui" line="20"/>
         <location filename="../src/gui/generalsettings.ui" line="32"/>
         <source>About</source>
         <translation>Sobre</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.ui" line="41"/>
-        <source>Legal notice</source>
-        <translation>Aviso legal</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.ui" line="66"/>
-        <source>General Settings</source>
-        <translation>Axustes xerais</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="82"/>
@@ -2971,12 +2889,17 @@ Como alternativa, pode restaurar todos os ficheiros eliminados descargándoos do
         <translation>Para a área de notificación</translation>
     </message>
     <message>
+        <location filename="../src/gui/generalsettings.ui" line="41"/>
+        <source>Legal notice</source>
+        <translation>Aviso legal</translation>
+    </message>
+    <message>
         <location filename="../src/gui/generalsettings.ui" line="75"/>
         <source>Use &amp;Monochrome Icons</source>
         <translation>Usar iconas &amp;monocromáticas</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="96"/>
+        <location filename="../src/gui/generalsettings.ui" line="50"/>
         <source>Show Chat Notifications</source>
         <translation type="unfinished"/>
     </message>
@@ -2984,6 +2907,16 @@ Como alternativa, pode restaurar todos os ficheiros eliminados descargándoos do
         <location filename="../src/gui/generalsettings.ui" line="89"/>
         <source>Show Server &amp;Notifications</source>
         <translation>Amosar as &amp;notificacións do servidor</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.ui" line="221"/>
+        <source>Advanced</source>
+        <translation>Avanzado</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.ui" line="80"/>
+        <source>Ask for confirmation before synchronizing new folders larger than</source>
+        <translation>Preguntar se se queren sincronizar novos cartafoles de máis de</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="106"/>
@@ -2996,55 +2929,23 @@ Como alternativa, pode restaurar todos os ficheiros eliminados descargándoos do
         <translation>Comprobar automaticamente as &amp;actualizacións</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="134"/>
-        <source>&amp;Channel</source>
-        <translation>&amp;Canle</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.ui" line="151"/>
-        <location filename="../src/gui/generalsettings.cpp" line="327"/>
-        <source>stable</source>
-        <translation>estábel</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.ui" line="156"/>
-        <location filename="../src/gui/generalsettings.cpp" line="329"/>
-        <source>beta</source>
-        <translation>beta</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.ui" line="183"/>
-        <source>&amp;Restart &amp;&amp; Update</source>
-        <translation>&amp;Reiniciar e actualizar</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.ui" line="198"/>
-        <source>&amp;Check for Update now</source>
-        <translation>&amp;Comprobar agora se hai actualizacións</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.ui" line="221"/>
-        <source>Advanced</source>
-        <translation>Avanzado</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.ui" line="33"/>
-        <source>Ask for confirmation before synchronizing new folders larger than</source>
-        <translation>Preguntar se se queren sincronizar novos cartafoles de máis de</translation>
-    </message>
-    <message>
         <location filename="../src/gui/generalsettings.ui" line="249"/>
         <source>MB</source>
         <extracomment>Trailing part of &quot;Ask confirmation before syncing folder larger than&quot; </extracomment>
         <translation>MB</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="96"/>
+        <location filename="../src/gui/generalsettings.ui" line="134"/>
+        <source>&amp;Channel</source>
+        <translation>&amp;Canle</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.ui" line="143"/>
         <source>Notify when synchronised folders grow larger than specified limit</source>
         <translation>Notificar cando os cartafoles sincronizados superen o límite especificado</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="123"/>
+        <location filename="../src/gui/generalsettings.ui" line="170"/>
         <source>Automatically disable synchronisation of folders that overcome limit</source>
         <translation>Desactivar automaticamente a sincronización de cartafoles que superan o límite</translation>
     </message>
@@ -3054,12 +2955,17 @@ Como alternativa, pode restaurar todos os ficheiros eliminados descargándoos do
         <translation>Preguntar se se queren sincronizar os cartafoles de almacenamento externo</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="147"/>
+        <location filename="../src/gui/generalsettings.ui" line="194"/>
         <source>Move removed files to trash</source>
         <translation>Mover os ficheiros retirados ao lixo</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="158"/>
+        <location filename="../src/gui/generalsettings.ui" line="198"/>
+        <source>&amp;Check for Update now</source>
+        <translation>&amp;Comprobar agora se hai actualizacións</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.ui" line="205"/>
         <source>Show sync folders in &amp;Explorer&apos;s navigation pane</source>
         <translation>Amosar os cartafoles sincronizados no &amp;panel de navegación do navegador</translation>
     </message>
@@ -3067,6 +2973,11 @@ Como alternativa, pode restaurar todos os ficheiros eliminados descargándoos do
         <location filename="../src/gui/generalsettings.ui" line="301"/>
         <source>S&amp;how crash reporter</source>
         <translation>Amosar o informe de &amp;fallos</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.ui" line="229"/>
+        <source>Ask for confirmation before synchronizing folders larger than</source>
+        <translation>Preguntar se se queren sincronizar cartafoles de máis de</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="312"/>
@@ -3080,24 +2991,14 @@ Como alternativa, pode restaurar todos os ficheiros eliminados descargándoos do
         <translation>Crear arquivo de depuración</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="218"/>
+        <location filename="../src/gui/generalsettings.ui" line="265"/>
         <source>Info</source>
         <translation>Información</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="229"/>
-        <source>Ask for confirmation before synchronizing folders larger than</source>
-        <translation>Preguntar se se queren sincronizar cartafoles de máis de</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.ui" line="230"/>
+        <location filename="../src/gui/generalsettings.ui" line="277"/>
         <source>Desktop client x.x.x</source>
         <translation>Cliente de escritorio x.x.x</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.ui" line="248"/>
-        <source>Update channel</source>
-        <translation>Actualizar a canle</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="284"/>
@@ -3105,44 +3006,34 @@ Como alternativa, pode restaurar todos os ficheiros eliminados descargándoos do
         <translation>Amosar os cartafoles sincronizados no &amp;panel de navegación do navegador</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="301"/>
+        <location filename="../src/gui/generalsettings.ui" line="295"/>
+        <source>Update channel</source>
+        <translation>Actualizar a canle</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.ui" line="183"/>
+        <source>&amp;Restart &amp;&amp; Update</source>
+        <translation>&amp;Reiniciar e actualizar</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.ui" line="348"/>
         <source>&amp;Automatically check for updates</source>
         <translation>Comprobar &amp;automaticamente as actualizacións</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="317"/>
+        <location filename="../src/gui/generalsettings.ui" line="364"/>
         <source>Check Now</source>
         <translation>Comproba agora</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="344"/>
+        <location filename="../src/gui/generalsettings.ui" line="391"/>
         <source>Usage Documentation</source>
         <translation>Documentación de uso</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="351"/>
+        <location filename="../src/gui/generalsettings.ui" line="398"/>
         <source>Legal Notice</source>
         <translation>Aviso legal</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.ui" line="398"/>
-        <source>Use &amp;monochrome icons</source>
-        <translation>Usar iconas &amp;monocromáticas</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.ui" line="405"/>
-        <source>&amp;Launch on system startup</source>
-        <translation>&amp;Executar ao iniciar o sistema</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.ui" line="412"/>
-        <source>Show server &amp;notifications</source>
-        <translation>Amosar as &amp;notificacións do servidor</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.ui" line="419"/>
-        <source>Show call notifications</source>
-        <translation>Amosar as notificacións de chamadas</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="144"/>
@@ -3150,7 +3041,7 @@ Como alternativa, pode restaurar todos os ficheiros eliminados descargándoos do
         <translation>Notificacións do servidor que precisan atención.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="169"/>
+        <location filename="../src/gui/generalsettings.cpp" line="195"/>
         <source>Show chat notification dialogs.</source>
         <translation type="unfinished"/>
     </message>
@@ -3163,6 +3054,18 @@ Como alternativa, pode restaurar todos os ficheiros eliminados descargándoos do
         <location filename="../src/gui/generalsettings.cpp" line="162"/>
         <source>You cannot disable autostart because system-wide autostart is enabled.</source>
         <translation>Non pode desactivar o inicio automático porque o inicio automático de todo o sistema está activado.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.ui" line="151"/>
+        <location filename="../src/gui/generalsettings.cpp" line="327"/>
+        <source>stable</source>
+        <translation>estábel</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.ui" line="156"/>
+        <location filename="../src/gui/generalsettings.cpp" line="329"/>
+        <source>beta</source>
+        <translation>beta</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="350"/>
@@ -3179,25 +3082,17 @@ Note that this selects only what pool upgrades are taken from, and that there ar
 Teña en conta que isto só selecciona de que grupo se toman as anovacións e que non hai reversións: por tanto, reverter da canle beta á canle estábel normalmente non se pode facer inmediatamente e significa agardar por unha versión estábel que sexa máis recente que a versión beta instalada actualmente.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="373"/>
+        <location filename="../src/gui/generalsettings.cpp" line="405"/>
         <source>daily</source>
         <translation>diario</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="377"/>
+        <location filename="../src/gui/generalsettings.cpp" line="409"/>
         <source>enterprise</source>
         <translation>empresarial</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="405"/>
-        <source>- enterprise: contains stable versions for customers.
-</source>
-        <comment>description of enterprise update channel for enterprise customers</comment>
-        <translation>– empresarial: contén versións estábeis para os clientes.
-</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.cpp" line="411"/>
+        <location filename="../src/gui/generalsettings.cpp" line="437"/>
         <source>- beta: contains versions with new features that may not be tested thoroughly
 - daily: contains versions created daily only for testing and development
 
@@ -3209,22 +3104,7 @@ Downgrading versions is not possible immediately: changing from beta to stable m
 Non é posíbel reverter versións inmediatamente: cambiar de beta a estábel implica agardar pola nova versión estábel.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="411"/>
-        <source>The channel determines which upgrades will be offered to install:
-- stable: contains tested versions considered reliable
-- beta: contains versions with new features that may not be tested thoroughly
-- daily: contains versions created daily only for testing and development
-%1
-Downgrading versions is not possible immediately: changing from beta to stable means waiting for the new stable version.</source>
-        <translation>A canle determina que actualizacións se forneceran para instalar:
-– estábel: contén versións probadas consideradas fiábeis
-– beta: contén versións con novas funcionalidades que poden non ser probadas a fondo
-– diario: contén versións creadas diariamente só para probas e desenvolvemento
-%1
-Non é posíbel reverter versións inmediatamente: cambiar de beta a estábel significa agardar pola nova versión estábel.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.cpp" line="416"/>
+        <location filename="../src/gui/generalsettings.cpp" line="442"/>
         <source>- enterprise: contains stable versions for customers.
 
 Downgrading versions is not possible immediately: changing from stable to enterprise means waiting for the new enterprise version.</source>
@@ -3234,12 +3114,12 @@ Downgrading versions is not possible immediately: changing from stable to enterp
 Non é posíbel reverter as versións inmediatamente: cambiar de estábel estable a empresarial implica agardar pola nova versión empresarial.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="410"/>
+        <location filename="../src/gui/generalsettings.cpp" line="449"/>
         <source>Changing update channel?</source>
         <translation>Quere cambiar a canle de actualización?</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="424"/>
+        <location filename="../src/gui/generalsettings.cpp" line="450"/>
         <source>The channel determines which upgrades will be offered to install:
 - stable: contains tested versions considered reliable
 </source>
@@ -4409,7 +4289,7 @@ Este é un novo modo experimental. Se decide usalo, agradecémoslle que informe 
         <translation>Non é posíbel sincronizar por mor dunha hora de modificación incorrecta</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1086"/>
+        <location filename="../src/libsync/discovery.cpp" line="1090"/>
         <source>Could not upload file, because it is open in &quot;%1&quot;.</source>
         <translation>Non foi posíbel enviar o ficheiro porque está aberto en «%1».</translation>
     </message>
@@ -4482,8 +4362,8 @@ Este é un novo modo experimental. Se decide usalo, agradecémoslle que informe 
         <translation>Produciuse un erro ao actualizar os metadatos por mor dunha hora de modificación incorrecta</translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1481"/>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1506"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1473"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1495"/>
         <source>The folder %1 cannot be made read-only: %2</source>
         <translation>Non é posíbel facer que o cartafol %1 sexa de só lectura: %2</translation>
     </message>
@@ -4605,7 +4485,7 @@ Este é un novo modo experimental. Se decide usalo, agradecémoslle que informe 
         <translation>Non foi posíbel crear o cartafol %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="240"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="239"/>
         <source>The folder %1 cannot be made read-only: %2</source>
         <translation>Non é posíbel facer que o cartafol %1 sexa de só lectura: %2</translation>
     </message>
@@ -4636,7 +4516,7 @@ Este é un novo modo experimental. Se decide usalo, agradecémoslle que informe 
 <context>
     <name>OCC::PropagateLocalRename</name>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="323"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="322"/>
         <source>Folder %1 cannot be renamed because of a local file or folder name clash!</source>
         <translation>Non é posíbel cambiarlle o nome ao cartafol %1 por mor dunha colisión co nome dun ficheiro ou cartafol local!</translation>
     </message>
@@ -5013,6 +4893,21 @@ Este é un novo modo experimental. Se decide usalo, agradecémoslle que informe 
 <context>
     <name>OCC::ShareModel</name>
     <message>
+        <location filename="../src/gui/filedetails/sharemodel.cpp" line="515"/>
+        <source>%1 days</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/filedetails/sharemodel.cpp" line="517"/>
+        <source>1 day</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/filedetails/sharemodel.cpp" line="518"/>
+        <source>Today</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="692"/>
         <source>Secure file drop link</source>
         <translation>Ligazón de entrega segura de ficheiros</translation>
@@ -5038,7 +4933,7 @@ Este é un novo modo experimental. Se decide usalo, agradecémoslle que informe 
         <translation>Entrega segura de ficheiros</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/sharemodel.cpp" line="915"/>
+        <location filename="../src/gui/filedetails/sharemodel.cpp" line="951"/>
         <source>Could not find local folder for %1</source>
         <translation>Non foi posíbel atopar o cartafol local para %1</translation>
     </message>
@@ -5178,14 +5073,14 @@ O servidor respondeu co erro: %2</translation>
         <translation>Copiar a ligazón pública</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1234"/>
-        <source>Encrypt</source>
-        <translation>Cifrar</translation>
-    </message>
-    <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1189"/>
         <source>Copy secure filedrop link</source>
         <translation>Copiar a ligazón para entrega segura de ficheiros (filedrop)</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1234"/>
+        <source>Encrypt</source>
+        <translation>Cifrar</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1245"/>
@@ -5209,14 +5104,14 @@ O servidor respondeu co erro: %2</translation>
         <translation><numerusform>Caduca en %1 minutos</numerusform><numerusform>Caduca en %1 minutos</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1369"/>
-        <source>Edit</source>
-        <translation>Editar</translation>
-    </message>
-    <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1371"/>
         <source>Open in browser</source>
         <translation>Abrir no navegador</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1369"/>
+        <source>Edit</source>
+        <translation>Editar</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1398"/>
@@ -5673,7 +5568,7 @@ O servidor respondeu co erro: %2</translation>
         <translation>&lt;p&gt;Cliente de escritorio de %1&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="597"/>
+        <location filename="../src/libsync/theme.cpp" line="599"/>
         <source>&lt;p&gt;%1 Desktop Client&lt;/p&gt;&lt;p&gt;Version %1. For more information please click &lt;a href=&apos;%2&apos;&gt;here&lt;/a&gt;.&lt;/p&gt;</source>
         <extracomment>Example text: &quot;&lt;p&gt;Nextcloud Desktop Client&lt;/p&gt;&quot; (%1 is the application name)</extracomment>
         <translation>&lt;p&gt;Cliente de escritorio de %1&lt;/p&gt;&lt;p&gt;Versión %1. Para obter máis información prema &lt;a href=&apos;%2&apos;&gt;aquí&lt;/a&gt;.&lt;/p&gt;</translation>
@@ -5684,7 +5579,7 @@ O servidor respondeu co erro: %2</translation>
         <translation>&lt;p&gt;&lt;small&gt;Usando o complemento de ficheiros virtuais: %1&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="614"/>
+        <location filename="../src/libsync/theme.cpp" line="616"/>
         <source>&lt;p&gt;%1 desktop client %2&lt;/p&gt;</source>
         <extracomment>Example text: &quot;&lt;p&gt;Nextcloud Desktop Client&lt;/p&gt;&quot; (%1 is the application name)</extracomment>
         <translation>&lt;p&gt;Cliente de escritorio de %1, %2&lt;/p&gt;</translation>
@@ -6078,12 +5973,12 @@ O servidor respondeu co erro: %2</translation>
         <translation>O servidor na conta %1 executa unha versión non admitida (%2). O uso deste cliente con versións de servidor non admitidas non está probado e é potencialmente perigoso. Proceda baixo a súa propia responsabilidade.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="293"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="283"/>
         <source>Terms of service</source>
         <translation>Condicións de servizo</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="294"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="284"/>
         <source>Your account %1 requires you to accept the terms of service of your server. You will be redirected to %2 to acknowledge that you have read it and agrees with it.</source>
         <translation>A súa conta %1 require que acepte as condicións de servizo do seu servidor. Vai ser redirixido a %2 para que confirme que as leu e que está conforme con elas.</translation>
     </message>
@@ -6159,23 +6054,23 @@ O servidor respondeu co erro: %2</translation>
         <translation>Non hai cartafoles de sincronización configurados</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="452"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="442"/>
         <source>%1: %2</source>
         <extracomment>Example text: &quot;Nextcloud: Syncing 25MB (3 minutes left)&quot; (%1 is the folder name to be synced, %2 a status message for that folder)</extracomment>
         <translation>%1: %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="456"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="446"/>
         <source>macOS VFS for %1: Sync is running.</source>
         <translation>macOS VFS para %1: a sincronización está a executarse.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="459"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="449"/>
         <source>macOS VFS for %1: Last sync was successful.</source>
         <translation>macOS VFS para %1: a última sincronización fíxose correctamente.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="462"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="452"/>
         <source>macOS VFS for %1: A problem was encountered.</source>
         <translation>macOS VFS para %1: atopouse un problema.</translation>
     </message>
@@ -6339,12 +6234,12 @@ O servidor respondeu co erro: %2</translation>
         <translation>Novo cartafol</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="126"/>
+        <location filename="../src/gui/generalsettings.cpp" line="131"/>
         <source>Failed to create debug archive</source>
         <translation>Produciuse un fallo ao crear o arquivo de depuración</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="127"/>
+        <location filename="../src/gui/generalsettings.cpp" line="132"/>
         <source>Could not create debug archive in selected location!</source>
         <translation>Non foi posíbel crear o arquivo de depuración na localización seleccionada.</translation>
     </message>
@@ -6525,7 +6420,7 @@ O servidor respondeu co erro: %2</translation>
         <translation>Soltar ficheiro (só envíos) </translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="399"/>
+        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="403"/>
         <source>Allow resharing</source>
         <translation>Permitir volver compartir</translation>
     </message>
@@ -6581,6 +6476,16 @@ O servidor respondeu co erro: %2</translation>
         <location filename="../src/gui/filedetails/ShareView.qml" line="118"/>
         <source>Share password</source>
         <translation>Compartir contrasinal</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/filedetails/ShareView.qml" line="157"/>
+        <source>Shared with you by %1</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/filedetails/ShareView.qml" line="163"/>
+        <source>Expires in %1</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareView.qml" line="279"/>
@@ -6643,54 +6548,6 @@ O servidor respondeu co erro: %2</translation>
         <location filename="../src/gui/tray/TalkReplyTextField.qml" line="52"/>
         <source>Send reply to chat message</source>
         <translation>Enviar resposta á mensaxe de parola</translation>
-    </message>
-</context>
-<context>
-    <name>TrayFoldersMenuButton</name>
-    <message>
-        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="55"/>
-        <source>Open local or group folders</source>
-        <translation>Abrir cartafoles locais ou de grupo</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="55"/>
-        <source>Open local folder</source>
-        <translation>Abrir o cartafol local</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="70"/>
-        <source>Connected</source>
-        <translation>Conectado</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="70"/>
-        <source>Disconnected</source>
-        <translation>Desconectado</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="109"/>
-        <source>Group folder button</source>
-        <translation>Botón do cartafol do grupo</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="184"/>
-        <source>Open local folder &quot;%1&quot;</source>
-        <translation>Abrir o cartafol local «%1»</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="184"/>
-        <source>Open group folder &quot;%1&quot;</source>
-        <translation>Abrir o cartafol do grupo «%1»</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="198"/>
-        <source>Open %1 in file explorer</source>
-        <translation>Abrir % 1 no xestor de ficheiros</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="203"/>
-        <source>User group and local folders menu</source>
-        <translation>Menú de grupos de usuarios e cartafoles locais</translation>
     </message>
 </context>
 <context>
@@ -6977,7 +6834,7 @@ O servidor respondeu co erro: %2</translation>
 <context>
     <name>nextcloudTheme::aboutInfo()</name>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="577"/>
+        <location filename="../src/libsync/theme.cpp" line="579"/>
         <source>&lt;p&gt;&lt;small&gt;Built from Git revision &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; on %3, %4 using Qt %5, %6&lt;/small&gt;&lt;/p&gt;</source>
         <translation>&lt;p&gt;&lt;small&gt;Construido desde a revisión Git &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; en %3, %4 usando Qt %5, %6&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
@@ -7380,6 +7237,54 @@ O servidor respondeu co erro: %2</translation>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.ui" line="69"/>
         <source>Copy link</source>
         <translation>Copiar a ligazón</translation>
+    </message>
+</context>
+<context>
+    <name>TrayFoldersMenuButton</name>
+    <message>
+        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="55"/>
+        <source>Open local or group folders</source>
+        <translation>Abrir cartafoles locais ou de grupo</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="55"/>
+        <source>Open local folder</source>
+        <translation>Abrir o cartafol local</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="70"/>
+        <source>Connected</source>
+        <translation>Conectado</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="70"/>
+        <source>Disconnected</source>
+        <translation>Desconectado</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="109"/>
+        <source>Group folder button</source>
+        <translation>Botón do cartafol do grupo</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="184"/>
+        <source>Open local folder &quot;%1&quot;</source>
+        <translation>Abrir o cartafol local «%1»</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="184"/>
+        <source>Open group folder &quot;%1&quot;</source>
+        <translation>Abrir o cartafol do grupo «%1»</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="198"/>
+        <source>Open %1 in file explorer</source>
+        <translation>Abrir % 1 no xestor de ficheiros</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="203"/>
+        <source>User group and local folders menu</source>
+        <translation>Menú de grupos de usuarios e cartafoles locais</translation>
     </message>
 </context>
 <context>
