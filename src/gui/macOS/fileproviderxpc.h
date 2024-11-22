@@ -45,7 +45,7 @@ public slots:
     void configureExtensions();
     void authenticateExtension(const QString &extensionAccountId) const;
     void unauthenticateExtension(const QString &extensionAccountId) const;
-    void createDebugArchiveForExtension(const QString &extensionAccountId, const QString &filename) const;
+    void createDebugArchiveForExtension(const QString &extensionAccountId, const QString &filename);
 
     void setFastEnumerationEnabledForExtension(const QString &extensionAccountId, bool enabled) const;
 

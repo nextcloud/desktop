@@ -31,6 +31,11 @@
 #endif
 #endif
 
+#ifdef BUILD_FILE_PROVIDER_MODULE
+#include "macOS/fileprovider.h"
+#include "macOS/fileprovidersettingscontroller.h"
+#endif
+
 #include "ignorelisteditor.h"
 #include "common/utility.h"
 #include "logger.h"
@@ -137,6 +142,27 @@ bool createDebugArchive(const QString &filename)
     for (const auto &entry : entries) {
         zip.addLocalFile(entry.localFilename, entry.zipFilename);
     }
+
+#ifdef BUILD_FILE_PROVIDER_MODULE
+    const auto fileProvider = OCC::Mac::FileProvider::instance();
+    if (fileProvider && fileProvider->fileProviderAvailable()) {
+        const auto tempDir = QTemporaryDir();
+        const auto xpc = fileProvider->xpc();
+        const auto vfsAccounts = OCC::Mac::FileProviderSettingsController::instance()->vfsEnabledAccounts();
+        for (const auto &accountUserIdAtHost : vfsAccounts) {
+            const auto accountState = OCC::AccountManager::instance()->accountFromUserId(accountUserIdAtHost);
+            if (!accountState) {
+                qWarning() << "Could not find account for" << accountUserIdAtHost;
+                continue;
+            }
+            const auto account = accountState->account();
+            const auto vfsLogFilename = QStringLiteral("macOS_vfs_%1.log").arg(account->davUser());
+            const auto vfsLogPath = tempDir.filePath(vfsLogFilename);
+            xpc->createDebugArchiveForExtension(accountUserIdAtHost, vfsLogPath);
+            zip.addLocalFile(vfsLogPath, vfsLogFilename);
+        }
+    }
+#endif
 
     const auto clientParameters = QCoreApplication::arguments().join(' ').toUtf8();
     zip.prepareWriting("__nextcloud_client_parameters.txt", {}, {}, clientParameters.size());
