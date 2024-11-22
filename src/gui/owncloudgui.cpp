@@ -273,7 +273,7 @@ void ownCloudGui::slotAccountStateChanged()
     slotComputeOverallSyncStatus();
 }
 
-void ownCloudGui::slotTrayMessageIfServerUnsupported(Account *account)
+void ownCloudGui::slotTrayMessageIfServerUnsupported(const AccountPtr &account)
 {
     if (account->serverVersionUnsupported()) {
         slotShowTrayMessage(
@@ -285,8 +285,8 @@ void ownCloudGui::slotTrayMessageIfServerUnsupported(Account *account)
     }
 }
 
-void ownCloudGui::slotNeedToAcceptTermsOfService(OCC::AccountPtr account,
-                                                 AccountState::State state)
+void ownCloudGui::slotNeedToAcceptTermsOfService(const OCC::AccountPtr &account,
+                                                 const OCC::AccountState::State state)
 {
     if (state == AccountState::NeedToSignTermsOfService) {
         slotShowTrayMessage(

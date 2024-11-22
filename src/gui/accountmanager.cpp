@@ -297,7 +297,7 @@ void AccountManager::save(bool saveCredentials)
     settings->setValue(QLatin1String(versionC), maxAccountsVersion);
     for (const auto &acc : qAsConst(_accounts)) {
         settings->beginGroup(acc->account()->id());
-        saveAccountHelper(acc->account().data(), *settings, saveCredentials);
+        saveAccountHelper(acc->account(), *settings, saveCredentials);
         settings->endGroup();
     }
 
@@ -305,12 +305,12 @@ void AccountManager::save(bool saveCredentials)
     qCInfo(lcAccountManager) << "Saved all account settings, status:" << settings->status();
 }
 
-void AccountManager::saveAccount(Account *a)
+void AccountManager::saveAccount(const AccountPtr &account)
 {
-    qCDebug(lcAccountManager) << "Saving account" << a->url().toString();
+    qCDebug(lcAccountManager) << "Saving account" << account->url().toString();
     const auto settings = ConfigFile::settingsWithGroup(QLatin1String(accountsC));
-    settings->beginGroup(a->id());
-    saveAccountHelper(a, *settings, false); // don't save credentials they might not have been loaded yet
+    settings->beginGroup(account->id());
+    saveAccountHelper(account, *settings, false); // don't save credentials they might not have been loaded yet
     settings->endGroup();
 
     settings->sync();
@@ -328,7 +328,7 @@ void AccountManager::saveAccountState(AccountState *a)
     qCDebug(lcAccountManager) << "Saved account state settings, status:" << settings->status();
 }
 
-void AccountManager::saveAccountHelper(Account *acc, QSettings &settings, bool saveCredentials)
+void AccountManager::saveAccountHelper(const AccountPtr &acc, QSettings &settings, bool saveCredentials)
 {
     qCDebug(lcAccountManager) << "Saving settings to" << settings.fileName();
     settings.setValue(QLatin1String(versionC), maxAccountVersion);

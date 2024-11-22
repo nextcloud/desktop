@@ -621,7 +621,7 @@ void Application::slotAccountStateAdded(AccountState *accountState)
     connect(accountState->account().data(), &Account::serverVersionChanged,
         _folderManager.data(), &FolderMan::slotServerVersionChanged);
 
-    _gui->slotTrayMessageIfServerUnsupported(accountState->account().data());
+    _gui->slotTrayMessageIfServerUnsupported(accountState->account());
 }
 
 void Application::slotCleanup()
