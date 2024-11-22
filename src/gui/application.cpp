@@ -59,6 +59,7 @@
 #include <libcrashreporter-handler/Handler.h>
 #endif
 
+#include <QLocale>
 #include <QTranslator>
 #include <QMenu>
 #include <QMessageBox>
@@ -967,70 +968,60 @@ QString substLang(const QString &lang)
 
 void Application::setupTranslations()
 {
-    QStringList uiLanguages;
-    uiLanguages = QLocale::system().uiLanguages();
-
-    QString enforcedLocale = Theme::instance()->enforcedLocale();
-    if (!enforcedLocale.isEmpty()) {
-        uiLanguages.prepend(enforcedLocale);
-    }
+    const auto enforcedLocale = Theme::instance()->enforcedLocale();
+    const auto lang = substLang(!enforcedLocale.isEmpty() ? enforcedLocale : QLocale::system().uiLanguages(QLocale::TagSeparator::Underscore).first());
 
     auto *translator = new QTranslator(this);
     auto *qtTranslator = new QTranslator(this);
     auto *qtkeychainTranslator = new QTranslator(this);
 
-    for (QString lang : qAsConst(uiLanguages)) {
-        lang.replace(QLatin1Char('-'), QLatin1Char('_')); // work around QTBUG-25973
-        lang = substLang(lang);
-        const auto trPath = applicationTrPath();
-        const auto trFolder = QDir{trPath};
-        if (!trFolder.exists()) {
-            qCWarning(lcApplication()) << trPath << "folder containing translations is missing. Impossible to load translations";
-            break;
-        }
-        const QString trFile = QLatin1String("client_") + lang;
-        qCDebug(lcApplication()) << "trying to load" << lang << "in" << trFile << "from" << trPath;
-        if (translator->load(trFile, trPath) || lang.startsWith(QLatin1String("en"))) {
-            // Permissive approach: Qt and keychain translations
-            // may be missing, but Qt translations must be there in order
-            // for us to accept the language. Otherwise, we try with the next.
-            // "en" is an exception as it is the default language and may not
-            // have a translation file provided.
-            qCInfo(lcApplication) << "Using" << lang << "translation";
-            setProperty("ui_lang", lang);
-            const QString qtTrPath = QLibraryInfo::location(QLibraryInfo::TranslationsPath);
-            const QString qtTrFile = QLatin1String("qt_") + lang;
-            const QString qtBaseTrFile = QLatin1String("qtbase_") + lang;
-            if (!qtTranslator->load(qtTrFile, qtTrPath)) {
-                if (!qtTranslator->load(qtTrFile, trPath)) {
-                    if (!qtTranslator->load(qtBaseTrFile, qtTrPath)) {
-                        if (!qtTranslator->load(qtBaseTrFile, trPath)) {
-                            qCDebug(lcApplication()) << "impossible to load Qt translation catalog" << qtBaseTrFile;
-                        }
+    const auto trPath = applicationTrPath();
+    const auto trFolder = QDir{trPath};
+    if (!trFolder.exists()) {
+        qCWarning(lcApplication()) << trPath << "folder containing translations is missing. Impossible to load translations";
+        return;
+    }
+    const QString trFile = QLatin1String("client_") + lang;
+    qCDebug(lcApplication()) << "trying to load" << lang << "in" << trFile << "from" << trPath;
+    if (translator->load(trFile, trPath) || lang.startsWith(QLatin1String("en"))) {
+        // Permissive approach: Qt and keychain translations
+        // may be missing, but Qt translations must be there in order
+        // for us to accept the language. Otherwise, we try with the next.
+        // "en" is an exception as it is the default language and may not
+        // have a translation file provided.
+        qCInfo(lcApplication) << "Using" << lang << "translation";
+        setProperty("ui_lang", lang);
+        const QString qtTrPath = QLibraryInfo::location(QLibraryInfo::TranslationsPath);
+        const QString qtTrFile = QLatin1String("qt_") + lang;
+        const QString qtBaseTrFile = QLatin1String("qtbase_") + lang;
+        if (!qtTranslator->load(qtTrFile, qtTrPath)) {
+            if (!qtTranslator->load(qtTrFile, trPath)) {
+                if (!qtTranslator->load(qtBaseTrFile, qtTrPath)) {
+                    if (!qtTranslator->load(qtBaseTrFile, trPath)) {
+                        qCDebug(lcApplication()) << "impossible to load Qt translation catalog" << qtBaseTrFile;
                     }
                 }
             }
-            const QString qtkeychainTrFile = QLatin1String("qtkeychain_") + lang;
-            if (!qtkeychainTranslator->load(qtkeychainTrFile, qtTrPath)) {
-                if (!qtkeychainTranslator->load(qtkeychainTrFile, trPath)) {
-                    qCDebug(lcApplication()) << "impossible to load QtKeychain translation catalog" << qtkeychainTrFile;
-                }
+        }
+        const QString qtkeychainTrFile = QLatin1String("qtkeychain_") + lang;
+        if (!qtkeychainTranslator->load(qtkeychainTrFile, qtTrPath)) {
+            if (!qtkeychainTranslator->load(qtkeychainTrFile, trPath)) {
+                qCDebug(lcApplication()) << "impossible to load QtKeychain translation catalog" << qtkeychainTrFile;
             }
-            if (!translator->isEmpty())
-                installTranslator(translator);
-            if (!qtTranslator->isEmpty())
-                installTranslator(qtTranslator);
-            if (!qtkeychainTranslator->isEmpty())
-                installTranslator(qtkeychainTranslator);
-            break;
-        } else {
-            qCWarning(lcApplication()) << "translation catalog failed to load";
-            const auto folderContent = trFolder.entryList();
-            qCDebug(lcApplication()) << "folder content" << folderContent.join(QStringLiteral(", "));
         }
-        if (property("ui_lang").isNull()) {
-            setProperty("ui_lang", "C");
-        }
+        if (!translator->isEmpty())
+            installTranslator(translator);
+        if (!qtTranslator->isEmpty())
+            installTranslator(qtTranslator);
+        if (!qtkeychainTranslator->isEmpty())
+            installTranslator(qtkeychainTranslator);
+    } else {
+        qCWarning(lcApplication()) << "translation catalog failed to load";
+        const auto folderContent = trFolder.entryList();
+        qCDebug(lcApplication()) << "folder content" << folderContent.join(QStringLiteral(", "));
+    }
+    if (property("ui_lang").isNull()) {
+        setProperty("ui_lang", "C");
     }
 }
 
