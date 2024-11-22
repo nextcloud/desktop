@@ -1193,11 +1193,7 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
                 item->_direction = SyncFileItem::Down;
                 item->_instruction = CSYNC_INSTRUCTION_SYNC;
                 const auto pinState = _discoveryData->_syncOptions._vfs->pinState(path._local);
-                if (FileSystem::isLnkFile(path._local) && !_discoveryData->_syncOptions._vfs->pinState(path._local).isValid()) {
-                    item->_type = ItemTypeVirtualFileDownload;
-                } else {
-                    item->_type = ItemTypeVirtualFileDehydration;
-                }
+                item->_type = ItemTypeVirtualFileDehydration;
             } else if (!serverModified
                 && (dbEntry._inode != localEntry.inode
                     || (localEntry.isMetadataMissing && item->_type == ItemTypeFile && !FileSystem::isLnkFile(item->_file))
@@ -1733,6 +1729,15 @@ void ProcessDirectoryJob::processFileFinalize(
         item->_instruction == CSyncEnums::CSYNC_INSTRUCTION_NONE &&
         !_discoveryData->_syncOptions._vfs->isPlaceHolderInSync(_discoveryData->_localDir + path._local)) {
         item->_instruction = CSyncEnums::CSYNC_INSTRUCTION_UPDATE_VFS_METADATA;
+    }
+
+    if (_discoveryData->_syncOptions._vfs &&
+        (item->_type == CSyncEnums::ItemTypeFile || item->_type == CSyncEnums::ItemTypeDirectory) &&
+        item->_instruction == CSyncEnums::CSYNC_INSTRUCTION_NONE &&
+        FileSystem::isLnkFile((_discoveryData->_localDir + path._local))) {
+        item->_instruction = CSyncEnums::CSYNC_INSTRUCTION_SYNC;
+        item->_direction = SyncFileItem::Down;
+        item->_type = CSyncEnums::ItemTypeVirtualFileDehydration;
     }
 
     if (path._original != path._target && (item->_instruction == CSYNC_INSTRUCTION_UPDATE_VFS_METADATA || item->_instruction == CSYNC_INSTRUCTION_UPDATE_METADATA || item->_instruction == CSYNC_INSTRUCTION_NONE)) {

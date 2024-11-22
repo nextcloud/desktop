@@ -372,6 +372,14 @@ Vfs::AvailabilityResult VfsCfApi::availability(const QString &folderPath, const 
                 return VfsItemAvailability::AlwaysLocal;
             else
                 return VfsItemAvailability::AllHydrated;
+        } else {
+            if (pin && *pin == PinState::OnlineOnly) {
+                return VfsItemAvailability::OnlineOnly;
+            } else if (pin && *pin == PinState::AlwaysLocal) {
+                return VfsItemAvailability::AlwaysLocal;
+            } else {
+                return VfsItemAvailability::AllDehydrated;
+            }
         }
         return AvailabilityError::NoSuchItem;
     }
@@ -511,7 +519,7 @@ int VfsCfApi::finalizeHydrationJob(const QString &requestId)
 VfsCfApi::HydratationAndPinStates VfsCfApi::computeRecursiveHydrationAndPinStates(const QString &folderPath, const Optional<PinState> &basePinState)
 {
     Q_ASSERT(!folderPath.endsWith('/'));
-    const auto fullPath = params().filesystemPath + folderPath;
+    const auto fullPath = QString{params().filesystemPath + folderPath};
     QFileInfo info(params().filesystemPath + folderPath);
 
     if (!FileSystem::fileExists(fullPath)) {

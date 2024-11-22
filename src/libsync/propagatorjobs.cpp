@@ -117,7 +117,8 @@ void PropagateLocalRemove::start()
     }
 
     QString removeError;
-    if (_moveToTrash) {
+    const auto availability = propagator()->syncOptions()._vfs->availability(_item->_file, Vfs::AvailabilityRecursivity::RecursiveAvailability);
+    if (_moveToTrash && (!availability || (*availability != VfsItemAvailability::AllDehydrated && *availability != VfsItemAvailability::OnlineOnly && *availability != VfsItemAvailability::Mixed))) {
         if ((QDir(filename).exists() || FileSystem::fileExists(filename))
             && !FileSystem::moveToTrash(filename, &removeError)) {
             done(SyncFileItem::NormalError, removeError, ErrorCategory::GenericError);
@@ -228,8 +229,6 @@ void PropagateLocalMkdir::startLocalMkdir()
 #if !defined(Q_OS_MACOS) || __MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_15
     if (!_item->_remotePerm.isNull() &&
         !_item->_remotePerm.hasPermission(RemotePermissions::CanAddFile) &&
-        !_item->_remotePerm.hasPermission(RemotePermissions::CanRename) &&
-        !_item->_remotePerm.hasPermission(RemotePermissions::CanMove) &&
         !_item->_remotePerm.hasPermission(RemotePermissions::CanAddSubDirectories)) {
         try {
             FileSystem::setFolderPermissions(newDirStr, FileSystem::FolderPermissions::ReadOnly);
