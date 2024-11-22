@@ -4,16 +4,16 @@ name: drone desktop client
 
 steps:
 - name: cmake
-  image: ghcr.io/nextcloud/continuous-integration-client-qt6:client-6.6.3-2
+  image: ghcr.io/nextcloud/continuous-integration-client-qt6:client-6.7.3-1
   volumes:
     - name: build
       path: /drone/build
   commands:
     - cd /drone/build
-    - cmake /drone/src -G Ninja -DCMAKE_PREFIX_PATH=/opt/qt6.6.3 -DCMAKE_C_COMPILER=gcc-11 -DCMAKE_CXX_COMPILER=g++-11 -DCMAKE_BUILD_TYPE=Debug -DQT_MAJOR_VERSION=6 -DQUICK_COMPILER=ON -DBUILD_UPDATER=ON -DBUILD_TESTING=1 -DCMAKE_CXX_FLAGS=-Werror -DOPENSSL_ROOT_DIR=/usr/local/lib64 -DADD_E2E_TESTS=ON
+    - cmake /drone/src -G Ninja -DCMAKE_PREFIX_PATH=/opt/qt6.7.3 -DCMAKE_C_COMPILER=gcc-11 -DCMAKE_CXX_COMPILER=g++-11 -DCMAKE_BUILD_TYPE=Debug -DQT_MAJOR_VERSION=6 -DQUICK_COMPILER=ON -DBUILD_UPDATER=ON -DBUILD_TESTING=1 -DCMAKE_CXX_FLAGS=-Werror -DOPENSSL_ROOT_DIR=/usr/local/lib64 -DADD_E2E_TESTS=ON
 
 - name: compile
-  image: ghcr.io/nextcloud/continuous-integration-client-qt6:client-6.6.3-2
+  image: ghcr.io/nextcloud/continuous-integration-client-qt6:client-6.7.3-1
   volumes:
     - name: build
       path: /drone/build
@@ -22,7 +22,7 @@ steps:
     - ninja
 
 - name: test
-  image: ghcr.io/nextcloud/continuous-integration-client-qt6:client-6.6.3-2
+  image: ghcr.io/nextcloud/continuous-integration-client-qt6:client-6.7.3-1
   volumes:
     - name: build
       path: /drone/build
@@ -79,15 +79,15 @@ name: qt-5.15-clang
 
 steps:
 - name: cmake
-  image: ghcr.io/nextcloud/continuous-integration-client-qt6:client-6.6.3-2
+  image: ghcr.io/nextcloud/continuous-integration-client-qt6:client-6.7.3-1
   volumes:
     - name: build
       path: /drone/build
   commands:
     - cd /drone/build
-    - cmake /drone/src -G Ninja -DCMAKE_PREFIX_PATH=/opt/qt6.6.3 -DCMAKE_C_COMPILER=clang-14 -DCMAKE_CXX_COMPILER=clang++-14 -DCMAKE_BUILD_TYPE=Debug -DQT_MAJOR_VERSION=6 -DQUICK_COMPILER=ON -DBUILD_UPDATER=ON -DBUILD_TESTING=1 -DCMAKE_CXX_FLAGS=-Werror -DOPENSSL_ROOT_DIR=/usr/local/lib64 -DADD_E2E_TESTS=ON
+    - cmake /drone/src -G Ninja -DCMAKE_PREFIX_PATH=/opt/qt6.7.3 -DCMAKE_C_COMPILER=clang-14 -DCMAKE_CXX_COMPILER=clang++-14 -DCMAKE_BUILD_TYPE=Debug -DQT_MAJOR_VERSION=6 -DQUICK_COMPILER=ON -DBUILD_UPDATER=ON -DBUILD_TESTING=1 -DCMAKE_CXX_FLAGS=-Werror -DOPENSSL_ROOT_DIR=/usr/local/lib64 -DADD_E2E_TESTS=ON
 - name: compile
-  image: ghcr.io/nextcloud/continuous-integration-client-qt6:client-6.6.3-2
+  image: ghcr.io/nextcloud/continuous-integration-client-qt6:client-6.7.3-1
   volumes:
     - name: build
       path: /drone/build
@@ -95,7 +95,7 @@ steps:
     - cd /drone/build
     - ninja
 - name: test
-  image: ghcr.io/nextcloud/continuous-integration-client-qt6:client-6.6.3-2
+  image: ghcr.io/nextcloud/continuous-integration-client-qt6:client-6.7.3-1
   volumes:
     - name: build
       path: /drone/build
@@ -152,14 +152,14 @@ name: AppImage
 
 steps:
 - name: build
-  image: ghcr.io/nextcloud/continuous-integration-client-appimage-qt6:client-appimage-6.6.3-2
+  image: ghcr.io/nextcloud/continuous-integration-client-appimage-qt6:client-appimage-6.7.3-1
   environment:
     CI_UPLOAD_GIT_TOKEN:
       from_secret: CI_UPLOAD_GIT_TOKEN
     CI_UPLOAD_GIT_USERNAME:
       from_secret: CI_UPLOAD_GIT_USERNAME
   commands:
-    - BUILDNR=$DRONE_BUILD_NUMBER VERSION_SUFFIX=$DRONE_PULL_REQUEST BUILD_UPDATER=ON DESKTOP_CLIENT_ROOT=$DRONE_WORKSPACE EXECUTABLE_NAME=nextcloud QT_BASE_DIR=/opt/qt6.6.3 OPENSSL_ROOT_DIR=/usr/local/lib64  /bin/bash -c "./admin/linux/build-appimage.sh"
+    - BUILDNR=$DRONE_BUILD_NUMBER VERSION_SUFFIX=$DRONE_PULL_REQUEST BUILD_UPDATER=ON DESKTOP_CLIENT_ROOT=$DRONE_WORKSPACE EXECUTABLE_NAME=nextcloud QT_BASE_DIR=/opt/qt6.7.3 OPENSSL_ROOT_DIR=/usr/local/lib64  /bin/bash -c "./admin/linux/build-appimage.sh"
     - BUILDNR=$DRONE_BUILD_NUMBER VERSION_SUFFIX=$DRONE_PULL_REQUEST DESKTOP_CLIENT_ROOT=$DRONE_WORKSPACE /bin/bash -c "./admin/linux/upload-appimage.sh" || echo "Upload failed, however this is an optional step."
 trigger:
   branch:
@@ -206,6 +206,6 @@ trigger:
     - push
 ---
 kind: signature
-hmac: fbdc01c6461fcc32d9ebff4be97340cbb6da5566643b60289504ed86b2a67583
+hmac: 1fbd0241ba0d4ea2702804324f4932b3f29d3d937ef75906a529cd00c4252a57
 
 ...
