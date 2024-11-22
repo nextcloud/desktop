@@ -66,7 +66,7 @@ OwncloudSetupWizard::~OwncloudSetupWizard()
     _ocWizard->deleteLater();
 }
 
-static QPointer<OwncloudSetupWizard> wiz = nullptr;
+static QPointer<OwncloudSetupWizard> owncloudSetupWizard = nullptr;
 
 void OwncloudSetupWizard::runWizard(QObject *obj, const char *amember, QWidget *parent)
 {
@@ -78,25 +78,26 @@ void OwncloudSetupWizard::runWizard(QObject *obj, const char *amember, QWidget *
 
         Theme::instance()->setStartLoginFlowAutomatically(true);
     }
-    if (!wiz.isNull()) {
+    if (!owncloudSetupWizard.isNull()) {
         bringWizardToFrontIfVisible();
         return;
     }
 
-    wiz = new OwncloudSetupWizard(parent);
-    connect(wiz, SIGNAL(ownCloudWizardDone(int)), obj, amember);
-    connect(wiz->_ocWizard, &OwncloudWizard::wizardClosed, obj, [] { wiz.clear(); });
+    owncloudSetupWizard = new OwncloudSetupWizard(parent);
+    connect(owncloudSetupWizard, SIGNAL(ownCloudWizardDone(int)), obj, amember);
+    connect(owncloudSetupWizard->_ocWizard, &OwncloudWizard::wizardClosed, obj, [] { owncloudSetupWizard.clear(); });
+
     FolderMan::instance()->setSyncEnabled(false);
-    wiz->startWizard();
+    owncloudSetupWizard->startWizard();
 }
 
 bool OwncloudSetupWizard::bringWizardToFrontIfVisible()
 {
-    if (wiz.isNull()) {
+    if (owncloudSetupWizard.isNull()) {
         return false;
     }
 
-    ownCloudGui::raiseDialog(wiz->_ocWizard);
+    ownCloudGui::raiseDialog(owncloudSetupWizard->_ocWizard);
     return true;
 }
 
@@ -700,7 +701,7 @@ void OwncloudSetupWizard::slotAssistantFinished(int result)
     }
 
     // notify others.
-    _ocWizard->done(QWizard::Accepted);
+    _ocWizard->done(result);
     emit ownCloudWizardDone(result);
 }
 
@@ -710,7 +711,10 @@ void OwncloudSetupWizard::slotSkipFolderConfiguration()
 
     disconnect(_ocWizard, &OwncloudWizard::basicSetupFinished,
         this, &OwncloudSetupWizard::slotAssistantFinished);
-    _ocWizard->close();
+
+    _ocWizard->done(QDialog::Rejected);
+
+    // Accept to check connectivity, only skip folder setup
     emit ownCloudWizardDone(QDialog::Accepted);
 }
 
@@ -727,7 +731,7 @@ AccountState *OwncloudSetupWizard::applyAccountChanges()
     auto manager = AccountManager::instance();
 
     auto newState = manager->addAccount(newAccount);
-    manager->save();
+    manager->saveAccount(newAccount.data());
     return newState;
 }
 
