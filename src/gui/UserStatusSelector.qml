@@ -54,36 +54,36 @@ ColumnLayout {
             }
 
             UserStatusSelectorButton {
-                checked: userStatusSelectorModel.onlineStatus === NC.userStatus.Online
+                checked: userStatusSelectorModel.onlineStatus === NC.UserStatus.Online
                 checkable: true
                 icon.source: userStatusSelectorModel.onlineIcon
                 icon.color: "transparent"
                 text: qsTr("Online")
-                onClicked: userStatusSelectorModel.onlineStatus = NC.userStatus.Online
+                onClicked: userStatusSelectorModel.onlineStatus = NC.UserStatus.Online
 
                 Layout.fillWidth: true
                 implicitWidth: 200 // Pretty much a hack to ensure all the buttons are equal in width
             }
             UserStatusSelectorButton {
-                checked: userStatusSelectorModel.onlineStatus === NC.userStatus.Away
+                checked: userStatusSelectorModel.onlineStatus === NC.UserStatus.Away
                 checkable: true
                 icon.source: userStatusSelectorModel.awayIcon
                 icon.color: "transparent"
                 text: qsTr("Away")
-                onClicked: userStatusSelectorModel.onlineStatus = NC.userStatus.Away
+                onClicked: userStatusSelectorModel.onlineStatus = NC.UserStatus.Away
 
                 Layout.fillWidth: true
                 implicitWidth: 200 // Pretty much a hack to ensure all the buttons are equal in width
 
             }
             UserStatusSelectorButton {
-                checked: userStatusSelectorModel.onlineStatus === NC.userStatus.DoNotDisturb
+                checked: userStatusSelectorModel.onlineStatus === NC.UserStatus.DoNotDisturb
                 checkable: true
                 icon.source: userStatusSelectorModel.dndIcon
                 icon.color: "transparent"
                 text: qsTr("Do not disturb")
                 secondaryText: qsTr("Mute all notifications")
-                onClicked: userStatusSelectorModel.onlineStatus = NC.userStatus.DoNotDisturb
+                onClicked: userStatusSelectorModel.onlineStatus = NC.UserStatus.DoNotDisturb
 
                 Layout.fillWidth: true
                 implicitWidth: 200 // Pretty much a hack to ensure all the buttons are equal in width
@@ -92,14 +92,14 @@ ColumnLayout {
                 Component.onCompleted: topButtonsLayout.updateMaxButtonHeight(implicitHeight)
             }
             UserStatusSelectorButton {
-                checked: userStatusSelectorModel.onlineStatus === NC.userStatus.Invisible ||
-                         userStatusSelectorModel.onlineStatus === NC.userStatus.Offline
+                checked: userStatusSelectorModel.onlineStatus === NC.UserStatus.Invisible ||
+                         userStatusSelectorModel.onlineStatus === NC.UserStatus.Offline
                 checkable: true
                 icon.source: userStatusSelectorModel.invisibleIcon
                 icon.color: "transparent"
                 text: qsTr("Invisible")
                 secondaryText: qsTr("Appear offline")
-                onClicked: userStatusSelectorModel.onlineStatus = NC.userStatus.Invisible
+                onClicked: userStatusSelectorModel.onlineStatus = NC.UserStatus.Invisible
 
                 Layout.fillWidth: true
                 implicitWidth: 200 // Pretty much a hack to ensure all the buttons are equal in width
