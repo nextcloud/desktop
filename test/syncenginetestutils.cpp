@@ -501,7 +501,7 @@ FileInfo *FakePutReply::perform(FileInfo &remoteRootFileInfo, const QNetworkRequ
         fileInfo->contentChar = putPayload.at(0);
     } else {
         // Assume that the file is filled with the same character
-        fileInfo = remoteRootFileInfo.create(fileName, putPayload.size(), putPayload.at(0));
+        fileInfo = remoteRootFileInfo.create(fileName, putPayload.size(), putPayload.isEmpty() ? ' ' : putPayload.at(0));
     }
     fileInfo->lastModified = OCC::Utility::qDateTimeFromTime_t(request.rawHeader("X-OC-Mtime").toLongLong());
     remoteRootFileInfo.find(fileName, /*invalidateEtags=*/true);
