@@ -342,11 +342,6 @@
         <source>Signal file provider domain</source>
         <translation>訊好檔案提供者網域</translation>
     </message>
-    <message>
-        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="158"/>
-        <source>Create debug archive</source>
-        <translation>建立除錯封存檔</translation>
-    </message>
 </context>
 <context>
     <name>FileProviderStorageInfo</name>
@@ -470,91 +465,19 @@
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="238"/>
+        <location filename="../src/gui/tray/MainWindow.qml" line="239"/>
         <source>Nextcloud desktop main dialog</source>
         <translation>Nextcloud 桌面主要對話方塊</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="264"/>
-        <source>Current account</source>
-        <translation>目前帳號</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="270"/>
-        <location filename="../src/gui/tray/MainWindow.qml" line="372"/>
-        <source>Resume sync for all</source>
-        <translation>繼續所有同步</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="270"/>
-        <location filename="../src/gui/tray/MainWindow.qml" line="372"/>
-        <source>Pause sync for all</source>
-        <translation>暫停所有同步</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="337"/>
-        <source>Add account</source>
-        <translation>新增帳號</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="349"/>
-        <source>Add new account</source>
-        <translation>新增新帳號</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="770"/>
+        <location filename="../src/gui/tray/MainWindow.qml" line="376"/>
         <source>Unified search results list</source>
         <translation>統一搜尋結果清單</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="384"/>
-        <source>Settings</source>
-        <translation>設定</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="401"/>
-        <source>Exit</source>
-        <translation>離開</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="435"/>
-        <source>Current account avatar</source>
-        <translation>目前帳號大頭照</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="833"/>
+        <location filename="../src/gui/tray/MainWindow.qml" line="440"/>
         <source>New activities</source>
         <translation>新活動</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="474"/>
-        <source>Current account status is online</source>
-        <translation>目前的帳號狀態為在線上</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="474"/>
-        <source>Current account status is do not disturb</source>
-        <translation>目前的帳號狀態為請勿打擾</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="543"/>
-        <source>Account switcher and settings menu</source>
-        <translation>帳號切換器與設定選單</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="564"/>
-        <source>Open local or group folders</source>
-        <translation>開啟本機或群組資料夾</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="602"/>
-        <source>More apps</source>
-        <translation>更多應用程式</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="644"/>
-        <source>Open %1 in browser</source>
-        <translation>在瀏覽器中開啟 %1</translation>
     </message>
 </context>
 <context>
@@ -1264,34 +1187,34 @@ This action will abort any currently running synchronization.</source>
         <translation>繼續</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="487"/>
+        <location filename="../src/gui/application.cpp" line="488"/>
         <source>%1 accounts</source>
         <comment>number of accounts imported</comment>
         <translation>%1 個帳號</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="488"/>
+        <location filename="../src/gui/application.cpp" line="489"/>
         <source>1 account</source>
         <translation>1 個帳號</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="490"/>
+        <location filename="../src/gui/application.cpp" line="491"/>
         <source>%1 folders</source>
         <comment>number of folders imported</comment>
         <translation>%1 個資料夾</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="491"/>
+        <location filename="../src/gui/application.cpp" line="492"/>
         <source>1 folder</source>
         <translation>1 個資料夾</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="493"/>
+        <location filename="../src/gui/application.cpp" line="494"/>
         <source>Legacy import</source>
         <translation>舊版匯入</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="494"/>
+        <location filename="../src/gui/application.cpp" line="495"/>
         <source>Imported %1 and %2 from a legacy desktop client.
 %3</source>
         <comment>number of accounts and folders imported. list of users.</comment>
@@ -1757,13 +1680,13 @@ This action will abort any currently running synchronization.</source>
         <translation>伺服器錯誤：PROPFIND 回覆未使用 XML 格式！</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="687"/>
-        <location filename="../src/libsync/discoveryphase.cpp" line="724"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="688"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="725"/>
         <source>Encrypted metadata setup error!</source>
         <translation>已加密的詮釋資料設定錯誤！</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="711"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="712"/>
         <source>Encrypted metadata setup error: initial signature from server is empty.</source>
         <translation>加密中繼資料設定錯誤：來自伺服器的初始簽章為空。</translation>
     </message>
@@ -2264,16 +2187,11 @@ This can be an issue with your OpenSSL libraries.</source>
         <translation>若要下載此項目，請前往設定選取它。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1398"/>
+        <location filename="../src/gui/folder.cpp" line="1404"/>
         <source>A folder has surpassed the set folder size limit of %1MB: %2.
 %3</source>
         <translation>資料夾已超過設定的資料夾大小限制 %1MB：%2。
 %3</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/folder.cpp" line="1409"/>
-        <source>Keep syncing</source>
-        <translation>保持同步</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1411"/>
@@ -2287,6 +2205,11 @@ If you decide to delete the files, they will be unavailable to you, unless you a
 假如您決定移除這些檔案，除非您是檔案的所有者，否則您將無法取用這些檔案。</translation>
     </message>
     <message>
+        <location filename="../src/gui/folder.cpp" line="1415"/>
+        <source>Keep syncing</source>
+        <translation>保持同步</translation>
+    </message>
+    <message>
         <location filename="../src/gui/folder.cpp" line="1416"/>
         <source>All the files in your local sync folder &quot;%1&quot; were deleted. These deletes will be synchronized with your server, making such files unavailable unless restored.
 Are you sure you want to sync those actions with the server?
@@ -2296,14 +2219,14 @@ If this was an accident and you decide to keep your files, they will be re-synce
 如果這是意外，而且您決定保留您的檔案，它們將會從伺服器重新同步回來。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1417"/>
-        <source>Stop syncing</source>
-        <translation>停止同步</translation>
-    </message>
-    <message>
         <location filename="../src/gui/folder.cpp" line="1420"/>
         <source>Remove All Files?</source>
         <translation>移除所有檔案？</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/folder.cpp" line="1423"/>
+        <source>Stop syncing</source>
+        <translation>停止同步</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1424"/>
@@ -2316,12 +2239,12 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <translation>保留檔案</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1428"/>
+        <location filename="../src/gui/folder.cpp" line="1434"/>
         <source>The folder %1 has surpassed the set folder size limit of %2MB.</source>
         <translation>資料夾 %1 已超過設定的資料夾大小限制 %2MB。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1429"/>
+        <location filename="../src/gui/folder.cpp" line="1435"/>
         <source>Would you like to stop syncing this folder?</source>
         <translation>您想要停止同步此資料夾嗎？</translation>
     </message>
@@ -2349,12 +2272,12 @@ This means that the synchronization client might not upload local changes immedi
 %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1551"/>
+        <location filename="../src/gui/folder.cpp" line="1557"/>
         <source>Virtual file download failed with code &quot;%1&quot;, status &quot;%2&quot; and error message &quot;%3&quot;</source>
         <translation>虛擬檔案下載失敗，代碼「%1」，狀態「%2」，錯誤訊息「%3」</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1645"/>
+        <location filename="../src/gui/folder.cpp" line="1651"/>
         <source>A large number of files in the server have been deleted.
 Please confirm if you'd like to proceed with these deletions.
 Alternatively, you can restore all deleted files by uploading from &apos;%1&apos; folder to the server.</source>
@@ -2363,7 +2286,7 @@ Alternatively, you can restore all deleted files by uploading from &apos;%1&apos
 或者，您也可以從「%1」資料夾上傳至伺服器來還原所有已刪除的檔案。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1646"/>
+        <location filename="../src/gui/folder.cpp" line="1652"/>
         <source>A large number of files in your local '%1' folder have been deleted.
 Please confirm if you'd like to proceed with these deletions.
 Alternatively, you can restore all deleted files by downloading them from the server.</source>
@@ -2372,22 +2295,22 @@ Alternatively, you can restore all deleted files by downloading them from the se
 或者，您也可以從伺服器下載這些檔案來還原所有已刪除的檔案。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1647"/>
+        <location filename="../src/gui/folder.cpp" line="1653"/>
         <source>Remove all files?</source>
         <translation>移除所有檔案？</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1651"/>
+        <location filename="../src/gui/folder.cpp" line="1657"/>
         <source>Proceed with Deletion</source>
         <translation>繼續刪除</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1652"/>
+        <location filename="../src/gui/folder.cpp" line="1658"/>
         <source>Restore Files to Server</source>
         <translation>還原檔案至伺服器</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1652"/>
+        <location filename="../src/gui/folder.cpp" line="1658"/>
         <source>Restore Files from Server</source>
         <translation>從伺服器還原檔案</translation>
     </message>
@@ -2940,20 +2863,15 @@ Alternatively, you can restore all deleted files by downloading them from the se
 <context>
     <name>OCC::GeneralSettings</name>
     <message>
+        <location filename="../src/gui/generalsettings.ui" line="66"/>
+        <source>General Settings</source>
+        <translation>一般設定</translation>
+    </message>
+    <message>
         <location filename="../src/gui/generalsettings.ui" line="20"/>
         <location filename="../src/gui/generalsettings.ui" line="32"/>
         <source>About</source>
         <translation>關於</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.ui" line="41"/>
-        <source>Legal notice</source>
-        <translation>法律聲明</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.ui" line="66"/>
-        <source>General Settings</source>
-        <translation>一般設定</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="82"/>
@@ -2971,12 +2889,17 @@ Alternatively, you can restore all deleted files by downloading them from the se
         <translation>系統匣適用</translation>
     </message>
     <message>
+        <location filename="../src/gui/generalsettings.ui" line="41"/>
+        <source>Legal notice</source>
+        <translation>法律聲明</translation>
+    </message>
+    <message>
         <location filename="../src/gui/generalsettings.ui" line="75"/>
         <source>Use &amp;Monochrome Icons</source>
         <translation>使用單色圖示(&amp;M)</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="96"/>
+        <location filename="../src/gui/generalsettings.ui" line="50"/>
         <source>Show Chat Notifications</source>
         <translation type="unfinished"/>
     </message>
@@ -2984,6 +2907,16 @@ Alternatively, you can restore all deleted files by downloading them from the se
         <location filename="../src/gui/generalsettings.ui" line="89"/>
         <source>Show Server &amp;Notifications</source>
         <translation>顯示伺服器通知(&amp;N)</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.ui" line="221"/>
+        <source>Advanced</source>
+        <translation>進階</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.ui" line="80"/>
+        <source>Ask for confirmation before synchronizing new folders larger than</source>
+        <translation>每當要同步的新資料夾超過大小限制時先詢問確認</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="106"/>
@@ -2996,55 +2929,23 @@ Alternatively, you can restore all deleted files by downloading them from the se
         <translation>自動檢查更新(&amp;A)</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="134"/>
-        <source>&amp;Channel</source>
-        <translation>頻道(&amp;C)</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.ui" line="151"/>
-        <location filename="../src/gui/generalsettings.cpp" line="327"/>
-        <source>stable</source>
-        <translation>穩定版</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.ui" line="156"/>
-        <location filename="../src/gui/generalsettings.cpp" line="329"/>
-        <source>beta</source>
-        <translation>測試版</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.ui" line="183"/>
-        <source>&amp;Restart &amp;&amp; Update</source>
-        <translation>重新啟動並更新(&amp;R)</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.ui" line="198"/>
-        <source>&amp;Check for Update now</source>
-        <translation>立即檢查更新(&amp;C)</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.ui" line="221"/>
-        <source>Advanced</source>
-        <translation>進階</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.ui" line="33"/>
-        <source>Ask for confirmation before synchronizing new folders larger than</source>
-        <translation>每當要同步的新資料夾超過大小限制時先詢問確認</translation>
-    </message>
-    <message>
         <location filename="../src/gui/generalsettings.ui" line="249"/>
         <source>MB</source>
         <extracomment>Trailing part of &quot;Ask confirmation before syncing folder larger than&quot; </extracomment>
         <translation>MB</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="96"/>
+        <location filename="../src/gui/generalsettings.ui" line="134"/>
+        <source>&amp;Channel</source>
+        <translation>頻道(&amp;C)</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.ui" line="143"/>
         <source>Notify when synchronised folders grow larger than specified limit</source>
         <translation>每當同步資料夾的大小超過指定限制時發出通知</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="123"/>
+        <location filename="../src/gui/generalsettings.ui" line="170"/>
         <source>Automatically disable synchronisation of folders that overcome limit</source>
         <translation>自動停用超出限制的資料夾同步</translation>
     </message>
@@ -3054,12 +2955,17 @@ Alternatively, you can restore all deleted files by downloading them from the se
         <translation>在與外部儲存空間同步前先詢問確認</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="147"/>
+        <location filename="../src/gui/generalsettings.ui" line="194"/>
         <source>Move removed files to trash</source>
         <translation>將移除的檔案移動到垃圾桶</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="158"/>
+        <location filename="../src/gui/generalsettings.ui" line="198"/>
+        <source>&amp;Check for Update now</source>
+        <translation>立即檢查更新(&amp;C)</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.ui" line="205"/>
         <source>Show sync folders in &amp;Explorer&apos;s navigation pane</source>
         <translation>在檔案管理程式的導覽面板中顯示同步資料夾(&amp;E)</translation>
     </message>
@@ -3067,6 +2973,11 @@ Alternatively, you can restore all deleted files by downloading them from the se
         <location filename="../src/gui/generalsettings.ui" line="301"/>
         <source>S&amp;how crash reporter</source>
         <translation>顯示當機回報程式(&amp;H)</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.ui" line="229"/>
+        <source>Ask for confirmation before synchronizing folders larger than</source>
+        <translation>每當要同步的資料夾超過大小限制時先詢問確認</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="312"/>
@@ -3080,24 +2991,14 @@ Alternatively, you can restore all deleted files by downloading them from the se
         <translation>建立除錯封存檔</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="218"/>
+        <location filename="../src/gui/generalsettings.ui" line="265"/>
         <source>Info</source>
         <translation>資訊</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="229"/>
-        <source>Ask for confirmation before synchronizing folders larger than</source>
-        <translation>每當要同步的資料夾超過大小限制時先詢問確認</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.ui" line="230"/>
+        <location filename="../src/gui/generalsettings.ui" line="277"/>
         <source>Desktop client x.x.x</source>
         <translation>桌面用戶端 x.x.x</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.ui" line="248"/>
-        <source>Update channel</source>
-        <translation>更新頻道</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="284"/>
@@ -3105,44 +3006,34 @@ Alternatively, you can restore all deleted files by downloading them from the se
         <translation>在檔案管理程式的導覽面板中顯示同步資料夾(&amp;E)</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="301"/>
+        <location filename="../src/gui/generalsettings.ui" line="295"/>
+        <source>Update channel</source>
+        <translation>更新頻道</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.ui" line="183"/>
+        <source>&amp;Restart &amp;&amp; Update</source>
+        <translation>重新啟動並更新(&amp;R)</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.ui" line="348"/>
         <source>&amp;Automatically check for updates</source>
         <translation>自動檢查更新(&amp;A)</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="317"/>
+        <location filename="../src/gui/generalsettings.ui" line="364"/>
         <source>Check Now</source>
         <translation>立刻檢查</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="344"/>
+        <location filename="../src/gui/generalsettings.ui" line="391"/>
         <source>Usage Documentation</source>
         <translation>用法說明文件</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="351"/>
+        <location filename="../src/gui/generalsettings.ui" line="398"/>
         <source>Legal Notice</source>
         <translation>法律聲明</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.ui" line="398"/>
-        <source>Use &amp;monochrome icons</source>
-        <translation>使用單色圖示(&amp;M)</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.ui" line="405"/>
-        <source>&amp;Launch on system startup</source>
-        <translation>系統初始啟動時啟動(&amp;L)</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.ui" line="412"/>
-        <source>Show server &amp;notifications</source>
-        <translation>顯示伺服器通知(&amp;N)</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.ui" line="419"/>
-        <source>Show call notifications</source>
-        <translation>顯示來電通知</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="144"/>
@@ -3150,7 +3041,7 @@ Alternatively, you can restore all deleted files by downloading them from the se
         <translation>需要注意的伺服器通知。</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="169"/>
+        <location filename="../src/gui/generalsettings.cpp" line="195"/>
         <source>Show chat notification dialogs.</source>
         <translation type="unfinished"/>
     </message>
@@ -3163,6 +3054,18 @@ Alternatively, you can restore all deleted files by downloading them from the se
         <location filename="../src/gui/generalsettings.cpp" line="162"/>
         <source>You cannot disable autostart because system-wide autostart is enabled.</source>
         <translation>您無法停用自動啟動，因為已啟用系統層級的自動啟動。</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.ui" line="151"/>
+        <location filename="../src/gui/generalsettings.cpp" line="327"/>
+        <source>stable</source>
+        <translation>穩定版</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.ui" line="156"/>
+        <location filename="../src/gui/generalsettings.cpp" line="329"/>
+        <source>beta</source>
+        <translation>測試版</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="350"/>
@@ -3179,25 +3082,17 @@ Note that this selects only what pool upgrades are taken from, and that there ar
 請注意，這只能選取要從哪個軟體庫中取得升級，無法降級：所以像是從測試頻道切回穩定頻道，也無法立即作用，這代表要等到穩定版推出的版本比目前安裝的測試版還新時才算切換成功。</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="373"/>
+        <location filename="../src/gui/generalsettings.cpp" line="405"/>
         <source>daily</source>
         <translation>每日</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="377"/>
+        <location filename="../src/gui/generalsettings.cpp" line="409"/>
         <source>enterprise</source>
         <translation>企業版</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="405"/>
-        <source>- enterprise: contains stable versions for customers.
-</source>
-        <comment>description of enterprise update channel for enterprise customers</comment>
-        <translation>- 企業版：包含供顧客使用的穩定版本。
-</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.cpp" line="411"/>
+        <location filename="../src/gui/generalsettings.cpp" line="437"/>
         <source>- beta: contains versions with new features that may not be tested thoroughly
 - daily: contains versions created daily only for testing and development
 
@@ -3209,22 +3104,7 @@ Downgrading versions is not possible immediately: changing from beta to stable m
 無法立即降級版本：從測試版變更為穩定版必須等待新的穩定版本才能更新。</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="411"/>
-        <source>The channel determines which upgrades will be offered to install:
-- stable: contains tested versions considered reliable
-- beta: contains versions with new features that may not be tested thoroughly
-- daily: contains versions created daily only for testing and development
-%1
-Downgrading versions is not possible immediately: changing from beta to stable means waiting for the new stable version.</source>
-        <translation>頻道是用來決定哪些升級可供安裝：
-- 穩定：包含被認為可靠的經測試版本
-- 測試：包含可能未經徹底測試的的新功能版本
-- 每日：包含每日建立的版本，僅用於測試與開發
-%1
-無法立即降級版本：從測試版變更為穩定版必須等待新的穩定版本才能更新。</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.cpp" line="416"/>
+        <location filename="../src/gui/generalsettings.cpp" line="442"/>
         <source>- enterprise: contains stable versions for customers.
 
 Downgrading versions is not possible immediately: changing from stable to enterprise means waiting for the new enterprise version.</source>
@@ -3234,12 +3114,12 @@ Downgrading versions is not possible immediately: changing from stable to enterp
 無法立即降級版本：從穩定版變更為企業版必須等待新的企業版本才能更新。</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="410"/>
+        <location filename="../src/gui/generalsettings.cpp" line="449"/>
         <source>Changing update channel?</source>
         <translation>變更更新頻道？</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="424"/>
+        <location filename="../src/gui/generalsettings.cpp" line="450"/>
         <source>The channel determines which upgrades will be offered to install:
 - stable: contains tested versions considered reliable
 </source>
@@ -4410,7 +4290,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>由於修改時間無效，無法同步</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1086"/>
+        <location filename="../src/libsync/discovery.cpp" line="1090"/>
         <source>Could not upload file, because it is open in &quot;%1&quot;.</source>
         <translation>無法上傳檔案，因為其於「%1」開啟。</translation>
     </message>
@@ -4483,8 +4363,8 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>因為修改時間無效，更新中介資料時發生錯誤</translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1481"/>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1506"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1473"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1495"/>
         <source>The folder %1 cannot be made read-only: %2</source>
         <translation>無法將資料夾 %1 設為唯讀：%2</translation>
     </message>
@@ -4606,7 +4486,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>無法建立資料夾 %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="240"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="239"/>
         <source>The folder %1 cannot be made read-only: %2</source>
         <translation>無法將資料夾 %1 設為唯讀：%2</translation>
     </message>
@@ -4637,7 +4517,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::PropagateLocalRename</name>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="323"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="322"/>
         <source>Folder %1 cannot be renamed because of a local file or folder name clash!</source>
         <translation>由於本機檔案或資料夾名稱衝突，無法重新命名資料夾 %1！</translation>
     </message>
@@ -5014,6 +4894,21 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::ShareModel</name>
     <message>
+        <location filename="../src/gui/filedetails/sharemodel.cpp" line="515"/>
+        <source>%1 days</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/filedetails/sharemodel.cpp" line="517"/>
+        <source>1 day</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/filedetails/sharemodel.cpp" line="518"/>
+        <source>Today</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="692"/>
         <source>Secure file drop link</source>
         <translation>安全檔案投遞連結</translation>
@@ -5039,7 +4934,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>安全檔案投放</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/sharemodel.cpp" line="915"/>
+        <location filename="../src/gui/filedetails/sharemodel.cpp" line="951"/>
         <source>Could not find local folder for %1</source>
         <translation>找不到 %1 的本機資料夾</translation>
     </message>
@@ -5179,14 +5074,14 @@ Server replied with error: %2</source>
         <translation>複製公開連結</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1234"/>
-        <source>Encrypt</source>
-        <translation>加密</translation>
-    </message>
-    <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1189"/>
         <source>Copy secure filedrop link</source>
         <translation>複製安全檔案投放連結</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1234"/>
+        <source>Encrypt</source>
+        <translation>加密</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1245"/>
@@ -5210,14 +5105,14 @@ Server replied with error: %2</source>
         <translation><numerusform>%1 分鐘內過期</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1369"/>
-        <source>Edit</source>
-        <translation>編輯</translation>
-    </message>
-    <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1371"/>
         <source>Open in browser</source>
         <translation>用瀏覽器打開</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1369"/>
+        <source>Edit</source>
+        <translation>編輯</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1398"/>
@@ -5674,7 +5569,7 @@ Server replied with error: %2</source>
         <translation>&lt;p&gt;%1 桌面版客戶端&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="597"/>
+        <location filename="../src/libsync/theme.cpp" line="599"/>
         <source>&lt;p&gt;%1 Desktop Client&lt;/p&gt;&lt;p&gt;Version %1. For more information please click &lt;a href=&apos;%2&apos;&gt;here&lt;/a&gt;.&lt;/p&gt;</source>
         <extracomment>Example text: &quot;&lt;p&gt;Nextcloud Desktop Client&lt;/p&gt;&quot; (%1 is the application name)</extracomment>
         <translation>&lt;p&gt;%1 桌面用戶端&lt;/p&gt;&lt;p&gt;版本 %1。若要了解更多資訊，請點擊&lt;a href=&apos;%2&apos;&gt;這裡&lt;/a&gt;。&lt;/p&gt;</translation>
@@ -5685,7 +5580,7 @@ Server replied with error: %2</source>
         <translation>&lt;p&gt;&lt;small&gt;正在使用虛擬檔案插入式元件：%1&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="614"/>
+        <location filename="../src/libsync/theme.cpp" line="616"/>
         <source>&lt;p&gt;%1 desktop client %2&lt;/p&gt;</source>
         <extracomment>Example text: &quot;&lt;p&gt;Nextcloud Desktop Client&lt;/p&gt;&quot; (%1 is the application name)</extracomment>
         <translation>&lt;p&gt;%1 桌面用戶端 %2&lt;/p&gt;</translation>
@@ -6079,12 +5974,12 @@ Server replied with error: %2</source>
         <translation>帳號 %1 所在的伺服器執行了不支援的版本 %2。將此客戶端搭配不支援的伺服器版本一同使用，此行為未經測試且有潛在危險。若要繼續，請自負風險。</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="293"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="283"/>
         <source>Terms of service</source>
         <translation>服務條款</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="294"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="284"/>
         <source>Your account %1 requires you to accept the terms of service of your server. You will be redirected to %2 to acknowledge that you have read it and agrees with it.</source>
         <translation>您的帳號 %1 要求您接受伺服器的服務條款。將會重新導向至 %2 以確認您已閱讀並同意。</translation>
     </message>
@@ -6160,23 +6055,23 @@ Server replied with error: %2</source>
         <translation>未設定同步資料夾組態</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="452"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="442"/>
         <source>%1: %2</source>
         <extracomment>Example text: &quot;Nextcloud: Syncing 25MB (3 minutes left)&quot; (%1 is the folder name to be synced, %2 a status message for that folder)</extracomment>
         <translation>%1：%2</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="456"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="446"/>
         <source>macOS VFS for %1: Sync is running.</source>
         <translation>％1 的 macOS VFS：正在同步。</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="459"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="449"/>
         <source>macOS VFS for %1: Last sync was successful.</source>
         <translation>％1 的 macOS VFS：上次同步成功。</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="462"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="452"/>
         <source>macOS VFS for %1: A problem was encountered.</source>
         <translation>％1 的 macOS VFS：遇到問題。</translation>
     </message>
@@ -6340,12 +6235,12 @@ Server replied with error: %2</source>
         <translation>新資料夾</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="126"/>
+        <location filename="../src/gui/generalsettings.cpp" line="131"/>
         <source>Failed to create debug archive</source>
         <translation>無法建立除錯封存</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="127"/>
+        <location filename="../src/gui/generalsettings.cpp" line="132"/>
         <source>Could not create debug archive in selected location!</source>
         <translation>無法在選定位置建立除錯封存！</translation>
     </message>
@@ -6526,7 +6421,7 @@ Server replied with error: %2</source>
         <translation>檔案投遞（僅供上傳）</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="399"/>
+        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="403"/>
         <source>Allow resharing</source>
         <translation>允許轉發分享</translation>
     </message>
@@ -6582,6 +6477,16 @@ Server replied with error: %2</source>
         <location filename="../src/gui/filedetails/ShareView.qml" line="118"/>
         <source>Share password</source>
         <translation>分享密碼</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/filedetails/ShareView.qml" line="157"/>
+        <source>Shared with you by %1</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/filedetails/ShareView.qml" line="163"/>
+        <source>Expires in %1</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareView.qml" line="279"/>
@@ -6644,54 +6549,6 @@ Server replied with error: %2</source>
         <location filename="../src/gui/tray/TalkReplyTextField.qml" line="52"/>
         <source>Send reply to chat message</source>
         <translation>傳送回覆至聊天訊息</translation>
-    </message>
-</context>
-<context>
-    <name>TrayFoldersMenuButton</name>
-    <message>
-        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="55"/>
-        <source>Open local or group folders</source>
-        <translation>開啟本機或群組資料夾</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="55"/>
-        <source>Open local folder</source>
-        <translation>開啟本機資料夾</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="70"/>
-        <source>Connected</source>
-        <translation>已連線</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="70"/>
-        <source>Disconnected</source>
-        <translation>已中斷連線</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="109"/>
-        <source>Group folder button</source>
-        <translation>群組資料夾按鈕</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="184"/>
-        <source>Open local folder &quot;%1&quot;</source>
-        <translation>開啟本機資料夾「%1」</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="184"/>
-        <source>Open group folder &quot;%1&quot;</source>
-        <translation>開啟群組資料夾「%1」</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="198"/>
-        <source>Open %1 in file explorer</source>
-        <translation>在檔案管理程式中開啟 %1</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="203"/>
-        <source>User group and local folders menu</source>
-        <translation>使用者群組與本機資料夾選單</translation>
     </message>
 </context>
 <context>
@@ -6978,7 +6835,7 @@ Server replied with error: %2</source>
 <context>
     <name>nextcloudTheme::aboutInfo()</name>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="577"/>
+        <location filename="../src/libsync/theme.cpp" line="579"/>
         <source>&lt;p&gt;&lt;small&gt;Built from Git revision &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; on %3, %4 using Qt %5, %6&lt;/small&gt;&lt;/p&gt;</source>
         <translation>&lt;p&gt;&lt;small&gt;根據 Git 修訂版本 &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; 於 %3 %4 建置，使用 Qt %5、%6&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
@@ -7381,6 +7238,54 @@ Server replied with error: %2</source>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.ui" line="69"/>
         <source>Copy link</source>
         <translation>複製連結</translation>
+    </message>
+</context>
+<context>
+    <name>TrayFoldersMenuButton</name>
+    <message>
+        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="55"/>
+        <source>Open local or group folders</source>
+        <translation>開啟本機或群組資料夾</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="55"/>
+        <source>Open local folder</source>
+        <translation>開啟本機資料夾</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="70"/>
+        <source>Connected</source>
+        <translation>已連線</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="70"/>
+        <source>Disconnected</source>
+        <translation>已中斷連線</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="109"/>
+        <source>Group folder button</source>
+        <translation>群組資料夾按鈕</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="184"/>
+        <source>Open local folder &quot;%1&quot;</source>
+        <translation>開啟本機資料夾「%1」</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="184"/>
+        <source>Open group folder &quot;%1&quot;</source>
+        <translation>開啟群組資料夾「%1」</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="198"/>
+        <source>Open %1 in file explorer</source>
+        <translation>在檔案管理程式中開啟 %1</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="203"/>
+        <source>User group and local folders menu</source>
+        <translation>使用者群組與本機資料夾選單</translation>
     </message>
 </context>
 <context>

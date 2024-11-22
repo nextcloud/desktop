@@ -342,11 +342,6 @@
         <source>Signal file provider domain</source>
         <translation type="unfinished"/>
     </message>
-    <message>
-        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="158"/>
-        <source>Create debug archive</source>
-        <translation type="unfinished"/>
-    </message>
 </context>
 <context>
     <name>FileProviderStorageInfo</name>
@@ -470,91 +465,19 @@
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="238"/>
+        <location filename="../src/gui/tray/MainWindow.qml" line="239"/>
         <source>Nextcloud desktop main dialog</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="264"/>
-        <source>Current account</source>
-        <translation>Dabartinė paskyra</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="270"/>
-        <location filename="../src/gui/tray/MainWindow.qml" line="372"/>
-        <source>Resume sync for all</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="270"/>
-        <location filename="../src/gui/tray/MainWindow.qml" line="372"/>
-        <source>Pause sync for all</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="337"/>
-        <source>Add account</source>
-        <translation>Pridėti paskyrą</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="349"/>
-        <source>Add new account</source>
-        <translation>Pridėti naują paskyrą</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="770"/>
+        <location filename="../src/gui/tray/MainWindow.qml" line="376"/>
         <source>Unified search results list</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="384"/>
-        <source>Settings</source>
-        <translation>Nustatymai</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="401"/>
-        <source>Exit</source>
-        <translation>Išeiti</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="435"/>
-        <source>Current account avatar</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="833"/>
+        <location filename="../src/gui/tray/MainWindow.qml" line="440"/>
         <source>New activities</source>
         <translation>Naujos veiklos</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="474"/>
-        <source>Current account status is online</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="474"/>
-        <source>Current account status is do not disturb</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="543"/>
-        <source>Account switcher and settings menu</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="564"/>
-        <source>Open local or group folders</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="602"/>
-        <source>More apps</source>
-        <translation>Daugiau programėlių</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="644"/>
-        <source>Open %1 in browser</source>
-        <translation>Atverti %1 naršyklėje</translation>
     </message>
 </context>
 <context>
@@ -1255,34 +1178,34 @@ This action will abort any currently running synchronization.</source>
         <translation>Tęsti</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="487"/>
+        <location filename="../src/gui/application.cpp" line="488"/>
         <source>%1 accounts</source>
         <comment>number of accounts imported</comment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="488"/>
+        <location filename="../src/gui/application.cpp" line="489"/>
         <source>1 account</source>
         <translation>1 paskyra</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="490"/>
+        <location filename="../src/gui/application.cpp" line="491"/>
         <source>%1 folders</source>
         <comment>number of folders imported</comment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="491"/>
+        <location filename="../src/gui/application.cpp" line="492"/>
         <source>1 folder</source>
         <translation>1 aplankas</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="493"/>
+        <location filename="../src/gui/application.cpp" line="494"/>
         <source>Legacy import</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="494"/>
+        <location filename="../src/gui/application.cpp" line="495"/>
         <source>Imported %1 and %2 from a legacy desktop client.
 %3</source>
         <comment>number of accounts and folders imported. list of users.</comment>
@@ -1747,13 +1670,13 @@ This action will abort any currently running synchronization.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="687"/>
-        <location filename="../src/libsync/discoveryphase.cpp" line="724"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="688"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="725"/>
         <source>Encrypted metadata setup error!</source>
         <translation>Šifruotų metaduomenų sąrankos klaida!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="711"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="712"/>
         <source>Encrypted metadata setup error: initial signature from server is empty.</source>
         <translation type="unfinished"/>
     </message>
@@ -2252,14 +2175,9 @@ This can be an issue with your OpenSSL libraries.</source>
         <translation>Jei norite parsisiųsti, eikite į nustatymus.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1398"/>
+        <location filename="../src/gui/folder.cpp" line="1404"/>
         <source>A folder has surpassed the set folder size limit of %1MB: %2.
 %3</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/folder.cpp" line="1409"/>
-        <source>Keep syncing</source>
         <translation type="unfinished"/>
     </message>
     <message>
@@ -2271,6 +2189,11 @@ If you decide to delete the files, they will be unavailable to you, unless you a
         <translation type="unfinished"/>
     </message>
     <message>
+        <location filename="../src/gui/folder.cpp" line="1415"/>
+        <source>Keep syncing</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/folder.cpp" line="1416"/>
         <source>All the files in your local sync folder &quot;%1&quot; were deleted. These deletes will be synchronized with your server, making such files unavailable unless restored.
 Are you sure you want to sync those actions with the server?
@@ -2278,14 +2201,14 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1417"/>
-        <source>Stop syncing</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
         <location filename="../src/gui/folder.cpp" line="1420"/>
         <source>Remove All Files?</source>
         <translation>Šalinti visus failus?</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/folder.cpp" line="1423"/>
+        <source>Stop syncing</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1424"/>
@@ -2298,12 +2221,12 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <translation>Palikti failus</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1428"/>
+        <location filename="../src/gui/folder.cpp" line="1434"/>
         <source>The folder %1 has surpassed the set folder size limit of %2MB.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1429"/>
+        <location filename="../src/gui/folder.cpp" line="1435"/>
         <source>Would you like to stop syncing this folder?</source>
         <translation type="unfinished"/>
     </message>
@@ -2329,41 +2252,41 @@ This means that the synchronization client might not upload local changes immedi
 Tai reiškia, kad sinchronizacijos klientas gali iš karto neįkelti lokalių pakeitimų, o tik juos nuskaityti. Įkėlimas bus atliekamas tam tikrais laiko tarpais (pagal numatytuosius nustatymus kas dvi valandas).</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1551"/>
+        <location filename="../src/gui/folder.cpp" line="1557"/>
         <source>Virtual file download failed with code &quot;%1&quot;, status &quot;%2&quot; and error message &quot;%3&quot;</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1645"/>
+        <location filename="../src/gui/folder.cpp" line="1651"/>
         <source>A large number of files in the server have been deleted.
 Please confirm if you'd like to proceed with these deletions.
 Alternatively, you can restore all deleted files by uploading from &apos;%1&apos; folder to the server.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1646"/>
+        <location filename="../src/gui/folder.cpp" line="1652"/>
         <source>A large number of files in your local '%1' folder have been deleted.
 Please confirm if you'd like to proceed with these deletions.
 Alternatively, you can restore all deleted files by downloading them from the server.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1647"/>
+        <location filename="../src/gui/folder.cpp" line="1653"/>
         <source>Remove all files?</source>
         <translation>Pašalinti visus failus?</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1651"/>
+        <location filename="../src/gui/folder.cpp" line="1657"/>
         <source>Proceed with Deletion</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1652"/>
+        <location filename="../src/gui/folder.cpp" line="1658"/>
         <source>Restore Files to Server</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1652"/>
+        <location filename="../src/gui/folder.cpp" line="1658"/>
         <source>Restore Files from Server</source>
         <translation type="unfinished"/>
     </message>
@@ -2917,20 +2840,15 @@ Alternatively, you can restore all deleted files by downloading them from the se
 <context>
     <name>OCC::GeneralSettings</name>
     <message>
+        <location filename="../src/gui/generalsettings.ui" line="66"/>
+        <source>General Settings</source>
+        <translation>Bendri nustatymai</translation>
+    </message>
+    <message>
         <location filename="../src/gui/generalsettings.ui" line="20"/>
         <location filename="../src/gui/generalsettings.ui" line="32"/>
         <source>About</source>
         <translation>Apie</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.ui" line="41"/>
-        <source>Legal notice</source>
-        <translation>Teisinis pranešimas</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.ui" line="66"/>
-        <source>General Settings</source>
-        <translation>Bendri nustatymai</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="82"/>
@@ -2948,12 +2866,17 @@ Alternatively, you can restore all deleted files by downloading them from the se
         <translation>Sistemos dėklui</translation>
     </message>
     <message>
+        <location filename="../src/gui/generalsettings.ui" line="41"/>
+        <source>Legal notice</source>
+        <translation>Teisinis pranešimas</translation>
+    </message>
+    <message>
         <location filename="../src/gui/generalsettings.ui" line="75"/>
         <source>Use &amp;Monochrome Icons</source>
         <translation>Naudoti &amp;vienspalves piktogramas</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="96"/>
+        <location filename="../src/gui/generalsettings.ui" line="50"/>
         <source>Show Chat Notifications</source>
         <translation type="unfinished"/>
     </message>
@@ -2961,6 +2884,16 @@ Alternatively, you can restore all deleted files by downloading them from the se
         <location filename="../src/gui/generalsettings.ui" line="89"/>
         <source>Show Server &amp;Notifications</source>
         <translation>Rodyti serverio pra&amp;nešimus</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.ui" line="221"/>
+        <source>Advanced</source>
+        <translation>Papildoma</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.ui" line="80"/>
+        <source>Ask for confirmation before synchronizing new folders larger than</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="106"/>
@@ -2973,55 +2906,23 @@ Alternatively, you can restore all deleted files by downloading them from the se
         <translation>&amp;Automatiškai tikrinti, ar nėra atnaujinimų </translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="134"/>
-        <source>&amp;Channel</source>
-        <translation>&amp;Kanalas</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.ui" line="151"/>
-        <location filename="../src/gui/generalsettings.cpp" line="327"/>
-        <source>stable</source>
-        <translation>stabilus</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.ui" line="156"/>
-        <location filename="../src/gui/generalsettings.cpp" line="329"/>
-        <source>beta</source>
-        <translation>beta</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.ui" line="183"/>
-        <source>&amp;Restart &amp;&amp; Update</source>
-        <translation>&amp;Paleisti iš naujo ir atnaujinti</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.ui" line="198"/>
-        <source>&amp;Check for Update now</source>
-        <translation>&amp;Tikrinti dabar, ar nėra atnaujinimų</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.ui" line="221"/>
-        <source>Advanced</source>
-        <translation>Papildoma</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.ui" line="33"/>
-        <source>Ask for confirmation before synchronizing new folders larger than</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
         <location filename="../src/gui/generalsettings.ui" line="249"/>
         <source>MB</source>
         <extracomment>Trailing part of &quot;Ask confirmation before syncing folder larger than&quot; </extracomment>
         <translation>MB</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="96"/>
+        <location filename="../src/gui/generalsettings.ui" line="134"/>
+        <source>&amp;Channel</source>
+        <translation>&amp;Kanalas</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.ui" line="143"/>
         <source>Notify when synchronised folders grow larger than specified limit</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="123"/>
+        <location filename="../src/gui/generalsettings.ui" line="170"/>
         <source>Automatically disable synchronisation of folders that overcome limit</source>
         <translation type="unfinished"/>
     </message>
@@ -3031,12 +2932,17 @@ Alternatively, you can restore all deleted files by downloading them from the se
         <translation>Patvirtinti, jei sinchronizuojami nuotoliniai aplankai</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="147"/>
+        <location filename="../src/gui/generalsettings.ui" line="194"/>
         <source>Move removed files to trash</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="158"/>
+        <location filename="../src/gui/generalsettings.ui" line="198"/>
+        <source>&amp;Check for Update now</source>
+        <translation>&amp;Tikrinti dabar, ar nėra atnaujinimų</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.ui" line="205"/>
         <source>Show sync folders in &amp;Explorer&apos;s navigation pane</source>
         <translation type="unfinished"/>
     </message>
@@ -3044,6 +2950,11 @@ Alternatively, you can restore all deleted files by downloading them from the se
         <location filename="../src/gui/generalsettings.ui" line="301"/>
         <source>S&amp;how crash reporter</source>
         <translation>Ro&amp;dyti strigčių pranešyklę</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.ui" line="229"/>
+        <source>Ask for confirmation before synchronizing folders larger than</source>
+        <translation>Patvirtinti, jei sinchronizuojami aplankai yra didesni nei</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="312"/>
@@ -3057,23 +2968,13 @@ Alternatively, you can restore all deleted files by downloading them from the se
         <translation>Sukurti derinimo archyvą</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="218"/>
+        <location filename="../src/gui/generalsettings.ui" line="265"/>
         <source>Info</source>
         <translation>Informacija</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="229"/>
-        <source>Ask for confirmation before synchronizing folders larger than</source>
-        <translation>Patvirtinti, jei sinchronizuojami aplankai yra didesni nei</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.ui" line="230"/>
+        <location filename="../src/gui/generalsettings.ui" line="277"/>
         <source>Desktop client x.x.x</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.ui" line="248"/>
-        <source>Update channel</source>
         <translation type="unfinished"/>
     </message>
     <message>
@@ -3082,43 +2983,33 @@ Alternatively, you can restore all deleted files by downloading them from the se
         <translation>Rodyti sinchronizavimo aplankus failų naršyklės naršymo srityje</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="301"/>
+        <location filename="../src/gui/generalsettings.ui" line="295"/>
+        <source>Update channel</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.ui" line="183"/>
+        <source>&amp;Restart &amp;&amp; Update</source>
+        <translation>&amp;Paleisti iš naujo ir atnaujinti</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.ui" line="348"/>
         <source>&amp;Automatically check for updates</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="317"/>
+        <location filename="../src/gui/generalsettings.ui" line="364"/>
         <source>Check Now</source>
         <translation>Tikrinti dabar</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="344"/>
+        <location filename="../src/gui/generalsettings.ui" line="391"/>
         <source>Usage Documentation</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="351"/>
-        <source>Legal Notice</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
         <location filename="../src/gui/generalsettings.ui" line="398"/>
-        <source>Use &amp;monochrome icons</source>
-        <translation>Naudoti &amp;vienspalves piktogramas</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.ui" line="405"/>
-        <source>&amp;Launch on system startup</source>
-        <translation>&amp;Paleisti įjungiant kompiuterį</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.ui" line="412"/>
-        <source>Show server &amp;notifications</source>
-        <translation>Rodyti serverio pra&amp;nešimus</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.ui" line="419"/>
-        <source>Show call notifications</source>
+        <source>Legal Notice</source>
         <translation type="unfinished"/>
     </message>
     <message>
@@ -3127,7 +3018,7 @@ Alternatively, you can restore all deleted files by downloading them from the se
         <translation>Serverio perspėjimai, reikalaujantys imtis veiksmų.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="169"/>
+        <location filename="../src/gui/generalsettings.cpp" line="195"/>
         <source>Show chat notification dialogs.</source>
         <translation type="unfinished"/>
     </message>
@@ -3142,6 +3033,18 @@ Alternatively, you can restore all deleted files by downloading them from the se
         <translation type="unfinished"/>
     </message>
     <message>
+        <location filename="../src/gui/generalsettings.ui" line="151"/>
+        <location filename="../src/gui/generalsettings.cpp" line="327"/>
+        <source>stable</source>
+        <translation>stabilus</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.ui" line="156"/>
+        <location filename="../src/gui/generalsettings.cpp" line="329"/>
+        <source>beta</source>
+        <translation>beta</translation>
+    </message>
+    <message>
         <location filename="../src/gui/generalsettings.cpp" line="350"/>
         <source>Change update channel?</source>
         <translation>Keisti atnaujinimų kanalą?</translation>
@@ -3154,24 +3057,17 @@ Note that this selects only what pool upgrades are taken from, and that there ar
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="373"/>
+        <location filename="../src/gui/generalsettings.cpp" line="405"/>
         <source>daily</source>
         <translation>kasdien</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="377"/>
+        <location filename="../src/gui/generalsettings.cpp" line="409"/>
         <source>enterprise</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="405"/>
-        <source>- enterprise: contains stable versions for customers.
-</source>
-        <comment>description of enterprise update channel for enterprise customers</comment>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.cpp" line="411"/>
+        <location filename="../src/gui/generalsettings.cpp" line="437"/>
         <source>- beta: contains versions with new features that may not be tested thoroughly
 - daily: contains versions created daily only for testing and development
 
@@ -3180,17 +3076,7 @@ Downgrading versions is not possible immediately: changing from beta to stable m
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="411"/>
-        <source>The channel determines which upgrades will be offered to install:
-- stable: contains tested versions considered reliable
-- beta: contains versions with new features that may not be tested thoroughly
-- daily: contains versions created daily only for testing and development
-%1
-Downgrading versions is not possible immediately: changing from beta to stable means waiting for the new stable version.</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.cpp" line="416"/>
+        <location filename="../src/gui/generalsettings.cpp" line="442"/>
         <source>- enterprise: contains stable versions for customers.
 
 Downgrading versions is not possible immediately: changing from stable to enterprise means waiting for the new enterprise version.</source>
@@ -3198,12 +3084,12 @@ Downgrading versions is not possible immediately: changing from stable to enterp
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="410"/>
+        <location filename="../src/gui/generalsettings.cpp" line="449"/>
         <source>Changing update channel?</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="424"/>
+        <location filename="../src/gui/generalsettings.cpp" line="450"/>
         <source>The channel determines which upgrades will be offered to install:
 - stable: contains tested versions considered reliable
 </source>
@@ -4363,7 +4249,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1086"/>
+        <location filename="../src/libsync/discovery.cpp" line="1090"/>
         <source>Could not upload file, because it is open in &quot;%1&quot;.</source>
         <translation type="unfinished"/>
     </message>
@@ -4436,8 +4322,8 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1481"/>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1506"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1473"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1495"/>
         <source>The folder %1 cannot be made read-only: %2</source>
         <translation type="unfinished"/>
     </message>
@@ -4559,7 +4445,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Nepavyko sukurti aplanko %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="240"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="239"/>
         <source>The folder %1 cannot be made read-only: %2</source>
         <translation type="unfinished"/>
     </message>
@@ -4590,7 +4476,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::PropagateLocalRename</name>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="323"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="322"/>
         <source>Folder %1 cannot be renamed because of a local file or folder name clash!</source>
         <translation type="unfinished"/>
     </message>
@@ -4967,6 +4853,21 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::ShareModel</name>
     <message>
+        <location filename="../src/gui/filedetails/sharemodel.cpp" line="515"/>
+        <source>%1 days</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/filedetails/sharemodel.cpp" line="517"/>
+        <source>1 day</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/filedetails/sharemodel.cpp" line="518"/>
+        <source>Today</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="692"/>
         <source>Secure file drop link</source>
         <translation type="unfinished"/>
@@ -4992,7 +4893,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/sharemodel.cpp" line="915"/>
+        <location filename="../src/gui/filedetails/sharemodel.cpp" line="951"/>
         <source>Could not find local folder for %1</source>
         <translation type="unfinished"/>
     </message>
@@ -5130,14 +5031,14 @@ Server replied with error: %2</source>
         <translation>Kopijuoti viešąją nuorodą</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1234"/>
-        <source>Encrypt</source>
-        <translation>Šifruoti</translation>
-    </message>
-    <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1189"/>
         <source>Copy secure filedrop link</source>
         <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1234"/>
+        <source>Encrypt</source>
+        <translation>Šifruoti</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1245"/>
@@ -5161,14 +5062,14 @@ Server replied with error: %2</source>
         <translation><numerusform>Baigia galioti po %1 minutės</numerusform><numerusform>Baigia galioti po %1 minučių</numerusform><numerusform>Baigia galioti po %1 minučių</numerusform><numerusform>Baigia galioti po %1 minutės</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1369"/>
-        <source>Edit</source>
-        <translation>Taisyti</translation>
-    </message>
-    <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1371"/>
         <source>Open in browser</source>
         <translation>Atverti naršyklėje</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1369"/>
+        <source>Edit</source>
+        <translation>Taisyti</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1398"/>
@@ -5625,7 +5526,7 @@ Server replied with error: %2</source>
         <translation>&lt;p&gt;%1 darbalaukio kliento programa&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="597"/>
+        <location filename="../src/libsync/theme.cpp" line="599"/>
         <source>&lt;p&gt;%1 Desktop Client&lt;/p&gt;&lt;p&gt;Version %1. For more information please click &lt;a href=&apos;%2&apos;&gt;here&lt;/a&gt;.&lt;/p&gt;</source>
         <extracomment>Example text: &quot;&lt;p&gt;Nextcloud Desktop Client&lt;/p&gt;&quot; (%1 is the application name)</extracomment>
         <translation type="unfinished"/>
@@ -5636,7 +5537,7 @@ Server replied with error: %2</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="614"/>
+        <location filename="../src/libsync/theme.cpp" line="616"/>
         <source>&lt;p&gt;%1 desktop client %2&lt;/p&gt;</source>
         <extracomment>Example text: &quot;&lt;p&gt;Nextcloud Desktop Client&lt;/p&gt;&quot; (%1 is the application name)</extracomment>
         <translation type="unfinished"/>
@@ -6030,12 +5931,12 @@ Server replied with error: %2</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="293"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="283"/>
         <source>Terms of service</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="294"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="284"/>
         <source>Your account %1 requires you to accept the terms of service of your server. You will be redirected to %2 to acknowledge that you have read it and agrees with it.</source>
         <translation type="unfinished"/>
     </message>
@@ -6111,23 +6012,23 @@ Server replied with error: %2</source>
         <translation>Sinchronizuojamų aplankų nėra</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="452"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="442"/>
         <source>%1: %2</source>
         <extracomment>Example text: &quot;Nextcloud: Syncing 25MB (3 minutes left)&quot; (%1 is the folder name to be synced, %2 a status message for that folder)</extracomment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="456"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="446"/>
         <source>macOS VFS for %1: Sync is running.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="459"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="449"/>
         <source>macOS VFS for %1: Last sync was successful.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="462"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="452"/>
         <source>macOS VFS for %1: A problem was encountered.</source>
         <translation type="unfinished"/>
     </message>
@@ -6291,12 +6192,12 @@ Server replied with error: %2</source>
         <translation>Naujas aplankas</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="126"/>
+        <location filename="../src/gui/generalsettings.cpp" line="131"/>
         <source>Failed to create debug archive</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="127"/>
+        <location filename="../src/gui/generalsettings.cpp" line="132"/>
         <source>Could not create debug archive in selected location!</source>
         <translation type="unfinished"/>
     </message>
@@ -6477,7 +6378,7 @@ Server replied with error: %2</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="399"/>
+        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="403"/>
         <source>Allow resharing</source>
         <translation type="unfinished"/>
     </message>
@@ -6532,6 +6433,16 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/filedetails/ShareView.qml" line="118"/>
         <source>Share password</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/filedetails/ShareView.qml" line="157"/>
+        <source>Shared with you by %1</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/filedetails/ShareView.qml" line="163"/>
+        <source>Expires in %1</source>
         <translation type="unfinished"/>
     </message>
     <message>
@@ -6594,54 +6505,6 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/TalkReplyTextField.qml" line="52"/>
         <source>Send reply to chat message</source>
-        <translation type="unfinished"/>
-    </message>
-</context>
-<context>
-    <name>TrayFoldersMenuButton</name>
-    <message>
-        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="55"/>
-        <source>Open local or group folders</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="55"/>
-        <source>Open local folder</source>
-        <translation>Atverti vietinį aplanką</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="70"/>
-        <source>Connected</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="70"/>
-        <source>Disconnected</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="109"/>
-        <source>Group folder button</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="184"/>
-        <source>Open local folder &quot;%1&quot;</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="184"/>
-        <source>Open group folder &quot;%1&quot;</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="198"/>
-        <source>Open %1 in file explorer</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="203"/>
-        <source>User group and local folders menu</source>
         <translation type="unfinished"/>
     </message>
 </context>
@@ -6929,7 +6792,7 @@ Server replied with error: %2</source>
 <context>
     <name>nextcloudTheme::aboutInfo()</name>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="577"/>
+        <location filename="../src/libsync/theme.cpp" line="579"/>
         <source>&lt;p&gt;&lt;small&gt;Built from Git revision &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; on %3, %4 using Qt %5, %6&lt;/small&gt;&lt;/p&gt;</source>
         <translation type="unfinished"/>
     </message>
@@ -7332,6 +7195,54 @@ Server replied with error: %2</source>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.ui" line="69"/>
         <source>Copy link</source>
         <translation>Kopijuoti nuorodą</translation>
+    </message>
+</context>
+<context>
+    <name>TrayFoldersMenuButton</name>
+    <message>
+        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="55"/>
+        <source>Open local or group folders</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="55"/>
+        <source>Open local folder</source>
+        <translation>Atverti vietinį aplanką</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="70"/>
+        <source>Connected</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="70"/>
+        <source>Disconnected</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="109"/>
+        <source>Group folder button</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="184"/>
+        <source>Open local folder &quot;%1&quot;</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="184"/>
+        <source>Open group folder &quot;%1&quot;</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="198"/>
+        <source>Open %1 in file explorer</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="203"/>
+        <source>User group and local folders menu</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>

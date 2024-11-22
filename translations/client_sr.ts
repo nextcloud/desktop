@@ -342,11 +342,6 @@
         <source>Signal file provider domain</source>
         <translation>Наведи домен пружаоца фајла</translation>
     </message>
-    <message>
-        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="158"/>
-        <source>Create debug archive</source>
-        <translation>Креирај дибаг архиву</translation>
-    </message>
 </context>
 <context>
     <name>FileProviderStorageInfo</name>
@@ -470,91 +465,19 @@
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="238"/>
+        <location filename="../src/gui/tray/MainWindow.qml" line="239"/>
         <source>Nextcloud desktop main dialog</source>
         <translation>Nextcloud desktop главни дијалог</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="264"/>
-        <source>Current account</source>
-        <translation>Тренутни налог</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="270"/>
-        <location filename="../src/gui/tray/MainWindow.qml" line="372"/>
-        <source>Resume sync for all</source>
-        <translation>Настави синхронизацију за све</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="270"/>
-        <location filename="../src/gui/tray/MainWindow.qml" line="372"/>
-        <source>Pause sync for all</source>
-        <translation>Паузирај синхронизацију за све</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="337"/>
-        <source>Add account</source>
-        <translation>Додај налог</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="349"/>
-        <source>Add new account</source>
-        <translation>Додај нови налог</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="770"/>
+        <location filename="../src/gui/tray/MainWindow.qml" line="376"/>
         <source>Unified search results list</source>
         <translation>Листа резултата обједињене претраге</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="384"/>
-        <source>Settings</source>
-        <translation>Подешавања</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="401"/>
-        <source>Exit</source>
-        <translation>Изађи</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="435"/>
-        <source>Current account avatar</source>
-        <translation>Тренутни аватар налога</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="833"/>
+        <location filename="../src/gui/tray/MainWindow.qml" line="440"/>
         <source>New activities</source>
         <translation>Нове активности</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="474"/>
-        <source>Current account status is online</source>
-        <translation>Тренутни статус налога је на мрежи</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="474"/>
-        <source>Current account status is do not disturb</source>
-        <translation>Тренутни статус налога је не узнемиравај</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="543"/>
-        <source>Account switcher and settings menu</source>
-        <translation>Пребацивач налога и мени подешавања</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="564"/>
-        <source>Open local or group folders</source>
-        <translation>Отвори локалне или фолдере групе</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="602"/>
-        <source>More apps</source>
-        <translation>Још апликација</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="644"/>
-        <source>Open %1 in browser</source>
-        <translation>Отвори %1 у прегледачу</translation>
     </message>
 </context>
 <context>
@@ -1264,34 +1187,34 @@ This action will abort any currently running synchronization.</source>
         <translation>Настави</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="487"/>
+        <location filename="../src/gui/application.cpp" line="488"/>
         <source>%1 accounts</source>
         <comment>number of accounts imported</comment>
         <translation>%1 налога</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="488"/>
+        <location filename="../src/gui/application.cpp" line="489"/>
         <source>1 account</source>
         <translation>1 налог</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="490"/>
+        <location filename="../src/gui/application.cpp" line="491"/>
         <source>%1 folders</source>
         <comment>number of folders imported</comment>
         <translation>%1 фолдера</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="491"/>
+        <location filename="../src/gui/application.cpp" line="492"/>
         <source>1 folder</source>
         <translation>1 фолдер</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="493"/>
+        <location filename="../src/gui/application.cpp" line="494"/>
         <source>Legacy import</source>
         <translation>Увоз старе верзије</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="494"/>
+        <location filename="../src/gui/application.cpp" line="495"/>
         <source>Imported %1 and %2 from a legacy desktop client.
 %3</source>
         <comment>number of accounts and folders imported. list of users.</comment>
@@ -1757,13 +1680,13 @@ This action will abort any currently running synchronization.</source>
         <translation>Серверска грешка: PROPFIND одговор није XML форматиран!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="687"/>
-        <location filename="../src/libsync/discoveryphase.cpp" line="724"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="688"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="725"/>
         <source>Encrypted metadata setup error!</source>
         <translation>Грешка подешавања шифрованих метаподатака!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="711"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="712"/>
         <source>Encrypted metadata setup error: initial signature from server is empty.</source>
         <translation>Грешка у подешавању шифрованих метаподатака: почетни потпис са сервера је празан.</translation>
     </message>
@@ -2264,16 +2187,11 @@ This can be an issue with your OpenSSL libraries.</source>
         <translation>Идите у поставке и означите ако желите да ја преузмете.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1398"/>
+        <location filename="../src/gui/folder.cpp" line="1404"/>
         <source>A folder has surpassed the set folder size limit of %1MB: %2.
 %3</source>
         <translation>Фолдер је прешао постављено ограничење величине од %1MB: %2.
 %3</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/folder.cpp" line="1409"/>
-        <source>Keep syncing</source>
-        <translation>Настави синхронизацију</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1411"/>
@@ -2287,6 +2205,11 @@ If you decide to delete the files, they will be unavailable to you, unless you a
 Ако одлучите да обришете фајлове, нећете више моћи да им приступите, осим у случају да сте ви њихов власник.</translation>
     </message>
     <message>
+        <location filename="../src/gui/folder.cpp" line="1415"/>
+        <source>Keep syncing</source>
+        <translation>Настави синхронизацију</translation>
+    </message>
+    <message>
         <location filename="../src/gui/folder.cpp" line="1416"/>
         <source>All the files in your local sync folder &quot;%1&quot; were deleted. These deletes will be synchronized with your server, making such files unavailable unless restored.
 Are you sure you want to sync those actions with the server?
@@ -2296,14 +2219,14 @@ If this was an accident and you decide to keep your files, they will be re-synce
 Ако је ово било случајно и одлучите да задржите своје фајлове, они ће се поново синхронизовати са сервера.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1417"/>
-        <source>Stop syncing</source>
-        <translation>Заустави синхронизацију</translation>
-    </message>
-    <message>
         <location filename="../src/gui/folder.cpp" line="1420"/>
         <source>Remove All Files?</source>
         <translation>Уклонити све фајлове?</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/folder.cpp" line="1423"/>
+        <source>Stop syncing</source>
+        <translation>Заустави синхронизацију</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1424"/>
@@ -2316,12 +2239,12 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <translation>Остави фајлове</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1428"/>
+        <location filename="../src/gui/folder.cpp" line="1434"/>
         <source>The folder %1 has surpassed the set folder size limit of %2MB.</source>
         <translation>Фолдер %1 је прешао постављено ограничење величине од %2MB.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1429"/>
+        <location filename="../src/gui/folder.cpp" line="1435"/>
         <source>Would you like to stop syncing this folder?</source>
         <translation>Желите ли да зауставите синхронизацију овог фолдера?</translation>
     </message>
@@ -2349,12 +2272,12 @@ This means that the synchronization client might not upload local changes immedi
 %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1551"/>
+        <location filename="../src/gui/folder.cpp" line="1557"/>
         <source>Virtual file download failed with code &quot;%1&quot;, status &quot;%2&quot; and error message &quot;%3&quot;</source>
         <translation>Није успело виртуелно преузимање фајла, кôд „%1”, статус „%2” и порука о грешки „%3~</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1645"/>
+        <location filename="../src/gui/folder.cpp" line="1651"/>
         <source>A large number of files in the server have been deleted.
 Please confirm if you'd like to proceed with these deletions.
 Alternatively, you can restore all deleted files by uploading from &apos;%1&apos; folder to the server.</source>
@@ -2363,7 +2286,7 @@ Alternatively, you can restore all deleted files by uploading from &apos;%1&apos
 У супротном, све обрисане фајлове можете да обновите тако што их отпремите из фолдера ’%1’ на сервер.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1646"/>
+        <location filename="../src/gui/folder.cpp" line="1652"/>
         <source>A large number of files in your local '%1' folder have been deleted.
 Please confirm if you'd like to proceed with these deletions.
 Alternatively, you can restore all deleted files by downloading them from the server.</source>
@@ -2372,22 +2295,22 @@ Alternatively, you can restore all deleted files by downloading them from the se
 У супротном, све обрисане фајлове можете да обновите тако што их поново преузмете са сервера.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1647"/>
+        <location filename="../src/gui/folder.cpp" line="1653"/>
         <source>Remove all files?</source>
         <translation>Желите ли да уклоните све фајлове?</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1651"/>
+        <location filename="../src/gui/folder.cpp" line="1657"/>
         <source>Proceed with Deletion</source>
         <translation>Настави са брисањем</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1652"/>
+        <location filename="../src/gui/folder.cpp" line="1658"/>
         <source>Restore Files to Server</source>
         <translation>Врати фајлове на сервер</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1652"/>
+        <location filename="../src/gui/folder.cpp" line="1658"/>
         <source>Restore Files from Server</source>
         <translation>Врати фајлове са сервера</translation>
     </message>
@@ -2940,20 +2863,15 @@ Alternatively, you can restore all deleted files by downloading them from the se
 <context>
     <name>OCC::GeneralSettings</name>
     <message>
+        <location filename="../src/gui/generalsettings.ui" line="66"/>
+        <source>General Settings</source>
+        <translation>Опште поставке</translation>
+    </message>
+    <message>
         <location filename="../src/gui/generalsettings.ui" line="20"/>
         <location filename="../src/gui/generalsettings.ui" line="32"/>
         <source>About</source>
         <translation>О програму</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.ui" line="41"/>
-        <source>Legal notice</source>
-        <translation>Правно обавештење</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.ui" line="66"/>
-        <source>General Settings</source>
-        <translation>Опште поставке</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="82"/>
@@ -2971,12 +2889,17 @@ Alternatively, you can restore all deleted files by downloading them from the se
         <translation>За системску палету</translation>
     </message>
     <message>
+        <location filename="../src/gui/generalsettings.ui" line="41"/>
+        <source>Legal notice</source>
+        <translation>Правно обавештење</translation>
+    </message>
+    <message>
         <location filename="../src/gui/generalsettings.ui" line="75"/>
         <source>Use &amp;Monochrome Icons</source>
         <translation>Користи &amp;једнобојне иконе</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="96"/>
+        <location filename="../src/gui/generalsettings.ui" line="50"/>
         <source>Show Chat Notifications</source>
         <translation type="unfinished"/>
     </message>
@@ -2984,6 +2907,16 @@ Alternatively, you can restore all deleted files by downloading them from the se
         <location filename="../src/gui/generalsettings.ui" line="89"/>
         <source>Show Server &amp;Notifications</source>
         <translation>Прикажи &amp;обавештења са сервера</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.ui" line="221"/>
+        <source>Advanced</source>
+        <translation>Напредно</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.ui" line="80"/>
+        <source>Ask for confirmation before synchronizing new folders larger than</source>
+        <translation>Питај за потврду пре синхронизације нових фолдера већих од</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="106"/>
@@ -2996,55 +2929,23 @@ Alternatively, you can restore all deleted files by downloading them from the se
         <translation>&amp;Аутоматски проверавај за ажурирања</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="134"/>
-        <source>&amp;Channel</source>
-        <translation>&amp;Канал</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.ui" line="151"/>
-        <location filename="../src/gui/generalsettings.cpp" line="327"/>
-        <source>stable</source>
-        <translation>стабилан</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.ui" line="156"/>
-        <location filename="../src/gui/generalsettings.cpp" line="329"/>
-        <source>beta</source>
-        <translation>бета</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.ui" line="183"/>
-        <source>&amp;Restart &amp;&amp; Update</source>
-        <translation>&amp;Поново покрени и ажурирај</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.ui" line="198"/>
-        <source>&amp;Check for Update now</source>
-        <translation>&amp;Провери ажурирања сад</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.ui" line="221"/>
-        <source>Advanced</source>
-        <translation>Напредно</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.ui" line="33"/>
-        <source>Ask for confirmation before synchronizing new folders larger than</source>
-        <translation>Питај за потврду пре синхронизације нових фолдера већих од</translation>
-    </message>
-    <message>
         <location filename="../src/gui/generalsettings.ui" line="249"/>
         <source>MB</source>
         <extracomment>Trailing part of &quot;Ask confirmation before syncing folder larger than&quot; </extracomment>
         <translation>MB</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="96"/>
+        <location filename="../src/gui/generalsettings.ui" line="134"/>
+        <source>&amp;Channel</source>
+        <translation>&amp;Канал</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.ui" line="143"/>
         <source>Notify when synchronised folders grow larger than specified limit</source>
         <translation>Обавести када величина синхронизованих фолдера пређе задату границу</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="123"/>
+        <location filename="../src/gui/generalsettings.ui" line="170"/>
         <source>Automatically disable synchronisation of folders that overcome limit</source>
         <translation>Аутоматски искључи синхронизацију фолдера чија величина пређе границу</translation>
     </message>
@@ -3054,12 +2955,17 @@ Alternatively, you can restore all deleted files by downloading them from the se
         <translation>Питај за потврду пре синхронизације спољашњих складишта</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="147"/>
+        <location filename="../src/gui/generalsettings.ui" line="194"/>
         <source>Move removed files to trash</source>
         <translation>Премести уклоњене фајлове у отпад</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="158"/>
+        <location filename="../src/gui/generalsettings.ui" line="198"/>
+        <source>&amp;Check for Update now</source>
+        <translation>&amp;Провери ажурирања сад</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.ui" line="205"/>
         <source>Show sync folders in &amp;Explorer&apos;s navigation pane</source>
         <translation>Прикажи синхронизоване фасцикле у навигационом панелу &amp;Истраживача фајлова</translation>
     </message>
@@ -3067,6 +2973,11 @@ Alternatively, you can restore all deleted files by downloading them from the se
         <location filename="../src/gui/generalsettings.ui" line="301"/>
         <source>S&amp;how crash reporter</source>
         <translation>П&amp;рикажи извештавач о грешкама</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.ui" line="229"/>
+        <source>Ask for confirmation before synchronizing folders larger than</source>
+        <translation>Питај за потврду пре синхронизације фасцикли већих од</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="312"/>
@@ -3080,24 +2991,14 @@ Alternatively, you can restore all deleted files by downloading them from the se
         <translation>Креирај дибаг архиву</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="218"/>
+        <location filename="../src/gui/generalsettings.ui" line="265"/>
         <source>Info</source>
         <translation>Инфо</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="229"/>
-        <source>Ask for confirmation before synchronizing folders larger than</source>
-        <translation>Питај за потврду пре синхронизације фасцикли већих од</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.ui" line="230"/>
+        <location filename="../src/gui/generalsettings.ui" line="277"/>
         <source>Desktop client x.x.x</source>
         <translation>Десктоп клијент x.x.x</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.ui" line="248"/>
-        <source>Update channel</source>
-        <translation>Канал ажурирања</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="284"/>
@@ -3105,44 +3006,34 @@ Alternatively, you can restore all deleted files by downloading them from the se
         <translation>Прикажи синхронизоване фасцикле у &amp;Експлореровом навигационом панелу</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="301"/>
+        <location filename="../src/gui/generalsettings.ui" line="295"/>
+        <source>Update channel</source>
+        <translation>Канал ажурирања</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.ui" line="183"/>
+        <source>&amp;Restart &amp;&amp; Update</source>
+        <translation>&amp;Поново покрени и ажурирај</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.ui" line="348"/>
         <source>&amp;Automatically check for updates</source>
         <translation>&amp;Аутоматски проверавај постојање ажурирања</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="317"/>
+        <location filename="../src/gui/generalsettings.ui" line="364"/>
         <source>Check Now</source>
         <translation>Провери сада</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="344"/>
+        <location filename="../src/gui/generalsettings.ui" line="391"/>
         <source>Usage Documentation</source>
         <translation>Документација о употреби</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="351"/>
+        <location filename="../src/gui/generalsettings.ui" line="398"/>
         <source>Legal Notice</source>
         <translation>Правно обавештење</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.ui" line="398"/>
-        <source>Use &amp;monochrome icons</source>
-        <translation>Користи &amp;једнобојне иконе</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.ui" line="405"/>
-        <source>&amp;Launch on system startup</source>
-        <translation>Покрени при покретању &amp;система</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.ui" line="412"/>
-        <source>Show server &amp;notifications</source>
-        <translation>Прикажи &amp;обавештења са сервера</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.ui" line="419"/>
-        <source>Show call notifications</source>
-        <translation>Прикажи обавештења о позиву</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="144"/>
@@ -3150,7 +3041,7 @@ Alternatively, you can restore all deleted files by downloading them from the se
         <translation>Обавештења са сервера која захтевају пажњу.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="169"/>
+        <location filename="../src/gui/generalsettings.cpp" line="195"/>
         <source>Show chat notification dialogs.</source>
         <translation type="unfinished"/>
     </message>
@@ -3163,6 +3054,18 @@ Alternatively, you can restore all deleted files by downloading them from the se
         <location filename="../src/gui/generalsettings.cpp" line="162"/>
         <source>You cannot disable autostart because system-wide autostart is enabled.</source>
         <translation>Не можете да искључите аутостарт јер је укључен аутостарт на нивоу система.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.ui" line="151"/>
+        <location filename="../src/gui/generalsettings.cpp" line="327"/>
+        <source>stable</source>
+        <translation>стабилан</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.ui" line="156"/>
+        <location filename="../src/gui/generalsettings.cpp" line="329"/>
+        <source>beta</source>
+        <translation>бета</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="350"/>
@@ -3179,25 +3082,17 @@ Note that this selects only what pool upgrades are taken from, and that there ar
 Имајте на уму да ово бира само из ког складишта се преузимају ажурирања, као и да нема враћања на раније верзије: тако да враћање са бета канала на стабилни канал обично не може да се изврши тренутно и значи да је потребно чекање на стабилну верзију која је новија од тренутно инсталиране бета верзије.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="373"/>
+        <location filename="../src/gui/generalsettings.cpp" line="405"/>
         <source>daily</source>
         <translation>дневно</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="377"/>
+        <location filename="../src/gui/generalsettings.cpp" line="409"/>
         <source>enterprise</source>
         <translation>предузетничка</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="405"/>
-        <source>- enterprise: contains stable versions for customers.
-</source>
-        <comment>description of enterprise update channel for enterprise customers</comment>
-        <translation>- предузетничка: садржи стабилне верзије за муштерије.
-</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.cpp" line="411"/>
+        <location filename="../src/gui/generalsettings.cpp" line="437"/>
         <source>- beta: contains versions with new features that may not be tested thoroughly
 - daily: contains versions created daily only for testing and development
 
@@ -3209,22 +3104,7 @@ Downgrading versions is not possible immediately: changing from beta to stable m
 Враћање на старију верзију није могуће тренутно: промена са бета канала на стабилни значи да ће се чекати на нову стабилну верзију.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="411"/>
-        <source>The channel determines which upgrades will be offered to install:
-- stable: contains tested versions considered reliable
-- beta: contains versions with new features that may not be tested thoroughly
-- daily: contains versions created daily only for testing and development
-%1
-Downgrading versions is not possible immediately: changing from beta to stable means waiting for the new stable version.</source>
-        <translation>Канал одређује која ажурирања ће се понудити за инсталирање:
-- стабилни: садржи тестиране верзије које се сматрају за поуздане
-- бета: садржи верзије са новим функцијама које можда нису темељно тестиране
-- дневни: садржи верзије које се креирају свакодневно и служе само за тестирање и развој
-%1
-Враћање на старију верзију није могуће тренутно: промена са бета канала на стабилни значи да ће се чекати на нову стабилну верзију.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.cpp" line="416"/>
+        <location filename="../src/gui/generalsettings.cpp" line="442"/>
         <source>- enterprise: contains stable versions for customers.
 
 Downgrading versions is not possible immediately: changing from stable to enterprise means waiting for the new enterprise version.</source>
@@ -3234,12 +3114,12 @@ Downgrading versions is not possible immediately: changing from stable to enterp
 Враћање на старију верзију није могуће тренутно: промена са стабилне на пословну значи да ће се чекати на нову пословну верзију.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="410"/>
+        <location filename="../src/gui/generalsettings.cpp" line="449"/>
         <source>Changing update channel?</source>
         <translation>Мењате ли канал ажурирања?</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="424"/>
+        <location filename="../src/gui/generalsettings.cpp" line="450"/>
         <source>The channel determines which upgrades will be offered to install:
 - stable: contains tested versions considered reliable
 </source>
@@ -4410,7 +4290,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Не може да се синхронизује због неисправног времена измене</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1086"/>
+        <location filename="../src/libsync/discovery.cpp" line="1090"/>
         <source>Could not upload file, because it is open in &quot;%1&quot;.</source>
         <translation>Фајл не може да се отпреми јер је отворен у „%1”.</translation>
     </message>
@@ -4483,8 +4363,8 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Грешка приликом ажурирања метаподатака услед неисправног времена измене</translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1481"/>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1506"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1473"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1495"/>
         <source>The folder %1 cannot be made read-only: %2</source>
         <translation>Фолдер %1 не може да се буде само-за-читање: %2</translation>
     </message>
@@ -4606,7 +4486,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Не може да се креира фолдер %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="240"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="239"/>
         <source>The folder %1 cannot be made read-only: %2</source>
         <translation>Фолдер %1 не може да се буде само-за-читање: %2</translation>
     </message>
@@ -4637,7 +4517,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::PropagateLocalRename</name>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="323"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="322"/>
         <source>Folder %1 cannot be renamed because of a local file or folder name clash!</source>
         <translation>Фолдеру %1 не може да се промени име због судара са називом локалног фајла или фолдера!</translation>
     </message>
@@ -5014,6 +4894,21 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::ShareModel</name>
     <message>
+        <location filename="../src/gui/filedetails/sharemodel.cpp" line="515"/>
+        <source>%1 days</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/filedetails/sharemodel.cpp" line="517"/>
+        <source>1 day</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/filedetails/sharemodel.cpp" line="518"/>
+        <source>Today</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="692"/>
         <source>Secure file drop link</source>
         <translation>Сигурно место за упуштање фајлова</translation>
@@ -5039,7 +4934,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Сигурно место за упуштање фајлова</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/sharemodel.cpp" line="915"/>
+        <location filename="../src/gui/filedetails/sharemodel.cpp" line="951"/>
         <source>Could not find local folder for %1</source>
         <translation>Не може да се пронађе локални фолдер за %1</translation>
     </message>
@@ -5179,14 +5074,14 @@ Server replied with error: %2</source>
         <translation>Копирај јавну везу</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1234"/>
-        <source>Encrypt</source>
-        <translation>Шифруј</translation>
-    </message>
-    <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1189"/>
         <source>Copy secure filedrop link</source>
         <translation>Копирај линк сигурног места за упуштање фајлова</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1234"/>
+        <source>Encrypt</source>
+        <translation>Шифруј</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1245"/>
@@ -5210,14 +5105,14 @@ Server replied with error: %2</source>
         <translation><numerusform>Истиче за %1 минут</numerusform><numerusform>Истиче за %1 минута</numerusform><numerusform>Истиче за %1 минута</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1369"/>
-        <source>Edit</source>
-        <translation>Измени</translation>
-    </message>
-    <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1371"/>
         <source>Open in browser</source>
         <translation>Отвори у веб читачу</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1369"/>
+        <source>Edit</source>
+        <translation>Измени</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1398"/>
@@ -5674,7 +5569,7 @@ Server replied with error: %2</source>
         <translation>&lt;p&gt;%1 десктоп клијент&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="597"/>
+        <location filename="../src/libsync/theme.cpp" line="599"/>
         <source>&lt;p&gt;%1 Desktop Client&lt;/p&gt;&lt;p&gt;Version %1. For more information please click &lt;a href=&apos;%2&apos;&gt;here&lt;/a&gt;.&lt;/p&gt;</source>
         <extracomment>Example text: &quot;&lt;p&gt;Nextcloud Desktop Client&lt;/p&gt;&quot; (%1 is the application name)</extracomment>
         <translation>&lt;p&gt;%1 Десктоп клијент&lt;/p&gt;&lt;p&gt;верзија %1. За више информација, молимо вас да кликнете &lt;a href=&apos;%2&apos;&gt;овде&lt;/a&gt;.&lt;/p&gt;</translation>
@@ -5685,7 +5580,7 @@ Server replied with error: %2</source>
         <translation>&lt;p&gt;&lt;small&gt;Користи се додатак виртуелних фајлова: %1&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="614"/>
+        <location filename="../src/libsync/theme.cpp" line="616"/>
         <source>&lt;p&gt;%1 desktop client %2&lt;/p&gt;</source>
         <extracomment>Example text: &quot;&lt;p&gt;Nextcloud Desktop Client&lt;/p&gt;&quot; (%1 is the application name)</extracomment>
         <translation>&lt;p&gt;%1 десктоп клијент %2&lt;/p&gt;</translation>
@@ -6079,12 +5974,12 @@ Server replied with error: %2</source>
         <translation>Сервер на налогу %1 извршава неподржану верзију %2. Коришћење овог клијента са неподржаном верзијом сервера није тестирано и потенцијално може бити опасно. Настављате на сопствену одговорност.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="293"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="283"/>
         <source>Terms of service</source>
         <translation>Услови коришћења</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="294"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="284"/>
         <source>Your account %1 requires you to accept the terms of service of your server. You will be redirected to %2 to acknowledge that you have read it and agrees with it.</source>
         <translation>Ваш налог %1 захтева да прихватите услове коришћења сервера. Бићете преусмерени на %2 да потврдите да сте их прочитали и да се слажете са њима.</translation>
     </message>
@@ -6160,23 +6055,23 @@ Server replied with error: %2</source>
         <translation>Нису подешене фасцикле за синхронизацију</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="452"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="442"/>
         <source>%1: %2</source>
         <extracomment>Example text: &quot;Nextcloud: Syncing 25MB (3 minutes left)&quot; (%1 is the folder name to be synced, %2 a status message for that folder)</extracomment>
         <translation>%1: %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="456"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="446"/>
         <source>macOS VFS for %1: Sync is running.</source>
         <translation>macOS VFS за %1: Синхронизација у току.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="459"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="449"/>
         <source>macOS VFS for %1: Last sync was successful.</source>
         <translation>macOS VFS за %1: Последња синхронизација је била успешна.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="462"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="452"/>
         <source>macOS VFS for %1: A problem was encountered.</source>
         <translation>macOS VFS за %1: Дошло је до проблема.</translation>
     </message>
@@ -6340,12 +6235,12 @@ Server replied with error: %2</source>
         <translation>Нови фолдер</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="126"/>
+        <location filename="../src/gui/generalsettings.cpp" line="131"/>
         <source>Failed to create debug archive</source>
         <translation>Није успело креирање дибаг архиве</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="127"/>
+        <location filename="../src/gui/generalsettings.cpp" line="132"/>
         <source>Could not create debug archive in selected location!</source>
         <translation>На изабраној локацији није могла да се креира дибаг архива!</translation>
     </message>
@@ -6526,7 +6421,7 @@ Server replied with error: %2</source>
         <translation>Превлачење фајлова (само за отпремање)</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="399"/>
+        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="403"/>
         <source>Allow resharing</source>
         <translation>Дозволи поновно дељење</translation>
     </message>
@@ -6582,6 +6477,16 @@ Server replied with error: %2</source>
         <location filename="../src/gui/filedetails/ShareView.qml" line="118"/>
         <source>Share password</source>
         <translation>Лозинка дељења</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/filedetails/ShareView.qml" line="157"/>
+        <source>Shared with you by %1</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/filedetails/ShareView.qml" line="163"/>
+        <source>Expires in %1</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareView.qml" line="279"/>
@@ -6644,54 +6549,6 @@ Server replied with error: %2</source>
         <location filename="../src/gui/tray/TalkReplyTextField.qml" line="52"/>
         <source>Send reply to chat message</source>
         <translation>Пошаљи одговор на чет поруку</translation>
-    </message>
-</context>
-<context>
-    <name>TrayFoldersMenuButton</name>
-    <message>
-        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="55"/>
-        <source>Open local or group folders</source>
-        <translation>Отвори локални или фолдер групе</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="55"/>
-        <source>Open local folder</source>
-        <translation>Отвори локални фолдер</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="70"/>
-        <source>Connected</source>
-        <translation>Веза је успостављена</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="70"/>
-        <source>Disconnected</source>
-        <translation>Веза је прекинута</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="109"/>
-        <source>Group folder button</source>
-        <translation>Дугме фолдера групе</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="184"/>
-        <source>Open local folder &quot;%1&quot;</source>
-        <translation>Отвори локални фолдер %1”</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="184"/>
-        <source>Open group folder &quot;%1&quot;</source>
-        <translation>Отвори фолдер групе „%1”</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="198"/>
-        <source>Open %1 in file explorer</source>
-        <translation>ОТвори %1 у истраживачу фајлова</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="203"/>
-        <source>User group and local folders menu</source>
-        <translation>Мени коринисникових групних и локалних фолдера</translation>
     </message>
 </context>
 <context>
@@ -6978,7 +6835,7 @@ Server replied with error: %2</source>
 <context>
     <name>nextcloudTheme::aboutInfo()</name>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="577"/>
+        <location filename="../src/libsync/theme.cpp" line="579"/>
         <source>&lt;p&gt;&lt;small&gt;Built from Git revision &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; on %3, %4 using Qt %5, %6&lt;/small&gt;&lt;/p&gt;</source>
         <translation>&lt;p&gt;&lt;small&gt;Изграђен из Git ревизије &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; дана %3, %4 користећи Qt %5, %6&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
@@ -7381,6 +7238,54 @@ Server replied with error: %2</source>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.ui" line="69"/>
         <source>Copy link</source>
         <translation>Копирај везу</translation>
+    </message>
+</context>
+<context>
+    <name>TrayFoldersMenuButton</name>
+    <message>
+        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="55"/>
+        <source>Open local or group folders</source>
+        <translation>Отвори локални или фолдер групе</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="55"/>
+        <source>Open local folder</source>
+        <translation>Отвори локални фолдер</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="70"/>
+        <source>Connected</source>
+        <translation>Веза је успостављена</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="70"/>
+        <source>Disconnected</source>
+        <translation>Веза је прекинута</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="109"/>
+        <source>Group folder button</source>
+        <translation>Дугме фолдера групе</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="184"/>
+        <source>Open local folder &quot;%1&quot;</source>
+        <translation>Отвори локални фолдер %1”</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="184"/>
+        <source>Open group folder &quot;%1&quot;</source>
+        <translation>Отвори фолдер групе „%1”</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="198"/>
+        <source>Open %1 in file explorer</source>
+        <translation>ОТвори %1 у истраживачу фајлова</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="203"/>
+        <source>User group and local folders menu</source>
+        <translation>Мени коринисникових групних и локалних фолдера</translation>
     </message>
 </context>
 <context>

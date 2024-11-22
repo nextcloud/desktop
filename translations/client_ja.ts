@@ -342,11 +342,6 @@
         <source>Signal file provider domain</source>
         <translation>シグナルファイルプロバイダドメイン</translation>
     </message>
-    <message>
-        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="158"/>
-        <source>Create debug archive</source>
-        <translation>デバッグアーカイブを作成</translation>
-    </message>
 </context>
 <context>
     <name>FileProviderStorageInfo</name>
@@ -470,91 +465,19 @@
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="238"/>
+        <location filename="../src/gui/tray/MainWindow.qml" line="239"/>
         <source>Nextcloud desktop main dialog</source>
         <translation>Nextcloudデスクトップのメインダイアログ</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="264"/>
-        <source>Current account</source>
-        <translation>現在のアカウント</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="270"/>
-        <location filename="../src/gui/tray/MainWindow.qml" line="372"/>
-        <source>Resume sync for all</source>
-        <translation>すべての同期を再開</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="270"/>
-        <location filename="../src/gui/tray/MainWindow.qml" line="372"/>
-        <source>Pause sync for all</source>
-        <translation>全ての同期を一時停止</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="337"/>
-        <source>Add account</source>
-        <translation>アカウントを追加</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="349"/>
-        <source>Add new account</source>
-        <translation>新しいアカウントを追加</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="770"/>
+        <location filename="../src/gui/tray/MainWindow.qml" line="376"/>
         <source>Unified search results list</source>
         <translation>統合検索結果</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="384"/>
-        <source>Settings</source>
-        <translation>設定</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="401"/>
-        <source>Exit</source>
-        <translation>終了</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="435"/>
-        <source>Current account avatar</source>
-        <translation>現在のアバター</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="833"/>
+        <location filename="../src/gui/tray/MainWindow.qml" line="440"/>
         <source>New activities</source>
         <translation>新しいアクティビティ</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="474"/>
-        <source>Current account status is online</source>
-        <translation>現在のステータスはオンラインです</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="474"/>
-        <source>Current account status is do not disturb</source>
-        <translation>現在のステータスは取り込み中です</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="543"/>
-        <source>Account switcher and settings menu</source>
-        <translation>アカウントスイッチャーと設定メニュー</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="564"/>
-        <source>Open local or group folders</source>
-        <translation>ローカルまたはグループフォルダを開く</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="602"/>
-        <source>More apps</source>
-        <translation>その他のアプリ</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="644"/>
-        <source>Open %1 in browser</source>
-        <translation>%1をブラウザーで開く</translation>
     </message>
 </context>
 <context>
@@ -1264,34 +1187,34 @@ This action will abort any currently running synchronization.</source>
         <translation>続ける</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="487"/>
+        <location filename="../src/gui/application.cpp" line="488"/>
         <source>%1 accounts</source>
         <comment>number of accounts imported</comment>
         <translation>%1 アカウント</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="488"/>
+        <location filename="../src/gui/application.cpp" line="489"/>
         <source>1 account</source>
         <translation>1 アカウント</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="490"/>
+        <location filename="../src/gui/application.cpp" line="491"/>
         <source>%1 folders</source>
         <comment>number of folders imported</comment>
         <translation>%1 フォルダ</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="491"/>
+        <location filename="../src/gui/application.cpp" line="492"/>
         <source>1 folder</source>
         <translation>1 フォルダ</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="493"/>
+        <location filename="../src/gui/application.cpp" line="494"/>
         <source>Legacy import</source>
         <translation>レガシーインポート(過去設定の取り込み)</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="494"/>
+        <location filename="../src/gui/application.cpp" line="495"/>
         <source>Imported %1 and %2 from a legacy desktop client.
 %3</source>
         <comment>number of accounts and folders imported. list of users.</comment>
@@ -1757,13 +1680,13 @@ This action will abort any currently running synchronization.</source>
         <translation>サーバーエラーが発生しました。PROPFIND応答がXML形式ではありません！</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="687"/>
-        <location filename="../src/libsync/discoveryphase.cpp" line="724"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="688"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="725"/>
         <source>Encrypted metadata setup error!</source>
         <translation>暗号化されたメタデータのセットアップエラー！</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="711"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="712"/>
         <source>Encrypted metadata setup error: initial signature from server is empty.</source>
         <translation>暗号化メタデータのセットアップエラー：サーバーからの初期署名が空です。</translation>
     </message>
@@ -2264,16 +2187,11 @@ This can be an issue with your OpenSSL libraries.</source>
         <translation>このフォルダーをダウンロードするには設定画面で選択してください。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1398"/>
+        <location filename="../src/gui/folder.cpp" line="1404"/>
         <source>A folder has surpassed the set folder size limit of %1MB: %2.
 %3</source>
         <translation>フォルダに設定されたフォルダサイズ制限値 %1MB を超えました: %2.
 %3</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/folder.cpp" line="1409"/>
-        <source>Keep syncing</source>
-        <translation>同期を維持する</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1411"/>
@@ -2287,6 +2205,11 @@ If you decide to delete the files, they will be unavailable to you, unless you a
 ファイルを削除することにした場合、所有者でない限り、ファイルは利用できなくなります。</translation>
     </message>
     <message>
+        <location filename="../src/gui/folder.cpp" line="1415"/>
+        <source>Keep syncing</source>
+        <translation>同期を維持する</translation>
+    </message>
+    <message>
         <location filename="../src/gui/folder.cpp" line="1416"/>
         <source>All the files in your local sync folder &quot;%1&quot; were deleted. These deletes will be synchronized with your server, making such files unavailable unless restored.
 Are you sure you want to sync those actions with the server?
@@ -2296,14 +2219,14 @@ If this was an accident and you decide to keep your files, they will be re-synce
 これが操作ミスであり、ファイルを維持することにした場合、ファイルはサーバーから再同期されます。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1417"/>
-        <source>Stop syncing</source>
-        <translation>同期を停止する</translation>
-    </message>
-    <message>
         <location filename="../src/gui/folder.cpp" line="1420"/>
         <source>Remove All Files?</source>
         <translation>すべてのファイルを削除しますか？</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/folder.cpp" line="1423"/>
+        <source>Stop syncing</source>
+        <translation>同期を停止する</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1424"/>
@@ -2316,12 +2239,12 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <translation>ファイルを保持</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1428"/>
+        <location filename="../src/gui/folder.cpp" line="1434"/>
         <source>The folder %1 has surpassed the set folder size limit of %2MB.</source>
         <translation>フォルダ %1 が設定されたフォルダサイズの制限値 %2MB を超えました。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1429"/>
+        <location filename="../src/gui/folder.cpp" line="1435"/>
         <source>Would you like to stop syncing this folder?</source>
         <translation>このフォルダの同期を停止しますか？</translation>
     </message>
@@ -2349,12 +2272,12 @@ This means that the synchronization client might not upload local changes immedi
 %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1551"/>
+        <location filename="../src/gui/folder.cpp" line="1557"/>
         <source>Virtual file download failed with code &quot;%1&quot;, status &quot;%2&quot; and error message &quot;%3&quot;</source>
         <translation>仮想のファイルのダウンロードは、コード &quot;%1&quot;、ステータス &quot;%2&quot;、エラーメッセージ &quot;%3&quot; で失敗しました。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1645"/>
+        <location filename="../src/gui/folder.cpp" line="1651"/>
         <source>A large number of files in the server have been deleted.
 Please confirm if you'd like to proceed with these deletions.
 Alternatively, you can restore all deleted files by uploading from &apos;%1&apos; folder to the server.</source>
@@ -2363,7 +2286,7 @@ Alternatively, you can restore all deleted files by uploading from &apos;%1&apos
 または、&apos;%1&apos; フォルダからサーバにアップロードすることで、削除されたファイルをすべて復元できます。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1646"/>
+        <location filename="../src/gui/folder.cpp" line="1652"/>
         <source>A large number of files in your local '%1' folder have been deleted.
 Please confirm if you'd like to proceed with these deletions.
 Alternatively, you can restore all deleted files by downloading them from the server.</source>
@@ -2372,22 +2295,22 @@ Alternatively, you can restore all deleted files by downloading them from the se
 または、削除されたファイルをサーバーからダウンロードして復元することもできます。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1647"/>
+        <location filename="../src/gui/folder.cpp" line="1653"/>
         <source>Remove all files?</source>
         <translation>全てのファイルを削除しますか?</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1651"/>
+        <location filename="../src/gui/folder.cpp" line="1657"/>
         <source>Proceed with Deletion</source>
         <translation>削除を進める</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1652"/>
+        <location filename="../src/gui/folder.cpp" line="1658"/>
         <source>Restore Files to Server</source>
         <translation>ファイルをサーバーに復元する</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1652"/>
+        <location filename="../src/gui/folder.cpp" line="1658"/>
         <source>Restore Files from Server</source>
         <translation>サーバーからファイルを復元する</translation>
     </message>
@@ -2941,20 +2864,15 @@ Alternatively, you can restore all deleted files by downloading them from the se
 <context>
     <name>OCC::GeneralSettings</name>
     <message>
+        <location filename="../src/gui/generalsettings.ui" line="66"/>
+        <source>General Settings</source>
+        <translation>一般設定</translation>
+    </message>
+    <message>
         <location filename="../src/gui/generalsettings.ui" line="20"/>
         <location filename="../src/gui/generalsettings.ui" line="32"/>
         <source>About</source>
         <translation>Nextcloud について</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.ui" line="41"/>
-        <source>Legal notice</source>
-        <translation>法律上の告知</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.ui" line="66"/>
-        <source>General Settings</source>
-        <translation>一般設定</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="82"/>
@@ -2972,12 +2890,17 @@ Alternatively, you can restore all deleted files by downloading them from the se
         <translation>システムトレイ</translation>
     </message>
     <message>
+        <location filename="../src/gui/generalsettings.ui" line="41"/>
+        <source>Legal notice</source>
+        <translation>法律上の告知</translation>
+    </message>
+    <message>
         <location filename="../src/gui/generalsettings.ui" line="75"/>
         <source>Use &amp;Monochrome Icons</source>
         <translation>モノクロアイコンを使用(&amp;M)</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="96"/>
+        <location filename="../src/gui/generalsettings.ui" line="50"/>
         <source>Show Chat Notifications</source>
         <translation type="unfinished"/>
     </message>
@@ -2985,6 +2908,16 @@ Alternatively, you can restore all deleted files by downloading them from the se
         <location filename="../src/gui/generalsettings.ui" line="89"/>
         <source>Show Server &amp;Notifications</source>
         <translation>サーバー通知を表示(&amp;N)</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.ui" line="221"/>
+        <source>Advanced</source>
+        <translation>詳細設定</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.ui" line="80"/>
+        <source>Ask for confirmation before synchronizing new folders larger than</source>
+        <translation>指定された容量を以上の新しいフォルダを同期する前に確認する。</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="106"/>
@@ -2997,55 +2930,23 @@ Alternatively, you can restore all deleted files by downloading them from the se
         <translation>自動的にアップデートを確認(&amp;A)</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="134"/>
-        <source>&amp;Channel</source>
-        <translation>チャネル(&amp;C)</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.ui" line="151"/>
-        <location filename="../src/gui/generalsettings.cpp" line="327"/>
-        <source>stable</source>
-        <translation>安定板</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.ui" line="156"/>
-        <location filename="../src/gui/generalsettings.cpp" line="329"/>
-        <source>beta</source>
-        <translation>ベータ版</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.ui" line="183"/>
-        <source>&amp;Restart &amp;&amp; Update</source>
-        <translation>再起動してアップデート(&amp;R)</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.ui" line="198"/>
-        <source>&amp;Check for Update now</source>
-        <translation>今すぐアップデートを確認(&amp;C)</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.ui" line="221"/>
-        <source>Advanced</source>
-        <translation>詳細設定</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.ui" line="33"/>
-        <source>Ask for confirmation before synchronizing new folders larger than</source>
-        <translation>指定された容量を以上の新しいフォルダを同期する前に確認する。</translation>
-    </message>
-    <message>
         <location filename="../src/gui/generalsettings.ui" line="249"/>
         <source>MB</source>
         <extracomment>Trailing part of &quot;Ask confirmation before syncing folder larger than&quot; </extracomment>
         <translation>MB</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="96"/>
+        <location filename="../src/gui/generalsettings.ui" line="134"/>
+        <source>&amp;Channel</source>
+        <translation>チャネル(&amp;C)</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.ui" line="143"/>
         <source>Notify when synchronised folders grow larger than specified limit</source>
         <translation>同期されたフォルダのサイズが指定した上限を超えた場合に通知する</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="123"/>
+        <location filename="../src/gui/generalsettings.ui" line="170"/>
         <source>Automatically disable synchronisation of folders that overcome limit</source>
         <translation>制限を超えたフォルダの同期を自動的に無効にする</translation>
     </message>
@@ -3055,12 +2956,17 @@ Alternatively, you can restore all deleted files by downloading them from the se
         <translation>外部ストレージと同期する前に確認</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="147"/>
+        <location filename="../src/gui/generalsettings.ui" line="194"/>
         <source>Move removed files to trash</source>
         <translation>削除したファイルをゴミ箱に移動する</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="158"/>
+        <location filename="../src/gui/generalsettings.ui" line="198"/>
+        <source>&amp;Check for Update now</source>
+        <translation>今すぐアップデートを確認(&amp;C)</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.ui" line="205"/>
         <source>Show sync folders in &amp;Explorer&apos;s navigation pane</source>
         <translation>エクスプローラのナビゲーションペインに同期フォルダを表示する</translation>
     </message>
@@ -3068,6 +2974,11 @@ Alternatively, you can restore all deleted files by downloading them from the se
         <location filename="../src/gui/generalsettings.ui" line="301"/>
         <source>S&amp;how crash reporter</source>
         <translation>クラッシュ報告を表示(&amp;H)</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.ui" line="229"/>
+        <source>Ask for confirmation before synchronizing folders larger than</source>
+        <translation>指定された容量以上のフォルダーは同期前に確認</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="312"/>
@@ -3081,24 +2992,14 @@ Alternatively, you can restore all deleted files by downloading them from the se
         <translation>デバッグアーカイブを作成</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="218"/>
+        <location filename="../src/gui/generalsettings.ui" line="265"/>
         <source>Info</source>
         <translation>情報</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="229"/>
-        <source>Ask for confirmation before synchronizing folders larger than</source>
-        <translation>指定された容量以上のフォルダーは同期前に確認</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.ui" line="230"/>
+        <location filename="../src/gui/generalsettings.ui" line="277"/>
         <source>Desktop client x.x.x</source>
         <translation>デスクトップクライアント x.x.x</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.ui" line="248"/>
-        <source>Update channel</source>
-        <translation>アップデートチャネル</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="284"/>
@@ -3106,44 +3007,34 @@ Alternatively, you can restore all deleted files by downloading them from the se
         <translation>エクスプローラのナビゲーションペインに同期フォルダーを表示</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="301"/>
+        <location filename="../src/gui/generalsettings.ui" line="295"/>
+        <source>Update channel</source>
+        <translation>アップデートチャネル</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.ui" line="183"/>
+        <source>&amp;Restart &amp;&amp; Update</source>
+        <translation>再起動してアップデート(&amp;R)</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.ui" line="348"/>
         <source>&amp;Automatically check for updates</source>
         <translation>自動的にアップデートをチェック(&amp;A)</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="317"/>
+        <location filename="../src/gui/generalsettings.ui" line="364"/>
         <source>Check Now</source>
         <translation>今すぐチェック</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="344"/>
+        <location filename="../src/gui/generalsettings.ui" line="391"/>
         <source>Usage Documentation</source>
         <translation>利用ドキュメント</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="351"/>
+        <location filename="../src/gui/generalsettings.ui" line="398"/>
         <source>Legal Notice</source>
         <translation>法的通知</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.ui" line="398"/>
-        <source>Use &amp;monochrome icons</source>
-        <translation>モノクロアイコンを使用(&amp;M)</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.ui" line="405"/>
-        <source>&amp;Launch on system startup</source>
-        <translation>システム開始時に起動(&amp;L)</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.ui" line="412"/>
-        <source>Show server &amp;notifications</source>
-        <translation>サーバー通知を表示(&amp;N)</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.ui" line="419"/>
-        <source>Show call notifications</source>
-        <translation>トークの通知を表示</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="144"/>
@@ -3151,7 +3042,7 @@ Alternatively, you can restore all deleted files by downloading them from the se
         <translation>注意が必要なサーバー通知を表示する</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="169"/>
+        <location filename="../src/gui/generalsettings.cpp" line="195"/>
         <source>Show chat notification dialogs.</source>
         <translation type="unfinished"/>
     </message>
@@ -3164,6 +3055,18 @@ Alternatively, you can restore all deleted files by downloading them from the se
         <location filename="../src/gui/generalsettings.cpp" line="162"/>
         <source>You cannot disable autostart because system-wide autostart is enabled.</source>
         <translation>システム全体の自動起動が有効になっているため、自動起動を無効にすることはできません。</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.ui" line="151"/>
+        <location filename="../src/gui/generalsettings.cpp" line="327"/>
+        <source>stable</source>
+        <translation>安定板</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.ui" line="156"/>
+        <location filename="../src/gui/generalsettings.cpp" line="329"/>
+        <source>beta</source>
+        <translation>ベータ版</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="350"/>
@@ -3180,25 +3083,17 @@ Note that this selects only what pool upgrades are taken from, and that there ar
 これはアップデートをどちらのチャネルからダウンロードするのかを決めるだけで、パッケージをダウングレードすることはできないことに注意してください。その為、ベータ版から安定版へ変更しても、通常はすぐに古いパッケージに戻されるわけではありません。現在インストールされているベータ版よりも新しい安定版が出るまで待つ必要があります。</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="373"/>
+        <location filename="../src/gui/generalsettings.cpp" line="405"/>
         <source>daily</source>
         <translation>毎日</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="377"/>
+        <location filename="../src/gui/generalsettings.cpp" line="409"/>
         <source>enterprise</source>
         <translation>enterprise</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="405"/>
-        <source>- enterprise: contains stable versions for customers.
-</source>
-        <comment>description of enterprise update channel for enterprise customers</comment>
-        <translation>- enterprise: お客様向けの安定バージョンが含まれています。
-</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.cpp" line="411"/>
+        <location filename="../src/gui/generalsettings.cpp" line="437"/>
         <source>- beta: contains versions with new features that may not be tested thoroughly
 - daily: contains versions created daily only for testing and development
 
@@ -3210,22 +3105,7 @@ Downgrading versions is not possible immediately: changing from beta to stable m
 バージョンのダウングレードはすぐにはできません。ベータ版から安定版への変更は、新しい安定版を待つことを意味します。</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="411"/>
-        <source>The channel determines which upgrades will be offered to install:
-- stable: contains tested versions considered reliable
-- beta: contains versions with new features that may not be tested thoroughly
-- daily: contains versions created daily only for testing and development
-%1
-Downgrading versions is not possible immediately: changing from beta to stable means waiting for the new stable version.</source>
-        <translation>チャネルは、どのアップグレードがインストールされるかを決定します：
-- stable: テスト済みの信頼できるバージョン。
-- beta: 十分なテストが行われていない可能性のある新機能を含むバージョンが含まれます。
-- daily: テストと開発のためだけに毎日作成されるバージョンが含まれます。
-%1
-バージョンのダウングレードはすぐにはできません。ベータ版から安定版への変更は、新しい安定版を待つことを意味します。</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.cpp" line="416"/>
+        <location filename="../src/gui/generalsettings.cpp" line="442"/>
         <source>- enterprise: contains stable versions for customers.
 
 Downgrading versions is not possible immediately: changing from stable to enterprise means waiting for the new enterprise version.</source>
@@ -3235,12 +3115,12 @@ Downgrading versions is not possible immediately: changing from stable to enterp
 安定版からエンタープライズ版への変更は、新しいエンタープライズ版を待つことを意味します。</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="410"/>
+        <location filename="../src/gui/generalsettings.cpp" line="449"/>
         <source>Changing update channel?</source>
         <translation>アップデートチャネルを変更しますか?</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="424"/>
+        <location filename="../src/gui/generalsettings.cpp" line="450"/>
         <source>The channel determines which upgrades will be offered to install:
 - stable: contains tested versions considered reliable
 </source>
@@ -4409,7 +4289,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>修正日時が無効なため同期できません</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1086"/>
+        <location filename="../src/libsync/discovery.cpp" line="1090"/>
         <source>Could not upload file, because it is open in &quot;%1&quot;.</source>
         <translation>&quot;%1&quot; で開いているので、ファイルをアップロードできませんでした。</translation>
     </message>
@@ -4482,8 +4362,8 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>修正日時が無効なためメタデータの更新時にエラーが発生</translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1481"/>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1506"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1473"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1495"/>
         <source>The folder %1 cannot be made read-only: %2</source>
         <translation>フォルダ %1 を読み取り専用にできません: %2</translation>
     </message>
@@ -4605,7 +4485,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>フォルダー %1 を作成できません</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="240"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="239"/>
         <source>The folder %1 cannot be made read-only: %2</source>
         <translation>フォルダ %1 を読み取り専用にできません: %2</translation>
     </message>
@@ -4636,7 +4516,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::PropagateLocalRename</name>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="323"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="322"/>
         <source>Folder %1 cannot be renamed because of a local file or folder name clash!</source>
         <translation>ローカルファイルまたはフォルダー名が重複しているため、フォルダー%1の名前を変更できません!</translation>
     </message>
@@ -5013,6 +4893,21 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::ShareModel</name>
     <message>
+        <location filename="../src/gui/filedetails/sharemodel.cpp" line="515"/>
+        <source>%1 days</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/filedetails/sharemodel.cpp" line="517"/>
+        <source>1 day</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/filedetails/sharemodel.cpp" line="518"/>
+        <source>Today</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="692"/>
         <source>Secure file drop link</source>
         <translation>セキュアファイルドロップリンク</translation>
@@ -5038,7 +4933,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>セキュアなファイルドロップ</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/sharemodel.cpp" line="915"/>
+        <location filename="../src/gui/filedetails/sharemodel.cpp" line="951"/>
         <source>Could not find local folder for %1</source>
         <translation>%1 のローカルフォルダが見つかりませんでした</translation>
     </message>
@@ -5178,14 +5073,14 @@ Server replied with error: %2</source>
         <translation>公開リンクのコピー</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1234"/>
-        <source>Encrypt</source>
-        <translation>暗号化</translation>
-    </message>
-    <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1189"/>
         <source>Copy secure filedrop link</source>
         <translation>セキュアファイルドロップリンク</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1234"/>
+        <source>Encrypt</source>
+        <translation>暗号化</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1245"/>
@@ -5209,14 +5104,14 @@ Server replied with error: %2</source>
         <translation><numerusform>%1 分で期限切れ</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1369"/>
-        <source>Edit</source>
-        <translation>編集</translation>
-    </message>
-    <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1371"/>
         <source>Open in browser</source>
         <translation>ブラウザーで開く</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1369"/>
+        <source>Edit</source>
+        <translation>編集</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1398"/>
@@ -5673,7 +5568,7 @@ Server replied with error: %2</source>
         <translation>&lt;p&gt;%1 デスクトップクライアント&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="597"/>
+        <location filename="../src/libsync/theme.cpp" line="599"/>
         <source>&lt;p&gt;%1 Desktop Client&lt;/p&gt;&lt;p&gt;Version %1. For more information please click &lt;a href=&apos;%2&apos;&gt;here&lt;/a&gt;.&lt;/p&gt;</source>
         <extracomment>Example text: &quot;&lt;p&gt;Nextcloud Desktop Client&lt;/p&gt;&quot; (%1 is the application name)</extracomment>
         <translation>&lt;p&gt;%1 デスクトップクライアント&lt;/p&gt;&lt;p&gt;バージョン %1. 詳細については &lt;a href=&apos;%2&apos;&gt;ここ&lt;/a&gt;をクリックしてください。&lt;/p&gt;</translation>
@@ -5684,7 +5579,7 @@ Server replied with error: %2</source>
         <translation>&lt;p&gt;&lt;small&gt;仮想ファイルシステムプラグインを利用：%1&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="614"/>
+        <location filename="../src/libsync/theme.cpp" line="616"/>
         <source>&lt;p&gt;%1 desktop client %2&lt;/p&gt;</source>
         <extracomment>Example text: &quot;&lt;p&gt;Nextcloud Desktop Client&lt;/p&gt;&quot; (%1 is the application name)</extracomment>
         <translation>&lt;p&gt;%1 デスクトップクライアント %2&lt;/p&gt;</translation>
@@ -6078,12 +5973,12 @@ Server replied with error: %2</source>
         <translation>アカウント %1 のサーバーは、サポートされていない古いバージョン %2 で実行しています。サポートされていないサーバーバージョンでこのクライアントを使用することはテストされておらず、潜在的な危険をはらんでいます。ご利用は自己責任でお願いいたします。</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="293"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="283"/>
         <source>Terms of service</source>
         <translation>サービス利用規約</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="294"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="284"/>
         <source>Your account %1 requires you to accept the terms of service of your server. You will be redirected to %2 to acknowledge that you have read it and agrees with it.</source>
         <translation>アカウント %1 では、サーバの利用規約に同意する必要があります。%2にリダイレクトされ、利用規約を読み、同意したことを確認します。</translation>
     </message>
@@ -6159,23 +6054,23 @@ Server replied with error: %2</source>
         <translation>同期フォルダーが設定されていません</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="452"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="442"/>
         <source>%1: %2</source>
         <extracomment>Example text: &quot;Nextcloud: Syncing 25MB (3 minutes left)&quot; (%1 is the folder name to be synced, %2 a status message for that folder)</extracomment>
         <translation>%1: %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="456"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="446"/>
         <source>macOS VFS for %1: Sync is running.</source>
         <translation>macOS VFS for %1: 同期が実行されています。</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="459"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="449"/>
         <source>macOS VFS for %1: Last sync was successful.</source>
         <translation>macOS VFS for %1: 最後の同期に成功しました。</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="462"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="452"/>
         <source>macOS VFS for %1: A problem was encountered.</source>
         <translation>macOS VFS for %1: 問題が発生しました。</translation>
     </message>
@@ -6339,12 +6234,12 @@ Server replied with error: %2</source>
         <translation>新しいフォルダー</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="126"/>
+        <location filename="../src/gui/generalsettings.cpp" line="131"/>
         <source>Failed to create debug archive</source>
         <translation>デバッグアーカイブの作成に失敗しました</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="127"/>
+        <location filename="../src/gui/generalsettings.cpp" line="132"/>
         <source>Could not create debug archive in selected location!</source>
         <translation>選択された場所にデバッグアーカイブを作成できませんでした!</translation>
     </message>
@@ -6525,7 +6420,7 @@ Server replied with error: %2</source>
         <translation>ファイルドロップ(アップロードのみ)</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="399"/>
+        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="403"/>
         <source>Allow resharing</source>
         <translation>再共有を許可する</translation>
     </message>
@@ -6581,6 +6476,16 @@ Server replied with error: %2</source>
         <location filename="../src/gui/filedetails/ShareView.qml" line="118"/>
         <source>Share password</source>
         <translation>パスワードを共有</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/filedetails/ShareView.qml" line="157"/>
+        <source>Shared with you by %1</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/filedetails/ShareView.qml" line="163"/>
+        <source>Expires in %1</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareView.qml" line="279"/>
@@ -6643,54 +6548,6 @@ Server replied with error: %2</source>
         <location filename="../src/gui/tray/TalkReplyTextField.qml" line="52"/>
         <source>Send reply to chat message</source>
         <translation>チャットメッセージに返信</translation>
-    </message>
-</context>
-<context>
-    <name>TrayFoldersMenuButton</name>
-    <message>
-        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="55"/>
-        <source>Open local or group folders</source>
-        <translation>ローカルまたはグループフォルダを開く</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="55"/>
-        <source>Open local folder</source>
-        <translation>ローカルフォルダを開く</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="70"/>
-        <source>Connected</source>
-        <translation>接続しました</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="70"/>
-        <source>Disconnected</source>
-        <translation>切断しました</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="109"/>
-        <source>Group folder button</source>
-        <translation>グループフォルダボタン</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="184"/>
-        <source>Open local folder &quot;%1&quot;</source>
-        <translation>ローカルフォルダ &quot;%1&quot; を開く</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="184"/>
-        <source>Open group folder &quot;%1&quot;</source>
-        <translation>グループフォルダ &quot;%1&quot; を開く</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="198"/>
-        <source>Open %1 in file explorer</source>
-        <translation>ファイルエクスプローラーで %1 を開く</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="203"/>
-        <source>User group and local folders menu</source>
-        <translation>ユーザグループとローカルフォルダメニュー</translation>
     </message>
 </context>
 <context>
@@ -6977,7 +6834,7 @@ Server replied with error: %2</source>
 <context>
     <name>nextcloudTheme::aboutInfo()</name>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="577"/>
+        <location filename="../src/libsync/theme.cpp" line="579"/>
         <source>&lt;p&gt;&lt;small&gt;Built from Git revision &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; on %3, %4 using Qt %5, %6&lt;/small&gt;&lt;/p&gt;</source>
         <translation>&lt;p&gt;&lt;small&gt;Git リビジョン &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; から %3, %4 で Qt %5, %6 を使用してビルドされました&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
@@ -7380,6 +7237,54 @@ Server replied with error: %2</source>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.ui" line="69"/>
         <source>Copy link</source>
         <translation>リンクをコピー</translation>
+    </message>
+</context>
+<context>
+    <name>TrayFoldersMenuButton</name>
+    <message>
+        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="55"/>
+        <source>Open local or group folders</source>
+        <translation>ローカルまたはグループフォルダを開く</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="55"/>
+        <source>Open local folder</source>
+        <translation>ローカルフォルダを開く</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="70"/>
+        <source>Connected</source>
+        <translation>接続しました</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="70"/>
+        <source>Disconnected</source>
+        <translation>切断しました</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="109"/>
+        <source>Group folder button</source>
+        <translation>グループフォルダボタン</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="184"/>
+        <source>Open local folder &quot;%1&quot;</source>
+        <translation>ローカルフォルダ &quot;%1&quot; を開く</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="184"/>
+        <source>Open group folder &quot;%1&quot;</source>
+        <translation>グループフォルダ &quot;%1&quot; を開く</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="198"/>
+        <source>Open %1 in file explorer</source>
+        <translation>ファイルエクスプローラーで %1 を開く</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="203"/>
+        <source>User group and local folders menu</source>
+        <translation>ユーザグループとローカルフォルダメニュー</translation>
     </message>
 </context>
 <context>
