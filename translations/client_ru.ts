@@ -167,6 +167,66 @@
     </message>
 </context>
 <context>
+    <name>CurrentAccountHeaderButton</name>
+    <message>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="36"/>
+        <source>Current account</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="42"/>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="116"/>
+        <source>Resume sync for all</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="42"/>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="116"/>
+        <source>Pause sync for all</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="95"/>
+        <source>Add account</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="99"/>
+        <source>Add new account</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="122"/>
+        <source>Settings</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="133"/>
+        <source>Exit</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="161"/>
+        <source>Current account avatar</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="187"/>
+        <source>Current account status is online</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="187"/>
+        <source>Current account status is do not disturb</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="258"/>
+        <source>Account switcher and settings menu</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>EditFileLocallyLoadingDialog</name>
     <message>
         <location filename="../src/gui/tray/EditFileLocallyLoadingDialog.qml" line="95"/>
@@ -442,6 +502,11 @@
         <translation>Создать учётную запись</translation>
     </message>
     <message>
+        <location filename="../src/gui/tray/MainWindow.qml" line="770"/>
+        <source>Unified search results list</source>
+        <translation>Единый список результатов поиска</translation>
+    </message>
+    <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="384"/>
         <source>Settings</source>
         <translation>Настройки</translation>
@@ -455,6 +520,11 @@
         <location filename="../src/gui/tray/MainWindow.qml" line="435"/>
         <source>Current account avatar</source>
         <translation>Текущее изображение учётной записи</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/MainWindow.qml" line="833"/>
+        <source>New activities</source>
+        <translation>Новые события</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/MainWindow.qml" line="474"/>
@@ -485,16 +555,6 @@
         <location filename="../src/gui/tray/MainWindow.qml" line="644"/>
         <source>Open %1 in browser</source>
         <translation>Открыть «%1» в браузере</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="770"/>
-        <source>Unified search results list</source>
-        <translation>Единый список результатов поиска</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="833"/>
-        <source>New activities</source>
-        <translation>Новые события</translation>
     </message>
 </context>
 <context>
@@ -2875,20 +2935,10 @@ Alternatively, you can restore all deleted files by downloading them from the se
 <context>
     <name>OCC::GeneralSettings</name>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="221"/>
-        <source>Advanced</source>
-        <translation>Дополнительно</translation>
-    </message>
-    <message>
         <location filename="../src/gui/generalsettings.ui" line="20"/>
         <location filename="../src/gui/generalsettings.ui" line="32"/>
         <source>About</source>
         <translation>О программе</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.ui" line="33"/>
-        <source>Ask for confirmation before synchronizing new folders larger than</source>
-        <translation>Запрашивать подтверждение синхронизации папок размером более</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="41"/>
@@ -2896,15 +2946,9 @@ Alternatively, you can restore all deleted files by downloading them from the se
         <translation>Официальное уведомление</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="249"/>
-        <source>MB</source>
-        <extracomment>Trailing part of &quot;Ask confirmation before syncing folder larger than&quot; </extracomment>
-        <translation>МБ</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.ui" line="75"/>
-        <source>Use &amp;Monochrome Icons</source>
-        <translation>Использовать чё&amp;рно-белые значки</translation>
+        <location filename="../src/gui/generalsettings.ui" line="66"/>
+        <source>General Settings</source>
+        <translation>Основные настройки</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="82"/>
@@ -2912,19 +2956,29 @@ Alternatively, you can restore all deleted files by downloading them from the se
         <translation>&amp;Запускать при входе в систему</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="89"/>
-        <source>Show Server &amp;Notifications</source>
-        <translation>Показывать &amp;уведомления, полученные с сервера</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.ui" line="96"/>
-        <source>Notify when synchronised folders grow larger than specified limit</source>
-        <translation>Уведомлять о превышении заданного максимального размера папок</translation>
-    </message>
-    <message>
         <location filename="../src/gui/generalsettings.ui" line="96"/>
         <source>Show Call Notifications</source>
         <translation>Показывать уведомления о вызовах</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.ui" line="72"/>
+        <source>For System Tray</source>
+        <translation>Чёрно-белые значки с системном лотке</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.ui" line="75"/>
+        <source>Use &amp;Monochrome Icons</source>
+        <translation>Использовать чё&amp;рно-белые значки</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.ui" line="96"/>
+        <source>Show Chat Notifications</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.ui" line="89"/>
+        <source>Show Server &amp;Notifications</source>
+        <translation>Показывать &amp;уведомления, полученные с сервера</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="106"/>
@@ -2937,14 +2991,57 @@ Alternatively, you can restore all deleted files by downloading them from the se
         <translation>Проверять наличие о&amp;бновлений</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="123"/>
-        <source>Automatically disable synchronisation of folders that overcome limit</source>
-        <translation>Автоматически отключать синхронизацию папок, размер которых превысил заданный лимит</translation>
-    </message>
-    <message>
         <location filename="../src/gui/generalsettings.ui" line="134"/>
         <source>&amp;Channel</source>
         <translation>&amp;Канал</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.ui" line="151"/>
+        <location filename="../src/gui/generalsettings.cpp" line="327"/>
+        <source>stable</source>
+        <translation>стабильный</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.ui" line="156"/>
+        <location filename="../src/gui/generalsettings.cpp" line="329"/>
+        <source>beta</source>
+        <translation>бета</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.ui" line="183"/>
+        <source>&amp;Restart &amp;&amp; Update</source>
+        <translation>&amp;Перезапуск и обновление</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.ui" line="198"/>
+        <source>&amp;Check for Update now</source>
+        <translation>&amp;Проверить наличие обновлений</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.ui" line="221"/>
+        <source>Advanced</source>
+        <translation>Дополнительно</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.ui" line="33"/>
+        <source>Ask for confirmation before synchronizing new folders larger than</source>
+        <translation>Запрашивать подтверждение синхронизации папок размером более</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.ui" line="249"/>
+        <source>MB</source>
+        <extracomment>Trailing part of &quot;Ask confirmation before syncing folder larger than&quot; </extracomment>
+        <translation>МБ</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.ui" line="96"/>
+        <source>Notify when synchronised folders grow larger than specified limit</source>
+        <translation>Уведомлять о превышении заданного максимального размера папок</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.ui" line="123"/>
+        <source>Automatically disable synchronisation of folders that overcome limit</source>
+        <translation>Автоматически отключать синхронизацию папок, размер которых превысил заданный лимит</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="273"/>
@@ -2978,11 +3075,6 @@ Alternatively, you can restore all deleted files by downloading them from the se
         <translation>Создать архив с отладочными данными</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="198"/>
-        <source>&amp;Check for Update now</source>
-        <translation>&amp;Проверить наличие обновлений</translation>
-    </message>
-    <message>
         <location filename="../src/gui/generalsettings.ui" line="218"/>
         <source>Info</source>
         <translation>Информация</translation>
@@ -3003,9 +3095,9 @@ Alternatively, you can restore all deleted files by downloading them from the se
         <translation>Канал обновлений</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="183"/>
-        <source>&amp;Restart &amp;&amp; Update</source>
-        <translation>&amp;Перезапуск и обновление</translation>
+        <location filename="../src/gui/generalsettings.ui" line="284"/>
+        <source>Show sync folders in &amp;Explorer&apos;s Navigation Pane</source>
+        <translation>Показывать синхронизируемые папки в панели навигации &amp;Проводника</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="301"/>
@@ -3026,21 +3118,6 @@ Alternatively, you can restore all deleted files by downloading them from the se
         <location filename="../src/gui/generalsettings.ui" line="351"/>
         <source>Legal Notice</source>
         <translation>Официальное уведомление</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.ui" line="66"/>
-        <source>General Settings</source>
-        <translation>Основные настройки</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.ui" line="72"/>
-        <source>For System Tray</source>
-        <translation>Чёрно-белые значки с системном лотке</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.ui" line="284"/>
-        <source>Show sync folders in &amp;Explorer&apos;s Navigation Pane</source>
-        <translation>Показывать синхронизируемые папки в панели навигации &amp;Проводника</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="398"/>
@@ -3068,6 +3145,11 @@ Alternatively, you can restore all deleted files by downloading them from the se
         <translation>Требующие внимания уведомления, полученные с сервера.</translation>
     </message>
     <message>
+        <location filename="../src/gui/generalsettings.cpp" line="169"/>
+        <source>Show chat notification dialogs.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/generalsettings.cpp" line="148"/>
         <source>Show call notification dialogs.</source>
         <translation>Показывать диалог уведомления о вызове.</translation>
@@ -3076,18 +3158,6 @@ Alternatively, you can restore all deleted files by downloading them from the se
         <location filename="../src/gui/generalsettings.cpp" line="162"/>
         <source>You cannot disable autostart because system-wide autostart is enabled.</source>
         <translation>Автоматический запуск не может быть отключен, т.к. он настроен на уровне системы.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.ui" line="151"/>
-        <location filename="../src/gui/generalsettings.cpp" line="327"/>
-        <source>stable</source>
-        <translation>стабильный</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.ui" line="156"/>
-        <location filename="../src/gui/generalsettings.cpp" line="329"/>
-        <source>beta</source>
-        <translation>бета</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="350"/>
@@ -3115,15 +3185,6 @@ Note that this selects only what pool upgrades are taken from, and that there ar
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="405"/>
-        <source>- beta: contains versions with new features that may not be tested thoroughly
-- daily: contains versions created daily only for testing and development
-
-Downgrading versions is not possible immediately: changing from beta to stable means waiting for the new stable version.</source>
-        <comment>list of available update channels to non enterprise users and downgrading warning</comment>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.cpp" line="405"/>
         <source>- enterprise: contains stable versions for customers.
 </source>
         <comment>description of enterprise update channel for enterprise customers</comment>
@@ -3131,17 +3192,13 @@ Downgrading versions is not possible immediately: changing from beta to stable m
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="410"/>
-        <source>- enterprise: contains stable versions for customers.
+        <location filename="../src/gui/generalsettings.cpp" line="411"/>
+        <source>- beta: contains versions with new features that may not be tested thoroughly
+- daily: contains versions created daily only for testing and development
 
-Downgrading versions is not possible immediately: changing from stable to enterprise means waiting for the new enterprise version.</source>
-        <comment>list of available update channels to enterprise users and downgrading warning</comment>
+Downgrading versions is not possible immediately: changing from beta to stable means waiting for the new stable version.</source>
+        <comment>list of available update channels to non enterprise users and downgrading warning</comment>
         <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.cpp" line="410"/>
-        <source>Changing update channel?</source>
-        <translation>Сменить канал обновлений?</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="411"/>
@@ -3159,7 +3216,20 @@ Downgrading versions is not possible immediately: changing from beta to stable m
 Понижение версии невозможно немедленно: переход с beta на stable означает ожидание новой стабильной версии.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="418"/>
+        <location filename="../src/gui/generalsettings.cpp" line="416"/>
+        <source>- enterprise: contains stable versions for customers.
+
+Downgrading versions is not possible immediately: changing from stable to enterprise means waiting for the new enterprise version.</source>
+        <comment>list of available update channels to enterprise users and downgrading warning</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.cpp" line="410"/>
+        <source>Changing update channel?</source>
+        <translation>Сменить канал обновлений?</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.cpp" line="424"/>
         <source>The channel determines which upgrades will be offered to install:
 - stable: contains tested versions considered reliable
 </source>
@@ -5080,6 +5150,11 @@ Server replied with error: %2</source>
         <translation>Повторная публикация этой папки не разрешена</translation>
     </message>
     <message>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1197"/>
+        <source>Copy internal link</source>
+        <translation>Скопировать внутреннюю ссылку</translation>
+    </message>
+    <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1183"/>
         <source>Copy secure file drop link</source>
         <translation>Скопировать защищенную ссылку для удаления файла</translation>
@@ -5091,19 +5166,14 @@ Server replied with error: %2</source>
         <translation>Скопировать общедоступную ссылку</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1189"/>
-        <source>Copy secure filedrop link</source>
-        <translation>Скопировать защищенную ссылку для удаления файла</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1197"/>
-        <source>Copy internal link</source>
-        <translation>Скопировать внутреннюю ссылку</translation>
-    </message>
-    <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1234"/>
         <source>Encrypt</source>
         <translation>Зашифровать</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1189"/>
+        <source>Copy secure filedrop link</source>
+        <translation>Скопировать защищенную ссылку для удаления файла</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1245"/>
@@ -6389,11 +6459,6 @@ Server replied with error: %2</source>
         <translation>Создать новую общую ссылку</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/ShareDelegate.qml" line="195"/>
-        <source>Copy share link location</source>
-        <translation>Скопировать адрес общей ссылки</translation>
-    </message>
-    <message>
         <location filename="../src/gui/filedetails/ShareDelegate.qml" line="197"/>
         <source>Copied!</source>
         <translation>Скопировано!</translation>
@@ -6402,6 +6467,11 @@ Server replied with error: %2</source>
         <location filename="../src/gui/filedetails/ShareDelegate.qml" line="244"/>
         <source>Share options</source>
         <translation>Настройки доступа</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/filedetails/ShareDelegate.qml" line="195"/>
+        <source>Copy share link location</source>
+        <translation>Скопировать адрес общей ссылки</translation>
     </message>
 </context>
 <context>
@@ -6612,11 +6682,37 @@ Server replied with error: %2</source>
     </message>
 </context>
 <context>
+    <name>TrayWindowHeader</name>
+    <message>
+        <location filename="../src/gui/tray/TrayWindowHeader.qml" line="72"/>
+        <source>Open local or group folders</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/TrayWindowHeader.qml" line="107"/>
+        <source>More apps</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/TrayWindowHeader.qml" line="131"/>
+        <source>Open %1 in browser</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>UnifiedSearchInputContainer</name>
     <message>
         <location filename="../src/gui/tray/UnifiedSearchInputContainer.qml" line="43"/>
         <source>Search files, messages, events …</source>
         <translation>Поиск файлов, сообщений, событий…</translation>
+    </message>
+</context>
+<context>
+    <name>UnifiedSearchPlaceholderView</name>
+    <message>
+        <location filename="../src/gui/tray/UnifiedSearchPlaceholderView.qml" line="39"/>
+        <source>Start typing to search</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
