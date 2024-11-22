@@ -276,11 +276,16 @@ private:
     void buildUserList();
 };
 
-class ImageProvider : public QQuickImageProvider
+class ImageProvider : public QQuickAsyncImageProvider
 {
+    Q_OBJECT
+
 public:
-    ImageProvider();
-    QImage requestImage(const QString &id, QSize *size, const QSize &requestedSize) override;
+    ImageProvider() = default;
+    QQuickImageResponse *requestImageResponse(const QString &id, const QSize &requestedSize) override;
+
+private:
+    QThreadPool _pool;
 };
 
 class UserAppsModel : public QAbstractListModel

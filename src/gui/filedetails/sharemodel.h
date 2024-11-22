@@ -38,6 +38,11 @@ class ShareModel : public QAbstractListModel
     Q_PROPERTY(bool hasInitialShareFetchCompleted READ hasInitialShareFetchCompleted NOTIFY hasInitialShareFetchCompletedChanged)
     Q_PROPERTY(bool serverAllowsResharing READ serverAllowsResharing NOTIFY serverAllowsResharingChanged)
     Q_PROPERTY(QVariantList sharees READ sharees NOTIFY shareesChanged)
+    Q_PROPERTY(bool displayShareOwner READ displayShareOwner NOTIFY displayShareOwnerChanged)
+    Q_PROPERTY(QString shareOwnerDisplayName READ shareOwnerDisplayName NOTIFY shareOwnerDisplayNameChanged)
+    Q_PROPERTY(QString shareOwnerAvatar READ shareOwnerAvatar NOTIFY shareOwnerAvatarChanged)
+    Q_PROPERTY(bool sharedWithMeExpires READ sharedWithMeExpires NOTIFY sharedWithMeExpiresChanged)
+    Q_PROPERTY(QString sharedWithMeRemainingTimeString READ sharedWithMeRemainingTimeString NOTIFY sharedWithMeRemainingTimeStringChanged)
 
 public:
     enum Roles {
@@ -126,6 +131,12 @@ public:
 
     [[nodiscard]] QVariantList sharees() const;
 
+    [[nodiscard]] bool displayShareOwner() const;
+    [[nodiscard]] QString shareOwnerDisplayName() const;
+    [[nodiscard]] QString shareOwnerAvatar() const;
+    [[nodiscard]] bool sharedWithMeExpires() const;
+    [[nodiscard]] QString sharedWithMeRemainingTimeString() const;
+
     [[nodiscard]] Q_INVOKABLE static QString generatePassword();
 
 signals:
@@ -143,6 +154,11 @@ signals:
     void shareesChanged();
     void internalLinkReady();
     void serverAllowsResharingChanged();
+    void displayShareOwnerChanged();
+    void shareOwnerDisplayNameChanged();
+    void shareOwnerAvatarChanged();
+    void sharedWithMeExpiresChanged();
+    void sharedWithMeRemainingTimeStringChanged();
 
     void serverError(const int code, const QString &message) const;
     void passwordSetError(const QString &shareId, const int code, const QString &message);
@@ -246,6 +262,11 @@ private:
     SyncJournalFileLockInfo _filelockState;
     QString _privateLinkUrl;
     QByteArray _fileRemoteId;
+    bool _displayShareOwner = false;
+    QString _shareOwnerDisplayName;
+    QString _shareOwnerAvatar;
+    bool _sharedWithMeExpires = false;
+    QString _sharedWithMeRemainingTimeString;
 
     QSharedPointer<ShareManager> _manager;
 
