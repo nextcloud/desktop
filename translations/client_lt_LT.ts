@@ -188,22 +188,22 @@
     <message>
         <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="95"/>
         <source>Add account</source>
-        <translation type="unfinished"/>
+        <translation>Pridėti paskyrą</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="99"/>
         <source>Add new account</source>
-        <translation type="unfinished"/>
+        <translation>Pridėti naują paskyrą</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="122"/>
         <source>Settings</source>
-        <translation type="unfinished"/>
+        <translation>Nustatymai</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="133"/>
         <source>Exit</source>
-        <translation type="unfinished"/>
+        <translation>Išeiti</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="161"/>

@@ -171,59 +171,59 @@
     <message>
         <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="36"/>
         <source>Current account</source>
-        <translation type="unfinished"/>
+        <translation>目前的帳戶</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="42"/>
         <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="116"/>
         <source>Resume sync for all</source>
-        <translation type="unfinished"/>
+        <translation>為所有項目恢復同步</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="42"/>
         <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="116"/>
         <source>Pause sync for all</source>
-        <translation type="unfinished"/>
+        <translation>暫停所有同步</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="95"/>
         <source>Add account</source>
-        <translation type="unfinished"/>
+        <translation>添加帳戶</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="99"/>
         <source>Add new account</source>
-        <translation type="unfinished"/>
+        <translation>添加新帳戶</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="122"/>
         <source>Settings</source>
-        <translation type="unfinished"/>
+        <translation>設定</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="133"/>
         <source>Exit</source>
-        <translation type="unfinished"/>
+        <translation>退出</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="161"/>
         <source>Current account avatar</source>
-        <translation type="unfinished"/>
+        <translation>目前的帳戶虛擬化身</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="187"/>
         <source>Current account status is online</source>
-        <translation type="unfinished"/>
+        <translation>目前帳戶狀態為在線</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="187"/>
         <source>Current account status is do not disturb</source>
-        <translation type="unfinished"/>
+        <translation>目前帳戶狀態為請勿打擾</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="258"/>
         <source>Account switcher and settings menu</source>
-        <translation type="unfinished"/>
+        <translation>帳戶切換器和設置選項單</translation>
     </message>
 </context>
 <context>
@@ -2902,7 +2902,7 @@ Alternatively, you can restore all deleted files by downloading them from the se
     <message>
         <location filename="../src/gui/generalsettings.ui" line="50"/>
         <source>Show Chat Notifications</source>
-        <translation type="unfinished"/>
+        <translation>顯示聊天通告</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="89"/>
@@ -3044,7 +3044,7 @@ Alternatively, you can restore all deleted files by downloading them from the se
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="195"/>
         <source>Show chat notification dialogs.</source>
-        <translation type="unfinished"/>
+        <translation>顯示聊天通告對話框。</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="148"/>
@@ -4897,17 +4897,17 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="515"/>
         <source>%1 days</source>
-        <translation type="unfinished"/>
+        <translation>%1 天</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="517"/>
         <source>1 day</source>
-        <translation type="unfinished"/>
+        <translation>1 日</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="518"/>
         <source>Today</source>
-        <translation type="unfinished"/>
+        <translation>今日</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="692"/>
@@ -6482,12 +6482,12 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/filedetails/ShareView.qml" line="157"/>
         <source>Shared with you by %1</source>
-        <translation type="unfinished"/>
+        <translation>%1 已與您分享</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareView.qml" line="163"/>
         <source>Expires in %1</source>
-        <translation type="unfinished"/>
+        <translation>於 %1 過期</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareView.qml" line="279"/>
@@ -6557,17 +6557,17 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/TrayWindowHeader.qml" line="72"/>
         <source>Open local or group folders</source>
-        <translation type="unfinished"/>
+        <translation>打開近端或群組資料夾</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/TrayWindowHeader.qml" line="107"/>
         <source>More apps</source>
-        <translation type="unfinished"/>
+        <translation>更多應用程式</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/TrayWindowHeader.qml" line="131"/>
         <source>Open %1 in browser</source>
-        <translation type="unfinished"/>
+        <translation>瀏覽器中開啟 %1</translation>
     </message>
 </context>
 <context>
@@ -6583,7 +6583,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/UnifiedSearchPlaceholderView.qml" line="39"/>
         <source>Start typing to search</source>
-        <translation type="unfinished"/>
+        <translation>開始輸入文字以搜尋</translation>
     </message>
 </context>
 <context>

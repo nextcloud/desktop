@@ -4894,17 +4894,17 @@ Dies ist ein neuer, experimenteller Modus. Wenn Sie sich entscheiden, ihn zu ver
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="515"/>
         <source>%1 days</source>
-        <translation type="unfinished"/>
+        <translation>%1 Tage</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="517"/>
         <source>1 day</source>
-        <translation type="unfinished"/>
+        <translation>1 Tag</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="518"/>
         <source>Today</source>
-        <translation type="unfinished"/>
+        <translation>Heute</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="692"/>
@@ -6479,12 +6479,12 @@ Server antwortete mit Fehler: %2</translation>
     <message>
         <location filename="../src/gui/filedetails/ShareView.qml" line="157"/>
         <source>Shared with you by %1</source>
-        <translation type="unfinished"/>
+        <translation>Geteilt mit Ihnen von %1</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareView.qml" line="163"/>
         <source>Expires in %1</source>
-        <translation type="unfinished"/>
+        <translation>Läuft ab in %1</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareView.qml" line="279"/>

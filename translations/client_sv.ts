@@ -171,59 +171,59 @@
     <message>
         <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="36"/>
         <source>Current account</source>
-        <translation type="unfinished"/>
+        <translation>Nuvarande konto</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="42"/>
         <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="116"/>
         <source>Resume sync for all</source>
-        <translation type="unfinished"/>
+        <translation>Återuppta synkronisering för alla</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="42"/>
         <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="116"/>
         <source>Pause sync for all</source>
-        <translation type="unfinished"/>
+        <translation>Pausa synkronisering för alla</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="95"/>
         <source>Add account</source>
-        <translation type="unfinished"/>
+        <translation>Lägg till konto</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="99"/>
         <source>Add new account</source>
-        <translation type="unfinished"/>
+        <translation>Lägg till nytt konto</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="122"/>
         <source>Settings</source>
-        <translation type="unfinished"/>
+        <translation>Inställningar</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="133"/>
         <source>Exit</source>
-        <translation type="unfinished"/>
+        <translation>Avsluta</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="161"/>
         <source>Current account avatar</source>
-        <translation type="unfinished"/>
+        <translation>Avatar för aktuellt konto</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="187"/>
         <source>Current account status is online</source>
-        <translation type="unfinished"/>
+        <translation>Aktuell kontostatus är online</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="187"/>
         <source>Current account status is do not disturb</source>
-        <translation type="unfinished"/>
+        <translation>Aktuell kontostatus är stör ej</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="258"/>
         <source>Account switcher and settings menu</source>
-        <translation type="unfinished"/>
+        <translation>Kontobytare och inställningsmeny</translation>
     </message>
 </context>
 <context>
@@ -2901,7 +2901,7 @@ Alternativt kan du återställa alla raderade filer genom att ladda ner dem frå
     <message>
         <location filename="../src/gui/generalsettings.ui" line="50"/>
         <source>Show Chat Notifications</source>
-        <translation type="unfinished"/>
+        <translation>Visa chattaviseringar</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="89"/>
@@ -3043,7 +3043,7 @@ Alternativt kan du återställa alla raderade filer genom att ladda ner dem frå
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="195"/>
         <source>Show chat notification dialogs.</source>
-        <translation type="unfinished"/>
+        <translation>Visa dialogrutor för chattaviseringar.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="148"/>
@@ -4896,17 +4896,17 @@ Detta är ett nytt experimentellt läge. Om du bestämmer dig för att använda 
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="515"/>
         <source>%1 days</source>
-        <translation type="unfinished"/>
+        <translation>%1 dagar</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="517"/>
         <source>1 day</source>
-        <translation type="unfinished"/>
+        <translation>1 dag</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="518"/>
         <source>Today</source>
-        <translation type="unfinished"/>
+        <translation>Idag</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="692"/>
@@ -6481,12 +6481,12 @@ Servern svarade med fel: %2</translation>
     <message>
         <location filename="../src/gui/filedetails/ShareView.qml" line="157"/>
         <source>Shared with you by %1</source>
-        <translation type="unfinished"/>
+        <translation>Delad med dig av %1</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareView.qml" line="163"/>
         <source>Expires in %1</source>
-        <translation type="unfinished"/>
+        <translation>Går ut om %1</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareView.qml" line="279"/>
@@ -6556,17 +6556,17 @@ Servern svarade med fel: %2</translation>
     <message>
         <location filename="../src/gui/tray/TrayWindowHeader.qml" line="72"/>
         <source>Open local or group folders</source>
-        <translation type="unfinished"/>
+        <translation>Öppna lokala eller gruppmappar</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/TrayWindowHeader.qml" line="107"/>
         <source>More apps</source>
-        <translation type="unfinished"/>
+        <translation>Fler appar</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/TrayWindowHeader.qml" line="131"/>
         <source>Open %1 in browser</source>
-        <translation type="unfinished"/>
+        <translation>Öppna %1 i webbläsare</translation>
     </message>
 </context>
 <context>
@@ -6582,7 +6582,7 @@ Servern svarade med fel: %2</translation>
     <message>
         <location filename="../src/gui/tray/UnifiedSearchPlaceholderView.qml" line="39"/>
         <source>Start typing to search</source>
-        <translation type="unfinished"/>
+        <translation>Börja skriva för att söka</translation>
     </message>
 </context>
 <context>
