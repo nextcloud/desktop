@@ -964,13 +964,10 @@ QColor Theme::defaultColor()
     return QColor{NEXTCLOUD_BACKGROUND_COLOR};
 }
 
-void Theme::connectToPaletteSignal()
+void Theme::connectToPaletteSignal() const
 {
-    if (!_paletteSignalsConnected) {
-        if (const auto ptr = qobject_cast<QGuiApplication*>(qApp)) {
-            connect(ptr->styleHints(), &QStyleHints::colorSchemeChanged, this, &Theme::darkModeChanged);
-            _paletteSignalsConnected = true;
-        }
+    if (const auto ptr = qobject_cast<QGuiApplication*>(qApp)) {
+        connect(ptr->styleHints(), &QStyleHints::colorSchemeChanged, this, &Theme::darkModeChanged, Qt::UniqueConnection);
     }
 }
 
