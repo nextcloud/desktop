@@ -1010,6 +1010,7 @@ QVariantMap Theme::systemPalette() const
 
 bool Theme::darkMode() const
 {
+    connectToPaletteSignal();
     const auto isDarkFromStyle = [] {
         switch (qGuiApp->styleHints()->colorScheme())
         {
