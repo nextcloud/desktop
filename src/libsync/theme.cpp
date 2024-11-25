@@ -398,8 +398,9 @@ Theme::Theme()
                                 QColor(127, 127, 127));
     reserveDarkPalette.setColor(QPalette::Disabled, QPalette::WindowText,
                                 QColor(127, 127, 127));
-    connectToPaletteSignal();
 #endif
+
+    connectToPaletteSignal();
 
 #ifdef APPLICATION_SERVER_URL_ENFORCE
     _forceOverrideServerUrl = true;
