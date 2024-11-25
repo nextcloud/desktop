@@ -398,8 +398,9 @@ Theme::Theme()
                                 QColor(127, 127, 127));
     reserveDarkPalette.setColor(QPalette::Disabled, QPalette::WindowText,
                                 QColor(127, 127, 127));
-    connectToPaletteSignal();
 #endif
+
+    connectToPaletteSignal();
 
 #ifdef APPLICATION_SERVER_URL_ENFORCE
     _forceOverrideServerUrl = true;
@@ -964,13 +965,10 @@ QColor Theme::defaultColor()
     return QColor{NEXTCLOUD_BACKGROUND_COLOR};
 }
 
-void Theme::connectToPaletteSignal()
+void Theme::connectToPaletteSignal() const
 {
-    if (!_paletteSignalsConnected) {
-        if (const auto ptr = qobject_cast<QGuiApplication*>(qApp)) {
-            connect(ptr->styleHints(), &QStyleHints::colorSchemeChanged, this, &Theme::darkModeChanged);
-            _paletteSignalsConnected = true;
-        }
+    if (const auto ptr = qobject_cast<QGuiApplication*>(qApp)) {
+        connect(ptr->styleHints(), &QStyleHints::colorSchemeChanged, this, &Theme::darkModeChanged, Qt::UniqueConnection);
     }
 }
 
@@ -1012,6 +1010,7 @@ QVariantMap Theme::systemPalette() const
 
 bool Theme::darkMode() const
 {
+    connectToPaletteSignal();
     const auto isDarkFromStyle = [] {
         switch (qGuiApp->styleHints()->colorScheme())
         {
