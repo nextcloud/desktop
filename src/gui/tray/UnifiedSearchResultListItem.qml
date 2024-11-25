@@ -56,9 +56,9 @@ MouseArea {
             anchors.fill: parent
             title: model.resultTitle
             subline: model.subline
-            icons: Theme.darkMode ? model.darkIcons : model.lightIcons
-            iconsIsThumbnail: Theme.darkMode ? model.darkIconsIsThumbnail : model.lightIconsIsThumbnail
-            iconPlaceholder: Theme.darkMode ? model.darkImagePlaceholder : model.lightImagePlaceholder
+            icons: Style.darkMode ? model.darkIcons : model.lightIcons
+            iconsIsThumbnail: Style.darkMode ? model.darkIconsIsThumbnail : model.lightIconsIsThumbnail
+            iconPlaceholder: Style.darkMode ? model.darkImagePlaceholder : model.lightImagePlaceholder
             isRounded: model.isRounded && iconsIsThumbnail
         }
     }
