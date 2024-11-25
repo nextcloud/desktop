@@ -779,11 +779,11 @@ QString ShareModel::iconUrlForShare(const SharePtr &share) const
 
     switch(share->getShareType()) {
     case Share::TypeInternalLink:
-        return QString(iconsPath + QStringLiteral("externalLink.svg"));
+        return QString(iconsPath + QStringLiteral("public.svg"));
     case Share::TypePlaceholderLink:
     case Share::TypeSecureFileDropPlaceholderLink:
     case Share::TypeLink:
-        return QString(iconsPath + QStringLiteral("link.svg"));
+        return QString(iconsPath + QStringLiteral("public.svg"));
     case Share::TypeEmail:
         return QString(iconsPath + QStringLiteral("email.svg"));
     case Share::TypeRoom:
