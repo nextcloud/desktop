@@ -163,7 +163,7 @@ ApplicationWindow {
                     cache: true
 
                     source: root.usingUserAvatar ? root.talkNotificationData.userAvatar :
-                                                   Theme.darkMode ? root.talkIcon + palette.windowText : root.talkIcon + Style.ncBlue
+                                                   Style.darkMode ? root.talkIcon + palette.windowText : root.talkIcon + Style.ncBlue
                     sourceSize.width: Style.accountAvatarSize
                     sourceSize.height: Style.accountAvatarSize
 

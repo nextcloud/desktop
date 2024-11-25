@@ -639,14 +639,13 @@ private:
     Theme &operator=(Theme const &);
 
     void updateMultipleOverrideServers();
-    void connectToPaletteSignal();
+    void connectToPaletteSignal() const;
 #if defined(Q_OS_WIN)
     QPalette reserveDarkPalette; // Windows 11 button and window dark colours
 #endif
 
     static Theme *_instance;
     bool _mono = false;
-    bool _paletteSignalsConnected = false;
 
     QString _overrideServerUrl;
     bool _forceOverrideServerUrl = false;
