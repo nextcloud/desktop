@@ -281,12 +281,12 @@
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderEvictionDialog.qml" line="33"/>
         <source>Evict materialised files</source>
-        <translation type="unfinished"/>
+        <translation>Materializált fájlok kilakoltatása</translation>
     </message>
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderEvictionDialog.qml" line="49"/>
         <source>Materialised items</source>
-        <translation type="unfinished"/>
+        <translation>Materializált elemek</translation>
     </message>
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderEvictionDialog.qml" line="57"/>
@@ -304,7 +304,7 @@
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderFastEnumerationSettings.qml" line="52"/>
         <source>Fast sync will only sync changes in files and folders within folders that have been explored. This can significantly increase responsiveness on initial configuration of virtual files. However, it will cause redundant downloads of files moved to an unexplored folder. </source>
-        <translation type="unfinished"/>
+        <translation>A gyors szinkronizálás csak a feltárt mappákon belüli fájlok és mappák változásait szinkronizálja. Ez jelentősen növelheti a reakciókészséget a virtuális fájlok kezdeti konfigurálásakor, azonban a még fel nem tárt mappába áthelyezett fájlok redundáns letöltését okozza.</translation>
     </message>
 </context>
 <context>
@@ -340,7 +340,7 @@
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="153"/>
         <source>Signal file provider domain</source>
-        <translation type="unfinished"/>
+        <translation>Jelző fájlszolgáltatói tartomány</translation>
     </message>
 </context>
 <context>
@@ -353,12 +353,12 @@
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderStorageInfo.qml" line="49"/>
         <source>%1 GB of %2 GB remote files synced</source>
-        <translation type="unfinished"/>
+        <translation>%1 GB/%2 GB távoli fájl szinkronizálva</translation>
     </message>
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderStorageInfo.qml" line="59"/>
         <source>Evict local copies...</source>
-        <translation type="unfinished"/>
+        <translation>Helyi másolatok kilakoltatása…</translation>
     </message>
 </context>
 <context>
@@ -529,13 +529,15 @@ Megpróbálja importálni a fiókot?</translation>
         <location filename="../src/gui/accountmanager.cpp" line="214"/>
         <source>%1 accounts were detected from a legacy desktop client.
 Should the accounts be imported?</source>
-        <translation type="unfinished"/>
+        <translation>%1 fiók észlelve egy régi asztali ügyfélről.
+Be kell importálni a fiókokat?</translation>
     </message>
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="216"/>
         <source>1 account was detected from a legacy desktop client.
 Should the account be imported?</source>
-        <translation type="unfinished"/>
+        <translation>1 fiók észlelve egy régi asztali ügyfélről.
+Be kell importálni a fiókot?</translation>
     </message>
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="186"/>
@@ -653,7 +655,8 @@ Should the account be imported?</source>
         <location filename="../src/gui/accountsettings.cpp" line="123"/>
         <source>This will encrypt your folder and all files within it. These files will no longer be accessible without your encryption mnemonic key. 
 &lt;b&gt;This process is not reversible. Are you sure you want to proceed?&lt;/b&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Ez titkosítja a mappát és a benne lévő összes fájlt. Ezek a fájlok többé nem lesznek elérhetők a titkosítási emlékeztető kulcs nélkül. 
+&lt;b&gt;Ez a folyamat nem visszafordítható. Biztos, hogy folytatni szeretné?&lt;/b&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="232"/>
@@ -683,17 +686,17 @@ Should the account be imported?</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="386"/>
         <source>Please wait for the folder to sync before trying to encrypt it.</source>
-        <translation type="unfinished"/>
+        <translation>Kérjük, várja meg a mappa szinkronizálását, mielőtt megpróbálná titkosítani.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="388"/>
         <source>The folder has a minor sync problem. Encryption of this folder will be possible once it has synced successfully</source>
-        <translation type="unfinished"/>
+        <translation>A mappának van egy kisebb szinkronizálási problémája. A mappa titkosítása a sikeres szinkronizálás után lesz lehetséges.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="390"/>
         <source>The folder has a sync error. Encryption of this folder will be possible once it has synced successfully</source>
-        <translation type="unfinished"/>
+        <translation>A mappának szinkronizálási hibája van. A mappa titkosítása a sikeres szinkronizálás után lesz lehetséges.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="341"/>
@@ -924,7 +927,7 @@ Ez a művelet megszakítja a jelenleg futó szinkronizálást.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1237"/>
         <source>Server %1 is currently being redirected, or your connection is behind a captive portal.</source>
-        <translation type="unfinished"/>
+        <translation>A(z) %1 kiszolgálót jelenleg átirányítják, vagy a kapcsolatod egy foglyul ejtett portál mögött van.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1240"/>
@@ -949,7 +952,7 @@ Ez a művelet megszakítja a jelenleg futó szinkronizálást.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1309"/>
         <source>Unable to connect to %1.</source>
-        <translation type="unfinished"/>
+        <translation>Nem lehetséges a csatlakozás a következőhöz: %1.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1264"/>
@@ -984,7 +987,7 @@ Ez a művelet megszakítja a jelenleg futó szinkronizálást.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1606"/>
         <source>There are folders that have grown in size beyond %1MB: %2</source>
-        <translation type="unfinished"/>
+        <translation>Vannak olyan mappák, amelyek mérete meghaladta a(z) %1 MB-ot: %2</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1577"/>
@@ -1070,7 +1073,7 @@ Ez a művelet megszakítja a jelenleg futó szinkronizálást.</translation>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="176"/>
         <source>Need the user to accept the terms of service</source>
-        <translation type="unfinished"/>
+        <translation>A felhasználónak el kell fogadnia a felhasználási feltételeket</translation>
     </message>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="166"/>
@@ -1215,7 +1218,8 @@ Ez a művelet megszakítja a jelenleg futó szinkronizálást.</translation>
         <source>Imported %1 and %2 from a legacy desktop client.
 %3</source>
         <comment>number of accounts and folders imported. list of users.</comment>
-        <translation type="unfinished"/>
+        <translation>%1 és %2 importálva egy régi asztali kliensből.
+%3</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="394"/>
@@ -1679,12 +1683,12 @@ Ez a művelet megszakítja a jelenleg futó szinkronizálást.</translation>
         <location filename="../src/libsync/discoveryphase.cpp" line="688"/>
         <location filename="../src/libsync/discoveryphase.cpp" line="725"/>
         <source>Encrypted metadata setup error!</source>
-        <translation type="unfinished"/>
+        <translation>Titkosított metaadatok beállítási hibája!</translation>
     </message>
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="712"/>
         <source>Encrypted metadata setup error: initial signature from server is empty.</source>
-        <translation type="unfinished"/>
+        <translation>Titkosított metaadatok beállítási hibája: a kiszolgáló kezdeti aláírása üres.</translation>
     </message>
 </context>
 <context>
@@ -2186,7 +2190,8 @@ Ezt a problémát valószínűleg az OpenSSL programkönyvtárakban kell keresni
         <location filename="../src/gui/folder.cpp" line="1404"/>
         <source>A folder has surpassed the set folder size limit of %1MB: %2.
 %3</source>
-        <translation type="unfinished"/>
+        <translation>Egy mappa túllépte a beállított %1 MB-os mappamérethatárt: %2.
+%3</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1411"/>
@@ -2236,7 +2241,7 @@ Ha ez véletlen volt, és úgy dönt, hogy megtartja ezeket a fájlokat, akkor �
     <message>
         <location filename="../src/gui/folder.cpp" line="1434"/>
         <source>The folder %1 has surpassed the set folder size limit of %2MB.</source>
-        <translation type="unfinished"/>
+        <translation>A mappa túllépte a beállított %2MB-os mappamérethatárt: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1435"/>
