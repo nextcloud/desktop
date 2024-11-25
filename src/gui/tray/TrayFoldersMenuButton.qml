@@ -11,6 +11,7 @@
  * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
  * for more details.
  */
+pragma NativeMethodBehavior: AcceptThisObject
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts

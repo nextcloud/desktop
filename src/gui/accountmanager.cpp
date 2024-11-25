@@ -123,7 +123,7 @@ AccountManager::AccountsRestoreResult AccountManager::restore(const bool alsoRes
             if (const auto acc = loadAccountHelper(*settings)) {
                 acc->_id = accountId;
                 const auto accState = new AccountState(acc);
-                const auto jar = qobject_cast<CookieJar*>(acc->_am->cookieJar());
+                const auto jar = qobject_cast<CookieJar*>(acc->_networkAccessManager->cookieJar());
                 Q_ASSERT(jar);
                 if (jar) {
                     jar->restore(acc->cookieJarPath());
@@ -305,12 +305,12 @@ void AccountManager::save(bool saveCredentials)
     qCInfo(lcAccountManager) << "Saved all account settings, status:" << settings->status();
 }
 
-void AccountManager::saveAccount(Account *a)
+void AccountManager::saveAccount(Account *newAccountData)
 {
-    qCDebug(lcAccountManager) << "Saving account" << a->url().toString();
+    qCDebug(lcAccountManager) << "Saving account" << newAccountData->url().toString();
     const auto settings = ConfigFile::settingsWithGroup(QLatin1String(accountsC));
-    settings->beginGroup(a->id());
-    saveAccountHelper(a, *settings, false); // don't save credentials they might not have been loaded yet
+    settings->beginGroup(newAccountData->id());
+    saveAccountHelper(newAccountData, *settings, false); // don't save credentials they might not have been loaded yet
     settings->endGroup();
 
     settings->sync();
@@ -328,36 +328,36 @@ void AccountManager::saveAccountState(AccountState *a)
     qCDebug(lcAccountManager) << "Saved account state settings, status:" << settings->status();
 }
 
-void AccountManager::saveAccountHelper(Account *acc, QSettings &settings, bool saveCredentials)
+void AccountManager::saveAccountHelper(Account *account, QSettings &settings, bool saveCredentials)
 {
     qCDebug(lcAccountManager) << "Saving settings to" << settings.fileName();
     settings.setValue(QLatin1String(versionC), maxAccountVersion);
-    settings.setValue(QLatin1String(urlC), acc->_url.toString());
-    settings.setValue(QLatin1String(davUserC), acc->_davUser);
-    settings.setValue(QLatin1String(displayNameC), acc->_displayName);
-    settings.setValue(QLatin1String(serverVersionC), acc->_serverVersion);
-    settings.setValue(QLatin1String(serverColorC), acc->_serverColor);
-    settings.setValue(QLatin1String(serverTextColorC), acc->_serverTextColor);
-    settings.setValue(QLatin1String(serverHasValidSubscriptionC), acc->serverHasValidSubscription());
+    settings.setValue(QLatin1String(urlC), account->_url.toString());
+    settings.setValue(QLatin1String(davUserC), account->_davUser);
+    settings.setValue(QLatin1String(displayNameC), account->davDisplayName());
+    settings.setValue(QLatin1String(serverVersionC), account->_serverVersion);
+    settings.setValue(QLatin1String(serverColorC), account->_serverColor);
+    settings.setValue(QLatin1String(serverTextColorC), account->_serverTextColor);
+    settings.setValue(QLatin1String(serverHasValidSubscriptionC), account->serverHasValidSubscription());
 
-    if (!acc->_skipE2eeMetadataChecksumValidation) {
+    if (!account->_skipE2eeMetadataChecksumValidation) {
         settings.remove(QLatin1String(skipE2eeMetadataChecksumValidationC));
     } else {
-        settings.setValue(QLatin1String(skipE2eeMetadataChecksumValidationC), acc->_skipE2eeMetadataChecksumValidation);
+        settings.setValue(QLatin1String(skipE2eeMetadataChecksumValidationC), account->_skipE2eeMetadataChecksumValidation);
     }
-    settings.setValue(networkProxySettingC, static_cast<std::underlying_type_t<Account::AccountNetworkProxySetting>>(acc->networkProxySetting()));
-    settings.setValue(networkProxyTypeC, acc->proxyType());
-    settings.setValue(networkProxyHostNameC, acc->proxyHostName());
-    settings.setValue(networkProxyPortC, acc->proxyPort());
-    settings.setValue(networkProxyNeedsAuthC, acc->proxyNeedsAuth());
-    settings.setValue(networkProxyUserC, acc->proxyUser());
-    settings.setValue(networkUploadLimitSettingC, static_cast<std::underlying_type_t<Account::AccountNetworkTransferLimitSetting>>(acc->uploadLimitSetting()));
-    settings.setValue(networkDownloadLimitSettingC, static_cast<std::underlying_type_t<Account::AccountNetworkTransferLimitSetting>>(acc->downloadLimitSetting()));
-    settings.setValue(networkUploadLimitC, acc->uploadLimit());
-    settings.setValue(networkDownloadLimitC, acc->downloadLimit());
+    settings.setValue(networkProxySettingC, static_cast<std::underlying_type_t<Account::AccountNetworkProxySetting>>(account->networkProxySetting()));
+    settings.setValue(networkProxyTypeC, account->proxyType());
+    settings.setValue(networkProxyHostNameC, account->proxyHostName());
+    settings.setValue(networkProxyPortC, account->proxyPort());
+    settings.setValue(networkProxyNeedsAuthC, account->proxyNeedsAuth());
+    settings.setValue(networkProxyUserC, account->proxyUser());
+    settings.setValue(networkUploadLimitSettingC, static_cast<std::underlying_type_t<Account::AccountNetworkTransferLimitSetting>>(account->uploadLimitSetting()));
+    settings.setValue(networkDownloadLimitSettingC, static_cast<std::underlying_type_t<Account::AccountNetworkTransferLimitSetting>>(account->downloadLimitSetting()));
+    settings.setValue(networkUploadLimitC, account->uploadLimit());
+    settings.setValue(networkDownloadLimitC, account->downloadLimit());
 
-    const auto proxyPasswordKey = QString(acc->userIdAtHostWithPort() + networkProxyPasswordKeychainKeySuffixC);
-    if (const auto proxyPassword = acc->proxyPassword(); proxyPassword.isEmpty()) {
+    const auto proxyPasswordKey = QString(account->userIdAtHostWithPort() + networkProxyPasswordKeychainKeySuffixC);
+    if (const auto proxyPassword = account->proxyPassword(); proxyPassword.isEmpty()) {
         const auto job = new QKeychain::DeletePasswordJob(Theme::instance()->appName(), this);
         job->setKey(proxyPasswordKey);
         connect(job, &QKeychain::Job::finished, this, [](const QKeychain::Job *const incomingJob) {
@@ -384,27 +384,27 @@ void AccountManager::saveAccountHelper(Account *acc, QSettings &settings, bool s
         job->start();
     }
 
-    if (acc->_credentials) {
+    if (account->_credentials) {
         if (saveCredentials) {
             // Only persist the credentials if the parameter is set, on migration from 1.8.x
             // we want to save the accounts but not overwrite the credentials
             // (This is easier than asynchronously fetching the credentials from keychain and then
             // re-persisting them)
-            acc->_credentials->persist();
+            account->_credentials->persist();
         }
 
-        const auto settingsMapKeys = acc->_settingsMap.keys();
+        const auto settingsMapKeys = account->_settingsMap.keys();
         for (const auto &key : settingsMapKeys) {
-            if (!acc->_settingsMap.value(key).isValid()) {
+            if (!account->_settingsMap.value(key).isValid()) {
                 continue;
             }
 
-            settings.setValue(key, acc->_settingsMap.value(key));
+            settings.setValue(key, account->_settingsMap.value(key));
         }
-        settings.setValue(QLatin1String(authTypeC), acc->_credentials->authType());
+        settings.setValue(QLatin1String(authTypeC), account->_credentials->authType());
 
         // HACK: Save http_user also as user
-        const auto settingsMap = acc->_settingsMap;
+        const auto settingsMap = account->_settingsMap;
         if (settingsMap.contains(httpUserC) && settingsMap.value(httpUserC).isValid()) {
             settings.setValue(userC, settingsMap.value(httpUserC));
         }
@@ -412,9 +412,9 @@ void AccountManager::saveAccountHelper(Account *acc, QSettings &settings, bool s
 
     // Save accepted certificates.
     settings.beginGroup(QLatin1String(generalC));
-    qCInfo(lcAccountManager) << "Saving " << acc->approvedCerts().count() << " unknown certs.";
+    qCInfo(lcAccountManager) << "Saving " << account->approvedCerts().count() << " unknown certs.";
     QByteArray certs;
-    const auto approvedCerts = acc->approvedCerts();
+    const auto approvedCerts = account->approvedCerts();
     for (const auto &cert : approvedCerts) {
         certs += cert.toPem() + '\n';
     }
@@ -424,13 +424,13 @@ void AccountManager::saveAccountHelper(Account *acc, QSettings &settings, bool s
     settings.endGroup();
 
     // Save cookies.
-    if (acc->_am) {
-        auto *jar = qobject_cast<CookieJar *>(acc->_am->cookieJar());
+    if (account->_networkAccessManager) {
+        const auto jar = qobject_cast<CookieJar *>(account->_networkAccessManager->cookieJar());
         if (jar) {
-            qCInfo(lcAccountManager) << "Saving cookies." << acc->cookieJarPath();
-            if (!jar->save(acc->cookieJarPath()))
+            qCInfo(lcAccountManager) << "Saving cookies." << account->cookieJarPath();
+            if (!jar->save(account->cookieJarPath()))
             {
-                qCWarning(lcAccountManager) << "Failed to save cookies to" << acc->cookieJarPath();
+                qCWarning(lcAccountManager) << "Failed to save cookies to" << account->cookieJarPath();
             }
         }
     }
@@ -498,7 +498,7 @@ AccountPtr AccountManager::loadAccountHelper(QSettings &settings)
     acc->_davUser = settings.value(QLatin1String(davUserC)).toString();
 
     acc->_settingsMap.insert(QLatin1String(userC), settings.value(userC));
-    acc->_displayName = settings.value(QLatin1String(displayNameC), "").toString();
+    acc->setDavDisplayName(settings.value(QLatin1String(displayNameC), "").toString());
     const QString authTypePrefix = authType + "_";
     const auto settingsChildKeys = settings.childKeys();
     for (const auto &key : settingsChildKeys) {
