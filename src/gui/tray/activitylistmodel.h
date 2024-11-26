@@ -51,8 +51,7 @@ class ActivityListModel : public QAbstractListModel
 
 public:
     enum DataRole {
-        DarkIconRole = Qt::UserRole + 1,
-        LightIconRole,
+        IconRole = Qt::UserRole + 1,
         AccountRole,
         ObjectTypeRole,
         ObjectIdRole,
