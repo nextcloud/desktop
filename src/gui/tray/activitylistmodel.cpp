@@ -65,8 +65,7 @@ QHash<int, QByteArray> ActivityListModel::roleNames() const
     roles[LinkRole] = "link";
     roles[MessageRole] = "message";
     roles[ActionRole] = "type";
-    roles[DarkIconRole] = "darkIcon";
-    roles[LightIconRole] = "lightIcon";
+    roles[IconRole] = "icon";
     roles[ActionTextRole] = "subject";
     roles[ActionsLinksRole] = "links";
     roles[ActionsLinksContextMenuRole] = "linksContextMenu";
@@ -288,10 +287,8 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
         return ActivityListModel::convertLinksToActionButtons(a);
     }
 
-    case DarkIconRole:
-    case LightIconRole: {
+    case IconRole:
         return generateIconPath();
-    }
     case ObjectTypeRole:
         return a._objectType;
     case ObjectIdRole:
