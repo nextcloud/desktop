@@ -225,7 +225,7 @@ ApplicationWindow {
         }
     }
 
-    Item {
+    Rectangle {
         id: trayWindowMainItem
 
         property bool isUnifiedSearchActive: unifiedSearchResultsListViewSkeletonLoader.active
@@ -238,6 +238,8 @@ ApplicationWindow {
         anchors.margins: Style.trayWindowBorderWidth
         clip: true
 
+        radius: Systray.useNormalWindow ? 0.0 : Style.trayWindowRadius
+        color: palette.base
         Accessible.role: Accessible.Grouping
         Accessible.name: qsTr("Nextcloud desktop main dialog")
 
