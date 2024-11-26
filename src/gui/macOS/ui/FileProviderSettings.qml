@@ -25,7 +25,7 @@ import com.nextcloud.desktopclient 1.0
 Page {
     id: root
 
-    property bool showBorder: true
+    property bool showBorder: false
     property var controller: FileProviderSettingsController
     property string accountUserIdAtHost: ""
 
