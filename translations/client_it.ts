@@ -465,17 +465,17 @@
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="239"/>
+        <location filename="../src/gui/tray/MainWindow.qml" line="238"/>
         <source>Nextcloud desktop main dialog</source>
         <translation>Finestra di dialogo principale del desktop Nextcloud</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="376"/>
+        <location filename="../src/gui/tray/MainWindow.qml" line="375"/>
         <source>Unified search results list</source>
         <translation>Elenco dei risultati di ricerca unificato</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="440"/>
+        <location filename="../src/gui/tray/MainWindow.qml" line="439"/>
         <source>New activities</source>
         <translation>Nuove attività</translation>
     </message>
@@ -5560,7 +5560,7 @@ Il server ha risposto con errore: %2</translation>
         <translation>&lt;p&gt;Client desktop di %1&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="599"/>
+        <location filename="../src/libsync/theme.cpp" line="600"/>
         <source>&lt;p&gt;%1 Desktop Client&lt;/p&gt;&lt;p&gt;Version %1. For more information please click &lt;a href=&apos;%2&apos;&gt;here&lt;/a&gt;.&lt;/p&gt;</source>
         <extracomment>Example text: &quot;&lt;p&gt;Nextcloud Desktop Client&lt;/p&gt;&quot; (%1 is the application name)</extracomment>
         <translation>&lt;p&gt;%1 Client Desktop&lt;/p&gt;&lt;p&gt;Versione %1. Per maggiori informazioni clicca &lt;a href=&apos;%2&apos;&gt;qui&lt;/a&gt;.&lt;/p&gt;</translation>
@@ -5571,7 +5571,7 @@ Il server ha risposto con errore: %2</translation>
         <translation>&lt;p&gt;&lt;small&gt;Usato il plugin dei file virtuali: %1&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="616"/>
+        <location filename="../src/libsync/theme.cpp" line="617"/>
         <source>&lt;p&gt;%1 desktop client %2&lt;/p&gt;</source>
         <extracomment>Example text: &quot;&lt;p&gt;Nextcloud Desktop Client&lt;/p&gt;&quot; (%1 is the application name)</extracomment>
         <translation>&lt;p&gt;%1 Client desktop %2&lt;/p&gt;</translation>
@@ -6826,7 +6826,7 @@ Il server ha risposto con errore: %2</translation>
 <context>
     <name>nextcloudTheme::aboutInfo()</name>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="579"/>
+        <location filename="../src/libsync/theme.cpp" line="580"/>
         <source>&lt;p&gt;&lt;small&gt;Built from Git revision &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; on %3, %4 using Qt %5, %6&lt;/small&gt;&lt;/p&gt;</source>
         <translation>&lt;p&gt;&lt;small&gt;Realizzato dalla revisione Git &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; su %3, %4 usando Qt %5, %6&lt;/small&gt;&lt;/p&gt;</translation>
     </message>

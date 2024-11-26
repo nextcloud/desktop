@@ -465,17 +465,17 @@
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="239"/>
+        <location filename="../src/gui/tray/MainWindow.qml" line="238"/>
         <source>Nextcloud desktop main dialog</source>
         <translation>Nextcloud 桌面主要對話方塊</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="376"/>
+        <location filename="../src/gui/tray/MainWindow.qml" line="375"/>
         <source>Unified search results list</source>
         <translation>統一搜尋結果清單</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="440"/>
+        <location filename="../src/gui/tray/MainWindow.qml" line="439"/>
         <source>New activities</source>
         <translation>新活動</translation>
     </message>
@@ -5569,7 +5569,7 @@ Server replied with error: %2</source>
         <translation>&lt;p&gt;%1 桌面版客戶端&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="599"/>
+        <location filename="../src/libsync/theme.cpp" line="600"/>
         <source>&lt;p&gt;%1 Desktop Client&lt;/p&gt;&lt;p&gt;Version %1. For more information please click &lt;a href=&apos;%2&apos;&gt;here&lt;/a&gt;.&lt;/p&gt;</source>
         <extracomment>Example text: &quot;&lt;p&gt;Nextcloud Desktop Client&lt;/p&gt;&quot; (%1 is the application name)</extracomment>
         <translation>&lt;p&gt;%1 桌面用戶端&lt;/p&gt;&lt;p&gt;版本 %1。若要了解更多資訊，請點擊&lt;a href=&apos;%2&apos;&gt;這裡&lt;/a&gt;。&lt;/p&gt;</translation>
@@ -5580,7 +5580,7 @@ Server replied with error: %2</source>
         <translation>&lt;p&gt;&lt;small&gt;正在使用虛擬檔案插入式元件：%1&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="616"/>
+        <location filename="../src/libsync/theme.cpp" line="617"/>
         <source>&lt;p&gt;%1 desktop client %2&lt;/p&gt;</source>
         <extracomment>Example text: &quot;&lt;p&gt;Nextcloud Desktop Client&lt;/p&gt;&quot; (%1 is the application name)</extracomment>
         <translation>&lt;p&gt;%1 桌面用戶端 %2&lt;/p&gt;</translation>
@@ -6835,7 +6835,7 @@ Server replied with error: %2</source>
 <context>
     <name>nextcloudTheme::aboutInfo()</name>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="579"/>
+        <location filename="../src/libsync/theme.cpp" line="580"/>
         <source>&lt;p&gt;&lt;small&gt;Built from Git revision &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; on %3, %4 using Qt %5, %6&lt;/small&gt;&lt;/p&gt;</source>
         <translation>&lt;p&gt;&lt;small&gt;根據 Git 修訂版本 &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; 於 %3 %4 建置，使用 Qt %5、%6&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
