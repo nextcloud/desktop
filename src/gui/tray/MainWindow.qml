@@ -67,7 +67,7 @@ ApplicationWindow {
         radius: Systray.useNormalWindow ? 0.0 : Style.trayWindowRadius
         border.width: Style.trayWindowBorderWidth
         border.color: palette.dark
-        color: palette.base
+        color: palette.window
     }
 
     Connections {
@@ -240,6 +240,7 @@ ApplicationWindow {
 
         radius: Systray.useNormalWindow ? 0.0 : Style.trayWindowRadius
         color: palette.base
+
         Accessible.role: Accessible.Grouping
         Accessible.name: qsTr("Nextcloud desktop main dialog")
 
