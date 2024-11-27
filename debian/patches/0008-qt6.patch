@@ -1,3 +1,16 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 351b3eaa0..b226eb79f 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -24,7 +24,7 @@ set(BIN_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
+ include(${CMAKE_SOURCE_DIR}/NEXTCLOUD.cmake)
+ 
+ set(QT_VERSION_MAJOR "6")
+-set(REQUIRED_QT_VERSION "6.7.0")
++set(REQUIRED_QT_VERSION "6.2.4")
+ 
+ # CfAPI Shell Extensions
+ set( CFAPI_SHELL_EXTENSIONS_LIB_NAME CfApiShellExtensions )
 diff --git a/shell_integration/libcloudproviders/CMakeLists.txt b/shell_integration/libcloudproviders/CMakeLists.txt
 index 02035d863..ba2438305 100644
 --- a/shell_integration/libcloudproviders/CMakeLists.txt
@@ -32,7 +45,7 @@ index fe9d4d9af..f61132e7a 100644
  
  if(NOT TOKEN_AUTH_ONLY)
 diff --git a/src/gui/CMakeLists.txt b/src/gui/CMakeLists.txt
-index 845066977..793a12d33 100644
+index 9660bfb7e..7133e74de 100644
 --- a/src/gui/CMakeLists.txt
 +++ b/src/gui/CMakeLists.txt
 @@ -3,7 +3,7 @@ find_package(Qt${QT_MAJOR_VERSION} REQUIRED COMPONENTS Widgets Svg Qml Quick Qui
@@ -44,8 +57,21 @@ index 845066977..793a12d33 100644
      message(FATAL_ERROR "Could not find GuiPrivate component of Qt. It might be shipped as a separate package, please check that.")
  endif()
  
+diff --git a/src/gui/application.cpp b/src/gui/application.cpp
+index 9569c8bc1..91063de44 100644
+--- a/src/gui/application.cpp
++++ b/src/gui/application.cpp
+@@ -969,7 +969,7 @@ QString substLang(const QString &lang)
+ void Application::setupTranslations()
+ {
+     const auto enforcedLocale = Theme::instance()->enforcedLocale();
+-    const auto lang = substLang(!enforcedLocale.isEmpty() ? enforcedLocale : QLocale::system().uiLanguages(QLocale::TagSeparator::Underscore).first());
++    const auto lang = substLang(!enforcedLocale.isEmpty() ? enforcedLocale : QLocale::system().name());
+ 
+     auto *translator = new QTranslator(this);
+     auto *qtTranslator = new QTranslator(this);
 diff --git a/src/libsync/theme.cpp b/src/libsync/theme.cpp
-index 11c8982bf..c48cf625e 100644
+index a77aa4450..fde10245e 100644
 --- a/src/libsync/theme.cpp
 +++ b/src/libsync/theme.cpp
 @@ -25,8 +25,6 @@
@@ -57,38 +83,50 @@ index 11c8982bf..c48cf625e 100644
  #include <QSslSocket>
  #include <QSvgRenderer>
  #include <QPainter>
-@@ -928,7 +926,7 @@ void Theme::connectToPaletteSignal()
+@@ -968,7 +966,7 @@ QColor Theme::defaultColor()
+ void Theme::connectToPaletteSignal() const
  {
-     if (!_paletteSignalsConnected) {
-         if (const auto ptr = qobject_cast<QGuiApplication *>(QGuiApplication::instance())) {
--            connect(ptr->styleHints(), &QStyleHints::colorSchemeChanged, this, &Theme::darkModeChanged);
-+            connect(ptr, &QGuiApplication::paletteChanged, this, &Theme::darkModeChanged);
-             _paletteSignalsConnected = true;
-         }
+     if (const auto ptr = qobject_cast<QGuiApplication*>(qApp)) {
+-        connect(ptr->styleHints(), &QStyleHints::colorSchemeChanged, this, &Theme::darkModeChanged, Qt::UniqueConnection);
++        connect(ptr, &QGuiApplication::paletteChanged, this, &Theme::darkModeChanged);
      }
-@@ -937,17 +935,18 @@ void Theme::connectToPaletteSignal()
- bool Theme::darkMode()
+ }
+ 
+@@ -1011,29 +1009,18 @@ QVariantMap Theme::systemPalette() const
+ bool Theme::darkMode() const
  {
      connectToPaletteSignal();
--    switch (qGuiApp->styleHints()->colorScheme())
--    {
--    case Qt::ColorScheme::Dark:
+-    const auto isDarkFromStyle = [] {
+-        switch (qGuiApp->styleHints()->colorScheme())
+-        {
+-        case Qt::ColorScheme::Dark:
+-            return true;
+-        case Qt::ColorScheme::Light:
+-            return false;
+-        case Qt::ColorScheme::Unknown:
+-            return Theme::isDarkColor(QGuiApplication::palette().window().color());
+-        }
+-
+-        return false;
+-    };
+-
+-#ifdef Q_OS_WIN
+-    static const auto darkModeSubkey = QStringLiteral("Software\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize");
+-    if (!isWindows11OrGreater() &&
+-        Utility::registryKeyExists(HKEY_CURRENT_USER, darkModeSubkey) &&
 +// Windows: Check registry for dark mode
 +#if defined(Q_OS_WIN)
 +    const auto darkModeSubkey = QStringLiteral("Software\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize");
 +    if (Utility::registryKeyExists(HKEY_CURRENT_USER, darkModeSubkey) &&
-+        !Utility::registryGetKeyValue(HKEY_CURRENT_USER, darkModeSubkey, QStringLiteral("AppsUseLightTheme")).toBool()) {
+         !Utility::registryGetKeyValue(HKEY_CURRENT_USER, darkModeSubkey, QStringLiteral("AppsUseLightTheme")).toBool()) {
          return true;
--    case Qt::ColorScheme::Light:
--        return false;
--    case Qt::ColorScheme::Unknown:
--        return Theme::isDarkColor(QGuiApplication::palette().window().color());
      }
- 
-     return false;
++
++    return false;
 +#else
 +    return Theme::isDarkColor(QGuiApplication::palette().window().color());
-+#endif
+ #endif
+-    return isDarkFromStyle();
  }
  
  void Theme::setOverrideServerUrl(const QString &overrideServerUrl)
