@@ -532,7 +532,10 @@ qint64 UploadDevice::readData(char *data, qint64 maxlen)
     }
 
     auto c = _file.read(data, maxlen);
-    if (c < 0) {
+    if (c == 0) {
+        setErrorString({});
+        return c;
+    } else if (c < 0) {
         setErrorString(_file.errorString());
         return -1;
     }
