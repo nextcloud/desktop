@@ -215,19 +215,6 @@ System requirements
 - Microsoft Visual Studio 2022 and tools to compile C++
 - `KDE Craft <https://community.kde.org/Craft>`_
 
-Setting up Microsoft Visual Studio
-----------------------------------
-
-1. Click on 'Modify' in the Visual Studio Installer:
-
-  .. image:: ./images/building/visual-studio-installer.png
-    :alt: Visual Studio Installer
-
-2. Select 'Desktop development with C++'
-
-  .. image:: ./images/building/desktop-development-with-cpp.png
-    :alt: Desktop development with C++
-
 Handling the dependencies 
 -------------------------
 We handle the dependencies using `KDE Craft <https://community.kde.org/Craft>`_ because it is easy to set it up and it makes the maintenance much more reliable in all platforms.
