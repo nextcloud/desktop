@@ -170,7 +170,7 @@ bool ChecksumCalculator::addChunk(const QByteArray &chunk, const qint64 size)
     } else {
         Q_ASSERT(_cryptographicHash);
         if (_cryptographicHash) {
-            _cryptographicHash->addData(chunk.data(), size);
+            _cryptographicHash->addData(chunk);
             return true;
         }
     }
