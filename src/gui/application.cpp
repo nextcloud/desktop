@@ -588,7 +588,8 @@ AccountManager::AccountsRestoreResult Application::restoreLegacyAccount()
                 tr("There was an error while accessing the configuration "
                    "file at %1. Please make sure the file can be accessed by your system account.")
                     .arg(ConfigFile().configFile()),
-                tr("Quit %1").arg(Theme::instance()->appNameGUI()));
+                QMessageBox::Ok
+            );
             QTimer::singleShot(0, qApp, &QCoreApplication::quit);
         }
     }
