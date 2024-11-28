@@ -514,7 +514,7 @@ void EditLocallyJob::lockFile(const QString &etag)
 
 void EditLocallyJob::disconnectFolderSignals()
 {
-    for (const auto &connection : qAsConst(_folderConnections)) {
+    for (const auto &connection : std::as_const(_folderConnections)) {
         disconnect(connection);
     }
 }

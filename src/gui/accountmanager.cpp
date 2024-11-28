@@ -306,7 +306,7 @@ void AccountManager::save(bool saveCredentials)
 {
     const auto settings = ConfigFile::settingsWithGroup(QLatin1String(accountsC));
     settings->setValue(QLatin1String(versionC), maxAccountsVersion);
-    for (const auto &acc : qAsConst(_accounts)) {
+    for (const auto &acc : std::as_const(_accounts)) {
         settings->beginGroup(acc->account()->id());
         saveAccountHelper(acc->account().data(), *settings, saveCredentials);
         settings->endGroup();
