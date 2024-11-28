@@ -151,17 +151,17 @@ static inline uint32_t c_jhash(const uint8_t *k, uint32_t length, uint32_t initv
    c += length;
    /* all the case statements fall through */
    switch(len) {
-     case 11: c+=((uint32_t)k[10]<<24);
-     case 10: c+=((uint32_t)k[9]<<16);
-     case 9 : c+=((uint32_t)k[8]<<8);
+     case 11: c+=((uint32_t)k[10]<<24); Q_FALLTHROUGH();
+     case 10: c+=((uint32_t)k[9]<<16); Q_FALLTHROUGH();
+     case 9 : c+=((uint32_t)k[8]<<8); Q_FALLTHROUGH();
      /* the first byte of c is reserved for the length */
-     case 8 : b+=((uint32_t)k[7]<<24);
-     case 7 : b+=((uint32_t)k[6]<<16);
-     case 6 : b+=((uint32_t)k[5]<<8);
-     case 5 : b+=k[4];
-     case 4 : a+=((uint32_t)k[3]<<24);
-     case 3 : a+=((uint32_t)k[2]<<16);
-     case 2 : a+=((uint32_t)k[1]<<8);
+     case 8 : b+=((uint32_t)k[7]<<24); Q_FALLTHROUGH();
+     case 7 : b+=((uint32_t)k[6]<<16); Q_FALLTHROUGH();
+     case 6 : b+=((uint32_t)k[5]<<8); Q_FALLTHROUGH();
+     case 5 : b+=k[4]; Q_FALLTHROUGH();
+     case 4 : a+=((uint32_t)k[3]<<24); Q_FALLTHROUGH();
+     case 3 : a+=((uint32_t)k[2]<<16); Q_FALLTHROUGH();
+     case 2 : a+=((uint32_t)k[1]<<8); Q_FALLTHROUGH();
      case 1 : a+=k[0];
      /* case 0: nothing left to add */
    }
