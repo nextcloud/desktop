@@ -293,7 +293,7 @@ ColumnLayout {
                 wrapMode: Text.Wrap
             }
 
-            BasicComboBox {
+            ComboBox {
                 id: clearComboBox
 
                 Layout.fillWidth: true
