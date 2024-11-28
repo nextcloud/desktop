@@ -412,7 +412,7 @@ bool SqlQuery::nullValue(int index)
 
 QString SqlQuery::stringValue(int index)
 {
-    return QString::fromUtf16(static_cast<const ushort *>(sqlite3_column_text16(_stmt, index)));
+    return QString::fromUtf16(static_cast<const char16_t *>(sqlite3_column_text16(_stmt, index)));
 }
 
 int SqlQuery::intValue(int index)
