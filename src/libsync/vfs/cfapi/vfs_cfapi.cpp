@@ -354,7 +354,7 @@ Vfs::AvailabilityResult VfsCfApi::availability(const QString &folderPath, const 
             break;
         };
         return VfsItemAvailability::Mixed;
-    } else {
+    } else if (basePinState) {
         const auto hydrationAndPinStates = computeRecursiveHydrationAndPinStates(folderPath, basePinState);
 
         const auto pin = hydrationAndPinStates.pinState;
@@ -381,6 +381,8 @@ Vfs::AvailabilityResult VfsCfApi::availability(const QString &folderPath, const 
                 return VfsItemAvailability::AllDehydrated;
             }
         }
+        return AvailabilityError::NoSuchItem;
+    } else {
         return AvailabilityError::NoSuchItem;
     }
 }
