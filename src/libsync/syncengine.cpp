@@ -1205,8 +1205,8 @@ bool SyncEngine::wasFileTouched(const QString &fn) const
     // Start from the end (most recent) and look for our path. Check the time just in case.
     auto begin = _touchedFiles.constBegin();
     for (auto it = _touchedFiles.constEnd(); it != begin; --it) {
-        if ((it-1).value() == fn)
-            return std::chrono::milliseconds((it-1).key().elapsed()) <= s_touchedFilesMaxAgeMs;
+        if (const auto prevIt = std::prev(it); prevIt.value() == fn)
+            return std::chrono::milliseconds(prevIt.key().elapsed()) <= s_touchedFilesMaxAgeMs;
     }
     return false;
 }
