@@ -199,7 +199,7 @@ bool Application::configVersionMigration()
         settings->endGroup();
 
         // Wipe confusing keys from the future, ignore the others
-        for (const auto &badKey : qAsConst(deleteKeys)) {
+        for (const auto &badKey : std::as_const(deleteKeys)) {
             settings->remove(badKey);
         }
     }

@@ -292,7 +292,7 @@ void SyncEngine::conflictRecordMaintenance()
     //
     // This happens when the conflicts table is new or when conflict files
     // are downloaded but the server doesn't send conflict headers.
-    for (const auto &path : qAsConst(_seenConflictFiles)) {
+    for (const auto &path : std::as_const(_seenConflictFiles)) {
         ASSERT(Utility::isConflictFile(path));
 
         auto bapath = path.toUtf8();
@@ -964,7 +964,7 @@ void SyncEngine::restoreOldFiles(SyncFileItemVector &syncItems)
        upload the client file. But we still downloaded the old file in a conflict file just in case
     */
 
-    for (const auto &syncItem : qAsConst(syncItems)) {
+    for (const auto &syncItem : std::as_const(syncItems)) {
         if (syncItem->_direction != SyncFileItem::Down || syncItem->_isSelectiveSync) {
             continue;
         }
@@ -1023,7 +1023,7 @@ void SyncEngine::finishSync()
     }
 
     if (_discoveryPhase && _discoveryPhase->_hasDownloadRemovedItems && _discoveryPhase->_hasUploadErrorItems) {
-        for (const auto &item : qAsConst(_syncItems)) {
+        for (const auto &item : std::as_const(_syncItems)) {
             if (item->_instruction == CSYNC_INSTRUCTION_ERROR && item->_direction == SyncFileItem::Up) {
                 // item->_instruction = CSYNC_INSTRUCTION_IGNORE;
             }
@@ -1103,7 +1103,7 @@ bool SyncEngine::handleMassDeletion()
     const auto allFilesDeleted = !_hasNoneFiles && _hasRemoveFile;
 
     auto deletionCounter = 0;
-    for (const auto &oneItem : qAsConst(_syncItems)) {
+    for (const auto &oneItem : std::as_const(_syncItems)) {
         if (oneItem->_instruction == CSYNC_INSTRUCTION_REMOVE) {
             if (oneItem->isDirectory()) {
                 const auto result = _journal->listFilesInPath(oneItem->_file.toUtf8(), [&deletionCounter] (const auto &oneRecord) {
@@ -1124,7 +1124,7 @@ bool SyncEngine::handleMassDeletion()
     if ((allFilesDeleted || filesDeletedThresholdExceeded) && displayDialog) {
         qCWarning(lcEngine) << "Many files are going to be deleted, asking the user";
         int side = 0; // > 0 means more deleted on the server.  < 0 means more deleted on the client
-        for (const auto &it : qAsConst(_syncItems)) {
+        for (const auto &it : std::as_const(_syncItems)) {
             if (it->_instruction == CSYNC_INSTRUCTION_REMOVE) {
                 side += it->_direction == SyncFileItem::Down ? 1 : -1;
             }
@@ -1455,7 +1455,7 @@ void SyncEngine::slotScheduleFilesDelayedSync()
         newTimer->callOnTimeout(this, [this, newTimer] {
             qCInfo(lcEngine) << "Rescanning now that delayed sync run is scheduled for:" << newTimer->files;
 
-            for (const auto &file : qAsConst(newTimer->files)) {
+            for (const auto &file : std::as_const(newTimer->files)) {
                 this->_filesScheduledForLaterSync.remove(file);
             }
 
@@ -1586,7 +1586,7 @@ void SyncEngine::slotUnscheduleFilesDelayedSync()
         return;
     }
 
-    for (const auto &file : qAsConst(_discoveryPhase->_filesUnscheduleSync)) {
+    for (const auto &file : std::as_const(_discoveryPhase->_filesUnscheduleSync)) {
         const auto fileSyncRunTimer = _filesScheduledForLaterSync.value(file);
 
         if (fileSyncRunTimer) {
