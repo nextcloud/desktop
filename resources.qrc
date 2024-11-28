@@ -5,7 +5,6 @@
         <file>src/gui/EmojiPicker.qml</file>
         <file>src/gui/UserStatusSelectorButton.qml</file>
         <file>src/gui/PredefinedStatusButton.qml</file>
-        <file>src/gui/BasicComboBox.qml</file>
         <file>src/gui/ErrorBox.qml</file>
         <file>src/gui/filedetails/FileActivityView.qml</file>
         <file>src/gui/filedetails/FileDetailsPage.qml</file>
