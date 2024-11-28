@@ -1003,7 +1003,7 @@ void Application::setupTranslations()
         // have a translation file provided.
         qCInfo(lcApplication) << "Using" << lang << "translation";
         setProperty("ui_lang", lang);
-        const QString qtTrPath = QLibraryInfo::location(QLibraryInfo::TranslationsPath);
+        const QString qtTrPath = QLibraryInfo::path(QLibraryInfo::TranslationsPath);
         const QString qtTrFile = QLatin1String("qt_") + lang;
         const QString qtBaseTrFile = QLatin1String("qtbase_") + lang;
         if (!qtTranslator->load(qtTrFile, qtTrPath)) {
