@@ -236,7 +236,7 @@ void User::slotBuildNotificationDisplay(const ActivityList &list)
         return;
     }
 
-    for (const auto &activity : qAsConst(toNotifyList)) {
+    for (const auto &activity : std::as_const(toNotifyList)) {
         if (activity._objectType == QStringLiteral("chat")) {
             showDesktopTalkNotification(activity);
         } else {
@@ -1308,7 +1308,7 @@ QString UserModel::currentUserServer()
 void UserModel::addUser(AccountStatePtr &user, const bool &isCurrent)
 {
     bool containsUser = false;
-    for (const auto &u : qAsConst(_users)) {
+    for (const auto &u : std::as_const(_users)) {
         if (u->account() == user->account()) {
             containsUser = true;
             continue;
@@ -1424,7 +1424,7 @@ void UserModel::setCurrentUserId(const int id)
 
     const auto isCurrentUserChanged = !_users[id]->isCurrentUser();
     if (isCurrentUserChanged) {
-        for (const auto user : qAsConst(_users)) {
+        for (const auto user : std::as_const(_users)) {
             user->setCurrentUser(false);
         }
         _users[id]->setCurrentUser(true);

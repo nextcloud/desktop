@@ -361,7 +361,7 @@ void ownCloudGui::slotComputeOverallSyncStatus()
 #else
         QStringList messages;
         messages.append(tr("Disconnected from accounts:"));
-        for (const auto &accountState : qAsConst(problemAccounts)) {
+        for (const auto &accountState : std::as_const(problemAccounts)) {
             QString message = tr("Account %1: %2").arg(accountState->account()->displayName(), accountState->stateString(accountState->state()));
             if (!accountState->connectionErrors().empty()) {
                 message += QLatin1String("\n");

@@ -833,7 +833,7 @@ void FolderStatusModel::slotUpdateDirectories(const QStringList &list)
         endInsertRows();
     }
 
-    for (const auto undecidedIndex : qAsConst(undecidedIndexes)) {
+    for (const auto undecidedIndex : std::as_const(undecidedIndexes)) {
         emit suggestExpand(index(undecidedIndex, 0, parentIdx));
     }
     /* Try to remove from the undecided lists the items that are not on the server. */
@@ -916,7 +916,7 @@ void FolderStatusModel::slotUpdateFolderState(Folder *folder)
 
 void FolderStatusModel::slotApplySelectiveSync()
 {
-    for (const auto &folderInfo : qAsConst(_folders)) {
+    for (const auto &folderInfo : std::as_const(_folders)) {
         if (!folderInfo._fetched) {
             folderInfo._folder->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncUndecidedList, QStringList());
             continue;
