@@ -472,7 +472,7 @@ void SocketApi::slotRegisterPath(const QString &alias)
     Folder *f = FolderMan::instance()->folder(alias);
     if (f) {
         const QString message = buildRegisterPathMessage(removeTrailingSlash(f->path()));
-        for (const auto &listener : qAsConst(_listeners)) {
+        for (const auto &listener : std::as_const(_listeners)) {
             qCInfo(lcSocketApi) << "Trying to send SocketAPI Register Path Message -->" << message << "to" << listener->socket;
             listener->sendMessage(message);
         }
@@ -519,7 +519,7 @@ void SocketApi::slotUpdateFolderView(Folder *f)
 
 void SocketApi::broadcastMessage(const QString &msg, bool doWait)
 {
-    for (const auto &listener : qAsConst(_listeners)) {
+    for (const auto &listener : std::as_const(_listeners)) {
         listener->sendMessage(msg, doWait);
     }
 }
@@ -639,7 +639,7 @@ void SocketApi::broadcastStatusPushMessage(const QString &systemPath, SyncFileSt
     QString msg = buildMessage(QLatin1String("STATUS"), systemPath, fileStatus.toSocketAPIString());
     Q_ASSERT(!systemPath.endsWith('/'));
     uint directoryHash = qHash(systemPath.left(systemPath.lastIndexOf('/')));
-    for (const auto &listener : qAsConst(_listeners)) {
+    for (const auto &listener : std::as_const(_listeners)) {
         listener->sendMessageIfDirectoryMonitored(msg, directoryHash);
     }
 }
