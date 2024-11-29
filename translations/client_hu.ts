@@ -3628,7 +3628,7 @@ Ne feledje, hogy a naplózás parancssori kapcsolóinak használata felülbírá
         <location filename="../src/gui/networksettings.ui" line="210"/>
         <location filename="../src/gui/networksettings.ui" line="299"/>
         <source>No limit</source>
-        <translation>Nincs korlát</translation>
+        <translation>Nincs korlátozás</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="248"/>
