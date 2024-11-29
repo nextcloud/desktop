@@ -666,7 +666,7 @@ void Folder::slotFilesLockReleased(const QSet<QString> &files)
         SyncJournalFileRecord rec;
         const auto isFileRecordValid = journalDb()->getFileRecord(fileRecordPath, &rec) && rec.isValid();
         if (isFileRecordValid) {
-            [[maybe_unused]] const auto result = _vfs->updateMetadata(path() + rec.path(), rec._modtime, rec._fileSize, rec._fileId);
+            [[maybe_unused]] const auto result = _vfs->updatePlaceholderMarkInSync(path() + rec.path(), rec._fileId);
         }
         const auto canUnlockFile = isFileRecordValid
             && rec._lockstate._locked
@@ -709,7 +709,7 @@ void Folder::slotFilesLockImposed(const QSet<QString> &files)
         const auto fileRecordPath = fileFromLocalPath(file);
         SyncJournalFileRecord rec;
         if (journalDb()->getFileRecord(fileRecordPath, &rec) && rec.isValid()) {
-            [[maybe_unused]] const auto result = _vfs->updateMetadata(path() + rec.path(), rec._modtime, rec._fileSize, rec._fileId);
+            [[maybe_unused]] const auto result = _vfs->updatePlaceholderMarkInSync(path() + rec.path(), rec._fileId);
         }
     }
 }
