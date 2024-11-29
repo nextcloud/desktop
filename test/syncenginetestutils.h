@@ -214,6 +214,29 @@ public:
     using QNetworkReply::setRawHeader;
 };
 
+class FakeJsonReply : public FakeReply
+{
+    Q_OBJECT
+public:
+    FakeJsonReply(QNetworkAccessManager::Operation op,
+                  const QNetworkRequest &request,
+                  QObject *parent,
+                  int httpReturnCode,
+                  const QJsonDocument &reply = QJsonDocument());
+
+    Q_INVOKABLE virtual void respond();
+
+public slots:
+    void slotSetFinished();
+
+public:
+    void abort() override { }
+    qint64 readData(char *buf, qint64 max) override;
+    [[nodiscard]] qint64 bytesAvailable() const override;
+
+    QByteArray _body;
+};
+
 class FakePropfindReply : public FakeReply
 {
     Q_OBJECT

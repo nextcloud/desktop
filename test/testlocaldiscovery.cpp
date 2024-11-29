@@ -378,6 +378,7 @@ private slots:
         const QString fileWithSpaces4("A/ foo");
         const QString fileWithSpaces5("A/ bar ");
         const QString fileWithSpaces6("A/bla ");
+        const auto extraFileNameWithSpaces = QStringLiteral(" with spaces ");
 
         fakeFolder.localModifier().insert(fileWithSpaces1);
         fakeFolder.localModifier().insert(fileWithSpaces2);
@@ -386,7 +387,7 @@ private slots:
         fakeFolder.localModifier().insert(fileWithSpaces4);
         fakeFolder.localModifier().insert(fileWithSpaces5);
         fakeFolder.localModifier().insert(fileWithSpaces6);
-        fakeFolder.localModifier().mkdir(QStringLiteral(" with spaces "));
+        fakeFolder.localModifier().mkdir(extraFileNameWithSpaces);
 
         ItemCompletedSpy completeSpy(fakeFolder);
         completeSpy.clear();
@@ -400,7 +401,7 @@ private slots:
         QCOMPARE(completeSpy.findItem(fileWithSpaces4)->_status, SyncFileItem::Status::FileNameInvalid);
         QCOMPARE(completeSpy.findItem(fileWithSpaces5)->_status, SyncFileItem::Status::FileNameInvalid);
         QCOMPARE(completeSpy.findItem(fileWithSpaces6)->_status, SyncFileItem::Status::FileNameInvalid);
-        QCOMPARE(completeSpy.findItem(QStringLiteral(" with spaces "))->_status, SyncFileItem::Status::FileNameInvalid);
+        QCOMPARE(completeSpy.findItem(extraFileNameWithSpaces)->_status, SyncFileItem::Status::FileNameInvalid);
 #else
         QCOMPARE(completeSpy.findItem(fileWithSpaces1)->_status, SyncFileItem::Status::Success);
         QCOMPARE(completeSpy.findItem(fileWithSpaces2)->_status, SyncFileItem::Status::Success);
@@ -408,7 +409,7 @@ private slots:
         QCOMPARE(completeSpy.findItem(fileWithSpaces4)->_status, SyncFileItem::Status::Success);
         QCOMPARE(completeSpy.findItem(fileWithSpaces5)->_status, SyncFileItem::Status::Success);
         QCOMPARE(completeSpy.findItem(fileWithSpaces6)->_status, SyncFileItem::Status::Success);
-        QCOMPARE(completeSpy.findItem(QStringLiteral(" with spaces "))->_status, SyncFileItem::Status::Success);
+        QCOMPARE(completeSpy.findItem(extraFileNameWithSpaces)->_status, SyncFileItem::Status::Success);
 #endif
 
         fakeFolder.syncEngine().addAcceptedInvalidFileName(fakeFolder.localPath() + fileWithSpaces1);
@@ -417,7 +418,7 @@ private slots:
         fakeFolder.syncEngine().addAcceptedInvalidFileName(fakeFolder.localPath() + fileWithSpaces4);
         fakeFolder.syncEngine().addAcceptedInvalidFileName(fakeFolder.localPath() + fileWithSpaces5);
         fakeFolder.syncEngine().addAcceptedInvalidFileName(fakeFolder.localPath() + fileWithSpaces6);
-        fakeFolder.syncEngine().addAcceptedInvalidFileName(fakeFolder.localPath() + QStringLiteral(" with spaces "));
+        fakeFolder.syncEngine().addAcceptedInvalidFileName(fakeFolder.localPath() + extraFileNameWithSpaces);
 
         completeSpy.clear();
 
@@ -431,7 +432,7 @@ private slots:
         QCOMPARE(completeSpy.findItem(fileWithSpaces4)->_status, SyncFileItem::Status::Success);
         QCOMPARE(completeSpy.findItem(fileWithSpaces5)->_status, SyncFileItem::Status::Success);
         QCOMPARE(completeSpy.findItem(fileWithSpaces6)->_status, SyncFileItem::Status::Success);
-        QCOMPARE(completeSpy.findItem(QStringLiteral(" with spaces "))->_status, SyncFileItem::Status::NormalError);
+        QCOMPARE(completeSpy.findItem(extraFileNameWithSpaces)->_status, SyncFileItem::Status::Success);
 #endif
     }
 
