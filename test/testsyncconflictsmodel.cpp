@@ -24,6 +24,7 @@
 #include <QTest>
 #include <QAbstractItemModelTester>
 #include <QSignalSpy>
+#include <QLocale>
 
 namespace {
 
@@ -47,6 +48,7 @@ class TestSyncConflictsModel : public QObject
     Q_OBJECT
 
 private:
+    QLocale _locale;
 
 private slots:
     void initTestCase()
@@ -104,8 +106,8 @@ private slots:
 
         QCOMPARE(model.rowCount(), 1);
         QCOMPARE(model.data(model.index(0), static_cast<int>(SyncConflictsModel::SyncConflictRoles::ExistingFileName)), QString{"a2"});
-        QCOMPARE(model.data(model.index(0), static_cast<int>(SyncConflictsModel::SyncConflictRoles::ExistingSize)), QString{"6 bytes"});
-        QCOMPARE(model.data(model.index(0), static_cast<int>(SyncConflictsModel::SyncConflictRoles::ConflictSize)), QString{"5 bytes"});
+        QCOMPARE(model.data(model.index(0), static_cast<int>(SyncConflictsModel::SyncConflictRoles::ExistingSize)), _locale.formattedDataSize(6));
+        QCOMPARE(model.data(model.index(0), static_cast<int>(SyncConflictsModel::SyncConflictRoles::ConflictSize)), _locale.formattedDataSize(5));
         QVERIFY(!model.data(model.index(0), static_cast<int>(SyncConflictsModel::SyncConflictRoles::ExistingDate)).toString().isEmpty());
         QVERIFY(!model.data(model.index(0), static_cast<int>(SyncConflictsModel::SyncConflictRoles::ConflictDate)).toString().isEmpty());
         QCOMPARE(model.data(model.index(0), static_cast<int>(SyncConflictsModel::SyncConflictRoles::ExistingPreviewUrl)), QVariant::fromValue(QUrl{QStringLiteral("image://tray-image-provider/:/fileicon%1A/a2").arg(fakeFolder.localPath())}));
