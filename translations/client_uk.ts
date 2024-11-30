@@ -2876,7 +2876,7 @@ Alternatively, you can restore all deleted files by downloading them from the se
     <message>
         <location filename="../src/gui/generalsettings.ui" line="82"/>
         <source>&amp;Launch on System Startup</source>
-        <translation>&amp;Запускати при старті Системи</translation>
+        <translation>&amp;Запускати при старті системи</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="96"/>
@@ -2906,7 +2906,7 @@ Alternatively, you can restore all deleted files by downloading them from the se
     <message>
         <location filename="../src/gui/generalsettings.ui" line="89"/>
         <source>Show Server &amp;Notifications</source>
-        <translation>Показувати &amp;Сповіщення сервера</translation>
+        <translation>Показувати &amp;сповіщення сервера</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="221"/>
