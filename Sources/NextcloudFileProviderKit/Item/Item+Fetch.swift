@@ -105,7 +105,8 @@ public extension Item {
                     }
                 }
 
-                metadata.status = ItemMetadata.Status.downloaded.rawValue
+                metadata.status = ItemMetadata.Status.normal.rawValue
+                metadata.downloaded = true
                 metadata.sessionError = ""
                 dbManager.addItemMetadata(metadata)
 
@@ -204,7 +205,7 @@ public extension Item {
             }
 
         } else {
-            let (_, dlEtag, dlDate, _, _, _, error) = await remoteInterface.download(
+            let (_, _, _, _, _, _, error) = await remoteInterface.download(
                 remotePath: serverUrlFileName,
                 localPath: localPath.path,
                 options: .init(),
@@ -238,7 +239,8 @@ public extension Item {
             """
         )
 
-        updatedMetadata.status = ItemMetadata.Status.downloaded.rawValue
+        updatedMetadata.status = ItemMetadata.Status.normal.rawValue
+        updatedMetadata.downloaded = true
         updatedMetadata.sessionError = ""
 
         dbManager.addItemMetadata(updatedMetadata)

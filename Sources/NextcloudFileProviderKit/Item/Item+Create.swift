@@ -179,7 +179,9 @@ extension Item {
         newMetadata.session = ""
         newMetadata.sessionError = ""
         newMetadata.sessionTaskIdentifier = 0
-        newMetadata.status = ItemMetadata.Status.downloaded.rawValue
+        newMetadata.status = ItemMetadata.Status.normal.rawValue
+        newMetadata.downloaded = true
+        newMetadata.uploaded = true
 
         dbManager.addItemMetadata(newMetadata)
         

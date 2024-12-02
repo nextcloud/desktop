@@ -300,6 +300,8 @@ public class FilesDatabaseManager {
         }
     }
 
+    // If setting a downloading or uploading status, also modified the relevant boolean properties
+    // of the item metadata object
     public func setStatusForItemMetadata(
         _ metadata: ItemMetadata,
         status: ItemMetadata.Status,
@@ -309,18 +311,27 @@ public class FilesDatabaseManager {
 
         do {
             try database.write {
-                guard
-                    let result = database.objects(ItemMetadata.self).filter(
-                        "ocId == %@", metadata.ocId
-                    ).first
+                guard let result = database
+                    .objects(ItemMetadata.self)
+                    .filter("ocId == %@", metadata.ocId)
+                    .first
                 else {
                     Self.logger.debug(
-                        "Did not update status for item metadata as it was not found. ocID: \(metadata.ocId, privacy: .public)"
+                        """
+                        Did not update status for item metadata as it was not found.
+                        ocID: \(metadata.ocId, privacy: .public)
+                        """
                     )
                     return
                 }
 
                 result.status = status.rawValue
+                if result.isDownload {
+                    result.downloaded = false
+                } else if result.isUpload {
+                    result.uploaded = false
+                }
+
                 database.add(result, update: .all)
                 Self.logger.debug(
                     "Updated status for item metadata. ocID: \(metadata.ocId, privacy: .public), etag: \(metadata.etag, privacy: .public), fileName: \(metadata.fileName, privacy: .public)"

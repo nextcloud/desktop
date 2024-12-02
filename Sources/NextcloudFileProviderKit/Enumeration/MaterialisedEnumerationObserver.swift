@@ -80,7 +80,7 @@ public class MaterialisedEnumerationObserver: NSObject, NSFileProviderEnumeratio
                 Self.logger.info("Cleaning up local file metadatas for unmaterialised items")
                 for itemId in noLongerMaterialisedIds {
                     guard let itemMetadata = dbManager.itemMetadataFromOcId(itemId) else { continue }
-                    itemMetadata.status = ItemMetadata.Status.normal.rawValue
+                    itemMetadata.downloaded = false
                     dbManager.addItemMetadata(itemMetadata)
                 }
 
