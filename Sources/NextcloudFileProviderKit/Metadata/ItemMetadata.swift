@@ -18,6 +18,7 @@ import RealmSwift
 
 public class ItemMetadata: Object {
     public enum Status: Int {
+        case downloaded = -5
         case downloadError = -4
         case downloading = -3
         case inDownload = -2
@@ -29,6 +30,7 @@ public class ItemMetadata: Object {
         case inUpload = 2
         case uploading = 3
         case uploadError = 4
+        case uploaded = 5
     }
 
     public enum SharePermissions: Int {

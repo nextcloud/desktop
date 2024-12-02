@@ -63,7 +63,7 @@ public class MaterialisedEnumerationObserver: NSObject, NSFileProviderEnumeratio
         completionHandler: @escaping (_ deletedOcIds: Set<String>) -> Void
     ) {
         let dbManager = FilesDatabaseManager.shared
-        let databaseLocalFileMetadatas = dbManager.localFileMetadatas(account: account)
+        let databaseLocalFileMetadatas = dbManager.itemMetadatas(account: account)
         var noLongerMaterialisedIds = Set<String>()
 
         DispatchQueue.global(qos: .background).async {
@@ -79,7 +79,9 @@ public class MaterialisedEnumerationObserver: NSObject, NSFileProviderEnumeratio
             DispatchQueue.main.async {
                 Self.logger.info("Cleaning up local file metadatas for unmaterialised items")
                 for itemId in noLongerMaterialisedIds {
-                    dbManager.deleteLocalFileMetadata(ocId: itemId)
+                    guard let itemMetadata = dbManager.itemMetadataFromOcId(itemId) else { continue }
+                    itemMetadata.status = ItemMetadata.Status.normal.rawValue
+                    dbManager.addItemMetadata(itemMetadata)
                 }
 
                 completionHandler(noLongerMaterialisedIds)

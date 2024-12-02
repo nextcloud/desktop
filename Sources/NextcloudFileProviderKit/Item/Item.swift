@@ -112,7 +112,8 @@ public class Item: NSObject, NSFileProviderItem {
     }
 
     public var isDownloaded: Bool {
-        metadata.directory || dbManager.localFileMetadataFromOcId(metadata.ocId) != nil
+        metadata.directory ||
+        dbManager.itemMetadataFromOcId(metadata.ocId)?.status == ItemMetadata.Status.downloaded.rawValue
     }
 
     public var isDownloading: Bool {
@@ -127,7 +128,7 @@ public class Item: NSObject, NSFileProviderItem {
     }
 
     public var isUploaded: Bool {
-        dbManager.localFileMetadataFromOcId(metadata.ocId) != nil
+        dbManager.itemMetadataFromOcId(metadata.ocId)?.status == ItemMetadata.Status.uploaded.rawValue
     }
 
     public var isUploading: Bool {

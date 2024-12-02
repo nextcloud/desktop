@@ -179,9 +179,8 @@ extension Item {
         newMetadata.session = ""
         newMetadata.sessionError = ""
         newMetadata.sessionTaskIdentifier = 0
-        newMetadata.status = ItemMetadata.Status.normal.rawValue
-        
-        dbManager.addLocalFileMetadataFromItemMetadata(newMetadata)
+        newMetadata.status = ItemMetadata.Status.downloaded.rawValue
+
         dbManager.addItemMetadata(newMetadata)
         
         let fpItem = Item(

@@ -105,11 +105,8 @@ public extension Item {
                     }
                 }
 
-                metadata.status = ItemMetadata.Status.normal.rawValue
+                metadata.status = ItemMetadata.Status.downloaded.rawValue
                 metadata.sessionError = ""
-                if !metadata.directory {
-                    dbManager.addLocalFileMetadataFromItemMetadata(metadata)
-                }
                 dbManager.addItemMetadata(metadata)
 
                 progress.completedUnitCount += 1
@@ -241,12 +238,9 @@ public extension Item {
             """
         )
 
-        updatedMetadata.status = ItemMetadata.Status.normal.rawValue
+        updatedMetadata.status = ItemMetadata.Status.downloaded.rawValue
         updatedMetadata.sessionError = ""
 
-        if !isDirectory {
-            dbManager.addLocalFileMetadataFromItemMetadata(updatedMetadata)
-        }
         dbManager.addItemMetadata(updatedMetadata)
 
         guard let parentItemIdentifier = dbManager.parentItemIdentifierFromMetadata(

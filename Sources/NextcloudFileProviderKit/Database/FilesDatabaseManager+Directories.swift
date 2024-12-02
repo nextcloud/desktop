@@ -114,10 +114,6 @@ extension FilesDatabaseManager {
             if deleteItemMetadata(ocId: result.ocId) {
                 deletedMetadatas.append(inactiveItemMetadata)
             }
-
-            if localFileMetadataFromOcId(resultOcId) != nil {
-                deleteLocalFileMetadata(ocId: resultOcId)
-            }
         }
 
         Self.logger.debug(

@@ -63,7 +63,7 @@ public class FilesDatabaseManager {
         let config = Realm.Configuration(
             fileURL: databasePath,
             schemaVersion: Self.schemaVersion,
-            objectTypes: [ItemMetadata.self, LocalFileMetadata.self]
+            objectTypes: [ItemMetadata.self]
         )
         self.init(realmConfig: config)
     }
