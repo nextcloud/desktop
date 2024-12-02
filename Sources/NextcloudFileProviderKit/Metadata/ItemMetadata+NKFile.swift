@@ -16,79 +16,6 @@ import Foundation
 import NextcloudKit
 
 public extension ItemMetadata {
-    static func fromNKFile(_ file: NKFile, account: String) -> ItemMetadata {
-        let metadata = ItemMetadata()
-
-        metadata.account = account
-        metadata.checksums = file.checksums
-        metadata.commentsUnread = file.commentsUnread
-        metadata.contentType = file.contentType
-        if let date = file.creationDate {
-            metadata.creationDate = date as Date
-        } else {
-            metadata.creationDate = file.date as Date
-        }
-        metadata.dataFingerprint = file.dataFingerprint
-        metadata.date = file.date as Date
-        metadata.directory = file.directory
-        metadata.downloadURL = file.downloadURL
-        metadata.e2eEncrypted = file.e2eEncrypted
-        metadata.etag = file.etag
-        metadata.favorite = file.favorite
-        metadata.fileId = file.fileId
-        metadata.fileName = file.fileName
-        metadata.fileNameView = file.fileName
-        metadata.hasPreview = file.hasPreview
-        metadata.iconName = file.iconName
-        metadata.mountType = file.mountType
-        metadata.name = file.name
-        metadata.note = file.note
-        metadata.ocId = file.ocId
-        metadata.ownerId = file.ownerId
-        metadata.ownerDisplayName = file.ownerDisplayName
-        metadata.lock = file.lock
-        metadata.lockOwner = file.lockOwner
-        metadata.lockOwnerEditor = file.lockOwnerEditor
-        metadata.lockOwnerType = file.lockOwnerType
-        metadata.lockOwnerDisplayName = file.lockOwnerDisplayName
-        metadata.lockTime = file.lockTime
-        metadata.lockTimeOut = file.lockTimeOut
-        metadata.path = file.path
-        metadata.permissions = file.permissions
-        metadata.quotaUsedBytes = file.quotaUsedBytes
-        metadata.quotaAvailableBytes = file.quotaAvailableBytes
-        metadata.richWorkspace = file.richWorkspace
-        metadata.resourceType = file.resourceType
-        metadata.serverUrl = file.serverUrl
-        metadata.sharePermissionsCollaborationServices = file.sharePermissionsCollaborationServices
-        for element in file.sharePermissionsCloudMesh {
-            metadata.sharePermissionsCloudMesh.append(element)
-        }
-        for element in file.shareType {
-            metadata.shareType.append(element)
-        }
-        metadata.size = file.size
-        metadata.classFile = file.classFile
-        // FIXME: iOS 12.0,* don't detect UTI text/markdown, text/x-markdown
-        if metadata.contentType == "text/markdown" || metadata.contentType == "text/x-markdown",
-            metadata.classFile == NKCommon.TypeClassFile.unknow.rawValue
-        {
-            metadata.classFile = NKCommon.TypeClassFile.document.rawValue
-        }
-        if let date = file.uploadDate {
-            metadata.uploadDate = date as Date
-        } else {
-            metadata.uploadDate = file.date as Date
-        }
-        metadata.urlBase = file.urlBase
-        metadata.user = file.user
-        metadata.userId = file.userId
-
-        // Support for finding the correct filename for e2ee files should go here
-
-        return metadata
-    }
-
     // TODO: Convert to async/await
     static func metadatasFromDirectoryReadNKFiles(
         _ files: [NKFile],
@@ -114,12 +41,12 @@ public extension ItemMetadata {
 
         for file in files {
             if metadatas.isEmpty, !directoryMetadataSet {
-                let metadata = ItemMetadata.fromNKFile(file, account: account)
+                let metadata = file.toItemMetadata()
                 directoryMetadata = metadata
                 directoryMetadataSet = true
             } else {
                 conversionQueue.async(group: dispatchGroup) {
-                    let metadata = ItemMetadata.fromNKFile(file, account: account)
+                    let metadata = file.toItemMetadata()
 
                     appendQueue.async(group: dispatchGroup) {
                         metadatas.append(metadata)
