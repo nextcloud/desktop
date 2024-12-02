@@ -16,8 +16,8 @@ extension NKFile {
         metadata.checksums = checksums
         metadata.commentsUnread = commentsUnread
         metadata.contentType = contentType
-        if let date = creationDate {
-            metadata.creationDate = date as Date
+        if let creationDate {
+            metadata.creationDate = creationDate as Date
         } else {
             metadata.creationDate = date as Date
         }
@@ -68,8 +68,8 @@ extension NKFile {
         {
             metadata.classFile = NKCommon.TypeClassFile.document.rawValue
         }
-        if let date = uploadDate {
-            metadata.uploadDate = date as Date
+        if let uploadDate {
+            metadata.uploadDate = uploadDate as Date
         } else {
             metadata.uploadDate = date as Date
         }
