@@ -166,7 +166,7 @@ final class FilesDatabaseManagerTests: XCTestCase {
         metadata1.ocId = "id-1"
         metadata1.account = "TestAccount"
         metadata1.serverUrl = "https://example.com"
-        metadata1.status = ItemMetadata.Status.waitDownload.rawValue
+        metadata1.status = ItemMetadata.Status.downloading.rawValue
 
         let metadata2 = ItemMetadata()
         metadata2.ocId = "id-2"
@@ -181,7 +181,7 @@ final class FilesDatabaseManagerTests: XCTestCase {
         }
 
         let results = Self.dbManager.itemMetadatas(
-            account: "TestAccount", serverUrl: "https://example.com", status: .waitDownload
+            account: "TestAccount", serverUrl: "https://example.com", status: .downloading
         )
         XCTAssertEqual(results.count, 1, "Should return only metadatas with 'waitDownload' status")
         XCTAssertEqual(
