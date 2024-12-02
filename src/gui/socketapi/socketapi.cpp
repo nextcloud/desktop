@@ -1096,6 +1096,7 @@ void SocketApi::setFileLock(const QString &localFile, const SyncFileItem::LockSt
     shareFolder->accountState()->account()->setLockFileState(fileData.serverRelativePath,
                                                              shareFolder->remotePathTrailingSlash(),
                                                              shareFolder->path(),
+                                                             record._etag,
                                                              shareFolder->journalDb(),
                                                              lockState,
                                                              (lockState == SyncFileItem::LockStatus::UnlockedItem) ? static_cast<SyncFileItem::LockOwnerType>(record._lockstate._lockOwnerType) : SyncFileItem::LockOwnerType::UserLock);
