@@ -110,6 +110,9 @@ struct Build: ParsableCommand {
     @Flag(help: "Create an installer package.")
     var package = false
 
+    @Flag(help: "Build in developer mode.")
+    var dev = false
+
     mutating func run() throws {
         print("Configuring build tooling.")
 
@@ -177,6 +180,11 @@ struct Build: ParsableCommand {
         if let overrideServerUrl {
             craftOptions.append("\(craftBlueprintName).overrideServerUrl=\(overrideServerUrl)")
             craftOptions.append("\(craftBlueprintName).forceOverrideServerUrl=\(forceOverrideServerUrl ? "True" : "False")")
+        }
+
+        if dev {
+            appName += "Dev"
+            craftOptions.append("\(craftBlueprintName).devMode=True")
         }
 
         if !disableAutoUpdater {
@@ -267,7 +275,10 @@ struct Codesign: ParsableCommand {
     var codeSignIdentity: String
 
     mutating func run() throws {
-        try codesignClientAppBundle(at: appBundlePath, withCodeSignIdentity: codeSignIdentity)
+        let absolutePath = appBundlePath.hasPrefix("/")
+            ? appBundlePath
+            : "\(FileManager.default.currentDirectoryPath)/\(appBundlePath)"
+        try codesignClientAppBundle(at: absolutePath, withCodeSignIdentity: codeSignIdentity)
     }
 }
 

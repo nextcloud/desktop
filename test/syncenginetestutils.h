@@ -142,6 +142,8 @@ public:
 
     void setModTimeKeepEtag(const QString &relativePath, const QDateTime &modTime);
 
+    void setIsLivePhoto(const QString &relativePath, bool isLivePhoto);
+
     void modifyLockState(const QString &relativePath, LockState lockState, int lockType, const QString &lockOwner, const QString &lockOwnerId, const QString &lockEditorId, quint64 lockTime, quint64 lockTimeout) override;
 
     void setE2EE(const QString &relativepath, const bool enabled) override;
@@ -188,6 +190,7 @@ public:
     quint64 lockTime = 0;
     quint64 lockTimeout = 0;
     bool isEncrypted = false;
+    bool isLivePhoto = false;
 
     // Sorted by name to be able to compare trees
     QMap<QString, FileInfo> children;
@@ -209,6 +212,29 @@ public:
 
     // useful to be public for testing
     using QNetworkReply::setRawHeader;
+};
+
+class FakeJsonReply : public FakeReply
+{
+    Q_OBJECT
+public:
+    FakeJsonReply(QNetworkAccessManager::Operation op,
+                  const QNetworkRequest &request,
+                  QObject *parent,
+                  int httpReturnCode,
+                  const QJsonDocument &reply = QJsonDocument());
+
+    Q_INVOKABLE virtual void respond();
+
+public slots:
+    void slotSetFinished();
+
+public:
+    void abort() override { }
+    qint64 readData(char *buf, qint64 max) override;
+    [[nodiscard]] qint64 bytesAvailable() const override;
+
+    QByteArray _body;
 };
 
 class FakePropfindReply : public FakeReply

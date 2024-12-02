@@ -78,8 +78,7 @@ export LD_LIBRARY_PATH=/app/usr/lib:${QT_BASE_DIR}/lib:/usr/local/lib/x86_64-lin
 
 # Use linuxdeploy-plugin-qt to deploy qt dependencies
 export APPIMAGE_NAME=linuxdeploy-plugin-qt-x86_64.AppImage
-# TODO: this share link is supposed to be a workaround, we need an url pointing to github.com/linuxdeploy/linuxdeploy-plugin-qt/releases/tag/continuous, see github.com/linuxdeploy/linuxdeploy-plugin-qt/pull/186
-wget -O ${APPIMAGE_NAME} --ca-directory=/etc/ssl/certs -c "https://cloud.nextcloud.com/s/TxcGkDiSs2enKoN/download/linuxdeploy-plugin-qt-x86_64.AppImage"
+wget -O ${APPIMAGE_NAME} --ca-directory=/etc/ssl/certs -c "https://github.com/linuxdeploy/linuxdeploy-plugin-qt/releases/download/continuous/linuxdeploy-plugin-qt-x86_64.AppImage"
 chmod a+x ${APPIMAGE_NAME}
 ./${APPIMAGE_NAME} --appimage-extract
 rm ./${APPIMAGE_NAME}
@@ -90,6 +89,21 @@ export QML_SOURCES_PATHS=${DESKTOP_CLIENT_ROOT}/src/gui
 ./linuxdeploy-plugin-qt-squashfs-root/AppRun --appdir=AppDir
 
 ./linuxdeploy-squashfs-root/AppRun --desktop-file=${DESKTOP_FILE} --icon-file=usr/share/icons/hicolor/512x512/apps/Nextcloud.png --executable=usr/bin/${EXECUTABLE_NAME} --appdir=AppDir --output appimage
+
+# Workaround issue #103 and #7231
+export APPIMAGETOOL=appimagetool-x86_64.AppImage
+wget -O ${APPIMAGETOOL} --ca-directory=/etc/ssl/certs -c https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage
+chmod a+x ${APPIMAGETOOL}
+rm -rf ./squashfs-root
+./${APPIMAGETOOL} --appimage-extract
+rm ./${APPIMAGETOOL}
+cp -r ./squashfs-root ./appimagetool-squashfs-root
+rm -rf ./squashfs-root
+APPIMAGE=$(ls *.AppImage)
+./"${APPIMAGE}" --appimage-extract
+rm ./"${APPIMAGE}"
+rm ./squashfs-root/usr/lib/libglib-2.0.so.0
+LD_LIBRARY_PATH="$PWD/appimagetool-squashfs-root/usr/lib":$LD_LIBRARY_PATH PATH="$PWD/appimagetool-squashfs-root/usr/bin":$PATH appimagetool -n ./squashfs-root "${APPIMAGE}"
 
 #move AppImage
 if [ ! -z "$DRONE_COMMIT" ]

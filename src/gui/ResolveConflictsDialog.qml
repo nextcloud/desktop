@@ -167,7 +167,7 @@ ApplicationWindow {
     }
 
     Rectangle {
-        color: Style.backgroundColor
+        color: palette.base
         anchors.fill: parent
         z: 1
     }

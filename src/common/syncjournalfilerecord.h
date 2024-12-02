@@ -88,6 +88,8 @@ public:
     bool _isShared = false;
     qint64 _lastShareStateFetchedTimestamp = 0;
     bool _sharedByMe = false;
+    bool _isLivePhoto = false;
+    QString _livePhotoFile;
 };
 
 QDebug& operator<<(QDebug &stream, const SyncJournalFileRecord::EncryptionStatus status);

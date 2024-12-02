@@ -79,7 +79,6 @@ public slots:
     void slotFolderOpenAction(const QString &alias);
     void slotUpdateProgress(const QString &folder, const OCC::ProgressInfo &progress);
     void slotShowGuiMessage(const QString &title, const QString &message);
-    void slotFoldersChanged();
     void slotShowSettings();
     void slotShowSyncProtocol();
     void slotShutdown();
@@ -92,7 +91,6 @@ public slots:
     void slotSettingsDialogActivated();
     void slotHelp();
     void slotOpenPath(const QString &path);
-    void slotAccountStateChanged();
     void slotTrayMessageIfServerUnsupported(OCC::Account *account);
     void slotNeedToAcceptTermsOfService(OCC::AccountPtr account,
                                         OCC::AccountState::State state);

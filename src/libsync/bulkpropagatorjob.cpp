@@ -520,6 +520,7 @@ void BulkPropagatorJob::finalize(const QJsonObject &fullReply)
         }
         if (!singleFile._item->hasErrorStatus()) {
             finalizeOneFile(singleFile);
+            singleFile._item->_status = OCC::SyncFileItem::Success;
         }
 
         done(singleFile._item, singleFile._item->_status, {}, ErrorCategory::GenericError);

@@ -202,8 +202,10 @@ void AccountState::signOutByUi()
 
 void AccountState::freshConnectionAttempt()
 {
-    if (isConnected())
+    if (isConnected()) {
         setState(Disconnected);
+    }
+
     checkConnectivity();
 }
 

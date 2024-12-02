@@ -27,7 +27,6 @@ TextEdit {
     readonly property alias submitButton: submitButton
 
     clip: true
-    color: Style.ncTextColor
     textMargin: Style.smallSpacing
     wrapMode: TextEdit.Wrap
     selectByMouse: true
@@ -39,7 +38,7 @@ TextEdit {
         radius: Style.trayWindowRadius
         border.width: Style.normalBorderWidth
         border.color: root.activeFocus ? root.accentColor : root.secondaryColor
-        color: palette.window
+        color: palette.base
         z: -1
     }
 

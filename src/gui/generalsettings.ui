@@ -7,13 +7,60 @@
     <x>0</x>
     <y>0</y>
     <width>667</width>
-    <height>663</height>
+    <height>796</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string notr="true">Form</string>
   </property>
-  <layout class="QGridLayout" name="gridLayout_3">
+  <layout class="QGridLayout" name="gridLayout_3"> 
+   <item row="0" column="0">
+    <widget class="QGroupBox" name="generalGroupBox">
+     <property name="title">
+      <string>General Settings</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_2">
+      <item row="0" column="0">
+       <widget class="QCheckBox" name="autostartCheckBox">
+        <property name="text">
+         <string>&amp;Launch on System Startup</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="QCheckBox" name="callNotificationsCheckBox">
+        <property name="text">
+         <string>Show Call Notifications</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QCheckBox" name="monoIconsCheckBox">
+        <property name="toolTip">
+         <string>For System Tray</string>
+        </property>
+        <property name="text">
+         <string>Use &amp;Monochrome Icons</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QCheckBox" name="chatNotificationsCheckBox">
+        <property name="text">
+         <string>Show Chat Notifications</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QCheckBox" name="serverNotificationsCheckBox">
+        <property name="text">
+         <string>Show Server &amp;Notifications</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item> 
    <item row="1" column="0">
     <widget class="QGroupBox" name="groupBox">
      <property name="title">
@@ -140,7 +187,7 @@
        </layout>
       </item>
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout">
+       <layout class="QHBoxLayout" name="horizontalLayout_trash">
         <item>
          <widget class="QCheckBox" name="moveFilesToTrashCheckBox">
           <property name="text">
@@ -383,52 +430,11 @@
      </property>
     </spacer>
    </item>
-   <item row="0" column="0">
-    <widget class="QGroupBox" name="generalGroupBox">
-     <property name="title">
-      <string>General Settings</string>
-     </property>
-     <layout class="QGridLayout" name="gridLayout_2">
-      <item row="1" column="0">
-       <widget class="QCheckBox" name="monoIconsCheckBox">
-        <property name="toolTip">
-         <string>For System Tray</string>
-        </property>
-        <property name="text">
-         <string>Use &amp;monochrome icons</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="0">
-       <widget class="QCheckBox" name="autostartCheckBox">
-        <property name="text">
-         <string>&amp;Launch on system startup</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="1">
-       <widget class="QCheckBox" name="serverNotificationsCheckBox">
-        <property name="text">
-         <string>Show server &amp;notifications</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="1">
-       <widget class="QCheckBox" name="callNotificationsCheckBox">
-        <property name="text">
-         <string>Show call notifications</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </widget>
-   </item>
   </layout>
  </widget>
  <tabstops>
   <tabstop>autostartCheckBox</tabstop>
   <tabstop>serverNotificationsCheckBox</tabstop>
-  <tabstop>monoIconsCheckBox</tabstop>
   <tabstop>ignoredFilesButton</tabstop>
   <tabstop>newFolderLimitCheckBox</tabstop>
   <tabstop>newFolderLimitSpinBox</tabstop>

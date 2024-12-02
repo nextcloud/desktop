@@ -104,7 +104,7 @@ RowLayout {
 
             cache: true
             fillMode: Image.PreserveAspectFit
-            source: Theme.darkMode ? model.darkIcon : model.lightIcon
+            source: Style.darkMode ? model.darkIcon : model.lightIcon
             sourceSize.height: 64
             sourceSize.width: 64
             mipmap: true // Addresses grainy downscale
@@ -123,8 +123,6 @@ RowLayout {
 
         RowLayout {
             Layout.fillWidth: true
-
-            spacing: Style.trayHorizontalMargin
 
             EnforcedPlainTextLabel {
                 id: activityTextTitle
@@ -156,55 +154,56 @@ RowLayout {
                 visible: text !== ""
             }
 
-            CustomButton {
-                id: fileDetailsButton
-
-                Layout.preferredWidth: Style.activityListButtonWidth
-                Layout.preferredHeight: Style.activityListButtonHeight
+            Row {
                 Layout.alignment: Qt.AlignVCenter | Qt.AlignHCenter
+                spacing: Style.extraSmallSpacing
 
-                icon.source: "image://svgimage-custom-color/more.svg/" + palette.buttonText
-                icon.width: Style.activityListButtonIconSize
-                icon.height: Style.activityListButtonIconSize
+                Button {
+                    id: fileDetailsButton
 
-                ToolTip {
-                    text: qsTr("Open file details")
-                    visible: parent.hovered
+                    width: Style.activityListButtonWidth
+                    height: Style.activityListButtonHeight
+
+                    icon.source: "image://svgimage-custom-color/more.svg/" + palette.buttonText
+                    icon.width: Style.activityListButtonIconSize
+                    icon.height: Style.activityListButtonIconSize
+
+                    ToolTip {
+                        text: qsTr("Open file details")
+                        visible: parent.hovered
+                    }
+
+                    display: Button.IconOnly
+                    visible: model.showFileDetails
+                    onClicked: Systray.presentShareViewInTray(model.openablePath)
                 }
 
-                display: Button.IconOnly
+                Button {
+                    id: dismissActionButton
 
-                visible: model.showFileDetails
+                    width: Style.activityListButtonWidth
+                    height: Style.activityListButtonHeight
 
-                onClicked: Systray.presentShareViewInTray(model.openablePath)
-            }
+                    icon.source: "image://svgimage-custom-color/clear.svg/" + palette.buttonText
+                    icon.width: Style.activityListButtonIconSize
+                    icon.height: Style.activityListButtonIconSize
 
-            CustomButton {
-                id: dismissActionButton
+                    display: Button.IconOnly
 
-                Layout.preferredWidth: Style.activityListButtonWidth
-                Layout.preferredHeight: Style.activityListButtonHeight
-                Layout.alignment: Qt.AlignVCenter | Qt.AlignHCenter
+                    ToolTip {
+                        text: qsTr("Dismiss")
+                        visible: parent.hovered
+                    }
 
-                icon.source: "image://svgimage-custom-color/clear.svg/" + palette.buttonText
-                icon.width: Style.activityListButtonIconSize
-                icon.height: Style.activityListButtonIconSize
-
-                display: Button.IconOnly
-
-                ToolTip {
-                    text: qsTr("Dismiss")
-                    visible: parent.hovered
+                    visible: root.showDismissButton
+                    onClicked: root.dismissButtonClicked()
                 }
-
-                onClicked: root.dismissButtonClicked()
             }
         }
 
         RowLayout {
             Layout.fillWidth: true
             Layout.fillHeight: true
-            spacing: Style.trayHorizontalMargin
             visible: activityTextInfo.visible || talkReplyMessageSent.visible || activityActions.visible
 
             EnforcedPlainTextLabel {

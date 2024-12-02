@@ -139,21 +139,25 @@ void Utility::setupFavLink(const QString &folder)
         SetFileAttributesW((wchar_t *)desktopIni.fileName().utf16(), FILE_ATTRIBUTE_HIDDEN | FILE_ATTRIBUTE_SYSTEM);
     }
 
-    // Windows Explorer: Place under "Favorites" (Links)
-    QString linkName;
-    QDir folderDir(QDir::fromNativeSeparators(folder));
-
     /* Use new WINAPI functions */
     PWSTR path;
-
-    if (SHGetKnownFolderPath(FOLDERID_Links, 0, nullptr, &path) == S_OK) {
-        QString links = QDir::fromNativeSeparators(QString::fromWCharArray(path));
-        linkName = QDir(links).filePath(folderDir.dirName() + QLatin1String(".lnk"));
-        CoTaskMemFree(path);
+    if (!SHGetKnownFolderPath(FOLDERID_Links, 0, nullptr, &path) == S_OK) {
+        qCWarning(lcUtility) << "SHGetKnownFolderPath for " << folder << "has failed.";
+        return;
     }
+
+    // Windows Explorer: Place under "Favorites" (Links)
+    const auto links = QDir::fromNativeSeparators(QString::fromWCharArray(path));
+    CoTaskMemFree(path);
+
+    const QDir folderDir(QDir::fromNativeSeparators(folder));
+    const QString filePath = folderDir.dirName() + QLatin1String(".lnk");
+    const auto linkName = QDir(links).filePath(filePath);
+
     qCInfo(lcUtility) << "Creating favorite link from" << folder << "to" << linkName;
-    if (!QFile::link(folder, linkName))
+    if (!QFile::link(folder, linkName)) {
         qCWarning(lcUtility) << "linking" << folder << "to" << linkName << "failed!";
+    }
 }
 
 void Utility::removeFavLink(const QString &folder)

@@ -1327,40 +1327,43 @@ QStringList FolderMan::findFileInLocalFolders(const QString &relPath, const Acco
     return re;
 }
 
-void FolderMan::removeFolder(Folder *f)
+void FolderMan::removeFolder(Folder *folderToRemove)
 {
-    if (!f) {
+    if (!folderToRemove) {
         qCCritical(lcFolderMan) << "Can not remove null folder";
         return;
     }
 
-    qCInfo(lcFolderMan) << "Removing " << f->alias();
+    qCInfo(lcFolderMan) << "Removing " << folderToRemove->alias();
 
-    const bool currentlyRunning = f->isSyncRunning();
+    const bool currentlyRunning = folderToRemove->isSyncRunning();
     if (currentlyRunning) {
         // abort the sync now
-        f->slotTerminateSync();
+        folderToRemove->slotTerminateSync();
     }
 
-    if (_scheduledFolders.removeAll(f) > 0) {
+    if (_scheduledFolders.removeAll(folderToRemove) > 0) {
         emit scheduleQueueChanged();
     }
 
-    f->setSyncPaused(true);
-    f->wipeForRemoval();
+    folderToRemove->setSyncPaused(true);
+    folderToRemove->wipeForRemoval();
 
     // remove the folder configuration
-    f->removeFromSettings();
+    folderToRemove->removeFromSettings();
 
-    unloadFolder(f);
+    // remove Desktop.ini
+    Utility::removeFavLink(folderToRemove->path());
+
+    unloadFolder(folderToRemove);
     if (currentlyRunning) {
         // We want to schedule the next folder once this is done
-        connect(f, &Folder::syncFinished,
+        connect(folderToRemove, &Folder::syncFinished,
             this, &FolderMan::slotFolderSyncFinished);
         // Let the folder delete itself when done.
-        connect(f, &Folder::syncFinished, f, &QObject::deleteLater);
+        connect(folderToRemove, &Folder::syncFinished, folderToRemove, &QObject::deleteLater);
     } else {
-        delete f;
+        delete folderToRemove;
     }
 
     _navigationPaneHelper.scheduleUpdateCloudStorageRegistry();

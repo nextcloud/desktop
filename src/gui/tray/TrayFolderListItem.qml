@@ -30,17 +30,6 @@ MenuItem {
         text: root.toolTipText
     }
 
-    background: Item {
-        height: parent.height
-        width: parent.width
-        Rectangle {
-            anchors.fill: parent
-            anchors.margins: Style.normalBorderWidth
-            color: parent.parent.hovered || parent.parent.visualFocus ? palette.highlight : palette.window
-            radius: Style.halfTrayWindowRadius
-        }
-    }
-
     contentItem: RowLayout {
         anchors.fill: parent
         anchors.leftMargin: Style.trayWindowMenuEntriesMargin

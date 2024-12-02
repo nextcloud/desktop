@@ -91,8 +91,8 @@ public:
     static void backwardMigrationSettingsKeys(QStringList *deleteKeys, QStringList *ignoreKeys);
 
 public slots:
-    /// Saves account data, not including the credentials
-    void saveAccount(OCC::Account *a);
+    /// Saves account data when adding user, when updating e.g. dav user, not including the credentials
+    void saveAccount(OCC::Account *newAccountData);
 
     /// Saves account state data, not including the account
     void saveAccountState(OCC::AccountState *a);
@@ -114,6 +114,7 @@ signals:
     void accountSyncConnectionRemoved(OCC::AccountState *account);
     void removeAccountFolders(OCC::AccountState *account);
     void forceLegacyImportChanged();
+    void capabilitiesChanged();
 
 private:
     // saving and loading Account to settings
@@ -127,6 +128,9 @@ private:
 
     // Adds an account to the tracked list, emitting accountAdded()
     void addAccountState(AccountState *const accountState);
+
+    // update config serverHasValidSubscription when accounts list changes
+    void updateServerHasValidSubscriptionConfig();
 
     AccountManager() = default;
     QList<AccountStatePtr> _accounts;

@@ -66,8 +66,19 @@ namespace Utility {
     OCSYNC_EXPORT void sleep(int sec);
     OCSYNC_EXPORT void usleep(int usec);
     OCSYNC_EXPORT QString formatFingerprint(const QByteArray &, bool colonSeparated = true);
+    /**
+     * @brief Creates the Desktop.ini file which contains the folder IconResource shown as a favorite link
+     *
+     * @param folder absolute file path to folder
+     */
     OCSYNC_EXPORT void setupFavLink(const QString &folder);
+    /**
+     * @brief Removes the Desktop.ini file which contains the folder IconResource shown as a favorite link
+     *
+     * @param folder absolute file path to folder
+     */
     OCSYNC_EXPORT void removeFavLink(const QString &folder);
+
     OCSYNC_EXPORT bool writeRandomFile(const QString &fname, int size = -1);
     OCSYNC_EXPORT QString octetsToString(const qint64 octets);
     OCSYNC_EXPORT QByteArray userAgentString();

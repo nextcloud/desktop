@@ -15,7 +15,7 @@
 #import <Foundation/Foundation.h>
 
 @protocol SyncClientDelegate <NSObject>
-- (void)setResultForPath:(NSString *)path result:(NSString *)result;
+- (void)setResult:(NSString *)result forPath:(NSString *)path;
 - (void)reFetchFileNameCacheForPath:(NSString *)path;
 - (void)registerPath:(NSString *)path;
 - (void)unregisterPath:(NSString *)path;

@@ -17,11 +17,13 @@
 #include <QLoggingCategory>
 
 #include "gui/accountmanager.h"
+#include "gui/macOS/fileprovider.h"
 #include "gui/macOS/fileproviderdomainmanager.h"
 #include "gui/macOS/fileproviderxpc_mac_utils.h"
 
 namespace {
-    constexpr int64_t semaphoreWaitDelta = 3000000000; // 3 seconds
+    constexpr int64_t semaphoreWaitDelta = 1000000000; // 1 seconds
+    constexpr auto reachableRetryTimeout = 300; // seconds
 }
 
 namespace OCC::Mac {
@@ -99,6 +101,7 @@ void FileProviderXPC::slotAccountStateChanged(const AccountState::State state) c
     case AccountState::SignedOut:
     case AccountState::AskingCredentials:
     case AccountState::RedirectDetected:
+    case AccountState::NeedToSignTermsOfService:
         // Notify File Provider that it should show the not authenticated message
         unauthenticateExtension(extensionAccountId);
         break;
@@ -108,9 +111,13 @@ void FileProviderXPC::slotAccountStateChanged(const AccountState::State state) c
         break;
     }
 }
-void FileProviderXPC::createDebugArchiveForExtension(const QString &extensionAccountId, const QString &filename) const
+void FileProviderXPC::createDebugArchiveForExtension(const QString &extensionAccountId, const QString &filename)
 {
     qCInfo(lcFileProviderXPC) << "Creating debug archive for extension" << extensionAccountId << "at" << filename;
+    if (!fileProviderExtReachable(extensionAccountId)) {
+        qCWarning(lcFileProviderXPC) << "Extension is not reachable. Cannot create debug archive";
+        return;
+    }
     // You need to fetch the contents from the extension and then create the archive from the client side.
     // The extension is not allowed to ask for permission to write into the file system as it is not a user facing process.
     const auto clientCommService = (NSObject<ClientCommunicationProtocol> *)_clientCommServices.value(extensionAccountId);
@@ -143,12 +150,24 @@ void FileProviderXPC::createDebugArchiveForExtension(const QString &extensionAcc
     }
 }
 
-bool FileProviderXPC::fileProviderExtReachable(const QString &extensionAccountId) const
+bool FileProviderXPC::fileProviderExtReachable(const QString &extensionAccountId, const bool retry, const bool reconfigureOnFail)
 {
-    const auto service = (NSObject<ClientCommunicationProtocol> *)_clientCommServices.value(extensionAccountId);
-    if (service == nil) {
+    const auto lastUnreachableTime = _unreachableAccountExtensions.value(extensionAccountId);
+    if (!retry 
+        && !reconfigureOnFail 
+        && lastUnreachableTime.isValid() 
+        && lastUnreachableTime.secsTo(QDateTime::currentDateTime()) < ::reachableRetryTimeout) {
+        qCInfo(lcFileProviderXPC) << "File provider extension was unreachable less than a minute ago. "
+                                  << "Not checking again";
         return false;
     }
+
+    const auto service = (NSObject<ClientCommunicationProtocol> *)_clientCommServices.value(extensionAccountId);
+    if (service == nil) {
+        qCWarning(lcFileProviderXPC) << "Could not get service for extension" << extensionAccountId;
+        return false;
+    }
+
     __block auto response = false;
     dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
     [service getExtensionAccountIdWithCompletionHandler:^(NSString *const, NSError *const) {
@@ -156,6 +175,33 @@ bool FileProviderXPC::fileProviderExtReachable(const QString &extensionAccountId
         dispatch_semaphore_signal(semaphore);
     }];
     dispatch_semaphore_wait(semaphore, dispatch_time(DISPATCH_TIME_NOW, semaphoreWaitDelta));
+    
+    if (response) {
+        _unreachableAccountExtensions.remove(extensionAccountId);
+    } else {
+        qCWarning(lcFileProviderXPC) << "Could not reach file provider extension.";
+   
+        if (reconfigureOnFail) {
+            qCWarning(lcFileProviderXPC) << "Could not reach extension"
+                                         << extensionAccountId
+                                         << "going to attempt reconfiguring interface";
+            const auto ncDomainManager = FileProvider::instance()->domainManager();
+            const auto accountState = ncDomainManager->accountStateFromFileProviderDomainIdentifier(extensionAccountId);
+            const auto domain = (NSFileProviderDomain *)(ncDomainManager->domainForAccount(accountState.get()));
+            const auto manager = [NSFileProviderManager managerForDomain:domain];
+            const auto fpServices = FileProviderXPCUtils::getFileProviderServices(@[manager]);
+            const auto connections = FileProviderXPCUtils::connectToFileProviderServices(fpServices);
+            const auto services = FileProviderXPCUtils::processClientCommunicationConnections(connections);
+            _clientCommServices.insert(services);
+        }
+
+        if (retry) {
+            qCWarning(lcFileProviderXPC) << "Could not reach extension" << extensionAccountId << "retrying";
+            return fileProviderExtReachable(extensionAccountId, false, false);
+        } else {
+            _unreachableAccountExtensions.insert(extensionAccountId, QDateTime::currentDateTime());
+        }
+    }
     return response;
 }
 

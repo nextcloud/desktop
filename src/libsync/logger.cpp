@@ -37,6 +37,7 @@ namespace {
 
 constexpr int CrashLogSize = 20;
 constexpr auto MaxLogLinesCount = 50000;
+constexpr auto MaxLogLinesBeforeFlush = 10;
 
 static bool compressLog(const QString &originalName, const QString &targetName)
 {
@@ -145,8 +146,13 @@ void Logger::doLog(QtMsgType type, const QMessageLogContext &ctx, const QString 
 
         if (_logstream) {
             (*_logstream) << msg << "\n";
-            if (_doFileFlush)
+            ++_linesCounter;
+            if (_doFileFlush ||
+                _linesCounter >= MaxLogLinesBeforeFlush ||
+                type == QtMsgType::QtWarningMsg || type == QtMsgType::QtCriticalMsg || type == QtMsgType::QtFatalMsg) {
                 _logstream->flush();
+                _linesCounter = 0;
+            }
         }
         if (_permanentDeleteLogStream && ctx.category && strcmp(ctx.category, lcPermanentLog().categoryName()) == 0) {
             (*_permanentDeleteLogStream) << msg << "\n";
@@ -234,10 +240,9 @@ QString Logger::temporaryFolderLogDirPath() const
 void Logger::setupTemporaryFolderLogDir()
 {
     auto dir = temporaryFolderLogDirPath();
-    if (!QDir().mkpath(dir))
+    if (!QDir().mkpath(dir)) {
         return;
-    setLogDebug(true);
-    setLogExpire(4 /*hours*/);
+    }
     setLogDir(dir);
     _temporaryFolderLogDir = true;
 }
@@ -249,8 +254,6 @@ void Logger::disableTemporaryFolderLogDir()
 
     enterNextLogFile("nextcloud.log", LogType::Log);
     setLogDir(QString());
-    setLogDebug(false);
-    setLogFile(QString());
     _temporaryFolderLogDir = false;
 }
 

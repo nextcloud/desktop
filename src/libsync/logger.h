@@ -110,6 +110,7 @@ private:
 
     QFile _logFile;
     bool _doFileFlush = false;
+    int _linesCounter = 0;
     int _logExpire = 0;
     bool _logDebug = false;
     QScopedPointer<QTextStream> _logstream;

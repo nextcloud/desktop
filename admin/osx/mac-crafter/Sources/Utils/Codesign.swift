@@ -14,6 +14,8 @@
 
 import Foundation
 
+fileprivate let defaultCodesignOptions = "--timestamp --force --preserve-metadata=entitlements --verbose=4 --options runtime"
+
 enum CodeSigningError: Error {
     case failedToCodeSign(String)
 }
@@ -30,19 +32,37 @@ func isAppExtension(_ path: String) -> Bool {
     path.hasSuffix(".appex")
 }
 
-func codesign(
-    identity: String,
-    path: String,
-    options: String = "--timestamp --force --preserve-metadata=entitlements --verbose=4 --options runtime --deep"
-) throws {
+func isExecutable(_ path: String) throws -> Bool {
+    let outPipe = Pipe()
+    let errPipe = Pipe()
+    let task = Process()
+    task.standardOutput = outPipe
+    task.standardError = errPipe
+
+    let command = "file \"\(path)\""
+    guard run("/bin/zsh", ["-c", command], task: task) == 0 else {
+        throw CodeSigningError.failedToCodeSign("Failed to determine if \(path) is an executable.")
+    }
+
+    let outputData = outPipe.fileHandleForReading.readDataToEndOfFile()
+    let output = String(data: outputData, encoding: .utf8) ?? ""
+    return output.contains("Mach-O 64-bit executable")
+}
+
+func codesign(identity: String, path: String, options: String = defaultCodesignOptions) throws {
     print("Code-signing \(path)...")
-    let command = "codesign -s \"\(identity)\" \(options) \(path)"
+    let command = "codesign -s \"\(identity)\" \(options) \"\(path)\""
     guard shell(command) == 0 else {
         throw CodeSigningError.failedToCodeSign("Failed to code-sign \(path).")
     }
 }
 
-func recursivelyCodesign(path: String, identity: String) throws {
+func recursivelyCodesign(
+    path: String,
+    identity: String,
+    options: String = defaultCodesignOptions,
+    skip: [String] = []
+) throws {
     let fm = FileManager.default
     guard let pathEnumerator = fm.enumerator(atPath: path) else {
         throw AppBundleSigningError.couldNotEnumerate(
@@ -51,13 +71,21 @@ func recursivelyCodesign(path: String, identity: String) throws {
     }
 
     for case let enumeratedItem as String in pathEnumerator {
-        guard isLibrary(enumeratedItem) || isAppExtension(enumeratedItem) else { continue }
-        try codesign(identity: identity, path: "\(path)/\(enumeratedItem)")
+        let enumeratedItemPath = "\(path)/\(enumeratedItem)"
+        guard !skip.contains(enumeratedItemPath) else {
+            print("Skipping \(enumeratedItemPath)...")
+            continue
+        }
+        let isExecutableFile = try isExecutable(enumeratedItemPath)
+        guard isLibrary(enumeratedItem) || isAppExtension(enumeratedItem) || isExecutableFile else {
+            continue
+        }
+        try codesign(identity: identity, path: enumeratedItemPath, options: options)
     }
 }
 
 func saveCodesignEntitlements(target: String, path: String) throws {
-    let command = "codesign -d --entitlements \(path) --xml \(target)"
+    let command = "codesign -d --entitlements \"\(path)\" --xml \"\(target)\""
     guard shell(command) == 0 else {
         throw CodeSigningError.failedToCodeSign("Failed to save entitlements for \(target).")
     }
@@ -81,7 +109,7 @@ func codesignClientAppBundle(
         "\(frameworksPath)/QtWebEngineCore.framework/Versions/A/Helpers/QtWebEngineProcess.app"
     try codesign(identity: codeSignIdentity,
                  path: qtWebEngineProcessPath,
-                 options: "--timestamp --force --verbose=4 --options runtime --deep --entitlements \(qtWebEngineProcessPath)/Contents/Resources/QtWebEngineProcess.entitlements")
+                 options: "--timestamp --force --verbose=4 --options runtime --deep --entitlements \"\(qtWebEngineProcessPath)/Contents/Resources/QtWebEngineProcess.entitlements\"")
 
     print("Code-signing QtWebEngine...")
     try codesign(identity: codeSignIdentity, path: "\(frameworksPath)/QtWebEngineCore.framework")
@@ -92,9 +120,9 @@ func codesignClientAppBundle(
 
     print("Code-signing Sparkle autoupdater app (without entitlements)...")
     let sparkleFrameworkPath = "\(frameworksPath)/Sparkle.framework"
-    try codesign(identity: codeSignIdentity,
-                 path: "\(sparkleFrameworkPath)/Resources/Autoupdate.app/Contents/MacOS/*",
-                 options: "--timestamp --force --verbose=4 --options runtime --deep")
+    try recursivelyCodesign(path: "\(sparkleFrameworkPath)/Resources/Autoupdate.app",
+                            identity: codeSignIdentity,
+                            options: "--timestamp --force --verbose=4 --options runtime --deep")
 
     print("Re-codesigning Sparkle library...")
     try codesign(identity: codeSignIdentity, path: "\(sparkleFrameworkPath)/Sparkle")
@@ -118,10 +146,20 @@ func codesignClientAppBundle(
                                        encoding: .utf8)
         try codesign(identity: codeSignIdentity,
                      path: appExtensionPath,
-                     options: "--timestamp --force --verbose=4 --options runtime --deep --entitlements \(tmpEntitlementXmlPath)")
+                     options: "--timestamp --force --verbose=4 --options runtime --deep --entitlements \"\(tmpEntitlementXmlPath)\"")
     }
 
     // Now we do the final codesign bit
+    let binariesDir = "\(clientContentsDir)/MacOS"
     print("Code-signing Nextcloud Desktop Client binaries...")
-    try codesign(identity: codeSignIdentity, path: "\(clientContentsDir)/MacOS/*")
+
+    guard let appName = clientAppDir.components(separatedBy: "/").last, clientAppDir.hasSuffix(".app") else {
+        throw AppBundleSigningError.couldNotEnumerate("Failed to determine main executable name.")
+    }
+
+    // Sign the main executable last
+    let mainExecutableName = String(appName.dropLast(".app".count))
+    let mainExecutablePath = "\(binariesDir)/\(mainExecutableName)"
+    try recursivelyCodesign(path: binariesDir, identity: codeSignIdentity, skip: [mainExecutablePath])
+    try codesign(identity: codeSignIdentity, path: mainExecutablePath)
 }

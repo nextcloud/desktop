@@ -14,40 +14,39 @@
 
 import Foundation
 
-var task: Process?
+weak var globalTaskRef: Process?
 
 @discardableResult
 func run(
     _ launchPath: String,
     _ args: [String],
     env: [String: String]? = nil,
-    quiet: Bool = false
+    quiet: Bool = false,
+    task: Process = Process()
 ) -> Int32 {
-    defer { task = nil }
-    task = Process()
-
+    globalTaskRef = task
     signal(SIGINT) { _ in
-        task?.terminate()  // Send terminate signal to the task
-        exit(0)            // Exit the script after cleanup
+        globalTaskRef?.terminate()  // Send terminate signal to the task
+        exit(0)           // Exit the script after cleanup
     }
 
-    task?.launchPath = launchPath
-    task?.arguments = args
+    task.launchPath = launchPath
+    task.arguments = args
 
     if let env,
-       let combinedEnv = task?.environment?.merging(env, uniquingKeysWith: { (_, new) in new })
+       let combinedEnv = task.environment?.merging(env, uniquingKeysWith: { (_, new) in new })
     {
-        task?.environment = combinedEnv
+        task.environment = combinedEnv
     }
 
     if quiet {
-        task?.standardOutput = nil
-        task?.standardError = nil
+        task.standardOutput = nil
+        task.standardError = nil
     }
 
-    task?.launch()
-    task?.waitUntilExit()
-    return task?.terminationStatus ?? 1
+    task.launch()
+    task.waitUntilExit()
+    return task.terminationStatus
 }
 
 func run(

@@ -984,15 +984,17 @@ private slots:
             if (op == QNetworkAccessManager::PostOperation) {
                 ++nPOST;
                 if (contentType.startsWith(QStringLiteral("multipart/related; boundary="))) {
-                    auto jsonReplyObject = fakeFolder.forEachReplyPart(outgoingData, contentType, [] (const QMap<QString, QByteArray> &allHeaders) -> QJsonObject {
+                    auto hasAnError = false;
+                    auto jsonReplyObject = fakeFolder.forEachReplyPart(outgoingData, contentType, [&hasAnError] (const QMap<QString, QByteArray> &allHeaders) -> QJsonObject {
                         auto reply = QJsonObject{};
-                        const auto fileName = allHeaders[QStringLiteral("X-File-Path")];
+                        const auto fileName = allHeaders[QStringLiteral("x-file-path")];
                         if (fileName.endsWith("A/big2") ||
                                 fileName.endsWith("A/big3") ||
                                 fileName.endsWith("A/big4") ||
                                 fileName.endsWith("A/big5") ||
                                 fileName.endsWith("A/big7") ||
                                 fileName.endsWith("B/big8")) {
+                            hasAnError = true;
                             reply.insert(QStringLiteral("error"), true);
                             reply.insert(QStringLiteral("etag"), {});
                             return reply;
@@ -1005,7 +1007,11 @@ private slots:
                     if (jsonReplyObject.size()) {
                         auto jsonReply = QJsonDocument{};
                         jsonReply.setObject(jsonReplyObject);
-                        return new FakeJsonErrorReply{op, request, this, 200, jsonReply};
+                        if (hasAnError) {
+                            return new FakeJsonErrorReply{op, request, this, 200, jsonReply};
+                        } else {
+                            return new FakeJsonReply{op, request, this, 200, jsonReply};
+                        }
                     }
                     return  nullptr;
                 }

@@ -31,7 +31,9 @@ class FileTagModel : public QAbstractListModel
     Q_PROPERTY(QString overflowTagsString READ overflowTagsString NOTIFY overflowTagsStringChanged)
 
 public:
-    explicit FileTagModel(const QString &serverRelativePath, const AccountPtr &account, QObject * const parent = nullptr);
+    explicit FileTagModel(const QString &serverRelativePath,
+                          const AccountPtr &account,
+                          QObject *const parent = nullptr);
 
     [[nodiscard]] int rowCount(const QModelIndex &parent = QModelIndex()) const override;
     [[nodiscard]] QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;

@@ -67,6 +67,7 @@ class OWNCLOUDSYNC_EXPORT Theme : public QObject
 
     Q_PROPERTY(QColor defaultColor READ defaultColor CONSTANT)
 
+    Q_PROPERTY(QVariantMap systemPalette READ systemPalette NOTIFY systemPaletteChanged)
     Q_PROPERTY(bool darkMode READ darkMode NOTIFY darkModeChanged)
 public:
     enum CustomMediaType {
@@ -600,13 +601,15 @@ public:
 
     static constexpr const char *themePrefix = ":/client/theme/";
 
-    bool darkMode();
+    [[nodiscard]] QVariantMap systemPalette() const;
+    [[nodiscard]] bool darkMode() const;
 
 public slots:
     void setOverrideServerUrl(const QString &overrideServerUrl);
     void setForceOverrideServerUrl(bool forceOverride);
     void setVfsEnabled(bool enabled);
     void setStartLoginFlowAutomatically(bool startLoginFlowAuto);
+    void systemPaletteHasChanged();
 
 protected:
 #ifndef TOKEN_AUTH_ONLY
@@ -624,6 +627,7 @@ protected:
 
 signals:
     void systrayUseMonoIconsChanged(bool);
+    void systemPaletteChanged(const QPalette &palette);
     void darkModeChanged();
     void overrideServerUrlChanged();
     void forceOverrideServerUrlChanged();
@@ -635,14 +639,13 @@ private:
     Theme &operator=(Theme const &);
 
     void updateMultipleOverrideServers();
-    void connectToPaletteSignal();
+    void connectToPaletteSignal() const;
 #if defined(Q_OS_WIN)
     QPalette reserveDarkPalette; // Windows 11 button and window dark colours
 #endif
 
     static Theme *_instance;
     bool _mono = false;
-    bool _paletteSignalsConnected = false;
 
     QString _overrideServerUrl;
     bool _forceOverrideServerUrl = false;

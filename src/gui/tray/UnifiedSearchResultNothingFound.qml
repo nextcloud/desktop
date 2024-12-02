@@ -38,7 +38,7 @@ ColumnLayout {
     EnforcedPlainTextLabel {
         id: unifiedSearchResultsNoResultsLabel
         text: qsTr("No results for")
-        font.pixelSize: Style.subLinePixelSize * 1.25
+        font.pixelSize: Style.unifiedSearchPlaceholderViewSublineFontPixelSize
         wrapMode: Text.Wrap
         Layout.fillWidth: true
         Layout.preferredHeight: Style.trayWindowHeaderHeight / 2
@@ -48,7 +48,7 @@ ColumnLayout {
     EnforcedPlainTextLabel {
         id: unifiedSearchResultsNoResultsLabelDetails
         text: unifiedSearchResultNothingFoundContainer.text
-        font.pixelSize: Style.topLinePixelSize * 1.25
+        font.pixelSize: Style.unifiedSearchPlaceholderViewTitleFontPixelSize
         wrapMode: Text.Wrap
         maximumLineCount: 2
         elide: Text.ElideRight

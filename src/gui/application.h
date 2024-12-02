@@ -96,11 +96,11 @@ signals:
     void folderRemoved();
     void folderStateChanged(OCC::Folder *);
     void isShowingSettingsDialog();
+    void systemPaletteChanged();
 
 protected slots:
     void slotParseMessage(const QString &, QObject *);
     void slotCheckConnection();
-    void slotUseMonoIconsChanged(bool);
     void slotCleanup();
     void slotAccountStateAdded(OCC::AccountState *accountState);
     void slotAccountStateRemoved(OCC::AccountState *accountState);

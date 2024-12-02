@@ -10,6 +10,7 @@ RowLayout {
     id: root
 
     property alias model: syncStatus
+    property color accentColor: Style.ncBlue
 
     spacing: Style.trayHorizontalMargin
 
@@ -26,9 +27,9 @@ RowLayout {
         Layout.preferredHeight: size
 
         Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
-        Layout.topMargin: 16
+        Layout.topMargin: Style.trayHorizontalMargin
         Layout.rightMargin: whiteSpace * (0.5 + Style.thumbnailImageSizeReduction)
-        Layout.bottomMargin: 16
+        Layout.bottomMargin: Style.trayHorizontalMargin
         Layout.leftMargin: Style.trayHorizontalMargin + (whiteSpace * (0.5 - Style.thumbnailImageSizeReduction))
 
         padding: 0
@@ -69,6 +70,7 @@ RowLayout {
             sourceComponent: NCProgressBar {
                 id: syncProgressBar
                 value: syncStatus.syncProgress
+                fillColor: root.accentColor
             }
         }
 
@@ -84,12 +86,8 @@ RowLayout {
         }
     }
 
-    CustomButton {
+    Button {
         id: syncNowButton
-
-        FontMetrics {
-            id: syncNowFm
-        }
 
         Layout.rightMargin: Style.trayHorizontalMargin
 
@@ -109,11 +107,7 @@ RowLayout {
         }
     }
 
-    CustomButton {
-        Layout.preferredWidth: syncNowFm.boundingRect(text).width +
-                               leftPadding +
-                               rightPadding +
-                               Style.standardSpacing * 2
+    Button {
         Layout.rightMargin: Style.trayHorizontalMargin
 
         text: qsTr("Resolve conflicts")

@@ -26,33 +26,22 @@ AbstractButton {
 
     signal showUserStatusSelector(int id)
 
-    property variant dialog;
-    property variant comp;
 
     Accessible.role: Accessible.MenuItem
     Accessible.name: qsTr("Switch to account") + " " + model.name
 
     height: Style.trayWindowHeaderHeight
 
-    background: Rectangle {
-        anchors.fill: parent
-        anchors.margins: 1
-        color: (userLine.hovered || userLine.visualFocus) &&
-               !(userMoreButton.hovered || userMoreButton.visualFocus) ?
-                   palette.highlight : palette.window
-        radius: Style.halfTrayWindowRadius
-    }
-
     contentItem: RowLayout {
         id: userLineLayout
-        spacing: Style.userStatusSpacing
+        spacing: Style.userLineSpacing
 
         Image {
             id: accountAvatar
             Layout.leftMargin: Style.accountIconsMenuMargin
             verticalAlignment: Qt.AlignCenter
             cache: false
-            source: model.avatar !== "" ? model.avatar : Theme.darkMode ? "image://avatars/fallbackWhite" : "image://avatars/fallbackBlack"
+            source: model.avatar !== "" ? model.avatar : Style.darkMode ? "image://avatars/fallbackWhite" : "image://avatars/fallbackBlack"
             Layout.preferredHeight: Style.accountAvatarSize
             Layout.preferredWidth: Style.accountAvatarSize
 
@@ -147,22 +136,11 @@ AbstractButton {
 
             onClicked: userMoreButtonMenu.visible ? userMoreButtonMenu.close() : userMoreButtonMenu.popup()
 
-            Image {
-                anchors.fill: parent
-                source: "image://svgimage-custom-color/more.svg/" + palette.windowText
-                fillMode: Image.PreserveAspectFit
-                anchors.rightMargin: Style.accountLabelsAnchorsMargin
-            }
+            icon.source: "image://svgimage-custom-color/more.svg/" + palette.windowText
 
             AutoSizingMenu {
                 id: userMoreButtonMenu
                 closePolicy: Menu.CloseOnPressOutsideParent | Menu.CloseOnEscape
-
-                background: Rectangle {
-                    border.color: palette.dark
-                    radius: Style.halfTrayWindowRadius
-                    color: palette.window
-                }
 
                 MenuItem {
                     visible: model.isConnected && model.serverHasUserStatus
@@ -171,12 +149,7 @@ AbstractButton {
                     font.pixelSize: Style.topLinePixelSize
                     hoverEnabled: true
                     onClicked: showUserStatusSelector(index)
-
-                    background: Rectangle {
-                        radius: Style.halfTrayWindowRadius
-                        color: parent.hovered ? palette.highlight : palette.window
-                    }
-                }
+               }
 
                 MenuItem {
                     text: model.isConnected ? qsTr("Log out") : qsTr("Log in")
@@ -198,12 +171,7 @@ AbstractButton {
                         }
                         accountMenu.close()
                     }
-
-                    background: Rectangle {
-                        radius: Style.halfTrayWindowRadius
-                        color: parent.hovered ? palette.highlight : palette.window
-                    }
-                }
+               }
 
                 MenuItem {
                     id: removeAccountButton
@@ -218,12 +186,7 @@ AbstractButton {
                     Accessible.role: Accessible.Button
                     Accessible.name: text
                     Accessible.onPressAction: removeAccountButton.clicked()
-
-                    background: Rectangle {
-                        radius: Style.halfTrayWindowRadius
-                        color: parent.hovered ? palette.highlight : palette.window
-                    }
-                }
+               }
             }
         }
     }

@@ -81,12 +81,12 @@ Item {
                 EnforcedPlainTextLabel {
                     id: fileTypeLabel
                     text: root.fileTypeString
-                    color: Style.ncSecondaryTextColor
+                    color: palette.midlight
                 }
             }
         }
 
-        CustomButton {
+        Button {
             id: deleteButton
 
             Layout.minimumWidth: implicitWidth

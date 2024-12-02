@@ -54,36 +54,36 @@ ColumnLayout {
             }
 
             UserStatusSelectorButton {
-                checked: userStatusSelectorModel.onlineStatus === NC.userStatus.Online
+                checked: userStatusSelectorModel.onlineStatus === NC.UserStatus.Online
                 checkable: true
                 icon.source: userStatusSelectorModel.onlineIcon
                 icon.color: "transparent"
                 text: qsTr("Online")
-                onClicked: userStatusSelectorModel.onlineStatus = NC.userStatus.Online
+                onClicked: userStatusSelectorModel.onlineStatus = NC.UserStatus.Online
 
                 Layout.fillWidth: true
                 implicitWidth: 200 // Pretty much a hack to ensure all the buttons are equal in width
             }
             UserStatusSelectorButton {
-                checked: userStatusSelectorModel.onlineStatus === NC.userStatus.Away
+                checked: userStatusSelectorModel.onlineStatus === NC.UserStatus.Away
                 checkable: true
                 icon.source: userStatusSelectorModel.awayIcon
                 icon.color: "transparent"
                 text: qsTr("Away")
-                onClicked: userStatusSelectorModel.onlineStatus = NC.userStatus.Away
+                onClicked: userStatusSelectorModel.onlineStatus = NC.UserStatus.Away
 
                 Layout.fillWidth: true
                 implicitWidth: 200 // Pretty much a hack to ensure all the buttons are equal in width
 
             }
             UserStatusSelectorButton {
-                checked: userStatusSelectorModel.onlineStatus === NC.userStatus.DoNotDisturb
+                checked: userStatusSelectorModel.onlineStatus === NC.UserStatus.DoNotDisturb
                 checkable: true
                 icon.source: userStatusSelectorModel.dndIcon
                 icon.color: "transparent"
                 text: qsTr("Do not disturb")
                 secondaryText: qsTr("Mute all notifications")
-                onClicked: userStatusSelectorModel.onlineStatus = NC.userStatus.DoNotDisturb
+                onClicked: userStatusSelectorModel.onlineStatus = NC.UserStatus.DoNotDisturb
 
                 Layout.fillWidth: true
                 implicitWidth: 200 // Pretty much a hack to ensure all the buttons are equal in width
@@ -92,14 +92,14 @@ ColumnLayout {
                 Component.onCompleted: topButtonsLayout.updateMaxButtonHeight(implicitHeight)
             }
             UserStatusSelectorButton {
-                checked: userStatusSelectorModel.onlineStatus === NC.userStatus.Invisible ||
-                         userStatusSelectorModel.onlineStatus === NC.userStatus.Offline
+                checked: userStatusSelectorModel.onlineStatus === NC.UserStatus.Invisible ||
+                         userStatusSelectorModel.onlineStatus === NC.UserStatus.Offline
                 checkable: true
                 icon.source: userStatusSelectorModel.invisibleIcon
                 icon.color: "transparent"
                 text: qsTr("Invisible")
                 secondaryText: qsTr("Appear offline")
-                onClicked: userStatusSelectorModel.onlineStatus = NC.userStatus.Invisible
+                onClicked: userStatusSelectorModel.onlineStatus = NC.UserStatus.Invisible
 
                 Layout.fillWidth: true
                 implicitWidth: 200 // Pretty much a hack to ensure all the buttons are equal in width
@@ -130,20 +130,18 @@ ColumnLayout {
             Layout.fillWidth: true
             spacing: 0
 
-            UserStatusSelectorButton {
+            AbstractButton {
                 id: fieldButton
+
+                readonly property bool showBorder: hovered || checked || emojiDialog.visible
 
                 Layout.preferredWidth: userStatusMessageTextField.height
                 Layout.preferredHeight: userStatusMessageTextField.height
 
                 text: userStatusSelectorModel.userStatusEmoji
-
-                onClicked: emojiDialog.open()
-                onHeightChanged: topButtonsLayout.maxButtonHeight = Math.max(topButtonsLayout.maxButtonHeight, height)
-
-                primary: true
                 padding: 0
-                z: hovered ? 2 : 0 // Make sure highlight is seen on top of text field
+                z: showBorder ? 2 : 0 // Make sure highlight is seen on top of text field
+                hoverEnabled: true
 
                 property color borderColor: showBorder ? Style.ncBlue : palette.dark
 
@@ -175,6 +173,15 @@ ColumnLayout {
                         color: palette.button
                     }
                 }
+
+                contentItem: Label {
+                    text: fieldButton.text
+                    textFormat: Text.PlainText
+                    horizontalAlignment: Text.AlignHCenter
+                    verticalAlignment: Text.AlignVCenter
+                }
+
+                onClicked: emojiDialog.open()
             }
 
             Popup {
@@ -186,7 +193,7 @@ ColumnLayout {
                 anchors.centerIn: Overlay.overlay
 
                 background: Rectangle {
-                    color: palette.window
+                    color: palette.base
                     border.width: Style.normalBorderWidth
                     border.color: palette.dark
                     radius: Style.slightlyRoundedButtonRadius
@@ -211,7 +218,7 @@ ColumnLayout {
                 Layout.preferredHeight: contentHeight + (Style.smallSpacing * 2)
 
                 placeholderText: qsTr("What is your status?")
-                placeholderTextColor: palette.midlight
+                placeholderTextColor: palette.dark
                 text: userStatusSelectorModel.userStatusMessage
                 verticalAlignment: TextInput.AlignVCenter
                 selectByMouse: true

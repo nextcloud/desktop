@@ -275,9 +275,9 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
     case DisplayPathRole:
         return getDisplayPath();
     case PathRole:
-        return QFileInfo(getFilePath()).path();
+        return getFilePath();
     case OpenablePathRole:
-        return a._isMultiObjectActivity ? QFileInfo(getFilePath()).canonicalPath() : QFileInfo(getFilePath()).canonicalFilePath();
+        return getFilePath();
     case DisplayLocationRole:
         return displayLocation();
     case ActionsLinksRole: {

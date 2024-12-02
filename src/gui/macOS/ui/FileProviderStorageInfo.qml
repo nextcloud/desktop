@@ -48,11 +48,11 @@ GridLayout {
         Layout.fillWidth: true
         text: qsTr("%1 GB of %2 GB remote files synced").arg(root.localUsedStorage.toFixed(2)).arg(root.remoteUsedStorage.toFixed(2));
         elide: Text.ElideRight
-        color: Style.ncSecondaryTextColor
+        color: palette.midlight
         horizontalAlignment: Text.AlignRight
     }
 
-    CustomButton {
+    Button {
         Layout.row: 0
         Layout.column: 2
         Layout.alignment: Layout.AlignRight | Layout.AlignVCenter
