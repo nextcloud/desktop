@@ -271,5 +271,8 @@ else()
     install(TARGETS nextcloudsync DESTINATION ${OWNCLOUD_OSX_BUNDLE}/Contents/MacOS)
 endif()
 
+if (WIN32)
+    install(FILES $<TARGET_PDB_FILE:nextcloudsync> DESTINATION bin OPTIONAL)
+endif()
 
 add_subdirectory(vfs)
