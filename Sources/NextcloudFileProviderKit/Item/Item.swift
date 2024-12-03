@@ -201,6 +201,22 @@ public class Item: NSObject, NSFileProviderItem {
         )
     }
 
+    public static func trashContainer(remoteInterface: RemoteInterface) -> Item {
+        let metadata = ItemMetadata()
+        metadata.account = remoteInterface.account.ncKitAccount
+        metadata.directory = true
+        metadata.ocId = NSFileProviderItemIdentifier.trashContainer.rawValue
+        metadata.fileName = "Trash"
+        metadata.fileNameView = "Trash"
+        metadata.serverUrl = remoteInterface.account.trashUrl
+        metadata.classFile = NKCommon.TypeClassFile.directory.rawValue
+        return Item(
+            metadata: metadata,
+            parentItemIdentifier: .trashContainer,
+            remoteInterface: remoteInterface
+        )
+    }
+
     static let logger = Logger(subsystem: Logger.subsystem, category: "item")
 
     public required init(
