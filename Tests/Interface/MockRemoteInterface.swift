@@ -144,7 +144,7 @@ public class MockRemoteInterface: RemoteInterface {
         etag: String?,
         date: NSDate?,
         size: Int64,
-        allHeaderFields: [AnyHashable : Any]?,
+        response: HTTPURLResponse?,
         afError: AFError?,
         remoteError: NKError
     ) {
@@ -213,12 +213,12 @@ public class MockRemoteInterface: RemoteInterface {
         overwrite: Bool = false,
         options: NKRequestOptions = .init(),
         taskHandler: @escaping (URLSessionTask) -> Void = { _ in }
-    ) async -> (account: String, error: NKError) {
+    ) async -> (account: String, data: Data?, error: NKError) {
         guard let itemNewName = try? name(from: remotePathDestination),
               let sourceItem = item(remotePath: remotePathSource),
               let destinationParent = parentItem(path: remotePathDestination),
               (overwrite || !destinationParent.children.contains(where: { $0.name == itemNewName }))
-        else { return (accountString, .urlError) }
+        else { return (accountString, nil, .urlError) }
 
         sourceItem.name = itemNewName
         sourceItem.parent?.children.removeAll(where: { $0.identifier == sourceItem.identifier })
@@ -244,7 +244,7 @@ public class MockRemoteInterface: RemoteInterface {
             children = nextChildren
         }
 
-        return (accountString, .success)
+        return (accountString, nil, .success)
     }
 
     public func download(
@@ -259,7 +259,7 @@ public class MockRemoteInterface: RemoteInterface {
         etag: String?,
         date: NSDate?,
         length: Int64,
-        allHeaderFields: [AnyHashable : Any]?,
+        response: HTTPURLResponse?,
         afError: AFError?,
         remoteError: NKError
     ) {
@@ -330,15 +330,16 @@ public class MockRemoteInterface: RemoteInterface {
         remotePath: String,
         options: NKRequestOptions = .init(),
         taskHandler: @escaping (URLSessionTask) -> Void = { _ in }
-    ) async -> (account: String, error: NKError) {
+    ) async -> (account: String, response: HTTPURLResponse?, error: NKError) {
         guard let item = item(remotePath: remotePath) else {
-            return (accountString, .urlError)
+            return (accountString, nil, .urlError)
         }
 
         item.children = []
         item.parent?.children.removeAll(where: { $0.identifier == item.identifier })
         item.parent = nil
-        return (accountString, .success)
+
+        return (accountString, nil, .success)
     }
 
     public func downloadThumbnail(

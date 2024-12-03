@@ -36,8 +36,8 @@ extension NextcloudKit: RemoteInterface {
                 account: account.ncKitAccount,
                 options: options,
                 taskHandler: taskHandler
-            ) { account, ocId, date, error in
-                continuation.resume(returning: (account, ocId, date, error))
+            ) { account, ocId, date, _, error in
+                continuation.resume(returning: (account, ocId, date as NSDate?, error))
             }
         }
     }
@@ -57,7 +57,7 @@ extension NextcloudKit: RemoteInterface {
         etag: String?,
         date: NSDate?,
         size: Int64,
-        allHeaderFields: [AnyHashable : Any]?,
+        response: HTTPURLResponse?,
         afError: AFError?,
         remoteError: NKError
     ) {
@@ -72,14 +72,14 @@ extension NextcloudKit: RemoteInterface {
                 requestHandler: requestHandler,
                 taskHandler: taskHandler,
                 progressHandler: progressHandler
-            ) { account, ocId, etag, date, size, allHeaderFields, afError, nkError in
+            ) { account, ocId, etag, date, size, response, afError, nkError in
                 continuation.resume(returning: (
                     account,
                     ocId,
                     etag,
-                    date,
+                    date as NSDate?,
                     size,
-                    allHeaderFields,
+                    response?.response,
                     afError,
                     nkError
                 ))
@@ -93,7 +93,7 @@ extension NextcloudKit: RemoteInterface {
         overwrite: Bool,
         options: NKRequestOptions,
         taskHandler: @escaping (URLSessionTask) -> Void
-    ) async -> (account: String, error: NKError) {
+    ) async -> (account: String, data: Data?, error: NKError) {
         return await withCheckedContinuation { continuation in
             moveFileOrFolder(
                 serverUrlFileNameSource: remotePathSource,
@@ -102,8 +102,8 @@ extension NextcloudKit: RemoteInterface {
                 account: account.ncKitAccount,
                 options: options,
                 taskHandler: taskHandler
-            ) { account, error in
-                continuation.resume(returning: (account, error))
+            ) { account, data, error in
+                continuation.resume(returning: (account, data?.data, error))
             }
         }
     }
@@ -120,7 +120,7 @@ extension NextcloudKit: RemoteInterface {
         etag: String?,
         date: NSDate?,
         length: Int64,
-        allHeaderFields: [AnyHashable : Any]?,
+        response: HTTPURLResponse?,
         afError: AFError?,
         remoteError: NKError
     ) {
@@ -133,13 +133,13 @@ extension NextcloudKit: RemoteInterface {
                 requestHandler: requestHandler,
                 taskHandler: taskHandler,
                 progressHandler: progressHandler
-            ) { account, etag, date, length, allHeaderFields, afError, remoteError in
+            ) { account, etag, date, length, data, afError, remoteError in
                 continuation.resume(returning: (
                     account, 
                     etag,
-                    date,
+                    date as NSDate?,
                     length,
-                    allHeaderFields,
+                    data?.response,
                     afError,
                     remoteError
                 ))
@@ -169,7 +169,7 @@ extension NextcloudKit: RemoteInterface {
                 options: options,
                 taskHandler: taskHandler
             ) { account, files, data, error in
-                continuation.resume(returning: (account, files, data, error))
+                continuation.resume(returning: (account, files ?? [], data?.data, error))
             }
         }
     }
@@ -178,10 +178,12 @@ extension NextcloudKit: RemoteInterface {
         remotePath: String,
         options: NKRequestOptions = .init(),
         taskHandler: @escaping (URLSessionTask) -> Void = { _ in }
-    ) async -> (account: String, error: NKError) {
+    ) async -> (account: String, response: HTTPURLResponse?, error: NKError) {
         return await withCheckedContinuation { continuation in
-            deleteFileOrFolder(serverUrlFileName: remotePath) { account, error in
-                continuation.resume(returning: (account, error))
+            deleteFileOrFolder(
+                serverUrlFileName: remotePath, account: account.ncKitAccount
+            ) { account, response, error in
+                continuation.resume(returning: (account, response?.response, error))
             }
         }
     }
@@ -203,8 +205,8 @@ extension NextcloudKit: RemoteInterface {
         taskHandler: @escaping (_ task: URLSessionTask) -> Void = { _ in }
     ) async -> (account: String, data: Data?, error: NKError) {
         return await withCheckedContinuation { continuation in
-            getCapabilities(options: options, taskHandler: taskHandler) { account, data, error in
-                continuation.resume(returning: (account, data, error))
+            getCapabilities(account: account.ncKitAccount, options: options, taskHandler: taskHandler) { account, data, error in
+                continuation.resume(returning: (account, data?.data, error))
             }
         }
     }
@@ -217,7 +219,7 @@ extension NextcloudKit: RemoteInterface {
             getUserProfile(
                 account: account.ncKitAccount, options: options, taskHandler: taskHandler
             ) { account, userProfile, data, error in
-                continuation.resume(returning: (account, userProfile, data, error))
+                continuation.resume(returning: (account, userProfile, data?.data, error))
             }
         }
     }

@@ -47,8 +47,8 @@ public protocol RemoteInterface {
         etag: String?,
         date: NSDate?,
         size: Int64,
-        allHeaderFields: [AnyHashable: Any]?,
-        afError: AFError?, 
+        response: HTTPURLResponse?,
+        afError: AFError?,
         remoteError: NKError
     )
 
@@ -58,7 +58,7 @@ public protocol RemoteInterface {
         overwrite: Bool,
         options: NKRequestOptions,
         taskHandler: @escaping (_ task: URLSessionTask) -> Void
-    ) async -> (account: String, error: NKError)
+    ) async -> (account: String, data: Data?, error: NKError)
 
     func download(
         remotePath: String,
@@ -72,7 +72,7 @@ public protocol RemoteInterface {
         etag: String?,
         date: NSDate?,
         length: Int64,
-        allHeaderFields: [AnyHashable: Any]?,
+        response: HTTPURLResponse?,
         afError: AFError?,
         remoteError: NKError
     )
@@ -91,7 +91,7 @@ public protocol RemoteInterface {
         remotePath: String,
         options: NKRequestOptions,
         taskHandler: @escaping (_ task: URLSessionTask) -> Void
-    ) async -> (account: String, error: NKError)
+    ) async -> (account: String, response: HTTPURLResponse?, error: NKError)
 
     func downloadThumbnail(
         url: URL,

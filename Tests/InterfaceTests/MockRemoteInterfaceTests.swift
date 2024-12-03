@@ -341,7 +341,7 @@ final class MockRemoteInterfaceTests: XCTestCase {
         let expectedRoot = remoteInterface.rootItem
         XCTAssertEqual(targetRootFile?.ocId, expectedRoot?.identifier)
         XCTAssertEqual(targetRootFile?.fileName, expectedRoot?.name)
-        XCTAssertEqual(targetRootFile?.date, expectedRoot?.creationDate as? NSDate)
+        XCTAssertEqual(targetRootFile?.date, expectedRoot?.creationDate)
         XCTAssertEqual(targetRootFile?.etag, expectedRoot?.versionIdentifier)
 
         let resultChildren = await remoteInterface.enumerate(

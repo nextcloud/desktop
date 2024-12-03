@@ -23,7 +23,7 @@ public extension Item {
         let ocId = itemIdentifier.rawValue
         let isFolder = contentType.conforms(to: .directory)
         let oldRemotePath = metadata.serverUrl + "/" + metadata.fileName
-        let (_, moveError) = await remoteInterface.move(
+        let (_, _, moveError) = await remoteInterface.move(
             remotePathSource: oldRemotePath,
             remotePathDestination: newRemotePath,
             overwrite: false,
@@ -421,7 +421,7 @@ public extension Item {
             let staleItemMetadata = staleItem.value
             guard dbManager.itemMetadataFromOcId(staleItemMetadata.ocId) != nil else { continue }
 
-            let (_, deleteError) = await remoteInterface.delete(
+            let (_, _, deleteError) = await remoteInterface.delete(
                 remotePath: staleItem.key, options: .init(), taskHandler: { task in
                     if let domain {
                         NSFileProviderManager(for: domain)?.register(
