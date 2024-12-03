@@ -97,6 +97,11 @@ public protocol RemoteInterface {
         taskHandler: @escaping (_ task: URLSessionTask) -> Void
     ) async -> (account: String, response: HTTPURLResponse?, error: NKError)
 
+    func trashedItems(
+        options: NKRequestOptions,
+        taskHandler: @escaping (_ task: URLSessionTask) -> Void
+    ) async -> (account: String, trashedItems: [NKTrash], data: Data?, error: NKError)
+
     func downloadThumbnail(
         url: URL,
         account: Account,

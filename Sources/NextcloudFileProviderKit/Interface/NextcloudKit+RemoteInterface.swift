@@ -185,6 +185,19 @@ extension NextcloudKit: RemoteInterface {
         }
     }
 
+    public func trashedItems(
+        options: NKRequestOptions = .init(),
+        taskHandler: @escaping (URLSessionTask) -> Void
+    ) async -> (account: String, trashedItems: [NKTrash], data: Data?, error: NKError) {
+        return await withCheckedContinuation { continuation in
+            listingTrash(
+                showHiddenFiles: true, account: account.ncKitAccount
+            ) { account, items, data, error in
+                continuation.resume(returning: (account, items ?? [], data?.data, error))
+            }
+        }
+    }
+
     public func downloadThumbnail(
         url: URL,
         account: Account,

@@ -16,6 +16,7 @@ public class MockRemoteInterface: RemoteInterface {
     public var capabilities = mockCapabilities
     public var rootItem: MockRemoteItem?
     public var delegate: (any NextcloudKitDelegate)?
+    public var trash: [NKTrash] = []
 
     public init(rootItem: MockRemoteItem? = nil) {
         self.rootItem = rootItem
@@ -342,6 +343,13 @@ public class MockRemoteInterface: RemoteInterface {
         item.parent = nil
 
         return (account.ncKitAccount, nil, .success)
+    }
+
+    public func trashedItems(
+        options: NKRequestOptions = .init(),
+        taskHandler: @escaping (URLSessionTask) -> Void
+    ) async -> (account: String, trashedItems: [NKTrash], data: Data?, error: NKError) {
+        return (accountString, trash, nil, .success)
     }
 
     public func downloadThumbnail(
