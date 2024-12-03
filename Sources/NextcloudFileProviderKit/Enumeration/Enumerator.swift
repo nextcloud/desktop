@@ -379,10 +379,38 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
             Self.logger.debug(
                 "Enumerating changes in trash set for: \(self.account.ncKitAccount, privacy: .public)"
             )
-            // TODO!
 
-            listener?.enumerationActionFinished(actionId: actionId)
-            observer.finishEnumeratingChanges(upTo: anchor, moreComing: false)
+            Task {
+                let (_, trashedItems, _, trashReadError) = await remoteInterface.trashedItems(
+                    options: .init(),
+                    taskHandler: { task in
+                        if let domain = self.domain {
+                            NSFileProviderManager(for: domain)?.register(
+                                task,
+                                forItemWithIdentifier: self.enumeratedItemIdentifier,
+                                completionHandler: { _ in }
+                            )
+                        }
+                    }
+                )
+
+                guard trashReadError == .success else {
+                    let error =
+                        trashReadError.fileProviderError ?? NSFileProviderError(.cannotSynchronize)
+                    listener?.enumerationActionFailed(actionId: actionId, error: error)
+                    observer.finishEnumeratingWithError(error)
+                    return
+                }
+
+                Self.completeChangesObserver(
+                    observer,
+                    anchor: anchor,
+                    remoteInterface: remoteInterface,
+                    dbManager: dbManager,
+                    trashItems: trashedItems
+                )
+                listener?.enumerationActionFinished(actionId: actionId)
+            }
             return
         }
 
