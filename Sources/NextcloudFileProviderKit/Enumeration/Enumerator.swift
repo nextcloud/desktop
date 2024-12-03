@@ -492,7 +492,7 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
     // MARK: - Helper methods
 
     // TODO: Use async group
-    private static func metadatasToFileProviderItems(
+    static func metadatasToFileProviderItems(
         _ itemMetadatas: [ItemMetadata],
         account: Account,
         remoteInterface: RemoteInterface,
@@ -557,7 +557,7 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
         }
     }
 
-    private static func fileProviderPageforNumPage(_ numPage: Int) -> NSFileProviderPage {
+    static func fileProviderPageforNumPage(_ numPage: Int) -> NSFileProviderPage {
         NSFileProviderPage("\(numPage)".data(using: .utf8)!)
     }
 
