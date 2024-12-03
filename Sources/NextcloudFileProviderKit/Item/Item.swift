@@ -246,6 +246,13 @@ public class Item: NSObject, NSFileProviderItem {
             return nil
         }
 
+        var parentItemIdentifier: NSFileProviderItemIdentifier?
+        if metadata.isTrashed {
+            parentItemIdentifier = .trashContainer
+        } else {
+            parentItemIdentifier = dbManager.parentItemIdentifierFromMetadata(metadata)
+        }
+        guard let parentItemIdentifier else { return nil }
 
         return Item(
             metadata: metadata,
