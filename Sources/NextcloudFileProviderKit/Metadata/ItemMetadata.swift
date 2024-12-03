@@ -172,6 +172,10 @@ public class ItemMetadata: Object {
         status == Status.inUpload.rawValue || status == Status.uploading.rawValue
     }
 
+    public var isTrashed: Bool {
+        serverUrl.hasSuffix(Account.webDavTrashUrlSuffix + userId + "/trash")
+    }
+
     public override func isEqual(_ object: Any?) -> Bool {
         if let object = object as? ItemMetadata {
             return fileId == object.fileId && account == object.account && path == object.path
