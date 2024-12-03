@@ -31,4 +31,56 @@ extension Enumerator {
             observer.finishEnumerating(upTo: fileProviderPageforNumPage(numPage))
         }
     }
+
+    static func completeChangesObserver(
+        _ observer: NSFileProviderChangeObserver,
+        anchor: NSFileProviderSyncAnchor,
+        remoteInterface: RemoteInterface,
+        dbManager: FilesDatabaseManager,
+        trashItems: [NKTrash]
+    ) {
+        var newTrashedItems = [NSFileProviderItem]()
+
+        // NKTrash items do not have an etag ; we assume they cannot be modified while they are in
+        // the trash, so we will just check by ocId
+        var existingTrashedItems =
+            dbManager.trashedItemMetadatas(account: remoteInterface.account.ncKitAccount)
+
+        for trashItem in trashItems {
+            guard let existingTrashItemIndex = existingTrashedItems.firstIndex(
+                where: { $0.ocId == trashItem.ocId }
+            ) else { continue }
+
+            existingTrashedItems.remove(at: existingTrashItemIndex)
+
+            let metadata = trashItem.toItemMetadata(account: remoteInterface.account)
+            dbManager.addItemMetadata(metadata)
+
+            let item = Item(
+                metadata: metadata,
+                parentItemIdentifier: .trashContainer,
+                remoteInterface: remoteInterface
+            )
+            newTrashedItems.append(item)
+
+            Self.logger.debug(
+                """
+                Will enumerate trashed item with ocId: \(metadata.ocId, privacy: .public)
+                and name: \(metadata.fileName, privacy: .public)
+                """
+            )
+        }
+
+        let deletedTrashedItemsIdentifiers = existingTrashedItems.map {
+            NSFileProviderItemIdentifier($0.ocId)
+        }
+        if !deletedTrashedItemsIdentifiers.isEmpty {
+            observer.didDeleteItems(withIdentifiers: deletedTrashedItemsIdentifiers)
+        }
+
+        if !newTrashedItems.isEmpty {
+            observer.didUpdate(newTrashedItems)
+        }
+        observer.finishEnumeratingChanges(upTo: anchor, moreComing: false)
+    }
 }
