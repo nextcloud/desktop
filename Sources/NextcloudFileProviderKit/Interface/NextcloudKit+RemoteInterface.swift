@@ -13,11 +13,15 @@ import NextcloudKit
 extension NextcloudKit: RemoteInterface {
 
     public var account: Account {
-        Account(
-            user: nkCommonInstance.user,
-            id: nkCommonInstance.userId,
-            serverUrl: nkCommonInstance.urlBase,
-            password: nkCommonInstance.password
+        guard let session = nkCommonInstance.nksessions.first else {
+            return Account(user: "", id: "", serverUrl: "", password: "")
+        }
+
+        return Account(
+            user: session.user,
+            id: session.userId,
+            serverUrl: session.urlBase,
+            password: session.password
         )
     }
 
