@@ -242,10 +242,14 @@ public class Item: NSObject, NSFileProviderItem {
         guard identifier != .rootContainer else {
             return Item.rootContainer(account: account, remoteInterface: remoteInterface)
         }
+        guard identifier != .trashContainer else {
+            return Item.trashContainer(remoteInterface: remoteInterface)
+        }
 
-        guard let metadata = dbManager.itemMetadataFromFileProviderItemIdentifier(identifier),
-              let parentItemIdentifier = dbManager.parentItemIdentifierFromMetadata(metadata)
-        else { return nil }
+        guard let metadata = dbManager.itemMetadataFromFileProviderItemIdentifier(identifier) else {
+            return nil
+        }
+
 
         return Item(
             metadata: metadata,
