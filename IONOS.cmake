@@ -4,7 +4,7 @@ set( APPLICATION_EXECUTABLE "HiDriveNext" )
 set( APPLICATION_CONFIG_NAME "${APPLICATION_EXECUTABLE}" )
 set( APPLICATION_DOMAIN     "ionos.com" )
 set( APPLICATION_VENDOR     "IONOS SE" )
-set( APPLICATION_UPDATE_URL "https://updates.nextcloud.org/client/" CACHE STRING "URL for updater" )
+set( APPLICATION_UPDATE_URL "https://customerupdates.nextcloud.com/client/" CACHE STRING "URL for updater" )
 set( APPLICATION_HELP_URL   "" CACHE STRING "URL for the help menu" )
 
 if(APPLE AND APPLICATION_NAME STREQUAL "Nextcloud" AND EXISTS "${CMAKE_SOURCE_DIR}/theme/colored/Nextcloud-macOS-icon.svg")
