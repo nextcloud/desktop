@@ -477,6 +477,8 @@ public class FilesDatabaseManager {
 
         if metadata.serverUrl == homeServerFilesUrl {
             return .rootContainer
+        } else if !metadata.trashbinFileName.isEmpty {
+            return .trashContainer
         }
 
         guard let itemParentDirectory = parentDirectoryMetadataForItem(metadata) else {
