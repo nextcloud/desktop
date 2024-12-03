@@ -23,6 +23,10 @@ final class EnumeratorTests: XCTestCase {
     var remoteItemB: MockRemoteItem!
     var remoteItemC: MockRemoteItem!
 
+    var trashItemA = NKTrash()
+    var trashItemB = NKTrash()
+    var trashItemC = NKTrash()
+
     static let dbManager = FilesDatabaseManager(realmConfig: .defaultConfiguration)
 
     override func setUp() {
@@ -89,6 +93,27 @@ final class EnumeratorTests: XCTestCase {
         remoteItemA.parent = remoteFolder
         remoteItemB.parent = remoteFolder
         remoteItemC.parent = nil
+
+        trashItemA.ocId = "trashItemA"
+        trashItemA.fileName = "a.txt"
+        trashItemA.filePath = "original/a.txt"
+        trashItemA.size = 32
+        trashItemA.trashbinFileName = "a.txt"
+        trashItemA.trashbinOriginalLocation = "original/a.txt"
+
+        trashItemB.ocId = "trashItemB"
+        trashItemB.fileName = "b.txt"
+        trashItemB.filePath = "original/b.txt"
+        trashItemB.size = 69
+        trashItemB.trashbinFileName = "b.txt"
+        trashItemB.trashbinOriginalLocation = "original/b.txt"
+
+        trashItemC.ocId = "trashItemC"
+        trashItemC.fileName = "c.txt"
+        trashItemC.filePath = "original/c.txt"
+        trashItemC.size = 100
+        trashItemC.trashbinFileName = "c.txt"
+        trashItemC.trashbinOriginalLocation = "original/c.txt"
     }
 
     func testRootEnumeration() async throws {
@@ -745,7 +770,6 @@ final class EnumeratorTests: XCTestCase {
         try await observer.enumerateChanges()
         // rootContainer has changed, itemA has changed
         XCTAssertEqual(observer.changedItems.count, 1)
-        print(Self.dbManager.ncDatabase().objects(ItemMetadata.self).count)
 
         let dbItemAMetadata = try XCTUnwrap(
             Self.dbManager.itemMetadata(ocId: remoteItemA.identifier)
@@ -789,5 +813,55 @@ final class EnumeratorTests: XCTestCase {
         XCTAssertEqual(listener.finishActions.count, 1)
         XCTAssertTrue(listener.errorActions.isEmpty)
         XCTAssertTrue(listener.startActions.first!.value < listener.finishActions.first!.value)
+    }
+
+    func testTrashEnumeration() async throws {
+        let db = Self.dbManager.ncDatabase() // Strong ref for in memory test db
+        debugPrint(db) // Avoid build-time warning about unused variable, ensure compiler won't free
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+
+        remoteInterface.trash = [trashItemA, trashItemB, trashItemC]
+
+        let enumerator = Enumerator(
+            enumeratedItemIdentifier: .trashContainer,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+        let observer = MockEnumerationObserver(enumerator: enumerator)
+        try await observer.enumerateItems()
+        XCTAssertEqual(observer.items.count, 3)
+
+        let storedItemA = try XCTUnwrap(
+            Item.storedItem(
+                identifier: .init(trashItemA.ocId),
+                remoteInterface: remoteInterface,
+                dbManager: Self.dbManager
+            )
+        )
+        XCTAssertEqual(storedItemA.itemIdentifier.rawValue, trashItemA.ocId)
+        XCTAssertEqual(storedItemA.filename, trashItemA.fileName)
+        XCTAssertEqual(storedItemA.documentSize?.int64Value, trashItemA.size)
+
+        let storedItemB = try XCTUnwrap(
+            Item.storedItem(
+                identifier: .init(trashItemB.ocId),
+                remoteInterface: remoteInterface,
+                dbManager: Self.dbManager
+            )
+        )
+        XCTAssertEqual(storedItemB.itemIdentifier.rawValue, trashItemB.ocId)
+        XCTAssertEqual(storedItemB.filename, trashItemB.fileName)
+        XCTAssertEqual(storedItemB.documentSize?.int64Value, trashItemB.size)
+
+        let storedItemC = try XCTUnwrap(
+            Item.storedItem(
+                identifier: .init(trashItemC.ocId),
+                remoteInterface: remoteInterface,
+                dbManager: Self.dbManager
+            )
+        )
+        XCTAssertEqual(storedItemC.itemIdentifier.rawValue, trashItemC.ocId)
+        XCTAssertEqual(storedItemC.filename, trashItemC.fileName)
+        XCTAssertEqual(storedItemC.documentSize?.int64Value, trashItemC.size)
     }
 }
