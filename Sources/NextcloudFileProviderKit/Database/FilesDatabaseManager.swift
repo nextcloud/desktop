@@ -389,6 +389,7 @@ public class FilesDatabaseManager {
                         lockOwner: \(metadata.lockOwner, privacy: .public)
                         permissions: \(metadata.permissions, privacy: .public)
                         size: \(metadata.size, privacy: .public)
+                        trashbinFileName: \(metadata.trashbinFileName, privacy: .public)
                     """
                 )
             }
