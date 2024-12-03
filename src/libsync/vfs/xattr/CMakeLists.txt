@@ -54,4 +54,6 @@ if (LINUX)
       LIBRARY DESTINATION "${vfs_installdir}"
       RUNTIME DESTINATION "${vfs_installdir}"
     )
+
+    install(FILES $<TARGET_PDB_FILE:nextcloudsync_vfs_xattr> DESTINATION bin OPTIONAL)
 endif()
