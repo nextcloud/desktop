@@ -21,6 +21,7 @@ extension NKTrash {
         metadata.directory = directory
         metadata.fileId = fileId
         metadata.fileName = fileName
+        metadata.fileNameView = trashbinFileName
         metadata.hasPreview = hasPreview
         metadata.iconName = iconName
         metadata.size = size
