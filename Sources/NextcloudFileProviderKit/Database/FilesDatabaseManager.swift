@@ -473,11 +473,12 @@ public class FilesDatabaseManager {
     public func parentItemIdentifierFromMetadata(
         _ metadata: ItemMetadata
     ) -> NSFileProviderItemIdentifier? {
-        let homeServerFilesUrl = metadata.urlBase + "/remote.php/dav/files/" + metadata.userId
+        let homeServerFilesUrl = metadata.urlBase + Account.webDavFilesUrlSuffix + metadata.userId
+        let trashServerFilesUrl = metadata.urlBase + Account.webDavTrashUrlSuffix + metadata.userId + "/trash"
 
         if metadata.serverUrl == homeServerFilesUrl {
             return .rootContainer
-        } else if !metadata.trashbinFileName.isEmpty {
+        } else if metadata.serverUrl == trashServerFilesUrl {
             return .trashContainer
         }
 
