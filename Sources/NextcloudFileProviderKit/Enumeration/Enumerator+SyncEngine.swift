@@ -390,7 +390,7 @@ extension Enumerator {
                 for user: \(ncAccount.ncKitAccount, privacy: .public)
                 """
             )
-            let itemMetadata = ItemMetadata.fromNKFile(receivedFile, account: ncKitAccount)
+            let itemMetadata = receivedFile.toItemMetadata()
             dbManager.addItemMetadata(itemMetadata)  // TODO: Return some value when it is an update
             return ([itemMetadata], nil, nil, nil, nil)
         }
@@ -421,7 +421,7 @@ extension Enumerator {
             if serverUrl == ncAccount.davFilesUrl {
                 return (nil, nil, nil, nil, nil)
             } else {
-                let metadata = ItemMetadata.fromNKFile(receivedFile, account: ncKitAccount)
+                let metadata = receivedFile.toItemMetadata()
                 let isNew = dbManager.itemMetadataFromOcId(metadata.ocId) == nil
                 let updatedMetadatas = isNew ? [] : [metadata]
                 let newMetadatas = isNew ? [metadata] : []
