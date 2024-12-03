@@ -33,6 +33,7 @@ extension NextcloudKit: RemoteInterface {
         return await withCheckedContinuation { continuation in
             createFolder(
                 serverUrlFileName: remotePath,
+                account: account.ncKitAccount,
                 options: options,
                 taskHandler: taskHandler
             ) { account, ocId, date, error in
@@ -66,6 +67,7 @@ extension NextcloudKit: RemoteInterface {
                 fileNameLocalPath: localPath,
                 dateCreationFile: creationDate,
                 dateModificationFile: modificationDate,
+                account: account.ncKitAccount,
                 options: options,
                 requestHandler: requestHandler,
                 taskHandler: taskHandler,
@@ -97,6 +99,7 @@ extension NextcloudKit: RemoteInterface {
                 serverUrlFileNameSource: remotePathSource,
                 serverUrlFileNameDestination: remotePathDestination,
                 overwrite: overwrite,
+                account: account.ncKitAccount,
                 options: options,
                 taskHandler: taskHandler
             ) { account, error in
@@ -125,6 +128,7 @@ extension NextcloudKit: RemoteInterface {
             download(
                 serverUrlFileName: remotePath,
                 fileNameLocalPath: localPath,
+                account: account.ncKitAccount,
                 options: options,
                 requestHandler: requestHandler,
                 taskHandler: taskHandler,
@@ -161,6 +165,7 @@ extension NextcloudKit: RemoteInterface {
                 showHiddenFiles: showHiddenFiles,
                 includeHiddenFiles: includeHiddenFiles,
                 requestBody: requestBody,
+                account: account.ncKitAccount,
                 options: options,
                 taskHandler: taskHandler
             ) { account, files, data, error in
@@ -210,7 +215,7 @@ extension NextcloudKit: RemoteInterface {
     ) async -> (account: String, userProfile: NKUserProfile?, data: Data?, error: NKError) {
         return await withCheckedContinuation { continuation in
             getUserProfile(
-                options: options, taskHandler: taskHandler
+                account: account.ncKitAccount, options: options, taskHandler: taskHandler
             ) { account, userProfile, data, error in
                 continuation.resume(returning: (account, userProfile, data, error))
             }
