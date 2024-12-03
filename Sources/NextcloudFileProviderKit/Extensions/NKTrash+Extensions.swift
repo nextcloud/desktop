@@ -9,12 +9,15 @@ import Foundation
 import NextcloudKit
 
 extension NKTrash {
-    func toItemMetadata(account: String) -> ItemMetadata {
+    func toItemMetadata(account: Account) -> ItemMetadata {
         let metadata = ItemMetadata()
         metadata.ocId = ocId
-        metadata.account = account
+        metadata.account = account.ncKitAccount
+        metadata.user = account.username
+        metadata.userId = account.id
+        metadata.urlBase = account.serverUrl
         metadata.contentType = contentType
-        metadata.date = date as Date
+        metadata.date = date
         metadata.directory = directory
         metadata.fileId = fileId
         metadata.fileName = fileName
@@ -22,9 +25,10 @@ extension NKTrash {
         metadata.iconName = iconName
         metadata.size = size
         metadata.classFile = classFile
+        metadata.serverUrl = account.trashUrl
         metadata.trashbinFileName = trashbinFileName
         metadata.trashbinOriginalLocation = trashbinOriginalLocation
-        metadata.trashbinDeletionTime = trashbinDeletionTime as Date
+        metadata.trashbinDeletionTime = trashbinDeletionTime
         return metadata
     }
 }
