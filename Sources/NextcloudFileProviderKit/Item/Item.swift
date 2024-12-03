@@ -31,11 +31,7 @@ public class Item: NSObject, NSFileProviderItem {
     public let remoteInterface: RemoteInterface
 
     public var itemIdentifier: NSFileProviderItemIdentifier {
-        if metadata.trashbinFileName == "" {
-            NSFileProviderItemIdentifier(metadata.ocId)
-        } else { // NKTrash items do not have an ocId
-            NSFileProviderItemIdentifier(metadata.fileId)
-        }
+        NSFileProviderItemIdentifier(metadata.ocId)
     }
 
     public var capabilities: NSFileProviderItemCapabilities {
