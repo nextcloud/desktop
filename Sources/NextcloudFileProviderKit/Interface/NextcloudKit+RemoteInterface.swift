@@ -190,10 +190,10 @@ extension NextcloudKit: RemoteInterface {
         url: URL, options: NKRequestOptions, taskHandler: @escaping (URLSessionTask) -> Void
     ) async -> (account: String, data: Data?, error: NKError) {
         await withCheckedContinuation { continuation in
-            getPreview(
-                url: url, options: options, taskHandler: taskHandler
+            downloadPreview(
+                url: url, account: account.ncKitAccount, options: options, taskHandler: taskHandler
             ) { account, data, error in
-                continuation.resume(returning: (account, data, error))
+                continuation.resume(returning: (account, data?.data, error))
             }
         }
     }
