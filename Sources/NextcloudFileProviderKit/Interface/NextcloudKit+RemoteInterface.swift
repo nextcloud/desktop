@@ -21,7 +21,7 @@ extension NextcloudKit: RemoteInterface {
         )
     }
 
-    public func setDelegate(_ delegate: any NKCommonDelegate) {
+    public func setDelegate(_ delegate: any NextcloudKitDelegate) {
         setup(delegate: delegate)
     }
 

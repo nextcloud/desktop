@@ -24,7 +24,7 @@ public protocol RemoteInterface {
 
     var account: Account { get }
 
-    func setDelegate(_ delegate: NKCommonDelegate)
+    func setDelegate(_ delegate: NextcloudKitDelegate)
 
     func createFolder(
         remotePath: String,

@@ -16,7 +16,7 @@ public class MockRemoteInterface: RemoteInterface {
     public var account: Account
     public var capabilities = mockCapabilities
     public var rootItem: MockRemoteItem?
-    public var delegate: (any NKCommonDelegate)?
+    public var delegate: (any NextcloudKitDelegate)?
 
     private var accountString: String { account.ncKitAccount }
 
@@ -94,7 +94,7 @@ public class MockRemoteInterface: RemoteInterface {
         return name
     }
 
-    public func setDelegate(_ delegate: any NKCommonDelegate) {
+    public func setDelegate(_ delegate: any NextcloudKitDelegate) {
         self.delegate = delegate
     }
 

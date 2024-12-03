@@ -5,6 +5,7 @@
 //  Created by Claudio Cambra on 17/4/24.
 //
 
+import Alamofire
 import FileProvider
 import Foundation
 import NextcloudCapabilitiesKit
@@ -13,7 +14,7 @@ import OSLog
 
 public let NotifyPushAuthenticatedNotificationName = Notification.Name("NotifyPushAuthenticated")
 
-public class RemoteChangeObserver: NSObject, NKCommonDelegate, URLSessionWebSocketDelegate {
+public class RemoteChangeObserver: NSObject, NextcloudKitDelegate, URLSessionWebSocketDelegate {
     public let remoteInterface: RemoteInterface
     public let changeNotificationInterface: ChangeNotificationInterface
     public let domain: NSFileProviderDomain?
@@ -370,7 +371,63 @@ public class RemoteChangeObserver: NSObject, NKCommonDelegate, URLSessionWebSock
         }
     }
 
+    // MARK: - NextcloudKitDelegate methods
+
     public func networkReachabilityObserver(_ typeReachability: NKCommon.TypeReachability) {
         networkReachability = typeReachability
     }
+
+    public func urlSessionDidFinishEvents(forBackgroundURLSession session: URLSession) { }
+
+    public func downloadProgress(
+        _ progress: Float,
+        totalBytes: Int64,
+        totalBytesExpected: Int64,
+        fileName: String,
+        serverUrl: String,
+        session: URLSession,
+        task: URLSessionTask
+    ) { }
+
+    public func uploadProgress(
+        _ progress: Float,
+        totalBytes: Int64,
+        totalBytesExpected: Int64,
+        fileName: String,
+        serverUrl: String,
+        session: URLSession,
+        task: URLSessionTask
+    ) { }
+
+    public func downloadingFinish(
+        _ session: URLSession,
+        downloadTask: URLSessionDownloadTask,
+        didFinishDownloadingTo location: URL
+    ) { }
+
+    public func downloadComplete(
+        fileName: String,
+        serverUrl: String,
+        etag: String?,
+        date: Date?,
+        dateLastModified: Date?,
+        length: Int64,
+        task: URLSessionTask,
+        error: NKError
+    ) { }
+
+    public func uploadComplete(
+        fileName: String,
+        serverUrl: String,
+        ocId: String?,
+        etag: String?,
+        date: Date?,
+        size: Int64,
+        task: URLSessionTask,
+        error: NKError
+    ) { }
+
+    public func request<Value>(
+        _ request: Alamofire.DataRequest, didParseResponse response: Alamofire.AFDataResponse<Value>
+    ) { }
 }
