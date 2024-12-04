@@ -499,19 +499,20 @@ bool FolderWizardRemotePath::isComplete() const
             continue;
         }
 
-        const auto currentDir = folder->remotePathTrailingSlash();
-        if (QDir::cleanPath(targetPath) == QDir::cleanPath(currentDir)) {
-            showWarn(tr("Please choose a different location. %1 is already being used as a sync folder.").arg(Utility::escape(currentDir)));
+        const auto remoteDir = folder->remotePathTrailingSlash();
+        const auto localDir = folder->cleanPath();
+        if (QDir::cleanPath(targetPath) == QDir::cleanPath(remoteDir)) {
+            showWarn(tr("Please choose a different location. %1 is already being synced to %2.").arg(Utility::escape(remoteDir), Utility::escape(localDir)));
             break;
         }
 
-        if (targetPath.startsWith(currentDir)) {
-            showWarn(tr("Please choose a different location. %1 is already being synced in %2.").arg(Utility::escape(targetPath), Utility::escape(currentDir)));
+        if (targetPath.startsWith(remoteDir)) {
+            showWarn(tr("Please choose a different location. %1 is already being synced to %2.").arg(Utility::escape(targetPath), Utility::escape(localDir)));
             break;
         }
 
-        if (currentDir.startsWith(targetPath)) {
-            showWarn(tr("Please choose a different location. %1 is already being synced in %2.").arg(Utility::escape(currentDir), Utility::escape(targetPath)));
+        if (remoteDir.startsWith(targetPath)) {
+            showWarn(tr("Please choose a different location. %1 is already being synced to %2.").arg(Utility::escape(remoteDir), Utility::escape(localDir)));
             break;
         }
     }
