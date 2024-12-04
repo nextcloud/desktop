@@ -18,6 +18,7 @@ import OSLog
 
 extension Enumerator {
     func fullRecursiveScan(
+        account: Account,
         remoteInterface: RemoteInterface,
         dbManager: FilesDatabaseManager,
         scanChangesOnly: Bool
@@ -34,6 +35,7 @@ extension Enumerator {
 
         let results = await self.scanRecursively(
             rootContainerDirectoryMetadata,
+            account: account,
             remoteInterface: remoteInterface,
             dbManager: dbManager,
             scanChangesOnly: scanChangesOnly
@@ -65,6 +67,7 @@ extension Enumerator {
 
     private func scanRecursively(
         _ directoryMetadata: ItemMetadata,
+        account: Account,
         remoteInterface: RemoteInterface,
         dbManager: FilesDatabaseManager,
         scanChangesOnly: Bool
@@ -89,7 +92,7 @@ extension Enumerator {
 
         let itemServerUrl =
             directoryMetadata.ocId == NSFileProviderItemIdentifier.rootContainer.rawValue
-                ? remoteInterface.account.davFilesUrl
+                ? account.davFilesUrl
                 : directoryMetadata.serverUrl + "/" + directoryMetadata.fileName
 
         Self.logger.debug("About to read: \(itemServerUrl, privacy: .public)")
@@ -98,6 +101,7 @@ extension Enumerator {
             metadatas, newMetadatas, updatedMetadatas, deletedMetadatas, readError
         ) = await Self.readServerUrl(
             itemServerUrl,
+            account: account,
             remoteInterface: remoteInterface,
             dbManager: dbManager,
             domain: domain,
@@ -156,7 +160,7 @@ extension Enumerator {
         Self.logger.info(
             """
             Finished reading serverUrl: \(itemServerUrl, privacy: .public)
-            for user: \(remoteInterface.account.ncKitAccount, privacy: .public)
+            for user: \(account.ncKitAccount, privacy: .public)
             """
         )
 
@@ -166,7 +170,7 @@ extension Enumerator {
             Self.logger.warning(
                 """
                 Nil metadatas received in change read at \(itemServerUrl, privacy: .public)
-                for user: \(remoteInterface.account.ncKitAccount, privacy: .public)
+                for user: \(account.ncKitAccount, privacy: .public)
                 """
             )
         }
@@ -177,7 +181,7 @@ extension Enumerator {
             Self.logger.warning(
                 """
                 Nil new metadatas received in change read at \(itemServerUrl, privacy: .public)
-                for user: \(remoteInterface.account.ncKitAccount, privacy: .public)
+                for user: \(account.ncKitAccount, privacy: .public)
                 """
             )
         }
@@ -188,7 +192,7 @@ extension Enumerator {
             Self.logger.warning(
                 """
                 Nil updated metadatas received in change read at \(itemServerUrl, privacy: .public)
-                for user: \(remoteInterface.account.ncKitAccount, privacy: .public)
+                for user: \(account.ncKitAccount, privacy: .public)
                 """
             )
         }
@@ -199,7 +203,7 @@ extension Enumerator {
             Self.logger.warning(
                 """
                 Nil deleted metadatas received in change read at \(itemServerUrl, privacy: .public)
-                for user: \(remoteInterface.account.ncKitAccount, privacy: .public)
+                for user: \(account.ncKitAccount, privacy: .public)
                 """
             )
         }
@@ -242,6 +246,7 @@ extension Enumerator {
             )
             let childScanResult = await scanRecursively(
                 childDirectory,
+                account: account,
                 remoteInterface: remoteInterface,
                 dbManager: dbManager,
                 scanChangesOnly: scanChangesOnly
@@ -262,7 +267,7 @@ extension Enumerator {
 
     static func handleDepth1ReadFileOrFolder(
         serverUrl: String,
-        ncAccount: Account,
+        account: Account,
         dbManager: FilesDatabaseManager,
         files: [NKFile]
     ) async -> (
@@ -275,14 +280,14 @@ extension Enumerator {
         Self.logger.debug(
             """
             Starting async conversion of NKFiles for serverUrl: \(serverUrl, privacy: .public)
-            for user: \(ncAccount.ncKitAccount, privacy: .public)
+            for user: \(account.ncKitAccount, privacy: .public)
             """
         )
 
 
         let (directoryMetadata, metadatas) = await withCheckedContinuation { continuation in
             ItemMetadata.metadatasFromDirectoryReadNKFiles(
-                files, account: ncAccount.ncKitAccount
+                files, account: account
             ) { directoryMetadata, _, metadatas in
                 continuation.resume(returning: (directoryMetadata, metadatas))
             }
@@ -291,7 +296,7 @@ extension Enumerator {
         // STORE DATA FOR CURRENTLY SCANNED DIRECTORY
         // We have now scanned this directory's contents, so update with etag in order to not check 
         // again if not needed unless it's the root container
-        if serverUrl != ncAccount.davFilesUrl {
+        if serverUrl != account.davFilesUrl {
             dbManager.addItemMetadata(directoryMetadata)
         }
 
@@ -301,7 +306,7 @@ extension Enumerator {
         // They will get updated when they are the subject of a readServerUrl call.
         // (See above)
         let changedMetadatas = dbManager.updateItemMetadatas(
-            account: ncAccount.ncKitAccount,
+            account: account.ncKitAccount,
             serverUrl: serverUrl,
             updatedMetadatas: metadatas,
             updateDirectoryEtags: false
@@ -318,6 +323,7 @@ extension Enumerator {
 
     static func readServerUrl(
         _ serverUrl: String,
+        account: Account,
         remoteInterface: RemoteInterface,
         dbManager: FilesDatabaseManager,
         domain: NSFileProviderDomain? = nil,
@@ -331,17 +337,16 @@ extension Enumerator {
         deletedMetadatas: [ItemMetadata]?,
         readError: NKError?
     ) {
-        let ncAccount = remoteInterface.account
-        let ncKitAccount = ncAccount.ncKitAccount
+        let ncKitAccount = account.ncKitAccount
 
         Self.logger.debug(
             """
             Starting to read serverUrl: \(serverUrl, privacy: .public)
             for user: \(ncKitAccount, privacy: .public)
             at depth \(depth.rawValue, privacy: .public).
-            username: \(ncAccount.username, privacy: .public),
-            password is empty: \(ncAccount.password == "" ? "EMPTY" : "NOT EMPTY"),
-            serverUrl: \(ncAccount.serverUrl, privacy: .public)
+            username: \(account.username, privacy: .public),
+            password is empty: \(account.password == "" ? "EMPTY" : "NOT EMPTY"),
+            serverUrl: \(account.serverUrl, privacy: .public)
             """
         )
 
@@ -351,6 +356,7 @@ extension Enumerator {
             showHiddenFiles: true,
             includeHiddenFiles: [],
             requestBody: nil,
+            account: account,
             options: .init(),
             taskHandler: { task in
                 if let domain, let enumeratedItemIdentifier {
@@ -387,7 +393,7 @@ extension Enumerator {
             Self.logger.debug(
                 """
                 Read item is a file. Converting NKfile for serverUrl: \(serverUrl, privacy: .public)
-                for user: \(ncAccount.ncKitAccount, privacy: .public)
+                for user: \(account.ncKitAccount, privacy: .public)
                 """
             )
             let itemMetadata = receivedFile.toItemMetadata()
@@ -418,7 +424,7 @@ extension Enumerator {
         }
 
         if depth == .target {
-            if serverUrl == ncAccount.davFilesUrl {
+            if serverUrl == account.davFilesUrl {
                 return (nil, nil, nil, nil, nil)
             } else {
                 let metadata = receivedFile.toItemMetadata()
@@ -435,7 +441,7 @@ extension Enumerator {
                 allMetadatas, newMetadatas, updatedMetadatas, deletedMetadatas, readError
             ) = await handleDepth1ReadFileOrFolder(
                 serverUrl: serverUrl, 
-                ncAccount: ncAccount,
+                account: account,
                 dbManager: dbManager,
                 files: files
             )

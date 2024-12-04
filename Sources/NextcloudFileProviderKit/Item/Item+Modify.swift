@@ -27,6 +27,7 @@ public extension Item {
             remotePathSource: oldRemotePath,
             remotePathDestination: newRemotePath,
             overwrite: false,
+            account: account,
             options: .init(),
             taskHandler: { task in
                 if let domain {
@@ -82,6 +83,7 @@ public extension Item {
         let modifiedItem = Item(
             metadata: newMetadata,
             parentItemIdentifier: newParentItemIdentifier,
+            account: account,
             remoteInterface: remoteInterface
         )
         return (modifiedItem, nil)
@@ -135,6 +137,7 @@ public extension Item {
             localPath: localPath,
             creationDate: newCreationDate,
             modificationDate: newContentModificationDate,
+            account: account,
             options: .init(),
             requestHandler: { progress.setHandlersFromAfRequest($0) },
             taskHandler: { task in
@@ -205,6 +208,7 @@ public extension Item {
         let modifiedItem = Item(
             metadata: newMetadata,
             parentItemIdentifier: parentItemIdentifier,
+            account: account,
             remoteInterface: remoteInterface
         )
         return (modifiedItem, nil)
@@ -254,7 +258,10 @@ public extension Item {
         while !directoriesToRead.isEmpty {
             let remoteDirectoryPath = directoriesToRead.removeFirst()
             let (metadatas, _, _, _, readError) = await Enumerator.readServerUrl(
-                remoteDirectoryPath, remoteInterface: remoteInterface, dbManager: dbManager
+                remoteDirectoryPath,
+                account: account,
+                remoteInterface: remoteInterface,
+                dbManager: dbManager
             )
             // Important note -- the enumerator will import found items' metadata into the database.
             // This is important for when we want to start deleting stale items and want to avoid trying
@@ -355,7 +362,10 @@ public extension Item {
                     """
                 )
                 let (_, _, _, createError) = await remoteInterface.createFolder(
-                    remotePath: childRemoteUrl, options: .init(), taskHandler: { task in
+                    remotePath: childRemoteUrl,
+                    account: account,
+                    options: .init(),
+                    taskHandler: { task in
                         if let domain {
                             NSFileProviderManager(for: domain)?.register(
                                 task,
@@ -388,6 +398,7 @@ public extension Item {
                     localPath: childUrlPath,
                     creationDate: childUrlAttributes.creationDate,
                     modificationDate: childUrlAttributes.contentModificationDate,
+                    account: account,
                     options: .init(),
                     requestHandler: { progress.setHandlersFromAfRequest($0) },
                     taskHandler: { task in
@@ -422,7 +433,10 @@ public extension Item {
             guard dbManager.itemMetadataFromOcId(staleItemMetadata.ocId) != nil else { continue }
 
             let (_, _, deleteError) = await remoteInterface.delete(
-                remotePath: staleItem.key, options: .init(), taskHandler: { task in
+                remotePath: staleItem.key,
+                account: account,
+                options: .init(),
+                taskHandler: { task in
                     if let domain {
                         NSFileProviderManager(for: domain)?.register(
                             task,
@@ -454,7 +468,10 @@ public extension Item {
         for remoteDirectoryPath in remoteDirectoriesPaths {
             // After everything, check into what the final state is of each folder now
             let (_, _, _, _, readError) = await Enumerator.readServerUrl(
-                remoteDirectoryPath, remoteInterface: remoteInterface, dbManager: dbManager
+                remoteDirectoryPath,
+                account: account,
+                remoteInterface: remoteInterface,
+                dbManager: dbManager
             )
 
             if let readError, readError != .success {
@@ -485,6 +502,7 @@ public extension Item {
         return Item(
             metadata: bundleRootMetadata,
             parentItemIdentifier: parentItemIdentifier,
+            account: account,
             remoteInterface: remoteInterface
         )
     }
@@ -530,7 +548,7 @@ public extension Item {
         // remote changes and then, upon user interaction, will try to modify the item.
         // That is, if the parent item has changed at all (it might not have)
         if parentItemIdentifier == .rootContainer {
-            parentItemServerUrl = remoteInterface.account.davFilesUrl
+            parentItemServerUrl = account.davFilesUrl
         } else {
             guard let parentItemMetadata = dbManager.directoryMetadata(
                 ocId: parentItemIdentifier.rawValue

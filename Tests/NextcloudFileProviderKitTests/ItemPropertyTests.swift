@@ -36,7 +36,8 @@ final class ItemPropertyTests: XCTestCase {
         let item = Item(
             metadata: metadata,
             parentItemIdentifier: .rootContainer,
-            remoteInterface: MockRemoteInterface(account: Self.account)
+            account: Self.account,
+            remoteInterface: MockRemoteInterface()
         )
         XCTAssertEqual(item.contentType, UTType.text)
     }
@@ -59,7 +60,8 @@ final class ItemPropertyTests: XCTestCase {
         let item = Item(
             metadata: metadata,
             parentItemIdentifier: .rootContainer,
-            remoteInterface: MockRemoteInterface(account: Self.account)
+            account: Self.account,
+            remoteInterface: MockRemoteInterface()
         )
         XCTAssertEqual(item.contentType, UTType.pdf)
     }
@@ -82,7 +84,8 @@ final class ItemPropertyTests: XCTestCase {
         let item = Item(
             metadata: metadata,
             parentItemIdentifier: .rootContainer,
-            remoteInterface: MockRemoteInterface(account: Self.account)
+            account: Self.account,
+            remoteInterface: MockRemoteInterface()
         )
         XCTAssertEqual(item.contentType, UTType.folder)
     }
@@ -106,7 +109,8 @@ final class ItemPropertyTests: XCTestCase {
         let item = Item(
             metadata: metadata,
             parentItemIdentifier: .rootContainer,
-            remoteInterface: MockRemoteInterface(account: Self.account)
+            account: Self.account,
+            remoteInterface: MockRemoteInterface()
         )
         XCTAssertEqual(item.contentType, UTType.package)
     }
@@ -130,7 +134,8 @@ final class ItemPropertyTests: XCTestCase {
         let item = Item(
             metadata: metadata,
             parentItemIdentifier: .rootContainer,
-            remoteInterface: MockRemoteInterface(account: Self.account)
+            account: Self.account,
+            remoteInterface: MockRemoteInterface()
         )
         XCTAssertEqual(item.contentType, UTType.bundle)
     }
@@ -154,7 +159,8 @@ final class ItemPropertyTests: XCTestCase {
         let item = Item(
             metadata: metadata,
             parentItemIdentifier: .rootContainer,
-            remoteInterface: MockRemoteInterface(account: Self.account)
+            account: Self.account,
+            remoteInterface: MockRemoteInterface()
         )
         XCTAssertEqual(item.contentType, UTType.folder)
     }
@@ -178,7 +184,8 @@ final class ItemPropertyTests: XCTestCase {
         let item = Item(
             metadata: metadata,
             parentItemIdentifier: .rootContainer,
-            remoteInterface: MockRemoteInterface(account: Self.account)
+            account: Self.account,
+            remoteInterface: MockRemoteInterface()
         )
         XCTAssertTrue(item.contentType.conforms(to: .bundle))
     }
@@ -206,7 +213,8 @@ final class ItemPropertyTests: XCTestCase {
         let item = Item(
             metadata: metadata,
             parentItemIdentifier: .rootContainer,
-            remoteInterface: MockRemoteInterface(account: Self.account)
+            account: Self.account,
+            remoteInterface: MockRemoteInterface()
         )
 
         XCTAssertNotNil(item.userInfo?["locked"])
@@ -236,7 +244,8 @@ final class ItemPropertyTests: XCTestCase {
         let item = Item(
             metadata: metadata,
             parentItemIdentifier: .rootContainer,
-            remoteInterface: MockRemoteInterface(account: Self.account)
+            account: Self.account,
+            remoteInterface: MockRemoteInterface()
         )
 
         XCTAssertNil(item.userInfo?["locked"])

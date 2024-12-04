@@ -19,7 +19,7 @@ public extension ItemMetadata {
     // TODO: Convert to async/await
     static func metadatasFromDirectoryReadNKFiles(
         _ files: [NKFile],
-        account: String,
+        account: Account,
         completionHandler: @escaping (
             _ directoryMetadata: ItemMetadata,
             _ childDirectoriesMetadatas: [ItemMetadata],

@@ -38,7 +38,7 @@ final class ItemDeleteTests: XCTestCase {
     }
 
     func testDeleteFile() async {
-        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+        let remoteInterface = MockRemoteInterface(rootItem: rootItem)
         let itemIdentifier = "file"
         let remoteItem = MockRemoteItem(
             identifier: itemIdentifier, 
@@ -63,6 +63,7 @@ final class ItemDeleteTests: XCTestCase {
         let item = Item(
             metadata: itemMetadata,
             parentItemIdentifier: .rootContainer,
+            account: Self.account,
             remoteInterface: remoteInterface
         )
 
@@ -74,7 +75,7 @@ final class ItemDeleteTests: XCTestCase {
     }
 
     func testDeleteFolderAndContents() async {
-        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+        let remoteInterface = MockRemoteInterface(rootItem: rootItem)
         let remoteFolder = MockRemoteItem(
             identifier: "folder",
             name: "folder",
@@ -121,6 +122,7 @@ final class ItemDeleteTests: XCTestCase {
         let folder = Item(
             metadata: folderMetadata,
             parentItemIdentifier: .rootContainer,
+            account: Self.account,
             remoteInterface: remoteInterface
         )
 

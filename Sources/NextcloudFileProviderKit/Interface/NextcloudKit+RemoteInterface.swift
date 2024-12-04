@@ -12,25 +12,13 @@ import NextcloudKit
 
 extension NextcloudKit: RemoteInterface {
 
-    public var account: Account {
-        guard let session = nkCommonInstance.nksessions.first else {
-            return Account(user: "", id: "", serverUrl: "", password: "")
-        }
-
-        return Account(
-            user: session.user,
-            id: session.userId,
-            serverUrl: session.urlBase,
-            password: session.password
-        )
-    }
-
     public func setDelegate(_ delegate: any NextcloudKitDelegate) {
         setup(delegate: delegate)
     }
 
     public func createFolder(
         remotePath: String,
+        account: Account,
         options: NKRequestOptions = .init(),
         taskHandler: @escaping (URLSessionTask) -> Void = { _ in }
     ) async -> (account: String, ocId: String?, date: NSDate?, error: NKError) {
@@ -51,6 +39,7 @@ extension NextcloudKit: RemoteInterface {
         localPath: String, 
         creationDate: Date? = nil,
         modificationDate: Date? = nil,
+        account: Account,
         options: NKRequestOptions = .init(),
         requestHandler: @escaping (UploadRequest) -> Void = { _ in },
         taskHandler: @escaping (URLSessionTask) -> Void = { _ in },
@@ -95,6 +84,7 @@ extension NextcloudKit: RemoteInterface {
         remotePathSource: String,
         remotePathDestination: String,
         overwrite: Bool,
+        account: Account,
         options: NKRequestOptions,
         taskHandler: @escaping (URLSessionTask) -> Void
     ) async -> (account: String, data: Data?, error: NKError) {
@@ -115,6 +105,7 @@ extension NextcloudKit: RemoteInterface {
     public func download(
         remotePath: String,
         localPath: String,
+        account: Account,
         options: NKRequestOptions = .init(),
         requestHandler: @escaping (DownloadRequest) -> Void = { _ in },
         taskHandler: @escaping (URLSessionTask) -> Void = { _ in },
@@ -157,6 +148,7 @@ extension NextcloudKit: RemoteInterface {
         showHiddenFiles: Bool = false,
         includeHiddenFiles: [String] = [],
         requestBody: Data? = nil,
+        account: Account,
         options: NKRequestOptions = .init(),
         taskHandler: @escaping (URLSessionTask) -> Void = { _ in }
     ) async -> (
@@ -180,6 +172,7 @@ extension NextcloudKit: RemoteInterface {
 
     public func delete(
         remotePath: String,
+        account: Account,
         options: NKRequestOptions = .init(),
         taskHandler: @escaping (URLSessionTask) -> Void = { _ in }
     ) async -> (account: String, response: HTTPURLResponse?, error: NKError) {
@@ -193,7 +186,10 @@ extension NextcloudKit: RemoteInterface {
     }
 
     public func downloadThumbnail(
-        url: URL, options: NKRequestOptions, taskHandler: @escaping (URLSessionTask) -> Void
+        url: URL,
+        account: Account,
+        options: NKRequestOptions,
+        taskHandler: @escaping (URLSessionTask) -> Void
     ) async -> (account: String, data: Data?, error: NKError) {
         await withCheckedContinuation { continuation in
             downloadPreview(
@@ -205,6 +201,7 @@ extension NextcloudKit: RemoteInterface {
     }
 
     public func fetchCapabilities(
+        account: Account,
         options: NKRequestOptions = .init(),
         taskHandler: @escaping (_ task: URLSessionTask) -> Void = { _ in }
     ) async -> (account: String, data: Data?, error: NKError) {
@@ -216,6 +213,7 @@ extension NextcloudKit: RemoteInterface {
     }
 
     public func fetchUserProfile(
+        account: Account,
         options: NKRequestOptions = .init(),
         taskHandler: @escaping (_ task: URLSessionTask) -> Void = { _ in }
     ) async -> (account: String, userProfile: NKUserProfile?, data: Data?, error: NKError) {
@@ -229,12 +227,13 @@ extension NextcloudKit: RemoteInterface {
     }
 
     public func tryAuthenticationAttempt(
+        account: Account,
         options: NKRequestOptions = .init(),
         taskHandler: @escaping (_ task: URLSessionTask) -> Void = { _ in }
     ) async -> AuthenticationAttemptResultState {
         // Test by trying to fetch user profile
         let (_, _, _, error) =
-            await fetchUserProfile(options: options, taskHandler: taskHandler)
+        await fetchUserProfile(account: account, options: options, taskHandler: taskHandler)
 
         if error == .success {
             return .success

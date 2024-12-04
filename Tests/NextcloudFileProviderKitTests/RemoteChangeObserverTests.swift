@@ -44,7 +44,7 @@ final class RemoteChangeObserverTests: XCTestCase {
     }
 
     func testAuthentication() async throws {
-        let remoteInterface = MockRemoteInterface(account: Self.account)
+        let remoteInterface = MockRemoteInterface()
         remoteInterface.capabilities = mockCapabilities
 
         var authenticated = false
@@ -56,6 +56,7 @@ final class RemoteChangeObserverTests: XCTestCase {
         }
 
         remoteChangeObserver = RemoteChangeObserver(
+            account: Self.account,
             remoteInterface: remoteInterface,
             changeNotificationInterface: MockChangeNotificationInterface(),
             domain: nil
@@ -83,9 +84,10 @@ final class RemoteChangeObserverTests: XCTestCase {
 
         let incorrectAccount =
             Account(user: username, id: userId, serverUrl: serverUrl, password: "wrong!")
-        let remoteInterface = MockRemoteInterface(account: incorrectAccount)
+        let remoteInterface = MockRemoteInterface()
         remoteInterface.capabilities = mockCapabilities
         remoteChangeObserver = RemoteChangeObserver(
+            account: incorrectAccount,
             remoteInterface: remoteInterface,
             changeNotificationInterface: MockChangeNotificationInterface(),
             domain: nil
@@ -99,7 +101,7 @@ final class RemoteChangeObserverTests: XCTestCase {
             }
         }
         XCTAssertTrue(remoteChangeObserver.webSocketAuthenticationFailCount > 0)
-        remoteInterface.account = Self.account
+        remoteChangeObserver.account = Self.account
 
         for _ in 0...Self.timeout {
             try await Task.sleep(nanoseconds: 1_000_000)
@@ -114,9 +116,10 @@ final class RemoteChangeObserverTests: XCTestCase {
     func testStopRetryingConnection() async throws {
         let incorrectAccount =
             Account(user: username, id: userId, serverUrl: serverUrl, password: "wrong!")
-        let remoteInterface = MockRemoteInterface(account: incorrectAccount)
+        let remoteInterface = MockRemoteInterface()
         remoteInterface.capabilities = mockCapabilities
         let remoteChangeObserver = RemoteChangeObserver(
+            account: incorrectAccount,
             remoteInterface: remoteInterface,
             changeNotificationInterface: MockChangeNotificationInterface(),
             domain: nil
@@ -138,7 +141,7 @@ final class RemoteChangeObserverTests: XCTestCase {
     }
 
     func testChangeRecognised() async throws {
-        let remoteInterface = MockRemoteInterface(account: Self.account)
+        let remoteInterface = MockRemoteInterface()
         remoteInterface.capabilities = mockCapabilities
 
         var authenticated = false
@@ -153,6 +156,7 @@ final class RemoteChangeObserverTests: XCTestCase {
         let notificationInterface = MockChangeNotificationInterface()
         notificationInterface.changeHandler = { notified = true }
         remoteChangeObserver = RemoteChangeObserver(
+            account: Self.account,
             remoteInterface: remoteInterface,
             changeNotificationInterface: notificationInterface,
             domain: nil
@@ -177,7 +181,7 @@ final class RemoteChangeObserverTests: XCTestCase {
     }
 
     func testIgnoreNonFileNotifications() async throws {
-        let remoteInterface = MockRemoteInterface(account: Self.account)
+        let remoteInterface = MockRemoteInterface()
         remoteInterface.capabilities = mockCapabilities
 
         var authenticated = false
@@ -192,6 +196,7 @@ final class RemoteChangeObserverTests: XCTestCase {
         let notificationInterface = MockChangeNotificationInterface()
         notificationInterface.changeHandler = { notified = true }
         remoteChangeObserver = RemoteChangeObserver(
+            account: Self.account,
             remoteInterface: remoteInterface,
             changeNotificationInterface: notificationInterface,
             domain: nil
@@ -219,11 +224,12 @@ final class RemoteChangeObserverTests: XCTestCase {
 
     func testPolling() async throws {
         var notified = false
-        let remoteInterface = MockRemoteInterface(account: Self.account)
+        let remoteInterface = MockRemoteInterface()
         remoteInterface.capabilities = ""
         let notificationInterface = MockChangeNotificationInterface()
         notificationInterface.changeHandler = { notified = true }
         remoteChangeObserver = RemoteChangeObserver(
+            account: Self.account,
             remoteInterface: remoteInterface,
             changeNotificationInterface: notificationInterface,
             domain: nil
@@ -257,7 +263,7 @@ final class RemoteChangeObserverTests: XCTestCase {
     }
 
     func testRetryOnRemoteClose() async throws {
-        let remoteInterface = MockRemoteInterface(account: Self.account)
+        let remoteInterface = MockRemoteInterface()
         remoteInterface.capabilities = mockCapabilities
 
         var authenticated = false
@@ -269,6 +275,7 @@ final class RemoteChangeObserverTests: XCTestCase {
         }
 
         remoteChangeObserver = RemoteChangeObserver(
+            account: Self.account,
             remoteInterface: remoteInterface,
             changeNotificationInterface: MockChangeNotificationInterface(),
             domain: nil
@@ -296,7 +303,7 @@ final class RemoteChangeObserverTests: XCTestCase {
     }
 
     func testPinging() async throws {
-        let remoteInterface = MockRemoteInterface(account: Self.account)
+        let remoteInterface = MockRemoteInterface()
         remoteInterface.capabilities = mockCapabilities
 
         var authenticated = false
@@ -308,6 +315,7 @@ final class RemoteChangeObserverTests: XCTestCase {
         }
 
         remoteChangeObserver = RemoteChangeObserver(
+            account: Self.account,
             remoteInterface: remoteInterface,
             changeNotificationInterface: MockChangeNotificationInterface(),
             domain: nil
@@ -338,7 +346,7 @@ final class RemoteChangeObserverTests: XCTestCase {
     }
 
     func testRetryOnConnectionLoss() async throws {
-        let remoteInterface = MockRemoteInterface(account: Self.account)
+        let remoteInterface = MockRemoteInterface()
         remoteInterface.capabilities = mockCapabilities
 
         var authenticated = false
@@ -353,6 +361,7 @@ final class RemoteChangeObserverTests: XCTestCase {
         let notificationInterface = MockChangeNotificationInterface()
         notificationInterface.changeHandler = { notified = true }
         remoteChangeObserver = RemoteChangeObserver(
+            account: Self.account,
             remoteInterface: remoteInterface,
             changeNotificationInterface: notificationInterface,
             domain: nil

@@ -18,7 +18,8 @@ public class RemoteChangeObserver: NSObject, NextcloudKitDelegate, URLSessionWeb
     public let remoteInterface: RemoteInterface
     public let changeNotificationInterface: ChangeNotificationInterface
     public let domain: NSFileProviderDomain?
-    public var accountId: String { remoteInterface.account.ncKitAccount }
+    public var account: Account
+    public var accountId: String { account.ncKitAccount }
 
     public var webSocketPingIntervalNanoseconds: UInt64 = 3 * 1_000_000_000
     public var webSocketReconfigureIntervalNanoseconds: UInt64 = 1 * 1_000_000_000
@@ -61,10 +62,12 @@ public class RemoteChangeObserver: NSObject, NextcloudKitDelegate, URLSessionWeb
     }
 
     public init(
+        account: Account,
         remoteInterface: RemoteInterface,
         changeNotificationInterface: ChangeNotificationInterface,
         domain: NSFileProviderDomain?
     ) {
+        self.account = account
         self.remoteInterface = remoteInterface
         self.changeNotificationInterface = changeNotificationInterface
         self.domain = domain
@@ -131,7 +134,8 @@ public class RemoteChangeObserver: NSObject, NextcloudKitDelegate, URLSessionWeb
 
     private func configureNotifyPush() async {
         let (_, capabilitiesData, error) = await remoteInterface.fetchCapabilities(
-            options: .init(), 
+            account: account,
+            options: .init(),
             taskHandler: { task in
                 if let domain = self.domain {
                     NSFileProviderManager(for: domain)?.register(
@@ -200,8 +204,8 @@ public class RemoteChangeObserver: NSObject, NextcloudKitDelegate, URLSessionWeb
         logger.debug("Received auth challenge with method: \(authMethod, privacy: .public)")
         if authMethod == NSURLAuthenticationMethodHTTPBasic {
             let credential = URLCredential(
-                user: remoteInterface.account.username,
-                password: remoteInterface.account.password,
+                user: account.username,
+                password: account.password,
                 persistence: .forSession
             )
             completionHandler(.useCredential, credential)
@@ -246,8 +250,8 @@ public class RemoteChangeObserver: NSObject, NextcloudKitDelegate, URLSessionWeb
 
     private func authenticateWebSocket() async {
         do {
-            try await webSocketTask?.send(.string(remoteInterface.account.username))
-            try await webSocketTask?.send(.string(remoteInterface.account.password))
+            try await webSocketTask?.send(.string(account.username))
+            try await webSocketTask?.send(.string(account.password))
         } catch let error {
             logger.error(
                 """
