@@ -906,19 +906,15 @@ OCC::Result<OCC::Vfs::ConvertToPlaceholderResult, QString> OCC::CfApiWrapper::de
 
     const auto info = findPlaceholderInfo(path);
     if (info) {
-        CF_FILE_RANGE dehydrationRange;
-        dehydrationRange.StartingOffset.QuadPart = 0;
-        dehydrationRange.Length.QuadPart = size;
+        LARGE_INTEGER largeStart, largeSize;
+        largeStart.QuadPart = 0;
+        largeSize.QuadPart = size;
 
-        const qint64 result = CfUpdatePlaceholder(handleForPath(path).get(),
-                                                  nullptr,
-                                                  fileIdentity.data(),
-                                                  sizeToDWORD(fileIdentitySize),
-                                                  &dehydrationRange,
-                                                  1,
-                                                  CF_UPDATE_FLAG_MARK_IN_SYNC | CF_UPDATE_FLAG_DEHYDRATE,
-                                                  nullptr,
-                                                  nullptr);
+        const qint64 result = CfDehydratePlaceholder(handleForPath(path).get(),
+                                                     largeStart,
+                                                     largeSize,
+                                                     CF_DEHYDRATE_FLAG_NONE,
+                                                     0);
 
         if (result != S_OK) {
             const auto errorMessage = createErrorMessageForPlaceholderUpdateAndCreate(path, "Couldn't update placeholder info");
