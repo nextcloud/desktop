@@ -63,9 +63,9 @@ QString FormatWarningsWizardPage::formatWarnings(const QStringList &warnings) co
 {
     QString ret;
     if (warnings.count() == 1) {
-        ret = tr("<b>Warning:</b> %1").arg(warnings.first());
+        ret = tr("%1").arg(warnings.first());
     } else if (warnings.count() > 1) {
-        ret = tr("<b>Warning:</b>") + " <ul>";
+        ret = "<ul>";
         Q_FOREACH (QString warning, warnings) {
             ret += QString::fromLatin1("<li>%1</li>").arg(warning);
         }
@@ -484,11 +484,11 @@ FolderWizardRemotePath::~FolderWizardRemotePath() = default;
 
 bool FolderWizardRemotePath::isComplete() const
 {
-    if (!_ui.folderTreeWidget->currentItem())
+    if (!_ui.folderTreeWidget->currentItem()) {
         return false;
+    }
 
-    QStringList warnStrings;
-    QString dir = _ui.folderTreeWidget->currentItem()->data(0, Qt::UserRole).toString();
+    auto dir = _ui.folderTreeWidget->currentItem()->data(0, Qt::UserRole).toString();
     if (!dir.startsWith(QLatin1Char('/'))) {
         dir.prepend(QLatin1Char('/'));
     }
@@ -502,16 +502,23 @@ bool FolderWizardRemotePath::isComplete() const
             continue;
         }
         QString curDir = f->remotePathTrailingSlash();
+
         if (QDir::cleanPath(dir) == QDir::cleanPath(curDir)) {
-            warnStrings.append(tr("This folder is already being synced."));
-        } else if (dir.startsWith(curDir)) {
-            warnStrings.append(tr("You are already syncing <i>%1</i>, which is a parent folder of <i>%2</i>.").arg(Utility::escape(curDir), Utility::escape(dir)));
-        } else if (curDir.startsWith(dir)) {
-            warnStrings.append(tr("You are already syncing <i>%1</i>, which is a subfolder of <i>%2</i>.").arg(Utility::escape(curDir), Utility::escape(dir)));
+            showWarn(tr("Please choose a different location. %1 is already being used as a sync folder.").arg(Utility::escape(curDir)));
+            break;
+        }
+
+        if (dir.startsWith(curDir)) {
+            showWarn(tr("Please choose a different location. %1 is already being synced in %2.").arg(Utility::escape(dir), Utility::escape(curDir)));
+            break;
+        }
+
+        if (curDir.startsWith(dir)) {
+            showWarn(tr("Please choose a different location. %1 is already being synced in %2.").arg(Utility::escape(curDir), Utility::escape(dir)));
+            break;
         }
     }
 
-    showWarn(formatWarnings(warnStrings));
     return true;
 }
 
@@ -625,7 +632,10 @@ bool FolderWizardSelectiveSync::validatePage()
     if (useVirtualFiles) {
         const auto availability = Vfs::checkAvailability(wizard()->field(QStringLiteral("sourceFolder")).toString(), mode);
         if (!availability) {
-            auto msg = new QMessageBox(QMessageBox::Warning, tr("Virtual files are not available for the selected folder"), availability.error(), QMessageBox::Ok, this);
+            auto msg = new QMessageBox(QMessageBox::Warning,
+                                       tr("Virtual files are not supported at the selected location"),
+                                       availability.error(),
+                                       QMessageBox::Ok, this);
             msg->setAttribute(Qt::WA_DeleteOnClose);
             msg->open();
             return false;
