@@ -98,6 +98,7 @@ public protocol RemoteInterface {
     ) async -> (account: String, response: HTTPURLResponse?, error: NKError)
 
     func trashedItems(
+        account: Account,
         options: NKRequestOptions,
         taskHandler: @escaping (_ task: URLSessionTask) -> Void
     ) async -> (account: String, trashedItems: [NKTrash], data: Data?, error: NKError)

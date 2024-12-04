@@ -346,10 +346,11 @@ public class MockRemoteInterface: RemoteInterface {
     }
 
     public func trashedItems(
+        account: Account,
         options: NKRequestOptions = .init(),
         taskHandler: @escaping (URLSessionTask) -> Void
     ) async -> (account: String, trashedItems: [NKTrash], data: Data?, error: NKError) {
-        return (accountString, trash, nil, .success)
+        return (account.ncKitAccount, trash, nil, .success)
     }
 
     public func downloadThumbnail(

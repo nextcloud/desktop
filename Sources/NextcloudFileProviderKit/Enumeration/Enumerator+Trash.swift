@@ -11,6 +11,7 @@ import NextcloudKit
 extension Enumerator {
     static func completeEnumerationObserver(
         _ observer: NSFileProviderEnumerationObserver,
+        account: Account,
         remoteInterface: RemoteInterface,
         dbManager: FilesDatabaseManager,
         numPage: Int,
@@ -18,13 +19,13 @@ extension Enumerator {
     ) {
         var metadatas = [ItemMetadata]()
         for trashItem in trashItems {
-            let metadata = trashItem.toItemMetadata(account: remoteInterface.account)
+            let metadata = trashItem.toItemMetadata(account: account)
             dbManager.addItemMetadata(metadata)
             metadatas.append(metadata)
         }
 
         Self.metadatasToFileProviderItems(
-            metadatas, remoteInterface: remoteInterface, dbManager: dbManager
+            metadatas, account: account, remoteInterface: remoteInterface, dbManager: dbManager
         ) { items in
             observer.didEnumerate(items)
             Self.logger.info("Did enumerate \(items.count) trash items")
@@ -35,6 +36,7 @@ extension Enumerator {
     static func completeChangesObserver(
         _ observer: NSFileProviderChangeObserver,
         anchor: NSFileProviderSyncAnchor,
+        account: Account,
         remoteInterface: RemoteInterface,
         dbManager: FilesDatabaseManager,
         trashItems: [NKTrash]
@@ -44,7 +46,7 @@ extension Enumerator {
         // NKTrash items do not have an etag ; we assume they cannot be modified while they are in
         // the trash, so we will just check by ocId
         var existingTrashedItems =
-            dbManager.trashedItemMetadatas(account: remoteInterface.account.ncKitAccount)
+            dbManager.trashedItemMetadatas(account: account.ncKitAccount)
 
         for trashItem in trashItems {
             if let existingTrashItemIndex = existingTrashedItems.firstIndex(
@@ -54,12 +56,13 @@ extension Enumerator {
                 continue
             }
 
-            let metadata = trashItem.toItemMetadata(account: remoteInterface.account)
+            let metadata = trashItem.toItemMetadata(account: account)
             dbManager.addItemMetadata(metadata)
 
             let item = Item(
                 metadata: metadata,
                 parentItemIdentifier: .trashContainer,
+                account: account,
                 remoteInterface: remoteInterface
             )
             newTrashedItems.append(item)

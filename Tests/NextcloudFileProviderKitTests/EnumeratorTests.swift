@@ -818,12 +818,13 @@ final class EnumeratorTests: XCTestCase {
     func testTrashEnumeration() async throws {
         let db = Self.dbManager.ncDatabase() // Strong ref for in memory test db
         debugPrint(db) // Avoid build-time warning about unused variable, ensure compiler won't free
-        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+        let remoteInterface = MockRemoteInterface(rootItem: rootItem)
 
         remoteInterface.trash = [trashItemA, trashItemB, trashItemC]
 
         let enumerator = Enumerator(
             enumeratedItemIdentifier: .trashContainer,
+            account: Self.account,
             remoteInterface: remoteInterface,
             dbManager: Self.dbManager
         )
@@ -834,6 +835,7 @@ final class EnumeratorTests: XCTestCase {
         let storedItemA = try XCTUnwrap(
             Item.storedItem(
                 identifier: .init(trashItemA.ocId),
+                account: Self.account,
                 remoteInterface: remoteInterface,
                 dbManager: Self.dbManager
             )
@@ -845,6 +847,7 @@ final class EnumeratorTests: XCTestCase {
         let storedItemB = try XCTUnwrap(
             Item.storedItem(
                 identifier: .init(trashItemB.ocId),
+                account: Self.account,
                 remoteInterface: remoteInterface,
                 dbManager: Self.dbManager
             )
@@ -856,6 +859,7 @@ final class EnumeratorTests: XCTestCase {
         let storedItemC = try XCTUnwrap(
             Item.storedItem(
                 identifier: .init(trashItemC.ocId),
+                account: Self.account,
                 remoteInterface: remoteInterface,
                 dbManager: Self.dbManager
             )
@@ -868,7 +872,7 @@ final class EnumeratorTests: XCTestCase {
     func testTrashChangeEnumeration() async throws {
         let db = Self.dbManager.ncDatabase() // Strong ref for in memory test db
         debugPrint(db) // Avoid build-time warning about unused variable, ensure compiler won't free
-        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+        let remoteInterface = MockRemoteInterface(rootItem: rootItem)
 
         Self.dbManager.addItemMetadata(trashItemA.toItemMetadata(account: Self.account))
         XCTAssertNotNil(Self.dbManager.itemMetadataFromOcId(trashItemA.ocId))
@@ -877,6 +881,7 @@ final class EnumeratorTests: XCTestCase {
 
         let enumerator = Enumerator(
             enumeratedItemIdentifier: .trashContainer,
+            account: Self.account,
             remoteInterface: remoteInterface,
             dbManager: Self.dbManager
         )

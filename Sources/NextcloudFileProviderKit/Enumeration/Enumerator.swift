@@ -145,6 +145,7 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
 
             Task {
                 let (_, trashedItems, _, trashReadError) = await remoteInterface.trashedItems(
+                    account: account,
                     options: .init(),
                     taskHandler: { task in
                         if let domain = self.domain {
@@ -167,6 +168,7 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
 
                 Self.completeEnumerationObserver(
                     observer,
+                    account: account,
                     remoteInterface: remoteInterface,
                     dbManager: dbManager,
                     numPage: 1,
@@ -382,6 +384,7 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
 
             Task {
                 let (_, trashedItems, _, trashReadError) = await remoteInterface.trashedItems(
+                    account: account,
                     options: .init(),
                     taskHandler: { task in
                         if let domain = self.domain {
@@ -405,6 +408,7 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
                 Self.completeChangesObserver(
                     observer,
                     anchor: anchor,
+                    account: account,
                     remoteInterface: remoteInterface,
                     dbManager: dbManager,
                     trashItems: trashedItems

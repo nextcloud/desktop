@@ -197,18 +197,19 @@ public class Item: NSObject, NSFileProviderItem {
         )
     }
 
-    public static func trashContainer(remoteInterface: RemoteInterface) -> Item {
+    public static func trashContainer(remoteInterface: RemoteInterface, account: Account) -> Item {
         let metadata = ItemMetadata()
-        metadata.account = remoteInterface.account.ncKitAccount
+        metadata.account = account.ncKitAccount
         metadata.directory = true
         metadata.ocId = NSFileProviderItemIdentifier.trashContainer.rawValue
         metadata.fileName = "Trash"
         metadata.fileNameView = "Trash"
-        metadata.serverUrl = remoteInterface.account.trashUrl
+        metadata.serverUrl = account.trashUrl
         metadata.classFile = NKCommon.TypeClassFile.directory.rawValue
         return Item(
             metadata: metadata,
             parentItemIdentifier: .trashContainer,
+            account: account,
             remoteInterface: remoteInterface
         )
     }
@@ -239,7 +240,7 @@ public class Item: NSObject, NSFileProviderItem {
             return Item.rootContainer(account: account, remoteInterface: remoteInterface)
         }
         guard identifier != .trashContainer else {
-            return Item.trashContainer(remoteInterface: remoteInterface)
+            return Item.trashContainer(remoteInterface: remoteInterface, account: account)
         }
 
         guard let metadata = dbManager.itemMetadataFromFileProviderItemIdentifier(identifier) else {

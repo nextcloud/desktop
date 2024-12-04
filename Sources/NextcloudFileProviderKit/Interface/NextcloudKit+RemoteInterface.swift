@@ -186,6 +186,7 @@ extension NextcloudKit: RemoteInterface {
     }
 
     public func trashedItems(
+        account: Account,
         options: NKRequestOptions = .init(),
         taskHandler: @escaping (URLSessionTask) -> Void
     ) async -> (account: String, trashedItems: [NKTrash], data: Data?, error: NKError) {
