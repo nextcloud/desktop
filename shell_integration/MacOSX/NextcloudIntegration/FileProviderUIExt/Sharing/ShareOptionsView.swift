@@ -7,6 +7,7 @@
 
 import AppKit
 import Combine
+import NextcloudFileProviderKit
 import NextcloudKit
 import OSLog
 import SuggestionsTextFieldKit
@@ -34,16 +35,17 @@ class ShareOptionsView: NSView {
     @IBOutlet private weak var circleShare: NSMenuItem!
     @IBOutlet private weak var talkConversationShare: NSMenuItem!
 
-    var kit: NextcloudKit? {
+    let kit = NextcloudKit.shared
+    var account: Account? {
         didSet {
-            Logger.shareOptionsView.info("Setting up the kit.")
-            guard let kit = kit else {
+            Logger.shareOptionsView.info("Setting up account.")
+            guard let account else {
                 Logger.shareOptionsView.error("Could not configure suggestions data source.")
                 return
             }
 
             suggestionsTextFieldDelegate.suggestionsDataSource = ShareeSuggestionsDataSource(
-                kit: kit
+                account: account, kit: kit
             )
             suggestionsTextFieldDelegate.confirmationHandler = { suggestion in
                 guard let sharee = suggestion?.data as? NKSharee else { return }
@@ -255,13 +257,13 @@ class ShareOptionsView: NSView {
             guard !createMode else {
                 Logger.shareOptionsView.info("Creating new share!")
 
-                guard let dataSource = dataSource,
-                      let kit = kit,
+                guard let dataSource,
+                      let account,
                       let itemServerRelativePath = dataSource.itemServerRelativePath
                 else {
                     Logger.shareOptionsView.error("Cannot create new share due to missing data.")
                     Logger.shareOptionsView.error("dataSource: \(self.dataSource, privacy: .public)")
-                    Logger.shareOptionsView.error("kit: \(self.kit, privacy: .public)")
+                    Logger.shareOptionsView.error("account: \(self.account != nil, privacy: .public)")
                     Logger.shareOptionsView.error(
                         "path: \(self.dataSource?.itemServerRelativePath ?? "", privacy: .public)"
                     )
@@ -280,6 +282,7 @@ class ShareOptionsView: NSView {
                 deleteButton.isEnabled = false
                 saveButton.isEnabled = false
                 let error = await ShareController.create(
+                    account: account,
                     kit: kit,
                     shareType: selectedShareType,
                     itemServerRelativePath: itemServerRelativePath,
