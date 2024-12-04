@@ -17,12 +17,15 @@ import Foundation
 import OSLog
 import RealmSwift
 
+fileprivate let stable1_0SchemaVersion: UInt64 = 100
+fileprivate let stable2_0SchemaVersion: UInt64 = 200 // Major change: deleted LocalFileMetadata type
+
 public class FilesDatabaseManager {
     public static let shared = FilesDatabaseManager()!
 
     private static let relativeDatabaseFolderPath = "Database/"
     private static let databaseFilename = "fileproviderextdatabase.realm"
-    private static let schemaVersion: UInt64 = 100
+    private static let schemaVersion = stable2_0SchemaVersion
 
     static let logger = Logger(subsystem: Logger.subsystem, category: "filesdatabase")
 
@@ -63,6 +66,27 @@ public class FilesDatabaseManager {
         let config = Realm.Configuration(
             fileURL: databasePath,
             schemaVersion: Self.schemaVersion,
+            migrationBlock: { migration, oldSchemaVersion in
+                if oldSchemaVersion == stable1_0SchemaVersion {
+                    var localFileMetadataOcIds = Set<String>()
+                    migration.enumerateObjects(ofType: "LocalFileMetadata") { oldObject, _ in
+                        guard let oldObject, let lfmOcId = oldObject["ocId"] as? String else {
+                            return
+                        }
+                        localFileMetadataOcIds.insert(lfmOcId)
+                    }
+
+                    migration.enumerateObjects(ofType: ItemMetadata.className()) { oldObject, _ in
+                        guard let oldObject,
+                              let imOcId = oldObject["ocId"] as? String,
+                              localFileMetadataOcIds.contains(imOcId)
+                        else { return }
+                        oldObject[NSExpression(forKeyPath: \ItemMetadata.downloaded).keyPath] = true
+                        oldObject[NSExpression(forKeyPath: \ItemMetadata.uploaded).keyPath] = true
+                    }
+                }
+
+            },
             objectTypes: [ItemMetadata.self]
         )
         self.init(realmConfig: config)
