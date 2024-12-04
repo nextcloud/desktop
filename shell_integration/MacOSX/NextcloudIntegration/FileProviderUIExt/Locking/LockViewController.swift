@@ -157,16 +157,20 @@ class LockViewController: NSViewController {
                 return
             }
             let serverPathString = serverPath as String
-            let kit = NextcloudKit()
-            kit.setup(
+            let kit = NextcloudKit.shared
+            kit.appendSession(
+                account: account.ncKitAccount,
+                urlBase: account.serverUrl,
                 user: account.username,
-                userId: account.username,
+                userId: account.id,
                 password: account.password,
-                urlBase: account.serverUrl
+                userAgent: "Nextcloud-macOS/FileProviderUIExt",
+                nextcloudVersion: 25,
+                groupIdentifier: ""
             )
             // guard let capabilities = await fetchCapabilities() else {
             guard let itemMetadata = await fetchItemMetadata(
-                itemRelativePath: serverPathString, kit: kit
+                itemRelativePath: serverPathString, account: account, kit: kit
             ) else {
                 presentError("Could not get item metadata.")
                 return
@@ -200,7 +204,8 @@ class LockViewController: NSViewController {
                 kit.lockUnlockFile(
                     serverUrlFileName: serverUrlFileName,
                     shouldLock: locking,
-                    completion: { _, error in
+                    account: account.ncKitAccount,
+                    completion: { _, _, error in
                         continuation.resume(returning: error)
                     }
                 )
