@@ -47,11 +47,12 @@ extension Enumerator {
             dbManager.trashedItemMetadatas(account: remoteInterface.account.ncKitAccount)
 
         for trashItem in trashItems {
-            guard let existingTrashItemIndex = existingTrashedItems.firstIndex(
+            if let existingTrashItemIndex = existingTrashedItems.firstIndex(
                 where: { $0.ocId == trashItem.ocId }
-            ) else { continue }
-
-            existingTrashedItems.remove(at: existingTrashItemIndex)
+            ) {
+                existingTrashedItems.remove(at: existingTrashItemIndex)
+                continue
+            }
 
             let metadata = trashItem.toItemMetadata(account: remoteInterface.account)
             dbManager.addItemMetadata(metadata)
@@ -65,7 +66,7 @@ extension Enumerator {
 
             Self.logger.debug(
                 """
-                Will enumerate trashed item with ocId: \(metadata.ocId, privacy: .public)
+                Will enumerate changed trashed item with ocId: \(metadata.ocId, privacy: .public)
                 and name: \(metadata.fileName, privacy: .public)
                 """
             )
