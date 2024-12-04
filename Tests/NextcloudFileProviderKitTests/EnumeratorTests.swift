@@ -864,4 +864,39 @@ final class EnumeratorTests: XCTestCase {
         XCTAssertEqual(storedItemC.filename, trashItemC.fileName)
         XCTAssertEqual(storedItemC.documentSize?.int64Value, trashItemC.size)
     }
+
+    func testTrashChangeEnumeration() async throws {
+        let db = Self.dbManager.ncDatabase() // Strong ref for in memory test db
+        debugPrint(db) // Avoid build-time warning about unused variable, ensure compiler won't free
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+
+        Self.dbManager.addItemMetadata(trashItemA.toItemMetadata(account: Self.account))
+        XCTAssertNotNil(Self.dbManager.itemMetadataFromOcId(trashItemA.ocId))
+
+        remoteInterface.trash = [trashItemA]
+
+        let enumerator = Enumerator(
+            enumeratedItemIdentifier: .trashContainer,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+        let observer = MockChangeObserver(enumerator: enumerator)
+        try await observer.enumerateChanges()
+        XCTAssertEqual(observer.changedItems.count, 0)
+        observer.reset()
+
+        remoteInterface.trash = [trashItemA, trashItemB]
+        try await observer.enumerateChanges()
+        XCTAssertEqual(observer.changedItems.count, 1)
+        XCTAssertNotNil(Self.dbManager.itemMetadataFromOcId(trashItemB.ocId))
+        observer.reset()
+
+        remoteInterface.trash = [trashItemB, trashItemC]
+        try await observer.enumerateChanges()
+        XCTAssertEqual(observer.changedItems.count, 1)
+        XCTAssertEqual(observer.deletedItemIdentifiers.count, 1)
+        XCTAssertNil(Self.dbManager.itemMetadataFromOcId(trashItemA.ocId))
+        XCTAssertNotNil(Self.dbManager.itemMetadataFromOcId(trashItemB.ocId))
+        XCTAssertNotNil(Self.dbManager.itemMetadataFromOcId(trashItemC.ocId))
+    }
 }
