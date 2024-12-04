@@ -2972,7 +2972,7 @@ Como alternativa, pode restaurar todos os ficheiros eliminados descargándoos do
     <message>
         <location filename="../src/gui/generalsettings.ui" line="301"/>
         <source>S&amp;how crash reporter</source>
-        <translation>Amosar o informe de &amp;fallos</translation>
+        <translation>Amosar o informe de &amp;crebas</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="229"/>
