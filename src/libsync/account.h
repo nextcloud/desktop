@@ -165,6 +165,12 @@ public:
     /** Server url of the account */
     void setUrl(const QUrl &url);
     [[nodiscard]] QUrl url() const { return _url; }
+    [[nodiscard]] QUrl publicShareLinkUrl() const;
+
+    [[nodiscard]] bool isPublicShareLink() const
+    {
+        return _isPublicLink;
+    }
 
     /// Adjusts _userVisibleUrl once the host to use is discovered.
     void setUserVisibleHost(const QString &host);
@@ -501,6 +507,8 @@ private:
 #endif
     QMap<QString, QVariant> _settingsMap;
     QUrl _url;
+    QUrl _publicShareLinkUrl;
+    bool _isPublicLink = false;
 
     /** If url to use for any user-visible urls.
      *
