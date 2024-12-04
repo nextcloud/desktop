@@ -29,9 +29,15 @@ extension FileProviderExtension: NSFileProviderThumbnailing {
         ) -> Void,
         completionHandler: @escaping (Error?) -> Void
     ) -> Progress {
+        guard let ncAccount else {
+            completionHandler(NSFileProviderError(.notAuthenticated))
+            return Progress()
+        }
+
         return NextcloudFileProviderKit.fetchThumbnails(
             for: itemIdentifiers,
             requestedSize: size,
+            account: ncAccount,
             usingRemoteInterface: self.ncKit,
             perThumbnailCompletionHandler: perThumbnailCompletionHandler,
             completionHandler: completionHandler
