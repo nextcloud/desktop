@@ -488,33 +488,30 @@ bool FolderWizardRemotePath::isComplete() const
         return false;
     }
 
-    auto dir = _ui.folderTreeWidget->currentItem()->data(0, Qt::UserRole).toString();
-    if (!dir.startsWith(QLatin1Char('/'))) {
-        dir.prepend(QLatin1Char('/'));
+    auto targetPath = _ui.folderTreeWidget->currentItem()->data(0, Qt::UserRole).toString();
+    if (!targetPath.startsWith(QLatin1Char('/'))) {
+        targetPath.prepend(QLatin1Char('/'));
     }
-    wizard()->setProperty("targetPath", dir);
+    wizard()->setProperty("targetPath", targetPath);
 
-    Folder::Map map = FolderMan::instance()->map();
-    Folder::Map::const_iterator i = map.constBegin();
-    for (i = map.constBegin(); i != map.constEnd(); i++) {
-        auto *f = static_cast<Folder *>(i.value());
-        if (f->accountState()->account() != _account) {
+    for (const auto folder : qAsConst(FolderMan::instance()->map())) {
+        if (folder->accountState()->account() != _account) {
             continue;
         }
-        QString curDir = f->remotePathTrailingSlash();
 
-        if (QDir::cleanPath(dir) == QDir::cleanPath(curDir)) {
-            showWarn(tr("Please choose a different location. %1 is already being used as a sync folder.").arg(Utility::escape(curDir)));
+        const auto currentDir = folder->remotePathTrailingSlash();
+        if (QDir::cleanPath(targetPath) == QDir::cleanPath(currentDir)) {
+            showWarn(tr("Please choose a different location. %1 is already being used as a sync folder.").arg(Utility::escape(currentDir)));
             break;
         }
 
-        if (dir.startsWith(curDir)) {
-            showWarn(tr("Please choose a different location. %1 is already being synced in %2.").arg(Utility::escape(dir), Utility::escape(curDir)));
+        if (targetPath.startsWith(currentDir)) {
+            showWarn(tr("Please choose a different location. %1 is already being synced in %2.").arg(Utility::escape(targetPath), Utility::escape(currentDir)));
             break;
         }
 
-        if (curDir.startsWith(dir)) {
-            showWarn(tr("Please choose a different location. %1 is already being synced in %2.").arg(Utility::escape(curDir), Utility::escape(dir)));
+        if (currentDir.startsWith(targetPath)) {
+            showWarn(tr("Please choose a different location. %1 is already being synced in %2.").arg(Utility::escape(currentDir), Utility::escape(targetPath)));
             break;
         }
     }
