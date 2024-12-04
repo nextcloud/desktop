@@ -45,4 +45,11 @@ public class MockChangeObserver: NSObject, NSFileProviderChangeObserver {
             throw error
         }
     }
+
+    public func reset() {
+        changedItems = []
+        deletedItemIdentifiers = []
+        error = nil
+        isComplete = false
+    }
 }
