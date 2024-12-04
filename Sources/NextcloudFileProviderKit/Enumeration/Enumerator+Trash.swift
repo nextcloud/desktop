@@ -76,6 +76,15 @@ extension Enumerator {
             NSFileProviderItemIdentifier($0.ocId)
         }
         if !deletedTrashedItemsIdentifiers.isEmpty {
+            for itemIdentifier in deletedTrashedItemsIdentifiers {
+                dbManager.deleteItemMetadata(ocId: itemIdentifier.rawValue)
+            }
+            Self.logger.debug(
+                """
+                Will enumerate deleted trashed items:
+                \(deletedTrashedItemsIdentifiers, privacy: .public)
+                """
+            )
             observer.didDeleteItems(withIdentifiers: deletedTrashedItemsIdentifiers)
         }
 
