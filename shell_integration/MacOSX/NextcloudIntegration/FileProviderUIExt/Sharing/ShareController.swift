@@ -7,14 +7,17 @@
 
 import Combine
 import Foundation
+import NextcloudFileProviderKit
 import NextcloudKit
 import OSLog
 
 class ShareController: ObservableObject {
     @Published private(set) var share: NKShare
     private let kit: NextcloudKit
+    private let account: Account
 
     static func create(
+        account: Account,
         kit: NextcloudKit,
         shareType: NKShare.ShareType,
         itemServerRelativePath: String,
@@ -38,6 +41,7 @@ class ShareController: ObservableObject {
                     publicUpload: publicUpload,
                     password: password,
                     permissions: permissions,
+                    account: account.ncKitAccount,
                     options: options
                 ) { account, share, data, error in
                     defer { continuation.resume(returning: error) }
@@ -65,8 +69,8 @@ class ShareController: ObservableObject {
                     shareWith: shareWith,
                     password: password,
                     permissions: permissions,
-                    options: options,
-                    attributes: attributes
+                    attributes: attributes,
+                    account: account.ncKitAccount
                 ) { account, share, data, error in
                     defer { continuation.resume(returning: error) }
                     guard error == .success else {
@@ -82,7 +86,8 @@ class ShareController: ObservableObject {
         }
     }
 
-    init(share: NKShare, kit: NextcloudKit) {
+    init(share: NKShare, account: Account, kit: NextcloudKit) {
+        self.account = account
         self.share = share
         self.kit = kit
     }
@@ -110,6 +115,7 @@ class ShareController: ObservableObject {
                 label: label,
                 hideDownload: hideDownload,
                 attributes: attributes,
+                account: account.ncKitAccount,
                 options: options
             ) { account, share, data, error in
                 Logger.shareController.info(
@@ -134,7 +140,9 @@ class ShareController: ObservableObject {
     func delete() async -> NKError? {
         Logger.shareController.info("Deleting share: \(self.share.url, privacy: .public)")
         return await withCheckedContinuation { continuation in
-            kit.deleteShare(idShare: share.idShare) { account, error in
+            kit.deleteShare(
+                idShare: share.idShare, account: account.ncKitAccount
+            ) { account, _, error in
                 Logger.shareController.info(
                     """
                     Received delete response: \(self.share.url, privacy: .public)
