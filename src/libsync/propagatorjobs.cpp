@@ -408,8 +408,8 @@ void PropagateLocalRename::start()
 
     SyncJournalFileRecord oldRecord;
     if (!propagator()->_journal->getFileRecord(fileAlreadyMoved ? previousNameInDb : _item->_originalFile, &oldRecord)) {
-        qCWarning(lcPropagateLocalRename) << "could not get file from local DB" << _item->_originalFile;
-        done(SyncFileItem::NormalError, tr("could not get file %1 from local DB").arg(_item->_originalFile), ErrorCategory::GenericError);
+        qCWarning(lcPropagateLocalRename) << "Could not get file from local DB" << _item->_originalFile;
+        done(SyncFileItem::NormalError, tr("Could not get file %1 from local DB").arg(_item->_originalFile), ErrorCategory::GenericError);
         return;
     }
 
