@@ -65,8 +65,7 @@ QHash<int, QByteArray> ActivityListModel::roleNames() const
     roles[LinkRole] = "link";
     roles[MessageRole] = "message";
     roles[ActionRole] = "type";
-    roles[DarkIconRole] = "darkIcon";
-    roles[LightIconRole] = "lightIcon";
+    roles[IconRole] = "icon";
     roles[ActionTextRole] = "subject";
     roles[ActionsLinksRole] = "links";
     roles[ActionsLinksContextMenuRole] = "linksContextMenu";
@@ -226,7 +225,7 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
     };
 
     const auto generateIconPath = [&]() {
-        auto colorIconPath = role == DarkIconRole ? QStringLiteral("image://svgimage-custom-color/%1/white") : QStringLiteral("image://svgimage-custom-color/%1/black");
+        auto colorIconPath = QStringLiteral("image://svgimage-custom-color/%1");
         if (a._type == Activity::NotificationType && !a._talkNotificationData.userAvatar.isEmpty()) {
             return QStringLiteral("image://svgimage-custom-color/talk-bordered.svg");
         } else if (a._type == Activity::SyncResultType) {
@@ -250,24 +249,16 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
             } else {
                 // File sync successful
                 if (a._fileAction == "file_created") {
-                    return a._previews.empty() ? QStringLiteral("image://svgimage-custom-color/add.svg/")
-                                               : QStringLiteral("image://svgimage-custom-color/add-bordered.svg/");
+                    return a._previews.empty() ? colorIconPath.arg("add.svg") : colorIconPath.arg("add-bordered.svg");
                 } else if (a._fileAction == "file_deleted") {
-                    return a._previews.empty() ? QStringLiteral("image://svgimage-custom-color/delete.svg/")
-                                               : QStringLiteral("image://svgimage-custom-color/delete-bordered.svg/");
+                    return a._previews.empty() ? colorIconPath.arg("delete.svg") : colorIconPath.arg("delete-bordered.svg");
                 } else {
-                    return a._previews.empty() ? colorIconPath.arg(QStringLiteral("change.svg"))
-                                               : QStringLiteral("image://svgimage-custom-color/change-bordered.svg/");
+                    return a._previews.empty() ? colorIconPath.arg("change.svg") : colorIconPath.arg("change-bordered.svg");
                 }
             }
         } else {
             // We have an activity
-            if (a._icon.isEmpty()) {
-                return colorIconPath.arg("activity.svg");
-            }
-
-            const QString basePath = QStringLiteral("image://tray-image-provider/") % a._icon % QStringLiteral("/");
-            return role == DarkIconRole ? QString(basePath + QStringLiteral("white")) : QString(basePath + QStringLiteral("black"));
+            return a._icon.isEmpty() ? colorIconPath.arg("activity.svg") : colorIconPath.arg(a._icon);
         }
     };
 
@@ -296,10 +287,8 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
         return ActivityListModel::convertLinksToActionButtons(a);
     }
 
-    case DarkIconRole:
-    case LightIconRole: {
+    case IconRole:
         return generateIconPath();
-    }
     case ObjectTypeRole:
         return a._objectType;
     case ObjectIdRole:
