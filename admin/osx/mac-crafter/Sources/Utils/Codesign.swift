@@ -21,6 +21,7 @@ enum CodeSigningError: Error {
 }
 
 enum AppBundleSigningError: Error {
+    case doesNotExist(String)
     case couldNotEnumerate(String)
 }
 
@@ -64,6 +65,10 @@ func recursivelyCodesign(
     skip: [String] = []
 ) throws {
     let fm = FileManager.default
+    guard fm.fileExists(atPath: path) else {
+        throw AppBundleSigningError.doesNotExist("Item at \(path) does not exist.")
+    }
+
     guard let pathEnumerator = fm.enumerator(atPath: path) else {
         throw AppBundleSigningError.couldNotEnumerate(
             "Failed to enumerate directory at \(path)."
