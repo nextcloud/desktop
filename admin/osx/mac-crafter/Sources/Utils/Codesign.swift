@@ -123,14 +123,21 @@ func codesignClientAppBundle(
     // Multiple components of the app will now have the get-task-allow entitlements.
     // We need to strip these out manually.
 
-    print("Code-signing Sparkle autoupdater app (without entitlements)...")
     let sparkleFrameworkPath = "\(frameworksPath)/Sparkle.framework"
-    try recursivelyCodesign(path: "\(sparkleFrameworkPath)/Resources/Autoupdate.app",
-                            identity: codeSignIdentity,
-                            options: "--timestamp --force --verbose=4 --options runtime --deep")
+    if FileManager.default.fileExists(atPath: "\(sparkleFrameworkPath)/Resources/Autoupdate.app") {
+        print("Code-signing Sparkle autoupdater app (without entitlements)...")
 
-    print("Re-codesigning Sparkle library...")
-    try codesign(identity: codeSignIdentity, path: "\(sparkleFrameworkPath)/Sparkle")
+        try recursivelyCodesign(
+            path: "\(sparkleFrameworkPath)/Resources/Autoupdate.app",
+            identity: codeSignIdentity,
+            options: "--timestamp --force --verbose=4 --options runtime --deep"
+        )
+
+        print("Re-codesigning Sparkle library...")
+        try codesign(identity: codeSignIdentity, path: "\(sparkleFrameworkPath)/Sparkle")
+    } else {
+        print("Build does not have Sparkle, skipping.")
+    }
 
     print("Code-signing app extensions (removing get-task-allow entitlements)...")
     let fm = FileManager.default
