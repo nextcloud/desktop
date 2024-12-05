@@ -44,7 +44,7 @@ private slots:
         backend._dateFormat = dateStringFormat;
 
         const auto currentDate = QDate::currentDate();
-        const auto currentDateMSecs = currentDate.startOfDay(Qt::UTC).toMSecsSinceEpoch();
+        const auto currentDateMSecs = currentDate.startOfDay(QTimeZone::utc()).toMSecsSinceEpoch();
         const auto currentDateString = currentDate.toString(dateStringFormat);
 
         QCOMPARE(backend.date(), currentDate);
@@ -64,8 +64,8 @@ private slots:
 
         const auto minDate = QDate::currentDate().addDays(-5);
         const auto maxDate = QDate::currentDate().addDays(5);
-        const auto minDateMs = minDate.startOfDay(Qt::UTC).toMSecsSinceEpoch();
-        const auto maxDateMs = maxDate.startOfDay(Qt::UTC).toMSecsSinceEpoch();
+        const auto minDateMs = minDate.startOfDay(QTimeZone::utc()).toMSecsSinceEpoch();
+        const auto maxDateMs = maxDate.startOfDay(QTimeZone::utc()).toMSecsSinceEpoch();
         const auto invalidMinDate = minDate.addDays(-1);
         const auto invalidMaxDate = maxDate.addDays(1);
 
@@ -124,7 +124,7 @@ private slots:
         QSignalSpy dateStringChangedSpy(&backend, &Quick::DateFieldBackend::dateStringChanged);
 
         const auto testDate = QDate::currentDate().addDays(800);
-        const auto testDateMsecs = testDate.startOfDay(Qt::UTC).toMSecsSinceEpoch();
+        const auto testDateMsecs = testDate.startOfDay(QTimeZone::utc()).toMSecsSinceEpoch();
         const auto testDateString = testDate.toString(dateStringFormat);
 
         backend.setDate(testDate);
