@@ -81,7 +81,7 @@ Rectangle {
             Layout.fillHeight: true
 
             visible: UserModel.currentUser.isFeaturedAppEnabled
-            icon.source: UserModel.currentUser.featuredAppIcon + "/"
+            icon.source: UserModel.currentUser.featuredAppIcon + "/" + palette.windowText
             onClicked: UserModel.openCurrentAccountFeaturedApp()
 
             Accessible.role: Accessible.Button
