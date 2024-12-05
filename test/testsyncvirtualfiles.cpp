@@ -32,7 +32,7 @@ bool expectConflict(FileInfo state, const QString path)
     auto base = state.find(pathComponents.parentDirComponents());
     if (!base)
         return false;
-    for (const auto &item : qAsConst(base->children)) {
+    for (const auto &item : std::as_const(base->children)) {
         if (item.name.startsWith(pathComponents.fileName()) && item.name.contains("(case clash from")) {
             return true;
         }
