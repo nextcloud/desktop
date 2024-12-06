@@ -171,59 +171,59 @@
     <message>
         <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="36"/>
         <source>Current account</source>
-        <translation type="unfinished"/>
+        <translation>Текущая учетная запись</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="42"/>
         <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="116"/>
         <source>Resume sync for all</source>
-        <translation type="unfinished"/>
+        <translation>Возобновить синхронизацию</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="42"/>
         <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="116"/>
         <source>Pause sync for all</source>
-        <translation type="unfinished"/>
+        <translation>Приостановить синхронизацию</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="95"/>
         <source>Add account</source>
-        <translation type="unfinished"/>
+        <translation>Добавить учетную запись</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="99"/>
         <source>Add new account</source>
-        <translation type="unfinished"/>
+        <translation>Создать учётную запись</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="122"/>
         <source>Settings</source>
-        <translation type="unfinished"/>
+        <translation>Настройки</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="133"/>
         <source>Exit</source>
-        <translation type="unfinished"/>
+        <translation>Выйти</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="161"/>
         <source>Current account avatar</source>
-        <translation type="unfinished"/>
+        <translation>Текущее изображение учётной записи</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="187"/>
         <source>Current account status is online</source>
-        <translation type="unfinished"/>
+        <translation>Текущий статус пользователя: в сети</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="187"/>
         <source>Current account status is do not disturb</source>
-        <translation type="unfinished"/>
+        <translation>Текущий статус пользователя: не беспокоить</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="258"/>
         <source>Account switcher and settings menu</source>
-        <translation type="unfinished"/>
+        <translation>Переключение уч. записей и настройки</translation>
     </message>
 </context>
 <context>
@@ -340,7 +340,7 @@
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="153"/>
         <source>Signal file provider domain</source>
-        <translation type="unfinished"/>
+        <translation>Домен поставщика сигнальных файлов</translation>
     </message>
 </context>
 <context>
@@ -353,7 +353,7 @@
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderStorageInfo.qml" line="49"/>
         <source>%1 GB of %2 GB remote files synced</source>
-        <translation type="unfinished"/>
+        <translation>%1 Gb из %2 Gb файлов синхронизировано</translation>
     </message>
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderStorageInfo.qml" line="59"/>
@@ -1926,7 +1926,7 @@ This can be an issue with your OpenSSL libraries.</source>
     <message>
         <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="199"/>
         <source>Error parsing or decrypting metadata.</source>
-        <translation type="unfinished"/>
+        <translation>Ошибка при анализе или расшифровке метаданных.</translation>
     </message>
     <message>
         <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="341"/>
@@ -2271,7 +2271,7 @@ This means that the synchronization client might not upload local changes immedi
     <message>
         <location filename="../src/gui/folder.cpp" line="1557"/>
         <source>Virtual file download failed with code &quot;%1&quot;, status &quot;%2&quot; and error message &quot;%3&quot;</source>
-        <translation type="unfinished"/>
+        <translation>Ошибка загрузки виртуального файла с кодом &quot;%1&quot;, статусом &quot;%2&quot; и сообщением об ошибке &quot;%3&quot;</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1651"/>
@@ -2287,7 +2287,7 @@ Alternatively, you can restore all deleted files by uploading from &apos;%1&apos
         <source>A large number of files in your local '%1' folder have been deleted.
 Please confirm if you'd like to proceed with these deletions.
 Alternatively, you can restore all deleted files by downloading them from the server.</source>
-        <translation type="unfinished"/>
+        <translation>Было удалено большое количество файлов из вашей локальной папки &quot;%1&quot;. Пожалуйста, подтвердите, если хотите продолжить удаление. В качестве альтернативы вы можете восстановить все удаленные файлы, загрузив их с сервера.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1653"/>
@@ -2378,32 +2378,32 @@ Alternatively, you can restore all deleted files by downloading them from the se
     <message>
         <location filename="../src/gui/folderman.cpp" line="1741"/>
         <source>Syncing %1 of %2 (A few seconds left)</source>
-        <translation type="unfinished"/>
+        <translation>Синхронизация %1 из %2 (несколько секунд назад)</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1744"/>
         <source>Syncing %1 of %2 (%3 left)</source>
-        <translation type="unfinished"/>
+        <translation>Синхронизация %1 из %2 (осталось %3)</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1747"/>
         <source>Syncing %1 of %2</source>
-        <translation type="unfinished"/>
+        <translation>Синхронизация %1 из %2</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1753"/>
         <source>Syncing %1 (A few seconds left)</source>
-        <translation type="unfinished"/>
+        <translation>Синхронизация %1 (несколько секунд назад)</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1755"/>
         <source>Syncing %1 (%2 left)</source>
-        <translation type="unfinished"/>
+        <translation>Синхронизация %1 (осталось %2)</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1758"/>
         <source>Syncing %1</source>
-        <translation type="unfinished"/>
+        <translation>Синхронизация %1</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1611"/>
@@ -2550,12 +2550,12 @@ Alternatively, you can restore all deleted files by downloading them from the se
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="322"/>
         <source>Synchronizing virtual files in local folder</source>
-        <translation type="unfinished"/>
+        <translation>Синхронизация виртуальных файлов в локальную папку</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="324"/>
         <source>Synchronizing files in local folder</source>
-        <translation type="unfinished"/>
+        <translation>Синхронизация файлов в локальную папку</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="993"/>
@@ -2575,13 +2575,13 @@ Alternatively, you can restore all deleted files by downloading them from the se
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1009"/>
         <source>Syncing local and remote changes</source>
-        <translation type="unfinished"/>
+        <translation>Синхронизация локальных и удаленных изменений</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1059"/>
         <source>%1 %2 …</source>
         <extracomment>Example text: &quot;Uploading foobar.png (1MB of 2MB) time left 2 minutes at a rate of 24Kb/s&quot; Example text: &quot;Syncing 'foo.txt', 'bar.txt'&quot;</extracomment>
-        <translation type="unfinished"/>
+        <translation>%1 %2 ...</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1068"/>
@@ -2598,7 +2598,7 @@ Alternatively, you can restore all deleted files by downloading them from the se
         <location filename="../src/gui/folderstatusmodel.cpp" line="1065"/>
         <source>Download %1/s</source>
         <extracomment>Example text: &quot;Download 24Kb/s&quot; (%1 is replaced by 24Kb (translated))</extracomment>
-        <translation type="unfinished"/>
+        <translation>Скачать %1/s</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1066"/>
@@ -2621,7 +2621,7 @@ Alternatively, you can restore all deleted files by downloading them from the se
         <location filename="../src/gui/folderstatusmodel.cpp" line="1075"/>
         <source>Upload %1/s</source>
         <extracomment>Example text: &quot;Upload 24Kb/s&quot; (%1 is replaced by 24Kb (translated))</extracomment>
-        <translation type="unfinished"/>
+        <translation>Загрузить %1/s</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1084"/>
@@ -2666,7 +2666,7 @@ Alternatively, you can restore all deleted files by downloading them from the se
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1131"/>
         <source>File %1 of %2</source>
-        <translation type="unfinished"/>
+        <translation>Файл %1 из %2</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1136"/>
@@ -2896,7 +2896,7 @@ Alternatively, you can restore all deleted files by downloading them from the se
     <message>
         <location filename="../src/gui/generalsettings.ui" line="50"/>
         <source>Show Chat Notifications</source>
-        <translation type="unfinished"/>
+        <translation>Показывать уведомления из чатов</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="89"/>
@@ -3038,7 +3038,7 @@ Alternatively, you can restore all deleted files by downloading them from the se
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="195"/>
         <source>Show chat notification dialogs.</source>
-        <translation type="unfinished"/>
+        <translation>Показывать диалоговые окна уведомлений в чатах.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="148"/>
@@ -3093,7 +3093,10 @@ Note that this selects only what pool upgrades are taken from, and that there ar
 
 Downgrading versions is not possible immediately: changing from beta to stable means waiting for the new stable version.</source>
         <comment>list of available update channels to non enterprise users and downgrading warning</comment>
-        <translation type="unfinished"/>
+        <translation>- бета-версия: содержит версии с новыми функциями, которые могут быть протестированы не полностью 
+- ежедневная: содержит версии, создаваемые ежедневно только для тестирования и разработки 
+
+Понижение версии невозможно: переход с бета-версии на стабильную означает ожидание новой стабильной версии.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="442"/>
@@ -3101,7 +3104,9 @@ Downgrading versions is not possible immediately: changing from beta to stable m
 
 Downgrading versions is not possible immediately: changing from stable to enterprise means waiting for the new enterprise version.</source>
         <comment>list of available update channels to enterprise users and downgrading warning</comment>
-        <translation type="unfinished"/>
+        <translation>- корпоративная: содержит стабильные версии для клиентов. 
+
+Понижение версии невозможно: для перехода со стабильной версии на корпоративную необходимо дождаться новой корпоративной версии.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="449"/>
@@ -3114,7 +3119,9 @@ Downgrading versions is not possible immediately: changing from stable to enterp
 - stable: contains tested versions considered reliable
 </source>
         <comment>starts list of available update channels, stable is always available</comment>
-        <translation type="unfinished"/>
+        <translation>Канал определяет, какие обновления будут предложены для установки: 
+- стабильный: содержит протестированные версии, которые считаются надежными
+</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="364"/>
@@ -3326,22 +3333,22 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="114"/>
         <source>The following characters are not allowed: %1</source>
-        <translation type="unfinished"/>
+        <translation>Следующие символы недопустимы: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="117"/>
         <source>The following basenames are not allowed: %1</source>
-        <translation type="unfinished"/>
+        <translation>Следующие базовые имена недопустимы: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="120"/>
         <source>The following filenames are not allowed: %1</source>
-        <translation type="unfinished"/>
+        <translation>Следующие имена файлов недопустимы: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="123"/>
         <source>The following file extensions are not allowed: %1</source>
-        <translation type="unfinished"/>
+        <translation>Следующие расширения файлов недопустимы: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="100"/>
@@ -3686,7 +3693,7 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="152"/>
         <source>Downloading %1 …</source>
-        <translation type="unfinished"/>
+        <translation>Загрузка %1 ...</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="152"/>
@@ -4229,22 +4236,22 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/discovery.cpp" line="442"/>
         <source>Reason: the entire filename is forbidden.</source>
-        <translation type="unfinished"/>
+        <translation>Причина: полное имя файла запрещено.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="445"/>
         <source>Reason: the filename has a forbidden base name (filename start).</source>
-        <translation type="unfinished"/>
+        <translation>Причина: имя файла содержит запрещенное базовое имя (начало имени файла).</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="448"/>
         <source>Reason: the file has a forbidden extension (.%1).</source>
-        <translation type="unfinished"/>
+        <translation>Причина: файл имеет запрещенное расширение (.%1)</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="451"/>
         <source>Reason: the filename contains a forbidden character (%1).</source>
-        <translation type="unfinished"/>
+        <translation>Причина: имя файла содержит запрещенный символ (%1).</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="516"/>
@@ -4279,7 +4286,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1090"/>
         <source>Could not upload file, because it is open in &quot;%1&quot;.</source>
-        <translation type="unfinished"/>
+        <translation>Не удалось загрузить файл, т.к. он открыт в &quot;%1&quot;.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1010"/>
@@ -4342,7 +4349,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1428"/>
         <source>Could not delete file %1 from local DB</source>
-        <translation type="unfinished"/>
+        <translation>Не удалось удалить файл %1 из локальной базы данных</translation>
     </message>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1357"/>
@@ -4358,7 +4365,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1473"/>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1495"/>
         <source>The folder %1 cannot be made read-only: %2</source>
-        <translation type="unfinished"/>
+        <translation>Папка %1 не может быть только для чтения: %2</translation>
     </message>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1387"/>
@@ -4376,7 +4383,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="461"/>
         <source>Could not get file %1 from local DB</source>
-        <translation type="unfinished"/>
+        <translation>Не удалось получить файл %1 из локальной базы данных</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="464"/>
@@ -4485,7 +4492,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="239"/>
         <source>The folder %1 cannot be made read-only: %2</source>
-        <translation type="unfinished"/>
+        <translation>Папка %1 не может быть только для чтения: %2</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="200"/>
@@ -4526,7 +4533,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="412"/>
         <source>Could not get file %1 from local DB</source>
-        <translation type="unfinished"/>
+        <translation>Не удалось получить файл %1 из локальной базы данных</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="283"/>
@@ -4638,7 +4645,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="261"/>
         <source>Could not get file %1 from local DB</source>
-        <translation type="unfinished"/>
+        <translation>Не удалось получить файл %1 из локальной базы данных</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="248"/>
@@ -4903,17 +4910,17 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="515"/>
         <source>%1 days</source>
-        <translation type="unfinished"/>
+        <translation>%1 дней</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="517"/>
         <source>1 day</source>
-        <translation type="unfinished"/>
+        <translation>1 день</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="518"/>
         <source>Today</source>
-        <translation type="unfinished"/>
+        <translation>Сегодня</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="692"/>
@@ -5464,7 +5471,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="159"/>
         <source>Checking folder changes</source>
-        <translation type="unfinished"/>
+        <translation>Проверка изменений в папках</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="161"/>
@@ -5686,7 +5693,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="158"/>
         <source>%1 notifications</source>
-        <translation type="unfinished"/>
+        <translation>%1 уведомлений</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="646"/>
@@ -5983,12 +5990,12 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="283"/>
         <source>Terms of service</source>
-        <translation type="unfinished"/>
+        <translation>Условия использования</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="284"/>
         <source>Your account %1 requires you to accept the terms of service of your server. You will be redirected to %2 to acknowledge that you have read it and agrees with it.</source>
-        <translation type="unfinished"/>
+        <translation>Ваша учетная запись %1 требует, чтобы вы приняли условия предоставления услуг вашего сервера. Вы будете перенаправлены на страницу %2 для ознакомления и подтверждения согласия с ними.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="308"/>
@@ -6065,22 +6072,22 @@ Server replied with error: %2</source>
         <location filename="../src/gui/owncloudgui.cpp" line="442"/>
         <source>%1: %2</source>
         <extracomment>Example text: &quot;Nextcloud: Syncing 25MB (3 minutes left)&quot; (%1 is the folder name to be synced, %2 a status message for that folder)</extracomment>
-        <translation type="unfinished"/>
+        <translation>%1: %2</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="446"/>
         <source>macOS VFS for %1: Sync is running.</source>
-        <translation type="unfinished"/>
+        <translation>mac OS VFS для %1: Синхронизация запущена.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="449"/>
         <source>macOS VFS for %1: Last sync was successful.</source>
-        <translation type="unfinished"/>
+        <translation>mac OS VFS для %1: Синхронизация прошла успешно.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="452"/>
         <source>macOS VFS for %1: A problem was encountered.</source>
-        <translation type="unfinished"/>
+        <translation>macOS VFS для %1: Возникла проблема.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="401"/>
@@ -6488,12 +6495,12 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/filedetails/ShareView.qml" line="157"/>
         <source>Shared with you by %1</source>
-        <translation type="unfinished"/>
+        <translation>%1 предоставил(а) Вам доступ</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareView.qml" line="163"/>
         <source>Expires in %1</source>
-        <translation type="unfinished"/>
+        <translation>Истекает через %1</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareView.qml" line="279"/>
@@ -6563,17 +6570,17 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/TrayWindowHeader.qml" line="72"/>
         <source>Open local or group folders</source>
-        <translation type="unfinished"/>
+        <translation>Открыть локальные или групповые папки</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/TrayWindowHeader.qml" line="107"/>
         <source>More apps</source>
-        <translation type="unfinished"/>
+        <translation>Больше приложений</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/TrayWindowHeader.qml" line="131"/>
         <source>Open %1 in browser</source>
-        <translation type="unfinished"/>
+        <translation>Открыть %1 в браузере</translation>
     </message>
 </context>
 <context>
@@ -6589,7 +6596,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/UnifiedSearchPlaceholderView.qml" line="39"/>
         <source>Start typing to search</source>
-        <translation type="unfinished"/>
+        <translation>Начните вводить символы для поиска</translation>
     </message>
 </context>
 <context>
@@ -6928,7 +6935,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="77"/>
         <source>Downloading</source>
-        <translation type="unfinished"/>
+        <translation>Загрузка</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="77"/>
@@ -6938,7 +6945,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="79"/>
         <source>Uploading</source>
-        <translation type="unfinished"/>
+        <translation>Загрузка</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="79"/>
@@ -6948,7 +6955,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="81"/>
         <source>Deleting</source>
-        <translation type="unfinished"/>
+        <translation>Удаление</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="82"/>
@@ -6968,7 +6975,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="86"/>
         <source>Ignoring</source>
-        <translation type="unfinished"/>
+        <translation>Игнорирование</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="87"/>
@@ -6983,12 +6990,12 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="91"/>
         <source>Updating local metadata</source>
-        <translation type="unfinished"/>
+        <translation>Обновление локальных метаданных</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="93"/>
         <source>Updating local virtual files metadata</source>
-        <translation type="unfinished"/>
+        <translation>Обновление метаданных локальных виртуальных файлов</translation>
     </message>
 </context>
 <context>
@@ -7006,12 +7013,12 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/libsync/theme.cpp" line="102"/>
         <source>Sync status is unknown</source>
-        <translation type="unfinished"/>
+        <translation>Статус синхронизации неизвестен</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="105"/>
         <source>Waiting to start syncing</source>
-        <translation type="unfinished"/>
+        <translation>Ожидание запуска синхронизации</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="90"/>
@@ -7046,12 +7053,12 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/libsync/theme.cpp" line="111"/>
         <source>Sync was successful</source>
-        <translation type="unfinished"/>
+        <translation>Синхронизация прошла успешно</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="114"/>
         <source>Sync was successful but some files were ignored</source>
-        <translation type="unfinished"/>
+        <translation>Синхронизация прошла успешно, некоторые файлы были исключены из синхронизации</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="117"/>
@@ -7071,7 +7078,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/libsync/theme.cpp" line="126"/>
         <source>Stopping sync</source>
-        <translation type="unfinished"/>
+        <translation>Остановка синхронизации</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="111"/>
