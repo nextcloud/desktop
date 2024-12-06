@@ -2901,7 +2901,7 @@ Bestela, ezabatutako fitxategi guztiak leheneratu ditzakezu zerbitzaritik deskar
     <message>
         <location filename="../src/gui/generalsettings.ui" line="50"/>
         <source>Show Chat Notifications</source>
-        <translation type="unfinished"/>
+        <translation>Erakutsi txat jakinarazpenak</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="89"/>
@@ -3043,7 +3043,7 @@ Bestela, ezabatutako fitxategi guztiak leheneratu ditzakezu zerbitzaritik deskar
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="195"/>
         <source>Show chat notification dialogs.</source>
-        <translation type="unfinished"/>
+        <translation>Erakutsi txat jakinarazpenen elkarrizketa-koadroak</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="148"/>
@@ -4354,7 +4354,7 @@ Modu hau berria eta experimentala da. Erabiltzea erabakitzen baduzu, agertzen di
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1428"/>
         <source>Could not delete file %1 from local DB</source>
-        <translation type="unfinished"/>
+        <translation>Ezin izan da %1 fitxategia datu-base lokaletik ezabatu</translation>
     </message>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1357"/>
@@ -4388,7 +4388,7 @@ Modu hau berria eta experimentala da. Erabiltzea erabakitzen baduzu, agertzen di
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="461"/>
         <source>Could not get file %1 from local DB</source>
-        <translation type="unfinished"/>
+        <translation>Ezin izan da %1 fitxategia datu-base lokaletik lortu</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="464"/>
@@ -4538,7 +4538,7 @@ Modu hau berria eta experimentala da. Erabiltzea erabakitzen baduzu, agertzen di
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="412"/>
         <source>Could not get file %1 from local DB</source>
-        <translation type="unfinished"/>
+        <translation>Ezin izan da %1 fitxategia datu-base lokaletik lortu</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="283"/>
@@ -4650,7 +4650,7 @@ Modu hau berria eta experimentala da. Erabiltzea erabakitzen baduzu, agertzen di
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="261"/>
         <source>Could not get file %1 from local DB</source>
-        <translation type="unfinished"/>
+        <translation>Ezin izan da %1 fitxategia datu-base lokaletik lortu</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="248"/>
@@ -6500,12 +6500,12 @@ Zerbitzariak errorearekin erantzun du: %2</translation>
     <message>
         <location filename="../src/gui/filedetails/ShareView.qml" line="157"/>
         <source>Shared with you by %1</source>
-        <translation type="unfinished"/>
+        <translation>%1 erabiltzaileak zurekin partekatua</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareView.qml" line="163"/>
         <source>Expires in %1</source>
-        <translation type="unfinished"/>
+        <translation>Iraungitze-data %1</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareView.qml" line="279"/>

@@ -4355,7 +4355,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1428"/>
         <source>Could not delete file %1 from local DB</source>
-        <translation type="unfinished"/>
+        <translation>無法從本機資料庫中刪除檔案 %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1357"/>
@@ -4389,7 +4389,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="461"/>
         <source>Could not get file %1 from local DB</source>
-        <translation type="unfinished"/>
+        <translation>無法從本機資料庫取得檔案 %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="464"/>
@@ -4539,7 +4539,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="412"/>
         <source>Could not get file %1 from local DB</source>
-        <translation type="unfinished"/>
+        <translation>無法從本機資料庫取得檔案 %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="283"/>
@@ -4651,7 +4651,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="261"/>
         <source>Could not get file %1 from local DB</source>
-        <translation type="unfinished"/>
+        <translation>無法從本機資料庫取得檔案 %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="248"/>
