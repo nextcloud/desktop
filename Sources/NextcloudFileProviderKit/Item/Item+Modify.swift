@@ -531,6 +531,69 @@ public extension Item {
         }
 
         let parentItemIdentifier = itemTarget.parentItemIdentifier
+        if parentItemIdentifier == .trashContainer {
+            let deleteError = await delete(trashing: true, domain: domain, dbManager: dbManager)
+            guard let dirtyMetadata = dbManager.itemMetadataFromOcId(ocId) else {
+                Self.logger.error(
+                    """
+                    Could not correctly process trashing results, dirty metadata not found.
+                    \(self.filename, privacy: .public) \(ocId, privacy: .public)
+                    """
+                )
+                return (self, NSFileProviderError(.cannotSynchronize))
+            }
+            let (_, files, _, error) = await remoteInterface.enumerate(
+                remotePath: dirtyMetadata.serverUrl + "/" + dirtyMetadata.trashbinFileName,
+                depth: EnumerateDepth.targetAndDirectChildren,
+                showHiddenFiles: true,
+                includeHiddenFiles: [],
+                requestBody: nil,
+                account: account,
+                options: .init(),
+                taskHandler: { task in
+                    if let domain {
+                        NSFileProviderManager(for: domain)?.register(
+                            task,
+                            forItemWithIdentifier: self.itemIdentifier,
+                            completionHandler: { _ in }
+                        )
+                    }
+                }
+            )
+            guard error == .success, !files.isEmpty else {
+                Self.logger.error(
+                    """
+                    Received bad error or files from post-trashing remote scan:
+                    \(error, privacy: .public) \(files, privacy: .public)
+                    """
+                )
+                let postTrashingItem = Item(
+                    metadata: dirtyMetadata,
+                    parentItemIdentifier: .trashContainer,
+                    account: account,
+                    remoteInterface: remoteInterface
+                )
+                return (postTrashingItem, deleteError)
+            }
+
+            for file in files {
+                let metadata = ItemMetadata.fromNKFile(file, account: account)
+                dbManager.addItemMetadata(metadata)
+            }
+
+            guard let targetItemNKFile = files.first else {
+                Self.logger.error("No files found for post-trashing item. This should not happen!")
+                return (self, NSFileProviderError(.cannotSynchronize))
+            }
+            let targetItem = Item(
+                metadata: ItemMetadata.fromNKFile(targetItemNKFile, account: account),
+                parentItemIdentifier: .trashContainer,
+                account: account,
+                remoteInterface: remoteInterface
+            )
+            return (targetItem, nil)
+        }
+
         let isFolder = contentType.conforms(to: .directory)
         let bundleOrPackage =
             contentType.conforms(to: .bundle) || contentType.conforms(to: .package)
