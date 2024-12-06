@@ -65,7 +65,7 @@ private slots:
 
     void processLocalItem();
     void openFile();
-    void lockFile();
+    void lockFile(const QString &etag);
 
     void fileAlreadyLocked();
     void fileLockSuccess(const OCC::SyncFileItemPtr &item);
