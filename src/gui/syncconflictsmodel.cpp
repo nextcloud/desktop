@@ -224,7 +224,7 @@ void SyncConflictsModel::selectAllConflicting(bool selected)
 
 void SyncConflictsModel::applySolution()
 {
-    for(const auto &syncConflict : qAsConst(_conflictData)) {
+    for(const auto &syncConflict : std::as_const(_conflictData)) {
         if (syncConflict.isValid()) {
             qCInfo(lcSyncConflictsModel) << syncConflict.mExistingFilePath << syncConflict.mConflictingFilePath << syncConflict.solution();
             ConflictSolver solver;
@@ -240,7 +240,7 @@ void SyncConflictsModel::updateConflictsData()
     _conflictData.clear();
     _conflictData.reserve(_data.size());
 
-    for (const auto &oneConflict : qAsConst(_data)) {
+    for (const auto &oneConflict : std::as_const(_data)) {
         const auto folder = FolderMan::instance()->folder(oneConflict._folder);
         if (!folder) {
             qCWarning(lcSyncConflictsModel) << "no Folder instance for" << oneConflict._folder;

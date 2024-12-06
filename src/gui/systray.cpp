@@ -314,7 +314,6 @@ void Systray::createResolveConflictsDialog(const OCC::ActivityList &allConflicts
     dialogWindow->show();
     dialogWindow->raise();
     dialogWindow->requestActivate();
-    dialog.take();
 }
 
 bool Systray::raiseDialogs()
