@@ -1164,6 +1164,7 @@ void PropagateDownloadFile::finalizeDownload()
 {
     if (isEncrypted()) {
         if (_downloadEncryptedHelper->decryptFile(_tmpFile)) {
+            _item->_e2eCertificateFingerprint = propagator()->account()->encryptionCertificateFingerprint();
             downloadFinished();
         } else {
             done(SyncFileItem::NormalError, _downloadEncryptedHelper->errorString(), ErrorCategory::GenericError);
