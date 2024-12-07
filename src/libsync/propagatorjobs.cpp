@@ -416,7 +416,7 @@ void PropagateLocalRename::start()
     if (fileAlreadyMoved && !deleteOldDbRecord(previousNameInDb)) {
         return;
     } else if (!deleteOldDbRecord(_item->_originalFile)) {
-        qCWarning(lcPropagateLocalRename) << "could not delete file from local DB" << _item->_originalFile;
+        qCWarning(lcPropagateLocalRename) << "Could not delete file from local DB" << _item->_originalFile;
         return;
     }
 
@@ -454,8 +454,8 @@ void PropagateLocalRename::start()
 
             SyncJournalFileRecord oldRecord;
             if (!propagator()->_journal->getFileRecord(oldFileName, &oldRecord)) {
-                qCWarning(lcPropagateLocalRename) << "could not get file from local DB" << oldFileName;
-                done(SyncFileItem::NormalError, tr("could not get file %1 from local DB").arg(oldFileNameString), OCC::ErrorCategory::GenericError);
+                qCWarning(lcPropagateLocalRename) << "Could not get file from local DB" << oldFileName;
+                done(SyncFileItem::NormalError, tr("Could not get file %1 from local DB").arg(oldFileNameString), OCC::ErrorCategory::GenericError);
                 return;
             }
             if (!propagator()->_journal->deleteFileRecord(oldFileName)) {
@@ -495,8 +495,8 @@ void PropagateLocalRename::start()
 bool PropagateLocalRename::deleteOldDbRecord(const QString &fileName)
 {
     if (SyncJournalFileRecord oldRecord; !propagator()->_journal->getFileRecord(fileName, &oldRecord)) {
-        qCWarning(lcPropagateLocalRename) << "could not get file from local DB" << fileName;
-        done(SyncFileItem::NormalError, tr("could not get file %1 from local DB").arg(fileName), OCC::ErrorCategory::GenericError);
+        qCWarning(lcPropagateLocalRename) << "Could not get file from local DB" << fileName;
+        done(SyncFileItem::NormalError, tr("Could not get file %1 from local DB").arg(fileName), OCC::ErrorCategory::GenericError);
         return false;
     }
     if (!propagator()->_journal->deleteFileRecord(fileName)) {
