@@ -11,6 +11,9 @@ ApplicationWindow {
 
     color: palette.base
 
+    LayoutMirroring.enabled: Application.layoutDirection === Qt.RightToLeft
+    LayoutMirroring.childrenInherit: true
+
     width: 320
     height: contentLayout.implicitHeight
 

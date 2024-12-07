@@ -30,6 +30,9 @@ ApplicationWindow {
     property var materialisedItemsModel: null
     property string accountUserIdAtHost: ""
 
+    LayoutMirroring.enabled: Application.layoutDirection === Qt.RightToLeft
+    LayoutMirroring.childrenInherit: true
+
     title: qsTr("Evict materialised files")
     color: palette.base
     flags: Qt.Dialog | Qt.WindowStaysOnTopHint
