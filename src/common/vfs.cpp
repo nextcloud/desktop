@@ -24,6 +24,7 @@
 
 #include "common/filesystembase.h"
 
+#include <QDir>
 #include <QPluginLoader>
 #include <QLoggingCategory>
 
@@ -65,21 +66,28 @@ Optional<Vfs::Mode> Vfs::modeFromString(const QString &str)
     return {};
 }
 
-Result<bool, QString> Vfs::checkAvailability(const QString &path)
+Result<void, QString> Vfs::checkAvailability(const QString &path, Vfs::Mode mode)
 {
-    const auto mode = bestAvailableVfsMode();
 #ifdef Q_OS_WIN
     if (mode == Mode::WindowsCfApi) {
-        const auto fs = FileSystem::fileSystemForPath(path);
-        if (fs != QLatin1String("NTFS")) {
-            return tr("The Virtual filesystem feature requires a NTFS file system, %1 is using %2").arg(path, fs);
+        const auto info = QFileInfo(path);
+        if (QDir(info.canonicalPath()).isRoot()) {
+            return tr("Please choose a different location. %1 is a drive. It doesn't support virtual files.").arg(path);
+        }
+        if (const auto fileSystemForPath = FileSystem::fileSystemForPath(info.absoluteFilePath());
+            fileSystemForPath != QLatin1String("NTFS")) {
+            return tr("Please choose a different location. %1 isn't a NTFS files system. It doesn't support virtual files.").arg(path);
+        }
+        const auto type = GetDriveTypeW(reinterpret_cast<const wchar_t *>(QDir::toNativeSeparators(info.absoluteFilePath().mid(0, 3)).utf16()));
+        if (type == DRIVE_REMOTE) {
+            return tr("Please choose a different location. %1 is a network drive. It doesn't support virtual files.").arg(path);
         }
     }
 #else
     Q_UNUSED(mode)
     Q_UNUSED(path)
 #endif
-    return true;
+    return {};
 }
 
 void Vfs::start(const VfsSetupParams &params)

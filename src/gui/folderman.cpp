@@ -44,6 +44,13 @@ constexpr auto settingsAccountsC = "Accounts";
 constexpr auto settingsFoldersC = "Folders";
 constexpr auto settingsVersionC = "version";
 constexpr auto maxFoldersVersion = 1;
+const char versionC[] = "version";
+
+int numberOfSyncJournals(const QString &path)
+{
+    return QDir(path).entryList({ QStringLiteral(".sync_*.db"), QStringLiteral("._sync_*.db") }, QDir::Hidden | QDir::Files).size();
+}
+
 }
 
 namespace OCC {
@@ -1793,23 +1800,28 @@ QString FolderMan::trayTooltipStatusString(SyncResult::Status syncStatus, bool h
 static QString checkPathValidityRecursive(const QString &path)
 {
     if (path.isEmpty()) {
-        return FolderMan::tr("No valid folder selected!");
+        return FolderMan::tr("Please choose a different location. The selected folder isn't valid.");
     }
 
 #ifdef Q_OS_WIN
     Utility::NtfsPermissionLookupRAII ntfs_perm;
 #endif
     const QFileInfo selFile(path);
+    if (numberOfSyncJournals(selFile.filePath()) != 0) {
+        return FolderMan::tr("Please choose a different location. %1 is already being used as a sync folder.").arg(QDir::toNativeSeparators(selFile.filePath()));
+    }
 
     if (!FileSystem::fileExists(path)) {
         QString parentPath = selFile.dir().path();
-        if (parentPath != path)
+        if (parentPath != path) {
             return checkPathValidityRecursive(parentPath);
-        return FolderMan::tr("The selected path does not exist!");
+        }
+
+        return FolderMan::tr("Please choose a different location. The path %1 doesn't exist.").arg(QDir::toNativeSeparators(selFile.filePath()));
     }
 
     if (!FileSystem::isDir(path)) {
-        return FolderMan::tr("The selected path is not a folder!");
+        return FolderMan::tr("Please choose a different location. The path %1 isn't a folder.").arg(QDir::toNativeSeparators(selFile.filePath()));
     }
 
     #ifdef Q_OS_WIN
@@ -1817,12 +1829,12 @@ static QString checkPathValidityRecursive(const QString &path)
         // isWritable() doesn't cover all NTFS permissions
         // try creating and removing a test file, and make sure it is excluded from sync
         if (!Utility::canCreateFileInPath(path)) {
-            return FolderMan::tr("You have no permission to write to the selected folder!");
+            return FolderMan::tr("Please choose a different location. You don't have enough permissions to write to %1.", "folder location").arg(QDir::toNativeSeparators(selFile.filePath()));
         }
     }
     #else
     if (!FileSystem::isWritable(path)) {
-        return FolderMan::tr("You have no permission to write to the selected folder!");
+        return FolderMan::tr("Please choose a different location. You don't have enough permissions to write to %1.", "folder location").arg(QDir::toNativeSeparators(selFile.filePath()));
     }
     #endif
     return {};
@@ -1875,17 +1887,15 @@ QPair<FolderMan::PathValidityResult, QString> FolderMan::checkPathValidityForNew
         bool differentPaths = QString::compare(folderDir, userDir, cs) != 0;
         if (differentPaths && folderDir.startsWith(userDir, cs)) {
             result.first = FolderMan::PathValidityResult::ErrorContainsFolder;
-            result.second = tr("The local folder %1 already contains a folder used in a folder sync connection. "
-                              "Please pick another one!")
+            result.second = tr("Please choose a different location. %1 is already being used as a sync folder.")
                                 .arg(QDir::toNativeSeparators(path));
             return result;
         }
 
         if (differentPaths && userDir.startsWith(folderDir, cs)) {
             result.first = FolderMan::PathValidityResult::ErrorContainedInFolder;
-            result.second = tr("The local folder %1 is already contained in a folder used in a folder sync connection. "
-                      "Please pick another one!")
-                .arg(QDir::toNativeSeparators(path));
+            result.second = tr("Please choose a different location. %1 is already contained in a folder used as a sync folder.")
+                                .arg(QDir::toNativeSeparators(path));
             return result;
         }
 
@@ -1899,8 +1909,9 @@ QPair<FolderMan::PathValidityResult, QString> FolderMan::checkPathValidityForNew
 
             if (serverUrl == folderUrl) {
                 result.first = FolderMan::PathValidityResult::ErrorNonEmptyFolder;
-                result.second = tr("There is already a sync from the server to this local folder. "
-                          "Please pick another local folder!");
+                result.second = tr("Please choose a different location. %1 is already being used as a sync folder for %2.", "folder location, server url")
+                                    .arg(QDir::toNativeSeparators(path),
+                                         serverUrl.toString());
                 return result;
             }
         }
@@ -2025,6 +2036,22 @@ void FolderMan::slotConnectToPushNotifications(Account *account)
         qCInfo(lcFolderMan) << "Push notifications ready";
         connect(pushNotifications, &PushNotifications::filesChanged, this, &FolderMan::slotProcessFilesPushNotification, Qt::UniqueConnection);
     }
+}
+
+bool FolderMan::checkVfsAvailability(const QString &path, Vfs::Mode mode) const
+{
+    return unsupportedConfiguration(path) && Vfs::checkAvailability(path, mode);
+}
+
+Result<void, QString> FolderMan::unsupportedConfiguration(const QString &path) const
+{
+    if (numberOfSyncJournals(path) > 1) {
+        return tr("Multiple accounts are sharing the folder %1.\n"
+                  "This configuration is know to lead to dataloss and is no longer supported.\n"
+                  "Please consider removing this folder from the account and adding it again.")
+            .arg(path);
+    }
+    return {};
 }
 
 } // namespace OCC
