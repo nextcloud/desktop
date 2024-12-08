@@ -194,7 +194,7 @@ name: Documentation
 
 steps:
 - name: build
-  image: nextcloudci/documentation:documentation-5
+  image: nextcloudci/documentation:documentation-client-docs
   commands:
     - cd doc
     - make html
