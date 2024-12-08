@@ -161,7 +161,13 @@ std::unique_ptr<csync_file_stat_t> csync_vio_local_readdir(csync_vio_handle_t *h
                !isDirectory) {
         file_stat->type = ItemTypeSkip;
     } else if (isDirectory) {
-        file_stat->type = ItemTypeDirectory;
+        if (handle->ffd.dwFileAttributes & FILE_ATTRIBUTE_REPARSE_POINT &&
+            (handle->ffd.dwReserved0 == IO_REPARSE_TAG_SYMLINK ||
+             handle->ffd.dwReserved0 == IO_REPARSE_TAG_MOUNT_POINT)) {
+            file_stat->type = ItemTypeSoftLink;
+        } else {
+            file_stat->type = ItemTypeDirectory;
+        }
     } else {
         file_stat->type = ItemTypeFile;
     }
