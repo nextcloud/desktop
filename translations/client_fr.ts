@@ -4353,7 +4353,7 @@ Il s&apos;agit d&apos;un nouveau mode expérimental. Si vous décidez de l&apos;
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1428"/>
         <source>Could not delete file %1 from local DB</source>
-        <translation type="unfinished"/>
+        <translation>Impossible de supprimer le fichier %1 de la base de données locale</translation>
     </message>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1357"/>
@@ -4387,7 +4387,7 @@ Il s&apos;agit d&apos;un nouveau mode expérimental. Si vous décidez de l&apos;
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="461"/>
         <source>Could not get file %1 from local DB</source>
-        <translation type="unfinished"/>
+        <translation>Impossible de récupérer le fichier %1 depuis la base de données locale</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="464"/>
@@ -4537,7 +4537,7 @@ Il s&apos;agit d&apos;un nouveau mode expérimental. Si vous décidez de l&apos;
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="412"/>
         <source>Could not get file %1 from local DB</source>
-        <translation type="unfinished"/>
+        <translation>Impossible de récupérer le fichier %1 depuis la base de données locale</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="283"/>
@@ -4649,7 +4649,7 @@ Il s&apos;agit d&apos;un nouveau mode expérimental. Si vous décidez de l&apos;
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="261"/>
         <source>Could not get file %1 from local DB</source>
-        <translation type="unfinished"/>
+        <translation>Impossible de récupérer le fichier %1 depuis la base de données locale</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="248"/>
