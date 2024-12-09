@@ -604,6 +604,13 @@ public:
     [[nodiscard]] QVariantMap systemPalette() const;
     [[nodiscard]] bool darkMode() const;
 
+    /**
+     * Display legacy import dialog
+     *
+     * The user will interact with the dialog to import legacy account when set to true
+     */
+    [[nodiscard]] bool displayLegacyImportDialog() const;
+
 public slots:
     void setOverrideServerUrl(const QString &overrideServerUrl);
     void setForceOverrideServerUrl(bool forceOverride);

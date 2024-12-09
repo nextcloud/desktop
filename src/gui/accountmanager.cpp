@@ -170,7 +170,8 @@ bool AccountManager::restoreFromLegacySettings()
     // try to open the correctly themed settings
     auto settings = ConfigFile::settingsWithGroup(Theme::instance()->appName());
 
-    auto displayMessageBoxWarning = false;
+    auto wasLegacyImportDialogDisplayed = false;
+    const auto displayLegacyImportDialog = Theme::instance()->displayLegacyImportDialog();
 
     // if the settings file could not be opened, the childKeys list is empty
     // then try to load settings from a very old place
@@ -206,10 +207,11 @@ bool AccountManager::restoreFromLegacySettings()
             oCSettings->beginGroup(QLatin1String(accountsC));
             const auto accountsListSize = oCSettings->childGroups().size();
             oCSettings->endGroup();
-            if (const QFileInfo configFileInfo(configFile); configFileInfo.exists() && configFileInfo.isReadable()) {
-                displayMessageBoxWarning = true;
+            if (const QFileInfo configFileInfo(configFile);
+                configFileInfo.exists() && configFileInfo.isReadable()) {
                 qCInfo(lcAccountManager) << "Migrate: checking old config " << configFile;
-                if (!forceLegacyImport() && accountsListSize > 0) {
+                if (!forceLegacyImport() && accountsListSize > 0 && displayLegacyImportDialog) {
+                    wasLegacyImportDialogDisplayed = true;
                     const auto importQuestion = accountsListSize > 1
                         ? tr("%1 accounts were detected from a legacy desktop client.\n"
                              "Should the accounts be imported?").arg(QString::number(accountsListSize))
@@ -282,7 +284,7 @@ bool AccountManager::restoreFromLegacySettings()
         return true;
     }
 
-    if (displayMessageBoxWarning) {
+    if (wasLegacyImportDialogDisplayed) {
         QMessageBox::information(nullptr,
                                  tr("Legacy import"),
                                  tr("Could not import accounts from legacy client configuration."));
