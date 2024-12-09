@@ -28,8 +28,8 @@ if(NOT BUILD_LIBRARIES_ONLY)
   add_executable(nextcloudcmd
       cmd.h
       cmd.cpp)
-  set_target_properties(nextcloudcmd PROPERTIES
-    RUNTIME_OUTPUT_NAME "${APPLICATION_EXECUTABLE}cmd")
+  ecm_mark_nongui_executable(nextcloudcmd)
+  set_target_properties(nextcloudcmd PROPERTIES RUNTIME_OUTPUT_NAME "${APPLICATION_EXECUTABLE}cmd")
 
   target_link_libraries(nextcloudcmd cmdCore)
 
