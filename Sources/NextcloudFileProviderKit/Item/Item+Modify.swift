@@ -713,6 +713,34 @@ public extension Item {
             )
 
             // We can't just move files into the trash, we need to issue a deletion; let's handle it
+            // Rename the item if necessary before doing the trashing procedures
+            if (changedFields.contains(.filename)) {
+                let currentParentItemRemotePath = modifiedItem.metadata.serverUrl
+                let preTrashingRenamedRemotePath =
+                    currentParentItemRemotePath + "/" + itemTarget.filename
+                let (renameModifiedItem, renameError) = await modifiedItem.move(
+                    newFileName: itemTarget.filename,
+                    newRemotePath: preTrashingRenamedRemotePath,
+                    newParentItemIdentifier: modifiedItem.parentItemIdentifier,
+                    newParentItemRemotePath: currentParentItemRemotePath,
+                    dbManager: dbManager
+                )
+
+                guard renameError == nil, let renameModifiedItem else {
+                    Self.logger.error(
+                        """
+                        Could not rename pre-trash item with ocID \(ocId, privacy: .public)
+                        (\(modifiedItem.filename, privacy: .public)) to
+                        \(newServerUrlFileName, privacy: .public),
+                        received error: \(renameError?.localizedDescription ?? "", privacy: .public)
+                        """
+                    )
+                    return (nil, renameError)
+                }
+
+                modifiedItem = renameModifiedItem
+            }
+
             let (trashedItem, trashingError) = await Self.trash(
                 modifiedItem, account: account, dbManager: dbManager, domain: domain
             )
