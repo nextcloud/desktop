@@ -104,7 +104,7 @@ RowLayout {
 
             cache: true
             fillMode: Image.PreserveAspectFit
-            source: Style.darkMode ? model.darkIcon : model.lightIcon
+            source: model.icon + "/" + palette.text
             sourceSize.height: 64
             sourceSize.width: 64
             mipmap: true // Addresses grainy downscale
