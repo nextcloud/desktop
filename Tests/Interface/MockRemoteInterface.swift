@@ -355,9 +355,12 @@ public class MockRemoteInterface: RemoteInterface {
             return (account.ncKitAccount, nil, .urlError)
         }
 
-        item.children = []
-        item.parent?.children.removeAll(where: { $0.identifier == item.identifier })
-        item.parent = nil
+        let (_, _, error) = await move(
+            remotePathSource: item.remotePath,
+            remotePathDestination: account.trashUrl + "/" + item.name + " (trashed)",
+            account: account
+        )
+        guard error == .success else { return (account.ncKitAccount, nil, error) }
 
         return (account.ncKitAccount, nil, .success)
     }
