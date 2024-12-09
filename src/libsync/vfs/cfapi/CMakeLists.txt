@@ -47,4 +47,6 @@ if (WIN32)
       LIBRARY DESTINATION "${vfs_installdir}"
       RUNTIME DESTINATION "${vfs_installdir}"
     )
+
+    install(FILES $<TARGET_PDB_FILE:nextcloudsync_vfs_cfapi> DESTINATION bin OPTIONAL)
 endif()
