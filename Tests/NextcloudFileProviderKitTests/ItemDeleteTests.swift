@@ -133,4 +133,58 @@ final class ItemDeleteTests: XCTestCase {
         XCTAssertNil(Self.dbManager.itemMetadata(ocId: remoteFolder.identifier))
         XCTAssertNil(Self.dbManager.itemMetadata(ocId: remoteItem.identifier))
     }
+
+    func testDeleteWithTrashing() async {
+        let remoteInterface = MockRemoteInterface(rootItem: rootItem)
+        let itemIdentifier = "file"
+        let remoteItem = MockRemoteItem(
+            identifier: itemIdentifier,
+            name: "file",
+            remotePath: Self.account.davFilesUrl + "/file",
+            account: Self.account.ncKitAccount,
+            username: Self.account.username,
+            userId: Self.account.id,
+            serverUrl: Self.account.serverUrl
+        )
+        remoteItem.parent = rootItem
+        rootItem.children = [remoteItem]
+
+        XCTAssertFalse(rootItem.children.isEmpty)
+
+        let itemMetadata = ItemMetadata()
+        itemMetadata.ocId = itemIdentifier
+        itemMetadata.fileName = remoteItem.name
+        itemMetadata.fileNameView = remoteItem.name
+        itemMetadata.account = Self.account.ncKitAccount
+        itemMetadata.user = Self.account.username
+        itemMetadata.userId = Self.account.id
+        itemMetadata.serverUrl = Self.account.davFilesUrl
+        itemMetadata.urlBase = Self.account.serverUrl
+
+        XCTAssertEqual(itemMetadata.isTrashed, false)
+
+        Self.dbManager.addItemMetadata(itemMetadata)
+        XCTAssertNotNil(Self.dbManager.itemMetadataFromOcId(itemIdentifier))
+
+        let item = Item(
+            metadata: itemMetadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: remoteInterface
+        )
+
+        let (error) = await item.delete(trashing: true, dbManager: Self.dbManager)
+        XCTAssertNil(error)
+        XCTAssertTrue(rootItem.children.isEmpty)
+
+        let postTrashingMetadata = Self.dbManager.itemMetadataFromOcId(itemIdentifier);
+        XCTAssertNotNil(postTrashingMetadata)
+        XCTAssertEqual(postTrashingMetadata?.serverUrl, Self.account.trashUrl)
+        XCTAssertEqual(
+            Self.dbManager.parentItemIdentifierFromMetadata(postTrashingMetadata!), .trashContainer
+        )
+        XCTAssertEqual(postTrashingMetadata?.isTrashed, true)
+        XCTAssertEqual(postTrashingMetadata?.trashbinFileName, remoteItem.name)
+        XCTAssertEqual(postTrashingMetadata?.trashbinOriginalLocation, itemMetadata.serverUrl)
+    }
 }
