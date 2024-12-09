@@ -84,7 +84,8 @@ public class MockRemoteInterface: RemoteInterface {
         if pathComponents?.first?.isEmpty == true { pathComponents?.removeFirst() }
         guard pathComponents?.isEmpty == false else { return "/" }
         pathComponents?.removeLast()
-        return account.davFilesUrl + "/" + (pathComponents?.joined(separator: "/") ?? "")
+        let rootPath = path.hasPrefix(account.trashUrl) ? account.trashUrl : account.davFilesUrl
+        return rootPath + "/" + (pathComponents?.joined(separator: "/") ?? "")
     }
 
     func parentItem(path: String, account: Account) -> MockRemoteItem? {
