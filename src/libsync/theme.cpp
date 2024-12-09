@@ -1036,6 +1036,15 @@ bool Theme::darkMode() const
     return isDarkFromStyle();
 }
 
+bool Theme::displayLegacyImportDialog() const
+{
+#if defined APPLICATION_DISPLAY_LEGACY_IMPORT_DIALOG && APPLICATION_DISPLAY_LEGACY_IMPORT_DIALOG
+    return true;
+#else
+    return false;
+#endif
+}
+
 void Theme::setOverrideServerUrl(const QString &overrideServerUrl)
 {
     auto validOverrideServerUrl = overrideServerUrl;
