@@ -16,20 +16,33 @@ public class MockRemoteInterface: RemoteInterface {
     public var capabilities = mockCapabilities
     public var rootItem: MockRemoteItem?
     public var delegate: (any NextcloudKitDelegate)?
-    public var trash: [NKTrash] = []
+    public var rootTrashItem: MockRemoteItem?
 
-    public init(rootItem: MockRemoteItem? = nil) {
+    public init(rootItem: MockRemoteItem? = nil, rootTrashItem: MockRemoteItem? = nil) {
         self.rootItem = rootItem
+        self.rootTrashItem = rootTrashItem
     }
 
-    func sanitisedPath(_ path: String, account: Account) -> String {
+    func sanitisedPath(_ path: String, account: Account) -> String? {
         var sanitisedPath = path
-        let filesPath = account.davFilesUrl
+        var filesPath: String
+        if sanitisedPath.hasPrefix(account.davFilesUrl) {
+            filesPath = account.davFilesUrl
+        } else if sanitisedPath.hasPrefix(account.trashUrl) {
+            filesPath = account.trashUrl
+        } else {
+            print("Invalid files path! Cannot create sanitised path for \(path)")
+            return nil
+        }
+
         if sanitisedPath.hasPrefix(filesPath) {
             // Keep the leading slash for root path
             let trimCount = filesPath.last == "/" ? filesPath.count - 1 : filesPath.count
             sanitisedPath = String(sanitisedPath.dropFirst(trimCount))
+        } else {
+            print("WARNING: Unexpected files path! \(filesPath)")
         }
+
         if sanitisedPath != "/", sanitisedPath.last == "/" {
             sanitisedPath = String(sanitisedPath.dropLast())
         }
@@ -45,17 +58,18 @@ public class MockRemoteInterface: RemoteInterface {
         let sanitisedPath = sanitisedPath(remotePath, account: account)
         guard sanitisedPath != "/" else { return rootItem }
 
-        var pathComponents = sanitisedPath.components(separatedBy: "/")
-        if pathComponents.first?.isEmpty == true { pathComponents.removeFirst() }
-        var currentNode = rootItem
+        var pathComponents = sanitisedPath?.components(separatedBy: "/")
+        if pathComponents?.first?.isEmpty == true { pathComponents?.removeFirst() }
+        var currentNode = remotePath.hasPrefix(account.trashUrl) ? rootTrashItem : rootItem
 
-        while !pathComponents.isEmpty {
-            let component = pathComponents.removeFirst()
-            guard !component.isEmpty,
-                  let nextNode = currentNode.children.first(where: { $0.name == component })
+        while pathComponents?.isEmpty == false {
+            let component = pathComponents?.removeFirst()
+            guard component?.isEmpty == false,
+                  let nextNode = currentNode?.children.first(where: { $0.name == component })
             else { return nil }
+            print(nextNode.name)
 
-            guard !pathComponents.isEmpty else { return nextNode } // This is the target
+            guard pathComponents?.isEmpty == false else { return nextNode } // This is the target
             currentNode = nextNode
         }
 
@@ -64,11 +78,11 @@ public class MockRemoteInterface: RemoteInterface {
 
     func parentPath(path: String, account: Account) -> String {
         let sanitisedPath = sanitisedPath(path, account: account)
-        var pathComponents = sanitisedPath.components(separatedBy: "/")
-        if pathComponents.first?.isEmpty == true { pathComponents.removeFirst() }
-        guard !pathComponents.isEmpty else { return "/" }
-        pathComponents.removeLast()
-        return account.davFilesUrl + "/" + pathComponents.joined(separator: "/")
+        var pathComponents = sanitisedPath?.components(separatedBy: "/")
+        if pathComponents?.first?.isEmpty == true { pathComponents?.removeFirst() }
+        guard pathComponents?.isEmpty == false else { return "/" }
+        pathComponents?.removeLast()
+        return account.davFilesUrl + "/" + (pathComponents?.joined(separator: "/") ?? "")
     }
 
     func parentItem(path: String, account: Account) -> MockRemoteItem? {
@@ -350,7 +364,8 @@ public class MockRemoteInterface: RemoteInterface {
         options: NKRequestOptions = .init(),
         taskHandler: @escaping (URLSessionTask) -> Void
     ) async -> (account: String, trashedItems: [NKTrash], data: Data?, error: NKError) {
-        return (account.ncKitAccount, trash, nil, .success)
+        guard let rootTrashItem else { return (account.ncKitAccount, [], nil, .invalidData) }
+        return (account.ncKitAccount, rootTrashItem.children.map { $0.toNKTrash() }, nil, .success)
     }
 
     public func downloadThumbnail(

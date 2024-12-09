@@ -251,7 +251,7 @@ final class MockRemoteInterfaceTests: XCTestCase {
         }
         let fileData = Data("Hello, World!".utf8)
         let _ = await remoteInterface.upload(
-            remotePath: "/", localPath: fileUrl.path, account: Self.account
+            remotePath: Self.account.davFilesUrl, localPath: fileUrl.path, account: Self.account
         )
 
         let result = await remoteInterface.download(
@@ -354,7 +354,7 @@ final class MockRemoteInterfaceTests: XCTestCase {
         itemC_A_A.parent = itemC_A
 
         let result = await remoteInterface.enumerate(
-            remotePath: "/", depth: .target, account: Self.account
+            remotePath: Self.account.davFilesUrl, depth: .target, account: Self.account
         )
         XCTAssertEqual(result.error, .success)
         XCTAssertEqual(result.files.count, 1)
