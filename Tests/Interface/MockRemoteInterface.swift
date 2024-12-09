@@ -69,7 +69,6 @@ public class MockRemoteInterface: RemoteInterface {
             guard component?.isEmpty == false,
                   let nextNode = currentNode?.children.first(where: { $0.name == component })
             else { return nil }
-            print(nextNode.name)
 
             guard pathComponents?.isEmpty == false else { return nextNode } // This is the target
             currentNode = nextNode
