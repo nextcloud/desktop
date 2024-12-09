@@ -36,6 +36,7 @@ ApplicationWindow {
     width:      Systray.useNormalWindow ? Style.trayWindowHeight : Style.trayWindowWidth
     height:     Style.trayWindowHeight
     flags:      Systray.useNormalWindow ? Qt.Window : Qt.Dialog | Qt.FramelessWindowHint
+    color: "transparent"
 
     readonly property int maxMenuHeight: Style.trayWindowHeight - Style.trayWindowHeaderHeight - 2 * Style.trayWindowBorderWidth
 
@@ -63,7 +64,7 @@ ApplicationWindow {
         radius: Systray.useNormalWindow ? 0.0 : Style.trayWindowRadius
         border.width: Style.trayWindowBorderWidth
         border.color: palette.dark
-        color: palette.base
+        color: palette.window
     }
 
     Connections {
@@ -221,7 +222,7 @@ ApplicationWindow {
         }
     }
 
-    Item {
+    Rectangle {
         id: trayWindowMainItem
 
         property bool isUnifiedSearchActive: unifiedSearchResultsListViewSkeletonLoader.active
@@ -233,6 +234,9 @@ ApplicationWindow {
         anchors.fill: parent
         anchors.margins: Style.trayWindowBorderWidth
         clip: true
+
+        radius: Systray.useNormalWindow ? 0.0 : Style.trayWindowRadius
+        color: palette.base
 
         Accessible.role: Accessible.Grouping
         Accessible.name: qsTr("Nextcloud desktop main dialog")
