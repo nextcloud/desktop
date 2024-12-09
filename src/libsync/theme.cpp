@@ -214,7 +214,7 @@ QString Theme::version() const
 
 QString Theme::versionSuffix() const
 {
-    return QString::fromLatin1(MIRALL_STRINGIFY(MIRALL_VERSION_SUFFIX));
+    return QString::fromLatin1(MIRALL_VERSION_SUFFIX);
 }
 
 QString Theme::configFileName() const
