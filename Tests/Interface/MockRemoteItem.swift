@@ -100,4 +100,16 @@ public class MockRemoteItem: Equatable {
         self.userId = userId
         self.serverUrl = serverUrl
     }
+
+    public func toNKTrash() -> NKTrash {
+        let trashItem = NKTrash()
+        trashItem.ocId = identifier
+        trashItem.fileName = name
+        trashItem.directory = directory
+        trashItem.trashbinOriginalLocation = remotePath
+        trashItem.trashbinFileName = name
+        trashItem.size = size
+        trashItem.filePath = (parent?.remotePath ?? "") + "/" + name
+        return trashItem
+    }
 }
