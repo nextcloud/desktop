@@ -86,6 +86,9 @@ public extension Item {
             metadata.trashbinFileName = filename
             metadata.trashbinDeletionTime = Date()
             metadata.trashbinOriginalLocation = self.metadata.serverUrl
+
+            dbManager.addItemMetadata(metadata)
+
             return nil
         }
         if self.metadata.directory {
