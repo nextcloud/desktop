@@ -507,6 +507,123 @@ public extension Item {
         )
     }
 
+    private static func trash(
+        _ modifiedItem: Item,
+        account: Account,
+        dbManager: FilesDatabaseManager,
+        domain: NSFileProviderDomain?
+    ) async -> (Item, Error?) {
+        let deleteError =
+            await modifiedItem.delete(trashing: true, domain: domain, dbManager: dbManager)
+        guard deleteError == nil else {
+            Self.logger.error(
+                """
+                Error attempting to move item into trash:
+                \(modifiedItem.filename, privacy: .public)
+                \(deleteError?.localizedDescription ?? "", privacy: .public)
+                """
+            )
+            return (modifiedItem, deleteError)
+        }
+
+        let ocId = modifiedItem.itemIdentifier.rawValue
+        guard let dirtyMetadata = dbManager.itemMetadataFromOcId(ocId) else {
+            Self.logger.error(
+                """
+                Could not correctly process trashing results, dirty metadata not found.
+                \(modifiedItem.filename, privacy: .public) \(ocId, privacy: .public)
+                """
+            )
+            return (modifiedItem, NSFileProviderError(.cannotSynchronize))
+        }
+
+        // The server may have renamed the trashed file so we need to scan the entire trash
+        let (_, files, _, error) = await modifiedItem.remoteInterface.enumerate(
+            remotePath: account.trashUrl,
+            depth: EnumerateDepth.targetAndAllChildren,
+            showHiddenFiles: true,
+            includeHiddenFiles: [],
+            requestBody: nil,
+            account: account,
+            options: .init(),
+            taskHandler: { task in
+                if let domain {
+                    NSFileProviderManager(for: domain)?.register(
+                        task,
+                        forItemWithIdentifier: modifiedItem.itemIdentifier,
+                        completionHandler: { _ in }
+                    )
+                }
+            }
+        )
+
+        guard error == .success,
+              let targetItemNKFile = files.first(where: { $0.ocId == modifiedItem.metadata.ocId })
+        else {
+            Self.logger.error(
+                """
+                Received bad error or files from post-trashing remote scan:
+                \(error.errorDescription, privacy: .public) \(files, privacy: .public)
+                """
+            )
+            return(Item(
+                metadata: dirtyMetadata,
+                parentItemIdentifier: .trashContainer,
+                account: account,
+                remoteInterface: modifiedItem.remoteInterface
+            ), error.fileProviderError)
+        }
+
+        let postDeleteMetadata = ItemMetadata.fromNKFile(targetItemNKFile, account: account)
+        dbManager.addItemMetadata(postDeleteMetadata)
+
+        let postDeleteItem = Item(
+            metadata: postDeleteMetadata,
+            parentItemIdentifier: .trashContainer,
+            account: account,
+            remoteInterface: modifiedItem.remoteInterface
+        )
+
+        // Now we can directly update info on the child items
+        var (_, childFiles, _, childError) = await modifiedItem.remoteInterface.enumerate(
+            remotePath: account.trashUrl,
+            depth: EnumerateDepth.targetAndAllChildren, // Just do it in one go
+            showHiddenFiles: true,
+            includeHiddenFiles: [],
+            requestBody: nil,
+            account: account,
+            options: .init(),
+            taskHandler: { task in
+                if let domain {
+                    NSFileProviderManager(for: domain)?.register(
+                        task,
+                        forItemWithIdentifier: modifiedItem.itemIdentifier,
+                        completionHandler: { _ in }
+                    )
+                }
+            }
+        )
+
+        guard error == .success else {
+            Self.logger.error(
+                """
+                Received bad error or files from post-trashing child items remote scan:
+                \(error.errorDescription, privacy: .public) \(files, privacy: .public)
+                """
+            )
+            return (postDeleteItem, childError.fileProviderError)
+        }
+
+        // Update state of child files
+        childFiles.removeFirst() // This is the target path, already scanned
+        for file in childFiles {
+            let metadata = ItemMetadata.fromNKFile(file, account: account)
+            dbManager.addItemMetadata(metadata)
+        }
+
+        return (postDeleteItem, nil)
+    }
+
     func modify(
         itemTarget: NSFileProviderItem,
         baseVersion: NSFileProviderItemVersion = NSFileProviderItemVersion(),
@@ -531,69 +648,6 @@ public extension Item {
         }
 
         let parentItemIdentifier = itemTarget.parentItemIdentifier
-        if parentItemIdentifier == .trashContainer {
-            let deleteError = await delete(trashing: true, domain: domain, dbManager: dbManager)
-            guard let dirtyMetadata = dbManager.itemMetadataFromOcId(ocId) else {
-                Self.logger.error(
-                    """
-                    Could not correctly process trashing results, dirty metadata not found.
-                    \(self.filename, privacy: .public) \(ocId, privacy: .public)
-                    """
-                )
-                return (self, NSFileProviderError(.cannotSynchronize))
-            }
-            let (_, files, _, error) = await remoteInterface.enumerate(
-                remotePath: dirtyMetadata.serverUrl + "/" + dirtyMetadata.trashbinFileName,
-                depth: EnumerateDepth.targetAndDirectChildren,
-                showHiddenFiles: true,
-                includeHiddenFiles: [],
-                requestBody: nil,
-                account: account,
-                options: .init(),
-                taskHandler: { task in
-                    if let domain {
-                        NSFileProviderManager(for: domain)?.register(
-                            task,
-                            forItemWithIdentifier: self.itemIdentifier,
-                            completionHandler: { _ in }
-                        )
-                    }
-                }
-            )
-            guard error == .success, !files.isEmpty else {
-                Self.logger.error(
-                    """
-                    Received bad error or files from post-trashing remote scan:
-                    \(error.errorDescription, privacy: .public) \(files, privacy: .public)
-                    """
-                )
-                let postTrashingItem = Item(
-                    metadata: dirtyMetadata,
-                    parentItemIdentifier: .trashContainer,
-                    account: account,
-                    remoteInterface: remoteInterface
-                )
-                return (postTrashingItem, deleteError)
-            }
-
-            for file in files {
-                let metadata = ItemMetadata.fromNKFile(file, account: account)
-                dbManager.addItemMetadata(metadata)
-            }
-
-            guard let targetItemNKFile = files.first else {
-                Self.logger.error("No files found for post-trashing item. This should not happen!")
-                return (self, NSFileProviderError(.cannotSynchronize))
-            }
-            let targetItem = Item(
-                metadata: ItemMetadata.fromNKFile(targetItemNKFile, account: account),
-                parentItemIdentifier: .trashContainer,
-                account: account,
-                remoteInterface: remoteInterface
-            )
-            return (targetItem, nil)
-        }
-
         let isFolder = contentType.conforms(to: .directory)
         let bundleOrPackage =
             contentType.conforms(to: .bundle) || contentType.conforms(to: .package)
@@ -645,19 +699,26 @@ public extension Item {
 
         var modifiedItem = self
 
-        if changedFields.contains(.filename) || changedFields.contains(.parentItemIdentifier) {
+        if (changedFields.contains(.parentItemIdentifier) && parentItemIdentifier == .trashContainer) {
             Self.logger.debug(
                 """
                 Changed fields for item \(ocId, privacy: .public)
-                with filename \(self.filename, privacy: .public)
+                with filename \(modifiedItem.filename, privacy: .public)
                 includes filename or parentitemidentifier.
-                old filename: \(self.filename, privacy: .public)
+                old filename: \(modifiedItem.filename, privacy: .public)
                 new filename: \(itemTarget.filename, privacy: .public)
-                old parent identifier: \(self.parentItemIdentifier.rawValue, privacy: .public)
+                old parent identifier: \(modifiedItem.parentItemIdentifier.rawValue, privacy: .public)
                 new parent identifier: \(itemTarget.parentItemIdentifier.rawValue, privacy: .public)
                 """
             )
 
+            // We can't just move files into the trash, we need to issue a deletion; let's handle it
+            let (trashedItem, trashingError) = await Self.trash(
+                modifiedItem, account: account, dbManager: dbManager, domain: domain
+            )
+            guard trashingError == nil else { return (modifiedItem, trashingError) }
+            modifiedItem = trashedItem
+        } else if changedFields.contains(.filename) || changedFields.contains(.parentItemIdentifier) {
             let (renameModifiedItem, renameError) = await modifiedItem.move(
                 newFileName: itemTarget.filename,
                 newRemotePath: newServerUrlFileName,
@@ -679,18 +740,6 @@ public extension Item {
             }
 
             modifiedItem = renameModifiedItem
-
-            guard !isFolder || bundleOrPackage else {
-                Self.logger.debug(
-                    """
-                    Rename of folder \(ocId, privacy: .public) (\(self.filename, privacy: .public))
-                    to \(itemTarget.filename, privacy: .public)
-                    at \(newServerUrlFileName, privacy: .public)
-                    complete. Only handling renaming for folder and no other procedures.
-                    """
-                )
-                return (modifiedItem, nil)
-            }
         }
 
         guard !isFolder || bundleOrPackage else {
