@@ -22,7 +22,7 @@ public extension Item {
     ) async -> (Item?, Error?) {
         let ocId = itemIdentifier.rawValue
         let isFolder = contentType.conforms(to: .directory)
-        let oldRemotePath = metadata.serverUrl + "/" + metadata.fileName
+        let oldRemotePath = metadata.serverUrl + "/" + filename
         let (_, _, moveError) = await remoteInterface.move(
             remotePathSource: oldRemotePath,
             remotePathDestination: newRemotePath,
