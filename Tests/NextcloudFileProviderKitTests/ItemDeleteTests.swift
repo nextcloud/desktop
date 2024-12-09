@@ -202,7 +202,7 @@ final class ItemDeleteTests: XCTestCase {
             Self.dbManager.parentItemIdentifierFromMetadata(postTrashingMetadata!), .trashContainer
         )
         XCTAssertEqual(postTrashingMetadata?.isTrashed, true)
-        XCTAssertEqual(postTrashingMetadata?.trashbinFileName, remoteItem.name)
+        XCTAssertEqual(postTrashingMetadata?.trashbinFileName, "file") // Remember we need to sync
         XCTAssertEqual(postTrashingMetadata?.trashbinOriginalLocation, itemMetadata.serverUrl)
     }
 }
