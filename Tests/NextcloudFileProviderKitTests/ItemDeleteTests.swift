@@ -56,6 +56,13 @@ final class ItemDeleteTests: XCTestCase {
 
         let itemMetadata = ItemMetadata()
         itemMetadata.ocId = itemIdentifier
+        itemMetadata.fileName = remoteItem.name
+        itemMetadata.fileNameView = remoteItem.name
+        itemMetadata.serverUrl = Self.account.davFilesUrl
+        itemMetadata.urlBase = Self.account.serverUrl
+        itemMetadata.account = Self.account.ncKitAccount
+        itemMetadata.user = Self.account.username
+        itemMetadata.userId = Self.account.id
 
         Self.dbManager.addItemMetadata(itemMetadata)
         XCTAssertNotNil(Self.dbManager.itemMetadata(ocId: itemIdentifier))
