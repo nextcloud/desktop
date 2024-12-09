@@ -28,6 +28,17 @@ final class ItemModifyTests: XCTestCase {
         userId: Self.account.id,
         serverUrl: Self.account.serverUrl
     )
+    lazy var rootTrashItem = MockRemoteItem(
+        identifier: NSFileProviderItemIdentifier.trashContainer.rawValue,
+        name: "root",
+        remotePath: Self.account.trashUrl,
+        directory: true,
+        account: Self.account.ncKitAccount,
+        username: Self.account.username,
+        userId: Self.account.id,
+        serverUrl: Self.account.serverUrl
+    )
+
     static let dbManager = FilesDatabaseManager(realmConfig: .defaultConfiguration)
 
     override func setUp() {
@@ -37,6 +48,7 @@ final class ItemModifyTests: XCTestCase {
 
     override func tearDown() {
         rootItem.children = []
+        rootTrashItem.children = []
     }
 
     func testModifyFileContents() async throws {
@@ -150,7 +162,7 @@ final class ItemModifyTests: XCTestCase {
         let db = Self.dbManager.ncDatabase() // Strong ref for in memory test db
         debugPrint(db)
 
-        let remoteInterface = MockRemoteInterface(rootItem: rootItem)
+        let remoteInterface = MockRemoteInterface(rootItem: rootItem, rootTrashItem: rootTrashItem)
 
         let keynoteBundleFilename = "test.key"
         let keynoteIndexZipFilename = "Index.zip"
