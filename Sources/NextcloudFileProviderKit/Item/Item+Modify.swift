@@ -635,8 +635,10 @@ public extension Item {
         progress: Progress = .init(),
         dbManager: FilesDatabaseManager = .shared
     ) async -> (Item?, Error?) {
-        let ocId = itemIdentifier.rawValue
-        guard itemTarget.itemIdentifier == itemIdentifier else {
+        var modifiedItem = self
+
+        let ocId = modifiedItem.itemIdentifier.rawValue
+        guard itemTarget.itemIdentifier == modifiedItem.itemIdentifier else {
             Self.logger.error(
                 """
                 Could not modify item: \(ocId, privacy: .public), different identifier to the
@@ -648,9 +650,10 @@ public extension Item {
         }
 
         let parentItemIdentifier = itemTarget.parentItemIdentifier
-        let isFolder = contentType.conforms(to: .directory)
+        let isFolder = modifiedItem.contentType.conforms(to: .directory)
         let bundleOrPackage =
-            contentType.conforms(to: .bundle) || contentType.conforms(to: .package)
+            modifiedItem.contentType.conforms(to: .bundle) ||
+            modifiedItem.contentType.conforms(to: .package)
 
         if options.contains(.mayAlreadyExist) {
             // TODO: This needs to be properly handled with a check in the db
@@ -688,16 +691,15 @@ public extension Item {
         Self.logger.debug(
             """
             About to modify item with identifier: \(ocId, privacy: .public)
-            of type: \(self.contentType.identifier)
+            of type: \(modifiedItem.contentType.identifier)
             (is folder: \(isFolder ? "yes" : "no", privacy: .public)
             and filename: \(itemTarget.filename, privacy: .public)
-            from old server url: \(self.metadata.serverUrl + "/" + self.filename, privacy: .public)
+            from old server url:
+                \(modifiedItem.metadata.serverUrl + "/" + modifiedItem.filename, privacy: .public)
             to server url: \(newServerUrlFileName, privacy: .public)
             with contents located at: \(newContents?.path ?? "", privacy: .public)
             """
         )
-
-        var modifiedItem = self
 
         if (changedFields.contains(.parentItemIdentifier) && parentItemIdentifier == .trashContainer) {
             Self.logger.debug(
@@ -759,7 +761,7 @@ public extension Item {
                 Self.logger.error(
                     """
                     Could not rename item with ocID \(ocId, privacy: .public)
-                    (\(self.filename, privacy: .public)) to
+                    (\(modifiedItem.filename, privacy: .public)) to
                     \(newServerUrlFileName, privacy: .public),
                     received error: \(renameError?.localizedDescription ?? "", privacy: .public)
                     """
