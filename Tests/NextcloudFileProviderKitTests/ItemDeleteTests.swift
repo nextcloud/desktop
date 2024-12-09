@@ -26,6 +26,16 @@ final class ItemDeleteTests: XCTestCase {
         userId: Self.account.id,
         serverUrl: Self.account.serverUrl
     )
+    lazy var rootTrashItem = MockRemoteItem(
+        identifier: NSFileProviderItemIdentifier.rootContainer.rawValue,
+        name: "trash",
+        remotePath: Self.account.trashUrl,
+        directory: true,
+        account: Self.account.ncKitAccount,
+        username: Self.account.username,
+        userId: Self.account.id,
+        serverUrl: Self.account.serverUrl
+    )
     static let dbManager = FilesDatabaseManager(realmConfig: .defaultConfiguration)
 
     override func setUp() {
@@ -35,10 +45,11 @@ final class ItemDeleteTests: XCTestCase {
 
     override func tearDown() {
         rootItem.children = []
+        rootTrashItem.children = []
     }
 
     func testDeleteFile() async {
-        let remoteInterface = MockRemoteInterface(rootItem: rootItem)
+        let remoteInterface = MockRemoteInterface(rootItem: rootItem, rootTrashItem: rootTrashItem)
         let itemIdentifier = "file"
         let remoteItem = MockRemoteItem(
             identifier: itemIdentifier, 
@@ -82,7 +93,7 @@ final class ItemDeleteTests: XCTestCase {
     }
 
     func testDeleteFolderAndContents() async {
-        let remoteInterface = MockRemoteInterface(rootItem: rootItem)
+        let remoteInterface = MockRemoteInterface(rootItem: rootItem, rootTrashItem: rootTrashItem)
         let remoteFolder = MockRemoteItem(
             identifier: "folder",
             name: "folder",
@@ -142,7 +153,7 @@ final class ItemDeleteTests: XCTestCase {
     }
 
     func testDeleteWithTrashing() async {
-        let remoteInterface = MockRemoteInterface(rootItem: rootItem)
+        let remoteInterface = MockRemoteInterface(rootItem: rootItem, rootTrashItem: rootTrashItem)
         let itemIdentifier = "file"
         let remoteItem = MockRemoteItem(
             identifier: itemIdentifier,
