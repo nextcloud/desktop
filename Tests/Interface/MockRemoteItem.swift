@@ -28,24 +28,6 @@ public class MockRemoteItem: Equatable {
     public var username: String
     public var userId: String
     public var serverUrl: String
-    public var nkfile: NKFile {
-        let file = NKFile()
-        file.fileName = name
-        file.size = size
-        file.date = creationDate
-        file.directory = directory
-        file.etag = versionIdentifier
-        file.ocId = identifier
-        file.serverUrl = parent?.remotePath ?? remotePath
-        file.account = account
-        file.user = username
-        file.userId = userId
-        file.urlBase = serverUrl
-        file.lock = locked
-        file.lockOwner = lockOwner
-        file.lockTimeOut = lockTimeOut
-        return file
-    }
 
     public static func == (lhs: MockRemoteItem, rhs: MockRemoteItem) -> Bool {
         lhs.parent == rhs.parent &&
@@ -99,6 +81,27 @@ public class MockRemoteItem: Equatable {
         self.username = username
         self.userId = userId
         self.serverUrl = serverUrl
+    }
+
+    public func toNKFile() -> NKFile {
+        let file = NKFile()
+        file.fileName = name
+        file.size = size
+        file.date = creationDate
+        file.directory = directory
+        file.etag = versionIdentifier
+        file.ocId = identifier
+        file.serverUrl = parent?.remotePath ?? remotePath
+        file.account = account
+        file.user = username
+        file.userId = userId
+        file.urlBase = serverUrl
+        file.lock = locked
+        file.lockOwner = lockOwner
+        file.lockTimeOut = lockTimeOut
+        file.trashbinFileName = trashbinFileName ?? ""
+        file.trashbinOriginalLocation = trashbinOriginalLocation ?? ""
+        return file
     }
 
     public func toNKTrash() -> NKTrash {

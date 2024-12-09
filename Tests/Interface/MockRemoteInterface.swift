@@ -326,16 +326,21 @@ public class MockRemoteInterface: RemoteInterface {
 
         switch depth {
         case .target:
-            return (account.ncKitAccount, [item.nkfile], nil, .success)
+            return (account.ncKitAccount, [item.toNKFile()], nil, .success)
         case .targetAndDirectChildren:
-            return (account.ncKitAccount, [item.nkfile] + item.children.map { $0.nkfile }, nil, .success)
+            return (
+                account.ncKitAccount,
+                [item.toNKFile()] + item.children.map { $0.toNKFile() },
+                nil,
+                .success
+            )
         case .targetAndAllChildren:
             var files = [NKFile]()
             var queue = [item]
             while !queue.isEmpty {
                 var nextQueue = [MockRemoteItem]()
                 for item in queue {
-                    files.append(item.nkfile)
+                    files.append(item.toNKFile())
                     nextQueue.append(contentsOf: item.children)
                 }
                 queue = nextQueue
