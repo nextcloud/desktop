@@ -345,7 +345,7 @@ public:
 
     void setLockFileState(const QString &serverRelativePath,
                           const QString &remoteSyncPathWithTrailingSlash,
-                          const QString &localSyncPath,
+                          const QString &localSyncPath, const QString &etag,
                           SyncJournalDb * const journal,
                           const SyncFileItem::LockStatus lockStatus,
                           const SyncFileItem::LockOwnerType lockOwnerType);

@@ -696,6 +696,7 @@ void Folder::slotFilesLockReleased(const QSet<QString> &files)
         _accountState->account()->setLockFileState(remoteFilePath,
                                                    remotePathTrailingSlash(),
                                                    path(),
+                                                   rec._etag,
                                                    journalDb(),
                                                    SyncFileItem::LockStatus::UnlockedItem,
                                                    lockOwnerType);
@@ -744,6 +745,7 @@ void Folder::slotLockedFilesFound(const QSet<QString> &files)
         _accountState->account()->setLockFileState(remoteFilePath,
                                                    remotePathTrailingSlash(),
                                                    path(),
+                                                   rec._etag,
                                                    journalDb(),
                                                    SyncFileItem::LockStatus::LockedItem,
                                                    SyncFileItem::LockOwnerType::TokenLock);
