@@ -667,4 +667,100 @@ final class ItemModifyTests: XCTestCase {
             remoteKeynotePropertiesPlist.data, try Data(contentsOf: keynotePropertiesPlistPath)
         )
     }
+
+    func testMoveToTrash() async throws {
+        let remoteInterface = MockRemoteInterface(rootItem: rootItem, rootTrashItem: rootTrashItem)
+        let remoteFolder = MockRemoteItem(
+            identifier: "folder",
+            name: "folder",
+            remotePath: Self.account.davFilesUrl + "/folder",
+            directory: true,
+            account: Self.account.ncKitAccount,
+            username: Self.account.username,
+            userId: Self.account.id,
+            serverUrl: Self.account.serverUrl
+        )
+        let remoteItem = MockRemoteItem(
+            identifier: "item",
+            versionIdentifier: "0",
+            name: "item.txt",
+            remotePath: remoteFolder.remotePath + "/item.txt",
+            data: "Hello, World!".data(using: .utf8),
+            account: Self.account.ncKitAccount,
+            username: Self.account.username,
+            userId: Self.account.id,
+            serverUrl: Self.account.serverUrl
+        )
+        rootItem.children = [remoteFolder]
+        remoteFolder.parent = rootItem
+        remoteFolder.children = [remoteItem]
+        remoteItem.parent = remoteFolder
+
+        let folderMetadata = ItemMetadata()
+        folderMetadata.ocId = remoteFolder.identifier
+        folderMetadata.etag = remoteFolder.versionIdentifier
+        folderMetadata.directory = remoteFolder.directory
+        folderMetadata.name = remoteFolder.name
+        folderMetadata.fileName = remoteFolder.name
+        folderMetadata.fileNameView = remoteFolder.name
+        folderMetadata.serverUrl = Self.account.davFilesUrl
+        folderMetadata.urlBase = Self.account.serverUrl
+        folderMetadata.userId = Self.account.id
+        folderMetadata.user = Self.account.username
+        folderMetadata.account = Self.account.ncKitAccount
+
+        Self.dbManager.addItemMetadata(folderMetadata)
+
+        let itemMetadata = ItemMetadata()
+        itemMetadata.ocId = remoteItem.identifier
+        itemMetadata.etag = remoteItem.versionIdentifier
+        itemMetadata.name = remoteItem.name
+        itemMetadata.fileName = remoteItem.name
+        itemMetadata.fileNameView = remoteItem.name
+        itemMetadata.serverUrl = remoteFolder.serverUrl
+        itemMetadata.urlBase = Self.account.serverUrl
+        itemMetadata.userId = Self.account.id
+        itemMetadata.user = Self.account.username
+        itemMetadata.account = Self.account.ncKitAccount
+
+        Self.dbManager.addItemMetadata(itemMetadata)
+
+        let folderItem = Item(
+            metadata: folderMetadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: remoteInterface
+        )
+        let trashFolderItem = Item(
+            metadata: folderMetadata,
+            parentItemIdentifier: .trashContainer,
+            account: Self.account,
+            remoteInterface: remoteInterface
+        )
+
+        folderItem.dbManager = Self.dbManager
+
+        let (trashedFolderItemMaybe, error) = await folderItem.modify(
+            itemTarget: trashFolderItem,
+            changedFields: [.parentItemIdentifier],
+            contents: nil,
+            dbManager: Self.dbManager
+        )
+        XCTAssertNil(error)
+
+        XCTAssertEqual(rootTrashItem.children.count, 1)
+        let remoteTrashedFolderItem = rootTrashItem.children.first
+        XCTAssertNotNil(remoteTrashedFolderItem)
+
+        let trashedFolderItem = try XCTUnwrap(trashedFolderItemMaybe)
+        XCTAssertEqual(
+            trashedFolderItem.itemIdentifier.rawValue, remoteTrashedFolderItem?.identifier
+        )
+        XCTAssertEqual(trashedFolderItem.filename, remoteTrashedFolderItem?.name)
+        XCTAssertEqual(trashedFolderItem.metadata.isTrashed, true)
+        XCTAssertEqual(
+            trashedFolderItem.metadata.trashbinOriginalLocation, folderMetadata.serverUrl
+        )
+        XCTAssertEqual(trashedFolderItem.parentItemIdentifier, .trashContainer)
+    }
 }
