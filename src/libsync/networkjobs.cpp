@@ -663,12 +663,9 @@ bool PropfindJob::finished()
     if (http_result_code == 207) {
         // Parse DAV response
         auto domDocument = QDomDocument();
-        auto errorMsg = QString();
-        auto errorLine = -1;
-        auto errorColumn = -1;
 
-        if (!domDocument.setContent(reply(), true, &errorMsg, &errorLine, &errorColumn)) {
-            qCWarning(lcPropfindJob) << "XML parser error: " << errorMsg << errorLine << errorColumn;
+        if (const auto res = domDocument.setContent(reply(), QDomDocument::ParseOption::UseNamespaceProcessing); !res) {
+            qCWarning(lcPropfindJob) << "XML parser error: " << res.errorMessage << res.errorLine << res.errorColumn;
             emit finishedWithError(reply());
 
         } else {

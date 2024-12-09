@@ -27,7 +27,7 @@ bool SimpleSslErrorHandler::handleErrors(QList<QSslError> errors, const QSslConf
     }
 
     if (account->trustCertificates()) {
-        for (const auto &error : qAsConst(errors)) {
+        for (const auto &error : std::as_const(errors)) {
             certs->append(error.certificate());
         }
         return true;
@@ -35,7 +35,7 @@ bool SimpleSslErrorHandler::handleErrors(QList<QSslError> errors, const QSslConf
 
     bool allTrusted = true;
 
-    for (const auto &error : qAsConst(errors)) {
+    for (const auto &error : std::as_const(errors)) {
         if (!account->approvedCerts().contains(error.certificate())) {
             allTrusted = false;
         }

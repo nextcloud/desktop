@@ -585,7 +585,7 @@ void FakePutMultiFileReply::respond()
         totalSize += fileInfo->size;
     });
 
-    for(auto fileInfo : qAsConst(_allFileInfo)) {
+    for(auto fileInfo : std::as_const(_allFileInfo)) {
         QJsonObject fileInfoReply;
         fileInfoReply.insert("error", QStringLiteral("false"));
         fileInfoReply.insert("etag", QLatin1String{fileInfo->etag});
@@ -1045,12 +1045,12 @@ QJsonObject FakeQNAM::forEachReplyPart(QIODevice *outgoingData,
     const QString boundaryValue = QStringLiteral("--") + contentType.mid(boundaryPosition, contentType.length() - boundaryPosition - 1) + QStringLiteral("\r\n");
     auto stringPutPayloadRef = QString{stringPutPayload}.left(stringPutPayload.size() - 2 - boundaryValue.size());
     auto allParts = stringPutPayloadRef.split(boundaryValue, Qt::SkipEmptyParts);
-    for (const auto &onePart : qAsConst(allParts)) {
+    for (const auto &onePart : std::as_const(allParts)) {
         auto headerEndPosition = onePart.indexOf(QStringLiteral("\r\n\r\n"));
         auto onePartHeaderPart = onePart.left(headerEndPosition);
         auto onePartHeaders = onePartHeaderPart.split(QStringLiteral("\r\n"));
         QMap<QString, QByteArray> allHeaders;
-        for(const auto &oneHeader : qAsConst(onePartHeaders)) {
+        for(const auto &oneHeader : std::as_const(onePartHeaders)) {
             auto headerParts = oneHeader.split(QStringLiteral(": "));
             allHeaders[headerParts.at(0).toLower()] = headerParts.at(1).toLatin1();
         }
