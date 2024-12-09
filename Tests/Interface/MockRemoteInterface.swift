@@ -56,7 +56,9 @@ public class MockRemoteInterface: RemoteInterface {
         guard let rootItem, !remotePath.isEmpty else { return nil }
 
         let sanitisedPath = sanitisedPath(remotePath, account: account)
-        guard sanitisedPath != "/" else { return rootItem }
+        guard sanitisedPath != "/" else {
+            return remotePath.hasPrefix(account.trashUrl) ? rootTrashItem : rootItem
+        }
 
         var pathComponents = sanitisedPath?.components(separatedBy: "/")
         if pathComponents?.first?.isEmpty == true { pathComponents?.removeFirst() }
