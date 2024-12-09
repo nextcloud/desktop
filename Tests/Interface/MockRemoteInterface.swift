@@ -359,9 +359,12 @@ public class MockRemoteInterface: RemoteInterface {
             return (account.ncKitAccount, nil, .urlError)
         }
 
+        item.trashbinOriginalLocation = item.parent?.remotePath ?? "bad path"
+        item.trashbinFileName = item.name + " (trashed)"
+
         let (_, _, error) = await move(
             remotePathSource: item.remotePath,
-            remotePathDestination: account.trashUrl + "/" + item.name + " (trashed)",
+            remotePathDestination: account.trashUrl + "/" + item.trashbinFileName!,
             account: account
         )
         guard error == .success else { return (account.ncKitAccount, nil, error) }

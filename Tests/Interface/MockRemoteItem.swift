@@ -28,6 +28,8 @@ public class MockRemoteItem: Equatable {
     public var username: String
     public var userId: String
     public var serverUrl: String
+    public var trashbinFileName: String?
+    public var trashbinOriginalLocation: String?
 
     public static func == (lhs: MockRemoteItem, rhs: MockRemoteItem) -> Bool {
         lhs.parent == rhs.parent &&
