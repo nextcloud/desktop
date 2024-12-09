@@ -205,6 +205,7 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent)
         const auto fpAccountUserIdAtHost = _accountState->account()->userIdAtHostWithPort();
         const auto fpSettingsController = Mac::FileProviderSettingsController::instance();
         const auto fpSettingsWidget = fpSettingsController->settingsViewWidget(fpAccountUserIdAtHost, fileProviderTab);
+        fpSettingsLayout->setContentsMargins(0, 0, 0, 0);
         fpSettingsLayout->addWidget(fpSettingsWidget);
         fileProviderTab->setLayout(fpSettingsLayout);
     }
@@ -220,6 +221,7 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent)
     const auto connectionSettingsTab = _ui->connectionSettingsTab;
     const auto connectionSettingsLayout = new QVBoxLayout(connectionSettingsTab);
     const auto networkSettings = new NetworkSettings(_accountState->account(), connectionSettingsTab);
+    connectionSettingsLayout->setContentsMargins(0, 0, 0, 0);
     connectionSettingsLayout->addWidget(networkSettings);
     connectionSettingsTab->setLayout(connectionSettingsLayout);
 
