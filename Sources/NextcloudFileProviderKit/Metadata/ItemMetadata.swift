@@ -173,7 +173,7 @@ public class ItemMetadata: Object {
     }
 
     public var isTrashed: Bool {
-        serverUrl.hasSuffix(Account.webDavTrashUrlSuffix + userId + "/trash")
+        serverUrl.hasPrefix(urlBase + Account.webDavTrashUrlSuffix + userId + "/trash")
     }
 
     public override func isEqual(_ object: Any?) -> Bool {
