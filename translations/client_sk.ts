@@ -171,54 +171,54 @@
     <message>
         <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="36"/>
         <source>Current account</source>
-        <translation type="unfinished"/>
+        <translation>Aktuálny účet</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="42"/>
         <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="116"/>
         <source>Resume sync for all</source>
-        <translation type="unfinished"/>
+        <translation>Pokračovať v synchronizácii pre všetky účty</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="42"/>
         <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="116"/>
         <source>Pause sync for all</source>
-        <translation type="unfinished"/>
+        <translation>Pozastaviť synchronizáciu pre všetky účty</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="95"/>
         <source>Add account</source>
-        <translation type="unfinished"/>
+        <translation>Pridať účet</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="99"/>
         <source>Add new account</source>
-        <translation type="unfinished"/>
+        <translation>Pridať nový účet</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="122"/>
         <source>Settings</source>
-        <translation type="unfinished"/>
+        <translation>Nastavenia</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="133"/>
         <source>Exit</source>
-        <translation type="unfinished"/>
+        <translation>Ukončiť</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="161"/>
         <source>Current account avatar</source>
-        <translation type="unfinished"/>
+        <translation>Avatar aktuálneho účtu</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="187"/>
         <source>Current account status is online</source>
-        <translation type="unfinished"/>
+        <translation>Stav aktuálneho účtu je pripojený</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="187"/>
         <source>Current account status is do not disturb</source>
-        <translation type="unfinished"/>
+        <translation>Stav aktuálneho účtu je nerušiť</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="258"/>
@@ -465,19 +465,19 @@
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="238"/>
+        <location filename="../src/gui/tray/MainWindow.qml" line="242"/>
         <source>Nextcloud desktop main dialog</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="375"/>
+        <location filename="../src/gui/tray/MainWindow.qml" line="379"/>
         <source>Unified search results list</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="439"/>
+        <location filename="../src/gui/tray/MainWindow.qml" line="443"/>
         <source>New activities</source>
-        <translation type="unfinished"/>
+        <translation>Nové aktivity</translation>
     </message>
 </context>
 <context>
@@ -526,14 +526,14 @@ Should an account import be attempted?</source>
 Má sa pokúsiť o import účtu?</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountmanager.cpp" line="214"/>
+        <location filename="../src/gui/accountmanager.cpp" line="216"/>
         <source>%1 accounts were detected from a legacy desktop client.
 Should the accounts be imported?</source>
         <translation>%1 účtov bolo zistených z dedikovaného desktopového klienta.
 Majú sa účty importovať?</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountmanager.cpp" line="216"/>
+        <location filename="../src/gui/accountmanager.cpp" line="218"/>
         <source>1 account was detected from a legacy desktop client.
 Should the account be imported?</source>
         <translation>%1 účet bol zistený z dedikovaného desktopového klienta.
@@ -547,12 +547,12 @@ Má sa účet importovať?</translation>
         <translation>Starý import</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountmanager.cpp" line="219"/>
+        <location filename="../src/gui/accountmanager.cpp" line="221"/>
         <source>Import</source>
         <translation>Importovať</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountmanager.cpp" line="220"/>
+        <location filename="../src/gui/accountmanager.cpp" line="222"/>
         <source>Skip</source>
         <translation>Preskočiť</translation>
     </message>
@@ -684,17 +684,17 @@ Má sa účet importovať?</translation>
         <translation>Varovanie</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="386"/>
+        <location filename="../src/gui/accountsettings.cpp" line="388"/>
         <source>Please wait for the folder to sync before trying to encrypt it.</source>
         <translation>Pred pokusom o šifrovanie počkajte, kým sa adresár zosynchronizuje.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="388"/>
+        <location filename="../src/gui/accountsettings.cpp" line="390"/>
         <source>The folder has a minor sync problem. Encryption of this folder will be possible once it has synced successfully</source>
         <translation>Adresár má menší problém so synchronizáciou. Šifrovanie tohto adresára bude možné po úspešnej synchronizácii</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="390"/>
+        <location filename="../src/gui/accountsettings.cpp" line="392"/>
         <source>The folder has a sync error. Encryption of this folder will be possible once it has synced successfully</source>
         <translation>Adresár má chybu synchronizácie. Šifrovanie tohto priečinka bude možné po úspešnej synchronizácii</translation>
     </message>
@@ -950,7 +950,7 @@ Táto akcia zruší všetky prebiehajúce synchronizácie.</translation>
         <translation>Žiadne pripojenie k %1 na %2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1309"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1311"/>
         <source>Unable to connect to %1.</source>
         <translation>Nepodarilo sa pripojiť k %1.</translation>
     </message>
@@ -960,9 +960,9 @@ Táto akcia zruší všetky prebiehajúce synchronizácie.</translation>
         <translation>Chyba konfigurácie serveru: %1 na %2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1323"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1325"/>
         <source>You need to accept the terms of service</source>
-        <translation type="unfinished"/>
+        <translation>Je potrebné akceptovať zmluvné podmienky</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1275"/>
@@ -985,7 +985,7 @@ Táto akcia zruší všetky prebiehajúce synchronizácie.</translation>
         <translation>Niektoré priečinky neboli synchronizované, pretože sú príliš veľké alebo sú na externom úložisku</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1606"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1608"/>
         <source>There are folders that have grown in size beyond %1MB: %2</source>
         <translation>Existujú priečinky, ktorých veľkosť presiahla %1 MB: %2</translation>
     </message>
@@ -1073,7 +1073,7 @@ Táto akcia zruší všetky prebiehajúce synchronizácie.</translation>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="176"/>
         <source>Need the user to accept the terms of service</source>
-        <translation type="unfinished"/>
+        <translation>Vyžaduje od používateľov, aby prijali zmluvné podmienky</translation>
     </message>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="166"/>
@@ -1688,7 +1688,7 @@ Táto akcia zruší všetky prebiehajúce synchronizácie.</translation>
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="712"/>
         <source>Encrypted metadata setup error: initial signature from server is empty.</source>
-        <translation type="unfinished"/>
+        <translation>Chyba nastavenia šifrovaných metadát: počiatočný podpis zo servera je prázdny.</translation>
     </message>
 </context>
 <context>
@@ -1848,12 +1848,12 @@ Táto akcia zruší všetky prebiehajúce synchronizácie.</translation>
     <message>
         <location filename="../src/gui/editlocallymanager.cpp" line="118"/>
         <source>Could not validate the request to open a file from server.</source>
-        <translation type="unfinished"/>
+        <translation>Nepodarilo sa overiť požiadavku na otvorenie súboru zo servera.</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallymanager.cpp" line="119"/>
         <source>Please try again.</source>
-        <translation type="unfinished"/>
+        <translation>Prosím skúste to znova.</translation>
     </message>
 </context>
 <context>
@@ -1861,34 +1861,34 @@ Táto akcia zruší všetky prebiehajúce synchronizácie.</translation>
     <message>
         <location filename="../src/gui/editlocallyverificationjob.cpp" line="92"/>
         <source>Invalid token received.</source>
-        <translation type="unfinished"/>
+        <translation>Bol prijatý neplatný token.</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyverificationjob.cpp" line="92"/>
         <location filename="../src/gui/editlocallyverificationjob.cpp" line="99"/>
         <location filename="../src/gui/editlocallyverificationjob.cpp" line="105"/>
         <source>Please try again.</source>
-        <translation type="unfinished"/>
+        <translation>Prosím skúste to znova.</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyverificationjob.cpp" line="99"/>
         <source>Invalid file path was provided.</source>
-        <translation type="unfinished"/>
+        <translation>Bola zadaná neplatná cesta k súboru.</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyverificationjob.cpp" line="105"/>
         <source>Could not find an account for local editing.</source>
-        <translation type="unfinished"/>
+        <translation>Nepodarilo sa nájsť účet pre miestne úpravy.</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyverificationjob.cpp" line="129"/>
         <source>Could not start editing locally.</source>
-        <translation type="unfinished"/>
+        <translation>Nepodarilo sa spustiť lokálnu úpravu.</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyverificationjob.cpp" line="130"/>
         <source>An error occurred trying to verify the request to edit locally.</source>
-        <translation type="unfinished"/>
+        <translation>Pri pokuse o overenie požiadavky na lokálne úpravy sa vyskytla chyba.</translation>
     </message>
 </context>
 <context>
@@ -2187,7 +2187,7 @@ Môže to byť problém s knižnicami OpenSSL.</translation>
         <translation>Ak si to prajete prevziať, tak prejdite do nastavení a vyberte to.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1404"/>
+        <location filename="../src/gui/folder.cpp" line="1406"/>
         <source>A folder has surpassed the set folder size limit of %1MB: %2.
 %3</source>
         <translation>Priečinok prekročil nastavený limit veľkosti priečinka %1 MB: %2.
@@ -2205,11 +2205,6 @@ Ak sa rozhodnete lokálne súbory ponechať, budú znovu synchronizované so ser
 Ak sa rozhodnete súbory vymazať tak následne už nebudú dostupné, ak nie ste vlastník.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1415"/>
-        <source>Keep syncing</source>
-        <translation>Pokračovať v synchronizácií</translation>
-    </message>
-    <message>
         <location filename="../src/gui/folder.cpp" line="1416"/>
         <source>All the files in your local sync folder &quot;%1&quot; were deleted. These deletes will be synchronized with your server, making such files unavailable unless restored.
 Are you sure you want to sync those actions with the server?
@@ -2219,14 +2214,14 @@ Ste si istí, že chcete tieto akcie synchronizovať so serverom?
 Ak to bol omyl a rozhodnete sa tieto súbory ponechať, budú opäť synchronizované zo servera.</translation>
     </message>
     <message>
+        <location filename="../src/gui/folder.cpp" line="1417"/>
+        <source>Keep syncing</source>
+        <translation>Pokračovať v synchronizácií</translation>
+    </message>
+    <message>
         <location filename="../src/gui/folder.cpp" line="1420"/>
         <source>Remove All Files?</source>
         <translation>Odstrániť všetky súbory?</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/folder.cpp" line="1423"/>
-        <source>Stop syncing</source>
-        <translation>Zastaviť synchronizáciu</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1424"/>
@@ -2235,16 +2230,21 @@ Ak to bol omyl a rozhodnete sa tieto súbory ponechať, budú opäť synchronizo
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1425"/>
+        <source>Stop syncing</source>
+        <translation>Zastaviť synchronizáciu</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/folder.cpp" line="1425"/>
         <source>Keep files</source>
         <translation>Ponechať súbory</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1434"/>
+        <location filename="../src/gui/folder.cpp" line="1436"/>
         <source>The folder %1 has surpassed the set folder size limit of %2MB.</source>
         <translation>Priečinok %1 prekročil nastavený limit veľkosti priečinka %2 MB.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1435"/>
+        <location filename="../src/gui/folder.cpp" line="1437"/>
         <source>Would you like to stop syncing this folder?</source>
         <translation>Chcete vypnúť synchronizáciu tohto priečinka?</translation>
     </message>
@@ -2272,43 +2272,43 @@ To znamená, že klient synchronizácie nemusí okamžite odovzdať lokálne zme
 % 1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1557"/>
+        <location filename="../src/gui/folder.cpp" line="1559"/>
         <source>Virtual file download failed with code &quot;%1&quot;, status &quot;%2&quot; and error message &quot;%3&quot;</source>
         <translation>Virtuálny súbor sa nepodarilo stiahnuť s kódom &quot;%1&quot;, stavom &quot;%2&quot; a chybovou správou &quot;%3&quot;</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1651"/>
+        <location filename="../src/gui/folder.cpp" line="1653"/>
         <source>A large number of files in the server have been deleted.
 Please confirm if you'd like to proceed with these deletions.
 Alternatively, you can restore all deleted files by uploading from &apos;%1&apos; folder to the server.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1652"/>
+        <location filename="../src/gui/folder.cpp" line="1654"/>
         <source>A large number of files in your local '%1' folder have been deleted.
 Please confirm if you'd like to proceed with these deletions.
 Alternatively, you can restore all deleted files by downloading them from the server.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1653"/>
+        <location filename="../src/gui/folder.cpp" line="1655"/>
         <source>Remove all files?</source>
-        <translation type="unfinished"/>
+        <translation>Odstrániť všetky súbory?</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1657"/>
+        <location filename="../src/gui/folder.cpp" line="1659"/>
         <source>Proceed with Deletion</source>
-        <translation type="unfinished"/>
+        <translation>Pokračovať s odstránením</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1658"/>
+        <location filename="../src/gui/folder.cpp" line="1660"/>
         <source>Restore Files to Server</source>
-        <translation type="unfinished"/>
+        <translation>Obnoviť súbory na Serveri</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1658"/>
+        <location filename="../src/gui/folder.cpp" line="1660"/>
         <source>Restore Files from Server</source>
-        <translation type="unfinished"/>
+        <translation>Obnoviť súbory zo Servera</translation>
     </message>
 </context>
 <context>
@@ -2379,32 +2379,32 @@ Alternatively, you can restore all deleted files by downloading them from the se
     <message>
         <location filename="../src/gui/folderman.cpp" line="1741"/>
         <source>Syncing %1 of %2 (A few seconds left)</source>
-        <translation type="unfinished"/>
+        <translation>Synchronizuje sa %1 z %2 (zostáva pár sekúnd)</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1744"/>
         <source>Syncing %1 of %2 (%3 left)</source>
-        <translation type="unfinished"/>
+        <translation>Synchronizuje sa %1 z %2 (zostáva %3)</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1747"/>
         <source>Syncing %1 of %2</source>
-        <translation type="unfinished"/>
+        <translation>Synchronizuje sa %1 z %2</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1753"/>
         <source>Syncing %1 (A few seconds left)</source>
-        <translation type="unfinished"/>
+        <translation>Synchronizuje sa %1 (zostáva pár sekúnd)</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1755"/>
         <source>Syncing %1 (%2 left)</source>
-        <translation type="unfinished"/>
+        <translation>Synchronizuje sa %1  (zostáva %2)</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1758"/>
         <source>Syncing %1</source>
-        <translation type="unfinished"/>
+        <translation>Synchronizuje sa %1</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1611"/>
@@ -2551,12 +2551,12 @@ Alternatively, you can restore all deleted files by downloading them from the se
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="322"/>
         <source>Synchronizing virtual files in local folder</source>
-        <translation type="unfinished"/>
+        <translation>Synchronizujú sa virtuálne súbory s lokálnym adresárom</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="324"/>
         <source>Synchronizing files in local folder</source>
-        <translation type="unfinished"/>
+        <translation>Synchronizujú sa súbory v lokálnom adresári</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="993"/>
@@ -2576,13 +2576,13 @@ Alternatively, you can restore all deleted files by downloading them from the se
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1009"/>
         <source>Syncing local and remote changes</source>
-        <translation type="unfinished"/>
+        <translation>Synchronizujú sa lokálne a vzdialené zmeny</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1059"/>
         <source>%1 %2 …</source>
         <extracomment>Example text: &quot;Uploading foobar.png (1MB of 2MB) time left 2 minutes at a rate of 24Kb/s&quot; Example text: &quot;Syncing 'foo.txt', 'bar.txt'&quot;</extracomment>
-        <translation type="unfinished"/>
+        <translation>%1 %2 …</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1068"/>
@@ -2599,7 +2599,7 @@ Alternatively, you can restore all deleted files by downloading them from the se
         <location filename="../src/gui/folderstatusmodel.cpp" line="1065"/>
         <source>Download %1/s</source>
         <extracomment>Example text: &quot;Download 24Kb/s&quot; (%1 is replaced by 24Kb (translated))</extracomment>
-        <translation type="unfinished"/>
+        <translation>Sťahovanie %1/s</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1066"/>
@@ -2622,7 +2622,7 @@ Alternatively, you can restore all deleted files by downloading them from the se
         <location filename="../src/gui/folderstatusmodel.cpp" line="1075"/>
         <source>Upload %1/s</source>
         <extracomment>Example text: &quot;Upload 24Kb/s&quot; (%1 is replaced by 24Kb (translated))</extracomment>
-        <translation type="unfinished"/>
+        <translation>Nahrávanie %1/s</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1084"/>
@@ -2667,7 +2667,7 @@ Alternatively, you can restore all deleted files by downloading them from the se
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1131"/>
         <source>File %1 of %2</source>
-        <translation type="unfinished"/>
+        <translation>Súbor %1 z %2</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1136"/>
@@ -2677,7 +2677,7 @@ Alternatively, you can restore all deleted files by downloading them from the se
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1184"/>
         <source>About to start syncing</source>
-        <translation type="unfinished"/>
+        <translation>O chvíľu sa spustí synchronizácia</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folderstatusmodel.cpp" line="1193"/>
@@ -3080,12 +3080,12 @@ Upozorňujeme, že sa tým vyberie iba to, odkiaľ sa aktualizácie budú sťaho
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="405"/>
         <source>daily</source>
-        <translation type="unfinished"/>
+        <translation>denne</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="409"/>
         <source>enterprise</source>
-        <translation type="unfinished"/>
+        <translation>enterprise</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="437"/>
@@ -3107,7 +3107,7 @@ Downgrading versions is not possible immediately: changing from stable to enterp
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="449"/>
         <source>Changing update channel?</source>
-        <translation type="unfinished"/>
+        <translation>Chcete zmeniť kanál pre aktualizácie?</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="450"/>
@@ -3115,7 +3115,9 @@ Downgrading versions is not possible immediately: changing from stable to enterp
 - stable: contains tested versions considered reliable
 </source>
         <comment>starts list of available update channels, stable is always available</comment>
-        <translation type="unfinished"/>
+        <translation>Kanál určuje, ktoré aktualizácie budú ponúkané pre inštaláciu:
+- stabilný: obsahuje testované verzie považované za spoľahlivé
+</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="364"/>
@@ -4526,9 +4528,17 @@ Toto je nový experimentálny režim. Ak sa ho rozhodnete použiť, nahláste v�
         <translation>Súbor %1 bol stiahnutý, ale došlo k kolízii názvov lokálnych súborov!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="412"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="458"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="499"/>
         <source>Could not get file %1 from local DB</source>
         <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="270"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="316"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="357"/>
+        <source>could not get file %1 from local DB</source>
+        <translation>nie je možné získať súbor %1 z lokálnej DB</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="283"/>
@@ -4546,13 +4556,6 @@ Toto je nový experimentálny režim. Ak sa ho rozhodnete použiť, nahláste v�
         <location filename="../src/libsync/propagatorjobs.cpp" line="299"/>
         <source>The file %1 is currently in use</source>
         <translation>Súbor %1 sa v súčasnosti používa</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="270"/>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="316"/>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="357"/>
-        <source>could not get file %1 from local DB</source>
-        <translation>nie je možné získať súbor %1 z lokálnej DB</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="321"/>
