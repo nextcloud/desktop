@@ -765,5 +765,19 @@ final class ItemModifyTests: XCTestCase {
                 .replacingOccurrences(of: Self.account.davFilesUrl, with: "")
         )
         XCTAssertEqual(trashedFolderItem.parentItemIdentifier, .trashContainer)
+
+        let trashChildItemMetadata = Self.dbManager.itemMetadataFromOcId(itemMetadata.ocId)
+        XCTAssertNotNil(trashChildItemMetadata)
+        XCTAssertEqual(trashChildItemMetadata?.isTrashed, true)
+        XCTAssertEqual(
+            trashChildItemMetadata?.serverUrl,
+            trashedFolderItem.metadata.serverUrl + "/" + trashedFolderItem.filename
+        )
+        XCTAssertEqual(trashChildItemMetadata?.trashbinFileName, itemMetadata.fileName)
+        XCTAssertEqual(
+            trashChildItemMetadata?.trashbinOriginalLocation,
+            (itemMetadata.serverUrl + "/" + itemMetadata.fileName)
+                .replacingOccurrences(of: Self.account.davFilesUrl + "/", with: "")
+        )
     }
 }
