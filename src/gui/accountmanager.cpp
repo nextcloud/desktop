@@ -73,6 +73,9 @@ constexpr auto networkProxyPasswordKeychainKeySuffixC = "_proxy_password";
 constexpr auto legacyRelativeConfigLocationC = "/ownCloud/owncloud.cfg";
 constexpr auto legacyCfgFileNameC = "owncloud.cfg";
 
+constexpr auto unbrandedRelativeConfigLocationC = "/Nextcloud/nextcloud.cfg";
+constexpr auto unbrandedCfgFileNameC = "nextcloud.cfg";
+
 // The maximum versions that this client can read
 constexpr auto maxAccountsVersion = 2;
 constexpr auto maxAccountVersion = 1;
@@ -192,10 +195,16 @@ bool AccountManager::restoreFromLegacySettings()
         const auto legacyCfgFileNamePath = QString(QStringLiteral("/") + legacyCfgFileNameC);
         const auto legacyCfgFileRelativePath = QString(legacyRelativeConfigLocationC);
 
-        const auto legacyLocations = QVector<QString>{legacy2_4CfgFileParentFolder + legacyCfgFileRelativePath,
-                                                      legacy2_5CfgFileParentFolder + legacyCfgFileRelativePath,
-                                                      legacyCfgFileParentFolder + legacyCfgFileNamePath,
-                                                      legacyCfgFileGrandParentFolder + legacyCfgFileRelativePath};
+        auto legacyLocations = QVector<QString>{legacy2_4CfgFileParentFolder + legacyCfgFileRelativePath,
+                                                legacy2_5CfgFileParentFolder + legacyCfgFileRelativePath,
+                                                legacyCfgFileParentFolder + legacyCfgFileNamePath,
+                                                legacyCfgFileGrandParentFolder + legacyCfgFileRelativePath};
+
+        if (Theme::instance()->isBranded()) {
+            const auto unbrandedCfgFileNamePath = QString(QStringLiteral("/") + unbrandedCfgFileNameC);
+            const auto unbrandedCfgFileRelativePath = QString(unbrandedRelativeConfigLocationC);
+            legacyLocations.append({legacyCfgFileParentFolder + unbrandedCfgFileNamePath, legacyCfgFileGrandParentFolder + unbrandedCfgFileRelativePath});
+        }
 
         for (const auto &configFile : legacyLocations) {
             auto oCSettings = std::make_unique<QSettings>(configFile, QSettings::IniFormat);
