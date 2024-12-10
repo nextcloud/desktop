@@ -244,13 +244,25 @@ public class MockRemoteInterface: RemoteInterface {
         let oldPath = sourceItem.remotePath
         sourceItem.remotePath = remotePathDestination
 
-        print("Moved \(sourceItem.name) to \(remotePathDestination)")
+        let isTrashed = remotePathDestination.hasPrefix(account.trashUrl)
+        print("Moved \(sourceItem.name) to \(remotePathDestination) (isTrashed: \(isTrashed))")
 
         var children = sourceItem.children
 
         while !children.isEmpty {
             var nextChildren = [MockRemoteItem]()
             for child in children {
+                if isTrashed {
+                    if child.trashbinFileName == nil || child.trashbinFileName?.isEmpty == true {
+                        child.trashbinFileName = child.name
+                    }
+                    if child.remotePath.hasPrefix(account.davFilesUrl) {
+                        child.trashbinOriginalLocation = child.remotePath.replacingOccurrences(
+                            of: account.davFilesUrl + "/", with: ""
+                        )
+                    }
+                }
+
                 let childNewPath =
                     child.remotePath.replacingOccurrences(of: oldPath, with: remotePathDestination)
                 print("Updating child path \(child.remotePath) to \(childNewPath)")
