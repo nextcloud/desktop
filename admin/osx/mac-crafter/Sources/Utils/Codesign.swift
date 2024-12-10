@@ -45,7 +45,9 @@ func isExecutable(_ path: String) throws -> Bool {
         throw CodeSigningError.failedToCodeSign("Failed to determine if \(path) is an executable.")
     }
 
-    let outputData = outPipe.fileHandleForReading.readDataToEndOfFile()
+    let outputFileHandle = outPipe.fileHandleForReading
+    let outputData = outputFileHandle.readDataToEndOfFile()
+    try outputFileHandle.close()
     let output = String(data: outputData, encoding: .utf8) ?? ""
     return output.contains("Mach-O 64-bit executable")
 }
