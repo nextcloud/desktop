@@ -6,7 +6,9 @@
 //
 
 import Foundation
+import NextcloudFileProviderKit
 import NextcloudKit
+import UniformTypeIdentifiers
 
 public class MockRemoteItem: Equatable {
     public var parent: MockRemoteItem?
@@ -115,5 +117,41 @@ public class MockRemoteItem: Equatable {
         trashItem.size = size
         trashItem.filePath = (parent?.remotePath ?? "") + "/" + name
         return trashItem
+    }
+
+    public func toItemMetadata(account: Account) -> ItemMetadata {
+        let fileName = trashbinOriginalLocation?.split(separator: "/").last?.toString() ?? name
+
+        let metadata = ItemMetadata()
+        metadata.ocId = identifier
+        metadata.etag = versionIdentifier
+        metadata.directory = directory
+        metadata.name = fileName
+        metadata.fileName = fileName
+        metadata.fileNameView = fileName
+        metadata.trashbinOriginalLocation = trashbinOriginalLocation ?? ""
+        metadata.serverUrl = remotePath
+        metadata.serverUrl.removeSubrange(
+            remotePath.index(
+                remotePath.endIndex, offsetBy: -(fileName.count + 1) // Remove trailing slash
+            )..<remotePath.endIndex
+        )
+        metadata.date = modificationDate
+        metadata.creationDate = creationDate
+        metadata.size = data?.count as? Int64 ?? 0
+        metadata.urlBase = account.serverUrl
+        metadata.userId = account.id
+        metadata.user = account.username
+        metadata.account = account.ncKitAccount
+
+        if (trashbinOriginalLocation != nil) {
+            metadata.trashbinFileName = name
+        }
+        if directory {
+            metadata.classFile = NKCommon.TypeClassFile.directory.rawValue
+            metadata.contentType = UTType.folder.identifier
+        }
+
+        return metadata
     }
 }
