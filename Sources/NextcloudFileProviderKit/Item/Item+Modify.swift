@@ -668,9 +668,9 @@ public extension Item {
         // remote changes and then, upon user interaction, will try to modify the item.
         // That is, if the parent item has changed at all (it might not have)
         if parentItemIdentifier == .rootContainer {
-            parentItemServerUrl = modifiedItem.account.davFilesUrl
+            parentItemServerUrl = account.davFilesUrl
         } else if parentItemIdentifier == .trashContainer {
-            parentItemServerUrl = modifiedItem.account.trashUrl
+            parentItemServerUrl = account.trashUrl
         } else {
             guard let parentItemMetadata = dbManager.directoryMetadata(
                 ocId: parentItemIdentifier.rawValue
