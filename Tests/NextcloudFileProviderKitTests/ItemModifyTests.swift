@@ -650,33 +650,10 @@ final class ItemModifyTests: XCTestCase {
         remoteFolder.children = [remoteItem]
         remoteItem.parent = remoteFolder
 
-        let folderMetadata = ItemMetadata()
-        folderMetadata.ocId = remoteFolder.identifier
-        folderMetadata.etag = remoteFolder.versionIdentifier
-        folderMetadata.directory = remoteFolder.directory
-        folderMetadata.name = remoteFolder.name
-        folderMetadata.fileName = remoteFolder.name
-        folderMetadata.fileNameView = remoteFolder.name
-        folderMetadata.serverUrl = Self.account.davFilesUrl
-        folderMetadata.urlBase = Self.account.serverUrl
-        folderMetadata.userId = Self.account.id
-        folderMetadata.user = Self.account.username
-        folderMetadata.account = Self.account.ncKitAccount
-
+        let folderMetadata = remoteFolder.toItemMetadata(account: Self.account)
         Self.dbManager.addItemMetadata(folderMetadata)
 
-        let itemMetadata = ItemMetadata()
-        itemMetadata.ocId = remoteItem.identifier
-        itemMetadata.etag = remoteItem.versionIdentifier
-        itemMetadata.name = remoteItem.name
-        itemMetadata.fileName = remoteItem.name
-        itemMetadata.fileNameView = remoteItem.name
-        itemMetadata.serverUrl = folderMetadata.serverUrl + "/" + folderMetadata.fileName
-        itemMetadata.urlBase = Self.account.serverUrl
-        itemMetadata.userId = Self.account.id
-        itemMetadata.user = Self.account.username
-        itemMetadata.account = Self.account.ncKitAccount
-
+        let itemMetadata = remoteItem.toItemMetadata(account: Self.account)
         Self.dbManager.addItemMetadata(itemMetadata)
 
         let folderItem = Item(
@@ -763,36 +740,13 @@ final class ItemModifyTests: XCTestCase {
         remoteFolder.children = [remoteItem]
         remoteItem.parent = remoteFolder
 
-        let folderMetadata = ItemMetadata()
-        folderMetadata.ocId = remoteFolder.identifier
-        folderMetadata.etag = remoteFolder.versionIdentifier
-        folderMetadata.directory = remoteFolder.directory
-        folderMetadata.name = remoteFolder.name
-        folderMetadata.fileName = remoteFolder.name
-        folderMetadata.fileNameView = remoteFolder.name
-        folderMetadata.serverUrl = Self.account.davFilesUrl
-        folderMetadata.urlBase = Self.account.serverUrl
-        folderMetadata.userId = Self.account.id
-        folderMetadata.user = Self.account.username
-        folderMetadata.account = Self.account.ncKitAccount
-
+        let folderMetadata = remoteFolder.toItemMetadata(account: Self.account)
         Self.dbManager.addItemMetadata(folderMetadata)
 
         let renamedFolderMetadata = ItemMetadata(value: folderMetadata)
         renamedFolderMetadata.fileName = "folder (renamed)"
 
-        let itemMetadata = ItemMetadata()
-        itemMetadata.ocId = remoteItem.identifier
-        itemMetadata.etag = remoteItem.versionIdentifier
-        itemMetadata.name = remoteItem.name
-        itemMetadata.fileName = remoteItem.name
-        itemMetadata.fileNameView = remoteItem.name
-        itemMetadata.serverUrl = folderMetadata.serverUrl + "/" + folderMetadata.fileName
-        itemMetadata.urlBase = Self.account.serverUrl
-        itemMetadata.userId = Self.account.id
-        itemMetadata.user = Self.account.username
-        itemMetadata.account = Self.account.ncKitAccount
-
+        let itemMetadata = remoteItem.toItemMetadata(account: Self.account)
         Self.dbManager.addItemMetadata(itemMetadata)
 
         let folderItem = Item(
