@@ -574,7 +574,7 @@ public extension Item {
             ), error.fileProviderError)
         }
 
-        let postDeleteMetadata = ItemMetadata.fromNKFile(targetItemNKFile, account: account)
+        let postDeleteMetadata = targetItemNKFile.toItemMetadata()
         dbManager.addItemMetadata(postDeleteMetadata)
 
         let postDeleteItem = Item(
@@ -617,7 +617,7 @@ public extension Item {
         // Update state of child files
         childFiles.removeFirst() // This is the target path, already scanned
         for file in childFiles {
-            let metadata = ItemMetadata.fromNKFile(file, account: account)
+            let metadata = file.toItemMetadata()
             dbManager.addItemMetadata(metadata)
         }
 
@@ -689,7 +689,7 @@ public extension Item {
             return (modifiedItem, NSFileProviderError(.cannotSynchronize))
         }
 
-        let restoredItemMetadata = ItemMetadata.fromNKFile(target, account: account)
+        let restoredItemMetadata = target.toItemMetadata()
         guard let parentItemIdentifier = dbManager.parentItemIdentifierFromMetadata(
             restoredItemMetadata
         ) else {
