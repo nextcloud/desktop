@@ -554,7 +554,7 @@ final class ItemModifyTests: XCTestCase {
         XCTAssertEqual(
             trashedItem.metadata.trashbinOriginalLocation,
             (itemMetadata.serverUrl + "/" + itemMetadata.fileName)
-                .replacingOccurrences(of: Self.account.davFilesUrl, with: "")
+                .replacingOccurrences(of: Self.account.davFilesUrl + "/", with: "")
         )
         XCTAssertEqual(trashedItem.parentItemIdentifier, .trashContainer)
     }
@@ -617,7 +617,7 @@ final class ItemModifyTests: XCTestCase {
         XCTAssertEqual(
             trashedItem.metadata.trashbinOriginalLocation,
             (remoteFolder.remotePath + "/" + renamedItemMetadata.fileName)
-                .replacingOccurrences(of: Self.account.davFilesUrl, with: "")
+                .replacingOccurrences(of: Self.account.davFilesUrl + "/", with: "")
         )
         XCTAssertEqual(trashedItem.parentItemIdentifier, .trashContainer)
     }
@@ -716,7 +716,7 @@ final class ItemModifyTests: XCTestCase {
         XCTAssertEqual(
             trashedFolderItem.metadata.trashbinOriginalLocation,
             (folderMetadata.serverUrl + "/" + folderMetadata.fileName)
-                .replacingOccurrences(of: Self.account.davFilesUrl, with: "")
+                .replacingOccurrences(of: Self.account.davFilesUrl + "/", with: "")
         )
         XCTAssertEqual(trashedFolderItem.parentItemIdentifier, .trashContainer)
 
@@ -832,7 +832,7 @@ final class ItemModifyTests: XCTestCase {
         XCTAssertEqual(
             trashedFolderItem.metadata.trashbinOriginalLocation,
             (renamedFolderMetadata.serverUrl + "/" + renamedFolderMetadata.fileName)
-                .replacingOccurrences(of: Self.account.davFilesUrl, with: "")
+                .replacingOccurrences(of: Self.account.davFilesUrl + "/", with: "")
         )
         XCTAssertEqual(trashedFolderItem.parentItemIdentifier, .trashContainer)
 

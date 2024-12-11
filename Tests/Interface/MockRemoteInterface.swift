@@ -371,7 +371,7 @@ public class MockRemoteInterface: RemoteInterface {
         }
 
         let relativePath =
-            item.remotePath.replacingOccurrences(of: account.davFilesUrl, with: "")
+            item.remotePath.replacingOccurrences(of: account.davFilesUrl + "/", with: "")
         item.trashbinOriginalLocation = relativePath
 
         let (_, _, error) = await move(
