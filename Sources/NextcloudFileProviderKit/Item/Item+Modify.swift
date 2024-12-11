@@ -678,6 +678,17 @@ public extension Item {
             return (modifiedItem, enumerateError.fileProviderError)
         }
 
+        guard target.ocId == modifiedItem.itemIdentifier.rawValue else {
+            Self.logger.error(
+                """
+                Restored item \(originalLocation, privacy: .public)
+                does not match \(modifiedItem.filename, privacy: .public)
+                (it is likely that when restoring from the trash, there was another identical item).
+                """
+            ) // TODO: Be more permissive of this and just rescan remote state
+            return (modifiedItem, NSFileProviderError(.cannotSynchronize))
+        }
+
         let restoredItemMetadata = ItemMetadata.fromNKFile(target, account: account)
         guard let parentItemIdentifier = dbManager.parentItemIdentifierFromMetadata(
             restoredItemMetadata
