@@ -113,7 +113,7 @@ public class MockRemoteItem: Equatable {
     public func toNKTrash() -> NKTrash {
         let trashItem = NKTrash()
         trashItem.ocId = identifier
-        trashItem.fileName = name
+        trashItem.fileName = trashbinOriginalLocation?.split(separator: "/").last?.toString() ?? name
         trashItem.directory = directory
         trashItem.trashbinOriginalLocation = remotePath
         trashItem.trashbinFileName = name
