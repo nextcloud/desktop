@@ -203,6 +203,6 @@ final class ItemDeleteTests: XCTestCase {
         )
         XCTAssertEqual(postTrashingMetadata?.isTrashed, true)
         XCTAssertEqual(postTrashingMetadata?.trashbinFileName, "file") // Remember we need to sync
-        XCTAssertEqual(postTrashingMetadata?.trashbinOriginalLocation, itemMetadata.serverUrl)
+        XCTAssertEqual(postTrashingMetadata?.trashbinOriginalLocation, "file")
     }
 }

@@ -87,7 +87,7 @@ public extension Item {
             metadata.trashbinDeletionTime = Date()
             metadata.trashbinOriginalLocation =
                 String(self.metadata.serverUrl + "/" + filename).replacingOccurrences(
-                    of: self.metadata.urlBase + "/", with: ""
+                    of: account.davFilesUrl + "/", with: ""
                 )
 
             dbManager.addItemMetadata(metadata)
