@@ -482,11 +482,18 @@ final class MockRemoteInterfaceTests: XCTestCase {
         itemA_C.children = [itemA_C_D]
         itemA_C_D.parent = itemA_C
 
+        let itemA_C_predeleteName = itemA_C.name
+
         let result = await remoteInterface.delete(
             remotePath: Self.account.davFilesUrl + "/a/c", account: Self.account
         )
         XCTAssertEqual(result.error, .success)
         XCTAssertEqual(itemA.children, [])
+        XCTAssertEqual(remoteInterface.rootTrashItem?.children.contains(itemA_C), true)
+        XCTAssertEqual(itemA_C.name, itemA_C_predeleteName + " (trashed)")
+        XCTAssertEqual(itemA_C.remotePath, Self.account.trashUrl + "/c (trashed)")
+        XCTAssertEqual(itemA_C_D.trashbinOriginalLocation, "a/c/d")
+        XCTAssertEqual(itemA_C_D.remotePath, Self.account.trashUrl + "/c (trashed)/d")
     }
 
     func testFetchUserProfile() async {
