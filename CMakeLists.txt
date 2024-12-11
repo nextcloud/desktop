@@ -99,13 +99,14 @@ include_directories(
     ${CMAKE_CURRENT_BINARY_DIR}/src
 )
 
+option(WITH_CRASHREPORTER "Build support for an integrated crash reporter" ON)
 # disable the crashreporter if libcrashreporter-qt is not available or we're building for ARM
 if( CMAKE_SYSTEM_PROCESSOR MATCHES "arm" OR NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/src/3rdparty/libcrashreporter-qt/CMakeLists.txt")
     set( WITH_CRASHREPORTER OFF )
 endif()
 
 if(NOT WITH_CRASHREPORTER)
-    message(STATUS "Build of crashreporter disabled.")
+    message(STATUS "-- Build of crashreporter disabled.")
 endif()
 
 include(GNUInstallDirs)
@@ -165,9 +166,9 @@ if(NO_MSG_HANDLER)
 endif()
 
 if(BUILD_UPDATER)
-   message("Compiling with updater")
+   message(STATUS "Compiling with updater")
 else()
-   message("Compiling without updater")
+   message(STATUS "Compiling without updater")
 endif()
 
 # this option builds the shell integration

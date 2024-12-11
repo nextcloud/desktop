@@ -1,6 +1,8 @@
 PROJECT( CrashReporter )
 cmake_policy(SET CMP0017 NEW)
 
+message(STATUS "Build of crashreporter enabled.")
+
 list(APPEND crashreporter_SOURCES main.cpp)
 list(APPEND crashreporter_RC resources.qrc)
 
