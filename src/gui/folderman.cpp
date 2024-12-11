@@ -44,7 +44,6 @@ constexpr auto settingsAccountsC = "Accounts";
 constexpr auto settingsFoldersC = "Folders";
 constexpr auto settingsVersionC = "version";
 constexpr auto maxFoldersVersion = 1;
-const char versionC[] = "version";
 
 int numberOfSyncJournals(const QString &path)
 {
