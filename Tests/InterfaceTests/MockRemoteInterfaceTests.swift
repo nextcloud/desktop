@@ -507,7 +507,7 @@ final class MockRemoteInterfaceTests: XCTestCase {
             username: Self.account.username,
             userId: Self.account.id,
             serverUrl: Self.account.serverUrl,
-            trashbinOriginalLocation: "/a"
+            trashbinOriginalLocation: "a"
         )
         let itemB = MockRemoteItem(
             identifier: "b",
@@ -518,7 +518,7 @@ final class MockRemoteInterfaceTests: XCTestCase {
             username: Self.account.username,
             userId: Self.account.id,
             serverUrl: Self.account.serverUrl,
-            trashbinOriginalLocation: "/b"
+            trashbinOriginalLocation: "b"
         )
         rootTrashItem.children = [itemA, itemB]
         itemA.parent = rootTrashItem
