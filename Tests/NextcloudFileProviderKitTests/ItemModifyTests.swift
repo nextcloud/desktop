@@ -804,4 +804,46 @@ final class ItemModifyTests: XCTestCase {
                 .replacingOccurrences(of: Self.account.davFilesUrl + "/", with: "")
         )
     }
+
+    func testMoveFileOutOfTrash() async throws {
+        let remoteInterface = MockRemoteInterface(rootItem: rootItem, rootTrashItem: rootTrashItem)
+        let itemMetadata = remoteItem.toItemMetadata(account: Self.account)
+        Self.dbManager.addItemMetadata(itemMetadata)
+
+        let item = Item(
+            metadata: itemMetadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: remoteInterface
+        )
+        let trashItem = Item(
+            metadata: itemMetadata,
+            parentItemIdentifier: .trashContainer,
+            account: Self.account,
+            remoteInterface: remoteInterface
+        )
+
+        item.dbManager = Self.dbManager
+
+        let (trashedItemMaybe, trashError) = await item.modify(
+            itemTarget: trashItem,
+            changedFields: [.parentItemIdentifier],
+            contents: nil,
+            dbManager: Self.dbManager
+        )
+        XCTAssertNil(trashError)
+        let trashedItem = try XCTUnwrap(trashedItemMaybe)
+        trashedItem.dbManager = Self.dbManager
+        XCTAssertEqual(trashedItem.parentItemIdentifier, .trashContainer)
+
+        let (untrashedItemMaybe, untrashError) = await trashedItem.modify(
+            itemTarget: item,
+            changedFields: [.parentItemIdentifier],
+            contents: nil,
+            dbManager: Self.dbManager
+        )
+        XCTAssertNil(untrashError)
+        let untrashedItem = try XCTUnwrap(untrashedItemMaybe)
+        XCTAssertEqual(untrashedItem.parentItemIdentifier, .rootContainer)
+    }
 }
