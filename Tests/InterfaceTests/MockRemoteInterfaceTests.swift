@@ -535,6 +535,34 @@ final class MockRemoteInterfaceTests: XCTestCase {
         XCTAssertEqual(items[1].ocId, itemB.identifier)
     }
 
+    func testRestoreFromTrash() async {
+        let remoteInterface = MockRemoteInterface(rootItem: rootItem, rootTrashItem: rootTrashItem)
+        let itemA = MockRemoteItem(
+            identifier: "a",
+            name: "a (trashed)",
+            remotePath: Self.account.trashUrl + "/a (trashed)",
+            directory: true,
+            account: Self.account.ncKitAccount,
+            username: Self.account.username,
+            userId: Self.account.id,
+            serverUrl: Self.account.serverUrl,
+            trashbinOriginalLocation: "a"
+        )
+        rootTrashItem.children = [itemA]
+        itemA.parent = rootTrashItem
+
+        let (_, _, error) =
+            await remoteInterface.restoreFromTrash(filename: itemA.name, account: Self.account)
+        XCTAssertEqual(error, .success)
+        XCTAssertEqual(rootTrashItem.children.count, 0)
+        XCTAssertEqual(rootItem.children.count, 1)
+        XCTAssertEqual(rootItem.children[0].identifier, "a")
+        XCTAssertEqual(itemA.identifier, "a")
+        XCTAssertEqual(itemA.remotePath, Self.account.davFilesUrl + "/a")
+        XCTAssertEqual(itemA.name, "a")
+        XCTAssertNil(itemA.trashbinOriginalLocation)
+    }
+
     func testFetchUserProfile() async {
         let remoteInterface = MockRemoteInterface(rootItem: rootItem)
         let (account, profile, _, error) = await remoteInterface.fetchUserProfile(
