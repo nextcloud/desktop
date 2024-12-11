@@ -258,6 +258,8 @@ public class MockRemoteInterface: RemoteInterface {
                             of: account.davFilesUrl + "/", with: ""
                         )
                     }
+                } else {
+                    child.trashbinOriginalLocation = nil
                 }
 
                 let childNewPath =
