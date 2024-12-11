@@ -624,6 +624,75 @@ public extension Item {
         return (postDeleteItem, nil)
     }
 
+    private static func restoreFromTrash(
+        _ modifiedItem: Item,
+        account: Account,
+        dbManager: FilesDatabaseManager,
+        domain: NSFileProviderDomain?
+    ) async -> (Item, Error?) {
+        let (_, _, restoreError) = await modifiedItem.remoteInterface.restoreFromTrash(
+            filename: modifiedItem.filename,
+            account: account,
+            options: .init(),
+            taskHandler: { _ in }
+        )
+        guard restoreError == .success else {
+            Self.logger.error(
+                """
+                Could not restore item \(modifiedItem.filename, privacy: .public) from trash
+                Received error: \(restoreError.errorDescription, privacy: .public)
+                """
+            )
+            return (modifiedItem, restoreError.fileProviderError)
+        }
+        guard modifiedItem.metadata.trashbinOriginalLocation != "" else {
+            Self.logger.error(
+                """
+                Could not scan restored item \(modifiedItem.filename, privacy: .public).
+                The trashed file's original location is invalid.
+                """
+            ) // TODO: Be more permissive of this and just rescan remote state
+            return (modifiedItem, NSFileProviderError(.cannotSynchronize))
+        }
+        let originalLocation =
+            account.davFilesUrl + "/" + modifiedItem.metadata.trashbinOriginalLocation
+
+        let (_, files, _, enumerateError) = await modifiedItem.remoteInterface.enumerate(
+            remotePath: originalLocation,
+            depth: .target,
+            showHiddenFiles: true,
+            includeHiddenFiles: [],
+            requestBody: nil,
+            account: account,
+            options: .init(),
+            taskHandler: { _ in }
+        )
+        guard enumerateError == .success, !files.isEmpty, let target = files.first else {
+            Self.logger.error(
+                """
+                Could not scan restored state of file \(originalLocation, privacy: .public)
+                Received error: \(enumerateError.errorDescription, privacy: .public)
+                Files: \(files.count, privacy: .public)
+                """ // TODO: Be more permissive of this and just rescan remote state
+            )
+            return (modifiedItem, enumerateError.fileProviderError)
+        }
+
+        let restoredItemMetadata = ItemMetadata.fromNKFile(target, account: account)
+        guard let parentItemIdentifier = dbManager.parentItemIdentifierFromMetadata(
+            restoredItemMetadata
+        ) else {
+            Self.logger.error("Could not find parent item identifier for \(originalLocation)")
+            return (modifiedItem, NSFileProviderError(.cannotSynchronize))
+        }
+        return (Item(
+            metadata: restoredItemMetadata,
+            parentItemIdentifier: parentItemIdentifier,
+            account: account,
+            remoteInterface: modifiedItem.remoteInterface
+        ), nil)
+    }
+
     func modify(
         itemTarget: NSFileProviderItem,
         baseVersion: NSFileProviderItemVersion = NSFileProviderItemVersion(),
@@ -747,61 +816,19 @@ public extension Item {
                 modifiedItem.parentItemIdentifier == .trashContainer &&
                 modifiedItem.metadata.isTrashed
             {
-                let (_, _, restoreError) = await remoteInterface.restoreFromTrash(
-                    filename: modifiedItem.filename,
-                    account: account,
-                    options: .init(),
-                    taskHandler: { _ in }
+                let (restoredItem, restoreError) = await Self.restoreFromTrash(
+                    modifiedItem, account: account, dbManager: dbManager, domain: domain
                 )
-                guard restoreError == .success else {
+                guard restoreError == nil else {
                     Self.logger.error(
                         """
-                        Could not restore item \(modifiedItem.filename, privacy: .public) from trash
-                        Received error: \(restoreError.errorDescription, privacy: .public)
+                        Could not modify item \(modifiedItem.filename, privacy: .public)
+                        as the procedure to restore it from the trash has failed.
                         """
                     )
-                    return (nil, restoreError.fileProviderError)
+                    return (modifiedItem, restoreError)
                 }
-                guard modifiedItem.metadata.trashbinOriginalLocation != "" else {
-                    Self.logger.error(
-                        """
-                        Could not scan restored item \(self.filename, privacy: .public).
-                        The trashed file's original location is invalid.
-                        """
-                    ) // TODO: Be more permissive of this and just rescan remote state
-                    return (modifiedItem, NSFileProviderError(.cannotSynchronize))
-                }
-                let originalLocation =
-                    account.davFilesUrl + "/" + modifiedItem.metadata.trashbinOriginalLocation
-
-                let (_, files, _, enumerateError) = await remoteInterface.enumerate(
-                    remotePath: originalLocation,
-                    depth: .target,
-                    showHiddenFiles: true,
-                    includeHiddenFiles: [],
-                    requestBody: nil,
-                    account: account,
-                    options: .init(),
-                    taskHandler: { _ in }
-                )
-                guard enumerateError == .success, !files.isEmpty, let target = files.first else {
-                    Self.logger.error(
-                        """
-                        Could not scan restored state of file \(originalLocation, privacy: .public)
-                        Received error: \(enumerateError.errorDescription, privacy: .public)
-                        Files: \(files.count, privacy: .public)
-                        """ // TODO: Be more permissive of this and just rescan remote state
-                    )
-                    return (modifiedItem, enumerateError.fileProviderError)
-                }
-
-                let restoredItemMetadata = ItemMetadata.fromNKFile(target, account: account)
-                modifiedItem = Item(
-                    metadata: restoredItemMetadata,
-                    parentItemIdentifier: parentItemIdentifier,
-                    account: account,
-                    remoteInterface: remoteInterface
-                )
+                modifiedItem = restoredItem
             }
 
             // Maybe during the untrashing the item's intended modifications were complete.
