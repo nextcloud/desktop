@@ -94,10 +94,11 @@ final class EnumeratorTests: XCTestCase {
     func testRootEnumeration() async throws {
         let db = Self.dbManager.ncDatabase() // Strong ref for in memory test db
         debugPrint(db) // Avoid build-time warning about unused variable, ensure compiler won't free
-        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+        let remoteInterface = MockRemoteInterface(rootItem: rootItem)
 
         let enumerator = Enumerator(
             enumeratedItemIdentifier: .rootContainer,
+            account: Self.account,
             remoteInterface: remoteInterface,
             dbManager: Self.dbManager
         )
@@ -129,6 +130,7 @@ final class EnumeratorTests: XCTestCase {
         let storedFolderItem = try XCTUnwrap(
             Item.storedItem(
                 identifier: .init(remoteFolder.identifier),
+                account: Self.account,
                 remoteInterface: remoteInterface,
                 dbManager: Self.dbManager
             )
@@ -148,10 +150,11 @@ final class EnumeratorTests: XCTestCase {
     func testWorkingSetEnumeration() async throws {
         let db = Self.dbManager.ncDatabase() // Strong ref for in memory test db
         debugPrint(db)
-        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+        let remoteInterface = MockRemoteInterface(rootItem: rootItem)
 
         let enumerator = Enumerator(
             enumeratedItemIdentifier: .workingSet,
+            account: Self.account,
             remoteInterface: remoteInterface,
             dbManager: Self.dbManager
         )
@@ -177,10 +180,11 @@ final class EnumeratorTests: XCTestCase {
     func testWorkingSetFastChangeEnumeration() async throws {
         let db = Self.dbManager.ncDatabase() // Strong ref for in memory test db
         debugPrint(db)
-        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+        let remoteInterface = MockRemoteInterface(rootItem: rootItem)
 
         let enumerator = Enumerator(
             enumeratedItemIdentifier: .workingSet,
+            account: Self.account,
             remoteInterface: remoteInterface,
             dbManager: Self.dbManager
         )
@@ -220,10 +224,11 @@ final class EnumeratorTests: XCTestCase {
     func testWorkingSetSlowChangeEnumeration() async throws {
         let db = Self.dbManager.ncDatabase() // Strong ref for in memory test db
         debugPrint(db)
-        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+        let remoteInterface = MockRemoteInterface(rootItem: rootItem)
 
         let enumerator = Enumerator(
             enumeratedItemIdentifier: .workingSet,
+            account: Self.account,
             remoteInterface: remoteInterface,
             dbManager: Self.dbManager,
             fastEnumeration: false
@@ -250,7 +255,7 @@ final class EnumeratorTests: XCTestCase {
     func testFolderEnumeration() async throws {
         let db = Self.dbManager.ncDatabase() // Strong ref for in memory test db
         debugPrint(db)
-        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+        let remoteInterface = MockRemoteInterface(rootItem: rootItem)
 
         let oldEtag = "OLD"
         let folderMetadata = ItemMetadata()
@@ -270,6 +275,7 @@ final class EnumeratorTests: XCTestCase {
 
         let enumerator = Enumerator(
             enumeratedItemIdentifier: .init(remoteFolder.identifier),
+            account: Self.account,
             remoteInterface: remoteInterface,
             dbManager: Self.dbManager
         )
@@ -284,6 +290,7 @@ final class EnumeratorTests: XCTestCase {
         let storedFolderItem = try XCTUnwrap(
             Item.storedItem(
                 identifier: .init(remoteFolder.identifier),
+                account: Self.account,
                 remoteInterface: remoteInterface,
                 dbManager: Self.dbManager
             )
@@ -309,7 +316,7 @@ final class EnumeratorTests: XCTestCase {
     func testEnumerateFile() async throws {
         let db = Self.dbManager.ncDatabase() // Strong ref for in memory test db
         debugPrint(db)
-        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+        let remoteInterface = MockRemoteInterface(rootItem: rootItem)
 
         let folderMetadata = ItemMetadata()
         folderMetadata.ocId = remoteFolder.identifier
@@ -343,6 +350,7 @@ final class EnumeratorTests: XCTestCase {
 
         let enumerator = Enumerator(
             enumeratedItemIdentifier: .init(remoteItemA.identifier),
+            account: Self.account,
             remoteInterface: remoteInterface,
             dbManager: Self.dbManager
         )
@@ -364,7 +372,7 @@ final class EnumeratorTests: XCTestCase {
     func testFolderAndContentsChangeEnumeration() async throws {
         let db = Self.dbManager.ncDatabase() // Strong ref for in memory test db
         debugPrint(db)
-        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+        let remoteInterface = MockRemoteInterface(rootItem: rootItem)
 
         remoteFolder.children.removeAll(where: { $0.identifier == remoteItemB.identifier })
         remoteFolder.children.append(remoteItemC)
@@ -417,6 +425,7 @@ final class EnumeratorTests: XCTestCase {
 
         let enumerator = Enumerator(
             enumeratedItemIdentifier: .init(remoteFolder.identifier),
+            account: Self.account,
             remoteInterface: remoteInterface,
             dbManager: Self.dbManager
         )
@@ -463,6 +472,7 @@ final class EnumeratorTests: XCTestCase {
         let storedFolderItem = try XCTUnwrap(
             Item.storedItem(
                 identifier: .init(remoteFolder.identifier),
+                account: Self.account,
                 remoteInterface: remoteInterface,
                 dbManager: Self.dbManager
             )
@@ -497,7 +507,7 @@ final class EnumeratorTests: XCTestCase {
     func testFileMoveChangeEnumeration() async throws {
         let db = Self.dbManager.ncDatabase() // Strong ref for in memory test db
         debugPrint(db)
-        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+        let remoteInterface = MockRemoteInterface(rootItem: rootItem)
 
         remoteFolder.children.removeAll(where: { $0.identifier == remoteItemA.identifier })
         rootItem.children.append(remoteItemA)
@@ -553,6 +563,7 @@ final class EnumeratorTests: XCTestCase {
 
         let enumerator = Enumerator(
             enumeratedItemIdentifier: .rootContainer,
+            account: Self.account,
             remoteInterface: remoteInterface,
             dbManager: Self.dbManager
         )
@@ -577,6 +588,7 @@ final class EnumeratorTests: XCTestCase {
         let storedItemA = try XCTUnwrap(
             Item.storedItem(
                 identifier: .init(remoteItemA.identifier),
+                account: Self.account,
                 remoteInterface: remoteInterface,
                 dbManager: Self.dbManager
             )
@@ -591,7 +603,9 @@ final class EnumeratorTests: XCTestCase {
             Int(remoteItemA.modificationDate.timeIntervalSince1970)
         )
 
-        let storedRootItem = Item.rootContainer(remoteInterface: remoteInterface)
+        let storedRootItem = Item.rootContainer(
+            account: Self.account, remoteInterface: remoteInterface
+        )
         print(storedRootItem.metadata.serverUrl)
         storedRootItem.dbManager = Self.dbManager
         XCTAssertEqual(storedRootItem.childItemCount?.intValue, 3) // All items
@@ -599,6 +613,7 @@ final class EnumeratorTests: XCTestCase {
         let storedFolder = try XCTUnwrap(
             Item.storedItem(
                 identifier: .init(remoteFolder.identifier),
+                account: Self.account,
                 remoteInterface: remoteInterface,
                 dbManager: Self.dbManager
             )
@@ -610,7 +625,7 @@ final class EnumeratorTests: XCTestCase {
     func testFileLockStateEnumeration() async throws {
         let db = Self.dbManager.ncDatabase() // Strong ref for in memory test db
         debugPrint(db)
-        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+        let remoteInterface = MockRemoteInterface(rootItem: rootItem)
 
         remoteFolder.children.append(remoteItemC)
         remoteItemC.parent = remoteFolder
@@ -645,6 +660,7 @@ final class EnumeratorTests: XCTestCase {
 
         let enumerator = Enumerator(
             enumeratedItemIdentifier: .init(remoteFolder.identifier),
+            account: Self.account,
             remoteInterface: remoteInterface,
             dbManager: Self.dbManager
         )
@@ -677,6 +693,7 @@ final class EnumeratorTests: XCTestCase {
         let storedItemA = try XCTUnwrap(
             Item.storedItem(
                 identifier: .init(remoteItemA.identifier),
+                account: Self.account,
                 remoteInterface: remoteInterface,
                 dbManager: Self.dbManager
             )
@@ -684,6 +701,7 @@ final class EnumeratorTests: XCTestCase {
         let storedItemB = try XCTUnwrap(
             Item.storedItem(
                 identifier: .init(remoteItemB.identifier),
+                account: Self.account,
                 remoteInterface: remoteInterface,
                 dbManager: Self.dbManager
             )
@@ -691,6 +709,7 @@ final class EnumeratorTests: XCTestCase {
         let storedItemC = try XCTUnwrap(
             Item.storedItem(
                 identifier: .init(remoteItemC.identifier),
+                account: Self.account,
                 remoteInterface: remoteInterface,
                 dbManager: Self.dbManager
             )
@@ -710,7 +729,7 @@ final class EnumeratorTests: XCTestCase {
     func testEnsureNoEmptyItemNameEnumeration() async throws {
         let db = Self.dbManager.ncDatabase() // Strong ref for in memory test db
         debugPrint(db) // Avoid build-time warning about unused variable, ensure compiler won't free
-        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+        let remoteInterface = MockRemoteInterface(rootItem: rootItem)
 
         remoteItemA.name = ""
         remoteItemA.parent = remoteInterface.rootItem
@@ -718,6 +737,7 @@ final class EnumeratorTests: XCTestCase {
 
         let enumerator = Enumerator(
             enumeratedItemIdentifier: .rootContainer,
+            account: Self.account,
             remoteInterface: remoteInterface,
             dbManager: Self.dbManager
         )
@@ -736,6 +756,7 @@ final class EnumeratorTests: XCTestCase {
         let storedItemA = try XCTUnwrap(
             Item.storedItem(
                 identifier: .init(remoteItemA.identifier),
+                account: Self.account,
                 remoteInterface: remoteInterface,
                 dbManager: Self.dbManager
             )
@@ -749,11 +770,12 @@ final class EnumeratorTests: XCTestCase {
     func testListenerInvocations() async throws {
         let db = Self.dbManager.ncDatabase() // Strong ref for in memory test db
         debugPrint(db)
-        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+        let remoteInterface = MockRemoteInterface(rootItem: rootItem)
         let listener = MockEnumerationListener()
 
         let enumerator = Enumerator(
             enumeratedItemIdentifier: .workingSet,
+            account: Self.account,
             remoteInterface: remoteInterface,
             dbManager: Self.dbManager,
             listener: listener

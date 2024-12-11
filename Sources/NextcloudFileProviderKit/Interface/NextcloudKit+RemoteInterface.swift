@@ -12,31 +12,24 @@ import NextcloudKit
 
 extension NextcloudKit: RemoteInterface {
 
-    public var account: Account {
-        Account(
-            user: nkCommonInstance.user,
-            id: nkCommonInstance.userId,
-            serverUrl: nkCommonInstance.urlBase,
-            password: nkCommonInstance.password
-        )
-    }
-
-    public func setDelegate(_ delegate: any NKCommonDelegate) {
+    public func setDelegate(_ delegate: any NextcloudKitDelegate) {
         setup(delegate: delegate)
     }
 
     public func createFolder(
         remotePath: String,
+        account: Account,
         options: NKRequestOptions = .init(),
         taskHandler: @escaping (URLSessionTask) -> Void = { _ in }
     ) async -> (account: String, ocId: String?, date: NSDate?, error: NKError) {
         return await withCheckedContinuation { continuation in
             createFolder(
                 serverUrlFileName: remotePath,
+                account: account.ncKitAccount,
                 options: options,
                 taskHandler: taskHandler
-            ) { account, ocId, date, error in
-                continuation.resume(returning: (account, ocId, date, error))
+            ) { account, ocId, date, _, error in
+                continuation.resume(returning: (account, ocId, date as NSDate?, error))
             }
         }
     }
@@ -46,6 +39,7 @@ extension NextcloudKit: RemoteInterface {
         localPath: String, 
         creationDate: Date? = nil,
         modificationDate: Date? = nil,
+        account: Account,
         options: NKRequestOptions = .init(),
         requestHandler: @escaping (UploadRequest) -> Void = { _ in },
         taskHandler: @escaping (URLSessionTask) -> Void = { _ in },
@@ -56,7 +50,7 @@ extension NextcloudKit: RemoteInterface {
         etag: String?,
         date: NSDate?,
         size: Int64,
-        allHeaderFields: [AnyHashable : Any]?,
+        response: HTTPURLResponse?,
         afError: AFError?,
         remoteError: NKError
     ) {
@@ -66,18 +60,19 @@ extension NextcloudKit: RemoteInterface {
                 fileNameLocalPath: localPath,
                 dateCreationFile: creationDate,
                 dateModificationFile: modificationDate,
+                account: account.ncKitAccount,
                 options: options,
                 requestHandler: requestHandler,
                 taskHandler: taskHandler,
                 progressHandler: progressHandler
-            ) { account, ocId, etag, date, size, allHeaderFields, afError, nkError in
+            ) { account, ocId, etag, date, size, response, afError, nkError in
                 continuation.resume(returning: (
                     account,
                     ocId,
                     etag,
-                    date,
+                    date as NSDate?,
                     size,
-                    allHeaderFields,
+                    response?.response,
                     afError,
                     nkError
                 ))
@@ -89,18 +84,20 @@ extension NextcloudKit: RemoteInterface {
         remotePathSource: String,
         remotePathDestination: String,
         overwrite: Bool,
+        account: Account,
         options: NKRequestOptions,
         taskHandler: @escaping (URLSessionTask) -> Void
-    ) async -> (account: String, error: NKError) {
+    ) async -> (account: String, data: Data?, error: NKError) {
         return await withCheckedContinuation { continuation in
             moveFileOrFolder(
                 serverUrlFileNameSource: remotePathSource,
                 serverUrlFileNameDestination: remotePathDestination,
                 overwrite: overwrite,
+                account: account.ncKitAccount,
                 options: options,
                 taskHandler: taskHandler
-            ) { account, error in
-                continuation.resume(returning: (account, error))
+            ) { account, data, error in
+                continuation.resume(returning: (account, data?.data, error))
             }
         }
     }
@@ -108,6 +105,7 @@ extension NextcloudKit: RemoteInterface {
     public func download(
         remotePath: String,
         localPath: String,
+        account: Account,
         options: NKRequestOptions = .init(),
         requestHandler: @escaping (DownloadRequest) -> Void = { _ in },
         taskHandler: @escaping (URLSessionTask) -> Void = { _ in },
@@ -117,7 +115,7 @@ extension NextcloudKit: RemoteInterface {
         etag: String?,
         date: NSDate?,
         length: Int64,
-        allHeaderFields: [AnyHashable : Any]?,
+        response: HTTPURLResponse?,
         afError: AFError?,
         remoteError: NKError
     ) {
@@ -125,17 +123,18 @@ extension NextcloudKit: RemoteInterface {
             download(
                 serverUrlFileName: remotePath,
                 fileNameLocalPath: localPath,
+                account: account.ncKitAccount,
                 options: options,
                 requestHandler: requestHandler,
                 taskHandler: taskHandler,
                 progressHandler: progressHandler
-            ) { account, etag, date, length, allHeaderFields, afError, remoteError in
+            ) { account, etag, date, length, data, afError, remoteError in
                 continuation.resume(returning: (
                     account, 
                     etag,
-                    date,
+                    date as NSDate?,
                     length,
-                    allHeaderFields,
+                    data?.response,
                     afError,
                     remoteError
                 ))
@@ -149,6 +148,7 @@ extension NextcloudKit: RemoteInterface {
         showHiddenFiles: Bool = false,
         includeHiddenFiles: [String] = [],
         requestBody: Data? = nil,
+        account: Account,
         options: NKRequestOptions = .init(),
         taskHandler: @escaping (URLSessionTask) -> Void = { _ in }
     ) async -> (
@@ -161,69 +161,79 @@ extension NextcloudKit: RemoteInterface {
                 showHiddenFiles: showHiddenFiles,
                 includeHiddenFiles: includeHiddenFiles,
                 requestBody: requestBody,
+                account: account.ncKitAccount,
                 options: options,
                 taskHandler: taskHandler
             ) { account, files, data, error in
-                continuation.resume(returning: (account, files, data, error))
+                continuation.resume(returning: (account, files ?? [], data?.data, error))
             }
         }
     }
 
     public func delete(
         remotePath: String,
+        account: Account,
         options: NKRequestOptions = .init(),
         taskHandler: @escaping (URLSessionTask) -> Void = { _ in }
-    ) async -> (account: String, error: NKError) {
+    ) async -> (account: String, response: HTTPURLResponse?, error: NKError) {
         return await withCheckedContinuation { continuation in
-            deleteFileOrFolder(serverUrlFileName: remotePath) { account, error in
-                continuation.resume(returning: (account, error))
+            deleteFileOrFolder(
+                serverUrlFileName: remotePath, account: account.ncKitAccount
+            ) { account, response, error in
+                continuation.resume(returning: (account, response?.response, error))
             }
         }
     }
 
     public func downloadThumbnail(
-        url: URL, options: NKRequestOptions, taskHandler: @escaping (URLSessionTask) -> Void
+        url: URL,
+        account: Account,
+        options: NKRequestOptions,
+        taskHandler: @escaping (URLSessionTask) -> Void
     ) async -> (account: String, data: Data?, error: NKError) {
         await withCheckedContinuation { continuation in
-            getPreview(
-                url: url, options: options, taskHandler: taskHandler
+            downloadPreview(
+                url: url, account: account.ncKitAccount, options: options, taskHandler: taskHandler
             ) { account, data, error in
-                continuation.resume(returning: (account, data, error))
+                continuation.resume(returning: (account, data?.data, error))
             }
         }
     }
 
     public func fetchCapabilities(
+        account: Account,
         options: NKRequestOptions = .init(),
         taskHandler: @escaping (_ task: URLSessionTask) -> Void = { _ in }
     ) async -> (account: String, data: Data?, error: NKError) {
         return await withCheckedContinuation { continuation in
-            getCapabilities(options: options, taskHandler: taskHandler) { account, data, error in
-                continuation.resume(returning: (account, data, error))
+            getCapabilities(account: account.ncKitAccount, options: options, taskHandler: taskHandler) { account, data, error in
+                continuation.resume(returning: (account, data?.data, error))
             }
         }
     }
 
     public func fetchUserProfile(
+        account: Account,
         options: NKRequestOptions = .init(),
         taskHandler: @escaping (_ task: URLSessionTask) -> Void = { _ in }
     ) async -> (account: String, userProfile: NKUserProfile?, data: Data?, error: NKError) {
         return await withCheckedContinuation { continuation in
             getUserProfile(
-                options: options, taskHandler: taskHandler
+                account: account.ncKitAccount, options: options, taskHandler: taskHandler
             ) { account, userProfile, data, error in
-                continuation.resume(returning: (account, userProfile, data, error))
+                continuation.resume(returning: (account, userProfile, data?.data, error))
             }
         }
     }
 
     public func tryAuthenticationAttempt(
+        account: Account,
         options: NKRequestOptions = .init(),
         taskHandler: @escaping (_ task: URLSessionTask) -> Void = { _ in }
     ) async -> AuthenticationAttemptResultState {
         // Test by trying to fetch user profile
         let (_, _, _, error) =
-            await fetchUserProfile(options: options, taskHandler: taskHandler)
+        await fetchUserProfile(account: account, options: options, taskHandler: taskHandler)
 
         if error == .success {
             return .success

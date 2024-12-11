@@ -22,8 +22,11 @@ public extension Item {
         }
         let ocId = itemIdentifier.rawValue
 
-        let (_, error) = await remoteInterface.delete(
-            remotePath: serverFileNameUrl, options: .init(), taskHandler: { task in
+        let (_, _, error) = await remoteInterface.delete(
+            remotePath: serverFileNameUrl,
+            account: account,
+            options: .init(),
+            taskHandler: { task in
                 if let domain {
                     NSFileProviderManager(for: domain)?.register(
                         task,

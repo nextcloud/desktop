@@ -29,8 +29,8 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
     private let anchor = NSFileProviderSyncAnchor(Date().description.data(using: .utf8)!)
     private static let maxItemsPerFileProviderPage = 100
     static let logger = Logger(subsystem: Logger.subsystem, category: "enumerator")
+    let account: Account
     let remoteInterface: RemoteInterface
-    let ncKitAccount: String
     let fastEnumeration: Bool
     var serverUrl: String = ""
     var isInvalidated = false
@@ -42,6 +42,7 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
 
     public init(
         enumeratedItemIdentifier: NSFileProviderItemIdentifier,
+        account: Account,
         remoteInterface: RemoteInterface,
         dbManager: FilesDatabaseManager = .shared,
         domain: NSFileProviderDomain? = nil,
@@ -50,7 +51,7 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
     ) {
         self.enumeratedItemIdentifier = enumeratedItemIdentifier
         self.remoteInterface = remoteInterface
-        self.ncKitAccount = remoteInterface.account.ncKitAccount
+        self.account = account
         self.dbManager = dbManager
         self.domain = domain
         self.fastEnumeration = fastEnumeration
@@ -63,7 +64,7 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
                 \(enumeratedItemIdentifier.rawValue, privacy: .public)
                 """
             )
-            serverUrl = remoteInterface.account.davFilesUrl
+            serverUrl = account.davFilesUrl
         } else {
             Self.logger.debug(
                 """
@@ -89,7 +90,7 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
 
         Self.logger.info(
             """
-            Set up enumerator for user: \(self.ncKitAccount, privacy: .public)
+            Set up enumerator for user: \(self.account.ncKitAccount, privacy: .public)
             with serverUrl: \(self.serverUrl, privacy: .public)
             """
         )
@@ -117,7 +118,7 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
         Self.logger.debug(
             """
             Received enumerate items request for enumerator with user:
-            \(self.ncKitAccount, privacy: .public)
+            \(self.account.ncKitAccount, privacy: .public)
             with serverUrl: \(self.serverUrl, privacy: .public)
             """
         )
@@ -137,7 +138,7 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
         if enumeratedItemIdentifier == .trashContainer {
             Self.logger.debug(
                 """
-                Enumerating trash set for user: \(self.ncKitAccount, privacy: .public)
+                Enumerating trash set for user: \(self.account.ncKitAccount, privacy: .public)
                 with serverUrl: \(self.serverUrl, privacy: .public)
                 """
             )
@@ -175,7 +176,7 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
         {
             Self.logger.debug(
                 """
-                Enumerating initial page for user: \(self.ncKitAccount, privacy: .public)
+                Enumerating initial page for user: \(self.account.ncKitAccount, privacy: .public)
                 with serverUrl: \(self.serverUrl, privacy: .public)
                 """
             )
@@ -183,6 +184,7 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
             Task {
                 let (metadatas, _, _, _, readError) = await Self.readServerUrl(
                     serverUrl,
+                    account: account,
                     remoteInterface: remoteInterface,
                     dbManager: dbManager
                 )
@@ -190,7 +192,7 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
                 guard readError == nil else {
                     Self.logger.error(
                         """
-                        "Finishing enumeration for user: \(self.ncKitAccount, privacy: .public)
+                        "Finishing enumeration for: \(self.account.ncKitAccount, privacy: .public)
                         with serverUrl: \(self.serverUrl, privacy: .public) 
                         with error \(readError!.errorDescription, privacy: .public)
                         """
@@ -207,7 +209,7 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
                 guard let metadatas else {
                     Self.logger.error(
                         """
-                        Finishing enumeration for user: \(self.ncKitAccount, privacy: .public)
+                        Finishing enumeration for: \(self.account.ncKitAccount, privacy: .public)
                         with serverUrl: \(self.serverUrl, privacy: .public)
                         with invalid metadatas.
                         """
@@ -222,13 +224,14 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
                 Self.logger.info(
                     """
                     Finished reading serverUrl: \(self.serverUrl, privacy: .public)
-                    for user: \(self.ncKitAccount, privacy: .public).
+                    for user: \(self.account.ncKitAccount, privacy: .public).
                     Processed \(metadatas.count) metadatas
                     """
                 )
 
                 Self.completeEnumerationObserver(
                     observer,
+                    account: account,
                     remoteInterface: remoteInterface,
                     dbManager: dbManager,
                     numPage: 1,
@@ -244,7 +247,7 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
         Self.logger.debug(
             """
             Enumerating page \(numPage, privacy: .public)
-            for user: \(self.ncKitAccount, privacy: .public)
+            for user: \(self.account.ncKitAccount, privacy: .public)
             with serverUrl: \(self.serverUrl, privacy: .public)
             """
         )
@@ -263,7 +266,7 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
         Self.logger.debug(
             """
             Received enumerate changes request for enumerator for user:
-            \(self.ncKitAccount, privacy: .public)
+            \(self.account.ncKitAccount, privacy: .public)
             with serverUrl: \(self.serverUrl, privacy: .public)
             """
         )
@@ -279,7 +282,7 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
 
         if enumeratedItemIdentifier == .workingSet {
             Self.logger.debug(
-                "Enumerating changes in working set for: \(self.ncKitAccount, privacy: .public)"
+                "Enumerating changes in working set for: \(self.account.ncKitAccount, privacy: .public)"
             )
 
             // Unlike when enumerating items we can't progressively enumerate items as we need to 
@@ -288,6 +291,7 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
                 let (
                     _, newMetadatas, updatedMetadatas, deletedMetadatas, error
                 ) = await fullRecursiveScan(
+                    account: account,
                     remoteInterface: remoteInterface,
                     dbManager: dbManager,
                     scanChangesOnly: true
@@ -297,7 +301,7 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
                     Self.logger.info(
                         """
                         Enumerator invalidated during working set change scan.
-                        For user: \(self.ncKitAccount, privacy: .public)
+                        For user: \(self.account.ncKitAccount, privacy: .public)
                         """
                     )
                     listener?.enumerationActionFailed(
@@ -311,7 +315,7 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
                     Self.logger.info(
                         """
                         Finished recursive change enumeration of working set for user:
-                        \(self.ncKitAccount, privacy: .public)
+                        \(self.account.ncKitAccount, privacy: .public)
                         with error: \(error!.errorDescription, privacy: .public)
                         """
                     )
@@ -326,13 +330,14 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
                 Self.logger.info(
                     """
                     Finished recursive change enumeration of working set for user:
-                    \(self.ncKitAccount, privacy: .public). Enumerating items.
+                    \(self.account.ncKitAccount, privacy: .public). Enumerating items.
                     """
                 )
 
                 Self.completeChangesObserver(
                     observer,
                     anchor: anchor,
+                    account: account,
                     remoteInterface: remoteInterface,
                     dbManager: dbManager,
                     newMetadatas: newMetadatas,
@@ -344,7 +349,7 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
             return
         } else if enumeratedItemIdentifier == .trashContainer {
             Self.logger.debug(
-                "Enumerating changes in trash set for user: \(self.ncKitAccount, privacy: .public)"
+                "Enumerating changes in trash set for: \(self.account.ncKitAccount, privacy: .public)"
             )
             // TODO!
 
@@ -355,7 +360,7 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
 
         Self.logger.info(
             """
-            Enumerating changes for user: \(self.ncKitAccount, privacy: .public)
+            Enumerating changes for user: \(self.account.ncKitAccount, privacy: .public)
             with serverUrl: \(self.serverUrl, privacy: .public)
             """
         )
@@ -368,6 +373,7 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
                 _, newMetadatas, updatedMetadatas, deletedMetadatas, readError
             ) = await Self.readServerUrl(
                 serverUrl,
+                account: account,
                 remoteInterface: remoteInterface,
                 dbManager: dbManager,
                 stopAtMatchingEtags: true
@@ -382,7 +388,7 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
             guard readError == nil else {
                 Self.logger.error(
                     """
-                    Finishing enumeration of changes for: \(self.ncKitAccount, privacy: .public)
+                    Finishing enumeration of changes for: \(self.account.ncKitAccount, privacy: .public)
                     with serverUrl: \(self.serverUrl, privacy: .public)
                     with error: \(readError!.errorDescription, privacy: .public)
                     """
@@ -432,6 +438,7 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
                     Self.completeChangesObserver(
                         observer,
                         anchor: anchor,
+                        account: account,
                         remoteInterface: remoteInterface,
                         dbManager: dbManager,
                         newMetadatas: nil,
@@ -460,13 +467,14 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
             Self.logger.info(
                 """
                 Finished reading serverUrl: \(self.serverUrl, privacy: .public)
-                for user: \(self.ncKitAccount, privacy: .public)
+                for user: \(self.account.ncKitAccount, privacy: .public)
                 """
             )
 
             Self.completeChangesObserver(
                 observer,
                 anchor: anchor,
+                account: account,
                 remoteInterface: remoteInterface,
                 dbManager: dbManager,
                 newMetadatas: newMetadatas,
@@ -486,6 +494,7 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
     // TODO: Use async group
     private static func metadatasToFileProviderItems(
         _ itemMetadatas: [ItemMetadata],
+        account: Account,
         remoteInterface: RemoteInterface,
         dbManager: FilesDatabaseManager,
         completionHandler: @escaping (_ items: [NSFileProviderItem]) -> Void
@@ -518,6 +527,7 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
                     let item = Item(
                         metadata: itemMetadata,
                         parentItemIdentifier: parentItemIdentifier,
+                        account: account,
                         remoteInterface: remoteInterface
                     )
                     Self.logger.debug(
@@ -553,13 +563,14 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
 
     private static func completeEnumerationObserver(
         _ observer: NSFileProviderEnumerationObserver,
+        account: Account,
         remoteInterface: RemoteInterface,
         dbManager: FilesDatabaseManager,
         numPage: Int,
         itemMetadatas: [ItemMetadata]
     ) {
         metadatasToFileProviderItems(
-            itemMetadatas, remoteInterface: remoteInterface, dbManager: dbManager
+            itemMetadatas, account: account, remoteInterface: remoteInterface, dbManager: dbManager
         ) { items in
             observer.didEnumerate(items)
             Self.logger.info("Did enumerate \(items.count) items")
@@ -581,6 +592,7 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
     private static func completeChangesObserver(
         _ observer: NSFileProviderChangeObserver,
         anchor: NSFileProviderSyncAnchor,
+        account: Account,
         remoteInterface: RemoteInterface,
         dbManager: FilesDatabaseManager,
         newMetadatas: [ItemMetadata]?,
@@ -621,7 +633,10 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
         }
 
         metadatasToFileProviderItems(
-            allUpdatedMetadatas, remoteInterface: remoteInterface, dbManager: dbManager
+            allUpdatedMetadatas,
+            account: account,
+            remoteInterface: remoteInterface,
+            dbManager: dbManager
         ) { updatedItems in
 
             if !updatedItems.isEmpty {

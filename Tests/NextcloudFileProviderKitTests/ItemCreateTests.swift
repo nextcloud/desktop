@@ -40,7 +40,7 @@ final class ItemCreateTests: XCTestCase {
     }
 
     func testCreateFolder() async throws {
-        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+        let remoteInterface = MockRemoteInterface(rootItem: rootItem)
         let folderItemMetadata = ItemMetadata()
         folderItemMetadata.name = "folder"
         folderItemMetadata.fileName = "folder"
@@ -52,11 +52,13 @@ final class ItemCreateTests: XCTestCase {
         let folderItemTemplate = Item(
             metadata: folderItemMetadata,
             parentItemIdentifier: .rootContainer,
+            account: Self.account,
             remoteInterface: remoteInterface
         )
         let (createdItemMaybe, error) = await Item.create(
             basedOn: folderItemTemplate,
             contents: nil,
+            account: Self.account,
             remoteInterface: remoteInterface,
             progress: Progress(),
             dbManager: Self.dbManager
@@ -86,7 +88,7 @@ final class ItemCreateTests: XCTestCase {
     }
 
     func testCreateFile() async throws {
-        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+        let remoteInterface = MockRemoteInterface(rootItem: rootItem)
         let fileItemMetadata = ItemMetadata()
         fileItemMetadata.fileName = "file"
         fileItemMetadata.fileNameView = "file"
@@ -100,11 +102,13 @@ final class ItemCreateTests: XCTestCase {
         let fileItemTemplate = Item(
             metadata: fileItemMetadata,
             parentItemIdentifier: .rootContainer,
+            account: Self.account,
             remoteInterface: remoteInterface
         )
         let (createdItemMaybe, error) = await Item.create(
             basedOn: fileItemTemplate,
             contents: tempUrl,
+            account: Self.account,
             remoteInterface: remoteInterface,
             progress: Progress(),
             dbManager: Self.dbManager
@@ -133,7 +137,7 @@ final class ItemCreateTests: XCTestCase {
     }
 
     func testCreateFileIntoFolder() async throws {
-        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+        let remoteInterface = MockRemoteInterface(rootItem: rootItem)
 
         let folderItemMetadata = ItemMetadata()
         folderItemMetadata.name = "folder"
@@ -146,12 +150,14 @@ final class ItemCreateTests: XCTestCase {
         let folderItemTemplate = Item(
             metadata: folderItemMetadata,
             parentItemIdentifier: .rootContainer,
+            account: Self.account,
             remoteInterface: remoteInterface
         )
 
         let (createdFolderItemMaybe, folderError) = await Item.create(
             basedOn: folderItemTemplate,
             contents: nil,
+            account: Self.account,
             remoteInterface: remoteInterface,
             progress: Progress(),
             dbManager: Self.dbManager
@@ -172,6 +178,7 @@ final class ItemCreateTests: XCTestCase {
         let fileItemTemplate = Item(
             metadata: fileItemMetadata,
             parentItemIdentifier: createdFolderItem.itemIdentifier,
+            account: Self.account,
             remoteInterface: remoteInterface
         )
 
@@ -181,6 +188,7 @@ final class ItemCreateTests: XCTestCase {
         let (createdFileItemMaybe, fileError) = await Item.create(
             basedOn: fileItemTemplate,
             contents: tempUrl,
+            account: Self.account,
             remoteInterface: remoteInterface,
             progress: Progress(),
             dbManager: Self.dbManager
@@ -218,7 +226,7 @@ final class ItemCreateTests: XCTestCase {
 
         let keynoteBundleFilename = "test.key"
 
-        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+        let remoteInterface = MockRemoteInterface(rootItem: rootItem)
         let bundleItemMetadata = ItemMetadata()
         bundleItemMetadata.name = keynoteBundleFilename
         bundleItemMetadata.fileName = keynoteBundleFilename
@@ -289,6 +297,7 @@ final class ItemCreateTests: XCTestCase {
         let bundleItemTemplate = Item(
             metadata: bundleItemMetadata,
             parentItemIdentifier: .rootContainer,
+            account: Self.account,
             remoteInterface: remoteInterface
         )
 
@@ -296,6 +305,7 @@ final class ItemCreateTests: XCTestCase {
         let (createdBundleItemMaybe, bundleError) = await Item.create(
             basedOn: bundleItemTemplate,
             contents: tempUrl,
+            account: Self.account,
             remoteInterface: remoteInterface,
             progress: Progress(),
             dbManager: Self.dbManager

@@ -27,6 +27,7 @@ public class Item: NSObject, NSFileProviderItem {
 
     public let metadata: ItemMetadata
     public let parentItemIdentifier: NSFileProviderItemIdentifier
+    public let account: Account
     public let remoteInterface: RemoteInterface
 
     public var itemIdentifier: NSFileProviderItemIdentifier {
@@ -152,7 +153,7 @@ public class Item: NSObject, NSFileProviderItem {
 
     public var fileSystemFlags: NSFileProviderFileSystemFlags {
         if metadata.lock,
-           (metadata.lockOwnerType != 0 || metadata.lockOwner != remoteInterface.account.username),
+           (metadata.lockOwnerType != 0 || metadata.lockOwner != account.username),
            metadata.lockTimeOut ?? Date() > Date()
         {
             return [.userReadable]
@@ -179,18 +180,19 @@ public class Item: NSObject, NSFileProviderItem {
         #endif
     }
 
-    public static func rootContainer(remoteInterface: RemoteInterface) -> Item {
+    public static func rootContainer(account: Account, remoteInterface: RemoteInterface) -> Item {
         let metadata = ItemMetadata()
-        metadata.account = remoteInterface.account.ncKitAccount
+        metadata.account = account.ncKitAccount
         metadata.directory = true
         metadata.ocId = NSFileProviderItemIdentifier.rootContainer.rawValue
         metadata.fileName = "/"
         metadata.fileNameView = "/"
-        metadata.serverUrl = remoteInterface.account.davFilesUrl
+        metadata.serverUrl = account.davFilesUrl
         metadata.classFile = NKCommon.TypeClassFile.directory.rawValue
         return Item(
             metadata: metadata,
             parentItemIdentifier: .rootContainer,
+            account: account,
             remoteInterface: remoteInterface
         )
     }
@@ -200,22 +202,25 @@ public class Item: NSObject, NSFileProviderItem {
     public required init(
         metadata: ItemMetadata,
         parentItemIdentifier: NSFileProviderItemIdentifier,
+        account: Account,
         remoteInterface: RemoteInterface
     ) {
         self.metadata = ItemMetadata(value: metadata) // Safeguard against active items
         self.parentItemIdentifier = parentItemIdentifier
+        self.account = account
         self.remoteInterface = remoteInterface
         super.init()
     }
 
     public static func storedItem(
         identifier: NSFileProviderItemIdentifier,
+        account: Account,
         remoteInterface: RemoteInterface,
         dbManager: FilesDatabaseManager = .shared
     ) -> Item? {
         // resolve the given identifier to a record in the model
         guard identifier != .rootContainer else {
-            return Item.rootContainer(remoteInterface: remoteInterface)
+            return Item.rootContainer(account: account, remoteInterface: remoteInterface)
         }
 
         guard let metadata = dbManager.itemMetadataFromFileProviderItemIdentifier(identifier),
@@ -225,6 +230,7 @@ public class Item: NSObject, NSFileProviderItem {
         return Item(
             metadata: metadata,
             parentItemIdentifier: parentItemIdentifier,
+            account: account,
             remoteInterface: remoteInterface
         )
     }

@@ -39,7 +39,7 @@ final class ItemFetchTests: XCTestCase {
     }
 
     func testFetchFileContents() async throws {
-        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+        let remoteInterface = MockRemoteInterface(rootItem: rootItem)
         let remoteItem = MockRemoteItem(
             identifier: "item",
             versionIdentifier: "0",
@@ -72,6 +72,7 @@ final class ItemFetchTests: XCTestCase {
         let item = Item(
             metadata: itemMetadata,
             parentItemIdentifier: .rootContainer,
+            account: Self.account,
             remoteInterface: remoteInterface
         )
 
@@ -95,7 +96,7 @@ final class ItemFetchTests: XCTestCase {
     }
 
     func testFetchDirectoryContents() async throws {
-        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+        let remoteInterface = MockRemoteInterface(rootItem: rootItem)
         let remoteDirectory = MockRemoteItem(
             identifier: "directory",
             versionIdentifier: "0",
@@ -250,6 +251,7 @@ final class ItemFetchTests: XCTestCase {
         let item = Item(
             metadata: directoryMetadata,
             parentItemIdentifier: .rootContainer,
+            account: Self.account,
             remoteInterface: remoteInterface
         )
         item.dbManager = Self.dbManager

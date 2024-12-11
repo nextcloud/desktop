@@ -15,6 +15,7 @@ fileprivate let logger = Logger(subsystem: Logger.subsystem, category: "thumbnai
 public func fetchThumbnails(
     for itemIdentifiers: [NSFileProviderItemIdentifier],
     requestedSize size: CGSize,
+    account: Account,
     usingRemoteInterface remoteInterface: RemoteInterface,
     perThumbnailCompletionHandler: @escaping (
         NSFileProviderItemIdentifier,
@@ -35,7 +36,9 @@ public func fetchThumbnails(
 
     for itemIdentifier in itemIdentifiers {
         guard let item = Item.storedItem(
-            identifier: itemIdentifier, remoteInterface: remoteInterface
+            identifier: itemIdentifier,
+            account: account,
+            remoteInterface: remoteInterface
         ) else {
             logger.error(
                 """

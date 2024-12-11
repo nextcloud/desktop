@@ -17,13 +17,14 @@ extension Item {
         remotePath: String,
         parentItemIdentifier: NSFileProviderItemIdentifier,
         domain: NSFileProviderDomain? = nil,
+        account: Account,
         remoteInterface: RemoteInterface,
         progress: Progress,
         dbManager: FilesDatabaseManager
     ) async -> (Item?, Error?) {
 
-        let (account, _, _, createError) = await remoteInterface.createFolder(
-            remotePath: remotePath, options: .init(), taskHandler: { task in
+        let (_, _, _, createError) = await remoteInterface.createFolder(
+            remotePath: remotePath, account: account, options: .init(), taskHandler: { task in
                 if let domain, let itemTemplate {
                     NSFileProviderManager(for: domain)?.register(
                         task,
@@ -56,6 +57,7 @@ extension Item {
             showHiddenFiles: true,
             includeHiddenFiles: [],
             requestBody: nil,
+            account: account,
             options: .init(),
             taskHandler: { task in
                 if let domain, let itemTemplate {
@@ -92,6 +94,7 @@ extension Item {
         let fpItem = Item(
             metadata: directoryMetadata,
             parentItemIdentifier: parentItemIdentifier,
+            account: account,
             remoteInterface: remoteInterface
         )
         
@@ -104,15 +107,17 @@ extension Item {
         itemTemplate: NSFileProviderItem,
         parentItemRemotePath: String,
         domain: NSFileProviderDomain? = nil,
+        account: Account,
         remoteInterface: RemoteInterface,
         progress: Progress,
         dbManager: FilesDatabaseManager
     ) async -> (Item?, Error?) {
-        let (account, ocId, etag, date, size, _, _, error) = await remoteInterface.upload(
+        let (_, ocId, etag, date, size, _, _, error) = await remoteInterface.upload(
             remotePath: remotePath,
             localPath: localPath,
             creationDate: itemTemplate.creationDate as? Date,
             modificationDate: itemTemplate.contentModificationDate as? Date,
+            account: account,
             options: .init(),
             requestHandler: { progress.setHandlersFromAfRequest($0) },
             taskHandler: { task in
@@ -151,7 +156,7 @@ extension Item {
             etag: \(etag ?? "", privacy: .public)
             date: \(date ?? NSDate(), privacy: .public)
             size: \(size, privacy: .public),
-            account: \(account, privacy: .public)
+            account: \(account.ncKitAccount, privacy: .public)
             """
         )
         
@@ -168,7 +173,7 @@ extension Item {
         let newMetadata = ItemMetadata()
         newMetadata.date = (date ?? NSDate()) as Date
         newMetadata.etag = etag ?? ""
-        newMetadata.account = account
+        newMetadata.account = account.ncKitAccount
         newMetadata.fileName = itemTemplate.filename
         newMetadata.fileNameView = itemTemplate.filename
         newMetadata.ocId = ocId
@@ -188,6 +193,7 @@ extension Item {
         let fpItem = Item(
             metadata: newMetadata,
             parentItemIdentifier: itemTemplate.parentItemIdentifier,
+            account: account,
             remoteInterface: remoteInterface
         )
         
@@ -199,6 +205,7 @@ extension Item {
         contents: URL,
         remotePath: String,
         domain: NSFileProviderDomain? = nil,
+        account: Account,
         remoteInterface: RemoteInterface,
         progress: Progress,
         dbManager: FilesDatabaseManager
@@ -268,7 +275,9 @@ extension Item {
                     """
                 )
                 let (_, _, _, createError) = await remoteInterface.createFolder(
-                    remotePath: childRemoteUrl, options: .init(), taskHandler: { task in
+                    remotePath: childRemoteUrl,
+                    account: account,
+                    options: .init(), taskHandler: { task in
                         if let domain {
                             NSFileProviderManager(for: domain)?.register(
                                 task,
@@ -305,6 +314,7 @@ extension Item {
                     localPath: childUrlPath,
                     creationDate: childUrlAttributes.creationDate,
                     modificationDate: childUrlAttributes.contentModificationDate,
+                    account: account,
                     options: .init(),
                     requestHandler: { progress.setHandlersFromAfRequest($0) },
                     taskHandler: { task in
@@ -337,7 +347,10 @@ extension Item {
             // After everything, check into what the final state is of each folder now
             Self.logger.debug("Reading bpi folder at: \(remoteDirectoryPath, privacy: .public)")
             let (_, _, _, _, readError) = await Enumerator.readServerUrl(
-                remoteDirectoryPath, remoteInterface: remoteInterface, dbManager: dbManager
+                remoteDirectoryPath,
+                account: account,
+                remoteInterface: remoteInterface,
+                dbManager: dbManager
             )
 
             if let readError, readError != .success {
@@ -352,14 +365,14 @@ extension Item {
         }
 
         guard let bundleRootMetadata = dbManager.itemMetadata(
-            account: remoteInterface.account.ncKitAccount, locatedAtRemoteUrl: remotePath
+            account: account.ncKitAccount, locatedAtRemoteUrl: remotePath
         ) else {
             Self.logger.error(
                 """
                 Could not find directory metadata for bundle or package at:
                 \(remotePath, privacy: .public)
                 of account:
-                \(remoteInterface.account.ncKitAccount, privacy: .public)
+                \(account.ncKitAccount, privacy: .public)
                 with contents located at:
                 \(contentsPath, privacy: .public)
                 """
@@ -372,6 +385,7 @@ extension Item {
         return Item(
             metadata: bundleRootMetadata,
             parentItemIdentifier: rootItem.parentItemIdentifier,
+            account: account,
             remoteInterface: remoteInterface
         )
     }
@@ -383,6 +397,7 @@ extension Item {
         options: NSFileProviderCreateItemOptions = [],
         request: NSFileProviderRequest = NSFileProviderRequest(),
         domain: NSFileProviderDomain? = nil,
+        account: Account,
         remoteInterface: RemoteInterface,
         progress: Progress,
         dbManager: FilesDatabaseManager = .shared
@@ -412,7 +427,7 @@ extension Item {
         
         // TODO: Deduplicate
         if parentItemIdentifier == .rootContainer {
-            parentItemRemotePath = remoteInterface.account.davFilesUrl
+            parentItemRemotePath = account.davFilesUrl
         } else {
             guard let parentItemMetadata = dbManager.directoryMetadata(
                 ocId: parentItemIdentifier.rawValue
@@ -454,6 +469,7 @@ extension Item {
                 remotePath: newServerUrlFileName,
                 parentItemIdentifier: parentItemIdentifier,
                 domain: domain,
+                account: account,
                 remoteInterface: remoteInterface,
                 progress: isBundleOrPackage ? Progress() : progress,
                 dbManager: dbManager
@@ -489,6 +505,7 @@ extension Item {
                 )
                 let (metadatas, _, _, _, readError) = await Enumerator.readServerUrl(
                     newServerUrlFileName,
+                    account: account,
                     remoteInterface: remoteInterface,
                     dbManager: dbManager,
                     domain: domain,
@@ -519,6 +536,7 @@ extension Item {
                 item = Item(
                     metadata: itemMetadata,
                     parentItemIdentifier: parentItemIdentifier,
+                    account: account,
                     remoteInterface: remoteInterface
                 )
             }
@@ -557,6 +575,7 @@ extension Item {
                     contents: url,
                     remotePath: newServerUrlFileName,
                     domain: domain,
+                    account: account,
                     remoteInterface: remoteInterface,
                     progress: progress,
                     dbManager: dbManager
@@ -573,6 +592,7 @@ extension Item {
             itemTemplate: itemTemplate,
             parentItemRemotePath: parentItemRemotePath,
             domain: domain,
+            account: account,
             remoteInterface: remoteInterface,
             progress: progress,
             dbManager: dbManager

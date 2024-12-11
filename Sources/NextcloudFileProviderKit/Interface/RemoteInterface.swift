@@ -22,12 +22,11 @@ public enum AuthenticationAttemptResultState: Int {
 
 public protocol RemoteInterface {
 
-    var account: Account { get }
-
-    func setDelegate(_ delegate: NKCommonDelegate)
+    func setDelegate(_ delegate: NextcloudKitDelegate)
 
     func createFolder(
         remotePath: String,
+        account: Account,
         options: NKRequestOptions,
         taskHandler: @escaping (_ task: URLSessionTask) -> Void
     ) async -> (account: String, ocId: String?, date: NSDate?, error: NKError)
@@ -37,6 +36,7 @@ public protocol RemoteInterface {
         localPath: String,
         creationDate: Date?,
         modificationDate: Date?,
+        account: Account,
         options: NKRequestOptions,
         requestHandler: @escaping (_ request: UploadRequest) -> Void,
         taskHandler: @escaping (_ task: URLSessionTask) -> Void,
@@ -47,8 +47,8 @@ public protocol RemoteInterface {
         etag: String?,
         date: NSDate?,
         size: Int64,
-        allHeaderFields: [AnyHashable: Any]?,
-        afError: AFError?, 
+        response: HTTPURLResponse?,
+        afError: AFError?,
         remoteError: NKError
     )
 
@@ -56,13 +56,15 @@ public protocol RemoteInterface {
         remotePathSource: String,
         remotePathDestination: String,
         overwrite: Bool,
+        account: Account,
         options: NKRequestOptions,
         taskHandler: @escaping (_ task: URLSessionTask) -> Void
-    ) async -> (account: String, error: NKError)
+    ) async -> (account: String, data: Data?, error: NKError)
 
     func download(
         remotePath: String,
         localPath: String,
+        account: Account,
         options: NKRequestOptions,
         requestHandler: @escaping (_ request: DownloadRequest) -> Void,
         taskHandler: @escaping (_ task: URLSessionTask) -> Void,
@@ -72,7 +74,7 @@ public protocol RemoteInterface {
         etag: String?,
         date: NSDate?,
         length: Int64,
-        allHeaderFields: [AnyHashable: Any]?,
+        response: HTTPURLResponse?,
         afError: AFError?,
         remoteError: NKError
     )
@@ -83,31 +85,40 @@ public protocol RemoteInterface {
         showHiddenFiles: Bool,
         includeHiddenFiles: [String],
         requestBody: Data?,
+        account: Account,
         options: NKRequestOptions,
         taskHandler: @escaping (_ task: URLSessionTask) -> Void
     ) async -> (account: String, files: [NKFile], data: Data?, error: NKError)
 
     func delete(
         remotePath: String,
+        account: Account,
         options: NKRequestOptions,
         taskHandler: @escaping (_ task: URLSessionTask) -> Void
-    ) async -> (account: String, error: NKError)
+    ) async -> (account: String, response: HTTPURLResponse?, error: NKError)
 
     func downloadThumbnail(
         url: URL,
+        account: Account,
         options: NKRequestOptions,
         taskHandler: @escaping (_ task: URLSessionTask) -> Void
     ) async -> (account: String, data: Data?, error: NKError)
 
     func fetchCapabilities(
-        options: NKRequestOptions, taskHandler: @escaping (_ task: URLSessionTask) -> Void
+        account: Account,
+        options: NKRequestOptions,
+        taskHandler: @escaping (_ task: URLSessionTask) -> Void
     ) async -> (account: String, data: Data?, error: NKError)
 
     func fetchUserProfile(
-        options: NKRequestOptions, taskHandler: @escaping (_ task: URLSessionTask) -> Void
+        account: Account,
+        options: NKRequestOptions,
+        taskHandler: @escaping (_ task: URLSessionTask) -> Void
     ) async -> (account: String, userProfile: NKUserProfile?, data: Data?, error: NKError)
 
     func tryAuthenticationAttempt(
-        options: NKRequestOptions, taskHandler: @escaping (_ task: URLSessionTask) -> Void
+        account: Account,
+        options: NKRequestOptions,
+        taskHandler: @escaping (_ task: URLSessionTask) -> Void
     ) async -> AuthenticationAttemptResultState
 }

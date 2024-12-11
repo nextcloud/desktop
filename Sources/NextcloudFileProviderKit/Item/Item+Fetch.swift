@@ -28,7 +28,10 @@ public extension Item {
         while !remoteDirectoryPaths.isEmpty {
             let remoteDirectoryPath = remoteDirectoryPaths.removeFirst()
             let (metadatas, _, _, _, readError) = await Enumerator.readServerUrl(
-                remoteDirectoryPath, remoteInterface: remoteInterface, dbManager: dbManager
+                remoteDirectoryPath,
+                account: account,
+                remoteInterface: remoteInterface,
+                dbManager: dbManager
             )
 
             if let readError, readError != .success {
@@ -74,6 +77,7 @@ public extension Item {
                     let (_, _, _, _, _, _, error) = await remoteInterface.download(
                         remotePath: remotePath,
                         localPath: childLocalPath,
+                        account: account,
                         options: .init(),
                         requestHandler: { progress.setHandlersFromAfRequest($0) },
                         taskHandler: { task in
@@ -208,6 +212,7 @@ public extension Item {
             let (_, _, _, _, _, _, error) = await remoteInterface.download(
                 remotePath: serverUrlFileName,
                 localPath: localPath.path,
+                account: account,
                 options: .init(),
                 requestHandler: { _ in },
                 taskHandler: { _ in },
@@ -259,6 +264,7 @@ public extension Item {
         let fpItem = Item(
             metadata: updatedMetadata,
             parentItemIdentifier: parentItemIdentifier,
+            account: account,
             remoteInterface: remoteInterface
         )
 
@@ -286,7 +292,7 @@ public extension Item {
         )
 
         let (_, data, error) = await remoteInterface.downloadThumbnail(
-            url: thumbnailUrl, options: .init(), taskHandler: { task in
+            url: thumbnailUrl, account: account, options: .init(), taskHandler: { task in
                 if let domain {
                     NSFileProviderManager(for: domain)?.register(
                         task,

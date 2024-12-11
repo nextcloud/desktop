@@ -32,7 +32,7 @@ public class MockRemoteItem: Equatable {
         let file = NKFile()
         file.fileName = name
         file.size = size
-        file.date = creationDate as NSDate
+        file.date = creationDate
         file.directory = directory
         file.etag = versionIdentifier
         file.ocId = identifier

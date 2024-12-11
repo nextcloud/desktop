@@ -25,11 +25,15 @@ public struct Account: Equatable {
     public static let webDavFilesUrlSuffix: String = "/remote.php/dav/files/"
     public let username, id, password, ncKitAccount, serverUrl, davFilesUrl: String
 
+    public static func ncKitAccountString(from username: String, serverUrl: String) -> String {
+        username + " " + serverUrl
+    }
+
     public init(user: String, id: String, serverUrl: String, password: String) {
         username = user
         self.id = id
         self.password = password
-        ncKitAccount = user + " " + serverUrl
+        ncKitAccount = Self.ncKitAccountString(from: user, serverUrl: serverUrl)
         self.serverUrl = serverUrl
         davFilesUrl = serverUrl + Self.webDavFilesUrlSuffix + id
     }

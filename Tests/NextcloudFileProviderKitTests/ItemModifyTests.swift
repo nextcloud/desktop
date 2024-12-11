@@ -40,7 +40,7 @@ final class ItemModifyTests: XCTestCase {
     }
 
     func testModifyFileContents() async throws {
-        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+        let remoteInterface = MockRemoteInterface(rootItem: rootItem)
         let remoteItem = MockRemoteItem(
             identifier: "item",
             versionIdentifier: "0",
@@ -108,12 +108,14 @@ final class ItemModifyTests: XCTestCase {
         let item = Item(
             metadata: itemMetadata,
             parentItemIdentifier: .rootContainer,
+            account: Self.account,
             remoteInterface: remoteInterface
         )
 
         let targetItem = Item(
             metadata: targetItemMetadata,
             parentItemIdentifier: .init(remoteFolder.identifier),
+            account: Self.account,
             remoteInterface: remoteInterface
         )
         targetItem.dbManager = Self.dbManager
@@ -148,7 +150,7 @@ final class ItemModifyTests: XCTestCase {
         let db = Self.dbManager.ncDatabase() // Strong ref for in memory test db
         debugPrint(db)
 
-        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+        let remoteInterface = MockRemoteInterface(rootItem: rootItem)
 
         let keynoteBundleFilename = "test.key"
         let keynoteIndexZipFilename = "Index.zip"
@@ -509,6 +511,7 @@ final class ItemModifyTests: XCTestCase {
         let bundleItem = Item(
             metadata: bundleItemMetadata,
             parentItemIdentifier: .rootContainer,
+            account: Self.account,
             remoteInterface: remoteInterface
         )
         bundleItem.dbManager = Self.dbManager
@@ -591,6 +594,7 @@ final class ItemModifyTests: XCTestCase {
         let targetItem = Item(
             metadata: targetBundleMetadata,
             parentItemIdentifier: .init(remoteFolder.identifier),
+            account: Self.account,
             remoteInterface: remoteInterface
         )
         targetItem.dbManager = Self.dbManager
