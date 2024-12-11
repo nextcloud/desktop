@@ -56,9 +56,6 @@ public extension Item {
             _ = dbManager.deleteDirectoryAndSubdirectoriesMetadata(ocId: ocId)
         } else {
             dbManager.deleteItemMetadata(ocId: ocId)
-            if dbManager.localFileMetadataFromOcId(ocId) != nil {
-                dbManager.deleteLocalFileMetadata(ocId: ocId)
-            }
         }
         return nil
     }

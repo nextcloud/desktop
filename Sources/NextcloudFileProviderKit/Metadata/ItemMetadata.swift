@@ -21,11 +21,9 @@ public class ItemMetadata: Object {
         case downloadError = -4
         case downloading = -3
         case inDownload = -2
-        case waitDownload = -1
 
         case normal = 0
 
-        case waitUpload = 1
         case inUpload = 2
         case uploading = 3
         case uploadError = 4
@@ -98,6 +96,8 @@ public class ItemMetadata: Object {
     public let shareType = List<Int>()
     @Persisted public var size: Int64 = 0
     @Persisted public var status: Int = 0
+    @Persisted public var downloaded = false
+    @Persisted public var uploaded = false
     @Persisted public var subline: String?
     @Persisted public var trashbinFileName = ""
     @Persisted public var trashbinOriginalLocation = ""

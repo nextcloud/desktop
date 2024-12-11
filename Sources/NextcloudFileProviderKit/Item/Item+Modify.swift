@@ -197,8 +197,9 @@ public extension Item {
         newMetadata.sessionError = ""
         newMetadata.sessionTaskIdentifier = 0
         newMetadata.status = ItemMetadata.Status.normal.rawValue
+        newMetadata.downloaded = true
+        newMetadata.uploaded = true
 
-        dbManager.addLocalFileMetadataFromItemMetadata(newMetadata)
         dbManager.addItemMetadata(newMetadata)
 
         let modifiedItem = Item(

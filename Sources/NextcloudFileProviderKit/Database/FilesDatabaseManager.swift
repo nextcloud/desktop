@@ -17,12 +17,15 @@ import Foundation
 import OSLog
 import RealmSwift
 
+fileprivate let stable1_0SchemaVersion: UInt64 = 100
+fileprivate let stable2_0SchemaVersion: UInt64 = 200 // Major change: deleted LocalFileMetadata type
+
 public class FilesDatabaseManager {
     public static let shared = FilesDatabaseManager()!
 
     private static let relativeDatabaseFolderPath = "Database/"
     private static let databaseFilename = "fileproviderextdatabase.realm"
-    private static let schemaVersion: UInt64 = 100
+    private static let schemaVersion = stable2_0SchemaVersion
 
     static let logger = Logger(subsystem: Logger.subsystem, category: "filesdatabase")
 
@@ -63,7 +66,28 @@ public class FilesDatabaseManager {
         let config = Realm.Configuration(
             fileURL: databasePath,
             schemaVersion: Self.schemaVersion,
-            objectTypes: [ItemMetadata.self, LocalFileMetadata.self]
+            migrationBlock: { migration, oldSchemaVersion in
+                if oldSchemaVersion == stable1_0SchemaVersion {
+                    var localFileMetadataOcIds = Set<String>()
+                    migration.enumerateObjects(ofType: "LocalFileMetadata") { oldObject, _ in
+                        guard let oldObject, let lfmOcId = oldObject["ocId"] as? String else {
+                            return
+                        }
+                        localFileMetadataOcIds.insert(lfmOcId)
+                    }
+
+                    migration.enumerateObjects(ofType: ItemMetadata.className()) { oldObject, _ in
+                        guard let oldObject,
+                              let imOcId = oldObject["ocId"] as? String,
+                              localFileMetadataOcIds.contains(imOcId)
+                        else { return }
+                        oldObject[NSExpression(forKeyPath: \ItemMetadata.downloaded).keyPath] = true
+                        oldObject[NSExpression(forKeyPath: \ItemMetadata.uploaded).keyPath] = true
+                    }
+                }
+
+            },
+            objectTypes: [ItemMetadata.self]
         )
         self.init(realmConfig: config)
     }
@@ -300,6 +324,8 @@ public class FilesDatabaseManager {
         }
     }
 
+    // If setting a downloading or uploading status, also modified the relevant boolean properties
+    // of the item metadata object
     public func setStatusForItemMetadata(
         _ metadata: ItemMetadata,
         status: ItemMetadata.Status,
@@ -309,18 +335,27 @@ public class FilesDatabaseManager {
 
         do {
             try database.write {
-                guard
-                    let result = database.objects(ItemMetadata.self).filter(
-                        "ocId == %@", metadata.ocId
-                    ).first
+                guard let result = database
+                    .objects(ItemMetadata.self)
+                    .filter("ocId == %@", metadata.ocId)
+                    .first
                 else {
                     Self.logger.debug(
-                        "Did not update status for item metadata as it was not found. ocID: \(metadata.ocId, privacy: .public)"
+                        """
+                        Did not update status for item metadata as it was not found.
+                        ocID: \(metadata.ocId, privacy: .public)
+                        """
                     )
                     return
                 }
 
                 result.status = status.rawValue
+                if result.isDownload {
+                    result.downloaded = false
+                } else if result.isUpload {
+                    result.uploaded = false
+                }
+
                 database.add(result, update: .all)
                 Self.logger.debug(
                     "Updated status for item metadata. ocID: \(metadata.ocId, privacy: .public), etag: \(metadata.etag, privacy: .public), fileName: \(metadata.fileName, privacy: .public)"
