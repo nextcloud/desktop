@@ -820,12 +820,6 @@ public extension Item {
                     modifiedItem, account: account, dbManager: dbManager, domain: domain
                 )
                 guard restoreError == nil else {
-                    Self.logger.error(
-                        """
-                        Could not modify item \(modifiedItem.filename, privacy: .public)
-                        as the procedure to restore it from the trash has failed.
-                        """
-                    )
                     return (modifiedItem, restoreError)
                 }
                 modifiedItem = restoredItem
@@ -845,14 +839,6 @@ public extension Item {
                 )
 
                 guard renameError == nil, let renameModifiedItem else {
-                    Self.logger.error(
-                        """
-                        Could not rename item with ocID \(ocId, privacy: .public)
-                        (\(modifiedItem.filename, privacy: .public)) to
-                        \(newServerUrlFileName, privacy: .public),
-                        received error: \(renameError?.localizedDescription ?? "", privacy: .public)
-                        """
-                    )
                     return (nil, renameError)
                 }
 
