@@ -496,6 +496,45 @@ final class MockRemoteInterfaceTests: XCTestCase {
         XCTAssertEqual(itemA_C_D.remotePath, Self.account.trashUrl + "/c (trashed)/d")
     }
 
+    func testTrashedItems() async {
+        let remoteInterface = MockRemoteInterface(rootItem: rootItem, rootTrashItem: rootTrashItem)
+        let itemA = MockRemoteItem(
+            identifier: "a",
+            name: "a (trashed)",
+            remotePath: Self.account.trashUrl + "/a (trashed)",
+            directory: true,
+            account: Self.account.ncKitAccount,
+            username: Self.account.username,
+            userId: Self.account.id,
+            serverUrl: Self.account.serverUrl,
+            trashbinOriginalLocation: "/a"
+        )
+        let itemB = MockRemoteItem(
+            identifier: "b",
+            name: "b (trashed)",
+            remotePath: Self.account.trashUrl + "/b (trashed)",
+            directory: true,
+            account: Self.account.ncKitAccount,
+            username: Self.account.username,
+            userId: Self.account.id,
+            serverUrl: Self.account.serverUrl,
+            trashbinOriginalLocation: "/b"
+        )
+        rootTrashItem.children = [itemA, itemB]
+        itemA.parent = rootTrashItem
+        itemB.parent = rootTrashItem
+
+        let (_, items, _, error) = await remoteInterface.trashedItems(account: Self.account)
+        XCTAssertEqual(error, .success)
+        XCTAssertEqual(items.count, 2)
+        XCTAssertEqual(items[0].fileName, "a")
+        XCTAssertEqual(items[1].fileName, "b")
+        XCTAssertEqual(items[0].trashbinFileName, "a (trashed)")
+        XCTAssertEqual(items[1].trashbinFileName, "b (trashed)")
+        XCTAssertEqual(items[0].ocId, itemA.identifier)
+        XCTAssertEqual(items[1].ocId, itemB.identifier)
+    }
+
     func testFetchUserProfile() async {
         let remoteInterface = MockRemoteInterface(rootItem: rootItem)
         let (account, profile, _, error) = await remoteInterface.fetchUserProfile(
