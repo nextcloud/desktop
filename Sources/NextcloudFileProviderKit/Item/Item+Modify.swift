@@ -695,27 +695,18 @@ public extension Item {
             About to modify item with identifier: \(ocId, privacy: .public)
             of type: \(modifiedItem.contentType.identifier)
             (is folder: \(isFolder ? "yes" : "no", privacy: .public)
-            and filename: \(itemTarget.filename, privacy: .public)
+            with filename: \(modifiedItem.filename, privacy: .public)
+            to filename: \(itemTarget.filename, privacy: .public)
             from old server url:
                 \(modifiedItem.metadata.serverUrl + "/" + modifiedItem.filename, privacy: .public)
             to server url: \(newServerUrlFileName, privacy: .public)
+            old parent identifier: \(modifiedItem.parentItemIdentifier.rawValue, privacy: .public)
+            new parent identifier: \(itemTarget.parentItemIdentifier.rawValue, privacy: .public)
             with contents located at: \(newContents?.path ?? "", privacy: .public)
             """
         )
 
         if (changedFields.contains(.parentItemIdentifier) && parentItemIdentifier == .trashContainer) {
-            Self.logger.debug(
-                """
-                Changed fields for item \(ocId, privacy: .public)
-                with filename \(modifiedItem.filename, privacy: .public)
-                includes filename or parentitemidentifier.
-                old filename: \(modifiedItem.filename, privacy: .public)
-                new filename: \(itemTarget.filename, privacy: .public)
-                old parent identifier: \(modifiedItem.parentItemIdentifier.rawValue, privacy: .public)
-                new parent identifier: \(itemTarget.parentItemIdentifier.rawValue, privacy: .public)
-                """
-            )
-
             // We can't just move files into the trash, we need to issue a deletion; let's handle it
             // Rename the item if necessary before doing the trashing procedures
             if (changedFields.contains(.filename)) {
