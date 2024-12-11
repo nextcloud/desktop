@@ -385,7 +385,7 @@ public class MockRemoteInterface: RemoteInterface {
     public func trashedItems(
         account: Account,
         options: NKRequestOptions = .init(),
-        taskHandler: @escaping (URLSessionTask) -> Void
+        taskHandler: @escaping (URLSessionTask) -> Void = { _ in }
     ) async -> (account: String, trashedItems: [NKTrash], data: Data?, error: NKError) {
         guard let rootTrashItem else { return (account.ncKitAccount, [], nil, .invalidData) }
         return (account.ncKitAccount, rootTrashItem.children.map { $0.toNKTrash() }, nil, .success)
