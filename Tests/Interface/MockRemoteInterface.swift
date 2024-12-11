@@ -253,9 +253,6 @@ public class MockRemoteInterface: RemoteInterface {
             var nextChildren = [MockRemoteItem]()
             for child in children {
                 if isTrashed {
-                    if child.trashbinFileName == nil || child.trashbinFileName?.isEmpty == true {
-                        child.trashbinFileName = child.name
-                    }
                     if child.remotePath.hasPrefix(account.davFilesUrl) {
                         child.trashbinOriginalLocation = child.remotePath.replacingOccurrences(
                             of: account.davFilesUrl + "/", with: ""
@@ -374,11 +371,10 @@ public class MockRemoteInterface: RemoteInterface {
         let relativePath =
             item.remotePath.replacingOccurrences(of: account.davFilesUrl, with: "")
         item.trashbinOriginalLocation = relativePath
-        item.trashbinFileName = item.name + " (trashed)"
 
         let (_, _, error) = await move(
             remotePathSource: item.remotePath,
-            remotePathDestination: account.trashUrl + "/" + item.trashbinFileName!,
+            remotePathDestination: account.trashUrl + "/" + item.name + " (trashed)",
             account: account
         )
         guard error == .success else { return (account.ncKitAccount, nil, error) }

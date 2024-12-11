@@ -28,7 +28,6 @@ public class MockRemoteItem: Equatable {
     public var username: String
     public var userId: String
     public var serverUrl: String
-    public var trashbinFileName: String?
     public var trashbinOriginalLocation: String?
 
     public static func == (lhs: MockRemoteItem, rhs: MockRemoteItem) -> Bool {
@@ -87,7 +86,7 @@ public class MockRemoteItem: Equatable {
 
     public func toNKFile() -> NKFile {
         let file = NKFile()
-        file.fileName = name
+        file.fileName = trashbinOriginalLocation?.split(separator: "/").last?.toString() ?? name
         file.size = size
         file.date = creationDate
         file.directory = directory
@@ -101,7 +100,7 @@ public class MockRemoteItem: Equatable {
         file.lock = locked
         file.lockOwner = lockOwner
         file.lockTimeOut = lockTimeOut
-        file.trashbinFileName = trashbinFileName ?? ""
+        file.trashbinFileName = name
         file.trashbinOriginalLocation = trashbinOriginalLocation ?? ""
         return file
     }
