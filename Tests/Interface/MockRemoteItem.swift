@@ -49,7 +49,8 @@ public class MockRemoteItem: Equatable {
         lhs.account == rhs.account &&
         lhs.username == rhs.username &&
         lhs.userId == rhs.userId &&
-        lhs.serverUrl == rhs.serverUrl
+        lhs.serverUrl == rhs.serverUrl &&
+        lhs.trashbinOriginalLocation == rhs.trashbinOriginalLocation
     }
 
     public init(
@@ -67,7 +68,8 @@ public class MockRemoteItem: Equatable {
         account: String,
         username: String,
         userId: String,
-        serverUrl: String
+        serverUrl: String,
+        trashbinOriginalLocation: String? = nil
     ) {
         self.identifier = identifier
         self.versionIdentifier = versionIdentifier
@@ -84,6 +86,7 @@ public class MockRemoteItem: Equatable {
         self.username = username
         self.userId = userId
         self.serverUrl = serverUrl
+        self.trashbinOriginalLocation = trashbinOriginalLocation
     }
 
     public func toNKFile() -> NKFile {
