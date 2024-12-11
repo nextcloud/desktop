@@ -39,21 +39,15 @@ final class ItemModifyTests: XCTestCase {
         serverUrl: Self.account.serverUrl
     )
 
+    var remoteFolder: MockRemoteItem!
+    var remoteItem: MockRemoteItem!
     static let dbManager = FilesDatabaseManager(realmConfig: .defaultConfiguration)
 
     override func setUp() {
         super.setUp()
         Realm.Configuration.defaultConfiguration.inMemoryIdentifier = name
-    }
 
-    override func tearDown() {
-        rootItem.children = []
-        rootTrashItem.children = []
-    }
-
-    func testModifyFileContents() async throws {
-        let remoteInterface = MockRemoteInterface(rootItem: rootItem)
-        let remoteItem = MockRemoteItem(
+        remoteItem = MockRemoteItem(
             identifier: "item",
             versionIdentifier: "0",
             name: "item.txt",
@@ -64,7 +58,7 @@ final class ItemModifyTests: XCTestCase {
             userId: Self.account.id,
             serverUrl: Self.account.serverUrl
         )
-        let remoteFolder = MockRemoteItem(
+        remoteFolder = MockRemoteItem(
             identifier: "folder",
             name: "folder",
             remotePath: Self.account.davFilesUrl + "/folder",
@@ -74,9 +68,12 @@ final class ItemModifyTests: XCTestCase {
             userId: Self.account.id,
             serverUrl: Self.account.serverUrl
         )
+
         rootItem.children = [remoteItem, remoteFolder]
+        rootTrashItem.children = []
         remoteItem.parent = rootItem
         remoteFolder.parent = rootItem
+    }
 
         let folderMetadata = ItemMetadata()
         folderMetadata.ocId = remoteFolder.identifier
@@ -666,6 +663,54 @@ final class ItemModifyTests: XCTestCase {
         XCTAssertEqual(
             remoteKeynotePropertiesPlist.data, try Data(contentsOf: keynotePropertiesPlistPath)
         )
+    }
+
+    func testMoveFileToTrash() async throws {
+        let remoteInterface = MockRemoteInterface(rootItem: rootItem, rootTrashItem: rootTrashItem)
+
+        let itemMetadata = remoteItem.toItemMetadata(account: Self.account)
+        Self.dbManager.addItemMetadata(itemMetadata)
+
+        let item = Item(
+            metadata: itemMetadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: remoteInterface
+        )
+        let trashItem = Item(
+            metadata: itemMetadata,
+            parentItemIdentifier: .trashContainer,
+            account: Self.account,
+            remoteInterface: remoteInterface
+        )
+
+        item.dbManager = Self.dbManager
+
+        let (trashedItemMaybe, error) = await item.modify(
+            itemTarget: trashItem,
+            changedFields: [.parentItemIdentifier],
+            contents: nil,
+            dbManager: Self.dbManager
+        )
+        XCTAssertNil(error)
+
+        XCTAssertEqual(rootTrashItem.children.count, 1)
+        let remoteTrashedItem = rootTrashItem.children.first
+        XCTAssertNotNil(remoteTrashedItem)
+
+        let trashedItem = try XCTUnwrap(trashedItemMaybe)
+        XCTAssertEqual(
+            trashedItem.itemIdentifier.rawValue, remoteTrashedItem?.identifier
+        )
+        // The mock remote interface renames items when trashing them, so, ensure this is synced
+        XCTAssertEqual(trashedItem.filename, remoteTrashedItem?.name)
+        XCTAssertEqual(trashedItem.metadata.isTrashed, true)
+        XCTAssertEqual(
+            trashedItem.metadata.trashbinOriginalLocation,
+            (itemMetadata.serverUrl + "/" + itemMetadata.fileName)
+                .replacingOccurrences(of: Self.account.davFilesUrl, with: "")
+        )
+        XCTAssertEqual(trashedItem.parentItemIdentifier, .trashContainer)
     }
 
     func testMoveFolderToTrash() async throws {
