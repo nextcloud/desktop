@@ -391,6 +391,32 @@ public class MockRemoteInterface: RemoteInterface {
         return (account.ncKitAccount, rootTrashItem.children.map { $0.toNKTrash() }, nil, .success)
     }
 
+    public func restoreFromTrash(
+        filename: String,
+        account: Account,
+        options: NKRequestOptions = .init(),
+        taskHandler: @escaping (URLSessionTask) -> Void = { _ in }
+    ) async -> (account: String, data: Data?, error: NKError) {
+        let fileTrashUrl = account.trashUrl + "/" + filename
+        guard let item = item(remotePath: fileTrashUrl, account: account) else {
+            return (account.ncKitAccount, nil, .urlError)
+        }
+
+        guard let originalRelativePath = item.trashbinOriginalLocation else {
+            return (account.ncKitAccount, nil, .invalidResponseError)
+        }
+        let originalLocationUrl = account.davFilesUrl + "/" + originalRelativePath
+        item.trashbinOriginalLocation = nil
+
+        let (_, data, error) = await move(
+            remotePathSource: fileTrashUrl,
+            remotePathDestination: originalLocationUrl,
+            account: account
+        )
+        guard error == .success else { return (account.ncKitAccount, data, error) }
+        return (account.ncKitAccount, data, .success)
+    }
+
     public func downloadThumbnail(
         url: URL,
         account: Account,

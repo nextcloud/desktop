@@ -199,6 +199,25 @@ extension NextcloudKit: RemoteInterface {
         }
     }
 
+    public func restoreFromTrash(
+        filename: String,
+        account: Account,
+        options: NKRequestOptions,
+        taskHandler: @escaping (_ task: URLSessionTask) -> Void
+    ) async -> (account: String, data: Data?, error: NKError) {
+        let trashFileUrl = account.trashUrl + "/" + filename
+        let recoverFileUrl = account.trashRestoreUrl + "/" + filename
+
+        return await move(
+            remotePathSource: trashFileUrl,
+            remotePathDestination: recoverFileUrl,
+            overwrite: false,
+            account: account,
+            options: options,
+            taskHandler: taskHandler
+        )
+    }
+
     public func downloadThumbnail(
         url: URL,
         account: Account,
