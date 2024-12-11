@@ -742,27 +742,95 @@ public extension Item {
             guard trashingError == nil else { return (modifiedItem, trashingError) }
             modifiedItem = trashedItem
         } else if changedFields.contains(.filename) || changedFields.contains(.parentItemIdentifier) {
-            let (renameModifiedItem, renameError) = await modifiedItem.move(
-                newFileName: itemTarget.filename,
-                newRemotePath: newServerUrlFileName,
-                newParentItemIdentifier: parentItemIdentifier,
-                newParentItemRemotePath: parentItemServerUrl,
-                dbManager: dbManager
-            )
-
-            guard renameError == nil, let renameModifiedItem else {
-                Self.logger.error(
-                    """
-                    Could not rename item with ocID \(ocId, privacy: .public)
-                    (\(modifiedItem.filename, privacy: .public)) to
-                    \(newServerUrlFileName, privacy: .public),
-                    received error: \(renameError?.localizedDescription ?? "", privacy: .public)
-                    """
+            // Recover the item first
+            if modifiedItem.parentItemIdentifier != itemTarget.parentItemIdentifier &&
+                modifiedItem.parentItemIdentifier == .trashContainer &&
+                modifiedItem.metadata.isTrashed
+            {
+                let (_, _, restoreError) = await remoteInterface.restoreFromTrash(
+                    filename: modifiedItem.filename,
+                    account: account,
+                    options: .init(),
+                    taskHandler: { _ in }
                 )
-                return (nil, renameError)
+                guard restoreError == .success else {
+                    Self.logger.error(
+                        """
+                        Could not restore item \(modifiedItem.filename, privacy: .public) from trash
+                        Received error: \(restoreError.errorDescription, privacy: .public)
+                        """
+                    )
+                    return (nil, restoreError.fileProviderError)
+                }
+                guard modifiedItem.metadata.trashbinOriginalLocation != "" else {
+                    Self.logger.error(
+                        """
+                        Could not scan restored item \(self.filename, privacy: .public).
+                        The trashed file's original location is invalid.
+                        """
+                    ) // TODO: Be more permissive of this and just rescan remote state
+                    return (modifiedItem, NSFileProviderError(.cannotSynchronize))
+                }
+                let originalLocation =
+                    account.davFilesUrl + "/" + modifiedItem.metadata.trashbinOriginalLocation
+
+                let (_, files, _, enumerateError) = await remoteInterface.enumerate(
+                    remotePath: originalLocation,
+                    depth: .target,
+                    showHiddenFiles: true,
+                    includeHiddenFiles: [],
+                    requestBody: nil,
+                    account: account,
+                    options: .init(),
+                    taskHandler: { _ in }
+                )
+                guard enumerateError == .success, !files.isEmpty, let target = files.first else {
+                    Self.logger.error(
+                        """
+                        Could not scan restored state of file \(originalLocation, privacy: .public)
+                        Received error: \(enumerateError.errorDescription, privacy: .public)
+                        Files: \(files.count, privacy: .public)
+                        """ // TODO: Be more permissive of this and just rescan remote state
+                    )
+                    return (modifiedItem, enumerateError.fileProviderError)
+                }
+
+                let restoredItemMetadata = ItemMetadata.fromNKFile(target, account: account)
+                modifiedItem = Item(
+                    metadata: restoredItemMetadata,
+                    parentItemIdentifier: parentItemIdentifier,
+                    account: account,
+                    remoteInterface: remoteInterface
+                )
             }
 
-            modifiedItem = renameModifiedItem
+            // Maybe during the untrashing the item's intended modifications were complete.
+            // If not the case, or the item modification does not involve untrashing, move/rename.
+            if modifiedItem.filename != itemTarget.filename ||
+               modifiedItem.parentItemIdentifier != itemTarget.parentItemIdentifier
+            {
+                let (renameModifiedItem, renameError) = await modifiedItem.move(
+                    newFileName: itemTarget.filename,
+                    newRemotePath: newServerUrlFileName,
+                    newParentItemIdentifier: parentItemIdentifier,
+                    newParentItemRemotePath: parentItemServerUrl,
+                    dbManager: dbManager
+                )
+
+                guard renameError == nil, let renameModifiedItem else {
+                    Self.logger.error(
+                        """
+                        Could not rename item with ocID \(ocId, privacy: .public)
+                        (\(modifiedItem.filename, privacy: .public)) to
+                        \(newServerUrlFileName, privacy: .public),
+                        received error: \(renameError?.localizedDescription ?? "", privacy: .public)
+                        """
+                    )
+                    return (nil, renameError)
+                }
+
+                modifiedItem = renameModifiedItem
+            }
         }
 
         guard !isFolder || bundleOrPackage else {
