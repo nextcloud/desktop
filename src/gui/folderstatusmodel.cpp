@@ -250,8 +250,15 @@ QVariant FolderStatusModel::data(const QModelIndex &index, int role) const
         return (folder->syncResult().hasUnresolvedConflicts())
             ? QStringList(tr("There are unresolved conflicts. Click for details."))
             : QStringList();
-    case FolderStatusDelegate::FolderErrorMsg:
-        return folder->syncResult().errorStrings();
+    case FolderStatusDelegate::FolderErrorMsg: {
+        auto errors = folder->syncResult().errorStrings();
+        const auto legacyError = FolderMan::instance()->unsupportedConfiguration(folder->path());
+        if (!legacyError) {
+            // the error message might contain new lines, the delegate only expect multiple single line values
+            errors.append(legacyError.error().split(QLatin1Char('\n')));
+        }
+        return errors;
+    }
     case FolderStatusDelegate::FolderInfoMsg:
         return folder->virtualFilesEnabled() && folder->vfs().mode() != Vfs::Mode::WindowsCfApi
             ? QStringList(tr("Virtual file support is enabled."))
