@@ -526,14 +526,14 @@ Should an account import be attempted?</source>
 계정을 가져오기를 시도할까요?</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountmanager.cpp" line="216"/>
+        <location filename="../src/gui/accountmanager.cpp" line="225"/>
         <source>%1 accounts were detected from a legacy desktop client.
 Should the accounts be imported?</source>
         <translation>%1개 계정이 예전의 데스크톱 클라이언트에서 발견되었습니다.
 이 계정들을 가져올까요?</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountmanager.cpp" line="218"/>
+        <location filename="../src/gui/accountmanager.cpp" line="227"/>
         <source>1 account was detected from a legacy desktop client.
 Should the account be imported?</source>
         <translation>하나의 계정이 예전의 데스크톱 클라이언트에서 발견되었습니다.
@@ -547,12 +547,12 @@ Should the account be imported?</source>
         <translation>예전 버전에서 가져오기</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountmanager.cpp" line="221"/>
+        <location filename="../src/gui/accountmanager.cpp" line="230"/>
         <source>Import</source>
         <translation>가져오기</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountmanager.cpp" line="222"/>
+        <location filename="../src/gui/accountmanager.cpp" line="231"/>
         <source>Skip</source>
         <translation>건너뛰기</translation>
     </message>
@@ -1186,34 +1186,34 @@ This action will abort any currently running synchronization.</source>
         <translation>계속</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="488"/>
+        <location filename="../src/gui/application.cpp" line="490"/>
         <source>%1 accounts</source>
         <comment>number of accounts imported</comment>
         <translation>%1개 계정</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="489"/>
+        <location filename="../src/gui/application.cpp" line="491"/>
         <source>1 account</source>
         <translation>1개 계정</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="491"/>
+        <location filename="../src/gui/application.cpp" line="493"/>
         <source>%1 folders</source>
         <comment>number of folders imported</comment>
         <translation>%1개 폴더</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="492"/>
+        <location filename="../src/gui/application.cpp" line="494"/>
         <source>1 folder</source>
         <translation>1개 폴더</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="494"/>
+        <location filename="../src/gui/application.cpp" line="496"/>
         <source>Legacy import</source>
         <translation>레거시 불러오기</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="495"/>
+        <location filename="../src/gui/application.cpp" line="497"/>
         <source>Imported %1 and %2 from a legacy desktop client.
 %3</source>
         <comment>number of accounts and folders imported. list of users.</comment>

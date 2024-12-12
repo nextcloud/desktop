@@ -526,14 +526,14 @@ Should an account import be attempted?</source>
 應該嘗試匯入帳號嗎？</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountmanager.cpp" line="216"/>
+        <location filename="../src/gui/accountmanager.cpp" line="225"/>
         <source>%1 accounts were detected from a legacy desktop client.
 Should the accounts be imported?</source>
         <translation>檢測到 %1 個來自舊版桌面客戶端的帳戶。
 是否應該導入這些帳戶？</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountmanager.cpp" line="218"/>
+        <location filename="../src/gui/accountmanager.cpp" line="227"/>
         <source>1 account was detected from a legacy desktop client.
 Should the account be imported?</source>
         <translation>檢測到 1 個來自舊版桌面客戶端的帳戶。
@@ -547,12 +547,12 @@ Should the account be imported?</source>
         <translation>舊版匯入</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountmanager.cpp" line="221"/>
+        <location filename="../src/gui/accountmanager.cpp" line="230"/>
         <source>Import</source>
         <translation>導入</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountmanager.cpp" line="222"/>
+        <location filename="../src/gui/accountmanager.cpp" line="231"/>
         <source>Skip</source>
         <translation>略過</translation>
     </message>
@@ -1190,34 +1190,34 @@ This action will abort any currently running synchronization.</source>
         <translation>繼續</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="488"/>
+        <location filename="../src/gui/application.cpp" line="490"/>
         <source>%1 accounts</source>
         <comment>number of accounts imported</comment>
         <translation>%1 個帳戶</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="489"/>
+        <location filename="../src/gui/application.cpp" line="491"/>
         <source>1 account</source>
         <translation>1 個帳戶</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="491"/>
+        <location filename="../src/gui/application.cpp" line="493"/>
         <source>%1 folders</source>
         <comment>number of folders imported</comment>
         <translation>%n 個資料夾</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="492"/>
+        <location filename="../src/gui/application.cpp" line="494"/>
         <source>1 folder</source>
         <translation>1 個資料夾</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="494"/>
+        <location filename="../src/gui/application.cpp" line="496"/>
         <source>Legacy import</source>
         <translation>舊版匯入</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="495"/>
+        <location filename="../src/gui/application.cpp" line="497"/>
         <source>Imported %1 and %2 from a legacy desktop client.
 %3</source>
         <comment>number of accounts and folders imported. list of users.</comment>
