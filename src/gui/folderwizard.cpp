@@ -122,6 +122,13 @@ bool FolderWizardLocalPath::isComplete() const
     const auto errorStr = FolderMan::instance()->checkPathValidityForNewFolder(
         QDir::fromNativeSeparators(_ui.localFolderLineEdit->text()), serverUrl).second;
 
+    SyncDirValidator syncDirValidator(QDir::fromNativeSeparators(_ui.localFolderLineEdit->text()));
+    if (!syncDirValidator.isValidDir()) {
+        _ui.sesSnackBar->show();
+        _ui.sesSnackBar->setError(syncDirValidator.message());
+        return false;
+    }
+
     if(errorStr.isEmpty())
     {
         _ui.sesSnackBar->hide();
