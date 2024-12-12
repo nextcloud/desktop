@@ -474,7 +474,7 @@ private:
 
     void showSyncResultPopup();
 
-    void checkLocalPath();
+    bool checkLocalPath();
 
     SyncOptions initializeSyncOptions() const;
 
