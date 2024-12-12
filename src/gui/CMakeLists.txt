@@ -47,7 +47,11 @@ set(client_UI_SRCS
     wizard/welcomepage.ui
 )
 
-qt_add_resources(client_UI_SRCS ../../resources.qrc ${CMAKE_SOURCE_DIR}/theme.qrc)
+if(QUICK_COMPILER)
+    qtquick_compiler_add_resources(client_UI_SRCS ../../resources.qrc ${CMAKE_SOURCE_DIR}/theme.qrc)
+else()
+    qt5_add_resources(client_UI_SRCS ../../resources.qrc ${CMAKE_SOURCE_DIR}/theme.qrc)
+endif()
 
 set(client_SRCS
     accountmanager.h
