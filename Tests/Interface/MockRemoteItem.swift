@@ -123,7 +123,9 @@ public class MockRemoteItem: Equatable {
     }
 
     public func toItemMetadata(account: Account) -> ItemMetadata {
-        let fileName = trashbinOriginalLocation?.split(separator: "/").last?.toString() ?? name
+        let originalFileName = trashbinOriginalLocation?.split(separator: "/").last?.toString()
+        let fileName = originalFileName ?? name
+        let serverUrlTrimCount = name.count
 
         let metadata = ItemMetadata()
         metadata.ocId = identifier
@@ -136,7 +138,7 @@ public class MockRemoteItem: Equatable {
         metadata.serverUrl = remotePath
         metadata.serverUrl.removeSubrange(
             remotePath.index(
-                remotePath.endIndex, offsetBy: -(fileName.count + 1) // Remove trailing slash
+                remotePath.endIndex, offsetBy: -(serverUrlTrimCount + 1) // Remove trailing slash
             )..<remotePath.endIndex
         )
         metadata.date = modificationDate
