@@ -2,4 +2,3 @@
 0003-use_system_buildflags.patch
 0004-sane-cmake.patch
 0007-vfs-plugin.patch
-0008-qt6.patch
