@@ -129,7 +129,8 @@ bool createDebugArchive(const QString &filename)
         QMessageBox::critical(
             nullptr,
             QObject::tr("Failed to create debug archive"),
-            QObject::tr("Could not create debug archive in selected location!")
+            QObject::tr("Could not create debug archive in selected location!"),
+            QMessageBox::Ok
         );
         return false;
     }

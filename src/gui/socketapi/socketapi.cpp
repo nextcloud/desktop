@@ -472,7 +472,7 @@ void SocketApi::slotRegisterPath(const QString &alias)
     Folder *f = FolderMan::instance()->folder(alias);
     if (f) {
         const QString message = buildRegisterPathMessage(removeTrailingSlash(f->path()));
-        for (const auto &listener : qAsConst(_listeners)) {
+        for (const auto &listener : std::as_const(_listeners)) {
             qCInfo(lcSocketApi) << "Trying to send SocketAPI Register Path Message -->" << message << "to" << listener->socket;
             listener->sendMessage(message);
         }
@@ -519,7 +519,7 @@ void SocketApi::slotUpdateFolderView(Folder *f)
 
 void SocketApi::broadcastMessage(const QString &msg, bool doWait)
 {
-    for (const auto &listener : qAsConst(_listeners)) {
+    for (const auto &listener : std::as_const(_listeners)) {
         listener->sendMessage(msg, doWait);
     }
 }
@@ -546,10 +546,13 @@ void SocketApi::processEncryptRequest(const QString &localFile)
     Q_ASSERT(rec.isValid());
 
     if (!account->e2e() || account->e2e()->_mnemonic.isEmpty()) {
-        const int ret = QMessageBox::critical(nullptr,
-                                              tr("Failed to encrypt folder at \"%1\"").arg(fileData.folderRelativePath),
-                                              tr("The account %1 does not have end-to-end encryption configured. "
-                                                 "Please configure this in your account settings to enable folder encryption.").arg(account->prettyName()));
+        const int ret = QMessageBox::critical(
+            nullptr,
+            tr("Failed to encrypt folder at \"%1\"").arg(fileData.folderRelativePath),
+            tr("The account %1 does not have end-to-end encryption configured. "
+               "Please configure this in your account settings to enable folder encryption.").arg(account->prettyName()),
+            QMessageBox::Ok
+        );
         Q_UNUSED(ret)
         return;
     }
@@ -563,10 +566,13 @@ void SocketApi::processEncryptRequest(const QString &localFile)
     job->setParent(this);
     connect(job, &OCC::EncryptFolderJob::finished, this, [fileData, job](const int status) {
         if (status == OCC::EncryptFolderJob::Error) {
-            const int ret = QMessageBox::critical(nullptr,
-                                                  tr("Failed to encrypt folder"),
-                                                  tr("Could not encrypt the following folder: \"%1\".\n\n"
-                                                     "Server replied with error: %2").arg(fileData.folderRelativePath, job->errorString()));
+            const int ret = QMessageBox::critical(
+                nullptr,
+                tr("Failed to encrypt folder"),
+                tr("Could not encrypt the following folder: \"%1\".\n\n"
+                   "Server replied with error: %2").arg(fileData.folderRelativePath, job->errorString()),
+                QMessageBox::Ok
+            );
             Q_UNUSED(ret)
         } else {
             const int ret = QMessageBox::information(nullptr,
@@ -639,7 +645,7 @@ void SocketApi::broadcastStatusPushMessage(const QString &systemPath, SyncFileSt
     QString msg = buildMessage(QLatin1String("STATUS"), systemPath, fileStatus.toSocketAPIString());
     Q_ASSERT(!systemPath.endsWith('/'));
     uint directoryHash = qHash(systemPath.left(systemPath.lastIndexOf('/')));
-    for (const auto &listener : qAsConst(_listeners)) {
+    for (const auto &listener : std::as_const(_listeners)) {
         listener->sendMessageIfDirectoryMonitored(msg, directoryHash);
     }
 }

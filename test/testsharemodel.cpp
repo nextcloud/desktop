@@ -278,7 +278,7 @@ private slots:
 
         const auto expectedLinkShareExpireDate = QDate::fromString(_testLinkShareDefinition.shareExpiration, helper.expectedDtFormat);
         QCOMPARE(shareIndex.data(ShareModel::ExpireDateEnabledRole).toBool(), expectedLinkShareExpireDate.isValid());
-        QCOMPARE(shareIndex.data(ShareModel::ExpireDateRole).toLongLong(), expectedLinkShareExpireDate.startOfDay(Qt::UTC).toMSecsSinceEpoch());
+        QCOMPARE(shareIndex.data(ShareModel::ExpireDateRole).toLongLong(), expectedLinkShareExpireDate.startOfDay(QTimeZone::utc()).toMSecsSinceEpoch());
 
         const auto iconUrl = shareIndex.data(ShareModel::IconUrlRole).toString();
         QVERIFY(iconUrl.contains("public.svg"));
@@ -321,7 +321,7 @@ private slots:
 
         const auto expectedShareExpireDate = QDate::fromString(_testEmailShareDefinition.shareExpiration, helper.expectedDtFormat);
         QCOMPARE(shareIndex.data(ShareModel::ExpireDateEnabledRole).toBool(), expectedShareExpireDate.isValid());
-        QCOMPARE(shareIndex.data(ShareModel::ExpireDateRole).toLongLong(), expectedShareExpireDate.startOfDay(Qt::UTC).toMSecsSinceEpoch());
+        QCOMPARE(shareIndex.data(ShareModel::ExpireDateRole).toLongLong(), expectedShareExpireDate.startOfDay(QTimeZone::utc()).toMSecsSinceEpoch());
 
         const auto iconUrl = shareIndex.data(ShareModel::IconUrlRole).toString();
         QVERIFY(iconUrl.contains("email.svg"));
@@ -364,7 +364,7 @@ private slots:
 
         const auto expectedShareExpireDate = QDate::fromString(_testUserShareDefinition.shareExpiration, helper.expectedDtFormat);
         QCOMPARE(shareIndex.data(ShareModel::ExpireDateEnabledRole).toBool(), expectedShareExpireDate.isValid());
-        QCOMPARE(shareIndex.data(ShareModel::ExpireDateRole).toLongLong(), expectedShareExpireDate.startOfDay(Qt::UTC).toMSecsSinceEpoch());
+        QCOMPARE(shareIndex.data(ShareModel::ExpireDateRole).toLongLong(), expectedShareExpireDate.startOfDay(QTimeZone::utc()).toMSecsSinceEpoch());
 
         const auto iconUrl = shareIndex.data(ShareModel::IconUrlRole).toString();
         QVERIFY(iconUrl.contains("user.svg"));
@@ -801,14 +801,14 @@ private slots:
         QCOMPARE(shareIndex.data(ShareModel::ExpireDateEnabledRole).toBool(), false);
 
         // Set a new expire date
-        const auto expireDateMsecs = QDate::currentDate().addDays(10).startOfDay(Qt::UTC).toMSecsSinceEpoch();
+        const auto expireDateMsecs = QDate::currentDate().addDays(10).startOfDay(QTimeZone::utc()).toMSecsSinceEpoch();
         model.setShareExpireDate(linkSharePtr, expireDateMsecs);
         QVERIFY(expireDateSet.wait(3000));
         QCOMPARE(shareIndex.data(ShareModel::ExpireDateRole).toLongLong(), expireDateMsecs);
         QCOMPARE(shareIndex.data(ShareModel::ExpireDateEnabledRole).toBool(), true);
 
         // Test the QML-specific slot
-        const QVariant newExpireDateMsecs = QDate::currentDate().addDays(20).startOfDay(Qt::UTC).toMSecsSinceEpoch();
+        const QVariant newExpireDateMsecs = QDate::currentDate().addDays(20).startOfDay(QTimeZone::utc()).toMSecsSinceEpoch();
         model.setShareExpireDateFromQml(QVariant::fromValue(sharePtr), newExpireDateMsecs);
         QVERIFY(expireDateSet.wait(3000));
         QCOMPARE(shareIndex.data(ShareModel::ExpireDateRole).toLongLong(), newExpireDateMsecs);
