@@ -40,3 +40,6 @@ install(TARGETS nextcloudsync_vfs_suffix
   RUNTIME DESTINATION "${vfs_installdir}"
 )
 
+if (WIN32)
+    install(FILES $<TARGET_PDB_FILE:nextcloudsync_vfs_suffix> DESTINATION bin OPTIONAL)
+endif()
