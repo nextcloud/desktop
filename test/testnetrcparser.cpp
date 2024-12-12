@@ -55,10 +55,10 @@ private slots:
        NetrcParser parser(testfileC);
        QEXPECT_FAIL("", "test currently broken, eventually will be fixed", Abort);
        QVERIFY(parser.parse());
-       QCOMPARE(parser.find("foo"), qMakePair(QString("bar"), QString("baz")));
-       QCOMPARE(parser.find("broken"), qMakePair(QString("bar2"), QString()));
-       QCOMPARE(parser.find("funnysplit"), qMakePair(QString("bar3"), QString("baz3")));
-       QCOMPARE(parser.find("frob"), qMakePair(QString("user with spaces"), QString("space pwd")));
+       QCOMPARE(parser.find("foo"), qMakePair(QStringLiteral("bar"), QStringLiteral("baz")));
+       QCOMPARE(parser.find("broken"), qMakePair(QStringLiteral("bar2"), QString()));
+       QCOMPARE(parser.find("funnysplit"), qMakePair(QStringLiteral("bar3"), QStringLiteral("baz3")));
+       QCOMPARE(parser.find("frob"), qMakePair(QStringLiteral("user with spaces"), QStringLiteral("space pwd")));
     }
 
     void testEmptyNetrc() {
@@ -71,8 +71,8 @@ private slots:
        NetrcParser parser(testfileWithDefaultC);
        QEXPECT_FAIL("", "test currently broken, eventually will be fixed", Abort);
        QVERIFY(parser.parse());
-       QCOMPARE(parser.find("foo"), qMakePair(QString("bar"), QString("baz")));
-       QCOMPARE(parser.find("dontknow"), qMakePair(QString("user"), QString("pass")));
+       QCOMPARE(parser.find("foo"), qMakePair(QStringLiteral("bar"), QStringLiteral("baz")));
+       QCOMPARE(parser.find("dontknow"), qMakePair(QStringLiteral("user"), QStringLiteral("pass")));
     }
 
     void testInvalidNetrc() {

@@ -715,7 +715,7 @@ private slots:
     void testAddExcludeFilePath_addSameFilePath_listSizeDoesNotIncrease()
     {
         excludedFiles.reset(new ExcludedFiles());
-        const auto filePath = QString("exclude/.sync-exclude.lst");
+        const auto filePath = QStringLiteral("exclude/.sync-exclude.lst");
         
         excludedFiles->addExcludeFilePath(filePath);
         excludedFiles->addExcludeFilePath(filePath);        
@@ -727,8 +727,8 @@ private slots:
     {
         excludedFiles.reset(new ExcludedFiles());
         
-        const auto filePath1 = QString("exclude1/.sync-exclude.lst");
-        const auto filePath2 = QString("exclude2/.sync-exclude.lst");
+        const auto filePath1 = QStringLiteral("exclude1/.sync-exclude.lst");
+        const auto filePath2 = QStringLiteral("exclude2/.sync-exclude.lst");
     
         excludedFiles->addExcludeFilePath(filePath1);
         excludedFiles->addExcludeFilePath(filePath2);

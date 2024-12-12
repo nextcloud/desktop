@@ -90,7 +90,7 @@ UpdateInfo UpdateInfo::parseString(const QString &xml, bool *ok)
     if (!doc.setContent(xml, false, &errorMsg, &errorLine, &errorCol)) {
         qCWarning(lcUpdater).noquote().nospace() << errorMsg << " at " << errorLine << "," << errorCol
                                 << "\n" <<  xml.split("\n").value(errorLine-1) << "\n"
-                                << QString(" ").repeated(errorCol - 1) << "^\n"
+                                << QStringLiteral(" ").repeated(errorCol - 1) << "^\n"
                                 << "->" << xml << "<-";
         if (ok)
             *ok = false;
