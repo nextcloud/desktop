@@ -73,14 +73,14 @@ final class ItemModifyTests: XCTestCase {
         remoteTrashItem = MockRemoteItem(
             identifier: "trashItem",
             versionIdentifier: "0",
-            name: "trashitem.txt (trashed)",
-            remotePath: Self.account.trashUrl + "/trashitem.txt (trashed)",
+            name: "trashItem.txt (trashed)",
+            remotePath: Self.account.trashUrl + "/trashItem.txt (trashed)",
             data: "Hello, World!".data(using: .utf8),
             account: Self.account.ncKitAccount,
             username: Self.account.username,
             userId: Self.account.id,
             serverUrl: Self.account.serverUrl,
-            trashbinOriginalLocation: "folder/trashitem.txt"
+            trashbinOriginalLocation: "folder/trashItem.txt"
         )
 
         rootItem.children = [remoteItem, remoteFolder]
@@ -822,7 +822,7 @@ final class ItemModifyTests: XCTestCase {
         )
     }
 
-    func testMoveFileOutOfTrash() async throws {
+    func testTrashAndMoveFileOutOfTrash() async throws {
         let remoteInterface = MockRemoteInterface(rootItem: rootItem, rootTrashItem: rootTrashItem)
         let itemMetadata = remoteItem.toItemMetadata(account: Self.account)
         Self.dbManager.addItemMetadata(itemMetadata)

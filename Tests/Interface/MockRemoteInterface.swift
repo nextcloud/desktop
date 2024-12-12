@@ -230,29 +230,66 @@ public class MockRemoteInterface: RemoteInterface {
         options: NKRequestOptions = .init(),
         taskHandler: @escaping (URLSessionTask) -> Void = { _ in }
     ) async -> (account: String, data: Data?, error: NKError) {
-        guard let itemNewName = try? name(from: remotePathDestination),
-              let sourceItem = item(remotePath: remotePathSource, account: account),
-              let destinationParent = parentItem(path: remotePathDestination, account: account),
-              (overwrite || !destinationParent.children.contains(where: { $0.name == itemNewName }))
-        else { return (account.ncKitAccount, nil, .urlError) }
+        print("Moving \(remotePathSource) to \(remotePathDestination)")
+
+        let isTrashed = remotePathSource.hasPrefix(account.trashUrl)
+        let isTrashing = remotePathDestination.hasPrefix(account.trashUrl)
+        let isRestoreFromTrash = remotePathDestination.hasPrefix(account.trashRestoreUrl)
+
+        guard !isTrashed || isRestoreFromTrash || isTrashing else {
+            print("Illegal moving of trash item into non-restore path \(remotePathDestination)")
+            return (account.ncKitAccount, nil, .urlError)
+        }
+
+        guard let itemNewName = try? name(from: remotePathDestination) else {
+            print("Could not get item's new name from: \(remotePathDestination)")
+            return (account.ncKitAccount, nil, .urlError)
+        }
+
+        guard let sourceItem = item(remotePath: remotePathSource, account: account) else {
+            print("Could not get item for remote path source\(remotePathSource)")
+            return (account.ncKitAccount, nil, .urlError)
+        }
+
+        guard !isRestoreFromTrash || sourceItem.trashbinOriginalLocation != nil else {
+            print("Cannot restore item from trash, sourceItem has no trashbin original location")
+            return (account.ncKitAccount, nil, .urlError)
+        }
 
         sourceItem.name = itemNewName
         sourceItem.parent?.children.removeAll(where: { $0.identifier == sourceItem.identifier })
+
+        // Shadow remotePathDestination and set it to the item's original destination if it is a
+        // restore from trash operation
+        let remotePathDestination = isRestoreFromTrash && sourceItem.trashbinOriginalLocation != nil
+            ? account.davFilesUrl + "/" + sourceItem.trashbinOriginalLocation!
+            : remotePathDestination
+
+        guard let destinationParent = parentItem(path: remotePathDestination, account: account),
+              (overwrite || !destinationParent.children.contains(where: { $0.name == itemNewName }))
+        else {
+            print("Failed to find destination parent item/it already contains item with same name")
+            return (account.ncKitAccount, nil, .urlError)
+        }
+
+        if isRestoreFromTrash {
+            sourceItem.name = try! name(from: sourceItem.trashbinOriginalLocation!)
+            sourceItem.trashbinOriginalLocation = nil
+        }
         sourceItem.parent = destinationParent
         destinationParent.children.append(sourceItem)
 
         let oldPath = sourceItem.remotePath
         sourceItem.remotePath = remotePathDestination
 
-        let isTrashed = remotePathDestination.hasPrefix(account.trashUrl)
-        print("Moved \(sourceItem.name) to \(remotePathDestination) (isTrashed: \(isTrashed))")
+        print("Moved \(sourceItem.name) to \(remotePathDestination) (isTrashed: \(isTrashing))")
 
         var children = sourceItem.children
 
         while !children.isEmpty {
             var nextChildren = [MockRemoteItem]()
             for child in children {
-                if isTrashed {
+                if isTrashing {
                     if child.remotePath.hasPrefix(account.davFilesUrl) {
                         child.trashbinOriginalLocation = child.remotePath.replacingOccurrences(
                             of: account.davFilesUrl + "/", with: ""
@@ -331,7 +368,9 @@ public class MockRemoteInterface: RemoteInterface {
         options: NKRequestOptions = .init(),
         taskHandler: @escaping (URLSessionTask) -> Void = { _ in }
     ) async -> (account: String, files: [NKFile], data: Data?, error: NKError) {
+        print("Enumerating \(remotePath)")
         guard let item = item(remotePath: remotePath, account: account) else {
+            print("Item at \(remotePath) not found.")
             return (account.ncKitAccount, [], nil, .urlError)
         }
 
@@ -400,22 +439,15 @@ public class MockRemoteInterface: RemoteInterface {
         taskHandler: @escaping (URLSessionTask) -> Void = { _ in }
     ) async -> (account: String, data: Data?, error: NKError) {
         let fileTrashUrl = account.trashUrl + "/" + filename
-        guard let item = item(remotePath: fileTrashUrl, account: account) else {
-            return (account.ncKitAccount, nil, .urlError)
-        }
-
-        guard let originalRelativePath = item.trashbinOriginalLocation else {
-            return (account.ncKitAccount, nil, .invalidResponseError)
-        }
-        let originalLocationUrl = account.davFilesUrl + "/" + originalRelativePath
-        item.trashbinOriginalLocation = nil
-
+        let fileTrashRestoreUrl = account.trashRestoreUrl + "/" + filename
         let (_, data, error) = await move(
             remotePathSource: fileTrashUrl,
-            remotePathDestination: originalLocationUrl,
+            remotePathDestination: fileTrashRestoreUrl,
             account: account
         )
-        guard error == .success else { return (account.ncKitAccount, data, error) }
+        guard error == .success else {
+            return (account.ncKitAccount, data, error)
+        }
         return (account.ncKitAccount, data, .success)
     }
 
