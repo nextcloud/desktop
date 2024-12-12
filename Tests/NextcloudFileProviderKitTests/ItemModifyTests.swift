@@ -41,6 +41,7 @@ final class ItemModifyTests: XCTestCase {
 
     var remoteFolder: MockRemoteItem!
     var remoteItem: MockRemoteItem!
+    var remoteTrashItem: MockRemoteItem!
 
     static let dbManager = FilesDatabaseManager(realmConfig: .defaultConfiguration)
 
@@ -69,9 +70,21 @@ final class ItemModifyTests: XCTestCase {
             userId: Self.account.id,
             serverUrl: Self.account.serverUrl
         )
+        remoteTrashItem = MockRemoteItem(
+            identifier: "trashItem",
+            versionIdentifier: "0",
+            name: "trashitem.txt (trashed)",
+            remotePath: Self.account.trashUrl + "/trashitem.txt (trashed)",
+            data: "Hello, World!".data(using: .utf8),
+            account: Self.account.ncKitAccount,
+            username: Self.account.username,
+            userId: Self.account.id,
+            serverUrl: Self.account.serverUrl,
+            trashbinOriginalLocation: "folder/trashitem.txt"
+        )
 
         rootItem.children = [remoteItem, remoteFolder]
-        rootTrashItem.children = []
+        rootTrashItem.children = [remoteTrashItem]
         remoteItem.parent = rootItem
         remoteFolder.parent = rootItem
     }
@@ -540,8 +553,9 @@ final class ItemModifyTests: XCTestCase {
         )
         XCTAssertNil(error)
 
-        XCTAssertEqual(rootTrashItem.children.count, 1)
-        let remoteTrashedItem = rootTrashItem.children.first
+        XCTAssertEqual(rootTrashItem.children.count, 2)
+        let remoteTrashedItem =
+            rootTrashItem.children.first(where: { $0.identifier == itemMetadata.ocId })
         XCTAssertNotNil(remoteTrashedItem)
 
         let trashedItem = try XCTUnwrap(trashedItemMaybe)
@@ -602,8 +616,9 @@ final class ItemModifyTests: XCTestCase {
         )
         XCTAssertNil(error)
 
-        XCTAssertEqual(rootTrashItem.children.count, 1)
-        let remoteTrashedItem = rootTrashItem.children.first
+        XCTAssertEqual(rootTrashItem.children.count, 2)
+        let remoteTrashedItem =
+            rootTrashItem.children.first(where: { $0.identifier == itemMetadata.ocId})
         XCTAssertNotNil(remoteTrashedItem)
 
         let trashedItem = try XCTUnwrap(trashedItemMaybe)
@@ -679,8 +694,9 @@ final class ItemModifyTests: XCTestCase {
         )
         XCTAssertNil(error)
 
-        XCTAssertEqual(rootTrashItem.children.count, 1)
-        let remoteTrashedFolderItem = rootTrashItem.children.first
+        XCTAssertEqual(rootTrashItem.children.count, 2)
+        let remoteTrashedFolderItem =
+            rootTrashItem.children.first(where: { $0.identifier == folderMetadata.ocId })
         XCTAssertNotNil(remoteTrashedFolderItem)
 
         let trashedFolderItem = try XCTUnwrap(trashedFolderItemMaybe)
@@ -772,8 +788,9 @@ final class ItemModifyTests: XCTestCase {
         )
         XCTAssertNil(error)
 
-        XCTAssertEqual(rootTrashItem.children.count, 1)
-        let remoteTrashedFolderItem = rootTrashItem.children.first
+        XCTAssertEqual(rootTrashItem.children.count, 2)
+        let remoteTrashedFolderItem =
+            rootTrashItem.children.first(where: { $0.identifier == folderMetadata.ocId })
         XCTAssertNotNil(remoteTrashedFolderItem)
 
         let trashedFolderItem = try XCTUnwrap(trashedFolderItemMaybe)
