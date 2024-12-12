@@ -304,6 +304,11 @@ public:
      */
     struct OCSYNC_EXPORT PinStateInterface
     {
+        explicit PinStateInterface(SyncJournalDb *db)
+            : _db(db)
+        {
+        }
+
         PinStateInterface(const PinStateInterface &) = delete;
         PinStateInterface(PinStateInterface &&) = delete;
 
