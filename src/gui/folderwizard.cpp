@@ -119,15 +119,15 @@ bool FolderWizardLocalPath::isComplete() const
     QUrl serverUrl = _account->url();
     serverUrl.setUserName(_account->credentials()->user());
 
-    const auto errorStr = FolderMan::instance()->checkPathValidityForNewFolder(
-        QDir::fromNativeSeparators(_ui.localFolderLineEdit->text()), serverUrl).second;
-
     SyncDirValidator syncDirValidator(QDir::fromNativeSeparators(_ui.localFolderLineEdit->text()));
     if (!syncDirValidator.isValidDir()) {
         _ui.sesSnackBar->show();
         _ui.sesSnackBar->setError(syncDirValidator.message());
         return false;
     }
+
+    const auto errorStr = FolderMan::instance()->checkPathValidityForNewFolder(
+        QDir::fromNativeSeparators(_ui.localFolderLineEdit->text()), serverUrl).second;
 
     if(errorStr.isEmpty())
     {
