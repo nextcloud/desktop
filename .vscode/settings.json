@@ -4,5 +4,5 @@
         "CMAKE_PREFIX_PATH": "C:/CraftRoot",
         "BUILD_TESTING":"OFF",
       },
-      "cmake.buildDirectory": "${workspaceFolder}/build/${buildKitTargetOs}-${buildKitVendor}-${buildKitTargetArch}/${buildType}",
+      "cmake.buildDirectory": "${workspaceFolder}/../build/${buildKitTargetOs}-${buildKitVendor}-${buildKitTargetArch}/${buildType}",
 }
