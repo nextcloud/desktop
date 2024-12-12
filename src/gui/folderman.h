@@ -232,10 +232,10 @@ public:
     void leaveShare(const QString &localFile);
 
     /** Whether or not vfs is supported in the location. */
-    bool checkVfsAvailability(const QString &path, Vfs::Mode mode = bestAvailableVfsMode()) const;
+    [[nodiscard]] bool checkVfsAvailability(const QString &path, Vfs::Mode mode = bestAvailableVfsMode()) const;
 
     /** If the folder configuration is no longer supported this will return an error string */
-    Result<void, QString> unsupportedConfiguration(const QString &path) const;
+    [[nodiscard]] Result<void, QString> unsupportedConfiguration(const QString &path) const;
 signals:
     /**
       * signal to indicate a folder has changed its sync state.
