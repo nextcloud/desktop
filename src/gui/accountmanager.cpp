@@ -343,7 +343,11 @@ void AccountManager::saveAccountHelper(Account *account, QSettings &settings, bo
 {
     qCDebug(lcAccountManager) << "Saving settings to" << settings.fileName();
     settings.setValue(QLatin1String(versionC), maxAccountVersion);
-    settings.setValue(QLatin1String(urlC), account->_url.toString());
+    if (account->isPublicShareLink()) {
+        settings.setValue(QLatin1String(urlC), account->publicShareLinkUrl().toString());
+    } else {
+        settings.setValue(QLatin1String(urlC), account->_url.toString());
+    }
     settings.setValue(QLatin1String(davUserC), account->_davUser);
     settings.setValue(QLatin1String(displayNameC), account->davDisplayName());
     settings.setValue(QLatin1String(serverVersionC), account->_serverVersion);
