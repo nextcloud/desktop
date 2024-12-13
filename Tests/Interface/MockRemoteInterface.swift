@@ -241,11 +241,6 @@ public class MockRemoteInterface: RemoteInterface {
             return (account.ncKitAccount, nil, .urlError)
         }
 
-        guard let itemNewName = try? name(from: remotePathDestination) else {
-            print("Could not get item's new name from: \(remotePathDestination)")
-            return (account.ncKitAccount, nil, .urlError)
-        }
-
         guard let sourceItem = item(remotePath: remotePathSource, account: account) else {
             print("Could not get item for remote path source\(remotePathSource)")
             return (account.ncKitAccount, nil, .urlError)
@@ -256,7 +251,7 @@ public class MockRemoteInterface: RemoteInterface {
             return (account.ncKitAccount, nil, .urlError)
         }
 
-        sourceItem.name = itemNewName
+        sourceItem.name = try! name(from: remotePathDestination)
         sourceItem.parent?.children.removeAll(where: { $0.identifier == sourceItem.identifier })
 
         // Shadow remotePathDestination and set it to the item's original destination if it is a
@@ -265,10 +260,8 @@ public class MockRemoteInterface: RemoteInterface {
             ? account.davFilesUrl + "/" + sourceItem.trashbinOriginalLocation!
             : remotePathDestination
 
-        guard let destinationParent = parentItem(path: remotePathDestination, account: account),
-              (overwrite || !destinationParent.children.contains(where: { $0.name == itemNewName }))
-        else {
-            print("Failed to find destination parent item/it already contains item with same name")
+        guard let destinationParent = parentItem(path: remotePathDestination, account: account) else {
+            print("Failed to find destination parent item!")
             return (account.ncKitAccount, nil, .urlError)
         }
 
@@ -276,11 +269,26 @@ public class MockRemoteInterface: RemoteInterface {
             sourceItem.name = try! name(from: sourceItem.trashbinOriginalLocation!)
             sourceItem.trashbinOriginalLocation = nil
         }
+
+        let matchingNameChildCount = destinationParent.children.count(
+            where: { $0.name == sourceItem.name }
+        )
+
+        print(matchingNameChildCount)
+
+        if !overwrite && matchingNameChildCount > 0 {
+            sourceItem.name += " (\(matchingNameChildCount))"
+            print("Found conflicting children, renaming file to \(sourceItem.name)")
+        } else if overwrite && matchingNameChildCount > 0 {
+            print("Found conflicting children, removing all due to overwrite.")
+            destinationParent.children.removeAll(where: { $0.name == sourceItem.name} )
+        }
+
         sourceItem.parent = destinationParent
         destinationParent.children.append(sourceItem)
 
         let oldPath = sourceItem.remotePath
-        sourceItem.remotePath = remotePathDestination
+        sourceItem.remotePath = destinationParent.remotePath + "/" + sourceItem.name
 
         print("Moved \(sourceItem.name) to \(remotePathDestination) (isTrashed: \(isTrashing))")
 
