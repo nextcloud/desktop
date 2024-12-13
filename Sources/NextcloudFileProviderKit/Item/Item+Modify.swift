@@ -631,6 +631,23 @@ public extension Item {
         dbManager: FilesDatabaseManager,
         domain: NSFileProviderDomain?
     ) async -> (Item, Error?) {
+
+        func finaliseRestore(target: NKFile) -> (Item, Error?) {
+            let restoredItemMetadata = target.toItemMetadata()
+            guard let parentItemIdentifier = dbManager.parentItemIdentifierFromMetadata(
+                restoredItemMetadata
+            ) else {
+                Self.logger.error("Could not find parent item identifier for \(originalLocation)")
+                return (modifiedItem, NSFileProviderError(.cannotSynchronize))
+            }
+            return (Item(
+                metadata: restoredItemMetadata,
+                parentItemIdentifier: parentItemIdentifier,
+                account: account,
+                remoteInterface: modifiedItem.remoteInterface
+            ), nil)
+        }
+
         let (_, _, restoreError) = await modifiedItem.remoteInterface.restoreFromTrash(
             filename: modifiedItem.filename,
             account: account,
@@ -680,29 +697,64 @@ public extension Item {
         }
 
         guard target.ocId == modifiedItem.itemIdentifier.rawValue else {
-            Self.logger.error(
+            Self.logger.warning(
                 """
                 Restored item \(originalLocation, privacy: .public)
                 does not match \(modifiedItem.filename, privacy: .public)
                 (it is likely that when restoring from the trash, there was another identical item).
                 """
-            ) // TODO: Be more permissive of this and just rescan remote state
-            return (modifiedItem, NSFileProviderError(.cannotSynchronize))
+            )
+
+            guard let finalSlashIndex = originalLocation.lastIndex(of: "/") else {
+                return (modifiedItem, NSFileProviderError(.cannotSynchronize))
+            }
+            var parentDirectoryRemotePath = originalLocation
+            parentDirectoryRemotePath.removeSubrange(finalSlashIndex..<originalLocation.endIndex)
+
+            Self.logger.info(
+                """
+                Scanning parent folder at \(parentDirectoryRemotePath, privacy: .public) for current
+                state of item restored from trash.
+                """
+            )
+
+            let (_, files, _, folderScanError) = await modifiedItem.remoteInterface.enumerate(
+                remotePath: parentDirectoryRemotePath,
+                depth: .targetAndDirectChildren,
+                showHiddenFiles: true,
+                includeHiddenFiles: [],
+                requestBody: nil,
+                account: account,
+                options: .init(),
+                taskHandler: { _ in }
+            )
+
+            guard folderScanError == .success else {
+                Self.logger.error(
+                    """
+                    Scanning parent folder at \(parentDirectoryRemotePath, privacy: .public)
+                    returned error: \(folderScanError.errorDescription)
+                    """
+                )
+                return (modifiedItem, NSFileProviderError(.cannotSynchronize))
+            }
+
+            guard let actualTarget = files.first(
+                where: { $0.ocId == modifiedItem.itemIdentifier.rawValue }
+            ) else {
+                Self.logger.error(
+                    """
+                    Scanning parent folder at \(parentDirectoryRemotePath, privacy: .public)
+                    finished successfully but the target item restored from trash not found.
+                    """
+                )
+                return (modifiedItem, NSFileProviderError(.cannotSynchronize))
+            }
+
+            return finaliseRestore(target: actualTarget)
         }
 
-        let restoredItemMetadata = target.toItemMetadata()
-        guard let parentItemIdentifier = dbManager.parentItemIdentifierFromMetadata(
-            restoredItemMetadata
-        ) else {
-            Self.logger.error("Could not find parent item identifier for \(originalLocation)")
-            return (modifiedItem, NSFileProviderError(.cannotSynchronize))
-        }
-        return (Item(
-            metadata: restoredItemMetadata,
-            parentItemIdentifier: parentItemIdentifier,
-            account: account,
-            remoteInterface: modifiedItem.remoteInterface
-        ), nil)
+        return finaliseRestore(target: target)
     }
 
     func modify(
