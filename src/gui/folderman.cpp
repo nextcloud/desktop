@@ -2045,7 +2045,7 @@ Result<void, QString> FolderMan::unsupportedConfiguration(const QString &path) c
 {
     if (numberOfSyncJournals(path) > 1) {
         return tr("Multiple accounts are sharing the folder %1.\n"
-                  "This configuration is know to lead to dataloss and is no longer supported.\n"
+                  "This configuration is known to lead to data loss and is no longer supported.\n"
                   "Please consider removing this folder from the account and adding it again.")
             .arg(path);
     }
