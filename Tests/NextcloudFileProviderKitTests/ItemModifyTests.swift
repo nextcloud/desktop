@@ -901,4 +901,59 @@ final class ItemModifyTests: XCTestCase {
         untrashedItem.dbManager = Self.dbManager
         XCTAssertEqual(untrashedItem.parentItemIdentifier, .init(remoteFolder.identifier))
     }
+
+    func testMoveTrashedFileOutOfTrashAndRenameAndModifyContents() async throws {
+        let remoteInterface = MockRemoteInterface(rootItem: rootItem, rootTrashItem: rootTrashItem)
+
+        let trashItemMetadata = remoteTrashItem.toItemMetadata(account: Self.account)
+        Self.dbManager.addItemMetadata(trashItemMetadata)
+
+        let folderMetadata = remoteFolder.toItemMetadata(account: Self.account)
+        Self.dbManager.addItemMetadata(folderMetadata)
+
+        let newContents = "I've changed!".data(using: .utf8)
+        let newContentsUrl = FileManager.default.temporaryDirectory.appendingPathComponent("test")
+        try newContents?.write(to: newContentsUrl)
+
+        let targetItemMetadata = ItemMetadata(value: trashItemMetadata)
+        targetItemMetadata.serverUrl = Self.account.davFilesUrl
+        targetItemMetadata.fileName = "new-file.txt"
+        targetItemMetadata.fileNameView = "new-file.txt"
+        targetItemMetadata.name = "new-file.txt"
+        targetItemMetadata.size = Int64(newContents!.count)
+        targetItemMetadata.trashbinFileName = ""
+        targetItemMetadata.trashbinOriginalLocation = ""
+        targetItemMetadata.trashbinDeletionTime = Date()
+
+        let trashItem = Item(
+            metadata: trashItemMetadata,
+            parentItemIdentifier: .trashContainer,
+            account: Self.account,
+            remoteInterface: remoteInterface
+        )
+        trashItem.dbManager = Self.dbManager
+
+        let targetItem = Item(
+            metadata: targetItemMetadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: remoteInterface
+        )
+
+        let (modifiedUntrashedItemMaybe, error) = await trashItem.modify(
+            itemTarget: targetItem,
+            changedFields: [.parentItemIdentifier, .filename, .contents],
+            contents: newContentsUrl,
+            dbManager: Self.dbManager
+        )
+        XCTAssertNil(error)
+        
+        let modifiedUntrashedItem = try XCTUnwrap(modifiedUntrashedItemMaybe)
+        modifiedUntrashedItem.dbManager = Self.dbManager
+
+        XCTAssertEqual(modifiedUntrashedItem.parentItemIdentifier, .rootContainer)
+        XCTAssertEqual(modifiedUntrashedItem.itemIdentifier, targetItem.itemIdentifier)
+        XCTAssertEqual(modifiedUntrashedItem.filename, targetItem.filename)
+        XCTAssertEqual(modifiedUntrashedItem.documentSize?.int64Value, targetItemMetadata.size)
+    }
 }
