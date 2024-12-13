@@ -145,14 +145,22 @@ extension FilesDatabaseManager {
         }
 
         let oldItemServerUrl = directoryMetadata.serverUrl
-        let oldDirectoryServerUrl = oldItemServerUrl + "/" + directoryMetadata.fileName
+        let oldItemFilename = directoryMetadata.isTrashed
+            ? directoryMetadata.trashbinFileName
+            : directoryMetadata.fileName
+        let oldDirectoryServerUrl = oldItemServerUrl + "/" + oldItemFilename
         let newDirectoryServerUrl = newServerUrl + "/" + newFileName
         let childItemResults = itemMetadatas.filter(
             "account == %@ AND serverUrl BEGINSWITH %@", directoryMetadata.account,
             oldDirectoryServerUrl)
 
         renameItemMetadata(ocId: ocId, newServerUrl: newServerUrl, newFileName: newFileName)
-        Self.logger.debug("Renamed root renaming directory")
+        Self.logger.debug(
+            """
+            Renamed root renaming directory from: \(oldDirectoryServerUrl, privacy: .public)
+                                              to: \(newDirectoryServerUrl, privacy: .public)
+            """
+        )
 
         do {
             let database = ncDatabase()
@@ -164,7 +172,10 @@ extension FilesDatabaseManager {
                     childItem.serverUrl = movedServerUrl
                     database.add(childItem, update: .all)
                     Self.logger.debug(
-                        "Moved childItem at \(oldServerUrl) to \(movedServerUrl)")
+                        """
+                        Moved childItem at: \(oldServerUrl, privacy: .public)
+                                        to: \(movedServerUrl, privacy: .public)
+                        """)
                 }
             }
         } catch {
