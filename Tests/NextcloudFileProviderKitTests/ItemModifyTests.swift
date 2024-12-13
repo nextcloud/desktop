@@ -956,4 +956,46 @@ final class ItemModifyTests: XCTestCase {
         XCTAssertEqual(modifiedUntrashedItem.filename, targetItem.filename)
         XCTAssertEqual(modifiedUntrashedItem.documentSize?.int64Value, targetItemMetadata.size)
     }
+
+    func testMoveFileOutOfTrashWithExistingIdenticallyNamedFile() async throws {
+        // Make sure that we properly get the post-untrash state of the target item and not the
+        // identically-named file in the location the file has been untrashed to
+        let remoteInterface = MockRemoteInterface(rootItem: rootItem, rootTrashItem: rootTrashItem)
+
+        remoteTrashItem.trashbinOriginalLocation =
+            remoteItem.remotePath.replacingOccurrences(of: Self.account.davFilesUrl + "/", with: "")
+
+        let trashItemMetadata = remoteTrashItem.toItemMetadata(account: Self.account)
+        Self.dbManager.addItemMetadata(trashItemMetadata)
+
+        let folderMetadata = remoteFolder.toItemMetadata(account: Self.account)
+        Self.dbManager.addItemMetadata(folderMetadata)
+
+        let trashItem = Item(
+            metadata: trashItemMetadata,
+            parentItemIdentifier: .trashContainer,
+            account: Self.account,
+            remoteInterface: remoteInterface
+        )
+        trashItem.dbManager = Self.dbManager
+
+        let untrashedTargetItem = Item(
+            metadata: trashItemMetadata,
+            parentItemIdentifier: .init(rootItem.identifier),
+            account: Self.account,
+            remoteInterface: remoteInterface
+        )
+
+        let (untrashedItemMaybe, untrashError) = await trashItem.modify(
+            itemTarget: untrashedTargetItem,
+            changedFields: [.parentItemIdentifier],
+            contents: nil,
+            dbManager: Self.dbManager
+        )
+        XCTAssertNil(untrashError)
+        let untrashedItem = try XCTUnwrap(untrashedItemMaybe)
+        untrashedItem.dbManager = Self.dbManager
+        XCTAssertEqual(untrashedItem.itemIdentifier, trashItem.itemIdentifier)
+        XCTAssertEqual(untrashedItem.parentItemIdentifier, .init(rootItem.identifier))
+    }
 }
