@@ -1022,16 +1022,16 @@ final class ItemModifyTests: XCTestCase {
         let folderMetadata = remoteFolder.toItemMetadata(account: Self.account)
         Self.dbManager.addItemMetadata(folderMetadata)
 
-        let newContents = "I've changed!".data(using: .utf8)
+        let newContents = "I've changed!".data(using: .utf8)!
         let newContentsUrl = FileManager.default.temporaryDirectory.appendingPathComponent("test")
-        try newContents?.write(to: newContentsUrl)
+        try newContents.write(to: newContentsUrl)
 
         let targetItemMetadata = ItemMetadata(value: trashItemMetadata)
         targetItemMetadata.serverUrl = Self.account.davFilesUrl
         targetItemMetadata.fileName = "new-file.txt"
         targetItemMetadata.fileNameView = "new-file.txt"
         targetItemMetadata.name = "new-file.txt"
-        targetItemMetadata.size = Int64(newContents!.count)
+        targetItemMetadata.size = Int64(newContents.count)
         targetItemMetadata.trashbinFileName = ""
         targetItemMetadata.trashbinOriginalLocation = ""
         targetItemMetadata.trashbinDeletionTime = Date()
@@ -1066,6 +1066,9 @@ final class ItemModifyTests: XCTestCase {
         XCTAssertEqual(modifiedUntrashedItem.itemIdentifier, targetItem.itemIdentifier)
         XCTAssertEqual(modifiedUntrashedItem.filename, targetItem.filename)
         XCTAssertEqual(modifiedUntrashedItem.documentSize?.int64Value, targetItemMetadata.size)
+
+        XCTAssertEqual(remoteTrashItem.name, targetItem.filename)
+        XCTAssertEqual(remoteTrashItem.data!, newContents)
     }
 
     func testMoveFileOutOfTrashWithExistingIdenticallyNamedFile() async throws {
