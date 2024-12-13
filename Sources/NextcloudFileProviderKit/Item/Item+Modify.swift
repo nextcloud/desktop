@@ -730,7 +730,7 @@ public extension Item {
             return (nil, NSFileProviderError(.noSuchItem))
         }
 
-        let parentItemIdentifier = itemTarget.parentItemIdentifier
+        let newParentItemIdentifier = itemTarget.parentItemIdentifier
         let isFolder = modifiedItem.contentType.conforms(to: .directory)
         let bundleOrPackage =
             modifiedItem.contentType.conforms(to: .bundle) ||
@@ -743,33 +743,33 @@ public extension Item {
             )
         }
 
-        var parentItemServerUrl: String
+        var newParentItemRemoteUrl: String
 
         // The target parent should already be present in our database. The system will have synced
         // remote changes and then, upon user interaction, will try to modify the item.
         // That is, if the parent item has changed at all (it might not have)
-        if parentItemIdentifier == .rootContainer {
-            parentItemServerUrl = account.davFilesUrl
-        } else if parentItemIdentifier == .trashContainer {
-            parentItemServerUrl = account.trashUrl
+        if newParentItemIdentifier == .rootContainer {
+            newParentItemRemoteUrl = account.davFilesUrl
+        } else if newParentItemIdentifier == .trashContainer {
+            newParentItemRemoteUrl = account.trashUrl
         } else {
             guard let parentItemMetadata = dbManager.directoryMetadata(
-                ocId: parentItemIdentifier.rawValue
+                ocId: newParentItemIdentifier.rawValue
             ) else {
                 Self.logger.error(
                     """
                     Not modifying item: \(ocId, privacy: .public),
                     could not find metadata for target parentItemIdentifier
-                        \(parentItemIdentifier.rawValue, privacy: .public)
+                        \(newParentItemIdentifier.rawValue, privacy: .public)
                     """
                 )
                 return (nil, NSFileProviderError(.noSuchItem))
             }
 
-            parentItemServerUrl = parentItemMetadata.serverUrl + "/" + parentItemMetadata.fileName
+            newParentItemRemoteUrl = parentItemMetadata.serverUrl + "/" + parentItemMetadata.fileName
         }
 
-        let newServerUrlFileName = parentItemServerUrl + "/" + itemTarget.filename
+        let newServerUrlFileName = newParentItemRemoteUrl + "/" + itemTarget.filename
 
         Self.logger.debug(
             """
@@ -787,7 +787,7 @@ public extension Item {
             """
         )
 
-        if (changedFields.contains(.parentItemIdentifier) && parentItemIdentifier == .trashContainer) {
+        if changedFields.contains(.parentItemIdentifier) && newParentItemIdentifier == .trashContainer {
             // We can't just move files into the trash, we need to issue a deletion; let's handle it
             // Rename the item if necessary before doing the trashing procedures
             if (changedFields.contains(.filename)) {
@@ -845,8 +845,8 @@ public extension Item {
                 let (renameModifiedItem, renameError) = await modifiedItem.move(
                     newFileName: itemTarget.filename,
                     newRemotePath: newServerUrlFileName,
-                    newParentItemIdentifier: parentItemIdentifier,
-                    newParentItemRemotePath: parentItemServerUrl,
+                    newParentItemIdentifier: newParentItemIdentifier,
+                    newParentItemRemotePath: newParentItemRemoteUrl,
                     dbManager: dbManager
                 )
 
