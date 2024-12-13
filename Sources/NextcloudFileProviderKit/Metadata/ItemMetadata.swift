@@ -220,4 +220,17 @@ public class ItemMetadata: Object {
             "\(urlBase)/index.php/core/preview.png?file=\(serverFileRelativeUrl)&x=\(size.width)&y=\(size.height)&a=1&mode=cover"
         return URL(string: urlString)
     }
+
+    public func apply(fileName: String) {
+        self.fileName = fileName
+        fileNameView = fileName
+        name = fileName
+    }
+
+    public func apply(account: Account) {
+        self.account = account.ncKitAccount
+        user = account.username
+        userId = account.id
+        urlBase = account.serverUrl
+    }
 }
