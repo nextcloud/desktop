@@ -679,7 +679,10 @@ public extension Item {
                 Could not scan restored item \(modifiedItem.filename, privacy: .public).
                 The trashed file's original location is invalid.
                 """
-            ) // TODO: Be more permissive of this and just rescan remote state
+            )
+            if #available(macOS 11.3, *) {
+                return (modifiedItem, NSFileProviderError(.unsyncedEdits))
+            }
             return (modifiedItem, NSFileProviderError(.cannotSynchronize))
         }
         let originalLocation =
@@ -701,8 +704,11 @@ public extension Item {
                 Could not scan restored state of file \(originalLocation, privacy: .public)
                 Received error: \(enumerateError.errorDescription, privacy: .public)
                 Files: \(files.count, privacy: .public)
-                """ // TODO: Be more permissive of this and just rescan remote state
+                """
             )
+            if #available(macOS 11.3, *) {
+                return (modifiedItem, NSFileProviderError(.unsyncedEdits))
+            }
             return (modifiedItem, enumerateError.fileProviderError)
         }
 
