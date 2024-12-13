@@ -640,6 +640,16 @@ public extension Item {
                 Self.logger.error("Could not find parent item identifier for \(originalLocation)")
                 return (modifiedItem, NSFileProviderError(.cannotSynchronize))
             }
+
+            if restoredItemMetadata.directory {
+                _ = dbManager.renameDirectoryAndPropagateToChildren(
+                    ocId: restoredItemMetadata.ocId,
+                    newServerUrl: restoredItemMetadata.serverUrl,
+                    newFileName: restoredItemMetadata.fileName
+                )
+            }
+            dbManager.addItemMetadata(restoredItemMetadata)
+
             return (Item(
                 metadata: restoredItemMetadata,
                 parentItemIdentifier: parentItemIdentifier,
