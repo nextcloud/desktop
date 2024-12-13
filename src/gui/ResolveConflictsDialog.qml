@@ -147,15 +147,39 @@ ApplicationWindow {
         }
 
         DialogButtonBox {
+            id: buttonBox
             Layout.fillWidth: true
 
-            Button {
+            readonly property int pixelSize: Style.sesFontPixelSize
+            readonly property int fontWeight: Style.sesFontNormalWeight
+
+            SesCustomButton {
+                font.pixelSize: pixelSize
+                font.weight: fontWeight
                 text: qsTr("Resolve conflicts")
-                DialogButtonBox.buttonRole: DialogButtonBox.AcceptRole
+                textColor: palette.brightText
+
+                bgColor: Style.sesActionPressed
+                bgNormalOpacity: 1.0
+                bgHoverOpacity: Style.hoverOpacity
+
+                onClicked: buttonBox.onRejected()
             }
-            Button {
+
+            SesCustomButton {
+                font.pixelSize: pixelSize
+                font.weight: fontWeight
                 text: qsTr("Cancel")
-                DialogButtonBox.buttonRole: DialogButtonBox.RejectRole
+                textColor: Style.sesActionPressed
+
+                bgColor: palette.highlight
+                bgNormalOpacity: 1.0
+
+                bgBorderWidth: 2
+                bgBorderColor: Style.sesActionPressed
+                bgHoverOpacity: Style.hoverOpacity
+
+                onClicked: buttonBox.onRejected()
             }
 
             onAccepted: function() {
