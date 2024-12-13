@@ -42,6 +42,7 @@ final class ItemModifyTests: XCTestCase {
     var remoteFolder: MockRemoteItem!
     var remoteItem: MockRemoteItem!
     var remoteTrashItem: MockRemoteItem!
+    var remoteTrashFolder: MockRemoteItem!
 
     static let dbManager = FilesDatabaseManager(realmConfig: .defaultConfiguration)
 
@@ -82,9 +83,21 @@ final class ItemModifyTests: XCTestCase {
             serverUrl: Self.account.serverUrl,
             trashbinOriginalLocation: "folder/trashItem.txt"
         )
+        remoteTrashFolder = MockRemoteItem(
+            identifier: "trashedFolder",
+            versionIdentifier: "0",
+            name: "trashedFolder (trashed)",
+            remotePath: Self.account.trashUrl + "/trashedFolder (trashed)",
+            directory: true,
+            account: Self.account.ncKitAccount,
+            username: Self.account.username,
+            userId: Self.account.id,
+            serverUrl: Self.account.serverUrl,
+            trashbinOriginalLocation: "trashedFolder"
+        )
 
         rootItem.children = [remoteItem, remoteFolder]
-        rootTrashItem.children = [remoteTrashItem]
+        rootTrashItem.children = [remoteTrashItem, remoteTrashFolder]
         remoteItem.parent = rootItem
         remoteFolder.parent = rootItem
     }
@@ -638,7 +651,7 @@ final class ItemModifyTests: XCTestCase {
         )
         XCTAssertNil(error)
 
-        XCTAssertEqual(rootTrashItem.children.count, 2)
+        XCTAssertEqual(rootTrashItem.children.count, 3)
         let remoteTrashedItem =
             rootTrashItem.children.first(where: { $0.identifier == itemMetadata.ocId })
         XCTAssertNotNil(remoteTrashedItem)
@@ -701,7 +714,7 @@ final class ItemModifyTests: XCTestCase {
         )
         XCTAssertNil(error)
 
-        XCTAssertEqual(rootTrashItem.children.count, 2)
+        XCTAssertEqual(rootTrashItem.children.count, 3)
         let remoteTrashedItem =
             rootTrashItem.children.first(where: { $0.identifier == itemMetadata.ocId})
         XCTAssertNotNil(remoteTrashedItem)
@@ -779,7 +792,7 @@ final class ItemModifyTests: XCTestCase {
         )
         XCTAssertNil(error)
 
-        XCTAssertEqual(rootTrashItem.children.count, 2)
+        XCTAssertEqual(rootTrashItem.children.count, 3)
         let remoteTrashedFolderItem =
             rootTrashItem.children.first(where: { $0.identifier == folderMetadata.ocId })
         XCTAssertNotNil(remoteTrashedFolderItem)
@@ -873,7 +886,7 @@ final class ItemModifyTests: XCTestCase {
         )
         XCTAssertNil(error)
 
-        XCTAssertEqual(rootTrashItem.children.count, 2)
+        XCTAssertEqual(rootTrashItem.children.count, 3)
         let remoteTrashedFolderItem =
             rootTrashItem.children.first(where: { $0.identifier == folderMetadata.ocId })
         XCTAssertNotNil(remoteTrashedFolderItem)
