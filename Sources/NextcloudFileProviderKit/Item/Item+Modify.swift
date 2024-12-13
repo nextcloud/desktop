@@ -100,7 +100,7 @@ public extension Item {
     ) async -> (Item?, Error?) {
         let ocId = itemIdentifier.rawValue
 
-        guard newContents != nil, let localPath = newContents?.path else {
+        guard let newContents else {
             Self.logger.error(
                 """
                 ERROR. Could not upload modified contents as was provided nil contents url.
@@ -134,7 +134,7 @@ public extension Item {
 
         let (_, _, etag, date, size, _, _, error) = await remoteInterface.upload(
             remotePath: remotePath,
-            localPath: localPath,
+            localPath: newContents.path,
             creationDate: newCreationDate,
             modificationDate: newContentModificationDate,
             account: account,
@@ -175,7 +175,8 @@ public extension Item {
             """
         )
 
-        if size != documentSize as? Int64 {
+        let contentAttributes = try? FileManager.default.attributesOfItem(atPath: newContents.path)
+        if let expectedSize = contentAttributes?[.size] as? Int64, size != expectedSize {
             Self.logger.warning(
                 """
                 Item content modification upload reported as successful,
