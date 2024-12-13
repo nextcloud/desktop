@@ -42,7 +42,8 @@ public class Item: NSObject, NSFileProviderItem {
                 .allowsReading,
                 .allowsDeleting,
                 .allowsReparenting,
-                .allowsRenaming
+                .allowsRenaming,
+                .allowsTrashing
             ]
 
             if #available(macOS 11.3, *) {
@@ -64,7 +65,8 @@ public class Item: NSObject, NSFileProviderItem {
             .allowsDeleting,
             .allowsRenaming,
             .allowsReparenting,
-            .allowsEvicting
+            .allowsEvicting,
+            .allowsTrashing
         ]
     }
 
