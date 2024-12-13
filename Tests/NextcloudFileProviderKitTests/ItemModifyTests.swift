@@ -43,6 +43,7 @@ final class ItemModifyTests: XCTestCase {
     var remoteItem: MockRemoteItem!
     var remoteTrashItem: MockRemoteItem!
     var remoteTrashFolder: MockRemoteItem!
+    var remoteTrashFolderChildItem: MockRemoteItem!
 
     static let dbManager = FilesDatabaseManager(realmConfig: .defaultConfiguration)
 
@@ -95,11 +96,25 @@ final class ItemModifyTests: XCTestCase {
             serverUrl: Self.account.serverUrl,
             trashbinOriginalLocation: "trashedFolder"
         )
+        remoteTrashFolderChildItem = MockRemoteItem(
+            identifier: "trashChildItem",
+            versionIdentifier: "0",
+            name: "trashChildItem.txt",
+            remotePath: remoteTrashFolder.remotePath + "/trashChildItem.txt",
+            data: "Hello world, I'm trash!".data(using: .utf8),
+            account: Self.account.ncKitAccount,
+            username: Self.account.username,
+            userId: Self.account.id,
+            serverUrl: Self.account.serverUrl,
+            trashbinOriginalLocation: "trashedFolder/trashChildItem.txt"
+        )
 
         rootItem.children = [remoteItem, remoteFolder]
         rootTrashItem.children = [remoteTrashItem, remoteTrashFolder]
         remoteItem.parent = rootItem
         remoteFolder.parent = rootItem
+        remoteTrashFolder.children = [remoteTrashFolderChildItem]
+        remoteTrashFolderChildItem.parent = remoteTrashFolder
     }
 
     func testModifyFile() async throws {
