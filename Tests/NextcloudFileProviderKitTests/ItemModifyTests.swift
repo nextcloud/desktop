@@ -98,12 +98,17 @@ final class ItemModifyTests: XCTestCase {
         let itemMetadata = remoteItem.toItemMetadata(account: Self.account)
         Self.dbManager.addItemMetadata(itemMetadata)
 
+        let newContents = "Hello, New World!".data(using: .utf8)
+        let newContentsUrl = FileManager.default.temporaryDirectory.appendingPathComponent("test")
+        try newContents?.write(to: newContentsUrl)
+
         let targetItemMetadata = ItemMetadata(value: itemMetadata)
         targetItemMetadata.name = "item-renamed.txt" // Renamed
         targetItemMetadata.fileName = "item-renamed.txt" // Renamed
         targetItemMetadata.fileNameView = "item-renamed.txt" // Renamed
         targetItemMetadata.serverUrl = Self.account.davFilesUrl + "/folder" // Move
         targetItemMetadata.date = .init()
+        targetItemMetadata.size = Int64(newContents!.count)
 
         let item = Item(
             metadata: itemMetadata,
@@ -120,10 +125,6 @@ final class ItemModifyTests: XCTestCase {
         )
         targetItem.dbManager = Self.dbManager
 
-        let newContents = "Hello, New World!".data(using: .utf8)
-        let newContentsUrl = FileManager.default.temporaryDirectory.appendingPathComponent("test")
-        try newContents?.write(to: newContentsUrl)
-
         let (modifiedItemMaybe, error) = await item.modify(
             itemTarget: targetItem,
             changedFields: [.filename, .contents, .parentItemIdentifier, .contentModificationDate],
@@ -137,6 +138,7 @@ final class ItemModifyTests: XCTestCase {
         XCTAssertEqual(modifiedItem.filename, targetItem.filename)
         XCTAssertEqual(modifiedItem.parentItemIdentifier, targetItem.parentItemIdentifier)
         XCTAssertEqual(modifiedItem.contentModificationDate, targetItem.contentModificationDate)
+        XCTAssertEqual(modifiedItem.documentSize?.intValue, newContents!.count)
 
         XCTAssertFalse(remoteFolder.children.isEmpty)
         XCTAssertEqual(remoteItem.data, newContents)
