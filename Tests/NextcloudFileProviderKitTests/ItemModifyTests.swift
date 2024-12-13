@@ -89,7 +89,7 @@ final class ItemModifyTests: XCTestCase {
         remoteFolder.parent = rootItem
     }
 
-    func testModifyFileContents() async throws {
+    func testModifyFile() async throws {
         let remoteInterface = MockRemoteInterface(rootItem: rootItem)
 
         let folderMetadata = remoteFolder.toItemMetadata(account: Self.account)
@@ -146,6 +146,89 @@ final class ItemModifyTests: XCTestCase {
         XCTAssertEqual(
             remoteItem.remotePath, targetItemMetadata.serverUrl + "/" + targetItemMetadata.fileName
         )
+    }
+
+    func testModifyFolder() async throws {
+        let remoteInterface = MockRemoteInterface(rootItem: rootItem)
+
+        let remoteFolderB = MockRemoteItem(
+            identifier: "folder-b",
+            name: "folder-b",
+            remotePath: Self.account.davFilesUrl + "/folder-b",
+            directory: true,
+            account: Self.account.ncKitAccount,
+            username: Self.account.username,
+            userId: Self.account.id,
+            serverUrl: Self.account.serverUrl
+        )
+
+        rootItem.children = [remoteFolder, remoteFolderB]
+        remoteFolder.parent = rootItem
+        remoteFolderB.parent = rootItem
+
+        remoteFolder.children = [remoteItem]
+        remoteItem.parent = remoteFolder
+
+        let folderMetadata = remoteFolder.toItemMetadata(account: Self.account)
+        Self.dbManager.addItemMetadata(folderMetadata)
+
+        let folderBMetadata = remoteFolderB.toItemMetadata(account: Self.account)
+        Self.dbManager.addItemMetadata(folderBMetadata)
+
+        let itemMetadata = remoteItem.toItemMetadata(account: Self.account)
+        Self.dbManager.addItemMetadata(itemMetadata)
+
+        let testingUrl = FileManager.default.temporaryDirectory.appendingPathComponent("nctest-dir")
+        do {
+            try FileManager.default.createDirectory(
+                atPath: testingUrl.path, withIntermediateDirectories: true, attributes: nil
+            )
+        } catch {
+            print(error.localizedDescription)
+        }
+
+        let modifiedFolderMetadata = ItemMetadata(value: folderMetadata)
+        modifiedFolderMetadata.apply(fileName: "folder-renamed")
+        modifiedFolderMetadata.serverUrl = remoteFolderB.remotePath
+
+        let folderItem = Item(
+            metadata: folderMetadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: remoteInterface
+        )
+        folderItem.dbManager = Self.dbManager
+
+        let targetFolderItem = Item(
+            metadata: modifiedFolderMetadata,
+            parentItemIdentifier: .init(remoteFolderB.identifier),
+            account: Self.account,
+            remoteInterface: remoteInterface
+        )
+        targetFolderItem.dbManager = Self.dbManager
+
+        let (modifiedFolderMaybe, error) = await folderItem.modify(
+            itemTarget: targetFolderItem,
+            changedFields: [.filename, .contents, .parentItemIdentifier, .contentModificationDate],
+            contents: nil,
+            dbManager: Self.dbManager
+        )
+        XCTAssertNil(error)
+        let modifiedFolder = try XCTUnwrap(modifiedFolderMaybe)
+
+        XCTAssertEqual(modifiedFolder.itemIdentifier, targetFolderItem.itemIdentifier)
+        XCTAssertEqual(modifiedFolder.filename, targetFolderItem.filename)
+        XCTAssertEqual(modifiedFolder.parentItemIdentifier, targetFolderItem.parentItemIdentifier)
+        XCTAssertEqual(modifiedFolder.contentModificationDate, targetFolderItem.contentModificationDate)
+
+        XCTAssertEqual(rootItem.children.count, 1)
+        XCTAssertEqual(remoteFolder.children.count, 1)
+        XCTAssertEqual(remoteFolderB.children.count, 1)
+        XCTAssertEqual(remoteFolder.name, targetFolderItem.filename)
+        XCTAssertEqual(
+            remoteFolder.remotePath, modifiedFolderMetadata.serverUrl + "/" + modifiedFolderMetadata.fileName
+        )
+        // We do not yet support modification of folder contents
     }
 
     func testModifyBundleContents() async throws {
