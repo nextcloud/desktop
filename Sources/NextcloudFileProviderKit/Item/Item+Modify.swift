@@ -891,8 +891,9 @@ public extension Item {
 
             // Maybe during the untrashing the item's intended modifications were complete.
             // If not the case, or the item modification does not involve untrashing, move/rename.
-            if modifiedItem.filename != itemTarget.filename ||
-               modifiedItem.parentItemIdentifier != itemTarget.parentItemIdentifier
+            if (changedFields.contains(.filename) && modifiedItem.filename != itemTarget.filename) ||
+                (changedFields.contains(.parentItemIdentifier) &&
+                 modifiedItem.parentItemIdentifier != itemTarget.parentItemIdentifier)
             {
                 let (renameModifiedItem, renameError) = await modifiedItem.move(
                     newFileName: itemTarget.filename,
