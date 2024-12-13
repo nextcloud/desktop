@@ -1160,4 +1160,62 @@ final class ItemModifyTests: XCTestCase {
         )
         XCTAssertEqual(untrashedFolderChildItem.serverUrl, remoteTrashFolder.remotePath)
     }
+
+    func testMoveFolderOutOfTrashAndRename() async throws {
+        let remoteInterface = MockRemoteInterface(rootItem: rootItem, rootTrashItem: rootTrashItem)
+
+        let trashFolderMetadata = remoteTrashFolder.toItemMetadata(account: Self.account)
+        Self.dbManager.addItemMetadata(trashFolderMetadata)
+
+        let renamedTrashFolderMetadata = ItemMetadata(value: trashFolderMetadata)
+        renamedTrashFolderMetadata.apply(fileName: "renamed-folder")
+        renamedTrashFolderMetadata.serverUrl = Self.account.davFilesUrl
+        renamedTrashFolderMetadata.trashbinFileName = ""
+        renamedTrashFolderMetadata.trashbinOriginalLocation = ""
+        renamedTrashFolderMetadata.trashbinDeletionTime = Date()
+
+        let trashFolderChildItemMetadata =
+            remoteTrashFolderChildItem.toItemMetadata(account: Self.account)
+        Self.dbManager.addItemMetadata(trashFolderChildItemMetadata)
+
+        let trashedFolderItem = Item(
+            metadata: trashFolderMetadata,
+            parentItemIdentifier: .trashContainer,
+            account: Self.account,
+            remoteInterface: remoteInterface
+        )
+        trashedFolderItem.dbManager = Self.dbManager
+
+        let untrashedTargetItem = Item(
+            metadata: renamedTrashFolderMetadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: remoteInterface
+        )
+
+        let (untrashedFolderItemMaybe, untrashError) = await trashedFolderItem.modify(
+            itemTarget: untrashedTargetItem,
+            changedFields: [.parentItemIdentifier, .filename],
+            contents: nil,
+            dbManager: Self.dbManager
+        )
+        XCTAssertNil(untrashError)
+        let untrashedFolderItem = try XCTUnwrap(untrashedFolderItemMaybe)
+        untrashedFolderItem.dbManager = Self.dbManager
+        XCTAssertEqual(untrashedFolderItem.parentItemIdentifier, .rootContainer)
+        XCTAssertEqual(untrashedFolderItem.filename, renamedTrashFolderMetadata.fileName)
+        XCTAssertEqual(remoteTrashFolder.children.count, 1)
+        XCTAssertEqual(remoteTrashFolder.name, renamedTrashFolderMetadata.fileName)
+        XCTAssertTrue(remoteTrashFolder.remotePath.hasPrefix(Self.account.davFilesUrl))
+
+        let untrashedFolderChildItemMaybe =
+            Self.dbManager.itemMetadataFromOcId(remoteTrashFolderChildItem.identifier)
+        let untrashedFolderChildItem = try XCTUnwrap(untrashedFolderChildItemMaybe)
+        XCTAssertEqual(remoteTrashFolder.children.first?.identifier, untrashedFolderChildItem.ocId)
+        XCTAssertEqual(
+            remoteTrashFolderChildItem.remotePath,
+            remoteTrashFolder.remotePath + "/" + remoteTrashFolderChildItem.name
+        )
+        XCTAssertEqual(untrashedFolderChildItem.serverUrl, remoteTrashFolder.remotePath)
+    }
 }
