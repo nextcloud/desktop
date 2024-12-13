@@ -1115,6 +1115,10 @@ final class ItemModifyTests: XCTestCase {
         let trashFolderMetadata = remoteTrashFolder.toItemMetadata(account: Self.account)
         Self.dbManager.addItemMetadata(trashFolderMetadata)
 
+        let trashFolderChildItemMetadata =
+            remoteTrashFolderChildItem.toItemMetadata(account: Self.account)
+        Self.dbManager.addItemMetadata(trashFolderChildItemMetadata)
+
         let trashedFolderItem = Item(
             metadata: trashFolderMetadata,
             parentItemIdentifier: .trashContainer,
@@ -1140,5 +1144,17 @@ final class ItemModifyTests: XCTestCase {
         let untrashedItem = try XCTUnwrap(untrashedFolderItemMaybe)
         untrashedItem.dbManager = Self.dbManager
         XCTAssertEqual(untrashedItem.parentItemIdentifier, .rootContainer)
+        XCTAssertEqual(remoteTrashFolder.children.count, 1)
+        XCTAssertTrue(remoteTrashFolder.remotePath.hasPrefix(Self.account.davFilesUrl))
+
+        let untrashedFolderChildItemMaybe =
+            Self.dbManager.itemMetadataFromOcId(remoteTrashFolderChildItem.identifier)
+        let untrashedFolderChildItem = try XCTUnwrap(untrashedFolderChildItemMaybe)
+        XCTAssertEqual(remoteTrashFolder.children.first?.identifier, untrashedFolderChildItem.ocId)
+        XCTAssertEqual(
+            remoteTrashFolderChildItem.remotePath,
+            remoteTrashFolder.remotePath + "/" + remoteTrashFolderChildItem.name
+        )
+        XCTAssertEqual(untrashedFolderChildItem.serverUrl, remoteTrashFolder.remotePath)
     }
 }
