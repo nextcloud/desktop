@@ -2487,6 +2487,13 @@ Vous pouvez également restaurer tous les fichiers supprimés en les télécharg
     <message>
         <location filename="../src/gui/folderman.cpp" line="2047"/>
         <source>Multiple accounts are sharing the folder %1.
+This configuration is known to lead to data loss and is no longer supported.
+Please consider removing this folder from the account and adding it again.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/folderman.cpp" line="2047"/>
+        <source>Multiple accounts are sharing the folder %1.
 This configuration is know to lead to dataloss and is no longer supported.
 Please consider removing this folder from the account and adding it again.</source>
         <translation type="unfinished"/>
