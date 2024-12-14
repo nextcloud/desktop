@@ -2439,7 +2439,7 @@ Alternatively, you can restore all deleted files by downloading them from the se
     <message>
         <location filename="../src/gui/folderman.cpp" line="1810"/>
         <source>The folder %1 is used in a folder sync connection!</source>
-        <translation type="unfinished"/>
+        <translation>المجلد %1 يستعمل لاتصال مزموة المجلد!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1656"/>
@@ -2474,9 +2474,18 @@ Alternatively, you can restore all deleted files by downloading them from the se
     <message>
         <location filename="../src/gui/folderman.cpp" line="2047"/>
         <source>Multiple accounts are sharing the folder %1.
-This configuration is know to lead to dataloss and is no longer supported.
+This configuration is known to lead to data loss and is no longer supported.
 Please consider removing this folder from the account and adding it again.</source>
         <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/folderman.cpp" line="2047"/>
+        <source>Multiple accounts are sharing the folder %1.
+This configuration is know to lead to dataloss and is no longer supported.
+Please consider removing this folder from the account and adding it again.</source>
+        <translation>تشترك عدة حسابات في المجلد%1.
+مثل هذه التهيئة قد تتسبب في تسرب البيانات ولم تعد مدعومة بعد الآن.
+رجاءً، قم بحذف هذه المجلد من الحساب ثم قم بإضافته مرة أخرى.</translation>
     </message>
 </context>
 <context>
@@ -5840,7 +5849,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/common/vfs.cpp" line="75"/>
         <source>The Virtual filesystem feature does not support a drive as sync root</source>
-        <translation type="unfinished"/>
+        <translation>خاصية نظام الملفات الافتراضي لا تدعم قرصاً كجذر لعمليات المزامنة</translation>
     </message>
     <message>
         <location filename="../src/common/vfs.cpp" line="75"/>
@@ -5850,7 +5859,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/common/vfs.cpp" line="83"/>
         <source>The Virtual filesystem feature is not supported on network drives</source>
-        <translation type="unfinished"/>
+        <translation>خاصية نظام الملفات الافتراضي غير مدعومة على أقراص التخزين الشبكية</translation>
     </message>
 </context>
 <context>

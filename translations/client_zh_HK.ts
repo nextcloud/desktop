@@ -834,11 +834,11 @@ Wait for the new sync, then encrypt it.</source>
 The only advantage of disabling virtual file support is that the selective sync feature will become available again.
 
 This action will abort any currently running synchronization.</source>
-        <translation>此操作將禁用虛擬檔案支持。結果，將下載當前標記為“僅在線可用”的資料夾的內容。
+        <translation>此操作將禁用虛擬檔案支持。結果，將下載目前標記為“僅在線可用”的資料夾的內容。
 
 禁用虛擬檔案支持的唯一好處是選擇性同步功能將再次變得可用。
 
-此操作將中止任何當前正在運行的同步。</translation>
+此操作將中止任何目前正在運行的同步。</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="929"/>
@@ -1153,7 +1153,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/application.cpp" line="177"/>
         <source>Some settings were configured in %1 versions of this client and use features that are not available in this version.&lt;br&gt;&lt;br&gt;Continuing will mean &lt;b&gt;%2 these settings&lt;/b&gt;.&lt;br&gt;&lt;br&gt;The current configuration file was already backed up to &lt;i&gt;%3&lt;/i&gt;.</source>
-        <translation>某些設置是在此客戶端的較新版本中配置的，並使用了此版本中不可用的功能。%1 當前配置檔案已備份到 %2。
+        <translation>某些設置是在此客戶端的較新版本中配置的，並使用了此版本中不可用的功能。%1 目前配置檔案已備份到 %2。
 
 某些設置已在此客戶端的 %1 版本中配置，並使用了此版本中不可用的功能。&lt;br&gt;&lt;br&gt;繼續將意味著 &lt;b&gt;%2 這些設置&lt;/b&gt;。&lt;br&gt;&lt;br&gt;目前配置檔案已備份到 &lt;i&gt;%3&lt;/i&gt;。</translation>
     </message>
@@ -2454,7 +2454,7 @@ Alternatively, you can restore all deleted files by downloading them from the se
     <message>
         <location filename="../src/gui/folderman.cpp" line="1810"/>
         <source>The folder %1 is used in a folder sync connection!</source>
-        <translation type="unfinished"/>
+        <translation>此資料夾 %1 用於資料夾同步連接！</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1656"/>
@@ -2489,9 +2489,18 @@ Alternatively, you can restore all deleted files by downloading them from the se
     <message>
         <location filename="../src/gui/folderman.cpp" line="2047"/>
         <source>Multiple accounts are sharing the folder %1.
-This configuration is know to lead to dataloss and is no longer supported.
+This configuration is known to lead to data loss and is no longer supported.
 Please consider removing this folder from the account and adding it again.</source>
         <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/folderman.cpp" line="2047"/>
+        <source>Multiple accounts are sharing the folder %1.
+This configuration is know to lead to dataloss and is no longer supported.
+Please consider removing this folder from the account and adding it again.</source>
+        <translation>多個帳戶正在共用該資料夾 %1。
+此配置已知會導致資料遺失，因此不再受支援。
+請考慮從帳戶中刪除此資料夾並重新新增。</translation>
     </message>
 </context>
 <context>
@@ -3092,7 +3101,7 @@ Please consider removing this folder from the account and adding it again.</sour
 Note that this selects only what pool upgrades are taken from, and that there are no downgrades: So going back from the beta channel to the stable channel usually cannot be done immediately and means waiting for a stable version that is newer than the currently installed beta version.</source>
         <translation>更新通道確定將提供哪些客戶端更新來進行安裝。“穩定”通道僅包含被認為可靠的升級，而“測試版”通道中的版本可能包含較新的功能和錯誤修正，但尚未經過全面測試。
 
-請注意，這僅選擇從哪個池升級中進行升級，並且沒有降級：因此通常無法立即從Beta通道返回到穩定通道，這意味著要等待比當前安裝的測試版本更新的穩定版本。</translation>
+請注意，這僅選擇從哪個池升級中進行升級，並且沒有降級：因此通常無法立即從Beta通道返回到穩定通道，這意味著要等待比目前安裝的測試版本更新的穩定版本。</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="405"/>
@@ -4104,9 +4113,9 @@ Switching to this mode will abort any currently running synchronization.
 This is a new, experimental mode. If you decide to use it, please report any issues that come up.</source>
         <translation>啟用“虛擬文件”模式後，最初不會下載任何檔案。而是，將為伺服器上存在的每個文件創建一個微小的“%1”檔案。= 可以通過運行這些檔案或使用其上下文選項單來下載內容。
 
-虛擬檔案模式與選擇性同步是互斥的。當前未選擇的資料夾將轉換為僅在線資料夾，並且您的選擇同步設置將被重置。
+虛擬檔案模式與選擇性同步是互斥的。目前未選擇的資料夾將轉換為僅在線資料夾，並且您的選擇同步設置將被重置。
 
-切換到此模式將中止任何當前正在運行的同步。
+切換到此模式將中止任何目前正在運行的同步。
 
 這是一種新的實驗模式。如果您決定使用它，請報告出現的任何問題。</translation>
     </message>
@@ -5867,7 +5876,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/common/vfs.cpp" line="75"/>
         <source>The Virtual filesystem feature does not support a drive as sync root</source>
-        <translation type="unfinished"/>
+        <translation>虛擬檔案系統功能不支援磁碟機作為同步根</translation>
     </message>
     <message>
         <location filename="../src/common/vfs.cpp" line="75"/>
@@ -5877,7 +5886,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/common/vfs.cpp" line="83"/>
         <source>The Virtual filesystem feature is not supported on network drives</source>
-        <translation type="unfinished"/>
+        <translation>網路磁碟機不支援虛擬檔案系統功能</translation>
     </message>
 </context>
 <context>
