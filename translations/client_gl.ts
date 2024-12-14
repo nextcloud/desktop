@@ -2453,7 +2453,7 @@ Como alternativa, pode restaurar todos os ficheiros eliminados descargándoos do
     <message>
         <location filename="../src/gui/folderman.cpp" line="1810"/>
         <source>The folder %1 is used in a folder sync connection!</source>
-        <translation type="unfinished"/>
+        <translation>O cartafol %1 úsase nunha conexión de sincronización de cartafoles!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1656"/>
@@ -2484,6 +2484,13 @@ Como alternativa, pode restaurar todos os ficheiros eliminados descargándoos do
         <location filename="../src/gui/folderman.cpp" line="1740"/>
         <source>There is already a sync from the server to this local folder. Please pick another local folder!</source>
         <translation>Xa existe unha tarefa de sincronización entre o servidor e este cartafol. Escolla outro cartafol local!</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/folderman.cpp" line="2047"/>
+        <source>Multiple accounts are sharing the folder %1.
+This configuration is known to lead to data loss and is no longer supported.
+Please consider removing this folder from the account and adding it again.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="2047"/>
