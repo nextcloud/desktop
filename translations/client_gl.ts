@@ -2490,14 +2490,18 @@ Como alternativa, pode restaurar todos os ficheiros eliminados descargándoos do
         <source>Multiple accounts are sharing the folder %1.
 This configuration is known to lead to data loss and is no longer supported.
 Please consider removing this folder from the account and adding it again.</source>
-        <translation type="unfinished"/>
+        <translation>Varias contas están a compartir o cartafol %1
+Sábese que esta configuración leva á perda de datos e xa non está admitida.
+Considere eliminar este cartafol da conta e engadilo de novo.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="2047"/>
         <source>Multiple accounts are sharing the folder %1.
 This configuration is know to lead to dataloss and is no longer supported.
 Please consider removing this folder from the account and adding it again.</source>
-        <translation type="unfinished"/>
+        <translation>Varias contas están a compartir o cartafol %1
+Sábese que esta configuración leva á perda de datos e xa non está admitida.
+Considere eliminar este cartafol da conta e engadilo de novo.</translation>
     </message>
 </context>
 <context>
@@ -5872,7 +5876,7 @@ O servidor respondeu co erro: %2</translation>
     <message>
         <location filename="../src/common/vfs.cpp" line="75"/>
         <source>The Virtual filesystem feature does not support a drive as sync root</source>
-        <translation type="unfinished"/>
+        <translation>A funcionalidade do sistema de ficheiros virtual non admite unha unidade como raíz de sincronización</translation>
     </message>
     <message>
         <location filename="../src/common/vfs.cpp" line="75"/>
@@ -5882,7 +5886,7 @@ O servidor respondeu co erro: %2</translation>
     <message>
         <location filename="../src/common/vfs.cpp" line="83"/>
         <source>The Virtual filesystem feature is not supported on network drives</source>
-        <translation type="unfinished"/>
+        <translation>A funcionalidade do sistema de ficheiros virtual non é compatíbel coas unidades de rede</translation>
     </message>
 </context>
 <context>
