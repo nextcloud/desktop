@@ -2490,7 +2490,9 @@ Alternatively, you can restore all deleted files by downloading them from the se
         <source>Multiple accounts are sharing the folder %1.
 This configuration is known to lead to data loss and is no longer supported.
 Please consider removing this folder from the account and adding it again.</source>
-        <translation type="unfinished"/>
+        <translation>Multiple accounts are sharing the folder %1.
+This configuration is known to lead to data loss and is no longer supported.
+Please consider removing this folder from the account and adding it again.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="2047"/>

@@ -2453,7 +2453,7 @@ De rogha air sin, is féidir leat gach comhad a scriosadh a chur ar ais trína n
     <message>
         <location filename="../src/gui/folderman.cpp" line="1810"/>
         <source>The folder %1 is used in a folder sync connection!</source>
-        <translation type="unfinished"/>
+        <translation>Úsáidtear fillteán %1 i gceangal sioncronaithe fillteáin!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1656"/>
@@ -2490,14 +2490,18 @@ De rogha air sin, is féidir leat gach comhad a scriosadh a chur ar ais trína n
         <source>Multiple accounts are sharing the folder %1.
 This configuration is known to lead to data loss and is no longer supported.
 Please consider removing this folder from the account and adding it again.</source>
-        <translation type="unfinished"/>
+        <translation>Tá an fillteán %1 á roinnt ag cuntais iolracha.
+Is eol go gcailltear sonraí as an gcumraíocht seo agus ní thacaítear léi a thuilleadh.
+Smaoinigh le do thoil an fillteán seo a bhaint den chuntas agus é a chur leis arís.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="2047"/>
         <source>Multiple accounts are sharing the folder %1.
 This configuration is know to lead to dataloss and is no longer supported.
 Please consider removing this folder from the account and adding it again.</source>
-        <translation type="unfinished"/>
+        <translation>Tá an fillteán %1 á roinnt ag cuntais iolracha.
+Tá a fhios go gcailltear sonraí as an gcumraíocht seo agus ní thacaítear léi a thuilleadh.
+Smaoinigh le do thoil an fillteán seo a bhaint den chuntas agus é a chur leis arís.</translation>
     </message>
 </context>
 <context>
@@ -5873,7 +5877,7 @@ D&apos;fhreagair an freastalaí le hearráid: % 2</translation>
     <message>
         <location filename="../src/common/vfs.cpp" line="75"/>
         <source>The Virtual filesystem feature does not support a drive as sync root</source>
-        <translation type="unfinished"/>
+        <translation>Ní thacaíonn gné an chórais comhaid fhíorúil le tiomántán mar fhréamh sioncronaithe</translation>
     </message>
     <message>
         <location filename="../src/common/vfs.cpp" line="75"/>
@@ -5883,7 +5887,7 @@ D&apos;fhreagair an freastalaí le hearráid: % 2</translation>
     <message>
         <location filename="../src/common/vfs.cpp" line="83"/>
         <source>The Virtual filesystem feature is not supported on network drives</source>
-        <translation type="unfinished"/>
+        <translation>Ní thacaítear leis an ngné córas comhaid Fíorúil ar thiomáineann líonra</translation>
     </message>
 </context>
 <context>
