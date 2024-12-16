@@ -593,7 +593,7 @@ bool createSyncRootRegistryKeys(const QString &providerName, const QString &fold
         { providerSyncRootIdRegistryKey, QStringLiteral("NamespaceCLSID"), REG_SZ, QString(navigationPaneClsid)}
     };
 
-    for (const auto &registryKeyToSet : qAsConst(registryKeysToSet)) {
+    for (const auto &registryKeyToSet : std::as_const(registryKeysToSet)) {
         if (!OCC::Utility::registrySetKeyValue(HKEY_LOCAL_MACHINE, registryKeyToSet.subKey, registryKeyToSet.valueName, registryKeyToSet.type, registryKeyToSet.value)) {
             qCWarning(lcCfApiWrapper) << "Failed to set Registry keys for shell integration. Progress bar will not work.";
             const auto deleteKeyResult = OCC::Utility::registryDeleteKeyTree(HKEY_LOCAL_MACHINE, providerSyncRootIdRegistryKey);
