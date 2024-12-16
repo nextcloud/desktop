@@ -76,13 +76,13 @@ public class FilesDatabaseManager {
                         localFileMetadataOcIds.insert(lfmOcId)
                     }
 
-                    migration.enumerateObjects(ofType: ItemMetadata.className()) { oldObject, _ in
-                        guard let oldObject,
-                              let imOcId = oldObject["ocId"] as? String,
+                    migration.enumerateObjects(ofType: ItemMetadata.className()) { _, newObject in
+                        guard let newObject,
+                              let imOcId = newObject["ocId"] as? String,
                               localFileMetadataOcIds.contains(imOcId)
                         else { return }
-                        oldObject[NSExpression(forKeyPath: \ItemMetadata.downloaded).keyPath] = true
-                        oldObject[NSExpression(forKeyPath: \ItemMetadata.uploaded).keyPath] = true
+                        newObject["downloaded"] = true
+                        newObject["uploaded"] = true
                     }
                 }
 
