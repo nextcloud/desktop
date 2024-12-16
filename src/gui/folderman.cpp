@@ -2044,9 +2044,10 @@ bool FolderMan::checkVfsAvailability(const QString &path, Vfs::Mode mode) const
 Result<void, QString> FolderMan::unsupportedConfiguration(const QString &path) const
 {
     if (numberOfSyncJournals(path) > 1) {
-        return tr("Multiple accounts are sharing the folder %1.\n"
-                  "This configuration is known to lead to data loss and is no longer supported.\n"
-                  "Please consider removing this folder from the account and adding it again.")
+        return tr("The folder %1 is linked to multiple accounts.\n"
+                  "This setup can cause data loss and it is no longer supported.\n"
+                  "To resolve this issue: please remove %1 from one of the accounts and create a new sync folder.\n\n"
+                  "For advanced users: this issue might be related to multiple sync database files found in one folder. Please check %1 for outdated and unused .sync_*.db files and remove them.")
             .arg(path);
     }
     return {};
