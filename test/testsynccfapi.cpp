@@ -1210,7 +1210,7 @@ private slots:
         CFVERIFY_VIRTUAL(fakeFolder, "local/file1");
 
         QCOMPARE(*vfs->pinState("online/file1"), PinState::Unspecified);
-        QCOMPARE(*vfs->pinState("local/file1"), PinState::Unspecified);
+        QCOMPARE(*vfs->pinState("local/file1"), PinState::OnlineOnly);
 
         // no change on another sync
         QVERIFY(fakeFolder.syncOnce());
