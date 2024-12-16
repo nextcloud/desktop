@@ -595,6 +595,7 @@ public extension Item {
         }
 
         let postDeleteMetadata = targetItemNKTrash.toItemMetadata(account: account)
+        postDeleteMetadata.ocId = modifiedItem.itemIdentifier.rawValue
         dbManager.addItemMetadata(postDeleteMetadata)
 
         let postDeleteItem = Item(
