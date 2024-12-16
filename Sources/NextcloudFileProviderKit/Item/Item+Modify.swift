@@ -539,12 +539,7 @@ public extension Item {
         }
 
         // The server may have renamed the trashed file so we need to scan the entire trash
-        let (_, files, _, error) = await modifiedItem.remoteInterface.enumerate(
-            remotePath: account.trashUrl,
-            depth: EnumerateDepth.targetAndAllChildren,
-            showHiddenFiles: true,
-            includeHiddenFiles: [],
-            requestBody: nil,
+        let (_, files, _, error) = await modifiedItem.remoteInterface.trashedItems(
             account: account,
             options: .init(),
             taskHandler: { task in
@@ -575,7 +570,7 @@ public extension Item {
             return (dirtyItem, error.fileProviderError)
         }
 
-        guard let targetItemNKFile = files.first(where: { $0.ocId == modifiedItem.metadata.ocId })
+        guard let targetItemNKTrash = files.first(where: { $0.ocId == modifiedItem.metadata.ocId })
         else {
             Self.logger.error(
                 """
@@ -593,7 +588,7 @@ public extension Item {
             }
         }
 
-        let postDeleteMetadata = targetItemNKFile.toItemMetadata()
+        let postDeleteMetadata = targetItemNKTrash.toItemMetadata(account: account)
         dbManager.addItemMetadata(postDeleteMetadata)
 
         let postDeleteItem = Item(
