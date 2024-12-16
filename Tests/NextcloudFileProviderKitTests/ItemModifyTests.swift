@@ -676,7 +676,7 @@ final class ItemModifyTests: XCTestCase {
             trashedItem.itemIdentifier.rawValue, remoteTrashedItem?.identifier
         )
         // The mock remote interface renames items when trashing them, so, ensure this is synced
-        XCTAssertEqual(trashedItem.filename, remoteTrashedItem?.name)
+        XCTAssertEqual(trashedItem.metadata.fileName, remoteTrashedItem?.name)
         XCTAssertEqual(trashedItem.metadata.isTrashed, true)
         XCTAssertEqual(
             trashedItem.metadata.trashbinOriginalLocation,
@@ -740,7 +740,7 @@ final class ItemModifyTests: XCTestCase {
         )
         XCTAssertTrue(remoteTrashedItem?.name.hasPrefix(renamedItemMetadata.fileName) ?? false)
         // The mock remote interface renames items when trashing them, so, ensure this is synced
-        XCTAssertEqual(trashedItem.filename, remoteTrashedItem?.name)
+        XCTAssertEqual(trashedItem.metadata.fileName, remoteTrashedItem?.name)
         XCTAssertEqual(trashedItem.metadata.isTrashed, true)
         XCTAssertEqual(
             trashedItem.metadata.trashbinOriginalLocation,
@@ -817,7 +817,7 @@ final class ItemModifyTests: XCTestCase {
             trashedFolderItem.itemIdentifier.rawValue, remoteTrashedFolderItem?.identifier
         )
         // The mock remote interface renames items when trashing them, so, ensure this is synced
-        XCTAssertEqual(trashedFolderItem.filename, remoteTrashedFolderItem?.name)
+        XCTAssertEqual(trashedFolderItem.metadata.fileName, remoteTrashedFolderItem?.name)
         XCTAssertEqual(trashedFolderItem.metadata.isTrashed, true)
         XCTAssertEqual(
             trashedFolderItem.metadata.trashbinOriginalLocation,
@@ -831,7 +831,7 @@ final class ItemModifyTests: XCTestCase {
         XCTAssertEqual(trashChildItemMetadata?.isTrashed, true)
         XCTAssertEqual(
             trashChildItemMetadata?.serverUrl,
-            trashedFolderItem.metadata.serverUrl + "/" + trashedFolderItem.filename
+            trashedFolderItem.metadata.serverUrl + "/" + trashedFolderItem.metadata.fileName
         )
         XCTAssertEqual(trashChildItemMetadata?.trashbinFileName, itemMetadata.fileName)
         XCTAssertEqual(
@@ -911,7 +911,7 @@ final class ItemModifyTests: XCTestCase {
             trashedFolderItem.itemIdentifier.rawValue, remoteTrashedFolderItem?.identifier
         )
         // The mock remote interface renames items when trashing them, so, ensure this is synced
-        XCTAssertEqual(trashedFolderItem.filename, remoteTrashedFolderItem?.name)
+        XCTAssertEqual(trashedFolderItem.metadata.fileName, remoteTrashedFolderItem?.name)
         XCTAssertEqual(trashedFolderItem.metadata.isTrashed, true)
         XCTAssertEqual(
             trashedFolderItem.metadata.trashbinOriginalLocation,
@@ -925,7 +925,7 @@ final class ItemModifyTests: XCTestCase {
         XCTAssertEqual(trashChildItemMetadata?.isTrashed, true)
         XCTAssertEqual(
             trashChildItemMetadata?.serverUrl,
-            trashedFolderItem.metadata.serverUrl + "/" + trashedFolderItem.filename
+            trashedFolderItem.metadata.serverUrl + "/" + trashedFolderItem.metadata.fileName
         )
         XCTAssertEqual(trashChildItemMetadata?.trashbinFileName, itemMetadata.fileName)
         XCTAssertEqual(

@@ -113,10 +113,11 @@ public class MockRemoteItem: Equatable {
     public func toNKTrash() -> NKTrash {
         let trashItem = NKTrash()
         trashItem.ocId = identifier
-        trashItem.fileName = trashbinOriginalLocation?.split(separator: "/").last?.toString() ?? name
+        trashItem.fileId = identifier
+        trashItem.fileName = name
         trashItem.directory = directory
         trashItem.trashbinOriginalLocation = trashbinOriginalLocation ?? ""
-        trashItem.trashbinFileName = name
+        trashItem.trashbinFileName = trashbinOriginalLocation?.split(separator: "/").last?.toString() ?? name
         trashItem.size = size
         trashItem.filePath = (parent?.remotePath ?? "") + "/" + name
         return trashItem
@@ -129,11 +130,12 @@ public class MockRemoteItem: Equatable {
 
         let metadata = ItemMetadata()
         metadata.ocId = identifier
+        metadata.fileId = identifier
         metadata.etag = versionIdentifier
         metadata.directory = directory
-        metadata.name = fileName
-        metadata.fileName = fileName
-        metadata.fileNameView = fileName
+        metadata.name = name
+        metadata.fileName = name
+        metadata.fileNameView = name
         metadata.trashbinOriginalLocation = trashbinOriginalLocation ?? ""
         metadata.serverUrl = remotePath
         metadata.serverUrl.removeSubrange(
@@ -150,7 +152,7 @@ public class MockRemoteItem: Equatable {
         metadata.account = account.ncKitAccount
 
         if (trashbinOriginalLocation != nil) {
-            metadata.trashbinFileName = name
+            metadata.trashbinFileName = fileName
         }
         if directory {
             metadata.classFile = NKCommon.TypeClassFile.directory.rawValue
