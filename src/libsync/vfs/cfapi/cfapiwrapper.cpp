@@ -334,6 +334,8 @@ OCC::Result<OCC::Vfs::ConvertToPlaceholderResult, QString> updatePlaceholderStat
         OCC::Utility::UnixTimeToLargeIntegerFiletime(modtime, &metadata.BasicInfo.ChangeTime);
         metadata.BasicInfo.FileAttributes = 0;
 
+        OCC::CfApiWrapper::setPinState(path, OCC::PinState::Unspecified, OCC::CfApiWrapper::SetPinRecurseMode::NoRecurse);
+
         qCInfo(lcCfApiWrapper) << "updatePlaceholderState" << path << modtime;
         const qint64 result = CfUpdatePlaceholder(OCC::CfApiWrapper::handleForPath(path).get(), updateType == CfApiUpdateMetadataType::AllMetadata ? &metadata : nullptr,
                                                   fileIdentity.data(), sizeToDWORD(fileIdentitySize),
@@ -345,7 +347,7 @@ OCC::Result<OCC::Vfs::ConvertToPlaceholderResult, QString> updatePlaceholderStat
             return errorMessage;
         }
 
-               // Pin state tends to be lost on updates, so restore it every time
+        // Pin state tends to be lost on updates, so restore it every time
         if (!setPinState(path, previousPinState, OCC::CfApiWrapper::NoRecurse)) {
             return { "Couldn't restore pin state" };
         }
@@ -906,16 +908,21 @@ OCC::Result<OCC::Vfs::ConvertToPlaceholderResult, QString> OCC::CfApiWrapper::de
 
     const auto info = findPlaceholderInfo(path);
     if (info) {
-        LARGE_INTEGER largeStart, largeSize;
-        largeStart.QuadPart = 0;
-        largeSize.QuadPart = size;
+        setPinState(path, OCC::PinState::OnlineOnly, OCC::CfApiWrapper::NoRecurse);
 
-        const qint64 result = CfDehydratePlaceholder(handleForPath(path).get(),
-                                                     largeStart,
-                                                     largeSize,
-                                                     CF_DEHYDRATE_FLAG_NONE,
-                                                     0);
+        CF_FILE_RANGE dehydrationRange;
+        dehydrationRange.StartingOffset.QuadPart = 0;
+        dehydrationRange.Length.QuadPart = size;
 
+        const qint64 result = CfUpdatePlaceholder(handleForPath(path).get(),
+                                                  nullptr,
+                                                  fileIdentity.data(),
+                                                  sizeToDWORD(fileIdentitySize),
+                                                  &dehydrationRange,
+                                                  1,
+                                                  CF_UPDATE_FLAG_MARK_IN_SYNC | CF_UPDATE_FLAG_DEHYDRATE,
+                                                  nullptr,
+                                                  nullptr);
         if (result != S_OK) {
             const auto errorMessage = createErrorMessageForPlaceholderUpdateAndCreate(path, "Couldn't update placeholder info");
             qCWarning(lcCfApiWrapper) << errorMessage << path << ":" << QString::fromWCharArray(_com_error(result).ErrorMessage());
