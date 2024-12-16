@@ -154,7 +154,7 @@ void KMessageWidgetPrivate::createLayout()
         layout->addWidget(iconLabel);
         layout->addWidget(textLabel);
 
-        for (QToolButton *button : qAsConst(buttons)) {
+        for (QToolButton *button : std::as_const(buttons)) {
             layout->addWidget(button);
         }
 
