@@ -617,8 +617,10 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
         }
     }
 
-    static func fileProviderPageforNumPage(_ numPage: Int) -> NSFileProviderPage {
-        NSFileProviderPage("\(numPage)".data(using: .utf8)!)
+    static func fileProviderPageforNumPage(_ numPage: Int) -> NSFileProviderPage? {
+        return nil
+        // TODO: Handle paging properly
+        // NSFileProviderPage("\(numPage)".data(using: .utf8)!)
     }
 
     private static func completeEnumerationObserver(
@@ -638,11 +640,11 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
             // TODO: Handle paging properly
             /*
              if items.count == maxItemsPerFileProviderPage {
-             let nextPage = numPage + 1
-             let providerPage = NSFileProviderPage("\(nextPage)".data(using: .utf8)!)
-             observer.finishEnumerating(upTo: providerPage)
+                let nextPage = numPage + 1
+                let providerPage = NSFileProviderPage("\(nextPage)".data(using: .utf8)!)
+                observer.finishEnumerating(upTo: providerPage)
              } else {
-             observer.finishEnumerating(upTo: nil)
+                observer.finishEnumerating(upTo: nil)
              }
              */
             observer.finishEnumerating(upTo: fileProviderPageforNumPage(numPage))
