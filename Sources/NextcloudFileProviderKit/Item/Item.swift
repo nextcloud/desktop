@@ -77,9 +77,9 @@ public class Item: NSObject, NSFileProviderItem {
     }
 
     public var filename: String {
-        metadata.isTrashed ?
-            metadata.trashbinFileName : metadata.fileName.isEmpty ?
-                "unnamed file" : metadata.fileName
+        metadata.isTrashed && !metadata.trashbinFileName.isEmpty ?
+            metadata.trashbinFileName : !metadata.fileName.isEmpty ?
+                metadata.fileName : "unnamed file"
     }
 
     public var contentType: UTType {
