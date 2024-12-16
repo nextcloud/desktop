@@ -678,7 +678,7 @@ public extension Item {
         }
 
         let (_, _, restoreError) = await modifiedItem.remoteInterface.restoreFromTrash(
-            filename: modifiedItem.filename,
+            filename: modifiedItem.metadata.fileName,
             account: account,
             options: .init(),
             taskHandler: { _ in }
