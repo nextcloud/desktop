@@ -570,7 +570,11 @@ public extension Item {
             return (dirtyItem, error.fileProviderError)
         }
 
-        guard let targetItemNKTrash = files.first(where: { $0.ocId == modifiedItem.metadata.ocId })
+        guard let targetItemNKTrash = files.first(
+            // It seems the server likes to return a fileId as the ocId for trash files, so let's
+            // check for the fileId too
+            where: { $0.ocId == modifiedItem.metadata.ocId ||
+                     $0.fileId == modifiedItem.metadata.fileId })
         else {
             Self.logger.error(
                 """
@@ -578,7 +582,9 @@ public extension Item {
                     \(modifiedItem.filename, privacy: .public)
                     \(modifiedItem.itemIdentifier.rawValue, privacy: .public)
                 in trash. Asking for a rescan. Found trashed files were:
-                    \(files.map { ($0.ocId, $0.fileName, $0.trashbinFileName) }, privacy: .public)
+                    \(files.map {
+                        ($0.ocId, $0.fileId, $0.fileName, $0.trashbinFileName)
+                    }, privacy: .public)
                 """
             )
             if #available(macOS 11.3, *) {
