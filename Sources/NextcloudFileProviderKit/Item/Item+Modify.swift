@@ -558,21 +558,39 @@ public extension Item {
             }
         )
 
-        guard error == .success,
-              let targetItemNKFile = files.first(where: { $0.ocId == modifiedItem.metadata.ocId })
-        else {
+        let dirtyItem = Item(
+            metadata: dirtyMetadata,
+            parentItemIdentifier: .trashContainer,
+            account: account,
+            remoteInterface: modifiedItem.remoteInterface
+        )
+
+        guard error == .success else {
             Self.logger.error(
                 """
-                Received bad error or files from post-trashing remote scan:
+                Received bad error from post-trashing remote scan:
                 \(error.errorDescription, privacy: .public) \(files, privacy: .public)
                 """
             )
-            return(Item(
-                metadata: dirtyMetadata,
-                parentItemIdentifier: .trashContainer,
-                account: account,
-                remoteInterface: modifiedItem.remoteInterface
-            ), error.fileProviderError)
+            return (dirtyItem, error.fileProviderError)
+        }
+
+        guard let targetItemNKFile = files.first(where: { $0.ocId == modifiedItem.metadata.ocId })
+        else {
+            Self.logger.error(
+                """
+                Did not find trashed item:
+                    \(modifiedItem.filename, privacy: .public)
+                    \(modifiedItem.itemIdentifier.rawValue, privacy: .public)
+                in trash. Asking for a rescan. Found trashed files were:
+                    \(files.map { ($0.ocId, $0.fileName, $0.trashbinFileName) }, privacy: .public)
+                """
+            )
+            if #available(macOS 11.3, *) {
+                return (dirtyItem, NSFileProviderError(.unsyncedEdits))
+            } else {
+                return (dirtyItem, NSFileProviderError(.syncAnchorExpired))
+            }
         }
 
         let postDeleteMetadata = targetItemNKFile.toItemMetadata()
