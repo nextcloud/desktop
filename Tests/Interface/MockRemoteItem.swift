@@ -115,7 +115,7 @@ public class MockRemoteItem: Equatable {
         trashItem.ocId = identifier
         trashItem.fileName = trashbinOriginalLocation?.split(separator: "/").last?.toString() ?? name
         trashItem.directory = directory
-        trashItem.trashbinOriginalLocation = remotePath
+        trashItem.trashbinOriginalLocation = trashbinOriginalLocation ?? ""
         trashItem.trashbinFileName = name
         trashItem.size = size
         trashItem.filePath = (parent?.remotePath ?? "") + "/" + name
