@@ -161,7 +161,7 @@ void FolderWizardLocalPath::slotChooseLocalFolder()
         sf);
 
     SyncDirValidator syncDirValidator(dir);
-    if (!syncDirValidator.isValidDir()) {
+    if (!syncDirValidator.isValidDir() && !dir.isEmpty()) {
         _ui.sesSnackBar->show();
         _ui.sesSnackBar->setError(syncDirValidator.message());
         return;
