@@ -15,6 +15,7 @@
 #include "NCOverlayRegistrationHandler.h"
 #include "NCOverlayFactory.h"
 #include "WinShellExtConstants.h"
+#include <iostream>
 
 HINSTANCE instanceHandle = nullptr;
 
@@ -35,6 +36,12 @@ BOOL APIENTRY DllMain(HMODULE hModule, DWORD dwReason, LPVOID lpReserved)
     }
 
     return TRUE;
+}
+
+HRESULT Shutdown()
+{
+    std::cout << "hello world" << std::endl;
+    return S_OK;
 }
 
 HRESULT CreateFactory(REFIID riid, void **ppv, int state)

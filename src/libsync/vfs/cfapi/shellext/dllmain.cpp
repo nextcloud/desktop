@@ -16,6 +16,7 @@
 #include "customstateprovider.h"
 #include "thumbnailprovider.h"
 #include <comdef.h>
+#include <iostream>
 
 long dllReferenceCount = 0;
 long dllObjectsCount = 0;
@@ -72,4 +73,10 @@ HRESULT ThumbnailProvider_CreateInstance(REFIID riid, void **ppv)
     const auto hresult = thumbnailProvider->QueryInterface(riid, ppv);
     thumbnailProvider->Release();
     return hresult;
+}
+
+HRESULT Shutdown()
+{
+    std::cout << "hello world" << std::endl;
+    return S_OK;
 }
