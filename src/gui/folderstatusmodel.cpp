@@ -219,7 +219,7 @@ QVariant FolderStatusModel::data(const QModelIndex &index, int role) const
         case Qt::DisplayRole:
             if (folderInfo->_hasError) {
                 return {tr("Error while loading the list of folders from the server.")
-                        + QString("\n")
+                        + QStringLiteral("\n")
                         + folderInfo->_lastErrorString};
             } else {
                 return tr("Fetching folder list from server …");

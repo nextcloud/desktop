@@ -78,7 +78,7 @@ const char *ClientProxy::proxyTypeToCStr(QNetworkProxy::ProxyType type)
 
 QString ClientProxy::printQNetworkProxy(const QNetworkProxy &proxy)
 {
-    return QString("%1://%2:%3").arg(proxyTypeToCStr(proxy.type())).arg(proxy.hostName()).arg(proxy.port());
+    return QStringLiteral("%1://%2:%3").arg(proxyTypeToCStr(proxy.type())).arg(proxy.hostName()).arg(proxy.port());
 }
 
 void ClientProxy::setupQtProxyFromConfig()
