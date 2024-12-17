@@ -2453,7 +2453,7 @@ Alternatively, you can restore all deleted files by downloading them from the se
     <message>
         <location filename="../src/gui/folderman.cpp" line="1810"/>
         <source>The folder %1 is used in a folder sync connection!</source>
-        <translation type="unfinished"/>
+        <translation>Каталог %1 використовується у синхронізації каталогів!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1656"/>
@@ -2487,16 +2487,11 @@ Alternatively, you can restore all deleted files by downloading them from the se
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="2047"/>
-        <source>Multiple accounts are sharing the folder %1.
-This configuration is known to lead to data loss and is no longer supported.
-Please consider removing this folder from the account and adding it again.</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/folderman.cpp" line="2047"/>
-        <source>Multiple accounts are sharing the folder %1.
-This configuration is know to lead to dataloss and is no longer supported.
-Please consider removing this folder from the account and adding it again.</source>
+        <source>The folder %1 is linked to multiple accounts.
+This setup can cause data loss and it is no longer supported.
+To resolve this issue: please remove %1 from one of the accounts and create a new sync folder.
+
+For advanced users: this issue might be related to multiple sync database files found in one folder. Please check %1 for outdated and unused .sync_*.db files and remove them.</source>
         <translation type="unfinished"/>
     </message>
 </context>
@@ -5871,7 +5866,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/common/vfs.cpp" line="75"/>
         <source>The Virtual filesystem feature does not support a drive as sync root</source>
-        <translation type="unfinished"/>
+        <translation>Функціонал віртуальної файлової системи не підтримує синхронізацію кореневого каталогу диску.</translation>
     </message>
     <message>
         <location filename="../src/common/vfs.cpp" line="75"/>
@@ -5881,7 +5876,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/common/vfs.cpp" line="83"/>
         <source>The Virtual filesystem feature is not supported on network drives</source>
-        <translation type="unfinished"/>
+        <translation>Функціонал віртуальної файлової системи не підтримується на мережевих дисках</translation>
     </message>
 </context>
 <context>

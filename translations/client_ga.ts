@@ -2487,21 +2487,12 @@ De rogha air sin, is féidir leat gach comhad a scriosadh a chur ar ais trína n
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="2047"/>
-        <source>Multiple accounts are sharing the folder %1.
-This configuration is known to lead to data loss and is no longer supported.
-Please consider removing this folder from the account and adding it again.</source>
-        <translation>Tá an fillteán %1 á roinnt ag cuntais iolracha.
-Is eol go gcailltear sonraí as an gcumraíocht seo agus ní thacaítear léi a thuilleadh.
-Smaoinigh le do thoil an fillteán seo a bhaint den chuntas agus é a chur leis arís.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/folderman.cpp" line="2047"/>
-        <source>Multiple accounts are sharing the folder %1.
-This configuration is know to lead to dataloss and is no longer supported.
-Please consider removing this folder from the account and adding it again.</source>
-        <translation>Tá an fillteán %1 á roinnt ag cuntais iolracha.
-Tá a fhios go gcailltear sonraí as an gcumraíocht seo agus ní thacaítear léi a thuilleadh.
-Smaoinigh le do thoil an fillteán seo a bhaint den chuntas agus é a chur leis arís.</translation>
+        <source>The folder %1 is linked to multiple accounts.
+This setup can cause data loss and it is no longer supported.
+To resolve this issue: please remove %1 from one of the accounts and create a new sync folder.
+
+For advanced users: this issue might be related to multiple sync database files found in one folder. Please check %1 for outdated and unused .sync_*.db files and remove them.</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>

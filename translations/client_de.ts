@@ -2486,21 +2486,12 @@ Alternativ können Sie auch alle gelöschten Dateien wiederherstellen, indem Sie
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="2047"/>
-        <source>Multiple accounts are sharing the folder %1.
-This configuration is known to lead to data loss and is no longer supported.
-Please consider removing this folder from the account and adding it again.</source>
-        <translation>Mehrere Konten teilen sich den Ordner %1.
-Diese Konfiguration führt bekanntermaßen zu Datenverlust und wird nicht mehr unterstützt.
-Sie sollten in Erwägung ziehen, diesen Ordner aus dem Konto zu entfernen und erneut hinzuzufügen.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/folderman.cpp" line="2047"/>
-        <source>Multiple accounts are sharing the folder %1.
-This configuration is know to lead to dataloss and is no longer supported.
-Please consider removing this folder from the account and adding it again.</source>
-        <translation>Mehrere Konten teilen sich den Ordner %1.
-Diese Konfiguration führt bekanntermaßen zu Datenverlust und wird nicht mehr unterstützt.
-Bitte ziehen Sie in Erwägung, diesen Ordner aus dem Konto zu entfernen und erneut hinzuzufügen.</translation>
+        <source>The folder %1 is linked to multiple accounts.
+This setup can cause data loss and it is no longer supported.
+To resolve this issue: please remove %1 from one of the accounts and create a new sync folder.
+
+For advanced users: this issue might be related to multiple sync database files found in one folder. Please check %1 for outdated and unused .sync_*.db files and remove them.</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
