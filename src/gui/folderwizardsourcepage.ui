@@ -112,7 +112,11 @@
       </spacer>
      </item>
      <item>
-      <widget class="QLineEdit" name="localFolderLineEdit"/>
+      <widget class="QLineEdit" name="localFolderLineEdit">
+       <property name="contextMenuPolicy">
+        <enum>Qt::NoContextMenu</enum>
+       </property>
+      </widget>
      </item>
      <item>
       <widget class="QPushButton" name="localFolderChooseBtn">

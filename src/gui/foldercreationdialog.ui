@@ -11,6 +11,9 @@
                     <property name="placeholderText">
                         <string>Enter folder name</string>
                     </property>
+                     <property name="contextMenuPolicy">
+                        <enum>Qt::NoContextMenu</enum>
+                    </property>
                 </widget>
             </item>
             <item>
