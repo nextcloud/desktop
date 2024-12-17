@@ -465,17 +465,17 @@
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="238"/>
+        <location filename="../src/gui/tray/MainWindow.qml" line="242"/>
         <source>Nextcloud desktop main dialog</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="375"/>
+        <location filename="../src/gui/tray/MainWindow.qml" line="379"/>
         <source>Unified search results list</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="439"/>
+        <location filename="../src/gui/tray/MainWindow.qml" line="443"/>
         <source>New activities</source>
         <translation type="unfinished"/>
     </message>
@@ -526,14 +526,14 @@ Should an account import be attempted?</source>
 ¿Se debería intentar la importación de una cuenta?</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountmanager.cpp" line="214"/>
+        <location filename="../src/gui/accountmanager.cpp" line="225"/>
         <source>%1 accounts were detected from a legacy desktop client.
 Should the accounts be imported?</source>
         <translation>%1 cuentas se detectaron desde un cliente de escritorio antiguo.
 ¿Se deberían importar estas cuentas?</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountmanager.cpp" line="216"/>
+        <location filename="../src/gui/accountmanager.cpp" line="227"/>
         <source>1 account was detected from a legacy desktop client.
 Should the account be imported?</source>
         <translation>1 cuenta se detectó desde un cliente de escritorio antiguo.
@@ -547,12 +547,12 @@ Should the account be imported?</source>
         <translation>Importación antigua</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountmanager.cpp" line="219"/>
+        <location filename="../src/gui/accountmanager.cpp" line="230"/>
         <source>Import</source>
         <translation>Importar</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountmanager.cpp" line="220"/>
+        <location filename="../src/gui/accountmanager.cpp" line="231"/>
         <source>Skip</source>
         <translation>Omitir</translation>
     </message>
@@ -684,17 +684,17 @@ Should the account be imported?</source>
         <translation>Advertencia</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="386"/>
+        <location filename="../src/gui/accountsettings.cpp" line="388"/>
         <source>Please wait for the folder to sync before trying to encrypt it.</source>
         <translation>Por favor, espere a que la carpeta se sincronice antes de intentar cifrarla.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="388"/>
+        <location filename="../src/gui/accountsettings.cpp" line="390"/>
         <source>The folder has a minor sync problem. Encryption of this folder will be possible once it has synced successfully</source>
         <translation>La carpeta tiene un problema de sincronización menor. El cifrado de esta carpeta será posible cuando se haya sincronizado correctamente.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="390"/>
+        <location filename="../src/gui/accountsettings.cpp" line="392"/>
         <source>The folder has a sync error. Encryption of this folder will be possible once it has synced successfully</source>
         <translation>La carpeta tiene un problema de sincronización. El cifrado de esta carpeta será posible cuando se haya sincronizado correctamente.</translation>
     </message>
@@ -950,7 +950,7 @@ This action will abort any currently running synchronization.</source>
         <translation>No hay conexión a %1 en %2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1309"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1312"/>
         <source>Unable to connect to %1.</source>
         <translation>No se pudo conectar a %1.</translation>
     </message>
@@ -960,7 +960,7 @@ This action will abort any currently running synchronization.</source>
         <translation>Error de configuración del servidor: %1 en %2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1323"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1326"/>
         <source>You need to accept the terms of service</source>
         <translation type="unfinished"/>
     </message>
@@ -985,7 +985,7 @@ This action will abort any currently running synchronization.</source>
         <translation>Hay carpetas que no fueron sincronizadas porque son demasiado grandes o son de almacenamiento externo:</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1606"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1609"/>
         <source>There are folders that have grown in size beyond %1MB: %2</source>
         <translation>Existen carpetas que han aumentado de tamaño más allá de %1MB: %2</translation>
     </message>
@@ -1187,34 +1187,34 @@ This action will abort any currently running synchronization.</source>
         <translation>Continuar</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="488"/>
+        <location filename="../src/gui/application.cpp" line="490"/>
         <source>%1 accounts</source>
         <comment>number of accounts imported</comment>
         <translation>%1 cuentas</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="489"/>
+        <location filename="../src/gui/application.cpp" line="491"/>
         <source>1 account</source>
         <translation>1 cuenta</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="491"/>
+        <location filename="../src/gui/application.cpp" line="493"/>
         <source>%1 folders</source>
         <comment>number of folders imported</comment>
         <translation>%1 carpetas</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="492"/>
+        <location filename="../src/gui/application.cpp" line="494"/>
         <source>1 folder</source>
         <translation>1 carpeta</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="494"/>
+        <location filename="../src/gui/application.cpp" line="496"/>
         <source>Legacy import</source>
         <translation>Importación antigua</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="495"/>
+        <location filename="../src/gui/application.cpp" line="497"/>
         <source>Imported %1 and %2 from a legacy desktop client.
 %3</source>
         <comment>number of accounts and folders imported. list of users.</comment>
@@ -2187,13 +2187,6 @@ Esto podría ser un problema con su librería OpenSSL.</translation>
         <translation>Por favor ve a las configuraciones para seleccionarlo si deseas descargarlo. </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1404"/>
-        <source>A folder has surpassed the set folder size limit of %1MB: %2.
-%3</source>
-        <translation>Una carpeta ha sobrepasado el límite establecido de tamaño de %1MB: %2.
-%3</translation>
-    </message>
-    <message>
         <location filename="../src/gui/folder.cpp" line="1411"/>
         <source>All files in the sync folder &quot;%1&quot; folder were deleted on the server.
 These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
@@ -2205,11 +2198,6 @@ Si decide restaurar los archivos, se volverán a sincronizar con el servidor si 
 Si decide eliminar los archivos, no estarán disponibles para ud., a menos que sea el propietario.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1415"/>
-        <source>Keep syncing</source>
-        <translation>Continuar sincronización</translation>
-    </message>
-    <message>
         <location filename="../src/gui/folder.cpp" line="1416"/>
         <source>All the files in your local sync folder &quot;%1&quot; were deleted. These deletes will be synchronized with your server, making such files unavailable unless restored.
 Are you sure you want to sync those actions with the server?
@@ -2219,14 +2207,16 @@ If this was an accident and you decide to keep your files, they will be re-synce
 Si esto ha sido un accidente y decide mantener sus archivos, serán resincronizados desde el servidor.</translation>
     </message>
     <message>
+        <location filename="../src/gui/folder.cpp" line="1419"/>
+        <source>A folder has surpassed the set folder size limit of %1MB: %2.
+%3</source>
+        <translation>Una carpeta ha sobrepasado el límite establecido de tamaño de %1MB: %2.
+%3</translation>
+    </message>
+    <message>
         <location filename="../src/gui/folder.cpp" line="1420"/>
         <source>Remove All Files?</source>
         <translation>¿Eliminar Todos los Archivos?</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/folder.cpp" line="1423"/>
-        <source>Stop syncing</source>
-        <translation>Detener sincronización</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1424"/>
@@ -2239,12 +2229,22 @@ Si esto ha sido un accidente y decide mantener sus archivos, serán resincroniza
         <translation>Mantener archivos</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1434"/>
+        <location filename="../src/gui/folder.cpp" line="1430"/>
+        <source>Keep syncing</source>
+        <translation>Continuar sincronización</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/folder.cpp" line="1438"/>
+        <source>Stop syncing</source>
+        <translation>Detener sincronización</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/folder.cpp" line="1449"/>
         <source>The folder %1 has surpassed the set folder size limit of %2MB.</source>
         <translation>La carpeta %1 ha sobrepasado el límite establecido de tamaño de %2MB.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1435"/>
+        <location filename="../src/gui/folder.cpp" line="1450"/>
         <source>Would you like to stop syncing this folder?</source>
         <translation>¿Desea detener la sincronización de esta carpeta?</translation>
     </message>
@@ -2272,41 +2272,41 @@ Esto significa que el cliente de sincronización podría no cargar los cambios l
 %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1557"/>
+        <location filename="../src/gui/folder.cpp" line="1572"/>
         <source>Virtual file download failed with code &quot;%1&quot;, status &quot;%2&quot; and error message &quot;%3&quot;</source>
         <translation>La descarga del archivo virtual falló con el código &quot;%1&quot; , estado &quot;%2&quot; y mensaje de error &quot;%3&quot;</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1651"/>
+        <location filename="../src/gui/folder.cpp" line="1666"/>
         <source>A large number of files in the server have been deleted.
 Please confirm if you'd like to proceed with these deletions.
 Alternatively, you can restore all deleted files by uploading from &apos;%1&apos; folder to the server.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1652"/>
+        <location filename="../src/gui/folder.cpp" line="1667"/>
         <source>A large number of files in your local '%1' folder have been deleted.
 Please confirm if you'd like to proceed with these deletions.
 Alternatively, you can restore all deleted files by downloading them from the server.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1653"/>
+        <location filename="../src/gui/folder.cpp" line="1668"/>
         <source>Remove all files?</source>
         <translation>¿Eliminar todos los archivos?</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1657"/>
+        <location filename="../src/gui/folder.cpp" line="1672"/>
         <source>Proceed with Deletion</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1658"/>
+        <location filename="../src/gui/folder.cpp" line="1673"/>
         <source>Restore Files to Server</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1658"/>
+        <location filename="../src/gui/folder.cpp" line="1673"/>
         <source>Restore Files from Server</source>
         <translation type="unfinished"/>
     </message>
@@ -2377,32 +2377,32 @@ Alternatively, you can restore all deleted files by downloading them from the se
         <translation>Preparando para sincronizar.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1741"/>
+        <location filename="../src/gui/folderman.cpp" line="1747"/>
         <source>Syncing %1 of %2 (A few seconds left)</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1744"/>
+        <location filename="../src/gui/folderman.cpp" line="1750"/>
         <source>Syncing %1 of %2 (%3 left)</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1747"/>
+        <location filename="../src/gui/folderman.cpp" line="1753"/>
         <source>Syncing %1 of %2</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1753"/>
+        <location filename="../src/gui/folderman.cpp" line="1759"/>
         <source>Syncing %1 (A few seconds left)</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1755"/>
+        <location filename="../src/gui/folderman.cpp" line="1761"/>
         <source>Syncing %1 (%2 left)</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1758"/>
+        <location filename="../src/gui/folderman.cpp" line="1764"/>
         <source>Syncing %1</source>
         <translation type="unfinished"/>
     </message>
@@ -2447,6 +2447,11 @@ Alternatively, you can restore all deleted files by downloading them from the se
         <translation>¡No se ha seleccionado una carpeta válida!</translation>
     </message>
     <message>
+        <location filename="../src/gui/folderman.cpp" line="1810"/>
+        <source>The folder %1 is used in a folder sync connection!</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/folderman.cpp" line="1656"/>
         <source>The selected path does not exist!</source>
         <translation>¡La ruta seleccionada no existe!</translation>
@@ -2475,6 +2480,15 @@ Alternatively, you can restore all deleted files by downloading them from the se
         <location filename="../src/gui/folderman.cpp" line="1740"/>
         <source>There is already a sync from the server to this local folder. Please pick another local folder!</source>
         <translation>Ya existe una sincronización desde el servidor a esta carpeta local. ¡Por favor elige otra carpeta local!</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/folderman.cpp" line="2047"/>
+        <source>The folder %1 is linked to multiple accounts.
+This setup can cause data loss and it is no longer supported.
+To resolve this issue: please remove %1 from one of the accounts and create a new sync folder.
+
+For advanced users: this issue might be related to multiple sync database files found in one folder. Please check %1 for outdated and unused .sync_*.db files and remove them.</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -2549,12 +2563,12 @@ Alternatively, you can restore all deleted files by downloading them from the se
         <translation>Sincronizando con la carpeta local</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="322"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="329"/>
         <source>Synchronizing virtual files in local folder</source>
         <translation>Sincronizando archivos virtuales en la carpeta local</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="324"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="331"/>
         <source>Synchronizing files in local folder</source>
         <translation>Sincronizando archivos en la carpeta local</translation>
     </message>
@@ -2574,32 +2588,15 @@ Alternatively, you can restore all deleted files by downloading them from the se
         <translation>Reconciliando los cambios</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1009"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1016"/>
         <source>Syncing local and remote changes</source>
         <translation>Sincronizando cambios locales y remotos</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1059"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1066"/>
         <source>%1 %2 …</source>
         <extracomment>Example text: &quot;Uploading foobar.png (1MB of 2MB) time left 2 minutes at a rate of 24Kb/s&quot; Example text: &quot;Syncing 'foo.txt', 'bar.txt'&quot;</extracomment>
         <translation>%1 %2 …</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1068"/>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1079"/>
-        <source>, </source>
-        <translation>, </translation>
-    </message>
-    <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1191"/>
-        <source>Waiting …</source>
-        <translation>Esperando ...</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1065"/>
-        <source>Download %1/s</source>
-        <extracomment>Example text: &quot;Download 24Kb/s&quot; (%1 is replaced by 24Kb (translated))</extracomment>
-        <translation>Descargando %1/s</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1066"/>
@@ -2608,9 +2605,16 @@ Alternatively, you can restore all deleted files by downloading them from the se
         <translation>Sincronizando %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1074"/>
-        <source>↓ %1/s</source>
-        <translation>↓ %1/s</translation>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1068"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1079"/>
+        <source>, </source>
+        <translation>, </translation>
+    </message>
+    <message>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1072"/>
+        <source>Download %1/s</source>
+        <extracomment>Example text: &quot;Download 24Kb/s&quot; (%1 is replaced by 24Kb (translated))</extracomment>
+        <translation>Descargando %1/s</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1072"/>
@@ -2619,21 +2623,26 @@ Alternatively, you can restore all deleted files by downloading them from the se
         <translation>descargando %1/seg</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1075"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1074"/>
+        <source>↓ %1/s</source>
+        <translation>↓ %1/s</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1082"/>
         <source>Upload %1/s</source>
         <extracomment>Example text: &quot;Upload 24Kb/s&quot; (%1 is replaced by 24Kb (translated))</extracomment>
         <translation>Cargando %1/s</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1084"/>
-        <source>↑ %1/s</source>
-        <translation>↑ %1/s</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1082"/>
         <source>upload %1/s</source>
         <extracomment>Example text: &quot;upload 24Kb/s&quot; (%1 is replaced by 24Kb (translated))</extracomment>
         <translation>cargando %1/seg</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1084"/>
+        <source>↑ %1/s</source>
+        <translation>↑ %1/s</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1090"/>
@@ -2665,17 +2674,17 @@ Alternatively, you can restore all deleted files by downloading them from the se
         <translation>%1 de %2, archivo %3 de %4</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1131"/>
-        <source>File %1 of %2</source>
-        <translation>Archivo %1 de %2</translation>
-    </message>
-    <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1136"/>
         <source>file %1 of %2</source>
         <translation>archivo %1 de %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1184"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1138"/>
+        <source>File %1 of %2</source>
+        <translation>Archivo %1 de %2</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1191"/>
         <source>About to start syncing</source>
         <translation>A punto de comenzar la sincronización</translation>
     </message>
@@ -2683,6 +2692,11 @@ Alternatively, you can restore all deleted files by downloading them from the se
         <location filename="../src/gui/folderstatusmodel.cpp" line="1193"/>
         <source>Waiting for %n other folder(s) …</source>
         <translation><numerusform>Esperando por %n carpeta(s) ...</numerusform><numerusform>Esperando por %n carpeta(s) ...</numerusform><numerusform>Esperando por %n carpeta(s) ...</numerusform></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1191"/>
+        <source>Waiting …</source>
+        <translation>Esperando ...</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1199"/>
@@ -4526,9 +4540,17 @@ Este es un modo nuevo y experimental. Si decide usarlo, por favor informe cualqu
         <translation>¡El archivo %1 se descargó pero generó un conflicto con un nombre de archivo local!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="412"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="458"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="499"/>
         <source>Could not get file %1 from local DB</source>
         <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="270"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="316"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="357"/>
+        <source>could not get file %1 from local DB</source>
+        <translation>no se pudo obtener el archivo %1 de la base de datos local</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="283"/>
@@ -4546,13 +4568,6 @@ Este es un modo nuevo y experimental. Si decide usarlo, por favor informe cualqu
         <location filename="../src/libsync/propagatorjobs.cpp" line="299"/>
         <source>The file %1 is currently in use</source>
         <translation>El archivo %1 está actualmente en uso</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="270"/>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="316"/>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="357"/>
-        <source>could not get file %1 from local DB</source>
-        <translation>no se pudo obtener el archivo %1 de la base de datos local</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="321"/>
@@ -5841,8 +5856,18 @@ El servidor respondió con el error: %2</translation>
     <name>OCC::Vfs</name>
     <message>
         <location filename="../src/common/vfs.cpp" line="75"/>
+        <source>The Virtual filesystem feature does not support a drive as sync root</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/common/vfs.cpp" line="75"/>
         <source>The Virtual filesystem feature requires a NTFS file system, %1 is using %2</source>
         <translation>La característica de archivos virtuales necesita un sistema de archivos NTFS, %1 está usando %2</translation>
+    </message>
+    <message>
+        <location filename="../src/common/vfs.cpp" line="83"/>
+        <source>The Virtual filesystem feature is not supported on network drives</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>

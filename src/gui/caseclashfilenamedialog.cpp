@@ -175,6 +175,7 @@ QString CaseClashFilenameDialog::caseClashConflictFile(const QString &conflictFi
 {
     const auto filePathFileInfo = QFileInfo(conflictFilePath);
     const auto conflictFileName = filePathFileInfo.fileName();
+    const auto lookingForDirectory = FileSystem::isDir(filePathFileInfo.absoluteFilePath());
 
     QDirIterator it(filePathFileInfo.path(), QDirIterator::Subdirectories);
 
@@ -182,15 +183,16 @@ QString CaseClashFilenameDialog::caseClashConflictFile(const QString &conflictFi
         const auto filePath = it.next();
         qCDebug(lcCaseClashConflictFialog) << filePath;
 
-        if (FileSystem::isDir(filePath)) {
+        if (FileSystem::isDir(filePath) && !lookingForDirectory) {
             continue;
         }
 
-        QFileInfo fileInfo(filePath);
-        const auto currentFileName = fileInfo.fileName();
-        if (currentFileName.compare(conflictFileName, Qt::CaseInsensitive) == 0 &&
-                currentFileName != conflictFileName) {
+        const auto currentFileName = QFileInfo(filePath).fileName();
+        if (currentFileName.compare(conflictFileName, Qt::CaseInsensitive) != 0) {
+            continue;
+        }
 
+        if (currentFileName != conflictFileName) {
             return filePath;
         }
     }

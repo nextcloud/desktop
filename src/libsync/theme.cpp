@@ -214,7 +214,7 @@ QString Theme::version() const
 
 QString Theme::versionSuffix() const
 {
-    return QString::fromLatin1(MIRALL_STRINGIFY(MIRALL_VERSION_SUFFIX));
+    return QString::fromLatin1(MIRALL_VERSION_SUFFIX);
 }
 
 QString Theme::configFileName() const
@@ -1034,6 +1034,15 @@ bool Theme::darkMode() const
     }
 #endif
     return isDarkFromStyle();
+}
+
+bool Theme::displayLegacyImportDialog() const
+{
+#if defined APPLICATION_DISPLAY_LEGACY_IMPORT_DIALOG && APPLICATION_DISPLAY_LEGACY_IMPORT_DIALOG
+    return true;
+#else
+    return false;
+#endif
 }
 
 void Theme::setOverrideServerUrl(const QString &overrideServerUrl)

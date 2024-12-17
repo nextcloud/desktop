@@ -484,23 +484,31 @@ void Application::setupAccountsAndFolders()
     if (const auto accounts = AccountManager::instance()->accounts();
         accountsRestoreResult == AccountManager::AccountsRestoreSuccessFromLegacyVersion
         && !accounts.isEmpty()) {
+
         const auto accountsListSize = accounts.size();
-        const auto accountsRestoreMessage = accountsListSize > 1
-            ? tr("%1 accounts", "number of accounts imported").arg(QString::number(accountsListSize))
-            : tr("1 account");
-        const auto foldersRestoreMessage = foldersListSize > 1
-            ? tr("%1 folders", "number of folders imported").arg(QString::number(foldersListSize))
-            : tr("1 folder");
-        const auto messageBox = new QMessageBox(QMessageBox::Information,
-                                                tr("Legacy import"),
-                                                tr("Imported %1 and %2 from a legacy desktop client.\n%3",
-                                                   "number of accounts and folders imported. list of users.")
-                                                    .arg(accountsRestoreMessage,
-                                                         foldersRestoreMessage,
-                                                         prettyNamesList(accounts))
-                                                );
-        messageBox->setWindowModality(Qt::NonModal);
-        messageBox->open();
+        if (Theme::instance()->displayLegacyImportDialog()) {
+            const auto accountsRestoreMessage = accountsListSize > 1
+                ? tr("%1 accounts", "number of accounts imported").arg(QString::number(accountsListSize))
+                : tr("1 account");
+            const auto foldersRestoreMessage = foldersListSize > 1
+                ? tr("%1 folders", "number of folders imported").arg(QString::number(foldersListSize))
+                : tr("1 folder");
+            const auto messageBox = new QMessageBox(QMessageBox::Information,
+                                                    tr("Legacy import"),
+                                                    tr("Imported %1 and %2 from a legacy desktop client.\n%3",
+                                                       "number of accounts and folders imported. list of users.")
+                                                        .arg(accountsRestoreMessage,
+                                                             foldersRestoreMessage,
+                                                             prettyNamesList(accounts))
+                                                    );
+            messageBox->setWindowModality(Qt::NonModal);
+            messageBox->open();
+        }
+
+        qCWarning(lcApplication) << "Migration result AccountManager::AccountsRestoreResult:" << accountsRestoreResult;
+        qCWarning(lcApplication) << "Folders migrated: " << foldersListSize;
+        qCWarning(lcApplication) << accountsListSize << "account(s) were migrated:" << prettyNamesList(accounts);
+
     } else {
         qCWarning(lcApplication) << "Migration result AccountManager::AccountsRestoreResult: " << accountsRestoreResult;
         qCWarning(lcApplication) << "Folders migrated: " << foldersListSize;

@@ -43,6 +43,7 @@ private slots:
         fakeFolder.account()->setLockFileState(QStringLiteral("/") + testFileName,
                                                QStringLiteral("/"),
                                                fakeFolder.localPath(),
+                                               {},
                                                &fakeFolder.syncJournal(),
                                                OCC::SyncFileItem::LockStatus::LockedItem,
                                                OCC::SyncFileItem::LockOwnerType::UserLock);
@@ -89,6 +90,7 @@ private slots:
         fakeFolder.account()->setLockFileState(QStringLiteral("/") + testFileName,
                                                QStringLiteral("/"),
                                                fakeFolder.localPath(),
+                                               {},
                                                &fakeFolder.syncJournal(),
                                                OCC::SyncFileItem::LockStatus::LockedItem,
                                                OCC::SyncFileItem::LockOwnerType::UserLock);
@@ -114,6 +116,7 @@ private slots:
         fakeFolder.account()->setLockFileState(QStringLiteral("/") + testFileName,
                                                QStringLiteral("/"),
                                                fakeFolder.localPath(),
+                                               {},
                                                &fakeFolder.syncJournal(),
                                                OCC::SyncFileItem::LockStatus::LockedItem,
                                                OCC::SyncFileItem::LockOwnerType::UserLock);
@@ -142,6 +145,7 @@ private slots:
         fakeFolder.account()->setLockFileState(QStringLiteral("/") + testFileName,
                                                QStringLiteral("/"),
                                                fakeFolder.localPath(),
+                                               {},
                                                &fakeFolder.syncJournal(),
                                                OCC::SyncFileItem::LockStatus::LockedItem,
                                                OCC::SyncFileItem::LockOwnerType::UserLock);
@@ -168,6 +172,7 @@ private slots:
                                         QStringLiteral("/") + testFileName,
                                         QStringLiteral("/"),
                                         fakeFolder.localPath(),
+                                        {},
                                         OCC::SyncFileItem::LockStatus::LockedItem,
                                         OCC::SyncFileItem::LockOwnerType::UserLock);
 
@@ -207,6 +212,7 @@ private slots:
                                                 QStringLiteral("/") + testFileName,
                                                 QStringLiteral("/"),
                                                 fakeFolder.localPath(),
+                                                {},
                                                 OCC::SyncFileItem::LockStatus::LockedItem,
                                                 OCC::SyncFileItem::LockOwnerType::UserLock);
 
@@ -225,6 +231,7 @@ private slots:
                                                   QStringLiteral("/") + testFileName,
                                                   QStringLiteral("/"),
                                                   fakeFolder.localPath(),
+                                                  {},
                                                   OCC::SyncFileItem::LockStatus::UnlockedItem,
                                                   OCC::SyncFileItem::LockOwnerType::UserLock);
 
@@ -285,6 +292,7 @@ private slots:
                                         QStringLiteral("/") + testFileName,
                                         QStringLiteral("/"),
                                         fakeFolder.localPath(),
+                                        {},
                                         OCC::SyncFileItem::LockStatus::LockedItem,
                                         OCC::SyncFileItem::LockOwnerType::UserLock);
 
@@ -339,6 +347,7 @@ private slots:
                                         QStringLiteral("/") + testFileName,
                                         QStringLiteral("/"),
                                         fakeFolder.localPath(),
+                                        {},
                                         OCC::SyncFileItem::LockStatus::LockedItem,
                                         OCC::SyncFileItem::LockOwnerType::UserLock);
 
@@ -393,6 +402,7 @@ private slots:
                                         QStringLiteral("/") + testFileName,
                                         QStringLiteral("/"),
                                         fakeFolder.localPath(),
+                                        {},
                                         OCC::SyncFileItem::LockStatus::UnlockedItem,
                                         OCC::SyncFileItem::LockOwnerType::UserLock);
 
@@ -445,6 +455,7 @@ private slots:
                                         QStringLiteral("/") + testFileName,
                                         QStringLiteral("/"),
                                         fakeFolder.localPath(),
+                                        {},
                                         OCC::SyncFileItem::LockStatus::UnlockedItem,
                                         OCC::SyncFileItem::LockOwnerType::UserLock);
 
@@ -484,6 +495,7 @@ private slots:
                                                 QStringLiteral("/") + testFileName,
                                                 QStringLiteral("/"),
                                                 fakeFolder.localPath(),
+                                                {},
                                                 OCC::SyncFileItem::LockStatus::LockedItem,
                                                 OCC::SyncFileItem::LockOwnerType::UserLock);
 
@@ -502,6 +514,7 @@ private slots:
                                                   QStringLiteral("/") + testFileName,
                                                   QStringLiteral("/"),
                                                   fakeFolder.localPath(),
+                                                  {},
                                                   OCC::SyncFileItem::LockStatus::UnlockedItem,
                                                   OCC::SyncFileItem::LockOwnerType::UserLock);
 
@@ -556,6 +569,7 @@ private slots:
                                         QStringLiteral("/") + testFileName,
                                         QStringLiteral("/"),
                                         fakeFolder.localPath(),
+                                        {},
                                         OCC::SyncFileItem::LockStatus::UnlockedItem,
                                         OCC::SyncFileItem::LockOwnerType::UserLock);
 

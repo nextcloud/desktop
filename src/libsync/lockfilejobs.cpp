@@ -30,6 +30,7 @@ LockFileJob::LockFileJob(const AccountPtr account,
                          const QString &path,
                          const QString &remoteSyncPathWithTrailingSlash,
                          const QString &localSyncPath,
+                         const QString &etag,
                          const SyncFileItem::LockStatus requestedLockState,
                          const SyncFileItem::LockOwnerType lockOwnerType,
                          QObject *parent)
@@ -39,6 +40,7 @@ LockFileJob::LockFileJob(const AccountPtr account,
     , _requestedLockOwnerType(lockOwnerType)
     , _remoteSyncPathWithTrailingSlash(remoteSyncPathWithTrailingSlash)
     , _localSyncPath(localSyncPath)
+    , _existingEtag(etag)
 {
     if (!_localSyncPath.endsWith(QLatin1Char('/'))) {
         _localSyncPath.append(QLatin1Char('/'));
@@ -65,8 +67,12 @@ void LockFileJob::start()
     switch(_requestedLockState)
     {
     case SyncFileItem::LockStatus::LockedItem:
+    {
+        const auto etagValue = QLatin1String("\"%1\"").arg(_existingEtag.toLatin1());
+        request.setRawHeader(QByteArrayLiteral("If-Match"), etagValue.toLatin1());
         verb = "LOCK";
         break;
+    }
     case SyncFileItem::LockStatus::UnlockedItem:
         verb = "UNLOCK";
         break;
@@ -79,7 +85,7 @@ void LockFileJob::start()
 bool LockFileJob::finished()
 {
     if (reply()->error() != QNetworkReply::NoError) {
-        qCInfo(lcLockFileJob()) << "finished with error" << reply()->error() << reply()->errorString() << _requestedLockState << _requestedLockOwnerType;
+        qCInfo(lcLockFileJob()) << "finished with error" << reply()->error() << reply()->errorString() << _requestedLockState << _requestedLockOwnerType << _existingEtag;
         const auto httpErrorCode = reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
         if (httpErrorCode == LOCKED_HTTP_ERROR_CODE) {
             const auto record = handleReply();

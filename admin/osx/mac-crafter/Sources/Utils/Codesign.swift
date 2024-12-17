@@ -21,6 +21,7 @@ enum CodeSigningError: Error {
 }
 
 enum AppBundleSigningError: Error {
+    case doesNotExist(String)
     case couldNotEnumerate(String)
 }
 
@@ -44,7 +45,9 @@ func isExecutable(_ path: String) throws -> Bool {
         throw CodeSigningError.failedToCodeSign("Failed to determine if \(path) is an executable.")
     }
 
-    let outputData = outPipe.fileHandleForReading.readDataToEndOfFile()
+    let outputFileHandle = outPipe.fileHandleForReading
+    let outputData = outputFileHandle.readDataToEndOfFile()
+    try outputFileHandle.close()
     let output = String(data: outputData, encoding: .utf8) ?? ""
     return output.contains("Mach-O 64-bit executable")
 }
@@ -64,6 +67,10 @@ func recursivelyCodesign(
     skip: [String] = []
 ) throws {
     let fm = FileManager.default
+    guard fm.fileExists(atPath: path) else {
+        throw AppBundleSigningError.doesNotExist("Item at \(path) does not exist.")
+    }
+
     guard let pathEnumerator = fm.enumerator(atPath: path) else {
         throw AppBundleSigningError.couldNotEnumerate(
             "Failed to enumerate directory at \(path)."
@@ -118,14 +125,21 @@ func codesignClientAppBundle(
     // Multiple components of the app will now have the get-task-allow entitlements.
     // We need to strip these out manually.
 
-    print("Code-signing Sparkle autoupdater app (without entitlements)...")
     let sparkleFrameworkPath = "\(frameworksPath)/Sparkle.framework"
-    try recursivelyCodesign(path: "\(sparkleFrameworkPath)/Resources/Autoupdate.app",
-                            identity: codeSignIdentity,
-                            options: "--timestamp --force --verbose=4 --options runtime --deep")
+    if FileManager.default.fileExists(atPath: "\(sparkleFrameworkPath)/Resources/Autoupdate.app") {
+        print("Code-signing Sparkle autoupdater app (without entitlements)...")
 
-    print("Re-codesigning Sparkle library...")
-    try codesign(identity: codeSignIdentity, path: "\(sparkleFrameworkPath)/Sparkle")
+        try recursivelyCodesign(
+            path: "\(sparkleFrameworkPath)/Resources/Autoupdate.app",
+            identity: codeSignIdentity,
+            options: "--timestamp --force --verbose=4 --options runtime --deep"
+        )
+
+        print("Re-codesigning Sparkle library...")
+        try codesign(identity: codeSignIdentity, path: "\(sparkleFrameworkPath)/Sparkle")
+    } else {
+        print("Build does not have Sparkle, skipping.")
+    }
 
     print("Code-signing app extensions (removing get-task-allow entitlements)...")
     let fm = FileManager.default

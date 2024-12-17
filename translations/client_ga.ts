@@ -465,17 +465,17 @@
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="238"/>
+        <location filename="../src/gui/tray/MainWindow.qml" line="242"/>
         <source>Nextcloud desktop main dialog</source>
         <translation>Príomhdhialóg deisce Nextcloud</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="375"/>
+        <location filename="../src/gui/tray/MainWindow.qml" line="379"/>
         <source>Unified search results list</source>
         <translation>Liosta torthaí cuardaigh aontaithe</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="439"/>
+        <location filename="../src/gui/tray/MainWindow.qml" line="443"/>
         <source>New activities</source>
         <translation>Gníomhaíochtaí nua</translation>
     </message>
@@ -526,14 +526,14 @@ Should an account import be attempted?</source>
 Ar cheart iarracht a dhéanamh iompórtáil cuntais?</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountmanager.cpp" line="214"/>
+        <location filename="../src/gui/accountmanager.cpp" line="225"/>
         <source>%1 accounts were detected from a legacy desktop client.
 Should the accounts be imported?</source>
         <translation>Braitheadh ​​% 1 cuntas ó chliant deisce oidhreachta.
 Ar cheart na cuntais a iompórtáil?</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountmanager.cpp" line="216"/>
+        <location filename="../src/gui/accountmanager.cpp" line="227"/>
         <source>1 account was detected from a legacy desktop client.
 Should the account be imported?</source>
         <translation>Braitheadh ​​1 chuntas ó chliant deisce oidhreachta.
@@ -547,12 +547,12 @@ Ar cheart an cuntas a iompórtáil?</translation>
         <translation>Iompórtáil oidhreachta</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountmanager.cpp" line="219"/>
+        <location filename="../src/gui/accountmanager.cpp" line="230"/>
         <source>Import</source>
         <translation>Iompórtáil</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountmanager.cpp" line="220"/>
+        <location filename="../src/gui/accountmanager.cpp" line="231"/>
         <source>Skip</source>
         <translation>Scipeáil</translation>
     </message>
@@ -684,17 +684,17 @@ Ar cheart an cuntas a iompórtáil?</translation>
         <translation>Rabhadh</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="386"/>
+        <location filename="../src/gui/accountsettings.cpp" line="388"/>
         <source>Please wait for the folder to sync before trying to encrypt it.</source>
         <translation>Fán le do thoil go ndéanfaidh tú an fillteán a shioncronú sula ndéanfaidh tú iarracht é a chriptiú.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="388"/>
+        <location filename="../src/gui/accountsettings.cpp" line="390"/>
         <source>The folder has a minor sync problem. Encryption of this folder will be possible once it has synced successfully</source>
         <translation>Tá mionfhadhb sioncronaithe ag an bhfillteán. Beifear in ann an fillteán seo a chriptiú nuair a bheidh sé sioncronaithe go rathúil</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="390"/>
+        <location filename="../src/gui/accountsettings.cpp" line="392"/>
         <source>The folder has a sync error. Encryption of this folder will be possible once it has synced successfully</source>
         <translation>Tá earráid shioncronaithe san fhillteán. Beifear in ann an fillteán seo a chriptiú nuair a bheidh sé sioncronaithe go rathúil</translation>
     </message>
@@ -950,7 +950,7 @@ Cuirfidh an gníomh seo deireadh le haon sioncrónú atá ar siúl faoi láthair
         <translation>Gan ceangal le % 1 ag % 2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1309"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1312"/>
         <source>Unable to connect to %1.</source>
         <translation>Ní féidir ceangal le % 1.</translation>
     </message>
@@ -960,7 +960,7 @@ Cuirfidh an gníomh seo deireadh le haon sioncrónú atá ar siúl faoi láthair
         <translation>Earráid chumraíocht an fhreastalaí: % 1 ag % 2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1323"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1326"/>
         <source>You need to accept the terms of service</source>
         <translation>Ní mór duit glacadh leis na téarmaí seirbhíse</translation>
     </message>
@@ -985,7 +985,7 @@ Cuirfidh an gníomh seo deireadh le haon sioncrónú atá ar siúl faoi láthair
         <translation>Tá fillteáin ann nár sioncronaíodh toisc go bhfuil siad rómhór nó mar stórais sheachtracha:</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1606"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1609"/>
         <source>There are folders that have grown in size beyond %1MB: %2</source>
         <translation>Tá fillteáin ann a d&apos;fhás i méid thar % 1MB: % 2</translation>
     </message>
@@ -1187,34 +1187,34 @@ Cuirfidh an gníomh seo deireadh le haon sioncrónú atá ar siúl faoi láthair
         <translation>Lean ar aghaidh</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="488"/>
+        <location filename="../src/gui/application.cpp" line="490"/>
         <source>%1 accounts</source>
         <comment>number of accounts imported</comment>
         <translation>% 1 cuntas</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="489"/>
+        <location filename="../src/gui/application.cpp" line="491"/>
         <source>1 account</source>
         <translation>1 chuntas</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="491"/>
+        <location filename="../src/gui/application.cpp" line="493"/>
         <source>%1 folders</source>
         <comment>number of folders imported</comment>
         <translation>% 1 fillteán</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="492"/>
+        <location filename="../src/gui/application.cpp" line="494"/>
         <source>1 folder</source>
         <translation>1 fillteán</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="494"/>
+        <location filename="../src/gui/application.cpp" line="496"/>
         <source>Legacy import</source>
         <translation>Iompórtáil oidhreachta</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="495"/>
+        <location filename="../src/gui/application.cpp" line="497"/>
         <source>Imported %1 and %2 from a legacy desktop client.
 %3</source>
         <comment>number of accounts and folders imported. list of users.</comment>
@@ -2187,13 +2187,6 @@ Féadfaidh sé seo a bheith ina fhadhb le do leabharlanna OpenSSL.</translation>
         <translation>Téigh isteach sna socruithe chun é a roghnú más mian leat é a íoslódáil le do thoil.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1404"/>
-        <source>A folder has surpassed the set folder size limit of %1MB: %2.
-%3</source>
-        <translation>Sháraigh fillteán an teorainn mhéid fillteáin de % 1MB: % 2.
-% 3</translation>
-    </message>
-    <message>
         <location filename="../src/gui/folder.cpp" line="1411"/>
         <source>All files in the sync folder &quot;%1&quot; folder were deleted on the server.
 These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
@@ -2205,11 +2198,6 @@ Má shocraíonn tú na comhaid a chur ar ais, déanfar iad a athshioncronú leis
 Má shocraíonn tú na comhaid a scriosadh, ní bheidh siad ar fáil duit, ach amháin más tusa an t-úinéir.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1415"/>
-        <source>Keep syncing</source>
-        <translation>Coinnigh sioncronú</translation>
-    </message>
-    <message>
         <location filename="../src/gui/folder.cpp" line="1416"/>
         <source>All the files in your local sync folder &quot;%1&quot; were deleted. These deletes will be synchronized with your server, making such files unavailable unless restored.
 Are you sure you want to sync those actions with the server?
@@ -2219,14 +2207,16 @@ An bhfuil tú cinnte gur mhaith leat na gníomhartha sin a shioncronú leis an b
 Más timpiste a bhí ann agus má shocraíonn tú do chuid comhad a choinneáil, déanfar iad a athshioncronú ón bhfreastalaí.</translation>
     </message>
     <message>
+        <location filename="../src/gui/folder.cpp" line="1419"/>
+        <source>A folder has surpassed the set folder size limit of %1MB: %2.
+%3</source>
+        <translation>Sháraigh fillteán an teorainn mhéid fillteáin de % 1MB: % 2.
+% 3</translation>
+    </message>
+    <message>
         <location filename="../src/gui/folder.cpp" line="1420"/>
         <source>Remove All Files?</source>
         <translation>Bain Gach Comhad?</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/folder.cpp" line="1423"/>
-        <source>Stop syncing</source>
-        <translation>Stop sioncronú</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1424"/>
@@ -2239,12 +2229,22 @@ Más timpiste a bhí ann agus má shocraíonn tú do chuid comhad a choinneáil,
         <translation>Coinnigh comhaid</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1434"/>
+        <location filename="../src/gui/folder.cpp" line="1430"/>
+        <source>Keep syncing</source>
+        <translation>Coinnigh sioncronú</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/folder.cpp" line="1438"/>
+        <source>Stop syncing</source>
+        <translation>Stop sioncronú</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/folder.cpp" line="1449"/>
         <source>The folder %1 has surpassed the set folder size limit of %2MB.</source>
         <translation>Sháraigh fillteán % 1 an teorainn méide fillteáin de % 2MB.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1435"/>
+        <location filename="../src/gui/folder.cpp" line="1450"/>
         <source>Would you like to stop syncing this folder?</source>
         <translation>Ar mhaith leat stop a chur le sioncronú an fhillteáin seo?</translation>
     </message>
@@ -2272,12 +2272,12 @@ Ciallaíonn sé seo go bhféadfadh sé nach ndéanfaidh an cliant sioncrónaithe
 % 1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1557"/>
+        <location filename="../src/gui/folder.cpp" line="1572"/>
         <source>Virtual file download failed with code &quot;%1&quot;, status &quot;%2&quot; and error message &quot;%3&quot;</source>
         <translation>Theip ar íosluchtú an chomhaid fhíorúil le cód &quot;% 1&quot;, stádas &quot;% 2&quot; agus teachtaireacht earráide &quot;% 3&quot;</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1651"/>
+        <location filename="../src/gui/folder.cpp" line="1666"/>
         <source>A large number of files in the server have been deleted.
 Please confirm if you'd like to proceed with these deletions.
 Alternatively, you can restore all deleted files by uploading from &apos;%1&apos; folder to the server.</source>
@@ -2286,7 +2286,7 @@ Deimhnigh le do thoil ar mhaith leat leanúint ar aghaidh leis na scriosanna seo
 Nó, is féidir leat gach comhad scriosta a chur ar ais trí uaslódáil ó fhillteán &apos;%1&apos; go dtí an freastalaí.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1652"/>
+        <location filename="../src/gui/folder.cpp" line="1667"/>
         <source>A large number of files in your local '%1' folder have been deleted.
 Please confirm if you'd like to proceed with these deletions.
 Alternatively, you can restore all deleted files by downloading them from the server.</source>
@@ -2295,22 +2295,22 @@ Deimhnigh le do thoil ar mhaith leat leanúint ar aghaidh leis na scriosanna seo
 De rogha air sin, is féidir leat gach comhad a scriosadh a chur ar ais trína n-íoslódáil ón bhfreastalaí.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1653"/>
+        <location filename="../src/gui/folder.cpp" line="1668"/>
         <source>Remove all files?</source>
         <translation>Bain gach comhad?</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1657"/>
+        <location filename="../src/gui/folder.cpp" line="1672"/>
         <source>Proceed with Deletion</source>
         <translation>Lean ar aghaidh leis an Scriosadh</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1658"/>
+        <location filename="../src/gui/folder.cpp" line="1673"/>
         <source>Restore Files to Server</source>
         <translation>Athchóirigh Comhaid go Freastalaí</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1658"/>
+        <location filename="../src/gui/folder.cpp" line="1673"/>
         <source>Restore Files from Server</source>
         <translation>Athchóirigh Comhaid ón bhfreastalaí</translation>
     </message>
@@ -2381,32 +2381,32 @@ De rogha air sin, is féidir leat gach comhad a scriosadh a chur ar ais trína n
         <translation>Ag ullmhú le haghaidh sioncronaithe.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1741"/>
+        <location filename="../src/gui/folderman.cpp" line="1747"/>
         <source>Syncing %1 of %2 (A few seconds left)</source>
         <translation>%1 de %2 á shioncronú (cúpla soicind fágtha)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1744"/>
+        <location filename="../src/gui/folderman.cpp" line="1750"/>
         <source>Syncing %1 of %2 (%3 left)</source>
         <translation>%1 de %2 á shioncronú (%3 fágtha)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1747"/>
+        <location filename="../src/gui/folderman.cpp" line="1753"/>
         <source>Syncing %1 of %2</source>
         <translation>%1 de %2 á shioncronú</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1753"/>
+        <location filename="../src/gui/folderman.cpp" line="1759"/>
         <source>Syncing %1 (A few seconds left)</source>
         <translation>%1 á shioncronú (cúpla soicind fágtha)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1755"/>
+        <location filename="../src/gui/folderman.cpp" line="1761"/>
         <source>Syncing %1 (%2 left)</source>
         <translation>%1 á shioncronú (%2 fágtha)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1758"/>
+        <location filename="../src/gui/folderman.cpp" line="1764"/>
         <source>Syncing %1</source>
         <translation>%1 á shioncronú</translation>
     </message>
@@ -2451,6 +2451,11 @@ De rogha air sin, is féidir leat gach comhad a scriosadh a chur ar ais trína n
         <translation>Níl aon fhillteán bailí roghnaithe!</translation>
     </message>
     <message>
+        <location filename="../src/gui/folderman.cpp" line="1810"/>
+        <source>The folder %1 is used in a folder sync connection!</source>
+        <translation>Úsáidtear fillteán %1 i gceangal sioncronaithe fillteáin!</translation>
+    </message>
+    <message>
         <location filename="../src/gui/folderman.cpp" line="1656"/>
         <source>The selected path does not exist!</source>
         <translation>Níl an cosán roghnaithe ann!</translation>
@@ -2479,6 +2484,15 @@ De rogha air sin, is féidir leat gach comhad a scriosadh a chur ar ais trína n
         <location filename="../src/gui/folderman.cpp" line="1740"/>
         <source>There is already a sync from the server to this local folder. Please pick another local folder!</source>
         <translation>Tá sioncronú ann cheana ón bhfreastalaí leis an bhfillteán logánta seo. Roghnaigh fillteán áitiúil eile le do thoil!</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/folderman.cpp" line="2047"/>
+        <source>The folder %1 is linked to multiple accounts.
+This setup can cause data loss and it is no longer supported.
+To resolve this issue: please remove %1 from one of the accounts and create a new sync folder.
+
+For advanced users: this issue might be related to multiple sync database files found in one folder. Please check %1 for outdated and unused .sync_*.db files and remove them.</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -2553,12 +2567,12 @@ De rogha air sin, is féidir leat gach comhad a scriosadh a chur ar ais trína n
         <translation>Ag sioncronú le fillteán áitiúil</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="322"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="329"/>
         <source>Synchronizing virtual files in local folder</source>
         <translation>Comhaid fhíorúla a shioncronú i bhfillteán áitiúil</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="324"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="331"/>
         <source>Synchronizing files in local folder</source>
         <translation>Comhaid a shioncronú i bhfillteán logánta</translation>
     </message>
@@ -2578,32 +2592,15 @@ De rogha air sin, is féidir leat gach comhad a scriosadh a chur ar ais trína n
         <translation>Athruithe a réiteach</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1009"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1016"/>
         <source>Syncing local and remote changes</source>
         <translation>Athruithe áitiúla agus cianda a shioncronú</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1059"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1066"/>
         <source>%1 %2 …</source>
         <extracomment>Example text: &quot;Uploading foobar.png (1MB of 2MB) time left 2 minutes at a rate of 24Kb/s&quot; Example text: &quot;Syncing 'foo.txt', 'bar.txt'&quot;</extracomment>
         <translation>%1 %2 …</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1068"/>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1079"/>
-        <source>, </source>
-        <translation>, </translation>
-    </message>
-    <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1191"/>
-        <source>Waiting …</source>
-        <translation>Ag fanacht…</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1065"/>
-        <source>Download %1/s</source>
-        <extracomment>Example text: &quot;Download 24Kb/s&quot; (%1 is replaced by 24Kb (translated))</extracomment>
-        <translation>Íoslódáil % 1/s</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1066"/>
@@ -2612,9 +2609,16 @@ De rogha air sin, is féidir leat gach comhad a scriosadh a chur ar ais trína n
         <translation>% 1 á shioncronú</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1074"/>
-        <source>↓ %1/s</source>
-        <translation>↓ %1/s</translation>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1068"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1079"/>
+        <source>, </source>
+        <translation>, </translation>
+    </message>
+    <message>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1072"/>
+        <source>Download %1/s</source>
+        <extracomment>Example text: &quot;Download 24Kb/s&quot; (%1 is replaced by 24Kb (translated))</extracomment>
+        <translation>Íoslódáil % 1/s</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1072"/>
@@ -2623,21 +2627,26 @@ De rogha air sin, is féidir leat gach comhad a scriosadh a chur ar ais trína n
         <translation>íoslódáil % 1/s</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1075"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1074"/>
+        <source>↓ %1/s</source>
+        <translation>↓ %1/s</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1082"/>
         <source>Upload %1/s</source>
         <extracomment>Example text: &quot;Upload 24Kb/s&quot; (%1 is replaced by 24Kb (translated))</extracomment>
         <translation>Uaslódáil % 1/s</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1084"/>
-        <source>↑ %1/s</source>
-        <translation>↑ %1/s</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1082"/>
         <source>upload %1/s</source>
         <extracomment>Example text: &quot;upload 24Kb/s&quot; (%1 is replaced by 24Kb (translated))</extracomment>
         <translation>uaslódáil % 1/s</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1084"/>
+        <source>↑ %1/s</source>
+        <translation>↑ %1/s</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1090"/>
@@ -2669,17 +2678,17 @@ De rogha air sin, is féidir leat gach comhad a scriosadh a chur ar ais trína n
         <translation>% 1 de % 2, comhad % 3 de % 4</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1131"/>
-        <source>File %1 of %2</source>
-        <translation>Comhad % 1 de % 2</translation>
-    </message>
-    <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1136"/>
         <source>file %1 of %2</source>
         <translation>comhad % 1 de % 2</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1184"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1138"/>
+        <source>File %1 of %2</source>
+        <translation>Comhad % 1 de % 2</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1191"/>
         <source>About to start syncing</source>
         <translation>Ar tí sioncronú a thosú</translation>
     </message>
@@ -2687,6 +2696,11 @@ De rogha air sin, is féidir leat gach comhad a scriosadh a chur ar ais trína n
         <location filename="../src/gui/folderstatusmodel.cpp" line="1193"/>
         <source>Waiting for %n other folder(s) …</source>
         <translation><numerusform>Ag fanacht le % i bhfillteáin eile …</numerusform><numerusform>Ag fanacht le % i bhfillteáin eile …</numerusform><numerusform>Ag fanacht le % i bhfillteáin eile …</numerusform><numerusform>Ag fanacht le % i bhfillteáin eile …</numerusform><numerusform>Ag fanacht le % i bhfillteáin eile …</numerusform></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1191"/>
+        <source>Waiting …</source>
+        <translation>Ag fanacht…</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1199"/>
@@ -4537,9 +4551,17 @@ Is modh turgnamhach nua é seo. Má shocraíonn tú é a úsáid, cuir in iúl l
         <translation>Íoslódáilte comhad % 1 ach bhí clash ainm comhaid logánta mar thoradh air!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="412"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="458"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="499"/>
         <source>Could not get file %1 from local DB</source>
         <translation>Níorbh fhéidir comhad %1 a fháil ó DB logánta</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="270"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="316"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="357"/>
+        <source>could not get file %1 from local DB</source>
+        <translation>Níorbh fhéidir comhad % 1 a fháil ó DB logánta</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="283"/>
@@ -4557,13 +4579,6 @@ Is modh turgnamhach nua é seo. Má shocraíonn tú é a úsáid, cuir in iúl l
         <location filename="../src/libsync/propagatorjobs.cpp" line="299"/>
         <source>The file %1 is currently in use</source>
         <translation>Tá comhad % 1 in úsáid faoi láthair</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="270"/>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="316"/>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="357"/>
-        <source>could not get file %1 from local DB</source>
-        <translation>Níorbh fhéidir comhad % 1 a fháil ó DB logánta</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="321"/>
@@ -5852,8 +5867,18 @@ D&apos;fhreagair an freastalaí le hearráid: % 2</translation>
     <name>OCC::Vfs</name>
     <message>
         <location filename="../src/common/vfs.cpp" line="75"/>
+        <source>The Virtual filesystem feature does not support a drive as sync root</source>
+        <translation>Ní thacaíonn gné an chórais comhaid fhíorúil le tiomántán mar fhréamh sioncronaithe</translation>
+    </message>
+    <message>
+        <location filename="../src/common/vfs.cpp" line="75"/>
         <source>The Virtual filesystem feature requires a NTFS file system, %1 is using %2</source>
         <translation>Teastaíonn córas comhaid NTFS ón ngné Chórais Fíorúil, tá % 1 ag úsáid % 2</translation>
+    </message>
+    <message>
+        <location filename="../src/common/vfs.cpp" line="83"/>
+        <source>The Virtual filesystem feature is not supported on network drives</source>
+        <translation>Ní thacaítear leis an ngné córas comhaid Fíorúil ar thiomáineann líonra</translation>
     </message>
 </context>
 <context>

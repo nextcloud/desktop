@@ -334,6 +334,8 @@ OCC::Result<OCC::Vfs::ConvertToPlaceholderResult, QString> updatePlaceholderStat
         OCC::Utility::UnixTimeToLargeIntegerFiletime(modtime, &metadata.BasicInfo.ChangeTime);
         metadata.BasicInfo.FileAttributes = 0;
 
+        OCC::CfApiWrapper::setPinState(path, OCC::PinState::Unspecified, OCC::CfApiWrapper::SetPinRecurseMode::NoRecurse);
+
         qCInfo(lcCfApiWrapper) << "updatePlaceholderState" << path << modtime;
         const qint64 result = CfUpdatePlaceholder(OCC::CfApiWrapper::handleForPath(path).get(), updateType == CfApiUpdateMetadataType::AllMetadata ? &metadata : nullptr,
                                                   fileIdentity.data(), sizeToDWORD(fileIdentitySize),
@@ -345,7 +347,7 @@ OCC::Result<OCC::Vfs::ConvertToPlaceholderResult, QString> updatePlaceholderStat
             return errorMessage;
         }
 
-               // Pin state tends to be lost on updates, so restore it every time
+        // Pin state tends to be lost on updates, so restore it every time
         if (!setPinState(path, previousPinState, OCC::CfApiWrapper::NoRecurse)) {
             return { "Couldn't restore pin state" };
         }
@@ -591,7 +593,7 @@ bool createSyncRootRegistryKeys(const QString &providerName, const QString &fold
         { providerSyncRootIdRegistryKey, QStringLiteral("NamespaceCLSID"), REG_SZ, QString(navigationPaneClsid)}
     };
 
-    for (const auto &registryKeyToSet : qAsConst(registryKeysToSet)) {
+    for (const auto &registryKeyToSet : std::as_const(registryKeysToSet)) {
         if (!OCC::Utility::registrySetKeyValue(HKEY_LOCAL_MACHINE, registryKeyToSet.subKey, registryKeyToSet.valueName, registryKeyToSet.type, registryKeyToSet.value)) {
             qCWarning(lcCfApiWrapper) << "Failed to set Registry keys for shell integration. Progress bar will not work.";
             const auto deleteKeyResult = OCC::Utility::registryDeleteKeyTree(HKEY_LOCAL_MACHINE, providerSyncRootIdRegistryKey);
@@ -906,6 +908,8 @@ OCC::Result<OCC::Vfs::ConvertToPlaceholderResult, QString> OCC::CfApiWrapper::de
 
     const auto info = findPlaceholderInfo(path);
     if (info) {
+        setPinState(path, OCC::PinState::OnlineOnly, OCC::CfApiWrapper::NoRecurse);
+
         CF_FILE_RANGE dehydrationRange;
         dehydrationRange.StartingOffset.QuadPart = 0;
         dehydrationRange.Length.QuadPart = size;
@@ -919,7 +923,6 @@ OCC::Result<OCC::Vfs::ConvertToPlaceholderResult, QString> OCC::CfApiWrapper::de
                                                   CF_UPDATE_FLAG_MARK_IN_SYNC | CF_UPDATE_FLAG_DEHYDRATE,
                                                   nullptr,
                                                   nullptr);
-
         if (result != S_OK) {
             const auto errorMessage = createErrorMessageForPlaceholderUpdateAndCreate(path, "Couldn't update placeholder info");
             qCWarning(lcCfApiWrapper) << errorMessage << path << ":" << QString::fromWCharArray(_com_error(result).ErrorMessage());

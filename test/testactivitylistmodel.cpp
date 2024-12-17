@@ -225,8 +225,7 @@ private slots:
 
             QVERIFY(!index.data(OCC::ActivityListModel::AccountRole).toString().isEmpty());
             QVERIFY(!index.data(OCC::ActivityListModel::ActionTextColorRole).toString().isEmpty());
-            QVERIFY(!index.data(OCC::ActivityListModel::DarkIconRole).toString().isEmpty());
-            QVERIFY(!index.data(OCC::ActivityListModel::LightIconRole).toString().isEmpty());
+            QVERIFY(!index.data(OCC::ActivityListModel::IconRole).toString().isEmpty());
             QVERIFY(!index.data(OCC::ActivityListModel::PointInTimeRole).toString().isEmpty());
 
             QVERIFY(index.data(OCC::ActivityListModel::ObjectTypeRole).canConvert<int>());

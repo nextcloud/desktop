@@ -211,4 +211,6 @@ install(TARGETS CfApiShellExtensions
     LIBRARY DESTINATION ${CMAKE_INSTALL_BINDIR}
 )
 
+install(FILES $<TARGET_PDB_FILE:CfApiShellExtensions> DESTINATION bin OPTIONAL)
+
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/configvfscfapishellext.h.in ${CMAKE_CURRENT_BINARY_DIR}/configvfscfapishellext.h)

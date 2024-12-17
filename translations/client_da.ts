@@ -171,7 +171,7 @@
     <message>
         <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="36"/>
         <source>Current account</source>
-        <translation type="unfinished"/>
+        <translation>Nuværende konto</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="42"/>
@@ -188,22 +188,22 @@
     <message>
         <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="95"/>
         <source>Add account</source>
-        <translation type="unfinished"/>
+        <translation>Tilføj konto</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="99"/>
         <source>Add new account</source>
-        <translation type="unfinished"/>
+        <translation>Tilføj ny konto</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="122"/>
         <source>Settings</source>
-        <translation type="unfinished"/>
+        <translation>Indstillinger</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="133"/>
         <source>Exit</source>
-        <translation type="unfinished"/>
+        <translation>Afslut</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="161"/>
@@ -465,17 +465,17 @@
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="238"/>
+        <location filename="../src/gui/tray/MainWindow.qml" line="242"/>
         <source>Nextcloud desktop main dialog</source>
         <translation>Nextcloud-skrivebordets hoveddialog</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="375"/>
+        <location filename="../src/gui/tray/MainWindow.qml" line="379"/>
         <source>Unified search results list</source>
         <translation>Samlet søgeresultatliste</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="439"/>
+        <location filename="../src/gui/tray/MainWindow.qml" line="443"/>
         <source>New activities</source>
         <translation>Nye aktiviteter</translation>
     </message>
@@ -526,14 +526,14 @@ Should an account import be attempted?</source>
 Skal en kontoimport forsøges?</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountmanager.cpp" line="214"/>
+        <location filename="../src/gui/accountmanager.cpp" line="225"/>
         <source>%1 accounts were detected from a legacy desktop client.
 Should the accounts be imported?</source>
         <translation>%1 konti blev fundet fra en ældre desktop-klient.
 Skal regnskabet importeres?</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountmanager.cpp" line="216"/>
+        <location filename="../src/gui/accountmanager.cpp" line="227"/>
         <source>1 account was detected from a legacy desktop client.
 Should the account be imported?</source>
         <translation>1 konto blev fundet fra en ældre desktop-klient.
@@ -547,12 +547,12 @@ Skal kontoen importeres?</translation>
         <translation>Legacy import</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountmanager.cpp" line="219"/>
+        <location filename="../src/gui/accountmanager.cpp" line="230"/>
         <source>Import</source>
         <translation>Importer</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountmanager.cpp" line="220"/>
+        <location filename="../src/gui/accountmanager.cpp" line="231"/>
         <source>Skip</source>
         <translation>Spring over</translation>
     </message>
@@ -683,17 +683,17 @@ Skal kontoen importeres?</translation>
         <translation>Advarsel</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="386"/>
+        <location filename="../src/gui/accountsettings.cpp" line="388"/>
         <source>Please wait for the folder to sync before trying to encrypt it.</source>
         <translation>Vent venligst på at mappen synkroniseres, før du prøver at kryptere den.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="388"/>
+        <location filename="../src/gui/accountsettings.cpp" line="390"/>
         <source>The folder has a minor sync problem. Encryption of this folder will be possible once it has synced successfully</source>
         <translation>Mappen har et mindre synkroniseringsproblem. Kryptering af denne mappe vil være mulig, når den er synkroniseret</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="390"/>
+        <location filename="../src/gui/accountsettings.cpp" line="392"/>
         <source>The folder has a sync error. Encryption of this folder will be possible once it has synced successfully</source>
         <translation>Mappen har en synkroniseringsfejl. Kryptering af denne mappe vil være mulig, når den er synkroniseret</translation>
     </message>
@@ -949,7 +949,7 @@ Denne handling vil annullere alle i øjeblikket kørende synkroniseringer.</tran
         <translation>Ingen forbindelse til %1 hos %2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1309"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1312"/>
         <source>Unable to connect to %1.</source>
         <translation>Kan ikke oprette forbindelse til %1.</translation>
     </message>
@@ -959,7 +959,7 @@ Denne handling vil annullere alle i øjeblikket kørende synkroniseringer.</tran
         <translation>Serverkonfigurationsfejl: %1 på %2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1323"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1326"/>
         <source>You need to accept the terms of service</source>
         <translation type="unfinished"/>
     </message>
@@ -984,7 +984,7 @@ Denne handling vil annullere alle i øjeblikket kørende synkroniseringer.</tran
         <translation>Der er mapper som ikke blev synkroniseret fordi de er for store eller eksterne lagre:</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1606"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1609"/>
         <source>There are folders that have grown in size beyond %1MB: %2</source>
         <translation type="unfinished"/>
     </message>
@@ -1186,34 +1186,34 @@ Denne handling vil annullere alle i øjeblikket kørende synkroniseringer.</tran
         <translation>Fortsæt</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="488"/>
+        <location filename="../src/gui/application.cpp" line="490"/>
         <source>%1 accounts</source>
         <comment>number of accounts imported</comment>
         <translation>%1 konti</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="489"/>
+        <location filename="../src/gui/application.cpp" line="491"/>
         <source>1 account</source>
         <translation>1 konto</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="491"/>
+        <location filename="../src/gui/application.cpp" line="493"/>
         <source>%1 folders</source>
         <comment>number of folders imported</comment>
         <translation>%1 mapper</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="492"/>
+        <location filename="../src/gui/application.cpp" line="494"/>
         <source>1 folder</source>
         <translation>1 mappe</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="494"/>
+        <location filename="../src/gui/application.cpp" line="496"/>
         <source>Legacy import</source>
         <translation>Bagudkompatibel import</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="495"/>
+        <location filename="../src/gui/application.cpp" line="497"/>
         <source>Imported %1 and %2 from a legacy desktop client.
 %3</source>
         <comment>number of accounts and folders imported. list of users.</comment>
@@ -1323,7 +1323,7 @@ Denne handling vil annullere alle i øjeblikket kørende synkroniseringer.</tran
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="649"/>
         <source>The local file was removed during sync.</source>
-        <translation type="unfinished"/>
+        <translation>Den lokale fil blev fjernet under synkronisering.</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="697"/>
@@ -2184,22 +2184,11 @@ Dette kan være et problem med dine OpenSSL biblioteker.</translation>
         <translation>Gå venligst til indstillinger for at vælge om du vil hente den.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1404"/>
-        <source>A folder has surpassed the set folder size limit of %1MB: %2.
-%3</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
         <location filename="../src/gui/folder.cpp" line="1411"/>
         <source>All files in the sync folder &quot;%1&quot; folder were deleted on the server.
 These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
 If you decide to restore the files, they will be re-synced with the server if you have rights to do so.
 If you decide to delete the files, they will be unavailable to you, unless you are the owner.</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/folder.cpp" line="1415"/>
-        <source>Keep syncing</source>
         <translation type="unfinished"/>
     </message>
     <message>
@@ -2210,14 +2199,15 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <translation type="unfinished"/>
     </message>
     <message>
+        <location filename="../src/gui/folder.cpp" line="1419"/>
+        <source>A folder has surpassed the set folder size limit of %1MB: %2.
+%3</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/folder.cpp" line="1420"/>
         <source>Remove All Files?</source>
         <translation>Fjern alle filer?</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/folder.cpp" line="1423"/>
-        <source>Stop syncing</source>
-        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1424"/>
@@ -2230,12 +2220,22 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <translation>Behold filer</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1434"/>
+        <location filename="../src/gui/folder.cpp" line="1430"/>
+        <source>Keep syncing</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/folder.cpp" line="1438"/>
+        <source>Stop syncing</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/folder.cpp" line="1449"/>
         <source>The folder %1 has surpassed the set folder size limit of %2MB.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1435"/>
+        <location filename="../src/gui/folder.cpp" line="1450"/>
         <source>Would you like to stop syncing this folder?</source>
         <translation type="unfinished"/>
     </message>
@@ -2263,41 +2263,41 @@ Dette betyder at synkroniseringsklienten muligvis ikke sender lokale ændringer 
 %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1557"/>
+        <location filename="../src/gui/folder.cpp" line="1572"/>
         <source>Virtual file download failed with code &quot;%1&quot;, status &quot;%2&quot; and error message &quot;%3&quot;</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1651"/>
+        <location filename="../src/gui/folder.cpp" line="1666"/>
         <source>A large number of files in the server have been deleted.
 Please confirm if you'd like to proceed with these deletions.
 Alternatively, you can restore all deleted files by uploading from &apos;%1&apos; folder to the server.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1652"/>
+        <location filename="../src/gui/folder.cpp" line="1667"/>
         <source>A large number of files in your local '%1' folder have been deleted.
 Please confirm if you'd like to proceed with these deletions.
 Alternatively, you can restore all deleted files by downloading them from the server.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1653"/>
+        <location filename="../src/gui/folder.cpp" line="1668"/>
         <source>Remove all files?</source>
         <translation>Slet alle filer?</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1657"/>
+        <location filename="../src/gui/folder.cpp" line="1672"/>
         <source>Proceed with Deletion</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1658"/>
+        <location filename="../src/gui/folder.cpp" line="1673"/>
         <source>Restore Files to Server</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1658"/>
+        <location filename="../src/gui/folder.cpp" line="1673"/>
         <source>Restore Files from Server</source>
         <translation type="unfinished"/>
     </message>
@@ -2368,32 +2368,32 @@ Alternatively, you can restore all deleted files by downloading them from the se
         <translation>Forbereder synkronisering</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1741"/>
+        <location filename="../src/gui/folderman.cpp" line="1747"/>
         <source>Syncing %1 of %2 (A few seconds left)</source>
         <translation>Synkroniserer %1 af %2 (et par sekunder tilbage)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1744"/>
+        <location filename="../src/gui/folderman.cpp" line="1750"/>
         <source>Syncing %1 of %2 (%3 left)</source>
         <translation>Synkroniserer %1 af %2 (%3 tilbage)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1747"/>
+        <location filename="../src/gui/folderman.cpp" line="1753"/>
         <source>Syncing %1 of %2</source>
         <translation>Synkroniserer %1 af %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1753"/>
+        <location filename="../src/gui/folderman.cpp" line="1759"/>
         <source>Syncing %1 (A few seconds left)</source>
         <translation>Synkroniserer %1 (et par sekunder tilbage)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1755"/>
+        <location filename="../src/gui/folderman.cpp" line="1761"/>
         <source>Syncing %1 (%2 left)</source>
         <translation>Synkroniserer %1 (%2 tilbage)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1758"/>
+        <location filename="../src/gui/folderman.cpp" line="1764"/>
         <source>Syncing %1</source>
         <translation>Synkroniserer %1</translation>
     </message>
@@ -2438,6 +2438,11 @@ Alternatively, you can restore all deleted files by downloading them from the se
         <translation>Ingen gyldig mappe valgt!</translation>
     </message>
     <message>
+        <location filename="../src/gui/folderman.cpp" line="1810"/>
+        <source>The folder %1 is used in a folder sync connection!</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/folderman.cpp" line="1656"/>
         <source>The selected path does not exist!</source>
         <translation>Den valgte sti findes ikke!</translation>
@@ -2466,6 +2471,15 @@ Alternatively, you can restore all deleted files by downloading them from the se
         <location filename="../src/gui/folderman.cpp" line="1740"/>
         <source>There is already a sync from the server to this local folder. Please pick another local folder!</source>
         <translation>Der er allerede sync fra serveren til denne lokale mappe. Vælg venligst en anden mappe!</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/folderman.cpp" line="2047"/>
+        <source>The folder %1 is linked to multiple accounts.
+This setup can cause data loss and it is no longer supported.
+To resolve this issue: please remove %1 from one of the accounts and create a new sync folder.
+
+For advanced users: this issue might be related to multiple sync database files found in one folder. Please check %1 for outdated and unused .sync_*.db files and remove them.</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -2540,14 +2554,14 @@ Alternatively, you can restore all deleted files by downloading them from the se
         <translation>Synkroniserer med lokal mappe</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="322"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="329"/>
         <source>Synchronizing virtual files in local folder</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="324"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="331"/>
         <source>Synchronizing files in local folder</source>
-        <translation type="unfinished"/>
+        <translation>Synkroniserer filer i lokal mappe</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="993"/>
@@ -2565,31 +2579,14 @@ Alternatively, you can restore all deleted files by downloading them from the se
         <translation>Forener ændringer</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1009"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1016"/>
         <source>Syncing local and remote changes</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1059"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1066"/>
         <source>%1 %2 …</source>
         <extracomment>Example text: &quot;Uploading foobar.png (1MB of 2MB) time left 2 minutes at a rate of 24Kb/s&quot; Example text: &quot;Syncing 'foo.txt', 'bar.txt'&quot;</extracomment>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1068"/>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1079"/>
-        <source>, </source>
-        <translation>, </translation>
-    </message>
-    <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1191"/>
-        <source>Waiting …</source>
-        <translation>Venter …</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1065"/>
-        <source>Download %1/s</source>
-        <extracomment>Example text: &quot;Download 24Kb/s&quot; (%1 is replaced by 24Kb (translated))</extracomment>
         <translation type="unfinished"/>
     </message>
     <message>
@@ -2599,9 +2596,16 @@ Alternatively, you can restore all deleted files by downloading them from the se
         <translation>Synkroniserer %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1074"/>
-        <source>↓ %1/s</source>
-        <translation>↓ %1/s</translation>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1068"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1079"/>
+        <source>, </source>
+        <translation>, </translation>
+    </message>
+    <message>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1072"/>
+        <source>Download %1/s</source>
+        <extracomment>Example text: &quot;Download 24Kb/s&quot; (%1 is replaced by 24Kb (translated))</extracomment>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1072"/>
@@ -2610,21 +2614,26 @@ Alternatively, you can restore all deleted files by downloading them from the se
         <translation>hent %1/s</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1075"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1074"/>
+        <source>↓ %1/s</source>
+        <translation>↓ %1/s</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1082"/>
         <source>Upload %1/s</source>
         <extracomment>Example text: &quot;Upload 24Kb/s&quot; (%1 is replaced by 24Kb (translated))</extracomment>
         <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1084"/>
-        <source>↑ %1/s</source>
-        <translation>↑ %1/s</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1082"/>
         <source>upload %1/s</source>
         <extracomment>Example text: &quot;upload 24Kb/s&quot; (%1 is replaced by 24Kb (translated))</extracomment>
         <translation>send %1/s</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1084"/>
+        <source>↑ %1/s</source>
+        <translation>↑ %1/s</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1090"/>
@@ -2656,17 +2665,17 @@ Alternatively, you can restore all deleted files by downloading them from the se
         <translation>%1 af %2, fil %3 af %4</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1131"/>
-        <source>File %1 of %2</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1136"/>
         <source>file %1 of %2</source>
         <translation>fil %1 af %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1184"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1138"/>
+        <source>File %1 of %2</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1191"/>
         <source>About to start syncing</source>
         <translation type="unfinished"/>
     </message>
@@ -2674,6 +2683,11 @@ Alternatively, you can restore all deleted files by downloading them from the se
         <location filename="../src/gui/folderstatusmodel.cpp" line="1193"/>
         <source>Waiting for %n other folder(s) …</source>
         <translation><numerusform>Venter på %n anden folder …</numerusform><numerusform>Venter på %n andre mapper …</numerusform></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1191"/>
+        <source>Waiting …</source>
+        <translation>Venter …</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1199"/>
@@ -2888,7 +2902,7 @@ Alternatively, you can restore all deleted files by downloading them from the se
     <message>
         <location filename="../src/gui/generalsettings.ui" line="50"/>
         <source>Show Chat Notifications</source>
-        <translation type="unfinished"/>
+        <translation>Vis chatnotifikationer</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="89"/>
@@ -2903,7 +2917,7 @@ Alternatively, you can restore all deleted files by downloading them from the se
     <message>
         <location filename="../src/gui/generalsettings.ui" line="80"/>
         <source>Ask for confirmation before synchronizing new folders larger than</source>
-        <translation type="unfinished"/>
+        <translation>Bed om bekræftelse, før du synkroniserer nye mapper større end</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="106"/>
@@ -2913,7 +2927,7 @@ Alternatively, you can restore all deleted files by downloading them from the se
     <message>
         <location filename="../src/gui/generalsettings.ui" line="114"/>
         <source>&amp;Automatically check for Updates</source>
-        <translation>Søg &amp;automatisk efter opdateringer</translation>
+        <translation>&amp;Søg automatisk efter opdateringer</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="249"/>
@@ -2929,12 +2943,12 @@ Alternatively, you can restore all deleted files by downloading them from the se
     <message>
         <location filename="../src/gui/generalsettings.ui" line="143"/>
         <source>Notify when synchronised folders grow larger than specified limit</source>
-        <translation type="unfinished"/>
+        <translation>Giv besked, når synkroniserede mapper bliver større end den angivne grænse</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="170"/>
         <source>Automatically disable synchronisation of folders that overcome limit</source>
-        <translation type="unfinished"/>
+        <translation>Deaktiver automatisk synkronisering af mapper, der overskrider grænsen</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="273"/>
@@ -2944,7 +2958,7 @@ Alternatively, you can restore all deleted files by downloading them from the se
     <message>
         <location filename="../src/gui/generalsettings.ui" line="194"/>
         <source>Move removed files to trash</source>
-        <translation type="unfinished"/>
+        <translation>Flyt fjernede filer til papirkurven</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="198"/>
@@ -2954,7 +2968,7 @@ Alternatively, you can restore all deleted files by downloading them from the se
     <message>
         <location filename="../src/gui/generalsettings.ui" line="205"/>
         <source>Show sync folders in &amp;Explorer&apos;s navigation pane</source>
-        <translation type="unfinished"/>
+        <translation>Vis synkroniseringsmapper i &amp;Stifinders navigationsrude</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="301"/>
@@ -2975,7 +2989,7 @@ Alternatively, you can restore all deleted files by downloading them from the se
         <location filename="../src/gui/generalsettings.ui" line="319"/>
         <location filename="../src/gui/generalsettings.cpp" line="469"/>
         <source>Create Debug Archive</source>
-        <translation type="unfinished"/>
+        <translation>Opret fejlfindingsarkiv</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="265"/>
@@ -2995,7 +3009,7 @@ Alternatively, you can restore all deleted files by downloading them from the se
     <message>
         <location filename="../src/gui/generalsettings.ui" line="295"/>
         <source>Update channel</source>
-        <translation type="unfinished"/>
+        <translation>Opdateringskanal</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="183"/>
@@ -3005,12 +3019,12 @@ Alternatively, you can restore all deleted files by downloading them from the se
     <message>
         <location filename="../src/gui/generalsettings.ui" line="348"/>
         <source>&amp;Automatically check for updates</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Søg automatisk efter opdateringer</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="364"/>
         <source>Check Now</source>
-        <translation type="unfinished"/>
+        <translation>Tjek nu</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="391"/>
@@ -3124,7 +3138,7 @@ Downgrading versions is not possible immediately: changing from stable to enterp
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="475"/>
         <source>Debug Archive Created</source>
-        <translation type="unfinished"/>
+        <translation>Fejlfindingsarkiv oprettet</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="475"/>
@@ -3574,17 +3588,17 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/networksettings.ui" line="176"/>
         <source>Note: proxy settings have no effects for accounts on localhost</source>
-        <translation type="unfinished"/>
+        <translation>Bemærk: proxyindstillinger har ingen virkninger for konti på localhost</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="249"/>
         <source>Manually specify proxy</source>
-        <translation type="unfinished"/>
+        <translation>Angiv proxy manuelt</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="259"/>
         <source>No proxy</source>
-        <translation type="unfinished"/>
+        <translation>Ingen proxy</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="285"/>
@@ -4506,8 +4520,16 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="412"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="458"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="499"/>
         <source>Could not get file %1 from local DB</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="270"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="316"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="357"/>
+        <source>could not get file %1 from local DB</source>
         <translation type="unfinished"/>
     </message>
     <message>
@@ -4525,13 +4547,6 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="299"/>
         <source>The file %1 is currently in use</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="270"/>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="316"/>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="357"/>
-        <source>could not get file %1 from local DB</source>
         <translation type="unfinished"/>
     </message>
     <message>
@@ -4854,7 +4869,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/gui/settingsdialog.cpp" line="102"/>
         <source>%1 Settings</source>
         <extracomment>This name refers to the application name e.g Nextcloud</extracomment>
-        <translation type="unfinished"/>
+        <translation>%1 Indstillinger</translation>
     </message>
     <message>
         <location filename="../src/gui/settingsdialog.cpp" line="120"/>
@@ -5743,7 +5758,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="171"/>
         <source>Could not set status. Make sure you are connected to the server.</source>
-        <translation type="unfinished"/>
+        <translation>Kunne ikke angive status. Sørg for at du er forbundet til serveren.</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="175"/>
@@ -5819,7 +5834,17 @@ Server replied with error: %2</source>
     <name>OCC::Vfs</name>
     <message>
         <location filename="../src/common/vfs.cpp" line="75"/>
+        <source>The Virtual filesystem feature does not support a drive as sync root</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/common/vfs.cpp" line="75"/>
         <source>The Virtual filesystem feature requires a NTFS file system, %1 is using %2</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/common/vfs.cpp" line="83"/>
+        <source>The Virtual filesystem feature is not supported on network drives</source>
         <translation type="unfinished"/>
     </message>
 </context>
@@ -6224,12 +6249,12 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="131"/>
         <source>Failed to create debug archive</source>
-        <translation type="unfinished"/>
+        <translation>Fejl ved oprettelse af fejlfindingsarkiv</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="132"/>
         <source>Could not create debug archive in selected location!</source>
-        <translation type="unfinished"/>
+        <translation>Kunne ikke oprette fejlfindingsarkiv på den valgte lokation!</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="763"/>
@@ -6637,7 +6662,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="165"/>
         <source>Set status</source>
-        <translation type="unfinished"/>
+        <translation>Angiv status</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="173"/>
@@ -7237,7 +7262,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="55"/>
         <source>Open local folder</source>
-        <translation type="unfinished"/>
+        <translation>Åbn lokal mappe</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="70"/>
@@ -7257,7 +7282,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="184"/>
         <source>Open local folder &quot;%1&quot;</source>
-        <translation type="unfinished"/>
+        <translation>Åbn lokal mappe &quot;%1&quot;</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="184"/>
@@ -7267,7 +7292,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="198"/>
         <source>Open %1 in file explorer</source>
-        <translation type="unfinished"/>
+        <translation>Åbn %1 i stifinder</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="203"/>

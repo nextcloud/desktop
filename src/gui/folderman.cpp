@@ -44,6 +44,12 @@ constexpr auto settingsAccountsC = "Accounts";
 constexpr auto settingsFoldersC = "Folders";
 constexpr auto settingsVersionC = "version";
 constexpr auto maxFoldersVersion = 1;
+
+int numberOfSyncJournals(const QString &path)
+{
+    return QDir(path).entryList({ QStringLiteral(".sync_*.db"), QStringLiteral("._sync_*.db") }, QDir::Hidden | QDir::Files).size();
+}
+
 }
 
 namespace OCC {
@@ -1800,6 +1806,9 @@ static QString checkPathValidityRecursive(const QString &path)
     Utility::NtfsPermissionLookupRAII ntfs_perm;
 #endif
     const QFileInfo selFile(path);
+    if (numberOfSyncJournals(selFile.filePath()) != 0) {
+        return FolderMan::tr("The folder %1 is used in a folder sync connection!").arg(QDir::toNativeSeparators(selFile.filePath()));
+    }
 
     if (!FileSystem::fileExists(path)) {
         QString parentPath = selFile.dir().path();
@@ -2025,6 +2034,23 @@ void FolderMan::slotConnectToPushNotifications(Account *account)
         qCInfo(lcFolderMan) << "Push notifications ready";
         connect(pushNotifications, &PushNotifications::filesChanged, this, &FolderMan::slotProcessFilesPushNotification, Qt::UniqueConnection);
     }
+}
+
+bool FolderMan::checkVfsAvailability(const QString &path, Vfs::Mode mode) const
+{
+    return unsupportedConfiguration(path) && Vfs::checkAvailability(path, mode);
+}
+
+Result<void, QString> FolderMan::unsupportedConfiguration(const QString &path) const
+{
+    if (numberOfSyncJournals(path) > 1) {
+        return tr("The folder %1 is linked to multiple accounts.\n"
+                  "This setup can cause data loss and it is no longer supported.\n"
+                  "To resolve this issue: please remove %1 from one of the accounts and create a new sync folder.\n\n"
+                  "For advanced users: this issue might be related to multiple sync database files found in one folder. Please check %1 for outdated and unused .sync_*.db files and remove them.")
+            .arg(path);
+    }
+    return {};
 }
 
 } // namespace OCC

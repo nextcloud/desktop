@@ -467,11 +467,11 @@ void EditLocallyJob::processLocalItem()
     if (rec.isDirectory() || !_accountState->account()->capabilities().filesLockAvailable()) {
         openFile();
     } else {
-        lockFile();
+        lockFile(rec._etag);
     }
 }
 
-void EditLocallyJob::lockFile()
+void EditLocallyJob::lockFile(const QString &etag)
 {
     Q_ASSERT(_accountState);
     Q_ASSERT(_accountState->account());
@@ -506,6 +506,7 @@ void EditLocallyJob::lockFile()
     _folderForFile->accountState()->account()->setLockFileState(_relPath,
                                                                 _folderForFile->remotePathTrailingSlash(),
                                                                 _folderForFile->path(),
+                                                                etag,
                                                                 _folderForFile->journalDb(),
                                                                 SyncFileItem::LockStatus::LockedItem,
                                                                 SyncFileItem::LockOwnerType::TokenLock);
