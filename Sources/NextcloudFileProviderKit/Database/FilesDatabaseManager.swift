@@ -93,7 +93,11 @@ public class FilesDatabaseManager {
     }
 
     func ncDatabase() -> Realm {
-        return try! Realm()
+        let realm = try! Realm()
+        if !realm.refresh() {
+            Self.logger.error("Failed to refresh Realm!!")
+        }
+        return realm
     }
 
     public func anyItemMetadatasForAccount(_ account: String) -> Bool {
