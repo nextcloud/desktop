@@ -2493,7 +2493,11 @@ This setup can cause data loss and it is no longer supported.
 To resolve this issue: please remove %1 from one of the accounts and create a new sync folder.
 
 For advanced users: this issue might be related to multiple sync database files found in one folder. Please check %1 for outdated and unused .sync_*.db files and remove them.</source>
-        <translation type="unfinished"/>
+        <translation>資料夾 %1 與多個帳戶相連結。這種設置可能導致數據丟失，並且不再受支援。
+
+要解決此問題：請從其中一個帳戶中移除 %1，然後創建一個新的同步資料夾。
+
+對於進階用戶：此問題可能與在同一資料夾中發現多個同步數據庫文件有關。請檢查 %1 是否有過時的和未使用的 .sync_*.db 檔案並將其刪除。</translation>
     </message>
 </context>
 <context>
