@@ -305,9 +305,7 @@ public class FilesDatabaseManager {
                     )
                 }
 
-                for metadata in metadatasToAdd {
-                    database.add(metadata, update: .all)
-                }
+                database.add(metadatasToAdd, update: .all)
             }
 
             return (
