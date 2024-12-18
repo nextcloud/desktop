@@ -131,7 +131,7 @@ public class FilesDatabaseManager {
         if serverUrl.hasSuffix("/") {
             serverUrl.removeLast()
         }
-        if let metadata = ncDatabase().objects(ItemMetadata.self).filter(
+        if let metadata = itemMetadatas.filter(
             "account == %@ AND serverUrl == %@ AND fileName == %@", account, serverUrl, fileName
         ).first {
             return ItemMetadata(value: metadata)
@@ -211,7 +211,7 @@ public class FilesDatabaseManager {
                         if updatedMetadata.serverUrl != existingMetadata.serverUrl
                             || updatedMetadata.fileName != existingMetadata.fileName
                         {
-                            directoriesNeedingRename.append(ItemMetadata(value: updatedMetadata))
+                            directoriesNeedingRename.append(updatedMetadata)
                             updatedMetadata.etag = ""  // Renaming doesn't change the etag so reset
 
                         } else if !updateDirectoryEtags {
