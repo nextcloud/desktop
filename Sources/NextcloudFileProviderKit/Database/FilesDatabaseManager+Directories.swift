@@ -145,14 +145,14 @@ extension FilesDatabaseManager {
         }
 
         let oldItemServerUrl = directoryMetadata.serverUrl
-        let oldItemFilename = directoryMetadata.isTrashed
-            ? directoryMetadata.trashbinFileName
-            : directoryMetadata.fileName
+        let oldItemFilename = directoryMetadata.fileName
         let oldDirectoryServerUrl = oldItemServerUrl + "/" + oldItemFilename
         let newDirectoryServerUrl = newServerUrl + "/" + newFileName
         let childItemResults = itemMetadatas.filter(
-            "account == %@ AND serverUrl BEGINSWITH %@", directoryMetadata.account,
-            oldDirectoryServerUrl)
+            "account == %@ AND serverUrl BEGINSWITH %@",
+            directoryMetadata.account,
+            oldDirectoryServerUrl
+        )
 
         renameItemMetadata(ocId: ocId, newServerUrl: newServerUrl, newFileName: newFileName)
         Self.logger.debug(
