@@ -1,0 +1,24 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 351b3eaa0..b226eb79f 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -24,7 +24,7 @@ set(BIN_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
+ include(${CMAKE_SOURCE_DIR}/NEXTCLOUD.cmake)
+ 
+ set(QT_VERSION_MAJOR "6")
+-set(REQUIRED_QT_VERSION "6.7.0")
++set(REQUIRED_QT_VERSION "6.6.0")
+ 
+ # CfAPI Shell Extensions
+ set( CFAPI_SHELL_EXTENSIONS_LIB_NAME CfApiShellExtensions )
+--- a/src/gui/application.cpp
++++ b/src/gui/application.cpp
+@@ -969,7 +969,7 @@ QString substLang(const QString &lang)
+ void Application::setupTranslations()
+ {
+     const auto enforcedLocale = Theme::instance()->enforcedLocale();
+-    const auto lang = substLang(!enforcedLocale.isEmpty() ? enforcedLocale : QLocale::system().uiLanguages(QLocale::TagSeparator::Underscore).first());
++    const auto lang = substLang(!enforcedLocale.isEmpty() ? enforcedLocale : QLocale::system().name());
+ 
+     auto *translator = new QTranslator(this);
+     auto *qtTranslator = new QTranslator(this);
