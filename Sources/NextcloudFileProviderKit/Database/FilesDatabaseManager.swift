@@ -269,6 +269,7 @@ public class FilesDatabaseManager {
             let metadatasToDelete = processItemMetadatasToDelete(
                 existingMetadatas: existingMetadatas,
                 updatedMetadatas: updatedMetadatas)
+            let metadatasToDeleteCopy = metadatasToDelete.map { ItemMetadata(value: $0) }
 
             let metadatasToChange = processItemMetadatasToUpdate(
                 existingMetadatas: existingMetadatas,
@@ -298,7 +299,7 @@ public class FilesDatabaseManager {
             return (
                 newMetadatas: metadatasToCreate, 
                 updatedMetadatas: metadatasToUpdate,
-                deletedMetadatas: metadatasToDelete
+                deletedMetadatas: metadatasToDeleteCopy
             )
         } catch {
             Self.logger.error(
