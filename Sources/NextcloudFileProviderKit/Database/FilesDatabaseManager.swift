@@ -106,7 +106,7 @@ public class FilesDatabaseManager {
         !itemMetadatas.filter("account == %@", account).isEmpty
     }
 
-    public func itemMetadataFromOcId(_ ocId: String, managed: Bool = false) -> ItemMetadata? {
+    public func itemMetadata(ocId: String, managed: Bool = false) -> ItemMetadata? {
         // Realm objects are live-fire, i.e. they will be changed and invalidated according to
         // changes in the db.
         //
@@ -152,7 +152,7 @@ public class FilesDatabaseManager {
     public func itemMetadataFromFileProviderItemIdentifier(
         _ identifier: NSFileProviderItemIdentifier
     ) -> ItemMetadata? {
-        itemMetadataFromOcId(identifier.rawValue)
+        itemMetadata(ocId: identifier.rawValue)
     }
 
     private func processItemMetadatasToDelete(
@@ -163,7 +163,7 @@ public class FilesDatabaseManager {
 
         for existingMetadata in existingMetadatas {
             guard !updatedMetadatas.contains(where: { $0.ocId == existingMetadata.ocId }),
-                  let metadataToDelete = itemMetadataFromOcId(existingMetadata.ocId, managed: true)
+                  let metadataToDelete = itemMetadata(ocId: existingMetadata.ocId, managed: true)
             else { continue }
 
             deletedMetadatas.append(metadataToDelete)
@@ -492,7 +492,7 @@ public class FilesDatabaseManager {
             return nil
         }
 
-        if let parentDirectoryMetadata = itemMetadataFromOcId(itemParentDirectory.ocId) {
+        if let parentDirectoryMetadata = itemMetadata(ocId: itemParentDirectory.ocId) {
             return NSFileProviderItemIdentifier(parentDirectoryMetadata.ocId)
         }
 

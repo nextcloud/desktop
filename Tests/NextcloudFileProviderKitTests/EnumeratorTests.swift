@@ -117,7 +117,7 @@ final class EnumeratorTests: XCTestCase {
         )
 
         // Important to keep in mind. Default behaviour is fast enumeration, not deep enumeration
-        let dbFolder = try XCTUnwrap(Self.dbManager.itemMetadataFromOcId(remoteFolder.identifier))
+        let dbFolder = try XCTUnwrap(Self.dbManager.itemMetadata(ocId: remoteFolder.identifier))
         XCTAssertEqual(dbFolder.etag, "") // Folder is not visited yet, should not have etag
         XCTAssertEqual(dbFolder.fileName, remoteFolder.name)
         XCTAssertEqual(dbFolder.fileNameView, remoteFolder.name)
@@ -173,7 +173,7 @@ final class EnumeratorTests: XCTestCase {
         )
 
         // Ensure the newly discovered folder has no etag
-        let dbFolder = try XCTUnwrap(Self.dbManager.itemMetadataFromOcId(remoteFolder.identifier))
+        let dbFolder = try XCTUnwrap(Self.dbManager.itemMetadata(ocId: remoteFolder.identifier))
         XCTAssertTrue(dbFolder.etag.isEmpty)
     }
 
@@ -203,7 +203,7 @@ final class EnumeratorTests: XCTestCase {
         )
 
         // Ensure the newly discovered folder has no etag
-        let dbFolder = try XCTUnwrap(Self.dbManager.itemMetadataFromOcId(remoteFolder.identifier))
+        let dbFolder = try XCTUnwrap(Self.dbManager.itemMetadata(ocId: remoteFolder.identifier))
         XCTAssertTrue(dbFolder.etag.isEmpty)
 
         // Having an etag marks a folder as visited. 
@@ -248,7 +248,7 @@ final class EnumeratorTests: XCTestCase {
         )
 
         // Ensure the newly discovered folder has an etag
-        let dbFolder = try XCTUnwrap(Self.dbManager.itemMetadataFromOcId(remoteFolder.identifier))
+        let dbFolder = try XCTUnwrap(Self.dbManager.itemMetadata(ocId: remoteFolder.identifier))
         XCTAssertEqual(dbFolder.etag, remoteFolder.versionIdentifier)
     }
 
@@ -271,7 +271,7 @@ final class EnumeratorTests: XCTestCase {
         folderMetadata.urlBase = Self.account.serverUrl
 
         Self.dbManager.addItemMetadata(folderMetadata)
-        XCTAssertNotNil(Self.dbManager.itemMetadataFromOcId(remoteFolder.identifier))
+        XCTAssertNotNil(Self.dbManager.itemMetadata(ocId: remoteFolder.identifier))
 
         let enumerator = Enumerator(
             enumeratedItemIdentifier: .init(remoteFolder.identifier),
@@ -285,7 +285,7 @@ final class EnumeratorTests: XCTestCase {
 
         // A pass of enumerating a target should update the target too. Let's check.
         let dbFolderMetadata = try XCTUnwrap(
-            Self.dbManager.itemMetadataFromOcId(remoteFolder.identifier)
+            Self.dbManager.itemMetadata(ocId: remoteFolder.identifier)
         )
         let storedFolderItem = try XCTUnwrap(
             Item.storedItem(
@@ -345,8 +345,8 @@ final class EnumeratorTests: XCTestCase {
 
         Self.dbManager.addItemMetadata(folderMetadata)
         Self.dbManager.addItemMetadata(itemAMetadata)
-        XCTAssertNotNil(Self.dbManager.itemMetadataFromOcId(remoteFolder.identifier))
-        XCTAssertNotNil(Self.dbManager.itemMetadataFromOcId(remoteItemA.identifier))
+        XCTAssertNotNil(Self.dbManager.itemMetadata(ocId: remoteFolder.identifier))
+        XCTAssertNotNil(Self.dbManager.itemMetadata(ocId: remoteItemA.identifier))
 
         let enumerator = Enumerator(
             enumeratedItemIdentifier: .init(remoteItemA.identifier),
@@ -419,9 +419,9 @@ final class EnumeratorTests: XCTestCase {
         Self.dbManager.addItemMetadata(folderMetadata)
         Self.dbManager.addItemMetadata(itemAMetadata)
         Self.dbManager.addItemMetadata(itemBMetadata)
-        XCTAssertNotNil(Self.dbManager.itemMetadataFromOcId(remoteFolder.identifier))
-        XCTAssertNotNil(Self.dbManager.itemMetadataFromOcId(remoteItemA.identifier))
-        XCTAssertNotNil(Self.dbManager.itemMetadataFromOcId(remoteItemB.identifier))
+        XCTAssertNotNil(Self.dbManager.itemMetadata(ocId: remoteFolder.identifier))
+        XCTAssertNotNil(Self.dbManager.itemMetadata(ocId: remoteItemA.identifier))
+        XCTAssertNotNil(Self.dbManager.itemMetadata(ocId: remoteItemB.identifier))
 
         let enumerator = Enumerator(
             enumeratedItemIdentifier: .init(remoteFolder.identifier),
@@ -446,15 +446,15 @@ final class EnumeratorTests: XCTestCase {
 
         // A pass of enumerating a target should update the target too. Let's check.
         let dbFolderMetadata = try XCTUnwrap(
-            Self.dbManager.itemMetadataFromOcId(remoteFolder.identifier)
+            Self.dbManager.itemMetadata(ocId: remoteFolder.identifier)
         )
         let dbItemAMetadata = try XCTUnwrap(
-            Self.dbManager.itemMetadataFromOcId(remoteItemA.identifier)
+            Self.dbManager.itemMetadata(ocId: remoteItemA.identifier)
         )
         let dbItemCMetadata = try XCTUnwrap(
-            Self.dbManager.itemMetadataFromOcId(remoteItemC.identifier)
+            Self.dbManager.itemMetadata(ocId: remoteItemC.identifier)
         )
-        XCTAssertNil(Self.dbManager.itemMetadataFromOcId(remoteItemB.identifier))
+        XCTAssertNil(Self.dbManager.itemMetadata(ocId: remoteItemB.identifier))
         XCTAssertEqual(dbFolderMetadata.etag, remoteFolder.versionIdentifier)
         XCTAssertNotEqual(dbFolderMetadata.etag, oldFolderEtag)
         XCTAssertEqual(dbItemAMetadata.etag, remoteItemA.versionIdentifier)
@@ -557,9 +557,9 @@ final class EnumeratorTests: XCTestCase {
         Self.dbManager.addItemMetadata(folderMetadata)
         Self.dbManager.addItemMetadata(itemAMetadata)
         Self.dbManager.addItemMetadata(itemBMetadata)
-        XCTAssertNotNil(Self.dbManager.itemMetadataFromOcId(remoteFolder.identifier))
-        XCTAssertNotNil(Self.dbManager.itemMetadataFromOcId(remoteItemA.identifier))
-        XCTAssertNotNil(Self.dbManager.itemMetadataFromOcId(remoteItemB.identifier))
+        XCTAssertNotNil(Self.dbManager.itemMetadata(ocId: remoteFolder.identifier))
+        XCTAssertNotNil(Self.dbManager.itemMetadata(ocId: remoteItemA.identifier))
+        XCTAssertNotNil(Self.dbManager.itemMetadata(ocId: remoteItemB.identifier))
 
         let enumerator = Enumerator(
             enumeratedItemIdentifier: .rootContainer,
@@ -656,7 +656,7 @@ final class EnumeratorTests: XCTestCase {
         folderMetadata.urlBase = Self.account.serverUrl
 
         Self.dbManager.addItemMetadata(folderMetadata)
-        XCTAssertNotNil(Self.dbManager.itemMetadataFromOcId(remoteFolder.identifier))
+        XCTAssertNotNil(Self.dbManager.itemMetadata(ocId: remoteFolder.identifier))
 
         let enumerator = Enumerator(
             enumeratedItemIdentifier: .init(remoteFolder.identifier),
@@ -669,13 +669,13 @@ final class EnumeratorTests: XCTestCase {
         XCTAssertEqual(observer.changedItems.count, 3)
 
         let dbItemAMetadata = try XCTUnwrap(
-            Self.dbManager.itemMetadataFromOcId(remoteItemA.identifier)
+            Self.dbManager.itemMetadata(ocId: remoteItemA.identifier)
         )
         let dbItemBMetadata = try XCTUnwrap(
-            Self.dbManager.itemMetadataFromOcId(remoteItemB.identifier)
+            Self.dbManager.itemMetadata(ocId: remoteItemB.identifier)
         )
         let dbItemCMetadata = try XCTUnwrap(
-            Self.dbManager.itemMetadataFromOcId(remoteItemC.identifier)
+            Self.dbManager.itemMetadata(ocId: remoteItemC.identifier)
         )
 
         XCTAssertEqual(dbItemAMetadata.lock, remoteItemA.locked)
@@ -748,7 +748,7 @@ final class EnumeratorTests: XCTestCase {
         print(Self.dbManager.ncDatabase().objects(ItemMetadata.self).count)
 
         let dbItemAMetadata = try XCTUnwrap(
-            Self.dbManager.itemMetadataFromOcId(remoteItemA.identifier)
+            Self.dbManager.itemMetadata(ocId: remoteItemA.identifier)
         )
         XCTAssertEqual(dbItemAMetadata.ocId, remoteItemA.identifier)
         XCTAssertEqual(dbItemAMetadata.fileName, remoteItemA.name)

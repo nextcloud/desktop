@@ -70,7 +70,7 @@ public extension Item {
             )
         }
 
-        guard let newMetadata = dbManager.itemMetadataFromOcId(ocId) else {
+        guard let newMetadata = dbManager.itemMetadata(ocId: ocId) else {
             Self.logger.error(
                 """
                 Could not acquire metadata of item with identifier: \(ocId, privacy: .public),
@@ -110,7 +110,7 @@ public extension Item {
             return (nil, NSFileProviderError(.noSuchItem))
         }
 
-        guard let metadata = dbManager.itemMetadataFromOcId(ocId) else {
+        guard let metadata = dbManager.itemMetadata(ocId: ocId) else {
             Self.logger.error(
                 "Could not acquire metadata of item with identifier: \(ocId, privacy: .public)"
             )
@@ -430,7 +430,7 @@ public extension Item {
 
         for staleItem in staleItems {
             let staleItemMetadata = staleItem.value
-            guard dbManager.itemMetadataFromOcId(staleItemMetadata.ocId) != nil else { continue }
+            guard dbManager.itemMetadata(ocId: staleItemMetadata.ocId) != nil else { continue }
 
             let (_, _, deleteError) = await remoteInterface.delete(
                 remotePath: staleItem.key,
@@ -485,8 +485,8 @@ public extension Item {
             }
         }
 
-        guard let bundleRootMetadata = dbManager.itemMetadataFromOcId(
-            self.itemIdentifier.rawValue
+        guard let bundleRootMetadata = dbManager.itemMetadata(
+            ocId: self.itemIdentifier.rawValue
         ) else {
             Self.logger.error(
                 """

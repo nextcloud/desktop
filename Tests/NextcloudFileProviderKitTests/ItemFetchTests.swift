@@ -84,7 +84,7 @@ final class ItemFetchTests: XCTestCase {
         let fetchedItem = try XCTUnwrap(fetchedItemMaybe)
         let contents = try Data(contentsOf: localPath)
 
-        XCTAssertNotNil(Self.dbManager.itemMetadataFromOcId(itemMetadata.ocId))
+        XCTAssertNotNil(Self.dbManager.itemMetadata(ocId: itemMetadata.ocId))
 
         fetchedItem.dbManager = Self.dbManager
 
@@ -262,7 +262,7 @@ final class ItemFetchTests: XCTestCase {
         let localPath = try XCTUnwrap(localPathMaybe)
         let fetchedItem = try XCTUnwrap(fetchedItemMaybe)
 
-        XCTAssertNotNil(Self.dbManager.itemMetadataFromOcId(directoryMetadata.ocId))
+        XCTAssertNotNil(Self.dbManager.itemMetadata(ocId: directoryMetadata.ocId))
 
         fetchedItem.dbManager = Self.dbManager
 

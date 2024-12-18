@@ -58,7 +58,7 @@ final class FilesDatabaseManagerTests: XCTestCase {
             realm.add(metadata)
         }
 
-        let fetchedMetadata = Self.dbManager.itemMetadataFromOcId(ocId)
+        let fetchedMetadata = Self.dbManager.itemMetadata(ocId: ocId)
         XCTAssertNotNil(fetchedMetadata, "Should fetch metadata with the specified ocId")
         XCTAssertEqual(
             fetchedMetadata?.ocId, ocId, "Fetched metadata ocId should match the requested ocId"
@@ -115,7 +115,7 @@ final class FilesDatabaseManagerTests: XCTestCase {
         metadata.ocId = "unique-id-123"
         Self.dbManager.addItemMetadata(metadata)
 
-        let fetchedMetadata = Self.dbManager.itemMetadataFromOcId("unique-id-123")
+        let fetchedMetadata = Self.dbManager.itemMetadata(ocId: "unique-id-123")
         XCTAssertNotNil(fetchedMetadata, "Metadata should be added to the database")
     }
 
@@ -132,7 +132,7 @@ final class FilesDatabaseManagerTests: XCTestCase {
         let result = Self.dbManager.deleteItemMetadata(ocId: ocId)
         XCTAssertTrue(result, "deleteItemMetadata should return true on successful deletion")
         XCTAssertNil(
-            Self.dbManager.itemMetadataFromOcId(ocId),
+            Self.dbManager.itemMetadata(ocId: ocId),
             "Metadata should be deleted from the database"
         )
     }
@@ -155,7 +155,7 @@ final class FilesDatabaseManagerTests: XCTestCase {
             ocId: ocId, newServerUrl: newServerUrl, newFileName: newFileName
         )
 
-        let updatedMetadata = Self.dbManager.itemMetadataFromOcId(ocId)
+        let updatedMetadata = Self.dbManager.itemMetadata(ocId: ocId)
         XCTAssertEqual(updatedMetadata?.fileName, newFileName, "File name should be updated")
         XCTAssertEqual(updatedMetadata?.serverUrl, newServerUrl, "Server URL should be updated")
     }
@@ -280,7 +280,7 @@ final class FilesDatabaseManagerTests: XCTestCase {
         semaphore.wait()
 
         for i in 0...count * 2 + 1 {
-            let resultsI = Self.dbManager.itemMetadataFromOcId("concurrency-\(i)")
+            let resultsI = Self.dbManager.itemMetadata(ocId: "concurrency-\(i)")
             XCTAssertNotNil(resultsI, "Metadata \(i) should be saved even under concurrency")
         }
     }
