@@ -12,4 +12,10 @@ extension Array {
             self[startIndex..<Swift.min(startIndex + size, count)]
         }
     }
+
+    func chunkedMap<T>(into size: Int, transform: (Element) -> T) -> [[T]] {
+        return self.chunked(into: size).map { chunk in
+            chunk.map(transform)
+        }
+    }
 }
