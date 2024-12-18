@@ -127,11 +127,11 @@ void FileSystem::setFileReadOnly(const QString &filename, bool readonly)
                 std::filesystem::permissions(filename.toStdString(), defaultWritePermissions, std::filesystem::perm_options::add);
             }
         }
-        catch (std::filesystem::filesystem_error e)
+        catch (const std::filesystem::filesystem_error &e)
         {
             qCWarning(lcFileSystem()) << filename << (readonly ? "readonly" : "read write") << e.what();
         }
-        catch (std::system_error e)
+        catch (const std::system_error &e)
         {
             qCWarning(lcFileSystem()) << filename << e.what();
         }
@@ -180,11 +180,11 @@ bool FileSystem::setFileReadOnlyWeak(const QString &filename, bool readonly)
             setFileReadOnly(filename, readonly);
             return true;
         }
-        catch (std::filesystem::filesystem_error e)
+        catch (const std::filesystem::filesystem_error &e)
         {
             qCWarning(lcFileSystem()) << filename << (readonly ? "readonly" : "read write") << e.what();
         }
-        catch (std::system_error e)
+        catch (const std::system_error &e)
         {
             qCWarning(lcFileSystem()) << filename << e.what();
         }
@@ -480,11 +480,11 @@ bool FileSystem::isWritable(const QString &filename, const QFileInfo &fileInfo)
             const auto permissions = filePermissionsWin(filename);
             return static_cast<bool>((permissions & std::filesystem::perms::owner_write));
         }
-        catch (std::filesystem::filesystem_error e)
+        catch (const std::filesystem::filesystem_error &e)
         {
             qCWarning(lcFileSystem()) << filename << e.what();
         }
-        catch (std::system_error e)
+        catch (const std::system_error &e)
         {
             qCWarning(lcFileSystem()) << filename << e.what();
         }
@@ -514,11 +514,11 @@ bool FileSystem::isReadable(const QString &filename, const QFileInfo &fileInfo)
             const auto permissions = filePermissionsWin(filename);
             return static_cast<bool>((permissions & std::filesystem::perms::owner_read));
         }
-        catch (std::filesystem::filesystem_error e)
+        catch (const std::filesystem::filesystem_error &e)
         {
             qCWarning(lcFileSystem()) << filename << e.what();
         }
-        catch (std::system_error e)
+        catch (const std::system_error &e)
         {
             qCWarning(lcFileSystem()) << filename << e.what();
         }
