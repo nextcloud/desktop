@@ -16,28 +16,15 @@ import Foundation
 import NextcloudKit
 
 public extension ItemMetadata {
-    // TODO: Convert to async/await
-    static func metadatasFromDirectoryReadNKFiles(
-        _ files: [NKFile],
-        account: Account,
-        completionHandler: @escaping (
-            _ directoryMetadata: ItemMetadata,
-            _ childDirectoriesMetadatas: [ItemMetadata],
-            _ metadatas: [ItemMetadata]
-        ) -> Void
+    static func metadatasFromDirectoryReadNKFiles(_ files: [NKFile], account: Account) -> (
+        directoryMetadata: ItemMetadata,
+        childDirectoriesMetadatas: [ItemMetadata],
+        metadatas: [ItemMetadata]
     ) {
         var directoryMetadataSet = false
         var directoryMetadata = ItemMetadata()
         var childDirectoriesMetadatas: [ItemMetadata] = []
         var metadatas: [ItemMetadata] = []
-
-        let conversionQueue = DispatchQueue(
-            label: "nkFileToMetadataConversionQueue", 
-            qos: .userInitiated,
-            attributes: .concurrent)
-        // appendQueue is a serial queue, not concurrent
-        let appendQueue = DispatchQueue(label: "metadataAppendQueue", qos: .userInitiated)
-        let dispatchGroup = DispatchGroup()
 
         for file in files {
             if metadatas.isEmpty, !directoryMetadataSet {
@@ -45,21 +32,14 @@ public extension ItemMetadata {
                 directoryMetadata = metadata
                 directoryMetadataSet = true
             } else {
-                conversionQueue.async(group: dispatchGroup) {
-                    let metadata = file.toItemMetadata()
-
-                    appendQueue.async(group: dispatchGroup) {
-                        metadatas.append(metadata)
-                        if metadata.directory {
-                            childDirectoriesMetadatas.append(metadata)
-                        }
-                    }
+                let metadata = file.toItemMetadata()
+                metadatas.append(metadata)
+                if metadata.directory {
+                    childDirectoriesMetadatas.append(metadata)
                 }
             }
         }
 
-        dispatchGroup.notify(queue: DispatchQueue.main) {
-            completionHandler(directoryMetadata, childDirectoriesMetadatas, metadatas)
-        }
+        return (directoryMetadata, childDirectoriesMetadatas, metadatas)
     }
 }
