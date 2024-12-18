@@ -45,8 +45,7 @@ extension Enumerator {
 
         // NKTrash items do not have an etag ; we assume they cannot be modified while they are in
         // the trash, so we will just check by ocId
-        var existingTrashedItems =
-            dbManager.trashedItemMetadatas(account: account.ncKitAccount)
+        var existingTrashedItems = dbManager.trashedItemMetadatas(account: account)
 
         for trashItem in trashItems {
             if let existingTrashItemIndex = existingTrashedItems.firstIndex(

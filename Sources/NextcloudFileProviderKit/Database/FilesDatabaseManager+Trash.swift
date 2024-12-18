@@ -6,10 +6,14 @@
 //
 
 extension FilesDatabaseManager {
-    func trashedItemMetadatas(account: String) -> [ItemMetadata] {
+    func trashedItemMetadatas(account: Account) -> [ItemMetadata] {
         ncDatabase()
             .objects(ItemMetadata.self)
-            .filter("account == %@ AND trashbinFileName != ''", account)
+            .filter(
+                "account == %@ AND serverUrl BEGINSWITH %@",
+                account.ncKitAccount,
+                account.trashUrl
+            )
             .toUnmanagedResults()
     }
 }
