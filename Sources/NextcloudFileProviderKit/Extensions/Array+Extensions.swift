@@ -18,4 +18,25 @@ extension Array {
             chunk.map(transform)
         }
     }
+
+    func concurrentChunkedMap<T>(
+        into size: Int,
+        transform: @escaping (Element) -> T
+    ) async -> [[T]] {
+        await withTaskGroup(of: [T].self) { group in
+            var results: [[T]] = []
+
+            for chunk in chunked(into: size) {
+                group.addTask {
+                    return chunk.map { transform($0) }
+                }
+            }
+
+            for await chunkResult in group {
+                results.append(chunkResult)
+            }
+
+            return results
+        }
+    }
 }
