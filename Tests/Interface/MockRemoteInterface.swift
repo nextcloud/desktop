@@ -241,6 +241,11 @@ public class MockRemoteInterface: RemoteInterface {
             return (account.ncKitAccount, nil, .urlError)
         }
 
+        guard !isRestoreFromTrash || overwrite else {
+            print("Cannot restore from trash without overwriting!")
+            return (account.ncKitAccount, nil, .urlError)
+        }
+
         guard let sourceItem = item(remotePath: remotePathSource, account: account) else {
             print("Could not get item for remote path source\(remotePathSource)")
             return (account.ncKitAccount, nil, .urlError)
@@ -451,6 +456,7 @@ public class MockRemoteInterface: RemoteInterface {
         let (_, data, error) = await move(
             remotePathSource: fileTrashUrl,
             remotePathDestination: fileTrashRestoreUrl,
+            overwrite: true,
             account: account
         )
         guard error == .success else {
