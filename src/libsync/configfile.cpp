@@ -67,6 +67,7 @@ static constexpr char updateSegmentC[] = "updateSegment";
 static constexpr char updateChannelC[] = "updateChannel";
 static constexpr char overrideServerUrlC[] = "overrideServerUrl";
 static constexpr char overrideLocalDirC[] = "overrideLocalDir";
+static constexpr char proposeLocalDirC[] = "proposeLocalDir";
 static constexpr char isVfsEnabledC[] = "isVfsEnabled";
 static constexpr char geometryC[] = "geometry";
 static constexpr char timeoutC[] = "timeout";
@@ -777,6 +778,18 @@ void ConfigFile::setOverrideLocalDir(const QString &localDir)
 {
     QSettings settings(configFile(), QSettings::IniFormat);
     settings.setValue(QLatin1String(overrideLocalDirC), localDir);
+}
+
+[[nodiscard]] QString ConfigFile::proposeLocalDir() const
+{
+    QSettings settings(configFile(), QSettings::IniFormat);
+    return settings.value(QLatin1String(proposeLocalDirC), {}).toString();
+}
+
+void ConfigFile::setProposeLocalDir(const QString &localDir)
+{
+    QSettings settings(configFile(), QSettings::IniFormat);
+    settings.setValue(QLatin1String(proposeLocalDirC), localDir);
 }
 
 bool ConfigFile::isVfsEnabled() const
