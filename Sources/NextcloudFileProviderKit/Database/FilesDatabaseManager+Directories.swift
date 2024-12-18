@@ -98,10 +98,13 @@ extension FilesDatabaseManager {
             """
         )
 
-        guard deleteItemMetadata(ocId: directoryMetadata.ocId) else {
-            Self.logger.debug(
+        do {
+            try database.write { database.delete(directoryMetadata) }
+        } catch let error {
+            Self.logger.error(
                 """
                 Failure to delete root directory metadata in recursive delete.
+                    Received error: \(error.localizedDescription)
                     ocID: \(directoryOcId, privacy: .public),
                     etag: \(directoryEtag, privacy: .public),
                     serverUrl: \(directoryUrlPath, privacy: .public)
@@ -112,15 +115,25 @@ extension FilesDatabaseManager {
 
         var deletedMetadatas: [ItemMetadata] = [directoryMetadataCopy]
 
-        let results = database.objects(ItemMetadata.self).filter(
-            "account == %@ AND serverUrl BEGINSWITH %@", directoryAccount, directoryUrlPath)
+        let results = itemMetadatas.filter(
+            "account == %@ AND serverUrl BEGINSWITH %@", directoryAccount, directoryUrlPath
+        )
 
         for result in results {
-            let resultOcId = result.ocId
             let inactiveItemMetadata = ItemMetadata(value: result)
-
-            if deleteItemMetadata(ocId: resultOcId) {
+            do {
+                try database.write { database.delete(result) }
                 deletedMetadatas.append(inactiveItemMetadata)
+            } catch let error {
+                Self.logger.error(
+                    """
+                    Failure to delete directory metadata child in recursive delete.
+                        Received error: \(error.localizedDescription)
+                        ocID: \(directoryOcId, privacy: .public),
+                        etag: \(directoryEtag, privacy: .public),
+                        serverUrl: \(directoryUrlPath, privacy: .public)
+                    """
+                )
             }
         }
 
