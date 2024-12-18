@@ -332,7 +332,8 @@ bool FileSystem::setFolderPermissions(const QString &path,
 {
     static constexpr auto writePerms = std::filesystem::perms::owner_write | std::filesystem::perms::group_write | std::filesystem::perms::others_write;
     const auto stdStrPath = path.toStdWString();
-    try {
+    try
+    {
         switch (permissions) {
         case OCC::FileSystem::FolderPermissions::ReadOnly:
             std::filesystem::permissions(stdStrPath, writePerms, std::filesystem::perm_options::remove);
@@ -340,8 +341,20 @@ bool FileSystem::setFolderPermissions(const QString &path,
         case OCC::FileSystem::FolderPermissions::ReadWrite:
             break;
         }
-    } catch (const std::filesystem::filesystem_error &e) {
+    }
+    catch (const std::filesystem::filesystem_error &e)
+    {
         qCWarning(lcFileSystem()) << "exception when modifying folder permissions" << e.what() << e.path1().c_str() << e.path2().c_str();
+        return false;
+    }
+    catch (const std::system_error &e)
+    {
+        qCWarning(lcFileSystem()) << "exception when modifying folder permissions" << e.what();
+        return false;
+    }
+    catch (...)
+    {
+        qCWarning(lcFileSystem()) << "exception when modifying folder permissions";
         return false;
     }
 
@@ -463,7 +476,8 @@ bool FileSystem::setFolderPermissions(const QString &path,
     }
 #endif
 
-    try {
+    try
+    {
         switch (permissions) {
         case OCC::FileSystem::FolderPermissions::ReadOnly:
             break;
@@ -472,8 +486,20 @@ bool FileSystem::setFolderPermissions(const QString &path,
             std::filesystem::permissions(stdStrPath, std::filesystem::perms::owner_write, std::filesystem::perm_options::add);
             break;
         }
-    } catch (const std::filesystem::filesystem_error &e) {
+    }
+    catch (const std::filesystem::filesystem_error &e)
+    {
         qCWarning(lcFileSystem()) << "exception when modifying folder permissions" << e.what() << e.path1().c_str() << e.path2().c_str();
+        return false;
+    }
+    catch (const std::system_error &e)
+    {
+        qCWarning(lcFileSystem()) << "exception when modifying folder permissions" << e.what();
+        return false;
+    }
+    catch (...)
+    {
+        qCWarning(lcFileSystem()) << "exception when modifying folder permissions";
         return false;
     }
 
@@ -482,7 +508,8 @@ bool FileSystem::setFolderPermissions(const QString &path,
 
 bool FileSystem::isFolderReadOnly(const std::filesystem::path &path) noexcept
 {
-    try {
+    try
+    {
         const auto folderStatus = std::filesystem::status(path);
         const auto folderPermissions = folderStatus.permissions();
         return (folderPermissions & std::filesystem::perms::owner_write) != std::filesystem::perms::owner_write;
@@ -492,20 +519,41 @@ bool FileSystem::isFolderReadOnly(const std::filesystem::path &path) noexcept
         qCWarning(lcFileSystem()) << "exception when checking folder permissions" << e.what() << e.path1().c_str() << e.path2().c_str();
         return false;
     }
+    catch (const std::system_error &e)
+    {
+        qCWarning(lcFileSystem()) << "exception when checking folder permissions" << e.what();
+        return false;
+    }
+    catch (...)
+    {
+        qCWarning(lcFileSystem()) << "exception when checking folder permissions";
+        return false;
+    }
 }
 
 FileSystem::FilePermissionsRestore::FilePermissionsRestore(const QString &path, FolderPermissions temporaryPermissions)
     : _path(path)
 {
-    try {
+    try
+    {
         const auto stdStrPath = _path.toStdWString();
         _initialPermissions = FileSystem::isFolderReadOnly(stdStrPath) ? OCC::FileSystem::FolderPermissions::ReadOnly : OCC::FileSystem::FolderPermissions::ReadWrite;
         if (_initialPermissions != temporaryPermissions) {
             _rollbackNeeded = true;
             FileSystem::setFolderPermissions(_path, temporaryPermissions);
         }
-    } catch (const std::filesystem::filesystem_error &e) {
+    }
+    catch (const std::filesystem::filesystem_error &e)
+    {
         qCWarning(lcFileSystem()) << "exception when modifying folder permissions" << e.what() << e.path1().c_str() << e.path2().c_str();
+    }
+    catch (const std::system_error &e)
+    {
+        qCWarning(lcFileSystem()) << "exception when modifying folder permissions" << e.what();
+    }
+    catch (...)
+    {
+        qCWarning(lcFileSystem()) << "exception when modifying folder permissions";
     }
 }
 
