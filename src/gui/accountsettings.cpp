@@ -238,6 +238,7 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent)
 
 #ifdef Q_OS_MAC
     _ui->expandMemoryButton->setAutoDefault(false);
+    _ui->expandMemoryButton->setFocusPolicy(Qt::NoFocus);
 #endif
 
     connect(this, &AccountSettings::removeAccountFolders,
