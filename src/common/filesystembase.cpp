@@ -131,6 +131,14 @@ void FileSystem::setFileReadOnly(const QString &filename, bool readonly)
         {
             qCWarning(lcFileSystem()) << filename << (readonly ? "readonly" : "read write") << e.what();
         }
+        catch (std::system_error e)
+        {
+            qCWarning(lcFileSystem()) << filename << e.what();
+        }
+        catch (...)
+        {
+            qCWarning(lcFileSystem()) << filename;
+        }
         return;
     }
 #endif
@@ -175,6 +183,14 @@ bool FileSystem::setFileReadOnlyWeak(const QString &filename, bool readonly)
         catch (std::filesystem::filesystem_error e)
         {
             qCWarning(lcFileSystem()) << filename << (readonly ? "readonly" : "read write") << e.what();
+        }
+        catch (std::system_error e)
+        {
+            qCWarning(lcFileSystem()) << filename << e.what();
+        }
+        catch (...)
+        {
+            qCWarning(lcFileSystem()) << filename;
         }
         return false;
     }
@@ -468,6 +484,14 @@ bool FileSystem::isWritable(const QString &filename, const QFileInfo &fileInfo)
         {
             qCWarning(lcFileSystem()) << filename << e.what();
         }
+        catch (std::system_error e)
+        {
+            qCWarning(lcFileSystem()) << filename << e.what();
+        }
+        catch (...)
+        {
+            qCWarning(lcFileSystem()) << filename;
+        }
         return false;
     }
 #endif
@@ -493,6 +517,14 @@ bool FileSystem::isReadable(const QString &filename, const QFileInfo &fileInfo)
         catch (std::filesystem::filesystem_error e)
         {
             qCWarning(lcFileSystem()) << filename << e.what();
+        }
+        catch (std::system_error e)
+        {
+            qCWarning(lcFileSystem()) << filename << e.what();
+        }
+        catch (...)
+        {
+            qCWarning(lcFileSystem()) << filename;
         }
         return false;
     }
