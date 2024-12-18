@@ -85,3 +85,32 @@ extension NKFile {
         return metadata
     }
 }
+
+extension [NKFile] {
+    func toDirectoryReadMetadatas(account: Account) -> (
+        directoryMetadata: ItemMetadata,
+        childDirectoriesMetadatas: [ItemMetadata],
+        metadatas: [ItemMetadata]
+    ) {
+        var directoryMetadataSet = false
+        var directoryMetadata = ItemMetadata()
+        var childDirectoriesMetadatas: [ItemMetadata] = []
+        var metadatas: [ItemMetadata] = []
+
+        for file in self {
+            if metadatas.isEmpty, !directoryMetadataSet {
+                let metadata = file.toItemMetadata()
+                directoryMetadata = metadata
+                directoryMetadataSet = true
+            } else {
+                let metadata = file.toItemMetadata()
+                metadatas.append(metadata)
+                if metadata.directory {
+                    childDirectoriesMetadatas.append(metadata)
+                }
+            }
+        }
+
+        return (directoryMetadata, childDirectoriesMetadatas, metadatas)
+    }
+}

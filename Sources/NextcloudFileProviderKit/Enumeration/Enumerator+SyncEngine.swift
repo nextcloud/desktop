@@ -285,9 +285,7 @@ extension Enumerator {
         )
 
 
-        let (directoryMetadata, _, metadatas) = ItemMetadata.metadatasFromDirectoryReadNKFiles(
-            files, account: account
-        )
+        let (directoryMetadata, _, metadatas) = files.toDirectoryReadMetadatas(account: account)
 
         // STORE DATA FOR CURRENTLY SCANNED DIRECTORY
         // We have now scanned this directory's contents, so update with etag in order to not check 
