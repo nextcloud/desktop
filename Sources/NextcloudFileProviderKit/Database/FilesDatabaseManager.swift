@@ -335,7 +335,6 @@ public class FilesDatabaseManager {
                     result.uploaded = false
                 }
 
-                database.add(result, update: .all)
                 Self.logger.debug(
                     "Updated status for item metadata. ocID: \(metadata.ocId, privacy: .public), etag: \(metadata.etag, privacy: .public), fileName: \(metadata.fileName, privacy: .public)"
                 )
