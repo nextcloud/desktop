@@ -300,8 +300,8 @@ public class FilesDatabaseManager {
                     )
                 }
 
-                database.add(metadatasToUpdate, update: .modified)
-                database.add(metadatasToCreate, update: .all)
+                database.add(metadatasToUpdate.map { ItemMetadata(value: $0) }, update: .modified)
+                database.add(metadatasToCreate.map { ItemMetadata(value: $0) }, update: .all)
             }
 
             return (
