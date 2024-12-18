@@ -205,6 +205,14 @@ void ConflictDialog::customizeStyle()
     #ifdef Q_OS_MAC
         _ui->buttonBox->layout()->setSpacing(24);
         _ui->buttonBox->setLayoutDirection(Qt::LeftToRight);
+
+        _ui->localVersionRadio->setStyleSheet(
+            QStringLiteral("QCheckBox {color: %1;}").arg(IonosTheme::black())
+        );
+
+        _ui->remoteVersionRadio->setStyleSheet(
+            QStringLiteral("QCheckBox {color: %1;}").arg(IonosTheme::black())
+        );
     #endif
 }
 
