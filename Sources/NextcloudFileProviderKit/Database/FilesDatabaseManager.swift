@@ -93,9 +93,7 @@ public class FilesDatabaseManager {
     }
 
     func ncDatabase() -> Realm {
-        let realm = try! Realm()
-        realm.refresh()
-        return realm
+        return try! Realm()
     }
 
     public func anyItemMetadatasForAccount(_ account: String) -> Bool {
