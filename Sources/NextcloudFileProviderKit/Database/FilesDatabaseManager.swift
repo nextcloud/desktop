@@ -29,6 +29,8 @@ public class FilesDatabaseManager {
 
     static let logger = Logger(subsystem: Logger.subsystem, category: "filesdatabase")
 
+    var itemMetadatas: Results<ItemMetadata> { ncDatabase().objects(ItemMetadata.self) }
+
     public init(realmConfig: Realm.Configuration = Realm.Configuration.defaultConfiguration) {
         Realm.Configuration.defaultConfiguration = realmConfig
 
@@ -94,24 +96,23 @@ public class FilesDatabaseManager {
 
     func ncDatabase() -> Realm {
         let realm = try! Realm()
-        realm.refresh()
+        if !realm.refresh() {
+            Self.logger.error("Failed to refresh Realm!!")
+        }
         return realm
     }
 
     public func anyItemMetadatasForAccount(_ account: String) -> Bool {
-        !ncDatabase().objects(ItemMetadata.self).filter("account == %@", account)
-            .isEmpty
+        !itemMetadatas.filter("account == %@", account).isEmpty
     }
 
-    public func itemMetadataFromOcId(_ ocId: String) -> ItemMetadata? {
+    public func itemMetadata(ocId: String, managed: Bool = false) -> ItemMetadata? {
         // Realm objects are live-fire, i.e. they will be changed and invalidated according to
         // changes in the db.
         //
         // Let's therefore create a copy
-        if let itemMetadata = ncDatabase().objects(ItemMetadata.self).filter(
-            "ocId == %@", ocId
-        ).first {
-            return ItemMetadata(value: itemMetadata)
+        if let itemMetadata = itemMetadatas.filter("ocId == %@", ocId).first {
+            return managed ? itemMetadata : ItemMetadata(value: itemMetadata)
         }
 
         return nil
@@ -130,7 +131,7 @@ public class FilesDatabaseManager {
         if serverUrl.hasSuffix("/") {
             serverUrl.removeLast()
         }
-        if let metadata = ncDatabase().objects(ItemMetadata.self).filter(
+        if let metadata = itemMetadatas.filter(
             "account == %@ AND serverUrl == %@ AND fileName == %@", account, serverUrl, fileName
         ).first {
             return ItemMetadata(value: metadata)
@@ -138,38 +139,20 @@ public class FilesDatabaseManager {
         return nil
     }
 
-    func sortedItemMetadatas(_ metadatas: Results<ItemMetadata>) -> [ItemMetadata] {
-        let sortedMetadatas = metadatas.sorted(byKeyPath: "fileName", ascending: true)
-        return Array(sortedMetadatas.map { ItemMetadata(value: $0) })
-    }
-
     public func itemMetadatas(account: String) -> [ItemMetadata] {
-        let metadatas = ncDatabase().objects(ItemMetadata.self).filter(
-            "account == %@", account)
-        return sortedItemMetadatas(metadatas)
+        itemMetadatas.filter("account == %@", account).toUnmanagedResults()
     }
 
     public func itemMetadatas(account: String, underServerUrl serverUrl: String) -> [ItemMetadata] {
-        let metadatas = ncDatabase().objects(ItemMetadata.self).filter(
-            "account == %@ AND serverUrl BEGINSWITH %@", account, serverUrl)
-        return sortedItemMetadatas(metadatas)
-    }
-
-    public func itemMetadatas(
-        account: String, serverUrl: String, status: ItemMetadata.Status
-    ) -> [ItemMetadata] {
-        let metadatas = ncDatabase().objects(ItemMetadata.self).filter(
-            "account == %@ AND serverUrl == %@ AND status == %@", 
-            account,
-            serverUrl,
-            status.rawValue)
-        return sortedItemMetadatas(metadatas)
+        itemMetadatas
+            .filter("account == %@ AND serverUrl BEGINSWITH %@", account, serverUrl)
+            .toUnmanagedResults()
     }
 
     public func itemMetadataFromFileProviderItemIdentifier(
         _ identifier: NSFileProviderItemIdentifier
     ) -> ItemMetadata? {
-        itemMetadataFromOcId(identifier.rawValue)
+        itemMetadata(ocId: identifier.rawValue)
     }
 
     private func processItemMetadatasToDelete(
@@ -180,7 +163,7 @@ public class FilesDatabaseManager {
 
         for existingMetadata in existingMetadatas {
             guard !updatedMetadatas.contains(where: { $0.ocId == existingMetadata.ocId }),
-                let metadataToDelete = itemMetadataFromOcId(existingMetadata.ocId)
+                  let metadataToDelete = itemMetadata(ocId: existingMetadata.ocId, managed: true)
             else { continue }
 
             deletedMetadatas.append(metadataToDelete)
@@ -216,8 +199,7 @@ public class FilesDatabaseManager {
                         if updatedMetadata.serverUrl != existingMetadata.serverUrl
                             || updatedMetadata.fileName != existingMetadata.fileName
                         {
-                            directoriesNeedingRename.append(
-                                ItemMetadata(value: updatedMetadata))
+                            directoriesNeedingRename.append(updatedMetadata)
                             updatedMetadata.etag = ""  // Renaming doesn't change the etag so reset
 
                         } else if !updateDirectoryEtags {
@@ -228,11 +210,21 @@ public class FilesDatabaseManager {
                     returningUpdatedMetadatas.append(updatedMetadata)
 
                     Self.logger.debug(
-                        "Updated existing item metadata. ocID: \(updatedMetadata.ocId, privacy: .public), etag: \(updatedMetadata.etag, privacy: .public), fileName: \(updatedMetadata.fileName, privacy: .public)"
+                        """
+                        Updated existing item metadata.
+                            ocID: \(updatedMetadata.ocId, privacy: .public)
+                            etag: \(updatedMetadata.etag, privacy: .public)
+                            fileName: \(updatedMetadata.fileName, privacy: .public)
+                        """
                     )
                 } else {
                     Self.logger.debug(
-                        "Skipping item metadata update; same as existing, or still downloading/uploading. ocID: \(updatedMetadata.ocId, privacy: .public), etag: \(updatedMetadata.etag, privacy: .public), fileName: \(updatedMetadata.fileName, privacy: .public)"
+                        """
+                        Skipping item metadata update; same as existing, or still in transit.
+                            ocID: \(updatedMetadata.ocId, privacy: .public)
+                            etag: \(updatedMetadata.etag, privacy: .public)
+                            fileName: \(updatedMetadata.fileName, privacy: .public)
+                        """
                     )
                 }
 
@@ -244,7 +236,12 @@ public class FilesDatabaseManager {
                 returningNewMetadatas.append(updatedMetadata)
 
                 Self.logger.debug(
-                    "Created new item metadata during update. ocID: \(updatedMetadata.ocId, privacy: .public), etag: \(updatedMetadata.etag, privacy: .public), fileName: \(updatedMetadata.fileName, privacy: .public)"
+                    """
+                    Created new item metadata during update.
+                        ocID: \(updatedMetadata.ocId, privacy: .public)
+                        etag: \(updatedMetadata.etag, privacy: .public)
+                        fileName: \(updatedMetadata.fileName, privacy: .public)
+                    """
                 )
             }
         }
@@ -271,9 +268,11 @@ public class FilesDatabaseManager {
                 serverUrl,
                 ItemMetadata.Status.normal.rawValue)
 
+            // NOTE: These metadatas are managed -- be careful!
             let metadatasToDelete = processItemMetadatasToDelete(
                 existingMetadatas: existingMetadatas,
                 updatedMetadatas: updatedMetadatas)
+            let metadatasToDeleteCopy = metadatasToDelete.map { ItemMetadata(value: $0) }
 
             let metadatasToChange = processItemMetadatasToUpdate(
                 existingMetadatas: existingMetadatas,
@@ -283,10 +282,6 @@ public class FilesDatabaseManager {
             var metadatasToUpdate = metadatasToChange.updatedMetadatas
             let metadatasToCreate = metadatasToChange.newMetadatas
             let directoriesNeedingRename = metadatasToChange.directoriesNeedingRename
-
-            let metadatasToAdd =
-                Array(metadatasToUpdate.map { ItemMetadata(value: $0) })
-                + Array(metadatasToCreate.map { ItemMetadata(value: $0) })
 
             for metadata in directoriesNeedingRename {
                 if let updatedDirectoryChildren = renameDirectoryAndPropagateToChildren(
@@ -299,26 +294,22 @@ public class FilesDatabaseManager {
             }
 
             try database.write {
-                for metadata in metadatasToDelete {
-                    // Can't pass copies, we need the originals from the database
-                    database.delete(
-                        ncDatabase().objects(ItemMetadata.self).filter(
-                            "ocId == %@", metadata.ocId))
-                }
-
-                for metadata in metadatasToAdd {
-                    database.add(metadata, update: .all)
-                }
+                database.delete(metadatasToDelete)
+                database.add(metadatasToUpdate.map { ItemMetadata(value: $0) }, update: .modified)
+                database.add(metadatasToCreate.map { ItemMetadata(value: $0) }, update: .all)
             }
 
             return (
                 newMetadatas: metadatasToCreate, 
                 updatedMetadatas: metadatasToUpdate,
-                deletedMetadatas: metadatasToDelete
+                deletedMetadatas: metadatasToDeleteCopy
             )
         } catch {
             Self.logger.error(
-                "Could not update any item metadatas, received error: \(error.localizedDescription, privacy: .public)"
+                """
+                Could not update any item metadatas.
+                    Received error: \(error.localizedDescription, privacy: .public)
+                """
             )
             return (nil, nil, nil)
         }
@@ -331,24 +322,19 @@ public class FilesDatabaseManager {
         status: ItemMetadata.Status,
         completionHandler: @escaping (_ updatedMetadata: ItemMetadata?) -> Void
     ) {
-        let database = ncDatabase()
-
+        guard let result = itemMetadatas.filter("ocId == %@", metadata.ocId).first else {
+            Self.logger.debug(
+                """
+                Did not update status for item metadata as it was not found.
+                    ocID: \(metadata.ocId, privacy: .public)
+                """
+            )
+            return
+        }
+        
         do {
+            let database = ncDatabase()
             try database.write {
-                guard let result = database
-                    .objects(ItemMetadata.self)
-                    .filter("ocId == %@", metadata.ocId)
-                    .first
-                else {
-                    Self.logger.debug(
-                        """
-                        Did not update status for item metadata as it was not found.
-                        ocID: \(metadata.ocId, privacy: .public)
-                        """
-                    )
-                    return
-                }
-
                 result.status = status.rawValue
                 if result.isDownload {
                     result.downloaded = false
@@ -356,16 +342,26 @@ public class FilesDatabaseManager {
                     result.uploaded = false
                 }
 
-                database.add(result, update: .all)
                 Self.logger.debug(
-                    "Updated status for item metadata. ocID: \(metadata.ocId, privacy: .public), etag: \(metadata.etag, privacy: .public), fileName: \(metadata.fileName, privacy: .public)"
+                    """
+                    Updated status for item metadata.
+                        ocID: \(metadata.ocId, privacy: .public)
+                        etag: \(metadata.etag, privacy: .public)
+                        fileName: \(metadata.fileName, privacy: .public)
+                    """
                 )
 
                 completionHandler(ItemMetadata(value: result))
             }
         } catch {
             Self.logger.error(
-                "Could not update status for item metadata with ocID: \(metadata.ocId, privacy: .public), etag: \(metadata.etag, privacy: .public), fileName: \(metadata.fileName, privacy: .public), received error: \(error.localizedDescription, privacy: .public)"
+                """
+                Could not update status for item metadata.
+                    ocID: \(metadata.ocId, privacy: .public)
+                    etag: \(metadata.etag, privacy: .public)
+                    fileName: \(metadata.fileName, privacy: .public)
+                    received error: \(error.localizedDescription, privacy: .public)
+                """
             )
             completionHandler(nil)
         }
@@ -380,66 +376,69 @@ public class FilesDatabaseManager {
                 Self.logger.debug(
                     """
                     Added item metadata.
-                    ocID: \(metadata.ocId, privacy: .public)
-                    etag: \(metadata.etag, privacy: .public)
-                    fileName: \(metadata.fileName, privacy: .public)
-                    parentDirectoryUrl: \(metadata.serverUrl, privacy: .public)
-                    account: \(metadata.account, privacy: .public)
-                    content type: \(metadata.contentType, privacy: .public)
-                    creation date: \(metadata.creationDate, privacy: .public)
-                    date: \(metadata.date, privacy: .public)
-                    lock: \(metadata.lock, privacy: .public)
-                    lockTimeOut: \(metadata.lockTimeOut?.description ?? "", privacy: .public)
-                    lockOwner: \(metadata.lockOwner, privacy: .public)
-                    permissions: \(metadata.permissions, privacy: .public)
-                    size: \(metadata.size, privacy: .public)
+                        ocID: \(metadata.ocId, privacy: .public)
+                        etag: \(metadata.etag, privacy: .public)
+                        fileName: \(metadata.fileName, privacy: .public)
+                        parentDirectoryUrl: \(metadata.serverUrl, privacy: .public)
+                        account: \(metadata.account, privacy: .public)
+                        content type: \(metadata.contentType, privacy: .public)
+                        creation date: \(metadata.creationDate, privacy: .public)
+                        date: \(metadata.date, privacy: .public)
+                        lock: \(metadata.lock, privacy: .public)
+                        lockTimeOut: \(metadata.lockTimeOut?.description ?? "", privacy: .public)
+                        lockOwner: \(metadata.lockOwner, privacy: .public)
+                        permissions: \(metadata.permissions, privacy: .public)
+                        size: \(metadata.size, privacy: .public)
                     """
                 )
             }
         } catch {
             Self.logger.error(
-                "Could not add item metadata. ocID: \(metadata.ocId, privacy: .public), etag: \(metadata.etag, privacy: .public), fileName: \(metadata.fileName, privacy: .public), received error: \(error.localizedDescription, privacy: .public)"
+                """
+                Could not add item metadata.
+                    ocID: \(metadata.ocId, privacy: .public)
+                    etag: \(metadata.etag, privacy: .public)
+                    fileName: \(metadata.fileName, privacy: .public)
+                    received error: \(error.localizedDescription, privacy: .public)
+                """
             )
         }
     }
 
     @discardableResult public func deleteItemMetadata(ocId: String) -> Bool {
-        let database = ncDatabase()
-
         do {
+            let results = itemMetadatas.filter("ocId == %@", ocId)
+            let database = ncDatabase()
             try database.write {
-                let results = database.objects(ItemMetadata.self).filter(
-                    "ocId == %@", ocId)
-
                 Self.logger.debug("Deleting item metadata. \(ocId, privacy: .public)")
                 database.delete(results)
             }
-
             return true
         } catch {
             Self.logger.error(
-                "Could not delete item metadata with ocId: \(ocId, privacy: .public), received error: \(error.localizedDescription, privacy: .public)"
+                """
+                Could not delete item metadata with ocId: \(ocId, privacy: .public)
+                    Received error: \(error.localizedDescription, privacy: .public)
+                """
             )
             return false
         }
     }
 
     public func renameItemMetadata(ocId: String, newServerUrl: String, newFileName: String) {
-        let database = ncDatabase()
+        guard let itemMetadata = itemMetadatas.filter("ocId == %@", ocId).first else {
+            Self.logger.debug(
+                """
+                Could not find an item with ocID \(ocId, privacy: .public)
+                    to rename to \(newFileName, privacy: .public)
+                """
+            )
+            return
+        }
 
         do {
+            let database = ncDatabase()
             try database.write {
-                guard
-                    let itemMetadata = database.objects(ItemMetadata.self).filter(
-                        "ocId == %@", ocId
-                    ).first
-                else {
-                    Self.logger.debug(
-                        "Could not find an item with ocID \(ocId, privacy: .public) to rename to \(newFileName, privacy: .public)"
-                    )
-                    return
-                }
-
                 let oldFileName = itemMetadata.fileName
                 let oldServerUrl = itemMetadata.serverUrl
 
@@ -460,7 +459,12 @@ public class FilesDatabaseManager {
             }
         } catch {
             Self.logger.error(
-                "Could not rename filename of item metadata with ocID: \(ocId, privacy: .public) to proposed name \(newFileName, privacy: .public) at proposed serverUrl \(newServerUrl, privacy: .public), received error: \(error.localizedDescription, privacy: .public)"
+                """
+                Could not rename filename of item metadata with ocID: \(ocId, privacy: .public)
+                    to proposed name \(newFileName, privacy: .public)
+                    at proposed serverUrl \(newServerUrl, privacy: .public)
+                    received error: \(error.localizedDescription, privacy: .public)
+                """
             )
         }
     }
@@ -478,28 +482,28 @@ public class FilesDatabaseManager {
             Self.logger.error(
                 """
                 Could not get item parent directory metadata for metadata.
-                ocID: \(metadata.ocId, privacy: .public),
-                etag: \(metadata.etag, privacy: .public),
-                fileName: \(metadata.fileName, privacy: .public),
-                serverUrl: \(metadata.serverUrl, privacy: .public),
-                account: \(metadata.account, privacy: .public),
+                    ocID: \(metadata.ocId, privacy: .public),
+                    etag: \(metadata.etag, privacy: .public),
+                    fileName: \(metadata.fileName, privacy: .public),
+                    serverUrl: \(metadata.serverUrl, privacy: .public),
+                    account: \(metadata.account, privacy: .public),
                 """
             )
             return nil
         }
 
-        if let parentDirectoryMetadata = itemMetadataFromOcId(itemParentDirectory.ocId) {
+        if let parentDirectoryMetadata = itemMetadata(ocId: itemParentDirectory.ocId) {
             return NSFileProviderItemIdentifier(parentDirectoryMetadata.ocId)
         }
 
         Self.logger.error(
             """
             Could not get item parent directory item metadata for metadata.
-            ocID: \(metadata.ocId, privacy: .public),
-            etag: \(metadata.etag, privacy: .public), 
-            fileName: \(metadata.fileName, privacy: .public),
-            serverUrl: \(metadata.serverUrl, privacy: .public),
-            account: \(metadata.account, privacy: .public),
+                ocID: \(metadata.ocId, privacy: .public),
+                etag: \(metadata.etag, privacy: .public), 
+                fileName: \(metadata.fileName, privacy: .public),
+                serverUrl: \(metadata.serverUrl, privacy: .public),
+                account: \(metadata.account, privacy: .public),
             """
         )
         return nil

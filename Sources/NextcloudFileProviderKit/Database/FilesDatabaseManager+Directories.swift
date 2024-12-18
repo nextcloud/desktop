@@ -15,26 +15,21 @@
 import FileProvider
 import Foundation
 import OSLog
+import RealmSwift
 
 extension FilesDatabaseManager {
-    public func childItemsForDirectory(_ directoryMetadata: ItemMetadata) -> [ItemMetadata] {
+    func childItems(directoryMetadata: ItemMetadata) -> Results<ItemMetadata> {
         var directoryServerUrl: String
         if directoryMetadata.ocId == NSFileProviderItemIdentifier.rootContainer.rawValue {
             directoryServerUrl = directoryMetadata.serverUrl
         } else {
             directoryServerUrl = directoryMetadata.serverUrl + "/" + directoryMetadata.fileName
         }
-        let metadatas = ncDatabase().objects(ItemMetadata.self).filter(
-            "serverUrl BEGINSWITH %@", directoryServerUrl
-        )
-        return sortedItemMetadatas(metadatas)
+        return itemMetadatas.filter("serverUrl BEGINSWITH %@", directoryServerUrl)
     }
 
-    public func childDirectoriesForDirectory(_ directoryMetadata: ItemMetadata) -> [ItemMetadata] {
-        let directoryServerUrl = directoryMetadata.serverUrl + "/" + directoryMetadata.fileName
-        let metadatas = ncDatabase().objects(ItemMetadata.self).filter(
-            "serverUrl BEGINSWITH %@ AND directory == true", directoryServerUrl)
-        return sortedItemMetadatas(metadatas)
+    public func childItemCount(directoryMetadata: ItemMetadata) -> Int {
+        childItems(directoryMetadata: directoryMetadata).count
     }
 
     public func parentDirectoryMetadataForItem(_ itemMetadata: ItemMetadata) -> ItemMetadata? {
@@ -42,40 +37,26 @@ extension FilesDatabaseManager {
     }
 
     public func directoryMetadata(ocId: String) -> ItemMetadata? {
-        if let metadata = ncDatabase().objects(ItemMetadata.self).filter(
-            "ocId == %@ AND directory == true", ocId
-        ).first {
+        if let metadata = itemMetadatas.filter("ocId == %@ AND directory == true", ocId).first {
             return ItemMetadata(value: metadata)
         }
 
         return nil
     }
 
-    public func directoryMetadatas(account: String) -> [ItemMetadata] {
-        let metadatas = ncDatabase().objects(ItemMetadata.self).filter(
-            "account == %@ AND directory == true", account)
-        return sortedItemMetadatas(metadatas)
-    }
-
-    public func directoryMetadatas(
-        account: String, parentDirectoryServerUrl: String
-    ) -> [ItemMetadata] {
-        let metadatas = ncDatabase().objects(ItemMetadata.self).filter(
-            "account == %@ AND parentDirectoryServerUrl == %@ AND directory == true", account,
-            parentDirectoryServerUrl)
-        return sortedItemMetadatas(metadatas)
-    }
-
     // Deletes all metadatas related to the info of the directory provided
     public func deleteDirectoryAndSubdirectoriesMetadata(ocId: String) -> [ItemMetadata]? {
         let database = ncDatabase()
         guard
-            let directoryMetadata = database.objects(ItemMetadata.self).filter(
+            let directoryMetadata = itemMetadatas.filter(
                 "ocId == %@ AND directory == true", ocId
             ).first
         else {
             Self.logger.error(
-                "Could not find directory metadata for ocId \(ocId, privacy: .public). Not proceeding with deletion"
+                """
+                Could not find directory metadata for ocId \(ocId, privacy: .public).
+                    Not proceeding with deletion
+                """
             )
             return nil
         }
@@ -87,16 +68,24 @@ extension FilesDatabaseManager {
         let directoryEtag = directoryMetadata.etag
 
         Self.logger.debug(
-            "Deleting root directory metadata in recursive delete. ocID: \(directoryMetadata.ocId, privacy: .public), etag: \(directoryEtag, privacy: .public), serverUrl: \(directoryUrlPath, privacy: .public)"
+            """
+            Deleting root directory metadata in recursive delete.
+                ocID: \(directoryMetadata.ocId, privacy: .public)
+                etag: \(directoryEtag, privacy: .public)
+                serverUrl: \(directoryUrlPath, privacy: .public)
+            """
         )
 
-        guard deleteItemMetadata(ocId: directoryMetadata.ocId) else {
-            Self.logger.debug(
+        do {
+            try database.write { database.delete(directoryMetadata) }
+        } catch let error {
+            Self.logger.error(
                 """
                 Failure to delete root directory metadata in recursive delete.
-                ocID: \(directoryOcId, privacy: .public),
-                etag: \(directoryEtag, privacy: .public),
-                serverUrl: \(directoryUrlPath, privacy: .public)
+                    Received error: \(error.localizedDescription)
+                    ocID: \(directoryOcId, privacy: .public),
+                    etag: \(directoryEtag, privacy: .public),
+                    serverUrl: \(directoryUrlPath, privacy: .public)
                 """
             )
             return nil
@@ -104,15 +93,25 @@ extension FilesDatabaseManager {
 
         var deletedMetadatas: [ItemMetadata] = [directoryMetadataCopy]
 
-        let results = database.objects(ItemMetadata.self).filter(
-            "account == %@ AND serverUrl BEGINSWITH %@", directoryAccount, directoryUrlPath)
+        let results = itemMetadatas.filter(
+            "account == %@ AND serverUrl BEGINSWITH %@", directoryAccount, directoryUrlPath
+        )
 
         for result in results {
-            let resultOcId = result.ocId
             let inactiveItemMetadata = ItemMetadata(value: result)
-
-            if deleteItemMetadata(ocId: result.ocId) {
+            do {
+                try database.write { database.delete(result) }
                 deletedMetadatas.append(inactiveItemMetadata)
+            } catch let error {
+                Self.logger.error(
+                    """
+                    Failure to delete directory metadata child in recursive delete.
+                        Received error: \(error.localizedDescription)
+                        ocID: \(directoryOcId, privacy: .public),
+                        etag: \(directoryEtag, privacy: .public),
+                        serverUrl: \(directoryUrlPath, privacy: .public)
+                    """
+                )
             }
         }
 
@@ -131,15 +130,16 @@ extension FilesDatabaseManager {
     public func renameDirectoryAndPropagateToChildren(
         ocId: String, newServerUrl: String, newFileName: String
     ) -> [ItemMetadata]? {
-        let database = ncDatabase()
-
         guard
-            let directoryMetadata = database.objects(ItemMetadata.self).filter(
+            let directoryMetadata = itemMetadatas.filter(
                 "ocId == %@ AND directory == true", ocId
             ).first
         else {
             Self.logger.error(
-                "Could not find a directory with ocID \(ocId, privacy: .public), cannot proceed with recursive renaming"
+                """
+                Could not find a directory with ocID \(ocId, privacy: .public)
+                    cannot proceed with recursive renaming
+                """
             )
             return nil
         }
@@ -147,7 +147,7 @@ extension FilesDatabaseManager {
         let oldItemServerUrl = directoryMetadata.serverUrl
         let oldDirectoryServerUrl = oldItemServerUrl + "/" + directoryMetadata.fileName
         let newDirectoryServerUrl = newServerUrl + "/" + newFileName
-        let childItemResults = database.objects(ItemMetadata.self).filter(
+        let childItemResults = itemMetadatas.filter(
             "account == %@ AND serverUrl BEGINSWITH %@", directoryMetadata.account,
             oldDirectoryServerUrl)
 
@@ -155,6 +155,7 @@ extension FilesDatabaseManager {
         Self.logger.debug("Renamed root renaming directory")
 
         do {
+            let database = ncDatabase()
             try database.write {
                 for childItem in childItemResults {
                     let oldServerUrl = childItem.serverUrl
@@ -168,15 +169,22 @@ extension FilesDatabaseManager {
             }
         } catch {
             Self.logger.error(
-                "Could not rename directory metadata with ocId: \(ocId, privacy: .public) to new serverUrl: \(newServerUrl), received error: \(error.localizedDescription, privacy: .public)"
+                """
+                Could not rename directory metadata with ocId: \(ocId, privacy: .public)
+                    to new serverUrl: \(newServerUrl)
+                    received error: \(error.localizedDescription, privacy: .public)
+                """
             )
 
             return nil
         }
 
-        let updatedChildItemResults = database.objects(ItemMetadata.self).filter(
-            "account == %@ AND serverUrl BEGINSWITH %@", directoryMetadata.account,
-            newDirectoryServerUrl)
-        return sortedItemMetadatas(updatedChildItemResults)
+        return itemMetadatas
+            .filter(
+                "account == %@ AND serverUrl BEGINSWITH %@",
+                directoryMetadata.account,
+                newDirectoryServerUrl
+            )
+            .toUnmanagedResults()
     }
 }

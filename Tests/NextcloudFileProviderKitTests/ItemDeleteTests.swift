@@ -58,7 +58,7 @@ final class ItemDeleteTests: XCTestCase {
         itemMetadata.ocId = itemIdentifier
 
         Self.dbManager.addItemMetadata(itemMetadata)
-        XCTAssertNotNil(Self.dbManager.itemMetadataFromOcId(itemIdentifier))
+        XCTAssertNotNil(Self.dbManager.itemMetadata(ocId: itemIdentifier))
 
         let item = Item(
             metadata: itemMetadata,
@@ -71,7 +71,7 @@ final class ItemDeleteTests: XCTestCase {
         XCTAssertNil(error)
         XCTAssertTrue(rootItem.children.isEmpty)
 
-        XCTAssertNil(Self.dbManager.itemMetadataFromOcId(itemIdentifier))
+        XCTAssertNil(Self.dbManager.itemMetadata(ocId: itemIdentifier))
     }
 
     func testDeleteFolderAndContents() async {
@@ -116,8 +116,8 @@ final class ItemDeleteTests: XCTestCase {
 
         Self.dbManager.addItemMetadata(folderMetadata)
         Self.dbManager.addItemMetadata(remoteItemMetadata)
-        XCTAssertNotNil(Self.dbManager.itemMetadataFromOcId(remoteFolder.identifier))
-        XCTAssertNotNil(Self.dbManager.itemMetadataFromOcId(remoteItem.identifier))
+        XCTAssertNotNil(Self.dbManager.itemMetadata(ocId: remoteFolder.identifier))
+        XCTAssertNotNil(Self.dbManager.itemMetadata(ocId: remoteItem.identifier))
 
         let folder = Item(
             metadata: folderMetadata,
@@ -130,7 +130,7 @@ final class ItemDeleteTests: XCTestCase {
         XCTAssertNil(error)
         XCTAssertTrue(rootItem.children.isEmpty)
 
-        XCTAssertNil(Self.dbManager.itemMetadataFromOcId(remoteFolder.identifier))
-        XCTAssertNil(Self.dbManager.itemMetadataFromOcId(remoteItem.identifier))
+        XCTAssertNil(Self.dbManager.itemMetadata(ocId: remoteFolder.identifier))
+        XCTAssertNil(Self.dbManager.itemMetadata(ocId: remoteItem.identifier))
     }
 }

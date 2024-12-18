@@ -428,7 +428,7 @@ extension Enumerator {
                 return (nil, nil, nil, nil, nil)
             } else {
                 let metadata = receivedFile.toItemMetadata()
-                let isNew = dbManager.itemMetadataFromOcId(metadata.ocId) == nil
+                let isNew = dbManager.itemMetadata(ocId: metadata.ocId) == nil
                 let updatedMetadatas = isNew ? [] : [metadata]
                 let newMetadatas = isNew ? [metadata] : []
 

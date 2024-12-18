@@ -58,7 +58,7 @@ final class FilesDatabaseManagerTests: XCTestCase {
             realm.add(metadata)
         }
 
-        let fetchedMetadata = Self.dbManager.itemMetadataFromOcId(ocId)
+        let fetchedMetadata = Self.dbManager.itemMetadata(ocId: ocId)
         XCTAssertNotNil(fetchedMetadata, "Should fetch metadata with the specified ocId")
         XCTAssertEqual(
             fetchedMetadata?.ocId, ocId, "Fetched metadata ocId should match the requested ocId"
@@ -115,7 +115,7 @@ final class FilesDatabaseManagerTests: XCTestCase {
         metadata.ocId = "unique-id-123"
         Self.dbManager.addItemMetadata(metadata)
 
-        let fetchedMetadata = Self.dbManager.itemMetadataFromOcId("unique-id-123")
+        let fetchedMetadata = Self.dbManager.itemMetadata(ocId: "unique-id-123")
         XCTAssertNotNil(fetchedMetadata, "Metadata should be added to the database")
     }
 
@@ -132,7 +132,7 @@ final class FilesDatabaseManagerTests: XCTestCase {
         let result = Self.dbManager.deleteItemMetadata(ocId: ocId)
         XCTAssertTrue(result, "deleteItemMetadata should return true on successful deletion")
         XCTAssertNil(
-            Self.dbManager.itemMetadataFromOcId(ocId),
+            Self.dbManager.itemMetadata(ocId: ocId),
             "Metadata should be deleted from the database"
         )
     }
@@ -155,40 +155,9 @@ final class FilesDatabaseManagerTests: XCTestCase {
             ocId: ocId, newServerUrl: newServerUrl, newFileName: newFileName
         )
 
-        let updatedMetadata = Self.dbManager.itemMetadataFromOcId(ocId)
+        let updatedMetadata = Self.dbManager.itemMetadata(ocId: ocId)
         XCTAssertEqual(updatedMetadata?.fileName, newFileName, "File name should be updated")
         XCTAssertEqual(updatedMetadata?.serverUrl, newServerUrl, "Server URL should be updated")
-    }
-
-    func testItemMetadatasWithStatus() throws {
-        // Setup metadatas with different statuses
-        let metadata1 = ItemMetadata()
-        metadata1.ocId = "id-1"
-        metadata1.account = "TestAccount"
-        metadata1.serverUrl = "https://example.com"
-        metadata1.status = ItemMetadata.Status.downloading.rawValue
-
-        let metadata2 = ItemMetadata()
-        metadata2.ocId = "id-2"
-        metadata2.account = "TestAccount"
-        metadata2.serverUrl = "https://example.com"
-        metadata2.status = ItemMetadata.Status.normal.rawValue
-
-        let realm = Self.dbManager.ncDatabase()
-        try realm.write {
-            realm.add(metadata1)
-            realm.add(metadata2)
-        }
-
-        let results = Self.dbManager.itemMetadatas(
-            account: "TestAccount", serverUrl: "https://example.com", status: .downloading
-        )
-        XCTAssertEqual(results.count, 1, "Should return only metadatas with 'waitDownload' status")
-        XCTAssertEqual(
-            results.first?.ocId,
-            "id-1",
-            "The ocId should match the metadata with 'waitDownload' status"
-        )
     }
 
     func testDeleteItemMetadatasBasedOnUpdate() throws {
@@ -235,8 +204,8 @@ final class FilesDatabaseManagerTests: XCTestCase {
             remainingMetadatas.count, 2, "Should have two remaining metadata after update"
         )
 
-        let id1Metadata = try XCTUnwrap(remainingMetadatas.first { $0.ocId == "id-1" })
-        let id2Metadata = try XCTUnwrap(remainingMetadatas.first { $0.ocId == "id-3" })
+        XCTAssertNotNil(remainingMetadatas.first { $0.ocId == "id-1" })
+        XCTAssertNotNil(remainingMetadatas.first { $0.ocId == "id-3" })
     }
 
     func testProcessItemMetadatasToUpdate_NewAndUpdatedSeparation() throws {
@@ -311,7 +280,7 @@ final class FilesDatabaseManagerTests: XCTestCase {
         semaphore.wait()
 
         for i in 0...count * 2 + 1 {
-            let resultsI = Self.dbManager.itemMetadataFromOcId("concurrency-\(i)")
+            let resultsI = Self.dbManager.itemMetadata(ocId: "concurrency-\(i)")
             XCTAssertNotNil(resultsI, "Metadata \(i) should be saved even under concurrency")
         }
     }
@@ -361,7 +330,7 @@ final class FilesDatabaseManagerTests: XCTestCase {
             realm.add(childMetadata)
         }
 
-        let children = Self.dbManager.childItemsForDirectory(directoryMetadata)
+        let children = Self.dbManager.childItems(directoryMetadata: directoryMetadata)
         XCTAssertEqual(children.count, 1, "Should return one child item")
         XCTAssertEqual(
             children.first?.fileName, "report.pdf", "Should match the child item's file name"
@@ -456,7 +425,7 @@ final class FilesDatabaseManagerTests: XCTestCase {
             realm.add(childMetadata)
         }
 
-        let children = Self.dbManager.childItemsForDirectory(rootMetadata)
+        let children = Self.dbManager.childItems(directoryMetadata: rootMetadata)
         XCTAssertEqual(children.count, 1, "Should return one child item for the root directory")
         XCTAssertEqual(
             children.first?.fileName,

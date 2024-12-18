@@ -78,7 +78,7 @@ final class ItemCreateTests: XCTestCase {
         XCTAssertTrue(remoteItem?.directory ?? false)
 
         let dbItem = try XCTUnwrap(
-            Self.dbManager.itemMetadataFromOcId(createdItem.itemIdentifier.rawValue)
+            Self.dbManager.itemMetadata(ocId: createdItem.itemIdentifier.rawValue)
         )
         XCTAssertEqual(dbItem.fileName, folderItemMetadata.fileName)
         XCTAssertEqual(dbItem.fileNameView, folderItemMetadata.fileNameView)
@@ -127,7 +127,7 @@ final class ItemCreateTests: XCTestCase {
         XCTAssertEqual(remoteItem.directory, fileItemMetadata.directory)
 
         let dbItem = try XCTUnwrap(
-            Self.dbManager.itemMetadataFromOcId(createdItem.itemIdentifier.rawValue)
+            Self.dbManager.itemMetadata(ocId: createdItem.itemIdentifier.rawValue)
         )
         XCTAssertEqual(dbItem.fileName, fileItemMetadata.fileName)
         XCTAssertEqual(dbItem.fileNameView, fileItemMetadata.fileNameView)
@@ -203,7 +203,7 @@ final class ItemCreateTests: XCTestCase {
         XCTAssertFalse(remoteFolderItem?.children.isEmpty ?? true)
 
         let dbItem = try XCTUnwrap(
-            Self.dbManager.itemMetadataFromOcId(createdFileItem.itemIdentifier.rawValue)
+            Self.dbManager.itemMetadata(ocId: createdFileItem.itemIdentifier.rawValue)
         )
         XCTAssertEqual(dbItem.fileName, fileItemMetadata.fileName)
         XCTAssertEqual(dbItem.fileNameView, fileItemMetadata.fileNameView)
@@ -212,7 +212,7 @@ final class ItemCreateTests: XCTestCase {
         XCTAssertEqual(dbItem.ocId, createdFileItem.itemIdentifier.rawValue)
 
         let parentDbItem = try XCTUnwrap(
-            Self.dbManager.itemMetadataFromOcId(createdFolderItem.itemIdentifier.rawValue)
+            Self.dbManager.itemMetadata(ocId: createdFolderItem.itemIdentifier.rawValue)
         )
         XCTAssertEqual(parentDbItem.fileName, folderItemMetadata.fileName)
         XCTAssertEqual(parentDbItem.fileNameView, folderItemMetadata.fileNameView)
@@ -329,7 +329,7 @@ final class ItemCreateTests: XCTestCase {
         XCTAssertTrue(remoteItem?.directory ?? false)
 
         let dbItem = try XCTUnwrap(
-            Self.dbManager.itemMetadataFromOcId(createdBundleItem.itemIdentifier.rawValue)
+            Self.dbManager.itemMetadata(ocId: createdBundleItem.itemIdentifier.rawValue)
         )
         XCTAssertEqual(dbItem.fileName, bundleItemMetadata.fileName)
         XCTAssertEqual(dbItem.fileNameView, bundleItemMetadata.fileNameView)
@@ -353,7 +353,7 @@ final class ItemCreateTests: XCTestCase {
             $0.name == "BuildVersionHistory.plist"
         })
 
-        let children = Self.dbManager.childItemsForDirectory(dbItem)
-        XCTAssertEqual(children.count, 6) // Ensure all children recorded to database
+        let childrenCount = Self.dbManager.childItemCount(directoryMetadata: dbItem)
+        XCTAssertEqual(childrenCount, 6) // Ensure all children recorded to database
     }
 }

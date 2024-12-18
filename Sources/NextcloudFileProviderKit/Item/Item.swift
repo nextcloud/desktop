@@ -113,7 +113,7 @@ public class Item: NSObject, NSFileProviderItem {
     }
 
     public var isDownloaded: Bool {
-        metadata.directory || dbManager.itemMetadataFromOcId(metadata.ocId)?.downloaded == true
+        metadata.directory || metadata.downloaded
     }
 
     public var isDownloading: Bool {
@@ -128,7 +128,7 @@ public class Item: NSObject, NSFileProviderItem {
     }
 
     public var isUploaded: Bool {
-        dbManager.itemMetadataFromOcId(metadata.ocId)?.uploaded == true
+        metadata.uploaded
     }
 
     public var isUploading: Bool {
@@ -145,7 +145,7 @@ public class Item: NSObject, NSFileProviderItem {
 
     public var childItemCount: NSNumber? {
         if metadata.directory {
-            NSNumber(integerLiteral: dbManager.childItemsForDirectory(metadata).count)
+            NSNumber(integerLiteral: dbManager.childItemCount(directoryMetadata: metadata))
         } else {
             nil
         }
