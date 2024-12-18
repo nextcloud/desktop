@@ -97,8 +97,7 @@ public class FilesDatabaseManager {
     }
 
     public func anyItemMetadatasForAccount(_ account: String) -> Bool {
-        !ncDatabase().objects(ItemMetadata.self).filter("account == %@", account)
-            .isEmpty
+        !ncDatabase().objects(ItemMetadata.self).filter("account == %@", account).isEmpty
     }
 
     public func itemMetadataFromOcId(_ ocId: String) -> ItemMetadata? {
@@ -300,8 +299,10 @@ public class FilesDatabaseManager {
                 for metadata in metadatasToDelete {
                     // Can't pass copies, we need the originals from the database
                     database.delete(
-                        ncDatabase().objects(ItemMetadata.self).filter(
-                            "ocId == %@", metadata.ocId))
+                        ncDatabase()
+                            .objects(ItemMetadata.self)
+                            .filter("ocId == %@", metadata.ocId)
+                    )
                 }
 
                 for metadata in metadatasToAdd {
