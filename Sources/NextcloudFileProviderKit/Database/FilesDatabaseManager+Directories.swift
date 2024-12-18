@@ -15,18 +15,21 @@
 import FileProvider
 import Foundation
 import OSLog
+import RealmSwift
 
 extension FilesDatabaseManager {
-    public func childItemsForDirectory(_ directoryMetadata: ItemMetadata) -> [ItemMetadata] {
+    func childItems(directoryMetadata: ItemMetadata) -> Results<ItemMetadata> {
         var directoryServerUrl: String
         if directoryMetadata.ocId == NSFileProviderItemIdentifier.rootContainer.rawValue {
             directoryServerUrl = directoryMetadata.serverUrl
         } else {
             directoryServerUrl = directoryMetadata.serverUrl + "/" + directoryMetadata.fileName
         }
-        return itemMetadatas
-            .filter("serverUrl BEGINSWITH %@", directoryServerUrl)
-            .toUnmanagedResults()
+        return itemMetadatas.filter("serverUrl BEGINSWITH %@", directoryServerUrl)
+    }
+
+    public func childItemCount(directoryMetadata: ItemMetadata) -> Int {
+        childItems(directoryMetadata: directoryMetadata).count
     }
 
     public func childDirectoriesForDirectory(_ directoryMetadata: ItemMetadata) -> [ItemMetadata] {

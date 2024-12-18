@@ -361,7 +361,7 @@ final class FilesDatabaseManagerTests: XCTestCase {
             realm.add(childMetadata)
         }
 
-        let children = Self.dbManager.childItemsForDirectory(directoryMetadata)
+        let children = Self.dbManager.childItems(directoryMetadata: directoryMetadata)
         XCTAssertEqual(children.count, 1, "Should return one child item")
         XCTAssertEqual(
             children.first?.fileName, "report.pdf", "Should match the child item's file name"
@@ -456,7 +456,7 @@ final class FilesDatabaseManagerTests: XCTestCase {
             realm.add(childMetadata)
         }
 
-        let children = Self.dbManager.childItemsForDirectory(rootMetadata)
+        let children = Self.dbManager.childItems(directoryMetadata: rootMetadata)
         XCTAssertEqual(children.count, 1, "Should return one child item for the root directory")
         XCTAssertEqual(
             children.first?.fileName,

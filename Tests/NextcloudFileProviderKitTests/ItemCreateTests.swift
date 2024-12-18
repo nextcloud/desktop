@@ -353,7 +353,7 @@ final class ItemCreateTests: XCTestCase {
             $0.name == "BuildVersionHistory.plist"
         })
 
-        let children = Self.dbManager.childItemsForDirectory(dbItem)
-        XCTAssertEqual(children.count, 6) // Ensure all children recorded to database
+        let childrenCount = Self.dbManager.childItemCount(directoryMetadata: dbItem)
+        XCTAssertEqual(childrenCount, 6) // Ensure all children recorded to database
     }
 }

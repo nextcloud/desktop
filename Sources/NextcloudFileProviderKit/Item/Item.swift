@@ -145,7 +145,7 @@ public class Item: NSObject, NSFileProviderItem {
 
     public var childItemCount: NSNumber? {
         if metadata.directory {
-            NSNumber(integerLiteral: dbManager.childItemsForDirectory(metadata).count)
+            NSNumber(integerLiteral: dbManager.childItemCount(directoryMetadata: metadata))
         } else {
             nil
         }
