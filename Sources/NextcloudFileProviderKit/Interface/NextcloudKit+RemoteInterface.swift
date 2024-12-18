@@ -233,7 +233,7 @@ extension NextcloudKit: RemoteInterface {
     ) async -> AuthenticationAttemptResultState {
         // Test by trying to fetch user profile
         let (_, _, _, error) =
-        await fetchUserProfile(account: account, options: options, taskHandler: taskHandler)
+            await enumerate(remotePath: account.davFilesUrl + "/", depth: .target, account: account)
 
         if error == .success {
             return .success
