@@ -281,10 +281,6 @@ public class FilesDatabaseManager {
             let metadatasToCreate = metadatasToChange.newMetadatas
             let directoriesNeedingRename = metadatasToChange.directoriesNeedingRename
 
-            let metadatasToAdd =
-                Array(metadatasToUpdate.map { ItemMetadata(value: $0) })
-                + Array(metadatasToCreate.map { ItemMetadata(value: $0) })
-
             for metadata in directoriesNeedingRename {
                 if let updatedDirectoryChildren = renameDirectoryAndPropagateToChildren(
                     ocId: metadata.ocId, 
@@ -305,7 +301,8 @@ public class FilesDatabaseManager {
                     )
                 }
 
-                database.add(metadatasToAdd, update: .all)
+                database.add(metadatasToUpdate, update: .modified)
+                database.add(metadatasToCreate, update: .all)
             }
 
             return (
