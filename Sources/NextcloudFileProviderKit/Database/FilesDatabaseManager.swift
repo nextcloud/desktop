@@ -149,18 +149,6 @@ public class FilesDatabaseManager {
             .toUnmanagedResults()
     }
 
-    public func itemMetadatas(
-        account: String, serverUrl: String, status: ItemMetadata.Status
-    ) -> [ItemMetadata] {
-        itemMetadatas
-            .filter(
-                "account == %@ AND serverUrl == %@ AND status == %@",
-                account,
-                serverUrl,
-                status.rawValue)
-            .toUnmanagedResults()
-    }
-
     public func itemMetadataFromFileProviderItemIdentifier(
         _ identifier: NSFileProviderItemIdentifier
     ) -> ItemMetadata? {

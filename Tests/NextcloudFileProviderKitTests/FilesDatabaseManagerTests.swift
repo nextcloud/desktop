@@ -160,37 +160,6 @@ final class FilesDatabaseManagerTests: XCTestCase {
         XCTAssertEqual(updatedMetadata?.serverUrl, newServerUrl, "Server URL should be updated")
     }
 
-    func testItemMetadatasWithStatus() throws {
-        // Setup metadatas with different statuses
-        let metadata1 = ItemMetadata()
-        metadata1.ocId = "id-1"
-        metadata1.account = "TestAccount"
-        metadata1.serverUrl = "https://example.com"
-        metadata1.status = ItemMetadata.Status.downloading.rawValue
-
-        let metadata2 = ItemMetadata()
-        metadata2.ocId = "id-2"
-        metadata2.account = "TestAccount"
-        metadata2.serverUrl = "https://example.com"
-        metadata2.status = ItemMetadata.Status.normal.rawValue
-
-        let realm = Self.dbManager.ncDatabase()
-        try realm.write {
-            realm.add(metadata1)
-            realm.add(metadata2)
-        }
-
-        let results = Self.dbManager.itemMetadatas(
-            account: "TestAccount", serverUrl: "https://example.com", status: .downloading
-        )
-        XCTAssertEqual(results.count, 1, "Should return only metadatas with 'waitDownload' status")
-        XCTAssertEqual(
-            results.first?.ocId,
-            "id-1",
-            "The ocId should match the metadata with 'waitDownload' status"
-        )
-    }
-
     func testDeleteItemMetadatasBasedOnUpdate() throws {
         // Existing metadata in the database
         let existingMetadata1 = ItemMetadata()
