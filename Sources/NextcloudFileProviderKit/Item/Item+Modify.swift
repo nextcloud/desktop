@@ -867,7 +867,7 @@ public extension Item {
             with filename: \(modifiedItem.filename, privacy: .public)
             to filename: \(itemTarget.filename, privacy: .public)
             from old server url:
-                \(modifiedItem.metadata.serverUrl + "/" + modifiedItem.filename, privacy: .public)
+                \(modifiedItem.metadata.serverUrl + "/" + modifiedItem.metadata.fileName, privacy: .public)
             to server url: \(newServerUrlFileName, privacy: .public)
             old parent identifier: \(modifiedItem.parentItemIdentifier.rawValue, privacy: .public)
             new parent identifier: \(itemTarget.parentItemIdentifier.rawValue, privacy: .public)
