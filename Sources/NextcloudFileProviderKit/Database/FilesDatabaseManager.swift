@@ -139,32 +139,31 @@ public class FilesDatabaseManager {
         return nil
     }
 
-    func sortedItemMetadatas(_ metadatas: Results<ItemMetadata>) -> [ItemMetadata] {
-        let sortedMetadatas = metadatas.sorted(byKeyPath: "fileName", ascending: true)
-        return Array(sortedMetadatas.map { ItemMetadata(value: $0) })
-    }
-
     public func itemMetadatas(account: String) -> [ItemMetadata] {
-        let metadatas = ncDatabase().objects(ItemMetadata.self).filter(
-            "account == %@", account)
-        return sortedItemMetadatas(metadatas)
+        ncDatabase()
+            .objects(ItemMetadata.self)
+            .filter("account == %@", account)
+            .toUnmanagedResults()
     }
 
     public func itemMetadatas(account: String, underServerUrl serverUrl: String) -> [ItemMetadata] {
-        let metadatas = ncDatabase().objects(ItemMetadata.self).filter(
-            "account == %@ AND serverUrl BEGINSWITH %@", account, serverUrl)
-        return sortedItemMetadatas(metadatas)
+        ncDatabase()
+            .objects(ItemMetadata.self)
+            .filter( "account == %@ AND serverUrl BEGINSWITH %@", account, serverUrl)
+            .toUnmanagedResults()
     }
 
     public func itemMetadatas(
         account: String, serverUrl: String, status: ItemMetadata.Status
     ) -> [ItemMetadata] {
-        let metadatas = ncDatabase().objects(ItemMetadata.self).filter(
-            "account == %@ AND serverUrl == %@ AND status == %@", 
-            account,
-            serverUrl,
-            status.rawValue)
-        return sortedItemMetadatas(metadatas)
+        ncDatabase()
+            .objects(ItemMetadata.self)
+            .filter(
+                "account == %@ AND serverUrl == %@ AND status == %@",
+                account,
+                serverUrl,
+                status.rawValue)
+            .toUnmanagedResults()
     }
 
     public func itemMetadataFromFileProviderItemIdentifier(

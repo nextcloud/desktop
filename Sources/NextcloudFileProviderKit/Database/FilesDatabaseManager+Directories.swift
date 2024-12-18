@@ -24,17 +24,18 @@ extension FilesDatabaseManager {
         } else {
             directoryServerUrl = directoryMetadata.serverUrl + "/" + directoryMetadata.fileName
         }
-        let metadatas = ncDatabase().objects(ItemMetadata.self).filter(
-            "serverUrl BEGINSWITH %@", directoryServerUrl
-        )
-        return sortedItemMetadatas(metadatas)
+        return ncDatabase()
+            .objects(ItemMetadata.self)
+            .filter("serverUrl BEGINSWITH %@", directoryServerUrl)
+            .toUnmanagedResults()
     }
 
     public func childDirectoriesForDirectory(_ directoryMetadata: ItemMetadata) -> [ItemMetadata] {
         let directoryServerUrl = directoryMetadata.serverUrl + "/" + directoryMetadata.fileName
-        let metadatas = ncDatabase().objects(ItemMetadata.self).filter(
-            "serverUrl BEGINSWITH %@ AND directory == true", directoryServerUrl)
-        return sortedItemMetadatas(metadatas)
+        return ncDatabase()
+            .objects(ItemMetadata.self)
+            .filter("serverUrl BEGINSWITH %@ AND directory == true", directoryServerUrl)
+            .toUnmanagedResults()
     }
 
     public func parentDirectoryMetadataForItem(_ itemMetadata: ItemMetadata) -> ItemMetadata? {
@@ -52,18 +53,23 @@ extension FilesDatabaseManager {
     }
 
     public func directoryMetadatas(account: String) -> [ItemMetadata] {
-        let metadatas = ncDatabase().objects(ItemMetadata.self).filter(
-            "account == %@ AND directory == true", account)
-        return sortedItemMetadatas(metadatas)
+        ncDatabase()
+            .objects(ItemMetadata.self)
+            .filter("account == %@ AND directory == true", account)
+            .toUnmanagedResults()
     }
 
     public func directoryMetadatas(
         account: String, parentDirectoryServerUrl: String
     ) -> [ItemMetadata] {
-        let metadatas = ncDatabase().objects(ItemMetadata.self).filter(
-            "account == %@ AND parentDirectoryServerUrl == %@ AND directory == true", account,
-            parentDirectoryServerUrl)
-        return sortedItemMetadatas(metadatas)
+        ncDatabase()
+            .objects(ItemMetadata.self)
+            .filter(
+                "account == %@ AND parentDirectoryServerUrl == %@ AND directory == true",
+                account,
+                parentDirectoryServerUrl
+            )
+            .toUnmanagedResults()
     }
 
     // Deletes all metadatas related to the info of the directory provided
@@ -111,7 +117,7 @@ extension FilesDatabaseManager {
             let resultOcId = result.ocId
             let inactiveItemMetadata = ItemMetadata(value: result)
 
-            if deleteItemMetadata(ocId: result.ocId) {
+            if deleteItemMetadata(ocId: resultOcId) {
                 deletedMetadatas.append(inactiveItemMetadata)
             }
         }
@@ -174,9 +180,13 @@ extension FilesDatabaseManager {
             return nil
         }
 
-        let updatedChildItemResults = database.objects(ItemMetadata.self).filter(
-            "account == %@ AND serverUrl BEGINSWITH %@", directoryMetadata.account,
-            newDirectoryServerUrl)
-        return sortedItemMetadatas(updatedChildItemResults)
+        return database
+            .objects(ItemMetadata.self)
+            .filter(
+                "account == %@ AND serverUrl BEGINSWITH %@",
+                directoryMetadata.account,
+                newDirectoryServerUrl
+            )
+            .toUnmanagedResults()
     }
 }
