@@ -77,7 +77,7 @@ extension FilesDatabaseManager {
             Self.logger.error(
                 """
                 Could not find directory metadata for ocId \(ocId, privacy: .public).
-                Not proceeding with deletion
+                    Not proceeding with deletion
                 """
             )
             return nil
@@ -191,7 +191,11 @@ extension FilesDatabaseManager {
             }
         } catch {
             Self.logger.error(
-                "Could not rename directory metadata with ocId: \(ocId, privacy: .public) to new serverUrl: \(newServerUrl), received error: \(error.localizedDescription, privacy: .public)"
+                """
+                Could not rename directory metadata with ocId: \(ocId, privacy: .public)
+                    to new serverUrl: \(newServerUrl)
+                    received error: \(error.localizedDescription, privacy: .public)
+                """
             )
 
             return nil

@@ -222,11 +222,21 @@ public class FilesDatabaseManager {
                     returningUpdatedMetadatas.append(updatedMetadata)
 
                     Self.logger.debug(
-                        "Updated existing item metadata. ocID: \(updatedMetadata.ocId, privacy: .public), etag: \(updatedMetadata.etag, privacy: .public), fileName: \(updatedMetadata.fileName, privacy: .public)"
+                        """
+                        Updated existing item metadata.
+                            ocID: \(updatedMetadata.ocId, privacy: .public)
+                            etag: \(updatedMetadata.etag, privacy: .public)
+                            fileName: \(updatedMetadata.fileName, privacy: .public)
+                        """
                     )
                 } else {
                     Self.logger.debug(
-                        "Skipping item metadata update; same as existing, or still downloading/uploading. ocID: \(updatedMetadata.ocId, privacy: .public), etag: \(updatedMetadata.etag, privacy: .public), fileName: \(updatedMetadata.fileName, privacy: .public)"
+                        """
+                        Skipping item metadata update; same as existing, or still in transit.
+                            ocID: \(updatedMetadata.ocId, privacy: .public)
+                            etag: \(updatedMetadata.etag, privacy: .public)
+                            fileName: \(updatedMetadata.fileName, privacy: .public)
+                        """
                     )
                 }
 
@@ -238,7 +248,12 @@ public class FilesDatabaseManager {
                 returningNewMetadatas.append(updatedMetadata)
 
                 Self.logger.debug(
-                    "Created new item metadata during update. ocID: \(updatedMetadata.ocId, privacy: .public), etag: \(updatedMetadata.etag, privacy: .public), fileName: \(updatedMetadata.fileName, privacy: .public)"
+                    """
+                    Created new item metadata during update.
+                        ocID: \(updatedMetadata.ocId, privacy: .public)
+                        etag: \(updatedMetadata.etag, privacy: .public)
+                        fileName: \(updatedMetadata.fileName, privacy: .public)
+                    """
                 )
             }
         }
@@ -303,7 +318,10 @@ public class FilesDatabaseManager {
             )
         } catch {
             Self.logger.error(
-                "Could not update any item metadatas, received error: \(error.localizedDescription, privacy: .public)"
+                """
+                Could not update any item metadatas.
+                    Received error: \(error.localizedDescription, privacy: .public)
+                """
             )
             return (nil, nil, nil)
         }
@@ -320,7 +338,7 @@ public class FilesDatabaseManager {
             Self.logger.debug(
                 """
                 Did not update status for item metadata as it was not found.
-                ocID: \(metadata.ocId, privacy: .public)
+                    ocID: \(metadata.ocId, privacy: .public)
                 """
             )
             return
@@ -337,14 +355,25 @@ public class FilesDatabaseManager {
                 }
 
                 Self.logger.debug(
-                    "Updated status for item metadata. ocID: \(metadata.ocId, privacy: .public), etag: \(metadata.etag, privacy: .public), fileName: \(metadata.fileName, privacy: .public)"
+                    """
+                    Updated status for item metadata.
+                        ocID: \(metadata.ocId, privacy: .public)
+                        etag: \(metadata.etag, privacy: .public)
+                        fileName: \(metadata.fileName, privacy: .public)
+                    """
                 )
 
                 completionHandler(ItemMetadata(value: result))
             }
         } catch {
             Self.logger.error(
-                "Could not update status for item metadata with ocID: \(metadata.ocId, privacy: .public), etag: \(metadata.etag, privacy: .public), fileName: \(metadata.fileName, privacy: .public), received error: \(error.localizedDescription, privacy: .public)"
+                """
+                Could not update status for item metadata.
+                    ocID: \(metadata.ocId, privacy: .public)
+                    etag: \(metadata.etag, privacy: .public)
+                    fileName: \(metadata.fileName, privacy: .public)
+                    received error: \(error.localizedDescription, privacy: .public)
+                """
             )
             completionHandler(nil)
         }
@@ -359,25 +388,31 @@ public class FilesDatabaseManager {
                 Self.logger.debug(
                     """
                     Added item metadata.
-                    ocID: \(metadata.ocId, privacy: .public)
-                    etag: \(metadata.etag, privacy: .public)
-                    fileName: \(metadata.fileName, privacy: .public)
-                    parentDirectoryUrl: \(metadata.serverUrl, privacy: .public)
-                    account: \(metadata.account, privacy: .public)
-                    content type: \(metadata.contentType, privacy: .public)
-                    creation date: \(metadata.creationDate, privacy: .public)
-                    date: \(metadata.date, privacy: .public)
-                    lock: \(metadata.lock, privacy: .public)
-                    lockTimeOut: \(metadata.lockTimeOut?.description ?? "", privacy: .public)
-                    lockOwner: \(metadata.lockOwner, privacy: .public)
-                    permissions: \(metadata.permissions, privacy: .public)
-                    size: \(metadata.size, privacy: .public)
+                        ocID: \(metadata.ocId, privacy: .public)
+                        etag: \(metadata.etag, privacy: .public)
+                        fileName: \(metadata.fileName, privacy: .public)
+                        parentDirectoryUrl: \(metadata.serverUrl, privacy: .public)
+                        account: \(metadata.account, privacy: .public)
+                        content type: \(metadata.contentType, privacy: .public)
+                        creation date: \(metadata.creationDate, privacy: .public)
+                        date: \(metadata.date, privacy: .public)
+                        lock: \(metadata.lock, privacy: .public)
+                        lockTimeOut: \(metadata.lockTimeOut?.description ?? "", privacy: .public)
+                        lockOwner: \(metadata.lockOwner, privacy: .public)
+                        permissions: \(metadata.permissions, privacy: .public)
+                        size: \(metadata.size, privacy: .public)
                     """
                 )
             }
         } catch {
             Self.logger.error(
-                "Could not add item metadata. ocID: \(metadata.ocId, privacy: .public), etag: \(metadata.etag, privacy: .public), fileName: \(metadata.fileName, privacy: .public), received error: \(error.localizedDescription, privacy: .public)"
+                """
+                Could not add item metadata.
+                    ocID: \(metadata.ocId, privacy: .public)
+                    etag: \(metadata.etag, privacy: .public)
+                    fileName: \(metadata.fileName, privacy: .public)
+                    received error: \(error.localizedDescription, privacy: .public)
+                """
             )
         }
     }
@@ -436,7 +471,12 @@ public class FilesDatabaseManager {
             }
         } catch {
             Self.logger.error(
-                "Could not rename filename of item metadata with ocID: \(ocId, privacy: .public) to proposed name \(newFileName, privacy: .public) at proposed serverUrl \(newServerUrl, privacy: .public), received error: \(error.localizedDescription, privacy: .public)"
+                """
+                Could not rename filename of item metadata with ocID: \(ocId, privacy: .public)
+                    to proposed name \(newFileName, privacy: .public)
+                    at proposed serverUrl \(newServerUrl, privacy: .public)
+                    received error: \(error.localizedDescription, privacy: .public)
+                """
             )
         }
     }
@@ -454,11 +494,11 @@ public class FilesDatabaseManager {
             Self.logger.error(
                 """
                 Could not get item parent directory metadata for metadata.
-                ocID: \(metadata.ocId, privacy: .public),
-                etag: \(metadata.etag, privacy: .public),
-                fileName: \(metadata.fileName, privacy: .public),
-                serverUrl: \(metadata.serverUrl, privacy: .public),
-                account: \(metadata.account, privacy: .public),
+                    ocID: \(metadata.ocId, privacy: .public),
+                    etag: \(metadata.etag, privacy: .public),
+                    fileName: \(metadata.fileName, privacy: .public),
+                    serverUrl: \(metadata.serverUrl, privacy: .public),
+                    account: \(metadata.account, privacy: .public),
                 """
             )
             return nil
@@ -471,11 +511,11 @@ public class FilesDatabaseManager {
         Self.logger.error(
             """
             Could not get item parent directory item metadata for metadata.
-            ocID: \(metadata.ocId, privacy: .public),
-            etag: \(metadata.etag, privacy: .public), 
-            fileName: \(metadata.fileName, privacy: .public),
-            serverUrl: \(metadata.serverUrl, privacy: .public),
-            account: \(metadata.account, privacy: .public),
+                ocID: \(metadata.ocId, privacy: .public),
+                etag: \(metadata.etag, privacy: .public), 
+                fileName: \(metadata.fileName, privacy: .public),
+                serverUrl: \(metadata.serverUrl, privacy: .public),
+                account: \(metadata.account, privacy: .public),
             """
         )
         return nil
