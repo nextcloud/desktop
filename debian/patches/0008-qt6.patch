@@ -1,5 +1,5 @@
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index 351b3eaa0..b226eb79f 100644
+index 3c1d91f80..6e87ee651 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
 @@ -24,7 +24,7 @@ set(BIN_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
@@ -36,10 +36,10 @@ index fe9d4d9af..7389f20c7 100644
  find_package(Qt${QT_MAJOR_VERSION}Core ${REQUIRED_QT_VERSION} CONFIG QUIET)
  set_package_properties(Qt${QT_MAJOR_VERSION}Core PROPERTIES
 diff --git a/src/gui/application.cpp b/src/gui/application.cpp
-index 9569c8bc1..91063de44 100644
+index f6df24546..1f5882756 100644
 --- a/src/gui/application.cpp
 +++ b/src/gui/application.cpp
-@@ -969,7 +969,7 @@ QString substLang(const QString &lang)
+@@ -977,7 +977,7 @@ QString substLang(const QString &lang)
  void Application::setupTranslations()
  {
      const auto enforcedLocale = Theme::instance()->enforcedLocale();
@@ -49,7 +49,7 @@ index 9569c8bc1..91063de44 100644
      auto *translator = new QTranslator(this);
      auto *qtTranslator = new QTranslator(this);
 diff --git a/src/libsync/theme.cpp b/src/libsync/theme.cpp
-index a77aa4450..fde10245e 100644
+index 7e717bf05..4265b9e3b 100644
 --- a/src/libsync/theme.cpp
 +++ b/src/libsync/theme.cpp
 @@ -25,8 +25,6 @@
@@ -107,4 +107,4 @@ index a77aa4450..fde10245e 100644
 -    return isDarkFromStyle();
  }
  
- void Theme::setOverrideServerUrl(const QString &overrideServerUrl)
+ bool Theme::displayLegacyImportDialog() const
