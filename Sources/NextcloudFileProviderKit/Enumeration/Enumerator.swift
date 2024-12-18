@@ -556,65 +556,50 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
         _ itemMetadatas: [ItemMetadata],
         account: Account,
         remoteInterface: RemoteInterface,
-        dbManager: FilesDatabaseManager,
-        completionHandler: @escaping (_ items: [NSFileProviderItem]) -> Void
-    ) {
+        dbManager: FilesDatabaseManager
+    ) -> [NSFileProviderItem] {
         var items: [NSFileProviderItem] = []
 
-        let conversionQueue = DispatchQueue(
-            label: "metadataToItemConversionQueue", qos: .userInitiated, attributes: .concurrent
-        )
-        // appendQueue is a serial queue
-        let appendQueue = DispatchQueue(label: "enumeratorItemAppendQueue", qos: .userInitiated)
-        let dispatchGroup = DispatchGroup()
-
         for itemMetadata in itemMetadatas {
-            conversionQueue.async(group: dispatchGroup) {
-                if itemMetadata.e2eEncrypted {
-                    Self.logger.info(
-                        """
-                        Skipping encrypted metadata in enumeration:
-                        \(itemMetadata.ocId, privacy: .public)
-                        \(itemMetadata.fileName, privacy: .public)
-                        """
-                    )
-                    return
-                }
+            if itemMetadata.e2eEncrypted {
+                Self.logger.info(
+                    """
+                    Skipping encrypted metadata in enumeration:
+                    \(itemMetadata.ocId, privacy: .public)
+                    \(itemMetadata.fileName, privacy: .public)
+                    """
+                )
+                continue
+            }
 
-                if let parentItemIdentifier = dbManager.parentItemIdentifierFromMetadata(
-                    itemMetadata
-                ) {
-                    let item = Item(
-                        metadata: itemMetadata,
-                        parentItemIdentifier: parentItemIdentifier,
-                        account: account,
-                        remoteInterface: remoteInterface
-                    )
-                    Self.logger.debug(
-                        """
-                        Will enumerate item with ocId: \(itemMetadata.ocId, privacy: .public)
-                        and name: \(itemMetadata.fileName, privacy: .public)
-                        """
-                    )
+            if let parentItemIdentifier = dbManager.parentItemIdentifierFromMetadata(
+                itemMetadata
+            ) {
+                let item = Item(
+                    metadata: itemMetadata,
+                    parentItemIdentifier: parentItemIdentifier,
+                    account: account,
+                    remoteInterface: remoteInterface
+                )
+                Self.logger.debug(
+                    """
+                    Will enumerate item with ocId: \(itemMetadata.ocId, privacy: .public)
+                    and name: \(itemMetadata.fileName, privacy: .public)
+                    """
+                )
 
-                    appendQueue.async(group: dispatchGroup) {
-                        items.append(item)
-                    }
-                } else {
-                    Self.logger.error(
-                        """
-                        Could not get valid parentItemIdentifier for item with ocId:
-                        \(itemMetadata.ocId, privacy: .public)
-                        and name: \(itemMetadata.fileName, privacy: .public), skipping enumeration
-                        """
-                    )
-                }
+                items.append(item)
+            } else {
+                Self.logger.error(
+                    """
+                    Could not get valid parentItemIdentifier for item with ocId:
+                    \(itemMetadata.ocId, privacy: .public)
+                    and name: \(itemMetadata.fileName, privacy: .public), skipping enumeration
+                    """
+                )
             }
         }
-
-        dispatchGroup.notify(queue: DispatchQueue.main) {
-            completionHandler(items)
-        }
+        return items
     }
 
     static func fileProviderPageforNumPage(_ numPage: Int) -> NSFileProviderPage? {
@@ -631,24 +616,23 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
         numPage: Int,
         itemMetadatas: [ItemMetadata]
     ) {
-        metadatasToFileProviderItems(
+        let items = metadatasToFileProviderItems(
             itemMetadatas, account: account, remoteInterface: remoteInterface, dbManager: dbManager
-        ) { items in
-            observer.didEnumerate(items)
-            Self.logger.info("Did enumerate \(items.count) items")
+        )
+        observer.didEnumerate(items)
+        Self.logger.info("Did enumerate \(items.count) items")
 
-            // TODO: Handle paging properly
-            /*
-             if items.count == maxItemsPerFileProviderPage {
-                let nextPage = numPage + 1
-                let providerPage = NSFileProviderPage("\(nextPage)".data(using: .utf8)!)
-                observer.finishEnumerating(upTo: providerPage)
-             } else {
-                observer.finishEnumerating(upTo: nil)
-             }
-             */
-            observer.finishEnumerating(upTo: fileProviderPageforNumPage(numPage))
-        }
+        // TODO: Handle paging properly
+        /*
+         if items.count == maxItemsPerFileProviderPage {
+            let nextPage = numPage + 1
+            let providerPage = NSFileProviderPage("\(nextPage)".data(using: .utf8)!)
+            observer.finishEnumerating(upTo: providerPage)
+         } else {
+            observer.finishEnumerating(upTo: nil)
+         }
+         */
+        observer.finishEnumerating(upTo: fileProviderPageforNumPage(numPage))
     }
 
     private static func completeChangesObserver(
@@ -694,24 +678,23 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
             observer.didDeleteItems(withIdentifiers: allFpItemDeletionsIdentifiers)
         }
 
-        metadatasToFileProviderItems(
+        let updatedItems = metadatasToFileProviderItems(
             allUpdatedMetadatas,
             account: account,
             remoteInterface: remoteInterface,
             dbManager: dbManager
-        ) { updatedItems in
+        )
 
-            if !updatedItems.isEmpty {
-                observer.didUpdate(updatedItems)
-            }
-
-            Self.logger.info(
-                """
-                Processed \(updatedItems.count) new or updated metadatas.
-                \(allDeletedMetadatas.count) deleted metadatas.
-                """
-            )
-            observer.finishEnumeratingChanges(upTo: anchor, moreComing: false)
+        if !updatedItems.isEmpty {
+            observer.didUpdate(updatedItems)
         }
+
+        Self.logger.info(
+            """
+            Processed \(updatedItems.count) new or updated metadatas.
+            \(allDeletedMetadatas.count) deleted metadatas.
+            """
+        )
+        observer.finishEnumeratingChanges(upTo: anchor, moreComing: false)
     }
 }
