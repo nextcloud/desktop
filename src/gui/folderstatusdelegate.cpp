@@ -273,7 +273,7 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
             subFm.height());
 
         for (const auto &eText : texts) {
-            painter->drawText(QStyle::visualRect(option.direction, option.rect, textRect), textAlign, subFm.elidedText(eText, Qt::ElideLeft, textRect.width()));
+            painter->drawText(QStyle::visualRect(option.direction, option.rect, textRect), textAlign, subFm.elidedText(eText, Qt::ElideRight, textRect.width()));
             textRect.translate(0, textRect.height());
         }
         // restore previous state
