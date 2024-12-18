@@ -235,8 +235,8 @@ final class FilesDatabaseManagerTests: XCTestCase {
             remainingMetadatas.count, 2, "Should have two remaining metadata after update"
         )
 
-        let id1Metadata = try XCTUnwrap(remainingMetadatas.first { $0.ocId == "id-1" })
-        let id2Metadata = try XCTUnwrap(remainingMetadatas.first { $0.ocId == "id-3" })
+        XCTAssertNotNil(remainingMetadatas.first { $0.ocId == "id-1" })
+        XCTAssertNotNil(remainingMetadatas.first { $0.ocId == "id-3" })
     }
 
     func testProcessItemMetadatasToUpdate_NewAndUpdatedSeparation() throws {
