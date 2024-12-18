@@ -44,24 +44,6 @@ extension FilesDatabaseManager {
         return nil
     }
 
-    public func directoryMetadatas(account: String) -> [ItemMetadata] {
-        itemMetadatas
-            .filter("account == %@ AND directory == true", account)
-            .toUnmanagedResults()
-    }
-
-    public func directoryMetadatas(
-        account: String, parentDirectoryServerUrl: String
-    ) -> [ItemMetadata] {
-        itemMetadatas
-            .filter(
-                "account == %@ AND parentDirectoryServerUrl == %@ AND directory == true",
-                account,
-                parentDirectoryServerUrl
-            )
-            .toUnmanagedResults()
-    }
-
     // Deletes all metadatas related to the info of the directory provided
     public func deleteDirectoryAndSubdirectoriesMetadata(ocId: String) -> [ItemMetadata]? {
         let database = ncDatabase()
