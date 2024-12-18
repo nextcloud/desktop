@@ -213,8 +213,7 @@ public class FilesDatabaseManager {
                         if updatedMetadata.serverUrl != existingMetadata.serverUrl
                             || updatedMetadata.fileName != existingMetadata.fileName
                         {
-                            directoriesNeedingRename.append(
-                                ItemMetadata(value: updatedMetadata))
+                            directoriesNeedingRename.append(ItemMetadata(value: updatedMetadata))
                             updatedMetadata.etag = ""  // Renaming doesn't change the etag so reset
 
                         } else if !updateDirectoryEtags {
