@@ -29,7 +29,7 @@ public class FilesDatabaseManager {
 
     static let logger = Logger(subsystem: Logger.subsystem, category: "filesdatabase")
 
-    lazy var itemMetadatas = ncDatabase().objects(ItemMetadata.self)
+    var itemMetadatas: Results<ItemMetadata> { ncDatabase().objects(ItemMetadata.self) }
 
     public init(realmConfig: Realm.Configuration = Realm.Configuration.defaultConfiguration) {
         Realm.Configuration.defaultConfiguration = realmConfig
