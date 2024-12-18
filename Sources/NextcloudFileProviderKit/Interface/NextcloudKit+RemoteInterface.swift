@@ -211,7 +211,7 @@ extension NextcloudKit: RemoteInterface {
         return await move(
             remotePathSource: trashFileUrl,
             remotePathDestination: recoverFileUrl,
-            overwrite: false,
+            overwrite: true,
             account: account,
             options: options,
             taskHandler: taskHandler
