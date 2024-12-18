@@ -53,6 +53,10 @@ const QString TOOLBAR_CSS()
                         "QToolBar QToolButton:pressed { background: %6; color: %4; }"
                         "QToolBar::separator { height: 100%; width: 1px; background: %2; margin-left: 12px; } " // Style for the separator
                         "QToolBarExtension#qt_toolbar_ext_button {margin: 0 0 7px 0; padding: 0;}" // Style overflow button
+                        "QMenu { background: %1; color: %4; }" // Style overflow menu
+                        "QMenu::item::checked { background: %7; color: %4; }"
+                        "QMenu::item::selected { background: %3; color: %4; }" 
+                        "QMenu::item::pressed { background: %6; color: %4; }"
                         );
 }
 
