@@ -75,7 +75,10 @@ extension FilesDatabaseManager {
             ).first
         else {
             Self.logger.error(
-                "Could not find directory metadata for ocId \(ocId, privacy: .public). Not proceeding with deletion"
+                """
+                Could not find directory metadata for ocId \(ocId, privacy: .public).
+                Not proceeding with deletion
+                """
             )
             return nil
         }
@@ -87,16 +90,21 @@ extension FilesDatabaseManager {
         let directoryEtag = directoryMetadata.etag
 
         Self.logger.debug(
-            "Deleting root directory metadata in recursive delete. ocID: \(directoryMetadata.ocId, privacy: .public), etag: \(directoryEtag, privacy: .public), serverUrl: \(directoryUrlPath, privacy: .public)"
+            """
+            Deleting root directory metadata in recursive delete.
+                ocID: \(directoryMetadata.ocId, privacy: .public)
+                etag: \(directoryEtag, privacy: .public)
+                serverUrl: \(directoryUrlPath, privacy: .public)
+            """
         )
 
         guard deleteItemMetadata(ocId: directoryMetadata.ocId) else {
             Self.logger.debug(
                 """
                 Failure to delete root directory metadata in recursive delete.
-                ocID: \(directoryOcId, privacy: .public),
-                etag: \(directoryEtag, privacy: .public),
-                serverUrl: \(directoryUrlPath, privacy: .public)
+                    ocID: \(directoryOcId, privacy: .public),
+                    etag: \(directoryEtag, privacy: .public),
+                    serverUrl: \(directoryUrlPath, privacy: .public)
                 """
             )
             return nil
@@ -137,7 +145,10 @@ extension FilesDatabaseManager {
             ).first
         else {
             Self.logger.error(
-                "Could not find a directory with ocID \(ocId, privacy: .public), cannot proceed with recursive renaming"
+                """
+                Could not find a directory with ocID \(ocId, privacy: .public)
+                    cannot proceed with recursive renaming
+                """
             )
             return nil
         }

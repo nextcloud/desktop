@@ -392,7 +392,10 @@ public class FilesDatabaseManager {
             return true
         } catch {
             Self.logger.error(
-                "Could not delete item metadata with ocId: \(ocId, privacy: .public), received error: \(error.localizedDescription, privacy: .public)"
+                """
+                Could not delete item metadata with ocId: \(ocId, privacy: .public)
+                    Received error: \(error.localizedDescription, privacy: .public)
+                """
             )
             return false
         }
