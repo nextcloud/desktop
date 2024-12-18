@@ -2478,7 +2478,11 @@ This setup can cause data loss and it is no longer supported.
 To resolve this issue: please remove %1 from one of the accounts and create a new sync folder.
 
 For advanced users: this issue might be related to multiple sync database files found in one folder. Please check %1 for outdated and unused .sync_*.db files and remove them.</source>
-        <translation type="unfinished"/>
+        <translation>المجلد %1 مربوط بعدة حسابات.
+قد يتسبب هذا في ضياع البيانات كما أنه لم يعد مدعوماً بعدُ.
+لحل هذا الإشكال: يرجى حذف %1 من إحدى الحسابات و إنشاء مجلد مزامنة جديد.
+
+بالنسبة للمستخدمين المتقدمين: قد تكون هذه المشكلة متعلقة بملفات قاعدة بيانات المزامنة المتعددة الموجودة في مجلد واحد. يرجى فحص %1 بحثاً عن أي ملفات sync_*.db انتهت صلاحيتها و لم تعد مستخدمة و قم بحذفها .</translation>
     </message>
 </context>
 <context>

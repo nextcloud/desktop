@@ -2492,7 +2492,11 @@ This setup can cause data loss and it is no longer supported.
 To resolve this issue: please remove %1 from one of the accounts and create a new sync folder.
 
 For advanced users: this issue might be related to multiple sync database files found in one folder. Please check %1 for outdated and unused .sync_*.db files and remove them.</source>
-        <translation type="unfinished"/>
+        <translation>資料夾 %1 連結到多個帳號。
+這種設定方式可能會導致資料遺失，且不再支援。
+要解決此問題：請從其中一個帳號移除 %1，然後建立新的同步資料夾。
+
+給進階使用者：此問題可能與在同一個資料夾中找到多個同步資料庫檔案有關。請檢查 %1 是否有過期與未使用的 sync_*.db 檔案並將其移除。</translation>
     </message>
 </context>
 <context>
