@@ -2492,7 +2492,11 @@ This setup can cause data loss and it is no longer supported.
 To resolve this issue: please remove %1 from one of the accounts and create a new sync folder.
 
 For advanced users: this issue might be related to multiple sync database files found in one folder. Please check %1 for outdated and unused .sync_*.db files and remove them.</source>
-        <translation type="unfinished"/>
+        <translation>Mappen %1 är länkad till flera konton.
+Denna inställning kan orsaka dataförlust och stöds inte längre.
+För att lösa problemet: ta bort %1 från ett av kontona och skapa en ny synkroniseringsmapp.
+
+För avancerade användare: det här problemet kan vara relaterat till flera synkdatabasfiler i en mapp. Kontrollera %1 om det finns föråldrade och oanvända .sync_*.db-filer och ta bort dem.</translation>
     </message>
 </context>
 <context>

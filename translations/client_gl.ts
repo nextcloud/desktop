@@ -2492,7 +2492,11 @@ This setup can cause data loss and it is no longer supported.
 To resolve this issue: please remove %1 from one of the accounts and create a new sync folder.
 
 For advanced users: this issue might be related to multiple sync database files found in one folder. Please check %1 for outdated and unused .sync_*.db files and remove them.</source>
-        <translation type="unfinished"/>
+        <translation>O cartafol %1 está ligado a varias contas.
+Esta configuración pode provocar a perda de datos e xa non está admitida.
+Para resolver este problema: elimine %1 dunha das contas e cree un novo cartafol de sincronización.
+
+Para usuarios avanzados: este problema pode estar relacionado con varios ficheiros de bases de datos de sincronización que se atopan nun cartafol. Comprobe se %1 ten ficheiros .sync_*.db obsoletos e sen usar e elimíneos.</translation>
     </message>
 </context>
 <context>

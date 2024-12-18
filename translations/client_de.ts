@@ -2281,8 +2281,8 @@ Dies bedeutet, dass der Synchronisierungs-Client lokale Änderungen möglicherwe
 Please confirm if you'd like to proceed with these deletions.
 Alternatively, you can restore all deleted files by uploading from &apos;%1&apos; folder to the server.</source>
         <translation>Eine große Anzahl von Dateien auf dem Server wurde gelöscht.
-Bitte bestätigen Sie, ob Sie mit diesen Löschungen fortfahren möchten.
-Alternativ können Sie alle gelöschten Dateien wiederherstellen, indem Sie den Ordner &apos;%1&apos; auf den Server hochladen.</translation>
+Bitte bestätigen Sie, dass Sie mit diesen Löschungen fortfahren möchten.
+Alternativ können Sie alle gelöschten Dateien wiederherstellen, indem Sie von Ordner &apos;%1&apos; auf den Server hochladen.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1667"/>
@@ -2290,7 +2290,7 @@ Alternativ können Sie alle gelöschten Dateien wiederherstellen, indem Sie den 
 Please confirm if you'd like to proceed with these deletions.
 Alternatively, you can restore all deleted files by downloading them from the server.</source>
         <translation>Eine große Anzahl von Dateien wurde lokal im Ordner &apos;%1&apos; gelöscht.
-Bitte bestätigen Sie, ob Sie mit diesen Löschungen fortfahren möchten.
+Bitte bestätigen Sie, dass Sie mit diesen Löschungen fortfahren möchten.
 Alternativ können Sie auch alle gelöschten Dateien wiederherstellen, indem Sie sie vom Server herunterladen.</translation>
     </message>
     <message>
@@ -2491,7 +2491,11 @@ This setup can cause data loss and it is no longer supported.
 To resolve this issue: please remove %1 from one of the accounts and create a new sync folder.
 
 For advanced users: this issue might be related to multiple sync database files found in one folder. Please check %1 for outdated and unused .sync_*.db files and remove them.</source>
-        <translation type="unfinished"/>
+        <translation>Der Ordner %1 ist mit mehreren Konten verknüpft.
+Diese Konfiguration kann zu Datenverlust führen und wird nicht mehr unterstützt.
+So beheben Sie dieses Problem: Entfernen Sie %1 von einem der Konten und erstellen Sie einen neuen Synchronisierungsordner.
+
+Für fortgeschrittene Benutzer: Dieses Problem kann damit zusammenhängen, dass sich mehrere Synchronisierungsdatenbankdateien in einem Ordner befinden. Suchen Sie in %1 nach veralteten und nicht verwendeten .sync_*.db-Dateien und entfernen Sie diese.</translation>
     </message>
 </context>
 <context>

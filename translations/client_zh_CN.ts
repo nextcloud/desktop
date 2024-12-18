@@ -4763,12 +4763,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="500"/>
         <source>Missing File ID from server</source>
-        <translation>服务器端文件 ID 缺失</translation>
+        <translation>服务端文件 ID 缺失</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="514"/>
         <source>Missing ETag from server</source>
-        <translation>服务器端 ETag 缺失</translation>
+        <translation>服务端 ETag 缺失</translation>
     </message>
 </context>
 <context>
@@ -5449,7 +5449,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1263"/>
         <source>There is insufficient space available on the server for some uploads.</source>
-        <translation>对于某些上传文件来说，服务器端的可用空间不足。</translation>
+        <translation>服务器上的空间不足以用于某些上传。</translation>
     </message>
 </context>
 <context>
