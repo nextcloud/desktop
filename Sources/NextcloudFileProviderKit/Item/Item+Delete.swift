@@ -73,7 +73,7 @@ public extension Item {
                 )
             }
 
-            guard let metadata = dbManager.itemMetadataFromOcId(ocId) else {
+            guard let metadata = dbManager.itemMetadata(ocId: ocId) else {
                 Self.logger.warning(
                     """
                     Could not find item metadata for \(self.filename, privacy: .public)

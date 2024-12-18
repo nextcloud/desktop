@@ -182,7 +182,7 @@ final class ItemDeleteTests: XCTestCase {
         XCTAssertEqual(itemMetadata.isTrashed, false)
 
         Self.dbManager.addItemMetadata(itemMetadata)
-        XCTAssertNotNil(Self.dbManager.itemMetadataFromOcId(itemIdentifier))
+        XCTAssertNotNil(Self.dbManager.itemMetadata(ocId: itemIdentifier))
 
         let item = Item(
             metadata: itemMetadata,
@@ -195,7 +195,7 @@ final class ItemDeleteTests: XCTestCase {
         XCTAssertNil(error)
         XCTAssertTrue(rootItem.children.isEmpty)
 
-        let postTrashingMetadata = Self.dbManager.itemMetadataFromOcId(itemIdentifier);
+        let postTrashingMetadata = Self.dbManager.itemMetadata(ocId: itemIdentifier);
         XCTAssertNotNil(postTrashingMetadata)
         XCTAssertEqual(postTrashingMetadata?.serverUrl, Self.account.trashUrl)
         XCTAssertEqual(

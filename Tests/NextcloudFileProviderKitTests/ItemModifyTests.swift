@@ -826,7 +826,7 @@ final class ItemModifyTests: XCTestCase {
         )
         XCTAssertEqual(trashedFolderItem.parentItemIdentifier, .trashContainer)
 
-        let trashChildItemMetadata = Self.dbManager.itemMetadataFromOcId(itemMetadata.ocId)
+        let trashChildItemMetadata = Self.dbManager.itemMetadata(ocId: itemMetadata.ocId)
         XCTAssertNotNil(trashChildItemMetadata)
         XCTAssertEqual(trashChildItemMetadata?.isTrashed, true)
         XCTAssertEqual(
@@ -920,7 +920,7 @@ final class ItemModifyTests: XCTestCase {
         )
         XCTAssertEqual(trashedFolderItem.parentItemIdentifier, .trashContainer)
 
-        let trashChildItemMetadata = Self.dbManager.itemMetadataFromOcId(itemMetadata.ocId)
+        let trashChildItemMetadata = Self.dbManager.itemMetadata(ocId: itemMetadata.ocId)
         XCTAssertNotNil(trashChildItemMetadata)
         XCTAssertEqual(trashChildItemMetadata?.isTrashed, true)
         XCTAssertEqual(
@@ -1151,7 +1151,7 @@ final class ItemModifyTests: XCTestCase {
         XCTAssertTrue(remoteTrashFolder.remotePath.hasPrefix(Self.account.davFilesUrl))
 
         let untrashedFolderChildItemMaybe =
-            Self.dbManager.itemMetadataFromOcId(remoteTrashFolderChildItem.identifier)
+            Self.dbManager.itemMetadata(ocId: remoteTrashFolderChildItem.identifier)
         let untrashedFolderChildItem = try XCTUnwrap(untrashedFolderChildItemMaybe)
         XCTAssertEqual(remoteTrashFolder.children.first?.identifier, untrashedFolderChildItem.ocId)
         XCTAssertEqual(
@@ -1209,7 +1209,7 @@ final class ItemModifyTests: XCTestCase {
         XCTAssertTrue(remoteTrashFolder.remotePath.hasPrefix(Self.account.davFilesUrl))
 
         let untrashedFolderChildItemMaybe =
-            Self.dbManager.itemMetadataFromOcId(remoteTrashFolderChildItem.identifier)
+            Self.dbManager.itemMetadata(ocId: remoteTrashFolderChildItem.identifier)
         let untrashedFolderChildItem = try XCTUnwrap(untrashedFolderChildItemMaybe)
         XCTAssertEqual(remoteTrashFolder.children.first?.identifier, untrashedFolderChildItem.ocId)
         XCTAssertEqual(

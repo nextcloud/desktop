@@ -7,9 +7,9 @@
 
 extension FilesDatabaseManager {
     func trashedItemMetadatas(account: String) -> [ItemMetadata] {
-        let metadatas = ncDatabase()
+        ncDatabase()
             .objects(ItemMetadata.self)
             .filter("account == %@ AND trashbinFileName != ''", account)
-        return sortedItemMetadatas(metadatas)
+            .toUnmanagedResults()
     }
 }

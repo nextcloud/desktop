@@ -907,7 +907,7 @@ final class EnumeratorTests: XCTestCase {
         Self.dbManager.addItemMetadata(
             remoteTrashItemA.toNKTrash().toItemMetadata(account: Self.account)
         )
-        XCTAssertNotNil(Self.dbManager.itemMetadataFromOcId(remoteTrashItemA.identifier))
+        XCTAssertNotNil(Self.dbManager.itemMetadata(ocId: remoteTrashItemA.identifier))
 
         let enumerator = Enumerator(
             enumeratedItemIdentifier: .trashContainer,
@@ -924,7 +924,7 @@ final class EnumeratorTests: XCTestCase {
         remoteTrashItemB.parent = rootTrashItem
         try await observer.enumerateChanges()
         XCTAssertEqual(observer.changedItems.count, 1)
-        XCTAssertNotNil(Self.dbManager.itemMetadataFromOcId(remoteTrashItemB.identifier))
+        XCTAssertNotNil(Self.dbManager.itemMetadata(ocId: remoteTrashItemB.identifier))
         observer.reset()
 
         rootTrashItem.children = [remoteTrashItemB, remoteTrashItemC]
@@ -933,8 +933,8 @@ final class EnumeratorTests: XCTestCase {
         try await observer.enumerateChanges()
         XCTAssertEqual(observer.changedItems.count, 1)
         XCTAssertEqual(observer.deletedItemIdentifiers.count, 1)
-        XCTAssertNil(Self.dbManager.itemMetadataFromOcId(remoteTrashItemA.identifier))
-        XCTAssertNotNil(Self.dbManager.itemMetadataFromOcId(remoteTrashItemB.identifier))
-        XCTAssertNotNil(Self.dbManager.itemMetadataFromOcId(remoteTrashItemC.identifier))
+        XCTAssertNil(Self.dbManager.itemMetadata(ocId: remoteTrashItemA.identifier))
+        XCTAssertNotNil(Self.dbManager.itemMetadata(ocId: remoteTrashItemB.identifier))
+        XCTAssertNotNil(Self.dbManager.itemMetadata(ocId: remoteTrashItemC.identifier))
     }
 }

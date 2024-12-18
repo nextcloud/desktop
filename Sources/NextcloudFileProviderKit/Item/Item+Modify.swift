@@ -528,7 +528,7 @@ public extension Item {
         }
 
         let ocId = modifiedItem.itemIdentifier.rawValue
-        guard let dirtyMetadata = dbManager.itemMetadataFromOcId(ocId) else {
+        guard let dirtyMetadata = dbManager.itemMetadata(ocId: ocId) else {
             Self.logger.error(
                 """
                 Could not correctly process trashing results, dirty metadata not found.
