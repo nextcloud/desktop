@@ -161,8 +161,7 @@ void FolderWizardLocalPath::slotChooseLocalFolder()
         tr("Select the source folder"),
         sf);
 
-     SyncDirValidator syncDirValidator(QDir::fromNativeSeparators("\\ //"));
-    // SyncDirValidator syncDirValidator(QDir::fromNativeSeparators(_ui.localFolderLineEdit->text()));
+    SyncDirValidator syncDirValidator(_ui.localFolderLineEdit->text());
     if (!syncDirValidator.isValidDir() && !dir.isEmpty()) {
         _ui.sesSnackBar->show();
         _ui.sesSnackBar->setError(syncDirValidator.message());
