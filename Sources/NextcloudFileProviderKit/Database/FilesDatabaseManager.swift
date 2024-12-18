@@ -29,6 +29,8 @@ public class FilesDatabaseManager {
 
     static let logger = Logger(subsystem: Logger.subsystem, category: "filesdatabase")
 
+    lazy var itemMetadatas = ncDatabase().objects(ItemMetadata.self)
+
     public init(realmConfig: Realm.Configuration = Realm.Configuration.defaultConfiguration) {
         Realm.Configuration.defaultConfiguration = realmConfig
 
@@ -101,7 +103,7 @@ public class FilesDatabaseManager {
     }
 
     public func anyItemMetadatasForAccount(_ account: String) -> Bool {
-        !ncDatabase().objects(ItemMetadata.self).filter("account == %@", account).isEmpty
+        !itemMetadatas.filter("account == %@", account).isEmpty
     }
 
     public func itemMetadataFromOcId(_ ocId: String) -> ItemMetadata? {
@@ -140,24 +142,19 @@ public class FilesDatabaseManager {
     }
 
     public func itemMetadatas(account: String) -> [ItemMetadata] {
-        ncDatabase()
-            .objects(ItemMetadata.self)
-            .filter("account == %@", account)
-            .toUnmanagedResults()
+        itemMetadatas.filter("account == %@", account).toUnmanagedResults()
     }
 
     public func itemMetadatas(account: String, underServerUrl serverUrl: String) -> [ItemMetadata] {
-        ncDatabase()
-            .objects(ItemMetadata.self)
-            .filter( "account == %@ AND serverUrl BEGINSWITH %@", account, serverUrl)
+        itemMetadatas
+            .filter("account == %@ AND serverUrl BEGINSWITH %@", account, serverUrl)
             .toUnmanagedResults()
     }
 
     public func itemMetadatas(
         account: String, serverUrl: String, status: ItemMetadata.Status
     ) -> [ItemMetadata] {
-        ncDatabase()
-            .objects(ItemMetadata.self)
+        itemMetadatas
             .filter(
                 "account == %@ AND serverUrl == %@ AND status == %@",
                 account,
@@ -327,24 +324,19 @@ public class FilesDatabaseManager {
         status: ItemMetadata.Status,
         completionHandler: @escaping (_ updatedMetadata: ItemMetadata?) -> Void
     ) {
-        let database = ncDatabase()
-
+        guard let result = itemMetadatas.filter("ocId == %@", metadata.ocId).first else {
+            Self.logger.debug(
+                """
+                Did not update status for item metadata as it was not found.
+                ocID: \(metadata.ocId, privacy: .public)
+                """
+            )
+            return
+        }
+        
         do {
+            let database = ncDatabase()
             try database.write {
-                guard let result = database
-                    .objects(ItemMetadata.self)
-                    .filter("ocId == %@", metadata.ocId)
-                    .first
-                else {
-                    Self.logger.debug(
-                        """
-                        Did not update status for item metadata as it was not found.
-                        ocID: \(metadata.ocId, privacy: .public)
-                        """
-                    )
-                    return
-                }
-
                 result.status = status.rawValue
                 if result.isDownload {
                     result.downloaded = false
@@ -400,17 +392,13 @@ public class FilesDatabaseManager {
     }
 
     @discardableResult public func deleteItemMetadata(ocId: String) -> Bool {
-        let database = ncDatabase()
-
         do {
+            let results = itemMetadatas.filter("ocId == %@", ocId)
+            let database = ncDatabase()
             try database.write {
-                let results = database.objects(ItemMetadata.self).filter(
-                    "ocId == %@", ocId)
-
                 Self.logger.debug("Deleting item metadata. \(ocId, privacy: .public)")
                 database.delete(results)
             }
-
             return true
         } catch {
             Self.logger.error(
@@ -421,21 +409,19 @@ public class FilesDatabaseManager {
     }
 
     public func renameItemMetadata(ocId: String, newServerUrl: String, newFileName: String) {
-        let database = ncDatabase()
+        guard let itemMetadata = itemMetadatas.filter("ocId == %@", ocId).first else {
+            Self.logger.debug(
+                """
+                Could not find an item with ocID \(ocId, privacy: .public)
+                    to rename to \(newFileName, privacy: .public)
+                """
+            )
+            return
+        }
 
         do {
+            let database = ncDatabase()
             try database.write {
-                guard
-                    let itemMetadata = database.objects(ItemMetadata.self).filter(
-                        "ocId == %@", ocId
-                    ).first
-                else {
-                    Self.logger.debug(
-                        "Could not find an item with ocID \(ocId, privacy: .public) to rename to \(newFileName, privacy: .public)"
-                    )
-                    return
-                }
-
                 let oldFileName = itemMetadata.fileName
                 let oldServerUrl = itemMetadata.serverUrl
 

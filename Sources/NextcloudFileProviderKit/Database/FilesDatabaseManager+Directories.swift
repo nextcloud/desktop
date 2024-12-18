@@ -24,16 +24,14 @@ extension FilesDatabaseManager {
         } else {
             directoryServerUrl = directoryMetadata.serverUrl + "/" + directoryMetadata.fileName
         }
-        return ncDatabase()
-            .objects(ItemMetadata.self)
+        return itemMetadatas
             .filter("serverUrl BEGINSWITH %@", directoryServerUrl)
             .toUnmanagedResults()
     }
 
     public func childDirectoriesForDirectory(_ directoryMetadata: ItemMetadata) -> [ItemMetadata] {
         let directoryServerUrl = directoryMetadata.serverUrl + "/" + directoryMetadata.fileName
-        return ncDatabase()
-            .objects(ItemMetadata.self)
+        return itemMetadatas
             .filter("serverUrl BEGINSWITH %@ AND directory == true", directoryServerUrl)
             .toUnmanagedResults()
     }
@@ -43,9 +41,7 @@ extension FilesDatabaseManager {
     }
 
     public func directoryMetadata(ocId: String) -> ItemMetadata? {
-        if let metadata = ncDatabase().objects(ItemMetadata.self).filter(
-            "ocId == %@ AND directory == true", ocId
-        ).first {
+        if let metadata = itemMetadatas.filter("ocId == %@ AND directory == true", ocId).first {
             return ItemMetadata(value: metadata)
         }
 
@@ -53,8 +49,7 @@ extension FilesDatabaseManager {
     }
 
     public func directoryMetadatas(account: String) -> [ItemMetadata] {
-        ncDatabase()
-            .objects(ItemMetadata.self)
+        itemMetadatas
             .filter("account == %@ AND directory == true", account)
             .toUnmanagedResults()
     }
@@ -62,8 +57,7 @@ extension FilesDatabaseManager {
     public func directoryMetadatas(
         account: String, parentDirectoryServerUrl: String
     ) -> [ItemMetadata] {
-        ncDatabase()
-            .objects(ItemMetadata.self)
+        itemMetadatas
             .filter(
                 "account == %@ AND parentDirectoryServerUrl == %@ AND directory == true",
                 account,
@@ -76,7 +70,7 @@ extension FilesDatabaseManager {
     public func deleteDirectoryAndSubdirectoriesMetadata(ocId: String) -> [ItemMetadata]? {
         let database = ncDatabase()
         guard
-            let directoryMetadata = database.objects(ItemMetadata.self).filter(
+            let directoryMetadata = itemMetadatas.filter(
                 "ocId == %@ AND directory == true", ocId
             ).first
         else {
@@ -137,10 +131,8 @@ extension FilesDatabaseManager {
     public func renameDirectoryAndPropagateToChildren(
         ocId: String, newServerUrl: String, newFileName: String
     ) -> [ItemMetadata]? {
-        let database = ncDatabase()
-
         guard
-            let directoryMetadata = database.objects(ItemMetadata.self).filter(
+            let directoryMetadata = itemMetadatas.filter(
                 "ocId == %@ AND directory == true", ocId
             ).first
         else {
@@ -153,7 +145,7 @@ extension FilesDatabaseManager {
         let oldItemServerUrl = directoryMetadata.serverUrl
         let oldDirectoryServerUrl = oldItemServerUrl + "/" + directoryMetadata.fileName
         let newDirectoryServerUrl = newServerUrl + "/" + newFileName
-        let childItemResults = database.objects(ItemMetadata.self).filter(
+        let childItemResults = itemMetadatas.filter(
             "account == %@ AND serverUrl BEGINSWITH %@", directoryMetadata.account,
             oldDirectoryServerUrl)
 
@@ -161,6 +153,7 @@ extension FilesDatabaseManager {
         Self.logger.debug("Renamed root renaming directory")
 
         do {
+            let database = ncDatabase()
             try database.write {
                 for childItem in childItemResults {
                     let oldServerUrl = childItem.serverUrl
@@ -180,8 +173,7 @@ extension FilesDatabaseManager {
             return nil
         }
 
-        return database
-            .objects(ItemMetadata.self)
+        return itemMetadatas
             .filter(
                 "account == %@ AND serverUrl BEGINSWITH %@",
                 directoryMetadata.account,
