@@ -106,15 +106,13 @@ public class FilesDatabaseManager {
         !itemMetadatas.filter("account == %@", account).isEmpty
     }
 
-    public func itemMetadataFromOcId(_ ocId: String) -> ItemMetadata? {
+    public func itemMetadataFromOcId(_ ocId: String, managed: Bool = false) -> ItemMetadata? {
         // Realm objects are live-fire, i.e. they will be changed and invalidated according to
         // changes in the db.
         //
         // Let's therefore create a copy
-        if let itemMetadata = ncDatabase().objects(ItemMetadata.self).filter(
-            "ocId == %@", ocId
-        ).first {
-            return ItemMetadata(value: itemMetadata)
+        if let itemMetadata = itemMetadatas.filter("ocId == %@", ocId).first {
+            return managed ? itemMetadata : ItemMetadata(value: itemMetadata)
         }
 
         return nil
@@ -177,7 +175,7 @@ public class FilesDatabaseManager {
 
         for existingMetadata in existingMetadatas {
             guard !updatedMetadatas.contains(where: { $0.ocId == existingMetadata.ocId }),
-                let metadataToDelete = itemMetadataFromOcId(existingMetadata.ocId)
+                  let metadataToDelete = itemMetadataFromOcId(existingMetadata.ocId, managed: true)
             else { continue }
 
             deletedMetadatas.append(metadataToDelete)
@@ -267,6 +265,7 @@ public class FilesDatabaseManager {
                 serverUrl,
                 ItemMetadata.Status.normal.rawValue)
 
+            // NOTE: These metadatas are managed -- be careful!
             let metadatasToDelete = processItemMetadatasToDelete(
                 existingMetadatas: existingMetadatas,
                 updatedMetadatas: updatedMetadatas)
@@ -291,15 +290,7 @@ public class FilesDatabaseManager {
             }
 
             try database.write {
-                for metadata in metadatasToDelete {
-                    // Can't pass copies, we need the originals from the database
-                    database.delete(
-                        ncDatabase()
-                            .objects(ItemMetadata.self)
-                            .filter("ocId == %@", metadata.ocId)
-                    )
-                }
-
+                database.delete(metadatasToDelete)
                 database.add(metadatasToUpdate.map { ItemMetadata(value: $0) }, update: .modified)
                 database.add(metadatasToCreate.map { ItemMetadata(value: $0) }, update: .all)
             }
