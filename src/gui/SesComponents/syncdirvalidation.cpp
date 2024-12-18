@@ -6,7 +6,7 @@
 #ifdef Q_OS_WIN
 bool SyncDirValidator::isValidDir() {
       QString appDataPath = SyncDirValidator::appDataPath();
-      return !_path.startsWith(appDataPath) && !appDataPath.startsWith(_path);
+      return !QDir::fromNativeSeparators(_path).startsWith(appDataPath) && !appDataPath.startsWith(QDir::fromNativeSeparators(_path));
 
 }
 
