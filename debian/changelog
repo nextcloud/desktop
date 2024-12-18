@@ -1,3 +1,922 @@
+nextcloud-desktop (3.15.0) jammy; urgency=medium
+
+  [ suiso67 ]
+  * Narrow down ReadWrite folder permission to owner
+
+  [ Matthieu Gallien ]
+  * master is now the next feature release (i.e. v3.15.0)
+
+  [ Nextcloud bot ]
+  * Fix(l10n): Update translations from Transifex
+  * Fix(l10n): Update translations from Transifex
+  * Fix(l10n): Update translations from Transifex
+
+  [ István Váradi ]
+  * Fix release kind detection
+
+  [ Matthieu Gallien ]
+  * on windows use QWidget native platform style
+  * properly detect and enable Qt6 WebEngine integration
+  * add missing logs and checks for database errors
+  * also include temporary files from WAL SQLite mode into debug archive
+
+  [ Josh ]
+  * docs: conf file option moveToTrash is no longer Linux specific
+
+  [ Matthieu Gallien ]
+  * remove the frame around the sync folders settings area
+
+  [ Nextcloud bot ]
+  * Fix(l10n): Update translations from Transifex
+  * Fix(l10n): Update translations from Transifex
+  * Fix(l10n): Update translations from Transifex
+
+  [ Andy Scherzinger ]
+  * style: Update icons to latest Hub 9 style
+
+  [ Nextcloud bot ]
+  * Fix(l10n): Update translations from Transifex
+
+  [ Matthieu Gallien ]
+  * only add Encrypt context menu entry for top folder in settings dialog
+
+  [ Nextcloud bot ]
+  * Fix(l10n): Update translations from Transifex
+  * Fix(l10n): Update translations from Transifex
+
+  [ Matthieu Gallien ]
+  * ensure detection of entry type on windows is reliable
+
+  [ Camila Ayres ]
+  * Remove QtWebEngineProcess.entitlements.
+
+  [ alex-z ]
+  * Revert "Fix incorrect date parsing."
+
+  [ Nextcloud bot ]
+  * Fix(l10n): Update translations from Transifex
+
+  [ Camila Ayres ]
+  * Change default Qt quick control style depending on the platform.
+
+  [ Matthieu Gallien ]
+  * set the windows native qml style on windows systems
+  * let's not make the background color of main dialog be transparent
+  * remove any use of custom palette: use the style palette
+
+  [ Camila Ayres ]
+  * Remove component versions under src/gui/tray.
+  * Remove qml component version from import.
+  * Remove component import version from Style.qml.
+
+  [ Matthieu Gallien ]
+  * let main dialog have a transparent background again
+  * add a QQuickStyle fallback: Fusion is fallback style
+  * use new QStyleHints::colorScheme feature to use light or dark mode
+  * remove broken system paellete detection within our custom style
+
+  [ Camila Ayres ]
+  * Change default Qt quick control style depending on the platform.
+  * Replace NCToolTip for ToolTip.
+  * Fix repeaded call to QQuickStyle::setStyle.
+  * Remove custom properties for background and opacity from CustomButton component.
+  * Remove custom properties for text color/hover from CustomButton and NCButtonContents components.
+  * Fix warning: The current style does not support customization of this control (property: "background").
+  * Fix warning: The current style does not support customization of this control (property: "contentItem").
+  * Fix warning: The current style does not support customization of this control (property: "background").
+  * Fix warning: The current style does not support customization of this control (property: "contextItem").
+  * Fix warning: The current style does not support customization of this control (property: "indicator").
+  * Fix warning: The current style does not support customization of this control (property: "background").
+  * Clean HeaderButton component from customizations.
+  * Remove setting contentsFont, not used anymore in CustomButton.
+  * Remove customizations from CustomButton.
+  * NCRadioButton => RadioButton.
+  * Remove backround customization from ShareeSearchField.
+  * Remove the component version from import.
+  * Remove duplicated header image.
+  *  Remove image hover from NCButtonContents and CustomButton.
+  * Remove cutomizations for text color and hover from ActivityActionButton.
+  * Remove customizaton for placeholder text color from UnifiedSearchInputContainer.
+  * Remove customization for text color and hover from TextButtonContents.
+  * Remove backround rectangle from NCInputTextEdit.
+  * Fix font color light/dark of time in ActivityItemContent.
+  * Remove customizations for hover background from the user menu options.
+  * Remove customization for font color from EnforcedPlainTextLabel.
+  * Remove background hover customization from UserLine.
+  * Remove more color customizations from Window and TrayFoldersMenuButton.
+  * qrc:/// => image://
+  * Fix talk app icon.
+
+  [ Matthieu Gallien ]
+  * add missing exception handling
+
+  [ Nextcloud bot ]
+  * Fix(l10n): Update translations from Transifex
+  * Fix(l10n): Update translations from Transifex
+  * Fix(l10n): Update translations from Transifex
+
+  [ Claudio Cambra ]
+  * Fix make_universal.py not taking into account 64-bit bundle dylibs
+
+  [ Jyrki Gadinger ]
+  * gui: add some extra syncing details to the tray tooltips
+  * gui: remove Systray::setToolTip
+
+  [ Matthieu Gallien ]
+  * do not ignore paths containing 2 "#" characters
+
+  [ Nextcloud bot ]
+  * Fix(l10n): Update translations from Transifex
+
+  [ Joas Schilling ]
+  * ci: Update workflows
+
+  [ Nextcloud bot ]
+  * Fix(l10n): Update translations from Transifex
+
+  [ Claudio Cambra ]
+  * Wrap all uses of FileSystem::setFolderPermissions in ifdefs for macOS
+  * Wrap use of folder permissions restore in mac ifdefs
+  * Fix issue with placing app bundle in product directory if an existing build is there
+  * Add convenience method to save the entitlements of a bundle to a file as XML
+  * Fix notarisation issues for Sparkle in mac-crafter
+  * Remove get-task-allow entitlement when code-signing app extensions
+  * Make sure to code-sign all binaries in app bundle
+  * Use deep codesigning by default in mac crafter
+  * Fix codesigning of qtwebengine related helper app in mac crafter
+  * Always move final product to product path in mac crafter
+  * Move building into separate subcommand, add subcommand just for codesigning
+
+  [ Nextcloud bot ]
+  * Fix(l10n): Update translations from Transifex
+
+  [ Matthieu Gallien ]
+  * collect remnant read-only folders during discovery
+  * let cancel sync and finish sync  lambda be reusable methods
+  * detect remnants read-only folders to delete: try to delete them
+  * let FileSystem::removeRecursively be able to delete read-only folders
+  * delete invalid folders and restart sync automatically
+  * add automated tests for complex move scenario
+  * avoid wrong tracking of renamed folders during discovery
+  * improve some log that are produced during discovery
+
+  [ Claudio Cambra ]
+  * Move all sharing components for FileProviderUIExt into a Sharing folder
+  * Add basic LockViewController components
+  * Add lock/unlock actions in FileProviderUIExt info plist
+  * Handle new locking action identifiers in document action view controller of FileProviderUIExt
+  * Add basic properties to lock view controller
+  * Design lock view in file provider ui
+  * Add close action to lock view controller
+  * Move service connection fetcher method into a utils file
+  * Move item metadata fetch into util file in FileProviderUIExt
+  * Add convenience method to present and log errors in lock view controller
+  * Add method to simply provide file details in locking view
+  * Process target item on init of lock view controller
+  * Perform lock/unlock procedure in lock view controller
+  * Add convenience function to stop/hide loading indicator in lock view controller
+  * Stop loading indicator when presenting error
+  * Pull out error handling from completionHandler for nckit lockunlock
+  * Once finished locking/unlocking, stop loading indicator
+  * Make sure not to check for kit before we should in shares table view data source
+  * Fix file lock server url in lockviewcontroller
+  * Fix XIB initialisation in LockViewController
+  * Fix internal layouting of lock view by simply using a nsview rather than fumbling with a stack view
+  * Add warn image to locking view if there is an error
+  * Fix NSExtensionFileProviderActionActivationRules for locking menu items
+  * Display checkmark when file lock completed
+  * Do not provide items if account is not set up correctly
+  * Signal enumeration of locked/unlocked file
+  * Make sure we do not renotify notifications when we have received the same etag as during the last check
+  * Notify even if pre-fetch etag header is empty
+
+  [ Nextcloud bot ]
+  * Fix(l10n): Update translations from Transifex
+
+  [ Jyrki Gadinger ]
+  * gui: add some context for translators
+
+  [ Camila Ayres ]
+  * Fix tray header light/dark theme.
+  * Fix caret-down icon theme, size and alignment.
+  * Fix dark/light mode for account menu.
+  * Fix display of icons in dark/light theme.
+  * Add colored to base colors.
+  * Use palette.window as header background color.
+  * Add new icon for more apps menu.
+  * Use Style.trayFolderStatusIndicatorRadiusFactor in the UserLine.
+  * Match the apps menu list look with the user's list look.
+  * Use the same radius value, border colors and hover colors in all header menus.
+  * Add radius value, border and hover colors in the folder's menus.
+  * Add margin space to the right of the 3 dots user menu.
+  * Fix the color of the tab icons in the files details page.
+  * Fix warning: TypeError: Cannot read property 'height'/'width' of null.
+  * Fix unified search input placeholder text alignment and radius.
+  * Fix height of text input fields and radius.
+  * Remove extra ';'
+  * Add the same round background rectangle for the talk reply text field.
+  * Adjust radius values: main window and text input uses bigger value, dropdown menus uses half.
+  * Fix emoji selector page: transparency made it unusable. Use windows background color.
+  * Add todo: fix predefined status list.
+  * Add todo: check if we should keep bottomUnifiedSearchInputSeparator.
+  * Remove user status hover effect and background color.
+  * Fix error: Audio is not a type.
+  * Fix wrong Style property.
+  * Remove extra ';'
+
+  [ Nextcloud bot ]
+  * Fix(l10n): Update translations from Transifex
+  * Fix(l10n): Update translations from Transifex
+
+  [ Nicolas Fella ]
+  * Mark as single window app
+
+  [ Nextcloud bot ]
+  * Fix(l10n): Update translations from Transifex
+
+  [ Matthieu Gallien ]
+  * ensure proper VFS metadata when restoring folders
+  * as a last resort, try to update VFS metadata of folders when discovered
+
+  [ Nextcloud bot ]
+  * Fix(l10n): Update translations from Transifex
+
+  [ dependabot[bot] ]
+  * Bump cpp-linter/cpp-linter-action from 2.12.1 to 2.13.0
+  * Fix(l10n): Update translations from Transifex
+  * Fix(l10n): Update translations from Transifex
+  * Fix(l10n): Update translations from Transifex
+  * Fix(l10n): Update translations from Transifex
+  * Fix(l10n): Update translations from Transifex
+  * Fix(l10n): Update translations from Transifex
+
+  [ Claudio Cambra ]
+  * Correctly kill processes spawned by mac-crafter if mac-crafter quits/is killed/etc
+  * Add buildPackage function to mac crafter
+  * Add flag to build pkg in mac-crafter
+  * Add ability to sign pkg from mac-crafter
+  * Add ability to notarise package from mac-crafter
+  * Add ability to build and sign sparkle tbz from mac-crafter
+  * Add logging to packaging procedures in mac-crafter
+  * Use appName for packaging step in mac-crafter
+  * Remove unused sparkleFile var
+  * Fix work build path used in mac crafter packaging stage
+  * Create convenience function to convert architecture string to craft target string
+  * Move packaging procedures into a single function in mac crafter
+  * Make specific step functions for packaging fileprivate in mac crafter
+  * Add package command for mac crafter
+  * Add note about packaging tooling in mac crafter
+  * Bump up minimum system version to 11.0 on macOS (required by Qt 6)
+  * Downgrade deployment target variables to 11.0 as 12.0 is not necessary
+  * Remove now unneeded deployment target checks in CMake
+  * Revert "Merge pull request #6986 from nextcloud/feature/alwaysEnableHttp2"
+
+  [ Nextcloud bot ]
+  * Fix(l10n): Update translations from Transifex
+
+  [ dependabot[bot] ]
+  * Bump cpp-linter/cpp-linter-action from 2.13.0 to 2.13.1
+
+  [ Claudio Cambra ]
+  * Add combo box to setup page UI
+  * Add property for detecting of application override server url is in fact a JSON array string describing multiple servers
+  * Do not apply override server url as account url if this is a multi-server JSON string
+  * Show or hide multi-server overrides or text field depending on type of override url
+  * Accept combo box selection as completed state in setup page
+  * If using multi-server override url and forcing it then provide combo box selection url as url in setup page
+  * Use url method instead of text field contents as url when deciding on error string in setup page
+  * Do not automatically validate server URL when enforced servers is active but have multiple servers
+  * Display server URL in multi-server enforced combo box
+  * Use a raw string in config.h.in for application server url
+  * Ensure we hide the combo box for multiple override servers by default
+
+  [ Camila Ayres ]
+  * Update README.
+
+  [ Joas Schilling ]
+  * Update config.yml
+
+  [ Nextcloud bot ]
+  * Fix(l10n): Update translations from Transifex
+
+  [ Matthieu Gallien ]
+  * store lock tokens in database
+  * receive and decode tokens for locks
+  * if a file is locked/ provide token during upload
+  * provide LOCK token when uploading a single file via PUT
+  * change the order of imports in Window.qml
+  * rename our Window component to MainWindow to not use an existing name
+  * add seemingly needed qml import path
+
+  [ Camila Ayres ]
+  * Use version of linuxdeploy-plugin-qt from PR in the project.
+
+  [ Nextcloud bot ]
+  * Fix(l10n): Update translations from Transifex
+
+  [ Matthieu Gallien ]
+  * clarify when desktop client should offer to unlock a file
+  * lock token should be sent via webdav only for token lock type
+  * changing default chunk size to 100MB
+  * remove obsolete not working docker image for windows compilation
+
+  [ Camila Ayres ]
+  * Fix alignment and size of buttons.
+  * Validate input of APPLICATION_SERVER_URL.
+
+  [ Matthieu Gallien ]
+  * disable our code for network timeout
+
+  [ Nextcloud bot ]
+  * Fix(l10n): Update translations from Transifex
+
+  [ Camila Ayres ]
+  * Only check leading/trailing spaces for files on Windows.
+  * Add test testCreateLocalPathsWithLeadingAndTrailingSpaces_syncOnSupportingOs.
+  * Fix tests for trailing spaces on Linux.
+  * Use preprocessor directives in tests.
+
+  [ Matthieu Gallien ]
+  * use constexpr function for platform detection
+
+  [ Nextcloud bot ]
+  * Fix(l10n): Update translations from Transifex
+  * Fix(l10n): Update translations from Transifex
+
+  [ Claudio Cambra ]
+  * Add support for the new craft blueprint options relating to override server urls
+
+  [ Nextcloud bot ]
+  * Fix(l10n): Update translations from Transifex
+
+  [ Claudio Cambra ]
+  * Codesign webengineprocess with correct entitlements on macOS with mac crafter
+
+  [ Matthieu Gallien ]
+  * count the files deletion and warn if threshold is exceeded
+
+  [ Andy Scherzinger ]
+  * docs: Update template to match org-templates
+
+  [ Nextcloud bot ]
+  * Fix(l10n): Update translations from Transifex
+
+  [ Matthieu Gallien ]
+  * create a permanent log of delete actions
+  * remove not so usefull log line for new files
+  * message should say many not all: would be triggered by 200 files
+
+  [ Nextcloud bot ]
+  * Fix(l10n): Update translations from Transifex
+  * Fix(l10n): Update translations from Transifex
+  * Fix(l10n): Update translations from Transifex
+
+  [ Matthieu Gallien ]
+  * enable dev logs only when NEXTCLOUD_DEV is defined to value 1
+  * improve debugger logs on Windows to have same content than normal log
+
+  [ Nextcloud bot ]
+  * Fix(l10n): Update translations from Transifex
+  * Fix(l10n): Update translations from Transifex
+  * Fix(l10n): Update translations from Transifex
+
+  [ Matthieu Gallien ]
+  * remove too verbose logs during discovery
+  * remove useless internal log about remote permissions management
+  * remove too verbose not so usefull logs
+  * remove internal logs in propagation scheduler: not usefull
+  * downgrade severity level of logs during propagation
+  * qml Windows native style is broken on dark mode: switch to Fusion
+  * switch folder wizar to modern style to avoid borken windows dark mode
+  * remove hard coded white color in elements of folder wizard
+  * ensure log context category is valid before reading it
+
+  [ Nextcloud bot ]
+  * Fix(l10n): Update translations from Transifex
+
+  [ Matthieu Gallien ]
+  * properly catch std::filesystem exceptions
+
+  [ Camila Ayres ]
+  * Add README about mac-crafter.
+  * Add note about craft-master in the main README.
+
+  [ Claudio Cambra ]
+  * Simplify build instructions in mac-crafter README
+  * Clarify architecture setting has automatic default in mac-crafter readme
+  * Match the universal build instructions with what we actually do with mac-crafter and make_universal
+
+  [ Camila Ayres ]
+  * Fix the list of steps order.
+  * Fix permanent link to mac-crafter README.
+
+  [ Nextcloud bot ]
+  * Fix(l10n): Update translations from Transifex
+
+  [ Matthieu Gallien ]
+  * remove extra argument from QString::arg: string has only 1 placeholder
+  * remove not so usefull log output
+  * remove info level output from activity list model: not so usefull
+  * improve log when too many deleted files are detected
+  * try to increase timeout of github actions for macOS
+  * no longer use deprecated Craft command line option
+  * CI fix warning: inkscape was renamed to homebrew/cask/inkscape
+
+  [ Nextcloud bot ]
+  * Fix(l10n): Update translations from Transifex
+
+  [ Claudio Cambra ]
+  * Remove unused <random> import in cmd.cpp
+  * Encourage use of https in error message for cmd.cpp
+  * Properly check for webdav or dav path in provided host url for cmd.cpp
+  * Try to authenticate new account details before setting them
+  * Retry authentication if connection timed out
+  * Wait for task to complete synchronously after setting up domain account rather than wrapping everything in task
+  * Fetch user profile (and user ID) when setting up domain account
+  * Properly provide both user-provided username AND backing user ID to File Provider Extension
+  * Handle userId correctly in File Provider Extension client interface
+  * Stop fetching user profile details now that is not necessary in file provider extension
+
+  [ Nextcloud bot ]
+  * Fix(l10n): Update translations from Transifex
+  * Fix(l10n): Update translations from Transifex
+  * Fix(l10n): Update translations from Transifex
+  * Fix(l10n): Update translations from Transifex
+
+  [ Claudio Cambra ]
+  * Fix poor translation strings for blacklisted error reason strings
+
+  [ Camila Ayres ]
+  * Make string more readable for translators.
+
+  [ Nextcloud bot ]
+  * Fix(l10n): Update translations from Transifex
+
+  [ Matthieu Gallien ]
+  * improve wordings of confirmation dialog when many files are deleted
+
+  [ Claudio Cambra ]
+  * Fix crash caused by null accountstate due to bad domain identifier parsed from FPExt
+
+  [ Camila Ayres ]
+  * Check if signature is empty.
+  * Add test testFolderMetadataWithEmptySignatureDecryptFails.
+  * Report client status error when signature is empty.
+  * Fail with error before calling folder metada setup when received empty signature.
+
+  [ Nextcloud bot ]
+  * Fix(l10n): Update translations from Transifex
+
+  [ Matthieu Gallien ]
+  * test syncing of read-only .lnk windows shorcuts
+  * better logs tounderstand when a folder is local scanned
+  * in automated tests, update modtime when modifying the content of a file
+  * handle NEW/NEW conflicts by being real conflicts
+  * remove the enforcement of identical etag for a server side item MOVE
+
+  [ dependabot[bot] ]
+  * Bump cpp-linter/cpp-linter-action from 2.13.1 to 2.13.2
+
+  [ Elsie Hupp ]
+  * Fix Finder sidebar icon to work as a "template" image and change to SF Symbols lineweights
+  * Show/Hide Menubar and Dock Icon
+
+  [ Rello ]
+  * remove ownCloud wording in logging
+
+  [ Matthieu Gallien ]
+  * on receiving reply of a remote MOVE: always record it
+
+  [ Nextcloud bot ]
+  * Fix(l10n): Update translations from Transifex
+
+  [ Claudio Cambra ]
+  * Incorporate doc fixes from pull request #6122
+  * Wrap use of NSFileProviderManager globalProgress in availability check
+  * Fix swift 6 concurrency error regarding use of authAttemptState
+  * Run post-auth state check with main actor task
+  * Make sure storage headers do not collide with each other in macOS VFS settings
+  * Constify openLocalFolder
+  * Use for : loop in getFolder
+  * Prevent double slashes in group folder path parsing
+  * Take reference to folder in folder map within User::getFolder
+  * Add ability to make share sharee displayname more verbose
+  * Check for and store indices of shares with duplicate display names
+  * Display more verbose share display names for shares that have sharees with identical display names
+  * Make sure to update display of all duplicate display name shares
+  * Clean up check for equality between sharee display names
+  * Store duplicate indices as key-value pair with value storing bucket of all duplicates
+  * Ensure on removal of share that display string is updated for last (now non-)duplicate share
+  * Pin Craft Qt version to 6.7.2 and binary cache version to 24.08
+
+  [ Nextcloud bot ]
+  * Fix(l10n): Update translations from Transifex
+  * Fix(l10n): Update translations from Transifex
+  * Fix(l10n): Update translations from Transifex
+  * Fix(l10n): Update translations from Transifex
+
+  [ Matthieu Gallien ]
+  * detect the terms of service app is requiring the user to sign them
+  * content access denied error during discovery: verify server access
+  * content access denied error during discovery: verify server access
+  * notify user once when terms of service need to be signed
+  * properly detect need to sign terms of service state
+
+  [ Nextcloud bot ]
+  * Fix(l10n): Update translations from Transifex
+
+  [ Matthieu Gallien ]
+  * improve again state tracking with terms of service app
+  * improve logs when checking terms of service status
+
+  [ Nextcloud bot ]
+  * Fix(l10n): Update translations from Transifex
+  * Fix(l10n): Update translations from Transifex
+
+  [ Camila Ayres ]
+  * Set promptDeleteFiles default to false.
+  * On upgrade notification for mass file deletion is disabled by default.
+
+  [ Nextcloud bot ]
+  * Fix(l10n): Update translations from Transifex
+  * Fix(l10n): Update translations from Transifex
+  * Fix(l10n): Update translations from Transifex
+  * Fix(l10n): Update translations from Transifex
+  * Fix(l10n): Update translations from Transifex
+
+  [ Claudio Cambra ]
+  * Only display server name in multiple override servers dropdown
+
+  [ dependabot[bot] ]
+  * Bump cpp-linter/cpp-linter-action from 2.13.2 to 2.13.3
+
+  [ Nextcloud bot ]
+  * Fix(l10n): Update translations from Transifex
+
+  [ Camila Ayres ]
+  * Remove call to wantsAccountSaved when clearing the cookies.
+  * Validate http_user value before assigning it to user in the config file.
+  * Use const auto.
+
+  [ Nextcloud bot ]
+  * Fix(l10n): Update translations from Transifex
+  * Fix(l10n): Update translations from Transifex
+
+  [ Camila Ayres ]
+  * Update share link for AppImage tool.
+
+  [ Claudio Cambra ]
+  * Add xml-escaped version of application vendor variable in CMakeLists
+  * Use xml-escaped application vendor in info plist, fixing code-signing issues for vendors with special chars
+
+  [ Camila Ayres ]
+  * Remove checks for the update channel from the getter function.
+  * Change the list of update channels when server capabilities change.
+  * Do not override the subscription value if one of the account has enterprise.
+  * Do not override the channels list if one of the account has enterprise.
+  * Save serverHasValidsubcription in the account.
+  * Fix logic for initial load of update channels and priority for user with subscription.
+  * Update config value when serverHasValidSubscription when accounts are added or removed.
+  * Address PR feedback.
+  * Remove check in setServerHasValidSubscription.
+  * Fix compiling when BUILD_UPDATER is set to OFF.
+
+  [ Claudio Cambra ]
+  * Do not alter the user's debug and expiration settings when changing temporary log dir setting
+
+  [ Nextcloud bot ]
+  * Fix(l10n): Update translations from Transifex
+  * Fix(l10n): Update translations from Transifex
+
+  [ dependabot[bot] ]
+  * Bump platisd/clang-tidy-pr-comments from 1.5.0 to 1.5.1
+  * Fix(l10n): Update translations from Transifex
+  * Fix(l10n): Update translations from Transifex
+  * Fix(l10n): Update translations from Transifex
+
+  [ Claudio Cambra ]
+  * Do not attempt to reach out to FileProviderExt every single time we want to check if it is reachable
+  * Slash semaphore wait delta on reachability down to 1 second
+  * Increase reachability retry timeout
+  * Store reachability of FileProviderExt by respective account
+  * Start counting storage usage from 0 for macOS virtual files account
+  * Update copyright year in macOS info.plist template
+
+  [ Nextcloud bot ]
+  * Fix(l10n): Update translations from Transifex
+
+  [ Claudio Cambra ]
+  * Only present proxy password delete error if it is not a "does not exist" error
+
+  [ Nextcloud bot ]
+  * Fix(l10n): Update translations from Transifex
+  * Fix(l10n): Update translations from Transifex
+  * Fix(l10n): Update translations from Transifex
+  * Fix(l10n): Update translations from Transifex
+  * Fix(l10n): Update translations from Transifex
+
+  [ Claudio Cambra ]
+  * Add section on Apple ATS to docs troubleshooting section
+  * Add option to create developer builds of client via mac crafter
+  * Emit a signal on wizard close
+  * Also emit close signal on window hide (i.e. user close) on macOS
+  * Clear wizard static pointer on wizardClosed
+
+  [ Rello ]
+  * Update nextcloudcmd.rst
+  * Update doc/nextcloudcmd.rst
+
+  [ Fabian Creutz ]
+  * Add null check for resultDacl after calling GetSecurityDescriptorDacl
+
+  [ Camila Ayres ]
+  * Add step to remove Desktop.ini to removeFolder function.
+  * f => folderToRemove.
+  * Modernize NavigationPaneHelper class.
+  * Add documentation about Utility::setupFavLink and Utility::removeFavLink.
+  * Modernize Utility::removeFavLink and Utility::setupFavLink.
+
+  [ Nextcloud bot ]
+  * Fix(l10n): Update translations from Transifex
+  * Fix(l10n): Update translations from Transifex
+
+  [ Claudio Cambra ]
+  * Add starter documentation page on macOS VFS
+  * Add introduction section to macosvfs docs
+  * Add install/initial setup section to macosvfs docs
+  * Add section on finder integration to macosvfs docs
+  * Add note on notify_push to macosvfs doc
+  * Add section on configuration for macosvfs docs
+
+  [ Nextcloud bot ]
+  * Fix(l10n): Update translations from Transifex
+
+  [ Matthieu Gallien ]
+  * remove assert that is being hit always when running debug builds
+
+  [ Claudio Cambra ]
+  * Remove background from textfields to fix errors
+  * Add small top margin to shareview
+
+  [ Nextcloud bot ]
+  * Fix(l10n): Update translations from Transifex
+
+  [ Claudio Cambra ]
+  * Fix encoding used for override server url
+  * If fileProviderExtRecheable is false, try to reconfigure client communication service
+
+  [ Camila Ayres ]
+  * Update url to dowload linuxdeploy-plugin-qt tool latest version.
+
+  [ Claudio Cambra ]
+  * Rewrite setResult:forPath: method signature for SyncClient and FinderSync
+  * Do not set badge identifier for a given path URL if the URL is nil
+  * Revert "remove broken system paellete detection within our custom style"
+  * Add convenience method to check Windows 11 availability
+  * Use old palette change detection method on Windows 10 and under
+  * If <= Windows 10, use the reserve dark palette for dark mode
+  * Use registry-based dark mode detection on <= Windows 10
+  * Use QOperatingSystemVersion in Windows 11 check
+
+  [ Matthieu Gallien ]
+  * use QWidget Fusion style on Windows 10: enable dark mode
+  * create a log category for OCC::Theme class
+  * implement a drak mode palette  and use it when needed
+  * on Windows 10 follow color scheme changes and apply them
+  * some improvements for account network settings
+
+  [ dependabot[bot] ]
+  * Build(deps): Bump platisd/clang-tidy-pr-comments from 1.5.1 to 1.6.1
+
+  [ Nextcloud bot ]
+  * Fix(l10n): Update translations from Transifex
+
+  [ Claudio Cambra ]
+  * Ensure paths are passed properly escaped into codesign command in mac-crafter
+  * Add missing brace in FileProviderXPC's fileProviderExtReachable
+  * Also escape codesign call with saving entitlements
+  * Also add options to recursive codesign function
+  * Use recursive codesign instead of broken wildcard path for sparkle Autoupdate app
+  * Fix codesign path for app bundle main binaries
+  * Escape code sign entitlement paths in mac crafter
+  * Add live photo properties to syncfileitem
+  * Add live photo properties to remoteinfo struct
+  * Add live photo properties to sync journal file record
+  * Handle live photo in syncjournaldb queries and inserts
+  * Fetch and record live photo properties during remote discovery single directory job
+  * Apply live photo server entry properties to syncfileitem
+  * Set live photo properties on syncfileitem when creating one based on other types of items
+  * If the user tries to delete the movie component of a live photo, redownload this
+  * Add isLivePhoto property to FileInfo in syncenginetestutils
+  * Add setIsLivePhoto method to FileInfo
+  * Add test for correct handling of live photo mov deletion
+  * Check for live photo against db entry instead of server entry
+  * Handle NeedToSignTermsOfService account state in file provider components
+  * Handle redirect detected for account state in domain manager
+
+  [ Nextcloud bot ]
+  * Fix(l10n): Update translations from Transifex
+
+  [ Claudio Cambra ]
+  * Do not do deep codesign as default
+  * Also sign executables during recursive codesign
+  * Do a codesign of the app bundle itself as final step
+  * Bring back coloured header
+  * Fix background colour for tray window (should be base as we only show item views)
+  * Use palette base colour for windows (we always display item views)
+  * Remove custom background from menus and menu buttons
+  * Remove internal list view and scrollview from apps menu
+  * Remove commented-out hover effect component
+  * Wrap the instantiated userLine components in a menu item
+  * Use standard icon for addAccountButton, fixing sizing
+  * Use standard icon property to set icon for userline
+  * Improve spacings of userline
+  * Make sizing of addacount button more reasonable
+  * Fix some more colours
+  * Fix colours for some more components
+  * Fix components for share details page footer
+  * Fix sync status separator
+  * Fix borders for share details page footer
+  * Fix icons in share delegate buttons being uncentered
+  * Fix spacing of activity item buttons
+  * Respect showDismissButton
+  * Simplify layout and fix alignments, sizings, and layouts of items with native theming in unified search input container
+  * Fix placeholderTextColor in user status selector text field
+  * Decouple emoji field button from UserStatusSelectorButton
+  * Replace use of CustomButton with standard Button
+  * Remove custom button QML items
+  * Fix sizing of share details page buttons
+  * Fix label alignments on share view checkboxes
+  * Fix displaying of busy indicator on share view
+  * Do not use magic numnbers for spacing of sync status icon
+  * Fix search bar separator in tray window
+  * Remove menuBorder Style variable, just use palette (as we have already done in parts)
+  * Remove now unused hover colors
+  * Remove background color from Style, use palette base in its place
+  * Use standard text colour in ncinputtextedit
+  * Move remaining uses of secondary text color to use palette midlight, remove this property froms style
+  * Remove unused colours from style
+  * Use accentColor rather than header colour where appropriate
+  * Give sync progress bar expected fill colour
+  * Use constexpr for accentcolor adjustment value
+  * Remove unused style measurements
+  * Fix colour of indicator outlines in tray header elements
+  * Reduce size of tray window header
+  * Remove rectangle aboce folder state indicator background in tray folders menu button
+  * Remove unused properties from UserLine
+  * Do not load caret on current user button if the button had a non-null indicator
+  * Move current account header button definition into own file
+  * Move tray window header component into separate file
+  * Do not treat bundles as executables in codesign check
+  * Mark non-const getters in Folder definition as const
+  * Store fetched folder as private member in filedetails
+  * Simply pass AccountPtr to updateFileTagModel
+  * Ensure we are checking for tags in correct server path regardless of the particular local path
+  * Move setup of server relative path used in FileTagModel into FileDetails
+  * Add missing nodiscards in folder methods
+  * Remove unused includes in filetagmodel
+  * Make the unified search input being focused a valid active reason
+  * Add a mouse area to allow de-focusing the unified search text field on click elsewhere
+  * Fix keyboard tab behaviour when focus reaches unified search bar
+  * On escape pressed of unified search placeholder view, diable activeSearchFocus
+  * Add a UnifiedSearchPlaceholderView
+  * Place unified search placeholder view in main tray window view when in focus and no text is entered
+  * Clean up ids of internal components of placeholder views
+  * Unify definition of unified seach placeholder views fonts
+  * Allow using an external task for running commands in mac-crafter run command
+  * Do not rely on FileManager's isExecutableFile, check manually for Mach-O executable type
+  * Do not do final bundle codesign
+
+  [ Matthieu Gallien ]
+  * improve files explorer context menu by removing obsolete commands
+  * flush logs every 5 lines written
+  * ensure folder permissions are read-only when needed
+  * ensure no any user writable permissions in Nextcloud sync folder
+  * better logs and factor common code in folder permissions handling
+
+  [ Claudio Cambra ]
+  * Add checkbox to disable general talk notifications in general settings
+  * Add setting for showing chat notifications to configfile
+  * Add the chat notification toggle setting logic in generalsettings
+  * Only notify talk chat notifications if this is enabled
+  * Do not use const for POD type in setShowCallNotifications declaration
+  * Remove unneeded check for DnD status when showing desktop talk notification
+
+  [ Matthieu Gallien ]
+  * remove this call that is probably useless and crashing tests
+
+  [ Claudio Cambra ]
+  * Do not take current dir pth for filemanager for recursive codesign executable path check
+  * Ensure path passed to codesigning is absolute when using mac-crafter codesign
+  * Only define enumeratedItemPath once
+  * Ensure we sign the app bundle's main executable last
+  * Add ability to skip certain files in recursive codesign
+  * Skip main executable during first binary codesign round
+
+  [ Nextcloud bot ]
+  * Fix(l10n): Update translations from Transifex
+
+  [ Claudio Cambra ]
+  * Fix broken general setting UI file
+  * Rename horizontalLayout with duplicate name
+  * Add displayFileOwner property to ShareModel
+  * Add fileOwnerDisplayName property to ShareModel
+  * Set if the file owner should be displayed and the file owner display name on propfind in sharemodel
+  * Add sharedWithMe-related properties to sharemodel
+  * Also fetch shared with me share on target path
+  * When handling fetched shares, record shared-with-me related information in sharemodel properties
+  * Display file owner information (if not self) in share view
+  * Display shared with me file's share expiry in share view if relevant
+  * Display share owner rather than file owner (this is more relevant to user)
+  * Bolden string showing who owns the share that was shared with me
+  * Convert ImageProvider in an async image provider using an internal image response
+  * Add ability to fetch remote server avatars in usermodel avatar ImageResponse
+  * Add shareOwnerAvatar property to ShareModel
+  * Build shareOwnerAvatar image provider string when handling sharedWithMe share in ShareModel
+  * Display image for sharedWithMe share owner in share view
+  * Ensure requestedSize for avatars is valid
+  * Ensure account pointer is valid when fetching avatars
+  * Clean up whitespace in ShareModel::slotPropfindReceived
+  * Match definition of shared_with_me with other properties in OcsShareJob getShares
+  * Ensure avatarJob is run on the respective account's QNAM thread
+
+  [ Matthieu Gallien ]
+  * do not move to trash online only files/folders: going to fail
+  * fix computation of availability for empty folders
+  * use proper item type when converting existing windows shortcuts
+  * fix migration of existing windows shortcut files to placeholder
+  * provide proper log when we block a self hydration request
+  * prevent implicit hydration when setting file permissions on shortcuts
+  * never use QFileInfo on possibly pure virtual placeholder file
+  * improve logs for CfAPI handle requests in erroneous cases
+  * remote permissions of a view-only folder: no new file or folder
+  * ensure lnk shortcut files are converted to virtual files
+
+  [ Claudio Cambra ]
+  * Directly bundle macOS vfs logs within standard debug archive
+  * Remove create debug archive button from individual vfs account settings
+  * Ensure we are not halting the entire application when trying to generate the debug archive for macOS vfs
+  * Move debug archive for vfs creation out of log entry creation
+  * Just use davUser as account identifier for macOS log filename
+  * Move file provider header include into file provider ifdef
+
+  [ Camila Ayres ]
+  * Use slotComputeOverallSyncStatus as a slot.
+  * Fix warning "Calling C++ methods with 'this' objects different from the one they were retrieved from is broken"
+  * Modernize Account::displayName().
+  * Use slots as slots.
+  * Diferentiate between display name and dav display name.
+  * Rename vars: _am => _networkAccessManager, a => newAccountData.
+  * Use saveAccount for adding single account.
+  * Add {} to single line if.
+  * acc => account.
+  * wiz => owncloudSetupWizard.
+  * Call for done() when skipping folder configuration.
+  * Remove check before setting display name.
+  * Fix tests: make sure displayName is not empty.
+  * Correct Q_PROPERTY for _davDisplayName.
+
+  [ cmuck ]
+  * Fix login regression on linux
+  * Fix login regression on linux
+
+  [ Matthieu Gallien ]
+  * revert changes to the stale virtual files clean up function
+  * prevent out of bounds access in automated tests
+
+  [ Claudio Cambra ]
+  * Remove unneeded workaround for dash separated language strings
+  * Only grab system language from QLocale::system
+  * Use first uiLanguage as lang
+
+  [ Matthieu Gallien ]
+  * add include QLocale to fix compilation issue
+  * use CI images including Qt6.7 that is now required
+  * we require Qt 6.7 release to build
+  * prepare for release 3.15.0
+
+  [ Nextcloud bot ]
+  * Fix(l10n): Update translations from Transifex
+
+  [ Matthieu Gallien ]
+  * fix spelling os UserStatus qml type when setting user status
+
+  [ Nextcloud bot ]
+  * Fix(l10n): Update translations from Transifex
+  * Fix(l10n): Update translations from Transifex
+  * Fix(l10n): Update translations from Transifex
+
+  [ Claudio Cambra ]
+  * Make connectToPaletteSignal const
+  * Try connectToSignal on all OSes on Theme init
+  * Add connectToSignal on darkMode property fetch
+  * Use Style.darkMode instead of Theme.darkMode
+
+  [ Matthieu Gallien ]
+  * no transparent background for main ApplicationWindow
+
+ -- István Váradi <ivaradi@varadiistvan.hu>  Wed, 18 Dec 2024 16:07:30 +0000
+
 nextcloud-desktop (3.14.0) jammy; urgency=medium
 
   [ Camila Ayres ]
