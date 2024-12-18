@@ -1223,6 +1223,14 @@ void PropagateDownloadFile::downloadFinished()
         {
             qCWarning(lcPropagateDownload()) << _item->_instruction << _item->_file << e.what();
         }
+        catch (std::system_error e)
+        {
+            qCWarning(lcPropagateDownload()) << _item->_instruction << _item->_file << e.what();
+        }
+        catch (...)
+        {
+            qCWarning(lcPropagateDownload()) << _item->_instruction << _item->_file;
+        }
 #else
         if (existingFile.permissions() != _tmpFile.permissions()) {
             _tmpFile.setPermissions(existingFile.permissions());
