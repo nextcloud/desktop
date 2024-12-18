@@ -32,13 +32,6 @@ extension FilesDatabaseManager {
         childItems(directoryMetadata: directoryMetadata).count
     }
 
-    public func childDirectoriesForDirectory(_ directoryMetadata: ItemMetadata) -> [ItemMetadata] {
-        let directoryServerUrl = directoryMetadata.serverUrl + "/" + directoryMetadata.fileName
-        return itemMetadatas
-            .filter("serverUrl BEGINSWITH %@ AND directory == true", directoryServerUrl)
-            .toUnmanagedResults()
-    }
-
     public func parentDirectoryMetadataForItem(_ itemMetadata: ItemMetadata) -> ItemMetadata? {
         self.itemMetadata(account: itemMetadata.account, locatedAtRemoteUrl: itemMetadata.serverUrl)
     }
