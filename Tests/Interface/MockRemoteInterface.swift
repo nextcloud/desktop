@@ -256,6 +256,10 @@ public class MockRemoteInterface: RemoteInterface {
             return (account.ncKitAccount, nil, .urlError)
         }
 
+        if isTrashing {
+            sourceItem.identifier = sourceItem.identifier + trashedItemIdSuffix
+        }
+
         sourceItem.name = try! name(from: remotePathDestination)
         sourceItem.parent?.children.removeAll(where: { $0.identifier == sourceItem.identifier })
 
@@ -271,6 +275,8 @@ public class MockRemoteInterface: RemoteInterface {
         }
 
         if isRestoreFromTrash {
+            sourceItem.identifier =
+                sourceItem.identifier.replacingOccurrences(of: trashedItemIdSuffix, with: "")
             sourceItem.name = try! name(from: sourceItem.trashbinOriginalLocation!)
             sourceItem.trashbinOriginalLocation = nil
         }
@@ -278,8 +284,6 @@ public class MockRemoteInterface: RemoteInterface {
         let matchingNameChildCount = destinationParent.children.count(
             where: { $0.name == sourceItem.name }
         )
-
-        print(matchingNameChildCount)
 
         if !overwrite && matchingNameChildCount > 0 {
             sourceItem.name += " (\(matchingNameChildCount))"
@@ -307,8 +311,11 @@ public class MockRemoteInterface: RemoteInterface {
                         child.trashbinOriginalLocation = child.remotePath.replacingOccurrences(
                             of: account.davFilesUrl + "/", with: ""
                         )
+                        child.identifier = child.identifier + trashedItemIdSuffix
                     }
                 } else {
+                    child.identifier =
+                        child.identifier.replacingOccurrences(of: trashedItemIdSuffix, with: "")
                     child.trashbinOriginalLocation = nil
                 }
 

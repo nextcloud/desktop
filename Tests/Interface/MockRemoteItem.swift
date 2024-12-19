@@ -10,11 +10,13 @@ import NextcloudFileProviderKit
 import NextcloudKit
 import UniformTypeIdentifiers
 
+public let trashedItemIdSuffix = "-trashed-mri"
+
 public class MockRemoteItem: Equatable {
     public var parent: MockRemoteItem?
     public var children: [MockRemoteItem] = []
 
-    public let identifier: String
+    public var identifier: String
     public let versionIdentifier: String
     public var name: String
     public var remotePath: String
@@ -97,6 +99,7 @@ public class MockRemoteItem: Equatable {
         file.directory = directory
         file.etag = versionIdentifier
         file.ocId = identifier
+        file.fileId = identifier.replacingOccurrences(of: trashedItemIdSuffix, with: "")
         file.serverUrl = parent?.remotePath ?? remotePath
         file.account = account
         file.user = username
@@ -113,7 +116,7 @@ public class MockRemoteItem: Equatable {
     public func toNKTrash() -> NKTrash {
         let trashItem = NKTrash()
         trashItem.ocId = identifier
-        trashItem.fileId = identifier
+        trashItem.fileId = identifier.replacingOccurrences(of: trashedItemIdSuffix, with: "")
         trashItem.fileName = name
         trashItem.directory = directory
         trashItem.trashbinOriginalLocation = trashbinOriginalLocation ?? ""
@@ -130,7 +133,7 @@ public class MockRemoteItem: Equatable {
 
         let metadata = ItemMetadata()
         metadata.ocId = identifier
-        metadata.fileId = identifier
+        metadata.fileId = identifier.replacingOccurrences(of: trashedItemIdSuffix, with: "")
         metadata.etag = versionIdentifier
         metadata.directory = directory
         metadata.name = name
