@@ -535,6 +535,10 @@ final class MockRemoteInterfaceTests: XCTestCase {
         XCTAssertEqual(items[1].ocId, itemB.identifier)
     }
 
+    // The server will return ocIds as fileIds. To try to test the item modification steps' handling
+    // of this, we intentionally mangle the item's original identifiers while keeping the fileIds
+    // consistent (this is what we are able to use to match pre-trashing items with their
+    // post-trashing metadata)
     func testTrashingManglesIdentifiers() async {
         let remoteInterface = MockRemoteInterface(rootItem: rootItem, rootTrashItem: rootTrashItem)
         let folderOriginalIdentifier = "folder"
@@ -573,6 +577,11 @@ final class MockRemoteInterfaceTests: XCTestCase {
         XCTAssertEqual(folder.identifier, folderOriginalIdentifier + trashedItemIdSuffix)
         XCTAssertNotEqual(itemA.identifier, itemAOriginalIdentifier) // Should not be equal
         XCTAssertEqual(itemA.identifier, itemAOriginalIdentifier + trashedItemIdSuffix)
+
+        let folderConvertedMetadata = folder.toItemMetadata(account: Self.account)
+        XCTAssertEqual(folderConvertedMetadata.fileId, folderOriginalIdentifier)
+        let itemAConvertedMetadata = itemA.toItemMetadata(account: Self.account)
+        XCTAssertEqual(itemAConvertedMetadata.fileId, itemAOriginalIdentifier)
     }
 
     func testRestoreFromTrash() async {
