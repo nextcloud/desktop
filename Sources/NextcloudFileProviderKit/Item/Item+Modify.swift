@@ -641,7 +641,7 @@ public extension Item {
         for file in childFiles {
             let metadata = file.toItemMetadata()
             guard let original = dirtyChildren
-                .filter("ocId == %@ || fileId == %@", metadata.ocId, metadata.fileId)
+                .filter({ $0.ocId == metadata.ocId || $0.fileId == metadata.fileId })
                 .first
             else {
                 Self.logger.info(
