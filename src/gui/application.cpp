@@ -232,6 +232,24 @@ Application::Application(int &argc, char **argv)
     // Ensure OpenSSL config file is only loaded from app directory
     QString opensslConf = QCoreApplication::applicationDirPath() + QStringLiteral("/openssl.cnf");
     qputenv("OPENSSL_CONF", opensslConf.toLocal8Bit());
+
+    const auto shouldDisableGraphicsAcceleration = [&]() {
+        const auto systemEnvironment = QProcessEnvironment::systemEnvironment();
+        if (systemEnvironment.contains(QStringLiteral("VMWARE"))) {
+            return true;
+        }
+
+        if (systemEnvironment.contains("SESSIONNAME") && systemEnvironment.value("SESSIONNAME").startsWith("RDP-")) {
+            return true;
+        }
+
+        return false;
+    };
+
+    if (shouldDisableGraphicsAcceleration()) {
+        QProcessEnvironment::systemEnvironment().insert(QStringLiteral("SVGA_ALLOW_LLVMPIPE"), 0);
+        qCInfo(lcApplication) << "Disabling graphics acceleration, application might be running in a virtual or in a remote desktop.";
+    }
 #endif
 
     // TODO: Can't set this without breaking current config paths
