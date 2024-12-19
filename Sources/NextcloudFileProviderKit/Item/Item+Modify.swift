@@ -902,7 +902,31 @@ public extension Item {
             """
         )
 
-        if changedFields.contains(.parentItemIdentifier) && newParentItemIdentifier == .trashContainer {
+        if changedFields.contains(.parentItemIdentifier)
+            && newParentItemIdentifier == .trashContainer
+            && modifiedItem.metadata.isTrashed {
+
+            if (changedFields.contains(.filename)) {
+                Self.logger.warning(
+                    """
+                    Tried to modify filename of already trashed item. This is not supported.
+                        ocId: \(modifiedItem.itemIdentifier.rawValue, privacy: .public)
+                        filename: \(modifiedItem.metadata.fileName, privacy: .public)
+                        new filename: \(itemTarget.filename, privacy: .public)
+                    """
+                )
+            }
+
+            Self.logger.info(
+                """
+                Tried to trash item that is in fact already trashed.
+                    ocId: \(modifiedItem.itemIdentifier.rawValue, privacy: .public)
+                    filename: \(modifiedItem.metadata.fileName, privacy: .public)
+                    serverUrl: \(modifiedItem.metadata.serverUrl, privacy: .public)
+                """
+            )
+            return (modifiedItem, nil)
+        } else if changedFields.contains(.parentItemIdentifier) && newParentItemIdentifier == .trashContainer {
             // We can't just move files into the trash, we need to issue a deletion; let's handle it
             // Rename the item if necessary before doing the trashing procedures
             if (changedFields.contains(.filename)) {
