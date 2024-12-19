@@ -535,6 +535,32 @@ final class MockRemoteInterfaceTests: XCTestCase {
         XCTAssertEqual(items[1].ocId, itemB.identifier)
     }
 
+    func testTrashingManglesIdentifiers() async {
+        let remoteInterface = MockRemoteInterface(rootItem: rootItem, rootTrashItem: rootTrashItem)
+        let itemAOriginalIdentifier = "a"
+        let itemA = MockRemoteItem(
+            identifier: itemAOriginalIdentifier,
+            name: "a",
+            remotePath: Self.account.davFilesUrl + "/a",
+            directory: true,
+            account: Self.account.ncKitAccount,
+            username: Self.account.username,
+            userId: Self.account.id,
+            serverUrl: Self.account.serverUrl
+        )
+        rootItem.children = [itemA]
+        itemA.parent = rootItem
+
+        let (_, _, error) = await remoteInterface.move(
+            remotePathSource: itemA.remotePath,
+            remotePathDestination: Self.account.trashUrl + "/" + itemA.name,
+            account: Self.account
+        )
+        XCTAssertEqual(error, .success)
+        XCTAssertNotEqual(itemA.identifier, itemAOriginalIdentifier) // Should not be equal
+        XCTAssertEqual(itemA.identifier, itemAOriginalIdentifier + trashedItemIdSuffix)
+    }
+
     func testRestoreFromTrash() async {
         let remoteInterface = MockRemoteInterface(rootItem: rootItem, rootTrashItem: rootTrashItem)
         let itemA = MockRemoteItem(
