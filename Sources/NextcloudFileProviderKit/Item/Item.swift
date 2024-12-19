@@ -42,7 +42,8 @@ public class Item: NSObject, NSFileProviderItem {
                 .allowsReading,
                 .allowsDeleting,
                 .allowsReparenting,
-                .allowsRenaming
+                .allowsRenaming,
+                .allowsTrashing
             ]
 
             if #available(macOS 11.3, *) {
@@ -64,7 +65,8 @@ public class Item: NSObject, NSFileProviderItem {
             .allowsDeleting,
             .allowsRenaming,
             .allowsReparenting,
-            .allowsEvicting
+            .allowsEvicting,
+            .allowsTrashing
         ]
     }
 
@@ -75,7 +77,9 @@ public class Item: NSObject, NSFileProviderItem {
     }
 
     public var filename: String {
-        metadata.fileNameView.isEmpty ? "unnamed file" : metadata.fileNameView
+        metadata.isTrashed && !metadata.trashbinFileName.isEmpty ?
+            metadata.trashbinFileName : !metadata.fileName.isEmpty ?
+                metadata.fileName : "unnamed file"
     }
 
     public var contentType: UTType {
@@ -197,6 +201,23 @@ public class Item: NSObject, NSFileProviderItem {
         )
     }
 
+    public static func trashContainer(remoteInterface: RemoteInterface, account: Account) -> Item {
+        let metadata = ItemMetadata()
+        metadata.account = account.ncKitAccount
+        metadata.directory = true
+        metadata.ocId = NSFileProviderItemIdentifier.trashContainer.rawValue
+        metadata.fileName = "Trash"
+        metadata.fileNameView = "Trash"
+        metadata.serverUrl = account.trashUrl
+        metadata.classFile = NKCommon.TypeClassFile.directory.rawValue
+        return Item(
+            metadata: metadata,
+            parentItemIdentifier: .trashContainer,
+            account: account,
+            remoteInterface: remoteInterface
+        )
+    }
+
     static let logger = Logger(subsystem: Logger.subsystem, category: "item")
 
     public required init(
@@ -222,10 +243,21 @@ public class Item: NSObject, NSFileProviderItem {
         guard identifier != .rootContainer else {
             return Item.rootContainer(account: account, remoteInterface: remoteInterface)
         }
+        guard identifier != .trashContainer else {
+            return Item.trashContainer(remoteInterface: remoteInterface, account: account)
+        }
 
-        guard let metadata = dbManager.itemMetadataFromFileProviderItemIdentifier(identifier),
-              let parentItemIdentifier = dbManager.parentItemIdentifierFromMetadata(metadata)
-        else { return nil }
+        guard let metadata = dbManager.itemMetadataFromFileProviderItemIdentifier(identifier) else {
+            return nil
+        }
+
+        var parentItemIdentifier: NSFileProviderItemIdentifier?
+        if metadata.isTrashed {
+            parentItemIdentifier = .trashContainer
+        } else {
+            parentItemIdentifier = dbManager.parentItemIdentifierFromMetadata(metadata)
+        }
+        guard let parentItemIdentifier else { return nil }
 
         return Item(
             metadata: metadata,

@@ -20,10 +20,20 @@ let AccountDictPasswordKey = "passwordKey"
 let AccountDictNcKitAccountKey = "ncKitAccountKey"
 let AccountDictServerUrlKey = "serverUrlKey"
 let AccountDictDavFilesUrlKey = "davFilesUrlKey"
+let AccountDictTrashUrlKey = "trashUrlKey"
+let AccountDictTrashRestoreUrlKey = "trashRestoreUrlKey"
 
 public struct Account: Equatable {
-    public static let webDavFilesUrlSuffix: String = "/remote.php/dav/files/"
-    public let username, id, password, ncKitAccount, serverUrl, davFilesUrl: String
+    public static let webDavFilesUrlSuffix = "/remote.php/dav/files/"
+    public static let webDavTrashUrlSuffix = "/remote.php/dav/trashbin/"
+    public let username,
+               id,
+               password,
+               ncKitAccount,
+               serverUrl,
+               davFilesUrl,
+               trashUrl,
+               trashRestoreUrl: String
 
     public static func ncKitAccountString(from username: String, serverUrl: String) -> String {
         username + " " + serverUrl
@@ -36,6 +46,8 @@ public struct Account: Equatable {
         ncKitAccount = Self.ncKitAccountString(from: user, serverUrl: serverUrl)
         self.serverUrl = serverUrl
         davFilesUrl = serverUrl + Self.webDavFilesUrlSuffix + id
+        trashUrl = serverUrl + Self.webDavTrashUrlSuffix + id + "/trash"
+        trashRestoreUrl = serverUrl + Self.webDavTrashUrlSuffix + id + "/restore"
     }
 
     public init?(dictionary: Dictionary<String, String>) {
@@ -44,7 +56,9 @@ public struct Account: Equatable {
               let password = dictionary[AccountDictPasswordKey],
               let ncKitAccount = dictionary[AccountDictNcKitAccountKey],
               let serverUrl = dictionary[AccountDictServerUrlKey],
-              let davFilesUrl = dictionary[AccountDictDavFilesUrlKey]
+              let davFilesUrl = dictionary[AccountDictDavFilesUrlKey],
+              let trashUrl = dictionary[AccountDictTrashUrlKey],
+              let trashRestoreUrl = dictionary[AccountDictTrashRestoreUrlKey]
         else {
             return nil
         }
@@ -55,6 +69,8 @@ public struct Account: Equatable {
         self.ncKitAccount = ncKitAccount
         self.serverUrl = serverUrl
         self.davFilesUrl = davFilesUrl
+        self.trashUrl = trashUrl
+        self.trashRestoreUrl = trashRestoreUrl
     }
 
     public func dictionary() -> Dictionary<String, String> {
@@ -64,7 +80,9 @@ public struct Account: Equatable {
             AccountDictPasswordKey: password,
             AccountDictNcKitAccountKey: ncKitAccount,
             AccountDictServerUrlKey: serverUrl,
-            AccountDictDavFilesUrlKey: davFilesUrl
+            AccountDictDavFilesUrlKey: davFilesUrl,
+            AccountDictTrashUrlKey: trashUrl,
+            AccountDictTrashRestoreUrlKey: trashRestoreUrl
         ]
     }
 }

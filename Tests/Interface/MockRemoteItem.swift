@@ -6,13 +6,17 @@
 //
 
 import Foundation
+import NextcloudFileProviderKit
 import NextcloudKit
+import UniformTypeIdentifiers
+
+public let trashedItemIdSuffix = "-trashed-mri"
 
 public class MockRemoteItem: Equatable {
     public var parent: MockRemoteItem?
     public var children: [MockRemoteItem] = []
 
-    public let identifier: String
+    public var identifier: String
     public let versionIdentifier: String
     public var name: String
     public var remotePath: String
@@ -28,24 +32,7 @@ public class MockRemoteItem: Equatable {
     public var username: String
     public var userId: String
     public var serverUrl: String
-    public var nkfile: NKFile {
-        let file = NKFile()
-        file.fileName = name
-        file.size = size
-        file.date = creationDate
-        file.directory = directory
-        file.etag = versionIdentifier
-        file.ocId = identifier
-        file.serverUrl = parent?.remotePath ?? remotePath
-        file.account = account
-        file.user = username
-        file.userId = userId
-        file.urlBase = serverUrl
-        file.lock = locked
-        file.lockOwner = lockOwner
-        file.lockTimeOut = lockTimeOut
-        return file
-    }
+    public var trashbinOriginalLocation: String?
 
     public static func == (lhs: MockRemoteItem, rhs: MockRemoteItem) -> Bool {
         lhs.parent == rhs.parent &&
@@ -64,7 +51,8 @@ public class MockRemoteItem: Equatable {
         lhs.account == rhs.account &&
         lhs.username == rhs.username &&
         lhs.userId == rhs.userId &&
-        lhs.serverUrl == rhs.serverUrl
+        lhs.serverUrl == rhs.serverUrl &&
+        lhs.trashbinOriginalLocation == rhs.trashbinOriginalLocation
     }
 
     public init(
@@ -82,7 +70,8 @@ public class MockRemoteItem: Equatable {
         account: String,
         username: String,
         userId: String,
-        serverUrl: String
+        serverUrl: String,
+        trashbinOriginalLocation: String? = nil
     ) {
         self.identifier = identifier
         self.versionIdentifier = versionIdentifier
@@ -99,5 +88,80 @@ public class MockRemoteItem: Equatable {
         self.username = username
         self.userId = userId
         self.serverUrl = serverUrl
+        self.trashbinOriginalLocation = trashbinOriginalLocation
+    }
+
+    public func toNKFile() -> NKFile {
+        let file = NKFile()
+        file.fileName = trashbinOriginalLocation?.split(separator: "/").last?.toString() ?? name
+        file.size = size
+        file.date = creationDate
+        file.directory = directory
+        file.etag = versionIdentifier
+        file.ocId = identifier
+        file.fileId = identifier.replacingOccurrences(of: trashedItemIdSuffix, with: "")
+        file.serverUrl = parent?.remotePath ?? remotePath
+        file.account = account
+        file.user = username
+        file.userId = userId
+        file.urlBase = serverUrl
+        file.lock = locked
+        file.lockOwner = lockOwner
+        file.lockTimeOut = lockTimeOut
+        file.trashbinFileName = name
+        file.trashbinOriginalLocation = trashbinOriginalLocation ?? ""
+        return file
+    }
+
+    public func toNKTrash() -> NKTrash {
+        let trashItem = NKTrash()
+        trashItem.ocId = identifier
+        trashItem.fileId = identifier.replacingOccurrences(of: trashedItemIdSuffix, with: "")
+        trashItem.fileName = name
+        trashItem.directory = directory
+        trashItem.trashbinOriginalLocation = trashbinOriginalLocation ?? ""
+        trashItem.trashbinFileName = trashbinOriginalLocation?.split(separator: "/").last?.toString() ?? name
+        trashItem.size = size
+        trashItem.filePath = (parent?.remotePath ?? "") + "/" + name
+        return trashItem
+    }
+
+    public func toItemMetadata(account: Account) -> ItemMetadata {
+        let originalFileName = trashbinOriginalLocation?.split(separator: "/").last?.toString()
+        let fileName = originalFileName ?? name
+        let serverUrlTrimCount = name.count
+
+        let metadata = ItemMetadata()
+        metadata.ocId = identifier
+        metadata.fileId = identifier.replacingOccurrences(of: trashedItemIdSuffix, with: "")
+        metadata.etag = versionIdentifier
+        metadata.directory = directory
+        metadata.name = name
+        metadata.fileName = name
+        metadata.fileNameView = name
+        metadata.trashbinOriginalLocation = trashbinOriginalLocation ?? ""
+        metadata.serverUrl = remotePath
+        metadata.serverUrl.removeSubrange(
+            remotePath.index(
+                remotePath.endIndex, offsetBy: -(serverUrlTrimCount + 1) // Remove trailing slash
+            )..<remotePath.endIndex
+        )
+        metadata.date = modificationDate
+        metadata.creationDate = creationDate
+        metadata.size = size
+        metadata.urlBase = account.serverUrl
+        metadata.userId = account.id
+        metadata.user = account.username
+        metadata.account = account.ncKitAccount
+
+        if (trashbinOriginalLocation != nil) {
+            metadata.trashbinFileName = fileName
+        }
+        if directory {
+            metadata.classFile = NKCommon.TypeClassFile.directory.rawValue
+            metadata.contentType = UTType.folder.identifier
+        }
+
+        return metadata
     }
 }

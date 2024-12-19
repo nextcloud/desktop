@@ -172,6 +172,10 @@ public class ItemMetadata: Object {
         status == Status.inUpload.rawValue || status == Status.uploading.rawValue
     }
 
+    public var isTrashed: Bool {
+        serverUrl.hasPrefix(urlBase + Account.webDavTrashUrlSuffix + userId + "/trash")
+    }
+
     public override func isEqual(_ object: Any?) -> Bool {
         if let object = object as? ItemMetadata {
             return fileId == object.fileId && account == object.account && path == object.path
@@ -215,5 +219,18 @@ public class ItemMetadata: Object {
         let urlString =
             "\(urlBase)/index.php/core/preview.png?file=\(serverFileRelativeUrl)&x=\(size.width)&y=\(size.height)&a=1&mode=cover"
         return URL(string: urlString)
+    }
+
+    public func apply(fileName: String) {
+        self.fileName = fileName
+        fileNameView = fileName
+        name = fileName
+    }
+
+    public func apply(account: Account) {
+        self.account = account.ncKitAccount
+        user = account.username
+        userId = account.id
+        urlBase = account.serverUrl
     }
 }

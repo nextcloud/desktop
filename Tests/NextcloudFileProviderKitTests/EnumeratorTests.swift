@@ -23,6 +23,11 @@ final class EnumeratorTests: XCTestCase {
     var remoteItemB: MockRemoteItem!
     var remoteItemC: MockRemoteItem!
 
+    var rootTrashItem: MockRemoteItem!
+    var remoteTrashItemA: MockRemoteItem!
+    var remoteTrashItemB: MockRemoteItem!
+    var remoteTrashItemC: MockRemoteItem!
+
     static let dbManager = FilesDatabaseManager(realmConfig: .defaultConfiguration)
 
     override func setUp() {
@@ -89,6 +94,55 @@ final class EnumeratorTests: XCTestCase {
         remoteItemA.parent = remoteFolder
         remoteItemB.parent = remoteFolder
         remoteItemC.parent = nil
+
+        rootTrashItem = MockRemoteItem(
+            identifier: NSFileProviderItemIdentifier.trashContainer.rawValue,
+            name: "root",
+            remotePath: Self.account.trashUrl,
+            directory: true,
+            account: Self.account.ncKitAccount,
+            username: Self.account.username,
+            userId: Self.account.id,
+            serverUrl: Self.account.serverUrl
+        )
+
+        remoteTrashItemA = MockRemoteItem(
+            identifier: "trashItemA",
+            name: "a.txt",
+            remotePath: Self.account.trashUrl + "/a.txt",
+            data: Data(repeating: 1, count: 32),
+            account: Self.account.ncKitAccount,
+            username: Self.account.username,
+            userId: Self.account.id,
+            serverUrl: Self.account.serverUrl
+        )
+
+        remoteTrashItemB = MockRemoteItem(
+            identifier: "trashItemB",
+            name: "b.txt",
+            remotePath: Self.account.trashUrl + "/b.txt",
+            data: Data(repeating: 1, count: 69),
+            account: Self.account.ncKitAccount,
+            username: Self.account.username,
+            userId: Self.account.id,
+            serverUrl: Self.account.serverUrl
+        )
+
+        remoteTrashItemC = MockRemoteItem(
+            identifier: "trashItemC",
+            name: "c.txt",
+            remotePath: Self.account.trashUrl + "/c.txt",
+            data: Data(repeating: 1, count: 100),
+            account: Self.account.ncKitAccount,
+            username: Self.account.username,
+            userId: Self.account.id,
+            serverUrl: Self.account.serverUrl
+        )
+
+        rootTrashItem.children = [remoteTrashItemA, remoteTrashItemB, remoteTrashItemC]
+        remoteTrashItemA.parent = rootTrashItem
+        remoteTrashItemB.parent = rootTrashItem
+        remoteTrashItemC.parent = rootTrashItem
     }
 
     func testRootEnumeration() async throws {
@@ -745,7 +799,6 @@ final class EnumeratorTests: XCTestCase {
         try await observer.enumerateChanges()
         // rootContainer has changed, itemA has changed
         XCTAssertEqual(observer.changedItems.count, 1)
-        print(Self.dbManager.ncDatabase().objects(ItemMetadata.self).count)
 
         let dbItemAMetadata = try XCTUnwrap(
             Self.dbManager.itemMetadata(ocId: remoteItemA.identifier)
@@ -789,5 +842,99 @@ final class EnumeratorTests: XCTestCase {
         XCTAssertEqual(listener.finishActions.count, 1)
         XCTAssertTrue(listener.errorActions.isEmpty)
         XCTAssertTrue(listener.startActions.first!.value < listener.finishActions.first!.value)
+    }
+
+    func testTrashEnumeration() async throws {
+        let db = Self.dbManager.ncDatabase() // Strong ref for in memory test db
+        debugPrint(db) // Avoid build-time warning about unused variable, ensure compiler won't free
+        let remoteInterface = MockRemoteInterface(rootItem: rootItem, rootTrashItem: rootTrashItem)
+        let enumerator = Enumerator(
+            enumeratedItemIdentifier: .trashContainer,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+        let observer = MockEnumerationObserver(enumerator: enumerator)
+        try await observer.enumerateItems()
+        XCTAssertEqual(observer.items.count, 3)
+
+        let storedItemA = try XCTUnwrap(
+            Item.storedItem(
+                identifier: .init(remoteTrashItemA.identifier),
+                account: Self.account,
+                remoteInterface: remoteInterface,
+                dbManager: Self.dbManager
+            )
+        )
+        XCTAssertEqual(storedItemA.itemIdentifier.rawValue, remoteTrashItemA.identifier)
+        XCTAssertEqual(storedItemA.filename, remoteTrashItemA.name)
+        XCTAssertEqual(storedItemA.documentSize?.int64Value, remoteTrashItemA.size)
+
+        let storedItemB = try XCTUnwrap(
+            Item.storedItem(
+                identifier: .init(remoteTrashItemB.identifier),
+                account: Self.account,
+                remoteInterface: remoteInterface,
+                dbManager: Self.dbManager
+            )
+        )
+        XCTAssertEqual(storedItemB.itemIdentifier.rawValue, remoteTrashItemB.identifier)
+        XCTAssertEqual(storedItemB.filename, remoteTrashItemB.name)
+        XCTAssertEqual(storedItemB.documentSize?.int64Value, remoteTrashItemB.size)
+
+        let storedItemC = try XCTUnwrap(
+            Item.storedItem(
+                identifier: .init(remoteTrashItemC.identifier),
+                account: Self.account,
+                remoteInterface: remoteInterface,
+                dbManager: Self.dbManager
+            )
+        )
+        XCTAssertEqual(storedItemC.itemIdentifier.rawValue, remoteTrashItemC.identifier)
+        XCTAssertEqual(storedItemC.filename, remoteTrashItemC.name)
+        XCTAssertEqual(storedItemC.documentSize?.int64Value, remoteTrashItemC.size)
+    }
+
+    func testTrashChangeEnumeration() async throws {
+        let db = Self.dbManager.ncDatabase() // Strong ref for in memory test db
+        debugPrint(db) // Avoid build-time warning about unused variable, ensure compiler won't free
+        let remoteInterface = MockRemoteInterface(rootItem: rootItem, rootTrashItem: rootTrashItem)
+        rootTrashItem.children = [remoteTrashItemA]
+        remoteTrashItemA.parent = rootTrashItem
+        remoteTrashItemB.parent = nil
+        remoteTrashItemC.parent = nil
+
+        Self.dbManager.addItemMetadata(
+            remoteTrashItemA.toNKTrash().toItemMetadata(account: Self.account)
+        )
+        XCTAssertNotNil(Self.dbManager.itemMetadata(ocId: remoteTrashItemA.identifier))
+
+        let enumerator = Enumerator(
+            enumeratedItemIdentifier: .trashContainer,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+        let observer = MockChangeObserver(enumerator: enumerator)
+        try await observer.enumerateChanges()
+        XCTAssertEqual(observer.changedItems.count, 0)
+        observer.reset()
+
+        rootTrashItem.children = [remoteTrashItemA, remoteTrashItemB]
+        remoteTrashItemB.parent = rootTrashItem
+        try await observer.enumerateChanges()
+        XCTAssertEqual(observer.changedItems.count, 1)
+        XCTAssertNotNil(Self.dbManager.itemMetadata(ocId: remoteTrashItemB.identifier))
+        observer.reset()
+
+        rootTrashItem.children = [remoteTrashItemB, remoteTrashItemC]
+        remoteTrashItemA.parent = nil
+        remoteTrashItemC.parent = rootTrashItem
+        try await observer.enumerateChanges()
+        XCTAssertEqual(observer.changedItems.count, 1)
+        XCTAssertEqual(observer.deletedItemIdentifiers.count, 1)
+        XCTAssertNil(Self.dbManager.itemMetadata(ocId: remoteTrashItemA.identifier))
+        XCTAssertNotNil(Self.dbManager.itemMetadata(ocId: remoteTrashItemB.identifier))
+        XCTAssertNotNil(Self.dbManager.itemMetadata(ocId: remoteTrashItemC.identifier))
     }
 }

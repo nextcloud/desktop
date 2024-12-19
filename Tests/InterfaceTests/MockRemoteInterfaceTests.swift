@@ -24,9 +24,21 @@ final class MockRemoteInterfaceTests: XCTestCase {
         userId: Self.account.id,
         serverUrl: Self.account.serverUrl
     )
+    lazy var rootTrashItem = MockRemoteItem(
+        identifier: "root",
+        versionIdentifier: "root",
+        name: "root",
+        remotePath: Self.account.trashUrl,
+        directory: true,
+        account: Self.account.ncKitAccount,
+        username: Self.account.username,
+        userId: Self.account.id,
+        serverUrl: Self.account.serverUrl
+    )
 
     override func tearDown() {
         rootItem.children = []
+        rootTrashItem.children = []
     }
 
     func testItemForRemotePath() {
@@ -251,7 +263,7 @@ final class MockRemoteInterfaceTests: XCTestCase {
         }
         let fileData = Data("Hello, World!".utf8)
         let _ = await remoteInterface.upload(
-            remotePath: "/", localPath: fileUrl.path, account: Self.account
+            remotePath: Self.account.davFilesUrl, localPath: fileUrl.path, account: Self.account
         )
 
         let result = await remoteInterface.download(
@@ -354,7 +366,7 @@ final class MockRemoteInterfaceTests: XCTestCase {
         itemC_A_A.parent = itemC_A
 
         let result = await remoteInterface.enumerate(
-            remotePath: "/", depth: .target, account: Self.account
+            remotePath: Self.account.davFilesUrl, depth: .target, account: Self.account
         )
         XCTAssertEqual(result.error, .success)
         XCTAssertEqual(result.files.count, 1)
@@ -420,7 +432,7 @@ final class MockRemoteInterfaceTests: XCTestCase {
     }
 
     func testDelete() async {
-        let remoteInterface = MockRemoteInterface(rootItem: rootItem)
+        let remoteInterface = MockRemoteInterface(rootItem: rootItem, rootTrashItem: rootTrashItem)
         let itemA = MockRemoteItem(
             identifier: "a", 
             name: "a",
@@ -470,11 +482,221 @@ final class MockRemoteInterfaceTests: XCTestCase {
         itemA_C.children = [itemA_C_D]
         itemA_C_D.parent = itemA_C
 
+        let itemA_C_predeleteName = itemA_C.name
+
         let result = await remoteInterface.delete(
             remotePath: Self.account.davFilesUrl + "/a/c", account: Self.account
         )
         XCTAssertEqual(result.error, .success)
         XCTAssertEqual(itemA.children, [])
+        XCTAssertEqual(remoteInterface.rootTrashItem?.children.contains(itemA_C), true)
+        XCTAssertEqual(itemA_C.name, itemA_C_predeleteName + " (trashed)")
+        XCTAssertEqual(itemA_C.remotePath, Self.account.trashUrl + "/c (trashed)")
+        XCTAssertEqual(itemA_C_D.trashbinOriginalLocation, "a/c/d")
+        XCTAssertEqual(itemA_C_D.remotePath, Self.account.trashUrl + "/c (trashed)/d")
+    }
+
+    func testTrashedItems() async {
+        let remoteInterface = MockRemoteInterface(rootItem: rootItem, rootTrashItem: rootTrashItem)
+        let itemA = MockRemoteItem(
+            identifier: "a",
+            name: "a (trashed)",
+            remotePath: Self.account.trashUrl + "/a (trashed)",
+            directory: true,
+            account: Self.account.ncKitAccount,
+            username: Self.account.username,
+            userId: Self.account.id,
+            serverUrl: Self.account.serverUrl,
+            trashbinOriginalLocation: "a"
+        )
+        let itemB = MockRemoteItem(
+            identifier: "b",
+            name: "b (trashed)",
+            remotePath: Self.account.trashUrl + "/b (trashed)",
+            directory: true,
+            account: Self.account.ncKitAccount,
+            username: Self.account.username,
+            userId: Self.account.id,
+            serverUrl: Self.account.serverUrl,
+            trashbinOriginalLocation: "b"
+        )
+        rootTrashItem.children = [itemA, itemB]
+        itemA.parent = rootTrashItem
+        itemB.parent = rootTrashItem
+
+        let (_, items, _, error) = await remoteInterface.trashedItems(account: Self.account)
+        XCTAssertEqual(error, .success)
+        XCTAssertEqual(items.count, 2)
+        XCTAssertEqual(items[0].fileName, "a (trashed)")
+        XCTAssertEqual(items[1].fileName, "b (trashed)")
+        XCTAssertEqual(items[0].trashbinFileName, "a")
+        XCTAssertEqual(items[1].trashbinFileName, "b")
+        XCTAssertEqual(items[0].ocId, itemA.identifier)
+        XCTAssertEqual(items[1].ocId, itemB.identifier)
+    }
+
+    // The server will return ocIds as fileIds. To try to test the item modification steps' handling
+    // of this, we intentionally mangle the item's original identifiers while keeping the fileIds
+    // consistent (this is what we are able to use to match pre-trashing items with their
+    // post-trashing metadata)
+    func testTrashingManglesIdentifiers() async {
+        let remoteInterface = MockRemoteInterface(rootItem: rootItem, rootTrashItem: rootTrashItem)
+        let folderOriginalIdentifier = "folder"
+        let folder = MockRemoteItem(
+            identifier: folderOriginalIdentifier,
+            name: "folder",
+            remotePath: Self.account.davFilesUrl + "/folder",
+            directory: true,
+            account: Self.account.ncKitAccount,
+            username: Self.account.username,
+            userId: Self.account.id,
+            serverUrl: Self.account.serverUrl
+        )
+        let itemAOriginalIdentifier = "a"
+        let itemA = MockRemoteItem(
+            identifier: itemAOriginalIdentifier,
+            name: "a",
+            remotePath: Self.account.davFilesUrl + "/a",
+            account: Self.account.ncKitAccount,
+            username: Self.account.username,
+            userId: Self.account.id,
+            serverUrl: Self.account.serverUrl
+        )
+        rootItem.children = [folder]
+        folder.parent = rootItem
+        folder.children = [itemA]
+        itemA.parent = folder
+
+        let (_, _, error) = await remoteInterface.move(
+            remotePathSource: folder.remotePath,
+            remotePathDestination: Self.account.trashUrl + "/" + folder.name,
+            account: Self.account
+        )
+        XCTAssertEqual(error, .success)
+        XCTAssertNotEqual(folder.identifier, folderOriginalIdentifier) // Should not be equal
+        XCTAssertEqual(folder.identifier, folderOriginalIdentifier + trashedItemIdSuffix)
+        XCTAssertNotEqual(itemA.identifier, itemAOriginalIdentifier) // Should not be equal
+        XCTAssertEqual(itemA.identifier, itemAOriginalIdentifier + trashedItemIdSuffix)
+
+        let folderConvertedMetadata = folder.toItemMetadata(account: Self.account)
+        XCTAssertEqual(folderConvertedMetadata.fileId, folderOriginalIdentifier)
+        let itemAConvertedMetadata = itemA.toItemMetadata(account: Self.account)
+        XCTAssertEqual(itemAConvertedMetadata.fileId, itemAOriginalIdentifier)
+    }
+
+    func testRestoreFromTrash() async {
+        let remoteInterface = MockRemoteInterface(rootItem: rootItem, rootTrashItem: rootTrashItem)
+        let itemA = MockRemoteItem(
+            identifier: "a",
+            name: "a (trashed)",
+            remotePath: Self.account.trashUrl + "/a (trashed)",
+            directory: true,
+            account: Self.account.ncKitAccount,
+            username: Self.account.username,
+            userId: Self.account.id,
+            serverUrl: Self.account.serverUrl,
+            trashbinOriginalLocation: "a"
+        )
+        rootTrashItem.children = [itemA]
+        itemA.parent = rootTrashItem
+
+        let (_, _, error) =
+            await remoteInterface.restoreFromTrash(filename: itemA.name, account: Self.account)
+        XCTAssertEqual(error, .success)
+        XCTAssertEqual(rootTrashItem.children.count, 0)
+        XCTAssertEqual(rootItem.children.count, 1)
+        XCTAssertEqual(rootItem.children[0].identifier, "a")
+        XCTAssertEqual(itemA.identifier, "a")
+        XCTAssertEqual(itemA.remotePath, Self.account.davFilesUrl + "/a")
+        XCTAssertEqual(itemA.name, "a")
+        XCTAssertNil(itemA.trashbinOriginalLocation)
+    }
+
+    func testNoDirectMoveFromTrash() async {
+        let remoteInterface = MockRemoteInterface(rootItem: rootItem, rootTrashItem: rootTrashItem)
+        let folder = MockRemoteItem(
+            identifier: "folder",
+            name: "folder",
+            remotePath: Self.account.davFilesUrl + "/folder",
+            directory: true,
+            account: Self.account.ncKitAccount,
+            username: Self.account.username,
+            userId: Self.account.id,
+            serverUrl: Self.account.serverUrl
+        )
+        let itemA = MockRemoteItem(
+            identifier: "a",
+            name: "a (trashed)",
+            remotePath: Self.account.trashUrl + "/a (trashed)",
+            directory: true,
+            account: Self.account.ncKitAccount,
+            username: Self.account.username,
+            userId: Self.account.id,
+            serverUrl: Self.account.serverUrl,
+            trashbinOriginalLocation: "a"
+        )
+        rootTrashItem.children = [itemA]
+        itemA.parent = rootTrashItem
+        rootItem.children = [folder]
+        folder.parent = rootItem
+
+        let newPath = folder.remotePath + "/" + itemA.name
+        let (_, _, directMoveError) = await remoteInterface.move(
+            remotePathSource: itemA.remotePath,
+            remotePathDestination: newPath,
+            overwrite: true,
+            account: Self.account
+        )
+        XCTAssertNotEqual(directMoveError, .success) // Should fail as we need to restore first
+
+        let expectedRestoreRemotePath =
+            Self.account.davFilesUrl + "/" + itemA.trashbinOriginalLocation!
+        let (_, _, restoreError) =
+            await remoteInterface.restoreFromTrash(filename: itemA.name, account: Self.account)
+        XCTAssertEqual(restoreError, .success)
+        XCTAssertEqual(itemA.remotePath, expectedRestoreRemotePath)
+
+        let (_, _, postRestoreMoveError) = await remoteInterface.move(
+            remotePathSource: itemA.remotePath,
+            remotePathDestination: newPath,
+            overwrite: true,
+            account: Self.account
+        )
+        XCTAssertEqual(postRestoreMoveError, .success)
+    }
+
+    func testEnforceOverwriteOnRestore() async {
+        let remoteInterface = MockRemoteInterface(rootItem: rootItem, rootTrashItem: rootTrashItem)
+        let itemA = MockRemoteItem(
+            identifier: "a",
+            name: "a (trashed)",
+            remotePath: Self.account.trashUrl + "/a (trashed)",
+            directory: true,
+            account: Self.account.ncKitAccount,
+            username: Self.account.username,
+            userId: Self.account.id,
+            serverUrl: Self.account.serverUrl,
+            trashbinOriginalLocation: "a"
+        )
+        rootTrashItem.children = [itemA]
+        itemA.parent = rootTrashItem
+
+        let restorePath = Self.account.trashRestoreUrl + "/" + itemA.name
+        let (_, _, noOverwriteError) = await remoteInterface.move(
+            remotePathSource: itemA.remotePath,
+            remotePathDestination: restorePath,
+            overwrite: false,
+            account: Self.account
+        )
+        XCTAssertNotEqual(noOverwriteError, .success) // Should fail as we enforce overwrite
+
+        let (_, _, overwriteError) = await remoteInterface.move(
+            remotePathSource: itemA.remotePath,
+            remotePathDestination: restorePath,
+            overwrite: true,
+            account: Self.account
+        )
+        XCTAssertEqual(overwriteError, .success)
     }
 
     func testFetchUserProfile() async {

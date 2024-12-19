@@ -160,7 +160,7 @@ extension Item {
             """
         )
         
-        if size != itemTemplate.documentSize as? Int64 {
+        if let expectedSize = itemTemplate.documentSize??.int64Value, size != expectedSize {
             Self.logger.warning(
                 """
                 Created item upload reported as successful, but there are differences between

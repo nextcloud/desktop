@@ -28,20 +28,30 @@ final class ItemModifyTests: XCTestCase {
         userId: Self.account.id,
         serverUrl: Self.account.serverUrl
     )
+    lazy var rootTrashItem = MockRemoteItem(
+        identifier: NSFileProviderItemIdentifier.trashContainer.rawValue,
+        name: "root",
+        remotePath: Self.account.trashUrl,
+        directory: true,
+        account: Self.account.ncKitAccount,
+        username: Self.account.username,
+        userId: Self.account.id,
+        serverUrl: Self.account.serverUrl
+    )
+
+    var remoteFolder: MockRemoteItem!
+    var remoteItem: MockRemoteItem!
+    var remoteTrashItem: MockRemoteItem!
+    var remoteTrashFolder: MockRemoteItem!
+    var remoteTrashFolderChildItem: MockRemoteItem!
+
     static let dbManager = FilesDatabaseManager(realmConfig: .defaultConfiguration)
 
     override func setUp() {
         super.setUp()
         Realm.Configuration.defaultConfiguration.inMemoryIdentifier = name
-    }
 
-    override func tearDown() {
-        rootItem.children = []
-    }
-
-    func testModifyFileContents() async throws {
-        let remoteInterface = MockRemoteInterface(rootItem: rootItem)
-        let remoteItem = MockRemoteItem(
+        remoteItem = MockRemoteItem(
             identifier: "item",
             versionIdentifier: "0",
             name: "item.txt",
@@ -52,7 +62,7 @@ final class ItemModifyTests: XCTestCase {
             userId: Self.account.id,
             serverUrl: Self.account.serverUrl
         )
-        let remoteFolder = MockRemoteItem(
+        remoteFolder = MockRemoteItem(
             identifier: "folder",
             name: "folder",
             remotePath: Self.account.davFilesUrl + "/folder",
@@ -62,48 +72,71 @@ final class ItemModifyTests: XCTestCase {
             userId: Self.account.id,
             serverUrl: Self.account.serverUrl
         )
+        remoteTrashItem = MockRemoteItem(
+            identifier: "trashItem",
+            versionIdentifier: "0",
+            name: "trashItem.txt (trashed)",
+            remotePath: Self.account.trashUrl + "/trashItem.txt (trashed)",
+            data: "Hello, World!".data(using: .utf8),
+            account: Self.account.ncKitAccount,
+            username: Self.account.username,
+            userId: Self.account.id,
+            serverUrl: Self.account.serverUrl,
+            trashbinOriginalLocation: "folder/trashItem.txt"
+        )
+        remoteTrashFolder = MockRemoteItem(
+            identifier: "trashedFolder",
+            versionIdentifier: "0",
+            name: "trashedFolder (trashed)",
+            remotePath: Self.account.trashUrl + "/trashedFolder (trashed)",
+            directory: true,
+            account: Self.account.ncKitAccount,
+            username: Self.account.username,
+            userId: Self.account.id,
+            serverUrl: Self.account.serverUrl,
+            trashbinOriginalLocation: "trashedFolder"
+        )
+        remoteTrashFolderChildItem = MockRemoteItem(
+            identifier: "trashChildItem",
+            versionIdentifier: "0",
+            name: "trashChildItem.txt",
+            remotePath: remoteTrashFolder.remotePath + "/trashChildItem.txt",
+            data: "Hello world, I'm trash!".data(using: .utf8),
+            account: Self.account.ncKitAccount,
+            username: Self.account.username,
+            userId: Self.account.id,
+            serverUrl: Self.account.serverUrl,
+            trashbinOriginalLocation: "trashedFolder/trashChildItem.txt"
+        )
+
         rootItem.children = [remoteItem, remoteFolder]
+        rootTrashItem.children = [remoteTrashItem, remoteTrashFolder]
         remoteItem.parent = rootItem
         remoteFolder.parent = rootItem
+        remoteTrashFolder.children = [remoteTrashFolderChildItem]
+        remoteTrashFolderChildItem.parent = remoteTrashFolder
+    }
 
-        let folderMetadata = ItemMetadata()
-        folderMetadata.ocId = remoteFolder.identifier
-        folderMetadata.etag = remoteFolder.versionIdentifier
-        folderMetadata.directory = remoteFolder.directory
-        folderMetadata.name = remoteFolder.name
-        folderMetadata.fileName = remoteFolder.name
-        folderMetadata.fileNameView = remoteFolder.name
-        folderMetadata.serverUrl = Self.account.davFilesUrl
-        folderMetadata.urlBase = Self.account.serverUrl
-        folderMetadata.userId = Self.account.username
-        folderMetadata.user = Self.account.username
+    func testModifyFile() async throws {
+        let remoteInterface = MockRemoteInterface(rootItem: rootItem)
 
+        let folderMetadata = remoteFolder.toItemMetadata(account: Self.account)
         Self.dbManager.addItemMetadata(folderMetadata)
 
-        let itemMetadata = ItemMetadata()
-        itemMetadata.ocId = remoteItem.identifier
-        itemMetadata.etag = remoteItem.versionIdentifier
-        itemMetadata.name = remoteItem.name
-        itemMetadata.fileName = remoteItem.name
-        itemMetadata.fileNameView = remoteItem.name
-        itemMetadata.serverUrl = Self.account.davFilesUrl
-        itemMetadata.urlBase = Self.account.serverUrl
-        itemMetadata.userId = Self.account.username
-        itemMetadata.user = Self.account.username
-
+        let itemMetadata = remoteItem.toItemMetadata(account: Self.account)
         Self.dbManager.addItemMetadata(itemMetadata)
 
-        let targetItemMetadata = ItemMetadata()
-        targetItemMetadata.ocId = remoteItem.identifier
-        targetItemMetadata.etag = remoteItem.identifier
+        let newContents = "Hello, New World!".data(using: .utf8)
+        let newContentsUrl = FileManager.default.temporaryDirectory.appendingPathComponent("test")
+        try newContents?.write(to: newContentsUrl)
+
+        let targetItemMetadata = ItemMetadata(value: itemMetadata)
         targetItemMetadata.name = "item-renamed.txt" // Renamed
         targetItemMetadata.fileName = "item-renamed.txt" // Renamed
         targetItemMetadata.fileNameView = "item-renamed.txt" // Renamed
         targetItemMetadata.serverUrl = Self.account.davFilesUrl + "/folder" // Move
-        targetItemMetadata.urlBase = Self.account.serverUrl
-        targetItemMetadata.userId = Self.account.username
-        targetItemMetadata.user = Self.account.username
         targetItemMetadata.date = .init()
+        targetItemMetadata.size = Int64(newContents!.count)
 
         let item = Item(
             metadata: itemMetadata,
@@ -120,10 +153,6 @@ final class ItemModifyTests: XCTestCase {
         )
         targetItem.dbManager = Self.dbManager
 
-        let newContents = "Hello, New World!".data(using: .utf8)
-        let newContentsUrl = FileManager.default.temporaryDirectory.appendingPathComponent("test")
-        try newContents?.write(to: newContentsUrl)
-
         let (modifiedItemMaybe, error) = await item.modify(
             itemTarget: targetItem,
             changedFields: [.filename, .contents, .parentItemIdentifier, .contentModificationDate],
@@ -137,6 +166,7 @@ final class ItemModifyTests: XCTestCase {
         XCTAssertEqual(modifiedItem.filename, targetItem.filename)
         XCTAssertEqual(modifiedItem.parentItemIdentifier, targetItem.parentItemIdentifier)
         XCTAssertEqual(modifiedItem.contentModificationDate, targetItem.contentModificationDate)
+        XCTAssertEqual(modifiedItem.documentSize?.intValue, newContents!.count)
 
         XCTAssertFalse(remoteFolder.children.isEmpty)
         XCTAssertEqual(remoteItem.data, newContents)
@@ -146,11 +176,94 @@ final class ItemModifyTests: XCTestCase {
         )
     }
 
+    func testModifyFolder() async throws {
+        let remoteInterface = MockRemoteInterface(rootItem: rootItem)
+
+        let remoteFolderB = MockRemoteItem(
+            identifier: "folder-b",
+            name: "folder-b",
+            remotePath: Self.account.davFilesUrl + "/folder-b",
+            directory: true,
+            account: Self.account.ncKitAccount,
+            username: Self.account.username,
+            userId: Self.account.id,
+            serverUrl: Self.account.serverUrl
+        )
+
+        rootItem.children = [remoteFolder, remoteFolderB]
+        remoteFolder.parent = rootItem
+        remoteFolderB.parent = rootItem
+
+        remoteFolder.children = [remoteItem]
+        remoteItem.parent = remoteFolder
+
+        let folderMetadata = remoteFolder.toItemMetadata(account: Self.account)
+        Self.dbManager.addItemMetadata(folderMetadata)
+
+        let folderBMetadata = remoteFolderB.toItemMetadata(account: Self.account)
+        Self.dbManager.addItemMetadata(folderBMetadata)
+
+        let itemMetadata = remoteItem.toItemMetadata(account: Self.account)
+        Self.dbManager.addItemMetadata(itemMetadata)
+
+        let testingUrl = FileManager.default.temporaryDirectory.appendingPathComponent("nctest-dir")
+        do {
+            try FileManager.default.createDirectory(
+                atPath: testingUrl.path, withIntermediateDirectories: true, attributes: nil
+            )
+        } catch {
+            print(error.localizedDescription)
+        }
+
+        let modifiedFolderMetadata = ItemMetadata(value: folderMetadata)
+        modifiedFolderMetadata.apply(fileName: "folder-renamed")
+        modifiedFolderMetadata.serverUrl = remoteFolderB.remotePath
+
+        let folderItem = Item(
+            metadata: folderMetadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: remoteInterface
+        )
+        folderItem.dbManager = Self.dbManager
+
+        let targetFolderItem = Item(
+            metadata: modifiedFolderMetadata,
+            parentItemIdentifier: .init(remoteFolderB.identifier),
+            account: Self.account,
+            remoteInterface: remoteInterface
+        )
+        targetFolderItem.dbManager = Self.dbManager
+
+        let (modifiedFolderMaybe, error) = await folderItem.modify(
+            itemTarget: targetFolderItem,
+            changedFields: [.filename, .contents, .parentItemIdentifier, .contentModificationDate],
+            contents: nil,
+            dbManager: Self.dbManager
+        )
+        XCTAssertNil(error)
+        let modifiedFolder = try XCTUnwrap(modifiedFolderMaybe)
+
+        XCTAssertEqual(modifiedFolder.itemIdentifier, targetFolderItem.itemIdentifier)
+        XCTAssertEqual(modifiedFolder.filename, targetFolderItem.filename)
+        XCTAssertEqual(modifiedFolder.parentItemIdentifier, targetFolderItem.parentItemIdentifier)
+        XCTAssertEqual(modifiedFolder.contentModificationDate, targetFolderItem.contentModificationDate)
+
+        XCTAssertEqual(rootItem.children.count, 1)
+        XCTAssertEqual(remoteFolder.children.count, 1)
+        XCTAssertEqual(remoteFolderB.children.count, 1)
+        XCTAssertEqual(remoteFolder.name, targetFolderItem.filename)
+        XCTAssertEqual(
+            remoteFolder.remotePath, modifiedFolderMetadata.serverUrl + "/" + modifiedFolderMetadata.fileName
+        )
+        // We do not yet support modification of folder contents
+    }
+
     func testModifyBundleContents() async throws {
         let db = Self.dbManager.ncDatabase() // Strong ref for in memory test db
         debugPrint(db)
 
-        let remoteInterface = MockRemoteInterface(rootItem: rootItem)
+        let remoteInterface = MockRemoteInterface(rootItem: rootItem, rootTrashItem: rootTrashItem)
 
         let keynoteBundleFilename = "test.key"
         let keynoteIndexZipFilename = "Index.zip"
@@ -305,6 +418,7 @@ final class ItemModifyTests: XCTestCase {
             serverUrl: Self.account.serverUrl
         )
 
+        rootItem.children.forEach { $0.parent = nil }
         rootItem.children = [remoteKeynoteBundle, remoteFolder]
         remoteFolder.parent = rootItem
         remoteKeynoteBundle.parent = rootItem
@@ -329,179 +443,46 @@ final class ItemModifyTests: XCTestCase {
         remoteKeynoteVersionPlist.parent = remoteKeynoteMetadataFolder
         remoteKeynotePropertiesPlist.parent = remoteKeynoteMetadataFolder
 
-        let folderMetadata = ItemMetadata()
-        folderMetadata.ocId = remoteFolder.identifier
-        folderMetadata.etag = remoteFolder.versionIdentifier
-        folderMetadata.directory = remoteFolder.directory
-        folderMetadata.name = remoteFolder.name
-        folderMetadata.fileName = remoteFolder.name
-        folderMetadata.fileNameView = remoteFolder.name
-        folderMetadata.serverUrl = Self.account.davFilesUrl
-        folderMetadata.urlBase = Self.account.serverUrl
-        folderMetadata.account = Self.account.ncKitAccount
-        folderMetadata.userId = Self.account.username
-        folderMetadata.user = Self.account.username
-        folderMetadata.date = remoteFolder.creationDate
-        folderMetadata.classFile = NKCommon.TypeClassFile.directory.rawValue
-        folderMetadata.directory = true
-        folderMetadata.contentType = UTType.folder.identifier
-
+        let folderMetadata = remoteFolder.toItemMetadata(account: Self.account)
         Self.dbManager.addItemMetadata(folderMetadata)
 
-        let bundleItemMetadata = ItemMetadata()
-        bundleItemMetadata.ocId = remoteKeynoteBundle.identifier
-        bundleItemMetadata.etag = remoteKeynoteBundle.versionIdentifier
-        bundleItemMetadata.name = remoteKeynoteBundle.name
-        bundleItemMetadata.fileName = remoteKeynoteBundle.name
-        bundleItemMetadata.fileNameView = remoteKeynoteBundle.name
-        bundleItemMetadata.serverUrl = Self.account.davFilesUrl
-        bundleItemMetadata.urlBase = Self.account.serverUrl
-        bundleItemMetadata.account = Self.account.ncKitAccount
-        bundleItemMetadata.userId = Self.account.username
-        bundleItemMetadata.user = Self.account.username
-        bundleItemMetadata.date = remoteKeynoteBundle.creationDate
-        bundleItemMetadata.classFile = NKCommon.TypeClassFile.directory.rawValue
-        bundleItemMetadata.directory = true
+        let bundleItemMetadata = remoteKeynoteBundle.toItemMetadata(account: Self.account)
         bundleItemMetadata.contentType = UTType.bundle.identifier
-
         Self.dbManager.addItemMetadata(bundleItemMetadata)
 
-        let bundleIndexZipMetadata = ItemMetadata()
-        bundleIndexZipMetadata.ocId = remoteKeynoteIndexZip.identifier
-        bundleIndexZipMetadata.etag = remoteKeynoteIndexZip.versionIdentifier
-        bundleIndexZipMetadata.name = remoteKeynoteIndexZip.name
-        bundleIndexZipMetadata.fileName = remoteKeynoteIndexZip.name
-        bundleIndexZipMetadata.fileNameView = remoteKeynoteIndexZip.name
-        bundleIndexZipMetadata.serverUrl = Self.account.davFilesUrl + "/" + remoteKeynoteBundle.identifier
-        bundleIndexZipMetadata.urlBase = Self.account.serverUrl
-        bundleIndexZipMetadata.account = Self.account.ncKitAccount
-        bundleIndexZipMetadata.userId = Self.account.username
-        bundleIndexZipMetadata.user = Self.account.username
-        bundleIndexZipMetadata.date = remoteKeynoteIndexZip.creationDate
-        bundleIndexZipMetadata.size = Int64(remoteKeynoteIndexZip.data?.count ?? 0)
-        bundleIndexZipMetadata.directory = false
+        let bundleIndexZipMetadata = remoteKeynoteIndexZip.toItemMetadata(account: Self.account)
+        bundleIndexZipMetadata.classFile = NKCommon.TypeClassFile.compress.rawValue
         bundleIndexZipMetadata.contentType = UTType.zip.identifier
-
         Self.dbManager.addItemMetadata(bundleIndexZipMetadata)
 
-        let bundleRandomFileMetadata = ItemMetadata()
-        bundleRandomFileMetadata.ocId = remoteKeynoteRandomFile.identifier
-        bundleRandomFileMetadata.etag = remoteKeynoteRandomFile.versionIdentifier
-        bundleRandomFileMetadata.name = remoteKeynoteRandomFile.name
-        bundleRandomFileMetadata.fileName = remoteKeynoteRandomFile.name
-        bundleRandomFileMetadata.fileNameView = remoteKeynoteRandomFile.name
-        bundleRandomFileMetadata.serverUrl = Self.account.davFilesUrl + "/" + remoteKeynoteBundle.identifier
-        bundleRandomFileMetadata.urlBase = Self.account.serverUrl
-        bundleRandomFileMetadata.account = Self.account.ncKitAccount
-        bundleRandomFileMetadata.userId = Self.account.username
-        bundleRandomFileMetadata.user = Self.account.username
-        bundleRandomFileMetadata.date = remoteKeynoteRandomFile.creationDate
-        bundleRandomFileMetadata.size = Int64(remoteKeynoteRandomFile.data?.count ?? 0)
-        bundleRandomFileMetadata.directory = false
+        let bundleRandomFileMetadata = remoteKeynoteRandomFile.toItemMetadata(account: Self.account)
         bundleRandomFileMetadata.contentType = UTType.text.identifier
-
         Self.dbManager.addItemMetadata(bundleRandomFileMetadata)
 
-        let bundleDataFolderMetadata = ItemMetadata()
-        bundleDataFolderMetadata.ocId = remoteKeynoteDataFolder.identifier
-        bundleDataFolderMetadata.etag = remoteKeynoteDataFolder.versionIdentifier
-        bundleDataFolderMetadata.name = remoteKeynoteDataFolder.name
-        bundleDataFolderMetadata.fileName = remoteKeynoteDataFolder.name
-        bundleDataFolderMetadata.fileNameView = remoteKeynoteDataFolder.name
-        bundleDataFolderMetadata.serverUrl = Self.account.davFilesUrl + "/" + remoteKeynoteBundle.identifier
-        bundleDataFolderMetadata.urlBase = Self.account.serverUrl
-        bundleDataFolderMetadata.account = Self.account.ncKitAccount
-        bundleDataFolderMetadata.userId = Self.account.username
-        bundleDataFolderMetadata.user = Self.account.username
-        bundleDataFolderMetadata.date = remoteKeynoteDataFolder.creationDate
-        bundleDataFolderMetadata.directory = true
-        bundleDataFolderMetadata.contentType = UTType.folder.identifier
-
+        let bundleDataFolderMetadata = remoteKeynoteDataFolder.toItemMetadata(account: Self.account)
         Self.dbManager.addItemMetadata(bundleDataFolderMetadata)
 
-        let bundleDataRandomFileMetadata = ItemMetadata()
-        bundleDataRandomFileMetadata.ocId = remoteKeynoteDataRandomFile.identifier
-        bundleDataRandomFileMetadata.etag = remoteKeynoteDataRandomFile.versionIdentifier
-        bundleDataRandomFileMetadata.name = remoteKeynoteDataRandomFile.name
-        bundleDataRandomFileMetadata.fileName = remoteKeynoteDataRandomFile.name
-        bundleDataRandomFileMetadata.fileNameView = remoteKeynoteDataRandomFile.name
-        bundleDataRandomFileMetadata.serverUrl = Self.account.davFilesUrl + "/" + remoteKeynoteBundle.identifier + "/" + keynoteDataFolderName
-        bundleDataRandomFileMetadata.urlBase = Self.account.serverUrl
-        bundleDataRandomFileMetadata.account = Self.account.ncKitAccount
-        bundleDataRandomFileMetadata.userId = Self.account.username
-        bundleDataRandomFileMetadata.user = Self.account.username
-        bundleDataRandomFileMetadata.date = remoteKeynoteDataRandomFile.creationDate
-        bundleDataRandomFileMetadata.size = Int64(remoteKeynoteDataRandomFile.data?.count ?? 0)
-        bundleDataRandomFileMetadata.directory = false
+        let bundleDataRandomFileMetadata =
+            remoteKeynoteDataRandomFile.toItemMetadata(account: Self.account)
+        bundleDataRandomFileMetadata.classFile = NKCommon.TypeClassFile.image.rawValue
         bundleDataRandomFileMetadata.contentType = UTType.image.identifier
-
         Self.dbManager.addItemMetadata(bundleDataRandomFileMetadata)
 
-        let bundleMetadataFolderMetadata = ItemMetadata()
-        bundleMetadataFolderMetadata.ocId = remoteKeynoteMetadataFolder.identifier
-        bundleMetadataFolderMetadata.etag = remoteKeynoteMetadataFolder.versionIdentifier
-        bundleMetadataFolderMetadata.name = remoteKeynoteMetadataFolder.name
-        bundleMetadataFolderMetadata.fileName = remoteKeynoteMetadataFolder.name
-        bundleMetadataFolderMetadata.fileNameView = remoteKeynoteMetadataFolder.name
-        bundleMetadataFolderMetadata.serverUrl = Self.account.davFilesUrl + "/" + remoteKeynoteBundle.identifier
-        bundleMetadataFolderMetadata.urlBase = Self.account.serverUrl
-        bundleMetadataFolderMetadata.account = Self.account.ncKitAccount
-        bundleMetadataFolderMetadata.userId = Self.account.username
-        bundleMetadataFolderMetadata.user = Self.account.username
-        bundleMetadataFolderMetadata.date = remoteKeynoteMetadataFolder.creationDate
-        bundleMetadataFolderMetadata.directory = true
-        bundleMetadataFolderMetadata.contentType = UTType.folder.identifier
-
+        let bundleMetadataFolderMetadata = remoteKeynoteMetadataFolder.toItemMetadata(account: Self.account)
         Self.dbManager.addItemMetadata(bundleMetadataFolderMetadata)
 
-        let bundleDocIdentifierMetadata = ItemMetadata()
-        bundleDocIdentifierMetadata.ocId = remoteKeynoteDocIdentifier.identifier
-        bundleDocIdentifierMetadata.etag = remoteKeynoteDocIdentifier.versionIdentifier
-        bundleDocIdentifierMetadata.name = remoteKeynoteDocIdentifier.name
-        bundleDocIdentifierMetadata.fileName = remoteKeynoteDocIdentifier.name
-        bundleDocIdentifierMetadata.fileNameView = remoteKeynoteDocIdentifier.name
-        bundleDocIdentifierMetadata.serverUrl = Self.account.davFilesUrl + "/" + remoteKeynoteBundle.identifier + "/" + keynoteMetadataFolderName
-        bundleDocIdentifierMetadata.urlBase = Self.account.serverUrl
-        bundleDocIdentifierMetadata.account = Self.account.ncKitAccount
-        bundleDocIdentifierMetadata.userId = Self.account.username
-        bundleDocIdentifierMetadata.user = Self.account.username
-        bundleDocIdentifierMetadata.date = remoteKeynoteDocIdentifier.creationDate
-        bundleDocIdentifierMetadata.size = Int64(remoteKeynoteDocIdentifier.data?.count ?? 0)
-        bundleDocIdentifierMetadata.directory = false
+        let bundleDocIdentifierMetadata =
+            remoteKeynoteDocIdentifier.toItemMetadata(account: Self.account)
         bundleDocIdentifierMetadata.contentType = UTType.text.identifier
-
         Self.dbManager.addItemMetadata(bundleDocIdentifierMetadata)
 
-        let bundleVersionPlistMetadata = ItemMetadata()
-        bundleVersionPlistMetadata.ocId = remoteKeynoteVersionPlist.identifier
-        bundleVersionPlistMetadata.etag = remoteKeynoteVersionPlist.versionIdentifier
-        bundleVersionPlistMetadata.name = remoteKeynoteVersionPlist.name
-        bundleVersionPlistMetadata.fileName = remoteKeynoteVersionPlist.name
-        bundleVersionPlistMetadata.fileNameView = remoteKeynoteVersionPlist.name
-        bundleVersionPlistMetadata.serverUrl = Self.account.davFilesUrl + "/" + remoteKeynoteBundle.identifier + "/" + keynoteMetadataFolderName
-        bundleVersionPlistMetadata.urlBase = Self.account.serverUrl
-        bundleVersionPlistMetadata.account = Self.account.ncKitAccount
-        bundleVersionPlistMetadata.userId = Self.account.username
-        bundleVersionPlistMetadata.user = Self.account.username
-        bundleVersionPlistMetadata.date = remoteKeynoteVersionPlist.creationDate
-        bundleVersionPlistMetadata.size = Int64(remoteKeynoteVersionPlist.data?.count ?? 0)
-        bundleVersionPlistMetadata.directory = false
+        let bundleVersionPlistMetadata =
+            remoteKeynoteVersionPlist.toItemMetadata(account: Self.account)
         bundleVersionPlistMetadata.contentType = UTType.xml.identifier
-
         Self.dbManager.addItemMetadata(bundleVersionPlistMetadata)
 
-        let bundlePropertiesPlistMetadata = ItemMetadata()
-        bundlePropertiesPlistMetadata.ocId = remoteKeynotePropertiesPlist.identifier
-        bundlePropertiesPlistMetadata.etag = remoteKeynotePropertiesPlist.versionIdentifier
-        bundlePropertiesPlistMetadata.name = remoteKeynotePropertiesPlist.name
-        bundlePropertiesPlistMetadata.fileName = remoteKeynotePropertiesPlist.name
-        bundlePropertiesPlistMetadata.fileNameView = remoteKeynotePropertiesPlist.name
-        bundlePropertiesPlistMetadata.serverUrl = Self.account.davFilesUrl + "/" + remoteKeynoteBundle.identifier + "/" + keynoteMetadataFolderName
-        bundlePropertiesPlistMetadata.urlBase = Self.account.serverUrl
-        bundlePropertiesPlistMetadata.account = Self.account.ncKitAccount
-        bundlePropertiesPlistMetadata.userId = Self.account.username
-        bundlePropertiesPlistMetadata.user = Self.account.username
-        bundlePropertiesPlistMetadata.date = remoteKeynotePropertiesPlist.creationDate
+        let bundlePropertiesPlistMetadata =
+            remoteKeynotePropertiesPlist.toItemMetadata(account: Self.account)
         bundlePropertiesPlistMetadata.size = Int64(remoteKeynotePropertiesPlist.data?.count ?? 0)
         bundlePropertiesPlistMetadata.directory = false
         bundlePropertiesPlistMetadata.contentType = UTType.xml.identifier
@@ -576,7 +557,7 @@ final class ItemModifyTests: XCTestCase {
             .utf8).write(to: keynotePropertiesPlistPath)
 
         let targetBundleMetadata = ItemMetadata()
-        targetBundleMetadata.ocId = keynoteBundleFilename
+        targetBundleMetadata.ocId = remoteKeynoteBundle.identifier
         targetBundleMetadata.etag = "this-is-a-new-etag"
         targetBundleMetadata.name = "renamed-" + keynoteBundleFilename
         targetBundleMetadata.fileName = "renamed-" + keynoteBundleFilename
@@ -584,7 +565,7 @@ final class ItemModifyTests: XCTestCase {
         targetBundleMetadata.serverUrl = Self.account.davFilesUrl + "/folder" // Move
         targetBundleMetadata.urlBase = Self.account.serverUrl
         targetBundleMetadata.account = Self.account.ncKitAccount
-        targetBundleMetadata.userId = Self.account.username
+        targetBundleMetadata.userId = Self.account.id
         targetBundleMetadata.user = Self.account.username
         targetBundleMetadata.date = .init()
         targetBundleMetadata.directory = true
@@ -654,5 +635,592 @@ final class ItemModifyTests: XCTestCase {
         XCTAssertEqual(
             remoteKeynotePropertiesPlist.data, try Data(contentsOf: keynotePropertiesPlistPath)
         )
+    }
+
+    func testMoveFileToTrash() async throws {
+        let remoteInterface = MockRemoteInterface(rootItem: rootItem, rootTrashItem: rootTrashItem)
+
+        let itemMetadata = remoteItem.toItemMetadata(account: Self.account)
+        Self.dbManager.addItemMetadata(itemMetadata)
+
+        let item = Item(
+            metadata: itemMetadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: remoteInterface
+        )
+        let trashItem = Item(
+            metadata: itemMetadata,
+            parentItemIdentifier: .trashContainer,
+            account: Self.account,
+            remoteInterface: remoteInterface
+        )
+
+        item.dbManager = Self.dbManager
+
+        let (trashedItemMaybe, error) = await item.modify(
+            itemTarget: trashItem,
+            changedFields: [.parentItemIdentifier],
+            contents: nil,
+            dbManager: Self.dbManager
+        )
+        XCTAssertNil(error)
+
+        XCTAssertEqual(rootTrashItem.children.count, 3)
+        let remoteTrashedItem =
+            rootTrashItem.children.first(where: { $0.identifier == itemMetadata.ocId + trashedItemIdSuffix })
+        XCTAssertNotNil(remoteTrashedItem)
+
+        let trashedItem = try XCTUnwrap(trashedItemMaybe)
+        XCTAssertEqual(
+            trashedItem.itemIdentifier.rawValue + trashedItemIdSuffix, remoteTrashedItem?.identifier
+        )
+        // The mock remote interface renames items when trashing them, so, ensure this is synced
+        XCTAssertEqual(trashedItem.metadata.fileName, remoteTrashedItem?.name)
+        XCTAssertEqual(trashedItem.metadata.isTrashed, true)
+        XCTAssertEqual(
+            trashedItem.metadata.trashbinOriginalLocation,
+            (itemMetadata.serverUrl + "/" + itemMetadata.fileName)
+                .replacingOccurrences(of: Self.account.davFilesUrl + "/", with: "")
+        )
+        XCTAssertEqual(trashedItem.parentItemIdentifier, .trashContainer)
+    }
+
+    func testRenameMoveFileToTrash() async throws {
+        let remoteInterface = MockRemoteInterface(rootItem: rootItem, rootTrashItem: rootTrashItem)
+        let (_, _, initMoveError) = await remoteInterface.move(
+            remotePathSource: remoteItem.remotePath,
+            remotePathDestination: remoteFolder.remotePath + "/" + remoteItem.name,
+            account: Self.account
+        )
+        XCTAssertEqual(initMoveError, .success)
+
+        let folderMetadata = remoteItem.toItemMetadata(account: Self.account)
+        Self.dbManager.addItemMetadata(folderMetadata)
+
+        let itemMetadata = remoteItem.toItemMetadata(account: Self.account)
+        Self.dbManager.addItemMetadata(itemMetadata)
+
+        let renamedItemMetadata = ItemMetadata(value: itemMetadata)
+        renamedItemMetadata.name = "renamed"
+        renamedItemMetadata.fileName = "renamed"
+        renamedItemMetadata.fileNameView = "renamed"
+
+        let item = Item(
+            metadata: itemMetadata,
+            parentItemIdentifier: .init(remoteFolder.identifier),
+            account: Self.account,
+            remoteInterface: remoteInterface
+        )
+        let trashItem = Item(
+            metadata: renamedItemMetadata,
+            parentItemIdentifier: .trashContainer,
+            account: Self.account,
+            remoteInterface: remoteInterface
+        )
+
+        item.dbManager = Self.dbManager
+
+        let (trashedItemMaybe, error) = await item.modify(
+            itemTarget: trashItem,
+            changedFields: [.parentItemIdentifier, .filename],
+            contents: nil,
+            dbManager: Self.dbManager
+        )
+        XCTAssertNil(error)
+
+        XCTAssertEqual(rootTrashItem.children.count, 3)
+        let remoteTrashedItem = rootTrashItem.children.first(
+            where: { $0.identifier == itemMetadata.ocId + trashedItemIdSuffix }
+        )
+        XCTAssertNotNil(remoteTrashedItem)
+
+        let trashedItem = try XCTUnwrap(trashedItemMaybe)
+        XCTAssertEqual(
+            trashedItem.itemIdentifier.rawValue + trashedItemIdSuffix, remoteTrashedItem?.identifier
+        )
+        XCTAssertTrue(remoteTrashedItem?.name.hasPrefix(renamedItemMetadata.fileName) ?? false)
+        // The mock remote interface renames items when trashing them, so, ensure this is synced
+        XCTAssertEqual(trashedItem.metadata.fileName, remoteTrashedItem?.name)
+        XCTAssertEqual(trashedItem.metadata.isTrashed, true)
+        XCTAssertEqual(
+            trashedItem.metadata.trashbinOriginalLocation,
+            (remoteFolder.remotePath + "/" + renamedItemMetadata.fileName)
+                .replacingOccurrences(of: Self.account.davFilesUrl + "/", with: "")
+        )
+        XCTAssertEqual(trashedItem.parentItemIdentifier, .trashContainer)
+    }
+
+    func testMoveFolderToTrash() async throws {
+        let remoteInterface = MockRemoteInterface(rootItem: rootItem, rootTrashItem: rootTrashItem)
+        let remoteFolder = MockRemoteItem(
+            identifier: "folder",
+            name: "folder",
+            remotePath: Self.account.davFilesUrl + "/folder",
+            directory: true,
+            account: Self.account.ncKitAccount,
+            username: Self.account.username,
+            userId: Self.account.id,
+            serverUrl: Self.account.serverUrl
+        )
+        let remoteItem = MockRemoteItem(
+            identifier: "item",
+            versionIdentifier: "0",
+            name: "item.txt",
+            remotePath: remoteFolder.remotePath + "/item.txt",
+            data: "Hello, World!".data(using: .utf8),
+            account: Self.account.ncKitAccount,
+            username: Self.account.username,
+            userId: Self.account.id,
+            serverUrl: Self.account.serverUrl
+        )
+        rootItem.children = [remoteFolder]
+        remoteFolder.parent = rootItem
+        remoteFolder.children = [remoteItem]
+        remoteItem.parent = remoteFolder
+
+        let folderMetadata = remoteFolder.toItemMetadata(account: Self.account)
+        Self.dbManager.addItemMetadata(folderMetadata)
+
+        let itemMetadata = remoteItem.toItemMetadata(account: Self.account)
+        Self.dbManager.addItemMetadata(itemMetadata)
+
+        let folderItem = Item(
+            metadata: folderMetadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: remoteInterface
+        )
+        let trashFolderItem = Item(
+            metadata: folderMetadata,
+            parentItemIdentifier: .trashContainer,
+            account: Self.account,
+            remoteInterface: remoteInterface
+        )
+
+        folderItem.dbManager = Self.dbManager
+
+        let (trashedFolderItemMaybe, error) = await folderItem.modify(
+            itemTarget: trashFolderItem,
+            changedFields: [.parentItemIdentifier],
+            contents: nil,
+            dbManager: Self.dbManager
+        )
+        XCTAssertNil(error)
+
+        XCTAssertEqual(rootTrashItem.children.count, 3)
+        let remoteTrashedFolderItem = rootTrashItem.children.first(
+            where: { $0.identifier == folderMetadata.ocId + trashedItemIdSuffix }
+        )
+        XCTAssertNotNil(remoteTrashedFolderItem)
+
+        let trashedFolderItem = try XCTUnwrap(trashedFolderItemMaybe)
+        XCTAssertEqual(
+            trashedFolderItem.itemIdentifier.rawValue + trashedItemIdSuffix,
+            remoteTrashedFolderItem?.identifier
+        )
+        // The mock remote interface renames items when trashing them, so, ensure this is synced
+        XCTAssertEqual(trashedFolderItem.metadata.fileName, remoteTrashedFolderItem?.name)
+        XCTAssertEqual(trashedFolderItem.metadata.isTrashed, true)
+        XCTAssertEqual(
+            trashedFolderItem.metadata.trashbinOriginalLocation,
+            (folderMetadata.serverUrl + "/" + folderMetadata.fileName)
+                .replacingOccurrences(of: Self.account.davFilesUrl + "/", with: "")
+        )
+        XCTAssertEqual(trashedFolderItem.parentItemIdentifier, .trashContainer)
+
+        let trashChildItemMetadata = Self.dbManager.itemMetadata(ocId: itemMetadata.ocId)
+        XCTAssertNotNil(trashChildItemMetadata)
+        XCTAssertEqual(trashChildItemMetadata?.isTrashed, true)
+        XCTAssertEqual(
+            trashChildItemMetadata?.serverUrl,
+            trashedFolderItem.metadata.serverUrl + "/" + trashedFolderItem.metadata.fileName
+        )
+        XCTAssertEqual(trashChildItemMetadata?.trashbinFileName, itemMetadata.fileName)
+        XCTAssertEqual(
+            trashChildItemMetadata?.trashbinOriginalLocation,
+            (itemMetadata.serverUrl + "/" + itemMetadata.fileName)
+                .replacingOccurrences(of: Self.account.davFilesUrl + "/", with: "")
+        )
+    }
+
+    func testMoveFolderToTrashWithRename() async throws {
+        let remoteInterface = MockRemoteInterface(rootItem: rootItem, rootTrashItem: rootTrashItem)
+        let remoteFolder = MockRemoteItem(
+            identifier: "folder",
+            name: "folder",
+            remotePath: Self.account.davFilesUrl + "/folder",
+            directory: true,
+            account: Self.account.ncKitAccount,
+            username: Self.account.username,
+            userId: Self.account.id,
+            serverUrl: Self.account.serverUrl
+        )
+        let remoteItem = MockRemoteItem(
+            identifier: "item",
+            versionIdentifier: "0",
+            name: "item.txt",
+            remotePath: remoteFolder.remotePath + "/item.txt",
+            data: "Hello, World!".data(using: .utf8),
+            account: Self.account.ncKitAccount,
+            username: Self.account.username,
+            userId: Self.account.id,
+            serverUrl: Self.account.serverUrl
+        )
+        rootItem.children = [remoteFolder]
+        remoteFolder.parent = rootItem
+        remoteFolder.children = [remoteItem]
+        remoteItem.parent = remoteFolder
+
+        let folderMetadata = remoteFolder.toItemMetadata(account: Self.account)
+        Self.dbManager.addItemMetadata(folderMetadata)
+
+        let renamedFolderMetadata = ItemMetadata(value: folderMetadata)
+        renamedFolderMetadata.fileName = "folder (renamed)"
+
+        let itemMetadata = remoteItem.toItemMetadata(account: Self.account)
+        Self.dbManager.addItemMetadata(itemMetadata)
+
+        let folderItem = Item(
+            metadata: folderMetadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: remoteInterface
+        )
+        let trashFolderItem = Item(
+            metadata: renamedFolderMetadata, // Test rename first and then trash
+            parentItemIdentifier: .trashContainer,
+            account: Self.account,
+            remoteInterface: remoteInterface
+        )
+
+        folderItem.dbManager = Self.dbManager
+
+        let (trashedFolderItemMaybe, error) = await folderItem.modify(
+            itemTarget: trashFolderItem,
+            changedFields: [.parentItemIdentifier, .filename],
+            contents: nil,
+            dbManager: Self.dbManager
+        )
+        XCTAssertNil(error)
+
+        XCTAssertEqual(rootTrashItem.children.count, 3)
+        let remoteTrashedFolderItem = rootTrashItem.children.first(
+            where: { $0.identifier == folderMetadata.ocId + trashedItemIdSuffix }
+        )
+        XCTAssertNotNil(remoteTrashedFolderItem)
+
+        let trashedFolderItem = try XCTUnwrap(trashedFolderItemMaybe)
+        XCTAssertEqual(
+            trashedFolderItem.itemIdentifier.rawValue + trashedItemIdSuffix,
+            remoteTrashedFolderItem?.identifier
+        )
+        // The mock remote interface renames items when trashing them, so, ensure this is synced
+        XCTAssertEqual(trashedFolderItem.metadata.fileName, remoteTrashedFolderItem?.name)
+        XCTAssertEqual(trashedFolderItem.metadata.isTrashed, true)
+        XCTAssertEqual(
+            trashedFolderItem.metadata.trashbinOriginalLocation,
+            (renamedFolderMetadata.serverUrl + "/" + renamedFolderMetadata.fileName)
+                .replacingOccurrences(of: Self.account.davFilesUrl + "/", with: "")
+        )
+        XCTAssertEqual(trashedFolderItem.parentItemIdentifier, .trashContainer)
+
+        let trashChildItemMetadata = Self.dbManager.itemMetadata(ocId: itemMetadata.ocId)
+        XCTAssertNotNil(trashChildItemMetadata)
+        XCTAssertEqual(trashChildItemMetadata?.isTrashed, true)
+        XCTAssertEqual(
+            trashChildItemMetadata?.serverUrl,
+            trashedFolderItem.metadata.serverUrl + "/" + trashedFolderItem.metadata.fileName
+        )
+        XCTAssertEqual(trashChildItemMetadata?.trashbinFileName, itemMetadata.fileName)
+        XCTAssertEqual(
+            trashChildItemMetadata?.trashbinOriginalLocation,
+            (renamedFolderMetadata.serverUrl + "/" + renamedFolderMetadata.fileName + "/" + itemMetadata.fileName)
+                .replacingOccurrences(of: Self.account.davFilesUrl + "/", with: "")
+        )
+    }
+
+    func testTrashAndMoveFileOutOfTrash() async throws {
+        let remoteInterface = MockRemoteInterface(rootItem: rootItem, rootTrashItem: rootTrashItem)
+        let itemMetadata = remoteItem.toItemMetadata(account: Self.account)
+        Self.dbManager.addItemMetadata(itemMetadata)
+
+        let item = Item(
+            metadata: itemMetadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: remoteInterface
+        )
+        let trashItem = Item(
+            metadata: itemMetadata,
+            parentItemIdentifier: .trashContainer,
+            account: Self.account,
+            remoteInterface: remoteInterface
+        )
+
+        item.dbManager = Self.dbManager
+
+        let (trashedItemMaybe, trashError) = await item.modify(
+            itemTarget: trashItem,
+            changedFields: [.parentItemIdentifier],
+            contents: nil,
+            dbManager: Self.dbManager
+        )
+        XCTAssertNil(trashError)
+        let trashedItem = try XCTUnwrap(trashedItemMaybe)
+        trashedItem.dbManager = Self.dbManager
+        XCTAssertEqual(trashedItem.parentItemIdentifier, .trashContainer)
+
+        let (untrashedItemMaybe, untrashError) = await trashedItem.modify(
+            itemTarget: item,
+            changedFields: [.parentItemIdentifier],
+            contents: nil,
+            dbManager: Self.dbManager
+        )
+        XCTAssertNil(untrashError)
+        let untrashedItem = try XCTUnwrap(untrashedItemMaybe)
+        XCTAssertEqual(untrashedItem.parentItemIdentifier, .rootContainer)
+    }
+
+    func testMoveTrashedFileOutOfTrash() async throws {
+        let remoteInterface = MockRemoteInterface(rootItem: rootItem, rootTrashItem: rootTrashItem)
+
+        let trashItemMetadata = remoteTrashItem.toItemMetadata(account: Self.account)
+        Self.dbManager.addItemMetadata(trashItemMetadata)
+
+        let folderMetadata = remoteFolder.toItemMetadata(account: Self.account)
+        Self.dbManager.addItemMetadata(folderMetadata)
+
+        let trashItem = Item(
+            metadata: trashItemMetadata,
+            parentItemIdentifier: .trashContainer,
+            account: Self.account,
+            remoteInterface: remoteInterface
+        )
+        trashItem.dbManager = Self.dbManager
+
+        let untrashedTargetItem = Item(
+            metadata: trashItemMetadata,
+            parentItemIdentifier: .init(remoteFolder.identifier),
+            account: Self.account,
+            remoteInterface: remoteInterface
+        )
+
+        let (untrashedItemMaybe, untrashError) = await trashItem.modify(
+            itemTarget: untrashedTargetItem,
+            changedFields: [.parentItemIdentifier],
+            contents: nil,
+            dbManager: Self.dbManager
+        )
+        XCTAssertNil(untrashError)
+        let untrashedItem = try XCTUnwrap(untrashedItemMaybe)
+        untrashedItem.dbManager = Self.dbManager
+        XCTAssertEqual(untrashedItem.parentItemIdentifier, .init(remoteFolder.identifier))
+    }
+
+    func testMoveTrashedFileOutOfTrashAndRenameAndModifyContents() async throws {
+        let remoteInterface = MockRemoteInterface(rootItem: rootItem, rootTrashItem: rootTrashItem)
+
+        let trashItemMetadata = remoteTrashItem.toItemMetadata(account: Self.account)
+        Self.dbManager.addItemMetadata(trashItemMetadata)
+
+        let folderMetadata = remoteFolder.toItemMetadata(account: Self.account)
+        Self.dbManager.addItemMetadata(folderMetadata)
+
+        let newContents = "I've changed!".data(using: .utf8)!
+        let newContentsUrl = FileManager.default.temporaryDirectory.appendingPathComponent("test")
+        try newContents.write(to: newContentsUrl)
+
+        let targetItemMetadata = ItemMetadata(value: trashItemMetadata)
+        targetItemMetadata.serverUrl = Self.account.davFilesUrl
+        targetItemMetadata.fileName = "new-file.txt"
+        targetItemMetadata.fileNameView = "new-file.txt"
+        targetItemMetadata.name = "new-file.txt"
+        targetItemMetadata.size = Int64(newContents.count)
+        targetItemMetadata.trashbinFileName = ""
+        targetItemMetadata.trashbinOriginalLocation = ""
+        targetItemMetadata.trashbinDeletionTime = Date()
+
+        let trashItem = Item(
+            metadata: trashItemMetadata,
+            parentItemIdentifier: .trashContainer,
+            account: Self.account,
+            remoteInterface: remoteInterface
+        )
+        trashItem.dbManager = Self.dbManager
+
+        let targetItem = Item(
+            metadata: targetItemMetadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: remoteInterface
+        )
+
+        let (modifiedUntrashedItemMaybe, error) = await trashItem.modify(
+            itemTarget: targetItem,
+            changedFields: [.parentItemIdentifier, .filename, .contents],
+            contents: newContentsUrl,
+            dbManager: Self.dbManager
+        )
+        XCTAssertNil(error)
+        
+        let modifiedUntrashedItem = try XCTUnwrap(modifiedUntrashedItemMaybe)
+        modifiedUntrashedItem.dbManager = Self.dbManager
+
+        XCTAssertEqual(modifiedUntrashedItem.parentItemIdentifier, .rootContainer)
+        XCTAssertEqual(modifiedUntrashedItem.itemIdentifier, targetItem.itemIdentifier)
+        XCTAssertEqual(modifiedUntrashedItem.filename, targetItem.filename)
+        XCTAssertEqual(modifiedUntrashedItem.documentSize?.int64Value, targetItemMetadata.size)
+
+        XCTAssertEqual(remoteTrashItem.name, targetItem.filename)
+        XCTAssertEqual(remoteTrashItem.data!, newContents)
+    }
+
+    func testMoveFileOutOfTrashWithExistingIdenticallyNamedFile() async throws {
+        // Make sure that we properly get the post-untrash state of the target item and not the
+        // identically-named file in the location the file has been untrashed to
+        let remoteInterface = MockRemoteInterface(rootItem: rootItem, rootTrashItem: rootTrashItem)
+
+        remoteTrashItem.trashbinOriginalLocation =
+            remoteItem.remotePath.replacingOccurrences(of: Self.account.davFilesUrl + "/", with: "")
+
+        let trashItemMetadata = remoteTrashItem.toItemMetadata(account: Self.account)
+        Self.dbManager.addItemMetadata(trashItemMetadata)
+
+        let folderMetadata = remoteFolder.toItemMetadata(account: Self.account)
+        Self.dbManager.addItemMetadata(folderMetadata)
+
+        let trashItem = Item(
+            metadata: trashItemMetadata,
+            parentItemIdentifier: .trashContainer,
+            account: Self.account,
+            remoteInterface: remoteInterface
+        )
+        trashItem.dbManager = Self.dbManager
+
+        let untrashedTargetItem = Item(
+            metadata: trashItemMetadata,
+            parentItemIdentifier: .init(rootItem.identifier),
+            account: Self.account,
+            remoteInterface: remoteInterface
+        )
+
+        let (untrashedItemMaybe, untrashError) = await trashItem.modify(
+            itemTarget: untrashedTargetItem,
+            changedFields: [.parentItemIdentifier],
+            contents: nil,
+            dbManager: Self.dbManager
+        )
+        XCTAssertNil(untrashError)
+        let untrashedItem = try XCTUnwrap(untrashedItemMaybe)
+        untrashedItem.dbManager = Self.dbManager
+        XCTAssertEqual(untrashedItem.itemIdentifier, trashItem.itemIdentifier)
+        XCTAssertEqual(untrashedItem.parentItemIdentifier, .init(rootItem.identifier))
+    }
+
+    func testMoveFolderOutOfTrash() async throws {
+        let remoteInterface = MockRemoteInterface(rootItem: rootItem, rootTrashItem: rootTrashItem)
+        let trashFolderMetadata = remoteTrashFolder.toItemMetadata(account: Self.account)
+        Self.dbManager.addItemMetadata(trashFolderMetadata)
+
+        let trashFolderChildItemMetadata =
+            remoteTrashFolderChildItem.toItemMetadata(account: Self.account)
+        Self.dbManager.addItemMetadata(trashFolderChildItemMetadata)
+
+        let trashedFolderItem = Item(
+            metadata: trashFolderMetadata,
+            parentItemIdentifier: .trashContainer,
+            account: Self.account,
+            remoteInterface: remoteInterface
+        )
+        trashedFolderItem.dbManager = Self.dbManager
+
+        let untrashedTargetItem = Item(
+            metadata: trashFolderMetadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: remoteInterface
+        )
+
+        let (untrashedFolderItemMaybe, untrashError) = await trashedFolderItem.modify(
+            itemTarget: untrashedTargetItem,
+            changedFields: [.parentItemIdentifier],
+            contents: nil,
+            dbManager: Self.dbManager
+        )
+        XCTAssertNil(untrashError)
+        let untrashedItem = try XCTUnwrap(untrashedFolderItemMaybe)
+        untrashedItem.dbManager = Self.dbManager
+        XCTAssertEqual(untrashedItem.parentItemIdentifier, .rootContainer)
+        XCTAssertEqual(remoteTrashFolder.children.count, 1)
+        XCTAssertTrue(remoteTrashFolder.remotePath.hasPrefix(Self.account.davFilesUrl))
+
+        let untrashedFolderChildItemMaybe =
+            Self.dbManager.itemMetadata(ocId: remoteTrashFolderChildItem.identifier)
+        let untrashedFolderChildItem = try XCTUnwrap(untrashedFolderChildItemMaybe)
+        XCTAssertEqual(remoteTrashFolder.children.first?.identifier, untrashedFolderChildItem.ocId)
+        XCTAssertEqual(
+            remoteTrashFolderChildItem.remotePath,
+            remoteTrashFolder.remotePath + "/" + remoteTrashFolderChildItem.name
+        )
+        XCTAssertEqual(untrashedFolderChildItem.serverUrl, remoteTrashFolder.remotePath)
+    }
+
+    func testMoveFolderOutOfTrashAndRename() async throws {
+        let remoteInterface = MockRemoteInterface(rootItem: rootItem, rootTrashItem: rootTrashItem)
+
+        let trashFolderMetadata = remoteTrashFolder.toItemMetadata(account: Self.account)
+        Self.dbManager.addItemMetadata(trashFolderMetadata)
+
+        let renamedTrashFolderMetadata = ItemMetadata(value: trashFolderMetadata)
+        renamedTrashFolderMetadata.apply(fileName: "renamed-folder")
+        renamedTrashFolderMetadata.serverUrl = Self.account.davFilesUrl
+        renamedTrashFolderMetadata.trashbinFileName = ""
+        renamedTrashFolderMetadata.trashbinOriginalLocation = ""
+        renamedTrashFolderMetadata.trashbinDeletionTime = Date()
+
+        let trashFolderChildItemMetadata =
+            remoteTrashFolderChildItem.toItemMetadata(account: Self.account)
+        Self.dbManager.addItemMetadata(trashFolderChildItemMetadata)
+
+        let trashedFolderItem = Item(
+            metadata: trashFolderMetadata,
+            parentItemIdentifier: .trashContainer,
+            account: Self.account,
+            remoteInterface: remoteInterface
+        )
+        trashedFolderItem.dbManager = Self.dbManager
+
+        let untrashedTargetItem = Item(
+            metadata: renamedTrashFolderMetadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: remoteInterface
+        )
+
+        let (untrashedFolderItemMaybe, untrashError) = await trashedFolderItem.modify(
+            itemTarget: untrashedTargetItem,
+            changedFields: [.parentItemIdentifier, .filename],
+            contents: nil,
+            dbManager: Self.dbManager
+        )
+        XCTAssertNil(untrashError)
+        let untrashedFolderItem = try XCTUnwrap(untrashedFolderItemMaybe)
+        untrashedFolderItem.dbManager = Self.dbManager
+        XCTAssertEqual(untrashedFolderItem.parentItemIdentifier, .rootContainer)
+        XCTAssertEqual(untrashedFolderItem.filename, renamedTrashFolderMetadata.fileName)
+        XCTAssertEqual(remoteTrashFolder.children.count, 1)
+        XCTAssertEqual(remoteTrashFolder.name, renamedTrashFolderMetadata.fileName)
+        XCTAssertTrue(remoteTrashFolder.remotePath.hasPrefix(Self.account.davFilesUrl))
+
+        let untrashedFolderChildItemMaybe =
+            Self.dbManager.itemMetadata(ocId: remoteTrashFolderChildItem.identifier)
+        let untrashedFolderChildItem = try XCTUnwrap(untrashedFolderChildItemMaybe)
+        XCTAssertEqual(remoteTrashFolder.children.first?.identifier, untrashedFolderChildItem.ocId)
+        XCTAssertEqual(
+            remoteTrashFolderChildItem.remotePath,
+            remoteTrashFolder.remotePath + "/" + remoteTrashFolderChildItem.name
+        )
+        XCTAssertEqual(untrashedFolderChildItem.serverUrl, remoteTrashFolder.remotePath)
     }
 }

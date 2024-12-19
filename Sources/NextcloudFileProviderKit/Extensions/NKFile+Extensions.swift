@@ -73,6 +73,9 @@ extension NKFile {
         } else {
             metadata.uploadDate = date as Date
         }
+        metadata.trashbinFileName = trashbinFileName
+        metadata.trashbinOriginalLocation = trashbinOriginalLocation
+        metadata.trashbinDeletionTime = trashbinDeletionTime
         metadata.urlBase = urlBase
         metadata.user = user
         metadata.userId = userId

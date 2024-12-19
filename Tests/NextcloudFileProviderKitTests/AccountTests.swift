@@ -23,6 +23,10 @@ final class AccountTests: XCTest {
         XCTAssertEqual(account.ncKitAccount, "\(user) \(serverUrl)")
         XCTAssertEqual(account.serverUrl, serverUrl)
         XCTAssertEqual(account.davFilesUrl, serverUrl + Account.webDavFilesUrlSuffix + user)
+        XCTAssertEqual(account.trashUrl, serverUrl + Account.webDavTrashUrlSuffix + "\(user)/trash")
+        XCTAssertEqual(
+            account.trashRestoreUrl, serverUrl + Account.webDavTrashUrlSuffix + "\(user)/restore"
+        )
     }
 
     func testInitializationFromDictionary() {
@@ -32,7 +36,9 @@ final class AccountTests: XCTest {
             AccountDictPasswordKey: "password",
             AccountDictNcKitAccountKey: "user https://example.com",
             AccountDictServerUrlKey: "https://example.com",
-            AccountDictDavFilesUrlKey: "https://example.com/remote.php/dav/files/user"
+            AccountDictDavFilesUrlKey: "https://example.com/remote.php/dav/files/user",
+            AccountDictTrashUrlKey: "https://example.com/remote.php/dav/trashbin/user/trash",
+            AccountDictTrashRestoreUrlKey: "https://example.com/remote.php/dav/trashbin/user/restore"
         ]
 
         let account = Account(dictionary: dictionary)
@@ -44,6 +50,10 @@ final class AccountTests: XCTest {
         XCTAssertEqual(account?.ncKitAccount, "user https://example.com")
         XCTAssertEqual(account?.serverUrl, "https://example.com")
         XCTAssertEqual(account?.davFilesUrl, "https://example.com/remote.php/dav/files/user")
+        XCTAssertEqual(account?.trashUrl, "https://example.com/remote.php/dav/trashbin/user/trash")
+        XCTAssertEqual(
+            account?.trashRestoreUrl, "https://example.com/remote.php/dav/trashbin/user/restore"
+        )
     }
 
     func testInitializationFromIncompleteDictionary() {
@@ -68,6 +78,8 @@ final class AccountTests: XCTest {
         XCTAssertEqual(dictionary[AccountDictNcKitAccountKey], "user https://example.com")
         XCTAssertEqual(dictionary[AccountDictServerUrlKey], "https://example.com")
         XCTAssertEqual(dictionary[AccountDictDavFilesUrlKey], "https://example.com/remote.php/dav/files/user")
+        XCTAssertEqual(dictionary[AccountDictTrashUrlKey], "https://example.com/remote.php/dav/trashbin/user/trash")
+        XCTAssertEqual(dictionary[AccountDictTrashUrlKey], "https://example.com/remote.php/dav/trashbin/user/restores")
     }
 
     func testEquatability() {
