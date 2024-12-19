@@ -1113,7 +1113,10 @@ void ConfigFile::setAutomaticLogDir(bool enabled)
 
 QString ConfigFile::logDir() const
 {
-    const auto defaultLogDir = QString(configPath() + QStringLiteral("/logs"));
+    const auto defaultLogDir = QString(
+        QStandardPaths::writableLocation(QStandardPaths::AppDataLocation)
+        + QStringLiteral("/logs")
+    );
     QSettings settings(configFile(), QSettings::IniFormat);
     return settings.value(QLatin1String(logDirC), defaultLogDir).toString();
 }
