@@ -537,6 +537,13 @@ public extension Item {
             )
             return (modifiedItem, NSFileProviderError(.cannotSynchronize))
         }
+        let dirtyChildren = dbManager.childItems(directoryMetadata: dirtyMetadata)
+        let dirtyItem = Item(
+            metadata: dirtyMetadata,
+            parentItemIdentifier: .trashContainer,
+            account: account,
+            remoteInterface: modifiedItem.remoteInterface
+        )
 
         // The server may have renamed the trashed file so we need to scan the entire trash
         let (_, files, _, error) = await modifiedItem.remoteInterface.trashedItems(
@@ -551,13 +558,6 @@ public extension Item {
                     )
                 }
             }
-        )
-
-        let dirtyItem = Item(
-            metadata: dirtyMetadata,
-            parentItemIdentifier: .trashContainer,
-            account: account,
-            remoteInterface: modifiedItem.remoteInterface
         )
 
         guard error == .success else {
@@ -607,7 +607,7 @@ public extension Item {
 
         // Now we can directly update info on the child items
         var (_, childFiles, _, childError) = await modifiedItem.remoteInterface.enumerate(
-            remotePath: account.trashUrl,
+            remotePath: postDeleteMetadata.serverUrl + "/" + postDeleteMetadata.fileName,
             depth: EnumerateDepth.targetAndAllChildren, // Just do it in one go
             showHiddenFiles: true,
             includeHiddenFiles: [],
@@ -637,9 +637,36 @@ public extension Item {
 
         // Update state of child files
         childFiles.removeFirst() // This is the target path, already scanned
+        var metadatas = [ItemMetadata]()
         for file in childFiles {
             let metadata = file.toItemMetadata()
-            dbManager.addItemMetadata(metadata)
+            guard let original = dirtyChildren
+                .filter("ocId == %@ || fileId == %@", metadata.ocId, metadata.fileId)
+                .first
+            else {
+                Self.logger.info(
+                    """
+                    Skipping post-trash child item metadata: \(metadata, privacy: .public)
+                        Could not find matching existing item in database, cannot do ocId correction
+                    """
+                )
+                continue
+            }
+            metadata.ocId = original.ocId // Give original id back
+            metadatas.append(metadata)
+            Self.logger.info("Adding post-trash child item metadata: \(metadata, privacy: .public)")
+        }
+
+        do {
+            let database = dbManager.ncDatabase()
+            try database.write { database.add(metadatas, update: .modified) }
+        } catch let error {
+            Self.logger.error(
+                """
+                Could not update trashed item child metadatas.
+                    error: \(error.localizedDescription)
+                """
+            )
         }
 
         return (postDeleteItem, nil)
