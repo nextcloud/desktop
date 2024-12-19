@@ -668,12 +668,12 @@ final class ItemModifyTests: XCTestCase {
 
         XCTAssertEqual(rootTrashItem.children.count, 3)
         let remoteTrashedItem =
-            rootTrashItem.children.first(where: { $0.identifier == itemMetadata.ocId })
+            rootTrashItem.children.first(where: { $0.identifier == itemMetadata.ocId + trashedItemIdSuffix })
         XCTAssertNotNil(remoteTrashedItem)
 
         let trashedItem = try XCTUnwrap(trashedItemMaybe)
         XCTAssertEqual(
-            trashedItem.itemIdentifier.rawValue, remoteTrashedItem?.identifier
+            trashedItem.itemIdentifier.rawValue + trashedItemIdSuffix, remoteTrashedItem?.identifier
         )
         // The mock remote interface renames items when trashing them, so, ensure this is synced
         XCTAssertEqual(trashedItem.metadata.fileName, remoteTrashedItem?.name)
@@ -730,13 +730,14 @@ final class ItemModifyTests: XCTestCase {
         XCTAssertNil(error)
 
         XCTAssertEqual(rootTrashItem.children.count, 3)
-        let remoteTrashedItem =
-            rootTrashItem.children.first(where: { $0.identifier == itemMetadata.ocId})
+        let remoteTrashedItem = rootTrashItem.children.first(
+            where: { $0.identifier == itemMetadata.ocId + trashedItemIdSuffix }
+        )
         XCTAssertNotNil(remoteTrashedItem)
 
         let trashedItem = try XCTUnwrap(trashedItemMaybe)
         XCTAssertEqual(
-            trashedItem.itemIdentifier.rawValue, remoteTrashedItem?.identifier
+            trashedItem.itemIdentifier.rawValue + trashedItemIdSuffix, remoteTrashedItem?.identifier
         )
         XCTAssertTrue(remoteTrashedItem?.name.hasPrefix(renamedItemMetadata.fileName) ?? false)
         // The mock remote interface renames items when trashing them, so, ensure this is synced
@@ -808,13 +809,15 @@ final class ItemModifyTests: XCTestCase {
         XCTAssertNil(error)
 
         XCTAssertEqual(rootTrashItem.children.count, 3)
-        let remoteTrashedFolderItem =
-            rootTrashItem.children.first(where: { $0.identifier == folderMetadata.ocId })
+        let remoteTrashedFolderItem = rootTrashItem.children.first(
+            where: { $0.identifier == folderMetadata.ocId + trashedItemIdSuffix }
+        )
         XCTAssertNotNil(remoteTrashedFolderItem)
 
         let trashedFolderItem = try XCTUnwrap(trashedFolderItemMaybe)
         XCTAssertEqual(
-            trashedFolderItem.itemIdentifier.rawValue, remoteTrashedFolderItem?.identifier
+            trashedFolderItem.itemIdentifier.rawValue + trashedItemIdSuffix,
+            remoteTrashedFolderItem?.identifier
         )
         // The mock remote interface renames items when trashing them, so, ensure this is synced
         XCTAssertEqual(trashedFolderItem.metadata.fileName, remoteTrashedFolderItem?.name)
@@ -902,13 +905,15 @@ final class ItemModifyTests: XCTestCase {
         XCTAssertNil(error)
 
         XCTAssertEqual(rootTrashItem.children.count, 3)
-        let remoteTrashedFolderItem =
-            rootTrashItem.children.first(where: { $0.identifier == folderMetadata.ocId })
+        let remoteTrashedFolderItem = rootTrashItem.children.first(
+            where: { $0.identifier == folderMetadata.ocId + trashedItemIdSuffix }
+        )
         XCTAssertNotNil(remoteTrashedFolderItem)
 
         let trashedFolderItem = try XCTUnwrap(trashedFolderItemMaybe)
         XCTAssertEqual(
-            trashedFolderItem.itemIdentifier.rawValue, remoteTrashedFolderItem?.identifier
+            trashedFolderItem.itemIdentifier.rawValue + trashedItemIdSuffix,
+            remoteTrashedFolderItem?.identifier
         )
         // The mock remote interface renames items when trashing them, so, ensure this is synced
         XCTAssertEqual(trashedFolderItem.metadata.fileName, remoteTrashedFolderItem?.name)
