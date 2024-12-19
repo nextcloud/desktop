@@ -148,7 +148,7 @@ public class MockRemoteItem: Equatable {
         )
         metadata.date = modificationDate
         metadata.creationDate = creationDate
-        metadata.size = data?.count as? Int64 ?? 0
+        metadata.size = size
         metadata.urlBase = account.serverUrl
         metadata.userId = account.id
         metadata.user = account.username

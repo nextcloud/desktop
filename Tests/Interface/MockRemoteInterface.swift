@@ -281,9 +281,8 @@ public class MockRemoteInterface: RemoteInterface {
             sourceItem.trashbinOriginalLocation = nil
         }
 
-        let matchingNameChildCount = destinationParent.children.count(
-            where: { $0.name == sourceItem.name }
-        )
+        let matchingNameChildCount =
+            destinationParent.children.filter({ $0.name == sourceItem.name }).count
 
         if !overwrite && matchingNameChildCount > 0 {
             sourceItem.name += " (\(matchingNameChildCount))"
