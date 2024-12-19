@@ -48,6 +48,18 @@ index f6df24546..1f5882756 100644
  
      auto *translator = new QTranslator(this);
      auto *qtTranslator = new QTranslator(this);
+diff --git a/src/gui/tray/TrayFoldersMenuButton.qml b/src/gui/tray/TrayFoldersMenuButton.qml
+index 6da6f9ca9..85fa37d09 100644
+--- a/src/gui/tray/TrayFoldersMenuButton.qml
++++ b/src/gui/tray/TrayFoldersMenuButton.qml
+@@ -11,7 +11,6 @@
+  * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
+  * for more details.
+  */
+-pragma NativeMethodBehavior: AcceptThisObject
+ import QtQuick
+ import QtQuick.Controls
+ import QtQuick.Layouts
 diff --git a/src/libsync/theme.cpp b/src/libsync/theme.cpp
 index 7e717bf05..4265b9e3b 100644
 --- a/src/libsync/theme.cpp
