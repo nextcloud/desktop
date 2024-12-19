@@ -563,6 +563,59 @@ final class MockRemoteInterfaceTests: XCTestCase {
         XCTAssertNil(itemA.trashbinOriginalLocation)
     }
 
+    func testNoDirectMoveFromTrash() async {
+        let remoteInterface = MockRemoteInterface(rootItem: rootItem, rootTrashItem: rootTrashItem)
+        let folder = MockRemoteItem(
+            identifier: "folder",
+            name: "folder",
+            remotePath: Self.account.davFilesUrl + "/folder",
+            directory: true,
+            account: Self.account.ncKitAccount,
+            username: Self.account.username,
+            userId: Self.account.id,
+            serverUrl: Self.account.serverUrl
+        )
+        let itemA = MockRemoteItem(
+            identifier: "a",
+            name: "a (trashed)",
+            remotePath: Self.account.trashUrl + "/a (trashed)",
+            directory: true,
+            account: Self.account.ncKitAccount,
+            username: Self.account.username,
+            userId: Self.account.id,
+            serverUrl: Self.account.serverUrl,
+            trashbinOriginalLocation: "a"
+        )
+        rootTrashItem.children = [itemA]
+        itemA.parent = rootTrashItem
+        rootItem.children = [folder]
+        folder.parent = rootItem
+
+        let newPath = folder.remotePath + "/" + itemA.name
+        let (_, _, directMoveError) = await remoteInterface.move(
+            remotePathSource: itemA.remotePath,
+            remotePathDestination: newPath,
+            overwrite: true,
+            account: Self.account
+        )
+        XCTAssertNotEqual(directMoveError, .success) // Should fail as we need to restore first
+
+        let expectedRestoreRemotePath =
+            Self.account.davFilesUrl + "/" + itemA.trashbinOriginalLocation!
+        let (_, _, restoreError) =
+            await remoteInterface.restoreFromTrash(filename: itemA.name, account: Self.account)
+        XCTAssertEqual(restoreError, .success)
+        XCTAssertEqual(itemA.remotePath, expectedRestoreRemotePath)
+
+        let (_, _, postRestoreMoveError) = await remoteInterface.move(
+            remotePathSource: itemA.remotePath,
+            remotePathDestination: newPath,
+            overwrite: true,
+            account: Self.account
+        )
+        XCTAssertEqual(postRestoreMoveError, .success)
+    }
+
     func testEnforceOverwriteOnRestore() async {
         let remoteInterface = MockRemoteInterface(rootItem: rootItem, rootTrashItem: rootTrashItem)
         let itemA = MockRemoteItem(
