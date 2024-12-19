@@ -985,6 +985,17 @@ public extension Item {
             return (modifiedItem, nil)
         }
 
+        guard newParentItemIdentifier != .trashContainer else {
+            Self.logger.debug(
+                """
+                System requested modification in trash for item with ocID \(ocId, privacy: .public)
+                (\(newServerUrlFileName, privacy: .public))
+                This is not supported.
+                """
+            )
+            return (modifiedItem, nil)
+        }
+
         if changedFields.contains(.contents) {
             Self.logger.debug(
                 """
