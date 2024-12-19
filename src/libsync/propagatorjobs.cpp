@@ -217,6 +217,14 @@ void PropagateLocalMkdir::startLocalMkdir()
     {
         qCWarning(lcPropagateLocalMkdir) << "exception when checking parent folder access rights" << e.what() << e.path1().c_str() << e.path2().c_str();
     }
+    catch (const std::system_error &e)
+    {
+        qCWarning(lcPropagateLocalMkdir) << "exception when checking parent folder access rights" << e.what();
+    }
+    catch (...)
+    {
+        qCWarning(lcPropagateLocalMkdir) << "exception when checking parent folder access rights";
+    }
 #endif
 
     emit propagator()->touchedFile(newDirStr);
@@ -239,6 +247,18 @@ void PropagateLocalMkdir::startLocalMkdir()
             done(SyncFileItem::NormalError, tr("The folder %1 cannot be made read-only: %2").arg(_item->_file, e.what()), ErrorCategory::GenericError);
             return;
         }
+        catch (const std::system_error &e)
+        {
+            qCWarning(lcPropagateLocalMkdir) << "exception when checking parent folder access rights" << e.what();
+            done(SyncFileItem::NormalError, tr("The folder %1 cannot be made read-only: %2").arg(_item->_file, e.what()), ErrorCategory::GenericError);
+            return;
+        }
+        catch (...)
+        {
+            qCWarning(lcPropagateLocalMkdir) << "exception when checking parent folder access rights";
+            done(SyncFileItem::NormalError, tr("The folder %1 cannot be made read-only: %2").arg(_item->_file, tr("unknown exception")), ErrorCategory::GenericError);
+            return;
+        }
     }
 
     try {
@@ -250,6 +270,14 @@ void PropagateLocalMkdir::startLocalMkdir()
     catch (const std::filesystem::filesystem_error &e)
     {
         qCWarning(lcPropagateLocalMkdir) << "exception when checking parent folder access rights" << e.what() << e.path1().c_str() << e.path2().c_str();
+    }
+    catch (const std::system_error &e)
+    {
+        qCWarning(lcPropagateLocalMkdir) << "exception when checking parent folder access rights" << e.what();
+    }
+    catch (...)
+    {
+        qCWarning(lcPropagateLocalMkdir) << "exception when checking parent folder access rights";
     }
 #endif
 
@@ -349,6 +377,14 @@ void PropagateLocalRename::start()
         {
             qCWarning(lcPropagateLocalRename) << "exception when checking parent folder access rights" << e.what() << e.path1().c_str() << e.path2().c_str();
         }
+        catch (const std::system_error &e)
+        {
+            qCWarning(lcPropagateLocalRename) << "exception when checking parent folder access rights" << e.what();
+        }
+        catch (...)
+        {
+            qCWarning(lcPropagateLocalRename) << "exception when checking parent folder access rights";
+        }
 
         auto originParentFolderPath = std::filesystem::path{};
         auto originParentFolderWasReadOnly = false;
@@ -366,6 +402,14 @@ void PropagateLocalRename::start()
         {
             qCWarning(lcPropagateLocalRename) << "exception when checking parent folder access rights" << e.what() << e.path1().c_str() << e.path2().c_str();
         }
+        catch (const std::system_error &e)
+        {
+            qCWarning(lcPropagateLocalRename) << "exception when checking parent folder access rights" << e.what();
+        }
+        catch (...)
+        {
+            qCWarning(lcPropagateLocalRename) << "exception when checking parent folder access rights";
+        }
 
         const auto restoreTargetPermissions = [this] (const auto &parentFolderPath) {
             try {
@@ -375,6 +419,14 @@ void PropagateLocalRename::start()
             catch (const std::filesystem::filesystem_error &e)
             {
                 qCWarning(lcPropagateLocalRename) << "exception when checking parent folder access rights" << e.what() << e.path1().c_str() << e.path2().c_str();
+            }
+            catch (const std::system_error &e)
+            {
+                qCWarning(lcPropagateLocalRename) << "exception when checking parent folder access rights" << e.what();
+            }
+            catch (...)
+            {
+                qCWarning(lcPropagateLocalRename) << "exception when checking parent folder access rights";
             }
         };
 
