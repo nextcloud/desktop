@@ -537,26 +537,40 @@ final class MockRemoteInterfaceTests: XCTestCase {
 
     func testTrashingManglesIdentifiers() async {
         let remoteInterface = MockRemoteInterface(rootItem: rootItem, rootTrashItem: rootTrashItem)
-        let itemAOriginalIdentifier = "a"
-        let itemA = MockRemoteItem(
-            identifier: itemAOriginalIdentifier,
-            name: "a",
-            remotePath: Self.account.davFilesUrl + "/a",
+        let folderOriginalIdentifier = "folder"
+        let folder = MockRemoteItem(
+            identifier: folderOriginalIdentifier,
+            name: "folder",
+            remotePath: Self.account.davFilesUrl + "/folder",
             directory: true,
             account: Self.account.ncKitAccount,
             username: Self.account.username,
             userId: Self.account.id,
             serverUrl: Self.account.serverUrl
         )
-        rootItem.children = [itemA]
-        itemA.parent = rootItem
+        let itemAOriginalIdentifier = "a"
+        let itemA = MockRemoteItem(
+            identifier: itemAOriginalIdentifier,
+            name: "a",
+            remotePath: Self.account.davFilesUrl + "/a",
+            account: Self.account.ncKitAccount,
+            username: Self.account.username,
+            userId: Self.account.id,
+            serverUrl: Self.account.serverUrl
+        )
+        rootItem.children = [folder]
+        folder.parent = rootItem
+        folder.children = [itemA]
+        itemA.parent = folder
 
         let (_, _, error) = await remoteInterface.move(
-            remotePathSource: itemA.remotePath,
-            remotePathDestination: Self.account.trashUrl + "/" + itemA.name,
+            remotePathSource: folder.remotePath,
+            remotePathDestination: Self.account.trashUrl + "/" + folder.name,
             account: Self.account
         )
         XCTAssertEqual(error, .success)
+        XCTAssertNotEqual(folder.identifier, folderOriginalIdentifier) // Should not be equal
+        XCTAssertEqual(folder.identifier, folderOriginalIdentifier + trashedItemIdSuffix)
         XCTAssertNotEqual(itemA.identifier, itemAOriginalIdentifier) // Should not be equal
         XCTAssertEqual(itemA.identifier, itemAOriginalIdentifier + trashedItemIdSuffix)
     }
