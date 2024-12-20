@@ -19,13 +19,17 @@ import OSLog
 public class MaterialisedEnumerationObserver: NSObject, NSFileProviderEnumerationObserver {
     static let logger = Logger(subsystem: Logger.subsystem, category: "materialisedobservation")
     public let ncKitAccount: String
+    let dbManager: FilesDatabaseManager
     private let completionHandler: (_ deletedOcIds: Set<String>) -> Void
     private var allEnumeratedItemIds: Set<String> = .init()
 
     public required init(
-        ncKitAccount: String, completionHandler: @escaping (_ deletedOcIds: Set<String>) -> Void
+        ncKitAccount: String,
+        dbManager: FilesDatabaseManager = FilesDatabaseManager.shared,
+        completionHandler: @escaping (_ deletedOcIds: Set<String>) -> Void
     ) {
         self.ncKitAccount = ncKitAccount
+        self.dbManager = dbManager
         self.completionHandler = completionHandler
         super.init()
     }
@@ -43,6 +47,7 @@ public class MaterialisedEnumerationObserver: NSObject, NSFileProviderEnumeratio
         Self.handleEnumeratedItems(
             allEnumeratedItemIds,
             account: ncKitAccount,
+            dbManager: dbManager,
             completionHandler: completionHandler
         )
     }
@@ -54,15 +59,17 @@ public class MaterialisedEnumerationObserver: NSObject, NSFileProviderEnumeratio
         Self.handleEnumeratedItems(
             allEnumeratedItemIds,
             account: ncKitAccount,
+            dbManager: dbManager,
             completionHandler: completionHandler
         )
     }
 
     static func handleEnumeratedItems(
-        _ itemIds: Set<String>, account: String,
+        _ itemIds: Set<String>,
+        account: String,
+        dbManager: FilesDatabaseManager,
         completionHandler: @escaping (_ deletedOcIds: Set<String>) -> Void
     ) {
-        let dbManager = FilesDatabaseManager.shared
         let databaseLocalFileMetadatas = dbManager.itemMetadatas(account: account)
         var noLongerMaterialisedIds = Set<String>()
 
