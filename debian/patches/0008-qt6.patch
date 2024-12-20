@@ -22,3 +22,33 @@ index 3c1d91f80..6e87ee651 100644
  
      auto *translator = new QTranslator(this);
      auto *qtTranslator = new QTranslator(this);
+diff --git a/src/csync/csync_exclude.cpp b/src/csync/csync_exclude.cpp
+index 2c23656f2..5d0b462bd 100644
+--- a/src/csync/csync_exclude.cpp
++++ b/src/csync/csync_exclude.cpp
+@@ -461,10 +461,10 @@ CSYNC_EXCLUDE_TYPE ExcludedFiles::traversalPatternMatch(const QString &path, Ite
+         QRegularExpressionMatch m;
+         if (filetype == ItemTypeDirectory
+             && _bnameTraversalRegexDir.contains(basePath)) {
+-            m = _bnameTraversalRegexDir[basePath].matchView(bnameStr);
++            m = _bnameTraversalRegexDir[basePath].match(bnameStr);
+         } else if (filetype == ItemTypeFile
+             && _bnameTraversalRegexFile.contains(basePath)) {
+-            m = _bnameTraversalRegexFile[basePath].matchView(bnameStr);
++            m = _bnameTraversalRegexFile[basePath].match(bnameStr);
+         } else {
+             continue;
+         }
+diff --git a/src/gui/folderwizard.cpp b/src/gui/folderwizard.cpp
+index 6a45da8a1..8cf29f35e 100644
+--- a/src/gui/folderwizard.cpp
++++ b/src/gui/folderwizard.cpp
+@@ -570,7 +570,7 @@ FolderWizardSelectiveSync::FolderWizardSelectiveSync(const AccountPtr &account)
+     if (Theme::instance()->showVirtualFilesOption() && bestAvailableVfsMode() != Vfs::Off) {
+         _virtualFilesCheckBox = new QCheckBox(tr("Use virtual files instead of downloading content immediately %1").arg(bestAvailableVfsMode() == Vfs::WindowsCfApi ? QString() : tr("(experimental)")));
+         connect(_virtualFilesCheckBox, &QCheckBox::clicked, this, &FolderWizardSelectiveSync::virtualFilesCheckboxClicked);
+-        connect(_virtualFilesCheckBox, &QCheckBox::checkStateChanged, this, [this](int state) {
++        connect(_virtualFilesCheckBox, &QCheckBox::stateChanged, this, [this](int state) {
+             _selectiveSync->setEnabled(state == Qt::Unchecked);
+         });
+         _virtualFilesCheckBox->setChecked(bestAvailableVfsMode() == Vfs::WindowsCfApi);
