@@ -2454,7 +2454,7 @@ In alternativa, è possibile ripristinare tutti i file eliminati scaricandoli da
     <message>
         <location filename="../src/gui/folderman.cpp" line="1810"/>
         <source>The folder %1 is used in a folder sync connection!</source>
-        <translation type="unfinished"/>
+        <translation>La cartella%1 viene usata in una connessione di sincronizzazione delle cartelle!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1656"/>
@@ -2493,7 +2493,12 @@ This setup can cause data loss and it is no longer supported.
 To resolve this issue: please remove %1 from one of the accounts and create a new sync folder.
 
 For advanced users: this issue might be related to multiple sync database files found in one folder. Please check %1 for outdated and unused .sync_*.db files and remove them.</source>
-        <translation type="unfinished"/>
+        <translation>La cartella %1 è collegato a più account.
+Questa configurazione può causare la perdita di dati e non è più supportata.
+Per risolvere questo problema: rimuovere %1 da uno degli account e crea una nuova cartella di sincronizzazione.
+
+Per utenti avanzati: questo problema potrebbe essere correlato a più file di database di sincronizzazione trovati in una cartella
+. Controllare %1 per i file .sync_*.db obsoleti e inutilizzati e rimuoverli.</translation>
     </message>
 </context>
 <context>
@@ -5859,7 +5864,7 @@ Il server ha risposto con errore: %2</translation>
     <message>
         <location filename="../src/common/vfs.cpp" line="75"/>
         <source>The Virtual filesystem feature does not support a drive as sync root</source>
-        <translation type="unfinished"/>
+        <translation>La funzionalità del file system virtuale non supporta un&apos;unità come root di sincronizzazione</translation>
     </message>
     <message>
         <location filename="../src/common/vfs.cpp" line="75"/>
@@ -5869,7 +5874,7 @@ Il server ha risposto con errore: %2</translation>
     <message>
         <location filename="../src/common/vfs.cpp" line="83"/>
         <source>The Virtual filesystem feature is not supported on network drives</source>
-        <translation type="unfinished"/>
+        <translation>La funzionalità del file system virtuale non è supportata sulle unità di rete</translation>
     </message>
 </context>
 <context>
