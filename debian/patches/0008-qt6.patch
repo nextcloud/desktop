@@ -120,3 +120,177 @@ index 7e717bf05..4265b9e3b 100644
  }
  
  bool Theme::displayLegacyImportDialog() const
+diff --git a/src/csync/csync_exclude.cpp b/src/csync/csync_exclude.cpp
+index 2c23656f2..5d0b462bd 100644
+--- a/src/csync/csync_exclude.cpp
++++ b/src/csync/csync_exclude.cpp
+@@ -461,10 +461,10 @@ CSYNC_EXCLUDE_TYPE ExcludedFiles::traversalPatternMatch(const QString &path, Ite
+         QRegularExpressionMatch m;
+         if (filetype == ItemTypeDirectory
+             && _bnameTraversalRegexDir.contains(basePath)) {
+-            m = _bnameTraversalRegexDir[basePath].matchView(bnameStr);
++            m = _bnameTraversalRegexDir[basePath].match(bnameStr);
+         } else if (filetype == ItemTypeFile
+             && _bnameTraversalRegexFile.contains(basePath)) {
+-            m = _bnameTraversalRegexFile[basePath].matchView(bnameStr);
++            m = _bnameTraversalRegexFile[basePath].match(bnameStr);
+         } else {
+             continue;
+         }
+diff --git a/src/libsync/pushnotifications.cpp b/src/libsync/pushnotifications.cpp
+index 6bfad9d62..89ca8221b 100644
+--- a/src/libsync/pushnotifications.cpp
++++ b/src/libsync/pushnotifications.cpp
+@@ -30,7 +30,7 @@ PushNotifications::PushNotifications(Account *account, QObject *parent)
+     , _account(account)
+     , _webSocket(new QWebSocket(QString(), QWebSocketProtocol::VersionLatest, this))
+ {
+-    connect(_webSocket, QOverload<QAbstractSocket::SocketError>::of(&QWebSocket::errorOccurred), this, &PushNotifications::onWebSocketError);
++    connect(_webSocket, QOverload<QAbstractSocket::SocketError>::of(&QWebSocket::error), this, &PushNotifications::onWebSocketError);
+     connect(_webSocket, &QWebSocket::sslErrors, this, &PushNotifications::onWebSocketSslErrors);
+     connect(_webSocket, &QWebSocket::connected, this, &PushNotifications::onWebSocketConnected);
+     connect(_webSocket, &QWebSocket::disconnected, this, &PushNotifications::onWebSocketDisconnected);
+@@ -76,7 +76,7 @@ void PushNotifications::closeWebSocket()
+         _reconnectTimer->stop();
+     }
+ 
+-    disconnect(_webSocket, QOverload<QAbstractSocket::SocketError>::of(&QWebSocket::errorOccurred), this, &PushNotifications::onWebSocketError);
++    disconnect(_webSocket, QOverload<QAbstractSocket::SocketError>::of(&QWebSocket::error), this, &PushNotifications::onWebSocketError);
+     disconnect(_webSocket, &QWebSocket::sslErrors, this, &PushNotifications::onWebSocketSslErrors);
+ 
+     _webSocket->close();
+@@ -174,7 +174,7 @@ void PushNotifications::openWebSocket()
+     const auto webSocketUrl = capabilities.pushNotificationsWebSocketUrl();
+ 
+     qCInfo(lcPushNotifications) << "Open connection to websocket on" << webSocketUrl << "for account" << _account->url();
+-    connect(_webSocket, QOverload<QAbstractSocket::SocketError>::of(&QWebSocket::errorOccurred), this, &PushNotifications::onWebSocketError);
++    connect(_webSocket, QOverload<QAbstractSocket::SocketError>::of(&QWebSocket::error), this, &PushNotifications::onWebSocketError);
+     connect(_webSocket, &QWebSocket::sslErrors, this, &PushNotifications::onWebSocketSslErrors);
+     _webSocket->open(webSocketUrl);
+ }
+diff --git a/src/gui/folderwizard.cpp b/src/gui/folderwizard.cpp
+index 6a45da8a1..8cf29f35e 100644
+--- a/src/gui/folderwizard.cpp
++++ b/src/gui/folderwizard.cpp
+@@ -570,7 +570,7 @@ FolderWizardSelectiveSync::FolderWizardSelectiveSync(const AccountPtr &account)
+     if (Theme::instance()->showVirtualFilesOption() && bestAvailableVfsMode() != Vfs::Off) {
+         _virtualFilesCheckBox = new QCheckBox(tr("Use virtual files instead of downloading content immediately %1").arg(bestAvailableVfsMode() == Vfs::WindowsCfApi ? QString() : tr("(experimental)")));
+         connect(_virtualFilesCheckBox, &QCheckBox::clicked, this, &FolderWizardSelectiveSync::virtualFilesCheckboxClicked);
+-        connect(_virtualFilesCheckBox, &QCheckBox::checkStateChanged, this, [this](int state) {
++        connect(_virtualFilesCheckBox, &QCheckBox::stateChanged, this, [this](int state) {
+             _selectiveSync->setEnabled(state == Qt::Unchecked);
+         });
+         _virtualFilesCheckBox->setChecked(bestAvailableVfsMode() == Vfs::WindowsCfApi);
+diff --git a/src/libsync/networkjobs.cpp b/src/libsync/networkjobs.cpp
+index 1cde1a2c1..78356f8c9 100644
+--- a/src/libsync/networkjobs.cpp
++++ b/src/libsync/networkjobs.cpp
+@@ -663,9 +663,12 @@ bool PropfindJob::finished()
+     if (http_result_code == 207) {
+         // Parse DAV response
+         auto domDocument = QDomDocument();
++        auto errorMsg = QString();
++        auto errorLine = -1;
++        auto errorColumn = -1;
+ 
+-        if (const auto res = domDocument.setContent(reply(), QDomDocument::ParseOption::UseNamespaceProcessing); !res) {
+-            qCWarning(lcPropfindJob) << "XML parser error: " << res.errorMessage << res.errorLine << res.errorColumn;
++        if (!domDocument.setContent(reply(), true, &errorMsg, &errorLine, &errorColumn)) {
++            qCWarning(lcPropfindJob) << "XML parser error: " << errorMsg << errorLine << errorColumn;
+             emit finishedWithError(reply());
+ 
+         } else {
+diff --git a/src/gui/sslerrordialog.cpp b/src/gui/sslerrordialog.cpp
+index b8c65e556..bd3eee0b4 100644
+--- a/src/gui/sslerrordialog.cpp
++++ b/src/gui/sslerrordialog.cpp
+@@ -201,7 +201,7 @@ QString SslErrorDialog::certDiv(QSslCertificate cert) const
+ 
+     msg += QL("<p>");
+ 
+-    if (cert.effectiveDate() < QDateTime(QDate(2016, 1, 1), QTime(), QTimeZone::UTC)) {
++    if (cert.effectiveDate() < QDateTime(QDate(2016, 1, 1), QTime(), Qt::UTC)) {
+ 	QString sha1sum = Utility::formatFingerprint(cert.digest(QCryptographicHash::Sha1).toHex());
+         msg += tr("Fingerprint (SHA1): <tt>%1</tt>").arg(sha1sum) + QL("<br/>");
+     }
+diff --git a/test/testdatefieldbackend.cpp b/test/testdatefieldbackend.cpp
+index 96f2ba1da..2ce760813 100644
+--- a/test/testdatefieldbackend.cpp
++++ b/test/testdatefieldbackend.cpp
+@@ -44,7 +44,7 @@ private slots:
+         backend._dateFormat = dateStringFormat;
+ 
+         const auto currentDate = QDate::currentDate();
+-        const auto currentDateMSecs = currentDate.startOfDay(QTimeZone::utc()).toMSecsSinceEpoch();
++        const auto currentDateMSecs = currentDate.startOfDay(Qt::UTC).toMSecsSinceEpoch();
+         const auto currentDateString = currentDate.toString(dateStringFormat);
+ 
+         QCOMPARE(backend.date(), currentDate);
+@@ -64,8 +64,8 @@ private slots:
+ 
+         const auto minDate = QDate::currentDate().addDays(-5);
+         const auto maxDate = QDate::currentDate().addDays(5);
+-        const auto minDateMs = minDate.startOfDay(QTimeZone::utc()).toMSecsSinceEpoch();
+-        const auto maxDateMs = maxDate.startOfDay(QTimeZone::utc()).toMSecsSinceEpoch();
++        const auto minDateMs = minDate.startOfDay(Qt::UTC).toMSecsSinceEpoch();
++        const auto maxDateMs = maxDate.startOfDay(Qt::UTC).toMSecsSinceEpoch();
+         const auto invalidMinDate = minDate.addDays(-1);
+         const auto invalidMaxDate = maxDate.addDays(1);
+ 
+@@ -124,7 +124,7 @@ private slots:
+         QSignalSpy dateStringChangedSpy(&backend, &Quick::DateFieldBackend::dateStringChanged);
+ 
+         const auto testDate = QDate::currentDate().addDays(800);
+-        const auto testDateMsecs = testDate.startOfDay(QTimeZone::utc()).toMSecsSinceEpoch();
++        const auto testDateMsecs = testDate.startOfDay(Qt::UTC).toMSecsSinceEpoch();
+         const auto testDateString = testDate.toString(dateStringFormat);
+ 
+         backend.setDate(testDate);
+diff --git a/test/testsharemodel.cpp b/test/testsharemodel.cpp
+index 6abfe79ce..5d8800985 100644
+--- a/test/testsharemodel.cpp
++++ b/test/testsharemodel.cpp
+@@ -278,7 +278,7 @@ private slots:
+ 
+         const auto expectedLinkShareExpireDate = QDate::fromString(_testLinkShareDefinition.shareExpiration, helper.expectedDtFormat);
+         QCOMPARE(shareIndex.data(ShareModel::ExpireDateEnabledRole).toBool(), expectedLinkShareExpireDate.isValid());
+-        QCOMPARE(shareIndex.data(ShareModel::ExpireDateRole).toLongLong(), expectedLinkShareExpireDate.startOfDay(QTimeZone::utc()).toMSecsSinceEpoch());
++        QCOMPARE(shareIndex.data(ShareModel::ExpireDateRole).toLongLong(), expectedLinkShareExpireDate.startOfDay(Qt::UTC).toMSecsSinceEpoch());
+ 
+         const auto iconUrl = shareIndex.data(ShareModel::IconUrlRole).toString();
+         QVERIFY(iconUrl.contains("public.svg"));
+@@ -321,7 +321,7 @@ private slots:
+ 
+         const auto expectedShareExpireDate = QDate::fromString(_testEmailShareDefinition.shareExpiration, helper.expectedDtFormat);
+         QCOMPARE(shareIndex.data(ShareModel::ExpireDateEnabledRole).toBool(), expectedShareExpireDate.isValid());
+-        QCOMPARE(shareIndex.data(ShareModel::ExpireDateRole).toLongLong(), expectedShareExpireDate.startOfDay(QTimeZone::utc()).toMSecsSinceEpoch());
++        QCOMPARE(shareIndex.data(ShareModel::ExpireDateRole).toLongLong(), expectedShareExpireDate.startOfDay(Qt::UTC).toMSecsSinceEpoch());
+ 
+         const auto iconUrl = shareIndex.data(ShareModel::IconUrlRole).toString();
+         QVERIFY(iconUrl.contains("email.svg"));
+@@ -364,7 +364,7 @@ private slots:
+ 
+         const auto expectedShareExpireDate = QDate::fromString(_testUserShareDefinition.shareExpiration, helper.expectedDtFormat);
+         QCOMPARE(shareIndex.data(ShareModel::ExpireDateEnabledRole).toBool(), expectedShareExpireDate.isValid());
+-        QCOMPARE(shareIndex.data(ShareModel::ExpireDateRole).toLongLong(), expectedShareExpireDate.startOfDay(QTimeZone::utc()).toMSecsSinceEpoch());
++        QCOMPARE(shareIndex.data(ShareModel::ExpireDateRole).toLongLong(), expectedShareExpireDate.startOfDay(Qt::UTC).toMSecsSinceEpoch());
+ 
+         const auto iconUrl = shareIndex.data(ShareModel::IconUrlRole).toString();
+         QVERIFY(iconUrl.contains("user.svg"));
+@@ -801,14 +801,14 @@ private slots:
+         QCOMPARE(shareIndex.data(ShareModel::ExpireDateEnabledRole).toBool(), false);
+ 
+         // Set a new expire date
+-        const auto expireDateMsecs = QDate::currentDate().addDays(10).startOfDay(QTimeZone::utc()).toMSecsSinceEpoch();
++        const auto expireDateMsecs = QDate::currentDate().addDays(10).startOfDay(Qt::UTC).toMSecsSinceEpoch();
+         model.setShareExpireDate(linkSharePtr, expireDateMsecs);
+         QVERIFY(expireDateSet.wait(3000));
+         QCOMPARE(shareIndex.data(ShareModel::ExpireDateRole).toLongLong(), expireDateMsecs);
+         QCOMPARE(shareIndex.data(ShareModel::ExpireDateEnabledRole).toBool(), true);
+ 
+         // Test the QML-specific slot
+-        const QVariant newExpireDateMsecs = QDate::currentDate().addDays(20).startOfDay(QTimeZone::utc()).toMSecsSinceEpoch();
++        const QVariant newExpireDateMsecs = QDate::currentDate().addDays(20).startOfDay(Qt::UTC).toMSecsSinceEpoch();
+         model.setShareExpireDateFromQml(QVariant::fromValue(sharePtr), newExpireDateMsecs);
+         QVERIFY(expireDateSet.wait(3000));
+         QCOMPARE(shareIndex.data(ShareModel::ExpireDateRole).toLongLong(), newExpireDateMsecs);
