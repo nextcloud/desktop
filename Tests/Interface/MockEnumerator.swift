@@ -13,7 +13,7 @@ public class MockEnumerator: NSObject, NSFileProviderEnumerator {
     let account: Account
     let dbManager: FilesDatabaseManager
     let remoteInterface: any RemoteInterface
-    public let materialisedItems: [ItemMetadata] = []
+    public var enumeratorItems: [ItemMetadata] = []
 
     public init(
         account: Account, dbManager: FilesDatabaseManager, remoteInterface: any RemoteInterface
@@ -27,7 +27,7 @@ public class MockEnumerator: NSObject, NSFileProviderEnumerator {
         for observer: any NSFileProviderEnumerationObserver, startingAt page: NSFileProviderPage
     ) {
         var items: [Item] = []
-        for item in materialisedItems {
+        for item in enumeratorItems {
             guard let parentItemIdentifier = dbManager.parentItemIdentifierFromMetadata(item) else {
                 print("Could not get parent item identifier for \(item)")
                 continue
