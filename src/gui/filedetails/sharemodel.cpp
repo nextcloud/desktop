@@ -385,7 +385,7 @@ void ShareModel::handlePlaceholderLinkShare()
     auto linkSharePresent = false;
     auto placeholderLinkSharePresent = false;
 
-    for (const auto &share : qAsConst(_shares)) {
+    for (const auto &share : std::as_const(_shares)) {
         const auto shareType = share->getShareType();
 
         if (!linkSharePresent && shareType == Share::TypeLink) {
@@ -415,7 +415,7 @@ void ShareModel::handleSecureFileDropLinkShare()
     auto linkSharePresent = false;
     auto secureFileDropLinkSharePresent = false;
 
-    for (const auto &share : qAsConst(_shares)) {
+    for (const auto &share : std::as_const(_shares)) {
         const auto shareType = share->getShareType();
 
         if (!linkSharePresent && shareType == Share::TypeLink) {

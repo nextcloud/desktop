@@ -178,7 +178,7 @@ private slots:
 
         // Remove the second chunk, so all further chunks will be deleted and resent
         auto firstChunk = chunkMap.first();
-        auto secondChunk = *(chunkMap.begin() + 1);
+        auto secondChunk = *(std::next(chunkMap.begin()));
         const auto chunksList = chunkMap.keys().mid(2);
         for (const auto& name : chunksList) {
             chunksToDelete.append(name);

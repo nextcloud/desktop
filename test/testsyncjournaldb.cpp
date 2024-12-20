@@ -293,13 +293,13 @@ private slots:
             << "foo bla bar/file"
             << "fo_"
             << "fo_/file";
-        for (const auto& elem : qAsConst(elements)) {
+        for (const auto& elem : std::as_const(elements)) {
             makeEntry(elem);
         }
 
         auto checkElements = [&]() {
             bool ok = true;
-            for (const auto& elem : qAsConst(elements)) {
+            for (const auto& elem : std::as_const(elements)) {
                 SyncJournalFileRecord record;
                 if (!_db.getFileRecord(elem, &record) || !record.isValid()) {
                     qWarning() << "Missing record: " << elem;

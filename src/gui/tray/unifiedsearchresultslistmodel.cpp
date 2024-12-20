@@ -503,7 +503,7 @@ void UnifiedSearchResultsListModel::startSearch()
         endResetModel();
     }
 
-    for (const auto &provider : qAsConst(_providers)) {
+    for (const auto &provider : std::as_const(_providers)) {
         startSearchForProvider(provider._id);
     }
 }
@@ -725,7 +725,7 @@ void UnifiedSearchResultsListModel::removeFetchMoreTrigger(const QString &provid
 
 void UnifiedSearchResultsListModel::disconnectAndClearSearchJobs()
 {
-    for (const auto &connection : qAsConst(_searchJobConnections)) {
+    for (const auto &connection : std::as_const(_searchJobConnections)) {
         if (connection) {
             QObject::disconnect(connection);
         }

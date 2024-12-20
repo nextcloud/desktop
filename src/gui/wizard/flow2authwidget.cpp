@@ -65,19 +65,20 @@ void Flow2AuthWidget::setLogo()
 
 void Flow2AuthWidget::startAuth(Account *account)
 {
-    Flow2Auth *oldAuth = _asyncAuth.take();
-    if(oldAuth)
+    const auto oldAuth = _asyncAuth.release();
+    if (oldAuth) {
         oldAuth->deleteLater();
+    }
 
     _statusUpdateSkipCount = 0;
 
     if(account) {
         _account = account;
 
-        _asyncAuth.reset(new Flow2Auth(_account, this));
-        connect(_asyncAuth.data(), &Flow2Auth::result, this, &Flow2AuthWidget::slotAuthResult, Qt::QueuedConnection);
-        connect(_asyncAuth.data(), &Flow2Auth::statusChanged, this, &Flow2AuthWidget::slotStatusChanged);
-        connect(this, &Flow2AuthWidget::pollNow, _asyncAuth.data(), &Flow2Auth::slotPollNow);
+        _asyncAuth = std::make_unique<Flow2Auth>(_account, this);
+        connect(_asyncAuth.get(), &Flow2Auth::result, this, &Flow2AuthWidget::slotAuthResult, Qt::QueuedConnection);
+        connect(_asyncAuth.get(), &Flow2Auth::statusChanged, this, &Flow2AuthWidget::slotStatusChanged);
+        connect(this, &Flow2AuthWidget::pollNow, _asyncAuth.get(), &Flow2Auth::slotPollNow);
         _asyncAuth->start();
     }
 }
@@ -122,7 +123,7 @@ void Flow2AuthWidget::setError(const QString &error) {
 
 Flow2AuthWidget::~Flow2AuthWidget() {
     // Forget sensitive data
-    _asyncAuth.reset();
+    _asyncAuth.reset(nullptr);
 }
 
 void Flow2AuthWidget::slotOpenBrowser()

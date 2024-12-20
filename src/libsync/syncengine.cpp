@@ -292,7 +292,7 @@ void SyncEngine::conflictRecordMaintenance()
     //
     // This happens when the conflicts table is new or when conflict files
     // are downloaded but the server doesn't send conflict headers.
-    for (const auto &path : qAsConst(_seenConflictFiles)) {
+    for (const auto &path : std::as_const(_seenConflictFiles)) {
         ASSERT(Utility::isConflictFile(path));
 
         auto bapath = path.toUtf8();
@@ -637,7 +637,7 @@ void SyncEngine::startSync()
 
     _remnantReadOnlyFolders.clear();
 
-    _discoveryPhase.reset(new DiscoveryPhase);
+    _discoveryPhase = std::make_unique<DiscoveryPhase>();
     _discoveryPhase->_leadingAndTrailingSpacesFilesAllowed = _leadingAndTrailingSpacesFilesAllowed;
     _discoveryPhase->_account = _account;
     _discoveryPhase->_excludes = _excludedFiles.data();
@@ -679,17 +679,17 @@ void SyncEngine::startSync()
     _discoveryPhase->_serverBlacklistedFiles = _account->capabilities().blacklistedFiles();
     _discoveryPhase->_ignoreHiddenFiles = ignoreHiddenFiles();
 
-    connect(_discoveryPhase.data(), &DiscoveryPhase::itemDiscovered, this, &SyncEngine::slotItemDiscovered);
-    connect(_discoveryPhase.data(), &DiscoveryPhase::newBigFolder, this, &SyncEngine::newBigFolder);
-    connect(_discoveryPhase.data(), &DiscoveryPhase::existingFolderNowBig, this, &SyncEngine::existingFolderNowBig);
-    connect(_discoveryPhase.data(), &DiscoveryPhase::fatalError, this, [this](const QString &errorString, ErrorCategory errorCategory) {
+    connect(_discoveryPhase.get(), &DiscoveryPhase::itemDiscovered, this, &SyncEngine::slotItemDiscovered);
+    connect(_discoveryPhase.get(), &DiscoveryPhase::newBigFolder, this, &SyncEngine::newBigFolder);
+    connect(_discoveryPhase.get(), &DiscoveryPhase::existingFolderNowBig, this, &SyncEngine::existingFolderNowBig);
+    connect(_discoveryPhase.get(), &DiscoveryPhase::fatalError, this, [this](const QString &errorString, ErrorCategory errorCategory) {
         Q_EMIT syncError(errorString, errorCategory);
         finalize(false);
     });
-    connect(_discoveryPhase.data(), &DiscoveryPhase::finished, this, &SyncEngine::slotDiscoveryFinished);
-    connect(_discoveryPhase.data(), &DiscoveryPhase::silentlyExcluded,
+    connect(_discoveryPhase.get(), &DiscoveryPhase::finished, this, &SyncEngine::slotDiscoveryFinished);
+    connect(_discoveryPhase.get(), &DiscoveryPhase::silentlyExcluded,
         _syncFileStatusTracker.data(), &SyncFileStatusTracker::slotAddSilentlyExcluded);
-    connect(_discoveryPhase.data(), &DiscoveryPhase::remnantReadOnlyFolderDiscovered, this, &SyncEngine::remnantReadOnlyFolderDiscovered);
+    connect(_discoveryPhase.get(), &DiscoveryPhase::remnantReadOnlyFolderDiscovered, this, &SyncEngine::remnantReadOnlyFolderDiscovered);
 
     ProcessDirectoryJob *discoveryJob = nullptr;
 
@@ -724,27 +724,27 @@ void SyncEngine::startSync()
         }();
 
         discoveryJob = new ProcessDirectoryJob(
-            _discoveryPhase.data(),
+            _discoveryPhase.get(),
             pinState,
             path,
             singleItemDiscoveryOptions().discoveryDirItem,
             {},
             localQueryMode,
             _journal->keyValueStoreGetInt("last_sync", 0),
-            _discoveryPhase.data()
+            _discoveryPhase.get()
         );
     } else {
         discoveryJob = new ProcessDirectoryJob(
-            _discoveryPhase.data(),
+            _discoveryPhase.get(),
             PinState::AlwaysLocal,
             _journal->keyValueStoreGetInt("last_sync", 0),
-            _discoveryPhase.data()
+            _discoveryPhase.get()
         );
     }
     
     _discoveryPhase->startJob(discoveryJob);
     connect(discoveryJob, &ProcessDirectoryJob::etag, this, &SyncEngine::slotRootEtagReceived);
-    connect(_discoveryPhase.data(), &DiscoveryPhase::addErrorToGui, this, &SyncEngine::addErrorToGui);
+    connect(_discoveryPhase.get(), &DiscoveryPhase::addErrorToGui, this, &SyncEngine::addErrorToGui);
 }
 
 void SyncEngine::slotFolderDiscovered(bool local, const QString &folder)
@@ -910,7 +910,7 @@ void SyncEngine::finalize(bool success)
     _stopWatch.stop();
 
     if (_discoveryPhase) {
-        _discoveryPhase.take()->deleteLater();
+        _discoveryPhase.release()->deleteLater();
     }
     s_anySyncRunning = false;
     _syncRunning = false;
@@ -964,7 +964,7 @@ void SyncEngine::restoreOldFiles(SyncFileItemVector &syncItems)
        upload the client file. But we still downloaded the old file in a conflict file just in case
     */
 
-    for (const auto &syncItem : qAsConst(syncItems)) {
+    for (const auto &syncItem : std::as_const(syncItems)) {
         if (syncItem->_direction != SyncFileItem::Down || syncItem->_isSelectiveSync) {
             continue;
         }
@@ -1023,7 +1023,7 @@ void SyncEngine::finishSync()
     }
 
     if (_discoveryPhase && _discoveryPhase->_hasDownloadRemovedItems && _discoveryPhase->_hasUploadErrorItems) {
-        for (const auto &item : qAsConst(_syncItems)) {
+        for (const auto &item : std::as_const(_syncItems)) {
             if (item->_instruction == CSYNC_INSTRUCTION_ERROR && item->_direction == SyncFileItem::Up) {
                 // item->_instruction = CSYNC_INSTRUCTION_IGNORE;
             }
@@ -1103,7 +1103,7 @@ bool SyncEngine::handleMassDeletion()
     const auto allFilesDeleted = !_hasNoneFiles && _hasRemoveFile;
 
     auto deletionCounter = 0;
-    for (const auto &oneItem : qAsConst(_syncItems)) {
+    for (const auto &oneItem : std::as_const(_syncItems)) {
         if (oneItem->_instruction == CSYNC_INSTRUCTION_REMOVE) {
             if (oneItem->isDirectory()) {
                 const auto result = _journal->listFilesInPath(oneItem->_file.toUtf8(), [&deletionCounter] (const auto &oneRecord) {
@@ -1124,7 +1124,7 @@ bool SyncEngine::handleMassDeletion()
     if ((allFilesDeleted || filesDeletedThresholdExceeded) && displayDialog) {
         qCWarning(lcEngine) << "Many files are going to be deleted, asking the user";
         int side = 0; // > 0 means more deleted on the server.  < 0 means more deleted on the client
-        for (const auto &it : qAsConst(_syncItems)) {
+        for (const auto &it : std::as_const(_syncItems)) {
             if (it->_instruction == CSYNC_INSTRUCTION_REMOVE) {
                 side += it->_direction == SyncFileItem::Down ? 1 : -1;
             }
@@ -1205,8 +1205,8 @@ bool SyncEngine::wasFileTouched(const QString &fn) const
     // Start from the end (most recent) and look for our path. Check the time just in case.
     auto begin = _touchedFiles.constBegin();
     for (auto it = _touchedFiles.constEnd(); it != begin; --it) {
-        if ((it-1).value() == fn)
-            return std::chrono::milliseconds((it-1).key().elapsed()) <= s_touchedFilesMaxAgeMs;
+        if (const auto prevIt = std::prev(it); prevIt.value() == fn)
+            return std::chrono::milliseconds(prevIt.key().elapsed()) <= s_touchedFilesMaxAgeMs;
     }
     return false;
 }
@@ -1369,8 +1369,8 @@ void SyncEngine::abort()
     } else if (_discoveryPhase) {
         // Delete the discovery and all child jobs after ensuring
         // it can't finish and start the propagator
-        disconnect(_discoveryPhase.data(), nullptr, this, nullptr);
-        _discoveryPhase.take()->deleteLater();
+        disconnect(_discoveryPhase.get(), nullptr, this, nullptr);
+        _discoveryPhase.release()->deleteLater();
         qCInfo(lcEngine) << "Aborting sync in discovery...";
         finalize(false);
     }
@@ -1455,7 +1455,7 @@ void SyncEngine::slotScheduleFilesDelayedSync()
         newTimer->callOnTimeout(this, [this, newTimer] {
             qCInfo(lcEngine) << "Rescanning now that delayed sync run is scheduled for:" << newTimer->files;
 
-            for (const auto &file : qAsConst(newTimer->files)) {
+            for (const auto &file : std::as_const(newTimer->files)) {
                 this->_filesScheduledForLaterSync.remove(file);
             }
 
@@ -1586,7 +1586,7 @@ void SyncEngine::slotUnscheduleFilesDelayedSync()
         return;
     }
 
-    for (const auto &file : qAsConst(_discoveryPhase->_filesUnscheduleSync)) {
+    for (const auto &file : std::as_const(_discoveryPhase->_filesUnscheduleSync)) {
         const auto fileSyncRunTimer = _filesScheduledForLaterSync.value(file);
 
         if (fileSyncRunTimer) {

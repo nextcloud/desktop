@@ -199,7 +199,7 @@ bool Application::configVersionMigration()
         settings->endGroup();
 
         // Wipe confusing keys from the future, ignore the others
-        for (const auto &badKey : qAsConst(deleteKeys)) {
+        for (const auto &badKey : std::as_const(deleteKeys)) {
             settings->remove(badKey);
         }
     }
@@ -588,7 +588,8 @@ AccountManager::AccountsRestoreResult Application::restoreLegacyAccount()
                 tr("There was an error while accessing the configuration "
                    "file at %1. Please make sure the file can be accessed by your system account.")
                     .arg(ConfigFile().configFile()),
-                tr("Quit %1").arg(Theme::instance()->appNameGUI()));
+                QMessageBox::Ok
+            );
             QTimer::singleShot(0, qApp, &QCoreApplication::quit);
         }
     }
@@ -1002,7 +1003,7 @@ void Application::setupTranslations()
         // have a translation file provided.
         qCInfo(lcApplication) << "Using" << lang << "translation";
         setProperty("ui_lang", lang);
-        const QString qtTrPath = QLibraryInfo::location(QLibraryInfo::TranslationsPath);
+        const QString qtTrPath = QLibraryInfo::path(QLibraryInfo::TranslationsPath);
         const QString qtTrFile = QLatin1String("qt_") + lang;
         const QString qtBaseTrFile = QLatin1String("qtbase_") + lang;
         if (!qtTranslator->load(qtTrFile, qtTrPath)) {

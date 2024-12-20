@@ -52,7 +52,7 @@ void EditLocallyManager::showError(const QString &message, const QString &inform
 void EditLocallyManager::showErrorNotification(const QString &message, 
                                                const QString &informativeText)
 {
-    Systray::instance()->showMessage(message, informativeText, Systray::MessageIcon::Critical); 
+    Systray::instance()->showMessage(message, informativeText, Systray::MessageIcon::Critical);
 }
 
 void EditLocallyManager::showErrorMessageBox(const QString &message, 

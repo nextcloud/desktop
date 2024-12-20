@@ -185,7 +185,7 @@ void PropagateUploadFileNG::slotPropfindFinished()
         // Make sure that if there is a "hole" and then a few more chunks, on the server
         // we should remove the later chunks. Otherwise when we do dynamic chunk sizing, we may end up
         // with corruptions if there are too many chunks, or if we abort and there are still stale chunks.
-        for (const auto &serverChunk : qAsConst(_serverChunks)) {
+        for (const auto &serverChunk : std::as_const(_serverChunks)) {
             auto job = new DeleteJob(propagator()->account(), Utility::concatUrlPath(chunkUploadFolderUrl(), serverChunk.originalName), this);
             QObject::connect(job, &DeleteJob::finishedSignal, this, &PropagateUploadFileNG::slotDeleteJobFinished);
             _jobs.append(job);

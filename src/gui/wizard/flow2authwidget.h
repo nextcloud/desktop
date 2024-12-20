@@ -49,7 +49,7 @@ Q_SIGNALS:
 
 private:
     Account *_account = nullptr;
-    QScopedPointer<Flow2Auth> _asyncAuth;
+    std::unique_ptr<Flow2Auth> _asyncAuth;
     Ui_Flow2AuthWidget _ui{};
 
 protected Q_SLOTS:
