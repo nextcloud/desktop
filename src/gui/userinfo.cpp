@@ -76,7 +76,7 @@ void UserInfo::slotRequestFailed()
 
 bool UserInfo::canGetInfo() const
 {
-    if (!_accountState || !_active) {
+    if (!_accountState || !_active || !_accountState->account() || _accountState->account()->isPublicShareLink()) {
         return false;
     }
     AccountPtr account = _accountState->account();
@@ -140,7 +140,7 @@ void UserInfo::slotUpdateLastInfo(const QJsonDocument &json)
     _jobRestartTimer.start(defaultIntervalT);
     _lastInfoReceived = QDateTime::currentDateTime();
 
-    if(_fetchAvatarImage) {
+    if(_fetchAvatarImage && !account->isPublicShareLink()) {
         auto *job = new AvatarJob(account, account->davUser(), 128, this);
         job->setTimeout(20 * 1000);
         QObject::connect(job, &AvatarJob::avatarPixmap, this, &UserInfo::slotAvatarImage);
