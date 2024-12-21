@@ -2492,7 +2492,10 @@ This setup can cause data loss and it is no longer supported.
 To resolve this issue: please remove %1 from one of the accounts and create a new sync folder.
 
 For advanced users: this issue might be related to multiple sync database files found in one folder. Please check %1 for outdated and unused .sync_*.db files and remove them.</source>
-        <translation type="unfinished"/>
+        <translation>Каталог %1 використовується кількома користувачами.
+Така конфігурація може призвести до втрати даних, відтак більше не підтримується.
+Для вирішення проблеми, вилучіть каталог %1 з одного з облікових записів та створіть новий окремий каталог для синхронізації.
+</translation>
     </message>
 </context>
 <context>
