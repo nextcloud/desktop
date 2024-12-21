@@ -2492,7 +2492,11 @@ This setup can cause data loss and it is no longer supported.
 To resolve this issue: please remove %1 from one of the accounts and create a new sync folder.
 
 For advanced users: this issue might be related to multiple sync database files found in one folder. Please check %1 for outdated and unused .sync_*.db files and remove them.</source>
-        <translation type="unfinished"/>
+        <translation>Tá fillteán %1 nasctha le cuntais iolracha.
+Is féidir leis an socrú seo a bheith ina chúis le caillteanas sonraí agus ní thacaítear leis a thuilleadh.
+Chun an fhadhb seo a réiteach: bain %1 de cheann de na cuntais agus cruthaigh fillteán sioncronaithe nua.
+
+D&apos;úsáideoirí ardleibhéil: d&apos;fhéadfadh an cheist seo a bheith bainteach le comhaid bunachar sonraí sioncronaithe iolracha a aimsíodh i bhfillteán amháin. Seiceáil %1 le haghaidh comhaid .sync_*.db atá as dáta agus nach bhfuil in úsáid agus bain amach iad.</translation>
     </message>
 </context>
 <context>
