@@ -557,11 +557,10 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
         account: Account,
         remoteInterface: RemoteInterface,
         dbManager: FilesDatabaseManager
-    ) -> [NSFileProviderItem] {
-        var items: [NSFileProviderItem] = []
+    ) async -> [NSFileProviderItem] {
 
-        for itemMetadata in itemMetadatas {
-            if itemMetadata.e2eEncrypted {
+        return await itemMetadatas.concurrentChunkedCompactMap(into: 64) { itemMetadata in
+            guard !itemMetadata.e2eEncrypted else {
                 Self.logger.info(
                     """
                     Skipping encrypted metadata in enumeration:
@@ -569,7 +568,7 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
                     \(itemMetadata.fileName, privacy: .public)
                     """
                 )
-                continue
+                return nil
             }
 
             if let parentItemIdentifier = dbManager.parentItemIdentifierFromMetadata(
@@ -588,7 +587,7 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
                     """
                 )
 
-                items.append(item)
+                return item
             } else {
                 Self.logger.error(
                     """
@@ -598,8 +597,8 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
                     """
                 )
             }
+            return nil
         }
-        return items
     }
 
     static func fileProviderPageforNumPage(_ numPage: Int) -> NSFileProviderPage? {
@@ -616,23 +615,31 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
         numPage: Int,
         itemMetadatas: [ItemMetadata]
     ) {
-        let items = metadatasToFileProviderItems(
-            itemMetadatas, account: account, remoteInterface: remoteInterface, dbManager: dbManager
-        )
-        observer.didEnumerate(items)
-        Self.logger.info("Did enumerate \(items.count) items")
+        Task {
+            let items = await metadatasToFileProviderItems(
+                itemMetadatas,
+                account: account,
+                remoteInterface: remoteInterface,
+                dbManager: dbManager
+            )
 
-        // TODO: Handle paging properly
-        /*
-         if items.count == maxItemsPerFileProviderPage {
-            let nextPage = numPage + 1
-            let providerPage = NSFileProviderPage("\(nextPage)".data(using: .utf8)!)
-            observer.finishEnumerating(upTo: providerPage)
-         } else {
-            observer.finishEnumerating(upTo: nil)
-         }
-         */
-        observer.finishEnumerating(upTo: fileProviderPageforNumPage(numPage))
+            Task { @MainActor in
+                observer.didEnumerate(items)
+                Self.logger.info("Did enumerate \(items.count) items")
+
+                // TODO: Handle paging properly
+                /*
+                 if items.count == maxItemsPerFileProviderPage {
+                 let nextPage = numPage + 1
+                 let providerPage = NSFileProviderPage("\(nextPage)".data(using: .utf8)!)
+                 observer.finishEnumerating(upTo: providerPage)
+                 } else {
+                 observer.finishEnumerating(upTo: nil)
+                 }
+                 */
+                observer.finishEnumerating(upTo: fileProviderPageforNumPage(numPage))
+            }
+        }
     }
 
     private static func completeChangesObserver(
@@ -678,23 +685,27 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
             observer.didDeleteItems(withIdentifiers: allFpItemDeletionsIdentifiers)
         }
 
-        let updatedItems = metadatasToFileProviderItems(
-            allUpdatedMetadatas,
-            account: account,
-            remoteInterface: remoteInterface,
-            dbManager: dbManager
-        )
+        Task {
+            let updatedItems = await metadatasToFileProviderItems(
+                allUpdatedMetadatas,
+                account: account,
+                remoteInterface: remoteInterface,
+                dbManager: dbManager
+            )
 
-        if !updatedItems.isEmpty {
-            observer.didUpdate(updatedItems)
+            Task { @MainActor in
+                if !updatedItems.isEmpty {
+                    observer.didUpdate(updatedItems)
+                }
+
+                Self.logger.info(
+                    """
+                    Processed \(updatedItems.count) new or updated metadatas.
+                    \(allDeletedMetadatas.count) deleted metadatas.
+                    """
+                )
+                observer.finishEnumeratingChanges(upTo: anchor, moreComing: false)
+            }
         }
-
-        Self.logger.info(
-            """
-            Processed \(updatedItems.count) new or updated metadatas.
-            \(allDeletedMetadatas.count) deleted metadatas.
-            """
-        )
-        observer.finishEnumeratingChanges(upTo: anchor, moreComing: false)
     }
 }

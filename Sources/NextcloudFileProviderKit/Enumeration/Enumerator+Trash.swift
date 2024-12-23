@@ -24,12 +24,19 @@ extension Enumerator {
             metadatas.append(metadata)
         }
 
-        Self.metadatasToFileProviderItems(
-            metadatas, account: account, remoteInterface: remoteInterface, dbManager: dbManager
-        ) { items in
-            observer.didEnumerate(items)
-            Self.logger.info("Did enumerate \(items.count) trash items")
-            observer.finishEnumerating(upTo: fileProviderPageforNumPage(numPage))
+        Task {
+            let items = await metadatasToFileProviderItems(
+                metadatas,
+                account: account,
+                remoteInterface: remoteInterface,
+                dbManager: dbManager
+            )
+
+            Task { @MainActor in
+                observer.didEnumerate(items)
+                Self.logger.info("Did enumerate \(items.count) trash items")
+                observer.finishEnumerating(upTo: fileProviderPageforNumPage(numPage))
+            }
         }
     }
 
