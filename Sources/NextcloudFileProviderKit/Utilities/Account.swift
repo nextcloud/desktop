@@ -23,7 +23,7 @@ let AccountDictDavFilesUrlKey = "davFilesUrlKey"
 let AccountDictTrashUrlKey = "trashUrlKey"
 let AccountDictTrashRestoreUrlKey = "trashRestoreUrlKey"
 
-public struct Account: Equatable {
+public struct Account: Equatable, Sendable {
     public static let webDavFilesUrlSuffix = "/remote.php/dav/files/"
     public static let webDavTrashUrlSuffix = "/remote.php/dav/trashbin/"
     public let username,
