@@ -86,8 +86,8 @@ extension NKFile {
     }
 }
 
-extension [NKFile] {
-    func toDirectoryReadMetadatas(account: Account) -> (
+extension Array<NKFile> {
+    func toDirectoryReadMetadatas(account: Account) async -> (
         directoryMetadata: ItemMetadata,
         childDirectoriesMetadatas: [ItemMetadata],
         metadatas: [ItemMetadata]
@@ -97,16 +97,21 @@ extension [NKFile] {
         var childDirectoriesMetadatas: [ItemMetadata] = []
         var metadatas: [ItemMetadata] = []
 
-        for file in self {
+        let metadataQueue =
+            DispatchQueue(label: "com.claucambra.NextcloudFileProviderKit.metadataQueue")
+
+        await concurrentChunkedForEach { file in
             if metadatas.isEmpty, !directoryMetadataSet {
                 let metadata = file.toItemMetadata()
                 directoryMetadata = metadata
                 directoryMetadataSet = true
             } else {
                 let metadata = file.toItemMetadata()
-                metadatas.append(metadata)
-                if metadata.directory {
-                    childDirectoriesMetadatas.append(metadata)
+                metadataQueue.sync {
+                    metadatas.append(metadata)
+                    if metadata.directory {
+                        childDirectoriesMetadatas.append(metadata)
+                    }
                 }
             }
         }

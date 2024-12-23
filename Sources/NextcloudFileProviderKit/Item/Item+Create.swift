@@ -81,7 +81,7 @@ extension Item {
             return (nil, readError.fileProviderError)
         }
         
-        let (directoryMetadata, _, _) = files.toDirectoryReadMetadatas(account: account)
+        let (directoryMetadata, _, _) = await files.toDirectoryReadMetadatas(account: account)
         dbManager.addItemMetadata(directoryMetadata)
 
         let fpItem = Item(
