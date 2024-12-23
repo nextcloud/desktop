@@ -631,7 +631,7 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
             observer.didDeleteItems(withIdentifiers: allFpItemDeletionsIdentifiers)
         }
 
-        Task {
+        Task { [allUpdatedMetadatas, allDeletedMetadatas] in
             let updatedItems = await allUpdatedMetadatas.toFileProviderItems(
                 account: account, remoteInterface: remoteInterface, dbManager: dbManager
             )
