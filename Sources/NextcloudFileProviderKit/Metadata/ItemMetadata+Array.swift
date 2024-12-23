@@ -16,7 +16,7 @@ extension Array<ItemMetadata> {
             subsystem: Logger.subsystem, category: "itemMetadataToFileProviderItems"
         )
 
-        return await concurrentChunkedCompactMap(into: 1) { itemMetadata in
+        return await concurrentChunkedCompactMap { itemMetadata in
             guard !itemMetadata.e2eEncrypted else {
                 logger.error(
                     """
