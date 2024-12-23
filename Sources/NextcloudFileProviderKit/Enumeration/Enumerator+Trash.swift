@@ -24,7 +24,7 @@ extension Enumerator {
             metadatas.append(metadata)
         }
 
-        Task {
+        Task { [metadatas] in
             let items = await metadatas.toFileProviderItems(
                 account: account, remoteInterface: remoteInterface, dbManager: dbManager
             )
