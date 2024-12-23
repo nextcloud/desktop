@@ -81,14 +81,7 @@ extension Item {
             return (nil, readError.fileProviderError)
         }
         
-        let directoryMetadata = await withCheckedContinuation { continuation in
-            ItemMetadata.metadatasFromDirectoryReadNKFiles(
-                files, account: account
-            ) { directoryMetadata, _, _ in
-                continuation.resume(returning: directoryMetadata)
-            }
-        }
-        
+        let (directoryMetadata, _, _) = await files.toDirectoryReadMetadatas(account: account)
         dbManager.addItemMetadata(directoryMetadata)
 
         let fpItem = Item(

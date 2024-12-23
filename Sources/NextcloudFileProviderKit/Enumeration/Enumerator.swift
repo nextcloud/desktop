@@ -550,73 +550,6 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
     }
 
     // MARK: - Helper methods
-
-    // TODO: Use async group
-    static func metadatasToFileProviderItems(
-        _ itemMetadatas: [ItemMetadata],
-        account: Account,
-        remoteInterface: RemoteInterface,
-        dbManager: FilesDatabaseManager,
-        completionHandler: @escaping (_ items: [NSFileProviderItem]) -> Void
-    ) {
-        var items: [NSFileProviderItem] = []
-
-        let conversionQueue = DispatchQueue(
-            label: "metadataToItemConversionQueue", qos: .userInitiated, attributes: .concurrent
-        )
-        // appendQueue is a serial queue
-        let appendQueue = DispatchQueue(label: "enumeratorItemAppendQueue", qos: .userInitiated)
-        let dispatchGroup = DispatchGroup()
-
-        for itemMetadata in itemMetadatas {
-            conversionQueue.async(group: dispatchGroup) {
-                if itemMetadata.e2eEncrypted {
-                    Self.logger.info(
-                        """
-                        Skipping encrypted metadata in enumeration:
-                        \(itemMetadata.ocId, privacy: .public)
-                        \(itemMetadata.fileName, privacy: .public)
-                        """
-                    )
-                    return
-                }
-
-                if let parentItemIdentifier = dbManager.parentItemIdentifierFromMetadata(
-                    itemMetadata
-                ) {
-                    let item = Item(
-                        metadata: itemMetadata,
-                        parentItemIdentifier: parentItemIdentifier,
-                        account: account,
-                        remoteInterface: remoteInterface
-                    )
-                    Self.logger.debug(
-                        """
-                        Will enumerate item with ocId: \(itemMetadata.ocId, privacy: .public)
-                        and name: \(itemMetadata.fileName, privacy: .public)
-                        """
-                    )
-
-                    appendQueue.async(group: dispatchGroup) {
-                        items.append(item)
-                    }
-                } else {
-                    Self.logger.error(
-                        """
-                        Could not get valid parentItemIdentifier for item with ocId:
-                        \(itemMetadata.ocId, privacy: .public)
-                        and name: \(itemMetadata.fileName, privacy: .public), skipping enumeration
-                        """
-                    )
-                }
-            }
-        }
-
-        dispatchGroup.notify(queue: DispatchQueue.main) {
-            completionHandler(items)
-        }
-    }
-
     static func fileProviderPageforNumPage(_ numPage: Int) -> NSFileProviderPage? {
         return nil
         // TODO: Handle paging properly
@@ -631,23 +564,27 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
         numPage: Int,
         itemMetadatas: [ItemMetadata]
     ) {
-        metadatasToFileProviderItems(
-            itemMetadatas, account: account, remoteInterface: remoteInterface, dbManager: dbManager
-        ) { items in
-            observer.didEnumerate(items)
-            Self.logger.info("Did enumerate \(items.count) items")
+        Task {
+            let items = await itemMetadatas.toFileProviderItems(
+                account: account, remoteInterface: remoteInterface, dbManager: dbManager
+            )
 
-            // TODO: Handle paging properly
-            /*
-             if items.count == maxItemsPerFileProviderPage {
-                let nextPage = numPage + 1
-                let providerPage = NSFileProviderPage("\(nextPage)".data(using: .utf8)!)
-                observer.finishEnumerating(upTo: providerPage)
-             } else {
-                observer.finishEnumerating(upTo: nil)
-             }
-             */
-            observer.finishEnumerating(upTo: fileProviderPageforNumPage(numPage))
+            Task { @MainActor in
+                observer.didEnumerate(items)
+                Self.logger.info("Did enumerate \(items.count) items")
+
+                // TODO: Handle paging properly
+                /*
+                 if items.count == maxItemsPerFileProviderPage {
+                 let nextPage = numPage + 1
+                 let providerPage = NSFileProviderPage("\(nextPage)".data(using: .utf8)!)
+                 observer.finishEnumerating(upTo: providerPage)
+                 } else {
+                 observer.finishEnumerating(upTo: nil)
+                 }
+                 */
+                observer.finishEnumerating(upTo: fileProviderPageforNumPage(numPage))
+            }
         }
     }
 
@@ -694,24 +631,24 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
             observer.didDeleteItems(withIdentifiers: allFpItemDeletionsIdentifiers)
         }
 
-        metadatasToFileProviderItems(
-            allUpdatedMetadatas,
-            account: account,
-            remoteInterface: remoteInterface,
-            dbManager: dbManager
-        ) { updatedItems in
-
-            if !updatedItems.isEmpty {
-                observer.didUpdate(updatedItems)
-            }
-
-            Self.logger.info(
-                """
-                Processed \(updatedItems.count) new or updated metadatas.
-                \(allDeletedMetadatas.count) deleted metadatas.
-                """
+        Task { [allUpdatedMetadatas, allDeletedMetadatas] in
+            let updatedItems = await allUpdatedMetadatas.toFileProviderItems(
+                account: account, remoteInterface: remoteInterface, dbManager: dbManager
             )
-            observer.finishEnumeratingChanges(upTo: anchor, moreComing: false)
+
+            Task { @MainActor in
+                if !updatedItems.isEmpty {
+                    observer.didUpdate(updatedItems)
+                }
+
+                Self.logger.info(
+                    """
+                    Processed \(updatedItems.count) new or updated metadatas.
+                    \(allDeletedMetadatas.count) deleted metadatas.
+                    """
+                )
+                observer.finishEnumeratingChanges(upTo: anchor, moreComing: false)
+            }
         }
     }
 }

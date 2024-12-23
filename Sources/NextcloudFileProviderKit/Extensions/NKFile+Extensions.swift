@@ -85,3 +85,43 @@ extension NKFile {
         return metadata
     }
 }
+
+extension Array<NKFile> {
+    private actor DirectoryReadConversionActor {
+        var directoryMetadata = ItemMetadata()
+        var childDirectoriesMetadatas: [ItemMetadata] = []
+        var metadatas: [ItemMetadata] = []
+
+        var convertedMetadatas: (ItemMetadata, [ItemMetadata], [ItemMetadata]) {
+            (directoryMetadata, childDirectoriesMetadatas, metadatas)
+        }
+
+        func apply(directoryMetadata: ItemMetadata) {
+            self.directoryMetadata = directoryMetadata
+        }
+
+        func add(metadata: ItemMetadata) {
+            metadatas.append(metadata)
+            if metadata.directory {
+                childDirectoriesMetadatas.append(metadata)
+            }
+        }
+    }
+
+    func toDirectoryReadMetadatas(account: Account) async -> (
+        directoryMetadata: ItemMetadata,
+        childDirectoriesMetadatas: [ItemMetadata],
+        metadatas: [ItemMetadata]
+    ) {
+        guard let targetDirectoryMetadata = first?.toItemMetadata() else {
+            return (ItemMetadata(), [], [])
+        }
+        let conversionActor = DirectoryReadConversionActor()
+        await conversionActor.apply(directoryMetadata: targetDirectoryMetadata)
+        await concurrentChunkedForEach { file in
+            guard file.ocId != targetDirectoryMetadata.ocId else { return }
+            await conversionActor.add(metadata: file.toItemMetadata())
+        }
+        return await conversionActor.convertedMetadatas
+    }
+}
