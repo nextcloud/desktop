@@ -5,22 +5,24 @@
 //  Created by Claudio Cambra on 2024-12-18.
 //
 
+fileprivate let defaultChunkSize = 64
+
 extension Array {
-    func chunked(into size: Int) -> [ArraySlice<Element>] {
+    func chunked(into size: Int = defaultChunkSize) -> [ArraySlice<Element>] {
         guard size > 0 else { return [] } // Avoid invalid chunk sizes
         return stride(from: 0, to: count, by: size).map { startIndex in
             self[startIndex..<Swift.min(startIndex + size, count)]
         }
     }
 
-    func chunkedMap<T>(into size: Int, transform: (Element) -> T) -> [[T]] {
+    func chunkedMap<T>(into size: Int = defaultChunkSize, transform: (Element) -> T) -> [[T]] {
         return self.chunked(into: size).map { chunk in
             chunk.map(transform)
         }
     }
 
     func concurrentChunkedForEach(
-        into size: Int, operation: @escaping (Element) async -> Void
+        into size: Int = defaultChunkSize, operation: @escaping (Element) async -> Void
     ) async {
         await withTaskGroup(of: Void.self) { group in
             for chunk in chunked(into: size) {
@@ -34,8 +36,7 @@ extension Array {
     }
 
     func concurrentChunkedCompactMap<T>(
-        into size: Int,
-        transform: @escaping (Element) -> T?
+        into size: Int = defaultChunkSize, transform: @escaping (Element) -> T?
     ) async -> [T] {
         await withTaskGroup(of: [T].self) { group in
             var results = [T]()
