@@ -87,35 +87,44 @@ extension NKFile {
 }
 
 extension Array<NKFile> {
+    private actor DirectoryReadConversionActor {
+        var directoryMetadata = ItemMetadata()
+        var childDirectoriesMetadatas: [ItemMetadata] = []
+        var metadatas: [ItemMetadata] = []
+
+        var convertedMetadatas: (ItemMetadata, [ItemMetadata], [ItemMetadata]) {
+            (directoryMetadata, childDirectoriesMetadatas, metadatas)
+        }
+
+        func apply(directoryMetadata: ItemMetadata) {
+            self.directoryMetadata = directoryMetadata
+        }
+
+        func add(metadata: ItemMetadata) {
+            metadatas.append(metadata)
+            if metadata.directory {
+                childDirectoriesMetadatas.append(metadata)
+            }
+        }
+    }
+
     func toDirectoryReadMetadatas(account: Account) async -> (
         directoryMetadata: ItemMetadata,
         childDirectoriesMetadatas: [ItemMetadata],
         metadatas: [ItemMetadata]
     ) {
         var directoryMetadataSet = false
-        var directoryMetadata = ItemMetadata()
-        var childDirectoriesMetadatas: [ItemMetadata] = []
-        var metadatas: [ItemMetadata] = []
-
-        let metadataQueue =
-            DispatchQueue(label: "com.claucambra.NextcloudFileProviderKit.metadataQueue")
+        let conversionActor = DirectoryReadConversionActor()
 
         await concurrentChunkedForEach { file in
-            if metadatas.isEmpty, !directoryMetadataSet {
-                let metadata = file.toItemMetadata()
-                directoryMetadata = metadata
+            if await conversionActor.metadatas.isEmpty, !directoryMetadataSet {
+                await conversionActor.apply(directoryMetadata: file.toItemMetadata())
                 directoryMetadataSet = true
             } else {
-                let metadata = file.toItemMetadata()
-                metadataQueue.sync {
-                    metadatas.append(metadata)
-                    if metadata.directory {
-                        childDirectoriesMetadatas.append(metadata)
-                    }
-                }
+                await conversionActor.add(metadata: file.toItemMetadata())
             }
         }
 
-        return (directoryMetadata, childDirectoriesMetadatas, metadatas)
+        return await conversionActor.convertedMetadatas
     }
 }
