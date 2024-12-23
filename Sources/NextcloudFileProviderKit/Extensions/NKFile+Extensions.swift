@@ -113,18 +113,15 @@ extension Array<NKFile> {
         childDirectoriesMetadatas: [ItemMetadata],
         metadatas: [ItemMetadata]
     ) {
-        var directoryMetadataSet = false
-        let conversionActor = DirectoryReadConversionActor()
-
-        await concurrentChunkedForEach { file in
-            if await conversionActor.metadatas.isEmpty, !directoryMetadataSet {
-                await conversionActor.apply(directoryMetadata: file.toItemMetadata())
-                directoryMetadataSet = true
-            } else {
-                await conversionActor.add(metadata: file.toItemMetadata())
-            }
+        guard let targetDirectoryMetadata = first?.toItemMetadata() else {
+            return (ItemMetadata(), [], [])
         }
-
+        let conversionActor = DirectoryReadConversionActor()
+        await conversionActor.apply(directoryMetadata: targetDirectoryMetadata)
+        await concurrentChunkedForEach { file in
+            guard file.ocId != targetDirectoryMetadata.ocId else { return }
+            await conversionActor.add(metadata: file.toItemMetadata())
+        }
         return await conversionActor.convertedMetadatas
     }
 }
