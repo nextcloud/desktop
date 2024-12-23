@@ -19,6 +19,20 @@ extension Array {
         }
     }
 
+    func concurrentChunkedForEach(
+        into size: Int, operation: @escaping (Element) async -> Void
+    ) async {
+        await withTaskGroup(of: Void.self) { group in
+            for chunk in chunked(into: size) {
+                group.addTask {
+                    for element in chunk {
+                        await operation(element)
+                    }
+                }
+            }
+        }
+    }
+
     func concurrentChunkedCompactMap<T>(
         into size: Int,
         transform: @escaping (Element) -> T?
