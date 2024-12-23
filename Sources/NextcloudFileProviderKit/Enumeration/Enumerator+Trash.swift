@@ -25,11 +25,8 @@ extension Enumerator {
         }
 
         Task {
-            let items = await metadatasToFileProviderItems(
-                metadatas,
-                account: account,
-                remoteInterface: remoteInterface,
-                dbManager: dbManager
+            let items = await metadatas.toFileProviderItems(
+                account: account, remoteInterface: remoteInterface, dbManager: dbManager
             )
 
             Task { @MainActor in

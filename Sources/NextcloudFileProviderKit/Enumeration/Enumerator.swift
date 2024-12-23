@@ -550,57 +550,6 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
     }
 
     // MARK: - Helper methods
-
-    // TODO: Use async group
-    static func metadatasToFileProviderItems(
-        _ itemMetadatas: [ItemMetadata],
-        account: Account,
-        remoteInterface: RemoteInterface,
-        dbManager: FilesDatabaseManager
-    ) async -> [NSFileProviderItem] {
-
-        return await itemMetadatas.concurrentChunkedCompactMap(into: 64) { itemMetadata in
-            guard !itemMetadata.e2eEncrypted else {
-                Self.logger.info(
-                    """
-                    Skipping encrypted metadata in enumeration:
-                    \(itemMetadata.ocId, privacy: .public)
-                    \(itemMetadata.fileName, privacy: .public)
-                    """
-                )
-                return nil
-            }
-
-            if let parentItemIdentifier = dbManager.parentItemIdentifierFromMetadata(
-                itemMetadata
-            ) {
-                let item = Item(
-                    metadata: itemMetadata,
-                    parentItemIdentifier: parentItemIdentifier,
-                    account: account,
-                    remoteInterface: remoteInterface
-                )
-                Self.logger.debug(
-                    """
-                    Will enumerate item with ocId: \(itemMetadata.ocId, privacy: .public)
-                    and name: \(itemMetadata.fileName, privacy: .public)
-                    """
-                )
-
-                return item
-            } else {
-                Self.logger.error(
-                    """
-                    Could not get valid parentItemIdentifier for item with ocId:
-                    \(itemMetadata.ocId, privacy: .public)
-                    and name: \(itemMetadata.fileName, privacy: .public), skipping enumeration
-                    """
-                )
-            }
-            return nil
-        }
-    }
-
     static func fileProviderPageforNumPage(_ numPage: Int) -> NSFileProviderPage? {
         return nil
         // TODO: Handle paging properly
@@ -616,11 +565,8 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
         itemMetadatas: [ItemMetadata]
     ) {
         Task {
-            let items = await metadatasToFileProviderItems(
-                itemMetadatas,
-                account: account,
-                remoteInterface: remoteInterface,
-                dbManager: dbManager
+            let items = await itemMetadatas.toFileProviderItems(
+                account: account, remoteInterface: remoteInterface, dbManager: dbManager
             )
 
             Task { @MainActor in
@@ -686,11 +632,8 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
         }
 
         Task {
-            let updatedItems = await metadatasToFileProviderItems(
-                allUpdatedMetadatas,
-                account: account,
-                remoteInterface: remoteInterface,
-                dbManager: dbManager
+            let updatedItems = await allUpdatedMetadatas.toFileProviderItems(
+                account: account, remoteInterface: remoteInterface, dbManager: dbManager
             )
 
             Task { @MainActor in
