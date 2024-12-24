@@ -8,5 +8,5 @@
 import OSLog
 
 extension Logger {
-    static var subsystem = Bundle.main.bundleIdentifier!
+    static let subsystem = Bundle.main.bundleIdentifier!
 }
