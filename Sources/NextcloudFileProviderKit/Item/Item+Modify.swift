@@ -186,17 +186,11 @@ public extension Item {
             )
         }
 
-        let newMetadata = ItemMetadata()
+        let newMetadata = ItemMetadata(value: metadata)
         newMetadata.date = (date ?? NSDate()) as Date
         newMetadata.etag = etag ?? metadata.etag
-        newMetadata.account = metadata.account
-        newMetadata.fileName = metadata.fileName
-        newMetadata.fileNameView = metadata.fileNameView
         newMetadata.ocId = ocId
         newMetadata.size = size
-        newMetadata.contentType = metadata.contentType
-        newMetadata.directory = metadata.directory
-        newMetadata.serverUrl = metadata.serverUrl
         newMetadata.session = ""
         newMetadata.sessionError = ""
         newMetadata.sessionTaskIdentifier = 0
