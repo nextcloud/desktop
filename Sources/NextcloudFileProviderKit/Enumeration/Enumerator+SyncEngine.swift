@@ -391,9 +391,12 @@ extension Enumerator {
                 for user: \(account.ncKitAccount, privacy: .public)
                 """
             )
-            let itemMetadata = receivedFile.toItemMetadata()
-            dbManager.addItemMetadata(itemMetadata)  // TODO: Return some value when it is an update
-            return ([itemMetadata], nil, nil, nil, nil)
+            let metadata = receivedFile.toItemMetadata()
+            let isNew = dbManager.itemMetadata(ocId: metadata.ocId) == nil
+            let newItems: [ItemMetadata] = isNew ? [metadata] : []
+            let updatedItems: [ItemMetadata] = isNew ? [] : [metadata]
+            dbManager.addItemMetadata(metadata)
+            return ([metadata], newItems, updatedItems, nil, nil)
         }
 
         if stopAtMatchingEtags,
