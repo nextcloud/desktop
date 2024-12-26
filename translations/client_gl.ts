@@ -4855,7 +4855,7 @@ Este é un novo modo experimental. Se decide usalo, agradecémoslle que informe 
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="78"/>
         <source>Deselect remote folders you do not wish to synchronize.</source>
-        <translation>Desmarque os cartafoles remotos que non quere sincronizar.</translation>
+        <translation>Deseleccione os cartafoles remotos que non quere sincronizar.</translation>
     </message>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="94"/>
