@@ -80,6 +80,59 @@ extension NextcloudKit: RemoteInterface {
         }
     }
 
+    public func chunkedUpload(
+        localDirectoryPath: String,
+        localFileName: String,
+        remoteParentDirectoryPath: String,
+        remoteChunkStoreFolderName: String = UUID().uuidString,
+        chunkSize: Int,
+        remainingChunks: [RemoteFileChunk],
+        creationDate: Date? = nil,
+        modificationDate: Date? = nil,
+        account: Account,
+        options: NKRequestOptions = .init(),
+        currentNumChunksUpdateHandler: @escaping (_ num: Int) -> Void = { _ in },
+        chunkCounter: @escaping (_ counter: Int) -> Void = { _ in },
+        chunkUploadStartHandler: @escaping (_ filesChunk: [RemoteFileChunk]) -> Void = { _ in },
+        requestHandler: @escaping (_ request: UploadRequest) -> Void = { _ in },
+        taskHandler: @escaping (_ task: URLSessionTask) -> Void = { _ in },
+        progressHandler: @escaping (
+            _ totalBytesExpected: Int64, _ totalBytes: Int64, _ fractionCompleted: Double
+        ) -> Void = { _, _, _ in },
+        chunkUploadCompleteHandler: @escaping (_ fileChunk: RemoteFileChunk) -> Void = { _ in }
+    ) async -> (
+        account: String,
+        fileChunks: [RemoteFileChunk]?,
+        file: NKFile?,
+        afError: AFError?,
+        remoteError: NKError
+    ) {
+        return await withCheckedContinuation { continuation in
+            uploadChunk(
+                directory: localDirectoryPath,
+                fileName: localFileName,
+                date: modificationDate,
+                creationDate: creationDate,
+                serverUrl: remoteParentDirectoryPath,
+                chunkFolder: remoteChunkStoreFolderName,
+                filesChunk: remainingChunks,
+                chunkSize: chunkSize,
+                account: account.ncKitAccount,
+                options: options,
+                numChunks: currentNumChunksUpdateHandler,
+                counterChunk: chunkCounter,
+                start: chunkUploadStartHandler,
+                requestHandler: requestHandler,
+                taskHandler: taskHandler,
+                progressHandler: progressHandler,
+                uploaded: chunkUploadCompleteHandler
+            ) { account, filesChunk, file, afError, error in
+                let chunks = filesChunk as [RemoteFileChunk]?
+                continuation.resume(returning: (account, chunks, file, afError, error))
+            }
+        }
+    }
+
     public func move(
         remotePathSource: String,
         remotePathDestination: String,
