@@ -2453,7 +2453,7 @@ Alternatively, you can restore all deleted files by downloading them from the se
     <message>
         <location filename="../src/gui/folderman.cpp" line="1810"/>
         <source>The folder %1 is used in a folder sync connection!</source>
-        <translation type="unfinished"/>
+        <translation>フォルダ %1 は、フォルダ同期接続で使用される！</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1656"/>
@@ -2492,7 +2492,11 @@ This setup can cause data loss and it is no longer supported.
 To resolve this issue: please remove %1 from one of the accounts and create a new sync folder.
 
 For advanced users: this issue might be related to multiple sync database files found in one folder. Please check %1 for outdated and unused .sync_*.db files and remove them.</source>
-        <translation type="unfinished"/>
+        <translation>%1フォルダは複数のアカウントにリンクされています。
+この設定はデータ損失の原因となる可能性があり、現在はサポートされていません。
+この問題を解決するには：%1をいずれかのアカウントから削除し、新しい同期フォルダを作成してください。
+
+上級者向け：この問題は、1つのフォルダに複数の同期データベースファイルがあることが原因である可能性があります。%1に古くて使用されていない.sync_*.dbファイルがないか確認し、削除してください。</translation>
     </message>
 </context>
 <context>
@@ -5867,7 +5871,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/common/vfs.cpp" line="75"/>
         <source>The Virtual filesystem feature does not support a drive as sync root</source>
-        <translation type="unfinished"/>
+        <translation>仮想ファイルシステム機能は、同期ルートとしてドライブをサポートしていません</translation>
     </message>
     <message>
         <location filename="../src/common/vfs.cpp" line="75"/>
@@ -5877,7 +5881,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/common/vfs.cpp" line="83"/>
         <source>The Virtual filesystem feature is not supported on network drives</source>
-        <translation type="unfinished"/>
+        <translation>仮想ファイルシステム機能は、ネットワークドライブではサポートされていません</translation>
     </message>
 </context>
 <context>
