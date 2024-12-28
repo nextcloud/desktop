@@ -54,6 +54,34 @@ public protocol RemoteInterface {
         remoteError: NKError
     )
 
+    func chunkedUpload(
+        localDirectoryPath: String,
+        localFileName: String,
+        remoteParentDirectoryPath: String,
+        remoteChunkStoreFolderName: String,
+        chunkSize: Int,
+        remainingChunks: [RemoteFileChunk],
+        creationDate: Date?,
+        modificationDate: Date?,
+        account: Account,
+        options: NKRequestOptions,
+        currentNumChunksUpdateHandler: @escaping (_ num: Int) -> Void,
+        chunkCounter: @escaping (_ counter: Int) -> Void,
+        chunkUploadStartHandler: @escaping (_ filesChunk: [RemoteFileChunk]) -> Void,
+        requestHandler: @escaping (_ request: UploadRequest) -> Void,
+        taskHandler: @escaping (_ task: URLSessionTask) -> Void,
+        progressHandler: @escaping (
+            _ totalBytesExpected: Int64, _ totalBytes: Int64, _ fractionCompleted: Double
+        ) -> Void,
+        chunkUploadCompleteHandler: @escaping (_ fileChunk: RemoteFileChunk) -> Void
+    ) async -> (
+        account: String,
+        fileChunks: [RemoteFileChunk]?,
+        file: NKFile?,
+        afError: AFError?,
+        remoteError: NKError
+    )
+
     func move(
         remotePathSource: String,
         remotePathDestination: String,
