@@ -860,6 +860,14 @@ private slots:
         {
             qCritical() << e.what() << e.path1().c_str() << e.path2().c_str() << e.code().message().c_str();
         }
+        catch (const std::system_error &e)
+        {
+            qCritical() << e.what() << e.code().message().c_str();
+        }
+        catch (...)
+        {
+            qCritical() << "exception unknown";
+        }
         QTextCodec::setCodecForLocale(utf8Locale);
 #endif
     }
