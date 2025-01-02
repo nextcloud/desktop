@@ -2046,7 +2046,7 @@ Result<void, QString> FolderMan::unsupportedConfiguration(const QString &path) c
     if (numberOfSyncJournals(path) > 1) {
         return tr("The folder %1 is linked to multiple accounts.\n"
                   "This setup can cause data loss and it is no longer supported.\n"
-                  "To resolve this issue: please remove %1 from one of the accounts and create a new sync folder.\n\n"
+                  "To resolve this issue: please remove %1 from one of the accounts and create a new sync folder.\n"
                   "For advanced users: this issue might be related to multiple sync database files found in one folder. Please check %1 for outdated and unused .sync_*.db files and remove them.")
             .arg(path);
     }
