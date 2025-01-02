@@ -56,6 +56,9 @@ bool NetrcParser::parse()
         return false;
     }
     QString content = netrc.readAll();
+    if (content.isEmpty()) {
+        return false;
+    }
 
     auto tokens = content.split(QRegularExpression("\\s+"));
 
@@ -71,9 +74,9 @@ bool NetrcParser::parse()
         }
 
         i++;
-        if (i > tokens.count()) {
+        if (i >= tokens.count()) {
             qDebug() << "error fetching value for" << key;
-            return false;
+            break;
         }
         auto value = tokens[i];
 
