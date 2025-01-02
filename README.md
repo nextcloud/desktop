@@ -45,8 +45,8 @@ If you find any bugs or have any suggestion for improvement, please
 - [delta: A viewer for git and diff output](https://github.com/dandavison/delta)
 
 > [!TIP]
-> We highly recommend [Nextcloud development environment on Docker Compose](https://juliushaertl.github.io/nextcloud-docker-dev/) for testing/bug fixing/development.<br>
-> ▶️ https://juliushaertl.github.io/nextcloud-docker-dev/
+> We highly recommend [Nextcloud development environment on Docker Compose](https://juliusknorr.github.io/nextcloud-docker-dev/) for testing/bug fixing/development.<br>
+> ▶️ https://juliusknorr.github.io/nextcloud-docker-dev/
 
 1.3 Step by step instructions on how to build the client to contribute
 1. Clone the Github repository:
