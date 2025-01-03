@@ -189,23 +189,7 @@ trigger:
     - pull_request
     - push
 ---
-kind: pipeline
-name: Documentation
-
-steps:
-- name: build
-  image: nextcloudci/documentation:documentation-5
-  commands:
-    - cd doc
-    - make html
-trigger:
-  branch:
-    - master
-  event:
-    - pull_request
-    - push
----
 kind: signature
-hmac: 1fbd0241ba0d4ea2702804324f4932b3f29d3d937ef75906a529cd00c4252a57
+hmac: 94f252484ad174569755f01f37a1776a74085e73b39e36defd4c9e5e13b48456
 
 ...
