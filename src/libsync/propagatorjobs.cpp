@@ -118,7 +118,7 @@ void PropagateLocalRemove::start()
 
     QString removeError;
     const auto availability = propagator()->syncOptions()._vfs->availability(_item->_file, Vfs::AvailabilityRecursivity::RecursiveAvailability);
-    if (_moveToTrash && (!availability || (*availability != VfsItemAvailability::AllDehydrated && *availability != VfsItemAvailability::OnlineOnly && *availability != VfsItemAvailability::Mixed))) {
+    if (_moveToTrash && propagator()->syncOptions()._vfs->mode() != OCC::Vfs::WindowsCfApi) {
         if ((QDir(filename).exists() || FileSystem::fileExists(filename))
             && !FileSystem::moveToTrash(filename, &removeError)) {
             done(SyncFileItem::NormalError, removeError, ErrorCategory::GenericError);
