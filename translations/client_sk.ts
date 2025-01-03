@@ -1187,34 +1187,34 @@ Táto akcia zruší všetky prebiehajúce synchronizácie.</translation>
         <translation>Pokračovať</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="490"/>
+        <location filename="../src/gui/application.cpp" line="488"/>
         <source>%1 accounts</source>
         <comment>number of accounts imported</comment>
         <translation>%1 účty</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="491"/>
+        <location filename="../src/gui/application.cpp" line="489"/>
         <source>1 account</source>
         <translation>1 účet</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="493"/>
+        <location filename="../src/gui/application.cpp" line="491"/>
         <source>%1 folders</source>
         <comment>number of folders imported</comment>
         <translation>%1 priečinkov</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="494"/>
+        <location filename="../src/gui/application.cpp" line="492"/>
         <source>1 folder</source>
         <translation>1 priečinok</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="496"/>
+        <location filename="../src/gui/application.cpp" line="494"/>
         <source>Legacy import</source>
         <translation>Starý import</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="497"/>
+        <location filename="../src/gui/application.cpp" line="495"/>
         <source>Imported %1 and %2 from a legacy desktop client.
 %3</source>
         <comment>number of accounts and folders imported. list of users.</comment>
@@ -2486,7 +2486,6 @@ Alternatively, you can restore all deleted files by downloading them from the se
         <source>The folder %1 is linked to multiple accounts.
 This setup can cause data loss and it is no longer supported.
 To resolve this issue: please remove %1 from one of the accounts and create a new sync folder.
-
 For advanced users: this issue might be related to multiple sync database files found in one folder. Please check %1 for outdated and unused .sync_*.db files and remove them.</source>
         <translation type="unfinished"/>
     </message>
@@ -4187,12 +4186,12 @@ Toto je nový experimentálny režim. Ak sa ho rozhodnete použiť, nahláste v�
     <message>
         <location filename="../src/libsync/discovery.cpp" line="398"/>
         <source>%1 name contains at least one invalid character</source>
-        <translation type="unfinished"/>
+        <translation>Názov %1 obsahuje aspoň jeden neplatný znak</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="400"/>
         <source>%1 name is a reserved name on this file system.</source>
-        <translation type="unfinished"/>
+        <translation>Názov %1 je na tomto súborovom systéme rezervovaným názvom.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="361"/>
@@ -4247,7 +4246,7 @@ Toto je nový experimentálny režim. Ak sa ho rozhodnete použiť, nahláste v�
     <message>
         <location filename="../src/libsync/discovery.cpp" line="442"/>
         <source>Reason: the entire filename is forbidden.</source>
-        <translation type="unfinished"/>
+        <translation>Dôvod: celý názov súboru je zakázaný.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="445"/>
@@ -4262,7 +4261,7 @@ Toto je nový experimentálny režim. Ak sa ho rozhodnete použiť, nahláste v�
     <message>
         <location filename="../src/libsync/discovery.cpp" line="451"/>
         <source>Reason: the filename contains a forbidden character (%1).</source>
-        <translation type="unfinished"/>
+        <translation>Dôvod: meno súboru obsahuje zakázaný znak (%1).</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="516"/>
@@ -4360,7 +4359,7 @@ Toto je nový experimentálny režim. Ak sa ho rozhodnete použiť, nahláste v�
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1428"/>
         <source>Could not delete file %1 from local DB</source>
-        <translation type="unfinished"/>
+        <translation>Nie je možné vymazať súbor %1 z lokálnej DB</translation>
     </message>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1357"/>
@@ -4374,9 +4373,19 @@ Toto je nový experimentálny režim. Ak sa ho rozhodnete použiť, nahláste v�
     </message>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1473"/>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1495"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1479"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1485"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1507"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1513"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1519"/>
         <source>The folder %1 cannot be made read-only: %2</source>
         <translation>Priečinok %1 nemôže byť nastavený len na čítanie: %2</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1485"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1519"/>
+        <source>unknown exception</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1387"/>
@@ -4394,7 +4403,7 @@ Toto je nový experimentálny režim. Ak sa ho rozhodnete použiť, nahláste v�
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="461"/>
         <source>Could not get file %1 from local DB</source>
-        <translation type="unfinished"/>
+        <translation>Nie je možné získať súbor %1 z lokálnej DB</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="464"/>
@@ -4501,9 +4510,16 @@ Toto je nový experimentálny režim. Ak sa ho rozhodnete použiť, nahláste v�
         <translation>Nemôžem vytvoriť priečinok %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="239"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="247"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="253"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="259"/>
         <source>The folder %1 cannot be made read-only: %2</source>
         <translation>Priečinok %1 nemôže byť nastavený len na čítanie: %2</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="259"/>
+        <source>unknown exception</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="200"/>
@@ -4532,7 +4548,7 @@ Toto je nový experimentálny režim. Ak sa ho rozhodnete použiť, nahláste v�
 <context>
     <name>OCC::PropagateLocalRename</name>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="322"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="350"/>
         <source>Folder %1 cannot be renamed because of a local file or folder name clash!</source>
         <translation type="unfinished"/>
     </message>
@@ -4542,10 +4558,10 @@ Toto je nový experimentálny režim. Ak sa ho rozhodnete použiť, nahláste v�
         <translation>Súbor %1 bol stiahnutý, ale došlo k kolízii názvov lokálnych súborov!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="458"/>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="499"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="510"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="551"/>
         <source>Could not get file %1 from local DB</source>
-        <translation type="unfinished"/>
+        <translation>Nie je možné získať súbor %1 z lokálnej DB</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="270"/>
@@ -4657,7 +4673,7 @@ Toto je nový experimentálny režim. Ak sa ho rozhodnete použiť, nahláste v�
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="261"/>
         <source>Could not get file %1 from local DB</source>
-        <translation type="unfinished"/>
+        <translation>Nie je možné získať súbor %1 z lokálnej DB</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="248"/>
@@ -4922,17 +4938,17 @@ Toto je nový experimentálny režim. Ak sa ho rozhodnete použiť, nahláste v�
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="515"/>
         <source>%1 days</source>
-        <translation type="unfinished"/>
+        <translation>%1 dní</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="517"/>
         <source>1 day</source>
-        <translation type="unfinished"/>
+        <translation>1 deň</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="518"/>
         <source>Today</source>
-        <translation type="unfinished"/>
+        <translation>Dnes</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="692"/>
@@ -5488,7 +5504,7 @@ Server odpovedal chybou: %2</translation>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="161"/>
         <source>Syncing changes</source>
-        <translation type="unfinished"/>
+        <translation>Synchonizácia zmien</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="162"/>
@@ -5705,7 +5721,7 @@ Server odpovedal chybou: %2</translation>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="158"/>
         <source>%1 notifications</source>
-        <translation type="unfinished"/>
+        <translation>%1 notifikácií</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="646"/>
@@ -5721,17 +5737,17 @@ Server odpovedal chybou: %2</translation>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="860"/>
         <source>Rename file</source>
-        <translation type="unfinished"/>
+        <translation>Premenovať súbor</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1066"/>
         <source>Open Nextcloud Assistant in browser</source>
-        <translation type="unfinished"/>
+        <translation>Otvoriť Nextcloud Assitant v prehliadači</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1066"/>
         <source>Open Nextcloud Talk in browser</source>
-        <translation type="unfinished"/>
+        <translation>Otvoriť Nextcloud Talk v prehliadači</translation>
     </message>
 </context>
 <context>
@@ -6012,7 +6028,7 @@ Server odpovedal chybou: %2</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="283"/>
         <source>Terms of service</source>
-        <translation type="unfinished"/>
+        <translation>Všeobecné podmienky</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="284"/>
@@ -6094,22 +6110,22 @@ Server odpovedal chybou: %2</translation>
         <location filename="../src/gui/owncloudgui.cpp" line="442"/>
         <source>%1: %2</source>
         <extracomment>Example text: &quot;Nextcloud: Syncing 25MB (3 minutes left)&quot; (%1 is the folder name to be synced, %2 a status message for that folder)</extracomment>
-        <translation type="unfinished"/>
+        <translation>%1: %2</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="446"/>
         <source>macOS VFS for %1: Sync is running.</source>
-        <translation type="unfinished"/>
+        <translation>macOS VFS pre %1: Prebieha synchronizácia.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="449"/>
         <source>macOS VFS for %1: Last sync was successful.</source>
-        <translation type="unfinished"/>
+        <translation>macOS VFS pre %1: Posledná synchronizácia bola úspešná.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="452"/>
         <source>macOS VFS for %1: A problem was encountered.</source>
-        <translation type="unfinished"/>
+        <translation>macOS VFS pre %1: Vyskytol sa problém.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="401"/>
@@ -6517,12 +6533,12 @@ Server odpovedal chybou: %2</translation>
     <message>
         <location filename="../src/gui/filedetails/ShareView.qml" line="157"/>
         <source>Shared with you by %1</source>
-        <translation type="unfinished"/>
+        <translation>Sprístupnené vám užívateľom %1</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareView.qml" line="163"/>
         <source>Expires in %1</source>
-        <translation type="unfinished"/>
+        <translation>Platnosť končí v %1</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareView.qml" line="279"/>
@@ -6592,17 +6608,17 @@ Server odpovedal chybou: %2</translation>
     <message>
         <location filename="../src/gui/tray/TrayWindowHeader.qml" line="72"/>
         <source>Open local or group folders</source>
-        <translation type="unfinished"/>
+        <translation>Otvoriť miestne alebo skupinové adresáre</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/TrayWindowHeader.qml" line="107"/>
         <source>More apps</source>
-        <translation type="unfinished"/>
+        <translation>Viac aplikácií</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/TrayWindowHeader.qml" line="131"/>
         <source>Open %1 in browser</source>
-        <translation type="unfinished"/>
+        <translation>Otvoriť %1 v prehliadači</translation>
     </message>
 </context>
 <context>
@@ -6618,7 +6634,7 @@ Server odpovedal chybou: %2</translation>
     <message>
         <location filename="../src/gui/tray/UnifiedSearchPlaceholderView.qml" line="39"/>
         <source>Start typing to search</source>
-        <translation type="unfinished"/>
+        <translation>Začnite písať pre vyhľadanie</translation>
     </message>
 </context>
 <context>
@@ -6957,7 +6973,7 @@ Server odpovedal chybou: %2</translation>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="77"/>
         <source>Downloading</source>
-        <translation type="unfinished"/>
+        <translation>Sťahovanie</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="77"/>
@@ -6967,7 +6983,7 @@ Server odpovedal chybou: %2</translation>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="79"/>
         <source>Uploading</source>
-        <translation type="unfinished"/>
+        <translation>Nahrávanie</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="79"/>
@@ -6977,7 +6993,7 @@ Server odpovedal chybou: %2</translation>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="81"/>
         <source>Deleting</source>
-        <translation type="unfinished"/>
+        <translation>Vymazávanie</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="82"/>
@@ -6987,7 +7003,7 @@ Server odpovedal chybou: %2</translation>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="84"/>
         <source>Moving</source>
-        <translation type="unfinished"/>
+        <translation>Presúvanie</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="84"/>
@@ -6997,7 +7013,7 @@ Server odpovedal chybou: %2</translation>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="86"/>
         <source>Ignoring</source>
-        <translation type="unfinished"/>
+        <translation>Ignorovanie</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="87"/>
@@ -7012,12 +7028,12 @@ Server odpovedal chybou: %2</translation>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="91"/>
         <source>Updating local metadata</source>
-        <translation type="unfinished"/>
+        <translation>Aktualizujú sa lokálne metadáta</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="93"/>
         <source>Updating local virtual files metadata</source>
-        <translation type="unfinished"/>
+        <translation>Aktualizujú sa lokálne metadáta virtuálných súborov</translation>
     </message>
 </context>
 <context>
@@ -7035,12 +7051,12 @@ Server odpovedal chybou: %2</translation>
     <message>
         <location filename="../src/libsync/theme.cpp" line="102"/>
         <source>Sync status is unknown</source>
-        <translation type="unfinished"/>
+        <translation>Stav synchronizácie je neznámy</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="105"/>
         <source>Waiting to start syncing</source>
-        <translation type="unfinished"/>
+        <translation>Čaká sa na začiatok synchronizácie</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="90"/>
@@ -7075,22 +7091,22 @@ Server odpovedal chybou: %2</translation>
     <message>
         <location filename="../src/libsync/theme.cpp" line="111"/>
         <source>Sync was successful</source>
-        <translation type="unfinished"/>
+        <translation>Synchronizácia bola úspešná</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="114"/>
         <source>Sync was successful but some files were ignored</source>
-        <translation type="unfinished"/>
+        <translation>Synchronizácia prebehla úspešne, ale niektoré súbory boli ignorované</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="117"/>
         <source>Error occurred during sync</source>
-        <translation type="unfinished"/>
+        <translation>Pri synchronizácii nastala chyba</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="120"/>
         <source>Error occurred during setup</source>
-        <translation type="unfinished"/>
+        <translation>Počas nastavovania nastala chyba</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="105"/>
@@ -7100,7 +7116,7 @@ Server odpovedal chybou: %2</translation>
     <message>
         <location filename="../src/libsync/theme.cpp" line="126"/>
         <source>Stopping sync</source>
-        <translation type="unfinished"/>
+        <translation>Zastavovanie synchronizácie</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="111"/>

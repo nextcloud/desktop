@@ -1187,34 +1187,34 @@ This action will abort any currently running synchronization.</source>
         <translation>繼續</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="490"/>
+        <location filename="../src/gui/application.cpp" line="488"/>
         <source>%1 accounts</source>
         <comment>number of accounts imported</comment>
         <translation>%1 個帳號</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="491"/>
+        <location filename="../src/gui/application.cpp" line="489"/>
         <source>1 account</source>
         <translation>1 個帳號</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="493"/>
+        <location filename="../src/gui/application.cpp" line="491"/>
         <source>%1 folders</source>
         <comment>number of folders imported</comment>
         <translation>%1 個資料夾</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="494"/>
+        <location filename="../src/gui/application.cpp" line="492"/>
         <source>1 folder</source>
         <translation>1 個資料夾</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="496"/>
+        <location filename="../src/gui/application.cpp" line="494"/>
         <source>Legacy import</source>
         <translation>舊版匯入</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="497"/>
+        <location filename="../src/gui/application.cpp" line="495"/>
         <source>Imported %1 and %2 from a legacy desktop client.
 %3</source>
         <comment>number of accounts and folders imported. list of users.</comment>
@@ -2490,13 +2490,8 @@ Alternatively, you can restore all deleted files by downloading them from the se
         <source>The folder %1 is linked to multiple accounts.
 This setup can cause data loss and it is no longer supported.
 To resolve this issue: please remove %1 from one of the accounts and create a new sync folder.
-
 For advanced users: this issue might be related to multiple sync database files found in one folder. Please check %1 for outdated and unused .sync_*.db files and remove them.</source>
-        <translation>資料夾 %1 連結到多個帳號。
-這種設定方式可能會導致資料遺失，且不再支援。
-要解決此問題：請從其中一個帳號移除 %1，然後建立新的同步資料夾。
-
-給進階使用者：此問題可能與在同一個資料夾中找到多個同步資料庫檔案有關。請檢查 %1 是否有過期與未使用的 sync_*.db 檔案並將其移除。</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -4387,9 +4382,19 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     </message>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1473"/>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1495"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1479"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1485"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1507"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1513"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1519"/>
         <source>The folder %1 cannot be made read-only: %2</source>
         <translation>無法將資料夾 %1 設為唯讀：%2</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1485"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1519"/>
+        <source>unknown exception</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1387"/>
@@ -4514,9 +4519,16 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>無法建立資料夾 %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="239"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="247"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="253"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="259"/>
         <source>The folder %1 cannot be made read-only: %2</source>
         <translation>無法將資料夾 %1 設為唯讀：%2</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="259"/>
+        <source>unknown exception</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="200"/>
@@ -4545,7 +4557,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::PropagateLocalRename</name>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="322"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="350"/>
         <source>Folder %1 cannot be renamed because of a local file or folder name clash!</source>
         <translation>由於本機檔案或資料夾名稱衝突，無法重新命名資料夾 %1！</translation>
     </message>
@@ -4555,8 +4567,8 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>已下載檔案 %1，但它導致本機檔案名稱衝突！</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="458"/>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="499"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="510"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="551"/>
         <source>Could not get file %1 from local DB</source>
         <translation>無法從本機資料庫取得檔案 %1</translation>
     </message>

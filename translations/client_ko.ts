@@ -1186,34 +1186,34 @@ This action will abort any currently running synchronization.</source>
         <translation>계속</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="490"/>
+        <location filename="../src/gui/application.cpp" line="488"/>
         <source>%1 accounts</source>
         <comment>number of accounts imported</comment>
         <translation>%1개 계정</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="491"/>
+        <location filename="../src/gui/application.cpp" line="489"/>
         <source>1 account</source>
         <translation>1개 계정</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="493"/>
+        <location filename="../src/gui/application.cpp" line="491"/>
         <source>%1 folders</source>
         <comment>number of folders imported</comment>
         <translation>%1개 폴더</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="494"/>
+        <location filename="../src/gui/application.cpp" line="492"/>
         <source>1 folder</source>
         <translation>1개 폴더</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="496"/>
+        <location filename="../src/gui/application.cpp" line="494"/>
         <source>Legacy import</source>
         <translation>레거시 불러오기</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="497"/>
+        <location filename="../src/gui/application.cpp" line="495"/>
         <source>Imported %1 and %2 from a legacy desktop client.
 %3</source>
         <comment>number of accounts and folders imported. list of users.</comment>
@@ -2489,11 +2489,8 @@ Alternatively, you can restore all deleted files by downloading them from the se
         <source>The folder %1 is linked to multiple accounts.
 This setup can cause data loss and it is no longer supported.
 To resolve this issue: please remove %1 from one of the accounts and create a new sync folder.
-
 For advanced users: this issue might be related to multiple sync database files found in one folder. Please check %1 for outdated and unused .sync_*.db files and remove them.</source>
-        <translation>%1 폴더는 여러 계정에 연결되어 있습니다. 이 설정은 데이터 손실을 유발하며 더 이상 지원되지 않습니다. 이 문제를 해결하기 위해 %1 폴더를 계정들 중 하나에서 제거해 주시고, 새로운 폴더를 만드세요.
-
-고급 사용자는: 이 문제는 여러 개의 동기화 데이터베이스 파일이 하나의 폴더에서 발견되는 것과 관련이 있을 수 있습니다. %1 폴더를 확인하여 사용되지 않는  오래된 .sync_*.db 파일들을 제거하세요.</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -4386,9 +4383,19 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     </message>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1473"/>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1495"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1479"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1485"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1507"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1513"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1519"/>
         <source>The folder %1 cannot be made read-only: %2</source>
         <translation>%1 폴더를 읽기 전용으로 만들 수 없습니다: %2</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1485"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1519"/>
+        <source>unknown exception</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1387"/>
@@ -4513,9 +4520,16 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>폴더 %1을 만들 수 없음</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="239"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="247"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="253"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="259"/>
         <source>The folder %1 cannot be made read-only: %2</source>
         <translation>%1 폴더를 읽기 전용으로 만들 수 없습니다: %2</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="259"/>
+        <source>unknown exception</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="200"/>
@@ -4544,7 +4558,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::PropagateLocalRename</name>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="322"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="350"/>
         <source>Folder %1 cannot be renamed because of a local file or folder name clash!</source>
         <translation>로컬 파일 및 폴더와 이름이 충돌하므로 %1 폴더의 이름을 바꿀 수 없습니다!</translation>
     </message>
@@ -4554,8 +4568,8 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>%1 파일을 다운로드 했지만 로컬 파일과 이름이 충돌합니다!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="458"/>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="499"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="510"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="551"/>
         <source>Could not get file %1 from local DB</source>
         <translation>로컬 데이터베이스에서 파일 %1을(를) 불러올 수 없음</translation>
     </message>
