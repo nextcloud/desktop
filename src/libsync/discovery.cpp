@@ -1672,7 +1672,8 @@ void ProcessDirectoryJob::processFileFinalize(
     if (_discoveryData->_syncOptions._vfs &&
         (item->_type == CSyncEnums::ItemTypeFile || item->_type == CSyncEnums::ItemTypeDirectory) &&
         item->_instruction == CSyncEnums::CSYNC_INSTRUCTION_NONE &&
-        FileSystem::isLnkFile((_discoveryData->_localDir + path._local))) {
+        FileSystem::isLnkFile((_discoveryData->_localDir + path._local)) &&
+        !_discoveryData->_syncOptions._vfs->isPlaceHolderInSync(_discoveryData->_localDir + path._local)) {
         item->_instruction = CSyncEnums::CSYNC_INSTRUCTION_SYNC;
         item->_direction = SyncFileItem::Down;
         item->_type = CSyncEnums::ItemTypeVirtualFileDehydration;
