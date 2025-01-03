@@ -2205,20 +2205,24 @@ void ProcessDirectoryJob::setupDbPinStateActions(SyncJournalFileRecord &record)
 {
     // Only suffix-vfs uses the db for pin states.
     // Other plugins will set localEntry._type according to the file's pin state.
-    if (!isVfsWithSuffix())
+    if (!isVfsWithSuffix()) {
         return;
+    }
 
     auto pin = _discoveryData->_statedb->internalPinStates().rawForPath(record._path);
-    if (!pin || *pin == PinState::Inherited)
+    if (!pin || *pin == PinState::Inherited) {
         pin = _pinState;
+    }
 
     // OnlineOnly hydrated files want to be dehydrated
-    if (record._type == ItemTypeFile && *pin == PinState::OnlineOnly)
+    if (record._type == ItemTypeFile && *pin == PinState::OnlineOnly) {
         record._type = ItemTypeVirtualFileDehydration;
+    }
 
     // AlwaysLocal dehydrated files want to be hydrated
-    if (record._type == ItemTypeVirtualFile && *pin == PinState::AlwaysLocal)
+    if (record._type == ItemTypeVirtualFile && *pin == PinState::AlwaysLocal) {
         record._type = ItemTypeVirtualFileDownload;
+    }
 }
 
 }
