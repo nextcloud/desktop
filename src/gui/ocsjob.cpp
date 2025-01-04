@@ -139,8 +139,9 @@ bool OcsJob::finished()
 
     } else {
         // save new ETag value
-        if(reply()->rawHeaderList().contains("ETag"))
-            emit etagResponseHeaderReceived(reply()->rawHeader("ETag"), statusCode);
+        if (const auto etagHeader = reply()->header(QNetworkRequest::ETagHeader); etagHeader.isValid()) {
+            emit etagResponseHeaderReceived(etagHeader.toByteArray(), statusCode);
+        }
 
         emit jobFinished(json, statusCode);
     }
