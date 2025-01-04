@@ -2491,7 +2491,10 @@ De rogha air sin, is féidir leat gach comhad a scriosadh a chur ar ais trína n
 This setup can cause data loss and it is no longer supported.
 To resolve this issue: please remove %1 from one of the accounts and create a new sync folder.
 For advanced users: this issue might be related to multiple sync database files found in one folder. Please check %1 for outdated and unused .sync_*.db files and remove them.</source>
-        <translation type="unfinished"/>
+        <translation>Tá fillteán %1nasctha le cuntais iolracha.
+Is féidir leis an socrú seo a bheith ina chúis le caillteanas sonraí agus ní thacaítear leis a thuilleadh.
+Chun an fhadhb seo a réiteach: bain %1 de cheann de na cuntais agus cruthaigh fillteán sioncronaithe nua.
+D&apos;úsáideoirí ardleibhéil: d&apos;fhéadfadh an cheist seo a bheith bainteach le comhaid bunachar sonraí sioncronaithe iolracha a aimsíodh i bhfillteán amháin. Seiceáil %1 le haghaidh comhaid .sync_*.db atá as dáta agus nach bhfuil in úsáid agus bain amach iad.</translation>
     </message>
 </context>
 <context>
@@ -4394,7 +4397,7 @@ Is modh turgnamhach nua é seo. Má shocraíonn tú é a úsáid, cuir in iúl l
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1485"/>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1519"/>
         <source>unknown exception</source>
-        <translation type="unfinished"/>
+        <translation>eisceacht anaithnid</translation>
     </message>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1387"/>
@@ -4528,7 +4531,7 @@ Is modh turgnamhach nua é seo. Má shocraíonn tú é a úsáid, cuir in iúl l
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="259"/>
         <source>unknown exception</source>
-        <translation type="unfinished"/>
+        <translation>eisceacht anaithnid</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="200"/>

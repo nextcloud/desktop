@@ -2477,7 +2477,10 @@ Alternatively, you can restore all deleted files by downloading them from the se
 This setup can cause data loss and it is no longer supported.
 To resolve this issue: please remove %1 from one of the accounts and create a new sync folder.
 For advanced users: this issue might be related to multiple sync database files found in one folder. Please check %1 for outdated and unused .sync_*.db files and remove them.</source>
-        <translation type="unfinished"/>
+        <translation>المجلد %1 مربوط مع عدة حسابات.
+هذا الإعداد يمكن أن يتسبب في فقدان البيانات، وهو لم يعد مدعوماً.
+لحل هذه المشكلة، قم بحذف %1 من أحد الحسابات وقم بإنشاء مجلد مزامنة جديد.
+بالنسبة للمستخدِمين المتقدمين، يمكن أن تكون هذه المشكلة مرتبطة بعدة ملفات مزامنة لقواعد البيانات موجودة في مجلد واحد. قم رجاءً بفحص %1 بحثاً عن ملفات قواعد بيانات قديمة و خارج المزامنة من ذات الامتداد .sync_*.db وقم بحذفها.</translation>
     </message>
 </context>
 <context>
@@ -4370,7 +4373,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1485"/>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1519"/>
         <source>unknown exception</source>
-        <translation type="unfinished"/>
+        <translation>استثناء غير معروف</translation>
     </message>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1387"/>
@@ -4504,7 +4507,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="259"/>
         <source>unknown exception</source>
-        <translation type="unfinished"/>
+        <translation>استثناء غير معروف</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="200"/>
