@@ -1216,12 +1216,14 @@ void SyncEngine::setLocalDiscoveryOptions(LocalDiscoveryStyle style, std::set<QS
     _localDiscoveryStyle = style;
     _localDiscoveryPaths = std::move(paths);
 
-    const auto allPaths = std::accumulate(_localDiscoveryPaths.begin(), _localDiscoveryPaths.end(), QString{}, [] (auto first, auto second) -> QString {
-                              first += ", " + second;
-                              return first;
-    });
-
-    qCInfo(lcEngine()) << "paths to discover locally" << allPaths;
+    if (lcEngine().isInfoEnabled()) {
+        // only execute if logging is enabled
+        auto debug = qInfo(lcEngine);
+        debug << "paths to discover locally";
+        for (auto path : _localDiscoveryPaths) {
+            debug << path;
+        }
+    }
 
     // Normalize to make sure that no path is a contained in another.
     // Note: for simplicity, this code consider anything less than '/' as a path separator, so for
