@@ -2492,7 +2492,11 @@ In alternativa, è possibile ripristinare tutti i file eliminati scaricandoli da
 This setup can cause data loss and it is no longer supported.
 To resolve this issue: please remove %1 from one of the accounts and create a new sync folder.
 For advanced users: this issue might be related to multiple sync database files found in one folder. Please check %1 for outdated and unused .sync_*.db files and remove them.</source>
-        <translation type="unfinished"/>
+        <translation>La Cartella %1è collegato a più account.
+Questa configurazione può causare la perdita di dati e non è più supportata.
+Per risolvere questo problema: rimuovere %1 da uno degli account e crea una nuova cartella di sincronizzazione.
+Per utenti avanzati: questo problema potrebbe essere correlato a più file di database di sincronizzazione trovati in una cartella.
+ Si prega di controllare %1 per i file .sync_*.db obsoleti e inutilizzati e rimuoverli.</translation>
     </message>
 </context>
 <context>
@@ -4385,7 +4389,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1485"/>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1519"/>
         <source>unknown exception</source>
-        <translation type="unfinished"/>
+        <translation>eccezione sconosciuta</translation>
     </message>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1387"/>
@@ -4519,7 +4523,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="259"/>
         <source>unknown exception</source>
-        <translation type="unfinished"/>
+        <translation>eccezione sconosciuta</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="200"/>

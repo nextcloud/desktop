@@ -2492,7 +2492,10 @@ Alternatively, you can restore all deleted files by downloading them from the se
 This setup can cause data loss and it is no longer supported.
 To resolve this issue: please remove %1 from one of the accounts and create a new sync folder.
 For advanced users: this issue might be related to multiple sync database files found in one folder. Please check %1 for outdated and unused .sync_*.db files and remove them.</source>
-        <translation type="unfinished"/>
+        <translation>資料夾 %1 與多個帳戶相連結。
+此設置可能導致數據丟失，並且不再受支援。
+要解決此問題：請從其中一個帳戶中移除 %1，然後創建一個新的同步資料夾。
+對於高級用戶：此問題可能與在同一資料夾中發現多個同步數據庫檔案有關。請檢查 %1 是否有過時的和未使用的 .sync_*.db 檔案並將其刪除。</translation>
     </message>
 </context>
 <context>
@@ -4395,7 +4398,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1485"/>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1519"/>
         <source>unknown exception</source>
-        <translation type="unfinished"/>
+        <translation>不詳例外</translation>
     </message>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1387"/>
@@ -4529,7 +4532,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="259"/>
         <source>unknown exception</source>
-        <translation type="unfinished"/>
+        <translation>不詳例外</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="200"/>
