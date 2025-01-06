@@ -1,6 +1,8 @@
+# keep the application name and short name the same or different for dev and prod build
+# or some migration logic will behave differently for each build
 if(NEXTCLOUD_DEV)
     set( APPLICATION_NAME       "NextcloudDev" )
-    set( APPLICATION_SHORTNAME  "NextDev" )
+    set( APPLICATION_SHORTNAME  "NextcloudDev" )
     set( APPLICATION_EXECUTABLE "nextclouddev" )
     set( APPLICATION_ICON_NAME  "Nextcloud" )
 else()
