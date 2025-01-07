@@ -14,7 +14,7 @@ public class RemoteFileChunk: Object {
     @Persisted public var size: Int64
     @Persisted public var remoteChunkStoreFolderName: String
 
-    static func fromNcKitChunks(
+    public static func fromNcKitChunks(
         _ chunks: [(fileName: String, size: Int64)], remoteChunkStoreFolderName: String
     ) -> [RemoteFileChunk] {
         chunks.map {
@@ -22,7 +22,9 @@ public class RemoteFileChunk: Object {
         }
     }
 
-    convenience init(ncKitChunk: (fileName: String, size: Int64), remoteChunkStoreFolderName: String) {
+    public convenience init(
+        ncKitChunk: (fileName: String, size: Int64), remoteChunkStoreFolderName: String
+    ) {
         self.init(
             fileName: ncKitChunk.fileName,
             size: ncKitChunk.size,
@@ -30,7 +32,7 @@ public class RemoteFileChunk: Object {
         )
     }
 
-    convenience init(fileName: String, size: Int64, remoteChunkStoreFolderName: String) {
+    public convenience init(fileName: String, size: Int64, remoteChunkStoreFolderName: String) {
         self.init()
         self.fileName = fileName
         self.size = size
