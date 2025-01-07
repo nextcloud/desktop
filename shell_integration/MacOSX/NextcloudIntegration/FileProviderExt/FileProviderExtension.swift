@@ -371,7 +371,7 @@ import OSLog
                 removeSyncAction(actionId)
             }
             progress.completedUnitCount = 1
-            completionHandler(await item.delete())
+            completionHandler(error)
         }
         return progress
     }
