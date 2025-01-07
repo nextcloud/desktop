@@ -268,6 +268,7 @@ public class MockRemoteInterface: RemoteInterface {
                 fileName: String(chunkIndex), size: Int64(min(chunkSize, remainingFileSize))
             )
             chunks.append(chunk)
+            remainingFileSize -= chunkSize
         }
         currentChunks[remoteChunkStoreFolderName] = chunks
 
