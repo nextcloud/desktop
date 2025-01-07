@@ -543,7 +543,15 @@ void Folder::startVfs()
 
     // Immediately mark the sqlite temporaries as excluded. They get recreated
     // on db-open and need to get marked again every time.
-    QString stateDbFile = _journal.databaseFilePath();
+    const auto stateDbFile = _journal.databaseFilePath();
+    const auto stateDbWalFile = QString(stateDbFile + QStringLiteral("-wal"));
+    const auto stateDbShmFile = QString(stateDbFile + QStringLiteral("-shm"));
+
+    FileSystem::setFileReadOnly(stateDbFile, false);
+    FileSystem::setFileReadOnly(stateDbWalFile, false);
+    FileSystem::setFileReadOnly(stateDbShmFile, false);
+    FileSystem::setFolderPermissions(path(), FileSystem::FolderPermissions::ReadWrite);
+
     _journal.open();
     _vfs->fileStatusChanged(stateDbFile + "-wal", SyncFileStatus::StatusExcluded);
     _vfs->fileStatusChanged(stateDbFile + "-shm", SyncFileStatus::StatusExcluded);
