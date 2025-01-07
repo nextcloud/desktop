@@ -23,5 +23,9 @@ public class RemoteFileChunk: Object {
         fileName = ncKitChunk.fileName
         size = ncKitChunk.size
     }
+
+    func toNcKitChunk() -> (fileName: String, size: Int64) {
+        (fileName, size)
+    }
 }
 
