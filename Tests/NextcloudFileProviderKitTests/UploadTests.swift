@@ -5,11 +5,19 @@
 //  Created by Claudio Cambra on 2025-01-07.
 //
 
+import RealmSwift
 import TestInterface
 import XCTest
 @testable import NextcloudFileProviderKit
 
 final class UploadTests: XCTestCase {
+    let account = Account(user: "user", id: "id", serverUrl: "test.cloud.com", password: "1234")
+    let dbManager = FilesDatabaseManager(realmConfig: .defaultConfiguration)
+
+    override func setUp() {
+        super.setUp()
+        Realm.Configuration.defaultConfiguration.inMemoryIdentifier = name
+    }
 
     func testSucceededUploadResult() {
         let uploadResult = UploadResult(
@@ -30,7 +38,6 @@ final class UploadTests: XCTestCase {
         let data = Data(repeating: 1, count: 8)
         try data.write(to: fileUrl)
 
-        let account = Account(user: "user", id: "id", serverUrl: "test.cloud.com", password: "1234")
         let remoteInterface =
             MockRemoteInterface(rootItem: MockRemoteItem.rootItem(account: account))
         let remotePath = account.davFilesUrl + "/file.txt"
@@ -38,7 +45,8 @@ final class UploadTests: XCTestCase {
             fileLocatedAt: fileUrl,
             toRemotePath: remotePath,
             usingRemoteInterface: remoteInterface,
-            withAccount: account
+            withAccount: account,
+            dbManager: dbManager
         )
 
         XCTAssertTrue(result.succeeded)
@@ -54,7 +62,6 @@ final class UploadTests: XCTestCase {
         let data = Data(repeating: 1, count: 8)
         try data.write(to: fileUrl)
 
-        let account = Account(user: "user", id: "id", serverUrl: "test.cloud.com", password: "1234")
         let remoteInterface =
             MockRemoteInterface(rootItem: MockRemoteItem.rootItem(account: account))
         let remotePath = account.davFilesUrl + "/file.txt"
@@ -63,7 +70,8 @@ final class UploadTests: XCTestCase {
             toRemotePath: remotePath,
             usingRemoteInterface: remoteInterface,
             withAccount: account,
-            inChunksSized: 3
+            inChunksSized: 3,
+            dbManager: dbManager
         )
 
         XCTAssertTrue(result.succeeded)
