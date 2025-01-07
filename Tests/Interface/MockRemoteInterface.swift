@@ -278,8 +278,11 @@ public class MockRemoteInterface: RemoteInterface {
             localPath: wholeLocalFile,
             creationDate: creationDate,
             modificationDate: modificationDate,
-
-            account: account
+            account: account,
+            options: options,
+            requestHandler: requestHandler,
+            taskHandler: taskHandler,
+            progressHandler: progressHandler
         )
         let file = NKFile()
         file.fileName = localFileName
