@@ -36,7 +36,8 @@ func upload(
     options: NKRequestOptions = .init(),
     requestHandler: @escaping (UploadRequest) -> Void = { _ in },
     taskHandler: @escaping (URLSessionTask) -> Void = { _ in },
-    progressHandler: @escaping (Progress) -> Void = { _ in }
+    progressHandler: @escaping (Progress) -> Void = { _ in },
+    chunkUploadCompleteHandler: @escaping (_ fileChunk: RemoteFileChunk) -> Void  = { _ in }
 ) async -> UploadResult {
     let localPath = localFileUrl.path
     let fileSize =
@@ -94,15 +95,7 @@ func upload(
         requestHandler: requestHandler,
         taskHandler: taskHandler,
         progressHandler: progressHandler,
-        chunkUploadCompleteHandler: { uploadedChunk in
-            uploadLogger.info(
-                """
-                \(localFileName, privacy: .public) uploaded chunk:
-                    \(uploadedChunk.fileName, privacy: .public)
-                    (\(uploadedChunk.size, privacy: .public))
-                """
-            )
-        }
+        chunkUploadCompleteHandler: chunkUploadCompleteHandler
     )
 
     return UploadResult(
