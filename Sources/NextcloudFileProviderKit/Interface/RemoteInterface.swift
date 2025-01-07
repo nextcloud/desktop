@@ -20,8 +20,6 @@ public enum AuthenticationAttemptResultState: Int {
     case authenticationError, connectionError, success
 }
 
-public typealias RemoteFileChunk = (fileName: String, size: Int64)
-
 public protocol RemoteInterface {
 
     func setDelegate(_ delegate: NextcloudKitDelegate)
