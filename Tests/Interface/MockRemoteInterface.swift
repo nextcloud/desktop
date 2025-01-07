@@ -54,7 +54,10 @@ public class MockRemoteInterface: RemoteInterface {
     }
 
     func item(remotePath: String, account: Account) -> MockRemoteItem? {
-        guard let rootItem, !remotePath.isEmpty else { return nil }
+        guard let rootItem, !remotePath.isEmpty else {
+            print("Invalid root item or remote path, cannot get item in item tree.")
+            return nil
+        }
 
         let sanitisedPath = sanitisedPath(remotePath, account: account)
         guard sanitisedPath != "/" else {
