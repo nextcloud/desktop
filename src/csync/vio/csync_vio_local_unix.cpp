@@ -157,7 +157,6 @@ static int _csync_vio_local_stat_mb(const mbchar_t *wuri, csync_file_stat_t *buf
   buf->inode = sb.st_ino;
   buf->modtime = sb.st_mtime;
   buf->size = sb.st_size;
-  buf->isPermissionsInvalid = (sb.st_mode & S_IWOTH) == S_IWOTH;
 
   return 0;
 }
