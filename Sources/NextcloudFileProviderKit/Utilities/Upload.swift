@@ -76,7 +76,7 @@ func upload(
         .ncDatabase()
         .objects(RemoteFileChunk.self)
         .toUnmanagedResults()
-        .filter { $0.uploadUuid == chunkUploadId }
+        .filter { $0.remoteChunkStoreFolderName == chunkUploadId }
 
     let (_, chunks, file, afError, remoteError) = await remoteInterface.chunkedUpload(
         localDirectoryPath: localParentDirectoryPath,
@@ -120,7 +120,10 @@ func upload(
                 try db.write {
                     let dbChunks = db.objects(RemoteFileChunk.self)
                     dbChunks
-                        .filter { $0.uploadUuid == chunkUploadId && $0.fileName == chunk.fileName }
+                        .filter {
+                            $0.remoteChunkStoreFolderName == chunkUploadId &&
+                            $0.fileName == chunk.fileName
+                        }
                         .forEach { db.delete($0) } }
             } catch let error {
                 uploadLogger.error(
