@@ -70,6 +70,20 @@ public class MockRemoteItem: Equatable {
         )
     }
 
+    public static func rootTrashItem(account: Account) -> MockRemoteItem {
+        return MockRemoteItem(
+            identifier: NSFileProviderItemIdentifier.trashContainer.rawValue,
+            versionIdentifier: "root",
+            name: "root",
+            remotePath: account.trashUrl,
+            directory: true,
+            account: account.ncKitAccount,
+            username: account.username,
+            userId: account.id,
+            serverUrl: account.serverUrl
+        )
+    }
+
     public init(
         identifier: String,
         versionIdentifier: String = "0",
