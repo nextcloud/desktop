@@ -9,6 +9,7 @@ import Alamofire
 import Foundation
 import NextcloudKit
 import OSLog
+import RealmSwift
 
 let defaultFileChunkSize = 10_000_000 // 10 MB
 let uploadLogger = Logger(subsystem: Logger.subsystem, category: "upload")
@@ -31,6 +32,7 @@ func upload(
     withAccount account: Account,
     inChunksSized chunkSize: Int = defaultFileChunkSize,
     usingChunkUploadId chunkUploadId: String = UUID().uuidString,
+    dbManager: FilesDatabaseManager = .shared,
     creationDate: Date? = nil,
     modificationDate: Date? = nil,
     options: NKRequestOptions = .init(),
@@ -69,14 +71,20 @@ func upload(
     let localFileName = localFileUrl.lastPathComponent
     let localParentDirectoryPath = localFileUrl.deletingLastPathComponent().path
     let remoteParentDirectoryPath = (remotePath as NSString).deletingLastPathComponent as String
-    // TODO: Pick up where left off for past failed chunked uploads
+
+    let remainingChunks = dbManager
+        .ncDatabase()
+        .objects(RemoteFileChunk.self)
+        .toUnmanagedResults()
+        .filter { $0.uploadUuid == chunkUploadId }
+
     let (_, chunks, file, afError, remoteError) = await remoteInterface.chunkedUpload(
         localDirectoryPath: localParentDirectoryPath,
         localFileName: localFileName,
         remoteParentDirectoryPath: remoteParentDirectoryPath,
         remoteChunkStoreFolderName: chunkUploadId,
         chunkSize: chunkSize,
-        remainingChunks: [],
+        remainingChunks: remainingChunks,
         creationDate: creationDate,
         modificationDate: modificationDate,
         account: account,
@@ -89,13 +97,41 @@ func upload(
                 """
             )
         },
-        chunkUploadStartHandler: { _ in
+        chunkUploadStartHandler: { chunks in
             uploadLogger.info("\(localFileName, privacy: .public) uploading chunk")
+            let db = dbManager.ncDatabase()
+            do {
+                try db.write { db.add(chunks) }
+            } catch let error {
+                uploadLogger.error(
+                    """
+                    Could not write chunks to db, won't be able to resume upload if transfer stops.
+                        \(error.localizedDescription, privacy: .public)
+                    """
+                )
+            }
         },
         requestHandler: requestHandler,
         taskHandler: taskHandler,
         progressHandler: progressHandler,
-        chunkUploadCompleteHandler: chunkUploadCompleteHandler
+        chunkUploadCompleteHandler: { chunk in
+            let db = dbManager.ncDatabase()
+            do {
+                try db.write {
+                    let dbChunks = db.objects(RemoteFileChunk.self)
+                    dbChunks
+                        .filter { $0.uploadUuid == chunkUploadId && $0.fileName == chunk.fileName }
+                        .forEach { db.delete($0) } }
+            } catch let error {
+                uploadLogger.error(
+                    """
+                    Could not delete chunks in db, won't resume upload correctly if transfer stops.
+                        \(error.localizedDescription, privacy: .public)
+                    """
+                )
+            }
+            chunkUploadCompleteHandler(chunk)
+        }
     )
 
     return UploadResult(
