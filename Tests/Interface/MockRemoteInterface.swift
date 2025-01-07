@@ -263,11 +263,12 @@ public class MockRemoteInterface: RemoteInterface {
         var remainingFileSize = fileSize
         let numChunks = Int(ceil(Double(fileSize) / Double(chunkSize)))
         let chunks = (0..<numChunks).map { chunkIndex in
-            let chunk = RemoteFileChunk(
-                fileName: String(chunkIndex + 1), size: Int64(min(chunkSize, remainingFileSize))
-            )
             remainingFileSize -= chunkSize
-            return chunk
+            return RemoteFileChunk(
+                fileName: String(chunkIndex + 1),
+                size: Int64(min(chunkSize, remainingFileSize)),
+                remoteChunkStoreFolderName: remoteChunkStoreFolderName
+            )
         }
         currentChunks[remoteChunkStoreFolderName] = chunks
         chunkUploadStartHandler(chunks)
