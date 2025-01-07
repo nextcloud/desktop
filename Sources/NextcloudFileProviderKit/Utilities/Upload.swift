@@ -73,7 +73,7 @@ func upload(
         localFileName: localFileName,
         remoteParentDirectoryPath: remoteParentDirectoryPath,
         remoteChunkStoreFolderName: UUID().uuidString,
-        chunkSize: defaultFileChunkSize,
+        chunkSize: chunkSize,
         remainingChunks: [],
         creationDate: creationDate,
         modificationDate: modificationDate,
