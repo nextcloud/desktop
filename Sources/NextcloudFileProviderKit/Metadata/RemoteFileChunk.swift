@@ -17,5 +17,11 @@ public class RemoteFileChunk: Object {
     static func fromNcKitChunks(_ chunks: [(fileName: String, size: Int64)]) -> [RemoteFileChunk] {
         chunks.map { RemoteFileChunk(ncKitChunk: $0) }
     }
+
+    convenience init(ncKitChunk: (fileName: String, size: Int64)) {
+        self.init()
+        fileName = ncKitChunk.fileName
+        size = ncKitChunk.size
+    }
 }
 
