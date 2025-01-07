@@ -89,7 +89,7 @@ public class FilesDatabaseManager {
                 }
 
             },
-            objectTypes: [ItemMetadata.self]
+            objectTypes: [ItemMetadata.self, RemoteFileChunk.self]
         )
         self.init(realmConfig: config)
     }
