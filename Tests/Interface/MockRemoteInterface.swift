@@ -265,7 +265,7 @@ public class MockRemoteInterface: RemoteInterface {
         var chunks: [RemoteFileChunk] = []
         for chunkIndex in 0..<numChunks {
             let chunk = RemoteFileChunk(
-                fileName: String(chunkIndex), size: Int64(min(chunkSize, remainingFileSize))
+                fileName: String(chunkIndex + 1), size: Int64(min(chunkSize, remainingFileSize))
             )
             chunks.append(chunk)
             remainingFileSize -= chunkSize
