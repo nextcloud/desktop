@@ -119,7 +119,12 @@ extension NextcloudKit: RemoteInterface {
                 options: options,
                 numChunks: currentNumChunksUpdateHandler,
                 counterChunk: chunkCounter,
-                start: { chunkUploadStartHandler(RemoteFileChunk.fromNcKitChunks($0)) },
+                start: { processedChunks in
+                    let chunks = RemoteFileChunk.fromNcKitChunks(
+                        processedChunks, remoteChunkStoreFolderName: remoteChunkStoreFolderName
+                    )
+                    chunkUploadStartHandler(chunks)
+                },
                 requestHandler: requestHandler,
                 taskHandler: taskHandler,
                 progressHandler: { totalBytesExpected, totalBytes, fractionCompleted in
@@ -127,9 +132,17 @@ extension NextcloudKit: RemoteInterface {
                     currentProgress.completedUnitCount = totalBytes
                     progressHandler(currentProgress)
                 },
-                uploaded: { chunkUploadCompleteHandler(RemoteFileChunk(ncKitChunk: $0)) }
+                uploaded: { uploadedChunk in
+                    let chunk = RemoteFileChunk(
+                        ncKitChunk: uploadedChunk,
+                        remoteChunkStoreFolderName: remoteChunkStoreFolderName
+                    )
+                    chunkUploadCompleteHandler(chunk)
+                }
             ) { account, receivedChunks, file, afError, error in
-                let chunks = RemoteFileChunk.fromNcKitChunks(receivedChunks ?? [])
+                let chunks = RemoteFileChunk.fromNcKitChunks(
+                    receivedChunks ?? [], remoteChunkStoreFolderName: remoteChunkStoreFolderName
+                )
                 continuation.resume(returning: (account, chunks, file, afError, error))
             }
         }
