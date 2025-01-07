@@ -29,3 +29,8 @@ public class RemoteFileChunk: Object {
     }
 }
 
+extension Array<RemoteFileChunk> {
+    func toNcKitChunks() -> [(fileName: String, size: Int64)] {
+        map { ($0.fileName, $0.size) }
+    }
+}
