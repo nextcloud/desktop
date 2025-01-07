@@ -19,7 +19,7 @@ import Style
 BusyIndicator {
     id: root
 
-    property color color: palette.midlight
+    property color color: palette.dark
     property string imageSource: "image://svgimage-custom-color/change.svg/"
 
     property int imageSourceSizeWidth: 64
