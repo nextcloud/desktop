@@ -59,6 +59,9 @@ void warnSystray()
 
 int main(int argc, char **argv)
 {
+#ifdef Q_OS_LINUX
+    qputenv("QT_QPA_PLATFORM", "xcb");
+#endif
 #ifdef Q_OS_WIN
     SetDllDirectory(L"");
     qputenv("QML_IMPORT_PATH", (QDir::currentPath() + QStringLiteral("/qml")).toLatin1());
