@@ -12,16 +12,29 @@ import RealmSwift
 public class RemoteFileChunk: Object {
     @Persisted public var fileName: String
     @Persisted public var size: Int64
-    @Persisted public var uploadUuid: String
+    @Persisted public var remoteChunkStoreFolderName: String
 
-    static func fromNcKitChunks(_ chunks: [(fileName: String, size: Int64)]) -> [RemoteFileChunk] {
-        chunks.map { RemoteFileChunk(ncKitChunk: $0) }
+    static func fromNcKitChunks(
+        _ chunks: [(fileName: String, size: Int64)], remoteChunkStoreFolderName: String
+    ) -> [RemoteFileChunk] {
+        chunks.map {
+            RemoteFileChunk(ncKitChunk: $0, remoteChunkStoreFolderName: remoteChunkStoreFolderName)
+        }
     }
 
-    convenience init(ncKitChunk: (fileName: String, size: Int64)) {
+    convenience init(ncKitChunk: (fileName: String, size: Int64), remoteChunkStoreFolderName: String) {
+        self.init(
+            fileName: ncKitChunk.fileName,
+            size: ncKitChunk.size,
+            remoteChunkStoreFolderName: remoteChunkStoreFolderName
+        )
+    }
+
+    convenience init(fileName: String, size: Int64, remoteChunkStoreFolderName: String) {
         self.init()
-        fileName = ncKitChunk.fileName
-        size = ncKitChunk.size
+        self.fileName = fileName
+        self.size = size
+        self.remoteChunkStoreFolderName = remoteChunkStoreFolderName
     }
 
     func toNcKitChunk() -> (fileName: String, size: Int64) {
