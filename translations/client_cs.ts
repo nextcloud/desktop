@@ -2489,7 +2489,10 @@ Případně je možné veškeré smazané soubory obnovit jejich stažením si z
 This setup can cause data loss and it is no longer supported.
 To resolve this issue: please remove %1 from one of the accounts and create a new sync folder.
 For advanced users: this issue might be related to multiple sync database files found in one folder. Please check %1 for outdated and unused .sync_*.db files and remove them.</source>
-        <translation type="unfinished"/>
+        <translation>Složka %1 je napojená na vícero účtů.
+Toto uspořádání může způsobit ztrátu dat a už není podporováno.
+Řešení tohoto problému: odeberte %1 z jednoho z účtů a vytvořte novou synchronizační složku.
+Pro pokročilé uživatele: tento problém může souviset s vícero databázovými soubory synchronizace, nalezenými v jedné složce. Zkontrolujte %1 ohledně zastaralých a nepoužívaných souborů .sync_*.db a odeberte je.</translation>
     </message>
 </context>
 <context>
