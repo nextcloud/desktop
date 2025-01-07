@@ -272,7 +272,7 @@ public class MockRemoteInterface: RemoteInterface {
         }
         currentChunks[remoteChunkStoreFolderName] = chunks
 
-        let (_, ocId, etag, date, size, response, afError, remoteError) = await upload(
+        let (_, ocId, etag, date, size, _, afError, remoteError) = await upload(
             remotePath: remoteParentDirectoryPath + "/" + localFileName,
             localPath: wholeLocalFile,
             creationDate: creationDate,
