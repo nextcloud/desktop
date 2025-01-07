@@ -70,9 +70,7 @@ public protocol RemoteInterface {
         chunkUploadStartHandler: @escaping (_ filesChunk: [RemoteFileChunk]) -> Void,
         requestHandler: @escaping (_ request: UploadRequest) -> Void,
         taskHandler: @escaping (_ task: URLSessionTask) -> Void,
-        progressHandler: @escaping (
-            _ totalBytesExpected: Int64, _ totalBytes: Int64, _ fractionCompleted: Double
-        ) -> Void,
+        progressHandler: @escaping (Progress) -> Void,
         chunkUploadCompleteHandler: @escaping (_ fileChunk: RemoteFileChunk) -> Void
     ) async -> (
         account: String,

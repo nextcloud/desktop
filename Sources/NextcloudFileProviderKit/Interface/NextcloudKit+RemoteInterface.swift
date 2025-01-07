@@ -96,9 +96,7 @@ extension NextcloudKit: RemoteInterface {
         chunkUploadStartHandler: @escaping (_ filesChunk: [RemoteFileChunk]) -> Void = { _ in },
         requestHandler: @escaping (_ request: UploadRequest) -> Void = { _ in },
         taskHandler: @escaping (_ task: URLSessionTask) -> Void = { _ in },
-        progressHandler: @escaping (
-            _ totalBytesExpected: Int64, _ totalBytes: Int64, _ fractionCompleted: Double
-        ) -> Void = { _, _, _ in },
+        progressHandler: @escaping (Progress) -> Void = { _ in },
         chunkUploadCompleteHandler: @escaping (_ fileChunk: RemoteFileChunk) -> Void = { _ in }
     ) async -> (
         account: String,
@@ -124,7 +122,11 @@ extension NextcloudKit: RemoteInterface {
                 start: chunkUploadStartHandler,
                 requestHandler: requestHandler,
                 taskHandler: taskHandler,
-                progressHandler: progressHandler,
+                progressHandler: { totalBytesExpected, totalBytes, fractionCompleted in
+                    let currentProgress = Progress(totalUnitCount: totalBytesExpected)
+                    currentProgress.completedUnitCount = totalBytes
+                    progressHandler(currentProgress)
+                },
                 uploaded: chunkUploadCompleteHandler
             ) { account, filesChunk, file, afError, error in
                 let chunks = filesChunk as [RemoteFileChunk]?
