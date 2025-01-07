@@ -74,7 +74,7 @@ Page {
                 Rectangle {
                     Layout.fillWidth: true
                     height: Style.normalBorderWidth
-                    color: palette.midlight
+                    color: palette.mid
                 }
 
                 FileProviderSyncStatus {
