@@ -260,15 +260,15 @@ public class MockRemoteInterface: RemoteInterface {
         let wholeLocalFile = localDirectoryPath + "/" + localFileName
         let fileSize = try! fm.attributesOfItem(atPath: wholeLocalFile)[.size] as! Int
 
-        let numChunks = Int(ceil(Double(fileSize) / Double(chunkSize)))
         var remainingFileSize = fileSize
-        var chunks: [RemoteFileChunk] = []
-        for chunkIndex in 0..<numChunks {
+        let numChunks = Int(ceil(Double(fileSize) / Double(chunkSize)))
+        let chunks = (0..<numChunks).map { chunkIndex in
             let chunk = RemoteFileChunk(
                 fileName: String(chunkIndex + 1), size: Int64(min(chunkSize, remainingFileSize))
             )
-            chunks.append(chunk)
+            chunkUploadCompleteHandler(chunk)
             remainingFileSize -= chunkSize
+            return chunk
         }
         currentChunks[remoteChunkStoreFolderName] = chunks
 
