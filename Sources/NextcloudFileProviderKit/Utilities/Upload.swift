@@ -101,7 +101,7 @@ func upload(
             uploadLogger.info("\(localFileName, privacy: .public) uploading chunk")
             let db = dbManager.ncDatabase()
             do {
-                try db.write { db.add(chunks) }
+                try db.write { db.add(chunks.map { RemoteFileChunk(value: $0) }) }
             } catch let error {
                 uploadLogger.error(
                     """
