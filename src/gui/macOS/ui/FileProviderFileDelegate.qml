@@ -81,7 +81,7 @@ Item {
                 EnforcedPlainTextLabel {
                     id: fileTypeLabel
                     text: root.fileTypeString
-                    color: palette.mid
+                    color: palette.dark
                 }
             }
         }

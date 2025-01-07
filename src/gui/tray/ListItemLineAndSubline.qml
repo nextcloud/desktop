@@ -30,7 +30,7 @@ ColumnLayout {
     property int sublineFontSize: Style.unifiedSearchResultSublineFontSize
 
     property color titleColor: palette.windowText
-    property color sublineColor: palette.mid
+    property color sublineColor: palette.dark
 
     EnforcedPlainTextLabel {
         id: title

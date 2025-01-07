@@ -48,7 +48,7 @@ GridLayout {
         Layout.fillWidth: true
         text: qsTr("%1 GB of %2 GB remote files synced").arg(root.localUsedStorage.toFixed(2)).arg(root.remoteUsedStorage.toFixed(2));
         elide: Text.ElideRight
-        color: palette.mid
+        color: palette.dark
         horizontalAlignment: Text.AlignRight
     }
 
