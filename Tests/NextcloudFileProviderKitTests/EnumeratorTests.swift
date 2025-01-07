@@ -34,16 +34,7 @@ final class EnumeratorTests: XCTestCase {
         super.setUp()
         Realm.Configuration.defaultConfiguration.inMemoryIdentifier = name
 
-        rootItem = MockRemoteItem(
-            identifier: NSFileProviderItemIdentifier.rootContainer.rawValue,
-            name: "root",
-            remotePath: Self.account.davFilesUrl,
-            directory: true,
-            account: Self.account.ncKitAccount,
-            username: Self.account.username,
-            userId: Self.account.id,
-            serverUrl: Self.account.serverUrl
-        )
+        rootItem = MockRemoteItem.rootItem(account: Self.account)
 
         remoteFolder = MockRemoteItem(
             identifier: "folder",
