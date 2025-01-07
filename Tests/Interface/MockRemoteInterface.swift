@@ -17,6 +17,7 @@ public class MockRemoteInterface: RemoteInterface {
     public var rootItem: MockRemoteItem?
     public var delegate: (any NextcloudKitDelegate)?
     public var rootTrashItem: MockRemoteItem?
+    public var currentChunks: [String: [RemoteFileChunk]] = [:]
 
     public init(rootItem: MockRemoteItem? = nil, rootTrashItem: MockRemoteItem? = nil) {
         self.rootItem = rootItem
@@ -220,6 +221,76 @@ public class MockRemoteInterface: RemoteInterface {
             nil,
             .success
         )
+    }
+
+    public func chunkedUpload(
+        localDirectoryPath: String,
+        localFileName: String,
+        remoteParentDirectoryPath: String,
+        remoteChunkStoreFolderName: String,
+        chunkSize: Int,
+        remainingChunks: [RemoteFileChunk],
+        creationDate: Date?,
+        modificationDate: Date?,
+        account: Account,
+        options: NKRequestOptions,
+        currentNumChunksUpdateHandler: @escaping (Int) -> Void = { _ in },
+        chunkCounter: @escaping (Int) -> Void = { _ in },
+        chunkUploadStartHandler: @escaping ([RemoteFileChunk]) -> Void = { _ in },
+        requestHandler: @escaping (UploadRequest) -> Void = { _ in },
+        taskHandler: @escaping (URLSessionTask) -> Void = { _ in },
+        progressHandler: @escaping (Progress) -> Void = { _ in },
+        chunkUploadCompleteHandler: @escaping (RemoteFileChunk) -> Void = { _ in }
+    ) async -> (
+        account: String,
+        fileChunks: [RemoteFileChunk]?,
+        file: NKFile?,
+        afError: AFError?,
+        remoteError: NKError
+    ) {
+        // Create temp directory for file and create chunks within it
+        let fm = FileManager.default
+        let tempDirectoryUrl = fm.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+        try! fm.createDirectory(atPath: tempDirectoryUrl.path, withIntermediateDirectories: true)
+
+        // Access local file and gather metadata
+        let wholeLocalFile = localDirectoryPath + "/" + localFileName
+        let fileSize = try! fm.attributesOfItem(atPath: wholeLocalFile)[.size] as! Int
+
+        let numChunks = Int(ceil(Double(fileSize) / Double(chunkSize)))
+        var remainingFileSize = fileSize
+        var chunks: [RemoteFileChunk] = []
+        for chunkIndex in 0..<numChunks {
+            let chunk = RemoteFileChunk(
+                fileName: String(chunkIndex), size: Int64(min(chunkSize, remainingFileSize))
+            )
+            chunks.append(chunk)
+        }
+        currentChunks[remoteChunkStoreFolderName] = chunks
+
+        let (_, ocId, etag, date, size, response, afError, remoteError) = await upload(
+            remotePath: remoteParentDirectoryPath + "/" + localFileName,
+            localPath: wholeLocalFile,
+            creationDate: creationDate,
+            modificationDate: modificationDate,
+
+            account: account
+        )
+        let file = NKFile()
+        file.fileName = localFileName
+        file.etag = etag ?? ""
+        file.size = size
+        file.path = remoteParentDirectoryPath + "/" + localFileName
+        file.ocId = ocId ?? ""
+        file.serverUrl = remoteParentDirectoryPath
+        file.urlBase = account.serverUrl
+        file.user = account.username
+        file.userId = account.id
+        file.account = account.ncKitAccount
+        file.creationDate = creationDate ?? Date()
+        file.date = date as? Date ?? Date()
+
+        return (account.ncKitAccount, chunks, file, afError, remoteError)
     }
 
     public func move(
