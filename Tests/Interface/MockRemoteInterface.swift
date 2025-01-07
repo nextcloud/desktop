@@ -284,6 +284,8 @@ public class MockRemoteInterface: RemoteInterface {
             taskHandler: taskHandler,
             progressHandler: progressHandler
         )
+        chunks.forEach { chunkUploadCompleteHandler($0) }
+
         let file = NKFile()
         file.fileName = localFileName
         file.etag = etag ?? ""
