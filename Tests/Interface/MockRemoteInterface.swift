@@ -266,7 +266,6 @@ public class MockRemoteInterface: RemoteInterface {
             let chunk = RemoteFileChunk(
                 fileName: String(chunkIndex + 1), size: Int64(min(chunkSize, remainingFileSize))
             )
-            chunkUploadCompleteHandler(chunk)
             remainingFileSize -= chunkSize
             return chunk
         }
