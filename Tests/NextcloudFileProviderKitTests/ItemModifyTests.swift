@@ -19,16 +19,7 @@ final class ItemModifyTests: XCTestCase {
     )
 
     lazy var rootItem = MockRemoteItem.rootItem(account: Self.account)
-    lazy var rootTrashItem = MockRemoteItem(
-        identifier: NSFileProviderItemIdentifier.trashContainer.rawValue,
-        name: "root",
-        remotePath: Self.account.trashUrl,
-        directory: true,
-        account: Self.account.ncKitAccount,
-        username: Self.account.username,
-        userId: Self.account.id,
-        serverUrl: Self.account.serverUrl
-    )
+    lazy var rootTrashItem = MockRemoteItem.rootTrashItem(account: Self.account)
 
     var remoteFolder: MockRemoteItem!
     var remoteItem: MockRemoteItem!

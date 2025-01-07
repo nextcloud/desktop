@@ -14,17 +14,7 @@ final class MockRemoteInterfaceTests: XCTestCase {
         user: "testUser", id: "testUserId", serverUrl: "https://mock.nc.com", password: "abcd"
     )
     lazy var rootItem = MockRemoteItem.rootItem(account: Self.account)
-    lazy var rootTrashItem = MockRemoteItem(
-        identifier: "root",
-        versionIdentifier: "root",
-        name: "root",
-        remotePath: Self.account.trashUrl,
-        directory: true,
-        account: Self.account.ncKitAccount,
-        username: Self.account.username,
-        userId: Self.account.id,
-        serverUrl: Self.account.serverUrl
-    )
+    lazy var rootTrashItem = MockRemoteItem.rootTrashItem(account: Self.account)
 
     override func tearDown() {
         rootItem.children = []

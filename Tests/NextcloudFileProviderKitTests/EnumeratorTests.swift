@@ -86,16 +86,7 @@ final class EnumeratorTests: XCTestCase {
         remoteItemB.parent = remoteFolder
         remoteItemC.parent = nil
 
-        rootTrashItem = MockRemoteItem(
-            identifier: NSFileProviderItemIdentifier.trashContainer.rawValue,
-            name: "root",
-            remotePath: Self.account.trashUrl,
-            directory: true,
-            account: Self.account.ncKitAccount,
-            username: Self.account.username,
-            userId: Self.account.id,
-            serverUrl: Self.account.serverUrl
-        )
+        rootTrashItem = MockRemoteItem.rootTrashItem(account: Self.account)
 
         remoteTrashItemA = MockRemoteItem(
             identifier: "trashItemA",
