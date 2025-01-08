@@ -392,12 +392,14 @@ public extension Item {
                     Handling child bundle or package file at: \(childUrlPath, privacy: .public)
                     """
                 )
-                let (_, _, _, _, _, _, _, error) = await remoteInterface.upload(
-                    remotePath: childRemoteUrl,
-                    localPath: childUrlPath,
+                let (_, _, _, _, _, _, error) = await upload(
+                    fileLocatedAt: childUrlPath,
+                    toRemotePath: childRemoteUrl,
+                    usingRemoteInterface: remoteInterface,
+                    withAccount: account,
+                    dbManager: dbManager,
                     creationDate: childUrlAttributes.creationDate,
                     modificationDate: childUrlAttributes.contentModificationDate,
-                    account: account,
                     options: .init(),
                     requestHandler: { progress.setHandlersFromAfRequest($0) },
                     taskHandler: { task in
