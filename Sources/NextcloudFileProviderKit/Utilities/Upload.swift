@@ -68,7 +68,7 @@ func upload(
         """
         Performing chunked upload to \(remotePath, privacy: .public)
             localFilePath: \(localFilePath, privacy: .public)
-            remoteChunkStoreFolderName: \(chunkUploadId, privacy: .public).
+            remoteChunkStoreFolderName: \(chunkUploadId, privacy: .public)
             chunkSize: \(chunkSize, privacy: .public)
         """
     )
