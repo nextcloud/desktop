@@ -14,17 +14,6 @@ import RealmSwift
 let defaultFileChunkSize = 10_000_000 // 10 MB
 let uploadLogger = Logger(subsystem: Logger.subsystem, category: "upload")
 
-struct UploadResult {
-    let ocId: String?
-    let chunks: [RemoteFileChunk]?
-    let etag: String?
-    let date: Date?
-    let size: Int64?
-    let afError: AFError?
-    let remoteError: NKError
-    var succeeded: Bool { remoteError == .success }
-}
-
 func upload(
     fileLocatedAt localFileUrl: URL,
     toRemotePath remotePath: String,
@@ -40,7 +29,15 @@ func upload(
     taskHandler: @escaping (URLSessionTask) -> Void = { _ in },
     progressHandler: @escaping (Progress) -> Void = { _ in },
     chunkUploadCompleteHandler: @escaping (_ fileChunk: RemoteFileChunk) -> Void  = { _ in }
-) async -> UploadResult {
+) async -> (
+    ocId: String?,
+    chunks: [RemoteFileChunk]?,
+    etag: String?,
+    date: Date?,
+    size: Int64?,
+    afError: AFError?,
+    remoteError: NKError
+) {
     let localPath = localFileUrl.path
     let fileSize =
         (try? FileManager.default.attributesOfItem(atPath: localPath)[.size] as? Int64) ?? 0
@@ -57,7 +54,7 @@ func upload(
             progressHandler: progressHandler
         )
 
-        return UploadResult(
+        return (
             ocId: ocId,
             chunks: nil,
             etag: etag,
@@ -137,7 +134,7 @@ func upload(
         }
     )
 
-    return UploadResult(
+    return (
         ocId: file?.name,
         chunks: chunks,
         etag: file?.etag,

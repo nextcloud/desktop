@@ -19,19 +19,6 @@ final class UploadTests: XCTestCase {
         Realm.Configuration.defaultConfiguration.inMemoryIdentifier = name
     }
 
-    func testSucceededUploadResult() {
-        let uploadResult = UploadResult(
-            ocId: nil,
-            chunks: nil,
-            etag: nil,
-            date: nil,
-            size: nil,
-            afError: nil,
-            remoteError: .success
-        )
-        XCTAssertTrue(uploadResult.succeeded)
-    }
-
     func testStandardUpload() async throws {
         let fileUrl =
             FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
@@ -49,7 +36,7 @@ final class UploadTests: XCTestCase {
             dbManager: dbManager
         )
 
-        XCTAssertTrue(result.succeeded)
+        XCTAssertEqual(result.remoteError, .success)
         XCTAssertNil(result.chunks)
         XCTAssertEqual(result.size, Int64(data.count))
         XCTAssertNotNil(result.ocId)
@@ -74,7 +61,7 @@ final class UploadTests: XCTestCase {
             dbManager: dbManager
         )
 
-        XCTAssertTrue(result.succeeded)
+        XCTAssertEqual(result.remoteError, .success)
         XCTAssertNotNil(result.chunks)
         XCTAssertEqual(result.chunks?.count, 3)
         XCTAssertEqual(result.size, Int64(data.count))
