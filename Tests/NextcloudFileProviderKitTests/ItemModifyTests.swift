@@ -1205,4 +1205,49 @@ final class ItemModifyTests: XCTestCase {
         )
         XCTAssertEqual(untrashedFolderChildItem.serverUrl, remoteTrashFolder.remotePath)
     }
+
+    func testModifyFileContentsChunked() async throws {
+        let remoteInterface = MockRemoteInterface(rootItem: rootItem)
+
+        let itemMetadata = remoteItem.toItemMetadata(account: Self.account)
+        Self.dbManager.addItemMetadata(itemMetadata)
+
+        let newContents = Data(repeating: 1, count: defaultFileChunkSize * 3)
+        let newContentsUrl = FileManager.default.temporaryDirectory.appendingPathComponent("test")
+        try newContents.write(to: newContentsUrl)
+
+        let targetItemMetadata = ItemMetadata(value: itemMetadata)
+        targetItemMetadata.date = .init()
+        targetItemMetadata.size = Int64(newContents.count)
+
+        let item = Item(
+            metadata: itemMetadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: remoteInterface
+        )
+
+        let targetItem = Item(
+            metadata: targetItemMetadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: remoteInterface
+        )
+        targetItem.dbManager = Self.dbManager
+
+        let (modifiedItemMaybe, error) = await item.modify(
+            itemTarget: targetItem,
+            changedFields: [.contents, .contentModificationDate],
+            contents: newContentsUrl,
+            dbManager: Self.dbManager
+        )
+        XCTAssertNil(error)
+        let modifiedItem = try XCTUnwrap(modifiedItemMaybe)
+
+        XCTAssertEqual(modifiedItem.itemIdentifier, targetItem.itemIdentifier)
+        XCTAssertEqual(modifiedItem.contentModificationDate, targetItem.contentModificationDate)
+        XCTAssertEqual(modifiedItem.documentSize?.intValue, newContents.count)
+
+        XCTAssertEqual(remoteItem.data, newContents)
+    }
 }
