@@ -64,10 +64,14 @@ func upload(
         )
     }
 
-    let localFilePathNs = localFilePath as NSString
-    let localFileName = localFilePathNs.lastPathComponent
-    let localParentDirectoryPath = localFilePathNs.deletingLastPathComponent
-    let remoteParentDirectoryPath = (remotePath as NSString).deletingLastPathComponent as String
+    let localFileUrl = URL(fileURLWithPath: localFilePath)
+    let localFileName = localFileUrl.lastPathComponent
+    let localParentDirectoryPath = localFileUrl.deletingLastPathComponent().path
+    guard let remoteUrl = URL(string: remotePath) else {
+        uploadLogger.error("Invalid remote path: \(remotePath, privacy: .public)")
+        return (nil, nil, nil, nil, nil, nil, .urlError)
+    }
+    let remoteParentDirectoryPath = remoteUrl.deletingLastPathComponent().absoluteString
 
     let remainingChunks = dbManager
         .ncDatabase()
