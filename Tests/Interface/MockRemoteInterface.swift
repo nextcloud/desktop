@@ -270,6 +270,7 @@ public class MockRemoteInterface: RemoteInterface {
                 remoteChunkStoreFolderName: remoteChunkStoreFolderName
             )
         }
+        let preexistingChunks = currentChunks[remoteChunkStoreFolderName] ?? []
         currentChunks[remoteChunkStoreFolderName] = chunks
         chunkUploadStartHandler(chunks)
 
@@ -284,7 +285,11 @@ public class MockRemoteInterface: RemoteInterface {
             taskHandler: taskHandler,
             progressHandler: progressHandler
         )
-        chunks.forEach { chunkUploadCompleteHandler($0) }
+        chunks.forEach { chunk in
+            if !preexistingChunks.contains(where: { $0.fileName == chunk.fileName }) {
+                chunkUploadCompleteHandler(chunk)
+            }
+        }
 
         let file = NKFile()
         file.fileName = localFileName
