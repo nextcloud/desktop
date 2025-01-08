@@ -139,7 +139,7 @@ func upload(
     )
 
     return (
-        ocId: file?.name,
+        ocId: file?.ocId,
         chunks: chunks,
         etag: file?.etag,
         date: file?.date,
