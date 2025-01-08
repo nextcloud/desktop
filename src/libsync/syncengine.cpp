@@ -1216,7 +1216,7 @@ void SyncEngine::setLocalDiscoveryOptions(LocalDiscoveryStyle style, std::set<QS
     _localDiscoveryStyle = style;
     _localDiscoveryPaths = std::move(paths);
 
-    if (lcEngine().isInfoEnabled()) {
+    if (lcEngine().isInfoEnabled() && !_localDiscoveryPaths.empty()) {
         // only execute if logging is enabled
         auto debug = qInfo(lcEngine);
         debug << "paths to discover locally";
