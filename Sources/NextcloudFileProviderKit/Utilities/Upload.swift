@@ -15,7 +15,7 @@ let defaultFileChunkSize = 10_000_000 // 10 MB
 let uploadLogger = Logger(subsystem: Logger.subsystem, category: "upload")
 
 func upload(
-    fileLocatedAt localFileUrl: URL,
+    fileLocatedAt localFilePath: String,
     toRemotePath remotePath: String,
     usingRemoteInterface remoteInterface: RemoteInterface,
     withAccount account: Account,
@@ -38,13 +38,12 @@ func upload(
     afError: AFError?,
     remoteError: NKError
 ) {
-    let localPath = localFileUrl.path
     let fileSize =
-        (try? FileManager.default.attributesOfItem(atPath: localPath)[.size] as? Int64) ?? 0
+        (try? FileManager.default.attributesOfItem(atPath: localFilePath)[.size] as? Int64) ?? 0
     guard fileSize > chunkSize else {
         let (_, ocId, etag, date, size, _, afError, remoteError) = await remoteInterface.upload(
             remotePath: remotePath,
-            localPath: localFileUrl.path,
+            localPath: localFilePath,
             creationDate: creationDate,
             modificationDate: modificationDate,
             account: account,
@@ -65,8 +64,9 @@ func upload(
         )
     }
 
-    let localFileName = localFileUrl.lastPathComponent
-    let localParentDirectoryPath = localFileUrl.deletingLastPathComponent().path
+    let localFilePathNs = localFilePath as NSString
+    let localFileName = localFilePathNs.lastPathComponent
+    let localParentDirectoryPath = localFilePathNs.deletingLastPathComponent
     let remoteParentDirectoryPath = (remotePath as NSString).deletingLastPathComponent as String
 
     let remainingChunks = dbManager

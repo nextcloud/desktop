@@ -29,7 +29,7 @@ final class UploadTests: XCTestCase {
             MockRemoteInterface(rootItem: MockRemoteItem.rootItem(account: account))
         let remotePath = account.davFilesUrl + "/file.txt"
         let result = await NextcloudFileProviderKit.upload(
-            fileLocatedAt: fileUrl,
+            fileLocatedAt: fileUrl.path,
             toRemotePath: remotePath,
             usingRemoteInterface: remoteInterface,
             withAccount: account,
@@ -55,7 +55,7 @@ final class UploadTests: XCTestCase {
         let chunkSize = 3
         var uploadedChunks = [RemoteFileChunk]()
         let result = await NextcloudFileProviderKit.upload(
-            fileLocatedAt: fileUrl,
+            fileLocatedAt: fileUrl.path,
             toRemotePath: remotePath,
             usingRemoteInterface: remoteInterface,
             withAccount: account,
@@ -108,7 +108,7 @@ final class UploadTests: XCTestCase {
         let remotePath = account.davFilesUrl + "/file.txt"
         var uploadedChunks = [RemoteFileChunk]()
         let result = await NextcloudFileProviderKit.upload(
-            fileLocatedAt: fileUrl,
+            fileLocatedAt: fileUrl.path,
             toRemotePath: remotePath,
             usingRemoteInterface: remoteInterface,
             withAccount: account,
