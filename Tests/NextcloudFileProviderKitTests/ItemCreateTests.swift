@@ -399,4 +399,81 @@ final class ItemCreateTests: XCTestCase {
         XCTAssertEqual(dbItem.serverUrl, fileItemMetadata.serverUrl)
         XCTAssertEqual(dbItem.ocId, createdItem.itemIdentifier.rawValue)
     }
+
+    func testCreateFileChunkedResumed() async throws {
+        let chunkUploadId = UUID().uuidString
+        let preexistingChunk = RemoteFileChunk(
+            fileName: String(1),
+            size: Int64(defaultFileChunkSize),
+            remoteChunkStoreFolderName: chunkUploadId
+        )
+        let db = Self.dbManager.ncDatabase()
+        try db.write { db.add(preexistingChunk) }
+
+        let remoteInterface = MockRemoteInterface(rootItem: rootItem)
+        remoteInterface.currentChunks = [chunkUploadId: [preexistingChunk]]
+
+        // With real new item uploads we do not have an associated ItemMetadata as the template is
+        // passed onto us by the OS. We cannot rely on the chunkUploadId property we usually use
+        // during modified item uploads.
+        //
+        // We therefore can only use the system-provided item template's itemIdentifier as the
+        // chunked upload identifier during new item creation.
+        //
+        // To test this situation we set the ocId of the metadata used to construct the item
+        // template to the chunk upload id.
+        let fileItemMetadata = ItemMetadata()
+        fileItemMetadata.ocId = chunkUploadId
+        fileItemMetadata.fileName = "file"
+        fileItemMetadata.fileNameView = "file"
+        fileItemMetadata.directory = false
+        fileItemMetadata.classFile = NKCommon.TypeClassFile.document.rawValue
+        fileItemMetadata.serverUrl = Self.account.davFilesUrl
+
+        let tempUrl = FileManager.default.temporaryDirectory.appendingPathComponent("file")
+        let tempData = Data(repeating: 1, count: defaultFileChunkSize * 3)
+        try tempData.write(to: tempUrl)
+
+        let fileItemTemplate = Item(
+            metadata: fileItemMetadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: remoteInterface
+        )
+        let (createdItemMaybe, error) = await Item.create(
+            basedOn: fileItemTemplate,
+            contents: tempUrl,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            progress: Progress(),
+            dbManager: Self.dbManager
+        )
+        let createdItem = try XCTUnwrap(createdItemMaybe)
+
+        XCTAssertNil(error)
+        XCTAssertNotNil(createdItem)
+        XCTAssertEqual(createdItem.metadata.fileName, fileItemMetadata.fileName)
+        XCTAssertEqual(createdItem.metadata.directory, fileItemMetadata.directory)
+
+        let remoteItem = try XCTUnwrap(
+            rootItem.children.first { $0.identifier == createdItem.itemIdentifier.rawValue }
+        )
+        XCTAssertEqual(remoteItem.name, fileItemMetadata.fileName)
+        XCTAssertEqual(remoteItem.directory, fileItemMetadata.directory)
+        XCTAssertEqual(remoteItem.data, tempData)
+        XCTAssertEqual(
+            remoteInterface.completedChunkTransferSize[chunkUploadId],
+            Int64(tempData.count) - preexistingChunk.size
+        )
+
+        let dbItem = try XCTUnwrap(
+            Self.dbManager.itemMetadata(ocId: createdItem.itemIdentifier.rawValue)
+        )
+        XCTAssertEqual(dbItem.fileName, fileItemMetadata.fileName)
+        XCTAssertEqual(dbItem.fileNameView, fileItemMetadata.fileNameView)
+        XCTAssertEqual(dbItem.directory, fileItemMetadata.directory)
+        XCTAssertEqual(dbItem.serverUrl, fileItemMetadata.serverUrl)
+        XCTAssertEqual(dbItem.ocId, createdItem.itemIdentifier.rawValue)
+        XCTAssertTrue(dbItem.chunkUploadId.isEmpty)
+    }
 }
