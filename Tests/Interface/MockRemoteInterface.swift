@@ -18,6 +18,7 @@ public class MockRemoteInterface: RemoteInterface {
     public var delegate: (any NextcloudKitDelegate)?
     public var rootTrashItem: MockRemoteItem?
     public var currentChunks: [String: [RemoteFileChunk]] = [:]
+    public var completedChunkTransferSize: [String: Int64] = [:]
 
     public init(rootItem: MockRemoteItem? = nil, rootTrashItem: MockRemoteItem? = nil) {
         self.rootItem = rootItem
@@ -290,6 +291,8 @@ public class MockRemoteInterface: RemoteInterface {
                 chunkUploadCompleteHandler(chunk)
             }
         }
+        completedChunkTransferSize[remoteChunkStoreFolderName] =
+            size - preexistingChunks.reduce(0) { $0 + $1.size }
 
         let file = NKFile()
         file.fileName = localFileName
