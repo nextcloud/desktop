@@ -105,6 +105,22 @@ final class UploadTests: XCTestCase {
         let previousUploadedChunks = [previousUploadedChunk]
         remoteInterface.currentChunks = [uploadUuid: previousUploadedChunks]
 
+        let db = dbManager.ncDatabase()
+        try db.write {
+            db.add([
+                RemoteFileChunk(
+                    fileName: String(previousUploadedChunkNum + 1),
+                    size: Int64(chunkSize),
+                    remoteChunkStoreFolderName: uploadUuid
+                ),
+                RemoteFileChunk(
+                    fileName: String(previousUploadedChunkNum + 2),
+                    size: Int64(data.count - (chunkSize * (previousUploadedChunkNum + 1))),
+                    remoteChunkStoreFolderName: uploadUuid
+                )
+            ])
+        }
+
         let remotePath = account.davFilesUrl + "/file.txt"
         var uploadedChunks = [RemoteFileChunk]()
         let result = await NextcloudFileProviderKit.upload(
