@@ -401,12 +401,13 @@ final class ItemCreateTests: XCTestCase {
     }
 
     func testCreateFileChunkedResumed() async throws {
-        let chunkUploadId = UUID().uuidString
+        let expectedChunkUploadId = UUID().uuidString // Check if illegal characters are stripped
+        let illegalChunkUploadId = expectedChunkUploadId + "/" // Check if illegal characters are stripped
         let previousUploadedChunkNum = 1
         let preexistingChunk = RemoteFileChunk(
             fileName: String(previousUploadedChunkNum),
             size: Int64(defaultFileChunkSize),
-            remoteChunkStoreFolderName: chunkUploadId
+            remoteChunkStoreFolderName: expectedChunkUploadId
         )
 
         let db = Self.dbManager.ncDatabase()
@@ -415,18 +416,18 @@ final class ItemCreateTests: XCTestCase {
                 RemoteFileChunk(
                     fileName: String(previousUploadedChunkNum + 1),
                     size: Int64(defaultFileChunkSize),
-                    remoteChunkStoreFolderName: chunkUploadId
+                    remoteChunkStoreFolderName: expectedChunkUploadId
                 ),
                 RemoteFileChunk(
                     fileName: String(previousUploadedChunkNum + 2),
                     size: Int64(defaultFileChunkSize),
-                    remoteChunkStoreFolderName: chunkUploadId
+                    remoteChunkStoreFolderName: expectedChunkUploadId
                 )
             ])
         }
 
         let remoteInterface = MockRemoteInterface(rootItem: rootItem)
-        remoteInterface.currentChunks = [chunkUploadId: [preexistingChunk]]
+        remoteInterface.currentChunks = [expectedChunkUploadId: [preexistingChunk]]
 
         // With real new item uploads we do not have an associated ItemMetadata as the template is
         // passed onto us by the OS. We cannot rely on the chunkUploadId property we usually use
@@ -438,7 +439,7 @@ final class ItemCreateTests: XCTestCase {
         // To test this situation we set the ocId of the metadata used to construct the item
         // template to the chunk upload id.
         let fileItemMetadata = ItemMetadata()
-        fileItemMetadata.ocId = chunkUploadId
+        fileItemMetadata.ocId = illegalChunkUploadId
         fileItemMetadata.fileName = "file"
         fileItemMetadata.fileNameView = "file"
         fileItemMetadata.directory = false
@@ -477,7 +478,7 @@ final class ItemCreateTests: XCTestCase {
         XCTAssertEqual(remoteItem.directory, fileItemMetadata.directory)
         XCTAssertEqual(remoteItem.data, tempData)
         XCTAssertEqual(
-            remoteInterface.completedChunkTransferSize[chunkUploadId],
+            remoteInterface.completedChunkTransferSize[expectedChunkUploadId],
             Int64(tempData.count) - preexistingChunk.size
         )
 
