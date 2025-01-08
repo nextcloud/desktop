@@ -44,7 +44,7 @@ public class ItemMetadata: Object {
     @Persisted public var account = ""
     @Persisted public var assetLocalIdentifier = ""
     @Persisted public var checksums = ""
-    @Persisted public var chunk: Bool = false
+    @Persisted public var chunkUploadId: String = ""
     @Persisted public var classFile = ""
     @Persisted public var commentsUnread: Bool = false
     @Persisted public var contentType = ""
