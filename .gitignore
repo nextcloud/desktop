@@ -9,6 +9,7 @@ doc/_build/*
 *.kdev4
 admin/win/nsi/l10n/pofiles/*.po
 *.swp
+*.swo
 *~$
 build*
 cscope.*

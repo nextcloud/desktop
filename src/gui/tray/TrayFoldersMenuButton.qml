@@ -222,8 +222,8 @@ HeaderButton {
             }
 
             Component.onCompleted: {
-                foldersMenuLoader.openMenu = open
-                foldersMenuLoader.closeMenu = close
+                foldersMenuLoader.openMenu = function() { open() }
+                foldersMenuLoader.closeMenu = function() { close() }
             }
 
             Connections {
