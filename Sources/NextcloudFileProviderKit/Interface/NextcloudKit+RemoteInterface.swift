@@ -81,9 +81,8 @@ extension NextcloudKit: RemoteInterface {
     }
 
     public func chunkedUpload(
-        localDirectoryPath: String,
-        localFileName: String,
-        remoteParentDirectoryPath: String,
+        localPath: String,
+        remotePath: String,
         remoteChunkStoreFolderName: String = UUID().uuidString,
         chunkSize: Int,
         remainingChunks: [RemoteFileChunk],
@@ -105,13 +104,20 @@ extension NextcloudKit: RemoteInterface {
         afError: AFError?,
         remoteError: NKError
     ) {
+        guard let remoteUrl = URL(string: remotePath) else {
+            uploadLogger.error("NCKit ext: Could not get url from \(remotePath, privacy: .public)")
+            return ("", nil, nil, nil, .urlError)
+        }
+        let localUrl = URL(fileURLWithPath: localPath)
+
         return await withCheckedContinuation { continuation in
             uploadChunk(
-                directory: localDirectoryPath,
-                fileName: localFileName,
+                directory: localUrl.deletingLastPathComponent().path,
+                fileName: localUrl.lastPathComponent,
+                destinationFileName: remoteUrl.lastPathComponent,
                 date: modificationDate,
                 creationDate: creationDate,
-                serverUrl: remoteParentDirectoryPath,
+                serverUrl: remoteUrl.deletingLastPathComponent().absoluteString,
                 chunkFolder: remoteChunkStoreFolderName,
                 filesChunk: remainingChunks.toNcKitChunks(),
                 chunkSize: chunkSize,

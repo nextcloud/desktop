@@ -228,9 +228,8 @@ public class MockRemoteInterface: RemoteInterface {
     }
 
     public func chunkedUpload(
-        localDirectoryPath: String,
-        localFileName: String,
-        remoteParentDirectoryPath: String,
+        localPath: String,
+        remotePath: String,
         remoteChunkStoreFolderName: String,
         chunkSize: Int,
         remainingChunks: [RemoteFileChunk],
@@ -252,14 +251,18 @@ public class MockRemoteInterface: RemoteInterface {
         afError: AFError?,
         remoteError: NKError
     ) {
+        guard let remoteUrl = URL(string: remotePath) else {
+            print("Invalid remote path!")
+            return ("", nil, nil, nil, .urlError)
+        }
+
         // Create temp directory for file and create chunks within it
         let fm = FileManager.default
         let tempDirectoryUrl = fm.temporaryDirectory.appendingPathComponent(UUID().uuidString)
         try! fm.createDirectory(atPath: tempDirectoryUrl.path, withIntermediateDirectories: true)
 
         // Access local file and gather metadata
-        let wholeLocalFile = localDirectoryPath + "/" + localFileName
-        let fileSize = try! fm.attributesOfItem(atPath: wholeLocalFile)[.size] as! Int
+        let fileSize = try! fm.attributesOfItem(atPath: localPath)[.size] as! Int
 
         var remainingFileSize = fileSize
         let numChunks = Int(ceil(Double(fileSize) / Double(chunkSize)))
@@ -276,8 +279,8 @@ public class MockRemoteInterface: RemoteInterface {
         chunkUploadStartHandler(chunks)
 
         let (_, ocId, etag, date, size, _, afError, remoteError) = await upload(
-            remotePath: remoteParentDirectoryPath + "/" + localFileName,
-            localPath: wholeLocalFile,
+            remotePath: remotePath,
+            localPath: localPath,
             creationDate: creationDate,
             modificationDate: modificationDate,
             account: account,
@@ -295,12 +298,12 @@ public class MockRemoteInterface: RemoteInterface {
             size - preexistingChunks.reduce(0) { $0 + $1.size }
 
         let file = NKFile()
-        file.fileName = localFileName
+        file.fileName = remoteUrl.lastPathComponent
         file.etag = etag ?? ""
         file.size = size
-        file.path = remoteParentDirectoryPath + "/" + localFileName
+        file.path = remotePath
         file.ocId = ocId ?? ""
-        file.serverUrl = remoteParentDirectoryPath
+        file.serverUrl = remoteUrl.deletingLastPathComponent().absoluteString
         file.urlBase = account.serverUrl
         file.user = account.username
         file.userId = account.id

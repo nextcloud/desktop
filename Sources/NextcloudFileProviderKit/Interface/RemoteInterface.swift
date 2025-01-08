@@ -53,9 +53,8 @@ public protocol RemoteInterface {
     )
 
     func chunkedUpload(
-        localDirectoryPath: String,
-        localFileName: String,
-        remoteParentDirectoryPath: String,
+        localPath: String,
+        remotePath: String,
         remoteChunkStoreFolderName: String,
         chunkSize: Int,
         remainingChunks: [RemoteFileChunk],

@@ -64,15 +64,6 @@ func upload(
         )
     }
 
-    let localFileUrl = URL(fileURLWithPath: localFilePath)
-    let localFileName = localFileUrl.lastPathComponent
-    let localParentDirectoryPath = localFileUrl.deletingLastPathComponent().path
-    guard let remoteUrl = URL(string: remotePath) else {
-        uploadLogger.error("Invalid remote path: \(remotePath, privacy: .public)")
-        return (nil, nil, nil, nil, nil, nil, .urlError)
-    }
-    let remoteParentDirectoryPath = remoteUrl.deletingLastPathComponent().absoluteString
-
     let remainingChunks = dbManager
         .ncDatabase()
         .objects(RemoteFileChunk.self)
@@ -80,9 +71,8 @@ func upload(
         .filter { $0.remoteChunkStoreFolderName == chunkUploadId }
 
     let (_, chunks, file, afError, remoteError) = await remoteInterface.chunkedUpload(
-        localDirectoryPath: localParentDirectoryPath,
-        localFileName: localFileName,
-        remoteParentDirectoryPath: remoteParentDirectoryPath,
+        localPath: localFilePath,
+        remotePath: remotePath,
         remoteChunkStoreFolderName: chunkUploadId,
         chunkSize: chunkSize,
         remainingChunks: remainingChunks,
@@ -94,12 +84,12 @@ func upload(
         chunkCounter: { currentChunk in
             uploadLogger.info(
                 """
-                \(localFileName, privacy: .public) current chunk: \(currentChunk, privacy: .public)
+                \(localFilePath, privacy: .public) current chunk: \(currentChunk, privacy: .public)
                 """
             )
         },
         chunkUploadStartHandler: { chunks in
-            uploadLogger.info("\(localFileName, privacy: .public) uploading chunk")
+            uploadLogger.info("\(localFilePath, privacy: .public) uploading chunk")
             let db = dbManager.ncDatabase()
             do {
                 try db.write { db.add(chunks.map { RemoteFileChunk(value: $0) }) }
