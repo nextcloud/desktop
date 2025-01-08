@@ -64,6 +64,15 @@ func upload(
         )
     }
 
+    uploadLogger.info(
+        """
+        Performing chunked upload to \(remotePath, privacy: .public)
+            localFilePath: \(localFilePath, privacy: .public)
+            remoteChunkStoreFolderName: \(chunkUploadId, privacy: .public).
+            chunkSize: \(chunkSize, privacy: .public)
+        """
+    )
+
     let remainingChunks = dbManager
         .ncDatabase()
         .objects(RemoteFileChunk.self)
