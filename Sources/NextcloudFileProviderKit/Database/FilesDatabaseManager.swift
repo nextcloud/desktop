@@ -341,7 +341,7 @@ public class FilesDatabaseManager {
                 } else if result.isUpload {
                     result.uploaded = false
                     result.chunkUploadId = UUID().uuidString
-                } else if status == .normal {
+                } else if status == .normal, metadata.isUpload {
                     result.chunkUploadId = ""
                 }
 
