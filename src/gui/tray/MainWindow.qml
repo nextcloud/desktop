@@ -100,8 +100,8 @@ ApplicationWindow {
 
             if (Systray.isOpen) {
                 trayWindowHeader.currentAccountHeaderButton.accountMenu.close();
-                appsMenu.close();
-                openLocalFolderButton.closeMenu()
+                trayWindowHeader.appsMenu.close();
+                trayWindowHeader.openLocalFolderButton.closeMenu()
             }
         }
 
