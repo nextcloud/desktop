@@ -2206,13 +2206,6 @@ Er du sikker på at du vil synkronisere disse handlingene med serveren?
 Hvis dette var et uhell og du bestemmer deg for å beholde filene dine, vil de synkroniseres på nytt fra serveren.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1419"/>
-        <source>A folder has surpassed the set folder size limit of %1MB: %2.
-%3</source>
-        <translation>En mappe har overskredet den angitte mappestørrelsesgrensen på %1MB: %2.
-%3</translation>
-    </message>
-    <message>
         <location filename="../src/gui/folder.cpp" line="1420"/>
         <source>Remove All Files?</source>
         <translation>Vil du fjerne alle filer?</translation>
@@ -2228,22 +2221,29 @@ Hvis dette var et uhell og du bestemmer deg for å beholde filene dine, vil de s
         <translation>Behold filer</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1430"/>
+        <location filename="../src/gui/folder.cpp" line="1427"/>
+        <source>A folder has surpassed the set folder size limit of %1MB: %2.
+%3</source>
+        <translation>En mappe har overskredet den angitte mappestørrelsesgrensen på %1MB: %2.
+%3</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/folder.cpp" line="1438"/>
         <source>Keep syncing</source>
         <translation>Fortsett å synkronisere</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1438"/>
+        <location filename="../src/gui/folder.cpp" line="1446"/>
         <source>Stop syncing</source>
         <translation>Stopp synkroniseringen</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1449"/>
+        <location filename="../src/gui/folder.cpp" line="1457"/>
         <source>The folder %1 has surpassed the set folder size limit of %2MB.</source>
         <translation>Mappen %1 har overskredet den angitte mappestørrelsesgrensen på %2MB.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1450"/>
+        <location filename="../src/gui/folder.cpp" line="1458"/>
         <source>Would you like to stop syncing this folder?</source>
         <translation>Vil du slutte å synkronisere denne mappen?</translation>
     </message>
@@ -2271,41 +2271,41 @@ Dette betyr at synkroniseringsklienten kanskje ikke laster opp lokale endringer 
 %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1572"/>
+        <location filename="../src/gui/folder.cpp" line="1580"/>
         <source>Virtual file download failed with code &quot;%1&quot;, status &quot;%2&quot; and error message &quot;%3&quot;</source>
         <translation>Virtuell nedlasting av filen feilet med kode &quot;%1&quot;, status &quot;%2&quot; og feilmelding &quot;%3&quot;</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1666"/>
+        <location filename="../src/gui/folder.cpp" line="1674"/>
         <source>A large number of files in the server have been deleted.
 Please confirm if you'd like to proceed with these deletions.
 Alternatively, you can restore all deleted files by uploading from &apos;%1&apos; folder to the server.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1667"/>
+        <location filename="../src/gui/folder.cpp" line="1675"/>
         <source>A large number of files in your local '%1' folder have been deleted.
 Please confirm if you'd like to proceed with these deletions.
 Alternatively, you can restore all deleted files by downloading them from the server.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1668"/>
+        <location filename="../src/gui/folder.cpp" line="1676"/>
         <source>Remove all files?</source>
         <translation>Fjerne alle filer?</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1672"/>
+        <location filename="../src/gui/folder.cpp" line="1680"/>
         <source>Proceed with Deletion</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1673"/>
+        <location filename="../src/gui/folder.cpp" line="1681"/>
         <source>Restore Files to Server</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1673"/>
+        <location filename="../src/gui/folder.cpp" line="1681"/>
         <source>Restore Files from Server</source>
         <translation type="unfinished"/>
     </message>
