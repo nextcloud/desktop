@@ -132,12 +132,15 @@ public extension Item {
             )
         }
 
-        let (_, _, etag, date, size, _, _, error) = await remoteInterface.upload(
-            remotePath: remotePath,
-            localPath: newContents.path,
+        let (_, _, etag, date, size, _, error) = await upload(
+            fileLocatedAt: newContents.path,
+            toRemotePath: remotePath,
+            usingRemoteInterface: remoteInterface,
+            withAccount: account,
+            usingChunkUploadId: metadata.chunkUploadId,
+            dbManager: dbManager,
             creationDate: newCreationDate,
             modificationDate: newContentModificationDate,
-            account: account,
             options: .init(),
             requestHandler: { progress.setHandlersFromAfRequest($0) },
             taskHandler: { task in
@@ -180,23 +183,24 @@ public extension Item {
             Self.logger.warning(
                 """
                 Item content modification upload reported as successful,
-                but there are differences between the received file size (\(size, privacy: .public))
+                but there are differences between the received file size (\(size ?? -1, privacy: .public))
                 and the original file size (\(self.documentSize?.int64Value ?? 0))
                 """
             )
         }
 
         let newMetadata = ItemMetadata(value: metadata)
-        newMetadata.date = (date ?? NSDate()) as Date
+        newMetadata.date = date ?? Date()
         newMetadata.etag = etag ?? metadata.etag
         newMetadata.ocId = ocId
-        newMetadata.size = size
+        newMetadata.size = size ?? 0
         newMetadata.session = ""
         newMetadata.sessionError = ""
         newMetadata.sessionTaskIdentifier = 0
         newMetadata.status = ItemMetadata.Status.normal.rawValue
         newMetadata.downloaded = true
         newMetadata.uploaded = true
+        newMetadata.chunkUploadId = ""
 
         dbManager.addItemMetadata(newMetadata)
 
