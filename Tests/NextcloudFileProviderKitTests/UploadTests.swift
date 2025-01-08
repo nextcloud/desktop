@@ -82,7 +82,7 @@ final class UploadTests: XCTestCase {
         XCTAssertEqual(lastUploadedChunkNameInt, expectedChunkCount)
         XCTAssertEqual(Int(firstUploadedChunk.size), chunkSize)
         XCTAssertEqual(
-            Int(lastUploadedChunk.size), data.count - (lastUploadedChunkNameInt * chunkSize)
+            Int(lastUploadedChunk.size), data.count - ((lastUploadedChunkNameInt - 1) * chunkSize)
         )
     }
 
