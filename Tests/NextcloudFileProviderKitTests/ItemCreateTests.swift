@@ -402,13 +402,28 @@ final class ItemCreateTests: XCTestCase {
 
     func testCreateFileChunkedResumed() async throws {
         let chunkUploadId = UUID().uuidString
+        let previousUploadedChunkNum = 1
         let preexistingChunk = RemoteFileChunk(
-            fileName: String(1),
+            fileName: String(previousUploadedChunkNum),
             size: Int64(defaultFileChunkSize),
             remoteChunkStoreFolderName: chunkUploadId
         )
+
         let db = Self.dbManager.ncDatabase()
-        try db.write { db.add(preexistingChunk) }
+        try db.write {
+            db.add([
+                RemoteFileChunk(
+                    fileName: String(previousUploadedChunkNum + 1),
+                    size: Int64(defaultFileChunkSize),
+                    remoteChunkStoreFolderName: chunkUploadId
+                ),
+                RemoteFileChunk(
+                    fileName: String(previousUploadedChunkNum + 2),
+                    size: Int64(defaultFileChunkSize),
+                    remoteChunkStoreFolderName: chunkUploadId
+                )
+            ])
+        }
 
         let remoteInterface = MockRemoteInterface(rootItem: rootItem)
         remoteInterface.currentChunks = [chunkUploadId: [preexistingChunk]]
