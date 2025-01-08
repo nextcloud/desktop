@@ -105,12 +105,14 @@ extension Item {
         progress: Progress,
         dbManager: FilesDatabaseManager
     ) async -> (Item?, Error?) {
+        let chunkUploadId =
+            itemTemplate.itemIdentifier.rawValue.replacingOccurrences(of: "/", with: "")
         let (ocId, _, etag, date, size, _, error) = await upload(
             fileLocatedAt: localPath,
             toRemotePath: remotePath,
             usingRemoteInterface: remoteInterface,
             withAccount: account,
-            usingChunkUploadId: itemTemplate.itemIdentifier.rawValue,
+            usingChunkUploadId: chunkUploadId,
             dbManager: dbManager,
             creationDate: itemTemplate.creationDate as? Date,
             modificationDate: itemTemplate.contentModificationDate as? Date,
