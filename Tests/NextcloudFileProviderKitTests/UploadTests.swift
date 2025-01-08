@@ -52,20 +52,37 @@ final class UploadTests: XCTestCase {
         let remoteInterface =
             MockRemoteInterface(rootItem: MockRemoteItem.rootItem(account: account))
         let remotePath = account.davFilesUrl + "/file.txt"
+        let chunkSize = 3
+        var uploadedChunks = [RemoteFileChunk]()
         let result = await NextcloudFileProviderKit.upload(
             fileLocatedAt: fileUrl,
             toRemotePath: remotePath,
             usingRemoteInterface: remoteInterface,
             withAccount: account,
-            inChunksSized: 3,
-            dbManager: dbManager
+            inChunksSized: chunkSize,
+            dbManager: dbManager,
+            chunkUploadCompleteHandler: { uploadedChunks.append($0) }
         )
+        let resultChunks = try XCTUnwrap(result.chunks)
+        let expectedChunkCount = Int(ceil(Double(data.count) / Double(chunkSize)))
 
         XCTAssertEqual(result.remoteError, .success)
-        XCTAssertNotNil(result.chunks)
-        XCTAssertEqual(result.chunks?.count, 3)
+        XCTAssertEqual(resultChunks.count, expectedChunkCount)
         XCTAssertEqual(result.size, Int64(data.count))
         XCTAssertNotNil(result.ocId)
         XCTAssertNotNil(result.etag)
+
+        XCTAssertEqual(uploadedChunks.count, resultChunks.count)
+
+        let firstUploadedChunk = try XCTUnwrap(uploadedChunks.first)
+        let firstUploadedChunkNameInt = try XCTUnwrap(Int(firstUploadedChunk.fileName))
+        let lastUploadedChunk = try XCTUnwrap(uploadedChunks.last)
+        let lastUploadedChunkNameInt = try XCTUnwrap(Int(lastUploadedChunk.fileName))
+        XCTAssertEqual(firstUploadedChunkNameInt, 1)
+        XCTAssertEqual(lastUploadedChunkNameInt, expectedChunkCount)
+        XCTAssertEqual(Int(firstUploadedChunk.size), chunkSize)
+        XCTAssertEqual(
+            Int(lastUploadedChunk.size), data.count - (lastUploadedChunkNameInt * chunkSize)
+        )
     }
 }
