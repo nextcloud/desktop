@@ -266,17 +266,20 @@ public class MockRemoteInterface: RemoteInterface {
 
         var remainingFileSize = fileSize
         let numChunks = Int(ceil(Double(fileSize) / Double(chunkSize)))
-        let chunks = (0..<numChunks).map { chunkIndex in
-            defer { remainingFileSize -= chunkSize }
-            return RemoteFileChunk(
-                fileName: String(chunkIndex + 1),
-                size: Int64(min(chunkSize, remainingFileSize)),
-                remoteChunkStoreFolderName: remoteChunkStoreFolderName
-            )
-        }
+        let newChunks = !remainingChunks.isEmpty
+            ? remainingChunks
+            : (0..<numChunks).map { chunkIndex in
+                defer { remainingFileSize -= chunkSize }
+                return RemoteFileChunk(
+                    fileName: String(chunkIndex + 1),
+                    size: Int64(min(chunkSize, remainingFileSize)),
+                    remoteChunkStoreFolderName: remoteChunkStoreFolderName
+                )
+            }
         let preexistingChunks = currentChunks[remoteChunkStoreFolderName] ?? []
-        currentChunks[remoteChunkStoreFolderName] = chunks
-        chunkUploadStartHandler(chunks)
+        let totalChunks = preexistingChunks + newChunks
+        currentChunks[remoteChunkStoreFolderName] = totalChunks
+        chunkUploadStartHandler(newChunks)
 
         let (_, ocId, etag, date, size, _, afError, remoteError) = await upload(
             remotePath: remotePath,
@@ -289,13 +292,10 @@ public class MockRemoteInterface: RemoteInterface {
             taskHandler: taskHandler,
             progressHandler: progressHandler
         )
-        chunks.forEach { chunk in
-            if !preexistingChunks.contains(where: { $0.fileName == chunk.fileName }) {
-                chunkUploadCompleteHandler(chunk)
-            }
-        }
+        newChunks.forEach { chunkUploadCompleteHandler($0) }
+        print(remainingChunks)
         completedChunkTransferSize[remoteChunkStoreFolderName] =
-            size - preexistingChunks.reduce(0) { $0 + $1.size }
+            remainingChunks.reduce(0) { $0 + $1.size }
 
         let file = NKFile()
         file.fileName = remoteUrl.lastPathComponent
@@ -311,7 +311,7 @@ public class MockRemoteInterface: RemoteInterface {
         file.creationDate = creationDate ?? Date()
         file.date = date as? Date ?? Date()
 
-        return (account.ncKitAccount, chunks, file, afError, remoteError)
+        return (account.ncKitAccount, totalChunks, file, afError, remoteError)
     }
 
     public func move(
