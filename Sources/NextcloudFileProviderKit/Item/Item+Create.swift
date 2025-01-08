@@ -116,7 +116,6 @@ extension Item {
             dbManager: dbManager,
             creationDate: itemTemplate.creationDate as? Date,
             modificationDate: itemTemplate.contentModificationDate as? Date,
-            options: .init(),
             requestHandler: { progress.setHandlersFromAfRequest($0) },
             taskHandler: { task in
                 if let domain = domain {
@@ -315,7 +314,6 @@ extension Item {
                     dbManager: dbManager,
                     creationDate: childUrlAttributes.creationDate,
                     modificationDate: childUrlAttributes.contentModificationDate,
-                    options: .init(),
                     requestHandler: { progress.setHandlersFromAfRequest($0) },
                     taskHandler: { task in
                         if let domain {

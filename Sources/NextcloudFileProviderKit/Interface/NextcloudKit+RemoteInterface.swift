@@ -172,6 +172,7 @@ extension NextcloudKit: RemoteInterface {
                 requestHandler: requestHandler,
                 taskHandler: taskHandler,
                 progressHandler: { totalBytesExpected, totalBytes, fractionCompleted in
+                    uploadLogger.info("Chunk progress: \(fractionCompleted * 100, privacy: .public)%")
                     let currentProgress = Progress(totalUnitCount: totalBytesExpected)
                     currentProgress.completedUnitCount = totalBytes
                     progressHandler(currentProgress)

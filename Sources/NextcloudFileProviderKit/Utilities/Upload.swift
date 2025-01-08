@@ -24,7 +24,7 @@ func upload(
     dbManager: FilesDatabaseManager = .shared,
     creationDate: Date? = nil,
     modificationDate: Date? = nil,
-    options: NKRequestOptions = .init(),
+    options: NKRequestOptions = .init(queue: .global(qos: .utility)),
     requestHandler: @escaping (UploadRequest) -> Void = { _ in },
     taskHandler: @escaping (URLSessionTask) -> Void = { _ in },
     progressHandler: @escaping (Progress) -> Void = { _ in },
