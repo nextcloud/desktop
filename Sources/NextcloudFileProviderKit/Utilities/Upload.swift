@@ -115,6 +115,7 @@ func upload(
         taskHandler: taskHandler,
         progressHandler: progressHandler,
         chunkUploadCompleteHandler: { chunk in
+            uploadLogger.info("\(localFilePath, privacy: .public) uploaded chunk!")
             let db = dbManager.ncDatabase()
             do {
                 try db.write {
@@ -136,6 +137,8 @@ func upload(
             chunkUploadCompleteHandler(chunk)
         }
     )
+
+    uploadLogger.info("\(localFilePath, privacy: .public) successfully uploaded in chunks")
 
     return (
         ocId: file?.ocId,

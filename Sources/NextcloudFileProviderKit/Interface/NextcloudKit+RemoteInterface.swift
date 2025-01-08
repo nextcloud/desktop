@@ -124,17 +124,40 @@ extension NextcloudKit: RemoteInterface {
             return ("", nil, nil, nil, .urlError)
         }
 
+        let directory = localUrl.deletingLastPathComponent().path
+        let fileChunksOutputDirectory = chunksOutputDirectoryUrl.path
+        let fileName = localUrl.lastPathComponent
+        let destinationFileName = remoteUrl.lastPathComponent
+        let serverUrl = remoteUrl.deletingLastPathComponent().absoluteString
+        let fileChunks = remainingChunks.toNcKitChunks()
+
+        uploadLogger.info(
+            """
+            Beginning chunked upload of: \(localPath, privacy: .public)
+                directory: \(directory, privacy: .public)
+                fileChunksOutputDirectory: \(fileChunksOutputDirectory, privacy: .public)
+                fileName: \(fileName, privacy: .public)
+                destinationFileName: \(destinationFileName, privacy: .public)
+                date: \(modificationDate?.debugDescription ?? "", privacy: .public)
+                creationDate: \(creationDate?.debugDescription ?? "", privacy: .public)
+                serverUrl: \(serverUrl, privacy: .public)
+                chunkFolder: \(remoteChunkStoreFolderName, privacy: .public)
+                filesChunk: \(fileChunks, privacy: .public)
+                chunkSize: \(chunkSize, privacy: .public)
+            """
+        )
+
         return await withCheckedContinuation { continuation in
             uploadChunk(
-                directory: localUrl.deletingLastPathComponent().path,
-                fileChunksOutputDirectory: chunksOutputDirectoryUrl.path,
-                fileName: localUrl.lastPathComponent,
-                destinationFileName: remoteUrl.lastPathComponent,
+                directory: directory,
+                fileChunksOutputDirectory: fileChunksOutputDirectory,
+                fileName: fileName,
+                destinationFileName: destinationFileName,
                 date: modificationDate,
                 creationDate: creationDate,
-                serverUrl: remoteUrl.deletingLastPathComponent().absoluteString,
+                serverUrl: serverUrl,
                 chunkFolder: remoteChunkStoreFolderName,
-                filesChunk: remainingChunks.toNcKitChunks(),
+                filesChunk: fileChunks,
                 chunkSize: chunkSize,
                 account: account.ncKitAccount,
                 options: options,
