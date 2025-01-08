@@ -110,9 +110,24 @@ extension NextcloudKit: RemoteInterface {
         }
         let localUrl = URL(fileURLWithPath: localPath)
 
+        let fm = FileManager.default
+        let chunksOutputDirectoryUrl =
+            fm.temporaryDirectory.appendingPathComponent(remoteChunkStoreFolderName)
+        do {
+            try fm.createDirectory(at: chunksOutputDirectoryUrl, withIntermediateDirectories: true)
+        } catch let error {
+            uploadLogger.error(
+                """
+                Could not create temporary directory for chunked files: \(error, privacy: .public)
+                """
+            )
+            return ("", nil, nil, nil, .urlError)
+        }
+
         return await withCheckedContinuation { continuation in
             uploadChunk(
                 directory: localUrl.deletingLastPathComponent().path,
+                fileChunksOutputDirectory: chunksOutputDirectoryUrl.path,
                 fileName: localUrl.lastPathComponent,
                 destinationFileName: remoteUrl.lastPathComponent,
                 date: modificationDate,
