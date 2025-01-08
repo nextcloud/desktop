@@ -340,6 +340,9 @@ public class FilesDatabaseManager {
                     result.downloaded = false
                 } else if result.isUpload {
                     result.uploaded = false
+                    result.chunkUploadId = UUID().uuidString
+                } else if status == .normal {
+                    result.chunkUploadId = ""
                 }
 
                 Self.logger.debug(
