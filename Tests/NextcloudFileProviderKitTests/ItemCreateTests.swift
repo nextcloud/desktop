@@ -360,7 +360,7 @@ final class ItemCreateTests: XCTestCase {
 
         let tempUrl = FileManager.default.temporaryDirectory.appendingPathComponent("file")
         let tempData = Data(repeating: 1, count: defaultFileChunkSize * 3)
-        try Data(repeating: 1, count: defaultFileChunkSize * 3).write(to: tempUrl)
+        try tempData.write(to: tempUrl)
 
         let fileItemTemplate = Item(
             metadata: fileItemMetadata,
