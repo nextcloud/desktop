@@ -966,6 +966,7 @@ Result<void, QString> SyncJournalDb::setFileRecord(const SyncJournalFileRecord &
                  << "lock owner:" << record._lockstate._lockOwnerDisplayName
                  << "lock owner id:" << record._lockstate._lockOwnerId
                  << "lock editor:" << record._lockstate._lockEditorApp
+                 << "lock token:" << record._lockstate._lockToken
                  << "sharedByMe:" << record._sharedByMe
                  << "isShared:" << record._isShared
                  << "lastShareStateFetchedTimestamp:" << record._lastShareStateFetchedTimestamp
