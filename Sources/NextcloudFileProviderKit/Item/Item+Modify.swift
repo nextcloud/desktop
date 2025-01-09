@@ -118,9 +118,9 @@ public extension Item {
         }
 
         let updatedMetadata = await withCheckedContinuation { continuation in
-            dbManager.setStatusForItemMetadata(
-                metadata, status: ItemMetadata.Status.uploading
-            ) { continuation.resume(returning: $0) }
+            dbManager.setStatusForItemMetadata(metadata, status: .uploading) {
+                continuation.resume(returning: $0)
+            }
         }
 
         if updatedMetadata == nil {
@@ -188,7 +188,15 @@ public extension Item {
             )
         }
 
-        let newMetadata = ItemMetadata(value: metadata)
+        let newMetadata: ItemMetadata = await {
+            guard let updatedMetadata else { return ItemMetadata(value: metadata) }
+            return await withCheckedContinuation { continuation in
+                dbManager.setStatusForItemMetadata(updatedMetadata, status: .normal) { updatedMeta in
+                    continuation.resume(returning: updatedMeta ?? ItemMetadata(value: updatedMetadata))
+                }
+            }
+        }()
+
         newMetadata.date = date ?? Date()
         newMetadata.etag = etag ?? metadata.etag
         newMetadata.ocId = ocId
@@ -196,10 +204,8 @@ public extension Item {
         newMetadata.session = ""
         newMetadata.sessionError = ""
         newMetadata.sessionTaskIdentifier = 0
-        newMetadata.status = ItemMetadata.Status.normal.rawValue
         newMetadata.downloaded = true
         newMetadata.uploaded = true
-        newMetadata.chunkUploadId = ""
 
         dbManager.addItemMetadata(newMetadata)
 
