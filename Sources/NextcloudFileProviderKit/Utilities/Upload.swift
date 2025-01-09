@@ -53,15 +53,7 @@ func upload(
             progressHandler: progressHandler
         )
 
-        return (
-            ocId: ocId,
-            chunks: nil,
-            etag: etag,
-            date: date as? Date,
-            size: size,
-            afError: afError,
-            remoteError: remoteError
-        )
+        return (ocId, nil, etag, date as? Date, size, afError, remoteError)
     }
 
     uploadLogger.info(
@@ -140,13 +132,5 @@ func upload(
 
     uploadLogger.info("\(localFilePath, privacy: .public) successfully uploaded in chunks")
 
-    return (
-        ocId: file?.ocId,
-        chunks: chunks,
-        etag: file?.etag,
-        date: file?.date,
-        size: file?.size,
-        afError: afError,
-        remoteError: remoteError
-    )
+    return (file?.ocId, chunks, file?.etag, file?.date, file?.size, afError, remoteError)
 }
