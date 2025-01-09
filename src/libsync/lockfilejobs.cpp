@@ -194,7 +194,7 @@ SyncJournalFileRecord LockFileJob::handleReply()
         }
     }
 
-    const auto relativePathInDb = path().mid(_remoteSyncPathWithTrailingSlash.size());
+    const auto relativePathInDb = path().mid(_remoteSyncPathWithTrailingSlash.size() - 1);
     if (_journal->getFileRecord(relativePathInDb, &record) && record.isValid()) {
         setFileRecordLocked(record);
         if ((_lockStatus == SyncFileItem::LockStatus::LockedItem)
