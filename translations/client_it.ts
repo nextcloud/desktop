@@ -6610,17 +6610,17 @@ Il server ha risposto con errore: %2</translation>
 <context>
     <name>TrayWindowHeader</name>
     <message>
-        <location filename="../src/gui/tray/TrayWindowHeader.qml" line="72"/>
+        <location filename="../src/gui/tray/TrayWindowHeader.qml" line="74"/>
         <source>Open local or group folders</source>
         <translation>Aprire cartelle locali o di gruppo</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/TrayWindowHeader.qml" line="107"/>
+        <location filename="../src/gui/tray/TrayWindowHeader.qml" line="109"/>
         <source>More apps</source>
         <translation>Altre app</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/TrayWindowHeader.qml" line="131"/>
+        <location filename="../src/gui/tray/TrayWindowHeader.qml" line="133"/>
         <source>Open %1 in browser</source>
         <translation>Apri %1 nel browser</translation>
     </message>

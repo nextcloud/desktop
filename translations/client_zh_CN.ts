@@ -6603,17 +6603,17 @@ Server replied with error: %2</source>
 <context>
     <name>TrayWindowHeader</name>
     <message>
-        <location filename="../src/gui/tray/TrayWindowHeader.qml" line="72"/>
+        <location filename="../src/gui/tray/TrayWindowHeader.qml" line="74"/>
         <source>Open local or group folders</source>
         <translation>打开本地或群组文件夹</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/TrayWindowHeader.qml" line="107"/>
+        <location filename="../src/gui/tray/TrayWindowHeader.qml" line="109"/>
         <source>More apps</source>
         <translation>更多应用</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/TrayWindowHeader.qml" line="131"/>
+        <location filename="../src/gui/tray/TrayWindowHeader.qml" line="133"/>
         <source>Open %1 in browser</source>
         <translation>在浏览器打开 %1</translation>
     </message>
