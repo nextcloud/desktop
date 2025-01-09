@@ -90,7 +90,11 @@ func upload(
             )
         },
         chunkUploadStartHandler: { chunks in
-            uploadLogger.info("\(localFilePath, privacy: .public) uploading chunk")
+            uploadLogger.info("\(localFilePath, privacy: .public) chunked upload starting...")
+
+            // Do not add chunks to database if we have done this already
+            guard remainingChunks.isEmpty else { return }
+
             let db = dbManager.ncDatabase()
             do {
                 try db.write { db.add(chunks.map { RemoteFileChunk(value: $0) }) }
@@ -107,7 +111,9 @@ func upload(
         taskHandler: taskHandler,
         progressHandler: progressHandler,
         chunkUploadCompleteHandler: { chunk in
-            uploadLogger.info("\(localFilePath, privacy: .public) uploaded chunk!")
+            uploadLogger.info(
+                "\(localFilePath, privacy: .public) chunk \(chunk.fileName, privacy: .public) done"
+            )
             let db = dbManager.ncDatabase()
             do {
                 try db.write {
