@@ -6592,17 +6592,17 @@ Server replied with error: %2</source>
 <context>
     <name>TrayWindowHeader</name>
     <message>
-        <location filename="../src/gui/tray/TrayWindowHeader.qml" line="72"/>
+        <location filename="../src/gui/tray/TrayWindowHeader.qml" line="74"/>
         <source>Open local or group folders</source>
         <translation>فتح مجلدات محلية أو جماعية</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/TrayWindowHeader.qml" line="107"/>
+        <location filename="../src/gui/tray/TrayWindowHeader.qml" line="109"/>
         <source>More apps</source>
         <translation>تطبيقات أخرى</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/TrayWindowHeader.qml" line="131"/>
+        <location filename="../src/gui/tray/TrayWindowHeader.qml" line="133"/>
         <source>Open %1 in browser</source>
         <translation>فتح %1 في مُستعرِض الوِب</translation>
     </message>

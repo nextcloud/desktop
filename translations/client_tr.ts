@@ -6617,17 +6617,17 @@ Sunucunun verdiği hata yanıtı: %2</translation>
 <context>
     <name>TrayWindowHeader</name>
     <message>
-        <location filename="../src/gui/tray/TrayWindowHeader.qml" line="72"/>
+        <location filename="../src/gui/tray/TrayWindowHeader.qml" line="74"/>
         <source>Open local or group folders</source>
         <translation>Yerel ya da grup klasörlerini aç</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/TrayWindowHeader.qml" line="107"/>
+        <location filename="../src/gui/tray/TrayWindowHeader.qml" line="109"/>
         <source>More apps</source>
         <translation>Diğer uygulamalar</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/TrayWindowHeader.qml" line="131"/>
+        <location filename="../src/gui/tray/TrayWindowHeader.qml" line="133"/>
         <source>Open %1 in browser</source>
         <translation>%1 ögesini tarayıcıda aç</translation>
     </message>
