@@ -124,11 +124,23 @@ extension NextcloudKit: RemoteInterface {
             return ("", nil, nil, nil, .urlError)
         }
 
-        let directory = localUrl.deletingLastPathComponent().path
+        var directory = localUrl.deletingLastPathComponent().path
+        if directory.last == "/" {
+            directory.removeLast()
+        }
         let fileChunksOutputDirectory = chunksOutputDirectoryUrl.path
         let fileName = localUrl.lastPathComponent
         let destinationFileName = remoteUrl.lastPathComponent
-        let serverUrl = remoteUrl.deletingLastPathComponent().absoluteString
+        guard let serverUrl = remoteUrl
+            .deletingLastPathComponent()
+            .absoluteString
+            .removingPercentEncoding
+        else {
+            uploadLogger.error(
+                "NCKit ext: Could not get server url from \(remotePath, privacy: .public)"
+            )
+            return ("", nil, nil, nil, .urlError)
+        }
         let fileChunks = remainingChunks.toNcKitChunks()
 
         uploadLogger.info(
