@@ -107,6 +107,7 @@ bool LockFileJob::finished()
     } else {
         qCInfo(lcLockFileJob()) << "success" << path() << _requestedLockState << _requestedLockOwnerType;
         handleReply();
+        qCInfo(lcLockFileJob()) << "database updated for" << path() << _requestedLockState;
         Q_EMIT finishedWithoutError();
     }
     return true;
@@ -173,18 +174,22 @@ SyncJournalFileRecord LockFileJob::handleReply()
 
     if (_lockStatus == SyncFileItem::LockStatus::LockedItem) {
         if (_lockOwnerType == SyncFileItem::LockOwnerType::UserLock && _userDisplayName.isEmpty()) {
+            qCWarning(lcLockFileJob) << "user lock type without an user name";
             return record;
         }
 
         if (_lockOwnerType == SyncFileItem::LockOwnerType::AppLock && _editorName.isEmpty()) {
+            qCWarning(lcLockFileJob) << "app lock type without an app name";
             return record;
         }
 
         if (_userId.isEmpty()) {
+            qCWarning(lcLockFileJob) << "user lock without an user id";
             return record;
         }
 
         if (_lockTime <= 0) {
+            qCWarning(lcLockFileJob) << "user lock with an invalid lock time:" << _lockTime;
             return record;
         }
     }
@@ -201,6 +206,8 @@ SyncJournalFileRecord LockFileJob::handleReply()
             qCWarning(lcLockFileJob) << "Error when setting the file record to the database" << record._path << result.error();
         }
         _journal->commit("lock file job");
+    } else {
+        qCWarning(lcLockFileJob) << "database file record invalid for path:" << relativePathInDb;
     }
 
     return record;
