@@ -16,6 +16,12 @@ jobs:
           cd doc
           make html > build.log 2>&1
           if grep WARNING build.log; then
+              grep WARNING build.log | awk '{
+                      split($0, fields, ":");
+                      sub("/__w/desktop/desktop/", "", fields[1]);
+                      print "::warning file=" fields[1] ( length(fields[2]) ? ",line=" fields[2] : "" ) ",title=Documentation generation::" substr($0, index($0, fields[4]) + 1)
+                  }'
+
               exit 1
           else
               exit 0
