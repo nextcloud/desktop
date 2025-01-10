@@ -536,13 +536,21 @@ void ShareManager::slotShareCreated(const QJsonDocument &reply)
 
 void ShareManager::fetchShares(const QString &path)
 {
-    auto *job = new OcsShareJob(_account);
+    const auto job = new OcsShareJob(_account);
     connect(job, &OcsShareJob::shareJobFinished, this, &ShareManager::slotSharesFetched);
     connect(job, &OcsJob::ocsError, this, &ShareManager::slotOcsError);
     job->getShares(path);
 }
 
-void ShareManager::slotSharesFetched(const QJsonDocument &reply)
+void ShareManager::fetchSharedWithMe(const QString &path)
+{
+    const auto sharedWithMeJob = new OcsShareJob(_account);
+    connect(sharedWithMeJob, &OcsShareJob::shareJobFinished, this, &ShareManager::slotSharedWithMeFetched);
+    connect(sharedWithMeJob, &OcsJob::ocsError, this, &ShareManager::slotOcsError);
+    sharedWithMeJob->getSharedWithMe(path);
+}
+
+const QList<SharePtr> ShareManager::parseShares(const QJsonDocument &reply) const
 {
     qDebug() << reply;
     auto tmpShares = reply.object().value("ocs").toObject().value("data").toArray();
@@ -570,10 +578,22 @@ void ShareManager::slotSharesFetched(const QJsonDocument &reply)
     }
 
     qCDebug(lcSharing) << "Sending " << shares.count() << "shares";
+    return shares;
+}
+
+void ShareManager::slotSharesFetched(const QJsonDocument &reply)
+{
+    const auto shares = parseShares(reply);
     emit sharesFetched(shares);
 }
 
-QSharedPointer<UserGroupShare> ShareManager::parseUserGroupShare(const QJsonObject &data)
+void ShareManager::slotSharedWithMeFetched(const QJsonDocument &reply)
+{
+    const auto shares = parseShares(reply);
+    emit sharedWithMeFetched(shares);
+}
+
+QSharedPointer<UserGroupShare> ShareManager::parseUserGroupShare(const QJsonObject &data) const
 {
     ShareePtr sharee(new Sharee(data.value("share_with").toString(),
         data.value("share_with_displayname").toString(),
@@ -602,7 +622,7 @@ QSharedPointer<UserGroupShare> ShareManager::parseUserGroupShare(const QJsonObje
         note));
 }
 
-QSharedPointer<LinkShare> ShareManager::parseLinkShare(const QJsonObject &data)
+QSharedPointer<LinkShare> ShareManager::parseLinkShare(const QJsonObject &data) const
 {
     QUrl url;
 

@@ -363,6 +363,7 @@ void ShareModel::initShareManager()
     if (_manager.isNull() && sharingPossible) {
         _manager.reset(new ShareManager(_accountState->account(), this));
         connect(_manager.data(), &ShareManager::sharesFetched, this, &ShareModel::slotSharesFetched);
+        connect(_manager.data(), &ShareManager::sharedWithMeFetched, this, &ShareModel::slotSharedWithMeFetched);
         connect(_manager.data(), &ShareManager::shareCreated, this, [&] {
             _manager->fetchShares(_sharePath);
         });
@@ -379,6 +380,7 @@ void ShareModel::initShareManager()
         });
 
         _manager->fetchShares(_sharePath);
+        _manager->fetchSharedWithMe(_sharePath);
     }
 }
 
@@ -493,38 +495,13 @@ void ShareModel::slotSharesFetched(const QList<SharePtr> &shares)
     qCInfo(lcSharing) << "Fetched" << shares.count() << "shares";
 
     for (const auto &share : shares) {
-        if (share.isNull()) {
+        if (share.isNull() ||
+            share->account().isNull() ||
+            share->getUidOwner() != share->account()->davUser()) {
             continue;
-        } else if (const auto selfUserId = share->account()->davUser(); share->getUidOwner() != selfUserId) {
-            _displayShareOwner = true;
-            Q_EMIT displayShareOwnerChanged();
-            _shareOwnerDisplayName = share->getOwnerDisplayName();
-            Q_EMIT shareOwnerDisplayNameChanged();
-            _shareOwnerAvatar = "image://avatars/user-id="
-                + share->getUidOwner()
-                + "/local-account:"
-                + share->account()->displayName();
-            Q_EMIT shareOwnerAvatarChanged();
-
-            if (share->getShareType() == Share::TypeUser &&
-                share->getShareWith() &&
-                share->getShareWith()->shareWith() == selfUserId)
-            {
-                const auto userShare = share.objectCast<UserGroupShare>();
-                const auto expireDate = userShare->getExpireDate();
-                const auto daysToExpire = QDate::currentDate().daysTo(expireDate);
-                _sharedWithMeExpires = expireDate.isValid();
-                Q_EMIT sharedWithMeExpiresChanged();
-                _sharedWithMeRemainingTimeString = daysToExpire > 1
-                    ? tr("%1 days").arg(daysToExpire)
-                    :  daysToExpire > 0
-                        ? tr("1 day")
-                        : tr("Today");
-                Q_EMIT sharedWithMeRemainingTimeStringChanged();
-            }
-        } else {
-            slotAddShare(share);
         }
+
+        slotAddShare(share);
     }
 
     // Perform forward pass on shares and check for duplicate display names; store these indeces so
@@ -563,6 +540,47 @@ void ShareModel::slotSharesFetched(const QList<SharePtr> &shares)
     }
 
     handleLinkShare();
+}
+
+void ShareModel::slotSharedWithMeFetched(const QList<OCC::SharePtr> &shares)
+{
+    qCInfo(lcSharing) << "Fetched" << shares.count() << "shares that have been shared_with_me";
+
+    for (const auto &share : shares) {
+        if (share.isNull()) {
+            continue;
+        }
+
+        const auto selfUserId = share->account()->davUser();
+        if (share->getUidOwner() == selfUserId) {
+            continue;
+        }
+
+        _displayShareOwner = true;
+        Q_EMIT displayShareOwnerChanged();
+        _shareOwnerDisplayName = share->getOwnerDisplayName();
+        Q_EMIT shareOwnerDisplayNameChanged();
+        _shareOwnerAvatar = QStringLiteral("image://avatars/user-id=%1/local-account:%2")
+            .arg(share->getUidOwner(), share->account()->displayName());
+        Q_EMIT shareOwnerAvatarChanged();
+
+        if (share->getShareType() == Share::TypeUser &&
+            share->getShareWith() &&
+            share->getShareWith()->shareWith() == selfUserId)
+        {
+            const auto userShare = share.objectCast<UserGroupShare>();
+            const auto expireDate = userShare->getExpireDate();
+            const auto daysToExpire = QDate::currentDate().daysTo(expireDate);
+            _sharedWithMeExpires = expireDate.isValid();
+            Q_EMIT sharedWithMeExpiresChanged();
+            _sharedWithMeRemainingTimeString = daysToExpire > 1
+                ? tr("%1 days").arg(daysToExpire)
+                :  daysToExpire == 1
+                    ? tr("1 day")
+                    : tr("Today");
+            Q_EMIT sharedWithMeRemainingTimeStringChanged();
+        }
+    }
 }
 
 void ShareModel::setupInternalLinkShare()
