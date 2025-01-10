@@ -6,7 +6,7 @@ macOS Virtual Files
 
 .. index:: macosvfs
 
-macOS Vitual Files client
+macOS Virtual Files client
 ============
 
 Virtual file-based synchronisation for Nextcloud desktop users is now
