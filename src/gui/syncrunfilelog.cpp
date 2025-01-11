@@ -52,7 +52,7 @@ void SyncRunFileLog::start(const QString &folderPath)
         if(QString::compare(folderPath,line,Qt::CaseSensitive)!=0) {
             depthIndex++;
             if(depthIndex <= length) {
-                filenameSingle = folderPath.split(QLatin1String("/")).at(length - depthIndex) + QString("_") ///
+                filenameSingle = folderPath.split(QLatin1String("/")).at(length - depthIndex) + QStringLiteral("_") ///
                         + filenameSingle;
                 filename = logpath+ QLatin1String("/") + filenameSingle + QLatin1String("_sync.log");
             }

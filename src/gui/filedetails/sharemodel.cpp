@@ -788,7 +788,7 @@ QString ShareModel::avatarUrlForShare(const SharePtr &share) const
         const auto provider = QStringLiteral("image://tray-image-provider/");
         const auto userId = share->getShareWith()->shareWith();
         const auto avatarUrl = Utility::concatUrlPath(_accountState->account()->url(),
-                                                      QString("remote.php/dav/avatars/%1/%2.png").arg(userId, QString::number(64))).toString();
+                                                      QStringLiteral("remote.php/dav/avatars/%1/%2.png").arg(userId, QString::number(64))).toString();
         return QString(provider + avatarUrl);
     }
 
@@ -1464,7 +1464,7 @@ QString ShareModel::generatePassword()
     static const QRegularExpression lowercaseMatch("[a-z]");
     static const QRegularExpression uppercaseMatch("[A-Z]");
     static const QRegularExpression numberMatch("[0-9]");
-    static const QRegularExpression specialCharMatch(QString("[%1]").arg(specialChars.data()));
+    static const QRegularExpression specialCharMatch(QStringLiteral("[%1]").arg(specialChars.data()));
 
     static const std::map<std::string_view, QRegularExpression> matchMap{
         {lowercaseAlphabet, lowercaseMatch},

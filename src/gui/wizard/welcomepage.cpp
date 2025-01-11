@@ -71,8 +71,8 @@ void WelcomePage::styleSlideShow()
     _ui->slideShow->addSlide(wizardTalkIconFileName, tr("Screensharing, online meetings & web conferences"));
 
     const auto isDarkBackground = Theme::isDarkColor(backgroundColor);
-    _ui->slideShowNextButton->setIcon(theme->uiThemeIcon(QString("control-next.svg"), isDarkBackground));
-    _ui->slideShowPreviousButton->setIcon(theme->uiThemeIcon(QString("control-prev.svg"), isDarkBackground));
+    _ui->slideShowNextButton->setIcon(theme->uiThemeIcon(QStringLiteral("control-next.svg"), isDarkBackground));
+    _ui->slideShowPreviousButton->setIcon(theme->uiThemeIcon(QStringLiteral("control-prev.svg"), isDarkBackground));
 }
 
 void WelcomePage::setupSlideShow()

@@ -371,7 +371,7 @@ private slots:
 
         // Check correct user avatar
         const auto avatarUrl = shareIndex.data(ShareModel::AvatarUrlRole).toString();
-        const auto relativeAvatarPath = QString("remote.php/dav/avatars/%1/%2.png").arg(_testUserShareDefinition.shareShareWith, QString::number(64));
+        const auto relativeAvatarPath = QStringLiteral("remote.php/dav/avatars/%1/%2.png").arg(_testUserShareDefinition.shareShareWith, QString::number(64));
         const auto expectedAvatarPath = Utility::concatUrlPath(helper.account->url(), relativeAvatarPath).toString();
         const QString expectedUrl(QStringLiteral("image://tray-image-provider/") + expectedAvatarPath);
         QCOMPARE(avatarUrl, expectedUrl);

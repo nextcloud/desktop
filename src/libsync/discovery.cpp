@@ -450,7 +450,7 @@ bool ProcessDirectoryJob::handleExcluded(const QString &path, const Entries &ent
             if (containsForbiddenCharacters) {
                 reasonString = tr("Reason: the filename contains a forbidden character (%1).").arg(forbiddenCharMatch);
             }
-            item->_errorString = reasonString.isEmpty() ? errorString : QString("%1 %2").arg(errorString, reasonString);
+            item->_errorString = reasonString.isEmpty() ? errorString : QStringLiteral("%1 %2").arg(errorString, reasonString);
             item->_status = SyncFileItem::FileNameInvalidOnServer;
             break;
         }

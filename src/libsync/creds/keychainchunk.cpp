@@ -205,7 +205,7 @@ void WriteJob::slotWriteJobDone(QKeychain::Job *incomingJob)
             return;
         }
 
-        const QString keyWithIndex = _key + (index > 0 ? (QString(".") + QString::number(index)) : QString());
+        const QString keyWithIndex = _key + (index > 0 ? (QStringLiteral(".") + QString::number(index)) : QString());
         const QString kck = _account ? AbstractCredentials::keychainKey(
                 _account->url().toString(),
                 keyWithIndex,
@@ -313,7 +313,7 @@ void ReadJob::slotReadJobDone(QKeychain::Job *incomingJob)
 #if defined(Q_OS_WIN)
         // try to fetch next chunk
         if (_chunkCount < KeychainChunk::MaxChunks) {
-            const QString keyWithIndex = _key + QString(".") + QString::number(_chunkCount);
+            const QString keyWithIndex = _key + QStringLiteral(".") + QString::number(_chunkCount);
             const QString kck = _account ? AbstractCredentials::keychainKey(
                     _account->url().toString(),
                     keyWithIndex,
@@ -442,7 +442,7 @@ void DeleteJob::slotDeleteJobDone(QKeychain::Job *incomingJob)
 #if defined(Q_OS_WIN)
         // try to delete next chunk
         if (_chunkCount < KeychainChunk::MaxChunks) {
-            const QString keyWithIndex = _key + QString(".") + QString::number(_chunkCount);
+            const QString keyWithIndex = _key + QStringLiteral(".") + QString::number(_chunkCount);
             const QString kck = _account ? AbstractCredentials::keychainKey(
                     _account->url().toString(),
                     keyWithIndex,

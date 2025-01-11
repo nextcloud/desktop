@@ -463,7 +463,7 @@ QString ConfigFile::backup(const QString &fileName) const
     }
 
     QString backupFile =
-        QString("%1.backup_%2%3")
+        QStringLiteral("%1.backup_%2%3")
             .arg(baseFilePath)
             .arg(QDateTime::currentDateTime().toString("yyyyMMdd_HHmmss"))
             .arg(versionString);

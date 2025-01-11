@@ -158,7 +158,7 @@ void Flow2AuthWidget::slotStatusChanged(Flow2Auth::PollStatus status, int second
             _statusUpdateSkipCount--;
             break;
         }
-        _ui.statusLabel->setText(tr("Waiting for authorization") + QString("… (%1)").arg(secondsLeft));
+        _ui.statusLabel->setText(tr("Waiting for authorization") + QStringLiteral("… (%1)").arg(secondsLeft));
         stopSpinner(true);
         break;
     case Flow2Auth::statusPollNow:

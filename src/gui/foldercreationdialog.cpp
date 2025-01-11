@@ -45,7 +45,7 @@ FolderCreationDialog::FolderCreationDialog(const QString &destination, QWidget *
         ui->newFolderNameEdit->setText(suggestedFolderNamePrefix);
     } else {
         for (unsigned int i = 2; i < std::numeric_limits<unsigned int>::max(); ++i) {
-            const QString suggestedPostfix = QString(" (%1)").arg(i);
+            const QString suggestedPostfix = QStringLiteral(" (%1)").arg(i);
 
             if (!QDir(newFolderFullPath + suggestedPostfix).exists()) {
                 ui->newFolderNameEdit->setText(suggestedFolderNamePrefix + suggestedPostfix);

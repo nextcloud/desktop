@@ -36,7 +36,7 @@ CloudProviderWrapper::CloudProviderWrapper(QObject *parent, Folder *folder, int 
 {
     GMenuModel *model = nullptr;
     GActionGroup *action_group = nullptr;
-    QString accountName = QString("Folder/%1").arg(folderId);
+    QString accountName = QStringLiteral("Folder/%1").arg(folderId);
 
     _cloudProvider = CLOUD_PROVIDERS_PROVIDER_EXPORTER(cloudprovider);
     _cloudProviderAccount = cloud_providers_account_exporter_new(_cloudProvider, accountName.toUtf8().data());
@@ -170,7 +170,7 @@ void CloudProviderWrapper::slotUpdateProgress(const QString &folder, const Progr
 
 void CloudProviderWrapper::updateStatusText(QString statusText)
 {
-    QString status = QString("%1 - %2").arg(_folder->accountState()->stateString(_folder->accountState()->state()), statusText);
+    QString status = QStringLiteral("%1 - %2").arg(_folder->accountState()->stateString(_folder->accountState()->state()), statusText);
     cloud_providers_account_exporter_set_status_details(_cloudProviderAccount, status.toUtf8().data());
 }
 
