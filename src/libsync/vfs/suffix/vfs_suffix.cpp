@@ -95,13 +95,13 @@ Result<void, QString> VfsSuffix::createPlaceholder(const SyncFileItem &item)
     QString fn = _setupParams.filesystemPath + item._file;
     if (!fn.endsWith(fileSuffix())) {
         ASSERT(false, "vfs file isn't ending with suffix");
-        return QString("vfs file isn't ending with suffix");
+        return QStringLiteral("vfs file isn't ending with suffix");
     }
 
     QFile file(fn);
     if (file.exists() && file.size() > 1
         && !FileSystem::verifyFileUnchanged(fn, item._size, item._modtime)) {
-        return QString("Cannot create a placeholder because a file with the placeholder name already exist");
+        return QStringLiteral("Cannot create a placeholder because a file with the placeholder name already exist");
     }
 
     if (!file.open(QFile::ReadWrite | QFile::Truncate))

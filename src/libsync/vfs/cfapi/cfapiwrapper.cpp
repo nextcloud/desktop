@@ -569,7 +569,7 @@ bool createSyncRootRegistryKeys(const QString &providerName, const QString &fold
 
     // syncRootId should be: [storage provider ID]![Windows SID]![Account ID]![FolderAlias] (FolderAlias is a custom part added here to be able to register multiple sync folders for the same account)
     // folder registry keys go like: Nextcloud!S-1-5-21-2096452760-2617351404-2281157308-1001!user@nextcloud.lan:8080!0, Nextcloud!S-1-5-21-2096452760-2617351404-2281157308-1001!user@nextcloud.lan:8080!1, etc. for each sync folder
-    const auto syncRootId = QString("%1!%2!%3!%4").arg(providerName).arg(windowsSid).arg(accountDisplayName).arg(folderAlias);
+    const auto syncRootId = QStringLiteral("%1!%2!%3!%4").arg(providerName).arg(windowsSid).arg(accountDisplayName).arg(folderAlias);
 
     const QString providerSyncRootIdRegistryKey = syncRootManagerRegKey + QStringLiteral("\\") + syncRootId;
     const QString providerSyncRootIdUserSyncRootsRegistryKey = providerSyncRootIdRegistryKey + QStringLiteral(R"(\UserSyncRoots\)");
@@ -617,7 +617,7 @@ bool deleteSyncRootRegistryKey(const QString &syncRootPath, const QString &provi
             return false;
         }
 
-        const auto currentUserSyncRootIdPattern = QString("%1!%2!%3").arg(providerName).arg(windowsSid).arg(accountDisplayName);
+        const auto currentUserSyncRootIdPattern = QStringLiteral("%1!%2!%3").arg(providerName).arg(windowsSid).arg(accountDisplayName);
 
         bool result = true;
 
@@ -691,7 +691,7 @@ void unregisterSyncRootShellExtensions(const QString &providerName, const QStrin
         return;
     }
 
-    const auto syncRootId = QString("%1!%2!%3!%4").arg(providerName).arg(windowsSid).arg(accountDisplayName).arg(folderAlias);
+    const auto syncRootId = QStringLiteral("%1!%2!%3!%4").arg(providerName).arg(windowsSid).arg(accountDisplayName).arg(folderAlias);
 
     const QString providerSyncRootIdRegistryKey = syncRootManagerRegKey + QStringLiteral("\\") + syncRootId;
 
@@ -757,7 +757,7 @@ bool OCC::CfApiWrapper::isAnySyncRoot(const QString &providerName, const QString
         return false;
     }
 
-    const auto syncRootPrefix = QString("%1!%2!%3!").arg(providerName).arg(windowsSid).arg(accountDisplayName);
+    const auto syncRootPrefix = QStringLiteral("%1!%2!%3!").arg(providerName).arg(windowsSid).arg(accountDisplayName);
 
     if (Utility::registryKeyExists(HKEY_LOCAL_MACHINE, syncRootManagerRegKey)) {
         bool foundSyncRoots = false;

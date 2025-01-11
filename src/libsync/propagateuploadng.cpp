@@ -50,7 +50,7 @@ QUrl PropagateUploadFileNG::chunkUrl(const int chunk) const
     constexpr auto maxChunkDigits = 5; // Chunk V2: max num of chunks is 10000
 
     // We need to do add leading 0 because the server orders the chunk alphabetically
-    const auto chunkNumString = QString("%1").arg(chunk, maxChunkDigits, 10, QChar('0'));
+    const auto chunkNumString = QStringLiteral("%1").arg(chunk, maxChunkDigits, 10, QChar('0'));
     return Utility::concatUrlPath(chunkUploadFolderUrl(), chunkNumString);
 }
 

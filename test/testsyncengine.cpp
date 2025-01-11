@@ -721,7 +721,7 @@ private slots:
         // Begin Test mismatch recalculation---------------------------------------------------------------------------------
 
         const auto prevServerVersion = fakeFolder.account()->serverVersion();
-        fakeFolder.account()->setServerVersion(QString("%1.0.0").arg(fakeFolder.account()->checksumRecalculateServerVersionMinSupportedMajor()));
+        fakeFolder.account()->setServerVersion(QStringLiteral("%1.0.0").arg(fakeFolder.account()->checksumRecalculateServerVersionMinSupportedMajor()));
 
         // Mismatched OC-Checksum and X-Recalculate-Hash is not supported -> sync must fail
         isChecksumRecalculateSupported = false;
