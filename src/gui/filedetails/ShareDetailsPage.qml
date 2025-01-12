@@ -466,7 +466,7 @@ Page {
 
                 checkable: true
                 checked: root.passwordProtectEnabled
-                text: qsTr("Password protect")
+                text: qsTr("Password protection")
                 visible: root.shareSupportsPassword
                 enabled: visible && 
                          !root.waitingForPasswordProtectEnabledChange && 
