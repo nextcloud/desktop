@@ -2483,7 +2483,10 @@ Alternatively, you can restore all deleted files by downloading them from the se
 This setup can cause data loss and it is no longer supported.
 To resolve this issue: please remove %1 from one of the accounts and create a new sync folder.
 For advanced users: this issue might be related to multiple sync database files found in one folder. Please check %1 for outdated and unused .sync_*.db files and remove them.</source>
-        <translation type="unfinished"/>
+        <translation>Каталог %1 використовується кількома користувачами.
+Така конфігурація може призвети до втрати даних, відтак більше не підтримується.
+Для вирішення проблеми потрібно вилучити каталог %1 з одного з облікових записів та створити новий каталог для синхронізації.
+Для експертів: проблема може полягати в тому, що кілька файлів синхронізації баз даних розташовано в одному каталозі. Перевірте, каталог %1 містить застарілі та невикористовувані  файли .sync_*.db, вилучіть їх.</translation>
     </message>
 </context>
 <context>
@@ -4384,7 +4387,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1485"/>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1519"/>
         <source>unknown exception</source>
-        <translation type="unfinished"/>
+        <translation>невідомий виняток</translation>
     </message>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1387"/>
@@ -4518,7 +4521,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="259"/>
         <source>unknown exception</source>
-        <translation type="unfinished"/>
+        <translation>невідомий виняток</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="200"/>
