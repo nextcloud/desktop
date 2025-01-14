@@ -2,19 +2,28 @@ pragma Singleton
 
 import QtQuick
 
-import com.nextcloud.desktopclient
+import com.ionos.hidrivenext.desktopclient 1.0
 
 QtObject {
     readonly property int pixelSize: fontMetrics.font.pixelSize
     readonly property bool darkMode: Theme.darkMode
 
     // Colors
-    readonly property color ncBlue: Theme.wizardHeaderBackgroundColor
-    readonly property color ncHeaderTextColor: Theme.wizardHeaderTitleColor
+    readonly property color ncBlue:      Theme.wizardHeaderBackgroundColor
+    readonly property color ncHeaderTextColor: sesTrayFontColor
+    readonly property color ncTextColor: sesTrayFontColor
+    readonly property color ncTextBrightColor: "white"
+    readonly property color ncSecondaryTextColor: sesTrayFontColor//"#808080"
+    readonly property color lightHover: Theme.darkMode ? Qt.lighter(backgroundColor, 2) : Qt.darker(backgroundColor, 1.05)
+    readonly property color darkerHover: Theme.darkMode ? Qt.lighter(backgroundColor, 2.35) : Qt.darker(backgroundColor, 1.25)
+    readonly property color menuBorder: Theme.darkMode ? Qt.lighter(backgroundColor, 2.5) : Qt.darker(backgroundColor, 1.5)
+    readonly property color backgroundColor: "#FFFFFF"
+    readonly property color buttonBackgroundColor: Theme.systemPalette.button
+    readonly property color positiveColor: Qt.rgba(0.38, 0.74, 0.38, 1)
     readonly property color accentColor: UserModel.currentUser ? UserModel.currentUser.accentColor : ncBlue
 
     readonly property color currentUserHeaderColor: UserModel.currentUser ? UserModel.currentUser.headerColor : ncBlue
-    readonly property color currentUserHeaderTextColor: UserModel.currentUser ? UserModel.currentUser.headerTextColor : ncHeaderTextColor
+    readonly property color currentUserHeaderTextColor: sesTrayFontColor
     readonly property color adjustedCurrentUserHeaderColor: Theme.darkMode ? Qt.lighter(currentUserHeaderColor, 2)
                                                                            : Qt.darker(currentUserHeaderColor, 1.5)
 
@@ -93,10 +102,13 @@ QtObject {
     property double trayFoldersMenuButtonDropDownCaretIconSizeFraction: 0.3
     property double trayFoldersMenuButtonMainIconSizeFraction: 1.0 - trayFoldersMenuButtonDropDownCaretIconSizeFraction
 
+    property int addAccountButtonHeight: 50
+
+    property int headerButtonIconSize: sesIconSize
+    property int dismissButtonSize: 26
     property int activityListButtonWidth: 42
     property int activityListButtonHeight: 32
     property int activityListButtonIconSize: 18
-    property int headerButtonIconSize: 48
     property int minimumActivityItemHeight: 24
 
     property int accountIconsMenuMargin: 7
@@ -205,4 +217,63 @@ QtObject {
     function colorWithoutTransparency(color) {
         return Qt.rgba(color.r, color.g, color.b, 1)
     }
+
+    readonly property color sesIconDarkColor: "#001B41"
+    readonly property color sesIconColor: "#1474C4"
+
+    readonly property color sesBorderColor: "#D7D7D7"
+    readonly property color sesWhite: "#FFFFFF"
+    readonly property color sesGray: "#465A75"
+    readonly property color sesTrayInputField: "#718095"
+    readonly property color sesHover: "#F2F5F8"
+    readonly property color sesActionHover: "#1474C4"
+    readonly property color sesActionPressed: "#0B2A63"
+    readonly property color sesSelectedColor: "#F4F7FA"
+    readonly property color sesButtonPressed: "#95CAEB"
+    readonly property color sesAccountMenuHover: "#DBEDF8"
+    readonly property color sesDarkGreen: "#096B35"
+    readonly property color sesDarkBlue: "#001B41"
+    readonly property color sesTrayFontColor: "#001B41"
+    readonly property color sesErrorBoxBorder: "#F50C00"
+    readonly property color sesErrorBoxText: "#C80A00"
+    readonly property color sesMenuBorder: "#2E4360"
+    readonly property color sesSearchFieldContent: "#97A3B4"
+
+    property int sesAccountMenuHeight: variableSize(40)
+    property int sesHeaderLogoHeigth: variableSize(40)
+    property int sesHeaderLogoTopMargin: variableSize(12)
+    property int sesHeaderLogoLeftMargin: variableSize(24)
+    property int sesCornerRadius: 8
+    property int sesHeaderTopMargin: variableSize(10)
+    property int sesSmallMargin: 8
+    property int sesAccountMenuItemPadding: 12
+    property int sesMediumMargin: 16
+
+    readonly property string sesOpenSansRegular: "qrc:///client/fonts/OpenSans-Regular.ttf"
+    property int sesFontPointSize: 9
+    property int sesFontPixelSizeTitle: 20
+    property int sesFontPixelSize: 16
+    property int sesFontErrortextPixelSize: 14
+    property int sesFontHintPixelSize: 12
+    property int sesFontBoldWeight: 400
+    property int sesFontNormalWeight: sesFontBoldWeight
+
+    property int sesIconSize: 24
+    property int sesActivityItemDistanceToFrame: 24
+    property int sesActivityItemWidthModifier: 26
+    property int sesFileDetailsIconSize: 58
+    property int sesFileDetailsHeaderModifier: 100
+    property int sesSearchFieldHeight: 40
+
+    //Tray Account Menu Values
+    property int sesAccountButtonWidth: 256
+    property int sesAccountButtonHeight: 68
+    property int sesAccountButtonRightMargin: 33
+    property int sesAccountButtonLeftMargin: 19
+    property int sesHeaderButtonWidth: 84
+    property int sesHeaderButtonHeight: 68
+    property int sesAccountMenuWidth: sesAccountButtonWidth - 8
+    property int sesAccountLabelWidth: 157
+    property int sesTrayHeaderMargin: 11
+    property int sesTrayWindowWidth: 464
 }
