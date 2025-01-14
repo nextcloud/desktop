@@ -15,7 +15,6 @@
 
 #include <Cocoa/Cocoa.h>
 #include <Sparkle/Sparkle.h>
-#include <Sparkle/SUUpdater.h>
 #include <AppKit/NSApplication.h>
 
 #include "common/utility.h"
@@ -34,7 +33,7 @@ public:
 
     ~SparkleInterface()
     {
-        [updater release];
+        [updaterController release];
         [delegate release];
     }
 
@@ -45,7 +44,7 @@ public:
         emit q->statusChanged();
     }
 
-    SUUpdater* updater;
+    SPUStandardUpdaterController *updaterController;
     NCSparkleUpdaterDelegate *delegate;
 
 private:
@@ -250,27 +249,25 @@ SparkleUpdater::SparkleUpdater(const QUrl& appCastUrl)
     _interface->delegate = [[NCSparkleUpdaterDelegate alloc] initWithOwner:_interface.get()];
     [_interface->delegate retain];
 
-    _interface->updater = [SUUpdater sharedUpdater];
-    [_interface->updater setDelegate:_interface->delegate];
-    [_interface->updater setAutomaticallyChecksForUpdates:YES];
-    [_interface->updater setAutomaticallyDownloadsUpdates:NO];
-    [_interface->updater setSendsSystemProfile:NO];
-    [_interface->updater resetUpdateCycle];
-    [_interface->updater retain];
+    _interface->updaterController =
+        [[SPUStandardUpdaterController alloc] initWithStartingUpdater:YES 
+                                                      updaterDelegate:_interface->delegate
+                                                   userDriverDelegate:nil];
+    [_interface->updaterController retain];
 
     setUpdateUrl(appCastUrl);
 
     // Sparkle 1.8 required
     const auto userAgentString = QString::fromUtf8(Utility::userAgentString());
-    NSString *userAgent = userAgentString.toNSString();
-    [_interface->updater setUserAgentString: userAgent];
+    NSString *const userAgent = userAgentString.toNSString();
+    _interface->updaterController.updater.userAgentString = userAgent;
 }
 
 SparkleUpdater::~SparkleUpdater() = default;
 
 void SparkleUpdater::setUpdateUrl(const QUrl &url)
 {
-    [_interface->updater setFeedURL:url.toNSURL()];
+    _interface->updaterController.updater.feedURL = url.toNSURL();
 }
 
 bool SparkleUpdater::autoUpdaterAllowed()
@@ -295,7 +292,7 @@ void SparkleUpdater::checkForUpdate()
 {
     qCInfo(OCC::lcUpdater) << "Checking for updates.";
     if (autoUpdaterAllowed()) {
-        [_interface->updater checkForUpdates: NSApp];
+        [_interface->updaterController.updater checkForUpdates];
     }
 }
 
@@ -303,7 +300,7 @@ void SparkleUpdater::backgroundCheckForUpdate()
 {
     if (autoUpdaterAllowed() && !ConfigFile().skipUpdateCheck()) {
         qCInfo(OCC::lcUpdater) << "launching background check";
-        [_interface->updater checkForUpdatesInBackground];
+        [_interface->updaterController.updater checkForUpdatesInBackground];
     } else {
         qCInfo(OCC::lcUpdater) << "not launching background check, auto updater not allowed or update check skipped in config";
     }
