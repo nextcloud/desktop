@@ -35,7 +35,8 @@ public:
 
     void startAuth(Account *account);
     void resetAuth(Account *account = nullptr);
-    void setError(const QString &error);
+    void setError(const QString &caption, const QString &message);
+    void shrinkTopMarginForText();
 
 public Q_SLOTS:
     void slotAuthResult(Flow2Auth::Result, const QString &errorString, const QString &user, const QString &appPassword);

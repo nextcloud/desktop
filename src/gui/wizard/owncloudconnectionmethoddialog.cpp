@@ -23,6 +23,7 @@ OwncloudConnectionMethodDialog::OwncloudConnectionMethodDialog(QWidget *parent)
     , ui(new Ui::OwncloudConnectionMethodDialog)
 {
     ui->setupUi(this);
+    setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
 
     connect(ui->btnNoTLS, &QAbstractButton::clicked, this, &OwncloudConnectionMethodDialog::returnNoTLS);
     connect(ui->btnClientSideTLS, &QAbstractButton::clicked, this, &OwncloudConnectionMethodDialog::returnClientSideTLS);

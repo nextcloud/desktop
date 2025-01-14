@@ -13,6 +13,8 @@
  */
 
 #include "slideshow.h"
+#include "ionostheme.h"
+
 #include <QGuiApplication>
 #include <QMouseEvent>
 #include <QPainter>
@@ -21,14 +23,19 @@
 
 namespace OCC {
 
-static const int Spacing = 6;
+static const int Spacing = IonosTheme::LoginPageSpacer();
 static const int SlideDuration = 1000;
 static const int SlideDistance = 400;
 
 SlideShow::SlideShow(QWidget *parent) : QWidget(parent)
 {
     setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
-    setStyleSheet(QStringLiteral("font: bold 18pt"));
+    setStyleSheet(IonosTheme::fontConfigurationCss(
+        IonosTheme::settingsFont(),
+        IonosTheme::onboardingTitle(),
+        IonosTheme::settingsTitleWeight400(),
+        IonosTheme::titleColor()
+    ));
 }
 
 void SlideShow::addSlide(const QPixmap &pixmap, const QString &label)
@@ -190,7 +197,7 @@ void SlideShow::maybeRestartTimer()
 }
 
 void SlideShow::drawSlide(QPainter *painter, int index)
-{    
+{
     const auto label = _labels.value(index);
     const auto labelRect = style()->itemTextRect(fontMetrics(),
                                                  rect(),

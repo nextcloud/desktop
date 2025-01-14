@@ -59,6 +59,7 @@ public:
 
 public slots:
     void setErrorString(const QString &, bool retryHTTPonly);
+    void setConnectionError(const QString &, bool retryHTTPonly);
     void startSpinner();
     void stopSpinner();
     void slotCertificateAccepted();

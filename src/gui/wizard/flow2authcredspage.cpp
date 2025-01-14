@@ -32,7 +32,7 @@ Flow2AuthCredsPage::Flow2AuthCredsPage()
     : AbstractCredentialsWizardPage()
 {
     _layout = new QVBoxLayout(this);
-
+    _layout->setContentsMargins(0, 0, 0, 0);
     _flow2AuthWidget = new Flow2AuthWidget();
     _layout->addWidget(_flow2AuthWidget);
 

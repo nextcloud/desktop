@@ -14,19 +14,21 @@
 
 #include "flow2authwidget.h"
 
-#include "common/utility.h"
+
 #include "account.h"
+#include "buttonstyle.h"
+#include "common/utility.h"
 #include "creds/webflowcredentials.h"
-#include "networkjobs.h"
-#include "wizard/owncloudwizardcommon.h"
-#include "theme.h"
 #include "linklabel.h"
+#include "networkjobs.h"
+#include "theme.h"
+#include "wizard/owncloudwizardcommon.h"
 
 #include "QProgressIndicator.h"
 
 #include <QJsonDocument>
-#include <QStringLiteral>
 #include <QJsonObject>
+#include <QStringLiteral>
 
 namespace OCC {
 
@@ -39,8 +41,7 @@ Flow2AuthWidget::Flow2AuthWidget(QWidget *parent)
 {
     _ui.setupUi(this);
 
-    WizardCommon::initErrorLabel(_ui.errorLabel);
-    _ui.errorLabel->setTextFormat(Qt::RichText);
+    _ui.errorSnackbar->setVisible(false);
 
     connect(_ui.openLinkButton, &QPushButton::clicked, this, &Flow2AuthWidget::slotOpenBrowser);
     connect(_ui.copyLinkButton, &QPushButton::clicked, this, &Flow2AuthWidget::slotCopyLinkToClipboard);
@@ -57,9 +58,7 @@ Flow2AuthWidget::Flow2AuthWidget(QWidget *parent)
 
 void Flow2AuthWidget::setLogo()
 {
-    const auto backgroundColor = palette().window().color();
-    const auto logoIconFileName = Theme::instance()->isBranded() ? Theme::hidpiFileName("external.png", backgroundColor)
-                                                                 : Theme::hidpiFileName(":/client/theme/colored/external.png");
+    const auto logoIconFileName = Theme::hidpiFileName(":/client/theme/ses/ses-external.svg");
     _ui.logoLabel->setPixmap(logoIconFileName);
 }
 
@@ -95,16 +94,14 @@ void Flow2AuthWidget::slotAuthResult(Flow2Auth::Result r, const QString &errorSt
     switch (r) {
     case Flow2Auth::NotSupported:
         /* Flow2Auth can't open browser */
-        _ui.errorLabel->setText(tr("Unable to open the Browser, please copy the link to your Browser."));
-        _ui.errorLabel->show();
+        setError(tr("Error"),tr("Unable to open the Browser, please copy the link to your Browser."));
         break;
     case Flow2Auth::Error:
         /* Error while getting the access token.  (Timeout, or the server did not accept our client credentials */
-        _ui.errorLabel->setText(errorString);
-        _ui.errorLabel->show();
+        setError(tr("Error"), errorString);
         break;
     case Flow2Auth::LoggedIn: {
-        _ui.errorLabel->hide();
+        _ui.errorSnackbar->hide();
         break;
     }
     }
@@ -112,12 +109,12 @@ void Flow2AuthWidget::slotAuthResult(Flow2Auth::Result r, const QString &errorSt
     emit authResult(r, errorString, user, appPassword);
 }
 
-void Flow2AuthWidget::setError(const QString &error) {
-    if (error.isEmpty()) {
-        _ui.errorLabel->hide();
+void Flow2AuthWidget::setError(const QString &caption, const QString &message) {
+    if (message.isEmpty()) {
+        _ui.errorSnackbar->hide();
     } else {
-        _ui.errorLabel->setText(error);
-        _ui.errorLabel->show();
+        _ui.errorSnackbar->setError(message);
+        _ui.errorSnackbar->show();
     }
 }
 
@@ -128,8 +125,8 @@ Flow2AuthWidget::~Flow2AuthWidget() {
 
 void Flow2AuthWidget::slotOpenBrowser()
 {
-    if (_ui.errorLabel)
-        _ui.errorLabel->hide();
+    if (_ui.errorSnackbar)
+        _ui.errorSnackbar->hide();
 
     if (_asyncAuth)
         _asyncAuth->openBrowser();
@@ -137,8 +134,8 @@ void Flow2AuthWidget::slotOpenBrowser()
 
 void Flow2AuthWidget::slotCopyLinkToClipboard()
 {
-    if (_ui.errorLabel)
-        _ui.errorLabel->hide();
+    if (_ui.errorSnackbar)
+        _ui.errorSnackbar->hide();
 
     if (_asyncAuth)
         _asyncAuth->copyLinkToClipboard();
@@ -206,6 +203,14 @@ void Flow2AuthWidget::slotStyleChanged()
     customizeStyle();
 }
 
+void Flow2AuthWidget::shrinkTopMarginForText()
+{
+    _ui.topMarginSpacer->changeSize(20, 30);
+    _ui.topMarginSpacer->invalidate();
+    setMinimumHeight(340);
+    setMaximumHeight(400);
+}
+
 void Flow2AuthWidget::customizeStyle()
 {
     setLogo();
@@ -220,10 +225,34 @@ void Flow2AuthWidget::customizeStyle()
     }
 
     _ui.openLinkButton->setText(tr("Open Browser"));
+    _ui.openLinkButton->setProperty("buttonStyle", QVariant::fromValue(OCC::ButtonStyleName::Primary));
+    _ui.openLinkButton->setFixedSize(180, 40);
 
     _ui.copyLinkButton->setText(tr("Copy Link"));
+    _ui.copyLinkButton->setFixedSize(150, 40);
 
-    WizardCommon::customizeHintLabel(_ui.statusLabel);
+    _ui.mainLayoutVBox->setContentsMargins(32, 0, 32, 0);
+    _ui.innerLayoutVBox->setSpacing(16);
+    
+#ifdef Q_OS_MAC
+    _ui.horizontalLayout->setSpacing(32);
+#endif
+
+    _ui.statusLabel->setStyleSheet(IonosTheme::fontConfigurationCss(
+        IonosTheme::settingsFont(),
+        IonosTheme::settingsTextSize(),
+        IonosTheme::settingsTextWeight(),
+        IonosTheme::titleColor()
+    ));
+
+    _ui.label->setStyleSheet(IonosTheme::fontConfigurationCss(
+        IonosTheme::settingsFont(),
+        IonosTheme::settingsTextSize(),
+        IonosTheme::settingsTextWeight(),
+        IonosTheme::titleColor()
+    ));
+
+    _ui.label->setText(tr("Switch to your browser to connect your account"));
 }
 
 } // namespace OCC

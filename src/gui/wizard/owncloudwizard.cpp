@@ -23,13 +23,14 @@
 #include "foregroundbackground_interface.h"
 #endif
 
-#include "wizard/owncloudwizard.h"
-#include "wizard/welcomepage.h"
-#include "wizard/owncloudsetuppage.h"
-#include "wizard/owncloudhttpcredspage.h"
-#include "wizard/owncloudadvancedsetuppage.h"
-#include "wizard/webviewpage.h"
+#include "ionostheme.h"
 #include "wizard/flow2authcredspage.h"
+#include "wizard/owncloudadvancedsetuppage.h"
+#include "wizard/owncloudhttpcredspage.h"
+#include "wizard/owncloudsetuppage.h"
+#include "wizard/owncloudwizard.h"
+#include "wizard/webviewpage.h"
+#include "wizard/welcomepage.h"
 
 #include "common/vfs.h"
 
@@ -124,6 +125,9 @@ OwncloudWizard::OwncloudWizard(QWidget *parent)
 
     adjustWizardSize();
     centerWindow();
+
+    // Set focus policy to prevent initial focus on the button
+    setFocusPolicy(Qt::StrongFocus);
 }
 
 void OwncloudWizard::centerWindow()
@@ -138,20 +142,9 @@ void OwncloudWizard::centerWindow()
     wizardWindow->move(newWindowPosition);
 }
 
-
 void OwncloudWizard::adjustWizardSize()
 {
-    const auto pageSizes = calculateWizardPageSizes();
-    const auto currentPageIndex = currentId();
-
-    // If we can, just use the size of the current page
-    if(currentPageIndex > -1 && currentPageIndex < pageSizes.count()) {
-        resize(pageSizes.at(currentPageIndex));
-        return;
-    }
-
-    // As a backup, resize to largest page
-    resize(calculateLargestSizeOfWizardPages(pageSizes));
+    setFixedSize(QSize(626, 460));
 }
 
 QList<QSize> OwncloudWizard::calculateWizardPageSizes() const
@@ -330,6 +323,10 @@ void OwncloudWizard::slotCurrentPageChanged(int id)
 #endif // WITH_WEBENGINE
         id == WizardCommon::Page_Flow2AuthCreds) {
         setButtonLayout({ QWizard::BackButton, QWizard::Stretch });
+        #ifdef APPLICATION_SERVER_URL_ENFORCE
+        button(QWizard::BackButton)->setHidden(true);
+        #endif
+
     } else if (id == WizardCommon::Page_AdvancedSetup) {
         setButtonLayout({ QWizard::CustomButton2, QWizard::Stretch, QWizard::CustomButton1, QWizard::FinishButton });
         setNextButtonAsDefault();
@@ -340,6 +337,11 @@ void OwncloudWizard::slotCurrentPageChanged(int id)
 
     if (id == WizardCommon::Page_ServerSetup) {
         emit clearPendingRequests();
+        #ifdef APPLICATION_SERVER_URL_ENFORCE
+            _setupPage->setServerUrl(APPLICATION_SERVER_URL);
+            _setupPage->initializePage();
+            button(QWizard::BackButton)->setHidden(true);
+        #endif
     }
 
     if (id == WizardCommon::Page_AdvancedSetup && _credentialsPage == _flow2CredsPage) {
@@ -353,7 +355,7 @@ void OwncloudWizard::displayError(const QString &msg, bool retryHTTPonly)
 {
     switch (currentId()) {
     case WizardCommon::Page_ServerSetup:
-        _setupPage->setErrorString(msg, retryHTTPonly);
+        _setupPage->setConnectionError(msg, retryHTTPonly);
         break;
 
     case WizardCommon::Page_HttpCreds:
@@ -429,8 +431,14 @@ void OwncloudWizard::customizeStyle()
 
     // Set background colors
     auto wizardPalette = palette();
-    const auto backgroundColor = wizardPalette.color(QPalette::Window);
+    const auto backgroundColor = QColor(IonosTheme::dialogBackgroundColor());
+    
+    // Set Color of upper part
     wizardPalette.setColor(QPalette::Base, backgroundColor);
+
+    // Set Color of lower part
+    wizardPalette.setColor(backgroundRole(), backgroundColor);
+
     // Set separator color
     wizardPalette.setColor(QPalette::Mid, backgroundColor);
 

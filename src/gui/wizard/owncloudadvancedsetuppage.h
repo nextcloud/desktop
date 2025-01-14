@@ -82,6 +82,7 @@ private:
     void setResolutionGuiVisible(bool value);
     void setupResoultionWidget();
     void fetchUserAvatar();
+    void SetAvatarIcon();
     void setUserInformation();
 
     // TODO: remove when UX decision is made
