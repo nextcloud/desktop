@@ -144,7 +144,7 @@ QString Theme::appNameGUI() const
 
 QString Theme::appName() const
 {
-    return APPLICATION_SHORTNAME;
+    return APPLICATION_NAME;
 }
 
 QUrl Theme::stateOnlineImageSource() const
@@ -399,6 +399,27 @@ Theme::Theme()
     reserveDarkPalette.setColor(QPalette::Disabled, QPalette::WindowText,
                                 QColor(127, 127, 127));
 #endif
+
+    IONOSPalette.setColor(QPalette::Window, QColor("#ffffff"));
+    IONOSPalette.setColor(QPalette::WindowText, QColor("#001B40"));
+    IONOSPalette.setColor(QPalette::Disabled, QPalette::WindowText, QColor(0,0,0));
+    IONOSPalette.setColor(QPalette::Base, QColor( "#FAFAFA"));
+    IONOSPalette.setColor(QPalette::AlternateBase, QColor(0,0,0));
+    IONOSPalette.setColor(QPalette::ToolTipBase, QColor(0,0,0));
+    IONOSPalette.setColor(QPalette::ToolTipText, QColor(0,0,0));
+    IONOSPalette.setColor(QPalette::Text, QColor(0,0,0));
+    IONOSPalette.setColor(QPalette::Disabled, QPalette::Text, QColor(0,0,0));
+    IONOSPalette.setColor(QPalette::Dark, QColor("#e1e1e1"));
+    IONOSPalette.setColor(QPalette::Shadow, QColor("#D1D1D1"));
+    IONOSPalette.setColor(QPalette::Button, QColor(0,0,0));
+    IONOSPalette.setColor(QPalette::ButtonText, QColor(0,0,0));
+    IONOSPalette.setColor(QPalette::Disabled, QPalette::ButtonText, QColor(0,0,0));
+    IONOSPalette.setColor(QPalette::BrightText,  QColor(0,0,0));
+    IONOSPalette.setColor(QPalette::Link, QColor("#1474c4"));
+    IONOSPalette.setColor(QPalette::Highlight, QColor("#F2F5F8"));
+    IONOSPalette.setColor(QPalette::Disabled, QPalette::Highlight, QColor(0,0,0));
+    IONOSPalette.setColor(QPalette::HighlightedText, QColor(0,0,0));
+    IONOSPalette.setColor(QPalette::Disabled, QPalette::HighlightedText, QColor(0,0,0));
 
     connectToPaletteSignal();
 
@@ -894,38 +915,25 @@ void Theme::replaceLinkColorString(QString &linkString, const QColor &newColor)
     linkString.replace(linkRegularExpression, QString::fromLatin1("<a style='color:%1;' href").arg(newColor.name()));
 }
 
-QIcon Theme::createColorAwareIcon(const QString &name, const QPalette &palette)
+QIcon Theme::createColorAwareIcon(const QString &name, const QPalette &palette, const QSize &size)
 {
     QSvgRenderer renderer(name);
-    QImage img(64, 64, QImage::Format_ARGB32);
+    QImage img(size, QImage::Format_ARGB32);
     img.fill(Qt::GlobalColor::transparent);
     QPainter imgPainter(&img);
-    QImage inverted(64, 64, QImage::Format_ARGB32);
-    inverted.fill(Qt::GlobalColor::transparent);
-    QPainter invPainter(&inverted);
 
     renderer.render(&imgPainter);
-    renderer.render(&invPainter);
-
-    inverted.invertPixels(QImage::InvertRgb);
 
     QIcon icon;
-    if (Theme::isDarkColor(palette.color(QPalette::Base))) {
-        icon.addPixmap(QPixmap::fromImage(inverted));
-    } else {
-        icon.addPixmap(QPixmap::fromImage(img));
-    }
-    if (Theme::isDarkColor(palette.color(QPalette::HighlightedText))) {
-        icon.addPixmap(QPixmap::fromImage(img), QIcon::Normal, QIcon::On);
-    } else {
-        icon.addPixmap(QPixmap::fromImage(inverted), QIcon::Normal, QIcon::On);
-    }
+    icon.addPixmap(QPixmap::fromImage(img));
+    icon.addPixmap(QPixmap::fromImage(img), QIcon::Normal, QIcon::On);
+
     return icon;
 }
 
-QIcon Theme::createColorAwareIcon(const QString &name)
+QIcon Theme::createColorAwareIcon(const QString &name, const QSize &size)
 {
-    return createColorAwareIcon(name, QGuiApplication::palette());
+    return createColorAwareIcon(name, QGuiApplication::palette(), size);
 }
 
 QPixmap Theme::createColorAwarePixmap(const QString &name, const QPalette &palette)
@@ -984,27 +992,49 @@ QVariantMap Theme::systemPalette() const
 
 #endif
 
+    // return QVariantMap {
+    //     { QStringLiteral("base"), systemPalette.base().color() },
+    //     { QStringLiteral("alternateBase"), systemPalette.alternateBase().color() },
+    //     { QStringLiteral("text"), systemPalette.text().color() },
+    //     { QStringLiteral("toolTipBase"), systemPalette.toolTipBase().color() },
+    //     { QStringLiteral("toolTipText"), systemPalette.toolTipText().color() },
+    //     { QStringLiteral("brightText"), systemPalette.brightText().color() },
+    //     { QStringLiteral("buttonText"), systemPalette.buttonText().color() },
+    //     { QStringLiteral("button"), systemPalette.button().color() },
+    //     { QStringLiteral("highlightedText"), systemPalette.highlightedText().color() },
+    //     { QStringLiteral("placeholderText"), systemPalette.placeholderText().color() },
+    //     { QStringLiteral("windowText"), systemPalette.windowText().color() },
+    //     { QStringLiteral("window"), systemPalette.window().color() },
+    //     { QStringLiteral("dark"), systemPalette.dark().color() },
+    //     { QStringLiteral("highlight"), systemPalette.highlight().color() },
+    //     { QStringLiteral("light"), systemPalette.light().color() },
+    //     { QStringLiteral("link"), systemPalette.link().color() },
+    //     { QStringLiteral("midlight"), systemPalette.midlight().color() },
+    //     { QStringLiteral("mid"), systemPalette.mid().color() },
+    //     { QStringLiteral("linkVisited"), systemPalette.linkVisited().color() },
+    //     { QStringLiteral("shadow"), systemPalette.shadow().color() },
+    // };
     return QVariantMap {
-        { QStringLiteral("base"), systemPalette.base().color() },
-        { QStringLiteral("alternateBase"), systemPalette.alternateBase().color() },
-        { QStringLiteral("text"), systemPalette.text().color() },
-        { QStringLiteral("toolTipBase"), systemPalette.toolTipBase().color() },
-        { QStringLiteral("toolTipText"), systemPalette.toolTipText().color() },
-        { QStringLiteral("brightText"), systemPalette.brightText().color() },
-        { QStringLiteral("buttonText"), systemPalette.buttonText().color() },
-        { QStringLiteral("button"), systemPalette.button().color() },
-        { QStringLiteral("highlightedText"), systemPalette.highlightedText().color() },
-        { QStringLiteral("placeholderText"), systemPalette.placeholderText().color() },
-        { QStringLiteral("windowText"), systemPalette.windowText().color() },
-        { QStringLiteral("window"), systemPalette.window().color() },
-        { QStringLiteral("dark"), systemPalette.dark().color() },
-        { QStringLiteral("highlight"), systemPalette.highlight().color() },
-        { QStringLiteral("light"), systemPalette.light().color() },
-        { QStringLiteral("link"), systemPalette.link().color() },
-        { QStringLiteral("midlight"), systemPalette.midlight().color() },
-        { QStringLiteral("mid"), systemPalette.mid().color() },
-        { QStringLiteral("linkVisited"), systemPalette.linkVisited().color() },
-        { QStringLiteral("shadow"), systemPalette.shadow().color() },
+        { QStringLiteral("base"), IONOSPalette.base().color() },
+        { QStringLiteral("alternateBase"), IONOSPalette.alternateBase().color() },
+        { QStringLiteral("text"), IONOSPalette.text().color() },
+        { QStringLiteral("toolTipBase"), IONOSPalette.toolTipBase().color() },
+        { QStringLiteral("toolTipText"), IONOSPalette.toolTipText().color() },
+        { QStringLiteral("brightText"), IONOSPalette.brightText().color() },
+        { QStringLiteral("buttonText"), IONOSPalette.buttonText().color() },
+        { QStringLiteral("button"), IONOSPalette.button().color() },
+        { QStringLiteral("highlightedText"), IONOSPalette.highlightedText().color() },
+        { QStringLiteral("placeholderText"), IONOSPalette.placeholderText().color() },
+        { QStringLiteral("windowText"), IONOSPalette.windowText().color() },
+        { QStringLiteral("window"), IONOSPalette.window().color() },
+        { QStringLiteral("dark"), IONOSPalette.dark().color() },
+        { QStringLiteral("highlight"), IONOSPalette.highlight().color() },
+        { QStringLiteral("light"), IONOSPalette.light().color() },
+        { QStringLiteral("link"), IONOSPalette.link().color() },
+        { QStringLiteral("midlight"), IONOSPalette.midlight().color() },
+        { QStringLiteral("mid"), IONOSPalette.mid().color() },
+        { QStringLiteral("linkVisited"), IONOSPalette.linkVisited().color() },
+        { QStringLiteral("shadow"), IONOSPalette.shadow().color() },
     };
 }
 

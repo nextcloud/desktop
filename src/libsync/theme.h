@@ -558,7 +558,7 @@ public:
      *
      * 2019/12/09: Moved here from SettingsDialog.
      */
-    static QIcon createColorAwareIcon(const QString &name, const QPalette &palette);
+    static QIcon createColorAwareIcon(const QString &name, const QPalette &palette, const QSize &size = QSize(64, 64));
 
     /**
      * @brief Creates a colour-aware icon based on the app palette's base colour (Dark-/Light-Mode switching).
@@ -567,7 +567,7 @@ public:
      *
      * 2019/12/09: Moved here from SettingsDialog.
      */
-    static QIcon createColorAwareIcon(const QString &name);
+    static QIcon createColorAwareIcon(const QString &name, const QSize &size = QSize(64, 64));
 
     /**
      * @brief Creates a colour-aware pixmap based on the specified palette's base colour.
@@ -652,6 +652,8 @@ private:
 #if defined(Q_OS_WIN)
     QPalette reserveDarkPalette; // Windows 11 button and window dark colours
 #endif
+
+    QPalette IONOSPalette;
 
     static Theme *_instance;
     bool _mono = false;
