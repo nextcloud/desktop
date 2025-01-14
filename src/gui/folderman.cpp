@@ -532,7 +532,7 @@ void FolderMan::setupLegacyFolder(const QString &fileNamePath, AccountState *acc
         }
         for (const auto &alias : childGroups) {
             settings.beginGroup(alias);
-            qCDebug(lcFolderMan) << "try to migrate folder alias:" << alias;
+            qCDebug(lcFolderMan) << "try to migrate" << folderGroupName << "alias:" << alias;
 
             const auto path = settings.value(QLatin1String("localPath")).toString();
             const auto targetPath = settings.value(QLatin1String("targetPath")).toString();
@@ -557,6 +557,8 @@ void FolderMan::setupLegacyFolder(const QString &fileNamePath, AccountState *acc
                 settings.endGroup();
                 continue;
             }
+
+            qCDebug(lcFolderMan) << folderGroupName << "located at" << path;
 
             FolderDefinition folderDefinition;
             folderDefinition.alias = alias;
