@@ -55,6 +55,7 @@ private:
 @interface NCSparkleUpdaterDelegate : NSObject <SPUUpdaterDelegate>
 
 @property (readwrite, assign) OCC::SparkleUpdater::SparkleInterface *owner;
+@property (readwrite, retain) NSString *feedURLString;
 
 - (instancetype)initWithOwner:(OCC::SparkleUpdater::SparkleInterface *)owner;
 
@@ -231,6 +232,12 @@ userDidMakeChoice:(SPUUserUpdateChoice)choice
               displayStatus:QObject::tr("Update download cancelled.")];
 }
 
+- (NSString *)feedURLStringForUpdater:(SPUUpdater *)updater
+{
+    Q_UNUSED(updater)
+    return self.feedURLString;
+}
+
 @end
 
 
@@ -262,7 +269,7 @@ SparkleUpdater::~SparkleUpdater() = default;
 
 void SparkleUpdater::setUpdateUrl(const QUrl &url)
 {
-    _interface->updaterController.updater.feedURL = url.toNSURL();
+    _interface->delegate.feedURLString = url.toNSURL().absoluteString;
 }
 
 bool SparkleUpdater::autoUpdaterAllowed()
