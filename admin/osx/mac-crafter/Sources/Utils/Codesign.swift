@@ -126,17 +126,31 @@ func codesignClientAppBundle(
     // We need to strip these out manually.
 
     let sparkleFrameworkPath = "\(frameworksPath)/Sparkle.framework"
-    if FileManager.default.fileExists(atPath: "\(sparkleFrameworkPath)/Resources/Autoupdate.app") {
-        print("Code-signing Sparkle autoupdater app (without entitlements)...")
-
-        try recursivelyCodesign(
-            path: "\(sparkleFrameworkPath)/Resources/Autoupdate.app",
+    if FileManager.default.fileExists(atPath: sparkleFrameworkPath) {
+        print("Code-signing Sparkle...")
+        try codesign(
             identity: codeSignIdentity,
-            options: "--timestamp --force --verbose=4 --options runtime --deep"
+            path: "\(sparkleFrameworkPath)/Versions/B/XPCServices/Installer.xpc",
+            options: "-f -o runtime"
         )
-
-        print("Re-codesigning Sparkle library...")
-        try codesign(identity: codeSignIdentity, path: "\(sparkleFrameworkPath)/Sparkle")
+        try codesign(
+            identity: codeSignIdentity,
+            path: "\(sparkleFrameworkPath)/Versions/B/XPCServices/Downloader.xpc",
+            options: "-f -o runtime --preserve-metadata=entitlements"
+        )
+        try codesign(
+            identity: codeSignIdentity,
+            path: "\(sparkleFrameworkPath)/Versions/B/Autoupdate",
+            options: "-f -o runtime"
+        )
+        try codesign(
+            identity: codeSignIdentity,
+            path: "\(sparkleFrameworkPath)/Versions/B/Updater.app",
+            options: "-f -o runtime"
+        )
+        try codesign(
+            identity: codeSignIdentity, path: sparkleFrameworkPath, options: "-f -o runtime"
+        )
     } else {
         print("Build does not have Sparkle, skipping.")
     }
