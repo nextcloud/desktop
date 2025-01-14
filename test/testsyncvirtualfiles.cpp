@@ -835,21 +835,12 @@ private slots:
 
         QVERIFY(fakeFolder.syncOnce());
 
-#if defined Q_OS_WINDOWS
         QCOMPARE(completeSpy.findItem(fileWithSpaces1)->_status, SyncFileItem::Status::FileNameInvalid);
         QCOMPARE(completeSpy.findItem(fileWithSpaces2)->_status, SyncFileItem::Status::FileNameInvalid);
         QCOMPARE(completeSpy.findItem(fileWithSpaces3)->_status, SyncFileItem::Status::FileNameInvalid);
         QCOMPARE(completeSpy.findItem(fileWithSpaces4)->_status, SyncFileItem::Status::FileNameInvalid);
         QCOMPARE(completeSpy.findItem(fileWithSpaces5)->_status, SyncFileItem::Status::FileNameInvalid);
         QCOMPARE(completeSpy.findItem(fileWithSpaces6)->_status, SyncFileItem::Status::FileNameInvalid);
-#else
-        QCOMPARE(completeSpy.findItem(fileWithSpaces1)->_status, SyncFileItem::Status::Success);
-        QCOMPARE(completeSpy.findItem(fileWithSpaces2)->_status, SyncFileItem::Status::Success);
-        QCOMPARE(completeSpy.findItem(fileWithSpaces3)->_status, SyncFileItem::Status::Success);
-        QCOMPARE(completeSpy.findItem(fileWithSpaces4)->_status, SyncFileItem::Status::Success);
-        QCOMPARE(completeSpy.findItem(fileWithSpaces5)->_status, SyncFileItem::Status::Success);
-        QCOMPARE(completeSpy.findItem(fileWithSpaces6)->_status, SyncFileItem::Status::Success);
-#endif
 
         fakeFolder.syncEngine().addAcceptedInvalidFileName(fakeFolder.localPath() + fileWithSpaces1);
         fakeFolder.syncEngine().addAcceptedInvalidFileName(fakeFolder.localPath() + fileWithSpaces2);
@@ -862,21 +853,12 @@ private slots:
 
         QVERIFY(fakeFolder.syncOnce());
 
-#if defined Q_OS_WINDOWS
         QCOMPARE(completeSpy.findItem(fileWithSpaces1)->_status, SyncFileItem::Status::Success);
         QCOMPARE(completeSpy.findItem(fileWithSpaces2)->_status, SyncFileItem::Status::Success);
         QCOMPARE(completeSpy.findItem(fileWithSpaces3)->_status, SyncFileItem::Status::Success);
         QCOMPARE(completeSpy.findItem(fileWithSpaces4)->_status, SyncFileItem::Status::Success);
         QCOMPARE(completeSpy.findItem(fileWithSpaces5)->_status, SyncFileItem::Status::Success);
         QCOMPARE(completeSpy.findItem(fileWithSpaces6)->_status, SyncFileItem::Status::Success);
-#else
-        QCOMPARE(completeSpy.findItem(fileWithSpaces1)->_status, SyncFileItem::Status::NoStatus);
-        QCOMPARE(completeSpy.findItem(fileWithSpaces2)->_status, SyncFileItem::Status::NoStatus);
-        QCOMPARE(completeSpy.findItem(fileWithSpaces3)->_status, SyncFileItem::Status::NoStatus);
-        QCOMPARE(completeSpy.findItem(fileWithSpaces4)->_status, SyncFileItem::Status::NoStatus);
-        QCOMPARE(completeSpy.findItem(fileWithSpaces5)->_status, SyncFileItem::Status::NoStatus);
-        QCOMPARE(completeSpy.findItem(fileWithSpaces6)->_status, SyncFileItem::Status::NoStatus);
-#endif
     }
 
     void testCreateFileWithTrailingSpaces_remoteDontGetRenamedAutomatically()
@@ -903,16 +885,15 @@ private slots:
 
         QVERIFY(fakeFolder.syncOnce());
 
-        if (Utility::isWindows()) {
-            QCOMPARE(completeSpy.findItem(fileWithSpaces4)->_status, SyncFileItem::Status::FileNameInvalid);
-            QCOMPARE(completeSpy.findItem(fileWithSpaces5)->_status, SyncFileItem::Status::FileNameInvalid);
-            QCOMPARE(completeSpy.findItem(fileWithSpaces6)->_status, SyncFileItem::Status::FileNameInvalid);
-        } else {
-            QCOMPARE(completeSpy.findItem(fileWithSpacesVirtual4)->_status, SyncFileItem::Status::Success);
-            QCOMPARE(completeSpy.findItem(fileWithSpacesVirtual5)->_status, SyncFileItem::Status::Success);
-            QCOMPARE(completeSpy.findItem(fileWithSpacesVirtual6)->_status, SyncFileItem::Status::Success);
-        }
-
+#if defined Q_OS_WINDOWS
+        QCOMPARE(completeSpy.findItem(fileWithSpaces4)->_status, SyncFileItem::Status::FileNameInvalid);
+        QCOMPARE(completeSpy.findItem(fileWithSpaces5)->_status, SyncFileItem::Status::FileNameInvalid);
+        QCOMPARE(completeSpy.findItem(fileWithSpaces6)->_status, SyncFileItem::Status::FileNameInvalid);
+#else
+        QCOMPARE(completeSpy.findItem(fileWithSpacesVirtual4)->_status, SyncFileItem::Status::Success);
+        QCOMPARE(completeSpy.findItem(fileWithSpacesVirtual5)->_status, SyncFileItem::Status::Success);
+        QCOMPARE(completeSpy.findItem(fileWithSpacesVirtual6)->_status, SyncFileItem::Status::Success);
+#endif
     }
 
     void testCreateFileWithTrailingSpaces_remoteGetRenamedManually()
@@ -947,16 +928,16 @@ private slots:
 
         QVERIFY(fakeFolder.syncOnce());
 
-        if (Utility::isWindows()) {
-            QCOMPARE(completeSpy.findItem(fileWithSpaces4)->_status, SyncFileItem::Status::FileNameInvalid);
-            QCOMPARE(completeSpy.findItem(fileWithSpaces5)->_status, SyncFileItem::Status::FileNameInvalid);
-            QCOMPARE(completeSpy.findItem(fileWithSpaces6)->_status, SyncFileItem::Status::FileNameInvalid);
-        } else {
-            QCOMPARE(completeSpy.findItem(fileWithSpacesVirtual4)->_status, SyncFileItem::Status::Success);
-            QCOMPARE(completeSpy.findItem(fileWithSpacesVirtual5)->_status, SyncFileItem::Status::Success);
-            QCOMPARE(completeSpy.findItem(fileWithSpacesVirtual6)->_status, SyncFileItem::Status::Success);
-        }
-        
+#if defined Q_OS_WINDOWS
+        QCOMPARE(completeSpy.findItem(fileWithSpaces4)->_status, SyncFileItem::Status::FileNameInvalid);
+        QCOMPARE(completeSpy.findItem(fileWithSpaces5)->_status, SyncFileItem::Status::FileNameInvalid);
+        QCOMPARE(completeSpy.findItem(fileWithSpaces6)->_status, SyncFileItem::Status::FileNameInvalid);
+#else
+        QCOMPARE(completeSpy.findItem(fileWithSpacesVirtual4)->_status, SyncFileItem::Status::Success);
+        QCOMPARE(completeSpy.findItem(fileWithSpacesVirtual5)->_status, SyncFileItem::Status::Success);
+        QCOMPARE(completeSpy.findItem(fileWithSpacesVirtual6)->_status, SyncFileItem::Status::Success);
+#endif
+
         fakeFolder.remoteModifier().rename(fileWithSpaces4, fileWithoutSpaces4);
         fakeFolder.remoteModifier().rename(fileWithSpaces5, fileWithoutSpaces5);
         fakeFolder.remoteModifier().rename(fileWithSpaces6, fileWithoutSpaces6);
@@ -965,15 +946,9 @@ private slots:
 
         QVERIFY(fakeFolder.syncOnce());
 
-        if (Utility::isWindows()) {
-            QCOMPARE(completeSpy.findItem(fileWithoutSpaces4 + DVSUFFIX)->_status, SyncFileItem::Status::Success);
-            QCOMPARE(completeSpy.findItem(fileWithoutSpaces5 + DVSUFFIX)->_status, SyncFileItem::Status::Success);
-            QCOMPARE(completeSpy.findItem(fileWithoutSpaces6 + DVSUFFIX)->_status, SyncFileItem::Status::Success);
-        } else {
-            QCOMPARE(completeSpy.findItem(fileWithoutSpacesVirtual4)->_status, SyncFileItem::Status::Success);
-            QCOMPARE(completeSpy.findItem(fileWithoutSpacesVirtual5)->_status, SyncFileItem::Status::Success);
-            QCOMPARE(completeSpy.findItem(fileWithoutSpacesVirtual6)->_status, SyncFileItem::Status::Success);
-        }
+        QCOMPARE(completeSpy.findItem(fileWithoutSpacesVirtual4)->_status, SyncFileItem::Status::Success);
+        QCOMPARE(completeSpy.findItem(fileWithoutSpacesVirtual5)->_status, SyncFileItem::Status::Success);
+        QCOMPARE(completeSpy.findItem(fileWithoutSpacesVirtual6)->_status, SyncFileItem::Status::Success);
     }
 
     // Dehydration via sync works

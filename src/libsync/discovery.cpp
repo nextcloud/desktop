@@ -272,8 +272,7 @@ bool ProcessDirectoryJob::handleExcluded(const QString &path, const Entries &ent
 
     const auto fileName = path.mid(path.lastIndexOf('/') + 1);
 
-    const auto osDoesNotSupportsSpaces = Utility::isWindows();
-    if (excluded == CSYNC_NOT_EXCLUDED && osDoesNotSupportsSpaces) {
+    if (excluded == CSYNC_NOT_EXCLUDED) {
         const auto endsWithSpace = fileName.endsWith(QLatin1Char(' '));
         const auto startsWithSpace = fileName.startsWith(QLatin1Char(' '));
         if (startsWithSpace && endsWithSpace) {
@@ -292,19 +291,24 @@ bool ProcessDirectoryJob::handleExcluded(const QString &path, const Entries &ent
                                             || excluded == CSYNC_FILE_EXCLUDE_TRAILING_SPACE
                                             || excluded == CSYNC_FILE_EXCLUDE_LEADING_AND_TRAILING_SPACE;
     const auto leadingAndTrailingSpacesFilesAllowed = _discoveryData->_leadingAndTrailingSpacesFilesAllowed.contains(_discoveryData->_localDir + path);
-    if (hasLeadingOrTrailingSpaces && ((!osDoesNotSupportsSpaces && wasSyncedAlready) || leadingAndTrailingSpacesFilesAllowed)) {
+    if (hasLeadingOrTrailingSpaces && (wasSyncedAlready || leadingAndTrailingSpacesFilesAllowed)) {
         excluded = CSYNC_NOT_EXCLUDED;
     }
 
     // FIXME: move to ExcludedFiles 's regexp ?
     bool isInvalidPattern = false;
-    if (excluded == CSYNC_NOT_EXCLUDED && !_discoveryData->_invalidFilenameRx.pattern().isEmpty()) {
-        if (path.contains(_discoveryData->_invalidFilenameRx)) {
-            excluded = CSYNC_FILE_EXCLUDE_INVALID_CHAR;
-            isInvalidPattern = true;
-        }
+    if (excluded == CSYNC_NOT_EXCLUDED
+        && !wasSyncedAlready
+        && !_discoveryData->_invalidFilenameRx.pattern().isEmpty()
+        && path.contains(_discoveryData->_invalidFilenameRx)) {
+
+        excluded = CSYNC_FILE_EXCLUDE_INVALID_CHAR;
+        isInvalidPattern = true;
     }
-    if (excluded == CSYNC_NOT_EXCLUDED && _discoveryData->_ignoreHiddenFiles && isHidden) {
+    if (excluded == CSYNC_NOT_EXCLUDED
+        && !entries.dbEntry.isValid()
+        && _discoveryData->_ignoreHiddenFiles && isHidden) {
+
         excluded = CSYNC_FILE_EXCLUDE_HIDDEN;
     }
 
@@ -335,7 +339,8 @@ bool ProcessDirectoryJob::handleExcluded(const QString &path, const Entries &ent
                     });
 
     if (excluded == CSYNC_NOT_EXCLUDED && !localName.isEmpty()
-        && (_discoveryData->_serverBlacklistedFiles.contains(localName)
+        && !wasSyncedAlready
+        &&(_discoveryData->_serverBlacklistedFiles.contains(localName)
             || hasForbiddenFilename
             || hasForbiddenBasename
             || hasForbiddenExtension
