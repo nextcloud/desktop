@@ -16,7 +16,7 @@
 
 #include <QImage>
 #include <QQuickImageProvider>
-#include <QFileIconProvider>
+#include "sesFileIconProvider.h"
 
 class AsyncImageResponse : public QQuickImageResponse
 {
@@ -35,6 +35,6 @@ private slots:
     QStringList _imagePaths;
     QSize _requestedImageSize;
     QColor _svgRecolor;
-    QFileIconProvider _fileIconProvider;
+    SesFileIconProvider _fileIconProvider;
     int _index = 0;
 };

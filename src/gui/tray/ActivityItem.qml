@@ -3,11 +3,13 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 import Style
-import com.nextcloud.desktopclient
+import com.ionos.hidrivenext.desktopclient
 
 ItemDelegate {
     id: root
 
+    leftPadding: Style.sesActivityItemDistanceToFrame
+    rightPadding: Style.sesActivityItemDistanceToFrame
     property Flickable flickable
 
     property int iconSize: Style.trayListItemIconSize

@@ -26,6 +26,8 @@
 #include "activitydata.h"
 #include "systray.h"
 
+#include "ionostheme.h"
+
 #include <QtCore>
 #include <QAbstractListModel>
 #include <QDesktopServices>
@@ -225,17 +227,19 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
     };
 
     const auto generateIconPath = [&]() {
-        auto colorIconPath = QStringLiteral("image://svgimage-custom-color/%1");
+        auto colorIconPath = QStringLiteral("qrc:///client/theme/ses/");
         if (a._type == Activity::NotificationType && !a._talkNotificationData.userAvatar.isEmpty()) {
             return QStringLiteral("image://svgimage-custom-color/talk-bordered.svg");
         } else if (a._type == Activity::SyncResultType) {
-            return colorIconPath.arg("state-error.svg");
+            colorIconPath.append("ses-snackBarErrorIcon.svg");
+            return colorIconPath;
         } else if (a._type == Activity::SyncFileItemType) {
             if (a._syncFileItemStatus == SyncFileItem::NormalError
                 || a._syncFileItemStatus == SyncFileItem::FatalError
                 || a._syncFileItemStatus == SyncFileItem::DetailError
                 || a._syncFileItemStatus == SyncFileItem::BlacklistedError) {
-                return colorIconPath.arg("state-error.svg");
+                colorIconPath.append("ses-snackBarErrorIcon.svg");
+                return colorIconPath;
             } else if (a._syncFileItemStatus == SyncFileItem::SoftError
                 || a._syncFileItemStatus == SyncFileItem::Conflict
                 || a._syncFileItemStatus == SyncFileItem::Restoration
@@ -243,17 +247,19 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
                 || a._syncFileItemStatus == SyncFileItem::FileNameInvalid
                 || a._syncFileItemStatus == SyncFileItem::FileNameInvalidOnServer
                 || a._syncFileItemStatus == SyncFileItem::FileNameClash) {
-                return colorIconPath.arg("state-warning.svg");
+                colorIconPath.append("ses-warning.svg");
+                return colorIconPath;
             } else if (a._syncFileItemStatus == SyncFileItem::FileIgnored) {
-                return colorIconPath.arg("state-info.svg");
+                colorIconPath.append("ses-info.svg");
+                return colorIconPath;
             } else {
                 // File sync successful
                 if (a._fileAction == "file_created") {
-                    return a._previews.empty() ? colorIconPath.arg("add.svg") : colorIconPath.arg("add-bordered.svg");
+                    return IonosTheme::plusIcon();
                 } else if (a._fileAction == "file_deleted") {
-                    return a._previews.empty() ? colorIconPath.arg("delete.svg") : colorIconPath.arg("delete-bordered.svg");
+                    return IonosTheme::deleteIcon();
                 } else {
-                    return a._previews.empty() ? colorIconPath.arg("change.svg") : colorIconPath.arg("change-bordered.svg");
+                    return IonosTheme::refreshIcon();
                 }
             }
         } else {

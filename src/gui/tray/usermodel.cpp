@@ -19,6 +19,7 @@
 #include "tray/talkreply.h"
 #include "userstatusconnector.h"
 #include "thumbnailjob.h"
+#include "buttonstyle.h"
 
 #include <QDesktopServices>
 #include <QIcon>
@@ -26,6 +27,10 @@
 #include <QSvgRenderer>
 #include <QPainter>
 #include <QPushButton>
+#include <QDialogButtonBox>
+#include <QHBoxLayout>
+#include <QLabel>
+#include <QMetaType>
 
 // time span in milliseconds which has to be between two
 // refreshes of the notifications
@@ -1481,15 +1486,18 @@ void UserModel::removeAccount(const int id)
     }
 
     QMessageBox messageBox(QMessageBox::Question,
-                           tr("Confirm Account Removal"),
+                           tr("Confirm Account Removal"), 
                            tr("<p>Do you really want to remove the connection to the account <i>%1</i>?</p>"
                               "<p><b>Note:</b> This will <b>not</b> delete any files.</p>")
-                               .arg(_users[id]->name()),
-                           QMessageBox::NoButton);
-    const auto * const yesButton = messageBox.addButton(tr("Remove connection"), QMessageBox::YesRole);
+                               .arg(_users[id]->name()));
+
     messageBox.addButton(tr("Cancel"), QMessageBox::NoRole);
+    QPushButton *yesButton = messageBox.addButton(tr("Remove connection"), QMessageBox::YesRole);
+
+    styleMessageBox(messageBox, yesButton);
 
     messageBox.exec();
+
     if (messageBox.clickedButton() != yesButton) {
         return;
     }
@@ -1634,6 +1642,38 @@ int UserModel::findUserIdForAccount(AccountState *account) const
 
     const auto id = std::distance(std::cbegin(_users), it);
     return id;
+}
+
+void UserModel::styleMessageBox(QMessageBox &messageBox, QPushButton *yesButton){ 
+
+    messageBox.setStyleSheet(QStringLiteral("QMessageBox { background-color: %1; } QMessageBox QLabel { %2 } ").arg(
+        IonosTheme::dialogBackgroundColor(),
+        IonosTheme::fontConfigurationCss(
+            IonosTheme::settingsFont(),
+            IonosTheme::settingsTextSize(),
+            IonosTheme::settingsTextWeight(),
+            IonosTheme::titleColor()
+        )
+        )
+    );
+
+    messageBox.setIconPixmap(QPixmap(IonosTheme::questionCircleIcon()));
+    
+    yesButton->setProperty("buttonStyle", QVariant::fromValue(OCC::ButtonStyleName::Primary));
+
+    QDialogButtonBox *buttonBox = messageBox.findChild<QDialogButtonBox *>();
+    buttonBox->setLayoutDirection(Qt::RightToLeft); 
+    buttonBox->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
+
+    QHBoxLayout *buttonBoxLayout = messageBox.findChild<QHBoxLayout *>();
+    buttonBoxLayout->setSpacing(8);
+#ifdef Q_OS_MACOS
+    buttonBoxLayout->setSpacing(24);
+#endif
+
+    QLabel *label = messageBox.findChild<QLabel *>("qt_msgbox_label");
+    label->setMinimumSize(529, 49);
+    label->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
 }
 /*-------------------------------------------------------------------------------------*/
 

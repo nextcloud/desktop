@@ -22,9 +22,6 @@ BusyIndicator {
     property color color: palette.windowText
     property string imageSource: "image://svgimage-custom-color/change.svg/"
 
-    property int imageSourceSizeWidth: 64
-    property int imageSourceSizeHeight: 64
-
     contentItem: Image {
         id: contentImage
 
@@ -34,9 +31,8 @@ BusyIndicator {
         verticalAlignment: Image.AlignVCenter
 
         source: colourableImage ? root.imageSource + root.color : root.imageSource
-        sourceSize.width: root.imageSourceSizeWidth
-        sourceSize.height: root.imageSourceSizeHeight
-        fillMode: Image.PreserveAspectFit
+        width: Style.sesIconSize
+        height: Style.sesIconSize
 
         mipmap: true
 

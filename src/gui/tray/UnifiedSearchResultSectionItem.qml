@@ -17,7 +17,7 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 import Style
-import com.nextcloud.desktopclient
+import com.ionos.hidrivenext.desktopclient
 
 EnforcedPlainTextLabel {
     required property string section

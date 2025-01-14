@@ -16,11 +16,11 @@
 import QtQuick
 import QtQuick.Window
 import Style
-import com.nextcloud.desktopclient
 import QtQuick.Layouts
 import QtMultimedia
 import QtQuick.Controls
 import Qt5Compat.GraphicalEffects
+import com.ionos.hidrivenext.desktopclient
 
 ApplicationWindow {
     id: root
