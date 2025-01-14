@@ -52,12 +52,11 @@ private:
 };
 
 
-@interface NCSparkleUpdaterDelegate : NSObject <SUUpdaterDelegate>
+@interface NCSparkleUpdaterDelegate : NSObject <SPUUpdaterDelegate>
 
 @property (readwrite, assign) OCC::SparkleUpdater::SparkleInterface *owner;
 
 - (instancetype)initWithOwner:(OCC::SparkleUpdater::SparkleInterface *)owner;
-- (BOOL)updaterMayCheckForUpdates:(SUUpdater *)bundle;
 
 @end
 
@@ -74,21 +73,15 @@ private:
 
 - (BOOL)backgroundUpdateChecksAllowed
 {
-    BOOL allowUpdateCheck = OCC::ConfigFile().skipUpdateCheck() ? NO : YES;
+    const BOOL allowUpdateCheck = OCC::ConfigFile().skipUpdateCheck() ? NO : YES;
     qCInfo(OCC::lcUpdater) << "Updater may check for updates:" << (allowUpdateCheck ? "YES" : "NO");
     return allowUpdateCheck;
 }
 
-- (BOOL)updaterMayCheckForUpdates:(SUUpdater *)bundle
-{
-    Q_UNUSED(bundle)
-    return [self backgroundUpdateChecksAllowed];
-}
-
-- (BOOL)updaterShouldShowUpdateAlertForScheduledUpdate:(SUUpdater *)updater forItem:(SUAppcastItem *)item
+- (BOOL)updater:(nonnull SPUUpdater *)updater mayPerformUpdateCheck:(SPUUpdateCheck)updateCheck error:(NSError **)error
 {
     Q_UNUSED(updater)
-    Q_UNUSED(item)
+    Q_UNUSED(updateCheck)
     return [self backgroundUpdateChecksAllowed];
 }
 
@@ -99,12 +92,12 @@ private:
 }
 
 // Sent when a valid update is found by the update driver.
-- (void)updater:(SUUpdater *)updater didFindValidUpdate:(SUAppcastItem *)update
+- (void)updater:(nonnull SPUUpdater *)updater didFindValidUpdate:(nonnull SUAppcastItem *)item
 {
     Q_UNUSED(updater)
-    Q_UNUSED(update)
+    Q_UNUSED(item)
 
-    const auto versionQstring = QString::fromNSString(update.displayVersionString);
+    const auto versionQstring = QString::fromNSString(item.displayVersionString);
     const auto message = QObject::tr("Found a valid update: version %1", "%1 is version number").arg(versionQstring);
 
     [self notifyStateChange:OCC::SparkleUpdater::State::AwaitingUserInput
@@ -112,7 +105,7 @@ private:
 }
 
 // Sent when a valid update is not found.
-- (void)updaterDidNotFindUpdate:(SUUpdater *)updater
+- (void)updaterDidNotFindUpdate:(nonnull SPUUpdater *)updater
 {
     Q_UNUSED(updater)
     [self notifyStateChange:OCC::SparkleUpdater::State::Idle
@@ -120,7 +113,7 @@ private:
 }
 
 // Sent immediately before installing the specified update.
-- (void)updater:(SUUpdater *)updater willInstallUpdate:(SUAppcastItem *)update
+- (void)updater:(nonnull SPUUpdater *)updater willInstallUpdate:(nonnull SUAppcastItem *)update
 {
     Q_UNUSED(updater)
 
@@ -131,7 +124,7 @@ private:
               displayStatus:message];
 }
 
-- (void)updater:(SUUpdater *)updater didAbortWithError:(NSError *)error
+- (void)updater:(nonnull SPUUpdater *)updater didAbortWithError:(nonnull NSError *)error
 {
     Q_UNUSED(updater)
 
@@ -141,7 +134,7 @@ private:
               displayStatus:message];
 }
 
-- (void)updater:(SUUpdater *)updater didFinishLoadingAppcast:(SUAppcast *)appcast
+- (void)updater:(nonnull SPUUpdater *)updater didFinishLoadingAppcast:(nonnull SUAppcast *)appcast
 {
     Q_UNUSED(updater)
     Q_UNUSED(appcast)
@@ -149,30 +142,32 @@ private:
               displayStatus:QObject::tr("Finished loading appcast.")];
 }
 
-- (void)updater:(SUUpdater *)updater didDismissUpdateAlertPermanently:(BOOL)permanently forItem:(nonnull SUAppcastItem *)item
-{
-    Q_UNUSED(updater)
-
-    const auto permanencyString = permanently ? QObject::tr("Permanently") : QObject::tr("Temporarily");
-    const auto versionQstring = QString::fromNSString(item.displayVersionString);
-    const auto message = QObject::tr("%1 dismissed %2 update", "%1 is permanently or temporarily, %2 is version number").arg(permanencyString, versionQstring);
-
-    [self notifyStateChange:OCC::SparkleUpdater::State::Idle
-              displayStatus:message];
-}
-
-- (void)updater:(nonnull SUUpdater *)updater userDidSkipThisVersion:(nonnull SUAppcastItem *)item
+- (void)updater:(nonnull SPUUpdater *)updater
+userDidMakeChoice:(SPUUserUpdateChoice)choice
+      forUpdate:(nonnull SUAppcastItem *)item
+          state:(nonnull SPUUserUpdateState *)state
 {
     Q_UNUSED(updater)
 
     const auto versionQstring = QString::fromNSString(item.displayVersionString);
-    const auto message = QObject::tr("Update version %1 will not be applied as it was chosen to be skipped.",  "%1 is version number").arg(versionQstring);
+    QString message;
 
-    [self notifyStateChange:OCC::SparkleUpdater::State::Idle
-              displayStatus:message];
+    switch(choice) {
+        case SPUUserUpdateChoiceSkip:
+            message = QObject::tr("Update version %1 will not be applied as it was chosen to be skipped.",  "%1 is version number").arg(versionQstring);
+            break;
+        case SPUUserUpdateChoiceInstall:
+            message = QObject::tr("Update version %1 will be installed.",  "%1 is version number").arg(versionQstring);
+            break;
+        case SPUUserUpdateChoiceDismiss:
+            message = QObject::tr("Update version %1 will not be applied as it was dismissed.",  "%1 is version number").arg(versionQstring);
+            break;
+    }
+
+    [self notifyStateChange:OCC::SparkleUpdater::State::Idle displayStatus:message];
 }
 
-- (void)updater:(nonnull SUUpdater *)updater willDownloadUpdate:(nonnull SUAppcastItem *)item withRequest:(nonnull NSMutableURLRequest *)request
+- (void)updater:(nonnull SPUUpdater *)updater willDownloadUpdate:(nonnull SUAppcastItem *)item withRequest:(nonnull NSMutableURLRequest *)request
 {
     Q_UNUSED(updater)
     Q_UNUSED(request)
@@ -184,7 +179,7 @@ private:
               displayStatus:message];
 }
 
-- (void)updater:(nonnull SUUpdater *)updater didDownloadUpdate:(nonnull SUAppcastItem *)item
+- (void)updater:(nonnull SPUUpdater *)updater didDownloadUpdate:(nonnull SUAppcastItem *)item
 {
     Q_UNUSED(updater)
 
@@ -195,7 +190,7 @@ private:
               displayStatus:message];
 }
 
-- (void)updater:(nonnull SUUpdater *)updater failedToDownloadUpdate:(nonnull SUAppcastItem *)item error:(nonnull NSError *)error
+- (void)updater:(nonnull SPUUpdater *)updater failedToDownloadUpdate:(nonnull SUAppcastItem *)item error:(nonnull NSError *)error
 {
     Q_UNUSED(updater)
 
@@ -207,7 +202,7 @@ private:
               displayStatus:message];
 }
 
-- (void)updater:(nonnull SUUpdater *)updater willExtractUpdate:(nonnull SUAppcastItem *)item
+- (void)updater:(nonnull SPUUpdater *)updater willExtractUpdate:(nonnull SUAppcastItem *)item
 {
     Q_UNUSED(updater)
 
@@ -218,7 +213,7 @@ private:
               displayStatus:message];
 }
 
-- (void)updater:(nonnull SUUpdater *)updater didExtractUpdate:(nonnull SUAppcastItem *)item
+- (void)updater:(nonnull SPUUpdater *)updater didExtractUpdate:(nonnull SUAppcastItem *)item
 {
     Q_UNUSED(updater)
 
@@ -229,7 +224,7 @@ private:
               displayStatus:message];
 }
 
-- (void)userDidCancelDownload:(SUUpdater *)updater
+- (void)userDidCancelDownload:(SPUUpdater *)updater
 {
     Q_UNUSED(updater);
     [self notifyStateChange:OCC::SparkleUpdater::State::Idle
