@@ -18,26 +18,8 @@ final class ItemModifyTests: XCTestCase {
         user: "testUser", id: "testUserId", serverUrl: "https://mock.nc.com", password: "abcd"
     )
 
-    lazy var rootItem = MockRemoteItem(
-        identifier: NSFileProviderItemIdentifier.rootContainer.rawValue,
-        name: "root",
-        remotePath: Self.account.davFilesUrl,
-        directory: true,
-        account: Self.account.ncKitAccount,
-        username: Self.account.username,
-        userId: Self.account.id,
-        serverUrl: Self.account.serverUrl
-    )
-    lazy var rootTrashItem = MockRemoteItem(
-        identifier: NSFileProviderItemIdentifier.trashContainer.rawValue,
-        name: "root",
-        remotePath: Self.account.trashUrl,
-        directory: true,
-        account: Self.account.ncKitAccount,
-        username: Self.account.username,
-        userId: Self.account.id,
-        serverUrl: Self.account.serverUrl
-    )
+    lazy var rootItem = MockRemoteItem.rootItem(account: Self.account)
+    lazy var rootTrashItem = MockRemoteItem.rootTrashItem(account: Self.account)
 
     var remoteFolder: MockRemoteItem!
     var remoteItem: MockRemoteItem!
@@ -1222,5 +1204,128 @@ final class ItemModifyTests: XCTestCase {
             remoteTrashFolder.remotePath + "/" + remoteTrashFolderChildItem.name
         )
         XCTAssertEqual(untrashedFolderChildItem.serverUrl, remoteTrashFolder.remotePath)
+    }
+
+    func testModifyFileContentsChunked() async throws {
+        let remoteInterface = MockRemoteInterface(rootItem: rootItem)
+
+        let itemMetadata = remoteItem.toItemMetadata(account: Self.account)
+        Self.dbManager.addItemMetadata(itemMetadata)
+
+        let newContents = Data(repeating: 1, count: defaultFileChunkSize * 3)
+        let newContentsUrl = FileManager.default.temporaryDirectory.appendingPathComponent("test")
+        try newContents.write(to: newContentsUrl)
+
+        let targetItemMetadata = ItemMetadata(value: itemMetadata)
+        targetItemMetadata.date = .init()
+        targetItemMetadata.size = Int64(newContents.count)
+
+        let item = Item(
+            metadata: itemMetadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: remoteInterface
+        )
+
+        let targetItem = Item(
+            metadata: targetItemMetadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: remoteInterface
+        )
+        targetItem.dbManager = Self.dbManager
+
+        let (modifiedItemMaybe, error) = await item.modify(
+            itemTarget: targetItem,
+            changedFields: [.contents, .contentModificationDate],
+            contents: newContentsUrl,
+            dbManager: Self.dbManager
+        )
+        XCTAssertNil(error)
+        let modifiedItem = try XCTUnwrap(modifiedItemMaybe)
+
+        XCTAssertEqual(modifiedItem.itemIdentifier, targetItem.itemIdentifier)
+        XCTAssertEqual(modifiedItem.contentModificationDate, targetItem.contentModificationDate)
+        XCTAssertEqual(modifiedItem.documentSize?.intValue, newContents.count)
+
+        XCTAssertEqual(remoteItem.data, newContents)
+    }
+
+    func testModifyFileContentsChunkedResumed() async throws {
+        let chunkUploadId = UUID().uuidString
+        let previousUploadedChunkNum = 1
+        let preexistingChunk = RemoteFileChunk(
+            fileName: String(previousUploadedChunkNum),
+            size: Int64(defaultFileChunkSize),
+            remoteChunkStoreFolderName: chunkUploadId
+        )
+
+        let db = Self.dbManager.ncDatabase()
+        try db.write {
+            db.add([
+                RemoteFileChunk(
+                    fileName: String(previousUploadedChunkNum + 1),
+                    size: Int64(defaultFileChunkSize),
+                    remoteChunkStoreFolderName: chunkUploadId
+                ),
+                RemoteFileChunk(
+                    fileName: String(previousUploadedChunkNum + 2),
+                    size: Int64(defaultFileChunkSize),
+                    remoteChunkStoreFolderName: chunkUploadId
+                )
+            ])
+        }
+
+        let remoteInterface = MockRemoteInterface(rootItem: rootItem)
+        remoteInterface.currentChunks = [chunkUploadId: [preexistingChunk]]
+
+        let itemMetadata = remoteItem.toItemMetadata(account: Self.account)
+        itemMetadata.chunkUploadId = chunkUploadId
+        Self.dbManager.addItemMetadata(itemMetadata)
+
+        let newContents = Data(repeating: 1, count: defaultFileChunkSize * 3)
+        let newContentsUrl = FileManager.default.temporaryDirectory.appendingPathComponent("test")
+        try newContents.write(to: newContentsUrl)
+
+        let targetItemMetadata = ItemMetadata(value: itemMetadata)
+        targetItemMetadata.date = .init()
+        targetItemMetadata.size = Int64(newContents.count)
+
+        let item = Item(
+            metadata: itemMetadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: remoteInterface
+        )
+
+        let targetItem = Item(
+            metadata: targetItemMetadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: remoteInterface
+        )
+        targetItem.dbManager = Self.dbManager
+
+        let (modifiedItemMaybe, error) = await item.modify(
+            itemTarget: targetItem,
+            changedFields: [.contents, .contentModificationDate],
+            contents: newContentsUrl,
+            dbManager: Self.dbManager
+        )
+        XCTAssertNil(error)
+        let modifiedItem = try XCTUnwrap(modifiedItemMaybe)
+
+        XCTAssertEqual(modifiedItem.itemIdentifier, targetItem.itemIdentifier)
+        XCTAssertEqual(modifiedItem.contentModificationDate, targetItem.contentModificationDate)
+        XCTAssertEqual(modifiedItem.documentSize?.intValue, newContents.count)
+
+        XCTAssertEqual(remoteItem.data, newContents)
+        XCTAssertEqual(
+            remoteInterface.completedChunkTransferSize[chunkUploadId],
+            Int64(newContents.count) - preexistingChunk.size
+        )
+
+        let dbItem = try XCTUnwrap(Self.dbManager.itemMetadata(ocId: itemMetadata.ocId))
+        XCTAssertTrue(dbItem.chunkUploadId.isEmpty)
     }
 }

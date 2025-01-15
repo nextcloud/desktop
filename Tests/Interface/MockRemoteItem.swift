@@ -5,6 +5,7 @@
 //  Created by Claudio Cambra on 9/5/24.
 //
 
+import FileProvider
 import Foundation
 import NextcloudFileProviderKit
 import NextcloudKit
@@ -53,6 +54,34 @@ public class MockRemoteItem: Equatable {
         lhs.userId == rhs.userId &&
         lhs.serverUrl == rhs.serverUrl &&
         lhs.trashbinOriginalLocation == rhs.trashbinOriginalLocation
+    }
+
+    public static func rootItem(account: Account) -> MockRemoteItem {
+        MockRemoteItem(
+            identifier: NSFileProviderItemIdentifier.rootContainer.rawValue,
+            versionIdentifier: "root",
+            name: "root",
+            remotePath: account.davFilesUrl,
+            directory: true,
+            account: account.ncKitAccount,
+            username: account.username,
+            userId: account.id,
+            serverUrl: account.serverUrl
+        )
+    }
+
+    public static func rootTrashItem(account: Account) -> MockRemoteItem {
+        return MockRemoteItem(
+            identifier: NSFileProviderItemIdentifier.trashContainer.rawValue,
+            versionIdentifier: "root",
+            name: "root",
+            remotePath: account.trashUrl,
+            directory: true,
+            account: account.ncKitAccount,
+            username: account.username,
+            userId: account.id,
+            serverUrl: account.serverUrl
+        )
     }
 
     public init(

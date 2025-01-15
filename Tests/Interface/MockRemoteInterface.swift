@@ -17,6 +17,8 @@ public class MockRemoteInterface: RemoteInterface {
     public var rootItem: MockRemoteItem?
     public var delegate: (any NextcloudKitDelegate)?
     public var rootTrashItem: MockRemoteItem?
+    public var currentChunks: [String: [RemoteFileChunk]] = [:]
+    public var completedChunkTransferSize: [String: Int64] = [:]
 
     public init(rootItem: MockRemoteItem? = nil, rootTrashItem: MockRemoteItem? = nil) {
         self.rootItem = rootItem
@@ -53,7 +55,10 @@ public class MockRemoteInterface: RemoteInterface {
     }
 
     func item(remotePath: String, account: Account) -> MockRemoteItem? {
-        guard let rootItem, !remotePath.isEmpty else { return nil }
+        guard let rootItem, !remotePath.isEmpty else {
+            print("Invalid root item or remote path, cannot get item in item tree.")
+            return nil
+        }
 
         let sanitisedPath = sanitisedPath(remotePath, account: account)
         guard sanitisedPath != "/" else {
@@ -220,6 +225,93 @@ public class MockRemoteInterface: RemoteInterface {
             nil,
             .success
         )
+    }
+
+    public func chunkedUpload(
+        localPath: String,
+        remotePath: String,
+        remoteChunkStoreFolderName: String,
+        chunkSize: Int,
+        remainingChunks: [RemoteFileChunk],
+        creationDate: Date?,
+        modificationDate: Date?,
+        account: Account,
+        options: NKRequestOptions,
+        currentNumChunksUpdateHandler: @escaping (Int) -> Void = { _ in },
+        chunkCounter: @escaping (Int) -> Void = { _ in },
+        chunkUploadStartHandler: @escaping ([RemoteFileChunk]) -> Void = { _ in },
+        requestHandler: @escaping (UploadRequest) -> Void = { _ in },
+        taskHandler: @escaping (URLSessionTask) -> Void = { _ in },
+        progressHandler: @escaping (Progress) -> Void = { _ in },
+        chunkUploadCompleteHandler: @escaping (RemoteFileChunk) -> Void = { _ in }
+    ) async -> (
+        account: String,
+        fileChunks: [RemoteFileChunk]?,
+        file: NKFile?,
+        afError: AFError?,
+        remoteError: NKError
+    ) {
+        guard let remoteUrl = URL(string: remotePath) else {
+            print("Invalid remote path!")
+            return ("", nil, nil, nil, .urlError)
+        }
+
+        // Create temp directory for file and create chunks within it
+        let fm = FileManager.default
+        let tempDirectoryUrl = fm.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+        try! fm.createDirectory(atPath: tempDirectoryUrl.path, withIntermediateDirectories: true)
+
+        // Access local file and gather metadata
+        let fileSize = try! fm.attributesOfItem(atPath: localPath)[.size] as! Int
+
+        var remainingFileSize = fileSize
+        let numChunks = Int(ceil(Double(fileSize) / Double(chunkSize)))
+        let newChunks = !remainingChunks.isEmpty
+            ? remainingChunks
+            : (0..<numChunks).map { chunkIndex in
+                defer { remainingFileSize -= chunkSize }
+                return RemoteFileChunk(
+                    fileName: String(chunkIndex + 1),
+                    size: Int64(min(chunkSize, remainingFileSize)),
+                    remoteChunkStoreFolderName: remoteChunkStoreFolderName
+                )
+            }
+        let preexistingChunks = currentChunks[remoteChunkStoreFolderName] ?? []
+        let totalChunks = preexistingChunks + newChunks
+        currentChunks[remoteChunkStoreFolderName] = totalChunks
+        chunkUploadStartHandler(newChunks)
+
+        let (_, ocId, etag, date, size, _, afError, remoteError) = await upload(
+            remotePath: remotePath,
+            localPath: localPath,
+            creationDate: creationDate,
+            modificationDate: modificationDate,
+            account: account,
+            options: options,
+            requestHandler: requestHandler,
+            taskHandler: taskHandler,
+            progressHandler: progressHandler
+        )
+        newChunks.forEach { chunkUploadCompleteHandler($0) }
+        print(remainingChunks)
+        completedChunkTransferSize[remoteChunkStoreFolderName] =
+            remainingChunks.reduce(0) { $0 + $1.size }
+
+        let file = NKFile()
+        file.fileName = remoteUrl.lastPathComponent
+        file.etag = etag ?? ""
+        file.size = size
+        file.path = remotePath
+        file.ocId = ocId ?? ""
+        file.serverUrl = remoteUrl.deletingLastPathComponent().absoluteString
+        file.urlBase = account.serverUrl
+        file.user = account.username
+        file.userId = account.id
+        file.account = account.ncKitAccount
+        file.creationDate = creationDate ?? Date()
+        file.date = date as? Date ?? Date()
+
+        return (account.ncKitAccount, totalChunks, file, afError, remoteError)
     }
 
     public func move(

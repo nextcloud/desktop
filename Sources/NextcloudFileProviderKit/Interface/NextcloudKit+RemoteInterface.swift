@@ -80,6 +80,130 @@ extension NextcloudKit: RemoteInterface {
         }
     }
 
+    public func chunkedUpload(
+        localPath: String,
+        remotePath: String,
+        remoteChunkStoreFolderName: String = UUID().uuidString,
+        chunkSize: Int,
+        remainingChunks: [RemoteFileChunk],
+        creationDate: Date? = nil,
+        modificationDate: Date? = nil,
+        account: Account,
+        options: NKRequestOptions = .init(),
+        currentNumChunksUpdateHandler: @escaping (_ num: Int) -> Void = { _ in },
+        chunkCounter: @escaping (_ counter: Int) -> Void = { _ in },
+        chunkUploadStartHandler: @escaping (_ filesChunk: [RemoteFileChunk]) -> Void = { _ in },
+        requestHandler: @escaping (_ request: UploadRequest) -> Void = { _ in },
+        taskHandler: @escaping (_ task: URLSessionTask) -> Void = { _ in },
+        progressHandler: @escaping (Progress) -> Void = { _ in },
+        chunkUploadCompleteHandler: @escaping (_ fileChunk: RemoteFileChunk) -> Void = { _ in }
+    ) async -> (
+        account: String,
+        fileChunks: [RemoteFileChunk]?,
+        file: NKFile?,
+        afError: AFError?,
+        remoteError: NKError
+    ) {
+        guard let remoteUrl = URL(string: remotePath) else {
+            uploadLogger.error("NCKit ext: Could not get url from \(remotePath, privacy: .public)")
+            return ("", nil, nil, nil, .urlError)
+        }
+        let localUrl = URL(fileURLWithPath: localPath)
+
+        let fm = FileManager.default
+        let chunksOutputDirectoryUrl =
+            fm.temporaryDirectory.appendingPathComponent(remoteChunkStoreFolderName)
+        do {
+            try fm.createDirectory(at: chunksOutputDirectoryUrl, withIntermediateDirectories: true)
+        } catch let error {
+            uploadLogger.error(
+                """
+                Could not create temporary directory for chunked files: \(error, privacy: .public)
+                """
+            )
+            return ("", nil, nil, nil, .urlError)
+        }
+
+        var directory = localUrl.deletingLastPathComponent().path
+        if directory.last == "/" {
+            directory.removeLast()
+        }
+        let fileChunksOutputDirectory = chunksOutputDirectoryUrl.path
+        let fileName = localUrl.lastPathComponent
+        let destinationFileName = remoteUrl.lastPathComponent
+        guard let serverUrl = remoteUrl
+            .deletingLastPathComponent()
+            .absoluteString
+            .removingPercentEncoding
+        else {
+            uploadLogger.error(
+                "NCKit ext: Could not get server url from \(remotePath, privacy: .public)"
+            )
+            return ("", nil, nil, nil, .urlError)
+        }
+        let fileChunks = remainingChunks.toNcKitChunks()
+
+        uploadLogger.info(
+            """
+            Beginning chunked upload of: \(localPath, privacy: .public)
+                directory: \(directory, privacy: .public)
+                fileChunksOutputDirectory: \(fileChunksOutputDirectory, privacy: .public)
+                fileName: \(fileName, privacy: .public)
+                destinationFileName: \(destinationFileName, privacy: .public)
+                date: \(modificationDate?.debugDescription ?? "", privacy: .public)
+                creationDate: \(creationDate?.debugDescription ?? "", privacy: .public)
+                serverUrl: \(serverUrl, privacy: .public)
+                chunkFolder: \(remoteChunkStoreFolderName, privacy: .public)
+                filesChunk: \(fileChunks, privacy: .public)
+                chunkSize: \(chunkSize, privacy: .public)
+            """
+        )
+
+        return await withCheckedContinuation { continuation in
+            uploadChunk(
+                directory: directory,
+                fileChunksOutputDirectory: fileChunksOutputDirectory,
+                fileName: fileName,
+                destinationFileName: destinationFileName,
+                date: modificationDate,
+                creationDate: creationDate,
+                serverUrl: serverUrl,
+                chunkFolder: remoteChunkStoreFolderName,
+                filesChunk: fileChunks,
+                chunkSize: chunkSize,
+                account: account.ncKitAccount,
+                options: options,
+                numChunks: currentNumChunksUpdateHandler,
+                counterChunk: chunkCounter,
+                start: { processedChunks in
+                    let chunks = RemoteFileChunk.fromNcKitChunks(
+                        processedChunks, remoteChunkStoreFolderName: remoteChunkStoreFolderName
+                    )
+                    chunkUploadStartHandler(chunks)
+                },
+                requestHandler: requestHandler,
+                taskHandler: taskHandler,
+                progressHandler: { totalBytesExpected, totalBytes, fractionCompleted in
+                    let currentProgress = Progress(totalUnitCount: totalBytesExpected)
+                    currentProgress.completedUnitCount = totalBytes
+                    progressHandler(currentProgress)
+                },
+                uploaded: { uploadedChunk in
+                    let chunk = RemoteFileChunk(
+                        ncKitChunk: uploadedChunk,
+                        remoteChunkStoreFolderName: remoteChunkStoreFolderName
+                    )
+                    chunkUploadCompleteHandler(chunk)
+                }
+            ) { account, receivedChunks, file, afError, error in
+                let chunks = RemoteFileChunk.fromNcKitChunks(
+                    receivedChunks ?? [], remoteChunkStoreFolderName: remoteChunkStoreFolderName
+                )
+                continuation.resume(returning: (account, chunks, file, afError, error))
+            }
+        }
+    }
+
     public func move(
         remotePathSource: String,
         remotePathDestination: String,

@@ -13,28 +13,8 @@ final class MockRemoteInterfaceTests: XCTestCase {
     static let account = Account(
         user: "testUser", id: "testUserId", serverUrl: "https://mock.nc.com", password: "abcd"
     )
-    lazy var rootItem = MockRemoteItem(
-        identifier: "root",
-        versionIdentifier: "root",
-        name: "root",
-        remotePath: Self.account.davFilesUrl,
-        directory: true,
-        account: Self.account.ncKitAccount,
-        username: Self.account.username,
-        userId: Self.account.id,
-        serverUrl: Self.account.serverUrl
-    )
-    lazy var rootTrashItem = MockRemoteItem(
-        identifier: "root",
-        versionIdentifier: "root",
-        name: "root",
-        remotePath: Self.account.trashUrl,
-        directory: true,
-        account: Self.account.ncKitAccount,
-        username: Self.account.username,
-        userId: Self.account.id,
-        serverUrl: Self.account.serverUrl
-    )
+    lazy var rootItem = MockRemoteItem.rootItem(account: Self.account)
+    lazy var rootTrashItem = MockRemoteItem.rootTrashItem(account: Self.account)
 
     override func tearDown() {
         rootItem.children = []
@@ -186,6 +166,122 @@ final class MockRemoteInterfaceTests: XCTestCase {
         XCTAssertEqual(result.size, fileSize)
 
         // TODO: Add test for overwriting existing file
+    }
+
+    func testChunkedUpload() async throws {
+        let fileUrl =
+            FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+        let data = Data(repeating: 1, count: 8)
+        try data.write(to: fileUrl)
+
+        let remoteInterface =
+            MockRemoteInterface(rootItem: MockRemoteItem.rootItem(account: Self.account))
+        let remotePath = Self.account.davFilesUrl + "/file.txt"
+        let chunkSize = 3
+        var uploadedChunks = [RemoteFileChunk]()
+        let result = await remoteInterface.chunkedUpload(
+            localPath: fileUrl.path,
+            remotePath: remotePath,
+            remoteChunkStoreFolderName: UUID().uuidString,
+            chunkSize: chunkSize,
+            remainingChunks: [],
+            creationDate: .init(),
+            modificationDate: .init(),
+            account: Self.account,
+            options: .init(),
+            chunkUploadCompleteHandler: { uploadedChunks.append($0) }
+        )
+
+        let resultChunks = try XCTUnwrap(result.fileChunks)
+        let expectedChunkCount = Int(ceil(Double(data.count) / Double(chunkSize)))
+
+        XCTAssertEqual(result.remoteError, .success)
+        XCTAssertEqual(resultChunks.count, expectedChunkCount)
+        XCTAssertNotNil(result.file)
+        XCTAssertEqual(result.file?.size, Int64(data.count))
+
+        XCTAssertEqual(uploadedChunks.count, resultChunks.count)
+
+        let firstUploadedChunk = try XCTUnwrap(uploadedChunks.first)
+        let firstUploadedChunkNameInt = try XCTUnwrap(Int(firstUploadedChunk.fileName))
+        let lastUploadedChunk = try XCTUnwrap(uploadedChunks.last)
+        let lastUploadedChunkNameInt = try XCTUnwrap(Int(lastUploadedChunk.fileName))
+        XCTAssertEqual(firstUploadedChunkNameInt, 1)
+        XCTAssertEqual(lastUploadedChunkNameInt, expectedChunkCount)
+        XCTAssertEqual(Int(firstUploadedChunk.size), chunkSize)
+        XCTAssertEqual(
+            Int(lastUploadedChunk.size), data.count - ((lastUploadedChunkNameInt - 1) * chunkSize)
+        )
+    }
+
+    func testResumedChunkedUpload() async throws {
+        let fileUrl =
+            FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+        let data = Data(repeating: 1, count: 8)
+        try data.write(to: fileUrl)
+
+        let chunkSize = 3
+        let uploadUuid = UUID().uuidString
+        let previousUploadedChunkNum = 1
+        let previousUploadedChunk = RemoteFileChunk(
+            fileName: String(previousUploadedChunkNum),
+            size: Int64(chunkSize),
+            remoteChunkStoreFolderName: uploadUuid
+        )
+        let previousUploadedChunks = [previousUploadedChunk]
+
+        let remoteInterface =
+            MockRemoteInterface(rootItem: MockRemoteItem.rootItem(account: Self.account))
+        remoteInterface.currentChunks = [uploadUuid: previousUploadedChunks]
+
+        let remotePath = Self.account.davFilesUrl + "/file.txt"
+
+        var uploadedChunks = [RemoteFileChunk]()
+        let result = await remoteInterface.chunkedUpload(
+            localPath: fileUrl.path,
+            remotePath: remotePath,
+            remoteChunkStoreFolderName: uploadUuid,
+            chunkSize: chunkSize,
+            remainingChunks: [
+                RemoteFileChunk(
+                    fileName: String(2),
+                    size: Int64(chunkSize),
+                    remoteChunkStoreFolderName: uploadUuid
+                ),
+                RemoteFileChunk(
+                    fileName: String(3),
+                    size: Int64(data.count - (chunkSize * 2)),
+                    remoteChunkStoreFolderName: uploadUuid
+                )
+            ],
+            creationDate: .init(),
+            modificationDate: .init(),
+            account: Self.account,
+            options: .init(),
+            chunkUploadCompleteHandler: { uploadedChunks.append($0) }
+        )
+
+        let resultChunks = try XCTUnwrap(result.fileChunks)
+        let expectedChunkCount = Int(ceil(Double(data.count) / Double(chunkSize)))
+
+        XCTAssertEqual(result.remoteError, .success)
+        XCTAssertEqual(resultChunks.count, expectedChunkCount)
+        XCTAssertNotNil(result.file)
+        XCTAssertEqual(result.file?.size, Int64(data.count))
+
+        XCTAssertEqual(uploadedChunks.count, resultChunks.count - previousUploadedChunks.count)
+
+        let firstUploadedChunk = try XCTUnwrap(uploadedChunks.first)
+        let firstUploadedChunkNameInt = try XCTUnwrap(Int(firstUploadedChunk.fileName))
+        let lastUploadedChunk = try XCTUnwrap(uploadedChunks.last)
+        let lastUploadedChunkNameInt = try XCTUnwrap(Int(lastUploadedChunk.fileName))
+        XCTAssertEqual(firstUploadedChunkNameInt, previousUploadedChunkNum + 1)
+        XCTAssertEqual(lastUploadedChunkNameInt, previousUploadedChunkNum + 2)
+        print(uploadedChunks)
+        XCTAssertEqual(Int(firstUploadedChunk.size), chunkSize)
+        XCTAssertEqual(
+            Int(lastUploadedChunk.size), data.count - ((lastUploadedChunkNameInt - 1) * chunkSize)
+        )
     }
 
     func testMove() async {

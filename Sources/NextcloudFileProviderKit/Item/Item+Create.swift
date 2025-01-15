@@ -105,13 +105,17 @@ extension Item {
         progress: Progress,
         dbManager: FilesDatabaseManager
     ) async -> (Item?, Error?) {
-        let (_, ocId, etag, date, size, _, _, error) = await remoteInterface.upload(
-            remotePath: remotePath,
-            localPath: localPath,
+        let chunkUploadId =
+            itemTemplate.itemIdentifier.rawValue.replacingOccurrences(of: "/", with: "")
+        let (ocId, _, etag, date, size, _, error) = await upload(
+            fileLocatedAt: localPath,
+            toRemotePath: remotePath,
+            usingRemoteInterface: remoteInterface,
+            withAccount: account,
+            usingChunkUploadId: chunkUploadId,
+            dbManager: dbManager,
             creationDate: itemTemplate.creationDate as? Date,
             modificationDate: itemTemplate.contentModificationDate as? Date,
-            account: account,
-            options: .init(),
             requestHandler: { progress.setHandlersFromAfRequest($0) },
             taskHandler: { task in
                 if let domain = domain {
@@ -147,8 +151,8 @@ extension Item {
             filename: \(itemTemplate.filename, privacy: .public)
             ocId: \(ocId, privacy: .public)
             etag: \(etag ?? "", privacy: .public)
-            date: \(date ?? NSDate(), privacy: .public)
-            size: \(size, privacy: .public),
+            date: \(date ?? Date(), privacy: .public)
+            size: \(Int(size ?? -1), privacy: .public),
             account: \(account.ncKitAccount, privacy: .public)
             """
         )
@@ -157,20 +161,20 @@ extension Item {
             Self.logger.warning(
                 """
                 Created item upload reported as successful, but there are differences between
-                the received file size (\(size, privacy: .public))
+                the received file size (\(Int(size ?? -1), privacy: .public))
                 and the original file size (\(itemTemplate.documentSize??.int64Value ?? 0))
                 """
             )
         }
         
         let newMetadata = ItemMetadata()
-        newMetadata.date = (date ?? NSDate()) as Date
+        newMetadata.date = date ?? Date()
         newMetadata.etag = etag ?? ""
         newMetadata.account = account.ncKitAccount
         newMetadata.fileName = itemTemplate.filename
         newMetadata.fileNameView = itemTemplate.filename
         newMetadata.ocId = ocId
-        newMetadata.size = size
+        newMetadata.size = size ?? 0
         newMetadata.contentType = itemTemplate.contentType?.preferredMIMEType ?? ""
         newMetadata.directory = false
         newMetadata.serverUrl = parentItemRemotePath
@@ -302,13 +306,14 @@ extension Item {
                     Handling child bundle or package file at: \(childUrlPath, privacy: .public)
                     """
                 )
-                let (_, _, _, _, _, _, _, error) = await remoteInterface.upload(
-                    remotePath: childRemoteUrl,
-                    localPath: childUrlPath,
+                let (_, _, _, _, _, _, error) = await upload(
+                    fileLocatedAt: childUrlPath,
+                    toRemotePath: childRemoteUrl,
+                    usingRemoteInterface: remoteInterface,
+                    withAccount: account,
+                    dbManager: dbManager,
                     creationDate: childUrlAttributes.creationDate,
                     modificationDate: childUrlAttributes.contentModificationDate,
-                    account: account,
-                    options: .init(),
                     requestHandler: { progress.setHandlersFromAfRequest($0) },
                     taskHandler: { task in
                         if let domain {

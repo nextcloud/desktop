@@ -34,16 +34,7 @@ final class EnumeratorTests: XCTestCase {
         super.setUp()
         Realm.Configuration.defaultConfiguration.inMemoryIdentifier = name
 
-        rootItem = MockRemoteItem(
-            identifier: NSFileProviderItemIdentifier.rootContainer.rawValue,
-            name: "root",
-            remotePath: Self.account.davFilesUrl,
-            directory: true,
-            account: Self.account.ncKitAccount,
-            username: Self.account.username,
-            userId: Self.account.id,
-            serverUrl: Self.account.serverUrl
-        )
+        rootItem = MockRemoteItem.rootItem(account: Self.account)
 
         remoteFolder = MockRemoteItem(
             identifier: "folder",
@@ -95,16 +86,7 @@ final class EnumeratorTests: XCTestCase {
         remoteItemB.parent = remoteFolder
         remoteItemC.parent = nil
 
-        rootTrashItem = MockRemoteItem(
-            identifier: NSFileProviderItemIdentifier.trashContainer.rawValue,
-            name: "root",
-            remotePath: Self.account.trashUrl,
-            directory: true,
-            account: Self.account.ncKitAccount,
-            username: Self.account.username,
-            userId: Self.account.id,
-            serverUrl: Self.account.serverUrl
-        )
+        rootTrashItem = MockRemoteItem.rootTrashItem(account: Self.account)
 
         remoteTrashItemA = MockRemoteItem(
             identifier: "trashItemA",

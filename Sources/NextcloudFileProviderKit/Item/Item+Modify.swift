@@ -118,9 +118,9 @@ public extension Item {
         }
 
         let updatedMetadata = await withCheckedContinuation { continuation in
-            dbManager.setStatusForItemMetadata(
-                metadata, status: ItemMetadata.Status.uploading
-            ) { continuation.resume(returning: $0) }
+            dbManager.setStatusForItemMetadata(metadata, status: .uploading) {
+                continuation.resume(returning: $0)
+            }
         }
 
         if updatedMetadata == nil {
@@ -132,13 +132,15 @@ public extension Item {
             )
         }
 
-        let (_, _, etag, date, size, _, _, error) = await remoteInterface.upload(
-            remotePath: remotePath,
-            localPath: newContents.path,
+        let (_, _, etag, date, size, _, error) = await upload(
+            fileLocatedAt: newContents.path,
+            toRemotePath: remotePath,
+            usingRemoteInterface: remoteInterface,
+            withAccount: account,
+            usingChunkUploadId: metadata.chunkUploadId,
+            dbManager: dbManager,
             creationDate: newCreationDate,
             modificationDate: newContentModificationDate,
-            account: account,
-            options: .init(),
             requestHandler: { progress.setHandlersFromAfRequest($0) },
             taskHandler: { task in
                 if let domain {
@@ -180,21 +182,28 @@ public extension Item {
             Self.logger.warning(
                 """
                 Item content modification upload reported as successful,
-                but there are differences between the received file size (\(size, privacy: .public))
+                but there are differences between the received file size (\(size ?? -1, privacy: .public))
                 and the original file size (\(self.documentSize?.int64Value ?? 0))
                 """
             )
         }
 
-        let newMetadata = ItemMetadata(value: metadata)
-        newMetadata.date = (date ?? NSDate()) as Date
+        let newMetadata: ItemMetadata = await {
+            guard let updatedMetadata else { return ItemMetadata(value: metadata) }
+            return await withCheckedContinuation { continuation in
+                dbManager.setStatusForItemMetadata(updatedMetadata, status: .normal) { updatedMeta in
+                    continuation.resume(returning: updatedMeta ?? ItemMetadata(value: updatedMetadata))
+                }
+            }
+        }()
+
+        newMetadata.date = date ?? Date()
         newMetadata.etag = etag ?? metadata.etag
         newMetadata.ocId = ocId
-        newMetadata.size = size
+        newMetadata.size = size ?? 0
         newMetadata.session = ""
         newMetadata.sessionError = ""
         newMetadata.sessionTaskIdentifier = 0
-        newMetadata.status = ItemMetadata.Status.normal.rawValue
         newMetadata.downloaded = true
         newMetadata.uploaded = true
 
@@ -388,13 +397,14 @@ public extension Item {
                     Handling child bundle or package file at: \(childUrlPath, privacy: .public)
                     """
                 )
-                let (_, _, _, _, _, _, _, error) = await remoteInterface.upload(
-                    remotePath: childRemoteUrl,
-                    localPath: childUrlPath,
+                let (_, _, _, _, _, _, error) = await upload(
+                    fileLocatedAt: childUrlPath,
+                    toRemotePath: childRemoteUrl,
+                    usingRemoteInterface: remoteInterface,
+                    withAccount: account,
+                    dbManager: dbManager,
                     creationDate: childUrlAttributes.creationDate,
                     modificationDate: childUrlAttributes.contentModificationDate,
-                    account: account,
-                    options: .init(),
                     requestHandler: { progress.setHandlersFromAfRequest($0) },
                     taskHandler: { task in
                         if let domain {

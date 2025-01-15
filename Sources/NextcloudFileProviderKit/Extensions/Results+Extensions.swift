@@ -8,8 +8,17 @@
 import Realm
 import RealmSwift
 
+extension Results where Element: RemoteFileChunk {
+    func toUnmanagedResults() -> [RemoteFileChunk] {
+        return map { RemoteFileChunk(value: $0) }
+    }
+}
+
 extension Results where Element: ItemMetadata {
     func toUnmanagedResults() -> [ItemMetadata] {
         return map { ItemMetadata(value: $0) }
     }
 }
+
+
+

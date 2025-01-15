@@ -89,7 +89,7 @@ public class FilesDatabaseManager {
                 }
 
             },
-            objectTypes: [ItemMetadata.self]
+            objectTypes: [ItemMetadata.self, RemoteFileChunk.self]
         )
         self.init(realmConfig: config)
     }
@@ -340,6 +340,9 @@ public class FilesDatabaseManager {
                     result.downloaded = false
                 } else if result.isUpload {
                     result.uploaded = false
+                    result.chunkUploadId = UUID().uuidString
+                } else if status == .normal, metadata.isUpload {
+                    result.chunkUploadId = ""
                 }
 
                 Self.logger.debug(
