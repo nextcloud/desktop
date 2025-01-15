@@ -241,7 +241,7 @@ private slots:
         std::thread t1([&] {
             VfsShellExtensions::ThumbnailProviderIpc thumbnailProviderIpc;
             thumbnailReplyData = thumbnailProviderIpc.fetchThumbnailForFile(
-                fakeFolder.localPath() + QString("A/photos/wrong.jpg"), QSize(256, 256));
+                fakeFolder.localPath() + QStringLiteral("A/photos/wrong.jpg"), QSize(256, 256));
             QMetaObject::invokeMethod(&loop, &QEventLoop::quit, Qt::QueuedConnection);
         });
         loop.exec();

@@ -383,7 +383,7 @@ void UnifiedSearchResultsListModel::slotSearchTermEditingFinished()
         &UnifiedSearchResultsListModel::slotSearchTermEditingFinished);
 
     if (!_accountState || !_accountState->account()) {
-        qCCritical(lcUnifiedSearch) << QString("Account state is invalid. Could not start search!");
+        qCCritical(lcUnifiedSearch) << QStringLiteral("Account state is invalid. Could not start search!");
         return;
     }
 
@@ -401,14 +401,14 @@ void UnifiedSearchResultsListModel::slotFetchProvidersFinished(const QJsonDocume
     const auto job = qobject_cast<JsonApiJob *>(sender());
 
     if (!job) {
-        qCCritical(lcUnifiedSearch) << QString("Failed to fetch providers.").arg(_searchTerm);
+        qCCritical(lcUnifiedSearch) << QStringLiteral("Failed to fetch providers.").arg(_searchTerm);
         _errorString += tr("Failed to fetch providers.") + QLatin1Char('\n');
         emit errorStringChanged();
         return;
     }
     
     if (statusCode != 200) {
-        qCCritical(lcUnifiedSearch) << QString("%1: Failed to fetch search providers for '%2'. Error: %3")
+        qCCritical(lcUnifiedSearch) << QStringLiteral("%1: Failed to fetch search providers for '%2'. Error: %3")
                                            .arg(statusCode)
                                            .arg(_searchTerm)
                                            .arg(job->errorString());
@@ -446,7 +446,7 @@ void UnifiedSearchResultsListModel::slotSearchForProviderFinished(const QJsonDoc
     const auto job = qobject_cast<JsonApiJob *>(sender());
 
     if (!job) {
-        qCCritical(lcUnifiedSearch) << QString("Search has failed for '%2'.").arg(_searchTerm);
+        qCCritical(lcUnifiedSearch) << QStringLiteral("Search has failed for '%2'.").arg(_searchTerm);
         _errorString += tr("Search has failed for '%2'.").arg(_searchTerm) + QLatin1Char('\n');
         emit errorStringChanged();
         return;
@@ -471,7 +471,7 @@ void UnifiedSearchResultsListModel::slotSearchForProviderFinished(const QJsonDoc
     }
 
     if (statusCode != 200) {
-        qCCritical(lcUnifiedSearch) << QString("%1: Search has failed for '%2'. Error: %3")
+        qCCritical(lcUnifiedSearch) << QStringLiteral("%1: Search has failed for '%2'. Error: %3")
                                            .arg(statusCode)
                                            .arg(_searchTerm)
                                            .arg(job->errorString());

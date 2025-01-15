@@ -65,7 +65,7 @@ private slots:
         QVERIFY(fakeFolder.syncOnce());
 
         QCOMPARE(newBigFolder.count(), 1);
-        QCOMPARE(newBigFolder.first()[0].toString(), QString("A/newBigDir"));
+        QCOMPARE(newBigFolder.first()[0].toString(), QStringLiteral("A/newBigDir"));
         QCOMPARE(newBigFolder.first()[1].toBool(), false);
         newBigFolder.clear();
 
@@ -75,7 +75,7 @@ private slots:
 
         auto oldSync = fakeFolder.currentLocalState();
         // syncing again should do the same
-        fakeFolder.syncEngine().journal()->schedulePathForRemoteDiscovery(QString("A/newBigDir"));
+        fakeFolder.syncEngine().journal()->schedulePathForRemoteDiscovery(QStringLiteral("A/newBigDir"));
         QVERIFY(fakeFolder.syncOnce());
         QCOMPARE(fakeFolder.currentLocalState(), oldSync);
         QCOMPARE(newBigFolder.count(), 1); // (since we don't have a real Folder, the files were not added to any list)
@@ -86,7 +86,7 @@ private slots:
         // Simulate that we accept all files by setting a wildcard white list
         fakeFolder.syncEngine().journal()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncWhiteList,
             QStringList() << QLatin1String("/"));
-        fakeFolder.syncEngine().journal()->schedulePathForRemoteDiscovery(QString("A/newBigDir"));
+        fakeFolder.syncEngine().journal()->schedulePathForRemoteDiscovery(QStringLiteral("A/newBigDir"));
         QVERIFY(fakeFolder.syncOnce());
         QCOMPARE(newBigFolder.count(), 0);
         QCOMPARE(sizeRequests.count(), 0);
