@@ -319,6 +319,7 @@ void ownCloudGui::slotComputeOverallSyncStatus()
             if (!Mac::FileProviderSettingsController::instance()->vfsEnabledForAccount(accountFpId)) {
                 continue;
             }
+            allPaused = false;
             const auto fileProvider = Mac::FileProvider::instance();
 
             if (!fileProvider->xpc()->fileProviderExtReachable(accountFpId)) {
