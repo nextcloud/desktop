@@ -119,7 +119,11 @@ class DiscoverySingleLocalDirectoryJob : public QObject, public QRunnable
 {
     Q_OBJECT
 public:
-    explicit DiscoverySingleLocalDirectoryJob(const AccountPtr &account, const QString &localPath, OCC::Vfs *vfs, QObject *parent = nullptr);
+    explicit DiscoverySingleLocalDirectoryJob(const AccountPtr &account,
+                                              const QString &localPath,
+                                              OCC::Vfs *vfs,
+                                              bool fileSystemReliablePermissions,
+                                              QObject *parent = nullptr);
 
     void run() override;
 signals:
@@ -134,6 +138,7 @@ private:
     QString _localPath;
     AccountPtr _account;
     OCC::Vfs* _vfs;
+    bool _fileSystemReliablePermissions = false;
 public:
 };
 
@@ -342,6 +347,8 @@ public:
     bool _hasDownloadRemovedItems = false;
 
     bool _noCaseConflictRecordsInDb = false;
+
+    bool _fileSystemReliablePermissions = false;
 
     QSet<QString> _topLevelE2eeFolderPaths;
 

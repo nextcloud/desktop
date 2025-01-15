@@ -943,7 +943,7 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(const SyncFileItemPtr &it
 
         if (!base.isDirectory()) {
             csync_file_stat_t buf;
-            if (csync_vio_local_stat(_discoveryData->_localDir + originalPathAdjusted, &buf)) {
+            if (csync_vio_local_stat(_discoveryData->_localDir + originalPathAdjusted, &buf, true)) {
                 qCInfo(lcDisco) << "Local file does not exist anymore." << originalPathAdjusted;
                 return;
             }
@@ -2137,7 +2137,7 @@ DiscoverySingleDirectoryJob *ProcessDirectoryJob::startAsyncServerQuery()
 void ProcessDirectoryJob::startAsyncLocalQuery()
 {
     QString localPath = _discoveryData->_localDir + _currentFolder._local;
-    auto localJob = new DiscoverySingleLocalDirectoryJob(_discoveryData->_account, localPath, _discoveryData->_syncOptions._vfs.data());
+    auto localJob = new DiscoverySingleLocalDirectoryJob(_discoveryData->_account, localPath, _discoveryData->_syncOptions._vfs.data(), _discoveryData->_fileSystemReliablePermissions);
 
     _discoveryData->_currentlyActiveJobs++;
     _pendingAsyncJobs++;
