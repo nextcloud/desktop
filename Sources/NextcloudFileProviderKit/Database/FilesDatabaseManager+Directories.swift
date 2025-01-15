@@ -25,7 +25,7 @@ extension FilesDatabaseManager {
         } else {
             directoryServerUrl = directoryMetadata.serverUrl + "/" + directoryMetadata.fileName
         }
-        return itemMetadatas.filter("serverUrl BEGINSWITH %@", directoryServerUrl)
+        return itemMetadatas.where { $0.serverUrl.starts(with: directoryServerUrl) }
     }
 
     public func childItemCount(directoryMetadata: ItemMetadata) -> Int {
@@ -37,7 +37,7 @@ extension FilesDatabaseManager {
     }
 
     public func directoryMetadata(ocId: String) -> ItemMetadata? {
-        if let metadata = itemMetadatas.filter("ocId == %@ AND directory == true", ocId).first {
+        if let metadata = itemMetadatas.where({ $0.ocId == ocId && $0.directory }).first {
             return ItemMetadata(value: metadata)
         }
 
@@ -47,10 +47,9 @@ extension FilesDatabaseManager {
     // Deletes all metadatas related to the info of the directory provided
     public func deleteDirectoryAndSubdirectoriesMetadata(ocId: String) -> [ItemMetadata]? {
         let database = ncDatabase()
-        guard
-            let directoryMetadata = itemMetadatas.filter(
-                "ocId == %@ AND directory == true", ocId
-            ).first
+        guard let directoryMetadata = itemMetadatas
+            .filter({ $0.ocId == ocId && $0.directory })
+            .first
         else {
             Self.logger.error(
                 """
@@ -93,9 +92,9 @@ extension FilesDatabaseManager {
 
         var deletedMetadatas: [ItemMetadata] = [directoryMetadataCopy]
 
-        let results = itemMetadatas.filter(
-            "account == %@ AND serverUrl BEGINSWITH %@", directoryAccount, directoryUrlPath
-        )
+        let results = itemMetadatas.filter {
+            $0.account == directoryAccount && $0.serverUrl.hasPrefix(directoryUrlPath)
+        }
 
         for result in results {
             let inactiveItemMetadata = ItemMetadata(value: result)
@@ -130,10 +129,9 @@ extension FilesDatabaseManager {
     public func renameDirectoryAndPropagateToChildren(
         ocId: String, newServerUrl: String, newFileName: String
     ) -> [ItemMetadata]? {
-        guard
-            let directoryMetadata = itemMetadatas.filter(
-                "ocId == %@ AND directory == true", ocId
-            ).first
+        guard let directoryMetadata = itemMetadatas
+            .where({ $0.ocId == ocId && $0.directory })
+            .first
         else {
             Self.logger.error(
                 """
@@ -148,11 +146,9 @@ extension FilesDatabaseManager {
         let oldItemFilename = directoryMetadata.fileName
         let oldDirectoryServerUrl = oldItemServerUrl + "/" + oldItemFilename
         let newDirectoryServerUrl = newServerUrl + "/" + newFileName
-        let childItemResults = itemMetadatas.filter(
-            "account == %@ AND serverUrl BEGINSWITH %@",
-            directoryMetadata.account,
-            oldDirectoryServerUrl
-        )
+        let childItemResults = itemMetadatas.filter {
+            $0.account == directoryMetadata.account && $0.serverUrl.hasPrefix(oldDirectoryServerUrl)
+        }
 
         renameItemMetadata(ocId: ocId, newServerUrl: newServerUrl, newFileName: newFileName)
         Self.logger.debug(
@@ -191,11 +187,10 @@ extension FilesDatabaseManager {
         }
 
         return itemMetadatas
-            .filter(
-                "account == %@ AND serverUrl BEGINSWITH %@",
-                directoryMetadata.account,
-                newDirectoryServerUrl
-            )
-            .toUnmanagedResults()
+            .filter {
+                $0.account == directoryMetadata.account &&
+                $0.serverUrl.hasPrefix(newDirectoryServerUrl)
+            }
+            .map { ItemMetadata(value: $0) }
     }
 }
