@@ -9,7 +9,7 @@ import FileProvider
 import NextcloudKit
 
 let fpUiExtensionServiceName = NSFileProviderServiceName(
-    "com.nextcloud.desktopclient.FPUIExtensionService"
+    "com.ionos.hidrivenext.desktopclient.FPUIExtensionService"
 )
 
 @objc protocol FPUIExtensionService {

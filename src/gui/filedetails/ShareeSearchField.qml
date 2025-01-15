@@ -17,7 +17,7 @@ import QtQuick.Window
 import QtQuick.Layouts
 import QtQuick.Controls
 
-import com.nextcloud.desktopclient
+import com.ionos.hidrivenext.desktopclient
 import Style
 import "../tray"
 

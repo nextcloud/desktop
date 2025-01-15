@@ -20,7 +20,7 @@ import "../"
 import "../filedetails/"
 
 import Style
-import com.nextcloud.desktopclient
+import com.ionos.hidrivenext.desktopclient
 
 Rectangle {
     id: root

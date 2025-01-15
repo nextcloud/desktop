@@ -11,7 +11,7 @@ import "../filedetails/"
 // Custom qml modules are in /theme (and included by resources.qrc)
 import Style 1.0
 
-import com.ionos.hidrivenext.desktopclient 1.0
+import com.ionos.hidrivenext.desktopclient
 
 
 Rectangle {

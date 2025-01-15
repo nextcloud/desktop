@@ -26,7 +26,7 @@ import "../filedetails/"
 // Custom qml modules are in /theme (and included by resources.qrc)
 import Style
 
-import com.nextcloud.desktopclient
+import com.ionos.hidrivenext.desktopclient
 
 ApplicationWindow {
     id:         trayWindow

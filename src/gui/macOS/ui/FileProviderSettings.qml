@@ -20,7 +20,7 @@ import Style 1.0
 import "../../filedetails"
 import "../../tray"
 
-import com.nextcloud.desktopclient 1.0
+import com.ionos.hidrivenext.desktopclient
 
 Page {
     id: root

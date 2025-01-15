@@ -2,7 +2,7 @@ pragma Singleton
 
 import QtQuick
 
-import com.ionos.hidrivenext.desktopclient 1.0
+import com.ionos.hidrivenext.desktopclient
 
 QtObject {
     readonly property int pixelSize: fontMetrics.font.pixelSize

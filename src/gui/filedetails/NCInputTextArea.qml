@@ -16,7 +16,7 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 
-import com.nextcloud.desktopclient
+import com.ionos.hidrivenext.desktopclient
 import Style
 
 TextArea {

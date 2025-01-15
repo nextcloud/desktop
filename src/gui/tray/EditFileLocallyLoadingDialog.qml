@@ -1,9 +1,9 @@
 import QtQuick
 import QtQuick.Window
 import Style
+import com.ionos.hidrivenext.desktopclient
 import QtQuick.Layouts
 import QtQuick.Controls
-import com.ionos.hidrivenext.desktopclient
 
 ApplicationWindow {
     id: root

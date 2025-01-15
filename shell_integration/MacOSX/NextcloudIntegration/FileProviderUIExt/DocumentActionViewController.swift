@@ -37,11 +37,11 @@ class DocumentActionViewController: FPUIActionExtensionViewController {
         Logger.actionViewController.info("Preparing action: \(actionIdentifier, privacy: .public)")
 
         switch (actionIdentifier) {
-        case "com.nextcloud.desktopclient.FileProviderUIExt.ShareAction":
+        case "com.ionos.hidrivenext.desktopclient.FileProviderUIExt.ShareAction":
             prepare(childViewController: ShareViewController(itemIdentifiers))
-        case "com.nextcloud.desktopclient.FileProviderUIExt.LockFileAction":
+        case "com.ionos.hidrivenext.desktopclient.FileProviderUIExt.LockFileAction":
             prepare(childViewController: LockViewController(itemIdentifiers, locking: true))
-        case "com.nextcloud.desktopclient.FileProviderUIExt.UnlockFileAction":
+        case "com.ionos.hidrivenext.desktopclient.FileProviderUIExt.UnlockFileAction":
             prepare(childViewController: LockViewController(itemIdentifiers, locking: false))
         default:
             return

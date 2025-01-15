@@ -18,7 +18,7 @@ import OSLog
 
 class ClientCommunicationService: NSObject, NSFileProviderServiceSource, NSXPCListenerDelegate, ClientCommunicationProtocol {
     let listener = NSXPCListener.anonymous()
-    let serviceName = NSFileProviderServiceName("com.nextcloud.desktopclient.ClientCommunicationService")
+    let serviceName = NSFileProviderServiceName("com.ionos.hidrivenext.desktopclient.ClientCommunicationService")
     let fpExtension: FileProviderExtension
 
     init(fpExtension: FileProviderExtension) {

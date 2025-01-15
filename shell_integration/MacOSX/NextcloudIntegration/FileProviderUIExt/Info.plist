@@ -14,7 +14,7 @@
 		<array>
 			<dict>
 				<key>NSExtensionFileProviderActionIdentifier</key>
-				<string>com.nextcloud.desktopclient.FileProviderUIExt.UnlockFileAction</string>
+				<string>com.ionos.hidrivenext.desktopclient.FileProviderUIExt.UnlockFileAction</string>
 				<key>NSExtensionFileProviderActionName</key>
 				<string>Unlock file</string>
 				<key>NSExtensionFileProviderActionActivationRule</key>
@@ -26,13 +26,13 @@
 				<key>NSExtensionFileProviderActionName</key>
 				<string>Lock file</string>
 				<key>NSExtensionFileProviderActionIdentifier</key>
-				<string>com.nextcloud.desktopclient.FileProviderUIExt.LockFileAction</string>
+				<string>com.ionos.hidrivenext.desktopclient.FileProviderUIExt.LockFileAction</string>
 			</dict>
 			<dict>
 				<key>NSExtensionFileProviderActionActivationRule</key>
 				<string>TRUEPREDICATE</string>
 				<key>NSExtensionFileProviderActionIdentifier</key>
-				<string>com.nextcloud.desktopclient.FileProviderUIExt.ShareAction</string>
+				<string>com.ionos.hidrivenext.desktopclient.FileProviderUIExt.ShareAction</string>
 				<key>NSExtensionFileProviderActionName</key>
 				<string>Share options</string>
 			</dict>

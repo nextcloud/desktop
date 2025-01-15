@@ -4,7 +4,7 @@ import QtQuick.Layouts
 
 import Style
 
-import com.ionos.hidrivenext.desktopclientas NC
+import com.ionos.hidrivenext.desktopclient as NC
 
 RowLayout {
     id: root

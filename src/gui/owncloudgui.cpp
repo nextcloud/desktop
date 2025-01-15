@@ -128,20 +128,20 @@ ownCloudGui::ownCloudGui(Application *parent)
     connect(Logger::instance(), &Logger::guiLog, this, &ownCloudGui::slotShowTrayMessage);
     connect(Logger::instance(), &Logger::guiMessage, this, &ownCloudGui::slotShowGuiMessage);
 
-    qmlRegisterType<SyncStatusSummary>("com.nextcloud.desktopclient", 1, 0, "SyncStatusSummary");
-    qmlRegisterType<EmojiModel>("com.nextcloud.desktopclient", 1, 0, "EmojiModel");
-    qmlRegisterType<UserStatusSelectorModel>("com.nextcloud.desktopclient", 1, 0, "UserStatusSelectorModel");
-    qmlRegisterType<ActivityListModel>("com.nextcloud.desktopclient", 1, 0, "ActivityListModel");
-    qmlRegisterType<FileActivityListModel>("com.nextcloud.desktopclient", 1, 0, "FileActivityListModel");
-    qmlRegisterType<SortedActivityListModel>("com.nextcloud.desktopclient", 1, 0, "SortedActivityListModel");
-    qmlRegisterType<WheelHandler>("com.nextcloud.desktopclient", 1, 0, "WheelHandler");
-    qmlRegisterType<CallStateChecker>("com.nextcloud.desktopclient", 1, 0, "CallStateChecker");
-    qmlRegisterType<Quick::DateFieldBackend>("com.nextcloud.desktopclient", 1, 0, "DateFieldBackend");
-    qmlRegisterType<FileDetails>("com.nextcloud.desktopclient", 1, 0, "FileDetails");
-    qmlRegisterType<ShareModel>("com.nextcloud.desktopclient", 1, 0, "ShareModel");
-    qmlRegisterType<ShareeModel>("com.nextcloud.desktopclient", 1, 0, "ShareeModel");
-    qmlRegisterType<SortedShareModel>("com.nextcloud.desktopclient", 1, 0, "SortedShareModel");
-    qmlRegisterType<SyncConflictsModel>("com.nextcloud.desktopclient", 1, 0, "SyncConflictsModel");
+    qmlRegisterType<SyncStatusSummary>("com.ionos.hidrivenext.desktopclient", 1, 0, "SyncStatusSummary");
+    qmlRegisterType<EmojiModel>("com.ionos.hidrivenext.desktopclient", 1, 0, "EmojiModel");
+    qmlRegisterType<UserStatusSelectorModel>("com.ionos.hidrivenext.desktopclient", 1, 0, "UserStatusSelectorModel");
+    qmlRegisterType<ActivityListModel>("com.ionos.hidrivenext.desktopclient", 1, 0, "ActivityListModel");
+    qmlRegisterType<FileActivityListModel>("com.ionos.hidrivenext.desktopclient", 1, 0, "FileActivityListModel");
+    qmlRegisterType<SortedActivityListModel>("com.ionos.hidrivenext.desktopclient", 1, 0, "SortedActivityListModel");
+    qmlRegisterType<WheelHandler>("com.ionos.hidrivenext.desktopclient", 1, 0, "WheelHandler");
+    qmlRegisterType<CallStateChecker>("com.ionos.hidrivenext.desktopclient", 1, 0, "CallStateChecker");
+    qmlRegisterType<Quick::DateFieldBackend>("com.ionos.hidrivenext.desktopclient", 1, 0, "DateFieldBackend");
+    qmlRegisterType<FileDetails>("com.ionos.hidrivenext.desktopclient", 1, 0, "FileDetails");
+    qmlRegisterType<ShareModel>("com.ionos.hidrivenext.desktopclient", 1, 0, "ShareModel");
+    qmlRegisterType<ShareeModel>("com.ionos.hidrivenext.desktopclient", 1, 0, "ShareeModel");
+    qmlRegisterType<SortedShareModel>("com.ionos.hidrivenext.desktopclient", 1, 0, "SortedShareModel");
+    qmlRegisterType<SyncConflictsModel>("com.ionos.hidrivenext.desktopclient", 1, 0, "SyncConflictsModel");
 
     qmlRegisterUncreatableType<QAbstractItemModel>("com.nextcloud.desktopclient", 1, 0, "QAbstractItemModel", "QAbstractItemModel");
     qmlRegisterUncreatableType<Activity>("com.nextcloud.desktopclient", 1, 0, "Activity", "Activity");
@@ -159,13 +159,13 @@ ownCloudGui::ownCloudGui(Application *parent)
     qRegisterMetaType<Sharee>("Sharee");
     qRegisterMetaType<OCC::ActivityList>("ActivityList");
 
-    qmlRegisterSingletonInstance("com.nextcloud.desktopclient", 1, 0, "UserModel", UserModel::instance());
-    qmlRegisterSingletonInstance("com.nextcloud.desktopclient", 1, 0, "UserAppsModel", UserAppsModel::instance());
-    qmlRegisterSingletonInstance("com.nextcloud.desktopclient", 1, 0, "Theme", Theme::instance());
-    qmlRegisterSingletonInstance("com.nextcloud.desktopclient", 1, 0, "Systray", Systray::instance());
+    qmlRegisterSingletonInstance("com.ionos.hidrivenext.desktopclient", 1, 0, "UserModel", UserModel::instance());
+    qmlRegisterSingletonInstance("com.ionos.hidrivenext.desktopclient", 1, 0, "UserAppsModel", UserAppsModel::instance());
+    qmlRegisterSingletonInstance("com.ionos.hidrivenext.desktopclient", 1, 0, "Theme", Theme::instance());
+    qmlRegisterSingletonInstance("com.ionos.hidrivenext.desktopclient", 1, 0, "Systray", Systray::instance());
 
 #ifdef BUILD_FILE_PROVIDER_MODULE
-    qmlRegisterSingletonInstance("com.nextcloud.desktopclient", 1, 0, "FileProviderSettingsController", Mac::FileProviderSettingsController::instance());
+    qmlRegisterSingletonInstance("com.ionos.hidrivenext.desktopclient", 1, 0, "FileProviderSettingsController", Mac::FileProviderSettingsController::instance());
 #endif
 }
 
