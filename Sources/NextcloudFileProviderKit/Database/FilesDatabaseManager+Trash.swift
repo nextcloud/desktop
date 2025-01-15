@@ -9,11 +9,9 @@ extension FilesDatabaseManager {
     func trashedItemMetadatas(account: Account) -> [ItemMetadata] {
         ncDatabase()
             .objects(ItemMetadata.self)
-            .filter(
-                "account == %@ AND serverUrl BEGINSWITH %@",
-                account.ncKitAccount,
-                account.trashUrl
-            )
-            .toUnmanagedResults()
+            .filter {
+                $0.account == account.ncKitAccount && $0.serverUrl.hasPrefix(account.trashUrl)
+            }
+            .map { ItemMetadata(value: $0) }
     }
 }
