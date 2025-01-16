@@ -242,13 +242,14 @@ bool AccountManager::restoreFromLegacySettings()
                 const auto cleanOverrideUrl = overrideUrl.endsWith('/') ? overrideUrl.chopped(1) : overrideUrl;
                 qCInfo(lcAccountManager) << "Migrate: overrideUrl" << cleanOverrideUrl;
 
-                if (!cleanOverrideUrl.isEmpty()) {
+                if (!cleanOverrideUrl.isEmpty() && !Theme::instance()->multipleOverrideServers()) {
                     oCSettings->beginGroup(QLatin1String(accountsC));
                     const auto accountsChildGroups = oCSettings->childGroups();
                     for (const auto &accountId : accountsChildGroups) {
                         oCSettings->beginGroup(accountId);
                         const auto oCUrl = oCSettings->value(QLatin1String(urlC)).toString();
                         const auto cleanOCUrl = oCUrl.endsWith('/') ? oCUrl.chopped(1) : oCUrl;
+
 
                         // in case the urls are equal reset the settings object to read from
                         // the ownCloud settings object
