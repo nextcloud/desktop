@@ -146,6 +146,12 @@ bool Application::configVersionMigration()
         return true;
     }
 
+    const QVersionNumber firstMigrationRun(3, 15, 0);
+    const QVersionNumber secondMigrationRun(3, 15, 3);
+    if (firstMigrationRun == previousVersion && secondMigrationRun == currentVersion) {
+        deleteKeys.append(QLatin1String("Updater"));
+    }
+
     // 'Launch on system startup' defaults to true > 3.11.x
     const auto theme = Theme::instance();
     configFile.setLaunchOnSystemStartup(configFile.launchOnSystemStartup());
