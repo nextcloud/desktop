@@ -164,7 +164,7 @@ void AccountManager::backwardMigrationSettingsKeys(QStringList *deleteKeys, QStr
         }
     } else {
         deleteKeys->append(settings->group());
-    }
+    }    
 }
 
 bool AccountManager::restoreFromLegacySettings()
@@ -269,9 +269,11 @@ bool AccountManager::restoreFromLegacySettings()
                         oCSettings->endGroup();
                     }
                 } else {
-                    // skip updater settings
+                    qCInfo(lcAccountManager) << "Copy settings:" << oCSettings->allKeys().join(", ");
+                    // skip updater settings from legacy clients
                     oCSettings->remove(QLatin1String(updaterC));
-                    qCInfo(lcAccountManager) << "Copy settings" << oCSettings->allKeys().join(", ");
+                    qCInfo(lcAccountManager) << "Removing Updater settings from legacy client.";
+                    qCInfo(lcAccountManager) << "New settings list:" << oCSettings->allKeys().join(", ");
                     settings = std::move(oCSettings);
                 }
 

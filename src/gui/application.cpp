@@ -149,6 +149,7 @@ bool Application::configVersionMigration()
     const QVersionNumber firstMigrationRun(3, 15, 0);
     const QVersionNumber secondMigrationRun(3, 15, 3);
     if (firstMigrationRun == previousVersion && secondMigrationRun == currentVersion) {
+        qCInfo(lcApplication) << "Upgrade from 3.15.0 to 3.15.3: remove Updater settings.";
         deleteKeys.append(QLatin1String("Updater"));
     }
 
@@ -199,13 +200,16 @@ bool Application::configVersionMigration()
             QTimer::singleShot(0, qApp, &QCoreApplication::quit);
             return false;
         }
+    }
 
+    if (!deleteKeys.isEmpty()) {
         auto settings = ConfigFile::settingsWithGroup("foo");
         settings->endGroup();
 
-        // Wipe confusing keys from the future, ignore the others
+         // Wipe confusing keys from the future, ignore the others
         for (const auto &badKey : qAsConst(deleteKeys)) {
             settings->remove(badKey);
+            qCInfo(lcApplication) << "Removed" << badKey << "key from settings.";
         }
     }
 
