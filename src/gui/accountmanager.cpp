@@ -81,6 +81,8 @@ constexpr auto maxAccountsVersion = 2;
 constexpr auto maxAccountVersion = 1;
 
 constexpr auto serverHasValidSubscriptionC = "serverHasValidSubscription";
+
+constexpr auto updaterC = "Updater";
 }
 
 
@@ -267,6 +269,8 @@ bool AccountManager::restoreFromLegacySettings()
                         oCSettings->endGroup();
                     }
                 } else {
+                    // skip updater settings
+                    oCSettings->remove(QLatin1String(updaterC));
                     qCInfo(lcAccountManager) << "Copy settings" << oCSettings->allKeys().join(", ");
                     settings = std::move(oCSettings);
                 }
