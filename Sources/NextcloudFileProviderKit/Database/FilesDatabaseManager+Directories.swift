@@ -48,7 +48,7 @@ extension FilesDatabaseManager {
     public func deleteDirectoryAndSubdirectoriesMetadata(ocId: String) -> [ItemMetadata]? {
         let database = ncDatabase()
         guard let directoryMetadata = itemMetadatas
-            .filter({ $0.ocId == ocId && $0.directory })
+            .where({ $0.ocId == ocId && $0.directory })
             .first
         else {
             Self.logger.error(
@@ -92,8 +92,8 @@ extension FilesDatabaseManager {
 
         var deletedMetadatas: [ItemMetadata] = [directoryMetadataCopy]
 
-        let results = itemMetadatas.filter {
-            $0.account == directoryAccount && $0.serverUrl.hasPrefix(directoryUrlPath)
+        let results = itemMetadatas.where {
+            $0.account == directoryAccount && $0.serverUrl.starts(with: directoryUrlPath)
         }
 
         for result in results {
@@ -146,8 +146,9 @@ extension FilesDatabaseManager {
         let oldItemFilename = directoryMetadata.fileName
         let oldDirectoryServerUrl = oldItemServerUrl + "/" + oldItemFilename
         let newDirectoryServerUrl = newServerUrl + "/" + newFileName
-        let childItemResults = itemMetadatas.filter {
-            $0.account == directoryMetadata.account && $0.serverUrl.hasPrefix(oldDirectoryServerUrl)
+        let childItemResults = itemMetadatas.where {
+            $0.account == directoryMetadata.account &&
+            $0.serverUrl.starts(with: oldDirectoryServerUrl)
         }
 
         renameItemMetadata(ocId: ocId, newServerUrl: newServerUrl, newFileName: newFileName)
@@ -187,9 +188,9 @@ extension FilesDatabaseManager {
         }
 
         return itemMetadatas
-            .filter {
+            .where {
                 $0.account == directoryMetadata.account &&
-                $0.serverUrl.hasPrefix(newDirectoryServerUrl)
+                $0.serverUrl.starts(with: newDirectoryServerUrl)
             }
             .map { ItemMetadata(value: $0) }
     }
