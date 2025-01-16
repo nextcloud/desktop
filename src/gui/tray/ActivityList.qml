@@ -126,7 +126,7 @@ ScrollView {
                 verticalAlignment: Image.AlignVCenter
                 horizontalAlignment: Image.AlignHCenter
                 fillMode: Image.PreserveAspectFit
-                source: "image://svgimage-custom-color/activity.svg/" + palette.dark
+                source: "image://svgimage-custom-color/activity.svg/" + palette.windowText
             }
 
             EnforcedPlainTextLabel {

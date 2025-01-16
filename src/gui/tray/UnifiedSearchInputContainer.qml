@@ -27,8 +27,7 @@ TextField {
 
     property bool isSearchInProgress: false
 
-    readonly property color textFieldIconsColor: palette.dark
-    readonly property color placeholderColor: palette.dark
+    readonly property color textFieldIconsColor: palette.placeholderText
 
     readonly property int iconInset: Style.smallSpacing
 
