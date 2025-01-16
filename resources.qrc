@@ -69,7 +69,9 @@
         <file>src/gui/macOS/ui/FileProviderFastEnumerationSettings.qml</file>
         <file>src/gui/SesComponents/SesErrorBox.qml</file>
         <file>src/gui/SesComponents/SesTrayHeader.qml</file>
+        <file>src/gui/tray/TrayWindowAccountMenu.qml</file>
         <file>src/gui/tray/SesCustomButton.qml</file>
         <file>src/gui/tray/SesButtonContents.qml</file>
+        <file>src/gui/tray/AccountMenuItem.qml</file>
     </qresource>
 </RCC>
