@@ -142,13 +142,13 @@ public class FilesDatabaseManager {
     public func itemMetadatas(account: String) -> [ItemMetadata] {
         itemMetadatas
             .where { $0.account == account }
-            .map { ItemMetadata(value:$0) }
+            .toUnmanagedResults()
     }
 
     public func itemMetadatas(account: String, underServerUrl serverUrl: String) -> [ItemMetadata] {
         itemMetadatas
             .where { $0.account == account && $0.serverUrl.starts(with: serverUrl) }
-            .map { ItemMetadata(value: $0) }
+            .toUnmanagedResults()
     }
 
     public func itemMetadataFromFileProviderItemIdentifier(

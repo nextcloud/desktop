@@ -14,6 +14,6 @@ extension FilesDatabaseManager {
             .where {
                 $0.account == account.ncKitAccount && $0.serverUrl.starts(with: account.trashUrl)
             }
-            .map { ItemMetadata(value: $0) }
+            .toUnmanagedResults()
     }
 }

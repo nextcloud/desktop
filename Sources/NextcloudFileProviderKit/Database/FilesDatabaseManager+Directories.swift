@@ -192,6 +192,6 @@ extension FilesDatabaseManager {
                 $0.account == directoryMetadata.account &&
                 $0.serverUrl.starts(with: newDirectoryServerUrl)
             }
-            .map { ItemMetadata(value: $0) }
+            .toUnmanagedResults()
     }
 }
