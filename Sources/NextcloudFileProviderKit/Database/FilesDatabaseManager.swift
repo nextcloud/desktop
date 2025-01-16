@@ -103,7 +103,7 @@ public class FilesDatabaseManager {
     }
 
     public func anyItemMetadatasForAccount(_ account: String) -> Bool {
-        !itemMetadatas.filter("account == %@", account).isEmpty
+        !itemMetadatas.where({ $0.account == account }).isEmpty
     }
 
     public func itemMetadata(ocId: String, managed: Bool = false) -> ItemMetadata? {
@@ -111,7 +111,7 @@ public class FilesDatabaseManager {
         // changes in the db.
         //
         // Let's therefore create a copy
-        if let itemMetadata = itemMetadatas.filter("ocId == %@", ocId).first {
+        if let itemMetadata = itemMetadatas.where({ $0.ocId == ocId }).first {
             return managed ? itemMetadata : ItemMetadata(value: itemMetadata)
         }
 
@@ -131,21 +131,23 @@ public class FilesDatabaseManager {
         if serverUrl.hasSuffix("/") {
             serverUrl.removeLast()
         }
-        if let metadata = itemMetadatas.filter(
-            "account == %@ AND serverUrl == %@ AND fileName == %@", account, serverUrl, fileName
-        ).first {
+        if let metadata = itemMetadatas.where({
+            $0.account == account && $0.serverUrl == serverUrl && $0.fileName == fileName
+        }).first {
             return ItemMetadata(value: metadata)
         }
         return nil
     }
 
     public func itemMetadatas(account: String) -> [ItemMetadata] {
-        itemMetadatas.filter("account == %@", account).toUnmanagedResults()
+        itemMetadatas
+            .where { $0.account == account }
+            .toUnmanagedResults()
     }
 
     public func itemMetadatas(account: String, underServerUrl serverUrl: String) -> [ItemMetadata] {
         itemMetadatas
-            .filter("account == %@ AND serverUrl BEGINSWITH %@", account, serverUrl)
+            .where { $0.account == account && $0.serverUrl.starts(with: serverUrl) }
             .toUnmanagedResults()
     }
 
@@ -262,11 +264,13 @@ public class FilesDatabaseManager {
         let database = ncDatabase()
 
         do {
-            let existingMetadatas = database.objects(ItemMetadata.self).filter(
-                "account == %@ AND serverUrl == %@ AND status == %@", 
-                account,
-                serverUrl,
-                ItemMetadata.Status.normal.rawValue)
+            let existingMetadatas = database
+                .objects(ItemMetadata.self)
+                .where {
+                    $0.account == account &&
+                    $0.serverUrl == serverUrl &&
+                    $0.status == ItemMetadata.Status.normal.rawValue
+                }
 
             // NOTE: These metadatas are managed -- be careful!
             let metadatasToDelete = processItemMetadatasToDelete(
@@ -322,7 +326,7 @@ public class FilesDatabaseManager {
         status: ItemMetadata.Status,
         completionHandler: @escaping (_ updatedMetadata: ItemMetadata?) -> Void
     ) {
-        guard let result = itemMetadatas.filter("ocId == %@", metadata.ocId).first else {
+        guard let result = itemMetadatas.where({ $0.ocId == metadata.ocId }).first else {
             Self.logger.debug(
                 """
                 Did not update status for item metadata as it was not found.
@@ -411,7 +415,7 @@ public class FilesDatabaseManager {
 
     @discardableResult public func deleteItemMetadata(ocId: String) -> Bool {
         do {
-            let results = itemMetadatas.filter("ocId == %@", ocId)
+            let results = itemMetadatas.where { $0.ocId == ocId }
             let database = ncDatabase()
             try database.write {
                 Self.logger.debug("Deleting item metadata. \(ocId, privacy: .public)")
@@ -430,7 +434,7 @@ public class FilesDatabaseManager {
     }
 
     public func renameItemMetadata(ocId: String, newServerUrl: String, newFileName: String) {
-        guard let itemMetadata = itemMetadatas.filter("ocId == %@", ocId).first else {
+        guard let itemMetadata = itemMetadatas.where({ $0.ocId == ocId }).first else {
             Self.logger.debug(
                 """
                 Could not find an item with ocID \(ocId, privacy: .public)
