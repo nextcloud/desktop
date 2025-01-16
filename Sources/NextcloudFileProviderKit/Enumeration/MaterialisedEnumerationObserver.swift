@@ -15,6 +15,7 @@
 import FileProvider
 import Foundation
 import OSLog
+import RealmSwift
 
 public class MaterialisedEnumerationObserver: NSObject, NSFileProviderEnumerationObserver {
     static let logger = Logger(subsystem: Logger.subsystem, category: "materialisedobservation")
@@ -70,8 +71,10 @@ public class MaterialisedEnumerationObserver: NSObject, NSFileProviderEnumeratio
         dbManager: FilesDatabaseManager,
         completionHandler: @escaping (_ deletedOcIds: Set<String>) -> Void
     ) {
-        let databaseLocalFileMetadatas =
-            dbManager.itemMetadatas(account: account).filter { $0.downloaded }
+        let databaseLocalFileMetadatas = dbManager
+            .itemMetadatas
+            .where({ $0.account == account && $0.downloaded })
+            .toUnmanagedResults()
         var noLongerMaterialisedIds = Set<String>()
 
         DispatchQueue.global(qos: .background).async {
