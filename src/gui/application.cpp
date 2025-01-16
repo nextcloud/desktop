@@ -144,6 +144,7 @@ bool Application::configVersionMigration()
     const auto downgrading = previousVersion > currentVersion;
 
     if (versionChanged) {
+        qCInfo(lcApplication) << "Version changed. Removing updater settings from config.";
         configFile.cleanUpdaterConfiguration();
     }
 
@@ -198,13 +199,16 @@ bool Application::configVersionMigration()
             QTimer::singleShot(0, qApp, &QCoreApplication::quit);
             return false;
         }
+    }
 
+    if (!deleteKeys.isEmpty()) {
         auto settings = ConfigFile::settingsWithGroup("foo");
         settings->endGroup();
 
         // Wipe confusing keys from the future, ignore the others
         for (const auto &badKey : std::as_const(deleteKeys)) {
             settings->remove(badKey);
+            qCInfo(lcApplication) << "Migration: removed" << badKey << "key from settings.";
         }
     }
 
