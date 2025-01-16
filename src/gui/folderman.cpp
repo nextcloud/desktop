@@ -388,16 +388,19 @@ void FolderMan::backwardMigrationSettingsKeys(QStringList *deleteKeys, QStringLi
     auto processSubgroup = [&](const QString &name) {
         settings->beginGroup(name);
         const auto foldersVersion = settings->value(QLatin1String(settingsVersionC), 1).toInt();
+        qCInfo(lcFolderMan) << "FolderDefinition::maxSettingsVersion:" << FolderDefinition::maxSettingsVersion();
         if (foldersVersion <= maxFoldersVersion) {
             for (const auto &folderAlias : settings->childGroups()) {
                 settings->beginGroup(folderAlias);
                 const auto folderVersion = settings->value(QLatin1String(settingsVersionC), 1).toInt();
                 if (folderVersion > FolderDefinition::maxSettingsVersion()) {
+                    qCInfo(lcFolderMan) << "Ignoring folder:" << folderAlias << "version:" << folderVersion;
                     ignoreKeys->append(settings->group());
                 }
                 settings->endGroup();
             }
         } else {
+            qCInfo(lcFolderMan) << "Ignoring group:" << name << "version:" << foldersVersion;
             deleteKeys->append(settings->group());
         }
         settings->endGroup();
