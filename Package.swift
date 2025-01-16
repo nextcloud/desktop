@@ -19,7 +19,7 @@ let package = Package(
     dependencies: [
         .package(
             url: "https://github.com/claucambra/NextcloudCapabilitiesKit.git",
-                .upToNextMajor(from: "2.0.0")
+                .upToNextMajor(from: "2.1.0")
         ),
         .package(url: "https://github.com/nextcloud/NextcloudKit", branch: "develop"),
         .package(url: "https://github.com/realm/realm-swift.git", exact: "10.49.0"),
