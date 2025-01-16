@@ -77,8 +77,8 @@ constexpr auto unbrandedRelativeConfigLocationC = "/Nextcloud/nextcloud.cfg";
 constexpr auto unbrandedCfgFileNameC = "nextcloud.cfg";
 
 // The maximum versions that this client can read
-constexpr auto maxAccountsVersion = 2;
-constexpr auto maxAccountVersion = 1;
+constexpr auto maxAccountsVersion = 13;
+constexpr auto maxAccountVersion = 13;
 
 constexpr auto serverHasValidSubscriptionC = "serverHasValidSubscription";
 
@@ -151,12 +151,16 @@ void AccountManager::backwardMigrationSettingsKeys(QStringList *deleteKeys, QStr
     const auto settings = ConfigFile::settingsWithGroup(QLatin1String(accountsC));
     const auto accountsVersion = settings->value(QLatin1String(versionC)).toInt();
 
+    qCInfo(lcAccountManager) << "Checking for accounts versions.";
+    qCInfo(lcAccountManager) << "accountsVersion: " << accountsVersion;
+    qCInfo(lcAccountManager) << "maxAccountsVersion: " << maxAccountsVersion;
     if (accountsVersion <= maxAccountsVersion) {
         const auto settingsChildGroups = settings->childGroups();
         for (const auto &accountId : settingsChildGroups) {
             settings->beginGroup(accountId);
             const auto accountVersion = settings->value(QLatin1String(versionC), 1).toInt();
 
+            qCInfo(lcAccountManager) << "maxAccountVersion: " << maxAccountVersion;
             if (accountVersion > maxAccountVersion) {
                 ignoreKeys->append(settings->group());
             }
