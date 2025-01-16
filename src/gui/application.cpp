@@ -142,6 +142,11 @@ bool Application::configVersionMigration()
     const auto versionChanged = previousVersion != currentVersion;
     const auto downgrading = previousVersion > currentVersion;
 
+    qCInfo(lcApplication) << "currentVersion:" << currentVersion;
+    qCInfo(lcApplication) << "previousVersion:" << previousVersion;
+    qCInfo(lcApplication) << "versionChanged?" << versionChanged;
+    qCInfo(lcApplication) << "downgrading?" << downgrading;
+
     if (!versionChanged && !(!deleteKeys.isEmpty() || (!ignoreKeys.isEmpty() && versionChanged))) {
         return true;
     }
