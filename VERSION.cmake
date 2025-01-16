@@ -38,4 +38,5 @@ if( MIRALL_VERSION_BUILD )
     set( MIRALL_VERSION_STRING "${MIRALL_VERSION_STRING} (build ${MIRALL_VERSION_BUILD})" )
 endif( MIRALL_VERSION_BUILD )
 
+# not used anymore. For brander, please maintain craftmaster.ini
 set(QT_MAJOR_VERSION 6)
