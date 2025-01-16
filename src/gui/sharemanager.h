@@ -440,10 +440,21 @@ public:
      */
     void fetchShares(const QString &path);
 
+    /**
+     * Fetch shares with the current user for path
+     *
+     * @param path The path to get the shares for relative to the users folder on the server
+     *
+     * On success the sharedWithMeFetched signal is emitted
+     * In case of a server error the serverError signal is emitted
+     */
+    void fetchSharedWithMe(const QString &path);
+
 signals:
     void shareCreated(const OCC::SharePtr &share);
     void linkShareCreated(const QSharedPointer<OCC::LinkShare> &share);
     void sharesFetched(const QList<OCC::SharePtr> &shares);
+    void sharedWithMeFetched(const QList<OCC::SharePtr> &shares);
     void serverError(int code, const QString &message);
 
     /** Emitted when creating a link share with password fails.
@@ -456,15 +467,17 @@ signals:
 
 private slots:
     void slotSharesFetched(const QJsonDocument &reply);
+    void slotSharedWithMeFetched(const QJsonDocument &reply);
     void slotLinkShareCreated(const QJsonDocument &reply);
     void slotShareCreated(const QJsonDocument &reply);
     void slotOcsError(int statusCode, const QString &message);
     void slotCreateE2eeShareJobFinised(int statusCode, const QString &message);
 
 private:
-    QSharedPointer<LinkShare> parseLinkShare(const QJsonObject &data);
-    QSharedPointer<UserGroupShare> parseUserGroupShare(const QJsonObject &data);
+    QSharedPointer<LinkShare> parseLinkShare(const QJsonObject &data) const;
+    QSharedPointer<UserGroupShare> parseUserGroupShare(const QJsonObject &data) const;
     SharePtr parseShare(const QJsonObject &data) const;
+    const QList<OCC::SharePtr> parseShares(const QJsonDocument &reply) const;
 
     AccountPtr _account;
 };

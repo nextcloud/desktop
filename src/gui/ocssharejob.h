@@ -135,8 +135,9 @@ public:
 
     /**
      * Returns information on the items shared with the current user.
+     * @param path Path to request shares for (default all shares)
      */
-    void getSharedWithMe();
+    void getSharedWithMe(const QString &path = "");
 
     static const QString _pathForSharesRequest;
 
