@@ -12,7 +12,7 @@ import NextcloudKit
 import OSLog
 import RealmSwift
 
-let defaultFileChunkSize = 100_000_000 // 100 MB
+let defaultFileChunkSize = 104_857_600 // 100 MiB
 let uploadLogger = Logger(subsystem: Logger.subsystem, category: "upload")
 
 func upload(
