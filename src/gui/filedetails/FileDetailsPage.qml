@@ -45,7 +45,11 @@ Page {
         localPath: root.localPath
     }
 
-    Connections {
+    font.family: Style.sesOpenSansRegular
+    font.pixelSize: Style.sesFontPixelSize
+    font.weight: Style.sesFontNormalWeight
+    
+        Connections {
         target: Systray
         function onShowFileDetailsPage(fileLocalPath, page) {
             if (!root.fileDetails.sharingAvailable && page == Systray.FileDetailsPage.Sharing) {
@@ -69,12 +73,12 @@ Page {
     bottomPadding: intendedPadding
 
     background: Rectangle {
-        color: palette.base
+        color: palette.window
         visible: root.backgroundsVisible
     }
 
     header: ColumnLayout {
-        spacing: root.intendedPadding
+        spacing: Style.sesMediumMargin
 
         GridLayout {
             id: headerGridLayout
@@ -107,15 +111,15 @@ Page {
                 id: fileIcon
 
                 Layout.rowSpan: headerGridLayout.rows
-                Layout.preferredWidth: Style.trayListItemIconSize
-                Layout.leftMargin: root.intendedPadding
+                Layout.preferredWidth: Style.sesFileDetailsIconSize
+                Layout.leftMargin: Style.sesMediumMargin
                 Layout.fillHeight: true
 
                 verticalAlignment: Image.AlignVCenter
                 horizontalAlignment: Image.AlignHCenter
                 source: root.fileDetails.iconUrl
-                sourceSize.width: Style.trayListItemIconSize
-                sourceSize.height: Style.trayListItemIconSize
+                sourceSize.width: Style.sesFileDetailsIconSize
+                sourceSize.height: Style.sesFileDetailsIconSize
                 fillMode: Image.PreserveAspectFit
             }
 
@@ -123,26 +127,34 @@ Page {
                 id: fileNameLabel
 
                 Layout.fillWidth: true
-                Layout.rightMargin: headerGridLayout.textRightMargin
+                Layout.rightMargin: Style.sesFileDetailsHeaderModifier
 
                 text: root.fileDetails.name
-                font.bold: true
+
+                font.pixelSize: Style.sesFontPixelSizeTitle
+                font.weight: Style.sesFontBoldWeight
+
                 wrapMode: Text.Wrap
             }
 
-            Button {
+            SesCustomButton {
                 id: closeButton
 
                 Layout.rowSpan: headerGridLayout.rows
-                Layout.preferredWidth: Style.activityListButtonWidth
-                Layout.preferredHeight: Style.activityListButtonHeight
-                Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
+                Layout.preferredWidth: Style.iconButtonWidth
+                Layout.preferredHeight: width
                 Layout.rightMargin: headerGridLayout.textRightMargin
 
                 icon.source: "image://svgimage-custom-color/clear.svg" + "/" + palette.buttonText
-                icon.width: Style.activityListButtonIconSize
-                icon.height: Style.activityListButtonIconSize
+                bgColor: palette.highlight
+                bgNormalOpacity: 0
+                toolTipText: qsTr("Dismiss")
+
+                font.pixelSize: Style.sesFontPixelSize
+                font.weight: Style.sesFontNormalWeight
+
                 visible: root.showCloseButton
+
                 onClicked: root.closeButtonClicked()
             }
 
@@ -150,9 +162,13 @@ Page {
                 id: fileDetailsLabel
 
                 Layout.fillWidth: true
-                Layout.rightMargin: headerGridLayout.textRightMargin
+                Layout.rightMargin: Style.sesFileDetailsHeaderModifier
 
-                text: `${root.fileDetails.sizeString} · ${root.fileDetails.lastChangedString}`
+                text: `${root.fileDetails.sizeString}, ${root.fileDetails.lastChangedString}`
+
+                font.pixelSize: Style.sesFontHintPixelSize
+                font.weight: Style.sesFontNormalWeight
+
                 wrapMode: Text.Wrap
             }
 
@@ -163,8 +179,12 @@ Page {
                 Layout.rightMargin: headerGridLayout.textRightMargin
 
                 text: root.fileDetails.lockExpireString
+                color: palette.midlight
                 wrapMode: Text.Wrap
                 visible: headerGridLayout.showFileLockedString
+
+                font.pixelSize: Style.sesFontHintPixelSize
+                font.weight: Style.sesFontNormalWeight
             }
 
             Row {
@@ -207,35 +227,11 @@ Page {
                     ToolTip {
                         visible: hoverHandler.hovered
                         text: tagRepeater.fileTagModel.overflowTagsString
+                        
+                        font.pixelSize: Style.sesFontPixelSize
+                        font.weight: Style.sesFontNormalWeight
                     }
                 }
-            }
-        }
-
-        TabBar {
-            id: viewBar
-
-            Layout.leftMargin: root.intendedPadding
-            Layout.rightMargin: root.intendedPadding
-
-            padding: 0
-            background: null
-
-            NCTabButton {
-                svgCustomColorSource: "image://svgimage-custom-color/activity.svg"
-                text: qsTr("Activity")
-                checked: swipeView.currentIndex === fileActivityView.swipeIndex
-                onClicked: swipeView.currentIndex = fileActivityView.swipeIndex
-            }
-
-            NCTabButton {
-                width: visible ? implicitWidth : 0
-                height: visible ? implicitHeight : 0
-                svgCustomColorSource: "image://svgimage-custom-color/share.svg"
-                text: qsTr("Sharing")
-                checked: swipeView.currentIndex === shareViewLoader.swipeIndex
-                onClicked: swipeView.currentIndex = shareViewLoader.swipeIndex
-                visible: root.fileDetails.sharingAvailable
             }
         }
     }
@@ -245,18 +241,6 @@ Page {
 
         anchors.fill: parent
         clip: true
-
-        FileActivityView {
-            id: fileActivityView
-
-            readonly property int swipeIndex: SwipeView.index
-
-            delegateHorizontalPadding: root.intendedPadding
-
-            accountState: root.accountState
-            localPath: root.localPath
-            iconSize: root.iconSize
-        }
 
         Loader {
             id: shareViewLoader

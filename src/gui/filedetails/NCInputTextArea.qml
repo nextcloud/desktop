@@ -43,6 +43,11 @@ TextArea {
 
         width: height
         height: parent.height
+        
+        background: Rectangle {
+            radius: width / 2
+            color: textFieldBorder.color
+        }
 
         flat: true
         icon.source: "image://svgimage-custom-color/confirm.svg" + "/" + root.secondaryColor

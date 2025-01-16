@@ -62,6 +62,9 @@ ItemDelegate {
             Layout.preferredHeight: unifiedSearchResultSkeletonItemDetails.iconWidth
             Layout.alignment: Qt.AlignVCenter | Qt.AlignLeft
 
+            font.pixelSize: Style.sesFontPixelSize
+            font.weight: Style.sesFontNormalWeight
+
             Layout.fillWidth: true
 
             horizontalAlignment: Text.AlignLeft

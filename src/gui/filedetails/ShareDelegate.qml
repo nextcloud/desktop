@@ -49,7 +49,7 @@ GridLayout {
     property FileDetails fileDetails: FileDetails {}
     property StackView rootStackView: StackView {}
     property bool backgroundsVisible: true
-    property color accentColor: Style.ncBlue
+    property color accentColor: Style.sesIconColor
 
     property bool canCreateLinkShares: true
     property bool serverAllowsResharing: true
@@ -139,6 +139,7 @@ GridLayout {
         Layout.column: 1
 
         text: root.detailText
+        
         elide: Text.ElideRight
         visible: text !== ""
     }
@@ -151,17 +152,22 @@ GridLayout {
 
         spacing: 0
 
-        Button {
+        SesCustomButton {
             id: createLinkButton
 
             Layout.alignment: Qt.AlignCenter
-            Layout.preferredWidth: Style.activityListButtonWidth
-            Layout.preferredHeight: Style.activityListButtonHeight
+            Layout.preferredWidth: Style.iconButtonWidth
+            Layout.preferredHeight: width
+            
+            toolTipText: qsTr("Create a new share link")
 
-            icon.source: "image://svgimage-custom-color/add.svg/" + palette.buttonText
-            icon.width: Style.activityListButtonIconSize
-            icon.height: Style.activityListButtonIconSize
-            display: AbstractButton.IconOnly
+            bgColor: palette.highlight
+            bgNormalOpacity: 0
+
+            icon.source: Style.sesLightPlus + palette.buttonText
+            icon.width: Style.smallIconSize
+            icon.height: Style.smallIconSize
+            // display: AbstractButton.IconOnly
 
             visible: (root.isPlaceholderLinkShare || root.isSecureFileDropPlaceholderLinkShare) && root.canCreateLinkShares
             enabled: visible
@@ -169,7 +175,7 @@ GridLayout {
             onClicked: root.createNewLinkShare()
         }
 
-        Button {
+        SesCustomButton {
             id: copyLinkButton
 
             function copyShareLink() {
@@ -184,19 +190,27 @@ GridLayout {
 
             property bool shareLinkCopied: false
 
-            Layout.alignment: Qt.AlignVCenter | Qt.AlignHCenter
-            Layout.preferredWidth: shareLinkCopied ? implicitWidth : Style.activityListButtonWidth
-            Layout.preferredHeight: Style.activityListButtonHeight
+            Layout.alignment: Qt.AlignCenter
+            Layout.preferredWidth: shareLinkCopied ? implicitWidth : Style.iconButtonWidth
+            Layout.preferredHeight: Style.iconButtonWidth
+            
+            toolTipText: qsTr("Copy share link location")
 
             text: shareLinkCopied ? qsTr("Copied!") : ""
+            textColor: Style.sesDarkGreen
 
-            icon.source: shareLinkCopied ? "image://svgimage-custom-color/copy.svg/" + palette.brightText :
-                                           "image://svgimage-custom-color/copy.svg/" + palette.buttonText
-            icon.width: Style.activityListButtonIconSize
-            icon.height: Style.activityListButtonIconSize
-            display: AbstractButton.IconOnly
+            bgColor: palette.highlight
+            bgNormalOpacity: 0
+
+            icon.source: shareLinkCopied ? Style.sesGreenCheckmark + Style.positiveColor :
+                                           Style.sesClipboard + palette.brightText
+
+            icon.width: Style.smallIconSize
+            icon.height: Style.smallIconSize
+
             visible: root.isLinkShare || root.isInternalLinkShare
             enabled: visible
+
             onClicked: copyShareLink()
 
             Behavior on Layout.preferredWidth {
@@ -215,19 +229,35 @@ GridLayout {
             }
         }
 
-        Button {
+        SesCustomButton {
             id: moreButton
 
-            Layout.alignment: Qt.AlignVCenter | Qt.AlignHCenter
-            Layout.preferredWidth: Style.activityListButtonWidth
-            Layout.preferredHeight: Style.activityListButtonHeight
+            property bool isHovered: moreButton.hovered || moreButton.visualFocus
+            property bool isActive: moreButton.pressed
 
-            icon.source: "image://svgimage-custom-color/more.svg/" + palette.buttonText
-            icon.width: Style.activityListButtonIconSize
-            icon.height: Style.activityListButtonIconSize
-            display: AbstractButton.IconOnly
+            Layout.alignment: Qt.AlignCenter
+            Layout.preferredWidth: Style.iconButtonWidth
+            Layout.preferredHeight: width
+
+            toolTipText: qsTr("Share options")
+
+            bgColor: palette.highlight
+            bgNormalOpacity: 0
+
+            icon.source: "image://svgimage-custom-color/more.svg/" + (moreButton.isActive || moreButton.isHovered ? Style.sesWhite : Style.sesIconColor)
+            icon.width: Style.smallIconSize
+            icon.height: Style.smallIconSize
+
             visible: !root.isPlaceholderLinkShare && !root.isSecureFileDropPlaceholderLinkShare && !root.isInternalLinkShare
             enabled: visible
+            
+            background: Rectangle {
+                anchors.fill: parent
+                anchors.margins: 1
+                color: moreButton.isActive ? Style.sesActionPressed : moreButton.isHovered ? Style.sesActionHover : "transparent"
+                radius: width / 2
+            }
+
             onClicked: root.rootStackView.push(shareDetailsPageComponent, {}, StackView.PushTransition)
 
             Component {

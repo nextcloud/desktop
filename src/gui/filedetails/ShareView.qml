@@ -20,6 +20,7 @@ import QtQuick.Controls
 import com.ionos.hidrivenext.desktopclient
 import Style
 import "../tray"
+import "../SesComponents"
 import "../"
 
 ColumnLayout {
@@ -123,20 +124,14 @@ ColumnLayout {
         }
     }
 
-    ErrorBox {
+    SesErrorBox {
         id: errorBox
 
         Layout.fillWidth: true
         Layout.leftMargin: root.horizontalPadding
         Layout.rightMargin: root.horizontalPadding
 
-        showCloseButton: true
         visible: false
-
-        onCloseButtonClicked: {
-            text = "";
-            visible = false;
-        }
     }
 
     RowLayout {
@@ -173,6 +168,7 @@ ColumnLayout {
         Layout.topMargin: Style.smallSpacing
         Layout.leftMargin: root.horizontalPadding
         Layout.rightMargin: root.horizontalPadding
+        Layout.preferredHeight: Style.sesSearchFieldHeight
 
         visible: root.userGroupSharingPossible
         enabled: visible && !root.loading && !root.shareModel.isShareDisabledEncryptedFolder && !shareeSearchField.isShareeFetchOngoing
@@ -194,6 +190,7 @@ ColumnLayout {
         Layout.fillHeight: true
         Layout.leftMargin: root.horizontalPadding
         Layout.rightMargin: root.horizontalPadding
+        Layout.topMargin: Style.sesMediumMargin
 
         active: root.sharingPossible
 
@@ -215,7 +212,9 @@ ColumnLayout {
                     sourceModel: root.shareModel
                 }
 
-                delegate: ShareDelegate {
+                delegate: ColumnLayout{
+                    width: parent.width
+                    ShareDelegate {
                     id: shareDelegate
 
                     Connections {
@@ -245,7 +244,7 @@ ColumnLayout {
                     fileDetails: root.fileDetails
                     rootStackView: root.rootStackView
                     backgroundsVisible: root.backgroundsVisible
-                    accentColor: root.accentColor
+                    accentColor: Style.sesIconColor
                     canCreateLinkShares: root.publicLinkSharingPossible
                     serverAllowsResharing: root.serverAllowsResharing
 
@@ -269,6 +268,14 @@ ColumnLayout {
                     onSetExpireDate: shareModel.setShareExpireDateFromQml(model.share, milliseconds)
                     onSetPassword: shareModel.setSharePasswordFromQml(model.share, password)
                     onSetNote: shareModel.setShareNoteFromQml(model.share, note)
+                        width: parent.width
+                    }
+
+                    Rectangle{
+                        height: Style.sesMediumMargin
+                        color: "transparent"
+                        width: parent.width
+                    }
                 }
 
                 Loader {
@@ -311,6 +318,7 @@ ColumnLayout {
                 id: sharingDisabledLabel
                 width: parent.width
                 text: qsTr("Sharing is disabled")
+                color: palette.midlight
                 wrapMode: Text.Wrap
                 horizontalAlignment: Text.AlignHCenter
                 verticalAlignment: Text.AlignVCenter
@@ -318,6 +326,7 @@ ColumnLayout {
             EnforcedPlainTextLabel {
                 width: parent.width
                 text: qsTr("This item cannot be shared.")
+                color: palette.midlight
                 wrapMode: Text.Wrap
                 horizontalAlignment: Text.AlignHCenter
                 verticalAlignment: Text.AlignVCenter
@@ -326,6 +335,7 @@ ColumnLayout {
             EnforcedPlainTextLabel {
                 width: parent.width
                 text: qsTr("Sharing is disabled.")
+                color: palette.midlight
                 wrapMode: Text.Wrap
                 horizontalAlignment: Text.AlignHCenter
                 verticalAlignment: Text.AlignVCenter
