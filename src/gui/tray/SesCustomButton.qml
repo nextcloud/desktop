@@ -12,11 +12,11 @@
  * for more details.
  */
 
-import QtQuick 2.15
-import QtQuick.Controls 2.15
-import QtQuick.Layouts 1.15
-import Style 1.0
-
+import QtQuick
+import QtQuick.Controls
+import QtQuick.Layouts
+import Style
+import com.ionos.hidrivenext.desktopclient 
 Button {
     id: root
 
@@ -39,12 +39,19 @@ Button {
     property int bgBorderWidth
     property string bgBorderColor
 
-    background: NCButtonBackground {
+    Rectangle {
         id: bgRectangle
-        hovered: root.hovered
-        height: 36
+        property bool isHovered: root.hovered
+        property real normalOpacity: 0.3
+        property real hoverOpacity: 1.0
+        property color normalColor: palette.button
+        property color hoverColor: palette.button
+        height: 36  
         border.width: root.bgBorderWidth
         border.color: root.bgBorderColor
+        color: isHovered ? hoverColor : normalColor
+        opacity: isHovered ? hoverOpacity : normalOpacity
+        radius: width / 2
     }
 
     leftPadding: root.text === "" ? Style.smallSpacing : 20

@@ -1,15 +1,14 @@
-import QtQuick 2.15
-import QtQuick.Window 2.15
-import QtQuick.Controls 2.15
-import QtQuick.Layouts 1.15
-import QtGraphicalEffects 1.15
-import Qt.labs.platform 1.1 as NativeDialogs
+import QtQuick
+import QtQuick.Window
+import QtQuick.Controls
+import QtQuick.Layouts
+import Qt.labs.platform as NativeDialogs
 
 import "../"
 import "../filedetails/"
 
 // Custom qml modules are in /theme (and included by resources.qrc)
-import Style 1.0
+import Style
 
 import com.ionos.hidrivenext.desktopclient
 
@@ -265,21 +264,21 @@ Button {
             }
         }
 
-        ColorOverlay {
-            cached: true
-            color: Style.currentUserHeaderTextColor
-            width: source.width
-            height: source.height
-            Layout.rightMargin: Style.sesAccountButtonRightMargin
-            source: Image {
-                Layout.alignment: Qt.AlignRight
-                verticalAlignment: Qt.AlignCenter
-                source: Style.sesChevron
-                sourceSize.width: 12
-                sourceSize.height: 7
-                Accessible.role: Accessible.PopupMenu
-                Accessible.name: qsTr("Account switcher and settings menu")
-            }
-        }
+        // ColorOverlay {
+        //     cached: true
+        //     color: Style.currentUserHeaderTextColor
+        //     width: source.width
+        //     height: source.height
+        //     Layout.rightMargin: Style.sesAccountButtonRightMargin
+        //     source: Image {
+        //         Layout.alignment: Qt.AlignRight
+        //         verticalAlignment: Qt.AlignCenter
+        //         source: Style.sesChevron
+        //         sourceSize.width: 12
+        //         sourceSize.height: 7
+        //         Accessible.role: Accessible.PopupMenu
+        //         Accessible.name: qsTr("Account switcher and settings menu")
+        //     }
+        // }
     }
 }

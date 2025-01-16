@@ -162,10 +162,10 @@ RowLayout {
                 spacing: Style.extraSmallSpacing
 
                 Button {
-                    id: fileDetailsButton
+                    id: fileDetailsButton                    
                     property bool isHovered: fileDetailsButton.hovered || fileDetailsButton.visualFocus
                     property bool isActive: fileDetailsButton.pressed
-
+                    
                     Layout.preferredWidth: Style.dismissButtonSize
                     Layout.preferredHeight: Style.dismissButtonSize
                     Layout.alignment: Qt.AlignTop | Qt.AlignRight
@@ -173,8 +173,7 @@ RowLayout {
                     width: Style.activityListButtonWidth
                     height: Style.activityListButtonHeight
                     icon.source: "image://svgimage-custom-color/more.svg/" + (isHovered ? Style.sesWhite : Style.sesActionHover)
-
-                    icon.source: "image://svgimage-custom-color/more.svg/" + palette.buttonText
+                    
                     icon.width: Style.activityListButtonIconSize
                     icon.height: Style.activityListButtonIconSize
 
@@ -182,17 +181,19 @@ RowLayout {
                         text: qsTr("Open file details")
                         visible: parent.hovered
                     }
-                background: Rectangle {
-                    anchors.fill: parent
-                    anchors.margins: 1
-                    color: parent.isActive ? Style.sesActionPressed : parent.isHovered ? Style.sesActionHover : "transparent"
-                    radius: width / 2
-                }
+                    background: Rectangle {
+                        anchors.fill: parent
+                        anchors.margins: 1
+                        color: parent.isActive ? Style.sesActionPressed : parent.isHovered ? Style.sesActionHover : "transparent"
+                        radius: width / 2
+                    }
 
-                display: Button.IconOnly
-                leftPadding: 0
-                rightPadding: 0
+                    display: Button.IconOnly
+                    leftPadding: 0
+                    rightPadding: 0
 
+                    visible: model.showFileDetails
+                    onClicked: Systray.presentShareViewInTray(model.openablePath)
                 }
 
                 Button {
@@ -260,7 +261,7 @@ RowLayout {
                 wrapMode: Text.Wrap
                 maximumLineCount: 2
                 font: root.font
-                color: Style.sesTrayFontColor
+                color: Style.sesTrayFontColor                
                 visible: text !== ""
             }
 

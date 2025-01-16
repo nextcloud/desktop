@@ -218,6 +218,27 @@ QtObject {
         return Qt.rgba(color.r, color.g, color.b, 1)
     }
 
+    // SES
+    readonly property string sesWebsiteIcon: "qrc:///client/theme/external.svg"
+    readonly property string sesFilesIcon: "qrc:///client/theme/files.svg"
+    readonly property string sesIonosLogoIcon: "qrc:///client/theme/ses/ses-IONOS-Logo.svg"
+
+    readonly property string sesAvatar: "qrc:///client/theme/account.svg"
+
+    readonly property string sesAccountQuit: "qrc:///client/theme/black/close.svg"
+    readonly property string sesAccountPause: "qrc:///client/theme/colored/state-pause.svg"
+    readonly property string sesDarkPlus: "qrc:///client/theme/black/add.svg"
+    readonly property string sesLightPlus: "qrc:///client/theme/white/add.svg"
+    readonly property string sesAccountSettings: "qrc:///client/theme/black/settings.svg"
+    readonly property string sesAccountResume: "qrc:///client/theme/black/state-sync.svg"
+    readonly property string sesLogout: "qrc:///client/theme/black/close.svg"
+    readonly property string sesDelete: "qrc:///client/theme/delete.svg"
+    readonly property string sesClipboard: "qrc:///client/theme/copy.svg"
+    readonly property string sesErrorIcon: "qrc:///client/theme/colored/state-error.svg"
+    readonly property string sesErrorBoxIcon: "qrc:///client/theme/colored/state-error.svg"
+    readonly property string sesGreenCheckmark: "qrc:///client/theme/colored/state-ok.svg"
+    readonly property string sesChevron: "qrc:///client/theme/black/caret-down.svg"
+
     readonly property color sesIconDarkColor: "#001B41"
     readonly property color sesIconColor: "#1474C4"
 

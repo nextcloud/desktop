@@ -40,8 +40,6 @@
         <file>src/gui/tray/UnifiedSearchResultNothingFound.qml</file>
         <file>src/gui/tray/UnifiedSearchPlaceholderView.qml</file>
         <file>src/gui/tray/UnifiedSearchResultSectionItem.qml</file>
-        <file>src/gui/tray/SesCustomButton.qml</file>
-        <file>src/gui/tray/SesButtonContents.qml</file>
         <file>src/gui/tray/ActivityItemContextMenu.qml</file>
         <file>src/gui/tray/ActivityItemActions.qml</file>
         <file>src/gui/tray/ActivityItemContent.qml</file>
@@ -54,15 +52,12 @@
         <file>src/gui/tray/NCToolTip.qml</file>
         <file>src/gui/tray/NCProgressBar.qml</file>
         <file>src/gui/tray/EnforcedPlainTextLabel.qml</file>
-        <file>src/gui/tray/TrayWindowHeaderBar.qml</file>
-        <file>src/gui/tray/TrayWindowAccountMenu.qml</file>
-        <file>src/gui/tray/HeaderLogo.qml</file>
-        <file>src/gui/tray/AccountMenuItem.qml</file>
         <file>theme/Style/Style.qml</file>
         <file>theme/Style/qmldir</file>
         <file>src/gui/tray/ListItemLineAndSubline.qml</file>
         <file>src/gui/tray/TrayFoldersMenuButton.qml</file>
         <file>src/gui/tray/TrayFolderListItem.qml</file>
+        <file>src/gui/tray/HeaderLogo.qml</file>
         <file>src/gui/ResolveConflictsDialog.qml</file>
         <file>src/gui/ConflictDelegate.qml</file>
         <file>src/gui/ConflictItemFileInfo.qml</file>
@@ -72,5 +67,9 @@
         <file>src/gui/macOS/ui/FileProviderSyncStatus.qml</file>
         <file>src/gui/macOS/ui/FileProviderStorageInfo.qml</file>
         <file>src/gui/macOS/ui/FileProviderFastEnumerationSettings.qml</file>
+        <file>src/gui/SesComponents/SesErrorBox.qml</file>
+        <file>src/gui/SesComponents/SesTrayHeader.qml</file>
+        <file>src/gui/tray/SesCustomButton.qml</file>
+        <file>src/gui/tray/SesButtonContents.qml</file>
     </qresource>
 </RCC>

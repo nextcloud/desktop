@@ -26,7 +26,7 @@ Repeater {
 
     model: root.linksForActionButtons
 
-    Button {
+    SesCustomButton {
         id: activityActionButton
 
         property string verb: model.modelData.verb
@@ -44,9 +44,10 @@ Repeater {
 
         onClicked: isTalkReplyButton ? root.showReplyField() : root.triggerAction(model.index)
 
-        textColor: Style.adjustedCurrentUserHeaderColor
-        textColorHovered: Style.currentUserHeaderTextColor
-        bgColor: Style.currentUserHeaderColor
+        textColor: palette.brightText
+        bgColor: Style.sesActionPressed
+        bgNormalOpacity: 1.0
+        bgHoverOpacity: Style.hoverOpacity
 
         visible: verb !== "REPLY" || (verb === "REPLY" && root.talkReplyButtonVisible)
     }
