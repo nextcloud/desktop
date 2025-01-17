@@ -225,6 +225,19 @@ set(client_SRCS
     creds/webflowcredentials.cpp
     creds/webflowcredentialsdialog.h
     creds/webflowcredentialsdialog.cpp
+    sessnackbar.h
+    sessnackbar.cpp
+    sesstyle.h
+    sesstyle.cpp
+    buttonstylestrategy.h
+    sesFileIconProvider.h
+    sesFileIconProvider.cpp
+    pushbuttonstylehelper.h
+    pushbuttonstylehelper.cpp
+    moreoptionsbuttonstylehelper.h
+    moreoptionsbuttonstylehelper.cpp
+    SesComponents/syncdirvalidation.h
+    SesComponents/syncdirvalidation.cpp
     wizard/postfixlineedit.h
     wizard/postfixlineedit.cpp
     wizard/abstractcredswizardpage.h
