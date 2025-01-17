@@ -7,11 +7,12 @@
 
 import Alamofire
 import Foundation
+import NextcloudCapabilitiesKit
 import NextcloudKit
 import OSLog
 import RealmSwift
 
-let defaultFileChunkSize = 10_000_000 // 10 MB
+let defaultFileChunkSize = 104_857_600 // 100 MiB
 let uploadLogger = Logger(subsystem: Logger.subsystem, category: "upload")
 
 func upload(
@@ -19,7 +20,7 @@ func upload(
     toRemotePath remotePath: String,
     usingRemoteInterface remoteInterface: RemoteInterface,
     withAccount account: Account,
-    inChunksSized chunkSize: Int = defaultFileChunkSize,
+    inChunksSized chunkSize: Int? = nil,
     usingChunkUploadId chunkUploadId: String = UUID().uuidString,
     dbManager: FilesDatabaseManager = .shared,
     creationDate: Date? = nil,
@@ -40,6 +41,37 @@ func upload(
 ) {
     let fileSize =
         (try? FileManager.default.attributesOfItem(atPath: localFilePath)[.size] as? Int64) ?? 0
+
+    let chunkSize = await {
+        if let chunkSize {
+            uploadLogger.info("Using provided chunkSize: \(chunkSize, privacy: .public)")
+            return chunkSize
+        }
+        let (_, capabilitiesData, error) = await remoteInterface.fetchCapabilities(
+            account: account, options: options, taskHandler: taskHandler
+        )
+        guard let capabilitiesData,
+              let capabilities = Capabilities(data: capabilitiesData),
+              let serverChunkSize = capabilities.files?.chunkedUpload?.maxChunkSize,
+              serverChunkSize > 0
+        else {
+            uploadLogger.info(
+                """
+                Received nil capabilities data.
+                    Received error: \(error.errorDescription, privacy: .public)
+                    Using default file chunk size: \(defaultFileChunkSize, privacy: .public)
+                """
+            )
+            return defaultFileChunkSize
+        }
+        uploadLogger.info(
+            """
+            Received file chunk size from server: \(serverChunkSize, privacy: .public)
+            """
+        )
+        return Int(serverChunkSize)
+    }()
+
     guard fileSize > chunkSize else {
         let (_, ocId, etag, date, size, _, afError, remoteError) = await remoteInterface.upload(
             remotePath: remotePath,

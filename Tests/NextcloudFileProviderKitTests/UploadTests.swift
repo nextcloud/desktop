@@ -156,4 +156,171 @@ final class UploadTests: XCTestCase {
             Int(lastUploadedChunk.size), data.count - ((lastUploadedChunkNameInt - 1) * chunkSize)
         )
     }
+
+    func testUsingServerCapabilitiesChunkSize() async throws {
+        let capabilities = ##"""
+        {
+            "ocs": {
+                "meta": {
+                    "status": "ok",
+                    "statuscode": 100,
+                    "message": "OK",
+                    "totalitems": "",
+                    "itemsperpage": ""
+                },
+                "data": {
+                    "version": {
+                        "major": 28,
+                        "minor": 0,
+                        "micro": 4,
+                        "string": "28.0.4",
+                        "edition": "",
+                        "extendedSupport": false
+                    },
+                    "capabilities": {
+                        "core": {
+                            "pollinterval": 60,
+                            "webdav-root": "remote.php/webdav",
+                            "reference-api": true,
+                            "reference-regex": "(\\s|\n|^)(https?:\\/\\/)((?:[-A-Z0-9+_]+\\.)+[-A-Z]+(?:\\/[-A-Z0-9+&@#%?=~_|!:,.;()]*)*)(\\s|\n|$)"
+                        },
+                        "files": {
+                            "bigfilechunking": true,
+                            "blacklisted_files": [
+                                ".htaccess"
+                            ],
+                            "chunked_upload": {
+                                "max_size": 4,
+                                "max_parallel_count": 5
+                            },
+                            "directEditing": {
+                                "url": "https://mock.nc.com/ocs/v2.php/apps/files/api/v1/directEditing",
+                                "etag": "c748e8fc588b54fc5af38c4481a19d20",
+                                "supportsFileId": true
+                            },
+                            "comments": true,
+                            "undelete": true,
+                            "versioning": true,
+                            "version_labeling": true,
+                            "version_deletion": true
+                        },
+                        "dav": {
+                            "chunking": "1.0",
+                            "bulkupload": "1.0"
+                        }
+                    }
+                }
+            }
+        }
+        """##
+        let fileUrl =
+            FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+        let data = Data(repeating: 1, count: 8)
+        try data.write(to: fileUrl)
+
+        let remoteInterface =
+            MockRemoteInterface(rootItem: MockRemoteItem.rootItem(account: account))
+        remoteInterface.capabilities = capabilities
+
+        let remotePath = account.davFilesUrl + "/file.txt"
+        var uploadedChunks = [RemoteFileChunk]()
+        let result = await NextcloudFileProviderKit.upload(
+            fileLocatedAt: fileUrl.path,
+            toRemotePath: remotePath,
+            usingRemoteInterface: remoteInterface,
+            withAccount: account,
+            dbManager: dbManager,
+            chunkUploadCompleteHandler: { uploadedChunks.append($0) }
+        )
+        let resultChunks = try XCTUnwrap(result.chunks)
+
+        XCTAssertEqual(result.remoteError, .success)
+        XCTAssertEqual(resultChunks.count, 2)
+        XCTAssertEqual(result.size, Int64(data.count))
+        XCTAssertNotNil(result.ocId)
+        XCTAssertNotNil(result.etag)
+
+        XCTAssertEqual(uploadedChunks.count, resultChunks.count)
+        XCTAssertEqual(uploadedChunks.first?.size, 4)
+        XCTAssertEqual(uploadedChunks.last?.size, 4)
+    }
+
+    func testUsingServerCapabilitiesWithoutChunkSize() async throws {
+        let capabilities = ##"""
+        {
+            "ocs": {
+                "meta": {
+                    "status": "ok",
+                    "statuscode": 100,
+                    "message": "OK",
+                    "totalitems": "",
+                    "itemsperpage": ""
+                },
+                "data": {
+                    "version": {
+                        "major": 28,
+                        "minor": 0,
+                        "micro": 4,
+                        "string": "28.0.4",
+                        "edition": "",
+                        "extendedSupport": false
+                    },
+                    "capabilities": {
+                        "core": {
+                            "pollinterval": 60,
+                            "webdav-root": "remote.php/webdav",
+                            "reference-api": true,
+                            "reference-regex": "(\\s|\n|^)(https?:\\/\\/)((?:[-A-Z0-9+_]+\\.)+[-A-Z]+(?:\\/[-A-Z0-9+&@#%?=~_|!:,.;()]*)*)(\\s|\n|$)"
+                        },
+                        "files": {
+                            "bigfilechunking": true,
+                            "blacklisted_files": [
+                                ".htaccess"
+                            ],
+                            "comments": true,
+                            "undelete": true,
+                            "versioning": true,
+                            "version_labeling": true,
+                            "version_deletion": true
+                        },
+                        "dav": {
+                            "chunking": "1.0",
+                            "bulkupload": "1.0"
+                        }
+                    }
+                }
+            }
+        }
+        """##
+        let fileUrl =
+            FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+        let data = Data(repeating: 1, count: defaultFileChunkSize + 1)
+        try data.write(to: fileUrl)
+
+        let remoteInterface =
+            MockRemoteInterface(rootItem: MockRemoteItem.rootItem(account: account))
+        remoteInterface.capabilities = capabilities
+
+        let remotePath = account.davFilesUrl + "/file.txt"
+        var uploadedChunks = [RemoteFileChunk]()
+        let result = await NextcloudFileProviderKit.upload(
+            fileLocatedAt: fileUrl.path,
+            toRemotePath: remotePath,
+            usingRemoteInterface: remoteInterface,
+            withAccount: account,
+            dbManager: dbManager,
+            chunkUploadCompleteHandler: { uploadedChunks.append($0) }
+        )
+        let resultChunks = try XCTUnwrap(result.chunks)
+
+        XCTAssertEqual(result.remoteError, .success)
+        XCTAssertEqual(resultChunks.count, 2)
+        XCTAssertEqual(result.size, Int64(data.count))
+        XCTAssertNotNil(result.ocId)
+        XCTAssertNotNil(result.etag)
+
+        XCTAssertEqual(uploadedChunks.count, resultChunks.count)
+        XCTAssertEqual(uploadedChunks.first?.size, Int64(defaultFileChunkSize))
+        XCTAssertEqual(uploadedChunks.last?.size, 1)
+    }
 }

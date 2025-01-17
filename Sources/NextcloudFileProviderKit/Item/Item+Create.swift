@@ -102,6 +102,7 @@ extension Item {
         domain: NSFileProviderDomain? = nil,
         account: Account,
         remoteInterface: RemoteInterface,
+        forcedChunkSize: Int?,
         progress: Progress,
         dbManager: FilesDatabaseManager
     ) async -> (Item?, Error?) {
@@ -112,6 +113,7 @@ extension Item {
             toRemotePath: remotePath,
             usingRemoteInterface: remoteInterface,
             withAccount: account,
+            inChunksSized: forcedChunkSize,
             usingChunkUploadId: chunkUploadId,
             dbManager: dbManager,
             creationDate: itemTemplate.creationDate as? Date,
@@ -204,6 +206,7 @@ extension Item {
         domain: NSFileProviderDomain? = nil,
         account: Account,
         remoteInterface: RemoteInterface,
+        forcedChunkSize: Int?,
         progress: Progress,
         dbManager: FilesDatabaseManager
     ) async throws -> Item? {
@@ -311,6 +314,7 @@ extension Item {
                     toRemotePath: childRemoteUrl,
                     usingRemoteInterface: remoteInterface,
                     withAccount: account,
+                    inChunksSized: forcedChunkSize,
                     dbManager: dbManager,
                     creationDate: childUrlAttributes.creationDate,
                     modificationDate: childUrlAttributes.contentModificationDate,
@@ -397,6 +401,7 @@ extension Item {
         domain: NSFileProviderDomain? = nil,
         account: Account,
         remoteInterface: RemoteInterface,
+        forcedChunkSize: Int? = nil,
         progress: Progress,
         dbManager: FilesDatabaseManager = .shared
     ) async -> (Item?, Error?) {
@@ -575,6 +580,7 @@ extension Item {
                     domain: domain,
                     account: account,
                     remoteInterface: remoteInterface,
+                    forcedChunkSize: forcedChunkSize,
                     progress: progress,
                     dbManager: dbManager
                 ), nil)
@@ -592,6 +598,7 @@ extension Item {
             domain: domain,
             account: account,
             remoteInterface: remoteInterface,
+            forcedChunkSize: forcedChunkSize,
             progress: progress,
             dbManager: dbManager
         )

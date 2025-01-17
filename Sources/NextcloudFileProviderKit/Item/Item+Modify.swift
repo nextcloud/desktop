@@ -94,6 +94,7 @@ public extension Item {
         remotePath: String,
         newCreationDate: Date?,
         newContentModificationDate: Date?,
+        forcedChunkSize: Int?,
         domain: NSFileProviderDomain?,
         progress: Progress,
         dbManager: FilesDatabaseManager
@@ -137,6 +138,7 @@ public extension Item {
             toRemotePath: remotePath,
             usingRemoteInterface: remoteInterface,
             withAccount: account,
+            inChunksSized: forcedChunkSize,
             usingChunkUploadId: metadata.chunkUploadId,
             dbManager: dbManager,
             creationDate: newCreationDate,
@@ -221,6 +223,7 @@ public extension Item {
     private func modifyBundleOrPackageContents(
         contents newContents: URL?,
         remotePath: String,
+        forcedChunkSize: Int?,
         domain: NSFileProviderDomain?,
         progress: Progress,
         dbManager: FilesDatabaseManager
@@ -402,6 +405,7 @@ public extension Item {
                     toRemotePath: childRemoteUrl,
                     usingRemoteInterface: remoteInterface,
                     withAccount: account,
+                    inChunksSized: forcedChunkSize,
                     dbManager: dbManager,
                     creationDate: childUrlAttributes.creationDate,
                     modificationDate: childUrlAttributes.contentModificationDate,
@@ -833,6 +837,7 @@ public extension Item {
         options: NSFileProviderModifyItemOptions = [],
         request: NSFileProviderRequest = NSFileProviderRequest(),
         domain: NSFileProviderDomain? = nil,
+        forcedChunkSize: Int? = nil,
         progress: Progress = .init(),
         dbManager: FilesDatabaseManager = .shared
     ) async -> (Item?, Error?) {
@@ -1045,6 +1050,7 @@ public extension Item {
                     contentModifiedItem = try await modifiedItem.modifyBundleOrPackageContents(
                         contents: newContents,
                         remotePath: newServerUrlFileName,
+                        forcedChunkSize: forcedChunkSize,
                         domain: domain,
                         progress: progress,
                         dbManager: dbManager
@@ -1058,6 +1064,7 @@ public extension Item {
                     remotePath: newServerUrlFileName,
                     newCreationDate: newCreationDate,
                     newContentModificationDate: newContentModificationDate,
+                    forcedChunkSize: forcedChunkSize,
                     domain: domain,
                     progress: progress,
                     dbManager: dbManager
