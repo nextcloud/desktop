@@ -143,6 +143,10 @@ bool Application::configVersionMigration()
     const auto versionChanged = previousVersion != currentVersion;
     const auto downgrading = previousVersion > currentVersion;
 
+    if (versionChanged) {
+        configFile.cleanUpdaterConfiguration();
+    }
+
     if (!versionChanged && !(!deleteKeys.isEmpty() || (!ignoreKeys.isEmpty() && versionChanged))) {
         return true;
     }

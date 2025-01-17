@@ -453,6 +453,17 @@ QString ConfigFile::excludeFileFromSystem()
     return fi.absoluteFilePath();
 }
 
+void OCC::ConfigFile::cleanUpdaterConfiguration()
+{
+    QSettings settings(configFile(), QSettings::IniFormat);
+    settings.beginGroup("Updater");
+    settings.remove("autoUpdateAttempted");
+    settings.remove("updateTargetVersion");
+    settings.remove("updateTargetVersionString");
+    settings.remove("updateAvailable");
+    settings.sync();
+}
+
 QString ConfigFile::backup(const QString &fileName) const
 {
     const QString baseFilePath = configPath() + fileName;

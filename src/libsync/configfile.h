@@ -48,6 +48,8 @@ public:
     [[nodiscard]] QString excludeFile(Scope scope) const;
     static QString excludeFileFromSystem(); // doesn't access config dir
 
+    void cleanUpdaterConfiguration();
+
     /**
      * Creates a backup of any given fileName in the config folder
      *
