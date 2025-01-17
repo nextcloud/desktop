@@ -137,13 +137,7 @@ public extension Item {
         )
 
         let localPath = FileManager.default.temporaryDirectory.appendingPathComponent(metadata.ocId)
-        let updatedMetadata = await withCheckedContinuation { continuation in
-            dbManager.setStatusForItemMetadata(metadata, status: .downloading) { updatedMeta in
-                continuation.resume(returning: updatedMeta)
-            }
-        }
-
-        guard let updatedMetadata else {
+        guard let updatedMetadata = dbManager.setStatusForItemMetadata(metadata, status: .downloading) else {
             Self.logger.error(
                 """
                 Could not acquire updated metadata of item \(ocId, privacy: .public),

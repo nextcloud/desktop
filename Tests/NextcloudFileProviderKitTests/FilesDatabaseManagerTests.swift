@@ -99,15 +99,14 @@ final class FilesDatabaseManagerTests: XCTestCase {
         }
 
         let expectedStatus = ItemMetadata.Status.uploadError
-        Self.dbManager.setStatusForItemMetadata(
+        let updatedMetadata = Self.dbManager.setStatusForItemMetadata(
             metadata, status: expectedStatus
-        ) { updatedMetadata in
-            XCTAssertEqual(
-                updatedMetadata?.status,
-                expectedStatus.rawValue,
-                "Status should be updated to \(expectedStatus)"
-            )
-        }
+        )
+        XCTAssertEqual(
+            updatedMetadata?.status,
+            expectedStatus.rawValue,
+            "Status should be updated to \(expectedStatus)"
+        )
     }
 
     func testAddItemMetadata() {
