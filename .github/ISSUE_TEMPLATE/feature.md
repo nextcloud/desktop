@@ -2,6 +2,7 @@
 name: 🚀 Feature request
 about: Suggest an idea for this app
 labels: 0. Needs triage, enhancement
+type: Enhancement
 ---
 
 <!--- Please keep this note for other contributors -->
