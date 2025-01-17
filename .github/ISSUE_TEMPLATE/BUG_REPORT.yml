@@ -2,6 +2,7 @@ name: "🐞 Bug report"
 description: "Help us to improve by reporting a bug"
 title: "[Bug]: "
 labels: ["bug", "0. Needs triage"]
+type: "Bug"
 body:
   - type: markdown
     attributes:
