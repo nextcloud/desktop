@@ -322,10 +322,8 @@ public class FilesDatabaseManager {
     // If setting a downloading or uploading status, also modified the relevant boolean properties
     // of the item metadata object
     public func setStatusForItemMetadata(
-        _ metadata: ItemMetadata,
-        status: ItemMetadata.Status,
-        completionHandler: @escaping (_ updatedMetadata: ItemMetadata?) -> Void
-    ) {
+        _ metadata: ItemMetadata, status: ItemMetadata.Status
+    ) -> ItemMetadata? {
         guard let result = itemMetadatas.where({ $0.ocId == metadata.ocId }).first else {
             Self.logger.debug(
                 """
@@ -333,7 +331,7 @@ public class FilesDatabaseManager {
                     ocID: \(metadata.ocId, privacy: .public)
                 """
             )
-            return
+            return nil
         }
         
         do {
@@ -357,9 +355,8 @@ public class FilesDatabaseManager {
                         fileName: \(metadata.fileName, privacy: .public)
                     """
                 )
-
-                completionHandler(ItemMetadata(value: result))
             }
+            return ItemMetadata(value: result)
         } catch {
             Self.logger.error(
                 """
@@ -370,8 +367,9 @@ public class FilesDatabaseManager {
                     received error: \(error.localizedDescription, privacy: .public)
                 """
             )
-            completionHandler(nil)
         }
+        
+        return nil
     }
 
     public func addItemMetadata(_ metadata: ItemMetadata) {

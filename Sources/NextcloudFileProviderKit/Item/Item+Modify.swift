@@ -118,19 +118,14 @@ public extension Item {
             return (nil, NSFileProviderError(.noSuchItem))
         }
 
-        let updatedMetadata = await withCheckedContinuation { continuation in
-            dbManager.setStatusForItemMetadata(metadata, status: .uploading) {
-                continuation.resume(returning: $0)
-            }
-        }
-
-        if updatedMetadata == nil {
+        guard let updatedMetadata = dbManager.setStatusForItemMetadata(metadata, status: .uploading) else {
             Self.logger.warning(
                 """
                 Could not acquire updated metadata of item: \(ocId, privacy: .public),
                 unable to update item status to uploading
                 """
             )
+            return (nil, NSFileProviderError(.noSuchItem))
         }
 
         let (_, _, etag, date, size, _, error) = await upload(
@@ -190,14 +185,8 @@ public extension Item {
             )
         }
 
-        let newMetadata: ItemMetadata = await {
-            guard let updatedMetadata else { return ItemMetadata(value: metadata) }
-            return await withCheckedContinuation { continuation in
-                dbManager.setStatusForItemMetadata(updatedMetadata, status: .normal) { updatedMeta in
-                    continuation.resume(returning: updatedMeta ?? ItemMetadata(value: updatedMetadata))
-                }
-            }
-        }()
+        let newMetadata =
+            dbManager.setStatusForItemMetadata(updatedMetadata, status: .normal) ?? ItemMetadata(value: updatedMetadata)
 
         newMetadata.date = date ?? Date()
         newMetadata.etag = etag ?? metadata.etag
