@@ -100,12 +100,7 @@ Button {
             Accessible.onPressAction: addAccountButton.clicked()
         }
 
-        Rectangle {
-            anchors.left: parent.left
-            anchors.right: parent.right
-            implicitHeight: 1
-            color: palette.dark
-        }
+        MenuSeparator {}
 
         MenuItem {
             id: syncPauseButton
