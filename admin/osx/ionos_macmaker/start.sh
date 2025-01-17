@@ -72,7 +72,7 @@ cmake -S $REPO_ROOT_DIR/ -B $BUILD_DIR \
       -DBUILD_TESTING=OFF \
       -DBUILD_UPDATER=$(if [ $BUILD_UPDATER == true ]; then echo "ON"; else echo "OFF"; fi) \
       -DMIRALL_VERSION_BUILD=`date +%Y%m%d` \
-      -DMIRALL_VERSION_SUFFIX=increment \
+      -DMIRALL_VERSION_SUFFIX="" \
       -DBUILD_OWNCLOUD_OSX_BUNDLE=ON \
       -DCMAKE_OSX_ARCHITECTURES=x86_64 \
       -DBUILD_FILE_PROVIDER_MODULE=ON \
