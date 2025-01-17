@@ -358,8 +358,9 @@ final class ItemCreateTests: XCTestCase {
         fileItemMetadata.classFile = NKCommon.TypeClassFile.document.rawValue
         fileItemMetadata.serverUrl = Self.account.davFilesUrl
 
+        let chunkSize = 2
         let tempUrl = FileManager.default.temporaryDirectory.appendingPathComponent("file")
-        let tempData = Data(repeating: 1, count: defaultFileChunkSize * 3)
+        let tempData = Data(repeating: 1, count: chunkSize * 3)
         try tempData.write(to: tempUrl)
 
         let fileItemTemplate = Item(
@@ -373,6 +374,7 @@ final class ItemCreateTests: XCTestCase {
             contents: tempUrl,
             account: Self.account,
             remoteInterface: remoteInterface,
+            forcedChunkSize: chunkSize,
             progress: Progress(),
             dbManager: Self.dbManager
         )
@@ -401,12 +403,13 @@ final class ItemCreateTests: XCTestCase {
     }
 
     func testCreateFileChunkedResumed() async throws {
+        let chunkSize = 2
         let expectedChunkUploadId = UUID().uuidString // Check if illegal characters are stripped
         let illegalChunkUploadId = expectedChunkUploadId + "/" // Check if illegal characters are stripped
         let previousUploadedChunkNum = 1
         let preexistingChunk = RemoteFileChunk(
             fileName: String(previousUploadedChunkNum),
-            size: Int64(defaultFileChunkSize),
+            size: Int64(chunkSize),
             remoteChunkStoreFolderName: expectedChunkUploadId
         )
 
@@ -415,12 +418,12 @@ final class ItemCreateTests: XCTestCase {
             db.add([
                 RemoteFileChunk(
                     fileName: String(previousUploadedChunkNum + 1),
-                    size: Int64(defaultFileChunkSize),
+                    size: Int64(chunkSize),
                     remoteChunkStoreFolderName: expectedChunkUploadId
                 ),
                 RemoteFileChunk(
                     fileName: String(previousUploadedChunkNum + 2),
-                    size: Int64(defaultFileChunkSize),
+                    size: Int64(chunkSize),
                     remoteChunkStoreFolderName: expectedChunkUploadId
                 )
             ])
@@ -447,7 +450,7 @@ final class ItemCreateTests: XCTestCase {
         fileItemMetadata.serverUrl = Self.account.davFilesUrl
 
         let tempUrl = FileManager.default.temporaryDirectory.appendingPathComponent("file")
-        let tempData = Data(repeating: 1, count: defaultFileChunkSize * 3)
+        let tempData = Data(repeating: 1, count: chunkSize * 3)
         try tempData.write(to: tempUrl)
 
         let fileItemTemplate = Item(
@@ -461,6 +464,7 @@ final class ItemCreateTests: XCTestCase {
             contents: tempUrl,
             account: Self.account,
             remoteInterface: remoteInterface,
+            forcedChunkSize: chunkSize,
             progress: Progress(),
             dbManager: Self.dbManager
         )
