@@ -1212,7 +1212,8 @@ final class ItemModifyTests: XCTestCase {
         let itemMetadata = remoteItem.toItemMetadata(account: Self.account)
         Self.dbManager.addItemMetadata(itemMetadata)
 
-        let newContents = Data(repeating: 1, count: defaultFileChunkSize * 3)
+        let chunkSize = 2
+        let newContents = Data(repeating: 1, count: chunkSize * 3)
         let newContentsUrl = FileManager.default.temporaryDirectory.appendingPathComponent("test")
         try newContents.write(to: newContentsUrl)
 
@@ -1239,6 +1240,7 @@ final class ItemModifyTests: XCTestCase {
             itemTarget: targetItem,
             changedFields: [.contents, .contentModificationDate],
             contents: newContentsUrl,
+            forcedChunkSize: chunkSize,
             dbManager: Self.dbManager
         )
         XCTAssertNil(error)
@@ -1252,11 +1254,12 @@ final class ItemModifyTests: XCTestCase {
     }
 
     func testModifyFileContentsChunkedResumed() async throws {
+        let chunkSize = 2
         let chunkUploadId = UUID().uuidString
         let previousUploadedChunkNum = 1
         let preexistingChunk = RemoteFileChunk(
             fileName: String(previousUploadedChunkNum),
-            size: Int64(defaultFileChunkSize),
+            size: Int64(chunkSize),
             remoteChunkStoreFolderName: chunkUploadId
         )
 
@@ -1265,12 +1268,12 @@ final class ItemModifyTests: XCTestCase {
             db.add([
                 RemoteFileChunk(
                     fileName: String(previousUploadedChunkNum + 1),
-                    size: Int64(defaultFileChunkSize),
+                    size: Int64(chunkSize),
                     remoteChunkStoreFolderName: chunkUploadId
                 ),
                 RemoteFileChunk(
                     fileName: String(previousUploadedChunkNum + 2),
-                    size: Int64(defaultFileChunkSize),
+                    size: Int64(chunkSize),
                     remoteChunkStoreFolderName: chunkUploadId
                 )
             ])
@@ -1283,7 +1286,7 @@ final class ItemModifyTests: XCTestCase {
         itemMetadata.chunkUploadId = chunkUploadId
         Self.dbManager.addItemMetadata(itemMetadata)
 
-        let newContents = Data(repeating: 1, count: defaultFileChunkSize * 3)
+        let newContents = Data(repeating: 1, count: chunkSize * 3)
         let newContentsUrl = FileManager.default.temporaryDirectory.appendingPathComponent("test")
         try newContents.write(to: newContentsUrl)
 
@@ -1310,6 +1313,7 @@ final class ItemModifyTests: XCTestCase {
             itemTarget: targetItem,
             changedFields: [.contents, .contentModificationDate],
             contents: newContentsUrl,
+            forcedChunkSize: chunkSize,
             dbManager: Self.dbManager
         )
         XCTAssertNil(error)
