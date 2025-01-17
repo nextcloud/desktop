@@ -13,9 +13,21 @@
   <property name="windowTitle">
    <string notr="true">Form</string>
   </property>
-  <layout class="QGridLayout" name="gridLayout">
+        <property name="leftMargin">
+            <number>32</number>
+        </property>        
+        <property name="rightMargin">
+            <number>32</number>
+        </property>        
+        <property name="topMargin">
+            <number>32</number>
+        </property>        
+        <property name="bottomMargin">
+            <number>32</number>
+        </property>        
+        <layout class="QGridLayout" name="account_gridLayout">
    <item row="2" column="0">
-    <layout class="QHBoxLayout" name="storageGroupBox">
+                <layout class="QVBoxLayout" name="storageGroupBox">
      <item>
       <widget class="QLabel" name="quotaInfoLabel">
        <property name="sizePolicy">
@@ -38,6 +50,8 @@
        </property>
       </widget>
      </item>
+                    <item>
+                        <layout class="QHBoxLayout">
      <item>
       <widget class="QProgressBar" name="quotaProgressBar">
        <property name="enabled">
@@ -52,7 +66,7 @@
        <property name="maximumSize">
         <size>
          <width>16777215</width>
-         <height>7</height>
+         <height>8</height>
         </size>
        </property>
        <property name="maximum">
@@ -62,6 +76,43 @@
         <number>-1</number>
        </property>
        <property name="textVisible">
+                                        <bool>false</bool>
+                                    </property>
+                                </widget>
+                            </item>
+                            <item>
+                                <widget class="QPushButton" name="expandMemoryButton">
+                                    <property name="sizePolicy">
+                                        <sizepolicy hsizetype="Minimum" vsizetype="Maximum">
+                                            <horstretch>0</horstretch>
+                                            <verstretch>0</verstretch>
+                                        </sizepolicy>
+                                    </property>
+                                    <property name="text">
+                                        <string>Expand Memory</string>
+                                    </property>
+                                </widget>
+                            </item>
+                        </layout>   
+                    </item>
+                    <item>
+                        <widget class="QLabel" name="quotaInfo2Label">
+                            <property name="sizePolicy">
+                                <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+                                    <horstretch>0</horstretch>
+                                    <verstretch>0</verstretch>
+                                </sizepolicy>
+                            </property>
+                            <property name="toolTip">
+                                <string />
+                            </property>
+                            <property name="text">
+                                <string>Storage space: …</string>
+                            </property>
+                            <property name="textFormat">
+                                <enum>Qt::PlainText</enum>
+                            </property>
+                            <property name="wordWrap">
         <bool>false</bool>
        </property>
       </widget>
@@ -263,7 +314,7 @@
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+                        <number>1</number>
      </property>
      <widget class="QWidget" name="standardSyncTab">
       <attribute name="title">

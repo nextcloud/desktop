@@ -27,6 +27,7 @@ class FolderStatusDelegate : public QStyledItemDelegate
     Q_OBJECT
 public:
     FolderStatusDelegate();
+    QPoint MousePos;
 
     enum datarole { FolderAliasRole = Qt::UserRole + 100,
         HeaderRole,
