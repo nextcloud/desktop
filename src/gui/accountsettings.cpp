@@ -210,6 +210,13 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent)
         fpSettingsLayout->setContentsMargins(0, 0, 0, 0);
         fpSettingsLayout->addWidget(fpSettingsWidget);
         fileProviderTab->setLayout(fpSettingsLayout);
+
+        _ui->tabWidget->tabBar()->setStyleSheet("QTabBar::tab {\
+                                   color: #000000;\
+                               }\
+                               QTabBar::tab:selected {\
+                                   color: #ffffff;\
+                               }");
     } else {
         disguiseTabWidget();
     }
