@@ -453,6 +453,23 @@ QString ConfigFile::excludeFileFromSystem()
     return fi.absoluteFilePath();
 }
 
+void OCC::ConfigFile::cleanUpdaterConfiguration()
+{
+                                                  // [Updater]
+                                                  // autoUpdateAttempted=true
+                                                  // updateTargetVersion=5.3.1.14360
+                                                  // updateTargetVersionString=sciebo sciebo 5.3.1 (build 14360)
+                                                  // updateAvailable=C:/Users/Matthieu Gallien/AppData/Roaming/sciebo/sciebo-5.3.1.14360.x64.msi
+
+    QSettings settings(configFile(), QSettings::IniFormat);
+    settings.beginGroup("Updater");
+    settings.remove("autoUpdateAttempted");
+    settings.remove("updateTargetVersion");
+    settings.remove("updateTargetVersionString");
+    settings.remove("updateAvailable");
+    settings.sync();
+}
+
 QString ConfigFile::backup(const QString &fileName) const
 {
     const QString baseFilePath = configPath() + fileName;

@@ -147,6 +147,10 @@ bool Application::configVersionMigration()
     qCInfo(lcApplication) << "versionChanged?" << versionChanged;
     qCInfo(lcApplication) << "downgrading?" << downgrading;
 
+    if (versionChanged) {
+        configFile.cleanUpdaterConfiguration();
+    }
+
     if (!versionChanged && !(!deleteKeys.isEmpty() || (!ignoreKeys.isEmpty() && versionChanged))) {
         return true;
     }
