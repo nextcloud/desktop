@@ -1140,7 +1140,7 @@ void AccountSettings::showConnectionLabel(const QString &message, QStringList er
         errors.prepend(message);
         auto userFriendlyMsg = errors.join(QLatin1String("<br>"));
         qCDebug(lcAccountSettings) << userFriendlyMsg;
-        Theme::replaceLinkColorString(userFriendlyMsg, QColor("#c1c8e6"));
+        Theme::replaceLinkColorString(userFriendlyMsg, QColor(0xc1c8e6));
         _ui->connectLabel->setText(userFriendlyMsg);
         _ui->connectLabel->setToolTip({});
         _ui->connectLabel->setStyleSheet(errStyle);
