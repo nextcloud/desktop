@@ -6,7 +6,7 @@
 #include "application.h"
 #include "owncloudgui.h"
 #include "wizard/owncloudwizardcommon.h"
-
+#include "ionostheme.h"
 #ifdef WITH_WEBENGINE
 #include "wizard/webview.h"
 #endif // WITH_WEBENGINE
@@ -24,6 +24,11 @@ WebFlowCredentialsDialog::WebFlowCredentialsDialog(Account *account, bool useFlo
 {
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
 
+    setStyleSheet(QStringLiteral("QDialog { background-color: %1; }").arg(IonosTheme::dialogBackgroundColor()));
+
+    setFixedWidth(646);
+    setSizePolicy(QSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum));
+
     _layout = new QVBoxLayout(this);
     int spacing = _layout->spacing();
     auto margin = _layout->contentsMargins();
@@ -35,12 +40,24 @@ WebFlowCredentialsDialog::WebFlowCredentialsDialog(Account *account, bool useFlo
     _containerLayout->setContentsMargins(margin);
 
     _infoLabel = new QLabel();
-    _infoLabel->setTextFormat(Qt::PlainText);
+    _infoLabel->setTextFormat(Qt::RichText);
     _infoLabel->setAlignment(Qt::AlignCenter);
+    _infoLabel->setWordWrap(true);
+    _infoLabel->setContentsMargins(0, 32, 0, 0);
+    _infoLabel->setStyleSheet(IonosTheme::fontConfigurationCss(
+        IonosTheme::settingsFont(),
+        IonosTheme::settingsTextSize(),
+        IonosTheme::settingsTitleWeight600(),
+        IonosTheme::titleColor()
+    ));
     _containerLayout->addWidget(_infoLabel);
+
+    layout()->setSizeConstraint(QLayout::SetFixedSize);
 
     if (_useFlow2) {
         _flow2AuthWidget = new Flow2AuthWidget();
+        _flow2AuthWidget->shrinkTopMarginForText();
+
         _containerLayout->addWidget(_flow2AuthWidget);
 
         connect(_flow2AuthWidget, &Flow2AuthWidget::authResult, this, &WebFlowCredentialsDialog::slotFlow2AuthResult);
@@ -117,7 +134,7 @@ void WebFlowCredentialsDialog::setError(const QString &error) {
     slotShowSettingsDialog();
 
     if (_useFlow2 && _flow2AuthWidget) {
-        _flow2AuthWidget->setError(error);
+        _flow2AuthWidget->setError("Error", error);
         return;
     }
 

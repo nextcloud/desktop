@@ -52,6 +52,8 @@
 #include <QJsonArray>
 #include <QLoggingCategory>
 #include <QHttpMultiPart>
+#include <QApplication>
+#include <QFontMetrics>
 
 #include <qsslconfiguration.h>
 
@@ -212,6 +214,13 @@ QString Account::prettyName() const
     }
 
     return name;
+}
+
+QString Account::eliedName(const int size) const
+{    
+    QFontMetrics fontMetrics(QApplication::font());
+    QString elidedName = fontMetrics.elidedText(prettyName(), Qt::ElideMiddle, size);
+    return elidedName;
 }
 
 QColor Account::serverColor() const

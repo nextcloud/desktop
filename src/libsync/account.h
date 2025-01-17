@@ -157,6 +157,7 @@ public:
     /// e.g. the actual name of the user (John Doe). If this cannot be
     /// provided, defaults to davUser (e.g. johndoe)
     [[nodiscard]] QString prettyName() const;
+    [[nodiscard]] QString eliedName(const int size) const;
 
     [[nodiscard]] QColor accentColor() const;
     [[nodiscard]] QColor headerColor() const;
