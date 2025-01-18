@@ -2034,7 +2034,7 @@ This can be an issue with your OpenSSL libraries.</source>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.cpp" line="222"/>
         <source>Open Browser</source>
-        <translation type="unfinished"/>
+        <translation>Atverti naršyklę</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.cpp" line="224"/>
@@ -2590,7 +2590,7 @@ For advanced users: this issue might be related to multiple sync database files 
         <location filename="../src/gui/folderstatusmodel.cpp" line="1072"/>
         <source>Download %1/s</source>
         <extracomment>Example text: &quot;Download 24Kb/s&quot; (%1 is replaced by 24Kb (translated))</extracomment>
-        <translation type="unfinished"/>
+        <translation>Atsiuntimas %1/s</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1072"/>
@@ -2607,7 +2607,7 @@ For advanced users: this issue might be related to multiple sync database files 
         <location filename="../src/gui/folderstatusmodel.cpp" line="1082"/>
         <source>Upload %1/s</source>
         <extracomment>Example text: &quot;Upload 24Kb/s&quot; (%1 is replaced by 24Kb (translated))</extracomment>
-        <translation type="unfinished"/>
+        <translation>Išsiuntimas %1/s</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1082"/>
@@ -3005,7 +3005,7 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <location filename="../src/gui/generalsettings.ui" line="348"/>
         <source>&amp;Automatically check for updates</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Automatiškai tikrinti, ar yra atnaujinimų</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="364"/>
@@ -3142,7 +3142,7 @@ Downgrading versions is not possible immediately: changing from stable to enterp
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="799"/>
         <source>Please enter a password for your link share:</source>
-        <translation>Prašome įveskite slaptažodį bendrinamai nuorodai:</translation>
+        <translation>Įveskite per nuorodą bendrinamo viešinio slaptažodį:</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="825"/>
@@ -3342,7 +3342,7 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="135"/>
         <source>You don&apos;t have the permission to rename this file. Please ask the author of the file to rename it.</source>
-        <translation type="unfinished"/>
+        <translation>Jūs neturite leidimo pervadinti šį failą. Paprašykite failo autoriaus, kad jį pervadintų.</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="140"/>
@@ -4913,7 +4913,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="518"/>
         <source>Today</source>
-        <translation type="unfinished"/>
+        <translation>Šiandien</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="692"/>
@@ -5630,12 +5630,12 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/libsync/updatee2eefoldermetadatajob.cpp" line="132"/>
         <source>Failed to update folder metadata.</source>
-        <translation type="unfinished"/>
+        <translation>Nepavyko atnaujinti aplanko metaduomenų.</translation>
     </message>
     <message>
         <location filename="../src/libsync/updatee2eefoldermetadatajob.cpp" line="155"/>
         <source>Failed to unlock encrypted folder.</source>
-        <translation type="unfinished"/>
+        <translation>Nepavyko atrakinti šifruoto aplanko.</translation>
     </message>
     <message>
         <location filename="../src/libsync/updatee2eefoldermetadatajob.cpp" line="165"/>
@@ -5676,7 +5676,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/libsync/updatee2eefolderusersmetadatajob.cpp" line="235"/>
         <source>Failed to unlock a folder.</source>
-        <translation type="unfinished"/>
+        <translation>Nepavyko atrakinti aplanko.</translation>
     </message>
 </context>
 <context>
@@ -5881,12 +5881,12 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/vfsdownloaderrordialog.cpp" line="26"/>
         <source>Error downloading %1</source>
-        <translation type="unfinished"/>
+        <translation>Klaida atsisiunčiant %1</translation>
     </message>
     <message>
         <location filename="../src/gui/vfsdownloaderrordialog.cpp" line="27"/>
         <source>%1 could not be downloaded.</source>
-        <translation type="unfinished"/>
+        <translation>Nepavyko atsisiųsti %1.</translation>
     </message>
 </context>
 <context>
