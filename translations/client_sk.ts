@@ -2045,7 +2045,7 @@ Môže to byť problém s knižnicami OpenSSL.</translation>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.cpp" line="222"/>
         <source>Open Browser</source>
-        <translation type="unfinished"/>
+        <translation>Otvoriť prehliadač</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.cpp" line="224"/>
@@ -6494,7 +6494,7 @@ Server odpovedal chybou: %2</translation>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="469"/>
         <source>Password protection</source>
-        <translation type="unfinished"/>
+        <translation>Ochrana heslom</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="516"/>
