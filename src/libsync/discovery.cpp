@@ -1712,6 +1712,16 @@ void ProcessDirectoryJob::processFileFinalize(
     } else {
         recurse = false;
     }
+
+    if (!(item->isDirectory() ||
+          (!_discoveryData->_syncOptions._vfs || _discoveryData->_syncOptions._vfs->mode() != OCC::Vfs::Off) ||
+          item->_type != CSyncEnums::ItemTypeVirtualFile ||
+          item->_type != CSyncEnums::ItemTypeVirtualFileDownload ||
+          item->_type != CSyncEnums::ItemTypeVirtualFileDehydration)) {
+        qCCritical(lcDisco()) << "wong item type for" << item->_file << item->_type;
+        Q_ASSERT(false);
+    }
+
     if (recurse) {
         auto job = new ProcessDirectoryJob(path, item, recurseQueryLocal, recurseQueryServer,
             _lastSyncTimestamp, this);
