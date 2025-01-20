@@ -1154,16 +1154,17 @@ SyncOptions Folder::initializeSyncOptions() const
     opt._parallelNetworkJobs = account->isHttp2Supported() ? 20 : 6;
 
     // Chunk V2: Size of chunks must be between 5MB and 5GB, except for the last chunk which can be smaller
-    const auto capsMaxChunkSize = account->capabilities().maxChunkSize();
-    const auto validCapsChunkSize = capsMaxChunkSize <= 0;
-    const auto maxChunkSize = validCapsChunkSize ? capsMaxChunkSize : cfgFile.maxChunkSize();
-    const auto preferredChunkSize = validCapsChunkSize ? capsMaxChunkSize : cfgFile.chunkSize();
-
-    opt.setMinChunkSize(cfgFile.minChunkSize());
-    opt.setMaxChunkSize(maxChunkSize);
-    opt._initialChunkSize = ::qBound(opt.minChunkSize(), preferredChunkSize, opt.maxChunkSize());
-    opt._targetChunkUploadDuration = cfgFile.targetChunkUploadDuration();
-
+    if (const auto capsMaxChunkSize = account->capabilities().maxChunkSize(); capsMaxChunkSize <= 0) {
+        opt.setMinChunkSize(capsMaxChunkSize);
+        opt.setMaxChunkSize(capsMaxChunkSize);
+        opt._initialChunkSize = capsMaxChunkSize);
+    } else {
+        const auto cfgMinChunkSize = cfgFile.minChunkSize();
+        const auto cfgMaxChunkSize = cfgFile.maxChunkSize();
+        opt.setMinChunkSize(cfgMinChunkSize);
+        opt.setMaxChunkSize(cfgMaxChunkSize);
+        opt._initialChunkSize = ::qBound(cfgMinChunkSize, cfgFile.chunkSize(), cfgMaxChunkSize);
+    }
     opt.fillFromEnvironmentVariables();
     opt.verifyChunkSizes();
 
