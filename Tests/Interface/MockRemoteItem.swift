@@ -155,12 +155,12 @@ public class MockRemoteItem: Equatable {
         return trashItem
     }
 
-    public func toItemMetadata(account: Account) -> ItemMetadata {
+    public func toItemMetadata(account: Account) -> SendableItemMetadata {
         let originalFileName = trashbinOriginalLocation?.split(separator: "/").last?.toString()
         let fileName = originalFileName ?? name
         let serverUrlTrimCount = name.count
 
-        let metadata = ItemMetadata()
+        let metadata = SendableItemMetadata()
         metadata.ocId = identifier
         metadata.fileId = identifier.replacingOccurrences(of: trashedItemIdSuffix, with: "")
         metadata.etag = versionIdentifier

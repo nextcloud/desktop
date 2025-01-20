@@ -234,3 +234,9 @@ public class ItemMetadata: Object {
         urlBase = account.serverUrl
     }
 }
+
+/// Realm objects are inherently unsendable and not thread-safe **IF THEY ARE MANAGED.**
+/// Marking our ItemMetadata as an unchecked Sendable is a naughty thing to do. So make sure to check
+/// for ItemMetadata objects to be unmanaged before doing anything crossing actor boundaries.
+/// Also make sure this is the only type that is returned to other code that is unaware of Realm.
+public final class SendableItemMetadata: ItemMetadata, @unchecked Sendable {}

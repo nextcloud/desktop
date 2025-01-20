@@ -25,7 +25,7 @@ public class Item: NSObject, NSFileProviderItem {
 
     lazy var dbManager: FilesDatabaseManager = .shared
 
-    public let metadata: ItemMetadata
+    public let metadata: SendableItemMetadata
     public let parentItemIdentifier: NSFileProviderItemIdentifier
     public let account: Account
     public let remoteInterface: RemoteInterface
@@ -125,7 +125,7 @@ public class Item: NSObject, NSFileProviderItem {
     }
 
     public var downloadingError: Error? {
-        if metadata.status == ItemMetadata.Status.downloadError.rawValue {
+        if metadata.status == SendableItemMetadata.Status.downloadError.rawValue {
             return FileProviderItemTransferError.downloadError
         }
         return nil
@@ -140,7 +140,7 @@ public class Item: NSObject, NSFileProviderItem {
     }
 
     public var uploadingError: Error? {
-        if metadata.status == ItemMetadata.Status.uploadError.rawValue {
+        if metadata.status == SendableItemMetadata.Status.uploadError.rawValue {
             FileProviderItemTransferError.uploadError
         } else {
             nil
@@ -185,7 +185,7 @@ public class Item: NSObject, NSFileProviderItem {
     }
 
     public static func rootContainer(account: Account, remoteInterface: RemoteInterface) -> Item {
-        let metadata = ItemMetadata()
+        let metadata = SendableItemMetadata()
         metadata.account = account.ncKitAccount
         metadata.directory = true
         metadata.ocId = NSFileProviderItemIdentifier.rootContainer.rawValue
@@ -202,7 +202,7 @@ public class Item: NSObject, NSFileProviderItem {
     }
 
     public static func trashContainer(remoteInterface: RemoteInterface, account: Account) -> Item {
-        let metadata = ItemMetadata()
+        let metadata = SendableItemMetadata()
         metadata.account = account.ncKitAccount
         metadata.directory = true
         metadata.ocId = NSFileProviderItemIdentifier.trashContainer.rawValue
@@ -221,12 +221,12 @@ public class Item: NSObject, NSFileProviderItem {
     static let logger = Logger(subsystem: Logger.subsystem, category: "item")
 
     public required init(
-        metadata: ItemMetadata,
+        metadata: SendableItemMetadata,
         parentItemIdentifier: NSFileProviderItemIdentifier,
         account: Account,
         remoteInterface: RemoteInterface
     ) {
-        self.metadata = ItemMetadata(value: metadata) // Safeguard against active items
+        self.metadata = metadata
         self.parentItemIdentifier = parentItemIdentifier
         self.account = account
         self.remoteInterface = remoteInterface

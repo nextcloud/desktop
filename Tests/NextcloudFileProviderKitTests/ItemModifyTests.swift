@@ -112,7 +112,7 @@ final class ItemModifyTests: XCTestCase {
         let newContentsUrl = FileManager.default.temporaryDirectory.appendingPathComponent("test")
         try newContents?.write(to: newContentsUrl)
 
-        let targetItemMetadata = ItemMetadata(value: itemMetadata)
+        let targetItemMetadata = SendableItemMetadata(value: itemMetadata)
         targetItemMetadata.name = "item-renamed.txt" // Renamed
         targetItemMetadata.fileName = "item-renamed.txt" // Renamed
         targetItemMetadata.fileNameView = "item-renamed.txt" // Renamed
@@ -197,7 +197,7 @@ final class ItemModifyTests: XCTestCase {
             print(error.localizedDescription)
         }
 
-        let modifiedFolderMetadata = ItemMetadata(value: folderMetadata)
+        let modifiedFolderMetadata = SendableItemMetadata(value: folderMetadata)
         modifiedFolderMetadata.apply(fileName: "folder-renamed")
         modifiedFolderMetadata.serverUrl = remoteFolderB.remotePath
 
@@ -538,7 +538,7 @@ final class ItemModifyTests: XCTestCase {
 """
             .utf8).write(to: keynotePropertiesPlistPath)
 
-        let targetBundleMetadata = ItemMetadata()
+        let targetBundleMetadata = SendableItemMetadata()
         targetBundleMetadata.ocId = remoteKeynoteBundle.identifier
         targetBundleMetadata.etag = "this-is-a-new-etag"
         targetBundleMetadata.name = "renamed-" + keynoteBundleFilename
@@ -683,7 +683,7 @@ final class ItemModifyTests: XCTestCase {
         let itemMetadata = remoteItem.toItemMetadata(account: Self.account)
         Self.dbManager.addItemMetadata(itemMetadata)
 
-        let renamedItemMetadata = ItemMetadata(value: itemMetadata)
+        let renamedItemMetadata = SendableItemMetadata(value: itemMetadata)
         renamedItemMetadata.name = "renamed"
         renamedItemMetadata.fileName = "renamed"
         renamedItemMetadata.fileNameView = "renamed"
@@ -857,7 +857,7 @@ final class ItemModifyTests: XCTestCase {
         let folderMetadata = remoteFolder.toItemMetadata(account: Self.account)
         Self.dbManager.addItemMetadata(folderMetadata)
 
-        let renamedFolderMetadata = ItemMetadata(value: folderMetadata)
+        let renamedFolderMetadata = SendableItemMetadata(value: folderMetadata)
         renamedFolderMetadata.fileName = "folder (renamed)"
 
         let itemMetadata = remoteItem.toItemMetadata(account: Self.account)
@@ -1013,7 +1013,7 @@ final class ItemModifyTests: XCTestCase {
         let newContentsUrl = FileManager.default.temporaryDirectory.appendingPathComponent("test")
         try newContents.write(to: newContentsUrl)
 
-        let targetItemMetadata = ItemMetadata(value: trashItemMetadata)
+        let targetItemMetadata = SendableItemMetadata(value: trashItemMetadata)
         targetItemMetadata.serverUrl = Self.account.davFilesUrl
         targetItemMetadata.fileName = "new-file.txt"
         targetItemMetadata.fileNameView = "new-file.txt"
@@ -1154,7 +1154,7 @@ final class ItemModifyTests: XCTestCase {
         let trashFolderMetadata = remoteTrashFolder.toItemMetadata(account: Self.account)
         Self.dbManager.addItemMetadata(trashFolderMetadata)
 
-        let renamedTrashFolderMetadata = ItemMetadata(value: trashFolderMetadata)
+        let renamedTrashFolderMetadata = SendableItemMetadata(value: trashFolderMetadata)
         renamedTrashFolderMetadata.apply(fileName: "renamed-folder")
         renamedTrashFolderMetadata.serverUrl = Self.account.davFilesUrl
         renamedTrashFolderMetadata.trashbinFileName = ""
@@ -1217,7 +1217,7 @@ final class ItemModifyTests: XCTestCase {
         let newContentsUrl = FileManager.default.temporaryDirectory.appendingPathComponent("test")
         try newContents.write(to: newContentsUrl)
 
-        let targetItemMetadata = ItemMetadata(value: itemMetadata)
+        let targetItemMetadata = SendableItemMetadata(value: itemMetadata)
         targetItemMetadata.date = .init()
         targetItemMetadata.size = Int64(newContents.count)
 
@@ -1290,7 +1290,7 @@ final class ItemModifyTests: XCTestCase {
         let newContentsUrl = FileManager.default.temporaryDirectory.appendingPathComponent("test")
         try newContents.write(to: newContentsUrl)
 
-        let targetItemMetadata = ItemMetadata(value: itemMetadata)
+        let targetItemMetadata = SendableItemMetadata(value: itemMetadata)
         targetItemMetadata.date = .init()
         targetItemMetadata.size = Int64(newContents.count)
 

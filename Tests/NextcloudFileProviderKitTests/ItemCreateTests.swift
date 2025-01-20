@@ -33,7 +33,7 @@ final class ItemCreateTests: XCTestCase {
 
     func testCreateFolder() async throws {
         let remoteInterface = MockRemoteInterface(rootItem: rootItem)
-        let folderItemMetadata = ItemMetadata()
+        let folderItemMetadata = SendableItemMetadata()
         folderItemMetadata.name = "folder"
         folderItemMetadata.fileName = "folder"
         folderItemMetadata.fileNameView = "folder"
@@ -81,7 +81,7 @@ final class ItemCreateTests: XCTestCase {
 
     func testCreateFile() async throws {
         let remoteInterface = MockRemoteInterface(rootItem: rootItem)
-        let fileItemMetadata = ItemMetadata()
+        let fileItemMetadata = SendableItemMetadata()
         fileItemMetadata.fileName = "file"
         fileItemMetadata.fileNameView = "file"
         fileItemMetadata.directory = false
@@ -131,7 +131,7 @@ final class ItemCreateTests: XCTestCase {
     func testCreateFileIntoFolder() async throws {
         let remoteInterface = MockRemoteInterface(rootItem: rootItem)
 
-        let folderItemMetadata = ItemMetadata()
+        let folderItemMetadata = SendableItemMetadata()
         folderItemMetadata.name = "folder"
         folderItemMetadata.fileName = "folder"
         folderItemMetadata.fileNameView = "folder"
@@ -159,7 +159,7 @@ final class ItemCreateTests: XCTestCase {
         let createdFolderItem = try XCTUnwrap(createdFolderItemMaybe)
 
         let fileRelativeRemotePath = "/folder"
-        let fileItemMetadata = ItemMetadata()
+        let fileItemMetadata = SendableItemMetadata()
         fileItemMetadata.name = "file"
         fileItemMetadata.fileName = "file"
         fileItemMetadata.fileNameView = "file"
@@ -219,7 +219,7 @@ final class ItemCreateTests: XCTestCase {
         let keynoteBundleFilename = "test.key"
 
         let remoteInterface = MockRemoteInterface(rootItem: rootItem)
-        let bundleItemMetadata = ItemMetadata()
+        let bundleItemMetadata = SendableItemMetadata()
         bundleItemMetadata.name = keynoteBundleFilename
         bundleItemMetadata.fileName = keynoteBundleFilename
         bundleItemMetadata.fileNameView = keynoteBundleFilename
@@ -351,7 +351,7 @@ final class ItemCreateTests: XCTestCase {
 
     func testCreateFileChunked() async throws {
         let remoteInterface = MockRemoteInterface(rootItem: rootItem)
-        let fileItemMetadata = ItemMetadata()
+        let fileItemMetadata = SendableItemMetadata()
         fileItemMetadata.fileName = "file"
         fileItemMetadata.fileNameView = "file"
         fileItemMetadata.directory = false
@@ -441,7 +441,7 @@ final class ItemCreateTests: XCTestCase {
         //
         // To test this situation we set the ocId of the metadata used to construct the item
         // template to the chunk upload id.
-        let fileItemMetadata = ItemMetadata()
+        let fileItemMetadata = SendableItemMetadata()
         fileItemMetadata.ocId = illegalChunkUploadId
         fileItemMetadata.fileName = "file"
         fileItemMetadata.fileNameView = "file"

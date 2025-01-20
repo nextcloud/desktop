@@ -10,8 +10,8 @@ import NextcloudKit
 import RealmSwift
 
 extension NKFile {
-    func toItemMetadata() -> ItemMetadata {
-        let metadata = ItemMetadata()
+    func toItemMetadata() -> SendableItemMetadata {
+        let metadata = SendableItemMetadata()
 
         metadata.account = account
         metadata.checksums = checksums
@@ -90,17 +90,14 @@ extension NKFile {
 
 
 extension Array<NKFile> {
-    /// Realm objects are inherently unsendable and not thread-safe **IF THEY ARE MANAGED.**
-    /// Marking our ItemMetadata as an unchecked Sendable is a naughty thing to do. So make sure to check
-    /// for ItemMetadata objects to be unmanaged before doing anything crossing actor boundaries.
-    private class SendableItemMetadata: ItemMetadata, @unchecked Sendable {}
-
     private final actor DirectoryReadConversionActor: Sendable {
         let directoryMetadata: SendableItemMetadata
         var childDirectoriesMetadatas: [SendableItemMetadata] = []
         var metadatas: [SendableItemMetadata] = []
 
-        func convertedMetadatas() -> (SendableItemMetadata, [SendableItemMetadata], [SendableItemMetadata]) {
+        func convertedMetadatas() -> (
+            SendableItemMetadata, [SendableItemMetadata], [SendableItemMetadata]
+        ) {
             (directoryMetadata, childDirectoriesMetadatas, metadatas)
         }
 
@@ -118,18 +115,17 @@ extension Array<NKFile> {
     }
 
     func toDirectoryReadMetadatas(account: Account) async -> (
-        directoryMetadata: ItemMetadata,
-        childDirectoriesMetadatas: [ItemMetadata],
-        metadatas: [ItemMetadata]
+        directoryMetadata: SendableItemMetadata,
+        childDirectoriesMetadatas: [SendableItemMetadata],
+        metadatas: [SendableItemMetadata]
     ) {
         guard let targetDirectoryMetadata = first?.toItemMetadata() else {
-            return (ItemMetadata(), [], [])
+            return (SendableItemMetadata(), [], [])
         }
-        let conversionActor =
-            DirectoryReadConversionActor(target: SendableItemMetadata(value: targetDirectoryMetadata))
+        let conversionActor = DirectoryReadConversionActor(target: targetDirectoryMetadata)
         await concurrentChunkedForEach { file in
             guard file.ocId != targetDirectoryMetadata.ocId else { return }
-            await conversionActor.add(metadata: SendableItemMetadata(value: file.toItemMetadata()))
+            await conversionActor.add( metadata: file.toItemMetadata())
         }
         return await conversionActor.convertedMetadatas()
     }

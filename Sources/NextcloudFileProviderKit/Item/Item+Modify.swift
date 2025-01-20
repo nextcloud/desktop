@@ -161,7 +161,7 @@ public extension Item {
                 """
             )
 
-            metadata.status = ItemMetadata.Status.uploadError.rawValue
+            metadata.status = SendableItemMetadata.Status.uploadError.rawValue
             metadata.sessionError = error.errorDescription
             dbManager.addItemMetadata(metadata)
             return (nil, error.fileProviderError)
@@ -186,7 +186,7 @@ public extension Item {
         }
 
         let newMetadata =
-            dbManager.setStatusForItemMetadata(updatedMetadata, status: .normal) ?? ItemMetadata(value: updatedMetadata)
+            dbManager.setStatusForItemMetadata(updatedMetadata, status: .normal) ?? SendableItemMetadata(value: updatedMetadata)
 
         newMetadata.date = date ?? Date()
         newMetadata.etag = etag ?? metadata.etag
@@ -249,7 +249,7 @@ public extension Item {
         // 2. Create set of the found items
         // 3. Upload new contents and get their paths post-upload
         // 4. Delete remote items with paths not present in the new set
-        var allMetadatas = [ItemMetadata]()
+        var allMetadatas = [SendableItemMetadata]()
         var directoriesToRead = [remotePath]
         while !directoriesToRead.isEmpty {
             let remoteDirectoryPath = directoriesToRead.removeFirst()
@@ -299,7 +299,7 @@ public extension Item {
             directoriesToRead.append(contentsOf: childDirPaths)
         }
 
-        var staleItems = [String: ItemMetadata]() // remote urls to metadata
+        var staleItems = [String: SendableItemMetadata]() // remote urls to metadata
         for metadata in allMetadatas {
             let remoteUrlPath = metadata.serverUrl + "/" + metadata.fileName
             guard remoteUrlPath != remotePath else { continue }
@@ -635,7 +635,6 @@ public extension Item {
 
         // Update state of child files
         childFiles.removeFirst() // This is the target path, already scanned
-        var metadatas = [ItemMetadata]()
         for file in childFiles {
             let metadata = file.toItemMetadata()
             guard let original = dirtyChildren
@@ -651,20 +650,8 @@ public extension Item {
                 continue
             }
             metadata.ocId = original.ocId // Give original id back
-            metadatas.append(metadata)
-            Self.logger.info("Adding post-trash child item metadata: \(metadata, privacy: .public)")
-        }
-
-        do {
-            let database = dbManager.ncDatabase()
-            try database.write { database.add(metadatas, update: .modified) }
-        } catch let error {
-            Self.logger.error(
-                """
-                Could not update trashed item child metadatas.
-                    error: \(error.localizedDescription)
-                """
-            )
+            dbManager.addItemMetadata(metadata)
+            Self.logger.info("Note: that was a post-trash child item metadata")
         }
 
         return (postDeleteItem, nil)

@@ -9,8 +9,8 @@ import Foundation
 import NextcloudKit
 
 extension NKTrash {
-    func toItemMetadata(account: Account) -> ItemMetadata {
-        let metadata = ItemMetadata()
+    func toItemMetadata(account: Account) -> SendableItemMetadata {
+        let metadata = SendableItemMetadata()
         metadata.ocId = ocId
         metadata.account = account.ncKitAccount
         metadata.user = account.username

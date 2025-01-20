@@ -18,7 +18,7 @@ import OSLog
 
 public class Enumerator: NSObject, NSFileProviderEnumerator {
     let enumeratedItemIdentifier: NSFileProviderItemIdentifier
-    private var enumeratedItemMetadata: ItemMetadata?
+    private var enumeratedItemMetadata: SendableItemMetadata?
     private var enumeratingSystemIdentifier: Bool {
         Self.isSystemIdentifier(enumeratedItemIdentifier)
     }
@@ -440,7 +440,7 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
             )
 
             // If we get a 404 we might add more deleted metadatas
-            var currentDeletedMetadatas: [ItemMetadata] = []
+            var currentDeletedMetadatas: [SendableItemMetadata] = []
             if let notNilDeletedMetadatas = deletedMetadatas {
                 currentDeletedMetadatas = notNilDeletedMetadatas
             }
@@ -562,7 +562,7 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
         remoteInterface: RemoteInterface,
         dbManager: FilesDatabaseManager,
         numPage: Int,
-        itemMetadatas: [ItemMetadata]
+        itemMetadatas: [SendableItemMetadata]
     ) {
         Task {
             let items = await itemMetadatas.toFileProviderItems(
@@ -594,9 +594,9 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
         account: Account,
         remoteInterface: RemoteInterface,
         dbManager: FilesDatabaseManager,
-        newMetadatas: [ItemMetadata]?,
-        updatedMetadatas: [ItemMetadata]?,
-        deletedMetadatas: [ItemMetadata]?
+        newMetadatas: [SendableItemMetadata]?,
+        updatedMetadatas: [SendableItemMetadata]?,
+        deletedMetadatas: [SendableItemMetadata]?
     ) {
         guard newMetadatas != nil || updatedMetadatas != nil || deletedMetadatas != nil else {
             Self.logger.error(
@@ -610,8 +610,8 @@ public class Enumerator: NSObject, NSFileProviderEnumerator {
         }
 
         // Observer does not care about new vs updated, so join
-        var allUpdatedMetadatas: [ItemMetadata] = []
-        var allDeletedMetadatas: [ItemMetadata] = []
+        var allUpdatedMetadatas: [SendableItemMetadata] = []
+        var allDeletedMetadatas: [SendableItemMetadata] = []
 
         if let newMetadatas {
             allUpdatedMetadatas += newMetadatas

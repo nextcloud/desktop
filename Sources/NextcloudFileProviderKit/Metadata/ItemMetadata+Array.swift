@@ -8,7 +8,7 @@
 import Foundation
 import OSLog
 
-extension Array<ItemMetadata> {
+extension Array<SendableItemMetadata> {
     func toFileProviderItems(
         account: Account, remoteInterface: RemoteInterface, dbManager: FilesDatabaseManager
     ) async -> [Item] {

@@ -69,7 +69,7 @@ final class FilesDatabaseManagerTests: XCTestCase {
         // Setting up test data
         let testAccount = "TestAccount"
         let serverUrl = "https://example.com"
-        let metadata = ItemMetadata()
+        let metadata = SendableItemMetadata()
         metadata.account = testAccount
         metadata.serverUrl = serverUrl
 
@@ -100,7 +100,7 @@ final class FilesDatabaseManagerTests: XCTestCase {
 
         let expectedStatus = ItemMetadata.Status.uploadError
         let updatedMetadata = Self.dbManager.setStatusForItemMetadata(
-            metadata, status: expectedStatus
+            SendableItemMetadata(value: metadata), status: expectedStatus
         )
         XCTAssertEqual(
             updatedMetadata?.status,
@@ -110,7 +110,7 @@ final class FilesDatabaseManagerTests: XCTestCase {
     }
 
     func testAddItemMetadata() {
-        let metadata = ItemMetadata()
+        let metadata = SendableItemMetadata()
         metadata.ocId = "unique-id-123"
         Self.dbManager.addItemMetadata(metadata)
 
@@ -192,7 +192,7 @@ final class FilesDatabaseManagerTests: XCTestCase {
         let _ = Self.dbManager.updateItemMetadatas(
             account: "TestAccount",
             serverUrl: "https://example.com",
-            updatedMetadatas: updatedMetadatas,
+            updatedMetadatas: updatedMetadatas.map { SendableItemMetadata(value: $0) },
             updateDirectoryEtags: true
         )
 
@@ -216,13 +216,13 @@ final class FilesDatabaseManagerTests: XCTestCase {
         existingMetadata.serverUrl = "https://example.com"
 
         // Simulate updated metadata that includes changes and a new entry
-        let updatedMetadata = ItemMetadata()
+        let updatedMetadata = SendableItemMetadata()
         updatedMetadata.ocId = "id-1"
         updatedMetadata.fileName = "UpdatedFile.pdf"  // Update existing
         updatedMetadata.account = "TestAccount"
         updatedMetadata.serverUrl = "https://example.com"
 
-        let newMetadata = ItemMetadata()
+        let newMetadata = SendableItemMetadata()
         newMetadata.ocId = "id-2"
         newMetadata.fileName = "NewFile.pdf"  // This is a new entry
         newMetadata.account = "TestAccount"
@@ -258,7 +258,7 @@ final class FilesDatabaseManagerTests: XCTestCase {
         Task {
             for i in 0...count {
                 let ocId = "concurrency-\(i)"
-                let metadata = ItemMetadata()
+                let metadata = SendableItemMetadata()
                 metadata.ocId = ocId
                 Self.dbManager.addItemMetadata(metadata)
             }
@@ -268,7 +268,7 @@ final class FilesDatabaseManagerTests: XCTestCase {
         Task {
             for i in 0...count {
                 let ocId = "concurrency-\(count + 1 + i)"
-                let metadata = ItemMetadata()
+                let metadata = SendableItemMetadata()
                 metadata.ocId = ocId
                 Self.dbManager.addItemMetadata(metadata)
             }

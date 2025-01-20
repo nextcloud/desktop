@@ -17,7 +17,7 @@ extension Enumerator {
         numPage: Int,
         trashItems: [NKTrash]
     ) {
-        var metadatas = [ItemMetadata]()
+        var metadatas = [SendableItemMetadata]()
         for trashItem in trashItems {
             let metadata = trashItem.toItemMetadata(account: account)
             dbManager.addItemMetadata(metadata)

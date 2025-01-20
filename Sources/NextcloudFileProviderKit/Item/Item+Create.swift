@@ -169,7 +169,7 @@ extension Item {
             )
         }
         
-        let newMetadata = ItemMetadata()
+        let newMetadata = SendableItemMetadata()
         newMetadata.date = date ?? Date()
         newMetadata.etag = etag ?? ""
         newMetadata.account = account.ncKitAccount
@@ -183,7 +183,7 @@ extension Item {
         newMetadata.session = ""
         newMetadata.sessionError = ""
         newMetadata.sessionTaskIdentifier = 0
-        newMetadata.status = ItemMetadata.Status.normal.rawValue
+        newMetadata.status = SendableItemMetadata.Status.normal.rawValue
         newMetadata.downloaded = true
         newMetadata.uploaded = true
 
