@@ -1144,18 +1144,24 @@ SyncOptions Folder::initializeSyncOptions() const
 {
     SyncOptions opt;
     ConfigFile cfgFile;
+    const auto account = _accountState->account();
 
     auto newFolderLimit = cfgFile.newBigFolderSizeLimit();
     opt._newBigFolderSizeLimit = newFolderLimit.first ? newFolderLimit.second * 1000LL * 1000LL : -1; // convert from MB to B
     opt._confirmExternalStorage = cfgFile.confirmExternalStorage();
     opt._moveFilesToTrash = cfgFile.moveToTrash();
     opt._vfs = _vfs;
-    opt._parallelNetworkJobs = _accountState->account()->isHttp2Supported() ? 20 : 6;
+    opt._parallelNetworkJobs = account->isHttp2Supported() ? 20 : 6;
 
     // Chunk V2: Size of chunks must be between 5MB and 5GB, except for the last chunk which can be smaller
+    const auto capsMaxChunkSize = account->capabilities().maxChunkSize();
+    const auto validCapsChunkSize = capsMaxChunkSize <= 0;
+    const auto maxChunkSize = validCapsChunkSize ? capsMaxChunkSize : cfgFile.maxChunkSize();
+    const auto preferredChunkSize = validCapsChunkSize ? capsMaxChunkSize : cfgFile.chunkSize();
+
     opt.setMinChunkSize(cfgFile.minChunkSize());
-    opt.setMaxChunkSize(cfgFile.maxChunkSize());
-    opt._initialChunkSize = ::qBound(opt.minChunkSize(), cfgFile.chunkSize(), opt.maxChunkSize());
+    opt.setMaxChunkSize(maxChunkSize);
+    opt._initialChunkSize = ::qBound(opt.minChunkSize(), preferredChunkSize, opt.maxChunkSize());
     opt._targetChunkUploadDuration = cfgFile.targetChunkUploadDuration();
 
     opt.fillFromEnvironmentVariables();
