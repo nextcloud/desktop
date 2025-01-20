@@ -1662,14 +1662,14 @@ void ProcessDirectoryJob::processFileFinalize(
         }
     }
 
-    if (_discoveryData->_syncOptions._vfs &&
+    if (_discoveryData->_syncOptions._vfs && _discoveryData->_syncOptions._vfs->mode() != OCC::Vfs::Off &&
         (item->_type == CSyncEnums::ItemTypeFile || item->_type == CSyncEnums::ItemTypeDirectory) &&
         item->_instruction == CSyncEnums::CSYNC_INSTRUCTION_NONE &&
         !_discoveryData->_syncOptions._vfs->isPlaceHolderInSync(_discoveryData->_localDir + path._local)) {
         item->_instruction = CSyncEnums::CSYNC_INSTRUCTION_UPDATE_VFS_METADATA;
     }
 
-    if (_discoveryData->_syncOptions._vfs &&
+    if (_discoveryData->_syncOptions._vfs && _discoveryData->_syncOptions._vfs->mode() != OCC::Vfs::Off &&
         (item->_type == CSyncEnums::ItemTypeFile || item->_type == CSyncEnums::ItemTypeDirectory) &&
         item->_instruction == CSyncEnums::CSYNC_INSTRUCTION_NONE &&
         FileSystem::isLnkFile((_discoveryData->_localDir + path._local)) &&
