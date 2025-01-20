@@ -1157,7 +1157,7 @@ SyncOptions Folder::initializeSyncOptions() const
     const auto cfgMinChunkSize = cfgFile.minChunkSize();
     opt.setMinChunkSize(cfgMinChunkSize);
 
-    if (const auto capsMaxChunkSize = account->capabilities().maxChunkSize(); capsMaxChunkSize > 0 && !cfgFile.overrideServerChunkSize()) {
+    if (const auto capsMaxChunkSize = account->capabilities().maxChunkSize(); capsMaxChunkSize) {
         opt.setMaxChunkSize(capsMaxChunkSize);
         opt._initialChunkSize = capsMaxChunkSize;
     } else {

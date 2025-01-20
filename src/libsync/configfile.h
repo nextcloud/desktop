@@ -177,7 +177,6 @@ public:
     void setShowInExplorerNavigationPane(bool show);
 
     [[nodiscard]] int timeout() const;
-    [[nodiscard]] bool overrideServerChunkSize() const;
     [[nodiscard]] qint64 chunkSize() const;
     [[nodiscard]] qint64 maxChunkSize() const;
     [[nodiscard]] qint64 minChunkSize() const;
