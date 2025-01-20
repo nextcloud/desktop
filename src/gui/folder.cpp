@@ -1154,14 +1154,14 @@ SyncOptions Folder::initializeSyncOptions() const
     opt._parallelNetworkJobs = account->isHttp2Supported() ? 20 : 6;
 
     // Chunk V2: Size of chunks must be between 5MB and 5GB, except for the last chunk which can be smaller
+    const auto cfgMinChunkSize = cfgFile.minChunkSize();
+    opt.setMinChunkSize(cfgMinChunkSize);
+
     if (const auto capsMaxChunkSize = account->capabilities().maxChunkSize(); capsMaxChunkSize > 0 && !cfgFile.overrideServerChunkSize) {
-        opt.setMinChunkSize(capsMaxChunkSize);
         opt.setMaxChunkSize(capsMaxChunkSize);
         opt._initialChunkSize = capsMaxChunkSize;
     } else {
-        const auto cfgMinChunkSize = cfgFile.minChunkSize();
         const auto cfgMaxChunkSize = cfgFile.maxChunkSize();
-        opt.setMinChunkSize(cfgMinChunkSize);
         opt.setMaxChunkSize(cfgMaxChunkSize);
         opt._initialChunkSize = ::qBound(cfgMinChunkSize, cfgFile.chunkSize(), cfgMaxChunkSize);
     }
