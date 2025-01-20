@@ -70,7 +70,7 @@ static constexpr char overrideLocalDirC[] = "overrideLocalDir";
 static constexpr char isVfsEnabledC[] = "isVfsEnabled";
 static constexpr char geometryC[] = "geometry";
 static constexpr char timeoutC[] = "timeout";
-static constexpr char overrideServerChunkSize[] = "overrideServerChunkSize";
+static constexpr char overrideServerChunkSizeC[] = "overrideServerChunkSize";
 static constexpr char chunkSizeC[] = "chunkSize";
 static constexpr char minChunkSizeC[] = "minChunkSize";
 static constexpr char maxChunkSizeC[] = "maxChunkSize";
@@ -262,7 +262,7 @@ int ConfigFile::timeout() const
 bool ConfigFile::overrideServerChunkSize() const
 {
     QSettings settings(configFile(), QSettings::IniFormat);
-    return settings.value(QLatin1String(overrideServerChunkSize), false).toBool();
+    return settings.value(QLatin1String(overrideServerChunkSizeC), false).toBool();
 }
 
 qint64 ConfigFile::chunkSize() const
