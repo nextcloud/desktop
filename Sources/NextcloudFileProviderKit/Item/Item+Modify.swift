@@ -111,7 +111,7 @@ public extension Item {
             return (nil, NSFileProviderError(.noSuchItem))
         }
 
-        guard let metadata = dbManager.itemMetadata(ocId: ocId) else {
+        guard var metadata = dbManager.itemMetadata(ocId: ocId) else {
             Self.logger.error(
                 "Could not acquire metadata of item with identifier: \(ocId, privacy: .public)"
             )
@@ -185,7 +185,7 @@ public extension Item {
             )
         }
 
-        let newMetadata =
+        var newMetadata =
             dbManager.setStatusForItemMetadata(updatedMetadata, status: .normal) ?? SendableItemMetadata(value: updatedMetadata)
 
         newMetadata.date = date ?? Date()
@@ -591,7 +591,7 @@ public extension Item {
             }
         }
 
-        let postDeleteMetadata = targetItemNKTrash.toItemMetadata(account: account)
+        var postDeleteMetadata = targetItemNKTrash.toItemMetadata(account: account)
         postDeleteMetadata.ocId = modifiedItem.itemIdentifier.rawValue
         dbManager.addItemMetadata(postDeleteMetadata)
 
@@ -635,7 +635,7 @@ public extension Item {
         // Update state of child files
         childFiles.removeFirst() // This is the target path, already scanned
         for file in childFiles {
-            let metadata = file.toItemMetadata()
+            var metadata = file.toItemMetadata()
             guard let original = dirtyChildren
                 .filter({ $0.ocId == metadata.ocId || $0.fileId == metadata.fileId })
                 .first

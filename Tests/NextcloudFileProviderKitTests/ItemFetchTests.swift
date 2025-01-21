@@ -45,7 +45,7 @@ final class ItemFetchTests: XCTestCase {
         rootItem.children = [remoteItem]
         remoteItem.parent = rootItem
 
-        let itemMetadata = SendableItemMetadata()
+        var itemMetadata = SendableItemMetadata()
         itemMetadata.ocId = remoteItem.identifier
         itemMetadata.etag = remoteItem.versionIdentifier
         itemMetadata.name = remoteItem.name
@@ -154,7 +154,7 @@ final class ItemFetchTests: XCTestCase {
         remoteDirectoryChildDirB.children = [remoteDirectoryChildDirBChildFile]
         remoteDirectoryChildDirBChildFile.parent = remoteDirectoryChildDirB
 
-        let directoryMetadata = SendableItemMetadata()
+        var directoryMetadata = SendableItemMetadata()
         directoryMetadata.ocId = remoteDirectory.identifier
         directoryMetadata.etag = remoteDirectory.versionIdentifier
         directoryMetadata.name = remoteDirectory.name
@@ -169,7 +169,7 @@ final class ItemFetchTests: XCTestCase {
 
         Self.dbManager.addItemMetadata(directoryMetadata)
 
-        let directoryChildFileMetadata = SendableItemMetadata()
+        var directoryChildFileMetadata = SendableItemMetadata()
         directoryChildFileMetadata.ocId = remoteDirectoryChildFile.identifier
         directoryChildFileMetadata.etag = remoteDirectoryChildFile.versionIdentifier
         directoryChildFileMetadata.name = remoteDirectoryChildFile.name
@@ -187,7 +187,7 @@ final class ItemFetchTests: XCTestCase {
 
         Self.dbManager.addItemMetadata(directoryChildFileMetadata)
 
-        let directoryChildDirAMetadata = SendableItemMetadata()
+        var directoryChildDirAMetadata = SendableItemMetadata()
         directoryChildDirAMetadata.ocId = remoteDirectoryChildDirA.identifier
         directoryChildDirAMetadata.etag = remoteDirectoryChildDirA.versionIdentifier
         directoryChildDirAMetadata.name = remoteDirectoryChildDirA.name
@@ -203,7 +203,7 @@ final class ItemFetchTests: XCTestCase {
 
         Self.dbManager.addItemMetadata(directoryChildDirAMetadata)
 
-        let directoryChildDirBMetadata = SendableItemMetadata()
+        var directoryChildDirBMetadata = SendableItemMetadata()
         directoryChildDirBMetadata.ocId = remoteDirectoryChildDirB.identifier
         directoryChildDirBMetadata.etag = remoteDirectoryChildDirB.versionIdentifier
         directoryChildDirBMetadata.name = remoteDirectoryChildDirB.name
@@ -219,7 +219,7 @@ final class ItemFetchTests: XCTestCase {
 
         Self.dbManager.addItemMetadata(directoryChildDirBMetadata)
 
-        let directoryChildDirBChildFileMetadata = SendableItemMetadata()
+        var directoryChildDirBChildFileMetadata = SendableItemMetadata()
         directoryChildDirBChildFileMetadata.ocId = remoteDirectoryChildDirBChildFile.identifier
         directoryChildDirBChildFileMetadata.etag =
             remoteDirectoryChildDirBChildFile.versionIdentifier

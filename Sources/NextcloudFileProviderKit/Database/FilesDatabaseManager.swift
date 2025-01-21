@@ -192,7 +192,7 @@ public class FilesDatabaseManager {
         var returningUpdatedMetadatas: [SendableItemMetadata] = []
         var directoriesNeedingRename: [SendableItemMetadata] = []
 
-        for updatedMetadata in updatedMetadatas {
+        for var updatedMetadata in updatedMetadatas {
             if let existingMetadata = existingMetadatas.first(where: {
                 $0.ocId == updatedMetadata.ocId
             }) {

@@ -19,7 +19,7 @@ final class ItemPropertyTests: XCTestCase {
     )
 
     func testMetadataContentType() {
-        let metadata = SendableItemMetadata()
+        var metadata = SendableItemMetadata()
         metadata.ocId = "test-id"
         metadata.etag = "test-etag"
         metadata.name = "test.txt"
@@ -43,7 +43,7 @@ final class ItemPropertyTests: XCTestCase {
     }
 
     func testMetadataExtensionContentType() {
-        let metadata = SendableItemMetadata()
+        var metadata = SendableItemMetadata()
         metadata.ocId = "test-id"
         metadata.etag = "test-etag"
         metadata.name = "test.pdf"
@@ -67,7 +67,7 @@ final class ItemPropertyTests: XCTestCase {
     }
 
     func testMetadataFolderContentType() {
-        let metadata = SendableItemMetadata()
+        var metadata = SendableItemMetadata()
         metadata.ocId = "test-id"
         metadata.etag = "test-etag"
         metadata.name = "test"
@@ -91,7 +91,7 @@ final class ItemPropertyTests: XCTestCase {
     }
 
     func testMetadataPackageContentType() {
-        let metadata = SendableItemMetadata()
+        var metadata = SendableItemMetadata()
         metadata.ocId = "test-id"
         metadata.etag = "test-etag"
         metadata.name = "test.zip"
@@ -116,7 +116,7 @@ final class ItemPropertyTests: XCTestCase {
     }
 
     func testMetadataBundleContentType() {
-        let metadata = SendableItemMetadata()
+        var metadata = SendableItemMetadata()
         metadata.ocId = "test-id"
         metadata.etag = "test-etag"
         metadata.name = "test.app"
@@ -141,7 +141,7 @@ final class ItemPropertyTests: XCTestCase {
     }
 
     func testMetadataUnixFolderContentType() {
-        let metadata = SendableItemMetadata()
+        var metadata = SendableItemMetadata()
         metadata.ocId = "test-id"
         metadata.etag = "test-etag"
         metadata.name = "test"
@@ -166,7 +166,7 @@ final class ItemPropertyTests: XCTestCase {
     }
 
     func testPredictedBundleContentType() {
-        let metadata = SendableItemMetadata()
+        var metadata = SendableItemMetadata()
         metadata.ocId = "test-id"
         metadata.etag = "test-etag"
         metadata.name = "test.app"
@@ -191,7 +191,7 @@ final class ItemPropertyTests: XCTestCase {
     }
 
     func testItemUserInfoLockingPropsFileLocked() {
-        let metadata = SendableItemMetadata()
+        var metadata = SendableItemMetadata()
         metadata.ocId = "test-id"
         metadata.etag = "test-etag"
         metadata.account = Self.account.ncKitAccount
@@ -227,7 +227,7 @@ final class ItemPropertyTests: XCTestCase {
     }
 
     func testItemUserInfoLockingPropsFileUnlocked() {
-        let metadata = SendableItemMetadata()
+        var metadata = SendableItemMetadata()
         metadata.ocId = "test-id"
         metadata.etag = "test-etag"
         metadata.account = Self.account.ncKitAccount

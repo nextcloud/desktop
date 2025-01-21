@@ -69,7 +69,7 @@ final class FilesDatabaseManagerTests: XCTestCase {
         // Setting up test data
         let testAccount = "TestAccount"
         let serverUrl = "https://example.com"
-        let metadata = SendableItemMetadata()
+        var metadata = SendableItemMetadata()
         metadata.account = testAccount
         metadata.serverUrl = serverUrl
 
@@ -110,7 +110,7 @@ final class FilesDatabaseManagerTests: XCTestCase {
     }
 
     func testAddItemMetadata() {
-        let metadata = SendableItemMetadata()
+        var metadata = SendableItemMetadata()
         metadata.ocId = "unique-id-123"
         Self.dbManager.addItemMetadata(metadata)
 
@@ -216,13 +216,13 @@ final class FilesDatabaseManagerTests: XCTestCase {
         existingMetadata.serverUrl = "https://example.com"
 
         // Simulate updated metadata that includes changes and a new entry
-        let updatedMetadata = SendableItemMetadata()
+        var updatedMetadata = SendableItemMetadata()
         updatedMetadata.ocId = "id-1"
         updatedMetadata.fileName = "UpdatedFile.pdf"  // Update existing
         updatedMetadata.account = "TestAccount"
         updatedMetadata.serverUrl = "https://example.com"
 
-        let newMetadata = SendableItemMetadata()
+        var newMetadata = SendableItemMetadata()
         newMetadata.ocId = "id-2"
         newMetadata.fileName = "NewFile.pdf"  // This is a new entry
         newMetadata.account = "TestAccount"
@@ -258,7 +258,7 @@ final class FilesDatabaseManagerTests: XCTestCase {
         Task {
             for i in 0...count {
                 let ocId = "concurrency-\(i)"
-                let metadata = SendableItemMetadata()
+                var metadata = SendableItemMetadata()
                 metadata.ocId = ocId
                 Self.dbManager.addItemMetadata(metadata)
             }
@@ -268,7 +268,7 @@ final class FilesDatabaseManagerTests: XCTestCase {
         Task {
             for i in 0...count {
                 let ocId = "concurrency-\(count + 1 + i)"
-                let metadata = SendableItemMetadata()
+                var metadata = SendableItemMetadata()
                 metadata.ocId = ocId
                 Self.dbManager.addItemMetadata(metadata)
             }
@@ -409,7 +409,7 @@ final class FilesDatabaseManagerTests: XCTestCase {
     }
 
     func testChildItemsForRootDirectory() throws {
-        let rootMetadata = RealmItemMetadata() // Do not write, we do not track root containe itself
+        var rootMetadata = SendableItemMetadata() // Do not write, we do not track root container
         rootMetadata.ocId = NSFileProviderItemIdentifier.rootContainer.rawValue
         rootMetadata.account = "TestAccount"
         rootMetadata.serverUrl = "https://cloud.example.com/files"

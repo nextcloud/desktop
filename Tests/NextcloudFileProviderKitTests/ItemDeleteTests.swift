@@ -47,7 +47,7 @@ final class ItemDeleteTests: XCTestCase {
 
         XCTAssertFalse(rootItem.children.isEmpty)
 
-        let itemMetadata = SendableItemMetadata()
+        var itemMetadata = SendableItemMetadata()
         itemMetadata.ocId = itemIdentifier
         itemMetadata.fileName = remoteItem.name
         itemMetadata.fileNameView = remoteItem.name
@@ -103,13 +103,13 @@ final class ItemDeleteTests: XCTestCase {
         XCTAssertFalse(rootItem.children.isEmpty)
         XCTAssertFalse(remoteFolder.children.isEmpty)
 
-        let folderMetadata = SendableItemMetadata()
+        var folderMetadata = SendableItemMetadata()
         folderMetadata.ocId = remoteFolder.identifier
         folderMetadata.fileName = remoteFolder.name
         folderMetadata.directory = true
         folderMetadata.serverUrl = Self.account.davFilesUrl
 
-        let remoteItemMetadata = SendableItemMetadata()
+        var remoteItemMetadata = SendableItemMetadata()
         remoteItemMetadata.ocId = remoteItem.identifier
         remoteItemMetadata.fileName = remoteItem.name
         remoteItemMetadata.serverUrl = remoteFolder.remotePath
@@ -151,7 +151,7 @@ final class ItemDeleteTests: XCTestCase {
 
         XCTAssertFalse(rootItem.children.isEmpty)
 
-        let itemMetadata = SendableItemMetadata()
+        var itemMetadata = SendableItemMetadata()
         itemMetadata.ocId = itemIdentifier
         itemMetadata.fileName = remoteItem.name
         itemMetadata.fileNameView = remoteItem.name

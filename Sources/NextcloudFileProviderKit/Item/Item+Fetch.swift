@@ -60,7 +60,7 @@ public extension Item {
 
             progress.totalUnitCount += Int64(metadatas.count)
 
-            for metadata in metadatas {
+            for var metadata in metadatas {
                 let remotePath = metadata.serverUrl + "/" + metadata.fileName
                 let relativePath =
                     remotePath.replacingOccurrences(of: directoryRemotePath, with: "")
@@ -137,7 +137,7 @@ public extension Item {
         )
 
         let localPath = FileManager.default.temporaryDirectory.appendingPathComponent(metadata.ocId)
-        guard let updatedMetadata = dbManager.setStatusForItemMetadata(metadata, status: .downloading) else {
+        guard var updatedMetadata = dbManager.setStatusForItemMetadata(metadata, status: .downloading) else {
             Self.logger.error(
                 """
                 Could not acquire updated metadata of item \(ocId, privacy: .public),

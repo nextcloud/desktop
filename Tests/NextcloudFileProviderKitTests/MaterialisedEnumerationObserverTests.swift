@@ -41,21 +41,21 @@ final class MaterialisedEnumerationObserverTests: XCTestCase {
     }
 
     func testMaterialisedFiles() async {
-        let itemA = SendableItemMetadata()
+        var itemA = SendableItemMetadata()
         itemA.apply(account: Self.account)
         itemA.apply(fileName: "itemA")
         itemA.ocId = "itemA"
         itemA.serverUrl = Self.account.davFilesUrl
         itemA.downloaded = true
 
-        let itemB = SendableItemMetadata()
+        var itemB = SendableItemMetadata()
         itemB.apply(account: Self.account)
         itemB.apply(fileName: "itemB")
         itemB.ocId = "itemB"
         itemB.serverUrl = Self.account.davFilesUrl
         itemB.downloaded = false
 
-        let itemC = SendableItemMetadata()
+        var itemC = SendableItemMetadata()
         itemC.apply(account: Self.account)
         itemC.apply(fileName: "itemC")
         itemC.ocId = "itemC"

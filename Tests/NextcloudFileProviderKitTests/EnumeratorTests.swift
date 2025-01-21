@@ -239,7 +239,7 @@ final class EnumeratorTests: XCTestCase {
         )
 
         // Ensure the newly discovered folder has no etag
-        let dbFolder = try XCTUnwrap(Self.dbManager.itemMetadata(ocId: remoteFolder.identifier))
+        var dbFolder = try XCTUnwrap(Self.dbManager.itemMetadata(ocId: remoteFolder.identifier))
         XCTAssertTrue(dbFolder.etag.isEmpty)
 
         // Having an etag marks a folder as visited. 
@@ -294,7 +294,7 @@ final class EnumeratorTests: XCTestCase {
         let remoteInterface = MockRemoteInterface(rootItem: rootItem)
 
         let oldEtag = "OLD"
-        let folderMetadata = SendableItemMetadata()
+        var folderMetadata = SendableItemMetadata()
         folderMetadata.ocId = remoteFolder.identifier
         folderMetadata.etag = oldEtag
         folderMetadata.name = remoteFolder.name
@@ -354,7 +354,7 @@ final class EnumeratorTests: XCTestCase {
         debugPrint(db)
         let remoteInterface = MockRemoteInterface(rootItem: rootItem)
 
-        let folderMetadata = SendableItemMetadata()
+        var folderMetadata = SendableItemMetadata()
         folderMetadata.ocId = remoteFolder.identifier
         folderMetadata.etag = remoteFolder.versionIdentifier
         folderMetadata.directory = true
@@ -367,7 +367,7 @@ final class EnumeratorTests: XCTestCase {
         folderMetadata.userId = Self.account.username
         folderMetadata.urlBase = Self.account.serverUrl
 
-        let itemAMetadata = SendableItemMetadata()
+        var itemAMetadata = SendableItemMetadata()
         itemAMetadata.ocId = remoteItemA.identifier
         itemAMetadata.etag = remoteItemA.versionIdentifier
         itemAMetadata.name = remoteItemA.name
@@ -415,7 +415,7 @@ final class EnumeratorTests: XCTestCase {
         remoteItemC.parent = remoteFolder
 
         let oldFolderEtag = "OLD"
-        let folderMetadata = SendableItemMetadata()
+        var folderMetadata = SendableItemMetadata()
         folderMetadata.ocId = remoteFolder.identifier
         folderMetadata.etag = oldFolderEtag
         folderMetadata.name = remoteFolder.name
@@ -428,7 +428,7 @@ final class EnumeratorTests: XCTestCase {
         folderMetadata.urlBase = Self.account.serverUrl
 
         let oldItemAEtag = "OLD"
-        let itemAMetadata = SendableItemMetadata()
+        var itemAMetadata = SendableItemMetadata()
         itemAMetadata.ocId = remoteItemA.identifier
         itemAMetadata.etag = oldItemAEtag
         itemAMetadata.name = remoteItemA.name
@@ -440,7 +440,7 @@ final class EnumeratorTests: XCTestCase {
         itemAMetadata.userId = Self.account.id
         itemAMetadata.urlBase = Self.account.serverUrl
 
-        let itemBMetadata = SendableItemMetadata()
+        var itemBMetadata = SendableItemMetadata()
         itemBMetadata.ocId = remoteItemB.identifier
         itemBMetadata.etag = remoteItemB.versionIdentifier
         itemBMetadata.name = remoteItemB.name
@@ -550,7 +550,7 @@ final class EnumeratorTests: XCTestCase {
         remoteItemA.parent = rootItem
         remoteItemA.remotePath = rootItem.remotePath + "/\(remoteItemA.name)"
 
-        let folderMetadata = SendableItemMetadata()
+        var folderMetadata = SendableItemMetadata()
         folderMetadata.ocId = remoteFolder.identifier
         folderMetadata.etag = "OLD"
         folderMetadata.directory = true
@@ -566,7 +566,7 @@ final class EnumeratorTests: XCTestCase {
         let oldEtag = "OLD"
         let oldServerUrl = remoteFolder.remotePath
         let oldName = "oldItemA"
-        let itemAMetadata = SendableItemMetadata()
+        var itemAMetadata = SendableItemMetadata()
         itemAMetadata.ocId = remoteItemA.identifier
         itemAMetadata.etag = oldEtag
         itemAMetadata.name = oldName
@@ -578,7 +578,7 @@ final class EnumeratorTests: XCTestCase {
         itemAMetadata.userId = Self.account.id
         itemAMetadata.urlBase = Self.account.serverUrl
 
-        let itemBMetadata = SendableItemMetadata()
+        var itemBMetadata = SendableItemMetadata()
         itemBMetadata.ocId = remoteItemB.identifier
         itemBMetadata.etag = remoteItemB.versionIdentifier
         itemBMetadata.name = remoteItemB.name
@@ -678,7 +678,7 @@ final class EnumeratorTests: XCTestCase {
         remoteItemC.lockOwner = "other different account"
         remoteItemC.lockTimeOut = Date.now.advanced(by: -1_000_000_000_000)
 
-        let folderMetadata = SendableItemMetadata()
+        var folderMetadata = SendableItemMetadata()
         folderMetadata.ocId = remoteFolder.identifier
         folderMetadata.etag = "OLD"
         folderMetadata.directory = true
