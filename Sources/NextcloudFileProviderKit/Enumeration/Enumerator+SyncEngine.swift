@@ -29,12 +29,8 @@ extension Enumerator {
         deletedMetadatas: [SendableItemMetadata],
         error: NKError?
     ) {
-        let rootContainerDirectoryMetadata = SendableItemMetadata()
-        rootContainerDirectoryMetadata.directory = true
-        rootContainerDirectoryMetadata.ocId = NSFileProviderItemIdentifier.rootContainer.rawValue
-
         let results = await self.scanRecursively(
-            rootContainerDirectoryMetadata,
+            Item.rootContainer(account: account, remoteInterface: remoteInterface).metadata,
             account: account,
             remoteInterface: remoteInterface,
             dbManager: dbManager,
