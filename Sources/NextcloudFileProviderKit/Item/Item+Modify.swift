@@ -534,8 +534,7 @@ public extension Item {
             )
             return (modifiedItem, NSFileProviderError(.cannotSynchronize))
         }
-        let dirtyChildren =
-            dbManager.childItems(directoryMetadata: dirtyMetadata).toUnmanagedResults()
+        let dirtyChildren = dbManager.childItems(directoryMetadata: dirtyMetadata)
         let dirtyItem = Item(
             metadata: dirtyMetadata,
             parentItemIdentifier: .trashContainer,

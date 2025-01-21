@@ -18,22 +18,30 @@ import OSLog
 import RealmSwift
 
 extension FilesDatabaseManager {
-    func childItems(directoryMetadata: RealmItemMetadata) -> Results<RealmItemMetadata> {
-        var directoryServerUrl: String
-        if directoryMetadata.ocId == NSFileProviderItemIdentifier.rootContainer.rawValue {
-            directoryServerUrl = directoryMetadata.serverUrl
+    private func fullServerPathUrl(for metadata: any ItemMetadata) -> String {
+        if metadata.ocId == NSFileProviderItemIdentifier.rootContainer.rawValue {
+            metadata.serverUrl
         } else {
-            directoryServerUrl = directoryMetadata.serverUrl + "/" + directoryMetadata.fileName
+            metadata.serverUrl + "/" + metadata.fileName
         }
-        return itemMetadatas.where { $0.serverUrl.starts(with: directoryServerUrl) }
     }
 
-    public func childItemCount(directoryMetadata: RealmItemMetadata) -> Int {
-        childItems(directoryMetadata: directoryMetadata).count
+    public func childItems(directoryMetadata: SendableItemMetadata) -> [SendableItemMetadata] {
+        let directoryServerUrl = fullServerPathUrl(for: directoryMetadata)
+        return itemMetadatas
+            .where({ $0.serverUrl.starts(with: directoryServerUrl) })
+            .toUnmanagedResults()
+    }
+
+    public func childItemCount(directoryMetadata: SendableItemMetadata) -> Int {
+        let directoryServerUrl = fullServerPathUrl(for: directoryMetadata)
+        return itemMetadatas
+            .where({ $0.serverUrl.starts(with: directoryServerUrl) })
+            .count
     }
 
     public func parentDirectoryMetadataForItem(
-        _ itemMetadata: RealmItemMetadata
+        _ itemMetadata: SendableItemMetadata
     ) -> SendableItemMetadata? {
         self.itemMetadata(
             account: itemMetadata.account, locatedAtRemoteUrl: itemMetadata.serverUrl

@@ -329,7 +329,9 @@ final class FilesDatabaseManagerTests: XCTestCase {
             realm.add(childMetadata)
         }
 
-        let children = Self.dbManager.childItems(directoryMetadata: directoryMetadata)
+        let children = Self.dbManager.childItems(
+            directoryMetadata: SendableItemMetadata(value: directoryMetadata)
+        )
         XCTAssertEqual(children.count, 1, "Should return one child item")
         XCTAssertEqual(
             children.first?.fileName, "report.pdf", "Should match the child item's file name"
@@ -416,7 +418,7 @@ final class FilesDatabaseManagerTests: XCTestCase {
         let childMetadata = RealmItemMetadata()
         childMetadata.ocId = "item-1"
         childMetadata.account = "TestAccount"
-        childMetadata.serverUrl = "https://cloud.example.com/files/report.pdf"
+        childMetadata.serverUrl = rootMetadata.serverUrl
         childMetadata.fileName = "report.pdf"
 
         let realm = Self.dbManager.ncDatabase()

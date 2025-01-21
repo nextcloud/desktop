@@ -285,8 +285,12 @@ extension Enumerator {
         )
 
 
-        let (directoryMetadata, _, metadatas) =
+        guard let (directoryMetadata, _, metadatas) =
             await files.toDirectoryReadMetadatas(account: account)
+        else {
+            Self.logger.error("Could not convert NKFiles to DirectoryReadMetadatas!")
+            return (nil, nil, nil, nil, .invalidData)
+        }
 
         // STORE DATA FOR CURRENTLY SCANNED DIRECTORY
         // We have now scanned this directory's contents, so update with etag in order to not check 

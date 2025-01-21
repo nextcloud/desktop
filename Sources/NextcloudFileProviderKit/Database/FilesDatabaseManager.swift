@@ -160,7 +160,7 @@ public class FilesDatabaseManager {
 
     private func processItemMetadatasToDelete(
         existingMetadatas: Results<RealmItemMetadata>,
-        updatedMetadatas: [RealmItemMetadata]
+        updatedMetadatas: [SendableItemMetadata]
     ) -> [RealmItemMetadata] {
         var deletedMetadatas: [RealmItemMetadata] = []
 
