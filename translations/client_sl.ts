@@ -76,7 +76,7 @@
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="128"/>
         <source>Syncing %1 of %2  (%3 left)</source>
-        <translation>Poteka usklajevanje %1 od %2  (preostaja %3)</translation>
+        <translation>Poteka usklajevanje %1 od %2  (%3 do konca)</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="133"/>
@@ -163,59 +163,59 @@
     <message>
         <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="36"/>
         <source>Current account</source>
-        <translation type="unfinished"/>
+        <translation>Trenutni račun</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="42"/>
         <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="116"/>
         <source>Resume sync for all</source>
-        <translation type="unfinished"/>
+        <translation>Nadaljuj z usklajevanjem za vse</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="42"/>
         <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="116"/>
         <source>Pause sync for all</source>
-        <translation type="unfinished"/>
+        <translation>Ustavi usklajevanje za vse</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="95"/>
         <source>Add account</source>
-        <translation type="unfinished"/>
+        <translation>Dodaj račun</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="99"/>
         <source>Add new account</source>
-        <translation type="unfinished"/>
+        <translation>Dodaj račun</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="122"/>
         <source>Settings</source>
-        <translation type="unfinished"/>
+        <translation>Nastavitve</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="133"/>
         <source>Exit</source>
-        <translation type="unfinished"/>
+        <translation>Končaj</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="161"/>
         <source>Current account avatar</source>
-        <translation type="unfinished"/>
+        <translation>Trenutna podoba računa</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="187"/>
         <source>Current account status is online</source>
-        <translation type="unfinished"/>
+        <translation>Uporabnik je trenutno povezan</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="187"/>
         <source>Current account status is do not disturb</source>
-        <translation type="unfinished"/>
+        <translation>Uporabnik trenutno ne želi motenj</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="258"/>
         <source>Account switcher and settings menu</source>
-        <translation type="unfinished"/>
+        <translation>Preklopnik računov in meni nastavitev</translation>
     </message>
 </context>
 <context>
@@ -924,7 +924,7 @@ S tem dejanjem prav tako prekinete vsa trenutna usklajevanja v izvajanju.</trans
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1250"/>
         <source>Obtaining authorization from the browser. &lt;a href=&apos;%1&apos;&gt;Click here&lt;/a&gt; to re-open the browser.</source>
-        <translation>Poteka pridobitev overitve po brskalniku. &lt;a href=&apos;%1&apos;&gt;Kliknite&lt;/a&gt; to za ponovno odpiranje brskalnika.</translation>
+        <translation>Poteka overjanje z brskalnikom. &lt;a href=&apos;%1&apos;&gt;Kliknite&lt;/a&gt; za ponovno odpiranje.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1254"/>
@@ -1564,7 +1564,7 @@ S tem dejanjem prav tako prekinete vsa trenutna usklajevanja v izvajanju.</trans
     <message>
         <location filename="../src/gui/conflictdialog.cpp" line="176"/>
         <source>Keep both versions</source>
-        <translation>Ohrani obe različice</translation>
+        <translation>Ohrani obe različici</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.cpp" line="177"/>
@@ -1733,7 +1733,7 @@ S tem dejanjem prav tako prekinete vsa trenutna usklajevanja v izvajanju.</trans
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="62"/>
         <source>Invalid token received.</source>
-        <translation>Prejet je neveljaven žeton</translation>
+        <translation>Prejet je neveljaven žeton.</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="146"/>
@@ -1904,12 +1904,12 @@ Morda je napaka v knjužnicah OpenSSL.</translation>
         <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="138"/>
         <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="231"/>
         <source>Error locking folder.</source>
-        <translation type="unfinished"/>
+        <translation>Napaka med zaklepanjem mape</translation>
     </message>
     <message>
         <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="165"/>
         <source>Error fetching encrypted folder ID.</source>
-        <translation type="unfinished"/>
+        <translation>Napaka pridobivanja določila ID šifrirane mape.</translation>
     </message>
     <message>
         <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="199"/>
@@ -1919,7 +1919,7 @@ Morda je napaka v knjužnicah OpenSSL.</translation>
     <message>
         <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="341"/>
         <source>Failed to upload metadata</source>
-        <translation type="unfinished"/>
+        <translation>Pošiljanje metapodatkov je spodletelo</translation>
     </message>
 </context>
 <context>
@@ -2039,7 +2039,7 @@ Morda je napaka v knjužnicah OpenSSL.</translation>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.cpp" line="222"/>
         <source>Open Browser</source>
-        <translation type="unfinished"/>
+        <translation>Odpri brskalnik</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.cpp" line="224"/>
@@ -2293,12 +2293,12 @@ Alternatively, you can restore all deleted files by downloading them from the se
     <message>
         <location filename="../src/gui/folder.cpp" line="1681"/>
         <source>Restore Files to Server</source>
-        <translation type="unfinished"/>
+        <translation>Obnovi datoteke s strežnika</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1681"/>
         <source>Restore Files from Server</source>
-        <translation type="unfinished"/>
+        <translation>Obnovi datoteke s strežnika</translation>
     </message>
 </context>
 <context>
@@ -2354,7 +2354,7 @@ Alternatively, you can restore all deleted files by downloading them from the se
     <message>
         <location filename="../src/gui/folderman.cpp" line="1602"/>
         <source>Undefined state.</source>
-        <translation type="unfinished"/>
+        <translation>Nedoločeno stanje.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1605"/>
@@ -2369,32 +2369,32 @@ Alternatively, you can restore all deleted files by downloading them from the se
     <message>
         <location filename="../src/gui/folderman.cpp" line="1747"/>
         <source>Syncing %1 of %2 (A few seconds left)</source>
-        <translation type="unfinished"/>
+        <translation>Poteka usklajevanje %1 od %2  (še nekaj sekund do konca)</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1750"/>
         <source>Syncing %1 of %2 (%3 left)</source>
-        <translation type="unfinished"/>
+        <translation>Poteka usklajevanje %1 od %2  ( %3 do konca)</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1753"/>
         <source>Syncing %1 of %2</source>
-        <translation type="unfinished"/>
+        <translation>Poteka usklajevanje %1 od %2</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1759"/>
         <source>Syncing %1 (A few seconds left)</source>
-        <translation type="unfinished"/>
+        <translation>Poteka usklajevanje %1 (še nekaj sekund do konca)</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1761"/>
         <source>Syncing %1 (%2 left)</source>
-        <translation type="unfinished"/>
+        <translation>Usklajevanje %1 (%2 do konca)</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1764"/>
         <source>Syncing %1</source>
-        <translation type="unfinished"/>
+        <translation>Usklajevanje %1</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1611"/>
@@ -3078,7 +3078,7 @@ For advanced users: this issue might be related to multiple sync database files 
 Note that this selects only what pool upgrades are taken from, and that there are no downgrades: So going back from the beta channel to the stable channel usually cannot be done immediately and means waiting for a stable version that is newer than the currently installed beta version.</source>
         <translation>Kanal posodobitev določa, katere posodobitve bodo na voljo za namestitev. Kanal »Stabilno« vsebuje le nadgradnje, ki veljajo za zanesljive, medtem ko različice v kanalu »Beta (preizkusno)« vključujejo tudi najnovejše funkcije in popravke napak, ki pa še niso temeljito preizkušene.
 
-Zavedati se je treba, da izbor določa le različice programske opreme za nadgradnjo in da povrnitev na starejše različice ni več mogoča. Povrnitev iz preizkusnega kanala Beta na Stabilnega ni mogoča, dokler stabilna različica ni višja oziroma novejša od nameščene preizkusne različice. </translation>
+Upoštevati je treba, da izbor določa le različice programske opreme za nadgradnjo in da povrnitev na starejše različice ni več mogoča. Povrnitev iz preizkusnega kanala Beta na Stabilnega ni mogoča, dokler stabilna različica ni višja oziroma novejša od nameščene preizkusne različice. </translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="405"/>
@@ -3416,6 +3416,11 @@ Predmeti v mapah, ki jih je dovoljeno izbrisati, bodo odstranjeni, če prepreču
         <location filename="../src/gui/legalnotice.ui" line="57"/>
         <source>Close</source>
         <translation>Zapri</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/legalnotice.cpp" line="55"/>
+        <source>&lt;p&gt;Copyright 2017-2025 Nextcloud GmbH&lt;br /&gt;Copyright 2012-2023 ownCloud GmbH&lt;/p&gt;</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/legalnotice.cpp" line="55"/>
@@ -6131,7 +6136,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="486"/>
         <source>Syncing %1 of %2 (%3 left)</source>
-        <translation>Poteka usklajevanje %1 od %2  (preostaja %3)</translation>
+        <translation>Poteka usklajevanje %1 od %2  (%3 do konca)</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="491"/>

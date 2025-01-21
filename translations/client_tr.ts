@@ -3439,6 +3439,11 @@ Silme izni verildiğinde bir klasörün silinmesini engelleyen ögeler silinir. 
     </message>
     <message>
         <location filename="../src/gui/legalnotice.cpp" line="55"/>
+        <source>&lt;p&gt;Copyright 2017-2025 Nextcloud GmbH&lt;br /&gt;Copyright 2012-2023 ownCloud GmbH&lt;/p&gt;</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/legalnotice.cpp" line="55"/>
         <source>&lt;p&gt;Copyright 2017-2023 Nextcloud GmbH&lt;br /&gt;Copyright 2012-2023 ownCloud GmbH&lt;/p&gt;</source>
         <translation>&lt;p&gt;Telif hakları 2017-2023 Nextcloud GmbH&lt;br /&gt;Telif hakları 2012-2023 ownCloud GmbH&lt;/p&gt;</translation>
     </message>
