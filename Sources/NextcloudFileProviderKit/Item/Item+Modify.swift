@@ -161,7 +161,7 @@ public extension Item {
                 """
             )
 
-            metadata.status = SendableItemMetadata.Status.uploadError.rawValue
+            metadata.status = Status.uploadError.rawValue
             metadata.sessionError = error.errorDescription
             dbManager.addItemMetadata(metadata)
             return (nil, error.fileProviderError)

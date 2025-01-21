@@ -125,7 +125,7 @@ public class Item: NSObject, NSFileProviderItem {
     }
 
     public var downloadingError: Error? {
-        if metadata.status == SendableItemMetadata.Status.downloadError.rawValue {
+        if metadata.status == Status.downloadError.rawValue {
             return FileProviderItemTransferError.downloadError
         }
         return nil
@@ -140,7 +140,7 @@ public class Item: NSObject, NSFileProviderItem {
     }
 
     public var uploadingError: Error? {
-        if metadata.status == SendableItemMetadata.Status.uploadError.rawValue {
+        if metadata.status == Status.uploadError.rawValue {
             FileProviderItemTransferError.uploadError
         } else {
             nil

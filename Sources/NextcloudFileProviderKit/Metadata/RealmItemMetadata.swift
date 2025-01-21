@@ -16,30 +16,30 @@ import Foundation
 import NextcloudKit
 import RealmSwift
 
+public enum Status: Int {
+    case downloadError = -4
+    case downloading = -3
+    case inDownload = -2
+
+    case normal = 0
+
+    case inUpload = 2
+    case uploading = 3
+    case uploadError = 4
+}
+
+public enum SharePermissions: Int {
+    case readShare = 1
+    case updateShare = 2
+    case createShare = 4
+    case deleteShare = 8
+    case shareShare = 16
+
+    case maxFileShare = 19
+    case maxFolderShare = 31
+}
+
 public class RealmItemMetadata: Object {
-    public enum Status: Int {
-        case downloadError = -4
-        case downloading = -3
-        case inDownload = -2
-
-        case normal = 0
-
-        case inUpload = 2
-        case uploading = 3
-        case uploadError = 4
-    }
-
-    public enum SharePermissions: Int {
-        case readShare = 1
-        case updateShare = 2
-        case createShare = 4
-        case deleteShare = 8
-        case shareShare = 16
-
-        case maxFileShare = 19
-        case maxFolderShare = 31
-    }
-
     @Persisted(primaryKey: true) public var ocId: String
     @Persisted public var account = ""
     @Persisted public var assetLocalIdentifier = ""

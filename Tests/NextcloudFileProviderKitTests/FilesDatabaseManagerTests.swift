@@ -91,14 +91,14 @@ final class FilesDatabaseManagerTests: XCTestCase {
         // Create and add a test metadata to the database
         let metadata = RealmItemMetadata()
         metadata.ocId = "unique-id-123"
-        metadata.status = RealmItemMetadata.Status.normal.rawValue
+        metadata.status = Status.normal.rawValue
 
         let realm = Self.dbManager.ncDatabase()
         try realm.write {
             realm.add(metadata)
         }
 
-        let expectedStatus = RealmItemMetadata.Status.uploadError
+        let expectedStatus = Status.uploadError
         let updatedMetadata = Self.dbManager.setStatusForItemMetadata(
             SendableItemMetadata(value: metadata), status: expectedStatus
         )

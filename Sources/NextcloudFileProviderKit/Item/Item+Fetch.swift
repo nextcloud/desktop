@@ -102,14 +102,14 @@ public extension Item {
                         \(error.errorDescription, privacy: .public)
                         """
                         )
-                        metadata.status = SendableItemMetadata.Status.downloadError.rawValue
+                        metadata.status = Status.downloadError.rawValue
                         metadata.sessionError = error.errorDescription
                         dbManager.addItemMetadata(metadata)
                         throw error.fileProviderError ?? NSFileProviderError(.cannotSynchronize)
                     }
                 }
 
-                metadata.status = SendableItemMetadata.Status.normal.rawValue
+                metadata.status = Status.normal.rawValue
                 metadata.downloaded = true
                 metadata.sessionError = ""
                 dbManager.addItemMetadata(metadata)
@@ -173,7 +173,7 @@ public extension Item {
                     """
                 )
 
-                updatedMetadata.status = SendableItemMetadata.Status.downloadError.rawValue
+                updatedMetadata.status = Status.downloadError.rawValue
                 updatedMetadata.sessionError = error.localizedDescription
                 dbManager.addItemMetadata(updatedMetadata)
                 return (nil, nil, error)
@@ -196,7 +196,7 @@ public extension Item {
                     """
                 )
 
-                updatedMetadata.status = SendableItemMetadata.Status.downloadError.rawValue
+                updatedMetadata.status = Status.downloadError.rawValue
                 updatedMetadata.sessionError = error.localizedDescription
                 dbManager.addItemMetadata(updatedMetadata)
                 return (nil, nil, error)
@@ -224,7 +224,7 @@ public extension Item {
                     """
                 )
 
-                updatedMetadata.status = SendableItemMetadata.Status.downloadError.rawValue
+                updatedMetadata.status = Status.downloadError.rawValue
                 updatedMetadata.sessionError = error.errorDescription
                 dbManager.addItemMetadata(updatedMetadata)
                 return (nil, nil, error.fileProviderError)
@@ -238,7 +238,7 @@ public extension Item {
             """
         )
 
-        updatedMetadata.status = SendableItemMetadata.Status.normal.rawValue
+        updatedMetadata.status = Status.normal.rawValue
         updatedMetadata.downloaded = true
         updatedMetadata.sessionError = ""
 

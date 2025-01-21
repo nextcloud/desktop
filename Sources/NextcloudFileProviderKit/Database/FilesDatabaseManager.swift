@@ -196,7 +196,7 @@ public class FilesDatabaseManager {
             if let existingMetadata = existingMetadatas.first(where: {
                 $0.ocId == updatedMetadata.ocId
             }) {
-                if existingMetadata.status == RealmItemMetadata.Status.normal.rawValue,
+                if existingMetadata.status == Status.normal.rawValue,
                     !existingMetadata.isInSameDatabaseStoreableRemoteState(updatedMetadata)
                 {
                     if updatedMetadata.directory {
@@ -271,7 +271,7 @@ public class FilesDatabaseManager {
                 .where {
                     $0.account == account &&
                     $0.serverUrl == serverUrl &&
-                    $0.status == RealmItemMetadata.Status.normal.rawValue
+                    $0.status == Status.normal.rawValue
                 }
 
             // NOTE: These metadatas are managed -- be careful!
@@ -320,7 +320,7 @@ public class FilesDatabaseManager {
     // If setting a downloading or uploading status, also modified the relevant boolean properties
     // of the item metadata object
     public func setStatusForItemMetadata(
-        _ metadata: SendableItemMetadata, status: RealmItemMetadata.Status
+        _ metadata: SendableItemMetadata, status: Status
     ) -> SendableItemMetadata? {
         guard let result = itemMetadatas.where({ $0.ocId == metadata.ocId }).first else {
             Self.logger.debug(
