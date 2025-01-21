@@ -188,16 +188,11 @@ public class Item: NSObject, NSFileProviderItem {
         let metadata = SendableItemMetadata(
             ocId: NSFileProviderItemIdentifier.rootContainer.rawValue,
             account: account.ncKitAccount,
-            checksums: "", // Placeholder as not set in original code
-            chunkUploadId: "", // Placeholder as not set in original code
             classFile: NKCommon.TypeClassFile.directory.rawValue,
-            commentsUnread: false, // Default as not set in original code
             contentType: "", // Placeholder as not set in original code
             creationDate: Date(), // Default as not set in original code
-            dataFingerprint: "", // Placeholder as not set in original code
             date: Date(), // Default as not set in original code
             directory: true,
-            downloadURL: "", // Placeholder as not set in original code
             e2eEncrypted: false, // Default as not set in original code
             etag: "", // Placeholder as not set in original code
             favorite: false, // Default as not set in original code
@@ -206,7 +201,6 @@ public class Item: NSObject, NSFileProviderItem {
             fileNameView: "/",
             hasPreview: false, // Default as not set in original code
             iconName: "", // Placeholder as not set in original code
-            iconUrl: "", // Placeholder as not set in original code
             livePhoto: false, // Default as not set in original code
             mountType: "", // Placeholder as not set in original code
             name: "", // Placeholder as not set in original code
@@ -233,13 +227,6 @@ public class Item: NSObject, NSFileProviderItem {
             sharePermissionsCollaborationServices: 0, // Default as not set in original code
             sharePermissionsCloudMesh: [], // Default as not set in original code
             size: 0, // Default as not set in original code
-            status: 0, // Default as not set in original code
-            downloaded: false, // Default as not set in original code
-            uploaded: false, // Default as not set in original code
-            trashbinFileName: "", // Placeholder as not set in original code
-            trashbinOriginalLocation: "", // Placeholder as not set in original code
-            trashbinDeletionTime: Date(), // Placeholder as not set in original code
-            uploadDate: Date(), // Default as not set in original code
             urlBase: "", // Placeholder as not set in original code
             user: "", // Placeholder as not set in original code
             userId: "" // Placeholder as not set in original code
@@ -256,16 +243,11 @@ public class Item: NSObject, NSFileProviderItem {
         let metadata = SendableItemMetadata(
             ocId: NSFileProviderItemIdentifier.trashContainer.rawValue,
             account: account.ncKitAccount,
-            checksums: "", // Placeholder as not set in original code
-            chunkUploadId: "", // Placeholder as not set in original code
             classFile: NKCommon.TypeClassFile.directory.rawValue,
-            commentsUnread: false, // Default as not set in original code
             contentType: "", // Placeholder as not set in original code
             creationDate: Date(), // Default as not set in original code
-            dataFingerprint: "", // Placeholder as not set in original code
             date: Date(), // Default as not set in original code
             directory: true,
-            downloadURL: "", // Placeholder as not set in original code
             e2eEncrypted: false, // Default as not set in original code
             etag: "", // Placeholder as not set in original code
             favorite: false, // Default as not set in original code
@@ -274,7 +256,6 @@ public class Item: NSObject, NSFileProviderItem {
             fileNameView: "Trash",
             hasPreview: false, // Default as not set in original code
             iconName: "", // Placeholder as not set in original code
-            iconUrl: "", // Placeholder as not set in original code
             livePhoto: false, // Default as not set in original code
             mountType: "", // Placeholder as not set in original code
             name: "", // Placeholder as not set in original code
@@ -301,13 +282,6 @@ public class Item: NSObject, NSFileProviderItem {
             sharePermissionsCollaborationServices: 0, // Default as not set in original code
             sharePermissionsCloudMesh: [], // Default as not set in original code
             size: 0, // Default as not set in original code
-            status: 0, // Default as not set in original code
-            downloaded: false, // Default as not set in original code
-            uploaded: false, // Default as not set in original code
-            trashbinFileName: "", // Placeholder as not set in original code
-            trashbinOriginalLocation: "", // Placeholder as not set in original code
-            trashbinDeletionTime: Date(), // Placeholder as not set in original code
-            uploadDate: Date(), // Default as not set in original code
             urlBase: "", // Placeholder as not set in original code
             user: "", // Placeholder as not set in original code
             userId: "" // Placeholder as not set in original code

@@ -176,16 +176,11 @@ extension Item {
         let newMetadata = SendableItemMetadata(
             ocId: ocId,
             account: account.ncKitAccount,
-            checksums: "", // Placeholder as not set in original code
-            chunkUploadId: "", // Placeholder as not set in original code
             classFile: "", // Placeholder as not set in original code
-            commentsUnread: false, // Default as not set in original code
             contentType: itemTemplate.contentType?.preferredMIMEType ?? "",
             creationDate: Date(), // Default as not set in original code
-            dataFingerprint: "", // Placeholder as not set in original code
             date: date ?? Date(),
             directory: false,
-            downloadURL: "", // Placeholder as not set in original code
             e2eEncrypted: false, // Default as not set in original code
             etag: etag ?? "",
             favorite: false, // Default as not set in original code
@@ -194,7 +189,6 @@ extension Item {
             fileNameView: itemTemplate.filename,
             hasPreview: false, // Default as not set in original code
             iconName: "", // Placeholder as not set in original code
-            iconUrl: "", // Placeholder as not set in original code
             livePhoto: false, // Default as not set in original code
             mountType: "", // Placeholder as not set in original code
             name: "", // Placeholder as not set in original code
@@ -224,10 +218,6 @@ extension Item {
             status: Status.normal.rawValue,
             downloaded: true,
             uploaded: true,
-            trashbinFileName: "", // Placeholder as not set in original code
-            trashbinOriginalLocation: "", // Placeholder as not set in original code
-            trashbinDeletionTime: Date(), // Placeholder as not set in original code
-            uploadDate: Date(), // Default as not set in original code
             urlBase: "", // Placeholder as not set in original code
             user: "", // Placeholder as not set in original code
             userId: "" // Placeholder as not set in original code

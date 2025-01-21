@@ -170,16 +170,11 @@ public class MockRemoteItem: Equatable {
         return SendableItemMetadata(
             ocId: identifier,
             account: account.ncKitAccount,
-            checksums: "", // Placeholder as not set in original code
-            chunkUploadId: "", // Placeholder as not set in original code
             classFile: directory ? NKCommon.TypeClassFile.directory.rawValue : "",
-            commentsUnread: false, // Default as not set in original code
             contentType: directory ? UTType.folder.identifier : "",
             creationDate: creationDate, // Use provided or fallback to default
-            dataFingerprint: "", // Placeholder as not set in original code
             date: modificationDate, // Use provided or fallback to default
             directory: directory,
-            downloadURL: "", // Placeholder as not set in original code
             e2eEncrypted: false, // Default as not set in original code
             etag: versionIdentifier,
             favorite: false, // Default as not set in original code
@@ -188,7 +183,6 @@ public class MockRemoteItem: Equatable {
             fileNameView: name,
             hasPreview: false, // Default as not set in original code
             iconName: "", // Placeholder as not set in original code
-            iconUrl: "", // Placeholder as not set in original code
             livePhoto: false, // Default as not set in original code
             mountType: "", // Placeholder as not set in original code
             name: name,
@@ -209,19 +203,11 @@ public class MockRemoteItem: Equatable {
             resourceType: "", // Placeholder as not set in original code
             richWorkspace: nil, // Default as not set in original code
             serverUrl: trimmedServerUrl,
-            session: "", // Placeholder as not set in original code
-            sessionError: "", // Placeholder as not set in original code
-            sessionTaskIdentifier: 0, // Default as not set in original code
             sharePermissionsCollaborationServices: 0, // Default as not set in original code
             sharePermissionsCloudMesh: [], // Default as not set in original code
             size: size,
-            status: 0, // Default as not set in original code
-            downloaded: false, // Default as not set in original code
-            uploaded: false, // Default as not set in original code
             trashbinFileName: trashbinOriginalLocation != nil ? fileName : "",
             trashbinOriginalLocation: trashbinOriginalLocation ?? "",
-            trashbinDeletionTime: Date(), // Placeholder as not set in original code
-            uploadDate: Date(), // Default as not set in original code
             urlBase: account.serverUrl,
             user: account.username,
             userId: account.id
