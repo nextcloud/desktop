@@ -176,7 +176,6 @@ extension Item {
         let newMetadata = SendableItemMetadata(
             ocId: ocId,
             account: account.ncKitAccount,
-            assetLocalIdentifier: "", // Placeholder as not set in original code
             checksums: "", // Placeholder as not set in original code
             chunkUploadId: "", // Placeholder as not set in original code
             classFile: "", // Placeholder as not set in original code
@@ -186,12 +185,9 @@ extension Item {
             dataFingerprint: "", // Placeholder as not set in original code
             date: date ?? Date(),
             directory: false,
-            deleteAssetLocalIdentifier: false, // Default as not set in original code
             downloadURL: "", // Placeholder as not set in original code
             e2eEncrypted: false, // Default as not set in original code
-            edited: false, // Default as not set in original code
             etag: etag ?? "",
-            etagResource: "", // Placeholder as not set in original code
             favorite: false, // Default as not set in original code
             fileId: "", // Placeholder as not set in original code
             fileName: itemTemplate.filename,
@@ -199,7 +195,6 @@ extension Item {
             hasPreview: false, // Default as not set in original code
             iconName: "", // Placeholder as not set in original code
             iconUrl: "", // Placeholder as not set in original code
-            isExtractFile: false, // Default as not set in original code
             livePhoto: false, // Default as not set in original code
             mountType: "", // Placeholder as not set in original code
             name: "", // Placeholder as not set in original code
@@ -222,7 +217,6 @@ extension Item {
             serverUrl: parentItemRemotePath,
             session: "",
             sessionError: "",
-            sessionSelector: "", // Placeholder as not set in original code
             sessionTaskIdentifier: 0,
             sharePermissionsCollaborationServices: 0, // Default as not set in original code
             sharePermissionsCloudMesh: [], // Default as not set in original code
@@ -230,12 +224,10 @@ extension Item {
             status: Status.normal.rawValue,
             downloaded: true,
             uploaded: true,
-            subline: nil, // Default as not set in original code
             trashbinFileName: "", // Placeholder as not set in original code
             trashbinOriginalLocation: "", // Placeholder as not set in original code
             trashbinDeletionTime: Date(), // Placeholder as not set in original code
             uploadDate: Date(), // Default as not set in original code
-            url: "", // Placeholder as not set in original code
             urlBase: "", // Placeholder as not set in original code
             user: "", // Placeholder as not set in original code
             userId: "" // Placeholder as not set in original code

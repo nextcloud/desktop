@@ -42,7 +42,6 @@ public enum SharePermissions: Int {
 public protocol ItemMetadata: Equatable {
     var ocId: String { get set }
     var account: String { get set }
-    var assetLocalIdentifier: String { get set }
     var checksums: String { get set }
     var chunkUploadId: String { get set }
     var classFile: String { get set }
@@ -52,12 +51,9 @@ public protocol ItemMetadata: Equatable {
     var dataFingerprint: String { get set }
     var date: Date { get set }
     var directory: Bool { get set }
-    var deleteAssetLocalIdentifier: Bool { get set }
     var downloadURL: String { get set }
     var e2eEncrypted: Bool { get set }
-    var edited: Bool { get set }
     var etag: String { get set }
-    var etagResource: String { get set }
     var favorite: Bool { get set }
     var fileId: String { get set }
     var fileName: String { get set } // What the file's real file name is
@@ -65,7 +61,6 @@ public protocol ItemMetadata: Equatable {
     var hasPreview: Bool { get set }
     var iconName: String { get set }
     var iconUrl: String { get set }
-    var isExtractFile: Bool { get set }
     var livePhoto: Bool { get set }
     var mountType: String { get set }
     var name: String { get set }  // for unifiedSearch is the provider.id
@@ -88,7 +83,6 @@ public protocol ItemMetadata: Equatable {
     var serverUrl: String { get set }  // For parent folder! Build remote url by adding fileName
     var session: String { get set }
     var sessionError: String { get set }
-    var sessionSelector: String { get set }
     var sessionTaskIdentifier: Int { get set }
     var sharePermissionsCollaborationServices: Int { get set }
     // TODO: Find a way to compare these two below in remote state check
@@ -97,12 +91,10 @@ public protocol ItemMetadata: Equatable {
     var status: Int { get set }
     var downloaded: Bool { get set }
     var uploaded: Bool { get set }
-    var subline: String? { get set }
     var trashbinFileName: String { get set }
     var trashbinOriginalLocation: String { get set }
     var trashbinDeletionTime: Date { get set }
     var uploadDate: Date { get set }
-    var url: String { get set }
     var urlBase: String { get set }
     var user: String { get set } // The user who owns the file (Nextcloud username)
     var userId: String { get set } // The user who owns the file (backend user id)
@@ -110,56 +102,6 @@ public protocol ItemMetadata: Equatable {
 }
 
 public extension ItemMetadata {
-    var fileExtension: String {
-        (fileNameView as NSString).pathExtension
-    }
-
-    var fileNoExtension: String {
-        (fileNameView as NSString).deletingPathExtension
-    }
-
-    var isRenameable: Bool {
-        lock
-    }
-
-    var isPrintable: Bool {
-        if isDocumentViewableOnly {
-            return false
-        }
-        if ["application/pdf", "com.adobe.pdf"].contains(contentType)
-            || contentType.hasPrefix("text/")
-            || classFile == NKCommon.TypeClassFile.image.rawValue
-        {
-            return true
-        }
-        return false
-    }
-
-    var isDocumentViewableOnly: Bool {
-        sharePermissionsCollaborationServices == SharePermissions.readShare.rawValue
-            && classFile == NKCommon.TypeClassFile.document.rawValue
-    }
-
-    var isCopyableInPasteboard: Bool {
-        !isDocumentViewableOnly && !directory
-    }
-
-    var isModifiableWithQuickLook: Bool {
-        if directory || isDocumentViewableOnly {
-            return false
-        }
-        return contentType == "com.adobe.pdf" || contentType == "application/pdf"
-            || classFile == NKCommon.TypeClassFile.image.rawValue
-    }
-
-    var isSettableOnOffline: Bool {
-        session.isEmpty && !isDocumentViewableOnly
-    }
-
-    var canOpenIn: Bool {
-        session.isEmpty && !isDocumentViewableOnly && !directory
-    }
-
     var isDownloadUpload: Bool {
         status == Status.inDownload.rawValue || status == Status.downloading.rawValue
             || status == Status.inUpload.rawValue || status == Status.uploading.rawValue
@@ -230,7 +172,6 @@ public extension ItemMetadata {
 public class RealmItemMetadata: Object, ItemMetadata {
     @Persisted(primaryKey: true) public var ocId: String
     @Persisted public var account = ""
-    @Persisted public var assetLocalIdentifier = ""
     @Persisted public var checksums = ""
     @Persisted public var chunkUploadId: String = ""
     @Persisted public var classFile = ""
@@ -240,12 +181,9 @@ public class RealmItemMetadata: Object, ItemMetadata {
     @Persisted public var dataFingerprint = ""
     @Persisted public var date = Date()
     @Persisted public var directory: Bool = false
-    @Persisted public var deleteAssetLocalIdentifier: Bool = false
     @Persisted public var downloadURL = ""
     @Persisted public var e2eEncrypted: Bool = false
-    @Persisted public var edited: Bool = false
     @Persisted public var etag = ""
-    @Persisted public var etagResource = ""
     @Persisted public var favorite: Bool = false
     @Persisted public var fileId = ""
     @Persisted public var fileName = "" // What the file's real file name is
@@ -253,7 +191,6 @@ public class RealmItemMetadata: Object, ItemMetadata {
     @Persisted public var hasPreview: Bool = false
     @Persisted public var iconName = ""
     @Persisted public var iconUrl = ""
-    @Persisted public var isExtractFile: Bool = false
     @Persisted public var livePhoto: Bool = false
     @Persisted public var mountType = ""
     @Persisted public var name = ""  // for unifiedSearch is the provider.id
@@ -276,7 +213,6 @@ public class RealmItemMetadata: Object, ItemMetadata {
     @Persisted public var serverUrl = ""  // For parent folder! Build remote url by adding fileName
     @Persisted public var session = ""
     @Persisted public var sessionError = ""
-    @Persisted public var sessionSelector = ""
     @Persisted public var sessionTaskIdentifier: Int = 0
     @Persisted public var sharePermissionsCollaborationServices: Int = 0
     // TODO: Find a way to compare these two below in remote state check
@@ -285,12 +221,10 @@ public class RealmItemMetadata: Object, ItemMetadata {
     @Persisted public var status: Int = 0
     @Persisted public var downloaded = false
     @Persisted public var uploaded = false
-    @Persisted public var subline: String?
     @Persisted public var trashbinFileName = ""
     @Persisted public var trashbinOriginalLocation = ""
     @Persisted public var trashbinDeletionTime = Date()
     @Persisted public var uploadDate = Date()
-    @Persisted public var url = ""
     @Persisted public var urlBase = ""
     @Persisted public var user = "" // The user who owns the file (Nextcloud username)
     @Persisted public var userId = "" // The user who owns the file (backend user id)
@@ -309,7 +243,6 @@ public class RealmItemMetadata: Object, ItemMetadata {
         self.init()
         self.ocId = value.ocId
         self.account = value.account
-        self.assetLocalIdentifier = value.assetLocalIdentifier
         self.checksums = value.checksums
         self.chunkUploadId = value.chunkUploadId
         self.classFile = value.classFile
@@ -319,12 +252,9 @@ public class RealmItemMetadata: Object, ItemMetadata {
         self.dataFingerprint = value.dataFingerprint
         self.date = value.date
         self.directory = value.directory
-        self.deleteAssetLocalIdentifier = value.deleteAssetLocalIdentifier
         self.downloadURL = value.downloadURL
         self.e2eEncrypted = value.e2eEncrypted
-        self.edited = value.edited
         self.etag = value.etag
-        self.etagResource = value.etagResource
         self.favorite = value.favorite
         self.fileId = value.fileId
         self.fileName = value.fileName
@@ -332,7 +262,6 @@ public class RealmItemMetadata: Object, ItemMetadata {
         self.hasPreview = value.hasPreview
         self.iconName = value.iconName
         self.iconUrl = value.iconUrl
-        self.isExtractFile = value.isExtractFile
         self.livePhoto = value.livePhoto
         self.mountType = value.mountType
         self.name = value.name
@@ -355,7 +284,6 @@ public class RealmItemMetadata: Object, ItemMetadata {
         self.serverUrl = value.serverUrl
         self.session = value.session
         self.sessionError = value.sessionError
-        self.sessionSelector = value.sessionSelector
         self.sessionTaskIdentifier = value.sessionTaskIdentifier
         self.sharePermissionsCollaborationServices = value.sharePermissionsCollaborationServices
         self.sharePermissionsCloudMesh = value.sharePermissionsCloudMesh
@@ -363,12 +291,10 @@ public class RealmItemMetadata: Object, ItemMetadata {
         self.status = value.status
         self.downloaded = value.downloaded
         self.uploaded = value.uploaded
-        self.subline = value.subline
         self.trashbinFileName = value.trashbinFileName
         self.trashbinOriginalLocation = value.trashbinOriginalLocation
         self.trashbinDeletionTime = value.trashbinDeletionTime
         self.uploadDate = value.uploadDate
-        self.url = value.url
         self.urlBase = value.urlBase
         self.user = value.user
         self.userId = value.userId
@@ -378,14 +304,10 @@ public class RealmItemMetadata: Object, ItemMetadata {
 /// Realm objects are inherently unsendable and not thread-safe **IF THEY ARE MANAGED.**
 /// Marking our ItemMetadata as an unchecked Sendable is a naughty thing to do. So make sure to check
 /// for ItemMetadata objects to be unmanaged before doing anything crossing actor boundaries.
-/// Also make sure this is the only type that is returned to other code that is un
-///public protocol ItemMetadata {
-///
-/// aware of Realm.
+/// Also make sure this is the only type that is returned to other code that is unaware of Realm.
 public struct SendableItemMetadata: ItemMetadata, Sendable {
     public var ocId: String
     public var account: String
-    public var assetLocalIdentifier: String
     public var checksums: String
     public var chunkUploadId: String
     public var classFile: String
@@ -395,12 +317,9 @@ public struct SendableItemMetadata: ItemMetadata, Sendable {
     public var dataFingerprint: String
     public var date: Date
     public var directory: Bool
-    public var deleteAssetLocalIdentifier: Bool
     public var downloadURL: String
     public var e2eEncrypted: Bool
-    public var edited: Bool
     public var etag: String
-    public var etagResource: String
     public var favorite: Bool
     public var fileId: String
     public var fileName: String
@@ -408,7 +327,6 @@ public struct SendableItemMetadata: ItemMetadata, Sendable {
     public var hasPreview: Bool
     public var iconName: String
     public var iconUrl: String
-    public var isExtractFile: Bool
     public var livePhoto: Bool
     public var mountType: String
     public var name: String
@@ -431,7 +349,6 @@ public struct SendableItemMetadata: ItemMetadata, Sendable {
     public var serverUrl: String
     public var session: String
     public var sessionError: String
-    public var sessionSelector: String
     public var sessionTaskIdentifier: Int
     public var sharePermissionsCollaborationServices: Int
     public var sharePermissionsCloudMesh: [String]
@@ -439,12 +356,10 @@ public struct SendableItemMetadata: ItemMetadata, Sendable {
     public var status: Int
     public var downloaded: Bool
     public var uploaded: Bool
-    public var subline: String?
     public var trashbinFileName: String
     public var trashbinOriginalLocation: String
     public var trashbinDeletionTime: Date
     public var uploadDate: Date
-    public var url: String
     public var urlBase: String
     public var user: String
     public var userId: String
@@ -452,7 +367,6 @@ public struct SendableItemMetadata: ItemMetadata, Sendable {
     public init(
         ocId: String,
         account: String,
-        assetLocalIdentifier: String,
         checksums: String,
         chunkUploadId: String,
         classFile: String,
@@ -462,12 +376,9 @@ public struct SendableItemMetadata: ItemMetadata, Sendable {
         dataFingerprint: String,
         date: Date,
         directory: Bool,
-        deleteAssetLocalIdentifier: Bool,
         downloadURL: String,
         e2eEncrypted: Bool,
-        edited: Bool,
         etag: String,
-        etagResource: String,
         favorite: Bool,
         fileId: String,
         fileName: String,
@@ -475,7 +386,6 @@ public struct SendableItemMetadata: ItemMetadata, Sendable {
         hasPreview: Bool,
         iconName: String,
         iconUrl: String,
-        isExtractFile: Bool,
         livePhoto: Bool,
         mountType: String,
         name: String,
@@ -498,7 +408,6 @@ public struct SendableItemMetadata: ItemMetadata, Sendable {
         serverUrl: String,
         session: String,
         sessionError: String,
-        sessionSelector: String,
         sessionTaskIdentifier: Int,
         sharePermissionsCollaborationServices: Int,
         sharePermissionsCloudMesh: [String],
@@ -506,19 +415,16 @@ public struct SendableItemMetadata: ItemMetadata, Sendable {
         status: Int,
         downloaded: Bool,
         uploaded: Bool,
-        subline: String?,
         trashbinFileName: String,
         trashbinOriginalLocation: String,
         trashbinDeletionTime: Date,
         uploadDate: Date,
-        url: String,
         urlBase: String,
         user: String,
         userId: String
     ) {
         self.ocId = ocId
         self.account = account
-        self.assetLocalIdentifier = assetLocalIdentifier
         self.checksums = checksums
         self.chunkUploadId = chunkUploadId
         self.classFile = classFile
@@ -528,12 +434,9 @@ public struct SendableItemMetadata: ItemMetadata, Sendable {
         self.dataFingerprint = dataFingerprint
         self.date = date
         self.directory = directory
-        self.deleteAssetLocalIdentifier = deleteAssetLocalIdentifier
         self.downloadURL = downloadURL
         self.e2eEncrypted = e2eEncrypted
-        self.edited = edited
         self.etag = etag
-        self.etagResource = etagResource
         self.favorite = favorite
         self.fileId = fileId
         self.fileName = fileName
@@ -541,7 +444,6 @@ public struct SendableItemMetadata: ItemMetadata, Sendable {
         self.hasPreview = hasPreview
         self.iconName = iconName
         self.iconUrl = iconUrl
-        self.isExtractFile = isExtractFile
         self.livePhoto = livePhoto
         self.mountType = mountType
         self.name = name
@@ -564,7 +466,6 @@ public struct SendableItemMetadata: ItemMetadata, Sendable {
         self.serverUrl = serverUrl
         self.session = session
         self.sessionError = sessionError
-        self.sessionSelector = sessionSelector
         self.sessionTaskIdentifier = sessionTaskIdentifier
         self.sharePermissionsCollaborationServices = sharePermissionsCollaborationServices
         self.sharePermissionsCloudMesh = sharePermissionsCloudMesh
@@ -572,12 +473,10 @@ public struct SendableItemMetadata: ItemMetadata, Sendable {
         self.status = status
         self.downloaded = downloaded
         self.uploaded = uploaded
-        self.subline = subline
         self.trashbinFileName = trashbinFileName
         self.trashbinOriginalLocation = trashbinOriginalLocation
         self.trashbinDeletionTime = trashbinDeletionTime
         self.uploadDate = uploadDate
-        self.url = url
         self.urlBase = urlBase
         self.user = user
         self.userId = userId
@@ -586,7 +485,6 @@ public struct SendableItemMetadata: ItemMetadata, Sendable {
     init(value: any ItemMetadata) {
         self.ocId = value.ocId
         self.account = value.account
-        self.assetLocalIdentifier = value.assetLocalIdentifier
         self.checksums = value.checksums
         self.chunkUploadId = value.chunkUploadId
         self.classFile = value.classFile
@@ -596,12 +494,9 @@ public struct SendableItemMetadata: ItemMetadata, Sendable {
         self.dataFingerprint = value.dataFingerprint
         self.date = value.date
         self.directory = value.directory
-        self.deleteAssetLocalIdentifier = value.deleteAssetLocalIdentifier
         self.downloadURL = value.downloadURL
         self.e2eEncrypted = value.e2eEncrypted
-        self.edited = value.edited
         self.etag = value.etag
-        self.etagResource = value.etagResource
         self.favorite = value.favorite
         self.fileId = value.fileId
         self.fileName = value.fileName
@@ -609,7 +504,6 @@ public struct SendableItemMetadata: ItemMetadata, Sendable {
         self.hasPreview = value.hasPreview
         self.iconName = value.iconName
         self.iconUrl = value.iconUrl
-        self.isExtractFile = value.isExtractFile
         self.livePhoto = value.livePhoto
         self.mountType = value.mountType
         self.name = value.name
@@ -632,7 +526,6 @@ public struct SendableItemMetadata: ItemMetadata, Sendable {
         self.serverUrl = value.serverUrl
         self.session = value.session
         self.sessionError = value.sessionError
-        self.sessionSelector = value.sessionSelector
         self.sessionTaskIdentifier = value.sessionTaskIdentifier
         self.sharePermissionsCollaborationServices = value.sharePermissionsCollaborationServices
         self.sharePermissionsCloudMesh = value.sharePermissionsCloudMesh
@@ -640,12 +533,10 @@ public struct SendableItemMetadata: ItemMetadata, Sendable {
         self.status = value.status
         self.downloaded = value.downloaded
         self.uploaded = value.uploaded
-        self.subline = value.subline
         self.trashbinFileName = value.trashbinFileName
         self.trashbinOriginalLocation = value.trashbinOriginalLocation
         self.trashbinDeletionTime = value.trashbinDeletionTime
         self.uploadDate = value.uploadDate
-        self.url = value.url
         self.urlBase = value.urlBase
         self.user = value.user
         self.userId = value.userId

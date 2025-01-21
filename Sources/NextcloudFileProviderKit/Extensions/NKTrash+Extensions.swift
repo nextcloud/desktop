@@ -13,7 +13,6 @@ extension NKTrash {
         SendableItemMetadata(
             ocId: ocId,
             account: account.ncKitAccount,
-            assetLocalIdentifier: "", // Placeholder as not set in original code
             checksums: "", // Placeholder as not set in original code
             chunkUploadId: "", // Placeholder as not set in original code
             classFile: classFile,
@@ -23,12 +22,9 @@ extension NKTrash {
             dataFingerprint: "", // Placeholder as not set in original code
             date: date,
             directory: directory,
-            deleteAssetLocalIdentifier: false, // Default as not set in original code
             downloadURL: "", // Placeholder as not set in original code
             e2eEncrypted: false, // Default as not set in original code
-            edited: false, // Default as not set in original code
             etag: "", // Placeholder as not set in original code
-            etagResource: "", // Placeholder as not set in original code
             favorite: false, // Default as not set in original code
             fileId: fileId,
             fileName: fileName,
@@ -36,7 +32,6 @@ extension NKTrash {
             hasPreview: hasPreview,
             iconName: iconName,
             iconUrl: "", // Placeholder as not set in original code
-            isExtractFile: false, // Default as not set in original code
             livePhoto: false, // Default as not set in original code
             mountType: "", // Placeholder as not set in original code
             name: "", // Placeholder as not set in original code
@@ -59,7 +54,6 @@ extension NKTrash {
             serverUrl: account.trashUrl,
             session: "", // Placeholder as not set in original code
             sessionError: "", // Placeholder as not set in original code
-            sessionSelector: "", // Placeholder as not set in original code
             sessionTaskIdentifier: 0, // Default as not set in original code
             sharePermissionsCollaborationServices: 0, // Default as not set in original code
             sharePermissionsCloudMesh: [], // Default as not set in original code
@@ -67,12 +61,10 @@ extension NKTrash {
             status: 0, // Default as not set in original code
             downloaded: false, // Default as not set in original code
             uploaded: false, // Default as not set in original code
-            subline: nil, // Default as not set in original code
             trashbinFileName: trashbinFileName,
             trashbinOriginalLocation: trashbinOriginalLocation,
             trashbinDeletionTime: trashbinDeletionTime,
             uploadDate: Date(), // Default as not set in original code
-            url: "", // Placeholder as not set in original code
             urlBase: account.serverUrl,
             user: account.username,
             userId: account.id

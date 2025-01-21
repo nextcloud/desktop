@@ -170,7 +170,6 @@ public class MockRemoteItem: Equatable {
         return SendableItemMetadata(
             ocId: identifier,
             account: account.ncKitAccount,
-            assetLocalIdentifier: "", // Placeholder as not set in original code
             checksums: "", // Placeholder as not set in original code
             chunkUploadId: "", // Placeholder as not set in original code
             classFile: directory ? NKCommon.TypeClassFile.directory.rawValue : "",
@@ -180,12 +179,9 @@ public class MockRemoteItem: Equatable {
             dataFingerprint: "", // Placeholder as not set in original code
             date: modificationDate, // Use provided or fallback to default
             directory: directory,
-            deleteAssetLocalIdentifier: false, // Default as not set in original code
             downloadURL: "", // Placeholder as not set in original code
             e2eEncrypted: false, // Default as not set in original code
-            edited: false, // Default as not set in original code
             etag: versionIdentifier,
-            etagResource: "", // Placeholder as not set in original code
             favorite: false, // Default as not set in original code
             fileId: identifier.replacingOccurrences(of: trashedItemIdSuffix, with: ""),
             fileName: name,
@@ -193,7 +189,6 @@ public class MockRemoteItem: Equatable {
             hasPreview: false, // Default as not set in original code
             iconName: "", // Placeholder as not set in original code
             iconUrl: "", // Placeholder as not set in original code
-            isExtractFile: false, // Default as not set in original code
             livePhoto: false, // Default as not set in original code
             mountType: "", // Placeholder as not set in original code
             name: name,
@@ -216,7 +211,6 @@ public class MockRemoteItem: Equatable {
             serverUrl: trimmedServerUrl,
             session: "", // Placeholder as not set in original code
             sessionError: "", // Placeholder as not set in original code
-            sessionSelector: "", // Placeholder as not set in original code
             sessionTaskIdentifier: 0, // Default as not set in original code
             sharePermissionsCollaborationServices: 0, // Default as not set in original code
             sharePermissionsCloudMesh: [], // Default as not set in original code
@@ -224,12 +218,10 @@ public class MockRemoteItem: Equatable {
             status: 0, // Default as not set in original code
             downloaded: false, // Default as not set in original code
             uploaded: false, // Default as not set in original code
-            subline: nil, // Default as not set in original code
             trashbinFileName: trashbinOriginalLocation != nil ? fileName : "",
             trashbinOriginalLocation: trashbinOriginalLocation ?? "",
             trashbinDeletionTime: Date(), // Placeholder as not set in original code
             uploadDate: Date(), // Default as not set in original code
-            url: "", // Placeholder as not set in original code
             urlBase: account.serverUrl,
             user: account.username,
             userId: account.id
