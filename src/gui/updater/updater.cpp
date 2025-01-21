@@ -60,9 +60,9 @@ QUrl Updater::updateUrl()
     if (SparkleUpdater::autoUpdaterAllowed()) {
         urlQuery.addQueryItem(QLatin1String("sparkle"), QLatin1String("true"));
     }
-#ifdef BUILD_FILE_PROVIDER_MODULE
-    urlQuery.addQueryItem(QLatin1String("fileprovider"), QLatin1String("true"));
-#endif
+// #ifdef BUILD_FILE_PROVIDER_MODULE
+//     urlQuery.addQueryItem(QLatin1String("fileprovider"), QLatin1String("true"));
+// #endif
 #endif
 #if defined(Q_OS_WIN)
     urlQuery.addQueryItem(QLatin1String("msi"), QLatin1String("true"));
