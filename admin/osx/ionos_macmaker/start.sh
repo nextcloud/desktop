@@ -1,5 +1,25 @@
 #!/bin/bash
 
+recursive_sign(){
+  local path="$1"
+  local extension="${path##*.}"
+  if [[ "$extension" == "dylib" || "$extension" == "framework" || "$extension" == "appex" ]]; then
+    echo "Signing directory: $path"
+    codesign -s "$2" --force --preserve-metadata=entitlements --verbose=4 --deep --options=runtime --timestamp "${path}" 
+  fi
+}
+
+export -f recursive_sign
+
+sign_folder_content(){
+  local folder="$1"
+  local identity="$2"
+  local entitlements="$3"
+  codesign -s "$identity" --force $entitlements --verbose=4 --deep --options=runtime --timestamp "${folder}" 
+}
+
+export -f sign_folder_content
+
 # This script is used to build the Mac OS X version of the IONOS client.
 set -xe
 
@@ -63,6 +83,13 @@ if [ "$CLEAN_REBUILD" == "true" ] && [ "$BUILD_UPDATER" == "true" ]; then
   mkdir -p $SPARKLE_DIR
   wget $SPARKLE_DOWNLOAD_URI -O $SPARKLE_DIR/Sparkle.tar.xz
   tar -xvf $SPARKLE_DIR/Sparkle.tar.xz -C $SPARKLE_DIR
+
+  # Sign Sparkle
+  if [ -n "$CODE_SIGN_IDENTITY" ]; then
+    SPARKLE_FRAMEWORK_DIR=$SPARKLE_DIR/Sparkle.framework
+    find "$SPARKLE_FRAMEWORK_DIR/Resources/Autoupdate.app/Contents/MacOS" -mindepth 1 -print0 | xargs -0 -I {} bash -c 'sign_folder_content "$@" "$CODE_SIGN_IDENTITY"' _ {} "$CODE_SIGN_IDENTITY"
+    codesign -s "$CODE_SIGN_IDENTITY" --force --preserve-metadata=entitlements --verbose=4 --deep --options=runtime --timestamp "$SPARKLE_FRAMEWORK_DIR/Sparkle"
+  fi
 fi
 
 # Build the client
@@ -72,7 +99,7 @@ cmake -S $REPO_ROOT_DIR/ -B $BUILD_DIR \
       -DBUILD_TESTING=OFF \
       -DBUILD_UPDATER=$(if [ $BUILD_UPDATER == true ]; then echo "ON"; else echo "OFF"; fi) \
       -DMIRALL_VERSION_BUILD=`date +%Y%m%d` \
-      -DMIRALL_VERSION_SUFFIX="" \
+      -DMIRALL_VERSION_SUFFIX="release" \
       -DBUILD_OWNCLOUD_OSX_BUNDLE=ON \
       -DCMAKE_OSX_ARCHITECTURES=x86_64 \
       -DBUILD_FILE_PROVIDER_MODULE=ON \
@@ -95,26 +122,6 @@ fi
 
 PRODUCT_PATH=$PRODUCT_DIR/$PRODUCT_NAME.app
 
-recursive_sign(){
-  local path="$1"
-  local extension="${path##*.}"
-  if [[ "$extension" == "dylib" || "$extension" == "framework" || "$extension" == "appex" ]]; then
-    echo "Signing directory: $path"
-    codesign -s "$2" --force --preserve-metadata=entitlements --verbose=4 --deep --options=runtime --timestamp "${path}" 
-  fi
-}
-
-export -f recursive_sign
-
-sign_folder_content(){
-  local folder="$1"
-  local identity="$2"
-  local entitlements="$3"
-  codesign -s "$identity" --force $entitlements --verbose=4 --deep --options=runtime --timestamp "${folder}" 
-}
-
-export -f sign_folder_content
-
 CLIENT_CONTENTS_DIR=$PRODUCT_PATH/Contents
 CLIENT_FRAMEWORKS_DIR=$CLIENT_CONTENTS_DIR/Frameworks
 CLIENT_PLUGINS_DIR=$CLIENT_CONTENTS_DIR/PlugIns
@@ -126,12 +133,6 @@ find "$CLIENT_RESOURCES_DIR" -print0 | xargs -0 -I {} bash -c 'recursive_sign "$
 
 codesign -s "$CODE_SIGN_IDENTITY" --force --preserve-metadata=entitlements --verbose=4 --deep --options=runtime --timestamp "$PRODUCT_PATH"
 
-# Sign Sparkle
-if [ $BUILD_UPDATER == true ]; then
-  SPARKLE_DIR=$CLIENT_FRAMEWORKS_DIR/Sparkle.framework
-  find "$SPARKLE_DIR/Resources/Autoupdate.app/Contents/MacOS" -mindepth 1 -print0 | xargs -0 -I {} bash -c 'sign_folder_content "$@" "$CODE_SIGN_IDENTITY"' _ {} "$CODE_SIGN_IDENTITY"
-  codesign -s "$CODE_SIGN_IDENTITY" --force --preserve-metadata=entitlements --verbose=4 --deep --options=runtime --timestamp "$SPARKLE_DIR/Sparkle"
-fi
 
 # Sign the client
 find "$CLIENT_CONTENTS_DIR/MacOS" -mindepth 1 -print0 | xargs -0 -I {} bash -c 'sign_folder_content "$@" "$CODE_SIGN_IDENTITY" "$entitlements" ' _ {} "$CODE_SIGN_IDENTITY" "--preserve-metadata=entitlements"
