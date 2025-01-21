@@ -538,21 +538,12 @@ final class ItemModifyTests: XCTestCase {
 """
             .utf8).write(to: keynotePropertiesPlistPath)
 
-        var targetBundleMetadata = SendableItemMetadata()
-        targetBundleMetadata.ocId = remoteKeynoteBundle.identifier
+        var targetBundleMetadata = remoteKeynoteBundle.toItemMetadata(account: Self.account)
         targetBundleMetadata.etag = "this-is-a-new-etag"
         targetBundleMetadata.name = "renamed-" + keynoteBundleFilename
         targetBundleMetadata.fileName = "renamed-" + keynoteBundleFilename
         targetBundleMetadata.fileNameView = "renamed-" + keynoteBundleFilename
         targetBundleMetadata.serverUrl = Self.account.davFilesUrl + "/folder" // Move
-        targetBundleMetadata.urlBase = Self.account.serverUrl
-        targetBundleMetadata.account = Self.account.ncKitAccount
-        targetBundleMetadata.userId = Self.account.id
-        targetBundleMetadata.user = Self.account.username
-        targetBundleMetadata.date = .init()
-        targetBundleMetadata.directory = true
-        targetBundleMetadata.classFile = NKCommon.TypeClassFile.directory.rawValue
-        targetBundleMetadata.contentType = UTType.bundle.identifier
 
         let targetItem = Item(
             metadata: targetBundleMetadata,

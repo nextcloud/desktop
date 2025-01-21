@@ -294,17 +294,8 @@ final class EnumeratorTests: XCTestCase {
         let remoteInterface = MockRemoteInterface(rootItem: rootItem)
 
         let oldEtag = "OLD"
-        var folderMetadata = SendableItemMetadata()
-        folderMetadata.ocId = remoteFolder.identifier
+        var folderMetadata = remoteFolder.toItemMetadata(account: Self.account)
         folderMetadata.etag = oldEtag
-        folderMetadata.name = remoteFolder.name
-        folderMetadata.fileName = remoteFolder.name
-        folderMetadata.fileNameView = remoteFolder.name
-        folderMetadata.serverUrl = Self.account.davFilesUrl
-        folderMetadata.account = Self.account.ncKitAccount
-        folderMetadata.user = Self.account.username
-        folderMetadata.userId = Self.account.id
-        folderMetadata.urlBase = Self.account.serverUrl
 
         Self.dbManager.addItemMetadata(folderMetadata)
         XCTAssertNotNil(Self.dbManager.itemMetadata(ocId: remoteFolder.identifier))
@@ -354,30 +345,8 @@ final class EnumeratorTests: XCTestCase {
         debugPrint(db)
         let remoteInterface = MockRemoteInterface(rootItem: rootItem)
 
-        var folderMetadata = SendableItemMetadata()
-        folderMetadata.ocId = remoteFolder.identifier
-        folderMetadata.etag = remoteFolder.versionIdentifier
-        folderMetadata.directory = true
-        folderMetadata.name = remoteFolder.name
-        folderMetadata.fileName = remoteFolder.name
-        folderMetadata.fileNameView = remoteFolder.name
-        folderMetadata.serverUrl = Self.account.davFilesUrl
-        folderMetadata.account = Self.account.ncKitAccount
-        folderMetadata.user = Self.account.username
-        folderMetadata.userId = Self.account.username
-        folderMetadata.urlBase = Self.account.serverUrl
-
-        var itemAMetadata = SendableItemMetadata()
-        itemAMetadata.ocId = remoteItemA.identifier
-        itemAMetadata.etag = remoteItemA.versionIdentifier
-        itemAMetadata.name = remoteItemA.name
-        itemAMetadata.fileName = remoteItemA.name
-        itemAMetadata.fileNameView = remoteItemA.name
-        itemAMetadata.serverUrl = remoteFolder.remotePath
-        itemAMetadata.account = Self.account.ncKitAccount
-        itemAMetadata.user = Self.account.username
-        itemAMetadata.userId = Self.account.id
-        itemAMetadata.urlBase = Self.account.serverUrl
+        let folderMetadata = remoteFolder.toItemMetadata(account: Self.account)
+        let itemAMetadata = remoteItemA.toItemMetadata(account: Self.account)
 
         Self.dbManager.addItemMetadata(folderMetadata)
         Self.dbManager.addItemMetadata(itemAMetadata)
@@ -415,42 +384,14 @@ final class EnumeratorTests: XCTestCase {
         remoteItemC.parent = remoteFolder
 
         let oldFolderEtag = "OLD"
-        var folderMetadata = SendableItemMetadata()
-        folderMetadata.ocId = remoteFolder.identifier
+        var folderMetadata = remoteFolder.toItemMetadata(account: Self.account)
         folderMetadata.etag = oldFolderEtag
-        folderMetadata.name = remoteFolder.name
-        folderMetadata.fileName = remoteFolder.name
-        folderMetadata.fileNameView = remoteFolder.name
-        folderMetadata.serverUrl = Self.account.davFilesUrl
-        folderMetadata.account = Self.account.ncKitAccount
-        folderMetadata.user = Self.account.username
-        folderMetadata.userId = Self.account.id
-        folderMetadata.urlBase = Self.account.serverUrl
 
         let oldItemAEtag = "OLD"
-        var itemAMetadata = SendableItemMetadata()
-        itemAMetadata.ocId = remoteItemA.identifier
+        var itemAMetadata = remoteItemA.toItemMetadata(account: Self.account)
         itemAMetadata.etag = oldItemAEtag
-        itemAMetadata.name = remoteItemA.name
-        itemAMetadata.fileName = remoteItemA.name
-        itemAMetadata.fileNameView = remoteItemA.name
-        itemAMetadata.serverUrl = remoteFolder.remotePath
-        itemAMetadata.account = Self.account.ncKitAccount
-        itemAMetadata.user = Self.account.username
-        itemAMetadata.userId = Self.account.id
-        itemAMetadata.urlBase = Self.account.serverUrl
 
-        var itemBMetadata = SendableItemMetadata()
-        itemBMetadata.ocId = remoteItemB.identifier
-        itemBMetadata.etag = remoteItemB.versionIdentifier
-        itemBMetadata.name = remoteItemB.name
-        itemBMetadata.fileName = remoteItemB.name
-        itemBMetadata.fileNameView = remoteItemB.name
-        itemBMetadata.serverUrl = remoteFolder.remotePath
-        itemBMetadata.account = Self.account.ncKitAccount
-        itemBMetadata.user = Self.account.username
-        itemBMetadata.userId = Self.account.id
-        itemBMetadata.urlBase = Self.account.serverUrl
+        var itemBMetadata = remoteItemB.toItemMetadata(account: Self.account)
 
         Self.dbManager.addItemMetadata(folderMetadata)
         Self.dbManager.addItemMetadata(itemAMetadata)
@@ -550,45 +491,20 @@ final class EnumeratorTests: XCTestCase {
         remoteItemA.parent = rootItem
         remoteItemA.remotePath = rootItem.remotePath + "/\(remoteItemA.name)"
 
-        var folderMetadata = SendableItemMetadata()
-        folderMetadata.ocId = remoteFolder.identifier
+        var folderMetadata = remoteFolder.toItemMetadata(account: Self.account)
         folderMetadata.etag = "OLD"
-        folderMetadata.directory = true
-        folderMetadata.name = remoteFolder.name
-        folderMetadata.fileName = remoteFolder.name
-        folderMetadata.fileNameView = remoteFolder.name
-        folderMetadata.serverUrl = Self.account.davFilesUrl
-        folderMetadata.account = Self.account.ncKitAccount
-        folderMetadata.user = Self.account.username
-        folderMetadata.userId = Self.account.id
-        folderMetadata.urlBase = Self.account.serverUrl
 
         let oldEtag = "OLD"
         let oldServerUrl = remoteFolder.remotePath
         let oldName = "oldItemA"
-        var itemAMetadata = SendableItemMetadata()
-        itemAMetadata.ocId = remoteItemA.identifier
+        var itemAMetadata = remoteItemA.toItemMetadata(account: Self.account)
         itemAMetadata.etag = oldEtag
         itemAMetadata.name = oldName
         itemAMetadata.fileName = oldName
         itemAMetadata.fileNameView = oldName
         itemAMetadata.serverUrl = oldServerUrl
-        itemAMetadata.account = Self.account.ncKitAccount
-        itemAMetadata.user = Self.account.username
-        itemAMetadata.userId = Self.account.id
-        itemAMetadata.urlBase = Self.account.serverUrl
 
-        var itemBMetadata = SendableItemMetadata()
-        itemBMetadata.ocId = remoteItemB.identifier
-        itemBMetadata.etag = remoteItemB.versionIdentifier
-        itemBMetadata.name = remoteItemB.name
-        itemBMetadata.fileName = remoteItemB.name
-        itemBMetadata.fileNameView = remoteItemB.name
-        itemBMetadata.serverUrl = remoteFolder.remotePath
-        itemBMetadata.account = Self.account.ncKitAccount
-        itemBMetadata.user = Self.account.username
-        itemBMetadata.userId = Self.account.id
-        itemBMetadata.urlBase = Self.account.serverUrl
+        var itemBMetadata = remoteItemB.toItemMetadata(account: Self.account)
 
         Self.dbManager.addItemMetadata(folderMetadata)
         Self.dbManager.addItemMetadata(itemAMetadata)
@@ -678,18 +594,8 @@ final class EnumeratorTests: XCTestCase {
         remoteItemC.lockOwner = "other different account"
         remoteItemC.lockTimeOut = Date.now.advanced(by: -1_000_000_000_000)
 
-        var folderMetadata = SendableItemMetadata()
-        folderMetadata.ocId = remoteFolder.identifier
+        var folderMetadata = remoteFolder.toItemMetadata(account: Self.account)
         folderMetadata.etag = "OLD"
-        folderMetadata.directory = true
-        folderMetadata.name = remoteFolder.name
-        folderMetadata.fileName = remoteFolder.name
-        folderMetadata.fileNameView = remoteFolder.name
-        folderMetadata.serverUrl = Self.account.davFilesUrl
-        folderMetadata.account = Self.account.ncKitAccount
-        folderMetadata.user = Self.account.username
-        folderMetadata.userId = Self.account.id
-        folderMetadata.urlBase = Self.account.serverUrl
 
         Self.dbManager.addItemMetadata(folderMetadata)
         XCTAssertNotNil(Self.dbManager.itemMetadata(ocId: remoteFolder.identifier))
