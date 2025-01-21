@@ -19,17 +19,9 @@ final class ItemPropertyTests: XCTestCase {
     )
 
     func testMetadataContentType() {
-        var metadata = SendableItemMetadata()
-        metadata.ocId = "test-id"
+        var metadata =
+            SendableItemMetadata(ocId: "test-id", fileName: "test.txt", account: Self.account)
         metadata.etag = "test-etag"
-        metadata.name = "test.txt"
-        metadata.fileName = "test.txt"
-        metadata.fileNameView = "test.txt"
-        metadata.serverUrl = Self.account.davFilesUrl
-        metadata.urlBase = Self.account.serverUrl
-        metadata.userId = Self.account.username
-        metadata.user = Self.account.username
-        metadata.date = .init()
         metadata.contentType = UTType.text.identifier
         metadata.size = 12
 
@@ -43,17 +35,9 @@ final class ItemPropertyTests: XCTestCase {
     }
 
     func testMetadataExtensionContentType() {
-        var metadata = SendableItemMetadata()
-        metadata.ocId = "test-id"
+        var metadata =
+            SendableItemMetadata(ocId: "test-id", fileName: "test.pdf", account: Self.account)
         metadata.etag = "test-etag"
-        metadata.name = "test.pdf"
-        metadata.fileName = "test.pdf"
-        metadata.fileNameView = "test.pdf"
-        metadata.serverUrl = Self.account.davFilesUrl
-        metadata.urlBase = Self.account.serverUrl
-        metadata.userId = Self.account.username
-        metadata.user = Self.account.username
-        metadata.date = .init()
         metadata.size = 12
         // Don't set the content type in metadata, test the extension uttype discovery
 
@@ -67,17 +51,9 @@ final class ItemPropertyTests: XCTestCase {
     }
 
     func testMetadataFolderContentType() {
-        var metadata = SendableItemMetadata()
-        metadata.ocId = "test-id"
+        var metadata =
+            SendableItemMetadata(ocId: "test-id", fileName: "test", account: Self.account)
         metadata.etag = "test-etag"
-        metadata.name = "test"
-        metadata.fileName = "test"
-        metadata.fileNameView = "test"
-        metadata.serverUrl = Self.account.davFilesUrl
-        metadata.urlBase = Self.account.serverUrl
-        metadata.userId = Self.account.username
-        metadata.user = Self.account.username
-        metadata.date = .init()
         metadata.size = 12
         metadata.directory = true
 
@@ -91,17 +67,9 @@ final class ItemPropertyTests: XCTestCase {
     }
 
     func testMetadataPackageContentType() {
-        var metadata = SendableItemMetadata()
-        metadata.ocId = "test-id"
+        var metadata =
+            SendableItemMetadata(ocId: "test-id", fileName: "test.zip", account: Self.account)
         metadata.etag = "test-etag"
-        metadata.name = "test.zip"
-        metadata.fileName = "test.zip"
-        metadata.fileNameView = "test.zip"
-        metadata.serverUrl = Self.account.davFilesUrl
-        metadata.urlBase = Self.account.serverUrl
-        metadata.userId = Self.account.username
-        metadata.user = Self.account.username
-        metadata.date = .init()
         metadata.size = 12
         metadata.directory = true
         metadata.contentType = UTType.package.identifier
@@ -116,17 +84,9 @@ final class ItemPropertyTests: XCTestCase {
     }
 
     func testMetadataBundleContentType() {
-        var metadata = SendableItemMetadata()
-        metadata.ocId = "test-id"
+        var metadata =
+            SendableItemMetadata(ocId: "test-id", fileName: "test.key", account: Self.account)
         metadata.etag = "test-etag"
-        metadata.name = "test.app"
-        metadata.fileName = "test.key"
-        metadata.fileNameView = "test.key"
-        metadata.serverUrl = Self.account.davFilesUrl
-        metadata.urlBase = Self.account.serverUrl
-        metadata.userId = Self.account.username
-        metadata.user = Self.account.username
-        metadata.date = .init()
         metadata.size = 12
         metadata.directory = true
         metadata.contentType = UTType.bundle.identifier
@@ -141,17 +101,9 @@ final class ItemPropertyTests: XCTestCase {
     }
 
     func testMetadataUnixFolderContentType() {
-        var metadata = SendableItemMetadata()
-        metadata.ocId = "test-id"
+        var metadata =
+            SendableItemMetadata(ocId: "test-id", fileName: "test", account: Self.account)
         metadata.etag = "test-etag"
-        metadata.name = "test"
-        metadata.fileName = "test"
-        metadata.fileNameView = "test"
-        metadata.serverUrl = Self.account.davFilesUrl
-        metadata.urlBase = Self.account.serverUrl
-        metadata.userId = Self.account.username
-        metadata.user = Self.account.username
-        metadata.date = .init()
         metadata.size = 12
         metadata.directory = true
         metadata.contentType = "httpd/unix-directory"
@@ -166,17 +118,9 @@ final class ItemPropertyTests: XCTestCase {
     }
 
     func testPredictedBundleContentType() {
-        var metadata = SendableItemMetadata()
-        metadata.ocId = "test-id"
+        var metadata =
+            SendableItemMetadata(ocId: "test-id", fileName: "test.app", account: Self.account)
         metadata.etag = "test-etag"
-        metadata.name = "test.app"
-        metadata.fileName = "test.app"
-        metadata.fileNameView = "test.app"
-        metadata.serverUrl = Self.account.davFilesUrl
-        metadata.urlBase = Self.account.serverUrl
-        metadata.userId = Self.account.username
-        metadata.user = Self.account.username
-        metadata.date = .init()
         metadata.size = 12
         metadata.directory = true
         metadata.contentType = "httpd/unix-directory"
@@ -191,18 +135,9 @@ final class ItemPropertyTests: XCTestCase {
     }
 
     func testItemUserInfoLockingPropsFileLocked() {
-        var metadata = SendableItemMetadata()
-        metadata.ocId = "test-id"
+        var metadata =
+            SendableItemMetadata(ocId: "test-id", fileName: "test.txt", account: Self.account)
         metadata.etag = "test-etag"
-        metadata.account = Self.account.ncKitAccount
-        metadata.name = "test.txt"
-        metadata.fileName = "test.txt"
-        metadata.fileNameView = "test.txt"
-        metadata.serverUrl = Self.account.davFilesUrl
-        metadata.urlBase = Self.account.serverUrl
-        metadata.userId = Self.account.username
-        metadata.user = Self.account.username
-        metadata.date = .init()
         metadata.size = 12
         metadata.lock = true
         metadata.lockOwner = Self.account.username
@@ -227,17 +162,9 @@ final class ItemPropertyTests: XCTestCase {
     }
 
     func testItemUserInfoLockingPropsFileUnlocked() {
-        var metadata = SendableItemMetadata()
-        metadata.ocId = "test-id"
+        var metadata =
+            SendableItemMetadata(ocId: "test-id", fileName: "test.txt", account: Self.account)
         metadata.etag = "test-etag"
-        metadata.account = Self.account.ncKitAccount
-        metadata.name = "test.txt"
-        metadata.fileName = "test.txt"
-        metadata.fileNameView = "test.txt"
-        metadata.serverUrl = Self.account.davFilesUrl
-        metadata.urlBase = Self.account.serverUrl
-        metadata.userId = Self.account.username
-        metadata.user = Self.account.username
         metadata.date = .init()
         metadata.size = 12
 

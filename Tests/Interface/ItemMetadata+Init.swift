@@ -9,10 +9,10 @@ import Foundation
 import NextcloudFileProviderKit
 
 public extension SendableItemMetadata {
-    init() {
+    init(ocId: String, fileName: String, account: Account) {
         self.init(
-            ocId: "",
-            account: "",
+            ocId: ocId,
+            account: account.ncKitAccount,
             classFile: "",
             contentType: "",
             creationDate: Date(),
@@ -22,13 +22,13 @@ public extension SendableItemMetadata {
             etag: "",
             favorite: false,
             fileId: "",
-            fileName: "",
-            fileNameView: "",
+            fileName: fileName,
+            fileNameView: fileName,
             hasPreview: false,
             iconName: "",
             livePhoto: false,
             mountType: "",
-            name: "",
+            name: fileName,
             note: "",
             ownerId: "",
             ownerDisplayName: "",
@@ -45,16 +45,16 @@ public extension SendableItemMetadata {
             quotaAvailableBytes: 0,
             resourceType: "",
             richWorkspace: nil,
-            serverUrl: "",
+            serverUrl: account.davFilesUrl,
             session: "",
             sessionError: "",
             sessionTaskIdentifier: 0,
             sharePermissionsCollaborationServices: 0,
             sharePermissionsCloudMesh: [],
             size: 0,
-            urlBase: "",
-            user: "",
-            userId: ""
+            urlBase: account.serverUrl,
+            user: account.username,
+            userId: account.id
         )
     }
 }

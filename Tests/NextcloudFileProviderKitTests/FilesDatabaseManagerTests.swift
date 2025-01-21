@@ -67,16 +67,13 @@ final class FilesDatabaseManagerTests: XCTestCase {
 
     func testUpdateItemMetadatas() {
         // Setting up test data
-        let testAccount = "TestAccount"
-        let serverUrl = "https://example.com"
-        var metadata = SendableItemMetadata()
-        metadata.account = testAccount
-        metadata.serverUrl = serverUrl
+        let account = Account(user: "test", id: "t", serverUrl: "https://example.com", password: "")
+        let metadata = SendableItemMetadata(ocId: "test", fileName: "test", account: account)
 
         // Call updateItemMetadatas
         let result = Self.dbManager.updateItemMetadatas(
-            account: testAccount,
-            serverUrl: serverUrl,
+            account: account.ncKitAccount,
+            serverUrl: account.davFilesUrl,
             updatedMetadatas: [metadata],
             updateDirectoryEtags: true
         )
@@ -110,8 +107,11 @@ final class FilesDatabaseManagerTests: XCTestCase {
     }
 
     func testAddItemMetadata() {
-        var metadata = SendableItemMetadata()
-        metadata.ocId = "unique-id-123"
+        let metadata = SendableItemMetadata(
+            ocId: "unique-id-123",
+            fileName: "b",
+            account: .init(user: "t", id: "t", serverUrl: "b", password: "")
+        )
         Self.dbManager.addItemMetadata(metadata)
 
         let fetchedMetadata = Self.dbManager.itemMetadata(ocId: "unique-id-123")
@@ -208,6 +208,10 @@ final class FilesDatabaseManagerTests: XCTestCase {
     }
 
     func testProcessItemMetadatasToUpdate_NewAndUpdatedSeparation() throws {
+        let account = Account(
+            user: "TestAccount", id: "taid", serverUrl: "https://example.com", password: "pass"
+        )
+
         // Simulate existing metadata in the database
         let existingMetadata = RealmItemMetadata()
         existingMetadata.ocId = "id-1"
@@ -216,17 +220,11 @@ final class FilesDatabaseManagerTests: XCTestCase {
         existingMetadata.serverUrl = "https://example.com"
 
         // Simulate updated metadata that includes changes and a new entry
-        var updatedMetadata = SendableItemMetadata()
-        updatedMetadata.ocId = "id-1"
-        updatedMetadata.fileName = "UpdatedFile.pdf"  // Update existing
-        updatedMetadata.account = "TestAccount"
-        updatedMetadata.serverUrl = "https://example.com"
+        let updatedMetadata =
+            SendableItemMetadata(ocId: "id-1", fileName: "UpdatedFile.pdf", account: account)
 
-        var newMetadata = SendableItemMetadata()
-        newMetadata.ocId = "id-2"
-        newMetadata.fileName = "NewFile.pdf"  // This is a new entry
-        newMetadata.account = "TestAccount"
-        newMetadata.serverUrl = "https://example.com"
+        let newMetadata =
+            SendableItemMetadata(ocId: "id-2", fileName: "NewFile.pdf", account: account)
 
         let realm = Self.dbManager.ncDatabase()
         try realm.write {
@@ -257,9 +255,11 @@ final class FilesDatabaseManagerTests: XCTestCase {
         let count = 100
         Task {
             for i in 0...count {
-                let ocId = "concurrency-\(i)"
-                var metadata = SendableItemMetadata()
-                metadata.ocId = ocId
+                let metadata = SendableItemMetadata(
+                    ocId: "concurrency-\(i)",
+                    fileName: "name",
+                    account: Account(user: "", id: "", serverUrl: "", password: "")
+                )
                 Self.dbManager.addItemMetadata(metadata)
             }
             semaphore.signal()
@@ -267,9 +267,11 @@ final class FilesDatabaseManagerTests: XCTestCase {
 
         Task {
             for i in 0...count {
-                let ocId = "concurrency-\(count + 1 + i)"
-                var metadata = SendableItemMetadata()
-                metadata.ocId = ocId
+                let metadata = SendableItemMetadata(
+                    ocId: "concurrency-\(count + 1 + i)",
+                    fileName: "name",
+                    account: Account(user: "", id: "", serverUrl: "", password: "")
+                )
                 Self.dbManager.addItemMetadata(metadata)
             }
             semaphore.signal()
@@ -409,11 +411,16 @@ final class FilesDatabaseManagerTests: XCTestCase {
     }
 
     func testChildItemsForRootDirectory() throws {
-        var rootMetadata = SendableItemMetadata() // Do not write, we do not track root container
-        rootMetadata.ocId = NSFileProviderItemIdentifier.rootContainer.rawValue
-        rootMetadata.account = "TestAccount"
-        rootMetadata.serverUrl = "https://cloud.example.com/files"
-        rootMetadata.directory = true
+        var rootMetadata = SendableItemMetadata(
+            ocId: NSFileProviderItemIdentifier.rootContainer.rawValue,
+            fileName: "",
+            account: Account(
+                user: "TestAccount",
+                id: "ta",
+                serverUrl: "https://cloud.example.com/files",
+                password: ""
+            )
+        ) // Do not write, we do not track root container
 
         let childMetadata = RealmItemMetadata()
         childMetadata.ocId = "item-1"

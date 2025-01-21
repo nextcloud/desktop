@@ -41,25 +41,13 @@ final class MaterialisedEnumerationObserverTests: XCTestCase {
     }
 
     func testMaterialisedFiles() async {
-        var itemA = SendableItemMetadata()
-        itemA.apply(account: Self.account)
-        itemA.apply(fileName: "itemA")
-        itemA.ocId = "itemA"
-        itemA.serverUrl = Self.account.davFilesUrl
+        var itemA = SendableItemMetadata(ocId: "itemA", fileName: "itemA", account: Self.account)
         itemA.downloaded = true
 
-        var itemB = SendableItemMetadata()
-        itemB.apply(account: Self.account)
-        itemB.apply(fileName: "itemB")
-        itemB.ocId = "itemB"
-        itemB.serverUrl = Self.account.davFilesUrl
+        var itemB = SendableItemMetadata(ocId: "itemB", fileName: "itemB", account: Self.account)
         itemB.downloaded = false
 
-        var itemC = SendableItemMetadata()
-        itemC.apply(account: Self.account)
-        itemC.apply(fileName: "itemC")
-        itemC.ocId = "itemC"
-        itemC.serverUrl = Self.account.davFilesUrl
+        var itemC = SendableItemMetadata(ocId: "itemC", fileName: "itemC", account: Self.account)
         itemC.downloaded = true
 
         let dbManager = FilesDatabaseManager(realmConfig: .defaultConfiguration)
