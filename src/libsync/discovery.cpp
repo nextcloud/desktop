@@ -1679,6 +1679,18 @@ void ProcessDirectoryJob::processFileFinalize(
         item->_type = CSyncEnums::ItemTypeVirtualFileDehydration;
     }
 
+    if (item->_instruction != CSyncEnums::CSYNC_INSTRUCTION_NONE &&
+        !item->isDirectory() &&
+        _discoveryData->_syncOptions._vfs &&
+        _discoveryData->_syncOptions._vfs->mode() == OCC::Vfs::Off &&
+        (item->_type == CSyncEnums::ItemTypeVirtualFile ||
+         item->_type == CSyncEnums::ItemTypeVirtualFileDownload ||
+         item->_type == CSyncEnums::ItemTypeVirtualFileDehydration)) {
+        item->_instruction = CSyncEnums::CSYNC_INSTRUCTION_UPDATE_METADATA;
+        item->_direction = SyncFileItem::Down;
+        item->_type = CSyncEnums::ItemTypeFile;
+    }
+
     if (path._original != path._target && (item->_instruction == CSYNC_INSTRUCTION_UPDATE_VFS_METADATA || item->_instruction == CSYNC_INSTRUCTION_UPDATE_METADATA || item->_instruction == CSYNC_INSTRUCTION_NONE)) {
         ASSERT(_dirItem && _dirItem->_instruction == CSYNC_INSTRUCTION_RENAME);
         // This is because otherwise subitems are not updated!  (ideally renaming a directory could
