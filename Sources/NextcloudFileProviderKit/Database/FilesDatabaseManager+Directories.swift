@@ -18,7 +18,7 @@ import OSLog
 import RealmSwift
 
 extension FilesDatabaseManager {
-    func childItems(directoryMetadata: ItemMetadata) -> Results<ItemMetadata> {
+    func childItems(directoryMetadata: RealmItemMetadata) -> Results<RealmItemMetadata> {
         var directoryServerUrl: String
         if directoryMetadata.ocId == NSFileProviderItemIdentifier.rootContainer.rawValue {
             directoryServerUrl = directoryMetadata.serverUrl
@@ -28,12 +28,12 @@ extension FilesDatabaseManager {
         return itemMetadatas.where { $0.serverUrl.starts(with: directoryServerUrl) }
     }
 
-    public func childItemCount(directoryMetadata: ItemMetadata) -> Int {
+    public func childItemCount(directoryMetadata: RealmItemMetadata) -> Int {
         childItems(directoryMetadata: directoryMetadata).count
     }
 
     public func parentDirectoryMetadataForItem(
-        _ itemMetadata: ItemMetadata
+        _ itemMetadata: RealmItemMetadata
     ) -> SendableItemMetadata? {
         self.itemMetadata(
             account: itemMetadata.account, locatedAtRemoteUrl: itemMetadata.serverUrl

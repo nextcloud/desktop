@@ -10,7 +10,7 @@ import RealmSwift
 extension FilesDatabaseManager {
     func trashedItemMetadatas(account: Account) -> [SendableItemMetadata] {
         ncDatabase()
-            .objects(ItemMetadata.self)
+            .objects(RealmItemMetadata.self)
             .where {
                 $0.account == account.ncKitAccount && $0.serverUrl.starts(with: account.trashUrl)
             }

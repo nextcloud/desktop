@@ -29,7 +29,7 @@ public class FilesDatabaseManager {
 
     static let logger = Logger(subsystem: Logger.subsystem, category: "filesdatabase")
 
-    var itemMetadatas: Results<ItemMetadata> { ncDatabase().objects(ItemMetadata.self) }
+    var itemMetadatas: Results<RealmItemMetadata> { ncDatabase().objects(RealmItemMetadata.self) }
 
     public init(realmConfig: Realm.Configuration = Realm.Configuration.defaultConfiguration) {
         Realm.Configuration.defaultConfiguration = realmConfig
@@ -78,7 +78,7 @@ public class FilesDatabaseManager {
                         localFileMetadataOcIds.insert(lfmOcId)
                     }
 
-                    migration.enumerateObjects(ofType: ItemMetadata.className()) { _, newObject in
+                    migration.enumerateObjects(ofType: RealmItemMetadata.className()) { _, newObject in
                         guard let newObject,
                               let imOcId = newObject["ocId"] as? String,
                               localFileMetadataOcIds.contains(imOcId)
@@ -89,7 +89,7 @@ public class FilesDatabaseManager {
                 }
 
             },
-            objectTypes: [ItemMetadata.self, RemoteFileChunk.self]
+            objectTypes: [RealmItemMetadata.self, RemoteFileChunk.self]
         )
         self.init(realmConfig: config)
     }
@@ -159,10 +159,10 @@ public class FilesDatabaseManager {
     }
 
     private func processItemMetadatasToDelete(
-        existingMetadatas: Results<ItemMetadata>,
-        updatedMetadatas: [ItemMetadata]
-    ) -> [ItemMetadata] {
-        var deletedMetadatas: [ItemMetadata] = []
+        existingMetadatas: Results<RealmItemMetadata>,
+        updatedMetadatas: [RealmItemMetadata]
+    ) -> [RealmItemMetadata] {
+        var deletedMetadatas: [RealmItemMetadata] = []
 
         for existingMetadata in existingMetadatas {
             guard !updatedMetadatas.contains(where: { $0.ocId == existingMetadata.ocId }),
@@ -180,7 +180,7 @@ public class FilesDatabaseManager {
     }
 
     private func processItemMetadatasToUpdate(
-        existingMetadatas: Results<ItemMetadata>,
+        existingMetadatas: Results<RealmItemMetadata>,
         updatedMetadatas: [SendableItemMetadata],
         updateDirectoryEtags: Bool
     ) -> (
@@ -196,7 +196,7 @@ public class FilesDatabaseManager {
             if let existingMetadata = existingMetadatas.first(where: {
                 $0.ocId == updatedMetadata.ocId
             }) {
-                if existingMetadata.status == ItemMetadata.Status.normal.rawValue,
+                if existingMetadata.status == RealmItemMetadata.Status.normal.rawValue,
                     !existingMetadata.isInSameDatabaseStoreableRemoteState(updatedMetadata)
                 {
                     if updatedMetadata.directory {
@@ -267,11 +267,11 @@ public class FilesDatabaseManager {
 
         do {
             let existingMetadatas = database
-                .objects(ItemMetadata.self)
+                .objects(RealmItemMetadata.self)
                 .where {
                     $0.account == account &&
                     $0.serverUrl == serverUrl &&
-                    $0.status == ItemMetadata.Status.normal.rawValue
+                    $0.status == RealmItemMetadata.Status.normal.rawValue
                 }
 
             // NOTE: These metadatas are managed -- be careful!
@@ -301,8 +301,8 @@ public class FilesDatabaseManager {
 
             try database.write {
                 database.delete(metadatasToDelete)
-                database.add(metadatasToUpdate.map { ItemMetadata(value: $0) }, update: .modified)
-                database.add(metadatasToCreate.map { ItemMetadata(value: $0) }, update: .all)
+                database.add(metadatasToUpdate.map { RealmItemMetadata(value: $0) }, update: .modified)
+                database.add(metadatasToCreate.map { RealmItemMetadata(value: $0) }, update: .all)
             }
 
             return (metadatasToCreate, metadatasToUpdate, metadatasToDeleteCopy)
@@ -320,7 +320,7 @@ public class FilesDatabaseManager {
     // If setting a downloading or uploading status, also modified the relevant boolean properties
     // of the item metadata object
     public func setStatusForItemMetadata(
-        _ metadata: SendableItemMetadata, status: ItemMetadata.Status
+        _ metadata: SendableItemMetadata, status: RealmItemMetadata.Status
     ) -> SendableItemMetadata? {
         guard let result = itemMetadatas.where({ $0.ocId == metadata.ocId }).first else {
             Self.logger.debug(
@@ -375,7 +375,7 @@ public class FilesDatabaseManager {
 
         do {
             try database.write {
-                database.add(ItemMetadata(value: metadata), update: .all)
+                database.add(RealmItemMetadata(value: metadata), update: .all)
                 Self.logger.debug(
                     """
                     Added item metadata.

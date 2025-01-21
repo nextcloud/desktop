@@ -31,7 +31,7 @@ final class FilesDatabaseManagerTests: XCTestCase {
         // Insert test data
         let expected = true
         let testAccount = "TestAccount"
-        let metadata = ItemMetadata()
+        let metadata = RealmItemMetadata()
         metadata.account = testAccount
 
         let realm = Self.dbManager.ncDatabase()
@@ -50,7 +50,7 @@ final class FilesDatabaseManagerTests: XCTestCase {
 
     func testItemMetadataFromOcId() throws {
         let ocId = "unique-id-123"
-        let metadata = ItemMetadata()
+        let metadata = RealmItemMetadata()
         metadata.ocId = ocId
 
         let realm = Self.dbManager.ncDatabase()
@@ -89,16 +89,16 @@ final class FilesDatabaseManagerTests: XCTestCase {
 
     func testSetStatusForItemMetadata() throws {
         // Create and add a test metadata to the database
-        let metadata = ItemMetadata()
+        let metadata = RealmItemMetadata()
         metadata.ocId = "unique-id-123"
-        metadata.status = ItemMetadata.Status.normal.rawValue
+        metadata.status = RealmItemMetadata.Status.normal.rawValue
 
         let realm = Self.dbManager.ncDatabase()
         try realm.write {
             realm.add(metadata)
         }
 
-        let expectedStatus = ItemMetadata.Status.uploadError
+        let expectedStatus = RealmItemMetadata.Status.uploadError
         let updatedMetadata = Self.dbManager.setStatusForItemMetadata(
             SendableItemMetadata(value: metadata), status: expectedStatus
         )
@@ -120,7 +120,7 @@ final class FilesDatabaseManagerTests: XCTestCase {
 
     func testDeleteItemMetadata() throws {
         let ocId = "unique-id-123"
-        let metadata = ItemMetadata()
+        let metadata = RealmItemMetadata()
         metadata.ocId = ocId
 
         let realm = Self.dbManager.ncDatabase()
@@ -140,7 +140,7 @@ final class FilesDatabaseManagerTests: XCTestCase {
         let ocId = "unique-id-123"
         let newFileName = "newFileName.pdf"
         let newServerUrl = "https://new.example.com"
-        let metadata = ItemMetadata()
+        let metadata = RealmItemMetadata()
         metadata.ocId = ocId
         metadata.fileName = "oldFileName.pdf"
         metadata.serverUrl = "https://old.example.com"
@@ -161,19 +161,19 @@ final class FilesDatabaseManagerTests: XCTestCase {
 
     func testDeleteItemMetadatasBasedOnUpdate() throws {
         // Existing metadata in the database
-        let existingMetadata1 = ItemMetadata()
+        let existingMetadata1 = RealmItemMetadata()
         existingMetadata1.ocId = "id-1"
         existingMetadata1.fileName = "Existing.pdf"
         existingMetadata1.serverUrl = "https://example.com"
         existingMetadata1.account = "TestAccount"
 
-        let existingMetadata2 = ItemMetadata()
+        let existingMetadata2 = RealmItemMetadata()
         existingMetadata2.ocId = "id-2"
         existingMetadata2.fileName = "Existing2.pdf"
         existingMetadata2.serverUrl = "https://example.com"
         existingMetadata2.account = "TestAccount"
 
-        let existingMetadata3 = ItemMetadata()
+        let existingMetadata3 = RealmItemMetadata()
         existingMetadata3.ocId = "id-3"
         existingMetadata3.fileName = "Existing3.pdf"
         existingMetadata3.serverUrl = "https://example.com/folder" // Different child path
@@ -209,7 +209,7 @@ final class FilesDatabaseManagerTests: XCTestCase {
 
     func testProcessItemMetadatasToUpdate_NewAndUpdatedSeparation() throws {
         // Simulate existing metadata in the database
-        let existingMetadata = ItemMetadata()
+        let existingMetadata = RealmItemMetadata()
         existingMetadata.ocId = "id-1"
         existingMetadata.fileName = "File.pdf"
         existingMetadata.account = "TestAccount"
@@ -288,7 +288,7 @@ final class FilesDatabaseManagerTests: XCTestCase {
         let account = "TestAccount"
         let serverUrl = "https://cloud.example.com/files/documents"
         let directoryFileName = "documents"
-        let metadata = ItemMetadata()
+        let metadata = RealmItemMetadata()
         metadata.ocId = "dir-1"
         metadata.account = account
         metadata.serverUrl = "https://cloud.example.com/files"
@@ -310,14 +310,14 @@ final class FilesDatabaseManagerTests: XCTestCase {
     }
 
     func testChildItemsForDirectory() throws {
-        let directoryMetadata = ItemMetadata()
+        let directoryMetadata = RealmItemMetadata()
         directoryMetadata.ocId = "dir-1"
         directoryMetadata.account = "TestAccount"
         directoryMetadata.serverUrl = "https://cloud.example.com/files"
         directoryMetadata.fileName = "documents"
         directoryMetadata.directory = true
 
-        let childMetadata = ItemMetadata()
+        let childMetadata = RealmItemMetadata()
         childMetadata.ocId = "item-1"
         childMetadata.account = "TestAccount"
         childMetadata.serverUrl = "https://cloud.example.com/files/documents"
@@ -337,14 +337,14 @@ final class FilesDatabaseManagerTests: XCTestCase {
     }
 
     func testDeleteDirectoryAndSubdirectoriesMetadata() throws {
-        let directoryMetadata = ItemMetadata()
+        let directoryMetadata = RealmItemMetadata()
         directoryMetadata.ocId = "dir-1"
         directoryMetadata.account = "TestAccount"
         directoryMetadata.serverUrl = "https://cloud.example.com/files"
         directoryMetadata.fileName = "documents"
         directoryMetadata.directory = true
 
-        let childMetadata = ItemMetadata()
+        let childMetadata = RealmItemMetadata()
         childMetadata.ocId = "item-1"
         childMetadata.account = "TestAccount"
         childMetadata.serverUrl = "https://cloud.example.com/files/documents"
@@ -364,14 +364,14 @@ final class FilesDatabaseManagerTests: XCTestCase {
     }
 
     func testRenameDirectoryAndPropagateToChildren() throws {
-        let directoryMetadata = ItemMetadata()
+        let directoryMetadata = RealmItemMetadata()
         directoryMetadata.ocId = "dir-1"
         directoryMetadata.account = "TestAccount"
         directoryMetadata.serverUrl = "https://cloud.example.com/files"
         directoryMetadata.fileName = "documents"
         directoryMetadata.directory = true
 
-        let childMetadata = ItemMetadata()
+        let childMetadata = RealmItemMetadata()
         childMetadata.ocId = "item-1"
         childMetadata.account = "TestAccount"
         childMetadata.serverUrl = "https://cloud.example.com/files/documents"
@@ -407,13 +407,13 @@ final class FilesDatabaseManagerTests: XCTestCase {
     }
 
     func testChildItemsForRootDirectory() throws {
-        let rootMetadata = ItemMetadata() // Do not write, we do not track root containe itself
+        let rootMetadata = RealmItemMetadata() // Do not write, we do not track root containe itself
         rootMetadata.ocId = NSFileProviderItemIdentifier.rootContainer.rawValue
         rootMetadata.account = "TestAccount"
         rootMetadata.serverUrl = "https://cloud.example.com/files"
         rootMetadata.directory = true
 
-        let childMetadata = ItemMetadata()
+        let childMetadata = RealmItemMetadata()
         childMetadata.ocId = "item-1"
         childMetadata.account = "TestAccount"
         childMetadata.serverUrl = "https://cloud.example.com/files/report.pdf"
@@ -435,21 +435,21 @@ final class FilesDatabaseManagerTests: XCTestCase {
 
     func testDeleteNestedDirectoriesAndSubdirectoriesMetadata() throws {
         // Create nested directories and their child items
-        let rootDirectoryMetadata = ItemMetadata()
+        let rootDirectoryMetadata = RealmItemMetadata()
         rootDirectoryMetadata.ocId = "dir-1"
         rootDirectoryMetadata.account = "TestAccount"
         rootDirectoryMetadata.serverUrl = "https://cloud.example.com/files"
         rootDirectoryMetadata.fileName = "documents"
         rootDirectoryMetadata.directory = true
 
-        let nestedDirectoryMetadata = ItemMetadata()
+        let nestedDirectoryMetadata = RealmItemMetadata()
         nestedDirectoryMetadata.ocId = "dir-2"
         nestedDirectoryMetadata.account = "TestAccount"
         nestedDirectoryMetadata.serverUrl = "https://cloud.example.com/files/documents"
         nestedDirectoryMetadata.fileName = "projects"
         nestedDirectoryMetadata.directory = true
 
-        let childMetadata = ItemMetadata()
+        let childMetadata = RealmItemMetadata()
         childMetadata.ocId = "item-1"
         childMetadata.account = "TestAccount"
         childMetadata.serverUrl = "https://cloud.example.com/files/documents/projects"
@@ -475,21 +475,21 @@ final class FilesDatabaseManagerTests: XCTestCase {
 
     func testRecursiveRenameOfDirectoriesAndChildItems() throws {
         // Setup a complex directory structure
-        let rootDirectoryMetadata = ItemMetadata()
+        let rootDirectoryMetadata = RealmItemMetadata()
         rootDirectoryMetadata.ocId = "dir-1"
         rootDirectoryMetadata.account = "TestAccount"
         rootDirectoryMetadata.serverUrl = "https://cloud.example.com/files"
         rootDirectoryMetadata.fileName = "documents"
         rootDirectoryMetadata.directory = true
 
-        let nestedDirectoryMetadata = ItemMetadata()
+        let nestedDirectoryMetadata = RealmItemMetadata()
         nestedDirectoryMetadata.ocId = "dir-2"
         nestedDirectoryMetadata.account = "TestAccount"
         nestedDirectoryMetadata.serverUrl = "https://cloud.example.com/files/documents"
         nestedDirectoryMetadata.fileName = "projects"
         nestedDirectoryMetadata.directory = true
 
-        let childMetadata = ItemMetadata()
+        let childMetadata = RealmItemMetadata()
         childMetadata.ocId = "item-1"
         childMetadata.account = "TestAccount"
         childMetadata.serverUrl = "https://cloud.example.com/files/documents/projects"
@@ -516,7 +516,7 @@ final class FilesDatabaseManagerTests: XCTestCase {
     }
 
     func testDeletingDirectoryWithNoChildren() throws {
-        let directoryMetadata = ItemMetadata()
+        let directoryMetadata = RealmItemMetadata()
         directoryMetadata.ocId = "dir-1"
         directoryMetadata.account = "TestAccount"
         directoryMetadata.serverUrl = "https://cloud.example.com/files"
@@ -544,21 +544,21 @@ final class FilesDatabaseManagerTests: XCTestCase {
 
     func testRenamingDirectoryWithComplexNestedStructure() throws {
         // Create a complex nested directory structure
-        let rootDirectoryMetadata = ItemMetadata()
+        let rootDirectoryMetadata = RealmItemMetadata()
         rootDirectoryMetadata.ocId = "dir-1"
         rootDirectoryMetadata.account = "TestAccount"
         rootDirectoryMetadata.serverUrl = "https://cloud.example.com/files"
         rootDirectoryMetadata.fileName = "dir-1"
         rootDirectoryMetadata.directory = true
 
-        let nestedDirectoryMetadata = ItemMetadata()
+        let nestedDirectoryMetadata = RealmItemMetadata()
         nestedDirectoryMetadata.ocId = "dir-2"
         nestedDirectoryMetadata.account = "TestAccount"
         nestedDirectoryMetadata.serverUrl = "https://cloud.example.com/files/dir-1"
         nestedDirectoryMetadata.fileName = "dir-2"
         nestedDirectoryMetadata.directory = true
 
-        let deepNestedDirectoryMetadata = ItemMetadata()
+        let deepNestedDirectoryMetadata = RealmItemMetadata()
         deepNestedDirectoryMetadata.ocId = "dir-3"
         deepNestedDirectoryMetadata.account = "TestAccount"
         deepNestedDirectoryMetadata.serverUrl = "https://cloud.example.com/files/dir-1/dir-2"
@@ -592,7 +592,7 @@ final class FilesDatabaseManagerTests: XCTestCase {
         let parentUrl = "https://cloud.example.com/files/my great and incredible dir/dir-2"
         let fullUrl = parentUrl + "/" + filename
 
-        let deepNestedDirectoryMetadata = ItemMetadata()
+        let deepNestedDirectoryMetadata = RealmItemMetadata()
         deepNestedDirectoryMetadata.ocId = filename
         deepNestedDirectoryMetadata.account = account
         deepNestedDirectoryMetadata.serverUrl = parentUrl

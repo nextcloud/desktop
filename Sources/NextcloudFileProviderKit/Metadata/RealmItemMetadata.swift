@@ -16,7 +16,7 @@ import Foundation
 import NextcloudKit
 import RealmSwift
 
-public class ItemMetadata: Object {
+public class RealmItemMetadata: Object {
     public enum Status: Int {
         case downloadError = -4
         case downloading = -3
@@ -177,7 +177,7 @@ public class ItemMetadata: Object {
     }
 
     public override func isEqual(_ object: Any?) -> Bool {
-        if let object = object as? ItemMetadata {
+        if let object = object as? RealmItemMetadata {
             return fileId == object.fileId && account == object.account && path == object.path
                 && fileName == object.fileName
         }
@@ -185,7 +185,7 @@ public class ItemMetadata: Object {
         return false
     }
 
-    public func isInSameDatabaseStoreableRemoteState(_ comparingMetadata: ItemMetadata)
+    public func isInSameDatabaseStoreableRemoteState(_ comparingMetadata: RealmItemMetadata)
         -> Bool
     {
         comparingMetadata.etag == etag 
@@ -239,4 +239,4 @@ public class ItemMetadata: Object {
 /// Marking our ItemMetadata as an unchecked Sendable is a naughty thing to do. So make sure to check
 /// for ItemMetadata objects to be unmanaged before doing anything crossing actor boundaries.
 /// Also make sure this is the only type that is returned to other code that is unaware of Realm.
-public final class SendableItemMetadata: ItemMetadata, @unchecked Sendable {}
+public final class SendableItemMetadata: RealmItemMetadata, @unchecked Sendable {}
