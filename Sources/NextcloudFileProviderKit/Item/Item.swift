@@ -185,14 +185,73 @@ public class Item: NSObject, NSFileProviderItem {
     }
 
     public static func rootContainer(account: Account, remoteInterface: RemoteInterface) -> Item {
-        let metadata = SendableItemMetadata()
-        metadata.account = account.ncKitAccount
-        metadata.directory = true
-        metadata.ocId = NSFileProviderItemIdentifier.rootContainer.rawValue
-        metadata.fileName = "/"
-        metadata.fileNameView = "/"
-        metadata.serverUrl = account.davFilesUrl
-        metadata.classFile = NKCommon.TypeClassFile.directory.rawValue
+        let metadata = SendableItemMetadata(
+            ocId: NSFileProviderItemIdentifier.rootContainer.rawValue,
+            account: account.ncKitAccount,
+            assetLocalIdentifier: "", // Placeholder as not set in original code
+            checksums: "", // Placeholder as not set in original code
+            chunkUploadId: "", // Placeholder as not set in original code
+            classFile: NKCommon.TypeClassFile.directory.rawValue,
+            commentsUnread: false, // Default as not set in original code
+            contentType: "", // Placeholder as not set in original code
+            creationDate: Date(), // Default as not set in original code
+            dataFingerprint: "", // Placeholder as not set in original code
+            date: Date(), // Default as not set in original code
+            directory: true,
+            deleteAssetLocalIdentifier: false, // Default as not set in original code
+            downloadURL: "", // Placeholder as not set in original code
+            e2eEncrypted: false, // Default as not set in original code
+            edited: false, // Default as not set in original code
+            etag: "", // Placeholder as not set in original code
+            etagResource: "", // Placeholder as not set in original code
+            favorite: false, // Default as not set in original code
+            fileId: "", // Placeholder as not set in original code
+            fileName: "/",
+            fileNameView: "/",
+            hasPreview: false, // Default as not set in original code
+            iconName: "", // Placeholder as not set in original code
+            iconUrl: "", // Placeholder as not set in original code
+            isExtractFile: false, // Default as not set in original code
+            livePhoto: false, // Default as not set in original code
+            mountType: "", // Placeholder as not set in original code
+            name: "", // Placeholder as not set in original code
+            note: "", // Placeholder as not set in original code
+            ownerId: "", // Placeholder as not set in original code
+            ownerDisplayName: "", // Placeholder as not set in original code
+            lock: false, // Default as not set in original code
+            lockOwner: "", // Placeholder as not set in original code
+            lockOwnerEditor: "", // Placeholder as not set in original code
+            lockOwnerType: 0, // Default as not set in original code
+            lockOwnerDisplayName: "", // Placeholder as not set in original code
+            lockTime: nil, // Default as not set in original code
+            lockTimeOut: nil, // Default as not set in original code
+            path: "", // Placeholder as not set in original code
+            permissions: "", // Placeholder as not set in original code
+            quotaUsedBytes: 0, // Default as not set in original code
+            quotaAvailableBytes: 0, // Default as not set in original code
+            resourceType: "", // Placeholder as not set in original code
+            richWorkspace: nil, // Default as not set in original code
+            serverUrl: account.davFilesUrl,
+            session: "", // Placeholder as not set in original code
+            sessionError: "", // Placeholder as not set in original code
+            sessionSelector: "", // Placeholder as not set in original code
+            sessionTaskIdentifier: 0, // Default as not set in original code
+            sharePermissionsCollaborationServices: 0, // Default as not set in original code
+            sharePermissionsCloudMesh: [], // Default as not set in original code
+            size: 0, // Default as not set in original code
+            status: 0, // Default as not set in original code
+            downloaded: false, // Default as not set in original code
+            uploaded: false, // Default as not set in original code
+            subline: nil, // Default as not set in original code
+            trashbinFileName: "", // Placeholder as not set in original code
+            trashbinOriginalLocation: "", // Placeholder as not set in original code
+            trashbinDeletionTime: Date(), // Placeholder as not set in original code
+            uploadDate: Date(), // Default as not set in original code
+            url: "", // Placeholder as not set in original code
+            urlBase: "", // Placeholder as not set in original code
+            user: "", // Placeholder as not set in original code
+            userId: "" // Placeholder as not set in original code
+        )
         return Item(
             metadata: metadata,
             parentItemIdentifier: .rootContainer,
@@ -202,14 +261,73 @@ public class Item: NSObject, NSFileProviderItem {
     }
 
     public static func trashContainer(remoteInterface: RemoteInterface, account: Account) -> Item {
-        let metadata = SendableItemMetadata()
-        metadata.account = account.ncKitAccount
-        metadata.directory = true
-        metadata.ocId = NSFileProviderItemIdentifier.trashContainer.rawValue
-        metadata.fileName = "Trash"
-        metadata.fileNameView = "Trash"
-        metadata.serverUrl = account.trashUrl
-        metadata.classFile = NKCommon.TypeClassFile.directory.rawValue
+        let metadata = SendableItemMetadata(
+            ocId: NSFileProviderItemIdentifier.trashContainer.rawValue,
+            account: account.ncKitAccount,
+            assetLocalIdentifier: "", // Placeholder as not set in original code
+            checksums: "", // Placeholder as not set in original code
+            chunkUploadId: "", // Placeholder as not set in original code
+            classFile: NKCommon.TypeClassFile.directory.rawValue,
+            commentsUnread: false, // Default as not set in original code
+            contentType: "", // Placeholder as not set in original code
+            creationDate: Date(), // Default as not set in original code
+            dataFingerprint: "", // Placeholder as not set in original code
+            date: Date(), // Default as not set in original code
+            directory: true,
+            deleteAssetLocalIdentifier: false, // Default as not set in original code
+            downloadURL: "", // Placeholder as not set in original code
+            e2eEncrypted: false, // Default as not set in original code
+            edited: false, // Default as not set in original code
+            etag: "", // Placeholder as not set in original code
+            etagResource: "", // Placeholder as not set in original code
+            favorite: false, // Default as not set in original code
+            fileId: "", // Placeholder as not set in original code
+            fileName: "Trash",
+            fileNameView: "Trash",
+            hasPreview: false, // Default as not set in original code
+            iconName: "", // Placeholder as not set in original code
+            iconUrl: "", // Placeholder as not set in original code
+            isExtractFile: false, // Default as not set in original code
+            livePhoto: false, // Default as not set in original code
+            mountType: "", // Placeholder as not set in original code
+            name: "", // Placeholder as not set in original code
+            note: "", // Placeholder as not set in original code
+            ownerId: "", // Placeholder as not set in original code
+            ownerDisplayName: "", // Placeholder as not set in original code
+            lock: false, // Default as not set in original code
+            lockOwner: "", // Placeholder as not set in original code
+            lockOwnerEditor: "", // Placeholder as not set in original code
+            lockOwnerType: 0, // Default as not set in original code
+            lockOwnerDisplayName: "", // Placeholder as not set in original code
+            lockTime: nil, // Default as not set in original code
+            lockTimeOut: nil, // Default as not set in original code
+            path: "", // Placeholder as not set in original code
+            permissions: "", // Placeholder as not set in original code
+            quotaUsedBytes: 0, // Default as not set in original code
+            quotaAvailableBytes: 0, // Default as not set in original code
+            resourceType: "", // Placeholder as not set in original code
+            richWorkspace: nil, // Default as not set in original code
+            serverUrl: account.trashUrl,
+            session: "", // Placeholder as not set in original code
+            sessionError: "", // Placeholder as not set in original code
+            sessionSelector: "", // Placeholder as not set in original code
+            sessionTaskIdentifier: 0, // Default as not set in original code
+            sharePermissionsCollaborationServices: 0, // Default as not set in original code
+            sharePermissionsCloudMesh: [], // Default as not set in original code
+            size: 0, // Default as not set in original code
+            status: 0, // Default as not set in original code
+            downloaded: false, // Default as not set in original code
+            uploaded: false, // Default as not set in original code
+            subline: nil, // Default as not set in original code
+            trashbinFileName: "", // Placeholder as not set in original code
+            trashbinOriginalLocation: "", // Placeholder as not set in original code
+            trashbinDeletionTime: Date(), // Placeholder as not set in original code
+            uploadDate: Date(), // Default as not set in original code
+            url: "", // Placeholder as not set in original code
+            urlBase: "", // Placeholder as not set in original code
+            user: "", // Placeholder as not set in original code
+            userId: "" // Placeholder as not set in original code
+        )
         return Item(
             metadata: metadata,
             parentItemIdentifier: .trashContainer,

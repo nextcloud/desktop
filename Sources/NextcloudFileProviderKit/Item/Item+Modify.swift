@@ -642,7 +642,7 @@ public extension Item {
             else {
                 Self.logger.info(
                     """
-                    Skipping post-trash child item metadata: \(metadata, privacy: .public)
+                    Skipping post-trash child item metadata: \(metadata.fileName, privacy: .public)
                         Could not find matching existing item in database, cannot do ocId correction
                     """
                 )

@@ -173,23 +173,73 @@ extension Item {
             )
         }
         
-        let newMetadata = SendableItemMetadata()
-        newMetadata.date = date ?? Date()
-        newMetadata.etag = etag ?? ""
-        newMetadata.account = account.ncKitAccount
-        newMetadata.fileName = itemTemplate.filename
-        newMetadata.fileNameView = itemTemplate.filename
-        newMetadata.ocId = ocId
-        newMetadata.size = size ?? 0
-        newMetadata.contentType = itemTemplate.contentType?.preferredMIMEType ?? ""
-        newMetadata.directory = false
-        newMetadata.serverUrl = parentItemRemotePath
-        newMetadata.session = ""
-        newMetadata.sessionError = ""
-        newMetadata.sessionTaskIdentifier = 0
-        newMetadata.status = SendableItemMetadata.Status.normal.rawValue
-        newMetadata.downloaded = true
-        newMetadata.uploaded = true
+        let newMetadata = SendableItemMetadata(
+            ocId: ocId,
+            account: account.ncKitAccount,
+            assetLocalIdentifier: "", // Placeholder as not set in original code
+            checksums: "", // Placeholder as not set in original code
+            chunkUploadId: "", // Placeholder as not set in original code
+            classFile: "", // Placeholder as not set in original code
+            commentsUnread: false, // Default as not set in original code
+            contentType: itemTemplate.contentType?.preferredMIMEType ?? "",
+            creationDate: Date(), // Default as not set in original code
+            dataFingerprint: "", // Placeholder as not set in original code
+            date: date ?? Date(),
+            directory: false,
+            deleteAssetLocalIdentifier: false, // Default as not set in original code
+            downloadURL: "", // Placeholder as not set in original code
+            e2eEncrypted: false, // Default as not set in original code
+            edited: false, // Default as not set in original code
+            etag: etag ?? "",
+            etagResource: "", // Placeholder as not set in original code
+            favorite: false, // Default as not set in original code
+            fileId: "", // Placeholder as not set in original code
+            fileName: itemTemplate.filename,
+            fileNameView: itemTemplate.filename,
+            hasPreview: false, // Default as not set in original code
+            iconName: "", // Placeholder as not set in original code
+            iconUrl: "", // Placeholder as not set in original code
+            isExtractFile: false, // Default as not set in original code
+            livePhoto: false, // Default as not set in original code
+            mountType: "", // Placeholder as not set in original code
+            name: "", // Placeholder as not set in original code
+            note: "", // Placeholder as not set in original code
+            ownerId: "", // Placeholder as not set in original code
+            ownerDisplayName: "", // Placeholder as not set in original code
+            lock: false, // Default as not set in original code
+            lockOwner: "", // Placeholder as not set in original code
+            lockOwnerEditor: "", // Placeholder as not set in original code
+            lockOwnerType: 0, // Default as not set in original code
+            lockOwnerDisplayName: "", // Placeholder as not set in original code
+            lockTime: nil, // Default as not set in original code
+            lockTimeOut: nil, // Default as not set in original code
+            path: "", // Placeholder as not set in original code
+            permissions: "", // Placeholder as not set in original code
+            quotaUsedBytes: 0, // Default as not set in original code
+            quotaAvailableBytes: 0, // Default as not set in original code
+            resourceType: "", // Placeholder as not set in original code
+            richWorkspace: nil, // Default as not set in original code
+            serverUrl: parentItemRemotePath,
+            session: "",
+            sessionError: "",
+            sessionSelector: "", // Placeholder as not set in original code
+            sessionTaskIdentifier: 0,
+            sharePermissionsCollaborationServices: 0, // Default as not set in original code
+            sharePermissionsCloudMesh: [], // Default as not set in original code
+            size: size ?? 0,
+            status: Status.normal.rawValue,
+            downloaded: true,
+            uploaded: true,
+            subline: nil, // Default as not set in original code
+            trashbinFileName: "", // Placeholder as not set in original code
+            trashbinOriginalLocation: "", // Placeholder as not set in original code
+            trashbinDeletionTime: Date(), // Placeholder as not set in original code
+            uploadDate: Date(), // Default as not set in original code
+            url: "", // Placeholder as not set in original code
+            urlBase: "", // Placeholder as not set in original code
+            user: "", // Placeholder as not set in original code
+            userId: "" // Placeholder as not set in original code
+        )
 
         dbManager.addItemMetadata(newMetadata)
         

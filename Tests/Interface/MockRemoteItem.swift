@@ -160,37 +160,79 @@ public class MockRemoteItem: Equatable {
         let fileName = originalFileName ?? name
         let serverUrlTrimCount = name.count
 
-        let metadata = SendableItemMetadata()
-        metadata.ocId = identifier
-        metadata.fileId = identifier.replacingOccurrences(of: trashedItemIdSuffix, with: "")
-        metadata.etag = versionIdentifier
-        metadata.directory = directory
-        metadata.name = name
-        metadata.fileName = name
-        metadata.fileNameView = name
-        metadata.trashbinOriginalLocation = trashbinOriginalLocation ?? ""
-        metadata.serverUrl = remotePath
-        metadata.serverUrl.removeSubrange(
+        var trimmedServerUrl = remotePath
+        trimmedServerUrl.removeSubrange(
             remotePath.index(
                 remotePath.endIndex, offsetBy: -(serverUrlTrimCount + 1) // Remove trailing slash
             )..<remotePath.endIndex
         )
-        metadata.date = modificationDate
-        metadata.creationDate = creationDate
-        metadata.size = size
-        metadata.urlBase = account.serverUrl
-        metadata.userId = account.id
-        metadata.user = account.username
-        metadata.account = account.ncKitAccount
 
-        if (trashbinOriginalLocation != nil) {
-            metadata.trashbinFileName = fileName
-        }
-        if directory {
-            metadata.classFile = NKCommon.TypeClassFile.directory.rawValue
-            metadata.contentType = UTType.folder.identifier
-        }
-
-        return metadata
+        return SendableItemMetadata(
+            ocId: identifier,
+            account: account.ncKitAccount,
+            assetLocalIdentifier: "", // Placeholder as not set in original code
+            checksums: "", // Placeholder as not set in original code
+            chunkUploadId: "", // Placeholder as not set in original code
+            classFile: directory ? NKCommon.TypeClassFile.directory.rawValue : "",
+            commentsUnread: false, // Default as not set in original code
+            contentType: directory ? UTType.folder.identifier : "",
+            creationDate: creationDate, // Use provided or fallback to default
+            dataFingerprint: "", // Placeholder as not set in original code
+            date: modificationDate, // Use provided or fallback to default
+            directory: directory,
+            deleteAssetLocalIdentifier: false, // Default as not set in original code
+            downloadURL: "", // Placeholder as not set in original code
+            e2eEncrypted: false, // Default as not set in original code
+            edited: false, // Default as not set in original code
+            etag: versionIdentifier,
+            etagResource: "", // Placeholder as not set in original code
+            favorite: false, // Default as not set in original code
+            fileId: identifier.replacingOccurrences(of: trashedItemIdSuffix, with: ""),
+            fileName: name,
+            fileNameView: name,
+            hasPreview: false, // Default as not set in original code
+            iconName: "", // Placeholder as not set in original code
+            iconUrl: "", // Placeholder as not set in original code
+            isExtractFile: false, // Default as not set in original code
+            livePhoto: false, // Default as not set in original code
+            mountType: "", // Placeholder as not set in original code
+            name: name,
+            note: "", // Placeholder as not set in original code
+            ownerId: "", // Placeholder as not set in original code
+            ownerDisplayName: "", // Placeholder as not set in original code
+            lock: false, // Default as not set in original code
+            lockOwner: "", // Placeholder as not set in original code
+            lockOwnerEditor: "", // Placeholder as not set in original code
+            lockOwnerType: 0, // Default as not set in original code
+            lockOwnerDisplayName: "", // Placeholder as not set in original code
+            lockTime: nil, // Default as not set in original code
+            lockTimeOut: nil, // Default as not set in original code
+            path: "", // Placeholder as not set in original code
+            permissions: "", // Placeholder as not set in original code
+            quotaUsedBytes: 0, // Default as not set in original code
+            quotaAvailableBytes: 0, // Default as not set in original code
+            resourceType: "", // Placeholder as not set in original code
+            richWorkspace: nil, // Default as not set in original code
+            serverUrl: trimmedServerUrl,
+            session: "", // Placeholder as not set in original code
+            sessionError: "", // Placeholder as not set in original code
+            sessionSelector: "", // Placeholder as not set in original code
+            sessionTaskIdentifier: 0, // Default as not set in original code
+            sharePermissionsCollaborationServices: 0, // Default as not set in original code
+            sharePermissionsCloudMesh: [], // Default as not set in original code
+            size: size,
+            status: 0, // Default as not set in original code
+            downloaded: false, // Default as not set in original code
+            uploaded: false, // Default as not set in original code
+            subline: nil, // Default as not set in original code
+            trashbinFileName: trashbinOriginalLocation != nil ? fileName : "",
+            trashbinOriginalLocation: trashbinOriginalLocation ?? "",
+            trashbinDeletionTime: Date(), // Placeholder as not set in original code
+            uploadDate: Date(), // Default as not set in original code
+            url: "", // Placeholder as not set in original code
+            urlBase: account.serverUrl,
+            user: account.username,
+            userId: account.id
+        )
     }
 }

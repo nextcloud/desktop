@@ -39,7 +39,195 @@ public enum SharePermissions: Int {
     case maxFolderShare = 31
 }
 
-public class RealmItemMetadata: Object {
+public protocol ItemMetadata: Equatable {
+    var ocId: String { get set }
+    var account: String { get set }
+    var assetLocalIdentifier: String { get set }
+    var checksums: String { get set }
+    var chunkUploadId: String { get set }
+    var classFile: String { get set }
+    var commentsUnread: Bool { get set }
+    var contentType: String { get set }
+    var creationDate: Date { get set }
+    var dataFingerprint: String { get set }
+    var date: Date { get set }
+    var directory: Bool { get set }
+    var deleteAssetLocalIdentifier: Bool { get set }
+    var downloadURL: String { get set }
+    var e2eEncrypted: Bool { get set }
+    var edited: Bool { get set }
+    var etag: String { get set }
+    var etagResource: String { get set }
+    var favorite: Bool { get set }
+    var fileId: String { get set }
+    var fileName: String { get set } // What the file's real file name is
+    var fileNameView: String { get set } // What the user sees (usually same as fileName)
+    var hasPreview: Bool { get set }
+    var iconName: String { get set }
+    var iconUrl: String { get set }
+    var isExtractFile: Bool { get set }
+    var livePhoto: Bool { get set }
+    var mountType: String { get set }
+    var name: String { get set }  // for unifiedSearch is the provider.id
+    var note: String { get set }
+    var ownerId: String { get set }
+    var ownerDisplayName: String { get set }
+    var lock: Bool { get set }
+    var lockOwner: String { get set }
+    var lockOwnerEditor: String { get set }
+    var lockOwnerType: Int { get set }
+    var lockOwnerDisplayName: String { get set }
+    var lockTime: Date? { get set } // Time the file was locked
+    var lockTimeOut: Date? { get set } // Time the file's lock will expire
+    var path: String { get set }
+    var permissions: String { get set }
+    var quotaUsedBytes: Int64 { get set }
+    var quotaAvailableBytes: Int64 { get set }
+    var resourceType: String { get set }
+    var richWorkspace: String? { get set }
+    var serverUrl: String { get set }  // For parent folder! Build remote url by adding fileName
+    var session: String { get set }
+    var sessionError: String { get set }
+    var sessionSelector: String { get set }
+    var sessionTaskIdentifier: Int { get set }
+    var sharePermissionsCollaborationServices: Int { get set }
+    // TODO: Find a way to compare these two below in remote state check
+    var sharePermissionsCloudMesh: [String] { get set }
+    var size: Int64 { get set }
+    var status: Int { get set }
+    var downloaded: Bool { get set }
+    var uploaded: Bool { get set }
+    var subline: String? { get set }
+    var trashbinFileName: String { get set }
+    var trashbinOriginalLocation: String { get set }
+    var trashbinDeletionTime: Date { get set }
+    var uploadDate: Date { get set }
+    var url: String { get set }
+    var urlBase: String { get set }
+    var user: String { get set } // The user who owns the file (Nextcloud username)
+    var userId: String { get set } // The user who owns the file (backend user id)
+                                   // (relevant for alt. backends like LDAP)
+}
+
+public extension ItemMetadata {
+    var fileExtension: String {
+        (fileNameView as NSString).pathExtension
+    }
+
+    var fileNoExtension: String {
+        (fileNameView as NSString).deletingPathExtension
+    }
+
+    var isRenameable: Bool {
+        lock
+    }
+
+    var isPrintable: Bool {
+        if isDocumentViewableOnly {
+            return false
+        }
+        if ["application/pdf", "com.adobe.pdf"].contains(contentType)
+            || contentType.hasPrefix("text/")
+            || classFile == NKCommon.TypeClassFile.image.rawValue
+        {
+            return true
+        }
+        return false
+    }
+
+    var isDocumentViewableOnly: Bool {
+        sharePermissionsCollaborationServices == SharePermissions.readShare.rawValue
+            && classFile == NKCommon.TypeClassFile.document.rawValue
+    }
+
+    var isCopyableInPasteboard: Bool {
+        !isDocumentViewableOnly && !directory
+    }
+
+    var isModifiableWithQuickLook: Bool {
+        if directory || isDocumentViewableOnly {
+            return false
+        }
+        return contentType == "com.adobe.pdf" || contentType == "application/pdf"
+            || classFile == NKCommon.TypeClassFile.image.rawValue
+    }
+
+    var isSettableOnOffline: Bool {
+        session.isEmpty && !isDocumentViewableOnly
+    }
+
+    var canOpenIn: Bool {
+        session.isEmpty && !isDocumentViewableOnly && !directory
+    }
+
+    var isDownloadUpload: Bool {
+        status == Status.inDownload.rawValue || status == Status.downloading.rawValue
+            || status == Status.inUpload.rawValue || status == Status.uploading.rawValue
+    }
+
+    var isDownload: Bool {
+        status == Status.inDownload.rawValue || status == Status.downloading.rawValue
+    }
+
+    var isUpload: Bool {
+        status == Status.inUpload.rawValue || status == Status.uploading.rawValue
+    }
+
+    var isTrashed: Bool {
+        serverUrl.hasPrefix(urlBase + Account.webDavTrashUrlSuffix + userId + "/trash")
+    }
+
+    mutating func apply(fileName: String) {
+        self.fileName = fileName
+        fileNameView = fileName
+        name = fileName
+    }
+
+    mutating func apply(account: Account) {
+        self.account = account.ncKitAccount
+        user = account.username
+        userId = account.id
+        urlBase = account.serverUrl
+    }
+
+    func isInSameDatabaseStoreableRemoteState(_ comparingMetadata: any ItemMetadata)
+        -> Bool
+    {
+        comparingMetadata.etag == etag
+            && comparingMetadata.fileNameView == fileNameView
+            && comparingMetadata.date == date
+            && comparingMetadata.permissions == permissions
+            && comparingMetadata.hasPreview == hasPreview
+            && comparingMetadata.note == note
+            && comparingMetadata.lock == lock
+            && comparingMetadata.sharePermissionsCollaborationServices
+                == sharePermissionsCollaborationServices
+            && comparingMetadata.favorite == favorite
+    }
+
+    /// Returns false if the user is lokced out of the file. I.e. The file is locked but by someone else
+    func canUnlock(as user: String) -> Bool {
+        !lock || (lockOwner == user && lockOwnerType == 0)
+    }
+
+    func thumbnailUrl(size: CGSize) -> URL? {
+        guard hasPreview else {
+            return nil
+        }
+
+        let urlBase = urlBase.urlEncoded!
+        // Leave the leading slash in webdavUrl
+        let webdavUrl = urlBase + Account.webDavFilesUrlSuffix + user
+        let serverFileRelativeUrl =
+            serverUrl.replacingOccurrences(of: webdavUrl, with: "") + "/" + fileName
+
+        let urlString =
+            "\(urlBase)/index.php/core/preview.png?file=\(serverFileRelativeUrl)&x=\(size.width)&y=\(size.height)&a=1&mode=cover"
+        return URL(string: urlString)
+    }
+}
+
+public class RealmItemMetadata: Object, ItemMetadata {
     @Persisted(primaryKey: true) public var ocId: String
     @Persisted public var account = ""
     @Persisted public var assetLocalIdentifier = ""
@@ -92,8 +280,7 @@ public class RealmItemMetadata: Object {
     @Persisted public var sessionTaskIdentifier: Int = 0
     @Persisted public var sharePermissionsCollaborationServices: Int = 0
     // TODO: Find a way to compare these two below in remote state check
-    public let sharePermissionsCloudMesh = List<String>()
-    public let shareType = List<Int>()
+    public var sharePermissionsCloudMesh = [String]()
     @Persisted public var size: Int64 = 0
     @Persisted public var status: Int = 0
     @Persisted public var downloaded = false
@@ -109,73 +296,6 @@ public class RealmItemMetadata: Object {
     @Persisted public var userId = "" // The user who owns the file (backend user id)
                                       // (relevant for alt. backends like LDAP)
 
-    public var fileExtension: String {
-        (fileNameView as NSString).pathExtension
-    }
-
-    public var fileNoExtension: String {
-        (fileNameView as NSString).deletingPathExtension
-    }
-
-    public var isRenameable: Bool {
-        lock
-    }
-
-    public var isPrintable: Bool {
-        if isDocumentViewableOnly {
-            return false
-        }
-        if ["application/pdf", "com.adobe.pdf"].contains(contentType)
-            || contentType.hasPrefix("text/")
-            || classFile == NKCommon.TypeClassFile.image.rawValue
-        {
-            return true
-        }
-        return false
-    }
-
-    public var isDocumentViewableOnly: Bool {
-        sharePermissionsCollaborationServices == SharePermissions.readShare.rawValue
-            && classFile == NKCommon.TypeClassFile.document.rawValue
-    }
-
-    public var isCopyableInPasteboard: Bool {
-        !isDocumentViewableOnly && !directory
-    }
-
-    public var isModifiableWithQuickLook: Bool {
-        if directory || isDocumentViewableOnly {
-            return false
-        }
-        return contentType == "com.adobe.pdf" || contentType == "application/pdf"
-            || classFile == NKCommon.TypeClassFile.image.rawValue
-    }
-
-    public var isSettableOnOffline: Bool {
-        session.isEmpty && !isDocumentViewableOnly
-    }
-
-    public var canOpenIn: Bool {
-        session.isEmpty && !isDocumentViewableOnly && !directory
-    }
-
-    public var isDownloadUpload: Bool {
-        status == Status.inDownload.rawValue || status == Status.downloading.rawValue
-            || status == Status.inUpload.rawValue || status == Status.uploading.rawValue
-    }
-
-    public var isDownload: Bool {
-        status == Status.inDownload.rawValue || status == Status.downloading.rawValue
-    }
-
-    public var isUpload: Bool {
-        status == Status.inUpload.rawValue || status == Status.uploading.rawValue
-    }
-
-    public var isTrashed: Bool {
-        serverUrl.hasPrefix(urlBase + Account.webDavTrashUrlSuffix + userId + "/trash")
-    }
-
     public override func isEqual(_ object: Any?) -> Bool {
         if let object = object as? RealmItemMetadata {
             return fileId == object.fileId && account == object.account && path == object.path
@@ -185,58 +305,349 @@ public class RealmItemMetadata: Object {
         return false
     }
 
-    public func isInSameDatabaseStoreableRemoteState(_ comparingMetadata: RealmItemMetadata)
-        -> Bool
-    {
-        comparingMetadata.etag == etag 
-            && comparingMetadata.fileNameView == fileNameView
-            && comparingMetadata.date == date 
-            && comparingMetadata.permissions == permissions
-            && comparingMetadata.hasPreview == hasPreview 
-            && comparingMetadata.note == note
-            && comparingMetadata.lock == lock
-            && comparingMetadata.sharePermissionsCollaborationServices
-                == sharePermissionsCollaborationServices
-            && comparingMetadata.favorite == favorite
-    }
-
-    /// Returns false if the user is lokced out of the file. I.e. The file is locked but by someone else
-    public func canUnlock(as user: String) -> Bool {
-        !lock || (lockOwner == user && lockOwnerType == 0)
-    }
-
-    public func thumbnailUrl(size: CGSize) -> URL? {
-        guard hasPreview else {
-            return nil
-        }
-
-        let urlBase = urlBase.urlEncoded!
-        // Leave the leading slash in webdavUrl
-        let webdavUrl = urlBase + Account.webDavFilesUrlSuffix + user
-        let serverFileRelativeUrl =
-            serverUrl.replacingOccurrences(of: webdavUrl, with: "") + "/" + fileName
-
-        let urlString =
-            "\(urlBase)/index.php/core/preview.png?file=\(serverFileRelativeUrl)&x=\(size.width)&y=\(size.height)&a=1&mode=cover"
-        return URL(string: urlString)
-    }
-
-    public func apply(fileName: String) {
-        self.fileName = fileName
-        fileNameView = fileName
-        name = fileName
-    }
-
-    public func apply(account: Account) {
-        self.account = account.ncKitAccount
-        user = account.username
-        userId = account.id
-        urlBase = account.serverUrl
+    convenience init(value: any ItemMetadata) {
+        self.init()
+        self.ocId = value.ocId
+        self.account = value.account
+        self.assetLocalIdentifier = value.assetLocalIdentifier
+        self.checksums = value.checksums
+        self.chunkUploadId = value.chunkUploadId
+        self.classFile = value.classFile
+        self.commentsUnread = value.commentsUnread
+        self.contentType = value.contentType
+        self.creationDate = value.creationDate
+        self.dataFingerprint = value.dataFingerprint
+        self.date = value.date
+        self.directory = value.directory
+        self.deleteAssetLocalIdentifier = value.deleteAssetLocalIdentifier
+        self.downloadURL = value.downloadURL
+        self.e2eEncrypted = value.e2eEncrypted
+        self.edited = value.edited
+        self.etag = value.etag
+        self.etagResource = value.etagResource
+        self.favorite = value.favorite
+        self.fileId = value.fileId
+        self.fileName = value.fileName
+        self.fileNameView = value.fileNameView
+        self.hasPreview = value.hasPreview
+        self.iconName = value.iconName
+        self.iconUrl = value.iconUrl
+        self.isExtractFile = value.isExtractFile
+        self.livePhoto = value.livePhoto
+        self.mountType = value.mountType
+        self.name = value.name
+        self.note = value.note
+        self.ownerId = value.ownerId
+        self.ownerDisplayName = value.ownerDisplayName
+        self.lock = value.lock
+        self.lockOwner = value.lockOwner
+        self.lockOwnerEditor = value.lockOwnerEditor
+        self.lockOwnerType = value.lockOwnerType
+        self.lockOwnerDisplayName = value.lockOwnerDisplayName
+        self.lockTime = value.lockTime
+        self.lockTimeOut = value.lockTimeOut
+        self.path = value.path
+        self.permissions = value.permissions
+        self.quotaUsedBytes = value.quotaUsedBytes
+        self.quotaAvailableBytes = value.quotaAvailableBytes
+        self.resourceType = value.resourceType
+        self.richWorkspace = value.richWorkspace
+        self.serverUrl = value.serverUrl
+        self.session = value.session
+        self.sessionError = value.sessionError
+        self.sessionSelector = value.sessionSelector
+        self.sessionTaskIdentifier = value.sessionTaskIdentifier
+        self.sharePermissionsCollaborationServices = value.sharePermissionsCollaborationServices
+        self.sharePermissionsCloudMesh = value.sharePermissionsCloudMesh
+        self.size = value.size
+        self.status = value.status
+        self.downloaded = value.downloaded
+        self.uploaded = value.uploaded
+        self.subline = value.subline
+        self.trashbinFileName = value.trashbinFileName
+        self.trashbinOriginalLocation = value.trashbinOriginalLocation
+        self.trashbinDeletionTime = value.trashbinDeletionTime
+        self.uploadDate = value.uploadDate
+        self.url = value.url
+        self.urlBase = value.urlBase
+        self.user = value.user
+        self.userId = value.userId
     }
 }
 
 /// Realm objects are inherently unsendable and not thread-safe **IF THEY ARE MANAGED.**
 /// Marking our ItemMetadata as an unchecked Sendable is a naughty thing to do. So make sure to check
 /// for ItemMetadata objects to be unmanaged before doing anything crossing actor boundaries.
-/// Also make sure this is the only type that is returned to other code that is unaware of Realm.
-public final class SendableItemMetadata: RealmItemMetadata, @unchecked Sendable {}
+/// Also make sure this is the only type that is returned to other code that is un
+///public protocol ItemMetadata {
+///
+/// aware of Realm.
+public struct SendableItemMetadata: ItemMetadata, Sendable {
+    public var ocId: String
+    public var account: String
+    public var assetLocalIdentifier: String
+    public var checksums: String
+    public var chunkUploadId: String
+    public var classFile: String
+    public var commentsUnread: Bool
+    public var contentType: String
+    public var creationDate: Date
+    public var dataFingerprint: String
+    public var date: Date
+    public var directory: Bool
+    public var deleteAssetLocalIdentifier: Bool
+    public var downloadURL: String
+    public var e2eEncrypted: Bool
+    public var edited: Bool
+    public var etag: String
+    public var etagResource: String
+    public var favorite: Bool
+    public var fileId: String
+    public var fileName: String
+    public var fileNameView: String
+    public var hasPreview: Bool
+    public var iconName: String
+    public var iconUrl: String
+    public var isExtractFile: Bool
+    public var livePhoto: Bool
+    public var mountType: String
+    public var name: String
+    public var note: String
+    public var ownerId: String
+    public var ownerDisplayName: String
+    public var lock: Bool
+    public var lockOwner: String
+    public var lockOwnerEditor: String
+    public var lockOwnerType: Int
+    public var lockOwnerDisplayName: String
+    public var lockTime: Date?
+    public var lockTimeOut: Date?
+    public var path: String
+    public var permissions: String
+    public var quotaUsedBytes: Int64
+    public var quotaAvailableBytes: Int64
+    public var resourceType: String
+    public var richWorkspace: String?
+    public var serverUrl: String
+    public var session: String
+    public var sessionError: String
+    public var sessionSelector: String
+    public var sessionTaskIdentifier: Int
+    public var sharePermissionsCollaborationServices: Int
+    public var sharePermissionsCloudMesh: [String]
+    public var size: Int64
+    public var status: Int
+    public var downloaded: Bool
+    public var uploaded: Bool
+    public var subline: String?
+    public var trashbinFileName: String
+    public var trashbinOriginalLocation: String
+    public var trashbinDeletionTime: Date
+    public var uploadDate: Date
+    public var url: String
+    public var urlBase: String
+    public var user: String
+    public var userId: String
+
+    public init(
+        ocId: String,
+        account: String,
+        assetLocalIdentifier: String,
+        checksums: String,
+        chunkUploadId: String,
+        classFile: String,
+        commentsUnread: Bool,
+        contentType: String,
+        creationDate: Date,
+        dataFingerprint: String,
+        date: Date,
+        directory: Bool,
+        deleteAssetLocalIdentifier: Bool,
+        downloadURL: String,
+        e2eEncrypted: Bool,
+        edited: Bool,
+        etag: String,
+        etagResource: String,
+        favorite: Bool,
+        fileId: String,
+        fileName: String,
+        fileNameView: String,
+        hasPreview: Bool,
+        iconName: String,
+        iconUrl: String,
+        isExtractFile: Bool,
+        livePhoto: Bool,
+        mountType: String,
+        name: String,
+        note: String,
+        ownerId: String,
+        ownerDisplayName: String,
+        lock: Bool,
+        lockOwner: String,
+        lockOwnerEditor: String,
+        lockOwnerType: Int,
+        lockOwnerDisplayName: String,
+        lockTime: Date?,
+        lockTimeOut: Date?,
+        path: String,
+        permissions: String,
+        quotaUsedBytes: Int64,
+        quotaAvailableBytes: Int64,
+        resourceType: String,
+        richWorkspace: String?,
+        serverUrl: String,
+        session: String,
+        sessionError: String,
+        sessionSelector: String,
+        sessionTaskIdentifier: Int,
+        sharePermissionsCollaborationServices: Int,
+        sharePermissionsCloudMesh: [String],
+        size: Int64,
+        status: Int,
+        downloaded: Bool,
+        uploaded: Bool,
+        subline: String?,
+        trashbinFileName: String,
+        trashbinOriginalLocation: String,
+        trashbinDeletionTime: Date,
+        uploadDate: Date,
+        url: String,
+        urlBase: String,
+        user: String,
+        userId: String
+    ) {
+        self.ocId = ocId
+        self.account = account
+        self.assetLocalIdentifier = assetLocalIdentifier
+        self.checksums = checksums
+        self.chunkUploadId = chunkUploadId
+        self.classFile = classFile
+        self.commentsUnread = commentsUnread
+        self.contentType = contentType
+        self.creationDate = creationDate
+        self.dataFingerprint = dataFingerprint
+        self.date = date
+        self.directory = directory
+        self.deleteAssetLocalIdentifier = deleteAssetLocalIdentifier
+        self.downloadURL = downloadURL
+        self.e2eEncrypted = e2eEncrypted
+        self.edited = edited
+        self.etag = etag
+        self.etagResource = etagResource
+        self.favorite = favorite
+        self.fileId = fileId
+        self.fileName = fileName
+        self.fileNameView = fileNameView
+        self.hasPreview = hasPreview
+        self.iconName = iconName
+        self.iconUrl = iconUrl
+        self.isExtractFile = isExtractFile
+        self.livePhoto = livePhoto
+        self.mountType = mountType
+        self.name = name
+        self.note = note
+        self.ownerId = ownerId
+        self.ownerDisplayName = ownerDisplayName
+        self.lock = lock
+        self.lockOwner = lockOwner
+        self.lockOwnerEditor = lockOwnerEditor
+        self.lockOwnerType = lockOwnerType
+        self.lockOwnerDisplayName = lockOwnerDisplayName
+        self.lockTime = lockTime
+        self.lockTimeOut = lockTimeOut
+        self.path = path
+        self.permissions = permissions
+        self.quotaUsedBytes = quotaUsedBytes
+        self.quotaAvailableBytes = quotaAvailableBytes
+        self.resourceType = resourceType
+        self.richWorkspace = richWorkspace
+        self.serverUrl = serverUrl
+        self.session = session
+        self.sessionError = sessionError
+        self.sessionSelector = sessionSelector
+        self.sessionTaskIdentifier = sessionTaskIdentifier
+        self.sharePermissionsCollaborationServices = sharePermissionsCollaborationServices
+        self.sharePermissionsCloudMesh = sharePermissionsCloudMesh
+        self.size = size
+        self.status = status
+        self.downloaded = downloaded
+        self.uploaded = uploaded
+        self.subline = subline
+        self.trashbinFileName = trashbinFileName
+        self.trashbinOriginalLocation = trashbinOriginalLocation
+        self.trashbinDeletionTime = trashbinDeletionTime
+        self.uploadDate = uploadDate
+        self.url = url
+        self.urlBase = urlBase
+        self.user = user
+        self.userId = userId
+    }
+
+    init(value: any ItemMetadata) {
+        self.ocId = value.ocId
+        self.account = value.account
+        self.assetLocalIdentifier = value.assetLocalIdentifier
+        self.checksums = value.checksums
+        self.chunkUploadId = value.chunkUploadId
+        self.classFile = value.classFile
+        self.commentsUnread = value.commentsUnread
+        self.contentType = value.contentType
+        self.creationDate = value.creationDate
+        self.dataFingerprint = value.dataFingerprint
+        self.date = value.date
+        self.directory = value.directory
+        self.deleteAssetLocalIdentifier = value.deleteAssetLocalIdentifier
+        self.downloadURL = value.downloadURL
+        self.e2eEncrypted = value.e2eEncrypted
+        self.edited = value.edited
+        self.etag = value.etag
+        self.etagResource = value.etagResource
+        self.favorite = value.favorite
+        self.fileId = value.fileId
+        self.fileName = value.fileName
+        self.fileNameView = value.fileNameView
+        self.hasPreview = value.hasPreview
+        self.iconName = value.iconName
+        self.iconUrl = value.iconUrl
+        self.isExtractFile = value.isExtractFile
+        self.livePhoto = value.livePhoto
+        self.mountType = value.mountType
+        self.name = value.name
+        self.note = value.note
+        self.ownerId = value.ownerId
+        self.ownerDisplayName = value.ownerDisplayName
+        self.lock = value.lock
+        self.lockOwner = value.lockOwner
+        self.lockOwnerEditor = value.lockOwnerEditor
+        self.lockOwnerType = value.lockOwnerType
+        self.lockOwnerDisplayName = value.lockOwnerDisplayName
+        self.lockTime = value.lockTime
+        self.lockTimeOut = value.lockTimeOut
+        self.path = value.path
+        self.permissions = value.permissions
+        self.quotaUsedBytes = value.quotaUsedBytes
+        self.quotaAvailableBytes = value.quotaAvailableBytes
+        self.resourceType = value.resourceType
+        self.richWorkspace = value.richWorkspace
+        self.serverUrl = value.serverUrl
+        self.session = value.session
+        self.sessionError = value.sessionError
+        self.sessionSelector = value.sessionSelector
+        self.sessionTaskIdentifier = value.sessionTaskIdentifier
+        self.sharePermissionsCollaborationServices = value.sharePermissionsCollaborationServices
+        self.sharePermissionsCloudMesh = value.sharePermissionsCloudMesh
+        self.size = value.size
+        self.status = value.status
+        self.downloaded = value.downloaded
+        self.uploaded = value.uploaded
+        self.subline = value.subline
+        self.trashbinFileName = value.trashbinFileName
+        self.trashbinOriginalLocation = value.trashbinOriginalLocation
+        self.trashbinDeletionTime = value.trashbinDeletionTime
+        self.uploadDate = value.uploadDate
+        self.url = value.url
+        self.urlBase = value.urlBase
+        self.user = value.user
+        self.userId = value.userId
+    }
+}
