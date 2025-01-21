@@ -118,9 +118,9 @@ extension Array<NKFile> {
         directoryMetadata: SendableItemMetadata,
         childDirectoriesMetadatas: [SendableItemMetadata],
         metadatas: [SendableItemMetadata]
-    ) {
+    )? {
         guard let targetDirectoryMetadata = first?.toItemMetadata() else {
-            return (SendableItemMetadata(), [], [])
+            return nil
         }
         let conversionActor = DirectoryReadConversionActor(target: targetDirectoryMetadata)
         await concurrentChunkedForEach { file in

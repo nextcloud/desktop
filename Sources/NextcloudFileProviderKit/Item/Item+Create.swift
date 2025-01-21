@@ -81,7 +81,11 @@ extension Item {
             return (nil, readError.fileProviderError)
         }
         
-        let (directoryMetadata, _, _) = await files.toDirectoryReadMetadatas(account: account)
+        guard let (directoryMetadata, _, _) = await files.toDirectoryReadMetadatas(account: account)
+        else {
+            Self.logger.error("Received nil directory read metadatas during conversion")
+            return (nil, NSFileProviderError(.noSuchItem))
+        }
         dbManager.addItemMetadata(directoryMetadata)
 
         let fpItem = Item(
