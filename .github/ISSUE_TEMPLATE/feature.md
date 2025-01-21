@@ -1,7 +1,7 @@
 ---
 name: 🚀 Feature request
 about: Suggest an idea for this app
-labels: 0. Needs triage, enhancement
+labels: 0. Needs triage
 type: Enhancement
 ---
 
