@@ -8,7 +8,7 @@
 import RealmSwift
 
 extension FilesDatabaseManager {
-    func trashedItemMetadatas(account: Account) -> [ItemMetadata] {
+    func trashedItemMetadatas(account: Account) -> [SendableItemMetadata] {
         ncDatabase()
             .objects(ItemMetadata.self)
             .where {

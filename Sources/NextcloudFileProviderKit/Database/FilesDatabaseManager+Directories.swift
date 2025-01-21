@@ -32,21 +32,26 @@ extension FilesDatabaseManager {
         childItems(directoryMetadata: directoryMetadata).count
     }
 
-    public func parentDirectoryMetadataForItem(_ itemMetadata: ItemMetadata) -> ItemMetadata? {
-        self.itemMetadata(account: itemMetadata.account, locatedAtRemoteUrl: itemMetadata.serverUrl)
+    public func parentDirectoryMetadataForItem(
+        _ itemMetadata: ItemMetadata
+    ) -> SendableItemMetadata? {
+        self.itemMetadata(
+            account: itemMetadata.account, locatedAtRemoteUrl: itemMetadata.serverUrl
+        )
     }
 
-    public func directoryMetadata(ocId: String) -> ItemMetadata? {
+    public func directoryMetadata(ocId: String) -> SendableItemMetadata? {
         if let metadata = itemMetadatas.where({ $0.ocId == ocId && $0.directory }).first {
-            return ItemMetadata(value: metadata)
+            return SendableItemMetadata(value: metadata)
         }
 
         return nil
     }
 
     // Deletes all metadatas related to the info of the directory provided
-    public func deleteDirectoryAndSubdirectoriesMetadata(ocId: String) -> [ItemMetadata]? {
-        let database = ncDatabase()
+    public func deleteDirectoryAndSubdirectoriesMetadata(
+        ocId: String
+    ) -> [SendableItemMetadata]? {
         guard let directoryMetadata = itemMetadatas
             .where({ $0.ocId == ocId && $0.directory })
             .first
@@ -60,7 +65,7 @@ extension FilesDatabaseManager {
             return nil
         }
 
-        let directoryMetadataCopy = ItemMetadata(value: directoryMetadata)
+        let directoryMetadataCopy = SendableItemMetadata(value: directoryMetadata)
         let directoryOcId = directoryMetadata.ocId
         let directoryUrlPath = directoryMetadata.serverUrl + "/" + directoryMetadata.fileName
         let directoryAccount = directoryMetadata.account
@@ -75,6 +80,7 @@ extension FilesDatabaseManager {
             """
         )
 
+        let database = ncDatabase()
         do {
             try database.write { database.delete(directoryMetadata) }
         } catch let error {
@@ -90,14 +96,14 @@ extension FilesDatabaseManager {
             return nil
         }
 
-        var deletedMetadatas: [ItemMetadata] = [directoryMetadataCopy]
+        var deletedMetadatas: [SendableItemMetadata] = [directoryMetadataCopy]
 
         let results = itemMetadatas.where {
             $0.account == directoryAccount && $0.serverUrl.starts(with: directoryUrlPath)
         }
 
         for result in results {
-            let inactiveItemMetadata = ItemMetadata(value: result)
+            let inactiveItemMetadata = SendableItemMetadata(value: result)
             do {
                 try database.write { database.delete(result) }
                 deletedMetadatas.append(inactiveItemMetadata)
@@ -128,7 +134,7 @@ extension FilesDatabaseManager {
 
     public func renameDirectoryAndPropagateToChildren(
         ocId: String, newServerUrl: String, newFileName: String
-    ) -> [ItemMetadata]? {
+    ) -> [SendableItemMetadata]? {
         guard let directoryMetadata = itemMetadatas
             .where({ $0.ocId == ocId && $0.directory })
             .first

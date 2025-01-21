@@ -106,21 +106,20 @@ public class FilesDatabaseManager {
         !itemMetadatas.where({ $0.account == account }).isEmpty
     }
 
-    public func itemMetadata(ocId: String, managed: Bool = false) -> ItemMetadata? {
+    public func itemMetadata(ocId: String) -> SendableItemMetadata? {
         // Realm objects are live-fire, i.e. they will be changed and invalidated according to
         // changes in the db.
         //
         // Let's therefore create a copy
         if let itemMetadata = itemMetadatas.where({ $0.ocId == ocId }).first {
-            return managed ? itemMetadata : ItemMetadata(value: itemMetadata)
+            return SendableItemMetadata(value: itemMetadata)
         }
-
         return nil
     }
 
     public func itemMetadata(
         account: String, locatedAtRemoteUrl remoteUrl: String // Is the URL for the actual item
-    ) -> ItemMetadata? {
+    ) -> SendableItemMetadata? {
         guard let actualRemoteUrl = URL(string: remoteUrl) else { return nil }
         let fileName = actualRemoteUrl.lastPathComponent
         guard var serverUrl = actualRemoteUrl
@@ -134,18 +133,20 @@ public class FilesDatabaseManager {
         if let metadata = itemMetadatas.where({
             $0.account == account && $0.serverUrl == serverUrl && $0.fileName == fileName
         }).first {
-            return ItemMetadata(value: metadata)
+            return SendableItemMetadata(value: metadata)
         }
         return nil
     }
 
-    public func itemMetadatas(account: String) -> [ItemMetadata] {
+    public func itemMetadatas(account: String) -> [SendableItemMetadata] {
         itemMetadatas
             .where { $0.account == account }
             .toUnmanagedResults()
     }
 
-    public func itemMetadatas(account: String, underServerUrl serverUrl: String) -> [ItemMetadata] {
+    public func itemMetadatas(
+        account: String, underServerUrl serverUrl: String
+    ) -> [SendableItemMetadata] {
         itemMetadatas
             .where { $0.account == account && $0.serverUrl.starts(with: serverUrl) }
             .toUnmanagedResults()
@@ -153,7 +154,7 @@ public class FilesDatabaseManager {
 
     public func itemMetadataFromFileProviderItemIdentifier(
         _ identifier: NSFileProviderItemIdentifier
-    ) -> ItemMetadata? {
+    ) -> SendableItemMetadata? {
         itemMetadata(ocId: identifier.rawValue)
     }
 
@@ -165,7 +166,7 @@ public class FilesDatabaseManager {
 
         for existingMetadata in existingMetadatas {
             guard !updatedMetadatas.contains(where: { $0.ocId == existingMetadata.ocId }),
-                  let metadataToDelete = itemMetadata(ocId: existingMetadata.ocId, managed: true)
+                  let metadataToDelete = itemMetadatas.where({ $0.ocId == existingMetadata.ocId }).first
             else { continue }
 
             deletedMetadatas.append(metadataToDelete)
@@ -180,15 +181,16 @@ public class FilesDatabaseManager {
 
     private func processItemMetadatasToUpdate(
         existingMetadatas: Results<ItemMetadata>,
-        updatedMetadatas: [ItemMetadata],
+        updatedMetadatas: [SendableItemMetadata],
         updateDirectoryEtags: Bool
     ) -> (
-        newMetadatas: [ItemMetadata], updatedMetadatas: [ItemMetadata],
-        directoriesNeedingRename: [ItemMetadata]
+        newMetadatas: [SendableItemMetadata],
+        updatedMetadatas: [SendableItemMetadata],
+        directoriesNeedingRename: [SendableItemMetadata]
     ) {
-        var returningNewMetadatas: [ItemMetadata] = []
-        var returningUpdatedMetadatas: [ItemMetadata] = []
-        var directoriesNeedingRename: [ItemMetadata] = []
+        var returningNewMetadatas: [SendableItemMetadata] = []
+        var returningUpdatedMetadatas: [SendableItemMetadata] = []
+        var directoriesNeedingRename: [SendableItemMetadata] = []
 
         for updatedMetadata in updatedMetadatas {
             if let existingMetadata = existingMetadatas.first(where: {
@@ -254,12 +256,12 @@ public class FilesDatabaseManager {
     public func updateItemMetadatas(
         account: String,
         serverUrl: String,
-        updatedMetadatas: [ItemMetadata],
+        updatedMetadatas: [SendableItemMetadata],
         updateDirectoryEtags: Bool
     ) -> (
-        newMetadatas: [ItemMetadata]?,
-        updatedMetadatas: [ItemMetadata]?,
-        deletedMetadatas: [ItemMetadata]?
+        newMetadatas: [SendableItemMetadata]?,
+        updatedMetadatas: [SendableItemMetadata]?,
+        deletedMetadatas: [SendableItemMetadata]?
     ) {
         let database = ncDatabase()
 
@@ -276,7 +278,7 @@ public class FilesDatabaseManager {
             let metadatasToDelete = processItemMetadatasToDelete(
                 existingMetadatas: existingMetadatas,
                 updatedMetadatas: updatedMetadatas)
-            let metadatasToDeleteCopy = metadatasToDelete.map { ItemMetadata(value: $0) }
+            let metadatasToDeleteCopy = metadatasToDelete.map { SendableItemMetadata(value: $0) }
 
             let metadatasToChange = processItemMetadatasToUpdate(
                 existingMetadatas: existingMetadatas,
@@ -303,11 +305,7 @@ public class FilesDatabaseManager {
                 database.add(metadatasToCreate.map { ItemMetadata(value: $0) }, update: .all)
             }
 
-            return (
-                newMetadatas: metadatasToCreate, 
-                updatedMetadatas: metadatasToUpdate,
-                deletedMetadatas: metadatasToDeleteCopy
-            )
+            return (metadatasToCreate, metadatasToUpdate, metadatasToDeleteCopy)
         } catch {
             Self.logger.error(
                 """
@@ -322,8 +320,8 @@ public class FilesDatabaseManager {
     // If setting a downloading or uploading status, also modified the relevant boolean properties
     // of the item metadata object
     public func setStatusForItemMetadata(
-        _ metadata: ItemMetadata, status: ItemMetadata.Status
-    ) -> ItemMetadata? {
+        _ metadata: SendableItemMetadata, status: ItemMetadata.Status
+    ) -> SendableItemMetadata? {
         guard let result = itemMetadatas.where({ $0.ocId == metadata.ocId }).first else {
             Self.logger.debug(
                 """
@@ -356,7 +354,7 @@ public class FilesDatabaseManager {
                     """
                 )
             }
-            return ItemMetadata(value: result)
+            return SendableItemMetadata(value: result)
         } catch {
             Self.logger.error(
                 """
@@ -372,7 +370,7 @@ public class FilesDatabaseManager {
         return nil
     }
 
-    public func addItemMetadata(_ metadata: ItemMetadata) {
+    public func addItemMetadata(_ metadata: SendableItemMetadata) {
         let database = ncDatabase()
 
         do {
@@ -476,7 +474,7 @@ public class FilesDatabaseManager {
     }
 
     public func parentItemIdentifierFromMetadata(
-        _ metadata: ItemMetadata
+        _ metadata: SendableItemMetadata
     ) -> NSFileProviderItemIdentifier? {
         let homeServerFilesUrl = metadata.urlBase + Account.webDavFilesUrlSuffix + metadata.userId
         let trashServerFilesUrl = metadata.urlBase + Account.webDavTrashUrlSuffix + metadata.userId + "/trash"
