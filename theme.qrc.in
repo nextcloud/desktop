@@ -248,5 +248,36 @@
         <file>theme/colored/IONOS_logo_w_suffix_frontend.svg</file>
         <file>fonts/OpenSans-SemiBold.ttf</file>
         <file>fonts/OpenSans-Regular.ttf</file>
+        <file>theme/ses/ses-accountDelete.svg</file>
+        <file>theme/ses/ses-accountLogout.svg</file>
+        <file>theme/ses/ses-accountPause.svg</file>
+        <file>theme/ses/ses-accountQuit.svg</file>
+        <file>theme/ses/ses-accountResume.svg</file>
+        <file>theme/ses/ses-activity.svg</file>
+        <file>theme/ses/ses-chevron.svg</file>
+        <file>theme/ses/ses-clipboard.svg</file>
+        <file>theme/ses/ses-darkPlus.svg</file>
+        <file>theme/ses/ses-addlivebackup.svg</file>
+        <file>theme/ses/ses-file.svg</file>
+        <file>theme/ses/ses-folderIcon.svg</file>
+        <file>theme/ses/ses-folderIconBright.svg</file>
+        <file>theme/ses/ses-syncstate-success.svg</file>
+        <file>theme/ses/ses-syncstate-syncing.svg</file>
+        <file>theme/ses/ses-syncstate-paused.svg</file>
+        <file>theme/ses/ses-syncstate-warning.svg</file>
+        <file>theme/ses/ses-syncstate-error.svg</file>
+        <file>theme/ses/ses-state-offline.svg</file>
+        <file>theme/ses/ses-snackbar-success.svg</file>
+        <file>theme/ses/ses-snackbar-warning.svg</file>
+        <file>theme/ses/ses-snackbar-error.svg</file>
+        <file>theme/ses/ses-more.svg</file>
+        <file>theme/ses/ses-questionmark.svg</file>
+        <file>theme/ses/ses-refresh.svg</file>
+        <file>theme/ses/ses-settings.svg</file>
+        <file>theme/ses/ses-settingsAvatar.svg</file>
+        <file>theme/ses/ses-info.svg</file>
+        <file>theme/ses/ses-syncArrows.svg</file>
+        <file>theme/ses/ses-external.svg</file>
+        <file>theme/ses/ses-website.svg</file>
     </qresource>
 </RCC>

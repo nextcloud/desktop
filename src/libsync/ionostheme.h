@@ -12,35 +12,59 @@ public:
 
     //Icons
     static QString avatarIcon() {
-        return QString(Theme::themePrefix) + QStringLiteral("colored/wizard-groupware.svg");
+        return QString(Theme::themePrefix) + QStringLiteral("ses/ses-settingsAvatar.svg");
     }
 
     static QString folderIcon() {
-        return QString(Theme::themePrefix) + QStringLiteral("black/folder.svg");
+        return QString(Theme::themePrefix) + QStringLiteral("ses/ses-folderIcon.svg");
     }
 
     static QString syncArrows() {
-        return QString(Theme::themePrefix) + QStringLiteral("sync-arrow.svg");
+        return QString(Theme::themePrefix) + QStringLiteral("ses/ses-syncArrows.svg");
     }
 
     static QString questionCircleIcon() {
-        return QString(Theme::themePrefix) + QStringLiteral("black/state-info.svg");
+        return QString(Theme::themePrefix) + QStringLiteral("ses/ses-questionMark.svg");
     }
 
     static QString liveBackupPlusIcon() {
-        return QString(Theme::themePrefix) + QStringLiteral("black/add.svg");
+        return QString(Theme::themePrefix) + QStringLiteral("ses/ses-addlivebackup.svg");
     }
 
     static QString plusIcon() {
-        return QStringLiteral("qrc:///client/theme/black/add.svg");
+        return QStringLiteral("qrc:///client/theme/ses/ses-darkPlus.svg");
     }
 
     static QString deleteIcon() {
-        return QStringLiteral("qrc:///client/theme/black/clear.svg");
+        return QStringLiteral("qrc:///client/theme/ses/ses-accountDelete.svg");
     }
 
     static QString refreshIcon() {
-        return QStringLiteral("qrc:///client/theme/black/change.svg");
+        return QStringLiteral("qrc:///client/theme/ses/ses-refresh.svg");
+    }
+
+    static QString syncSuccessIcon() {
+        return QStringLiteral("qrc:///client/theme/ses/ses-syncstatus-success.svg");
+    }
+
+    static QString syncWarnIcon() {
+        return QStringLiteral("qrc:///client/theme/ses/ses-syncstatus-warning.svg");
+    }
+
+    static QString syncErrorIcon() {
+        return QStringLiteral("qrc:///client/theme/ses/ses-syncstatus-error.svg");
+    }
+
+    static QString syncPausedIcon() {
+        return QStringLiteral("qrc:///client/theme/ses/ses-syncstatus-paused.svg");
+    }
+
+    static QString syncingIcon() {
+        return QStringLiteral("qrc:///client/theme/ses/ses-syncstatus-syncing.svg");
+    }
+
+    static QString syncOfflineIcon() {
+        return QStringLiteral("qrc:///client/theme/ses/ses-state-offline.svg");
     }
 
     static int treeViewIconSize() {
