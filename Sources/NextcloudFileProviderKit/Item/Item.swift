@@ -191,34 +191,19 @@ public class Item: NSObject, NSFileProviderItem {
             classFile: NKCommon.TypeClassFile.directory.rawValue,
             contentType: "", // Placeholder as not set in original code
             creationDate: Date(), // Default as not set in original code
-            date: Date(), // Default as not set in original code
             directory: true,
             e2eEncrypted: false, // Default as not set in original code
             etag: "", // Placeholder as not set in original code
-            favorite: false, // Default as not set in original code
             fileId: "", // Placeholder as not set in original code
             fileName: "/",
             fileNameView: "/",
             hasPreview: false, // Default as not set in original code
             iconName: "", // Placeholder as not set in original code
-            livePhoto: false, // Default as not set in original code
             mountType: "", // Placeholder as not set in original code
-            name: "", // Placeholder as not set in original code
-            note: "", // Placeholder as not set in original code
             ownerId: "", // Placeholder as not set in original code
             ownerDisplayName: "", // Placeholder as not set in original code
             path: "", // Placeholder as not set in original code
-            permissions: "", // Placeholder as not set in original code
-            quotaUsedBytes: 0, // Default as not set in original code
-            quotaAvailableBytes: 0, // Default as not set in original code
-            resourceType: "", // Placeholder as not set in original code
-            richWorkspace: nil, // Default as not set in original code
             serverUrl: account.davFilesUrl,
-            session: "", // Placeholder as not set in original code
-            sessionError: "", // Placeholder as not set in original code
-            sessionTaskIdentifier: 0, // Default as not set in original code
-            sharePermissionsCollaborationServices: 0, // Default as not set in original code
-            sharePermissionsCloudMesh: [], // Default as not set in original code
             size: 0, // Default as not set in original code
             urlBase: "", // Placeholder as not set in original code
             user: "", // Placeholder as not set in original code
@@ -239,34 +224,19 @@ public class Item: NSObject, NSFileProviderItem {
             classFile: NKCommon.TypeClassFile.directory.rawValue,
             contentType: "", // Placeholder as not set in original code
             creationDate: Date(), // Default as not set in original code
-            date: Date(), // Default as not set in original code
             directory: true,
             e2eEncrypted: false, // Default as not set in original code
             etag: "", // Placeholder as not set in original code
-            favorite: false, // Default as not set in original code
             fileId: "", // Placeholder as not set in original code
             fileName: "Trash",
             fileNameView: "Trash",
             hasPreview: false, // Default as not set in original code
             iconName: "", // Placeholder as not set in original code
-            livePhoto: false, // Default as not set in original code
             mountType: "", // Placeholder as not set in original code
-            name: "", // Placeholder as not set in original code
-            note: "", // Placeholder as not set in original code
             ownerId: "", // Placeholder as not set in original code
             ownerDisplayName: "", // Placeholder as not set in original code
             path: "", // Placeholder as not set in original code
-            permissions: "", // Placeholder as not set in original code
-            quotaUsedBytes: 0, // Default as not set in original code
-            quotaAvailableBytes: 0, // Default as not set in original code
-            resourceType: "", // Placeholder as not set in original code
-            richWorkspace: nil, // Default as not set in original code
             serverUrl: account.trashUrl,
-            session: "", // Placeholder as not set in original code
-            sessionError: "", // Placeholder as not set in original code
-            sessionTaskIdentifier: 0, // Default as not set in original code
-            sharePermissionsCollaborationServices: 0, // Default as not set in original code
-            sharePermissionsCloudMesh: [], // Default as not set in original code
             size: 0, // Default as not set in original code
             urlBase: "", // Placeholder as not set in original code
             user: "", // Placeholder as not set in original code

@@ -177,16 +177,13 @@ public class MockRemoteItem: Equatable {
             directory: directory,
             e2eEncrypted: false, // Default as not set in original code
             etag: versionIdentifier,
-            favorite: false, // Default as not set in original code
             fileId: identifier.replacingOccurrences(of: trashedItemIdSuffix, with: ""),
             fileName: name,
             fileNameView: name,
             hasPreview: false, // Default as not set in original code
             iconName: "", // Placeholder as not set in original code
-            livePhoto: false, // Default as not set in original code
             mountType: "", // Placeholder as not set in original code
             name: name,
-            note: "", // Placeholder as not set in original code
             ownerId: "", // Placeholder as not set in original code
             ownerDisplayName: "", // Placeholder as not set in original code
             lock: locked,
@@ -196,14 +193,7 @@ public class MockRemoteItem: Equatable {
             lockTime: nil, // Default as not set in original code
             lockTimeOut: lockTimeOut,
             path: "", // Placeholder as not set in original code
-            permissions: "", // Placeholder as not set in original code
-            quotaUsedBytes: 0, // Default as not set in original code
-            quotaAvailableBytes: 0, // Default as not set in original code
-            resourceType: "", // Placeholder as not set in original code
-            richWorkspace: nil, // Default as not set in original code
             serverUrl: trimmedServerUrl,
-            sharePermissionsCollaborationServices: 0, // Default as not set in original code
-            sharePermissionsCloudMesh: [], // Default as not set in original code
             size: size,
             trashbinFileName: trashbinOriginalLocation != nil ? fileName : "",
             trashbinOriginalLocation: trashbinOriginalLocation ?? "",

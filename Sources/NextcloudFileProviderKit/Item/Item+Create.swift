@@ -183,30 +183,16 @@ extension Item {
             directory: false,
             e2eEncrypted: false, // Default as not set in original code
             etag: etag ?? "",
-            favorite: false, // Default as not set in original code
             fileId: "", // Placeholder as not set in original code
             fileName: itemTemplate.filename,
             fileNameView: itemTemplate.filename,
             hasPreview: false, // Default as not set in original code
             iconName: "", // Placeholder as not set in original code
-            livePhoto: false, // Default as not set in original code
             mountType: "", // Placeholder as not set in original code
-            name: "", // Placeholder as not set in original code
-            note: "", // Placeholder as not set in original code
             ownerId: "", // Placeholder as not set in original code
             ownerDisplayName: "", // Placeholder as not set in original code
             path: "", // Placeholder as not set in original code
-            permissions: "", // Placeholder as not set in original code
-            quotaUsedBytes: 0, // Default as not set in original code
-            quotaAvailableBytes: 0, // Default as not set in original code
-            resourceType: "", // Placeholder as not set in original code
-            richWorkspace: nil, // Default as not set in original code
             serverUrl: parentItemRemotePath,
-            session: "",
-            sessionError: "",
-            sessionTaskIdentifier: 0,
-            sharePermissionsCollaborationServices: 0, // Default as not set in original code
-            sharePermissionsCloudMesh: [], // Default as not set in original code
             size: size ?? 0,
             status: Status.normal.rawValue,
             downloaded: true,
