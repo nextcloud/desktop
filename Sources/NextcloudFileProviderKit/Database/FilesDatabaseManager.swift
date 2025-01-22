@@ -20,7 +20,7 @@ import RealmSwift
 fileprivate let stable1_0SchemaVersion: UInt64 = 100
 fileprivate let stable2_0SchemaVersion: UInt64 = 200 // Major change: deleted LocalFileMetadata type
 
-public class FilesDatabaseManager {
+public final class FilesDatabaseManager: Sendable {
     public static let shared = FilesDatabaseManager()!
 
     private static let relativeDatabaseFolderPath = "Database/"
