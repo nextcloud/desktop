@@ -176,7 +176,7 @@ public extension ItemMetadata {
     }
 }
 
-public class RealmItemMetadata: Object, ItemMetadata {
+internal class RealmItemMetadata: Object, ItemMetadata {
     @Persisted(primaryKey: true) public var ocId: String
     @Persisted public var account = ""
     @Persisted public var checksums = ""
@@ -335,10 +335,8 @@ public class RealmItemMetadata: Object, ItemMetadata {
     }
 }
 
-/// Realm objects are inherently unsendable and not thread-safe **IF THEY ARE MANAGED.**
-/// Marking our ItemMetadata as an unchecked Sendable is a naughty thing to do. So make sure to check
-/// for ItemMetadata objects to be unmanaged before doing anything crossing actor boundaries.
-/// Also make sure this is the only type that is returned to other code that is unaware of Realm.
+/// Realm objects are inherently unsendable and not thread-safe. **DON'T EXPOSE THEM.**
+/// Make sure this is the only type that is returned to other code that is unaware of Realm.
 public struct SendableItemMetadata: ItemMetadata, Sendable {
     public var ocId: String
     public var account: String
