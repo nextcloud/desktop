@@ -1679,7 +1679,7 @@ void ProcessDirectoryJob::processFileFinalize(
         item->_type = CSyncEnums::ItemTypeVirtualFileDehydration;
     }
 
-    if (item->_instruction != CSyncEnums::CSYNC_INSTRUCTION_NONE &&
+    if (item->_instruction == CSyncEnums::CSYNC_INSTRUCTION_NONE &&
         !item->isDirectory() &&
         _discoveryData->_syncOptions._vfs &&
         _discoveryData->_syncOptions._vfs->mode() == OCC::Vfs::Off &&
