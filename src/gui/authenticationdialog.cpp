@@ -43,6 +43,7 @@ AuthenticationDialog::AuthenticationDialog(const QString &realm, const QString &
     connect(box, &QDialogButtonBox::accepted, this, &QDialog::accept);
     connect(box, &QDialogButtonBox::rejected, this, &QDialog::reject);
     lay->addWidget(box);
+    setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
 }
 
 QString AuthenticationDialog::user() const

@@ -24,6 +24,7 @@ LegalNotice::LegalNotice(QDialog *parent)
     , _ui(new Ui::LegalNotice)
 {
     _ui->setupUi(this);
+    setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
 
     connect(_ui->closeButton, &QPushButton::clicked, this, &LegalNotice::accept);
 

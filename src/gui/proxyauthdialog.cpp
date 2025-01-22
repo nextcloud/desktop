@@ -22,6 +22,7 @@ ProxyAuthDialog::ProxyAuthDialog(QWidget *parent)
     , ui(new Ui::ProxyAuthDialog)
 {
     ui->setupUi(this);
+    setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
 }
 
 ProxyAuthDialog::~ProxyAuthDialog()
