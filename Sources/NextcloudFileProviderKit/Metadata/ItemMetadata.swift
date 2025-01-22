@@ -232,7 +232,14 @@ public class RealmItemMetadata: Object, ItemMetadata {
     }
     @Persisted public var sharePermissionsCollaborationServices: Int = 0
     // TODO: Find a way to compare these two below in remote state check
-    public var sharePermissionsCloudMesh = [String]()
+    @Persisted public var storedSharePermissionsCloudMesh = List<String>()
+    public var sharePermissionsCloudMesh: [String] {
+        get { storedSharePermissionsCloudMesh.map { $0 } }
+        set {
+            storedSharePermissionsCloudMesh = List<String>()
+            storedSharePermissionsCloudMesh.append(objectsIn: newValue)
+        }
+    }
     @Persisted public var size: Int64 = 0
     @Persisted public var status: Int = 0
     @Persisted public var storedTags = List<String>()
