@@ -342,7 +342,7 @@ public final class FilesDatabaseManager: Sendable {
                     result.uploaded = false
                     result.chunkUploadId = UUID().uuidString
                 } else if status == .normal, metadata.isUpload {
-                    result.chunkUploadId = ""
+                    result.chunkUploadId = nil
                 }
 
                 Self.logger.debug(

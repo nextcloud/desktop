@@ -43,7 +43,7 @@ public protocol ItemMetadata: Equatable {
     var ocId: String { get set }
     var account: String { get set }
     var checksums: String { get set }
-    var chunkUploadId: String { get set }
+    var chunkUploadId: String? { get set }
     var classFile: String { get set }
     var commentsUnread: Bool { get set }
     var contentType: String { get set }
@@ -173,7 +173,7 @@ public class RealmItemMetadata: Object, ItemMetadata {
     @Persisted(primaryKey: true) public var ocId: String
     @Persisted public var account = ""
     @Persisted public var checksums = ""
-    @Persisted public var chunkUploadId: String = ""
+    @Persisted public var chunkUploadId: String?
     @Persisted public var classFile = ""
     @Persisted public var commentsUnread: Bool = false
     @Persisted public var contentType = ""
@@ -309,7 +309,7 @@ public struct SendableItemMetadata: ItemMetadata, Sendable {
     public var ocId: String
     public var account: String
     public var checksums: String
-    public var chunkUploadId: String
+    public var chunkUploadId: String?
     public var classFile: String
     public var commentsUnread: Bool
     public var contentType: String
@@ -368,7 +368,7 @@ public struct SendableItemMetadata: ItemMetadata, Sendable {
         ocId: String,
         account: String,
         checksums: String = "",
-        chunkUploadId: String = "",
+        chunkUploadId: String? = nil,
         classFile: String,
         commentsUnread: Bool = false,
         contentType: String,

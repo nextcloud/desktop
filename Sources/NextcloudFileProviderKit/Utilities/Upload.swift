@@ -21,7 +21,7 @@ func upload(
     usingRemoteInterface remoteInterface: RemoteInterface,
     withAccount account: Account,
     inChunksSized chunkSize: Int? = nil,
-    usingChunkUploadId chunkUploadId: String = UUID().uuidString,
+    usingChunkUploadId chunkUploadId: String? = UUID().uuidString,
     dbManager: FilesDatabaseManager = .shared,
     creationDate: Date? = nil,
     modificationDate: Date? = nil,
@@ -87,6 +87,8 @@ func upload(
 
         return (ocId, nil, etag, date as? Date, size, afError, remoteError)
     }
+
+    let chunkUploadId = chunkUploadId ?? UUID().uuidString
 
     uploadLogger.info(
         """
