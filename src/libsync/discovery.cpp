@@ -1662,14 +1662,14 @@ void ProcessDirectoryJob::processFileFinalize(
         }
     }
 
-    if (_discoveryData->_syncOptions._vfs &&
+    if (_discoveryData->_syncOptions._vfs && _discoveryData->_syncOptions._vfs->mode() != OCC::Vfs::Off &&
         (item->_type == CSyncEnums::ItemTypeFile || item->_type == CSyncEnums::ItemTypeDirectory) &&
         item->_instruction == CSyncEnums::CSYNC_INSTRUCTION_NONE &&
         !_discoveryData->_syncOptions._vfs->isPlaceHolderInSync(_discoveryData->_localDir + path._local)) {
         item->_instruction = CSyncEnums::CSYNC_INSTRUCTION_UPDATE_VFS_METADATA;
     }
 
-    if (_discoveryData->_syncOptions._vfs &&
+    if (_discoveryData->_syncOptions._vfs && _discoveryData->_syncOptions._vfs->mode() != OCC::Vfs::Off &&
         (item->_type == CSyncEnums::ItemTypeFile || item->_type == CSyncEnums::ItemTypeDirectory) &&
         item->_instruction == CSyncEnums::CSYNC_INSTRUCTION_NONE &&
         FileSystem::isLnkFile((_discoveryData->_localDir + path._local)) &&
@@ -1677,6 +1677,18 @@ void ProcessDirectoryJob::processFileFinalize(
         item->_instruction = CSyncEnums::CSYNC_INSTRUCTION_SYNC;
         item->_direction = SyncFileItem::Down;
         item->_type = CSyncEnums::ItemTypeVirtualFileDehydration;
+    }
+
+    if (item->_instruction != CSyncEnums::CSYNC_INSTRUCTION_NONE &&
+        !item->isDirectory() &&
+        _discoveryData->_syncOptions._vfs &&
+        _discoveryData->_syncOptions._vfs->mode() == OCC::Vfs::Off &&
+        (item->_type == CSyncEnums::ItemTypeVirtualFile ||
+         item->_type == CSyncEnums::ItemTypeVirtualFileDownload ||
+         item->_type == CSyncEnums::ItemTypeVirtualFileDehydration)) {
+        item->_instruction = CSyncEnums::CSYNC_INSTRUCTION_UPDATE_METADATA;
+        item->_direction = SyncFileItem::Down;
+        item->_type = CSyncEnums::ItemTypeFile;
     }
 
     if (path._original != path._target && (item->_instruction == CSYNC_INSTRUCTION_UPDATE_VFS_METADATA || item->_instruction == CSYNC_INSTRUCTION_UPDATE_METADATA || item->_instruction == CSYNC_INSTRUCTION_NONE)) {
@@ -1712,6 +1724,16 @@ void ProcessDirectoryJob::processFileFinalize(
     } else {
         recurse = false;
     }
+
+    if (!(item->isDirectory() ||
+          (!_discoveryData->_syncOptions._vfs || _discoveryData->_syncOptions._vfs->mode() != OCC::Vfs::Off) ||
+          item->_type != CSyncEnums::ItemTypeVirtualFile ||
+          item->_type != CSyncEnums::ItemTypeVirtualFileDownload ||
+          item->_type != CSyncEnums::ItemTypeVirtualFileDehydration)) {
+        qCCritical(lcDisco()) << "wong item type for" << item->_file << item->_type;
+        Q_ASSERT(false);
+    }
+
     if (recurse) {
         auto job = new ProcessDirectoryJob(path, item, recurseQueryLocal, recurseQueryServer,
             _lastSyncTimestamp, this);
