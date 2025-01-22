@@ -389,7 +389,7 @@ public final class FilesDatabaseManager: Sendable {
                         date: \(metadata.date, privacy: .public)
                         lock: \(metadata.lock, privacy: .public)
                         lockTimeOut: \(metadata.lockTimeOut?.description ?? "", privacy: .public)
-                        lockOwner: \(metadata.lockOwner, privacy: .public)
+                        lockOwner: \(metadata.lockOwner ?? "", privacy: .public)
                         permissions: \(metadata.permissions, privacy: .public)
                         size: \(metadata.size, privacy: .public)
                         trashbinFileName: \(metadata.trashbinFileName, privacy: .public)

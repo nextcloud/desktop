@@ -483,6 +483,6 @@ final class ItemCreateTests: XCTestCase {
         XCTAssertEqual(dbItem.directory, fileItemMetadata.directory)
         XCTAssertEqual(dbItem.serverUrl, fileItemMetadata.serverUrl)
         XCTAssertEqual(dbItem.ocId, createdItem.itemIdentifier.rawValue)
-        XCTAssertTrue(dbItem.chunkUploadId.isEmpty)
+        XCTAssertNil(dbItem.chunkUploadId)
     }
 }

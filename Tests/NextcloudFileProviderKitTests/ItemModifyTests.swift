@@ -1321,6 +1321,6 @@ final class ItemModifyTests: XCTestCase {
         )
 
         let dbItem = try XCTUnwrap(Self.dbManager.itemMetadata(ocId: itemMetadata.ocId))
-        XCTAssertTrue(dbItem.chunkUploadId.isEmpty)
+        XCTAssertNil(dbItem.chunkUploadId)
     }
 }

@@ -68,10 +68,10 @@ public protocol ItemMetadata: Equatable {
     var ownerId: String { get set }
     var ownerDisplayName: String { get set }
     var lock: Bool { get set }
-    var lockOwner: String { get set }
-    var lockOwnerEditor: String { get set }
-    var lockOwnerType: Int { get set }
-    var lockOwnerDisplayName: String { get set }
+    var lockOwner: String? { get set }
+    var lockOwnerEditor: String? { get set }
+    var lockOwnerType: Int? { get set }
+    var lockOwnerDisplayName: String? { get set }
     var lockTime: Date? { get set } // Time the file was locked
     var lockTimeOut: Date? { get set } // Time the file's lock will expire
     var path: String { get set }
@@ -197,11 +197,11 @@ public class RealmItemMetadata: Object, ItemMetadata {
     @Persisted public var note = ""
     @Persisted public var ownerId = ""
     @Persisted public var ownerDisplayName = ""
-    @Persisted public var lock = false
-    @Persisted public var lockOwner = ""
-    @Persisted public var lockOwnerEditor = ""
-    @Persisted public var lockOwnerType = 0
-    @Persisted public var lockOwnerDisplayName = ""
+    @Persisted public var lock: Bool = false
+    @Persisted public var lockOwner: String?
+    @Persisted public var lockOwnerEditor: String?
+    @Persisted public var lockOwnerType: Int?
+    @Persisted public var lockOwnerDisplayName: String?
     @Persisted public var lockTime: Date? // Time the file was locked
     @Persisted public var lockTimeOut: Date? // Time the file's lock will expire
     @Persisted public var path = ""
@@ -334,10 +334,10 @@ public struct SendableItemMetadata: ItemMetadata, Sendable {
     public var ownerId: String
     public var ownerDisplayName: String
     public var lock: Bool
-    public var lockOwner: String
-    public var lockOwnerEditor: String
-    public var lockOwnerType: Int
-    public var lockOwnerDisplayName: String
+    public var lockOwner: String?
+    public var lockOwnerEditor: String?
+    public var lockOwnerType: Int?
+    public var lockOwnerDisplayName: String?
     public var lockTime: Date?
     public var lockTimeOut: Date?
     public var path: String
@@ -393,10 +393,10 @@ public struct SendableItemMetadata: ItemMetadata, Sendable {
         ownerId: String,
         ownerDisplayName: String,
         lock: Bool = false,
-        lockOwner: String = "",
-        lockOwnerEditor: String = "",
-        lockOwnerType: Int = 0,
-        lockOwnerDisplayName: String = "",
+        lockOwner: String? = nil,
+        lockOwnerEditor: String? = nil,
+        lockOwnerType: Int? = nil,
+        lockOwnerDisplayName: String? = nil,
         lockTime: Date? = nil,
         lockTimeOut: Date? = nil,
         path: String,
