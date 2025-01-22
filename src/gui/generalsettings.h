@@ -59,6 +59,10 @@ private slots:
     void slotCreateDebugArchive();
     void loadMiscSettings();
     void slotShowLegalNotice();
+    void slotOpenMoreInformationLink();
+    void slotOpenLegalNoticeLink();
+    void slotOpenPrivacyLink();
+    void slotOpenOpenSourceLink();
 #if defined(BUILD_UPDATER)
     void slotUpdateInfo();
     void slotUpdateChannelChanged();
