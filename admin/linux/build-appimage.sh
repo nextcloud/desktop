@@ -20,6 +20,11 @@ if [ "$BUILD_UPDATER" != "OFF" ]; then
     BUILD_UPDATER=ON
 fi
 
+# Ensure we use gcc-11 on RHEL-like systems
+if [ -e "/opt/rh/gcc-toolset-11/enable" ]; then
+    source /opt/rh/gcc-toolset-11/enable
+fi
+
 mkdir /app
 
 # Build client
@@ -42,11 +47,11 @@ DESTDIR=/app cmake --install .
 # Move stuff around
 cd /app
 
-mv usr/lib/x86_64-linux-gnu/* usr/lib/
+[ -d usr/lib/x86_64-linux-gnu ] && mv usr/lib/x86_64-linux-gnu/* usr/lib/
 
 mkdir usr/plugins
-mv usr/lib/*sync_vfs_suffix.so usr/plugins
-mv usr/lib/*sync_vfs_xattr.so usr/plugins
+mv usr/lib64/*sync_vfs_suffix.so usr/plugins || mv usr/lib/*sync_vfs_suffix.so usr/plugins
+mv usr/lib64/*sync_vfs_xattr.so usr/plugins  || mv usr/lib/*sync_vfs_xattr.so usr/plugins
 
 rm -rf usr/lib/cmake
 rm -rf usr/include
@@ -73,7 +78,7 @@ chmod a+x ${APPIMAGE_NAME}
 rm ./${APPIMAGE_NAME}
 cp -r ./squashfs-root ./linuxdeploy-squashfs-root
 
-export LD_LIBRARY_PATH=/app/usr/lib:${QT_BASE_DIR}/lib:/usr/local/lib/x86_64-linux-gnu:/usr/local/lib:/usr/local/lib64
+export LD_LIBRARY_PATH=/app/usr/lib64:/app/usr/lib:${QT_BASE_DIR}/lib:/usr/local/lib/x86_64-linux-gnu:/usr/local/lib:/usr/local/lib64
 ./linuxdeploy-squashfs-root/AppRun --desktop-file=${DESKTOP_FILE} --icon-file=usr/share/icons/hicolor/512x512/apps/Nextcloud.png --executable=usr/bin/${EXECUTABLE_NAME} --appdir=AppDir
 
 # Use linuxdeploy-plugin-qt to deploy qt dependencies
