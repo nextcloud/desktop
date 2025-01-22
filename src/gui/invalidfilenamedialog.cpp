@@ -19,6 +19,8 @@
 #include "ui_invalidfilenamedialog.h"
 
 #include "filesystem.h"
+#include "ionostheme.h"
+#include "buttonstyle.h"
 #include <folder.h>
 
 #include <QPushButton>
@@ -79,6 +81,7 @@ InvalidFilenameDialog::InvalidFilenameDialog(AccountPtr account,
 {
     Q_ASSERT(_account);
     Q_ASSERT(_folder);
+    setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
 
     const auto filePathFileInfo = QFileInfo(_filePath);
     _relativeFilePath = filePathFileInfo.path() + QStringLiteral("/");
@@ -134,6 +137,8 @@ InvalidFilenameDialog::InvalidFilenameDialog(AccountPtr account,
         tr("Checking rename permissions …"));
     _ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
     _ui->filenameLineEdit->setEnabled(false);
+    _ui->buttonBox->button(QDialogButtonBox::Ok)->setProperty("buttonStyle", QVariant::fromValue(ButtonStyleName::Primary));
+
 
     connect(_ui->filenameLineEdit, &QLineEdit::textChanged, this,
         &InvalidFilenameDialog::onFilenameLineEditTextChanged);
@@ -144,6 +149,8 @@ InvalidFilenameDialog::InvalidFilenameDialog(AccountPtr account,
     } else {
         checkIfAllowedToRename();
     }
+    
+    customizeStyle();
 }
 
 InvalidFilenameDialog::~InvalidFilenameDialog() = default;
@@ -185,6 +192,7 @@ bool InvalidFilenameDialog::processLeadingOrTrailingSpacesError(const QString &f
     const auto hasTrailingSpaces = fileName.endsWith(QLatin1Char(' '));
 
     _ui->buttonBox->setStandardButtons(_ui->buttonBox->standardButtons() &~ QDialogButtonBox::No);
+    _ui->buttonBox->button(QDialogButtonBox::Ok)->setProperty("buttonStyle", QVariant::fromValue(ButtonStyleName::Primary));
 
     if (hasLeadingSpaces || hasTrailingSpaces) {
         if (hasLeadingSpaces && hasTrailingSpaces) {
@@ -221,6 +229,8 @@ void InvalidFilenameDialog::onPropfindPermissionError(QNetworkReply *reply)
 void InvalidFilenameDialog::allowRenaming()
 {
     _ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(true);
+    _ui->buttonBox->button(QDialogButtonBox::Ok)->setProperty("buttonStyle", QVariant::fromValue(ButtonStyleName::Primary));
+
     _ui->filenameLineEdit->setEnabled(true);
     _ui->filenameLineEdit->selectAll();
 
@@ -256,8 +266,9 @@ void InvalidFilenameDialog::onFilenameLineEditTextChanged(const QString &text)
         _ui->errorLabel->setText(tr("Filename contains illegal characters: %1").arg(illegalCharacterListToString(illegalContainedCharacters)));
     }
 
-    _ui->buttonBox->button(QDialogButtonBox::Ok)
-        ->setEnabled(isTextValid);
+    _ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(isTextValid);
+    _ui->buttonBox->button(QDialogButtonBox::Ok)->setProperty("buttonStyle", QVariant::fromValue(ButtonStyleName::Primary));
+
 }
 
 void InvalidFilenameDialog::onMoveJobFinished()
@@ -279,6 +290,7 @@ void InvalidFilenameDialog::onRemoteDestinationFileAlreadyExists(const QVariantM
 
     _ui->errorLabel->setText(tr("Cannot rename file because a file with the same name does already exist on the server. Please pick another name."));
     _ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
+    _ui->buttonBox->button(QDialogButtonBox::Ok)->setProperty("buttonStyle", QVariant::fromValue(ButtonStyleName::Primary));
 }
 
 void InvalidFilenameDialog::onRemoteDestinationFileDoesNotExist(QNetworkReply *reply)
@@ -318,4 +330,36 @@ void InvalidFilenameDialog::onRemoteSourceFileDoesNotExist(QNetworkReply *reply)
     }
     QDialog::accept();
 }
+
+void InvalidFilenameDialog::customizeStyle()
+{
+    this->setStyleSheet(
+        QStringLiteral("QDialog {background-color: %1; } QLabel{ font-family: %2; font-size: %3; font-weight: %4; }").arg(
+            IonosTheme::dialogBackgroundColor(), 
+            IonosTheme::settingsFont(),
+            IonosTheme::settingsTextSize(),
+            IonosTheme::settingsTextWeight()
+        )
+    );
+ 
+    _ui->filenameLineEdit->setStyleSheet(
+        QStringLiteral(
+            "color: %1; font-family: %2; font-size: %3; font-weight: %4; border-radius: %5; border: 1px "
+            "solid %6; padding: 0px 12px; text-align: left; vertical-align: middle; height: 40px; background: %7; ").arg(
+                IonosTheme::folderWizardPathColor(),
+                IonosTheme::settingsFont(),
+                IonosTheme::settingsTextSize(),
+                IonosTheme::settingsTextWeight(),
+                IonosTheme::buttonRadius(),
+                IonosTheme::menuBorderColor(),
+                IonosTheme::white()
+            )
+    );
+
+    #ifdef Q_OS_MAC
+        _ui->buttonBox->layout()->setSpacing(24);
+        _ui->buttonBox->setLayoutDirection(Qt::LeftToRight);
+    #endif
+}
+
 }

@@ -13,12 +13,14 @@
  */
 #include "selectivesyncdialog.h"
 #include "account.h"
+#include "buttonstyle.h"
 #include "common/utility.h"
 #include "configfile.h"
 #include "folder.h"
 #include "folderman.h"
 #include "networkjobs.h"
 #include "theme.h"
+#include "ionostheme.h"
 #include <QDialogButtonBox>
 #include <QFileIconProvider>
 #include <QHeaderView>
@@ -77,6 +79,14 @@ SelectiveSyncWidget::SelectiveSyncWidget(AccountPtr account, QWidget *parent)
     auto header = new QLabel(this);
     header->setText(tr("Deselect remote folders you do not wish to synchronize."));
     header->setWordWrap(true);
+    header->setStyleSheet(
+        IonosTheme::fontConfigurationCss(
+            IonosTheme::settingsFont(),
+            IonosTheme::settingsTextSize(),
+            IonosTheme::settingsTextWeight(),
+            IonosTheme::titleColor())
+        + QStringLiteral("background-color: %1;").arg(IonosTheme::dialogBackgroundColor())
+    );
     layout->addWidget(header);
 
     layout->addWidget(_folderTree);
@@ -93,6 +103,42 @@ SelectiveSyncWidget::SelectiveSyncWidget(AccountPtr account, QWidget *parent)
     _folderTree->header()->setStretchLastSection(true);
     _folderTree->headerItem()->setText(0, tr("Name"));
     _folderTree->headerItem()->setText(1, tr("Size"));
+
+
+#ifdef Q_OS_MAC
+    _folderTree->header()->setStyleSheet(
+    "QHeaderView::section {"
+    "    background-color: white;" // Set the background color
+    "    border: 1px solid #e6e6e6;"   // Optional: add a border
+    "    padding-left: 4px;" 
+    +    QString(IonosTheme::fontConfigurationCss(
+            IonosTheme::settingsFont(),
+            IonosTheme::settingsTextSize(),
+            IonosTheme::settingsTextWeight(),
+            IonosTheme::titleColor())) 
+    +
+    "}"
+    );
+#else
+    _folderTree->header()->setStyleSheet(
+        IonosTheme::fontConfigurationCss(
+            IonosTheme::settingsFont(),
+            IonosTheme::settingsTextSize(),
+            IonosTheme::settingsTextWeight(),
+            IonosTheme::titleColor()
+    ));
+#endif
+
+    _folderTree->setStyleSheet(IonosTheme::fontConfigurationCss(
+        IonosTheme::settingsFont(),
+        IonosTheme::settingsTextSize(),
+        IonosTheme::settingsTextWeight(),
+        IonosTheme::titleColor()
+    ));
+
+#ifdef Q_OS_MAC
+    _folderTree->setPalette(QPalette(IonosTheme::white()));
+#endif
 
     ConfigFile::setupDefaultExcludeFilePaths(_excludedFiles);
     _excludedFiles.reloadExcludeFiles();
@@ -477,6 +523,7 @@ SelectiveSyncDialog::SelectiveSyncDialog(AccountPtr account, Folder *folder, QWi
     , _folder(folder)
 {
     bool ok = false;
+    setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
     init(account);
     QStringList selectiveSyncList = _folder->journalDb()->getSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, &ok);
     if (ok) {
@@ -494,6 +541,7 @@ SelectiveSyncDialog::SelectiveSyncDialog(AccountPtr account, const QString &fold
     , _folder(nullptr)
 {
     init(account);
+    setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
     _selectiveSync->setFolderInfo(folder, folder, blacklist);
 }
 
@@ -504,11 +552,42 @@ void SelectiveSyncDialog::init(const AccountPtr &account)
     _selectiveSync = new SelectiveSyncWidget(account, this);
     layout->addWidget(_selectiveSync);
     auto *buttonBox = new QDialogButtonBox(Qt::Horizontal);
+    
     _okButton = buttonBox->addButton(QDialogButtonBox::Ok);
+    _okButton->setProperty("buttonStyle", QVariant::fromValue(ButtonStyleName::Primary));
     connect(_okButton, &QPushButton::clicked, this, &SelectiveSyncDialog::accept);
+
     QPushButton *button = nullptr;
     button = buttonBox->addButton(QDialogButtonBox::Cancel);
+
+#ifdef Q_OS_MAC
+    _okButton->setStyleSheet(
+        _okButton->styleSheet() + QStringLiteral("QPushButton { %1; } ").arg(
+            IonosTheme::fontConfigurationCss(
+                IonosTheme::settingsFont(),
+                IonosTheme::settingsTextSize(),
+                IonosTheme::settingsTitleWeight500(),
+                IonosTheme::white()
+            )
+        )
+    );
+
+    button->setStyleSheet(
+        button->styleSheet() + QStringLiteral("QPushButton { %1; } ").arg(
+            IonosTheme::fontConfigurationCss(
+                IonosTheme::settingsFont(),
+                IonosTheme::settingsTextSize(),
+                IonosTheme::settingsTitleWeight500(),
+                IonosTheme::titleColor()
+            )
+        )
+    );
+
+    buttonBox->layout()->setSpacing(24);
+#endif
+
     connect(button, &QAbstractButton::clicked, this, &QDialog::reject);
+
     layout->addWidget(buttonBox);
 }
 

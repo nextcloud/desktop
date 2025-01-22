@@ -13,6 +13,9 @@
  */
 
 #include "foldercreationdialog.h"
+ 
+#include "buttonstyle.h"
+#include "ionostheme.h"
 #include "ui_foldercreationdialog.h"
 
 #include <limits>
@@ -20,6 +23,9 @@
 #include <QDir>
 #include <QMessageBox>
 #include <QLoggingCategory>
+#include <QHBoxLayout>
+#include <QMetaType>
+#include <QPushButton>
 
 namespace OCC {
 
@@ -31,10 +37,13 @@ FolderCreationDialog::FolderCreationDialog(const QString &destination, QWidget *
     , _destination(destination)
 {
     ui->setupUi(this);
+    setWindowTitle(tr("%1 Create new folder").arg(Theme::instance()->appNameGUI()));
+    customizeStyle();
 
-    ui->labelErrorMessage->setVisible(false);
+    ui->errorSnackbar->setVisible(false);
 
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
+    setWindowFlags(windowFlags() | Qt::Dialog | Qt::WindowMinMaxButtonsHint);
 
     connect(ui->newFolderNameEdit, &QLineEdit::textChanged, this, &FolderCreationDialog::slotNewFolderNameEditTextEdited);
 
@@ -69,11 +78,6 @@ void FolderCreationDialog::accept()
 
     const auto fullPath = QString(_destination + "/" + ui->newFolderNameEdit->text());
 
-    if (QDir(fullPath).exists()) {
-        ui->labelErrorMessage->setVisible(true);
-        return;
-    }
-
     if (QDir(_destination).mkdir(ui->newFolderNameEdit->text())) {
         Q_EMIT folderCreated(fullPath);
     } else {
@@ -86,10 +90,46 @@ void FolderCreationDialog::accept()
 void FolderCreationDialog::slotNewFolderNameEditTextEdited()
 {
     if (!ui->newFolderNameEdit->text().isEmpty() && QDir(_destination + "/" + ui->newFolderNameEdit->text()).exists()) {
-        ui->labelErrorMessage->setVisible(true);
+        ui->errorSnackbar->setVisible(true);
+        ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
     } else {
-        ui->labelErrorMessage->setVisible(false);
+        ui->errorSnackbar->setVisible(false);
+        ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(true);
     }
 }
 
+void FolderCreationDialog::customizeStyle()
+{
+    ui->buttonBox->setLayoutDirection(Qt::RightToLeft);
+
+    QDialog *dialog = qobject_cast<QDialog*>(this);
+    dialog->setMinimumSize(626, 156);
+
+    QPushButton *okButton = ui->buttonBox->button(QDialogButtonBox::Ok);
+    okButton->setProperty("buttonStyle", QVariant::fromValue(OCC::ButtonStyleName::Primary));
+
+    QHBoxLayout* buttonlayout = qobject_cast<QHBoxLayout*>(ui->buttonBox->layout());
+    buttonlayout->setSpacing(16);
+
+    ui->errorSnackbar->setFixedHeight(46);
+
+    ui->newFolderNameEdit->setStyleSheet(
+        QStringLiteral(
+            "color: %1; font-family: %2; font-size: %3; font-weight: %4; border-radius: %5; border: 1px "
+            "solid %6; padding: 0px 12px; text-align: left; vertical-align: middle; height: 40px; background: %7; ")
+            .arg(IonosTheme::folderWizardPathColor(),
+                 IonosTheme::settingsFont(),
+                 IonosTheme::settingsTextSize(),
+                 IonosTheme::settingsTextWeight(),
+                 IonosTheme::buttonRadius(),
+                 IonosTheme::menuBorderColor(),
+                 IonosTheme::white()
+            )
+    );
+
+#if defined(Q_OS_MAC)
+    buttonlayout->setSpacing(32);
+#endif
+
+}
 }

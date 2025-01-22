@@ -19,6 +19,7 @@
 
 #include "account.h"
 #include "folder.h"
+#include "buttonstyle.h"
 #include "common/filesystembase.h"
 
 #include <QPushButton>
@@ -84,6 +85,8 @@ CaseClashFilenameDialog::CaseClashFilenameDialog(AccountPtr account,
     Q_ASSERT(_account);
     Q_ASSERT(_folder);
 
+    setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
+
     const auto filePathFileInfo = QFileInfo(_filePath);
     const auto conflictFileName = filePathFileInfo.fileName();
 
@@ -99,6 +102,7 @@ CaseClashFilenameDialog::CaseClashFilenameDialog(AccountPtr account,
     _ui->setupUi(this);
     _ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
     _ui->buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Rename file"));
+    _ui->buttonBox->button(QDialogButtonBox::Ok)->setProperty("buttonStyle", QVariant::fromValue(ButtonStyleName::Primary));
 
     _ui->descriptionLabel->setText(tr("The file \"%1\" could not be synced because of a case clash conflict with an existing file on this system.").arg(_originalFileName));
     _ui->explanationLabel->setText(tr("%1 does not support equal file names with only letter casing differences.").arg(QSysInfo::prettyProductName()));
@@ -150,10 +154,13 @@ CaseClashFilenameDialog::CaseClashFilenameDialog(AccountPtr account,
         _ui->buttonBox->setStandardButtons(_ui->buttonBox->standardButtons() &~ QDialogButtonBox::No);
         if (_conflictSolver.allowedToRename()) {
             _ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(true);
+            _ui->buttonBox->button(QDialogButtonBox::Ok)->setProperty("buttonStyle", QVariant::fromValue(ButtonStyleName::Primary));
+
             _ui->filenameLineEdit->setEnabled(true);
             _ui->filenameLineEdit->selectAll();
         } else {
             _ui->buttonBox->setStandardButtons(_ui->buttonBox->standardButtons() | QDialogButtonBox::No);
+            _ui->buttonBox->button(QDialogButtonBox::Ok)->setProperty("buttonStyle", QVariant::fromValue(ButtonStyleName::Primary));
         }
     });
 
@@ -167,6 +174,8 @@ CaseClashFilenameDialog::CaseClashFilenameDialog(AccountPtr account,
     });
 
     checkIfAllowedToRename();
+
+    customizeStyle();
 }
 
 CaseClashFilenameDialog::~CaseClashFilenameDialog() = default;
@@ -286,5 +295,43 @@ void CaseClashFilenameDialog::onFilenameLineEditTextChanged(const QString &text)
 
     _ui->buttonBox->button(QDialogButtonBox::Ok)
         ->setEnabled(isTextValid);
+    _ui->buttonBox->button(QDialogButtonBox::Ok)->setProperty("buttonStyle", QVariant::fromValue(ButtonStyleName::Primary));
+
 }
+
+void CaseClashFilenameDialog::customizeStyle()
+{
+    this->setStyleSheet(
+        QStringLiteral("QDialog {background-color: %1; color: %2;} QLabel{ %3;}").arg(
+            IonosTheme::dialogBackgroundColor(), 
+            IonosTheme::black(),
+            IonosTheme::fontConfigurationCss(
+                IonosTheme::settingsFont(),
+                IonosTheme::settingsTextSize(),
+                IonosTheme::settingsTextWeight(),
+                IonosTheme::titleColor()
+            )
+        )
+    );
+ 
+    _ui->filenameLineEdit->setStyleSheet(
+        QStringLiteral(
+            "color: %1; font-family: %2; font-size: %3; font-weight: %4; border-radius: %5; border: 1px "
+            "solid %6; padding: 0px 12px; text-align: left; vertical-align: middle; height: 40px; background: %7; ").arg(
+                IonosTheme::folderWizardPathColor(),
+                IonosTheme::settingsFont(),
+                IonosTheme::settingsTextSize(),
+                IonosTheme::settingsTextWeight(),
+                IonosTheme::buttonRadius(),
+                IonosTheme::menuBorderColor(),
+                IonosTheme::white()
+            )
+    );
+
+    #ifdef Q_OS_MAC
+        _ui->buttonBox->layout()->setSpacing(24);
+        _ui->buttonBox->setLayoutDirection(Qt::LeftToRight);
+    #endif
+}
+
 }

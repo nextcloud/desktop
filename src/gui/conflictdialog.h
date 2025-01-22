@@ -46,6 +46,7 @@ public slots:
 private:
     void updateWidgets();
     void updateButtonStates();
+    void customizeStyle();
 
     QString _baseFilename;
     QScopedPointer<Ui::ConflictDialog> _ui;

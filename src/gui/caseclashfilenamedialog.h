@@ -79,5 +79,7 @@ private:
     QString _relativeFilePath;
     QString _originalFileName;
     QString _newFilename;
+
+    void customizeStyle();
 };
 }
