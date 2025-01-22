@@ -195,13 +195,6 @@ extension Item {
             note: "", // Placeholder as not set in original code
             ownerId: "", // Placeholder as not set in original code
             ownerDisplayName: "", // Placeholder as not set in original code
-            lock: false, // Default as not set in original code
-            lockOwner: "", // Placeholder as not set in original code
-            lockOwnerEditor: "", // Placeholder as not set in original code
-            lockOwnerType: 0, // Default as not set in original code
-            lockOwnerDisplayName: "", // Placeholder as not set in original code
-            lockTime: nil, // Default as not set in original code
-            lockTimeOut: nil, // Default as not set in original code
             path: "", // Placeholder as not set in original code
             permissions: "", // Placeholder as not set in original code
             quotaUsedBytes: 0, // Default as not set in original code
