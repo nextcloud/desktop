@@ -25,6 +25,7 @@
 #include "application.h"
 #include "cocoainitializer.h"
 #include "theme.h"
+#include "ionostheme.h"
 #include "common/utility.h"
 
 #if defined(BUILD_UPDATER)
@@ -40,6 +41,7 @@
 #include <QQuickWindow>
 #include <QSurfaceFormat>
 #include <QOperatingSystemVersion>
+#include "sesstyle.h"
 
 using namespace OCC;
 
@@ -84,15 +86,11 @@ int main(int argc, char **argv)
 #if defined Q_OS_MAC
     qmlStyle = QStringLiteral("macOS");
 #elif defined Q_OS_WIN
-    if (QOperatingSystemVersion::current().version() < QOperatingSystemVersion::Windows11.version()) {
-        qmlStyle = QStringLiteral("Universal");
-        widgetsStyle = QStringLiteral("Fusion");
-    } else {
-        qmlStyle = QStringLiteral("FluentWinUI3");
-        widgetsStyle = QStringLiteral("windows11");
-    }
+    qmlStyle = QStringLiteral("Fusion");
+    QApplication::setFont(IonosTheme::settingsFontDefault());
 #endif
 
+    QApplication::setStyle(new sesStyle);
     QQuickStyle::setStyle(qmlStyle);
     QQuickStyle::setFallbackStyle(QStringLiteral("Fusion"));
 
@@ -200,6 +198,13 @@ int main(int argc, char **argv)
             }
         }
     }
+
+    QString clientID;
+    if (clientID.isEmpty()) {
+        clientID = QUuid::createUuid().toString();
+    }
+
+
 
     return app.exec();
 }

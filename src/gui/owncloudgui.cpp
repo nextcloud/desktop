@@ -76,7 +76,7 @@
 
 namespace OCC {
 
-Q_LOGGING_CATEGORY(lcOwnCloudGui, "com.nextcloud.owncloudgui")
+Q_LOGGING_CATEGORY(lcOwnCloudGui, "com.ionos.hidrivenext.owncloudgui")
 
 const char propertyAccountC[] = "oc_account";
 
@@ -619,6 +619,9 @@ void ownCloudGui::slotShowSettings()
 #ifdef Q_OS_MAC
         auto *fgbg = new ForegroundBackground();
         _settingsDialog->installEventFilter(fgbg);
+#else
+        _settingsDialog->setStyleSheet(QStringLiteral("QDialog {background: %1}")
+            .arg(Theme::instance()->systemPalette()["base"].value<QColor>().name()));        
 #endif
 
         connect(_tray.data(), &Systray::hideSettingsDialog,
