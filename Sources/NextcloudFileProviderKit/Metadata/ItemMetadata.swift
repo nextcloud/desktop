@@ -81,9 +81,9 @@ public protocol ItemMetadata: Equatable {
     var resourceType: String { get set }
     var richWorkspace: String? { get set }
     var serverUrl: String { get set }  // For parent folder! Build remote url by adding fileName
-    var session: String { get set }
-    var sessionError: String { get set }
-    var sessionTaskIdentifier: Int { get set }
+    var session: String? { get set }
+    var sessionError: String? { get set }
+    var sessionTaskIdentifier: Int? { get set }
     var sharePermissionsCollaborationServices: Int { get set }
     // TODO: Find a way to compare these two below in remote state check
     var sharePermissionsCloudMesh: [String] { get set }
@@ -211,9 +211,9 @@ public class RealmItemMetadata: Object, ItemMetadata {
     @Persisted public var resourceType = ""
     @Persisted public var richWorkspace: String?
     @Persisted public var serverUrl = ""  // For parent folder! Build remote url by adding fileName
-    @Persisted public var session = ""
-    @Persisted public var sessionError = ""
-    @Persisted public var sessionTaskIdentifier: Int = 0
+    @Persisted public var session: String?
+    @Persisted public var sessionError: String?
+    @Persisted public var sessionTaskIdentifier: Int?
     @Persisted public var sharePermissionsCollaborationServices: Int = 0
     // TODO: Find a way to compare these two below in remote state check
     public var sharePermissionsCloudMesh = [String]()
@@ -347,9 +347,9 @@ public struct SendableItemMetadata: ItemMetadata, Sendable {
     public var resourceType: String
     public var richWorkspace: String?
     public var serverUrl: String
-    public var session: String
-    public var sessionError: String
-    public var sessionTaskIdentifier: Int
+    public var session: String?
+    public var sessionError: String?
+    public var sessionTaskIdentifier: Int?
     public var sharePermissionsCollaborationServices: Int
     public var sharePermissionsCloudMesh: [String]
     public var size: Int64
@@ -406,9 +406,9 @@ public struct SendableItemMetadata: ItemMetadata, Sendable {
         resourceType: String = "",
         richWorkspace: String? = nil,
         serverUrl: String,
-        session: String = "",
-        sessionError: String = "",
-        sessionTaskIdentifier: Int = 0,
+        session: String? = nil,
+        sessionError: String? = nil,
+        sessionTaskIdentifier: Int? = nil,
         sharePermissionsCollaborationServices: Int = 0,
         sharePermissionsCloudMesh: [String] = [],
         size: Int64,
