@@ -59,14 +59,15 @@ public protocol ItemMetadata: Equatable {
     var fileName: String { get set } // What the file's real file name is
     var fileNameView: String { get set } // What the user sees (usually same as fileName)
     var hasPreview: Bool { get set }
+    var hidden: Bool { get set }
     var iconName: String { get set }
     var iconUrl: String { get set }
-    var livePhoto: Bool { get set }
     var mountType: String { get set }
     var name: String { get set }  // for unifiedSearch is the provider.id
     var note: String { get set }
     var ownerId: String { get set }
     var ownerDisplayName: String { get set }
+    var livePhotoFile: String? { get set }
     var lock: Bool { get set }
     var lockOwner: String? { get set }
     var lockOwnerEditor: String? { get set }
@@ -76,6 +77,7 @@ public protocol ItemMetadata: Equatable {
     var lockTimeOut: Date? { get set } // Time the file's lock will expire
     var path: String { get set }
     var permissions: String { get set }
+    var shareType: [Int] { get set }
     var quotaUsedBytes: Int64 { get set }
     var quotaAvailableBytes: Int64 { get set }
     var resourceType: String { get set }
@@ -89,6 +91,7 @@ public protocol ItemMetadata: Equatable {
     var sharePermissionsCloudMesh: [String] { get set }
     var size: Int64 { get set }
     var status: Int { get set }
+    var tags: [String] { get set }
     var downloaded: Bool { get set }
     var uploaded: Bool { get set }
     var trashbinFileName: String { get set }
@@ -102,6 +105,10 @@ public protocol ItemMetadata: Equatable {
 }
 
 public extension ItemMetadata {
+    var livePhoto: Bool {
+        livePhotoFile != nil && livePhotoFile?.isEmpty == false
+    }
+
     var isDownloadUpload: Bool {
         status == Status.inDownload.rawValue || status == Status.downloading.rawValue
             || status == Status.inUpload.rawValue || status == Status.uploading.rawValue
@@ -189,9 +196,10 @@ public class RealmItemMetadata: Object, ItemMetadata {
     @Persisted public var fileName = "" // What the file's real file name is
     @Persisted public var fileNameView = "" // What the user sees (usually same as fileName)
     @Persisted public var hasPreview: Bool = false
+    @Persisted public var hidden = false
     @Persisted public var iconName = ""
     @Persisted public var iconUrl = ""
-    @Persisted public var livePhoto: Bool = false
+    @Persisted public var livePhotoFile: String?
     @Persisted public var mountType = ""
     @Persisted public var name = ""  // for unifiedSearch is the provider.id
     @Persisted public var note = ""
@@ -214,11 +222,27 @@ public class RealmItemMetadata: Object, ItemMetadata {
     @Persisted public var session: String?
     @Persisted public var sessionError: String?
     @Persisted public var sessionTaskIdentifier: Int?
+    @Persisted public var storedShareType = List<Int>()
+    public var shareType: [Int] {
+        get { storedShareType.map { $0 } }
+        set {
+            storedShareType = List<Int>()
+            storedShareType.append(objectsIn: newValue)
+        }
+    }
     @Persisted public var sharePermissionsCollaborationServices: Int = 0
     // TODO: Find a way to compare these two below in remote state check
     public var sharePermissionsCloudMesh = [String]()
     @Persisted public var size: Int64 = 0
     @Persisted public var status: Int = 0
+    @Persisted public var storedTags = List<String>()
+    public var tags: [String] {
+        get { storedTags.map { $0 } }
+        set {
+            storedTags = List<String>()
+            storedTags.append(objectsIn: newValue)
+        }
+    }
     @Persisted public var downloaded = false
     @Persisted public var uploaded = false
     @Persisted public var trashbinFileName = ""
@@ -260,9 +284,10 @@ public class RealmItemMetadata: Object, ItemMetadata {
         self.fileName = value.fileName
         self.fileNameView = value.fileNameView
         self.hasPreview = value.hasPreview
+        self.hidden = value.hidden
         self.iconName = value.iconName
         self.iconUrl = value.iconUrl
-        self.livePhoto = value.livePhoto
+        self.livePhotoFile = value.livePhotoFile
         self.mountType = value.mountType
         self.name = value.name
         self.note = value.note
@@ -289,6 +314,8 @@ public class RealmItemMetadata: Object, ItemMetadata {
         self.sharePermissionsCloudMesh = value.sharePermissionsCloudMesh
         self.size = value.size
         self.status = value.status
+        self.shareType = value.shareType
+        self.tags = value.tags
         self.downloaded = value.downloaded
         self.uploaded = value.uploaded
         self.trashbinFileName = value.trashbinFileName
@@ -325,14 +352,15 @@ public struct SendableItemMetadata: ItemMetadata, Sendable {
     public var fileName: String
     public var fileNameView: String
     public var hasPreview: Bool
+    public var hidden: Bool
     public var iconName: String
     public var iconUrl: String
-    public var livePhoto: Bool
     public var mountType: String
     public var name: String
     public var note: String
     public var ownerId: String
     public var ownerDisplayName: String
+    public var livePhotoFile: String?
     public var lock: Bool
     public var lockOwner: String?
     public var lockOwnerEditor: String?
@@ -352,8 +380,10 @@ public struct SendableItemMetadata: ItemMetadata, Sendable {
     public var sessionTaskIdentifier: Int?
     public var sharePermissionsCollaborationServices: Int
     public var sharePermissionsCloudMesh: [String]
+    public var shareType: [Int]
     public var size: Int64
     public var status: Int
+    public var tags: [String]
     public var downloaded: Bool
     public var uploaded: Bool
     public var trashbinFileName: String
@@ -384,9 +414,10 @@ public struct SendableItemMetadata: ItemMetadata, Sendable {
         fileName: String,
         fileNameView: String,
         hasPreview: Bool,
+        hidden: Bool = false,
         iconName: String,
         iconUrl: String = "",
-        livePhoto: Bool = false,
+        livePhotoFile: String? = nil,
         mountType: String,
         name: String = "",
         note: String = "",
@@ -411,8 +442,10 @@ public struct SendableItemMetadata: ItemMetadata, Sendable {
         sessionTaskIdentifier: Int? = nil,
         sharePermissionsCollaborationServices: Int = 0,
         sharePermissionsCloudMesh: [String] = [],
+        shareType: [Int] = [],
         size: Int64,
         status: Int = 0,
+        tags: [String] = [],
         downloaded: Bool = false,
         uploaded: Bool = false,
         trashbinFileName: String = "",
@@ -442,9 +475,10 @@ public struct SendableItemMetadata: ItemMetadata, Sendable {
         self.fileName = fileName
         self.fileNameView = fileNameView
         self.hasPreview = hasPreview
+        self.hidden = hidden
         self.iconName = iconName
         self.iconUrl = iconUrl
-        self.livePhoto = livePhoto
+        self.livePhotoFile = livePhotoFile
         self.mountType = mountType
         self.name = name
         self.note = note
@@ -469,8 +503,10 @@ public struct SendableItemMetadata: ItemMetadata, Sendable {
         self.sessionTaskIdentifier = sessionTaskIdentifier
         self.sharePermissionsCollaborationServices = sharePermissionsCollaborationServices
         self.sharePermissionsCloudMesh = sharePermissionsCloudMesh
+        self.shareType = shareType
         self.size = size
         self.status = status
+        self.tags = tags
         self.downloaded = downloaded
         self.uploaded = uploaded
         self.trashbinFileName = trashbinFileName
@@ -502,9 +538,10 @@ public struct SendableItemMetadata: ItemMetadata, Sendable {
         self.fileName = value.fileName
         self.fileNameView = value.fileNameView
         self.hasPreview = value.hasPreview
+        self.hidden = value.hidden
         self.iconName = value.iconName
         self.iconUrl = value.iconUrl
-        self.livePhoto = value.livePhoto
+        self.livePhotoFile = value.livePhotoFile
         self.mountType = value.mountType
         self.name = value.name
         self.note = value.note
@@ -529,10 +566,12 @@ public struct SendableItemMetadata: ItemMetadata, Sendable {
         self.sessionTaskIdentifier = value.sessionTaskIdentifier
         self.sharePermissionsCollaborationServices = value.sharePermissionsCollaborationServices
         self.sharePermissionsCloudMesh = value.sharePermissionsCloudMesh
+        self.shareType = value.shareType
         self.size = value.size
         self.status = value.status
         self.downloaded = value.downloaded
         self.uploaded = value.uploaded
+        self.tags = value.tags
         self.trashbinFileName = value.trashbinFileName
         self.trashbinOriginalLocation = value.trashbinOriginalLocation
         self.trashbinDeletionTime = value.trashbinDeletionTime
