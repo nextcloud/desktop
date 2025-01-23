@@ -29,7 +29,7 @@ HeaderButton {
     property bool userHasGroupFolders: currentUser.groupFolders.length > 0
     property color parentBackgroundColor: "transparent"
 
-    icon.source: Style.sesFilesIcon
+    icon.source: Style.sesFolderIcon
     icon.color: Style.sesIconColor
 
     text: qsTr("Files")

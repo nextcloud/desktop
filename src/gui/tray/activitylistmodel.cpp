@@ -231,7 +231,7 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
         if (a._type == Activity::NotificationType && !a._talkNotificationData.userAvatar.isEmpty()) {
             return QStringLiteral("image://svgimage-custom-color/talk-bordered.svg");
         } else if (a._type == Activity::SyncResultType) {
-            colorIconPath.append("state-error.svg");
+            colorIconPath.append("state-ok.svg");
             return colorIconPath;
         } else if (a._type == Activity::SyncFileItemType) {
             if (a._syncFileItemStatus == SyncFileItem::NormalError
@@ -247,10 +247,10 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
                 || a._syncFileItemStatus == SyncFileItem::FileNameInvalid
                 || a._syncFileItemStatus == SyncFileItem::FileNameInvalidOnServer
                 || a._syncFileItemStatus == SyncFileItem::FileNameClash) {
-                colorIconPath.append("state-info.svg");
+                colorIconPath.append("state-warning.svg");
                 return colorIconPath;
             } else if (a._syncFileItemStatus == SyncFileItem::FileIgnored) {
-                colorIconPath.append("state-info.svg");
+                colorIconPath = QStringLiteral("qrc:///client/theme/ses/ses-info.svg");
                 return colorIconPath;
             } else {
                 // File sync successful

@@ -9,12 +9,12 @@ QIcon SesFileIconProvider::icon(const QFileInfo &info) const
 
     if (info.isDir())
     {
-        return QIcon(":/client/theme/black/folder.svg");
+        return QIcon(":/client/theme/ses/ses-folderIconBright.svg");
     }
 
     if (info.suffix().isEmpty())
     {
-        return QIcon(":/client/theme/black/edit.svg");
+        return QIcon(":/client/theme/ses/ses-file.svg");
     }
     
     

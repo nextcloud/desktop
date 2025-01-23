@@ -517,7 +517,7 @@ void FolderStatusDelegate::slotStyleChanged()
 
 void FolderStatusDelegate::customizeStyle()
 {
-    _iconMore = Theme::createColorAwareIcon(QLatin1String(":/client/theme/more.svg"), QSize(128, 128));
+    _iconMore = Theme::createColorAwareIcon(QLatin1String(":/client/theme/ses/ses-more.svg"), QSize(128, 128));
 }
 
 } // namespace OCC

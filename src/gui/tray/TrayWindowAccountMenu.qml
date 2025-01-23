@@ -272,10 +272,10 @@ Button {
         //     Layout.rightMargin: Style.sesAccountButtonRightMargin
         //     source: Image {
         //         Layout.alignment: Qt.AlignRight
-        //         verticalAlignment: Qt.AlignCenter
+        //         verticalAlignment: Qt.AlignBottom
         //         source: Style.sesChevron
-        //         sourceSize.width: 12
-        //         sourceSize.height: 7
+        //         sourceSize.width: 14
+        //         sourceSize.height: 14
         //         Accessible.role: Accessible.PopupMenu
         //         Accessible.name: qsTr("Account switcher and settings menu")
         //     }

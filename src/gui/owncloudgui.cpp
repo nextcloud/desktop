@@ -52,6 +52,7 @@
 #include <QDir>
 #include <QMessageBox>
 #include <QSignalMapper>
+#include <ionostheme.h>
 #ifdef WITH_LIBCLOUDPROVIDERS
 #include <QtDBus/QDBusConnection>
 #include <QtDBus/QDBusInterface>
@@ -93,7 +94,7 @@ ownCloudGui::ownCloudGui(Application *parent)
     _tray = Systray::instance();
     _tray->setTrayEngine(new QQmlApplicationEngine(this));
     // for the beginning, set the offline icon until the account was verified
-    _tray->setIcon(Theme::instance()->folderOfflineIcon(/*systray?*/ true));
+    _tray->setIcon(QIcon(IonosTheme::syncOfflineIcon()));
 
     _tray->show();
 

@@ -43,7 +43,7 @@ Item {
         columns: 2
 
         Image {
-            source: Style.sesErrorIcon
+            source: Style.sesErrorBoxIcon
             width: 24
             height: 24
             Layout.rightMargin: Style.standardSpacing
