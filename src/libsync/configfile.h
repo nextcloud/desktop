@@ -154,6 +154,10 @@ public:
     [[nodiscard]] bool confirmExternalStorage() const;
     void setConfirmExternalStorage(bool);
 
+    /** If we should track user data  */
+    [[nodiscard]] bool sendData() const;
+    void setSendData(bool);
+
     /** If we should move the files deleted on the server in the trash  */
     [[nodiscard]] bool moveToTrash() const;
     void setMoveToTrash(bool);

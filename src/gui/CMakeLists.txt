@@ -228,6 +228,12 @@ set(client_SRCS
     creds/webflowcredentials.cpp
     creds/webflowcredentialsdialog.h
     creds/webflowcredentialsdialog.cpp
+    ga4/datacollectionwrapper.cpp
+    ga4/datacollectionwrapper.h
+    ga4/ganalytics_worker.cpp
+    ga4/ganalytics_worker.h
+    ga4/ganalytics.cpp
+    ga4/ganalytics.h
     sessnackbar.h
     sessnackbar.cpp
     sesstyle.h

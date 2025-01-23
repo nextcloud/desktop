@@ -42,6 +42,8 @@
 #include <QSurfaceFormat>
 #include <QOperatingSystemVersion>
 #include "sesstyle.h"
+#include "ga4/ganalytics.h"
+#include "ga4/datacollectionwrapper.h"
 
 using namespace OCC;
 
