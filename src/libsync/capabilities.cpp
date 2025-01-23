@@ -245,6 +245,16 @@ bool Capabilities::chunkingNg() const
     return _capabilities["dav"].toMap()["chunking"].toByteArray() >= "1.0";
 }
 
+qint64 Capabilities::maxChunkSize() const
+{
+    return _capabilities["files"].toMap()["chunked_upload"].toMap()["max_size"].toLongLong();
+}
+
+int Capabilities::maxConcurrentChunkUploads() const
+{
+    return _capabilities["files"].toMap()["chunked_upload"].toMap()["max_parallel_count"].toInt();
+}
+
 bool Capabilities::bulkUpload() const
 {
     return _capabilities["dav"].toMap()["bulkupload"].toByteArray() >= "1.0";

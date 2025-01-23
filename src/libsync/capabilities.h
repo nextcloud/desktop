@@ -64,6 +64,8 @@ public:
     [[nodiscard]] bool shareResharing() const;
     [[nodiscard]] int shareDefaultPermissions() const;
     [[nodiscard]] bool chunkingNg() const;
+    [[nodiscard]] qint64 maxChunkSize() const;
+    [[nodiscard]] int maxConcurrentChunkUploads() const;
     [[nodiscard]] bool bulkUpload() const;
     [[nodiscard]] bool filesLockAvailable() const;
     [[nodiscard]] bool filesLockTypeAvailable() const;
