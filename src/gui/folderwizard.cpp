@@ -20,7 +20,9 @@
 #include "account.h"
 #include "selectivesyncdialog.h"
 #include "accountstate.h"
+#include "buttonstyle.h"
 #include "creds/abstractcredentials.h"
+#include "SesComponents/syncdirvalidation.h"
 #include "wizard/owncloudwizard.h"
 #include "common/asserts.h"
 
@@ -30,6 +32,7 @@
 #include <QFileInfo>
 #include <QFileIconProvider>
 #include <QInputDialog>
+#include <QDialogButtonBox>
 #include <QUrl>
 #include <QValidator>
 #include <QWizardPage>
@@ -63,9 +66,9 @@ QString FormatWarningsWizardPage::formatWarnings(const QStringList &warnings) co
 {
     QString formattedWarning;
     if (warnings.count() == 1) {
-        formattedWarning = warnings.first();
+        formattedWarning = tr("%1").arg(warnings.first());
     } else if (warnings.count() > 1) {
-        formattedWarning = "<ul>";
+        formattedWarning = tr("") + " <ul>";
         for (const auto &warning : warnings) {
             formattedWarning += QString::fromLatin1("<li>%1</li>").arg(warning);
         }
@@ -91,8 +94,10 @@ FolderWizardLocalPath::FolderWizardLocalPath(const AccountPtr &account)
     _ui.localFolderLineEdit->setText(QDir::toNativeSeparators(defaultPath));
     _ui.localFolderLineEdit->setToolTip(tr("Enter the path to the local folder."));
 
-    _ui.warnLabel->setTextFormat(Qt::RichText);
-    _ui.warnLabel->hide();
+    _ui.sesSnackBar->setWordWrap(true);
+    _ui.sesSnackBar->hide();
+
+    _ui.localFolderChooseBtn->setProperty("buttonStyle", QVariant::fromValue(OCC::ButtonStyleName::Primary));
 
     changeStyle();
 }
@@ -101,12 +106,12 @@ FolderWizardLocalPath::~FolderWizardLocalPath() = default;
 
 void FolderWizardLocalPath::initializePage()
 {
-    _ui.warnLabel->hide();
+    _ui.sesSnackBar->hide();
 }
 
 void FolderWizardLocalPath::cleanupPage()
 {
-    _ui.warnLabel->hide();
+    _ui.sesSnackBar->hide();
 }
 
 bool FolderWizardLocalPath::isComplete() const
@@ -117,23 +122,18 @@ bool FolderWizardLocalPath::isComplete() const
     const auto errorStr = FolderMan::instance()->checkPathValidityForNewFolder(
         QDir::fromNativeSeparators(_ui.localFolderLineEdit->text()), serverUrl).second;
 
-
-    bool isOk = errorStr.isEmpty();
-    QStringList warnStrings;
-    if (!isOk) {
-        warnStrings << errorStr;
+    if(errorStr.isEmpty())
+    {
+        _ui.sesSnackBar->hide();
+        _ui.sesSnackBar->clearMessage();
+        return true;
     }
-
-    _ui.warnLabel->setWordWrap(true);
-    if (isOk) {
-        _ui.warnLabel->hide();
-        _ui.warnLabel->clear();
-    } else {
-        _ui.warnLabel->show();
-        QString warnings = formatWarnings(warnStrings);
-        _ui.warnLabel->setText(warnings);
+    else
+    {
+         _ui.sesSnackBar->show();
+        _ui.sesSnackBar->setWarning(formatWarnings(QStringList(errorStr)));
+        return false;
     }
-    return isOk;
 }
 
 void FolderWizardLocalPath::slotChooseLocalFolder()
@@ -152,6 +152,13 @@ void FolderWizardLocalPath::slotChooseLocalFolder()
     QString dir = QFileDialog::getExistingDirectory(this,
         tr("Select the source folder"),
         sf);
+
+    SyncDirValidator syncDirValidator(dir);
+    if (!syncDirValidator.isValidDir()) {
+        _ui.sesSnackBar->show();
+        _ui.sesSnackBar->setError(syncDirValidator.message());
+        return;
+    }
     if (!dir.isEmpty()) {
         // set the last directory component name as alias
         _ui.localFolderLineEdit->setText(QDir::toNativeSeparators(dir));
@@ -178,8 +185,60 @@ void FolderWizardLocalPath::changeEvent(QEvent *e)
 
 void FolderWizardLocalPath::changeStyle()
 {
-    const auto yellowWarnPalette = yellowWarnWidgetPalette(_ui.warnLabel->palette());
-    _ui.warnLabel->setPalette(yellowWarnPalette);
+    _ui.title->setStyleSheet(IonosTheme::fontConfigurationCss(
+            IonosTheme::settingsFont(),
+            IonosTheme::settingsBigTitleSize(),
+            IonosTheme::settingsTitleWeight600(),
+            IonosTheme::titleColor()));
+
+    _ui.title->setProperty("text", tr("Add Folder Sync"));
+
+    _ui.subTitle->setStyleSheet(IonosTheme::fontConfigurationCss(
+            IonosTheme::settingsFont(),
+            IonosTheme::settingsTextSize(),
+            IonosTheme::settingsTitleWeight600(),
+            IonosTheme::folderWizardSubtitleColor()));
+
+    _ui.subTitle->setProperty("text", tr("Step 1 of 3: Select local folder"));
+
+    _ui.description->setStyleSheet(IonosTheme::fontConfigurationCss(
+            IonosTheme::settingsFont(),
+            IonosTheme::settingsTextSize(),
+            IonosTheme::settingsTextWeight(),
+            IonosTheme::titleColor()));
+
+    _ui.description->setProperty("text",
+        tr("Select a folder on your hard drive that should be permanetly connected to your %1. All files and "
+        "subfolders are automatically uploaded and synchronized").arg(Theme::instance()->appNameGUI()));
+
+    _ui.localFolderLineEdit->setStyleSheet(QString(
+        "color: %1; font-family: %2; font-size: %3; font-weight: %4; border-radius: %5; border: 1px "
+        "solid %6; padding: 0px 12px; text-align: left; vertical-align: middle; height: 40px; background: %7; ")
+        .arg(IonosTheme::folderWizardPathColor())
+        .arg(IonosTheme::settingsFont())
+        .arg(IonosTheme::settingsTextSize())
+        .arg(IonosTheme::settingsTextWeight())
+        .arg(IonosTheme::buttonRadius())
+        .arg(IonosTheme::menuBorderColor())
+        .arg(IonosTheme::white())
+    );
+
+    _ui.localFolderChooseBtn->setProperty("text", tr("Choose"));
+
+
+#if defined(Q_OS_MAC)
+    _ui.localFolderChooseBtn->setStyleSheet(
+        QStringLiteral("QPushButton { margin-left: 5px; margin-top: 12px; height: 40px; width: 80px; %1} ").arg(
+            IonosTheme::fontConfigurationCss(
+                IonosTheme::settingsFont(),
+                IonosTheme::settingsTextSize(),
+                IonosTheme::settingsTitleWeight500(),
+                IonosTheme::white()
+            )
+        )
+    );
+#endif
+
 }
 
 // =================================================================================
@@ -188,7 +247,7 @@ FolderWizardRemotePath::FolderWizardRemotePath(const AccountPtr &account)
     , _account(account)
 {
     _ui.setupUi(this);
-    _ui.warnFrame->hide();
+    _ui.sesSnackBar->hide();
 
     _ui.folderTreeWidget->setSortingEnabled(true);
     _ui.folderTreeWidget->sortByColumn(0, Qt::AscendingOrder);
@@ -199,11 +258,21 @@ FolderWizardRemotePath::FolderWizardRemotePath(const AccountPtr &account)
     connect(_ui.folderTreeWidget, &QTreeWidget::currentItemChanged, this, &FolderWizardRemotePath::slotCurrentItemChanged);
     connect(_ui.folderEntry, &QLineEdit::textEdited, this, &FolderWizardRemotePath::slotFolderEntryEdited);
 
+    _ui.refreshButton->setProperty("buttonStyle", QVariant::fromValue(OCC::ButtonStyleName::Primary));
+    _ui.addFolderButton->setProperty("buttonStyle", QVariant::fromValue(OCC::ButtonStyleName::Primary));
+
+    _ui.buttonLayout->setAlignment(Qt::AlignLeft);
+
     _lscolTimer.setInterval(500);
     _lscolTimer.setSingleShot(true);
     connect(&_lscolTimer, &QTimer::timeout, this, &FolderWizardRemotePath::slotLsColFolderEntry);
 
     _ui.folderTreeWidget->header()->setSectionResizeMode(0, QHeaderView::ResizeToContents);
+
+#ifdef Q_OS_MAC
+    _ui.folderTreeWidget->setPalette(QPalette(IonosTheme::white()));
+#endif
+
     // Make sure that there will be a scrollbar when the contents is too wide
     _ui.folderTreeWidget->header()->setStretchLastSection(false);
 
@@ -225,7 +294,47 @@ void FolderWizardRemotePath::slotAddRemoteFolder()
     dlg->setLabelText(tr("Enter the name of the new folder to be created below \"%1\":")
                           .arg(parent));
     dlg->open(this, SLOT(slotCreateRemoteFolder(QString)));
+
+    QDialogButtonBox *buttonBox = dlg->findChild<QDialogButtonBox*>();
+    buttonBox->setLayoutDirection(Qt::RightToLeft);
+    buttonBox->layout()->setSpacing(16);
+    buttonBox->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Fixed);
+    buttonBox->button(QDialogButtonBox::Ok)->setProperty("buttonStyle", QVariant::fromValue(OCC::ButtonStyleName::Primary));
     dlg->setAttribute(Qt::WA_DeleteOnClose);
+
+    dlg->findChild<QLineEdit*>()->setStyleSheet(
+        QStringLiteral(
+            "color: %1; font-family: %2; font-size: %3; font-weight: %4; border-radius: %5; border: 1px "
+            "solid %6; padding: 0px 12px; text-align: left; vertical-align: middle; height: 40px; background: %7; ").arg(
+                IonosTheme::folderWizardPathColor(),
+                IonosTheme::settingsFont(),
+                IonosTheme::settingsTextSize(),
+                IonosTheme::settingsTextWeight(),
+                IonosTheme::buttonRadius(),
+                IonosTheme::menuBorderColor(),
+                IonosTheme::white()
+            )
+    );
+
+    #ifdef Q_OS_MAC
+        buttonBox->layout()->setSpacing(24);
+
+        dlg->setStyleSheet(
+            QStringLiteral(" %1; } ").arg(
+                IonosTheme::fontConfigurationCss(
+                    IonosTheme::settingsFont(),
+                    IonosTheme::settingsTextSize(),
+                    IonosTheme::settingsTextWeight(),
+                    IonosTheme::titleColor()
+                )
+            )
+        );
+
+        buttonBox->button(QDialogButtonBox::Ok)->setStyleSheet(
+            buttonBox->button(QDialogButtonBox::Ok)->styleSheet() +
+            QStringLiteral(" color: %1; ").arg(IonosTheme::white())
+        );
+    #endif
 }
 
 void FolderWizardRemotePath::slotCreateRemoteFolder(const QString &folder)
@@ -251,7 +360,7 @@ void FolderWizardRemotePath::slotCreateRemoteFolder(const QString &folder)
 void FolderWizardRemotePath::slotCreateRemoteFolderFinished()
 {
     qCDebug(lcWizard) << "webdav mkdir request finished";
-    showWarn(tr("Folder was successfully created on %1.").arg(Theme::instance()->appNameGUI()));
+    showSuccess(tr("Folder was successfully created on %1.").arg(Theme::instance()->appNameGUI()));
     slotRefreshFolders();
     _ui.folderEntry->setText(dynamic_cast<MkColJob *>(sender())->path());
     slotLsColFolderEntry();
@@ -261,9 +370,9 @@ void FolderWizardRemotePath::slotHandleMkdirNetworkError(QNetworkReply *reply)
 {
     qCWarning(lcWizard) << "webdav mkdir request failed:" << reply->error();
     if (!_account->credentials()->stillValid(reply)) {
-        showWarn(tr("Authentication failed accessing %1").arg(Theme::instance()->appNameGUI()));
+        showError(tr("Authentication failed accessing %1").arg(Theme::instance()->appNameGUI()));
     } else {
-        showWarn(tr("Failed to create the folder on %1. Please check manually.")
+        showError(tr("Failed to create the folder on %1. Please check manually.")
                      .arg(Theme::instance()->appNameGUI()));
     }
 }
@@ -281,7 +390,7 @@ void FolderWizardRemotePath::slotHandleLsColNetworkError(QNetworkReply *reply)
     }
     auto job = qobject_cast<LsColJob *>(sender());
     ASSERT(job);
-    showWarn(tr("Failed to list a folder. Error: %1")
+    showError(tr("Failed to list a folder. Error: %1")
                  .arg(job->errorStringParsingBody()));
 }
 
@@ -534,11 +643,33 @@ void FolderWizardRemotePath::initializePage()
 void FolderWizardRemotePath::showWarn(const QString &msg) const
 {
     if (msg.isEmpty()) {
-        _ui.warnFrame->hide();
+        _ui.sesSnackBar->hide();
 
     } else {
-        _ui.warnFrame->show();
-        _ui.warnLabel->setText(msg);
+        _ui.sesSnackBar->show();
+        _ui.sesSnackBar->setWarning(msg);
+    }
+}
+
+void FolderWizardRemotePath::showSuccess(const QString &msg) const
+{
+    if (msg.isEmpty()) {
+        _ui.sesSnackBar->hide();
+
+    } else {
+        _ui.sesSnackBar->show();
+        _ui.sesSnackBar->setSuccess(msg);
+    }
+}
+
+void FolderWizardRemotePath::showError(const QString &msg) const
+{
+    if (msg.isEmpty()) {
+        _ui.sesSnackBar->hide();
+
+    } else {
+        _ui.sesSnackBar->show();
+        _ui.sesSnackBar->setError(msg);
     }
 }
 
@@ -560,27 +691,114 @@ void FolderWizardRemotePath::changeEvent(QEvent *e)
 
 void FolderWizardRemotePath::changeStyle()
 {
-    const auto yellowWarnPalette = yellowWarnWidgetPalette(_ui.warnLabel->palette());
-    _ui.warnLabel->setPalette(yellowWarnPalette);
+    _ui.title->setStyleSheet(IonosTheme::fontConfigurationCss(
+        IonosTheme::settingsFont(),
+        IonosTheme::settingsBigTitleSize(),
+        IonosTheme::settingsTitleWeight600(),
+        IonosTheme::titleColor()));
+
+    _ui.title->setProperty("text", tr("Add Folder Sync"));
+
+    _ui.subTitle->setStyleSheet(IonosTheme::fontConfigurationCss(
+        IonosTheme::settingsFont(),
+        IonosTheme::settingsTextSize(),
+        IonosTheme::settingsTitleWeight600(),
+        IonosTheme::folderWizardSubtitleColor()));
+
+    _ui.subTitle->setProperty("text", tr("Step 2 of 3: Directory in your %1").arg(Theme::instance()->appNameGUI()));
+
+    _ui.description1->setStyleSheet(IonosTheme::fontConfigurationCss(
+        IonosTheme::settingsFont(),
+        IonosTheme::settingsTextSize(),
+        IonosTheme::settingsTextWeight(),
+        IonosTheme::titleColor()));
+
+    _ui.description1->setProperty("text",
+        tr("Please now select or create a target folder in your %1 where the content should be uploaded and synchronized.").arg(Theme::instance()->appNameGUI()));
+
+    _ui.description2->setProperty("text",
+        tr("Both folders are permanently linked and the respective contents are automatically synchronized and updated."));
+
+    _ui.description2->setStyleSheet(IonosTheme::fontConfigurationCss(
+        IonosTheme::settingsFont(),
+        IonosTheme::settingsTextSize(),
+        IonosTheme::settingsTextWeight(),
+        IonosTheme::titleColor()));
+
+    _ui.folderEntry->setStyleSheet(
+        QStringLiteral("color: %1; font-family: %2; font-size: %3; font-weight: %4; border-radius: %5; border: 1px "
+        "solid %6; padding: 0px 12px; text-align: left; vertical-align: middle; height: 40px;")
+        .arg(IonosTheme::folderWizardPathColor())
+        .arg(IonosTheme::settingsFont())
+        .arg(IonosTheme::settingsTextSize())
+        .arg(IonosTheme::settingsTextWeight())
+        .arg(IonosTheme::buttonRadius())
+        .arg(IonosTheme::menuBorderColor()));
+
+    _ui.folderTreeWidget->setStyleSheet(IonosTheme::fontConfigurationCss(
+        IonosTheme::settingsFont(),
+        IonosTheme::settingsTextSize(),
+        IonosTheme::settingsTextWeight(),
+        IonosTheme::titleColor()));
+
+    _ui.refreshButton->setProperty("text", tr("Refresh"));
+
+    _ui.addFolderButton->setProperty("text", tr("Create folder"));
+
+#if defined(Q_OS_MAC)
+    _ui.buttonLayout->setSpacing(24);
+#endif
 }
 
 // ====================================================================================
 
 FolderWizardSelectiveSync::FolderWizardSelectiveSync(const AccountPtr &account)
 {
-    auto *layout = new QVBoxLayout(this);
+    _uiSelectiveSync.setupUi(this);
+    auto *layout = _uiSelectiveSync.verticalLayout;
     _selectiveSync = new SelectiveSyncWidget(account, this);
     layout->addWidget(_selectiveSync);
 
     if (Theme::instance()->showVirtualFilesOption() && bestAvailableVfsMode() != Vfs::Off) {
         _virtualFilesCheckBox = new QCheckBox(tr("Use virtual files instead of downloading content immediately %1").arg(bestAvailableVfsMode() == Vfs::WindowsCfApi ? QString() : tr("(experimental)")));
+
         connect(_virtualFilesCheckBox, &QCheckBox::clicked, this, &FolderWizardSelectiveSync::virtualFilesCheckboxClicked);
-        connect(_virtualFilesCheckBox, &QCheckBox::checkStateChanged, this, [this](int state) {
+        connect(_virtualFilesCheckBox, &QCheckBox::stateChanged, this, [this](int state) {
             _selectiveSync->setEnabled(state == Qt::Unchecked);
         });
         _virtualFilesCheckBox->setChecked(bestAvailableVfsMode() == Vfs::WindowsCfApi);
+        _virtualFilesCheckBox->setStyleSheet("margin-top: 5px;");
+
         layout->addWidget(_virtualFilesCheckBox);
+
+        _virtualFilesCheckBox->setStyleSheet(IonosTheme::fontConfigurationCss(
+            IonosTheme::settingsFont(),
+            IonosTheme::settingsTextSize(),
+            IonosTheme::settingsTextWeight(),
+            IonosTheme::titleColor()));
     }
+
+    _selectiveSync->setStyleSheet(IonosTheme::fontConfigurationCss(
+        IonosTheme::settingsFont(),
+        IonosTheme::settingsTextSize(),
+        IonosTheme::settingsTextWeight(),
+        IonosTheme::titleColor()));
+
+    _uiSelectiveSync.title->setStyleSheet(IonosTheme::fontConfigurationCss(
+            IonosTheme::settingsFont(),
+            IonosTheme::settingsBigTitleSize(),
+            IonosTheme::settingsTitleWeight600(),
+            IonosTheme::titleColor()));
+    _uiSelectiveSync.title->setProperty("text", tr("Add Folder Sync"));
+
+    _uiSelectiveSync.subTitle->setStyleSheet(IonosTheme::fontConfigurationCss(
+        IonosTheme::settingsFont(),
+        IonosTheme::settingsTextSize(),
+        IonosTheme::settingsTitleWeight600(),
+        IonosTheme::folderWizardSubtitleColor()));
+
+    _uiSelectiveSync.subTitle->setProperty("text", tr("Step 3 of 3: Selektive Synchronisation"));
+
 }
 
 FolderWizardSelectiveSync::~FolderWizardSelectiveSync() = default;
@@ -679,7 +897,6 @@ FolderWizard::FolderWizard(AccountPtr account, QWidget *parent)
     , _folderWizardSourcePage(new FolderWizardLocalPath(account))
     , _folderWizardSelectiveSyncPage(new FolderWizardSelectiveSync(account))
 {
-    setWizardStyle(QWizard::ModernStyle);
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
     setPage(Page_Source, _folderWizardSourcePage);
     _folderWizardSourcePage->installEventFilter(this);
@@ -691,8 +908,14 @@ FolderWizard::FolderWizard(AccountPtr account, QWidget *parent)
     setPage(Page_SelectiveSync, _folderWizardSelectiveSyncPage);
 
     setWindowTitle(tr("Add Folder Sync Connection"));
+    setButtonLayout({ QWizard::Stretch, QWizard::CancelButton, QWizard::NextButton, QWizard::FinishButton });
     setOptions(QWizard::CancelButtonOnLeft);
     setButtonText(QWizard::FinishButton, tr("Add Sync Connection"));
+    button(QWizard::NextButton)->setProperty("buttonStyle", QVariant::fromValue(OCC::ButtonStyleName::Primary));
+
+    adjustWizardSize();
+    setWizardStyle(QWizard::ClassicStyle);
+    customizeStyle();
 }
 
 FolderWizard::~FolderWizard() = default;
@@ -718,6 +941,31 @@ void FolderWizard::resizeEvent(QResizeEvent *event)
             setTitleFormat(titleFormat()); // And another workaround for QTBUG-3396
         }
     }
+}
+
+void FolderWizard::customizeStyle()
+{
+    // HINT: Customize wizard's own style here, if necessary in the future (Dark-/Light-Mode switching)
+
+    // Set background colors
+    auto wizardPalette = palette();
+    const auto backgroundColor = QColor(IonosTheme::dialogBackgroundColor());
+
+    // Set Color of upper part
+    wizardPalette.setColor(QPalette::Base, backgroundColor);
+
+    // Set Color of lower part
+    wizardPalette.setColor(QPalette::Window, backgroundColor);
+
+    // Set separator color
+    wizardPalette.setColor(QPalette::Mid, backgroundColor);
+
+    setPalette(wizardPalette);
+}
+
+void FolderWizard::adjustWizardSize()
+{
+    setFixedSize(QSize(576, 704));
 }
 
 } // end namespace

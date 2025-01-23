@@ -1,125 +1,234 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>FolderWizardTargetPage</class>
- <widget class="QWidget" name="FolderWizardTargetPage">
-  <property name="geometry">
-   <rect>
-    <x>0</x>
-    <y>0</y>
-    <width>520</width>
-    <height>350</height>
-   </rect>
-  </property>
-  <property name="windowTitle">
-   <string notr="true">Form</string>
-  </property>
-  <layout class="QGridLayout" name="gridLayout_6">
-   <item row="1" column="0">
-    <widget class="QLineEdit" name="folderEntry"/>
-   </item>
-   <item row="2" column="0">
-    <widget class="QFrame" name="warnFrame">
-     <property name="autoFillBackground">
-      <bool>true</bool>
-     </property>
-     <property name="frameShape">
-      <enum>QFrame::NoFrame</enum>
-     </property>
-     <property name="frameShadow">
-      <enum>QFrame::Raised</enum>
-     </property>
-     <layout class="QGridLayout" name="gridLayout_5">
-      <item row="0" column="0">
-       <layout class="QHBoxLayout" name="horizontalLayout">
-        <item>
-         <widget class="QLabel" name="warnLabel">
-          <property name="autoFillBackground">
-           <bool>true</bool>
-          </property>
-          <property name="frameShape">
-           <enum>QFrame::NoFrame</enum>
-          </property>
-          <property name="frameShadow">
-           <enum>QFrame::Plain</enum>
-          </property>
-          <property name="text">
-           <string notr="true">TextLabel</string>
-          </property>
-          <property name="textFormat">
-           <enum>Qt::RichText</enum>
-          </property>
-          <property name="wordWrap">
-           <bool>true</bool>
-          </property>
-          <property name="margin">
-           <number>3</number>
-          </property>
-         </widget>
+    <class>FolderWizardTargetPage</class>
+    <widget class="QWidget" name="FolderWizardTargetPage">
+        <property name="geometry">
+            <rect>
+                <x>0</x>
+                <y>0</y>
+                <width>639</width>
+                <height>460</height>
+            </rect>
+        </property>
+        <property name="windowTitle">
+            <string notr="true">Form</string>
+        </property>
+        <layout class="QGridLayout" name="gridLayout_2">
+        <item row="1" column="0">
+        <layout class="QVBoxLayout" name="verticalLayout">
+            <property name="leftMargin">
+                <number>20</number>
+            </property>
+            <property name="topMargin">
+                <number>0</number>
+            </property>
+            <property name="rightMargin">
+                <number>20</number>
+            </property>
+            <property name="bottomMargin">
+                <number>0</number>
+            </property>
+            <item>
+                <widget class="QLabel" name="title">
+                    <property name="styleSheet">
+                        <string notr="true">font: 18pt bold;</string>
+                    </property>
+                    <property name="text">
+                        <string>Add Folder Sync</string>
+                    </property>
+                    <property name="textFormat">
+                        <enum>Qt::PlainText</enum>
+                    </property>
+                    <property name="scaledContents">
+                        <bool>false</bool>
+                    </property>
+                </widget>
+            </item>
+            <item alignment="Qt::AlignTop">
+                <widget class="QLabel" name="subTitle">
+                    <property name="styleSheet">
+                        <string notr="true">color: rgb(16,73, 150);font: bold;</string>
+                    </property>
+                    <property name="text">
+                        <string>Step 2 of 3: Directory in your %1</string>
+                    </property>
+                    <property name="textFormat">
+                        <enum>Qt::PlainText</enum>
+                    </property>
+                    <property name="scaledContents">
+                        <bool>false</bool>
+                    </property>
+                </widget>
+            </item>
+            <item>
+                <spacer name="verticalSpacer_2">
+                    <property name="orientation">
+                        <enum>Qt::Vertical</enum>
+                    </property>
+                    <property name="sizeType">
+                        <enum>QSizePolicy::Preferred</enum>
+                    </property>
+                    <property name="sizeHint" stdset="0">
+                        <size>
+                            <width>20</width>
+                            <height>20</height>
+                        </size>
+                    </property>
+                </spacer>
+            </item>
+            <item>
+                <widget class="QLabel" name="description1">
+                    <property name="sizePolicy">
+                        <sizepolicy hsizetype="Preferred"
+                            vsizetype="Preferred">
+                            <horstretch>0</horstretch>
+                            <verstretch>0</verstretch>
+                        </sizepolicy>
+                    </property>
+                    <property name="text">
+                        <string>Please now select or create a target folder in your %1 where the content should be uploaded and synchronized.</string>
+                    </property>
+                    <property name="textFormat">
+                        <enum>Qt::PlainText</enum>
+                    </property>
+                    <property name="wordWrap">
+                        <bool>true</bool>
+                    </property>
+                </widget>
+            </item>
+            <item>
+                <widget class="QLabel" name="description2">
+                    <property name="sizePolicy">
+                        <sizepolicy hsizetype="Preferred"
+                            vsizetype="Preferred">
+                            <horstretch>0</horstretch>
+                            <verstretch>0</verstretch>
+                        </sizepolicy>
+                    </property>
+                    <property name="text">
+                        <string>Both folders are permanently linked and the respective contents are automatically synchronized and updated.</string>
+                    </property>
+                    <property name="textFormat">
+                        <enum>Qt::PlainText</enum>
+                    </property>
+                    <property name="wordWrap">
+                        <bool>true</bool>
+                    </property>
+                </widget>
+            </item>
+            <item>
+                <spacer name="verticalSpacer_3">
+                    <property name="orientation">
+                        <enum>Qt::Vertical</enum>
+                    </property>
+                    <property name="sizeType">
+                        <enum>QSizePolicy::Preferred</enum>
+                    </property>
+                    <property name="sizeHint" stdset="0">
+                        <size>
+                            <width>20</width>
+                            <height>12</height>
+                        </size>
+                    </property>
+                </spacer>
+            </item>
+            <item>
+                <widget class="QLineEdit" name="folderEntry">
+                    <property name="sizePolicy">
+                        <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                            <horstretch>0</horstretch>
+                            <verstretch>0</verstretch>
+                        </sizepolicy>
+                    </property>
+                    <property name="fixedSize">
+                        <size>
+                            <width>0</width>
+                            <height>0</height>
+                        </size>
+                    </property>
+                </widget>
+            </item>
+            <item>
+                <widget class="QTreeWidget" name="folderTreeWidget">
+                    <property name="sizePolicy">
+                        <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                            <horstretch>0</horstretch>
+                            <verstretch>0</verstretch>
+                        </sizepolicy>
+                    </property>
+                    <property name="sortingEnabled">
+                        <bool>true</bool>
+                    </property>
+                    <property name="headerHidden">
+                        <bool>true</bool>
+                    </property>
+                    <column>
+                        <property name="text">
+                            <string>Folders</string>
+                        </property>
+                    </column>
+                </widget>
+            </item>
+            <item>
+                <widget class="OCC::sesSnackBar" name="sesSnackBar">
+                    <property name="wordWrap">
+                        <bool>true</bool>
+                    </property>
+                </widget>
+            </item>
+            <item>
+                <spacer name="verticalSpacer_4">
+                    <property name="orientation">
+                        <enum>Qt::Vertical</enum>
+                    </property>
+                    <property name="sizeType">
+                        <enum>QSizePolicy::Preferred</enum>
+                    </property>
+                    <property name="sizeHint" stdset="0">
+                        <size>
+                            <width>20</width>
+                            <height>10</height>
+                        </size>
+                    </property>
+                </spacer>
+            </item>
+            <item>
+                <layout class="QHBoxLayout" name="buttonLayout">
+                    <property name="spacing">
+                        <number>16</number>
+                    </property>
+                    <item>
+                        <widget class="QPushButton" name="refreshButton">
+                            <property name="minimumSize">
+                                <size>
+                                    <width>86</width>
+                                    <height>40</height>
+                                </size>
+                            </property>
+                            <property name="text">
+                                <string>Refresh</string>
+                            </property>
+                        </widget>
+                    </item>
+                    <item>
+                        <widget class="QPushButton" name="addFolderButton">
+                            <property name="minimumSize">
+                                <size>
+                                    <width>167</width>
+                                    <height>40</height>
+                                </size>
+                            </property>
+                            <property name="text">
+                                <string>Create folder</string>
+                            </property>
+                        </widget>
+                    </item>
+                </layout>
+            </item>
+        </layout>
         </item>
-       </layout>
-      </item>
-     </layout>
+    </layout>
     </widget>
-   </item>
-   <item row="0" column="0">
-    <widget class="QGroupBox" name="groupBox">
-     <property name="title">
-      <string>Select a remote destination folder</string>
-     </property>
-     <property name="flat">
-      <bool>true</bool>
-     </property>
-     <property name="checkable">
-      <bool>false</bool>
-     </property>
-     <layout class="QGridLayout" name="gridLayout">
-      <item row="1" column="1">
-       <widget class="QPushButton" name="addFolderButton">
-        <property name="text">
-         <string>Create folder</string>
-        </property>
-       </widget>
-      </item>
-      <item row="3" column="1">
-       <spacer name="verticalSpacer_2">
-        <property name="orientation">
-         <enum>Qt::Vertical</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>20</width>
-          <height>40</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
-      <item row="2" column="1">
-       <widget class="QPushButton" name="refreshButton">
-        <property name="text">
-         <string>Refresh</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="0" rowspan="4">
-       <widget class="QTreeWidget" name="folderTreeWidget">
-        <property name="sortingEnabled">
-         <bool>true</bool>
-        </property>
-        <property name="headerHidden">
-         <bool>true</bool>
-        </property>
-        <column>
-         <property name="text">
-          <string>Folders</string>
-         </property>
-        </column>
-       </widget>
-      </item>
-     </layout>
-    </widget>
-   </item>
-  </layout>
- </widget>
- <resources/>
- <connections/>
+    <resources />
+    <connections />
 </ui>

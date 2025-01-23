@@ -24,6 +24,7 @@
 
 #include "ui_folderwizardsourcepage.h"
 #include "ui_folderwizardtargetpage.h"
+#include "ui_folderwizardselectivesync.h"
 
 class QCheckBox;
 
@@ -95,6 +96,8 @@ public:
 
 protected slots:
     void showWarn(const QString & = QString()) const;
+    void showSuccess(const QString & = QString()) const;
+    void showError(const QString & = QString()) const;
     void slotAddRemoteFolder();
     void slotCreateRemoteFolder(const QString &);
     void slotCreateRemoteFolderFinished();
@@ -146,6 +149,7 @@ private slots:
     void virtualFilesCheckboxClicked();
 
 private:
+    Ui_FolderWizardSelectiveSync _uiSelectiveSync{};
     SelectiveSyncWidget *_selectiveSync;
     QCheckBox *_virtualFilesCheckBox = nullptr;
 };
@@ -174,8 +178,10 @@ private:
     FolderWizardLocalPath *_folderWizardSourcePage;
     FolderWizardRemotePath *_folderWizardTargetPage = nullptr;
     FolderWizardSelectiveSync *_folderWizardSelectiveSyncPage;
-};
 
+    void customizeStyle();
+    void adjustWizardSize();
+};
 
 } // namespace OCC
 
