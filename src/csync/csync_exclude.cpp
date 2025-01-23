@@ -153,7 +153,7 @@ static CSYNC_EXCLUDE_TYPE _csync_excluded_common(const QString &path, bool exclu
         if (bname.startsWith(QLatin1String(".owncloudsync.log"), Qt::CaseInsensitive)) { // ".owncloudsync.log*"
             return CSYNC_FILE_SILENTLY_EXCLUDED;
         }
-        if (bname.startsWith(QLatin1String(".nextcloudsync.log"), Qt::CaseInsensitive)) { // ".nextcloudsync.log*"
+        if (bname.startsWith(QLatin1String(".hidrivenextsync.log"), Qt::CaseInsensitive)) { // ".hidrivenextsync.log*"
             return CSYNC_FILE_SILENTLY_EXCLUDED;
         }
     }
