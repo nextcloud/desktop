@@ -362,7 +362,7 @@
                         <item>                        
                             <widget class="QCheckBox" name="sendData_checkbox">
                                 <property name="text">
-                                    <string>&amp;Analysis data collection for needs-based design </string>
+                                    <string>&amp;Analysis data collection for needs-based design</string>
                                 </property>
                             </widget>
                         </item>

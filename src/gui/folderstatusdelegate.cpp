@@ -57,7 +57,7 @@ FolderStatusDelegate::FolderStatusDelegate()
 
 QString FolderStatusDelegate::addFolderText()
 {
-    return tr("Add live backup");
+    return tr("Add Folder Sync");
 }
 
 QString FolderStatusDelegate::addInfoText()

@@ -642,7 +642,8 @@ QString Theme::aboutInfo() const
 
 QString Theme::about() const
 {
-    const auto devString = developerStringInfo();
+    //: Example text: "<p>Nextcloud Desktop Client</p>"   (%1 is the application name)
+    const auto devString = tr("<p>%1 %2</p>").arg(APPLICATION_NAME, QString::fromLatin1(MIRALL_STRINGIFY(MIRALL_VERSION)));
 
     return devString;
 }
