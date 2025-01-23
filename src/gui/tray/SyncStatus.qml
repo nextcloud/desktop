@@ -10,7 +10,6 @@ RowLayout {
     id: root
 
     property alias model: syncStatus
-    property color accentColor: Style.ncBlue
 
     spacing: Style.trayHorizontalMargin
 
@@ -63,7 +62,6 @@ RowLayout {
             sourceComponent: NCProgressBar {
                 id: syncProgressBar
                 value: syncStatus.syncProgress
-                fillColor: root.accentColor
             }
         }
 
@@ -80,7 +78,7 @@ RowLayout {
         }
     }
 
-    Button {
+    SesCustomButton {
         id: syncNowButton
 
         Layout.rightMargin: Style.trayHorizontalMargin
@@ -88,6 +86,9 @@ RowLayout {
         text: qsTr("Sync now")
 
         padding: Style.smallSpacing
+        textColor: Style.adjustedCurrentUserHeaderColor
+        textColorHovered: Style.currentUserHeaderTextColor
+        bgColor: Style.currentUserHeaderColor
 
         visible: false // SES-4 removed
         enabled: visible

@@ -13,7 +13,7 @@ Repeater {
     property variant linksContextMenu: []
     property bool displayActions: false
 
-    property color moreActionsButtonColor: palette.base
+    property color moreActionsButtonColor: "transparent"
 
     property int maxActionButtons: 0
 
@@ -34,7 +34,6 @@ Repeater {
 
         Layout.alignment: Qt.AlignTop | Qt.AlignRight
 
-        hoverEnabled: true
         padding: Style.smallSpacing
         display: Button.TextOnly
 
