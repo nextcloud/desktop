@@ -647,6 +647,7 @@ void SyncEngine::startSync()
 
     _discoveryPhase = std::make_unique<DiscoveryPhase>();
     _discoveryPhase->_leadingAndTrailingSpacesFilesAllowed = _leadingAndTrailingSpacesFilesAllowed;
+    _discoveryPhase->_shouldEnforceWindowsFileNameCompatibility = _shouldEnforceWindowsFileNameCompatibility;
     _discoveryPhase->_account = _account;
     _discoveryPhase->_excludes = _excludedFiles.data();
     const QString excludeFilePath = _localPath + QStringLiteral(".sync-exclude.lst");
@@ -1206,6 +1207,11 @@ void SyncEngine::slotClearTouchedFiles()
 void SyncEngine::addAcceptedInvalidFileName(const QString& filePath)
 {
     _leadingAndTrailingSpacesFilesAllowed.append(filePath);
+}
+
+void SyncEngine::setLocalDiscoveryEnforceWindowsFileNameCompatibility(bool value)
+{
+    _shouldEnforceWindowsFileNameCompatibility = value;
 }
 
 bool SyncEngine::wasFileTouched(const QString &fn) const
