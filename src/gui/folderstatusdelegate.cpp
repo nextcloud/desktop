@@ -19,7 +19,11 @@
 #include "folderstatusview.h"
 #include "folderman.h"
 #include "accountstate.h"
+#include "sesstyle.h"
+#include "buttonstyle.h"
+
 #include <theme.h>
+#include <ionostheme.h>
 #include <account.h>
 
 #include <QFileIconProvider>
@@ -27,14 +31,7 @@
 #include <QApplication>
 #include <QMouseEvent>
 #include <QStyleFactory>
-
-inline static QFont makeAliasFont(const QFont &normalFont)
-{
-    QFont aliasFont = normalFont;
-    aliasFont.setBold(true);
-    aliasFont.setPointSize(normalFont.pointSize() + 2);
-    return aliasFont;
-}
+#include <iostream>
 
 namespace {
 #ifdef Q_OS_MACOS
@@ -44,6 +41,14 @@ namespace {
 
 namespace OCC {
 
+inline static QFont makeAliasFont(const QFont &normalFont)
+{
+    QFont aliasFont = normalFont;
+    aliasFont.setWeight(IonosTheme::settingsTitleWeightDemiBold());
+    aliasFont.setPixelSize(IonosTheme::settingsBigTitlePixel());
+    return aliasFont;
+}
+
 FolderStatusDelegate::FolderStatusDelegate()
     : QStyledItemDelegate()
 {
@@ -52,15 +57,21 @@ FolderStatusDelegate::FolderStatusDelegate()
 
 QString FolderStatusDelegate::addFolderText()
 {
-    return tr("Add Folder Sync Connection");
+    return tr("Add live backup");
+}
+
+QString FolderStatusDelegate::addInfoText()
+{
+    return tr("Synchronize any other local folder with your %1").arg(Theme::instance()->appNameGUI());
 }
 
 // allocate each item size in listview.
 QSize FolderStatusDelegate::sizeHint(const QStyleOptionViewItem &option,
     const QModelIndex &index) const
 {
-    QFont aliasFont = makeAliasFont(option.font);
-    QFont font = option.font;
+    QFont font = QFont(option.font);
+    font.setPixelSize(IonosTheme::settingsTextPixel());
+    QFont aliasFont = makeAliasFont(font);
 
     QFontMetrics fm(font);
     QFontMetrics aliasFm(aliasFont);
@@ -71,7 +82,7 @@ QSize FolderStatusDelegate::sizeHint(const QStyleOptionViewItem &option,
         QFontMetrics fm(qApp->font("QPushButton"));
         QStyleOptionButton opt;
         static_cast<QStyleOption &>(opt) = option;
-        opt.text = addFolderText();
+        opt.text = addInfoText();
         return QApplication::style()->sizeFromContents( QStyle::CT_PushButton, &opt, fm.size(Qt::TextSingleLine, opt.text)) +
                 QSize(0, margins);
     }
@@ -111,45 +122,84 @@ int FolderStatusDelegate::rootFolderHeightWithoutErrors(const QFontMetrics &fm, 
     return h;
 }
 
+void FolderStatusDelegate::drawAddButton(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
+{
+    QFont titleFont = option.font;
+    titleFont.setWeight(IonosTheme::settingsTitleWeightDemiBold());
+    titleFont.setPixelSize(IonosTheme::settingsTitlePixel());
+    QFontMetrics titleTextFm(titleFont);
+    const auto baseDistanceForCalculus = titleTextFm.height() / 2;
+
+    QFont subtitleFont = option.font;
+
+    QFontMetrics subtitleTextFm(subtitleFont);
+    const auto distanceToSubline = subtitleTextFm.height() / 4;
+
+    auto iconBox = option.rect;
+    iconBox.setTop(iconBox.top() + baseDistanceForCalculus);
+    iconBox.setBottom(iconBox.top() + IonosTheme::treeViewIconSize());
+    iconBox.setLeft(iconBox.left() + baseDistanceForCalculus);
+    iconBox.setWidth(iconBox.height());
+
+    auto titleBox = option.rect;
+    titleBox.setTop(iconBox.top());
+    titleBox.setBottom(iconBox.bottom() - distanceToSubline);
+    titleBox.setRight(titleBox.right() - baseDistanceForCalculus);
+    titleBox.setLeft(iconBox.right() + baseDistanceForCalculus);
+
+    auto subtitleBox = option.rect;
+    subtitleBox.setTop(titleBox.bottom() + distanceToSubline);
+    subtitleBox.setBottom(subtitleBox.top() + 4 * distanceToSubline);
+    subtitleBox.setLeft(iconBox.right() + baseDistanceForCalculus);
+    subtitleBox.setRight(subtitleBox.right() - baseDistanceForCalculus);
+
+    auto titleText = addFolderText();
+    auto subtitleText = addInfoText();
+    auto addIcon = QIcon(IonosTheme::liveBackupPlusIcon());
+    const auto addPixmap = addIcon.pixmap(iconBox.size(), QIcon::Normal);
+
+    painter->save();
+    painter->drawPixmap(QStyle::visualRect(option.direction, option.rect, iconBox).left(), iconBox.top(), addPixmap);
+
+    drawElidedText(painter, option, titleTextFm, titleFont, titleText, titleBox);
+
+    drawElidedText(painter, option, subtitleTextFm, subtitleFont, subtitleText, subtitleBox);
+
+    painter->restore();
+}
+
+void FolderStatusDelegate::drawElidedText(QPainter *painter, QStyleOptionViewItem option, QFontMetrics fontMetric, QFont font, QString text, QRect rect) const{
+    const auto elidedText = fontMetric.elidedText(text, Qt::ElideRight, rect.width());
+    painter->setFont(font);
+    painter->drawText(QStyle::visualRect(option.direction, option.rect, rect), Qt::AlignLeft, elidedText);
+}
+
 void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
-    if (index.data(AddButton).toBool()) {
-        const_cast<QStyleOptionViewItem &>(option).showDecorationSelected = false;
-    }
+    QStyleOptionViewItem opt = option;
+    QFont font = opt.font;
+    font.setPixelSize(IonosTheme::settingsTextPixel());
+    opt.font = font;
 
-    QStyledItemDelegate::paint(painter, option, index);
+    QStyledItemDelegate::paint(painter, opt, index);
+
+    if (index.data(AddButton).toBool()) {
+        drawAddButton(painter, opt, index);
+        return;
+    }
 
     auto textAlign = Qt::AlignLeft;
 
-    const auto aliasFont = makeAliasFont(option.font);
-    const auto subFont = option.font;
-    const auto errorFont = subFont;
-    auto progressFont = subFont;
+    const auto aliasFont = makeAliasFont(opt.font);
+    const auto subFont = opt.font;
 
-    progressFont.setPointSize(subFont.pointSize() - 2);
+    const auto errorFont = subFont;
 
     QFontMetrics subFm(subFont);
     QFontMetrics aliasFm(aliasFont);
 
     const auto aliasMargin = aliasFm.height() / 2;
     const auto margin = subFm.height() / 4;
-
-    if (index.data(AddButton).toBool()) {
-        QStyleOptionButton opt;
-        static_cast<QStyleOption &>(opt) = option;
-        if (opt.state & QStyle::State_Enabled && opt.state & QStyle::State_MouseOver && index == _pressedIndex) {
-            opt.state |= QStyle::State_Sunken;
-        } else {
-            opt.state |= QStyle::State_Raised;
-        }
-        opt.text = addFolderText();
-        opt.rect = addButtonRect(option.rect, option.direction);
-        painter->save();
-        painter->setFont(qApp->font("QPushButton"));
-        QApplication::style()->drawControl(QStyle::CE_PushButton, &opt, painter, option.widget);
-        painter->restore();
-        return;
-    }
 
     if (dynamic_cast<const FolderStatusModel *>(index.model())->classify(index) != FolderStatusModel::RootFolder) {
         return;
@@ -163,7 +213,6 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
     auto errorTexts = qvariant_cast<QStringList>(index.data(FolderErrorMsg));
     auto infoTexts = qvariant_cast<QStringList>(index.data(FolderInfoMsg));
 
-    auto overallPercent = qvariant_cast<int>(index.data(SyncProgressOverallPercent));
     auto overallString = qvariant_cast<QString>(index.data(SyncProgressOverallString));
     auto itemString = qvariant_cast<QString>(index.data(SyncProgressItemString));
     auto warningCount = qvariant_cast<int>(index.data(WarningCount));
@@ -192,7 +241,7 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
     localPathRect.setTop(remotePathRect.bottom() + margin);
     localPathRect.setBottom(localPathRect.top() + subFm.height());
 
-    iconRect.setBottom(localPathRect.bottom());
+    iconRect.setBottom(iconRect.top() + IonosTheme::treeViewIconSize());
     iconRect.setWidth(iconRect.height());
 
     const auto nextToIcon = iconRect.right() + aliasMargin;
@@ -201,8 +250,6 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
     remotePathRect.setLeft(nextToIcon);
 
     const auto iconSize = iconRect.width();
-
-    auto optionsButtonVisualRect = optionsButtonRect(option.rect, option.direction);
 
     const auto statusPixmap = statusIcon.pixmap(iconSize, iconSize, syncEnabled ? QIcon::Normal : QIcon::Disabled);
     painter->drawPixmap(QStyle::visualRect(option.direction, option.rect, iconRect).left(), iconRect.top(), statusPixmap);
@@ -235,37 +282,32 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
         painter->setPen(palette.color(colourGroup, QPalette::Text));
     }
 
-    const auto elidedAlias = aliasFm.elidedText(aliasText, Qt::ElideRight, aliasRect.width());
-    painter->setFont(aliasFont);
-    painter->drawText(QStyle::visualRect(option.direction, option.rect, aliasRect), textAlign, elidedAlias);
+    drawElidedText(painter, option, aliasFm, aliasFont, aliasText, aliasRect);
 
     const auto showProgess = !overallString.isEmpty() || !itemString.isEmpty();
     if (!showProgess) {
-        painter->setFont(subFont);
-        const auto elidedRemotePathText = subFm.elidedText(syncText, Qt::ElideRight, remotePathRect.width());
-        painter->drawText(QStyle::visualRect(option.direction, option.rect, remotePathRect), textAlign, elidedRemotePathText);
+        drawElidedText(painter, option, subFm, subFont, syncText, remotePathRect);
 
-        const auto elidedPathText = subFm.elidedText(pathText, Qt::ElideMiddle, localPathRect.width());
-        painter->drawText(QStyle::visualRect(option.direction, option.rect, localPathRect), textAlign, elidedPathText);
+        drawElidedText(painter, option, subFm, subFont, pathText, localPathRect);
     }
 
-    auto textBoxTop = iconRect.bottom() + margin;
+    auto textBoxTop = qMax(localPathRect.bottom(), remotePathRect.bottom()) +  margin;
 
     // paint an error overlay if there is an error string or conflict string
-    auto drawTextBox = [&](const QStringList &texts, QColor color) {
+    auto drawTextBox = [&](const QStringList &texts, QColor color, QColor borderColor) {
         auto rect = localPathRect;
         rect.setLeft(iconRect.left());
         rect.setTop(textBoxTop);
         rect.setHeight(texts.count() * subFm.height() + 2 * margin);
-        rect.setRight(option.rect.right() - margin);
+        rect.setRight(option.rect.right() - aliasMargin);
 
         // save previous state to not mess up colours with the background (fixes issue: https://github.com/nextcloud/desktop/issues/1237)
         painter->save();
         painter->setBrush(color);
-        painter->setPen(QColor(0xaa, 0xaa, 0xaa));
+        painter->setPen(borderColor);
         painter->drawRoundedRect(QStyle::visualRect(option.direction, option.rect, rect),
             4, 4);
-        painter->setPen(Qt::white);
+        painter->setPen(Qt::black);
         painter->setFont(errorFont);
         QRect textRect(rect.left() + margin,
             rect.top() + margin,
@@ -283,73 +325,118 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
     };
 
     if (!conflictTexts.isEmpty()) {
-        drawTextBox(conflictTexts, QColor(0xba, 0xba, 0x4d));
+        drawTextBox(conflictTexts, QColor(IonosTheme::warningColor()), QColor(IonosTheme::warningBorderColor()));
     }
     if (!errorTexts.isEmpty()) {
-        drawTextBox(errorTexts, QColor(0xbb, 0x4d, 0x4d));
+        drawTextBox(errorTexts, QColor(IonosTheme::errorColor()), QColor(IonosTheme::errorBorderColor()));
     }
     if (!infoTexts.isEmpty()) {
-        drawTextBox(infoTexts, QColor(0x4d, 0x4d, 0xba));
+        drawTextBox(infoTexts, QColor(IonosTheme::infoColor()), QColor(IonosTheme::infoBorderColor()));
     }
 
     // Sync File Progress Bar: Show it if syncFile is not empty.
     if (showProgess) {
-        const auto fileNameTextHeight = subFm.boundingRect(tr("File")).height();
-        constexpr auto barHeight = 7; // same height as quota bar
-        const auto overallWidth = option.rect.right() - aliasMargin - optionsButtonVisualRect.width() - nextToIcon;
+        drawSyncProgressBar(painter, opt, index, subFm, aliasMargin, remotePathRect, margin, nextToIcon);
+    }
 
-        painter->save();
+    drawMoreOptionsButton(painter, option, index);
+}
+
+void FolderStatusDelegate::drawSyncProgressBar(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index, const QFontMetrics &subFm, const int aliasMargin, const QRect &remotePathRect, const int margin, const int nextToIcon) const
+{
+    auto overallPercent = qvariant_cast<int>(index.data(SyncProgressOverallPercent));
+    auto overallString = qvariant_cast<QString>(index.data(SyncProgressOverallString));
+    auto optionsButtonVisualRect = optionsButtonRect(option.rect, option.direction);
+
+    const auto fileNameTextHeight = subFm.boundingRect(tr("File")).height();
+    constexpr auto barHeight = 7; // same height as quota bar
+    const auto overallWidth = option.rect.right() - aliasMargin - optionsButtonVisualRect.width() - nextToIcon;
+
+    QFont progressFont(option.font);
+    progressFont.setPixelSize(IonosTheme::settingsTextPixel());
+    progressFont.setWeight(IonosTheme::settingsTitleWeightNormal());
+    painter->save();
 
         // Overall Progress Bar.
-        const auto progressBarRect = QRect(nextToIcon,
-                                           remotePathRect.top(),
-                                           overallWidth - 2 * margin,
-                                           barHeight);
+    const auto progressBarRect = QRect(nextToIcon,
+                                        remotePathRect.top(),
+                                        overallWidth - 2 * margin,
+                                        barHeight);
 
-        QStyleOptionProgressBar progressBarOpt;
+    QStyleOptionProgressBar progressBarOpt;
 
-        progressBarOpt.state = option.state | QStyle::State_Horizontal;
-        progressBarOpt.minimum = 0;
-        progressBarOpt.maximum = 100;
-        progressBarOpt.progress = overallPercent;
-        progressBarOpt.state = QStyle::StateFlag::State_Horizontal;
-        progressBarOpt.rect = QStyle::visualRect(option.direction, option.rect, progressBarRect);
+    progressBarOpt.state = option.state | QStyle::State_Horizontal;
+    progressBarOpt.minimum = 0;
+    progressBarOpt.maximum = 100;
+    progressBarOpt.progress = overallPercent;
+    progressBarOpt.state = QStyle::StateFlag::State_Horizontal;
+    progressBarOpt.rect = QStyle::visualRect(option.direction, option.rect, progressBarRect);
 #ifdef Q_OS_MACOS
-        backupStyle->drawControl(QStyle::CE_ProgressBar, &progressBarOpt, painter, option.widget);
+    backupStyle->drawControl(QStyle::CE_ProgressBar, &progressBarOpt, painter, option.widget);
 #else
-        QApplication::style()->drawControl(QStyle::CE_ProgressBar, &progressBarOpt, painter, option.widget);
+    QApplication::style()->drawControl(QStyle::CE_ProgressBar, &progressBarOpt, painter, option.widget);
 #endif
 
-        // itemString is e.g. Syncing fileName1, filename2
-        // syncText is Synchronizing files in local folders or Synchronizing virtual files in local folder
-        const auto generalSyncStatus = !itemString.isEmpty() ? itemString : syncText;
-        QRect generalSyncStatusRect;
-        generalSyncStatusRect.setTop(progressBarRect.bottom() + margin);
-        generalSyncStatusRect.setHeight(fileNameTextHeight);
-        generalSyncStatusRect.setLeft(progressBarRect.left());
-        generalSyncStatusRect.setWidth(progressBarRect.width());
-        painter->setFont(progressFont);
+// Overall Progress Text
+    QRect overallProgressRect;
+    overallProgressRect.setTop(progressBarRect.bottom() + margin);
+    overallProgressRect.setHeight(fileNameTextHeight);
+    overallProgressRect.setLeft(progressBarRect.left());
+    overallProgressRect.setWidth(progressBarRect.width());
+    painter->setFont(progressFont);
 
-        painter->drawText(QStyle::visualRect(option.direction, option.rect, generalSyncStatusRect), Qt::AlignLeft | Qt::AlignVCenter, generalSyncStatus);
+    painter->drawText(QStyle::visualRect(option.direction, option.rect, overallProgressRect), Qt::AlignLeft | Qt::AlignVCenter, overallString);
 
-        painter->restore();
-    }
+    // // itemString is e.g. Syncing fileName1, filename2
+    // // syncText is Synchronizing files in local folders or Synchronizing virtual files in local folder
+    // const auto generalSyncStatus = !itemString.isEmpty() ? itemString : syncText;
+    // QRect generalSyncStatusRect;
+    // generalSyncStatusRect.setTop(progressBarRect.bottom() + margin);
+    // generalSyncStatusRect.setHeight(fileNameTextHeight);
+    // generalSyncStatusRect.setLeft(progressBarRect.left());
+    // generalSyncStatusRect.setWidth(progressBarRect.width());
+    // // painter->setFont(progressFont);
+
+    // painter->drawText(QStyle::visualRect(option.direction, option.rect, generalSyncStatusRect), Qt::AlignLeft | Qt::AlignVCenter, generalSyncStatus);
 
     painter->restore();
+}
 
+void FolderStatusDelegate::drawMoreOptionsButton(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
+{
+    auto optionsButtonVisualRect = optionsButtonRect(option.rect, option.direction);
+
+    QStyleOptionButton btnOpt;
+    btnOpt.state = option.state;
+    btnOpt.state &= ~(QStyle::State_Selected | QStyle::State_HasFocus | QStyle::State_MouseOver);
+    btnOpt.state |= QStyle::State_Raised;
+
+    if(optionsButtonVisualRect.contains(MousePos)  )
     {
-        QStyleOptionToolButton btnOpt;
-        btnOpt.state = option.state;
-        btnOpt.state &= ~(QStyle::State_Selected | QStyle::State_HasFocus);
-        btnOpt.state |= QStyle::State_Raised;
-        btnOpt.arrowType = Qt::NoArrow;
-        btnOpt.subControls = QStyle::SC_ToolButton;
-        btnOpt.rect = optionsButtonVisualRect;
-        btnOpt.icon = _iconMore;
-        const auto buttonSize = QApplication::style()->pixelMetric(QStyle::PM_ButtonIconSize);
-        btnOpt.iconSize = QSize(buttonSize, buttonSize);
-        QApplication::style()->drawComplexControl(QStyle::CC_ToolButton, &btnOpt, painter);
+        btnOpt.state |= QStyle::State_MouseOver;
     }
+
+    if (btnOpt.state & QStyle::State_Enabled && btnOpt.state & QStyle::State_MouseOver && index == _pressedIndex) {
+        btnOpt.state |= QStyle::State_Sunken;
+    } else {
+        btnOpt.state |= QStyle::State_Raised;
+    }
+
+    btnOpt.rect = optionsButtonVisualRect;
+    btnOpt.icon = _iconMore;
+    const auto iconSize = optionsButtonIconSize();
+    btnOpt.iconSize = QSize(iconSize, iconSize);
+    QWidget buttonWidget;
+    buttonWidget.setProperty("buttonStyle", QVariant::fromValue(OCC::ButtonStyleName::MoreOptions));
+
+    QApplication::style()->
+        drawControl(
+            static_cast<QStyle::ControlElement>(sesStyle::CE_TreeViewMoreOptions), &btnOpt, painter, &buttonWidget);
+}
+
+int FolderStatusDelegate::optionsButtonIconSize() {
+    // Using this calculation to use the DPI-Scaled values. The QStyleHelper::dpiScaled is not accessible from here.
+    return QApplication::style()->pixelMetric(QStyle::PM_LargeIconSize) - QApplication::style()->pixelMetric(QStyle::PM_MenuScrollerHeight);
 }
 
 bool FolderStatusDelegate::editorEvent(QEvent *event, QAbstractItemModel *model,
@@ -360,12 +447,24 @@ bool FolderStatusDelegate::editorEvent(QEvent *event, QAbstractItemModel *model,
     case QEvent::MouseMove:
         if (const auto *view = qobject_cast<const QAbstractItemView *>(option.widget)) {
             auto *me = dynamic_cast<QMouseEvent *>(event);
-            QModelIndex index;
+            QModelIndex pressedIndex;
             if (me->buttons()) {
-                index = view->indexAt(me->pos());
+                pressedIndex = view->indexAt(me->pos());
             }
-            if (_pressedIndex != index) {
-                _pressedIndex = index;
+            if (_pressedIndex != pressedIndex) {
+                _pressedIndex = pressedIndex;
+                view->viewport()->update();
+            }
+            auto optionsButtonVisualRect = optionsButtonRect(option.rect, option.direction);
+
+            MousePos = me->pos();
+            if(optionsButtonVisualRect.contains(MousePos))
+            {
+                _hoveredIndex = index;
+                view->viewport()->update();
+            } else if(_hoveredIndex.isValid())
+            {
+                _hoveredIndex = QModelIndex();
                 view->viewport()->update();
             }
         }
@@ -381,37 +480,29 @@ bool FolderStatusDelegate::editorEvent(QEvent *event, QAbstractItemModel *model,
 
 QRect FolderStatusDelegate::optionsButtonRect(QRect within, Qt::LayoutDirection direction)
 {
-    QFont font = QFont();
+    QFont font = QFont(IonosTheme::settingsFont());
     QFont aliasFont = makeAliasFont(font);
     QFontMetrics fm(font);
     QFontMetrics aliasFm(aliasFont);
     within.setHeight(FolderStatusDelegate::rootFolderHeightWithoutErrors(fm, aliasFm));
 
-    QStyleOptionToolButton opt;
-    int e = QApplication::style()->pixelMetric(QStyle::PM_ButtonIconSize);
-    opt.rect.setSize(QSize(e,e));
-    QSize size = QApplication::style()->sizeFromContents(QStyle::CT_ToolButton, &opt, opt.rect.size());
+    QStyleOptionButton opt;
+    int iconSize = optionsButtonIconSize();
+    opt.rect.setSize(QSize(iconSize,iconSize));
+    QSize size = QApplication::style()->sizeFromContents(
+        static_cast<QStyle::ContentsType>(sesStyle::CT_TreeViewMoreOptions), &opt, opt.rect.size());
 
-    int margin = QApplication::style()->pixelMetric(QStyle::PM_LayoutHorizontalSpacing);
-    QRect r(QPoint(within.right() - size.width() - margin,
+    // Using PM_LargeIconSize as margin because it get DPI Scaled, which I canot access from here
+    int margin = QApplication::style()->pixelMetric(QStyle::PM_LargeIconSize);
+    QRect r(QPoint(within.right() - size.width() - aliasFm.height() / 2,
                 within.top() + within.height() / 2 - size.height() / 2),
         size);
     return QStyle::visualRect(direction, within, r);
 }
 
-QRect FolderStatusDelegate::addButtonRect(QRect within, Qt::LayoutDirection direction)
-{
-    QFontMetrics fm(qApp->font("QPushButton"));
-    QStyleOptionButton opt;
-    opt.text = addFolderText();
-    QSize size = QApplication::style()->sizeFromContents(QStyle::CT_PushButton, &opt, fm.size(Qt::TextSingleLine, opt.text));
-    QRect r(QPoint(within.left(), within.top() + within.height() / 2 - size.height() / 2), size);
-    return QStyle::visualRect(direction, within, r);
-}
-
 QRect FolderStatusDelegate::errorsListRect(QRect within)
 {
-    QFont font = QFont();
+    QFont font = QFont(IonosTheme::settingsFont());
     QFont aliasFont = makeAliasFont(font);
     QFontMetrics fm(font);
     QFontMetrics aliasFm(aliasFont);
@@ -426,7 +517,7 @@ void FolderStatusDelegate::slotStyleChanged()
 
 void FolderStatusDelegate::customizeStyle()
 {
-    _iconMore = Theme::createColorAwareIcon(QLatin1String(":/client/theme/more.svg"));
+    _iconMore = Theme::createColorAwareIcon(QLatin1String(":/client/theme/ses/ses-more.svg"), QSize(128, 128));
 }
 
 } // namespace OCC

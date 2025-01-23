@@ -14,11 +14,15 @@
 
 #include "folderstatusview.h"
 #include "folderstatusdelegate.h"
+#include "ionostheme.h"
 
 namespace OCC {
 
 FolderStatusView::FolderStatusView(QWidget *parent) : QTreeView(parent)
 {
+    #ifdef Q_OS_MAC
+        setPalette(QPalette(QPalette::ButtonText, IonosTheme::white()));
+    #endif
 }
 
 QModelIndex FolderStatusView::indexAt(const QPoint &point) const
@@ -32,11 +36,7 @@ QModelIndex FolderStatusView::indexAt(const QPoint &point) const
 
 QRect FolderStatusView::visualRect(const QModelIndex &index) const
 {
-    QRect rect = QTreeView::visualRect(index);
-    if (index.data(FolderStatusDelegate::AddButton).toBool()) {
-        return FolderStatusDelegate::addButtonRect(rect, layoutDirection());
-    }
-    return rect;
+    return QTreeView::visualRect(index);
 }
 
 } // namespace OCC
