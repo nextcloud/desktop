@@ -638,7 +638,7 @@ void OwncloudAdvancedSetupPage::customizeStyle()
     _ui.lVirtualFileSync->setContentsMargins(0, 0, 0, 0);
     _ui.horizontalLayout_8->setContentsMargins(32, 0, 0, 0);
     _ui.horizontalLayout_10->setContentsMargins(0, 8, 0, 0);
-    _ui.horizontalLayout_10->setMargin(1);
+    // _ui.horizontalLayout_10->setMargin(1);
 
     _ui.wSyncStrategy->setSpacing(16);
     _ui.wSyncStrategy->setContentsMargins(0, 0, 0, 0);
