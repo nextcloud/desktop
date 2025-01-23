@@ -255,7 +255,7 @@ void ownCloudGui::slotSyncStateChange(Folder *folder)
         || result.status() == SyncResult::Problem
         || result.status() == SyncResult::SyncAbortRequested
         || result.status() == SyncResult::Error) {
-        Logger::instance()->enterNextLogFile(QStringLiteral("nextcloud.log"), OCC::Logger::LogType::Log);
+        Logger::instance()->enterNextLogFile(QStringLiteral("hidrivenext.log"), OCC::Logger::LogType::Log);
     }
 }
 

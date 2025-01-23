@@ -240,9 +240,10 @@ QString Logger::temporaryFolderLogDirPath() const
 void Logger::setupTemporaryFolderLogDir()
 {
     auto dir = temporaryFolderLogDirPath();
-    if (!QDir().mkpath(dir)) {
+    if (!QDir().mkpath(dir)) 
         return;
-    }
+    setLogDebug(true);
+    setLogExpire(4 /*hours*/);
     setLogDir(dir);
     _temporaryFolderLogDir = true;
 }
@@ -254,6 +255,8 @@ void Logger::disableTemporaryFolderLogDir()
 
     enterNextLogFile("nextcloud.log", LogType::Log);
     setLogDir(QString());
+    setLogDebug(false);
+    setLogFile(QString());
     _temporaryFolderLogDir = false;
 }
 

@@ -118,7 +118,7 @@ void LogBrowser::togglePermanentLogging(bool enabled)
     if (enabled) {
         if (!logger->isLoggingToFile()) {
             logger->setupTemporaryFolderLogDir();
-            logger->enterNextLogFile(QStringLiteral("nextcloud.log"), OCC::Logger::LogType::Log);
+            logger->enterNextLogFile(QStringLiteral("hidrivenext.log"), OCC::Logger::LogType::Log);
         }
     } else {
         logger->disableTemporaryFolderLogDir();
