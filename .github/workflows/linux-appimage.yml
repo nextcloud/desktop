@@ -23,9 +23,10 @@ jobs:
         id: upload-appimage
         uses: actions/upload-artifact@v4
         with:
-          name: appimage-pr-${{ github.event.number }}
+          name: nextcloud-appimage-pr-${{ github.event.number }}
           path: ${{ steps.build-appimage.outputs.APPIMAGE_NAME }}
           overwrite: true
+          compression-level: 0 # squashfs is already compressed
 
       - name: Comment AppImage
         uses: actions/github-script@v7
@@ -36,9 +37,11 @@ jobs:
             const comment_body = `
               ${comment_identifier_string}
 
-              AppImage file: [${{ steps.build-appimage.outputs.APPIMAGE_NAME }}](${{ steps.upload-appimage.outputs.artifact-url }})
+              Artifact containing the AppImage: [nextcloud-appimage-pr-${{ github.event.number }}.zip](${{ steps.upload-appimage.outputs.artifact-url }})
 
-              To test this change/fix you can simply download above AppImage file and test it.
+              SHA256 checksum: \`${{ steps.upload-appimage.outputs.artifact-digest }}\`
+
+              To test this change/fix you can download the above artifact file, unzip it, and run it.
 
               Please make sure to quit your existing Nextcloud app and backup your data.
             `;
