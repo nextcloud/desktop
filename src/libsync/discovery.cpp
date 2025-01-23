@@ -420,14 +420,17 @@ bool ProcessDirectoryJob::handleExcluded(const QString &path, const Entries &ent
         case CSYNC_FILE_EXCLUDE_TRAILING_SPACE:
             item->_errorString = tr("Filename contains trailing spaces.");
             item->_status = SyncFileItem::FileNameInvalid;
+            maybeRenameForWindowsCompatibility(_discoveryData->_localDir + item->_file, excluded);
             break;
         case CSYNC_FILE_EXCLUDE_LEADING_SPACE:
             item->_errorString = tr("Filename contains leading spaces.");
             item->_status = SyncFileItem::FileNameInvalid;
+            maybeRenameForWindowsCompatibility(_discoveryData->_localDir + item->_file, excluded);
             break;
         case CSYNC_FILE_EXCLUDE_LEADING_AND_TRAILING_SPACE:
             item->_errorString = tr("Filename contains leading and trailing spaces.");
             item->_status = SyncFileItem::FileNameInvalid;
+            maybeRenameForWindowsCompatibility(_discoveryData->_localDir + item->_file, excluded);
             break;
         case CSYNC_FILE_EXCLUDE_LONG_FILENAME:
             item->_errorString = tr("Filename is too long.");
@@ -2271,6 +2274,40 @@ void ProcessDirectoryJob::setupDbPinStateActions(SyncJournalFileRecord &record)
     // AlwaysLocal dehydrated files want to be hydrated
     if (record._type == ItemTypeVirtualFile && *pin == PinState::AlwaysLocal) {
         record._type = ItemTypeVirtualFileDownload;
+    }
+}
+
+void ProcessDirectoryJob::maybeRenameForWindowsCompatibility(const QString &absoluteFileName,
+                                                             CSYNC_EXCLUDE_TYPE excludeReason)
+{
+    if (!_discoveryData->_shouldEnforceWindowsFileNameCompatibility) {
+        return;
+    }
+
+    const auto fileInfo = QFileInfo{absoluteFileName};
+    switch (excludeReason)
+    {
+    case CSYNC_NOT_EXCLUDED:
+    case CSYNC_FILE_EXCLUDE_CASE_CLASH_CONFLICT:
+    case CSYNC_FILE_EXCLUDE_AND_REMOVE:
+    case CSYNC_FILE_EXCLUDE_CANNOT_ENCODE:
+    case CSYNC_FILE_EXCLUDE_INVALID_CHAR:
+    case CSYNC_FILE_EXCLUDE_SERVER_BLACKLISTED:
+    case CSYNC_FILE_EXCLUDE_HIDDEN:
+    case CSYNC_FILE_SILENTLY_EXCLUDED:
+    case CSYNC_FILE_EXCLUDE_STAT_FAILED:
+    case CSYNC_FILE_EXCLUDE_LONG_FILENAME:
+    case CSYNC_FILE_EXCLUDE_LIST:
+    case CSYNC_FILE_EXCLUDE_CONFLICT:
+        break;
+    case CSYNC_FILE_EXCLUDE_LEADING_AND_TRAILING_SPACE:
+    case CSYNC_FILE_EXCLUDE_LEADING_SPACE:
+    case CSYNC_FILE_EXCLUDE_TRAILING_SPACE:
+    {
+        const auto renameTarget = QString{fileInfo.absolutePath() + QStringLiteral("/") + fileInfo.fileName().trimmed()};
+        FileSystem::rename(absoluteFileName, renameTarget);
+        break;
+    }
     }
 }
 
