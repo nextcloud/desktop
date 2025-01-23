@@ -41,13 +41,20 @@ else
 fi
 
 export UPDATE=$(readlink -f ./Nextcloud*.AppImage.zsync)
-export BASENAME=$(basename ${APPIMAGE})
+export BASENAME_APPIMAGE=$(basename ${APPIMAGE})
+export BASENAME_UPDATE=$(basename ${UPDATE})
 
 if ! test -e $APPIMAGE ; then
     exit 1
 fi
 
-echo "Found AppImage: $BASENAME"
+echo "Found AppImage: $BASENAME_APPIMAGE"
+
+if ! test -e $UPDATE ; then
+    exit 1
+fi
+
+echo "Found zsync: $BASENAME_UPDATE"
 
 if [ $TAG_NAME != "master" ]; then
     # Delete all old comments in desktop PR, starting with "AppImage file:"
@@ -86,8 +93,8 @@ get_release_assets()
 upload_release_asset()
 {
     uploadUrl=$1
-    echo $(curl --max-time 900 -u $GIT_USERNAME:$GIT_TOKEN -X POST $uploadUrl --header "Content-Type: application/octet-stream" --upload-file $APPIMAGE)
-    echo $(curl --max-time 900 -u $GIT_USERNAME:$GIT_TOKEN -X POST $uploadUrl --header "Content-Type: application/octet-stream" --upload-file $UPDATE)
+    asset=$2
+    echo $(curl --max-time 900 -u $GIT_USERNAME:$GIT_TOKEN -X POST $uploadUrl --header "Content-Type: application/octet-stream" --upload-file $asset)
 }
 
 delete_release_asset()
@@ -117,7 +124,8 @@ if [[ "$uploadUrl" == "null" ]]; then
 fi
 
 # Prepare upload url
-uploadUrl=$(echo "${uploadUrl/'{?name,label}'/?name=$BASENAME}")
+uploadUrlAppImage=$(echo "${uploadUrl/'{?name,label}'/?name=$BASENAME_APPIMAGE}")
+uploadUrlUpdate=$(echo "${uploadUrl/'{?name,label}'/?name=$BASENAME_UPDATE}")
 
 # Try to delete existing AppImage assets for this PR
 assets=$(get_release_assets $releaseId)
@@ -132,23 +140,38 @@ for data in $(echo $assets | jq -r '.[] | @uri'); do
         echo "Deleting old asset: $name"
         $(delete_release_asset $assetId)
     fi
+
+    if [[ "$name" == *.zsync ]]; then
+        echo "Deleting old asset: $name"
+        $(delete_release_asset $assetId)
+    fi
 done
 
 # Upload release asset
-echo "Uploading new asset: $BASENAME"
+echo "Uploading new asset: $BASENAME_APPIMAGE"
 
-json=$(upload_release_asset "$uploadUrl")
-browserDownloadUrl=$(echo $json | jq -r '.browser_download_url')
+jsonAppImage=$(upload_release_asset "$uploadUrlAppImage" "$APPIMAGE")
+browserDownloadUrlAppImage=$(echo $jsonAppImage | jq -r '.browser_download_url')
 
-if [[ "$browserDownloadUrl" == "null" ]]; then
-    echo "upload_release_asset failed: $json"
+if [[ "$browserDownloadUrlAppImage" == "null" ]]; then
+    echo "upload_release_asset failed: $jsonAppImage"
+    exit 3
+fi
+
+echo "Uploading new asset: $BASENAME_UPDATE"
+jsonUpdate=$(upload_release_asset "$uploadUrlUpdate" "$UPDATE")
+browserDownloadUrlUpdate=$(echo $jsonUpdate | jq -r '.browser_download_url')
+
+if [[ "$browserDownloadUrlUpdate" == "null" ]]; then
+    echo "upload_release_asset failed: $jsonUpdate"
     exit 3
 fi
 
 if [ $TAG_NAME != "master" ]; then
     # Create comment in desktop PR
-    curl 2>/dev/null -u $GIT_USERNAME:$GIT_TOKEN -X POST $DESKTOP_API_BASE_URL/issues/$PR/comments -d "{ \"body\" : \"AppImage file: [$BASENAME]($browserDownloadUrl) <br/><br/>To test this change/fix you can simply download above AppImage file and test it. <br/><br/>Please make sure to quit your existing Nextcloud app and backup your data. \" }"
+    curl 2>/dev/null -u $GIT_USERNAME:$GIT_TOKEN -X POST $DESKTOP_API_BASE_URL/issues/$PR/comments -d "{ \"body\" : \"AppImage file: [$BASENAME_APPIMAGE]($browserDownloadUrlAppImage) <br/><br/>[$BASENAME_UPDATE]($browserDownloadUrlUpdate)<br/><br/>To test this change/fix you can simply download above AppImage file and test it. <br/><br/>Please make sure to quit your existing Nextcloud app and backup your data. \" }"
 fi
 
 echo
-echo "AppImage link: $browserDownloadUrl"
+echo "AppImage link: $browserDownloadUrlAppImage"
+echo "zsync link: $browserDownloadUrlUpdate"
