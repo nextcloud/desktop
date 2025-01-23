@@ -12,7 +12,7 @@ export OPENSSL_ROOT_DIR=${OPENSSL_ROOT_DIR:-/usr/lib/x86_64-linux-gnu}
 export VERSION_SUFFIX=${VERSION_SUFFIX:stable}
 
 # Set defaults
-export SUFFIX=${DRONE_PULL_REQUEST:=master}
+export SUFFIX=${PR_ID:=${DRONE_PULL_REQUEST:=master}}
 if [ $SUFFIX != "master" ]; then
     SUFFIX="PR-$SUFFIX"
 fi
@@ -111,10 +111,17 @@ rm ./squashfs-root/usr/lib/libglib-2.0.so.0
 LD_LIBRARY_PATH="$PWD/appimagetool-squashfs-root/usr/lib":$LD_LIBRARY_PATH PATH="$PWD/appimagetool-squashfs-root/usr/bin":$PATH appimagetool -n ./squashfs-root "${APPIMAGE}"
 
 #move AppImage
-if [ ! -z "$DRONE_COMMIT" ]
+export COMMIT=${GITHUB_SHA:=${DRONE_COMMIT}}
+if [ ! -z "$COMMIT" ]
 then
-    mv *.AppImage ${EXECUTABLE_NAME}-${SUFFIX}-${DRONE_COMMIT}-x86_64.AppImage
+    export APPIMAGE_NAME="${EXECUTABLE_NAME}-${SUFFIX}-${COMMIT}-x86_64.AppImage"
 else
-    mv *.AppImage ${EXECUTABLE_NAME}-${SUFFIX}-x86_64.AppImage
+    export APPIMAGE_NAME="${EXECUTABLE_NAME}-${SUFFIX}-x86_64.AppImage"
 fi
-mv *.AppImage ${DESKTOP_CLIENT_ROOT}/
+mv *.AppImage ${DESKTOP_CLIENT_ROOT}/$APPIMAGE_NAME
+
+# tell GitHub Actions the name of our appimage
+if [ ! -z "$GITHUB_OUTPUT" ]; then
+  echo "AppImage name: ${APPIMAGE_NAME}"
+  echo "APPIMAGE_NAME=${APPIMAGE_NAME}" >> "$GITHUB_OUTPUT"
+fi
