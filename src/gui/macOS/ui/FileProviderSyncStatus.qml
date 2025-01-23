@@ -53,8 +53,9 @@ GridLayout {
         Layout.columnSpan: root.syncStatus.syncing ? 2 : 1
         Layout.fillWidth: true
         font.bold: true
-        font.pointSize: Style.headerFontPtSize
+        font.pointSize: Style.sesFontPointSize
         text: root.syncStatus.syncing ? qsTr("Syncing") : qsTr("All synced!")
+        color: Style.sesDarkBlue
     }
 
     NCProgressBar {
