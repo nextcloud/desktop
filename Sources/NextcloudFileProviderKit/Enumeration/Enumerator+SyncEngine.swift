@@ -23,18 +23,14 @@ extension Enumerator {
         dbManager: FilesDatabaseManager,
         scanChangesOnly: Bool
     ) async -> (
-        metadatas: [ItemMetadata],
-        newMetadatas: [ItemMetadata],
-        updatedMetadatas: [ItemMetadata],
-        deletedMetadatas: [ItemMetadata],
+        metadatas: [SendableItemMetadata],
+        newMetadatas: [SendableItemMetadata],
+        updatedMetadatas: [SendableItemMetadata],
+        deletedMetadatas: [SendableItemMetadata],
         error: NKError?
     ) {
-        let rootContainerDirectoryMetadata = ItemMetadata()
-        rootContainerDirectoryMetadata.directory = true
-        rootContainerDirectoryMetadata.ocId = NSFileProviderItemIdentifier.rootContainer.rawValue
-
         let results = await self.scanRecursively(
-            rootContainerDirectoryMetadata,
+            Item.rootContainer(account: account, remoteInterface: remoteInterface).metadata,
             account: account,
             remoteInterface: remoteInterface,
             dbManager: dbManager,
@@ -66,16 +62,16 @@ extension Enumerator {
     }
 
     private func scanRecursively(
-        _ directoryMetadata: ItemMetadata,
+        _ directoryMetadata: SendableItemMetadata,
         account: Account,
         remoteInterface: RemoteInterface,
         dbManager: FilesDatabaseManager,
         scanChangesOnly: Bool
     ) async -> (
-        metadatas: [ItemMetadata],
-        newMetadatas: [ItemMetadata],
-        updatedMetadatas: [ItemMetadata],
-        deletedMetadatas: [ItemMetadata],
+        metadatas: [SendableItemMetadata],
+        newMetadatas: [SendableItemMetadata],
+        updatedMetadatas: [SendableItemMetadata],
+        deletedMetadatas: [SendableItemMetadata],
         error: NKError?
     ) {
         if isInvalidated {
@@ -85,10 +81,10 @@ extension Enumerator {
         assert(directoryMetadata.directory, "Can only recursively scan a directory.")
 
         // Will include results of recursive calls
-        var allMetadatas: [ItemMetadata] = []
-        var allNewMetadatas: [ItemMetadata] = []
-        var allUpdatedMetadatas: [ItemMetadata] = []
-        var allDeletedMetadatas: [ItemMetadata] = []
+        var allMetadatas: [SendableItemMetadata] = []
+        var allNewMetadatas: [SendableItemMetadata] = []
+        var allUpdatedMetadatas: [SendableItemMetadata] = []
+        var allDeletedMetadatas: [SendableItemMetadata] = []
 
         let itemServerUrl =
             directoryMetadata.ocId == NSFileProviderItemIdentifier.rootContainer.rawValue
@@ -208,8 +204,8 @@ extension Enumerator {
             )
         }
 
-        var childDirectoriesToScan: [ItemMetadata] = []
-        var candidateMetadatas: [ItemMetadata]
+        var childDirectoriesToScan: [SendableItemMetadata] = []
+        var candidateMetadatas: [SendableItemMetadata]
 
         if scanChangesOnly, fastEnumeration {
             candidateMetadatas = allUpdatedMetadatas
@@ -271,10 +267,10 @@ extension Enumerator {
         dbManager: FilesDatabaseManager,
         files: [NKFile]
     ) async -> (
-        metadatas: [ItemMetadata]?,
-        newMetadatas: [ItemMetadata]?,
-        updatedMetadatas: [ItemMetadata]?,
-        deletedMetadatas: [ItemMetadata]?,
+        metadatas: [SendableItemMetadata]?,
+        newMetadatas: [SendableItemMetadata]?,
+        updatedMetadatas: [SendableItemMetadata]?,
+        deletedMetadatas: [SendableItemMetadata]?,
         readError: NKError?
     ) {
         Self.logger.debug(
@@ -285,8 +281,12 @@ extension Enumerator {
         )
 
 
-        let (directoryMetadata, _, metadatas) =
+        guard let (directoryMetadata, _, metadatas) =
             await files.toDirectoryReadMetadatas(account: account)
+        else {
+            Self.logger.error("Could not convert NKFiles to DirectoryReadMetadatas!")
+            return (nil, nil, nil, nil, .invalidData)
+        }
 
         // STORE DATA FOR CURRENTLY SCANNED DIRECTORY
         // We have now scanned this directory's contents, so update with etag in order to not check 
@@ -326,10 +326,10 @@ extension Enumerator {
         stopAtMatchingEtags: Bool = false,
         depth: EnumerateDepth = .targetAndDirectChildren
     ) async -> (
-        metadatas: [ItemMetadata]?,
-        newMetadatas: [ItemMetadata]?,
-        updatedMetadatas: [ItemMetadata]?,
-        deletedMetadatas: [ItemMetadata]?,
+        metadatas: [SendableItemMetadata]?,
+        newMetadatas: [SendableItemMetadata]?,
+        updatedMetadatas: [SendableItemMetadata]?,
+        deletedMetadatas: [SendableItemMetadata]?,
         readError: NKError?
     ) {
         let ncKitAccount = account.ncKitAccount
@@ -393,8 +393,8 @@ extension Enumerator {
             )
             let metadata = receivedFile.toItemMetadata()
             let isNew = dbManager.itemMetadata(ocId: metadata.ocId) == nil
-            let newItems: [ItemMetadata] = isNew ? [metadata] : []
-            let updatedItems: [ItemMetadata] = isNew ? [] : [metadata]
+            let newItems: [SendableItemMetadata] = isNew ? [metadata] : []
+            let updatedItems: [SendableItemMetadata] = isNew ? [] : [metadata]
             dbManager.addItemMetadata(metadata)
             return ([metadata], newItems, updatedItems, nil, nil)
         }

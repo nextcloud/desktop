@@ -25,7 +25,7 @@ public class Item: NSObject, NSFileProviderItem {
 
     lazy var dbManager: FilesDatabaseManager = .shared
 
-    public let metadata: ItemMetadata
+    public let metadata: SendableItemMetadata
     public let parentItemIdentifier: NSFileProviderItemIdentifier
     public let account: Account
     public let remoteInterface: RemoteInterface
@@ -125,7 +125,7 @@ public class Item: NSObject, NSFileProviderItem {
     }
 
     public var downloadingError: Error? {
-        if metadata.status == ItemMetadata.Status.downloadError.rawValue {
+        if metadata.status == Status.downloadError.rawValue {
             return FileProviderItemTransferError.downloadError
         }
         return nil
@@ -140,7 +140,7 @@ public class Item: NSObject, NSFileProviderItem {
     }
 
     public var uploadingError: Error? {
-        if metadata.status == ItemMetadata.Status.uploadError.rawValue {
+        if metadata.status == Status.uploadError.rawValue {
             FileProviderItemTransferError.uploadError
         } else {
             nil
@@ -185,14 +185,30 @@ public class Item: NSObject, NSFileProviderItem {
     }
 
     public static func rootContainer(account: Account, remoteInterface: RemoteInterface) -> Item {
-        let metadata = ItemMetadata()
-        metadata.account = account.ncKitAccount
-        metadata.directory = true
-        metadata.ocId = NSFileProviderItemIdentifier.rootContainer.rawValue
-        metadata.fileName = "/"
-        metadata.fileNameView = "/"
-        metadata.serverUrl = account.davFilesUrl
-        metadata.classFile = NKCommon.TypeClassFile.directory.rawValue
+        let metadata = SendableItemMetadata(
+            ocId: NSFileProviderItemIdentifier.rootContainer.rawValue,
+            account: account.ncKitAccount,
+            classFile: NKCommon.TypeClassFile.directory.rawValue,
+            contentType: "", // Placeholder as not set in original code
+            creationDate: Date(), // Default as not set in original code
+            directory: true,
+            e2eEncrypted: false, // Default as not set in original code
+            etag: "", // Placeholder as not set in original code
+            fileId: "", // Placeholder as not set in original code
+            fileName: "/",
+            fileNameView: "/",
+            hasPreview: false, // Default as not set in original code
+            iconName: "", // Placeholder as not set in original code
+            mountType: "", // Placeholder as not set in original code
+            ownerId: "", // Placeholder as not set in original code
+            ownerDisplayName: "", // Placeholder as not set in original code
+            path: "", // Placeholder as not set in original code
+            serverUrl: account.davFilesUrl,
+            size: 0, // Default as not set in original code
+            urlBase: "", // Placeholder as not set in original code
+            user: "", // Placeholder as not set in original code
+            userId: "" // Placeholder as not set in original code
+        )
         return Item(
             metadata: metadata,
             parentItemIdentifier: .rootContainer,
@@ -202,14 +218,30 @@ public class Item: NSObject, NSFileProviderItem {
     }
 
     public static func trashContainer(remoteInterface: RemoteInterface, account: Account) -> Item {
-        let metadata = ItemMetadata()
-        metadata.account = account.ncKitAccount
-        metadata.directory = true
-        metadata.ocId = NSFileProviderItemIdentifier.trashContainer.rawValue
-        metadata.fileName = "Trash"
-        metadata.fileNameView = "Trash"
-        metadata.serverUrl = account.trashUrl
-        metadata.classFile = NKCommon.TypeClassFile.directory.rawValue
+        let metadata = SendableItemMetadata(
+            ocId: NSFileProviderItemIdentifier.trashContainer.rawValue,
+            account: account.ncKitAccount,
+            classFile: NKCommon.TypeClassFile.directory.rawValue,
+            contentType: "", // Placeholder as not set in original code
+            creationDate: Date(), // Default as not set in original code
+            directory: true,
+            e2eEncrypted: false, // Default as not set in original code
+            etag: "", // Placeholder as not set in original code
+            fileId: "", // Placeholder as not set in original code
+            fileName: "Trash",
+            fileNameView: "Trash",
+            hasPreview: false, // Default as not set in original code
+            iconName: "", // Placeholder as not set in original code
+            mountType: "", // Placeholder as not set in original code
+            ownerId: "", // Placeholder as not set in original code
+            ownerDisplayName: "", // Placeholder as not set in original code
+            path: "", // Placeholder as not set in original code
+            serverUrl: account.trashUrl,
+            size: 0, // Default as not set in original code
+            urlBase: "", // Placeholder as not set in original code
+            user: "", // Placeholder as not set in original code
+            userId: "" // Placeholder as not set in original code
+        )
         return Item(
             metadata: metadata,
             parentItemIdentifier: .trashContainer,
@@ -221,12 +253,12 @@ public class Item: NSObject, NSFileProviderItem {
     static let logger = Logger(subsystem: Logger.subsystem, category: "item")
 
     public required init(
-        metadata: ItemMetadata,
+        metadata: SendableItemMetadata,
         parentItemIdentifier: NSFileProviderItemIdentifier,
         account: Account,
         remoteInterface: RemoteInterface
     ) {
-        self.metadata = ItemMetadata(value: metadata) // Safeguard against active items
+        self.metadata = metadata
         self.parentItemIdentifier = parentItemIdentifier
         self.account = account
         self.remoteInterface = remoteInterface

@@ -33,10 +33,9 @@ final class ItemCreateTests: XCTestCase {
 
     func testCreateFolder() async throws {
         let remoteInterface = MockRemoteInterface(rootItem: rootItem)
-        let folderItemMetadata = ItemMetadata()
-        folderItemMetadata.name = "folder"
-        folderItemMetadata.fileName = "folder"
-        folderItemMetadata.fileNameView = "folder"
+        var folderItemMetadata = SendableItemMetadata(
+            ocId: "folder-id", fileName: "folder", account: Self.account
+        )
         folderItemMetadata.directory = true
         folderItemMetadata.classFile = NKCommon.TypeClassFile.directory.rawValue
         folderItemMetadata.serverUrl = Self.account.davFilesUrl
@@ -81,12 +80,10 @@ final class ItemCreateTests: XCTestCase {
 
     func testCreateFile() async throws {
         let remoteInterface = MockRemoteInterface(rootItem: rootItem)
-        let fileItemMetadata = ItemMetadata()
-        fileItemMetadata.fileName = "file"
-        fileItemMetadata.fileNameView = "file"
-        fileItemMetadata.directory = false
+        var fileItemMetadata = SendableItemMetadata(
+            ocId: "file-id", fileName: "file", account: Self.account
+        )
         fileItemMetadata.classFile = NKCommon.TypeClassFile.document.rawValue
-        fileItemMetadata.serverUrl = Self.account.davFilesUrl
 
         let tempUrl = FileManager.default.temporaryDirectory.appendingPathComponent("file")
         try Data("Hello world".utf8).write(to: tempUrl)
@@ -131,13 +128,12 @@ final class ItemCreateTests: XCTestCase {
     func testCreateFileIntoFolder() async throws {
         let remoteInterface = MockRemoteInterface(rootItem: rootItem)
 
-        let folderItemMetadata = ItemMetadata()
-        folderItemMetadata.name = "folder"
-        folderItemMetadata.fileName = "folder"
-        folderItemMetadata.fileNameView = "folder"
+        var folderItemMetadata = SendableItemMetadata(
+            ocId: "folder-id", fileName: "folder", account: Self.account
+        )
         folderItemMetadata.directory = true
-        folderItemMetadata.serverUrl = Self.account.davFilesUrl
         folderItemMetadata.classFile = NKCommon.TypeClassFile.directory.rawValue
+        folderItemMetadata.serverUrl = Self.account.davFilesUrl
 
         let folderItemTemplate = Item(
             metadata: folderItemMetadata,
@@ -159,13 +155,11 @@ final class ItemCreateTests: XCTestCase {
         let createdFolderItem = try XCTUnwrap(createdFolderItemMaybe)
 
         let fileRelativeRemotePath = "/folder"
-        let fileItemMetadata = ItemMetadata()
-        fileItemMetadata.name = "file"
-        fileItemMetadata.fileName = "file"
-        fileItemMetadata.fileNameView = "file"
-        fileItemMetadata.directory = false
-        fileItemMetadata.serverUrl = Self.account.davFilesUrl + fileRelativeRemotePath
+        var fileItemMetadata = SendableItemMetadata(
+            ocId: "file-id", fileName: "file", account: Self.account
+        )
         fileItemMetadata.classFile = NKCommon.TypeClassFile.document.rawValue
+        fileItemMetadata.serverUrl = Self.account.davFilesUrl + fileRelativeRemotePath
 
         let fileItemTemplate = Item(
             metadata: fileItemMetadata,
@@ -219,10 +213,9 @@ final class ItemCreateTests: XCTestCase {
         let keynoteBundleFilename = "test.key"
 
         let remoteInterface = MockRemoteInterface(rootItem: rootItem)
-        let bundleItemMetadata = ItemMetadata()
-        bundleItemMetadata.name = keynoteBundleFilename
-        bundleItemMetadata.fileName = keynoteBundleFilename
-        bundleItemMetadata.fileNameView = keynoteBundleFilename
+        var bundleItemMetadata = SendableItemMetadata(
+            ocId: "keynotebundleid", fileName: keynoteBundleFilename, account: Self.account
+        )
         bundleItemMetadata.directory = true
         bundleItemMetadata.serverUrl = Self.account.davFilesUrl
         bundleItemMetadata.classFile = NKCommon.TypeClassFile.directory.rawValue
@@ -351,12 +344,10 @@ final class ItemCreateTests: XCTestCase {
 
     func testCreateFileChunked() async throws {
         let remoteInterface = MockRemoteInterface(rootItem: rootItem)
-        let fileItemMetadata = ItemMetadata()
-        fileItemMetadata.fileName = "file"
-        fileItemMetadata.fileNameView = "file"
-        fileItemMetadata.directory = false
+        var fileItemMetadata = SendableItemMetadata(
+            ocId: "file-id", fileName: "file", account: Self.account
+        )
         fileItemMetadata.classFile = NKCommon.TypeClassFile.document.rawValue
-        fileItemMetadata.serverUrl = Self.account.davFilesUrl
 
         let chunkSize = 2
         let tempUrl = FileManager.default.temporaryDirectory.appendingPathComponent("file")
@@ -441,13 +432,11 @@ final class ItemCreateTests: XCTestCase {
         //
         // To test this situation we set the ocId of the metadata used to construct the item
         // template to the chunk upload id.
-        let fileItemMetadata = ItemMetadata()
+        var fileItemMetadata = SendableItemMetadata(
+            ocId: illegalChunkUploadId, fileName: "file", account: Self.account
+        )
         fileItemMetadata.ocId = illegalChunkUploadId
-        fileItemMetadata.fileName = "file"
-        fileItemMetadata.fileNameView = "file"
-        fileItemMetadata.directory = false
         fileItemMetadata.classFile = NKCommon.TypeClassFile.document.rawValue
-        fileItemMetadata.serverUrl = Self.account.davFilesUrl
 
         let tempUrl = FileManager.default.temporaryDirectory.appendingPathComponent("file")
         let tempData = Data(repeating: 1, count: chunkSize * 3)
@@ -494,6 +483,6 @@ final class ItemCreateTests: XCTestCase {
         XCTAssertEqual(dbItem.directory, fileItemMetadata.directory)
         XCTAssertEqual(dbItem.serverUrl, fileItemMetadata.serverUrl)
         XCTAssertEqual(dbItem.ocId, createdItem.itemIdentifier.rawValue)
-        XCTAssertTrue(dbItem.chunkUploadId.isEmpty)
+        XCTAssertNil(dbItem.chunkUploadId)
     }
 }

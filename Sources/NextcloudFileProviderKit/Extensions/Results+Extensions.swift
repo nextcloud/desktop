@@ -14,9 +14,9 @@ extension Results where Element: RemoteFileChunk {
     }
 }
 
-extension Results where Element: ItemMetadata {
-    func toUnmanagedResults() -> [ItemMetadata] {
-        return map { ItemMetadata(value: $0) }
+extension Results where Element: RealmItemMetadata {
+    func toUnmanagedResults() -> [SendableItemMetadata] {
+        return map { SendableItemMetadata(value: $0) }
     }
 }
 

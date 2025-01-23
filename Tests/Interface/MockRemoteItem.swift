@@ -155,42 +155,51 @@ public class MockRemoteItem: Equatable {
         return trashItem
     }
 
-    public func toItemMetadata(account: Account) -> ItemMetadata {
+    public func toItemMetadata(account: Account) -> SendableItemMetadata {
         let originalFileName = trashbinOriginalLocation?.split(separator: "/").last?.toString()
         let fileName = originalFileName ?? name
         let serverUrlTrimCount = name.count
 
-        let metadata = ItemMetadata()
-        metadata.ocId = identifier
-        metadata.fileId = identifier.replacingOccurrences(of: trashedItemIdSuffix, with: "")
-        metadata.etag = versionIdentifier
-        metadata.directory = directory
-        metadata.name = name
-        metadata.fileName = name
-        metadata.fileNameView = name
-        metadata.trashbinOriginalLocation = trashbinOriginalLocation ?? ""
-        metadata.serverUrl = remotePath
-        metadata.serverUrl.removeSubrange(
+        var trimmedServerUrl = remotePath
+        trimmedServerUrl.removeSubrange(
             remotePath.index(
                 remotePath.endIndex, offsetBy: -(serverUrlTrimCount + 1) // Remove trailing slash
             )..<remotePath.endIndex
         )
-        metadata.date = modificationDate
-        metadata.creationDate = creationDate
-        metadata.size = size
-        metadata.urlBase = account.serverUrl
-        metadata.userId = account.id
-        metadata.user = account.username
-        metadata.account = account.ncKitAccount
 
-        if (trashbinOriginalLocation != nil) {
-            metadata.trashbinFileName = fileName
-        }
-        if directory {
-            metadata.classFile = NKCommon.TypeClassFile.directory.rawValue
-            metadata.contentType = UTType.folder.identifier
-        }
-
-        return metadata
+        return SendableItemMetadata(
+            ocId: identifier,
+            account: account.ncKitAccount,
+            classFile: directory ? NKCommon.TypeClassFile.directory.rawValue : "",
+            contentType: directory ? UTType.folder.identifier : "",
+            creationDate: creationDate, // Use provided or fallback to default
+            date: modificationDate, // Use provided or fallback to default
+            directory: directory,
+            e2eEncrypted: false, // Default as not set in original code
+            etag: versionIdentifier,
+            fileId: identifier.replacingOccurrences(of: trashedItemIdSuffix, with: ""),
+            fileName: name,
+            fileNameView: name,
+            hasPreview: false, // Default as not set in original code
+            iconName: "", // Placeholder as not set in original code
+            mountType: "", // Placeholder as not set in original code
+            name: name,
+            ownerId: "", // Placeholder as not set in original code
+            ownerDisplayName: "", // Placeholder as not set in original code
+            lock: locked,
+            lockOwner: lockOwner,
+            lockOwnerType: lockOwner.isEmpty ? 0 : 1,
+            lockOwnerDisplayName: lockOwner == account.username ? account.username : "other user",
+            lockTime: nil, // Default as not set in original code
+            lockTimeOut: lockTimeOut,
+            path: "", // Placeholder as not set in original code
+            serverUrl: trimmedServerUrl,
+            size: size,
+            trashbinFileName: trashbinOriginalLocation != nil ? fileName : "",
+            trashbinOriginalLocation: trashbinOriginalLocation ?? "",
+            urlBase: account.serverUrl,
+            user: account.username,
+            userId: account.id
+        )
     }
 }

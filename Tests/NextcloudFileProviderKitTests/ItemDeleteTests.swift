@@ -47,16 +47,7 @@ final class ItemDeleteTests: XCTestCase {
 
         XCTAssertFalse(rootItem.children.isEmpty)
 
-        let itemMetadata = ItemMetadata()
-        itemMetadata.ocId = itemIdentifier
-        itemMetadata.fileName = remoteItem.name
-        itemMetadata.fileNameView = remoteItem.name
-        itemMetadata.serverUrl = Self.account.davFilesUrl
-        itemMetadata.urlBase = Self.account.serverUrl
-        itemMetadata.account = Self.account.ncKitAccount
-        itemMetadata.user = Self.account.username
-        itemMetadata.userId = Self.account.id
-
+        let itemMetadata = remoteItem.toItemMetadata(account: Self.account)
         Self.dbManager.addItemMetadata(itemMetadata)
         XCTAssertNotNil(Self.dbManager.itemMetadata(ocId: itemIdentifier))
 
@@ -103,17 +94,8 @@ final class ItemDeleteTests: XCTestCase {
         XCTAssertFalse(rootItem.children.isEmpty)
         XCTAssertFalse(remoteFolder.children.isEmpty)
 
-        let folderMetadata = ItemMetadata()
-        folderMetadata.ocId = remoteFolder.identifier
-        folderMetadata.fileName = remoteFolder.name
-        folderMetadata.directory = true
-        folderMetadata.serverUrl = Self.account.davFilesUrl
-
-        let remoteItemMetadata = ItemMetadata()
-        remoteItemMetadata.ocId = remoteItem.identifier
-        remoteItemMetadata.fileName = remoteItem.name
-        remoteItemMetadata.serverUrl = remoteFolder.remotePath
-
+        let folderMetadata = remoteFolder.toItemMetadata(account: Self.account)
+        let remoteItemMetadata = remoteItem.toItemMetadata(account: Self.account)
         Self.dbManager.addItemMetadata(folderMetadata)
         Self.dbManager.addItemMetadata(remoteItemMetadata)
         XCTAssertNotNil(Self.dbManager.itemMetadata(ocId: remoteFolder.identifier))
@@ -151,16 +133,7 @@ final class ItemDeleteTests: XCTestCase {
 
         XCTAssertFalse(rootItem.children.isEmpty)
 
-        let itemMetadata = ItemMetadata()
-        itemMetadata.ocId = itemIdentifier
-        itemMetadata.fileName = remoteItem.name
-        itemMetadata.fileNameView = remoteItem.name
-        itemMetadata.account = Self.account.ncKitAccount
-        itemMetadata.user = Self.account.username
-        itemMetadata.userId = Self.account.id
-        itemMetadata.serverUrl = Self.account.davFilesUrl
-        itemMetadata.urlBase = Self.account.serverUrl
-
+        let itemMetadata = remoteItem.toItemMetadata(account: Self.account)
         XCTAssertEqual(itemMetadata.isTrashed, false)
 
         Self.dbManager.addItemMetadata(itemMetadata)

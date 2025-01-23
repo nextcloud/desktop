@@ -13,7 +13,7 @@ public class MockEnumerator: NSObject, NSFileProviderEnumerator {
     let account: Account
     let dbManager: FilesDatabaseManager
     let remoteInterface: any RemoteInterface
-    public var enumeratorItems: [ItemMetadata] = []
+    public var enumeratorItems: [SendableItemMetadata] = []
 
     public init(
         account: Account, dbManager: FilesDatabaseManager, remoteInterface: any RemoteInterface

@@ -81,7 +81,11 @@ extension Item {
             return (nil, readError.fileProviderError)
         }
         
-        let (directoryMetadata, _, _) = await files.toDirectoryReadMetadatas(account: account)
+        guard let (directoryMetadata, _, _) = await files.toDirectoryReadMetadatas(account: account)
+        else {
+            Self.logger.error("Received nil directory read metadatas during conversion")
+            return (nil, NSFileProviderError(.noSuchItem))
+        }
         dbManager.addItemMetadata(directoryMetadata)
 
         let fpItem = Item(
@@ -169,23 +173,34 @@ extension Item {
             )
         }
         
-        let newMetadata = ItemMetadata()
-        newMetadata.date = date ?? Date()
-        newMetadata.etag = etag ?? ""
-        newMetadata.account = account.ncKitAccount
-        newMetadata.fileName = itemTemplate.filename
-        newMetadata.fileNameView = itemTemplate.filename
-        newMetadata.ocId = ocId
-        newMetadata.size = size ?? 0
-        newMetadata.contentType = itemTemplate.contentType?.preferredMIMEType ?? ""
-        newMetadata.directory = false
-        newMetadata.serverUrl = parentItemRemotePath
-        newMetadata.session = ""
-        newMetadata.sessionError = ""
-        newMetadata.sessionTaskIdentifier = 0
-        newMetadata.status = ItemMetadata.Status.normal.rawValue
-        newMetadata.downloaded = true
-        newMetadata.uploaded = true
+        let newMetadata = SendableItemMetadata(
+            ocId: ocId,
+            account: account.ncKitAccount,
+            classFile: "", // Placeholder as not set in original code
+            contentType: itemTemplate.contentType?.preferredMIMEType ?? "",
+            creationDate: Date(), // Default as not set in original code
+            date: date ?? Date(),
+            directory: false,
+            e2eEncrypted: false, // Default as not set in original code
+            etag: etag ?? "",
+            fileId: "", // Placeholder as not set in original code
+            fileName: itemTemplate.filename,
+            fileNameView: itemTemplate.filename,
+            hasPreview: false, // Default as not set in original code
+            iconName: "", // Placeholder as not set in original code
+            mountType: "", // Placeholder as not set in original code
+            ownerId: "", // Placeholder as not set in original code
+            ownerDisplayName: "", // Placeholder as not set in original code
+            path: "", // Placeholder as not set in original code
+            serverUrl: parentItemRemotePath,
+            size: size ?? 0,
+            status: Status.normal.rawValue,
+            downloaded: true,
+            uploaded: true,
+            urlBase: "", // Placeholder as not set in original code
+            user: "", // Placeholder as not set in original code
+            userId: "" // Placeholder as not set in original code
+        )
 
         dbManager.addItemMetadata(newMetadata)
         

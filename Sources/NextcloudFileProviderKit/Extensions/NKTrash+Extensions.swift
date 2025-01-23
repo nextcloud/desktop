@@ -9,27 +9,36 @@ import Foundation
 import NextcloudKit
 
 extension NKTrash {
-    func toItemMetadata(account: Account) -> ItemMetadata {
-        let metadata = ItemMetadata()
-        metadata.ocId = ocId
-        metadata.account = account.ncKitAccount
-        metadata.user = account.username
-        metadata.userId = account.id
-        metadata.urlBase = account.serverUrl
-        metadata.contentType = contentType
-        metadata.date = date
-        metadata.directory = directory
-        metadata.fileId = fileId
-        metadata.fileName = fileName
-        metadata.fileNameView = trashbinFileName
-        metadata.hasPreview = hasPreview
-        metadata.iconName = iconName
-        metadata.size = size
-        metadata.classFile = classFile
-        metadata.serverUrl = account.trashUrl
-        metadata.trashbinFileName = trashbinFileName
-        metadata.trashbinOriginalLocation = trashbinOriginalLocation
-        metadata.trashbinDeletionTime = trashbinDeletionTime
-        return metadata
+    func toItemMetadata(account: Account) -> SendableItemMetadata {
+        SendableItemMetadata(
+            ocId: ocId,
+            account: account.ncKitAccount,
+            classFile: classFile,
+            contentType: contentType,
+            creationDate: Date(), // Default as not set in original code
+            date: date,
+            directory: directory,
+            e2eEncrypted: false, // Default as not set in original code
+            etag: "", // Placeholder as not set in original code
+            fileId: fileId,
+            fileName: fileName,
+            fileNameView: trashbinFileName,
+            hasPreview: hasPreview,
+            iconName: iconName,
+            mountType: "", // Placeholder as not set in original code
+            ownerId: "", // Placeholder as not set in original code
+            ownerDisplayName: "", // Placeholder as not set in original code
+            path: "", // Placeholder as not set in original code
+            serverUrl: account.trashUrl,
+            sharePermissionsCollaborationServices: 0, // Default as not set in original code
+            sharePermissionsCloudMesh: [], // Default as not set in original code
+            size: size,
+            trashbinFileName: trashbinFileName,
+            trashbinOriginalLocation: trashbinOriginalLocation,
+            trashbinDeletionTime: trashbinDeletionTime,
+            urlBase: account.serverUrl,
+            user: account.username,
+            userId: account.id
+        )
     }
 }

@@ -7,100 +7,94 @@
 
 import Foundation
 import NextcloudKit
+import RealmSwift
 
 extension NKFile {
-    func toItemMetadata() -> ItemMetadata {
-        let metadata = ItemMetadata()
-
-        metadata.account = account
-        metadata.checksums = checksums
-        metadata.commentsUnread = commentsUnread
-        metadata.contentType = contentType
-        if let creationDate {
-            metadata.creationDate = creationDate as Date
-        } else {
-            metadata.creationDate = date as Date
-        }
-        metadata.dataFingerprint = dataFingerprint
-        metadata.date = date as Date
-        metadata.directory = directory
-        metadata.downloadURL = downloadURL
-        metadata.e2eEncrypted = e2eEncrypted
-        metadata.etag = etag
-        metadata.favorite = favorite
-        metadata.fileId = fileId
-        metadata.fileName = fileName
-        metadata.fileNameView = fileName
-        metadata.hasPreview = hasPreview
-        metadata.iconName = iconName
-        metadata.mountType = mountType
-        metadata.name = name
-        metadata.note = note
-        metadata.ocId = ocId
-        metadata.ownerId = ownerId
-        metadata.ownerDisplayName = ownerDisplayName
-        metadata.lock = lock
-        metadata.lockOwner = lockOwner
-        metadata.lockOwnerEditor = lockOwnerEditor
-        metadata.lockOwnerType = lockOwnerType
-        metadata.lockOwnerDisplayName = lockOwnerDisplayName
-        metadata.lockTime = lockTime
-        metadata.lockTimeOut = lockTimeOut
-        metadata.path = path
-        metadata.permissions = permissions
-        metadata.quotaUsedBytes = quotaUsedBytes
-        metadata.quotaAvailableBytes = quotaAvailableBytes
-        metadata.richWorkspace = richWorkspace
-        metadata.resourceType = resourceType
-        metadata.serverUrl = serverUrl
-        metadata.sharePermissionsCollaborationServices = sharePermissionsCollaborationServices
-        for element in sharePermissionsCloudMesh {
-            metadata.sharePermissionsCloudMesh.append(element)
-        }
-        for element in shareType {
-            metadata.shareType.append(element)
-        }
-        metadata.size = size
-        metadata.classFile = classFile
-        // FIXME: iOS 12.0,* don't detect UTI text/markdown, text/x-markdown
-        if metadata.contentType == "text/markdown" || metadata.contentType == "text/x-markdown",
-            metadata.classFile == NKCommon.TypeClassFile.unknow.rawValue
-        {
-            metadata.classFile = NKCommon.TypeClassFile.document.rawValue
-        }
-        if let uploadDate {
-            metadata.uploadDate = uploadDate as Date
-        } else {
-            metadata.uploadDate = date as Date
-        }
-        metadata.trashbinFileName = trashbinFileName
-        metadata.trashbinOriginalLocation = trashbinOriginalLocation
-        metadata.trashbinDeletionTime = trashbinDeletionTime
-        metadata.urlBase = urlBase
-        metadata.user = user
-        metadata.userId = userId
-
+    func toItemMetadata() -> SendableItemMetadata {
+        let creationDate = creationDate ?? date
+        let uploadDate = uploadDate ?? date
+        let classFile = (contentType == "text/markdown" || contentType == "text/x-markdown")
+            && classFile == NKCommon.TypeClassFile.unknow.rawValue
+                ? NKCommon.TypeClassFile.document.rawValue
+                : classFile
         // Support for finding the correct filename for e2ee files should go here
 
-        return metadata
+        return SendableItemMetadata(
+            ocId: ocId,
+            account: account,
+            checksums: checksums,
+            classFile: classFile,
+            commentsUnread: commentsUnread,
+            contentType: contentType,
+            creationDate: creationDate as Date,
+            dataFingerprint: dataFingerprint,
+            date: date as Date,
+            directory: directory,
+            downloadURL: downloadURL,
+            e2eEncrypted: e2eEncrypted,
+            etag: etag,
+            favorite: favorite,
+            fileId: fileId,
+            fileName: fileName,
+            fileNameView: fileName,
+            hasPreview: hasPreview,
+            hidden: hidden,
+            iconName: iconName,
+            livePhotoFile: livePhotoFile,
+            mountType: mountType,
+            name: name,
+            note: note,
+            ownerId: ownerId,
+            ownerDisplayName: ownerDisplayName,
+            lock: lock,
+            lockOwner: lockOwner,
+            lockOwnerEditor: lockOwnerEditor,
+            lockOwnerType: lockOwnerType,
+            lockOwnerDisplayName: lockOwnerDisplayName,
+            lockTime: lockTime,
+            lockTimeOut: lockTimeOut,
+            path: path,
+            permissions: permissions,
+            quotaUsedBytes: quotaUsedBytes,
+            quotaAvailableBytes: quotaAvailableBytes,
+            resourceType: resourceType,
+            richWorkspace: richWorkspace,
+            serverUrl: serverUrl,
+            sharePermissionsCollaborationServices: sharePermissionsCollaborationServices,
+            sharePermissionsCloudMesh: sharePermissionsCloudMesh,
+            shareType: shareType,
+            size: size,
+            tags: tags,
+            trashbinFileName: trashbinFileName,
+            trashbinOriginalLocation: trashbinOriginalLocation,
+            trashbinDeletionTime: trashbinDeletionTime,
+            uploadDate: uploadDate as Date,
+            urlBase: urlBase,
+            user: user,
+            userId: userId
+        )
     }
 }
 
-extension Array<NKFile> {
-    private actor DirectoryReadConversionActor {
-        var directoryMetadata = ItemMetadata()
-        var childDirectoriesMetadatas: [ItemMetadata] = []
-        var metadatas: [ItemMetadata] = []
 
-        var convertedMetadatas: (ItemMetadata, [ItemMetadata], [ItemMetadata]) {
+
+extension Array<NKFile> {
+    private final actor DirectoryReadConversionActor: Sendable {
+        let directoryMetadata: SendableItemMetadata
+        var childDirectoriesMetadatas: [SendableItemMetadata] = []
+        var metadatas: [SendableItemMetadata] = []
+
+        func convertedMetadatas() -> (
+            SendableItemMetadata, [SendableItemMetadata], [SendableItemMetadata]
+        ) {
             (directoryMetadata, childDirectoriesMetadatas, metadatas)
         }
 
-        func apply(directoryMetadata: ItemMetadata) {
-            self.directoryMetadata = directoryMetadata
+        init(target: SendableItemMetadata) {
+            self.directoryMetadata = target
         }
 
-        func add(metadata: ItemMetadata) {
+        func add(metadata: SendableItemMetadata) {
             metadatas.append(metadata)
             if metadata.directory {
                 childDirectoriesMetadatas.append(metadata)
@@ -109,19 +103,18 @@ extension Array<NKFile> {
     }
 
     func toDirectoryReadMetadatas(account: Account) async -> (
-        directoryMetadata: ItemMetadata,
-        childDirectoriesMetadatas: [ItemMetadata],
-        metadatas: [ItemMetadata]
-    ) {
+        directoryMetadata: SendableItemMetadata,
+        childDirectoriesMetadatas: [SendableItemMetadata],
+        metadatas: [SendableItemMetadata]
+    )? {
         guard let targetDirectoryMetadata = first?.toItemMetadata() else {
-            return (ItemMetadata(), [], [])
+            return nil
         }
-        let conversionActor = DirectoryReadConversionActor()
-        await conversionActor.apply(directoryMetadata: targetDirectoryMetadata)
+        let conversionActor = DirectoryReadConversionActor(target: targetDirectoryMetadata)
         await concurrentChunkedForEach { file in
             guard file.ocId != targetDirectoryMetadata.ocId else { return }
-            await conversionActor.add(metadata: file.toItemMetadata())
+            await conversionActor.add( metadata: file.toItemMetadata())
         }
-        return await conversionActor.convertedMetadatas
+        return await conversionActor.convertedMetadatas()
     }
 }

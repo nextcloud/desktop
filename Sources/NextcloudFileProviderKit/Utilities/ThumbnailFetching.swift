@@ -22,7 +22,7 @@ public func fetchThumbnails(
         Data?,
         Error?
     ) -> Void,
-    completionHandler: @escaping (Error?) -> Void
+    completionHandler: @Sendable @escaping (Error?) -> Void
 ) -> Progress {
     let progress = Progress(totalUnitCount: Int64(itemIdentifiers.count))
 

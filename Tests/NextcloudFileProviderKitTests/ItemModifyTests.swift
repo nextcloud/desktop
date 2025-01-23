@@ -112,7 +112,7 @@ final class ItemModifyTests: XCTestCase {
         let newContentsUrl = FileManager.default.temporaryDirectory.appendingPathComponent("test")
         try newContents?.write(to: newContentsUrl)
 
-        let targetItemMetadata = ItemMetadata(value: itemMetadata)
+        var targetItemMetadata = SendableItemMetadata(value: itemMetadata)
         targetItemMetadata.name = "item-renamed.txt" // Renamed
         targetItemMetadata.fileName = "item-renamed.txt" // Renamed
         targetItemMetadata.fileNameView = "item-renamed.txt" // Renamed
@@ -197,7 +197,7 @@ final class ItemModifyTests: XCTestCase {
             print(error.localizedDescription)
         }
 
-        let modifiedFolderMetadata = ItemMetadata(value: folderMetadata)
+        var modifiedFolderMetadata = SendableItemMetadata(value: folderMetadata)
         modifiedFolderMetadata.apply(fileName: "folder-renamed")
         modifiedFolderMetadata.serverUrl = remoteFolderB.remotePath
 
@@ -428,23 +428,23 @@ final class ItemModifyTests: XCTestCase {
         let folderMetadata = remoteFolder.toItemMetadata(account: Self.account)
         Self.dbManager.addItemMetadata(folderMetadata)
 
-        let bundleItemMetadata = remoteKeynoteBundle.toItemMetadata(account: Self.account)
+        var bundleItemMetadata = remoteKeynoteBundle.toItemMetadata(account: Self.account)
         bundleItemMetadata.contentType = UTType.bundle.identifier
         Self.dbManager.addItemMetadata(bundleItemMetadata)
 
-        let bundleIndexZipMetadata = remoteKeynoteIndexZip.toItemMetadata(account: Self.account)
+        var bundleIndexZipMetadata = remoteKeynoteIndexZip.toItemMetadata(account: Self.account)
         bundleIndexZipMetadata.classFile = NKCommon.TypeClassFile.compress.rawValue
         bundleIndexZipMetadata.contentType = UTType.zip.identifier
         Self.dbManager.addItemMetadata(bundleIndexZipMetadata)
 
-        let bundleRandomFileMetadata = remoteKeynoteRandomFile.toItemMetadata(account: Self.account)
+        var bundleRandomFileMetadata = remoteKeynoteRandomFile.toItemMetadata(account: Self.account)
         bundleRandomFileMetadata.contentType = UTType.text.identifier
         Self.dbManager.addItemMetadata(bundleRandomFileMetadata)
 
         let bundleDataFolderMetadata = remoteKeynoteDataFolder.toItemMetadata(account: Self.account)
         Self.dbManager.addItemMetadata(bundleDataFolderMetadata)
 
-        let bundleDataRandomFileMetadata =
+        var bundleDataRandomFileMetadata =
             remoteKeynoteDataRandomFile.toItemMetadata(account: Self.account)
         bundleDataRandomFileMetadata.classFile = NKCommon.TypeClassFile.image.rawValue
         bundleDataRandomFileMetadata.contentType = UTType.image.identifier
@@ -453,17 +453,17 @@ final class ItemModifyTests: XCTestCase {
         let bundleMetadataFolderMetadata = remoteKeynoteMetadataFolder.toItemMetadata(account: Self.account)
         Self.dbManager.addItemMetadata(bundleMetadataFolderMetadata)
 
-        let bundleDocIdentifierMetadata =
+        var bundleDocIdentifierMetadata =
             remoteKeynoteDocIdentifier.toItemMetadata(account: Self.account)
         bundleDocIdentifierMetadata.contentType = UTType.text.identifier
         Self.dbManager.addItemMetadata(bundleDocIdentifierMetadata)
 
-        let bundleVersionPlistMetadata =
+        var bundleVersionPlistMetadata =
             remoteKeynoteVersionPlist.toItemMetadata(account: Self.account)
         bundleVersionPlistMetadata.contentType = UTType.xml.identifier
         Self.dbManager.addItemMetadata(bundleVersionPlistMetadata)
 
-        let bundlePropertiesPlistMetadata =
+        var bundlePropertiesPlistMetadata =
             remoteKeynotePropertiesPlist.toItemMetadata(account: Self.account)
         bundlePropertiesPlistMetadata.size = Int64(remoteKeynotePropertiesPlist.data?.count ?? 0)
         bundlePropertiesPlistMetadata.directory = false
@@ -538,21 +538,12 @@ final class ItemModifyTests: XCTestCase {
 """
             .utf8).write(to: keynotePropertiesPlistPath)
 
-        let targetBundleMetadata = ItemMetadata()
-        targetBundleMetadata.ocId = remoteKeynoteBundle.identifier
+        var targetBundleMetadata = remoteKeynoteBundle.toItemMetadata(account: Self.account)
         targetBundleMetadata.etag = "this-is-a-new-etag"
         targetBundleMetadata.name = "renamed-" + keynoteBundleFilename
         targetBundleMetadata.fileName = "renamed-" + keynoteBundleFilename
         targetBundleMetadata.fileNameView = "renamed-" + keynoteBundleFilename
         targetBundleMetadata.serverUrl = Self.account.davFilesUrl + "/folder" // Move
-        targetBundleMetadata.urlBase = Self.account.serverUrl
-        targetBundleMetadata.account = Self.account.ncKitAccount
-        targetBundleMetadata.userId = Self.account.id
-        targetBundleMetadata.user = Self.account.username
-        targetBundleMetadata.date = .init()
-        targetBundleMetadata.directory = true
-        targetBundleMetadata.classFile = NKCommon.TypeClassFile.directory.rawValue
-        targetBundleMetadata.contentType = UTType.bundle.identifier
 
         let targetItem = Item(
             metadata: targetBundleMetadata,
@@ -683,7 +674,7 @@ final class ItemModifyTests: XCTestCase {
         let itemMetadata = remoteItem.toItemMetadata(account: Self.account)
         Self.dbManager.addItemMetadata(itemMetadata)
 
-        let renamedItemMetadata = ItemMetadata(value: itemMetadata)
+        var renamedItemMetadata = SendableItemMetadata(value: itemMetadata)
         renamedItemMetadata.name = "renamed"
         renamedItemMetadata.fileName = "renamed"
         renamedItemMetadata.fileNameView = "renamed"
@@ -857,7 +848,7 @@ final class ItemModifyTests: XCTestCase {
         let folderMetadata = remoteFolder.toItemMetadata(account: Self.account)
         Self.dbManager.addItemMetadata(folderMetadata)
 
-        let renamedFolderMetadata = ItemMetadata(value: folderMetadata)
+        var renamedFolderMetadata = SendableItemMetadata(value: folderMetadata)
         renamedFolderMetadata.fileName = "folder (renamed)"
 
         let itemMetadata = remoteItem.toItemMetadata(account: Self.account)
@@ -1013,7 +1004,7 @@ final class ItemModifyTests: XCTestCase {
         let newContentsUrl = FileManager.default.temporaryDirectory.appendingPathComponent("test")
         try newContents.write(to: newContentsUrl)
 
-        let targetItemMetadata = ItemMetadata(value: trashItemMetadata)
+        var targetItemMetadata = SendableItemMetadata(value: trashItemMetadata)
         targetItemMetadata.serverUrl = Self.account.davFilesUrl
         targetItemMetadata.fileName = "new-file.txt"
         targetItemMetadata.fileNameView = "new-file.txt"
@@ -1154,7 +1145,7 @@ final class ItemModifyTests: XCTestCase {
         let trashFolderMetadata = remoteTrashFolder.toItemMetadata(account: Self.account)
         Self.dbManager.addItemMetadata(trashFolderMetadata)
 
-        let renamedTrashFolderMetadata = ItemMetadata(value: trashFolderMetadata)
+        var renamedTrashFolderMetadata = SendableItemMetadata(value: trashFolderMetadata)
         renamedTrashFolderMetadata.apply(fileName: "renamed-folder")
         renamedTrashFolderMetadata.serverUrl = Self.account.davFilesUrl
         renamedTrashFolderMetadata.trashbinFileName = ""
@@ -1217,7 +1208,7 @@ final class ItemModifyTests: XCTestCase {
         let newContentsUrl = FileManager.default.temporaryDirectory.appendingPathComponent("test")
         try newContents.write(to: newContentsUrl)
 
-        let targetItemMetadata = ItemMetadata(value: itemMetadata)
+        var targetItemMetadata = SendableItemMetadata(value: itemMetadata)
         targetItemMetadata.date = .init()
         targetItemMetadata.size = Int64(newContents.count)
 
@@ -1282,7 +1273,7 @@ final class ItemModifyTests: XCTestCase {
         let remoteInterface = MockRemoteInterface(rootItem: rootItem)
         remoteInterface.currentChunks = [chunkUploadId: [preexistingChunk]]
 
-        let itemMetadata = remoteItem.toItemMetadata(account: Self.account)
+        var itemMetadata = remoteItem.toItemMetadata(account: Self.account)
         itemMetadata.chunkUploadId = chunkUploadId
         Self.dbManager.addItemMetadata(itemMetadata)
 
@@ -1290,7 +1281,7 @@ final class ItemModifyTests: XCTestCase {
         let newContentsUrl = FileManager.default.temporaryDirectory.appendingPathComponent("test")
         try newContents.write(to: newContentsUrl)
 
-        let targetItemMetadata = ItemMetadata(value: itemMetadata)
+        var targetItemMetadata = SendableItemMetadata(value: itemMetadata)
         targetItemMetadata.date = .init()
         targetItemMetadata.size = Int64(newContents.count)
 
@@ -1330,6 +1321,6 @@ final class ItemModifyTests: XCTestCase {
         )
 
         let dbItem = try XCTUnwrap(Self.dbManager.itemMetadata(ocId: itemMetadata.ocId))
-        XCTAssertTrue(dbItem.chunkUploadId.isEmpty)
+        XCTAssertNil(dbItem.chunkUploadId)
     }
 }

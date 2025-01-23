@@ -45,18 +45,7 @@ final class ItemFetchTests: XCTestCase {
         rootItem.children = [remoteItem]
         remoteItem.parent = rootItem
 
-        let itemMetadata = ItemMetadata()
-        itemMetadata.ocId = remoteItem.identifier
-        itemMetadata.etag = remoteItem.versionIdentifier
-        itemMetadata.name = remoteItem.name
-        itemMetadata.fileName = remoteItem.name
-        itemMetadata.fileNameView = remoteItem.name
-        itemMetadata.serverUrl = Self.account.davFilesUrl
-        itemMetadata.urlBase = Self.account.serverUrl
-        itemMetadata.account = Self.account.ncKitAccount
-        itemMetadata.userId = Self.account.id
-        itemMetadata.user = Self.account.username
-
+        let itemMetadata = remoteItem.toItemMetadata(account: Self.account)
         Self.dbManager.addItemMetadata(itemMetadata)
         XCTAssertNotNil(itemMetadata.ocId)
 
@@ -154,89 +143,23 @@ final class ItemFetchTests: XCTestCase {
         remoteDirectoryChildDirB.children = [remoteDirectoryChildDirBChildFile]
         remoteDirectoryChildDirBChildFile.parent = remoteDirectoryChildDirB
 
-        let directoryMetadata = ItemMetadata()
-        directoryMetadata.ocId = remoteDirectory.identifier
-        directoryMetadata.etag = remoteDirectory.versionIdentifier
-        directoryMetadata.name = remoteDirectory.name
-        directoryMetadata.fileName = remoteDirectory.name
-        directoryMetadata.fileNameView = remoteDirectory.name
-        directoryMetadata.serverUrl = Self.account.davFilesUrl
-        directoryMetadata.urlBase = Self.account.serverUrl
-        directoryMetadata.account = Self.account.ncKitAccount
-        directoryMetadata.userId = Self.account.id
-        directoryMetadata.user = Self.account.username
-        directoryMetadata.directory = true
-
+        let directoryMetadata = remoteDirectory.toItemMetadata(account: Self.account)
         Self.dbManager.addItemMetadata(directoryMetadata)
 
-        let directoryChildFileMetadata = ItemMetadata()
-        directoryChildFileMetadata.ocId = remoteDirectoryChildFile.identifier
-        directoryChildFileMetadata.etag = remoteDirectoryChildFile.versionIdentifier
-        directoryChildFileMetadata.name = remoteDirectoryChildFile.name
-        directoryChildFileMetadata.fileName = remoteDirectoryChildFile.name
-        directoryChildFileMetadata.fileNameView = remoteDirectoryChildFile.name
-        directoryChildFileMetadata.serverUrl =
-            directoryMetadata.serverUrl + "/" + directoryMetadata.fileName
-        directoryChildFileMetadata.urlBase = Self.account.serverUrl
-        directoryChildFileMetadata.account = Self.account.ncKitAccount
-        directoryChildFileMetadata.userId = Self.account.username
-        directoryChildFileMetadata.user = Self.account.username
-        directoryChildFileMetadata.contentType = "text/plain"
-        directoryChildFileMetadata.size = Int64(remoteDirectoryChildFile.data?.count ?? 0)
-        directoryChildFileMetadata.classFile = NKCommon.TypeClassFile.document.rawValue
-
+        let directoryChildFileMetadata =
+            remoteDirectoryChildFile.toItemMetadata(account: Self.account)
         Self.dbManager.addItemMetadata(directoryChildFileMetadata)
 
-        let directoryChildDirAMetadata = ItemMetadata()
-        directoryChildDirAMetadata.ocId = remoteDirectoryChildDirA.identifier
-        directoryChildDirAMetadata.etag = remoteDirectoryChildDirA.versionIdentifier
-        directoryChildDirAMetadata.name = remoteDirectoryChildDirA.name
-        directoryChildDirAMetadata.fileName = remoteDirectoryChildDirA.name
-        directoryChildDirAMetadata.fileNameView = remoteDirectoryChildDirA.name
-        directoryChildDirAMetadata.serverUrl =
-            directoryMetadata.serverUrl + "/" + directoryMetadata.fileName
-        directoryChildDirAMetadata.urlBase = Self.account.serverUrl
-        directoryChildDirAMetadata.account = Self.account.ncKitAccount
-        directoryChildDirAMetadata.userId = Self.account.id
-        directoryChildDirAMetadata.user = Self.account.username
-        directoryChildDirAMetadata.directory = true
-
+        let directoryChildDirAMetadata =
+            remoteDirectoryChildDirA.toItemMetadata(account: Self.account)
         Self.dbManager.addItemMetadata(directoryChildDirAMetadata)
 
-        let directoryChildDirBMetadata = ItemMetadata()
-        directoryChildDirBMetadata.ocId = remoteDirectoryChildDirB.identifier
-        directoryChildDirBMetadata.etag = remoteDirectoryChildDirB.versionIdentifier
-        directoryChildDirBMetadata.name = remoteDirectoryChildDirB.name
-        directoryChildDirBMetadata.fileName = remoteDirectoryChildDirB.name
-        directoryChildDirBMetadata.fileNameView = remoteDirectoryChildDirB.name
-        directoryChildDirBMetadata.serverUrl =
-            directoryMetadata.serverUrl + "/" + directoryMetadata.fileName
-        directoryChildDirBMetadata.urlBase = Self.account.serverUrl
-        directoryChildDirBMetadata.account = Self.account.ncKitAccount
-        directoryChildDirBMetadata.userId = Self.account.username
-        directoryChildDirBMetadata.user = Self.account.username
-        directoryChildDirBMetadata.directory = true
-
+        let directoryChildDirBMetadata =
+            remoteDirectoryChildDirB.toItemMetadata(account: Self.account)
         Self.dbManager.addItemMetadata(directoryChildDirBMetadata)
 
-        let directoryChildDirBChildFileMetadata = ItemMetadata()
-        directoryChildDirBChildFileMetadata.ocId = remoteDirectoryChildDirBChildFile.identifier
-        directoryChildDirBChildFileMetadata.etag =
-            remoteDirectoryChildDirBChildFile.versionIdentifier
-        directoryChildDirBChildFileMetadata.name = remoteDirectoryChildDirBChildFile.name
-        directoryChildDirBChildFileMetadata.fileName = remoteDirectoryChildDirBChildFile.name
-        directoryChildDirBChildFileMetadata.fileNameView = remoteDirectoryChildDirBChildFile.name
-        directoryChildDirBChildFileMetadata.serverUrl =
-            directoryChildDirBMetadata.serverUrl + "/" + directoryChildDirBMetadata.fileName
-        directoryChildDirBChildFileMetadata.urlBase = Self.account.serverUrl
-        directoryChildDirBChildFileMetadata.account = Self.account.ncKitAccount
-        directoryChildDirBChildFileMetadata.userId = Self.account.id
-        directoryChildDirBChildFileMetadata.user = Self.account.username
-        directoryChildDirBChildFileMetadata.contentType = "text/plain"
-        directoryChildDirBChildFileMetadata.size =
-            Int64(remoteDirectoryChildDirBChildFile.data?.count ?? 0)
-        directoryChildDirBChildFileMetadata.classFile = NKCommon.TypeClassFile.document.rawValue
-
+        let directoryChildDirBChildFileMetadata =
+            remoteDirectoryChildDirBChildFile.toItemMetadata(account: Self.account)
         Self.dbManager.addItemMetadata(directoryChildDirBChildFileMetadata)
 
         let item = Item(
