@@ -6,8 +6,8 @@
 #ifdef Q_OS_WIN
 bool SyncDirValidator::isValidDir() {
       QString appDataPath = SyncDirValidator::appDataPath().replace("/", QDir::separator());
-      QStringList pathComponents = _path.replace("/", QDir::separator()).split(QDir::separator(), QString::SkipEmptyParts);
-      QStringList appDataPathComponents = appDataPath.split(QDir::separator(), QString::SkipEmptyParts);
+      QStringList pathComponents = _path.replace("/", QDir::separator()).split(QDir::separator(), Qt::SkipEmptyParts);
+      QStringList appDataPathComponents = appDataPath.split(QDir::separator(), Qt::SkipEmptyParts);
       /*
         If path is shorter than appDataPath and one path component is different, then path cannot be a real subset and is sowith valid
         If appDataPath is shorter than path, we need to check, if the last appDataPath component is different from the related path component, then path is valid.
