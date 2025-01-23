@@ -41,6 +41,7 @@ class OWNCLOUDSYNC_EXPORT Theme : public QObject
     Q_PROPERTY(bool branded READ isBranded CONSTANT)
     Q_PROPERTY(QString appNameGUI READ appNameGUI CONSTANT)
     Q_PROPERTY(QString appName READ appName CONSTANT)
+    Q_PROPERTY(QString appShortName READ appShortName CONSTANT)
     Q_PROPERTY(QUrl stateOnlineImageSource READ stateOnlineImageSource CONSTANT)
     Q_PROPERTY(QUrl stateOfflineImageSource READ stateOfflineImageSource CONSTANT)
     Q_PROPERTY(QUrl statusOnlineImageSource READ statusOnlineImageSource CONSTANT)
@@ -122,6 +123,24 @@ public:
      * @return QString with app name.
      */
     [[nodiscard]] QString appName() const;
+
+        /**
+     * @brief appShortName - Application name (short and single word)
+     *
+     * Use and redefine this as an application name. Keep it straight as
+     * it is used for config files etc. If you need a more sophisticated
+     * name in the GUI, redefine appNameGUI.
+     *
+     * By default, the name is derived from the APPLICATION_SHORTNAME
+     * cmake variable, and should be the same. This method is only
+     * reimplementable for legacy reasons.
+     *
+     * Warning: Do not modify this value, as many things, e.g. settings
+     * depend on it! You most likely want to modify \ref appNameGUI().
+     *
+     * @return QString with app name.
+     */
+    [[nodiscard]] QString appShortName() const;
 
     /**
      * @brief Returns full path to an online state icon

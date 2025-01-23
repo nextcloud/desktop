@@ -95,7 +95,7 @@ QUrlQuery Updater::getQueryParams()
     query.addQueryItem(QStringLiteral("osRelease"), QSysInfo::productType());
     query.addQueryItem(QStringLiteral("osVersion"), QSysInfo::productVersion());
     query.addQueryItem(QStringLiteral("kernelVersion"), QSysInfo::kernelVersion());
-    query.addQueryItem(QStringLiteral("oem"), Theme::instance()->appName());
+    query.addQueryItem(QStringLiteral("oem"), Theme::instance()->appShortName());
     query.addQueryItem(QStringLiteral("buildArch"), QSysInfo::buildCpuArchitecture());
     query.addQueryItem(QStringLiteral("currentArch"), QSysInfo::currentCpuArchitecture());
     query.addQueryItem(QStringLiteral("versionsuffix"), Theme::instance()->versionSuffix());
