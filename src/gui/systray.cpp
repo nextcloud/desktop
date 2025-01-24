@@ -301,13 +301,13 @@ void Systray::createResolveConflictsDialog(const OCC::ActivityList &allConflicts
 
     // This call dialog gets deallocated on close conditions
     // by a call from the QML side to the destroyDialog slot
-    auto dialog = QScopedPointer(conflictsDialog->createWithInitialProperties(initialProperties));
+    auto dialog = std::unique_ptr<QObject>(conflictsDialog->createWithInitialProperties(initialProperties));
     if (!dialog) {
         return;
     }
     dialog->setParent(QGuiApplication::instance());
 
-    auto dialogWindow = qobject_cast<QQuickWindow*>(dialog.data());
+    auto dialogWindow = qobject_cast<QQuickWindow*>(dialog.release());
     if (!dialogWindow) {
         return;
     }
