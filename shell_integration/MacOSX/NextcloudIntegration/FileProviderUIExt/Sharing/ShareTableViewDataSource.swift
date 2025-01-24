@@ -164,6 +164,17 @@ class ShareTableViewDataSource: NSObject, NSTableViewDataSource, NSTableViewDele
         }
     }
 
+    private static func generateInternalShare(for file: NKFile) -> NKShare {
+        let internalShare = NKShare()
+        internalShare.shareType = NKShare.ShareType.internalLink.rawValue
+        internalShare.url = file.urlBase +  "/index.php/f/" + file.fileId
+        internalShare.account = file.account
+        internalShare.displaynameOwner = file.ownerDisplayName
+        internalShare.displaynameFileOwner = file.ownerDisplayName
+        internalShare.path = file.path
+        return internalShare
+    }
+
     private func fetchCapabilities() async -> Capabilities? {
         guard let account else {
             self.presentError("Could not fetch capabilities as account is invalid.")
