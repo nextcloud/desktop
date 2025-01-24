@@ -129,6 +129,7 @@ class ShareTableViewDataSource: NSObject, NSTableViewDataSource, NSTableViewDele
             shares = await fetch(
                 itemIdentifier: itemIdentifier, itemRelativePath: serverPathString
             )
+            shares.append(Self.generateInternalShare(for: itemMetadata))
         } catch let error {
             presentError("Could not reload data: \(error), will try again.")
             reattempt()
