@@ -480,7 +480,7 @@
          </item>
         </layout>
        </item>
-       <item>
+       <!-- <item>
         <layout class="QHBoxLayout" name="horizontalLayout_8">
          <item>
           <widget class="QCheckBox" name="confCheckBoxExternal">
@@ -493,7 +493,7 @@
           </widget>
          </item>
         </layout>
-       </item>
+       </item> -->
        <item>
         <layout class="QHBoxLayout" name="horizontalLayout_10">
          <property name="topMargin">
@@ -801,7 +801,7 @@
     </hint>
    </hints>
   </connection>
-  <connection>
+  <!-- <connection>
    <sender>rSyncEverything</sender>
    <signal>toggled(bool)</signal>
    <receiver>confCheckBoxExternal</receiver>
@@ -816,6 +816,6 @@
      <y>174</y>
     </hint>
    </hints>
-  </connection>
+  </connection> -->
  </connections>
 </ui>
