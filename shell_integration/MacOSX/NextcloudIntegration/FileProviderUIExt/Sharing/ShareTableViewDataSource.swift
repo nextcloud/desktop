@@ -30,7 +30,6 @@ class ShareTableViewDataSource: NSObject, NSTableViewDataSource, NSTableViewDele
         }
     }
     var capabilities: Capabilities?
-    var itemMetadata: NKFile?
 
     private(set) var itemURL: URL?
     private(set) var itemServerRelativePath: String?
@@ -117,10 +116,13 @@ class ShareTableViewDataSource: NSObject, NSTableViewDataSource, NSTableViewDele
                 presentError("Account data is unavailable, cannot reload data!")
                 return
             }
-            itemMetadata = await fetchItemMetadata(
+            guard let itemMetadata = await fetchItemMetadata(
                 itemRelativePath: serverPathString, account: account, kit: kit
-            )
-            guard itemMetadata?.permissions.contains("R") == true else {
+            ) else {
+                presentError("Unable to retrieve file metadata...")
+                return
+            }
+            guard itemMetadata.permissions.contains("R") == true else {
                 presentError("This file cannot be shared.")
                 return
             }
