@@ -176,7 +176,7 @@ class ShareViewController: NSViewController, ShareViewDataSourceUIDelegate {
     }
 
     func showOptions(share: NKShare) {
-        guard let account = shareDataSource.account else { return }
+        guard let account = shareDataSource.account, share.canEdit || share.canDelete else { return }
         optionsView.account = account
         optionsView.controller = ShareController(
             share: share, account: account, kit: shareDataSource.kit
