@@ -176,7 +176,7 @@ class ShareViewController: NSViewController, ShareViewDataSourceUIDelegate {
     }
 
     func showOptions(share: NKShare) {
-        guard let kit = shareDataSource.kit else { return }
+        guard let kit = shareDataSource.kit, share.canEdit || share.canDelete else { return }
         optionsView.kit = kit
         optionsView.controller = ShareController(share: share, kit: kit)
         if !splitView.arrangedSubviews.contains(optionsView) {
