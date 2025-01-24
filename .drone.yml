@@ -148,28 +148,6 @@ trigger:
 
 ---
 kind: pipeline
-name: AppImage
-
-steps:
-- name: build
-  image: ghcr.io/nextcloud/continuous-integration-client-appimage-qt6:client-appimage-6.7.3-1
-  environment:
-    CI_UPLOAD_GIT_TOKEN:
-      from_secret: CI_UPLOAD_GIT_TOKEN
-    CI_UPLOAD_GIT_USERNAME:
-      from_secret: CI_UPLOAD_GIT_USERNAME
-  commands:
-    - BUILDNR=$DRONE_BUILD_NUMBER VERSION_SUFFIX=$DRONE_PULL_REQUEST BUILD_UPDATER=ON DESKTOP_CLIENT_ROOT=$DRONE_WORKSPACE EXECUTABLE_NAME=nextcloud QT_BASE_DIR=/opt/qt6.7.3 OPENSSL_ROOT_DIR=/usr/local/lib64  /bin/bash -c "./admin/linux/build-appimage.sh"
-    - BUILDNR=$DRONE_BUILD_NUMBER VERSION_SUFFIX=$DRONE_PULL_REQUEST DESKTOP_CLIENT_ROOT=$DRONE_WORKSPACE /bin/bash -c "./admin/linux/upload-appimage.sh" || echo "Upload failed, however this is an optional step."
-trigger:
-  branch:
-    - master
-    - stable-*
-  event:
-    - pull_request
-    - push
----
-kind: pipeline
 name: Debian
 
 steps:
@@ -190,6 +168,6 @@ trigger:
     - push
 ---
 kind: signature
-hmac: 94f252484ad174569755f01f37a1776a74085e73b39e36defd4c9e5e13b48456
+hmac: 20a4eb306b48377c21036520acc47ad69253eca7fbf607e95153cfcd2274db37
 
 ...

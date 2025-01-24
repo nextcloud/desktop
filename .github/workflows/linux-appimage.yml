@@ -6,12 +6,69 @@ jobs:
   build:
     name: Linux Appimage Package
     runs-on: ubuntu-latest
-    container: ghcr.io/nextcloud/continuous-integration-client-appimage-qt6:client-appimage-6.8.0-1
+    container: ghcr.io/nextcloud/continuous-integration-client-appimage-qt6:client-appimage-el8-6.8.1-2
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 1
+
       - name: Configure, compile and package
+        id: build-appimage
+        env:
+          PR_ID: ${{ github.event.number }}
         run: |
-            BUILDNR=${GITHUB_RUN_ID} VERSION_SUFFIX=${GITHUB_HEAD_REF} BUILD_UPDATER=ON DESKTOP_CLIENT_ROOT=`pwd` EXECUTABLE_NAME=nextcloud QT_BASE_DIR=/opt/qt6.8.0 OPENSSL_ROOT_DIR=/usr/local/lib64  /bin/bash -c "./admin/linux/build-appimage.sh"
-            BUILDNR=${GITHUB_RUN_ID} VERSION_SUFFIX=${GITHUB_HEAD_REF} DESKTOP_CLIENT_ROOT=`pwd` /bin/bash -c "./admin/linux/upload-appimage.sh" || echo "Upload failed, however this is an optional step."
+            BUILDNR=${GITHUB_RUN_ID} VERSION_SUFFIX=${GITHUB_HEAD_REF} BUILD_UPDATER=ON DESKTOP_CLIENT_ROOT=`pwd` EXECUTABLE_NAME=nextcloud QT_BASE_DIR=/opt/qt OPENSSL_ROOT_DIR=/usr/local/lib64  /bin/bash -c "./admin/linux/build-appimage.sh"
+
+      - name: Upload AppImage artifact
+        id: upload-appimage
+        uses: actions/upload-artifact@v4
+        with:
+          name: nextcloud-appimage-pr-${{ github.event.number }}
+          path: ${{ steps.build-appimage.outputs.APPIMAGE_NAME }}
+          overwrite: true
+          compression-level: 0 # squashfs is already compressed
+
+      - name: Comment AppImage
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const comment_identifier_string = "<!-- automated comment for an appimage build -->";
+
+            const comment_body = `
+              ${comment_identifier_string}
+
+              Artifact containing the AppImage: [nextcloud-appimage-pr-${{ github.event.number }}.zip](${{ steps.upload-appimage.outputs.artifact-url }})
+
+              SHA256 checksum: \`${{ steps.upload-appimage.outputs.artifact-digest }}\`
+
+              To test this change/fix you can download the above artifact file, unzip it, and run it.
+
+              Please make sure to quit your existing Nextcloud app and backup your data.
+            `;
+
+            console.log("fetching old comments")
+            const comments = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+            });
+
+            comments
+              .data
+              .filter(comment => comment.body?.includes(comment_identifier_string))
+              .forEach(comment => {
+                console.log(`deleting previous AppImage comment with ID ${comment.id}`)
+                github.rest.issues.deleteComment({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  comment_id: comment.id,
+                })
+              });
+
+            console.log("creating new comment")
+            github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body: comment_body,
+            });
