@@ -10,6 +10,7 @@ import NextcloudKit
 
 extension NKShare {
     enum ShareType: Int {
+        case internalLink = -1
         case user = 0
         case group = 1
         case publicLink = 3
@@ -31,6 +32,11 @@ extension NKShare {
     var typeImage: NSImage? {
         var image: NSImage?
         switch shareType {
+        case ShareType.internalLink.rawValue:
+            image = NSImage(
+                systemSymbolName: "square.and.arrow.up.circle.fill",
+                accessibilityDescription: "Internal link share icon"
+            )
         case ShareType.user.rawValue:
             image = NSImage(
                 systemSymbolName: "person.circle.fill", 
@@ -85,6 +91,8 @@ extension NKShare {
         }
 
         switch shareType {
+        case ShareType.internalLink.rawValue:
+            return "Internal share (requires access to file)"
         case ShareType.user.rawValue:
             return "User share (\(shareWith))"
         case ShareType.group.rawValue:
