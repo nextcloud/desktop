@@ -213,6 +213,7 @@ bool WebFlowCredentials::stillValid(QNetworkReply *reply) {
 void WebFlowCredentials::persist() {
     if (_user.isEmpty()) {
         // We don't even have a user nothing to see here move along
+        qCWarning(lcWebFlowCredentials) << "_user is unset, nothing to persist ...";
         return;
     }
 
