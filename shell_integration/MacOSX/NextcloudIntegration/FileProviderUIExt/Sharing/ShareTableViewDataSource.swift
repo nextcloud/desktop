@@ -156,6 +156,17 @@ class ShareTableViewDataSource: NSObject, NSTableViewDataSource, NSTableViewDele
         }
     }
 
+    private static func generateInternalShare(for file: NKFile) -> NKShare {
+        let internalShare = NKShare()
+        internalShare.shareType = NKShare.ShareType.internalLink.rawValue
+        internalShare.url = file.urlBase +  "/index.php/f/" + file.fileId
+        internalShare.account = file.account
+        internalShare.displaynameOwner = file.ownerDisplayName
+        internalShare.displaynameFileOwner = file.ownerDisplayName
+        internalShare.path = file.path
+        return internalShare
+    }
+
     private func fetchCapabilities() async -> Capabilities? {
         return await withCheckedContinuation { continuation in
             kit?.getCapabilities { account, capabilitiesJson, error in
