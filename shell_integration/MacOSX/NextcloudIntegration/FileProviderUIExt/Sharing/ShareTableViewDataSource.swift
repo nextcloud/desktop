@@ -113,8 +113,13 @@ class ShareTableViewDataSource: NSObject, NSTableViewDataSource, NSTableViewDele
                 presentError("NextcloudKit instance is unavailable, cannot reload data!")
                 return
             }
-            itemMetadata = await fetchItemMetadata(itemRelativePath: serverPathString, kit: kit)
-            guard itemMetadata?.permissions.contains("R") == true else {
+            guard let itemMetadata =
+                    await fetchItemMetadata(itemRelativePath: serverPathString, kit: kit)
+            else {
+                presentError("Unable to retrieve file metadata...")
+                return
+            }
+            guard itemMetadata.permissions.contains("R") == true else {
                 presentError("This file cannot be shared.")
                 return
             }
