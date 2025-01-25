@@ -350,7 +350,7 @@
     <message>
         <location filename="../src/gui/macOS/ui/FileProviderStorageInfo.qml" line="59"/>
         <source>Evict local copies...</source>
-        <translation>Lokale Kopien entfernen...</translation>
+        <translation>Lokale Kopien entfernen…</translation>
     </message>
 </context>
 <context>
