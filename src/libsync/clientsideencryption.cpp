@@ -1694,7 +1694,7 @@ void ClientSideEncryption::decryptPrivateKey(const AccountPtr &account, const QB
                 _privateKey = privateKey;
             } else {
                 const auto deprecatedSha1PrivateKey = EncryptionHelper::decryptPrivateKey(deprecatedSha1Password, key);
-                if (!privateKey.isEmpty()) {
+                if (!deprecatedSha1PrivateKey.isEmpty()) {
                     _privateKey = deprecatedSha1PrivateKey;
                 } else {
                     _privateKey = EncryptionHelper::decryptPrivateKey(deprecatedPassword, key);
