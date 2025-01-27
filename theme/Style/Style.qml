@@ -200,4 +200,9 @@ QtObject {
     function variableSize(size) {
         return size * (1 + Math.min(pixelSize / 100, 1));
     }
+
+    // some platforms (e.g. Windows 11) have a transparency set on palette colours, this function removes that
+    function colorWithoutTransparency(color) {
+        return Qt.rgba(color.r, color.g, color.b, 1)
+    }
 }

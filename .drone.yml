@@ -4,16 +4,16 @@ name: drone desktop client
 
 steps:
 - name: cmake
-  image: ghcr.io/nextcloud/continuous-integration-client-qt6:client-6.7.3-1
+  image: ghcr.io/nextcloud/continuous-integration-client-qt6:client-6.8.1-2
   volumes:
     - name: build
       path: /drone/build
   commands:
     - cd /drone/build
-    - cmake /drone/src -G Ninja -DCMAKE_PREFIX_PATH=/opt/qt6.7.3 -DCMAKE_C_COMPILER=gcc-11 -DCMAKE_CXX_COMPILER=g++-11 -DCMAKE_BUILD_TYPE=Debug -DQT_MAJOR_VERSION=6 -DQUICK_COMPILER=ON -DBUILD_UPDATER=ON -DBUILD_TESTING=1 -DCMAKE_CXX_FLAGS=-Werror -DOPENSSL_ROOT_DIR=/usr/local/lib64 -DADD_E2E_TESTS=ON
+    - cmake /drone/src -G Ninja -DCMAKE_PREFIX_PATH=/opt/qt -DCMAKE_C_COMPILER=gcc-11 -DCMAKE_CXX_COMPILER=g++-11 -DCMAKE_BUILD_TYPE=Debug -DQT_MAJOR_VERSION=6 -DQUICK_COMPILER=ON -DBUILD_UPDATER=ON -DBUILD_TESTING=1 -DCMAKE_CXX_FLAGS=-Werror -DOPENSSL_ROOT_DIR=/usr/local/lib64 -DADD_E2E_TESTS=ON
 
 - name: compile
-  image: ghcr.io/nextcloud/continuous-integration-client-qt6:client-6.7.3-1
+  image: ghcr.io/nextcloud/continuous-integration-client-qt6:client-6.8.1-2
   volumes:
     - name: build
       path: /drone/build
@@ -22,7 +22,7 @@ steps:
     - ninja
 
 - name: test
-  image: ghcr.io/nextcloud/continuous-integration-client-qt6:client-6.7.3-1
+  image: ghcr.io/nextcloud/continuous-integration-client-qt6:client-6.8.1-2
   volumes:
     - name: build
       path: /drone/build
@@ -38,7 +38,7 @@ services:
     image: ghcr.io/nextcloud/continuous-integration-shallow-server:latest # also change in updateScreenshots.sh
     environment:
       EVAL: true
-      SERVER_VERSION: 'stable28'
+      SERVER_VERSION: 'stable30'
     commands:
       - BRANCH="$SERVER_VERSION" /usr/local/bin/initnc.sh
       - echo 127.0.0.1 server >> /etc/hosts
@@ -79,15 +79,15 @@ name: qt-5.15-clang
 
 steps:
 - name: cmake
-  image: ghcr.io/nextcloud/continuous-integration-client-qt6:client-6.7.3-1
+  image: ghcr.io/nextcloud/continuous-integration-client-qt6:client-6.8.1-2
   volumes:
     - name: build
       path: /drone/build
   commands:
     - cd /drone/build
-    - cmake /drone/src -G Ninja -DCMAKE_PREFIX_PATH=/opt/qt6.7.3 -DCMAKE_C_COMPILER=clang-14 -DCMAKE_CXX_COMPILER=clang++-14 -DCMAKE_BUILD_TYPE=Debug -DQT_MAJOR_VERSION=6 -DQUICK_COMPILER=ON -DBUILD_UPDATER=ON -DBUILD_TESTING=1 -DCMAKE_CXX_FLAGS=-Werror -DOPENSSL_ROOT_DIR=/usr/local/lib64 -DADD_E2E_TESTS=ON
+    - cmake /drone/src -G Ninja -DCMAKE_PREFIX_PATH=/opt/qt -DCMAKE_C_COMPILER=clang-14 -DCMAKE_CXX_COMPILER=clang++-14 -DCMAKE_BUILD_TYPE=Debug -DQT_MAJOR_VERSION=6 -DQUICK_COMPILER=ON -DBUILD_UPDATER=ON -DBUILD_TESTING=1 -DCMAKE_CXX_FLAGS=-Werror -DOPENSSL_ROOT_DIR=/usr/local/lib64 -DADD_E2E_TESTS=ON
 - name: compile
-  image: ghcr.io/nextcloud/continuous-integration-client-qt6:client-6.7.3-1
+  image: ghcr.io/nextcloud/continuous-integration-client-qt6:client-6.8.1-2
   volumes:
     - name: build
       path: /drone/build
@@ -95,7 +95,7 @@ steps:
     - cd /drone/build
     - ninja
 - name: test
-  image: ghcr.io/nextcloud/continuous-integration-client-qt6:client-6.7.3-1
+  image: ghcr.io/nextcloud/continuous-integration-client-qt6:client-6.8.1-2
   volumes:
     - name: build
       path: /drone/build
@@ -111,7 +111,7 @@ services:
     image: ghcr.io/nextcloud/continuous-integration-shallow-server:latest # also change in updateScreenshots.sh
     environment:
       EVAL: true
-      SERVER_VERSION: 'stable28'
+      SERVER_VERSION: 'stable30'
     commands:
       - BRANCH="$SERVER_VERSION" /usr/local/bin/initnc.sh
       - echo 127.0.0.1 server >> /etc/hosts
@@ -168,6 +168,5 @@ trigger:
     - push
 ---
 kind: signature
-hmac: 20a4eb306b48377c21036520acc47ad69253eca7fbf607e95153cfcd2274db37
-
+hmac: 4296d3beb6775fd1589c30b86412298de4f67e9791843c7bb484fc6d5bb01e4e
 ...
