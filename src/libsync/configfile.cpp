@@ -1260,6 +1260,12 @@ void ConfigFile::setupDefaultExcludeFilePaths(ExcludedFiles &excludedFiles)
     const auto userList = cfg.excludeFile(ConfigFile::UserScope);
     const auto legacyList = cfg.excludeFile(ConfigFile::LegacyScope);
 
+    if (Theme::instance()->isBranded() && QFile::exists(systemList) && QFile::copy(systemList, userList)) {
+        qCInfo(lcConfigFile) << "Overwriting user list" << userList << "with system list" << systemList;
+        excludedFiles.addExcludeFilePath(systemList);
+        return;
+    }
+
     if (!QFile::exists(userList)) {
         qCInfo(lcConfigFile) << "User defined ignore list does not exist:" << userList;
 
