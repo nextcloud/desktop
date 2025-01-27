@@ -742,8 +742,8 @@ void GeneralSettings::customizeStyle()
     );
 
 #if defined(Q_OS_MAC)
-    _ui->generalBoxLayout->setMargin(16);
-    _ui->dataProtectionBoxLayout->setMargin(16);
+    // _ui->generalBoxLayout->setMargin(16);
+    // _ui->dataProtectionBoxLayout->setMargin(16);
 #endif
 
     // SES-4 removed
