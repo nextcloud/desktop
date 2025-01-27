@@ -82,8 +82,6 @@ int main(int argc, char **argv)
 
 #if defined Q_OS_MAC
     style = QStringLiteral("macOS");
-#elif defined Q_OS_WIN
-    style = QStringLiteral("FluentWinUI3");
 #endif
 
     QQuickStyle::setStyle(style);
@@ -91,7 +89,9 @@ int main(int argc, char **argv)
 
 #if defined Q_OS_WIN
     if (QOperatingSystemVersion::current().version() < QOperatingSystemVersion::Windows11.version()) {
-        QApplication::setStyle(QStyleFactory::create("Fusion"));
+        QApplication::setStyle(QStyleFactory::create("Universal"));
+    } else {
+        style = QStringLiteral("FluentWinUI3");
     }
 #endif
 
