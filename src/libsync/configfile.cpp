@@ -1263,7 +1263,7 @@ void ConfigFile::setupDefaultExcludeFilePaths(ExcludedFiles &excludedFiles)
     if (!QFile::exists(userList)) {
         qCInfo(lcConfigFile) << "User defined ignore list does not exist:" << userList;
 
-        if (QFile::exists(legacyList) && QFile::copy(legacyList, userList)) {
+        if (!Theme::instance()->isBranded() && QFile::exists(legacyList) && QFile::copy(legacyList, userList)) {
             qCInfo(lcConfigFile) << "Migrating legacy list" << legacyList << "to user list" << userList;
 
         } else if (QFile::copy(systemList, userList)) {
