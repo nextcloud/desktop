@@ -101,7 +101,7 @@ OwncloudAdvancedSetupPage::OwncloudAdvancedSetupPage(OwncloudWizard *wizard)
     _ui.lServerIcon->setPixmap(appIcon.pixmap(appIconSize));
 
     if (theme->wizardHideExternalStorageConfirmationCheckbox()) {
-        //_ui.confCheckBoxExternal->hide();
+        //_ui.confCheckBoxExternal->hide(); // commented out for https://bmjira.atlassian.net/browse/SES-282
     }
     if (theme->wizardHideFolderSizeLimitCheckbox()) {
         _ui.confCheckBoxSize->hide();
@@ -196,7 +196,7 @@ void OwncloudAdvancedSetupPage::initializePage()
     auto newFolderLimit = cfgFile.newBigFolderSizeLimit();
     _ui.confCheckBoxSize->setChecked(newFolderLimit.first);
     _ui.confSpinBox->setValue(newFolderLimit.second);
-    //_ui.confCheckBoxExternal->setChecked(cfgFile.confirmExternalStorage());
+    //_ui.confCheckBoxExternal->setChecked(cfgFile.confirmExternalStorage()); // commented out for https://bmjira.atlassian.net/browse/SES-282
 
     SetAvatarIcon();
     setUserInformation();
@@ -428,7 +428,7 @@ bool OwncloudAdvancedSetupPage::validatePage()
             ConfigFile cfgFile;
             cfgFile.setNewBigFolderSizeLimit(_ui.confCheckBoxSize->isChecked(),
                 _ui.confCheckBoxSize->isChecked() ? _ui.confSpinBox->value() : -1);
-            //cfgFile.setConfirmExternalStorage(_ui.confCheckBoxExternal->isChecked());
+            //cfgFile.setConfirmExternalStorage(_ui.confCheckBoxExternal->isChecked()); // commented out for https://bmjira.atlassian.net/browse/SES-282
         }
         else
         {
@@ -513,6 +513,7 @@ void OwncloudAdvancedSetupPage::slotSelectiveSyncClicked()
         if (result == QDialog::Accepted) {
             _selectiveSyncBlacklist = dlg->createBlackList();
             updateBlacklist = true;
+            // commented out for https://bmjira.atlassian.net/browse/SES-282
             // _ui.confCheckBoxExternal->setStyleSheet(IonosTheme::fontConfigurationCss(
             //     IonosTheme::settingsFont(),
             //     IonosTheme::settingsTextSize(),
@@ -561,7 +562,7 @@ void OwncloudAdvancedSetupPage::slotVirtualFileSyncClicked()
             setRadioChecked(_ui.rVirtualFileSync);
         });
     }
-
+// commented out for https://bmjira.atlassian.net/browse/SES-282
     // _ui.confCheckBoxExternal->setStyleSheet(IonosTheme::fontConfigurationCss(
     //             IonosTheme::settingsFont(),
     //             IonosTheme::settingsTextSize(),
@@ -581,6 +582,7 @@ void OwncloudAdvancedSetupPage::slotSyncEverythingClicked()
     QString errorStr = checkLocalSpace(_rSize);
     setErrorString(errorStr);
 
+// commented out for https://bmjira.atlassian.net/browse/SES-282
     // _ui.confCheckBoxExternal->setStyleSheet(IonosTheme::fontConfigurationCss(
     //     IonosTheme::settingsFont(),
     //     IonosTheme::settingsTextSize(),
@@ -635,7 +637,7 @@ void OwncloudAdvancedSetupPage::customizeStyle()
     _ui.mainHBox->setContentsMargins(0, 0, 0, 0);
     _ui.wSyncStrategySynchronizeEverything->setContentsMargins(0, 0, 0, 0);
     _ui.lVirtualFileSync->setContentsMargins(0, 0, 0, 0);
-    //_ui.horizontalLayout_8->setContentsMargins(32, 0, 0, 0);
+    //_ui.horizontalLayout_8->setContentsMargins(32, 0, 0, 0); // commented out for https://bmjira.atlassian.net/browse/SES-282
     _ui.horizontalLayout_10->setContentsMargins(0, 8, 0, 0);
 
     _ui.wSyncStrategy->setSpacing(16);
