@@ -494,7 +494,7 @@ bool FolderWizardRemotePath::isComplete() const
     }
     wizard()->setProperty("targetPath", targetPath);
 
-    for (const auto folder : qAsConst(FolderMan::instance()->map())) {
+    for (const auto folder : std::as_const(FolderMan::instance()->map())) {
         if (folder->accountState()->account() != _account) {
             continue;
         }
