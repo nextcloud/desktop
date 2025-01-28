@@ -1,27 +1,16 @@
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index 3c1d91f80..6e87ee651 100644
+index 54fdf0a3b..722c75434 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
 @@ -24,7 +24,7 @@ set(BIN_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
  include(${CMAKE_SOURCE_DIR}/NEXTCLOUD.cmake)
  
  set(QT_VERSION_MAJOR "6")
--set(REQUIRED_QT_VERSION "6.7.0")
+-set(REQUIRED_QT_VERSION "6.8.0")
 +set(REQUIRED_QT_VERSION "6.6.0")
  
  # CfAPI Shell Extensions
  set( CFAPI_SHELL_EXTENSIONS_LIB_NAME CfApiShellExtensions )
---- a/src/gui/application.cpp
-+++ b/src/gui/application.cpp
-@@ -977,7 +977,7 @@ QString substLang(const QString &lang)
- void Application::setupTranslations()
- {
-     const auto enforcedLocale = Theme::instance()->enforcedLocale();
--    const auto lang = substLang(!enforcedLocale.isEmpty() ? enforcedLocale : QLocale::system().uiLanguages(QLocale::TagSeparator::Underscore).first());
-+    const auto lang = substLang(!enforcedLocale.isEmpty() ? enforcedLocale : QLocale::system().name());
- 
-     auto *translator = new QTranslator(this);
-     auto *qtTranslator = new QTranslator(this);
 diff --git a/src/csync/csync_exclude.cpp b/src/csync/csync_exclude.cpp
 index 2c23656f2..5d0b462bd 100644
 --- a/src/csync/csync_exclude.cpp
@@ -39,6 +28,19 @@ index 2c23656f2..5d0b462bd 100644
          } else {
              continue;
          }
+diff --git a/src/gui/application.cpp b/src/gui/application.cpp
+index c5c0f7cb6..f72f7b844 100644
+--- a/src/gui/application.cpp
++++ b/src/gui/application.cpp
+@@ -979,7 +979,7 @@ QString substLang(const QString &lang)
+ void Application::setupTranslations()
+ {
+     const auto enforcedLocale = Theme::instance()->enforcedLocale();
+-    const auto lang = substLang(!enforcedLocale.isEmpty() ? enforcedLocale : QLocale::system().uiLanguages(QLocale::TagSeparator::Underscore).first());
++    const auto lang = substLang(!enforcedLocale.isEmpty() ? enforcedLocale : QLocale::system().name());
+ 
+     auto *translator = new QTranslator(this);
+     auto *qtTranslator = new QTranslator(this);
 diff --git a/src/gui/folderwizard.cpp b/src/gui/folderwizard.cpp
 index 6a45da8a1..8cf29f35e 100644
 --- a/src/gui/folderwizard.cpp
