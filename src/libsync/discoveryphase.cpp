@@ -284,8 +284,17 @@ void DiscoveryPhase::slotItemDiscovered(const OCC::SyncFileItemPtr &item)
     }
 }
 
-DiscoverySingleLocalDirectoryJob::DiscoverySingleLocalDirectoryJob(const AccountPtr &account, const QString &localPath, OCC::Vfs *vfs, QObject *parent)
- : QObject(parent), QRunnable(), _localPath(localPath), _account(account), _vfs(vfs)
+DiscoverySingleLocalDirectoryJob::DiscoverySingleLocalDirectoryJob(const AccountPtr &account,
+                                                                   const QString &localPath,
+                                                                   OCC::Vfs *vfs,
+                                                                   bool fileSystemReliablePermissions,
+                                                                   QObject *parent)
+    : QObject{parent}
+    , QRunnable{}
+    , _localPath{localPath}
+    , _account{account}
+    , _vfs{vfs}
+    , _fileSystemReliablePermissions{fileSystemReliablePermissions}
 {
     qRegisterMetaType<QVector<OCC::LocalInfo> >("QVector<OCC::LocalInfo>");
 }
@@ -318,7 +327,7 @@ void DiscoverySingleLocalDirectoryJob::run() {
     QVector<LocalInfo> results;
     while (true) {
         errno = 0;
-        auto dirent = csync_vio_local_readdir(dh, _vfs);
+        auto dirent = csync_vio_local_readdir(dh, _vfs, _fileSystemReliablePermissions);
         if (!dirent)
             break;
         if (dirent->type == ItemTypeSkip)

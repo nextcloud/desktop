@@ -184,7 +184,7 @@ time_t FileSystem::getModTime(const QString &filename)
 {
     csync_file_stat_t stat;
     time_t result = -1;
-    if (csync_vio_local_stat(filename, &stat) != -1 && (stat.modtime != 0)) {
+    if (csync_vio_local_stat(filename, &stat, true) != -1 && (stat.modtime != 0)) {
         result = stat.modtime;
     } else {
         result = Utility::qDateTimeToTime_t(QFileInfo(filename).lastModified());
@@ -319,7 +319,7 @@ bool FileSystem::removeRecursively(const QString &path, const std::function<void
 bool FileSystem::getInode(const QString &filename, quint64 *inode)
 {
     csync_file_stat_t fs;
-    if (csync_vio_local_stat(filename, &fs) == 0) {
+    if (csync_vio_local_stat(filename, &fs, true) == 0) {
         *inode = fs.inode;
         return true;
     }
