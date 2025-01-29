@@ -937,7 +937,9 @@ const QString &ClientSideEncryption::getMnemonic() const
 
 void ClientSideEncryption::setCertificate(const QSslCertificate &certificate)
 {
-    _encryptionCertificate = CertificateInformation{_encryptionCertificate.getPrivateKeyData(), QSslCertificate{certificate}};
+    _encryptionCertificate = CertificateInformation{useTokenBasedEncryption() ? CertificateInformation::CertificateType::HardwareCertificate : CertificateInformation::CertificateType::SoftwareNextcloudCertificate,
+                                                    _encryptionCertificate.getPrivateKeyData(),
+                                                    QSslCertificate{certificate}};
 }
 
 const QSslCertificate& ClientSideEncryption::getCertificate() const
@@ -1411,7 +1413,9 @@ void ClientSideEncryption::publicCertificateFetched(Job *incoming)
         return;
     }
 
-    _encryptionCertificate = CertificateInformation{_encryptionCertificate.getPrivateKeyData(), QSslCertificate{readJob->binaryData(), QSsl::Pem}};
+    _encryptionCertificate = CertificateInformation{useTokenBasedEncryption() ? CertificateInformation::CertificateType::HardwareCertificate : CertificateInformation::CertificateType::SoftwareNextcloudCertificate,
+                                                    _encryptionCertificate.getPrivateKeyData(),
+                                                    QSslCertificate{readJob->binaryData(), QSsl::Pem}};
 
     if (_encryptionCertificate.getCertificate().isNull()) {
         fetchPublicKeyFromKeyChain(account);
@@ -2042,7 +2046,9 @@ void ClientSideEncryption::sendSignRequestCSR(const AccountPtr &account,
     connect(job, &SignPublicKeyApiJob::jsonReceived, job, [this, account, keyPair = std::move(keyPair)](const QJsonDocument& json, const int retCode) {
         if (retCode == 200) {
             const auto cert = json.object().value("ocs").toObject().value("data").toObject().value("public-key").toString();
-            _encryptionCertificate = CertificateInformation{_encryptionCertificate.getPrivateKeyData(), QSslCertificate{cert.toLocal8Bit(), QSsl::Pem}};
+            _encryptionCertificate = CertificateInformation{useTokenBasedEncryption() ? CertificateInformation::CertificateType::HardwareCertificate : CertificateInformation::CertificateType::SoftwareNextcloudCertificate,
+                                                            _encryptionCertificate.getPrivateKeyData(),
+                                                            QSslCertificate{cert.toLocal8Bit(), QSsl::Pem}};
             Bio certificateBio;
             const auto certificatePem = _encryptionCertificate.getCertificate().toPem();
             BIO_write(certificateBio, certificatePem.constData(), certificatePem.size());
@@ -2328,7 +2334,9 @@ void ClientSideEncryption::getPublicKeyFromServer(const AccountPtr &account)
     connect(job, &JsonApiJob::jsonReceived, [this, account](const QJsonDocument& doc, int retCode) {
         if (retCode == 200) {
             QString publicKey = doc.object()["ocs"].toObject()["data"].toObject()["public-keys"].toObject()[account->davUser()].toString();
-            _encryptionCertificate = CertificateInformation{_encryptionCertificate.getPrivateKeyData(), QSslCertificate{publicKey.toLocal8Bit(), QSsl::Pem}};
+            _encryptionCertificate = CertificateInformation{useTokenBasedEncryption() ? CertificateInformation::CertificateType::HardwareCertificate : CertificateInformation::CertificateType::SoftwareNextcloudCertificate,
+                                                            _encryptionCertificate.getPrivateKeyData(),
+                                                            QSslCertificate{publicKey.toLocal8Bit(), QSsl::Pem}};
             fetchAndValidatePublicKeyFromServer(account);
         } else if (retCode == 404) {
             qCDebug(lcCse()) << "No public key on the server";
@@ -3002,22 +3010,34 @@ CertificateInformation::CertificateInformation()
 
 CertificateInformation::CertificateInformation(PKCS11_KEY *hardwarePrivateKey,
                                                QSslCertificate &&certificate)
-    : _hardwarePrivateKey(hardwarePrivateKey)
-    , _certificate(std::move(certificate))
+    : _hardwarePrivateKey{hardwarePrivateKey}
+    , _certificate{std::move(certificate)}
+    , _certificateType{CertificateType::HardwareCertificate}
 {
     checkEncryptionCertificate();
 }
 
-CertificateInformation::CertificateInformation(const QByteArray &privateKey, QSslCertificate &&certificate)
+CertificateInformation::CertificateInformation(CertificateType certificateType,
+                                               const QByteArray &privateKey,
+                                               QSslCertificate &&certificate)
     : _hardwarePrivateKey()
     , _privateKeyData()
     , _certificate(std::move(certificate))
+    , _certificateType{certificateType}
 {
     if (!privateKey.isEmpty()) {
         setPrivateKeyData(privateKey);
     }
 
-    checkEncryptionCertificate();
+    switch (_certificateType)
+    {
+    case CertificateType::HardwareCertificate:
+        checkEncryptionCertificate();
+        break;
+    case CertificateType::SoftwareNextcloudCertificate:
+        doNotCheckEncryptionCertificate();
+        break;
+    }
 }
 
 bool CertificateInformation::operator==(const CertificateInformation &other) const
@@ -3206,6 +3226,14 @@ void CertificateInformation::checkEncryptionCertificate()
             break;
         }
     }
+}
+
+void CertificateInformation::doNotCheckEncryptionCertificate()
+{
+    _certificateExpired = false;
+    _certificateNotYetValid = false;
+    _certificateRevoked = false;
+    _certificateInvalid = false;
 }
 
 }

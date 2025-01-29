@@ -557,8 +557,12 @@ void FolderMetadata::initEmptyMetadata()
         return initEmptyMetadataLegacy();
     }
     qCDebug(lcCseMetadata()) << "Setting up empty metadata v2";
+
+    const auto certificateType = _account->e2e()->useTokenBasedEncryption() ?
+        FolderMetadata::CertificateType::HardwareCertificate : FolderMetadata::CertificateType::SoftwareNextcloudCertificate;
+
     if (_isRootEncryptedFolder) {
-        if (!addUser(_account->davUser(), _account->e2e()->getCertificate())) {
+        if (!addUser(_account->davUser(), _account->e2e()->getCertificate(), certificateType)) {
             qCDebug(lcCseMetadata) << "Empty metadata setup failed. Could not add first user.";
             _account->reportClientStatus(OCC::ClientStatusReportingStatus::E2EeError_GeneralError);
             return;
@@ -1043,7 +1047,9 @@ void FolderMetadata::slotRootE2eeFolderMetadataReceived(int statusCode, const QS
     initMetadata();
 }
 
-bool FolderMetadata::addUser(const QString &userId, const QSslCertificate &certificate)
+bool FolderMetadata::addUser(const QString &userId,
+                             const QSslCertificate &certificate,
+                             CertificateType certificateType)
 {
     Q_ASSERT(_isRootEncryptedFolder);
     Q_ASSERT(!certificate.isNull());
@@ -1052,9 +1058,23 @@ bool FolderMetadata::addUser(const QString &userId, const QSslCertificate &certi
         return false;
     }
 
-    const auto shareUserCertificate = CertificateInformation{{}, QSslCertificate{certificate}};
+    auto convertedCertificateType = CertificateInformation::CertificateType::HardwareCertificate;
+    switch (certificateType)
+    {
+    case CertificateType::HardwareCertificate:
+        convertedCertificateType = CertificateInformation::CertificateType::HardwareCertificate;
+        break;
+    case CertificateType::SoftwareNextcloudCertificate:
+        convertedCertificateType = CertificateInformation::CertificateType::SoftwareNextcloudCertificate;
+        break;
+    }
+
+    const auto shareUserCertificate = CertificateInformation{convertedCertificateType, {}, QSslCertificate{certificate}};
     if (userId.isEmpty() || certificate.isNull() || !shareUserCertificate.canEncrypt()) {
-        qCWarning(lcCseMetadata()) << "Could not add a folder user. Invalid userId or certificate.";
+        qCWarning(lcCseMetadata()) << "Could not add a folder user. Invalid userId or certificate."
+                                   << userId
+                                   << (certificate.isNull() ? "user certificate is invalid" : "user certificate is valid")
+                                   << (shareUserCertificate.canEncrypt() ? "certificate of share receiver user can encrypt" : "certificate of share receiver user cannot encrypt");
         return false;
     }
 

@@ -136,8 +136,11 @@ void UpdateE2eeFolderUsersMetadataJob::startUpdate()
             return;
         }
 
+        const auto certificateType = _account->e2e()->useTokenBasedEncryption() ?
+            FolderMetadata::CertificateType::HardwareCertificate : FolderMetadata::CertificateType::SoftwareNextcloudCertificate;
+
         const auto result = _operation == Operation::Add
-            ? _encryptedFolderMetadataHandler->folderMetadata()->addUser(_folderUserId, _folderUserCertificate)
+            ? _encryptedFolderMetadataHandler->folderMetadata()->addUser(_folderUserId, _folderUserCertificate, certificateType)
             : _encryptedFolderMetadataHandler->folderMetadata()->removeUser(_folderUserId);
 
         if (!result) {
