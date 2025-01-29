@@ -56,12 +56,18 @@ class ClientSideEncryption;
 
 class CertificateInformation {
 public:
+    enum class CertificateType {
+        SoftwareNextcloudCertificate,
+        HardwareCertificate,
+    };
+
     CertificateInformation();
 
     explicit CertificateInformation(PKCS11_KEY *hardwarePrivateKey,
                                     QSslCertificate &&certificate);
 
-    explicit CertificateInformation(const QByteArray& privateKey,
+    explicit CertificateInformation(CertificateType certificateType,
+                                    const QByteArray& privateKey,
                                     QSslCertificate &&certificate);
 
     [[nodiscard]] bool operator==(const CertificateInformation &other) const;
@@ -99,11 +105,15 @@ public:
 private:
     void checkEncryptionCertificate();
 
+    void doNotCheckEncryptionCertificate();
+
     PKCS11_KEY* _hardwarePrivateKey = nullptr;
 
     QByteArray _privateKeyData;
 
     QSslCertificate _certificate;
+
+    CertificateType _certificateType = CertificateType::SoftwareNextcloudCertificate;
 
     bool _certificateExpired = true;
 

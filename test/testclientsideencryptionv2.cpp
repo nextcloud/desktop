@@ -245,11 +245,11 @@ private slots:
         encryptedFile.initializationVector = EncryptionHelper::generateRandom(16);
         metadata->addEncryptedFile(encryptedFile);
 
-        QVERIFY(metadata->addUser(_secondAccount->davUser(), _secondAccount->e2e()->getCertificate()));
+        QVERIFY(metadata->addUser(_secondAccount->davUser(), _secondAccount->e2e()->getCertificate(), FolderMetadata::CertificateType::SoftwareNextcloudCertificate));
 
         QVERIFY(metadata->removeUser(_secondAccount->davUser()));
 
-        QVERIFY(metadata->addUser(_secondAccount->davUser(), _secondAccount->e2e()->getCertificate()));
+        QVERIFY(metadata->addUser(_secondAccount->davUser(), _secondAccount->e2e()->getCertificate(), FolderMetadata::CertificateType::SoftwareNextcloudCertificate));
 
         const auto encryptedMetadata = metadata->encryptedMetadata();
         QVERIFY(!encryptedMetadata.isEmpty());

@@ -93,6 +93,12 @@ public:
     };
     Q_ENUM(FolderType)
 
+    enum class CertificateType {
+        SoftwareNextcloudCertificate,
+        HardwareCertificate,
+    };
+    Q_ENUM(CertificateType)
+
     FolderMetadata(AccountPtr account, const QString &remoteFolderRoot, FolderType folderType = FolderType::Nested);
     /*
     * construct metadata based on RootEncryptedFolderInfo
@@ -121,7 +127,7 @@ public:
     [[nodiscard]] bool moveFromFileDropToFiles();
 
     // adds a user to have access to this folder (always generates new metadata key)
-    [[nodiscard]] bool addUser(const QString &userId, const QSslCertificate &certificate);
+    [[nodiscard]] bool addUser(const QString &userId, const QSslCertificate &certificate, CertificateType certificateType);
     // removes a user from this folder and removes and generates a new metadata key
     [[nodiscard]] bool removeUser(const QString &userId);
 
