@@ -43,7 +43,7 @@ Repeater {
 
         onClicked: isTalkReplyButton ? root.showReplyField() : root.triggerAction(model.index)
 
-        textColor: palette.brightText
+        textColor: palette.buttonText
         bgColor: Style.sesActionPressed
         bgNormalOpacity: 1.0
         bgHoverOpacity: Style.hoverOpacity
