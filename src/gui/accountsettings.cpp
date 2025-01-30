@@ -236,6 +236,15 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent)
     connectionSettingsLayout->addWidget(networkSettings);
     connectionSettingsTab->setLayout(connectionSettingsLayout);
 
+    const auto connectionSettingsTabIndex = _ui->tabWidget->indexOf(connectionSettingsTab);
+    if(connectionSettingsTabIndex >= 0){
+        _ui->tabWidget->removeTab(connectionSettingsTabIndex);
+    }
+    _ui->tabWidget->setCurrentIndex(0);
+#ifndef BUILD_FILE_PROVIDER_MODULE
+    _ui->tabWidget->tabBar()->hide();
+#endif
+
     const auto mouseCursorChanger = new MouseCursorChanger(this);
     mouseCursorChanger->folderList = _ui->_folderList;
     mouseCursorChanger->model = _model;
