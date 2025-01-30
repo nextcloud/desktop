@@ -95,9 +95,18 @@ int main(int argc, char **argv)
     QApplication::setStyle(new sesStyle);
     QQuickStyle::setStyle(qmlStyle);
     QQuickStyle::setFallbackStyle(QStringLiteral("Fusion"));
+// Comment in again when Ionos Compiler Switch is available
+// #if defined Q_OS_WIN
+//     if (QOperatingSystemVersion::current().version() < QOperatingSystemVersion::Windows11.version()) {
+//         QApplication::setStyle(QStyleFactory::create("Fusion"));
+//     }
+// #endif
 
     OCC::Application app(argc, argv);
+    app.setStyle(new sesStyle(QStyleFactory::create("WindowsVista")));
 
+    QQuickStyle::setStyle(style);
+    QQuickStyle::setFallbackStyle(QStringLiteral("Fusion"));
     if (!widgetsStyle.isEmpty()) {
         QApplication::setStyle(QStyleFactory::create(widgetsStyle));
     }

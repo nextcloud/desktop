@@ -31,6 +31,8 @@ using super = QProxyStyle;
 class sesStyle : public super
 {
 public:
+    sesStyle(QStyle* baseStyle);
+
     enum CustomControlElement {
         CE_TreeViewMoreOptions = QStyle::CE_CustomBase + 1,  // Custom element for a button
     };

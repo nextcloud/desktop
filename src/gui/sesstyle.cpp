@@ -29,8 +29,8 @@
 #include <QPainter>
 #include <QStyleOption>
 
-sesStyle::sesStyle()
-    : super()
+sesStyle::sesStyle(QStyle* baseStyle)
+    : super(baseStyle)
     , mPushButtonStyleHelper(new PushButtonStyleHelper)
     , mMoreOptionsButtonStyleHelper(new MoreOptionsButtonStyleHelper)
 {
