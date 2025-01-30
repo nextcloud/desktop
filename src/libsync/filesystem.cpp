@@ -344,17 +344,17 @@ bool FileSystem::setFolderPermissions(const QString &path,
     }
     catch (const std::filesystem::filesystem_error &e)
     {
-        qCWarning(lcFileSystem()) << "exception when modifying folder permissions" << e.what() << e.path1().c_str() << e.path2().c_str();
+        qCWarning(lcFileSystem()) << "exception when modifying folder permissions" << e.what() << "- path1:" << e.path1().c_str() << "- path2:" << e.path2().c_str();
         return false;
     }
     catch (const std::system_error &e)
     {
-        qCWarning(lcFileSystem()) << "exception when modifying folder permissions" << e.what();
+        qCWarning(lcFileSystem()) << "exception when modifying folder permissions" << e.what() << "- path:" << stdStrPath;
         return false;
     }
     catch (...)
     {
-        qCWarning(lcFileSystem()) << "exception when modifying folder permissions";
+        qCWarning(lcFileSystem()) << "exception when modifying folder permissions -  path:" << stdStrPath;
         return false;
     }
 
@@ -494,12 +494,12 @@ bool FileSystem::setFolderPermissions(const QString &path,
     }
     catch (const std::system_error &e)
     {
-        qCWarning(lcFileSystem()) << "exception when modifying folder permissions" << e.what();
+        qCWarning(lcFileSystem()) << "exception when modifying folder permissions" << e.what() << "- path:" << stdStrPath;
         return false;
     }
     catch (...)
     {
-        qCWarning(lcFileSystem()) << "exception when modifying folder permissions";
+        qCWarning(lcFileSystem()) << "exception when modifying folder permissions -  path:" << stdStrPath;
         return false;
     }
 
@@ -516,17 +516,17 @@ bool FileSystem::isFolderReadOnly(const std::filesystem::path &path) noexcept
     }
     catch (const std::filesystem::filesystem_error &e)
     {
-        qCWarning(lcFileSystem()) << "exception when checking folder permissions" << e.what() << e.path1().c_str() << e.path2().c_str();
+        qCWarning(lcFileSystem()) << "exception when checking folder permissions" << e.what() << "- path1:" << e.path1().c_str() << "- path2:" << e.path2().c_str();
         return false;
     }
     catch (const std::system_error &e)
     {
-        qCWarning(lcFileSystem()) << "exception when checking folder permissions" << e.what();
+        qCWarning(lcFileSystem()) << "exception when checking folder permissions" << e.what() << "- path:" << path;
         return false;
     }
     catch (...)
     {
-        qCWarning(lcFileSystem()) << "exception when checking folder permissions";
+        qCWarning(lcFileSystem()) << "exception when checking folder permissions -  path:" << path;
         return false;
     }
 }
@@ -545,15 +545,15 @@ FileSystem::FilePermissionsRestore::FilePermissionsRestore(const QString &path, 
     }
     catch (const std::filesystem::filesystem_error &e)
     {
-        qCWarning(lcFileSystem()) << "exception when modifying folder permissions" << e.what() << e.path1().c_str() << e.path2().c_str();
+        qCWarning(lcFileSystem()) << "exception when modifying folder permissions" << e.what() << "- path1:" << e.path1().c_str() << "- path2:" << e.path2().c_str();
     }
     catch (const std::system_error &e)
     {
-        qCWarning(lcFileSystem()) << "exception when modifying folder permissions" << e.what();
+        qCWarning(lcFileSystem()) << "exception when modifying folder permissions" << e.what() << "- path:" << path;
     }
     catch (...)
     {
-        qCWarning(lcFileSystem()) << "exception when modifying folder permissions";
+        qCWarning(lcFileSystem()) << "exception when modifying folder permissions -  path:" << path;
     }
 }
 
