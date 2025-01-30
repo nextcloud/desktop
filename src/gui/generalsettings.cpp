@@ -711,7 +711,7 @@ void GeneralSettings::customizeStyle()
         QStringLiteral("QGroupBox { border: %1; font-size: %2; font-weight: %3; color: %4; }").arg(
             Theme::instance()->systemPalette()["base"].value<QColor>().name(),
             IonosTheme::settingsTitleSize(),
-            IonosTheme::settingsTitleWeight500(),
+            IonosTheme::settingsTitleWeight600(),
             IonosTheme::black()
         )
     );

@@ -38,9 +38,15 @@
                                 <font>
                                 </font>
                             </property>
+                            <property name="minimumSize">
+                                <size>
+                                    <width>250</width> 
+                                    <height>0</height>
+                                </size>
+                            </property>
                             <layout class="QVBoxLayout" name="generalBoxLayout">
                                 <property name="topMargin">
-                                    <number>3</number>
+                                    <number>32</number>
                                 </property>
                                 <item>
                                     <widget class="QCheckBox" name="autostartCheckBox">
@@ -101,7 +107,7 @@
                             </property>
                             <layout class="QVBoxLayout">
                                 <property name="topMargin">
-                                    <number>3</number>
+                                    <number>24</number>
                                 </property>
                                 <item>
                                     <widget class="QCheckBox" name="autoCheckForUpdatesCheckBox">
@@ -357,7 +363,7 @@
                     </property>
                     <layout class="QVBoxLayout" name="dataProtectionBoxLayout">
                         <property name="topMargin">
-                            <number>3</number>
+                            <number>32</number>
                         </property>
                         <item>                        
                             <widget class="QCheckBox" name="sendData_checkbox">
