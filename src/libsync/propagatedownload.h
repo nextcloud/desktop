@@ -220,6 +220,11 @@ public:
      */
     void setDeleteExistingFolder(bool enabled);
 
+protected:
+    void done(const SyncFileItem::Status status, const QString &errorString, const ErrorCategory category) override;
+
+    void makeParentFolderModifiable(const QString &fileName);
+
 private slots:
     /// Called when ComputeChecksum on the local file finishes,
     /// maybe the local and remote checksums are identical?
