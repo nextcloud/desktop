@@ -560,7 +560,6 @@ void SelectiveSyncDialog::init(const AccountPtr &account)
     QPushButton *button = nullptr;
     button = buttonBox->addButton(QDialogButtonBox::Cancel);
 
-#ifdef Q_OS_MAC
     _okButton->setStyleSheet(
         _okButton->styleSheet() + QStringLiteral("QPushButton { %1; } ").arg(
             IonosTheme::fontConfigurationCss(
@@ -572,6 +571,7 @@ void SelectiveSyncDialog::init(const AccountPtr &account)
         )
     );
 
+#ifdef Q_OS_MAC
     button->setStyleSheet(
         button->styleSheet() + QStringLiteral("QPushButton { %1; } ").arg(
             IonosTheme::fontConfigurationCss(
