@@ -798,7 +798,6 @@ Page {
             font.pixelSize: pixelSize
             font.weight: fontWeight
             text: qsTr("Add another link")
-            textColor: palette.brightText
 
             bgColor: Style.sesActionPressed
             bgNormalOpacity: 1.0
@@ -856,7 +855,6 @@ Page {
             font.pixelSize: pixelSize
             font.weight: fontWeight
             text: shareLinkCopied ? qsTr("Share link copied!") : qsTr("Copy share link")
-            textColor: palette.brightText
 
             bgColor: Style.sesActionPressed
             bgNormalOpacity: 1.0

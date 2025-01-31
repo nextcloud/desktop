@@ -106,7 +106,6 @@ RowLayout {
         font.weight: fontWeight
 
         text: qsTr("Resolve conflicts")
-        textColor: palette.brightText
         bgColor: Style.sesActionPressed
         bgNormalOpacity: 1.0
         bgHoverOpacity: Style.hoverOpacity
