@@ -176,7 +176,7 @@ body:
     attributes:
       value: |
         ## :warning: Desktop Client Logs
-        Since 3.1: Under the "General" settings, you can click on **"Create Debug Archive"** to pick the location of where the desktop client will export the logs and the database to a zip file: https://docs.nextcloud.com/desktop/3.4/troubleshooting.html#create-debug-archive
+        Under the "General" settings, you can click on **"Create Debug Archive"** to pick the location of where the desktop client will export the logs and the database to a zip file: https://docs.nextcloud.com/server/latest/admin_manual/desktop/troubleshooting.html#create-debug-archive
         > Please attach the debug archive to this issue. You can edit it down to the bug report time window to reduce size.
   - type: markdown
     attributes:
