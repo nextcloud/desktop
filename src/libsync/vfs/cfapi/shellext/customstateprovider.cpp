@@ -84,8 +84,8 @@ CustomStateProvider::GetItemProperties(hstring const &itemPath)
 
             winrt::Windows::Storage::Provider::StorageProviderItemProperty itemProperty;
             itemProperty.Id(stateValue);
-            itemProperty.Value(QString("Value%1").arg(stateValue).toStdWString());
-            itemProperty.IconResource(QString(_dllFilePath + QString(",%1").arg(QString::number(stateValue))).toStdWString());
+            itemProperty.Value(QStringLiteral("Value%1").arg(stateValue).toStdWString());
+            itemProperty.IconResource(QString(_dllFilePath + QStringLiteral(",%1").arg(QString::number(stateValue))).toStdWString());
             properties.push_back(std::move(itemProperty));
         }
     }

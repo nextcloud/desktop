@@ -82,7 +82,7 @@ private slots:
 
         QVERIFY(!fakeFolder.syncOnce()); // The sync must fail because not all the file was downloaded
         QCOMPARE(getItem(completeSpy, "A/a0")->_status, SyncFileItem::SoftError);
-        QCOMPARE(getItem(completeSpy, "A/a0")->_errorString, QString("The file could not be downloaded completely."));
+        QCOMPARE(getItem(completeSpy, "A/a0")->_errorString, QStringLiteral("The file could not be downloaded completely."));
         QVERIFY(fakeFolder.syncEngine().isAnotherSyncNeeded());
 
         // Now, we need to restart, this time, it should resume.

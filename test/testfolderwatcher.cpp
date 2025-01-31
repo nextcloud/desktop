@@ -17,7 +17,7 @@ void touch(const QString &file)
     OCC::Utility::writeRandomFile(file);
 #else
     QString cmd;
-    cmd = QString("touch %1").arg(file);
+    cmd = QStringLiteral("touch %1").arg(file);
     qDebug() << "Command: " << cmd;
     system(cmd.toLocal8Bit());
 #endif
@@ -29,7 +29,7 @@ void mkdir(const QString &file)
     QDir dir;
     dir.mkdir(file);
 #else
-    QString cmd = QString("mkdir %1").arg(file);
+    QString cmd = QStringLiteral("mkdir %1").arg(file);
     qDebug() << "Command: " << cmd;
     system(cmd.toLocal8Bit());
 #endif
@@ -41,7 +41,7 @@ void rmdir(const QString &file)
     QDir dir;
     dir.rmdir(file);
 #else
-    QString cmd = QString("rmdir %1").arg(file);
+    QString cmd = QStringLiteral("rmdir %1").arg(file);
     qDebug() << "Command: " << cmd;
     system(cmd.toLocal8Bit());
 #endif
@@ -52,7 +52,7 @@ void rm(const QString &file)
 #ifdef Q_OS_WIN
     QFile::remove(file);
 #else
-    QString cmd = QString("rm %1").arg(file);
+    QString cmd = QStringLiteral("rm %1").arg(file);
     qDebug() << "Command: " << cmd;
     system(cmd.toLocal8Bit());
 #endif
@@ -63,7 +63,7 @@ void mv(const QString &file1, const QString &file2)
 #ifdef Q_OS_WIN
     QFile::rename(file1, file2);
 #else
-    QString cmd = QString("mv %1 %2").arg(file1, file2);
+    QString cmd = QStringLiteral("mv %1 %2").arg(file1, file2);
     qDebug() << "Command: " << cmd;
     system(cmd.toLocal8Bit());
 #endif
@@ -158,7 +158,7 @@ private slots:
     void testACreate() { // create a new file
         QString file(_rootPath + "/foo.txt");
         QString cmd;
-        cmd = QString("echo \"xyz\" > \"%1\"").arg(file);
+        cmd = QStringLiteral("echo \"xyz\" > \"%1\"").arg(file);
         qDebug() << "Command: " << cmd;
         system(cmd.toLocal8Bit());
 

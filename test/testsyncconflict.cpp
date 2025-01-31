@@ -138,7 +138,7 @@ private slots:
         QCOMPARE(Utility::conflictFileBaseNameFromPattern(conflictMap[a1FileId].toUtf8()), QByteArray("A/a1"));
 
         // Check that the conflict file contains the username
-        QVERIFY(conflictMap[a1FileId].contains(QString("(conflicted copy %1 ").arg(fakeFolder.syncEngine().account()->davDisplayName())));
+        QVERIFY(conflictMap[a1FileId].contains(QStringLiteral("(conflicted copy %1 ").arg(fakeFolder.syncEngine().account()->davDisplayName())));
 
         QCOMPARE(remote.find(conflictMap[a1FileId])->contentChar, 'L');
         QCOMPARE(remote.find("A/a1")->contentChar, 'R');

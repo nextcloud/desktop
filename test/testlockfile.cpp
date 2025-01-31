@@ -782,8 +782,8 @@ private slots:
         fakeFolder.syncEngine().account()->setCapabilities({{"files", QVariantMap{{"locking", QByteArray{"1.0"}}}}});
         QSignalSpy lockFileDetectedNewlyUploadedSpy(&fakeFolder.syncEngine(), &OCC::SyncEngine::lockFileDetected);
 
-        fakeFolder.localModifier().insert(testDocumentsDirName + QString("/") + testLockFileName);
-        fakeFolder.localModifier().insert(testDocumentsDirName + QString("/") + testFileName);
+        fakeFolder.localModifier().insert(testDocumentsDirName + QStringLiteral("/") + testLockFileName);
+        fakeFolder.localModifier().insert(testDocumentsDirName + QStringLiteral("/") + testFileName);
 
         QVERIFY(fakeFolder.syncOnce());
 
