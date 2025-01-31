@@ -124,24 +124,25 @@ AbstractButton {
                 radius: width / 2
             }
 
-            AutoSizingMenu {
+            Menu {
                 id: userMoreButtonMenu
+                width: Style.sesAccountMenuWidth
+                height: Math.min(implicitHeight, maxMenuHeight)
                 closePolicy: Menu.CloseOnPressOutsideParent | Menu.CloseOnEscape
+
+                bottomInset: 0
+                topInset: 0
+                rightInset: 0
+                leftInset: 0
+                rightPadding: 0
+                leftPadding: 0
+                topPadding: 0
+                bottomPadding: 0
 
                 background: Rectangle {
                     radius: Style.sesCornerRadius
                     border.color: Style.sesBorderColor
                 }
-
-                MenuItem {
-                    visible: false
-                    height: visible ? implicitHeight : 0
-                    text: qsTr("Set status")
-                    font: root.font
-                    palette.windowText: Style.ncTextColor
-                    hoverEnabled: true
-                    onClicked: showUserStatusSelector(index)
-               }
 
                 MenuItem {
                     id: logInOutButton
@@ -179,6 +180,16 @@ AbstractButton {
                     Accessible.role: Accessible.MenuItem
                     Accessible.name: model.isConnected ? qsTr("Log out") : qsTr("Log in")
                 }
+
+                MenuItem {
+                    visible: false
+                    height: visible ? implicitHeight : 0
+                    text: qsTr("Set status")
+                    font: root.font
+                    palette.windowText: Style.ncTextColor
+                    hoverEnabled: true
+                    onClicked: showUserStatusSelector(index)
+               }
 
                 MenuItem {
 

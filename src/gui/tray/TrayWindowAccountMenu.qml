@@ -53,6 +53,14 @@ Button {
     Menu {
         id: accountMenu
 
+        bottomInset: 0
+        topInset: 0
+        rightInset: 0
+        leftInset: 0
+        rightPadding: 0
+        leftPadding: 0
+        topPadding: 0
+        bottomPadding: 0
         // x coordinate grows towards the right
         // y coordinate grows towards the bottom
         x: (currentAccountButton.x + 2)
