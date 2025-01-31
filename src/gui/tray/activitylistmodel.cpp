@@ -258,7 +258,12 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
             }
         } else {
             // We have an activity
-            return a._icon.isEmpty() ? colorIconPath.arg("activity.svg") : colorIconPath.arg(a._icon);
+            if (a._icon.isEmpty()) {
+                return colorIconPath.arg("activity.svg");
+            }
+
+            // using tray-image-provider here as it can read from URLs
+            return QStringLiteral("image://tray-image-provider/%1").arg(a._icon);
         }
     };
 

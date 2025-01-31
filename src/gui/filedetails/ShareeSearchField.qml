@@ -38,7 +38,6 @@ TextField {
     }
 
     readonly property int horizontalPaddingOffset: Style.trayHorizontalMargin
-    readonly property color placeholderColor: palette.dark
     readonly property double iconsScaleFactor: 0.6
 
     function triggerSuggestionsVisibility() {
@@ -46,7 +45,6 @@ TextField {
     }
 
     placeholderText: enabled ? qsTr("Search for users or groups…") : qsTr("Sharing is not available for this folder")
-    placeholderTextColor: placeholderColor
     verticalAlignment: Qt.AlignVCenter
     implicitHeight: Math.max(Style.talkReplyTextFieldPreferredHeight, contentHeight)
 
@@ -109,7 +107,7 @@ TextField {
         fillMode: Image.PreserveAspectFit
         horizontalAlignment: Image.AlignLeft
 
-        source: "image://svgimage-custom-color/search.svg" + "/" + root.placeholderColor
+        source: "image://svgimage-custom-color/search.svg" + "/" + palette.placeholderText
         sourceSize: Qt.size(parent.height * root.iconsScaleFactor, parent.height * root.iconsScaleFactor)
 
         visible: !root.shareeModel.fetchOngoing
@@ -125,7 +123,7 @@ TextField {
         }
 
         width: height
-        color: root.placeholderColor
+        color: palette.placeholderText
         visible: root.shareeModel.fetchOngoing
         running: visible
     }
@@ -147,7 +145,7 @@ TextField {
         mipmap: true
         fillMode: Image.PreserveAspectFit
 
-        source: "image://svgimage-custom-color/clear.svg" + "/" + root.placeholderColor
+        source: "image://svgimage-custom-color/clear.svg" + "/" + palette.placeholderText
         sourceSize: Qt.size(parent.height * root.iconsScaleFactor, parent.height * root.iconsScaleFactor)
 
         visible: root.text
