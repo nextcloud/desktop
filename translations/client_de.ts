@@ -1001,7 +1001,7 @@ Diese Aktion bricht jede derzeit laufende Synchronisierung ab.</translation>
     <message>
         <location filename="../src/gui/accountsetupfromcommandlinejob.cpp" line="142"/>
         <source>The authenticated request to the server was redirected to &quot;%1&quot;. The URL is bad, the server is misconfigured.</source>
-        <translation>Die genehmigte Anfrage an den Server wurde an &quot;%1“ umgeleitet. Die URL ist fehlerhaft, der Server ist falsch konfiguriert.</translation>
+        <translation>Die genehmigte Anfrage an den Server wurde an &quot;%1&quot; umgeleitet. Die URL ist fehlerhaft, der Server ist falsch konfiguriert.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsetupfromcommandlinejob.cpp" line="152"/>
@@ -2918,7 +2918,7 @@ Für fortgeschrittene Benutzer: Dieses Problem kann damit zusammenhängen, dass 
     <message>
         <location filename="../src/gui/generalsettings.ui" line="89"/>
         <source>Show Server &amp;Notifications</source>
-        <translation>Server-&amp;Benachrichtigungen anzeigen</translation>
+        <translation>Server&amp;benachrichtigungen anzeigen</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="221"/>
@@ -3345,7 +3345,7 @@ Objekte, bei denen Löschen erlaubt ist, werden gelöscht, wenn diese das Lösch
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="103"/>
         <source>The file &quot;%1&quot; could not be synced because the name contains characters which are not allowed on the server.</source>
-        <translation>Die Datei „%1“ konnte nicht synchronisiert werden, da der Name Zeichen enthält, die auf dem Server unzulässig sind.</translation>
+        <translation>Die Datei &quot;%1&quot; konnte nicht synchronisiert werden, da der Name Zeichen enthält, die auf dem Server unzulässig sind.</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="114"/>
@@ -5887,7 +5887,7 @@ Server antwortete mit Fehler: %2</translation>
     <message>
         <location filename="../src/common/vfs.cpp" line="75"/>
         <source>The Virtual filesystem feature does not support a drive as sync root</source>
-        <translation>Die Funktion „Virtuelles Dateisystem“ unterstützt kein Laufwerk als Synchronisierungsstamm</translation>
+        <translation>Die Funktion &quot;Virtuelles Dateisystem&quot; unterstützt kein Laufwerk als Synchronisierungsstamm</translation>
     </message>
     <message>
         <location filename="../src/common/vfs.cpp" line="75"/>
@@ -5897,7 +5897,7 @@ Server antwortete mit Fehler: %2</translation>
     <message>
         <location filename="../src/common/vfs.cpp" line="83"/>
         <source>The Virtual filesystem feature is not supported on network drives</source>
-        <translation>Die Funktion „Virtuelles Dateisystem“ wird auf Netzwerklaufwerken nicht unterstützt</translation>
+        <translation>Die Funktion &quot;Virtuelles Dateisystem&quot; wird auf Netzwerklaufwerken nicht unterstützt</translation>
     </message>
 </context>
 <context>
@@ -6898,7 +6898,7 @@ Server antwortete mit Fehler: %2</translation>
     <message>
         <location filename="../src/gui/main.cpp" line="46"/>
         <source>%1 requires on a working system tray. If you are running XFCE, please follow &lt;a href=&quot;http://docs.xfce.org/xfce/xfce4-panel/systray&quot;&gt;these instructions&lt;/a&gt;. Otherwise, please install a system tray application such as &quot;trayer&quot; and try again.</source>
-        <translation>%1 benötigt ein funktionierendes Benachrichtigungsfeld. Falls Sie XFCE einsetzen, dann folgen Sie bitte &lt;a href=&quot;http://docs.xfce.org/xfce/xfce4-panel/systray&quot;&gt;diesen Anweisungen&lt;/a&gt;. Andernfalls installieren Sie bitte ein Benachrichtigungsfeld wie zum Beispiel &quot;Trayer“ und versuchen es nochmal.</translation>
+        <translation>%1 benötigt ein funktionierendes Benachrichtigungsfeld. Falls Sie XFCE einsetzen, dann folgen Sie bitte &lt;a href=&quot;http://docs.xfce.org/xfce/xfce4-panel/systray&quot;&gt;diesen Anweisungen&lt;/a&gt;. Andernfalls installieren Sie bitte ein Benachrichtigungsfeld wie zum Beispiel &quot;Trayer&quot; und versuchen es nochmal.</translation>
     </message>
 </context>
 <context>
