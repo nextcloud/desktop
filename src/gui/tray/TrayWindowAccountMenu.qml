@@ -65,7 +65,7 @@ Button {
         // y coordinate grows towards the bottom
         x: (currentAccountButton.x + 2)
         y: (currentAccountButton.y + Style.trayWindowHeaderHeight + 2)
-
+        
         width: Style.sesAccountMenuWidth
         height: Math.min(implicitHeight, maxMenuHeight)
         closePolicy: Menu.CloseOnPressOutsideParent | Menu.CloseOnEscape
@@ -90,7 +90,7 @@ Button {
                 model: accountMenu.contentModel
                 interactive: true
                 clip: true
-                currentIndex: accountMenu.currentIndex
+                currentIndex: accountMenu.currentIndex                
             }
         }
 
@@ -272,21 +272,15 @@ Button {
             }
         }
 
-        // ColorOverlay {
-        //     cached: true
-        //     color: Style.currentUserHeaderTextColor
-        //     width: source.width
-        //     height: source.height
-        //     Layout.rightMargin: Style.sesAccountButtonRightMargin
-        //     source: Image {
-        //         Layout.alignment: Qt.AlignRight
-        //         verticalAlignment: Qt.AlignBottom
-        //         source: Style.sesChevron
-        //         sourceSize.width: 14
-        //         sourceSize.height: 14
-        //         Accessible.role: Accessible.PopupMenu
-        //         Accessible.name: qsTr("Account switcher and settings menu")
-        //     }
-        // }
+        Image {
+            Layout.alignment: Qt.AlignRight
+            verticalAlignment: Qt.AlignBottom
+            Layout.rightMargin: Style.sesAccountButtonRightMargin
+            source: Style.sesChevron
+            sourceSize.width: 14
+            sourceSize.height: 14
+            Accessible.role: Accessible.PopupMenu
+            Accessible.name: qsTr("Account switcher and settings menu")
+        }
     }
 }
