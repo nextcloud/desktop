@@ -190,7 +190,7 @@ void FolderMetadata::setupExistingMetadata(const QByteArray &metadata)
     if (_folderUsers.contains(_account->davUser())) {
         const auto currentFolderUser = _folderUsers.value(_account->davUser());
         _e2eCertificateFingerprint = QSslCertificate{currentFolderUser.certificatePem}.digest(QCryptographicHash::Sha256).toBase64();
-        _metadataKeyForEncryption = QByteArray::fromBase64(decryptDataWithPrivateKey(currentFolderUser.encryptedMetadataKey, _e2eCertificateFingerprint));
+        _metadataKeyForEncryption = QByteArray::fromBase64(decryptDataWithPrivateKey(currentFolderUser.encryptedMetadataKey.toBase64(), _e2eCertificateFingerprint));
         _metadataKeyForDecryption = _metadataKeyForEncryption;
     }
 
@@ -454,6 +454,7 @@ QByteArray FolderMetadata::decryptDataWithPrivateKey(const QByteArray &base64Dat
         _account->reportClientStatus(OCC::ClientStatusReportingStatus::E2EeError_GeneralError);
         return {};
     }
+
     return *decryptBase64Result;
 }
 
