@@ -1321,7 +1321,7 @@ bool ClientSideEncryption::checkPublicKeyValidity(const AccountPtr &account) con
     BIO_write(publicKeyBio, publicKeyPem.constData(), publicKeyPem.size());
     auto publicKey = PKey::readPublicKey(publicKeyBio);
 
-    auto encryptedData = EncryptionHelper::encryptStringAsymmetric(account->e2e()->getCertificateInformation(), account->e2e()->paddingMode(), *account->e2e(), data.toBase64());
+    auto encryptedData = EncryptionHelper::encryptStringAsymmetric(account->e2e()->getCertificateInformation(), account->e2e()->paddingMode(), *account->e2e(), data);
     if (!encryptedData) {
         qCWarning(lcCse()) << "encryption error";
         return false;
