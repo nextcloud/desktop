@@ -501,7 +501,6 @@ void OwncloudAdvancedSetupPage::slotSelectiveSyncClicked()
     AccountPtr acc = dynamic_cast<OwncloudWizard *>(wizard())->account();
     auto *dlg = new SelectiveSyncDialog(acc, _remoteFolder, _selectiveSyncBlacklist, this);
     dlg->setAttribute(Qt::WA_DeleteOnClose);
-    dlg->setStyleSheet(QStringLiteral("background-color: %1;").arg(IonosTheme::dialogBackgroundColor()));
 
     connect(dlg, &SelectiveSyncDialog::finished, this, [this, dlg]{
         const int result = dlg->result();
@@ -638,7 +637,6 @@ void OwncloudAdvancedSetupPage::customizeStyle()
     _ui.lVirtualFileSync->setContentsMargins(0, 0, 0, 0);
     _ui.horizontalLayout_8->setContentsMargins(32, 0, 0, 0);
     _ui.horizontalLayout_10->setContentsMargins(0, 8, 0, 0);
-    // _ui.horizontalLayout_10->setMargin(1);
 
     _ui.wSyncStrategy->setSpacing(16);
     _ui.wSyncStrategy->setContentsMargins(0, 0, 0, 0);

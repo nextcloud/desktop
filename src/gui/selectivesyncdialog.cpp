@@ -560,6 +560,14 @@ void SelectiveSyncDialog::init(const AccountPtr &account)
     QPushButton *button = nullptr;
     button = buttonBox->addButton(QDialogButtonBox::Cancel);
 
+    connect(button, &QAbstractButton::clicked, this, &QDialog::reject);
+
+    layout->addWidget(buttonBox);
+    customizeStyle();
+}
+
+void SelectiveSyncDialog::customizeStyle()
+{
     _okButton->setStyleSheet(
         _okButton->styleSheet() + QStringLiteral("QPushButton { %1; } ").arg(
             IonosTheme::fontConfigurationCss(
@@ -586,9 +594,21 @@ void SelectiveSyncDialog::init(const AccountPtr &account)
     buttonBox->layout()->setSpacing(24);
 #endif
 
-    connect(button, &QAbstractButton::clicked, this, &QDialog::reject);
 
-    layout->addWidget(buttonBox);
+    // Set background colors
+    auto dialogPalette = palette();
+    const auto backgroundColor = QColor(IonosTheme::dialogBackgroundColor());
+
+    // Set Color of upper part
+    dialogPalette.setColor(QPalette::Base, backgroundColor);
+
+    // Set Color of lower part
+    dialogPalette.setColor(QPalette::Window, backgroundColor);
+
+    // Set separator color
+    dialogPalette.setColor(QPalette::Mid, backgroundColor);
+
+    setPalette(dialogPalette);
 }
 
 void SelectiveSyncDialog::accept()
