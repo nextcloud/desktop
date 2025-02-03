@@ -16,9 +16,10 @@ import com.ionos.hidrivenext.desktopclient
 
 Rectangle {
 
-    height:         Style.trayWindowHeaderHeight
+    height:         Style.sesTrayHeaderHeight + Style.sesHeaderTopMargin * 2 
     color:          Style.sesWhite
     radius: 0.0
+    clip: true
 
     RowLayout {
         id: trayWindowHeaderLayout
@@ -26,6 +27,8 @@ Rectangle {
         anchors.fill:   parent
         anchors.leftMargin: Style.sesTrayHeaderMargin
         anchors.rightMargin: Style.sesTrayHeaderMargin
+        anchors.topMargin: Style.sesHeaderTopMargin
+        anchors.bottomMargin: Style.sesHeaderTopMargin
 
         TrayWindowAccountMenu{
             Layout.preferredWidth:  Style.sesAccountButtonWidth

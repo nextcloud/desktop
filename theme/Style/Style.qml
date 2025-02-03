@@ -293,6 +293,8 @@ QtObject {
     property int sesAccountButtonLeftMargin: 19
     property int sesHeaderButtonWidth: 84
     property int sesHeaderButtonHeight: 68
+    property int sesTrayHeaderHeight: 68
+
     property int sesAccountMenuWidth: sesAccountButtonWidth - 8
     property int sesAccountLabelWidth: 157
     property int sesTrayHeaderMargin: 11
