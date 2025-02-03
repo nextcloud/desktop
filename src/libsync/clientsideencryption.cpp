@@ -757,12 +757,12 @@ std::optional<QByteArray> decryptStringAsymmetric(ENGINE *sslEngine,
         return {};
     }
 
-    if (pad_mode != RSA_PKCS1_PADDING && EVP_PKEY_CTX_set_rsa_oaep_md(ctx, EVP_sha1()) <= 0) {
+    if (pad_mode != RSA_PKCS1_PADDING && EVP_PKEY_CTX_set_rsa_oaep_md(ctx, EVP_sha256()) <= 0) {
         qCInfo(lcCseDecryption()) << "Error setting OAEP SHA 256" << handleErrors();
         return {};
     }
 
-    if (pad_mode != RSA_PKCS1_PADDING && EVP_PKEY_CTX_set_rsa_mgf1_md(ctx, EVP_sha1()) <= 0) {
+    if (pad_mode != RSA_PKCS1_PADDING && EVP_PKEY_CTX_set_rsa_mgf1_md(ctx, EVP_sha256()) <= 0) {
         qCInfo(lcCseDecryption()) << "Error setting MGF1 padding" << handleErrors();
         return {};
     }
@@ -807,12 +807,12 @@ std::optional<QByteArray> encryptStringAsymmetric(ENGINE *sslEngine,
         return {};
     }
 
-    if (pad_mode != RSA_PKCS1_PADDING && EVP_PKEY_CTX_set_rsa_oaep_md(ctx, EVP_sha1()) <= 0) {
+    if (pad_mode != RSA_PKCS1_PADDING && EVP_PKEY_CTX_set_rsa_oaep_md(ctx, EVP_sha256()) <= 0) {
         qCInfo(lcCseEncryption()) << "Error setting OAEP SHA 256" << handleErrors();
         return {};
     }
 
-    if (pad_mode != RSA_PKCS1_PADDING && EVP_PKEY_CTX_set_rsa_mgf1_md(ctx, EVP_sha1()) <= 0) {
+    if (pad_mode != RSA_PKCS1_PADDING && EVP_PKEY_CTX_set_rsa_mgf1_md(ctx, EVP_sha256()) <= 0) {
         qCInfo(lcCseEncryption()) << "Error setting MGF1 padding" << handleErrors();
         return {};
     }
@@ -902,7 +902,11 @@ CertificateInformation ClientSideEncryption::getCertificateInformationByFingerpr
 
 int ClientSideEncryption::paddingMode() const
 {
-    return RSA_PKCS1_PADDING;
+    if (useTokenBasedEncryption()) {
+        return RSA_PKCS1_PADDING;
+    } else {
+        return RSA_PKCS1_OAEP_PADDING;
+    }
 }
 
 CertificateInformation ClientSideEncryption::getTokenCertificateByFingerprint(const QByteArray &expectedFingerprint) const
@@ -2714,7 +2718,7 @@ bool EncryptionHelper::dataDecryption(const QByteArray &key, const QByteArray &i
     }
 
     if (1 != EVP_DecryptFinal_ex(ctx, unsignedData(out), &len)) {
-        qCInfo(lcCse()) << "Could finalize decryption";
+        qCInfo(lcCse()) << "Could not finalize decryption";
         return false;
     }
     outputBuffer.write(out, len);
