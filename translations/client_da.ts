@@ -43,12 +43,12 @@
     <message>
         <location filename="../src/gui/tray/CallNotificationDialog.qml" line="194"/>
         <source>Talk notification caller avatar</source>
-        <translation>Opkalds-avatar for Talk-meddelelse</translation>
+        <translation>Opkalds-avatar til Snak meddelelse</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/CallNotificationDialog.qml" line="260"/>
         <source>Answer Talk call notification</source>
-        <translation>Svar Talk opkaldsmeddelelse</translation>
+        <translation>Svar Snak opkaldsnotifikation</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/CallNotificationDialog.qml" line="268"/>
@@ -58,7 +58,7 @@
     <message>
         <location filename="../src/gui/tray/CallNotificationDialog.qml" line="284"/>
         <source>Decline Talk call notification</source>
-        <translation>Afvis Talk kalde notifikation</translation>
+        <translation>Afvis Snak opkaldsnotifikation</translation>
     </message>
 </context>
 <context>
@@ -7398,7 +7398,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="641"/>
         <source>Open Nextcloud Talk in browser</source>
-        <translation>Åbn Nextcloud Talk i browseren</translation>
+        <translation>Åbn Nextcloud Snak i browseren</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="661"/>
