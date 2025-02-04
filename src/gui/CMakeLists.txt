@@ -99,6 +99,7 @@ set(client_SRCS
     folderwatcher.cpp
     folderwizard.h
     folderwizard.cpp
+    clickablelabel.h
     generalsettings.h
     generalsettings.cpp
     legalnotice.h

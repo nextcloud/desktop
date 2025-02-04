@@ -21,6 +21,7 @@
 
 #include "folder.h"
 #include "accountfwd.h"
+#include "clickablelabel.h"
 
 #include "ui_folderwizardsourcepage.h"
 #include "ui_folderwizardtargetpage.h"
@@ -147,11 +148,16 @@ public:
 
 private slots:
     void virtualFilesCheckboxClicked();
+    void virtualFilesCheckboxLabelClicked();
 
 private:
+    void setupVirtualFilesCheckbox();
+
     Ui_FolderWizardSelectiveSync _uiSelectiveSync{};
     SelectiveSyncWidget *_selectiveSync;
+    QHBoxLayout *_virtualFilesHBox = nullptr;
     QCheckBox *_virtualFilesCheckBox = nullptr;
+    ClickableLabel *_virtualFilesCheckBoxLabel = nullptr;
 };
 
 /**

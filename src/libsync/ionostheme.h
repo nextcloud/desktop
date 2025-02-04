@@ -104,6 +104,14 @@ public:
         return 740;
     }
 
+    static int wizardFixedWidth() {
+        return 576;
+    }
+
+    static int wizardFixedHeight() {
+        return 704;
+    }
+
     static int LoginPageSpacer() {
         return 45;
     }
