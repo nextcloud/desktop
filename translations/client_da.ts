@@ -381,7 +381,7 @@
     <message>
         <location filename="../src/common/filesystembase.cpp" line="384"/>
         <source>Could not make directories in trash</source>
-        <translation>Kunne ikke oprette mapperne i skraldespanden</translation>
+        <translation>Kunne ikke oprette mapper i skraldespanden</translation>
     </message>
     <message>
         <location filename="../src/common/filesystembase.cpp" line="398"/>
@@ -2974,7 +2974,7 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <location filename="../src/gui/generalsettings.ui" line="229"/>
         <source>Ask for confirmation before synchronizing folders larger than</source>
-        <translation>Spørg om bekræftelse inden synkronisering af mapper større end</translation>
+        <translation>Spørg om bekræftelse inden synkronisering af mapper der er større end</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="312"/>
@@ -3000,7 +3000,7 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <location filename="../src/gui/generalsettings.ui" line="284"/>
         <source>Show sync folders in &amp;Explorer&apos;s Navigation Pane</source>
-        <translation>Vis synk mapper i &amp;Stifinder&apos;s Navigations Panel</translation>
+        <translation>Vis synk mapper i &amp;Stifinder&apos;s Navigationspanel</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="295"/>
@@ -3020,7 +3020,7 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <location filename="../src/gui/generalsettings.ui" line="364"/>
         <source>Check Now</source>
-        <translation>Tjek nu</translation>
+        <translation>Kontroller nu</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="391"/>
@@ -5586,7 +5586,7 @@ Server replied with error: %2</source>
         <location filename="../src/libsync/theme.cpp" line="554"/>
         <source>&lt;p&gt;%1 Desktop Client&lt;/p&gt;</source>
         <extracomment>Example text: &quot;&lt;p&gt;Nextcloud Desktop Client&lt;/p&gt;&quot; (%1 is the application name)</extracomment>
-        <translation>&lt;p&gt;%1-skrivebordsklient&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;%1 Desktopklient&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="600"/>
@@ -6046,7 +6046,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="338"/>
         <source>Signed out</source>
-        <translation>Logget ud</translation>
+        <translation>Logget af</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="342"/>
@@ -6057,7 +6057,7 @@ Server replied with error: %2</source>
         <location filename="../src/gui/owncloudgui.cpp" line="343"/>
         <location filename="../src/gui/owncloudgui.cpp" line="396"/>
         <source>Synchronization is paused</source>
-        <translation>Synkronisering er suspenderet</translation>
+        <translation>Synkronisering er pauseret</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="383"/>
@@ -6067,7 +6067,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="391"/>
         <source>Unresolved conflicts</source>
-        <translation>Uafgjorte konflikter</translation>
+        <translation>Uløste konflikter</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="393"/>
@@ -6082,7 +6082,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="402"/>
         <source>No sync folders configured</source>
-        <translation>Ingen synk.-mapper konfigureret</translation>
+        <translation>Ingen synkroniseringsmapper konfigureret</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="442"/>
@@ -6123,12 +6123,12 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="486"/>
         <source>Syncing %1 of %2 (%3 left)</source>
-        <translation>Synkroniserer %1 af %2 (%3 tilbage)</translation>
+        <translation>Synkroniserer %1 ud af %2 (%3 tilbage)</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="491"/>
         <source>Syncing %1 of %2</source>
-        <translation>Synkroniserer %1 af %2 </translation>
+        <translation>Synkroniserer %1 ud af %2 </translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="500"/>
@@ -6951,7 +6951,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="75"/>
         <source>downloading</source>
-        <translation>henter</translation>
+        <translation>downloader</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="77"/>
@@ -6961,7 +6961,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="77"/>
         <source>uploading</source>
-        <translation>sender</translation>
+        <translation>uploader</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="79"/>
@@ -7186,7 +7186,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="115"/>
         <source>Error returned from the server: &lt;em&gt;%1&lt;/em&gt;</source>
-        <translation>Fejl meddelelse fra serveren: &lt;em&gt;%1&lt;/em&gt; </translation>
+        <translation>Fejlmeddelelse fra serveren: &lt;em&gt;%1&lt;/em&gt; </translation>
     </message>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="118"/>
@@ -7201,7 +7201,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="127"/>
         <source>Could not parse the JSON returned from the server: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</source>
-        <translation>Kunne ikke analysere den modtaget JSON fra serveren: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</translation>
+        <translation>Kunne ikke analysere den modtagne JSON fra serveren: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="130"/>
@@ -7229,7 +7229,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.cpp" line="46"/>
         <source>Login in your browser</source>
-        <translation>Forbind i din browser</translation>
+        <translation>Log på i din browser</translation>
     </message>
 </context>
 <context>
@@ -7265,7 +7265,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.ui" line="36"/>
         <source>Please switch to your browser to proceed.</source>
-        <translation>Venligst skift til din browser for at fortsætte.</translation>
+        <translation>Skift venligst til din browser for at fortsætte.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.ui" line="46"/>
@@ -7280,7 +7280,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.ui" line="69"/>
         <source>Copy link</source>
-        <translation>Kopiér link</translation>
+        <translation>Kopier link</translation>
     </message>
 </context>
 <context>
