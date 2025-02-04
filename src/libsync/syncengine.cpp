@@ -1216,9 +1216,9 @@ void SyncEngine::setLocalDiscoveryOptions(LocalDiscoveryStyle style, std::set<QS
     _localDiscoveryStyle = style;
     _localDiscoveryPaths = std::move(paths);
 
-    if (lcEngine().isInfoEnabled() && !_localDiscoveryPaths.empty()) {
+    if (lcEngine().isDebugEnabled() && !_localDiscoveryPaths.empty()) {
         // only execute if logging is enabled
-        auto debug = qInfo(lcEngine);
+        auto debug = qDebug(lcEngine);
         debug << "paths to discover locally";
         for (auto path : _localDiscoveryPaths) {
             debug << path;
@@ -1275,12 +1275,12 @@ bool SyncEngine::shouldDiscoverLocally(const QString &path) const
         if (it != _localDiscoveryPaths.begin() && path.startsWith(*(--it))) {
             result = it->endsWith('/') || (path.size() > it->size() && path.at(it->size()) <= '/');
             if (!result) {
-                qCInfo(lcEngine()) << path << "no local discovery needed";
+                qCDebug(lcEngine()) << path << "no local discovery needed";
             }
             return result;
         }
         result = false;
-        qCInfo(lcEngine()) << path << "no local discovery needed";
+        qCDebug(lcEngine()) << path << "no local discovery needed";
         return result;
     }
 
@@ -1300,12 +1300,12 @@ bool SyncEngine::shouldDiscoverLocally(const QString &path) const
         ++it;
         if (it == _localDiscoveryPaths.end() || !it->startsWith(path)) {
             result = false;
-            qCInfo(lcEngine()) << path << "no local discovery needed";
+            qCDebug(lcEngine()) << path << "no local discovery needed";
             return result;
         }
     }
 
-    qCInfo(lcEngine()) << path << "no local discovery needed";
+    qCDebug(lcEngine()) << path << "no local discovery needed";
     return result;
 }
 
