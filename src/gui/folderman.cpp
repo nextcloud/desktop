@@ -42,6 +42,7 @@
 namespace {
 constexpr auto settingsAccountsC = "Accounts";
 constexpr auto settingsFoldersC = "Folders";
+constexpr auto settingsFoldersWithPlaceholdersC = "FoldersWithPlaceholders";
 constexpr auto settingsVersionC = "version";
 constexpr auto maxFoldersVersion = 1;
 
@@ -388,16 +389,19 @@ void FolderMan::backwardMigrationSettingsKeys(QStringList *deleteKeys, QStringLi
     auto processSubgroup = [&](const QString &name) {
         settings->beginGroup(name);
         const auto foldersVersion = settings->value(QLatin1String(settingsVersionC), 1).toInt();
+        qCInfo(lcFolderMan) << "FolderDefinition::maxSettingsVersion:" << FolderDefinition::maxSettingsVersion();
         if (foldersVersion <= maxFoldersVersion) {
             for (const auto &folderAlias : settings->childGroups()) {
                 settings->beginGroup(folderAlias);
                 const auto folderVersion = settings->value(QLatin1String(settingsVersionC), 1).toInt();
                 if (folderVersion > FolderDefinition::maxSettingsVersion()) {
+                    qCInfo(lcFolderMan) << "Ignoring folder:" << folderAlias << "version:" << folderVersion;
                     ignoreKeys->append(settings->group());
                 }
                 settings->endGroup();
             }
         } else {
+            qCInfo(lcFolderMan) << "Ignoring group:" << name << "version:" << foldersVersion;
             deleteKeys->append(settings->group());
         }
         settings->endGroup();
@@ -523,89 +527,97 @@ void FolderMan::setupLegacyFolder(const QString &fileNamePath, AccountState *acc
         return;
     }
 
-    settings.beginGroup(settingsAccountsC);
-    qCDebug(lcFolderMan) << "try to migrate accountId:" << accountState->account()->id();
-    settings.beginGroup(accountState->account()->id());
-    settings.beginGroup(settingsFoldersC);
-
-    if (settings.childGroups().isEmpty()) {
-        qCDebug(lcFolderMan) << "there are no legacy folders for accountId:" << accountState->account()->id();
-        return;
-    }
-
-    const auto childGroups = settings.childGroups();
-    for (const auto &alias : childGroups) {
-        settings.beginGroup(alias);
-        qCDebug(lcFolderMan) << "try to migrate folder alias:" << alias;
-
-        const auto path = settings.value(QLatin1String("localPath")).toString();
-        const auto targetPath = settings.value(QLatin1String("targetPath")).toString();
-        const auto journalPath = settings.value(QLatin1String("journalPath")).toString();
-        const auto paused = settings.value(QLatin1String("paused"), false).toBool();
-        const auto ignoreHiddenFiles = settings.value(QLatin1String("ignoreHiddenFiles"), false).toBool();
-
-        if (path.isEmpty()) {
-            qCDebug(lcFolderMan) << "localPath is empty";
-            settings.endGroup();
-            continue;
+    auto migrateFoldersGroup = [&](const QString &folderGroupName) {
+        const auto childGroups = settings.childGroups();
+        if (childGroups.isEmpty()) {
+            qCDebug(lcFolderMan) << "There are no" << folderGroupName << "to migrate from account" <<  accountState->account()->id();
+            return;
         }
+        for (const auto &alias : childGroups) {
+            settings.beginGroup(alias);
+            qCDebug(lcFolderMan) << "try to migrate" << folderGroupName << "alias:" << alias;
 
-        if (targetPath.isEmpty()) {
-            qCDebug(lcFolderMan) << "targetPath is empty";
-            settings.endGroup();
-            continue;
-        }
+            const auto path = settings.value(QLatin1String("localPath")).toString();
+            const auto targetPath = settings.value(QLatin1String("targetPath")).toString();
+            const auto journalPath = settings.value(QLatin1String("journalPath")).toString();
+            const auto paused = settings.value(QLatin1String("paused"), false).toBool();
+            const auto ignoreHiddenFiles = settings.value(QLatin1String("ignoreHiddenFiles"), false).toBool();
 
-        if (journalPath.isEmpty()) {
-            qCDebug(lcFolderMan) << "journalPath is empty";
-            settings.endGroup();
-            continue;
-        }
-
-        FolderDefinition folderDefinition;
-        folderDefinition.alias = alias;
-        folderDefinition.localPath = path;
-        folderDefinition.targetPath = targetPath;
-        folderDefinition.journalPath = journalPath;
-        folderDefinition.paused = paused;
-        folderDefinition.ignoreHiddenFiles = ignoreHiddenFiles;
-
-        if (const auto folder = addFolderInternal(folderDefinition, accountState, std::make_unique<VfsOff>())) {
-            auto ok = true;
-            auto legacyBlacklist = folder->journalDb()->getSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList,
-                                                                                   &ok);
-            if (!ok) {
-                qCInfo(lcFolderMan) << "There was a problem retrieving the database selective sync for " << folder;
-            }
-
-            legacyBlacklist << settings.value(QLatin1String("blackList")).toStringList();
-            if (!legacyBlacklist.isEmpty()) {
-                qCInfo(lcFolderMan) << "Legacy selective sync list found:" << legacyBlacklist;
-                for (const auto &legacyFolder : legacyBlacklist) {
-                    folder->migrateBlackListPath(legacyFolder);
-                }
-                settings.remove(QLatin1String("blackList"));
-            }
-
-            folder->saveToSettings();
-
-            qCInfo(lcFolderMan) << "Migrated!" << folder->path();
-            settings.sync();
-
-            if (!folder) {
+            if (path.isEmpty()) {
+                qCDebug(lcFolderMan) << "localPath is empty";
+                settings.endGroup();
                 continue;
             }
 
-            scheduleFolder(folder);
-            emit folderSyncStateChange(folder);
+            if (targetPath.isEmpty()) {
+                qCDebug(lcFolderMan) << "targetPath is empty";
+                settings.endGroup();
+                continue;
+            }
+
+            if (journalPath.isEmpty()) {
+                qCDebug(lcFolderMan) << "journalPath is empty";
+                settings.endGroup();
+                continue;
+            }
+
+            qCDebug(lcFolderMan) << folderGroupName << "located at" << path;
+
+            FolderDefinition folderDefinition;
+            folderDefinition.alias = alias;
+            folderDefinition.localPath = path;
+            folderDefinition.targetPath = targetPath;
+            folderDefinition.journalPath = journalPath;
+            folderDefinition.paused = paused;
+            folderDefinition.ignoreHiddenFiles = ignoreHiddenFiles;
+
+            if (const auto folder = addFolderInternal(folderDefinition, accountState, std::make_unique<VfsOff>())) {
+                auto ok = true;
+                auto legacyBlacklist = folder->journalDb()->getSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList,
+                                                                                 &ok);
+                if (!ok) {
+                    qCInfo(lcFolderMan) << "There was a problem retrieving the database selective sync for " << folder;
+                }
+
+                legacyBlacklist << settings.value(QLatin1String("blackList")).toStringList();
+                if (!legacyBlacklist.isEmpty()) {
+                    qCInfo(lcFolderMan) << "Legacy selective sync list found:" << legacyBlacklist;
+                    for (const auto &legacyFolder : legacyBlacklist) {
+                        folder->migrateBlackListPath(legacyFolder);
+                    }
+                    settings.remove(QLatin1String("blackList"));
+                }
+
+                folder->saveToSettings();
+
+                qCInfo(lcFolderMan) << "Migrated!" << folder->path();
+                settings.sync();
+
+                if (!folder) {
+                    continue;
+                }
+
+                scheduleFolder(folder);
+                emit folderSyncStateChange(folder);
+            }
+            settings.endGroup(); // folder alias
         }
+    };
 
-        settings.endGroup();
-    }
+    settings.beginGroup(settingsAccountsC);
+    qCDebug(lcFolderMan) << "try to migrate accountId:" << accountState->account()->id();
+    settings.beginGroup(accountState->account()->id());
+
+    settings.beginGroup(settingsFoldersWithPlaceholdersC);
+    migrateFoldersGroup(settingsFoldersWithPlaceholdersC);
+    settings.endGroup();
+
+    settings.beginGroup(settingsFoldersC);
+    migrateFoldersGroup(settingsFoldersC);
+    settings.endGroup();
 
     settings.endGroup();
     settings.endGroup();
-
     return;
 }
 

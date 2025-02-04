@@ -85,8 +85,9 @@ public:
      *            (version remains readable by 2.5.1)
      * Version 3: introduction of new windows vfs mode in 2.6.0
      * Version 5: available in oC client 4.0.0 and 4.2.0
+     * Version 13: available in oC client 5.2.0 and 5.3.1
      */
-    static int maxSettingsVersion() { return 5; }
+    static int maxSettingsVersion() { return 13; }
 
     /// Ensure / as separator and trailing /.
     static QString prepareLocalPath(const QString &path);

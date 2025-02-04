@@ -143,6 +143,11 @@ bool Application::configVersionMigration()
     const auto versionChanged = previousVersion != currentVersion;
     const auto downgrading = previousVersion > currentVersion;
 
+    if (versionChanged) {
+        qCInfo(lcApplication) << "Version changed. Removing updater settings from config.";
+        configFile.cleanUpdaterConfiguration();
+    }
+
     if (!versionChanged && !(!deleteKeys.isEmpty() || (!ignoreKeys.isEmpty() && versionChanged))) {
         return true;
     }
@@ -194,13 +199,16 @@ bool Application::configVersionMigration()
             QTimer::singleShot(0, qApp, &QCoreApplication::quit);
             return false;
         }
+    }
 
+    if (!deleteKeys.isEmpty()) {
         auto settings = ConfigFile::settingsWithGroup("foo");
         settings->endGroup();
 
         // Wipe confusing keys from the future, ignore the others
         for (const auto &badKey : std::as_const(deleteKeys)) {
             settings->remove(badKey);
+            qCInfo(lcApplication) << "Migration: removed" << badKey << "key from settings.";
         }
     }
 
@@ -236,14 +244,14 @@ Application::Application(int &argc, char **argv)
     setWindowIcon(_theme->applicationIcon());
 
     if (!ConfigFile().exists()) {
-        // Migrate from version <= 2.4
         setApplicationName(_theme->appNameGUI());
-        // We need to use the deprecated QDesktopServices::storageLocation because of its Qt4
-        // behavior of adding "data" to the path
-        QString oldDir = QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation) + "/data/" + organizationName() + "/" + applicationName();
-        if (oldDir.endsWith('/')) oldDir.chop(1); // macOS 10.11.x does not like trailing slash for rename/move.
+        QString legacyDir = QStandardPaths::writableLocation(QStandardPaths::GenericConfigLocation) + "/" + APPLICATION_CONFIG_NAME;
+
+        if (legacyDir.endsWith('/')) {
+            legacyDir.chop(1); // macOS 10.11.x does not like trailing slash for rename/move.
+        }
         setApplicationName(_theme->appName());
-        if (QFileInfo(oldDir).isDir()) {
+        if (QFileInfo(legacyDir).isDir()) {
             auto confDir = ConfigFile().configPath();
 
             // macOS 10.11.x does not like trailing slash for rename/move.
@@ -251,17 +259,17 @@ Application::Application(int &argc, char **argv)
                 confDir.chop(1);
             }
 
-            qCInfo(lcApplication) << "Migrating old config from" << oldDir << "to" << confDir;
+            qCInfo(lcApplication) << "Migrating old config from" << legacyDir << "to" << confDir;
 
-            if (!QFile::rename(oldDir, confDir)) {
-                qCWarning(lcApplication) << "Failed to move the old config directory to its new location (" << oldDir << "to" << confDir << ")";
+            if (!QFile::rename(legacyDir, confDir)) {
+                qCWarning(lcApplication) << "Failed to move the old config directory to its new location (" << legacyDir << "to" << confDir << ")";
 
                 // Try to move the files one by one
                 if (QFileInfo(confDir).isDir() || QDir().mkdir(confDir)) {
-                    const QStringList filesList = QDir(oldDir).entryList(QDir::Files);
+                    const QStringList filesList = QDir(legacyDir).entryList(QDir::Files);
                     qCInfo(lcApplication) << "Will move the individual files" << filesList;
                     for (const auto &name : filesList) {
-                        if (!QFile::rename(oldDir + "/" + name,  confDir + "/" + name)) {
+                        if (!QFile::rename(legacyDir + "/" + name,  confDir + "/" + name)) {
                             qCWarning(lcApplication) << "Fallback move of " << name << "also failed";
                         }
                     }
@@ -269,7 +277,7 @@ Application::Application(int &argc, char **argv)
             } else {
 #ifndef Q_OS_WIN
                 // Create a symbolic link so a downgrade of the client would still find the config.
-                QFile::link(confDir, oldDir);
+                QFile::link(confDir, legacyDir);
 #endif
             }
         }
