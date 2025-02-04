@@ -34,7 +34,7 @@ namespace OCC {
 
         m_iconLabel.setObjectName("sesSnackBarIcon");
         m_iconLabel.setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-        m_iconLabel.setFixedSize(16, 16);
+        m_iconLabel.setFixedSize(24, 24);
 
         layout->addWidget(&m_captionLabel);
         layout->addSpacerItem(new QSpacerItem(8, 0, QSizePolicy::Fixed, QSizePolicy::Fixed));
