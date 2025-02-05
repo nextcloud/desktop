@@ -71,16 +71,16 @@ Result<void, QString> Vfs::checkAvailability(const QString &path, Vfs::Mode mode
 #ifdef Q_OS_WIN
     if (mode == Mode::WindowsCfApi) {
         const auto info = QFileInfo(path);
-        if (QDir(info.canonicalFilePath()).isRoot()) {
-            return tr("The Virtual filesystem feature does not support a drive as sync root");
+        if (QDir(info.canonicalPath()).isRoot()) {
+            return tr("Please choose a different location. %1 is a drive. It doesn't support virtual files.").arg(path);
         }
-        const auto fs = FileSystem::fileSystemForPath(info.absoluteFilePath());
-        if (fs != QLatin1String("NTFS")) {
-            return tr("The Virtual filesystem feature requires a NTFS file system, %1 is using %2").arg(path, fs);
+        if (const auto fileSystemForPath = FileSystem::fileSystemForPath(info.absoluteFilePath());
+            fileSystemForPath != QLatin1String("NTFS")) {
+            return tr("Please choose a different location. %1 isn't a NTFS file system. It doesn't support virtual files.").arg(path);
         }
         const auto type = GetDriveTypeW(reinterpret_cast<const wchar_t *>(QDir::toNativeSeparators(info.absoluteFilePath().mid(0, 3)).utf16()));
         if (type == DRIVE_REMOTE) {
-            return tr("The Virtual filesystem feature is not supported on network drives");
+            return tr("Please choose a different location. %1 is a network drive. It doesn't support virtual files.").arg(path);
         }
     }
 #else

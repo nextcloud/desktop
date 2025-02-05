@@ -61,18 +61,18 @@ namespace OCC {
 
 QString FormatWarningsWizardPage::formatWarnings(const QStringList &warnings) const
 {
-    QString ret;
+    QString formattedWarning;
     if (warnings.count() == 1) {
-        ret = tr("<b>Warning:</b> %1").arg(warnings.first());
+        formattedWarning = warnings.first();
     } else if (warnings.count() > 1) {
-        ret = tr("<b>Warning:</b>") + " <ul>";
-        Q_FOREACH (QString warning, warnings) {
-            ret += QString::fromLatin1("<li>%1</li>").arg(warning);
+        formattedWarning = "<ul>";
+        for (const auto &warning : warnings) {
+            formattedWarning += QString::fromLatin1("<li>%1</li>").arg(warning);
         }
-        ret += "</ul>";
+        formattedWarning += "</ul>";
     }
 
-    return ret;
+    return formattedWarning;
 }
 
 FolderWizardLocalPath::FolderWizardLocalPath(const AccountPtr &account)
@@ -484,34 +484,39 @@ FolderWizardRemotePath::~FolderWizardRemotePath() = default;
 
 bool FolderWizardRemotePath::isComplete() const
 {
-    if (!_ui.folderTreeWidget->currentItem())
+    if (!_ui.folderTreeWidget->currentItem()) {
         return false;
-
-    QStringList warnStrings;
-    QString dir = _ui.folderTreeWidget->currentItem()->data(0, Qt::UserRole).toString();
-    if (!dir.startsWith(QLatin1Char('/'))) {
-        dir.prepend(QLatin1Char('/'));
     }
-    wizard()->setProperty("targetPath", dir);
 
-    Folder::Map map = FolderMan::instance()->map();
-    Folder::Map::const_iterator i = map.constBegin();
-    for (i = map.constBegin(); i != map.constEnd(); i++) {
-        auto *f = static_cast<Folder *>(i.value());
-        if (f->accountState()->account() != _account) {
+    auto targetPath = _ui.folderTreeWidget->currentItem()->data(0, Qt::UserRole).toString();
+    if (!targetPath.startsWith(QLatin1Char('/'))) {
+        targetPath.prepend(QLatin1Char('/'));
+    }
+    wizard()->setProperty("targetPath", targetPath);
+
+    for (const auto folder : std::as_const(FolderMan::instance()->map())) {
+        if (folder->accountState()->account() != _account) {
             continue;
         }
-        QString curDir = f->remotePathTrailingSlash();
-        if (QDir::cleanPath(dir) == QDir::cleanPath(curDir)) {
-            warnStrings.append(tr("This folder is already being synced."));
-        } else if (dir.startsWith(curDir)) {
-            warnStrings.append(tr("You are already syncing <i>%1</i>, which is a parent folder of <i>%2</i>.").arg(Utility::escape(curDir), Utility::escape(dir)));
-        } else if (curDir.startsWith(dir)) {
-            warnStrings.append(tr("You are already syncing <i>%1</i>, which is a subfolder of <i>%2</i>.").arg(Utility::escape(curDir), Utility::escape(dir)));
+
+        const auto remoteDir = folder->remotePathTrailingSlash();
+        const auto localDir = folder->cleanPath();
+        if (QDir::cleanPath(targetPath) == QDir::cleanPath(remoteDir)) {
+            showWarn(tr("Please choose a different location. %1 is already being synced to %2.").arg(Utility::escape(remoteDir), Utility::escape(localDir)));
+            break;
+        }
+
+        if (targetPath.startsWith(remoteDir)) {
+            showWarn(tr("Please choose a different location. %1 is already being synced to %2.").arg(Utility::escape(targetPath), Utility::escape(localDir)));
+            break;
+        }
+
+        if (remoteDir.startsWith(targetPath)) {
+            showWarn(tr("Please choose a different location. %1 is already being synced to %2.").arg(Utility::escape(remoteDir), Utility::escape(localDir)));
+            break;
         }
     }
 
-    showWarn(formatWarnings(warnStrings));
     return true;
 }
 
@@ -625,7 +630,10 @@ bool FolderWizardSelectiveSync::validatePage()
     if (useVirtualFiles) {
         const auto availability = Vfs::checkAvailability(wizard()->field(QStringLiteral("sourceFolder")).toString(), mode);
         if (!availability) {
-            auto msg = new QMessageBox(QMessageBox::Warning, tr("Virtual files are not available for the selected folder"), availability.error(), QMessageBox::Ok, this);
+            auto msg = new QMessageBox(QMessageBox::Warning,
+                                       tr("Virtual files are not supported at the selected location"),
+                                       availability.error(),
+                                       QMessageBox::Ok, this);
             msg->setAttribute(Qt::WA_DeleteOnClose);
             msg->open();
             return false;
