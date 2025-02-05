@@ -34,7 +34,7 @@ ApplicationWindow {
     LayoutMirroring.childrenInherit: true
 
     width: Style.minimumWidthResolveConflictsDialog
-    height: Style.minimumHeightResolveConflictsDialog
+    height: Math.min(contentItem.height + 20, Screen.height * 0.8)
     minimumWidth: Style.minimumWidthResolveConflictsDialog
     minimumHeight: Style.minimumHeightResolveConflictsDialog
     title: qsTr('Solve sync conflicts')
