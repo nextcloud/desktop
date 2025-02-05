@@ -113,14 +113,20 @@ class ShareTableViewDataSource: NSObject, NSTableViewDataSource, NSTableViewDele
                 presentError("NextcloudKit instance is unavailable, cannot reload data!")
                 return
             }
-            itemMetadata = await fetchItemMetadata(itemRelativePath: serverPathString, kit: kit)
-            guard itemMetadata?.permissions.contains("R") == true else {
+            guard let itemMetadata =
+                    await fetchItemMetadata(itemRelativePath: serverPathString, kit: kit)
+            else {
+                presentError("Unable to retrieve file metadata...")
+                return
+            }
+            guard itemMetadata.permissions.contains("R") == true else {
                 presentError("This file cannot be shared.")
                 return
             }
             shares = await fetch(
                 itemIdentifier: itemIdentifier, itemRelativePath: serverPathString
             )
+            shares.append(Self.generateInternalShare(for: itemMetadata))
         } catch let error {
             presentError("Could not reload data: \(error), will try again.")
             reattempt()
@@ -154,6 +160,17 @@ class ShareTableViewDataSource: NSObject, NSTableViewDataSource, NSTableViewDele
                 }
             }
         }
+    }
+
+    private static func generateInternalShare(for file: NKFile) -> NKShare {
+        let internalShare = NKShare()
+        internalShare.shareType = NKShare.ShareType.internalLink.rawValue
+        internalShare.url = file.urlBase +  "/index.php/f/" + file.fileId
+        internalShare.account = file.account
+        internalShare.displaynameOwner = file.ownerDisplayName
+        internalShare.displaynameFileOwner = file.ownerDisplayName
+        internalShare.path = file.path
+        return internalShare
     }
 
     private func fetchCapabilities() async -> Capabilities? {
