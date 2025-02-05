@@ -48,8 +48,9 @@ Q_LOGGING_CATEGORY(lcDb, "nextcloud.sync.database", QtInfoMsg)
 
 #define GET_FILE_RECORD_QUERY \
         "SELECT path, inode, modtime, type, md5, fileid, remotePerm, filesize," \
-        "  ignoredChildrenRemote, contentchecksumtype.name || ':' || contentChecksum, e2eMangledName, isE2eEncrypted, " \
-        "  lock, lockOwnerDisplayName, lockOwnerId, lockType, lockOwnerEditor, lockTime, lockTimeout, lockToken, isShared, lastShareStateFetchedTimestmap, sharedByMe, isLivePhoto, livePhotoFile" \
+        "  ignoredChildrenRemote, contentchecksumtype.name || ':' || contentChecksum, e2eMangledName, isE2eEncrypted, e2eCertificateFingerprint, " \
+        "  lock, lockOwnerDisplayName, lockOwnerId, lockType, lockOwnerEditor, lockTime, lockTimeout, lockToken, isShared, lastShareStateFetchedTimestmap, " \
+        "  sharedByMe, isLivePhoto, livePhotoFile" \
         " FROM metadata" \
         "  LEFT JOIN checksumtype as contentchecksumtype ON metadata.contentChecksumTypeId == contentchecksumtype.id"
 
@@ -67,19 +68,20 @@ static void fillFileRecordFromGetQuery(SyncJournalFileRecord &rec, SqlQuery &que
     rec._checksumHeader = query.baValue(9);
     rec._e2eMangledName = query.baValue(10);
     rec._e2eEncryptionStatus = static_cast<SyncJournalFileRecord::EncryptionStatus>(query.intValue(11));
-    rec._lockstate._locked = query.intValue(12) > 0;
-    rec._lockstate._lockOwnerDisplayName = query.stringValue(13);
-    rec._lockstate._lockOwnerId = query.stringValue(14);
-    rec._lockstate._lockOwnerType = query.int64Value(15);
-    rec._lockstate._lockEditorApp = query.stringValue(16);
-    rec._lockstate._lockTime = query.int64Value(17);
-    rec._lockstate._lockTimeout = query.int64Value(18);
-    rec._lockstate._lockToken = query.stringValue(19);
-    rec._isShared = query.intValue(20) > 0;
-    rec._lastShareStateFetchedTimestamp = query.int64Value(21);
-    rec._sharedByMe = query.intValue(22) > 0;
-    rec._isLivePhoto = query.intValue(23) > 0;
-    rec._livePhotoFile = query.stringValue(24);
+    rec._e2eCertificateFingerprint = query.baValue(12);
+    rec._lockstate._locked = query.intValue(13) > 0;
+    rec._lockstate._lockOwnerDisplayName = query.stringValue(14);
+    rec._lockstate._lockOwnerId = query.stringValue(15);
+    rec._lockstate._lockOwnerType = query.int64Value(16);
+    rec._lockstate._lockEditorApp = query.stringValue(17);
+    rec._lockstate._lockTime = query.int64Value(18);
+    rec._lockstate._lockTimeout = query.int64Value(19);
+    rec._lockstate._lockToken = query.stringValue(20);
+    rec._isShared = query.intValue(21) > 0;
+    rec._lastShareStateFetchedTimestamp = query.int64Value(22);
+    rec._sharedByMe = query.intValue(23) > 0;
+    rec._isLivePhoto = query.intValue(24) > 0;
+    rec._livePhotoFile = query.stringValue(25);
 }
 
 static QByteArray defaultJournalMode(const QString &dbPath)
@@ -783,6 +785,7 @@ bool SyncJournalDb::updateMetadataTableStructure()
     addColumn(QStringLiteral("contentChecksumTypeId"), QStringLiteral("INTEGER"));
     addColumn(QStringLiteral("e2eMangledName"), QStringLiteral("TEXT"));
     addColumn(QStringLiteral("isE2eEncrypted"), QStringLiteral("INTEGER"));
+    addColumn(QStringLiteral("e2eCertificateFingerprint"), QStringLiteral("TEXT"));
     addColumn(QStringLiteral("isShared"), QStringLiteral("INTEGER"));
     addColumn(QStringLiteral("lastShareStateFetchedTimestmap"), QStringLiteral("INTEGER"));
     addColumn(QStringLiteral("sharedByMe"), QStringLiteral("INTEGER"));
@@ -995,9 +998,9 @@ Result<void, QString> SyncJournalDb::setFileRecord(const SyncJournalFileRecord &
 
     const auto query = _queryManager.get(PreparedSqlQueryManager::SetFileRecordQuery, QByteArrayLiteral("INSERT OR REPLACE INTO metadata "
                                                                                                         "(phash, pathlen, path, inode, uid, gid, mode, modtime, type, md5, fileid, remotePerm, filesize, ignoredChildrenRemote, "
-                                                                                                        "contentChecksum, contentChecksumTypeId, e2eMangledName, isE2eEncrypted, lock, lockType, lockOwnerDisplayName, lockOwnerId, "
+                                                                                                        "contentChecksum, contentChecksumTypeId, e2eMangledName, isE2eEncrypted, e2eCertificateFingerprint, lock, lockType, lockOwnerDisplayName, lockOwnerId, "
                                                                                                         "lockOwnerEditor, lockTime, lockTimeout, lockToken, isShared, lastShareStateFetchedTimestmap, sharedByMe, isLivePhoto, livePhotoFile) "
-                                                                                                        "VALUES (?1 , ?2, ?3 , ?4 , ?5 , ?6 , ?7,  ?8 , ?9 , ?10, ?11, ?12, ?13, ?14, ?15, ?16, ?17, ?18, ?19, ?20, ?21, ?22, ?23, ?24, ?25, ?26, ?27, ?28, ?29, ?30, ?31);"),
+                                                                                                        "VALUES (?1 , ?2, ?3 , ?4 , ?5 , ?6 , ?7,  ?8 , ?9 , ?10, ?11, ?12, ?13, ?14, ?15, ?16, ?17, ?18, ?19, ?20, ?21, ?22, ?23, ?24, ?25, ?26, ?27, ?28, ?29, ?30, ?31, ?32);"),
         _db);
     if (!query) {
         qCDebug(lcDb) << "database error:" << query->error();
@@ -1022,19 +1025,20 @@ Result<void, QString> SyncJournalDb::setFileRecord(const SyncJournalFileRecord &
     query->bindValue(16, contentChecksumTypeId);
     query->bindValue(17, record._e2eMangledName);
     query->bindValue(18, static_cast<int>(record._e2eEncryptionStatus));
-    query->bindValue(19, record._lockstate._locked ? 1 : 0);
-    query->bindValue(20, record._lockstate._lockOwnerType);
-    query->bindValue(21, record._lockstate._lockOwnerDisplayName);
-    query->bindValue(22, record._lockstate._lockOwnerId);
-    query->bindValue(23, record._lockstate._lockEditorApp);
-    query->bindValue(24, record._lockstate._lockTime);
-    query->bindValue(25, record._lockstate._lockTimeout);
-    query->bindValue(26, record._lockstate._lockToken);
-    query->bindValue(27, record._isShared);
-    query->bindValue(28, record._lastShareStateFetchedTimestamp);
-    query->bindValue(29, record._sharedByMe);
-    query->bindValue(30, record._isLivePhoto);
-    query->bindValue(31, record._livePhotoFile);
+    query->bindValue(19, record._e2eCertificateFingerprint);
+    query->bindValue(20, record._lockstate._locked ? 1 : 0);
+    query->bindValue(21, record._lockstate._lockOwnerType);
+    query->bindValue(22, record._lockstate._lockOwnerDisplayName);
+    query->bindValue(23, record._lockstate._lockOwnerId);
+    query->bindValue(24, record._lockstate._lockEditorApp);
+    query->bindValue(25, record._lockstate._lockTime);
+    query->bindValue(26, record._lockstate._lockTimeout);
+    query->bindValue(27, record._lockstate._lockToken);
+    query->bindValue(28, record._isShared);
+    query->bindValue(29, record._lastShareStateFetchedTimestamp);
+    query->bindValue(30, record._sharedByMe);
+    query->bindValue(31, record._isLivePhoto);
+    query->bindValue(32, record._livePhotoFile);
 
     if (!query->exec()) {
         qCDebug(lcDb) << "database error:" << query->error();
@@ -3035,7 +3039,7 @@ SyncJournalDb::PinStateInterface::rawList()
 
 SyncJournalDb::PinStateInterface SyncJournalDb::internalPinStates()
 {
-    return {this};
+    return PinStateInterface{this};
 }
 
 void SyncJournalDb::commit(const QString &context, bool startTrans)

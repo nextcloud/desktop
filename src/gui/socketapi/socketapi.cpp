@@ -545,14 +545,14 @@ void SocketApi::processEncryptRequest(const QString &localFile)
     const auto rec = fileData.journalRecord();
     Q_ASSERT(rec.isValid());
 
-    if (!account->e2e() || account->e2e()->_mnemonic.isEmpty()) {
+    if (!account->e2e() || !account->e2e()->isInitialized()) {
         const int ret = QMessageBox::critical(
             nullptr,
             tr("Failed to encrypt folder at \"%1\"").arg(fileData.folderRelativePath),
             tr("The account %1 does not have end-to-end encryption configured. "
                "Please configure this in your account settings to enable folder encryption.").arg(account->prettyName()),
             QMessageBox::Ok
-        );
+            );
         Q_UNUSED(ret)
         return;
     }
