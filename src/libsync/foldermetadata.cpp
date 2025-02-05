@@ -161,7 +161,7 @@ void FolderMetadata::setupExistingMetadata(const QByteArray &metadata)
         /* TODO: does it make sense to store each certificatePem that has been successfuly verified? Is this secure?
         /  Can the attacker use outdated certificate as an attack vector?*/
         folderUser.certificatePem = folderUserObject.value(usersCertificateKey).toString().toUtf8();
-        folderUser.encryptedMetadataKey = QByteArray::fromBase64(folderUserObject.value(usersEncryptedMetadataKey).toString().toUtf8());
+        folderUser.encryptedMetadataKey = folderUserObject.value(usersEncryptedMetadataKey).toString().toUtf8();
         _folderUsers[userId] = folderUser;
     }
 
@@ -668,7 +668,7 @@ QByteArray FolderMetadata::encryptedMetadata()
 
             const QJsonObject folderUserJson{{usersUserIdKey, folderUser.userId},
                                              {usersCertificateKey, QJsonValue::fromVariant(folderUser.certificatePem)},
-                                             {usersEncryptedMetadataKey, QJsonValue::fromVariant(folderUser.encryptedMetadataKey.toBase64())}};
+                                             {usersEncryptedMetadataKey, QJsonValue::fromVariant(folderUser.encryptedMetadataKey)}};
             folderUsers.push_back(folderUserJson);
         }
     }
