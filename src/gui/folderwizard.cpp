@@ -61,18 +61,18 @@ namespace OCC {
 
 QString FormatWarningsWizardPage::formatWarnings(const QStringList &warnings) const
 {
-    QString ret;
+    QString formattedWarning;
     if (warnings.count() == 1) {
-        ret = tr("%1").arg(warnings.first());
+        formattedWarning = warnings.first();
     } else if (warnings.count() > 1) {
-        ret = "<ul>";
-        Q_FOREACH (QString warning, warnings) {
-            ret += QString::fromLatin1("<li>%1</li>").arg(warning);
+        formattedWarning = "<ul>";
+        for (const auto &warning : warnings) {
+            formattedWarning += QString::fromLatin1("<li>%1</li>").arg(warning);
         }
-        ret += "</ul>";
+        formattedWarning += "</ul>";
     }
 
-    return ret;
+    return formattedWarning;
 }
 
 FolderWizardLocalPath::FolderWizardLocalPath(const AccountPtr &account)
