@@ -43,7 +43,7 @@ class ShareeSuggestionsDataSource: SuggestionsDataSource {
                     defer { continuation.resume(returning: sharees ?? []) }
                     guard error == .success else {
                         Logger.shareeDataSource.error(
-                            "Error fetching sharees: \(error.description, privacy: .public)"
+                            "Error fetching sharees: \(error.errorDescription, privacy: .public)"
                         )
                         return
                     }
