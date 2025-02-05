@@ -76,7 +76,7 @@ Result<void, QString> Vfs::checkAvailability(const QString &path, Vfs::Mode mode
         }
         if (const auto fileSystemForPath = FileSystem::fileSystemForPath(info.absoluteFilePath());
             fileSystemForPath != QLatin1String("NTFS")) {
-            return tr("Please choose a different location. %1 isn't a NTFS files system. It doesn't support virtual files.").arg(path);
+            return tr("Please choose a different location. %1 isn't a NTFS file system. It doesn't support virtual files.").arg(path);
         }
         const auto type = GetDriveTypeW(reinterpret_cast<const wchar_t *>(QDir::toNativeSeparators(info.absoluteFilePath().mid(0, 3)).utf16()));
         if (type == DRIVE_REMOTE) {
