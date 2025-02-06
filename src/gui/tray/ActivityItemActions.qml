@@ -26,7 +26,7 @@ Repeater {
 
     model: root.linksForActionButtons
 
-    SesCustomButton {
+    PrimaryPillButton {
         id: activityActionButton
 
         property string verb: model.modelData.verb
