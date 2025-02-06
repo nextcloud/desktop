@@ -24,7 +24,6 @@
 #include "configfile.h"
 #include "accessmanager.h"
 #include "callstatechecker.h"
-#include "clientsideencryptiontokenselector.h"
 
 #include <QCursor>
 #include <QGuiApplication>
@@ -35,8 +34,6 @@
 #include <QScreen>
 #include <QMenu>
 #include <QGuiApplication>
-#include <QQuickView>
-#include <QMessageBox>
 
 #ifdef USE_FDO_NOTIFICATIONS
 #include <QDBusConnection>

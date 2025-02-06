@@ -301,7 +301,6 @@ signals:
     void certificateFetchedFromKeychain(QSslCertificate certificate);
     void certificatesFetchedFromServer(const QHash<QString, OCC::NextcloudSslCertificate> &results);
     void certificateWriteComplete(const QSslCertificate &certificate);
-    void displayTokenInitDialog();
 
     void startingDiscoveryEncryptionUsbToken();
     void finishedDiscoveryEncryptionUsbToken();

@@ -31,8 +31,6 @@ class QGuiApplication;
 
 namespace OCC {
 
-class ClientSideEncryptionTokenSelector;
-
 class AccessManagerFactory : public QQmlNetworkAccessManagerFactory
 {
 public:
@@ -195,7 +193,6 @@ private:
     QPointer<QObject> _editFileLocallyLoadingDialog;
     QPointer<QObject> _encryptionTokenDiscoveryDialog;
     QVector<QQuickWindow*> _fileDetailDialogs;
-    QQuickWindow* _tokenInitDialog = nullptr;
 
     QStringListModel _fakeActivityModel;
 };
