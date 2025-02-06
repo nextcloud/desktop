@@ -27,7 +27,7 @@
 
 namespace OCC {
 
-Q_LOGGING_CATEGORY(lcUserStatusDialogModel, "nextcloud.gui.userstatusdialogmodel", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcUserStatusDialogModel, "hidrivenext.gui.userstatusdialogmodel", QtInfoMsg)
 
 UserStatusSelectorModel::UserStatusSelectorModel(QObject *parent)
     : QObject(parent)

@@ -27,8 +27,8 @@
 
 namespace OCC {
 
-Q_LOGGING_CATEGORY(lcMoveJob, "nextcloud.sync.networkjob.move", QtInfoMsg)
-Q_LOGGING_CATEGORY(lcPropagateRemoteMove, "nextcloud.sync.propagator.remotemove", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcMoveJob, "hidrivenext.sync.networkjob.move", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcPropagateRemoteMove, "hidrivenext.sync.propagator.remotemove", QtInfoMsg)
 
 MoveJob::MoveJob(AccountPtr account, const QString &path,
     const QString &destination, QObject *parent)

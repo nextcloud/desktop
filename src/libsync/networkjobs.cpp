@@ -48,18 +48,18 @@
 
 namespace OCC {
 
-Q_LOGGING_CATEGORY(lcEtagJob, "nextcloud.sync.networkjob.etag", QtInfoMsg)
-Q_LOGGING_CATEGORY(lcLsColJob, "nextcloud.sync.networkjob.lscol", QtInfoMsg)
-Q_LOGGING_CATEGORY(lcCheckServerJob, "nextcloud.sync.networkjob.checkserver", QtInfoMsg)
-Q_LOGGING_CATEGORY(lcCheckRedirectCostFreeUrlJob, "nextcloud.sync.networkjob.checkredirectcostfreeurl", QtInfoMsg)
-Q_LOGGING_CATEGORY(lcPropfindJob, "nextcloud.sync.networkjob.propfind", QtInfoMsg)
-Q_LOGGING_CATEGORY(lcAvatarJob, "nextcloud.sync.networkjob.avatar", QtInfoMsg)
-Q_LOGGING_CATEGORY(lcMkColJob, "nextcloud.sync.networkjob.mkcol", QtInfoMsg)
-Q_LOGGING_CATEGORY(lcProppatchJob, "nextcloud.sync.networkjob.proppatch", QtInfoMsg)
-Q_LOGGING_CATEGORY(lcJsonApiJob, "nextcloud.sync.networkjob.jsonapi", QtInfoMsg)
-Q_LOGGING_CATEGORY(lcSimpleApiJob, "nextcloud.sync.networkjob.simpleapi", QtInfoMsg)
-Q_LOGGING_CATEGORY(lcDetermineAuthTypeJob, "nextcloud.sync.networkjob.determineauthtype", QtInfoMsg)
-Q_LOGGING_CATEGORY(lcSimpleFileJob, "nextcloud.sync.networkjob.simplefilejob", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcEtagJob, "hidrivenext.sync.networkjob.etag", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcLsColJob, "hidrivenext.sync.networkjob.lscol", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcCheckServerJob, "hidrivenext.sync.networkjob.checkserver", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcCheckRedirectCostFreeUrlJob, "hidrivenext.sync.networkjob.checkredirectcostfreeurl", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcPropfindJob, "hidrivenext.sync.networkjob.propfind", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcAvatarJob, "hidrivenext.sync.networkjob.avatar", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcMkColJob, "hidrivenext.sync.networkjob.mkcol", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcProppatchJob, "hidrivenext.sync.networkjob.proppatch", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcJsonApiJob, "hidrivenext.sync.networkjob.jsonapi", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcSimpleApiJob, "hidrivenext.sync.networkjob.simpleapi", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcDetermineAuthTypeJob, "hidrivenext.sync.networkjob.determineauthtype", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcSimpleFileJob, "hidrivenext.sync.networkjob.simplefilejob", QtInfoMsg)
 
 constexpr auto notModifiedStatusCode = 304;
 constexpr auto propfindPropElementTagName = "prop";

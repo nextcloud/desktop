@@ -22,7 +22,7 @@
 
 using namespace OCC;
 
-Q_LOGGING_CATEGORY(PROPAGATE_REMOVE_ENCRYPTED, "nextcloud.sync.propagator.remove.encrypted")
+Q_LOGGING_CATEGORY(PROPAGATE_REMOVE_ENCRYPTED, "hidrivenext.sync.propagator.remove.encrypted")
 
 PropagateRemoteDeleteEncrypted::PropagateRemoteDeleteEncrypted(OwncloudPropagator *propagator, SyncFileItemPtr item, QObject *parent)
     : BasePropagateRemoteDeleteEncrypted(propagator, item, parent)

@@ -27,7 +27,7 @@
 
 using namespace OCC;
 
-Q_LOGGING_CATEGORY(lcCaseClashConflictSolver, "nextcloud.sync.caseclash.solver", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcCaseClashConflictSolver, "hidrivenext.sync.caseclash.solver", QtInfoMsg)
 
 CaseClashConflictSolver::CaseClashConflictSolver(const QString &targetFilePath,
                                                  const QString &conflictFilePath,

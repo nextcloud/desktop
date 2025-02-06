@@ -43,11 +43,11 @@
 
 namespace OCC {
 
-Q_LOGGING_CATEGORY(lcPutJob, "nextcloud.sync.networkjob.put", QtInfoMsg)
-Q_LOGGING_CATEGORY(lcPollJob, "nextcloud.sync.networkjob.poll", QtInfoMsg)
-Q_LOGGING_CATEGORY(lcPropagateUpload, "nextcloud.sync.propagator.upload", QtInfoMsg)
-Q_LOGGING_CATEGORY(lcPropagateUploadV1, "nextcloud.sync.propagator.upload.v1", QtInfoMsg)
-Q_LOGGING_CATEGORY(lcPropagateUploadNG, "nextcloud.sync.propagator.upload.ng", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcPutJob, "hidrivenext.sync.networkjob.put", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcPollJob, "hidrivenext.sync.networkjob.poll", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcPropagateUpload, "hidrivenext.sync.propagator.upload", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcPropagateUploadV1, "hidrivenext.sync.propagator.upload.v1", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcPropagateUploadNG, "hidrivenext.sync.propagator.upload.ng", QtInfoMsg)
 
 PUTFileJob::~PUTFileJob()
 {

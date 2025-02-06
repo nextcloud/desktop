@@ -7,7 +7,7 @@
 #include "pushnotificationstestutils.h"
 #include "pushnotifications.h"
 
-Q_LOGGING_CATEGORY(lcFakeWebSocketServer, "nextcloud.test.fakewebserver", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcFakeWebSocketServer, "hidrivenext.test.fakewebserver", QtInfoMsg)
 
 FakeWebSocketServer::FakeWebSocketServer(quint16 port, QObject *parent)
     : QObject(parent)

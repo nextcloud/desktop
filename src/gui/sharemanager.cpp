@@ -25,7 +25,7 @@
 #include <QJsonObject>
 #include <QJsonArray>
 
-Q_LOGGING_CATEGORY(lcUserGroupShare, "nextcloud.gui.usergroupshare", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcUserGroupShare, "hidrivenext.gui.usergroupshare", QtInfoMsg)
 
 namespace OCC {
 

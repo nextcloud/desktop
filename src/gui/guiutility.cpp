@@ -24,7 +24,7 @@
 #include "common/asserts.h"
 using namespace OCC;
 
-Q_LOGGING_CATEGORY(lcUtility, "nextcloud.gui.utility", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcUtility, "hidrivenext.gui.utility", QtInfoMsg)
 
 bool Utility::openBrowser(const QUrl &url, QWidget *errorWidgetParent)
 {

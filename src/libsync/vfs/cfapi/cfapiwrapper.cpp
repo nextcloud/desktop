@@ -35,7 +35,7 @@
 
 #include "config.h"
 
-Q_LOGGING_CATEGORY(lcCfApiWrapper, "nextcloud.sync.vfs.cfapi.wrapper", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcCfApiWrapper, "hidrivenext.sync.vfs.cfapi.wrapper", QtInfoMsg)
 
 #define FIELD_SIZE( type, field ) ( sizeof( ( (type*)0 )->field ) )
 #define CF_SIZE_OF_OP_PARAM( field )                                           \

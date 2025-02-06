@@ -82,7 +82,7 @@ namespace OCC {
 namespace Ui {
 namespace IconUtils {
 
-Q_LOGGING_CATEGORY(lcIconUtils, "nextcloud.gui.iconutils", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcIconUtils, "hidrivenext.gui.iconutils", QtInfoMsg)
 
 QPixmap pixmapForBackground(const QString &fileName, const QColor &backgroundColor)
 {

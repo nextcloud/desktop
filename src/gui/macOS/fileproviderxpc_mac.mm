@@ -28,7 +28,7 @@ namespace {
 
 namespace OCC::Mac {
 
-Q_LOGGING_CATEGORY(lcFileProviderXPC, "nextcloud.gui.macos.fileprovider.xpc", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcFileProviderXPC, "hidrivenext.gui.macos.fileprovider.xpc", QtInfoMsg)
 
 FileProviderXPC::FileProviderXPC(QObject *parent)
     : QObject{parent}

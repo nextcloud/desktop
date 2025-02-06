@@ -22,7 +22,7 @@
 
 namespace OCC {
 
-Q_LOGGING_CATEGORY(lcRemoteWipe, "nextcloud.gui.remotewipe", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcRemoteWipe, "hidrivenext.gui.remotewipe", QtInfoMsg)
 
 RemoteWipe::RemoteWipe(AccountPtr account, QObject *parent)
     : QObject(parent),

@@ -42,7 +42,7 @@ OCC::SyncResult::Status determineSyncStatus(const OCC::SyncResult &syncResult)
 
 namespace OCC {
 
-Q_LOGGING_CATEGORY(lcSyncStatusModel, "nextcloud.gui.syncstatusmodel", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcSyncStatusModel, "hidrivenext.gui.syncstatusmodel", QtInfoMsg)
 
 SyncStatusSummary::SyncStatusSummary(QObject *parent)
     : QObject(parent)

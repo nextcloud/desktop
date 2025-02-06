@@ -25,7 +25,7 @@ using namespace QKeychain;
 
 namespace OCC {
 
-Q_LOGGING_CATEGORY(lcKeychainChunk, "nextcloud.sync.credentials.keychainchunk", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcKeychainChunk, "hidrivenext.sync.credentials.keychainchunk", QtInfoMsg)
 
 namespace KeychainChunk {
 

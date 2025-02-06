@@ -16,7 +16,7 @@
 
 namespace OCC {
 
-Q_LOGGING_CATEGORY(lcPropagateUploadEncrypted, "nextcloud.sync.propagator.upload.encrypted", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcPropagateUploadEncrypted, "hidrivenext.sync.propagator.upload.encrypted", QtInfoMsg)
 
 PropagateUploadEncrypted::PropagateUploadEncrypted(OwncloudPropagator *propagator, const QString &remoteParentPath, SyncFileItemPtr item, QObject *parent)
     : QObject(parent)

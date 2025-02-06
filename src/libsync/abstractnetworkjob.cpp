@@ -42,7 +42,7 @@ Q_DECLARE_METATYPE(QTimer *)
 
 namespace OCC {
 
-Q_LOGGING_CATEGORY(lcNetworkJob, "nextcloud.sync.networkjob", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcNetworkJob, "hidrivenext.sync.networkjob", QtInfoMsg)
 
 // If not set, it is overwritten by the Application constructor with the value from the config
 int AbstractNetworkJob::httpTimeout = qEnvironmentVariableIntValue("OWNCLOUD_TIMEOUT");

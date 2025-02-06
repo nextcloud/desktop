@@ -18,7 +18,7 @@
 
 namespace OCC {
 
-Q_LOGGING_CATEGORY(lcDeleteJob, "nextcloud.sync.networkjob.delete", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcDeleteJob, "hidrivenext.sync.networkjob.delete", QtInfoMsg)
 
 DeleteJob::DeleteJob(AccountPtr account, const QString &path, QObject *parent)
     : SimpleFileJob(account, path, parent)

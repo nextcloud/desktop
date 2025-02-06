@@ -22,7 +22,7 @@
 
 namespace OCC
 {
-Q_LOGGING_CATEGORY(lcUpdateE2eeFolderUsersMetadataJob, "nextcloud.gui.updatee2eefolderusersmetadatajob", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcUpdateE2eeFolderUsersMetadataJob, "hidrivenext.gui.updatee2eefolderusersmetadatajob", QtInfoMsg)
 
 UpdateE2eeFolderUsersMetadataJob::UpdateE2eeFolderUsersMetadataJob(const AccountPtr &account,
                                                        SyncJournalDb *journalDb,

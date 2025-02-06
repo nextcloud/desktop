@@ -40,7 +40,7 @@ namespace {
 
 using namespace OCC;
 
-Q_LOGGING_CATEGORY(PROPAGATE_REMOVE_ENCRYPTED_ROOTFOLDER, "nextcloud.sync.propagator.remove.encrypted.rootfolder")
+Q_LOGGING_CATEGORY(PROPAGATE_REMOVE_ENCRYPTED_ROOTFOLDER, "hidrivenext.sync.propagator.remove.encrypted.rootfolder")
 
 PropagateRemoteDeleteEncryptedRootFolder::PropagateRemoteDeleteEncryptedRootFolder(OwncloudPropagator *propagator, SyncFileItemPtr item, QObject *parent)
     : BasePropagateRemoteDeleteEncrypted(propagator, item, parent)

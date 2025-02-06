@@ -82,7 +82,7 @@ namespace OCC {
 
 class AccountSettings;
 
-Q_LOGGING_CATEGORY(lcAccountSettings, "nextcloud.gui.account.settings", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcAccountSettings, "hidrivenext.gui.account.settings", QtInfoMsg)
 
 const QString progressBarStyle()
 {

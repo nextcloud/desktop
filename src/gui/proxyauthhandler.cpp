@@ -26,7 +26,7 @@
 using namespace OCC;
 using namespace QKeychain;
 
-Q_LOGGING_CATEGORY(lcProxy, "nextcloud.gui.credentials.proxy", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcProxy, "hidrivenext.gui.credentials.proxy", QtInfoMsg)
 
 ProxyAuthHandler *ProxyAuthHandler::instance()
 {

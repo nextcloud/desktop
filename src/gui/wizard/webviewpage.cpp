@@ -14,7 +14,7 @@
 
 namespace OCC {
 
-Q_LOGGING_CATEGORY(lcWizardWebiewPage, "nextcloud.gui.wizard.webviewpage", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcWizardWebiewPage, "hidrivenext.gui.wizard.webviewpage", QtInfoMsg)
 
 
 WebViewPage::WebViewPage(QWidget *parent)

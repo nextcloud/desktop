@@ -23,7 +23,7 @@ static constexpr int PING_INTERVAL = 30 * 1000;
 
 namespace OCC {
 
-Q_LOGGING_CATEGORY(lcPushNotifications, "nextcloud.sync.pushnotifications", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcPushNotifications, "hidrivenext.sync.pushnotifications", QtInfoMsg)
 
 PushNotifications::PushNotifications(Account *account, QObject *parent)
     : QObject(parent)

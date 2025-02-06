@@ -71,7 +71,7 @@ constexpr auto isSkipE2eeMetadataChecksumValidationAllowedInClientVersion = MIRA
 }
 
 namespace OCC {
-Q_LOGGING_CATEGORY(lcAccount, "nextcloud.sync.account", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcAccount, "hidrivenext.sync.account", QtInfoMsg)
 const char app_password[] = "_app-password";
 
 Account::Account(QObject *parent)

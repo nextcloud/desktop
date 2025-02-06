@@ -20,7 +20,7 @@
 
 namespace OCC {
 
-Q_LOGGING_CATEGORY(lcSyncConflictsModel, "nextcloud.syncconflictsmodel", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcSyncConflictsModel, "hidrivenext.syncconflictsmodel", QtInfoMsg)
 
 SyncConflictsModel::SyncConflictsModel(QObject *parent)
     : QAbstractListModel(parent)

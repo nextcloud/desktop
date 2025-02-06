@@ -87,7 +87,7 @@ constexpr auto serverHasValidSubscriptionC = "serverHasValidSubscription";
 
 namespace OCC {
 
-Q_LOGGING_CATEGORY(lcAccountManager, "nextcloud.gui.account.manager", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcAccountManager, "hidrivenext.gui.account.manager", QtInfoMsg)
 
 AccountManager *AccountManager::instance()
 {

@@ -20,7 +20,7 @@
 
 #include <sys/xattr.h>
 
-Q_LOGGING_CATEGORY(lcXAttrWrapper, "nextcloud.sync.vfs.xattr.wrapper", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcXAttrWrapper, "hidrivenext.sync.vfs.xattr.wrapper", QtInfoMsg)
 
 namespace {
 constexpr auto hydrateExecAttributeName = "user.nextcloud.hydrate_exec";

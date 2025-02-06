@@ -9,7 +9,7 @@
 
 namespace OCC {
 
-Q_LOGGING_CATEGORY(lcTalkReply, "nextcloud.gui.talkreply", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcTalkReply, "hidrivenext.gui.talkreply", QtInfoMsg)
 
 TalkReply::TalkReply(AccountState *accountState, QObject *parent)
     : QObject(parent)

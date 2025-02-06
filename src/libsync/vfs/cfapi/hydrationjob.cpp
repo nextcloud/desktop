@@ -26,7 +26,7 @@
 #include <QLocalServer>
 #include <QLocalSocket>
 
-Q_LOGGING_CATEGORY(lcHydration, "nextcloud.sync.vfs.hydrationjob", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcHydration, "hidrivenext.sync.vfs.hydrationjob", QtInfoMsg)
 
 OCC::HydrationJob::HydrationJob(QObject *parent)
     : QObject(parent)

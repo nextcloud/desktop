@@ -18,7 +18,7 @@
 
 namespace OCC {
 
-Q_LOGGING_CATEGORY(lcFileActivityListModel, "nextcloud.gui.fileactivitylistmodel", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcFileActivityListModel, "hidrivenext.gui.fileactivitylistmodel", QtInfoMsg)
 
 FileActivityListModel::FileActivityListModel(QObject *parent)
     : ActivityListModel(nullptr, parent)

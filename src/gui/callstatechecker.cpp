@@ -21,7 +21,7 @@
 
 namespace OCC {
 
-Q_LOGGING_CATEGORY(lcCallStateChecker, "nextcloud.gui.callstatechecker", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcCallStateChecker, "hidrivenext.gui.callstatechecker", QtInfoMsg)
 
 constexpr int successStatusCode = 200;
 

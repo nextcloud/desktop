@@ -25,7 +25,7 @@ NSString *const nsClientCommunicationServiceName = [NSString stringWithUTF8Strin
 
 namespace OCC::Mac::FileProviderXPCUtils {
 
-Q_LOGGING_CATEGORY(lcFileProviderXPCUtils, "nextcloud.gui.macos.fileprovider.xpc.utils", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcFileProviderXPCUtils, "hidrivenext.gui.macos.fileprovider.xpc.utils", QtInfoMsg)
 
 NSArray<NSFileProviderManager *> *getDomainManagers()
 {

@@ -20,7 +20,7 @@
 
 namespace OCC {
 
-Q_LOGGING_CATEGORY(lcFileDetails, "nextcloud.gui.filedetails", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcFileDetails, "hidrivenext.gui.filedetails", QtInfoMsg)
 
 FileDetails::FileDetails(QObject *parent)
     : QObject(parent)

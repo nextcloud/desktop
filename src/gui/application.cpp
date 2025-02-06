@@ -76,7 +76,7 @@ class QSocket;
 
 namespace OCC {
 
-Q_LOGGING_CATEGORY(lcApplication, "nextcloud.gui.application", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcApplication, "hidrivenext.gui.application", QtInfoMsg)
 
 namespace {
 

@@ -40,7 +40,7 @@
 
 namespace OCC {
 
-Q_LOGGING_CATEGORY(lcAccountState, "nextcloud.gui.account.state", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcAccountState, "hidrivenext.gui.account.state", QtInfoMsg)
 
 AccountState::AccountState(const AccountPtr &account)
     : QObject()

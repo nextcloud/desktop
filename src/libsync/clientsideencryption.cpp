@@ -76,9 +76,8 @@ using namespace QKeychain;
 namespace OCC
 {
 
-Q_LOGGING_CATEGORY(lcCse, "nextcloud.sync.clientsideencryption", QtInfoMsg)
-Q_LOGGING_CATEGORY(lcCseDecryption, "nextcloud.sync.clientsideencryption.decryption", QtInfoMsg)
-Q_LOGGING_CATEGORY(lcCseEncryption, "nextcloud.sync.clientsideencryption.encryption", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcCse, "hidrivenext.sync.clientsideencryption", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcCseDecryption, "hidrivenext.e2e", QtInfoMsg)
 
 QString e2eeBaseUrl(const OCC::AccountPtr &account)
 {

@@ -77,7 +77,7 @@
 
 namespace OCC {
 
-Q_LOGGING_CATEGORY(lcOwnCloudGui, "com.ionos.hidrivenext.owncloudgui")
+Q_LOGGING_CATEGORY(lcOwnCloudGui, "com.hidrivenext.owncloudgui")
 
 const char propertyAccountC[] = "oc_account";
 

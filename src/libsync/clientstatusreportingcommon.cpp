@@ -16,7 +16,7 @@
 #include <QLoggingCategory>
 
 namespace OCC {
-Q_LOGGING_CATEGORY(lcClientStatusReportingCommon, "nextcloud.sync.clientstatusreportingcommon", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcClientStatusReportingCommon, "hidrivenext.sync.clientstatusreportingcommon", QtInfoMsg)
 
 QByteArray clientStatusstatusStringFromNumber(const ClientStatusReportingStatus status)
 {

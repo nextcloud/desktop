@@ -24,7 +24,7 @@
 
 namespace OCC {
 
-Q_LOGGING_CATEGORY(lcEditLocallyManager, "nextcloud.gui.editlocallymanager", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcEditLocallyManager, "hidrivenext.gui.editlocallymanager", QtInfoMsg)
 
 EditLocallyManager *EditLocallyManager::_instance = nullptr;
 

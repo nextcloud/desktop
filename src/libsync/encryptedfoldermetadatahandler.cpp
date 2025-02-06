@@ -25,7 +25,7 @@
 
 namespace OCC {
 
-Q_LOGGING_CATEGORY(lcFetchAndUploadE2eeFolderMetadataJob, "nextcloud.sync.propagator.encryptedfoldermetadatahandler", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcFetchAndUploadE2eeFolderMetadataJob, "hidrivenext.sync.propagator.encryptedfoldermetadatahandler", QtInfoMsg)
 
 }
 

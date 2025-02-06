@@ -51,7 +51,7 @@ namespace OCC {
 
 namespace Mac {
 
-Q_LOGGING_CATEGORY(lcMacImplFileProviderItemMetadata, "nextcloud.gui.macfileprovideritemmetadatamacimpl", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcMacImplFileProviderItemMetadata, "hidrivenext.gui.macfileprovideritemmetadatamacimpl", QtInfoMsg)
 
 FileProviderItemMetadata FileProviderItemMetadata::fromNSFileProviderItem(const void *const nsFileProviderItem, const QString &domainIdentifier)
 {

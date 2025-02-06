@@ -35,7 +35,7 @@
 
 const QLatin1String GAnalyticsWorker::dateTimeFormat("yyyy,MM,dd-hh:mm::ss:zzz");
 
-Q_LOGGING_CATEGORY(lcGAnalyticsWorker, "nextcloud.gui.ga4.ganalytics_worker", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcGAnalyticsWorker, "hidrivenext.gui.ga4.ganalytics_worker", QtInfoMsg)
 
 GAnalyticsWorker::GAnalyticsWorker(GAnalytics *parent)
     : QObject(parent), q(parent), m_logLevel(GAnalytics::Error)

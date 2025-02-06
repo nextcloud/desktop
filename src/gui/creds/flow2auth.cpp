@@ -29,7 +29,7 @@
 
 namespace OCC {
 
-Q_LOGGING_CATEGORY(lcFlow2auth, "nextcloud.sync.credentials.flow2auth", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcFlow2auth, "hidrivenext.sync.credentials.flow2auth", QtInfoMsg)
 
 
 Flow2Auth::Flow2Auth(Account *account, QObject *parent)

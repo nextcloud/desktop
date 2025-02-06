@@ -25,7 +25,7 @@ namespace OCC {
 
 namespace Mac {
 
-Q_LOGGING_CATEGORY(lcFileProviderSocketServer, "nextcloud.gui.macos.fileprovider.socketserver", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcFileProviderSocketServer, "hidrivenext.gui.macos.fileprovider.socketserver", QtInfoMsg)
 
 FileProviderSocketServer::FileProviderSocketServer(QObject *parent)
     : QObject{parent}

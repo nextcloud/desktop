@@ -23,7 +23,7 @@
 
 namespace OCC {
 
-Q_LOGGING_CATEGORY(lcShareeModel, "com.ionos.hidrivenext.shareemodel")
+Q_LOGGING_CATEGORY(lcShareeModel, "com.hidrivenext.shareemodel")
 
 ShareeModel::ShareeModel(QObject *parent)
     : QAbstractListModel(parent)

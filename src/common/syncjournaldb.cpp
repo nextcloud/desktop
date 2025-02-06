@@ -44,7 +44,7 @@
 
 namespace OCC {
 
-Q_LOGGING_CATEGORY(lcDb, "nextcloud.sync.database", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcDb, "hidrivenext.sync.database", QtInfoMsg)
 
 #define GET_FILE_RECORD_QUERY \
         "SELECT path, inode, modtime, type, md5, fileid, remotePerm, filesize," \

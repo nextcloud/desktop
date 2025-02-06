@@ -26,7 +26,7 @@ constexpr qint64 bufSize = 500 * 1024;
 
 namespace OCC {
 
-Q_LOGGING_CATEGORY(lcChecksumCalculator, "nextcloud.common.checksumcalculator", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcChecksumCalculator, "hidrivenext.common.checksumcalculator", QtInfoMsg)
 
 static QCryptographicHash::Algorithm algorithmTypeToQCryptoHashAlgorithm(ChecksumCalculator::AlgorithmType algorithmType)
 {

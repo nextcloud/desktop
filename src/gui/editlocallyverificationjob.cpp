@@ -32,7 +32,7 @@ QString prefixSlashToPath(const QString &path)
 namespace OCC
 {
 
-Q_LOGGING_CATEGORY(lcEditLocallyVerificationJob, "nextcloud.gui.editlocallyverificationjob", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcEditLocallyVerificationJob, "hidrivenext.gui.editlocallyverificationjob", QtInfoMsg)
 
 EditLocallyVerificationJob::EditLocallyVerificationJob(const AccountStatePtr &accountState, 
                                                        const QString &relPath, 

@@ -65,7 +65,7 @@ constexpr auto parallelJobsMaximumCount = 1;
 
 namespace OCC {
 
-Q_LOGGING_CATEGORY(lcBulkPropagatorJob, "nextcloud.sync.propagator.bulkupload", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcBulkPropagatorJob, "hidrivenext.sync.propagator.bulkupload", QtInfoMsg)
 
 BulkPropagatorJob::BulkPropagatorJob(OwncloudPropagator *propagator, const std::deque<SyncFileItemPtr> &items)
     : PropagatorJob(propagator)

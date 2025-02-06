@@ -26,7 +26,7 @@
 #include "systray.h"
 #include "tray/talkreply.h"
 
-Q_LOGGING_CATEGORY(lcMacSystrayUserNotifications, "nextcloud.gui.macsystrayusernotifications")
+Q_LOGGING_CATEGORY(lcMacSystrayUserNotifications, "hidrivenext.gui.macsystrayusernotifications")
 
 /************************* Private utility functions *************************/
 

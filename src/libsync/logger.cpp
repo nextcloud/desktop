@@ -69,7 +69,7 @@ static bool compressLog(const QString &originalName, const QString &targetName)
 
 namespace OCC {
 
-Q_LOGGING_CATEGORY(lcPermanentLog, "nextcloud.log.permanent")
+Q_LOGGING_CATEGORY(lcPermanentLog, "hidrivenext.log.permanent")
 
 Logger *Logger::instance()
 {

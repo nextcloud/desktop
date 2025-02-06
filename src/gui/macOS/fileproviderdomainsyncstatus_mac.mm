@@ -26,7 +26,7 @@
 namespace OCC::Mac
 {
 
-Q_LOGGING_CATEGORY(lcMacFileProviderDomainSyncStatus, "nextcloud.gui.macfileproviderdomainsyncstatus", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcMacFileProviderDomainSyncStatus, "hidrivenext.gui.macfileproviderdomainsyncstatus", QtInfoMsg)
 
 class FileProviderDomainSyncStatus::MacImplementation
 {

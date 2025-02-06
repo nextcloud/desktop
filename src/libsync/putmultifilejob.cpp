@@ -18,7 +18,7 @@
 
 namespace OCC {
 
-Q_LOGGING_CATEGORY(lcPutMultiFileJob, "nextcloud.sync.networkjob.put.multi", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcPutMultiFileJob, "hidrivenext.sync.networkjob.put.multi", QtInfoMsg)
 
 PutMultiFileJob::PutMultiFileJob(AccountPtr account,
                                  const QUrl &url,

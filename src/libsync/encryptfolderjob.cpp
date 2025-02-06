@@ -21,7 +21,7 @@
 
 namespace OCC {
 
-Q_LOGGING_CATEGORY(lcEncryptFolderJob, "nextcloud.sync.propagator.encryptfolder", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcEncryptFolderJob, "hidrivenext.sync.propagator.encryptfolder", QtInfoMsg)
 
 EncryptFolderJob::EncryptFolderJob(const AccountPtr &account, SyncJournalDb *journal, const QString &path, const QString &pathNonEncrypted, const QString &remoteSyncRootPath, const QByteArray &fileId, OwncloudPropagator *propagator, SyncFileItemPtr item,
     QObject * parent)

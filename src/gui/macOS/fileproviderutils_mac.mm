@@ -25,7 +25,7 @@ namespace Mac {
 
 namespace FileProviderUtils {
 
-Q_LOGGING_CATEGORY(lcMacFileProviderUtils, "nextcloud.gui.macfileproviderutils", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcMacFileProviderUtils, "hidrivenext.gui.macfileproviderutils", QtInfoMsg)
 
 NSFileProviderDomain *domainForIdentifier(const QString &domainIdentifier)
 {

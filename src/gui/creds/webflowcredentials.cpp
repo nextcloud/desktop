@@ -25,7 +25,7 @@ using namespace QKeychain;
 
 namespace OCC {
 
-Q_LOGGING_CATEGORY(lcWebFlowCredentials, "nextcloud.sync.credentials.webflow", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcWebFlowCredentials, "hidrivenext.sync.credentials.webflow", QtInfoMsg)
 
 namespace {
     const char userC[] = "user";

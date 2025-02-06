@@ -24,7 +24,7 @@
 
 namespace OCC {
 
-Q_LOGGING_CATEGORY(lcSslErrorDialog, "nextcloud.gui.sslerrordialog", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcSslErrorDialog, "hidrivenext.gui.sslerrordialog", QtInfoMsg)
 
 namespace Utility {
     //  Used for QSSLCertificate::subjectInfo which returns a QStringList in Qt5, but a QString in Qt4

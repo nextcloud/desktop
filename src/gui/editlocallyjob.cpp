@@ -26,7 +26,7 @@
 
 namespace OCC {
 
-Q_LOGGING_CATEGORY(lcEditLocallyJob, "nextcloud.gui.editlocallyjob", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcEditLocallyJob, "hidrivenext.gui.editlocallyjob", QtInfoMsg)
 
 EditLocallyJob::EditLocallyJob(const AccountStatePtr &accountState,
                                const QString &relPath,

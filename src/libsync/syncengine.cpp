@@ -61,7 +61,7 @@
 
 namespace OCC {
 
-Q_LOGGING_CATEGORY(lcEngine, "nextcloud.sync.engine", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcEngine, "hidrivenext.sync.engine", QtInfoMsg)
 
 bool SyncEngine::s_anySyncRunning = false;
 

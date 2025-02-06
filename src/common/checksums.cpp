@@ -87,7 +87,7 @@
 
 namespace OCC {
 
-Q_LOGGING_CATEGORY(lcChecksums, "nextcloud.sync.checksums", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcChecksums, "hidrivenext.sync.checksums", QtInfoMsg)
 
 #define BUFSIZE qint64(500 * 1024) // 500 KiB
 

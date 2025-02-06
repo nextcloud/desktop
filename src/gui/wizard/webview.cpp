@@ -21,7 +21,7 @@
 
 namespace OCC {
 
-Q_LOGGING_CATEGORY(lcWizardWebiew, "nextcloud.gui.wizard.webview", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcWizardWebiew, "hidrivenext.gui.wizard.webview", QtInfoMsg)
 
 
 class WebViewPageUrlRequestInterceptor : public QWebEngineUrlRequestInterceptor

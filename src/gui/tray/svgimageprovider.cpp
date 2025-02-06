@@ -19,7 +19,7 @@
 
 namespace OCC {
 namespace Ui {
-    Q_LOGGING_CATEGORY(lcSvgImageProvider, "nextcloud.gui.svgimageprovider", QtInfoMsg)
+    Q_LOGGING_CATEGORY(lcSvgImageProvider, "hidrivenext.gui.svgimageprovider", QtInfoMsg)
 
     SvgImageProvider::SvgImageProvider()
         : QQuickImageProvider(QQuickImageProvider::Image)

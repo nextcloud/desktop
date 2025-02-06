@@ -24,7 +24,7 @@
 
 namespace OCC {
 
-Q_LOGGING_CATEGORY(lcFileItem, "nextcloud.sync.fileitem", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcFileItem, "hidrivenext.sync.fileitem", QtInfoMsg)
 
 namespace EncryptionStatusEnums {
 

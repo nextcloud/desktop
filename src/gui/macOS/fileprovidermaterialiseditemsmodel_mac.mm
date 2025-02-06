@@ -26,7 +26,7 @@ namespace OCC {
 
 namespace Mac {
 
-Q_LOGGING_CATEGORY(lcMacImplFileProviderMaterialisedItemsModelMac, "nextcloud.gui.macfileprovidermaterialiseditemsmodelmac", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcMacImplFileProviderMaterialisedItemsModelMac, "hidrivenext.gui.macfileprovidermaterialiseditemsmodelmac", QtInfoMsg)
 
 void FileProviderMaterialisedItemsModel::evictItem(const QString &identifier, const QString &domainIdentifier)
 {

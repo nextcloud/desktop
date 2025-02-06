@@ -29,7 +29,7 @@
 
 constexpr auto serverUrl = "https://server";
 
-Q_LOGGING_CATEGORY(lcEndToEndTestUtils, "nextcloud.gui.endtoendtestutils", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcEndToEndTestUtils, "hidrivenext.gui.endtoendtestutils", QtInfoMsg)
 
 /** End to end test credentials access manager class **/
 

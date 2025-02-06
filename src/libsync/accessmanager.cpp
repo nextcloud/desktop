@@ -30,7 +30,7 @@
 
 namespace OCC {
 
-Q_LOGGING_CATEGORY(lcAccessManager, "nextcloud.sync.accessmanager", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcAccessManager, "hidrivenext.sync.accessmanager", QtInfoMsg)
 
 AccessManager::AccessManager(QObject *parent)
     : QNetworkAccessManager(parent)

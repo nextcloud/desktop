@@ -77,7 +77,7 @@ bool isWindows11OrGreater() {
 
 namespace OCC {
 
-Q_LOGGING_CATEGORY(lcTheme, "nextcloud.gui.theme", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcTheme, "hidrivenext.gui.theme", QtInfoMsg)
 
 Theme *Theme::_instance = nullptr;
 

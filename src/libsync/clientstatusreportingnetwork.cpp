@@ -28,7 +28,7 @@ constexpr auto statusReportCategoryVirus = "virus_detected";
 
 namespace OCC
 {
-Q_LOGGING_CATEGORY(lcClientStatusReportingNetwork, "nextcloud.sync.clientstatusreportingnetwork", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcClientStatusReportingNetwork, "hidrivenext.sync.clientstatusreportingnetwork", QtInfoMsg)
 
 ClientStatusReportingNetwork::ClientStatusReportingNetwork(Account *account, const QSharedPointer<ClientStatusReportingDatabase> database, QObject *parent)
     : QObject(parent)

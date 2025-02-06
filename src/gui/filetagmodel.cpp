@@ -16,7 +16,7 @@
 
 #include "libsync/networkjobs.h"
 
-Q_LOGGING_CATEGORY(lcFileTagModel, "nextcloud.gui.filetagmodel", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcFileTagModel, "hidrivenext.gui.filetagmodel", QtInfoMsg)
 
 namespace OCC {
 

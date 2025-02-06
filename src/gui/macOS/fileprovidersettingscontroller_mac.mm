@@ -52,7 +52,7 @@ namespace OCC {
 
 namespace Mac {
 
-Q_LOGGING_CATEGORY(lcFileProviderSettingsController, "nextcloud.gui.mac.fileprovider.settingscontroller")
+Q_LOGGING_CATEGORY(lcFileProviderSettingsController, "hidrivenext.gui.mac.fileprovider.settingscontroller")
 
 class FileProviderSettingsController::MacImplementation : public QObject
 {

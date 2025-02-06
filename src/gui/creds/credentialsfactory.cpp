@@ -22,7 +22,7 @@
 
 namespace OCC {
 
-Q_LOGGING_CATEGORY(lcGuiCredentials, "nextcloud.gui.credentials", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcGuiCredentials, "hidrivenext.gui.credentials", QtInfoMsg)
 
 namespace CredentialsFactory {
 

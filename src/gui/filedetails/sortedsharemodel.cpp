@@ -16,7 +16,7 @@
 
 namespace OCC {
 
-Q_LOGGING_CATEGORY(lcSortedShareModel, "com.ionos.hidrivenext.sortedsharemodel")
+Q_LOGGING_CATEGORY(lcSortedShareModel, "com.hidrivenext.sortedsharemodel")
 
 SortedShareModel::SortedShareModel(QObject *parent)
     : QSortFilterProxyModel(parent)

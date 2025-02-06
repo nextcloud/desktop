@@ -22,7 +22,7 @@
 
 namespace OCC {
 
-Q_LOGGING_CATEGORY(lcOcs, "nextcloud.gui.sharing.ocs", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcOcs, "hidrivenext.gui.sharing.ocs", QtInfoMsg)
 
 OcsJob::OcsJob(AccountPtr account)
     : AbstractNetworkJob(account, "")

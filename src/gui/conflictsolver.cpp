@@ -22,7 +22,7 @@
 
 namespace OCC {
 
-Q_LOGGING_CATEGORY(lcConflict, "nextcloud.gui.conflictsolver", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcConflict, "hidrivenext.gui.conflictsolver", QtInfoMsg)
 
 ConflictSolver::ConflictSolver(QWidget *parent)
     : QObject(parent)
