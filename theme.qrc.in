@@ -256,7 +256,9 @@
         <file>theme/ses/ses-activity.svg</file>
         <file>theme/ses/ses-chevron.svg</file>
         <file>theme/ses/ses-clipboard.svg</file>
+        <file>theme/ses/ses-lightClipboard.svg</file>
         <file>theme/ses/ses-darkPlus.svg</file>
+        <file>theme/ses/ses-lightPlus.svg</file>
         <file>theme/ses/ses-addlivebackup.svg</file>
         <file>theme/ses/ses-file.svg</file>
         <file>theme/ses/ses-folderIcon.svg</file>
