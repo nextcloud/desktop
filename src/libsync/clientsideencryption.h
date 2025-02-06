@@ -395,7 +395,6 @@ private:
                               SUCCESS_CALLBACK nextCheck,
                               ERROR_CALLBACK onError);
 
-    [[nodiscard]] bool checkPublicKeyValidity(const AccountPtr &account) const;
     [[nodiscard]] bool checkServerPublicKeyValidity(const QByteArray &serverPublicKeyString) const;
     [[nodiscard]] bool sensitiveDataRemaining() const;
 

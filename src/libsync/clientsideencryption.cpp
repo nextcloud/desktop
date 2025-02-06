@@ -1316,38 +1316,6 @@ void ClientSideEncryption::fetchPublicKeyFromKeyChain(const AccountPtr &account)
     job->start();
 }
 
-bool ClientSideEncryption::checkPublicKeyValidity(const AccountPtr &account) const
-{
-    QByteArray data = EncryptionHelper::generateRandom(64);
-
-    Bio publicKeyBio;
-    QByteArray publicKeyPem = account->e2e()->getPublicKey().toPem();
-    BIO_write(publicKeyBio, publicKeyPem.constData(), publicKeyPem.size());
-    auto publicKey = PKey::readPublicKey(publicKeyBio);
-
-    auto encryptedData = EncryptionHelper::encryptStringAsymmetric(account->e2e()->getCertificateInformation(), account->e2e()->paddingMode(), *account->e2e(), data);
-    if (!encryptedData) {
-        qCWarning(lcCse()) << "encryption error";
-        return false;
-    }
-
-    auto key = _encryptionCertificate.getEvpPrivateKey();
-
-    const auto decryptionResult = EncryptionHelper::decryptStringAsymmetric(account->e2e()->getCertificateInformation(), account->e2e()->paddingMode(), *account->e2e(), *encryptedData);
-    if (!decryptionResult) {
-        qCWarning(lcCse()) << "encryption error";
-        return false;
-    }
-    const auto decryptResult = QByteArray::fromBase64(*decryptionResult);
-
-    if (data != decryptResult) {
-        qCInfo(lcCse()) << "invalid private key";
-        return false;
-    }
-
-    return true;
-}
-
 bool ClientSideEncryption::checkEncryptionIsWorking() const
 {
     qCInfo(lcCse) << "check encryption is working before enabling end-to-end encryption feature";
@@ -2296,7 +2264,7 @@ void ClientSideEncryption::decryptPrivateKey(const AccountPtr &account, const QB
                 }
             }
 
-            if (!getPrivateKey().isNull() && checkPublicKeyValidity(account)) {
+            if (!getPrivateKey().isNull() && checkEncryptionIsWorking()) {
                 writePrivateKey(account);
                 writeCertificate(account);
                 writeMnemonic(account, [] () {});
