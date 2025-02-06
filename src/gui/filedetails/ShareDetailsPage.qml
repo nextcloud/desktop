@@ -870,18 +870,6 @@ Page {
             Layout.rightMargin: 20
             Layout.row: 1
 
-            Behavior on bgColor {
-                ColorAnimation { duration: Style.shortAnimationDuration }
-            }
-
-            Behavior on bgHoverOpacity {
-                NumberAnimation { duration: Style.shortAnimationDuration }
-            }
-
-            Behavior on Layout.preferredWidth {
-                SmoothedAnimation { duration: Style.shortAnimationDuration }
-            }
-
             TextEdit {
                 id: clipboardHelper
                 visible: false
