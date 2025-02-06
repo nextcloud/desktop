@@ -69,6 +69,7 @@
 #include <QVersionNumber>
 #include <QRandomGenerator>
 #include <QHttp2Configuration>
+#include <QElapsedTimer>
 
 class QSocket;
 
@@ -1112,6 +1113,17 @@ bool Application::event(QEvent *event)
         emit systemPaletteChanged();
     }
     return SharedTools::QtSingleApplication::event(event);
+}
+
+bool Application::notify(QObject *object, QEvent *event)
+{
+    QElapsedTimer timer;
+    timer.start();
+    const auto result = SharedTools::QtSingleApplication::notify(object, event);
+    if (timer.elapsed() > 200) {
+        qCCritical(lcApplication()) << "stuck main thread";
+    }
+    return result;
 }
 
 } // namespace OCC

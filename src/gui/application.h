@@ -74,6 +74,8 @@ public:
 
     bool event(QEvent *event) override;
 
+    bool notify(QObject *, QEvent *) override;
+
 public slots:
     // TODO: this should not be public
     void slotownCloudWizardDone(int);
