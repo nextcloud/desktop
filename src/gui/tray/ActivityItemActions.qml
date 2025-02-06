@@ -34,6 +34,7 @@ Repeater {
 
         Layout.alignment: Qt.AlignTop | Qt.AlignRight
 
+        hoverEnabled: false
         padding: Style.smallSpacing
         display: Button.TextOnly
 
@@ -42,10 +43,6 @@ Repeater {
         icon.source: model.modelData.imageSource ? model.modelData.imageSource + Style.adjustedCurrentUserHeaderColor : ""
 
         onClicked: isTalkReplyButton ? root.showReplyField() : root.triggerAction(model.index)
-
-        bgColor: Style.sesActionPressed
-        bgNormalOpacity: 1.0
-        bgHoverOpacity: Style.hoverOpacity
 
         visible: verb !== "REPLY" || (verb === "REPLY" && root.talkReplyButtonVisible)
     }
