@@ -6,10 +6,13 @@
 //
 
 import Foundation
+import NextcloudFileProviderKit
 import NextcloudKit
 import OSLog
 
-func fetchItemMetadata(itemRelativePath: String, kit: NextcloudKit) async -> NKFile? {
+func fetchItemMetadata(
+    itemRelativePath: String, account: Account, kit: NextcloudKit
+) async -> NKFile? {
     func slashlessPath(_ string: String) -> String {
         var strCopy = string
         if strCopy.hasPrefix("/") {
@@ -21,15 +24,21 @@ func fetchItemMetadata(itemRelativePath: String, kit: NextcloudKit) async -> NKF
         return strCopy
     }
 
-    let nkCommon = kit.nkCommonInstance
-    let urlBase = slashlessPath(nkCommon.urlBase)
-    let davSuffix = slashlessPath(nkCommon.dav)
-    let userId = nkCommon.userId
+    guard let nksession = kit.getSession(account: account.ncKitAccount) else {
+        Logger.metadataProvider.error("Could not get nksession for \(account.ncKitAccount)")
+        return nil
+    }
+
+    let urlBase = slashlessPath(nksession.urlBase)
+    let davSuffix = slashlessPath(nksession.dav)
+    let userId = nksession.userId
     let itemRelPath = slashlessPath(itemRelativePath)
 
     let itemFullServerPath = "\(urlBase)/\(davSuffix)/files/\(userId)/\(itemRelPath)"
     return await withCheckedContinuation { continuation in
-        kit.readFileOrFolder(serverUrlFileName: itemFullServerPath, depth: "0") {
+        kit.readFileOrFolder(
+            serverUrlFileName: itemFullServerPath, depth: "0", account: account.ncKitAccount
+        ) {
             account, files, data, error in
             guard error == .success else {
                 Logger.metadataProvider.error(
@@ -39,7 +48,7 @@ func fetchItemMetadata(itemRelativePath: String, kit: NextcloudKit) async -> NKF
                 return
             }
             Logger.metadataProvider.info("Successfully retrieved item metadata")
-            continuation.resume(returning: files.first)
+            continuation.resume(returning: files?.first)
         }
     }
 }

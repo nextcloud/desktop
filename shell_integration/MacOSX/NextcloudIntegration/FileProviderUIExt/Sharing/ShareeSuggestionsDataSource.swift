@@ -6,18 +6,21 @@
 //
 
 import Foundation
+import NextcloudFileProviderKit
 import NextcloudKit
 import OSLog
 import SuggestionsTextFieldKit
 
 class ShareeSuggestionsDataSource: SuggestionsDataSource {
     let kit: NextcloudKit
+    let account: Account
     var suggestions: [Suggestion] = []
     var inputString: String = "" {
         didSet { Task { await updateSuggestions() } }
     }
 
-    init(kit: NextcloudKit) {
+    init(account: Account, kit: NextcloudKit) {
+        self.account = account
         self.kit = kit
     }
 
@@ -35,11 +38,12 @@ class ShareeSuggestionsDataSource: SuggestionsDataSource {
                 search: inputString,
                 page: 1,
                 perPage: 20,
+                account: account.ncKitAccount,
                 completion: { account, sharees, data, error in
                     defer { continuation.resume(returning: sharees ?? []) }
                     guard error == .success else {
                         Logger.shareeDataSource.error(
-                            "Error fetching sharees: \(error.description, privacy: .public)"
+                            "Error fetching sharees: \(error.errorDescription, privacy: .public)"
                         )
                         return
                     }
