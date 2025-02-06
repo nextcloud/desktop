@@ -2045,7 +2045,7 @@ Ezt a problémát valószínűleg az OpenSSL programkönyvtárakban kell keresni
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.cpp" line="222"/>
         <source>Open Browser</source>
-        <translation type="unfinished"/>
+        <translation>Böngésző megnyitása</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.cpp" line="224"/>
@@ -2488,7 +2488,10 @@ Alternatívaként az összes törölt fájlt visszaállíthatja a kiszolgálór�
 This setup can cause data loss and it is no longer supported.
 To resolve this issue: please remove %1 from one of the accounts and create a new sync folder.
 For advanced users: this issue might be related to multiple sync database files found in one folder. Please check %1 for outdated and unused .sync_*.db files and remove them.</source>
-        <translation type="unfinished"/>
+        <translation>Az %1 mappa több fiókhoz is kapcsolódik.
+Ez a beállítás adatvesztést okozhat, és már nem támogatott.
+A probléma megoldása: Kérjük, távolítsa el a(z) %1 mappát az egyik fiókból, és hozzon létre egy új szinkronizálási mappát.
+Haladó felhasználók számára: Ez a probléma az egy mappában található több szinkronizálási adatbázisfájlhoz kapcsolódhat. Kérjük, ellenőrizze a(z) %1 mappában az elavult és nem használt .sync_*.db fájlokat, és távolítsa el őket.</translation>
     </message>
 </context>
 <context>
@@ -3438,7 +3441,7 @@ Ahol a törlés engedélyezett, ott az elemek törölve lesznek, ha megakadályo
     <message>
         <location filename="../src/gui/legalnotice.cpp" line="55"/>
         <source>&lt;p&gt;Copyright 2017-2025 Nextcloud GmbH&lt;br /&gt;Copyright 2012-2023 ownCloud GmbH&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Copyright 2017-2025 Nextcloud GmbH&lt;br /&gt;Copyright 2012-2023 ownCloud GmbH&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/legalnotice.cpp" line="55"/>
@@ -4397,7 +4400,7 @@ Ez egy új, kísérleti mód. Ha úgy dönt, hogy használja, akkor jelezze nek�
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1485"/>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1519"/>
         <source>unknown exception</source>
-        <translation type="unfinished"/>
+        <translation>ismeretlen kivétel</translation>
     </message>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1387"/>
@@ -4531,7 +4534,7 @@ Ez egy új, kísérleti mód. Ha úgy dönt, hogy használja, akkor jelezze nek�
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="259"/>
         <source>unknown exception</source>
-        <translation type="unfinished"/>
+        <translation>ismeretlen kivétel</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="200"/>
@@ -6497,7 +6500,7 @@ A kiszolgáló hibával válaszolt: %2</translation>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="469"/>
         <source>Password protection</source>
-        <translation type="unfinished"/>
+        <translation>Jelszavas védelem</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="516"/>
