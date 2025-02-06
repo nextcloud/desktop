@@ -299,4 +299,12 @@ QtObject {
     property int sesAccountLabelWidth: 157
     property int sesTrayHeaderMargin: 11
     property int sesTrayWindowWidth: 464
+
+    property color sesPillButtonPrimaryBackgroundColor: "#0B2A63"
+    property color sesPillButtonSecondaryBackgroundColor: "white"
+    property color sesPillButtonBorderColor: "#0B2A63"
+    property real sesPillIconSize: 16
+    property int sesPillButtonVerticalPadding: 4
+    property int sesPillButtonHorizontalPadding: 10
+    property real sesPillButtonHoverOpacity: 0.7
 }
