@@ -790,18 +790,14 @@ Page {
         columns: 1
         rows: 2
 
-        SesCustomButton {
+        PrimaryPillButton {
             Layout.columnSpan: buttonGrid.columns
 
-            icon.source: Style.sesDarkPlus
+            iconSource: Style.sesLightPlus
 
             font.pixelSize: pixelSize
             font.weight: fontWeight
             text: qsTr("Add another link")
-
-            bgColor: Style.sesActionPressed
-            bgNormalOpacity: 1.0
-            bgHoverOpacity: Style.hoverOpacity
 
             visible: root.isLinkShare && root.canCreateLinkShares
             enabled: visible
@@ -813,20 +809,12 @@ Page {
             onClicked: root.createNewLinkShare()
         }
 
-        SesCustomButton {
+        SecondaryPillButton {
             id: unshareButton
 
             font.pixelSize: pixelSize
             font.weight: fontWeight
             text: qsTr("Unshare")
-            textColor: Style.sesActionPressed
-
-            bgColor: palette.highlight
-            bgNormalOpacity: 1.0
-
-            bgBorderWidth: 2
-            bgBorderColor: Style.sesActionPressed
-            bgHoverOpacity: Style.hoverOpacity
 
             Layout.bottomMargin: 16
             Layout.leftMargin: 16
@@ -835,7 +823,7 @@ Page {
             onClicked: root.deleteShare()
         }
 
-        SesCustomButton {
+        PrimaryPillButton {
             id: copyShareLinkButton
 
             function copyShareLink() {
@@ -850,15 +838,9 @@ Page {
 
             property bool shareLinkCopied: false
 
-            icon.source: Style.sesClipboard
+            iconSource: Style.sesLightClipboard
 
-            font.pixelSize: pixelSize
-            font.weight: fontWeight
             text: shareLinkCopied ? qsTr("Share link copied!") : qsTr("Copy share link")
-
-            bgColor: Style.sesActionPressed
-            bgNormalOpacity: 1.0
-            bgHoverOpacity: shareLinkCopied ? 1.0 : Style.hoverOpacity
 
             visible: root.isLinkShare
             enabled: visible
