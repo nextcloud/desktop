@@ -313,6 +313,7 @@ void ownCloudGui::slotComputeOverallSyncStatus()
     QList<QString> problemFileProviderAccounts;
     QList<QString> syncingFileProviderAccounts;
     QList<QString> successFileProviderAccounts;
+    QList<QString> idleFileProviderAccounts;
 
     if (Mac::FileProvider::fileProviderAvailable()) {
         for (const auto &accountState : AccountManager::instance()->accounts()) {
@@ -329,6 +330,7 @@ void ownCloudGui::slotComputeOverallSyncStatus()
                 switch (const auto latestStatus = fileProvider->socketServer()->latestReceivedSyncStatusForAccount(accountState->account())) {
                 case SyncResult::Undefined:
                 case SyncResult::NotYetStarted:
+                    idleFileProviderAccounts.append(accountFpId);
                     break;
                 case SyncResult::SyncPrepare:
                 case SyncResult::SyncRunning:
@@ -343,7 +345,7 @@ void ownCloudGui::slotComputeOverallSyncStatus()
                 case SyncResult::SetupError:
                     problemFileProviderAccounts.append(accountFpId);
                     break;
-                case SyncResult::Paused:
+                case SyncResult::Paused: // This is not technically possible with VFS
                     break;
                 }
             }
@@ -405,7 +407,7 @@ void ownCloudGui::slotComputeOverallSyncStatus()
                overallStatus != SyncResult::Error &&
                overallStatus != SyncResult::SetupError) {
         overallStatus = SyncResult::SyncRunning;
-    } else if (!successFileProviderAccounts.isEmpty() &&
+    } else if ((!successFileProviderAccounts.isEmpty() || (problemFileProviderAccounts.isEmpty() && syncingFileProviderAccounts.isEmpty() && !idleFileProviderAccounts.isEmpty())) &&
                overallStatus != SyncResult::SyncRunning &&
                overallStatus != SyncResult::Problem &&
                overallStatus != SyncResult::Error &&
