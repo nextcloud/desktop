@@ -490,7 +490,8 @@ void PropagateDownloadFile::startAfterIsEncryptedIsChecked()
 
     // For virtual files just dehydrate or create the file and be done
     if (_item->_type == ItemTypeVirtualFileDehydration) {
-        QString fsPath = propagator()->fullLocalPath(_item->_file);
+        const auto fsPath = propagator()->fullLocalPath(_item->_file);
+        makeParentFolderModifiable(fsPath);
         if (!FileSystem::verifyFileUnchanged(fsPath, _item->_previousSize, _item->_previousModtime)) {
             propagator()->_anotherSyncNeeded = true;
             done(SyncFileItem::SoftError, tr("File has changed since discovery"), ErrorCategory::GenericError);
@@ -499,6 +500,7 @@ void PropagateDownloadFile::startAfterIsEncryptedIsChecked()
 
         qCDebug(lcPropagateDownload) << "dehydrating file" << _item->_file;
         if (FileSystem::isLnkFile(fsPath)) {
+            makeParentFolderModifiable(_tmpFile.fileName());
             const auto convertResult = vfs->convertToPlaceholder(fsPath, *_item);
             if (!convertResult) {
                 qCCritical(lcPropagateDownload()) << "error when converting a shortcut file to placeholder" << convertResult.error();
@@ -532,6 +534,10 @@ void PropagateDownloadFile::startAfterIsEncryptedIsChecked()
     }
     if (_item->_type == ItemTypeVirtualFile && !propagator()->localFileNameClash(_item->_file)) {
         qCDebug(lcPropagateDownload) << "creating virtual file" << _item->_file;
+
+        const auto fsPath = propagator()->fullLocalPath(_item->_file);
+        makeParentFolderModifiable(fsPath);
+
         // do a klaas' case clash check.
         if (propagator()->localFileNameClash(_item->_file)) {
             done(SyncFileItem::FileNameClash, tr("File %1 can not be downloaded because of a local file name clash!").arg(QDir::toNativeSeparators(_item->_file)), ErrorCategory::GenericError);
@@ -666,6 +672,7 @@ void PropagateDownloadFile::startDownload()
         tmpFileName = createDownloadTmpFileName(_item->_file);
     }
     _tmpFile.setFileName(propagator()->fullLocalPath(tmpFileName));
+    makeParentFolderModifiable(_tmpFile.fileName());
 
     _resumeStart = _tmpFile.size();
     if (_resumeStart > 0 && _resumeStart == _item->_size) {
@@ -679,32 +686,6 @@ void PropagateDownloadFile::startDownload()
     if (_tmpFile.exists()) {
         FileSystem::setFileReadOnly(_tmpFile.fileName(), false);
     }
-
-#if !defined(Q_OS_MACOS) || __MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_15
-    try {
-        const auto newDirPath = std::filesystem::path{_tmpFile.fileName().toStdWString()};
-        Q_ASSERT(newDirPath.has_parent_path());
-        _parentPath = newDirPath.parent_path();
-    }
-    catch (const std::filesystem::filesystem_error &e)
-    {
-        qCWarning(lcPropagateDownload) << "exception when checking parent folder access rights" << e.what() << e.path1().c_str() << e.path2().c_str();
-    }
-    catch (const std::system_error &e)
-    {
-        qCWarning(lcPropagateDownload) << "exception when checking parent folder access rights" << e.what();
-    }
-    catch (...)
-    {
-        qCWarning(lcPropagateDownload) << "exception when checking parent folder access rights";
-    }
-
-    if (FileSystem::isFolderReadOnly(_parentPath)) {
-        FileSystem::setFolderPermissions(QString::fromStdWString(_parentPath.wstring()), FileSystem::FolderPermissions::ReadWrite);
-        emit propagator()->touchedFile(QString::fromStdWString(_parentPath.wstring()));
-        _needParentFolderRestorePermissions = true;
-    }
-#endif
 
     if (!_tmpFile.open(QIODevice::Append | QIODevice::Unbuffered)) {
         qCWarning(lcPropagateDownload) << "could not open temporary file" << _tmpFile.fileName();
@@ -784,6 +765,47 @@ qint64 PropagateDownloadFile::committedDiskSpace() const
 void PropagateDownloadFile::setDeleteExistingFolder(bool enabled)
 {
     _deleteExisting = enabled;
+}
+
+void PropagateDownloadFile::done(const SyncFileItem::Status status, const QString &errorString, const ErrorCategory category)
+{
+#if !defined(Q_OS_MACOS) || __MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_15
+    if (_needParentFolderRestorePermissions) {
+        FileSystem::setFolderPermissions(QString::fromStdWString(_parentPath.wstring()), FileSystem::FolderPermissions::ReadOnly);
+        emit propagator()->touchedFile(QString::fromStdWString(_parentPath.wstring()));
+        _needParentFolderRestorePermissions = false;
+    }
+#endif
+    PropagateItemJob::done(status, errorString, category);
+}
+
+void PropagateDownloadFile::makeParentFolderModifiable(const QString &fileName)
+{
+#if !defined(Q_OS_MACOS) || __MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_15
+    try {
+        const auto newDirPath = std::filesystem::path{fileName.toStdWString()};
+        Q_ASSERT(newDirPath.has_parent_path());
+        _parentPath = newDirPath.parent_path();
+    }
+    catch (const std::filesystem::filesystem_error &e)
+    {
+        qCWarning(lcPropagateDownload) << "exception when checking parent folder access rights" << e.what() << e.path1().c_str() << e.path2().c_str();
+    }
+    catch (const std::system_error &e)
+    {
+        qCWarning(lcPropagateDownload) << "exception when checking parent folder access rights" << e.what();
+    }
+    catch (...)
+    {
+        qCWarning(lcPropagateDownload) << "exception when checking parent folder access rights";
+    }
+
+    if (FileSystem::isFolderReadOnly(_parentPath)) {
+        FileSystem::setFolderPermissions(QString::fromStdWString(_parentPath.wstring()), FileSystem::FolderPermissions::ReadWrite);
+        emit propagator()->touchedFile(QString::fromStdWString(_parentPath.wstring()));
+        _needParentFolderRestorePermissions = true;
+    }
+#endif
 }
 
 const char owncloudCustomSoftErrorStringC[] = "owncloud-custom-soft-error-string";
@@ -1329,7 +1351,7 @@ void PropagateDownloadFile::downloadFinished()
 
 #if !defined(Q_OS_MACOS) || __MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_15
     if (_needParentFolderRestorePermissions) {
-        FileSystem::setFolderPermissions(QString::fromStdWString(_parentPath.wstring()), FileSystem::FolderPermissions::ReadWrite);
+        FileSystem::setFolderPermissions(QString::fromStdWString(_parentPath.wstring()), FileSystem::FolderPermissions::ReadOnly);
         emit propagator()->touchedFile(QString::fromStdWString(_parentPath.wstring()));
         _needParentFolderRestorePermissions = false;
     }
