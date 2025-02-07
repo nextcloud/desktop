@@ -92,26 +92,30 @@ void FolderCreationDialog::slotNewFolderNameEditTextEdited()
     if (!ui->newFolderNameEdit->text().isEmpty() && QDir(_destination + "/" + ui->newFolderNameEdit->text()).exists()) {
         ui->errorSnackbar->setVisible(true);
         ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
+        sizeDialog();
+
     } else {
         ui->errorSnackbar->setVisible(false);
         ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(true);
+        sizeDialog();
     }
+}
+
+void FolderCreationDialog::sizeDialog(){
+    adjustSize();
+    setFixedWidth(626);
+    setFixedHeight(sizeHint().height());
 }
 
 void FolderCreationDialog::customizeStyle()
 {
     ui->buttonBox->setLayoutDirection(Qt::RightToLeft);
 
-    QDialog *dialog = qobject_cast<QDialog*>(this);
-    dialog->setMinimumSize(626, 156);
-
     QPushButton *okButton = ui->buttonBox->button(QDialogButtonBox::Ok);
     okButton->setProperty("buttonStyle", QVariant::fromValue(OCC::ButtonStyleName::Primary));
 
     QHBoxLayout* buttonlayout = qobject_cast<QHBoxLayout*>(ui->buttonBox->layout());
     buttonlayout->setSpacing(16);
-
-    ui->errorSnackbar->setFixedHeight(46);
 
     ui->newFolderNameEdit->setStyleSheet(
         QStringLiteral(
@@ -131,5 +135,6 @@ void FolderCreationDialog::customizeStyle()
     buttonlayout->setSpacing(32);
 #endif
 
+    sizeDialog();
 }
 }
