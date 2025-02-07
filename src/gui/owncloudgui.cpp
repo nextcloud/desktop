@@ -405,6 +405,12 @@ void ownCloudGui::slotComputeOverallSyncStatus()
                overallStatus != SyncResult::Error &&
                overallStatus != SyncResult::SetupError) {
         overallStatus = SyncResult::SyncRunning;
+    } else if (!successFileProviderAccounts.isEmpty() &&
+               overallStatus != SyncResult::SyncRunning &&
+               overallStatus != SyncResult::Problem &&
+               overallStatus != SyncResult::Error &&
+               overallStatus != SyncResult::SetupError) {
+        overallStatus = SyncResult::Success;
     }
 #endif
 
