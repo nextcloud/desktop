@@ -1,5 +1,5 @@
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index 54fdf0a3b..6e87ee651 100644
+index 5b7448b2e..77550d202 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
 @@ -24,7 +24,7 @@ set(BIN_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
@@ -62,7 +62,7 @@ index 2c23656f2..5d0b462bd 100644
              continue;
          }
 diff --git a/src/gui/CMakeLists.txt b/src/gui/CMakeLists.txt
-index 014cfce4c..c5f74aba9 100644
+index 4bd77faba..ed2484e10 100644
 --- a/src/gui/CMakeLists.txt
 +++ b/src/gui/CMakeLists.txt
 @@ -3,7 +3,7 @@ find_package(Qt${QT_MAJOR_VERSION} REQUIRED COMPONENTS Widgets Svg Qml Quick Qui
@@ -75,7 +75,7 @@ index 014cfce4c..c5f74aba9 100644
  endif()
  
 diff --git a/src/gui/application.cpp b/src/gui/application.cpp
-index c5c0f7cb6..f72f7b844 100644
+index 4175ae5f0..416323fd6 100644
 --- a/src/gui/application.cpp
 +++ b/src/gui/application.cpp
 @@ -979,7 +979,7 @@ QString substLang(const QString &lang)
@@ -125,8 +125,42 @@ index f98cad514..86bb14f10 100644
  import QtQuick
  import QtQuick.Controls
  import QtQuick.Layouts
+diff --git a/src/libsync/filesystem.cpp b/src/libsync/filesystem.cpp
+index 8361d8af5..e158d8706 100644
+--- a/src/libsync/filesystem.cpp
++++ b/src/libsync/filesystem.cpp
+@@ -349,12 +349,12 @@ bool FileSystem::setFolderPermissions(const QString &path,
+     }
+     catch (const std::system_error &e)
+     {
+-        qCWarning(lcFileSystem()) << "exception when modifying folder permissions" << e.what() << "- path:" << stdStrPath;
++        qCWarning(lcFileSystem()) << "exception when modifying folder permissions" << e.what() << "- path:" << stdStrPath.c_str();
+         return false;
+     }
+     catch (...)
+     {
+-        qCWarning(lcFileSystem()) << "exception when modifying folder permissions -  path:" << stdStrPath;
++        qCWarning(lcFileSystem()) << "exception when modifying folder permissions -  path:" << stdStrPath.c_str();
+         return false;
+     }
+ 
+@@ -494,12 +494,12 @@ bool FileSystem::setFolderPermissions(const QString &path,
+     }
+     catch (const std::system_error &e)
+     {
+-        qCWarning(lcFileSystem()) << "exception when modifying folder permissions" << e.what() << "- path:" << stdStrPath;
++        qCWarning(lcFileSystem()) << "exception when modifying folder permissions" << e.what() << "- path:" << stdStrPath.c_str();
+         return false;
+     }
+     catch (...)
+     {
+-        qCWarning(lcFileSystem()) << "exception when modifying folder permissions -  path:" << stdStrPath;
++        qCWarning(lcFileSystem()) << "exception when modifying folder permissions -  path:" << stdStrPath.c_str();
+         return false;
+     }
+ 
 diff --git a/src/libsync/networkjobs.cpp b/src/libsync/networkjobs.cpp
-index 336905003..483bc25bc 100644
+index c01ab82e2..64846ba1c 100644
 --- a/src/libsync/networkjobs.cpp
 +++ b/src/libsync/networkjobs.cpp
 @@ -663,9 +663,12 @@ bool PropfindJob::finished()
@@ -176,7 +210,7 @@ index 6bfad9d62..89ca8221b 100644
      _webSocket->open(webSocketUrl);
  }
 diff --git a/src/libsync/theme.cpp b/src/libsync/theme.cpp
-index 7850f7ff0..4edff0821 100644
+index f25ff9b58..9e32faa79 100644
 --- a/src/libsync/theme.cpp
 +++ b/src/libsync/theme.cpp
 @@ -25,8 +25,6 @@
@@ -269,7 +303,7 @@ index 96f2ba1da..2ce760813 100644
  
          backend.setDate(testDate);
 diff --git a/test/testsharemodel.cpp b/test/testsharemodel.cpp
-index 6abfe79ce..5d8800985 100644
+index 1385dc73d..041fd5f73 100644
 --- a/test/testsharemodel.cpp
 +++ b/test/testsharemodel.cpp
 @@ -278,7 +278,7 @@ private slots:
