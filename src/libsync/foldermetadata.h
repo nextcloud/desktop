@@ -93,6 +93,12 @@ public:
     };
     Q_ENUM(FolderType)
 
+    enum class CertificateType {
+        SoftwareNextcloudCertificate,
+        HardwareCertificate,
+    };
+    Q_ENUM(CertificateType)
+
     FolderMetadata(AccountPtr account, const QString &remoteFolderRoot, FolderType folderType = FolderType::Nested);
     /*
     * construct metadata based on RootEncryptedFolderInfo
@@ -116,10 +122,12 @@ public:
 
     [[nodiscard]] bool encryptedMetadataNeedUpdate() const;
 
+    [[nodiscard]] QByteArray certificateSha256Fingerprint() const;
+
     [[nodiscard]] bool moveFromFileDropToFiles();
 
     // adds a user to have access to this folder (always generates new metadata key)
-    [[nodiscard]] bool addUser(const QString &userId, const QSslCertificate &certificate);
+    [[nodiscard]] bool addUser(const QString &userId, const QSslCertificate &certificate, CertificateType certificateType);
     // removes a user from this folder and removes and generates a new metadata key
     [[nodiscard]] bool removeUser(const QString &userId);
 
@@ -141,8 +149,8 @@ public:
     [[nodiscard]] QByteArray initialMetadata() const;
 
 public slots:
-    void addEncryptedFile(const EncryptedFile &f);
-    void removeEncryptedFile(const EncryptedFile &f);
+    void addEncryptedFile(const FolderMetadata::EncryptedFile &f);
+    void removeEncryptedFile(const FolderMetadata::EncryptedFile &f);
     void removeAllEncryptedFiles();
 
 private:
@@ -150,8 +158,9 @@ private:
 
     [[nodiscard]] bool verifyMetadataKey(const QByteArray &metadataKey) const;
 
-    [[nodiscard]] QByteArray encryptDataWithPublicKey(const QByteArray &data, const QSslKey &key) const;
-    [[nodiscard]] QByteArray decryptDataWithPrivateKey(const QByteArray &data) const;
+    [[nodiscard]] QByteArray encryptDataWithPublicKey(const QByteArray &data,
+                                                      const CertificateInformation &shareUserCertificate) const;
+    [[nodiscard]] QByteArray decryptDataWithPrivateKey(const QByteArray &data, const QByteArray &certificateFingerprint) const;
 
     [[nodiscard]] QByteArray encryptJsonObject(const QByteArray& obj, const QByteArray pass) const;
     [[nodiscard]] QByteArray decryptJsonObject(const QByteArray& encryptedJsonBlob, const QByteArray& pass) const;
@@ -231,6 +240,8 @@ private:
     QByteArray _metadataSignature;
     // signature from server-side metadata
     QByteArray _initialSignature;
+
+    QByteArray _e2eCertificateFingerprint;
 
     // both files and folders info
     QVector<EncryptedFile> _files;

@@ -20,6 +20,7 @@
 #include "common/syncjournaldb.h"
 
 Q_LOGGING_CATEGORY(lcSignPublicKeyApiJob, "nextcloud.sync.networkjob.sendcsr", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcStorePublicKeyApiJob, "nextcloud.sync.networkjob.storepublickey", QtInfoMsg)
 Q_LOGGING_CATEGORY(lcStorePrivateKeyApiJob, "nextcloud.sync.networkjob.storeprivatekey", QtInfoMsg)
 Q_LOGGING_CATEGORY(lcCseJob, "nextcloud.sync.networkjob.clientsideencrypt", QtInfoMsg)
 
@@ -77,16 +78,16 @@ bool GetMetadataApiJob::finished()
 }
 
 StoreMetaDataApiJob::StoreMetaDataApiJob(const AccountPtr& account,
-                                                 const QByteArray& fileId,
-                                                 const QByteArray &token,
-                                                 const QByteArray& b64Metadata,
-                                                 const QByteArray &signature,
-                                                 QObject* parent)
-: AbstractNetworkJob(account, e2eeBaseUrl(account) + QStringLiteral("meta-data/") + fileId, parent),
-_fileId(fileId),
-_token(token),
-_b64Metadata(b64Metadata),
-_signature(signature)
+                                         const QByteArray& fileId,
+                                         const QByteArray &token,
+                                         const QByteArray& b64Metadata,
+                                         const QByteArray &signature,
+                                         QObject* parent)
+    : AbstractNetworkJob(account, e2eeBaseUrl(account) + QStringLiteral("meta-data/") + fileId, parent),
+    _fileId(fileId),
+    _token(token),
+    _b64Metadata(b64Metadata),
+    _signature(signature)
 {
 }
 
@@ -98,6 +99,8 @@ void StoreMetaDataApiJob::start()
     if (_account->capabilities().clientSideEncryptionVersion() >= 2.0) {
         if (!_signature.isEmpty()) {
             req.setRawHeader(e2eeSignatureHeaderName, _signature);
+        } else {
+            qCWarning(lcCseJob()) << "empty signature for" << _fileId;
         }
     }
     QUrlQuery query;
@@ -121,14 +124,16 @@ void StoreMetaDataApiJob::start()
 
 bool StoreMetaDataApiJob::finished()
 {
-    int retCode = reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
-		if (retCode != 200) {
-			qCInfo(lcCseJob()) << "error sending the metadata" << path() << errorString() << retCode;
-			emit error(_fileId, retCode);
-            return false;
-		}
-		qCInfo(lcCseJob()) << "Metadata submitted to the server successfully";
-		emit success(_fileId);
+    const auto retCode = reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+    if (retCode != 200) {
+        qCInfo(lcCseJob()) << "error sending the metadata" << path() << errorString() << retCode;
+        emit error(_fileId, retCode);
+        return false;
+    }
+
+    qCInfo(lcCseJob()) << "Metadata submitted to the server successfully";
+    emit success(_fileId);
+
     return true;
 }
 
@@ -299,14 +304,16 @@ bool DeleteMetadataApiJob::finished()
 
 LockEncryptFolderApiJob::LockEncryptFolderApiJob(const AccountPtr &account,
                                                  const QByteArray &fileId,
+                                                 const QByteArray &certificateSha256Fingerprint,
                                                  SyncJournalDb *journalDb,
-                                                 const QSslKey publicKey,
+                                                 const QSslKey &sslkey,
                                                  QObject *parent)
     : AbstractNetworkJob(account, e2eeBaseUrl(account) + QStringLiteral("lock/") + fileId, parent)
     , _fileId(fileId)
+    , _certificateSha256Fingerprint(certificateSha256Fingerprint)
     , _journalDb(journalDb)
-    , _publicKey(publicKey)
 {
+    Q_UNUSED(sslkey)
 }
 
 void LockEncryptFolderApiJob::start()
@@ -315,8 +322,12 @@ void LockEncryptFolderApiJob::start()
 
     if (!folderTokenEncrypted.isEmpty()) {
         qCInfo(lcCseJob()) << "lock folder started for:" << path() << " for fileId: " << _fileId << " but we need to first lift the previous lock";
-        const auto folderToken = EncryptionHelper::decryptStringAsymmetric(_account->e2e()->_privateKey, folderTokenEncrypted);
-        const auto unlockJob = new OCC::UnlockEncryptFolderApiJob(_account, _fileId, folderToken, _journalDb, this);
+        const auto folderToken = EncryptionHelper::decryptStringAsymmetric(_account->e2e()->getCertificateInformation(), _account->e2e()->paddingMode(), *_account->e2e(), folderTokenEncrypted);
+        if (!folderToken) {
+            qCWarning(lcCseJob()) << "decrypt failed";
+            return;
+        }
+        const auto unlockJob = new OCC::UnlockEncryptFolderApiJob(_account, _fileId, *folderToken, _journalDb, this);
         unlockJob->setShouldRollbackMetadataChanges(true);
         connect(unlockJob, &UnlockEncryptFolderApiJob::done, this, [this]() {
             this->start();
@@ -364,9 +375,13 @@ bool LockEncryptFolderApiJob::finished()
 
     qCInfo(lcCseJob()) << "lock folder finished with code" << retCode << " for:" << path() << " for fileId: " << _fileId << " token:" << token;
 
-    if (!_publicKey.isNull()) {
-        const auto folderTokenEncrypted = EncryptionHelper::encryptStringAsymmetric(_publicKey, token);
-        _journalDb->setE2EeLockedFolder(_fileId, folderTokenEncrypted);
+    if (!_account->e2e()->getPublicKey().isNull()) {
+        const auto folderTokenEncrypted = EncryptionHelper::encryptStringAsymmetric(_account->e2e()->getCertificateInformation(), _account->e2e()->paddingMode(), *_account->e2e(), token);
+        if (!folderTokenEncrypted) {
+            qCWarning(lcCseJob()) << "decrypt failed";
+            return false;
+        }
+        _journalDb->setE2EeLockedFolder(_fileId, *folderTokenEncrypted);
     }
 
     //TODO: Parse the token and submit.
@@ -410,6 +425,45 @@ bool SetEncryptionFlagApiJob::finished()
     return true;
 }
 
+StorePublicKeyApiJob::StorePublicKeyApiJob(const AccountPtr& account, const QString& path, QObject* parent)
+    : AbstractNetworkJob(account, path, parent)
+{
+}
+
+void StorePublicKeyApiJob::setPublicKey(const QByteArray& publicKey)
+{
+    QByteArray data = "publicKey=";
+    data += QUrl::toPercentEncoding(publicKey);
+    _publicKey.setData(data);
+}
+
+void StorePublicKeyApiJob::start()
+{
+    QNetworkRequest req;
+    req.setRawHeader("OCS-APIREQUEST", "true");
+    req.setHeader(QNetworkRequest::ContentTypeHeader, QByteArrayLiteral("application/x-www-form-urlencoded"));
+    QUrlQuery query;
+    query.addQueryItem(QLatin1String("format"), QLatin1String("json"));
+    QUrl url = Utility::concatUrlPath(account()->url(), path());
+    url.setQuery(query);
+
+    qCDebug(lcStorePublicKeyApiJob) << "Sending the public key";
+    sendRequest("PUT", url, req, &_publicKey);
+    AbstractNetworkJob::start();
+}
+
+bool StorePublicKeyApiJob::finished()
+{
+    int retCode = reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+    if (retCode != 200)
+        qCInfo(lcStorePublicKeyApiJob()) << "Sending public key ended with"  << path() << errorString() << retCode;
+
+    QJsonParseError error{};
+    auto json = QJsonDocument::fromJson(reply()->readAll(), &error);
+    emit jsonReceived(json, reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt());
+    return true;
+}
+
 StorePrivateKeyApiJob::StorePrivateKeyApiJob(const AccountPtr& account, const QString& path, QObject* parent)
 : AbstractNetworkJob(account, path, parent)
 {
@@ -431,7 +485,7 @@ void StorePrivateKeyApiJob::start()
     QUrl url = Utility::concatUrlPath(account()->url(), path());
     url.setQuery(query);
 
-    qCInfo(lcStorePrivateKeyApiJob) << "Sending the private key" << _privKey.data();
+    qCDebug(lcStorePrivateKeyApiJob) << "Sending the private key";
     sendRequest("POST", url, req, &_privKey);
     AbstractNetworkJob::start();
 }
@@ -470,7 +524,7 @@ void SignPublicKeyApiJob::start()
     QUrl url = Utility::concatUrlPath(account()->url(), path());
     url.setQuery(query);
 
-    qCInfo(lcSignPublicKeyApiJob) << "Sending the CSR" << _csr.data();
+    qCDebug(lcSignPublicKeyApiJob) << "Sending the CSR";
     sendRequest("POST", url, req, &_csr);
     AbstractNetworkJob::start();
 }
