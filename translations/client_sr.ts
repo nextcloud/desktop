@@ -235,6 +235,37 @@
     </message>
 </context>
 <context>
+    <name>EncryptionTokenDiscoveryDialog</name>
+    <message>
+        <location filename="../src/gui/tray/EncryptionTokenDiscoveryDialog.qml" line="83"/>
+        <source>Discovering the certificates stored on your USB token</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>EncryptionTokenSelectionWindow</name>
+    <message>
+        <location filename="../src/gui/EncryptionTokenSelectionWindow.qml" line="41"/>
+        <source>Token Encryption Key Chooser</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/EncryptionTokenSelectionWindow.qml" line="78"/>
+        <source>Available Keys for end-to-end Encryption:</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/EncryptionTokenSelectionWindow.qml" line="121"/>
+        <source>Choose</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/EncryptionTokenSelectionWindow.qml" line="125"/>
+        <source>Cancel</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>ErrorBox</name>
     <message>
         <location filename="../src/gui/ErrorBox.qml" line="63"/>
@@ -962,6 +993,11 @@ This action will abort any currently running synchronization.</source>
         <translation>Нема подешене %1 везе.</translation>
     </message>
     <message>
+        <location filename="../src/gui/accountsettings.cpp" line="1533"/>
+        <source>Migrate certificate to a new one</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/accountsettings.cpp" line="1517"/>
         <source>There are folders that were not synchronized because they are too big: </source>
         <translation>Ово су фасцикле које нису синхронизоване јер су превелике:</translation>
@@ -1484,6 +1520,26 @@ This action will abort any currently running synchronization.</source>
 </context>
 <context>
     <name>OCC::ClientSideEncryption</name>
+    <message>
+        <location filename="../src/libsync/clientsideencryption.cpp" line="1147"/>
+        <source>PIN needed to login to token</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/clientsideencryption.cpp" line="1148"/>
+        <source>Enter Certificate USB Token PIN:</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/clientsideencryption.cpp" line="1165"/>
+        <source>Invalid PIN. Login failed</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/clientsideencryption.cpp" line="1166"/>
+        <source>Login to the token failed after providing the user PIN. It may be invalid or wrong. Please try again !</source>
+        <translation type="unfinished"/>
+    </message>
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1369"/>
         <source>Please enter your end-to-end encryption passphrase:&lt;br&gt;&lt;br&gt;Username: %2&lt;br&gt;Account: %3&lt;br&gt;</source>
@@ -4333,6 +4389,11 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Премештено на неисправан циљ, враћа се</translation>
     </message>
     <message>
+        <location filename="../src/libsync/discovery.cpp" line="1735"/>
+        <source>Cannot modify encrypted item because the selected certificate is not valid.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/libsync/discovery.cpp" line="1637"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
         <translation>Игнорисано јер се не налази на листи за синхронизацију</translation>
@@ -4371,14 +4432,14 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::PropagateDirectory</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1428"/>
-        <source>Could not delete file %1 from local DB</source>
-        <translation>Фајл %1 не може да се обрише из локалне базе</translation>
-    </message>
-    <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1357"/>
         <source>could not delete file %1 from local DB</source>
         <translation>фајл %1 не може да се обрише из локалне базе</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1439"/>
+        <source>Could not delete file %1 from local DB</source>
+        <translation>Фајл %1 не може да се обрише из локалне базе</translation>
     </message>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1371"/>
@@ -5733,6 +5794,16 @@ Server replied with error: %2</source>
 <context>
     <name>OCC::User</name>
     <message>
+        <location filename="../src/gui/tray/usermodel.cpp" line="104"/>
+        <source>End-to-end certificate needs to be migrated to a new one</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/usermodel.cpp" line="106"/>
+        <source>Trigger the migration</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="158"/>
         <source>%1 notifications</source>
         <translation>%1 обавештења</translation>
@@ -6979,6 +7050,11 @@ Server replied with error: %2</source>
         <translation>Ажурирани су метаподаци локалних виртуелних фајлова</translation>
     </message>
     <message>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="62"/>
+        <source>Updated end-to-end encryption metadata</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="61"/>
         <location filename="../src/libsync/progressdispatcher.cpp" line="63"/>
         <source>Unknown</source>
@@ -7053,6 +7129,11 @@ Server replied with error: %2</source>
         <location filename="../src/libsync/progressdispatcher.cpp" line="93"/>
         <source>Updating local virtual files metadata</source>
         <translation>Ажурирају се метаподаци локалних виртуелних фајлова</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="97"/>
+        <source>Updating end-to-end encryption metadata</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>

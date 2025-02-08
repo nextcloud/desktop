@@ -235,6 +235,37 @@
     </message>
 </context>
 <context>
+    <name>EncryptionTokenDiscoveryDialog</name>
+    <message>
+        <location filename="../src/gui/tray/EncryptionTokenDiscoveryDialog.qml" line="83"/>
+        <source>Discovering the certificates stored on your USB token</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>EncryptionTokenSelectionWindow</name>
+    <message>
+        <location filename="../src/gui/EncryptionTokenSelectionWindow.qml" line="41"/>
+        <source>Token Encryption Key Chooser</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/EncryptionTokenSelectionWindow.qml" line="78"/>
+        <source>Available Keys for end-to-end Encryption:</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/EncryptionTokenSelectionWindow.qml" line="121"/>
+        <source>Choose</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/EncryptionTokenSelectionWindow.qml" line="125"/>
+        <source>Cancel</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>ErrorBox</name>
     <message>
         <location filename="../src/gui/ErrorBox.qml" line="63"/>
@@ -960,6 +991,11 @@ Vous prenez vos propres risques.</translation>
         <translation>Aucune connexion à %1 configurée</translation>
     </message>
     <message>
+        <location filename="../src/gui/accountsettings.cpp" line="1533"/>
+        <source>Migrate certificate to a new one</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/accountsettings.cpp" line="1517"/>
         <source>There are folders that were not synchronized because they are too big: </source>
         <translation>Certains dossiers n&apos;ont pas été synchronisés parce qu&apos;ils sont de taille trop importante :</translation>
@@ -1482,6 +1518,26 @@ Vous prenez vos propres risques.</translation>
 </context>
 <context>
     <name>OCC::ClientSideEncryption</name>
+    <message>
+        <location filename="../src/libsync/clientsideencryption.cpp" line="1147"/>
+        <source>PIN needed to login to token</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/clientsideencryption.cpp" line="1148"/>
+        <source>Enter Certificate USB Token PIN:</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/clientsideencryption.cpp" line="1165"/>
+        <source>Invalid PIN. Login failed</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/clientsideencryption.cpp" line="1166"/>
+        <source>Login to the token failed after providing the user PIN. It may be invalid or wrong. Please try again !</source>
+        <translation type="unfinished"/>
+    </message>
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1369"/>
         <source>Please enter your end-to-end encryption passphrase:&lt;br&gt;&lt;br&gt;Username: %2&lt;br&gt;Account: %3&lt;br&gt;</source>
@@ -2043,7 +2099,7 @@ Cela peut être un problème avec vos bibliothèques OpenSSL.</translation>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.cpp" line="222"/>
         <source>Open Browser</source>
-        <translation type="unfinished"/>
+        <translation>Ouvrir le navigateur</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.cpp" line="224"/>
@@ -2449,7 +2505,7 @@ Vous pouvez également restaurer tous les fichiers supprimés en les télécharg
     <message>
         <location filename="../src/gui/folderman.cpp" line="1810"/>
         <source>The folder %1 is used in a folder sync connection!</source>
-        <translation type="unfinished"/>
+        <translation>Le dossier %1 est utilisé dans une connexion de synchronisation de dossiers !</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1656"/>
@@ -4328,6 +4384,11 @@ Il s&apos;agit d&apos;un nouveau mode expérimental. Si vous décidez de l&apos;
         <translation>Déplacé vers une cible invalide, restauration</translation>
     </message>
     <message>
+        <location filename="../src/libsync/discovery.cpp" line="1735"/>
+        <source>Cannot modify encrypted item because the selected certificate is not valid.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/libsync/discovery.cpp" line="1637"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
         <translation>Exclus en raison de la liste noire &quot;Sélectionner le contenu à synchroniser&quot;.</translation>
@@ -4366,13 +4427,13 @@ Il s&apos;agit d&apos;un nouveau mode expérimental. Si vous décidez de l&apos;
 <context>
     <name>OCC::PropagateDirectory</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1428"/>
-        <source>Could not delete file %1 from local DB</source>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1357"/>
+        <source>could not delete file %1 from local DB</source>
         <translation>Impossible de supprimer le fichier %1 de la base de données locale</translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1357"/>
-        <source>could not delete file %1 from local DB</source>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1439"/>
+        <source>Could not delete file %1 from local DB</source>
         <translation>Impossible de supprimer le fichier %1 de la base de données locale</translation>
     </message>
     <message>
@@ -5728,6 +5789,16 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
 <context>
     <name>OCC::User</name>
     <message>
+        <location filename="../src/gui/tray/usermodel.cpp" line="104"/>
+        <source>End-to-end certificate needs to be migrated to a new one</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/usermodel.cpp" line="106"/>
+        <source>Trigger the migration</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="158"/>
         <source>%1 notifications</source>
         <translation>%1 notifications</translation>
@@ -5884,7 +5955,7 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
     <message>
         <location filename="../src/common/vfs.cpp" line="75"/>
         <source>The Virtual filesystem feature does not support a drive as sync root</source>
-        <translation type="unfinished"/>
+        <translation>La fonction de système de fichiers virtuel ne prend pas en charge un lecteur en tant que racine de synchronisation.</translation>
     </message>
     <message>
         <location filename="../src/common/vfs.cpp" line="75"/>
@@ -5894,7 +5965,7 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
     <message>
         <location filename="../src/common/vfs.cpp" line="83"/>
         <source>The Virtual filesystem feature is not supported on network drives</source>
-        <translation type="unfinished"/>
+        <translation>La fonction de système de fichiers virtuel n&apos;est pas prise en charge sur les lecteurs réseau.</translation>
     </message>
 </context>
 <context>
@@ -6494,7 +6565,7 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="469"/>
         <source>Password protection</source>
-        <translation type="unfinished"/>
+        <translation>Protection par mot de passe</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="516"/>
@@ -6974,6 +7045,11 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
         <translation>Fichiers locaux virtuels de métadonnées mis à jour</translation>
     </message>
     <message>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="62"/>
+        <source>Updated end-to-end encryption metadata</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="61"/>
         <location filename="../src/libsync/progressdispatcher.cpp" line="63"/>
         <source>Unknown</source>
@@ -7048,6 +7124,11 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
         <location filename="../src/libsync/progressdispatcher.cpp" line="93"/>
         <source>Updating local virtual files metadata</source>
         <translation>Mise à jour des méta-données des fichiers virtuels</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="97"/>
+        <source>Updating end-to-end encryption metadata</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
