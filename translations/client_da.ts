@@ -1095,7 +1095,7 @@ Denne handling vil annullere alle i øjeblikket kørende synkroniseringer.</tran
     <message>
         <location filename="../src/gui/accountstate.cpp" line="164"/>
         <source>Asking Credentials</source>
-        <translation>Forespørger om brugeroplysninger</translation>
+        <translation>Forespørger efter legitimationsoplysninger</translation>
     </message>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="176"/>
@@ -1690,7 +1690,7 @@ Denne handling vil annullere alle i øjeblikket kørende synkroniseringer.</tran
     <message>
         <location filename="../src/gui/connectionvalidator.cpp" line="215"/>
         <source>The provided credentials are not correct</source>
-        <translation>De givne brugeroplysninger er ikke korrekte</translation>
+        <translation>De angivne legitimationsoplysninger er ikke korrekte</translation>
     </message>
     <message>
         <location filename="../src/gui/connectionvalidator.cpp" line="286"/>
@@ -3918,7 +3918,7 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/wizard/owncloudhttpcredspage.cpp" line="59"/>
         <source>Enter user credentials</source>
-        <translation>Angiv brugeroplysninger</translation>
+        <translation>Angiv bruger legitimationsoplysninger</translation>
     </message>
 </context>
 <context>
@@ -4060,12 +4060,12 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="595"/>
         <source>The remote folder creation failed because the provided credentials are wrong!&lt;br/&gt;Please go back and check your credentials.&lt;/p&gt;</source>
-        <translation>Oprettelse af den afsides mappe fejlede da brugeroplysningerne er forkerte!&lt;br/&gt;Gå venligst tilbage og kontroller dine brugeroplysninger.&lt;/p&gt;</translation>
+        <translation>Oprettelse af fjernmappen fejlede da de angivne legitimationsoplysninger er forkerte!&lt;br/&gt;Gå venligst tilbage og kontroller dine legitimationsoplysninger .&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="599"/>
         <source>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;Remote folder creation failed probably because the provided credentials are wrong.&lt;/font&gt;&lt;br/&gt;Please go back and check your credentials.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;Afsides mappe oprettelse fejlede sansynligvis på grund af forkert angivne brugeroplysninger.&lt;/font&gt;&lt;br/&gt;Gå venligst tilbage og kontroller dine brugeroplysninger.&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;Fjernmappeoprettelse fejlede sandsynligvis på grund af forkert angivne legitimationsoplysninger.&lt;/font&gt;&lt;br/&gt;Gå venligst tilbage og kontroller dine legitimationsoplysninger.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="604"/>
