@@ -28,7 +28,7 @@
 
 #include <qt6keychain/keychain.h>
 
-#include <KCompressionDevice>
+#include "kfcompat.h"
 
 #include <QDebug>
 #include <QLoggingCategory>
@@ -2698,26 +2698,12 @@ bool EncryptionHelper::dataDecryption(const QByteArray &key, const QByteArray &i
 
 QByteArray EncryptionHelper::gzipThenEncryptData(const QByteArray &key, const QByteArray &inputData, const QByteArray &iv, QByteArray &returnTag)
 {
-    QBuffer gZipBuffer;
-    auto gZipCompressionDevice = KCompressionDevice(&gZipBuffer, false, KCompressionDevice::GZip);
-    if (!gZipCompressionDevice.open(QIODevice::WriteOnly)) {
-        return {};
-    }
-    const auto bytesWritten = gZipCompressionDevice.write(inputData);
-    gZipCompressionDevice.close();
-    if (bytesWritten < 0) {
-        return {};
-    }
-
-    if (!gZipBuffer.open(QIODevice::ReadOnly)) {
-        return {};
-    }
-
     QByteArray outputData;
     returnTag.clear();
-    const auto gZippedAndNotEncrypted = gZipBuffer.readAll();
+
+    const auto gZippedAndNotEncrypted = gZipData(inputData);
+
     EncryptionHelper::dataEncryption(key, iv, gZippedAndNotEncrypted, outputData, returnTag);
-    gZipBuffer.close();
     return outputData;
 }
 
@@ -2729,23 +2715,7 @@ QByteArray EncryptionHelper::decryptThenUnGzipData(const QByteArray &key, const 
         return {};
     }
 
-    QBuffer gZipBuffer;
-    if (!gZipBuffer.open(QIODevice::WriteOnly)) {
-        return {};
-    }
-    const auto bytesWritten = gZipBuffer.write(decryptedAndUnGzipped);
-    gZipBuffer.close();
-    if (bytesWritten < 0) {
-        return {};
-    }
-
-    auto gZipUnCompressionDevice = KCompressionDevice(&gZipBuffer, false, KCompressionDevice::GZip);
-    if (!gZipUnCompressionDevice.open(QIODevice::ReadOnly)) {
-        return {};
-    }
-
-    decryptedAndUnGzipped = gZipUnCompressionDevice.readAll();
-    gZipUnCompressionDevice.close();
+    decryptedAndUnGzipped = unGzipData(decryptedAndUnGzipped);
 
     return decryptedAndUnGzipped;
 }

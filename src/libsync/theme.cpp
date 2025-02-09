@@ -18,6 +18,7 @@
 #include "version.h"
 #include "configfile.h"
 #include "common/vfs.h"
+#include "common/qtcompat.h"
 
 #include <QtCore>
 #ifndef TOKEN_AUTH_ONLY
@@ -858,14 +859,12 @@ QString Theme::versionSwitchOutput() const
 
 double Theme::getColorDarkness(const QColor &color)
 {
-    // account for different sensitivity of the human eye to certain colors
-    const double threshold = 1.0 - (0.299 * color.red() + 0.587 * color.green() + 0.114 * color.blue()) / 255.0;
-    return threshold;
+    return ::getColorDarkness(color);
 }
 
 bool Theme::isDarkColor(const QColor &color)
 {
-    return getColorDarkness(color) > 0.5;
+    return ::isDarkColor(color);
 }
 
 QColor Theme::getBackgroundAwareLinkColor(const QColor &backgroundColor)
@@ -968,7 +967,7 @@ QColor Theme::defaultColor()
 void Theme::connectToPaletteSignal() const
 {
     if (const auto ptr = qobject_cast<QGuiApplication*>(qApp)) {
-        connect(ptr->styleHints(), &QStyleHints::colorSchemeChanged, this, &Theme::darkModeChanged, Qt::UniqueConnection);
+        connectQStyleHintsColorSchemeChanged(ptr, this, &Theme::darkModeChanged);
     }
 }
 
@@ -1011,19 +1010,6 @@ QVariantMap Theme::systemPalette() const
 bool Theme::darkMode() const
 {
     connectToPaletteSignal();
-    const auto isDarkFromStyle = [] {
-        switch (qGuiApp->styleHints()->colorScheme())
-        {
-        case Qt::ColorScheme::Dark:
-            return true;
-        case Qt::ColorScheme::Light:
-            return false;
-        case Qt::ColorScheme::Unknown:
-            return Theme::isDarkColor(QGuiApplication::palette().window().color());
-        }
-
-        return false;
-    };
 
 #ifdef Q_OS_WIN
     static const auto darkModeSubkey = QStringLiteral("Software\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize");
@@ -1033,7 +1019,8 @@ bool Theme::darkMode() const
         return true;
     }
 #endif
-    return isDarkFromStyle();
+
+    return isDarkMode();
 }
 
 bool Theme::displayLegacyImportDialog() const

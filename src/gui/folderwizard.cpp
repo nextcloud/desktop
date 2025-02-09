@@ -23,6 +23,7 @@
 #include "creds/abstractcredentials.h"
 #include "wizard/owncloudwizard.h"
 #include "common/asserts.h"
+#include "common/qtcompat.h"
 
 #include <QDesktopServices>
 #include <QDir>
@@ -570,7 +571,7 @@ FolderWizardSelectiveSync::FolderWizardSelectiveSync(const AccountPtr &account)
     if (Theme::instance()->showVirtualFilesOption() && bestAvailableVfsMode() != Vfs::Off) {
         _virtualFilesCheckBox = new QCheckBox(tr("Use virtual files instead of downloading content immediately %1").arg(bestAvailableVfsMode() == Vfs::WindowsCfApi ? QString() : tr("(experimental)")));
         connect(_virtualFilesCheckBox, &QCheckBox::clicked, this, &FolderWizardSelectiveSync::virtualFilesCheckboxClicked);
-        connect(_virtualFilesCheckBox, &QCheckBox::checkStateChanged, this, [this](int state) {
+        connectCheckBoxStateChanged(_virtualFilesCheckBox, this, [this](int state) {
             _selectiveSync->setEnabled(state == Qt::Unchecked);
         });
         _virtualFilesCheckBox->setChecked(bestAvailableVfsMode() == Vfs::WindowsCfApi);

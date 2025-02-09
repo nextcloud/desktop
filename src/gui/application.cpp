@@ -46,6 +46,7 @@
 #include "version.h"
 #include "csync_exclude.h"
 #include "common/vfs.h"
+#include "common/qtcompat.h"
 
 #include "config.h"
 
@@ -979,7 +980,7 @@ QString substLang(const QString &lang)
 void Application::setupTranslations()
 {
     const auto enforcedLocale = Theme::instance()->enforcedLocale();
-    const auto lang = substLang(!enforcedLocale.isEmpty() ? enforcedLocale : QLocale::system().uiLanguages(QLocale::TagSeparator::Underscore).first());
+    const auto lang = substLang(!enforcedLocale.isEmpty() ? enforcedLocale : systemLocaleName());
 
     auto *translator = new QTranslator(this);
     auto *qtTranslator = new QTranslator(this);

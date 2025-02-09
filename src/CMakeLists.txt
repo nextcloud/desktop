@@ -1,6 +1,6 @@
 include(ECMEnableSanitizers)
 
-set(REQUIRED_QT_VERSION "6.5.0")
+set(REQUIRED_QT_VERSION "6.2.4")
 
 find_package(Qt${QT_MAJOR_VERSION}Core ${REQUIRED_QT_VERSION} CONFIG QUIET)
 set_package_properties(Qt${QT_MAJOR_VERSION}Core PROPERTIES

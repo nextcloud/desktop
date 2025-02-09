@@ -1,6 +1,6 @@
 project(gui)
 find_package(Qt${QT_MAJOR_VERSION} REQUIRED COMPONENTS Widgets Svg Qml Quick QuickControls2 QuickWidgets Xml Network)
-find_package(KF6Archive REQUIRED)
+find_package(KF6Archive)
 find_package(KF6GuiAddons)
 
 if (NOT TARGET Qt::GuiPrivate)
@@ -561,8 +561,15 @@ target_link_libraries(nextcloudCore
   Qt::Quick
   Qt::QuickControls2
   Qt::QuickWidgets
-  KF6::Archive
   )
+
+if(KF6Archive_FOUND)
+  target_link_libraries(nextcloudCore
+    PUBLIC
+    KF6::Archive
+  )
+  add_definitions(-DHAVE_KARCHIVE)
+endif()
 
 if(KF6GuiAddons_FOUND)
   target_link_libraries(nextcloudCore
@@ -781,3 +788,10 @@ if(NOT BUILD_OWNCLOUD_OSX_BUNDLE AND NOT WIN32)
 endif()
 
 configure_file(configgui.h.in ${CMAKE_CURRENT_BINARY_DIR}/configgui.h)
+
+if ("${QT_VERSION_MAJOR}.${QT_VERSION_MINOR}" VERSION_GREATER_EQUAL "6.5")
+    set(QML_ACCEPTTHISOBJECT_PRAGMA "pragma NativeMethodBehavior: AcceptThisObject")
+else()
+    set(QML_ACCEPTTHISOBJECT_PRAGMA "")
+endif()
+configure_file(tray/TrayFoldersMenuButton.qml.in ${CMAKE_CURRENT_SOURCE_DIR}/tray/TrayFoldersMenuButton.qml)
