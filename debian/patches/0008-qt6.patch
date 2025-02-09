@@ -1,0 +1,947 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 53abf9d0e..c3fc0ecf0 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -24,7 +24,7 @@ set(BIN_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
+ include(${CMAKE_SOURCE_DIR}/NEXTCLOUD.cmake)
+ 
+ set(QT_VERSION_MAJOR "6")
+-set(REQUIRED_QT_VERSION "6.8.0")
++set(REQUIRED_QT_VERSION "6.2.4")
+ 
+ # CfAPI Shell Extensions
+ set( CFAPI_SHELL_EXTENSIONS_LIB_NAME CfApiShellExtensions )
+@@ -131,7 +131,7 @@ if(APPLE AND BUILD_OWNCLOUD_OSX_BUNDLE)
+     add_definitions(-DBUILD_OWNCLOUD_OSX_BUNDLE)
+ endif()
+ 
+-find_package(Qt${QT_MAJOR_VERSION} COMPONENTS Core)
++find_package(QT REQUIRED COMPONENTS Core NAMES Qt${QT_MAJOR_VERSION} )
+ option(QUICK_COMPILER "Use QtQuick compiler to improve performance" OFF)
+ 
+ # this option removes Http authentication, keychain, shibboleth etc and is intended for
+diff --git a/src/CMakeLists.txt b/src/CMakeLists.txt
+index fe9d4d9af..b86fdeb57 100644
+--- a/src/CMakeLists.txt
++++ b/src/CMakeLists.txt
+@@ -1,6 +1,6 @@
+ include(ECMEnableSanitizers)
+ 
+-set(REQUIRED_QT_VERSION "6.5.0")
++set(REQUIRED_QT_VERSION "6.2.4")
+ 
+ find_package(Qt${QT_MAJOR_VERSION}Core ${REQUIRED_QT_VERSION} CONFIG QUIET)
+ set_package_properties(Qt${QT_MAJOR_VERSION}Core PROPERTIES
+diff --git a/src/common/common.cmake b/src/common/common.cmake
+index 126542769..94e2a035b 100644
+--- a/src/common/common.cmake
++++ b/src/common/common.cmake
+@@ -32,3 +32,5 @@ elseif(UNIX AND NOT APPLE)
+ endif()
+ 
+ configure_file(${CMAKE_CURRENT_LIST_DIR}/vfspluginmetadata.json.in ${CMAKE_CURRENT_BINARY_DIR}/vfspluginmetadata.json)
++
++find_package(Qt6 REQUIRED COMPONENTS Widgets)
+diff --git a/src/common/qtcompat.cpp b/src/common/qtcompat.cpp
+new file mode 100644
+index 000000000..ccded5d62
+--- /dev/null
++++ b/src/common/qtcompat.cpp
+@@ -0,0 +1 @@
++#include "qtcompat.h"
+diff --git a/src/common/qtcompat.h b/src/common/qtcompat.h
+new file mode 100644
+index 000000000..154bc35c1
+--- /dev/null
++++ b/src/common/qtcompat.h
+@@ -0,0 +1,231 @@
++
++#pragma once
++
++#include <QtGlobal>
++#include <QLocale>
++#include <QRegularExpression>
++#include <QTimeZone>
++
++#include <type_traits>
++
++//-----------------------------------------------------------------------------
++
++template<unsigned major, unsigned minor, class T = void>
++struct qt_atleast : public std::enable_if<QT_VERSION>=QT_VERSION_CHECK(major, minor, 0), T>
++{
++};
++
++template<unsigned major, unsigned minor, class T = void>
++struct qt_before : public std::enable_if<QT_VERSION<QT_VERSION_CHECK(major, minor, 0), T>
++{
++};
++
++//-----------------------------------------------------------------------------
++//-----------------------------------------------------------------------------
++
++inline QString systemLocaleName()
++{
++#if QT_VERSION>=QT_VERSION_CHECK(6, 8, 0)
++    return QLocale::system().uiLanguages(QLocale::TagSeparator::Underscore).first();
++#else
++    return QLocale::system().name();
++#endif
++}
++
++//-----------------------------------------------------------------------------
++
++template <typename T>
++inline QRegularExpressionMatch
++matchRegularExpression(const QRegularExpression& re, const T& s)
++{
++#if QT_VERSION>=QT_VERSION_CHECK(6, 5, 0)
++    return re.matchView(s);
++#else
++    return re.match(s);
++#endif
++}
++
++//-----------------------------------------------------------------------------
++
++#if QT_VERSION<QT_VERSION_CHECK(6, 5, 0)
++template <typename Char, typename... Args>
++inline QDebug& operator<<(QDebug& d, const std::basic_string<Char, Args...>& s)
++{
++    return d << s.c_str();
++}
++#endif
++
++//-----------------------------------------------------------------------------
++
++#if QT_VERSION>=QT_VERSION_CHECK(6, 5, 0)
++const auto QTimeZoneUTC = QTimeZone::UTC;
++#else
++const auto QTimeZoneUTC = Qt::UTC;
++#endif
++
++//-----------------------------------------------------------------------------
++//-----------------------------------------------------------------------------
++
++#ifdef QT_WIDGETS_LIB
++
++//-----------------------------------------------------------------------------
++
++#include <QCheckBox>
++
++//-----------------------------------------------------------------------------
++
++template <typename Functor>
++inline QMetaObject::Connection connectCheckBoxStateChanged(
++    const QCheckBox* sender, const QObject* context, Functor functor)
++{
++    return QObject::connect(sender,
++#if QT_VERSION>=QT_VERSION_CHECK(6, 8, 0)
++                            &QCheckBox::checkStateChanged,
++#else
++                            &QCheckBox::stateChanged,
++#endif
++                            context, functor);
++}
++
++//-----------------------------------------------------------------------------
++
++#endif // QT_WIDGETS_LIB
++
++//-----------------------------------------------------------------------------
++//-----------------------------------------------------------------------------
++
++#ifdef QT_WEBSOCKETS_LIB
++
++//-----------------------------------------------------------------------------
++
++#include <QWebSocket>
++
++//-----------------------------------------------------------------------------
++
++#if QT_VERSION>=QT_VERSION_CHECK(6, 5, 0)
++#define QWebSocketErrorOccurred &QWebSocket::errorOccurred
++#else
++#define QWebSocketErrorOccurred &QWebSocket::error
++#endif
++
++//-----------------------------------------------------------------------------
++
++#endif // QT_WEBSOCKETS_LIB
++
++//-----------------------------------------------------------------------------
++//-----------------------------------------------------------------------------
++
++#ifdef QT_XML_LIB
++
++//-----------------------------------------------------------------------------
++
++#include <QDomDocument>
++
++//-----------------------------------------------------------------------------
++
++#if QT_VERSION>=QT_VERSION_CHECK(6, 5, 0)
++
++inline QDomDocument::ParseResult
++QDomDocumentSetContentsUseNamespaceProcessing(QDomDocument& doc, QIODevice* device)
++{
++    return doc.setContent(device, QDomDocument::ParseOption::UseNamespaceProcessing);
++}
++
++#else // QT_VERSION>=QT_VERSION_CHECK(6, 5, 0)
++
++struct QDomDocumentParseResult {
++    bool retval = false;
++
++    QString errorMessage;
++
++    int errorLine = -1;
++
++    int errorColumn = -1;
++
++    inline operator bool() const {
++        return retval;
++    }
++};
++
++inline QDomDocumentParseResult
++QDomDocumentSetContentsUseNamespaceProcessing(QDomDocument& doc, QIODevice* device)
++{
++    QDomDocumentParseResult result;
++    result.retval = doc.setContent(device, true, &result.errorMessage,
++                                   &result.errorLine, &result.errorColumn);
++    return result;
++}
++
++#endif // QT_VERSION>=QT_VERSION_CHECK(6, 5, 0)
++
++//-----------------------------------------------------------------------------
++
++#endif // QT_XML_LIB
++
++//-----------------------------------------------------------------------------
++//-----------------------------------------------------------------------------
++
++#ifdef QT_GUI_LIB
++
++//-----------------------------------------------------------------------------
++
++#include <QGuiApplication>
++#include <QStyleHints>
++
++//-----------------------------------------------------------------------------
++
++inline double getColorDarkness(const QColor &color)
++{
++    // account for different sensitivity of the human eye to certain colors
++    const double threshold = 1.0 - (0.299 * color.red() + 0.587 * color.green() + 0.114 * color.blue()) / 255.0;
++    return threshold;
++}
++
++//-----------------------------------------------------------------------------
++
++inline bool isDarkColor(const QColor& color)
++{
++    return getColorDarkness(color) > 0.5;
++}
++
++//-----------------------------------------------------------------------------
++
++template <class Target, typename Functor>
++inline void connectQStyleHintsColorSchemeChanged(QGuiApplication* app,
++                                                 const Target* context,
++                                                 Functor functor)
++{
++#if QT_VERSION>=QT_VERSION_CHECK(6, 5, 0)
++    QObject::connect(app->styleHints(), &QStyleHints::colorSchemeChanged,
++                     context, functor, Qt::UniqueConnection);
++#else
++    QObject::connect(app, &QGuiApplication::paletteChanged, context, functor);
++#endif
++}
++
++//-----------------------------------------------------------------------------
++
++inline bool isDarkMode() {
++#if QT_VERSION>=QT_VERSION_CHECK(6, 5, 0)
++    switch (qGuiApp->styleHints()->colorScheme())
++    {
++      case Qt::ColorScheme::Dark:
++        return true;
++      case Qt::ColorScheme::Light:
++        return false;
++      case Qt::ColorScheme::Unknown:
++        return isDarkColor(QGuiApplication::palette().window().color());
++    }
++
++    return false;
++#else // QT_VERSION>=QT_VERSION_CHECK(6, 5, 0)
++    return isDarkColor(QGuiApplication::palette().window().color());
++#endif // QT_VERSION>=QT_VERSION_CHECK(6, 5, 0)
++}
++
++//-----------------------------------------------------------------------------
++
++#endif // QT_GUI_LIB
++
++//-----------------------------------------------------------------------------
++//-----------------------------------------------------------------------------
+diff --git a/src/csync/csync_exclude.cpp b/src/csync/csync_exclude.cpp
+index 2c23656f2..1dad0bdba 100644
+--- a/src/csync/csync_exclude.cpp
++++ b/src/csync/csync_exclude.cpp
+@@ -32,6 +32,7 @@
+ 
+ #include "common/utility.h"
+ #include "common/filesystembase.h"
++#include "common/qtcompat.h"
+ #include "../version.h"
+ 
+ #include <QString>
+@@ -461,10 +462,10 @@ CSYNC_EXCLUDE_TYPE ExcludedFiles::traversalPatternMatch(const QString &path, Ite
+         QRegularExpressionMatch m;
+         if (filetype == ItemTypeDirectory
+             && _bnameTraversalRegexDir.contains(basePath)) {
+-            m = _bnameTraversalRegexDir[basePath].matchView(bnameStr);
++            m = matchRegularExpression(_bnameTraversalRegexDir[basePath], bnameStr);
+         } else if (filetype == ItemTypeFile
+             && _bnameTraversalRegexFile.contains(basePath)) {
+-            m = _bnameTraversalRegexFile[basePath].matchView(bnameStr);
++            m = matchRegularExpression(_bnameTraversalRegexFile[basePath], bnameStr);
+         } else {
+             continue;
+         }
+diff --git a/src/gui/CMakeLists.txt b/src/gui/CMakeLists.txt
+index 4bd77faba..2bf590f21 100644
+--- a/src/gui/CMakeLists.txt
++++ b/src/gui/CMakeLists.txt
+@@ -1,6 +1,6 @@
+ project(gui)
+ find_package(Qt${QT_MAJOR_VERSION} REQUIRED COMPONENTS Widgets Svg Qml Quick QuickControls2 QuickWidgets Xml Network)
+-find_package(KF6Archive REQUIRED)
++find_package(KF6Archive)
+ find_package(KF6GuiAddons)
+ 
+ if (NOT TARGET Qt::GuiPrivate)
+@@ -561,9 +561,16 @@ target_link_libraries(nextcloudCore
+   Qt::Quick
+   Qt::QuickControls2
+   Qt::QuickWidgets
+-  KF6::Archive
+   )
+ 
++if(KF6Archive_FOUND)
++  target_link_libraries(nextcloudCore
++    PUBLIC
++    KF6::Archive
++  )
++  add_definitions(-DHAVE_KARCHIVE)
++endif()
++
+ if(KF6GuiAddons_FOUND)
+   target_link_libraries(nextcloudCore
+     PUBLIC
+@@ -781,3 +788,10 @@ if(NOT BUILD_OWNCLOUD_OSX_BUNDLE AND NOT WIN32)
+ endif()
+ 
+ configure_file(configgui.h.in ${CMAKE_CURRENT_BINARY_DIR}/configgui.h)
++
++if ("${QT_VERSION_MAJOR}.${QT_VERSION_MINOR}" VERSION_GREATER_EQUAL "6.5")
++    set(QML_ACCEPTTHISOBJECT_PRAGMA "pragma NativeMethodBehavior: AcceptThisObject")
++else()
++    set(QML_ACCEPTTHISOBJECT_PRAGMA "")
++endif()
++configure_file(tray/TrayFoldersMenuButton.qml.in ${CMAKE_CURRENT_SOURCE_DIR}/tray/TrayFoldersMenuButton.qml)
+diff --git a/src/gui/application.cpp b/src/gui/application.cpp
+index 4175ae5f0..601964330 100644
+--- a/src/gui/application.cpp
++++ b/src/gui/application.cpp
+@@ -46,6 +46,7 @@
+ #include "version.h"
+ #include "csync_exclude.h"
+ #include "common/vfs.h"
++#include "common/qtcompat.h"
+ 
+ #include "config.h"
+ 
+@@ -979,7 +980,7 @@ QString substLang(const QString &lang)
+ void Application::setupTranslations()
+ {
+     const auto enforcedLocale = Theme::instance()->enforcedLocale();
+-    const auto lang = substLang(!enforcedLocale.isEmpty() ? enforcedLocale : QLocale::system().uiLanguages(QLocale::TagSeparator::Underscore).first());
++    const auto lang = substLang(!enforcedLocale.isEmpty() ? enforcedLocale : systemLocaleName());
+ 
+     auto *translator = new QTranslator(this);
+     auto *qtTranslator = new QTranslator(this);
+diff --git a/src/gui/folderwizard.cpp b/src/gui/folderwizard.cpp
+index 6a45da8a1..b96d390b3 100644
+--- a/src/gui/folderwizard.cpp
++++ b/src/gui/folderwizard.cpp
+@@ -23,6 +23,7 @@
+ #include "creds/abstractcredentials.h"
+ #include "wizard/owncloudwizard.h"
+ #include "common/asserts.h"
++#include "common/qtcompat.h"
+ 
+ #include <QDesktopServices>
+ #include <QDir>
+@@ -570,7 +571,7 @@ FolderWizardSelectiveSync::FolderWizardSelectiveSync(const AccountPtr &account)
+     if (Theme::instance()->showVirtualFilesOption() && bestAvailableVfsMode() != Vfs::Off) {
+         _virtualFilesCheckBox = new QCheckBox(tr("Use virtual files instead of downloading content immediately %1").arg(bestAvailableVfsMode() == Vfs::WindowsCfApi ? QString() : tr("(experimental)")));
+         connect(_virtualFilesCheckBox, &QCheckBox::clicked, this, &FolderWizardSelectiveSync::virtualFilesCheckboxClicked);
+-        connect(_virtualFilesCheckBox, &QCheckBox::checkStateChanged, this, [this](int state) {
++        connectCheckBoxStateChanged(_virtualFilesCheckBox, this, [this](int state) {
+             _selectiveSync->setEnabled(state == Qt::Unchecked);
+         });
+         _virtualFilesCheckBox->setChecked(bestAvailableVfsMode() == Vfs::WindowsCfApi);
+diff --git a/src/gui/generalsettings.cpp b/src/gui/generalsettings.cpp
+index 843be0dd5..dff1148d5 100644
+--- a/src/gui/generalsettings.cpp
++++ b/src/gui/generalsettings.cpp
+@@ -49,6 +49,7 @@
+ #include <QScopedValueRollback>
+ #include <QMessageBox>
+ 
++#ifdef HAVE_KARCHIVE
+ #include <KZip>
+ 
+ namespace {
+@@ -178,6 +179,7 @@ bool createDebugArchive(const QString &filename)
+ }
+ 
+ }
++#endif // HAVE_KARCHIVE
+ 
+ namespace OCC {
+ 
+@@ -270,7 +272,11 @@ GeneralSettings::GeneralSettings(QWidget *parent)
+     _ui->monoIconsCheckBox->setVisible(Theme::instance()->monoIconsAvailable());
+ 
+     connect(_ui->ignoredFilesButton, &QAbstractButton::clicked, this, &GeneralSettings::slotIgnoreFilesEditor);
++#ifdef HAVE_KARCHIVE
+     connect(_ui->debugArchiveButton, &QAbstractButton::clicked, this, &GeneralSettings::slotCreateDebugArchive);
++#else
++    _ui->debugArchiveButton->setEnabled(false);
++#endif
+ 
+     // accountAdded means the wizard was finished and the wizard might change some options.
+     connect(AccountManager::instance(), &AccountManager::accountAdded, this, &GeneralSettings::loadMiscSettings);
+@@ -581,6 +587,7 @@ void GeneralSettings::slotIgnoreFilesEditor()
+     }
+ }
+ 
++#ifdef HAVE_KARCHIVE
+ void GeneralSettings::slotCreateDebugArchive()
+ {
+     const auto filename = QFileDialog::getSaveFileName(
+@@ -602,6 +609,7 @@ void GeneralSettings::slotCreateDebugArchive()
+         );
+     }
+ }
++#endif
+ 
+ void GeneralSettings::slotShowLegalNotice()
+ {
+diff --git a/src/gui/generalsettings.h b/src/gui/generalsettings.h
+index 83067799a..c20029945 100644
+--- a/src/gui/generalsettings.h
++++ b/src/gui/generalsettings.h
+@@ -56,7 +56,9 @@ private slots:
+     void slotToggleCallNotifications(bool);
+     void slotShowInExplorerNavigationPane(bool);
+     void slotIgnoreFilesEditor();
++#if defined(HAVE_KARCHIVE)
+     void slotCreateDebugArchive();
++#endif
+     void loadMiscSettings();
+     void slotShowLegalNotice();
+ #if defined(BUILD_UPDATER)
+diff --git a/src/gui/sslerrordialog.cpp b/src/gui/sslerrordialog.cpp
+index b8c65e556..24d0d2f1e 100644
+--- a/src/gui/sslerrordialog.cpp
++++ b/src/gui/sslerrordialog.cpp
+@@ -14,6 +14,7 @@
+ #include "configfile.h"
+ #include "sslerrordialog.h"
+ #include "theme.h"
++#include "common/qtcompat.h"
+ 
+ #include <QtGui>
+ #include <QtNetwork>
+@@ -201,7 +202,7 @@ QString SslErrorDialog::certDiv(QSslCertificate cert) const
+ 
+     msg += QL("<p>");
+ 
+-    if (cert.effectiveDate() < QDateTime(QDate(2016, 1, 1), QTime(), QTimeZone::UTC)) {
++    if (cert.effectiveDate() < QDateTime(QDate(2016, 1, 1), QTime(), QTimeZoneUTC)) {
+ 	QString sha1sum = Utility::formatFingerprint(cert.digest(QCryptographicHash::Sha1).toHex());
+         msg += tr("Fingerprint (SHA1): <tt>%1</tt>").arg(sha1sum) + QL("<br/>");
+     }
+diff --git a/src/gui/tray/TrayFoldersMenuButton.qml b/src/gui/tray/TrayFoldersMenuButton.qml.in
+similarity index 99%
+rename from src/gui/tray/TrayFoldersMenuButton.qml
+rename to src/gui/tray/TrayFoldersMenuButton.qml.in
+index f98cad514..8925c87c7 100644
+--- a/src/gui/tray/TrayFoldersMenuButton.qml
++++ b/src/gui/tray/TrayFoldersMenuButton.qml.in
+@@ -11,7 +11,7 @@
+  * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
+  * for more details.
+  */
+-pragma NativeMethodBehavior: AcceptThisObject
++@QML_ACCEPTTHISOBJECT_PRAGMA@
+ import QtQuick
+ import QtQuick.Controls
+ import QtQuick.Layouts
+diff --git a/src/libsync/CMakeLists.txt b/src/libsync/CMakeLists.txt
+index 72ec2eede..7f8536d79 100644
+--- a/src/libsync/CMakeLists.txt
++++ b/src/libsync/CMakeLists.txt
+@@ -1,5 +1,5 @@
+ project(libsync)
+-find_package(KF6Archive REQUIRED)
++find_package(KF6Archive)
+ include(DefinePlatformDefaults)
+ 
+ set(CMAKE_AUTOMOC TRUE)
+@@ -157,6 +157,8 @@ set(libsync_SRCS
+     creds/keychainchunk.cpp
+     caseclashconflictsolver.h
+     caseclashconflictsolver.cpp
++    kfcompat.h
++    kfcompat.cpp
+ )
+ 
+ if (WIN32)
+@@ -223,10 +225,15 @@ target_link_libraries(nextcloudsync
+   Qt::Gui
+   Qt::Svg
+   Qt::Widgets
+-  KF6::Archive
++
+   Qt::Core5Compat
+ )
+ 
++if (KF6Archive_FOUND)
++   target_link_libraries(nextcloudsync PUBLIC  KF6::Archive)
++   add_definitions(-DHAVE_KARCHIVE)
++endif()
++
+ target_compile_features(nextcloudsync
+     PRIVATE
+         cxx_std_17
+diff --git a/src/libsync/clientsideencryption.cpp b/src/libsync/clientsideencryption.cpp
+index c65c6639a..bee7a9cc8 100644
+--- a/src/libsync/clientsideencryption.cpp
++++ b/src/libsync/clientsideencryption.cpp
+@@ -28,7 +28,7 @@
+ 
+ #include <qt6keychain/keychain.h>
+ 
+-#include <KCompressionDevice>
++#include "kfcompat.h"
+ 
+ #include <QDebug>
+ #include <QLoggingCategory>
+@@ -2698,26 +2698,12 @@ bool EncryptionHelper::dataDecryption(const QByteArray &key, const QByteArray &i
+ 
+ QByteArray EncryptionHelper::gzipThenEncryptData(const QByteArray &key, const QByteArray &inputData, const QByteArray &iv, QByteArray &returnTag)
+ {
+-    QBuffer gZipBuffer;
+-    auto gZipCompressionDevice = KCompressionDevice(&gZipBuffer, false, KCompressionDevice::GZip);
+-    if (!gZipCompressionDevice.open(QIODevice::WriteOnly)) {
+-        return {};
+-    }
+-    const auto bytesWritten = gZipCompressionDevice.write(inputData);
+-    gZipCompressionDevice.close();
+-    if (bytesWritten < 0) {
+-        return {};
+-    }
+-
+-    if (!gZipBuffer.open(QIODevice::ReadOnly)) {
+-        return {};
+-    }
+-
+     QByteArray outputData;
+     returnTag.clear();
+-    const auto gZippedAndNotEncrypted = gZipBuffer.readAll();
++
++    const auto gZippedAndNotEncrypted = gZipData(inputData);
++
+     EncryptionHelper::dataEncryption(key, iv, gZippedAndNotEncrypted, outputData, returnTag);
+-    gZipBuffer.close();
+     return outputData;
+ }
+ 
+@@ -2729,23 +2715,7 @@ QByteArray EncryptionHelper::decryptThenUnGzipData(const QByteArray &key, const
+         return {};
+     }
+ 
+-    QBuffer gZipBuffer;
+-    if (!gZipBuffer.open(QIODevice::WriteOnly)) {
+-        return {};
+-    }
+-    const auto bytesWritten = gZipBuffer.write(decryptedAndUnGzipped);
+-    gZipBuffer.close();
+-    if (bytesWritten < 0) {
+-        return {};
+-    }
+-
+-    auto gZipUnCompressionDevice = KCompressionDevice(&gZipBuffer, false, KCompressionDevice::GZip);
+-    if (!gZipUnCompressionDevice.open(QIODevice::ReadOnly)) {
+-        return {};
+-    }
+-
+-    decryptedAndUnGzipped = gZipUnCompressionDevice.readAll();
+-    gZipUnCompressionDevice.close();
++    decryptedAndUnGzipped = unGzipData(decryptedAndUnGzipped);
+ 
+     return decryptedAndUnGzipped;
+ }
+diff --git a/src/libsync/filesystem.cpp b/src/libsync/filesystem.cpp
+index 8361d8af5..6394fef7f 100644
+--- a/src/libsync/filesystem.cpp
++++ b/src/libsync/filesystem.cpp
+@@ -15,6 +15,7 @@
+ #include "filesystem.h"
+ 
+ #include "common/utility.h"
++#include "common/qtcompat.h"
+ #include "csync.h"
+ #include "vio/csync_vio_local.h"
+ #include "std/c_time.h"
+diff --git a/src/libsync/kfcompat.cpp b/src/libsync/kfcompat.cpp
+new file mode 100644
+index 000000000..09a055288
+--- /dev/null
++++ b/src/libsync/kfcompat.cpp
+@@ -0,0 +1,176 @@
++
++#include "kfcompat.h"
++
++//-----------------------------------------------------------------------------
++
++#include <QByteArray>
++#include <QBuffer>
++
++//-----------------------------------------------------------------------------
++
++#ifdef HAVE_KARCHIVE
++
++//-----------------------------------------------------------------------------
++
++#include <KCompressionDevice>
++
++//-----------------------------------------------------------------------------
++
++QByteArray gZipData(const QByteArray& inputData)
++{
++    QBuffer gZipBuffer;
++    auto gZipCompressionDevice = KCompressionDevice(&gZipBuffer, false, KCompressionDevice::GZip);
++    if (!gZipCompressionDevice.open(QIODevice::WriteOnly)) {
++        return {};
++    }
++    const auto bytesWritten = gZipCompressionDevice.write(inputData);
++    gZipCompressionDevice.close();
++    if (bytesWritten < 0) {
++        return {};
++    }
++
++    if (!gZipBuffer.open(QIODevice::ReadOnly)) {
++        return {};
++    }
++
++    const auto gZipped = gZipBuffer.readAll();
++    gZipBuffer.close();
++    return gZipped;
++}
++
++//-----------------------------------------------------------------------------
++
++QByteArray unGzipData(const QByteArray& inputData)
++{
++    QBuffer gZipBuffer;
++    if (!gZipBuffer.open(QIODevice::WriteOnly)) {
++        return {};
++    }
++    const auto bytesWritten = gZipBuffer.write(inputData);
++    gZipBuffer.close();
++    if (bytesWritten < 0) {
++        return {};
++    }
++
++    auto gZipUnCompressionDevice = KCompressionDevice(&gZipBuffer, false, KCompressionDevice::GZip);
++    if (!gZipUnCompressionDevice.open(QIODevice::ReadOnly)) {
++        return {};
++    }
++
++    auto unGzipped = gZipUnCompressionDevice.readAll();
++    gZipUnCompressionDevice.close();
++    return unGzipped;
++}
++
++
++//-----------------------------------------------------------------------------
++#else // HAVE_KARCHIVE
++//-----------------------------------------------------------------------------
++
++#include <zlib.h>
++#include <sys/mman.h>
++
++//-----------------------------------------------------------------------------
++
++QByteArray gZipData(const QByteArray& inputData)
++{
++    auto fd = memfd_create("gzipThenEncryptData", 0);
++    if (fd < 0) {
++        return {};
++    }
++
++    auto gzFile = gzdopen(fd, "wb");
++    if (gzFile == nullptr) {
++        close(fd);
++        return {};
++    }
++
++    if (gzwrite(gzFile, inputData.data(), inputData.length())!=inputData.length()) {
++        gzclose(gzFile);
++        close(fd);
++        return {};
++    }
++
++    if (gzflush(gzFile, Z_FINISH)!=Z_OK) {
++        close(fd);
++        return {};
++    }
++
++    auto gzippedSize = lseek(fd, 0, SEEK_CUR);
++    if (gzippedSize < 0) {
++        close(fd);
++        return {};
++    }
++
++    if (lseek(fd, 0, SEEK_SET)!=0) {
++        close(fd);
++        return {};
++    }
++
++    QByteArray gZipped(gzippedSize, Qt::Initialization::Uninitialized);
++
++    if (read(fd, gZipped.data(), gzippedSize)!=gzippedSize) {
++        close(fd);
++        return {};
++    }
++
++    close(fd);
++    return gZipped;
++}
++
++//-----------------------------------------------------------------------------
++
++QByteArray unGzipData(const QByteArray& inputData)
++{
++    auto fd = memfd_create("decryptThenUnGzipData", 0);
++    if (fd < 0) {
++        return {};
++    }
++
++    if (write(fd, inputData.data(), inputData.length())!=inputData.length()) {
++        close(fd);
++        return {};
++    }
++
++    auto gzippedSize = lseek(fd, 0, SEEK_CUR);
++    if (gzippedSize < 0) {
++        close(fd);
++        return {};
++    }
++
++    if (lseek(fd, 0, SEEK_SET)!=0) {
++        close(fd);
++        return {};
++    }
++
++    auto gzFile = gzdopen(fd, "rb");
++    if (gzFile == nullptr) {
++        close(fd);
++        return {};
++    }
++
++    QBuffer gunzipBuffer;
++    if (!gunzipBuffer.open(QIODevice::WriteOnly)) {
++        return {};
++    }
++
++    while(!gzeof(gzFile)) {
++        char buf[4096];
++        auto a = gzread(gzFile, buf, sizeof(buf));
++        if (a<0) {
++            gunzipBuffer.close();
++            gzclose(gzFile);
++            return {};
++        }
++
++        gunzipBuffer.write(buf, a);
++    }
++
++    gzclose(gzFile);
++    gunzipBuffer.close();
++
++    return gunzipBuffer.data();
++}
++
++//-----------------------------------------------------------------------------
++#endif // HAVE_KARCHIVE
+diff --git a/src/libsync/kfcompat.h b/src/libsync/kfcompat.h
+new file mode 100644
+index 000000000..ba7eb4406
+--- /dev/null
++++ b/src/libsync/kfcompat.h
+@@ -0,0 +1,7 @@
++#pragma once
++
++class QByteArray;
++
++QByteArray gZipData(const QByteArray& inputData);
++
++QByteArray unGzipData(const QByteArray& inputData);
+diff --git a/src/libsync/networkjobs.cpp b/src/libsync/networkjobs.cpp
+index c01ab82e2..99270ade3 100644
+--- a/src/libsync/networkjobs.cpp
++++ b/src/libsync/networkjobs.cpp
+@@ -42,6 +42,7 @@
+ #include "owncloudpropagator.h"
+ #include "clientsideencryption.h"
+ 
++#include "common/qtcompat.h"
+ #include "creds/abstractcredentials.h"
+ #include "creds/httpcredentials.h"
+ #include "configfile.h"
+@@ -664,7 +665,7 @@ bool PropfindJob::finished()
+         // Parse DAV response
+         auto domDocument = QDomDocument();
+ 
+-        if (const auto res = domDocument.setContent(reply(), QDomDocument::ParseOption::UseNamespaceProcessing); !res) {
++        if (const auto res = QDomDocumentSetContentsUseNamespaceProcessing(domDocument, reply()); !res) {
+             qCWarning(lcPropfindJob) << "XML parser error: " << res.errorMessage << res.errorLine << res.errorColumn;
+             emit finishedWithError(reply());
+ 
+diff --git a/src/libsync/pushnotifications.cpp b/src/libsync/pushnotifications.cpp
+index 6bfad9d62..ca34f0ada 100644
+--- a/src/libsync/pushnotifications.cpp
++++ b/src/libsync/pushnotifications.cpp
+@@ -12,6 +12,7 @@
+  * for more details.
+  */
+ 
++#include "common/qtcompat.h"
+ #include "pushnotifications.h"
+ #include "creds/abstractcredentials.h"
+ #include "account.h"
+@@ -30,7 +31,7 @@ PushNotifications::PushNotifications(Account *account, QObject *parent)
+     , _account(account)
+     , _webSocket(new QWebSocket(QString(), QWebSocketProtocol::VersionLatest, this))
+ {
+-    connect(_webSocket, QOverload<QAbstractSocket::SocketError>::of(&QWebSocket::errorOccurred), this, &PushNotifications::onWebSocketError);
++    connect(_webSocket, QOverload<QAbstractSocket::SocketError>::of(QWebSocketErrorOccurred), this, &PushNotifications::onWebSocketError);
+     connect(_webSocket, &QWebSocket::sslErrors, this, &PushNotifications::onWebSocketSslErrors);
+     connect(_webSocket, &QWebSocket::connected, this, &PushNotifications::onWebSocketConnected);
+     connect(_webSocket, &QWebSocket::disconnected, this, &PushNotifications::onWebSocketDisconnected);
+@@ -76,7 +77,7 @@ void PushNotifications::closeWebSocket()
+         _reconnectTimer->stop();
+     }
+ 
+-    disconnect(_webSocket, QOverload<QAbstractSocket::SocketError>::of(&QWebSocket::errorOccurred), this, &PushNotifications::onWebSocketError);
++    disconnect(_webSocket, QOverload<QAbstractSocket::SocketError>::of(QWebSocketErrorOccurred), this, &PushNotifications::onWebSocketError);
+     disconnect(_webSocket, &QWebSocket::sslErrors, this, &PushNotifications::onWebSocketSslErrors);
+ 
+     _webSocket->close();
+@@ -174,7 +175,7 @@ void PushNotifications::openWebSocket()
+     const auto webSocketUrl = capabilities.pushNotificationsWebSocketUrl();
+ 
+     qCInfo(lcPushNotifications) << "Open connection to websocket on" << webSocketUrl << "for account" << _account->url();
+-    connect(_webSocket, QOverload<QAbstractSocket::SocketError>::of(&QWebSocket::errorOccurred), this, &PushNotifications::onWebSocketError);
++    connect(_webSocket, QOverload<QAbstractSocket::SocketError>::of(QWebSocketErrorOccurred), this, &PushNotifications::onWebSocketError);
+     connect(_webSocket, &QWebSocket::sslErrors, this, &PushNotifications::onWebSocketSslErrors);
+     _webSocket->open(webSocketUrl);
+ }
+diff --git a/src/libsync/theme.cpp b/src/libsync/theme.cpp
+index f25ff9b58..a3b2f66ea 100644
+--- a/src/libsync/theme.cpp
++++ b/src/libsync/theme.cpp
+@@ -18,6 +18,7 @@
+ #include "version.h"
+ #include "configfile.h"
+ #include "common/vfs.h"
++#include "common/qtcompat.h"
+ 
+ #include <QtCore>
+ #ifndef TOKEN_AUTH_ONLY
+@@ -858,14 +859,12 @@ QString Theme::versionSwitchOutput() const
+ 
+ double Theme::getColorDarkness(const QColor &color)
+ {
+-    // account for different sensitivity of the human eye to certain colors
+-    const double threshold = 1.0 - (0.299 * color.red() + 0.587 * color.green() + 0.114 * color.blue()) / 255.0;
+-    return threshold;
++    return ::getColorDarkness(color);
+ }
+ 
+ bool Theme::isDarkColor(const QColor &color)
+ {
+-    return getColorDarkness(color) > 0.5;
++    return ::isDarkColor(color);
+ }
+ 
+ QColor Theme::getBackgroundAwareLinkColor(const QColor &backgroundColor)
+@@ -968,7 +967,7 @@ QColor Theme::defaultColor()
+ void Theme::connectToPaletteSignal() const
+ {
+     if (const auto ptr = qobject_cast<QGuiApplication*>(qApp)) {
+-        connect(ptr->styleHints(), &QStyleHints::colorSchemeChanged, this, &Theme::darkModeChanged, Qt::UniqueConnection);
++        connectQStyleHintsColorSchemeChanged(ptr, this, &Theme::darkModeChanged);
+     }
+ }
+ 
+@@ -1011,19 +1010,6 @@ QVariantMap Theme::systemPalette() const
+ bool Theme::darkMode() const
+ {
+     connectToPaletteSignal();
+-    const auto isDarkFromStyle = [] {
+-        switch (qGuiApp->styleHints()->colorScheme())
+-        {
+-        case Qt::ColorScheme::Dark:
+-            return true;
+-        case Qt::ColorScheme::Light:
+-            return false;
+-        case Qt::ColorScheme::Unknown:
+-            return Theme::isDarkColor(QGuiApplication::palette().window().color());
+-        }
+-
+-        return false;
+-    };
+ 
+ #ifdef Q_OS_WIN
+     static const auto darkModeSubkey = QStringLiteral("Software\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize");
+@@ -1033,7 +1019,8 @@ bool Theme::darkMode() const
+         return true;
+     }
+ #endif
+-    return isDarkFromStyle();
++
++    return isDarkMode();
+ }
+ 
+ bool Theme::displayLegacyImportDialog() const
+diff --git a/test/testdatefieldbackend.cpp b/test/testdatefieldbackend.cpp
+index 96f2ba1da..aab73a0d9 100644
+--- a/test/testdatefieldbackend.cpp
++++ b/test/testdatefieldbackend.cpp
+@@ -19,6 +19,7 @@
+ #include <QTest>
+ #include <QSignalSpy>
+ #include <QStandardPaths>
++#include <QTimeZone>
+ 
+ using namespace OCC;
+ 
