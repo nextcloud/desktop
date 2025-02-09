@@ -239,7 +239,7 @@
     <message>
         <location filename="../src/gui/tray/EncryptionTokenDiscoveryDialog.qml" line="83"/>
         <source>Discovering the certificates stored on your USB token</source>
-        <translation type="unfinished"/>
+        <translation>Scoperta dei certificati archiviati sul tuo token USB</translation>
     </message>
 </context>
 <context>
@@ -247,22 +247,22 @@
     <message>
         <location filename="../src/gui/EncryptionTokenSelectionWindow.qml" line="41"/>
         <source>Token Encryption Key Chooser</source>
-        <translation type="unfinished"/>
+        <translation>Selettore chiave di crittografia token</translation>
     </message>
     <message>
         <location filename="../src/gui/EncryptionTokenSelectionWindow.qml" line="78"/>
         <source>Available Keys for end-to-end Encryption:</source>
-        <translation type="unfinished"/>
+        <translation>Chiavi disponibili per la crittografia end-to-end:</translation>
     </message>
     <message>
         <location filename="../src/gui/EncryptionTokenSelectionWindow.qml" line="121"/>
         <source>Choose</source>
-        <translation type="unfinished"/>
+        <translation>Scegliere</translation>
     </message>
     <message>
         <location filename="../src/gui/EncryptionTokenSelectionWindow.qml" line="125"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>Annulla</translation>
     </message>
 </context>
 <context>
@@ -995,7 +995,7 @@ Questa azione interromperà qualsiasi sincronizzazione attualmente in esecuzione
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1533"/>
         <source>Migrate certificate to a new one</source>
-        <translation type="unfinished"/>
+        <translation>Migrare il certificato a uno nuovo</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1517"/>
@@ -1523,22 +1523,22 @@ Questa azione interromperà qualsiasi sincronizzazione attualmente in esecuzione
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1147"/>
         <source>PIN needed to login to token</source>
-        <translation type="unfinished"/>
+        <translation>PIN necessario per accedere al token</translation>
     </message>
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1148"/>
         <source>Enter Certificate USB Token PIN:</source>
-        <translation type="unfinished"/>
+        <translation>Inserisci il PIN del token USB del certificato:</translation>
     </message>
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1165"/>
         <source>Invalid PIN. Login failed</source>
-        <translation type="unfinished"/>
+        <translation>PIN non valido. Accesso non riuscito</translation>
     </message>
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1166"/>
         <source>Login to the token failed after providing the user PIN. It may be invalid or wrong. Please try again !</source>
-        <translation type="unfinished"/>
+        <translation>L&apos;accesso al token non è riuscito dopo aver fornito il PIN utente. Potrebbe essere non valido o sbagliato. Riprova!</translation>
     </message>
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1369"/>
@@ -3497,7 +3497,7 @@ Gli elementi per i quali è consentita l&apos;eliminazione saranno eliminati se 
     <message>
         <location filename="../src/gui/legalnotice.cpp" line="55"/>
         <source>&lt;p&gt;Copyright 2017-2025 Nextcloud GmbH&lt;br /&gt;Copyright 2012-2023 ownCloud GmbH&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Copyright 2017-2025 Nextcloud GmbH&lt;br /&gt;Copyright 2012-2023 ownCloud GmbH&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/legalnotice.cpp" line="55"/>
@@ -4383,7 +4383,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1735"/>
         <source>Cannot modify encrypted item because the selected certificate is not valid.</source>
-        <translation type="unfinished"/>
+        <translation>Impossibile modificare l&apos;elemento crittografato perché il certificato selezionato non è valido.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1637"/>
@@ -5788,12 +5788,12 @@ Il server ha risposto con errore: %2</translation>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="104"/>
         <source>End-to-end certificate needs to be migrated to a new one</source>
-        <translation type="unfinished"/>
+        <translation>Il certificato end-to-end deve essere migrato a uno nuovo</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="106"/>
         <source>Trigger the migration</source>
-        <translation type="unfinished"/>
+        <translation>Avviare la migrazione</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="158"/>
@@ -7044,7 +7044,7 @@ Il server ha risposto con errore: %2</translation>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="62"/>
         <source>Updated end-to-end encryption metadata</source>
-        <translation type="unfinished"/>
+        <translation>Metadati di crittografia end-to-end aggiornati</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="61"/>
@@ -7125,7 +7125,7 @@ Il server ha risposto con errore: %2</translation>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="97"/>
         <source>Updating end-to-end encryption metadata</source>
-        <translation type="unfinished"/>
+        <translation>Aggiornamento dei metadati di crittografia end-to-end</translation>
     </message>
 </context>
 <context>

@@ -239,7 +239,7 @@
     <message>
         <location filename="../src/gui/tray/EncryptionTokenDiscoveryDialog.qml" line="83"/>
         <source>Discovering the certificates stored on your USB token</source>
-        <translation type="unfinished"/>
+        <translation>استكشاف الشهادات المحفوطة على أَمَارَة USB خاصّتك</translation>
     </message>
 </context>
 <context>
@@ -247,22 +247,22 @@
     <message>
         <location filename="../src/gui/EncryptionTokenSelectionWindow.qml" line="41"/>
         <source>Token Encryption Key Chooser</source>
-        <translation type="unfinished"/>
+        <translation>أداة اختيار مفتاح تشفير الأَمَارَة token</translation>
     </message>
     <message>
         <location filename="../src/gui/EncryptionTokenSelectionWindow.qml" line="78"/>
         <source>Available Keys for end-to-end Encryption:</source>
-        <translation type="unfinished"/>
+        <translation>المفاتيح المتوفرة للتشفير من الحدّ للحدّ:</translation>
     </message>
     <message>
         <location filename="../src/gui/EncryptionTokenSelectionWindow.qml" line="121"/>
         <source>Choose</source>
-        <translation type="unfinished"/>
+        <translation>إختَر</translation>
     </message>
     <message>
         <location filename="../src/gui/EncryptionTokenSelectionWindow.qml" line="125"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>إلغاء</translation>
     </message>
 </context>
 <context>
@@ -990,7 +990,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1533"/>
         <source>Migrate certificate to a new one</source>
-        <translation type="unfinished"/>
+        <translation>ترحيل الشهادة إلى أخرى جديدة</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1517"/>
@@ -1518,22 +1518,22 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1147"/>
         <source>PIN needed to login to token</source>
-        <translation type="unfinished"/>
+        <translation>الرمز PIN مطلوب لتسجيل الدخول إلى الأَمَارَة</translation>
     </message>
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1148"/>
         <source>Enter Certificate USB Token PIN:</source>
-        <translation type="unfinished"/>
+        <translation>أدخِل رمز PIN لتسجيل الدخول إلى الأَمَارَة:</translation>
     </message>
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1165"/>
         <source>Invalid PIN. Login failed</source>
-        <translation type="unfinished"/>
+        <translation>الرمز PIN غير صحيح. عملية تسجيل الدخول لم تتم.</translation>
     </message>
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1166"/>
         <source>Login to the token failed after providing the user PIN. It may be invalid or wrong. Please try again !</source>
-        <translation type="unfinished"/>
+        <translation>عملية تسجيل الدخول إلى الأَمَارَة لم تنجح بعد إدخال رمز PIN المستخدِم والذي يمكن أن يكون غير صحيح. رجاءً؛ حاول مرة أخرى.</translation>
     </message>
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1369"/>
@@ -4367,7 +4367,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1735"/>
         <source>Cannot modify encrypted item because the selected certificate is not valid.</source>
-        <translation type="unfinished"/>
+        <translation>تعذّر تعديل العنصر المُشفّر لأن الشهادة المحددة غير صحيحة.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1637"/>
@@ -5770,12 +5770,12 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="104"/>
         <source>End-to-end certificate needs to be migrated to a new one</source>
-        <translation type="unfinished"/>
+        <translation>شهادة التشفير من الحدّ للحدّ يجب ترحيلها إلى أخرى جديدة</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="106"/>
         <source>Trigger the migration</source>
-        <translation type="unfinished"/>
+        <translation>البدء في الترحيل</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="158"/>
@@ -7026,7 +7026,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="62"/>
         <source>Updated end-to-end encryption metadata</source>
-        <translation type="unfinished"/>
+        <translation>بيانات وصفية مُحدَّثة للتشفير من الحدّ للحدّ</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="61"/>
@@ -7107,7 +7107,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="97"/>
         <source>Updating end-to-end encryption metadata</source>
-        <translation type="unfinished"/>
+        <translation>تحديث البيانات الوصفية للتشفير من الحدّ للحدّ</translation>
     </message>
 </context>
 <context>

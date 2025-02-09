@@ -239,7 +239,7 @@
     <message>
         <location filename="../src/gui/tray/EncryptionTokenDiscoveryDialog.qml" line="83"/>
         <source>Discovering the certificates stored on your USB token</source>
-        <translation type="unfinished"/>
+        <translation>Découverte des certificats stockés sur votre jeton USB</translation>
     </message>
 </context>
 <context>
@@ -247,22 +247,22 @@
     <message>
         <location filename="../src/gui/EncryptionTokenSelectionWindow.qml" line="41"/>
         <source>Token Encryption Key Chooser</source>
-        <translation type="unfinished"/>
+        <translation>Choisir la clé de chiffrement du jeton</translation>
     </message>
     <message>
         <location filename="../src/gui/EncryptionTokenSelectionWindow.qml" line="78"/>
         <source>Available Keys for end-to-end Encryption:</source>
-        <translation type="unfinished"/>
+        <translation>Clés disponibles pour le chiffrement de bout en bout:</translation>
     </message>
     <message>
         <location filename="../src/gui/EncryptionTokenSelectionWindow.qml" line="121"/>
         <source>Choose</source>
-        <translation type="unfinished"/>
+        <translation>Choisir</translation>
     </message>
     <message>
         <location filename="../src/gui/EncryptionTokenSelectionWindow.qml" line="125"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>Annuler</translation>
     </message>
 </context>
 <context>
@@ -993,7 +993,7 @@ Vous prenez vos propres risques.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1533"/>
         <source>Migrate certificate to a new one</source>
-        <translation type="unfinished"/>
+        <translation>Migrer le certificat vers une nouvelle clé</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1517"/>
@@ -1521,22 +1521,22 @@ Vous prenez vos propres risques.</translation>
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1147"/>
         <source>PIN needed to login to token</source>
-        <translation type="unfinished"/>
+        <translation>PIN nécessaire pour se connecter au jeton</translation>
     </message>
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1148"/>
         <source>Enter Certificate USB Token PIN:</source>
-        <translation type="unfinished"/>
+        <translation>Entrez le PIN du jeton USB de certificat:</translation>
     </message>
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1165"/>
         <source>Invalid PIN. Login failed</source>
-        <translation type="unfinished"/>
+        <translation>PIN invalide. Connexion échouée</translation>
     </message>
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1166"/>
         <source>Login to the token failed after providing the user PIN. It may be invalid or wrong. Please try again !</source>
-        <translation type="unfinished"/>
+        <translation>Connexion au jeton échouée après avoir fourni le PIN utilisateur. Il peut être invalide ou mauvais. Veuillez essayer à nouveau !</translation>
     </message>
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1369"/>
@@ -2543,7 +2543,10 @@ Vous pouvez également restaurer tous les fichiers supprimés en les télécharg
 This setup can cause data loss and it is no longer supported.
 To resolve this issue: please remove %1 from one of the accounts and create a new sync folder.
 For advanced users: this issue might be related to multiple sync database files found in one folder. Please check %1 for outdated and unused .sync_*.db files and remove them.</source>
-        <translation type="unfinished"/>
+        <translation>Le dossier %1 est lié à plusieurs comptes.
+Cette configuration peut provoquer une perte de données et n&apos;est plus supportée.
+Pour résoudre ce problème: veuillez enlever %1 d&apos;un des comptes et créer un nouveau dossier de synchronisation.
+Pour les utilisateurs avancés: ce problème peut aussi venir de plusieurs fichiers de bases de données de synchronisation dans un seul dossier. Veuillez vérifier si %1 contient des fichiers .sync_*.db périmés ou inutilisés et supprimez-les.</translation>
     </message>
 </context>
 <context>
@@ -3492,7 +3495,7 @@ Les éléments dont la suppression est autorisée seront supprimés s&apos;ils e
     <message>
         <location filename="../src/gui/legalnotice.cpp" line="55"/>
         <source>&lt;p&gt;Copyright 2017-2025 Nextcloud GmbH&lt;br /&gt;Copyright 2012-2023 ownCloud GmbH&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Copyright 2017-2025 Nextcloud GmbH&lt;br /&gt;Copyright 2012-2023 ownCloud GmbH&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/legalnotice.cpp" line="55"/>
@@ -4386,7 +4389,7 @@ Il s&apos;agit d&apos;un nouveau mode expérimental. Si vous décidez de l&apos;
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1735"/>
         <source>Cannot modify encrypted item because the selected certificate is not valid.</source>
-        <translation type="unfinished"/>
+        <translation>Impossible de modifier l&apos;élément chiffré car le certificat sélectionné n&apos;est pas valide.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1637"/>
@@ -4455,7 +4458,7 @@ Il s&apos;agit d&apos;un nouveau mode expérimental. Si vous décidez de l&apos;
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1485"/>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1519"/>
         <source>unknown exception</source>
-        <translation type="unfinished"/>
+        <translation>Exception inconnue</translation>
     </message>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1387"/>
@@ -4589,7 +4592,7 @@ Il s&apos;agit d&apos;un nouveau mode expérimental. Si vous décidez de l&apos;
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="259"/>
         <source>unknown exception</source>
-        <translation type="unfinished"/>
+        <translation>Exception inconnue</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="200"/>
@@ -5791,12 +5794,12 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="104"/>
         <source>End-to-end certificate needs to be migrated to a new one</source>
-        <translation type="unfinished"/>
+        <translation>Le certificat de bout en bout doit être migré vers une nouvelle clé</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="106"/>
         <source>Trigger the migration</source>
-        <translation type="unfinished"/>
+        <translation>Déclencher la migration</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="158"/>
@@ -7047,7 +7050,7 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="62"/>
         <source>Updated end-to-end encryption metadata</source>
-        <translation type="unfinished"/>
+        <translation>Métadonnées de chiffrement de bout en bout mises à jour</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="61"/>
@@ -7128,7 +7131,7 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="97"/>
         <source>Updating end-to-end encryption metadata</source>
-        <translation type="unfinished"/>
+        <translation>Mise à jour des métadonnées de chiffrement de bout en bout </translation>
     </message>
 </context>
 <context>
