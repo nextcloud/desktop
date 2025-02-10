@@ -161,8 +161,9 @@ RowLayout {
                 Layout.alignment: Qt.AlignVCenter | Qt.AlignHCenter
                 spacing: Style.extraSmallSpacing
 
-                Button {
-                    id: fileDetailsButton                    
+                IconButton {
+                    id: fileDetailsButton   
+                 
                     property bool isHovered: fileDetailsButton.hovered || fileDetailsButton.visualFocus
                     property bool isActive: fileDetailsButton.pressed
                     
