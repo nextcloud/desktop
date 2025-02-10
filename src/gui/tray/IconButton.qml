@@ -11,6 +11,7 @@ Button{
 
   property bool isMouseOver: false
   property bool isActive: root.pressed
+  property bool customHoverEnabled: true
 
   hoverEnabled: false // turn off default button hover
 
@@ -33,7 +34,7 @@ Button{
     height: 24
     MouseArea {
         anchors.fill: parent
-        hoverEnabled: true
+        hoverEnabled: root.customHoverEnabled
         onExited: root.isMouseOver = false
         onEntered: root.isMouseOver = true
     }

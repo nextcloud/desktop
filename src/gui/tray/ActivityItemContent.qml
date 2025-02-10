@@ -191,8 +191,10 @@ RowLayout {
                     onClicked: Systray.presentShareViewInTray(model.openablePath)
                 }
 
-                Button {
+                IconButton {
                     id: dismissActionButton
+
+                    customHoverEnabled: false
 
                     width: Style.activityListButtonWidth
                     height: Style.activityListButtonHeight
