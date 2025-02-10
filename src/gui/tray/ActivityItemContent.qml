@@ -173,7 +173,8 @@ RowLayout {
 
                     width: Style.activityListButtonWidth
                     height: Style.activityListButtonHeight
-                    icon.source: "image://svgimage-custom-color/more.svg/" + (isHovered ? Style.sesWhite : Style.sesActionHover)
+                    iconSource: Style.sesMore
+                    iconSourceHovered: Style.sesMoreWhite
                     
                     icon.width: Style.activityListButtonIconSize
                     icon.height: Style.activityListButtonIconSize
@@ -182,14 +183,7 @@ RowLayout {
                         text: qsTr("Open file details")
                         visible: parent.hovered
                     }
-                    background: Rectangle {
-                        anchors.fill: parent
-                        anchors.margins: 1
-                        color: parent.isActive ? Style.sesActionPressed : parent.isHovered ? Style.sesActionHover : "transparent"
-                        radius: width / 2
-                    }
 
-                    display: Button.IconOnly
                     leftPadding: 0
                     rightPadding: 0
 
