@@ -38,6 +38,11 @@ Button{
     border.width: 2
     border.color: Style.sesPillButtonBorderColor
     radius: height / 2
+
+    Behavior on opacity {
+        NumberAnimation { duration: Style.shortAnimationDuration }
+    }
+
     MouseArea {
         anchors.fill: parent
         hoverEnabled: true
