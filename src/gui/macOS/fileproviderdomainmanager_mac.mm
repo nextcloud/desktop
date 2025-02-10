@@ -81,23 +81,23 @@ QString domainIdentifierForAccount(const OCC::Account * const account)
     return domainId;
 }
 
-QString domainIdentifierForAccount(const OCC::AccountPtr account)
+inline QString domainIdentifierForAccount(const OCC::AccountPtr account)
 {
     return domainIdentifierForAccount(account.get());
 }
 
-QString domainDisplayNameForAccount(const OCC::Account * const account)
+inline QString domainDisplayNameForAccount(const OCC::Account * const account)
 {
     Q_ASSERT(account);
     return account->displayName();
 }
 
-QString domainDisplayNameForAccount(const OCC::AccountPtr account)
+inline QString domainDisplayNameForAccount(const OCC::AccountPtr account)
 {
     return domainDisplayNameForAccount(account.get());
 }
 
-QString accountIdFromDomainId(const QString &domainId)
+inline QString accountIdFromDomainId(const QString &domainId)
 {
     return domainId;
 }
@@ -122,7 +122,7 @@ QString accountIdFromDomainId(NSString * const domainId)
 }
 
 API_AVAILABLE(macos(11.0))
-QString accountIdFromDomain(NSFileProviderDomain * const domain)
+inline QString accountIdFromDomain(NSFileProviderDomain * const domain)
 {
     return accountIdFromDomainId(domain.identifier);
 }
