@@ -24,7 +24,9 @@ class ShareTableItemView: NSTableCellView {
             }
             typeImageView.image = share.typeImage
             label.stringValue = share.displayString
-            copyLinkButton.isHidden = share.shareType != NKShare.ShareType.publicLink.rawValue
+            copyLinkButton.isHidden =
+                share.shareType != NKShare.ShareType.publicLink.rawValue &&
+                share.shareType != NKShare.ShareType.internalLink.rawValue
         }
     }
 
