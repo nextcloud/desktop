@@ -174,6 +174,26 @@ public:
                         qCInfo(lcMacFileProviderDomainManager) << "Found existing file provider domain for account:"
                                                                << accountState->account()->displayName();
                         [domain retain];
+
+                        if (illegalDomainIdentifier(QString::fromNSString(domain.identifier))) {
+                            qCWarning(lcMacFileProviderDomainManager) << "Found existing file provider domain with illegal domain identifier:"
+                                                                      << domain.identifier
+                                                                      << "removing and recreating";
+                            [NSFileProviderManager removeDomain:domain completionHandler:^(NSError * const error) {
+                                if (error) {
+                                    qCWarning(lcMacFileProviderDomainManager) << "Error removing file provider domain with illegal domain identifier: "
+                                                                              << error.code
+                                                                              << error.localizedDescription;
+                                    
+                                } else {
+                                    qCInfo(lcMacFileProviderDomainManager) << "Successfully removed file provider domain with illegal domain identifier: "
+                                                                           << domain.identifier;
+                                }
+                                [domain release];
+                            }];
+                            return;
+                        }
+                        
                         _registeredDomains.insert(accountId, domain);
 
                         NSFileProviderManager * const fpManager = [NSFileProviderManager managerForDomain:domain];
