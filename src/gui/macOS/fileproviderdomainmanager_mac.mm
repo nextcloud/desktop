@@ -104,7 +104,21 @@ QString accountIdFromDomainId(const QString &domainId)
 
 QString accountIdFromDomainId(NSString * const domainId)
 {
-    return accountIdFromDomainId(QString::fromNSString(domainId));
+    auto qDomainId = QString::fromNSString(domainId);
+    if (!qDomainId.contains('-')) {
+        return qDomainId.replace("(.)", ".");
+    }
+    // Using slashes as the replacement for illegal chars was unwise and we now have to pay the
+    // price of doing so...
+    const auto accounts = OCC::AccountManager::instance()->accounts();
+    for (const auto &accountState : accounts) {
+        const auto account = accountState->account();
+        const auto convertedDomainId = domainIdentifierForAccount(account);
+        if (convertedDomainId == qDomainId) {
+            return account->userIdAtHostWithPort();
+        }
+    }
+    Q_UNREACHABLE();
 }
 
 API_AVAILABLE(macos(11.0))
