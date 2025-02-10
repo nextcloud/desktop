@@ -137,17 +137,18 @@ Page {
                 wrapMode: Text.Wrap
             }
 
-            SesCustomButton {
+            IconButton {
                 id: closeButton
+
+                customHoverEnabled: false
+
 
                 Layout.rowSpan: headerGridLayout.rows
                 Layout.preferredWidth: Style.iconButtonWidth
                 Layout.preferredHeight: width
                 Layout.rightMargin: headerGridLayout.textRightMargin
 
-                icon.source: "image://svgimage-custom-color/clear.svg" + "/" + palette.buttonText
-                bgColor: palette.highlight
-                bgNormalOpacity: 0
+                iconSource: Style.sesAccountQuit
                 toolTipText: qsTr("Dismiss")
 
                 font.pixelSize: Style.sesFontPixelSize
