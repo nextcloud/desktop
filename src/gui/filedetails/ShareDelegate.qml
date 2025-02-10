@@ -152,7 +152,7 @@ GridLayout {
 
         spacing: 0
 
-        SesCustomButton {
+        IconButton {
             id: createLinkButton
 
             Layout.alignment: Qt.AlignCenter
@@ -161,13 +161,10 @@ GridLayout {
             
             toolTipText: qsTr("Create a new share link")
 
-            bgColor: palette.highlight
-            bgNormalOpacity: 0
-
-            icon.source: Style.sesDarkPlus + palette.buttonText
+            iconSource: Style.sesDarkPlus + palette.buttonText
             icon.width: Style.smallIconSize
             icon.height: Style.smallIconSize
-            // display: AbstractButton.IconOnly
+            customHoverEnabled: false
 
             visible: (root.isPlaceholderLinkShare || root.isSecureFileDropPlaceholderLinkShare) && root.canCreateLinkShares
             enabled: visible
@@ -229,7 +226,7 @@ GridLayout {
             }
         }
 
-        SesCustomButton {
+        IconButton {
             id: moreButton
 
             property bool isHovered: moreButton.hovered || moreButton.visualFocus
@@ -241,22 +238,13 @@ GridLayout {
 
             toolTipText: qsTr("Share options")
 
-            bgColor: palette.highlight
-            bgNormalOpacity: 0
-
-            icon.source: "image://svgimage-custom-color/more.svg/" + (moreButton.isActive || moreButton.isHovered ? Style.sesWhite : Style.sesIconColor)
-            icon.width: Style.smallIconSize
-            icon.height: Style.smallIconSize
+            iconSource: Style.sesMore
+            iconSourceHovered: Style.sesMoreWhite
+            width: Style.smallIconSize
+            height: Style.smallIconSize
 
             visible: !root.isPlaceholderLinkShare && !root.isSecureFileDropPlaceholderLinkShare && !root.isInternalLinkShare
             enabled: visible
-            
-            background: Rectangle {
-                anchors.fill: parent
-                anchors.margins: 1
-                color: moreButton.isActive ? Style.sesActionPressed : moreButton.isHovered ? Style.sesActionHover : "transparent"
-                radius: width / 2
-            }
 
             onClicked: root.rootStackView.push(shareDetailsPageComponent, {}, StackView.PushTransition)
 
