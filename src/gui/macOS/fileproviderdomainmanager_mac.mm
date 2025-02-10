@@ -13,8 +13,10 @@
  */
 
 #include "configfile.h"
+
 #import <FileProvider/FileProvider.h>
 
+#include <QLatin1StringView>
 #include <QLoggingCategory>
 #include <QRegularExpression>
 
@@ -29,11 +31,42 @@
 // are consistent throughout these classes
 namespace {
 
+static constexpr auto bundleExtensions = std::array{
+    QLatin1StringView(".app"),
+    QLatin1StringView(".framework"),
+    QLatin1StringView(".kext"),
+    QLatin1StringView(".plugin"),
+    QLatin1StringView(".docset"),
+    QLatin1StringView(".xpc"),
+    QLatin1StringView(".qlgenerator"),
+    QLatin1StringView(".component"),
+    QLatin1StringView(".saver"),
+    QLatin1StringView(".mdimporter")
+};
+
 QString domainIdentifierForAccount(const OCC::Account * const account)
 {
     Q_ASSERT(account);
+    auto domainId = account->userIdAtHostWithPort();
+    Q_ASSERT(!domainId.isEmpty());
+
     static const QRegularExpression illegalChars("[:/]");
-    return account->userIdAtHostWithPort().replace(illegalChars, "-");
+    domainId.replace(illegalChars, "-");
+
+    // Some url domains like .app cause issues on macOS as these are also bundle extensions.
+    // Under the hood, fileproviderd will create a folder for the user to access the files named
+    // after the domain identifier. If the url domain is the same as a bundle extension, Finder
+    // will interpret this folder as a bundle and will not allow the user to access the files.
+    // Here we wrap the dot in the url domain extension to prevent this from happening.
+    for (const auto &ext : bundleExtensions) {
+        if (domainId.endsWith(ext)) {
+            domainId = domainId.left(domainId.length() - ext.length());
+            domainId += "(.)" + ext.right(ext.length() - 1);
+            break;
+        }
+    }
+
+    return domainId;
 }
 
 QString domainIdentifierForAccount(const OCC::AccountPtr account)
