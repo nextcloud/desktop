@@ -43,6 +43,19 @@ static constexpr auto bundleExtensions = std::array{
     QLatin1StringView(".saver"),
     QLatin1StringView(".mdimporter")
 };
+static const QRegularExpression illegalChars("[:/]");
+
+inline bool hasBundleExtension(const QString &domainId)
+{
+    return std::any_of(bundleExtensions.begin(), bundleExtensions.end(), [&domainId](const auto &ext) {
+        return domainId.endsWith(ext);
+    });
+}
+
+inline bool illegalDomainIdentifier(const QString &domainId)
+{
+    return !domainId.isEmpty() && !illegalChars.match(domainId).hasMatch() && hasBundleExtension(domainId);
+}
 
 QString domainIdentifierForAccount(const OCC::Account * const account)
 {
@@ -50,7 +63,6 @@ QString domainIdentifierForAccount(const OCC::Account * const account)
     auto domainId = account->userIdAtHostWithPort();
     Q_ASSERT(!domainId.isEmpty());
 
-    static const QRegularExpression illegalChars("[:/]");
     domainId.replace(illegalChars, "-");
 
     // Some url domains like .app cause issues on macOS as these are also bundle extensions.
