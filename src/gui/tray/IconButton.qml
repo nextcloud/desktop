@@ -28,7 +28,7 @@ Button{
 
   ToolTip {
       text: root.toolTipText
-      visible: root.isMouseOver
+      visible: root.toolTipText && root.isMouseOver
   }
 
   background: Rectangle {
