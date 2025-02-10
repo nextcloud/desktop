@@ -239,22 +239,17 @@ Page {
                 wrapMode: Text.Wrap
             }
 
-            SesCustomButton {
+            IconButton {
                 id: placeholder
+
+                customHoverEnabled: false
 
                 Layout.rowSpan: headerGridLayout.rows
                 Layout.preferredWidth: Style.iconButtonWidth
                 Layout.preferredHeight: width
                 Layout.rightMargin: root.padding
 
-                icon.source: "image://svgimage-custom-color/clear.svg" + "/" + palette.buttonText
-                bgColor: palette.highlight
-                bgNormalOpacity: 0
-                toolTipText: qsTr("Dismiss")
-
-                font.pixelSize: pixelSize
-                font.weight: fontWeight
-
+                iconSource: Style.sesAccountQuit
 
                 onClicked: root.closeShareDetails()
             }
@@ -851,6 +846,10 @@ Page {
             Layout.bottomMargin: 16
             Layout.rightMargin: 20
             Layout.row: 1
+
+            Behavior on Layout.preferredWidth {
+                SmoothedAnimation { duration: Style.shortAnimationDuration }
+            }
 
             TextEdit {
                 id: clipboardHelper
