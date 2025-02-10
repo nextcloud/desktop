@@ -13,8 +13,10 @@
  */
 
 #include "configfile.h"
+
 #import <FileProvider/FileProvider.h>
 
+#include <QLatin1StringView>
 #include <QLoggingCategory>
 #include <QRegularExpression>
 
@@ -29,41 +31,98 @@
 // are consistent throughout these classes
 namespace {
 
+static constexpr auto bundleExtensions = std::array{
+    QLatin1StringView(".app"),
+    QLatin1StringView(".framework"),
+    QLatin1StringView(".kext"),
+    QLatin1StringView(".plugin"),
+    QLatin1StringView(".docset"),
+    QLatin1StringView(".xpc"),
+    QLatin1StringView(".qlgenerator"),
+    QLatin1StringView(".component"),
+    QLatin1StringView(".saver"),
+    QLatin1StringView(".mdimporter")
+};
+static const QRegularExpression illegalChars("[:/]");
+
+inline bool hasBundleExtension(const QString &domainId)
+{
+    return std::any_of(bundleExtensions.begin(), bundleExtensions.end(), [&domainId](const auto &ext) {
+        return domainId.endsWith(ext);
+    });
+}
+
+inline bool illegalDomainIdentifier(const QString &domainId)
+{
+    return !domainId.isEmpty() && !illegalChars.match(domainId).hasMatch() && hasBundleExtension(domainId);
+}
+
 QString domainIdentifierForAccount(const OCC::Account * const account)
 {
     Q_ASSERT(account);
-    static const QRegularExpression illegalChars("[:/]");
-    return account->userIdAtHostWithPort().replace(illegalChars, "-");
+    auto domainId = account->userIdAtHostWithPort();
+    Q_ASSERT(!domainId.isEmpty());
+
+    domainId.replace(illegalChars, "-");
+
+    // Some url domains like .app cause issues on macOS as these are also bundle extensions.
+    // Under the hood, fileproviderd will create a folder for the user to access the files named
+    // after the domain identifier. If the url domain is the same as a bundle extension, Finder
+    // will interpret this folder as a bundle and will not allow the user to access the files.
+    // Here we wrap the dot in the url domain extension to prevent this from happening.
+    for (const auto &ext : bundleExtensions) {
+        if (domainId.endsWith(ext)) {
+            domainId = domainId.left(domainId.length() - ext.length());
+            domainId += "(.)" + ext.right(ext.length() - 1);
+            break;
+        }
+    }
+
+    return domainId;
 }
 
-QString domainIdentifierForAccount(const OCC::AccountPtr account)
+inline QString domainIdentifierForAccount(const OCC::AccountPtr account)
 {
     return domainIdentifierForAccount(account.get());
 }
 
-QString domainDisplayNameForAccount(const OCC::Account * const account)
+inline QString domainDisplayNameForAccount(const OCC::Account * const account)
 {
     Q_ASSERT(account);
     return account->displayName();
 }
 
-QString domainDisplayNameForAccount(const OCC::AccountPtr account)
+inline QString domainDisplayNameForAccount(const OCC::AccountPtr account)
 {
     return domainDisplayNameForAccount(account.get());
 }
 
-QString accountIdFromDomainId(const QString &domainId)
+inline QString accountIdFromDomainId(const QString &domainId)
 {
     return domainId;
 }
 
 QString accountIdFromDomainId(NSString * const domainId)
 {
-    return accountIdFromDomainId(QString::fromNSString(domainId));
+    auto qDomainId = QString::fromNSString(domainId);
+    if (!qDomainId.contains('-')) {
+        return qDomainId.replace("(.)", ".");
+    }
+    // Using slashes as the replacement for illegal chars was unwise and we now have to pay the
+    // price of doing so...
+    const auto accounts = OCC::AccountManager::instance()->accounts();
+    for (const auto &accountState : accounts) {
+        const auto account = accountState->account();
+        const auto convertedDomainId = domainIdentifierForAccount(account);
+        if (convertedDomainId == qDomainId) {
+            return account->userIdAtHostWithPort();
+        }
+    }
+    Q_UNREACHABLE();
 }
 
 API_AVAILABLE(macos(11.0))
-QString accountIdFromDomain(NSFileProviderDomain * const domain)
+inline QString accountIdFromDomain(NSFileProviderDomain * const domain)
 {
     return accountIdFromDomainId(domain.identifier);
 }
@@ -115,6 +174,26 @@ public:
                         qCInfo(lcMacFileProviderDomainManager) << "Found existing file provider domain for account:"
                                                                << accountState->account()->displayName();
                         [domain retain];
+
+                        if (illegalDomainIdentifier(QString::fromNSString(domain.identifier))) {
+                            qCWarning(lcMacFileProviderDomainManager) << "Found existing file provider domain with illegal domain identifier:"
+                                                                      << domain.identifier
+                                                                      << "removing and recreating";
+                            [NSFileProviderManager removeDomain:domain completionHandler:^(NSError * const error) {
+                                if (error) {
+                                    qCWarning(lcMacFileProviderDomainManager) << "Error removing file provider domain with illegal domain identifier: "
+                                                                              << error.code
+                                                                              << error.localizedDescription;
+                                    
+                                } else {
+                                    qCInfo(lcMacFileProviderDomainManager) << "Successfully removed file provider domain with illegal domain identifier: "
+                                                                           << domain.identifier;
+                                }
+                                [domain release];
+                            }];
+                            return;
+                        }
+                        
                         _registeredDomains.insert(accountId, domain);
 
                         NSFileProviderManager * const fpManager = [NSFileProviderManager managerForDomain:domain];
