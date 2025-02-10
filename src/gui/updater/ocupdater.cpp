@@ -496,6 +496,13 @@ bool NSISUpdater::handleStartup()
 {
     ConfigFile cfg;
     QSettings settings(cfg.configFile(), QSettings::IniFormat);
+
+    // no need to try to install a previously fetched update when the user doesn't want automated updates
+    if (cfg.skipUpdateCheck() || !cfg.autoUpdateCheck()) {
+        qCInfo(lcUpdater) << "Skipping installation of update due to config settings";
+        return false;
+    }
+
     QString updateFileName = settings.value(updateAvailableC).toString();
     // has the previous run downloaded an update?
     if (!updateFileName.isEmpty() && QFile(updateFileName).exists()) {
