@@ -121,10 +121,10 @@ void FileSystem::setFileReadOnly(const QString &filename, bool readonly)
             std::filesystem::perms allWritePermissions = std::filesystem::perms::_All_write;
             static std::filesystem::perms defaultWritePermissions = std::filesystem::perms::others_write;
 
-            std::filesystem::permissions(filename.toStdString(), allWritePermissions, std::filesystem::perm_options::remove);
+            std::filesystem::permissions(filename.toStdWString(), allWritePermissions, std::filesystem::perm_options::remove);
 
             if (!readonly) {
-                std::filesystem::permissions(filename.toStdString(), defaultWritePermissions, std::filesystem::perm_options::add);
+                std::filesystem::permissions(filename.toStdWString(), defaultWritePermissions, std::filesystem::perm_options::add);
             }
         }
         catch (const std::filesystem::filesystem_error &e)
@@ -370,7 +370,7 @@ bool FileSystem::openAndSeekFileSharedRead(QFile *file, QString *errorOrNull, qi
 #ifdef Q_OS_WIN
 std::filesystem::perms FileSystem::filePermissionsWin(const QString &filename)
 {
-    return std::filesystem::status(filename.toStdString()).permissions();
+    return std::filesystem::status(filename.toStdWString()).permissions();
 }
 
 void FileSystem::setFilePermissionsWin(const QString &filename, const std::filesystem::perms &perms)
@@ -378,7 +378,7 @@ void FileSystem::setFilePermissionsWin(const QString &filename, const std::files
     if (!fileExists(filename)) {
         return;
     }
-    std::filesystem::permissions(filename.toStdString(), perms);
+    std::filesystem::permissions(filename.toStdWString(), perms);
 }
 
 static bool fileExistsWin(const QString &filename)
