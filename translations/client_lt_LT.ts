@@ -2412,32 +2412,32 @@ Alternatively, you can restore all deleted files by downloading them from the se
     <message>
         <location filename="../src/gui/folderman.cpp" line="1747"/>
         <source>Syncing %1 of %2 (A few seconds left)</source>
-        <translation type="unfinished"/>
+        <translation>Sinchronizuojama %1 iš %2 (liko kelios sekundės)</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1750"/>
         <source>Syncing %1 of %2 (%3 left)</source>
-        <translation type="unfinished"/>
+        <translation>Sinchronizuojama %1 iš %2 (liko %3)</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1753"/>
         <source>Syncing %1 of %2</source>
-        <translation type="unfinished"/>
+        <translation>Sinchronizuojama %1 iš %2</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1759"/>
         <source>Syncing %1 (A few seconds left)</source>
-        <translation type="unfinished"/>
+        <translation>Sinchronizuojama %1 (liko kelios sekundės)</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1761"/>
         <source>Syncing %1 (%2 left)</source>
-        <translation type="unfinished"/>
+        <translation>Sinchronizuojama %1 (liko %2)</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1764"/>
         <source>Syncing %1</source>
-        <translation type="unfinished"/>
+        <translation>Sinchronizuojama %1</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1611"/>
@@ -2452,7 +2452,7 @@ Alternatively, you can restore all deleted files by downloading them from the se
     <message>
         <location filename="../src/gui/folderman.cpp" line="1618"/>
         <source>Last sync was successful.</source>
-        <translation type="unfinished"/>
+        <translation>Paskutinis sinchronizavimas buvo sėkmingas.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1624"/>
