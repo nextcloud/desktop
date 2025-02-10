@@ -7,6 +7,7 @@
 
 import AppKit
 import FileProvider
+import NextcloudCapabilitiesKit
 import NextcloudFileProviderKit
 import NextcloudKit
 import OSLog
@@ -74,6 +75,20 @@ class LockViewController: NSViewController {
         Logger.lockViewController.error("Error: \(error, privacy: .public)")
         descriptionLabel.stringValue = "Error: \(error)"
         stopIndicatingLoading()
+    }
+
+    private func fetchCapabilities(account: Account, kit: NextcloudKit) async -> Capabilities? {
+        return await withCheckedContinuation { continuation in
+            kit.getCapabilities(account: account.ncKitAccount) { account, data, error in
+                guard error == .success, let capabilitiesJson = data?.data else {
+                    self.presentError("Error getting server caps: \(error.errorDescription)")
+                    continuation.resume(returning: nil)
+                    return
+                }
+                Logger.lockViewController.info("Successfully retrieved server share capabilities")
+                continuation.resume(returning: Capabilities(data: capabilitiesJson))
+            }
+        }
     }
 
     private func processItemIdentifier(_ itemIdentifier: NSFileProviderItemIdentifier) async {
@@ -168,7 +183,12 @@ class LockViewController: NSViewController {
                 nextcloudVersion: 25,
                 groupIdentifier: ""
             )
-            // guard let capabilities = await fetchCapabilities() else {
+            guard let capabilities = await fetchCapabilities(account: account, kit: kit),
+                  capabilities.files?.locking != nil
+            else {
+                presentError("Server does not have the ability to lock files.")
+                return
+            }
             guard let itemMetadata = await fetchItemMetadata(
                 itemRelativePath: serverPathString, account: account, kit: kit
             ) else {
