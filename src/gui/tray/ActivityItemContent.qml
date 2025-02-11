@@ -227,13 +227,14 @@ RowLayout {
 
             Item {
                 Layout.fillWidth: true
+                visible: !talkReplyMessageSent.visible
             }
 
             EnforcedPlainTextLabel {
                 id: talkReplyMessageSent
 
                 height: (text === "") ? 0 : implicitHeight
-                width: parent.width
+                Layout.maximumWidth: parent.width / 2
                 Layout.alignment: Qt.AlignTop | Qt.AlignRight
 
                 text: root.activityData.messageSent
