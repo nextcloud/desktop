@@ -1360,9 +1360,11 @@ void SocketApi::command_GET_MENU_ITEMS(const QString &argument, OCC::SocketListe
         const QFileInfo fileInfo(fileData.localPath);
         sendLockFileInfoMenuEntries(fileInfo, syncFolder, fileData, listener, record);
 
+        #ifndef IONOS_BUILD
         if (!FileSystem::isDir(fileData.localPath)) {
             listener->sendMessage(QLatin1String("MENU_ITEM:ACTIVITY") + flagString + tr("Activity"));
         }
+        #endif 
 
         DirectEditor* editor = getDirectEditorForLocalFile(fileData.localPath);
         if (editor) {
