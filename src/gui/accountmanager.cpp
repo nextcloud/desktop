@@ -78,8 +78,8 @@ constexpr auto unbrandedRelativeConfigLocationC = "/Nextcloud/nextcloud.cfg";
 constexpr auto unbrandedCfgFileNameC = "nextcloud.cfg";
 
 // The maximum versions that this client can read
-constexpr auto maxAccountsVersion = 2;
-constexpr auto maxAccountVersion = 1;
+constexpr auto maxAccountsVersion = 13;
+constexpr auto maxAccountVersion = 13;
 
 constexpr auto serverHasValidSubscriptionC = "serverHasValidSubscription";
 }
@@ -150,6 +150,9 @@ void AccountManager::backwardMigrationSettingsKeys(QStringList *deleteKeys, QStr
     const auto settings = ConfigFile::settingsWithGroup(QLatin1String(accountsC));
     const auto accountsVersion = settings->value(QLatin1String(versionC)).toInt();
 
+    qCInfo(lcAccountManager) << "Checking for accounts versions.";
+    qCInfo(lcAccountManager) << "Config accounts version:" << accountsVersion;
+    qCInfo(lcAccountManager) << "Max accounts Version is set to:" << maxAccountsVersion;
     if (accountsVersion <= maxAccountsVersion) {
         const auto settingsChildGroups = settings->childGroups();
         for (const auto &accountId : settingsChildGroups) {
@@ -158,6 +161,7 @@ void AccountManager::backwardMigrationSettingsKeys(QStringList *deleteKeys, QStr
 
             if (accountVersion > maxAccountVersion) {
                 ignoreKeys->append(settings->group());
+                qCInfo(lcAccountManager) << "Ignoring account" << accountId << "because of version" << accountVersion;
             }
             settings->endGroup();
         }
@@ -236,41 +240,8 @@ bool AccountManager::restoreFromLegacySettings()
                     }
                 }
 
-                // Check the theme url to see if it is the same url that the oC config was for
-                const auto overrideUrl = Theme::instance()->overrideServerUrl();
-                const auto cleanOverrideUrl = overrideUrl.endsWith('/') ? overrideUrl.chopped(1) : overrideUrl;
-                qCInfo(lcAccountManager) << "Migrate: overrideUrl" << cleanOverrideUrl;
-
-                if (!cleanOverrideUrl.isEmpty()) {
-                    oCSettings->beginGroup(QLatin1String(accountsC));
-                    const auto accountsChildGroups = oCSettings->childGroups();
-                    for (const auto &accountId : accountsChildGroups) {
-                        oCSettings->beginGroup(accountId);
-                        const auto oCUrl = oCSettings->value(QLatin1String(urlC)).toString();
-                        const auto cleanOCUrl = oCUrl.endsWith('/') ? oCUrl.chopped(1) : oCUrl;
-
-                        // in case the urls are equal reset the settings object to read from
-                        // the ownCloud settings object
-                        qCInfo(lcAccountManager) << "Migrate oC config if " << cleanOCUrl << " == " << cleanOverrideUrl << ":"
-                                                 << (cleanOCUrl == cleanOverrideUrl ? "Yes" : "No");
-                        if (cleanOCUrl == cleanOverrideUrl) {
-                            qCInfo(lcAccountManager) << "Copy settings" << oCSettings->allKeys().join(", ");
-                            oCSettings->endGroup(); // current accountID group
-                            oCSettings->endGroup(); // accounts group
-                            settings = std::move(oCSettings);
-                            break;
-                        }
-
-                        oCSettings->endGroup();
-                    }
-
-                    if (oCSettings) {
-                        oCSettings->endGroup();
-                    }
-                } else {
-                    qCInfo(lcAccountManager) << "Copy settings" << oCSettings->allKeys().join(", ");
-                    settings = std::move(oCSettings);
-                }
+                qCInfo(lcAccountManager) << "Copy settings" << oCSettings->allKeys().join(", ");
+                settings = std::move(oCSettings);
 
                 ConfigFile::setDiscoveredLegacyConfigPath(configFileInfo.canonicalPath());
                 break;
