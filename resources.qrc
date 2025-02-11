@@ -70,11 +70,9 @@
         <file>src/gui/SesComponents/SesErrorBox.qml</file>
         <file>src/gui/SesComponents/SesTrayHeader.qml</file>
         <file>src/gui/tray/TrayWindowAccountMenu.qml</file>
-        <file>src/gui/tray/SesCustomButton.qml</file>
         <file>src/gui/tray/PrimaryPillButton.qml</file>
         <file>src/gui/tray/SecondaryPillButton.qml</file>
         <file>src/gui/tray/IconButton.qml</file>
-        <file>src/gui/tray/SesButtonContents.qml</file>
         <file>src/gui/tray/AccountMenuItem.qml</file>
     </qresource>
 </RCC>
