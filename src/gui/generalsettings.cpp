@@ -746,11 +746,13 @@ void GeneralSettings::customizeStyle()
     // _ui->dataProtectionBoxLayout->setMargin(16);
 #endif
 
+#ifdef IONOS_BUILD
     // SES-4 removed
     _ui->monoIconsCheckBox->hide();
     _ui->callNotificationsCheckBox->hide();
     _ui->advanced_groupBox->hide();
     _ui->updates_frame->hide();
+#endif 
 
 #if defined(BUILD_UPDATER)
     // updater info
