@@ -78,17 +78,12 @@ RowLayout {
         }
     }
 
-    SesCustomButton {
+    PrimaryPillButton {
         id: syncNowButton
 
         Layout.rightMargin: Style.trayHorizontalMargin
 
         text: qsTr("Sync now")
-
-        padding: Style.smallSpacing
-        textColor: Style.adjustedCurrentUserHeaderColor
-        textColorHovered: Style.currentUserHeaderTextColor
-        bgColor: Style.currentUserHeaderColor
 
         visible: false // SES-4 removed
         enabled: visible
@@ -99,16 +94,13 @@ RowLayout {
         }
     }
 
-    SesCustomButton {
+    SecondaryPillButton {
         Layout.rightMargin: Style.trayHorizontalMargin
 
         font.pixelSize: pixelSize
         font.weight: fontWeight
 
         text: qsTr("Resolve conflicts")
-        bgColor: Style.sesActionPressed
-        bgNormalOpacity: 1.0
-        bgHoverOpacity: Style.hoverOpacity
         
         visible: activityModel.hasSyncConflicts &&
                  !syncStatus.syncing &&

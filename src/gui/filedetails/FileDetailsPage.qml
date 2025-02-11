@@ -142,7 +142,6 @@ Page {
 
                 customHoverEnabled: false
 
-
                 Layout.rowSpan: headerGridLayout.rows
                 Layout.preferredWidth: Style.iconButtonWidth
                 Layout.preferredHeight: width

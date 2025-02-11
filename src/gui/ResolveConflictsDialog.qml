@@ -153,30 +153,18 @@ ApplicationWindow {
             readonly property int pixelSize: Style.sesFontPixelSize
             readonly property int fontWeight: Style.sesFontNormalWeight
 
-            SesCustomButton {
+            PrimaryPillButton {
                 font.pixelSize: pixelSize
                 font.weight: fontWeight
                 text: qsTr("Resolve conflicts")
 
-                bgColor: Style.sesActionPressed
-                bgNormalOpacity: 1.0
-                bgHoverOpacity: Style.hoverOpacity
-
                 onClicked: buttonBox.onRejected()
             }
 
-            SesCustomButton {
+            SecondaryPillButton {
                 font.pixelSize: pixelSize
                 font.weight: fontWeight
                 text: qsTr("Cancel")
-                textColor: Style.sesActionPressed
-
-                bgColor: palette.highlight
-                bgNormalOpacity: 1.0
-
-                bgBorderWidth: 2
-                bgBorderColor: Style.sesActionPressed
-                bgHoverOpacity: Style.hoverOpacity
 
                 onClicked: buttonBox.onRejected()
             }
