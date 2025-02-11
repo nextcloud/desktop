@@ -197,11 +197,11 @@ bool Folder::checkLocalPath()
         QString error;
         // Check directory again
         if (!FileSystem::fileExists(_definition.localPath, fi)) {
-            error = tr("Local folder %1 does not exist.").arg(_definition.localPath);
+            error = tr("Please choose a different location. The folder %1 doesn't exist.").arg(_definition.localPath);
         } else if (!fi.isDir()) {
-            error = tr("%1 should be a folder but is not.").arg(_definition.localPath);
+            error = tr("Please choose a different location. %1 isn't a valid folder.").arg(_definition.localPath);
         } else if (!fi.isReadable()) {
-            error = tr("%1 is not readable.").arg(_definition.localPath);
+            error = tr("Please choose a different location. %1 isn't a readable folder.").arg(_definition.localPath);
         }
         if (!error.isEmpty()) {
             _syncResult.appendErrorString(error);
