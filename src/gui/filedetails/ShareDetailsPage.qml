@@ -608,7 +608,8 @@ Page {
                         id: customPermissionsCheckBox
                         Layout.fillWidth: true
                         enabled: !root.isSharePermissionChangeInProgress
-                        checked: root.currentPermissionMode === permissionMode
+                        checkable: false
+                        checked: true
                         text: qsTr("Custom Permissions")
                         spacing: scrollContentsColumn.indicatorSpacing
                         padding: scrollContentsColumn.itemPadding
