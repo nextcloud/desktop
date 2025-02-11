@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "name": "Linux",
+            "compileCommands": [
+                "${workspaceFolder}/../build/win32-MSVC-x64/RelWithDebInfo/compile_commands.json"
+            ],
+            "intelliSenseMode": "linux-gcc-x64",
+            "cStandard": "c17",
+            "cppStandard": "c++17"
+        }
+    ],
+    "version": 4
+}
