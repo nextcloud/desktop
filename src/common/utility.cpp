@@ -179,8 +179,8 @@ QByteArray Utility::userAgentString()
 
 QByteArray Utility::friendlyUserAgentString()
 {
-    const auto pattern = QStringLiteral("%1 (Desktop Client - %2)");
-    const auto userAgent = pattern.arg(QSysInfo::machineHostName(), platform());
+    const auto pattern = QStringLiteral("%1 (%2 Desktop Client - %3)");
+    const auto userAgent = pattern.arg(QSysInfo::machineHostName(), qApp->applicationName(), platform());
     return userAgent.toUtf8();
 }
 
