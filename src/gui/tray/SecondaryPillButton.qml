@@ -9,8 +9,11 @@ Button{
   hoverEnabled: false // turn off default button hover
 
   property string iconSource
+  property string toolTipText
 
   property bool isMouseOver: false
+  property bool removeBorder: false
+  property color textColor: "black"
 
   contentItem: Row {
     spacing: Style.sesPillButtonVerticalPadding
@@ -20,7 +23,7 @@ Button{
     anchors.centerIn: parent
     Text {
         text: root.text
-        color: "black"
+        color: textColor
         font.weight: Style.sesFontNormalWeight
         font.pointSize: Style.sesFontPointSize
     }
@@ -35,7 +38,7 @@ Button{
   background: Rectangle {
     color: Style.sesPillButtonSecondaryBackgroundColor
     opacity: root.isMouseOver ? Style.sesPillButtonHoverOpacity : 1.0
-    border.width: 2
+    border.width: root.removeBorder ? 0 : 2
     border.color: Style.sesPillButtonBorderColor
     radius: height / 2
 
@@ -49,5 +52,10 @@ Button{
         onExited: root.isMouseOver = false
         onEntered: root.isMouseOver = true
     }
+  }
+
+  ToolTip {
+      text: root.toolTipText
+      visible: root.toolTipText && root.isMouseOver
   }
 }
