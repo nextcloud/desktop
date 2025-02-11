@@ -158,7 +158,7 @@ ApplicationWindow {
                 font.weight: fontWeight
                 text: qsTr("Resolve conflicts")
 
-                onClicked: buttonBox.onRejected()
+                onClicked: buttonBox.onAccepted()
             }
 
             SecondaryPillButton {
