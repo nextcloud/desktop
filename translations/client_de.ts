@@ -33,6 +33,11 @@
         <translation>Aktivitätenliste</translation>
     </message>
     <message>
+        <location filename="../src/gui/tray/ActivityList.qml" line="127"/>
+        <source>Scroll to top</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/tray/ActivityList.qml" line="108"/>
         <source>No activities yet</source>
         <translation>Noch keine Aktivitäten vorhanden</translation>
@@ -247,7 +252,7 @@
     <message>
         <location filename="../src/gui/EncryptionTokenSelectionWindow.qml" line="41"/>
         <source>Token Encryption Key Chooser</source>
-        <translation type="unfinished"/>
+        <translation>Auswahl des Token-Verschlüsselungsschlüssels</translation>
     </message>
     <message>
         <location filename="../src/gui/EncryptionTokenSelectionWindow.qml" line="78"/>
@@ -1527,7 +1532,7 @@ Diese Aktion bricht jede derzeit laufende Synchronisierung ab.</translation>
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1148"/>
         <source>Enter Certificate USB Token PIN:</source>
-        <translation type="unfinished"/>
+        <translation>PIN des USB-Token-Zertifikats eingeben:</translation>
     </message>
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1165"/>
@@ -7050,7 +7055,7 @@ Server antwortete mit Fehler: %2</translation>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="62"/>
         <source>Updated end-to-end encryption metadata</source>
-        <translation>Metadaten zur Ende-zu-Ende-Verschlüsselung aktualisiert</translation>
+        <translation>Metadaten für die Ende-zu-Ende-Verschlüsselung aktualisiert</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="61"/>

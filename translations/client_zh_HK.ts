@@ -33,6 +33,11 @@
         <translation>活動紀錄清單</translation>
     </message>
     <message>
+        <location filename="../src/gui/tray/ActivityList.qml" line="127"/>
+        <source>Scroll to top</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/tray/ActivityList.qml" line="108"/>
         <source>No activities yet</source>
         <translation>尚無系統事件</translation>
