@@ -86,6 +86,7 @@ Page {
     readonly property bool isHideDownloadInProgress: shareModelData.isHideDownloadInProgress
     readonly property int  currentPermissionMode: shareModelData.currentPermissionMode
 
+    readonly property bool isInternalShare: shareModelData.shareType === ShareModel.ShareTypeUser || shareModelData.shareType === ShareModel.ShareTypeGroup || shareModelData.shareType === ShareModel.ShareTypeCircle 
     readonly property bool isLinkShare: shareModelData.shareType === ShareModel.ShareTypeLink
     readonly property bool isEmailShare: shareModelData.shareType === ShareModel.ShareTypeEmail
     readonly property bool shareSupportsPassword: isLinkShare || isEmailShare
@@ -669,7 +670,7 @@ Page {
                         spacing: scrollContentsColumn.indicatorSpacing
                         padding: scrollContentsColumn.itemPadding
                         onClicked: root.permissionModeChanged(permissionMode)
-                        visible: customPermissionsCheckBox.checked & false // Removed SES-307
+                        visible: customPermissionsCheckBox.checked && !root.isInternalShare // Removed SES-307
                         font.pixelSize: pixelSize
                         font.weight: fontWeight
                     }
