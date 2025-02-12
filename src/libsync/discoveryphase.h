@@ -343,6 +343,11 @@ public:
 
     QStringList _listExclusiveFiles;
 
+    QStringList _forbiddenFilenames;
+    QStringList _forbiddenBasenames;
+    QStringList _forbiddenExtensions;
+    QStringList _forbiddenChars;
+
     bool _hasUploadErrorItems = false;
     bool _hasDownloadRemovedItems = false;
 

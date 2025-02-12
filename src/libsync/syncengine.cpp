@@ -647,7 +647,6 @@ void SyncEngine::startSync()
 
     _discoveryPhase = std::make_unique<DiscoveryPhase>();
     _discoveryPhase->_leadingAndTrailingSpacesFilesAllowed = _leadingAndTrailingSpacesFilesAllowed;
-    _discoveryPhase->_shouldEnforceWindowsFileNameCompatibility = _shouldEnforceWindowsFileNameCompatibility;
     _discoveryPhase->_account = _account;
     _discoveryPhase->_excludes = _excludedFiles.data();
     const QString excludeFilePath = _localPath + QStringLiteral(".sync-exclude.lst");
@@ -670,6 +669,24 @@ void SyncEngine::startSync()
         Q_EMIT syncError(tr("Unable to read from the sync journal."), ErrorCategory::GenericError);
         finalize(false);
         return;
+    }
+
+    const auto accountCaps = _account->capabilities();
+    const auto forbiddenFilenames = accountCaps.forbiddenFilenames();
+    const auto forbiddenBasenames = accountCaps.forbiddenFilenameBasenames();
+    const auto forbiddenExtensions = accountCaps.forbiddenFilenameExtensions();
+    const auto forbiddenChars = accountCaps.forbiddenFilenameCharacters();
+
+    _discoveryPhase->_forbiddenFilenames = forbiddenFilenames;
+    _discoveryPhase->_forbiddenBasenames = forbiddenBasenames;
+    _discoveryPhase->_forbiddenExtensions = forbiddenExtensions;
+    _discoveryPhase->_forbiddenChars = forbiddenChars;
+    if (!forbiddenFilenames.isEmpty() &&
+        !forbiddenBasenames.isEmpty() &&
+        !forbiddenExtensions.isEmpty() &&
+        !forbiddenChars.isEmpty()) {
+        _shouldEnforceWindowsFileNameCompatibility = true;
+        _discoveryPhase->_shouldEnforceWindowsFileNameCompatibility = _shouldEnforceWindowsFileNameCompatibility;
     }
 
     // Check for invalid character in old server version
