@@ -14,6 +14,7 @@
 
 #include "syncstatussummary.h"
 #include "accountfwd.h"
+#include "accountstate.h"
 #include "folderman.h"
 #include "navigationpanehelper.h"
 #include "networkjobs.h"
