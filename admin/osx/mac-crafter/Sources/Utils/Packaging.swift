@@ -140,7 +140,7 @@ func createDmgForAppBundle(
         .appendingPathExtension("dmg")
         .path
 
-    guard shell("create-dmg --volname \(appName) --filesystem APFS --app-drop-link 600 0 \"\(dmgFilePath)\" \"\(appBundlePath)\"") == 0 else {
+    guard shell("create-dmg --volname \(appName) --filesystem APFS --app-drop-link 513 37 --window-size 787 276 \"\(dmgFilePath)\" \"\(appBundlePath)\"") == 0 else {
         throw PackagingError.packageCreateDmgFailed("Command failed.")
     }
 
